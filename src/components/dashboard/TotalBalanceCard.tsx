@@ -21,14 +21,7 @@ export function TotalBalanceCard() {
             <BarChart data={data} barGap={1} barCategoryGap={1}>
               <Bar dataKey="value" radius={[2, 2, 0, 0]} maxBarSize={8}>
                 {data.map((_, i) => (
-                  <Cell
-                    key={i}
-                    fill={
-                      i < 12
-                        ? `hsl(200, 90%, ${55 + (i % 3) * 5}%)`
-                        : `hsl(0, 0%, ${30 - (i - 12) * 1}%)`
-                    }
-                  />
+                  <Cell key={i} fill={i < 12 ? `hsl(200, 90%, ${55 + (i % 3) * 5}%)` : `hsl(0, 0%, ${30 - (i - 12) * 1}%)`} />
                 ))}
               </Bar>
             </BarChart>

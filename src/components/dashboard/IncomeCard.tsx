@@ -19,12 +19,7 @@ export function IncomeCard() {
         <div className="mt-4 h-[50px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} barGap={1} barCategoryGap={1}>
-              <Bar
-                dataKey="value"
-                fill="hsl(270, 70%, 60%)"
-                radius={[2, 2, 0, 0]}
-                maxBarSize={8}
-              />
+              <Bar dataKey="value" fill="hsl(270, 70%, 60%)" radius={[2, 2, 0, 0]} maxBarSize={8} />
             </BarChart>
           </ResponsiveContainer>
         </div>

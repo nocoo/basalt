@@ -1,55 +1,50 @@
 import { useState } from "react";
 import {
-  LayoutDashboard,
-  Wallet,
-  CreditCard,
-  ArrowLeftRight,
-  PiggyBank,
-  Target,
-  BarChart3,
-  TrendingUp,
-  LineChart,
-  HelpCircle,
-  Search,
-  ChevronUp,
-  Sparkles,
-  PanelLeft,
+  LayoutDashboard, Wallet, CreditCard, ArrowLeftRight,
+  PiggyBank, Target, BarChart3, TrendingUp,
+  LineChart, HelpCircle, Search, ChevronUp,
+  Sparkles, PanelLeft,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
+  Collapsible, CollapsibleContent, CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 
 interface NavItem {
   title: string;
   icon: React.ElementType;
   badge?: number;
-  active?: boolean;
+  path: string;
 }
 
 const mainMenuItems: NavItem[] = [
-  { title: "Dashboard", icon: LayoutDashboard, active: true },
-  { title: "Wallet", icon: Wallet },
-  { title: "Cards", icon: CreditCard },
-  { title: "Transactions", icon: ArrowLeftRight, badge: 6 },
-  { title: "Budget", icon: PiggyBank },
-  { title: "Goals", icon: Target },
+  { title: "Dashboard", icon: LayoutDashboard, path: "/" },
+  { title: "Wallet", icon: Wallet, path: "/wallet" },
+  { title: "Cards", icon: CreditCard, path: "/cards" },
+  { title: "Transactions", icon: ArrowLeftRight, path: "/transactions", badge: 6 },
+  { title: "Budget", icon: PiggyBank, path: "/budget" },
+  { title: "Goals", icon: Target, path: "/goals" },
 ];
 
 const analyticsItems: NavItem[] = [
-  { title: "Analytics", icon: BarChart3 },
-  { title: "Cash Flow", icon: TrendingUp, badge: 2 },
-  { title: "Investments", icon: LineChart },
+  { title: "Analytics", icon: BarChart3, path: "/analytics" },
+  { title: "Cash Flow", icon: TrendingUp, path: "/cash-flow", badge: 2 },
+  { title: "Investments", icon: LineChart, path: "/investments" },
 ];
 
 const otherItems: NavItem[] = [
-  { title: "Help Center", icon: HelpCircle },
+  { title: "Help Center", icon: HelpCircle, path: "/help" },
 ];
 
-function NavGroup({ label, items, defaultOpen = true }: { label: string; items: NavItem[]; defaultOpen?: boolean }) {
+function NavGroup({
+  label, items, defaultOpen = true, currentPath,
+}: {
+  label: string; items: NavItem[]; defaultOpen?: boolean; currentPath: string;
+}) {
   const [open, setOpen] = useState(defaultOpen);
+  const navigate = useNavigate();
+
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
       <CollapsibleTrigger className="flex w-full items-center justify-between px-5 py-2.5 mt-2">
@@ -61,9 +56,12 @@ function NavGroup({ label, items, defaultOpen = true }: { label: string; items: 
           {items.map((item) => (
             <button
               key={item.title}
+              onClick={() => navigate(item.path)}
               className={cn(
                 "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-normal transition-colors",
-                item.active ? "bg-accent text-foreground font-medium" : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                currentPath === item.path
+                  ? "bg-accent text-foreground font-medium"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
               )}
             >
               <item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
@@ -81,41 +79,29 @@ function NavGroup({ label, items, defaultOpen = true }: { label: string; items: 
   );
 }
 
-export function AppSidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
+export function AppSidebar({ collapsed, onToggle, currentPath }: { collapsed: boolean; onToggle: () => void; currentPath: string }) {
   return (
-    <aside
-      className={cn(
-        "flex h-screen shrink-0 flex-col bg-background transition-all duration-300 ease-in-out overflow-hidden",
-        collapsed ? "w-0" : "w-[260px]"
-      )}
-    >
+    <aside className={cn("flex h-screen shrink-0 flex-col bg-background transition-all duration-300 ease-in-out overflow-hidden", collapsed ? "w-0" : "w-[260px]")}>
       <div className="w-[260px]">
-        {/* Logo row — h-14 matches header */}
         <div className="flex h-14 items-center justify-between px-5">
           <div className="flex items-center gap-3">
             <Sparkles className="h-5 w-5 text-primary" strokeWidth={1.5} />
             <span className="text-lg font-semibold text-foreground">Acme Inc.</span>
           </div>
-          <button
-            onClick={onToggle}
-            className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors"
-          >
+          <button onClick={onToggle} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors">
             <PanelLeft className="h-4 w-4" strokeWidth={1.5} />
           </button>
         </div>
-
-        {/* Search */}
         <div className="px-4 pb-1">
           <div className="flex items-center gap-3 rounded-lg bg-secondary px-3 py-2.5">
             <Search className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
             <span className="text-sm text-muted-foreground">Search</span>
           </div>
         </div>
-
         <nav className="flex-1 overflow-y-auto pt-1">
-          <NavGroup label="Main Menu" items={mainMenuItems} />
-          <NavGroup label="Analytics" items={analyticsItems} />
-          <NavGroup label="Others" items={otherItems} />
+          <NavGroup label="Main Menu" items={mainMenuItems} currentPath={currentPath} />
+          <NavGroup label="Analytics" items={analyticsItems} currentPath={currentPath} />
+          <NavGroup label="Others" items={otherItems} currentPath={currentPath} />
         </nav>
       </div>
     </aside>
