@@ -11,6 +11,9 @@ import {
   Collapsible, CollapsibleContent, CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Tooltip, TooltipContent, TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface NavItem {
   title: string;
@@ -38,6 +41,7 @@ const otherItems: NavItem[] = [
   { title: "Help Center", icon: HelpCircle, path: "/help" },
 ];
 
+/* ── Expanded nav group with collapsible sections ── */
 function NavGroup({
   label, items, defaultOpen = true, currentPath,
 }: {
@@ -80,48 +84,128 @@ function NavGroup({
   );
 }
 
+/* ── Collapsed icon-only nav item ── */
+function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: string }) {
+  const navigate = useNavigate();
+  return (
+    <Tooltip delayDuration={0}>
+      <TooltipTrigger asChild>
+        <button
+          onClick={() => navigate(item.path)}
+          className={cn(
+            "relative flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
+            currentPath === item.path
+              ? "bg-accent text-foreground"
+              : "text-muted-foreground hover:bg-accent hover:text-foreground"
+          )}
+        >
+          <item.icon className="h-4 w-4" strokeWidth={1.5} />
+          {item.badge && (
+            <span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-badge-red px-1 text-[10px] font-medium text-badge-red-foreground">
+              {item.badge}
+            </span>
+          )}
+        </button>
+      </TooltipTrigger>
+      <TooltipContent side="right" sideOffset={8}>
+        {item.title}
+      </TooltipContent>
+    </Tooltip>
+  );
+}
+
+const allNavItems = [...mainMenuItems, ...analyticsItems, ...otherItems];
+
 export function AppSidebar({ collapsed, onToggle, currentPath }: { collapsed: boolean; onToggle: () => void; currentPath: string }) {
   return (
-    <aside className={cn("flex h-screen shrink-0 flex-col bg-background transition-all duration-300 ease-in-out overflow-hidden", collapsed ? "w-0" : "w-[260px]")}>
-      <div className="flex h-screen w-[260px] flex-col">
-        <div className="flex h-14 items-center justify-between px-5">
-          <div className="flex items-center gap-3">
+    <aside
+      className={cn(
+        "flex h-screen shrink-0 flex-col bg-background transition-all duration-300 ease-in-out overflow-hidden",
+        collapsed ? "w-[68px]" : "w-[260px]"
+      )}
+    >
+      {/* ── Collapsed (icon-only) view ── */}
+      {collapsed && (
+        <div className="flex h-screen w-[68px] flex-col items-center">
+          {/* Logo */}
+          <div className="flex h-14 items-center justify-center">
             <Sparkles className="h-5 w-5 text-primary" strokeWidth={1.5} />
-            <span className="text-lg font-semibold text-foreground">Acme Inc.</span>
           </div>
-          <button onClick={onToggle} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors">
+
+          {/* Expand button */}
+          <button
+            onClick={onToggle}
+            className="flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors mb-2"
+          >
             <PanelLeft className="h-4 w-4" strokeWidth={1.5} />
           </button>
-        </div>
-        <div className="px-4 pb-1">
-          <div className="flex items-center gap-3 rounded-lg bg-secondary px-3 py-2.5">
-            <Search className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-            <span className="text-sm text-muted-foreground">Search</span>
+
+          {/* Nav icons */}
+          <nav className="flex-1 flex flex-col items-center gap-1 overflow-y-auto pt-1">
+            {allNavItems.map((item) => (
+              <CollapsedNavItem key={item.title} item={item} currentPath={currentPath} />
+            ))}
+          </nav>
+
+          {/* User avatar */}
+          <div className="border-t border-border py-3 flex justify-center w-full">
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger asChild>
+                <Avatar className="h-9 w-9 cursor-pointer">
+                  <AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
+                  <AvatarFallback className="text-xs">JD</AvatarFallback>
+                </Avatar>
+              </TooltipTrigger>
+              <TooltipContent side="right" sideOffset={8}>
+                John Doe
+              </TooltipContent>
+            </Tooltip>
           </div>
         </div>
-        <nav className="flex-1 overflow-y-auto pt-1">
-          <NavGroup label="Main Menu" items={mainMenuItems} currentPath={currentPath} />
-          <NavGroup label="Analytics" items={analyticsItems} currentPath={currentPath} />
-          <NavGroup label="Others" items={otherItems} currentPath={currentPath} />
-        </nav>
+      )}
 
-        {/* User profile */}
-        <div className="border-t border-border px-4 py-3">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-9 w-9 shrink-0">
-              <AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-              <AvatarFallback className="text-xs">JD</AvatarFallback>
-            </Avatar>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-foreground truncate">John Doe</p>
-              <p className="text-xs text-muted-foreground truncate">john@acme.com</p>
+      {/* ── Expanded view ── */}
+      {!collapsed && (
+        <div className="flex h-screen w-[260px] flex-col">
+          <div className="flex h-14 items-center justify-between px-5">
+            <div className="flex items-center gap-3">
+              <Sparkles className="h-5 w-5 text-primary" strokeWidth={1.5} />
+              <span className="text-lg font-semibold text-foreground">Acme Inc.</span>
             </div>
-            <button className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0">
-              <LogOut className="h-4 w-4" strokeWidth={1.5} />
+            <button onClick={onToggle} className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors">
+              <PanelLeft className="h-4 w-4" strokeWidth={1.5} />
             </button>
           </div>
+          <div className="px-4 pb-1">
+            <div className="flex items-center gap-3 rounded-lg bg-secondary px-3 py-2.5">
+              <Search className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+              <span className="text-sm text-muted-foreground">Search</span>
+            </div>
+          </div>
+          <nav className="flex-1 overflow-y-auto pt-1">
+            <NavGroup label="Main Menu" items={mainMenuItems} currentPath={currentPath} />
+            <NavGroup label="Analytics" items={analyticsItems} currentPath={currentPath} />
+            <NavGroup label="Others" items={otherItems} currentPath={currentPath} />
+          </nav>
+
+          {/* User profile */}
+          <div className="border-t border-border px-4 py-3">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-9 w-9 shrink-0">
+                <AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
+                <AvatarFallback className="text-xs">JD</AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-foreground truncate">John Doe</p>
+                <p className="text-xs text-muted-foreground truncate">john@acme.com</p>
+              </div>
+              <button className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0">
+                <LogOut className="h-4 w-4" strokeWidth={1.5} />
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </aside>
   );
 }
