@@ -1,73 +1,68 @@
-# Welcome to your Lovable project
+# basalt
 
-## Project info
+> **Dense. Dark. Durable.**
+> A matte-dark design system engineered for high-density SaaS interfaces.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+[![License: MIT](https://img.shields.io/badge/License-MIT-white.svg?style=flat-square)](https://opensource.org/licenses/MIT)
+[![Framework: Next.js](https://img.shields.io/badge/Framework-Next.js-black.svg?style=flat-square&logo=next.js)](https://nextjs.org)
+[![Style: Tailwind](https://img.shields.io/badge/Style-Tailwind_CSS-38bdf8.svg?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
 
-## How can I edit this code?
+![Basalt Preview](https://assets.lizheng.me/wp-content/uploads/2026/02/basalt.png)
 
-There are several ways of editing your application.
+## Philosophy
 
-**Use Lovable**
+**Basalt** is not just another dark mode. It is a study in contrast and subtlety. Inspired by the fine-grained, volcanic rock, this theme prioritizes a **matte finish** over glossy reflections. It is designed for developers who build tools, not toys.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+* **Subdued, not dim.** Calculated contrast ratios ensure readability without eye strain.
+* **Structure over decoration.** Borderless containers defined by luminance depth.
+* **Precision engineered.** 14px base typography with razor-thin 1px strokes.
 
-Changes made via Lovable will be committed automatically to this repo.
+## Features
 
-**Use your preferred IDE**
+* **Matte Surface:** Built on a `zinc-950` foundation, avoiding absolute blacks for a richer, softer visual field.
+* **Micro-Typography:** Standardized `14px` base font size with `400/500` weights for clean, data-heavy layouts.
+* **Ultra-Thin Iconography:** Optimized for `16px` icons with `1.5px` stroke widths using Lucide/Heroicons.
+* **Fluid Geometry:** Generous `rounded-xl` corners paired with sophisticated negative space.
+* **shadcn/ui Compatible:** Drop-in variables for your existing component library.
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+## Tech Stack
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+* **Core:** [React](https://react.dev) / [Next.js](https://nextjs.org)
+* **Styling:** [Tailwind CSS](https://tailwindcss.com)
+* **Components:** [shadcn/ui](https://ui.shadcn.com)
+* **Icons:** [Lucide React](https://lucide.dev)
 
-Follow these steps:
+## Integration
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+**Basalt** is distributed as a configuration preset. Simply update your `globals.css` to adopt the volcanic palette.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 1. Update CSS Variables
 
-# Step 3: Install the necessary dependencies.
-npm i
+Replace your `:root` variables in `globals.css`:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```css
+@layer base {
+  :root {
+    --background: 240 5.9% 10%; /* Zinc 950 */
+    --foreground: 0 0% 98%;
+    --card: 240 5.9% 10%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 5.9% 10%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+    --radius: 0.75rem; /* 12px */
+  }
+}
 ```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
