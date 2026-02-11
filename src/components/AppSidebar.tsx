@@ -97,7 +97,8 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
           strokeWidth={1.5}
         />
       </CollapsibleTrigger>
-      <CollapsibleContent className="overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
+      <CollapsibleContent forceMount className="grid transition-[grid-template-rows] duration-200 ease-out data-[state=open]:grid-rows-[1fr] data-[state=closed]:grid-rows-[0fr]">
+        <div className="overflow-hidden">
         <div className="flex flex-col gap-0.5 px-3">
           {group.items.map((item) => (
             <button
@@ -126,6 +127,7 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
               )}
             </button>
           ))}
+        </div>
         </div>
       </CollapsibleContent>
     </Collapsible>
