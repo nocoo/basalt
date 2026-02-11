@@ -3,7 +3,8 @@ import {
   LayoutDashboard, Wallet, CreditCard, ArrowLeftRight,
   PiggyBank, Target, BarChart3, TrendingUp,
   LineChart, HelpCircle, Settings, Search, ChevronUp,
-  PanelLeft, LogOut, Mountain, Palette,
+  PanelLeft, LogOut, Mountain, Palette, LogIn,
+  ExternalLink, FileQuestion,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -26,6 +27,7 @@ interface NavItem {
   icon: React.ElementType;
   path: string;
   badge?: number;
+  external?: boolean;
 }
 
 interface NavGroup {
@@ -65,6 +67,14 @@ const NAV_GROUPS: NavGroup[] = [
       { title: "Settings", icon: Settings, path: "/settings" },
     ],
   },
+  {
+    label: "Standalone",
+    defaultOpen: true,
+    items: [
+      { title: "Login", icon: LogIn, path: "/login", external: true },
+      { title: "404 Page", icon: FileQuestion, path: "/404", external: true },
+    ],
+  },
 ];
 
 const ALL_NAV_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
@@ -92,16 +102,23 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
           {group.items.map((item) => (
             <button
               key={item.path}
-              onClick={() => navigate(item.path)}
+              onClick={() =>
+                item.external
+                  ? window.open(item.path, "_blank", "noopener,noreferrer")
+                  : navigate(item.path)
+              }
               className={cn(
                 "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-normal transition-colors",
-                currentPath === item.path
+                !item.external && currentPath === item.path
                   ? "bg-accent text-foreground"
                   : "text-muted-foreground hover:bg-accent hover:text-foreground"
               )}
             >
               <item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
               <span className="flex-1 text-left">{item.title}</span>
+              {item.external && (
+                <ExternalLink className="h-3 w-3 shrink-0 text-muted-foreground" strokeWidth={1.5} />
+              )}
               {item.badge && (
                 <span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-badge-red px-1.5 text-[11px] font-medium text-badge-red-foreground">
                   {item.badge}
@@ -121,10 +138,14 @@ function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: s
     <Tooltip delayDuration={0}>
       <TooltipTrigger asChild>
         <button
-          onClick={() => navigate(item.path)}
+          onClick={() =>
+            item.external
+              ? window.open(item.path, "_blank", "noopener,noreferrer")
+              : navigate(item.path)
+          }
           className={cn(
             "relative flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
-            currentPath === item.path
+            !item.external && currentPath === item.path
               ? "bg-accent text-foreground"
               : "text-muted-foreground hover:bg-accent hover:text-foreground"
           )}
@@ -222,11 +243,11 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
               <TooltipTrigger asChild>
                 <Avatar className="h-9 w-9 cursor-pointer">
                   <AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-                  <AvatarFallback className="text-xs">JD</AvatarFallback>
+                  <AvatarFallback className="text-xs">ZL</AvatarFallback>
                 </Avatar>
               </TooltipTrigger>
               <TooltipContent side="right" sideOffset={8}>
-                John Doe
+                Zheng Li
               </TooltipContent>
             </Tooltip>
           </div>
@@ -270,11 +291,11 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
             <div className="flex items-center gap-3">
               <Avatar className="h-9 w-9 shrink-0">
                 <AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-                <AvatarFallback className="text-xs">JD</AvatarFallback>
+                <AvatarFallback className="text-xs">ZL</AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-foreground truncate">John Doe</p>
-                <p className="text-xs text-muted-foreground truncate">john@acme.com</p>
+                <p className="text-sm font-medium text-foreground truncate">Zheng Li</p>
+                <p className="text-xs text-muted-foreground truncate">zhengli@example.com</p>
               </div>
               <button className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0">
                 <LogOut className="h-4 w-4" strokeWidth={1.5} />
