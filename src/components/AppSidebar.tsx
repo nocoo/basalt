@@ -9,7 +9,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
-  Collapsible, CollapsibleContent, CollapsibleTrigger,
+  Collapsible, CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -97,8 +97,14 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
           strokeWidth={1.5}
         />
       </CollapsibleTrigger>
-      <CollapsibleContent forceMount className="grid transition-[grid-template-rows] duration-200 ease-out data-[state=open]:grid-rows-[1fr] data-[state=closed]:grid-rows-[0fr]">
-        <div className="overflow-hidden">
+      <div
+        className="grid overflow-hidden"
+        style={{
+          gridTemplateRows: open ? "1fr" : "0fr",
+          transition: "grid-template-rows 200ms ease-out",
+        }}
+      >
+        <div className="min-h-0 overflow-hidden">
         <div className="flex flex-col gap-0.5 px-3">
           {group.items.map((item) => (
             <button
@@ -129,7 +135,7 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
           ))}
         </div>
         </div>
-      </CollapsibleContent>
+      </div>
     </Collapsible>
   );
 }
