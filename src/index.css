@@ -4,56 +4,53 @@
 
 @layer base {
   :root {
-    /* Force dark mode only — these are the only tokens used */
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 95%;
+    --background: 0 0% 10%;
+    --foreground: 0 0% 93%;
 
-    --card: 240 6% 6.5%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 13%;
+    --card-foreground: 0 0% 93%;
 
-    --popover: 240 6% 6.5%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 13%;
+    --popover-foreground: 0 0% 93%;
 
     --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 240 4% 16%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 0 0% 93%;
 
-    --muted: 240 4% 16%;
-    --muted-foreground: 240 5% 45%;
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 0 0% 100% / 0.05;
-    --accent-foreground: 0 0% 95%;
+    --accent: 0 0% 18%;
+    --accent-foreground: 0 0% 93%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 240 4% 16%;
-    --input: 240 4% 10%;
+    --border: 0 0% 18%;
+    --input: 0 0% 14%;
     --ring: 217 91% 60%;
 
     --radius: 0.75rem;
 
-    /* Sidebar tokens */
-    --sidebar-background: 240 6% 6.5%;
-    --sidebar-foreground: 0 0% 95%;
+    --sidebar-background: 0 0% 10%;
+    --sidebar-foreground: 0 0% 93%;
     --sidebar-primary: 217 91% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 100% / 0.05;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 240 4% 16%;
+    --sidebar-accent: 0 0% 16%;
+    --sidebar-accent-foreground: 0 0% 93%;
+    --sidebar-border: 0 0% 18%;
     --sidebar-ring: 217 91% 60%;
 
-    /* Custom tokens */
     --success: 142 71% 45%;
     --success-foreground: 0 0% 100%;
-    --badge-red: 346 77% 50%;
+    --badge-red: 340 82% 55%;
     --badge-red-foreground: 0 0% 100%;
     --chart-blue: 217 91% 60%;
     --chart-cyan: 186 80% 50%;
     --chart-purple: 270 70% 60%;
-    --chart-gray: 240 4% 25%;
+    --chart-gray: 0 0% 25%;
   }
 }
 

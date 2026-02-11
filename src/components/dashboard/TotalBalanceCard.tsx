@@ -1,41 +1,33 @@
 import { BarChart, Bar, ResponsiveContainer, Cell } from "recharts";
+import { Globe } from "lucide-react";
 
-const data = [
-  { value: 4000 },
-  { value: 6000 },
-  { value: 5000 },
-  { value: 8000 },
-  { value: 7000 },
-  { value: 8800 },
-  { value: 6500 },
-  { value: 5500 },
-  { value: 4500 },
-  { value: 3500 },
-  { value: 3000 },
-  { value: 2500 },
-];
+const data = Array.from({ length: 24 }, (_, i) => ({ value: 3000 + Math.random() * 5000 }));
 
 export function TotalBalanceCard() {
   return (
-    <div className="flex flex-col justify-between rounded-2xl bg-card p-6 min-h-[220px]">
+    <div className="flex flex-col rounded-2xl border border-border bg-card p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <Globe className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+        <span className="text-sm font-normal text-muted-foreground">Total Balance</span>
+      </div>
       <div>
-        <p className="text-sm text-muted-foreground font-normal">Total Balance</p>
-        <div className="mt-1 flex items-baseline gap-3">
-          <h2 className="text-3xl font-semibold text-foreground">$8,800</h2>
-          <span className="text-xs font-medium text-success">+3.1% vs last month</span>
+        <h2 className="text-3xl font-semibold text-foreground">$8,800</h2>
+        <div className="mt-1 flex items-center gap-2">
+          <span className="text-sm font-medium text-success">+3.1%</span>
+          <span className="text-sm text-muted-foreground">vs last month</span>
         </div>
       </div>
-      <div className="mt-4 h-[80px]">
+      <div className="mt-4 h-[50px]">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} barGap={3}>
-            <Bar dataKey="value" radius={[3, 3, 0, 0]} maxBarSize={14}>
+          <BarChart data={data} barGap={1} barCategoryGap={1}>
+            <Bar dataKey="value" radius={[2, 2, 0, 0]} maxBarSize={8}>
               {data.map((_, i) => (
                 <Cell
                   key={i}
                   fill={
-                    i < 6
-                      ? `hsl(217, 91%, ${60 - i * 3}%)`
-                      : `hsl(240, 4%, ${20 + (i - 6) * 3}%)`
+                    i < 12
+                      ? `hsl(200, 90%, ${55 + (i % 3) * 5}%)`
+                      : `hsl(0, 0%, ${30 - (i - 12) * 1}%)`
                   }
                 />
               ))}

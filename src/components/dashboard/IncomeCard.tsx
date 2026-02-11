@@ -1,34 +1,30 @@
 import { BarChart, Bar, ResponsiveContainer } from "recharts";
+import { TrendingUp } from "lucide-react";
 
-const data = [
-  { value: 3000 },
-  { value: 5500 },
-  { value: 4200 },
-  { value: 7800 },
-  { value: 6000 },
-  { value: 9200 },
-  { value: 7500 },
-  { value: 8000 },
-];
+const data = Array.from({ length: 20 }, (_, i) => ({ value: 2000 + Math.random() * 6000 }));
 
 export function IncomeCard() {
   return (
-    <div className="flex flex-col justify-between rounded-2xl bg-card p-6 min-h-[220px]">
+    <div className="flex flex-col rounded-2xl border border-border bg-card p-5">
+      <div className="flex items-center gap-2 mb-4">
+        <TrendingUp className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+        <span className="text-sm font-normal text-muted-foreground">Income</span>
+      </div>
       <div>
-        <p className="text-sm text-muted-foreground font-normal">Income</p>
-        <div className="mt-1 flex items-baseline gap-3">
-          <h2 className="text-3xl font-semibold text-foreground">$12,400</h2>
-          <span className="text-xs font-medium text-success">+5.2% vs last month</span>
+        <h2 className="text-3xl font-semibold text-foreground">$4,500</h2>
+        <div className="mt-1 flex items-center gap-2">
+          <span className="text-sm font-medium text-success">+2.4%</span>
+          <span className="text-sm text-muted-foreground">vs last month</span>
         </div>
       </div>
-      <div className="mt-4 h-[80px]">
+      <div className="mt-4 h-[50px]">
         <ResponsiveContainer width="100%" height="100%">
-          <BarChart data={data} barGap={3}>
+          <BarChart data={data} barGap={1} barCategoryGap={1}>
             <Bar
               dataKey="value"
               fill="hsl(270, 70%, 60%)"
-              radius={[3, 3, 0, 0]}
-              maxBarSize={14}
+              radius={[2, 2, 0, 0]}
+              maxBarSize={8}
             />
           </BarChart>
         </ResponsiveContainer>
