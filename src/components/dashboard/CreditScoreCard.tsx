@@ -28,8 +28,8 @@ export function CreditScoreCard() {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">
-        <div className="flex flex-1 flex-col items-center justify-center">
-          <div className="relative h-[140px] w-[140px]">
+        <div className="flex flex-1 flex-col items-center">
+          <div className="relative h-[120px] w-[120px]">
             <ResponsiveContainer width="100%" height="100%">
               <RadialBarChart
                 cx="50%"
@@ -55,9 +55,19 @@ export function CreditScoreCard() {
               <span className={`text-xs font-medium ${color}`}>{label}</span>
             </div>
           </div>
-          <div className="mt-3 flex w-full justify-between text-xs text-muted-foreground px-2">
-            <span>300</span>
-            <span>{max}</span>
+          <div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-sm font-medium text-foreground font-display">{score}</span>
+              <span className="text-xs text-muted-foreground">Score</span>
+            </div>
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-sm font-medium text-foreground font-display">{max}</span>
+              <span className="text-xs text-muted-foreground">Max</span>
+            </div>
+            <div className="flex flex-col items-center gap-0.5">
+              <span className={`text-sm font-medium font-display ${color}`}>{label}</span>
+              <span className="text-xs text-muted-foreground">Rating</span>
+            </div>
           </div>
         </div>
       </CardContent>

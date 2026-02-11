@@ -42,8 +42,8 @@ export default function InvestmentsPage() {
 
         <div className="rounded-[14px] bg-secondary p-4 md:p-5">
           <p className="text-sm text-muted-foreground mb-4">Asset Allocation</p>
-          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-            <div className="h-[150px] w-[150px] md:h-[180px] md:w-[180px] shrink-0">
+          <div className="flex flex-col items-center">
+            <div className="h-[160px] w-[160px] md:h-[180px] md:w-[180px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={portfolio} cx="50%" cy="50%" innerRadius={40} outerRadius={65} dataKey="allocation" strokeWidth={0}>
@@ -52,12 +52,14 @@ export default function InvestmentsPage() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex flex-row flex-wrap sm:flex-col gap-2 sm:gap-2.5 justify-center">
+            <div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
               {portfolio.map((item, i) => (
-                <div key={item.name} className="flex items-center gap-2">
-                  <div className="h-2.5 w-2.5 rounded-full" style={{ background: CHART_COLORS[i] }} />
-                  <span className="text-xs text-muted-foreground">{item.name}</span>
-                  <span className="text-xs font-medium text-foreground">{item.allocation}%</span>
+                <div key={item.name} className="flex flex-col items-center gap-0.5">
+                  <span className="text-sm font-medium text-foreground font-display">{item.allocation}%</span>
+                  <div className="flex items-center gap-1.5">
+                    <div className="h-2 w-2 rounded-full" style={{ background: CHART_COLORS[i] }} />
+                    <span className="text-xs text-muted-foreground">{item.name}</span>
+                  </div>
                 </div>
               ))}
             </div>

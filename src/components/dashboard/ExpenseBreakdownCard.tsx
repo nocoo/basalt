@@ -20,8 +20,8 @@ export function ExpenseBreakdownCard() {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">
-        <div className="flex flex-1 items-center gap-6">
-          <div className="h-[130px] w-[130px]">
+        <div className="flex flex-1 flex-col items-center">
+          <div className="h-[120px] w-[120px]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie data={data} cx="50%" cy="50%" innerRadius={35} outerRadius={55} dataKey="value" strokeWidth={0}>
@@ -30,12 +30,14 @@ export function ExpenseBreakdownCard() {
               </PieChart>
             </ResponsiveContainer>
           </div>
-          <div className="flex flex-col gap-2.5">
+          <div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
             {data.map((item, i) => (
-              <div key={item.name} className="flex items-center gap-2">
-                <div className="h-2.5 w-2.5 rounded-full" style={{ background: CHART_COLORS[i] }} />
-                <span className="text-xs text-muted-foreground">{item.name}</span>
-                <span className="text-xs font-medium text-foreground ml-auto">{item.value}%</span>
+              <div key={item.name} className="flex flex-col items-center gap-0.5">
+                <span className="text-sm font-medium text-foreground font-display">{item.value}%</span>
+                <div className="flex items-center gap-1.5">
+                  <div className="h-2 w-2 rounded-full" style={{ background: CHART_COLORS[i] }} />
+                  <span className="text-xs text-muted-foreground">{item.name}</span>
+                </div>
               </div>
             ))}
           </div>

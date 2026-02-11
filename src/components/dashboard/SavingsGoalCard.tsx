@@ -22,7 +22,7 @@ export function SavingsGoalCard() {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">
-        <div className="flex flex-1 items-center gap-5">
+        <div className="flex flex-1 flex-col items-center">
           <div className="relative h-[120px] w-[120px]">
             <ResponsiveContainer width="100%" height="100%">
               <RadialBarChart
@@ -42,18 +42,18 @@ export function SavingsGoalCard() {
               <span className="text-xl font-semibold text-foreground font-display tracking-tight">{pct}%</span>
             </div>
           </div>
-          <div className="flex flex-col gap-2">
-            <div>
-              <p className="text-xs text-muted-foreground">Saved</p>
-              <p className="text-sm font-medium text-foreground font-display">${saved.toLocaleString()}</p>
+          <div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-sm font-medium text-foreground font-display">${saved.toLocaleString()}</span>
+              <span className="text-xs text-muted-foreground">Saved</span>
             </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Target</p>
-              <p className="text-sm font-medium text-foreground font-display">${goal.toLocaleString()}</p>
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-sm font-medium text-foreground font-display">${goal.toLocaleString()}</span>
+              <span className="text-xs text-muted-foreground">Target</span>
             </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Remaining</p>
-              <p className="text-sm font-medium text-foreground font-display">${(goal - saved).toLocaleString()}</p>
+            <div className="flex flex-col items-center gap-0.5">
+              <span className="text-sm font-medium text-foreground font-display">${(goal - saved).toLocaleString()}</span>
+              <span className="text-xs text-muted-foreground">Remaining</span>
             </div>
           </div>
         </div>

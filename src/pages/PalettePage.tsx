@@ -157,8 +157,8 @@ export default function PalettePage() {
 
         {/* Donut Chart */}
         <Section title="Donut Chart">
-          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-            <div className="h-[180px] w-[180px] shrink-0">
+          <div className="flex flex-col items-center">
+            <div className="h-[180px] w-[180px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={pieData} cx="50%" cy="50%" innerRadius={45} outerRadius={70} dataKey="value" strokeWidth={0}>
@@ -167,12 +167,14 @@ export default function PalettePage() {
                 </PieChart>
               </ResponsiveContainer>
             </div>
-            <div className="flex flex-row flex-wrap sm:flex-col gap-2 sm:gap-2.5 justify-center">
+            <div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
               {pieData.map((item, i) => (
-                <div key={item.name} className="flex items-center gap-2">
-                  <div className="h-2.5 w-2.5 rounded-full" style={{ background: CHART_COLORS[i] }} />
-                  <span className="text-xs text-muted-foreground">{item.name}</span>
-                  <span className="text-xs font-medium text-foreground">{item.value}%</span>
+                <div key={item.name} className="flex flex-col items-center gap-0.5">
+                  <span className="text-sm font-medium text-foreground font-display">{item.value}%</span>
+                  <div className="flex items-center gap-1.5">
+                    <div className="h-2 w-2 rounded-full" style={{ background: CHART_COLORS[i] }} />
+                    <span className="text-xs text-muted-foreground">{item.name}</span>
+                  </div>
                 </div>
               ))}
             </div>
