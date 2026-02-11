@@ -11,7 +11,7 @@ import {
   LineChart,
   HelpCircle,
   Search,
-  ChevronDown,
+  ChevronUp,
   Sparkles,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -60,14 +60,14 @@ function NavGroup({
 
   return (
     <Collapsible open={open} onOpenChange={setOpen}>
-      <CollapsibleTrigger className="flex w-full items-center justify-between px-4 py-2 mt-4">
-        <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+      <CollapsibleTrigger className="flex w-full items-center justify-between px-5 py-2.5 mt-2">
+        <span className="text-sm font-normal text-muted-foreground">
           {label}
         </span>
-        <ChevronDown
+        <ChevronUp
           className={cn(
-            "h-3.5 w-3.5 text-muted-foreground transition-transform duration-200",
-            open && "rotate-180"
+            "h-4 w-4 text-muted-foreground transition-transform duration-200",
+            !open && "rotate-180"
           )}
           strokeWidth={1.5}
         />
@@ -78,9 +78,10 @@ function NavGroup({
             <button
               key={item.title}
               className={cn(
-                "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-normal text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground",
-                item.active &&
-                  "bg-sidebar-accent text-sidebar-foreground font-medium"
+                "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-normal transition-colors",
+                item.active
+                  ? "bg-accent text-foreground font-medium"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
               )}
             >
               <item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
@@ -100,25 +101,23 @@ function NavGroup({
 
 export function AppSidebar() {
   return (
-    <aside className="flex h-screen w-[250px] shrink-0 flex-col border-r border-border bg-sidebar">
+    <aside className="flex h-screen w-[260px] shrink-0 flex-col bg-background">
       {/* Logo */}
-      <div className="flex items-center gap-2.5 px-5 py-5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-          <Sparkles className="h-4 w-4 text-primary-foreground" strokeWidth={1.5} />
-        </div>
-        <span className="text-sm font-medium text-foreground">Acme Inc.</span>
+      <div className="flex items-center gap-3 px-5 py-5">
+        <Sparkles className="h-5 w-5 text-primary" strokeWidth={1.5} />
+        <span className="text-base font-medium text-foreground">Acme Inc.</span>
       </div>
 
       {/* Search */}
-      <div className="px-4 pb-2">
-        <div className="flex items-center gap-2.5 rounded-lg bg-input px-3 py-2">
+      <div className="px-4 pb-1">
+        <div className="flex items-center gap-3 rounded-lg border border-border bg-input px-3 py-2.5">
           <Search className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
           <span className="text-sm text-muted-foreground">Search</span>
         </div>
       </div>
 
       {/* Nav Groups */}
-      <nav className="flex-1 overflow-y-auto">
+      <nav className="flex-1 overflow-y-auto pt-1">
         <NavGroup label="Main Menu" items={mainMenuItems} />
         <NavGroup label="Analytics" items={analyticsItems} />
         <NavGroup label="Others" items={otherItems} />
