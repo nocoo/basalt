@@ -1,5 +1,5 @@
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp, TrendingDown, PieChart as PieChartIcon, Briefcase } from "lucide-react";
 import { portfolio, performanceData } from "@/data/mock";
 import { CHART_COLORS, CHART_TOKENS, chartPositive, chartAxis, withAlpha } from "@/lib/palette";
 
@@ -27,9 +27,12 @@ export default function InvestmentsPage() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-2">
-        <div className="rounded-[14px] bg-secondary p-4 md:p-5">
-          <p className="text-sm text-muted-foreground mb-4">Portfolio Performance</p>
-          <div className="h-[180px] md:h-[200px]">
+        <div className="flex flex-col rounded-[14px] bg-secondary p-4 md:p-5">
+          <div className="flex items-center gap-2 mb-4">
+            <TrendingUp className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+            <p className="text-sm text-muted-foreground">Portfolio Performance</p>
+          </div>
+          <div className="flex-1 min-h-[180px] md:min-h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={performanceData}>
                 <XAxis dataKey="month" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -41,7 +44,10 @@ export default function InvestmentsPage() {
         </div>
 
         <div className="rounded-[14px] bg-secondary p-4 md:p-5">
-          <p className="text-sm text-muted-foreground mb-4">Asset Allocation</p>
+          <div className="flex items-center gap-2 mb-4">
+            <PieChartIcon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+            <p className="text-sm text-muted-foreground">Asset Allocation</p>
+          </div>
           <div className="flex flex-col items-center">
             <div className="h-[160px] w-[160px] md:h-[180px] md:w-[180px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -68,7 +74,10 @@ export default function InvestmentsPage() {
       </div>
 
       <div className="mt-4 rounded-[14px] bg-secondary p-4 md:p-5">
-        <p className="text-sm text-muted-foreground mb-4">Holdings</p>
+        <div className="flex items-center gap-2 mb-4">
+          <Briefcase className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+          <p className="text-sm text-muted-foreground">Holdings</p>
+        </div>
         <div className="flex flex-col gap-3">
           {portfolio.map((item, i) => (
             <div key={item.name} className="flex items-center justify-between rounded-[10px] bg-card p-3">

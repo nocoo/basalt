@@ -1,4 +1,4 @@
-import { ArrowUpRight, ArrowDownLeft, Filter } from "lucide-react";
+import { ArrowUpRight, ArrowDownLeft, ArrowLeftRight, Filter } from "lucide-react";
 import { transactions } from "@/data/mock";
 
 export default function TransactionsPage() {
@@ -13,6 +13,10 @@ export default function TransactionsPage() {
 
       {/* Desktop table */}
       <div className="rounded-[14px] bg-secondary overflow-hidden hidden md:block">
+        <div className="flex items-center gap-2 px-5 pt-4 pb-2">
+          <ArrowLeftRight className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+          <p className="text-sm text-muted-foreground">Transactions</p>
+        </div>
         <div className="grid grid-cols-[1fr_100px_120px_100px_90px] gap-2 px-5 py-3 text-xs text-muted-foreground border-b border-border">
           <span>Transaction</span><span>Category</span><span>Date</span><span className="text-right">Amount</span><span className="text-right">Status</span>
         </div>

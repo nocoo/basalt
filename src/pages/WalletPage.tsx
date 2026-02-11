@@ -1,4 +1,4 @@
-import { Wallet as WalletIcon, ArrowUpRight, ArrowDownLeft, Plus } from "lucide-react";
+import { Wallet as WalletIcon, ArrowUpRight, ArrowDownLeft, Plus, Activity } from "lucide-react";
 import { accounts, walletActivity } from "@/data/mock";
 
 export default function WalletPage() {
@@ -27,7 +27,10 @@ export default function WalletPage() {
       </div>
 
       <div className="mt-4 rounded-[14px] bg-secondary p-5">
-        <p className="text-sm text-muted-foreground mb-4">Recent Activity</p>
+        <div className="flex items-center gap-2 mb-4">
+          <Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+          <p className="text-sm text-muted-foreground">Recent Activity</p>
+        </div>
         <div className="flex flex-col gap-3">
           {walletActivity.map((item, i) => (
             <div key={i} className="flex items-center justify-between py-1">

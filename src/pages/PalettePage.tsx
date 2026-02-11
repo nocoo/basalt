@@ -2,6 +2,7 @@ import {
   BarChart, Bar, LineChart, Line, PieChart, Pie, Cell,
   XAxis, YAxis, ResponsiveContainer, AreaChart, Area,
 } from "recharts";
+import { Palette, LineChart as LineChartIcon, Target, BarChart3, Activity } from "lucide-react";
 import { CHART_COLORS, chart, chartPrimary, chartPositive, chartNegative, chartAxis } from "@/lib/palette";
 
 // ── Mock data for example charts ──
@@ -90,10 +91,13 @@ function Swatch({ token, label, subtitle }: { token: string; label: string; subt
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, icon: Icon, children }: { title: string; icon?: React.ElementType; children: React.ReactNode }) {
   return (
     <div className="rounded-[14px] bg-secondary p-4 md:p-5">
-      <p className="text-sm text-muted-foreground mb-4">{title}</p>
+      <div className="flex items-center gap-2 mb-4">
+        {Icon && <Icon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />}
+        <p className="text-sm text-muted-foreground">{title}</p>
+      </div>
       {children}
     </div>
   );
@@ -103,7 +107,7 @@ export default function PalettePage() {
   return (
     <>
       {/* Base Colors */}
-      <Section title="Base Colors">
+      <Section title="Base Colors" icon={Palette}>
         <div className="flex flex-wrap gap-5">
           {baseColors.map((c) => (
             <Swatch key={c.token} token={c.token} label={c.label} subtitle={c.tier || undefined} />
@@ -113,7 +117,7 @@ export default function PalettePage() {
 
       {/* Chart Palette */}
       <div className="mt-4">
-        <Section title="Visualization Palette">
+        <Section title="Visualization Palette" icon={Palette}>
           <div className="flex flex-wrap gap-5">
             {chartColors.map((c) => (
               <Swatch key={c.token} token={c.token} label={c.label} subtitle={c.semantic || undefined} />
@@ -133,7 +137,7 @@ export default function PalettePage() {
       {/* Chart Examples */}
       <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-2">
         {/* Line Chart */}
-        <Section title="Line Chart">
+        <Section title="Line Chart" icon={LineChartIcon}>
           <div className="h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={lineData}>
@@ -156,7 +160,7 @@ export default function PalettePage() {
         </Section>
 
         {/* Donut Chart */}
-        <Section title="Donut Chart">
+        <Section title="Donut Chart" icon={Target}>
           <div className="flex flex-col items-center">
             <div className="h-[180px] w-[180px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -182,7 +186,7 @@ export default function PalettePage() {
         </Section>
 
         {/* Bar Chart */}
-        <Section title="Grouped Bar Chart">
+        <Section title="Grouped Bar Chart" icon={BarChart3}>
           <div className="h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={barData} barGap={4}>
@@ -204,7 +208,7 @@ export default function PalettePage() {
         </Section>
 
         {/* Area Chart */}
-        <Section title="Area Chart (Positive / Negative)">
+        <Section title="Area Chart (Positive / Negative)" icon={Activity}>
           <div className="h-[200px]">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={areaData}>
