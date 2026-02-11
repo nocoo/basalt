@@ -59,20 +59,20 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    label: "Standalone",
+    defaultOpen: true,
+    items: [
+      { title: "Login", icon: LogIn, path: "/login", external: true },
+      { title: "404 Page", icon: FileQuestion, path: "/404", external: true },
+    ],
+  },
+  {
     label: "Others",
     defaultOpen: true,
     items: [
       { title: "Help Center", icon: HelpCircle, path: "/help" },
       { title: "Color Palette", icon: Palette, path: "/palette" },
       { title: "Settings", icon: Settings, path: "/settings" },
-    ],
-  },
-  {
-    label: "Standalone",
-    defaultOpen: true,
-    items: [
-      { title: "Login", icon: LogIn, path: "/login", external: true },
-      { title: "404 Page", icon: FileQuestion, path: "/404", external: true },
     ],
   },
 ];
@@ -97,7 +97,7 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
           strokeWidth={1.5}
         />
       </CollapsibleTrigger>
-      <CollapsibleContent>
+      <CollapsibleContent className="overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
         <div className="flex flex-col gap-0.5 px-3">
           {group.items.map((item) => (
             <button
