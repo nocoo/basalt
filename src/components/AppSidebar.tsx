@@ -3,7 +3,7 @@ import {
   LayoutDashboard, Wallet, CreditCard, ArrowLeftRight,
   PiggyBank, Target, BarChart3, TrendingUp,
   LineChart, HelpCircle, Settings, Search, ChevronUp,
-  PanelLeft, LogOut,
+  PanelLeft, LogOut, Mountain,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -160,7 +160,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
         /* ── Collapsed (icon-only) view ── */
         <div className="flex h-screen w-[68px] flex-col items-center">
           <div className="flex h-14 items-center justify-center">
-            <span className="text-lg font-semibold text-foreground">b.</span>
+            <Mountain className="h-5 w-5 text-primary" strokeWidth={1.5} />
           </div>
 
           <button
@@ -195,6 +195,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
         <div className="flex h-screen w-[260px] flex-col">
           <div className="flex h-14 items-center justify-between px-5">
             <div className="flex items-center gap-3">
+              <Mountain className="h-5 w-5 text-primary" strokeWidth={1.5} />
               <span className="text-lg font-semibold text-foreground">basalt.</span>
             </div>
             <button
