@@ -289,7 +289,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
           <div className="px-3 pb-1">
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex w-full items-center gap-3 rounded-lg bg-secondary px-3 py-2.5 transition-colors hover:bg-accent cursor-pointer"
+              className="flex w-full items-center gap-3 rounded-lg bg-secondary px-3 py-1.5 transition-colors hover:bg-accent cursor-pointer"
             >
               <Search className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
               <span className="flex-1 text-left text-sm text-muted-foreground">Search</span>
