@@ -2,7 +2,14 @@ import { Mountain, User } from "lucide-react";
 
 export default function BadgeLoginPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="relative flex min-h-screen items-center justify-center bg-background p-4 overflow-hidden">
+      {/* Radial glow — subtle center highlight */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: "radial-gradient(ellipse 60% 50% at 50% 50%, hsl(var(--foreground) / 0.04) 0%, transparent 100%)",
+        }}
+      />
       <div className="flex flex-col items-center">
         {/* Pin */}
         <div className="relative z-20 flex flex-col items-center">
