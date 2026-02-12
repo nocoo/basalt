@@ -53,14 +53,13 @@
 | Layer | Technology |
 |---|---|
 | **Build** | [Vite 5](https://vite.dev) + SWC |
-| **UI** | [React 18](https://react.dev) + TypeScript 5.8 |
+| **UI** | [React 18](https://react.dev) + TypeScript 5.9 |
 | **Routing** | [React Router 6](https://reactrouter.com) |
-| **Styling** | [Tailwind CSS 3.4](https://tailwindcss.com) + tailwindcss-animate |
+| **Styling** | [Tailwind CSS 4](https://tailwindcss.com) + @tailwindcss/vite + tw-animate-css |
 | **Components** | [shadcn/ui](https://ui.shadcn.com) (48 primitives) |
 | **Charts** | [Recharts 2](https://recharts.org) |
 | **Icons** | [Lucide React](https://lucide.dev) (1.5px stroke) |
-| **Forms** | [React Hook Form](https://react-hook-form.com) + [Zod](https://zod.dev) |
-| **Testing** | [Vitest 3](https://vitest.dev) + Testing Library |
+| **Testing** | [Vitest 4](https://vitest.dev) + Testing Library |
 | **Package Manager** | [Bun](https://bun.sh) |
 
 ## Getting Started
