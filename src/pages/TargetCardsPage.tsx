@@ -8,7 +8,7 @@ const GOAL_ICONS: Record<string, React.ElementType> = {
   home: Home,
 };
 
-export default function GoalsPage() {
+export default function TargetCardsPage() {
   return (
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       {goals.map((goal) => {

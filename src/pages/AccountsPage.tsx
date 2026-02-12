@@ -1,7 +1,7 @@
 import { Wallet as WalletIcon, ArrowUpRight, ArrowDownLeft, Plus, Activity } from "lucide-react";
 import { accounts, walletActivity } from "@/data/mock";
 
-export default function WalletPage() {
+export default function AccountsPage() {
   return (
     <>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">

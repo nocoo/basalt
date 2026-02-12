@@ -3,7 +3,7 @@ import { TrendingUp, TrendingDown, PieChart as PieChartIcon, Briefcase } from "l
 import { portfolio, performanceData } from "@/data/mock";
 import { CHART_COLORS, CHART_TOKENS, chartPositive, chartAxis, withAlpha } from "@/lib/palette";
 
-export default function InvestmentsPage() {
+export default function PortfolioPage() {
   const totalValue = portfolio.reduce((a, b) => a + b.value, 0);
 
   return (

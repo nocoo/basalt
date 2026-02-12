@@ -33,7 +33,7 @@ function ChipIcon({ isBlack }: { isBlack: boolean }) {
   );
 }
 
-export default function CardsPage() {
+export default function CardShowcasePage() {
   const [showBalance, setShowBalance] = useState(true);
 
   return (

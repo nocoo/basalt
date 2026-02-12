@@ -1,7 +1,7 @@
 import { ArrowUpRight, ArrowDownLeft, ArrowLeftRight, Filter } from "lucide-react";
 import { transactions } from "@/data/mock";
 
-export default function TransactionsPage() {
+export default function RecordListPage() {
   return (
     <>
       <div className="flex items-center justify-between mb-4">

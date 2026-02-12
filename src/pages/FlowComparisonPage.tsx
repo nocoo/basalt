@@ -5,7 +5,7 @@ import { chartPositive, chartNegative, chartPrimary, chartAxis } from "@/lib/pal
 
 const netFlow = monthlyFlow.map((m) => ({ ...m, net: m.inflow - m.outflow }));
 
-export default function CashFlowPage() {
+export default function FlowComparisonPage() {
   const totalIn = monthlyFlow.reduce((a, b) => a + b.inflow, 0);
   const totalOut = monthlyFlow.reduce((a, b) => a + b.outflow, 0);
 

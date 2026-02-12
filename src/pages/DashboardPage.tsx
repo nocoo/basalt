@@ -11,7 +11,7 @@ import { WeeklyActivityCard } from "@/components/dashboard/WeeklyActivityCard";
 import { CreditScoreCard } from "@/components/dashboard/CreditScoreCard";
 import { MonthlyComparisonCard } from "@/components/dashboard/MonthlyComparisonCard";
 
-export default function Index() {
+export default function DashboardPage() {
   return (
     <>
       {/* Row 1: 3 summary cards */}

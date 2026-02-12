@@ -3,7 +3,7 @@ import { BarChart3, Target, TrendingUp } from "lucide-react";
 import { analyticsWeekly, analyticsCategories, analyticsTrend, analyticsStats } from "@/data/mock";
 import { CHART_COLORS, chart, chartPrimary, chartAxis } from "@/lib/palette";
 
-export default function AnalyticsPage() {
+export default function StatsOverviewPage() {
   return (
     <>
       <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
