@@ -24,7 +24,7 @@ export function TrendLineCard() {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">
-        <div className="flex-1 min-h-[100px]">
+        <div className="flex-1 min-h-[100px]" role="img" aria-label="Spending trend line chart from Monday to Sunday, current total $3,420">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={data}>
               <XAxis dataKey="name" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />

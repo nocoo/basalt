@@ -21,7 +21,7 @@ export function SecondaryMetricCard() {
             <span className="text-sm font-medium text-success font-display">+2.4%</span>
             <span className="text-sm text-muted-foreground">vs last month</span>
           </div>
-          <div className="mt-3 flex-1 min-h-[50px]">
+          <div className="mt-3 flex-1 min-h-[50px]" role="img" aria-label="Income trend over 20 periods, bar chart">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data} barGap={1} barCategoryGap={1}>
                 <Bar dataKey="value" fill={chart.purple} radius={[2, 2, 0, 0]} maxBarSize={8} />

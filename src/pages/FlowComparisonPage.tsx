@@ -28,7 +28,7 @@ export default function FlowComparisonPage() {
           <Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
           <p className="text-sm text-muted-foreground">Cash Flow Over Time</p>
         </div>
-        <div className="h-[200px] md:h-[240px]">
+        <div className="h-[200px] md:h-[240px]" role="img" aria-label="Cash flow over time area chart showing inflow and outflow">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={flowData}>
               <XAxis dataKey="month" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -49,7 +49,7 @@ export default function FlowComparisonPage() {
           <BarChart3 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
           <p className="text-sm text-muted-foreground">Net Cash Flow by Month</p>
         </div>
-        <div className="h-[160px] md:h-[180px]">
+        <div className="h-[160px] md:h-[180px]" role="img" aria-label="Net cash flow by month bar chart">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={netFlowData}>
               <XAxis dataKey="month" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />

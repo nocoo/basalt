@@ -24,7 +24,7 @@ export default function StatsOverviewPage() {
             <BarChart3 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
             <p className="text-sm text-muted-foreground">Income vs Expenses</p>
           </div>
-          <div className="h-[180px] md:h-[200px]">
+          <div className="h-[180px] md:h-[200px]" role="img" aria-label="Income vs expenses grouped bar chart by day of week">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={weeklyData} barGap={4}>
                 <XAxis dataKey="day" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -42,7 +42,7 @@ export default function StatsOverviewPage() {
             <p className="text-sm text-muted-foreground">Spending by Category</p>
           </div>
           <div className="flex flex-col items-center">
-            <div className="h-[160px] w-[160px] md:h-[180px] md:w-[180px]">
+            <div className="h-[160px] w-[160px] md:h-[180px] md:w-[180px]" role="img" aria-label="Spending by category donut chart">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={categoryData} cx="50%" cy="50%" innerRadius={40} outerRadius={65} dataKey="value" strokeWidth={0}>
@@ -71,7 +71,7 @@ export default function StatsOverviewPage() {
           <TrendingUp className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
           <p className="text-sm text-muted-foreground">30-Day Balance Trend</p>
         </div>
-        <div className="h-[180px] md:h-[200px]">
+        <div className="h-[180px] md:h-[200px]" role="img" aria-label="30-day balance trend area chart">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={trendData}>
               <XAxis dataKey="day" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />

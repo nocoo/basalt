@@ -26,7 +26,7 @@ export function BarChartCard() {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">
-        <div className="flex-1 min-h-[200px]">
+        <div className="flex-1 min-h-[200px]" role="img" aria-label="Monthly transaction amounts from January to December, bar chart totaling $15,200">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} barCategoryGap="25%">
               <XAxis dataKey="name" tick={{ fill: chartAxis, fontSize: 12 }} axisLine={false} tickLine={false} />

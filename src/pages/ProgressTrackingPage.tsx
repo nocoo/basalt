@@ -48,7 +48,7 @@ export default function ProgressTrackingPage() {
           <BarChart3 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
           <p className="text-sm text-muted-foreground">Budget vs Actual</p>
         </div>
-        <div className="h-[180px] md:h-[200px]">
+        <div className="h-[180px] md:h-[200px]" role="img" aria-label="Budget vs actual spending grouped bar chart by month">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={comparisonData} barGap={4}>
               <XAxis dataKey="month" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />

@@ -23,7 +23,7 @@ export function RadialProgressCard() {
       </CardHeader>
       <CardContent className="flex flex-col">
         <div className="flex flex-1 flex-col items-center min-h-0">
-          <div className="flex-1 min-h-0 w-full flex items-center justify-center">
+          <div className="flex-1 min-h-0 w-full flex items-center justify-center" role="img" aria-label="Savings goal radial progress: 68% complete, $6,800 saved of $10,000 target">
             <div className="relative aspect-square h-full max-h-[180px] min-h-[100px]">
               <ResponsiveContainer width="100%" height="100%">
                 <RadialBarChart

@@ -34,7 +34,7 @@ export function GroupedBarCard() {
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">
-        <div className="flex-1 min-h-[200px]">
+        <div className="flex-1 min-h-[200px]" role="img" aria-label="Grouped bar chart comparing monthly income and expense from July to December">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} barGap={4} barCategoryGap="20%">
               <CartesianGrid strokeDasharray="3 3" stroke={chartAxis} strokeOpacity={0.15} vertical={false} />

@@ -154,7 +154,7 @@ export default function PalettePage() {
       <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-2">
         {/* Line Chart */}
         <Section title="Line Chart" icon={LineChartIcon}>
-          <div className="h-[200px]">
+          <div className="h-[200px]" role="img" aria-label="Example multi-series line chart">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={lineData}>
                 <XAxis dataKey="name" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -178,7 +178,7 @@ export default function PalettePage() {
         {/* Donut Chart */}
         <Section title="Donut Chart" icon={Target}>
           <div className="flex flex-col items-center">
-            <div className="h-[180px] w-[180px]">
+            <div className="h-[180px] w-[180px]" role="img" aria-label="Example donut chart showing asset allocation">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={pieData} cx="50%" cy="50%" innerRadius={45} outerRadius={70} dataKey="value" strokeWidth={0}>
@@ -203,7 +203,7 @@ export default function PalettePage() {
 
         {/* Bar Chart */}
         <Section title="Grouped Bar Chart" icon={BarChart3}>
-          <div className="h-[200px]">
+          <div className="h-[200px]" role="img" aria-label="Example grouped bar chart showing income vs expense">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={barData} barGap={4}>
                 <XAxis dataKey="name" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -225,7 +225,7 @@ export default function PalettePage() {
 
         {/* Area Chart */}
         <Section title="Area Chart (Positive / Negative)" icon={Activity}>
-          <div className="h-[200px]">
+          <div className="h-[200px]" role="img" aria-label="Example area chart showing positive and negative cash flow">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={areaData}>
                 <XAxis dataKey="name" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />

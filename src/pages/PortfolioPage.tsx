@@ -32,7 +32,7 @@ export default function PortfolioPage() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
             <p className="text-sm text-muted-foreground">Portfolio Performance</p>
           </div>
-          <div className="h-[180px] md:h-[200px]">
+          <div className="h-[180px] md:h-[200px]" role="img" aria-label="Portfolio performance line chart over time">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={performanceData}>
                 <XAxis dataKey="month" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -49,7 +49,7 @@ export default function PortfolioPage() {
             <p className="text-sm text-muted-foreground">Asset Allocation</p>
           </div>
           <div className="flex flex-col items-center">
-            <div className="h-[160px] w-[160px] md:h-[180px] md:w-[180px]">
+            <div className="h-[160px] w-[160px] md:h-[180px] md:w-[180px]" role="img" aria-label="Asset allocation donut chart">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={holdings} cx="50%" cy="50%" innerRadius={40} outerRadius={65} dataKey="allocation" strokeWidth={0}>
