@@ -1,10 +1,11 @@
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, PieChart, Pie, AreaChart, Area } from "recharts";
 import { BarChart3, Target, TrendingUp } from "lucide-react";
 import { useStatsOverviewViewModel } from "@/viewmodels/useStatsOverviewViewModel";
 import { CHART_COLORS, chart, chartPrimary, chartAxis } from "@/lib/palette";
 
 export default function StatsOverviewPage() {
   const { stats, weeklyData, categoryData, trendData } = useStatsOverviewViewModel();
+  const categoryDataWithFill = categoryData.map((d, i) => ({ ...d, fill: CHART_COLORS[i] }));
 
   return (
     <>
@@ -45,9 +46,7 @@ export default function StatsOverviewPage() {
             <div className="h-[160px] w-[160px] md:h-[180px] md:w-[180px]" role="img" aria-label="Spending by category donut chart">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={categoryData} cx="50%" cy="50%" innerRadius={40} outerRadius={65} dataKey="value" strokeWidth={0}>
-                    {categoryData.map((_, i) => <Cell key={i} fill={CHART_COLORS[i]} />)}
-                  </Pie>
+                  <Pie data={categoryDataWithFill} cx="50%" cy="50%" innerRadius={40} outerRadius={65} dataKey="value" strokeWidth={0} />
                 </PieChart>
               </ResponsiveContainer>
             </div>
