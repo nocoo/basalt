@@ -7,7 +7,7 @@ import {
   ExternalLink, FileQuestion, Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router";
 import {
   Collapsible, CollapsibleTrigger,
 } from "@/components/ui/collapsible";
