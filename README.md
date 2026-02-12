@@ -52,9 +52,9 @@
 
 | Layer | Technology |
 |---|---|
-| **Build** | [Vite 5](https://vite.dev) + SWC |
-| **UI** | [React 18](https://react.dev) + TypeScript 5.9 |
-| **Routing** | [React Router 6](https://reactrouter.com) |
+| **Build** | [Vite 7](https://vite.dev) + SWC |
+| **UI** | [React 19](https://react.dev) + TypeScript 5.9 |
+| **Routing** | [React Router 7](https://reactrouter.com) |
 | **Styling** | [Tailwind CSS 4](https://tailwindcss.com) + @tailwindcss/vite + tw-animate-css |
 | **Components** | [shadcn/ui](https://ui.shadcn.com) (48 primitives) |
 | **Charts** | [Recharts 2](https://recharts.org) |
