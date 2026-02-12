@@ -126,12 +126,6 @@ export default function BadgeLoginPage() {
             </p>
           </div>
 
-          {/* Decorative circles — inspired by CardsPage */}
-          <div className="pointer-events-none absolute -top-10 -right-10 h-32 w-32 rounded-full border border-foreground/[0.06]" />
-          <div className="pointer-events-none absolute -bottom-16 -left-16 flex h-48 w-48 items-center justify-center rounded-full border border-foreground/[0.06]">
-            <Mountain className="h-12 w-12 text-foreground/[0.06]" strokeWidth={1} />
-          </div>
-
           {/* Footer strip */}
           <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center border-t border-border bg-secondary/50 py-2.5">
             <div className="flex items-center gap-1.5">
