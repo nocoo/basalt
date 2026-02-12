@@ -1,23 +1,28 @@
-import { HelpCircle, Book, MessageCircle, FileText, ChevronRight } from "lucide-react";
-import { faqs } from "@/data/mock";
+import { HelpCircle, Book, MessageCircle, FileText, ChevronRight, type LucideIcon } from "lucide-react";
+import { useHelpViewModel } from "@/viewmodels/useHelpViewModel";
 
-const resources = [
-  { icon: Book, title: "Getting Started Guide", desc: "Learn the basics of managing your finances" },
-  { icon: MessageCircle, title: "Contact Support", desc: "Chat with our team for help" },
-  { icon: FileText, title: "API Documentation", desc: "Integrate with third-party services" },
-];
+const iconMap: Record<string, LucideIcon> = {
+  book: Book,
+  "message-circle": MessageCircle,
+  "file-text": FileText,
+};
 
 export default function HelpPage() {
+  const { resources, filteredFAQs } = useHelpViewModel();
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        {resources.map((r) => (
-          <div key={r.title} className="rounded-[14px] bg-secondary p-5 cursor-pointer hover:bg-accent transition-colors">
-            <r.icon className="h-5 w-5 text-primary mb-3" strokeWidth={1.5} />
-            <p className="text-sm font-medium text-foreground mb-1">{r.title}</p>
-            <p className="text-xs text-muted-foreground">{r.desc}</p>
-          </div>
-        ))}
+        {resources.map((r) => {
+          const Icon = iconMap[r.icon] ?? HelpCircle;
+          return (
+            <div key={r.title} className="rounded-[14px] bg-secondary p-5 cursor-pointer hover:bg-accent transition-colors">
+              <Icon className="h-5 w-5 text-primary mb-3" strokeWidth={1.5} />
+              <p className="text-sm font-medium text-foreground mb-1">{r.title}</p>
+              <p className="text-xs text-muted-foreground">{r.desc}</p>
+            </div>
+          );
+        })}
       </div>
 
       <div className="mt-4 rounded-[14px] bg-secondary p-5">
@@ -26,7 +31,7 @@ export default function HelpPage() {
           <span className="text-sm text-muted-foreground">Frequently Asked Questions</span>
         </div>
         <div className="flex flex-col gap-2">
-          {faqs.map((faq, i) => (
+          {filteredFAQs.map((faq, i) => (
             <details key={i} className="group rounded-[10px] bg-card">
               <summary className="flex items-center justify-between cursor-pointer px-4 py-3 text-sm text-foreground">
                 {faq.q}
