@@ -11,17 +11,9 @@ export default function BadgeLoginPage() {
         }}
       />
       <div className="flex flex-col items-center">
-        {/* Pin */}
-        <div className="relative z-20 flex flex-col items-center">
-          {/* Pin head */}
-          <div className="h-5 w-5 rounded-full bg-gradient-to-b from-zinc-300 to-zinc-400 dark:from-zinc-400 dark:to-zinc-500 shadow-[0_1px_3px_rgba(0,0,0,0.3)] ring-1 ring-zinc-400/30 dark:ring-zinc-500/30" />
-          {/* Pin needle — overlaps into card */}
-          <div className="h-4 w-px bg-gradient-to-b from-zinc-400 to-zinc-300 dark:from-zinc-500 dark:to-zinc-400" />
-        </div>
-
         {/* Badge card */}
         <div
-          className="relative -mt-2 aspect-[54/86] w-72 overflow-hidden rounded-2xl bg-card flex flex-col ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
+          className="relative aspect-[54/86] w-72 overflow-hidden rounded-2xl bg-card flex flex-col ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
           style={{
             boxShadow: [
               "0 1px 2px rgba(0,0,0,0.06)",
@@ -34,7 +26,7 @@ export default function BadgeLoginPage() {
           }}
         >
           {/* Header strip */}
-          <div className="flex items-center justify-between bg-primary px-5 py-4">
+          <div className="relative flex items-center justify-between bg-primary px-5 py-4">
             <div className="flex items-center gap-2">
               <Mountain className="h-4 w-4 text-primary-foreground" strokeWidth={1.5} />
               <span className="text-sm font-semibold text-primary-foreground">basalt.</span>
@@ -42,6 +34,13 @@ export default function BadgeLoginPage() {
             <span className="text-[10px] font-medium uppercase tracking-widest text-primary-foreground/60">
               Visitor
             </span>
+            {/* Punch hole */}
+            <div
+              className="absolute left-1/2 -top-2.5 -translate-x-1/2 h-5 w-5 rounded-full bg-background"
+              style={{
+                boxShadow: "inset 0 2px 4px rgba(0,0,0,0.25), inset 0 0 1px rgba(0,0,0,0.15)",
+              }}
+            />
           </div>
 
           {/* Badge content */}
