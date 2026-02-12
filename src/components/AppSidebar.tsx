@@ -4,7 +4,7 @@ import {
   PiggyBank, Target, BarChart3, TrendingUp,
   LineChart, HelpCircle, Settings, Search, ChevronUp,
   PanelLeft, LogOut, Mountain, Palette, LogIn, IdCard,
-  ExternalLink, FileQuestion,
+  ExternalLink, FileQuestion, Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -73,6 +73,7 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { title: "Help Center", icon: HelpCircle, path: "/help" },
       { title: "Color Palette", icon: Palette, path: "/palette" },
+      { title: "Interactions", icon: Layers, path: "/interactions" },
       { title: "Settings", icon: Settings, path: "/settings" },
     ],
   },

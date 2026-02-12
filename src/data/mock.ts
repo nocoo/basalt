@@ -11,6 +11,8 @@ import type {
   Goal,
   PortfolioItem,
   FAQ,
+  ShowcaseToast,
+  ShowcaseDialog,
 } from "@/models/types";
 
 // ── Wallet ──
@@ -137,5 +139,20 @@ export const faqs: FAQ[] = [
   { q: "How are budget limits calculated?", a: "Budget limits are set monthly and reset on the 1st." },
   { q: "Can I export my transactions?", a: "Yes, go to Transactions > Filter > Export CSV." },
   { q: "How do I change my notification settings?", a: "Settings > Notifications > Toggle preferences." },
+];
+
+// ── Interaction Showcase ──
+export const showcaseToasts: ShowcaseToast[] = [
+  { id: "t1", title: "Changes saved", description: "Your profile has been updated successfully.", variant: "success" },
+  { id: "t2", title: "New message", description: "You have a new notification from the system.", variant: "default" },
+  { id: "t3", title: "Payment failed", description: "Your card was declined. Please try another method.", variant: "error" },
+  { id: "t4", title: "Storage almost full", description: "You have used 90% of your available storage.", variant: "warning" },
+  { id: "t5", title: "Update available", description: "A new version of the app is ready to install.", variant: "info" },
+];
+
+export const showcaseDialogs: ShowcaseDialog[] = [
+  { id: "d1", title: "About Basalt", description: "Basalt is a modern personal finance dashboard template built with React, TypeScript, and Tailwind CSS.", style: "info" },
+  { id: "d2", title: "Send Feedback", description: "Let us know how we can improve your experience.", style: "form" },
+  { id: "d3", title: "Delete Account", description: "This action cannot be undone. All your data will be permanently removed from our servers.", style: "confirm" },
 ];
 

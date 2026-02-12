@@ -65,3 +65,19 @@ export interface FAQ {
   q: string;
   a: string;
 }
+
+export type ToastVariant = "default" | "success" | "error" | "warning" | "info";
+
+export interface ShowcaseToast {
+  id: string;
+  title: string;
+  description: string;
+  variant: ToastVariant;
+}
+
+export interface ShowcaseDialog {
+  id: string;
+  title: string;
+  description: string;
+  style: "info" | "form" | "confirm";
+}

@@ -15,6 +15,7 @@ import PortfolioPage from "./pages/PortfolioPage";
 import HelpPage from "./pages/HelpPage";
 import SettingsPage from "./pages/SettingsPage";
 import PalettePage from "./pages/PalettePage";
+import InteractionShowcasePage from "./pages/InteractionShowcasePage";
 import LoginPage from "./pages/LoginPage";
 import BadgeLoginPage from "./pages/BadgeLoginPage";
 import NotFound from "./pages/NotFound";
@@ -39,6 +40,7 @@ const App = () => (
           <Route path="/help" element={<HelpPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route path="/palette" element={<PalettePage />} />
+          <Route path="/interactions" element={<InteractionShowcasePage />} />
         </Route>
         {/* Standalone pages (no sidebar) */}
         <Route path="/login" element={<LoginPage />} />
