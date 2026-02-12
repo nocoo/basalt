@@ -34,11 +34,14 @@ export default function BadgeLoginPage() {
             <span className="text-[10px] font-medium uppercase tracking-widest text-primary-foreground/60">
               Visitor
             </span>
-            {/* Punch hole */}
+          </div>
+
+          {/* Punch hole — centered near top of card */}
+          <div className="absolute top-1.5 left-1/2 -translate-x-1/2 z-10">
             <div
-              className="absolute left-1/2 -top-2.5 -translate-x-1/2 h-5 w-5 rounded-full bg-background"
+              className="h-3 w-3 rounded-full bg-background/80"
               style={{
-                boxShadow: "inset 0 2px 4px rgba(0,0,0,0.25), inset 0 0 1px rgba(0,0,0,0.15)",
+                boxShadow: "inset 0 1px 3px rgba(0,0,0,0.35), inset 0 -0.5px 1px rgba(255,255,255,0.1)",
               }}
             />
           </div>
