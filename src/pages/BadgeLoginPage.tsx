@@ -3,15 +3,29 @@ import { Mountain, User } from "lucide-react";
 export default function BadgeLoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
-      {/* Lanyard */}
       <div className="flex flex-col items-center">
-        {/* Clip */}
-        <div className="relative z-10 h-4 w-10 rounded-t-md bg-zinc-400 dark:bg-zinc-500" />
-        {/* Strap */}
-        <div className="h-8 w-1 bg-zinc-400 dark:bg-zinc-500" />
+        {/* Pin */}
+        <div className="relative z-20 flex flex-col items-center">
+          {/* Pin head */}
+          <div className="h-5 w-5 rounded-full bg-gradient-to-b from-zinc-300 to-zinc-400 dark:from-zinc-400 dark:to-zinc-500 shadow-[0_1px_3px_rgba(0,0,0,0.3)] ring-1 ring-zinc-400/30 dark:ring-zinc-500/30" />
+          {/* Pin needle — overlaps into card */}
+          <div className="h-4 w-px bg-gradient-to-b from-zinc-400 to-zinc-300 dark:from-zinc-500 dark:to-zinc-400" />
+        </div>
 
         {/* Badge card */}
-        <div className="relative aspect-[54/86] w-72 overflow-hidden rounded-2xl bg-card shadow-xl ring-1 ring-border flex flex-col">
+        <div
+          className="relative -mt-2 aspect-[54/86] w-72 overflow-hidden rounded-2xl bg-card flex flex-col ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
+          style={{
+            boxShadow: [
+              "0 1px 2px rgba(0,0,0,0.06)",
+              "0 4px 8px rgba(0,0,0,0.04)",
+              "0 12px 24px rgba(0,0,0,0.06)",
+              "0 24px 48px rgba(0,0,0,0.04)",
+              "0 0 0 0.5px rgba(0,0,0,0.02)",
+              "0 0 60px rgba(0,0,0,0.03)",
+            ].join(", "),
+          }}
+        >
           {/* Header strip */}
           <div className="flex items-center justify-between bg-primary px-5 py-4">
             <div className="flex items-center gap-2">
