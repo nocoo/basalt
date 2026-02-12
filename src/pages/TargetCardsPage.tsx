@@ -27,8 +27,15 @@ export default function TargetCardsPage() {
               </div>
               <span className="text-sm font-semibold text-foreground">{goal.percent}%</span>
             </div>
-            <div className="h-2 rounded-full bg-card">
-              <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${goal.percent}%` }} />
+            <div
+              className="h-2 rounded-full bg-card"
+              role="progressbar"
+              aria-valuenow={goal.percent}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={`${goal.name}: ${goal.percent}% of $${goal.target.toLocaleString()} saved`}
+            >
+              <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${goal.percent}%` }} aria-hidden="true" />
             </div>
             <div className="mt-3 flex items-center gap-4">
               <span className="text-xs text-muted-foreground">Monthly target: ${goal.monthlyTarget.toLocaleString()}</span>

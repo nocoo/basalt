@@ -107,10 +107,18 @@ export default function CardShowcasePage() {
                 {card.utilization}%
               </span>
             </div>
-            <div className="h-1.5 rounded-full bg-muted">
+            <div
+              className="h-1.5 rounded-full bg-muted"
+              role="progressbar"
+              aria-valuenow={card.utilization}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-label={`${card.bank} ${card.name} credit utilization: ${card.utilization}%`}
+            >
               <div
                 className="h-full rounded-full bg-foreground/60 transition-all"
                 style={{ width: `${card.utilization}%` }}
+                aria-hidden="true"
               />
             </div>
             <p className="text-[11px] text-muted-foreground mt-1.5">

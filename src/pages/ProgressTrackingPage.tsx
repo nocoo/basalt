@@ -35,8 +35,15 @@ export default function ProgressTrackingPage() {
                 <span className="text-sm text-foreground">{cat.category}</span>
                 <span className="text-xs text-muted-foreground">${cat.spent} / ${cat.limit}</span>
               </div>
-              <div className="h-2 rounded-full bg-card">
-                <div className="h-full rounded-full transition-all" style={{ width: `${cat.progress}%`, background: cat.color }} />
+              <div
+                className="h-2 rounded-full bg-card"
+                role="progressbar"
+                aria-valuenow={cat.progress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-label={`${cat.category} budget: ${cat.progress}% spent`}
+              >
+                <div className="h-full rounded-full transition-all" style={{ width: `${cat.progress}%`, background: cat.color }} aria-hidden="true" />
               </div>
             </div>
           ))}
