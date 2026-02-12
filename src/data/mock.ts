@@ -15,7 +15,10 @@ export interface ActivityItem {
 
 export interface CreditCard {
   name: string;
+  bank: string;
+  network: "visa" | "mastercard" | "amex";
   number: string;
+  expiry: string;
   balance: number;
   limit: number;
   color: string;
@@ -127,9 +130,9 @@ export const walletActivity: ActivityItem[] = [
 
 // ── Cards ──
 export const creditCards: CreditCard[] = [
-  { name: "Visa Platinum", number: "4532 •••• •••• 7890", balance: 3250.0, limit: 10000, color: "from-blue-600 to-blue-800" },
-  { name: "Mastercard Gold", number: "5412 •••• •••• 3456", balance: 1820.5, limit: 5000, color: "from-purple-600 to-purple-800" },
-  { name: "Amex Business", number: "3742 •••• •••• 1234", balance: 8400.0, limit: 25000, color: "from-emerald-600 to-emerald-800" },
+  { name: "Sapphire Reserve", bank: "Chase", network: "visa", number: "4532 •••• •••• 7890", expiry: "09/28", balance: 3250.0, limit: 10000, color: "from-blue-600 to-blue-800" },
+  { name: "Premier World", bank: "HSBC", network: "mastercard", number: "5412 •••• •••• 3456", expiry: "03/27", balance: 1820.5, limit: 5000, color: "from-purple-600 to-purple-800" },
+  { name: "Centurion", bank: "American Express", network: "amex", number: "3742 •••• •••• 1234", expiry: "12/29", balance: 8400.0, limit: 25000, color: "from-neutral-800 to-neutral-950" },
 ];
 
 // ── Transactions ──

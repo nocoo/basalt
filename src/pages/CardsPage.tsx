@@ -1,6 +1,37 @@
-import { CreditCard, Wifi, Eye, EyeOff, Lock } from "lucide-react";
+import { CreditCard, Wifi, Eye, EyeOff, Lock, NfcIcon } from "lucide-react";
 import { useState } from "react";
 import { creditCards } from "@/data/mock";
+import type { CreditCard as CreditCardType } from "@/data/mock";
+
+function NetworkLogo({ network }: { network: CreditCardType["network"] }) {
+  switch (network) {
+    case "visa":
+      return <span className="text-lg font-extrabold italic tracking-tight">VISA</span>;
+    case "mastercard":
+      return (
+        <div className="flex items-center">
+          <div className="h-5 w-5 rounded-full bg-red-500 opacity-80" />
+          <div className="-ml-2 h-5 w-5 rounded-full bg-yellow-400 opacity-80" />
+        </div>
+      );
+    case "amex":
+      return <span className="text-xs font-bold tracking-wider">AMEX</span>;
+    default:
+      return null;
+  }
+}
+
+function ChipIcon({ isBlack }: { isBlack: boolean }) {
+  return (
+    <div className={`h-8 w-10 rounded-md ${isBlack ? "bg-amber-300/80" : "bg-amber-200/80"} flex items-center justify-center`}>
+      <div className={`h-5 w-7 rounded-sm border ${isBlack ? "border-amber-600/50" : "border-amber-400/60"} grid grid-cols-3 grid-rows-2 gap-px p-px`}>
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className={`${isBlack ? "bg-amber-500/40" : "bg-amber-300/50"} rounded-[1px]`} />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function CardsPage() {
   const [showBalance, setShowBalance] = useState(true);
@@ -15,25 +46,79 @@ export default function CardsPage() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        {creditCards.map((card) => (
-          <div key={card.name} className={`rounded-[14px] bg-gradient-to-br ${card.color} p-5 text-white relative overflow-hidden`}>
-            <div className="absolute top-4 right-4 opacity-20">
-              <Wifi className="h-6 w-6 rotate-90" />
-            </div>
-            <p className="text-xs font-medium opacity-70 mb-6">{card.name}</p>
-            <p className="text-base font-mono tracking-wider mb-4">{card.number}</p>
-            <div className="flex items-end justify-between">
-              <div>
-                <p className="text-[10px] opacity-60 uppercase">Balance</p>
-                <p className="text-lg font-semibold">{showBalance ? `$${card.balance.toLocaleString()}` : "------"}</p>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 justify-items-center">
+        {creditCards.map((card) => {
+          const isBlack = card.network === "amex";
+          const textMuted = isBlack ? "text-amber-200/60" : "text-white/60";
+          const textSecondary = isBlack ? "text-amber-100/80" : "text-white/80";
+          const textPrimary = isBlack ? "text-amber-50" : "text-white";
+
+          return (
+            <div
+              key={card.name}
+              className={`aspect-[86/54] w-full max-w-sm rounded-2xl bg-gradient-to-br ${card.color} p-5 relative overflow-hidden flex flex-col justify-between shadow-lg`}
+            >
+              {/* Decorative circles */}
+              <div className={`absolute -top-12 -right-12 h-40 w-40 rounded-full ${isBlack ? "bg-white/[0.03]" : "bg-white/[0.06]"}`} />
+              <div className={`absolute -bottom-8 -left-8 h-32 w-32 rounded-full ${isBlack ? "bg-white/[0.02]" : "bg-white/[0.04]"}`} />
+
+              {/* Top row: bank name + contactless */}
+              <div className="flex items-start justify-between relative z-10">
+                <div>
+                  <p className={`text-sm font-semibold ${textPrimary}`}>{card.bank}</p>
+                  <p className={`text-[10px] ${textMuted} mt-0.5`}>{card.name}</p>
+                </div>
+                <NfcIcon className={`h-5 w-5 ${textMuted}`} strokeWidth={1.5} />
               </div>
-              <CreditCard className="h-8 w-8 opacity-40" strokeWidth={1} />
+
+              {/* Middle: chip + card number */}
+              <div className="relative z-10 space-y-3">
+                <ChipIcon isBlack={isBlack} />
+                <p className={`text-sm font-mono tracking-[0.2em] ${textSecondary}`}>{card.number}</p>
+              </div>
+
+              {/* Bottom row: expiry + balance + network logo */}
+              <div className="flex items-end justify-between relative z-10">
+                <div className="flex gap-6">
+                  <div>
+                    <p className={`text-[9px] uppercase ${textMuted}`}>Valid Thru</p>
+                    <p className={`text-xs font-mono ${textSecondary}`}>{card.expiry}</p>
+                  </div>
+                  <div>
+                    <p className={`text-[9px] uppercase ${textMuted}`}>Balance</p>
+                    <p className={`text-sm font-semibold ${textPrimary}`}>
+                      {showBalance ? `$${card.balance.toLocaleString()}` : "••••••"}
+                    </p>
+                  </div>
+                </div>
+                <div className={textPrimary}>
+                  <NetworkLogo network={card.network} />
+                </div>
+              </div>
             </div>
-            <div className="mt-3 h-1 rounded-full bg-white/20">
-              <div className="h-full rounded-full bg-white/60" style={{ width: `${(card.balance / card.limit) * 100}%` }} />
+          );
+        })}
+      </div>
+
+      {/* Usage bar */}
+      <div className="mt-6 grid grid-cols-1 gap-4 md:grid-cols-3">
+        {creditCards.map((card) => (
+          <div key={card.name} className="rounded-[14px] bg-secondary p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-foreground">{card.bank} {card.name}</span>
+              <span className="text-xs text-muted-foreground">
+                {Math.round((card.balance / card.limit) * 100)}%
+              </span>
             </div>
-            <p className="text-[10px] opacity-50 mt-1">${card.balance.toLocaleString()} / ${card.limit.toLocaleString()} limit</p>
+            <div className="h-1.5 rounded-full bg-muted">
+              <div
+                className="h-full rounded-full bg-foreground/60 transition-all"
+                style={{ width: `${(card.balance / card.limit) * 100}%` }}
+              />
+            </div>
+            <p className="text-[11px] text-muted-foreground mt-1.5">
+              ${card.balance.toLocaleString()} / ${card.limit.toLocaleString()} limit
+            </p>
           </div>
         ))}
       </div>
