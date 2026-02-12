@@ -4,6 +4,21 @@
 > **Scope**: Full codebase review of all TSX templates, pages, and components
 > **Standard**: WCAG 2.1 AA
 
+## Fix Status
+
+All **Critical** issues (6 categories, ~20 instances) have been resolved in atomic commits:
+
+| # | Issue | Status | Commit |
+|---|-------|--------|--------|
+| 1 | Icon-only buttons without accessible names | **Fixed** | `fix: add aria-label to icon-only buttons and aria-hidden to decorative icons` |
+| 2 | Form elements without associated labels | **Fixed** | `fix: add htmlFor and id associations to all form labels and inputs` |
+| 3 | Charts completely inaccessible | **Fixed** | `fix: add role=img and aria-label to all chart containers` |
+| 4 | Data tables built with `<div>` instead of `<table>` | **Fixed** | `fix: replace div-based data tables with semantic table elements` |
+| 5 | Login page missing `<form>` element | **Fixed** | `fix: wrap login inputs in form element and add aria-hidden to decorative icons` |
+| 6 | No skip navigation link | **Fixed** | `fix: add skip navigation link and main content landmark id` |
+
+**Remaining**: High, Medium, and Low issues are documented below for future remediation passes.
+
 ## Executive Summary
 
 The project's accessibility posture relies almost entirely on Radix UI's built-in behavior from shadcn/ui primitives. Custom application code adds virtually **no** explicit ARIA attributes, has **no** a11y linting rules (`eslint-plugin-jsx-a11y` absent), and **no** a11y test coverage (e.g., axe-core).
@@ -21,7 +36,7 @@ The project's accessibility posture relies almost entirely on Radix UI's built-i
 
 ## Critical Issues
 
-### 1. Icon-Only Buttons Without Accessible Names (~15 instances)
+### 1. Icon-Only Buttons Without Accessible Names (~15 instances) -- RESOLVED
 
 Multiple buttons contain only an icon with no `aria-label` or visually-hidden text. Screen readers announce "button" with zero context.
 
@@ -40,7 +55,7 @@ Multiple buttons contain only an icon with no `aria-label` or visually-hidden te
 
 **WCAG**: 4.1.2 Name, Role, Value (Level A)
 
-### 2. Form Elements Without Associated Labels (~16 instances)
+### 2. Form Elements Without Associated Labels (~16 instances) -- RESOLVED
 
 All `<Label>` components in `SettingsPage.tsx` lack `htmlFor`, and all `<Input>` components lack `id`. Screen readers cannot associate labels with their inputs.
 
@@ -66,7 +81,7 @@ All `<Label>` components in `SettingsPage.tsx` lack `htmlFor`, and all `<Input>`
 
 **WCAG**: 1.3.1 Info and Relationships (Level A)
 
-### 3. Charts Completely Inaccessible (~13 chart components)
+### 3. Charts Completely Inaccessible (~13 chart components) -- RESOLVED
 
 All Recharts visualizations lack text alternatives. Screen readers encounter opaque SVG graphics with no meaningful content.
 
@@ -90,7 +105,7 @@ All Recharts visualizations lack text alternatives. Screen readers encounter opa
 
 **WCAG**: 1.1.1 Non-text Content (Level A)
 
-### 4. Data Tables Built With `<div>` Instead of `<table>`
+### 4. Data Tables Built With `<div>` Instead of `<table>` -- RESOLVED
 
 | File | Line(s) | Description |
 |------|---------|-------------|
@@ -103,7 +118,7 @@ Screen readers cannot navigate these as data tables. Column headers (`Transactio
 
 **WCAG**: 1.3.1 Info and Relationships (Level A)
 
-### 5. Login Page Missing `<form>` Element
+### 5. Login Page Missing `<form>` Element -- RESOLVED
 
 `src/pages/LoginPage.tsx:12-141` -- Inputs and submit button are not wrapped in a `<form>`. This breaks native form submission, autofill in some browsers, and screen reader form landmark detection.
 
@@ -111,7 +126,7 @@ Screen readers cannot navigate these as data tables. Column headers (`Transactio
 
 **WCAG**: 1.3.1 Info and Relationships (Level A)
 
-### 6. No Skip Navigation Link
+### 6. No Skip Navigation Link -- RESOLVED
 
 `index.html` lacks a "Skip to main content" link. Keyboard users must tab through the entire sidebar on every page load.
 
