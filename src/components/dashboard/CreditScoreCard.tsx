@@ -30,7 +30,7 @@ export function CreditScoreCard() {
       <CardContent className="flex flex-col">
         <div className="flex flex-1 flex-col items-center min-h-0">
           <div className="flex-1 min-h-0 w-full flex items-center justify-center">
-            <div className="relative aspect-square h-full max-h-[180px] min-h-[100px]">
+            <div className="relative aspect-square h-full max-h-[220px] min-h-[100px]">
               <ResponsiveContainer width="100%" height="100%">
                 <RadialBarChart
                   cx="50%"
@@ -52,7 +52,7 @@ export function CreditScoreCard() {
                 </RadialBarChart>
               </ResponsiveContainer>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-2xl font-semibold text-foreground font-display tracking-tight">{score}</span>
+                <span className="text-xl font-semibold text-foreground font-display tracking-tight">{score}</span>
                 <span className={`text-xs font-medium ${color}`}>{label}</span>
               </div>
             </div>
