@@ -353,10 +353,12 @@ function AppearanceSection() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-3" role="radiogroup" aria-label="Theme">
             {(["Light", "Dark", "System"] as const).map((theme) => (
               <button
                 key={theme}
+                role="radio"
+                aria-checked={theme === "Dark"}
                 className={`flex flex-col items-center gap-2 rounded-widget border p-4 transition-colors ${
                   theme === "Dark"
                     ? "border-primary bg-accent"
