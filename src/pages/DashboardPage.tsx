@@ -1,57 +1,57 @@
-import { TotalBalanceCard } from "@/components/dashboard/TotalBalanceCard";
-import { IncomeCard } from "@/components/dashboard/IncomeCard";
-import { UsageCategoryCard } from "@/components/dashboard/UsageCategoryCard";
-import { SpendingTrendCard } from "@/components/dashboard/SpendingTrendCard";
-import { ExpenseBreakdownCard } from "@/components/dashboard/ExpenseBreakdownCard";
-import { RecentTransactionsCard } from "@/components/dashboard/RecentTransactionsCard";
-import { QuickActionsCard } from "@/components/dashboard/QuickActionsCard";
-import { AccountOverviewCard } from "@/components/dashboard/AccountOverviewCard";
-import { SavingsGoalCard } from "@/components/dashboard/SavingsGoalCard";
-import { WeeklyActivityCard } from "@/components/dashboard/WeeklyActivityCard";
-import { CreditScoreCard } from "@/components/dashboard/CreditScoreCard";
-import { MonthlyComparisonCard } from "@/components/dashboard/MonthlyComparisonCard";
+import { SummaryMetricCard } from "@/components/dashboard/SummaryMetricCard";
+import { SecondaryMetricCard } from "@/components/dashboard/SecondaryMetricCard";
+import { BarChartCard } from "@/components/dashboard/BarChartCard";
+import { TrendLineCard } from "@/components/dashboard/TrendLineCard";
+import { DonutChartCard } from "@/components/dashboard/DonutChartCard";
+import { RecentListCard } from "@/components/dashboard/RecentListCard";
+import { ActionGridCard } from "@/components/dashboard/ActionGridCard";
+import { ItemListCard } from "@/components/dashboard/ItemListCard";
+import { RadialProgressCard } from "@/components/dashboard/RadialProgressCard";
+import { AreaChartCard } from "@/components/dashboard/AreaChartCard";
+import { GaugeCard } from "@/components/dashboard/GaugeCard";
+import { GroupedBarCard } from "@/components/dashboard/GroupedBarCard";
 
 export default function DashboardPage() {
   return (
     <>
       {/* Row 1: 3 summary cards */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <TotalBalanceCard />
-        <IncomeCard />
-        <SpendingTrendCard />
+        <SummaryMetricCard />
+        <SecondaryMetricCard />
+        <TrendLineCard />
       </div>
 
       {/* Row 2: wide bar chart + donut */}
       <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <UsageCategoryCard />
+          <BarChartCard />
         </div>
-        <ExpenseBreakdownCard />
+        <DonutChartCard />
       </div>
 
       {/* Row 3: wide area chart + 2 radial cards */}
       <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <WeeklyActivityCard />
+          <AreaChartCard />
         </div>
         <div className="flex flex-col gap-4">
-          <SavingsGoalCard />
-          <CreditScoreCard />
+          <RadialProgressCard />
+          <GaugeCard />
         </div>
       </div>
 
       {/* Row 4: wide grouped bar chart + transactions */}
       <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <MonthlyComparisonCard />
+          <GroupedBarCard />
         </div>
-        <RecentTransactionsCard />
+        <RecentListCard />
       </div>
 
       {/* Row 5: quick actions + accounts */}
       <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
-        <QuickActionsCard />
-        <AccountOverviewCard />
+        <ActionGridCard />
+        <ItemListCard />
       </div>
     </>
   );
