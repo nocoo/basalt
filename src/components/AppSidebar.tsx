@@ -4,7 +4,7 @@ import {
   PiggyBank, Target, BarChart3, TrendingUp,
   LineChart, HelpCircle, Settings, Search, ChevronUp,
   PanelLeft, LogOut, Mountain, Palette, LogIn, IdCard,
-  ExternalLink, FileQuestion, Layers,
+  ExternalLink, FileQuestion, Layers, HeartPulse,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate, useLocation } from "react-router";
@@ -47,6 +47,7 @@ const NAV_GROUPS: NavGroup[] = [
       { title: "Records", icon: ArrowLeftRight, path: "/records", badge: 6 },
       { title: "Progress Tracking", icon: PiggyBank, path: "/progress-tracking" },
       { title: "Targets", icon: Target, path: "/targets" },
+      { title: "Life.ai", icon: HeartPulse, path: "/life-ai" },
     ],
   },
   {

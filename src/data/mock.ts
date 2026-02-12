@@ -13,6 +13,9 @@ import type {
   FAQ,
   ShowcaseToast,
   ShowcaseDialog,
+  LifeAiTimelineEvent,
+  LifeAiStat,
+  LifeAiHeatmapPoint,
 } from "@/models/types";
 
 // ── Wallet ──
@@ -154,5 +157,85 @@ export const showcaseDialogs: ShowcaseDialog[] = [
   { id: "d1", title: "About Basalt", description: "Basalt is a modern personal finance dashboard template built with React, TypeScript, and Tailwind CSS.", style: "info" },
   { id: "d2", title: "Send Feedback", description: "Let us know how we can improve your experience.", style: "form" },
   { id: "d3", title: "Delete Account", description: "This action cannot be undone. All your data will be permanently removed from our servers.", style: "confirm" },
+];
+
+// ── Life.ai Demo ──
+
+export const lifeAiStats: LifeAiStat[] = [
+  { title: "Steps", value: "8,432", subtitle: "Goal: 10,000", trend: { value: 12.5, label: "vs last week" } },
+  { title: "Sleep", value: "7h 24m", subtitle: "Deep: 2h 10m", trend: { value: -3.2, label: "vs avg" } },
+  { title: "Heart Rate", value: "72 bpm", subtitle: "Resting avg", trend: { value: 0, label: "stable" } },
+  { title: "Calories", value: "2,180", subtitle: "Burned today", trend: { value: 8.1, label: "vs target" } },
+];
+
+export const lifeAiTimeline: LifeAiTimelineEvent[] = [
+  { id: "e1", time: "06:30", title: "Wake up", subtitle: "Sleep score 85", color: "bg-blue-500" },
+  { id: "e2", time: "07:00", title: "Morning run", subtitle: "5.2 km in 28 min", color: "bg-green-500" },
+  { id: "e3", time: "08:00", title: "Breakfast", subtitle: "420 kcal" },
+  { id: "e4", time: "09:00", title: "Deep work", subtitle: "Focus session 90 min", color: "bg-purple-500" },
+  { id: "e5", time: "12:30", title: "Lunch", subtitle: "680 kcal" },
+  { id: "e6", time: "14:00", title: "Meeting", subtitle: "Design review", color: "bg-orange-500" },
+  { id: "e7", time: "17:00", title: "Gym", subtitle: "Upper body + core", color: "bg-green-500" },
+  { id: "e8", time: "19:00", title: "Dinner", subtitle: "550 kcal" },
+  { id: "e9", time: "21:00", title: "Reading", subtitle: "45 min" },
+  { id: "e10", time: "22:30", title: "Sleep", color: "bg-blue-500" },
+];
+
+/** Generate a year of heatmap data with realistic-looking values */
+function generateHeatmapData(year: number): LifeAiHeatmapPoint[] {
+  const data: LifeAiHeatmapPoint[] = [];
+  const start = new Date(year, 0, 1);
+  const end = new Date(year, 11, 31);
+  const current = new Date(start);
+  let seed = 42;
+  const pseudoRandom = () => {
+    seed = (seed * 16807 + 0) % 2147483647;
+    return (seed - 1) / 2147483646;
+  };
+  while (current <= end) {
+    const m = String(current.getMonth() + 1).padStart(2, "0");
+    const d = String(current.getDate()).padStart(2, "0");
+    const date = `${year}-${m}-${d}`;
+    // ~20% days with 0, rest 1-12
+    const val = pseudoRandom() < 0.2 ? 0 : Math.ceil(pseudoRandom() * 12);
+    data.push({ date, value: val });
+    current.setDate(current.getDate() + 1);
+  }
+  return data;
+}
+
+export const lifeAiHeatmapData: LifeAiHeatmapPoint[] = generateHeatmapData(2026);
+
+export const lifeAiWeeklySteps = [
+  { label: "Mon", value: 7200 },
+  { label: "Tue", value: 8400 },
+  { label: "Wed", value: 6800 },
+  { label: "Thu", value: 9100 },
+  { label: "Fri", value: 8432 },
+  { label: "Sat", value: 11200 },
+  { label: "Sun", value: 5600 },
+];
+
+export const lifeAiMonthlySleep = [
+  { label: "Jan", value: 7.2 },
+  { label: "Feb", value: 7.5 },
+  { label: "Mar", value: 6.8 },
+  { label: "Apr", value: 7.1 },
+  { label: "May", value: 7.4 },
+  { label: "Jun", value: 7.0 },
+  { label: "Jul", value: 6.9 },
+  { label: "Aug", value: 7.3 },
+  { label: "Sep", value: 7.6 },
+  { label: "Oct", value: 7.1 },
+  { label: "Nov", value: 7.4 },
+  { label: "Dec", value: 7.2 },
+];
+
+export const lifeAiActivityBreakdown = [
+  { label: "Running", value: 35 },
+  { label: "Gym", value: 25 },
+  { label: "Walking", value: 20 },
+  { label: "Cycling", value: 12 },
+  { label: "Yoga", value: 8 },
 ];
 
