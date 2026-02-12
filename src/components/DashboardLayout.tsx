@@ -3,7 +3,7 @@ import { Outlet, useLocation } from "react-router-dom";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu } from "lucide-react";
+import { Menu, Github } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Map route paths to page titles
@@ -83,7 +83,17 @@ export function DashboardLayout() {
             )}
             <h1 className="text-lg md:text-xl font-semibold text-foreground">{title}</h1>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center gap-1">
+            <a
+              href="https://github.com/nocoo/basalt"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+            >
+              <Github className="h-[18px] w-[18px]" strokeWidth={1.5} />
+            </a>
+            <ThemeToggle />
+          </div>
         </header>
         <div className={cn("flex-1 px-2 pb-2 md:px-3 md:pb-3")}>
           <div className="h-full rounded-[16px] md:rounded-[20px] bg-card p-3 md:p-5 overflow-y-auto">
