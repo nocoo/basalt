@@ -13,57 +13,6 @@ import type {
   FAQ,
 } from "@/models/types";
 
-export type { Account, ActivityItem, CreditCard, Transaction, Budget, MonthlyBudget, Goal, PortfolioItem, FAQ };
-
-// ── Dashboard ──
-export const dashboardBalance = {
-  data: Array.from({ length: 24 }, () => ({ value: 3000 + Math.random() * 5000 })),
-};
-
-export const dashboardIncome = {
-  data: Array.from({ length: 20 }, () => ({ value: 2000 + Math.random() * 6000 })),
-};
-
-export const dashboardSpending = [
-  { name: "Mon", value: 2400 },
-  { name: "Tue", value: 1398 },
-  { name: "Wed", value: 5800 },
-  { name: "Thu", value: 3908 },
-  { name: "Fri", value: 4800 },
-  { name: "Sat", value: 3200 },
-  { name: "Sun", value: 4300 },
-];
-
-export const dashboardExpenses = [
-  { name: "Food", value: 35 },
-  { name: "Transport", value: 20 },
-  { name: "Shopping", value: 25 },
-  { name: "Bills", value: 20 },
-];
-
-export const dashboardUsage = [
-  { name: "Jan", value: 12000 },
-  { name: "Feb", value: 15000 },
-  { name: "Mar", value: 11000 },
-  { name: "Apr", value: 18000 },
-  { name: "May", value: 14000 },
-  { name: "Jun", value: 20000 },
-  { name: "Jul", value: 16000 },
-  { name: "Aug", value: 22000 },
-  { name: "Sep", value: 13000 },
-  { name: "Oct", value: 17000 },
-  { name: "Nov", value: 25000 },
-  { name: "Dec", value: 19000 },
-];
-
-export const recentTransactions = [
-  { name: "Netflix Subscription", amount: -15.99, date: "Today", type: "expense" as const },
-  { name: "Salary Deposit", amount: 5200.0, date: "Yesterday", type: "income" as const },
-  { name: "Grocery Store", amount: -82.4, date: "Yesterday", type: "expense" as const },
-  { name: "Freelance Payment", amount: 1200.0, date: "Feb 8", type: "income" as const },
-  { name: "Electric Bill", amount: -145.0, date: "Feb 7", type: "expense" as const },
-];
-
 // ── Wallet ──
 export const accounts: Account[] = [
   { name: "Main Account", balance: 12450.8, currency: "USD", change: "+2.4%" },
