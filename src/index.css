@@ -52,15 +52,31 @@
     --badge-red: 340 82% 55%;
     --badge-red-foreground: 0 0% 100%;
 
-    /* Visualization palette (8 sequential chart colors) */
-    --chart-1: 200 90% 55%;   /* Blue — primary chart color */
-    --chart-2: 270 70% 60%;   /* Purple */
-    --chart-3: 142 71% 45%;   /* Green (= success) */
-    --chart-4: 340 82% 55%;   /* Pink / Rose (= badge-red) */
-    --chart-5: 30 90% 55%;    /* Orange */
-    --chart-6: 186 80% 45%;   /* Teal / Cyan */
+    /* Visualization palette (24 sequential chart colors) */
+    --chart-1: 217 91% 60%;   /* Primary — brand blue */
+    --chart-2: 200 90% 55%;   /* Sky blue */
+    --chart-3: 186 80% 45%;   /* Teal */
+    --chart-4: 166 72% 44%;   /* Jade */
+    --chart-5: 142 71% 45%;   /* Green (= success) */
+    --chart-6: 84 65% 46%;    /* Lime */
     --chart-7: 45 93% 47%;    /* Amber */
-    --chart-8: 0 0% 25%;      /* Neutral gray */
+    --chart-8: 30 90% 55%;    /* Orange */
+    --chart-9: 15 85% 52%;    /* Vermilion */
+    --chart-10: 0 72% 51%;    /* Red (= destructive) */
+    --chart-11: 340 82% 55%;  /* Rose / Pink */
+    --chart-12: 320 70% 55%;  /* Magenta */
+    --chart-13: 290 65% 55%;  /* Orchid */
+    --chart-14: 270 70% 60%;  /* Purple */
+    --chart-15: 250 65% 58%;  /* Indigo */
+    --chart-16: 230 70% 56%;  /* Cobalt */
+    --chart-17: 210 55% 50%;  /* Steel */
+    --chart-18: 195 45% 55%;  /* Cadet */
+    --chart-19: 160 50% 50%;  /* Seafoam */
+    --chart-20: 100 50% 48%;  /* Olive */
+    --chart-21: 60 65% 45%;   /* Gold */
+    --chart-22: 22 80% 50%;   /* Tangerine */
+    --chart-23: 350 65% 50%;  /* Crimson */
+    --chart-24: 0 0% 25%;     /* Neutral gray */
 
     /* Chart utility tokens */
     --chart-axis: 0 0% 40%;
@@ -114,14 +130,30 @@
     --badge-red-foreground: 0 0% 100%;
 
     /* Visualization palette — boosted saturation/brightness for dark bg */
-    --chart-1: 200 90% 60%;
-    --chart-2: 270 70% 65%;
-    --chart-3: 142 71% 50%;
-    --chart-4: 340 82% 60%;
-    --chart-5: 30 90% 60%;
-    --chart-6: 186 80% 50%;
+    --chart-1: 217 91% 65%;
+    --chart-2: 200 90% 60%;
+    --chart-3: 186 80% 50%;
+    --chart-4: 166 72% 50%;
+    --chart-5: 142 71% 50%;
+    --chart-6: 84 65% 52%;
     --chart-7: 45 93% 52%;
-    --chart-8: 0 0% 65%;
+    --chart-8: 30 90% 60%;
+    --chart-9: 15 85% 57%;
+    --chart-10: 0 72% 56%;
+    --chart-11: 340 82% 60%;
+    --chart-12: 320 70% 60%;
+    --chart-13: 290 65% 60%;
+    --chart-14: 270 70% 65%;
+    --chart-15: 250 65% 63%;
+    --chart-16: 230 70% 61%;
+    --chart-17: 210 55% 56%;
+    --chart-18: 195 45% 60%;
+    --chart-19: 160 50% 55%;
+    --chart-20: 100 50% 53%;
+    --chart-21: 60 65% 50%;
+    --chart-22: 22 80% 55%;
+    --chart-23: 350 65% 55%;
+    --chart-24: 0 0% 65%;
 
     /* Chart utility tokens */
     --chart-axis: 0 0% 50%;

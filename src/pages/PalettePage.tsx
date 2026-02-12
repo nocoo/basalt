@@ -58,14 +58,30 @@ const baseColors = [
 ];
 
 const chartColors = [
-  { token: "--chart-1", label: "Blue", semantic: "Primary" },
-  { token: "--chart-2", label: "Purple", semantic: "" },
-  { token: "--chart-3", label: "Green", semantic: "Positive" },
-  { token: "--chart-4", label: "Pink", semantic: "" },
-  { token: "--chart-5", label: "Orange", semantic: "" },
-  { token: "--chart-6", label: "Teal", semantic: "" },
+  { token: "--chart-1", label: "Primary", semantic: "Primary" },
+  { token: "--chart-2", label: "Sky", semantic: "" },
+  { token: "--chart-3", label: "Teal", semantic: "" },
+  { token: "--chart-4", label: "Jade", semantic: "" },
+  { token: "--chart-5", label: "Green", semantic: "Positive" },
+  { token: "--chart-6", label: "Lime", semantic: "" },
   { token: "--chart-7", label: "Amber", semantic: "" },
-  { token: "--chart-8", label: "Gray", semantic: "Muted" },
+  { token: "--chart-8", label: "Orange", semantic: "" },
+  { token: "--chart-9", label: "Vermilion", semantic: "" },
+  { token: "--chart-10", label: "Red", semantic: "Destructive" },
+  { token: "--chart-11", label: "Rose", semantic: "" },
+  { token: "--chart-12", label: "Magenta", semantic: "" },
+  { token: "--chart-13", label: "Orchid", semantic: "" },
+  { token: "--chart-14", label: "Purple", semantic: "" },
+  { token: "--chart-15", label: "Indigo", semantic: "" },
+  { token: "--chart-16", label: "Cobalt", semantic: "" },
+  { token: "--chart-17", label: "Steel", semantic: "" },
+  { token: "--chart-18", label: "Cadet", semantic: "" },
+  { token: "--chart-19", label: "Seafoam", semantic: "" },
+  { token: "--chart-20", label: "Olive", semantic: "" },
+  { token: "--chart-21", label: "Gold", semantic: "" },
+  { token: "--chart-22", label: "Tangerine", semantic: "" },
+  { token: "--chart-23", label: "Crimson", semantic: "" },
+  { token: "--chart-24", label: "Gray", semantic: "Muted" },
 ];
 
 const utilityColors = [
@@ -118,7 +134,7 @@ export default function PalettePage() {
       {/* Chart Palette */}
       <div className="mt-4">
         <Section title="Visualization Palette" icon={Palette}>
-          <div className="flex flex-wrap gap-5">
+          <div className="grid grid-cols-6 gap-4 sm:grid-cols-8 lg:grid-cols-12">
             {chartColors.map((c) => (
               <Swatch key={c.token} token={c.token} label={c.label} subtitle={c.semantic || undefined} />
             ))}
@@ -143,14 +159,14 @@ export default function PalettePage() {
               <LineChart data={lineData}>
                 <XAxis dataKey="name" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
                 <YAxis tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} width={35} />
-                <Line type="monotone" dataKey="a" stroke={chart.blue} strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="a" stroke={chart.primary} strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="b" stroke={chart.purple} strokeWidth={2} dot={false} />
                 <Line type="monotone" dataKey="c" stroke={chart.green} strokeWidth={2} dot={false} />
               </LineChart>
             </ResponsiveContainer>
           </div>
           <div className="mt-3 flex flex-wrap gap-4">
-            {[{ label: "Series A", color: chart.blue }, { label: "Series B", color: chart.purple }, { label: "Series C", color: chart.green }].map((s) => (
+            {[{ label: "Series A", color: chart.primary }, { label: "Series B", color: chart.purple }, { label: "Series C", color: chart.green }].map((s) => (
               <div key={s.label} className="flex items-center gap-2">
                 <div className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />
                 <span className="text-xs text-muted-foreground">{s.label}</span>

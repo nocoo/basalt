@@ -24,7 +24,7 @@ export function AreaChartCard() {
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
-              <div className="h-2 w-2 rounded-full" style={{ background: chart.blue }} />
+              <div className="h-2 w-2 rounded-full" style={{ background: chart.primary }} />
               <span className="text-xs text-muted-foreground">Income</span>
             </div>
             <div className="flex items-center gap-1.5">
@@ -40,8 +40,8 @@ export function AreaChartCard() {
             <AreaChart data={data}>
               <defs>
                 <linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor={chart.blue} stopOpacity={0.3} />
-                  <stop offset="100%" stopColor={chart.blue} stopOpacity={0} />
+                  <stop offset="0%" stopColor={chart.primary} stopOpacity={0.3} />
+                  <stop offset="100%" stopColor={chart.primary} stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="expenseGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor={chart.purple} stopOpacity={0.3} />
@@ -51,7 +51,7 @@ export function AreaChartCard() {
               <CartesianGrid strokeDasharray="3 3" stroke={chartAxis} strokeOpacity={0.15} vertical={false} />
               <XAxis dataKey="day" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} width={30} />
-              <Area type="monotone" dataKey="income" stroke={chart.blue} strokeWidth={2} fill="url(#incomeGrad)" />
+              <Area type="monotone" dataKey="income" stroke={chart.primary} strokeWidth={2} fill="url(#incomeGrad)" />
               <Area type="monotone" dataKey="expense" stroke={chart.purple} strokeWidth={2} fill="url(#expenseGrad)" />
             </AreaChart>
           </ResponsiveContainer>
