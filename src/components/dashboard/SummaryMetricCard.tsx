@@ -1,9 +1,12 @@
-import { BarChart, Bar, ResponsiveContainer, Cell } from "recharts";
+import { BarChart, Bar, ResponsiveContainer } from "recharts";
 import { Globe } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { chartPrimary, chart } from "@/lib/palette";
 
-const data = Array.from({ length: 24 }, (_, i) => ({ value: 3000 + Math.random() * 5000 }));
+const data = Array.from({ length: 24 }, (_, i) => ({
+  value: 3000 + Math.random() * 5000,
+  fill: i < 12 ? chartPrimary : chart.gray,
+}));
 
 export function SummaryMetricCard() {
   return (
@@ -24,11 +27,7 @@ export function SummaryMetricCard() {
           <div className="mt-3 flex-1 min-h-[50px]" role="img" aria-label="Total balance trend over 24 periods, bar chart">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={data} barGap={1} barCategoryGap={1}>
-                <Bar dataKey="value" radius={[2, 2, 0, 0]} maxBarSize={8}>
-                  {data.map((_, i) => (
-                    <Cell key={i} fill={i < 12 ? chartPrimary : chart.gray} />
-                  ))}
-                </Bar>
+                <Bar dataKey="value" radius={[2, 2, 0, 0]} maxBarSize={8} />
               </BarChart>
             </ResponsiveContainer>
           </div>
