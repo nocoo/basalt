@@ -10,7 +10,7 @@ const data = [
   { name: "Bills", value: 20 },
 ];
 
-export function ExpenseBreakdownCard() {
+export function DonutChartCard() {
   return (
     <Card className="h-full rounded-[14px] border-0 bg-secondary shadow-none">
       <CardHeader>

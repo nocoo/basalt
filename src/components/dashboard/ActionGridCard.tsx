@@ -8,7 +8,7 @@ const actions = [
   { icon: PiggyBank, label: "Save", color: "bg-purple-500/10 text-purple-500" },
 ];
 
-export function QuickActionsCard() {
+export function ActionGridCard() {
   return (
     <Card className="h-full rounded-[14px] border-0 bg-secondary shadow-none">
       <CardHeader>

@@ -12,7 +12,7 @@ const data = [
   { name: "Nov", value: 25000 }, { name: "Dec", value: 19000 },
 ];
 
-export function UsageCategoryCard() {
+export function BarChartCard() {
   return (
     <Card className="h-full rounded-[14px] border-0 bg-secondary shadow-none">
       <CardHeader>

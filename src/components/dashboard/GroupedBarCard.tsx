@@ -12,7 +12,7 @@ const data = [
   { month: "Dec", income: 5500, expense: 3800 },
 ];
 
-export function MonthlyComparisonCard() {
+export function GroupedBarCard() {
   return (
     <Card className="h-full rounded-[14px] border-0 bg-secondary shadow-none">
       <CardHeader>

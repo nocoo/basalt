@@ -9,7 +9,7 @@ const transactions = [
   { name: "Electric Bill", amount: -145.00, date: "Feb 7", type: "expense" },
 ];
 
-export function RecentTransactionsCard() {
+export function RecentListCard() {
   return (
     <Card className="h-full rounded-[14px] border-0 bg-secondary shadow-none">
       <CardHeader>

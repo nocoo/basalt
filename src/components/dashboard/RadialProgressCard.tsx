@@ -12,7 +12,7 @@ const data = [
   { name: "saved", value: pct, fill: chart.teal },
 ];
 
-export function SavingsGoalCard() {
+export function RadialProgressCard() {
   return (
     <Card className="h-full rounded-[14px] border-0 bg-secondary shadow-none">
       <CardHeader>

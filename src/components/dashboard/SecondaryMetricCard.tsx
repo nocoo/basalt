@@ -5,7 +5,7 @@ import { chart } from "@/lib/palette";
 
 const data = Array.from({ length: 20 }, (_, i) => ({ value: 2000 + Math.random() * 6000 }));
 
-export function IncomeCard() {
+export function SecondaryMetricCard() {
   return (
     <Card className="h-full rounded-[14px] border-0 bg-secondary shadow-none">
       <CardHeader>

@@ -7,7 +7,7 @@ const accountItems = [
   { name: "Investment", balance: 23100.5, change: "+8.7%" },
 ];
 
-export function AccountOverviewCard() {
+export function ItemListCard() {
   return (
     <Card className="h-full rounded-[14px] border-0 bg-secondary shadow-none">
       <CardHeader>

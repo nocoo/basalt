@@ -10,7 +10,7 @@ const data = [
   { name: "Sun", value: 4300 },
 ];
 
-export function SpendingTrendCard() {
+export function TrendLineCard() {
   return (
     <Card className="h-full rounded-[14px] border-0 bg-secondary shadow-none">
       <CardHeader>

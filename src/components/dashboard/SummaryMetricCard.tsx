@@ -5,7 +5,7 @@ import { chartPrimary, chart } from "@/lib/palette";
 
 const data = Array.from({ length: 24 }, (_, i) => ({ value: 3000 + Math.random() * 5000 }));
 
-export function TotalBalanceCard() {
+export function SummaryMetricCard() {
   return (
     <Card className="h-full rounded-[14px] border-0 bg-secondary shadow-none">
       <CardHeader>

@@ -13,7 +13,7 @@ const data = [
   { day: "Sun", income: 290, expense: 150 },
 ];
 
-export function WeeklyActivityCard() {
+export function AreaChartCard() {
   return (
     <Card className="h-full rounded-[14px] border-0 bg-secondary shadow-none">
       <CardHeader>
