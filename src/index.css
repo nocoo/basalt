@@ -64,6 +64,23 @@
   --color-chart-axis: hsl(var(--chart-axis));
   --color-chart-muted: hsl(var(--chart-muted));
 
+  --color-heatmap-green-1: hsl(var(--heatmap-green-1));
+  --color-heatmap-green-2: hsl(var(--heatmap-green-2));
+  --color-heatmap-green-3: hsl(var(--heatmap-green-3));
+  --color-heatmap-green-4: hsl(var(--heatmap-green-4));
+  --color-heatmap-red-1: hsl(var(--heatmap-red-1));
+  --color-heatmap-red-2: hsl(var(--heatmap-red-2));
+  --color-heatmap-red-3: hsl(var(--heatmap-red-3));
+  --color-heatmap-red-4: hsl(var(--heatmap-red-4));
+  --color-heatmap-blue-1: hsl(var(--heatmap-blue-1));
+  --color-heatmap-blue-2: hsl(var(--heatmap-blue-2));
+  --color-heatmap-blue-3: hsl(var(--heatmap-blue-3));
+  --color-heatmap-blue-4: hsl(var(--heatmap-blue-4));
+  --color-heatmap-orange-1: hsl(var(--heatmap-orange-1));
+  --color-heatmap-orange-2: hsl(var(--heatmap-orange-2));
+  --color-heatmap-orange-3: hsl(var(--heatmap-orange-3));
+  --color-heatmap-orange-4: hsl(var(--heatmap-orange-4));
+
   --radius-card: 14px;
   --radius-widget: 10px;
   --radius-lg: var(--radius);
@@ -164,6 +181,27 @@
   /* Chart utility tokens */
   --chart-axis: 0 0% 40%;
   --chart-muted: 0 0% 70%;
+
+  /* Heatmap color scales — green (default) */
+  --heatmap-green-1: 142 50% 85%;
+  --heatmap-green-2: 142 55% 65%;
+  --heatmap-green-3: 142 60% 45%;
+  --heatmap-green-4: 142 65% 30%;
+  /* Heatmap color scales — red */
+  --heatmap-red-1: 0 55% 85%;
+  --heatmap-red-2: 0 60% 65%;
+  --heatmap-red-3: 0 65% 48%;
+  --heatmap-red-4: 0 65% 35%;
+  /* Heatmap color scales — blue */
+  --heatmap-blue-1: 217 50% 85%;
+  --heatmap-blue-2: 217 55% 65%;
+  --heatmap-blue-3: 217 60% 48%;
+  --heatmap-blue-4: 217 65% 35%;
+  /* Heatmap color scales — orange */
+  --heatmap-orange-1: 30 55% 85%;
+  --heatmap-orange-2: 30 60% 65%;
+  --heatmap-orange-3: 30 65% 48%;
+  --heatmap-orange-4: 30 65% 35%;
 }
 
 .dark {
@@ -241,6 +279,27 @@
   /* Chart utility tokens */
   --chart-axis: 0 0% 50%;
   --chart-muted: 0 0% 35%;
+
+  /* Heatmap color scales — green (default), boosted for dark bg */
+  --heatmap-green-1: 142 45% 25%;
+  --heatmap-green-2: 142 50% 35%;
+  --heatmap-green-3: 142 55% 45%;
+  --heatmap-green-4: 142 60% 58%;
+  /* Heatmap color scales — red */
+  --heatmap-red-1: 0 45% 25%;
+  --heatmap-red-2: 0 55% 35%;
+  --heatmap-red-3: 0 60% 45%;
+  --heatmap-red-4: 0 65% 55%;
+  /* Heatmap color scales — blue */
+  --heatmap-blue-1: 217 45% 25%;
+  --heatmap-blue-2: 217 50% 35%;
+  --heatmap-blue-3: 217 55% 45%;
+  --heatmap-blue-4: 217 60% 55%;
+  /* Heatmap color scales — orange */
+  --heatmap-orange-1: 30 45% 25%;
+  --heatmap-orange-2: 30 55% 35%;
+  --heatmap-orange-3: 30 60% 45%;
+  --heatmap-orange-4: 30 65% 55%;
 }
 
 /*
