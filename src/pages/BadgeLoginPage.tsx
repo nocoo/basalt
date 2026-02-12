@@ -1,5 +1,21 @@
 import { Mountain } from "lucide-react";
 
+function Barcode() {
+  // Varying bar widths for a realistic barcode pattern
+  const bars = [2, 1, 3, 1, 2, 1, 1, 3, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1];
+  return (
+    <div className="flex items-stretch gap-[1.5px] h-full">
+      {bars.map((w, i) => (
+        <div
+          key={i}
+          className="rounded-[0.5px] bg-primary-foreground"
+          style={{ width: `${w * 1.5}px`, opacity: i % 3 === 0 ? 0.9 : 0.5 }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function BadgeLoginPage() {
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background p-4 overflow-hidden">
@@ -11,9 +27,9 @@ export default function BadgeLoginPage() {
         }}
       />
       <div className="flex flex-col items-center">
-        {/* Badge card — aspect closer to 3:4 for a more compact badge */}
+        {/* Badge card — bank card flipped vertical: 54/86 */}
         <div
-          className="relative aspect-[3/4] w-72 overflow-hidden rounded-2xl bg-card flex flex-col ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
+          className="relative aspect-[54/86] w-72 overflow-hidden rounded-2xl bg-card flex flex-col ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
           style={{
             boxShadow: [
               "0 1px 2px rgba(0,0,0,0.06)",
@@ -35,29 +51,40 @@ export default function BadgeLoginPage() {
             />
           </div>
 
-          {/* Header strip */}
-          <div className="flex items-center justify-between bg-primary px-5 py-4">
-            <div className="flex items-center gap-2">
-              <Mountain className="h-4 w-4 text-primary-foreground" strokeWidth={1.5} />
-              <span className="text-sm font-semibold text-primary-foreground">basalt.</span>
+          {/* Header strip with barcode */}
+          <div className="bg-primary px-5 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Mountain className="h-4 w-4 text-primary-foreground" strokeWidth={1.5} />
+                <span className="text-sm font-semibold text-primary-foreground">basalt.</span>
+              </div>
+              <span className="text-[10px] font-medium uppercase tracking-widest text-primary-foreground/60">
+                Visitor
+              </span>
             </div>
-            <span className="text-[10px] font-medium uppercase tracking-widest text-primary-foreground/60">
-              Visitor
-            </span>
+            {/* Barcode row */}
+            <div className="mt-3 flex items-center justify-between">
+              <span className="text-[9px] font-mono text-primary-foreground/40 tracking-wider">
+                ID 2026-0212
+              </span>
+              <div className="h-6">
+                <Barcode />
+              </div>
+            </div>
           </div>
 
           {/* Badge content */}
-          <div className="flex flex-1 flex-col items-center px-6 pt-5 pb-14">
+          <div className="flex flex-1 flex-col items-center px-6 pt-6 pb-14">
             {/* Brand icon */}
             <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-secondary ring-1 ring-border">
               <Mountain className="h-10 w-10 text-foreground" strokeWidth={1.5} />
             </div>
 
-            <p className="mt-4 text-lg font-semibold text-foreground">Welcome</p>
+            <p className="mt-5 text-lg font-semibold text-foreground">Welcome</p>
             <p className="mt-1 text-xs text-muted-foreground">Sign in to get your badge</p>
 
             {/* Divider */}
-            <div className="mt-4 h-px w-full bg-border" />
+            <div className="mt-5 h-px w-full bg-border" />
 
             {/* Push button toward bottom */}
             <div className="flex-1" />
