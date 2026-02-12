@@ -41,19 +41,16 @@ export default function BadgeLoginPage() {
             ].join(", "),
           }}
         >
-          {/* Punch hole */}
-          <div className="absolute top-1.5 left-1/2 -translate-x-1/2 z-10">
-            <div
-              className="h-3 w-3 rounded-full bg-background/80"
-              style={{
-                boxShadow: "inset 0 1px 3px rgba(0,0,0,0.35), inset 0 -0.5px 1px rgba(255,255,255,0.1)",
-              }}
-            />
-          </div>
-
           {/* Header strip with barcode */}
           <div className="bg-primary px-5 py-4">
             <div className="flex items-center justify-between">
+              {/* Punch hole — capsule, aligned with logo row */}
+              <div
+                className="h-4 w-8 rounded-full bg-background/80"
+                style={{
+                  boxShadow: "inset 0 1.5px 3px rgba(0,0,0,0.35), inset 0 -0.5px 1px rgba(255,255,255,0.1)",
+                }}
+              />
               <div className="flex items-center gap-2">
                 <Mountain className="h-4 w-4 text-primary-foreground" strokeWidth={1.5} />
                 <span className="text-sm font-semibold text-primary-foreground">basalt.</span>
