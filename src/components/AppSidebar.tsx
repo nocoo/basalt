@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   LayoutDashboard, Wallet, CreditCard,
-  PiggyBank, BarChart3, TrendingUp,
+  PiggyBank, TrendingUp,
   LineChart,   LayoutGrid, Settings, Search, ChevronUp,
   PanelLeft, LogOut, Mountain, Palette, LogIn, IdCard,
   ExternalLink, FileQuestion, FileText, Layers, Layers2, HeartPulse,
@@ -48,7 +48,6 @@ const NAV_GROUPS: NavGroup[] = [
       { title: "Health", icon: HeartPulse, path: "/health" },
       { title: "Accounts", icon: Wallet, path: "/accounts" },
       { title: "Progress Tracking", icon: PiggyBank, path: "/progress-tracking" },
-      { title: "Stats Overview", icon: BarChart3, path: "/stats" },
       { title: "Flow Comparison", icon: TrendingUp, path: "/flow-comparison" },
       { title: "Portfolio", icon: LineChart, path: "/portfolio" },
       { title: "Interactions", icon: Layers, path: "/interactions", badge: 3 },

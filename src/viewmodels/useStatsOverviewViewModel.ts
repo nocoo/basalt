@@ -1,13 +1,8 @@
-// ViewModel for the Stats Overview page.
+// ViewModel for analytics stat cards (used by DashboardPage).
 // Composes model logic with data source — View consumes this hook only.
 
 import { useMemo } from "react";
-import {
-  analyticsWeekly,
-  analyticsCategories,
-  analyticsTrend,
-  analyticsStats,
-} from "@/data/mock";
+import { analyticsStats } from "@/data/mock";
 import { classifyChange, changeToColorClass } from "@/models/stats-overview";
 
 export interface StatCard {
@@ -27,10 +22,5 @@ export function useStatsOverviewViewModel() {
     [],
   );
 
-  return {
-    stats,
-    weeklyData: analyticsWeekly,
-    categoryData: analyticsCategories,
-    trendData: analyticsTrend,
-  };
+  return { stats };
 }

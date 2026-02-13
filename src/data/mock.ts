@@ -77,29 +77,6 @@ export const goals: Goal[] = [
 ];
 
 // ── Analytics ──
-export const analyticsWeekly = [
-  { day: "Mon", income: 1200, expense: 800 },
-  { day: "Tue", income: 900, expense: 1100 },
-  { day: "Wed", income: 1500, expense: 700 },
-  { day: "Thu", income: 800, expense: 900 },
-  { day: "Fri", income: 2000, expense: 1200 },
-  { day: "Sat", income: 600, expense: 1500 },
-  { day: "Sun", income: 400, expense: 500 },
-];
-
-export const analyticsCategories = [
-  { name: "Food", value: 35 },
-  { name: "Bills", value: 25 },
-  { name: "Shopping", value: 20 },
-  { name: "Transport", value: 12 },
-  { name: "Other", value: 8 },
-];
-
-export const analyticsTrend = Array.from({ length: 30 }, (_, i) => ({
-  day: i + 1,
-  value: 5000 + Math.sin(i / 3) * 2000 + Math.random() * 1000,
-}));
-
 export const analyticsStats = [
   { label: "Avg. Daily Spend", value: "$142", change: "-3.2%" },
   { label: "Transactions/Day", value: "8.4", change: "+1.5%" },

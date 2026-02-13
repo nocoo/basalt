@@ -14,7 +14,6 @@ import DataDisplayPage from "./pages/DataDisplayPage";
 import NavigationPage from "./pages/NavigationPage";
 import AccountsPage from "./pages/AccountsPage";
 import ProgressTrackingPage from "./pages/ProgressTrackingPage";
-import StatsOverviewPage from "./pages/StatsOverviewPage";
 import FlowComparisonPage from "./pages/FlowComparisonPage";
 import PortfolioPage from "./pages/PortfolioPage";
 import LayoutPage from "./pages/LayoutPage";
@@ -51,7 +50,6 @@ const App = () => (
           <Route path="/" element={<DashboardPage />} />
           <Route path="/accounts" element={<AccountsPage />} />
           <Route path="/progress-tracking" element={<ProgressTrackingPage />} />
-          <Route path="/stats" element={<StatsOverviewPage />} />
           <Route path="/flow-comparison" element={<FlowComparisonPage />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
           <Route path="/layout" element={<LayoutPage />} />

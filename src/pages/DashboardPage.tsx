@@ -10,12 +10,26 @@ import { RadialProgressCard } from "@/components/dashboard/RadialProgressCard";
 import { AreaChartCard } from "@/components/dashboard/AreaChartCard";
 import { GaugeCard } from "@/components/dashboard/GaugeCard";
 import { GroupedBarCard } from "@/components/dashboard/GroupedBarCard";
+import { useStatsOverviewViewModel } from "@/viewmodels/useStatsOverviewViewModel";
 
 export default function DashboardPage() {
+  const { stats } = useStatsOverviewViewModel();
+
   return (
     <>
+      {/* Row 0: analytics stat cards */}
+      <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+        {stats.map((s) => (
+          <div key={s.label} className="rounded-card bg-secondary p-4 md:p-5">
+            <p className="text-xs md:text-sm text-muted-foreground mb-1">{s.label}</p>
+            <h3 className="text-xl md:text-2xl font-semibold text-foreground font-display tracking-tight">{s.value}</h3>
+            <span className={`text-xs font-medium ${s.changeColorClass}`}>{s.change}</span>
+          </div>
+        ))}
+      </div>
+
       {/* Row 1: 3 summary cards */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
         <SummaryMetricCard />
         <SecondaryMetricCard />
         <TrendLineCard />

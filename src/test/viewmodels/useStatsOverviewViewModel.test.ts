@@ -14,12 +14,4 @@ describe("useStatsOverviewViewModel", () => {
       expect(s.changeColorClass).toMatch(/^text-/);
     }
   });
-
-  it("returns weeklyData, categoryData, and trendData", () => {
-    const { result } = renderHook(() => useStatsOverviewViewModel());
-    expect(Array.isArray(result.current.weeklyData)).toBe(true);
-    expect(Array.isArray(result.current.categoryData)).toBe(true);
-    expect(Array.isArray(result.current.trendData)).toBe(true);
-    expect(result.current.trendData.length).toBe(30);
-  });
 });
