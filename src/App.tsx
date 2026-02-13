@@ -18,6 +18,7 @@ import InteractionShowcasePage from "./pages/InteractionShowcasePage";
 import LifeAiPage from "./pages/LifeAiPage";
 import LoginPage from "./pages/LoginPage";
 import BadgeLoginPage from "./pages/BadgeLoginPage";
+import StaticPage from "./pages/StaticPage";
 import NotFound from "./pages/NotFound";
 
 const App = () => (
@@ -45,6 +46,7 @@ const App = () => (
         {/* Standalone pages (no sidebar) */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/badge-login" element={<BadgeLoginPage />} />
+        <Route path="/static-page" element={<StaticPage />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
