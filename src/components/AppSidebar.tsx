@@ -5,6 +5,7 @@ import {
   LineChart, HelpCircle, Settings, Search, ChevronUp,
   PanelLeft, LogOut, Mountain, Palette, LogIn, IdCard,
   ExternalLink, FileQuestion, FileText, Layers, HeartPulse,
+  Loader,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate, useLocation } from "react-router";
@@ -66,6 +67,7 @@ const NAV_GROUPS: NavGroup[] = [
       { title: "Login", icon: LogIn, path: "/login", external: true },
       { title: "Badge Login", icon: IdCard, path: "/badge-login", external: true },
       { title: "Static Page", icon: FileText, path: "/static-page", external: true },
+      { title: "Loading", icon: Loader, path: "/loading", external: true },
       { title: "404 Page", icon: FileQuestion, path: "/404", external: true },
     ],
   },

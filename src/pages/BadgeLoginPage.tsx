@@ -1,4 +1,4 @@
-import { Mountain, User } from "lucide-react";
+import { Mountain, Wallet } from "lucide-react";
 
 function Barcode() {
   // Varying bar widths for a realistic barcode pattern
@@ -17,6 +17,9 @@ function Barcode() {
 }
 
 export default function BadgeLoginPage() {
+  const year = new Date().getFullYear();
+  const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-background p-4 overflow-hidden">
       {/* Radial glow — eased gradient to prevent banding */}
@@ -63,7 +66,7 @@ export default function BadgeLoginPage() {
                 }}
               />
               <div className="flex items-center gap-2">
-                <Mountain className="h-4 w-4 text-primary-foreground" strokeWidth={1.5} />
+                <Wallet className="h-4 w-4 text-primary-foreground" strokeWidth={1.5} />
                 <span className="text-sm font-semibold text-primary-foreground">basalt.</span>
               </div>
               <span className="text-[10px] font-medium uppercase tracking-widest text-primary-foreground/60">
@@ -73,7 +76,7 @@ export default function BadgeLoginPage() {
             {/* Barcode row */}
             <div className="mt-3 flex items-center justify-between">
               <span className="text-[9px] font-mono text-primary-foreground/40 tracking-wider">
-                ID 2026-0212
+                ID {year}-{today.slice(4)}
               </span>
               <div className="h-6">
                 <Barcode />
@@ -83,9 +86,9 @@ export default function BadgeLoginPage() {
 
           {/* Badge content */}
           <div className="flex flex-1 flex-col items-center px-6 pt-6 pb-14">
-            {/* Avatar */}
-            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-secondary ring-1 ring-border">
-              <User className="h-10 w-10 text-muted-foreground" strokeWidth={1.5} />
+            {/* Logo */}
+            <div className="flex h-24 w-24 items-center justify-center rounded-full bg-secondary dark:bg-[#171717] ring-1 ring-border overflow-hidden p-2.5">
+              <Mountain className="h-10 w-10 text-muted-foreground" strokeWidth={1.5} />
             </div>
 
             <p className="mt-5 text-lg font-semibold text-foreground">Welcome</p>
