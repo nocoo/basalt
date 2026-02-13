@@ -16,6 +16,7 @@ const PAGE_TITLES: Record<string, string> = {
   "/feedback": "Feedback",
   "/overlays": "Overlays",
   "/data-display": "Data Display",
+  "/navigation": "Navigation",
   "/wearable": "Wearable Health",
   "/banking": "Banking & Wealth",
   "/network": "Network Ops",

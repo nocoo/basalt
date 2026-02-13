@@ -11,6 +11,7 @@ import ButtonsPage from "./pages/ButtonsPage";
 import FeedbackPage from "./pages/FeedbackPage";
 import OverlaysPage from "./pages/OverlaysPage";
 import DataDisplayPage from "./pages/DataDisplayPage";
+import NavigationPage from "./pages/NavigationPage";
 import AccountsPage from "./pages/AccountsPage";
 import RecordListPage from "./pages/RecordListPage";
 import ProgressTrackingPage from "./pages/ProgressTrackingPage";
@@ -48,6 +49,7 @@ const App = () => (
           <Route path="/feedback" element={<FeedbackPage />} />
           <Route path="/overlays" element={<OverlaysPage />} />
           <Route path="/data-display" element={<DataDisplayPage />} />
+          <Route path="/navigation" element={<NavigationPage />} />
           <Route path="/" element={<DashboardPage />} />
           <Route path="/accounts" element={<AccountsPage />} />
           <Route path="/records" element={<RecordListPage />} />
