@@ -7,6 +7,7 @@ import ComponentsPage from "./pages/ComponentsPage";
 import FormsPage from "./pages/FormsPage";
 import TablesPage from "./pages/TablesPage";
 import ControlsPage from "./pages/ControlsPage";
+import ButtonsPage from "./pages/ButtonsPage";
 import AccountsPage from "./pages/AccountsPage";
 import RecordListPage from "./pages/RecordListPage";
 import ProgressTrackingPage from "./pages/ProgressTrackingPage";
@@ -40,6 +41,7 @@ const App = () => (
           <Route path="/forms" element={<FormsPage />} />
           <Route path="/tables" element={<TablesPage />} />
           <Route path="/controls" element={<ControlsPage />} />
+          <Route path="/buttons" element={<ButtonsPage />} />
           <Route path="/" element={<DashboardPage />} />
           <Route path="/accounts" element={<AccountsPage />} />
           <Route path="/records" element={<RecordListPage />} />
