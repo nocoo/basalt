@@ -1,4 +1,4 @@
-import { RectangleEllipsis, Sparkles, BarChart3, Activity, ListChecks } from "lucide-react";
+import { RectangleEllipsis, Sparkles, BarChart3, Activity, ListChecks, Check, Shield, Plane, Car, Home, Target } from "lucide-react";
 import { PageIntro } from "@/components/PageIntro";
 import { SummaryMetricCard } from "@/components/dashboard/SummaryMetricCard";
 import { SecondaryMetricCard } from "@/components/dashboard/SecondaryMetricCard";
@@ -22,6 +22,14 @@ import { BulletChartCard } from "@/components/dashboard/BulletChartCard";
 import { MiniDonutCard } from "@/components/dashboard/MiniDonutCard";
 import { SankeyCard } from "@/components/dashboard/SankeyCard";
 import { FunnelChartCard } from "@/components/dashboard/FunnelChartCard";
+import { useTargetCardsViewModel } from "@/viewmodels/useTargetCardsViewModel";
+
+const GOAL_ICONS: Record<string, React.ElementType> = {
+  shield: Shield,
+  plane: Plane,
+  car: Car,
+  home: Home,
+};
 
 function Section({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
   return (
@@ -36,12 +44,14 @@ function Section({ title, icon: Icon, children }: { title: string; icon: React.E
 }
 
 export default function ComponentsPage() {
+  const { goals } = useTargetCardsViewModel();
+
   return (
     <div className="space-y-4">
       <PageIntro
         title="Composable blocks and visual modules"
-        description="These are example modules built from controls: metric cards, charts, lists, and action grids that can be reused across templates."
-        eyebrow="Examples"
+        description="Metric cards, charts, lists, action grids, and target trackers that can be reused across pages."
+        eyebrow="Components"
         icon={RectangleEllipsis}
       />
       <Section title="Metric Cards" icon={Sparkles}>
@@ -98,6 +108,42 @@ export default function ComponentsPage() {
             <p className="text-xs text-muted-foreground">Stackable list + KPI combination.</p>
             <button className="mt-3 rounded-widget bg-secondary px-3 py-2 text-xs text-foreground">View module</button>
           </div>
+        </div>
+      </Section>
+
+      <Section title="Targets" icon={Target}>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          {goals.map((goal) => {
+            const Icon = GOAL_ICONS[goal.icon] ?? Shield;
+            return (
+              <div key={goal.name} className="rounded-widget border border-border bg-card p-5">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+                    <Icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-foreground">{goal.name}</p>
+                    <p className="text-xs text-muted-foreground">${goal.saved.toLocaleString()} of ${goal.target.toLocaleString()}</p>
+                  </div>
+                  <span className="text-sm font-semibold text-foreground">{goal.percent}%</span>
+                </div>
+                <div
+                  className="h-2 rounded-full bg-muted"
+                  role="progressbar"
+                  aria-valuenow={goal.percent}
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-label={`${goal.name}: ${goal.percent}% of $${goal.target.toLocaleString()} saved`}
+                >
+                  <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${goal.percent}%` }} aria-hidden="true" />
+                </div>
+                <div className="mt-3 flex items-center gap-4">
+                  <span className="text-xs text-muted-foreground">Monthly target: ${goal.monthlyTarget.toLocaleString()}</span>
+                  {goal.onTrack && <span className="flex items-center gap-1 text-xs text-success"><Check className="h-3 w-3" strokeWidth={2} /> On Track</span>}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </Section>
     </div>

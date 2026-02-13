@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import {
   LayoutDashboard, Wallet, CreditCard, ArrowLeftRight,
-  PiggyBank, Target, BarChart3, TrendingUp,
+  PiggyBank, BarChart3, TrendingUp,
   LineChart, HelpCircle, Settings, Search, ChevronUp,
   PanelLeft, LogOut, Mountain, Palette, LogIn, IdCard,
   ExternalLink, FileQuestion, FileText, Layers, HeartPulse,
@@ -40,6 +40,23 @@ interface NavGroup {
 
 const NAV_GROUPS: NavGroup[] = [
   {
+    label: "Blocks",
+    defaultOpen: true,
+    items: [
+      { title: "Dashboard", icon: LayoutDashboard, path: "/" },
+      { title: "Components", icon: RectangleEllipsis, path: "/components" },
+      { title: "Health", icon: HeartPulse, path: "/health" },
+      { title: "Life.ai", icon: Sparkles, path: "/life-ai" },
+      { title: "Accounts", icon: Wallet, path: "/accounts" },
+      { title: "Records", icon: ArrowLeftRight, path: "/records", badge: 6 },
+      { title: "Progress Tracking", icon: PiggyBank, path: "/progress-tracking" },
+      { title: "Stats Overview", icon: BarChart3, path: "/stats" },
+      { title: "Flow Comparison", icon: TrendingUp, path: "/flow-comparison", badge: 2 },
+      { title: "Portfolio", icon: LineChart, path: "/portfolio" },
+      { title: "Interactions", icon: Layers, path: "/interactions" },
+    ],
+  },
+  {
     label: "Pages",
     defaultOpen: true,
     items: [
@@ -48,7 +65,6 @@ const NAV_GROUPS: NavGroup[] = [
       { title: "Network Ops", icon: LineChart, path: "/network" },
     ],
   },
-
   {
     label: "Controls",
     defaultOpen: true,
@@ -57,25 +73,6 @@ const NAV_GROUPS: NavGroup[] = [
       { title: "Forms", icon: FormInput, path: "/forms" },
       { title: "Tables", icon: Table, path: "/tables" },
       { title: "Pills", icon: CreditCard, path: "/pills" },
-    ],
-  },
-  {
-    label: "Examples",
-    defaultOpen: true,
-    items: [
-      { title: "Dashboard", icon: LayoutDashboard, path: "/" },
-      { title: "Health", icon: HeartPulse, path: "/health" },
-      { title: "Life.ai", icon: Sparkles, path: "/life-ai" },
-      { title: "Accounts", icon: Wallet, path: "/accounts" },
-      { title: "Card Showcase", icon: CreditCard, path: "/card-showcase" },
-      { title: "Records", icon: ArrowLeftRight, path: "/records", badge: 6 },
-      { title: "Progress Tracking", icon: PiggyBank, path: "/progress-tracking" },
-      { title: "Targets", icon: Target, path: "/targets" },
-      { title: "Modules", icon: RectangleEllipsis, path: "/components" },
-      { title: "Stats Overview", icon: BarChart3, path: "/stats" },
-      { title: "Flow Comparison", icon: TrendingUp, path: "/flow-comparison", badge: 2 },
-      { title: "Portfolio", icon: LineChart, path: "/portfolio" },
-      { title: "Interactions", icon: Layers, path: "/interactions" },
     ],
   },
   {
