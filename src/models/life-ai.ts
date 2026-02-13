@@ -1,7 +1,7 @@
 // Pure business logic for the Life.ai demo page.
 // No React dependency — fully testable with plain unit tests.
 
-import type { LifeAiStat, LifeAiTimelineEvent } from "@/models/types";
+import type { LifeAiTimelineEvent } from "@/models/types";
 
 /** Count events that have a color (i.e. categorized activities) */
 export function countActiveEvents(events: LifeAiTimelineEvent[]): number {
@@ -16,14 +16,6 @@ export function computeTotalCalories(events: LifeAiTimelineEvent[]): number {
     if (!match) return sum;
     return sum + parseInt(match[1].replace(",", ""), 10);
   }, 0);
-}
-
-/** Derive stat trend direction: positive, negative, or neutral */
-export function classifyTrend(stat: LifeAiStat): "positive" | "negative" | "neutral" {
-  if (!stat.trend) return "neutral";
-  if (stat.trend.value > 0) return "positive";
-  if (stat.trend.value < 0) return "negative";
-  return "neutral";
 }
 
 /** Navigate date by a number of days (positive = forward, negative = back) */

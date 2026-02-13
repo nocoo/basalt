@@ -1,18 +1,7 @@
 // Pure business logic for the Interaction Showcase page.
 // No React dependency — fully testable with plain unit tests.
 
-import type { ShowcaseToast, ShowcaseDialog, ToastVariant } from "@/models/types";
-
-export function filterToastsByVariant(items: ShowcaseToast[], variant: ToastVariant): ShowcaseToast[] {
-  return items.filter((t) => t.variant === variant);
-}
-
-export function filterDialogsByStyle(
-  items: ShowcaseDialog[],
-  style: ShowcaseDialog["style"],
-): ShowcaseDialog[] {
-  return items.filter((d) => d.style === style);
-}
+import type { ToastVariant } from "@/models/types";
 
 export function toastVariantLabel(variant: ToastVariant): string {
   const labels: Record<ToastVariant, string> = {

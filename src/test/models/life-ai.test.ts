@@ -2,10 +2,9 @@ import { describe, it, expect } from "vitest";
 import {
   countActiveEvents,
   computeTotalCalories,
-  classifyTrend,
   shiftDate,
 } from "@/models/life-ai";
-import type { LifeAiTimelineEvent, LifeAiStat } from "@/models/types";
+import type { LifeAiTimelineEvent } from "@/models/types";
 
 describe("countActiveEvents", () => {
   it("counts only events with a color", () => {
@@ -48,28 +47,6 @@ describe("computeTotalCalories", () => {
       { id: "1", time: "07:00", title: "Run", subtitle: "5 km" },
     ];
     expect(computeTotalCalories(events)).toBe(0);
-  });
-});
-
-describe("classifyTrend", () => {
-  it("returns positive for positive trend", () => {
-    const stat: LifeAiStat = { title: "Steps", value: 8000, trend: { value: 5 } };
-    expect(classifyTrend(stat)).toBe("positive");
-  });
-
-  it("returns negative for negative trend", () => {
-    const stat: LifeAiStat = { title: "Sleep", value: "7h", trend: { value: -3.2 } };
-    expect(classifyTrend(stat)).toBe("negative");
-  });
-
-  it("returns neutral for zero trend", () => {
-    const stat: LifeAiStat = { title: "HR", value: 72, trend: { value: 0 } };
-    expect(classifyTrend(stat)).toBe("neutral");
-  });
-
-  it("returns neutral when no trend", () => {
-    const stat: LifeAiStat = { title: "HR", value: 72 };
-    expect(classifyTrend(stat)).toBe("neutral");
   });
 });
 
