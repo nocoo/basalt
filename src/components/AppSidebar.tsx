@@ -57,7 +57,7 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    label: "Pages",
+    label: "Scenarios",
     defaultOpen: true,
     items: [
       { title: "Wearable Health", icon: HeartPulse, path: "/wearable" },
@@ -81,7 +81,7 @@ const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
-    label: "Standalone",
+    label: "Pages",
     defaultOpen: true,
     items: [
       { title: "Login", icon: LogIn, path: "/login", external: true },
