@@ -181,23 +181,20 @@ export const lifeAiTimeline: LifeAiTimelineEvent[] = [
   { id: "e10", time: "22:30", title: "Sleep", color: "bg-blue-500" },
 ];
 
-/** Generate a year of heatmap data with realistic-looking values */
+/** Generate a year of heatmap data with randomized values */
 function generateHeatmapData(year: number): LifeAiHeatmapPoint[] {
   const data: LifeAiHeatmapPoint[] = [];
   const start = new Date(year, 0, 1);
   const end = new Date(year, 11, 31);
   const current = new Date(start);
-  let seed = 42;
-  const pseudoRandom = () => {
-    seed = (seed * 16807 + 0) % 2147483647;
-    return (seed - 1) / 2147483646;
-  };
   while (current <= end) {
     const m = String(current.getMonth() + 1).padStart(2, "0");
     const d = String(current.getDate()).padStart(2, "0");
     const date = `${year}-${m}-${d}`;
-    // ~20% days with 0, rest 1-12
-    const val = pseudoRandom() < 0.2 ? 0 : Math.ceil(pseudoRandom() * 12);
+    const dayIndex = Math.floor((current.getTime() - start.getTime()) / 86400000);
+    const noise = Math.sin(dayIndex * 19.731 + 0.17) * 10000;
+    const random = noise - Math.floor(noise);
+    const val = Math.max(1, Math.round(2 + random * 10));
     data.push({ date, value: val });
     current.setDate(current.getDate() + 1);
   }
@@ -295,4 +292,3 @@ export const lifeAiHeartRateSlots: { color: string; label: string }[] = [
   { color: "bg-green-600", label: "64 bpm" },
   { color: "bg-green-600", label: "60 bpm" },
 ];
-
