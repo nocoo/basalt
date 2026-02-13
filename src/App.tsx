@@ -35,6 +35,9 @@ import InteractionShowcasePage from "./pages/InteractionShowcasePage";
 import LifeAiPage from "./pages/LifeAiPage";
 import HealthPage from "./pages/HealthPage";
 import PillsPage from "./pages/PillsPage";
+import WearableDashboardPage from "./pages/WearableDashboardPage";
+import BankingDashboardPage from "./pages/BankingDashboardPage";
+import NetworkOpsDashboardPage from "./pages/NetworkOpsDashboardPage";
 import LoginPage from "./pages/LoginPage";
 import BadgeLoginPage from "./pages/BadgeLoginPage";
 import StaticPage from "./pages/StaticPage";
@@ -81,6 +84,9 @@ const App = () => (
           <Route path="/life-ai" element={<LifeAiPage />} />
           <Route path="/health" element={<HealthPage />} />
           <Route path="/pills" element={<PillsPage />} />
+          <Route path="/wearable" element={<WearableDashboardPage />} />
+          <Route path="/banking" element={<BankingDashboardPage />} />
+          <Route path="/network" element={<NetworkOpsDashboardPage />} />
         </Route>
         {/* Standalone pages (no sidebar) */}
         <Route path="/login" element={<LoginPage />} />
