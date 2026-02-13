@@ -51,6 +51,30 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Progress } from "@/components/ui/progress";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Menubar, MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger } from "@/components/ui/menubar";
+import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/components/ui/context-menu";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Toggle } from "@/components/ui/toggle";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   Tooltip,
   TooltipContent,
@@ -333,6 +357,68 @@ export default function ControlsPage() {
         </Section>
       </div>
 
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <Section title="Menubar" icon={Info}>
+          <Menubar className="rounded-widget border border-border bg-card px-2 py-1">
+            <MenubarMenu>
+              <MenubarTrigger>File</MenubarTrigger>
+              <MenubarContent>
+                <MenubarItem>New</MenubarItem>
+                <MenubarItem>Duplicate</MenubarItem>
+                <MenubarItem>Share</MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger>Edit</MenubarTrigger>
+              <MenubarContent>
+                <MenubarItem>Undo</MenubarItem>
+                <MenubarItem>Redo</MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+          </Menubar>
+        </Section>
+        <Section title="Context Menu" icon={Info}>
+          <ContextMenu>
+            <ContextMenuTrigger asChild>
+              <div className="rounded-widget border border-dashed border-border bg-card px-4 py-6 text-center text-sm text-muted-foreground">
+                Right click here
+              </div>
+            </ContextMenuTrigger>
+            <ContextMenuContent>
+              <ContextMenuItem>Rename</ContextMenuItem>
+              <ContextMenuItem>Duplicate</ContextMenuItem>
+              <ContextMenuItem>Archive</ContextMenuItem>
+            </ContextMenuContent>
+          </ContextMenu>
+        </Section>
+      </div>
+
+      <Section title="Navigation Menu" icon={Info}>
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="grid gap-2">
+                  <NavigationMenuLink className="text-sm text-foreground">Templates</NavigationMenuLink>
+                  <NavigationMenuLink className="text-sm text-foreground">Design systems</NavigationMenuLink>
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Company</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div className="grid gap-2">
+                  <NavigationMenuLink className="text-sm text-foreground">About</NavigationMenuLink>
+                  <NavigationMenuLink className="text-sm text-foreground">Careers</NavigationMenuLink>
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+          <NavigationMenuViewport />
+        </NavigationMenu>
+      </Section>
+
       <Section title="Tooltip" icon={Info}>
         <TooltipProvider>
           <div className="flex flex-wrap gap-3">
@@ -368,6 +454,42 @@ export default function ControlsPage() {
           </AccordionItem>
         </Accordion>
       </Section>
+
+      <Section title="Alert Dialog" icon={AlertTriangle}>
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <button className="rounded-widget bg-destructive px-3 py-2 text-xs text-destructive-foreground">Delete project</button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Delete this project?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. The project data will be removed permanently.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction>Confirm delete</AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      </Section>
+
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <Section title="Toggle" icon={Sparkles}>
+          <div className="flex flex-wrap gap-2">
+            <Toggle aria-label="Bold">Bold</Toggle>
+            <Toggle variant="outline" aria-label="Italic">Italic</Toggle>
+          </div>
+        </Section>
+        <Section title="Toggle Group" icon={Sparkles}>
+          <ToggleGroup type="single" defaultValue="left" aria-label="Text alignment">
+            <ToggleGroupItem value="left">Left</ToggleGroupItem>
+            <ToggleGroupItem value="center">Center</ToggleGroupItem>
+            <ToggleGroupItem value="right">Right</ToggleGroupItem>
+          </ToggleGroup>
+        </Section>
+      </div>
 
       <Card className="rounded-card border-0 bg-secondary shadow-none">
         <CardHeader>
