@@ -12,6 +12,10 @@ import { TrendLineCard } from "@/components/dashboard/TrendLineCard";
 import { ActionGridCard } from "@/components/dashboard/ActionGridCard";
 import { RecentListCard } from "@/components/dashboard/RecentListCard";
 import { ItemListCard } from "@/components/dashboard/ItemListCard";
+import { SparklineCard } from "@/components/dashboard/SparklineCard";
+import { StackedBarCard } from "@/components/dashboard/StackedBarCard";
+import { RadarChartCard } from "@/components/dashboard/RadarChartCard";
+import { HeatmapCard } from "@/components/dashboard/HeatmapCard";
 
 function Section({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
   return (
@@ -50,6 +54,15 @@ export default function ComponentsPage() {
           <GroupedBarCard />
           <DonutChartCard />
           <TrendLineCard />
+          <StackedBarCard />
+          <RadarChartCard />
+          <SparklineCard />
+        </div>
+      </Section>
+
+      <Section title="Heatmaps" icon={BarChart3}>
+        <div className="grid grid-cols-1 gap-4">
+          <HeatmapCard />
         </div>
       </Section>
 
