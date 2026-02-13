@@ -65,32 +65,6 @@ export default function AccountsPage() {
         </button>
       </div>
 
-      {/* Recent activity */}
-      <div className="rounded-card bg-secondary p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-          <p className="text-sm text-muted-foreground">Recent Activity</p>
-        </div>
-        <div className="flex flex-col gap-3">
-          {activityList.map((item, i) => (
-            <div key={i} className="flex items-center justify-between py-1">
-              <div className="flex items-center gap-3">
-                <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${item.direction === "positive" ? "bg-success/10" : "bg-destructive/10"}`}>
-                  {item.direction === "positive" ? <ArrowDownLeft className="h-3.5 w-3.5 text-success" strokeWidth={1.5} /> : <ArrowUpRight className="h-3.5 w-3.5 text-destructive" strokeWidth={1.5} />}
-                </div>
-                <div>
-                  <p className="text-sm text-foreground">{item.desc}</p>
-                  <p className="text-xs text-muted-foreground">{item.date}</p>
-                </div>
-              </div>
-              <span className={`text-sm font-medium ${item.direction === "positive" ? "text-success" : "text-foreground"}`}>
-                {item.formattedAmount}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Card showcase */}
       <div className="flex items-center justify-between">
         <span className="text-sm text-muted-foreground">{cardCount} cards active</span>
@@ -192,6 +166,32 @@ export default function AccountsPage() {
             <div key={feat} className="flex items-center justify-between rounded-widget bg-card p-3">
               <label htmlFor={`switch-${feat}`} className="text-sm text-foreground cursor-pointer">{feat}</label>
               <Switch id={`switch-${feat}`} defaultChecked aria-label={feat} className="h-5 w-9 data-[state=checked]:bg-success/20 data-[state=unchecked]:bg-input [&>span]:h-4 [&>span]:w-4 [&>span]:data-[state=checked]:bg-success [&>span]:data-[state=checked]:translate-x-4" />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Recent activity */}
+      <div className="rounded-card bg-secondary p-5">
+        <div className="flex items-center gap-2 mb-4">
+          <Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+          <p className="text-sm text-muted-foreground">Recent Activity</p>
+        </div>
+        <div className="flex flex-col gap-3">
+          {activityList.map((item, i) => (
+            <div key={i} className="flex items-center justify-between py-1">
+              <div className="flex items-center gap-3">
+                <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${item.direction === "positive" ? "bg-success/10" : "bg-destructive/10"}`}>
+                  {item.direction === "positive" ? <ArrowDownLeft className="h-3.5 w-3.5 text-success" strokeWidth={1.5} /> : <ArrowUpRight className="h-3.5 w-3.5 text-destructive" strokeWidth={1.5} />}
+                </div>
+                <div>
+                  <p className="text-sm text-foreground">{item.desc}</p>
+                  <p className="text-xs text-muted-foreground">{item.date}</p>
+                </div>
+              </div>
+              <span className={`text-sm font-medium ${item.direction === "positive" ? "text-success" : "text-foreground"}`}>
+                {item.formattedAmount}
+              </span>
             </div>
           ))}
         </div>
