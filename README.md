@@ -9,6 +9,8 @@
 
 ![Basalt Preview](https://assets.lizheng.me/wp-content/uploads/2026/02/basalt-1-scaled.jpg)
 
+**[Live Preview →](https://basalt.hexly.ai)**
+
 ## Overview
 
 **Basalt** is a fully functional personal finance dashboard demo, showcasing a design system inspired by the fine-grained volcanic rock. It features 17 pages, 12 dashboard widgets, skeuomorphic credit card visuals, and a dual-mode (light/dark) theme with calculated contrast ratios.
