@@ -1,6 +1,7 @@
 import { createRoot } from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
+import "./i18n";
 
 // Apply theme before render to avoid flash
 const stored = localStorage.getItem("theme");

@@ -1,36 +1,40 @@
 import { useState, useEffect } from "react";
 import { Outlet, useLocation } from "react-router";
+import { useTranslation } from "react-i18next";
 import { AppSidebar } from "@/components/AppSidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { LanguageToggle } from "@/components/LanguageToggle";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Menu, Github } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// Map route paths to page titles
-const PAGE_TITLES: Record<string, string> = {
-  "/components": "Components",
-  "/forms": "Forms",
-  "/tables": "Tables",
-  "/controls": "Controls",
-  "/buttons": "Buttons",
-  "/feedback": "Feedback",
-  "/overlays": "Overlays",
-  "/data-display": "Data Display",
-  "/navigation": "Navigation",
-  "/wearable": "Wearable Health",
-  "/banking": "Banking & Wealth",
-  "/network": "Network Ops",
-  "/health": "Health",
-  "/pills": "Pills",
-  "/": "Dashboard",
-  "/accounts": "Accounts",
-  "/progress-tracking": "Progress Tracking",
-  "/flow-comparison": "Flow Comparison",
-  "/portfolio": "Portfolio",
-  "/layout": "Layout",
-  "/settings": "Settings",
-  "/palette": "Color Palette",
-  "/interactions": "Interactions",
+// Map route paths to i18n keys
+const PAGE_TITLE_KEYS: Record<string, string> = {
+  "/components": "nav.components",
+  "/forms": "nav.forms",
+  "/tables": "nav.tables",
+  "/controls": "nav.controls",
+  "/buttons": "nav.buttons",
+  "/feedback": "nav.feedback",
+  "/overlays": "nav.overlays",
+  "/data-display": "nav.dataDisplay",
+  "/navigation": "nav.navigation",
+  "/wearable": "nav.wearableHealth",
+  "/banking": "nav.bankingWealth",
+  "/network": "nav.networkOps",
+  "/health": "nav.health",
+  "/pills": "nav.pills",
+  "/": "nav.dashboard",
+  "/accounts": "nav.accounts",
+  "/progress-tracking": "nav.progressTracking",
+  "/flow-comparison": "nav.flowComparison",
+  "/portfolio": "nav.portfolio",
+  "/layout": "nav.layout",
+  "/settings": "nav.settings",
+  "/palette": "nav.colorPalette",
+  "/interactions": "nav.interactions",
+  "/interactive": "nav.interactive",
+  "/data": "nav.data",
 };
 
 export function DashboardLayout() {
@@ -38,8 +42,10 @@ export function DashboardLayout() {
   const isMobile = useIsMobile();
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const { t } = useTranslation();
 
-  const title = PAGE_TITLES[location.pathname] ?? "Dashboard";
+  const titleKey = PAGE_TITLE_KEYS[location.pathname] ?? "nav.dashboard";
+  const title = t(titleKey);
 
   // Close mobile sidebar on route change
   useEffect(() => {
@@ -64,7 +70,7 @@ export function DashboardLayout() {
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
       >
-        Skip to main content
+        {t("common.skipToMain")}
       </a>
       {/* Desktop sidebar */}
       {!isMobile && (
@@ -93,7 +99,7 @@ export function DashboardLayout() {
             {isMobile && (
               <button
                 onClick={() => setMobileOpen(true)}
-                aria-label="Open navigation menu"
+                aria-label={t("common.openNav")}
                 className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
               >
                 <Menu className="h-5 w-5" aria-hidden="true" strokeWidth={1.5} />
@@ -106,11 +112,12 @@ export function DashboardLayout() {
               href="https://github.com/nocoo/basalt"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="GitHub repository"
+              aria-label={t("common.github")}
               className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
             >
               <Github className="h-[18px] w-[18px]" aria-hidden="true" strokeWidth={1.5} />
             </a>
+            <LanguageToggle />
             <ThemeToggle />
           </div>
         </header>

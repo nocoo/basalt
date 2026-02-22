@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   User,
   Bell,
@@ -18,10 +19,10 @@ import { Separator } from "@/components/ui/separator";
 // -- Settings sections nav --
 
 const SECTIONS = [
-  { id: "profile", label: "Profile", icon: User },
-  { id: "notifications", label: "Notifications", icon: Bell },
-  { id: "security", label: "Security", icon: Shield },
-  { id: "appearance", label: "Appearance", icon: Palette },
+  { id: "profile", labelKey: "pages.settings.profile", icon: User },
+  { id: "notifications", labelKey: "pages.settings.notifications", icon: Bell },
+  { id: "security", labelKey: "pages.settings.security", icon: Shield },
+  { id: "appearance", labelKey: "pages.settings.appearance", icon: Palette },
 ] as const;
 
 type SectionId = (typeof SECTIONS)[number]["id"];
@@ -30,23 +31,24 @@ type SectionId = (typeof SECTIONS)[number]["id"];
 
 interface NotifToggle {
   id: string;
-  label: string;
-  description: string;
+  labelKey: string;
+  descriptionKey: string;
   defaultOn: boolean;
 }
 
 const NOTIFICATION_TOGGLES: NotifToggle[] = [
-  { id: "email", label: "Email notifications", description: "Receive transaction alerts via email", defaultOn: true },
-  { id: "push", label: "Push notifications", description: "Browser and mobile push alerts", defaultOn: true },
-  { id: "marketing", label: "Marketing emails", description: "Tips, product updates, and offers", defaultOn: false },
-  { id: "weekly", label: "Weekly digest", description: "Summary of your weekly spending", defaultOn: true },
-  { id: "security", label: "Security alerts", description: "Login attempts and password changes", defaultOn: true },
+  { id: "email", labelKey: "pages.settings.emailNotifications", descriptionKey: "pages.settings.emailNotificationsDesc", defaultOn: true },
+  { id: "push", labelKey: "pages.settings.pushNotifications", descriptionKey: "pages.settings.pushNotificationsDesc", defaultOn: true },
+  { id: "marketing", labelKey: "pages.settings.marketingEmails", descriptionKey: "pages.settings.marketingEmailsDesc", defaultOn: false },
+  { id: "weekly", labelKey: "pages.settings.weeklyDigest", descriptionKey: "pages.settings.weeklyDigestDesc", defaultOn: true },
+  { id: "security", labelKey: "pages.settings.securityAlerts", descriptionKey: "pages.settings.securityAlertsDesc", defaultOn: true },
 ];
 
 // -- Component --
 
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState<SectionId>("profile");
+  const { t } = useTranslation();
 
   return (
     <>
@@ -55,11 +57,11 @@ export default function SettingsPage() {
         <Card className="rounded-card border-0 bg-secondary shadow-none lg:col-span-1">
           <CardContent className="p-3">
             <nav className="flex flex-row gap-1 lg:flex-col">
-              {SECTIONS.map(({ id, label, icon: Icon }) => (
+              {SECTIONS.map(({ id, labelKey, icon: Icon }) => (
                 <button
                   key={id}
                   onClick={() => setActiveSection(id)}
-                  aria-label={label}
+                  aria-label={t(labelKey)}
                   className={`flex items-center gap-2 rounded-widget px-3 py-2.5 text-sm transition-colors ${
                     activeSection === id
                       ? "bg-accent text-foreground font-medium"
@@ -67,7 +69,7 @@ export default function SettingsPage() {
                   }`}
                 >
                   <Icon className="h-4 w-4" strokeWidth={1.5} />
-                  <span className="hidden sm:inline">{label}</span>
+                  <span className="hidden sm:inline">{t(labelKey)}</span>
                 </button>
               ))}
             </nav>
@@ -89,13 +91,15 @@ export default function SettingsPage() {
 // ── Profile ──
 
 function ProfileSection() {
+  const { t } = useTranslation();
+
   return (
     <Card className="rounded-card border-0 bg-secondary shadow-none">
       <CardHeader>
         <div className="flex items-center gap-2">
           <User className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
           <CardTitle className="text-sm font-normal text-muted-foreground">
-            Profile Information
+            {t("pages.settings.profileInfo")}
           </CardTitle>
         </div>
       </CardHeader>
@@ -106,7 +110,7 @@ function ProfileSection() {
             <div className="flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 text-primary">
               <User className="h-7 w-7" strokeWidth={1.5} />
             </div>
-            <button className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground transition-colors hover:bg-primary/90" aria-label="Change profile photo">
+            <button className="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-primary-foreground transition-colors hover:bg-primary/90" aria-label={t("pages.settings.changePhoto")}>
               <Camera className="h-3 w-3" aria-hidden="true" strokeWidth={1.5} />
             </button>
           </div>
@@ -121,7 +125,7 @@ function ProfileSection() {
         {/* Form fields */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="space-y-2">
-            <Label htmlFor="settings-first-name" className="text-sm text-foreground">First name</Label>
+            <Label htmlFor="settings-first-name" className="text-sm text-foreground">{t("pages.settings.firstName")}</Label>
             <Input
               id="settings-first-name"
               defaultValue="Alex"
@@ -129,7 +133,7 @@ function ProfileSection() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="settings-last-name" className="text-sm text-foreground">Last name</Label>
+            <Label htmlFor="settings-last-name" className="text-sm text-foreground">{t("pages.settings.lastName")}</Label>
             <Input
               id="settings-last-name"
               defaultValue="Johnson"
@@ -137,7 +141,7 @@ function ProfileSection() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="settings-email" className="text-sm text-foreground">Email</Label>
+            <Label htmlFor="settings-email" className="text-sm text-foreground">{t("pages.login.email")}</Label>
             <Input
               id="settings-email"
               defaultValue="alex@basalt.app"
@@ -146,7 +150,7 @@ function ProfileSection() {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="settings-phone" className="text-sm text-foreground">Phone</Label>
+            <Label htmlFor="settings-phone" className="text-sm text-foreground">{t("pages.settings.phone")}</Label>
             <Input
               id="settings-phone"
               defaultValue="+1 (555) 123-4567"
@@ -157,7 +161,7 @@ function ProfileSection() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="settings-bio" className="text-sm text-foreground">Bio</Label>
+          <Label htmlFor="settings-bio" className="text-sm text-foreground">{t("pages.settings.bio")}</Label>
           <textarea
             id="settings-bio"
             defaultValue="Product designer and financial enthusiast."
@@ -168,10 +172,10 @@ function ProfileSection() {
 
         <div className="flex justify-end gap-3">
           <button className="rounded-widget bg-card px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">
-            Cancel
+            {t("common.cancel")}
           </button>
           <button className="rounded-widget bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
-            Save changes
+            {t("common.save")}
           </button>
         </div>
       </CardContent>
@@ -182,13 +186,15 @@ function ProfileSection() {
 // ── Notifications ──
 
 function NotificationsSection() {
+  const { t } = useTranslation();
+
   return (
     <Card className="rounded-card border-0 bg-secondary shadow-none">
       <CardHeader>
         <div className="flex items-center gap-2">
           <Bell className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
           <CardTitle className="text-sm font-normal text-muted-foreground">
-            Notification Preferences
+            {t("pages.settings.notificationPrefs")}
           </CardTitle>
         </div>
       </CardHeader>
@@ -197,8 +203,8 @@ function NotificationsSection() {
           <div key={item.id}>
             <div className="flex items-center justify-between py-3">
               <div className="space-y-0.5">
-                <label htmlFor={`notif-${item.id}`} className="text-sm text-foreground cursor-pointer">{item.label}</label>
-                <p className="text-xs text-muted-foreground">{item.description}</p>
+                <label htmlFor={`notif-${item.id}`} className="text-sm text-foreground cursor-pointer">{t(item.labelKey)}</label>
+                <p className="text-xs text-muted-foreground">{t(item.descriptionKey)}</p>
               </div>
               <Switch id={`notif-${item.id}`} defaultChecked={item.defaultOn} />
             </div>
@@ -213,6 +219,8 @@ function NotificationsSection() {
 // ── Security ──
 
 function SecuritySection() {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-4">
       {/* Password */}
@@ -221,13 +229,13 @@ function SecuritySection() {
           <div className="flex items-center gap-2">
             <Shield className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
             <CardTitle className="text-sm font-normal text-muted-foreground">
-              Password
+              {t("pages.settings.passwordTitle")}
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="settings-current-password" className="text-sm text-foreground">Current password</Label>
+            <Label htmlFor="settings-current-password" className="text-sm text-foreground">{t("pages.settings.currentPassword")}</Label>
             <Input
               id="settings-current-password"
               type="password"
@@ -237,7 +245,7 @@ function SecuritySection() {
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="settings-new-password" className="text-sm text-foreground">New password</Label>
+              <Label htmlFor="settings-new-password" className="text-sm text-foreground">{t("pages.settings.newPassword")}</Label>
               <Input
                 id="settings-new-password"
                 type="password"
@@ -246,7 +254,7 @@ function SecuritySection() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="settings-confirm-password" className="text-sm text-foreground">Confirm new password</Label>
+              <Label htmlFor="settings-confirm-password" className="text-sm text-foreground">{t("pages.settings.confirmPassword")}</Label>
               <Input
                 id="settings-confirm-password"
                 type="password"
@@ -257,7 +265,7 @@ function SecuritySection() {
           </div>
           <div className="flex justify-end">
             <button className="rounded-widget bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90">
-              Update password
+              {t("pages.settings.updatePassword")}
             </button>
           </div>
         </CardContent>
@@ -269,16 +277,16 @@ function SecuritySection() {
           <div className="flex items-center gap-2">
             <Smartphone className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
             <CardTitle className="text-sm font-normal text-muted-foreground">
-              Two-Factor Authentication
+              {t("pages.settings.twoFactor")}
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <label htmlFor="2fa-authenticator" className="text-sm text-foreground cursor-pointer">Authenticator app</label>
+              <label htmlFor="2fa-authenticator" className="text-sm text-foreground cursor-pointer">{t("pages.settings.authenticatorApp")}</label>
               <p className="text-xs text-muted-foreground">
-                Add an extra layer of security with TOTP
+                {t("pages.settings.authenticatorDesc")}
               </p>
             </div>
             <Switch id="2fa-authenticator" />
@@ -286,9 +294,9 @@ function SecuritySection() {
           <Separator className="my-4 bg-border" />
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <label htmlFor="2fa-sms" className="text-sm text-foreground cursor-pointer">SMS verification</label>
+              <label htmlFor="2fa-sms" className="text-sm text-foreground cursor-pointer">{t("pages.settings.smsVerification")}</label>
               <p className="text-xs text-muted-foreground">
-                Receive codes via text message
+                {t("pages.settings.smsDesc")}
               </p>
             </div>
             <Switch id="2fa-sms" defaultChecked />
@@ -302,7 +310,7 @@ function SecuritySection() {
           <div className="flex items-center gap-2">
             <Globe className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
             <CardTitle className="text-sm font-normal text-muted-foreground">
-              Active Sessions
+              {t("pages.settings.activeSessions")}
             </CardTitle>
           </div>
         </CardHeader>
@@ -318,7 +326,7 @@ function SecuritySection() {
                   {session.device}
                   {session.current && (
                     <span className="ml-2 rounded-sm bg-success/10 px-1.5 py-0.5 text-xs font-medium text-success">
-                      Current
+                      {t("common.currentBadge")}
                     </span>
                   )}
                 </p>
@@ -326,7 +334,7 @@ function SecuritySection() {
               </div>
               {!session.current && (
                 <button className="text-xs text-destructive hover:text-destructive/80 transition-colors">
-                  Revoke
+                  {t("common.revoke")}
                 </button>
               )}
             </div>
@@ -340,6 +348,8 @@ function SecuritySection() {
 // ── Appearance ──
 
 function AppearanceSection() {
+  const { t } = useTranslation();
+
   return (
     <div className="space-y-4">
       {/* Theme */}
@@ -348,31 +358,35 @@ function AppearanceSection() {
           <div className="flex items-center gap-2">
             <Palette className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
             <CardTitle className="text-sm font-normal text-muted-foreground">
-              Theme
+              {t("pages.settings.themeTitle")}
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent>
-          <div className="grid grid-cols-3 gap-3" role="radiogroup" aria-label="Theme">
-            {(["Light", "Dark", "System"] as const).map((theme) => (
+          <div className="grid grid-cols-3 gap-3" role="radiogroup" aria-label={t("pages.settings.themeTitle")}>
+            {([
+              { key: "light", label: t("pages.settings.light") },
+              { key: "dark", label: t("pages.settings.dark") },
+              { key: "system", label: t("pages.settings.systemTheme") },
+            ] as const).map((theme) => (
               <button
-                key={theme}
+                key={theme.key}
                 role="radio"
-                aria-checked={theme === "Dark"}
+                aria-checked={theme.key === "dark"}
                 className={`flex flex-col items-center gap-2 rounded-widget border p-4 transition-colors ${
-                  theme === "Dark"
+                  theme.key === "dark"
                     ? "border-primary bg-accent"
                     : "border-border hover:border-primary/50 hover:bg-accent/50"
                 }`}
               >
                 <div className={`h-10 w-full rounded-lg ${
-                  theme === "Light"
+                  theme.key === "light"
                     ? "bg-white border border-gray-200"
-                    : theme === "Dark"
+                    : theme.key === "dark"
                     ? "bg-[#171717]"
                     : "bg-gradient-to-r from-white to-[#171717]"
                 }`} />
-                <span className="text-xs text-foreground">{theme}</span>
+                <span className="text-xs text-foreground">{theme.label}</span>
               </button>
             ))}
           </div>
@@ -385,15 +399,15 @@ function AppearanceSection() {
           <div className="flex items-center gap-2">
             <CreditCard className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
             <CardTitle className="text-sm font-normal text-muted-foreground">
-              Preferences
+              {t("pages.settings.preferences")}
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <label htmlFor="settings-currency" className="text-sm text-foreground cursor-pointer">Currency</label>
-              <p className="text-xs text-muted-foreground">Default display currency</p>
+              <label htmlFor="settings-currency" className="text-sm text-foreground cursor-pointer">{t("pages.settings.currency")}</label>
+              <p className="text-xs text-muted-foreground">{t("pages.settings.currencyDesc")}</p>
             </div>
             <select id="settings-currency" className="rounded-widget border border-border bg-card px-3 py-1.5 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary">
               <option>USD ($)</option>
@@ -405,21 +419,21 @@ function AppearanceSection() {
           <Separator className="bg-border" />
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <label htmlFor="settings-language" className="text-sm text-foreground cursor-pointer">Language</label>
-              <p className="text-xs text-muted-foreground">Interface language</p>
+              <label htmlFor="settings-language" className="text-sm text-foreground cursor-pointer">{t("pages.settings.interfaceLanguage")}</label>
+              <p className="text-xs text-muted-foreground">{t("pages.settings.interfaceLanguageDesc")}</p>
             </div>
             <select id="settings-language" className="rounded-widget border border-border bg-card px-3 py-1.5 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary">
-              <option>English</option>
-              <option>Spanish</option>
-              <option>French</option>
-              <option>German</option>
+              <option>{t("pages.settings.english")}</option>
+              <option>{t("pages.settings.spanish")}</option>
+              <option>{t("pages.settings.french")}</option>
+              <option>{t("pages.settings.german")}</option>
             </select>
           </div>
           <Separator className="bg-border" />
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">
-              <label htmlFor="settings-compact-mode" className="text-sm text-foreground cursor-pointer">Compact mode</label>
-              <p className="text-xs text-muted-foreground">Reduce spacing and card sizes</p>
+              <label htmlFor="settings-compact-mode" className="text-sm text-foreground cursor-pointer">{t("pages.settings.compactMode")}</label>
+              <p className="text-xs text-muted-foreground">{t("pages.settings.compactModeDesc")}</p>
             </div>
             <Switch id="settings-compact-mode" />
           </div>
