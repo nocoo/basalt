@@ -1,4 +1,5 @@
 import { Router, Activity, Wifi, Server, AlertTriangle, Clock } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { PageIntro } from "@/components/PageIntro";
 import { StatCardWidget, StatGrid } from "@/components/dashboard/StatCardWidget";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
@@ -9,13 +10,6 @@ import { RadarChartCard } from "@/components/dashboard/RadarChartCard";
 import { HeatmapCard } from "@/components/dashboard/HeatmapCard";
 import { TimelineWidget } from "@/components/dashboard/TimelineWidget";
 import { chart } from "@/lib/palette";
-
-const statCards = [
-  { title: "Uptime", value: "99.98%", subtitle: "30 days", icon: Server, trend: { value: 0.02, label: "vs last month" } },
-  { title: "Latency", value: "18 ms", subtitle: "Avg RTT", icon: Wifi, trend: { value: -4.2, label: "vs last week" } },
-  { title: "Packet Loss", value: "0.12%", subtitle: "Region avg", icon: AlertTriangle, trend: { value: -0.04, label: "vs last week" } },
-  { title: "Throughput", value: "4.8 Gbps", subtitle: "Peak today", icon: Router, trend: { value: 6.4, label: "vs last week" } },
-];
 
 const latencyTrend = [
   { label: "00", value: 18 },
@@ -33,12 +27,21 @@ const incidents = [
 ];
 
 export default function NetworkOpsDashboardPage() {
+  const { t } = useTranslation();
+
+  const statCards = [
+    { title: t("pages.networkOps.uptime"), value: "99.98%", subtitle: t("pages.networkOps.days30"), icon: Server, trend: { value: 0.02, label: t("common.vsLastMonth") } },
+    { title: t("pages.networkOps.latency"), value: "18 ms", subtitle: t("pages.networkOps.avgRtt"), icon: Wifi, trend: { value: -4.2, label: t("common.vsLastWeek") } },
+    { title: t("pages.networkOps.packetLoss"), value: "0.12%", subtitle: t("pages.networkOps.regionAvg"), icon: AlertTriangle, trend: { value: -0.04, label: t("common.vsLastWeek") } },
+    { title: t("pages.networkOps.throughput"), value: "4.8 Gbps", subtitle: t("pages.networkOps.peakToday"), icon: Router, trend: { value: 6.4, label: t("common.vsLastWeek") } },
+  ];
+
   return (
     <div className="space-y-4">
       <PageIntro
-        title="Network operations dashboard"
-        description="Router telemetry with uptime, latency, traffic mix, and incident timeline for operators."
-        eyebrow="Network Ops"
+        title={t("pages.networkOps.title")}
+        description={t("pages.networkOps.description")}
+        eyebrow={t("pages.networkOps.eyebrow")}
         icon={Router}
       />
 
@@ -52,7 +55,7 @@ export default function NetworkOpsDashboardPage() {
         <div className="rounded-card bg-secondary p-4 md:p-5">
           <div className="mb-4 flex items-center gap-2">
             <Wifi className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-            <p className="text-sm text-muted-foreground">Latency trend</p>
+            <p className="text-sm text-muted-foreground">{t("pages.networkOps.latencyTrend")}</p>
           </div>
           <LineChartWidget data={latencyTrend} height={220} color={chart.teal} valueFormatter={(v) => `${v}ms`} />
         </div>
@@ -70,7 +73,7 @@ export default function NetworkOpsDashboardPage() {
         <div className="rounded-card bg-secondary p-4 md:p-5 lg:col-span-2 max-h-[420px] overflow-y-auto">
           <div className="mb-4 flex items-center gap-2">
             <Clock className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-            <p className="text-sm text-muted-foreground">Incident timeline</p>
+            <p className="text-sm text-muted-foreground">{t("pages.networkOps.incidentTimeline")}</p>
           </div>
           <TimelineWidget events={incidents} />
         </div>

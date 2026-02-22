@@ -1,4 +1,5 @@
 import { ArrowUpRight, ArrowDownLeft, ArrowLeftRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 
 const transactions = [
@@ -10,15 +11,16 @@ const transactions = [
 ];
 
 export function RecentListCard() {
+  const { t } = useTranslation();
   return (
     <Card className="h-full rounded-card border-0 bg-secondary shadow-none">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ArrowLeftRight className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-            <CardTitle className="text-sm font-normal text-muted-foreground">Recent Transactions</CardTitle>
+            <CardTitle className="text-sm font-normal text-muted-foreground">{t("dashboard.recentTransactions")}</CardTitle>
           </div>
-          <span className="text-xs text-muted-foreground cursor-pointer hover:text-foreground">View All</span>
+          <span className="text-xs text-muted-foreground cursor-pointer hover:text-foreground">{t("common.viewAll")}</span>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">

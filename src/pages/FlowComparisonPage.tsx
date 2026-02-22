@@ -1,24 +1,26 @@
 import { AreaChart, Area, XAxis, YAxis, ResponsiveContainer, BarChart, Bar } from "recharts";
 import { Activity, BarChart3 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { useFlowComparisonViewModel } from "@/viewmodels/useFlowComparisonViewModel";
 import { chartPositive, chartNegative, chartPrimary, chartAxis } from "@/lib/palette";
 
 export default function FlowComparisonPage() {
+  const { t } = useTranslation();
   const { summary, flowData, netFlowData } = useFlowComparisonViewModel();
 
   return (
     <>
       <div className="grid grid-cols-1 gap-3 md:gap-4 sm:grid-cols-3">
         <div className="rounded-card bg-secondary p-4 md:p-5">
-          <p className="text-xs md:text-sm text-muted-foreground mb-1">Total Inflow</p>
+          <p className="text-xs md:text-sm text-muted-foreground mb-1">{t("pages.flowComparison.totalInflow")}</p>
           <h2 className="text-xl md:text-2xl font-semibold text-success font-display tracking-tight">${summary.totalInflow.toLocaleString()}</h2>
         </div>
         <div className="rounded-card bg-secondary p-4 md:p-5">
-          <p className="text-xs md:text-sm text-muted-foreground mb-1">Total Outflow</p>
+          <p className="text-xs md:text-sm text-muted-foreground mb-1">{t("pages.flowComparison.totalOutflow")}</p>
           <h2 className="text-xl md:text-2xl font-semibold text-destructive font-display tracking-tight">${summary.totalOutflow.toLocaleString()}</h2>
         </div>
         <div className="rounded-card bg-secondary p-4 md:p-5">
-          <p className="text-xs md:text-sm text-muted-foreground mb-1">Net Cash Flow</p>
+          <p className="text-xs md:text-sm text-muted-foreground mb-1">{t("pages.flowComparison.netCashFlow")}</p>
           <h2 className="text-xl md:text-2xl font-semibold text-foreground font-display tracking-tight">${summary.netFlow.toLocaleString()}</h2>
         </div>
       </div>
@@ -26,9 +28,9 @@ export default function FlowComparisonPage() {
       <div className="mt-4 rounded-card bg-secondary p-4 md:p-5">
         <div className="flex items-center gap-2 mb-4">
           <Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-          <p className="text-sm text-muted-foreground">Cash Flow Over Time</p>
+          <p className="text-sm text-muted-foreground">{t("pages.flowComparison.cashFlowOverTime")}</p>
         </div>
-        <div className="h-[200px] md:h-[240px]" role="img" aria-label="Cash flow over time area chart showing inflow and outflow">
+        <div className="h-[200px] md:h-[240px]" role="img" aria-label={t("pages.flowComparison.cashFlowOverTimeAria")}>
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={flowData}>
               <XAxis dataKey="month" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -47,9 +49,9 @@ export default function FlowComparisonPage() {
       <div className="mt-4 rounded-card bg-secondary p-4 md:p-5">
         <div className="flex items-center gap-2 mb-4">
           <BarChart3 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-          <p className="text-sm text-muted-foreground">Net Cash Flow by Month</p>
+          <p className="text-sm text-muted-foreground">{t("pages.flowComparison.netCashFlowByMonth")}</p>
         </div>
-        <div className="h-[160px] md:h-[180px]" role="img" aria-label="Net cash flow by month bar chart">
+        <div className="h-[160px] md:h-[180px]" role="img" aria-label={t("pages.flowComparison.netCashFlowByMonthAria")}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={netFlowData}>
               <XAxis dataKey="month" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />

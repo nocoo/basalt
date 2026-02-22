@@ -7,6 +7,7 @@ import {
 import { PageIntro } from "@/components/PageIntro";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { useTranslation } from "react-i18next";
 
 function Section({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
   return (
@@ -120,74 +121,95 @@ function Stepper({ steps, current }: { steps: string[]; current: number }) {
 }
 
 export default function NavigationPage() {
+  const { t } = useTranslation();
   const [page1, setPage1] = useState(1);
   const [page2, setPage2] = useState(5);
   const [stepperIndex, setStepperIndex] = useState(1);
 
-  const stepperSteps = ["Account", "Profile", "Preferences", "Review", "Complete"];
+  const stepperSteps = [
+    t("pages.navigation.account"),
+    t("pages.navigation.profile"),
+    t("pages.navigation.preferences"),
+    t("pages.navigation.review"),
+    t("pages.navigation.complete"),
+  ];
+
+  const underlineTabs = [
+    { label: t("pages.navigation.all"), value: "all" },
+    { label: t("pages.navigation.activeTab"), value: "active" },
+    { label: t("pages.navigation.archived"), value: "archived" },
+    { label: t("pages.navigation.drafts"), value: "drafts" },
+  ];
+
+  const pillTabs = [
+    { label: t("pages.navigation.day"), value: "day" },
+    { label: t("pages.navigation.week"), value: "week" },
+    { label: t("pages.navigation.month"), value: "month" },
+    { label: t("pages.navigation.year"), value: "year" },
+  ];
 
   return (
     <div className="space-y-4">
       <PageIntro
-        title="Navigation and wayfinding"
-        description="Breadcrumbs, pagination, steppers, and tab patterns for guiding users through hierarchies and multi-step flows."
-        eyebrow="Navigation"
+        title={t("pages.navigation.title")}
+        description={t("pages.navigation.description")}
+        eyebrow={t("pages.navigation.eyebrow")}
         icon={Navigation}
       />
 
       {/* Breadcrumbs */}
-      <Section title="Breadcrumbs" icon={ChevronRight}>
+      <Section title={t("pages.navigation.breadcrumbs")} icon={ChevronRight}>
         <div className="space-y-4">
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">simple</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.navigation.simple")}</p>
             <Breadcrumb items={[
-              { label: "Home" },
-              { label: "Products" },
-              { label: "Electronics" },
-              { label: "Headphones" },
+              { label: t("pages.navigation.home") },
+              { label: t("pages.navigation.products") },
+              { label: t("pages.navigation.electronics") },
+              { label: t("pages.navigation.headphones") },
             ]} />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">with icons</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.navigation.withIcons")}</p>
             <Breadcrumb items={[
-              { label: "Home", icon: Home },
-              { label: "Documents", icon: FolderOpen },
-              { label: "Reports", icon: FolderOpen },
-              { label: "Q4 Summary.pdf", icon: FileText },
+              { label: t("pages.navigation.home"), icon: Home },
+              { label: t("pages.navigation.documents"), icon: FolderOpen },
+              { label: t("pages.navigation.reports"), icon: FolderOpen },
+              { label: t("pages.navigation.q4Summary"), icon: FileText },
             ]} />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">inside a card</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.navigation.insideCard")}</p>
             <div className="rounded-widget border border-border bg-card p-4">
               <Breadcrumb items={[
-                { label: "Dashboard" },
-                { label: "Settings" },
-                { label: "Notifications" },
+                { label: t("pages.navigation.dashboard") },
+                { label: t("pages.navigation.settings") },
+                { label: t("pages.navigation.notifications") },
               ]} />
-              <p className="text-sm text-foreground font-medium mt-3">Notification Preferences</p>
-              <p className="text-xs text-muted-foreground mt-1">Choose how you want to be notified about updates.</p>
+              <p className="text-sm text-foreground font-medium mt-3">{t("pages.navigation.notificationPrefs")}</p>
+              <p className="text-xs text-muted-foreground mt-1">{t("pages.navigation.notificationPrefsDesc")}</p>
             </div>
           </div>
         </div>
       </Section>
 
       {/* Pagination */}
-      <Section title="Pagination" icon={ChevronsRight}>
+      <Section title={t("pages.navigation.pagination")} icon={ChevronsRight}>
         <div className="space-y-6">
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">short (5 pages)</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.navigation.short5Pages")}</p>
             <Pagination currentPage={page1} totalPages={5} onPageChange={setPage1} />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">long (20 pages) with ellipsis</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.navigation.long20Pages")}</p>
             <Pagination currentPage={page2} totalPages={20} onPageChange={setPage2} />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">with context</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.navigation.withContext")}</p>
             <div className="rounded-widget border border-border bg-card p-4">
               <div className="flex items-center justify-between">
                 <p className="text-xs text-muted-foreground">
-                  Showing <span className="font-medium text-foreground">41-50</span> of <span className="font-medium text-foreground">200</span> results
+                  {t("common.showing")} <span className="font-medium text-foreground">41-50</span> {t("common.of")} <span className="font-medium text-foreground">200</span> {t("common.results")}
                 </p>
                 <Pagination currentPage={page2} totalPages={20} onPageChange={setPage2} />
               </div>
@@ -197,27 +219,27 @@ export default function NavigationPage() {
       </Section>
 
       {/* Stepper / Wizard */}
-      <Section title="Stepper / Wizard" icon={Circle}>
+      <Section title={t("pages.navigation.stepperWizard")} icon={Circle}>
         <div className="space-y-6">
           <div>
-            <p className="text-xs text-muted-foreground mb-3 font-mono">horizontal stepper</p>
+            <p className="text-xs text-muted-foreground mb-3 font-mono">{t("pages.navigation.horizontalStepper")}</p>
             <Stepper steps={stepperSteps} current={stepperIndex} />
             <div className="flex items-center gap-2 mt-4">
               <Button variant="outline" size="sm" disabled={stepperIndex === 0} onClick={() => setStepperIndex((i) => i - 1)}>
-                Back
+                {t("common.back")}
               </Button>
               <Button size="sm" disabled={stepperIndex === stepperSteps.length - 1} onClick={() => setStepperIndex((i) => i + 1)}>
-                {stepperIndex === stepperSteps.length - 2 ? "Finish" : "Next"}
+                {stepperIndex === stepperSteps.length - 2 ? t("common.finish") : t("common.next")}
               </Button>
               <Button variant="ghost" size="sm" className="ml-auto" onClick={() => setStepperIndex(0)}>
-                Reset
+                {t("common.reset")}
               </Button>
             </div>
           </div>
 
           {/* Vertical stepper */}
           <div>
-            <p className="text-xs text-muted-foreground mb-3 font-mono">vertical stepper</p>
+            <p className="text-xs text-muted-foreground mb-3 font-mono">{t("pages.navigation.verticalStepper")}</p>
             <div className="max-w-sm">
               {stepperSteps.map((step, i) => (
                 <div key={step} className="flex gap-3">
@@ -238,7 +260,7 @@ export default function NavigationPage() {
                   <div className="pb-6">
                     <p className={`text-sm font-medium ${i <= stepperIndex ? "text-foreground" : "text-muted-foreground"}`}>{step}</p>
                     <p className="text-xs text-muted-foreground">
-                      {i < stepperIndex ? "Completed" : i === stepperIndex ? "In progress" : "Pending"}
+                      {i < stepperIndex ? t("pages.navigation.completed") : i === stepperIndex ? t("pages.navigation.inProgress") : t("pages.navigation.pending")}
                     </p>
                   </div>
                 </div>
@@ -249,37 +271,37 @@ export default function NavigationPage() {
       </Section>
 
       {/* Tabs Variants */}
-      <Section title="Tab Patterns" icon={Navigation}>
+      <Section title={t("pages.navigation.tabPatterns")} icon={Navigation}>
         <div className="space-y-6">
           {/* Standard tabs */}
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">standard tabs</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.navigation.standardTabs")}</p>
             <Tabs defaultValue="overview">
               <TabsList>
-                <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                <TabsTrigger value="reports">Reports</TabsTrigger>
-                <TabsTrigger value="settings">Settings</TabsTrigger>
+                <TabsTrigger value="overview">{t("pages.navigation.overview")}</TabsTrigger>
+                <TabsTrigger value="analytics">{t("pages.navigation.analytics")}</TabsTrigger>
+                <TabsTrigger value="reports">{t("pages.navigation.reports")}</TabsTrigger>
+                <TabsTrigger value="settings">{t("pages.navigation.settings")}</TabsTrigger>
               </TabsList>
               <TabsContent value="overview">
                 <div className="rounded-widget border border-border bg-card p-4">
-                  <p className="text-sm text-foreground">Overview content area</p>
-                  <p className="text-xs text-muted-foreground mt-1">Tab panels hold the content for each section.</p>
+                  <p className="text-sm text-foreground">{t("pages.navigation.overviewContent")}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{t("pages.navigation.overviewContentDesc")}</p>
                 </div>
               </TabsContent>
               <TabsContent value="analytics">
                 <div className="rounded-widget border border-border bg-card p-4">
-                  <p className="text-sm text-foreground">Analytics content area</p>
+                  <p className="text-sm text-foreground">{t("pages.navigation.analyticsContent")}</p>
                 </div>
               </TabsContent>
               <TabsContent value="reports">
                 <div className="rounded-widget border border-border bg-card p-4">
-                  <p className="text-sm text-foreground">Reports content area</p>
+                  <p className="text-sm text-foreground">{t("pages.navigation.reportsContent")}</p>
                 </div>
               </TabsContent>
               <TabsContent value="settings">
                 <div className="rounded-widget border border-border bg-card p-4">
-                  <p className="text-sm text-foreground">Settings content area</p>
+                  <p className="text-sm text-foreground">{t("pages.navigation.settingsContent")}</p>
                 </div>
               </TabsContent>
             </Tabs>
@@ -287,37 +309,37 @@ export default function NavigationPage() {
 
           {/* Underline tabs (custom) */}
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">underline style</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.navigation.underlineStyle")}</p>
             <Tabs defaultValue="all">
               <TabsList className="bg-transparent border-b border-border rounded-none h-auto p-0 gap-4">
-                {["All", "Active", "Archived", "Drafts"].map((tab) => (
+                {underlineTabs.map((tab) => (
                   <TabsTrigger
-                    key={tab}
-                    value={tab.toLowerCase()}
+                    key={tab.value}
+                    value={tab.value}
                     className="rounded-none border-b-2 border-transparent bg-transparent px-1 pb-2 pt-1 data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none"
                   >
-                    {tab}
+                    {tab.label}
                   </TabsTrigger>
                 ))}
               </TabsList>
               <TabsContent value="all">
                 <div className="rounded-widget border border-border bg-card p-4 mt-3">
-                  <p className="text-sm text-foreground">Showing all items</p>
+                  <p className="text-sm text-foreground">{t("pages.navigation.showingAll")}</p>
                 </div>
               </TabsContent>
               <TabsContent value="active">
                 <div className="rounded-widget border border-border bg-card p-4 mt-3">
-                  <p className="text-sm text-foreground">Showing active items</p>
+                  <p className="text-sm text-foreground">{t("pages.navigation.showingActive")}</p>
                 </div>
               </TabsContent>
               <TabsContent value="archived">
                 <div className="rounded-widget border border-border bg-card p-4 mt-3">
-                  <p className="text-sm text-foreground">Showing archived items</p>
+                  <p className="text-sm text-foreground">{t("pages.navigation.showingArchived")}</p>
                 </div>
               </TabsContent>
               <TabsContent value="drafts">
                 <div className="rounded-widget border border-border bg-card p-4 mt-3">
-                  <p className="text-sm text-foreground">Showing draft items</p>
+                  <p className="text-sm text-foreground">{t("pages.navigation.showingDrafts")}</p>
                 </div>
               </TabsContent>
             </Tabs>
@@ -325,16 +347,16 @@ export default function NavigationPage() {
 
           {/* Pill tabs */}
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">pill style</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.navigation.pillStyle")}</p>
             <Tabs defaultValue="day">
               <TabsList className="bg-transparent gap-1 p-0">
-                {["Day", "Week", "Month", "Year"].map((tab) => (
+                {pillTabs.map((tab) => (
                   <TabsTrigger
-                    key={tab}
-                    value={tab.toLowerCase()}
+                    key={tab.value}
+                    value={tab.value}
                     className="rounded-full px-4 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
                   >
-                    {tab}
+                    {tab.label}
                   </TabsTrigger>
                 ))}
               </TabsList>

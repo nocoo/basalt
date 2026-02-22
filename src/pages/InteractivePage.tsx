@@ -35,6 +35,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { useTranslation } from "react-i18next";
 
 function Section({ title, icon: Icon, children }: { title: string; icon: React.ElementType; children: React.ReactNode }) {
   return (
@@ -87,6 +88,7 @@ function SkeletonCard() {
 }
 
 function LoadingButton() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const handleClick = () => {
     setLoading(true);
@@ -95,12 +97,13 @@ function LoadingButton() {
   return (
     <Button onClick={handleClick} disabled={loading}>
       {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-      {loading ? "Processing..." : "Submit"}
+      {loading ? t("pages.interactive.processing") : t("common.submit")}
     </Button>
   );
 }
 
 function CopyButton() {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState(false);
   const handleCopy = () => {
     setCopied(true);
@@ -109,81 +112,94 @@ function CopyButton() {
   return (
     <Button variant="outline" size="sm" onClick={handleCopy}>
       {copied ? <Check className="mr-2 h-3.5 w-3.5" /> : <Copy className="mr-2 h-3.5 w-3.5" />}
-      {copied ? "Copied!" : "Copy"}
+      {copied ? t("common.copied") : t("common.copy")}
     </Button>
   );
 }
 
 export default function InteractivePage() {
+  const { t } = useTranslation();
   const [collapsible1, setCollapsible1] = useState(false);
   const [collapsible2, setCollapsible2] = useState(false);
+
+  const alertData = [
+    { variant: "info" as const, title: t("pages.interactive.alertInfoTitle"), message: t("pages.interactive.alertInfoMessage") },
+    { variant: "success" as const, title: t("pages.interactive.alertSuccessTitle"), message: t("pages.interactive.alertSuccessMessage") },
+    { variant: "warning" as const, title: t("pages.interactive.alertWarningTitle"), message: t("pages.interactive.alertWarningMessage") },
+    { variant: "error" as const, title: t("pages.interactive.alertErrorTitle"), message: t("pages.interactive.alertErrorMessage") },
+  ];
+
+  const profileMenuItems = [
+    { label: t("pages.interactive.profileSettings"), key: "profile-settings" },
+    { label: t("pages.interactive.billing"), key: "billing" },
+    { label: t("common.signOut"), key: "sign-out" },
+  ];
 
   return (
     <div className="space-y-4">
       <PageIntro
-        title="Interactive components"
-        description="Buttons, feedback, overlays, and all interactive UI patterns in one place."
-        eyebrow="Interactive"
+        title={t("pages.interactive.title")}
+        description={t("pages.interactive.description")}
+        eyebrow={t("pages.interactive.eyebrow")}
         icon={MousePointerClick}
       />
 
-      <Section title="Button Variants" icon={MousePointerClick}>
+      <Section title={t("pages.interactive.buttonVariants")} icon={MousePointerClick}>
         <div className="flex flex-wrap items-center gap-3">
-          <Button variant="default">Default</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="destructive">Destructive</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
-          <Button variant="link">Link</Button>
+          <Button variant="default">{t("pages.interactive.default")}</Button>
+          <Button variant="secondary">{t("pages.interactive.secondary")}</Button>
+          <Button variant="destructive">{t("pages.interactive.destructive")}</Button>
+          <Button variant="outline">{t("pages.interactive.outline")}</Button>
+          <Button variant="ghost">{t("pages.interactive.ghost")}</Button>
+          <Button variant="link">{t("pages.interactive.link")}</Button>
         </div>
       </Section>
 
-      <Section title="Button Sizes" icon={MousePointerClick}>
+      <Section title={t("pages.interactive.buttonSizes")} icon={MousePointerClick}>
         <div className="flex flex-wrap items-end gap-3">
-          <Button size="sm">Small</Button>
-          <Button size="default">Default</Button>
-          <Button size="lg">Large</Button>
+          <Button size="sm">{t("pages.interactive.small")}</Button>
+          <Button size="default">{t("pages.interactive.default")}</Button>
+          <Button size="lg">{t("pages.interactive.large")}</Button>
           <Button size="icon" aria-label="Add"><Plus className="h-4 w-4" /></Button>
         </div>
       </Section>
 
-      <Section title="Button States" icon={MousePointerClick}>
+      <Section title={t("pages.interactive.buttonStates")} icon={MousePointerClick}>
         <div className="space-y-4">
           <div className="flex flex-wrap items-center gap-3">
-            <Button disabled>Disabled</Button>
+            <Button disabled>{t("pages.interactive.disabled")}</Button>
             <LoadingButton />
             <CopyButton />
           </div>
         </div>
       </Section>
 
-      <Section title="Toast Notifications" icon={Bell}>
+      <Section title={t("pages.interactive.toastNotifications")} icon={Bell}>
         <div className="flex flex-wrap gap-3">
-          <Button size="sm" onClick={() => toast.success("Changes saved successfully.")}>
-            <CheckCircle2 className="mr-2 h-3.5 w-3.5" /> Success
+          <Button size="sm" onClick={() => toast.success(t("pages.interactive.toastSuccess"))}>
+            <CheckCircle2 className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.success")}
           </Button>
-          <Button size="sm" variant="destructive" onClick={() => toast.error("Failed to save changes.")}>
-            <XCircle className="mr-2 h-3.5 w-3.5" /> Error
+          <Button size="sm" variant="destructive" onClick={() => toast.error(t("pages.interactive.toastError"))}>
+            <XCircle className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.error")}
           </Button>
-          <Button size="sm" variant="outline" onClick={() => toast.warning("Your session expires in 5 minutes.")}>
-            <AlertTriangle className="mr-2 h-3.5 w-3.5" /> Warning
+          <Button size="sm" variant="outline" onClick={() => toast.warning(t("pages.interactive.toastWarning"))}>
+            <AlertTriangle className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.warning")}
           </Button>
-          <Button size="sm" variant="secondary" onClick={() => toast.info("A new version is available.")}>
-            <Info className="mr-2 h-3.5 w-3.5" /> Info
+          <Button size="sm" variant="secondary" onClick={() => toast.info(t("pages.interactive.toastInfo"))}>
+            <Info className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.info")}
           </Button>
         </div>
       </Section>
 
-      <Section title="Inline Alerts" icon={AlertTriangle}>
+      <Section title={t("pages.interactive.inlineAlerts")} icon={AlertTriangle}>
         <div className="space-y-3">
-          <InlineAlert variant="info" title="New update available" message="Version 2.4.0 includes performance improvements." />
-          <InlineAlert variant="success" title="Payment confirmed" message="Your invoice #1042 has been paid." />
-          <InlineAlert variant="warning" title="Storage almost full" message="You've used 92% of your storage quota." />
-          <InlineAlert variant="error" title="Connection lost" message="Unable to reach the server." />
+          {alertData.map((alert) => (
+            <InlineAlert key={alert.variant} variant={alert.variant} title={alert.title} message={alert.message} />
+          ))}
         </div>
       </Section>
 
-      <Section title="Skeleton Loaders" icon={Loader2}>
+      <Section title={t("pages.interactive.skeletonLoaders")} icon={Loader2}>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <SkeletonCard />
           <SkeletonCard />
@@ -191,127 +207,127 @@ export default function InteractivePage() {
         </div>
       </Section>
 
-      <Section title="Progress Indicators" icon={Loader2}>
+      <Section title={t("pages.interactive.progressIndicators")} icon={Loader2}>
         <div className="space-y-4 max-w-md">
           <div className="space-y-1">
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>Uploading...</span><span>60%</span>
+              <span>{t("pages.interactive.uploading")}</span><span>60%</span>
             </div>
             <Progress value={60} />
           </div>
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-              <span className="text-xs text-muted-foreground">Loading...</span>
+              <span className="text-xs text-muted-foreground">{t("pages.interactive.loading")}</span>
             </div>
             <div className="flex items-center gap-2">
               <Loader2 className="h-5 w-5 animate-spin text-primary" />
-              <span className="text-sm text-foreground">Processing</span>
+              <span className="text-sm text-foreground">{t("pages.interactive.progressProcessing")}</span>
             </div>
           </div>
         </div>
       </Section>
 
-      <Section title="Empty States" icon={Inbox}>
+      <Section title={t("pages.interactive.emptyStates")} icon={Inbox}>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="rounded-widget border border-border bg-card p-8 flex flex-col items-center text-center">
             <Inbox className="h-10 w-10 text-muted-foreground/50 mb-3" strokeWidth={1} />
-            <p className="text-sm font-medium text-foreground mb-1">No data yet</p>
-            <p className="text-xs text-muted-foreground mb-4">Start by creating your first record.</p>
-            <Button size="sm">Create record</Button>
+            <p className="text-sm font-medium text-foreground mb-1">{t("pages.interactive.noDataYet")}</p>
+            <p className="text-xs text-muted-foreground mb-4">{t("pages.interactive.createFirstRecord")}</p>
+            <Button size="sm">{t("pages.interactive.createRecord")}</Button>
           </div>
           <div className="rounded-widget border border-border bg-card p-8 flex flex-col items-center text-center">
             <Search className="h-10 w-10 text-muted-foreground/50 mb-3" strokeWidth={1} />
-            <p className="text-sm font-medium text-foreground mb-1">No results found</p>
-            <p className="text-xs text-muted-foreground mb-4">Try adjusting your search.</p>
-            <Button size="sm" variant="outline">Clear filters</Button>
+            <p className="text-sm font-medium text-foreground mb-1">{t("pages.interactive.noResultsFound")}</p>
+            <p className="text-xs text-muted-foreground mb-4">{t("pages.interactive.tryAdjusting")}</p>
+            <Button size="sm" variant="outline">{t("pages.interactive.clearFilters")}</Button>
           </div>
           <div className="rounded-widget border border-border bg-card p-8 flex flex-col items-center text-center">
             <XCircle className="h-10 w-10 text-red-500/50 mb-3" strokeWidth={1} />
-            <p className="text-sm font-medium text-foreground mb-1">Something went wrong</p>
-            <p className="text-xs text-muted-foreground mb-4">Please try again.</p>
-            <Button size="sm" variant="outline"><RefreshCw className="mr-2 h-3.5 w-3.5" /> Retry</Button>
+            <p className="text-sm font-medium text-foreground mb-1">{t("pages.interactive.somethingWentWrong")}</p>
+            <p className="text-xs text-muted-foreground mb-4">{t("pages.interactive.pleaseTryAgain")}</p>
+            <Button size="sm" variant="outline"><RefreshCw className="mr-2 h-3.5 w-3.5" /> {t("common.retry")}</Button>
           </div>
         </div>
       </Section>
 
-      <Section title="Sheet / Drawer" icon={PanelRight}>
+      <Section title={t("pages.interactive.sheetDrawer")} icon={PanelRight}>
         <div className="flex flex-wrap gap-3">
           <Sheet>
-            <SheetTrigger asChild><Button variant="outline" size="sm"><PanelRight className="mr-2 h-3.5 w-3.5" /> Right</Button></SheetTrigger>
+            <SheetTrigger asChild><Button variant="outline" size="sm"><PanelRight className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.sheetRight")}</Button></SheetTrigger>
             <SheetContent side="right">
-              <SheetHeader><SheetTitle>Detail Panel</SheetTitle><SheetDescription>View and edit details.</SheetDescription></SheetHeader>
+              <SheetHeader><SheetTitle>{t("pages.interactive.detailPanel")}</SheetTitle><SheetDescription>{t("pages.interactive.viewEditDetails")}</SheetDescription></SheetHeader>
               <div className="mt-6 space-y-4">
-                <div className="space-y-2"><Label>Name</Label><Input defaultValue="John Doe" /></div>
-                <div className="space-y-2"><Label>Email</Label><Input defaultValue="john@example.com" /></div>
+                <div className="space-y-2"><Label>{t("pages.interactive.nameLabel")}</Label><Input defaultValue={t("pages.interactive.nameValue")} /></div>
+                <div className="space-y-2"><Label>{t("pages.interactive.emailLabel")}</Label><Input defaultValue={t("pages.interactive.emailValue")} /></div>
               </div>
-              <SheetFooter className="mt-6"><Button size="sm">Save changes</Button></SheetFooter>
+              <SheetFooter className="mt-6"><Button size="sm">{t("common.save")}</Button></SheetFooter>
             </SheetContent>
           </Sheet>
           <Sheet>
-            <SheetTrigger asChild><Button variant="outline" size="sm"><PanelLeft className="mr-2 h-3.5 w-3.5" /> Left</Button></SheetTrigger>
+            <SheetTrigger asChild><Button variant="outline" size="sm"><PanelLeft className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.sheetLeft")}</Button></SheetTrigger>
             <SheetContent side="left">
-              <SheetHeader><SheetTitle>Filters</SheetTitle><SheetDescription>Narrow down results.</SheetDescription></SheetHeader>
+              <SheetHeader><SheetTitle>{t("pages.interactive.filters")}</SheetTitle><SheetDescription>{t("pages.interactive.narrowDownResults")}</SheetDescription></SheetHeader>
             </SheetContent>
           </Sheet>
           <Sheet>
-            <SheetTrigger asChild><Button variant="outline" size="sm"><PanelBottom className="mr-2 h-3.5 w-3.5" /> Bottom</Button></SheetTrigger>
+            <SheetTrigger asChild><Button variant="outline" size="sm"><PanelBottom className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.sheetBottom")}</Button></SheetTrigger>
             <SheetContent side="bottom">
-              <SheetHeader><SheetTitle>Quick Actions</SheetTitle></SheetHeader>
+              <SheetHeader><SheetTitle>{t("pages.interactive.quickActions")}</SheetTitle></SheetHeader>
             </SheetContent>
           </Sheet>
         </div>
       </Section>
 
-      <Section title="Dialogs" icon={MessageSquare}>
+      <Section title={t("pages.interactive.dialogs")} icon={MessageSquare}>
         <div className="flex flex-wrap gap-3">
           <Dialog>
-            <DialogTrigger asChild><Button variant="outline" size="sm">Basic dialog</Button></DialogTrigger>
+            <DialogTrigger asChild><Button variant="outline" size="sm">{t("pages.interactive.basicDialog")}</Button></DialogTrigger>
             <DialogContent>
-              <DialogHeader><DialogTitle>Edit profile</DialogTitle><DialogDescription>Make changes to your profile.</DialogDescription></DialogHeader>
+              <DialogHeader><DialogTitle>{t("pages.interactive.editProfile")}</DialogTitle><DialogDescription>{t("pages.interactive.editProfileDesc")}</DialogDescription></DialogHeader>
               <div className="space-y-4 py-4">
-                <div className="space-y-2"><Label>Display name</Label><Input defaultValue="Zheng Li" /></div>
+                <div className="space-y-2"><Label>{t("pages.interactive.displayName")}</Label><Input defaultValue={t("pages.interactive.displayNameValue")} /></div>
               </div>
-              <DialogFooter><Button size="sm">Save</Button></DialogFooter>
+              <DialogFooter><Button size="sm">{t("common.save")}</Button></DialogFooter>
             </DialogContent>
           </Dialog>
           <AlertDialog>
-            <AlertDialogTrigger asChild><Button variant="destructive" size="sm">Delete item</Button></AlertDialogTrigger>
+            <AlertDialogTrigger asChild><Button variant="destructive" size="sm">{t("pages.interactive.deleteItem")}</Button></AlertDialogTrigger>
             <AlertDialogContent>
-              <AlertDialogHeader><AlertDialogTitle>Are you sure?</AlertDialogTitle><AlertDialogDescription>This action cannot be undone.</AlertDialogDescription></AlertDialogHeader>
+              <AlertDialogHeader><AlertDialogTitle>{t("pages.interactive.areYouSure")}</AlertDialogTitle><AlertDialogDescription>{t("pages.interactive.cannotBeUndone")}</AlertDialogDescription></AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">Delete</AlertDialogAction>
+                <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
+                <AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">{t("common.delete")}</AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
         </div>
       </Section>
 
-      <Section title="Popovers" icon={Filter}>
+      <Section title={t("pages.interactive.popovers")} icon={Filter}>
         <div className="flex flex-wrap gap-3">
           <Popover>
-            <PopoverTrigger asChild><Button variant="outline" size="sm"><Filter className="mr-2 h-3.5 w-3.5" /> Filter</Button></PopoverTrigger>
+            <PopoverTrigger asChild><Button variant="outline" size="sm"><Filter className="mr-2 h-3.5 w-3.5" /> {t("common.filter")}</Button></PopoverTrigger>
             <PopoverContent className="w-64">
               <div className="space-y-3">
-                <p className="text-sm font-medium">Filter by</p>
-                <div className="space-y-2"><Label className="text-xs">Status</Label><Input placeholder="e.g. Active" className="h-8 text-xs" /></div>
+                <p className="text-sm font-medium">{t("pages.interactive.filterBy")}</p>
+                <div className="space-y-2"><Label className="text-xs">{t("pages.interactive.statusLabel")}</Label><Input placeholder={t("pages.interactive.statusPlaceholder")} className="h-8 text-xs" /></div>
                 <Separator />
-                <div className="flex justify-end gap-2"><Button size="sm">Apply</Button></div>
+                <div className="flex justify-end gap-2"><Button size="sm">{t("common.apply")}</Button></div>
               </div>
             </PopoverContent>
           </Popover>
           <Popover>
-            <PopoverTrigger asChild><Button variant="outline" size="sm"><User className="mr-2 h-3.5 w-3.5" /> Profile</Button></PopoverTrigger>
+            <PopoverTrigger asChild><Button variant="outline" size="sm"><User className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.profileLabel")}</Button></PopoverTrigger>
             <PopoverContent className="w-72">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-xs font-medium">ZL</div>
-                <div><p className="text-sm font-medium">Zheng Li</p><p className="text-xs text-muted-foreground">zhengli@example.com</p></div>
+                <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-xs font-medium">{t("pages.interactive.profileInitials")}</div>
+                <div><p className="text-sm font-medium">{t("pages.interactive.profileName")}</p><p className="text-xs text-muted-foreground">{t("pages.interactive.profileEmail")}</p></div>
               </div>
               <Separator className="my-3" />
               <div className="space-y-1">
-                {["Profile settings", "Billing", "Sign out"].map((item) => (
-                  <button key={item} className="flex w-full items-center rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">{item}</button>
+                {profileMenuItems.map((item) => (
+                  <button key={item.key} className="flex w-full items-center rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-accent hover:text-foreground">{item.label}</button>
                 ))}
               </div>
             </PopoverContent>
@@ -319,18 +335,18 @@ export default function InteractivePage() {
         </div>
       </Section>
 
-      <Section title="Collapsible Sections" icon={ChevronDown}>
+      <Section title={t("pages.interactive.collapsibleSections")} icon={ChevronDown}>
         <div className="space-y-3">
           <Collapsible open={collapsible1} onOpenChange={setCollapsible1}>
             <div className="rounded-widget border border-border bg-card">
               <CollapsibleTrigger className="flex w-full items-center justify-between p-4">
-                <span className="text-sm font-medium text-foreground">Advanced options</span>
+                <span className="text-sm font-medium text-foreground">{t("pages.interactive.advancedOptions")}</span>
                 <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${collapsible1 ? "rotate-180" : ""}`} strokeWidth={1.5} />
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <div className="border-t border-border p-4 space-y-3">
-                  <div className="flex items-center justify-between"><span className="text-sm">Enable caching</span><Switch /></div>
-                  <div className="flex items-center justify-between"><span className="text-sm">Debug mode</span><Switch /></div>
+                  <div className="flex items-center justify-between"><span className="text-sm">{t("pages.interactive.enableCaching")}</span><Switch /></div>
+                  <div className="flex items-center justify-between"><span className="text-sm">{t("pages.interactive.debugMode")}</span><Switch /></div>
                 </div>
               </CollapsibleContent>
             </div>
@@ -338,14 +354,14 @@ export default function InteractivePage() {
           <Collapsible open={collapsible2} onOpenChange={setCollapsible2}>
             <div className="rounded-widget border border-border bg-card">
               <CollapsibleTrigger className="flex w-full items-center justify-between p-4">
-                <span className="text-sm font-medium text-foreground">Danger zone</span>
+                <span className="text-sm font-medium text-foreground">{t("pages.interactive.dangerZone")}</span>
                 <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${collapsible2 ? "rotate-180" : ""}`} strokeWidth={1.5} />
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <div className="border-t border-border p-4">
                   <div className="flex items-center justify-between">
-                    <div><p className="text-sm font-medium text-foreground">Delete workspace</p><p className="text-xs text-muted-foreground">Permanently remove all data.</p></div>
-                    <Button variant="destructive" size="sm">Delete</Button>
+                    <div><p className="text-sm font-medium text-foreground">{t("pages.interactive.deleteWorkspace")}</p><p className="text-xs text-muted-foreground">{t("pages.interactive.permanentlyRemoveData")}</p></div>
+                    <Button variant="destructive" size="sm">{t("common.delete")}</Button>
                   </div>
                 </div>
               </CollapsibleContent>

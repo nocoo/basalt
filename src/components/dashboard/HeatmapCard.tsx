@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { HeatmapCalendar, heatmapColorScales } from "@/components/dashboard/HeatmapCalendar";
 
@@ -13,13 +14,14 @@ const heatmapData = Array.from({ length: 365 }).map((_, i) => {
 });
 
 export function HeatmapCard() {
+  const { t } = useTranslation();
   return (
     <Card className="rounded-card border-border bg-card shadow-none">
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm text-muted-foreground">Engagement heatmap</CardTitle>
+        <CardTitle className="text-sm text-muted-foreground">{t("dashboard.engagementHeatmap")}</CardTitle>
       </CardHeader>
       <CardContent>
-        <HeatmapCalendar data={heatmapData} year={2026} colorScale={heatmapColorScales.blue} metricLabel="Sessions" />
+        <HeatmapCalendar data={heatmapData} year={2026} colorScale={heatmapColorScales.blue} metricLabel={t("dashboard.sessions")} />
       </CardContent>
     </Card>
   );

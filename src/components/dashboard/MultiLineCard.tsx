@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   LineChart as RechartsLineChart,
   Line,
@@ -16,10 +17,11 @@ const data = [
 ];
 
 export function MultiLineCard() {
+  const { t } = useTranslation();
   return (
     <Card className="rounded-card border-border bg-card shadow-none">
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm text-muted-foreground">Multi-series trend</CardTitle>
+        <CardTitle className="text-sm text-muted-foreground">{t("dashboard.multiSeriesTrend")}</CardTitle>
       </CardHeader>
       <CardContent className="h-56">
         <ResponsiveContainer width="100%" height="100%">

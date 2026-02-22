@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { FunnelChart, Funnel, LabelList, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CHART_COLORS } from "@/lib/palette";
@@ -10,10 +11,11 @@ const data = [
 ];
 
 export function FunnelChartCard() {
+  const { t } = useTranslation();
   return (
     <Card className="rounded-card border-border bg-card shadow-none">
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm text-muted-foreground">Funnel conversion</CardTitle>
+        <CardTitle className="text-sm text-muted-foreground">{t("dashboard.funnelConversion")}</CardTitle>
       </CardHeader>
       <CardContent className="h-56">
         <ResponsiveContainer width="100%" height="100%">

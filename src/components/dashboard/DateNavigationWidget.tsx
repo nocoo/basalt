@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 
 export interface DateNavigationProps {
@@ -20,15 +21,6 @@ export interface DateNavigationProps {
   className?: string;
 }
 
-/** Default date formatter: "Mon, Feb 13 2026" */
-const defaultFormatDate = (date: Date): string =>
-  date.toLocaleDateString("en-US", {
-    weekday: "short",
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  });
-
 /** Check if two dates are the same calendar day */
 const isSameDay = (a: Date, b: Date): boolean =>
   a.getFullYear() === b.getFullYear() &&
@@ -47,10 +39,22 @@ export function DateNavigationWidget({
   onNextDay,
   onToday,
   onToggleCalendar,
-  todayLabel = "Today",
-  formatDate = defaultFormatDate,
+  todayLabel,
+  formatDate,
   className,
 }: DateNavigationProps) {
+  const { t, i18n } = useTranslation();
+
+  const defaultFormatDate = (date: Date): string =>
+    date.toLocaleDateString(i18n.language === "zh" ? "zh-CN" : "en-US", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+
+  const resolvedTodayLabel = todayLabel ?? t("common.today");
+  const resolvedFormatDate = formatDate ?? defaultFormatDate;
   const isToday = isSameDay(selectedDate, new Date());
 
   return (
@@ -66,13 +70,13 @@ export function DateNavigationWidget({
             : "bg-secondary text-foreground hover:bg-accent",
         )}
       >
-        {todayLabel}
+        {resolvedTodayLabel}
       </button>
 
       {/* Previous day */}
       <button
         onClick={onPrevDay}
-        aria-label="Previous day"
+        aria-label={t("common.previousDay")}
         className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
       >
         <ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
@@ -88,7 +92,7 @@ export function DateNavigationWidget({
             : "cursor-default",
         )}
       >
-        <span>{formatDate(selectedDate)}</span>
+        <span>{resolvedFormatDate(selectedDate)}</span>
         {onToggleCalendar && (
           <CalendarIcon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
         )}
@@ -97,7 +101,7 @@ export function DateNavigationWidget({
       {/* Next day */}
       <button
         onClick={onNextDay}
-        aria-label="Next day"
+        aria-label={t("common.nextDay")}
         className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
       >
         <ChevronRight className="h-4 w-4" strokeWidth={1.5} />

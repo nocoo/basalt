@@ -1,24 +1,26 @@
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { useTranslation } from "react-i18next";
 import { LayoutGrid, BarChart3 } from "lucide-react";
 import { useProgressTrackingViewModel } from "@/viewmodels/useProgressTrackingViewModel";
 import { chartPrimary, chart, chartAxis } from "@/lib/palette";
 
 export default function ProgressTrackingPage() {
+  const { t } = useTranslation();
   const { summary, categories, comparisonData } = useProgressTrackingViewModel();
 
   return (
     <>
       <div className="grid grid-cols-1 gap-3 md:gap-4 sm:grid-cols-3">
         <div className="rounded-card bg-secondary p-4 md:p-5">
-          <p className="text-xs md:text-sm text-muted-foreground mb-1">Total Budget</p>
+          <p className="text-xs md:text-sm text-muted-foreground mb-1">{t("pages.progressTracking.totalBudget")}</p>
           <h2 className="text-xl md:text-2xl font-semibold text-foreground font-display tracking-tight">${summary.totalLimit.toLocaleString()}</h2>
         </div>
         <div className="rounded-card bg-secondary p-4 md:p-5">
-          <p className="text-xs md:text-sm text-muted-foreground mb-1">Spent So Far</p>
+          <p className="text-xs md:text-sm text-muted-foreground mb-1">{t("pages.progressTracking.spentSoFar")}</p>
           <h2 className="text-xl md:text-2xl font-semibold text-foreground font-display tracking-tight">${summary.totalSpent.toLocaleString()}</h2>
         </div>
         <div className="rounded-card bg-secondary p-4 md:p-5">
-          <p className="text-xs md:text-sm text-muted-foreground mb-1">Remaining</p>
+          <p className="text-xs md:text-sm text-muted-foreground mb-1">{t("pages.progressTracking.remaining")}</p>
           <h2 className="text-xl md:text-2xl font-semibold text-success font-display tracking-tight">${summary.remaining.toLocaleString()}</h2>
         </div>
       </div>
@@ -26,7 +28,7 @@ export default function ProgressTrackingPage() {
       <div className="mt-4 rounded-card bg-secondary p-4 md:p-5">
         <div className="flex items-center gap-2 mb-4">
           <LayoutGrid className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-          <p className="text-sm text-muted-foreground">Category Budgets</p>
+          <p className="text-sm text-muted-foreground">{t("pages.progressTracking.categoryBudgets")}</p>
         </div>
         <div className="flex flex-col gap-4">
           {categories.map((cat) => (
@@ -53,9 +55,9 @@ export default function ProgressTrackingPage() {
       <div className="mt-4 rounded-card bg-secondary p-4 md:p-5">
         <div className="flex items-center gap-2 mb-4">
           <BarChart3 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-          <p className="text-sm text-muted-foreground">Budget vs Actual</p>
+          <p className="text-sm text-muted-foreground">{t("pages.progressTracking.budgetVsActual")}</p>
         </div>
-        <div className="h-[180px] md:h-[200px]" role="img" aria-label="Budget vs actual spending grouped bar chart by month">
+        <div className="h-[180px] md:h-[200px]" role="img" aria-label={t("pages.progressTracking.budgetVsActualAria")}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={comparisonData} barGap={4}>
               <XAxis dataKey="month" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />

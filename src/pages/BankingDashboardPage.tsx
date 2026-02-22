@@ -1,4 +1,5 @@
 import { Landmark, CreditCard, TrendingUp, Wallet, ShieldCheck, ArrowDownLeft, ArrowUpRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { PageIntro } from "@/components/PageIntro";
 import { StatCardWidget, StatGrid } from "@/components/dashboard/StatCardWidget";
 import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
@@ -10,13 +11,6 @@ import { RadialProgressCard } from "@/components/dashboard/RadialProgressCard";
 import { ItemListCard } from "@/components/dashboard/ItemListCard";
 import { RecentListCard } from "@/components/dashboard/RecentListCard";
 
-const statCards = [
-  { title: "Assets", value: "$4.82M", subtitle: "Managed total", icon: Wallet, trend: { value: 4.8, label: "QoQ" } },
-  { title: "Liquidity", value: "$620k", subtitle: "On-hand cash", icon: CreditCard, trend: { value: 2.1, label: "QoQ" } },
-  { title: "Net Worth", value: "$3.12M", subtitle: "Household", icon: TrendingUp, trend: { value: 6.7, label: "YoY" } },
-  { title: "Risk", value: "Low", subtitle: "Portfolio tilt", icon: ShieldCheck, trend: { value: -3.2, label: "YoY" } },
-];
-
 const transfers = [
   { name: "Wire transfer", amount: "$120k", direction: "in" },
   { name: "Mortgage payment", amount: "$4.8k", direction: "out" },
@@ -24,12 +18,21 @@ const transfers = [
 ];
 
 export default function BankingDashboardPage() {
+  const { t } = useTranslation();
+
+  const statCards = [
+    { title: t("pages.banking.assets"), value: "$4.82M", subtitle: t("pages.banking.managedTotal"), icon: Wallet, trend: { value: 4.8, label: t("pages.banking.qoq") } },
+    { title: t("pages.banking.liquidity"), value: "$620k", subtitle: t("pages.banking.onHandCash"), icon: CreditCard, trend: { value: 2.1, label: t("pages.banking.qoq") } },
+    { title: t("pages.banking.netWorth"), value: "$3.12M", subtitle: t("pages.banking.household"), icon: TrendingUp, trend: { value: 6.7, label: t("pages.banking.yoy") } },
+    { title: t("pages.banking.risk"), value: t("pages.banking.low"), subtitle: t("pages.banking.portfolioTilt"), icon: ShieldCheck, trend: { value: -3.2, label: t("pages.banking.yoy") } },
+  ];
+
   return (
     <div className="space-y-4">
       <PageIntro
-        title="Banking & wealth management dashboard"
-        description="Professional banking view with portfolio mix, liquidity, cash flow, and compliance signals."
-        eyebrow="Banking"
+        title={t("pages.banking.title")}
+        description={t("pages.banking.description")}
+        eyebrow={t("pages.banking.eyebrow")}
         icon={Landmark}
       />
 
@@ -57,7 +60,7 @@ export default function BankingDashboardPage() {
         <div className="rounded-card bg-secondary p-4 md:p-5">
           <div className="mb-4 flex items-center gap-2">
             <CreditCard className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-            <p className="text-sm text-muted-foreground">Recent transfers</p>
+            <p className="text-sm text-muted-foreground">{t("pages.banking.recentTransfers")}</p>
           </div>
           <div className="space-y-3">
             {transfers.map((item) => (

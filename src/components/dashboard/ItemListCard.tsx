@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Wallet } from "lucide-react";
 
@@ -8,12 +9,13 @@ const accountItems = [
 ];
 
 export function ItemListCard() {
+  const { t } = useTranslation();
   return (
     <Card className="h-full rounded-card border-0 bg-secondary shadow-none">
       <CardHeader>
         <div className="flex items-center gap-2">
           <Wallet className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-          <CardTitle className="text-sm font-normal text-muted-foreground">Accounts</CardTitle>
+          <CardTitle className="text-sm font-normal text-muted-foreground">{t("dashboard.accountsTitle")}</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">

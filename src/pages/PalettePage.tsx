@@ -3,6 +3,7 @@ import {
   XAxis, YAxis, ResponsiveContainer, AreaChart, Area,
 } from "recharts";
 import { Palette, LineChart as LineChartIcon, Target, BarChart3, Activity } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { CHART_COLORS, chart, chartPrimary, chartPositive, chartNegative, chartAxis } from "@/lib/palette";
 
 // ── Mock data for example charts ──
@@ -120,10 +121,28 @@ function Section({ title, icon: Icon, children }: { title: string; icon?: React.
 }
 
 export default function PalettePage() {
+  const { t } = useTranslation();
+
+  const lineLegend = [
+    { label: t("pages.palette.seriesA"), color: chart.primary },
+    { label: t("pages.palette.seriesB"), color: chart.purple },
+    { label: t("pages.palette.seriesC"), color: chart.green },
+  ];
+
+  const barLegend = [
+    { label: t("pages.palette.income"), color: chartPrimary },
+    { label: t("pages.palette.expense"), color: chart.gray },
+  ];
+
+  const areaLegend = [
+    { label: t("pages.palette.inflow"), color: chartPositive },
+    { label: t("pages.palette.outflow"), color: chartNegative },
+  ];
+
   return (
     <>
       {/* Base Colors */}
-      <Section title="Base Colors" icon={Palette}>
+      <Section title={t("pages.palette.baseColors")} icon={Palette}>
         <div className="flex flex-wrap gap-5">
           {baseColors.map((c) => (
             <Swatch key={c.token} token={c.token} label={c.label} subtitle={c.tier || undefined} />
@@ -133,14 +152,14 @@ export default function PalettePage() {
 
       {/* Chart Palette */}
       <div className="mt-4">
-        <Section title="Visualization Palette" icon={Palette}>
+        <Section title={t("pages.palette.vizPalette")} icon={Palette}>
           <div className="grid grid-cols-6 gap-4 sm:grid-cols-8 lg:grid-cols-12">
             {chartColors.map((c) => (
               <Swatch key={c.token} token={c.token} label={c.label} subtitle={c.semantic || undefined} />
             ))}
           </div>
           <div className="mt-5 pt-4 border-t border-border">
-            <p className="text-xs text-muted-foreground mb-3">Utility Tokens</p>
+            <p className="text-xs text-muted-foreground mb-3">{t("pages.palette.utilityTokens")}</p>
             <div className="flex flex-wrap gap-5">
               {utilityColors.map((c) => (
                 <Swatch key={c.token} token={c.token} label={c.label} />
@@ -153,8 +172,8 @@ export default function PalettePage() {
       {/* Chart Examples */}
       <div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-2">
         {/* Line Chart */}
-        <Section title="Line Chart" icon={LineChartIcon}>
-          <div className="h-[200px]" role="img" aria-label="Example multi-series line chart">
+        <Section title={t("pages.palette.lineChart")} icon={LineChartIcon}>
+          <div className="h-[200px]" role="img" aria-label={t("pages.palette.lineChartAria")}>
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={lineData}>
                 <XAxis dataKey="name" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -166,7 +185,7 @@ export default function PalettePage() {
             </ResponsiveContainer>
           </div>
           <div className="mt-3 flex flex-wrap gap-4">
-            {[{ label: "Series A", color: chart.primary }, { label: "Series B", color: chart.purple }, { label: "Series C", color: chart.green }].map((s) => (
+            {lineLegend.map((s) => (
               <div key={s.label} className="flex items-center gap-2">
                 <div className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />
                 <span className="text-xs text-muted-foreground">{s.label}</span>
@@ -176,9 +195,9 @@ export default function PalettePage() {
         </Section>
 
         {/* Donut Chart */}
-        <Section title="Donut Chart" icon={Target}>
+        <Section title={t("pages.palette.donutChart")} icon={Target}>
           <div className="flex flex-col items-center">
-            <div className="h-[180px] w-[180px]" role="img" aria-label="Example donut chart showing asset allocation">
+            <div className="h-[180px] w-[180px]" role="img" aria-label={t("pages.palette.donutChartAria")}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie data={pieData} cx="50%" cy="50%" innerRadius={45} outerRadius={70} dataKey="value" strokeWidth={0} />
@@ -200,8 +219,8 @@ export default function PalettePage() {
         </Section>
 
         {/* Bar Chart */}
-        <Section title="Grouped Bar Chart" icon={BarChart3}>
-          <div className="h-[200px]" role="img" aria-label="Example grouped bar chart showing income vs expense">
+        <Section title={t("pages.palette.groupedBarChart")} icon={BarChart3}>
+          <div className="h-[200px]" role="img" aria-label={t("pages.palette.groupedBarChartAria")}>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={barData} barGap={4}>
                 <XAxis dataKey="name" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -212,7 +231,7 @@ export default function PalettePage() {
             </ResponsiveContainer>
           </div>
           <div className="mt-3 flex flex-wrap gap-4">
-            {[{ label: "Income", color: chartPrimary }, { label: "Expense", color: chart.gray }].map((s) => (
+            {barLegend.map((s) => (
               <div key={s.label} className="flex items-center gap-2">
                 <div className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />
                 <span className="text-xs text-muted-foreground">{s.label}</span>
@@ -222,8 +241,8 @@ export default function PalettePage() {
         </Section>
 
         {/* Area Chart */}
-        <Section title="Area Chart (Positive / Negative)" icon={Activity}>
-          <div className="h-[200px]" role="img" aria-label="Example area chart showing positive and negative cash flow">
+        <Section title={t("pages.palette.areaChart")} icon={Activity}>
+          <div className="h-[200px]" role="img" aria-label={t("pages.palette.areaChartAria")}>
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart data={areaData}>
                 <XAxis dataKey="name" tick={{ fill: chartAxis, fontSize: 11 }} axisLine={false} tickLine={false} />
@@ -244,7 +263,7 @@ export default function PalettePage() {
             </ResponsiveContainer>
           </div>
           <div className="mt-3 flex flex-wrap gap-4">
-            {[{ label: "Inflow", color: chartPositive }, { label: "Outflow", color: chartNegative }].map((s) => (
+            {areaLegend.map((s) => (
               <div key={s.label} className="flex items-center gap-2">
                 <div className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />
                 <span className="text-xs text-muted-foreground">{s.label}</span>

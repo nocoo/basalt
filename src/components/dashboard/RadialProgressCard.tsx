@@ -1,5 +1,6 @@
 import { RadialBarChart, RadialBar, ResponsiveContainer } from "recharts";
 import { Goal } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { chart } from "@/lib/palette";
 
@@ -13,17 +14,18 @@ const data = [
 ];
 
 export function RadialProgressCard() {
+  const { t } = useTranslation();
   return (
     <Card className="h-full rounded-card border-0 bg-secondary shadow-none">
       <CardHeader>
         <div className="flex items-center gap-2">
           <Goal className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-          <CardTitle className="text-sm font-normal text-muted-foreground">Savings Goal</CardTitle>
+          <CardTitle className="text-sm font-normal text-muted-foreground">{t("dashboard.savingsGoal")}</CardTitle>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">
         <div className="flex flex-1 flex-col items-center min-h-0">
-          <div className="flex-1 min-h-0 w-full flex items-center justify-center" role="img" aria-label="Savings goal radial progress: 68% complete, $6,800 saved of $10,000 target">
+          <div className="flex-1 min-h-0 w-full flex items-center justify-center" role="img" aria-label={t("dashboard.savingsGoalAria", { percent: 68, saved: "6,800", target: "10,000" })}>
             <div className="relative aspect-square h-full max-h-[180px] min-h-[100px]">
               <ResponsiveContainer width="100%" height="100%">
                 <RadialBarChart
@@ -47,15 +49,15 @@ export function RadialProgressCard() {
           <div className="mt-3 grid w-full grid-cols-3 gap-x-4 gap-y-3">
             <div className="flex flex-col items-center gap-0.5">
               <span className="text-sm font-medium text-foreground font-display">${saved.toLocaleString()}</span>
-              <span className="text-xs text-muted-foreground">Saved</span>
+              <span className="text-xs text-muted-foreground">{t("dashboard.saved")}</span>
             </div>
             <div className="flex flex-col items-center gap-0.5">
               <span className="text-sm font-medium text-foreground font-display">${goal.toLocaleString()}</span>
-              <span className="text-xs text-muted-foreground">Target</span>
+              <span className="text-xs text-muted-foreground">{t("dashboard.target")}</span>
             </div>
             <div className="flex flex-col items-center gap-0.5">
               <span className="text-sm font-medium text-foreground font-display">${(goal - saved).toLocaleString()}</span>
-              <span className="text-xs text-muted-foreground">Remaining</span>
+              <span className="text-xs text-muted-foreground">{t("dashboard.remaining")}</span>
             </div>
           </div>
         </div>

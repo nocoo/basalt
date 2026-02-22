@@ -5,6 +5,7 @@ import {
   Filter, Search, SlidersHorizontal, Table, Circle, X,
   Sparkles, BadgeCheck, AlertTriangle, Info,
 } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { PageIntro } from "@/components/PageIntro";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -36,13 +37,6 @@ const TIMELINE = [
   { icon: GitCommit, color: "text-blue-500", title: "Code merged", desc: "PR #142 merged into main", time: "15 min ago" },
   { icon: MessageSquare, color: "text-amber-500", title: "New comment", desc: "Alice left a review", time: "1 hr ago" },
   { icon: Star, color: "text-purple-500", title: "Milestone reached", desc: "Sprint 8 completed", time: "3 hr ago" },
-];
-
-const KPI_DATA = [
-  { label: "Revenue", value: "$48.2k", change: "+12.5%", trend: "up" as const },
-  { label: "Users", value: "2,841", change: "+8.2%", trend: "up" as const },
-  { label: "Bounce Rate", value: "24.3%", change: "-3.1%", trend: "down" as const },
-  { label: "Avg. Session", value: "4m 32s", change: "0%", trend: "flat" as const },
 ];
 
 const TABLE_ROWS = [
@@ -85,16 +79,32 @@ const DOT_PILLS = [
 ];
 
 export default function DataPage() {
+  const { t } = useTranslation();
+
+  const KPI_DATA = [
+    { label: t("pages.data.revenue"), value: "$48.2k", change: "+12.5%", trend: "up" as const },
+    { label: t("pages.data.users"), value: "2,841", change: "+8.2%", trend: "up" as const },
+    { label: t("pages.data.bounceRate"), value: "24.3%", change: "-3.1%", trend: "down" as const },
+    { label: t("pages.data.avgSession"), value: "4m 32s", change: "0%", trend: "flat" as const },
+  ];
+
+  const KEY_VALUE_DATA = [
+    { key: t("common.status"), value: t("pages.data.active") },
+    { key: t("pages.data.plan"), value: t("pages.data.enterprise") },
+    { key: t("pages.data.created"), value: "Jan 15, 2026" },
+    { key: t("pages.data.lastLogin"), value: t("pages.data.hoursAgo") },
+  ];
+
   return (
     <div className="space-y-4">
       <PageIntro
-        title="Data display components"
-        description="Avatars, badges, tables, pills, timelines, and stat tiles for presenting data."
-        eyebrow="Data"
+        title={t("pages.data.title")}
+        description={t("pages.data.description")}
+        eyebrow={t("pages.data.eyebrow")}
         icon={Eye}
       />
 
-      <Section title="Stat Tiles / KPIs" icon={TrendingUp}>
+      <Section title={t("pages.data.statTiles")} icon={TrendingUp}>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {KPI_DATA.map((kpi) => (
             <div key={kpi.label} className="rounded-widget border border-border bg-card p-4">
@@ -107,7 +117,7 @@ export default function DataPage() {
                 <span className={`text-xs font-medium ${kpi.trend === "up" ? "text-emerald-500" : kpi.trend === "down" ? "text-red-500" : "text-muted-foreground"}`}>
                   {kpi.change}
                 </span>
-                <span className="text-xs text-muted-foreground">vs last month</span>
+                <span className="text-xs text-muted-foreground">{t("common.vsLastMonth")}</span>
               </div>
             </div>
           ))}
@@ -116,25 +126,25 @@ export default function DataPage() {
 
       <div className="rounded-card bg-secondary overflow-hidden">
         <div className="flex items-center justify-between px-5 py-3 border-b border-border">
-          <p className="text-sm text-muted-foreground">Data Table</p>
+          <p className="text-sm text-muted-foreground">{t("pages.data.dataTable")}</p>
           <div className="flex items-center gap-2">
             <div className="relative min-w-[180px]">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" strokeWidth={1.5} />
-              <Input placeholder="Search" className="rounded-widget border-border bg-card pl-10 text-sm h-8" />
+              <Input placeholder={t("pages.data.searchPlaceholder")} className="rounded-widget border-border bg-card pl-10 text-sm h-8" />
             </div>
             <button className="flex items-center gap-2 rounded-widget bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground">
-              <Filter className="h-3.5 w-3.5" strokeWidth={1.5} /> Filter
+              <Filter className="h-3.5 w-3.5" strokeWidth={1.5} /> {t("common.filter")}
             </button>
           </div>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-border text-left text-xs text-muted-foreground">
-              <th className="px-5 py-3 font-normal">Invoice</th>
-              <th className="px-5 py-3 font-normal">Customer</th>
-              <th className="px-5 py-3 font-normal">Status</th>
-              <th className="px-5 py-3 font-normal">Amount</th>
-              <th className="px-5 py-3 font-normal">Date</th>
+              <th className="px-5 py-3 font-normal">{t("pages.data.invoice")}</th>
+              <th className="px-5 py-3 font-normal">{t("pages.data.customer")}</th>
+              <th className="px-5 py-3 font-normal">{t("common.status")}</th>
+              <th className="px-5 py-3 font-normal">{t("common.amount")}</th>
+              <th className="px-5 py-3 font-normal">{t("common.date")}</th>
             </tr>
           </thead>
           <tbody>
@@ -157,10 +167,10 @@ export default function DataPage() {
         </table>
       </div>
 
-      <Section title="Avatars" icon={Users}>
+      <Section title={t("pages.data.avatars")} icon={Users}>
         <div className="space-y-4">
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">sizes</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.data.sizes")}</p>
             <div className="flex items-end gap-3">
               {[
                 { size: "h-6 w-6", text: "text-[9px]" },
@@ -176,7 +186,7 @@ export default function DataPage() {
             </div>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">stacked group</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.data.stackedGroup")}</p>
             <div className="flex -space-x-2">
               {PEOPLE.map((p) => (
                 <Avatar key={p.seed} className="h-9 w-9 border-2 border-background">
@@ -190,10 +200,10 @@ export default function DataPage() {
         </div>
       </Section>
 
-      <Section title="Badges" icon={Tag}>
+      <Section title={t("pages.data.badges")} icon={Tag}>
         <div className="space-y-4">
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">variants</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.data.variants")}</p>
             <div className="flex flex-wrap items-center gap-2">
               <Badge>Default</Badge>
               <Badge variant="secondary">Secondary</Badge>
@@ -202,7 +212,7 @@ export default function DataPage() {
             </div>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">semantic</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.data.semantic")}</p>
             <div className="flex flex-wrap items-center gap-2">
               <Badge className="border-transparent bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">Active</Badge>
               <Badge className="border-transparent bg-amber-500/15 text-amber-600 dark:text-amber-400">Pending</Badge>
@@ -213,10 +223,10 @@ export default function DataPage() {
         </div>
       </Section>
 
-      <Section title="Pills" icon={Circle}>
+      <Section title={t("pages.data.pills")} icon={Circle}>
         <div className="space-y-4">
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">solid</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.data.solid")}</p>
             <div className="flex flex-wrap gap-2">
               {SOLID_PILLS.map((pill) => (
                 <span key={pill.label} className={`rounded-full px-3 py-1 text-xs font-medium ${pill.className}`}>{pill.label}</span>
@@ -224,7 +234,7 @@ export default function DataPage() {
             </div>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">soft</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.data.soft")}</p>
             <div className="flex flex-wrap gap-2">
               {SOFT_PILLS.map((pill) => (
                 <span key={pill.label} className={`rounded-full px-3 py-1 text-xs font-medium ${pill.className}`}>{pill.label}</span>
@@ -232,7 +242,7 @@ export default function DataPage() {
             </div>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">outline</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.data.outline")}</p>
             <div className="flex flex-wrap gap-2">
               {OUTLINE_PILLS.map((pill) => (
                 <span key={pill.label} className={`rounded-full px-3 py-1 text-xs font-medium ${pill.className}`}>{pill.label}</span>
@@ -240,7 +250,7 @@ export default function DataPage() {
             </div>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">with icons</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.data.withIcons")}</p>
             <div className="flex flex-wrap gap-2">
               {ICON_PILLS.map((pill) => (
                 <span key={pill.label} className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ${pill.className}`}>
@@ -250,7 +260,7 @@ export default function DataPage() {
             </div>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground mb-2 font-mono">with dot indicators</p>
+            <p className="text-xs text-muted-foreground mb-2 font-mono">{t("pages.data.withDotIndicators")}</p>
             <div className="flex flex-wrap gap-2">
               {DOT_PILLS.map((pill) => (
                 <span key={pill.label} className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ${pill.className}`}>
@@ -262,7 +272,7 @@ export default function DataPage() {
         </div>
       </Section>
 
-      <Section title="Timeline / Activity Feed" icon={Clock}>
+      <Section title={t("pages.data.timelineFeed")} icon={Clock}>
         <div className="rounded-widget border border-border bg-card p-4">
           <div className="space-y-0">
             {TIMELINE.map((item, i) => (
@@ -284,7 +294,7 @@ export default function DataPage() {
         </div>
       </Section>
 
-      <Section title="List Items" icon={Users}>
+      <Section title={t("pages.data.listItems")} icon={Users}>
         <div className="rounded-widget border border-border bg-card divide-y divide-border">
           {PEOPLE.slice(0, 4).map((person) => (
             <div key={person.seed} className="flex items-center gap-3 px-4 py-3">
@@ -304,15 +314,10 @@ export default function DataPage() {
         </div>
       </Section>
 
-      <Section title="Key-Value Display" icon={Eye}>
+      <Section title={t("pages.data.keyValueDisplay")} icon={Eye}>
         <div className="rounded-widget border border-border bg-card p-4">
           <div className="grid grid-cols-1 gap-0 sm:grid-cols-2">
-            {[
-              { key: "Status", value: "Active" },
-              { key: "Plan", value: "Enterprise" },
-              { key: "Created", value: "Jan 15, 2026" },
-              { key: "Last login", value: "2 hours ago" },
-            ].map((item, i) => (
+            {KEY_VALUE_DATA.map((item, i) => (
               <div key={item.key}>
                 <div className="flex items-center justify-between py-2.5 px-1">
                   <span className="text-xs text-muted-foreground">{item.key}</span>

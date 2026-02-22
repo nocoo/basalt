@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { BarChart as RechartsBarChart, Bar, ResponsiveContainer, XAxis, Tooltip } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CHART_COLORS, chartAxis } from "@/lib/palette";
@@ -11,10 +12,11 @@ const stackedData = [
 ];
 
 export function StackedBarCard() {
+  const { t } = useTranslation();
   return (
     <Card className="rounded-card border-border bg-card shadow-none">
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm text-muted-foreground">Stacked engagement</CardTitle>
+        <CardTitle className="text-sm text-muted-foreground">{t("dashboard.stackedEngagement")}</CardTitle>
       </CardHeader>
       <CardContent className="h-56">
         <ResponsiveContainer width="100%" height="100%">

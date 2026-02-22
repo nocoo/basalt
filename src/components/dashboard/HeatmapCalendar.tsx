@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import {
   Tooltip,
@@ -65,12 +66,6 @@ export const heatmapColorScales = {
 
 const defaultColorScale = heatmapColorScales.green;
 
-const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-const MONTHS = [
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
-];
-
 /** Get all dates in a year, grouped by week */
 function getYearWeeks(year: number): Date[][] {
   const weeks: Date[][] = [];
@@ -135,6 +130,11 @@ export function HeatmapCalendar({
   cellGap = 2,
   className,
 }: HeatmapCalendarProps) {
+  const { t } = useTranslation();
+
+  const WEEKDAYS = [t("dashboard.weekdays.sun"), t("dashboard.weekdays.mon"), t("dashboard.weekdays.tue"), t("dashboard.weekdays.wed"), t("dashboard.weekdays.thu"), t("dashboard.weekdays.fri"), t("dashboard.weekdays.sat")];
+  const MONTHS = [t("dashboard.months.jan"), t("dashboard.months.feb"), t("dashboard.months.mar"), t("dashboard.months.apr"), t("dashboard.months.may"), t("dashboard.months.jun"), t("dashboard.months.jul"), t("dashboard.months.aug"), t("dashboard.months.sep"), t("dashboard.months.oct"), t("dashboard.months.nov"), t("dashboard.months.dec")];
+
   const { weeks, dataMap, maxValue, monthLabels } = useMemo(() => {
     const weeks = getYearWeeks(year);
     const dataMap = new Map<string, number>();
@@ -161,7 +161,7 @@ export function HeatmapCalendar({
     });
 
     return { weeks, dataMap, maxValue, monthLabels };
-  }, [data, year]);
+  }, [data, year, MONTHS]);
 
   const labelWidth = 30;
 
@@ -262,7 +262,7 @@ export function HeatmapCalendar({
 
           {/* Legend */}
           <div className="flex items-center justify-end gap-1 mt-2 text-xs text-muted-foreground">
-            <span>Less</span>
+            <span>{t("common.less")}</span>
             {colorScale.map((color, i) => (
               <div
                 key={i}
@@ -274,7 +274,7 @@ export function HeatmapCalendar({
                 }}
               />
             ))}
-            <span>More</span>
+            <span>{t("common.more")}</span>
           </div>
         </div>
       </TooltipProvider>

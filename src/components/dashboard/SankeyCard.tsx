@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Sankey, ResponsiveContainer, Tooltip } from "recharts";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CHART_COLORS } from "@/lib/palette";
@@ -19,10 +20,11 @@ const data = {
 };
 
 export function SankeyCard() {
+  const { t } = useTranslation();
   return (
     <Card className="rounded-card border-border bg-card shadow-none">
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm text-muted-foreground">User flow (Sankey)</CardTitle>
+        <CardTitle className="text-sm text-muted-foreground">{t("dashboard.userFlowSankey")}</CardTitle>
       </CardHeader>
       <CardContent className="h-56">
         <ResponsiveContainer width="100%" height="100%">

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, CartesianGrid } from "recharts";
 import { ArrowUpDown } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -13,28 +14,29 @@ const data = [
 ];
 
 export function GroupedBarCard() {
+  const { t } = useTranslation();
   return (
     <Card className="h-full rounded-card border-0 bg-secondary shadow-none">
       <CardHeader>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ArrowUpDown className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-            <CardTitle className="text-sm font-normal text-muted-foreground">Income vs Expense</CardTitle>
+            <CardTitle className="text-sm font-normal text-muted-foreground">{t("dashboard.incomeVsExpense")}</CardTitle>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-1.5">
               <div className="h-2 w-2 rounded-full" style={{ background: chart.green }} />
-              <span className="text-xs text-muted-foreground">Income</span>
+              <span className="text-xs text-muted-foreground">{t("dashboard.income")}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="h-2 w-2 rounded-full" style={{ background: chart.rose }} />
-              <span className="text-xs text-muted-foreground">Expense</span>
+              <span className="text-xs text-muted-foreground">{t("dashboard.expense")}</span>
             </div>
           </div>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">
-        <div className="flex-1 min-h-[200px]" role="img" aria-label="Grouped bar chart comparing monthly income and expense from July to December">
+        <div className="flex-1 min-h-[200px]" role="img" aria-label={t("dashboard.incomeVsExpenseAria")}>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data} barGap={4} barCategoryGap="20%">
               <CartesianGrid strokeDasharray="3 3" stroke={chartAxis} strokeOpacity={0.15} vertical={false} />

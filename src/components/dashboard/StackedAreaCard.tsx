@@ -5,6 +5,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CHART_COLORS, chartAxis } from "@/lib/palette";
 
@@ -17,10 +18,11 @@ const data = [
 ];
 
 export function StackedAreaCard() {
+  const { t } = useTranslation();
   return (
     <Card className="rounded-card border-border bg-card shadow-none">
       <CardHeader className="pb-2">
-        <CardTitle className="text-sm text-muted-foreground">Stacked activity</CardTitle>
+        <CardTitle className="text-sm text-muted-foreground">{t("dashboard.stackedActivity")}</CardTitle>
       </CardHeader>
       <CardContent className="h-56">
         <ResponsiveContainer width="100%" height="100%">

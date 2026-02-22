@@ -1,4 +1,5 @@
 import { Mountain, Wallet } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 function Barcode() {
   // Varying bar widths for a realistic barcode pattern
@@ -17,6 +18,7 @@ function Barcode() {
 }
 
 export default function BadgeLoginPage() {
+  const { t } = useTranslation();
   const year = new Date().getFullYear();
   const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
 
@@ -70,7 +72,7 @@ export default function BadgeLoginPage() {
                 <span className="text-sm font-semibold text-primary-foreground">basalt.</span>
               </div>
               <span className="text-[10px] font-medium uppercase tracking-widest text-primary-foreground/60">
-                Visitor
+                {t("pages.badgeLogin.visitor")}
               </span>
             </div>
             {/* Barcode row */}
@@ -91,8 +93,8 @@ export default function BadgeLoginPage() {
               <Mountain className="h-10 w-10 text-muted-foreground" strokeWidth={1.5} />
             </div>
 
-            <p className="mt-5 text-lg font-semibold text-foreground">Welcome</p>
-            <p className="mt-1 text-xs text-muted-foreground">Sign in to get your badge</p>
+            <p className="mt-5 text-lg font-semibold text-foreground">{t("pages.badgeLogin.welcome")}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{t("pages.badgeLogin.signInDesc")}</p>
 
             {/* Divider */}
             <div className="mt-5 h-px w-full bg-border" />
@@ -120,12 +122,12 @@ export default function BadgeLoginPage() {
                   fill="#EA4335"
                 />
               </svg>
-              Continue with Google
+              {t("pages.badgeLogin.continueWithGoogle")}
             </button>
 
             {/* Terms */}
             <p className="mt-3 text-center text-[10px] leading-relaxed text-muted-foreground/60">
-              By signing in you agree to our Terms of Service and Privacy Policy
+              {t("pages.badgeLogin.termsText")}
             </p>
           </div>
 
@@ -133,7 +135,7 @@ export default function BadgeLoginPage() {
           <div className="absolute bottom-0 left-0 right-0 flex items-center justify-center border-t border-border bg-secondary/50 py-2.5">
             <div className="flex items-center gap-1.5">
               <div className="h-1.5 w-1.5 rounded-full bg-success animate-pulse" />
-              <span className="text-[10px] text-muted-foreground">Secure authentication</span>
+              <span className="text-[10px] text-muted-foreground">{t("pages.badgeLogin.secureAuth")}</span>
             </div>
           </div>
         </div>
