@@ -299,6 +299,9 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
               <div className="flex items-center gap-3">
                 <Mountain className="h-5 w-5 text-primary" strokeWidth={1.5} />
                 <span className="text-lg md:text-xl font-semibold text-foreground">basalt.</span>
+                <span className="rounded-md bg-secondary px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground leading-none">
+                  v{__APP_VERSION__}
+                </span>
               </div>
               <button
                 onClick={onToggle}
