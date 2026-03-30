@@ -73,7 +73,7 @@
 # Install dependencies
 bun install
 
-# Start dev server (port 7017)
+# Start dev server (port 7003)
 bun dev
 
 # Build for production

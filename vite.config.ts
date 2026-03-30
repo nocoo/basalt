@@ -29,7 +29,7 @@ export default defineConfig(() => ({
   },
   server: {
     host: "::",
-    port: 7017,
+    port: 7003,
     allowedHosts: ["basalt.dev.hexly.ai"],
     hmr: {
       overlay: false,
