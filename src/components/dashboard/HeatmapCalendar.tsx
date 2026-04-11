@@ -33,6 +33,7 @@ export interface HeatmapCalendarProps {
 }
 
 /** Predefined color scale presets using CSS variables */
+// eslint-disable-next-line react-refresh/only-export-components
 export const heatmapColorScales = {
   green: [
     "hsl(var(--muted))",
@@ -133,9 +134,9 @@ export function HeatmapCalendar({
   const { t } = useTranslation();
 
   const WEEKDAYS = [t("dashboard.weekdays.sun"), t("dashboard.weekdays.mon"), t("dashboard.weekdays.tue"), t("dashboard.weekdays.wed"), t("dashboard.weekdays.thu"), t("dashboard.weekdays.fri"), t("dashboard.weekdays.sat")];
-  const MONTHS = [t("dashboard.months.jan"), t("dashboard.months.feb"), t("dashboard.months.mar"), t("dashboard.months.apr"), t("dashboard.months.may"), t("dashboard.months.jun"), t("dashboard.months.jul"), t("dashboard.months.aug"), t("dashboard.months.sep"), t("dashboard.months.oct"), t("dashboard.months.nov"), t("dashboard.months.dec")];
 
   const { weeks, dataMap, maxValue, monthLabels } = useMemo(() => {
+    const months = [t("dashboard.months.jan"), t("dashboard.months.feb"), t("dashboard.months.mar"), t("dashboard.months.apr"), t("dashboard.months.may"), t("dashboard.months.jun"), t("dashboard.months.jul"), t("dashboard.months.aug"), t("dashboard.months.sep"), t("dashboard.months.oct"), t("dashboard.months.nov"), t("dashboard.months.dec")];
     const weeks = getYearWeeks(year);
     const dataMap = new Map<string, number>();
     let maxValue = 0;
@@ -154,14 +155,14 @@ export function HeatmapCalendar({
       if (firstDayOfWeek) {
         const month = firstDayOfWeek.getMonth();
         if (month !== lastMonth) {
-          monthLabels.push({ month: MONTHS[month], weekIndex });
+          monthLabels.push({ month: months[month], weekIndex });
           lastMonth = month;
         }
       }
     });
 
     return { weeks, dataMap, maxValue, monthLabels };
-  }, [data, year, MONTHS]);
+  }, [data, year, t]);
 
   const labelWidth = 30;
 
