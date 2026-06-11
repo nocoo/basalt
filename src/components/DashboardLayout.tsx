@@ -5,7 +5,8 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { Menu, Github } from "lucide-react";
+import { Menu } from "lucide-react";
+import { Github } from "@/components/icons/github";
 import { cn } from "@/lib/utils";
 
 // Map route paths to i18n keys
