@@ -7,6 +7,7 @@
     "paths": {
       "@/*": ["./src/*"]
     },
+    "ignoreDeprecations": "6.0",
     "noUnusedParameters": false,
     "skipLibCheck": true,
     "allowJs": true,
