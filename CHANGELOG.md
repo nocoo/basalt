@@ -1,6 +1,28 @@
 # Changelog
 
-## [1.1.0] - 2026-05-01n### Changedn- Minor version bump to validate CI/CD pipelinen
+## [1.1.1] - 2026-06-11
+
+### Changed
+
+- **Dependencies**: Bumped 46 dependencies across patch, minor, and MAJOR upgrades.
+  - Radix UI suite: 24 packages bumped to latest patch/minor versions.
+  - **MAJOR**: `lucide-react` 0.563 → 1.17 (Github icon extracted to local component, brand icons removed in v1).
+  - **MAJOR**: `eslint-plugin-react-hooks` 5.2 → 7.1 (new `set-state-in-effect` rule).
+  - **MAJOR**: `eslint` 9 → 10, `@eslint/js` 9 → 10.
+  - **MAJOR**: `typescript` 5.9 → 6.0 (added `ignoreDeprecations: "6.0"` migration shim for `baseUrl`).
+  - **MAJOR**: `i18next` 25 → 26, `react-i18next` 16 → 17 (configured together).
+  - **MAJOR**: `sonner` 1.7 → 2.0, `tailwind-merge` 2.6 → 3.6, `jsdom` 28 → 29, `@types/node` 22 → 25, `globals` 15 → 17.
+  - Patch: react/react-dom 19.2.6 → 19.2.7, vite 8.0.10 → 8.0.16, vitest 4.1.6 → 4.1.8, plus other minor/patch bumps.
+
+### Added
+
+- `src/components/icons/github.tsx` — local Github icon component using `createLucideIcon`, replacing the brand icon removed from lucide-react v1.
+
+## [1.1.0] - 2026-05-01
+
+### Changed
+
+- Minor version bump to validate CI/CD pipeline.
 
 All notable changes to this project will be documented in this file.
 
