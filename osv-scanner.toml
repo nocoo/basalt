@@ -1,17 +1,3 @@
-# Indirect dependencies from eslint/typescript-eslint toolchain (devDependencies)
-
-[[IgnoredVulns]]
-id = "GHSA-f886-m6hf-6m8v"
-reason = "Indirect: brace-expansion via minimatch (eslint, @typescript-eslint)"
-
-[[IgnoredVulns]]
-id = "GHSA-25h7-pfq9-p65f"
-reason = "Indirect: flatted via flat-cache (eslint)"
-
-[[IgnoredVulns]]
-id = "GHSA-rf6f-7fwh-wjgh"
-reason = "Indirect: flatted via flat-cache (eslint)"
-
 # Indirect dependencies from vitest (devDependency)
 
 [[IgnoredVulns]]
