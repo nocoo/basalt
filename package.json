@@ -16,7 +16,7 @@
 		"test:coverage": "vitest run --coverage",
 		"test:watch": "vitest",
 		"prepare": "husky",
-		"typecheck": "tsc --noEmit"
+		"typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit"
 	},
 	"dependencies": {
 		"@radix-ui/react-accordion": "1.2.16",

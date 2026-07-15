@@ -48,11 +48,11 @@ export function DashboardLayout() {
 	const titleKey = PAGE_TITLE_KEYS[location.pathname] ?? "nav.dashboard";
 	const title = t(titleKey);
 
-	// Close mobile sidebar on route change
+	// Close mobile sidebar on route change: pathname is the intentional trigger.
+	// biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, not a value used inside
 	useEffect(() => {
-		// eslint-disable-next-line react-hooks/set-state-in-effect -- syncing UI state to route change is intentional
 		setMobileOpen(false);
-	}, []);
+	}, [location.pathname]);
 
 	// Prevent body scroll when mobile sidebar is open
 	useEffect(() => {
