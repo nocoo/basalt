@@ -28,7 +28,6 @@ export interface HeatmapCalendarProps {
 }
 
 /** Predefined color scale presets using CSS variables */
-// eslint-disable-next-line react-refresh/only-export-components
 export const heatmapColorScales = {
 	green: [
 		"hsl(var(--muted))",
