@@ -1,39 +1,39 @@
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const data = [
-  { label: "Active", value: 62 },
-  { label: "Idle", value: 28 },
-  { label: "Churn", value: 10 },
+	{ label: "Active", value: 62 },
+	{ label: "Idle", value: 28 },
+	{ label: "Churn", value: 10 },
 ];
 
 export function MiniDonutCard() {
-  const { t } = useTranslation();
-  return (
-    <Card className="rounded-card border-border bg-card shadow-none">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-sm text-muted-foreground">{t("dashboard.miniDonut")}</CardTitle>
-      </CardHeader>
-      <CardContent className="flex items-center gap-4">
-        <div className="h-24 w-24">
-          <DonutChartWidget data={data} height={96} />
-        </div>
-        <div className="space-y-2 text-xs text-muted-foreground">
-          <div className="flex items-center justify-between gap-6">
-            <span>{t("dashboard.activeLabel")}</span>
-            <span className="text-foreground">62%</span>
-          </div>
-          <div className="flex items-center justify-between gap-6">
-            <span>{t("dashboard.idleLabel")}</span>
-            <span className="text-foreground">28%</span>
-          </div>
-          <div className="flex items-center justify-between gap-6">
-            <span>{t("dashboard.churnLabel")}</span>
-            <span className="text-foreground">10%</span>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
+	const { t } = useTranslation();
+	return (
+		<Card className="rounded-card border-border bg-card shadow-none">
+			<CardHeader className="pb-2">
+				<CardTitle className="text-sm text-muted-foreground">{t("dashboard.miniDonut")}</CardTitle>
+			</CardHeader>
+			<CardContent className="flex items-center gap-4">
+				<div className="h-24 w-24">
+					<DonutChartWidget data={data} height={96} />
+				</div>
+				<div className="space-y-2 text-xs text-muted-foreground">
+					<div className="flex items-center justify-between gap-6">
+						<span>{t("dashboard.activeLabel")}</span>
+						<span className="text-foreground">62%</span>
+					</div>
+					<div className="flex items-center justify-between gap-6">
+						<span>{t("dashboard.idleLabel")}</span>
+						<span className="text-foreground">28%</span>
+					</div>
+					<div className="flex items-center justify-between gap-6">
+						<span>{t("dashboard.churnLabel")}</span>
+						<span className="text-foreground">10%</span>
+					</div>
+				</div>
+			</CardContent>
+		</Card>
+	);
 }
