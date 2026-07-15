@@ -1,5 +1,32 @@
 # Changelog
 
+## [1.2.1] - 2026-07-15
+
+### Changed
+
+- **Toolchain**: Replaced ESLint (with `typescript-eslint`) by [Biome](https://biomejs.dev) 2.5.3.
+  Biome is now the single tool for lint + format + import sorting. `eslint.config.js` is deleted;
+  `biome.json` at repo root holds all rules (preset `recommended` plus tightened
+  `noUnusedImports`, `noUnusedVariables`, `noNonNullAssertion`, `useConst`, `noDangerouslySetInnerHtml`).
+- **TypeScript**: Bumped `typescript` 6.0 → 7.0.2. Dropped `baseUrl` and `ignoreDeprecations: "6.0"`
+  from `tsconfig*.json` (paths now stand alone — TS 7 removed `baseUrl`).
+- **Husky hooks unchanged**: pre-commit still runs `typecheck && lint && test && gitleaks`;
+  pre-push runs `build && test:coverage && lint && osv-scanner`. `lint-staged` now runs
+  `biome check --error-on-warnings --no-errors-on-unmatched` over the staged JS/TS/JSON/CSS files.
+
+### Removed
+
+- `eslint`, `@eslint/js`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`,
+  `typescript-eslint`, `globals` — full ESLint toolchain and all inline `eslint-disable` comments.
+
+### Fixed
+
+- Refactor `document.getElementById("root")!` in `src/main.tsx` to a guarded lookup that throws
+  a clear error if the mount point is missing (removes `noNonNullAssertion` violation).
+- Added `<title>` inside the Google logo SVG in `BadgeLoginPage` for `noSvgWithoutTitle` a11y.
+- Every raw `<button>` now carries an explicit `type` attribute (`useButtonType` a11y).
+- Applied Biome import ordering and tab-indent formatting across the codebase.
+
 ## [1.1.1] - 2026-06-11
 
 ### Changed
