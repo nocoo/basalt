@@ -80,7 +80,7 @@ bun dev
 bun run build
 
 # Run tests
-vitest run
+bun run test
 ```
 
 ## License
