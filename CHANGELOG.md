@@ -1,5 +1,42 @@
 # Changelog
 
+## [1.3.0] - 2026-07-16
+
+### Fixed
+
+- **Mobile drawer regression**: the route-change effect in `DashboardLayout`
+  had an empty dependency array left over from a stale `eslint-disable`
+  comment; the drawer no longer closed after navigating from within it.
+  Restored `[location.pathname]` deps with a `biome-ignore` annotation.
+- **Broken typecheck script**: `typecheck` used to run `tsc --noEmit`
+  against the solution-style root `tsconfig.json` (`files: []`), which
+  silently type-checked nothing. Now runs both `tsconfig.app.json` and
+  `tsconfig.node.json` explicitly — future TS errors actually get caught.
+
+### Removed
+
+- All six remaining `eslint-disable` comments across `src/`
+  (`react-hooks/set-state-in-effect`, `react-refresh/only-export-components`) —
+  the migration commit had claimed to remove them but missed these six.
+  Biome has no equivalent rules, so the comments were dead weight.
+
+### Added
+
+- Regression test `src/test/components/DashboardLayout.test.tsx` covering
+  the mobile-drawer scroll lock + route-change close flow, so this
+  particular regression cannot resurface silently.
+
+### Changed
+
+- `README.md`: tech-stack table now advertises Vite 8 / TypeScript 7
+  (not the pre-migration 7 / 5.9), and the "Run tests" snippet uses
+  `bun run test` instead of a bare `vitest run` that assumes vitest is
+  on PATH.
+- `CLAUDE.md`: release-checklist verification command switched to
+  `bun run test`.
+- `osv-scanner.toml`: dropped ignored-vuln entries that referenced the
+  now-deleted ESLint toolchain.
+
 ## [1.2.1] - 2026-07-15
 
 ### Changed
