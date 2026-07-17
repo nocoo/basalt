@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.1] - 2026-07-17
+
+### Changed
+
+- **Dependencies (patch/minor bumps)**:
+  - `@biomejs/biome` 2.5.3 → 2.5.4
+  - `@tailwindcss/vite` 4.3.2 → 4.3.3
+  - `tailwindcss` 4.3.2 → 4.3.3
+  - `vite` 8.1.4 → 8.1.5
+  Closes basalt#221, #222, #223, #224.
+
 ## [1.3.0] - 2026-07-16
 
 ### Fixed
