@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.2] - 2026-07-18
+
+### Changed
+
+- **Dependencies (minor bump)**:
+  - `lucide-react` 1.24.0 → 1.25.0
+  Closes basalt#226.
+
 ## [1.3.1] - 2026-07-17
 
 ### Changed
