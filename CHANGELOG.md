@@ -1,5 +1,37 @@
 # Changelog
 
+## [1.3.3] - 2026-07-20
+
+### Changed
+
+- **Dependencies (patch/minor bumps)**:
+  - `postcss` 8.5.19 → 8.5.20
+  - `@radix-ui/react-accordion` 1.2.16 → 1.2.17
+  - `@radix-ui/react-alert-dialog` 1.1.19 → 1.1.20
+  - `@radix-ui/react-avatar` 1.2.2 → 1.2.3
+  - `@radix-ui/react-checkbox` 1.3.7 → 1.3.8
+  - `@radix-ui/react-collapsible` 1.1.16 → 1.1.17
+  - `@radix-ui/react-context-menu` 2.3.3 → 2.3.4
+  - `@radix-ui/react-dialog` 1.1.19 → 1.1.20
+  - `@radix-ui/react-dropdown-menu` 2.1.20 → 2.1.21
+  - `@radix-ui/react-hover-card` 1.1.19 → 1.1.20
+  - `@radix-ui/react-label` 2.1.11 → 2.1.12
+  - `@radix-ui/react-menubar` 1.1.20 → 1.1.21
+  - `@radix-ui/react-navigation-menu` 1.2.18 → 1.2.19
+  - `@radix-ui/react-popover` 1.1.19 → 1.1.20
+  - `@radix-ui/react-progress` 1.1.12 → 1.1.13
+  - `@radix-ui/react-radio-group` 1.4.3 → 1.4.4
+  - `@radix-ui/react-select` 2.3.3 → 2.3.4
+  - `@radix-ui/react-separator` 1.1.11 → 1.1.12
+  - `@radix-ui/react-slider` 1.4.3 → 1.4.4
+  - `@radix-ui/react-switch` 1.3.3 → 1.3.4
+  - `@radix-ui/react-tabs` 1.1.17 → 1.1.18
+  - `@radix-ui/react-toast` 1.2.19 → 1.2.20
+  - `@radix-ui/react-toggle` 1.1.14 → 1.1.15
+  - `@radix-ui/react-toggle-group` 1.1.15 → 1.1.16
+  - `@radix-ui/react-tooltip` 1.2.12 → 1.2.13
+  Closes basalt#228, #229, #230, #231, #232, #233, #234, #235, #236, #237, #238, #239, #240, #241, #242, #243, #244, #245, #246, #247, #248, #249, #250, #251, #252.
+
 ## [1.3.2] - 2026-07-18
 
 ### Changed
