@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.3.4] - 2026-07-21
+
+### Changed
+
+- **Dependencies**:
+  - `@testing-library/jest-dom` ^6.9.1 → 7.0.0 (MAJOR). v7 requires
+    `@testing-library/dom` as an explicit peer dependency and lifts the
+    minimum Node.js version to 22 — both satisfied here (dom@10.4.1 was
+    already resolved transitively via `@testing-library/react`; now
+    pinned explicitly, Node 26 in use). No API/matcher removals.
+  - `recharts` 3.9.2 → 3.10.0 (minor). Legend gains additive
+    `position`/`offset` props; existing `align`/`verticalAlign` usage in
+    `PieChartWidget` continues to work unchanged.
+  Closes basalt#254, #255.
+
 ## [1.3.3] - 2026-07-20
 
 ### Changed
