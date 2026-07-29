@@ -60,4 +60,53 @@ Follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/):
 
 ## Retrospective
 
-_(Record mistakes and lessons learned here)_
+### `overrides` for a direct dependency must use the `$name` form
+
+npm refuses an override for a package that is also a direct dependency
+unless both specs match **verbatim** — `^8.5.18` against a direct
+`8.5.22` is semantically compatible but still fails:
+
+```
+npm error code EOVERRIDE
+npm error Override for postcss@8.5.22 conflicts with direct dependency
+```
+
+Always write `"postcss": "$postcss"` instead. The reference form tracks
+the direct dependency automatically, so upgrades only touch one place.
+
+This surfaces **only in the Cloudflare deploy step**: `bun install` and
+`vite build` ignore the rule, and `npx wrangler versions upload` is the
+one command that resolves the tree through npm. CI stays fully green
+while Workers Builds fails — do not read a green CI as "deps are fine".
+
+### Regenerating `bun.lock` when only a mirror is reachable
+
+A mirror install rewrites every entry with `https://mirrors.../*.tgz`,
+which pins CI to that mirror permanently. Two rules make it safe:
+
+1. **Never `rm bun.lock` first.** A full re-resolve drifts versions
+   (postcss silently went `8.5.22` → `8.5.24`). Edit `package.json` and
+   let `bun install` update the lockfile incrementally.
+2. **Strip the URLs afterward**, then verify against the committed file:
+   ```bash
+   perl -pi -e 's/(\["[^"]+", )"https:\/\/[^"]*"(, )/$1""$2/g' bun.lock
+   rg -c '", "https' bun.lock          # must be 0
+   git diff bun.lock                    # must be only the intended lines
+   ```
+   `bun install --frozen-lockfile` accepts the stripped file and does not
+   write the URLs back.
+
+### `~/.npmrc` overrides the registry for bun too
+
+A `registry=` line in `~/.npmrc` silently redirects `bun install`. An
+apparent "network is down" (dozens of `ConnectionClosed`) may just be an
+unreachable proxy configured there — check it before concluding the
+network is unusable, and probe registries with
+`curl -sL --max-time 8 <mirror>/react` rather than guessing.
+
+### Don't infer build duration from GitHub check-run timestamps
+
+For Cloudflare Workers Builds, `started_at` and `completed_at` are the
+same instant (the moment the result is written back), not the real build
+window. A "0-second failure" says nothing about whether the build ran —
+read the actual build log before diagnosing.
