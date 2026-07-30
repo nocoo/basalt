@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.5] - 2026-07-29
+
+### Fixed
+
+- **Security**: Release the `postcss` root override (`8.5.22`) that
+  closes GHSA-r28c-9q8g-f849 (high, path traversal in source-map
+  auto-loading). `vitest@4.1.10` was pulling `vite@8.1.3` →
+  `postcss@8.5.16` alongside the direct `postcss@8.5.22`; the override
+  consolidates every resolution to `8.5.22`. Direct `postcss` pin and
+  `vite` (already on `postcss@8.5.19`) unchanged. Closes basalt#291.
+
 ## [1.3.4] - 2026-07-21
 
 ### Changed
