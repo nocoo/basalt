@@ -78,8 +78,7 @@
 		"vitest": "4.1.10"
 	},
 	"overrides": {
-		"postcss": "8.5.25",
-		"undici": "^7.28.0"
+		"postcss": "8.5.25"
 	},
 	"lint-staged": {
 		"*.{ts,tsx,js,jsx,json,css}": [
