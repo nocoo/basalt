@@ -49,7 +49,7 @@
 		"i18next": "26.3.6",
 		"i18next-browser-languagedetector": "^8.2.1",
 		"lucide-react": "1.29.0",
-		"postcss": "8.5.25",
+		"postcss": "8.5.26",
 		"react": "19.2.8",
 		"react-dom": "19.2.8",
 		"react-i18next": "17.0.11",
@@ -78,7 +78,7 @@
 		"vitest": "4.1.10"
 	},
 	"overrides": {
-		"postcss": "8.5.25"
+		"postcss": "8.5.26"
 	},
 	"lint-staged": {
 		"*.{ts,tsx,js,jsx,json,css}": [
