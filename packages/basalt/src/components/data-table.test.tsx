@@ -100,6 +100,25 @@ describe("DataTable", () => {
 		expect(screen.getByText("B")).toBeInTheDocument();
 	});
 
+	it("filters bigint cells", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "A", count: 10n },
+					{ name: "B", count: 2n },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+				filter="10"
+			/>,
+		);
+		expect(screen.getByText("A")).toBeInTheDocument();
+		expect(screen.getByText("10")).toBeInTheDocument();
+		expect(screen.queryByText("B")).not.toBeInTheDocument();
+	});
+
 	it("keeps equal sort keys stable", () => {
 		render(
 			<DataTable

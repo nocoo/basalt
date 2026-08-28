@@ -18,7 +18,11 @@ function filterSource<T>(column: DataTableColumn<T>, row: T): string {
 		return String(column.sortValue(row));
 	}
 	const rendered = column.accessor(row);
-	if (typeof rendered === "string" || typeof rendered === "number") {
+	if (
+		typeof rendered === "string" ||
+		typeof rendered === "number" ||
+		typeof rendered === "bigint"
+	) {
 		return String(rendered);
 	}
 	return "";
@@ -119,9 +123,14 @@ export function DataTable<T>({
 			<TableBody>
 				{rows.map(({ row, key }) => (
 					<TableRow key={key}>
-						{columns.map((column) => (
-							<TableCell key={column.id}>{column.accessor(row)}</TableCell>
-						))}
+						{columns.map((column) => {
+							const cell = column.accessor(row);
+							return (
+								<TableCell key={column.id}>
+									{typeof cell === "bigint" ? String(cell) : cell}
+								</TableCell>
+							);
+						})}
 					</TableRow>
 				))}
 			</TableBody>
