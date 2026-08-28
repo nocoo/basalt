@@ -42,7 +42,7 @@ export const SANKEY_SAMPLE = {
 	],
 };
 
-export type XYPoint = (typeof SAMPLE)[number];
+export type XYPoint = { x: string | number; y: number; y2?: number };
 export type NamedValue = (typeof DONUT_SAMPLE)[number];
 export type RadarPoint = (typeof RADAR_SAMPLE)[number];
 export type BulletPoint = (typeof BULLET_SAMPLE)[number];

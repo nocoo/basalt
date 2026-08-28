@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
@@ -92,6 +92,8 @@ export function DatePicker({
 }) {
 	const [uncontrolled, setUncontrolled] = useState(defaultValue);
 	const [open, setOpen] = useState(false);
+	const [focusIndex, setFocusIndex] = useState(0);
+	const dayRefs = useRef<Array<HTMLButtonElement | null>>([]);
 	const selected = value ?? uncontrolled;
 	const selectedDate = selected ? parseIso(selected) : null;
 	const cursor = selectedDate ?? todayCivil(timeZone);
@@ -104,6 +106,12 @@ export function DatePicker({
 		}
 		setMonth({ y: next.y, m: next.m, d: 1 });
 	}, [selected]);
+
+	useEffect(() => {
+		if (disabled) {
+			setOpen(false);
+		}
+	}, [disabled]);
 
 	const weekdayLabels = useMemo(() => {
 		const formatter = new Intl.DateTimeFormat(locale, { weekday: "short", timeZone: "UTC" });
@@ -119,6 +127,21 @@ export function DatePicker({
 		const start = addDays(first, -startOffset);
 		return Array.from({ length: 42 }, (_, index) => addDays(start, index));
 	}, [month, weekStartsOn]);
+
+	useEffect(() => {
+		if (!open) {
+			return;
+		}
+		const iso = selected || formatIso(todayCivil(timeZone));
+		const index = days.findIndex((date) => formatIso(date) === iso);
+		setFocusIndex(index >= 0 ? index : 0);
+	}, [open, selected, timeZone, days]);
+
+	useEffect(() => {
+		if (open) {
+			dayRefs.current[focusIndex]?.focus();
+		}
+	}, [open, focusIndex]);
 
 	const label = selectedDate
 		? (formatDate?.(civilDate(selectedDate)) ??
@@ -137,7 +160,15 @@ export function DatePicker({
 	}
 
 	return (
-		<Popover open={open} onOpenChange={(next) => !disabled && setOpen(next)}>
+		<Popover
+			open={open}
+			onOpenChange={(next) => {
+				if (next && disabled) {
+					return;
+				}
+				setOpen(next);
+			}}
+		>
 			{name ? <input type="hidden" name={name} value={selected} disabled={disabled} /> : null}
 			<input
 				type="date"
@@ -200,17 +231,44 @@ export function DatePicker({
 						Next
 					</button>
 				</div>
-				<div className="grid grid-cols-7 gap-1 text-center text-xs text-basalt-muted-foreground">
+				<div
+					className="grid grid-cols-7 gap-1 text-center text-xs text-basalt-muted-foreground"
+					onKeyDown={(event) => {
+						if (event.key === "ArrowRight") {
+							event.preventDefault();
+							setFocusIndex((index) => Math.min(days.length - 1, index + 1));
+						} else if (event.key === "ArrowLeft") {
+							event.preventDefault();
+							setFocusIndex((index) => Math.max(0, index - 1));
+						} else if (event.key === "ArrowDown") {
+							event.preventDefault();
+							setFocusIndex((index) => Math.min(days.length - 1, index + 7));
+						} else if (event.key === "ArrowUp") {
+							event.preventDefault();
+							setFocusIndex((index) => Math.max(0, index - 7));
+						} else if (event.key === "Enter" || event.key === " ") {
+							event.preventDefault();
+							const date = days[focusIndex];
+							if (date) {
+								commit(formatIso(date));
+							}
+						}
+					}}
+				>
 					{weekdayLabels.map((day, index) => (
 						<span key={`${day}-${index}`}>{day}</span>
 					))}
-					{days.map((date) => {
+					{days.map((date, index) => {
 						const iso = formatIso(date);
 						const inMonth = date.m === month.m;
 						return (
 							<button
 								type="button"
 								key={iso}
+								ref={(node) => {
+									dayRefs.current[index] = node;
+								}}
+								tabIndex={index === focusIndex ? 0 : -1}
 								aria-label={iso}
 								aria-pressed={iso === selected}
 								disabled={disabled}

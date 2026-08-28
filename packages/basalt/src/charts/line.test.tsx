@@ -7,4 +7,9 @@ describe("LineChart", () => {
 		const { container } = render(<LineChart />);
 		expect(container.firstChild).toBeTruthy();
 	});
+
+	it("accepts a single series without y2", () => {
+		const { container } = render(<LineChart data={[{ x: "Mon", y: 4 }]} ariaLabel="Solo" />);
+		expect(container.firstChild).toBeTruthy();
+	});
 });

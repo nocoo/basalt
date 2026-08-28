@@ -95,7 +95,9 @@ export function Combobox({
 				aria-expanded={open}
 				aria-autocomplete="list"
 				aria-controls={listId}
-				aria-activedescendant={open && activeItem ? `${listId}-${activeItem}` : undefined}
+				aria-activedescendant={
+					open && activeItem ? `${listId}-opt-${Math.min(active, filtered.length - 1)}` : undefined
+				}
 			/>
 			{open && filtered.length > 0 ? (
 				<div
@@ -103,11 +105,11 @@ export function Combobox({
 					role="listbox"
 					className="absolute z-20 mt-1 w-full rounded-basalt-md border border-basalt-border bg-basalt-popover p-1"
 				>
-					{filtered.map((item) => (
+					{filtered.map((item, index) => (
 						<button
 							type="button"
-							key={item}
-							id={`${listId}-${item}`}
+							key={`${listId}-opt-${index}`}
+							id={`${listId}-opt-${index}`}
 							role="option"
 							aria-selected={item === activeItem}
 							className={cn(

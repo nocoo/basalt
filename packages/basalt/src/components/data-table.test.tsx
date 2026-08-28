@@ -54,6 +54,28 @@ describe("DataTable", () => {
 		expect(screen.queryByText("Zed")).not.toBeInTheDocument();
 	});
 
+	it("filters formatted cells via sortValue", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Active", count: 1 },
+					{ name: "Idle", count: 2 },
+				]}
+				columns={[
+					{
+						id: "status",
+						header: "Status",
+						accessor: (row) => <span>{row.name}</span>,
+						sortValue: (row) => row.name,
+					},
+				]}
+				filter="active"
+			/>,
+		);
+		expect(screen.getByText("Active")).toBeInTheDocument();
+		expect(screen.queryByText("Idle")).not.toBeInTheDocument();
+	});
+
 	it("uses stable row ids", () => {
 		render(<DataTable data={rows} columns={columns} getRowId={(row) => row.name} />);
 		expect(screen.getByText("Zed")).toBeInTheDocument();

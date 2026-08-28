@@ -53,6 +53,15 @@ describe("Combobox", () => {
 		expect(onValueChange).toHaveBeenCalledWith("Banana");
 	});
 
+	it("gives duplicate labels unique option ids", () => {
+		render(<Combobox items={["New York", "New York"]} placeholder="City" />);
+		fireEvent.change(screen.getByLabelText("City"), { target: { value: "New" } });
+		const options = screen.getAllByRole("option", { name: "New York" });
+		expect(options).toHaveLength(2);
+		expect(options[0].id).not.toBe(options[1].id);
+		expect(options[0].id).toMatch(/opt-0$/);
+	});
+
 	it("hides the list when nothing matches", () => {
 		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
 		const input = screen.getByLabelText("Fruit");

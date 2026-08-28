@@ -7,7 +7,22 @@ export type DataTableColumn<T> = {
 	header: string;
 	accessor: (row: T) => ReactNode;
 	sortValue?: (row: T) => string | number;
+	filterValue?: (row: T) => string | number;
 };
+
+function filterSource<T>(column: DataTableColumn<T>, row: T): string {
+	if (column.filterValue) {
+		return String(column.filterValue(row));
+	}
+	if (column.sortValue) {
+		return String(column.sortValue(row));
+	}
+	const rendered = column.accessor(row);
+	if (typeof rendered === "string" || typeof rendered === "number") {
+		return String(rendered);
+	}
+	return "";
+}
 
 export function DataTable<T>({
 	data,
@@ -47,7 +62,7 @@ export function DataTable<T>({
 		});
 		const filtered = query
 			? keyed.filter(({ row }) =>
-					columns.some((column) => String(column.accessor(row)).toLowerCase().includes(query)),
+					columns.some((column) => filterSource(column, row).toLowerCase().includes(query)),
 				)
 			: keyed;
 		if (!sort) {

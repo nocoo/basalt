@@ -43,17 +43,27 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("Pick a date");
 	});
 
-	it("ignores calendar commits when disabled", () => {
+	it("closes the calendar when it becomes disabled", () => {
 		const onChange = vi.fn();
 		const { rerender } = render(
 			<DatePicker defaultValue="2024-01-15" onChange={onChange} aria-label="Date" />,
 		);
 		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		expect(screen.getByRole("button", { name: "2024-01-15" })).toBeInTheDocument();
 		rerender(
 			<DatePicker defaultValue="2024-01-15" disabled onChange={onChange} aria-label="Date" />,
 		);
-		fireEvent.click(screen.getByRole("button", { name: "2024-01-16" }));
+		expect(screen.queryByRole("button", { name: "2024-01-16" })).not.toBeInTheDocument();
 		expect(onChange).not.toHaveBeenCalled();
+	});
+
+	it("moves calendar focus with arrow keys", () => {
+		render(<DatePicker defaultValue="2024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		const selected = screen.getByRole("button", { name: "2024-01-15" });
+		expect(selected).toHaveAttribute("tabindex", "0");
+		fireEvent.keyDown(selected, { key: "ArrowRight" });
+		expect(screen.getByRole("button", { name: "2024-01-16" })).toHaveAttribute("tabindex", "0");
 	});
 
 	it("commits a day from the calendar", () => {
