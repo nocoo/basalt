@@ -1,6 +1,6 @@
 # 02 · 2.0 实现步骤
 
-> 状态：01+02 联审 Sign Off。01 第 13 节 2–11 已拍板；第 1 条（视觉基线）待确认后才 Wave B。依赖 [01-plan-2-0.md](./01-plan-2-0.md) 的架构与 6.2 出口表。
+> 状态：01+02 联审 Sign Off。01 第 13 节 1–11 已拍板。不冻现网像素；下一刀 Wave P。依赖 [01-plan-2-0.md](./01-plan-2-0.md) 的架构与 6.2 出口表。
 > 本文只写**怎么做**：阶段、原子化提交、每个控件的推荐底稿与确认门。
 > 不含工时。未确认本文前不写业务代码。
 
@@ -12,16 +12,16 @@
 
 | 点 | 01 | 02 |
 |----|----|----|
-| 取样 vs 第一刀代码 | Wave B 产出冻结截图（阶段 0 不再拍、不再钉 SHA） | **先** B0 播种随机数据，再 B1 截图并写入 B0 SHA（改侧栏之前），再 Wave P 加 `/ui/:name` placeholder |
+| 第一刀代码 | 阶段 0 workspace | **先** Wave P 加齐 `/ui/:name` placeholder；**不做** Wave B / 截图冻结 |
 | 每个控件 | 7.2 底稿可直接用 | **先推荐、等哥确认，再写实现** |
 | 顺序 | 阶段 1→7 按 kind | **先小后大**：原子 → LayerCard 容器 → 表单 → 反馈 → 浮层 → 结构/Sidebar catalog → **图表工具层** → 图表控件 → 拼现页壳 |
 | 图表 | 与其它控件并列 stage 6 | **单独轨道**：先 kit（色板、tooltip、轴/字号），再各个 chart |
-| 家族权重 | 7.2 分散 | **pew / zhe / intentional-kusto-queries 加权**；本站只锁视觉 |
+| 家族权重 | 7.2 分散 | **pew / zhe / intentional-kusto-queries 加权**；视觉由哥按精神验收 |
 | 质量 | 6DQ 章节 | **Husky 从第一行包代码起就拦**：typecheck + `biome --error-on-warnings` + test。不准先红后补 |
 | Sidebar 现页 | 6.2 `wire=/` | 实现时只填 `/ui/sidebar`；现页 `/` 推迟到 S2 |
 | 发布路径 | 阶段 8 列门 | Wave 0 写 README 双契约 + 构建 dts/banner；Wave 8 写 tarball 门、`prepublishOnly`、CHANGELOG；全部完成发 `2.0.0`，不发 alpha |
 
-架构、CSS 命名空间、发布门 A/B/C/D、观感冻结仍以 01 为准。冲突时：执行顺序听 02，API/CSS/发布听 01。
+架构、CSS 命名空间、发布门 A/B/C/D、视觉精神（哥验收）仍以 01 为准。冲突时：执行顺序听 02，API/CSS/发布听 01。
 
 ---
 
@@ -32,12 +32,12 @@
 实现某个 6.2 出口之前，必须在对话里给出：
 
 1. 候选实现（路径 + SHA，来自加权家族）
-2. **推荐主线**（一条）和理由（API / a11y / 测试 / 能否用 className 压回本站像素）
+2. **推荐主线**（一条）和理由（API / a11y / 测试 / 是否符合 Basalt 视觉精神）
 3. 明确不选谁
 
 **等哥回复选哪条（或改选）之后才能改代码。** 禁止用 01 §7.2 默认赢家直接开工。
 
-例外：Wave B（截图）和 Wave P（placeholder）不需要逐页确认。
+例外：Wave P（placeholder）不需要逐页确认。视觉好不好等哥验收，不在实现前截图像素门。
 
 ### 2.2 家族权重
 
@@ -48,13 +48,13 @@
 | 高 | `pew` `97a890fabe6e` | StatCard、ChartTooltip、产品图表密度 |
 | 高 | `zhe` `c31c239f01c9` | token/密度契约 `docs/22-design-tokens.md`、Button/Input 表面 |
 | 高 | `intentional-kusto-queries`（Whiteboard）`bce8a88fe26e` `data/dashboard/src/model/chart-config.ts` + `view/charts/*` | **图表工具层主参考**：色板函数、轴、字号、tooltip、cursor、无动画 |
-| 中 | 本站 `basalt` | **视觉冻结真相**；SlotBarChart 测试；Sonner；三态 ThemeToggle |
+| 中 | 本站 `basalt` | Basalt 视觉参考（哥验收精神）；SlotBarChart 测试；Sonner；三态 ThemeToggle |
 | 中 | `meowth` `surety` `pika` `otter` `signoff.now` `gecko` | API / asChild / Field / Tabs / Table primitive / DatePicker |
 | 低 | 其它 personal clone | 只在前几档没有对应物时看 |
 
 Whiteboard 路径：`/Users/nocoo/workspace/work/whiteboard/intentional-kusto-queries`。钉 SHA `bce8a88fe26e`。它不是 personal/ 下的仓，但是 Basalt family，图表优先于 pew 里「每个页面一份 chart 文件」的散装实现。换底稿先改 01 §7.1 与本表再动手。
 
-视觉冲突时：**本站 1.3.5 像素优先**（01 §3.2）。zhe 的 `h-10` 只能当非默认 `size`，不能改本站默认 Button `h-9`。
+视觉冲突时：按 Basalt 精神做，**哥验收**（01 §3.2）。Button 默认 `h-9`，zhe `h-10` 只当非默认 `size`（第 13 节第 11 条）。
 
 ### 2.3 MVVM
 
@@ -100,7 +100,7 @@ Wave 0 起：
 ```
 packages/basalt/src/charts/
   kit/                 # 不全部进 6.2 公开名
-    palette.ts         # 从本站 src/lib/palette.ts 迁颜色值（视觉冻结）
+    palette.ts         # 从本站 src/lib/palette.ts 迁颜色值（默认；换色须确认）
     typography.ts      # 轴/图例/tooltip 字号，禁止视图里写死 fontSize
     tooltip-props.ts   # Recharts <Tooltip> 共用 props（关动画、cursor、contain）
     axis.ts            # tick/grid/bar radius
@@ -116,11 +116,11 @@ kit **不是** Kumo ECharts。公开 chart 控件全部建立在 kit 上。
 
 | 模块 | 推荐主线 | 理由 | 不选 |
 |------|----------|------|------|
-| 色板数值 | 本站 `src/lib/palette.ts` + `index.css` `--chart-*`（现网 24 色） | 观感冻结 | 换成 Whiteboard 16 色 pastel（会改现图） |
+| 色板数值 | 本站 `src/lib/palette.ts` + `index.css` `--chart-*`（现网 24 色） | 默认推荐；换色须确认 | 未确认就换成 Whiteboard 16 色 pastel |
 | 色板 API | Whiteboard `bce8a88fe26e` `chart-config.ts`：`getChartColor` / `withAlpha` / tone | 有测试、函数化 | pew 每个 chart 文件自己取色 |
 | Tooltip 容器 | pew `chart-tooltip.tsx` + Whiteboard `ChartTooltip` | 统一 title/row/dot；pew 更贴近本站 `radius-widget` | 各图内联 div |
 | Tooltip/轴行为 | Whiteboard `CHART_TOOLTIP_PROPS` `AXIS_CONFIG` `ANIMATION_PROPS` `chartFontSize` | 关飞入动画、轴无线、字号一处定义 | 各图 `fontSize={12}` |
-| 图表卡片壳 | 本站现卡 class（有边/无边跟实例） | 冻结 | Whiteboard `ring-1 ring-border/40` 一刀切 |
+| 图表卡片壳 | 本站现卡 class 作推荐 | 哥验收；允许更好 | 未确认就把全部卡改成 Whiteboard `ring-1` |
 
 确认 kit 之后才做具体 chart 控件。
 
@@ -128,32 +128,15 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 
 ---
 
-## 4. Wave B — 视觉基线（改任何导航之前）
+## 4. 不做 Wave B
 
-**必须在 Wave P 之前。** Wave P 会给侧栏加「控件库」组，若先改导航再取样，基线就不是现网。
-
-现网已有未播种 `Math.random()`，直接对批准时 HEAD 截图不可复现；改源码后再截图才是可对照基线。因此 Wave B 两步，**禁止**用 Playwright `addInitScript` 偷换 `Math.random`（图会与源码不一致）。
-
-| # | commit | 内容 |
-|---|--------|------|
-| B0 | `fix: seed showcase chart mock data` | 去掉未播种随机：`src/components/dashboard/SummaryMetricCard.tsx`、`SecondaryMetricCard.tsx`、`src/data/mock.ts` 的 `performanceData`。换成播种 PRNG 或固定数组。不改 class / 布局 / 色值 |
-| B1 | `docs: capture 2-0 visual baselines` | 对 **B0 HEAD** 拍 `docs/baselines/2-0/`，01 §3.2 矩阵。**由本 commit 唯一**把 B0 SHA 写入 01 §3.2，替换「基线 commit」那句。B1 本身不是代码基线 |
-
-B0 是 Wave P 前**唯一**允许的现页源码改动。B1 **禁止**改 `AppSidebar` / `App.tsx` / 现页 class。
-
-其它约束：
-
-- 已有路由 × `{light,dark}` × desktop `1280×800` × mobile `390×844`
-- 另存：侧栏展开/折叠、移动抽屉开、一个 Dialog 开
-- 浏览器：本机 Chrome；locale `zh-CN`；timezone `Asia/Shanghai`；`prefers-reduced-motion: reduce`
-
-Wave P 之后不重拍整表。阶段 7 对照这批图；侧栏允许多一个默认折叠组。
+01 §13.1 已拍板：不冻现网像素，不截图矩阵，不播种随机数当基线。第一刀代码就是 Wave P。
 
 ---
 
 ## 5. Wave P — 全部 placeholder（第一刀代码）
 
-在**现仓库 SPA**上加齐入口，不实现控件、不拆 workspace。现有组合页零视觉改动（只侧栏多一个默认折叠组，01 §13.2）。
+在**现仓库 SPA**上加齐入口，不实现控件、不拆 workspace。本波只加「控件库」导航和空壳页，不顺便改组合页皮肤（01 §13.2）。
 
 ### 5.1 路由
 
@@ -289,7 +272,7 @@ P1–P5 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 |---|--------|
 | 0.1 | `chore: add packages/basalt workspace` |
 | 0.2 | `chore: typecheck vitest cover packages`（**同 commit 改 husky 会跑到的脚本**；包可仍为空） |
-| 0.3 | `feat: extract basalt design tokens`（`--basalt-*`，showcase 映射，现页颜色不变） |
+| 0.3 | `feat: extract basalt design tokens`（`--basalt-*`，showcase 映射，旧 utility 先继续工作） |
 | 0.4 | `feat: add empty package exports` |
 | 0.5 | `chore: add publish gate fixtures`（vite-tailwind / vite-standalone / next19 模板） |
 | 0.6 | `docs: write package css contracts`（`packages/basalt/README.md`：Tailwind `@source` 与 standalone 两条，01 §5.2；缺一不算阶段 0 完成） |
@@ -299,7 +282,7 @@ P1–P5 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 
 0.6 必须在 Wave 0 完成，**禁止**拖到 Wave 8。8.3 只复核或补发布说明，不承担「第一次写双契约」。
 
-0.3 验收：已有路由与 Wave B 基线一致（侧栏允许多一个折叠组）。
+0.3 验收：showcase 仍能跑；抽 token 不把站点抽挂。视觉不在本步用截图门。
 
 ---
 
@@ -435,7 +418,7 @@ P1–P5 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | K15 | DateNavigation | 本站 widget，locale props |
 | K16 | Flow | catalog 最小页 |
 
-每一张 chart 的推荐都要单独确认；K1 必须先于 K2–K16。色值冻本站 24 色，不换成 Whiteboard 16 色。
+每一张 chart 的推荐都要单独确认；K1 必须先于 K2–K16。色值默认本站 24 色；换成 Whiteboard 16 色必须先确认。
 
 ### 8.8 拼现页壳（01 阶段 7）
 
@@ -448,7 +431,7 @@ P1–P5 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | S3… | 其余组合页，**一页一 commit** |
 | S9 | `chore: remove inlined ui copies` |
 
-登录等无侧栏页单独 commit。对照 `docs/baselines/2-0/`。
+登录等无侧栏页单独 commit。视觉由哥按 Basalt 精神验收，不对照冻结截图。
 
 ### 8.9 发布（01 阶段 8）
 
@@ -487,12 +470,11 @@ Wave 0.6 已写 CSS 双契约 README。发布前若文案过期可另作 `docs:`
 
 ## 10. 明确不做
 
-- 不在 Wave B 之前改侧栏或现页 class（B0 播种随机数据除外）
-- 不对未播种的 `Math.random()` 页面截图当基线；不用 `addInitScript` 偷换随机数
 - 不在 placeholder 阶段拆包或改组合页皮肤
+- 不做 Wave B / 截图冻结 / 像素 diff
 - 不把图表和 Button 放进同一波「先做完所有控件」
 - 不把 pew 里 20+ 个业务 chart 文件当 Basalt 出口
-- **不把本站 24 色换成 Whiteboard 16 色 pastel**（默认冻本站色值；换色必须先改 01 再经确认）
+- **不把本站 24 色换成 Whiteboard 16 色 pastel**（默认用本站色值；换色必须先经确认）
 - 不跳过哥的底稿确认
 - 不 `--no-verify`
 - 不在阶段 5 把 `AppSidebar` 换成包
@@ -501,10 +483,9 @@ Wave 0.6 已写 CSS 双契约 README。发布前若文案过期可另作 `docs:`
 
 ## 11. 开工开关
 
-1. 01 第 13 节：2–11 已拍板；**第 1 条视觉基线仍待确认**
+1. 01 第 13 节 1–11 已拍板
 2. 本文与 01 联审 Sign Off（已完成）
-3. Wave B（B0 播种 → B1 截图，改侧栏之前）
-4. Wave P（placeholder）
-5. 确认 Button 底稿（预确认，不立即实现）→ Wave 0（含 0.6 README、0.7 dts/banner）→ 按 §8 从 Text 起；到 Button 用已确认底稿
+3. Wave P（placeholder）
+4. 确认 Button 底稿（预确认，不立即实现）→ Wave 0（含 0.6 README、0.7 dts/banner）→ 按 §8 从 Text 起；到 Button 用已确认底稿
 
-下一句动作从 Wave B 的 `fix: seed showcase chart mock data` 开始。未拍板、未 Sign Off 不准动。
+下一句动作从 Wave P 的 `feat: add ui catalog placeholder page` 开始。
