@@ -92,6 +92,27 @@ describe("Combobox", () => {
 		expect(onValueChange).not.toHaveBeenCalled();
 	});
 
+	it("does not close on composing Escape", () => {
+		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
+		fireEvent.focus(screen.getByLabelText("Fruit"));
+		fireEvent.keyDown(document, { key: "Escape", isComposing: true });
+		expect(screen.getByRole("option", { name: "Apple" })).toBeInTheDocument();
+	});
+
+	it("clamps the highlight when items shrink", () => {
+		const { rerender } = render(<Combobox items={["A", "B", "C", "D", "E"]} placeholder="Fruit" />);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.keyDown(input, { key: "ArrowDown" });
+		fireEvent.keyDown(input, { key: "ArrowDown" });
+		fireEvent.keyDown(input, { key: "ArrowDown" });
+		fireEvent.keyDown(input, { key: "ArrowDown" });
+		expect(screen.getByRole("option", { name: "E" })).toHaveAttribute("aria-selected", "true");
+		rerender(<Combobox items={["A", "B", "C"]} placeholder="Fruit" />);
+		fireEvent.keyDown(input, { key: "ArrowUp" });
+		expect(screen.getByRole("option", { name: "B" })).toHaveAttribute("aria-selected", "true");
+	});
+
 	it("marks the active duplicate option by index", () => {
 		render(<Combobox items={["New York", "New York"]} placeholder="City" />);
 		fireEvent.focus(screen.getByLabelText("City"));

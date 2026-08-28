@@ -35,6 +35,10 @@ export function Combobox({
 	const activeIndex = Math.min(active, Math.max(0, filtered.length - 1));
 	const activeItem = filtered[activeIndex];
 
+	useEffect(() => {
+		setActive((current) => Math.min(current, Math.max(0, filtered.length - 1)));
+	}, [filtered.length]);
+
 	function commit(next: string) {
 		if (value === undefined) {
 			setUncontrolled(next);
@@ -51,7 +55,7 @@ export function Combobox({
 			return;
 		}
 		const onKey = (event: KeyboardEvent) => {
-			if (event.key !== "Escape") {
+			if (event.key !== "Escape" || event.isComposing) {
 				return;
 			}
 			event.preventDefault();
@@ -96,14 +100,14 @@ export function Combobox({
 					if (event.key === "ArrowDown") {
 						event.preventDefault();
 						setOpen(true);
-						setActive((current) => (filtered.length === 0 ? 0 : (current + 1) % filtered.length));
+						setActive(filtered.length === 0 ? 0 : (activeIndex + 1) % filtered.length);
 						return;
 					}
 					if (event.key === "ArrowUp") {
 						event.preventDefault();
 						setOpen(true);
-						setActive((current) =>
-							filtered.length === 0 ? 0 : (current - 1 + filtered.length) % filtered.length,
+						setActive(
+							filtered.length === 0 ? 0 : (activeIndex - 1 + filtered.length) % filtered.length,
 						);
 						return;
 					}
