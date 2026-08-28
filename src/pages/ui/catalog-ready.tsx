@@ -115,6 +115,7 @@ import { toast } from "@nocoo/basalt/components/toast";
 import { Toggle } from "@nocoo/basalt/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
+import { Search } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { CATALOG, type CatalogEntry, catalogImportPath } from "./catalog";
 
@@ -506,11 +507,19 @@ function CommandPaletteDemo() {
 	const [open, setOpen] = useState(false);
 	return (
 		<>
-			<Button variant="outline" onClick={() => setOpen(true)}>
-				Open
+			<Button
+				variant="outline"
+				icon={<Search />}
+				className="w-full max-w-sm justify-start font-normal text-basalt-muted-foreground"
+				onClick={() => setOpen(true)}
+			>
+				Search pages...
+				<kbd className="pointer-events-none ml-auto rounded-sm border border-basalt-border bg-basalt-card px-1.5 py-0.5 text-[10px] font-medium text-basalt-muted-foreground">
+					⌘K
+				</kbd>
 			</Button>
 			<CommandPalette open={open} onOpenChange={setOpen}>
-				<CommandInput placeholder="Search pages" />
+				<CommandInput placeholder="Search pages..." />
 				<CommandList>
 					<CommandEmpty>No results</CommandEmpty>
 					<CommandGroup heading="Pages">
@@ -527,7 +536,7 @@ add(
 	"command-palette",
 	"Search pages and commands.",
 	() => <CommandPaletteDemo />,
-	'<Button variant="outline">Open</Button>',
+	'<Button variant="outline">Search pages...</Button>',
 );
 add("sidebar", "App sidebar shell.", () => <Sidebar>Nav</Sidebar>, "<Sidebar />");
 add(

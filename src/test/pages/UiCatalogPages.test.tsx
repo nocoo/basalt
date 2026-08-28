@@ -143,18 +143,23 @@ describe("ui catalog", () => {
 	it("opens overlay demos with the button control", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		for (const slug of [
-			"collapsible",
-			"dialog",
-			"popover",
-			"dropdown-menu",
-			"sheet",
-			"command-palette",
-		]) {
+		for (const slug of ["collapsible", "dialog", "popover", "dropdown-menu", "sheet"]) {
 			cleanup();
 			renderCatalog(`/ui/${slug}`);
 			expect(screen.getAllByRole("button", { name: "Open" }).length).toBeGreaterThan(0);
 		}
+	});
+
+	it("opens the command palette from a search trigger", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		Element.prototype.scrollIntoView = vi.fn();
+		renderCatalog("/ui/command-palette");
+		expect(screen.getByRole("heading", { name: "Command Palette" })).toBeInTheDocument();
+		fireEvent.click(screen.getAllByRole("button", { name: /Search pages/ })[0]);
+		expect(screen.getByPlaceholderText("Search pages...")).toBeInTheDocument();
+		expect(screen.getByRole("dialog")).toBeInTheDocument();
+		expect(screen.getByText("Button")).toBeInTheDocument();
 	});
 
 	it("renders example previews on a white bordered surface", () => {
