@@ -20,6 +20,26 @@ function asBigint(value: unknown): bigint | null {
 	return null;
 }
 
+function compareNumberAndBigint(num: number, big: bigint): number {
+	if (!Number.isFinite(num)) {
+		if (Number.isNaN(num)) {
+			return 0;
+		}
+		return num === Number.POSITIVE_INFINITY ? 1 : -1;
+	}
+	const truncated = BigInt(Math.trunc(num));
+	if (truncated < big) {
+		return -1;
+	}
+	if (truncated > big) {
+		return 1;
+	}
+	if (num === Number(truncated)) {
+		return 0;
+	}
+	return num > Number(truncated) ? 1 : -1;
+}
+
 function compareUnknown(left: unknown, right: unknown): number {
 	if (typeof left === "bigint" && typeof right === "bigint") {
 		return left < right ? -1 : left > right ? 1 : 0;
@@ -29,14 +49,11 @@ function compareUnknown(left: unknown, right: unknown): number {
 	if (leftInt !== null && rightInt !== null) {
 		return leftInt < rightInt ? -1 : leftInt > rightInt ? 1 : 0;
 	}
-	const leftNumeric = typeof left === "number" || typeof left === "bigint";
-	const rightNumeric = typeof right === "number" || typeof right === "bigint";
-	if (leftNumeric && rightNumeric) {
-		const leftNum = Number(left);
-		const rightNum = Number(right);
-		if (Number.isFinite(leftNum) && Number.isFinite(rightNum)) {
-			return leftNum - rightNum;
-		}
+	if (typeof left === "number" && typeof right === "bigint") {
+		return compareNumberAndBigint(left, right);
+	}
+	if (typeof left === "bigint" && typeof right === "number") {
+		return -compareNumberAndBigint(right, left);
 	}
 	if (typeof left === "number" && typeof right === "number") {
 		return left - right;

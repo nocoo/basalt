@@ -123,6 +123,23 @@ describe("DataTable", () => {
 		expect(screen.getByRole("button", { name: /Name/ }).className).toContain("text-inherit");
 	});
 
+	it("sorts huge bigints ahead of fractional numbers numerically", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Huge", count: 10n ** 400n },
+					{ name: "Half", count: 2.5 },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getAllByRole("cell")[0].textContent).toBe("Half");
+	});
+
 	it("sorts mixed fractional numbers and bigints numerically", () => {
 		render(
 			<DataTable
