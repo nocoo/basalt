@@ -65,7 +65,7 @@ export function DocCode({ code, attached = false }: { code: string; attached?: b
 export function DocExample({ children, code }: { children: ReactNode; code: string }) {
 	return (
 		<div className="overflow-hidden rounded-lg border border-border">
-			<div className="flex min-h-[140px] items-center justify-center bg-background p-6 md:p-8">
+			<div className="flex min-h-[140px] items-center justify-center bg-white p-6 md:p-8">
 				{children}
 			</div>
 			<DocCode code={code} attached />
