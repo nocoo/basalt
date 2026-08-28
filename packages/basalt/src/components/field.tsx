@@ -22,13 +22,22 @@ export function Field({
 	const describedBy = [error ? errorId : null, !error && hint ? hintId : null]
 		.filter(Boolean)
 		.join(" ");
+	const child = React.isValidElement(children)
+		? (children as React.ReactElement<{
+				"aria-describedby"?: string;
+				"aria-invalid"?: boolean | "true" | "false";
+			}>)
+		: null;
+	const mergedDescribedBy = [describedBy, child?.props["aria-describedby"]]
+		.filter(Boolean)
+		.join(" ");
 	return (
 		<div className={cn("flex flex-col gap-1.5", className)}>
 			<Label htmlFor={htmlFor}>{label}</Label>
-			{React.isValidElement(children)
-				? React.cloneElement(children as React.ReactElement<Record<string, unknown>>, {
-						"aria-invalid": error ? true : undefined,
-						"aria-describedby": describedBy || undefined,
+			{child
+				? React.cloneElement(child, {
+						"aria-invalid": error ? true : child.props["aria-invalid"],
+						"aria-describedby": mergedDescribedBy || undefined,
 					})
 				: children}
 			{hint && !error ? (

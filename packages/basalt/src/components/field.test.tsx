@@ -30,4 +30,19 @@ describe("Field", () => {
 		);
 		expect(screen.getByRole("alert")).toHaveTextContent("Required");
 	});
+
+	it("merges caller described-by ids with hint and error", () => {
+		render(
+			<>
+				<p id="extra">Company domain</p>
+				<Field label="Email" htmlFor="email-merge" hint="Never shared">
+					<Input id="email-merge" aria-describedby="extra" />
+				</Field>
+			</>,
+		);
+		expect(screen.getByLabelText("Email")).toHaveAttribute(
+			"aria-describedby",
+			"email-merge-hint extra",
+		);
+	});
 });
