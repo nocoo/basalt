@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -152,6 +152,17 @@ describe("ui catalog", () => {
 		]) {
 			expect(screen.getByRole("heading", { name: title })).toBeInTheDocument();
 		}
+	});
+
+	it("keeps the disabled link example inert", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/button");
+		const link = screen.getByRole("link", { name: "Disabled link" });
+		expect(link).toHaveAttribute("aria-disabled", "true");
+		expect(link).toHaveAttribute("tabindex", "-1");
+		fireEvent.click(link);
+		expect(window.location.hash).not.toBe("#docs");
 	});
 
 	it("shows a barrel install for stable controls", () => {

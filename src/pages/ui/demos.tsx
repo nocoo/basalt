@@ -213,9 +213,15 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 		},
 		{
 			title: "Disabled Link",
-			code: '<LinkButton href="#docs" aria-disabled="true">Disabled link</LinkButton>',
+			code: '<LinkButton href="#docs" aria-disabled="true" tabIndex={-1} onClick={(event) => event.preventDefault()}>Disabled link</LinkButton>',
 			render: () => (
-				<LinkButton href="#docs" aria-disabled="true" className="pointer-events-none opacity-50">
+				<LinkButton
+					href="#docs"
+					aria-disabled="true"
+					tabIndex={-1}
+					onClick={(event) => event.preventDefault()}
+					className="opacity-50"
+				>
 					Disabled link
 				</LinkButton>
 			),
