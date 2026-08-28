@@ -6,9 +6,19 @@ export type DataTableColumn<T> = {
 	id: string;
 	header: string;
 	accessor: (row: T) => ReactNode;
-	sortValue?: (row: T) => string | number;
-	filterValue?: (row: T) => string | number;
+	sortValue?: (row: T) => string | number | bigint;
+	filterValue?: (row: T) => string | number | bigint;
 };
+
+function compareUnknown(left: unknown, right: unknown): number {
+	if (typeof left === "bigint" && typeof right === "bigint") {
+		return left < right ? -1 : left > right ? 1 : 0;
+	}
+	if (typeof left === "number" && typeof right === "number") {
+		return left - right;
+	}
+	return String(left) < String(right) ? -1 : String(left) > String(right) ? 1 : 0;
+}
 
 function filterSource<T>(column: DataTableColumn<T>, row: T): string {
 	if (column.filterValue) {
@@ -79,14 +89,7 @@ export function DataTable<T>({
 		return [...filtered].sort((a, b) => {
 			const left = column.sortValue?.(a.row) ?? column.accessor(a.row);
 			const right = column.sortValue?.(b.row) ?? column.accessor(b.row);
-			const cmp =
-				typeof left === "number" && typeof right === "number"
-					? left - right
-					: String(left) < String(right)
-						? -1
-						: String(left) > String(right)
-							? 1
-							: 0;
+			const cmp = compareUnknown(left, right);
 			return sort.dir === "asc" ? cmp : -cmp;
 		});
 	}, [columns, data, getRowId, query, sort]);
