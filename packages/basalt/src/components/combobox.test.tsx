@@ -152,6 +152,16 @@ describe("Combobox", () => {
 		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
 	});
 
+	it("reopens on click while focused", () => {
+		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.keyDown(input, { key: "Escape" });
+		expect(screen.queryByRole("option", { name: "Apple" })).not.toBeInTheDocument();
+		fireEvent.click(input);
+		expect(screen.getByRole("option", { name: "Apple" })).toBeInTheDocument();
+	});
+
 	it("closes on document Escape without committing", () => {
 		const onValueChange = vi.fn();
 		render(<Combobox items={["Apple"]} placeholder="Fruit" onValueChange={onValueChange} />);

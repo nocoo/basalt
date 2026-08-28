@@ -120,6 +120,7 @@ export function Combobox({
 					}
 					setOpen(true);
 				}}
+				onClick={() => setOpen(true)}
 				onKeyDown={(event) => {
 					if (event.nativeEvent.isComposing || event.key === "Process") {
 						return;
