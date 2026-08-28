@@ -244,7 +244,7 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 
 `/ui/:slug` 与 `/ui` 共用无浮岛画布。英雄区标题 + description + Copy page 分段按钮，底部分割线。预览与代码合成一张圆角卡（上预览、下代码、右上复制图标）。右侧 TOC 用左侧 hairline + active `border-primary` 竖条。内容左对齐，不加 `max-w-6xl` 居中。
 
-侧栏 Library 条目与 Examples 同一套 `px-3 py-2.5` 行高/圆角/hover，不要第二套更密的样式。
+侧栏 Library 与 Examples 同一套 `NavGroupSection`：分类可折叠（默认展开）、条目带 icon、同一套 `px-3 py-2.5` 行高/圆角/hover。
 
 ### 5.2b Catalog 首页
 
@@ -255,7 +255,7 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 现有 `NAV_GROUPS` 不改顺序、不改现有组名。侧栏两大分区：
 
 - **示例**（`nav.examples`）：现有分组原样，默认展开
-- **控件库**（`nav.kit`）：Home（`/ui`）+ 每个 6.2 出口一条导航，按 `CATALOG_CATEGORIES` 分组，默认展开、不折叠
+- **控件库**（`nav.kit`）：Home（`/ui`）+ 每个 6.2 出口一条导航，按 `CATALOG_CATEGORIES` 分组，复用 `NavGroupSection`（可折叠、默认展开、条目带 icon）
 
 ⌘K 收录 example 页 + Home + 全部 `/ui/:slug`。
 

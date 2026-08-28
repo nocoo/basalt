@@ -1,6 +1,6 @@
 import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router";
 import { describe, expect, it } from "vitest";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -28,5 +28,10 @@ describe("AppSidebar", () => {
 		for (const entry of CATALOG) {
 			expect(screen.getByRole("button", { name: entry.name })).toBeInTheDocument();
 		}
+		const atoms = screen.getByRole("button", { name: "Atoms" });
+		expect(atoms).toHaveAttribute("aria-expanded", "true");
+		fireEvent.click(atoms);
+		expect(atoms).toHaveAttribute("aria-expanded", "false");
+		expect(screen.getByRole("button", { name: "Dashboard" })).toBeInTheDocument();
 	});
 });

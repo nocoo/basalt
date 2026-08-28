@@ -1,32 +1,92 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@nocoo/basalt/components/tooltip";
 import {
+	Activity,
+	AlignLeft,
+	AppWindow,
+	Award,
+	BarChart3,
+	Bell,
 	BookOpen,
+	Calendar,
+	CalendarDays,
+	CalendarRange,
+	ChartArea,
+	ChartColumn,
+	ChartColumnStacked,
+	ChartLine,
+	ChartPie,
+	ChevronRight,
+	ChevronsDown,
+	ChevronsDownUp,
+	ChevronsUpDown,
 	ChevronUp,
+	Circle,
+	Clipboard,
+	Code,
+	Columns3,
+	Command,
+	CreditCard,
+	Ellipsis,
 	ExternalLink,
 	Eye,
+	EyeOff,
+	FileCode,
 	FileQuestion,
 	FileText,
+	Filter,
 	FormInput,
+	Gauge,
+	GitBranch,
+	GitFork,
+	Hash,
 	HeartPulse,
+	History,
 	IdCard,
+	Inbox,
 	Layers,
 	LayoutDashboard,
 	LayoutGrid,
 	LineChart,
+	Link2,
+	List,
 	Loader,
 	LogIn,
 	LogOut,
+	Megaphone,
+	Menu,
+	MessageCircle,
+	MessageSquare,
+	Minus,
 	Mountain,
+	MousePointer2,
 	MousePointerClick,
 	Navigation,
 	Palette,
 	PanelLeft,
+	PanelRight,
+	PanelTop,
 	PiggyBank,
+	Radar,
 	RectangleEllipsis,
 	Search,
 	Settings,
+	SlidersHorizontal,
+	Square,
+	SquareCheck,
+	Sun,
+	SwatchBook,
+	Table,
+	Table2,
+	Tag,
+	TextCursorInput,
+	ToggleLeft,
+	ToggleRight,
 	TrendingUp,
+	TriangleAlert,
+	Type,
+	UserRound,
 	Wallet,
+	Wrench,
 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,7 +107,8 @@ import { CATALOG, CATALOG_CATEGORIES } from "@/pages/ui/catalog";
 // ── Navigation data model ──
 
 interface NavItem {
-	titleKey: string;
+	titleKey?: string;
+	title?: string;
 	icon: React.ElementType;
 	path: string;
 	badge?: number;
@@ -55,7 +116,8 @@ interface NavItem {
 }
 
 interface NavGroup {
-	labelKey: string;
+	labelKey?: string;
+	label?: string;
 	items: NavItem[];
 	defaultOpen?: boolean;
 }
@@ -118,6 +180,98 @@ const NAV_GROUPS: NavGroup[] = [
 
 const LIBRARY_HOME: NavItem = { titleKey: "nav.kitIndex", icon: BookOpen, path: "/ui" };
 
+const CATALOG_ICONS: Record<string, React.ElementType> = {
+	button: RectangleEllipsis,
+	"link-button": ExternalLink,
+	text: Type,
+	label: Tag,
+	separator: Minus,
+	link: Link2,
+	tooltip: MessageCircle,
+	"theme-toggle": Sun,
+	"layer-card": Square,
+	"basalt-mark": Mountain,
+	field: FormInput,
+	input: TextCursorInput,
+	"input-area": AlignLeft,
+	"input-group": Columns3,
+	"sensitive-input": EyeOff,
+	checkbox: SquareCheck,
+	radio: Circle,
+	switch: ToggleLeft,
+	select: ChevronsUpDown,
+	combobox: ChevronsUpDown,
+	autocomplete: Search,
+	"date-picker": Calendar,
+	slider: SlidersHorizontal,
+	toggle: ToggleRight,
+	"toggle-group": ToggleRight,
+	badge: Award,
+	banner: Megaphone,
+	empty: Inbox,
+	loader: Loader,
+	"skeleton-line": Minus,
+	meter: Gauge,
+	toast: Bell,
+	"clipboard-text": Clipboard,
+	code: Code,
+	"code-block": FileCode,
+	avatar: UserRound,
+	accordion: ChevronsDownUp,
+	dialog: AppWindow,
+	"alert-dialog": TriangleAlert,
+	popover: MessageSquare,
+	"dropdown-menu": Menu,
+	"context-menu": MousePointer2,
+	"hover-card": CreditCard,
+	sheet: PanelRight,
+	"command-palette": Command,
+	tabs: Columns3,
+	table: Table,
+	"data-table": Table2,
+	pagination: Ellipsis,
+	collapsible: ChevronsDown,
+	breadcrumbs: ChevronRight,
+	"navigation-menu": Navigation,
+	"menu-bar": PanelTop,
+	toolbar: Wrench,
+	"table-of-contents": List,
+	grid: LayoutGrid,
+	sidebar: PanelLeft,
+	flow: GitBranch,
+	"theme-provider": Palette,
+	"link-provider": Link2,
+	"stat-card": Hash,
+	"slot-bar": BarChart3,
+	bar: ChartColumn,
+	line: ChartLine,
+	area: ChartArea,
+	donut: ChartPie,
+	"grouped-bar": ChartColumnStacked,
+	"stacked-bar": ChartColumnStacked,
+	sparkline: Activity,
+	"heatmap-calendar": CalendarDays,
+	gauge: Gauge,
+	radar: Radar,
+	funnel: Filter,
+	bullet: Minus,
+	timeline: History,
+	sankey: GitFork,
+	"item-list": List,
+	"date-navigation": CalendarRange,
+	palette: SwatchBook,
+};
+
+const LIBRARY_GROUPS: NavGroup[] = CATALOG_CATEGORIES.map((category) => ({
+	label: category.label,
+	defaultOpen: true,
+	items: CATALOG.filter((entry) => entry.category === category.id).map((entry) => ({
+		title: entry.name,
+		path: `/ui/${entry.slug}`,
+		icon: CATALOG_ICONS[entry.slug] ?? RectangleEllipsis,
+	})),
+}));
+
 const ALL_NAV_ITEMS = [...NAV_GROUPS.flatMap((g) => g.items), LIBRARY_HOME];
 
 function navItemClass(active: boolean) {
@@ -131,6 +285,14 @@ function navItemClass(active: boolean) {
 
 // ── Sub-components ──
 
+function itemTitle(item: NavItem, t: (key: string) => string) {
+	return item.title ?? t(item.titleKey ?? "");
+}
+
+function groupLabel(group: NavGroup, t: (key: string) => string) {
+	return group.label ?? t(group.labelKey ?? "");
+}
+
 function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath: string }) {
 	const [open, setOpen] = useState(group.defaultOpen ?? true);
 	const navigate = useNavigate();
@@ -140,7 +302,7 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
 		<Collapsible open={open} onOpenChange={setOpen}>
 			<div className="px-3 mt-2">
 				<CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-2.5">
-					<span className="text-sm font-normal text-muted-foreground">{t(group.labelKey)}</span>
+					<span className="text-sm font-normal text-muted-foreground">{groupLabel(group, t)}</span>
 					<span className="flex h-7 w-7 shrink-0 items-center justify-center">
 						<ChevronUp
 							className={cn(
@@ -173,7 +335,7 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
 								className={navItemClass(!item.external && currentPath === item.path)}
 							>
 								<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
-								<span className="flex-1 text-left">{t(item.titleKey)}</span>
+								<span className="flex-1 truncate text-left">{itemTitle(item, t)}</span>
 								{item.external && (
 									<span className="flex h-7 w-7 shrink-0 items-center justify-center">
 										<ExternalLink className="h-3 w-3 text-muted-foreground" strokeWidth={1.5} />
@@ -209,7 +371,7 @@ function LibraryNav({ currentPath }: { currentPath: string }) {
 	const { t } = useTranslation();
 	return (
 		<div className="pb-3">
-			<div className="flex flex-col gap-0.5 px-3">
+			<div className="mt-2 flex flex-col gap-0.5 px-3">
 				<button
 					type="button"
 					onClick={() => navigate("/ui")}
@@ -219,36 +381,9 @@ function LibraryNav({ currentPath }: { currentPath: string }) {
 					<span className="flex-1 text-left">{t("nav.kitIndex")}</span>
 				</button>
 			</div>
-			{CATALOG_CATEGORIES.map((category) => {
-				const items = CATALOG.filter((entry) => entry.category === category.id);
-				if (items.length === 0) {
-					return null;
-				}
-				return (
-					<div key={category.id} className="mt-2">
-						<div className="px-3">
-							<p className="px-3 py-2.5 text-sm font-normal text-muted-foreground">
-								{category.label}
-							</p>
-						</div>
-						<div className="flex flex-col gap-0.5 px-3">
-							{items.map((entry) => {
-								const path = `/ui/${entry.slug}`;
-								return (
-									<button
-										type="button"
-										key={entry.slug}
-										onClick={() => navigate(path)}
-										className={navItemClass(currentPath === path)}
-									>
-										<span className="flex-1 truncate text-left">{entry.name}</span>
-									</button>
-								);
-							})}
-						</div>
-					</div>
-				);
-			})}
+			{LIBRARY_GROUPS.map((group) => (
+				<NavGroupSection key={group.label} group={group} currentPath={currentPath} />
+			))}
 		</div>
 	);
 }
@@ -282,7 +417,7 @@ function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: s
 				</button>
 			</TooltipTrigger>
 			<TooltipContent side="right" sideOffset={8}>
-				{t(item.titleKey)}
+				{itemTitle(item, t)}
 			</TooltipContent>
 		</Tooltip>
 	);
@@ -459,16 +594,16 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 				<CommandList>
 					<CommandEmpty>{t("common.noResults")}</CommandEmpty>
 					{NAV_GROUPS.map((group) => (
-						<CommandGroup key={group.labelKey} heading={t(group.labelKey)}>
+						<CommandGroup key={group.labelKey} heading={groupLabel(group, t)}>
 							{group.items.map((item) => (
 								<CommandItem
 									key={item.path}
-									value={t(item.titleKey)}
+									value={itemTitle(item, t)}
 									onSelect={() => handleSelect(item.path)}
 									className="gap-3 cursor-pointer"
 								>
 									<item.icon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-									<span>{t(item.titleKey)}</span>
+									<span>{itemTitle(item, t)}</span>
 								</CommandItem>
 							))}
 						</CommandGroup>
