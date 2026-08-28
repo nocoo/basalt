@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ClipboardText } from "./clipboard-text";
 
@@ -8,5 +8,13 @@ describe("ClipboardText", () => {
 		render(<ClipboardText text="bun add @nocoo/basalt" />);
 		expect(screen.getByText("bun add @nocoo/basalt")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Copy" })).toBeInTheDocument();
+	});
+
+	it("copies text when clicked", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		vi.stubGlobal("navigator", { clipboard: { writeText } });
+		render(<ClipboardText text="secret" />);
+		fireEvent.click(screen.getByRole("button", { name: "Copy" }));
+		await waitFor(() => expect(writeText).toHaveBeenCalledWith("secret"));
 	});
 });

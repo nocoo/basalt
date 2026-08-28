@@ -31,6 +31,11 @@ describe("Field", () => {
 		expect(screen.getByRole("alert")).toHaveTextContent("Required");
 	});
 
+	it("renders non-element children without htmlFor", () => {
+		render(<Field label="Note">plain</Field>);
+		expect(screen.getByText("plain")).toBeInTheDocument();
+	});
+
 	it("merges caller described-by ids with hint and error", () => {
 		render(
 			<>

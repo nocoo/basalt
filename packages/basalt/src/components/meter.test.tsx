@@ -6,5 +6,16 @@ describe("Meter", () => {
 	it("shows the label", () => {
 		render(<Meter value={40} label="Usage" />);
 		expect(screen.getByText("Usage")).toBeInTheDocument();
+		expect(screen.getByText("40%")).toBeInTheDocument();
+	});
+
+	it("accepts a custom value label", () => {
+		render(<Meter value={12} customValue="12 GB" />);
+		expect(screen.getByText("12 GB")).toBeInTheDocument();
+	});
+
+	it("renders without captions", () => {
+		const { container } = render(<Meter value={8} />);
+		expect(container.querySelector("[data-state]")).toBeTruthy();
 	});
 });
