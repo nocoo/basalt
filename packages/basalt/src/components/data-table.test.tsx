@@ -100,6 +100,29 @@ describe("DataTable", () => {
 		expect(screen.getByText("B")).toBeInTheDocument();
 	});
 
+	it("sorts bigints beyond the safe integer range", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "High", count: 9007199254740993n },
+					{ name: "Low", count: 9007199254740992n },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getAllByRole("cell")[0].textContent).toBe("Low");
+		expect(screen.getAllByRole("cell")[1].textContent).toBe("9007199254740992");
+	});
+
+	it("inherits header text color on sort buttons", () => {
+		render(<DataTable data={rows} columns={columns} />);
+		expect(screen.getByRole("button", { name: /Name/ }).className).toContain("text-inherit");
+	});
+
 	it("sorts mixed fractional numbers and bigints numerically", () => {
 		render(
 			<DataTable
