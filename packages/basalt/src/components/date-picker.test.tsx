@@ -95,6 +95,33 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "Next" })).toHaveFocus();
 	});
 
+	it("moves day focus after month navigation when the index is unchanged", () => {
+		render(<DatePicker defaultValue="2024-01-04" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		const next = screen.getByRole("button", { name: "Next" });
+		next.focus();
+		fireEvent.click(next);
+		expect(screen.getByText("February 2024")).toBeInTheDocument();
+		const first = screen.getByRole("button", { name: "2024-02-01" });
+		first.focus();
+		fireEvent.keyDown(first, { key: "ArrowRight" });
+		expect(screen.getByRole("button", { name: "2024-02-02" })).toHaveAttribute("tabindex", "0");
+	});
+
+	it("restores defaultValue on form reset without a name", () => {
+		render(
+			<form>
+				<DatePicker defaultValue="2024-01-15" aria-label="Date" />
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-16" }));
+		expect(screen.getByRole("button", { name: /Date/ })).toHaveTextContent("Jan 16, 2024");
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		expect(screen.getByRole("button", { name: /Date/ })).toHaveTextContent("Jan 15, 2024");
+	});
+
 	it("restores defaultValue on form reset", () => {
 		render(
 			<form>

@@ -99,7 +99,7 @@ export function DatePicker({
 	const [focusIndex, setFocusIndex] = useState(0);
 	const dayRefs = useRef<Array<HTMLButtonElement | null>>([]);
 	const pendingFocusIso = useRef<string | null>(null);
-	const retainNavFocus = useRef(false);
+	const focusDay = useRef(false);
 	const hiddenRef = useRef<HTMLInputElement>(null);
 	const selected = value ?? uncontrolled;
 	const selectedDate = selected ? parseIso(selected) : null;
@@ -155,6 +155,7 @@ export function DatePicker({
 		const pending = pendingFocusIso.current;
 		if (pending) {
 			pendingFocusIso.current = null;
+			focusDay.current = true;
 			const pendingIndex = days.findIndex((date) => formatIso(date) === pending);
 			setFocusIndex(pendingIndex >= 0 ? pendingIndex : 0);
 			return;
@@ -170,13 +171,10 @@ export function DatePicker({
 	}, [open, selected, timeZone, days, month.m]);
 
 	useEffect(() => {
-		if (!open) {
+		if (!open || !focusDay.current) {
 			return;
 		}
-		if (retainNavFocus.current) {
-			retainNavFocus.current = false;
-			return;
-		}
+		focusDay.current = false;
 		dayRefs.current[focusIndex]?.focus();
 	}, [open, focusIndex]);
 
@@ -206,10 +204,9 @@ export function DatePicker({
 				setOpen(next);
 			}}
 		>
-			{name ? (
-				<input ref={hiddenRef} type="hidden" name={name} value={selected} disabled={disabled} />
-			) : null}
+			{name ? <input type="hidden" name={name} value={selected} disabled={disabled} /> : null}
 			<input
+				ref={hiddenRef}
 				type="date"
 				className="sr-only mb-2 h-7"
 				style={{
@@ -254,7 +251,7 @@ export function DatePicker({
 						className={CALENDAR_BUTTON}
 						disabled={disabled}
 						onClick={() => {
-							retainNavFocus.current = true;
+							focusDay.current = false;
 							setMonth(
 								month.m === 1
 									? { y: month.y - 1, m: 12, d: 1 }
@@ -270,7 +267,7 @@ export function DatePicker({
 						className={CALENDAR_BUTTON}
 						disabled={disabled}
 						onClick={() => {
-							retainNavFocus.current = true;
+							focusDay.current = false;
 							setMonth(
 								month.m === 12
 									? { y: month.y + 1, m: 1, d: 1 }
@@ -311,6 +308,7 @@ export function DatePicker({
 							}
 							const index = days.findIndex((date) => formatIso(date) === formatIso(next));
 							if (index >= 0) {
+								focusDay.current = true;
 								setFocusIndex(index);
 							}
 							return;
