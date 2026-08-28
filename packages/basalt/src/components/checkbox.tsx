@@ -10,17 +10,14 @@ export const Checkbox = React.forwardRef<
 	<CheckboxPrimitive.Root
 		ref={ref}
 		className={cn(
-			"peer h-4 w-4 shrink-0 rounded-basalt-sm border border-basalt-primary ring-offset-basalt-background data-[state=checked]:bg-basalt-primary data-[state=checked]:text-basalt-primary-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-basalt-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+			"group peer h-4 w-4 shrink-0 rounded-basalt-sm border border-basalt-primary ring-offset-basalt-background data-[state=checked]:bg-basalt-primary data-[state=checked]:text-basalt-primary-foreground data-[state=indeterminate]:bg-basalt-primary data-[state=indeterminate]:text-basalt-primary-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-basalt-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
 			className,
 		)}
 		{...props}
 	>
 		<CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
-			{props.checked === "indeterminate" ? (
-				<Minus className="h-3 w-3" />
-			) : (
-				<Check className="h-4 w-4" />
-			)}
+			<Check className="hidden h-4 w-4 group-data-[state=checked]:block" />
+			<Minus className="hidden h-3 w-3 group-data-[state=indeterminate]:block" />
 		</CheckboxPrimitive.Indicator>
 	</CheckboxPrimitive.Root>
 ));

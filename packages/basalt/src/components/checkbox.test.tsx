@@ -10,6 +10,13 @@ describe("Checkbox", () => {
 
 	it("renders an indeterminate state", () => {
 		render(<Checkbox aria-label="Partial" checked="indeterminate" />);
+		const checkbox = screen.getByRole("checkbox", { name: "Partial" });
+		expect(checkbox).toHaveAttribute("data-state", "indeterminate");
+		expect(checkbox.className).toContain("data-[state=indeterminate]:bg-basalt-primary");
+	});
+
+	it("keeps mixed state when defaultChecked is indeterminate", () => {
+		render(<Checkbox aria-label="Partial" defaultChecked="indeterminate" />);
 		expect(screen.getByRole("checkbox", { name: "Partial" })).toHaveAttribute(
 			"data-state",
 			"indeterminate",
