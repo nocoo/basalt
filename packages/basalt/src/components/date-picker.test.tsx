@@ -43,6 +43,18 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("Pick a date");
 	});
 
+	it("does not submit invalid dates", () => {
+		const { container } = render(
+			<form>
+				<DatePicker value="2024-02-30" name="when" aria-label="Date" />
+			</form>,
+		);
+		const form = container.querySelector("form");
+		expect(form).toBeTruthy();
+		expect(new FormData(form as HTMLFormElement).get("when")).toBe("");
+		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("Pick a date");
+	});
+
 	it("closes the calendar when it becomes disabled", () => {
 		const onChange = vi.fn();
 		const { rerender } = render(
@@ -55,6 +67,25 @@ describe("DatePicker", () => {
 		);
 		expect(screen.queryByRole("button", { name: "2024-01-16" })).not.toBeInTheDocument();
 		expect(onChange).not.toHaveBeenCalled();
+	});
+
+	it("refocuses after a controlled value change while open", async () => {
+		const { rerender } = render(<DatePicker value="2024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "2024-01-15" })).toHaveFocus();
+		});
+		rerender(<DatePicker value="2024-01-22" aria-label="Date" />);
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "2024-01-22" })).toHaveFocus();
+		});
+		rerender(<DatePicker value="2024-03-20" aria-label="Date" />);
+		await waitFor(() => {
+			expect(screen.getByText("March 2024")).toBeInTheDocument();
+		});
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "2024-03-20" })).toHaveFocus();
+		});
 	});
 
 	it("focuses the selected day when opened", async () => {

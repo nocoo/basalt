@@ -103,8 +103,18 @@ export function DatePicker({
 	const hiddenRef = useRef<HTMLInputElement>(null);
 	const selected = value ?? uncontrolled;
 	const selectedDate = selected ? parseIso(selected) : null;
+	const submitted = selectedDate ? formatIso(selectedDate) : "";
 	const cursor = selectedDate ?? todayCivil(timeZone);
 	const [month, setMonth] = useState<Civil>({ y: cursor.y, m: cursor.m, d: 1 });
+	const prevSelected = useRef(selected);
+	if (open && prevSelected.current !== selected) {
+		focusDay.current = true;
+		const next = selectedDate ?? todayCivil(timeZone);
+		if (month.y !== next.y || month.m !== next.m) {
+			setMonth({ y: next.y, m: next.m, d: 1 });
+		}
+	}
+	prevSelected.current = selected;
 
 	useEffect(() => {
 		if (!open) {
@@ -213,7 +223,7 @@ export function DatePicker({
 				setOpen(next);
 			}}
 		>
-			{name ? <input type="hidden" name={name} value={selected} disabled={disabled} /> : null}
+			{name ? <input type="hidden" name={name} value={submitted} disabled={disabled} /> : null}
 			<input
 				ref={hiddenRef}
 				type="date"
@@ -225,7 +235,7 @@ export function DatePicker({
 					overflow: "hidden",
 					clip: "rect(0, 0, 0, 0)",
 				}}
-				value={selected}
+				value={submitted}
 				readOnly
 				disabled={disabled}
 				aria-hidden="true"
