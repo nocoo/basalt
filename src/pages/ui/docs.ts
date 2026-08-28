@@ -33,9 +33,9 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 			{ name: "icon", type: "ReactNode" },
 		],
 		source: {
-			repo: "meowth",
-			sha: "bb02d5a18e00",
-			file: "apps/dashboard/src/components/ui/button.tsx",
+			repo: "pew",
+			sha: "97a890fabe6e",
+			file: "packages/web/src/components/ui/button.tsx",
 		},
 	},
 	"link-button": {
@@ -56,9 +56,9 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 			{ name: "href", type: "string" },
 		],
 		source: {
-			repo: "meowth",
-			sha: "bb02d5a18e00",
-			file: "apps/dashboard/src/components/ui/button.tsx",
+			repo: "pew",
+			sha: "97a890fabe6e",
+			file: "packages/web/src/components/ui/button.tsx",
 		},
 	},
 	text: {
@@ -77,9 +77,9 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		variants: [],
 		props: [{ name: "htmlFor", type: "string" }],
 		source: {
-			repo: "meowth",
-			sha: "bb02d5a18e00",
-			file: "apps/dashboard/src/components/ui/label.tsx",
+			repo: "zhe",
+			sha: "c31c239f01c9",
+			file: "components/ui/label.tsx",
 		},
 	},
 	separator: {
@@ -95,9 +95,9 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 			{ name: "decorative", type: "boolean" },
 		],
 		source: {
-			repo: "meowth",
-			sha: "bb02d5a18e00",
-			file: "apps/dashboard/src/components/ui/separator.tsx",
+			repo: "pew",
+			sha: "97a890fabe6e",
+			file: "packages/web/src/components/ui/separator.tsx",
 		},
 	},
 	link: {
@@ -129,9 +129,9 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 			},
 		],
 		source: {
-			repo: "meowth",
-			sha: "bb02d5a18e00",
-			file: "apps/dashboard/src/components/ui/tooltip.tsx",
+			repo: "pew",
+			sha: "97a890fabe6e",
+			file: "packages/web/src/components/ui/tooltip.tsx",
 		},
 	},
 	"theme-toggle": {
@@ -168,7 +168,7 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 				description: "L2 card surface. Bordered is a variant, not L3.",
 			},
 		],
-		source: { repo: "pika", sha: "d9b12caf26a4", file: "packages/web/src/components/ui/card.tsx" },
+		source: { repo: "zhe", sha: "c31c239f01c9", file: "components/ui/card.tsx" },
 	},
 	field: {
 		description: "A labeled control with optional hint and error.",
@@ -201,9 +201,9 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		variants: [],
 		props: [{ name: "type", type: "string" }],
 		source: {
-			repo: "meowth",
-			sha: "bb02d5a18e00",
-			file: "apps/dashboard/src/components/ui/input.tsx",
+			repo: "zhe",
+			sha: "c31c239f01c9",
+			file: "components/ui/input.tsx",
 		},
 	},
 	"input-area": {
@@ -216,9 +216,9 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		variants: [],
 		props: [{ name: "rows", type: "number" }],
 		source: {
-			repo: "meowth",
-			sha: "bb02d5a18e00",
-			file: "apps/dashboard/src/components/ui/textarea.tsx",
+			repo: "zhe",
+			sha: "c31c239f01c9",
+			file: "components/ui/textarea.tsx",
 		},
 	},
 	"input-group": {
@@ -260,9 +260,9 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		variants: ["checked", "unchecked", "indeterminate"],
 		props: [{ name: "checked", type: 'boolean | "indeterminate"' }],
 		source: {
-			repo: "pika",
-			sha: "d9b12caf26a4",
-			file: "packages/web/src/components/ui/checkbox.tsx",
+			repo: "zhe",
+			sha: "c31c239f01c9",
+			file: "components/ui/checkbox.tsx",
 		},
 	},
 	radio: {
@@ -275,9 +275,9 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		variants: [],
 		props: [{ name: "value", type: "string" }],
 		source: {
-			repo: "meowth",
-			sha: "bb02d5a18e00",
-			file: "apps/dashboard/src/components/ui/radio-group.tsx",
+			repo: "pew",
+			sha: "97a890fabe6e",
+			file: "packages/web/src/components",
 		},
 	},
 	switch: {
@@ -290,9 +290,9 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		variants: ["checked", "unchecked"],
 		props: [{ name: "checked", type: "boolean" }],
 		source: {
-			repo: "meowth",
-			sha: "bb02d5a18e00",
-			file: "apps/dashboard/src/components/ui/switch.tsx",
+			repo: "zhe",
+			sha: "c31c239f01c9",
+			file: "components/ui/switch.tsx",
 		},
 	},
 	"theme-provider": {

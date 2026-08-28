@@ -134,6 +134,21 @@ describe("ui catalog", () => {
 		]);
 	});
 
+	it("does not cite meowth or pika as catalog sources", () => {
+		for (const [slug, docs] of Object.entries(CATALOG_DOCS)) {
+			expect(docs.source.repo, slug).not.toMatch(/^(meowth|pika)$/);
+		}
+	});
+
+	it("renders example previews on a white bordered surface", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/button");
+		const preview = document.querySelector(".min-h-\\[140px\\]");
+		expect(preview).toHaveClass("bg-white");
+		expect(preview?.parentElement).toHaveClass("border", "border-border");
+	});
+
 	it("documents button examples like kumo", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
