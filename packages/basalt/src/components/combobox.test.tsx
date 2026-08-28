@@ -68,4 +68,40 @@ describe("Combobox", () => {
 		fireEvent.change(input, { target: { value: "zzz" } });
 		expect(screen.queryByRole("list")).not.toBeInTheDocument();
 	});
+
+	it("ignores keys during IME composition", () => {
+		const onValueChange = vi.fn();
+		render(
+			<Combobox items={["Apple", "Banana"]} placeholder="Fruit" onValueChange={onValueChange} />,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.keyDown(input, { key: "Enter", isComposing: true });
+		fireEvent.keyDown(input, { key: "ArrowDown", isComposing: true });
+		expect(onValueChange).not.toHaveBeenCalled();
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+	});
+
+	it("closes on document Escape without committing", () => {
+		const onValueChange = vi.fn();
+		render(<Combobox items={["Apple"]} placeholder="Fruit" onValueChange={onValueChange} />);
+		fireEvent.focus(screen.getByLabelText("Fruit"));
+		expect(screen.getByRole("option", { name: "Apple" })).toBeInTheDocument();
+		fireEvent.keyDown(document, { key: "Escape" });
+		expect(screen.queryByRole("option", { name: "Apple" })).not.toBeInTheDocument();
+		expect(onValueChange).not.toHaveBeenCalled();
+	});
+
+	it("marks the active duplicate option by index", () => {
+		render(<Combobox items={["New York", "New York"]} placeholder="City" />);
+		fireEvent.focus(screen.getByLabelText("City"));
+		const options = screen.getAllByRole("option", { name: "New York" });
+		expect(options[0]).toHaveAttribute("aria-selected", "true");
+		expect(options[1]).toHaveAttribute("aria-selected", "false");
+		expect(options[0]).toHaveAttribute("tabindex", "-1");
+		fireEvent.keyDown(screen.getByLabelText("City"), { key: "ArrowDown" });
+		const next = screen.getAllByRole("option", { name: "New York" });
+		expect(next[0]).toHaveAttribute("aria-selected", "false");
+		expect(next[1]).toHaveAttribute("aria-selected", "true");
+	});
 });

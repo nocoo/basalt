@@ -32,7 +32,8 @@ export function Combobox({
 		}
 	}, [value]);
 	const filtered = items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
-	const activeItem = filtered[Math.min(active, Math.max(0, filtered.length - 1))];
+	const activeIndex = Math.min(active, Math.max(0, filtered.length - 1));
+	const activeItem = filtered[activeIndex];
 
 	function commit(next: string) {
 		if (value === undefined) {
@@ -44,6 +45,23 @@ export function Combobox({
 		setOpen(false);
 		onValueChange?.(next);
 	}
+
+	useEffect(() => {
+		if (!open) {
+			return;
+		}
+		const onKey = (event: KeyboardEvent) => {
+			if (event.key !== "Escape") {
+				return;
+			}
+			event.preventDefault();
+			event.stopPropagation();
+			setOpen(false);
+			setQuery(selected);
+		};
+		document.addEventListener("keydown", onKey, true);
+		return () => document.removeEventListener("keydown", onKey, true);
+	}, [open, selected]);
 
 	return (
 		<div
@@ -65,7 +83,12 @@ export function Combobox({
 				}}
 				onFocus={() => setOpen(true)}
 				onKeyDown={(event) => {
+					if (event.nativeEvent.isComposing || event.key === "Process") {
+						return;
+					}
 					if (event.key === "Escape") {
+						event.preventDefault();
+						event.stopPropagation();
 						setOpen(false);
 						setQuery(selected);
 						return;
@@ -95,9 +118,7 @@ export function Combobox({
 				aria-expanded={open}
 				aria-autocomplete="list"
 				aria-controls={listId}
-				aria-activedescendant={
-					open && activeItem ? `${listId}-opt-${Math.min(active, filtered.length - 1)}` : undefined
-				}
+				aria-activedescendant={open && activeItem ? `${listId}-opt-${activeIndex}` : undefined}
 			/>
 			{open && filtered.length > 0 ? (
 				<div
@@ -111,10 +132,11 @@ export function Combobox({
 							key={`${listId}-opt-${index}`}
 							id={`${listId}-opt-${index}`}
 							role="option"
-							aria-selected={item === activeItem}
+							tabIndex={-1}
+							aria-selected={index === activeIndex}
 							className={cn(
 								"w-full rounded-basalt-sm px-2 py-1.5 text-left text-sm hover:bg-basalt-accent",
-								item === activeItem && "bg-basalt-accent",
+								index === activeIndex && "bg-basalt-accent",
 							)}
 							onClick={() => commit(item)}
 						>
