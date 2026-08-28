@@ -3,101 +3,96 @@ import { useCallback, useEffect, useRef, useState } from "react";
 const SCROLL_SETTLE_MS = 150;
 const BOTTOM_PX = 8;
 
-export function useDocTocActiveId(ids: string[], offset = 24) {
+function scrollParent(): HTMLElement | null {
+	return document.querySelector("[data-doc-scroll]");
+}
+
+function pickActiveId(ids: string[], offset: number): string {
+	const ordered = ids
+		.map((id) => document.getElementById(id))
+		.filter((el): el is HTMLElement => el !== null);
+	if (ordered.length === 0) {
+		return ids[0] ?? "";
+	}
+	const scroller = scrollParent();
+	if (scroller && scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - BOTTOM_PX) {
+		return ordered[ordered.length - 1].id;
+	}
+	const line = (scroller?.getBoundingClientRect().top ?? 0) + offset;
+	let current = ordered[0].id;
+	for (const el of ordered) {
+		if (el.getBoundingClientRect().top <= line + 1) {
+			current = el.id;
+		} else {
+			break;
+		}
+	}
+	return current;
+}
+
+export function useDocTocActiveId(ids: string[], offset = 48) {
 	const [activeId, setActiveId] = useState(ids[0] ?? "");
-	const [root, setRoot] = useState<Element | null>(null);
 	const pinned = useRef(false);
 	const idsKey = ids.join("\0");
 
 	useEffect(() => {
-		setRoot(document.querySelector("[data-doc-scroll]"));
-	}, []);
-
-	useEffect(() => {
-		const ordered = idsKey
-			.split("\0")
-			.filter(Boolean)
-			.map((id) => document.getElementById(id))
-			.filter((el): el is HTMLElement => el !== null);
-		if (ordered.length === 0 || typeof IntersectionObserver === "undefined") {
+		const tracked = idsKey.split("\0").filter(Boolean);
+		const scroller = scrollParent();
+		if (!scroller) {
 			return;
 		}
-
-		const intersecting = new Set<Element>();
-
-		const pickTopmost = () => {
+		let frame = 0;
+		const update = () => {
 			if (pinned.current) {
 				return;
 			}
-			const scroller = root;
-			if (
-				scroller &&
-				scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - BOTTOM_PX
-			) {
-				setActiveId(ordered[ordered.length - 1].id);
+			const next = pickActiveId(tracked, offset);
+			if (next) {
+				setActiveId(next);
+			}
+		};
+		const onScroll = () => {
+			if (frame) {
 				return;
 			}
-			const first = ordered.find((el) => intersecting.has(el));
-			if (first) {
-				setActiveId(first.id);
+			frame = window.requestAnimationFrame(() => {
+				frame = 0;
+				update();
+			});
+		};
+		scroller.addEventListener("scroll", onScroll, { passive: true });
+		update();
+		return () => {
+			scroller.removeEventListener("scroll", onScroll);
+			if (frame) {
+				window.cancelAnimationFrame(frame);
 			}
 		};
-
-		const observer = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					if (entry.isIntersecting) {
-						intersecting.add(entry.target);
-					} else {
-						intersecting.delete(entry.target);
-					}
-				}
-				pickTopmost();
-			},
-			{ root, rootMargin: `-${offset}px 0px 0px 0px`, threshold: [0, 1] },
-		);
-
-		for (const el of ordered) {
-			observer.observe(el);
-		}
-
-		const scroller: EventTarget = root ?? window;
-		scroller.addEventListener("scroll", pickTopmost, { passive: true });
-		pickTopmost();
-
-		return () => {
-			observer.disconnect();
-			scroller.removeEventListener("scroll", pickTopmost);
-		};
-	}, [idsKey, offset, root]);
+	}, [idsKey, offset]);
 
 	const settleTimer = useRef<number | undefined>(undefined);
 	const cancelUnpin = useRef<(() => void) | null>(null);
 
-	const selectSection = useCallback(
-		(id: string) => {
-			cancelUnpin.current?.();
-			pinned.current = true;
-			setActiveId(id);
-
-			const scrollTarget: EventTarget = root ?? window;
-			const arm = () => {
-				window.clearTimeout(settleTimer.current);
-				settleTimer.current = window.setTimeout(() => {
-					cancelUnpin.current?.();
-					pinned.current = false;
-				}, SCROLL_SETTLE_MS);
-			};
-			scrollTarget.addEventListener("scroll", arm, { passive: true });
-			cancelUnpin.current = () => {
-				window.clearTimeout(settleTimer.current);
-				scrollTarget.removeEventListener("scroll", arm);
-				cancelUnpin.current = null;
-			};
-			arm();
-		},
-		[root],
-	);
+	const selectSection = useCallback((id: string) => {
+		cancelUnpin.current?.();
+		pinned.current = true;
+		setActiveId(id);
+		const scrollTarget: EventTarget = scrollParent() ?? window;
+		const arm = () => {
+			window.clearTimeout(settleTimer.current);
+			settleTimer.current = window.setTimeout(() => {
+				cancelUnpin.current?.();
+				pinned.current = false;
+			}, SCROLL_SETTLE_MS);
+		};
+		scrollTarget.addEventListener("scroll", arm, { passive: true });
+		cancelUnpin.current = () => {
+			window.clearTimeout(settleTimer.current);
+			scrollTarget.removeEventListener("scroll", arm);
+			cancelUnpin.current = null;
+		};
+		arm();
+	}, []);
 
 	useEffect(() => () => cancelUnpin.current?.(), []);
 

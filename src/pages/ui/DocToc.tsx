@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { useDocTocActiveId } from "./useDocTocActiveId";
 
@@ -25,16 +25,6 @@ function groupHeadings(headings: DocHeading[]): HeadingGroup[] {
 	return groups;
 }
 
-function itemClass(active: boolean, nested = false) {
-	return cn(
-		"block w-full truncate border-l-2 py-0.5 text-left text-sm leading-5 no-underline transition-colors",
-		nested ? "pl-7" : "pl-4",
-		active
-			? "border-primary font-medium text-foreground"
-			: "border-transparent text-muted-foreground hover:border-border hover:text-foreground",
-	);
-}
-
 function TocLink({
 	heading,
 	active,
@@ -50,7 +40,12 @@ function TocLink({
 		<a
 			href={`#${heading.id}`}
 			aria-current={active ? "true" : undefined}
-			className={itemClass(active, nested)}
+			data-toc-id={heading.id}
+			className={cn(
+				"block w-full truncate py-0.5 text-left text-sm leading-5 no-underline transition-colors duration-200",
+				nested ? "pl-7" : "pl-4",
+				active ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
+			)}
 			onClick={(event) => {
 				event.preventDefault();
 				onSelect(heading.id);
@@ -66,6 +61,22 @@ export function DocToc({ headings }: { headings: DocHeading[] }) {
 	const groups = useMemo(() => groupHeadings(headings), [headings]);
 	const ids = useMemo(() => headings.map((heading) => heading.id), [headings]);
 	const { activeId, selectSection } = useDocTocActiveId(ids);
+	const listRef = useRef<HTMLUListElement>(null);
+	const [marker, setMarker] = useState({ top: 0, height: 0 });
+
+	useLayoutEffect(() => {
+		const list = listRef.current;
+		const active = list?.querySelector(`[data-toc-id="${activeId}"]`);
+		if (!list || !(active instanceof HTMLElement) || !activeId) {
+			return;
+		}
+		const listBox = list.getBoundingClientRect();
+		const itemBox = active.getBoundingClientRect();
+		setMarker({
+			top: itemBox.top - listBox.top,
+			height: itemBox.height,
+		});
+	}, [activeId]);
 
 	return (
 		<nav aria-label="On this page" className="text-sm">
@@ -92,11 +103,19 @@ export function DocToc({ headings }: { headings: DocHeading[] }) {
 				<p className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
 					On this page
 				</p>
-				<ul className="flex flex-col gap-2 border-l-2 border-border">
+				<ul ref={listRef} className="relative flex flex-col gap-2 border-l-2 border-border">
+					<span
+						aria-hidden="true"
+						className="absolute top-0 left-[-2px] w-0.5 rounded-full bg-primary transition-[transform,height] duration-200 ease-out"
+						style={{
+							height: marker.height || 20,
+							transform: `translateY(${marker.top}px)`,
+						}}
+					/>
 					{groups.map((group) => {
 						if (group.h3s.length === 0) {
 							return (
-								<li key={group.h2.id} className="-ml-0.5">
+								<li key={group.h2.id}>
 									<TocLink
 										heading={group.h2}
 										active={activeId === group.h2.id}
@@ -106,7 +125,7 @@ export function DocToc({ headings }: { headings: DocHeading[] }) {
 							);
 						}
 						return (
-							<li key={group.h2.id} className="-ml-0.5 flex flex-col gap-2">
+							<li key={group.h2.id} className="flex flex-col gap-2">
 								<TocLink
 									heading={group.h2}
 									active={activeId === group.h2.id}
