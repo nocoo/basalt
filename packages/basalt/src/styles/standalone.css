@@ -1,0 +1,3 @@
+@import "./tokens.css";
+
+/* Standalone has no Preflight. Consumers without Tailwind get tokens only in 2.0 skeleton. */

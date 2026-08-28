@@ -1,0 +1,47 @@
+:root,
+.light,
+[data-mode="light"] {
+	--basalt-background: 220 14% 94%;
+	--basalt-foreground: 0 0% 12%;
+	--basalt-card: 220 14% 97%;
+	--basalt-card-foreground: 0 0% 12%;
+	--basalt-secondary: 0 0% 100%;
+	--basalt-secondary-foreground: 0 0% 12%;
+	--basalt-popover: 0 0% 100%;
+	--basalt-popover-foreground: 0 0% 12%;
+	--basalt-primary: 217 91% 60%;
+	--basalt-primary-foreground: 0 0% 100%;
+	--basalt-muted: 220 14% 92%;
+	--basalt-muted-foreground: 0 0% 45%;
+	--basalt-accent: 220 14% 92%;
+	--basalt-accent-foreground: 0 0% 12%;
+	--basalt-destructive: 0 72% 51%;
+	--basalt-destructive-foreground: 0 0% 100%;
+	--basalt-border: 220 13% 88%;
+	--basalt-input: 220 13% 88%;
+	--basalt-ring: 217 91% 60%;
+	--basalt-radius: 0.75rem;
+}
+
+.dark,
+[data-mode="dark"] {
+	--basalt-background: 0 0% 9%;
+	--basalt-foreground: 0 0% 93%;
+	--basalt-card: 0 0% 10.6%;
+	--basalt-card-foreground: 0 0% 93%;
+	--basalt-secondary: 0 0% 12.2%;
+	--basalt-secondary-foreground: 0 0% 93%;
+	--basalt-popover: 0 0% 10.6%;
+	--basalt-popover-foreground: 0 0% 93%;
+	--basalt-primary: 217 91% 60%;
+	--basalt-primary-foreground: 0 0% 100%;
+	--basalt-muted: 0 0% 12.2%;
+	--basalt-muted-foreground: 0 0% 48%;
+	--basalt-accent: 0 0% 14%;
+	--basalt-accent-foreground: 0 0% 93%;
+	--basalt-destructive: 0 72% 51%;
+	--basalt-destructive-foreground: 0 0% 100%;
+	--basalt-border: 0 0% 16%;
+	--basalt-input: 0 0% 12%;
+	--basalt-ring: 217 91% 60%;
+}

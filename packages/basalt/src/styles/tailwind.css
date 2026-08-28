@@ -1,0 +1,26 @@
+@import "./tokens.css";
+
+@theme inline {
+	--color-basalt-background: hsl(var(--basalt-background));
+	--color-basalt-foreground: hsl(var(--basalt-foreground));
+	--color-basalt-card: hsl(var(--basalt-card));
+	--color-basalt-card-foreground: hsl(var(--basalt-card-foreground));
+	--color-basalt-secondary: hsl(var(--basalt-secondary));
+	--color-basalt-secondary-foreground: hsl(var(--basalt-secondary-foreground));
+	--color-basalt-popover: hsl(var(--basalt-popover));
+	--color-basalt-popover-foreground: hsl(var(--basalt-popover-foreground));
+	--color-basalt-primary: hsl(var(--basalt-primary));
+	--color-basalt-primary-foreground: hsl(var(--basalt-primary-foreground));
+	--color-basalt-muted: hsl(var(--basalt-muted));
+	--color-basalt-muted-foreground: hsl(var(--basalt-muted-foreground));
+	--color-basalt-accent: hsl(var(--basalt-accent));
+	--color-basalt-accent-foreground: hsl(var(--basalt-accent-foreground));
+	--color-basalt-destructive: hsl(var(--basalt-destructive));
+	--color-basalt-destructive-foreground: hsl(var(--basalt-destructive-foreground));
+	--color-basalt-border: hsl(var(--basalt-border));
+	--color-basalt-input: hsl(var(--basalt-input));
+	--color-basalt-ring: hsl(var(--basalt-ring));
+	--radius-basalt-lg: var(--basalt-radius);
+	--radius-basalt-md: calc(var(--basalt-radius) - 2px);
+	--radius-basalt-sm: calc(var(--basalt-radius) - 4px);
+}
