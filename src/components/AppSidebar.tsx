@@ -120,6 +120,15 @@ const LIBRARY_HOME: NavItem = { titleKey: "nav.kitIndex", icon: BookOpen, path: 
 
 const ALL_NAV_ITEMS = [...NAV_GROUPS.flatMap((g) => g.items), LIBRARY_HOME];
 
+function navItemClass(active: boolean) {
+	return cn(
+		"flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-normal transition-colors",
+		active
+			? "bg-accent text-foreground"
+			: "text-muted-foreground hover:bg-accent hover:text-foreground",
+	);
+}
+
 // ── Sub-components ──
 
 function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath: string }) {
@@ -161,12 +170,7 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
 										? window.open(item.path, "_blank", "noopener,noreferrer")
 										: navigate(item.path)
 								}
-								className={cn(
-									"flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-normal transition-colors",
-									!item.external && currentPath === item.path
-										? "bg-accent text-foreground"
-										: "text-muted-foreground hover:bg-accent hover:text-foreground",
-								)}
+								className={navItemClass(!item.external && currentPath === item.path)}
 							>
 								<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
 								<span className="flex-1 text-left">{t(item.titleKey)}</span>
@@ -205,18 +209,16 @@ function LibraryNav({ currentPath }: { currentPath: string }) {
 	const { t } = useTranslation();
 	return (
 		<div className="pb-3">
-			<button
-				type="button"
-				onClick={() => navigate("/ui")}
-				className={cn(
-					"mx-3 flex w-[calc(100%-1.5rem)] items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors",
-					currentPath === "/ui"
-						? "bg-accent text-foreground"
-						: "text-muted-foreground hover:bg-accent hover:text-foreground",
-				)}
-			>
-				{t("nav.kitIndex")}
-			</button>
+			<div className="flex flex-col gap-0.5 px-3">
+				<button
+					type="button"
+					onClick={() => navigate("/ui")}
+					className={navItemClass(currentPath === "/ui")}
+				>
+					<BookOpen className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+					<span className="flex-1 text-left">{t("nav.kitIndex")}</span>
+				</button>
+			</div>
 			{CATALOG_CATEGORIES.map((category) => {
 				const items = CATALOG.filter((entry) => entry.category === category.id);
 				if (items.length === 0) {
@@ -224,10 +226,12 @@ function LibraryNav({ currentPath }: { currentPath: string }) {
 				}
 				return (
 					<div key={category.id} className="mt-2">
-						<p className="px-6 py-1.5 text-xs font-medium text-muted-foreground">
-							{category.label}
-						</p>
-						<div className="flex flex-col px-3">
+						<div className="px-3">
+							<p className="px-3 py-2.5 text-sm font-normal text-muted-foreground">
+								{category.label}
+							</p>
+						</div>
+						<div className="flex flex-col gap-0.5 px-3">
 							{items.map((entry) => {
 								const path = `/ui/${entry.slug}`;
 								return (
@@ -235,14 +239,9 @@ function LibraryNav({ currentPath }: { currentPath: string }) {
 										type="button"
 										key={entry.slug}
 										onClick={() => navigate(path)}
-										className={cn(
-											"flex w-full items-center rounded-lg px-3 py-1.5 text-sm font-normal transition-colors",
-											currentPath === path
-												? "bg-accent text-foreground"
-												: "text-muted-foreground hover:bg-accent hover:text-foreground",
-										)}
+										className={navItemClass(currentPath === path)}
 									>
-										<span className="truncate text-left">{entry.name}</span>
+										<span className="flex-1 truncate text-left">{entry.name}</span>
 									</button>
 								);
 							})}
