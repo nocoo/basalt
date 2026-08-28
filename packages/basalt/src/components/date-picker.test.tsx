@@ -115,6 +115,19 @@ describe("DatePicker", () => {
 		expect(control).toHaveAttribute("step", "7");
 	});
 
+	it("clamps the open month down to max", async () => {
+		render(<DatePicker defaultValue="2024-03-15" max="2024-02-20" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		expect(await screen.findByText("February 2024")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "2024-02-21" })).toBeDisabled();
+	});
+
+	it("ignores malformed min and max strings", async () => {
+		render(<DatePicker defaultValue="2024-01-15" min="nope" max="also-bad" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		expect(await screen.findByRole("button", { name: "2024-01-15" })).toBeInTheDocument();
+	});
+
 	it("compares extended-year bounds numerically", async () => {
 		render(<DatePicker defaultValue="9999-12-31" max="9999-12-31" aria-label="Date" />);
 		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
