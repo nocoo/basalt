@@ -33,6 +33,35 @@ describe("Button", () => {
 		render(<Button size="icon" aria-label="Close" />);
 		expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
 	});
+
+	it("renders an icon before the label", () => {
+		render(
+			<Button
+				icon={
+					<span data-testid="plus" aria-hidden="true">
+						+
+					</span>
+				}
+			>
+				Add
+			</Button>,
+		);
+		expect(screen.getByTestId("plus")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Add" })).toBeEnabled();
+	});
+
+	it("disables the control and replaces the icon while loading", () => {
+		render(
+			<Button loading icon={<span data-testid="plus">+</span>}>
+				Save
+			</Button>,
+		);
+		const button = screen.getByRole("button", { name: "Save" });
+		expect(button).toBeDisabled();
+		expect(button).toHaveAttribute("aria-busy", "true");
+		expect(screen.queryByTestId("plus")).not.toBeInTheDocument();
+		expect(button.querySelector("svg")).toBeTruthy();
+	});
 });
 
 describe("LinkButton", () => {

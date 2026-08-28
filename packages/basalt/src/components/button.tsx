@@ -1,10 +1,11 @@
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
+import { Loader2 } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
 
 const buttonVariants = cva(
-	"inline-flex items-center justify-center rounded-basalt-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-basalt-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ring-offset-basalt-background",
+	"inline-flex items-center justify-center gap-2 rounded-basalt-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-basalt-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 ring-offset-basalt-background [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
 	{
 		variants: {
 			variant: {
@@ -35,18 +36,51 @@ export interface ButtonProps
 	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
 		VariantProps<typeof buttonVariants> {
 	asChild?: boolean;
+	loading?: boolean;
+	icon?: React.ReactNode;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-	({ className, variant, size, asChild = false, type = "button", ...props }, ref) => {
+	(
+		{
+			className,
+			variant,
+			size,
+			asChild = false,
+			type = "button",
+			loading = false,
+			icon,
+			children,
+			disabled,
+			...props
+		},
+		ref,
+	) => {
 		const Comp = asChild ? Slot : "button";
+		if (asChild) {
+			return (
+				<Comp className={cn(buttonVariants({ variant, size }), className)} ref={ref} {...props}>
+					{children}
+				</Comp>
+			);
+		}
+		const iconNode = loading ? (
+			<Loader2 className="animate-basalt-spin" aria-hidden="true" />
+		) : (
+			icon
+		);
 		return (
-			<Comp
+			<button
 				className={cn(buttonVariants({ variant, size }), className)}
 				ref={ref}
-				{...(!asChild ? { type } : {})}
+				type={type}
+				disabled={disabled || loading}
+				aria-busy={loading || undefined}
 				{...props}
-			/>
+			>
+				{iconNode}
+				{children}
+			</button>
 		);
 	},
 );
@@ -54,11 +88,16 @@ Button.displayName = "Button";
 
 export interface LinkButtonProps
 	extends React.AnchorHTMLAttributes<HTMLAnchorElement>,
-		VariantProps<typeof buttonVariants> {}
+		VariantProps<typeof buttonVariants> {
+	icon?: React.ReactNode;
+}
 
 export const LinkButton = React.forwardRef<HTMLAnchorElement, LinkButtonProps>(
-	({ className, variant, size, ...props }, ref) => (
-		<a ref={ref} className={cn(buttonVariants({ variant, size }), className)} {...props} />
+	({ className, variant, size, icon, children, ...props }, ref) => (
+		<a ref={ref} className={cn(buttonVariants({ variant, size }), className)} {...props}>
+			{icon}
+			{children}
+		</a>
 	),
 );
 LinkButton.displayName = "LinkButton";

@@ -52,6 +52,8 @@ export const UI_DEMOS: Record<string, ComponentType> = {
 			<Button>Save</Button>
 			<Button variant="secondary">Cancel</Button>
 			<Button variant="outline">Outline</Button>
+			<Button icon="+">With icon</Button>
+			<Button loading>Saving</Button>
 			<Button size="icon" aria-label="Add">
 				+
 			</Button>
