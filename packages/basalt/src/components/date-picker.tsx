@@ -209,7 +209,15 @@ export function DatePicker({
 					{label}
 				</button>
 			</PopoverTrigger>
-			<PopoverContent className="w-64 p-3">
+			<PopoverContent
+				className="w-64 p-3"
+				onOpenAutoFocus={(event) => {
+					event.preventDefault();
+					const iso = selected || formatIso(todayCivil(timeZone));
+					const index = days.findIndex((date) => formatIso(date) === iso);
+					dayRefs.current[index >= 0 ? index : 0]?.focus();
+				}}
+			>
 				<div className="mb-2 flex items-center justify-between text-sm">
 					<button
 						type="button"

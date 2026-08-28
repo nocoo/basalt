@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { DatePicker } from "./date-picker";
 
@@ -55,6 +55,14 @@ describe("DatePicker", () => {
 		);
 		expect(screen.queryByRole("button", { name: "2024-01-16" })).not.toBeInTheDocument();
 		expect(onChange).not.toHaveBeenCalled();
+	});
+
+	it("focuses the selected day when opened", async () => {
+		render(<DatePicker defaultValue="2024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "2024-01-15" })).toHaveFocus();
+		});
 	});
 
 	it("moves calendar focus with arrow keys", () => {
