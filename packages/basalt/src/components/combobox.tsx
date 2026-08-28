@@ -39,10 +39,15 @@ export function Combobox({
 		if (!form || value !== undefined) {
 			return;
 		}
-		const onReset = () => {
-			setUncontrolled(defaultValue);
-			setQuery(defaultValue);
-			setOpen(false);
+		const onReset = (event: Event) => {
+			queueMicrotask(() => {
+				if (event.defaultPrevented) {
+					return;
+				}
+				setUncontrolled(defaultValue);
+				setQuery(defaultValue);
+				setOpen(false);
+			});
 		};
 		form.addEventListener("reset", onReset);
 		return () => form.removeEventListener("reset", onReset);

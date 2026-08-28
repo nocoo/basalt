@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Combobox } from "./combobox";
 
@@ -79,7 +79,7 @@ describe("Combobox", () => {
 		expect(input).toHaveFocus();
 	});
 
-	it("restores defaultValue on form reset", () => {
+	it("restores defaultValue on form reset", async () => {
 		render(
 			<form>
 				<Combobox
@@ -97,8 +97,36 @@ describe("Combobox", () => {
 		fireEvent.click(screen.getByRole("option", { name: "Banana" }));
 		expect(document.querySelector('input[name="fruit"]')).toHaveValue("Banana");
 		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
-		expect(screen.getByLabelText("Fruit")).toHaveValue("Apple");
+		await waitFor(() => {
+			expect(screen.getByLabelText("Fruit")).toHaveValue("Apple");
+		});
 		expect(document.querySelector('input[name="fruit"]')).toHaveValue("Apple");
+	});
+
+	it("does not restore when form reset is canceled", async () => {
+		render(
+			<form
+				onReset={(event) => {
+					event.preventDefault();
+				}}
+			>
+				<Combobox
+					items={["Apple", "Banana"]}
+					defaultValue="Apple"
+					placeholder="Fruit"
+					name="fruit"
+				/>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.change(input, { target: { value: "Ba" } });
+		fireEvent.click(screen.getByRole("option", { name: "Banana" }));
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await waitFor(() => {
+			expect(document.querySelector('input[name="fruit"]')).toHaveValue("Banana");
+		});
 	});
 
 	it("stays closed after selecting a focused option", () => {
