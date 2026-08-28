@@ -8,14 +8,14 @@ export function Timeline({
 	ariaLabel = "Timeline",
 	className,
 }: {
-	items?: { title: string; at?: string }[];
+	items?: { id?: string; title: string; at?: string }[];
 	ariaLabel?: string;
 	className?: string;
 }) {
 	return (
 		<ol className={cn("space-y-2 text-sm", className)} aria-label={ariaLabel}>
-			{items.map((item) => (
-				<li key={item.title} className="flex gap-2">
+			{items.map((item, index) => (
+				<li key={item.id ?? `${item.at ?? ""}-${item.title}-${index}`} className="flex gap-2">
 					<span className="text-basalt-muted-foreground">{item.at}</span>
 					<span>{item.title}</span>
 				</li>

@@ -306,7 +306,7 @@ add(
 			columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]}
 		/>
 	),
-	"<DataTable data={rows} columns={columns} />",
+	'<DataTable data={[{ name: "Worker" }]} columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]} />',
 	[
 		{ name: "data", type: "T[]" },
 		{ name: "columns", type: "DataTableColumn<T>[]" },
@@ -544,26 +544,56 @@ add("slot-bar", "Slot bar.", () => <SlotBarChart />, "<SlotBarChart />");
 add("grouped-bar", "Grouped bars.", () => <GroupedBarChart />, "<GroupedBarChart />");
 add("stacked-bar", "Stacked bars.", () => <StackedBarChart />, "<StackedBarChart />");
 add("heatmap-calendar", "Calendar heatmap.", () => <HeatmapCalendar />, "<HeatmapCalendar />");
-add("radar", "Radar series.", () => <RadarChart />, "<RadarChart data={rows} />", [
-	{ name: "data", type: "RadarPoint[]" },
-	{ name: "ariaLabel", type: "string" },
-]);
-add("funnel", "Funnel series.", () => <FunnelChart />, "<FunnelChart data={rows} />", [
-	{ name: "data", type: "NamedValue[]" },
-	{ name: "ariaLabel", type: "string" },
-]);
-add("bullet", "Bullet chart.", () => <BulletChart />, "<BulletChart data={rows} />", [
-	{ name: "data", type: "BulletPoint[]" },
-	{ name: "ariaLabel", type: "string" },
-]);
-add("timeline", "Timeline.", () => <Timeline />, "<Timeline items={events} />", [
-	{ name: "items", type: "{ title: string; at?: string }[]" },
-	{ name: "ariaLabel", type: "string" },
-]);
-add("sankey", "Sankey-style flow.", () => <SankeyChart />, "<SankeyChart data={flow} />", [
-	{ name: "data", type: "SankeyData" },
-	{ name: "ariaLabel", type: "string" },
-]);
+add(
+	"radar",
+	"Radar series.",
+	() => <RadarChart />,
+	'<RadarChart data={[{ subject: "Speed", value: 80 }]} />',
+	[
+		{ name: "data", type: "RadarPoint[]" },
+		{ name: "ariaLabel", type: "string" },
+	],
+);
+add(
+	"funnel",
+	"Funnel series.",
+	() => <FunnelChart />,
+	'<FunnelChart data={[{ name: "Visits", value: 2400 }]} />',
+	[
+		{ name: "data", type: "NamedValue[]" },
+		{ name: "ariaLabel", type: "string" },
+	],
+);
+add(
+	"bullet",
+	"Bullet chart.",
+	() => <BulletChart />,
+	'<BulletChart data={[{ name: "Revenue", value: 68, target: 80 }]} />',
+	[
+		{ name: "data", type: "BulletPoint[]" },
+		{ name: "ariaLabel", type: "string" },
+	],
+);
+add(
+	"timeline",
+	"Timeline.",
+	() => <Timeline />,
+	'<Timeline items={[{ id: "created", title: "Created", at: "Mon" }]} />',
+	[
+		{ name: "items", type: "{ id?: string; title: string; at?: string }[]" },
+		{ name: "ariaLabel", type: "string" },
+	],
+);
+add(
+	"sankey",
+	"Sankey-style flow.",
+	() => <SankeyChart />,
+	'<SankeyChart data={{ nodes: [{ name: "In" }, { name: "Out" }], links: [{ source: 0, target: 1, value: 10 }] }} />',
+	[
+		{ name: "data", type: "SankeyData" },
+		{ name: "ariaLabel", type: "string" },
+	],
+);
 add("item-list", "Simple list.", () => <ItemList />, "<ItemList />");
 add(
 	"date-navigation",

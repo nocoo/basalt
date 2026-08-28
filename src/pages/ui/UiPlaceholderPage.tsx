@@ -15,20 +15,12 @@ import { type DocHeading, DocToc } from "./DocToc";
 import { UI_DEMOS, UI_EXAMPLES } from "./demos";
 import { CATALOG_DOCS, type CatalogDocs } from "./docs";
 
-const ROOT_NAMES = new Set([
-	"Button",
-	"Checkbox",
-	"Input",
-	"Label",
-	"LayerCard",
-	"Link",
-	"Separator",
-	"Switch",
-	"ThemeToggle",
-	"Tooltip",
-	"LinkProvider",
-	"ThemeProvider",
-]);
+function barrelImport(entry: CatalogEntry): string | null {
+	if (entry.kind !== "stable" && entry.kind !== "provider") {
+		return null;
+	}
+	return `import { ${entry.name} } from "@nocoo/basalt";`;
+}
 
 function sourceHref(source: CatalogDocs["source"]): string {
 	return `https://github.com/nocoo/${source.repo}/blob/${source.sha}/${source.file}`;
@@ -85,9 +77,7 @@ function ReadyDoc({
 	Demo: ComponentType;
 }) {
 	const importPath = catalogImportPath(entry);
-	const barrel = ROOT_NAMES.has(entry.name)
-		? `import { ${entry.name} } from "@nocoo/basalt";`
-		: null;
+	const barrel = barrelImport(entry);
 	const granular = `import { ${entry.name} } from "${importPath}";`;
 	const examples = UI_EXAMPLES[entry.slug] ?? [];
 	const pageMarkdown = [

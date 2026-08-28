@@ -85,7 +85,10 @@ export function DataTable<T>({
 				{rows.map((row, index) => {
 					let id = getRowId?.(row, index);
 					if (!id && row && typeof row === "object" && "id" in row) {
-						id = String((row as { id: unknown }).id);
+						const raw = (row as { id: unknown }).id;
+						if (raw != null) {
+							id = String(raw);
+						}
 					}
 					if (!id && row && typeof row === "object") {
 						id = rowIds.current.get(row as object);

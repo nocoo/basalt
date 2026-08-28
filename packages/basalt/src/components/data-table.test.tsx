@@ -42,6 +42,25 @@ describe("DataTable", () => {
 		expect(screen.getByText("Zed")).toBeInTheDocument();
 	});
 
+	it("does not collide on nullish row ids", () => {
+		const withIds = [
+			{ id: undefined as string | undefined, name: "A", count: 1 },
+			{ id: null as string | null, name: "B", count: 2 },
+		];
+		render(
+			<DataTable
+				data={withIds}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Name/ }));
+		expect(screen.getByText("A")).toBeInTheDocument();
+		expect(screen.getByText("B")).toBeInTheDocument();
+	});
+
 	it("keeps equal sort keys stable", () => {
 		render(
 			<DataTable

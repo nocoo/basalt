@@ -70,8 +70,16 @@ describe("charts", () => {
 		expect(screen.getByRole("img", { name: "Heat" })).toBeInTheDocument();
 		render(<ItemList items={[{ label: "A", value: "1" }]} ariaLabel="Workers" />);
 		expect(screen.getByRole("list", { name: "Workers" })).toHaveTextContent("A 1");
-		render(<Timeline items={[{ title: "Shipped", at: "Tue" }]} ariaLabel="Events" />);
-		expect(screen.getByRole("list", { name: "Events" })).toHaveTextContent("Shipped");
+		render(
+			<Timeline
+				items={[
+					{ title: "Deployed", at: "Mon" },
+					{ title: "Deployed", at: "Tue" },
+				]}
+				ariaLabel="Events"
+			/>,
+		);
+		expect(screen.getByRole("list", { name: "Events" }).querySelectorAll("li")).toHaveLength(2);
 		render(<StatCard label="CPU" value="8%" />);
 		expect(screen.getByRole("img", { name: "CPU 8%" })).toBeInTheDocument();
 		render(<Gauge value={20} ariaLabel="Load" />);

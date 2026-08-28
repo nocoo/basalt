@@ -61,6 +61,14 @@ describe("ui catalog", () => {
 		expect(document.querySelector("[data-status='missing']")).toBeTruthy();
 	});
 
+	it("keeps generated usage examples self-contained", () => {
+		expect(CATALOG_DOCS["data-table"]?.usage).toContain('name: "Worker"');
+		expect(CATALOG_DOCS["data-table"]?.usage).not.toContain("data={rows}");
+		expect(CATALOG_DOCS.radar?.usage).toContain("subject:");
+		expect(CATALOG_DOCS.timeline?.usage).toContain("Created");
+		expect(CATALOG_DOCS.sankey?.usage).toContain("nodes:");
+	});
+
 	it("maps CodeBlock to the code module path", () => {
 		const entry = CATALOG.find((item) => item.slug === "code-block");
 		expect(entry).toBeDefined();
@@ -124,6 +132,21 @@ describe("ui catalog", () => {
 			"Resource List",
 			"Delete Resource",
 		]);
+	});
+
+	it("shows a barrel install for stable controls", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/badge");
+		expect(screen.getByRole("heading", { name: "Barrel" })).toBeInTheDocument();
+		expect(document.body.textContent).toContain('import { Badge } from "@nocoo/basalt"');
+	});
+
+	it("omits the barrel install for catalog-only controls", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/accordion");
+		expect(screen.queryByRole("heading", { name: "Barrel" })).not.toBeInTheDocument();
 	});
 
 	it("covers every Kumo docs component slug", () => {

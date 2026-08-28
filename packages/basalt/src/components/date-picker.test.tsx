@@ -22,6 +22,17 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: /Date/ })).toHaveTextContent("formatted");
 	});
 
+	it("passes the civil local day to formatDate", () => {
+		render(
+			<DatePicker
+				value="2024-01-15"
+				formatDate={(date) => `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`}
+				aria-label="Date"
+			/>,
+		);
+		expect(screen.getByRole("button", { name: /Date/ })).toHaveTextContent("2024-1-15");
+	});
+
 	it("keeps civil dates stable across time zones", () => {
 		render(<DatePicker value="2024-01-15" locale="en-US" timeZone="UTC" aria-label="Date" />);
 		expect(screen.getByRole("button", { name: /Date/ })).toHaveTextContent("Jan 15, 2024");

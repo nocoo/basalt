@@ -32,6 +32,13 @@ function utcDate(date: Civil) {
 	return new Date(Date.UTC(date.y, date.m - 1, date.d));
 }
 
+function civilDate(date: Civil) {
+	return new Date(date.y, date.m - 1, date.d);
+}
+
+const CALENDAR_BUTTON =
+	"appearance-none border-0 bg-transparent p-0 font-inherit text-inherit cursor-pointer";
+
 function todayCivil(timeZone?: string): Civil {
 	const parts = new Intl.DateTimeFormat("en-CA", {
 		timeZone,
@@ -113,7 +120,7 @@ export function DatePicker({
 	}, [month, weekStartsOn]);
 
 	const label = selectedDate
-		? (formatDate?.(utcDate(selectedDate)) ??
+		? (formatDate?.(civilDate(selectedDate)) ??
 			formatCivil(selectedDate, locale, { dateStyle: "medium" }))
 		: "Pick a date";
 
@@ -160,6 +167,7 @@ export function DatePicker({
 				<div className="mb-2 flex items-center justify-between text-sm">
 					<button
 						type="button"
+						className={CALENDAR_BUTTON}
 						onClick={() =>
 							setMonth(
 								month.m === 1
@@ -173,6 +181,7 @@ export function DatePicker({
 					<span>{formatCivil(month, locale, { month: "long", year: "numeric" })}</span>
 					<button
 						type="button"
+						className={CALENDAR_BUTTON}
 						onClick={() =>
 							setMonth(
 								month.m === 12
@@ -198,6 +207,7 @@ export function DatePicker({
 								aria-label={iso}
 								aria-pressed={iso === selected}
 								className={cn(
+									CALENDAR_BUTTON,
 									"h-7 rounded-basalt-sm text-xs",
 									inMonth ? "text-basalt-foreground" : "text-basalt-muted-foreground",
 									iso === selected && "bg-basalt-primary text-basalt-primary-foreground",
