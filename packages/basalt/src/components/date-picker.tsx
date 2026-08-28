@@ -9,7 +9,19 @@ function pad(value: number) {
 }
 
 function formatIso(date: Civil) {
-	return `${date.y}-${pad(date.m)}-${pad(date.d)}`;
+	return `${String(date.y).padStart(4, "0")}-${pad(date.m)}-${pad(date.d)}`;
+}
+
+function utcDate(date: Civil) {
+	const next = new Date(Date.UTC(date.y, date.m - 1, date.d));
+	next.setUTCFullYear(date.y);
+	return next;
+}
+
+function civilDate(date: Civil) {
+	const next = new Date(date.y, date.m - 1, date.d);
+	next.setFullYear(date.y);
+	return next;
 }
 
 function parseIso(value: string): Civil | null {
@@ -17,7 +29,7 @@ function parseIso(value: string): Civil | null {
 		return null;
 	}
 	const [year, month, day] = value.split("-").map(Number);
-	const utc = new Date(Date.UTC(year, month - 1, day));
+	const utc = utcDate({ y: year, m: month, d: day });
 	if (
 		utc.getUTCFullYear() !== year ||
 		utc.getUTCMonth() + 1 !== month ||
@@ -26,14 +38,6 @@ function parseIso(value: string): Civil | null {
 		return null;
 	}
 	return { y: year, m: month, d: day };
-}
-
-function utcDate(date: Civil) {
-	return new Date(Date.UTC(date.y, date.m - 1, date.d));
-}
-
-function civilDate(date: Civil) {
-	return new Date(date.y, date.m - 1, date.d);
 }
 
 const CALENDAR_BUTTON =
@@ -101,14 +105,12 @@ export function DatePicker({
 	const [month, setMonth] = useState<Civil>({ y: cursor.y, m: cursor.m, d: 1 });
 
 	useEffect(() => {
-		const next = selected ? parseIso(selected) : null;
-		if (next) {
-			setMonth({ y: next.y, m: next.m, d: 1 });
+		if (!open) {
 			return;
 		}
-		const today = todayCivil(timeZone);
-		setMonth({ y: today.y, m: today.m, d: 1 });
-	}, [selected, timeZone]);
+		const next = (selected ? parseIso(selected) : null) ?? todayCivil(timeZone);
+		setMonth({ y: next.y, m: next.m, d: 1 });
+	}, [open, selected, timeZone]);
 
 	useEffect(() => {
 		if (disabled) {

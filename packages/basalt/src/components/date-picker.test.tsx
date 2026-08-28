@@ -82,6 +82,25 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "2024-02-01" })).toHaveAttribute("tabindex", "0");
 	});
 
+	it("restores the selected month when reopened", async () => {
+		render(<DatePicker defaultValue="2024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		fireEvent.click(screen.getByRole("button", { name: "Next" }));
+		expect(screen.getByText("February 2024")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		await waitFor(() => {
+			expect(screen.getByText("January 2024")).toBeInTheDocument();
+		});
+		expect(screen.getByRole("button", { name: "2024-01-15" })).toHaveAttribute("tabindex", "0");
+	});
+
+	it("round-trips years before 100", () => {
+		render(<DatePicker value="0099-01-01" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		expect(screen.getByRole("button", { name: "0099-01-01" })).toBeInTheDocument();
+	});
+
 	it("resets the visible month when the value is cleared", () => {
 		const { rerender } = render(<DatePicker value="2024-01-15" aria-label="Date" />);
 		rerender(<DatePicker value="" aria-label="Date" />);
