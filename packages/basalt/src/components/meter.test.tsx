@@ -18,4 +18,10 @@ describe("Meter", () => {
 		const { container } = render(<Meter value={8} />);
 		expect(container.querySelector("[data-state]")).toBeTruthy();
 	});
+
+	it("can hide the value", () => {
+		render(<Meter value={40} label="Usage" hideValue />);
+		expect(screen.getByText("Usage")).toBeInTheDocument();
+		expect(screen.queryByText("40%")).not.toBeInTheDocument();
+	});
 });

@@ -7,4 +7,9 @@ describe("Loader", () => {
 		render(<Loader />);
 		expect(screen.getByLabelText("Loading")).toBeInTheDocument();
 	});
+
+	it("accepts a custom size", () => {
+		render(<Loader size={32} />);
+		expect(screen.getByLabelText("Loading")).toHaveAttribute("width", "32");
+	});
 });

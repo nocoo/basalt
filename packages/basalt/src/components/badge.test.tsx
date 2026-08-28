@@ -16,4 +16,9 @@ describe("Badge", () => {
 		render(<Badge variant="outline">Draft</Badge>);
 		expect(screen.getByText("Draft").className).toContain("border-basalt-border");
 	});
+
+	it("renders a status dot", () => {
+		render(<Badge dot>Live</Badge>);
+		expect(screen.getByText("Live").querySelector("span")).toBeTruthy();
+	});
 });

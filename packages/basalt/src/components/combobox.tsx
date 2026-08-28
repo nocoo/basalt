@@ -9,6 +9,7 @@ export function Combobox({
 	onValueChange,
 	name,
 	placeholder = "Select…",
+	disabled = false,
 	className,
 }: {
 	items: string[];
@@ -17,6 +18,7 @@ export function Combobox({
 	onValueChange?: (value: string) => void;
 	name?: string;
 	placeholder?: string;
+	disabled?: boolean;
 	className?: string;
 }) {
 	const [uncontrolled, setUncontrolled] = useState(defaultValue);
@@ -138,12 +140,16 @@ export function Combobox({
 			<Input
 				ref={inputRef}
 				value={query}
+				disabled={disabled}
 				onChange={(event) => {
 					setQuery(event.target.value);
 					setOpen(true);
 					setActive(0);
 				}}
 				onFocus={() => {
+					if (disabled) {
+						return;
+					}
 					if (skipFocusOpen.current) {
 						skipFocusOpen.current = false;
 						return;

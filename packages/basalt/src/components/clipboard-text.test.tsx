@@ -17,4 +17,12 @@ describe("ClipboardText", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Copy" }));
 		await waitFor(() => expect(writeText).toHaveBeenCalledWith("secret"));
 	});
+
+	it("copies alternate text", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		vi.stubGlobal("navigator", { clipboard: { writeText } });
+		render(<ClipboardText text="sk-••••" copyText="sk-live" />);
+		fireEvent.click(screen.getByRole("button", { name: "Copy" }));
+		await waitFor(() => expect(writeText).toHaveBeenCalledWith("sk-live"));
+	});
 });

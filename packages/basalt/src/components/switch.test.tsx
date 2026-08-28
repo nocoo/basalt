@@ -12,4 +12,9 @@ describe("Switch", () => {
 		render(<Switch aria-label="Alerts" disabled />);
 		expect(screen.getByRole("switch", { name: "Alerts" })).toBeDisabled();
 	});
+
+	it("supports a compact size", () => {
+		render(<Switch aria-label="Alerts" size="sm" />);
+		expect(screen.getByRole("switch", { name: "Alerts" }).className).toContain("h-4");
+	});
 });

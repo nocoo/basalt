@@ -7,4 +7,9 @@ describe("Empty", () => {
 		render(<Empty title="Nothing here" />);
 		expect(screen.getByText("Nothing here")).toBeInTheDocument();
 	});
+
+	it("renders an icon", () => {
+		render(<Empty title="Empty" icon={<span data-testid="empty-icon" />} />);
+		expect(screen.getByTestId("empty-icon")).toBeInTheDocument();
+	});
 });

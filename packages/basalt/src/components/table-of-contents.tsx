@@ -11,10 +11,12 @@ export function TableOfContents({
 	className?: string;
 }) {
 	return (
-		<nav aria-label={title} className={cn("text-sm", className)}>
-			<p className="mb-3 text-xs font-semibold tracking-wide text-basalt-muted-foreground uppercase">
-				{title}
-			</p>
+		<nav aria-label={title || "On this page"} className={cn("text-sm", className)}>
+			{title ? (
+				<p className="mb-3 text-xs font-semibold tracking-wide text-basalt-muted-foreground uppercase">
+					{title}
+				</p>
+			) : null}
 			<ul className="flex flex-col gap-2 border-l-2 border-basalt-border">{children}</ul>
 		</nav>
 	);

@@ -17,6 +17,12 @@ describe("Pagination", () => {
 		expect(onPageChange).toHaveBeenCalledWith(3);
 	});
 
+	it("hides the page caption in simple mode", () => {
+		render(<Pagination page={2} pageCount={5} simple />);
+		expect(screen.queryByText("2 / 5")).not.toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Previous" })).toBeInTheDocument();
+	});
+
 	it("clamps at the edges", () => {
 		const onPageChange = vi.fn();
 		render(<Pagination page={1} pageCount={1} onPageChange={onPageChange} />);

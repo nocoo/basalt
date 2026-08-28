@@ -5,21 +5,23 @@ export function Meter({
 	value = 0,
 	label,
 	customValue,
+	hideValue = false,
 	className,
 	"aria-label": ariaLabel,
 }: {
 	value?: number;
 	label?: string;
 	customValue?: string;
+	hideValue?: boolean;
 	className?: string;
 	"aria-label"?: string;
 }) {
 	return (
 		<div className={cn("w-full space-y-1", className)}>
-			{label || customValue ? (
+			{label || (!hideValue && customValue) ? (
 				<div className="flex justify-between text-xs text-basalt-muted-foreground">
 					<span>{label}</span>
-					<span>{customValue ?? `${value}%`}</span>
+					{hideValue ? null : <span>{customValue ?? `${value}%`}</span>}
 				</div>
 			) : null}
 			<Progress.Root

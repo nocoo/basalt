@@ -5,11 +5,13 @@ export function Pagination({
 	page,
 	pageCount = 10,
 	onPageChange,
+	simple = false,
 	className,
 }: {
 	page: number;
 	pageCount?: number;
 	onPageChange?: (page: number) => void;
+	simple?: boolean;
 	className?: string;
 }) {
 	return (
@@ -17,9 +19,11 @@ export function Pagination({
 			<Button variant="outline" size="sm" onClick={() => onPageChange?.(Math.max(1, page - 1))}>
 				Previous
 			</Button>
-			<span className="text-sm text-basalt-muted-foreground">
-				{page} / {pageCount}
-			</span>
+			{simple ? null : (
+				<span className="text-sm text-basalt-muted-foreground">
+					{page} / {pageCount}
+				</span>
+			)}
 			<Button
 				variant="outline"
 				size="sm"
