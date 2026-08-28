@@ -25,6 +25,7 @@ export function Combobox({
 	const [active, setActive] = useState(0);
 	const listId = useId();
 	const inputRef = useRef<HTMLInputElement>(null);
+	const skipFocusOpen = useRef(false);
 	const selected = value ?? uncontrolled;
 
 	useEffect(() => {
@@ -48,6 +49,7 @@ export function Combobox({
 		} else {
 			setQuery(value);
 		}
+		skipFocusOpen.current = true;
 		setOpen(false);
 		onValueChange?.(next);
 		inputRef.current?.focus();
@@ -89,7 +91,13 @@ export function Combobox({
 					setOpen(true);
 					setActive(0);
 				}}
-				onFocus={() => setOpen(true)}
+				onFocus={() => {
+					if (skipFocusOpen.current) {
+						skipFocusOpen.current = false;
+						return;
+					}
+					setOpen(true);
+				}}
 				onKeyDown={(event) => {
 					if (event.nativeEvent.isComposing || event.key === "Process") {
 						return;

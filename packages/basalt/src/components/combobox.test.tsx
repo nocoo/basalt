@@ -79,6 +79,16 @@ describe("Combobox", () => {
 		expect(input).toHaveFocus();
 	});
 
+	it("stays closed after selecting a focused option", () => {
+		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
+		fireEvent.focus(screen.getByLabelText("Fruit"));
+		const option = screen.getByRole("option", { name: "Apple" });
+		option.focus();
+		fireEvent.click(option);
+		expect(screen.getByLabelText("Fruit")).toHaveFocus();
+		expect(screen.queryByRole("option", { name: "Apple" })).not.toBeInTheDocument();
+	});
+
 	it("ignores keys during IME composition", () => {
 		const onValueChange = vi.fn();
 		render(
