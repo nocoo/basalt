@@ -1,3 +1,5 @@
+import { cn } from "../utils/cn";
+
 export function HeatmapCalendar({
 	values = Array.from({ length: 28 }, (_, index) => index % 5),
 	ariaLabel = "Heatmap calendar",
@@ -8,7 +10,7 @@ export function HeatmapCalendar({
 	className?: string;
 }) {
 	return (
-		<div className={className ?? "grid grid-cols-7 gap-1"} role="img" aria-label={ariaLabel}>
+		<div className={cn("grid grid-cols-7 gap-1", className)} role="img" aria-label={ariaLabel}>
 			{values.map((value, index) => (
 				<span
 					key={index}

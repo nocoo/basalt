@@ -13,11 +13,13 @@ export function DataTable<T>({
 	data,
 	columns,
 	filter = "",
+	getRowId,
 	className,
 }: {
 	data: T[];
 	columns: DataTableColumn<T>[];
 	filter?: string;
+	getRowId?: (row: T, index: number) => string;
 	className?: string;
 }) {
 	const [sort, setSort] = useState<{ id: string; dir: "asc" | "desc" } | null>(null);
@@ -72,13 +74,20 @@ export function DataTable<T>({
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{rows.map((row, index) => (
-					<TableRow key={index}>
-						{columns.map((column) => (
-							<TableCell key={column.id}>{column.accessor(row)}</TableCell>
-						))}
-					</TableRow>
-				))}
+				{rows.map((row, index) => {
+					const id =
+						getRowId?.(row, index) ??
+						(row && typeof row === "object" && "id" in row
+							? String((row as { id: unknown }).id)
+							: String(index));
+					return (
+						<TableRow key={id}>
+							{columns.map((column) => (
+								<TableCell key={column.id}>{column.accessor(row)}</TableCell>
+							))}
+						</TableRow>
+					);
+				})}
 			</TableBody>
 		</Table>
 	);

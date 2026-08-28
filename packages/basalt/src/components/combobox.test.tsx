@@ -28,8 +28,10 @@ describe("Combobox", () => {
 	});
 
 	it("supports a controlled value", () => {
-		render(<Combobox items={["Apple"]} value="Apple" placeholder="Fruit" />);
+		const { rerender } = render(<Combobox items={["Apple"]} value="Apple" placeholder="Fruit" />);
 		expect(screen.getByLabelText("Fruit")).toHaveValue("Apple");
+		rerender(<Combobox items={["Apple", "Pear"]} value="Pear" placeholder="Fruit" />);
+		expect(screen.getByLabelText("Fruit")).toHaveValue("Pear");
 	});
 
 	it("hides the list when nothing matches", () => {

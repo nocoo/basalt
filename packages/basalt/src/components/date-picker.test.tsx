@@ -22,6 +22,11 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("formatted");
 	});
 
+	it("keeps civil dates stable across time zones", () => {
+		render(<DatePicker value="2024-01-15" locale="en-US" timeZone="UTC" aria-label="Date" />);
+		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("Jan 15, 2024");
+	});
+
 	it("shows a placeholder before a value is chosen", () => {
 		render(<DatePicker aria-label="Date" name="when" />);
 		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("Pick a date");

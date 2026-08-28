@@ -29,6 +29,7 @@ const points = [{ x: "Mon", y: 4, y2: 2 }];
 describe("charts", () => {
 	it("keeps the 24-color palette", () => {
 		expect(CHART_COLORS).toHaveLength(24);
+		expect(CHART_COLORS[0]).toContain("--basalt-chart-1");
 		render(<ChartPalette />);
 		expect(screen.getByRole("img", { name: "Chart colors" })).toBeInTheDocument();
 	});

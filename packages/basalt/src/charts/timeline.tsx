@@ -1,3 +1,5 @@
+import { cn } from "../utils/cn";
+
 export function Timeline({
 	items = [
 		{ title: "Created", at: "Mon" },
@@ -11,7 +13,7 @@ export function Timeline({
 	className?: string;
 }) {
 	return (
-		<ol className={className ?? "space-y-2 text-sm"} aria-label={ariaLabel}>
+		<ol className={cn("space-y-2 text-sm", className)} aria-label={ariaLabel}>
 			{items.map((item) => (
 				<li key={item.title} className="flex gap-2">
 					<span className="text-basalt-muted-foreground">{item.at}</span>

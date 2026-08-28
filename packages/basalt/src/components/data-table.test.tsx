@@ -37,6 +37,11 @@ describe("DataTable", () => {
 		expect(screen.queryByText("Zed")).not.toBeInTheDocument();
 	});
 
+	it("uses stable row ids", () => {
+		render(<DataTable data={rows} columns={columns} getRowId={(row) => row.name} />);
+		expect(screen.getByText("Zed")).toBeInTheDocument();
+	});
+
 	it("keeps equal sort keys stable", () => {
 		render(
 			<DataTable

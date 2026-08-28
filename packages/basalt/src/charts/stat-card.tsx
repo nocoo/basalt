@@ -1,3 +1,5 @@
+import { cn } from "../utils/cn";
+
 export function StatCard({
 	label = "Requests",
 	value = "12.4k",
@@ -11,9 +13,10 @@ export function StatCard({
 }) {
 	return (
 		<div
-			className={
-				className ?? "rounded-basalt-md border border-basalt-border bg-basalt-secondary p-4"
-			}
+			className={cn(
+				"rounded-basalt-md border border-basalt-border bg-basalt-secondary p-4",
+				className,
+			)}
 			role="img"
 			aria-label={ariaLabel ?? `${label} ${value}`}
 		>

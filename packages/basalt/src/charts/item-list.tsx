@@ -1,3 +1,5 @@
+import { cn } from "../utils/cn";
+
 export function ItemList({
 	items = [{ label: "Worker A" }, { label: "Worker B" }, { label: "Worker C" }],
 	ariaLabel = "Item list",
@@ -8,7 +10,7 @@ export function ItemList({
 	className?: string;
 }) {
 	return (
-		<ul className={className ?? "space-y-1 text-sm"} aria-label={ariaLabel}>
+		<ul className={cn("space-y-1 text-sm", className)} aria-label={ariaLabel}>
 			{items.map((item) => (
 				<li key={item.label}>
 					{item.label}

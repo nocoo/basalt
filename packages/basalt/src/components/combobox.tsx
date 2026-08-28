@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "../utils/cn";
 import { Input } from "./input";
 
@@ -23,6 +23,12 @@ export function Combobox({
 	const [query, setQuery] = useState(value ?? defaultValue);
 	const [open, setOpen] = useState(false);
 	const selected = value ?? uncontrolled;
+
+	useEffect(() => {
+		if (value !== undefined) {
+			setQuery(value);
+		}
+	}, [value]);
 	const filtered = items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
 
 	function commit(next: string) {

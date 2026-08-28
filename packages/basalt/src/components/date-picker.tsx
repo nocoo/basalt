@@ -1,28 +1,49 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "../utils/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
-function isoDate(date: Date, timeZone?: string) {
-	if (timeZone) {
-		return new Intl.DateTimeFormat("en-CA", {
-			timeZone,
-			year: "numeric",
-			month: "2-digit",
-			day: "2-digit",
-		}).format(date);
-	}
-	const year = date.getFullYear();
-	const month = String(date.getMonth() + 1).padStart(2, "0");
-	const day = String(date.getDate()).padStart(2, "0");
-	return `${year}-${month}-${day}`;
+type Civil = { y: number; m: number; d: number };
+
+function pad(value: number) {
+	return String(value).padStart(2, "0");
 }
 
-function parseIso(value: string) {
+function formatIso(date: Civil) {
+	return `${date.y}-${pad(date.m)}-${pad(date.d)}`;
+}
+
+function parseIso(value: string): Civil | null {
 	const [year, month, day] = value.split("-").map(Number);
 	if (!year || !month || !day) {
 		return null;
 	}
-	return new Date(year, month - 1, day);
+	return { y: year, m: month, d: day };
+}
+
+function utcDate(date: Civil) {
+	return new Date(Date.UTC(date.y, date.m - 1, date.d));
+}
+
+function todayCivil(timeZone?: string): Civil {
+	const parts = new Intl.DateTimeFormat("en-CA", {
+		timeZone,
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+	}).formatToParts(new Date());
+	const read = (type: Intl.DateTimeFormatPartTypes) =>
+		Number(parts.find((part) => part.type === type)?.value);
+	return { y: read("year"), m: read("month"), d: read("day") };
+}
+
+function formatCivil(date: Civil, locale: string, options: Intl.DateTimeFormatOptions) {
+	return new Intl.DateTimeFormat(locale, { ...options, timeZone: "UTC" }).format(utcDate(date));
+}
+
+function addDays(date: Civil, days: number): Civil {
+	const next = utcDate(date);
+	next.setUTCDate(next.getUTCDate() + days);
+	return { y: next.getUTCFullYear(), m: next.getUTCMonth() + 1, d: next.getUTCDate() };
 }
 
 export function DatePicker({
@@ -53,33 +74,35 @@ export function DatePicker({
 	const [uncontrolled, setUncontrolled] = useState(defaultValue);
 	const selected = value ?? uncontrolled;
 	const selectedDate = selected ? parseIso(selected) : null;
-	const today = isoDate(new Date(), timeZone);
-	const cursor = selectedDate ?? parseIso(today) ?? new Date();
-	const [month, setMonth] = useState(new Date(cursor.getFullYear(), cursor.getMonth(), 1));
+	const cursor = selectedDate ?? todayCivil(timeZone);
+	const [month, setMonth] = useState<Civil>({ y: cursor.y, m: cursor.m, d: 1 });
+
+	useEffect(() => {
+		const next = selected ? parseIso(selected) : null;
+		if (!next) {
+			return;
+		}
+		setMonth({ y: next.y, m: next.m, d: 1 });
+	}, [selected]);
 
 	const weekdayLabels = useMemo(() => {
-		const formatter = new Intl.DateTimeFormat(locale, { weekday: "short", timeZone });
+		const formatter = new Intl.DateTimeFormat(locale, { weekday: "short", timeZone: "UTC" });
 		return Array.from({ length: 7 }, (_, index) => {
 			const day = new Date(Date.UTC(2024, 0, 7 + ((index + weekStartsOn) % 7)));
 			return formatter.format(day);
 		});
-	}, [locale, timeZone, weekStartsOn]);
+	}, [locale, weekStartsOn]);
 
 	const days = useMemo(() => {
-		const first = new Date(month.getFullYear(), month.getMonth(), 1);
-		const startOffset = (first.getDay() - weekStartsOn + 7) % 7;
-		const start = new Date(first);
-		start.setDate(first.getDate() - startOffset);
-		return Array.from({ length: 42 }, (_, index) => {
-			const date = new Date(start);
-			date.setDate(start.getDate() + index);
-			return date;
-		});
+		const first = { y: month.y, m: month.m, d: 1 };
+		const startOffset = (utcDate(first).getUTCDay() - weekStartsOn + 7) % 7;
+		const start = addDays(first, -startOffset);
+		return Array.from({ length: 42 }, (_, index) => addDays(start, index));
 	}, [month, weekStartsOn]);
 
 	const label = selectedDate
-		? (formatDate?.(selectedDate) ??
-			new Intl.DateTimeFormat(locale, { dateStyle: "medium", timeZone }).format(selectedDate))
+		? (formatDate?.(utcDate(selectedDate)) ??
+			formatCivil(selectedDate, locale, { dateStyle: "medium" }))
 		: "Pick a date";
 
 	function commit(next: string) {
@@ -91,12 +114,20 @@ export function DatePicker({
 
 	return (
 		<Popover>
-			{name ? <input type="hidden" name={name} value={selected} /> : null}
+			{name ? <input type="hidden" name={name} value={selected} disabled={disabled} /> : null}
 			<input
 				type="date"
-				className="sr-only"
+				className="sr-only mb-2 h-7"
+				style={{
+					position: "absolute",
+					width: 1,
+					height: 1,
+					overflow: "hidden",
+					clip: "rect(0, 0, 0, 0)",
+				}}
 				value={selected}
 				readOnly
+				disabled={disabled}
 				aria-hidden="true"
 				tabIndex={-1}
 			/>
@@ -117,18 +148,26 @@ export function DatePicker({
 				<div className="mb-2 flex items-center justify-between text-sm">
 					<button
 						type="button"
-						onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() - 1, 1))}
+						onClick={() =>
+							setMonth(
+								month.m === 1
+									? { y: month.y - 1, m: 12, d: 1 }
+									: { y: month.y, m: month.m - 1, d: 1 },
+							)
+						}
 					>
 						Prev
 					</button>
-					<span>
-						{new Intl.DateTimeFormat(locale, { month: "long", year: "numeric", timeZone }).format(
-							month,
-						)}
-					</span>
+					<span>{formatCivil(month, locale, { month: "long", year: "numeric" })}</span>
 					<button
 						type="button"
-						onClick={() => setMonth(new Date(month.getFullYear(), month.getMonth() + 1, 1))}
+						onClick={() =>
+							setMonth(
+								month.m === 12
+									? { y: month.y + 1, m: 1, d: 1 }
+									: { y: month.y, m: month.m + 1, d: 1 },
+							)
+						}
 					>
 						Next
 					</button>
@@ -138,8 +177,8 @@ export function DatePicker({
 						<span key={`${day}-${index}`}>{day}</span>
 					))}
 					{days.map((date) => {
-						const iso = isoDate(date, timeZone);
-						const inMonth = date.getMonth() === month.getMonth();
+						const iso = formatIso(date);
+						const inMonth = date.m === month.m;
 						return (
 							<button
 								type="button"
@@ -151,7 +190,7 @@ export function DatePicker({
 								)}
 								onClick={() => commit(iso)}
 							>
-								{date.getDate()}
+								{date.d}
 							</button>
 						);
 					})}

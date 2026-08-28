@@ -1,4 +1,4 @@
-const v = (token: string) => `hsl(var(--${token}))`;
+const v = (token: string) => `hsl(var(--basalt-${token}))`;
 
 export const chart = {
 	primary: v("chart-1"),
