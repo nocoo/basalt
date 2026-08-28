@@ -69,6 +69,10 @@ function formatCivil(date: Civil, locale: string, options: Intl.DateTimeFormatOp
 	}).format(utcDate(date));
 }
 
+function withinBounds(iso: string, min?: string, max?: string) {
+	return (!min || iso >= min) && (!max || iso <= max);
+}
+
 function isValidCivil(date: Civil): boolean {
 	if (!Number.isFinite(date.y) || date.m < 1 || date.m > 12 || date.d < 1 || date.d > 31) {
 		return false;
@@ -422,8 +426,9 @@ export function DatePicker({
 						}
 						if (event.key === "Enter" || event.key === " ") {
 							event.preventDefault();
-							if (current.y >= 1) {
-								commit(formatIso(current));
+							const iso = formatIso(current);
+							if (current.y >= 1 && withinBounds(iso, min, max)) {
+								commit(iso);
 							}
 						}
 					}}
@@ -445,7 +450,7 @@ export function DatePicker({
 						}
 						const iso = formatIso(date);
 						const inMonth = date.m === month.m;
-						const inRange = date.y >= 1;
+						const inRange = date.y >= 1 && withinBounds(iso, min, max);
 						return (
 							<button
 								type="button"

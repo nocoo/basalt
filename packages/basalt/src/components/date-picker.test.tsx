@@ -73,6 +73,26 @@ describe("DatePicker", () => {
 		expect((control as HTMLInputElement).checkValidity()).toBe(false);
 	});
 
+	it("disables calendar days outside min and max", async () => {
+		const onChange = vi.fn();
+		render(
+			<DatePicker
+				defaultValue="2024-01-15"
+				min="2024-01-10"
+				max="2024-01-20"
+				onChange={onChange}
+				aria-label="Date"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Date: Jan 15, 2024" }));
+		expect(await screen.findByRole("button", { name: "2024-01-09" })).toBeDisabled();
+		expect(screen.getByRole("button", { name: "2024-01-21" })).toBeDisabled();
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-09" }));
+		expect(onChange).not.toHaveBeenCalled();
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-12" }));
+		expect(onChange).toHaveBeenCalledWith("2024-01-12");
+	});
+
 	it("matches native date input year range", () => {
 		const { container, rerender } = render(
 			<form>
