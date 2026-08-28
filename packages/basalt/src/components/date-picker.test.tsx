@@ -255,6 +255,19 @@ describe("DatePicker", () => {
 				"true",
 			);
 		});
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "2024-01-15" })).toHaveFocus();
+		});
+	});
+
+	it("stops calendar generation at the maximum valid date", () => {
+		render(<DatePicker defaultValue="275760-09-13" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		expect(screen.getByRole("button", { name: "275760-09-13" })).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: "275760-09-14" })).not.toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
+		fireEvent.keyDown(screen.getByRole("button", { name: "275760-09-13" }), { key: "ArrowRight" });
+		expect(screen.getByRole("button", { name: "275760-09-13" })).toHaveAttribute("tabindex", "0");
 	});
 
 	it("round-trips years before 100", () => {

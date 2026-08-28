@@ -69,10 +69,40 @@ function formatCivil(date: Civil, locale: string, options: Intl.DateTimeFormatOp
 	}).format(utcDate(date));
 }
 
-function addDays(date: Civil, days: number): Civil {
+function isValidCivil(date: Civil): boolean {
+	if (!Number.isFinite(date.y) || date.m < 1 || date.m > 12 || date.d < 1 || date.d > 31) {
+		return false;
+	}
+	const utc = utcDate(date);
+	return (
+		!Number.isNaN(utc.getTime()) &&
+		utc.getUTCFullYear() === date.y &&
+		utc.getUTCMonth() + 1 === date.m &&
+		utc.getUTCDate() === date.d
+	);
+}
+
+function isoOf(date: Civil | null) {
+	return date ? formatIso(date) : "";
+}
+
+function addDays(date: Civil, days: number): Civil | null {
 	const next = utcDate(date);
+	if (Number.isNaN(next.getTime())) {
+		return null;
+	}
 	next.setUTCDate(next.getUTCDate() + days);
-	return { y: next.getUTCFullYear(), m: next.getUTCMonth() + 1, d: next.getUTCDate() };
+	if (Number.isNaN(next.getTime())) {
+		return null;
+	}
+	const civil = { y: next.getUTCFullYear(), m: next.getUTCMonth() + 1, d: next.getUTCDate() };
+	return isValidCivil(civil) ? civil : null;
+}
+
+function shiftMonth(month: Civil, delta: number): Civil | null {
+	const total = month.y * 12 + (month.m - 1) + delta;
+	const next = { y: Math.floor(total / 12), m: (total % 12) + 1, d: 1 };
+	return isValidCivil(next) ? next : null;
 }
 
 export function DatePicker({
@@ -164,8 +194,14 @@ export function DatePicker({
 
 	const days = useMemo(() => {
 		const first = { y: month.y, m: month.m, d: 1 };
+		if (!isValidCivil(first)) {
+			return Array.from({ length: 42 }, () => null);
+		}
 		const startOffset = (utcDate(first).getUTCDay() - weekStartsOn + 7) % 7;
 		const start = addDays(first, -startOffset);
+		if (!start) {
+			return Array.from({ length: 42 }, (_, index) => addDays(first, index - startOffset));
+		}
 		return Array.from({ length: 42 }, (_, index) => addDays(start, index));
 	}, [month, weekStartsOn]);
 
@@ -177,17 +213,17 @@ export function DatePicker({
 		let index = 0;
 		if (pending) {
 			pendingFocusIso.current = null;
-			index = days.findIndex((date) => formatIso(date) === pending);
+			index = days.findIndex((date) => isoOf(date) === pending);
 			if (index < 0) {
 				index = 0;
 			}
 		} else {
 			const iso = submitted || formatIso(todayCivil(timeZone));
-			const selectedIndex = days.findIndex((date) => formatIso(date) === iso);
+			const selectedIndex = days.findIndex((date) => isoOf(date) === iso);
 			if (selectedIndex >= 0 && days[selectedIndex]?.m === month.m) {
 				index = selectedIndex;
 			} else {
-				const firstInMonth = days.findIndex((date) => date.m === month.m);
+				const firstInMonth = days.findIndex((date) => date?.m === month.m);
 				index = firstInMonth >= 0 ? firstInMonth : 0;
 			}
 		}
@@ -198,6 +234,8 @@ export function DatePicker({
 		}
 	}, [open, submitted, timeZone, days, month.m]);
 
+	const previousMonth = shiftMonth(month, -1);
+	const followingMonth = shiftMonth(month, 1);
 	const label = selectedDate
 		? (formatDate?.(civilDate(selectedDate)) ??
 			formatCivil(selectedDate, locale, { dateStyle: "medium" }))
@@ -265,14 +303,14 @@ export function DatePicker({
 				aria-label={ariaLabel ? `${ariaLabel} calendar` : "Date calendar"}
 				onOpenAutoFocus={(event) => {
 					event.preventDefault();
-					const iso = selected || formatIso(todayCivil(timeZone));
-					const selectedIndex = days.findIndex((date) => formatIso(date) === iso);
+					const iso = submitted || formatIso(todayCivil(timeZone));
+					const selectedIndex = days.findIndex((date) => isoOf(date) === iso);
 					const index =
 						selectedIndex >= 0 && days[selectedIndex]?.m === month.m
 							? selectedIndex
 							: Math.max(
 									0,
-									days.findIndex((date) => date.m === month.m),
+									days.findIndex((date) => date?.m === month.m),
 								);
 					queueMicrotask(() => {
 						dayRefs.current[index]?.focus();
@@ -283,17 +321,13 @@ export function DatePicker({
 					<button
 						type="button"
 						className={CALENDAR_BUTTON}
-						disabled={disabled}
+						disabled={disabled || !previousMonth || previousMonth.y < 1}
 						onClick={() => {
-							if (month.y === 1 && month.m === 1) {
+							if (!previousMonth || previousMonth.y < 1) {
 								return;
 							}
 							focusDay.current = false;
-							setMonth(
-								month.m === 1
-									? { y: month.y - 1, m: 12, d: 1 }
-									: { y: month.y, m: month.m - 1, d: 1 },
-							);
+							setMonth(previousMonth);
 						}}
 					>
 						Prev
@@ -302,14 +336,13 @@ export function DatePicker({
 					<button
 						type="button"
 						className={CALENDAR_BUTTON}
-						disabled={disabled}
+						disabled={disabled || !followingMonth}
 						onClick={() => {
+							if (!followingMonth) {
+								return;
+							}
 							focusDay.current = false;
-							setMonth(
-								month.m === 12
-									? { y: month.y + 1, m: 1, d: 1 }
-									: { y: month.y, m: month.m + 1, d: 1 },
-							);
+							setMonth(followingMonth);
 						}}
 					>
 						Next
@@ -338,7 +371,7 @@ export function DatePicker({
 											? 7
 											: -7;
 							const next = addDays(current, delta);
-							if (next.y < 1) {
+							if (!next || next.y < 1) {
 								return;
 							}
 							if (next.y !== month.y || next.m !== month.m) {
@@ -347,7 +380,7 @@ export function DatePicker({
 								setMonth({ y: next.y, m: next.m, d: 1 });
 								return;
 							}
-							const index = days.findIndex((date) => formatIso(date) === formatIso(next));
+							const index = days.findIndex((date) => isoOf(date) === formatIso(next));
 							if (index >= 0) {
 								setFocusIndex(index);
 								dayRefs.current[index]?.focus();
@@ -366,6 +399,17 @@ export function DatePicker({
 						<span key={`${day}-${index}`}>{day}</span>
 					))}
 					{days.map((date, index) => {
+						if (!date) {
+							return (
+								<span
+									key={`empty-${index}`}
+									className="h-7"
+									ref={() => {
+										dayRefs.current[index] = null;
+									}}
+								/>
+							);
+						}
 						const iso = formatIso(date);
 						const inMonth = date.m === month.m;
 						const inRange = date.y >= 1;
