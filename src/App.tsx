@@ -24,6 +24,8 @@ import PortfolioPage from "./pages/PortfolioPage";
 import ProgressTrackingPage from "./pages/ProgressTrackingPage";
 import SettingsPage from "./pages/SettingsPage";
 import StaticPage from "./pages/StaticPage";
+import UiIndexPage from "./pages/ui/UiIndexPage";
+import UiPlaceholderPage from "./pages/ui/UiPlaceholderPage";
 import WearableDashboardPage from "./pages/WearableDashboardPage";
 
 const App = () => (
@@ -51,6 +53,8 @@ const App = () => (
 					<Route path="/wearable" element={<WearableDashboardPage />} />
 					<Route path="/banking" element={<BankingDashboardPage />} />
 					<Route path="/network" element={<NetworkOpsDashboardPage />} />
+					<Route path="/ui" element={<UiIndexPage />} />
+					<Route path="/ui/:slug" element={<UiPlaceholderPage />} />
 				</Route>
 				{/* Standalone pages (no sidebar) */}
 				<Route path="/login" element={<LoginPage />} />
