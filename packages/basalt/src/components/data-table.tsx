@@ -78,6 +78,31 @@ function compareUnknown(left: unknown, right: unknown): number {
 	return leftStr < rightStr ? -1 : leftStr > rightStr ? 1 : 0;
 }
 
+function primitiveKey(row: unknown, index: number): string {
+	if (row === null) {
+		return "prim:null";
+	}
+	const type = typeof row;
+	if (
+		type === "string" ||
+		type === "number" ||
+		type === "bigint" ||
+		type === "boolean" ||
+		type === "symbol"
+	) {
+		return `prim:${type}:${String(row)}`;
+	}
+	return `prim:${index}`;
+}
+
+function isInstanceKey(key: string) {
+	return key.startsWith("dup:") || key.startsWith("gen:");
+}
+
+function isCanonicalKey(key: string) {
+	return key.startsWith("id:") || key.startsWith("get:");
+}
+
 function filterSource<T>(column: DataTableColumn<T>, row: T): string {
 	if (column.filterValue) {
 		return String(column.filterValue(row));
@@ -113,6 +138,7 @@ export function DataTable<T>({
 	const rowIds = useRef(new WeakMap<object, string>());
 	const rowSeq = useRef(0);
 	const assignedKeys = useRef(new WeakMap<object, string>());
+	const lastCanonical = useRef(new Map<string, object>());
 	const query = filter.trim().toLowerCase();
 
 	const rows = useMemo(() => {
@@ -124,6 +150,17 @@ export function DataTable<T>({
 			}
 			return stored;
 		};
+		const present = new Set<object>();
+		for (const row of data) {
+			if (row && typeof row === "object") {
+				present.add(row as object);
+			}
+		}
+		for (const [canonical, owner] of lastCanonical.current) {
+			if (!present.has(owner)) {
+				lastCanonical.current.delete(canonical);
+			}
+		}
 		const seen = new WeakSet<object>();
 		const used = new Set<string>();
 		const pending = data.map((row, index) => ({
@@ -137,7 +174,10 @@ export function DataTable<T>({
 				continue;
 			}
 			const previous = assignedKeys.current.get(objectRow);
-			if (previous && !used.has(previous)) {
+			if (!previous || used.has(previous)) {
+				continue;
+			}
+			if (isInstanceKey(previous) || lastCanonical.current.get(previous) === objectRow) {
 				item.key = previous;
 				used.add(previous);
 				seen.add(objectRow);
@@ -168,13 +208,16 @@ export function DataTable<T>({
 				}
 				seen.add(objectRow);
 			}
-			key = key ?? `prim:${index}`;
+			key = key ?? primitiveKey(row, index);
 			while (used.has(key)) {
 				key = `${key}-${index}`;
 			}
 			used.add(key);
 			if (objectRow && !isRepeat) {
 				assignedKeys.current.set(objectRow, key);
+				if (isCanonicalKey(key)) {
+					lastCanonical.current.set(key, objectRow);
+				}
 			}
 			return { row, key };
 		});

@@ -474,6 +474,34 @@ describe("DataTable", () => {
 		expect(screen.getByRole("button", { name: "Right-1" })).toBeInTheDocument();
 	});
 
+	it("does not let a returning row steal a live canonical key", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const first = { id: "x", name: "A", count: 1 };
+		const second = { id: "x", name: "B", count: 2 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+			{ id: "count", header: "Count", accessor: (row: { count: number }) => row.count },
+		];
+		const { rerender } = render(<DataTable data={[first]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "A-0" }));
+		rerender(<DataTable data={[second]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "B-1" })).toBeInTheDocument();
+		rerender(<DataTable data={[first, second]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "A-0" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "B-1" })).toBeInTheDocument();
+	});
+
 	it("isolates synthesized keys from caller ids", () => {
 		function NameCell({ name }: { name: string }) {
 			const [count, setCount] = useState(0);
@@ -520,6 +548,19 @@ describe("DataTable", () => {
 		expect(screen.getAllByText("Zed")).toHaveLength(2);
 	});
 
+	it("renders mixed primitive rows", () => {
+		render(
+			<DataTable
+				data={[null, 1, true, "Zed"] as Array<string | number | boolean | null>}
+				columns={[{ id: "name", header: "Name", accessor: (row) => String(row) }]}
+			/>,
+		);
+		expect(screen.getByText("null")).toBeInTheDocument();
+		expect(screen.getByText("1")).toBeInTheDocument();
+		expect(screen.getByText("true")).toBeInTheDocument();
+		expect(screen.getByText("Zed")).toBeInTheDocument();
+	});
+
 	it("renders primitive rows", () => {
 		render(
 			<DataTable
@@ -529,6 +570,45 @@ describe("DataTable", () => {
 		);
 		expect(screen.getByText("Zed")).toBeInTheDocument();
 		expect(screen.getByText("Amy")).toBeInTheDocument();
+	});
+
+	it("keeps primitive row state across reorders", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const { rerender } = render(
+			<DataTable
+				data={["A", "B"]}
+				columns={[
+					{
+						id: "name",
+						header: "Name",
+						accessor: (row: string) => <NameCell name={row} />,
+					},
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "A-0" }));
+		fireEvent.click(screen.getByRole("button", { name: "B-0" }));
+		rerender(
+			<DataTable
+				data={["B", "A"]}
+				columns={[
+					{
+						id: "name",
+						header: "Name",
+						accessor: (row: string) => <NameCell name={row} />,
+					},
+				]}
+			/>,
+		);
+		expect(screen.getByRole("button", { name: "A-1" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "B-1" })).toBeInTheDocument();
 	});
 
 	it("uses stable row ids", () => {
