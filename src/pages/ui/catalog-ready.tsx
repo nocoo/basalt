@@ -230,11 +230,13 @@ add(
 	"Show and hide a panel.",
 	() => (
 		<Collapsible>
-			<CollapsibleTrigger>Open</CollapsibleTrigger>
+			<CollapsibleTrigger asChild>
+				<Button variant="outline">Open</Button>
+			</CollapsibleTrigger>
 			<CollapsibleContent>More</CollapsibleContent>
 		</Collapsible>
 	),
-	"<Collapsible />",
+	'<Collapsible><CollapsibleTrigger asChild><Button variant="outline">Open</Button></CollapsibleTrigger></Collapsible>',
 );
 add(
 	"tabs",
@@ -362,20 +364,24 @@ add(
 	"Modal dialog.",
 	() => (
 		<Dialog>
-			<DialogTrigger>Open</DialogTrigger>
+			<DialogTrigger asChild>
+				<Button variant="outline">Open</Button>
+			</DialogTrigger>
 			<DialogContent>
 				<DialogTitle>Title</DialogTitle>
 			</DialogContent>
 		</Dialog>
 	),
-	"<Dialog />",
+	'<Dialog><DialogTrigger asChild><Button variant="outline">Open</Button></DialogTrigger></Dialog>',
 );
 add(
 	"alert-dialog",
 	"Confirm destructive work.",
 	() => (
 		<AlertDialog>
-			<AlertDialogTrigger>Delete</AlertDialogTrigger>
+			<AlertDialogTrigger asChild>
+				<Button variant="outline">Delete</Button>
+			</AlertDialogTrigger>
 			<AlertDialogContent>
 				<AlertDialogTitle>Delete resource</AlertDialogTitle>
 				<AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
@@ -391,24 +397,28 @@ add(
 	"Floating panel.",
 	() => (
 		<Popover>
-			<PopoverTrigger>Open</PopoverTrigger>
+			<PopoverTrigger asChild>
+				<Button variant="outline">Open</Button>
+			</PopoverTrigger>
 			<PopoverContent>Details</PopoverContent>
 		</Popover>
 	),
-	"<Popover />",
+	'<Popover><PopoverTrigger asChild><Button variant="outline">Open</Button></PopoverTrigger></Popover>',
 );
 add(
 	"dropdown-menu",
 	"Action menu.",
 	() => (
 		<DropdownMenu>
-			<DropdownMenuTrigger>Open</DropdownMenuTrigger>
+			<DropdownMenuTrigger asChild>
+				<Button variant="outline">Open</Button>
+			</DropdownMenuTrigger>
 			<DropdownMenuContent>
 				<DropdownMenuItem>Copy</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
 	),
-	"<DropdownMenu />",
+	'<DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline">Open</Button></DropdownMenuTrigger></DropdownMenu>',
 );
 add(
 	"select",
@@ -430,20 +440,24 @@ add(
 	"Side panel.",
 	() => (
 		<Sheet>
-			<SheetTrigger>Open</SheetTrigger>
+			<SheetTrigger asChild>
+				<Button variant="outline">Open</Button>
+			</SheetTrigger>
 			<SheetContent side="right">
 				<SheetTitle>Panel</SheetTitle>
 			</SheetContent>
 		</Sheet>
 	),
-	"<Sheet />",
+	'<Sheet><SheetTrigger asChild><Button variant="outline">Open</Button></SheetTrigger></Sheet>',
 );
 add(
 	"hover-card",
 	"Preview on hover.",
 	() => (
 		<HoverCard>
-			<HoverCardTrigger>Hover</HoverCardTrigger>
+			<HoverCardTrigger asChild>
+				<Button variant="outline">Hover</Button>
+			</HoverCardTrigger>
 			<HoverCardContent>Preview</HoverCardContent>
 		</HoverCard>
 	),
@@ -454,7 +468,9 @@ add(
 	"Right-click menu.",
 	() => (
 		<ContextMenu>
-			<ContextMenuTrigger>Right click</ContextMenuTrigger>
+			<ContextMenuTrigger asChild>
+				<Button variant="outline">Right click</Button>
+			</ContextMenuTrigger>
 			<ContextMenuPanel>
 				<ContextMenuItem>Copy</ContextMenuItem>
 			</ContextMenuPanel>
