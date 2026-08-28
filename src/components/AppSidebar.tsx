@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/command";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { CATALOG } from "@/pages/ui/catalog";
 
 // ── Navigation data model ──
 
@@ -407,6 +408,17 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 									<span>{t(item.titleKey)}</span>
 								</CommandItem>
 							))}
+							{group.labelKey === "nav.kit" &&
+								CATALOG.map((entry) => (
+									<CommandItem
+										key={entry.slug}
+										value={`${entry.name} ${entry.slug}`}
+										onSelect={() => handleSelect(`/ui/${entry.slug}`)}
+										className="gap-3 cursor-pointer"
+									>
+										<span>{entry.name}</span>
+									</CommandItem>
+								))}
 						</CommandGroup>
 					))}
 				</CommandList>
