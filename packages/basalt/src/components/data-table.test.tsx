@@ -424,6 +424,63 @@ describe("DataTable", () => {
 		expect(screen.getByRole("button", { name: "Right-1" })).toBeInTheDocument();
 	});
 
+	it("keeps the surviving duplicate row's state when its peer is removed", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const left = { id: "same", name: "Left", count: 1 };
+		const right = { id: "same", name: "Right", count: 2 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+			{ id: "count", header: "Count", accessor: (row: { count: number }) => row.count },
+		];
+		const { rerender } = render(<DataTable data={[left, right]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "Right-0" }));
+		rerender(<DataTable data={[right]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Right-1" })).toBeInTheDocument();
+	});
+
+	it("isolates synthesized keys from caller ids", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const first = { id: "x", name: "A", count: 1 };
+		const second = { id: "x", name: "B", count: 2 };
+		const caller = { id: "x:basalt-row-1", name: "C", count: 3 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+			{ id: "count", header: "Count", accessor: (row: { count: number }) => row.count },
+		];
+		const { rerender } = render(
+			<DataTable data={[first, second, caller]} columns={identityColumns} />,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "A-0" }));
+		fireEvent.click(screen.getByRole("button", { name: "B-0" }));
+		fireEvent.click(screen.getByRole("button", { name: "C-0" }));
+		rerender(<DataTable data={[caller, second, first]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "A-1" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "B-1" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "C-1" })).toBeInTheDocument();
+	});
+
 	it("keeps duplicate row object occurrences distinct", () => {
 		const row = { name: "Zed", count: 2 };
 		render(<DataTable data={[row, row]} columns={columns} />);
