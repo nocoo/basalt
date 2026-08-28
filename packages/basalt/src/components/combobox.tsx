@@ -21,18 +21,19 @@ export function Combobox({
 }) {
 	const [uncontrolled, setUncontrolled] = useState(defaultValue);
 	const [query, setQuery] = useState(value ?? defaultValue);
+	const [prevValue, setPrevValue] = useState(value);
 	const [open, setOpen] = useState(false);
 	const [active, setActive] = useState(0);
 	const listId = useId();
 	const inputRef = useRef<HTMLInputElement>(null);
 	const skipFocusOpen = useRef(false);
 	const selected = value ?? uncontrolled;
-
-	useEffect(() => {
+	if (value !== prevValue) {
+		setPrevValue(value);
 		if (value !== undefined) {
 			setQuery(value);
 		}
-	}, [value]);
+	}
 	useEffect(() => {
 		const node = inputRef.current;
 		const form = node?.form;
