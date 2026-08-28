@@ -39,6 +39,7 @@ export default defineConfig(() => ({
 	resolve: {
 		alias: {
 			"@": path.resolve(__dirname, "./src"),
+			"@nocoo/basalt": path.resolve(__dirname, "./packages/basalt/src/index.ts"),
 		},
 		dedupe: ["react", "react-dom", "react/jsx-runtime", "@radix-ui/react-tooltip"],
 	},

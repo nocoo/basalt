@@ -14,16 +14,23 @@ export default defineConfig({
 		environment: "jsdom",
 		globals: true,
 		setupFiles: ["./src/test/setup.ts"],
-		include: ["src/**/*.{test,spec}.{ts,tsx}"],
+		include: ["src/**/*.{test,spec}.{ts,tsx}", "packages/basalt/**/*.{test,spec}.{ts,tsx}"],
 		coverage: {
 			provider: "v8",
 			// AST-aware remapping is built into vitest v4+; no opt-in needed.
 			reporter: ["text", "text-summary", "lcov"],
-			include: ["src/models/**/*.ts", "src/viewmodels/**/*.ts", "src/lib/**/*.ts"],
+			include: [
+				"src/models/**/*.ts",
+				"src/viewmodels/**/*.ts",
+				"src/lib/**/*.ts",
+				"packages/basalt/src/**/*.{ts,tsx}",
+			],
 			exclude: [
 				// Test setup, fixtures, and helpers — exercised by the tests themselves,
 				// not production code paths we want to gate on coverage.
 				"src/test/**",
+				"packages/basalt/**/*.test.ts",
+				"packages/basalt/**/*.test.tsx",
 				// Type-only declaration files have no runtime behavior to cover.
 				"src/**/*.d.ts",
 				// Pure type definitions for model shapes; covered implicitly via the
@@ -39,6 +46,9 @@ export default defineConfig({
 		},
 	},
 	resolve: {
-		alias: { "@": path.resolve(__dirname, "./src") },
+		alias: {
+			"@": path.resolve(__dirname, "./src"),
+			"@nocoo/basalt": path.resolve(__dirname, "./packages/basalt/src/index.ts"),
+		},
 	},
 });

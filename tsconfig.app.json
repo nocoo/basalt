@@ -22,8 +22,10 @@
 		"noFallthroughCasesInSwitch": true,
 
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": ["./src/*"],
+			"@nocoo/basalt": ["./packages/basalt/src/index.ts"],
+			"@nocoo/basalt/*": ["./packages/basalt/src/*"]
 		}
 	},
-	"include": ["src"]
+	"include": ["src", "packages/basalt/src"]
 }
