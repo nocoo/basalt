@@ -23,4 +23,25 @@
 	.mb-2 {
 		margin-bottom: 0.5rem;
 	}
+	.appearance-none {
+		appearance: none;
+	}
+	.border-0 {
+		border-width: 0;
+	}
+	.bg-transparent {
+		background-color: transparent;
+	}
+	.p-0 {
+		padding: 0;
+	}
+	.font-inherit {
+		font: inherit;
+	}
+	.text-inherit {
+		color: inherit;
+	}
+	.cursor-pointer {
+		cursor: pointer;
+	}
 }

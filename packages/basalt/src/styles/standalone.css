@@ -387,6 +387,9 @@
   .touch-none {
     touch-action: none;
   }
+  .appearance-none {
+    appearance: none;
+  }
   .grid-cols-7 {
     grid-template-columns: repeat(7, minmax(0, 1fr));
   }
@@ -459,6 +462,10 @@
   .border {
     border-style: var(--tw-border-style);
     border-width: 1px;
+  }
+  .border-0 {
+    border-style: var(--tw-border-style);
+    border-width: 0px;
   }
   .border-2 {
     border-style: var(--tw-border-style);
@@ -535,8 +542,14 @@
       background-color: color-mix(in oklab, var(--color-black) 50%, transparent);
     }
   }
+  .bg-transparent {
+    background-color: transparent;
+  }
   .fill-current {
     fill: currentcolor;
+  }
+  .p-0 {
+    padding: 0px;
   }
   .p-1 {
     padding: var(--spacing);
@@ -676,6 +689,9 @@
   }
   .text-current {
     color: currentcolor;
+  }
+  .text-inherit {
+    color: inherit;
   }
   .uppercase {
     text-transform: uppercase;
@@ -901,6 +917,27 @@
   }
   .mb-2 {
     margin-bottom: 0.5rem;
+  }
+  .appearance-none {
+    appearance: none;
+  }
+  .border-0 {
+    border-width: 0;
+  }
+  .bg-transparent {
+    background-color: transparent;
+  }
+  .p-0 {
+    padding: 0;
+  }
+  .font-inherit {
+    font: inherit;
+  }
+  .text-inherit {
+    color: inherit;
+  }
+  .cursor-pointer {
+    cursor: pointer;
   }
 }
 @property --tw-translate-x {
