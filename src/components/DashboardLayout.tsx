@@ -8,6 +8,7 @@ import { LanguageToggle } from "@/components/LanguageToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { CATALOG_BY_SLUG } from "@/pages/ui/catalog";
 
 // Map route paths to i18n keys
 const PAGE_TITLE_KEYS: Record<string, string> = {
@@ -36,6 +37,7 @@ const PAGE_TITLE_KEYS: Record<string, string> = {
 	"/interactions": "nav.interactions",
 	"/interactive": "nav.interactive",
 	"/data": "nav.data",
+	"/ui": "nav.kitIndex",
 };
 
 export function DashboardLayout() {
@@ -45,8 +47,12 @@ export function DashboardLayout() {
 	const location = useLocation();
 	const { t } = useTranslation();
 
+	const catalogSlug = location.pathname.startsWith("/ui/")
+		? location.pathname.slice("/ui/".length)
+		: undefined;
+	const catalogTitle = catalogSlug ? CATALOG_BY_SLUG.get(catalogSlug)?.name : undefined;
 	const titleKey = PAGE_TITLE_KEYS[location.pathname] ?? "nav.dashboard";
-	const title = t(titleKey);
+	const title = catalogTitle ?? t(titleKey);
 
 	// Close mobile sidebar on route change: pathname is the intentional trigger.
 	// biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, not a value used inside

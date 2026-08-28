@@ -1,4 +1,5 @@
 import {
+	BookOpen,
 	ChevronUp,
 	ExternalLink,
 	Eye,
@@ -111,6 +112,11 @@ const NAV_GROUPS: NavGroup[] = [
 			{ titleKey: "nav.colorPalette", icon: Palette, path: "/palette" },
 			{ titleKey: "nav.settings", icon: Settings, path: "/settings" },
 		],
+	},
+	{
+		labelKey: "nav.kit",
+		defaultOpen: false,
+		items: [{ titleKey: "nav.kitIndex", icon: BookOpen, path: "/ui" }],
 	},
 ];
 

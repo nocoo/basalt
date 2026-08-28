@@ -91,7 +91,9 @@
 		"feedback": "Feedback",
 		"overlays": "Overlays",
 		"dataDisplay": "Data Display",
-		"pills": "Pills"
+		"pills": "Pills",
+		"kit": "Library",
+		"kitIndex": "Catalog"
 	},
 	"pages": {
 		"notFound": {
