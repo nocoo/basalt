@@ -1,4 +1,4 @@
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Input } from "./input";
 
@@ -24,6 +24,7 @@ export function Combobox({
 	const [open, setOpen] = useState(false);
 	const [active, setActive] = useState(0);
 	const listId = useId();
+	const inputRef = useRef<HTMLInputElement>(null);
 	const selected = value ?? uncontrolled;
 
 	useEffect(() => {
@@ -34,6 +35,7 @@ export function Combobox({
 	const filtered = items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
 	const activeIndex = Math.min(active, Math.max(0, filtered.length - 1));
 	const activeItem = filtered[activeIndex];
+	const listOpen = open && filtered.length > 0;
 
 	useEffect(() => {
 		setActive((current) => Math.min(current, Math.max(0, filtered.length - 1)));
@@ -48,6 +50,7 @@ export function Combobox({
 		}
 		setOpen(false);
 		onValueChange?.(next);
+		inputRef.current?.focus();
 	}
 
 	useEffect(() => {
@@ -79,6 +82,7 @@ export function Combobox({
 		>
 			{name ? <input type="hidden" name={name} value={selected} /> : null}
 			<Input
+				ref={inputRef}
 				value={query}
 				onChange={(event) => {
 					setQuery(event.target.value);
@@ -119,12 +123,12 @@ export function Combobox({
 				placeholder={placeholder}
 				role="combobox"
 				aria-label={placeholder}
-				aria-expanded={open}
+				aria-expanded={listOpen}
 				aria-autocomplete="list"
-				aria-controls={listId}
-				aria-activedescendant={open && activeItem ? `${listId}-opt-${activeIndex}` : undefined}
+				aria-controls={listOpen ? listId : undefined}
+				aria-activedescendant={listOpen && activeItem ? `${listId}-opt-${activeIndex}` : undefined}
 			/>
-			{open && filtered.length > 0 ? (
+			{listOpen ? (
 				<div
 					id={listId}
 					role="listbox"
@@ -142,6 +146,7 @@ export function Combobox({
 								"w-full rounded-basalt-sm px-2 py-1.5 text-left text-sm hover:bg-basalt-accent",
 								index === activeIndex && "bg-basalt-accent",
 							)}
+							onMouseDown={(event) => event.preventDefault()}
 							onClick={() => commit(item)}
 						>
 							{item}

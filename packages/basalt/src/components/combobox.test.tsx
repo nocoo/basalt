@@ -67,6 +67,16 @@ describe("Combobox", () => {
 		const input = screen.getByLabelText("Fruit");
 		fireEvent.change(input, { target: { value: "zzz" } });
 		expect(screen.queryByRole("list")).not.toBeInTheDocument();
+		expect(input).toHaveAttribute("aria-expanded", "false");
+	});
+
+	it("keeps focus on the input after selecting", () => {
+		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.mouseDown(screen.getByRole("option", { name: "Apple" }));
+		fireEvent.click(screen.getByRole("option", { name: "Apple" }));
+		expect(input).toHaveFocus();
 	});
 
 	it("ignores keys during IME composition", () => {
