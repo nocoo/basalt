@@ -43,6 +43,17 @@ describe("charts", () => {
 		expect(screen.getByRole("img", { name: "Area" })).toBeInTheDocument();
 		render(<DonutChart data={[{ name: "A", value: 1 }]} ariaLabel="Share" />);
 		expect(screen.getByRole("img", { name: "Share" })).toBeInTheDocument();
+		const { container: donutDup } = render(
+			<DonutChart
+				data={[
+					{ name: "A", value: 1 },
+					{ name: "A", value: 2 },
+				]}
+				ariaLabel="Dup"
+			/>,
+		);
+		expect(screen.getByRole("img", { name: "Dup" })).toBeInTheDocument();
+		expect(donutDup.querySelector('[role="application"]')).toBeNull();
 		render(<RadarChart data={[{ subject: "Speed", value: 10 }]} ariaLabel="Radar" />);
 		expect(screen.getByRole("img", { name: "Radar" })).toBeInTheDocument();
 		render(<FunnelChart data={[{ name: "In", value: 10 }]} ariaLabel="Funnel" />);
