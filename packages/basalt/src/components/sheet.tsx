@@ -10,11 +10,11 @@ export const SheetDescription = DialogPrimitive.Description;
 
 const SIDE = {
 	right:
-		"fixed inset-y-0 right-0 z-50 h-full w-80 border-l border-basalt-border bg-basalt-background p-6 shadow-lg",
-	left: "fixed inset-y-0 left-0 z-50 h-full w-80 border-r border-basalt-border bg-basalt-background p-6 shadow-lg",
-	top: "fixed inset-x-0 top-0 z-50 h-80 w-full border-b border-basalt-border bg-basalt-background p-6 shadow-lg",
+		"fixed inset-y-0 right-0 z-50 box-border h-full w-80 border-l border-basalt-border bg-basalt-background p-6 shadow-lg",
+	left: "fixed inset-y-0 left-0 z-50 box-border h-full w-80 border-r border-basalt-border bg-basalt-background p-6 shadow-lg",
+	top: "fixed inset-x-0 top-0 z-50 box-border h-80 w-full border-b border-basalt-border bg-basalt-background p-6 shadow-lg",
 	bottom:
-		"fixed inset-x-0 bottom-0 z-50 h-80 w-full border-t border-basalt-border bg-basalt-background p-6 shadow-lg",
+		"fixed inset-x-0 bottom-0 z-50 box-border h-80 w-full border-t border-basalt-border bg-basalt-background p-6 shadow-lg",
 } as const;
 
 export type SheetSide = keyof typeof SIDE;
@@ -25,7 +25,12 @@ export const SheetContent = React.forwardRef<
 >(({ className, side = "right", children, ...props }, ref) => (
 	<DialogPrimitive.Portal>
 		<DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50" />
-		<DialogPrimitive.Content ref={ref} className={cn(SIDE[side], className)} {...props}>
+		<DialogPrimitive.Content
+			ref={ref}
+			className={cn(SIDE[side], className)}
+			{...props}
+			style={{ boxSizing: "border-box", ...props.style }}
+		>
 			{children}
 		</DialogPrimitive.Content>
 	</DialogPrimitive.Portal>

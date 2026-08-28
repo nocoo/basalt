@@ -24,6 +24,7 @@ describe("Sheet", () => {
 		const panel = screen.getByRole("dialog");
 		expect(panel.className).toContain("left-0");
 		expect(panel.className).not.toContain("left-1/2");
+		expect(panel).toHaveStyle({ boxSizing: "border-box" });
 	});
 
 	it("defaults to the right edge", () => {
