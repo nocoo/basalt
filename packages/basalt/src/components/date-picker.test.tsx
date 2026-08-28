@@ -93,6 +93,35 @@ describe("DatePicker", () => {
 		expect(onChange).toHaveBeenCalledWith("2024-01-12");
 	});
 
+	it("focuses an enabled day when the selected date is out of bounds", async () => {
+		render(
+			<DatePicker defaultValue="2024-01-01" min="2024-01-10" max="2024-01-20" aria-label="Date" />,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2024-01-10");
+		});
+		expect(document.activeElement).not.toBeDisabled();
+	});
+
+	it("forwards native date input attributes", () => {
+		const { container } = render(
+			<form id="booking">
+				<DatePicker name="when" form="booking" step={7} aria-label="Date" />
+			</form>,
+		);
+		const control = container.querySelector('input[name="when"]');
+		expect(control).toHaveAttribute("form", "booking");
+		expect(control).toHaveAttribute("step", "7");
+	});
+
+	it("compares extended-year bounds numerically", async () => {
+		render(<DatePicker defaultValue="9999-12-31" max="9999-12-31" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		const overflow = await screen.findByRole("button", { name: "10000-01-01" });
+		expect(overflow).toBeDisabled();
+	});
+
 	it("matches native date input year range", () => {
 		const { container, rerender } = render(
 			<form>

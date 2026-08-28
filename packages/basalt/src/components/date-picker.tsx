@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { type ComponentProps, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
@@ -69,8 +69,34 @@ function formatCivil(date: Civil, locale: string, options: Intl.DateTimeFormatOp
 	}).format(utcDate(date));
 }
 
+function compareIso(left: string, right: string) {
+	const a = parseIso(left);
+	const b = parseIso(right);
+	if (!a || !b) {
+		return left < right ? -1 : left > right ? 1 : 0;
+	}
+	if (a.y !== b.y) {
+		return a.y - b.y;
+	}
+	if (a.m !== b.m) {
+		return a.m - b.m;
+	}
+	return a.d - b.d;
+}
+
 function withinBounds(iso: string, min?: string, max?: string) {
-	return (!min || iso >= min) && (!max || iso <= max);
+	return (!min || compareIso(iso, min) >= 0) && (!max || compareIso(iso, max) <= 0);
+}
+
+function clampCivil(date: Civil, min?: string, max?: string) {
+	const iso = formatIso(date);
+	if (min && compareIso(iso, min) < 0) {
+		return parseIso(min) ?? date;
+	}
+	if (max && compareIso(iso, max) > 0) {
+		return parseIso(max) ?? date;
+	}
+	return date;
 }
 
 function isValidCivil(date: Civil): boolean {
@@ -127,6 +153,7 @@ export function DatePicker({
 	"aria-label": ariaLabel,
 	"aria-describedby": ariaDescribedBy,
 	"aria-invalid": ariaInvalid,
+	...inputRest
 }: {
 	value?: string;
 	defaultValue?: string;
@@ -145,7 +172,24 @@ export function DatePicker({
 	"aria-label"?: string;
 	"aria-describedby"?: string;
 	"aria-invalid"?: boolean | "true" | "false";
-}) {
+} & Omit<
+	ComponentProps<"input">,
+	| "value"
+	| "defaultValue"
+	| "onChange"
+	| "type"
+	| "children"
+	| "className"
+	| "disabled"
+	| "id"
+	| "name"
+	| "required"
+	| "min"
+	| "max"
+	| "aria-label"
+	| "aria-describedby"
+	| "aria-invalid"
+>) {
 	const [uncontrolled, setUncontrolled] = useState(defaultValue);
 	const [open, setOpen] = useState(false);
 	const [focusIndex, setFocusIndex] = useState(0);
@@ -172,12 +216,16 @@ export function DatePicker({
 		if (!open) {
 			return;
 		}
-		const next = (selected ? parseIso(selected) : null) ?? todayCivil(timeZone);
+		const next = clampCivil(
+			(selected ? parseIso(selected) : null) ?? todayCivil(timeZone),
+			min,
+			max,
+		);
 		setMonth({ y: next.y, m: next.m, d: 1 });
 		if (!selected) {
 			focusDay.current = true;
 		}
-	}, [open, selected, timeZone]);
+	}, [open, selected, timeZone, min, max]);
 
 	useEffect(() => {
 		if (disabled) {
@@ -258,12 +306,19 @@ export function DatePicker({
 				}
 			}
 		}
+		const enabled = (date: Civil | null) =>
+			Boolean(date && date.y >= 1 && withinBounds(formatIso(date), min, max));
+		if (!enabled(days[index] ?? null)) {
+			const inMonth = days.findIndex((date) => date?.m === month.m && enabled(date));
+			const any = days.findIndex((date) => enabled(date));
+			index = inMonth >= 0 ? inMonth : any >= 0 ? any : index;
+		}
 		setFocusIndex(index);
 		if (focusDay.current) {
 			focusDay.current = false;
 			dayRefs.current[index]?.focus();
 		}
-	}, [open, submitted, timeZone, days, month.m]);
+	}, [open, submitted, timeZone, days, month.m, min, max]);
 
 	const previousMonth = shiftMonth(month, -1);
 	const followingMonth = shiftMonth(month, 1);
@@ -318,6 +373,7 @@ export function DatePicker({
 				disabled={disabled}
 				aria-hidden="true"
 				tabIndex={-1}
+				{...inputRest}
 			/>
 			<PopoverTrigger asChild>
 				<button
@@ -342,13 +398,20 @@ export function DatePicker({
 					event.preventDefault();
 					const iso = submitted || formatIso(todayCivil(timeZone));
 					const selectedIndex = days.findIndex((date) => isoOf(date) === iso);
-					const index =
+					const enabled = (date: Civil | null) =>
+						Boolean(date && date.y >= 1 && withinBounds(formatIso(date), min, max));
+					let index =
 						selectedIndex >= 0 && days[selectedIndex]?.m === month.m
 							? selectedIndex
 							: Math.max(
 									0,
 									days.findIndex((date) => date?.m === month.m),
 								);
+					if (!enabled(days[index] ?? null)) {
+						const inMonth = days.findIndex((date) => date?.m === month.m && enabled(date));
+						const any = days.findIndex((date) => enabled(date));
+						index = inMonth >= 0 ? inMonth : any >= 0 ? any : index;
+					}
 					queueMicrotask(() => {
 						dayRefs.current[index]?.focus();
 					});
