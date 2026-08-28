@@ -222,9 +222,11 @@ function ReadyDoc({
 						{docs.source.file}
 					</p>
 				</article>
-				<div className="hidden xl:block">
-					<DocToc headings={headings} />
-				</div>
+				<aside className="hidden min-w-0 xl:block">
+					<div className="sticky top-4">
+						<DocToc headings={headings} />
+					</div>
+				</aside>
 			</div>
 		</div>
 	);

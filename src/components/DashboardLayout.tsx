@@ -75,7 +75,7 @@ export function DashboardLayout() {
 	}, [mobileOpen]);
 
 	return (
-		<div className="flex min-h-screen w-full bg-background">
+		<div className="flex h-screen w-full overflow-hidden bg-background">
 			<a
 				href="#main-content"
 				className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
@@ -98,7 +98,7 @@ export function DashboardLayout() {
 				</>
 			)}
 
-			<main id="main-content" className="flex min-h-screen min-w-0 flex-1 flex-col">
+			<main id="main-content" className="flex h-full min-w-0 flex-1 flex-col overflow-hidden">
 				<header className="flex h-14 shrink-0 items-center justify-between px-4 md:px-6">
 					<div className="flex items-center gap-3">
 						{isMobile && (
@@ -127,10 +127,10 @@ export function DashboardLayout() {
 						<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
 					</div>
 				</header>
-				<div className="flex-1 px-2 pb-2 md:px-3 md:pb-3">
+				<div className="flex min-h-0 flex-1 flex-col px-2 pb-2 md:px-3 md:pb-3">
 					<div
 						data-doc-scroll
-						className="h-full overflow-y-auto rounded-[16px] bg-card p-3 md:rounded-[20px] md:p-5"
+						className="min-h-0 flex-1 overflow-y-auto rounded-[16px] bg-card p-3 md:rounded-[20px] md:p-5"
 					>
 						<Outlet />
 					</div>

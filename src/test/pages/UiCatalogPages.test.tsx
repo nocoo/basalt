@@ -78,6 +78,7 @@ describe("ui catalog", () => {
 			expect(screen.getByRole("button", { name: "Copy page" })).toBeInTheDocument();
 			expect(screen.getAllByRole("button", { name: "Copy" }).length).toBeGreaterThan(0);
 			expect(screen.getAllByRole("navigation", { name: "On this page" }).length).toBeGreaterThan(0);
+			expect(document.querySelector("aside .sticky")).toBeTruthy();
 			expect(screen.getAllByRole("combobox", { name: "Jump to section" }).length).toBeGreaterThan(
 				0,
 			);

@@ -1,5 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
+import { useDocTocActiveId } from "./useDocTocActiveId";
 
 export interface DocHeading {
 	id: string;
@@ -64,39 +65,10 @@ function TocLink({
 export function DocToc({ headings }: { headings: DocHeading[] }) {
 	const groups = useMemo(() => groupHeadings(headings), [headings]);
 	const ids = useMemo(() => headings.map((heading) => heading.id), [headings]);
-	const [activeId, setActiveId] = useState(ids[0] ?? "");
-
-	useEffect(() => {
-		if (ids.length === 0 || typeof IntersectionObserver === "undefined") {
-			return;
-		}
-		const root = document.querySelector("[data-doc-scroll]");
-		const elements = ids
-			.map((id) => document.getElementById(id))
-			.filter((el): el is HTMLElement => el !== null);
-		if (elements.length === 0) {
-			return;
-		}
-		const observer = new IntersectionObserver(
-			(entries) => {
-				const visible = entries
-					.filter((entry) => entry.isIntersecting)
-					.sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-				const next = visible[0]?.target.id;
-				if (next) {
-					setActiveId(next);
-				}
-			},
-			{ root: root instanceof Element ? root : null, rootMargin: "0px 0px -70% 0px", threshold: 0 },
-		);
-		for (const el of elements) {
-			observer.observe(el);
-		}
-		return () => observer.disconnect();
-	}, [ids]);
+	const { activeId, selectSection } = useDocTocActiveId(ids);
 
 	return (
-		<nav aria-label="On this page" className="text-sm xl:sticky xl:top-6">
+		<nav aria-label="On this page" className="text-sm">
 			<label className="block xl:hidden">
 				<span className="mb-1 block text-muted-foreground">On this page</span>
 				<select
@@ -105,8 +77,8 @@ export function DocToc({ headings }: { headings: DocHeading[] }) {
 					value={activeId}
 					onChange={(event) => {
 						const id = event.target.value;
-						setActiveId(id);
-						window.location.hash = id;
+						selectSection(id);
+						document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
 					}}
 				>
 					{headings.map((heading) => (
@@ -128,7 +100,7 @@ export function DocToc({ headings }: { headings: DocHeading[] }) {
 									<TocLink
 										heading={group.h2}
 										active={activeId === group.h2.id}
-										onSelect={setActiveId}
+										onSelect={selectSection}
 									/>
 								</li>
 							);
@@ -138,16 +110,16 @@ export function DocToc({ headings }: { headings: DocHeading[] }) {
 								<TocLink
 									heading={group.h2}
 									active={activeId === group.h2.id}
-									onSelect={setActiveId}
+									onSelect={selectSection}
 								/>
-								<ul className="flex flex-col gap-2 border-l-2 border-border">
+								<ul className="flex flex-col gap-2">
 									{group.h3s.map((h3) => (
-										<li key={h3.id} className="-ml-0.5">
+										<li key={h3.id}>
 											<TocLink
 												heading={h3}
 												active={activeId === h3.id}
 												nested
-												onSelect={setActiveId}
+												onSelect={selectSection}
 											/>
 										</li>
 									))}
