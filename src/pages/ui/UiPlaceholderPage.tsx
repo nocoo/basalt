@@ -9,7 +9,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CATALOG_BY_SLUG, type CatalogEntry, catalogImportPath } from "./catalog";
+import { CATALOG_BY_SLUG, type CatalogEntry, catalogImportPath, catalogNavName } from "./catalog";
 import { DocCode, DocExample } from "./DocCode";
 import { type DocHeading, DocToc } from "./DocToc";
 import { UI_DEMOS, UI_EXAMPLES } from "./demos";
@@ -81,7 +81,7 @@ function ReadyDoc({
 	const granular = `import { ${entry.name} } from "${importPath}";`;
 	const examples = UI_EXAMPLES[entry.slug] ?? [];
 	const pageMarkdown = [
-		`# ${entry.name}`,
+		`# ${catalogNavName(entry)}`,
 		docs.description,
 		"## Installation",
 		barrel ?? "",
@@ -116,7 +116,9 @@ function ReadyDoc({
 			<header className="border-b border-border px-6 py-8 md:px-8 md:py-10">
 				<div className="mb-3 flex items-start justify-between gap-4">
 					<div className="flex min-w-0 items-center gap-3">
-						<h1 className="text-4xl font-semibold tracking-tight text-foreground">{entry.name}</h1>
+						<h1 className="text-4xl font-semibold tracking-tight text-foreground">
+							{catalogNavName(entry)}
+						</h1>
 						<a
 							href={sourceHref(docs.source)}
 							target="_blank"
@@ -255,7 +257,7 @@ export default function UiPlaceholderPage() {
 	return (
 		<div data-status="placeholder" data-slug={entry.slug}>
 			<CatalogHero
-				title={entry.name}
+				title={catalogNavName(entry)}
 				description="未实现. This catalog page is a placeholder until the control ships."
 			/>
 			<div className="px-6 py-8 text-sm text-muted-foreground md:px-8">

@@ -56,7 +56,7 @@ const SHOWCASE: { name: string; slug: string }[] = [
 	{ name: "DatePicker", slug: "date-picker" },
 	{ name: "Breadcrumbs", slug: "breadcrumbs" },
 	{ name: "ClipboardText", slug: "clipboard-text" },
-	{ name: "CommandPalette", slug: "command-palette" },
+	{ name: "Command Palette", slug: "command-palette" },
 	{ name: "Flow", slug: "flow" },
 	{ name: "Link", slug: "link" },
 	{ name: "Empty", slug: "empty" },
