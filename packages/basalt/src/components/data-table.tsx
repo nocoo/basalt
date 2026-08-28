@@ -21,6 +21,15 @@ function asBigint(value: unknown): bigint | null {
 }
 
 function compareUnknown(left: unknown, right: unknown): number {
+	const leftNumeric = typeof left === "number" || typeof left === "bigint";
+	const rightNumeric = typeof right === "number" || typeof right === "bigint";
+	if (leftNumeric && rightNumeric) {
+		const leftNum = Number(left);
+		const rightNum = Number(right);
+		if (Number.isFinite(leftNum) && Number.isFinite(rightNum)) {
+			return leftNum - rightNum;
+		}
+	}
 	const leftInt = asBigint(left);
 	const rightInt = asBigint(right);
 	if (leftInt !== null && rightInt !== null) {
@@ -119,7 +128,7 @@ export function DataTable<T>({
 						>
 							<button
 								type="button"
-								className="font-medium"
+								className="appearance-none border-0 bg-transparent p-0 font-inherit font-medium cursor-pointer"
 								onClick={() =>
 									setSort((current) =>
 										current?.id === column.id && current.dir === "asc"
