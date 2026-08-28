@@ -225,10 +225,16 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 | `item-list` | ItemList |
 | `date-navigation` | DateNavigation |
 | `palette` | ChartPalette（`/ui/palette`，与现 `/palette` 系统页并存） |
+| `charts` | Charts 索引 |
+| `colors` | Colors |
+| `timeseries` | Timeseries |
+| `maps` | Maps（占位，包内不实现） |
+| `custom-chart` | Custom Chart |
+| `page-header` | Page Header |
+| `resource-list` | Resource List |
+| `delete-resource` | Delete Resource |
 
-另加分类索引锚点（同一 `/ui` 页内 heading，或 `/ui/charts` 重定向到索引过滤）：不强制单独路由。
-
-79 条 kebab 必须与 01 §6.2 `name` 一一对应。`/ui/:slug` 不得抢现有路由（现网无 `/ui`）。
+侧栏分组：Components 字母序；Charts 先 Kumo 六项再其余字母序；Blocks 按 Kumo 三项。`/ui/:slug` 不得抢现有路由（现网无 `/ui`）。
 
 ### 5.2 Placeholder 页最低内容
 
@@ -255,7 +261,7 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 现有 `NAV_GROUPS` 不改顺序、不改现有组名。侧栏两大分区：
 
 - **示例**（`nav.examples`）：现有分组原样，默认展开
-- **控件库**（`nav.kit`）：Home（`/ui`）+ 每个 6.2 出口一条导航，按 `CATALOG_CATEGORIES` 分组，复用 `NavGroupSection`（可折叠、默认展开、条目带 icon）
+- **控件库**（`nav.kit`）：Home（`/ui`）+ Components（扁平字母序）/ Charts / Blocks，复用 `NavGroupSection`（可折叠、默认展开、条目带 icon）
 
 ⌘K 收录 example 页 + Home + 全部 `/ui/:slug`。
 

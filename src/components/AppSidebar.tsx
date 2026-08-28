@@ -38,6 +38,7 @@ import {
 	Gauge,
 	GitBranch,
 	GitFork,
+	Globe,
 	Hash,
 	HeartPulse,
 	History,
@@ -46,6 +47,7 @@ import {
 	Layers,
 	LayoutDashboard,
 	LayoutGrid,
+	LayoutTemplate,
 	LineChart,
 	Link2,
 	List,
@@ -71,6 +73,7 @@ import {
 	Search,
 	Settings,
 	SlidersHorizontal,
+	Sparkles,
 	Square,
 	SquareCheck,
 	Sun,
@@ -81,6 +84,7 @@ import {
 	TextCursorInput,
 	ToggleLeft,
 	ToggleRight,
+	Trash2,
 	TrendingUp,
 	TriangleAlert,
 	Type,
@@ -102,7 +106,7 @@ import {
 	CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import { CATALOG, CATALOG_CATEGORIES } from "@/pages/ui/catalog";
+import { CATALOG, CATALOG_CATEGORIES, catalogNavName, libraryNavEntries } from "@/pages/ui/catalog";
 
 // ── Navigation data model ──
 
@@ -260,13 +264,21 @@ const CATALOG_ICONS: Record<string, React.ElementType> = {
 	"item-list": List,
 	"date-navigation": CalendarRange,
 	palette: SwatchBook,
+	charts: BarChart3,
+	colors: SwatchBook,
+	timeseries: ChartLine,
+	maps: Globe,
+	"custom-chart": Sparkles,
+	"page-header": LayoutTemplate,
+	"resource-list": List,
+	"delete-resource": Trash2,
 };
 
 const LIBRARY_GROUPS: NavGroup[] = CATALOG_CATEGORIES.map((category) => ({
 	label: category.label,
 	defaultOpen: true,
-	items: CATALOG.filter((entry) => entry.category === category.id).map((entry) => ({
-		title: entry.name,
+	items: libraryNavEntries(category.id).map((entry) => ({
+		title: catalogNavName(entry),
 		path: `/ui/${entry.slug}`,
 		icon: CATALOG_ICONS[entry.slug] ?? RectangleEllipsis,
 	})),

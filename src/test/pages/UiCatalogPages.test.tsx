@@ -1,7 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, it, vi } from "vitest";
-import { CATALOG, catalogImportPath } from "@/pages/ui/catalog";
+import { CATALOG, catalogImportPath, catalogNavName, libraryNavEntries } from "@/pages/ui/catalog";
 import { UI_DEMOS } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { KUMO_DOCS_SLUGS } from "@/pages/ui/kumo-list";
@@ -20,10 +20,10 @@ function renderCatalog(path: string) {
 }
 
 describe("ui catalog", () => {
-	it("lists 79 unique public exports", () => {
+	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(79);
-		expect(new Set(slugs).size).toBe(79);
+		expect(slugs).toHaveLength(87);
+		expect(new Set(slugs).size).toBe(87);
 	});
 
 	it("renders the index with links to every export", () => {
@@ -84,6 +84,27 @@ describe("ui catalog", () => {
 			);
 			expect(screen.getByRole("link", { name: new RegExp(docs.source.sha) })).toBeInTheDocument();
 		}
+	});
+
+	it("orders library nav like kumo", () => {
+		const components = libraryNavEntries("component");
+		expect(catalogNavName(components[0])).toBe("Accordion");
+		expect(components.map(catalogNavName)).toEqual(
+			[...components.map(catalogNavName)].sort((a, b) => a.localeCompare(b, "en")),
+		);
+		expect(libraryNavEntries("chart").slice(0, 6).map(catalogNavName)).toEqual([
+			"Charts",
+			"Colors",
+			"Timeseries",
+			"Maps",
+			"Sankey",
+			"Custom Chart",
+		]);
+		expect(libraryNavEntries("block").map(catalogNavName)).toEqual([
+			"Page Header",
+			"Resource List",
+			"Delete Resource",
+		]);
 	});
 
 	it("covers every Kumo docs component slug", () => {
