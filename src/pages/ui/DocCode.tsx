@@ -1,7 +1,7 @@
 import { type ReactNode, useState } from "react";
 
 const TOKEN =
-	/(\/\/[^\n]*)|("[^"]*"|'[^']*')|\b(import|from|export|default|function|return|const|let|type|interface)\b/g;
+	/(\/\/[^\n]*)|("[^"]*"|'[^']*')|(<\/?[A-Za-z][\w.-]*)|\b(import|from|export|default|function|return|const|let|type|interface)\b/g;
 
 function highlight(code: string): ReactNode[] {
 	const nodes: ReactNode[] = [];
@@ -12,25 +12,12 @@ function highlight(code: string): ReactNode[] {
 		if (index > last) {
 			nodes.push(code.slice(last, index));
 		}
-		if (match[1]) {
-			nodes.push(
-				<span key={key} className="text-muted-foreground">
-					{match[1]}
-				</span>,
-			);
-		} else if (match[2]) {
-			nodes.push(
-				<span key={key} className="text-primary">
-					{match[2]}
-				</span>,
-			);
-		} else {
-			nodes.push(
-				<span key={key} className="text-primary">
-					{match[0]}
-				</span>,
-			);
-		}
+		const className = match[1] ? "text-muted-foreground" : "text-primary";
+		nodes.push(
+			<span key={key} className={className}>
+				{match[0]}
+			</span>,
+		);
 		key += 1;
 		last = index + match[0].length;
 	}
@@ -43,7 +30,7 @@ function highlight(code: string): ReactNode[] {
 export function DocCode({ code }: { code: string }) {
 	const [copied, setCopied] = useState(false);
 	return (
-		<div className="relative rounded-widget border border-border bg-card">
+		<div className="relative rounded-widget bg-secondary">
 			<button
 				type="button"
 				className="absolute right-2 top-2 text-xs underline underline-offset-4 text-foreground"

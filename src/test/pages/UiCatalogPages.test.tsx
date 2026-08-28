@@ -73,10 +73,12 @@ describe("ui catalog", () => {
 			expect(screen.getByRole("heading", { name: "Installation" })).toBeInTheDocument();
 			expect(screen.getByRole("heading", { name: "Usage" })).toBeInTheDocument();
 			expect(screen.getByRole("heading", { name: "API Reference" })).toBeInTheDocument();
+			expect(screen.getByRole("columnheader", { name: "Default" })).toBeInTheDocument();
+			expect(screen.getByRole("button", { name: "Copy page" })).toBeInTheDocument();
 			expect(screen.getAllByRole("button", { name: "Copy" }).length).toBeGreaterThan(0);
 			expect(screen.getByRole("navigation", { name: "On this page" })).toBeInTheDocument();
-			expect(screen.getByText(/Source:/)).toBeInTheDocument();
-			expect(screen.getByText(new RegExp(docs.source.sha))).toBeInTheDocument();
+			expect(screen.getByRole("combobox", { name: "Jump to section" })).toBeInTheDocument();
+			expect(screen.getByRole("link", { name: new RegExp(docs.source.sha) })).toBeInTheDocument();
 		}
 	});
 

@@ -2,12 +2,12 @@ export interface CatalogDocs {
 	description: string;
 	usage: string;
 	variants: string[];
-	props: { name: string; type: string }[];
+	props: { name: string; type: string; default?: string; description?: string }[];
 	source: { repo: string; sha: string; file: string };
 }
 
 function usage(name: string, from: string, sample: string): string {
-	return `import { ${name} } from "${from}";\n\n${sample}`;
+	return `import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
 }
 
 export const CATALOG_DOCS: Record<string, CatalogDocs> = {
@@ -281,7 +281,12 @@ export const CATALOG_DOCS: Record<string, CatalogDocs> = {
 		),
 		variants: [],
 		props: [
-			{ name: "component", type: "ComponentType<{ href: string }>" },
+			{
+				name: "render",
+				type: 'ComponentType<{ href: string }> | "a"',
+				default: '"a"',
+				description: "Link renderer injected into Basalt Link.",
+			},
 			{ name: "children", type: "ReactNode" },
 		],
 		source: {
