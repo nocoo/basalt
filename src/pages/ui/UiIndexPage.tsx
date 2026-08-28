@@ -25,6 +25,7 @@ export default function UiIndexPage() {
 								<li key={entry.slug}>
 									<Link
 										to={`/ui/${entry.slug}`}
+										aria-label={entry.name}
 										className="flex items-center justify-between rounded-lg bg-card px-3 py-2 text-sm text-foreground hover:bg-accent transition-colors"
 									>
 										<span>{entry.name}</span>
