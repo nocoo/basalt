@@ -12,7 +12,7 @@
 
 | 点 | 01 | 02 |
 |----|----|----|
-| 取样 vs 第一刀代码 | 阶段 0 含冻结截图 | **先** B0 播种随机数据，再 B1 截图（改侧栏之前），再 Wave P 加 `/ui/:name` placeholder |
+| 取样 vs 第一刀代码 | Wave B 产出冻结截图（阶段 0 不再拍、不再钉 SHA） | **先** B0 播种随机数据，再 B1 截图并写入 B0 SHA（改侧栏之前），再 Wave P 加 `/ui/:name` placeholder |
 | 每个控件 | 7.2 底稿可直接用 | **先推荐、等哥确认，再写实现** |
 | 顺序 | 阶段 1→7 按 kind | **先小后大**：原子 → LayerCard 容器 → 表单 → 反馈 → 浮层 → 结构/Sidebar catalog → **图表工具层** → 图表控件 → 拼现页壳 |
 | 图表 | 与其它控件并列 stage 6 | **单独轨道**：先 kit（色板、tooltip、轴/字号），再各个 chart |
@@ -137,7 +137,7 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 | # | commit | 内容 |
 |---|--------|------|
 | B0 | `fix: seed showcase chart mock data` | 去掉未播种随机：`src/components/dashboard/SummaryMetricCard.tsx`、`SecondaryMetricCard.tsx`、`src/data/mock.ts` 的 `performanceData`。换成播种 PRNG 或固定数组。不改 class / 布局 / 色值 |
-| B1 | `docs: capture 2-0 visual baselines` | 对 **B0 HEAD** 拍 `docs/baselines/2-0/`，01 §3.2 矩阵；把 B0 SHA 写入 01 §3.2 |
+| B1 | `docs: capture 2-0 visual baselines` | 对 **B0 HEAD** 拍 `docs/baselines/2-0/`，01 §3.2 矩阵。**由本 commit 唯一**把 B0 SHA 写入 01 §3.2，替换「基线 commit」那句。B1 本身不是代码基线 |
 
 B0 是 Wave P 前**唯一**允许的现页源码改动。B1 **禁止**改 `AppSidebar` / `App.tsx` / 现页 class。
 
@@ -272,18 +272,17 @@ Wave P 之后不重拍整表。阶段 7 对照这批图；侧栏允许多一个�
 |---|--------|----------------|
 | P1 | `feat: add ui catalog placeholder page` | `src/pages/ui/UiPlaceholderPage.tsx`（通用页，读 param） |
 | P2 | `feat: register ui catalog routes` | `src/App.tsx`：`/ui`、`/ui/:slug` |
-| P3 | `feat: add kit nav group` | `AppSidebar.tsx` 一组 + 不展开 |
-| P4 | `feat: add kit nav i18n` | `en.json` / `zh.json` `nav.kit` |
-| P5 | `test: cover ui placeholder routes` | 渲染 `/ui` 与一个 slug，断言 placeholder |
-| P6 | `feat: index ui pages in command palette` | `AppSidebar` cmdk 增加 kit 项 |
+| P3 | `feat: add kit nav group` | `AppSidebar.tsx` 一组 + 不展开，**同 commit** 写 `en.json` / `zh.json` `nav.kit`。禁止先合无翻译的 key |
+| P4 | `test: cover ui placeholder routes` | 渲染 `/ui` 与一个 slug，断言 placeholder |
+| P5 | `feat: index ui pages in command palette` | `AppSidebar` cmdk 增加 kit 项 |
 
-P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的唯一导航变化。P5 的测试与被测路由必须同一次绿：若 P2 已注册路由，P5 可紧随；禁止 P5 先于 P1/P2 合进红测。
+P1–P5 期间禁止改现有组合页 class。侧栏多一组是 01 允许的唯一导航变化。P4 的测试与被测路由必须同一次绿：若 P2 已注册路由，P4 可紧随；禁止 P4 先于 P1/P2 合进红测。
 
 ---
 
 ## 6. Wave 0 — 包骨架（第一个真控件之前）
 
-在确认 **Button** 底稿之后、写 Button 之前做（或与 Button 同一迭代，但提交在 Button 前）。**先让工具链看见包，再往包里写文件。**
+在确认 **Button** 底稿之后做（包骨架需要先知道第一个重量级控件的 API），但 Wave 0 **不是**紧挨 Button 实现。写完 Wave 0 后按 §8 从 Text 起；轮到 Button 时用已确认底稿。**先让工具链看见包，再往包里写文件。**
 
 | # | commit |
 |---|--------|
@@ -337,13 +336,13 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | 2 | Text | Kumo Text API + 本站 14px | catalog |
 | 3 | Label | 本站 `ui/label.tsx` | |
 | 4 | Separator | 本站 `ui/separator.tsx` | |
-| 5 | Button | meowth Button API（asChild）+ **本站 h-9 默认**；zhe 只提供非默认 size | **第一个要确认的控件** |
+| 5 | Button | meowth Button API（asChild）+ **本站 h-9 默认**；zhe 只提供非默认 size | **第一个要确认的控件**（Wave 0 前预确认；实现仍排在 Text/Label/Separator 之后） |
 | 6 | LinkButton | 与 Button 同文件；catalog | 随 Button 确认 |
-| 7 | Link | 本站 `<a>` + LinkProvider | |
-| 8 | Tooltip | meowth API；现页不加 Arrow | |
-| 9 | ThemeProvider | pew `useSyncExternalStore` | |
-| 10 | ThemeToggle | 本站三态 label | |
-| 11 | LinkProvider | Kumo 思路，本站实现 | |
+| 7 | LinkProvider | Kumo 思路，本站实现 | 与 Link 同一家族确认，排在 Link 前 |
+| 8 | Link | 本站 `<a>` + LinkProvider | 随 LinkProvider |
+| 9 | Tooltip | meowth API；现页不加 Arrow | |
+| 10 | ThemeProvider | pew `useSyncExternalStore` | |
+| 11 | ThemeToggle | 本站三态 label | |
 
 ### 8.2 容器
 
@@ -458,7 +457,7 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | 8.1 | `chore: add tarball publish gate scripts` | 复制 fixtures 到仓外 tmp、`npm pack`、安装 tarball、跑 A/B/C/D |
 | 8.2 | `test: assert tarball gates a b c d` | 与 8.1 可合并仅当同一次绿；断言 computed style 与根 barrel 不拉 optional peer |
 | 8.3 | `chore: add package prepublishonly script` | 写入 `packages/basalt/package.json` 的 `prepublishOnly`：build + 包内 jsdom + browser + publint + 门 A/B/C/D。这是 npm lifecycle，不是 README 步骤 |
-| 8.4 | `docs: add notice for kumo excerpts` | 仅当复制了 Kumo 逻辑 |
+| 8.4 | `docs: add notice for kumo excerpts` | 仅当复制了 Kumo 逻辑：同时写 `packages/basalt/NOTICE` **和** 包 README 的 Cloudflare MIT notice（01 §3.4） |
 | 8.5 | `docs: changelog 2.0.0-alpha` | Keep a Changelog 一节 |
 | 8.6 | `chore: release v2.0.0-alpha.n` | 只 bump `packages/basalt` 版本；走仓库 release 清单的 alpha 路径 |
 
@@ -504,6 +503,6 @@ Wave 0.6 已写 CSS 双契约 README。发布前若文案过期可另作 `docs:`
 2. 本文与 01 联审 Sign Off
 3. Wave B（B0 播种 → B1 截图，改侧栏之前）
 4. Wave P（placeholder）
-5. 确认 Button 底稿 → Wave 0（含 0.6 README、0.7 dts/banner）→ Button 起按 §8 顺序
+5. 确认 Button 底稿（预确认，不立即实现）→ Wave 0（含 0.6 README、0.7 dts/banner）→ 按 §8 从 Text 起；到 Button 用已确认底稿
 
 下一句动作从 Wave B 的 `fix: seed showcase chart mock data` 开始。未拍板、未 Sign Off 不准动。
