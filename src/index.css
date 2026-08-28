@@ -1,8 +1,8 @@
+/* biome-ignore-all lint/correctness/noInvalidPositionAtImportRule: 01 §5.2 requires @source before @import */
+@source "../packages/basalt/src/**/*.{ts,tsx}";
 @import "../packages/basalt/src/styles/tailwind.css";
 @import "tailwindcss";
 @import "tw-animate-css";
-
-@source "../packages/basalt/src/**/*.{ts,tsx}";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -84,8 +84,8 @@
 	--color-heatmap-orange-3: hsl(var(--heatmap-orange-3));
 	--color-heatmap-orange-4: hsl(var(--heatmap-orange-4));
 
-	--radius-card: 14px;
-	--radius-widget: 10px;
+	--radius-card: var(--basalt-radius-card);
+	--radius-widget: var(--basalt-radius-widget);
 	--radius-lg: var(--radius);
 	--radius-md: calc(var(--radius) - 2px);
 	--radius-sm: calc(var(--radius) - 4px);
@@ -163,56 +163,51 @@
 	--badge-red: 340 82% 55%;
 	--badge-red-foreground: 0 0% 100%;
 
-	/* Visualization palette (24 sequential chart colors) */
-	--chart-1: 217 91% 60%;
-	--chart-2: 200 90% 55%;
-	--chart-3: 186 80% 45%;
-	--chart-4: 166 72% 44%;
-	--chart-5: 142 71% 45%;
-	--chart-6: 84 65% 46%;
-	--chart-7: 45 93% 47%;
-	--chart-8: 30 90% 55%;
-	--chart-9: 15 85% 52%;
-	--chart-10: 0 72% 51%;
-	--chart-11: 340 82% 55%;
-	--chart-12: 320 70% 55%;
-	--chart-13: 290 65% 55%;
-	--chart-14: 270 70% 60%;
-	--chart-15: 250 65% 58%;
-	--chart-16: 230 70% 56%;
-	--chart-17: 210 55% 50%;
-	--chart-18: 195 45% 55%;
-	--chart-19: 160 50% 50%;
-	--chart-20: 100 50% 48%;
-	--chart-21: 60 65% 45%;
-	--chart-22: 22 80% 50%;
-	--chart-23: 350 65% 50%;
-	--chart-24: 0 0% 25%;
+	/* Visualization palette — mapped from Basalt tokens */
+	--chart-1: var(--basalt-chart-1);
+	--chart-2: var(--basalt-chart-2);
+	--chart-3: var(--basalt-chart-3);
+	--chart-4: var(--basalt-chart-4);
+	--chart-5: var(--basalt-chart-5);
+	--chart-6: var(--basalt-chart-6);
+	--chart-7: var(--basalt-chart-7);
+	--chart-8: var(--basalt-chart-8);
+	--chart-9: var(--basalt-chart-9);
+	--chart-10: var(--basalt-chart-10);
+	--chart-11: var(--basalt-chart-11);
+	--chart-12: var(--basalt-chart-12);
+	--chart-13: var(--basalt-chart-13);
+	--chart-14: var(--basalt-chart-14);
+	--chart-15: var(--basalt-chart-15);
+	--chart-16: var(--basalt-chart-16);
+	--chart-17: var(--basalt-chart-17);
+	--chart-18: var(--basalt-chart-18);
+	--chart-19: var(--basalt-chart-19);
+	--chart-20: var(--basalt-chart-20);
+	--chart-21: var(--basalt-chart-21);
+	--chart-22: var(--basalt-chart-22);
+	--chart-23: var(--basalt-chart-23);
+	--chart-24: var(--basalt-chart-24);
 
-	/* Chart utility tokens */
-	--chart-axis: 0 0% 40%;
-	--chart-muted: 0 0% 70%;
+	--chart-axis: var(--basalt-chart-axis);
+	--chart-muted: var(--basalt-chart-muted);
 
-	/* Heatmap color scales — green (default) */
-	--heatmap-green-1: 142 50% 85%;
-	--heatmap-green-2: 142 55% 65%;
-	--heatmap-green-3: 142 60% 45%;
-	--heatmap-green-4: 142 65% 30%;
-	/* Heatmap color scales — red */
-	--heatmap-red-1: 0 55% 85%;
-	--heatmap-red-2: 0 60% 65%;
-	--heatmap-red-3: 0 65% 48%;
-	--heatmap-red-4: 0 65% 35%;
-	/* Heatmap color scales — blue */
-	--heatmap-blue-1: 217 50% 85%;
-	--heatmap-blue-2: 217 55% 65%;
-	--heatmap-blue-3: 217 60% 48%;
-	--heatmap-blue-4: 217 65% 35%;
-	/* Heatmap color scales — orange */
-	--heatmap-orange-1: 30 55% 85%;
-	--heatmap-orange-2: 30 60% 65%;
-	--heatmap-orange-3: 30 65% 48%;
-	--heatmap-orange-4: 30 65% 35%;
+	--heatmap-green-1: var(--basalt-heatmap-green-1);
+	--heatmap-green-2: var(--basalt-heatmap-green-2);
+	--heatmap-green-3: var(--basalt-heatmap-green-3);
+	--heatmap-green-4: var(--basalt-heatmap-green-4);
+	--heatmap-red-1: var(--basalt-heatmap-red-1);
+	--heatmap-red-2: var(--basalt-heatmap-red-2);
+	--heatmap-red-3: var(--basalt-heatmap-red-3);
+	--heatmap-red-4: var(--basalt-heatmap-red-4);
+	--heatmap-blue-1: var(--basalt-heatmap-blue-1);
+	--heatmap-blue-2: var(--basalt-heatmap-blue-2);
+	--heatmap-blue-3: var(--basalt-heatmap-blue-3);
+	--heatmap-blue-4: var(--basalt-heatmap-blue-4);
+	--heatmap-orange-1: var(--basalt-heatmap-orange-1);
+	--heatmap-orange-2: var(--basalt-heatmap-orange-2);
+	--heatmap-orange-3: var(--basalt-heatmap-orange-3);
+	--heatmap-orange-4: var(--basalt-heatmap-orange-4);
 }
 
 .dark {
@@ -261,56 +256,50 @@
 	--badge-red: 340 82% 55%;
 	--badge-red-foreground: 0 0% 100%;
 
-	/* Visualization palette — boosted saturation/brightness for dark bg */
-	--chart-1: 217 91% 65%;
-	--chart-2: 200 90% 60%;
-	--chart-3: 186 80% 50%;
-	--chart-4: 166 72% 50%;
-	--chart-5: 142 71% 50%;
-	--chart-6: 84 65% 52%;
-	--chart-7: 45 93% 52%;
-	--chart-8: 30 90% 60%;
-	--chart-9: 15 85% 57%;
-	--chart-10: 0 72% 56%;
-	--chart-11: 340 82% 60%;
-	--chart-12: 320 70% 60%;
-	--chart-13: 290 65% 60%;
-	--chart-14: 270 70% 65%;
-	--chart-15: 250 65% 63%;
-	--chart-16: 230 70% 61%;
-	--chart-17: 210 55% 56%;
-	--chart-18: 195 45% 60%;
-	--chart-19: 160 50% 55%;
-	--chart-20: 100 50% 53%;
-	--chart-21: 60 65% 50%;
-	--chart-22: 22 80% 55%;
-	--chart-23: 350 65% 55%;
-	--chart-24: 0 0% 65%;
+	--chart-1: var(--basalt-chart-1);
+	--chart-2: var(--basalt-chart-2);
+	--chart-3: var(--basalt-chart-3);
+	--chart-4: var(--basalt-chart-4);
+	--chart-5: var(--basalt-chart-5);
+	--chart-6: var(--basalt-chart-6);
+	--chart-7: var(--basalt-chart-7);
+	--chart-8: var(--basalt-chart-8);
+	--chart-9: var(--basalt-chart-9);
+	--chart-10: var(--basalt-chart-10);
+	--chart-11: var(--basalt-chart-11);
+	--chart-12: var(--basalt-chart-12);
+	--chart-13: var(--basalt-chart-13);
+	--chart-14: var(--basalt-chart-14);
+	--chart-15: var(--basalt-chart-15);
+	--chart-16: var(--basalt-chart-16);
+	--chart-17: var(--basalt-chart-17);
+	--chart-18: var(--basalt-chart-18);
+	--chart-19: var(--basalt-chart-19);
+	--chart-20: var(--basalt-chart-20);
+	--chart-21: var(--basalt-chart-21);
+	--chart-22: var(--basalt-chart-22);
+	--chart-23: var(--basalt-chart-23);
+	--chart-24: var(--basalt-chart-24);
 
-	/* Chart utility tokens */
-	--chart-axis: 0 0% 50%;
-	--chart-muted: 0 0% 35%;
+	--chart-axis: var(--basalt-chart-axis);
+	--chart-muted: var(--basalt-chart-muted);
 
-	/* Heatmap color scales — green (default), boosted for dark bg */
-	--heatmap-green-1: 142 45% 25%;
-	--heatmap-green-2: 142 50% 35%;
-	--heatmap-green-3: 142 55% 45%;
-	--heatmap-green-4: 142 60% 58%;
-	/* Heatmap color scales — red */
-	--heatmap-red-1: 0 45% 25%;
-	--heatmap-red-2: 0 55% 35%;
-	--heatmap-red-3: 0 60% 45%;
-	--heatmap-red-4: 0 65% 55%;
-	/* Heatmap color scales — blue */
-	--heatmap-blue-1: 217 45% 25%;
-	--heatmap-blue-2: 217 50% 35%;
-	--heatmap-blue-3: 217 55% 45%;
-	--heatmap-blue-4: 217 60% 55%;
-	/* Heatmap color scales — orange */
-	--heatmap-orange-1: 30 45% 25%;
-	--heatmap-orange-2: 30 55% 35%;
-	--heatmap-orange-3: 30 60% 45%;
-	--heatmap-orange-4: 30 65% 55%;
+	--heatmap-green-1: var(--basalt-heatmap-green-1);
+	--heatmap-green-2: var(--basalt-heatmap-green-2);
+	--heatmap-green-3: var(--basalt-heatmap-green-3);
+	--heatmap-green-4: var(--basalt-heatmap-green-4);
+	--heatmap-red-1: var(--basalt-heatmap-red-1);
+	--heatmap-red-2: var(--basalt-heatmap-red-2);
+	--heatmap-red-3: var(--basalt-heatmap-red-3);
+	--heatmap-red-4: var(--basalt-heatmap-red-4);
+	--heatmap-blue-1: var(--basalt-heatmap-blue-1);
+	--heatmap-blue-2: var(--basalt-heatmap-blue-2);
+	--heatmap-blue-3: var(--basalt-heatmap-blue-3);
+	--heatmap-blue-4: var(--basalt-heatmap-blue-4);
+	--heatmap-orange-1: var(--basalt-heatmap-orange-1);
+	--heatmap-orange-2: var(--basalt-heatmap-orange-2);
+	--heatmap-orange-3: var(--basalt-heatmap-orange-3);
+	--heatmap-orange-4: var(--basalt-heatmap-orange-4);
 }
 
 /*

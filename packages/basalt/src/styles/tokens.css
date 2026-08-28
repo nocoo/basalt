@@ -21,6 +21,52 @@
 	--basalt-input: 220 13% 88%;
 	--basalt-ring: 217 91% 60%;
 	--basalt-radius: 0.75rem;
+	--basalt-radius-card: 14px;
+	--basalt-radius-widget: 10px;
+	--basalt-font-sans: "Inter", system-ui, -apple-system, sans-serif;
+	--basalt-font-display: "DM Sans", system-ui, sans-serif;
+	--basalt-chart-1: 217 91% 60%;
+	--basalt-chart-2: 200 90% 55%;
+	--basalt-chart-3: 186 80% 45%;
+	--basalt-chart-4: 166 72% 44%;
+	--basalt-chart-5: 142 71% 45%;
+	--basalt-chart-6: 84 65% 46%;
+	--basalt-chart-7: 45 93% 47%;
+	--basalt-chart-8: 30 90% 55%;
+	--basalt-chart-9: 15 85% 52%;
+	--basalt-chart-10: 0 72% 51%;
+	--basalt-chart-11: 340 82% 55%;
+	--basalt-chart-12: 320 70% 55%;
+	--basalt-chart-13: 290 65% 55%;
+	--basalt-chart-14: 270 70% 60%;
+	--basalt-chart-15: 250 65% 58%;
+	--basalt-chart-16: 230 70% 56%;
+	--basalt-chart-17: 210 55% 50%;
+	--basalt-chart-18: 195 45% 55%;
+	--basalt-chart-19: 160 50% 50%;
+	--basalt-chart-20: 100 50% 48%;
+	--basalt-chart-21: 60 65% 45%;
+	--basalt-chart-22: 22 80% 50%;
+	--basalt-chart-23: 350 65% 50%;
+	--basalt-chart-24: 0 0% 25%;
+	--basalt-chart-axis: 0 0% 40%;
+	--basalt-chart-muted: 0 0% 70%;
+	--basalt-heatmap-green-1: 142 50% 85%;
+	--basalt-heatmap-green-2: 142 55% 65%;
+	--basalt-heatmap-green-3: 142 60% 45%;
+	--basalt-heatmap-green-4: 142 65% 30%;
+	--basalt-heatmap-red-1: 0 55% 85%;
+	--basalt-heatmap-red-2: 0 60% 65%;
+	--basalt-heatmap-red-3: 0 65% 48%;
+	--basalt-heatmap-red-4: 0 65% 35%;
+	--basalt-heatmap-blue-1: 217 50% 85%;
+	--basalt-heatmap-blue-2: 217 55% 65%;
+	--basalt-heatmap-blue-3: 217 60% 48%;
+	--basalt-heatmap-blue-4: 217 65% 35%;
+	--basalt-heatmap-orange-1: 30 55% 85%;
+	--basalt-heatmap-orange-2: 30 60% 65%;
+	--basalt-heatmap-orange-3: 30 65% 48%;
+	--basalt-heatmap-orange-4: 30 65% 35%;
 }
 
 .dark,
@@ -44,4 +90,70 @@
 	--basalt-border: 0 0% 16%;
 	--basalt-input: 0 0% 12%;
 	--basalt-ring: 217 91% 60%;
+	--basalt-chart-1: 217 91% 65%;
+	--basalt-chart-2: 200 90% 60%;
+	--basalt-chart-3: 186 80% 50%;
+	--basalt-chart-4: 166 72% 50%;
+	--basalt-chart-5: 142 71% 50%;
+	--basalt-chart-6: 84 65% 52%;
+	--basalt-chart-7: 45 93% 52%;
+	--basalt-chart-8: 30 90% 60%;
+	--basalt-chart-9: 15 85% 57%;
+	--basalt-chart-10: 0 72% 56%;
+	--basalt-chart-11: 340 82% 60%;
+	--basalt-chart-12: 320 70% 60%;
+	--basalt-chart-13: 290 65% 60%;
+	--basalt-chart-14: 270 70% 65%;
+	--basalt-chart-15: 250 65% 63%;
+	--basalt-chart-16: 230 70% 61%;
+	--basalt-chart-17: 210 55% 56%;
+	--basalt-chart-18: 195 45% 60%;
+	--basalt-chart-19: 160 50% 55%;
+	--basalt-chart-20: 100 50% 53%;
+	--basalt-chart-21: 60 65% 50%;
+	--basalt-chart-22: 22 80% 55%;
+	--basalt-chart-23: 350 65% 55%;
+	--basalt-chart-24: 0 0% 65%;
+	--basalt-chart-axis: 0 0% 50%;
+	--basalt-chart-muted: 0 0% 35%;
+	--basalt-heatmap-green-1: 142 45% 25%;
+	--basalt-heatmap-green-2: 142 50% 35%;
+	--basalt-heatmap-green-3: 142 55% 45%;
+	--basalt-heatmap-green-4: 142 60% 58%;
+	--basalt-heatmap-red-1: 0 45% 25%;
+	--basalt-heatmap-red-2: 0 55% 35%;
+	--basalt-heatmap-red-3: 0 60% 45%;
+	--basalt-heatmap-red-4: 0 65% 55%;
+	--basalt-heatmap-blue-1: 217 45% 25%;
+	--basalt-heatmap-blue-2: 217 50% 35%;
+	--basalt-heatmap-blue-3: 217 55% 45%;
+	--basalt-heatmap-blue-4: 217 60% 55%;
+	--basalt-heatmap-orange-1: 30 45% 25%;
+	--basalt-heatmap-orange-2: 30 55% 35%;
+	--basalt-heatmap-orange-3: 30 60% 45%;
+	--basalt-heatmap-orange-4: 30 65% 55%;
+}
+
+@keyframes basalt-accordion-down {
+	from {
+		height: 0;
+	}
+	to {
+		height: var(--radix-accordion-content-height);
+	}
+}
+
+@keyframes basalt-accordion-up {
+	from {
+		height: var(--radix-accordion-content-height);
+	}
+	to {
+		height: 0;
+	}
+}
+
+@keyframes basalt-spin {
+	to {
+		transform: rotate(360deg);
+	}
 }
