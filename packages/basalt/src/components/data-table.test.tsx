@@ -154,6 +154,33 @@ describe("DataTable", () => {
 		expect(screen.getByRole("button", { name: "Generated-1" })).toBeInTheDocument();
 	});
 
+	it("keeps duplicate explicit ids stable across reorders", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const left = { id: "same", name: "Left", count: 1 };
+		const right = { id: "same", name: "Right", count: 2 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+			{ id: "count", header: "Count", accessor: (row: { count: number }) => row.count },
+		];
+		const { rerender } = render(<DataTable data={[left, right]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "Left-0" }));
+		fireEvent.click(screen.getByRole("button", { name: "Right-0" }));
+		rerender(<DataTable data={[right, left]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Left-1" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Right-1" })).toBeInTheDocument();
+	});
+
 	it("keeps duplicate row object occurrences distinct", () => {
 		const row = { name: "Zed", count: 2 };
 		render(<DataTable data={[row, row]} columns={columns} />);

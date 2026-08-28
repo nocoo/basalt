@@ -124,9 +124,15 @@ export function DataTable<T>({
 	const query = filter.trim().toLowerCase();
 
 	const rows = useMemo(() => {
-		const seen = new WeakSet<object>();
-		const used = new Set<string>();
-		const keyed = data.map((row, index) => {
+		const identityOf = (row: object) => {
+			let stored = rowIds.current.get(row);
+			if (!stored) {
+				stored = `basalt-row-${rowSeq.current++}`;
+				rowIds.current.set(row, stored);
+			}
+			return stored;
+		};
+		const preferred = data.map((row, index) => {
 			let key: string | undefined;
 			const requested = getRowId?.(row, index);
 			if (requested) {
@@ -138,19 +144,23 @@ export function DataTable<T>({
 				}
 			}
 			if (!key && row && typeof row === "object") {
-				let stored = rowIds.current.get(row as object);
-				if (!stored) {
-					stored = `basalt-row-${rowSeq.current++}`;
-					rowIds.current.set(row as object, stored);
-				}
-				if (seen.has(row as object)) {
-					key = `gen:${stored}-${index}`;
-				} else {
-					seen.add(row as object);
-					key = `gen:${stored}`;
-				}
+				key = `gen:${identityOf(row as object)}`;
 			}
-			key = key ?? `prim:${index}`;
+			return { row, preferred: key ?? `prim:${index}`, index };
+		});
+		const counts = new Map<string, number>();
+		for (const item of preferred) {
+			counts.set(item.preferred, (counts.get(item.preferred) ?? 0) + 1);
+		}
+		const seen = new WeakSet<object>();
+		const used = new Set<string>();
+		const keyed = preferred.map(({ row, preferred: initial, index }) => {
+			let key = initial;
+			if ((counts.get(initial) ?? 1) > 1 && row && typeof row === "object") {
+				const stored = identityOf(row as object);
+				key = seen.has(row as object) ? `dup:${stored}-${index}` : `dup:${stored}`;
+				seen.add(row as object);
+			}
 			while (used.has(key)) {
 				key = `${key}-${index}`;
 			}
