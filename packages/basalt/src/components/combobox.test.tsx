@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Combobox } from "./combobox";
+import { Dialog, DialogContent, DialogTitle } from "./dialog";
 
 describe("Combobox", () => {
 	it("renders an input", () => {
@@ -170,6 +171,38 @@ describe("Combobox", () => {
 		fireEvent.keyDown(document, { key: "Escape" });
 		expect(screen.queryByRole("option", { name: "Apple" })).not.toBeInTheDocument();
 		expect(onValueChange).not.toHaveBeenCalled();
+	});
+
+	it("resets the highlight when Escape restores the query", () => {
+		render(<Combobox items={["Apple", "Apricot", "Banana"]} placeholder="Fruit" />);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.change(input, { target: { value: "Ap" } });
+		fireEvent.keyDown(input, { key: "ArrowDown" });
+		expect(screen.getByRole("option", { name: "Apricot" })).toHaveAttribute(
+			"aria-selected",
+			"true",
+		);
+		fireEvent.keyDown(input, { key: "Escape" });
+		fireEvent.click(input);
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+	});
+
+	it("keeps a parent dialog open on Escape while the list is open", () => {
+		render(
+			<Dialog open>
+				<DialogContent>
+					<DialogTitle>Pick</DialogTitle>
+					<Combobox items={["Apple", "Banana"]} placeholder="Fruit" />
+				</DialogContent>
+			</Dialog>,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		expect(screen.getByRole("option", { name: "Apple" })).toBeInTheDocument();
+		fireEvent.keyDown(window, { key: "Escape" });
+		expect(screen.queryByRole("option", { name: "Apple" })).not.toBeInTheDocument();
+		expect(screen.getByRole("dialog", { name: "Pick" })).toBeInTheDocument();
 	});
 
 	it("does not close on composing Escape", () => {

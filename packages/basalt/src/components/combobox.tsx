@@ -48,6 +48,7 @@ export function Combobox({
 				setUncontrolled(defaultValue);
 				setQuery(defaultValue);
 				setOpen(false);
+				setActive(0);
 			});
 		};
 		form.addEventListener("reset", onReset);
@@ -87,11 +88,17 @@ export function Combobox({
 			}
 			event.preventDefault();
 			event.stopPropagation();
+			event.stopImmediatePropagation();
 			setOpen(false);
 			setQuery(selected);
+			setActive(0);
 		};
+		window.addEventListener("keydown", onKey, true);
 		document.addEventListener("keydown", onKey, true);
-		return () => document.removeEventListener("keydown", onKey, true);
+		return () => {
+			window.removeEventListener("keydown", onKey, true);
+			document.removeEventListener("keydown", onKey, true);
+		};
 	}, [open, selected]);
 
 	return (
@@ -101,6 +108,7 @@ export function Combobox({
 				if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
 					setOpen(false);
 					setQuery(selected);
+					setActive(0);
 				}
 			}}
 		>
@@ -130,6 +138,7 @@ export function Combobox({
 						event.stopPropagation();
 						setOpen(false);
 						setQuery(selected);
+						setActive(0);
 						return;
 					}
 					if (event.key === "ArrowDown") {
