@@ -260,12 +260,96 @@ describe("DatePicker", () => {
 		});
 	});
 
+	it("ignores values that are not iso dates", () => {
+		render(<DatePicker value="not-a-date" aria-label="Date" />);
+		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("Pick a date");
+	});
+
+	it("commits a controlled day with Enter", () => {
+		const onChange = vi.fn();
+		render(<DatePicker value="2024-01-15" onChange={onChange} aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		const grid = screen.getByRole("button", { name: "2024-01-15" }).parentElement;
+		fireEvent.keyDown(grid as HTMLElement, { key: "Enter" });
+		expect(onChange).toHaveBeenCalledWith("2024-01-15");
+	});
+
+	it("commits the focused day with Enter", () => {
+		const onChange = vi.fn();
+		render(<DatePicker defaultValue="2024-01-15" onChange={onChange} aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		const grid = screen.getByRole("button", { name: "2024-01-15" }).parentElement;
+		fireEvent.keyDown(grid as HTMLElement, { key: "Enter" });
+		expect(onChange).toHaveBeenCalledWith("2024-01-15");
+	});
+
+	it("commits the focused day with Space", () => {
+		const onChange = vi.fn();
+		render(<DatePicker defaultValue="2024-01-15" onChange={onChange} aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		const grid = screen.getByRole("button", { name: "2024-01-15" }).parentElement;
+		fireEvent.keyDown(grid as HTMLElement, { key: " " });
+		expect(onChange).toHaveBeenCalledWith("2024-01-15");
+	});
+
+	it("renders without an accessible name", () => {
+		render(<DatePicker defaultValue="2024-01-15" />);
+		fireEvent.click(screen.getByRole("button"));
+		expect(screen.getByRole("dialog", { name: "Date calendar" })).toBeInTheDocument();
+	});
+
+	it("moves calendar focus left with arrow keys", () => {
+		render(<DatePicker defaultValue="2024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		fireEvent.keyDown(screen.getByRole("button", { name: "2024-01-15" }), { key: "ArrowLeft" });
+		expect(screen.getByRole("button", { name: "2024-01-14" })).toHaveAttribute("tabindex", "0");
+	});
+
+	it("moves calendar focus down with arrow keys", () => {
+		render(<DatePicker defaultValue="2024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		fireEvent.keyDown(screen.getByRole("button", { name: "2024-01-15" }), { key: "ArrowDown" });
+		expect(screen.getByRole("button", { name: "2024-01-22" })).toHaveAttribute("tabindex", "0");
+	});
+
+	it("moves calendar focus up with arrow keys", () => {
+		render(<DatePicker defaultValue="2024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		fireEvent.keyDown(screen.getByRole("button", { name: "2024-01-15" }), { key: "ArrowUp" });
+		expect(screen.getByRole("button", { name: "2024-01-08" })).toHaveAttribute("tabindex", "0");
+	});
+
+	it("keeps the selected day focused when the week start changes", async () => {
+		const { rerender } = render(
+			<DatePicker defaultValue="2024-01-15" weekStartsOn={0} aria-label="Date" />,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "2024-01-15" })).toHaveFocus();
+		});
+		rerender(<DatePicker defaultValue="2024-01-15" weekStartsOn={1} aria-label="Date" />);
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "2024-01-15" })).toHaveFocus();
+		});
+	});
+
+	it("disables previous month at year one", () => {
+		render(<DatePicker defaultValue="0001-01-01" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		const prev = screen.getByRole("button", { name: "Prev" });
+		expect(prev).toBeDisabled();
+		fireEvent.click(prev);
+		expect(screen.getByText("January 1")).toBeInTheDocument();
+	});
+
 	it("stops calendar generation at the maximum valid date", () => {
 		render(<DatePicker defaultValue="275760-09-13" aria-label="Date" />);
 		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
 		expect(screen.getByRole("button", { name: "275760-09-13" })).toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: "275760-09-14" })).not.toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Next" })).toBeDisabled();
+		fireEvent.click(screen.getByRole("button", { name: "Next" }));
+		expect(screen.getByRole("button", { name: "275760-09-13" })).toBeInTheDocument();
 		fireEvent.keyDown(screen.getByRole("button", { name: "275760-09-13" }), { key: "ArrowRight" });
 		expect(screen.getByRole("button", { name: "275760-09-13" })).toHaveAttribute("tabindex", "0");
 	});

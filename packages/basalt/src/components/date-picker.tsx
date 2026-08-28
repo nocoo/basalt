@@ -416,7 +416,7 @@ export function DatePicker({
 						return (
 							<button
 								type="button"
-								key={`${iso}-${index}`}
+								key={iso}
 								ref={(node) => {
 									dayRefs.current[index] = node;
 								}}
