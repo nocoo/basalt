@@ -43,6 +43,19 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("Pick a date");
 	});
 
+	it("ignores calendar commits when disabled", () => {
+		const onChange = vi.fn();
+		const { rerender } = render(
+			<DatePicker defaultValue="2024-01-15" onChange={onChange} aria-label="Date" />,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		rerender(
+			<DatePicker defaultValue="2024-01-15" disabled onChange={onChange} aria-label="Date" />,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-16" }));
+		expect(onChange).not.toHaveBeenCalled();
+	});
+
 	it("commits a day from the calendar", () => {
 		const onChange = vi.fn();
 		render(

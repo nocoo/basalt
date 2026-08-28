@@ -125,6 +125,9 @@ export function DatePicker({
 		: "Pick a date";
 
 	function commit(next: string) {
+		if (disabled) {
+			return;
+		}
 		if (value === undefined) {
 			setUncontrolled(next);
 		}
@@ -168,6 +171,7 @@ export function DatePicker({
 					<button
 						type="button"
 						className={CALENDAR_BUTTON}
+						disabled={disabled}
 						onClick={() =>
 							setMonth(
 								month.m === 1
@@ -182,6 +186,7 @@ export function DatePicker({
 					<button
 						type="button"
 						className={CALENDAR_BUTTON}
+						disabled={disabled}
 						onClick={() =>
 							setMonth(
 								month.m === 12
@@ -206,6 +211,7 @@ export function DatePicker({
 								key={iso}
 								aria-label={iso}
 								aria-pressed={iso === selected}
+								disabled={disabled}
 								className={cn(
 									CALENDAR_BUTTON,
 									"h-7 rounded-basalt-sm text-xs",

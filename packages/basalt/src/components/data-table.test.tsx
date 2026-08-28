@@ -22,6 +22,23 @@ describe("DataTable", () => {
 		expect(screen.getByText("Zed")).toBeInTheDocument();
 	});
 
+	it("sorts numbers numerically without sortValue", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Ten", count: 10 },
+					{ name: "Two", count: 2 },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getAllByRole("cell")[1].textContent).toBe("2");
+	});
+
 	it("sorts by a column header", () => {
 		render(<DataTable data={rows} columns={columns} />);
 		fireEvent.click(screen.getByRole("button", { name: /Name/ }));

@@ -22,6 +22,7 @@ export function Combobox({
 	const [uncontrolled, setUncontrolled] = useState(defaultValue);
 	const [query, setQuery] = useState(value ?? defaultValue);
 	const [open, setOpen] = useState(false);
+	const [active, setActive] = useState(0);
 	const selected = value ?? uncontrolled;
 
 	useEffect(() => {
@@ -30,6 +31,7 @@ export function Combobox({
 		}
 	}, [value]);
 	const filtered = items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
+	const activeItem = filtered[Math.min(active, Math.max(0, filtered.length - 1))];
 
 	function commit(next: string) {
 		if (value === undefined) {
@@ -58,12 +60,32 @@ export function Combobox({
 				onChange={(event) => {
 					setQuery(event.target.value);
 					setOpen(true);
+					setActive(0);
 				}}
 				onFocus={() => setOpen(true)}
 				onKeyDown={(event) => {
 					if (event.key === "Escape") {
 						setOpen(false);
 						setQuery(selected);
+						return;
+					}
+					if (event.key === "ArrowDown") {
+						event.preventDefault();
+						setOpen(true);
+						setActive((current) => (filtered.length === 0 ? 0 : (current + 1) % filtered.length));
+						return;
+					}
+					if (event.key === "ArrowUp") {
+						event.preventDefault();
+						setOpen(true);
+						setActive((current) =>
+							filtered.length === 0 ? 0 : (current - 1 + filtered.length) % filtered.length,
+						);
+						return;
+					}
+					if (event.key === "Enter" && open && activeItem) {
+						event.preventDefault();
+						commit(activeItem);
 					}
 				}}
 				placeholder={placeholder}
@@ -77,7 +99,10 @@ export function Combobox({
 						<li key={item}>
 							<button
 								type="button"
-								className="w-full rounded-basalt-sm px-2 py-1.5 text-left text-sm hover:bg-basalt-accent"
+								className={cn(
+									"w-full rounded-basalt-sm px-2 py-1.5 text-left text-sm hover:bg-basalt-accent",
+									item === activeItem && "bg-basalt-accent",
+								)}
 								onClick={() => commit(item)}
 							>
 								{item}

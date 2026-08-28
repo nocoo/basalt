@@ -45,9 +45,16 @@ export function DataTable<T>({
 			return filtered;
 		}
 		return [...filtered].sort((a, b) => {
-			const left = column.sortValue?.(a) ?? String(column.accessor(a));
-			const right = column.sortValue?.(b) ?? String(column.accessor(b));
-			const cmp = left < right ? -1 : left > right ? 1 : 0;
+			const left = column.sortValue?.(a) ?? column.accessor(a);
+			const right = column.sortValue?.(b) ?? column.accessor(b);
+			const cmp =
+				typeof left === "number" && typeof right === "number"
+					? left - right
+					: String(left) < String(right)
+						? -1
+						: String(left) > String(right)
+							? 1
+							: 0;
 			return sort.dir === "asc" ? cmp : -cmp;
 		});
 	}, [columns, data, query, sort]);
@@ -93,7 +100,7 @@ export function DataTable<T>({
 					if (!id && row && typeof row === "object") {
 						id = rowIds.current.get(row as object);
 						if (!id) {
-							id = `row-${rowSeq.current++}`;
+							id = `basalt-row-${rowSeq.current++}`;
 							rowIds.current.set(row as object, id);
 						}
 					}

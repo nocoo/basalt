@@ -42,6 +42,17 @@ describe("Combobox", () => {
 		expect(input).toHaveValue("Apple");
 	});
 
+	it("commits the highlighted option with Enter", () => {
+		const onValueChange = vi.fn();
+		render(
+			<Combobox items={["Apple", "Banana"]} placeholder="Fruit" onValueChange={onValueChange} />,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.change(input, { target: { value: "Ba" } });
+		fireEvent.keyDown(input, { key: "Enter" });
+		expect(onValueChange).toHaveBeenCalledWith("Banana");
+	});
+
 	it("hides the list when nothing matches", () => {
 		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
 		const input = screen.getByLabelText("Fruit");
