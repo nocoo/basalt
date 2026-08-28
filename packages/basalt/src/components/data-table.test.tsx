@@ -502,6 +502,112 @@ describe("DataTable", () => {
 		expect(screen.getByRole("button", { name: "Next-1" })).toBeInTheDocument();
 	});
 
+	it("reuses a duplicate key when the colliding row is replaced", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const left = { id: "same", name: "Left", count: 1 };
+		const right = { id: "same", name: "Right", count: 2 };
+		const next = { id: "same", name: "Next", count: 3 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+			{ id: "count", header: "Count", accessor: (row: { count: number }) => row.count },
+		];
+		const { rerender } = render(<DataTable data={[left, right]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "Right-0" }));
+		rerender(<DataTable data={[left, next]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Left-0" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Next-1" })).toBeInTheDocument();
+	});
+
+	it("keeps repeated row state when another row is prepended", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const row = { name: "Zed", count: 1 };
+		const extra = { name: "Amy", count: 2 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+		];
+		const { rerender } = render(<DataTable data={[row, row]} columns={identityColumns} />);
+		const copies = screen.getAllByRole("button", { name: "Zed-0" });
+		fireEvent.click(copies[1]);
+		rerender(<DataTable data={[extra, row, row]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Amy-0" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Zed-0" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Zed-1" })).toBeInTheDocument();
+	});
+
+	it("keeps distinct symbol row state across reorders", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const left = Symbol("row");
+		const right = Symbol("row");
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: symbol) => <NameCell name={row === left ? "Left" : "Right"} />,
+			},
+		];
+		const { rerender } = render(<DataTable data={[left, right]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "Left-0" }));
+		fireEvent.click(screen.getByRole("button", { name: "Right-0" }));
+		rerender(<DataTable data={[right, left]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Left-1" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Right-1" })).toBeInTheDocument();
+	});
+
+	it("honors empty getRowId values", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const first = { name: "A", count: 1 };
+		const second = { name: "B", count: 2 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+		];
+		const { rerender } = render(
+			<DataTable data={[first]} columns={identityColumns} getRowId={() => ""} />,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "A-0" }));
+		rerender(<DataTable data={[second]} columns={identityColumns} getRowId={() => ""} />);
+		expect(screen.getByRole("button", { name: "B-1" })).toBeInTheDocument();
+	});
+
 	it("does not let a returning row steal a live canonical key", () => {
 		function NameCell({ name }: { name: string }) {
 			const [count, setCount] = useState(0);

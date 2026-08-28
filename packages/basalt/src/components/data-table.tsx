@@ -78,18 +78,25 @@ function compareUnknown(left: unknown, right: unknown): number {
 	return leftStr < rightStr ? -1 : leftStr > rightStr ? 1 : 0;
 }
 
-function primitiveKey(row: unknown, index: number): string {
+function primitiveKey(
+	row: unknown,
+	index: number,
+	symbols: Map<symbol, string>,
+	seq: { current: number },
+): string {
 	if (row === null) {
 		return "prim:null";
 	}
+	if (typeof row === "symbol") {
+		let key = symbols.get(row);
+		if (!key) {
+			key = `prim:symbol:${seq.current++}`;
+			symbols.set(row, key);
+		}
+		return key;
+	}
 	const type = typeof row;
-	if (
-		type === "string" ||
-		type === "number" ||
-		type === "bigint" ||
-		type === "boolean" ||
-		type === "symbol"
-	) {
+	if (type === "string" || type === "number" || type === "bigint" || type === "boolean") {
 		return `prim:${type}:${String(row)}`;
 	}
 	return `prim:${index}`;
@@ -137,9 +144,11 @@ export function DataTable<T>({
 	const [sort, setSort] = useState<{ id: string; dir: "asc" | "desc" } | null>(null);
 	const rowIds = useRef(new WeakMap<object, string>());
 	const rowSeq = useRef(0);
-	const assignedKeys = useRef(new WeakMap<object, string>());
+	const assignedKeys = useRef(new WeakMap<object, string[]>());
 	const lastCanonical = useRef(new Map<string, object>());
 	const lastKeyByCanonical = useRef(new Map<string, string>());
+	const lastDupsByCanonical = useRef(new Map<string, string[]>());
+	const symbolKeys = useRef(new Map<symbol, string>());
 	const query = filter.trim().toLowerCase();
 
 	const rows = useMemo(() => {
@@ -153,7 +162,7 @@ export function DataTable<T>({
 		};
 		const canonicalOf = (row: T, index: number) => {
 			const requested = getRowId?.(row, index);
-			if (requested) {
+			if (requested !== undefined) {
 				return `get:${requested}`;
 			}
 			if (row && typeof row === "object" && "id" in row) {
@@ -164,9 +173,12 @@ export function DataTable<T>({
 			}
 		};
 		const present = new Set<object>();
+		const presentSymbols = new Set<symbol>();
 		for (const row of data) {
 			if (row && typeof row === "object") {
 				present.add(row as object);
+			} else if (typeof row === "symbol") {
+				presentSymbols.add(row);
 			}
 		}
 		for (const [canonical, owner] of lastCanonical.current) {
@@ -174,51 +186,72 @@ export function DataTable<T>({
 				lastCanonical.current.delete(canonical);
 			}
 		}
-		const seen = new WeakSet<object>();
+		for (const symbol of symbolKeys.current.keys()) {
+			if (!presentSymbols.has(symbol)) {
+				symbolKeys.current.delete(symbol);
+			}
+		}
 		const used = new Set<string>();
 		const nextLastKey = new Map<string, string>();
-		const rememberKey = (
-			row: T,
-			index: number,
-			key: string,
-			objectRow: object | null,
-			repeat: boolean,
-		) => {
-			if (!objectRow || repeat) {
+		const nextDups = new Map<string, string[]>();
+		const nextAssigned = new WeakMap<object, string[]>();
+		const rememberKey = (row: T, index: number, key: string, objectRow: object | null) => {
+			if (!objectRow) {
 				return;
 			}
+			const list = nextAssigned.get(objectRow) ?? [];
+			list.push(key);
+			nextAssigned.set(objectRow, list);
+			assignedKeys.current.set(objectRow, list);
+			if (isCanonicalKey(key)) {
+				lastCanonical.current.set(key, objectRow);
+			}
 			const canonical = canonicalOf(row, index);
-			if (canonical) {
-				nextLastKey.set(canonical, key);
+			if (!canonical) {
+				return;
+			}
+			nextLastKey.set(canonical, key);
+			if (isInstanceKey(key)) {
+				const dups = nextDups.get(canonical) ?? [];
+				dups.push(key);
+				nextDups.set(canonical, dups);
 			}
 		};
-		const pending = data.map((row, index) => ({
-			row,
-			index,
-			key: undefined as string | undefined,
-		}));
+		const counts = new WeakMap<object, number>();
+		const pending = data.map((row, index) => {
+			const objectRow = row && typeof row === "object" ? (row as object) : null;
+			const occurrence = objectRow ? (counts.get(objectRow) ?? 0) : 0;
+			if (objectRow) {
+				counts.set(objectRow, occurrence + 1);
+			}
+			return {
+				row,
+				index,
+				occurrence,
+				key: undefined as string | undefined,
+			};
+		});
 		for (const item of pending) {
 			const objectRow = item.row && typeof item.row === "object" ? (item.row as object) : null;
-			if (!objectRow || seen.has(objectRow)) {
+			if (!objectRow) {
 				continue;
 			}
-			const previous = assignedKeys.current.get(objectRow);
+			const previous = assignedKeys.current.get(objectRow)?.[item.occurrence];
 			if (!previous || used.has(previous)) {
 				continue;
 			}
 			if (isInstanceKey(previous) || lastCanonical.current.get(previous) === objectRow) {
 				item.key = previous;
 				used.add(previous);
-				seen.add(objectRow);
 			}
 		}
-		const keyed = pending.map(({ row, index, key: reserved }) => {
+		const keyed = pending.map(({ row, index, occurrence, key: reserved }) => {
 			const objectRow = row && typeof row === "object" ? (row as object) : null;
 			if (reserved) {
-				rememberKey(row, index, reserved, objectRow, false);
+				rememberKey(row, index, reserved, objectRow);
 				return { row, key: reserved };
 			}
-			const isRepeat = Boolean(objectRow && seen.has(objectRow));
+			const isRepeat = occurrence > 0;
 			let key: string | undefined;
 			const requested = canonicalOf(row, index);
 			if (requested) {
@@ -227,32 +260,29 @@ export function DataTable<T>({
 			if (objectRow) {
 				const stored = identityOf(objectRow);
 				if (!key) {
-					key = isRepeat ? `gen:${stored}-${index}` : `gen:${stored}`;
+					key = isRepeat ? `gen:${stored}#${occurrence}` : `gen:${stored}`;
 				} else if (used.has(key) || isRepeat) {
-					key = isRepeat ? `dup:${stored}-${index}` : `dup:${stored}`;
+					const reused = (lastDupsByCanonical.current.get(key) ?? []).find(
+						(candidate) => !used.has(candidate),
+					);
+					key = reused ?? (isRepeat ? `dup:${stored}#${occurrence}` : `dup:${stored}`);
 				} else {
 					const inherited = lastKeyByCanonical.current.get(key);
 					if (inherited && !used.has(inherited) && isInstanceKey(inherited)) {
 						key = inherited;
 					}
 				}
-				seen.add(objectRow);
 			}
-			key = key ?? primitiveKey(row, index);
+			key = key ?? primitiveKey(row, index, symbolKeys.current, rowSeq);
 			while (used.has(key)) {
 				key = `${key}-${index}`;
 			}
 			used.add(key);
-			if (objectRow && !isRepeat) {
-				assignedKeys.current.set(objectRow, key);
-				if (isCanonicalKey(key)) {
-					lastCanonical.current.set(key, objectRow);
-				}
-			}
-			rememberKey(row, index, key, objectRow, isRepeat);
+			rememberKey(row, index, key, objectRow);
 			return { row, key };
 		});
 		lastKeyByCanonical.current = nextLastKey;
+		lastDupsByCanonical.current = nextDups;
 		const filtered = query
 			? keyed.filter(({ row }) =>
 					columns.some((column) => filterSource(column, row).toLowerCase().includes(query)),
