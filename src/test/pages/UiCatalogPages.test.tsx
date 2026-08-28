@@ -134,6 +134,26 @@ describe("ui catalog", () => {
 		]);
 	});
 
+	it("documents button examples like kumo", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/button");
+		for (const title of [
+			"Variants",
+			"Sizes",
+			"With Icon",
+			"Icon Only",
+			"Loading State",
+			"Disabled State",
+			"Title",
+			"Link as Button",
+			"Link with Tooltip",
+			"Disabled Link",
+		]) {
+			expect(screen.getByRole("heading", { name: title })).toBeInTheDocument();
+		}
+	});
+
 	it("shows a barrel install for stable controls", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });

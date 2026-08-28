@@ -134,36 +134,91 @@ export const UI_DEMOS: Record<string, ComponentType> = { ...BASE_DEMOS, ...EXTRA
 
 const BASE_EXAMPLES: Record<string, { title: string; code: string; render: ComponentType }[]> = {
 	button: [
-		{ title: "Default", code: "<Button>Save</Button>", render: () => <Button>Save</Button> },
 		{
-			title: "Secondary",
-			code: '<Button variant="secondary">Cancel</Button>',
-			render: () => <Button variant="secondary">Cancel</Button>,
+			title: "Variants",
+			code: '<Button>Default</Button>\n<Button variant="secondary">Secondary</Button>\n<Button variant="destructive">Destructive</Button>\n<Button variant="outline">Outline</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="link">Link</Button>',
+			render: () => (
+				<Preview>
+					<Button>Default</Button>
+					<Button variant="secondary">Secondary</Button>
+					<Button variant="destructive">Destructive</Button>
+					<Button variant="outline">Outline</Button>
+					<Button variant="ghost">Ghost</Button>
+					<Button variant="link">Link</Button>
+				</Preview>
+			),
 		},
 		{
-			title: "Loading",
+			title: "Sizes",
+			code: '<Button size="sm">Small</Button>\n<Button>Default</Button>\n<Button size="lg">Large</Button>',
+			render: () => (
+				<Preview>
+					<Button size="sm">Small</Button>
+					<Button>Default</Button>
+					<Button size="lg">Large</Button>
+				</Preview>
+			),
+		},
+		{
+			title: "With Icon",
+			code: '<Button icon="+">Add</Button>',
+			render: () => <Button icon="+">Add</Button>,
+		},
+		{
+			title: "Icon Only",
+			code: '<Button size="icon" aria-label="Add">+</Button>',
+			render: () => (
+				<Button size="icon" aria-label="Add">
+					+
+				</Button>
+			),
+		},
+		{
+			title: "Loading State",
 			code: "<Button loading>Saving</Button>",
 			render: () => <Button loading>Saving</Button>,
 		},
 		{
-			title: "Destructive",
-			code: '<Button variant="destructive">Delete</Button>',
-			render: () => <Button variant="destructive">Delete</Button>,
+			title: "Disabled State",
+			code: "<Button disabled>Disabled</Button>",
+			render: () => <Button disabled>Disabled</Button>,
 		},
 		{
-			title: "Outline",
-			code: '<Button variant="outline">Outline</Button>',
-			render: () => <Button variant="outline">Outline</Button>,
+			title: "Title",
+			code: '<Button title="Creates a new worker">Hover title</Button>',
+			render: () => <Button title="Creates a new worker">Hover title</Button>,
 		},
 		{
-			title: "Ghost",
-			code: '<Button variant="ghost">Ghost</Button>',
-			render: () => <Button variant="ghost">Ghost</Button>,
+			title: "Link as Button",
+			code: '<Button asChild><a href="#docs">Open docs</a></Button>',
+			render: () => (
+				<Button asChild>
+					<a href="#docs">Open docs</a>
+				</Button>
+			),
 		},
 		{
-			title: "Link",
-			code: '<Button variant="link">Link</Button>',
-			render: () => <Button variant="link">Link</Button>,
+			title: "Link with Tooltip",
+			code: "<Tooltip><TooltipTrigger asChild><LinkButton href='#docs'>Docs</LinkButton></TooltipTrigger><TooltipContent>Open documentation</TooltipContent></Tooltip>",
+			render: () => (
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<LinkButton href="#docs">Docs</LinkButton>
+						</TooltipTrigger>
+						<TooltipContent>Open documentation</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			),
+		},
+		{
+			title: "Disabled Link",
+			code: '<LinkButton href="#docs" aria-disabled="true">Disabled link</LinkButton>',
+			render: () => (
+				<LinkButton href="#docs" aria-disabled="true" className="pointer-events-none opacity-50">
+					Disabled link
+				</LinkButton>
+			),
 		},
 	],
 	"link-button": [
