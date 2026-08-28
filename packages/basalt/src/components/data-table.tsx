@@ -294,8 +294,14 @@ export function DataTable<T>({
 				}
 			}
 			key = key ?? primitiveKey(row, index, symbolKeys.current, rowSeq);
-			while (used.has(key)) {
-				key = `${key}-${index}`;
+			if (used.has(key)) {
+				let n = 0;
+				let candidate = `occ:${key}#${n}`;
+				while (used.has(candidate)) {
+					n += 1;
+					candidate = `occ:${key}#${n}`;
+				}
+				key = candidate;
 			}
 			used.add(key);
 			rememberKey(row, index, key, objectRow);

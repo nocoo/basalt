@@ -807,6 +807,32 @@ describe("DataTable", () => {
 		expect(screen.getByText("Amy")).toBeInTheDocument();
 	});
 
+	it("keeps colliding primitive keys from stealing sibling identity", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: string) => <NameCell name={row} />,
+			},
+		];
+		const { rerender } = render(<DataTable data={["a", "a", "a-1"]} columns={identityColumns} />);
+		const copies = screen.getAllByRole("button", { name: "a-0" });
+		fireEvent.click(copies[1]);
+		fireEvent.click(screen.getByRole("button", { name: "a-1-0" }));
+		rerender(<DataTable data={["a-1", "a", "a"]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "a-1-1" })).toBeInTheDocument();
+		expect(screen.getAllByRole("button", { name: "a-0" })).toHaveLength(1);
+		expect(screen.getByRole("button", { name: "a-1" })).toBeInTheDocument();
+	});
+
 	it("keeps primitive row state across reorders", () => {
 		function NameCell({ name }: { name: string }) {
 			const [count, setCount] = useState(0);
