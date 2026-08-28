@@ -125,6 +125,7 @@ export function DataTable<T>({
 
 	const rows = useMemo(() => {
 		const seen = new WeakSet<object>();
+		const used = new Set<string>();
 		const keyed = data.map((row, index) => {
 			let key = getRowId?.(row, index);
 			if (!key && row && typeof row === "object" && "id" in row) {
@@ -146,7 +147,12 @@ export function DataTable<T>({
 					key = stored;
 				}
 			}
-			return { row, key: key ?? `basalt-primitive-${index}` };
+			key = key ?? `basalt-primitive-${index}`;
+			while (used.has(key)) {
+				key = `${key}-${index}`;
+			}
+			used.add(key);
+			return { row, key };
 		});
 		const filtered = query
 			? keyed.filter(({ row }) =>

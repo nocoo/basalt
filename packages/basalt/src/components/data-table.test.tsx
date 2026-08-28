@@ -121,6 +121,23 @@ describe("DataTable", () => {
 		expect(screen.queryByText("Idle")).not.toBeInTheDocument();
 	});
 
+	it("namespaces colliding explicit and generated row ids", () => {
+		render(
+			<DataTable
+				data={[
+					{ id: "basalt-row-0", name: "Named", count: 1 },
+					{ name: "Generated", count: 2 },
+				]}
+				columns={columns}
+			/>,
+		);
+		expect(screen.getByText("Named")).toBeInTheDocument();
+		expect(screen.getByText("Generated")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: /Name/ }));
+		expect(screen.getByText("Named")).toBeInTheDocument();
+		expect(screen.getByText("Generated")).toBeInTheDocument();
+	});
+
 	it("keeps duplicate row object occurrences distinct", () => {
 		const row = { name: "Zed", count: 2 };
 		render(<DataTable data={[row, row]} columns={columns} />);
