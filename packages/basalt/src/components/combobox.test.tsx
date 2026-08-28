@@ -21,7 +21,7 @@ describe("Combobox", () => {
 		const input = screen.getByLabelText("Search fruits");
 		fireEvent.focus(input);
 		fireEvent.change(input, { target: { value: "Ba" } });
-		fireEvent.click(screen.getByRole("button", { name: "Banana" }));
+		fireEvent.click(screen.getByRole("option", { name: "Banana" }));
 		expect(onValueChange).toHaveBeenCalledWith("Banana");
 		expect(screen.queryByRole("button", { name: "Banana" })).not.toBeInTheDocument();
 		expect(document.querySelector('input[name="fruit"]')).toHaveValue("Banana");
@@ -38,7 +38,7 @@ describe("Combobox", () => {
 		render(<Combobox items={["Apple", "Banana"]} value="Apple" placeholder="Fruit" />);
 		const input = screen.getByLabelText("Fruit");
 		fireEvent.change(input, { target: { value: "Ba" } });
-		fireEvent.click(screen.getByRole("button", { name: "Banana" }));
+		fireEvent.click(screen.getByRole("option", { name: "Banana" }));
 		expect(input).toHaveValue("Apple");
 	});
 

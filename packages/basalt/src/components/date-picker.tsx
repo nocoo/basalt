@@ -91,6 +91,7 @@ export function DatePicker({
 	"aria-label"?: string;
 }) {
 	const [uncontrolled, setUncontrolled] = useState(defaultValue);
+	const [open, setOpen] = useState(false);
 	const selected = value ?? uncontrolled;
 	const selectedDate = selected ? parseIso(selected) : null;
 	const cursor = selectedDate ?? todayCivil(timeZone);
@@ -131,11 +132,12 @@ export function DatePicker({
 		if (value === undefined) {
 			setUncontrolled(next);
 		}
+		setOpen(false);
 		onChange?.(next);
 	}
 
 	return (
-		<Popover>
+		<Popover open={open} onOpenChange={(next) => !disabled && setOpen(next)}>
 			{name ? <input type="hidden" name={name} value={selected} disabled={disabled} /> : null}
 			<input
 				type="date"

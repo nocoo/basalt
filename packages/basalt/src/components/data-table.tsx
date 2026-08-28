@@ -28,15 +28,28 @@ export function DataTable<T>({
 	const query = filter.trim().toLowerCase();
 
 	const rows = useMemo(() => {
+		const keyed = data.map((row, index) => {
+			let key = getRowId?.(row, index);
+			if (!key && row && typeof row === "object" && "id" in row) {
+				const raw = (row as { id: unknown }).id;
+				if (raw != null) {
+					key = String(raw);
+				}
+			}
+			if (!key && row && typeof row === "object") {
+				key = rowIds.current.get(row as object);
+				if (!key) {
+					key = `basalt-row-${rowSeq.current++}`;
+					rowIds.current.set(row as object, key);
+				}
+			}
+			return { row, key: key ?? `basalt-primitive-${index}` };
+		});
 		const filtered = query
-			? data.filter((row) =>
-					columns.some((column) =>
-						String(column.sortValue?.(row) ?? column.accessor(row))
-							.toLowerCase()
-							.includes(query),
-					),
+			? keyed.filter(({ row }) =>
+					columns.some((column) => String(column.accessor(row)).toLowerCase().includes(query)),
 				)
-			: data;
+			: keyed;
 		if (!sort) {
 			return filtered;
 		}
@@ -45,8 +58,8 @@ export function DataTable<T>({
 			return filtered;
 		}
 		return [...filtered].sort((a, b) => {
-			const left = column.sortValue?.(a) ?? column.accessor(a);
-			const right = column.sortValue?.(b) ?? column.accessor(b);
+			const left = column.sortValue?.(a.row) ?? column.accessor(a.row);
+			const right = column.sortValue?.(b.row) ?? column.accessor(b.row);
 			const cmp =
 				typeof left === "number" && typeof right === "number"
 					? left - right
@@ -57,7 +70,7 @@ export function DataTable<T>({
 							: 0;
 			return sort.dir === "asc" ? cmp : -cmp;
 		});
-	}, [columns, data, query, sort]);
+	}, [columns, data, getRowId, query, sort]);
 
 	return (
 		<Table className={cn("w-full", className)}>
@@ -89,29 +102,13 @@ export function DataTable<T>({
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{rows.map((row, index) => {
-					let id = getRowId?.(row, index);
-					if (!id && row && typeof row === "object" && "id" in row) {
-						const raw = (row as { id: unknown }).id;
-						if (raw != null) {
-							id = String(raw);
-						}
-					}
-					if (!id && row && typeof row === "object") {
-						id = rowIds.current.get(row as object);
-						if (!id) {
-							id = `basalt-row-${rowSeq.current++}`;
-							rowIds.current.set(row as object, id);
-						}
-					}
-					return (
-						<TableRow key={id ?? String(index)}>
-							{columns.map((column) => (
-								<TableCell key={column.id}>{column.accessor(row)}</TableCell>
-							))}
-						</TableRow>
-					);
-				})}
+				{rows.map(({ row, key }) => (
+					<TableRow key={key}>
+						{columns.map((column) => (
+							<TableCell key={column.id}>{column.accessor(row)}</TableCell>
+						))}
+					</TableRow>
+				))}
 			</TableBody>
 		</Table>
 	);

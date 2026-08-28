@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { cn } from "../utils/cn";
 import { Input } from "./input";
 
@@ -23,6 +23,7 @@ export function Combobox({
 	const [query, setQuery] = useState(value ?? defaultValue);
 	const [open, setOpen] = useState(false);
 	const [active, setActive] = useState(0);
+	const listId = useId();
 	const selected = value ?? uncontrolled;
 
 	useEffect(() => {
@@ -89,27 +90,36 @@ export function Combobox({
 					}
 				}}
 				placeholder={placeholder}
+				role="combobox"
 				aria-label={placeholder}
 				aria-expanded={open}
 				aria-autocomplete="list"
+				aria-controls={listId}
+				aria-activedescendant={open && activeItem ? `${listId}-${activeItem}` : undefined}
 			/>
 			{open && filtered.length > 0 ? (
-				<ul className="absolute z-20 mt-1 w-full rounded-basalt-md border border-basalt-border bg-basalt-popover p-1">
+				<div
+					id={listId}
+					role="listbox"
+					className="absolute z-20 mt-1 w-full rounded-basalt-md border border-basalt-border bg-basalt-popover p-1"
+				>
 					{filtered.map((item) => (
-						<li key={item}>
-							<button
-								type="button"
-								className={cn(
-									"w-full rounded-basalt-sm px-2 py-1.5 text-left text-sm hover:bg-basalt-accent",
-									item === activeItem && "bg-basalt-accent",
-								)}
-								onClick={() => commit(item)}
-							>
-								{item}
-							</button>
-						</li>
+						<button
+							type="button"
+							key={item}
+							id={`${listId}-${item}`}
+							role="option"
+							aria-selected={item === activeItem}
+							className={cn(
+								"w-full rounded-basalt-sm px-2 py-1.5 text-left text-sm hover:bg-basalt-accent",
+								item === activeItem && "bg-basalt-accent",
+							)}
+							onClick={() => commit(item)}
+						>
+							{item}
+						</button>
 					))}
-				</ul>
+				</div>
 			) : null}
 		</div>
 	);

@@ -66,5 +66,6 @@ describe("DatePicker", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Prev" }));
 		fireEvent.click(screen.getByRole("button", { name: "2024-01-15" }));
 		expect(onChange).toHaveBeenCalled();
+		expect(screen.queryByRole("button", { name: "2024-01-16" })).not.toBeInTheDocument();
 	});
 });
