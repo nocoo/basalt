@@ -112,6 +112,7 @@ export function DataTable<T>({
 	const [sort, setSort] = useState<{ id: string; dir: "asc" | "desc" } | null>(null);
 	const rowIds = useRef(new WeakMap<object, string>());
 	const rowSeq = useRef(0);
+	const idOwners = useRef(new Map<string, object>());
 	const query = filter.trim().toLowerCase();
 
 	const rows = useMemo(() => {
@@ -123,6 +124,17 @@ export function DataTable<T>({
 			}
 			return stored;
 		};
+		const present = new Set<object>();
+		for (const row of data) {
+			if (row && typeof row === "object") {
+				present.add(row as object);
+			}
+		}
+		for (const [preferred, owner] of idOwners.current) {
+			if (!present.has(owner)) {
+				idOwners.current.delete(preferred);
+			}
+		}
 		const seen = new WeakSet<object>();
 		const used = new Set<string>();
 		const keyed = data.map((row, index) => {
@@ -139,7 +151,17 @@ export function DataTable<T>({
 			if (row && typeof row === "object") {
 				const stored = identityOf(row as object);
 				if (key) {
-					key = `${key}:${stored}`;
+					if (seen.has(row as object)) {
+						key = `${key}:${stored}-${index}`;
+					} else {
+						const owner = idOwners.current.get(key);
+						if (!owner || owner === row) {
+							idOwners.current.set(key, row as object);
+						} else {
+							key = `${key}:${stored}`;
+						}
+						seen.add(row as object);
+					}
 				} else if (seen.has(row as object)) {
 					key = `gen:${stored}-${index}`;
 				} else {

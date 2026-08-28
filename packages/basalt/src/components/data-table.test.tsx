@@ -345,6 +345,31 @@ describe("DataTable", () => {
 		expect(screen.getByRole("button", { name: "Generated-1" })).toBeInTheDocument();
 	});
 
+	it("preserves state when a row is replaced with the same id", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const first = { id: "row", name: "Same", count: 1 };
+		const next = { id: "row", name: "Same", count: 1 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+			{ id: "count", header: "Count", accessor: (row: { count: number }) => row.count },
+		];
+		const { rerender } = render(<DataTable data={[first]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "Same-0" }));
+		rerender(<DataTable data={[next]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Same-1" })).toBeInTheDocument();
+	});
+
 	it("keeps row state when a duplicate id is added", () => {
 		function NameCell({ name }: { name: string }) {
 			const [count, setCount] = useState(0);
@@ -405,6 +430,23 @@ describe("DataTable", () => {
 		expect(screen.getAllByText("Zed")).toHaveLength(2);
 		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
 		expect(screen.getAllByText("Zed")).toHaveLength(2);
+	});
+
+	it("keeps duplicate id object occurrences distinct", () => {
+		const row = { id: "z", name: "Zed", count: 2 };
+		render(<DataTable data={[row, row]} columns={columns} />);
+		expect(screen.getAllByText("Zed")).toHaveLength(2);
+	});
+
+	it("renders primitive rows", () => {
+		render(
+			<DataTable
+				data={["Zed", "Amy"]}
+				columns={[{ id: "name", header: "Name", accessor: (row) => row }]}
+			/>,
+		);
+		expect(screen.getByText("Zed")).toBeInTheDocument();
+		expect(screen.getByText("Amy")).toBeInTheDocument();
 	});
 
 	it("uses stable row ids", () => {
