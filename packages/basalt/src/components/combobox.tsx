@@ -32,6 +32,9 @@ export function Combobox({
 		setPrevValue(value);
 		if (value !== undefined) {
 			setQuery(value);
+		} else if (prevValue !== undefined) {
+			setUncontrolled(prevValue);
+			setQuery(prevValue);
 		}
 	}
 	useEffect(() => {

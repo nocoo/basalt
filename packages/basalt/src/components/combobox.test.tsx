@@ -170,6 +170,21 @@ describe("Combobox", () => {
 		expect(screen.getByLabelText("Fruit")).toHaveValue("Apple");
 	});
 
+	it("keeps the submitted value when becoming uncontrolled", () => {
+		const { rerender } = render(
+			<form>
+				<Combobox items={["Apple"]} value="Apple" name="fruit" placeholder="Fruit" />
+			</form>,
+		);
+		rerender(
+			<form>
+				<Combobox items={["Apple"]} name="fruit" placeholder="Fruit" />
+			</form>,
+		);
+		expect(screen.getByLabelText("Fruit")).toHaveValue("Apple");
+		expect(document.querySelector('input[name="fruit"]')).toHaveValue("Apple");
+	});
+
 	it("ignores keys during IME composition", () => {
 		const onValueChange = vi.fn();
 		render(
