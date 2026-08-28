@@ -5,6 +5,7 @@
 	"type": "module",
 	"license": "MIT",
 	"scripts": {
+		"build": "vite build && tsc -p tsconfig.build.json",
 		"build:css": "bun ../../scripts/build-basalt-standalone.ts"
 	},
 	"sideEffects": [
