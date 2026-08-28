@@ -4,6 +4,9 @@
 	"private": true,
 	"type": "module",
 	"license": "MIT",
+	"scripts": {
+		"build:css": "bun ../../scripts/build-basalt-standalone.ts"
+	},
 	"sideEffects": [
 		"*.css"
 	],

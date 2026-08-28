@@ -20,7 +20,7 @@ Import order is required:
 import "@nocoo/basalt/styles/standalone";
 ```
 
-Standalone has no Preflight and no html/body reset.
+Standalone has no Preflight and no html/body reset. It is compiled tokens + the utilities used by shipped controls + namespaced keyframes. Rebuild with `bun scripts/build-basalt-standalone.ts`.
 
 ## Components
 

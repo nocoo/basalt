@@ -62,6 +62,13 @@
 		}
 	},
 	"files": {
-		"includes": ["**", "!**/node_modules", "!**/dist", "!**/coverage", "!**/.wrangler"]
+		"includes": [
+			"**",
+			"!**/node_modules",
+			"!**/dist",
+			"!**/coverage",
+			"!**/.wrangler",
+			"!**/packages/basalt/src/styles/standalone.css"
+		]
 	}
 }
