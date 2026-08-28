@@ -9,7 +9,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { Github } from "@/components/icons/github";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { CATALOG_BY_SLUG } from "@/pages/ui/catalog";
+import { CATALOG_BY_SLUG, catalogNavName } from "@/pages/ui/catalog";
 
 // Map route paths to i18n keys
 const PAGE_TITLE_KEYS: Record<string, string> = {
@@ -52,7 +52,8 @@ export function DashboardLayout() {
 	const catalogSlug = location.pathname.startsWith("/ui/")
 		? location.pathname.slice("/ui/".length)
 		: undefined;
-	const catalogTitle = catalogSlug ? CATALOG_BY_SLUG.get(catalogSlug)?.name : undefined;
+	const catalogEntry = catalogSlug ? CATALOG_BY_SLUG.get(catalogSlug) : undefined;
+	const catalogTitle = catalogEntry ? catalogNavName(catalogEntry) : undefined;
 	const titleKey = PAGE_TITLE_KEYS[location.pathname] ?? "nav.dashboard";
 	const title = catalogTitle ?? t(titleKey);
 

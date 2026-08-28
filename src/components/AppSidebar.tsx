@@ -669,11 +669,11 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 						{CATALOG.map((entry) => (
 							<CommandItem
 								key={entry.slug}
-								value={`${entry.name} ${entry.slug}`}
+								value={`${catalogNavName(entry)} ${entry.name} ${entry.slug}`}
 								onSelect={() => handleSelect(`/ui/${entry.slug}`)}
 								className="gap-3 cursor-pointer"
 							>
-								<span>{entry.name}</span>
+								<span>{catalogNavName(entry)}</span>
 							</CommandItem>
 						))}
 					</CommandGroup>

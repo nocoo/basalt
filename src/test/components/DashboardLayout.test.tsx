@@ -18,6 +18,7 @@ function renderLayout(initialPath = "/") {
 						<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
 						<Route path="/accounts" element={<div data-testid="accounts-outlet">Accounts</div>} />
 						<Route path="/settings" element={<div data-testid="settings-outlet">Settings</div>} />
+						<Route path="/ui/:slug" element={<div data-testid="catalog-outlet">Catalog</div>} />
 					</Route>
 				</Routes>
 			</MemoryRouter>
@@ -33,6 +34,11 @@ describe("DashboardLayout", () => {
 	afterEach(() => {
 		vi.useRealTimers();
 		document.body.style.overflow = "";
+	});
+
+	it("uses spaced catalog names in the header", () => {
+		renderLayout("/ui/command-palette");
+		expect(screen.getByRole("heading", { name: "Command Palette" })).toBeInTheDocument();
 	});
 
 	it("opens the mobile drawer and locks body scroll when the menu button is clicked", () => {
