@@ -5,7 +5,10 @@ import { Input } from "./input";
 describe("Input", () => {
 	it("renders an enabled text field", () => {
 		render(<Input aria-label="Name" />);
-		expect(screen.getByRole("textbox", { name: "Name" })).toBeEnabled();
+		const input = screen.getByRole("textbox", { name: "Name" });
+		expect(input).toBeEnabled();
+		expect(input.className).toContain("bg-basalt-secondary");
+		expect(input.className).not.toContain("bg-basalt-background");
 	});
 
 	it("can be disabled", () => {
