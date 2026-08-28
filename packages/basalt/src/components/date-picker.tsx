@@ -158,6 +158,9 @@ export function DatePicker({
 		}
 		const next = (selected ? parseIso(selected) : null) ?? todayCivil(timeZone);
 		setMonth({ y: next.y, m: next.m, d: 1 });
+		if (!selected) {
+			focusDay.current = true;
+		}
 	}, [open, selected, timeZone]);
 
 	useEffect(() => {

@@ -319,6 +319,18 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "2024-01-08" })).toHaveAttribute("tabindex", "0");
 	});
 
+	it("refocuses a day after the time zone changes", async () => {
+		const { rerender } = render(<DatePicker aria-label="Date" timeZone="UTC" />);
+		fireEvent.click(screen.getByRole("button", { name: "Date" }));
+		await waitFor(() => {
+			expect(document.activeElement?.getAttribute("aria-label")).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+		});
+		rerender(<DatePicker aria-label="Date" timeZone="Pacific/Kiritimati" />);
+		await waitFor(() => {
+			expect(document.activeElement?.getAttribute("aria-label")).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+		});
+	});
+
 	it("keeps the selected day focused when the week start changes", async () => {
 		const { rerender } = render(
 			<DatePicker defaultValue="2024-01-15" weekStartsOn={0} aria-label="Date" />,
