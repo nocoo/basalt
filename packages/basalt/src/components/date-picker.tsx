@@ -99,6 +99,8 @@ export function DatePicker({
 	const [focusIndex, setFocusIndex] = useState(0);
 	const dayRefs = useRef<Array<HTMLButtonElement | null>>([]);
 	const pendingFocusIso = useRef<string | null>(null);
+	const retainNavFocus = useRef(false);
+	const hiddenRef = useRef<HTMLInputElement>(null);
 	const selected = value ?? uncontrolled;
 	const selectedDate = selected ? parseIso(selected) : null;
 	const cursor = selectedDate ?? todayCivil(timeZone);
@@ -117,6 +119,19 @@ export function DatePicker({
 			setOpen(false);
 		}
 	}, [disabled]);
+
+	useEffect(() => {
+		const form = hiddenRef.current?.form;
+		if (!form || value !== undefined) {
+			return;
+		}
+		const onReset = () => {
+			setUncontrolled(defaultValue);
+			setOpen(false);
+		};
+		form.addEventListener("reset", onReset);
+		return () => form.removeEventListener("reset", onReset);
+	}, [defaultValue, value]);
 
 	const weekdayLabels = useMemo(() => {
 		const formatter = new Intl.DateTimeFormat(locale, { weekday: "short", timeZone: "UTC" });
@@ -155,9 +170,14 @@ export function DatePicker({
 	}, [open, selected, timeZone, days, month.m]);
 
 	useEffect(() => {
-		if (open) {
-			dayRefs.current[focusIndex]?.focus();
+		if (!open) {
+			return;
 		}
+		if (retainNavFocus.current) {
+			retainNavFocus.current = false;
+			return;
+		}
+		dayRefs.current[focusIndex]?.focus();
 	}, [open, focusIndex]);
 
 	const label = selectedDate
@@ -186,7 +206,9 @@ export function DatePicker({
 				setOpen(next);
 			}}
 		>
-			{name ? <input type="hidden" name={name} value={selected} disabled={disabled} /> : null}
+			{name ? (
+				<input ref={hiddenRef} type="hidden" name={name} value={selected} disabled={disabled} />
+			) : null}
 			<input
 				type="date"
 				className="sr-only mb-2 h-7"
@@ -231,13 +253,14 @@ export function DatePicker({
 						type="button"
 						className={CALENDAR_BUTTON}
 						disabled={disabled}
-						onClick={() =>
+						onClick={() => {
+							retainNavFocus.current = true;
 							setMonth(
 								month.m === 1
 									? { y: month.y - 1, m: 12, d: 1 }
 									: { y: month.y, m: month.m - 1, d: 1 },
-							)
-						}
+							);
+						}}
 					>
 						Prev
 					</button>
@@ -246,13 +269,14 @@ export function DatePicker({
 						type="button"
 						className={CALENDAR_BUTTON}
 						disabled={disabled}
-						onClick={() =>
+						onClick={() => {
+							retainNavFocus.current = true;
 							setMonth(
 								month.m === 12
 									? { y: month.y + 1, m: 1, d: 1 }
 									: { y: month.y, m: month.m + 1, d: 1 },
-							)
-						}
+							);
+						}}
 					>
 						Next
 					</button>

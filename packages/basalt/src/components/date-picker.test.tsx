@@ -85,6 +85,30 @@ describe("DatePicker", () => {
 		expect(stop).toHaveAttribute("tabindex", "0");
 	});
 
+	it("keeps focus on next after month navigation", () => {
+		render(<DatePicker defaultValue="2024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		const next = screen.getByRole("button", { name: "Next" });
+		next.focus();
+		fireEvent.click(next);
+		expect(screen.getByText("February 2024")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Next" })).toHaveFocus();
+	});
+
+	it("restores defaultValue on form reset", () => {
+		render(
+			<form>
+				<DatePicker defaultValue="2024-01-15" name="when" aria-label="Date" />
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-16" }));
+		expect(document.querySelector('input[name="when"]')).toHaveValue("2024-01-16");
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		expect(document.querySelector('input[name="when"]')).toHaveValue("2024-01-15");
+	});
+
 	it("labels the calendar dialog", () => {
 		render(<DatePicker defaultValue="2024-01-15" aria-label="Date" />);
 		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
