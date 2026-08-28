@@ -345,6 +345,23 @@ describe("DatePicker", () => {
 		});
 	});
 
+	it("keeps the navigated day focused when the week start changes", async () => {
+		const { rerender } = render(
+			<DatePicker defaultValue="2024-01-15" weekStartsOn={0} aria-label="Date" />,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "2024-01-15" })).toHaveFocus();
+		});
+		fireEvent.keyDown(screen.getByRole("button", { name: "2024-01-15" }), { key: "ArrowRight" });
+		screen.getByRole("button", { name: "2024-01-16" }).focus();
+		expect(screen.getByRole("button", { name: "2024-01-16" })).toHaveAttribute("tabindex", "0");
+		rerender(<DatePicker defaultValue="2024-01-15" weekStartsOn={1} aria-label="Date" />);
+		expect(screen.getByRole("button", { name: "2024-01-16" })).toHaveAttribute("tabindex", "0");
+		fireEvent.keyDown(screen.getByRole("button", { name: "2024-01-16" }), { key: "ArrowRight" });
+		expect(screen.getByRole("button", { name: "2024-01-17" })).toHaveAttribute("tabindex", "0");
+	});
+
 	it("disables previous month at year one", () => {
 		render(<DatePicker defaultValue="0001-01-01" aria-label="Date" />);
 		fireEvent.click(screen.getByRole("button", { name: /Date/ }));

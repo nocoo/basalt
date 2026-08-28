@@ -221,13 +221,25 @@ export function DatePicker({
 				index = 0;
 			}
 		} else {
-			const iso = submitted || formatIso(todayCivil(timeZone));
-			const selectedIndex = days.findIndex((date) => isoOf(date) === iso);
-			if (selectedIndex >= 0 && days[selectedIndex]?.m === month.m) {
-				index = selectedIndex;
+			const focused = document.activeElement;
+			const focusedIso =
+				!focusDay.current &&
+				focused instanceof HTMLElement &&
+				dayRefs.current.some((node) => node === focused)
+					? focused.getAttribute("aria-label")
+					: null;
+			const focusedIndex = focusedIso ? days.findIndex((date) => isoOf(date) === focusedIso) : -1;
+			if (focusedIndex >= 0) {
+				index = focusedIndex;
 			} else {
-				const firstInMonth = days.findIndex((date) => date?.m === month.m);
-				index = firstInMonth >= 0 ? firstInMonth : 0;
+				const iso = submitted || formatIso(todayCivil(timeZone));
+				const selectedIndex = days.findIndex((date) => isoOf(date) === iso);
+				if (selectedIndex >= 0 && days[selectedIndex]?.m === month.m) {
+					index = selectedIndex;
+				} else {
+					const firstInMonth = days.findIndex((date) => date?.m === month.m);
+					index = firstInMonth >= 0 ? firstInMonth : 0;
+				}
 			}
 		}
 		setFocusIndex(index);
