@@ -120,5 +120,8 @@ export function catalogImportPath(entry: CatalogEntry): string {
 	if (entry.slug === "link-button") {
 		return "@nocoo/basalt/components/button";
 	}
+	if (entry.slug === "code-block") {
+		return "@nocoo/basalt/components/code";
+	}
 	return `@nocoo/basalt/components/${entry.slug}`;
 }

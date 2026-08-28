@@ -1,7 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
-import { describe, expect, it } from "vitest";
-import { CATALOG } from "@/pages/ui/catalog";
+import { describe, expect, it, vi } from "vitest";
+import { CATALOG, catalogImportPath } from "@/pages/ui/catalog";
+import { UI_DEMOS } from "@/pages/ui/demos";
+import { CATALOG_DOCS } from "@/pages/ui/docs";
+import { KUMO_DOCS_SLUGS } from "@/pages/ui/kumo-list";
 import UiIndexPage from "@/pages/ui/UiIndexPage";
 import UiPlaceholderPage from "@/pages/ui/UiPlaceholderPage";
 
@@ -25,7 +28,7 @@ describe("ui catalog", () => {
 
 	it("renders the index with links to every export", () => {
 		renderCatalog("/ui");
-		expect(screen.getByRole("heading", { name: "Library" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Home" })).toBeInTheDocument();
 		for (const entry of CATALOG) {
 			expect(screen.getByRole("link", { name: entry.name })).toHaveAttribute(
 				"href",
@@ -44,5 +47,44 @@ describe("ui catalog", () => {
 	it("marks unknown slugs as missing", () => {
 		renderCatalog("/ui/not-a-control");
 		expect(document.querySelector("[data-status='missing']")).toBeTruthy();
+	});
+
+	it("maps CodeBlock to the code module path", () => {
+		const entry = CATALOG.find((item) => item.slug === "code-block");
+		expect(entry).toBeDefined();
+		if (!entry) {
+			return;
+		}
+		expect(catalogImportPath(entry)).toBe("@nocoo/basalt/components/code");
+	});
+
+	it("documents every ready catalog page", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		for (const slug of Object.keys(UI_DEMOS)) {
+			const docs = CATALOG_DOCS[slug];
+			expect(docs, slug).toBeDefined();
+			if (!docs) {
+				continue;
+			}
+			cleanup();
+			renderCatalog(`/ui/${slug}`);
+			expect(document.querySelector(`[data-status='ready'][data-slug='${slug}']`)).toBeTruthy();
+			expect(screen.getByRole("heading", { name: "Installation" })).toBeInTheDocument();
+			expect(screen.getByRole("heading", { name: "Usage" })).toBeInTheDocument();
+			expect(screen.getByRole("heading", { name: "API Reference" })).toBeInTheDocument();
+			expect(screen.getAllByRole("button", { name: "Copy" }).length).toBeGreaterThan(0);
+			expect(screen.getByRole("navigation", { name: "On this page" })).toBeInTheDocument();
+			expect(screen.getByText(/Source:/)).toBeInTheDocument();
+			expect(screen.getByText(new RegExp(docs.source.sha))).toBeInTheDocument();
+		}
+	});
+
+	it("covers every Kumo docs component slug", () => {
+		const slugs = new Set(CATALOG.map((entry) => entry.slug));
+		expect(KUMO_DOCS_SLUGS).toHaveLength(41);
+		for (const slug of KUMO_DOCS_SLUGS) {
+			expect(slugs.has(slug), slug).toBe(true);
+		}
 	});
 });

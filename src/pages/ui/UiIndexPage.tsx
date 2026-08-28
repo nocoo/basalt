@@ -7,9 +7,9 @@ export default function UiIndexPage() {
 	return (
 		<div data-status="index" className="space-y-4">
 			<PageIntro
-				title="Library"
-				description="Catalog of every public Basalt export. Unbuilt pages are placeholders."
-				eyebrow="Controls"
+				title="Home"
+				description="Every public Basalt export. Kumo's component list is covered in full; extra Basalt controls stay listed."
+				eyebrow="Library"
 				icon={BookOpen}
 			/>
 			{CATALOG_CATEGORIES.map((category) => {
