@@ -240,6 +240,12 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 
 实现该控件时**原地填满**此页，不另开路由。
 
+### 5.2c Catalog 内页
+
+`/ui/:slug` 与 `/ui` 共用无浮岛画布。英雄区标题 + description + Copy page 分段按钮，底部分割线。预览与代码合成一张圆角卡（上预览、下代码、右上复制图标）。右侧 TOC 用左侧 hairline + active `border-primary` 竖条。内容左对齐，不加 `max-w-6xl` 居中。
+
+侧栏 Library 条目与 Examples 同一套 `px-3 py-2.5` 行高/圆角/hover，不要第二套更密的样式。
+
 ### 5.2b Catalog 首页
 
 `/ui` 对照 Kumo `HomeGrid`：不是分类卡片。`gap-px` + `aspect-square` 方格，名称绝对定位左上，demo 居中且可交互（不要整格 overlay `pointer-events-none`）。未实现的格子只留名称。DashboardLayout 在 `/ui` 取消浮岛与标题，内容区 `bg-secondary` 贴边。

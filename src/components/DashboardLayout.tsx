@@ -51,6 +51,7 @@ export function DashboardLayout() {
 	const { theme } = useTheme();
 
 	const catalogHome = location.pathname === "/ui";
+	const catalogDocs = catalogHome || location.pathname.startsWith("/ui/");
 	const catalogSlug = location.pathname.startsWith("/ui/")
 		? location.pathname.slice("/ui/".length)
 		: undefined;
@@ -104,7 +105,7 @@ export function DashboardLayout() {
 				id="main-content"
 				className={cn(
 					"flex min-w-0 flex-1 flex-col",
-					catalogHome
+					catalogDocs
 						? "h-screen overflow-hidden border-l border-border bg-secondary"
 						: "min-h-screen",
 				)}
@@ -112,7 +113,7 @@ export function DashboardLayout() {
 				<header
 					className={cn(
 						"flex h-14 shrink-0 items-center justify-between px-4 md:px-6",
-						catalogHome && "border-b border-border",
+						catalogDocs && "border-b border-border",
 					)}
 				>
 					<div className="flex items-center gap-3">
@@ -129,7 +130,7 @@ export function DashboardLayout() {
 						<h1
 							className={cn(
 								"text-lg font-semibold text-foreground md:text-xl",
-								catalogHome && "sr-only",
+								catalogDocs && "sr-only",
 							)}
 						>
 							{title}
@@ -149,8 +150,8 @@ export function DashboardLayout() {
 						<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
 					</div>
 				</header>
-				{catalogHome ? (
-					<div className="min-h-0 flex-1 overflow-y-auto">
+				{catalogDocs ? (
+					<div data-doc-scroll className="min-h-0 flex-1 overflow-y-auto">
 						<Outlet />
 					</div>
 				) : (

@@ -1,7 +1,9 @@
+import { Check, Copy } from "lucide-react";
 import { type ReactNode, useState } from "react";
+import { cn } from "@/lib/utils";
 
 const TOKEN =
-	/(\/\/[^\n]*)|("[^"]*"|'[^']*')|(<\/?[A-Za-z][\w.-]*)|\b(import|from|export|default|function|return|const|let|type|interface)\b/g;
+	/(\/\/[^\n]*)|("[^"]*"|'[^']*'|`[^`]*`)|\b(import|from|export|default|function|return|const|let|type|interface|as)\b|(<\/?[A-Za-z][\w.-]*)/g;
 
 function highlight(code: string): ReactNode[] {
 	const nodes: ReactNode[] = [];
@@ -12,7 +14,13 @@ function highlight(code: string): ReactNode[] {
 		if (index > last) {
 			nodes.push(code.slice(last, index));
 		}
-		const className = match[1] ? "text-muted-foreground" : "text-primary";
+		const className = match[1]
+			? "text-muted-foreground"
+			: match[2]
+				? "text-foreground"
+				: match[3]
+					? "text-destructive"
+					: "text-primary";
 		nodes.push(
 			<span key={key} className={className}>
 				{match[0]}
@@ -27,23 +35,40 @@ function highlight(code: string): ReactNode[] {
 	return nodes;
 }
 
-export function DocCode({ code }: { code: string }) {
+export function DocCode({ code, attached = false }: { code: string; attached?: boolean }) {
 	const [copied, setCopied] = useState(false);
 	return (
-		<div className="relative rounded-widget bg-secondary">
+		<div
+			className={cn(
+				"relative bg-secondary",
+				attached ? "border-t border-border" : "overflow-hidden rounded-lg border border-border",
+			)}
+		>
 			<button
 				type="button"
-				className="absolute right-2 top-2 text-xs underline underline-offset-4 text-foreground"
+				aria-label="Copy"
+				className="absolute top-2.5 right-2.5 flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
 				onClick={async () => {
 					await navigator.clipboard.writeText(code);
 					setCopied(true);
 				}}
 			>
-				{copied ? "Copied" : "Copy"}
+				{copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
 			</button>
-			<pre className="overflow-x-auto p-3 pr-16 text-xs text-foreground">
+			<pre className="overflow-x-auto p-4 pr-12 text-[13px] leading-6 text-foreground">
 				<code>{highlight(code)}</code>
 			</pre>
+		</div>
+	);
+}
+
+export function DocExample({ children, code }: { children: ReactNode; code: string }) {
+	return (
+		<div className="overflow-hidden rounded-lg border border-border">
+			<div className="flex min-h-[140px] items-center justify-center bg-background p-6 md:p-8">
+				{children}
+			</div>
+			<DocCode code={code} attached />
 		</div>
 	);
 }
