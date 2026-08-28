@@ -23,6 +23,197 @@ describe("DataTable", () => {
 		expect(screen.getByText("Zed")).toBeInTheDocument();
 	});
 
+	it("sorts positive infinity after finite numbers", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Pos", count: Number.POSITIVE_INFINITY },
+					{ name: "Fin", count: 2 },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getAllByRole("cell")[0].textContent).toBe("Fin");
+	});
+
+	it("sorts a fractional number against a smaller bigint", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Big", count: 2n },
+					{ name: "Frac", count: 10.5 },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getAllByRole("cell")[0].textContent).toBe("Big");
+	});
+
+	it("sorts fractional numbers against each other", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "High", count: 10.5 },
+					{ name: "Low", count: 2.5 },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getAllByRole("cell")[0].textContent).toBe("Low");
+	});
+
+	it("sorts object cells as strings", () => {
+		render(
+			<DataTable
+				data={[{ name: "B" }, { name: "A" }]}
+				columns={[
+					{
+						id: "name",
+						header: "Name",
+						accessor: (row) => row.name,
+						sortValue: (row) => ({ label: row.name }) as unknown as string,
+					},
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Name" }));
+		expect(screen.getByText("A")).toBeInTheDocument();
+		expect(screen.getByText("B")).toBeInTheDocument();
+	});
+
+	it("sorts equal integer numbers and bigints together", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Num", count: 2 },
+					{ name: "Big", count: 2n },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getByText("Num")).toBeInTheDocument();
+		expect(screen.getByText("Big")).toBeInTheDocument();
+	});
+
+	it("ignores a sort column that no longer exists", () => {
+		const { rerender } = render(<DataTable data={rows} columns={columns} />);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		rerender(
+			<DataTable
+				data={rows}
+				columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]}
+			/>,
+		);
+		expect(screen.getByText("Zed")).toBeInTheDocument();
+	});
+
+	it("sorts a negative fraction before its truncated bigint", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Int", count: -2n },
+					{ name: "Frac", count: -2.5 },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getAllByRole("cell")[0].textContent).toBe("Frac");
+	});
+
+	it("sorts equal bigints without reordering", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "A", count: 2n },
+					{ name: "B", count: 2n },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getByText("A")).toBeInTheDocument();
+		expect(screen.getByText("B")).toBeInTheDocument();
+	});
+
+	it("sorts a fractional number after an equal truncated bigint", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Int", count: 2n },
+					{ name: "Frac", count: 2.5 },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getAllByRole("cell")[0].textContent).toBe("Int");
+	});
+
+	it("filters with filterValue", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Active", count: 1 },
+					{ name: "Idle", count: 2 },
+				]}
+				columns={[
+					{
+						id: "status",
+						header: "Status",
+						accessor: (row) => <span>{row.name}</span>,
+						filterValue: (row) => row.name,
+					},
+				]}
+				filter="idle"
+			/>,
+		);
+		expect(screen.getByText("Idle")).toBeInTheDocument();
+		expect(screen.queryByText("Active")).not.toBeInTheDocument();
+	});
+
+	it("does not filter object cells without sort or filter values", () => {
+		render(
+			<DataTable
+				data={[{ name: "Active", count: 1 }]}
+				columns={[
+					{
+						id: "status",
+						header: "Status",
+						accessor: (row) => <span>{row.name}</span>,
+					},
+				]}
+				filter="active"
+			/>,
+		);
+		expect(screen.queryByText("Active")).not.toBeInTheDocument();
+	});
+
 	it("sorts negative infinity before finite numbers", () => {
 		render(
 			<DataTable
@@ -152,6 +343,33 @@ describe("DataTable", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Name" }));
 		expect(screen.getByRole("button", { name: "Named-1" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Generated-1" })).toBeInTheDocument();
+	});
+
+	it("keeps row state when a duplicate id is added", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const solo = { id: "same", name: "Solo", count: 1 };
+		const peer = { id: "same", name: "Peer", count: 2 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+			{ id: "count", header: "Count", accessor: (row: { count: number }) => row.count },
+		];
+		const { rerender } = render(<DataTable data={[solo]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "Solo-0" }));
+		rerender(<DataTable data={[solo, peer]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Solo-1" })).toBeInTheDocument();
+		rerender(<DataTable data={[solo]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Solo-1" })).toBeInTheDocument();
 	});
 
 	it("keeps duplicate explicit ids stable across reorders", () => {

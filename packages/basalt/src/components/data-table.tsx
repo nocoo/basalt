@@ -21,21 +21,12 @@ function asBigint(value: unknown): bigint | null {
 }
 
 function compareNumberAndBigint(num: number, big: bigint): number {
-	if (!Number.isFinite(num)) {
-		if (Number.isNaN(num)) {
-			return 0;
-		}
-		return num === Number.POSITIVE_INFINITY ? 1 : -1;
-	}
 	const truncated = BigInt(Math.trunc(num));
 	if (truncated < big) {
 		return -1;
 	}
 	if (truncated > big) {
 		return 1;
-	}
-	if (num === Number(truncated)) {
-		return 0;
 	}
 	return num > Number(truncated) ? 1 : -1;
 }
@@ -132,7 +123,9 @@ export function DataTable<T>({
 			}
 			return stored;
 		};
-		const preferred = data.map((row, index) => {
+		const seen = new WeakSet<object>();
+		const used = new Set<string>();
+		const keyed = data.map((row, index) => {
 			let key: string | undefined;
 			const requested = getRowId?.(row, index);
 			if (requested) {
@@ -143,24 +136,18 @@ export function DataTable<T>({
 					key = `id:${String(raw)}`;
 				}
 			}
-			if (!key && row && typeof row === "object") {
-				key = `gen:${identityOf(row as object)}`;
-			}
-			return { row, preferred: key ?? `prim:${index}`, index };
-		});
-		const counts = new Map<string, number>();
-		for (const item of preferred) {
-			counts.set(item.preferred, (counts.get(item.preferred) ?? 0) + 1);
-		}
-		const seen = new WeakSet<object>();
-		const used = new Set<string>();
-		const keyed = preferred.map(({ row, preferred: initial, index }) => {
-			let key = initial;
-			if ((counts.get(initial) ?? 1) > 1 && row && typeof row === "object") {
+			if (row && typeof row === "object") {
 				const stored = identityOf(row as object);
-				key = seen.has(row as object) ? `dup:${stored}-${index}` : `dup:${stored}`;
-				seen.add(row as object);
+				if (key) {
+					key = `${key}:${stored}`;
+				} else if (seen.has(row as object)) {
+					key = `gen:${stored}-${index}`;
+				} else {
+					seen.add(row as object);
+					key = `gen:${stored}`;
+				}
 			}
+			key = key ?? `prim:${index}`;
 			while (used.has(key)) {
 				key = `${key}-${index}`;
 			}
