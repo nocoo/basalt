@@ -12,14 +12,14 @@
 
 | 点 | 01 | 02 |
 |----|----|----|
-| 取样 vs 第一刀代码 | 阶段 0 含冻结截图 | **先** Wave B 冻结截图（改侧栏之前），再 Wave P 加 `/ui/:name` placeholder |
+| 取样 vs 第一刀代码 | 阶段 0 含冻结截图 | **先** B0 播种随机数据，再 B1 截图（改侧栏之前），再 Wave P 加 `/ui/:name` placeholder |
 | 每个控件 | 7.2 底稿可直接用 | **先推荐、等哥确认，再写实现** |
-| 顺序 | 阶段 1→7 按 kind | **先小后大**：原子 → 表单 → 反馈 → 浮层 → 容器/结构 → Sidebar catalog → **图表工具层** → 图表控件 → 拼现页壳 |
+| 顺序 | 阶段 1→7 按 kind | **先小后大**：原子 → LayerCard 容器 → 表单 → 反馈 → 浮层 → 结构/Sidebar catalog → **图表工具层** → 图表控件 → 拼现页壳 |
 | 图表 | 与其它控件并列 stage 6 | **单独轨道**：先 kit（色板、tooltip、轴/字号），再各个 chart |
 | 家族权重 | 7.2 分散 | **pew / zhe / intentional-kusto-queries 加权**；本站只锁视觉 |
 | 质量 | 6DQ 章节 | **Husky 从第一行包代码起就拦**：typecheck + `biome --error-on-warnings` + test。不准先红后补 |
 | Sidebar 现页 | 6.2 `wire=/` | 实现时只填 `/ui/sidebar`；现页 `/` 推迟到 S2 |
-| 发布路径 | 阶段 8 列门 | Wave 8 原子提交覆盖 publint、仓外门、CHANGELOG、alpha |
+| 发布路径 | 阶段 8 列门 | Wave 0 写 README 双契约 + 构建 dts/banner；Wave 8 写 tarball 门、`prepublishOnly`、CHANGELOG、alpha |
 
 架构、CSS 命名空间、发布门 A/B/C/D、观感冻结仍以 01 为准。冲突时：执行顺序听 02，API/CSS/发布听 01。
 
@@ -82,7 +82,7 @@ Wave 0 起：
 - 不允许先合进红测试再「下个 commit 补」
 - **测试与实现必须同一次绿 commit**（见 §7）。禁止单独提交会让 husky 失败的红测
 
-每个控件提交必须带：实现 + 单测 + 填满该 `/ui/:name` placeholder（不再是空壳）。stable/chart/provider 另接 01 的现页 wire（Sidebar 除外，见 §8.6 / §8.8）。a11y：icon-only 名称、label 关联、图表 `aria-label`/`summary`。参考 Kumo 的 compound/ARIA，不抄视觉。
+每个控件的**提交序列**必须包含：实现 + 单测（同一次绿 commit）+ 填满该 `/ui/:name` placeholder（不再是空壳）。catalog 页与现页 wire 仍按 §7 拆开提交。stable/chart/provider 另接 01 的现页 wire（Sidebar 除外，见 §8.6 / §8.8）。a11y：icon-only 名称、label 关联、图表 `aria-label`/`summary`。参考 Kumo 的 compound/ARIA，不抄视觉。
 
 ### 2.5 原子化提交
 
@@ -132,17 +132,19 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 
 **必须在 Wave P 之前。** Wave P 会给侧栏加「控件库」组，若先改导航再取样，基线就不是现网。
 
+现网已有未播种 `Math.random()`，直接对批准时 HEAD 截图不可复现；改源码后再截图才是可对照基线。因此 Wave B 两步，**禁止**用 Playwright `addInitScript` 偷换 `Math.random`（图会与源码不一致）。
+
 | # | commit | 内容 |
 |---|--------|------|
-| B1 | `docs: capture 2-0 visual baselines` | `docs/baselines/2-0/`，01 §3.2 矩阵 |
+| B0 | `fix: seed showcase chart mock data` | 去掉未播种随机：`src/components/dashboard/SummaryMetricCard.tsx`、`SecondaryMetricCard.tsx`、`src/data/mock.ts` 的 `performanceData`。换成播种 PRNG 或固定数组。不改 class / 布局 / 色值 |
+| B1 | `docs: capture 2-0 visual baselines` | 对 **B0 HEAD** 拍 `docs/baselines/2-0/`，01 §3.2 矩阵；把 B0 SHA 写入 01 §3.2 |
 
-约束：
+B0 是 Wave P 前**唯一**允许的现页源码改动。B1 **禁止**改 `AppSidebar` / `App.tsx` / 现页 class。
 
-- HEAD 即批准时基线；把 SHA 写入 01 §3.2 替换「批准时 HEAD」那句
+其它约束：
+
 - 已有路由 × `{light,dark}` × desktop `1280×800` × mobile `390×844`
 - 另存：侧栏展开/折叠、移动抽屉开、一个 Dialog 开
-- Heatmap 等先冻种子或确定性 mock，禁止未播种 `Math.random()`
-- 本 commit **禁止**改 `AppSidebar` / `App.tsx` / 现页 class
 - 浏览器：本机 Chrome；locale `zh-CN`；timezone `Asia/Shanghai`；`prefers-reduced-motion: reduce`
 
 Wave P 之后不重拍整表。阶段 7 对照这批图；侧栏允许多一个默认折叠组。
@@ -290,8 +292,12 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | 0.3 | `feat: extract basalt design tokens`（`--basalt-*`，showcase 映射，现页颜色不变） |
 | 0.4 | `feat: add empty package exports` |
 | 0.5 | `chore: add publish gate fixtures`（vite-tailwind / vite-standalone / next19 模板） |
+| 0.6 | `docs: write package css contracts`（`packages/basalt/README.md`：Tailwind `@source` 与 standalone 两条，01 §5.2；缺一不算阶段 0 完成） |
+| 0.7 | `chore: add package build dts and banners`（产出 `.d.ts`；每个组件 chunk `"use client"` banner） |
 
 0.2 必须在 0.3 之前：否则 tokens 进包时 typecheck/Vitest 还不扫 `packages/basalt`，husky 绿了也看不见包内错误。
+
+0.6 必须在 Wave 0 完成，**禁止**拖到 Wave 8。8.3 只复核或补发布说明，不承担「第一次写双契约」。
 
 0.3 验收：已有路由与 Wave B 基线一致（侧栏允许多一个折叠组）。
 
@@ -451,12 +457,14 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 |---|--------|------|
 | 8.1 | `chore: add tarball publish gate scripts` | 复制 fixtures 到仓外 tmp、`npm pack`、安装 tarball、跑 A/B/C/D |
 | 8.2 | `test: assert tarball gates a b c d` | 与 8.1 可合并仅当同一次绿；断言 computed style 与根 barrel 不拉 optional peer |
-| 8.3 | `docs: write package readme css contracts` | 若 Wave 0 未写完双契约 |
+| 8.3 | `chore: add package prepublishonly script` | 写入 `packages/basalt/package.json` 的 `prepublishOnly`：build + 包内 jsdom + browser + publint + 门 A/B/C/D。这是 npm lifecycle，不是 README 步骤 |
 | 8.4 | `docs: add notice for kumo excerpts` | 仅当复制了 Kumo 逻辑 |
 | 8.5 | `docs: changelog 2.0.0-alpha` | Keep a Changelog 一节 |
 | 8.6 | `chore: release v2.0.0-alpha.n` | 只 bump `packages/basalt` 版本；走仓库 release 清单的 alpha 路径 |
 
-8.6 之前：publint、typecheck、包内 jsdom + browser 测试、门 A/B/C/D 全绿。失败不准发。先 alpha，自吃后再 `2.0.0`。
+Wave 0.6 已写 CSS 双契约 README。发布前若文案过期可另作 `docs:` 更新，不替代 0.6。
+
+8.6 之前：`prepublishOnly` 全绿。失败不准发。先 alpha，自吃后再 `2.0.0`。
 
 ---
 
@@ -478,7 +486,8 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 
 ## 10. 明确不做
 
-- 不在 Wave B 之前改侧栏或现页 class
+- 不在 Wave B 之前改侧栏或现页 class（B0 播种随机数据除外）
+- 不对未播种的 `Math.random()` 页面截图当基线；不用 `addInitScript` 偷换随机数
 - 不在 placeholder 阶段拆包或改组合页皮肤
 - 不把图表和 Button 放进同一波「先做完所有控件」
 - 不把 pew 里 20+ 个业务 chart 文件当 Basalt 出口
@@ -493,8 +502,8 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 
 1. 01 第 13 节拍板（侧栏「控件库」组、CSS 契约等）
 2. 本文与 01 联审 Sign Off
-3. Wave B（冻结截图，改侧栏之前）
+3. Wave B（B0 播种 → B1 截图，改侧栏之前）
 4. Wave P（placeholder）
-5. 确认 Button 底稿 → Wave 0 → Button 起按 §8 顺序
+5. 确认 Button 底稿 → Wave 0（含 0.6 README、0.7 dts/banner）→ Button 起按 §8 顺序
 
-下一句动作从 Wave B 的 `docs: capture 2-0 visual baselines` 开始。未拍板、未 Sign Off 不准动。
+下一句动作从 Wave B 的 `fix: seed showcase chart mock data` 开始。未拍板、未 Sign Off 不准动。
