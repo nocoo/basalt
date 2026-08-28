@@ -62,11 +62,21 @@ export function Combobox({
 	const activeItem = filtered[activeIndex];
 	const listOpen = open && filtered.length > 0;
 
+	const prevQuery = useRef(query);
+	const prevSelected = useRef(selected);
 	useEffect(() => {
+		const queryChanged = prevQuery.current !== query;
+		const selectedChanged = prevSelected.current !== selected;
+		prevQuery.current = query;
+		prevSelected.current = selected;
 		if (!open) {
 			return;
 		}
 		const nextFiltered = items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
+		if (queryChanged && !selectedChanged) {
+			setActive((current) => Math.min(current, Math.max(0, nextFiltered.length - 1)));
+			return;
+		}
 		const selectedIndex = nextFiltered.indexOf(selected);
 		if (selectedIndex >= 0) {
 			setActive(selectedIndex);

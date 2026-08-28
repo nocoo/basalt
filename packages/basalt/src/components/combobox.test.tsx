@@ -213,6 +213,25 @@ describe("Combobox", () => {
 		expect(onValueChange).toHaveBeenCalledWith("Apple");
 	});
 
+	it("keeps query edits focused on the first match", () => {
+		const onValueChange = vi.fn();
+		render(
+			<Combobox
+				items={["Apple", "Banana"]}
+				defaultValue="Banana"
+				placeholder="Fruit"
+				onValueChange={onValueChange}
+			/>,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		expect(screen.getByRole("option", { name: "Banana" })).toHaveAttribute("aria-selected", "true");
+		fireEvent.change(input, { target: { value: "a" } });
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+		fireEvent.keyDown(input, { key: "Enter" });
+		expect(onValueChange).toHaveBeenCalledWith("Apple");
+	});
+
 	it("highlights the selected option when opened", () => {
 		const onValueChange = vi.fn();
 		render(
