@@ -10,5 +10,7 @@ describe("standalone css", () => {
 		expect(css).toContain("--basalt-primary");
 		expect(css).not.toContain("img, svg, video, canvas");
 		expect(css).not.toMatch(/body\s*\{[^}]*margin:\s*0/);
+		expect(css).toContain("@keyframes basalt-pulse");
+		expect(css).not.toMatch(/@keyframes pulse\s*\{/);
 	});
 });

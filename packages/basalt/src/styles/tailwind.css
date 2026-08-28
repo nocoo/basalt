@@ -72,4 +72,5 @@
 	--animate-basalt-accordion-down: basalt-accordion-down 0.2s ease-out;
 	--animate-basalt-accordion-up: basalt-accordion-up 0.2s ease-out;
 	--animate-basalt-spin: basalt-spin 1s linear infinite;
+	--animate-pulse: basalt-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }

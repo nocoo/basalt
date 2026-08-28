@@ -157,3 +157,9 @@
 		transform: rotate(360deg);
 	}
 }
+
+@keyframes basalt-pulse {
+	50% {
+		opacity: 0.5;
+	}
+}
