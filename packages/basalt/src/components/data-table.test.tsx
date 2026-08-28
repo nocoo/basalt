@@ -695,6 +695,53 @@ describe("DataTable", () => {
 		expect(screen.getByText("Zed")).toBeInTheDocument();
 	});
 
+	it("keeps undefined row state across reorders", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: string | undefined) => <NameCell name={row ?? "Empty"} />,
+			},
+		];
+		const { rerender } = render(<DataTable data={[undefined, "A"]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "Empty-0" }));
+		rerender(<DataTable data={["A", undefined]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Empty-1" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "A-0" })).toBeInTheDocument();
+	});
+
+	it("keeps signed zero rows distinct across reorders", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: number) => <NameCell name={Object.is(row, -0) ? "Neg" : "Pos"} />,
+			},
+		];
+		const { rerender } = render(<DataTable data={[0, -0]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "Pos-0" }));
+		fireEvent.click(screen.getByRole("button", { name: "Neg-0" }));
+		rerender(<DataTable data={[-0, 0]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Pos-1" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Neg-1" })).toBeInTheDocument();
+	});
+
 	it("renders primitive rows", () => {
 		render(
 			<DataTable

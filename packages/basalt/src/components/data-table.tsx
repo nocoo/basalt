@@ -87,6 +87,9 @@ function primitiveKey(
 	if (row === null) {
 		return "prim:null";
 	}
+	if (row === undefined) {
+		return "prim:undefined";
+	}
 	if (typeof row === "symbol") {
 		let key = symbols.get(row);
 		if (!key) {
@@ -96,7 +99,13 @@ function primitiveKey(
 		return key;
 	}
 	const type = typeof row;
-	if (type === "string" || type === "number" || type === "bigint" || type === "boolean") {
+	if (type === "number") {
+		if (Object.is(row, -0)) {
+			return "prim:number:-0";
+		}
+		return `prim:number:${String(row)}`;
+	}
+	if (type === "string" || type === "bigint" || type === "boolean") {
 		return `prim:${type}:${String(row)}`;
 	}
 	return `prim:${index}`;
