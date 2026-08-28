@@ -58,6 +58,21 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("Pick a date");
 	});
 
+	it("exposes native date constraints on the form control", () => {
+		const { container } = render(
+			<form>
+				<DatePicker name="when" required min="2020-01-01" max="2030-12-31" aria-label="Date" />
+			</form>,
+		);
+		const control = container.querySelector('input[name="when"]');
+		expect(control).toHaveAttribute("type", "date");
+		expect(control).toHaveAttribute("required");
+		expect(control).toHaveAttribute("min", "2020-01-01");
+		expect(control).toHaveAttribute("max", "2030-12-31");
+		expect(control).not.toHaveAttribute("readonly");
+		expect((control as HTMLInputElement).checkValidity()).toBe(false);
+	});
+
 	it("matches native date input year range", () => {
 		const { container, rerender } = render(
 			<form>

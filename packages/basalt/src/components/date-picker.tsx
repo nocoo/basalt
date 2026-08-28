@@ -114,6 +114,9 @@ export function DatePicker({
 	timeZone,
 	formatDate,
 	name,
+	required,
+	min,
+	max,
 	disabled,
 	className,
 	id,
@@ -129,6 +132,9 @@ export function DatePicker({
 	timeZone?: string;
 	formatDate?: (date: Date) => string;
 	name?: string;
+	required?: boolean;
+	min?: string;
+	max?: string;
 	disabled?: boolean;
 	className?: string;
 	id?: string;
@@ -288,10 +294,13 @@ export function DatePicker({
 				setOpen(next);
 			}}
 		>
-			{name ? <input type="hidden" name={name} value={submitted} disabled={disabled} /> : null}
 			<input
 				ref={hiddenRef}
 				type="date"
+				name={name}
+				required={required}
+				min={min}
+				max={max}
 				className="sr-only mb-2 h-7"
 				style={{
 					position: "absolute",
@@ -301,7 +310,7 @@ export function DatePicker({
 					clip: "rect(0, 0, 0, 0)",
 				}}
 				value={submitted}
-				readOnly
+				onChange={() => undefined}
 				disabled={disabled}
 				aria-hidden="true"
 				tabIndex={-1}
