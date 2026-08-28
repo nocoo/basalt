@@ -127,11 +127,14 @@ export function DataTable<T>({
 		const seen = new WeakSet<object>();
 		const used = new Set<string>();
 		const keyed = data.map((row, index) => {
-			let key = getRowId?.(row, index);
-			if (!key && row && typeof row === "object" && "id" in row) {
+			let key: string | undefined;
+			const requested = getRowId?.(row, index);
+			if (requested) {
+				key = `get:${requested}`;
+			} else if (row && typeof row === "object" && "id" in row) {
 				const raw = (row as { id: unknown }).id;
 				if (raw != null) {
-					key = String(raw);
+					key = `id:${String(raw)}`;
 				}
 			}
 			if (!key && row && typeof row === "object") {
@@ -141,13 +144,13 @@ export function DataTable<T>({
 					rowIds.current.set(row as object, stored);
 				}
 				if (seen.has(row as object)) {
-					key = `${stored}-${index}`;
+					key = `gen:${stored}-${index}`;
 				} else {
 					seen.add(row as object);
-					key = stored;
+					key = `gen:${stored}`;
 				}
 			}
-			key = key ?? `basalt-primitive-${index}`;
+			key = key ?? `prim:${index}`;
 			while (used.has(key)) {
 				key = `${key}-${index}`;
 			}

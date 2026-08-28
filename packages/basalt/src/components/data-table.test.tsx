@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { useState } from "react";
 import { describe, expect, it } from "vitest";
 import { DataTable } from "./data-table";
 
@@ -122,20 +123,35 @@ describe("DataTable", () => {
 	});
 
 	it("namespaces colliding explicit and generated row ids", () => {
-		render(
-			<DataTable
-				data={[
-					{ id: "basalt-row-0", name: "Named", count: 1 },
-					{ name: "Generated", count: 2 },
-				]}
-				columns={columns}
-			/>,
-		);
-		expect(screen.getByText("Named")).toBeInTheDocument();
-		expect(screen.getByText("Generated")).toBeInTheDocument();
-		fireEvent.click(screen.getByRole("button", { name: /Name/ }));
-		expect(screen.getByText("Named")).toBeInTheDocument();
-		expect(screen.getByText("Generated")).toBeInTheDocument();
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const named = { id: "basalt-row-0", name: "Named", count: 1 };
+		const generated = { name: "Generated", count: 2 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+			{ id: "count", header: "Count", accessor: (row: { count: number }) => row.count },
+		];
+		const { rerender } = render(<DataTable data={[named, generated]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "Named-0" }));
+		fireEvent.click(screen.getByRole("button", { name: "Generated-0" }));
+		expect(screen.getByRole("button", { name: "Named-1" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Generated-1" })).toBeInTheDocument();
+		rerender(<DataTable data={[generated, named]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Named-1" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Generated-1" })).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Name" }));
+		expect(screen.getByRole("button", { name: "Named-1" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Generated-1" })).toBeInTheDocument();
 	});
 
 	it("keeps duplicate row object occurrences distinct", () => {
