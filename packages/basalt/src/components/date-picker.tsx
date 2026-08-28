@@ -311,7 +311,7 @@ export function DatePicker({
 					type="button"
 					id={id}
 					disabled={disabled}
-					aria-label={selectedDate ? `${ariaLabel ?? "Date"}: ${label}` : (ariaLabel ?? "Date")}
+					aria-label={ariaLabel ? (selectedDate ? `${ariaLabel}: ${label}` : ariaLabel) : undefined}
 					aria-describedby={ariaDescribedBy}
 					aria-invalid={ariaInvalid}
 					className={cn(

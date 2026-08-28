@@ -15,8 +15,9 @@ describe("DatePicker", () => {
 				<DatePicker id="start" />
 			</Field>,
 		);
-		const trigger = screen.getByRole("button", { name: "Date" });
+		const trigger = screen.getByRole("button", { name: "Start" });
 		expect(trigger).toHaveAttribute("id", "start");
+		expect(trigger).not.toHaveAttribute("aria-label");
 		expect(trigger).toHaveAttribute("aria-invalid", "true");
 		expect(trigger).toHaveAttribute("aria-describedby", "start-error");
 		expect(screen.getByLabelText("Start")).toBe(trigger);
