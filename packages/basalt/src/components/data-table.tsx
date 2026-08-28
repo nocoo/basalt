@@ -10,9 +10,21 @@ export type DataTableColumn<T> = {
 	filterValue?: (row: T) => string | number | bigint;
 };
 
+function asBigint(value: unknown): bigint | null {
+	if (typeof value === "bigint") {
+		return value;
+	}
+	if (typeof value === "number" && Number.isFinite(value) && Number.isInteger(value)) {
+		return BigInt(value);
+	}
+	return null;
+}
+
 function compareUnknown(left: unknown, right: unknown): number {
-	if (typeof left === "bigint" && typeof right === "bigint") {
-		return left < right ? -1 : left > right ? 1 : 0;
+	const leftInt = asBigint(left);
+	const rightInt = asBigint(right);
+	if (leftInt !== null && rightInt !== null) {
+		return leftInt < rightInt ? -1 : leftInt > rightInt ? 1 : 0;
 	}
 	if (typeof left === "number" && typeof right === "number") {
 		return left - right;

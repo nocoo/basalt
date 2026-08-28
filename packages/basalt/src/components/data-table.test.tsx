@@ -100,6 +100,23 @@ describe("DataTable", () => {
 		expect(screen.getByText("B")).toBeInTheDocument();
 	});
 
+	it("sorts mixed number and bigint cells numerically", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Ten", count: 10n },
+					{ name: "Two", count: 2 },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getAllByRole("cell")[1].textContent).toBe("2");
+	});
+
 	it("sorts bigint cells numerically", () => {
 		render(
 			<DataTable
