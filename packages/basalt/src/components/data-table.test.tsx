@@ -424,6 +424,31 @@ describe("DataTable", () => {
 		expect(screen.getByRole("button", { name: "Right-1" })).toBeInTheDocument();
 	});
 
+	it("keeps state when a duplicate id is prepended", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const solo = { id: "same", name: "Solo", count: 1 };
+		const peer = { id: "same", name: "Peer", count: 2 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+			{ id: "count", header: "Count", accessor: (row: { count: number }) => row.count },
+		];
+		const { rerender } = render(<DataTable data={[solo]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "Solo-0" }));
+		rerender(<DataTable data={[peer, solo]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Solo-1" })).toBeInTheDocument();
+	});
+
 	it("keeps the surviving duplicate row's state when its peer is removed", () => {
 		function NameCell({ name }: { name: string }) {
 			const [count, setCount] = useState(0);

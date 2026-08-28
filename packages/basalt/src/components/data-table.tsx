@@ -126,17 +126,29 @@ export function DataTable<T>({
 		};
 		const seen = new WeakSet<object>();
 		const used = new Set<string>();
-		const keyed = data.map((row, index) => {
+		const pending = data.map((row, index) => ({
+			row,
+			index,
+			key: undefined as string | undefined,
+		}));
+		for (const item of pending) {
+			const objectRow = item.row && typeof item.row === "object" ? (item.row as object) : null;
+			if (!objectRow || seen.has(objectRow)) {
+				continue;
+			}
+			const previous = assignedKeys.current.get(objectRow);
+			if (previous && !used.has(previous)) {
+				item.key = previous;
+				used.add(previous);
+				seen.add(objectRow);
+			}
+		}
+		const keyed = pending.map(({ row, index, key: reserved }) => {
+			if (reserved) {
+				return { row, key: reserved };
+			}
 			const objectRow = row && typeof row === "object" ? (row as object) : null;
 			const isRepeat = Boolean(objectRow && seen.has(objectRow));
-			if (objectRow && !isRepeat) {
-				const previous = assignedKeys.current.get(objectRow);
-				if (previous && !used.has(previous)) {
-					used.add(previous);
-					seen.add(objectRow);
-					return { row, key: previous };
-				}
-			}
 			let key: string | undefined;
 			const requested = getRowId?.(row, index);
 			if (requested) {
