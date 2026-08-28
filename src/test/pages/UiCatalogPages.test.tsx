@@ -171,6 +171,25 @@ describe("ui catalog", () => {
 		expect(preview?.parentElement).toHaveClass("border", "border-border");
 	});
 
+	it("documents banner examples like kumo", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/banner");
+		expect(screen.getByRole("heading", { name: "Banner" })).toBeInTheDocument();
+		for (const title of [
+			"Variants",
+			"With icon",
+			"With action",
+			"With multiple actions",
+			"Compact size",
+			"Custom content",
+		]) {
+			expect(screen.getByRole("heading", { name: title })).toBeInTheDocument();
+		}
+		expect(screen.getAllByText("Update available").length).toBeGreaterThan(0);
+		expect(screen.getAllByRole("button", { name: "Update" }).length).toBeGreaterThan(0);
+	});
+
 	it("documents button examples like kumo", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });

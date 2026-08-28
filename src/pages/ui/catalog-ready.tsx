@@ -115,7 +115,7 @@ import { toast } from "@nocoo/basalt/components/toast";
 import { Toggle } from "@nocoo/basalt/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import { Search } from "lucide-react";
+import { AlertTriangle, CircleAlert, Info, Search } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { CATALOG, type CatalogEntry, catalogImportPath } from "./catalog";
 
@@ -172,11 +172,79 @@ function add(
 }
 
 add("badge", "Compact status labels.", () => <Badge>Stable</Badge>, "<Badge>Stable</Badge>");
+function BannerVariantsDemo() {
+	return (
+		<div className="w-full space-y-3">
+			<Banner
+				icon={<Info />}
+				title="Update available"
+				description="A new version is ready to install."
+			/>
+			<Banner
+				icon={<AlertTriangle />}
+				variant="alert"
+				title="Session expiring"
+				description="Your session will expire in 5 minutes."
+			/>
+			<Banner
+				icon={<CircleAlert />}
+				variant="error"
+				title="Save failed"
+				description="We couldn't save your changes. Please try again."
+			/>
+			<Banner
+				icon={<Info />}
+				variant="secondary"
+				title="Maintenance scheduled"
+				description="This service will be unavailable for 10 minutes."
+			/>
+		</div>
+	);
+}
 add(
 	"banner",
-	"Inline status messages.",
-	() => <Banner title="Notice" description="Something happened." />,
-	"<Banner title='Notice' />",
+	"Displays contextual inline messages for informational, alert, or error states.",
+	() => <BannerVariantsDemo />,
+	'<Banner icon={<Info />} title="Update available" description="A new version is ready to install." />',
+	[
+		{
+			name: "variant",
+			type: '"default" | "alert" | "error" | "secondary"',
+			default: '"default"',
+			description: "Visual style of the banner.",
+		},
+		{
+			name: "size",
+			type: '"base" | "sm"',
+			default: '"base"',
+			description: "Compact size for dialogs and tight spaces.",
+		},
+		{ name: "icon", type: "ReactNode", description: "Icon rendered before the banner content." },
+		{ name: "title", type: "string", description: "Primary heading text." },
+		{
+			name: "description",
+			type: "ReactNode",
+			description: "Secondary copy below the title.",
+		},
+		{
+			name: "action",
+			type: "ReactNode",
+			description: "Trailing CTA slot. Use Banner.Action for accent-aware buttons.",
+		},
+		{ name: "className", type: "string" },
+	],
+	`import { Banner } from "@nocoo/basalt/components/banner";
+import { Info } from "lucide-react";
+
+export default function Example() {
+	return (
+		<Banner
+			icon={<Info />}
+			title="Update available"
+			description="A new version is ready to install."
+		/>
+	);
+}`,
 );
 add("loader", "Indicates a pending state.", () => <Loader />, "<Loader />");
 add(

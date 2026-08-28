@@ -1,3 +1,4 @@
+import { Banner } from "@nocoo/basalt/components/banner";
 import { Button, LinkButton } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { Field } from "@nocoo/basalt/components/field";
@@ -21,6 +22,7 @@ import {
 } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
+import { AlertTriangle, CircleAlert, Info, X } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
 import { EXTRA_DEMOS, EXTRA_EXAMPLES } from "./catalog-ready";
 
@@ -402,6 +404,189 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			title: "Default",
 			code: '<Switch aria-label="Notifications" />',
 			render: () => <Switch aria-label="Notifications" />,
+		},
+	],
+	banner: [
+		{
+			title: "Variants",
+			code: `<Banner icon={<Info />} title="Update available" description="A new version is ready to install." />
+<Banner icon={<AlertTriangle />} variant="alert" title="Session expiring" description="Your session will expire in 5 minutes." />
+<Banner icon={<CircleAlert />} variant="error" title="Save failed" description="We couldn't save your changes. Please try again." />
+<Banner icon={<Info />} variant="secondary" title="Maintenance scheduled" description="This service will be unavailable for 10 minutes." />`,
+			render: () => (
+				<div className="w-full space-y-3">
+					<Banner
+						icon={<Info />}
+						title="Update available"
+						description="A new version is ready to install."
+					/>
+					<Banner
+						icon={<AlertTriangle />}
+						variant="alert"
+						title="Session expiring"
+						description="Your session will expire in 5 minutes."
+					/>
+					<Banner
+						icon={<CircleAlert />}
+						variant="error"
+						title="Save failed"
+						description="We couldn't save your changes. Please try again."
+					/>
+					<Banner
+						icon={<Info />}
+						variant="secondary"
+						title="Maintenance scheduled"
+						description="This service will be unavailable for 10 minutes."
+					/>
+				</div>
+			),
+		},
+		{
+			title: "With icon",
+			code: '<Banner icon={<AlertTriangle />} variant="alert" title="Review required" description="Please review your billing information before proceeding." />',
+			render: () => (
+				<Banner
+					icon={<AlertTriangle />}
+					variant="alert"
+					title="Review required"
+					description="Please review your billing information before proceeding."
+				/>
+			),
+		},
+		{
+			title: "With action",
+			code: `<Banner
+  icon={<Info />}
+  title="Update available"
+  description="A new version is ready to install."
+  action={
+    <>
+      <Banner.Action>Update</Banner.Action>
+      <Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss" />
+    </>
+  }
+/>`,
+			render: () => (
+				<div className="w-full space-y-3">
+					<Banner
+						icon={<Info />}
+						title="Update available"
+						description="A new version is ready to install."
+						action={
+							<>
+								<Banner.Action>Update</Banner.Action>
+								<Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss" />
+							</>
+						}
+					/>
+					<Banner
+						variant="error"
+						icon={<CircleAlert />}
+						title="Save failed"
+						description="We couldn't save your changes. Please try again."
+						action={
+							<>
+								<Banner.Action>Retry</Banner.Action>
+								<Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss error" />
+							</>
+						}
+					/>
+				</div>
+			),
+		},
+		{
+			title: "With multiple actions",
+			code: `<Banner
+  icon={<AlertTriangle />}
+  variant="error"
+  title="Your account is 90 days past due."
+  description="Pay now to avoid interruption."
+  action={
+    <>
+      <Banner.Action>Pay now</Banner.Action>
+      <Banner.Action variant="secondary">Go to billing</Banner.Action>
+    </>
+  }
+/>`,
+			render: () => (
+				<Banner
+					icon={<AlertTriangle />}
+					variant="error"
+					title="Your account is 90 days past due."
+					description="Pay now to avoid interruption."
+					action={
+						<>
+							<Banner.Action>Pay now</Banner.Action>
+							<Banner.Action variant="secondary">Go to billing</Banner.Action>
+						</>
+					}
+				/>
+			),
+		},
+		{
+			title: "Compact size",
+			code: `<Banner
+  size="sm"
+  description="A DNS record for puppies.cloudflare.dev already exists in this zone."
+  action={<Link href="#">Manage DNS for puppies.cloudflare.dev</Link>}
+/>
+<Banner
+  size="sm"
+  description="A DNS record for puppies.cloudflare.dev already exists in this zone."
+  action={
+    <>
+      <Banner.Action>Manage DNS</Banner.Action>
+      <Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss compact" />
+    </>
+  }
+/>
+<Banner size="sm" description="A DNS record for puppies.cloudflare.dev already exists in this zone." />`,
+			render: () => (
+				<div className="w-full space-y-3">
+					<Banner
+						size="sm"
+						description="A DNS record for puppies.cloudflare.dev already exists in this zone."
+						action={<Link href="#">Manage DNS for puppies.cloudflare.dev</Link>}
+					/>
+					<Banner
+						size="sm"
+						description="A DNS record for puppies.cloudflare.dev already exists in this zone."
+						action={
+							<>
+								<Banner.Action>Manage DNS</Banner.Action>
+								<Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss compact" />
+							</>
+						}
+					/>
+					<Banner
+						size="sm"
+						description="A DNS record for puppies.cloudflare.dev already exists in this zone."
+					/>
+				</div>
+			),
+		},
+		{
+			title: "Custom content",
+			code: `<Banner
+  icon={<Info />}
+  title="Custom content supported"
+  description={
+    <Text>
+      This banner supports <strong>custom content</strong> with Text.
+    </Text>
+  }
+/>`,
+			render: () => (
+				<Banner
+					icon={<Info />}
+					title="Custom content supported"
+					description={
+						<Text className="text-inherit">
+							This banner supports <strong>custom content</strong> with Text.
+						</Text>
+					}
+				/>
+			),
 		},
 	],
 };
