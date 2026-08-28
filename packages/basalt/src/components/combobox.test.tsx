@@ -161,6 +161,35 @@ describe("Combobox", () => {
 		expect(onValueChange).not.toHaveBeenCalled();
 	});
 
+	it("highlights a controlled value that changes while open", () => {
+		const onValueChange = vi.fn();
+		const { rerender } = render(
+			<Combobox
+				items={["Pineapple", "Apple"]}
+				value=""
+				placeholder="Fruit"
+				onValueChange={onValueChange}
+			/>,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		expect(screen.getByRole("option", { name: "Pineapple" })).toHaveAttribute(
+			"aria-selected",
+			"true",
+		);
+		rerender(
+			<Combobox
+				items={["Pineapple", "Apple"]}
+				value="Apple"
+				placeholder="Fruit"
+				onValueChange={onValueChange}
+			/>,
+		);
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+		fireEvent.keyDown(input, { key: "Enter" });
+		expect(onValueChange).toHaveBeenCalledWith("Apple");
+	});
+
 	it("highlights the selected option when opened", () => {
 		const onValueChange = vi.fn();
 		render(

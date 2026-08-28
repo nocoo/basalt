@@ -63,8 +63,17 @@ export function Combobox({
 	const listOpen = open && filtered.length > 0;
 
 	useEffect(() => {
-		setActive((current) => Math.min(current, Math.max(0, filtered.length - 1)));
-	}, [filtered.length]);
+		if (!open) {
+			return;
+		}
+		const nextFiltered = items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
+		const selectedIndex = nextFiltered.indexOf(selected);
+		if (selectedIndex >= 0) {
+			setActive(selectedIndex);
+			return;
+		}
+		setActive((current) => Math.min(current, Math.max(0, nextFiltered.length - 1)));
+	}, [items, open, query, selected]);
 
 	function commit(next: string) {
 		if (value === undefined) {
