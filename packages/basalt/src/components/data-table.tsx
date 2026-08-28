@@ -139,6 +139,7 @@ export function DataTable<T>({
 	const rowSeq = useRef(0);
 	const assignedKeys = useRef(new WeakMap<object, string>());
 	const lastCanonical = useRef(new Map<string, object>());
+	const lastKeyByCanonical = useRef(new Map<string, string>());
 	const query = filter.trim().toLowerCase();
 
 	const rows = useMemo(() => {
@@ -149,6 +150,18 @@ export function DataTable<T>({
 				rowIds.current.set(row, stored);
 			}
 			return stored;
+		};
+		const canonicalOf = (row: T, index: number) => {
+			const requested = getRowId?.(row, index);
+			if (requested) {
+				return `get:${requested}`;
+			}
+			if (row && typeof row === "object" && "id" in row) {
+				const raw = (row as { id: unknown }).id;
+				if (raw != null) {
+					return `id:${String(raw)}`;
+				}
+			}
 		};
 		const present = new Set<object>();
 		for (const row of data) {
@@ -163,6 +176,22 @@ export function DataTable<T>({
 		}
 		const seen = new WeakSet<object>();
 		const used = new Set<string>();
+		const nextLastKey = new Map<string, string>();
+		const rememberKey = (
+			row: T,
+			index: number,
+			key: string,
+			objectRow: object | null,
+			repeat: boolean,
+		) => {
+			if (!objectRow || repeat) {
+				return;
+			}
+			const canonical = canonicalOf(row, index);
+			if (canonical) {
+				nextLastKey.set(canonical, key);
+			}
+		};
 		const pending = data.map((row, index) => ({
 			row,
 			index,
@@ -184,20 +213,16 @@ export function DataTable<T>({
 			}
 		}
 		const keyed = pending.map(({ row, index, key: reserved }) => {
+			const objectRow = row && typeof row === "object" ? (row as object) : null;
 			if (reserved) {
+				rememberKey(row, index, reserved, objectRow, false);
 				return { row, key: reserved };
 			}
-			const objectRow = row && typeof row === "object" ? (row as object) : null;
 			const isRepeat = Boolean(objectRow && seen.has(objectRow));
 			let key: string | undefined;
-			const requested = getRowId?.(row, index);
+			const requested = canonicalOf(row, index);
 			if (requested) {
-				key = `get:${requested}`;
-			} else if (objectRow && "id" in objectRow) {
-				const raw = (objectRow as { id: unknown }).id;
-				if (raw != null) {
-					key = `id:${String(raw)}`;
-				}
+				key = requested;
 			}
 			if (objectRow) {
 				const stored = identityOf(objectRow);
@@ -205,6 +230,11 @@ export function DataTable<T>({
 					key = isRepeat ? `gen:${stored}-${index}` : `gen:${stored}`;
 				} else if (used.has(key) || isRepeat) {
 					key = isRepeat ? `dup:${stored}-${index}` : `dup:${stored}`;
+				} else {
+					const inherited = lastKeyByCanonical.current.get(key);
+					if (inherited && !used.has(inherited) && isInstanceKey(inherited)) {
+						key = inherited;
+					}
 				}
 				seen.add(objectRow);
 			}
@@ -219,8 +249,10 @@ export function DataTable<T>({
 					lastCanonical.current.set(key, objectRow);
 				}
 			}
+			rememberKey(row, index, key, objectRow, isRepeat);
 			return { row, key };
 		});
+		lastKeyByCanonical.current = nextLastKey;
 		const filtered = query
 			? keyed.filter(({ row }) =>
 					columns.some((column) => filterSource(column, row).toLowerCase().includes(query)),

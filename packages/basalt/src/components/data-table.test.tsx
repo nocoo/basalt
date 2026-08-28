@@ -474,6 +474,34 @@ describe("DataTable", () => {
 		expect(screen.getByRole("button", { name: "Right-1" })).toBeInTheDocument();
 	});
 
+	it("keeps a duplicate survivor's key when a same-id object replaces it", () => {
+		function NameCell({ name }: { name: string }) {
+			const [count, setCount] = useState(0);
+			return (
+				<button type="button" onClick={() => setCount((value) => value + 1)}>
+					{name}-{count}
+				</button>
+			);
+		}
+		const left = { id: "same", name: "Left", count: 1 };
+		const right = { id: "same", name: "Right", count: 2 };
+		const next = { id: "same", name: "Next", count: 3 };
+		const identityColumns = [
+			{
+				id: "name",
+				header: "Name",
+				accessor: (row: { name: string }) => <NameCell name={row.name} />,
+			},
+			{ id: "count", header: "Count", accessor: (row: { count: number }) => row.count },
+		];
+		const { rerender } = render(<DataTable data={[left, right]} columns={identityColumns} />);
+		fireEvent.click(screen.getByRole("button", { name: "Right-0" }));
+		rerender(<DataTable data={[right]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Right-1" })).toBeInTheDocument();
+		rerender(<DataTable data={[next]} columns={identityColumns} />);
+		expect(screen.getByRole("button", { name: "Next-1" })).toBeInTheDocument();
+	});
+
 	it("does not let a returning row steal a live canonical key", () => {
 		function NameCell({ name }: { name: string }) {
 			const [count, setCount] = useState(0);
