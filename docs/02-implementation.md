@@ -1,0 +1,455 @@
+# 02 · 2.0 实现步骤
+
+> 状态：待审查。依赖 [01-plan-2-0.md](./01-plan-2-0.md) 的架构与 6.2 出口表。
+> 本文只写**怎么做**：阶段、原子化提交、每个控件的推荐底稿与确认门。
+> 不含工时。未确认本文前不写业务代码。
+
+01 回答「做成什么样」。02 回答「按什么顺序提交」。图表走独立 Recharts 工具层，不跟 Button 混在同一阶段里当「普通控件」处理。
+
+---
+
+## 1. 相对 01 的执行修正
+
+| 点 | 01 | 02 |
+|----|----|----|
+| 第一刀代码 | 阶段 0 workspace | **先**在现站加齐全部 `/ui/:name` placeholder 路由和入口，页面空壳 |
+| 每个控件 | 7.2 底稿可直接用 | **先推荐、等哥确认，再写实现** |
+| 顺序 | 阶段 1→7 按 kind | **先小后大**：原子 → 表单 → 反馈 → 浮层 → 容器/结构 → Sidebar → **图表工具层** → 图表控件 → 拼现页壳 |
+| 图表 | 与其它控件并列 stage 6 | **单独轨道**：先 kit（色板、tooltip、轴/字号），再各个 chart |
+| 家族权重 | 7.2 分散 | **pew / zhe / intentional-kusto-queries 加权**；本站只锁视觉 |
+| 质量 | 6DQ 章节 | **Husky 从第一行包代码起就拦**：typecheck + `biome --error-on-warnings` + test。不准先红后补 |
+
+架构、CSS 命名空间、发布门 A/B/C/D、观感冻结仍以 01 为准。冲突时：执行顺序听 02，API/CSS/发布听 01。
+
+---
+
+## 2. 全程硬规则
+
+### 2.1 每个控件的确认门
+
+实现某个 6.2 出口之前，必须在对话里给出：
+
+1. 候选实现（路径 + SHA，来自加权家族）
+2. **推荐主线**（一条）和理由（API / a11y / 测试 / 能否用 className 压回本站像素）
+3. 明确不选谁
+
+**等哥回复选哪条（或改选）之后才能改代码。** 禁止用 01 §7.2 默认赢家直接开工。
+
+例外：Wave P（placeholder）不需要逐页确认。
+
+### 2.2 家族权重
+
+搜底稿时按这个顺序，前三档必须看：
+
+| 权重 | 仓 | 用途 |
+|------|----|------|
+| 高 | `pew` `97a890fabe6e` | StatCard、ChartTooltip、产品图表密度 |
+| 高 | `zhe` `c31c239f01c9` | token/密度契约 `docs/22-design-tokens.md`、Button/Input 表面 |
+| 高 | `intentional-kusto-queries`（Whiteboard）`data/dashboard/src/model/chart-config.ts` + `view/charts/*` | **图表工具层主参考**：色板函数、轴、字号、tooltip、cursor、无动画 |
+| 中 | 本站 `basalt` | **视觉冻结真相**；SlotBarChart 测试；Sonner；三态 ThemeToggle |
+| 中 | `meowth` `surety` `pika` `otter` `signoff.now` `gecko` | API / asChild / Field / Tabs / Table primitive / DatePicker |
+| 低 | 其它 personal clone | 只在前几档没有对应物时看 |
+
+Whiteboard 路径：`/Users/nocoo/workspace/work/whiteboard/intentional-kusto-queries`。它不是 personal/ 下的仓，但是 Basalt family，图表优先于 pew 里「每个页面一份 chart 文件」的散装实现。
+
+视觉冲突时：**本站 1.3.5 像素优先**（01 §3.2）。zhe 的 `h-10` 只能当非默认 `size`，不能改本站默认 Button `h-9`。
+
+### 2.3 MVVM
+
+| 层 | 放哪 | 禁止 |
+|----|------|------|
+| Model | `packages/basalt/src/charts/kit/*.ts` 等纯函数；现有 `src/models` 不动 | 控件里写死 mock |
+| ViewModel | 现页继续 `src/viewmodels`；catalog 演示若有派生状态才加 `useXxxDemoViewModel` | 把 i18n / 路由写进包 |
+| View | 包内控件 + `src/pages/ui/*` | 包内 `useTranslation`、模块顶层 `window` |
+
+图表：kit 是 model（palette、axis、tooltip props）；`LineChart` 等是 view；页面把 viewmodel 的 series 喂进去。
+
+### 2.4 Husky / 6DQ（先门后代码）
+
+现有：
+
+- pre-commit：`typecheck` + `lint`（`biome check --error-on-warnings`）+ `test` + gitleaks
+- pre-push：`build` + `test:coverage` + lint + osv-scanner
+
+Wave 0 起：
+
+- `typecheck` 必须覆盖 `packages/basalt`
+- `vitest` `include` 必须含 `packages/basalt/**/*.test.tsx`
+- 包内 coverage 门槛与现网 models 一样高（01 现为 95% 语句/分支/函数/行，针对包源码；第一批文件少也不得降门槛凑数——用真实测试填）
+- 不允许 `--no-verify`
+- 不允许先合进红测试再「下个 commit 补」
+
+每个控件提交必须带：实现 + 单测 + 填满该 `/ui/:name` placeholder（不再是空壳）。stable/chart 另接 01 的现页 wire。a11y：icon-only 名称、label 关联、图表 `aria-label`/`summary`。参考 Kumo 的 compound/ARIA，不抄视觉。
+
+### 2.5 原子化提交
+
+- Conventional Commits，祈使句，全小写，≤50 字符
+- 一次一个逻辑；禁止 `git add -A`
+- placeholder 与实现分开；实现与「接到现页」分开
+- 提交后 Husky 必须绿
+
+---
+
+## 3. 图表单独轨道
+
+不把 Recharts 图表当成「又一个 Button」。包结构：
+
+```
+packages/basalt/src/charts/
+  kit/                 # 不全部进 6.2 公开名
+    palette.ts         # 从本站 src/lib/palette.ts 迁颜色值（视觉冻结）
+    typography.ts      # 轴/图例/tooltip 字号，禁止视图里写死 fontSize
+    tooltip-props.ts   # Recharts <Tooltip> 共用 props（关动画、cursor、contain）
+    axis.ts            # tick/grid/bar radius
+    index.ts
+  tooltip.tsx          # ChartTooltip + ChartTooltipRow（view）
+  palette.ts           # 6.2 ChartPalette 出口
+  line.tsx / bar.tsx / …
+```
+
+kit **不是** Kumo ECharts。公开 chart 控件全部建立在 kit 上。
+
+### 3.1 Kit 推荐（仍须确认）
+
+| 模块 | 推荐主线 | 理由 | 不选 |
+|------|----------|------|------|
+| 色板数值 | 本站 `src/lib/palette.ts` + `index.css` `--chart-*` | 观感冻结 | 直接换 Whiteboard 的 16 色 pastel（会改现图） |
+| 色板 API | Whiteboard `chart-config.ts`：`getChartColor` / `withAlpha` / tone | 有测试、函数化 | pew 每个 chart 文件自己取色 |
+| Tooltip 容器 | pew `chart-tooltip.tsx` + Whiteboard `ChartTooltip` | 统一 title/row/dot；pew 更贴近本站 `radius-widget` | 各图内联 div |
+| Tooltip/轴行为 | Whiteboard `CHART_TOOLTIP_PROPS` `AXIS_CONFIG` `ANIMATION_PROPS` `chartFontSize` | 关飞入动画、轴无线、字号一处定义 | 各图 `fontSize={12}` |
+| 图表卡片壳 | 本站现卡 class（有边/无边跟实例） | 冻结 | Whiteboard `ring-1 ring-border/40` 一刀切 |
+
+确认 kit 之后才做具体 chart 控件。
+
+Flow 仍是 catalog、放图表轨道末。Maps 不做。
+
+---
+
+## 4. Wave P — 全部 placeholder（第一刀代码）
+
+在**现仓库 SPA**上加齐入口，不实现控件、不拆 workspace。现有组合页零视觉改动（只侧栏多一个默认折叠组，01 §13.2）。
+
+### 4.1 路由
+
+索引：`/ui`
+
+子页：每个 6.2 `name` 一条 `/ui/<kebab>`。provider 也有文档页。
+
+| kebab | 6.2 name |
+|-------|----------|
+| `button` | Button |
+| `link-button` | LinkButton |
+| `badge` | Badge |
+| `banner` | Banner |
+| `breadcrumbs` | Breadcrumbs |
+| `text` | Text |
+| `layer-card` | LayerCard |
+| `empty` | Empty |
+| `loader` | Loader |
+| `skeleton-line` | SkeletonLine |
+| `meter` | Meter |
+| `clipboard-text` | ClipboardText |
+| `code` | Code |
+| `code-block` | CodeBlock |
+| `label` | Label |
+| `field` | Field |
+| `input` | Input |
+| `input-area` | InputArea |
+| `input-group` | InputGroup |
+| `sensitive-input` | SensitiveInput |
+| `checkbox` | Checkbox |
+| `radio` | Radio |
+| `switch` | Switch |
+| `select` | Select |
+| `combobox` | Combobox |
+| `autocomplete` | Autocomplete |
+| `date-picker` | DatePicker |
+| `tabs` | Tabs |
+| `table` | Table |
+| `pagination` | Pagination |
+| `collapsible` | Collapsible |
+| `dialog` | Dialog |
+| `alert-dialog` | AlertDialog |
+| `dropdown-menu` | DropdownMenu |
+| `popover` | Popover |
+| `tooltip` | Tooltip |
+| `toast` | Toast |
+| `command-palette` | CommandPalette |
+| `toolbar` | Toolbar |
+| `grid` | Grid |
+| `link` | Link |
+| `sidebar` | Sidebar |
+| `table-of-contents` | TableOfContents |
+| `flow` | Flow |
+| `menu-bar` | MenuBar |
+| `basalt-mark` | BasaltMark |
+| `accordion` | Accordion |
+| `context-menu` | ContextMenu |
+| `hover-card` | HoverCard |
+| `navigation-menu` | NavigationMenu |
+| `slider` | Slider |
+| `toggle` | Toggle |
+| `toggle-group` | ToggleGroup |
+| `separator` | Separator |
+| `sheet` | Sheet |
+| `avatar` | Avatar |
+| `theme-toggle` | ThemeToggle |
+| `theme-provider` | ThemeProvider |
+| `link-provider` | LinkProvider |
+| `stat-card` | StatCard |
+| `slot-bar` | SlotBarChart |
+| `bar` | BarChart |
+| `line` | LineChart |
+| `area` | AreaChart |
+| `donut` | DonutChart |
+| `grouped-bar` | GroupedBarChart |
+| `stacked-bar` | StackedBarChart |
+| `sparkline` | Sparkline |
+| `heatmap-calendar` | HeatmapCalendar |
+| `gauge` | Gauge |
+| `radar` | RadarChart |
+| `funnel` | FunnelChart |
+| `bullet` | BulletChart |
+| `timeline` | Timeline |
+| `sankey` | SankeyChart |
+| `item-list` | ItemList |
+| `date-navigation` | DateNavigation |
+| `palette` | ChartPalette（`/ui/palette`，与现 `/palette` 系统页并存） |
+
+另加分类索引锚点（同一 `/ui` 页内 heading，或 `/ui/charts` 重定向到索引过滤）：不强制单独路由。
+
+### 4.2 Placeholder 页最低内容
+
+- 标题 = 控件名
+- 一句「未实现」
+- 链到 01/02
+- 无假 Button 冒充已完成
+- `data-status="placeholder"` 便于测试
+
+实现该控件时**原地填满**此页，不另开路由。
+
+### 4.3 侧栏
+
+现有 `NAV_GROUPS` 不改顺序。新增一组 `nav.kit`（en: `Library`，zh: `控件库`），`defaultOpen: false`。组内只放：
+
+- `/ui` 索引（分类列表，链到各 placeholder）
+
+不要把 78 条都挂到侧栏。⌘K 收录全部 `/ui/:name`。
+
+### 4.4 Wave P 原子化提交
+
+| # | commit | 文件（示意） |
+|---|--------|----------------|
+| P1 | `feat: add ui catalog placeholder page` | `src/pages/ui/UiPlaceholderPage.tsx`（通用页，读 param） |
+| P2 | `feat: register ui catalog routes` | `src/App.tsx`：`/ui`、`/ui/:slug` |
+| P3 | `feat: add kit nav group` | `AppSidebar.tsx` 一组 + 不展开 |
+| P4 | `feat: add kit nav i18n` | `en.json` / `zh.json` `nav.kit` |
+| P5 | `test: cover ui placeholder routes` | 渲染 `/ui` 与一个 slug，断言 placeholder |
+| P6 | `feat: index ui pages in command palette` | `AppSidebar` cmdk 增加 kit 项 |
+
+P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的唯一导航变化。
+
+---
+
+## 5. Wave 0 — 包骨架（第一个真控件之前）
+
+在确认 **Button** 底稿之后、写 Button 之前做（或与 Button 同一迭代，但提交在 Button 前）。
+
+| # | commit |
+|---|--------|
+| 0.1 | `chore: add packages/basalt workspace` |
+| 0.2 | `feat: extract basalt design tokens`（`--basalt-*`，showcase 映射，现页颜色不变） |
+| 0.3 | `chore: typecheck vitest cover packages`（**同 commit 改 husky 会跑到的脚本**） |
+| 0.4 | `feat: add empty package exports` |
+| 0.5 | `chore: add publish gate fixtures`（vite-tailwind / vite-standalone / next19 模板） |
+
+0.2 验收：已有路由与基线一致。没有基线截图则 0.2 前加：
+
+| # | commit |
+|---|--------|
+| 0.0 | `docs: capture 2-0 visual baselines`（`docs/baselines/2-0/`，01 §3.2 矩阵） |
+
+---
+
+## 6. 单控件实现模板（确认之后）
+
+每个 6.2 出口固定四步提交（可因「无现页 wire」少一步）：
+
+| # | commit 形态 | 内容 |
+|---|-------------|------|
+| a | `test: add <Name> unit tests` | 先红或与 b 合并仅当测试与实现同逻辑且一次绿；优先分开 |
+| b | `feat: add <Name> control` | `packages/basalt/src/...`，无 mock、无 i18n |
+| c | `feat: fill <Name> catalog page` | 替换 placeholder：预览、import、copy、props、来源 SHA |
+| d | `refactor: wire <Name> on <route>` | 仅 stable/chart/provider，01 的 wire 路由 |
+
+复杂控件（Dialog、Combobox、DatePicker、CommandPalette、Sidebar）加：
+
+| # | commit |
+|---|--------|
+| e | `test: add <Name> browser tests` |
+
+不允许：只实现不填 catalog 页；catalog 页继续显示 placeholder。
+
+---
+
+## 7. 实现顺序（先小后大）与推荐底稿
+
+下列「推荐」= 加权后的**建议**，不是许可。每项开工前走 §2.1。
+
+### 7.1 原子
+
+| 顺序 | 出口 | 推荐主线 | 备注 |
+|------|------|----------|------|
+| 1 | `cn`（内部） | 本站 `src/lib/utils.ts` | 无确认也可做，随 Wave 0/Button |
+| 2 | Text | Kumo Text API + 本站 14px | catalog |
+| 3 | Label | 本站 `ui/label.tsx` | |
+| 4 | Separator | 本站 `ui/separator.tsx` | |
+| 5 | Button | meowth Button API（asChild）+ **本站 h-9 默认**；zhe 只提供非默认 size | **第一个要确认的控件** |
+| 6 | LinkButton | 与 Button 同文件；catalog | 随 Button 确认 |
+| 7 | Link | 本站 `<a>` + LinkProvider | |
+| 8 | Tooltip | meowth API；现页不加 Arrow | |
+| 9 | ThemeProvider | pew `useSyncExternalStore` | |
+| 10 | ThemeToggle | 本站三态 label | |
+| 11 | LinkProvider | Kumo 思路，本站实现 | |
+
+### 7.2 容器
+
+| 顺序 | 出口 | 推荐主线 |
+|------|------|----------|
+| 12 | LayerCard | pika 无边作 **variant**；本站有边实例用 variant 复现 |
+
+### 7.3 表单
+
+| 顺序 | 出口 | 推荐主线 |
+|------|------|----------|
+| 13 | Input | meowth size API；默认 `bg-background` 跟本站 |
+| 14 | InputArea | 本站无独立件，跟 Input 表面 |
+| 15 | InputGroup | Kumo API，本站皮 |
+| 16 | SensitiveInput | 本站 Login 眼标行为，抽成控件 |
+| 17 | Checkbox | pika indeterminate |
+| 18 | Radio | 本站 `ui/radio-group` |
+| 19 | Switch | meowth |
+| 20 | Select | meowth/surety |
+| 21 | Slider | 本站 ui（现页未用） |
+| 22 | Field | signoff Field |
+| 23 | Toggle / ToggleGroup | 本站 ui |
+| 24 | Combobox | Kumo compound，Radix/cmdk 现栈 |
+| 25 | Autocomplete | 同 Combobox 家族一次确认 |
+| 26 | DatePicker | gecko calendar + locale props |
+
+### 7.4 反馈
+
+| 顺序 | 出口 | 推荐主线 |
+|------|------|----------|
+| 27 | Badge | meowth/surety semantic |
+| 28 | Banner | Kumo API，本站皮 |
+| 29 | Empty | surety/meowth empty-state |
+| 30 | Loader / SkeletonLine | meowth Spinner/skeleton |
+| 31 | Meter | 本站 progress + ARIA |
+| 32 | Toast | **本站 sonner** + Provider |
+| 33 | ClipboardText | 新；Interactive 现 Copy 是坏的 |
+| 34 | Code / CodeBlock | Kumo API，高亮后置 |
+| 35 | Avatar | 本站 ui |
+| 36 | Accordion | 本站 ui |
+
+### 7.5 浮层
+
+| 顺序 | 出口 | 推荐主线 |
+|------|------|----------|
+| 37 | Dialog | meowth Confirm API；overlay 跟本站 |
+| 38 | AlertDialog | 本站，独立导出 |
+| 39 | Popover | 本站 |
+| 40 | DropdownMenu | 本站 |
+| 41 | ContextMenu / HoverCard | 本站 ui |
+| 42 | Sheet | 本站 |
+| 43 | CommandPalette | surety 应用层 |
+
+### 7.6 结构（Sidebar 放最后）
+
+| 顺序 | 出口 | 推荐主线 |
+|------|------|----------|
+| 44 | Tabs | otter |
+| 45 | Collapsible | 本站（侧栏已用） |
+| 46 | Pagination | pika 受控 API，不带 DataTable |
+| 47 | Breadcrumbs | Kumo API |
+| 48 | NavigationMenu / MenuBar | 本站 ui |
+| 49 | Toolbar | Kumo API |
+| 50 | Table | surety/meowth primitive，不是 pika DataTable |
+| 51 | TableOfContents | Kumo API |
+| 52 | Grid | Kumo API，现页不强制换 |
+| 53 | BasaltMark | 本站 Mountain |
+| 54 | Sidebar | 本站 AppSidebar 视觉；零件化；drawer 归 Layout |
+
+### 7.7 图表轨道（确认 kit 后）
+
+| 顺序 | 出口 | 推荐主线 |
+|------|------|----------|
+| K1 | kit（内部）+ ChartPalette | §3.1：本站色值 + Whiteboard API + pew/Whiteboard tooltip |
+| K2 | StatCard | pew StatCard API |
+| K3 | SlotBarChart | **本站**（已有测试） |
+| K4 | BarChart | 本站 BarChartWidget 视觉 + kit |
+| K5 | LineChart | 本站 + kit；Whiteboard SeriesChart 作 API 参考 |
+| K6 | AreaChart | 本站 + kit |
+| K7 | DonutChart | 本站环/图例 + **必须 data props**；pew compact-donut 可参考 |
+| K8 | GroupedBar / StackedBar | 本站 + kit `barCornerRadius` |
+| K9 | Sparkline | 本站 + kit |
+| K10 | HeatmapCalendar | 本站；文案 props |
+| K11 | Gauge | 本站 |
+| K12 | Radar / Funnel / Bullet / Timeline | 本站视觉 + kit |
+| K13 | SankeyChart | 本站 + Whiteboard SankeyChart 测试结构 |
+| K14 | ItemList | 本站列表卡；不是 ActionGrid |
+| K15 | DateNavigation | 本站 widget，locale props |
+| K16 | Flow | catalog 最小页 |
+
+每一张 chart 的推荐都要单独确认；K1 必须先于 K2–K16。
+
+### 7.8 拼现页壳（01 阶段 7）
+
+全部 6.2 填完 catalog 且 stable/chart 已 wire 后：
+
+| # | commit |
+|---|--------|
+| S1 | `refactor: rebuild dashboard layout with package` |
+| S2 | `refactor: rebuild app sidebar with package` |
+| S3… | 其余组合页，**一页一 commit** |
+| S9 | `chore: remove inlined ui copies` |
+
+登录等无侧栏页单独 commit。对照 `docs/baselines/2-0/`。
+
+---
+
+## 8. 质量（执行时）
+
+| 门 | 何时 |
+|----|------|
+| biome error-on-warnings | 每个 commit（husky） |
+| typecheck 含 package | Wave 0.3 起每个 commit |
+| 单元测试 | 每个控件 b 不得无测 |
+| browser 测试 | Dialog/Combobox/DatePicker/CommandPalette/Sidebar |
+| a11y | 控件 b 的测试里断言名称；图表 summary |
+| 覆盖率 | pre-push；包源码不降门槛 |
+| 发布门 A/B/C/D | 01 §5.3，发 alpha 前 |
+
+参考 Kumo：compound、variants 可机器读、icon-only `aria-label`。不参考：ECharts、Base UI、`bg-kumo-*`。
+
+---
+
+## 9. 明确不做
+
+- 不在 placeholder 阶段拆包或改组合页皮肤
+- 不把图表和 Button 放进同一波「先做完所有控件」
+- 不把 pew 里 20+ 个业务 chart 文件当 Basalt 出口
+- 不把 Whiteboard 16 色 pastel 换成现网 24 色而不经确认（默认**不换色值**）
+- 不跳过哥的底稿确认
+- 不 `--no-verify`
+
+---
+
+## 10. 开工开关
+
+1. 01 第 13 节拍板（侧栏 kit 组、CSS 契约等）
+2. 本文审查通过
+3. Wave P（placeholder）
+4. 确认 Button 底稿 → Wave 0 → Button 起按 §7 顺序
+
+下一句代码从 Wave P 的 `feat: add ui catalog placeholder page` 开始。
