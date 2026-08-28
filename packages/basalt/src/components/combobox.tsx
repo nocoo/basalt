@@ -33,6 +33,20 @@ export function Combobox({
 			setQuery(value);
 		}
 	}, [value]);
+	useEffect(() => {
+		const node = inputRef.current;
+		const form = node?.form;
+		if (!form || value !== undefined) {
+			return;
+		}
+		const onReset = () => {
+			setUncontrolled(defaultValue);
+			setQuery(defaultValue);
+			setOpen(false);
+		};
+		form.addEventListener("reset", onReset);
+		return () => form.removeEventListener("reset", onReset);
+	}, [defaultValue, value]);
 	const filtered = items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
 	const activeIndex = Math.min(active, Math.max(0, filtered.length - 1));
 	const activeItem = filtered[activeIndex];
@@ -49,10 +63,12 @@ export function Combobox({
 		} else {
 			setQuery(value);
 		}
-		skipFocusOpen.current = true;
 		setOpen(false);
 		onValueChange?.(next);
-		inputRef.current?.focus();
+		if (inputRef.current && document.activeElement !== inputRef.current) {
+			skipFocusOpen.current = true;
+			inputRef.current.focus();
+		}
 	}
 
 	useEffect(() => {

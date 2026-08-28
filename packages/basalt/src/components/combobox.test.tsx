@@ -79,6 +79,28 @@ describe("Combobox", () => {
 		expect(input).toHaveFocus();
 	});
 
+	it("restores defaultValue on form reset", () => {
+		render(
+			<form>
+				<Combobox
+					items={["Apple", "Banana"]}
+					defaultValue="Apple"
+					placeholder="Fruit"
+					name="fruit"
+				/>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.change(input, { target: { value: "Ba" } });
+		fireEvent.click(screen.getByRole("option", { name: "Banana" }));
+		expect(document.querySelector('input[name="fruit"]')).toHaveValue("Banana");
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		expect(screen.getByLabelText("Fruit")).toHaveValue("Apple");
+		expect(document.querySelector('input[name="fruit"]')).toHaveValue("Apple");
+	});
+
 	it("stays closed after selecting a focused option", () => {
 		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
 		fireEvent.focus(screen.getByLabelText("Fruit"));
