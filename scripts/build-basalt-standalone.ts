@@ -18,11 +18,11 @@ function walk(dir: string): string[] {
 			files.push(...walk(path));
 			continue;
 		}
-		if (/\.(ts|tsx)$/.test(entry.name) && !entry.name.includes(".test.")) {
+		if (/\.(ts|tsx)$/.test(entry.name) && !/\.(test|spec)\./.test(entry.name)) {
 			files.push(path);
 		}
 	}
-	return files;
+	return files.sort();
 }
 
 function classCandidates(source: string): string[] {
@@ -43,7 +43,7 @@ const candidates = [
 			classCandidates(readFileSync(file, "utf8")),
 		),
 	),
-];
+].sort();
 
 async function loadStylesheet(id: string, base: string) {
 	if (
