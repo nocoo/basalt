@@ -140,6 +140,36 @@ describe("Combobox", () => {
 		expect(screen.queryByRole("option", { name: "Apple" })).not.toBeInTheDocument();
 	});
 
+	it("ignores the process key", () => {
+		const onValueChange = vi.fn();
+		render(<Combobox items={["Apple"]} placeholder="Fruit" onValueChange={onValueChange} />);
+		fireEvent.focus(screen.getByLabelText("Fruit"));
+		fireEvent.keyDown(screen.getByLabelText("Fruit"), { key: "Process" });
+		expect(onValueChange).not.toHaveBeenCalled();
+	});
+
+	it("keeps highlight at zero when no options match", () => {
+		const onValueChange = vi.fn();
+		render(<Combobox items={["Apple"]} placeholder="Fruit" onValueChange={onValueChange} />);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.change(input, { target: { value: "zzz" } });
+		fireEvent.keyDown(input, { key: "ArrowDown" });
+		fireEvent.keyDown(input, { key: "ArrowUp" });
+		fireEvent.keyDown(input, { key: "Enter" });
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+		expect(onValueChange).not.toHaveBeenCalled();
+	});
+
+	it("syncs the query when a controlled value is cleared", () => {
+		const { rerender } = render(
+			<Combobox items={["Apple", "Banana"]} value="Apple" placeholder="Fruit" />,
+		);
+		expect(screen.getByLabelText("Fruit")).toHaveValue("Apple");
+		rerender(<Combobox items={["Apple", "Banana"]} placeholder="Fruit" />);
+		expect(screen.getByLabelText("Fruit")).toHaveValue("Apple");
+	});
+
 	it("ignores keys during IME composition", () => {
 		const onValueChange = vi.fn();
 		render(
@@ -161,6 +191,16 @@ describe("Combobox", () => {
 		expect(screen.queryByRole("option", { name: "Apple" })).not.toBeInTheDocument();
 		fireEvent.click(input);
 		expect(screen.getByRole("option", { name: "Apple" })).toBeInTheDocument();
+	});
+
+	it("restores the query when focus leaves", () => {
+		render(<Combobox items={["Apple", "Banana"]} placeholder="Fruit" defaultValue="Apple" />);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.change(input, { target: { value: "Ban" } });
+		fireEvent.focusOut(input, { relatedTarget: document.body });
+		expect(input).toHaveValue("Apple");
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
 	});
 
 	it("closes on document Escape without committing", () => {

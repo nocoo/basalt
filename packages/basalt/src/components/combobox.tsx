@@ -133,14 +133,6 @@ export function Combobox({
 					if (event.nativeEvent.isComposing || event.key === "Process") {
 						return;
 					}
-					if (event.key === "Escape") {
-						event.preventDefault();
-						event.stopPropagation();
-						setOpen(false);
-						setQuery(selected);
-						setActive(0);
-						return;
-					}
 					if (event.key === "ArrowDown") {
 						event.preventDefault();
 						setOpen(true);
