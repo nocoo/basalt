@@ -232,6 +232,9 @@
   .-ml-0\.5 {
     margin-left: calc(var(--spacing) * -0.5);
   }
+  .box-border {
+    box-sizing: border-box;
+  }
   .block {
     display: block;
   }
