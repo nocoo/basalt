@@ -69,39 +69,39 @@ function formatCivil(date: Civil, locale: string, options: Intl.DateTimeFormatOp
 	}).format(utcDate(date));
 }
 
-function compareIso(left: string, right: string) {
-	const a = parseIso(left);
-	const b = parseIso(right);
-	if (!a || !b) {
-		return left < right ? -1 : left > right ? 1 : 0;
+function compareCivil(left: Civil, right: Civil) {
+	if (left.y !== right.y) {
+		return left.y - right.y;
 	}
-	if (a.y !== b.y) {
-		return a.y - b.y;
+	if (left.m !== right.m) {
+		return left.m - right.m;
 	}
-	if (a.m !== b.m) {
-		return a.m - b.m;
-	}
-	return a.d - b.d;
+	return left.d - right.d;
 }
 
 function withinBounds(iso: string, min?: string, max?: string) {
-	if (min && parseIso(min) && compareIso(iso, min) < 0) {
+	const date = parseIso(iso);
+	const minDate = min ? parseIso(min) : null;
+	const maxDate = max ? parseIso(max) : null;
+	if (!date) {
 		return false;
 	}
-	if (max && parseIso(max) && compareIso(iso, max) > 0) {
+	if (minDate && compareCivil(date, minDate) < 0) {
+		return false;
+	}
+	if (maxDate && compareCivil(date, maxDate) > 0) {
 		return false;
 	}
 	return true;
 }
 
 function clampCivil(date: Civil, min?: string, max?: string) {
-	const iso = formatIso(date);
 	const minDate = min ? parseIso(min) : null;
 	const maxDate = max ? parseIso(max) : null;
-	if (minDate && compareIso(iso, formatIso(minDate)) < 0) {
+	if (minDate && compareCivil(date, minDate) < 0) {
 		return minDate;
 	}
-	if (maxDate && compareIso(iso, formatIso(maxDate)) > 0) {
+	if (maxDate && compareCivil(date, maxDate) > 0) {
 		return maxDate;
 	}
 	return date;

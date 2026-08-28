@@ -152,6 +152,27 @@ describe("DatePicker", () => {
 		expect(document.activeElement).toHaveAttribute("aria-label", "Date");
 	});
 
+	it("forwards focus handlers to the trigger", () => {
+		const onFocus = vi.fn();
+		const onBlur = vi.fn();
+		render(<DatePicker onFocus={onFocus} onBlur={onBlur} aria-label="Date" />);
+		const trigger = screen.getByRole("button", { name: "Date" });
+		fireEvent.focus(trigger);
+		fireEvent.blur(trigger);
+		expect(onFocus).toHaveBeenCalled();
+		expect(onBlur).toHaveBeenCalled();
+	});
+
+	it("allows the exact min and max day", async () => {
+		render(
+			<DatePicker defaultValue="2024-01-15" min="2024-01-15" max="2024-01-15" aria-label="Date" />,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		expect(await screen.findByRole("button", { name: "2024-01-15" })).toBeEnabled();
+		expect(screen.getByRole("button", { name: "2024-01-14" })).toBeDisabled();
+		expect(screen.getByRole("button", { name: "2024-01-16" })).toBeDisabled();
+	});
+
 	it("compares extended-year bounds numerically", async () => {
 		render(<DatePicker defaultValue="9999-12-31" max="9999-12-31" aria-label="Date" />);
 		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
