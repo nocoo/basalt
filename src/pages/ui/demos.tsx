@@ -25,6 +25,7 @@ import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { AlertTriangle, CircleAlert, Info, X } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
 import { EXTRA_DEMOS, EXTRA_EXAMPLES } from "./catalog-ready";
+import { KUMO_EXAMPLES } from "./kumo-examples";
 
 function Preview({ children }: { children: ReactNode }) {
 	return <div className="flex flex-wrap items-center gap-3">{children}</div>;
@@ -595,4 +596,5 @@ export const UI_EXAMPLES: Record<string, { title: string; code: string; render: 
 	{
 		...EXTRA_EXAMPLES,
 		...BASE_EXAMPLES,
+		...KUMO_EXAMPLES,
 	};

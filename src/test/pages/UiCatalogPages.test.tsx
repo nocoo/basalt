@@ -190,6 +190,36 @@ describe("ui catalog", () => {
 		expect(screen.getAllByRole("button", { name: "Update" }).length).toBeGreaterThan(0);
 	});
 
+	it.each([
+		[
+			"badge",
+			[
+				"Primary Badges",
+				"Other color variants",
+				"Dot badges",
+				"In a sentence",
+				"With an icon",
+				"Linked badge",
+			],
+		],
+		["checkbox", ["Default", "Checked", "Indeterminate", "Disabled", "Error"]],
+		["switch", ["Off State", "On State", "Disabled", "Sizes"]],
+		["input", ["With Label and Description", "With Error (String)", "Disabled", "Input Types"]],
+		["loader", ["Default Size", "Custom Size"]],
+		["empty", ["Basic", "With icon"]],
+		["meter", ["Basic Meter", "Custom Value Display", "Hidden Value"]],
+		["pagination", ["Full Controls (Default)", "Simple Controls"]],
+		["toast", ["Title Only", "Success Variant", "Error Variant"]],
+		["clipboard-text", ["Short Text", "API Key", "Copy Alternate Text"]],
+	] as const)("documents kumo examples for %s", (slug, titles) => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog(`/ui/${slug}`);
+		for (const title of titles) {
+			expect(screen.getByRole("heading", { name: title })).toBeInTheDocument();
+		}
+	});
+
 	it("documents button examples like kumo", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
