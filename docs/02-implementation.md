@@ -1,6 +1,6 @@
 # 02 · 2.0 实现步骤
 
-> 状态：待审查。依赖 [01-plan-2-0.md](./01-plan-2-0.md) 的架构与 6.2 出口表。
+> 状态：与 01 联审。依赖 [01-plan-2-0.md](./01-plan-2-0.md) 的架构与 6.2 出口表。
 > 本文只写**怎么做**：阶段、原子化提交、每个控件的推荐底稿与确认门。
 > 不含工时。未确认本文前不写业务代码。
 
@@ -12,12 +12,14 @@
 
 | 点 | 01 | 02 |
 |----|----|----|
-| 第一刀代码 | 阶段 0 workspace | **先**在现站加齐全部 `/ui/:name` placeholder 路由和入口，页面空壳 |
+| 取样 vs 第一刀代码 | 阶段 0 含冻结截图 | **先** Wave B 冻结截图（改侧栏之前），再 Wave P 加 `/ui/:name` placeholder |
 | 每个控件 | 7.2 底稿可直接用 | **先推荐、等哥确认，再写实现** |
-| 顺序 | 阶段 1→7 按 kind | **先小后大**：原子 → 表单 → 反馈 → 浮层 → 容器/结构 → Sidebar → **图表工具层** → 图表控件 → 拼现页壳 |
+| 顺序 | 阶段 1→7 按 kind | **先小后大**：原子 → 表单 → 反馈 → 浮层 → 容器/结构 → Sidebar catalog → **图表工具层** → 图表控件 → 拼现页壳 |
 | 图表 | 与其它控件并列 stage 6 | **单独轨道**：先 kit（色板、tooltip、轴/字号），再各个 chart |
 | 家族权重 | 7.2 分散 | **pew / zhe / intentional-kusto-queries 加权**；本站只锁视觉 |
 | 质量 | 6DQ 章节 | **Husky 从第一行包代码起就拦**：typecheck + `biome --error-on-warnings` + test。不准先红后补 |
+| Sidebar 现页 | 6.2 `wire=/` | 实现时只填 `/ui/sidebar`；现页 `/` 推迟到 S2 |
+| 发布路径 | 阶段 8 列门 | Wave 8 原子提交覆盖 publint、仓外门、CHANGELOG、alpha |
 
 架构、CSS 命名空间、发布门 A/B/C/D、观感冻结仍以 01 为准。冲突时：执行顺序听 02，API/CSS/发布听 01。
 
@@ -35,7 +37,7 @@
 
 **等哥回复选哪条（或改选）之后才能改代码。** 禁止用 01 §7.2 默认赢家直接开工。
 
-例外：Wave P（placeholder）不需要逐页确认。
+例外：Wave B（截图）和 Wave P（placeholder）不需要逐页确认。
 
 ### 2.2 家族权重
 
@@ -45,12 +47,12 @@
 |------|----|------|
 | 高 | `pew` `97a890fabe6e` | StatCard、ChartTooltip、产品图表密度 |
 | 高 | `zhe` `c31c239f01c9` | token/密度契约 `docs/22-design-tokens.md`、Button/Input 表面 |
-| 高 | `intentional-kusto-queries`（Whiteboard）`data/dashboard/src/model/chart-config.ts` + `view/charts/*` | **图表工具层主参考**：色板函数、轴、字号、tooltip、cursor、无动画 |
+| 高 | `intentional-kusto-queries`（Whiteboard）`bce8a88fe26e` `data/dashboard/src/model/chart-config.ts` + `view/charts/*` | **图表工具层主参考**：色板函数、轴、字号、tooltip、cursor、无动画 |
 | 中 | 本站 `basalt` | **视觉冻结真相**；SlotBarChart 测试；Sonner；三态 ThemeToggle |
 | 中 | `meowth` `surety` `pika` `otter` `signoff.now` `gecko` | API / asChild / Field / Tabs / Table primitive / DatePicker |
 | 低 | 其它 personal clone | 只在前几档没有对应物时看 |
 
-Whiteboard 路径：`/Users/nocoo/workspace/work/whiteboard/intentional-kusto-queries`。它不是 personal/ 下的仓，但是 Basalt family，图表优先于 pew 里「每个页面一份 chart 文件」的散装实现。
+Whiteboard 路径：`/Users/nocoo/workspace/work/whiteboard/intentional-kusto-queries`。钉 SHA `bce8a88fe26e`。它不是 personal/ 下的仓，但是 Basalt family，图表优先于 pew 里「每个页面一份 chart 文件」的散装实现。换底稿先改 01 §7.1 与本表再动手。
 
 视觉冲突时：**本站 1.3.5 像素优先**（01 §3.2）。zhe 的 `h-10` 只能当非默认 `size`，不能改本站默认 Button `h-9`。
 
@@ -78,14 +80,15 @@ Wave 0 起：
 - 包内 coverage 门槛与现网 models 一样高（01 现为 95% 语句/分支/函数/行，针对包源码；第一批文件少也不得降门槛凑数——用真实测试填）
 - 不允许 `--no-verify`
 - 不允许先合进红测试再「下个 commit 补」
+- **测试与实现必须同一次绿 commit**（见 §7）。禁止单独提交会让 husky 失败的红测
 
-每个控件提交必须带：实现 + 单测 + 填满该 `/ui/:name` placeholder（不再是空壳）。stable/chart 另接 01 的现页 wire。a11y：icon-only 名称、label 关联、图表 `aria-label`/`summary`。参考 Kumo 的 compound/ARIA，不抄视觉。
+每个控件提交必须带：实现 + 单测 + 填满该 `/ui/:name` placeholder（不再是空壳）。stable/chart/provider 另接 01 的现页 wire（Sidebar 除外，见 §8.6 / §8.8）。a11y：icon-only 名称、label 关联、图表 `aria-label`/`summary`。参考 Kumo 的 compound/ARIA，不抄视觉。
 
 ### 2.5 原子化提交
 
 - Conventional Commits，祈使句，全小写，≤50 字符
 - 一次一个逻辑；禁止 `git add -A`
-- placeholder 与实现分开；实现与「接到现页」分开
+- placeholder 与实现分开；实现与「接到现页」分开（测试不与实现分开）
 - 提交后 Husky 必须绿
 
 ---
@@ -113,8 +116,8 @@ kit **不是** Kumo ECharts。公开 chart 控件全部建立在 kit 上。
 
 | 模块 | 推荐主线 | 理由 | 不选 |
 |------|----------|------|------|
-| 色板数值 | 本站 `src/lib/palette.ts` + `index.css` `--chart-*` | 观感冻结 | 直接换 Whiteboard 的 16 色 pastel（会改现图） |
-| 色板 API | Whiteboard `chart-config.ts`：`getChartColor` / `withAlpha` / tone | 有测试、函数化 | pew 每个 chart 文件自己取色 |
+| 色板数值 | 本站 `src/lib/palette.ts` + `index.css` `--chart-*`（现网 24 色） | 观感冻结 | 换成 Whiteboard 16 色 pastel（会改现图） |
+| 色板 API | Whiteboard `bce8a88fe26e` `chart-config.ts`：`getChartColor` / `withAlpha` / tone | 有测试、函数化 | pew 每个 chart 文件自己取色 |
 | Tooltip 容器 | pew `chart-tooltip.tsx` + Whiteboard `ChartTooltip` | 统一 title/row/dot；pew 更贴近本站 `radius-widget` | 各图内联 div |
 | Tooltip/轴行为 | Whiteboard `CHART_TOOLTIP_PROPS` `AXIS_CONFIG` `ANIMATION_PROPS` `chartFontSize` | 关飞入动画、轴无线、字号一处定义 | 各图 `fontSize={12}` |
 | 图表卡片壳 | 本站现卡 class（有边/无边跟实例） | 冻结 | Whiteboard `ring-1 ring-border/40` 一刀切 |
@@ -125,11 +128,32 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 
 ---
 
-## 4. Wave P — 全部 placeholder（第一刀代码）
+## 4. Wave B — 视觉基线（改任何导航之前）
+
+**必须在 Wave P 之前。** Wave P 会给侧栏加「控件库」组，若先改导航再取样，基线就不是现网。
+
+| # | commit | 内容 |
+|---|--------|------|
+| B1 | `docs: capture 2-0 visual baselines` | `docs/baselines/2-0/`，01 §3.2 矩阵 |
+
+约束：
+
+- HEAD 即批准时基线；把 SHA 写入 01 §3.2 替换「批准时 HEAD」那句
+- 已有路由 × `{light,dark}` × desktop `1280×800` × mobile `390×844`
+- 另存：侧栏展开/折叠、移动抽屉开、一个 Dialog 开
+- Heatmap 等先冻种子或确定性 mock，禁止未播种 `Math.random()`
+- 本 commit **禁止**改 `AppSidebar` / `App.tsx` / 现页 class
+- 浏览器：本机 Chrome；locale `zh-CN`；timezone `Asia/Shanghai`；`prefers-reduced-motion: reduce`
+
+Wave P 之后不重拍整表。阶段 7 对照这批图；侧栏允许多一个默认折叠组。
+
+---
+
+## 5. Wave P — 全部 placeholder（第一刀代码）
 
 在**现仓库 SPA**上加齐入口，不实现控件、不拆 workspace。现有组合页零视觉改动（只侧栏多一个默认折叠组，01 §13.2）。
 
-### 4.1 路由
+### 5.1 路由
 
 索引：`/ui`
 
@@ -218,7 +242,9 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 
 另加分类索引锚点（同一 `/ui` 页内 heading，或 `/ui/charts` 重定向到索引过滤）：不强制单独路由。
 
-### 4.2 Placeholder 页最低内容
+78 条 kebab 必须与 01 §6.2 `name` 一一对应。`/ui/:slug` 不得抢现有路由（现网无 `/ui`）。
+
+### 5.2 Placeholder 页最低内容
 
 - 标题 = 控件名
 - 一句「未实现」
@@ -228,15 +254,17 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 
 实现该控件时**原地填满**此页，不另开路由。
 
-### 4.3 侧栏
+### 5.3 侧栏
 
-现有 `NAV_GROUPS` 不改顺序。新增一组 `nav.kit`（en: `Library`，zh: `控件库`），`defaultOpen: false`。组内只放：
+现有 `NAV_GROUPS` 不改顺序、不改现有组名。新增一组 `nav.kit`（en: `Library`，zh: `控件库`），`defaultOpen: false`。组内只放：
 
 - `/ui` 索引（分类列表，链到各 placeholder）
 
 不要把 78 条都挂到侧栏。⌘K 收录全部 `/ui/:name`。
 
-### 4.4 Wave P 原子化提交
+禁止把新组命名为「控件」：现网 `nav.controls` 已是「控件」（Interactive / Data / Forms / Navigation）。
+
+### 5.4 Wave P 原子化提交
 
 | # | commit | 文件（示意） |
 |---|--------|----------------|
@@ -247,56 +275,55 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 | P5 | `test: cover ui placeholder routes` | 渲染 `/ui` 与一个 slug，断言 placeholder |
 | P6 | `feat: index ui pages in command palette` | `AppSidebar` cmdk 增加 kit 项 |
 
-P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的唯一导航变化。
+P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的唯一导航变化。P5 的测试与被测路由必须同一次绿：若 P2 已注册路由，P5 可紧随；禁止 P5 先于 P1/P2 合进红测。
 
 ---
 
-## 5. Wave 0 — 包骨架（第一个真控件之前）
+## 6. Wave 0 — 包骨架（第一个真控件之前）
 
-在确认 **Button** 底稿之后、写 Button 之前做（或与 Button 同一迭代，但提交在 Button 前）。
+在确认 **Button** 底稿之后、写 Button 之前做（或与 Button 同一迭代，但提交在 Button 前）。**先让工具链看见包，再往包里写文件。**
 
 | # | commit |
 |---|--------|
 | 0.1 | `chore: add packages/basalt workspace` |
-| 0.2 | `feat: extract basalt design tokens`（`--basalt-*`，showcase 映射，现页颜色不变） |
-| 0.3 | `chore: typecheck vitest cover packages`（**同 commit 改 husky 会跑到的脚本**） |
+| 0.2 | `chore: typecheck vitest cover packages`（**同 commit 改 husky 会跑到的脚本**；包可仍为空） |
+| 0.3 | `feat: extract basalt design tokens`（`--basalt-*`，showcase 映射，现页颜色不变） |
 | 0.4 | `feat: add empty package exports` |
 | 0.5 | `chore: add publish gate fixtures`（vite-tailwind / vite-standalone / next19 模板） |
 
-0.2 验收：已有路由与基线一致。没有基线截图则 0.2 前加：
+0.2 必须在 0.3 之前：否则 tokens 进包时 typecheck/Vitest 还不扫 `packages/basalt`，husky 绿了也看不见包内错误。
 
-| # | commit |
-|---|--------|
-| 0.0 | `docs: capture 2-0 visual baselines`（`docs/baselines/2-0/`，01 §3.2 矩阵） |
+0.3 验收：已有路由与 Wave B 基线一致（侧栏允许多一个折叠组）。
 
 ---
 
-## 6. 单控件实现模板（确认之后）
+## 7. 单控件实现模板（确认之后）
 
-每个 6.2 出口固定四步提交（可因「无现页 wire」少一步）：
+每个 6.2 出口固定三步提交（可因「无现页 wire」少一步）。**禁止**单独提交红测。
 
 | # | commit 形态 | 内容 |
 |---|-------------|------|
-| a | `test: add <Name> unit tests` | 先红或与 b 合并仅当测试与实现同逻辑且一次绿；优先分开 |
-| b | `feat: add <Name> control` | `packages/basalt/src/...`，无 mock、无 i18n |
-| c | `feat: fill <Name> catalog page` | 替换 placeholder：预览、import、copy、props、来源 SHA |
-| d | `refactor: wire <Name> on <route>` | 仅 stable/chart/provider，01 的 wire 路由 |
+| a | `feat: add <Name> control` | 实现 + 单测，同 commit，husky 一次绿。`packages/basalt/src/...`，无 mock、无 i18n |
+| b | `feat: fill <Name> catalog page` | 替换 placeholder：预览、import、copy、props、来源 SHA |
+| c | `refactor: wire <Name> on <route>` | 仅 stable/chart/provider，01 的 wire 路由 |
 
 复杂控件（Dialog、Combobox、DatePicker、CommandPalette、Sidebar）加：
 
 | # | commit |
 |---|--------|
-| e | `test: add <Name> browser tests` |
+| d | `test: add <Name> browser tests` | 与能绿的 harness 同 commit；不得先合红测 |
 
-不允许：只实现不填 catalog 页；catalog 页继续显示 placeholder。
+不允许：只实现不填 catalog 页；catalog 页继续显示 placeholder；`test:` 先红、下个 commit 再补实现。
+
+**Sidebar 例外：** 步骤 c 不在实现波执行。实现波只做 a + b + d（catalog `/ui/sidebar` + browser 测试）。现页 `wire=/` 见 §8.8 S2。
 
 ---
 
-## 7. 实现顺序（先小后大）与推荐底稿
+## 8. 实现顺序（先小后大）与推荐底稿
 
 下列「推荐」= 加权后的**建议**，不是许可。每项开工前走 §2.1。
 
-### 7.1 原子
+### 8.1 原子
 
 | 顺序 | 出口 | 推荐主线 | 备注 |
 |------|------|----------|------|
@@ -312,13 +339,13 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | 10 | ThemeToggle | 本站三态 label | |
 | 11 | LinkProvider | Kumo 思路，本站实现 | |
 
-### 7.2 容器
+### 8.2 容器
 
 | 顺序 | 出口 | 推荐主线 |
 |------|------|----------|
 | 12 | LayerCard | pika 无边作 **variant**；本站有边实例用 variant 复现 |
 
-### 7.3 表单
+### 8.3 表单
 
 | 顺序 | 出口 | 推荐主线 |
 |------|------|----------|
@@ -337,7 +364,7 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | 25 | Autocomplete | 同 Combobox 家族一次确认 |
 | 26 | DatePicker | gecko calendar + locale props |
 
-### 7.4 反馈
+### 8.4 反馈
 
 | 顺序 | 出口 | 推荐主线 |
 |------|------|----------|
@@ -352,7 +379,7 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | 35 | Avatar | 本站 ui |
 | 36 | Accordion | 本站 ui |
 
-### 7.5 浮层
+### 8.5 浮层
 
 | 顺序 | 出口 | 推荐主线 |
 |------|------|----------|
@@ -364,7 +391,7 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | 42 | Sheet | 本站 |
 | 43 | CommandPalette | surety 应用层 |
 
-### 7.6 结构（Sidebar 放最后）
+### 8.6 结构（Sidebar 放最后）
 
 | 顺序 | 出口 | 推荐主线 |
 |------|------|----------|
@@ -378,13 +405,13 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | 51 | TableOfContents | Kumo API |
 | 52 | Grid | Kumo API，现页不强制换 |
 | 53 | BasaltMark | 本站 Mountain |
-| 54 | Sidebar | 本站 AppSidebar 视觉；零件化；drawer 归 Layout |
+| 54 | Sidebar | 本站 AppSidebar 视觉；零件化；drawer 归 Layout。**只填 `/ui/sidebar`，现页 `/` 到 S2** |
 
-### 7.7 图表轨道（确认 kit 后）
+### 8.7 图表轨道（确认 kit 后）
 
 | 顺序 | 出口 | 推荐主线 |
 |------|------|----------|
-| K1 | kit（内部）+ ChartPalette | §3.1：本站色值 + Whiteboard API + pew/Whiteboard tooltip |
+| K1 | kit（内部）+ ChartPalette | §3.1：本站 24 色值 + Whiteboard `bce8a88fe26e` API + pew/Whiteboard tooltip |
 | K2 | StatCard | pew StatCard API |
 | K3 | SlotBarChart | **本站**（已有测试） |
 | K4 | BarChart | 本站 BarChartWidget 视觉 + kit |
@@ -401,55 +428,73 @@ P1–P6 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | K15 | DateNavigation | 本站 widget，locale props |
 | K16 | Flow | catalog 最小页 |
 
-每一张 chart 的推荐都要单独确认；K1 必须先于 K2–K16。
+每一张 chart 的推荐都要单独确认；K1 必须先于 K2–K16。色值冻本站 24 色，不换成 Whiteboard 16 色。
 
-### 7.8 拼现页壳（01 阶段 7）
+### 8.8 拼现页壳（01 阶段 7）
 
-全部 6.2 填完 catalog 且 stable/chart 已 wire 后：
+前置：全部 6.2 catalog 已填满；stable / chart / **provider** 均已接到表内 wire；**Sidebar 现页除外**（在 S2 做）。
 
 | # | commit |
 |---|--------|
 | S1 | `refactor: rebuild dashboard layout with package` |
-| S2 | `refactor: rebuild app sidebar with package` |
+| S2 | `refactor: rebuild app sidebar with package`（Sidebar 现页 `wire=/` 在此完成） |
 | S3… | 其余组合页，**一页一 commit** |
 | S9 | `chore: remove inlined ui copies` |
 
 登录等无侧栏页单独 commit。对照 `docs/baselines/2-0/`。
 
+### 8.9 发布（01 阶段 8）
+
+仓外 tarball 门禁止用仓库 fixture 向上解析根 `node_modules`。脚本与门断言必须进版本库，不能只写在 01 里口头跑。
+
+| # | commit | 内容 |
+|---|--------|------|
+| 8.1 | `chore: add tarball publish gate scripts` | 复制 fixtures 到仓外 tmp、`npm pack`、安装 tarball、跑 A/B/C/D |
+| 8.2 | `test: assert tarball gates a b c d` | 与 8.1 可合并仅当同一次绿；断言 computed style 与根 barrel 不拉 optional peer |
+| 8.3 | `docs: write package readme css contracts` | 若 Wave 0 未写完双契约 |
+| 8.4 | `docs: add notice for kumo excerpts` | 仅当复制了 Kumo 逻辑 |
+| 8.5 | `docs: changelog 2.0.0-alpha` | Keep a Changelog 一节 |
+| 8.6 | `chore: release v2.0.0-alpha.n` | 只 bump `packages/basalt` 版本；走仓库 release 清单的 alpha 路径 |
+
+8.6 之前：publint、typecheck、包内 jsdom + browser 测试、门 A/B/C/D 全绿。失败不准发。先 alpha，自吃后再 `2.0.0`。
+
 ---
 
-## 8. 质量（执行时）
+## 9. 质量（执行时）
 
 | 门 | 何时 |
 |----|------|
 | biome error-on-warnings | 每个 commit（husky） |
-| typecheck 含 package | Wave 0.3 起每个 commit |
-| 单元测试 | 每个控件 b 不得无测 |
+| typecheck 含 package | Wave 0.2 起每个 commit |
+| 单元测试 | 每个控件 a 必须含测，且与实现同绿 |
 | browser 测试 | Dialog/Combobox/DatePicker/CommandPalette/Sidebar |
-| a11y | 控件 b 的测试里断言名称；图表 summary |
+| a11y | 控件 a 的测试里断言名称；图表 summary |
 | 覆盖率 | pre-push；包源码不降门槛 |
-| 发布门 A/B/C/D | 01 §5.3，发 alpha 前 |
+| 发布门 A/B/C/D | 01 §5.3，Wave 8，发 alpha 前 |
 
 参考 Kumo：compound、variants 可机器读、icon-only `aria-label`。不参考：ECharts、Base UI、`bg-kumo-*`。
 
 ---
 
-## 9. 明确不做
+## 10. 明确不做
 
+- 不在 Wave B 之前改侧栏或现页 class
 - 不在 placeholder 阶段拆包或改组合页皮肤
 - 不把图表和 Button 放进同一波「先做完所有控件」
 - 不把 pew 里 20+ 个业务 chart 文件当 Basalt 出口
-- 不把 Whiteboard 16 色 pastel 换成现网 24 色而不经确认（默认**不换色值**）
+- **不把本站 24 色换成 Whiteboard 16 色 pastel**（默认冻本站色值；换色必须先改 01 再经确认）
 - 不跳过哥的底稿确认
 - 不 `--no-verify`
+- 不在阶段 5 把 `AppSidebar` 换成包
 
 ---
 
-## 10. 开工开关
+## 11. 开工开关
 
-1. 01 第 13 节拍板（侧栏 kit 组、CSS 契约等）
-2. 本文审查通过
-3. Wave P（placeholder）
-4. 确认 Button 底稿 → Wave 0 → Button 起按 §7 顺序
+1. 01 第 13 节拍板（侧栏「控件库」组、CSS 契约等）
+2. 本文与 01 联审 Sign Off
+3. Wave B（冻结截图，改侧栏之前）
+4. Wave P（placeholder）
+5. 确认 Button 底稿 → Wave 0 → Button 起按 §8 顺序
 
-下一句代码从 Wave P 的 `feat: add ui catalog placeholder page` 开始。
+下一句动作从 Wave B 的 `docs: capture 2-0 visual baselines` 开始。未拍板、未 Sign Off 不准动。
