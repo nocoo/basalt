@@ -1,0 +1,36 @@
+import { Eye, EyeOff } from "lucide-react";
+import * as React from "react";
+import { cn } from "../utils/cn";
+import { Button } from "./button";
+import { Input } from "./input";
+
+export interface SensitiveInputProps extends Omit<React.ComponentProps<"input">, "type"> {
+	revealLabel: string;
+	hideLabel: string;
+}
+
+export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputProps>(
+	({ className, revealLabel, hideLabel, ...props }, ref) => {
+		const [revealed, setRevealed] = React.useState(false);
+		return (
+			<div className={cn("relative", className)}>
+				<Input ref={ref} type={revealed ? "text" : "password"} className="pr-10" {...props} />
+				<Button
+					type="button"
+					variant="ghost"
+					size="icon"
+					className="absolute right-0 top-0 h-9 w-9"
+					aria-label={revealed ? hideLabel : revealLabel}
+					onClick={() => setRevealed((value) => !value)}
+				>
+					{revealed ? (
+						<EyeOff className="h-4 w-4" aria-hidden="true" />
+					) : (
+						<Eye className="h-4 w-4" aria-hidden="true" />
+					)}
+				</Button>
+			</div>
+		);
+	},
+);
+SensitiveInput.displayName = "SensitiveInput";
