@@ -10,17 +10,24 @@ export interface SensitiveInputProps extends Omit<React.ComponentProps<"input">,
 }
 
 export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputProps>(
-	({ className, revealLabel, hideLabel, ...props }, ref) => {
+	({ className, revealLabel, hideLabel, disabled, ...props }, ref) => {
 		const [revealed, setRevealed] = React.useState(false);
 		return (
-			<div className={cn("relative", className)}>
-				<Input ref={ref} type={revealed ? "text" : "password"} className="pr-10" {...props} />
+			<div className="relative">
+				<Input
+					ref={ref}
+					type={revealed ? "text" : "password"}
+					className={cn("pr-10", className)}
+					disabled={disabled}
+					{...props}
+				/>
 				<Button
 					type="button"
 					variant="ghost"
 					size="icon"
 					className="absolute right-0 top-0 h-9 w-9"
 					aria-label={revealed ? hideLabel : revealLabel}
+					disabled={disabled}
 					onClick={() => setRevealed((value) => !value)}
 				>
 					{revealed ? (

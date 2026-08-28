@@ -1,4 +1,4 @@
-@import "../packages/basalt/src/styles/tokens.css";
+@import "../packages/basalt/src/styles/tailwind.css";
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -84,29 +84,6 @@
 	--color-heatmap-orange-3: hsl(var(--heatmap-orange-3));
 	--color-heatmap-orange-4: hsl(var(--heatmap-orange-4));
 
-	--color-basalt-background: hsl(var(--basalt-background));
-	--color-basalt-foreground: hsl(var(--basalt-foreground));
-	--color-basalt-card: hsl(var(--basalt-card));
-	--color-basalt-card-foreground: hsl(var(--basalt-card-foreground));
-	--color-basalt-secondary: hsl(var(--basalt-secondary));
-	--color-basalt-secondary-foreground: hsl(var(--basalt-secondary-foreground));
-	--color-basalt-popover: hsl(var(--basalt-popover));
-	--color-basalt-popover-foreground: hsl(var(--basalt-popover-foreground));
-	--color-basalt-primary: hsl(var(--basalt-primary));
-	--color-basalt-primary-foreground: hsl(var(--basalt-primary-foreground));
-	--color-basalt-muted: hsl(var(--basalt-muted));
-	--color-basalt-muted-foreground: hsl(var(--basalt-muted-foreground));
-	--color-basalt-accent: hsl(var(--basalt-accent));
-	--color-basalt-accent-foreground: hsl(var(--basalt-accent-foreground));
-	--color-basalt-destructive: hsl(var(--basalt-destructive));
-	--color-basalt-destructive-foreground: hsl(var(--basalt-destructive-foreground));
-	--color-basalt-border: hsl(var(--basalt-border));
-	--color-basalt-input: hsl(var(--basalt-input));
-	--color-basalt-ring: hsl(var(--basalt-ring));
-	--radius-basalt-lg: var(--basalt-radius);
-	--radius-basalt-md: calc(var(--basalt-radius) - 2px);
-	--radius-basalt-sm: calc(var(--basalt-radius) - 4px);
-
 	--radius-card: 14px;
 	--radius-widget: 10px;
 	--radius-lg: var(--radius);
@@ -139,38 +116,38 @@
  * Design tokens — light (default) & dark mode
  */
 :root {
-	/* L0 body */
-	--background: 220 14% 94%;
-	--foreground: 0 0% 12%;
+	/* L0 body — mapped from Basalt tokens */
+	--background: var(--basalt-background);
+	--foreground: var(--basalt-foreground);
 
 	/* L1 content panel */
-	--card: 220 14% 97%;
-	--card-foreground: 0 0% 12%;
+	--card: var(--basalt-card);
+	--card-foreground: var(--basalt-card-foreground);
 
 	/* L2 inner cards */
-	--secondary: 0 0% 100%;
-	--secondary-foreground: 0 0% 12%;
+	--secondary: var(--basalt-secondary);
+	--secondary-foreground: var(--basalt-secondary-foreground);
 
-	--popover: 0 0% 100%;
-	--popover-foreground: 0 0% 12%;
+	--popover: var(--basalt-popover);
+	--popover-foreground: var(--basalt-popover-foreground);
 
-	--primary: 217 91% 60%;
-	--primary-foreground: 0 0% 100%;
+	--primary: var(--basalt-primary);
+	--primary-foreground: var(--basalt-primary-foreground);
 
-	--muted: 220 14% 92%;
-	--muted-foreground: 0 0% 45%;
+	--muted: var(--basalt-muted);
+	--muted-foreground: var(--basalt-muted-foreground);
 
-	--accent: 220 14% 92%;
-	--accent-foreground: 0 0% 12%;
+	--accent: var(--basalt-accent);
+	--accent-foreground: var(--basalt-accent-foreground);
 
-	--destructive: 0 72% 51%;
-	--destructive-foreground: 0 0% 100%;
+	--destructive: var(--basalt-destructive);
+	--destructive-foreground: var(--basalt-destructive-foreground);
 
-	--border: 220 13% 88%;
-	--input: 220 13% 88%;
-	--ring: 217 91% 60%;
+	--border: var(--basalt-border);
+	--input: var(--basalt-input);
+	--ring: var(--basalt-ring);
 
-	--radius: 0.75rem;
+	--radius: var(--basalt-radius);
 
 	--sidebar-background: 220 14% 94%;
 	--sidebar-foreground: 0 0% 12%;
@@ -239,36 +216,36 @@
 }
 
 .dark {
-	/* L0 body: #171717 */
-	--background: 0 0% 9%;
-	--foreground: 0 0% 93%;
+	/* L0 body — mapped from Basalt tokens */
+	--background: var(--basalt-background);
+	--foreground: var(--basalt-foreground);
 
-	/* L1 content panel: #1b1b1b */
-	--card: 0 0% 10.6%;
-	--card-foreground: 0 0% 93%;
+	/* L1 content panel */
+	--card: var(--basalt-card);
+	--card-foreground: var(--basalt-card-foreground);
 
-	/* L2 inner cards: #1f1f1f */
-	--secondary: 0 0% 12.2%;
-	--secondary-foreground: 0 0% 93%;
+	/* L2 inner cards */
+	--secondary: var(--basalt-secondary);
+	--secondary-foreground: var(--basalt-secondary-foreground);
 
-	--popover: 0 0% 10.6%;
-	--popover-foreground: 0 0% 93%;
+	--popover: var(--basalt-popover);
+	--popover-foreground: var(--basalt-popover-foreground);
 
-	--primary: 217 91% 60%;
-	--primary-foreground: 0 0% 100%;
+	--primary: var(--basalt-primary);
+	--primary-foreground: var(--basalt-primary-foreground);
 
-	--muted: 0 0% 12.2%;
-	--muted-foreground: 0 0% 48%;
+	--muted: var(--basalt-muted);
+	--muted-foreground: var(--basalt-muted-foreground);
 
-	--accent: 0 0% 14%;
-	--accent-foreground: 0 0% 93%;
+	--accent: var(--basalt-accent);
+	--accent-foreground: var(--basalt-accent-foreground);
 
-	--destructive: 0 72% 51%;
-	--destructive-foreground: 0 0% 100%;
+	--destructive: var(--basalt-destructive);
+	--destructive-foreground: var(--basalt-destructive-foreground);
 
-	--border: 0 0% 16%;
-	--input: 0 0% 12%;
-	--ring: 217 91% 60%;
+	--border: var(--basalt-border);
+	--input: var(--basalt-input);
+	--ring: var(--basalt-ring);
 
 	--sidebar-background: 0 0% 9%;
 	--sidebar-foreground: 0 0% 93%;

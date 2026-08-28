@@ -1,3 +1,4 @@
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { ActionGridCard } from "@/components/dashboard/ActionGridCard";
 import { AreaChartCard } from "@/components/dashboard/AreaChartCard";
 import { BarChartCard } from "@/components/dashboard/BarChartCard";
@@ -20,13 +21,13 @@ export default function DashboardPage() {
 			{/* Row 0: analytics stat cards */}
 			<div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
 				{stats.map((s) => (
-					<div key={s.label} className="rounded-card bg-secondary p-4 md:p-5">
+					<LayerCard key={s.label} className="rounded-card bg-secondary p-4 md:p-5">
 						<p className="text-xs md:text-sm text-muted-foreground mb-1">{s.label}</p>
 						<h3 className="text-xl md:text-2xl font-semibold text-foreground font-display tracking-tight">
 							{s.value}
 						</h3>
 						<span className={`text-xs font-medium ${s.changeColorClass}`}>{s.change}</span>
-					</div>
+					</LayerCard>
 				))}
 			</div>
 

@@ -3,13 +3,14 @@ import {
 	type ReactNode,
 	useCallback,
 	useContext,
+	useEffect,
 	useMemo,
 	useSyncExternalStore,
 } from "react";
 
 export type BasaltTheme = "light" | "dark" | "system";
 
-const STORAGE_KEY = "basalt-theme";
+const STORAGE_KEY = "theme";
 
 type ThemeContextValue = {
 	theme: BasaltTheme;
@@ -42,6 +43,16 @@ function applyTheme(theme: BasaltTheme) {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
 	const theme = useSyncExternalStore(subscribe, readTheme, () => "system" as const);
+	useEffect(() => {
+		applyTheme(theme);
+		if (theme !== "system") {
+			return;
+		}
+		const mq = window.matchMedia("(prefers-color-scheme: dark)");
+		const onChange = () => applyTheme("system");
+		mq.addEventListener("change", onChange);
+		return () => mq.removeEventListener("change", onChange);
+	}, [theme]);
 	const setTheme = useCallback((next: BasaltTheme) => {
 		window.localStorage.setItem(STORAGE_KEY, next);
 		applyTheme(next);

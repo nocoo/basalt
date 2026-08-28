@@ -127,7 +127,7 @@ export default function FormsPage() {
 								<p className="text-sm text-foreground">{t("pages.forms.twoFactorAuth")}</p>
 								<p className="text-xs text-muted-foreground">{t("pages.forms.twoFactorDesc")}</p>
 							</div>
-							<Switch defaultChecked />
+							<Switch defaultChecked aria-label={t("pages.forms.twoFactorAuth")} />
 						</div>
 						<button
 							type="button"

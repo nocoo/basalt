@@ -1,3 +1,6 @@
+import { Link } from "@nocoo/basalt/components/link";
+import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
+import { useTheme } from "@nocoo/basalt/providers/theme";
 import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -5,7 +8,6 @@ import { Outlet, useLocation } from "react-router";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Github } from "@/components/icons/github";
 import { LanguageToggle } from "@/components/LanguageToggle";
-import { ThemeToggle } from "@/components/ThemeToggle";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import { CATALOG_BY_SLUG } from "@/pages/ui/catalog";
@@ -46,6 +48,7 @@ export function DashboardLayout() {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const location = useLocation();
 	const { t } = useTranslation();
+	const { theme } = useTheme();
 
 	const catalogSlug = location.pathname.startsWith("/ui/")
 		? location.pathname.slice("/ui/".length)
@@ -112,17 +115,17 @@ export function DashboardLayout() {
 						<h1 className="text-lg md:text-xl font-semibold text-foreground">{title}</h1>
 					</div>
 					<div className="flex items-center gap-1">
-						<a
+						<Link
 							href="https://github.com/nocoo/basalt"
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label={t("common.github")}
-							className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
+							className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors no-underline"
 						>
 							<Github className="h-[18px] w-[18px]" aria-hidden="true" strokeWidth={1.5} />
-						</a>
+						</Link>
 						<LanguageToggle />
-						<ThemeToggle />
+						<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
 					</div>
 				</header>
 				<div className={cn("flex-1 px-2 pb-2 md:px-3 md:pb-3")}>

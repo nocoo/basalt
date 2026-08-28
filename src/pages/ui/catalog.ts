@@ -109,3 +109,16 @@ export const CATALOG: CatalogEntry[] = [
 ];
 
 export const CATALOG_BY_SLUG = new Map(CATALOG.map((entry) => [entry.slug, entry]));
+
+export function catalogImportPath(entry: CatalogEntry): string {
+	if (entry.kind === "provider") {
+		return `@nocoo/basalt/providers/${entry.slug.replace(/-provider$/, "")}`;
+	}
+	if (entry.kind === "chart") {
+		return `@nocoo/basalt/charts/${entry.slug}`;
+	}
+	if (entry.slug === "link-button") {
+		return "@nocoo/basalt/components/button";
+	}
+	return `@nocoo/basalt/components/${entry.slug}`;
+}

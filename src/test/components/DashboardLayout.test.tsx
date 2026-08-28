@@ -1,3 +1,4 @@
+import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -10,15 +11,17 @@ vi.mock("@/hooks/use-mobile", () => ({
 
 function renderLayout(initialPath = "/") {
 	return render(
-		<MemoryRouter initialEntries={[initialPath]}>
-			<Routes>
-				<Route element={<DashboardLayout />}>
-					<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
-					<Route path="/accounts" element={<div data-testid="accounts-outlet">Accounts</div>} />
-					<Route path="/settings" element={<div data-testid="settings-outlet">Settings</div>} />
-				</Route>
-			</Routes>
-		</MemoryRouter>,
+		<ThemeProvider>
+			<MemoryRouter initialEntries={[initialPath]}>
+				<Routes>
+					<Route element={<DashboardLayout />}>
+						<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
+						<Route path="/accounts" element={<div data-testid="accounts-outlet">Accounts</div>} />
+						<Route path="/settings" element={<div data-testid="settings-outlet">Settings</div>} />
+					</Route>
+				</Routes>
+			</MemoryRouter>
+		</ThemeProvider>,
 	);
 }
 

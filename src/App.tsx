@@ -1,9 +1,9 @@
+import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import AccountsPage from "./pages/AccountsPage";
 import BadgeLoginPage from "./pages/BadgeLoginPage";
 import BankingDashboardPage from "./pages/BankingDashboardPage";

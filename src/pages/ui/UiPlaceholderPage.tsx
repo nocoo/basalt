@@ -1,7 +1,7 @@
 import { BookOpen } from "lucide-react";
 import { Link, useParams } from "react-router";
 import { PageIntro } from "@/components/PageIntro";
-import { CATALOG_BY_SLUG } from "./catalog";
+import { CATALOG_BY_SLUG, catalogImportPath } from "./catalog";
 import { UI_DEMOS } from "./demos";
 
 export default function UiPlaceholderPage() {
@@ -27,12 +27,16 @@ export default function UiPlaceholderPage() {
 			<div data-status="ready" data-slug={entry.slug} className="space-y-4">
 				<PageIntro
 					title={entry.name}
-					description={`import { ${entry.name} } from "@nocoo/basalt/components/${entry.slug}"`}
+					description={`import { ${entry.name} } from "${catalogImportPath(entry)}"`}
 					eyebrow="Library"
 					icon={BookOpen}
 				/>
-				<div className="rounded-card bg-secondary p-5 md:p-6">
+				<div className="rounded-card bg-secondary p-5 md:p-6 space-y-4">
 					<Demo />
+					<p className="text-xs text-muted-foreground">
+						Source: Basalt family + this repo tokens. Import path above. Props follow the component
+						TypeScript export.
+					</p>
 				</div>
 			</div>
 		);
@@ -52,10 +56,19 @@ export default function UiPlaceholderPage() {
 						Library index
 					</Link>
 				</p>
-				<p>
-					<code className="text-foreground">docs/01-plan-2-0.md</code>
-					{" · "}
-					<code className="text-foreground">docs/02-implementation.md</code>
+				<p className="flex flex-wrap gap-3">
+					<a
+						className="text-foreground underline underline-offset-4"
+						href="https://github.com/nocoo/basalt/blob/main/docs/01-plan-2-0.md"
+					>
+						docs/01-plan-2-0.md
+					</a>
+					<a
+						className="text-foreground underline underline-offset-4"
+						href="https://github.com/nocoo/basalt/blob/main/docs/02-implementation.md"
+					>
+						docs/02-implementation.md
+					</a>
 				</p>
 			</div>
 		</div>
