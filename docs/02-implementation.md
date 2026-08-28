@@ -1,6 +1,6 @@
 # 02 · 2.0 实现步骤
 
-> 状态：与 01 联审。依赖 [01-plan-2-0.md](./01-plan-2-0.md) 的架构与 6.2 出口表。
+> 状态：01+02 联审 Sign Off。01 第 13 节 2–11 已拍板；第 1 条（视觉基线）待确认后才 Wave B。依赖 [01-plan-2-0.md](./01-plan-2-0.md) 的架构与 6.2 出口表。
 > 本文只写**怎么做**：阶段、原子化提交、每个控件的推荐底稿与确认门。
 > 不含工时。未确认本文前不写业务代码。
 
@@ -19,7 +19,7 @@
 | 家族权重 | 7.2 分散 | **pew / zhe / intentional-kusto-queries 加权**；本站只锁视觉 |
 | 质量 | 6DQ 章节 | **Husky 从第一行包代码起就拦**：typecheck + `biome --error-on-warnings` + test。不准先红后补 |
 | Sidebar 现页 | 6.2 `wire=/` | 实现时只填 `/ui/sidebar`；现页 `/` 推迟到 S2 |
-| 发布路径 | 阶段 8 列门 | Wave 0 写 README 双契约 + 构建 dts/banner；Wave 8 写 tarball 门、`prepublishOnly`、CHANGELOG、alpha |
+| 发布路径 | 阶段 8 列门 | Wave 0 写 README 双契约 + 构建 dts/banner；Wave 8 写 tarball 门、`prepublishOnly`、CHANGELOG；全部完成发 `2.0.0`，不发 alpha |
 
 架构、CSS 命名空间、发布门 A/B/C/D、观感冻结仍以 01 为准。冲突时：执行顺序听 02，API/CSS/发布听 01。
 
@@ -192,6 +192,7 @@ Wave P 之后不重拍整表。阶段 7 对照这批图；侧栏允许多一个�
 | `date-picker` | DatePicker |
 | `tabs` | Tabs |
 | `table` | Table |
+| `data-table` | DataTable |
 | `pagination` | Pagination |
 | `collapsible` | Collapsible |
 | `dialog` | Dialog |
@@ -244,7 +245,7 @@ Wave P 之后不重拍整表。阶段 7 对照这批图；侧栏允许多一个�
 
 另加分类索引锚点（同一 `/ui` 页内 heading，或 `/ui/charts` 重定向到索引过滤）：不强制单独路由。
 
-78 条 kebab 必须与 01 §6.2 `name` 一一对应。`/ui/:slug` 不得抢现有路由（现网无 `/ui`）。
+79 条 kebab 必须与 01 §6.2 `name` 一一对应。`/ui/:slug` 不得抢现有路由（现网无 `/ui`）。
 
 ### 5.2 Placeholder 页最低内容
 
@@ -262,7 +263,7 @@ Wave P 之后不重拍整表。阶段 7 对照这批图；侧栏允许多一个�
 
 - `/ui` 索引（分类列表，链到各 placeholder）
 
-不要把 78 条都挂到侧栏。⌘K 收录全部 `/ui/:name`。
+不要把 79 条都挂到侧栏。⌘K 收录全部 `/ui/:name`。
 
 禁止把新组命名为「控件」：现网 `nav.controls` 已是「控件」（Interactive / Data / Forms / Navigation）。
 
@@ -402,15 +403,16 @@ P1–P5 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 |------|------|----------|
 | 44 | Tabs | otter |
 | 45 | Collapsible | 本站（侧栏已用） |
-| 46 | Pagination | pika 受控 API，不带 DataTable |
+| 46 | Pagination | pika 受控 API，与 DataTable 分开导出 |
 | 47 | Breadcrumbs | Kumo API |
 | 48 | NavigationMenu / MenuBar | 本站 ui |
 | 49 | Toolbar | Kumo API |
-| 50 | Table | surety/meowth primitive，不是 pika DataTable |
-| 51 | TableOfContents | Kumo API |
-| 52 | Grid | Kumo API，现页不强制换 |
-| 53 | BasaltMark | 本站 Mountain |
-| 54 | Sidebar | 本站 AppSidebar 视觉；零件化；drawer 归 Layout。**只填 `/ui/sidebar`，现页 `/` 到 S2** |
+| 50 | Table | surety/meowth primitive |
+| 51 | DataTable | pika DataTable；catalog；optional peer `@tanstack/react-table`；不进根 barrel |
+| 52 | TableOfContents | Kumo API |
+| 53 | Grid | Kumo API，现页不强制换 |
+| 54 | BasaltMark | 本站 Mountain |
+| 55 | Sidebar | 本站 AppSidebar 视觉；零件化；drawer 归 Layout。**只填 `/ui/sidebar`，现页 `/` 到 S2** |
 
 ### 8.7 图表轨道（确认 kit 后）
 
@@ -458,12 +460,12 @@ P1–P5 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | 8.2 | `test: assert tarball gates a b c d` | 与 8.1 可合并仅当同一次绿；断言 computed style 与根 barrel 不拉 optional peer |
 | 8.3 | `chore: add package prepublishonly script` | 写入 `packages/basalt/package.json` 的 `prepublishOnly`：build + 包内 jsdom + browser + publint + 门 A/B/C/D。这是 npm lifecycle，不是 README 步骤 |
 | 8.4 | `docs: add notice for kumo excerpts` | 仅当复制了 Kumo 逻辑：同时写 `packages/basalt/NOTICE` **和** 包 README 的 Cloudflare MIT notice（01 §3.4） |
-| 8.5 | `docs: changelog 2.0.0-alpha` | Keep a Changelog 一节 |
-| 8.6 | `chore: release v2.0.0-alpha.n` | 只 bump `packages/basalt` 版本；走仓库 release 清单的 alpha 路径 |
+| 8.5 | `docs: changelog 2.0.0` | Keep a Changelog 一节 |
+| 8.6 | `chore: release v2.0.0` | 全部完成后再 bump `packages/basalt` 与仓库 `package.json` 到 `2.0.0`；不打 alpha。走仓库 release 清单 |
 
 Wave 0.6 已写 CSS 双契约 README。发布前若文案过期可另作 `docs:` 更新，不替代 0.6。
 
-8.6 之前：`prepublishOnly` 全绿。失败不准发。先 alpha，自吃后再 `2.0.0`。
+8.6 之前：`prepublishOnly` 全绿。失败不准发。开发期不发 npm。
 
 ---
 
@@ -477,7 +479,7 @@ Wave 0.6 已写 CSS 双契约 README。发布前若文案过期可另作 `docs:`
 | browser 测试 | Dialog/Combobox/DatePicker/CommandPalette/Sidebar |
 | a11y | 控件 a 的测试里断言名称；图表 summary |
 | 覆盖率 | pre-push；包源码不降门槛 |
-| 发布门 A/B/C/D | 01 §5.3，Wave 8，发 alpha 前 |
+| 发布门 A/B/C/D | 01 §5.3，Wave 8，发 `2.0.0` 前 |
 
 参考 Kumo：compound、variants 可机器读、icon-only `aria-label`。不参考：ECharts、Base UI、`bg-kumo-*`。
 
@@ -499,8 +501,8 @@ Wave 0.6 已写 CSS 双契约 README。发布前若文案过期可另作 `docs:`
 
 ## 11. 开工开关
 
-1. 01 第 13 节拍板（侧栏「控件库」组、CSS 契约等）
-2. 本文与 01 联审 Sign Off
+1. 01 第 13 节：2–11 已拍板；**第 1 条视觉基线仍待确认**
+2. 本文与 01 联审 Sign Off（已完成）
 3. Wave B（B0 播种 → B1 截图，改侧栏之前）
 4. Wave P（placeholder）
 5. 确认 Button 底稿（预确认，不立即实现）→ Wave 0（含 0.6 README、0.7 dts/banner）→ 按 §8 从 Text 起；到 Button 用已确认底稿
