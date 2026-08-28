@@ -885,6 +885,23 @@
   .\[\&_svg\]\:shrink-0 svg {
     flex-shrink: 0;
   }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+  .h-7 {
+    height: 1.75rem;
+  }
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
 }
 @property --tw-translate-x {
   syntax: "*";

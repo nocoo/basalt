@@ -4,3 +4,23 @@
 @import "tailwindcss/utilities" layer(utilities);
 @source "../components/**/*.{ts,tsx}";
 @source "../providers/**/*.{ts,tsx}";
+
+@layer utilities {
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border-width: 0;
+	}
+	.h-7 {
+		height: 1.75rem;
+	}
+	.mb-2 {
+		margin-bottom: 0.5rem;
+	}
+}
