@@ -242,13 +242,14 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 
 ### 5.3 侧栏
 
-现有 `NAV_GROUPS` 不改顺序、不改现有组名。新增一组 `nav.kit`（en: `Library`，zh: `控件库`），`defaultOpen: false`。组内只放：
+现有 `NAV_GROUPS` 不改顺序、不改现有组名。侧栏两大分区：
 
-- `/ui` 索引（分类列表，链到各 placeholder）
+- **示例**（`nav.examples`）：现有分组原样，默认展开
+- **控件库**（`nav.kit`）：Home（`/ui`）+ 每个 6.2 出口一条导航，按 `CATALOG_CATEGORIES` 分组，默认展开、不折叠
 
-不要把 79 条都挂到侧栏。⌘K 收录全部 `/ui/:name`。
+⌘K 收录 example 页 + Home + 全部 `/ui/:slug`。
 
-禁止把新组命名为「控件」：现网 `nav.controls` 已是「控件」（Interactive / Data / Forms / Navigation）。
+禁止把新分区命名为「控件」：现网 `nav.controls` 已是「控件」（Interactive / Data / Forms / Navigation）。
 
 ### 5.4 Wave P 原子化提交
 

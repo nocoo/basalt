@@ -92,8 +92,9 @@
 		"overlays": "Overlays",
 		"dataDisplay": "Data Display",
 		"pills": "Pills",
+		"examples": "Examples",
 		"kit": "Library",
-		"kitIndex": "Catalog"
+		"kitIndex": "Home"
 	},
 	"pages": {
 		"notFound": {

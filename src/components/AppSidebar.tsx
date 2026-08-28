@@ -42,7 +42,7 @@ import {
 	CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import { CATALOG } from "@/pages/ui/catalog";
+import { CATALOG, CATALOG_CATEGORIES } from "@/pages/ui/catalog";
 
 // ── Navigation data model ──
 
@@ -114,14 +114,11 @@ const NAV_GROUPS: NavGroup[] = [
 			{ titleKey: "nav.settings", icon: Settings, path: "/settings" },
 		],
 	},
-	{
-		labelKey: "nav.kit",
-		defaultOpen: false,
-		items: [{ titleKey: "nav.kitIndex", icon: BookOpen, path: "/ui" }],
-	},
 ];
 
-const ALL_NAV_ITEMS = NAV_GROUPS.flatMap((g) => g.items);
+const LIBRARY_HOME: NavItem = { titleKey: "nav.kitIndex", icon: BookOpen, path: "/ui" };
+
+const ALL_NAV_ITEMS = [...NAV_GROUPS.flatMap((g) => g.items), LIBRARY_HOME];
 
 // ── Sub-components ──
 
@@ -191,6 +188,69 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
 				</div>
 			</div>
 		</Collapsible>
+	);
+}
+
+function PartitionLabel({ labelKey }: { labelKey: string }) {
+	const { t } = useTranslation();
+	return (
+		<p className="px-6 pt-3 pb-1 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+			{t(labelKey)}
+		</p>
+	);
+}
+
+function LibraryNav({ currentPath }: { currentPath: string }) {
+	const navigate = useNavigate();
+	const { t } = useTranslation();
+	return (
+		<div className="pb-3">
+			<button
+				type="button"
+				onClick={() => navigate("/ui")}
+				className={cn(
+					"mx-3 flex w-[calc(100%-1.5rem)] items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+					currentPath === "/ui"
+						? "bg-accent text-foreground"
+						: "text-muted-foreground hover:bg-accent hover:text-foreground",
+				)}
+			>
+				{t("nav.kitIndex")}
+			</button>
+			{CATALOG_CATEGORIES.map((category) => {
+				const items = CATALOG.filter((entry) => entry.category === category.id);
+				if (items.length === 0) {
+					return null;
+				}
+				return (
+					<div key={category.id} className="mt-2">
+						<p className="px-6 py-1.5 text-xs font-medium text-muted-foreground">
+							{category.label}
+						</p>
+						<div className="flex flex-col px-3">
+							{items.map((entry) => {
+								const path = `/ui/${entry.slug}`;
+								return (
+									<button
+										type="button"
+										key={entry.slug}
+										onClick={() => navigate(path)}
+										className={cn(
+											"flex w-full items-center rounded-lg px-3 py-1.5 text-sm font-normal transition-colors",
+											currentPath === path
+												? "bg-accent text-foreground"
+												: "text-muted-foreground hover:bg-accent hover:text-foreground",
+										)}
+									>
+										<span className="truncate text-left">{entry.name}</span>
+									</button>
+								);
+							})}
+						</div>
+					</div>
+				);
+			})}
+		</div>
 	);
 }
 
@@ -363,9 +423,13 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 					</div>
 
 					<nav className="flex-1 overflow-y-auto pt-1">
+						<PartitionLabel labelKey="nav.examples" />
 						{NAV_GROUPS.map((group) => (
 							<NavGroupSection key={group.labelKey} group={group} currentPath={pathname} />
 						))}
+						<div className="mx-6 my-3 border-t border-border" />
+						<PartitionLabel labelKey="nav.kit" />
+						<LibraryNav currentPath={pathname} />
 					</nav>
 
 					<div className="px-4 py-3">
@@ -408,19 +472,28 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 									<span>{t(item.titleKey)}</span>
 								</CommandItem>
 							))}
-							{group.labelKey === "nav.kit" &&
-								CATALOG.map((entry) => (
-									<CommandItem
-										key={entry.slug}
-										value={`${entry.name} ${entry.slug}`}
-										onSelect={() => handleSelect(`/ui/${entry.slug}`)}
-										className="gap-3 cursor-pointer"
-									>
-										<span>{entry.name}</span>
-									</CommandItem>
-								))}
 						</CommandGroup>
 					))}
+					<CommandGroup heading={t("nav.kit")}>
+						<CommandItem
+							value={t("nav.kitIndex")}
+							onSelect={() => handleSelect("/ui")}
+							className="gap-3 cursor-pointer"
+						>
+							<BookOpen className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+							<span>{t("nav.kitIndex")}</span>
+						</CommandItem>
+						{CATALOG.map((entry) => (
+							<CommandItem
+								key={entry.slug}
+								value={`${entry.name} ${entry.slug}`}
+								onSelect={() => handleSelect(`/ui/${entry.slug}`)}
+								className="gap-3 cursor-pointer"
+							>
+								<span>{entry.name}</span>
+							</CommandItem>
+						))}
+					</CommandGroup>
 				</CommandList>
 			</CommandDialog>
 		</aside>
