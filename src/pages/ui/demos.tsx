@@ -143,6 +143,26 @@ export const UI_EXAMPLES: Record<string, { title: string; code: string; render: 
 				code: "<Button loading>Saving</Button>",
 				render: () => <Button loading>Saving</Button>,
 			},
+			{
+				title: "Destructive",
+				code: '<Button variant="destructive">Delete</Button>',
+				render: () => <Button variant="destructive">Delete</Button>,
+			},
+			{
+				title: "Outline",
+				code: '<Button variant="outline">Outline</Button>',
+				render: () => <Button variant="outline">Outline</Button>,
+			},
+			{
+				title: "Ghost",
+				code: '<Button variant="ghost">Ghost</Button>',
+				render: () => <Button variant="ghost">Ghost</Button>,
+			},
+			{
+				title: "Link",
+				code: '<Button variant="link">Link</Button>',
+				render: () => <Button variant="link">Link</Button>,
+			},
 		],
 		"link-button": [
 			{

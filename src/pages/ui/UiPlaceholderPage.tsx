@@ -24,10 +24,7 @@ const ROOT_NAMES = new Set([
 ]);
 
 function sourceHref(source: CatalogDocs["source"]): string {
-	if (source.repo === "basalt") {
-		return `https://github.com/nocoo/basalt/blob/${source.sha}/${source.file}`;
-	}
-	return `https://github.com/nocoo/basalt/blob/main/docs/01-plan-2-0.md`;
+	return `https://github.com/nocoo/${source.repo}/blob/${source.sha}/${source.file}`;
 }
 
 function ReadyDoc({
@@ -54,6 +51,15 @@ function ReadyDoc({
 		granular,
 		"## Usage",
 		docs.usage,
+		"## Examples",
+		...examples.flatMap((example) => [`### ${example.title}`, example.code]),
+		"## API Reference",
+		...docs.props.map(
+			(prop) =>
+				`- ${prop.name} (${prop.type}, default ${prop.default ?? "—"}): ${prop.description ?? ""}`,
+		),
+		"## Source",
+		`${docs.source.repo}@${docs.source.sha} ${docs.source.file}`,
 	].join("\n\n");
 	const headings: DocHeading[] = [
 		{ id: "preview", text: "Preview", depth: 2 },
@@ -71,101 +77,108 @@ function ReadyDoc({
 		{ id: "source", text: "Source", depth: 2 },
 	];
 	return (
-		<div className="xl:grid xl:grid-cols-[minmax(0,1fr)_12rem] xl:gap-10">
-			<article data-status="ready" data-slug={entry.slug} className="space-y-10 min-w-0">
-				<header className="space-y-3">
-					<div className="flex flex-wrap items-center justify-between gap-3">
-						<p className="text-xs font-medium tracking-wide text-muted-foreground">LIBRARY</p>
-						<button
-							type="button"
-							className="text-xs underline underline-offset-4"
-							onClick={async () => {
-								await navigator.clipboard.writeText(pageMarkdown);
-								setCopiedPage(true);
-							}}
-						>
-							{copiedPage ? "Copied page" : "Copy page"}
-						</button>
-					</div>
-					<h1 className="text-4xl font-semibold text-foreground">{entry.name}</h1>
-					<p className="text-lg text-muted-foreground">{docs.description}</p>
-				</header>
-				<section id="preview" className="space-y-3">
-					<h2 className="text-xl font-semibold">Preview</h2>
-					<div className="rounded-card bg-secondary p-5 md:p-6">
-						<Demo />
-					</div>
-				</section>
-				<section id="installation" className="space-y-3">
-					<h2 className="text-xl font-semibold">Installation</h2>
-					{barrel ? (
-						<>
-							<h3 id="barrel" className="text-sm font-medium">
-								Barrel
-							</h3>
-							<DocCode code={barrel} />
-						</>
-					) : null}
-					<h3 id="granular" className="text-sm font-medium">
-						Granular
-					</h3>
-					<DocCode code={granular} />
-				</section>
-				<section id="usage" className="space-y-3">
-					<h2 className="text-xl font-semibold">Usage</h2>
-					<DocCode code={docs.usage} />
-				</section>
-				<section id="examples" className="space-y-6">
-					<h2 className="text-xl font-semibold">Examples</h2>
-					{examples.map((example, index) => (
-						<div key={example.title} id={`example-${index}`} className="space-y-3">
-							<h3 className="text-sm font-medium">{example.title}</h3>
-							<div className="rounded-card bg-secondary p-5">
-								<example.render />
-							</div>
-							<DocCode code={example.code} />
+		<div className="space-y-6">
+			<div className="xl:hidden sticky top-0 z-10 bg-card py-2">
+				<DocToc headings={headings} />
+			</div>
+			<div className="xl:grid xl:grid-cols-[minmax(0,1fr)_12rem] xl:gap-10">
+				<article data-status="ready" data-slug={entry.slug} className="space-y-10 min-w-0">
+					<header className="space-y-3">
+						<div className="flex flex-wrap items-center justify-between gap-3">
+							<p className="text-xs font-medium tracking-wide text-muted-foreground">LIBRARY</p>
+							<button
+								type="button"
+								className="text-xs underline underline-offset-4"
+								onClick={async () => {
+									await navigator.clipboard.writeText(pageMarkdown);
+									setCopiedPage(true);
+								}}
+							>
+								{copiedPage ? "Copied page" : "Copy page"}
+							</button>
 						</div>
-					))}
-				</section>
-				<section id="api-reference" className="space-y-3">
-					<h2 className="text-xl font-semibold">API Reference</h2>
-					<table className="w-full text-sm">
-						<thead>
-							<tr className="text-left text-muted-foreground">
-								<th className="py-2 pr-4 font-medium">Prop</th>
-								<th className="py-2 pr-4 font-medium">Type</th>
-								<th className="py-2 pr-4 font-medium">Default</th>
-								<th className="py-2 font-medium">Description</th>
-							</tr>
-						</thead>
-						<tbody>
-							{docs.props.map((prop) => (
-								<tr key={prop.name} className="border-t border-border">
-									<td className="py-2 pr-4 font-medium text-foreground">{prop.name}</td>
-									<td className="py-2 pr-4 text-muted-foreground">
-										<code>{prop.type}</code>
-									</td>
-									<td className="py-2 pr-4 text-muted-foreground">{prop.default ?? "—"}</td>
-									<td className="py-2 text-muted-foreground">{prop.description ?? prop.name}</td>
+						<h1 className="text-4xl font-semibold text-foreground">{entry.name}</h1>
+						<p className="text-lg text-muted-foreground">{docs.description}</p>
+					</header>
+					<section id="preview" className="space-y-3">
+						<h2 className="text-xl font-semibold">Preview</h2>
+						<div className="rounded-card bg-secondary p-5 md:p-6">
+							<Demo />
+						</div>
+					</section>
+					<section id="installation" className="space-y-3">
+						<h2 className="text-xl font-semibold">Installation</h2>
+						{barrel ? (
+							<>
+								<h3 id="barrel" className="text-sm font-medium">
+									Barrel
+								</h3>
+								<DocCode code={barrel} />
+							</>
+						) : null}
+						<h3 id="granular" className="text-sm font-medium">
+							Granular
+						</h3>
+						<DocCode code={granular} />
+					</section>
+					<section id="usage" className="space-y-3">
+						<h2 className="text-xl font-semibold">Usage</h2>
+						<DocCode code={docs.usage} />
+					</section>
+					<section id="examples" className="space-y-6">
+						<h2 className="text-xl font-semibold">Examples</h2>
+						{examples.map((example, index) => (
+							<div key={example.title} id={`example-${index}`} className="space-y-3">
+								<h3 className="text-sm font-medium">{example.title}</h3>
+								<div className="rounded-card bg-secondary p-5">
+									<example.render />
+								</div>
+								<DocCode code={example.code} />
+							</div>
+						))}
+					</section>
+					<section id="api-reference" className="space-y-3">
+						<h2 className="text-xl font-semibold">API Reference</h2>
+						<table className="w-full text-sm">
+							<thead>
+								<tr className="text-left text-muted-foreground">
+									<th className="py-2 pr-4 font-medium">Prop</th>
+									<th className="py-2 pr-4 font-medium">Type</th>
+									<th className="py-2 pr-4 font-medium">Default</th>
+									<th className="py-2 font-medium">Description</th>
 								</tr>
-							))}
-						</tbody>
-					</table>
-				</section>
-				<section id="source" className="space-y-2">
-					<h2 className="text-xl font-semibold">Source</h2>
-					<p className="text-sm text-muted-foreground">
-						<a
-							className="underline underline-offset-4 text-foreground"
-							href={sourceHref(docs.source)}
-						>
-							{docs.source.repo}@{docs.source.sha}
-						</a>{" "}
-						{docs.source.file}
-					</p>
-				</section>
-			</article>
-			<DocToc headings={headings} />
+							</thead>
+							<tbody>
+								{docs.props.map((prop) => (
+									<tr key={prop.name} className="border-t border-border">
+										<td className="py-2 pr-4 font-medium text-foreground">{prop.name}</td>
+										<td className="py-2 pr-4 text-muted-foreground">
+											<code>{prop.type}</code>
+										</td>
+										<td className="py-2 pr-4 text-muted-foreground">{prop.default ?? "—"}</td>
+										<td className="py-2 text-muted-foreground">{prop.description ?? prop.name}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</section>
+					<section id="source" className="space-y-2">
+						<h2 className="text-xl font-semibold">Source</h2>
+						<p className="text-sm text-muted-foreground">
+							<a
+								className="underline underline-offset-4 text-foreground"
+								href={sourceHref(docs.source)}
+							>
+								{docs.source.repo}@{docs.source.sha}
+							</a>{" "}
+							{docs.source.file}
+						</p>
+					</section>
+				</article>
+				<div className="hidden xl:block">
+					<DocToc headings={headings} />
+				</div>
+			</div>
 		</div>
 	);
 }

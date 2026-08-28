@@ -6,8 +6,9 @@ export interface CatalogDocs {
 	source: { repo: string; sha: string; file: string };
 }
 
-function usage(name: string, from: string, sample: string): string {
-	return `import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
+function usage(name: string, from: string, sample: string, extraImports = ""): string {
+	const extras = extraImports ? `${extraImports}\n` : "";
+	return `${extras}import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
 }
 
 export const CATALOG_DOCS: Record<string, CatalogDocs> = {
@@ -113,10 +114,18 @@ export const CATALOG_DOCS: Record<string, CatalogDocs> = {
 		usage: usage(
 			"Tooltip, TooltipTrigger, TooltipContent, TooltipProvider",
 			"@nocoo/basalt/components/tooltip",
-			"<Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip>",
+			"<TooltipProvider><Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip></TooltipProvider>",
+			'import { Button } from "@nocoo/basalt/components/button";',
 		),
 		variants: [],
-		props: [{ name: "delayDuration", type: "number" }],
+		props: [
+			{
+				name: "delayDuration",
+				type: "number",
+				default: "700",
+				description: "Delay before the tooltip opens, in milliseconds.",
+			},
+		],
 		source: {
 			repo: "meowth",
 			sha: "bb02d5a18e00",
@@ -128,10 +137,17 @@ export const CATALOG_DOCS: Record<string, CatalogDocs> = {
 		usage: usage(
 			"ThemeToggle",
 			"@nocoo/basalt/components/theme-toggle",
-			'<ThemeToggle aria-label="Toggle theme" />',
+			'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+			'import { ThemeProvider } from "@nocoo/basalt/providers/theme";',
 		),
 		variants: ["system", "light", "dark"],
-		props: [{ name: "aria-label", type: "string" }],
+		props: [
+			{
+				name: "aria-label",
+				type: "string",
+				description: "Accessible name for the toggle.",
+			},
+		],
 		source: { repo: "basalt", sha: "2727ae6a8d3f", file: "src/components/ThemeToggle.tsx" },
 	},
 	"layer-card": {
@@ -142,7 +158,14 @@ export const CATALOG_DOCS: Record<string, CatalogDocs> = {
 			'<LayerCard surface="bordered">Content</LayerCard>',
 		),
 		variants: ["plain", "bordered"],
-		props: [{ name: "surface", type: '"plain" | "bordered"' }],
+		props: [
+			{
+				name: "surface",
+				type: '"plain" | "bordered"',
+				default: '"plain"',
+				description: "L2 card surface. Bordered is a variant, not L3.",
+			},
+		],
 		source: { repo: "pika", sha: "d9b12caf26a4", file: "packages/web/src/components/ui/card.tsx" },
 	},
 	field: {
@@ -151,13 +174,22 @@ export const CATALOG_DOCS: Record<string, CatalogDocs> = {
 			"Field",
 			"@nocoo/basalt/components/field",
 			'<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
+			'import { Input } from "@nocoo/basalt/components/input";',
 		),
 		variants: [],
 		props: [
-			{ name: "label", type: "string" },
-			{ name: "htmlFor", type: "string" },
-			{ name: "hint", type: "string" },
-			{ name: "error", type: "string" },
+			{ name: "label", type: "string", description: "Visible label text." },
+			{
+				name: "htmlFor",
+				type: "string",
+				description: "Associates the label and described-by ids.",
+			},
+			{ name: "hint", type: "string", description: "Supporting text when there is no error." },
+			{
+				name: "error",
+				type: "string",
+				description: "Replaces the hint and marks the control invalid.",
+			},
 		],
 		source: { repo: "signoff.now", sha: "92033c89d807", file: "apps/web/src/components/Field.tsx" },
 	},
@@ -192,10 +224,14 @@ export const CATALOG_DOCS: Record<string, CatalogDocs> = {
 		usage: usage(
 			"InputGroup",
 			"@nocoo/basalt/components/input-group",
-			"<InputGroup><Input /><Button>Go</Button></InputGroup>",
+			"<InputGroup><Input aria-label='Query' /><Button>Go</Button></InputGroup>",
+			'import { Button } from "@nocoo/basalt/components/button";\nimport { Input } from "@nocoo/basalt/components/input";',
 		),
 		variants: [],
-		props: [],
+		props: [
+			{ name: "className", type: "string", description: "Layout class names for the group." },
+			{ name: "children", type: "ReactNode", description: "Controls laid out in a row." },
+		],
 		source: { repo: "basalt", sha: "2727ae6a8d3f", file: "src/pages/FormsPage.tsx" },
 	},
 	"sensitive-input": {
@@ -262,7 +298,7 @@ export const CATALOG_DOCS: Record<string, CatalogDocs> = {
 		usage: usage(
 			"ThemeProvider",
 			"@nocoo/basalt/providers/theme",
-			"<ThemeProvider>{children}</ThemeProvider>",
+			"<ThemeProvider><span>Content</span></ThemeProvider>",
 		),
 		variants: ["system", "light", "dark"],
 		props: [{ name: "children", type: "ReactNode" }],

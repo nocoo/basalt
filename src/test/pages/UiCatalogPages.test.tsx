@@ -76,8 +76,10 @@ describe("ui catalog", () => {
 			expect(screen.getByRole("columnheader", { name: "Default" })).toBeInTheDocument();
 			expect(screen.getByRole("button", { name: "Copy page" })).toBeInTheDocument();
 			expect(screen.getAllByRole("button", { name: "Copy" }).length).toBeGreaterThan(0);
-			expect(screen.getByRole("navigation", { name: "On this page" })).toBeInTheDocument();
-			expect(screen.getByRole("combobox", { name: "Jump to section" })).toBeInTheDocument();
+			expect(screen.getAllByRole("navigation", { name: "On this page" }).length).toBeGreaterThan(0);
+			expect(screen.getAllByRole("combobox", { name: "Jump to section" }).length).toBeGreaterThan(
+				0,
+			);
 			expect(screen.getByRole("link", { name: new RegExp(docs.source.sha) })).toBeInTheDocument();
 		}
 	});
