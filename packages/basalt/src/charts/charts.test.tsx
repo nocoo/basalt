@@ -71,6 +71,17 @@ describe("charts", () => {
 		render(<ItemList items={[{ label: "A", value: "1" }]} ariaLabel="Workers" />);
 		expect(screen.getByRole("list", { name: "Workers" })).toHaveTextContent("A 1");
 		render(
+			<ItemList
+				items={[
+					{ label: "Deployed", value: "Mon" },
+					{ label: "Deployed", value: "Tue" },
+					{ id: "c", label: "Deployed", value: "Wed" },
+				]}
+				ariaLabel="Duplicates"
+			/>,
+		);
+		expect(screen.getByRole("list", { name: "Duplicates" }).querySelectorAll("li")).toHaveLength(3);
+		render(
 			<Timeline
 				items={[
 					{ title: "Deployed", at: "Mon" },

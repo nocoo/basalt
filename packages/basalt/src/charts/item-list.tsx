@@ -5,14 +5,14 @@ export function ItemList({
 	ariaLabel = "Item list",
 	className,
 }: {
-	items?: { label: string; value?: string }[];
+	items?: { id?: string; label: string; value?: string }[];
 	ariaLabel?: string;
 	className?: string;
 }) {
 	return (
 		<ul className={cn("space-y-1 text-sm", className)} aria-label={ariaLabel}>
-			{items.map((item) => (
-				<li key={item.label}>
+			{items.map((item, index) => (
+				<li key={item.id ?? `${item.label}-${item.value ?? ""}-${index}`}>
 					{item.label}
 					{item.value ? <span className="text-basalt-muted-foreground"> {item.value}</span> : null}
 				</li>
