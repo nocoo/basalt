@@ -43,6 +43,24 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("Pick a date");
 	});
 
+	it("matches native date input year range", () => {
+		const { container, rerender } = render(
+			<form>
+				<DatePicker value="0000-01-01" name="when" aria-label="Date" />
+			</form>,
+		);
+		const form = container.querySelector("form") as HTMLFormElement;
+		expect(new FormData(form).get("when")).toBe("");
+		rerender(
+			<form>
+				<DatePicker value="10000-01-01" name="when" aria-label="Date" />
+			</form>,
+		);
+		expect(new FormData(container.querySelector("form") as HTMLFormElement).get("when")).toBe(
+			"10000-01-01",
+		);
+	});
+
 	it("does not submit invalid dates", () => {
 		const { container } = render(
 			<form>

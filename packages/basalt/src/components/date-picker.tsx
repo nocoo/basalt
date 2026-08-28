@@ -25,10 +25,16 @@ function civilDate(date: Civil) {
 }
 
 function parseIso(value: string): Civil | null {
-	if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+	const match = /^(\d{4,})-(\d{2})-(\d{2})$/.exec(value);
+	if (!match) {
 		return null;
 	}
-	const [year, month, day] = value.split("-").map(Number);
+	const year = Number(match[1]);
+	const month = Number(match[2]);
+	const day = Number(match[3]);
+	if (year < 1) {
+		return null;
+	}
 	const utc = utcDate({ y: year, m: month, d: day });
 	if (
 		utc.getUTCFullYear() !== year ||
