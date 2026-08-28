@@ -9,7 +9,6 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { Github } from "@/components/icons/github";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { cn } from "@/lib/utils";
 import { CATALOG_BY_SLUG } from "@/pages/ui/catalog";
 
 // Map route paths to i18n keys
@@ -50,8 +49,6 @@ export function DashboardLayout() {
 	const { t } = useTranslation();
 	const { theme } = useTheme();
 
-	const catalogHome = location.pathname === "/ui";
-	const catalogDocs = catalogHome || location.pathname.startsWith("/ui/");
 	const catalogSlug = location.pathname.startsWith("/ui/")
 		? location.pathname.slice("/ui/".length)
 		: undefined;
@@ -101,21 +98,8 @@ export function DashboardLayout() {
 				</>
 			)}
 
-			<main
-				id="main-content"
-				className={cn(
-					"flex min-w-0 flex-1 flex-col",
-					catalogDocs
-						? "h-screen overflow-hidden border-l border-border bg-secondary"
-						: "min-h-screen",
-				)}
-			>
-				<header
-					className={cn(
-						"flex h-14 shrink-0 items-center justify-between px-4 md:px-6",
-						catalogDocs && "border-b border-border",
-					)}
-				>
+			<main id="main-content" className="flex min-h-screen min-w-0 flex-1 flex-col">
+				<header className="flex h-14 shrink-0 items-center justify-between px-4 md:px-6">
 					<div className="flex items-center gap-3">
 						{isMobile && (
 							<button
@@ -127,14 +111,7 @@ export function DashboardLayout() {
 								<Menu className="h-5 w-5" aria-hidden="true" strokeWidth={1.5} />
 							</button>
 						)}
-						<h1
-							className={cn(
-								"text-lg font-semibold text-foreground md:text-xl",
-								catalogDocs && "sr-only",
-							)}
-						>
-							{title}
-						</h1>
+						<h1 className="text-lg font-semibold text-foreground md:text-xl">{title}</h1>
 					</div>
 					<div className="flex items-center gap-1">
 						<Link
@@ -150,17 +127,14 @@ export function DashboardLayout() {
 						<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
 					</div>
 				</header>
-				{catalogDocs ? (
-					<div data-doc-scroll className="min-h-0 flex-1 overflow-y-auto">
+				<div className="flex-1 px-2 pb-2 md:px-3 md:pb-3">
+					<div
+						data-doc-scroll
+						className="h-full overflow-y-auto rounded-[16px] bg-card p-3 md:rounded-[20px] md:p-5"
+					>
 						<Outlet />
 					</div>
-				) : (
-					<div className="flex-1 px-2 pb-2 md:px-3 md:pb-3">
-						<div className="h-full overflow-y-auto rounded-[16px] bg-card p-3 md:rounded-[20px] md:p-5">
-							<Outlet />
-						</div>
-					</div>
-				)}
+				</div>
 			</main>
 		</div>
 	);
