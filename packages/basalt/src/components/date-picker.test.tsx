@@ -19,12 +19,12 @@ describe("DatePicker", () => {
 				aria-label="Date"
 			/>,
 		);
-		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("formatted");
+		expect(screen.getByRole("button", { name: /Date/ })).toHaveTextContent("formatted");
 	});
 
 	it("keeps civil dates stable across time zones", () => {
 		render(<DatePicker value="2024-01-15" locale="en-US" timeZone="UTC" aria-label="Date" />);
-		expect(screen.getByRole("button", { name: "Date" })).toHaveTextContent("Jan 15, 2024");
+		expect(screen.getByRole("button", { name: /Date/ })).toHaveTextContent("Jan 15, 2024");
 	});
 
 	it("shows a placeholder before a value is chosen", () => {
@@ -37,10 +37,10 @@ describe("DatePicker", () => {
 		render(
 			<DatePicker defaultValue="2024-01-15" onChange={onChange} aria-label="Date" name="when" />,
 		);
-		fireEvent.click(screen.getByRole("button", { name: "Date" }));
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
 		fireEvent.click(screen.getByRole("button", { name: "Next" }));
 		fireEvent.click(screen.getByRole("button", { name: "Prev" }));
-		fireEvent.click(screen.getByRole("button", { name: "15" }));
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-15" }));
 		expect(onChange).toHaveBeenCalled();
 	});
 });

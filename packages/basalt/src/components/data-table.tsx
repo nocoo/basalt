@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useState } from "react";
+import { type ReactNode, useMemo, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
 
@@ -23,6 +23,8 @@ export function DataTable<T>({
 	className?: string;
 }) {
 	const [sort, setSort] = useState<{ id: string; dir: "asc" | "desc" } | null>(null);
+	const rowIds = useRef(new WeakMap<object, string>());
+	const rowSeq = useRef(0);
 	const query = filter.trim().toLowerCase();
 
 	const rows = useMemo(() => {
@@ -55,7 +57,12 @@ export function DataTable<T>({
 			<TableHeader>
 				<TableRow>
 					{columns.map((column) => (
-						<TableHead key={column.id}>
+						<TableHead
+							key={column.id}
+							aria-sort={
+								sort?.id === column.id ? (sort.dir === "asc" ? "ascending" : "descending") : "none"
+							}
+						>
 							<button
 								type="button"
 								className="font-medium"
@@ -68,6 +75,7 @@ export function DataTable<T>({
 								}
 							>
 								{column.header}
+								{sort?.id === column.id ? (sort.dir === "asc" ? " ↑" : " ↓") : ""}
 							</button>
 						</TableHead>
 					))}
@@ -75,13 +83,19 @@ export function DataTable<T>({
 			</TableHeader>
 			<TableBody>
 				{rows.map((row, index) => {
-					const id =
-						getRowId?.(row, index) ??
-						(row && typeof row === "object" && "id" in row
-							? String((row as { id: unknown }).id)
-							: String(index));
+					let id = getRowId?.(row, index);
+					if (!id && row && typeof row === "object" && "id" in row) {
+						id = String((row as { id: unknown }).id);
+					}
+					if (!id && row && typeof row === "object") {
+						id = rowIds.current.get(row as object);
+						if (!id) {
+							id = `row-${rowSeq.current++}`;
+							rowIds.current.set(row as object, id);
+						}
+					}
 					return (
-						<TableRow key={id}>
+						<TableRow key={id ?? String(index)}>
 							{columns.map((column) => (
 								<TableCell key={column.id}>{column.accessor(row)}</TableCell>
 							))}

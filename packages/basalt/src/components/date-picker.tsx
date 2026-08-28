@@ -13,8 +13,16 @@ function formatIso(date: Civil) {
 }
 
 function parseIso(value: string): Civil | null {
+	if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+		return null;
+	}
 	const [year, month, day] = value.split("-").map(Number);
-	if (!year || !month || !day) {
+	const utc = new Date(Date.UTC(year, month - 1, day));
+	if (
+		utc.getUTCFullYear() !== year ||
+		utc.getUTCMonth() + 1 !== month ||
+		utc.getUTCDate() !== day
+	) {
 		return null;
 	}
 	return { y: year, m: month, d: day };
@@ -37,7 +45,11 @@ function todayCivil(timeZone?: string): Civil {
 }
 
 function formatCivil(date: Civil, locale: string, options: Intl.DateTimeFormatOptions) {
-	return new Intl.DateTimeFormat(locale, { ...options, timeZone: "UTC" }).format(utcDate(date));
+	return new Intl.DateTimeFormat(locale, {
+		...options,
+		timeZone: "UTC",
+		calendar: "gregory",
+	}).format(utcDate(date));
 }
 
 function addDays(date: Civil, days: number): Civil {
@@ -135,7 +147,7 @@ export function DatePicker({
 				<button
 					type="button"
 					disabled={disabled}
-					aria-label={ariaLabel ?? "Date"}
+					aria-label={selectedDate ? `${ariaLabel ?? "Date"}: ${label}` : (ariaLabel ?? "Date")}
 					className={cn(
 						"flex h-9 rounded-basalt-md border border-basalt-border bg-basalt-secondary px-3 text-sm",
 						className,
@@ -183,6 +195,8 @@ export function DatePicker({
 							<button
 								type="button"
 								key={iso}
+								aria-label={iso}
+								aria-pressed={iso === selected}
 								className={cn(
 									"h-7 rounded-basalt-sm text-xs",
 									inMonth ? "text-basalt-foreground" : "text-basalt-muted-foreground",

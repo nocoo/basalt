@@ -6,11 +6,13 @@ export function Meter({
 	label,
 	customValue,
 	className,
+	"aria-label": ariaLabel,
 }: {
 	value?: number;
 	label?: string;
 	customValue?: string;
 	className?: string;
+	"aria-label"?: string;
 }) {
 	return (
 		<div className={cn("w-full space-y-1", className)}>
@@ -22,6 +24,7 @@ export function Meter({
 			) : null}
 			<Progress.Root
 				value={value}
+				aria-label={ariaLabel ?? label}
 				className="relative h-2 overflow-hidden rounded-full bg-basalt-muted"
 			>
 				<Progress.Indicator

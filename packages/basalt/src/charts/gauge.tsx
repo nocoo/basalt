@@ -9,5 +9,5 @@ export function Gauge({
 	ariaLabel?: string;
 	className?: string;
 }) {
-	return <Meter value={value} label={ariaLabel} className={className} />;
+	return <Meter value={value} label={ariaLabel} aria-label={ariaLabel} className={className} />;
 }

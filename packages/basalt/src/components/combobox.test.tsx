@@ -34,6 +34,14 @@ describe("Combobox", () => {
 		expect(screen.getByLabelText("Fruit")).toHaveValue("Pear");
 	});
 
+	it("keeps the controlled display if the parent ignores the selection", () => {
+		render(<Combobox items={["Apple", "Banana"]} value="Apple" placeholder="Fruit" />);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.change(input, { target: { value: "Ba" } });
+		fireEvent.click(screen.getByRole("button", { name: "Banana" }));
+		expect(input).toHaveValue("Apple");
+	});
+
 	it("hides the list when nothing matches", () => {
 		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
 		const input = screen.getByLabelText("Fruit");

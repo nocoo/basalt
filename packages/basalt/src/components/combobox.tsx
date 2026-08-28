@@ -34,14 +34,24 @@ export function Combobox({
 	function commit(next: string) {
 		if (value === undefined) {
 			setUncontrolled(next);
+			setQuery(next);
+		} else {
+			setQuery(value);
 		}
-		setQuery(next);
 		setOpen(false);
 		onValueChange?.(next);
 	}
 
 	return (
-		<div className={cn("relative w-full", className)}>
+		<div
+			className={cn("relative w-full", className)}
+			onBlur={(event) => {
+				if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+					setOpen(false);
+					setQuery(selected);
+				}
+			}}
+		>
 			{name ? <input type="hidden" name={name} value={selected} /> : null}
 			<Input
 				value={query}
@@ -50,6 +60,12 @@ export function Combobox({
 					setOpen(true);
 				}}
 				onFocus={() => setOpen(true)}
+				onKeyDown={(event) => {
+					if (event.key === "Escape") {
+						setOpen(false);
+						setQuery(selected);
+					}
+				}}
 				placeholder={placeholder}
 				aria-label={placeholder}
 				aria-expanded={open}

@@ -24,10 +24,10 @@ describe("DataTable", () => {
 
 	it("sorts by a column header", () => {
 		render(<DataTable data={rows} columns={columns} />);
-		fireEvent.click(screen.getByRole("button", { name: "Name" }));
+		fireEvent.click(screen.getByRole("button", { name: /Name/ }));
 		const cells = screen.getAllByRole("cell").map((cell) => cell.textContent);
 		expect(cells[0]).toBe("Amy");
-		fireEvent.click(screen.getByRole("button", { name: "Name" }));
+		fireEvent.click(screen.getByRole("button", { name: /Name/ }));
 		expect(screen.getAllByRole("cell")[0].textContent).toBe("Zed");
 	});
 
@@ -52,7 +52,7 @@ describe("DataTable", () => {
 				columns={columns}
 			/>,
 		);
-		fireEvent.click(screen.getByRole("button", { name: "Count" }));
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
 		expect(screen.getByText("A")).toBeInTheDocument();
 		expect(screen.getByText("B")).toBeInTheDocument();
 	});

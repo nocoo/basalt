@@ -15,7 +15,7 @@ export function HeatmapCalendar({
 				<span
 					key={index}
 					className="h-3 w-3 rounded-sm bg-basalt-primary"
-					style={{ opacity: 0.2 + (value % 5) * 0.15 }}
+					style={{ opacity: 0.2 + Math.min(4, Math.max(0, value)) * 0.15 }}
 				/>
 			))}
 		</div>
