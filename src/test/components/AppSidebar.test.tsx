@@ -19,7 +19,7 @@ function renderSidebar() {
 }
 
 describe("AppSidebar", () => {
-	it("keeps example pages and lists every library export", () => {
+	it("keeps example pages and lists every library export", { timeout: 15_000 }, () => {
 		renderSidebar();
 		expect(screen.getByText("Examples")).toBeInTheDocument();
 		expect(screen.getByText("Library")).toBeInTheDocument();

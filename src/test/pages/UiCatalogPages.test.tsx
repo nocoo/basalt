@@ -27,6 +27,10 @@ function renderCatalog(path: string) {
 }
 
 describe("ui catalog", () => {
+	it("covers every in-scope catalog slug", () => {
+		expect(inScopeCatalogSlugs().length).toBeGreaterThan(40);
+	});
+
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
 		expect(slugs).toHaveLength(96);
@@ -66,34 +70,28 @@ describe("ui catalog", () => {
 		expect(catalogImportPath(entry)).toBe("@nocoo/basalt/components/code");
 	});
 
-	it("documents every ready catalog page", () => {
+	it.each(inScopeCatalogSlugs())("documents ready catalog page %s", (slug) => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		const slugs = inScopeCatalogSlugs();
-		expect(slugs.length).toBeGreaterThan(40);
-		for (const slug of slugs) {
-			expect(UI_DEMOS[slug], slug).toBeDefined();
-			const docs = CATALOG_DOCS[slug];
-			expect(docs, slug).toBeDefined();
-			if (!docs) {
-				continue;
-			}
-			cleanup();
-			renderCatalog(`/ui/${slug}`);
-			expect(document.querySelector(`[data-status='ready'][data-slug='${slug}']`)).toBeTruthy();
-			expect(screen.getByRole("heading", { name: "Installation" })).toBeInTheDocument();
-			expect(screen.getByRole("heading", { name: "Usage" })).toBeInTheDocument();
-			expect(screen.getByRole("heading", { name: "API Reference" })).toBeInTheDocument();
-			expect(screen.getByRole("columnheader", { name: "Default" })).toBeInTheDocument();
-			expect(screen.getByRole("button", { name: "Copy page" })).toBeInTheDocument();
-			expect(screen.getAllByRole("button", { name: "Copy" }).length).toBeGreaterThan(0);
-			expect(screen.getAllByRole("navigation", { name: "On this page" }).length).toBeGreaterThan(0);
-			expect(document.querySelector("aside .sticky")).toBeTruthy();
-			expect(screen.getAllByRole("combobox", { name: "Jump to section" }).length).toBeGreaterThan(
-				0,
-			);
-			expect(screen.getByRole("link", { name: new RegExp(docs.source.sha) })).toBeInTheDocument();
+		expect(UI_DEMOS[slug], slug).toBeDefined();
+		const docs = CATALOG_DOCS[slug];
+		expect(docs, slug).toBeDefined();
+		if (!docs) {
+			return;
 		}
+		cleanup();
+		renderCatalog(`/ui/${slug}`);
+		expect(document.querySelector(`[data-status='ready'][data-slug='${slug}']`)).toBeTruthy();
+		expect(screen.getByRole("heading", { name: "Installation" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Usage" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "API Reference" })).toBeInTheDocument();
+		expect(screen.getByRole("columnheader", { name: "Default" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Copy page" })).toBeInTheDocument();
+		expect(screen.getAllByRole("button", { name: "Copy" }).length).toBeGreaterThan(0);
+		expect(screen.getAllByRole("navigation", { name: "On this page" }).length).toBeGreaterThan(0);
+		expect(document.querySelector("aside .sticky")).toBeTruthy();
+		expect(screen.getAllByRole("combobox", { name: "Jump to section" }).length).toBeGreaterThan(0);
+		expect(screen.getByRole("link", { name: new RegExp(docs.source.sha) })).toBeInTheDocument();
 	});
 
 	it("orders library nav like kumo", () => {

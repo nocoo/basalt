@@ -1,5 +1,6 @@
 import { AreaChart } from "@nocoo/basalt/charts/area";
 import { BarChart } from "@nocoo/basalt/charts/bar";
+import { BulletChart } from "@nocoo/basalt/charts/bullet";
 import { Colors } from "@nocoo/basalt/charts/chart-colors";
 import { Charts } from "@nocoo/basalt/charts/charts";
 import { CustomChart } from "@nocoo/basalt/charts/custom-chart";
@@ -26,7 +27,15 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@nocoo/basalt/components/accordion";
-import { AlertDialog, AlertDialogTrigger } from "@nocoo/basalt/components/alert-dialog";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@nocoo/basalt/components/alert-dialog";
 import { Autocomplete } from "@nocoo/basalt/components/autocomplete";
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
@@ -47,20 +56,25 @@ import {
 	CommandList,
 	CommandPalette,
 } from "@nocoo/basalt/components/command-palette";
-import { ContextMenu, ContextMenuTrigger } from "@nocoo/basalt/components/context-menu";
 import {
-	DataTable,
-	DataTableBody,
-	DataTableCell,
-	DataTableRow,
-} from "@nocoo/basalt/components/data-table";
+	ContextMenu,
+	ContextMenuItem,
+	ContextMenuPanel,
+	ContextMenuTrigger,
+} from "@nocoo/basalt/components/context-menu";
+import { DataTable } from "@nocoo/basalt/components/data-table";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";
-import { DropdownMenu, DropdownMenuTrigger } from "@nocoo/basalt/components/dropdown-menu";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@nocoo/basalt/components/dropdown-menu";
 import { Empty } from "@nocoo/basalt/components/empty";
 import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
 import { Grid, GridItem } from "@nocoo/basalt/components/grid";
-import { HoverCard, HoverCardTrigger } from "@nocoo/basalt/components/hover-card";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@nocoo/basalt/components/hover-card";
 import { Input } from "@nocoo/basalt/components/input";
 import { Loader } from "@nocoo/basalt/components/loader";
 import { MenuBarMenu, MenuBarRoot, MenuBarTrigger } from "@nocoo/basalt/components/menu-bar";
@@ -72,9 +86,15 @@ import {
 	NavigationMenuList,
 } from "@nocoo/basalt/components/navigation-menu";
 import { Pagination } from "@nocoo/basalt/components/pagination";
-import { Popover, PopoverTrigger } from "@nocoo/basalt/components/popover";
-import { Select, SelectTrigger, SelectValue } from "@nocoo/basalt/components/select";
-import { Sheet, SheetTrigger } from "@nocoo/basalt/components/sheet";
+import { Popover, PopoverContent, PopoverTrigger } from "@nocoo/basalt/components/popover";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@nocoo/basalt/components/select";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@nocoo/basalt/components/sheet";
 import { Sidebar } from "@nocoo/basalt/components/sidebar";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Slider } from "@nocoo/basalt/components/slider";
@@ -111,12 +131,15 @@ function page(
 	Demo: ComponentType,
 	sample: string,
 	props: CatalogDocs["props"] = [{ name: "className", type: "string" }],
+	usage?: string,
 ): { demo: ComponentType; docs: CatalogDocs } {
 	return {
 		demo: Demo,
 		docs: {
 			description,
-			usage: `import { ${entry.name.replace(/ /g, "")} } from "${catalogImportPath(entry)}";\n\nexport default function Example() {\n\treturn ${sample};\n}`,
+			usage:
+				usage ??
+				`import { ${entry.name.replace(/ /g, "")} } from "${catalogImportPath(entry)}";\n\nexport default function Example() {\n\treturn ${sample};\n}`,
 			variants: [],
 			props: props.map((prop) => ({
 				...prop,
@@ -129,12 +152,19 @@ function page(
 
 const extra: Record<string, { demo: ComponentType; docs: CatalogDocs }> = {};
 
-function add(slug: string, description: string, Demo: ComponentType, sample: string) {
+function add(
+	slug: string,
+	description: string,
+	Demo: ComponentType,
+	sample: string,
+	props?: CatalogDocs["props"],
+	usage?: string,
+) {
 	const entry = CATALOG.find((item) => item.slug === slug);
 	if (!entry) {
 		return;
 	}
-	extra[slug] = page(entry, description, Demo, sample);
+	extra[slug] = page(entry, description, Demo, sample, props, usage);
 }
 
 add("badge", "Compact status labels.", () => <Badge>Stable</Badge>, "<Badge>Stable</Badge>");
@@ -269,17 +299,19 @@ add(
 );
 add(
 	"data-table",
-	"Data table.",
+	"Sortable data table.",
 	() => (
-		<DataTable>
-			<DataTableBody>
-				<DataTableRow>
-					<DataTableCell>Row</DataTableCell>
-				</DataTableRow>
-			</DataTableBody>
-		</DataTable>
+		<DataTable
+			data={[{ name: "Worker" }]}
+			columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]}
+		/>
 	),
-	"<DataTable />",
+	"<DataTable data={rows} columns={columns} />",
+	[
+		{ name: "data", type: "T[]" },
+		{ name: "columns", type: "DataTableColumn<T>[]" },
+		{ name: "filter", type: "string" },
+	],
 );
 add(
 	"table-of-contents",
@@ -317,6 +349,13 @@ add(
 	"Transient notification.",
 	() => <Button onClick={() => toast("Saved")}>Toast</Button>,
 	"<Button onClick={() => toast('Saved')}>Toast</Button>",
+	[{ name: "message", type: "string" }],
+	`import { Button } from "@nocoo/basalt/components/button";
+import { toast } from "@nocoo/basalt/components/toast";
+
+export default function Example() {
+	return <Button onClick={() => toast("Saved")}>Toast</Button>;
+}`,
 );
 add(
 	"dialog",
@@ -337,6 +376,12 @@ add(
 	() => (
 		<AlertDialog>
 			<AlertDialogTrigger>Delete</AlertDialogTrigger>
+			<AlertDialogContent>
+				<AlertDialogTitle>Delete resource</AlertDialogTitle>
+				<AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+				<AlertDialogCancel>Cancel</AlertDialogCancel>
+				<AlertDialogAction>Delete</AlertDialogAction>
+			</AlertDialogContent>
 		</AlertDialog>
 	),
 	"<AlertDialog />",
@@ -347,6 +392,7 @@ add(
 	() => (
 		<Popover>
 			<PopoverTrigger>Open</PopoverTrigger>
+			<PopoverContent>Details</PopoverContent>
 		</Popover>
 	),
 	"<Popover />",
@@ -357,6 +403,9 @@ add(
 	() => (
 		<DropdownMenu>
 			<DropdownMenuTrigger>Open</DropdownMenuTrigger>
+			<DropdownMenuContent>
+				<DropdownMenuItem>Copy</DropdownMenuItem>
+			</DropdownMenuContent>
 		</DropdownMenu>
 	),
 	"<DropdownMenu />",
@@ -369,6 +418,9 @@ add(
 			<SelectTrigger aria-label="Version">
 				<SelectValue placeholder="Select version" />
 			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="1">v1</SelectItem>
+			</SelectContent>
 		</Select>
 	),
 	"<Select />",
@@ -379,6 +431,9 @@ add(
 	() => (
 		<Sheet>
 			<SheetTrigger>Open</SheetTrigger>
+			<SheetContent side="right">
+				<SheetTitle>Panel</SheetTitle>
+			</SheetContent>
 		</Sheet>
 	),
 	"<Sheet />",
@@ -389,6 +444,7 @@ add(
 	() => (
 		<HoverCard>
 			<HoverCardTrigger>Hover</HoverCardTrigger>
+			<HoverCardContent>Preview</HoverCardContent>
 		</HoverCard>
 	),
 	"<HoverCard />",
@@ -399,6 +455,9 @@ add(
 	() => (
 		<ContextMenu>
 			<ContextMenuTrigger>Right click</ContextMenuTrigger>
+			<ContextMenuPanel>
+				<ContextMenuItem>Copy</ContextMenuItem>
+			</ContextMenuPanel>
 		</ContextMenu>
 	),
 	"<ContextMenu />",
@@ -407,7 +466,15 @@ add(
 	"combobox",
 	"Searchable select.",
 	() => <Combobox items={["Apple", "Banana"]} placeholder="Select…" />,
-	"<Combobox />",
+	'<Combobox items={["Apple", "Banana"]} />',
+	[
+		{ name: "items", type: "string[]" },
+		{ name: "value", type: "string" },
+		{ name: "defaultValue", type: "string" },
+		{ name: "onValueChange", type: "(value: string) => void" },
+		{ name: "name", type: "string" },
+		{ name: "placeholder", type: "string" },
+	],
 );
 add(
 	"autocomplete",
@@ -477,30 +544,26 @@ add("slot-bar", "Slot bar.", () => <SlotBarChart />, "<SlotBarChart />");
 add("grouped-bar", "Grouped bars.", () => <GroupedBarChart />, "<GroupedBarChart />");
 add("stacked-bar", "Stacked bars.", () => <StackedBarChart />, "<StackedBarChart />");
 add("heatmap-calendar", "Calendar heatmap.", () => <HeatmapCalendar />, "<HeatmapCalendar />");
-add("radar", "Radar series.", () => <RadarChart />, "<RadarChart />");
-add("funnel", "Funnel series.", () => <FunnelChart />, "<FunnelChart />");
-add("bullet", "Bullet chart.", () => <Gauge />, "<BulletChart />");
-add(
-	"timeline",
-	"Timeline.",
-	() => (
-		<Timeline>
-			<FlowNode>Event</FlowNode>
-		</Timeline>
-	),
-	"<Timeline />",
-);
-add(
-	"sankey",
-	"Sankey-style flow.",
-	() => (
-		<SankeyChart>
-			<FlowNode>In</FlowNode>
-			<FlowNode>Out</FlowNode>
-		</SankeyChart>
-	),
-	"<SankeyChart />",
-);
+add("radar", "Radar series.", () => <RadarChart />, "<RadarChart data={rows} />", [
+	{ name: "data", type: "RadarPoint[]" },
+	{ name: "ariaLabel", type: "string" },
+]);
+add("funnel", "Funnel series.", () => <FunnelChart />, "<FunnelChart data={rows} />", [
+	{ name: "data", type: "NamedValue[]" },
+	{ name: "ariaLabel", type: "string" },
+]);
+add("bullet", "Bullet chart.", () => <BulletChart />, "<BulletChart data={rows} />", [
+	{ name: "data", type: "BulletPoint[]" },
+	{ name: "ariaLabel", type: "string" },
+]);
+add("timeline", "Timeline.", () => <Timeline />, "<Timeline items={events} />", [
+	{ name: "items", type: "{ title: string; at?: string }[]" },
+	{ name: "ariaLabel", type: "string" },
+]);
+add("sankey", "Sankey-style flow.", () => <SankeyChart />, "<SankeyChart data={flow} />", [
+	{ name: "data", type: "SankeyData" },
+	{ name: "ariaLabel", type: "string" },
+]);
 add("item-list", "Simple list.", () => <ItemList />, "<ItemList />");
 add(
 	"date-navigation",
