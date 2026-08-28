@@ -277,7 +277,7 @@ add(
 add(
 	"breadcrumbs",
 	"Hierarchical location.",
-	() => <Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Docs" }]} />,
+	() => <Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />,
 	"<Breadcrumbs />",
 );
 add(
