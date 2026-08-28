@@ -119,6 +119,10 @@ function isCanonicalKey(key: string) {
 	return key.startsWith("id:") || key.startsWith("get:");
 }
 
+function isRefRow(row: unknown): row is object {
+	return typeof row === "function" || (typeof row === "object" && row !== null);
+}
+
 function filterSource<T>(column: DataTableColumn<T>, row: T): string {
 	if (column.filterValue) {
 		return String(column.filterValue(row));
@@ -155,6 +159,7 @@ export function DataTable<T>({
 	const rowSeq = useRef(0);
 	const assignedKeys = useRef(new WeakMap<object, string[]>());
 	const lastCanonical = useRef(new Map<string, object>());
+	const lastOwner = useRef(new Map<string, object>());
 	const lastKeyByCanonical = useRef(new Map<string, string>());
 	const lastDupsByCanonical = useRef(new Map<string, string[]>());
 	const symbolKeys = useRef(new Map<symbol, string>());
@@ -174,7 +179,7 @@ export function DataTable<T>({
 			if (requested !== undefined) {
 				return `get:${requested}`;
 			}
-			if (row && typeof row === "object" && "id" in row) {
+			if (isRefRow(row) && "id" in row) {
 				const raw = (row as { id: unknown }).id;
 				if (raw != null) {
 					return `id:${String(raw)}`;
@@ -184,8 +189,8 @@ export function DataTable<T>({
 		const present = new Set<object>();
 		const presentSymbols = new Set<symbol>();
 		for (const row of data) {
-			if (row && typeof row === "object") {
-				present.add(row as object);
+			if (isRefRow(row)) {
+				present.add(row);
 			} else if (typeof row === "symbol") {
 				presentSymbols.add(row);
 			}
@@ -193,6 +198,11 @@ export function DataTable<T>({
 		for (const [canonical, owner] of lastCanonical.current) {
 			if (!present.has(owner)) {
 				lastCanonical.current.delete(canonical);
+			}
+		}
+		for (const [key, owner] of lastOwner.current) {
+			if (!present.has(owner)) {
+				lastOwner.current.delete(key);
 			}
 		}
 		for (const symbol of symbolKeys.current.keys()) {
@@ -212,6 +222,7 @@ export function DataTable<T>({
 			list.push(key);
 			nextAssigned.set(objectRow, list);
 			assignedKeys.current.set(objectRow, list);
+			lastOwner.current.set(key, objectRow);
 			if (isCanonicalKey(key)) {
 				lastCanonical.current.set(key, objectRow);
 			}
@@ -228,7 +239,7 @@ export function DataTable<T>({
 		};
 		const counts = new WeakMap<object, number>();
 		const pending = data.map((row, index) => {
-			const objectRow = row && typeof row === "object" ? (row as object) : null;
+			const objectRow = isRefRow(row) ? row : null;
 			const occurrence = objectRow ? (counts.get(objectRow) ?? 0) : 0;
 			if (objectRow) {
 				counts.set(objectRow, occurrence + 1);
@@ -241,7 +252,7 @@ export function DataTable<T>({
 			};
 		});
 		for (const item of pending) {
-			const objectRow = item.row && typeof item.row === "object" ? (item.row as object) : null;
+			const objectRow = isRefRow(item.row) ? item.row : null;
 			if (!objectRow) {
 				continue;
 			}
@@ -249,13 +260,13 @@ export function DataTable<T>({
 			if (!previous || used.has(previous)) {
 				continue;
 			}
-			if (isInstanceKey(previous) || lastCanonical.current.get(previous) === objectRow) {
+			if (lastOwner.current.get(previous) === objectRow) {
 				item.key = previous;
 				used.add(previous);
 			}
 		}
 		const keyed = pending.map(({ row, index, occurrence, key: reserved }) => {
-			const objectRow = row && typeof row === "object" ? (row as object) : null;
+			const objectRow = isRefRow(row) ? row : null;
 			if (reserved) {
 				rememberKey(row, index, reserved, objectRow);
 				return { row, key: reserved };
