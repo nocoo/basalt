@@ -161,6 +161,29 @@ describe("Combobox", () => {
 		expect(onValueChange).not.toHaveBeenCalled();
 	});
 
+	it("opens ArrowUp on the first option when closed", () => {
+		render(<Combobox items={["Apple", "Banana"]} placeholder="Fruit" />);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.keyDown(input, { key: "Escape" });
+		fireEvent.keyDown(input, { key: "ArrowUp" });
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+	});
+
+	it("opens ArrowDown on the first option when closed", () => {
+		const onValueChange = vi.fn();
+		render(
+			<Combobox items={["Apple", "Banana"]} placeholder="Fruit" onValueChange={onValueChange} />,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.keyDown(input, { key: "Escape" });
+		fireEvent.keyDown(input, { key: "ArrowDown" });
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+		fireEvent.keyDown(input, { key: "Enter" });
+		expect(onValueChange).toHaveBeenCalledWith("Apple");
+	});
+
 	it("highlights a controlled value that changes while open", () => {
 		const onValueChange = vi.fn();
 		const { rerender } = render(

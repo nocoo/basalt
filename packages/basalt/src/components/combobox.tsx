@@ -157,16 +157,24 @@ export function Combobox({
 					}
 					if (event.key === "ArrowDown") {
 						event.preventDefault();
+						if (!open) {
+							setActive(0);
+						} else {
+							setActive(filtered.length === 0 ? 0 : (activeIndex + 1) % filtered.length);
+						}
 						setOpen(true);
-						setActive(filtered.length === 0 ? 0 : (activeIndex + 1) % filtered.length);
 						return;
 					}
 					if (event.key === "ArrowUp") {
 						event.preventDefault();
+						if (!open) {
+							setActive(0);
+						} else {
+							setActive(
+								filtered.length === 0 ? 0 : (activeIndex - 1 + filtered.length) % filtered.length,
+							);
+						}
 						setOpen(true);
-						setActive(
-							filtered.length === 0 ? 0 : (activeIndex - 1 + filtered.length) % filtered.length,
-						);
 						return;
 					}
 					if (event.key === "Enter" && open && activeItem) {
