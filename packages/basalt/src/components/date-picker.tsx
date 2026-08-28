@@ -116,7 +116,10 @@ export function DatePicker({
 	name,
 	disabled,
 	className,
+	id,
 	"aria-label": ariaLabel,
+	"aria-describedby": ariaDescribedBy,
+	"aria-invalid": ariaInvalid,
 }: {
 	value?: string;
 	defaultValue?: string;
@@ -128,7 +131,10 @@ export function DatePicker({
 	name?: string;
 	disabled?: boolean;
 	className?: string;
+	id?: string;
 	"aria-label"?: string;
+	"aria-describedby"?: string;
+	"aria-invalid"?: boolean | "true" | "false";
 }) {
 	const [uncontrolled, setUncontrolled] = useState(defaultValue);
 	const [open, setOpen] = useState(false);
@@ -303,8 +309,11 @@ export function DatePicker({
 			<PopoverTrigger asChild>
 				<button
 					type="button"
+					id={id}
 					disabled={disabled}
 					aria-label={selectedDate ? `${ariaLabel ?? "Date"}: ${label}` : (ariaLabel ?? "Date")}
+					aria-describedby={ariaDescribedBy}
+					aria-invalid={ariaInvalid}
 					className={cn(
 						"flex h-9 rounded-basalt-md border border-basalt-border bg-basalt-secondary px-3 text-sm",
 						className,

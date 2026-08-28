@@ -1,11 +1,25 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { DatePicker } from "./date-picker";
+import { Field } from "./field";
 
 describe("DatePicker", () => {
 	it("renders a date input", () => {
 		const { container } = render(<DatePicker aria-label="Date" />);
 		expect(container.querySelector('input[type="date"]')).toBeTruthy();
+	});
+
+	it("forwards field association props to the trigger", () => {
+		render(
+			<Field label="Start" htmlFor="start" error="Pick a date">
+				<DatePicker id="start" />
+			</Field>,
+		);
+		const trigger = screen.getByRole("button", { name: "Date" });
+		expect(trigger).toHaveAttribute("id", "start");
+		expect(trigger).toHaveAttribute("aria-invalid", "true");
+		expect(trigger).toHaveAttribute("aria-describedby", "start-error");
+		expect(screen.getByLabelText("Start")).toBe(trigger);
 	});
 
 	it("formats the selected value with locale props", () => {
