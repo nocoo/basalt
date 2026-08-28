@@ -125,7 +125,31 @@ describe("DatePicker", () => {
 	it("ignores malformed min and max strings", async () => {
 		render(<DatePicker defaultValue="2024-01-15" min="nope" max="also-bad" aria-label="Date" />);
 		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
-		expect(await screen.findByRole("button", { name: "2024-01-15" })).toBeInTheDocument();
+		expect(await screen.findByRole("button", { name: "2024-01-15" })).toBeEnabled();
+	});
+
+	it("does not commit when read-only", async () => {
+		const onChange = vi.fn();
+		render(<DatePicker defaultValue="2024-01-15" readOnly onChange={onChange} aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		fireEvent.click(await screen.findByRole("button", { name: "2024-01-16" }));
+		expect(onChange).not.toHaveBeenCalled();
+	});
+
+	it("keeps arrow keys on an in-range day", async () => {
+		render(
+			<DatePicker defaultValue="2024-01-10" min="2024-01-10" max="2024-01-20" aria-label="Date" />,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		const day = await screen.findByRole("button", { name: "2024-01-10" });
+		day.focus();
+		fireEvent.keyDown(day.parentElement as HTMLElement, { key: "ArrowLeft" });
+		expect(document.activeElement).toHaveAttribute("aria-label", "2024-01-10");
+	});
+
+	it("routes autoFocus to the trigger", () => {
+		render(<DatePicker autoFocus aria-label="Date" />);
+		expect(document.activeElement).toHaveAttribute("aria-label", "Date");
 	});
 
 	it("compares extended-year bounds numerically", async () => {

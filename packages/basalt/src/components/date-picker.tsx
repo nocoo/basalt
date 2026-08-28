@@ -85,16 +85,24 @@ function compareIso(left: string, right: string) {
 }
 
 function withinBounds(iso: string, min?: string, max?: string) {
-	return (!min || compareIso(iso, min) >= 0) && (!max || compareIso(iso, max) <= 0);
+	if (min && parseIso(min) && compareIso(iso, min) < 0) {
+		return false;
+	}
+	if (max && parseIso(max) && compareIso(iso, max) > 0) {
+		return false;
+	}
+	return true;
 }
 
 function clampCivil(date: Civil, min?: string, max?: string) {
 	const iso = formatIso(date);
-	if (min && compareIso(iso, min) < 0) {
-		return parseIso(min) ?? date;
+	const minDate = min ? parseIso(min) : null;
+	const maxDate = max ? parseIso(max) : null;
+	if (minDate && compareIso(iso, formatIso(minDate)) < 0) {
+		return minDate;
 	}
-	if (max && compareIso(iso, max) > 0) {
-		return parseIso(max) ?? date;
+	if (maxDate && compareIso(iso, formatIso(maxDate)) > 0) {
+		return maxDate;
 	}
 	return date;
 }
@@ -190,6 +198,14 @@ export function DatePicker({
 	| "aria-describedby"
 	| "aria-invalid"
 >) {
+	const {
+		readOnly,
+		autoFocus,
+		onFocus,
+		onBlur,
+		"aria-labelledby": ariaLabelledBy,
+		...formRest
+	} = inputRest;
 	const [uncontrolled, setUncontrolled] = useState(defaultValue);
 	const [open, setOpen] = useState(false);
 	const [focusIndex, setFocusIndex] = useState(0);
@@ -197,6 +213,7 @@ export function DatePicker({
 	const pendingFocusIso = useRef<string | null>(null);
 	const focusDay = useRef(false);
 	const hiddenRef = useRef<HTMLInputElement>(null);
+	const triggerRef = useRef<HTMLButtonElement>(null);
 	const selected = value ?? uncontrolled;
 	const selectedDate = selected ? parseIso(selected) : null;
 	const submitted = selectedDate ? formatIso(selectedDate) : "";
@@ -232,6 +249,12 @@ export function DatePicker({
 			setOpen(false);
 		}
 	}, [disabled]);
+
+	useEffect(() => {
+		if (autoFocus) {
+			triggerRef.current?.focus();
+		}
+	}, [autoFocus]);
 
 	useEffect(() => {
 		const form = hiddenRef.current?.form;
@@ -328,7 +351,7 @@ export function DatePicker({
 		: "Pick a date";
 
 	function commit(next: string) {
-		if (disabled) {
+		if (disabled || readOnly) {
 			return;
 		}
 		if (value === undefined) {
@@ -373,13 +396,17 @@ export function DatePicker({
 				disabled={disabled}
 				aria-hidden="true"
 				tabIndex={-1}
-				{...inputRest}
+				{...formRest}
 			/>
 			<PopoverTrigger asChild>
 				<button
 					type="button"
+					ref={triggerRef}
 					id={id}
 					disabled={disabled}
+					onFocus={onFocus as ComponentProps<"button">["onFocus"]}
+					onBlur={onBlur as ComponentProps<"button">["onBlur"]}
+					aria-labelledby={ariaLabelledBy}
 					aria-label={ariaLabel ? (selectedDate ? `${ariaLabel}: ${label}` : ariaLabel) : undefined}
 					aria-describedby={ariaDescribedBy}
 					aria-invalid={ariaInvalid}
@@ -471,7 +498,7 @@ export function DatePicker({
 											? 7
 											: -7;
 							const next = addDays(current, delta);
-							if (!next || next.y < 1) {
+							if (!next || next.y < 1 || !withinBounds(formatIso(next), min, max)) {
 								return;
 							}
 							if (next.y !== month.y || next.m !== month.m) {
@@ -524,7 +551,7 @@ export function DatePicker({
 								tabIndex={index === focusIndex ? 0 : -1}
 								aria-label={iso}
 								aria-pressed={Boolean(submitted) && iso === submitted}
-								disabled={disabled || !inRange}
+								disabled={disabled || readOnly || !inRange}
 								className={cn(
 									CALENDAR_BUTTON,
 									"h-7 rounded-basalt-sm text-xs",
