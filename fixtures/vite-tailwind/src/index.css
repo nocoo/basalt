@@ -1,0 +1,4 @@
+/* biome-ignore-all lint/correctness/noInvalidPositionAtImportRule: 01 §5.2 requires @source before @import */
+@source "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
+@import "@nocoo/basalt/styles/tailwind";
+@import "tailwindcss";
