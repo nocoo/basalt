@@ -1,5 +1,6 @@
 import { type ComponentProps, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../utils/cn";
+import { Button } from "./button";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
 type Civil = { y: number; m: number; d: number };
@@ -399,10 +400,11 @@ export function DatePicker({
 				{...formRest}
 			/>
 			<PopoverTrigger asChild>
-				<button
+				<Button
 					type="button"
 					ref={triggerRef}
 					id={id}
+					variant="outline"
 					disabled={disabled}
 					onFocus={onFocus as ComponentProps<"button">["onFocus"]}
 					onBlur={onBlur as ComponentProps<"button">["onBlur"]}
@@ -410,13 +412,10 @@ export function DatePicker({
 					aria-label={ariaLabel ? (selectedDate ? `${ariaLabel}: ${label}` : ariaLabel) : undefined}
 					aria-describedby={ariaDescribedBy}
 					aria-invalid={ariaInvalid}
-					className={cn(
-						"flex h-9 rounded-basalt-md border border-basalt-border bg-basalt-secondary px-3 text-sm",
-						className,
-					)}
+					className={cn("justify-start font-normal", className)}
 				>
 					{label}
-				</button>
+				</Button>
 			</PopoverTrigger>
 			<PopoverContent
 				className="w-64 p-3"
@@ -444,10 +443,11 @@ export function DatePicker({
 					});
 				}}
 			>
-				<div className="mb-2 flex items-center justify-between text-sm">
-					<button
+				<div className="mb-2 flex items-center justify-between gap-2">
+					<Button
 						type="button"
-						className={CALENDAR_BUTTON}
+						variant="ghost"
+						size="sm"
 						disabled={disabled || !previousMonth || previousMonth.y < 1}
 						onClick={() => {
 							if (!previousMonth || previousMonth.y < 1) {
@@ -458,11 +458,14 @@ export function DatePicker({
 						}}
 					>
 						Prev
-					</button>
-					<span>{formatCivil(month, locale, { month: "long", year: "numeric" })}</span>
-					<button
+					</Button>
+					<span className="text-sm font-medium">
+						{formatCivil(month, locale, { month: "long", year: "numeric" })}
+					</span>
+					<Button
 						type="button"
-						className={CALENDAR_BUTTON}
+						variant="ghost"
+						size="sm"
 						disabled={disabled || !followingMonth}
 						onClick={() => {
 							if (!followingMonth) {
@@ -473,10 +476,10 @@ export function DatePicker({
 						}}
 					>
 						Next
-					</button>
+					</Button>
 				</div>
 				<div
-					className="grid grid-cols-7 gap-1 text-center text-xs text-basalt-muted-foreground"
+					className="grid grid-cols-7 gap-1 text-center"
 					onKeyDown={(event) => {
 						const current = days[focusIndex];
 						if (!current) {
@@ -524,14 +527,19 @@ export function DatePicker({
 					}}
 				>
 					{weekdayLabels.map((day, index) => (
-						<span key={`${day}-${index}`}>{day}</span>
+						<span
+							key={`${day}-${index}`}
+							className="flex h-8 items-center justify-center text-xs font-medium text-basalt-muted-foreground"
+						>
+							{day}
+						</span>
 					))}
 					{days.map((date, index) => {
 						if (!date) {
 							return (
 								<span
 									key={`empty-${index}`}
-									className="h-7"
+									className="h-8"
 									ref={() => {
 										dayRefs.current[index] = null;
 									}}
@@ -554,7 +562,7 @@ export function DatePicker({
 								disabled={disabled || readOnly || !inRange}
 								className={cn(
 									CALENDAR_BUTTON,
-									"h-7 rounded-basalt-sm text-xs",
+									"flex h-8 w-8 items-center justify-center rounded-basalt-md text-sm",
 									inMonth ? "text-basalt-foreground" : "text-basalt-muted-foreground",
 									inRange &&
 										iso === submitted &&

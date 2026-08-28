@@ -5,7 +5,7 @@ export function Sidebar({ className, ...props }: HTMLAttributes<HTMLElement>) {
 	return (
 		<aside
 			className={cn(
-				"flex h-full w-60 flex-col border-r border-basalt-border bg-basalt-background",
+				"flex h-full min-h-48 w-56 flex-col gap-1 border-r border-basalt-border bg-basalt-popover p-3 text-sm text-basalt-foreground",
 				className,
 			)}
 			{...props}

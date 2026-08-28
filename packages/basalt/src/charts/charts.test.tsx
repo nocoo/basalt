@@ -108,5 +108,7 @@ describe("charts", () => {
 		expect(screen.getByText("Load")).toBeInTheDocument();
 		render(<DateNavigation ariaLabel="When" />);
 		expect(screen.getByRole("button", { name: "When" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Previous day" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Next day" })).toBeInTheDocument();
 	});
 });
