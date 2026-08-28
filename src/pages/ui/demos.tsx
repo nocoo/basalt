@@ -22,12 +22,13 @@ import {
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import type { ComponentType, ReactNode } from "react";
+import { EXTRA_DEMOS, EXTRA_EXAMPLES } from "./catalog-ready";
 
 function Preview({ children }: { children: ReactNode }) {
 	return <div className="flex flex-wrap items-center gap-3">{children}</div>;
 }
 
-export const UI_DEMOS: Record<string, ComponentType> = {
+const BASE_DEMOS: Record<string, ComponentType> = {
 	text: () => (
 		<Preview>
 			<Text>The quick brown fox jumps over the lazy dog.</Text>
@@ -129,222 +130,229 @@ export const UI_DEMOS: Record<string, ComponentType> = {
 	switch: () => <Switch aria-label="Notifications" />,
 };
 
+export const UI_DEMOS: Record<string, ComponentType> = { ...BASE_DEMOS, ...EXTRA_DEMOS };
+
+const BASE_EXAMPLES: Record<string, { title: string; code: string; render: ComponentType }[]> = {
+	button: [
+		{ title: "Default", code: "<Button>Save</Button>", render: () => <Button>Save</Button> },
+		{
+			title: "Secondary",
+			code: '<Button variant="secondary">Cancel</Button>',
+			render: () => <Button variant="secondary">Cancel</Button>,
+		},
+		{
+			title: "Loading",
+			code: "<Button loading>Saving</Button>",
+			render: () => <Button loading>Saving</Button>,
+		},
+		{
+			title: "Destructive",
+			code: '<Button variant="destructive">Delete</Button>',
+			render: () => <Button variant="destructive">Delete</Button>,
+		},
+		{
+			title: "Outline",
+			code: '<Button variant="outline">Outline</Button>',
+			render: () => <Button variant="outline">Outline</Button>,
+		},
+		{
+			title: "Ghost",
+			code: '<Button variant="ghost">Ghost</Button>',
+			render: () => <Button variant="ghost">Ghost</Button>,
+		},
+		{
+			title: "Link",
+			code: '<Button variant="link">Link</Button>',
+			render: () => <Button variant="link">Link</Button>,
+		},
+	],
+	"link-button": [
+		{
+			title: "Default",
+			code: '<LinkButton href="#docs">Open docs</LinkButton>',
+			render: () => <LinkButton href="#docs">Open docs</LinkButton>,
+		},
+	],
+	text: [
+		{ title: "Default", code: "<Text>Body copy</Text>", render: () => <Text>Body copy</Text> },
+		{
+			title: "Muted",
+			code: '<Text tone="muted">Muted</Text>',
+			render: () => <Text tone="muted">Muted</Text>,
+		},
+	],
+	label: [
+		{
+			title: "Associated",
+			code: '<Label htmlFor="email">Email</Label>',
+			render: () => <Label htmlFor="demo-ex-label">Email</Label>,
+		},
+	],
+	separator: [{ title: "Horizontal", code: "<Separator />", render: () => <Separator /> }],
+	link: [
+		{
+			title: "Default",
+			code: '<Link href="#section">Inline link</Link>',
+			render: () => (
+				<LinkProvider>
+					<Link href="#section">Inline link</Link>
+				</LinkProvider>
+			),
+		},
+	],
+	"link-provider": [
+		{
+			title: "Default",
+			code: "<LinkProvider><Link href='#section'>Link</Link></LinkProvider>",
+			render: () => (
+				<LinkProvider>
+					<Link href="#section">Link</Link>
+				</LinkProvider>
+			),
+		},
+	],
+	tooltip: [
+		{
+			title: "Default",
+			code: "<Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip>",
+			render: () => (
+				<TooltipProvider>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button variant="outline">Hover</Button>
+						</TooltipTrigger>
+						<TooltipContent>Hint</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			),
+		},
+	],
+	"theme-provider": [
+		{
+			title: "Default",
+			code: "<ThemeProvider>{children}</ThemeProvider>",
+			render: () => (
+				<ThemeProvider>
+					<Text>Provider is active.</Text>
+				</ThemeProvider>
+			),
+		},
+	],
+	"theme-toggle": [
+		{
+			title: "Default",
+			code: '<ThemeToggle aria-label="Toggle theme" />',
+			render: () => (
+				<ThemeProvider>
+					<ThemeToggle aria-label="Toggle theme" />
+				</ThemeProvider>
+			),
+		},
+	],
+	"layer-card": [
+		{
+			title: "Plain",
+			code: "<LayerCard>Plain</LayerCard>",
+			render: () => <LayerCard className="p-4">Plain</LayerCard>,
+		},
+		{
+			title: "Bordered",
+			code: '<LayerCard surface="bordered">Bordered</LayerCard>',
+			render: () => (
+				<LayerCard surface="bordered" className="p-4">
+					Bordered
+				</LayerCard>
+			),
+		},
+	],
+	input: [
+		{
+			title: "Default",
+			code: '<Input aria-label="Name" placeholder="Jane Doe" />',
+			render: () => <Input aria-label="Name" placeholder="Jane Doe" />,
+		},
+	],
+	"input-area": [
+		{
+			title: "Default",
+			code: '<InputArea aria-label="Notes" />',
+			render: () => <InputArea aria-label="Notes" />,
+		},
+	],
+	"input-group": [
+		{
+			title: "Default",
+			code: "<InputGroup><Input /><Button>Go</Button></InputGroup>",
+			render: () => (
+				<InputGroup>
+					<Input aria-label="Query" />
+					<Button>Go</Button>
+				</InputGroup>
+			),
+		},
+	],
+	"sensitive-input": [
+		{
+			title: "Default",
+			code: '<SensitiveInput revealLabel="Show" hideLabel="Hide" />',
+			render: () => <SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />,
+		},
+	],
+	field: [
+		{
+			title: "Hint",
+			code: '<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
+			render: () => (
+				<Field label="Email" htmlFor="ex-email" hint="Never shared">
+					<Input id="ex-email" />
+				</Field>
+			),
+		},
+		{
+			title: "Error",
+			code: '<Field label="Email" htmlFor="email" error="Required"><Input id="email" /></Field>',
+			render: () => (
+				<Field label="Email" htmlFor="ex-email-err" error="Required">
+					<Input id="ex-email-err" />
+				</Field>
+			),
+		},
+	],
+	checkbox: [
+		{
+			title: "Unchecked",
+			code: '<Checkbox aria-label="Subscribe" />',
+			render: () => <Checkbox aria-label="Subscribe" />,
+		},
+		{
+			title: "Indeterminate",
+			code: '<Checkbox aria-label="Partial" checked="indeterminate" />',
+			render: () => <Checkbox aria-label="Partial" checked="indeterminate" />,
+		},
+	],
+	radio: [
+		{
+			title: "Group",
+			code: '<RadioGroup defaultValue="a"><Radio value="a" /></RadioGroup>',
+			render: () => (
+				<RadioGroup defaultValue="a" className="flex gap-4">
+					<Radio value="a" aria-label="Alpha" />
+					<Radio value="b" aria-label="Beta" />
+				</RadioGroup>
+			),
+		},
+	],
+	switch: [
+		{
+			title: "Default",
+			code: '<Switch aria-label="Notifications" />',
+			render: () => <Switch aria-label="Notifications" />,
+		},
+	],
+};
+
 export const UI_EXAMPLES: Record<string, { title: string; code: string; render: ComponentType }[]> =
 	{
-		button: [
-			{ title: "Default", code: "<Button>Save</Button>", render: () => <Button>Save</Button> },
-			{
-				title: "Secondary",
-				code: '<Button variant="secondary">Cancel</Button>',
-				render: () => <Button variant="secondary">Cancel</Button>,
-			},
-			{
-				title: "Loading",
-				code: "<Button loading>Saving</Button>",
-				render: () => <Button loading>Saving</Button>,
-			},
-			{
-				title: "Destructive",
-				code: '<Button variant="destructive">Delete</Button>',
-				render: () => <Button variant="destructive">Delete</Button>,
-			},
-			{
-				title: "Outline",
-				code: '<Button variant="outline">Outline</Button>',
-				render: () => <Button variant="outline">Outline</Button>,
-			},
-			{
-				title: "Ghost",
-				code: '<Button variant="ghost">Ghost</Button>',
-				render: () => <Button variant="ghost">Ghost</Button>,
-			},
-			{
-				title: "Link",
-				code: '<Button variant="link">Link</Button>',
-				render: () => <Button variant="link">Link</Button>,
-			},
-		],
-		"link-button": [
-			{
-				title: "Default",
-				code: '<LinkButton href="#docs">Open docs</LinkButton>',
-				render: () => <LinkButton href="#docs">Open docs</LinkButton>,
-			},
-		],
-		text: [
-			{ title: "Default", code: "<Text>Body copy</Text>", render: () => <Text>Body copy</Text> },
-			{
-				title: "Muted",
-				code: '<Text tone="muted">Muted</Text>',
-				render: () => <Text tone="muted">Muted</Text>,
-			},
-		],
-		label: [
-			{
-				title: "Associated",
-				code: '<Label htmlFor="email">Email</Label>',
-				render: () => <Label htmlFor="demo-ex-label">Email</Label>,
-			},
-		],
-		separator: [{ title: "Horizontal", code: "<Separator />", render: () => <Separator /> }],
-		link: [
-			{
-				title: "Default",
-				code: '<Link href="#section">Inline link</Link>',
-				render: () => (
-					<LinkProvider>
-						<Link href="#section">Inline link</Link>
-					</LinkProvider>
-				),
-			},
-		],
-		"link-provider": [
-			{
-				title: "Default",
-				code: "<LinkProvider><Link href='#section'>Link</Link></LinkProvider>",
-				render: () => (
-					<LinkProvider>
-						<Link href="#section">Link</Link>
-					</LinkProvider>
-				),
-			},
-		],
-		tooltip: [
-			{
-				title: "Default",
-				code: "<Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip>",
-				render: () => (
-					<TooltipProvider>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Button variant="outline">Hover</Button>
-							</TooltipTrigger>
-							<TooltipContent>Hint</TooltipContent>
-						</Tooltip>
-					</TooltipProvider>
-				),
-			},
-		],
-		"theme-provider": [
-			{
-				title: "Default",
-				code: "<ThemeProvider>{children}</ThemeProvider>",
-				render: () => (
-					<ThemeProvider>
-						<Text>Provider is active.</Text>
-					</ThemeProvider>
-				),
-			},
-		],
-		"theme-toggle": [
-			{
-				title: "Default",
-				code: '<ThemeToggle aria-label="Toggle theme" />',
-				render: () => (
-					<ThemeProvider>
-						<ThemeToggle aria-label="Toggle theme" />
-					</ThemeProvider>
-				),
-			},
-		],
-		"layer-card": [
-			{
-				title: "Plain",
-				code: "<LayerCard>Plain</LayerCard>",
-				render: () => <LayerCard className="p-4">Plain</LayerCard>,
-			},
-			{
-				title: "Bordered",
-				code: '<LayerCard surface="bordered">Bordered</LayerCard>',
-				render: () => (
-					<LayerCard surface="bordered" className="p-4">
-						Bordered
-					</LayerCard>
-				),
-			},
-		],
-		input: [
-			{
-				title: "Default",
-				code: '<Input aria-label="Name" placeholder="Jane Doe" />',
-				render: () => <Input aria-label="Name" placeholder="Jane Doe" />,
-			},
-		],
-		"input-area": [
-			{
-				title: "Default",
-				code: '<InputArea aria-label="Notes" />',
-				render: () => <InputArea aria-label="Notes" />,
-			},
-		],
-		"input-group": [
-			{
-				title: "Default",
-				code: "<InputGroup><Input /><Button>Go</Button></InputGroup>",
-				render: () => (
-					<InputGroup>
-						<Input aria-label="Query" />
-						<Button>Go</Button>
-					</InputGroup>
-				),
-			},
-		],
-		"sensitive-input": [
-			{
-				title: "Default",
-				code: '<SensitiveInput revealLabel="Show" hideLabel="Hide" />',
-				render: () => <SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />,
-			},
-		],
-		field: [
-			{
-				title: "Hint",
-				code: '<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
-				render: () => (
-					<Field label="Email" htmlFor="ex-email" hint="Never shared">
-						<Input id="ex-email" />
-					</Field>
-				),
-			},
-			{
-				title: "Error",
-				code: '<Field label="Email" htmlFor="email" error="Required"><Input id="email" /></Field>',
-				render: () => (
-					<Field label="Email" htmlFor="ex-email-err" error="Required">
-						<Input id="ex-email-err" />
-					</Field>
-				),
-			},
-		],
-		checkbox: [
-			{
-				title: "Unchecked",
-				code: '<Checkbox aria-label="Subscribe" />',
-				render: () => <Checkbox aria-label="Subscribe" />,
-			},
-			{
-				title: "Indeterminate",
-				code: '<Checkbox aria-label="Partial" checked="indeterminate" />',
-				render: () => <Checkbox aria-label="Partial" checked="indeterminate" />,
-			},
-		],
-		radio: [
-			{
-				title: "Group",
-				code: '<RadioGroup defaultValue="a"><Radio value="a" /></RadioGroup>',
-				render: () => (
-					<RadioGroup defaultValue="a" className="flex gap-4">
-						<Radio value="a" aria-label="Alpha" />
-						<Radio value="b" aria-label="Beta" />
-					</RadioGroup>
-				),
-			},
-		],
-		switch: [
-			{
-				title: "Default",
-				code: '<Switch aria-label="Notifications" />',
-				render: () => <Switch aria-label="Notifications" />,
-			},
-		],
+		...EXTRA_EXAMPLES,
+		...BASE_EXAMPLES,
 	};

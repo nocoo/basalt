@@ -1,4 +1,5 @@
 import "@testing-library/jest-dom";
+import { vi } from "vitest";
 import "../i18n";
 
 // Node 26 ships an experimental global Web Storage API that shadows the
@@ -44,3 +45,10 @@ Object.defineProperty(window, "matchMedia", {
 		dispatchEvent: () => {},
 	}),
 });
+
+class ResizeObserverStub {
+	observe() {}
+	unobserve() {}
+	disconnect() {}
+}
+vi.stubGlobal("ResizeObserver", ResizeObserverStub);

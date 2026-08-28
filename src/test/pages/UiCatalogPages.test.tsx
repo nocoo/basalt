@@ -5,6 +5,7 @@ import {
 	CATALOG,
 	catalogImportPath,
 	catalogNavName,
+	inScopeCatalogSlugs,
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
@@ -45,8 +46,8 @@ describe("ui catalog", () => {
 	});
 
 	it("renders a placeholder catalog page for a known slug", () => {
-		renderCatalog("/ui/select");
-		expect(screen.getByRole("heading", { name: "Select" })).toBeInTheDocument();
+		renderCatalog("/ui/maps");
+		expect(screen.getByRole("heading", { name: "Maps" })).toBeInTheDocument();
 		expect(document.querySelector("[data-status='placeholder']")).toBeTruthy();
 		expect(screen.getByText(/未实现/)).toBeInTheDocument();
 	});
@@ -68,7 +69,10 @@ describe("ui catalog", () => {
 	it("documents every ready catalog page", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		for (const slug of Object.keys(UI_DEMOS)) {
+		const slugs = inScopeCatalogSlugs();
+		expect(slugs.length).toBeGreaterThan(40);
+		for (const slug of slugs) {
+			expect(UI_DEMOS[slug], slug).toBeDefined();
 			const docs = CATALOG_DOCS[slug];
 			expect(docs, slug).toBeDefined();
 			if (!docs) {

@@ -11,7 +11,9 @@ function usage(name: string, from: string, sample: string, extraImports = ""): s
 	return `${extras}import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
 }
 
-export const CATALOG_DOCS: Record<string, CatalogDocs> = {
+import { EXTRA_DOCS } from "./catalog-ready";
+
+const BASE_DOCS: Record<string, CatalogDocs> = {
 	button: {
 		description: "Primary actions, including loading and icon slots.",
 		usage: usage(
@@ -332,3 +334,5 @@ export const CATALOG_DOCS: Record<string, CatalogDocs> = {
 		},
 	},
 };
+
+export const CATALOG_DOCS: Record<string, CatalogDocs> = { ...EXTRA_DOCS, ...BASE_DOCS };

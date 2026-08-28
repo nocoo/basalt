@@ -195,6 +195,13 @@ export function catalogNavName(entry: CatalogEntry): string {
 	return entry.navName ?? entry.name;
 }
 
+export function inScopeCatalogSlugs(): string[] {
+	return CATALOG.filter(
+		(entry) =>
+			(entry.category === "component" || entry.category === "chart") && entry.slug !== "maps",
+	).map((entry) => entry.slug);
+}
+
 function byNavName(a: CatalogEntry, b: CatalogEntry) {
 	return catalogNavName(a).localeCompare(catalogNavName(b), "en");
 }

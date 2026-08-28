@@ -30,6 +30,9 @@ export default defineConfig({
 				"clsx",
 				"tailwind-merge",
 				"lucide-react",
+				"cmdk",
+				"sonner",
+				/^recharts($|\/)/,
 			],
 			output: {
 				banner: '"use client";',
