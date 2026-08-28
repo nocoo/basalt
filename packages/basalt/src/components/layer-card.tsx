@@ -2,7 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "../utils/cn";
 
-const layerCardVariants = cva("flex flex-col rounded-lg text-basalt-card-foreground", {
+const layerCardVariants = cva("flex flex-col rounded-basalt-card text-basalt-card-foreground", {
 	variants: {
 		surface: {
 			plain: "bg-basalt-card",
