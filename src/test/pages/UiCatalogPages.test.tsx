@@ -28,12 +28,13 @@ describe("ui catalog", () => {
 
 	it("renders the index with links to every export", () => {
 		renderCatalog("/ui");
-		expect(screen.getByRole("heading", { name: "Home" })).toBeInTheDocument();
+		expect(document.querySelector("[data-status='index']")).toBeTruthy();
+		expect(screen.getByRole("link", { name: "Button" })).toHaveAttribute("href", "/ui/button");
+		expect(screen.getByRole("link", { name: "Toolbar" })).toHaveAttribute("href", "/ui/toolbar");
 		for (const entry of CATALOG) {
-			expect(screen.getByRole("link", { name: entry.name })).toHaveAttribute(
-				"href",
-				`/ui/${entry.slug}`,
-			);
+			const href = `/ui/${entry.slug}`;
+			const match = screen.getAllByRole("link").some((link) => link.getAttribute("href") === href);
+			expect(match, entry.slug).toBe(true);
 		}
 	});
 

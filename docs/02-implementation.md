@@ -240,6 +240,10 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 
 实现该控件时**原地填满**此页，不另开路由。
 
+### 5.2b Catalog 首页
+
+`/ui` 对照 Kumo `HomeGrid`：不是分类卡片。`gap-px` + `aspect-square` 方格，名称绝对定位左上，demo 居中且可交互（不要整格 overlay `pointer-events-none`）。未实现的格子只留名称。DashboardLayout 在 `/ui` 取消浮岛与标题，内容区 `bg-secondary` 贴边。
+
 ### 5.3 侧栏
 
 现有 `NAV_GROUPS` 不改顺序、不改现有组名。侧栏两大分区：

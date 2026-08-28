@@ -50,6 +50,7 @@ export function DashboardLayout() {
 	const { t } = useTranslation();
 	const { theme } = useTheme();
 
+	const catalogHome = location.pathname === "/ui";
 	const catalogSlug = location.pathname.startsWith("/ui/")
 		? location.pathname.slice("/ui/".length)
 		: undefined;
@@ -99,8 +100,21 @@ export function DashboardLayout() {
 				</>
 			)}
 
-			<main id="main-content" className="flex-1 flex flex-col min-h-screen min-w-0">
-				<header className="flex h-14 items-center justify-between px-4 md:px-6 shrink-0">
+			<main
+				id="main-content"
+				className={cn(
+					"flex min-w-0 flex-1 flex-col",
+					catalogHome
+						? "h-screen overflow-hidden border-l border-border bg-secondary"
+						: "min-h-screen",
+				)}
+			>
+				<header
+					className={cn(
+						"flex h-14 shrink-0 items-center justify-between px-4 md:px-6",
+						catalogHome && "border-b border-border",
+					)}
+				>
 					<div className="flex items-center gap-3">
 						{isMobile && (
 							<button
@@ -112,7 +126,14 @@ export function DashboardLayout() {
 								<Menu className="h-5 w-5" aria-hidden="true" strokeWidth={1.5} />
 							</button>
 						)}
-						<h1 className="text-lg md:text-xl font-semibold text-foreground">{title}</h1>
+						<h1
+							className={cn(
+								"text-lg font-semibold text-foreground md:text-xl",
+								catalogHome && "sr-only",
+							)}
+						>
+							{title}
+						</h1>
 					</div>
 					<div className="flex items-center gap-1">
 						<Link
@@ -128,11 +149,17 @@ export function DashboardLayout() {
 						<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
 					</div>
 				</header>
-				<div className={cn("flex-1 px-2 pb-2 md:px-3 md:pb-3")}>
-					<div className="h-full rounded-[16px] md:rounded-[20px] bg-card p-3 md:p-5 overflow-y-auto">
+				{catalogHome ? (
+					<div className="min-h-0 flex-1 overflow-y-auto">
 						<Outlet />
 					</div>
-				</div>
+				) : (
+					<div className="flex-1 px-2 pb-2 md:px-3 md:pb-3">
+						<div className="h-full overflow-y-auto rounded-[16px] bg-card p-3 md:rounded-[20px] md:p-5">
+							<Outlet />
+						</div>
+					</div>
+				)}
 			</main>
 		</div>
 	);
