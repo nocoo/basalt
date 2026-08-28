@@ -66,6 +66,21 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "2024-01-16" })).toHaveAttribute("tabindex", "0");
 	});
 
+	it("moves into the next month from the last day", () => {
+		render(<DatePicker defaultValue="2024-01-31" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		fireEvent.keyDown(screen.getByRole("button", { name: "2024-01-31" }), { key: "ArrowRight" });
+		expect(screen.getByText("February 2024")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "2024-02-01" })).toHaveAttribute("tabindex", "0");
+	});
+
+	it("resets the visible month when the value is cleared", () => {
+		const { rerender } = render(<DatePicker value="2024-01-15" aria-label="Date" />);
+		rerender(<DatePicker value="" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: "Date" }));
+		expect(screen.queryByText("January 2024")).not.toBeInTheDocument();
+	});
+
 	it("commits a day from the calendar", () => {
 		const onChange = vi.fn();
 		render(

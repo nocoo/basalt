@@ -94,6 +94,7 @@ export function DatePicker({
 	const [open, setOpen] = useState(false);
 	const [focusIndex, setFocusIndex] = useState(0);
 	const dayRefs = useRef<Array<HTMLButtonElement | null>>([]);
+	const pendingFocusIso = useRef<string | null>(null);
 	const selected = value ?? uncontrolled;
 	const selectedDate = selected ? parseIso(selected) : null;
 	const cursor = selectedDate ?? todayCivil(timeZone);
@@ -101,11 +102,13 @@ export function DatePicker({
 
 	useEffect(() => {
 		const next = selected ? parseIso(selected) : null;
-		if (!next) {
+		if (next) {
+			setMonth({ y: next.y, m: next.m, d: 1 });
 			return;
 		}
-		setMonth({ y: next.y, m: next.m, d: 1 });
-	}, [selected]);
+		const today = todayCivil(timeZone);
+		setMonth({ y: today.y, m: today.m, d: 1 });
+	}, [selected, timeZone]);
 
 	useEffect(() => {
 		if (disabled) {
@@ -130,6 +133,13 @@ export function DatePicker({
 
 	useEffect(() => {
 		if (!open) {
+			return;
+		}
+		const pending = pendingFocusIso.current;
+		if (pending) {
+			pendingFocusIso.current = null;
+			const pendingIndex = days.findIndex((date) => formatIso(date) === pending);
+			setFocusIndex(pendingIndex >= 0 ? pendingIndex : 0);
 			return;
 		}
 		const iso = selected || formatIso(todayCivil(timeZone));
@@ -234,24 +244,40 @@ export function DatePicker({
 				<div
 					className="grid grid-cols-7 gap-1 text-center text-xs text-basalt-muted-foreground"
 					onKeyDown={(event) => {
-						if (event.key === "ArrowRight") {
+						const current = days[focusIndex];
+						if (!current) {
+							return;
+						}
+						if (
+							event.key === "ArrowRight" ||
+							event.key === "ArrowLeft" ||
+							event.key === "ArrowDown" ||
+							event.key === "ArrowUp"
+						) {
 							event.preventDefault();
-							setFocusIndex((index) => Math.min(days.length - 1, index + 1));
-						} else if (event.key === "ArrowLeft") {
-							event.preventDefault();
-							setFocusIndex((index) => Math.max(0, index - 1));
-						} else if (event.key === "ArrowDown") {
-							event.preventDefault();
-							setFocusIndex((index) => Math.min(days.length - 1, index + 7));
-						} else if (event.key === "ArrowUp") {
-							event.preventDefault();
-							setFocusIndex((index) => Math.max(0, index - 7));
-						} else if (event.key === "Enter" || event.key === " ") {
-							event.preventDefault();
-							const date = days[focusIndex];
-							if (date) {
-								commit(formatIso(date));
+							const delta =
+								event.key === "ArrowRight"
+									? 1
+									: event.key === "ArrowLeft"
+										? -1
+										: event.key === "ArrowDown"
+											? 7
+											: -7;
+							const next = addDays(current, delta);
+							if (next.y !== month.y || next.m !== month.m) {
+								pendingFocusIso.current = formatIso(next);
+								setMonth({ y: next.y, m: next.m, d: 1 });
+								return;
 							}
+							const index = days.findIndex((date) => formatIso(date) === formatIso(next));
+							if (index >= 0) {
+								setFocusIndex(index);
+							}
+							return;
+						}
+						if (event.key === "Enter" || event.key === " ") {
+							event.preventDefault();
+							commit(formatIso(current));
 						}
 					}}
 				>
