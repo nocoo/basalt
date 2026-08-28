@@ -108,7 +108,7 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "2024-02-02" })).toHaveAttribute("tabindex", "0");
 	});
 
-	it("restores defaultValue on form reset without a name", () => {
+	it("restores defaultValue on form reset without a name", async () => {
 		render(
 			<form>
 				<DatePicker defaultValue="2024-01-15" aria-label="Date" />
@@ -119,10 +119,12 @@ describe("DatePicker", () => {
 		fireEvent.click(screen.getByRole("button", { name: "2024-01-16" }));
 		expect(screen.getByRole("button", { name: /Date/ })).toHaveTextContent("Jan 16, 2024");
 		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
-		expect(screen.getByRole("button", { name: /Date/ })).toHaveTextContent("Jan 15, 2024");
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: /Date/ })).toHaveTextContent("Jan 15, 2024");
+		});
 	});
 
-	it("restores defaultValue on form reset", () => {
+	it("restores defaultValue on form reset", async () => {
 		render(
 			<form>
 				<DatePicker defaultValue="2024-01-15" name="when" aria-label="Date" />
@@ -133,7 +135,28 @@ describe("DatePicker", () => {
 		fireEvent.click(screen.getByRole("button", { name: "2024-01-16" }));
 		expect(document.querySelector('input[name="when"]')).toHaveValue("2024-01-16");
 		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
-		expect(document.querySelector('input[name="when"]')).toHaveValue("2024-01-15");
+		await waitFor(() => {
+			expect(document.querySelector('input[name="when"]')).toHaveValue("2024-01-15");
+		});
+	});
+
+	it("does not restore when form reset is canceled", async () => {
+		render(
+			<form
+				onReset={(event) => {
+					event.preventDefault();
+				}}
+			>
+				<DatePicker defaultValue="2024-01-15" name="when" aria-label="Date" />
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-16" }));
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await waitFor(() => {
+			expect(document.querySelector('input[name="when"]')).toHaveValue("2024-01-16");
+		});
 	});
 
 	it("labels the calendar dialog", () => {
@@ -156,11 +179,16 @@ describe("DatePicker", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Next" }));
 		expect(screen.getByText("February 2024")).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		await waitFor(() => {
+			expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+		});
 		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
 		await waitFor(() => {
 			expect(screen.getByText("January 2024")).toBeInTheDocument();
 		});
-		expect(screen.getByRole("button", { name: "2024-01-15" })).toHaveAttribute("tabindex", "0");
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "2024-01-15" })).toHaveFocus();
+		});
 	});
 
 	it("round-trips years before 100", () => {

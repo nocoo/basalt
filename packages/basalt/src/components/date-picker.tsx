@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
@@ -125,9 +125,14 @@ export function DatePicker({
 		if (!form || value !== undefined) {
 			return;
 		}
-		const onReset = () => {
-			setUncontrolled(defaultValue);
-			setOpen(false);
+		const onReset = (event: Event) => {
+			queueMicrotask(() => {
+				if (event.defaultPrevented) {
+					return;
+				}
+				setUncontrolled(defaultValue);
+				setOpen(false);
+			});
 		};
 		form.addEventListener("reset", onReset);
 		return () => form.removeEventListener("reset", onReset);
@@ -148,35 +153,34 @@ export function DatePicker({
 		return Array.from({ length: 42 }, (_, index) => addDays(start, index));
 	}, [month, weekStartsOn]);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		if (!open) {
 			return;
 		}
 		const pending = pendingFocusIso.current;
+		let index = 0;
 		if (pending) {
 			pendingFocusIso.current = null;
-			focusDay.current = true;
-			const pendingIndex = days.findIndex((date) => formatIso(date) === pending);
-			setFocusIndex(pendingIndex >= 0 ? pendingIndex : 0);
-			return;
+			index = days.findIndex((date) => formatIso(date) === pending);
+			if (index < 0) {
+				index = 0;
+			}
+		} else {
+			const iso = selected || formatIso(todayCivil(timeZone));
+			const selectedIndex = days.findIndex((date) => formatIso(date) === iso);
+			if (selectedIndex >= 0 && days[selectedIndex]?.m === month.m) {
+				index = selectedIndex;
+			} else {
+				const firstInMonth = days.findIndex((date) => date.m === month.m);
+				index = firstInMonth >= 0 ? firstInMonth : 0;
+			}
 		}
-		const iso = selected || formatIso(todayCivil(timeZone));
-		const selectedIndex = days.findIndex((date) => formatIso(date) === iso);
-		if (selectedIndex >= 0 && days[selectedIndex]?.m === month.m) {
-			setFocusIndex(selectedIndex);
-			return;
+		setFocusIndex(index);
+		if (focusDay.current) {
+			focusDay.current = false;
+			dayRefs.current[index]?.focus();
 		}
-		const firstInMonth = days.findIndex((date) => date.m === month.m);
-		setFocusIndex(firstInMonth >= 0 ? firstInMonth : 0);
 	}, [open, selected, timeZone, days, month.m]);
-
-	useEffect(() => {
-		if (!open || !focusDay.current) {
-			return;
-		}
-		focusDay.current = false;
-		dayRefs.current[focusIndex]?.focus();
-	}, [open, focusIndex]);
 
 	const label = selectedDate
 		? (formatDate?.(civilDate(selectedDate)) ??
@@ -200,6 +204,11 @@ export function DatePicker({
 			onOpenChange={(next) => {
 				if (next && disabled) {
 					return;
+				}
+				if (next) {
+					const synced = (selected ? parseIso(selected) : null) ?? todayCivil(timeZone);
+					setMonth({ y: synced.y, m: synced.m, d: 1 });
+					focusDay.current = true;
 				}
 				setOpen(next);
 			}}
@@ -241,8 +250,17 @@ export function DatePicker({
 				onOpenAutoFocus={(event) => {
 					event.preventDefault();
 					const iso = selected || formatIso(todayCivil(timeZone));
-					const index = days.findIndex((date) => formatIso(date) === iso);
-					dayRefs.current[index >= 0 ? index : 0]?.focus();
+					const selectedIndex = days.findIndex((date) => formatIso(date) === iso);
+					const index =
+						selectedIndex >= 0 && days[selectedIndex]?.m === month.m
+							? selectedIndex
+							: Math.max(
+									0,
+									days.findIndex((date) => date.m === month.m),
+								);
+					queueMicrotask(() => {
+						dayRefs.current[index]?.focus();
+					});
 				}}
 			>
 				<div className="mb-2 flex items-center justify-between text-sm">
@@ -303,13 +321,14 @@ export function DatePicker({
 							const next = addDays(current, delta);
 							if (next.y !== month.y || next.m !== month.m) {
 								pendingFocusIso.current = formatIso(next);
+								focusDay.current = true;
 								setMonth({ y: next.y, m: next.m, d: 1 });
 								return;
 							}
 							const index = days.findIndex((date) => formatIso(date) === formatIso(next));
 							if (index >= 0) {
-								focusDay.current = true;
 								setFocusIndex(index);
+								dayRefs.current[index]?.focus();
 							}
 							return;
 						}
