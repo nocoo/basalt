@@ -1,16 +1,24 @@
-import { Area, AreaChart as RechartsArea, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { SAMPLE } from "./sample";
+import { Area, AreaChart as RechartsArea, XAxis, YAxis } from "recharts";
+import { ChartFrame } from "./frame";
+import { CHART_COLORS } from "./palette";
+import { SAMPLE, type XYPoint } from "./sample";
 
-export function AreaChart({ data = SAMPLE }: { data?: typeof SAMPLE }) {
+export function AreaChart({
+	data = SAMPLE,
+	ariaLabel = "Area chart",
+	className,
+}: {
+	data?: XYPoint[];
+	ariaLabel?: string;
+	className?: string;
+}) {
 	return (
-		<div className="h-36 w-56 text-basalt-primary">
-			<ResponsiveContainer>
-				<RechartsArea data={data}>
-					<XAxis dataKey="x" hide />
-					<YAxis hide />
-					<Area dataKey="y" stroke="currentColor" fill="currentColor" fillOpacity={0.2} />
-				</RechartsArea>
-			</ResponsiveContainer>
-		</div>
+		<ChartFrame ariaLabel={ariaLabel} className={className}>
+			<RechartsArea data={data}>
+				<XAxis dataKey="x" hide />
+				<YAxis hide />
+				<Area dataKey="y" stroke={CHART_COLORS[0]} fill={CHART_COLORS[0]} fillOpacity={0.2} />
+			</RechartsArea>
+		</ChartFrame>
 	);
 }

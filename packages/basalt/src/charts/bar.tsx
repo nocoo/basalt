@@ -1,16 +1,24 @@
-import { Bar, BarChart as RechartsBar, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { SAMPLE } from "./sample";
+import { Bar, BarChart as RechartsBar, XAxis, YAxis } from "recharts";
+import { ChartFrame } from "./frame";
+import { CHART_COLORS } from "./palette";
+import { SAMPLE, type XYPoint } from "./sample";
 
-export function BarChart({ data = SAMPLE }: { data?: typeof SAMPLE }) {
+export function BarChart({
+	data = SAMPLE,
+	ariaLabel = "Bar chart",
+	className,
+}: {
+	data?: XYPoint[];
+	ariaLabel?: string;
+	className?: string;
+}) {
 	return (
-		<div className="h-36 w-56 text-basalt-primary">
-			<ResponsiveContainer>
-				<RechartsBar data={data}>
-					<XAxis dataKey="x" hide />
-					<YAxis hide />
-					<Bar dataKey="y" fill="currentColor" />
-				</RechartsBar>
-			</ResponsiveContainer>
-		</div>
+		<ChartFrame ariaLabel={ariaLabel} className={className}>
+			<RechartsBar data={data}>
+				<XAxis dataKey="x" hide />
+				<YAxis hide />
+				<Bar dataKey="y" fill={CHART_COLORS[0]} />
+			</RechartsBar>
+		</ChartFrame>
 	);
 }

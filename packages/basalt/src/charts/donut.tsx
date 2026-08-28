@@ -1,23 +1,33 @@
-import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
+import { Cell, Pie, PieChart } from "recharts";
+import { ChartFrame } from "./frame";
+import { CHART_COLORS } from "./palette";
+import { DONUT_SAMPLE, type NamedValue } from "./sample";
 
-const DATA = [
-	{ name: "A", value: 40 },
-	{ name: "B", value: 25 },
-	{ name: "C", value: 35 },
-];
-
-export function DonutChart() {
+export function DonutChart({
+	data = DONUT_SAMPLE,
+	ariaLabel = "Donut chart",
+	className,
+}: {
+	data?: NamedValue[];
+	ariaLabel?: string;
+	className?: string;
+}) {
 	return (
-		<div className="h-36 w-36">
-			<ResponsiveContainer>
-				<PieChart>
-					<Pie data={DATA} dataKey="value" innerRadius={24} outerRadius={48} stroke="none">
-						{DATA.map((entry) => (
-							<Cell key={entry.name} fill="currentColor" fillOpacity={entry.value / 50} />
-						))}
-					</Pie>
-				</PieChart>
-			</ResponsiveContainer>
-		</div>
+		<ChartFrame ariaLabel={ariaLabel} className={className} size="h-36 w-36">
+			<PieChart>
+				<Pie
+					data={data}
+					dataKey="value"
+					nameKey="name"
+					innerRadius={24}
+					outerRadius={48}
+					stroke="none"
+				>
+					{data.map((entry, index) => (
+						<Cell key={entry.name} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+					))}
+				</Pie>
+			</PieChart>
+		</ChartFrame>
 	);
 }
