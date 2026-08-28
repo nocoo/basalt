@@ -145,9 +145,14 @@ export function DatePicker({
 			return;
 		}
 		const iso = selected || formatIso(todayCivil(timeZone));
-		const index = days.findIndex((date) => formatIso(date) === iso);
-		setFocusIndex(index >= 0 ? index : 0);
-	}, [open, selected, timeZone, days]);
+		const selectedIndex = days.findIndex((date) => formatIso(date) === iso);
+		if (selectedIndex >= 0 && days[selectedIndex]?.m === month.m) {
+			setFocusIndex(selectedIndex);
+			return;
+		}
+		const firstInMonth = days.findIndex((date) => date.m === month.m);
+		setFocusIndex(firstInMonth >= 0 ? firstInMonth : 0);
+	}, [open, selected, timeZone, days, month.m]);
 
 	useEffect(() => {
 		if (open) {
@@ -213,6 +218,7 @@ export function DatePicker({
 			</PopoverTrigger>
 			<PopoverContent
 				className="w-64 p-3"
+				aria-label={ariaLabel ? `${ariaLabel} calendar` : "Date calendar"}
 				onOpenAutoFocus={(event) => {
 					event.preventDefault();
 					const iso = selected || formatIso(todayCivil(timeZone));

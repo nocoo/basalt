@@ -74,6 +74,23 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "2024-01-16" })).toHaveAttribute("tabindex", "0");
 	});
 
+	it("keeps the tab stop in the navigated month", async () => {
+		render(<DatePicker defaultValue="2024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		fireEvent.click(screen.getByRole("button", { name: "Next" }));
+		await waitFor(() => {
+			expect(screen.getByText("February 2024")).toBeInTheDocument();
+		});
+		const stop = screen.getByRole("button", { name: "2024-02-01" });
+		expect(stop).toHaveAttribute("tabindex", "0");
+	});
+
+	it("labels the calendar dialog", () => {
+		render(<DatePicker defaultValue="2024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		expect(screen.getByRole("dialog", { name: "Date calendar" })).toBeInTheDocument();
+	});
+
 	it("moves into the next month from the last day", () => {
 		render(<DatePicker defaultValue="2024-01-31" aria-label="Date" />);
 		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
