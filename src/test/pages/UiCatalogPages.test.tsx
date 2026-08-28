@@ -143,7 +143,14 @@ describe("ui catalog", () => {
 	it("opens overlay demos with the button control", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		for (const slug of ["collapsible", "dialog", "popover", "dropdown-menu", "sheet"]) {
+		for (const slug of [
+			"collapsible",
+			"dialog",
+			"popover",
+			"dropdown-menu",
+			"sheet",
+			"command-palette",
+		]) {
 			cleanup();
 			renderCatalog(`/ui/${slug}`);
 			expect(screen.getAllByRole("button", { name: "Open" }).length).toBeGreaterThan(0);

@@ -19,6 +19,8 @@ export {
 	CommandItem,
 	CommandList,
 	CommandPalette,
+	CommandSeparator,
+	CommandShortcut,
 } from "./components/command-palette";
 export {
 	Dialog,

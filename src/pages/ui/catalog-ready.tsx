@@ -52,7 +52,10 @@ import {
 } from "@nocoo/basalt/components/collapsible";
 import { Combobox } from "@nocoo/basalt/components/combobox";
 import {
+	CommandEmpty,
+	CommandGroup,
 	CommandInput,
+	CommandItem,
 	CommandList,
 	CommandPalette,
 } from "@nocoo/basalt/components/command-palette";
@@ -112,7 +115,7 @@ import { toast } from "@nocoo/basalt/components/toast";
 import { Toggle } from "@nocoo/basalt/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import type { ComponentType } from "react";
+import { type ComponentType, useState } from "react";
 import { CATALOG, type CatalogEntry, catalogImportPath } from "./catalog";
 
 type CatalogDocs = {
@@ -499,16 +502,32 @@ add(
 	"<Autocomplete />",
 );
 add("date-picker", "Pick a date.", () => <DatePicker aria-label="Date" />, "<DatePicker />");
+function CommandPaletteDemo() {
+	const [open, setOpen] = useState(false);
+	return (
+		<>
+			<Button variant="outline" onClick={() => setOpen(true)}>
+				Open
+			</Button>
+			<CommandPalette open={open} onOpenChange={setOpen}>
+				<CommandInput placeholder="Search pages" />
+				<CommandList>
+					<CommandEmpty>No results</CommandEmpty>
+					<CommandGroup heading="Pages">
+						<CommandItem>Button</CommandItem>
+						<CommandItem>Input</CommandItem>
+					</CommandGroup>
+				</CommandList>
+			</CommandPalette>
+		</>
+	);
+}
+
 add(
 	"command-palette",
-	"Command search.",
-	() => (
-		<CommandPalette>
-			<CommandInput placeholder="Search" />
-			<CommandList />
-		</CommandPalette>
-	),
-	"<CommandPalette />",
+	"Search pages and commands.",
+	() => <CommandPaletteDemo />,
+	'<Button variant="outline">Open</Button>',
 );
 add("sidebar", "App sidebar shell.", () => <Sidebar>Nav</Sidebar>, "<Sidebar />");
 add(
