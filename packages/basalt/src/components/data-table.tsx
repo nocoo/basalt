@@ -1,4 +1,4 @@
-import { type ReactNode, useMemo, useRef, useState } from "react";
+import { type ReactNode, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
 
@@ -186,34 +186,12 @@ export function DataTable<T>({
 				}
 			}
 		};
-		const present = new Set<object>();
-		const presentSymbols = new Set<symbol>();
-		for (const row of data) {
-			if (isRefRow(row)) {
-				present.add(row);
-			} else if (typeof row === "symbol") {
-				presentSymbols.add(row);
-			}
-		}
-		for (const [canonical, owner] of lastCanonical.current) {
-			if (!present.has(owner)) {
-				lastCanonical.current.delete(canonical);
-			}
-		}
-		for (const [key, owner] of lastOwner.current) {
-			if (!present.has(owner)) {
-				lastOwner.current.delete(key);
-			}
-		}
-		for (const symbol of symbolKeys.current.keys()) {
-			if (!presentSymbols.has(symbol)) {
-				symbolKeys.current.delete(symbol);
-			}
-		}
 		const used = new Set<string>();
 		const nextLastKey = new Map<string, string>();
 		const nextDups = new Map<string, string[]>();
-		const nextAssigned = new WeakMap<object, string[]>();
+		const nextAssigned = new Map<object, string[]>();
+		const nextOwner = new Map<string, object>();
+		const nextCanonical = new Map<string, object>();
 		const rememberKey = (row: T, index: number, key: string, objectRow: object | null) => {
 			if (!objectRow) {
 				return;
@@ -221,10 +199,9 @@ export function DataTable<T>({
 			const list = nextAssigned.get(objectRow) ?? [];
 			list.push(key);
 			nextAssigned.set(objectRow, list);
-			assignedKeys.current.set(objectRow, list);
-			lastOwner.current.set(key, objectRow);
+			nextOwner.set(key, objectRow);
 			if (isCanonicalKey(key)) {
-				lastCanonical.current.set(key, objectRow);
+				nextCanonical.set(key, objectRow);
 			}
 			const canonical = canonicalOf(row, index);
 			if (!canonical) {
@@ -307,27 +284,45 @@ export function DataTable<T>({
 			rememberKey(row, index, key, objectRow);
 			return { row, key };
 		});
-		lastKeyByCanonical.current = nextLastKey;
-		lastDupsByCanonical.current = nextDups;
 		const filtered = query
 			? keyed.filter(({ row }) =>
 					columns.some((column) => filterSource(column, row).toLowerCase().includes(query)),
 				)
 			: keyed;
-		if (!sort) {
-			return filtered;
-		}
-		const column = columns.find((item) => item.id === sort.id);
-		if (!column) {
-			return filtered;
-		}
-		return [...filtered].sort((a, b) => {
-			const left = column.sortValue?.(a.row) ?? column.accessor(a.row);
-			const right = column.sortValue?.(b.row) ?? column.accessor(b.row);
-			const cmp = compareUnknown(left, right);
-			return sort.dir === "asc" ? cmp : -cmp;
-		});
+		const sorted = (() => {
+			if (!sort) {
+				return filtered;
+			}
+			const column = columns.find((item) => item.id === sort.id);
+			if (!column) {
+				return filtered;
+			}
+			return [...filtered].sort((a, b) => {
+				const left = column.sortValue?.(a.row) ?? column.accessor(a.row);
+				const right = column.sortValue?.(b.row) ?? column.accessor(b.row);
+				const cmp = compareUnknown(left, right);
+				return sort.dir === "asc" ? cmp : -cmp;
+			});
+		})();
+		return {
+			rows: sorted,
+			assigned: nextAssigned,
+			owner: nextOwner,
+			canonical: nextCanonical,
+			lastKey: nextLastKey,
+			dups: nextDups,
+		};
 	}, [columns, data, getRowId, query, sort]);
+
+	useLayoutEffect(() => {
+		for (const [objectRow, keys] of rows.assigned) {
+			assignedKeys.current.set(objectRow, keys);
+		}
+		lastOwner.current = rows.owner;
+		lastCanonical.current = rows.canonical;
+		lastKeyByCanonical.current = rows.lastKey;
+		lastDupsByCanonical.current = rows.dups;
+	}, [rows]);
 
 	return (
 		<Table className={cn("w-full", className)}>
@@ -359,7 +354,7 @@ export function DataTable<T>({
 				</TableRow>
 			</TableHeader>
 			<TableBody>
-				{rows.map(({ row, key }) => (
+				{rows.rows.map(({ row, key }) => (
 					<TableRow key={key}>
 						{columns.map((column) => {
 							const cell = column.accessor(row);
