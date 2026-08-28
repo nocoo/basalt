@@ -240,6 +240,23 @@ describe("DatePicker", () => {
 		});
 	});
 
+	it("disables year-zero spillover days", () => {
+		render(<DatePicker defaultValue="0001-01-01" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		expect(screen.getByRole("button", { name: "0000-12-31" })).toBeDisabled();
+	});
+
+	it("selects canonical ISO days for padded years", async () => {
+		render(<DatePicker value="02024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "2024-01-15" })).toHaveAttribute(
+				"aria-pressed",
+				"true",
+			);
+		});
+	});
+
 	it("round-trips years before 100", () => {
 		render(<DatePicker value="0099-01-01" aria-label="Date" />);
 		fireEvent.click(screen.getByRole("button", { name: /Date/ }));

@@ -182,7 +182,7 @@ export function DatePicker({
 				index = 0;
 			}
 		} else {
-			const iso = selected || formatIso(todayCivil(timeZone));
+			const iso = submitted || formatIso(todayCivil(timeZone));
 			const selectedIndex = days.findIndex((date) => formatIso(date) === iso);
 			if (selectedIndex >= 0 && days[selectedIndex]?.m === month.m) {
 				index = selectedIndex;
@@ -196,7 +196,7 @@ export function DatePicker({
 			focusDay.current = false;
 			dayRefs.current[index]?.focus();
 		}
-	}, [open, selected, timeZone, days, month.m]);
+	}, [open, submitted, timeZone, days, month.m]);
 
 	const label = selectedDate
 		? (formatDate?.(civilDate(selectedDate)) ??
@@ -285,6 +285,9 @@ export function DatePicker({
 						className={CALENDAR_BUTTON}
 						disabled={disabled}
 						onClick={() => {
+							if (month.y === 1 && month.m === 1) {
+								return;
+							}
 							focusDay.current = false;
 							setMonth(
 								month.m === 1
@@ -335,6 +338,9 @@ export function DatePicker({
 											? 7
 											: -7;
 							const next = addDays(current, delta);
+							if (next.y < 1) {
+								return;
+							}
 							if (next.y !== month.y || next.m !== month.m) {
 								pendingFocusIso.current = formatIso(next);
 								focusDay.current = true;
@@ -350,7 +356,9 @@ export function DatePicker({
 						}
 						if (event.key === "Enter" || event.key === " ") {
 							event.preventDefault();
-							commit(formatIso(current));
+							if (current.y >= 1) {
+								commit(formatIso(current));
+							}
 						}
 					}}
 				>
@@ -360,24 +368,27 @@ export function DatePicker({
 					{days.map((date, index) => {
 						const iso = formatIso(date);
 						const inMonth = date.m === month.m;
+						const inRange = date.y >= 1;
 						return (
 							<button
 								type="button"
-								key={iso}
+								key={`${iso}-${index}`}
 								ref={(node) => {
 									dayRefs.current[index] = node;
 								}}
 								tabIndex={index === focusIndex ? 0 : -1}
 								aria-label={iso}
-								aria-pressed={iso === selected}
-								disabled={disabled}
+								aria-pressed={Boolean(submitted) && iso === submitted}
+								disabled={disabled || !inRange}
 								className={cn(
 									CALENDAR_BUTTON,
 									"h-7 rounded-basalt-sm text-xs",
 									inMonth ? "text-basalt-foreground" : "text-basalt-muted-foreground",
-									iso === selected && "bg-basalt-primary text-basalt-primary-foreground",
+									inRange &&
+										iso === submitted &&
+										"bg-basalt-primary text-basalt-primary-foreground",
 								)}
-								onClick={() => commit(iso)}
+								onClick={() => inRange && commit(iso)}
 							>
 								{date.d}
 							</button>
