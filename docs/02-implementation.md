@@ -1,6 +1,6 @@
 # 02 · 2.0 实现步骤
 
-> 状态：01+02 联审 Sign Off。01 第 13 节 1–11 已拍板。不冻现网像素；下一刀 Wave P。依赖 [01-plan-2-0.md](./01-plan-2-0.md) 的架构与 6.2 出口表。
+> 状态：01+02 联审 Sign Off。01 第 13 节 1–11 已拍板。执行纠偏：B05 四层亮度、catalog 对照 `kumo-ui.com` 复刻、Kumo Components 清单 100% 覆盖（01 §3.6、§8）。依赖 [01-plan-2-0.md](./01-plan-2-0.md) 的架构与 6.2 出口表。
 > 本文只写**怎么做**：阶段、原子化提交、每个控件的推荐底稿与确认门。
 > 不含工时。未确认本文前不写业务代码。
 
@@ -293,7 +293,7 @@ P1–P5 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 | # | commit 形态 | 内容 |
 |---|-------------|------|
 | a | `feat: add <Name> control` | 实现 + 单测，同 commit，husky 一次绿。`packages/basalt/src/...`，无 mock、无 i18n |
-| b | `feat: fill <Name> catalog page` | 替换 placeholder：预览、import、copy、props、来源 SHA |
+| b | `feat: fill <Name> catalog page` | 替换 placeholder，按 01 §8.3：hero、Installation、Usage、Examples、高亮代码、API 表、右侧 TOC、源码 SHA |
 | c | `refactor: wire <Name> on <route>` | 仅 stable/chart/provider，01 的 wire 路由 |
 
 复杂控件（Dialog、Combobox、DatePicker、CommandPalette、Sidebar）加：
@@ -302,7 +302,9 @@ P1–P5 期间禁止改现有组合页 class。侧栏多一组是 01 允许的�
 |---|--------|
 | d | `test: add <Name> browser tests` | 与能绿的 harness 同 commit；不得先合红测 |
 
-不允许：只实现不填 catalog 页；catalog 页继续显示 placeholder；`test:` 先红、下个 commit 再补实现。
+不允许：只实现不填 catalog 页；catalog 页继续显示 placeholder；`test:` 先红、下个 commit 再补实现。catalog 页缺 TOC / Installation / 高亮代码 / props 表，不算填完。
+
+Input / InputArea / SensitiveInput / Select 默认表面必须是 B05 L3（`bg-basalt-secondary` + `border-basalt-border`），禁止 `bg-basalt-background`。
 
 **Sidebar 例外：** 步骤 c 不在实现波执行。实现波只做 a + b + d（catalog `/ui/sidebar` + browser 测试）。现页 `wire=/` 见 §8.8 S2。
 
