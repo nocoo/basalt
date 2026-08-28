@@ -129,9 +129,19 @@ export function Combobox({
 						skipFocusOpen.current = false;
 						return;
 					}
+					if (!open) {
+						const selectedIndex = filtered.indexOf(selected);
+						setActive(selectedIndex >= 0 ? selectedIndex : 0);
+					}
 					setOpen(true);
 				}}
-				onClick={() => setOpen(true)}
+				onClick={() => {
+					if (!open) {
+						const selectedIndex = filtered.indexOf(selected);
+						setActive(selectedIndex >= 0 ? selectedIndex : 0);
+					}
+					setOpen(true);
+				}}
 				onKeyDown={(event) => {
 					if (event.nativeEvent.isComposing || event.key === "Process") {
 						return;

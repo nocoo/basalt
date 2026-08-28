@@ -161,6 +161,24 @@ describe("Combobox", () => {
 		expect(onValueChange).not.toHaveBeenCalled();
 	});
 
+	it("highlights the selected option when opened", () => {
+		const onValueChange = vi.fn();
+		render(
+			<Combobox
+				items={["Pineapple", "Apple"]}
+				defaultValue="Apple"
+				placeholder="Fruit"
+				onValueChange={onValueChange}
+			/>,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+		fireEvent.keyDown(input, { key: "Enter" });
+		expect(onValueChange).not.toHaveBeenCalledWith("Pineapple");
+		expect(input).toHaveValue("Apple");
+	});
+
 	it("syncs the query when a controlled value is cleared", () => {
 		const { rerender } = render(
 			<Combobox items={["Apple", "Banana"]} value="Apple" placeholder="Fruit" />,
