@@ -22,6 +22,34 @@ describe("DataTable", () => {
 		expect(screen.getByText("Zed")).toBeInTheDocument();
 	});
 
+	it("sorts mixed declared sort values in a total order", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Str", count: "11" as number | bigint | string },
+					{ name: "Num", count: 2 },
+					{ name: "Big", count: 10n },
+					{ name: "NaN", count: Number.NaN },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{
+						id: "count",
+						header: "Count",
+						accessor: (row) => String(row.count),
+						sortValue: (row) => row.count,
+					},
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		const names = screen
+			.getAllByRole("cell")
+			.filter((_, index) => index % 2 === 0)
+			.map((cell) => cell.textContent);
+		expect(names).toEqual(["Num", "Big", "NaN", "Str"]);
+	});
+
 	it("sorts numbers numerically without sortValue", () => {
 		render(
 			<DataTable

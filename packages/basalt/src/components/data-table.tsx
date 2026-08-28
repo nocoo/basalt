@@ -40,25 +40,61 @@ function compareNumberAndBigint(num: number, big: bigint): number {
 	return num > Number(truncated) ? 1 : -1;
 }
 
+function rank(value: unknown): number {
+	if (typeof value === "bigint") {
+		return 0;
+	}
+	if (typeof value === "number") {
+		return Number.isFinite(value) ? 0 : 1;
+	}
+	if (typeof value === "string") {
+		return 2;
+	}
+	return 3;
+}
+
+function compareNonFinite(left: number, right: number): number {
+	const order = (value: number) => {
+		if (value === Number.NEGATIVE_INFINITY) {
+			return 0;
+		}
+		if (value === Number.POSITIVE_INFINITY) {
+			return 1;
+		}
+		return 2;
+	};
+	return order(left) - order(right);
+}
+
 function compareUnknown(left: unknown, right: unknown): number {
-	if (typeof left === "bigint" && typeof right === "bigint") {
-		return left < right ? -1 : left > right ? 1 : 0;
+	const leftRank = rank(left);
+	const rightRank = rank(right);
+	if (leftRank !== rightRank) {
+		return leftRank - rightRank;
 	}
-	const leftInt = asBigint(left);
-	const rightInt = asBigint(right);
-	if (leftInt !== null && rightInt !== null) {
-		return leftInt < rightInt ? -1 : leftInt > rightInt ? 1 : 0;
+	if (leftRank === 0) {
+		if (typeof left === "bigint" && typeof right === "bigint") {
+			return left < right ? -1 : left > right ? 1 : 0;
+		}
+		const leftInt = asBigint(left);
+		const rightInt = asBigint(right);
+		if (leftInt !== null && rightInt !== null) {
+			return leftInt < rightInt ? -1 : leftInt > rightInt ? 1 : 0;
+		}
+		if (typeof left === "number" && typeof right === "bigint") {
+			return compareNumberAndBigint(left, right);
+		}
+		if (typeof left === "bigint" && typeof right === "number") {
+			return -compareNumberAndBigint(right, left);
+		}
+		return (left as number) - (right as number);
 	}
-	if (typeof left === "number" && typeof right === "bigint") {
-		return compareNumberAndBigint(left, right);
+	if (leftRank === 1) {
+		return compareNonFinite(left as number, right as number);
 	}
-	if (typeof left === "bigint" && typeof right === "number") {
-		return -compareNumberAndBigint(right, left);
-	}
-	if (typeof left === "number" && typeof right === "number") {
-		return left - right;
-	}
-	return String(left) < String(right) ? -1 : String(left) > String(right) ? 1 : 0;
+	const leftStr = String(left);
+	const rightStr = String(right);
+	return leftStr < rightStr ? -1 : leftStr > rightStr ? 1 : 0;
 }
 
 function filterSource<T>(column: DataTableColumn<T>, row: T): string {
