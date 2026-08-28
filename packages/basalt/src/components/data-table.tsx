@@ -41,29 +41,22 @@ function compareNumberAndBigint(num: number, big: bigint): number {
 }
 
 function rank(value: unknown): number {
-	if (typeof value === "bigint") {
+	if (value === Number.NEGATIVE_INFINITY) {
 		return 0;
 	}
+	if (typeof value === "bigint" || (typeof value === "number" && Number.isFinite(value))) {
+		return 1;
+	}
+	if (value === Number.POSITIVE_INFINITY) {
+		return 2;
+	}
 	if (typeof value === "number") {
-		return Number.isFinite(value) ? 0 : 1;
+		return 3;
 	}
 	if (typeof value === "string") {
-		return 2;
+		return 4;
 	}
-	return 3;
-}
-
-function compareNonFinite(left: number, right: number): number {
-	const order = (value: number) => {
-		if (value === Number.NEGATIVE_INFINITY) {
-			return 0;
-		}
-		if (value === Number.POSITIVE_INFINITY) {
-			return 1;
-		}
-		return 2;
-	};
-	return order(left) - order(right);
+	return 5;
 }
 
 function compareUnknown(left: unknown, right: unknown): number {
@@ -72,7 +65,7 @@ function compareUnknown(left: unknown, right: unknown): number {
 	if (leftRank !== rightRank) {
 		return leftRank - rightRank;
 	}
-	if (leftRank === 0) {
+	if (leftRank === 1) {
 		if (typeof left === "bigint" && typeof right === "bigint") {
 			return left < right ? -1 : left > right ? 1 : 0;
 		}
@@ -88,9 +81,6 @@ function compareUnknown(left: unknown, right: unknown): number {
 			return -compareNumberAndBigint(right, left);
 		}
 		return (left as number) - (right as number);
-	}
-	if (leftRank === 1) {
-		return compareNonFinite(left as number, right as number);
 	}
 	const leftStr = String(left);
 	const rightStr = String(right);
@@ -134,6 +124,7 @@ export function DataTable<T>({
 	const query = filter.trim().toLowerCase();
 
 	const rows = useMemo(() => {
+		const seen = new WeakSet<object>();
 		const keyed = data.map((row, index) => {
 			let key = getRowId?.(row, index);
 			if (!key && row && typeof row === "object" && "id" in row) {
@@ -143,12 +134,16 @@ export function DataTable<T>({
 				}
 			}
 			if (!key && row && typeof row === "object") {
-				const stored = rowIds.current.get(row as object);
+				let stored = rowIds.current.get(row as object);
 				if (!stored) {
-					key = `basalt-row-${rowSeq.current++}`;
-					rowIds.current.set(row as object, key);
-				} else {
+					stored = `basalt-row-${rowSeq.current++}`;
+					rowIds.current.set(row as object, stored);
+				}
+				if (seen.has(row as object)) {
 					key = `${stored}-${index}`;
+				} else {
+					seen.add(row as object);
+					key = stored;
 				}
 			}
 			return { row, key: key ?? `basalt-primitive-${index}` };

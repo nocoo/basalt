@@ -22,6 +22,23 @@ describe("DataTable", () => {
 		expect(screen.getByText("Zed")).toBeInTheDocument();
 	});
 
+	it("sorts negative infinity before finite numbers", () => {
+		render(
+			<DataTable
+				data={[
+					{ name: "Fin", count: 2 },
+					{ name: "Neg", count: Number.NEGATIVE_INFINITY },
+				]}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{ id: "count", header: "Count", accessor: (row) => row.count },
+				]}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getAllByRole("cell")[0].textContent).toBe("Neg");
+	});
+
 	it("sorts mixed declared sort values in a total order", () => {
 		render(
 			<DataTable
