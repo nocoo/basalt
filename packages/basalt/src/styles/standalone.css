@@ -23,7 +23,7 @@
   --basalt-foreground: 0 0% 12%;
   --basalt-card: 220 14% 97%;
   --basalt-card-foreground: 0 0% 12%;
-  --basalt-secondary: 0 0% 100%;
+  --basalt-secondary: 220 14% 99%;
   --basalt-secondary-foreground: 0 0% 12%;
   --basalt-popover: 0 0% 100%;
   --basalt-popover-foreground: 0 0% 12%;
@@ -104,7 +104,7 @@
   --basalt-destructive: 0 72% 51%;
   --basalt-destructive-foreground: 0 0% 100%;
   --basalt-border: 0 0% 16%;
-  --basalt-input: 0 0% 12%;
+  --basalt-input: 0 0% 18%;
   --basalt-ring: 217 91% 60%;
   --basalt-chart-1: 217 91% 65%;
   --basalt-chart-2: 200 90% 60%;
@@ -314,9 +314,6 @@
   .border-basalt-border {
     border-color: hsl(var(--basalt-border));
   }
-  .border-basalt-input {
-    border-color: hsl(var(--basalt-input));
-  }
   .border-basalt-primary {
     border-color: hsl(var(--basalt-primary));
   }
@@ -328,9 +325,6 @@
   }
   .bg-basalt-border {
     background-color: hsl(var(--basalt-border));
-  }
-  .bg-basalt-card {
-    background-color: hsl(var(--basalt-card));
   }
   .bg-basalt-destructive {
     background-color: hsl(var(--basalt-destructive));

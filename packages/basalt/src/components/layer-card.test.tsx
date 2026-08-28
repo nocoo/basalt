@@ -5,7 +5,7 @@ import { LayerCard } from "./layer-card";
 describe("LayerCard", () => {
 	it("renders a plain surface by default", () => {
 		render(<LayerCard>Body</LayerCard>);
-		expect(screen.getByText("Body").className).toContain("bg-basalt-card");
+		expect(screen.getByText("Body").className).toContain("bg-basalt-secondary");
 		expect(screen.getByText("Body").className).not.toContain("border-basalt-border");
 	});
 

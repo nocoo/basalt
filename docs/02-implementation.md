@@ -340,8 +340,8 @@ Input / InputArea / SensitiveInput / Select 默认表面必须是 B05 L3（`bg-b
 
 | 顺序 | 出口 | 推荐主线 |
 |------|------|----------|
-| 13 | Input | meowth/zhe 表面：`bg-basalt-secondary` + `border-basalt-border`（B05 L3，light 白底） |
-| 14 | InputArea | 与 Input 同一 L3 表面 |
+| 13 | Input | raven：`bg-basalt-secondary` + `border-basalt-border`（L2 近白，靠边） |
+| 14 | InputArea | 与 Input 同一 L2 表面 |
 | 15 | InputGroup | Kumo API，本站皮 |
 | 16 | SensitiveInput | 本站 Login 眼标行为，抽成控件 |
 | 17 | Checkbox | pika indeterminate |

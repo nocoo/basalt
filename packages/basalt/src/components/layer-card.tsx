@@ -5,8 +5,8 @@ import { cn } from "../utils/cn";
 const layerCardVariants = cva("flex flex-col rounded-basalt-card text-basalt-card-foreground", {
 	variants: {
 		surface: {
-			plain: "bg-basalt-card",
-			bordered: "border border-basalt-border bg-basalt-card",
+			plain: "bg-basalt-secondary",
+			bordered: "border border-basalt-border bg-basalt-secondary",
 		},
 	},
 	defaultVariants: {
