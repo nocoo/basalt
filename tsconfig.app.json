@@ -24,7 +24,9 @@
 		"paths": {
 			"@/*": ["./src/*"],
 			"@nocoo/basalt": ["./packages/basalt/src/index.ts"],
-			"@nocoo/basalt/*": ["./packages/basalt/src/*"]
+			"@nocoo/basalt/components/*": ["./packages/basalt/src/components/*"],
+			"@nocoo/basalt/providers/*": ["./packages/basalt/src/providers/*"],
+			"@nocoo/basalt/charts/*": ["./packages/basalt/src/charts/*"]
 		}
 	},
 	"include": ["src", "packages/basalt/src"]

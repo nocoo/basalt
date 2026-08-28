@@ -37,10 +37,25 @@ export default defineConfig(() => ({
 	},
 	plugins: [tailwindcss(), react(), apiLivePlugin()],
 	resolve: {
-		alias: {
-			"@": path.resolve(__dirname, "./src"),
-			"@nocoo/basalt": path.resolve(__dirname, "./packages/basalt/src/index.ts"),
-		},
+		alias: [
+			{
+				find: "@nocoo/basalt/components",
+				replacement: path.resolve(__dirname, "./packages/basalt/src/components"),
+			},
+			{
+				find: "@nocoo/basalt/providers",
+				replacement: path.resolve(__dirname, "./packages/basalt/src/providers"),
+			},
+			{
+				find: "@nocoo/basalt/charts",
+				replacement: path.resolve(__dirname, "./packages/basalt/src/charts"),
+			},
+			{
+				find: "@nocoo/basalt",
+				replacement: path.resolve(__dirname, "./packages/basalt/src/index.ts"),
+			},
+			{ find: "@", replacement: path.resolve(__dirname, "./src") },
+		],
 		dedupe: ["react", "react-dom", "react/jsx-runtime", "@radix-ui/react-tooltip"],
 	},
 }));

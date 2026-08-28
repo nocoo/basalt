@@ -31,6 +31,7 @@ export default defineConfig({
 				"src/test/**",
 				"packages/basalt/**/*.test.ts",
 				"packages/basalt/**/*.test.tsx",
+				"packages/basalt/src/index.ts",
 				// Type-only declaration files have no runtime behavior to cover.
 				"src/**/*.d.ts",
 				// Pure type definitions for model shapes; covered implicitly via the
@@ -46,9 +47,24 @@ export default defineConfig({
 		},
 	},
 	resolve: {
-		alias: {
-			"@": path.resolve(__dirname, "./src"),
-			"@nocoo/basalt": path.resolve(__dirname, "./packages/basalt/src/index.ts"),
-		},
+		alias: [
+			{
+				find: "@nocoo/basalt/components",
+				replacement: path.resolve(__dirname, "./packages/basalt/src/components"),
+			},
+			{
+				find: "@nocoo/basalt/providers",
+				replacement: path.resolve(__dirname, "./packages/basalt/src/providers"),
+			},
+			{
+				find: "@nocoo/basalt/charts",
+				replacement: path.resolve(__dirname, "./packages/basalt/src/charts"),
+			},
+			{
+				find: "@nocoo/basalt",
+				replacement: path.resolve(__dirname, "./packages/basalt/src/index.ts"),
+			},
+			{ find: "@", replacement: path.resolve(__dirname, "./src") },
+		],
 	},
 });
