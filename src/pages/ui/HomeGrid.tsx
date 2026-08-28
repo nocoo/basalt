@@ -271,7 +271,7 @@ const HOME_DEMOS: Record<string, ComponentType> = {
 };
 
 const extraTiles = CATALOG.filter(
-	(entry) => !SHOWCASE.some((tile) => tile.slug === entry.slug),
+	(entry) => entry.category !== "docs" && !SHOWCASE.some((tile) => tile.slug === entry.slug),
 ).map((entry) => ({ name: entry.name, slug: entry.slug }));
 
 const TILES = [...SHOWCASE, ...extraTiles];

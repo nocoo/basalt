@@ -261,7 +261,7 @@ Flow 仍是 catalog、放图表轨道末。Maps 不做。
 现有 `NAV_GROUPS` 不改顺序、不改现有组名。侧栏两大分区：
 
 - **示例**（`nav.examples`）：现有分组原样，默认展开
-- **控件库**（`nav.kit`）：Home（`/ui`）+ Components（扁平字母序）/ Charts / Blocks，复用 `NavGroupSection`（可折叠、默认展开、条目带 icon）
+- **控件库**（`nav.kit`）：Home + Kumo 顶层文档 9 项 + Components（扁平字母序）/ Charts / Blocks。复用 `NavGroupSection`（可折叠、默认展开、条目带 icon）
 
 ⌘K 收录 example 页 + Home + 全部 `/ui/:slug`。
 

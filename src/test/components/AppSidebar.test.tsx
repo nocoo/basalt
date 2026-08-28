@@ -30,6 +30,8 @@ describe("AppSidebar", () => {
 				0,
 			);
 		}
+		expect(screen.getByRole("button", { name: "Installation" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Changelog" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Clipboard Text" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Page Header" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Maps" })).toBeInTheDocument();

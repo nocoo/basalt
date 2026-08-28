@@ -1,5 +1,6 @@
 import { Tooltip, TooltipContent, TooltipTrigger } from "@nocoo/basalt/components/tooltip";
 import {
+	Accessibility,
 	Activity,
 	AlignLeft,
 	AppWindow,
@@ -7,6 +8,7 @@ import {
 	BarChart3,
 	Bell,
 	BookOpen,
+	Boxes,
 	Calendar,
 	CalendarDays,
 	CalendarRange,
@@ -26,6 +28,7 @@ import {
 	Columns3,
 	Command,
 	CreditCard,
+	Download,
 	Ellipsis,
 	ExternalLink,
 	Eye,
@@ -40,6 +43,7 @@ import {
 	GitFork,
 	Globe,
 	Hash,
+	HeartHandshake,
 	HeartPulse,
 	History,
 	IdCard,
@@ -67,9 +71,11 @@ import {
 	PanelLeft,
 	PanelRight,
 	PanelTop,
+	PenTool,
 	PiggyBank,
 	Radar,
 	RectangleEllipsis,
+	ScrollText,
 	Search,
 	Settings,
 	SlidersHorizontal,
@@ -81,6 +87,7 @@ import {
 	Table,
 	Table2,
 	Tag,
+	Terminal,
 	TextCursorInput,
 	ToggleLeft,
 	ToggleRight,
@@ -106,7 +113,13 @@ import {
 	CommandList,
 } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
-import { CATALOG, CATALOG_CATEGORIES, catalogNavName, libraryNavEntries } from "@/pages/ui/catalog";
+import {
+	CATALOG,
+	CATALOG_CATEGORIES,
+	catalogNavName,
+	libraryDocEntries,
+	libraryNavEntries,
+} from "@/pages/ui/catalog";
 
 // ── Navigation data model ──
 
@@ -265,13 +278,22 @@ const CATALOG_ICONS: Record<string, React.ElementType> = {
 	"date-navigation": CalendarRange,
 	palette: SwatchBook,
 	charts: BarChart3,
-	colors: SwatchBook,
 	timeseries: ChartLine,
 	maps: Globe,
 	"custom-chart": Sparkles,
 	"page-header": LayoutTemplate,
 	"resource-list": List,
 	"delete-resource": Trash2,
+	installation: Download,
+	contributing: HeartHandshake,
+	colors: Palette,
+	accessibility: Accessibility,
+	figma: PenTool,
+	cli: Terminal,
+	skill: Sparkles,
+	registry: Boxes,
+	changelog: ScrollText,
+	"chart-colors": SwatchBook,
 };
 
 const LIBRARY_GROUPS: NavGroup[] = CATALOG_CATEGORIES.map((category) => ({
@@ -392,6 +414,21 @@ function LibraryNav({ currentPath }: { currentPath: string }) {
 					<BookOpen className="h-4 w-4 shrink-0" strokeWidth={1.5} />
 					<span className="flex-1 text-left">{t("nav.kitIndex")}</span>
 				</button>
+				{libraryDocEntries().map((entry) => {
+					const path = `/ui/${entry.slug}`;
+					const Icon = CATALOG_ICONS[entry.slug] ?? FileText;
+					return (
+						<button
+							type="button"
+							key={entry.slug}
+							onClick={() => navigate(path)}
+							className={navItemClass(currentPath === path)}
+						>
+							<Icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+							<span className="flex-1 truncate text-left">{catalogNavName(entry)}</span>
+						</button>
+					);
+				})}
 			</div>
 			{LIBRARY_GROUPS.map((group) => (
 				<NavGroupSection key={group.label} group={group} currentPath={currentPath} />

@@ -1,6 +1,6 @@
 export type CatalogKind = "stable" | "catalog" | "chart" | "provider";
 
-export type CatalogCategory = "component" | "chart" | "block";
+export type CatalogCategory = "docs" | "component" | "chart" | "block";
 
 export interface CatalogEntry {
 	slug: string;
@@ -137,8 +137,17 @@ export const CATALOG: CatalogEntry[] = [
 	{ slug: "flow", name: "Flow", kind: "catalog", category: "component" },
 	{ slug: "theme-provider", name: "ThemeProvider", kind: "provider", category: "component" },
 	{ slug: "link-provider", name: "LinkProvider", kind: "provider", category: "component" },
+	{ slug: "installation", name: "Installation", kind: "catalog", category: "docs" },
+	{ slug: "contributing", name: "Contributing", kind: "catalog", category: "docs" },
+	{ slug: "colors", name: "Colors", kind: "catalog", category: "docs" },
+	{ slug: "accessibility", name: "Accessibility", kind: "catalog", category: "docs" },
+	{ slug: "figma", name: "Figma Resources", kind: "catalog", category: "docs" },
+	{ slug: "cli", name: "CLI", kind: "catalog", category: "docs" },
+	{ slug: "skill", name: "Design skill", kind: "catalog", category: "docs" },
+	{ slug: "registry", name: "Registry", kind: "catalog", category: "docs" },
+	{ slug: "changelog", name: "Changelog", kind: "catalog", category: "docs" },
 	{ slug: "charts", name: "Charts", kind: "chart", category: "chart" },
-	{ slug: "colors", name: "Colors", kind: "chart", category: "chart" },
+	{ slug: "chart-colors", name: "Colors", kind: "chart", category: "chart" },
 	{ slug: "timeseries", name: "Timeseries", kind: "chart", category: "chart" },
 	{ slug: "maps", name: "Maps", kind: "chart", category: "chart" },
 	{ slug: "custom-chart", name: "Custom Chart", kind: "chart", category: "chart" },
@@ -168,7 +177,18 @@ export const CATALOG: CatalogEntry[] = [
 
 export const CATALOG_BY_SLUG = new Map(CATALOG.map((entry) => [entry.slug, entry]));
 
-const CHART_LEAD = ["charts", "colors", "timeseries", "maps", "sankey", "custom-chart"];
+const DOC_LEAD = [
+	"installation",
+	"contributing",
+	"colors",
+	"accessibility",
+	"figma",
+	"cli",
+	"skill",
+	"registry",
+	"changelog",
+];
+const CHART_LEAD = ["charts", "chart-colors", "timeseries", "maps", "sankey", "custom-chart"];
 const BLOCK_LEAD = ["page-header", "resource-list", "delete-resource"];
 
 export function catalogNavName(entry: CatalogEntry): string {
@@ -179,7 +199,16 @@ function byNavName(a: CatalogEntry, b: CatalogEntry) {
 	return catalogNavName(a).localeCompare(catalogNavName(b), "en");
 }
 
+export function libraryDocEntries(): CatalogEntry[] {
+	return DOC_LEAD.map((slug) => CATALOG_BY_SLUG.get(slug)).filter(
+		(entry): entry is CatalogEntry => entry !== undefined,
+	);
+}
+
 export function libraryNavEntries(category: CatalogCategory): CatalogEntry[] {
+	if (category === "docs") {
+		return libraryDocEntries();
+	}
 	if (category === "component") {
 		return CATALOG.filter((entry) => entry.category === "component").sort(byNavName);
 	}

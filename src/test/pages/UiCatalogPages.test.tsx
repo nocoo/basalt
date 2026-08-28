@@ -1,7 +1,13 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, it, vi } from "vitest";
-import { CATALOG, catalogImportPath, catalogNavName, libraryNavEntries } from "@/pages/ui/catalog";
+import {
+	CATALOG,
+	catalogImportPath,
+	catalogNavName,
+	libraryDocEntries,
+	libraryNavEntries,
+} from "@/pages/ui/catalog";
 import { UI_DEMOS } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { KUMO_DOCS_SLUGS } from "@/pages/ui/kumo-list";
@@ -22,8 +28,8 @@ function renderCatalog(path: string) {
 describe("ui catalog", () => {
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(87);
-		expect(new Set(slugs).size).toBe(87);
+		expect(slugs).toHaveLength(96);
+		expect(new Set(slugs).size).toBe(96);
 	});
 
 	it("renders the index with links to every export", () => {
@@ -31,7 +37,7 @@ describe("ui catalog", () => {
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
 		expect(screen.getByRole("link", { name: "Button" })).toHaveAttribute("href", "/ui/button");
 		expect(screen.getByRole("link", { name: "Toolbar" })).toHaveAttribute("href", "/ui/toolbar");
-		for (const entry of CATALOG) {
+		for (const entry of CATALOG.filter((item) => item.category !== "docs")) {
 			const href = `/ui/${entry.slug}`;
 			const match = screen.getAllByRole("link").some((link) => link.getAttribute("href") === href);
 			expect(match, entry.slug).toBe(true);
@@ -87,6 +93,17 @@ describe("ui catalog", () => {
 	});
 
 	it("orders library nav like kumo", () => {
+		expect(libraryDocEntries().map(catalogNavName)).toEqual([
+			"Installation",
+			"Contributing",
+			"Colors",
+			"Accessibility",
+			"Figma Resources",
+			"CLI",
+			"Design skill",
+			"Registry",
+			"Changelog",
+		]);
 		const components = libraryNavEntries("component");
 		expect(catalogNavName(components[0])).toBe("Accordion");
 		expect(components.map(catalogNavName)).toEqual(
