@@ -104,6 +104,14 @@ describe("DataTable", () => {
 		expect(screen.queryByText("Idle")).not.toBeInTheDocument();
 	});
 
+	it("keeps duplicate row object occurrences distinct", () => {
+		const row = { name: "Zed", count: 2 };
+		render(<DataTable data={[row, row]} columns={columns} />);
+		expect(screen.getAllByText("Zed")).toHaveLength(2);
+		fireEvent.click(screen.getByRole("button", { name: /Count/ }));
+		expect(screen.getAllByText("Zed")).toHaveLength(2);
+	});
+
 	it("uses stable row ids", () => {
 		render(<DataTable data={rows} columns={columns} getRowId={(row) => row.name} />);
 		expect(screen.getByText("Zed")).toBeInTheDocument();

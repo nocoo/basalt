@@ -143,10 +143,12 @@ export function DataTable<T>({
 				}
 			}
 			if (!key && row && typeof row === "object") {
-				key = rowIds.current.get(row as object);
-				if (!key) {
+				const stored = rowIds.current.get(row as object);
+				if (!stored) {
 					key = `basalt-row-${rowSeq.current++}`;
 					rowIds.current.set(row as object, key);
+				} else {
+					key = `${stored}-${index}`;
 				}
 			}
 			return { row, key: key ?? `basalt-primitive-${index}` };
