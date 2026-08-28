@@ -1,3 +1,4 @@
+import { Tooltip, TooltipContent, TooltipTrigger } from "@nocoo/basalt/components/tooltip";
 import {
 	BookOpen,
 	ChevronUp,
@@ -40,7 +41,6 @@ import {
 	CommandItem,
 	CommandList,
 } from "@/components/ui/command";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { CATALOG } from "@/pages/ui/catalog";
 
