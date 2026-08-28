@@ -1,3 +1,4 @@
+import { Button } from "@nocoo/basalt/components/button";
 import {
 	AlertTriangle,
 	Bell,
@@ -35,7 +36,6 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import {
 	Dialog,

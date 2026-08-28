@@ -3,6 +3,8 @@ import * as pkg from "./index";
 
 describe("@nocoo/basalt", () => {
 	it("loads the root barrel", () => {
-		expect(Object.keys(pkg)).toEqual([]);
+		expect(Object.keys(pkg)).toEqual(
+			expect.arrayContaining(["Button", "Label", "Separator", "ThemeProvider", "LinkProvider"]),
+		);
 	});
 });

@@ -35,8 +35,8 @@ describe("ui catalog", () => {
 	});
 
 	it("renders a placeholder catalog page for a known slug", () => {
-		renderCatalog("/ui/button");
-		expect(screen.getByRole("heading", { name: "Button" })).toBeInTheDocument();
+		renderCatalog("/ui/select");
+		expect(screen.getByRole("heading", { name: "Select" })).toBeInTheDocument();
 		expect(document.querySelector("[data-status='placeholder']")).toBeTruthy();
 		expect(screen.getByText(/未实现/)).toBeInTheDocument();
 	});

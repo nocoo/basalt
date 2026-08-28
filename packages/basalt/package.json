@@ -8,7 +8,13 @@
 		"*.css"
 	],
 	"exports": {
-		".": "./src/index.ts"
+		".": "./src/index.ts",
+		"./components/*": "./src/components/*.tsx",
+		"./providers/*": "./src/providers/*.tsx",
+		"./charts/*": "./src/charts/*.tsx",
+		"./styles": "./src/styles/tailwind.css",
+		"./styles/tailwind": "./src/styles/tailwind.css",
+		"./styles/standalone": "./src/styles/standalone.css"
 	},
 	"peerDependencies": {
 		"react": "^19",

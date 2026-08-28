@@ -2,6 +2,7 @@ import { BookOpen } from "lucide-react";
 import { Link, useParams } from "react-router";
 import { PageIntro } from "@/components/PageIntro";
 import { CATALOG_BY_SLUG } from "./catalog";
+import { UI_DEMOS } from "./demos";
 
 export default function UiPlaceholderPage() {
 	const { slug } = useParams<{ slug: string }>();
@@ -16,6 +17,23 @@ export default function UiPlaceholderPage() {
 					eyebrow="Library"
 					icon={BookOpen}
 				/>
+			</div>
+		);
+	}
+
+	const Demo = UI_DEMOS[entry.slug];
+	if (Demo) {
+		return (
+			<div data-status="ready" data-slug={entry.slug} className="space-y-4">
+				<PageIntro
+					title={entry.name}
+					description={`import { ${entry.name} } from "@nocoo/basalt/components/${entry.slug}"`}
+					eyebrow="Library"
+					icon={BookOpen}
+				/>
+				<div className="rounded-card bg-secondary p-5 md:p-6">
+					<Demo />
+				</div>
 			</div>
 		);
 	}

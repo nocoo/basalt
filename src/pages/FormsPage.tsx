@@ -1,11 +1,11 @@
+import { Checkbox } from "@nocoo/basalt/components/checkbox";
+import { Input } from "@nocoo/basalt/components/input";
+import { Label } from "@nocoo/basalt/components/label";
+import { Separator } from "@nocoo/basalt/components/separator";
+import { Switch } from "@nocoo/basalt/components/switch";
 import { Check, FormInput, Mail, MapPin, Shield, Upload, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { PageIntro } from "@/components/PageIntro";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
 
 function Section({
 	title,
