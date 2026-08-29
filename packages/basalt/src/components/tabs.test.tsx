@@ -27,5 +27,18 @@ describe("Tabs", () => {
 			</Tabs>,
 		);
 		expect(screen.getByText("Home panel")).toBeInTheDocument();
+		expect(screen.getByText("Home panel").className).toContain("animate-basalt-tab-in");
+	});
+
+	it("renders a sliding active indicator", () => {
+		const { container } = render(
+			<Tabs defaultValue="a">
+				<TabsList>
+					<TabsTrigger value="a">Home</TabsTrigger>
+					<TabsTrigger value="b">About</TabsTrigger>
+				</TabsList>
+			</Tabs>,
+		);
+		expect(container.querySelector('[aria-hidden="true"]')).toBeTruthy();
 	});
 });

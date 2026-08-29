@@ -2,18 +2,75 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 import * as React from "react";
 import { cn } from "../utils/cn";
 
+function assignRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
+	if (typeof ref === "function") {
+		ref(value);
+	} else if (ref) {
+		(ref as React.MutableRefObject<T | null>).current = value;
+	}
+}
+
 export const Tabs = TabsPrimitive.Root;
 
 export const TabsList = React.forwardRef<
 	React.ElementRef<typeof TabsPrimitive.List>,
 	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, ...props }, ref) => (
-	<TabsPrimitive.List
-		ref={ref}
-		className={cn("flex flex-wrap items-center gap-1 border-b border-basalt-border", className)}
-		{...props}
-	/>
-));
+>(({ className, children, ...props }, ref) => {
+	const listRef = React.useRef<HTMLDivElement>(null);
+	const [indicator, setIndicator] = React.useState({ left: 0, width: 0, ready: false });
+
+	const sync = React.useCallback(() => {
+		const list = listRef.current;
+		if (!list) {
+			return;
+		}
+		const active = list.querySelector<HTMLElement>('[data-state="active"]');
+		if (!active) {
+			return;
+		}
+		setIndicator({ left: active.offsetLeft, width: active.offsetWidth, ready: true });
+	}, []);
+
+	React.useLayoutEffect(() => {
+		sync();
+		const list = listRef.current;
+		if (!list) {
+			return;
+		}
+		const mo = new MutationObserver(sync);
+		mo.observe(list, { attributes: true, subtree: true, attributeFilter: ["data-state"] });
+		const ro = new ResizeObserver(sync);
+		ro.observe(list);
+		return () => {
+			mo.disconnect();
+			ro.disconnect();
+		};
+	}, [sync]);
+
+	return (
+		<TabsPrimitive.List
+			ref={(node) => {
+				listRef.current = node;
+				assignRef(ref, node);
+			}}
+			className={cn(
+				"relative flex flex-wrap items-center gap-1 border-b border-basalt-border",
+				className,
+			)}
+			{...props}
+		>
+			{children}
+			<span
+				aria-hidden="true"
+				className={cn(
+					"pointer-events-none absolute bottom-0 h-0.5 bg-basalt-primary",
+					indicator.ready && "transition-[left,width] duration-200 ease-out",
+				)}
+				style={{ left: indicator.left, width: indicator.width }}
+			/>
+		</TabsPrimitive.List>
+	);
+});
 TabsList.displayName = TabsPrimitive.List.displayName;
 
 export const TabsTrigger = React.forwardRef<
@@ -23,7 +80,7 @@ export const TabsTrigger = React.forwardRef<
 	<TabsPrimitive.Trigger
 		ref={ref}
 		className={cn(
-			"-mb-px inline-flex items-center justify-center border-b-2 border-transparent px-3 py-2 text-sm font-medium text-basalt-muted-foreground transition-colors hover:text-basalt-foreground data-[state=active]:border-basalt-primary data-[state=active]:text-basalt-primary",
+			"inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-basalt-muted-foreground transition-colors hover:text-basalt-foreground data-[state=active]:text-basalt-primary",
 			className,
 		)}
 		{...props}
@@ -37,7 +94,10 @@ export const TabsContent = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<TabsPrimitive.Content
 		ref={ref}
-		className={cn("mt-3 text-sm text-basalt-foreground", className)}
+		className={cn(
+			"mt-3 text-sm text-basalt-foreground data-[state=active]:animate-basalt-tab-in",
+			className,
+		)}
 		{...props}
 	/>
 ));
