@@ -448,9 +448,11 @@ add(
 	"grid",
 	"Simple grid.",
 	() => (
-		<Grid>
+		<Grid className="w-full max-w-sm">
 			<GridItem>1</GridItem>
 			<GridItem>2</GridItem>
+			<GridItem>3</GridItem>
+			<GridItem>4</GridItem>
 		</Grid>
 	),
 	"<Grid />",

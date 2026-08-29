@@ -1522,11 +1522,18 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	grid: [
 		{
 			title: "Grid",
-			code: "<Grid><GridItem>1</GridItem></Grid>",
+			code: `<Grid>
+  <GridItem>1</GridItem>
+  <GridItem>2</GridItem>
+  <GridItem>3</GridItem>
+  <GridItem>4</GridItem>
+</Grid>`,
 			render: () => (
-				<Grid>
+				<Grid className="w-full max-w-sm">
 					<GridItem>1</GridItem>
 					<GridItem>2</GridItem>
+					<GridItem>3</GridItem>
+					<GridItem>4</GridItem>
 				</Grid>
 			),
 		},
