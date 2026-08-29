@@ -85,7 +85,6 @@ import { Empty } from "@nocoo/basalt/components/empty";
 import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
 import { Grid, GridItem } from "@nocoo/basalt/components/grid";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@nocoo/basalt/components/hover-card";
-import { Input } from "@nocoo/basalt/components/input";
 import { Loader } from "@nocoo/basalt/components/loader";
 import { MenuBarMenu, MenuBarRoot, MenuBarTrigger } from "@nocoo/basalt/components/menu-bar";
 import { Meter } from "@nocoo/basalt/components/meter";
@@ -122,7 +121,7 @@ import { toast } from "@nocoo/basalt/components/toast";
 import { Toggle } from "@nocoo/basalt/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import { AlertTriangle, CircleAlert, Info, Search, X } from "lucide-react";
+import { AlertTriangle, CircleAlert, Info, Plus, Search, X } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { CATALOG, type CatalogEntry, catalogImportPath } from "./catalog";
 
@@ -419,13 +418,15 @@ add(
 );
 add(
 	"toolbar",
-	"Compact tool cluster.",
+	"Compose explicit toolbar controls into one grouped card.",
 	() => (
-		<Toolbar>
-			<Input aria-label="Search" placeholder="Search…" className="border-0 shadow-none" />
+		<Toolbar className="w-full max-w-md">
+			<Toolbar.Input aria-label="Search records" placeholder="Search..." className="flex-1" />
+			<Toolbar.Button icon={<Search />} aria-label="Search" />
+			<Toolbar.Button icon={<Plus />} aria-label="Add" />
 		</Toolbar>
 	),
-	"<Toolbar />",
+	'<Toolbar><Toolbar.Input placeholder="Search..." /><Toolbar.Button aria-label="Search" /></Toolbar>',
 );
 add(
 	"toast",

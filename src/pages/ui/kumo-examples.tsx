@@ -93,7 +93,7 @@ import {
 	TooltipTrigger,
 } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
-import { AlertTriangle, Check, Inbox, Search, X } from "lucide-react";
+import { AlertTriangle, Check, Inbox, Plus, Search, X } from "lucide-react";
 import { type ComponentType, type ReactNode, useState } from "react";
 
 function Preview({ children, className }: { children: ReactNode; className?: string }) {
@@ -1329,22 +1329,22 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	toolbar: [
 		{
 			title: "Input Shorthand",
-			code: "<Toolbar><Input placeholder='Search…' /></Toolbar>",
+			code: '<Toolbar><Toolbar.Input placeholder="Search..." /><Toolbar.Button aria-label="Search" /><Toolbar.Button aria-label="Add" /></Toolbar>',
 			render: () => (
-				<Toolbar>
-					<Input aria-label="Search" placeholder="Search…" className="border-0 shadow-none" />
+				<Toolbar className="w-full max-w-md">
+					<Toolbar.Input aria-label="Search records" placeholder="Search..." className="flex-1" />
+					<Toolbar.Button icon={<Search />} aria-label="Search" />
+					<Toolbar.Button icon={<Plus />} aria-label="Add" />
 				</Toolbar>
 			),
 		},
 		{
 			title: "Button Actions",
-			code: "<Toolbar><Button>Save</Button></Toolbar>",
+			code: "<Toolbar><Toolbar.Button>Upload</Toolbar.Button><Toolbar.Button>Download</Toolbar.Button></Toolbar>",
 			render: () => (
 				<Toolbar>
-					<Button size="sm">Save</Button>
-					<Button size="sm" variant="outline">
-						Cancel
-					</Button>
+					<Toolbar.Button>Upload</Toolbar.Button>
+					<Toolbar.Button>Download</Toolbar.Button>
 				</Toolbar>
 			),
 		},
