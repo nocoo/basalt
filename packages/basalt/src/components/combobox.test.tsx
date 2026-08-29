@@ -3,15 +3,31 @@ import { describe, expect, it, vi } from "vitest";
 import { Combobox } from "./combobox";
 import { Dialog, DialogContent, DialogTitle } from "./dialog";
 
+function typeQuery(name: string, query: string) {
+	const input = screen.getByLabelText(name);
+	fireEvent.focus(input);
+	fireEvent.change(input, { target: { value: query } });
+	return input;
+}
+
 describe("Combobox", () => {
 	it("renders an input", () => {
 		render(<Combobox items={["Apple", "Banana"]} placeholder="Search fruits" />);
 		expect(screen.getByLabelText("Search fruits")).toBeInTheDocument();
 	});
 
+	it("hides options until the query is non-empty", () => {
+		render(<Combobox items={["Apple", "Banana"]} placeholder="Fruit" />);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+		fireEvent.change(input, { target: { value: "a" } });
+		expect(screen.getByRole("option", { name: "Apple" })).toBeInTheDocument();
+	});
+
 	it("opens the list below the field with inset highlight", () => {
 		render(<Combobox items={["Apple", "Banana"]} placeholder="Fruit" />);
-		fireEvent.focus(screen.getByLabelText("Fruit"));
+		typeQuery("Fruit", "a");
 		const list = screen.getByRole("listbox");
 		expect(list.className).toContain("top-full");
 		expect(list.className).toContain("mt-1");
@@ -21,7 +37,7 @@ describe("Combobox", () => {
 
 	it("does not highlight an option until hover or arrow keys", () => {
 		render(<Combobox items={["Apple", "Banana"]} placeholder="Fruit" />);
-		fireEvent.focus(screen.getByLabelText("Fruit"));
+		typeQuery("Fruit", "a");
 		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "false");
 		expect(screen.getByRole("option", { name: "Banana" })).toHaveAttribute(
 			"aria-selected",
@@ -97,8 +113,7 @@ describe("Combobox", () => {
 
 	it("keeps focus on the input after selecting", () => {
 		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
-		const input = screen.getByLabelText("Fruit");
-		fireEvent.focus(input);
+		const input = typeQuery("Fruit", "A");
 		fireEvent.mouseDown(screen.getByRole("option", { name: "Apple" }));
 		fireEvent.click(screen.getByRole("option", { name: "Apple" }));
 		expect(input).toHaveFocus();
@@ -156,7 +171,7 @@ describe("Combobox", () => {
 
 	it("stays closed after selecting a focused option", () => {
 		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
-		fireEvent.focus(screen.getByLabelText("Fruit"));
+		typeQuery("Fruit", "A");
 		const option = screen.getByRole("option", { name: "Apple" });
 		option.focus();
 		fireEvent.click(option);
@@ -186,18 +201,26 @@ describe("Combobox", () => {
 	});
 
 	it("opens ArrowUp on the last option when closed", () => {
-		render(<Combobox items={["Apple", "Banana"]} placeholder="Fruit" />);
+		render(<Combobox items={["Apple", "Apricot"]} defaultValue="Ap" placeholder="Fruit" />);
 		const input = screen.getByLabelText("Fruit");
 		fireEvent.focus(input);
 		fireEvent.keyDown(input, { key: "Escape" });
 		fireEvent.keyDown(input, { key: "ArrowUp" });
-		expect(screen.getByRole("option", { name: "Banana" })).toHaveAttribute("aria-selected", "true");
+		expect(screen.getByRole("option", { name: "Apricot" })).toHaveAttribute(
+			"aria-selected",
+			"true",
+		);
 	});
 
 	it("opens ArrowDown on the first option when closed", () => {
 		const onValueChange = vi.fn();
 		render(
-			<Combobox items={["Apple", "Banana"]} placeholder="Fruit" onValueChange={onValueChange} />,
+			<Combobox
+				items={["Apple", "Apricot"]}
+				defaultValue="Ap"
+				placeholder="Fruit"
+				onValueChange={onValueChange}
+			/>,
 		);
 		const input = screen.getByLabelText("Fruit");
 		fireEvent.focus(input);
@@ -218,8 +241,7 @@ describe("Combobox", () => {
 				onValueChange={onValueChange}
 			/>,
 		);
-		const input = screen.getByLabelText("Fruit");
-		fireEvent.focus(input);
+		const input = typeQuery("Fruit", "p");
 		expect(screen.getByRole("option", { name: "Pineapple" })).toHaveAttribute(
 			"aria-selected",
 			"false",
@@ -304,8 +326,7 @@ describe("Combobox", () => {
 		render(
 			<Combobox items={["Apple", "Banana"]} placeholder="Fruit" onValueChange={onValueChange} />,
 		);
-		const input = screen.getByLabelText("Fruit");
-		fireEvent.focus(input);
+		const input = typeQuery("Fruit", "a");
 		fireEvent.keyDown(input, { key: "Enter", isComposing: true });
 		fireEvent.keyDown(input, { key: "ArrowDown", isComposing: true });
 		expect(onValueChange).not.toHaveBeenCalled();
@@ -313,7 +334,7 @@ describe("Combobox", () => {
 	});
 
 	it("reopens on click while focused", () => {
-		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
+		render(<Combobox items={["Apple"]} defaultValue="Apple" placeholder="Fruit" />);
 		const input = screen.getByLabelText("Fruit");
 		fireEvent.focus(input);
 		fireEvent.keyDown(input, { key: "Escape" });
@@ -335,7 +356,7 @@ describe("Combobox", () => {
 	it("closes on document Escape without committing", () => {
 		const onValueChange = vi.fn();
 		render(<Combobox items={["Apple"]} placeholder="Fruit" onValueChange={onValueChange} />);
-		fireEvent.focus(screen.getByLabelText("Fruit"));
+		typeQuery("Fruit", "A");
 		expect(screen.getByRole("option", { name: "Apple" })).toBeInTheDocument();
 		fireEvent.keyDown(document, { key: "Escape" });
 		expect(screen.queryByRole("option", { name: "Apple" })).not.toBeInTheDocument();
@@ -354,8 +375,8 @@ describe("Combobox", () => {
 			"true",
 		);
 		fireEvent.keyDown(input, { key: "Escape" });
-		fireEvent.click(input);
-		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "false");
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+		expect(input).toHaveValue("");
 	});
 
 	it("keeps a parent dialog open on Escape while the list is open", () => {
@@ -367,8 +388,7 @@ describe("Combobox", () => {
 				</DialogContent>
 			</Dialog>,
 		);
-		const input = screen.getByLabelText("Fruit");
-		fireEvent.focus(input);
+		typeQuery("Fruit", "a");
 		expect(screen.getByRole("option", { name: "Apple" })).toBeInTheDocument();
 		fireEvent.keyDown(window, { key: "Escape" });
 		expect(screen.queryByRole("option", { name: "Apple" })).not.toBeInTheDocument();
@@ -377,29 +397,30 @@ describe("Combobox", () => {
 
 	it("does not close on composing Escape", () => {
 		render(<Combobox items={["Apple"]} placeholder="Fruit" />);
-		fireEvent.focus(screen.getByLabelText("Fruit"));
+		typeQuery("Fruit", "A");
 		fireEvent.keyDown(document, { key: "Escape", isComposing: true });
 		expect(screen.getByRole("option", { name: "Apple" })).toBeInTheDocument();
 	});
 
 	it("clamps the highlight when items shrink", () => {
-		const { rerender } = render(<Combobox items={["A", "B", "C", "D", "E"]} placeholder="Fruit" />);
-		const input = screen.getByLabelText("Fruit");
-		fireEvent.focus(input);
+		const { rerender } = render(
+			<Combobox items={["A1", "A2", "A3", "A4", "A5"]} placeholder="Fruit" />,
+		);
+		const input = typeQuery("Fruit", "A");
 		fireEvent.keyDown(input, { key: "ArrowDown" });
 		fireEvent.keyDown(input, { key: "ArrowDown" });
 		fireEvent.keyDown(input, { key: "ArrowDown" });
 		fireEvent.keyDown(input, { key: "ArrowDown" });
 		fireEvent.keyDown(input, { key: "ArrowDown" });
-		expect(screen.getByRole("option", { name: "E" })).toHaveAttribute("aria-selected", "true");
-		rerender(<Combobox items={["A", "B", "C"]} placeholder="Fruit" />);
+		expect(screen.getByRole("option", { name: "A5" })).toHaveAttribute("aria-selected", "true");
+		rerender(<Combobox items={["A1", "A2", "A3"]} placeholder="Fruit" />);
 		fireEvent.keyDown(input, { key: "ArrowUp" });
-		expect(screen.getByRole("option", { name: "B" })).toHaveAttribute("aria-selected", "true");
+		expect(screen.getByRole("option", { name: "A2" })).toHaveAttribute("aria-selected", "true");
 	});
 
 	it("marks the active duplicate option by index", () => {
 		render(<Combobox items={["New York", "New York"]} placeholder="City" />);
-		fireEvent.focus(screen.getByLabelText("City"));
+		typeQuery("City", "New");
 		const options = screen.getAllByRole("option", { name: "New York" });
 		expect(options[0]).toHaveAttribute("aria-selected", "false");
 		expect(options[1]).toHaveAttribute("aria-selected", "false");

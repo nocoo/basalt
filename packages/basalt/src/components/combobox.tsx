@@ -60,7 +60,10 @@ export function Combobox({
 		form.addEventListener("reset", onReset);
 		return () => form.removeEventListener("reset", onReset);
 	}, [defaultValue, value]);
-	const filtered = items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
+	const filtered =
+		query.trim() === ""
+			? []
+			: items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
 	const activeIndex =
 		active === null || filtered.length === 0 ? null : Math.min(active, filtered.length - 1);
 	const activeItem = activeIndex === null ? undefined : filtered[activeIndex];
@@ -70,7 +73,10 @@ export function Combobox({
 		if (!open) {
 			return;
 		}
-		const nextLen = items.filter((item) => item.toLowerCase().includes(query.toLowerCase())).length;
+		const nextLen =
+			query.trim() === ""
+				? 0
+				: items.filter((item) => item.toLowerCase().includes(query.toLowerCase())).length;
 		setActive((current) => {
 			if (current === null || nextLen === 0) {
 				return null;
