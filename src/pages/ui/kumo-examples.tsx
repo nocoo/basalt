@@ -1459,9 +1459,22 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	table: [
 		{
 			title: "Basic",
-			code: "<Table><TableHeader>…</TableHeader></Table>",
+			code: `<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+      <TableHead>Status</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Worker 1</TableCell>
+      <TableCell>Active</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>`,
 			render: () => (
-				<Table>
+				<Table className="w-[200px]">
 					<TableHeader>
 						<TableRow>
 							<TableHead>Name</TableHead>
@@ -1470,8 +1483,16 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 					</TableHeader>
 					<TableBody>
 						<TableRow>
-							<TableCell>Atlas</TableCell>
-							<TableCell>Ready</TableCell>
+							<TableCell>Worker 1</TableCell>
+							<TableCell>Active</TableCell>
+						</TableRow>
+						<TableRow>
+							<TableCell>Worker 2</TableCell>
+							<TableCell>Paused</TableCell>
+						</TableRow>
+						<TableRow>
+							<TableCell>Worker 3</TableCell>
+							<TableCell>Active</TableCell>
 						</TableRow>
 					</TableBody>
 				</Table>
@@ -1479,16 +1500,16 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 		},
 		{
 			title: "Selected Row",
-			code: '<TableRow className="bg-basalt-accent">…</TableRow>',
+			code: '<TableRow variant="selected">…</TableRow>',
 			render: () => (
-				<Table>
+				<Table className="w-[200px]">
 					<TableHeader>
 						<TableRow>
 							<TableHead>Name</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
-						<TableRow className="bg-basalt-accent">
+						<TableRow variant="selected">
 							<TableCell>Selected</TableCell>
 						</TableRow>
 						<TableRow>

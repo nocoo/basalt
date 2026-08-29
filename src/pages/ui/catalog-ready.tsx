@@ -407,22 +407,32 @@ add(
 );
 add(
 	"table",
-	"Tabular data.",
+	"Tabular data with a header bar and striped rows.",
 	() => (
-		<Table>
+		<Table className="w-[200px]">
 			<TableHeader>
 				<TableRow>
 					<TableHead>Name</TableHead>
+					<TableHead>Status</TableHead>
 				</TableRow>
 			</TableHeader>
 			<TableBody>
 				<TableRow>
-					<TableCell>Atlas</TableCell>
+					<TableCell>Worker 1</TableCell>
+					<TableCell>Active</TableCell>
+				</TableRow>
+				<TableRow>
+					<TableCell>Worker 2</TableCell>
+					<TableCell>Paused</TableCell>
+				</TableRow>
+				<TableRow>
+					<TableCell>Worker 3</TableCell>
+					<TableCell>Active</TableCell>
 				</TableRow>
 			</TableBody>
 		</Table>
 	),
-	"<Table />",
+	"<Table><TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Status</TableHead></TableRow></TableHeader><TableBody><TableRow><TableCell>Worker 1</TableCell><TableCell>Active</TableCell></TableRow></TableBody></Table>",
 );
 add(
 	"data-table",
