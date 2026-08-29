@@ -9,6 +9,16 @@ describe("Combobox", () => {
 		expect(screen.getByLabelText("Search fruits")).toBeInTheDocument();
 	});
 
+	it("opens the list below the field with inset highlight", () => {
+		render(<Combobox items={["Apple", "Banana"]} placeholder="Fruit" />);
+		fireEvent.focus(screen.getByLabelText("Fruit"));
+		const list = screen.getByRole("listbox");
+		expect(list.className).toContain("top-full");
+		expect(list.className).toContain("mt-1");
+		expect(list.className).toContain("py-1.5");
+		expect(screen.getByRole("option", { name: "Apple" }).className).toContain("mx-1.5");
+	});
+
 	it("commits a selection and closes the list", () => {
 		const onValueChange = vi.fn();
 		render(

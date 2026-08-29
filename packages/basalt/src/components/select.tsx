@@ -2,6 +2,7 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
 export const Select = SelectPrimitive.Root;
 export const SelectValue = SelectPrimitive.Value;
@@ -28,17 +29,18 @@ SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 export const SelectContent = React.forwardRef<
 	React.ElementRef<typeof SelectPrimitive.Content>,
 	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
->(({ className, children, ...props }, ref) => (
+>(({ className, children, position = "popper", sideOffset = OVERLAY_GAP, ...props }, ref) => (
 	<SelectPrimitive.Portal>
 		<SelectPrimitive.Content
 			ref={ref}
-			className={cn(
-				"z-50 min-w-[8rem] overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover text-basalt-popover-foreground shadow-md",
-				className,
+			position={position}
+			sideOffset={sideOffset}
+			className={overlayPanelClass(
+				cn(position === "popper" && "w-[var(--radix-select-trigger-width)]", className),
 			)}
 			{...props}
 		>
-			<SelectPrimitive.Viewport className="p-1">{children}</SelectPrimitive.Viewport>
+			<SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>
 		</SelectPrimitive.Content>
 	</SelectPrimitive.Portal>
 ));
@@ -50,9 +52,8 @@ export const SelectItem = React.forwardRef<
 >(({ className, children, ...props }, ref) => (
 	<SelectPrimitive.Item
 		ref={ref}
-		className={cn(
-			"relative flex w-full cursor-default items-center rounded-basalt-sm py-1.5 pl-2 pr-8 text-sm outline-hidden focus:bg-basalt-accent",
-			className,
+		className={overlayItemClass(
+			cn("relative pr-8 outline-hidden focus:bg-basalt-accent", className),
 		)}
 		{...props}
 	>

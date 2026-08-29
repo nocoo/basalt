@@ -1,6 +1,7 @@
 import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { MENU_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
 export function MenuBar(props: React.ComponentProps<typeof MenubarPrimitive.Root>) {
 	return <MenuBarRoot {...props} />;
@@ -28,14 +29,12 @@ MenuBarTrigger.displayName = MenubarPrimitive.Trigger.displayName;
 export const MenuBarContent = React.forwardRef<
 	React.ElementRef<typeof MenubarPrimitive.Content>,
 	React.ComponentPropsWithoutRef<typeof MenubarPrimitive.Content>
->(({ className, ...props }, ref) => (
+>(({ className, sideOffset = MENU_GAP, ...props }, ref) => (
 	<MenubarPrimitive.Portal>
 		<MenubarPrimitive.Content
 			ref={ref}
-			className={cn(
-				"z-50 min-w-40 overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover p-1 text-sm text-basalt-popover-foreground shadow-md",
-				className,
-			)}
+			sideOffset={sideOffset}
+			className={overlayPanelClass(cn("min-w-40", className))}
 			{...props}
 		/>
 	</MenubarPrimitive.Portal>
@@ -48,10 +47,7 @@ export const MenuBarItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<MenubarPrimitive.Item
 		ref={ref}
-		className={cn(
-			"relative flex h-8 cursor-default items-center rounded-basalt-sm px-2 text-sm outline-hidden select-none focus:bg-basalt-accent",
-			className,
-		)}
+		className={overlayItemClass(cn("relative outline-hidden focus:bg-basalt-accent", className))}
 		{...props}
 	/>
 ));

@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Input } from "./input";
+import { overlayItemClass, overlayPanelClass } from "./overlay";
 
 export function Combobox({
 	items,
@@ -210,7 +211,7 @@ export function Combobox({
 				<div
 					id={listId}
 					role="listbox"
-					className="absolute z-20 mt-1 w-full rounded-basalt-md border border-basalt-border bg-basalt-popover p-1"
+					className={overlayPanelClass("absolute top-full z-20 mt-1 w-full")}
 				>
 					{filtered.map((item, index) => (
 						<button
@@ -221,7 +222,7 @@ export function Combobox({
 							tabIndex={-1}
 							aria-selected={index === activeIndex}
 							className={cn(
-								"w-full rounded-basalt-sm px-2 py-1.5 text-left text-sm hover:bg-basalt-accent",
+								overlayItemClass("hover:bg-basalt-accent"),
 								index === activeIndex && "bg-basalt-accent",
 							)}
 							onMouseDown={(event) => event.preventDefault()}

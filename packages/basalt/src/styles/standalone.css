@@ -243,6 +243,9 @@
   .z-50 {
     z-index: 50;
   }
+  .mx-1\.5 {
+    margin-inline: calc(var(--spacing) * 1.5);
+  }
   .mt-0\.5 {
     margin-top: calc(var(--spacing) * 0.5);
   }
@@ -386,6 +389,12 @@
   .w-80 {
     width: calc(var(--spacing) * 80);
   }
+  .w-\[calc\(100\%-0\.75rem\)\] {
+    width: calc(100% - 0.75rem);
+  }
+  .w-\[var\(--radix-select-trigger-width\)\] {
+    width: var(--radix-select-trigger-width);
+  }
   .w-full {
     width: 100%;
   }
@@ -403,9 +412,6 @@
   }
   .min-w-40 {
     min-width: calc(var(--spacing) * 40);
-  }
-  .min-w-\[8rem\] {
-    min-width: 8rem;
   }
   .flex-1 {
     flex: 1;
@@ -641,9 +647,6 @@
   .p-0\.5 {
     padding: calc(var(--spacing) * 0.5);
   }
-  .p-1 {
-    padding: var(--spacing);
-  }
   .p-3 {
     padding: calc(var(--spacing) * 3);
   }
@@ -700,9 +703,6 @@
   }
   .pr-10 {
     padding-right: calc(var(--spacing) * 10);
-  }
-  .pl-2 {
-    padding-left: calc(var(--spacing) * 2);
   }
   .pl-4 {
     padding-left: calc(var(--spacing) * 4);
