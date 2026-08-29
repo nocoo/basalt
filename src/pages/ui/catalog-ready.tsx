@@ -372,11 +372,26 @@ add(
 	),
 	'<ToggleGroup type="single" defaultValue="live"><ToggleGroupItem value="live">Live</ToggleGroupItem></ToggleGroup>',
 );
+function PaginationHeroDemo() {
+	const [page, setPage] = useState(1);
+	return <Pagination page={page} pageCount={10} onPageChange={setPage} />;
+}
 add(
 	"pagination",
 	"Page controls.",
-	() => <Pagination page={1} pageCount={10} />,
-	"<Pagination page={1} />",
+	() => <PaginationHeroDemo />,
+	"<Pagination page={1} pageCount={10} onPageChange={setPage} />",
+	[
+		{ name: "page", type: "number" },
+		{ name: "pageCount", type: "number", default: "10" },
+		{ name: "onPageChange", type: "(page: number) => void" },
+		{
+			name: "simple",
+			type: "boolean",
+			default: "false",
+			description: "Previous and next only.",
+		},
+	],
 );
 add(
 	"breadcrumbs",

@@ -100,6 +100,19 @@ function Preview({ children, className }: { children: ReactNode; className?: str
 	return <div className={className ?? "flex flex-wrap items-center gap-3"}>{children}</div>;
 }
 
+function PaginationExample({
+	page: initialPage = 1,
+	pageCount = 10,
+	simple = false,
+}: {
+	page?: number;
+	pageCount?: number;
+	simple?: boolean;
+}) {
+	const [page, setPage] = useState(initialPage);
+	return <Pagination page={page} pageCount={pageCount} onPageChange={setPage} simple={simple} />;
+}
+
 function Stack({ children }: { children: ReactNode }) {
 	return <div className="flex w-full flex-col gap-3">{children}</div>;
 }
@@ -461,18 +474,18 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	pagination: [
 		{
 			title: "Full Controls (Default)",
-			code: "<Pagination page={2} pageCount={10} />",
-			render: () => <Pagination page={2} pageCount={10} />,
+			code: "<Pagination page={1} pageCount={10} onPageChange={setPage} />",
+			render: () => <PaginationExample page={1} pageCount={10} />,
 		},
 		{
 			title: "Simple Controls",
-			code: "<Pagination page={2} pageCount={10} simple />",
-			render: () => <Pagination page={2} pageCount={10} simple />,
+			code: "<Pagination page={2} pageCount={10} simple onPageChange={setPage} />",
+			render: () => <PaginationExample page={2} pageCount={10} simple />,
 		},
 		{
 			title: "Mid-Page State",
-			code: "<Pagination page={5} pageCount={12} />",
-			render: () => <Pagination page={5} pageCount={12} />,
+			code: "<Pagination page={5} pageCount={12} onPageChange={setPage} />",
+			render: () => <PaginationExample page={5} pageCount={12} />,
 		},
 	],
 	switch: [
