@@ -17,4 +17,11 @@ describe("Switch", () => {
 		render(<Switch aria-label="Alerts" size="sm" />);
 		expect(screen.getByRole("switch", { name: "Alerts" }).className).toContain("h-4");
 	});
+
+	it("uses a bright white thumb", () => {
+		render(<Switch aria-label="Alerts" />);
+		expect(
+			screen.getByRole("switch", { name: "Alerts" }).querySelector("span")?.className,
+		).toContain("bg-white");
+	});
 });
