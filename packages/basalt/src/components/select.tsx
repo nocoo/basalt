@@ -2,7 +2,7 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
+import { FOCUS_BORDER, OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
 export const Select = SelectPrimitive.Root;
 export const SelectValue = SelectPrimitive.Value;
@@ -16,6 +16,7 @@ export const SelectTrigger = React.forwardRef<
 		ref={ref}
 		className={cn(
 			"flex h-9 w-full items-center justify-between rounded-basalt-md border border-basalt-border bg-basalt-secondary px-3 text-sm",
+			FOCUS_BORDER,
 			className,
 		)}
 		{...props}

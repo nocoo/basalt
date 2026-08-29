@@ -18,7 +18,7 @@ export const Radio = React.forwardRef<
 	<RadioGroupPrimitive.Item
 		ref={ref}
 		className={cn(
-			"aspect-square h-4 w-4 rounded-full border border-basalt-primary text-basalt-primary ring-offset-basalt-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-basalt-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+			"aspect-square h-4 w-4 rounded-full border border-basalt-primary text-basalt-primary outline-hidden focus-visible:border-basalt-ring disabled:cursor-not-allowed disabled:opacity-50",
 			className,
 		)}
 		{...props}

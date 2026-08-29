@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { MENU_GAP, OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
+import {
+	FOCUS_BORDER,
+	FOCUS_INSET,
+	MENU_GAP,
+	OVERLAY_GAP,
+	overlayItemClass,
+	overlayPanelClass,
+} from "./overlay";
 
 describe("overlay", () => {
 	it("keeps field lists 4px below the trigger and menus 8px", () => {
@@ -11,5 +18,12 @@ describe("overlay", () => {
 		expect(overlayPanelClass()).toContain("py-1.5");
 		expect(overlayItemClass()).toContain("mx-1.5");
 		expect(overlayItemClass()).toContain("py-1.5");
+	});
+
+	it("focuses by recoloring the border instead of growing a ring", () => {
+		expect(FOCUS_BORDER).toContain("focus-visible:border-basalt-ring");
+		expect(FOCUS_BORDER).not.toContain("ring-offset");
+		expect(FOCUS_INSET).toContain("ring-inset");
+		expect(FOCUS_INSET).not.toContain("ring-offset");
 	});
 });

@@ -5,6 +5,12 @@ export const OVERLAY_GAP = 4;
 /** Gap between a menu trigger and its panel. Matches Kumo Dropdown/Popover. */
 export const MENU_GAP = 8;
 
+/** Recolor the existing 1px border. No extra ring, no layout shift. */
+export const FOCUS_BORDER = "outline-hidden focus-visible:border-basalt-ring";
+/** Inset 1px theme ring for borderless controls. Outer size stays put. */
+export const FOCUS_INSET =
+	"outline-hidden focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-basalt-ring";
+
 export function overlayPanelClass(className?: string) {
 	return cn(
 		"z-50 overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover py-1.5 text-sm text-basalt-popover-foreground shadow-md",
