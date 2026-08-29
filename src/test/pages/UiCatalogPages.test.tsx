@@ -40,6 +40,7 @@ describe("ui catalog", () => {
 	it("renders the index with links to every export", () => {
 		renderCatalog("/ui");
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
+		expect(document.querySelector("li.bg-card")).toBeTruthy();
 		expect(screen.getByRole("link", { name: "Button" })).toHaveAttribute("href", "/ui/button");
 		expect(screen.getByRole("link", { name: "Toolbar" })).toHaveAttribute("href", "/ui/toolbar");
 		for (const entry of CATALOG.filter((item) => item.category !== "docs")) {

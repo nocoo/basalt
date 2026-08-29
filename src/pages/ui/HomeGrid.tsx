@@ -289,7 +289,7 @@ export function HomeGrid() {
 				return (
 					<li
 						key={tile.name}
-						className="relative flex aspect-square items-center justify-center overflow-hidden bg-white"
+						className="relative flex aspect-square items-center justify-center overflow-hidden bg-card"
 					>
 						<Link
 							to={`/ui/${tile.slug}`}
