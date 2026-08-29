@@ -14,7 +14,7 @@ import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button, LinkButton } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
-import { Code, CodeBlock } from "@nocoo/basalt/components/code";
+import { CodeBlock, CodeHighlighted } from "@nocoo/basalt/components/code";
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -1402,9 +1402,43 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	code: [
 		{
-			title: "Languages",
-			code: "<Code>cn()</Code>",
-			render: () => <Code>cn()</Code>,
+			title: "TypeScript",
+			code: '<CodeHighlighted code="export async function fetchUser(id: string) { … }" />',
+			render: () => (
+				<CodeHighlighted
+					code={`export async function fetchUser(id: string, retries = 3) {
+  // Resolve a profile, then return a display name.
+  const response = await fetch(\`/api/users/\${id}\`);
+  if (!response.ok) {
+    throw new Error("User not found");
+  }
+  const user = await response.json();
+  return {
+    id: user.id,
+    name: \`\${user.firstName} \${user.lastName}\`,
+  };
+}`}
+				/>
+			),
+		},
+		{
+			title: "React",
+			code: '<CodeHighlighted code="export function Counter() { … }" />',
+			render: () => (
+				<CodeHighlighted
+					code={`import { useState } from "react";
+
+export function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <button onClick={() => setCount((n) => n + 1)}>
+      Count: {count}
+    </button>
+  );
+}`}
+				/>
+			),
 		},
 	],
 	"code-block": [

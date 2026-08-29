@@ -44,7 +44,7 @@ import { BasaltMark } from "@nocoo/basalt/components/basalt-mark";
 import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
 import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
-import { Code, CodeBlock } from "@nocoo/basalt/components/code";
+import { CodeBlock, CodeHighlighted } from "@nocoo/basalt/components/code";
 import {
 	Collapsible,
 	CollapsibleContent,
@@ -272,7 +272,27 @@ add(
 	"<Empty />",
 );
 add("basalt-mark", "Basalt mark.", () => <BasaltMark />, "<BasaltMark />");
-add("code", "Inline code highlighting.", () => <Code>cn()</Code>, "<Code>cn()</Code>");
+add(
+	"code",
+	"Syntax-highlighted code.",
+	() => (
+		<CodeHighlighted
+			code={`export async function fetchUser(id: string, retries = 3) {
+  // Resolve a profile, then return a display name.
+  const response = await fetch(\`/api/users/\${id}\`);
+  if (!response.ok) {
+    throw new Error("User not found");
+  }
+  const user = await response.json();
+  return {
+    id: user.id,
+    name: \`\${user.firstName} \${user.lastName}\`,
+  };
+}`}
+		/>
+	),
+	'<CodeHighlighted code="export async function fetchUser(id: string) { … }" />',
+);
 add(
 	"code-block",
 	"A fenced code block.",
