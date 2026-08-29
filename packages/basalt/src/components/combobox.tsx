@@ -26,7 +26,7 @@ export function Combobox({
 	const [query, setQuery] = useState(value ?? defaultValue);
 	const [prevValue, setPrevValue] = useState(value);
 	const [open, setOpen] = useState(false);
-	const [active, setActive] = useState(0);
+	const [active, setActive] = useState<number | null>(null);
 	const listId = useId();
 	const inputRef = useRef<HTMLInputElement>(null);
 	const skipFocusOpen = useRef(false);
@@ -54,39 +54,30 @@ export function Combobox({
 				setUncontrolled(defaultValue);
 				setQuery(defaultValue);
 				setOpen(false);
-				setActive(0);
+				setActive(null);
 			});
 		};
 		form.addEventListener("reset", onReset);
 		return () => form.removeEventListener("reset", onReset);
 	}, [defaultValue, value]);
 	const filtered = items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
-	const activeIndex = Math.min(active, Math.max(0, filtered.length - 1));
-	const activeItem = filtered[activeIndex];
+	const activeIndex =
+		active === null || filtered.length === 0 ? null : Math.min(active, filtered.length - 1);
+	const activeItem = activeIndex === null ? undefined : filtered[activeIndex];
 	const listOpen = open && filtered.length > 0;
 
-	const prevQuery = useRef(query);
-	const prevSelected = useRef(selected);
 	useEffect(() => {
-		const queryChanged = prevQuery.current !== query;
-		const selectedChanged = prevSelected.current !== selected;
-		prevQuery.current = query;
-		prevSelected.current = selected;
 		if (!open) {
 			return;
 		}
-		const nextFiltered = items.filter((item) => item.toLowerCase().includes(query.toLowerCase()));
-		if (queryChanged && !selectedChanged) {
-			setActive((current) => Math.min(current, Math.max(0, nextFiltered.length - 1)));
-			return;
-		}
-		const selectedIndex = nextFiltered.indexOf(selected);
-		if (selectedIndex >= 0) {
-			setActive(selectedIndex);
-			return;
-		}
-		setActive((current) => Math.min(current, Math.max(0, nextFiltered.length - 1)));
-	}, [items, open, query, selected]);
+		const nextLen = items.filter((item) => item.toLowerCase().includes(query.toLowerCase())).length;
+		setActive((current) => {
+			if (current === null || nextLen === 0) {
+				return null;
+			}
+			return Math.min(current, nextLen - 1);
+		});
+	}, [items, open, query]);
 
 	function commit(next: string) {
 		if (value === undefined) {
@@ -116,7 +107,7 @@ export function Combobox({
 			event.stopImmediatePropagation();
 			setOpen(false);
 			setQuery(selected);
-			setActive(0);
+			setActive(null);
 		};
 		window.addEventListener("keydown", onKey, true);
 		document.addEventListener("keydown", onKey, true);
@@ -133,7 +124,7 @@ export function Combobox({
 				if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
 					setOpen(false);
 					setQuery(selected);
-					setActive(0);
+					setActive(null);
 				}
 			}}
 		>
@@ -145,7 +136,7 @@ export function Combobox({
 				onChange={(event) => {
 					setQuery(event.target.value);
 					setOpen(true);
-					setActive(0);
+					setActive(null);
 				}}
 				onFocus={() => {
 					if (disabled) {
@@ -155,16 +146,12 @@ export function Combobox({
 						skipFocusOpen.current = false;
 						return;
 					}
-					if (!open) {
-						const selectedIndex = filtered.indexOf(selected);
-						setActive(selectedIndex >= 0 ? selectedIndex : 0);
-					}
+					setActive(null);
 					setOpen(true);
 				}}
 				onClick={() => {
 					if (!open) {
-						const selectedIndex = filtered.indexOf(selected);
-						setActive(selectedIndex >= 0 ? selectedIndex : 0);
+						setActive(null);
 					}
 					setOpen(true);
 				}}
@@ -174,24 +161,26 @@ export function Combobox({
 					}
 					if (event.key === "ArrowDown") {
 						event.preventDefault();
-						if (!open) {
-							setActive(0);
-						} else {
-							setActive(filtered.length === 0 ? 0 : (activeIndex + 1) % filtered.length);
-						}
 						setOpen(true);
+						if (filtered.length === 0) {
+							setActive(null);
+							return;
+						}
+						setActive((current) => (current === null ? 0 : (current + 1) % filtered.length));
 						return;
 					}
 					if (event.key === "ArrowUp") {
 						event.preventDefault();
-						if (!open) {
-							setActive(0);
-						} else {
-							setActive(
-								filtered.length === 0 ? 0 : (activeIndex - 1 + filtered.length) % filtered.length,
-							);
-						}
 						setOpen(true);
+						if (filtered.length === 0) {
+							setActive(null);
+							return;
+						}
+						setActive((current) =>
+							current === null
+								? filtered.length - 1
+								: (current - 1 + filtered.length) % filtered.length,
+						);
 						return;
 					}
 					if (event.key === "Enter" && open && activeItem) {
@@ -205,7 +194,11 @@ export function Combobox({
 				aria-expanded={listOpen}
 				aria-autocomplete="list"
 				aria-controls={listOpen ? listId : undefined}
-				aria-activedescendant={listOpen && activeItem ? `${listId}-opt-${activeIndex}` : undefined}
+				aria-activedescendant={
+					listOpen && activeItem && activeIndex !== null
+						? `${listId}-opt-${activeIndex}`
+						: undefined
+				}
 			/>
 			{listOpen ? (
 				<div
@@ -225,6 +218,7 @@ export function Combobox({
 								overlayItemClass("hover:bg-basalt-accent"),
 								index === activeIndex && "bg-basalt-accent",
 							)}
+							onMouseEnter={() => setActive(index)}
 							onMouseDown={(event) => event.preventDefault()}
 							onClick={() => commit(item)}
 						>

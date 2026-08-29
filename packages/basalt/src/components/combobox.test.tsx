@@ -19,6 +19,19 @@ describe("Combobox", () => {
 		expect(screen.getByRole("option", { name: "Apple" }).className).toContain("mx-1.5");
 	});
 
+	it("does not highlight an option until hover or arrow keys", () => {
+		render(<Combobox items={["Apple", "Banana"]} placeholder="Fruit" />);
+		fireEvent.focus(screen.getByLabelText("Fruit"));
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "false");
+		expect(screen.getByRole("option", { name: "Banana" })).toHaveAttribute(
+			"aria-selected",
+			"false",
+		);
+		fireEvent.mouseEnter(screen.getByRole("option", { name: "Banana" }));
+		expect(screen.getByRole("option", { name: "Banana" })).toHaveAttribute("aria-selected", "true");
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "false");
+	});
+
 	it("commits a selection and closes the list", () => {
 		const onValueChange = vi.fn();
 		render(
@@ -60,6 +73,7 @@ describe("Combobox", () => {
 		);
 		const input = screen.getByLabelText("Fruit");
 		fireEvent.change(input, { target: { value: "Ba" } });
+		fireEvent.keyDown(input, { key: "ArrowDown" });
 		fireEvent.keyDown(input, { key: "Enter" });
 		expect(onValueChange).toHaveBeenCalledWith("Banana");
 	});
@@ -171,13 +185,13 @@ describe("Combobox", () => {
 		expect(onValueChange).not.toHaveBeenCalled();
 	});
 
-	it("opens ArrowUp on the first option when closed", () => {
+	it("opens ArrowUp on the last option when closed", () => {
 		render(<Combobox items={["Apple", "Banana"]} placeholder="Fruit" />);
 		const input = screen.getByLabelText("Fruit");
 		fireEvent.focus(input);
 		fireEvent.keyDown(input, { key: "Escape" });
 		fireEvent.keyDown(input, { key: "ArrowUp" });
-		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+		expect(screen.getByRole("option", { name: "Banana" })).toHaveAttribute("aria-selected", "true");
 	});
 
 	it("opens ArrowDown on the first option when closed", () => {
@@ -194,7 +208,7 @@ describe("Combobox", () => {
 		expect(onValueChange).toHaveBeenCalledWith("Apple");
 	});
 
-	it("highlights a controlled value that changes while open", () => {
+	it("does not move highlight when a controlled value changes while open", () => {
 		const onValueChange = vi.fn();
 		const { rerender } = render(
 			<Combobox
@@ -208,7 +222,7 @@ describe("Combobox", () => {
 		fireEvent.focus(input);
 		expect(screen.getByRole("option", { name: "Pineapple" })).toHaveAttribute(
 			"aria-selected",
-			"true",
+			"false",
 		);
 		rerender(
 			<Combobox
@@ -218,12 +232,12 @@ describe("Combobox", () => {
 				onValueChange={onValueChange}
 			/>,
 		);
-		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "false");
 		fireEvent.keyDown(input, { key: "Enter" });
-		expect(onValueChange).toHaveBeenCalledWith("Apple");
+		expect(onValueChange).not.toHaveBeenCalled();
 	});
 
-	it("keeps query edits focused on the first match", () => {
+	it("clears highlight when the query changes", () => {
 		const onValueChange = vi.fn();
 		render(
 			<Combobox
@@ -235,14 +249,15 @@ describe("Combobox", () => {
 		);
 		const input = screen.getByLabelText("Fruit");
 		fireEvent.focus(input);
+		fireEvent.mouseEnter(screen.getByRole("option", { name: "Banana" }));
 		expect(screen.getByRole("option", { name: "Banana" })).toHaveAttribute("aria-selected", "true");
 		fireEvent.change(input, { target: { value: "a" } });
-		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "false");
 		fireEvent.keyDown(input, { key: "Enter" });
-		expect(onValueChange).toHaveBeenCalledWith("Apple");
+		expect(onValueChange).not.toHaveBeenCalled();
 	});
 
-	it("highlights the selected option when opened", () => {
+	it("does not commit on Enter until an option is highlighted", () => {
 		const onValueChange = vi.fn();
 		render(
 			<Combobox
@@ -254,9 +269,9 @@ describe("Combobox", () => {
 		);
 		const input = screen.getByLabelText("Fruit");
 		fireEvent.focus(input);
-		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "false");
 		fireEvent.keyDown(input, { key: "Enter" });
-		expect(onValueChange).not.toHaveBeenCalledWith("Pineapple");
+		expect(onValueChange).not.toHaveBeenCalled();
 		expect(input).toHaveValue("Apple");
 	});
 
@@ -294,7 +309,7 @@ describe("Combobox", () => {
 		fireEvent.keyDown(input, { key: "Enter", isComposing: true });
 		fireEvent.keyDown(input, { key: "ArrowDown", isComposing: true });
 		expect(onValueChange).not.toHaveBeenCalled();
-		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "false");
 	});
 
 	it("reopens on click while focused", () => {
@@ -333,13 +348,14 @@ describe("Combobox", () => {
 		fireEvent.focus(input);
 		fireEvent.change(input, { target: { value: "Ap" } });
 		fireEvent.keyDown(input, { key: "ArrowDown" });
+		fireEvent.keyDown(input, { key: "ArrowDown" });
 		expect(screen.getByRole("option", { name: "Apricot" })).toHaveAttribute(
 			"aria-selected",
 			"true",
 		);
 		fireEvent.keyDown(input, { key: "Escape" });
 		fireEvent.click(input);
-		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "true");
+		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "false");
 	});
 
 	it("keeps a parent dialog open on Escape while the list is open", () => {
@@ -374,6 +390,7 @@ describe("Combobox", () => {
 		fireEvent.keyDown(input, { key: "ArrowDown" });
 		fireEvent.keyDown(input, { key: "ArrowDown" });
 		fireEvent.keyDown(input, { key: "ArrowDown" });
+		fireEvent.keyDown(input, { key: "ArrowDown" });
 		expect(screen.getByRole("option", { name: "E" })).toHaveAttribute("aria-selected", "true");
 		rerender(<Combobox items={["A", "B", "C"]} placeholder="Fruit" />);
 		fireEvent.keyDown(input, { key: "ArrowUp" });
@@ -384,9 +401,13 @@ describe("Combobox", () => {
 		render(<Combobox items={["New York", "New York"]} placeholder="City" />);
 		fireEvent.focus(screen.getByLabelText("City"));
 		const options = screen.getAllByRole("option", { name: "New York" });
-		expect(options[0]).toHaveAttribute("aria-selected", "true");
+		expect(options[0]).toHaveAttribute("aria-selected", "false");
 		expect(options[1]).toHaveAttribute("aria-selected", "false");
 		expect(options[0]).toHaveAttribute("tabindex", "-1");
+		fireEvent.keyDown(screen.getByLabelText("City"), { key: "ArrowDown" });
+		const highlighted = screen.getAllByRole("option", { name: "New York" });
+		expect(highlighted[0]).toHaveAttribute("aria-selected", "true");
+		expect(highlighted[1]).toHaveAttribute("aria-selected", "false");
 		fireEvent.keyDown(screen.getByLabelText("City"), { key: "ArrowDown" });
 		const next = screen.getAllByRole("option", { name: "New York" });
 		expect(next[0]).toHaveAttribute("aria-selected", "false");
