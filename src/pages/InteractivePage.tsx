@@ -1,4 +1,45 @@
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@nocoo/basalt/components/alert-dialog";
 import { Button } from "@nocoo/basalt/components/button";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@nocoo/basalt/components/collapsible";
+import {
+	Dialog,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@nocoo/basalt/components/dialog";
+import { Input } from "@nocoo/basalt/components/input";
+import { Label } from "@nocoo/basalt/components/label";
+import { Popover, PopoverContent, PopoverTrigger } from "@nocoo/basalt/components/popover";
+import { Progress } from "@nocoo/basalt/components/progress";
+import { Separator } from "@nocoo/basalt/components/separator";
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetFooter,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@nocoo/basalt/components/sheet";
+import { Switch } from "@nocoo/basalt/components/switch";
+import { toast } from "@nocoo/basalt/components/toast";
 import {
 	AlertTriangle,
 	Bell,
@@ -23,44 +64,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
 import { PageIntro } from "@/components/PageIntro";
-import {
-	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
-	AlertDialogContent,
-	AlertDialogDescription,
-	AlertDialogFooter,
-	AlertDialogHeader,
-	AlertDialogTitle,
-	AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-import {
-	Sheet,
-	SheetContent,
-	SheetDescription,
-	SheetFooter,
-	SheetHeader,
-	SheetTitle,
-	SheetTrigger,
-} from "@/components/ui/sheet";
-import { Switch } from "@/components/ui/switch";
 
 function Section({
 	title,
@@ -536,16 +540,18 @@ export default function InteractivePage() {
 				<div className="space-y-3">
 					<Collapsible open={collapsible1} onOpenChange={setCollapsible1}>
 						<div className="rounded-widget border border-border bg-card">
-							<CollapsibleTrigger className="flex w-full items-center justify-between p-4">
-								<span className="text-sm font-medium text-foreground">
-									{t("pages.interactive.advancedOptions")}
-								</span>
-								<ChevronDown
-									className={`h-4 w-4 text-muted-foreground transition-transform ${collapsible1 ? "rotate-180" : ""}`}
-									strokeWidth={1.5}
-								/>
+							<CollapsibleTrigger asChild>
+								<button type="button" className="flex w-full items-center justify-between p-4">
+									<span className="text-sm font-medium text-foreground">
+										{t("pages.interactive.advancedOptions")}
+									</span>
+									<ChevronDown
+										className={`h-4 w-4 text-muted-foreground transition-transform ${collapsible1 ? "rotate-180" : ""}`}
+										strokeWidth={1.5}
+									/>
+								</button>
 							</CollapsibleTrigger>
-							<CollapsibleContent>
+							<CollapsibleContent unstyled>
 								<div className="border-t border-border p-4 space-y-3">
 									<div className="flex items-center justify-between">
 										<span className="text-sm">{t("pages.interactive.enableCaching")}</span>
@@ -561,16 +567,18 @@ export default function InteractivePage() {
 					</Collapsible>
 					<Collapsible open={collapsible2} onOpenChange={setCollapsible2}>
 						<div className="rounded-widget border border-border bg-card">
-							<CollapsibleTrigger className="flex w-full items-center justify-between p-4">
-								<span className="text-sm font-medium text-foreground">
-									{t("pages.interactive.dangerZone")}
-								</span>
-								<ChevronDown
-									className={`h-4 w-4 text-muted-foreground transition-transform ${collapsible2 ? "rotate-180" : ""}`}
-									strokeWidth={1.5}
-								/>
+							<CollapsibleTrigger asChild>
+								<button type="button" className="flex w-full items-center justify-between p-4">
+									<span className="text-sm font-medium text-foreground">
+										{t("pages.interactive.dangerZone")}
+									</span>
+									<ChevronDown
+										className={`h-4 w-4 text-muted-foreground transition-transform ${collapsible2 ? "rotate-180" : ""}`}
+										strokeWidth={1.5}
+									/>
+								</button>
 							</CollapsibleTrigger>
-							<CollapsibleContent>
+							<CollapsibleContent unstyled>
 								<div className="border-t border-border p-4">
 									<div className="flex items-center justify-between">
 										<div>

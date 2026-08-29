@@ -2,8 +2,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import InteractionShowcasePage from "@/pages/InteractionShowcasePage";
 
-// Mock sonner toast
-vi.mock("sonner", () => ({
+vi.mock("@nocoo/basalt/components/toast", () => ({
 	toast: Object.assign(vi.fn(), {
 		success: vi.fn(),
 		error: vi.fn(),
@@ -116,8 +115,8 @@ describe("InteractionShowcasePage", () => {
 		expect(screen.getByText("Destructive")).toBeInTheDocument();
 	});
 
-	it("fires sonner toast on toast card click", async () => {
-		const { toast } = await import("sonner");
+	it("fires package toast on toast card click", async () => {
+		const { toast } = await import("@nocoo/basalt/components/toast");
 		render(<InteractionShowcasePage />);
 		fireEvent.click(screen.getByText("Changes saved"));
 		expect(toast.success).toHaveBeenCalled();

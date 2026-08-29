@@ -1,4 +1,17 @@
 import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+} from "@nocoo/basalt/components/dialog";
+import { Input } from "@nocoo/basalt/components/input";
+import { Label } from "@nocoo/basalt/components/label";
+import { Separator } from "@nocoo/basalt/components/separator";
+import { toast } from "@nocoo/basalt/components/toast";
+import {
 	AlertTriangle,
 	Bell,
 	CheckCircle2,
@@ -9,19 +22,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
-import {
-	Dialog,
-	DialogClose,
-	DialogContent,
-	DialogDescription,
-	DialogFooter,
-	DialogHeader,
-	DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
 import type { ToastVariant } from "@/models/types";
 import { useInteractionShowcaseViewModel } from "@/viewmodels/useInteractionShowcaseViewModel";
 
