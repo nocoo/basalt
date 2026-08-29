@@ -147,7 +147,7 @@ describe("ui catalog", () => {
 		const triggers: Record<string, string> = {
 			collapsible: "What is Kumo?",
 			dialog: "Click me",
-			popover: "Open",
+			popover: "Open Popover",
 			"dropdown-menu": "Open",
 			sheet: "Open",
 		};

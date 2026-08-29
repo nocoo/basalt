@@ -419,6 +419,7 @@ export function DatePicker({
 				</Button>
 			</PopoverTrigger>
 			<PopoverContent
+				arrow={false}
 				className="w-64 p-3"
 				aria-label={ariaLabel ? `${ariaLabel} calendar` : "Date calendar"}
 				onOpenAutoFocus={(event) => {

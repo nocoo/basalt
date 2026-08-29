@@ -41,7 +41,14 @@ export { Label } from "./components/label";
 export { LayerCard } from "./components/layer-card";
 export { Link } from "./components/link";
 export { Meter } from "./components/meter";
-export { Popover, PopoverContent, PopoverTrigger } from "./components/popover";
+export {
+	Popover,
+	PopoverClose,
+	PopoverContent,
+	PopoverDescription,
+	PopoverTitle,
+	PopoverTrigger,
+} from "./components/popover";
 export { Separator } from "./components/separator";
 export {
 	Sheet,

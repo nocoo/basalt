@@ -95,7 +95,13 @@ import {
 	NavigationMenuList,
 } from "@nocoo/basalt/components/navigation-menu";
 import { Pagination } from "@nocoo/basalt/components/pagination";
-import { Popover, PopoverContent, PopoverTrigger } from "@nocoo/basalt/components/popover";
+import {
+	Popover,
+	PopoverContent,
+	PopoverDescription,
+	PopoverTitle,
+	PopoverTrigger,
+} from "@nocoo/basalt/components/popover";
 import {
 	Select,
 	SelectContent,
@@ -626,16 +632,27 @@ add(
 );
 add(
 	"popover",
-	"Floating panel.",
+	"Floating panel with a title, description, and arrow.",
 	() => (
 		<Popover>
 			<PopoverTrigger asChild>
-				<Button variant="outline">Open</Button>
+				<Button variant="outline">Open Popover</Button>
 			</PopoverTrigger>
-			<PopoverContent>Details</PopoverContent>
+			<PopoverContent>
+				<PopoverTitle>Popover Title</PopoverTitle>
+				<PopoverDescription>This is a popover.</PopoverDescription>
+			</PopoverContent>
 		</Popover>
 	),
-	'<Popover><PopoverTrigger asChild><Button variant="outline">Open</Button></PopoverTrigger></Popover>',
+	'<Popover><PopoverTrigger asChild><Button variant="outline">Open Popover</Button></PopoverTrigger><PopoverContent><PopoverTitle>Popover Title</PopoverTitle><PopoverDescription>This is a popover.</PopoverDescription></PopoverContent></Popover>',
+	[
+		{
+			name: "side",
+			type: '"top" | "bottom" | "left" | "right"',
+			default: '"bottom"',
+			description: "Which side of the trigger the popover appears on.",
+		},
+	],
 );
 add(
 	"dropdown-menu",

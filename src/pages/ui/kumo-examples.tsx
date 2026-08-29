@@ -58,7 +58,13 @@ import { Link } from "@nocoo/basalt/components/link";
 import { Loader } from "@nocoo/basalt/components/loader";
 import { Meter } from "@nocoo/basalt/components/meter";
 import { Pagination } from "@nocoo/basalt/components/pagination";
-import { Popover, PopoverContent, PopoverTrigger } from "@nocoo/basalt/components/popover";
+import {
+	Popover,
+	PopoverContent,
+	PopoverDescription,
+	PopoverTitle,
+	PopoverTrigger,
+} from "@nocoo/basalt/components/popover";
 import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
 import {
 	Select,
@@ -1368,14 +1374,42 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	popover: [
 		{
 			title: "Basic Popover",
-			code: "<Popover><PopoverTrigger asChild><Button>Open</Button></PopoverTrigger><PopoverContent>Panel</PopoverContent></Popover>",
+			code: `<Popover>
+  <PopoverTrigger asChild><Button>Open Popover</Button></PopoverTrigger>
+  <PopoverContent>
+    <PopoverTitle>Popover Title</PopoverTitle>
+    <PopoverDescription>This is a popover.</PopoverDescription>
+  </PopoverContent>
+</Popover>`,
 			render: () => (
 				<Popover>
 					<PopoverTrigger asChild>
-						<Button variant="outline">Open</Button>
+						<Button variant="outline">Open Popover</Button>
 					</PopoverTrigger>
-					<PopoverContent>Panel</PopoverContent>
+					<PopoverContent>
+						<PopoverTitle>Popover Title</PopoverTitle>
+						<PopoverDescription>This is a popover.</PopoverDescription>
+					</PopoverContent>
 				</Popover>
+			),
+		},
+		{
+			title: "Sides",
+			code: '<PopoverContent side="top">…</PopoverContent>',
+			render: () => (
+				<div className="flex flex-wrap items-center justify-center gap-4 py-16">
+					{(["bottom", "top", "left", "right"] as const).map((side) => (
+						<Popover key={side}>
+							<PopoverTrigger asChild>
+								<Button variant="outline">{side[0].toUpperCase() + side.slice(1)}</Button>
+							</PopoverTrigger>
+							<PopoverContent side={side}>
+								<PopoverTitle>{side[0].toUpperCase() + side.slice(1)}</PopoverTitle>
+								<PopoverDescription>Popover on {side}.</PopoverDescription>
+							</PopoverContent>
+						</Popover>
+					))}
+				</div>
 			),
 		},
 	],
