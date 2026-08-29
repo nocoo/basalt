@@ -1,15 +1,36 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Input } from "./input";
 import { InputGroup } from "./input-group";
 
 describe("InputGroup", () => {
-	it("groups controls", () => {
+	it("renders a composed input", () => {
 		render(
 			<InputGroup>
-				<Input aria-label="Query" />
+				<InputGroup.Input aria-label="Query" />
 			</InputGroup>,
 		);
 		expect(screen.getByRole("textbox", { name: "Query" })).toBeInTheDocument();
+	});
+
+	it("keeps the suffix inline with the value", () => {
+		render(
+			<InputGroup>
+				<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
+				<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+			</InputGroup>,
+		);
+		expect(screen.getByRole("textbox", { name: "Subdomain" })).toHaveValue("kumo");
+		expect(screen.getByText(".workers.dev")).toBeInTheDocument();
+	});
+
+	it("focuses the input when the group is clicked", () => {
+		render(
+			<InputGroup>
+				<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
+				<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+			</InputGroup>,
+		);
+		fireEvent.click(screen.getByText(".workers.dev"));
+		expect(screen.getByRole("textbox", { name: "Subdomain" })).toHaveFocus();
 	});
 });

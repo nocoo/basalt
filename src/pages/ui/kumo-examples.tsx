@@ -93,7 +93,17 @@ import {
 	TooltipTrigger,
 } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
-import { AlertTriangle, Check, CircleAlert, Inbox, Info, Plus, Search, X } from "lucide-react";
+import {
+	AlertTriangle,
+	Check,
+	CircleAlert,
+	CircleCheck,
+	Inbox,
+	Info,
+	Plus,
+	Search,
+	X,
+} from "lucide-react";
 import { type ComponentType, type ReactNode, useState } from "react";
 
 function Preview({ children, className }: { children: ReactNode; className?: string }) {
@@ -593,42 +603,79 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	"input-group": [
 		{
-			title: "Icon",
-			code: "<InputGroup><Search /><Input /></InputGroup>",
+			title: "Inline Suffix",
+			code: `<InputGroup>
+  <InputGroup.Input defaultValue="kumo" />
+  <InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+  <InputGroup.Addon align="end"><CircleCheck /></InputGroup.Addon>
+</InputGroup>`,
 			render: () => (
-				<InputGroup className="w-full max-w-sm rounded-basalt-md border border-basalt-border bg-basalt-secondary px-3">
-					<Search className="size-4 text-basalt-muted-foreground" />
-					<Input className="border-0 shadow-none" aria-label="Search group" placeholder="Search" />
+				<InputGroup className="max-w-sm">
+					<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
+					<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+					<InputGroup.Addon align="end">
+						<CircleCheck className="text-basalt-heatmap-green-3" />
+					</InputGroup.Addon>
 				</InputGroup>
 			),
 		},
 		{
-			title: "Button",
-			code: "<InputGroup><Input /><Button>Go</Button></InputGroup>",
+			title: "Icon",
+			code: `<InputGroup>
+  <InputGroup.Addon><Search /></InputGroup.Addon>
+  <InputGroup.Input placeholder="Search" />
+</InputGroup>`,
 			render: () => (
-				<InputGroup>
-					<Input aria-label="Query" />
-					<Button>Go</Button>
+				<InputGroup className="max-w-sm">
+					<InputGroup.Addon>
+						<Search />
+					</InputGroup.Addon>
+					<InputGroup.Input aria-label="Search" placeholder="Search" />
 				</InputGroup>
 			),
 		},
 		{
 			title: "Text",
-			code: "<InputGroup><span>https://</span><Input /></InputGroup>",
+			code: `<InputGroup>
+  <InputGroup.Addon>https://</InputGroup.Addon>
+  <InputGroup.Input placeholder="example.com" />
+</InputGroup>`,
 			render: () => (
-				<InputGroup>
-					<span className="text-sm text-basalt-muted-foreground">https://</span>
-					<Input aria-label="Host" placeholder="example.com" />
+				<InputGroup className="max-w-sm">
+					<InputGroup.Addon>https://</InputGroup.Addon>
+					<InputGroup.Input aria-label="Host" placeholder="example.com" />
+				</InputGroup>
+			),
+		},
+		{
+			title: "Button",
+			code: `<InputGroup>
+  <InputGroup.Input placeholder="Search" />
+  <InputGroup.Addon align="end">
+    <InputGroup.Button icon={<Search />} aria-label="Search" />
+  </InputGroup.Addon>
+</InputGroup>`,
+			render: () => (
+				<InputGroup className="max-w-sm">
+					<InputGroup.Input aria-label="Query" placeholder="Search" />
+					<InputGroup.Addon align="end">
+						<InputGroup.Button icon={<Search />} aria-label="Search" />
+					</InputGroup.Addon>
 				</InputGroup>
 			),
 		},
 		{
 			title: "Loading",
-			code: "<InputGroup><Input /><Loader /></InputGroup>",
+			code: `<InputGroup>
+  <InputGroup.Input defaultValue="kumo" />
+  <InputGroup.Addon align="end"><Loader /></InputGroup.Addon>
+</InputGroup>`,
 			render: () => (
-				<InputGroup>
-					<Input aria-label="Loading query" />
-					<Loader size={16} />
+				<InputGroup className="max-w-sm">
+					<InputGroup.Input defaultValue="kumo" aria-label="Loading query" />
+					<InputGroup.Addon align="end">
+						<Loader size={16} />
+					</InputGroup.Addon>
 				</InputGroup>
 			),
 		},

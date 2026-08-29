@@ -22,7 +22,7 @@ import {
 } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
-import { AlertTriangle, CircleAlert, Info, X } from "lucide-react";
+import { AlertTriangle, CircleAlert, CircleCheck, Info, X } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
 import { EXTRA_DEMOS, EXTRA_EXAMPLES } from "./catalog-ready";
 import { KUMO_EXAMPLES } from "./kumo-examples";
@@ -109,8 +109,11 @@ const BASE_DEMOS: Record<string, ComponentType> = {
 	"input-area": () => <InputArea aria-label="Notes" placeholder="Write a note" />,
 	"input-group": () => (
 		<InputGroup>
-			<Input aria-label="Query" placeholder="Search" />
-			<Button>Go</Button>
+			<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
+			<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+			<InputGroup.Addon align="end">
+				<CircleCheck className="text-basalt-heatmap-green-3" />
+			</InputGroup.Addon>
 		</InputGroup>
 	),
 	"sensitive-input": () => (
@@ -339,11 +342,17 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	"input-group": [
 		{
 			title: "Default",
-			code: "<InputGroup><Input /><Button>Go</Button></InputGroup>",
+			code: `<InputGroup>
+  <InputGroup.Input defaultValue="kumo" />
+  <InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+</InputGroup>`,
 			render: () => (
 				<InputGroup>
-					<Input aria-label="Query" />
-					<Button>Go</Button>
+					<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
+					<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+					<InputGroup.Addon align="end">
+						<CircleCheck className="text-basalt-heatmap-green-3" />
+					</InputGroup.Addon>
 				</InputGroup>
 			),
 		},

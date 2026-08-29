@@ -215,17 +215,26 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		},
 	},
 	"input-group": {
-		description: "Lay out an input beside an action.",
+		description: "Compose an input with addons, an inline suffix, and status icons.",
 		usage: usage(
 			"InputGroup",
 			"@nocoo/basalt/components/input-group",
-			"<InputGroup><Input aria-label='Query' /><Button>Go</Button></InputGroup>",
-			'import { Button } from "@nocoo/basalt/components/button";\nimport { Input } from "@nocoo/basalt/components/input";',
+			"<InputGroup><InputGroup.Input defaultValue='kumo' aria-label='Subdomain' /><InputGroup.Suffix>.workers.dev</InputGroup.Suffix></InputGroup>",
 		),
 		variants: [],
 		props: [
-			{ name: "className", type: "string", description: "Layout class names for the group." },
-			{ name: "children", type: "ReactNode", description: "Controls laid out in a row." },
+			{ name: "InputGroup.Input", type: "input", description: "The editable value." },
+			{
+				name: "InputGroup.Suffix",
+				type: "ReactNode",
+				description: "Inline text that sits against the value, such as a domain.",
+			},
+			{
+				name: "InputGroup.Addon",
+				type: '"start" | "end"',
+				description: "Leading or trailing icons, text, or buttons.",
+			},
+			{ name: "InputGroup.Button", type: "button", description: "Compact action inside an addon." },
 		],
 		source: { repo: "basalt", sha: "2727ae6a8d3f", file: "src/pages/FormsPage.tsx" },
 	},

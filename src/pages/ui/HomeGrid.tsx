@@ -22,7 +22,7 @@ import {
 } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
-import { Plus, Search } from "lucide-react";
+import { CircleCheck, Plus, Search } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { Link } from "react-router";
 import { CATALOG } from "./catalog";
@@ -167,18 +167,12 @@ function HomeBanner() {
 
 function HomeInputGroup() {
 	return (
-		<InputGroup className="gap-0 overflow-hidden rounded-md border border-border">
-			<Input
-				aria-label="Search"
-				placeholder="Search..."
-				className="rounded-none border-0 shadow-none focus-visible:ring-0"
-			/>
-			<Button size="icon" variant="ghost" aria-label="Search">
-				<Search />
-			</Button>
-			<Button size="icon" variant="ghost" aria-label="Add">
-				<Plus />
-			</Button>
+		<InputGroup className="max-w-[220px]">
+			<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
+			<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+			<InputGroup.Addon align="end">
+				<CircleCheck className="text-basalt-heatmap-green-3" />
+			</InputGroup.Addon>
 		</InputGroup>
 	);
 }

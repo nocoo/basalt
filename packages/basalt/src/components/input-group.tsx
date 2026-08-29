@@ -1,9 +1,117 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { Button, type ButtonProps } from "./button";
+import { Input } from "./input";
 
-export const InputGroup = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-	({ className, ...props }, ref) => (
-		<div ref={ref} className={cn("flex items-center gap-2", className)} {...props} />
+export type InputGroupProps = React.HTMLAttributes<HTMLDivElement> & {
+	disabled?: boolean;
+};
+
+const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
+	({ className, disabled, onClick, children, ...props }, ref) => (
+		<div
+			ref={ref}
+			data-slot="input-group"
+			data-disabled={disabled ? "" : undefined}
+			className={cn(
+				"flex h-9 w-full items-center overflow-hidden rounded-basalt-lg border border-basalt-border bg-basalt-background text-sm shadow-xs",
+				"outline-hidden focus-within:border-basalt-ring",
+				"has-[[data-slot=input-group-addon-start]]:[&_input]:pl-2",
+				"has-[[data-slot=input-group-addon-end]]:[&_input]:pr-2",
+				"has-[[data-slot=input-group-suffix]]:[&_input]:flex-none",
+				"has-[[data-slot=input-group-suffix]]:[&_input]:[field-sizing:content]",
+				"has-[[data-slot=input-group-suffix]]:[&_input]:pr-0",
+				"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+				className,
+			)}
+			onClick={(event) => {
+				onClick?.(event);
+				if (event.defaultPrevented) {
+					return;
+				}
+				const target = event.target as HTMLElement;
+				if (target.closest("input, textarea, button, a")) {
+					return;
+				}
+				event.currentTarget.querySelector("input")?.focus();
+			}}
+			{...props}
+		>
+			{children}
+		</div>
 	),
 );
-InputGroup.displayName = "InputGroup";
+InputGroupRoot.displayName = "InputGroup";
+
+const InputGroupInput = React.forwardRef<
+	HTMLInputElement,
+	React.ComponentPropsWithoutRef<typeof Input>
+>(({ className, ...props }, ref) => (
+	<Input
+		ref={ref}
+		className={cn(
+			"h-full min-w-0 w-auto! flex-1 rounded-none border-0 bg-transparent px-3 py-0 shadow-none",
+			"outline-hidden focus-visible:border-transparent focus-visible:ring-0",
+			className,
+		)}
+		{...props}
+	/>
+));
+InputGroupInput.displayName = "InputGroup.Input";
+
+export type InputGroupAddonProps = React.HTMLAttributes<HTMLDivElement> & {
+	align?: "start" | "end";
+};
+
+function InputGroupAddon({ align = "start", className, children, ...props }: InputGroupAddonProps) {
+	return (
+		<div
+			data-slot={align === "end" ? "input-group-addon-end" : "input-group-addon-start"}
+			className={cn(
+				"pointer-events-none flex shrink-0 items-center text-basalt-muted-foreground *:pointer-events-auto [&_svg]:size-4",
+				align === "start" ? "-order-1 pl-3" : "order-1 pr-3",
+				className,
+			)}
+			{...props}
+		>
+			{children}
+		</div>
+	);
+}
+InputGroupAddon.displayName = "InputGroup.Addon";
+
+function InputGroupSuffix({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+	return (
+		<div
+			data-slot="input-group-suffix"
+			className={cn(
+				"pointer-events-none flex min-w-0 flex-1 items-center pr-3 text-basalt-muted-foreground select-none",
+				className,
+			)}
+			{...props}
+		>
+			<span className="truncate">{children}</span>
+		</div>
+	);
+}
+InputGroupSuffix.displayName = "InputGroup.Suffix";
+
+const InputGroupButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
+	({ className, variant = "ghost", size = "icon", ...props }, ref) => (
+		<Button
+			ref={ref}
+			variant={variant}
+			size={size}
+			className={cn("h-7 w-7 shrink-0 rounded-basalt-sm", className)}
+			{...props}
+		/>
+	),
+);
+InputGroupButton.displayName = "InputGroup.Button";
+
+export const InputGroup = Object.assign(InputGroupRoot, {
+	Input: InputGroupInput,
+	Addon: InputGroupAddon,
+	Suffix: InputGroupSuffix,
+	Button: InputGroupButton,
+});
