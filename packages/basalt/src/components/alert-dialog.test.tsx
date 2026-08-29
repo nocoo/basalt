@@ -6,6 +6,8 @@ import {
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "./alert-dialog";
@@ -26,10 +28,14 @@ describe("AlertDialog", () => {
 			<AlertDialog>
 				<AlertDialogTrigger>Delete</AlertDialogTrigger>
 				<AlertDialogContent>
-					<AlertDialogTitle>Delete Account?</AlertDialogTitle>
-					<AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
-					<AlertDialogCancel>Cancel</AlertDialogCancel>
-					<AlertDialogAction>Delete Account</AlertDialogAction>
+					<AlertDialogHeader>
+						<AlertDialogTitle>Delete Account?</AlertDialogTitle>
+						<AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+					</AlertDialogHeader>
+					<AlertDialogFooter>
+						<AlertDialogCancel>Cancel</AlertDialogCancel>
+						<AlertDialogAction>Delete Account</AlertDialogAction>
+					</AlertDialogFooter>
 				</AlertDialogContent>
 			</AlertDialog>,
 		);

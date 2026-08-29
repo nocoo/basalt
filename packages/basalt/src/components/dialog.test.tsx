@@ -6,6 +6,8 @@ import {
 	DialogClose,
 	DialogContent,
 	DialogDescription,
+	DialogFooter,
+	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 	dialogOverlayClass,
@@ -80,6 +82,21 @@ describe("Dialog", () => {
 		);
 		fireEvent.click(screen.getByRole("button", { name: "Dismiss" }));
 		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+	});
+
+	it("renders header and footer slots", () => {
+		render(
+			<Dialog defaultOpen>
+				<DialogContent>
+					<DialogHeader>
+						<DialogTitle>Edit</DialogTitle>
+					</DialogHeader>
+					<DialogFooter>Save</DialogFooter>
+				</DialogContent>
+			</Dialog>,
+		);
+		expect(screen.getByText("Edit").parentElement?.className).toContain("flex-col");
+		expect(screen.getByText("Save").className).toContain("sm:justify-end");
 	});
 
 	it("blocks pointer dismissal when asked", () => {

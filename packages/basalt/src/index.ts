@@ -4,6 +4,8 @@ export {
 	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
+	AlertDialogFooter,
+	AlertDialogHeader,
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "./components/alert-dialog";
@@ -35,6 +37,8 @@ export {
 	DialogClose,
 	DialogContent,
 	DialogDescription,
+	DialogFooter,
+	DialogHeader,
 	DialogTitle,
 	DialogTrigger,
 } from "./components/dialog";
@@ -63,6 +67,8 @@ export {
 	SheetClose,
 	SheetContent,
 	SheetDescription,
+	SheetFooter,
+	SheetHeader,
 	SheetTitle,
 	SheetTrigger,
 } from "./components/sheet";

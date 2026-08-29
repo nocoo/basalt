@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "./sheet";
+import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./sheet";
 
 describe("Sheet", () => {
 	it("renders a trigger", () => {
@@ -25,6 +25,21 @@ describe("Sheet", () => {
 		expect(panel.className).toContain("left-0");
 		expect(panel.className).not.toContain("left-1/2");
 		expect(panel).toHaveStyle({ boxSizing: "border-box" });
+	});
+
+	it("renders header and footer slots", () => {
+		render(
+			<Sheet defaultOpen>
+				<SheetContent>
+					<SheetHeader>
+						<SheetTitle>Panel</SheetTitle>
+					</SheetHeader>
+					<SheetFooter>Done</SheetFooter>
+				</SheetContent>
+			</Sheet>,
+		);
+		expect(screen.getByText("Panel").parentElement?.className).toContain("flex-col");
+		expect(screen.getByText("Done").className).toContain("sm:justify-end");
 	});
 
 	it("defaults to the right edge", () => {
