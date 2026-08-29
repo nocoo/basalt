@@ -17,6 +17,12 @@
 	--color-basalt-accent-foreground: hsl(var(--basalt-accent-foreground));
 	--color-basalt-destructive: hsl(var(--basalt-destructive));
 	--color-basalt-destructive-foreground: hsl(var(--basalt-destructive-foreground));
+	--color-basalt-info: hsl(var(--basalt-info));
+	--color-basalt-info-tint: hsl(var(--basalt-info-tint));
+	--color-basalt-warning: hsl(var(--basalt-warning));
+	--color-basalt-warning-tint: hsl(var(--basalt-warning-tint));
+	--color-basalt-danger: hsl(var(--basalt-danger));
+	--color-basalt-danger-tint: hsl(var(--basalt-danger-tint));
 	--color-basalt-border: hsl(var(--basalt-border));
 	--color-basalt-input: hsl(var(--basalt-input));
 	--color-basalt-ring: hsl(var(--basalt-ring));

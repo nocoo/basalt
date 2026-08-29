@@ -17,6 +17,12 @@
 	--basalt-accent-foreground: 0 0% 12%;
 	--basalt-destructive: 0 72% 51%;
 	--basalt-destructive-foreground: 0 0% 100%;
+	--basalt-info: 221 72% 38%;
+	--basalt-info-tint: 217 80% 95%;
+	--basalt-warning: 28 72% 36%;
+	--basalt-warning-tint: 40 86% 95%;
+	--basalt-danger: 0 70% 40%;
+	--basalt-danger-tint: 0 78% 96%;
 	--basalt-border: 220 13% 88%;
 	--basalt-input: 220 13% 88%;
 	--basalt-ring: 217 91% 60%;
@@ -88,6 +94,12 @@
 	--basalt-accent-foreground: 0 0% 93%;
 	--basalt-destructive: 0 72% 51%;
 	--basalt-destructive-foreground: 0 0% 100%;
+	--basalt-info: 217 80% 72%;
+	--basalt-info-tint: 217 40% 16%;
+	--basalt-warning: 32 80% 68%;
+	--basalt-warning-tint: 32 35% 16%;
+	--basalt-danger: 0 75% 70%;
+	--basalt-danger-tint: 0 40% 16%;
 	--basalt-border: 0 0% 16%;
 	--basalt-input: 0 0% 18%;
 	--basalt-ring: 217 91% 60%;

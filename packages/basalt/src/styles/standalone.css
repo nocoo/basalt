@@ -47,6 +47,12 @@
   --basalt-accent-foreground: 0 0% 12%;
   --basalt-destructive: 0 72% 51%;
   --basalt-destructive-foreground: 0 0% 100%;
+  --basalt-info: 221 72% 38%;
+  --basalt-info-tint: 217 80% 95%;
+  --basalt-warning: 28 72% 36%;
+  --basalt-warning-tint: 40 86% 95%;
+  --basalt-danger: 0 70% 40%;
+  --basalt-danger-tint: 0 78% 96%;
   --basalt-border: 220 13% 88%;
   --basalt-input: 220 13% 88%;
   --basalt-ring: 217 91% 60%;
@@ -116,6 +122,12 @@
   --basalt-accent-foreground: 0 0% 93%;
   --basalt-destructive: 0 72% 51%;
   --basalt-destructive-foreground: 0 0% 100%;
+  --basalt-info: 217 80% 72%;
+  --basalt-info-tint: 217 40% 16%;
+  --basalt-warning: 32 80% 68%;
+  --basalt-warning-tint: 32 35% 16%;
+  --basalt-danger: 0 75% 70%;
+  --basalt-danger-tint: 0 40% 16%;
   --basalt-border: 0 0% 16%;
   --basalt-input: 0 0% 18%;
   --basalt-ring: 217 91% 60%;
@@ -620,9 +632,6 @@
   .overflow-hidden {
     overflow: hidden;
   }
-  .overflow-x-auto {
-    overflow-x: auto;
-  }
   .overflow-y-auto {
     overflow-y: auto;
   }
@@ -705,20 +714,20 @@
   .bg-basalt-card {
     background-color: hsl(var(--basalt-card));
   }
+  .bg-basalt-danger-tint {
+    background-color: hsl(var(--basalt-danger-tint));
+  }
   .bg-basalt-destructive {
     background-color: hsl(var(--basalt-destructive));
   }
   .bg-basalt-heatmap-green-3 {
     background-color: hsl(var(--basalt-heatmap-green-3));
   }
-  .bg-basalt-heatmap-orange-1 {
-    background-color: hsl(var(--basalt-heatmap-orange-1));
-  }
   .bg-basalt-heatmap-orange-3 {
     background-color: hsl(var(--basalt-heatmap-orange-3));
   }
-  .bg-basalt-heatmap-red-1 {
-    background-color: hsl(var(--basalt-heatmap-red-1));
+  .bg-basalt-info-tint {
+    background-color: hsl(var(--basalt-info-tint));
   }
   .bg-basalt-muted {
     background-color: hsl(var(--basalt-muted));
@@ -729,14 +738,11 @@
   .bg-basalt-primary {
     background-color: hsl(var(--basalt-primary));
   }
-  .bg-basalt-primary\/10 {
-    background-color: hsl(var(--basalt-primary));
-    @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, hsl(var(--basalt-primary)) 10%, transparent);
-    }
-  }
   .bg-basalt-secondary {
     background-color: hsl(var(--basalt-secondary));
+  }
+  .bg-basalt-warning-tint {
+    background-color: hsl(var(--basalt-warning-tint));
   }
   .bg-black\/40 {
     background-color: color-mix(in srgb, #000 40%, transparent);
@@ -802,9 +808,6 @@
   }
   .px-1 {
     padding-inline: var(--spacing);
-  }
-  .px-1\.5 {
-    padding-inline: calc(var(--spacing) * 1.5);
   }
   .px-2 {
     padding-inline: calc(var(--spacing) * 2);
@@ -883,9 +886,6 @@
   .text-\[11px\] {
     font-size: 11px;
   }
-  .text-\[13px\] {
-    font-size: 13px;
-  }
   .leading-6 {
     --tw-leading: calc(var(--spacing) * 6);
     line-height: calc(var(--spacing) * 6);
@@ -913,6 +913,9 @@
   .text-basalt-card-foreground {
     color: hsl(var(--basalt-card-foreground));
   }
+  .text-basalt-danger {
+    color: hsl(var(--basalt-danger));
+  }
   .text-basalt-destructive {
     color: hsl(var(--basalt-destructive));
   }
@@ -922,8 +925,8 @@
   .text-basalt-foreground {
     color: hsl(var(--basalt-foreground));
   }
-  .text-basalt-heatmap-orange-4 {
-    color: hsl(var(--basalt-heatmap-orange-4));
+  .text-basalt-info {
+    color: hsl(var(--basalt-info));
   }
   .text-basalt-muted-foreground {
     color: hsl(var(--basalt-muted-foreground));
@@ -936,6 +939,9 @@
   }
   .text-basalt-primary-foreground {
     color: hsl(var(--basalt-primary-foreground));
+  }
+  .text-basalt-warning {
+    color: hsl(var(--basalt-warning));
   }
   .text-current {
     color: currentcolor;
@@ -954,9 +960,6 @@
   }
   .opacity-50 {
     opacity: 50%;
-  }
-  .opacity-80 {
-    opacity: 80%;
   }
   .shadow {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));

@@ -1,3 +1,4 @@
+import { Banner } from "@nocoo/basalt/components/banner";
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { Field } from "@nocoo/basalt/components/field";
@@ -160,6 +161,10 @@ function HomeLayerCard() {
 	);
 }
 
+function HomeBanner() {
+	return <Banner className="max-w-[220px]" title="Update available" />;
+}
+
 function HomeInputGroup() {
 	return (
 		<InputGroup className="gap-0 overflow-hidden rounded-md border border-border">
@@ -257,6 +262,7 @@ const HOME_DEMOS: Record<string, ComponentType> = {
 	tooltip: HomeTooltip,
 	checkbox: HomeCheckbox,
 	"layer-card": HomeLayerCard,
+	banner: HomeBanner,
 	"input-group": HomeInputGroup,
 	link: HomeLink,
 	label: HomeLabel,

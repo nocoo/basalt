@@ -6,9 +6,9 @@ import { Button, type ButtonProps } from "./button";
 const bannerVariants = cva("flex w-full items-start gap-3 rounded-basalt-md text-sm", {
 	variants: {
 		variant: {
-			default: "bg-basalt-primary/10 text-basalt-primary",
-			alert: "bg-basalt-heatmap-orange-1 text-basalt-heatmap-orange-4",
-			error: "bg-basalt-heatmap-red-1 text-basalt-destructive",
+			default: "bg-basalt-info-tint text-basalt-info",
+			alert: "bg-basalt-warning-tint text-basalt-warning",
+			error: "bg-basalt-danger-tint text-basalt-danger",
 			secondary: "bg-basalt-muted text-basalt-foreground",
 		},
 		size: {
@@ -77,7 +77,7 @@ function BannerRoot({
 					{description ? (
 						<div
 							className={cn(
-								resolvedVariant === "secondary" ? "text-basalt-muted-foreground" : "opacity-80",
+								resolvedVariant === "secondary" ? "text-basalt-muted-foreground" : "text-current",
 							)}
 						>
 							{description}

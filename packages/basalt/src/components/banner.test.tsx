@@ -9,6 +9,21 @@ describe("Banner", () => {
 		expect(screen.getByText("A new version is ready.")).toBeInTheDocument();
 	});
 
+	it("uses high-contrast tints instead of heatmap fills", () => {
+		const { rerender } = render(<Banner title="Info" />);
+		expect(screen.getByText("Info").parentElement?.parentElement?.className).toContain(
+			"bg-basalt-info-tint",
+		);
+		rerender(<Banner variant="alert" title="Warn" />);
+		expect(screen.getByText("Warn").parentElement?.parentElement?.className).toContain(
+			"text-basalt-warning",
+		);
+		rerender(<Banner variant="error" title="Fail" />);
+		expect(screen.getByText("Fail").parentElement?.parentElement?.className).toContain(
+			"bg-basalt-danger-tint",
+		);
+	});
+
 	it("renders children without a title", () => {
 		render(<Banner variant="alert">Just copy</Banner>);
 		expect(screen.getByText("Just copy")).toBeInTheDocument();
