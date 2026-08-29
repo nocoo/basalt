@@ -13,6 +13,7 @@ describe("standalone css", () => {
 		expect(css).toContain("@keyframes basalt-pulse");
 		expect(css).toContain("@keyframes basalt-dialog-in");
 		expect(css).toContain("@keyframes basalt-overlay-in");
+		expect(css).toContain("@keyframes basalt-collapsible-down");
 		expect(css).toContain("backdrop-filter");
 		expect(css).not.toMatch(/@keyframes pulse\s*\{/);
 	});

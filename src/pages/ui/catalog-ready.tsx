@@ -305,16 +305,14 @@ add(
 );
 add(
 	"collapsible",
-	"Show and hide a panel.",
+	"A composable disclosure for showing and hiding content.",
 	() => (
 		<Collapsible>
-			<CollapsibleTrigger asChild>
-				<Button variant="outline">Open</Button>
-			</CollapsibleTrigger>
-			<CollapsibleContent>More</CollapsibleContent>
+			<CollapsibleTrigger>What is Kumo?</CollapsibleTrigger>
+			<CollapsibleContent>Kumo is Cloudflare's component library.</CollapsibleContent>
 		</Collapsible>
 	),
-	'<Collapsible><CollapsibleTrigger asChild><Button variant="outline">Open</Button></CollapsibleTrigger></Collapsible>',
+	"<Collapsible><CollapsibleTrigger>What is Kumo?</CollapsibleTrigger><CollapsibleContent>…</CollapsibleContent></Collapsible>",
 );
 add(
 	"tabs",

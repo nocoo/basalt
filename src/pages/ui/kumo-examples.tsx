@@ -1231,22 +1231,24 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	collapsible: [
 		{
 			title: "With Default Styling",
-			code: "<Collapsible><CollapsibleTrigger asChild><Button>Open</Button></CollapsibleTrigger><CollapsibleContent>Hidden</CollapsibleContent></Collapsible>",
+			code: "<Collapsible><CollapsibleTrigger>What is Kumo?</CollapsibleTrigger><CollapsibleContent>…</CollapsibleContent></Collapsible>",
 			render: () => (
 				<Collapsible>
-					<CollapsibleTrigger asChild>
-						<Button variant="outline">Open</Button>
-					</CollapsibleTrigger>
-					<CollapsibleContent>Hidden details</CollapsibleContent>
+					<CollapsibleTrigger>What is Kumo?</CollapsibleTrigger>
+					<CollapsibleContent>Kumo is Cloudflare's component library.</CollapsibleContent>
 				</Collapsible>
 			),
 		},
 		{
 			title: "Custom Trigger",
-			code: "<CollapsibleTrigger>Details</CollapsibleTrigger>",
+			code: "<CollapsibleTrigger asChild><Button>Show details</Button></CollapsibleTrigger>",
 			render: () => (
 				<Collapsible>
-					<CollapsibleTrigger className="text-sm font-medium">Details</CollapsibleTrigger>
+					<CollapsibleTrigger asChild>
+						<Button variant="outline" size="sm">
+							Show details
+						</Button>
+					</CollapsibleTrigger>
 					<CollapsibleContent>Expanded copy.</CollapsibleContent>
 				</Collapsible>
 			),

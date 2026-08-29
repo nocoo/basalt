@@ -144,7 +144,7 @@ describe("ui catalog", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		const triggers: Record<string, string> = {
-			collapsible: "Open",
+			collapsible: "What is Kumo?",
 			dialog: "Click me",
 			popover: "Open",
 			"dropdown-menu": "Open",
