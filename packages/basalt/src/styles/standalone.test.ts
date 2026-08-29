@@ -11,6 +11,9 @@ describe("standalone css", () => {
 		expect(css).not.toContain("img, svg, video, canvas");
 		expect(css).not.toMatch(/body\s*\{[^}]*margin:\s*0/);
 		expect(css).toContain("@keyframes basalt-pulse");
+		expect(css).toContain("@keyframes basalt-dialog-in");
+		expect(css).toContain("@keyframes basalt-overlay-in");
+		expect(css).toContain("backdrop-filter");
 		expect(css).not.toMatch(/@keyframes pulse\s*\{/);
 	});
 });

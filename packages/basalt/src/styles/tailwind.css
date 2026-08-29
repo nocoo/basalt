@@ -74,4 +74,8 @@
 	--animate-basalt-accordion-up: basalt-accordion-up 0.2s ease-out;
 	--animate-basalt-spin: basalt-spin 1s linear infinite;
 	--animate-pulse: basalt-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+	--animate-basalt-overlay-in: basalt-overlay-in 200ms ease-out;
+	--animate-basalt-overlay-out: basalt-overlay-out 150ms ease-in forwards;
+	--animate-basalt-dialog-in: basalt-dialog-in 200ms ease-out;
+	--animate-basalt-dialog-out: basalt-dialog-out 150ms ease-in forwards;
 }

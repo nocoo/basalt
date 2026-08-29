@@ -24,6 +24,7 @@
     --tracking-tight: -0.025em;
     --tracking-wide: 0.025em;
     --radius-sm: 0.25rem;
+    --blur-md: 12px;
     --default-transition-duration: 150ms;
     --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -186,6 +187,42 @@
     opacity: 0.5;
   }
 }
+@keyframes basalt-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes basalt-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes basalt-dialog-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes basalt-dialog-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+}
 @layer utilities {
   .pointer-events-none {
     pointer-events: none;
@@ -222,8 +259,8 @@
   .top-0 {
     top: 0px;
   }
-  .top-8 {
-    top: calc(var(--spacing) * 8);
+  .top-1\/2 {
+    top: calc(1 / 2 * 100%);
   }
   .right-0 {
     right: 0px;
@@ -329,14 +366,23 @@
   .h-80 {
     height: calc(var(--spacing) * 80);
   }
+  .h-auto {
+    height: auto;
+  }
   .h-full {
     height: 100%;
   }
   .h-px {
     height: 1px;
   }
+  .max-h-\[calc\(100vh-2rem\)\] {
+    max-height: calc(100vh - 2rem);
+  }
   .min-h-0 {
     min-height: 0px;
+  }
+  .min-h-9 {
+    min-height: calc(var(--spacing) * 9);
   }
   .min-h-48 {
     min-height: calc(var(--spacing) * 48);
@@ -395,6 +441,9 @@
   .w-\[var\(--radix-select-trigger-width\)\] {
     width: var(--radix-select-trigger-width);
   }
+  .w-fit {
+    width: fit-content;
+  }
   .w-full {
     width: 100%;
   }
@@ -429,6 +478,10 @@
     --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
+  .-translate-y-1\/2 {
+    --tw-translate-y: calc(calc(1 / 2 * 100%) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
   .animate-basalt-spin {
     animation: basalt-spin 1s linear infinite;
   }
@@ -461,6 +514,9 @@
   }
   .items-start {
     align-items: flex-start;
+  }
+  .items-stretch {
+    align-items: stretch;
   }
   .justify-between {
     justify-content: space-between;
@@ -529,6 +585,9 @@
   }
   .rounded-full {
     border-radius: calc(infinity * 1px);
+  }
+  .rounded-none {
+    border-radius: 0;
   }
   .rounded-sm {
     border-radius: var(--radius-sm);
@@ -620,10 +679,10 @@
   .bg-basalt-secondary {
     background-color: hsl(var(--basalt-secondary));
   }
-  .bg-basalt-secondary\/80 {
-    background-color: hsl(var(--basalt-secondary));
+  .bg-black\/40 {
+    background-color: color-mix(in srgb, #000 40%, transparent);
     @supports (color: color-mix(in lab, red, red)) {
-      background-color: color-mix(in oklab, hsl(var(--basalt-secondary)) 80%, transparent);
+      background-color: color-mix(in oklab, var(--color-black) 40%, transparent);
     }
   }
   .bg-black\/50 {
@@ -637,6 +696,9 @@
   }
   .bg-transparent {
     background-color: transparent;
+  }
+  .bg-white {
+    background-color: var(--color-white);
   }
   .fill-current {
     fill: currentcolor;
@@ -826,6 +888,10 @@
     --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .shadow-none {
+    --tw-shadow: 0 0 #0000;
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
   .shadow-sm {
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
@@ -871,6 +937,11 @@
   }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
+  .backdrop-blur-md {
+    --tw-backdrop-blur: blur(var(--blur-md));
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
   }
   .transition-\[width\] {
     transition-property: width;
@@ -921,6 +992,9 @@
   .placeholder\:text-basalt-muted-foreground::placeholder {
     color: hsl(var(--basalt-muted-foreground));
   }
+  .focus-within\:z-2:focus-within {
+    z-index: 2;
+  }
   @media (hover: hover) {
     .hover\:bg-basalt-accent:hover {
       background-color: hsl(var(--basalt-accent));
@@ -951,11 +1025,20 @@
       text-decoration-line: underline;
     }
   }
+  .focus\:z-2:focus {
+    z-index: 2;
+  }
   .focus\:bg-basalt-accent:focus {
     background-color: hsl(var(--basalt-accent));
   }
+  .focus-visible\:z-2:focus-visible {
+    z-index: 2;
+  }
   .focus-visible\:border-basalt-ring:focus-visible {
     border-color: hsl(var(--basalt-ring));
+  }
+  .focus-visible\:bg-basalt-accent:focus-visible {
+    background-color: hsl(var(--basalt-accent));
   }
   .focus-visible\:ring-0:focus-visible {
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
@@ -1015,6 +1098,12 @@
   .data-\[state\=checked\]\:text-basalt-primary-foreground[data-state="checked"] {
     color: hsl(var(--basalt-primary-foreground));
   }
+  .data-\[state\=closed\]\:animate-basalt-dialog-out[data-state="closed"] {
+    animation: basalt-dialog-out 150ms ease-in forwards;
+  }
+  .data-\[state\=closed\]\:animate-basalt-overlay-out[data-state="closed"] {
+    animation: basalt-overlay-out 150ms ease-in forwards;
+  }
   .data-\[state\=indeterminate\]\:bg-basalt-primary[data-state="indeterminate"] {
     background-color: hsl(var(--basalt-primary));
   }
@@ -1034,6 +1123,12 @@
     --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
     box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
+  .data-\[state\=open\]\:animate-basalt-dialog-in[data-state="open"] {
+    animation: basalt-dialog-in 200ms ease-out;
+  }
+  .data-\[state\=open\]\:animate-basalt-overlay-in[data-state="open"] {
+    animation: basalt-overlay-in 200ms ease-out;
+  }
   .data-\[state\=open\]\:bg-basalt-accent[data-state="open"] {
     background-color: hsl(var(--basalt-accent));
   }
@@ -1045,9 +1140,6 @@
     background-color: hsl(var(--basalt-input));
   }
   @media (width >= 40rem) {
-    .sm\:top-16 {
-      top: calc(var(--spacing) * 16);
-    }
     .sm\:w-72 {
       width: calc(var(--spacing) * 72);
     }
@@ -1123,6 +1215,13 @@
   }
   .\[\&_svg\]\:shrink-0 svg {
     flex-shrink: 0;
+  }
+  .\[\&\>\*\:not\(\:first-child\)\]\:border-l > :not(:first-child) {
+    border-left-style: var(--tw-border-style);
+    border-left-width: 1px;
+  }
+  .\[\&\>\*\:not\(\:first-child\)\]\:border-basalt-border > :not(:first-child) {
+    border-color: hsl(var(--basalt-border));
   }
   .sr-only {
     position: absolute;
@@ -1323,6 +1422,42 @@
   syntax: "*";
   inherits: false;
 }
+@property --tw-backdrop-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-sepia {
+  syntax: "*";
+  inherits: false;
+}
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
@@ -1362,6 +1497,15 @@
       --tw-drop-shadow-color: initial;
       --tw-drop-shadow-alpha: 100%;
       --tw-drop-shadow-size: initial;
+      --tw-backdrop-blur: initial;
+      --tw-backdrop-brightness: initial;
+      --tw-backdrop-contrast: initial;
+      --tw-backdrop-grayscale: initial;
+      --tw-backdrop-hue-rotate: initial;
+      --tw-backdrop-invert: initial;
+      --tw-backdrop-opacity: initial;
+      --tw-backdrop-saturate: initial;
+      --tw-backdrop-sepia: initial;
     }
   }
 }

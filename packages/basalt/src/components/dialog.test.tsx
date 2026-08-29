@@ -8,6 +8,7 @@ import {
 	DialogDescription,
 	DialogTitle,
 	DialogTrigger,
+	dialogOverlayClass,
 	dialogPanelClass,
 } from "./dialog";
 
@@ -39,13 +40,22 @@ describe("Dialog", () => {
 		expect(screen.getByText("Details")).toBeInTheDocument();
 	});
 
-	it("applies size classes without centering vertically", () => {
+	it("centers the panel and animates open and close", () => {
 		const classes = dialogPanelClass({ size: "sm" }).split(" ");
-		expect(classes).toContain("top-8");
-		expect(classes).toContain("sm:top-16");
+		expect(classes).toContain("top-1/2");
+		expect(classes).toContain("-translate-y-1/2");
 		expect(classes).toContain(DIALOG_SIZES.sm);
-		expect(classes).not.toContain("top-1/2");
-		expect(classes).not.toContain("-translate-y-1/2");
+		expect(classes).toContain("data-[state=open]:animate-basalt-dialog-in");
+		expect(classes).toContain("data-[state=closed]:animate-basalt-dialog-out");
+		expect(classes).not.toContain("top-8");
+	});
+
+	it("frosts the overlay and fades it with the panel", () => {
+		const classes = dialogOverlayClass().split(" ");
+		expect(classes).toContain("backdrop-blur-md");
+		expect(classes).toContain("bg-black/40");
+		expect(classes).toContain("data-[state=open]:animate-basalt-overlay-in");
+		expect(classes).toContain("data-[state=closed]:animate-basalt-overlay-out");
 	});
 
 	it("renders each size on the panel", () => {

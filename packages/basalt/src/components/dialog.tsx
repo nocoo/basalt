@@ -11,6 +11,14 @@ export const DIALOG_SIZES = {
 
 export type DialogSize = keyof typeof DIALOG_SIZES;
 
+export function dialogOverlayClass(className?: string) {
+	return cn(
+		"fixed inset-0 z-50 bg-black/40 backdrop-blur-md",
+		"data-[state=open]:animate-basalt-overlay-in data-[state=closed]:animate-basalt-overlay-out",
+		className,
+	);
+}
+
 export function dialogPanelClass({
 	size = "base",
 	className,
@@ -19,7 +27,8 @@ export function dialogPanelClass({
 	className?: string;
 } = {}) {
 	return cn(
-		"fixed top-8 left-1/2 z-50 w-full max-w-[calc(100vw-2rem)] -translate-x-1/2 overflow-hidden rounded-basalt-lg bg-basalt-background p-8 text-basalt-foreground shadow-lg ring-1 ring-basalt-border sm:top-16",
+		"fixed top-1/2 left-1/2 z-50 w-full max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-basalt-lg bg-basalt-background p-8 text-basalt-foreground shadow-lg ring-1 ring-basalt-border",
+		"data-[state=open]:animate-basalt-dialog-in data-[state=closed]:animate-basalt-dialog-out",
 		DIALOG_SIZES[size],
 		className,
 	);
@@ -34,11 +43,7 @@ export const DialogOverlay = React.forwardRef<
 	React.ElementRef<typeof DialogPrimitive.Overlay>,
 	React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
-	<DialogPrimitive.Overlay
-		ref={ref}
-		className={cn("fixed inset-0 z-50 bg-basalt-secondary/80", className)}
-		{...props}
-	/>
+	<DialogPrimitive.Overlay ref={ref} className={dialogOverlayClass(className)} {...props} />
 ));
 DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 

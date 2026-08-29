@@ -2,7 +2,7 @@ import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { buttonVariants } from "./button";
-import { type DialogSize, dialogPanelClass } from "./dialog";
+import { type DialogSize, dialogOverlayClass, dialogPanelClass } from "./dialog";
 
 export const AlertDialog = AlertDialogPrimitive.Root;
 export const AlertDialogTrigger = AlertDialogPrimitive.Trigger;
@@ -12,11 +12,7 @@ export const AlertDialogOverlay = React.forwardRef<
 	React.ElementRef<typeof AlertDialogPrimitive.Overlay>,
 	React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
-	<AlertDialogPrimitive.Overlay
-		ref={ref}
-		className={cn("fixed inset-0 z-50 bg-basalt-secondary/80", className)}
-		{...props}
-	/>
+	<AlertDialogPrimitive.Overlay ref={ref} className={dialogOverlayClass(className)} {...props} />
 ));
 AlertDialogOverlay.displayName = AlertDialogPrimitive.Overlay.displayName;
 
