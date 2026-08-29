@@ -1,6 +1,6 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { useTranslation } from "react-i18next";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const data = [
 	{ label: "Active", value: 62 },

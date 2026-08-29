@@ -1,7 +1,7 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { chart, chartAxis } from "@/lib/palette";
 
 const data = [

@@ -1,7 +1,7 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { Shield } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { PolarAngleAxis, RadialBar, RadialBarChart, ResponsiveContainer } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { chart } from "@/lib/palette";
 
 const score = 742;

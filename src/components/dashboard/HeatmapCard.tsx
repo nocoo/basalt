@@ -1,6 +1,6 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { useTranslation } from "react-i18next";
 import { HeatmapCalendar, heatmapColorScales } from "@/components/dashboard/HeatmapCalendar";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const heatmapData = Array.from({ length: 365 }).map((_, i) => {
 	const date = new Date(2026, 0, 1 + i);

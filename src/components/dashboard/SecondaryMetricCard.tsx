@@ -1,7 +1,7 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { TrendingUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Bar, BarChart, ResponsiveContainer } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { chart } from "@/lib/palette";
 
 const data = Array.from({ length: 20 }, (_, _i) => ({ value: 2000 + Math.random() * 6000 }));

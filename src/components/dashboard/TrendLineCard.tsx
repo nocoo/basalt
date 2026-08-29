@@ -1,7 +1,7 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { Activity } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { chartAxis, chartPrimary } from "@/lib/palette";
 
 const data = [

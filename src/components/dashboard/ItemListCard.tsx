@@ -1,6 +1,6 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const accountItems = [
 	{ name: "Checking", balance: 12450.8, change: "+2.4%" },

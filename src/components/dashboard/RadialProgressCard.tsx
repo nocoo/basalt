@@ -1,7 +1,7 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { Goal } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { RadialBar, RadialBarChart, ResponsiveContainer } from "recharts";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { chart } from "@/lib/palette";
 
 const goal = 10000;
