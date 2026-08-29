@@ -1,7 +1,6 @@
+import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { BarChart3, LayoutGrid } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { chart, chartAxis, chartPrimary } from "@/lib/palette";
 import { useProgressTrackingViewModel } from "@/viewmodels/useProgressTrackingViewModel";
 
 export default function ProgressTrackingPage() {
@@ -79,30 +78,12 @@ export default function ProgressTrackingPage() {
 						{t("pages.progressTracking.budgetVsActual")}
 					</p>
 				</div>
-				<div
-					className="h-[180px] md:h-[200px]"
-					role="img"
-					aria-label={t("pages.progressTracking.budgetVsActualAria")}
-				>
-					<ResponsiveContainer width="100%" height="100%">
-						<BarChart data={comparisonData} barGap={4}>
-							<XAxis
-								dataKey="month"
-								tick={{ fill: chartAxis, fontSize: 11 }}
-								axisLine={false}
-								tickLine={false}
-							/>
-							<YAxis
-								tick={{ fill: chartAxis, fontSize: 11 }}
-								axisLine={false}
-								tickLine={false}
-								width={30}
-							/>
-							<Bar dataKey="budget" fill={chart.gray} radius={[4, 4, 0, 0]} />
-							<Bar dataKey="actual" fill={chartPrimary} radius={[4, 4, 0, 0]} />
-						</BarChart>
-					</ResponsiveContainer>
-				</div>
+				<GroupedBarChart
+					data={comparisonData.map((row) => ({ x: row.month, y: row.budget, y2: row.actual }))}
+					ariaLabel={t("pages.progressTracking.budgetVsActualAria")}
+					className="h-[180px] w-full md:h-[200px]"
+					showAxes
+				/>
 			</div>
 		</>
 	);

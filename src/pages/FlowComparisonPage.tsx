@@ -1,7 +1,7 @@
+import { AreaChart } from "@nocoo/basalt/charts/area";
+import { BarChart } from "@nocoo/basalt/charts/bar";
 import { Activity, BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Area, AreaChart, Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { chartAxis, chartNegative, chartPositive, chartPrimary } from "@/lib/palette";
 import { useFlowComparisonViewModel } from "@/viewmodels/useFlowComparisonViewModel";
 
 export default function FlowComparisonPage() {
@@ -44,52 +44,12 @@ export default function FlowComparisonPage() {
 						{t("pages.flowComparison.cashFlowOverTime")}
 					</p>
 				</div>
-				<div
-					className="h-[200px] md:h-[240px]"
-					role="img"
-					aria-label={t("pages.flowComparison.cashFlowOverTimeAria")}
-				>
-					<ResponsiveContainer width="100%" height="100%">
-						<AreaChart data={flowData}>
-							<XAxis
-								dataKey="month"
-								tick={{ fill: chartAxis, fontSize: 11 }}
-								axisLine={false}
-								tickLine={false}
-							/>
-							<YAxis
-								tick={{ fill: chartAxis, fontSize: 11 }}
-								axisLine={false}
-								tickLine={false}
-								width={35}
-							/>
-							<defs>
-								<linearGradient id="inflowG" x1="0" y1="0" x2="0" y2="1">
-									<stop offset="0%" stopColor={chartPositive} stopOpacity={0.3} />
-									<stop offset="100%" stopColor={chartPositive} stopOpacity={0} />
-								</linearGradient>
-								<linearGradient id="outflowG" x1="0" y1="0" x2="0" y2="1">
-									<stop offset="0%" stopColor={chartNegative} stopOpacity={0.3} />
-									<stop offset="100%" stopColor={chartNegative} stopOpacity={0} />
-								</linearGradient>
-							</defs>
-							<Area
-								type="monotone"
-								dataKey="inflow"
-								stroke={chartPositive}
-								strokeWidth={2}
-								fill="url(#inflowG)"
-							/>
-							<Area
-								type="monotone"
-								dataKey="outflow"
-								stroke={chartNegative}
-								strokeWidth={2}
-								fill="url(#outflowG)"
-							/>
-						</AreaChart>
-					</ResponsiveContainer>
-				</div>
+				<AreaChart
+					data={flowData.map((row) => ({ x: row.month, y: row.inflow, y2: row.outflow }))}
+					ariaLabel={t("pages.flowComparison.cashFlowOverTimeAria")}
+					className="h-[200px] w-full md:h-[240px]"
+					showAxes
+				/>
 			</div>
 
 			<div className="mt-4 rounded-card bg-secondary p-4 md:p-5">
@@ -99,29 +59,12 @@ export default function FlowComparisonPage() {
 						{t("pages.flowComparison.netCashFlowByMonth")}
 					</p>
 				</div>
-				<div
-					className="h-[160px] md:h-[180px]"
-					role="img"
-					aria-label={t("pages.flowComparison.netCashFlowByMonthAria")}
-				>
-					<ResponsiveContainer width="100%" height="100%">
-						<BarChart data={netFlowData}>
-							<XAxis
-								dataKey="month"
-								tick={{ fill: chartAxis, fontSize: 11 }}
-								axisLine={false}
-								tickLine={false}
-							/>
-							<YAxis
-								tick={{ fill: chartAxis, fontSize: 11 }}
-								axisLine={false}
-								tickLine={false}
-								width={35}
-							/>
-							<Bar dataKey="net" fill={chartPrimary} radius={[4, 4, 0, 0]} />
-						</BarChart>
-					</ResponsiveContainer>
-				</div>
+				<BarChart
+					data={netFlowData.map((row) => ({ x: row.month, y: row.net }))}
+					ariaLabel={t("pages.flowComparison.netCashFlowByMonthAria")}
+					className="h-[160px] w-full md:h-[180px]"
+					showAxes
+				/>
 			</div>
 		</>
 	);

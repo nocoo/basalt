@@ -1,26 +1,10 @@
+import { AreaChart } from "@nocoo/basalt/charts/area";
+import { DonutChart } from "@nocoo/basalt/charts/donut";
+import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
+import { LineChart } from "@nocoo/basalt/charts/line";
 import { Activity, BarChart3, LineChart as LineChartIcon, Palette, Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import {
-	Area,
-	AreaChart,
-	Bar,
-	BarChart,
-	Line,
-	LineChart,
-	Pie,
-	PieChart,
-	ResponsiveContainer,
-	XAxis,
-	YAxis,
-} from "recharts";
-import {
-	CHART_COLORS,
-	chart,
-	chartAxis,
-	chartNegative,
-	chartPositive,
-	chartPrimary,
-} from "@/lib/palette";
+import { CHART_COLORS, chart, chartNegative, chartPositive, chartPrimary } from "@/lib/palette";
 
 // ── Mock data for example charts ──
 
@@ -202,45 +186,12 @@ export default function PalettePage() {
 			<div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-2">
 				{/* Line Chart */}
 				<Section title={t("pages.palette.lineChart")} icon={LineChartIcon}>
-					<div className="h-[200px]" role="img" aria-label={t("pages.palette.lineChartAria")}>
-						<ResponsiveContainer width="100%" height="100%">
-							<LineChart data={lineData}>
-								<XAxis
-									dataKey="name"
-									tick={{ fill: chartAxis, fontSize: 11 }}
-									axisLine={false}
-									tickLine={false}
-								/>
-								<YAxis
-									tick={{ fill: chartAxis, fontSize: 11 }}
-									axisLine={false}
-									tickLine={false}
-									width={35}
-								/>
-								<Line
-									type="monotone"
-									dataKey="a"
-									stroke={chart.primary}
-									strokeWidth={2}
-									dot={false}
-								/>
-								<Line
-									type="monotone"
-									dataKey="b"
-									stroke={chart.purple}
-									strokeWidth={2}
-									dot={false}
-								/>
-								<Line
-									type="monotone"
-									dataKey="c"
-									stroke={chart.green}
-									strokeWidth={2}
-									dot={false}
-								/>
-							</LineChart>
-						</ResponsiveContainer>
-					</div>
+					<LineChart
+						data={lineData.map((row) => ({ x: row.name, y: row.a, y2: row.b }))}
+						ariaLabel={t("pages.palette.lineChartAria")}
+						className="h-[200px] w-full"
+						showAxes
+					/>
 					<div className="mt-3 flex flex-wrap gap-4">
 						{lineLegend.map((s) => (
 							<div key={s.label} className="flex items-center gap-2">
@@ -254,25 +205,11 @@ export default function PalettePage() {
 				{/* Donut Chart */}
 				<Section title={t("pages.palette.donutChart")} icon={Target}>
 					<div className="flex flex-col items-center">
-						<div
+						<DonutChart
+							data={pieData}
+							ariaLabel={t("pages.palette.donutChartAria")}
 							className="h-[180px] w-[180px]"
-							role="img"
-							aria-label={t("pages.palette.donutChartAria")}
-						>
-							<ResponsiveContainer width="100%" height="100%">
-								<PieChart>
-									<Pie
-										data={pieData}
-										cx="50%"
-										cy="50%"
-										innerRadius={45}
-										outerRadius={70}
-										dataKey="value"
-										strokeWidth={0}
-									/>
-								</PieChart>
-							</ResponsiveContainer>
-						</div>
+						/>
 						<div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
 							{pieData.map((item, i) => (
 								<div key={item.name} className="flex flex-col items-center gap-0.5">
@@ -291,26 +228,12 @@ export default function PalettePage() {
 
 				{/* Bar Chart */}
 				<Section title={t("pages.palette.groupedBarChart")} icon={BarChart3}>
-					<div className="h-[200px]" role="img" aria-label={t("pages.palette.groupedBarChartAria")}>
-						<ResponsiveContainer width="100%" height="100%">
-							<BarChart data={barData} barGap={4}>
-								<XAxis
-									dataKey="name"
-									tick={{ fill: chartAxis, fontSize: 11 }}
-									axisLine={false}
-									tickLine={false}
-								/>
-								<YAxis
-									tick={{ fill: chartAxis, fontSize: 11 }}
-									axisLine={false}
-									tickLine={false}
-									width={30}
-								/>
-								<Bar dataKey="income" fill={chartPrimary} radius={[4, 4, 0, 0]} />
-								<Bar dataKey="expense" fill={chart.gray} radius={[4, 4, 0, 0]} />
-							</BarChart>
-						</ResponsiveContainer>
-					</div>
+					<GroupedBarChart
+						data={barData.map((row) => ({ x: row.name, y: row.income, y2: row.expense }))}
+						ariaLabel={t("pages.palette.groupedBarChartAria")}
+						className="h-[200px] w-full"
+						showAxes
+					/>
 					<div className="mt-3 flex flex-wrap gap-4">
 						{barLegend.map((s) => (
 							<div key={s.label} className="flex items-center gap-2">
@@ -323,48 +246,12 @@ export default function PalettePage() {
 
 				{/* Area Chart */}
 				<Section title={t("pages.palette.areaChart")} icon={Activity}>
-					<div className="h-[200px]" role="img" aria-label={t("pages.palette.areaChartAria")}>
-						<ResponsiveContainer width="100%" height="100%">
-							<AreaChart data={areaData}>
-								<XAxis
-									dataKey="name"
-									tick={{ fill: chartAxis, fontSize: 11 }}
-									axisLine={false}
-									tickLine={false}
-								/>
-								<YAxis
-									tick={{ fill: chartAxis, fontSize: 11 }}
-									axisLine={false}
-									tickLine={false}
-									width={35}
-								/>
-								<defs>
-									<linearGradient id="palInG" x1="0" y1="0" x2="0" y2="1">
-										<stop offset="0%" stopColor={chartPositive} stopOpacity={0.3} />
-										<stop offset="100%" stopColor={chartPositive} stopOpacity={0} />
-									</linearGradient>
-									<linearGradient id="palOutG" x1="0" y1="0" x2="0" y2="1">
-										<stop offset="0%" stopColor={chartNegative} stopOpacity={0.3} />
-										<stop offset="100%" stopColor={chartNegative} stopOpacity={0} />
-									</linearGradient>
-								</defs>
-								<Area
-									type="monotone"
-									dataKey="inflow"
-									stroke={chartPositive}
-									strokeWidth={2}
-									fill="url(#palInG)"
-								/>
-								<Area
-									type="monotone"
-									dataKey="outflow"
-									stroke={chartNegative}
-									strokeWidth={2}
-									fill="url(#palOutG)"
-								/>
-							</AreaChart>
-						</ResponsiveContainer>
-					</div>
+					<AreaChart
+						data={areaData.map((row) => ({ x: row.name, y: row.inflow, y2: row.outflow }))}
+						ariaLabel={t("pages.palette.areaChartAria")}
+						className="h-[200px] w-full"
+						showAxes
+					/>
 					<div className="mt-3 flex flex-wrap gap-4">
 						{areaLegend.map((s) => (
 							<div key={s.label} className="flex items-center gap-2">

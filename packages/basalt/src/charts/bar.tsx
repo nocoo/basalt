@@ -7,16 +7,18 @@ export function BarChart({
 	data = SAMPLE,
 	ariaLabel = "Bar chart",
 	className,
+	showAxes = false,
 }: {
 	data?: XYPoint[];
 	ariaLabel?: string;
 	className?: string;
+	showAxes?: boolean;
 }) {
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
 			<RechartsBar data={data}>
-				<XAxis dataKey="x" hide />
-				<YAxis hide />
+				<XAxis dataKey="x" hide={!showAxes} />
+				<YAxis hide={!showAxes} />
 				<Bar dataKey="y" fill={CHART_COLORS[0]} />
 			</RechartsBar>
 		</ChartFrame>

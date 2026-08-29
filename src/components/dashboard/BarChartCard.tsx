@@ -1,8 +1,7 @@
+import { BarChart } from "@nocoo/basalt/charts/bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { PiggyBank } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { chart, chartAxis } from "@/lib/palette";
 
 const data = [
 	{ name: "Jan", value: 12000 },
@@ -39,32 +38,12 @@ export function BarChartCard() {
 				</div>
 			</CardHeader>
 			<CardContent className="flex flex-col">
-				<div
-					className="flex-1 min-h-[200px]"
-					role="img"
-					aria-label={t("dashboard.usageCategoryAria")}
-				>
-					<ResponsiveContainer width="100%" height="100%">
-						<BarChart data={data} barCategoryGap="25%">
-							<XAxis
-								dataKey="name"
-								tick={{ fill: chartAxis, fontSize: 12 }}
-								axisLine={false}
-								tickLine={false}
-							/>
-							<YAxis
-								tickFormatter={(v: number) => `${v / 1000}k`}
-								tick={{ fill: chartAxis, fontSize: 12 }}
-								axisLine={false}
-								tickLine={false}
-								width={35}
-								domain={[0, 30000]}
-								ticks={[10000, 15000, 20000, 25000, 30000]}
-							/>
-							<Bar dataKey="value" fill={chart.primary} radius={[4, 4, 0, 0]} />
-						</BarChart>
-					</ResponsiveContainer>
-				</div>
+				<BarChart
+					data={data.map((row) => ({ x: row.name, y: row.value }))}
+					ariaLabel={t("dashboard.usageCategoryAria")}
+					className="min-h-[200px] w-full flex-1"
+					showAxes
+				/>
 			</CardContent>
 		</Card>
 	);

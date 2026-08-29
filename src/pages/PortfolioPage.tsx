@@ -1,13 +1,13 @@
+import { DonutChart } from "@nocoo/basalt/charts/donut";
+import { LineChart } from "@nocoo/basalt/charts/line";
 import { Briefcase, PieChart as PieChartIcon, TrendingDown, TrendingUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Line, LineChart, Pie, PieChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { CHART_COLORS, CHART_TOKENS, chartAxis, chartPositive, withAlpha } from "@/lib/palette";
+import { CHART_COLORS, CHART_TOKENS, withAlpha } from "@/lib/palette";
 import { usePortfolioViewModel } from "@/viewmodels/usePortfolioViewModel";
 
 export default function PortfolioPage() {
 	const { t } = useTranslation();
 	const { totalValue, holdings, performanceData } = usePortfolioViewModel();
-	const holdingsWithFill = holdings.map((h, i) => ({ ...h, fill: CHART_COLORS[i] }));
 
 	return (
 		<>
@@ -49,36 +49,12 @@ export default function PortfolioPage() {
 							{t("pages.portfolio.portfolioPerformance")}
 						</p>
 					</div>
-					<div
-						className="h-[180px] md:h-[200px]"
-						role="img"
-						aria-label={t("pages.portfolio.performanceAria")}
-					>
-						<ResponsiveContainer width="100%" height="100%">
-							<LineChart data={performanceData}>
-								<XAxis
-									dataKey="month"
-									tick={{ fill: chartAxis, fontSize: 11 }}
-									axisLine={false}
-									tickLine={false}
-								/>
-								<YAxis
-									tick={{ fill: chartAxis, fontSize: 11 }}
-									axisLine={false}
-									tickLine={false}
-									width={40}
-									tickFormatter={(v: number) => `$${(v / 1000).toFixed(0)}k`}
-								/>
-								<Line
-									type="monotone"
-									dataKey="value"
-									stroke={chartPositive}
-									strokeWidth={2}
-									dot={false}
-								/>
-							</LineChart>
-						</ResponsiveContainer>
-					</div>
+					<LineChart
+						data={performanceData.map((row) => ({ x: row.month, y: row.value }))}
+						ariaLabel={t("pages.portfolio.performanceAria")}
+						className="h-[180px] w-full md:h-[200px]"
+						showAxes
+					/>
 				</div>
 
 				<div className="rounded-card bg-secondary p-4 md:p-5">
@@ -87,25 +63,11 @@ export default function PortfolioPage() {
 						<p className="text-sm text-muted-foreground">{t("pages.portfolio.assetAllocation")}</p>
 					</div>
 					<div className="flex flex-col items-center">
-						<div
+						<DonutChart
+							data={holdings.map((item) => ({ name: item.name, value: item.allocation }))}
+							ariaLabel={t("pages.portfolio.allocationAria")}
 							className="h-[160px] w-[160px] md:h-[180px] md:w-[180px]"
-							role="img"
-							aria-label={t("pages.portfolio.allocationAria")}
-						>
-							<ResponsiveContainer width="100%" height="100%">
-								<PieChart>
-									<Pie
-										data={holdingsWithFill}
-										cx="50%"
-										cy="50%"
-										innerRadius={40}
-										outerRadius={65}
-										dataKey="allocation"
-										strokeWidth={0}
-									/>
-								</PieChart>
-							</ResponsiveContainer>
-						</div>
+						/>
 						<div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
 							{holdings.map((item, i) => (
 								<div key={item.name} className="flex flex-col items-center gap-0.5">

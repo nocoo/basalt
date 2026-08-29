@@ -12,4 +12,11 @@ describe("LineChart", () => {
 		const { container } = render(<LineChart data={[{ x: "Mon", y: 4 }]} ariaLabel="Solo" />);
 		expect(container.firstChild).toBeTruthy();
 	});
+
+	it("shows axes when requested", () => {
+		const { container } = render(
+			<LineChart data={[{ x: "Mon", y: 4 }]} ariaLabel="Performance" showAxes />,
+		);
+		expect(container.querySelector("[aria-label='Performance']")).toBeTruthy();
+	});
 });
