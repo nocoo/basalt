@@ -105,7 +105,11 @@ describe("charts", () => {
 		render(<StatCard label="CPU" value="8%" />);
 		expect(screen.getByRole("img", { name: "CPU 8%" })).toBeInTheDocument();
 		render(<Gauge value={20} ariaLabel="Load" />);
-		expect(screen.getByRole("progressbar", { name: "Load" })).toBeInTheDocument();
+		expect(screen.getByRole("img", { name: "Load" })).toBeInTheDocument();
+		expect(screen.getByText("20")).toBeInTheDocument();
+		render(<Gauge value={40} ariaLabel="Quiet" hideValue />);
+		expect(screen.getByRole("img", { name: "Quiet" })).toBeInTheDocument();
+		expect(screen.queryByText("40")).toBeNull();
 		render(<DateNavigation ariaLabel="When" />);
 		expect(screen.getByRole("button", { name: "When" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Previous day" })).toBeInTheDocument();
