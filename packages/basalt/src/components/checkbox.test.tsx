@@ -8,6 +8,14 @@ describe("Checkbox", () => {
 		expect(screen.getByRole("checkbox", { name: "Accept" })).toBeEnabled();
 	});
 
+	it("keeps a square control", () => {
+		render(<Checkbox aria-label="Accept" />);
+		const box = screen.getByRole("checkbox", { name: "Accept" });
+		expect(box.className).toContain("rounded-sm");
+		expect(box.className).not.toContain("rounded-full");
+		expect(box.className).not.toContain("rounded-basalt-sm");
+	});
+
 	it("renders an indeterminate state", () => {
 		render(<Checkbox aria-label="Partial" checked="indeterminate" />);
 		const checkbox = screen.getByRole("checkbox", { name: "Partial" });
