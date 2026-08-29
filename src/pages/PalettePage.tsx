@@ -134,6 +134,7 @@ export default function PalettePage() {
 	const lineLegend = [
 		{ label: t("pages.palette.seriesA"), color: CHART_COLORS[0] },
 		{ label: t("pages.palette.seriesB"), color: CHART_COLORS[2] },
+		{ label: t("pages.palette.seriesC"), color: CHART_COLORS[4] },
 	];
 
 	const barLegend = [
@@ -186,7 +187,7 @@ export default function PalettePage() {
 				{/* Line Chart */}
 				<Section title={t("pages.palette.lineChart")} icon={LineChartIcon}>
 					<LineChart
-						data={lineData.map((row) => ({ x: row.name, y: row.a, y2: row.b }))}
+						data={lineData.map((row) => ({ x: row.name, y: row.a, y2: row.b, y3: row.c }))}
 						ariaLabel={t("pages.palette.lineChartAria")}
 						className="h-[200px] w-full"
 						showAxes

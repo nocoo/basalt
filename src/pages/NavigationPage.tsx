@@ -484,7 +484,7 @@ export default function NavigationPage() {
 							{t("pages.navigation.pillStyle")}
 						</p>
 						<Tabs defaultValue="day">
-							<TabsList showIndicator={false} className="gap-1 bg-transparent p-0">
+							<TabsList showIndicator={false} className="gap-1 border-0 bg-transparent p-0">
 								{pillTabs.map((tab) => (
 									<TabsTrigger
 										key={tab.value}

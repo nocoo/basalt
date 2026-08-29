@@ -21,7 +21,12 @@ export function StackedAreaCard() {
 			</CardHeader>
 			<CardContent className="h-56">
 				<AreaChart
-					data={data.map((row) => ({ x: row.name, y: row.core, y2: row.growth }))}
+					data={data.map((row) => ({
+						x: row.name,
+						y: row.core,
+						y2: row.growth,
+						y3: row.churn,
+					}))}
 					ariaLabel={t("dashboard.stackedActivity")}
 					className="h-full w-full"
 					showAxes

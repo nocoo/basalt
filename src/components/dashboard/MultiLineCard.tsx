@@ -20,7 +20,12 @@ export function MultiLineCard() {
 			</CardHeader>
 			<CardContent className="h-56">
 				<LineChart
-					data={data.map((row) => ({ x: row.name, y: row.retention, y2: row.activation }))}
+					data={data.map((row) => ({
+						x: row.name,
+						y: row.retention,
+						y2: row.activation,
+						y3: row.conversion,
+					}))}
 					ariaLabel={t("dashboard.multiSeriesTrend")}
 					className="h-full w-full"
 					showAxes

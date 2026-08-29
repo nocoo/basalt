@@ -15,6 +15,7 @@ export function AreaChart({
 	showAxes?: boolean;
 }) {
 	const dual = data.some((point) => point.y2 != null);
+	const triple = data.some((point) => point.y3 != null);
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
 			<RechartsArea data={data}>
@@ -23,6 +24,9 @@ export function AreaChart({
 				<Area dataKey="y" stroke={CHART_COLORS[0]} fill={CHART_COLORS[0]} fillOpacity={0.2} />
 				{dual ? (
 					<Area dataKey="y2" stroke={CHART_COLORS[2]} fill={CHART_COLORS[2]} fillOpacity={0.2} />
+				) : null}
+				{triple ? (
+					<Area dataKey="y3" stroke={CHART_COLORS[4]} fill={CHART_COLORS[4]} fillOpacity={0.2} />
 				) : null}
 			</RechartsArea>
 		</ChartFrame>

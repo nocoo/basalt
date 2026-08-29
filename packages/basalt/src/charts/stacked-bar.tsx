@@ -19,6 +19,7 @@ export function StackedBarChart({
 				<YAxis hide />
 				<Bar dataKey="y" stackId="stack" fill={CHART_COLORS[0]} />
 				<Bar dataKey="y2" stackId="stack" fill={CHART_COLORS[2]} />
+				<Bar dataKey="y3" stackId="stack" fill={CHART_COLORS[4]} />
 			</RechartsBar>
 		</ChartFrame>
 	);

@@ -21,7 +21,7 @@ export function StackedBarCard() {
 			</CardHeader>
 			<CardContent className="h-56">
 				<StackedBarChart
-					data={stackedData.map((row) => ({ x: row.name, y: row.a, y2: row.b }))}
+					data={stackedData.map((row) => ({ x: row.name, y: row.a, y2: row.b, y3: row.c }))}
 					ariaLabel={t("dashboard.stackedEngagement")}
 					className="h-full w-full"
 				/>
