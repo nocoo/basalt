@@ -739,18 +739,36 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	"skeleton-line": [
 		{
 			title: "Default",
-			code: "<SkeletonLine minWidth={120} />",
-			render: () => <SkeletonLine minWidth={120} />,
+			code: "<SkeletonLine /><SkeletonLine /><SkeletonLine />",
+			render: () => (
+				<div className="flex w-64 flex-col gap-3">
+					<SkeletonLine minWidth={40} maxWidth={55} />
+					<SkeletonLine minWidth={75} maxWidth={90} />
+					<SkeletonLine minWidth={90} maxWidth={100} />
+				</div>
+			),
 		},
 		{
-			title: "Sizes",
-			code: "<SkeletonLine minWidth={64} /><SkeletonLine minWidth={160} />",
+			title: "Width",
+			code: "<SkeletonLine minWidth={80} maxWidth={100} />",
 			render: () => (
-				<Stack>
-					<SkeletonLine minWidth={64} />
-					<SkeletonLine minWidth={120} />
-					<SkeletonLine minWidth={200} />
-				</Stack>
+				<div className="flex w-64 flex-col gap-3">
+					<SkeletonLine minWidth={80} maxWidth={100} />
+					<SkeletonLine minWidth={60} maxWidth={80} />
+					<SkeletonLine minWidth={40} maxWidth={60} />
+				</div>
+			),
+		},
+		{
+			title: "Height",
+			code: '<SkeletonLine className="h-2" />',
+			render: () => (
+				<div className="flex w-64 flex-col gap-3">
+					<SkeletonLine className="h-2" minWidth={90} maxWidth={100} />
+					<SkeletonLine className="h-4" minWidth={90} maxWidth={100} />
+					<SkeletonLine className="h-6" minWidth={90} maxWidth={100} />
+					<SkeletonLine className="h-8" minWidth={90} maxWidth={100} />
+				</div>
 			),
 		},
 	],

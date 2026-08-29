@@ -256,8 +256,14 @@ add("loader", "Indicates a pending state.", () => <Loader />, "<Loader />");
 add(
 	"skeleton-line",
 	"Placeholder lines while content loads.",
-	() => <SkeletonLine minWidth={120} />,
-	"<SkeletonLine />",
+	() => (
+		<div className="flex w-64 flex-col gap-3">
+			<SkeletonLine minWidth={40} maxWidth={55} />
+			<SkeletonLine minWidth={75} maxWidth={90} />
+			<SkeletonLine minWidth={90} maxWidth={100} />
+		</div>
+	),
+	"<SkeletonLine minWidth={40} maxWidth={55} />",
 );
 add(
 	"empty",

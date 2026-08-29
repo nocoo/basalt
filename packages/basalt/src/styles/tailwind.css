@@ -80,4 +80,5 @@
 	--animate-basalt-dialog-out: basalt-dialog-out 150ms ease-in forwards;
 	--animate-basalt-collapsible-down: basalt-collapsible-down 150ms ease-out;
 	--animate-basalt-collapsible-up: basalt-collapsible-up 100ms ease-in;
+	--animate-basalt-shimmer: basalt-shimmer 1.5s ease-in-out infinite;
 }
