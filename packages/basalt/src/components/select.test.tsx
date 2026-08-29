@@ -29,9 +29,11 @@ describe("Select", () => {
 		const list = screen.getByRole("listbox");
 		expect(list).toHaveAttribute("data-side", "bottom");
 		expect(list.className).toContain("py-1.5");
-		expect(screen.getByRole("option", { name: "All deployed versions" }).className).toContain(
-			"mx-1.5",
-		);
+		const first = screen.getByRole("option", { name: "All deployed versions" });
+		expect(first.className).toContain("mx-1.5");
+		expect(first.className).toContain("hover:bg-basalt-accent");
+		expect(first.className).toContain("focus-visible:bg-basalt-accent");
+		expect(first.className).not.toContain("focus:bg-basalt-accent");
 	});
 
 	it("keeps a closed trigger from covering the page", () => {

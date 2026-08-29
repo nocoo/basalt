@@ -54,7 +54,10 @@ export const SelectItem = React.forwardRef<
 	<SelectPrimitive.Item
 		ref={ref}
 		className={overlayItemClass(
-			cn("relative pr-8 outline-hidden focus:bg-basalt-accent", className),
+			cn(
+				"relative pr-8 outline-hidden hover:bg-basalt-accent focus-visible:bg-basalt-accent",
+				className,
+			),
 		)}
 		{...props}
 	>
