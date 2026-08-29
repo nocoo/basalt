@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -41,8 +41,50 @@ const CHART_PAGES = [
 	"BankingDashboardPage.tsx",
 ] as const;
 
+const LOCAL_CHART_FORKS = [
+	"HeatmapCalendar.tsx",
+	"SlotBarChart.tsx",
+	"DateNavigationWidget.tsx",
+	"TimelineWidget.tsx",
+	"StatCardWidget.tsx",
+] as const;
+
+const DASHBOARD_DIR = path.join(process.cwd(), "src/components/dashboard");
+
 function pageSource(name: string) {
 	return readFileSync(path.join(process.cwd(), "src/pages", name), "utf8");
+}
+
+function usesPackageCharts(source: string) {
+	return source.includes("@nocoo/basalt/charts/");
+}
+
+function dashboardImportSpecs(source: string) {
+	return [...source.matchAll(/from ["']@\/components\/dashboard\/([^"']+)["']/g)].map(
+		(match) => match[1],
+	);
+}
+
+function dashboardFile(spec: string) {
+	const name = spec.endsWith(".tsx") ? spec : `${spec}.tsx`;
+	return path.join(DASHBOARD_DIR, name);
+}
+
+function moduleUsesPackageCharts(source: string, seen = new Set<string>()): boolean {
+	if (usesPackageCharts(source)) {
+		return true;
+	}
+	for (const spec of dashboardImportSpecs(source)) {
+		const file = dashboardFile(spec);
+		if (seen.has(file) || !existsSync(file)) {
+			continue;
+		}
+		seen.add(file);
+		if (moduleUsesPackageCharts(readFileSync(file, "utf8"), seen)) {
+			return true;
+		}
+	}
+	return false;
 }
 
 describe("Examples package contract", () => {
@@ -60,19 +102,32 @@ describe("Examples package contract", () => {
 		}
 	});
 
-	it("loads charts through package chart exports", () => {
+	it("resolves chart pages through package chart exports", () => {
 		for (const name of CHART_PAGES) {
-			const source = pageSource(name);
-			const usesPackageChart = source.includes("@nocoo/basalt/charts/");
-			const usesDashboardChart = source.includes("@/components/dashboard/");
-			expect(usesPackageChart || usesDashboardChart, name).toBe(true);
+			expect(moduleUsesPackageCharts(pageSource(name)), name).toBe(true);
+		}
+	});
+
+	it("dashboard chart wrappers import package charts", () => {
+		for (const file of readdirSync(DASHBOARD_DIR).filter((name) => name.endsWith(".tsx"))) {
+			if (!/Chart|Gauge|Sparkline|Heatmap|Donut|Radar|Sankey|Funnel|Bullet/.test(file)) {
+				continue;
+			}
+			const source = readFileSync(path.join(DASHBOARD_DIR, file), "utf8");
+			expect(moduleUsesPackageCharts(source), file).toBe(true);
+		}
+	});
+
+	it("does not keep local chart forks in dashboard", () => {
+		const files = new Set(readdirSync(DASHBOARD_DIR));
+		for (const fork of LOCAL_CHART_FORKS) {
+			expect(files.has(fork), fork).toBe(false);
 		}
 	});
 
 	it("dashboard modules do not import recharts", () => {
-		const dir = path.join(process.cwd(), "src/components/dashboard");
-		for (const file of readdirSync(dir).filter((name) => name.endsWith(".tsx"))) {
-			const source = readFileSync(path.join(dir, file), "utf8");
+		for (const file of readdirSync(DASHBOARD_DIR).filter((name) => name.endsWith(".tsx"))) {
+			const source = readFileSync(path.join(DASHBOARD_DIR, file), "utf8");
 			expect(source, file).not.toMatch(/from ["']recharts["']/);
 		}
 	});
