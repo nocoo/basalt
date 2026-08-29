@@ -1,7 +1,7 @@
 import { cn } from "../utils/cn";
 
 export function ItemList({
-	items = [{ label: "Worker A" }, { label: "Worker B" }, { label: "Worker C" }],
+	items = [{ label: "North" }, { label: "East" }, { label: "West" }],
 	ariaLabel = "Item list",
 	className,
 }: {

@@ -172,18 +172,18 @@ function DialogSizesExample() {
 							<Table>
 								<TableHeader>
 									<TableRow>
-										<TableHead>Resource</TableHead>
-										<TableHead>Region</TableHead>
+										<TableHead>Project</TableHead>
+										<TableHead>Owner</TableHead>
 										<TableHead>Status</TableHead>
-										<TableHead>Latency</TableHead>
+										<TableHead>Updated</TableHead>
 									</TableRow>
 								</TableHeader>
 								<TableBody>
 									<TableRow>
-										<TableCell>api-gateway-prod</TableCell>
-										<TableCell>us-east-1</TableCell>
-										<TableCell>Healthy</TableCell>
-										<TableCell>12ms</TableCell>
+										<TableCell>northwind-analytics</TableCell>
+										<TableCell>Ada Lovelace</TableCell>
+										<TableCell>On track</TableCell>
+										<TableCell>Mon</TableCell>
 									</TableRow>
 								</TableBody>
 							</Table>
@@ -910,9 +910,9 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 		},
 		{
 			title: "Title and Description",
-			code: 'toast("Saved", { description: "Worker updated." })',
+			code: 'toast("Saved", { description: "Project updated." })',
 			render: () => (
-				<Button onClick={() => toast("Saved", { description: "Worker updated." })}>
+				<Button onClick={() => toast("Saved", { description: "Project updated." })}>
 					With description
 				</Button>
 			),
@@ -1266,7 +1266,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 					</TableHeader>
 					<TableBody>
 						<TableRow>
-							<TableCell>Worker</TableCell>
+							<TableCell>Atlas</TableCell>
 							<TableCell>Ready</TableCell>
 						</TableRow>
 					</TableBody>

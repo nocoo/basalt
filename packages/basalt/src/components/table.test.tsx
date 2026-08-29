@@ -13,12 +13,12 @@ describe("Table", () => {
 				</TableHeader>
 				<TableBody>
 					<TableRow>
-						<TableCell>Worker</TableCell>
+						<TableCell>Atlas</TableCell>
 					</TableRow>
 				</TableBody>
 			</Table>,
 		);
 		expect(screen.getByText("Name")).toBeInTheDocument();
-		expect(screen.getByText("Worker")).toBeInTheDocument();
+		expect(screen.getByText("Atlas")).toBeInTheDocument();
 	});
 });

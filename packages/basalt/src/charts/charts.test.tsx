@@ -79,8 +79,8 @@ describe("charts", () => {
 		render(<Colors />);
 		render(<HeatmapCalendar values={[1, 2, 3]} ariaLabel="Heat" />);
 		expect(screen.getByRole("img", { name: "Heat" })).toBeInTheDocument();
-		render(<ItemList items={[{ label: "A", value: "1" }]} ariaLabel="Workers" />);
-		expect(screen.getByRole("list", { name: "Workers" })).toHaveTextContent("A 1");
+		render(<ItemList items={[{ label: "A", value: "1" }]} ariaLabel="Items" />);
+		expect(screen.getByRole("list", { name: "Items" })).toHaveTextContent("A 1");
 		render(
 			<ItemList
 				items={[

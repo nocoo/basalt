@@ -373,7 +373,7 @@ add(
 			</TableHeader>
 			<TableBody>
 				<TableRow>
-					<TableCell>Worker</TableCell>
+					<TableCell>Atlas</TableCell>
 				</TableRow>
 			</TableBody>
 		</Table>
@@ -385,11 +385,11 @@ add(
 	"Sortable data table.",
 	() => (
 		<DataTable
-			data={[{ name: "Worker" }]}
+			data={[{ name: "Atlas" }]}
 			columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]}
 		/>
 	),
-	'<DataTable data={[{ name: "Worker" }]} columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]} />',
+	'<DataTable data={[{ name: "Atlas" }]} columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]} />',
 	[
 		{ name: "data", type: "T[]" },
 		{ name: "columns", type: "DataTableColumn<T>[]" },

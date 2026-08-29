@@ -74,11 +74,11 @@ function HomeButton() {
 	return (
 		<div className="grid gap-3">
 			<Button variant="outline" icon={<Plus />}>
-				Create Worker
+				Create project
 			</Button>
-			<Button icon={<Plus />}>Create Worker</Button>
+			<Button icon={<Plus />}>Create project</Button>
 			<Button variant="outline" loading>
-				Create Worker
+				Create project
 			</Button>
 		</div>
 	);

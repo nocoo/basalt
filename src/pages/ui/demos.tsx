@@ -188,8 +188,8 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 		},
 		{
 			title: "Title",
-			code: '<Button title="Creates a new worker">Hover title</Button>',
-			render: () => <Button title="Creates a new worker">Hover title</Button>,
+			code: '<Button title="Creates a new project">Hover title</Button>',
+			render: () => <Button title="Creates a new project">Hover title</Button>,
 		},
 		{
 			title: "Link as Button",
@@ -528,41 +528,38 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			title: "Compact size",
 			code: `<Banner
   size="sm"
-  description="A DNS record for puppies.cloudflare.dev already exists in this zone."
-  action={<Link href="#">Manage DNS for puppies.cloudflare.dev</Link>}
+  description="A project named Atlas already exists."
+  action={<Link href="#">Open project</Link>}
 />
 <Banner
   size="sm"
-  description="A DNS record for puppies.cloudflare.dev already exists in this zone."
+  description="A project named Atlas already exists."
   action={
     <>
-      <Banner.Action>Manage DNS</Banner.Action>
+      <Banner.Action>Open project</Banner.Action>
       <Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss compact" />
     </>
   }
 />
-<Banner size="sm" description="A DNS record for puppies.cloudflare.dev already exists in this zone." />`,
+<Banner size="sm" description="A project named Atlas already exists." />`,
 			render: () => (
 				<div className="w-full space-y-3">
 					<Banner
 						size="sm"
-						description="A DNS record for puppies.cloudflare.dev already exists in this zone."
-						action={<Link href="#">Manage DNS for puppies.cloudflare.dev</Link>}
+						description="A project named Atlas already exists."
+						action={<Link href="#">Open project</Link>}
 					/>
 					<Banner
 						size="sm"
-						description="A DNS record for puppies.cloudflare.dev already exists in this zone."
+						description="A project named Atlas already exists."
 						action={
 							<>
-								<Banner.Action>Manage DNS</Banner.Action>
+								<Banner.Action>Open project</Banner.Action>
 								<Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss compact" />
 							</>
 						}
 					/>
-					<Banner
-						size="sm"
-						description="A DNS record for puppies.cloudflare.dev already exists in this zone."
-					/>
+					<Banner size="sm" description="A project named Atlas already exists." />
 				</div>
 			),
 		},

@@ -62,7 +62,7 @@ describe("ui catalog", () => {
 	});
 
 	it("keeps generated usage examples self-contained", () => {
-		expect(CATALOG_DOCS["data-table"]?.usage).toContain('name: "Worker"');
+		expect(CATALOG_DOCS["data-table"]?.usage).toContain('name: "Atlas"');
 		expect(CATALOG_DOCS["data-table"]?.usage).not.toContain("data={rows}");
 		expect(CATALOG_DOCS.radar?.usage).toContain("subject:");
 		expect(CATALOG_DOCS.timeline?.usage).toContain("Created");
