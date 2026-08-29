@@ -30,6 +30,7 @@ export function StackedAreaCard() {
 					ariaLabel={t("dashboard.stackedActivity")}
 					className="h-full w-full"
 					showAxes
+					stacked
 				/>
 			</CardContent>
 		</Card>
