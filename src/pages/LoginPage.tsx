@@ -1,11 +1,11 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
+import { Checkbox } from "@nocoo/basalt/components/checkbox";
+import { Input } from "@nocoo/basalt/components/input";
+import { Label } from "@nocoo/basalt/components/label";
 import { ArrowRight, Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function LoginPage() {
 	const [showPassword, setShowPassword] = useState(false);

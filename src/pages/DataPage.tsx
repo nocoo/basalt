@@ -1,3 +1,7 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@nocoo/basalt/components/avatar";
+import { Badge } from "@nocoo/basalt/components/badge";
+import { Input } from "@nocoo/basalt/components/input";
+import { Separator } from "@nocoo/basalt/components/separator";
 import {
 	AlertTriangle,
 	BadgeCheck,
@@ -19,10 +23,6 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { PageIntro } from "@/components/PageIntro";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 
 function Section({
 	title,

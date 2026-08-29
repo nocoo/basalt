@@ -1,11 +1,11 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
+import { Input } from "@nocoo/basalt/components/input";
+import { Label } from "@nocoo/basalt/components/label";
+import { Separator } from "@nocoo/basalt/components/separator";
+import { Switch } from "@nocoo/basalt/components/switch";
 import { Bell, Camera, CreditCard, Globe, Palette, Shield, Smartphone, User } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
 
 // -- Settings sections nav --
 

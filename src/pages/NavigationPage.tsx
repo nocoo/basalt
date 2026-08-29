@@ -1,3 +1,5 @@
+import { Button } from "@nocoo/basalt/components/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import {
 	CheckCircle2,
 	ChevronLeft,
@@ -15,8 +17,6 @@ import {
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageIntro } from "@/components/PageIntro";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 function Section({
 	title,

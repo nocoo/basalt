@@ -1,3 +1,4 @@
+import { Switch } from "@nocoo/basalt/components/switch";
 import {
 	Activity,
 	ArrowDownLeft,
@@ -13,7 +14,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Switch } from "@/components/ui/switch";
 import type { CreditCard as CreditCardType } from "@/models/types";
 import { useAccountsViewModel } from "@/viewmodels/useAccountsViewModel";
 import { useCardShowcaseViewModel } from "@/viewmodels/useCardShowcaseViewModel";
