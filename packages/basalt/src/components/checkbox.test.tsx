@@ -11,9 +11,9 @@ describe("Checkbox", () => {
 	it("keeps a square control", () => {
 		render(<Checkbox aria-label="Accept" />);
 		const box = screen.getByRole("checkbox", { name: "Accept" });
-		expect(box.className).toContain("rounded-sm");
+		expect(box.className).toContain("rounded-[4px]");
 		expect(box.className).not.toContain("rounded-full");
-		expect(box.className).not.toContain("rounded-basalt-sm");
+		expect(box.className).not.toContain("rounded-sm");
 	});
 
 	it("renders an indeterminate state", () => {
