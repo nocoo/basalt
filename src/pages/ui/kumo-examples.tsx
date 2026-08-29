@@ -693,25 +693,32 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	"layer-card": [
 		{
 			title: "Basic Card",
-			code: "<LayerCard>Plain</LayerCard>",
-			render: () => <LayerCard className="p-4">Plain</LayerCard>,
-		},
-		{
-			title: "Surface-style Card",
-			code: '<LayerCard surface="bordered">Bordered</LayerCard>',
+			code: "<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
 			render: () => (
-				<LayerCard surface="bordered" className="p-4">
-					Bordered
+				<LayerCard className="w-[250px]">
+					<LayerCard.Secondary>Next Steps</LayerCard.Secondary>
+					<LayerCard.Primary>Hello</LayerCard.Primary>
 				</LayerCard>
 			),
 		},
 		{
+			title: "Surface-style Card",
+			code: "<LayerCard className='p-4'>Quick start guide</LayerCard>",
+			render: () => <LayerCard className="w-[250px] p-4">Quick start guide</LayerCard>,
+		},
+		{
 			title: "Multiple Cards",
-			code: "<LayerCard>A</LayerCard><LayerCard>B</LayerCard>",
+			code: "<LayerCard><LayerCard.Secondary>Components</LayerCard.Secondary><LayerCard.Primary>Browse</LayerCard.Primary></LayerCard>",
 			render: () => (
-				<div className="grid w-full grid-cols-2 gap-3">
-					<LayerCard className="p-4">Alpha</LayerCard>
-					<LayerCard className="p-4">Beta</LayerCard>
+				<div className="flex w-full gap-4">
+					<LayerCard className="w-[200px]">
+						<LayerCard.Secondary>Components</LayerCard.Secondary>
+						<LayerCard.Primary>Browse all components</LayerCard.Primary>
+					</LayerCard>
+					<LayerCard className="w-[200px]">
+						<LayerCard.Secondary>Examples</LayerCard.Secondary>
+						<LayerCard.Primary>View code examples</LayerCard.Primary>
+					</LayerCard>
 				</div>
 			),
 		},

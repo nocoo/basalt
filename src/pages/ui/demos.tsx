@@ -100,12 +100,10 @@ const BASE_DEMOS: Record<string, ComponentType> = {
 		</ThemeProvider>
 	),
 	"layer-card": () => (
-		<div className="grid gap-3 sm:grid-cols-2 w-full">
-			<LayerCard className="p-4">Plain surface</LayerCard>
-			<LayerCard surface="bordered" className="p-4">
-				Bordered surface
-			</LayerCard>
-		</div>
+		<LayerCard className="w-[250px]">
+			<LayerCard.Secondary>Next Steps</LayerCard.Secondary>
+			<LayerCard.Primary>Hello</LayerCard.Primary>
+		</LayerCard>
 	),
 	input: () => <Input aria-label="Name" placeholder="Jane Doe" />,
 	"input-area": () => <InputArea aria-label="Notes" placeholder="Write a note" />,
@@ -309,18 +307,19 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	"layer-card": [
 		{
-			title: "Plain",
-			code: "<LayerCard>Plain</LayerCard>",
-			render: () => <LayerCard className="p-4">Plain</LayerCard>,
-		},
-		{
-			title: "Bordered",
-			code: '<LayerCard surface="bordered">Bordered</LayerCard>',
+			title: "Basic Card",
+			code: "<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
 			render: () => (
-				<LayerCard surface="bordered" className="p-4">
-					Bordered
+				<LayerCard className="w-[250px]">
+					<LayerCard.Secondary>Next Steps</LayerCard.Secondary>
+					<LayerCard.Primary>Hello</LayerCard.Primary>
 				</LayerCard>
 			),
+		},
+		{
+			title: "Surface-style Card",
+			code: "<LayerCard className='p-4'>Quick start guide</LayerCard>",
+			render: () => <LayerCard className="w-[250px] p-4">Quick start guide</LayerCard>,
 		},
 	],
 	input: [

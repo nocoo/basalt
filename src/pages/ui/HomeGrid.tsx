@@ -153,11 +153,9 @@ function HomeCheckbox() {
 
 function HomeLayerCard() {
 	return (
-		<LayerCard surface="bordered" className="w-[200px] p-4">
-			<Text size="sm" tone="muted">
-				Next Steps
-			</Text>
-			<Text size="lg">Hello</Text>
+		<LayerCard className="w-[200px]">
+			<LayerCard.Secondary>Next Steps</LayerCard.Secondary>
+			<LayerCard.Primary>Hello</LayerCard.Primary>
 		</LayerCard>
 	);
 }

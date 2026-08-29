@@ -153,21 +153,14 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		source: { repo: "basalt", sha: "2727ae6a8d3f", file: "src/components/ThemeToggle.tsx" },
 	},
 	"layer-card": {
-		description: "A surface for grouping content.",
+		description: "A card with a layered visual effect for headers and raised content.",
 		usage: usage(
 			"LayerCard",
 			"@nocoo/basalt/components/layer-card",
-			'<LayerCard surface="bordered">Content</LayerCard>',
+			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
 		),
-		variants: ["plain", "bordered"],
-		props: [
-			{
-				name: "surface",
-				type: '"plain" | "bordered"',
-				default: '"plain"',
-				description: "L2 card surface. Bordered is a variant, not L3.",
-			},
-		],
+		variants: [],
+		props: [{ name: "className", type: "string" }],
 		source: { repo: "zhe", sha: "c31c239f01c9", file: "components/ui/card.tsx" },
 	},
 	field: {
