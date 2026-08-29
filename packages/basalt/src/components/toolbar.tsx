@@ -6,6 +6,7 @@ import { FOCUS_INSET } from "./overlay";
 
 const toolbarControlClass = cn(
 	"relative min-w-0 rounded-none border-0 bg-transparent shadow-none",
+	"first:rounded-l-basalt-md last:rounded-r-basalt-md",
 	"focus-within:z-2 focus:z-2 focus-visible:z-2",
 );
 
@@ -16,7 +17,7 @@ const ToolbarRoot = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
 			{...props}
 			role="toolbar"
 			className={cn(
-				"inline-flex w-fit items-stretch overflow-hidden rounded-basalt-md bg-basalt-secondary shadow-xs ring-1 ring-basalt-border",
+				"inline-flex w-fit items-stretch rounded-basalt-md bg-basalt-secondary shadow-xs ring-1 ring-basalt-border",
 				"[&>*:not(:first-child)]:border-l [&>*:not(:first-child)]:border-basalt-border",
 				className,
 			)}

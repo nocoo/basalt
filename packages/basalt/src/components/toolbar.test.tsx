@@ -19,7 +19,11 @@ describe("Toolbar", () => {
 		);
 		const toolbar = screen.getByRole("toolbar");
 		expect(toolbar.className).toContain("[&>*:not(:first-child)]:border-l");
+		expect(toolbar.className).not.toContain("overflow-hidden");
 		expect(screen.getByPlaceholderText("Search...")).toHaveClass("border-0");
+		expect(screen.getByPlaceholderText("Search...").className).toContain(
+			"first:rounded-l-basalt-md",
+		);
 		expect(screen.getByRole("button", { name: "Search" }).className).toContain("w-9");
 		expect(screen.getByRole("button", { name: "Add" }).className).not.toContain("w-9");
 	});
