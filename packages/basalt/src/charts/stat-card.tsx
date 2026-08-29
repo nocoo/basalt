@@ -27,6 +27,17 @@ export function StatCard({
 	const display = typeof value === "number" ? value.toLocaleString() : value;
 	const isPositiveTrend = trend && trend.value > 0;
 	const isNegativeTrend = trend && trend.value < 0;
+	const named =
+		ariaLabel ??
+		[
+			heading,
+			display,
+			subtitle,
+			trend ? `${isPositiveTrend ? "+" : ""}${trend.value}% ${trend.label ?? ""}` : null,
+		]
+			.filter(Boolean)
+			.join(" ")
+			.trim();
 	return (
 		<div
 			className={cn(
@@ -34,7 +45,7 @@ export function StatCard({
 				className,
 			)}
 			role="img"
-			aria-label={ariaLabel ?? `${heading} ${display}`}
+			aria-label={named}
 		>
 			<div className="flex items-start justify-between">
 				<div className="space-y-1">

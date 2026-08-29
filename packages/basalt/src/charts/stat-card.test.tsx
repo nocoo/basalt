@@ -22,5 +22,8 @@ describe("StatCard", () => {
 		expect(screen.getByText("Managed")).toBeInTheDocument();
 		expect(screen.getByText("+4.8%")).toBeInTheDocument();
 		expect(screen.getByText("QoQ")).toBeInTheDocument();
+		expect(
+			screen.getByRole("img", { name: "Assets $4.82M Managed +4.8% QoQ" }),
+		).toBeInTheDocument();
 	});
 });

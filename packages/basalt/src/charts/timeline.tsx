@@ -59,12 +59,12 @@ function HourTimeline({
 		eventsByHour.set(hour, [...existing, event]);
 	}
 	return (
-		<div className={cn("flex flex-col pl-14", className)} role="list" aria-label={ariaLabel}>
+		<ol className={cn("flex flex-col pl-14", className)} aria-label={ariaLabel}>
 			{hours.map((hour) => {
 				const hourEvents = eventsByHour.get(hour) ?? [];
 				const hasEvents = hourEvents.length > 0;
 				return (
-					<div
+					<li
 						key={hour}
 						className={cn(
 							"relative flex items-start border-l-2 py-2 pl-4",
@@ -106,9 +106,9 @@ function HourTimeline({
 								</div>
 							))}
 						</div>
-					</div>
+					</li>
 				);
 			})}
-		</div>
+		</ol>
 	);
 }
