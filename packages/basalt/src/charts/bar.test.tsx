@@ -18,4 +18,11 @@ describe("BarChart", () => {
 		);
 		expect(container.querySelector("[aria-label='Budget vs actual']")).toBeTruthy();
 	});
+
+	it("uses the caller color", () => {
+		const { container } = render(
+			<BarChart data={[{ x: "Jan", y: 12 }]} ariaLabel="Tinted" color="rgb(1, 2, 3)" />,
+		);
+		expect(container.querySelector('[aria-label="Tinted"]')).toBeTruthy();
+	});
 });

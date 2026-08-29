@@ -47,6 +47,8 @@ describe("charts", () => {
 		expect(screen.getByRole("img", { name: "Stacked area" })).toBeInTheDocument();
 		render(<DonutChart data={[{ name: "A", value: 1 }]} ariaLabel="Share" />);
 		expect(screen.getByRole("img", { name: "Share" })).toBeInTheDocument();
+		render(<DonutChart data={[{ name: "A", value: 1 }]} ariaLabel="Legend donut" showLegend />);
+		expect(screen.getByRole("img", { name: "Legend donut" })).toBeInTheDocument();
 		const { container: donutDup } = render(
 			<DonutChart
 				data={[

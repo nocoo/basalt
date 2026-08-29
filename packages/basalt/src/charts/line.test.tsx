@@ -19,4 +19,16 @@ describe("LineChart", () => {
 		);
 		expect(container.querySelector("[aria-label='Performance']")).toBeTruthy();
 	});
+
+	it("uses the caller color and formatter", () => {
+		const { container } = render(
+			<LineChart
+				data={[{ x: "Mon", y: 4 }]}
+				ariaLabel="Latency"
+				color="rgb(1, 2, 3)"
+				valueFormatter={(value) => `${value}ms`}
+			/>,
+		);
+		expect(container.querySelector('[aria-label="Latency"]')).toBeTruthy();
+	});
 });

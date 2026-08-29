@@ -13,37 +13,22 @@ export interface LineChartSeries {
 }
 
 export interface LineChartProps {
-	/** Single series data (use this or series, not both) */
 	data?: LineChartDataPoint[];
-	/** Multiple series (use this or data, not both) */
 	series?: LineChartSeries[];
-	/** Chart height in pixels */
 	height?: number;
-	/** Line color (for single series) */
 	color?: string;
-	/** Show grid lines */
-	showGrid?: boolean;
-	/** Show X axis */
-	showXAxis?: boolean;
-	/** Show Y axis */
-	showYAxis?: boolean;
-	/** Show dots on line */
-	showDots?: boolean;
-	/** Curved line */
-	curved?: boolean;
-	/** Show area fill under line */
-	showArea?: boolean;
-	/** Reference line value (horizontal) */
-	referenceLine?: number;
-	/** Reference line label */
-	referenceLineLabel?: string;
-	/** Value formatter for tooltip */
 	valueFormatter?: (value: number) => string;
-	/** Additional class name */
 	className?: string;
 }
 
-export function LineChartWidget({ data, series, height = 200, className }: LineChartProps) {
+export function LineChartWidget({
+	data,
+	series,
+	height = 200,
+	color,
+	valueFormatter,
+	className,
+}: LineChartProps) {
 	const primary = series?.[0]?.data ?? data ?? [];
 	const secondary = series?.[1]?.data;
 	const tertiary = series?.[2]?.data;
@@ -58,7 +43,14 @@ export function LineChartWidget({ data, series, height = 200, className }: LineC
 	}
 	return (
 		<div className={cn("w-full", className)} style={{ height }}>
-			<LineChart data={points} ariaLabel="Line chart" showAxes className="h-full w-full" />
+			<LineChart
+				data={points}
+				ariaLabel="Line chart"
+				showAxes
+				color={color}
+				valueFormatter={valueFormatter}
+				className="h-full w-full"
+			/>
 		</div>
 	);
 }
