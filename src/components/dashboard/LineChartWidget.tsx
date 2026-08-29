@@ -6,15 +6,8 @@ export interface LineChartDataPoint {
 	value: number;
 }
 
-export interface LineChartSeries {
-	data: LineChartDataPoint[];
-	color?: string;
-	name?: string;
-}
-
 export interface LineChartProps {
-	data?: LineChartDataPoint[];
-	series?: LineChartSeries[];
+	data: LineChartDataPoint[];
 	height?: number;
 	color?: string;
 	valueFormatter?: (value: number) => string;
@@ -23,20 +16,14 @@ export interface LineChartProps {
 
 export function LineChartWidget({
 	data,
-	series,
 	height = 200,
 	color,
 	valueFormatter,
 	className,
 }: LineChartProps) {
-	const primary = series?.[0]?.data ?? data ?? [];
-	const secondary = series?.[1]?.data;
-	const tertiary = series?.[2]?.data;
-	const points = primary.map((point, index) => ({
+	const points = data.map((point) => ({
 		x: point.label,
 		y: point.value,
-		y2: secondary?.[index]?.value,
-		y3: tertiary?.[index]?.value,
 	}));
 	if (points.length === 0) {
 		return null;

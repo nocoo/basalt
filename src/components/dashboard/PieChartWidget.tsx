@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 export interface PieChartDataPoint {
 	label: string;
 	value: number;
-	color?: string;
 }
 
 export interface PieChartWidgetProps {
