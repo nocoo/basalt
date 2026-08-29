@@ -116,6 +116,7 @@ export function DashboardLayout() {
 						<h1 className="text-lg font-semibold text-foreground md:text-xl">{title}</h1>
 					</div>
 					<div className="flex items-center gap-1">
+						<LanguageToggle />
 						<Link
 							href="https://github.com/nocoo/basalt"
 							target="_blank"
@@ -125,7 +126,6 @@ export function DashboardLayout() {
 						>
 							<Github className="h-[18px] w-[18px]" aria-hidden="true" strokeWidth={1.5} />
 						</Link>
-						<LanguageToggle />
 						<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
 					</div>
 				</header>

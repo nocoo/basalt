@@ -49,6 +49,13 @@ describe("DashboardLayout", () => {
 		expect(island).toHaveClass("ring-basalt-border/40");
 	});
 
+	it("keeps the github icon second to last in the header", () => {
+		renderLayout("/");
+		const github = screen.getByRole("link", { name: "GitHub repository" });
+		const theme = screen.getByRole("button", { name: /Toggle theme/ });
+		expect(github.nextElementSibling).toBe(theme);
+	});
+
 	it("opens the mobile drawer and locks body scroll when the menu button is clicked", () => {
 		renderLayout("/");
 		fireEvent.click(screen.getByLabelText("Open navigation menu"));
