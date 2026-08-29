@@ -109,8 +109,9 @@ describe("Examples package contract", () => {
 	});
 
 	it("dashboard chart wrappers import package charts", () => {
+		const nonChart = new Set(["ActionGridCard.tsx", "ItemListCard.tsx", "RecentListCard.tsx"]);
 		for (const file of readdirSync(DASHBOARD_DIR).filter((name) => name.endsWith(".tsx"))) {
-			if (!/Chart|Gauge|Sparkline|Heatmap|Donut|Radar|Sankey|Funnel|Bullet/.test(file)) {
+			if (nonChart.has(file)) {
 				continue;
 			}
 			const source = readFileSync(path.join(DASHBOARD_DIR, file), "utf8");
