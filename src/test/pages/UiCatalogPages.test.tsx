@@ -203,6 +203,7 @@ describe("ui catalog", () => {
 			[
 				"Primary Badges",
 				"Other color variants",
+				"Color tokens",
 				"Dot badges",
 				"In a sentence",
 				"With an icon",

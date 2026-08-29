@@ -15,6 +15,10 @@ describe("Badge", () => {
 		expect(screen.getByText("Down").className).toContain("bg-basalt-destructive");
 		render(<Badge variant="outline">Draft</Badge>);
 		expect(screen.getByText("Draft").className).toContain("border-basalt-border");
+		render(<Badge variant="info">Info</Badge>);
+		expect(screen.getByText("Info").className).toContain("bg-basalt-info-tint");
+		render(<Badge variant="purple">Purple</Badge>);
+		expect(screen.getByText("Purple").className).toContain("bg-basalt-chart-14");
 	});
 
 	it("renders a status dot", () => {

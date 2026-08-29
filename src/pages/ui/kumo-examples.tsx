@@ -81,7 +81,7 @@ import {
 	TableRow,
 } from "@nocoo/basalt/components/table";
 import { TableOfContents, TableOfContentsItem } from "@nocoo/basalt/components/table-of-contents";
-import { Tabs, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { Text } from "@nocoo/basalt/components/text";
 import { toast } from "@nocoo/basalt/components/toast";
 import { Toggle } from "@nocoo/basalt/components/toggle";
@@ -93,7 +93,7 @@ import {
 	TooltipTrigger,
 } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
-import { AlertTriangle, Check, Inbox, Plus, Search, X } from "lucide-react";
+import { AlertTriangle, Check, CircleAlert, Inbox, Info, Plus, Search, X } from "lucide-react";
 import { type ComponentType, type ReactNode, useState } from "react";
 
 function Preview({ children, className }: { children: ReactNode; className?: string }) {
@@ -240,17 +240,38 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 		{
 			title: "Other color variants",
 			code: `<Badge variant="secondary">Secondary</Badge>
+<Badge variant="info">Info</Badge>
 <Badge variant="success">Success</Badge>
 <Badge variant="warning">Warning</Badge>
+<Badge variant="error">Error</Badge>
 <Badge variant="destructive">Destructive</Badge>
 <Badge variant="outline">Outline</Badge>`,
 			render: () => (
 				<Preview>
 					<Badge variant="secondary">Secondary</Badge>
+					<Badge variant="info">Info</Badge>
 					<Badge variant="success">Success</Badge>
 					<Badge variant="warning">Warning</Badge>
+					<Badge variant="error">Error</Badge>
 					<Badge variant="destructive">Destructive</Badge>
 					<Badge variant="outline">Outline</Badge>
+				</Preview>
+			),
+		},
+		{
+			title: "Color tokens",
+			code: `<Badge variant="red">Red</Badge>
+<Badge variant="orange">Orange</Badge>
+<Badge variant="teal">Teal</Badge>
+<Badge variant="blue">Blue</Badge>
+<Badge variant="purple">Purple</Badge>`,
+			render: () => (
+				<Preview>
+					<Badge variant="red">Red</Badge>
+					<Badge variant="orange">Orange</Badge>
+					<Badge variant="teal">Teal</Badge>
+					<Badge variant="blue">Blue</Badge>
+					<Badge variant="purple">Purple</Badge>
 				</Preview>
 			),
 		},
@@ -279,9 +300,23 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			title: "With an icon",
 			code: "<Badge><Check /> Verified</Badge>",
 			render: () => (
-				<Badge>
-					<Check className="size-3" /> Verified
-				</Badge>
+				<Preview>
+					<Badge>
+						<Check className="size-3" /> Verified
+					</Badge>
+					<Badge variant="success">
+						<Check className="size-3" /> Healthy
+					</Badge>
+					<Badge variant="warning">
+						<AlertTriangle className="size-3" /> Warning
+					</Badge>
+					<Badge variant="error">
+						<CircleAlert className="size-3" /> Error
+					</Badge>
+					<Badge variant="info">
+						<Info className="size-3" /> Info
+					</Badge>
+				</Preview>
 			),
 		},
 		{
@@ -908,6 +943,8 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 						<TabsTrigger value="a">Home</TabsTrigger>
 						<TabsTrigger value="b">About</TabsTrigger>
 					</TabsList>
+					<TabsContent value="a">Home overview and getting started.</TabsContent>
+					<TabsContent value="b">About this project and its goals.</TabsContent>
 				</Tabs>
 			),
 		},
