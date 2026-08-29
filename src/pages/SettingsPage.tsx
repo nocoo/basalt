@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { Input } from "@nocoo/basalt/components/input";
 import { Label } from "@nocoo/basalt/components/label";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Separator } from "@nocoo/basalt/components/separator";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Bell, Camera, CreditCard, Globe, Palette, Shield, Smartphone, User } from "lucide-react";
@@ -69,8 +69,8 @@ export default function SettingsPage() {
 	return (
 		<div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
 			{/* Left nav */}
-			<Card className="rounded-card border-0 bg-secondary shadow-none lg:col-span-1">
-				<CardContent className="p-3">
+			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none lg:col-span-1">
+				<div className="min-h-0 flex-1 px-4 pt-0 pb-4 p-3">
 					<nav className="flex flex-row gap-1 lg:flex-col">
 						{SECTIONS.map(({ id, labelKey, icon: Icon }) => (
 							<button
@@ -89,8 +89,8 @@ export default function SettingsPage() {
 							</button>
 						))}
 					</nav>
-				</CardContent>
-			</Card>
+				</div>
+			</LayerCard>
 
 			{/* Right content */}
 			<div className="lg:col-span-3">
@@ -109,16 +109,16 @@ function ProfileSection() {
 	const { t } = useTranslation();
 
 	return (
-		<Card className="rounded-card border-0 bg-secondary shadow-none">
-			<CardHeader>
+		<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+			<div className="flex flex-col space-y-2.5 p-4">
 				<div className="flex items-center gap-2">
 					<User className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<CardTitle className="text-sm font-normal text-muted-foreground">
+					<h3 className="text-sm font-normal text-muted-foreground">
 						{t("pages.settings.profileInfo")}
-					</CardTitle>
+					</h3>
 				</div>
-			</CardHeader>
-			<CardContent className="space-y-6">
+			</div>
+			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 space-y-6">
 				{/* Avatar */}
 				<div className="flex items-center gap-4">
 					<div className="relative">
@@ -213,8 +213,8 @@ function ProfileSection() {
 						{t("common.save")}
 					</button>
 				</div>
-			</CardContent>
-		</Card>
+			</div>
+		</LayerCard>
 	);
 }
 
@@ -224,16 +224,16 @@ function NotificationsSection() {
 	const { t } = useTranslation();
 
 	return (
-		<Card className="rounded-card border-0 bg-secondary shadow-none">
-			<CardHeader>
+		<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+			<div className="flex flex-col space-y-2.5 p-4">
 				<div className="flex items-center gap-2">
 					<Bell className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<CardTitle className="text-sm font-normal text-muted-foreground">
+					<h3 className="text-sm font-normal text-muted-foreground">
 						{t("pages.settings.notificationPrefs")}
-					</CardTitle>
+					</h3>
 				</div>
-			</CardHeader>
-			<CardContent className="space-y-1">
+			</div>
+			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 space-y-1">
 				{NOTIFICATION_TOGGLES.map((item, i) => (
 					<div key={item.id}>
 						<div className="flex items-center justify-between py-3">
@@ -251,8 +251,8 @@ function NotificationsSection() {
 						{i < NOTIFICATION_TOGGLES.length - 1 && <Separator className="bg-border" />}
 					</div>
 				))}
-			</CardContent>
-		</Card>
+			</div>
+		</LayerCard>
 	);
 }
 
@@ -264,16 +264,16 @@ function SecuritySection() {
 	return (
 		<div className="space-y-4">
 			{/* Password */}
-			<Card className="rounded-card border-0 bg-secondary shadow-none">
-				<CardHeader>
+			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+				<div className="flex flex-col space-y-2.5 p-4">
 					<div className="flex items-center gap-2">
 						<Shield className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<CardTitle className="text-sm font-normal text-muted-foreground">
+						<h3 className="text-sm font-normal text-muted-foreground">
 							{t("pages.settings.passwordTitle")}
-						</CardTitle>
+						</h3>
 					</div>
-				</CardHeader>
-				<CardContent className="space-y-4">
+				</div>
+				<div className="min-h-0 flex-1 px-4 pt-0 pb-4 space-y-4">
 					<div className="space-y-2">
 						<Label htmlFor="settings-current-password" className="text-sm text-foreground">
 							{t("pages.settings.currentPassword")}
@@ -317,20 +317,20 @@ function SecuritySection() {
 							{t("pages.settings.updatePassword")}
 						</button>
 					</div>
-				</CardContent>
-			</Card>
+				</div>
+			</LayerCard>
 
 			{/* Two-factor */}
-			<Card className="rounded-card border-0 bg-secondary shadow-none">
-				<CardHeader>
+			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+				<div className="flex flex-col space-y-2.5 p-4">
 					<div className="flex items-center gap-2">
 						<Smartphone className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<CardTitle className="text-sm font-normal text-muted-foreground">
+						<h3 className="text-sm font-normal text-muted-foreground">
 							{t("pages.settings.twoFactor")}
-						</CardTitle>
+						</h3>
 					</div>
-				</CardHeader>
-				<CardContent>
+				</div>
+				<div className="min-h-0 flex-1 px-4 pt-0 pb-4">
 					<div className="flex items-center justify-between">
 						<div className="space-y-0.5">
 							<label htmlFor="2fa-authenticator" className="text-sm text-foreground cursor-pointer">
@@ -352,20 +352,20 @@ function SecuritySection() {
 						</div>
 						<Switch id="2fa-sms" defaultChecked />
 					</div>
-				</CardContent>
-			</Card>
+				</div>
+			</LayerCard>
 
 			{/* Active sessions */}
-			<Card className="rounded-card border-0 bg-secondary shadow-none">
-				<CardHeader>
+			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+				<div className="flex flex-col space-y-2.5 p-4">
 					<div className="flex items-center gap-2">
 						<Globe className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<CardTitle className="text-sm font-normal text-muted-foreground">
+						<h3 className="text-sm font-normal text-muted-foreground">
 							{t("pages.settings.activeSessions")}
-						</CardTitle>
+						</h3>
 					</div>
-				</CardHeader>
-				<CardContent className="space-y-3">
+				</div>
+				<div className="min-h-0 flex-1 px-4 pt-0 pb-4 space-y-3">
 					{[
 						{ device: "MacBook Pro — Chrome", location: "San Francisco, US", current: true },
 						{ device: "iPhone 15 — Safari", location: "San Francisco, US", current: false },
@@ -396,8 +396,8 @@ function SecuritySection() {
 							)}
 						</div>
 					))}
-				</CardContent>
-			</Card>
+				</div>
+			</LayerCard>
 		</div>
 	);
 }
@@ -410,16 +410,16 @@ function AppearanceSection() {
 	return (
 		<div className="space-y-4">
 			{/* Theme */}
-			<Card className="rounded-card border-0 bg-secondary shadow-none">
-				<CardHeader>
+			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+				<div className="flex flex-col space-y-2.5 p-4">
 					<div className="flex items-center gap-2">
 						<Palette className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<CardTitle className="text-sm font-normal text-muted-foreground">
+						<h3 className="text-sm font-normal text-muted-foreground">
 							{t("pages.settings.themeTitle")}
-						</CardTitle>
+						</h3>
 					</div>
-				</CardHeader>
-				<CardContent>
+				</div>
+				<div className="min-h-0 flex-1 px-4 pt-0 pb-4">
 					<div
 						className="grid grid-cols-3 gap-3"
 						role="radiogroup"
@@ -456,20 +456,20 @@ function AppearanceSection() {
 							</button>
 						))}
 					</div>
-				</CardContent>
-			</Card>
+				</div>
+			</LayerCard>
 
 			{/* Currency & language */}
-			<Card className="rounded-card border-0 bg-secondary shadow-none">
-				<CardHeader>
+			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+				<div className="flex flex-col space-y-2.5 p-4">
 					<div className="flex items-center gap-2">
 						<CreditCard className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<CardTitle className="text-sm font-normal text-muted-foreground">
+						<h3 className="text-sm font-normal text-muted-foreground">
 							{t("pages.settings.preferences")}
-						</CardTitle>
+						</h3>
 					</div>
-				</CardHeader>
-				<CardContent className="space-y-4">
+				</div>
+				<div className="min-h-0 flex-1 px-4 pt-0 pb-4 space-y-4">
 					<div className="flex items-center justify-between">
 						<div className="space-y-0.5">
 							<label htmlFor="settings-currency" className="text-sm text-foreground cursor-pointer">
@@ -520,8 +520,8 @@ function AppearanceSection() {
 						</div>
 						<Switch id="settings-compact-mode" />
 					</div>
-				</CardContent>
-			</Card>
+				</div>
+			</LayerCard>
 		</div>
 	);
 }

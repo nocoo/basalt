@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
 import { HeatmapCalendar, heatmapColorScales } from "@/components/dashboard/HeatmapCalendar";
 
@@ -16,20 +16,18 @@ const heatmapData = Array.from({ length: 365 }).map((_, i) => {
 export function HeatmapCard() {
 	const { t } = useTranslation();
 	return (
-		<Card className="rounded-card border-border bg-card shadow-none">
-			<CardHeader className="pb-2">
-				<CardTitle className="text-sm text-muted-foreground">
-					{t("dashboard.engagementHeatmap")}
-				</CardTitle>
-			</CardHeader>
-			<CardContent>
+		<LayerCard className="flex flex-col ring-0 rounded-card border-border bg-card shadow-none">
+			<div className="flex flex-col space-y-2.5 p-4 pb-2">
+				<h3 className="text-sm text-muted-foreground">{t("dashboard.engagementHeatmap")}</h3>
+			</div>
+			<div className="min-h-0 flex-1 px-4 pt-0 pb-4">
 				<HeatmapCalendar
 					data={heatmapData}
 					year={2026}
 					colorScale={heatmapColorScales.blue}
 					metricLabel={t("dashboard.sessions")}
 				/>
-			</CardContent>
-		</Card>
+			</div>
+		</LayerCard>
 	);
 }

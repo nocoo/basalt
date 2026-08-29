@@ -1,5 +1,5 @@
 import { LineChart } from "@nocoo/basalt/charts/line";
-import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
 
 const data = [
@@ -12,13 +12,11 @@ const data = [
 export function MultiLineCard() {
 	const { t } = useTranslation();
 	return (
-		<Card className="rounded-card border-border bg-card shadow-none">
-			<CardHeader className="pb-2">
-				<CardTitle className="text-sm text-muted-foreground">
-					{t("dashboard.multiSeriesTrend")}
-				</CardTitle>
-			</CardHeader>
-			<CardContent className="h-56">
+		<LayerCard className="flex flex-col ring-0 rounded-card border-border bg-card shadow-none">
+			<div className="flex flex-col space-y-2.5 p-4 pb-2">
+				<h3 className="text-sm text-muted-foreground">{t("dashboard.multiSeriesTrend")}</h3>
+			</div>
+			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 h-56">
 				<LineChart
 					data={data.map((row) => ({
 						x: row.name,
@@ -30,7 +28,7 @@ export function MultiLineCard() {
 					className="h-full w-full"
 					showAxes
 				/>
-			</CardContent>
-		</Card>
+			</div>
+		</LayerCard>
 	);
 }

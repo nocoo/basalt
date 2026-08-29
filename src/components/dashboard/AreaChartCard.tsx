@@ -1,5 +1,5 @@
 import { AreaChart } from "@nocoo/basalt/charts/area";
-import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { CHART_COLORS } from "@/lib/palette";
@@ -18,14 +18,14 @@ export function AreaChartCard() {
 	const { t } = useTranslation();
 
 	return (
-		<Card className="h-full rounded-card border-0 bg-secondary shadow-none">
-			<CardHeader>
+		<LayerCard className="flex flex-col ring-0 h-full rounded-card border-0 bg-secondary shadow-none">
+			<div className="flex flex-col space-y-2.5 p-4">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-2">
 						<BarChart3 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<CardTitle className="text-sm font-normal text-muted-foreground">
+						<h3 className="text-sm font-normal text-muted-foreground">
 							{t("dashboard.weeklyActivity")}
-						</CardTitle>
+						</h3>
 					</div>
 					<div className="flex items-center gap-4">
 						<div className="flex items-center gap-1.5">
@@ -38,15 +38,15 @@ export function AreaChartCard() {
 						</div>
 					</div>
 				</div>
-			</CardHeader>
-			<CardContent className="flex flex-col">
+			</div>
+			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 flex flex-col">
 				<AreaChart
 					data={data.map((row) => ({ x: row.day, y: row.income, y2: row.expense }))}
 					ariaLabel={t("dashboard.weeklyActivityAria")}
 					className="min-h-[200px] w-full flex-1"
 					showAxes
 				/>
-			</CardContent>
-		</Card>
+			</div>
+		</LayerCard>
 	);
 }

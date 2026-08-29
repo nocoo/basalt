@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
 
@@ -11,11 +11,11 @@ const data = [
 export function MiniDonutCard() {
 	const { t } = useTranslation();
 	return (
-		<Card className="rounded-card border-border bg-card shadow-none">
-			<CardHeader className="pb-2">
-				<CardTitle className="text-sm text-muted-foreground">{t("dashboard.miniDonut")}</CardTitle>
-			</CardHeader>
-			<CardContent className="flex items-center gap-4">
+		<LayerCard className="flex flex-col ring-0 rounded-card border-border bg-card shadow-none">
+			<div className="flex flex-col space-y-2.5 p-4 pb-2">
+				<h3 className="text-sm text-muted-foreground">{t("dashboard.miniDonut")}</h3>
+			</div>
+			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 flex items-center gap-4">
 				<div className="h-24 w-24">
 					<DonutChartWidget data={data} height={96} />
 				</div>
@@ -33,7 +33,7 @@ export function MiniDonutCard() {
 						<span className="text-foreground">10%</span>
 					</div>
 				</div>
-			</CardContent>
-		</Card>
+			</div>
+		</LayerCard>
 	);
 }
