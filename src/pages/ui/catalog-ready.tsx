@@ -67,7 +67,14 @@ import {
 } from "@nocoo/basalt/components/context-menu";
 import { DataTable } from "@nocoo/basalt/components/data-table";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogTitle,
+	DialogTrigger,
+} from "@nocoo/basalt/components/dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -115,7 +122,7 @@ import { toast } from "@nocoo/basalt/components/toast";
 import { Toggle } from "@nocoo/basalt/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import { AlertTriangle, CircleAlert, Info, Search } from "lucide-react";
+import { AlertTriangle, CircleAlert, Info, Search, X } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { CATALOG, type CatalogEntry, catalogImportPath } from "./catalog";
 
@@ -431,38 +438,132 @@ export default function Example() {
 	return <Button onClick={() => toast("Saved")}>Toast</Button>;
 }`,
 );
-add(
-	"dialog",
-	"Modal dialog.",
-	() => (
+function DialogHeroDemo() {
+	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button variant="outline">Open</Button>
+				<Button variant="outline">Delete</Button>
 			</DialogTrigger>
 			<DialogContent>
-				<DialogTitle>Title</DialogTitle>
+				<div className="mb-4 flex items-start justify-between gap-4">
+					<DialogTitle>Delete Resource?</DialogTitle>
+					<DialogClose asChild>
+						<Button variant="outline" size="icon" aria-label="Close">
+							<X />
+						</Button>
+					</DialogClose>
+				</div>
+				<DialogDescription>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+					ut labore et dolore magna aliqua.
+				</DialogDescription>
+				<div className="mt-8 flex justify-end gap-2">
+					<DialogClose asChild>
+						<Button variant="outline">Cancel</Button>
+					</DialogClose>
+					<DialogClose asChild>
+						<Button variant="destructive">Delete</Button>
+					</DialogClose>
+				</div>
 			</DialogContent>
 		</Dialog>
-	),
-	'<Dialog><DialogTrigger asChild><Button variant="outline">Open</Button></DialogTrigger></Dialog>',
+	);
+}
+add(
+	"dialog",
+	"A window overlaid on the primary window, rendering the content underneath inert.",
+	() => <DialogHeroDemo />,
+	"<Dialog><DialogTrigger asChild><Button>Delete</Button></DialogTrigger><DialogContent><DialogTitle>Delete Resource?</DialogTitle></DialogContent></Dialog>",
+	[
+		{
+			name: "size",
+			type: '"sm" | "base" | "lg" | "xl"',
+			default: '"base"',
+			description: "Fixed desktop width. Overflowing content scrolls inside the panel.",
+		},
+		{
+			name: "disablePointerDismissal",
+			type: "boolean",
+			default: "false",
+			description: "When true, clicking outside does not close the dialog.",
+		},
+		{ name: "className", type: "string" },
+	],
+	`import { Button } from "@nocoo/basalt/components/button";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogTitle,
+	DialogTrigger,
+} from "@nocoo/basalt/components/dialog";
+
+export default function Example() {
+	return (
+		<Dialog>
+			<DialogTrigger asChild>
+				<Button>Delete</Button>
+			</DialogTrigger>
+			<DialogContent>
+				<DialogTitle>Delete Resource?</DialogTitle>
+				<DialogDescription>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+				</DialogDescription>
+				<div className="mt-8 flex justify-end gap-2">
+					<DialogClose asChild>
+						<Button variant="outline">Cancel</Button>
+					</DialogClose>
+					<DialogClose asChild>
+						<Button variant="destructive">Delete</Button>
+					</DialogClose>
+				</div>
+			</DialogContent>
+		</Dialog>
+	);
+}`,
 );
+if (extra.dialog) {
+	extra.dialog.docs.source = {
+		repo: "kumo",
+		sha: "1159868dfe32",
+		file: "packages/kumo/src/components/dialog/dialog.tsx",
+	};
+}
 add(
 	"alert-dialog",
-	"Confirm destructive work.",
+	"Confirm destructive work. Not dismissible by clicking outside.",
 	() => (
 		<AlertDialog>
 			<AlertDialogTrigger asChild>
-				<Button variant="outline">Delete</Button>
+				<Button variant="destructive">Delete Account</Button>
 			</AlertDialogTrigger>
 			<AlertDialogContent>
-				<AlertDialogTitle>Delete resource</AlertDialogTitle>
-				<AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
-				<AlertDialogCancel>Cancel</AlertDialogCancel>
-				<AlertDialogAction>Delete</AlertDialogAction>
+				<div className="mb-4 flex items-center gap-3">
+					<div className="flex h-10 w-10 items-center justify-center rounded-full bg-basalt-destructive/20">
+						<AlertTriangle className="size-5 text-basalt-destructive" />
+					</div>
+					<AlertDialogTitle className="text-xl">Delete Account?</AlertDialogTitle>
+				</div>
+				<AlertDialogDescription>
+					This action cannot be undone. All your data will be permanently removed from our servers.
+				</AlertDialogDescription>
+				<div className="mt-8 flex justify-end gap-2">
+					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogAction>Delete Account</AlertDialogAction>
+				</div>
 			</AlertDialogContent>
 		</AlertDialog>
 	),
 	"<AlertDialog />",
+	[
+		{
+			name: "size",
+			type: '"sm" | "base" | "lg" | "xl"',
+			default: '"base"',
+			description: "Fixed desktop width, shared with Dialog.",
+		},
+	],
 );
 add(
 	"popover",

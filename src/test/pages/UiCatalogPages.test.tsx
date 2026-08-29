@@ -143,10 +143,17 @@ describe("ui catalog", () => {
 	it("opens overlay demos with the button control", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		for (const slug of ["collapsible", "dialog", "popover", "dropdown-menu", "sheet"]) {
+		const triggers: Record<string, string> = {
+			collapsible: "Open",
+			dialog: "Click me",
+			popover: "Open",
+			"dropdown-menu": "Open",
+			sheet: "Open",
+		};
+		for (const [slug, name] of Object.entries(triggers)) {
 			cleanup();
 			renderCatalog(`/ui/${slug}`);
-			expect(screen.getAllByRole("button", { name: "Open" }).length).toBeGreaterThan(0);
+			expect(screen.getAllByRole("button", { name }).length).toBeGreaterThan(0);
 		}
 	});
 
@@ -211,6 +218,20 @@ describe("ui catalog", () => {
 		["pagination", ["Full Controls (Default)", "Simple Controls"]],
 		["toast", ["Title Only", "Success Variant", "Error Variant"]],
 		["clipboard-text", ["Short Text", "API Key", "Copy Alternate Text"]],
+		[
+			"dialog",
+			[
+				"Basic Dialog",
+				"Sizes",
+				"Alert Dialog",
+				"Confirmation Dialog",
+				"With Actions",
+				"Custom Max Width",
+				"With Select",
+				"With Combobox",
+				"With Dropdown",
+			],
+		],
 	] as const)("documents kumo examples for %s", (slug, titles) => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });

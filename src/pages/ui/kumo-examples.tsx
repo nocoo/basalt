@@ -1,3 +1,12 @@
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@nocoo/basalt/components/alert-dialog";
 import { Autocomplete } from "@nocoo/basalt/components/autocomplete";
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
@@ -21,7 +30,15 @@ import {
 	CommandPalette,
 } from "@nocoo/basalt/components/command-palette";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	type DialogSize,
+	DialogTitle,
+	DialogTrigger,
+} from "@nocoo/basalt/components/dialog";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -76,7 +93,7 @@ import {
 	TooltipTrigger,
 } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
-import { Check, Inbox, Search } from "lucide-react";
+import { AlertTriangle, Check, Inbox, Search, X } from "lucide-react";
 import { type ComponentType, type ReactNode, useState } from "react";
 
 function Preview({ children, className }: { children: ReactNode; className?: string }) {
@@ -85,6 +102,102 @@ function Preview({ children, className }: { children: ReactNode; className?: str
 
 function Stack({ children }: { children: ReactNode }) {
 	return <div className="flex w-full flex-col gap-3">{children}</div>;
+}
+
+const DIALOG_LOREM =
+	"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+
+function DialogCloseButton() {
+	return (
+		<DialogClose asChild>
+			<Button variant="outline" size="icon" aria-label="Close">
+				<X />
+			</Button>
+		</DialogClose>
+	);
+}
+
+function DialogHeaderRow({ title }: { title: string }) {
+	return (
+		<div className="mb-4 flex items-start justify-between gap-4">
+			<DialogTitle>{title}</DialogTitle>
+			<DialogCloseButton />
+		</div>
+	);
+}
+
+function DialogFooter({
+	cancel = "Cancel",
+	action = "Delete",
+	actionVariant = "destructive",
+}: {
+	cancel?: string;
+	action?: string;
+	actionVariant?: "default" | "destructive";
+}) {
+	return (
+		<div className="mt-8 flex justify-end gap-2">
+			<DialogClose asChild>
+				<Button variant="outline">{cancel}</Button>
+			</DialogClose>
+			<DialogClose asChild>
+				<Button variant={actionVariant}>{action}</Button>
+			</DialogClose>
+		</div>
+	);
+}
+
+function DialogSizesExample() {
+	const sizes: { size: DialogSize; label: string; width: string }[] = [
+		{ size: "sm", label: "Small", width: "288px" },
+		{ size: "base", label: "Base", width: "384px" },
+		{ size: "lg", label: "Large", width: "512px" },
+		{ size: "xl", label: "Extra Large", width: "768px" },
+	];
+	return (
+		<Preview>
+			{sizes.map(({ size, label, width }) => (
+				<Dialog key={size}>
+					<DialogTrigger asChild>
+						<Button variant="outline">
+							{label} ({width})
+						</Button>
+					</DialogTrigger>
+					<DialogContent size={size}>
+						<DialogHeaderRow title={`${label} Dialog`} />
+						<DialogDescription>
+							This size="{size}" dialog stays {width} wide on desktop.
+						</DialogDescription>
+						<div className="mt-4 overflow-auto rounded-basalt-md ring-1 ring-basalt-border">
+							<Table>
+								<TableHeader>
+									<TableRow>
+										<TableHead>Resource</TableHead>
+										<TableHead>Region</TableHead>
+										<TableHead>Status</TableHead>
+										<TableHead>Latency</TableHead>
+									</TableRow>
+								</TableHeader>
+								<TableBody>
+									<TableRow>
+										<TableCell>api-gateway-prod</TableCell>
+										<TableCell>us-east-1</TableCell>
+										<TableCell>Healthy</TableCell>
+										<TableCell>12ms</TableCell>
+									</TableRow>
+								</TableBody>
+							</Table>
+						</div>
+						<div className="mt-6 flex justify-end">
+							<DialogClose asChild>
+								<Button variant="outline">Close</Button>
+							</DialogClose>
+						</div>
+					</DialogContent>
+				</Dialog>
+			))}
+		</Preview>
+	);
 }
 
 type Example = { title: string; code: string; render: ComponentType };
@@ -828,32 +941,257 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	dialog: [
 		{
 			title: "Basic Dialog",
-			code: "<Dialog><DialogTrigger asChild><Button>Open</Button></DialogTrigger><DialogContent><DialogTitle>Title</DialogTitle></DialogContent></Dialog>",
+			code: `<Dialog>
+  <DialogTrigger asChild>
+    <Button>Click me</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <div className="mb-4 flex items-start justify-between gap-4">
+      <DialogTitle>Modal Title</DialogTitle>
+      <DialogClose asChild>
+        <Button variant="outline" size="icon" aria-label="Close"><X /></Button>
+      </DialogClose>
+    </div>
+    <DialogDescription>${DIALOG_LOREM}</DialogDescription>
+  </DialogContent>
+</Dialog>`,
 			render: () => (
 				<Dialog>
 					<DialogTrigger asChild>
-						<Button variant="outline">Open</Button>
+						<Button variant="outline">Click me</Button>
 					</DialogTrigger>
 					<DialogContent>
-						<DialogTitle>Title</DialogTitle>
+						<DialogHeaderRow title="Modal Title" />
+						<DialogDescription>{DIALOG_LOREM}</DialogDescription>
+					</DialogContent>
+				</Dialog>
+			),
+		},
+		{
+			title: "Sizes",
+			code: '<DialogContent size="sm">…</DialogContent>\n<DialogContent size="base">…</DialogContent>\n<DialogContent size="lg">…</DialogContent>\n<DialogContent size="xl">…</DialogContent>',
+			render: () => <DialogSizesExample />,
+		},
+		{
+			title: "Alert Dialog",
+			code: `<AlertDialog>
+  <AlertDialogTrigger asChild>
+    <Button variant="destructive">Delete Account</Button>
+  </AlertDialogTrigger>
+  <AlertDialogContent>
+    <AlertDialogTitle>Delete Account?</AlertDialogTitle>
+    <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+    <AlertDialogCancel>Cancel</AlertDialogCancel>
+    <AlertDialogAction>Delete Account</AlertDialogAction>
+  </AlertDialogContent>
+</AlertDialog>`,
+			render: () => (
+				<AlertDialog>
+					<AlertDialogTrigger asChild>
+						<Button variant="destructive">Delete Account</Button>
+					</AlertDialogTrigger>
+					<AlertDialogContent>
+						<div className="mb-4 flex items-center gap-3">
+							<div className="flex h-10 w-10 items-center justify-center rounded-full bg-basalt-destructive/20">
+								<AlertTriangle className="size-5 text-basalt-destructive" />
+							</div>
+							<AlertDialogTitle className="text-xl">Delete Account?</AlertDialogTitle>
+						</div>
+						<AlertDialogDescription>
+							This action cannot be undone. All your data will be permanently removed from our
+							servers. Are you sure you want to proceed?
+						</AlertDialogDescription>
+						<div className="mt-8 flex justify-end gap-2">
+							<AlertDialogCancel>Cancel</AlertDialogCancel>
+							<AlertDialogAction>Delete Account</AlertDialogAction>
+						</div>
+					</AlertDialogContent>
+				</AlertDialog>
+			),
+		},
+		{
+			title: "Confirmation Dialog",
+			code: `<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="destructive">Delete Project</Button>
+  </DialogTrigger>
+  <DialogContent disablePointerDismissal>
+    <DialogTitle>Delete Project?</DialogTitle>
+    <DialogDescription>This action cannot be undone.</DialogDescription>
+  </DialogContent>
+</Dialog>`,
+			render: () => (
+				<Dialog>
+					<DialogTrigger asChild>
+						<Button variant="destructive">Delete Project</Button>
+					</DialogTrigger>
+					<DialogContent disablePointerDismissal>
+						<div className="mb-4 flex items-center gap-3">
+							<div className="flex h-10 w-10 items-center justify-center rounded-full bg-basalt-destructive/20">
+								<AlertTriangle className="size-5 text-basalt-destructive" />
+							</div>
+							<DialogTitle className="text-xl">Delete Project?</DialogTitle>
+						</div>
+						<DialogDescription>
+							This action cannot be undone. This will permanently delete the project and all
+							associated data.
+						</DialogDescription>
+						<DialogFooter action="Delete" />
 					</DialogContent>
 				</Dialog>
 			),
 		},
 		{
 			title: "With Actions",
-			code: "<DialogContent><Button>Confirm</Button></DialogContent>",
+			code: `<Dialog>
+  <DialogTrigger asChild>
+    <Button>Delete</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogTitle>Delete Resource?</DialogTitle>
+    <DialogDescription>${DIALOG_LOREM}</DialogDescription>
+    <div className="mt-8 flex justify-end gap-2">
+      <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
+      <DialogClose asChild><Button variant="destructive">Delete</Button></DialogClose>
+    </div>
+  </DialogContent>
+</Dialog>`,
 			render: () => (
 				<Dialog>
 					<DialogTrigger asChild>
-						<Button variant="outline">Open with actions</Button>
+						<Button variant="outline">Delete</Button>
 					</DialogTrigger>
 					<DialogContent>
-						<DialogTitle>Confirm</DialogTitle>
-						<Preview>
-							<Button>Save</Button>
-							<Button variant="outline">Cancel</Button>
-						</Preview>
+						<DialogHeaderRow title="Delete Resource?" />
+						<DialogDescription>{DIALOG_LOREM}</DialogDescription>
+						<DialogFooter />
+					</DialogContent>
+				</Dialog>
+			),
+		},
+		{
+			title: "Custom Max Width",
+			code: '<DialogContent size="xl" className="max-w-lg">…</DialogContent>',
+			render: () => (
+				<Dialog>
+					<DialogTrigger asChild>
+						<Button variant="outline">Open capped dialog</Button>
+					</DialogTrigger>
+					<DialogContent size="xl" className="max-w-lg">
+						<DialogHeaderRow title="Max width override" />
+						<DialogDescription>
+							This dialog uses className="max-w-lg" and stays capped around 512px on desktop.
+						</DialogDescription>
+						<div className="mt-4 truncate rounded-basalt-md bg-basalt-secondary p-3 font-mono text-sm ring-1 ring-basalt-border">
+							abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
+						</div>
+					</DialogContent>
+				</Dialog>
+			),
+		},
+		{
+			title: "With Select",
+			code: `<DialogContent>
+  <DialogTitle>Create Resource</DialogTitle>
+  <Select>
+    <SelectTrigger aria-label="Region"><SelectValue placeholder="Select region..." /></SelectTrigger>
+    <SelectContent><SelectItem value="us-east">US East</SelectItem></SelectContent>
+  </Select>
+</DialogContent>`,
+			render: () => (
+				<Dialog>
+					<DialogTrigger asChild>
+						<Button variant="outline">Open Form</Button>
+					</DialogTrigger>
+					<DialogContent>
+						<DialogHeaderRow title="Create Resource" />
+						<DialogDescription className="mb-4">
+							Select a region for your new resource.
+						</DialogDescription>
+						<Select>
+							<SelectTrigger aria-label="Region">
+								<SelectValue placeholder="Select region..." />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="us-east">US East</SelectItem>
+								<SelectItem value="us-west">US West</SelectItem>
+								<SelectItem value="eu-west">EU West</SelectItem>
+							</SelectContent>
+						</Select>
+						<div className="mt-8 flex justify-end gap-2">
+							<DialogClose asChild>
+								<Button variant="outline">Cancel</Button>
+							</DialogClose>
+							<Button>Create</Button>
+						</div>
+					</DialogContent>
+				</Dialog>
+			),
+		},
+		{
+			title: "With Combobox",
+			code: `<DialogContent>
+  <DialogTitle>Create Resource</DialogTitle>
+  <Combobox items={["US East", "US West", "EU West"]} placeholder="Search regions..." />
+</DialogContent>`,
+			render: () => (
+				<Dialog>
+					<DialogTrigger asChild>
+						<Button variant="outline">Open Form</Button>
+					</DialogTrigger>
+					<DialogContent>
+						<DialogHeaderRow title="Create Resource" />
+						<DialogDescription className="mb-4">
+							Search and select a region for your new resource.
+						</DialogDescription>
+						<Combobox items={["US East", "US West", "EU West"]} placeholder="Search regions..." />
+						<div className="mt-8 flex justify-end gap-2">
+							<DialogClose asChild>
+								<Button variant="outline">Cancel</Button>
+							</DialogClose>
+							<Button>Create</Button>
+						</div>
+					</DialogContent>
+				</Dialog>
+			),
+		},
+		{
+			title: "With Dropdown",
+			code: `<DialogContent>
+  <DialogTitle>Resource Actions</DialogTitle>
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild><Button>Actions</Button></DropdownMenuTrigger>
+    <DropdownMenuContent>
+      <DropdownMenuItem>Edit</DropdownMenuItem>
+      <DropdownMenuItem>Delete</DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+</DialogContent>`,
+			render: () => (
+				<Dialog>
+					<DialogTrigger asChild>
+						<Button variant="outline">Open Form</Button>
+					</DialogTrigger>
+					<DialogContent>
+						<DialogHeaderRow title="Resource Actions" />
+						<DialogDescription className="mb-4">
+							Choose an action for the selected resource.
+						</DialogDescription>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<Button>Actions</Button>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent>
+								<DropdownMenuItem>Edit</DropdownMenuItem>
+								<DropdownMenuItem>Duplicate</DropdownMenuItem>
+								<DropdownMenuItem>Delete</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
+						<div className="mt-8 flex justify-end">
+							<DialogClose asChild>
+								<Button variant="outline">Close</Button>
+							</DialogClose>
+						</div>
 					</DialogContent>
 				</Dialog>
 			),
