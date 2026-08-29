@@ -9,6 +9,7 @@
 	--basalt-secondary-foreground: 0 0% 12%;
 	--basalt-popover: 0 0% 100%;
 	--basalt-popover-foreground: 0 0% 12%;
+	--basalt-bright: 0 0% 100%;
 	--basalt-primary: 217 91% 60%;
 	--basalt-primary-foreground: 0 0% 100%;
 	--basalt-muted: 220 14% 92%;
@@ -86,6 +87,7 @@
 	--basalt-secondary-foreground: 0 0% 93%;
 	--basalt-popover: 0 0% 10.6%;
 	--basalt-popover-foreground: 0 0% 93%;
+	--basalt-bright: 0 0% 14%;
 	--basalt-primary: 217 91% 60%;
 	--basalt-primary-foreground: 0 0% 100%;
 	--basalt-muted: 0 0% 12.2%;

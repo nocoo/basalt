@@ -10,13 +10,13 @@ import {
 import { cn } from "../utils/cn";
 
 const SURFACE_CLASSES =
-	"overflow-hidden rounded-basalt-lg bg-basalt-card shadow-xs ring-1 ring-basalt-border";
+	"overflow-hidden rounded-basalt-lg bg-basalt-bright shadow-xs ring-1 ring-basalt-border";
 const LAYERED_ROOT_CLASSES =
 	"flex w-full flex-col overflow-hidden rounded-basalt-lg bg-basalt-muted text-base ring-1 ring-basalt-border";
 const SECONDARY_CLASSES =
 	"-my-2 flex items-center gap-2 bg-basalt-muted p-4 text-base font-medium text-basalt-muted-foreground";
 const PRIMARY_CLASSES =
-	"relative flex flex-col gap-2 overflow-hidden rounded-basalt-lg bg-basalt-card p-4 pr-3 text-basalt-foreground ring-1 ring-basalt-border";
+	"relative flex flex-col gap-2 overflow-hidden rounded-basalt-lg bg-basalt-bright p-4 pr-3 text-basalt-foreground ring-1 ring-basalt-border";
 
 export type LayerCardProps = HTMLAttributes<HTMLDivElement>;
 export type LayerCardSectionProps = HTMLAttributes<HTMLDivElement>;

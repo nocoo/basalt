@@ -41,6 +41,8 @@
 	--color-card: hsl(var(--card));
 	--color-card-foreground: hsl(var(--card-foreground));
 
+	--color-bright: hsl(var(--bright));
+
 	--color-sidebar: hsl(var(--sidebar-background));
 	--color-sidebar-foreground: hsl(var(--sidebar-foreground));
 	--color-sidebar-primary: hsl(var(--sidebar-primary));
@@ -131,6 +133,7 @@
 
 	--popover: var(--basalt-popover);
 	--popover-foreground: var(--basalt-popover-foreground);
+	--bright: var(--basalt-bright);
 
 	--primary: var(--basalt-primary);
 	--primary-foreground: var(--basalt-primary-foreground);
@@ -226,6 +229,7 @@
 
 	--popover: var(--basalt-popover);
 	--popover-foreground: var(--basalt-popover-foreground);
+	--bright: var(--basalt-bright);
 
 	--primary: var(--basalt-primary);
 	--primary-foreground: var(--basalt-primary-foreground);
