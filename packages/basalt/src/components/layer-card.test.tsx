@@ -5,7 +5,7 @@ import { LayerCard } from "./layer-card";
 describe("LayerCard", () => {
 	it("renders a single surface by default", () => {
 		render(<LayerCard>Body</LayerCard>);
-		expect(screen.getByText("Body").className).toContain("bg-white");
+		expect(screen.getByText("Body").className).toContain("bg-basalt-card");
 		expect(screen.getByText("Body").className).toContain("ring-1");
 	});
 
@@ -19,7 +19,7 @@ describe("LayerCard", () => {
 		const header = screen.getByText("Next Steps");
 		const body = screen.getByText("Hello");
 		expect(header.className).toContain("text-basalt-muted-foreground");
-		expect(body.className).toContain("bg-white");
+		expect(body.className).toContain("bg-basalt-card");
 		expect(body.className).toContain("rounded-basalt-lg");
 		expect(header.parentElement?.className).toContain("bg-basalt-muted");
 	});

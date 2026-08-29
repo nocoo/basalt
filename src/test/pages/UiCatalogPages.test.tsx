@@ -170,12 +170,12 @@ describe("ui catalog", () => {
 		expect(screen.getByText("Button")).toBeInTheDocument();
 	});
 
-	it("renders example previews on a white bordered surface", () => {
+	it("renders example previews on a themed bordered surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		renderCatalog("/ui/button");
 		const preview = document.querySelector(".min-h-\\[140px\\]");
-		expect(preview).toHaveClass("bg-white");
+		expect(preview).toHaveClass("bg-card");
 		expect(preview?.parentElement).toHaveClass("border", "border-border");
 	});
 
