@@ -85,6 +85,16 @@ describe("charts", () => {
 		render(<Colors />);
 		render(<HeatmapCalendar values={[1, 2, 3]} ariaLabel="Heat" />);
 		expect(screen.getByRole("img", { name: "Heat" })).toBeInTheDocument();
+		render(
+			<HeatmapCalendar
+				data={[{ date: "2026-01-01", value: 4 }]}
+				year={2026}
+				ariaLabel="Year heat"
+				metricLabel="Sessions"
+			/>,
+		);
+		expect(screen.getByRole("img", { name: "Year heat" })).toBeInTheDocument();
+		expect(screen.getByText("Less")).toBeInTheDocument();
 		render(<ItemList items={[{ label: "A", value: "1" }]} ariaLabel="Items" />);
 		expect(screen.getByRole("list", { name: "Items" })).toHaveTextContent("A 1");
 		render(
@@ -120,5 +130,23 @@ describe("charts", () => {
 		expect(screen.getByRole("button", { name: "When" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Previous day" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Next day" })).toBeInTheDocument();
+		render(
+			<DateNavigation
+				selectedDate={new Date(2026, 1, 13)}
+				onPrevDay={() => {}}
+				onNextDay={() => {}}
+				onToday={() => {}}
+				todayLabel="Today"
+			/>,
+		);
+		expect(screen.getByText("Today")).toBeInTheDocument();
+		render(
+			<Timeline
+				events={[{ id: "i1", time: "08:45", title: "Packet loss", subtitle: "0.6%" }]}
+				ariaLabel="Incidents"
+			/>,
+		);
+		expect(screen.getByText("Packet loss")).toBeInTheDocument();
+		expect(screen.getByText("08:45")).toBeInTheDocument();
 	});
 });

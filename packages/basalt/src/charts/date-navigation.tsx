@@ -1,7 +1,8 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight } from "lucide-react";
 import { type ComponentProps, useState } from "react";
 import { Button } from "../components/button";
 import { DatePicker } from "../components/date-picker";
+import { cn } from "../utils/cn";
 
 function shiftIso(value: string, delta: number) {
 	const match = /^(\d{4,})-(\d{2})-(\d{2})$/.exec(value);
@@ -15,7 +16,41 @@ function shiftIso(value: string, delta: number) {
 	return `${year}-${month}-${day}`;
 }
 
-export function DateNavigation({
+function isSameDay(left: Date, right: Date) {
+	return (
+		left.getFullYear() === right.getFullYear() &&
+		left.getMonth() === right.getMonth() &&
+		left.getDate() === right.getDate()
+	);
+}
+
+type PickerProps = ComponentProps<typeof DatePicker> & {
+	ariaLabel?: string;
+	selectedDate?: undefined;
+};
+
+type DisplayProps = {
+	selectedDate: Date;
+	onPrevDay: () => void;
+	onNextDay: () => void;
+	onToday: () => void;
+	onToggleCalendar?: () => void;
+	todayLabel?: string;
+	previousDayLabel?: string;
+	nextDayLabel?: string;
+	formatDate?: (date: Date) => string;
+	locale?: string;
+	className?: string;
+};
+
+export function DateNavigation(props: PickerProps | DisplayProps) {
+	if ("onPrevDay" in props) {
+		return <DateNavigationDisplay {...props} />;
+	}
+	return <DateNavigationPicker {...props} />;
+}
+
+function DateNavigationPicker({
 	value,
 	defaultValue = "",
 	onChange,
@@ -23,7 +58,7 @@ export function DateNavigation({
 	ariaLabel,
 	"aria-label": ariaLabelAttr,
 	...props
-}: ComponentProps<typeof DatePicker> & { ariaLabel?: string }) {
+}: PickerProps) {
 	const [uncontrolled, setUncontrolled] = useState(value ?? defaultValue);
 	const selected = value ?? uncontrolled;
 	function commit(next: string) {
@@ -59,6 +94,77 @@ export function DateNavigation({
 			>
 				<ChevronRight />
 			</Button>
+		</div>
+	);
+}
+
+function DateNavigationDisplay({
+	selectedDate,
+	onPrevDay,
+	onNextDay,
+	onToday,
+	onToggleCalendar,
+	todayLabel = "Today",
+	previousDayLabel = "Previous day",
+	nextDayLabel = "Next day",
+	formatDate,
+	locale = "en-US",
+	className,
+}: DisplayProps) {
+	const resolvedFormatDate =
+		formatDate ??
+		((date: Date) =>
+			date.toLocaleDateString(locale, {
+				weekday: "short",
+				year: "numeric",
+				month: "short",
+				day: "numeric",
+			}));
+	const isToday = isSameDay(selectedDate, new Date());
+	return (
+		<div className={cn("flex items-center justify-center gap-2", className)}>
+			<button
+				type="button"
+				onClick={onToday}
+				disabled={isToday}
+				className={cn(
+					"mr-2 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
+					isToday
+						? "cursor-not-allowed text-basalt-muted-foreground opacity-50"
+						: "bg-basalt-secondary text-basalt-foreground hover:bg-basalt-accent",
+				)}
+			>
+				{todayLabel}
+			</button>
+			<button
+				type="button"
+				onClick={onPrevDay}
+				aria-label={previousDayLabel}
+				className="flex h-8 w-8 items-center justify-center rounded-lg text-basalt-muted-foreground transition-colors hover:bg-basalt-accent hover:text-basalt-foreground"
+			>
+				<ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
+			</button>
+			<button
+				type="button"
+				onClick={onToggleCalendar}
+				className={cn(
+					"flex items-center gap-2 rounded-lg px-3 py-1.5 text-lg font-medium transition-colors",
+					onToggleCalendar ? "cursor-pointer hover:bg-basalt-accent" : "cursor-default",
+				)}
+			>
+				<span>{resolvedFormatDate(selectedDate)}</span>
+				{onToggleCalendar ? (
+					<CalendarIcon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+				) : null}
+			</button>
+			<button
+				type="button"
+				onClick={onNextDay}
+				aria-label={nextDayLabel}
+				className="flex h-8 w-8 items-center justify-center rounded-lg text-basalt-muted-foreground transition-colors hover:bg-basalt-accent hover:text-basalt-foreground"
+			>
+				<ChevronRight className="h-4 w-4" strokeWidth={1.5} />
+			</button>
 		</div>
 	);
 }
