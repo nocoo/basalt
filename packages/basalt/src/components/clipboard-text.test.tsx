@@ -8,6 +8,9 @@ describe("ClipboardText", () => {
 		render(<ClipboardText text="bun add @nocoo/basalt" />);
 		expect(screen.getByText("bun add @nocoo/basalt")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Copy" })).toBeInTheDocument();
+		expect(
+			screen.getByText("bun add @nocoo/basalt").closest("[data-slot=clipboard-text]")?.className,
+		).toContain("border-basalt-border");
 	});
 
 	it("copies text when clicked", async () => {
