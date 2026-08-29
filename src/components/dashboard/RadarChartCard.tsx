@@ -13,7 +13,7 @@ const radarData = [
 export function RadarChartCard() {
 	const { t } = useTranslation();
 	return (
-		<LayerCard className="flex flex-col ring-0 rounded-card border-border bg-card shadow-none">
+		<LayerCard className="flex flex-col rounded-card border-border bg-card shadow-none">
 			<div className="flex flex-col space-y-2.5 p-4 pb-2">
 				<h3 className="text-sm text-muted-foreground">{t("dashboard.capabilityRadar")}</h3>
 			</div>
