@@ -1,13 +1,13 @@
+import { DateNavigation } from "@nocoo/basalt/charts/date-navigation";
+import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatmap-calendar";
+import { SlotBarChart } from "@nocoo/basalt/charts/slot-bar";
+import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
+import { Timeline } from "@nocoo/basalt/charts/timeline";
 import { Activity, Clock, Flame, Footprints, Heart, Moon, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { BarChartWidget } from "@/components/dashboard/BarChartWidget";
-import { DateNavigationWidget } from "@/components/dashboard/DateNavigationWidget";
-import { HeatmapCalendar, heatmapColorScales } from "@/components/dashboard/HeatmapCalendar";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
-import { SlotBarChart } from "@/components/dashboard/SlotBarChart";
-import { StatCardWidget, StatGrid } from "@/components/dashboard/StatCardWidget";
-import { TimelineWidget } from "@/components/dashboard/TimelineWidget";
 import { PageIntro } from "@/components/PageIntro";
 import { chart } from "@/lib/palette";
 
@@ -56,7 +56,7 @@ const heatmapData = Array.from({ length: 365 }).map((_, i) => {
 });
 
 export default function WearableDashboardPage() {
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
 
 	const statCards = [
 		{
@@ -142,18 +142,26 @@ export default function WearableDashboardPage() {
 						<Sparkles className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<p className="text-sm text-muted-foreground">{t("pages.wearable.todaySummary")}</p>
 					</div>
-					<DateNavigationWidget
+					<DateNavigation
 						selectedDate={new Date(2026, 1, 13)}
 						onPrevDay={() => {}}
 						onNextDay={() => {}}
 						onToday={() => {}}
+						todayLabel={t("common.today")}
+						previousDayLabel={t("common.previousDay")}
+						nextDayLabel={t("common.nextDay")}
+						locale={i18n.language}
 					/>
 				</div>
 			</div>
 
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (
-					<StatCardWidget key={stat.title} {...stat} />
+					<StatCard
+						key={stat.title}
+						{...stat}
+						className="rounded-card border-0 bg-secondary p-4 md:p-5"
+					/>
 				))}
 			</StatGrid>
 
@@ -211,7 +219,7 @@ export default function WearableDashboardPage() {
 						<Clock className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<p className="text-sm text-muted-foreground">{t("pages.wearable.dailyTimeline")}</p>
 					</div>
-					<TimelineWidget events={timeline} />
+					<Timeline events={timeline} />
 				</div>
 			</div>
 
@@ -227,6 +235,9 @@ export default function WearableDashboardPage() {
 					year={2026}
 					colorScale={heatmapColorScales.green}
 					metricLabel={t("pages.wearable.workouts")}
+					locale={i18n.language}
+					lessLabel={t("common.less")}
+					moreLabel={t("common.more")}
 				/>
 			</div>
 		</div>

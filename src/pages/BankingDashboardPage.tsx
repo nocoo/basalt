@@ -1,3 +1,4 @@
+import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import {
 	ArrowDownLeft,
 	ArrowUpRight,
@@ -16,7 +17,6 @@ import { RadialProgressCard } from "@/components/dashboard/RadialProgressCard";
 import { RecentListCard } from "@/components/dashboard/RecentListCard";
 import { SankeyCard } from "@/components/dashboard/SankeyCard";
 import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
-import { StatCardWidget, StatGrid } from "@/components/dashboard/StatCardWidget";
 import { PageIntro } from "@/components/PageIntro";
 
 const transfers = [
@@ -70,7 +70,11 @@ export default function BankingDashboardPage() {
 
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (
-					<StatCardWidget key={stat.title} {...stat} />
+					<StatCard
+						key={stat.title}
+						{...stat}
+						className="rounded-card border-0 bg-secondary p-4 md:p-5"
+					/>
 				))}
 			</StatGrid>
 

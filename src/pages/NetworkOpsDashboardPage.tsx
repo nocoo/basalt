@@ -1,3 +1,5 @@
+import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
+import { Timeline } from "@nocoo/basalt/charts/timeline";
 import { AlertTriangle, Clock, Router, Server, Wifi } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { HeatmapCard } from "@/components/dashboard/HeatmapCard";
@@ -6,8 +8,6 @@ import { RadarChartCard } from "@/components/dashboard/RadarChartCard";
 import { SankeyCard } from "@/components/dashboard/SankeyCard";
 import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
 import { StackedBarCard } from "@/components/dashboard/StackedBarCard";
-import { StatCardWidget, StatGrid } from "@/components/dashboard/StatCardWidget";
-import { TimelineWidget } from "@/components/dashboard/TimelineWidget";
 import { PageIntro } from "@/components/PageIntro";
 import { chart } from "@/lib/palette";
 
@@ -89,7 +89,11 @@ export default function NetworkOpsDashboardPage() {
 
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (
-					<StatCardWidget key={stat.title} {...stat} />
+					<StatCard
+						key={stat.title}
+						{...stat}
+						className="rounded-card border-0 bg-secondary p-4 md:p-5"
+					/>
 				))}
 			</StatGrid>
 
@@ -124,7 +128,7 @@ export default function NetworkOpsDashboardPage() {
 							{t("pages.networkOps.incidentTimeline")}
 						</p>
 					</div>
-					<TimelineWidget events={incidents} />
+					<Timeline events={incidents} />
 				</div>
 			</div>
 		</div>

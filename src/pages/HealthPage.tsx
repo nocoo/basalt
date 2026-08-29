@@ -1,3 +1,8 @@
+import { DateNavigation } from "@nocoo/basalt/charts/date-navigation";
+import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatmap-calendar";
+import { SlotBarChart } from "@nocoo/basalt/charts/slot-bar";
+import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
+import { Timeline } from "@nocoo/basalt/charts/timeline";
 import {
 	Activity,
 	AlertTriangle,
@@ -15,13 +20,8 @@ import {
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { BarChartWidget } from "@/components/dashboard/BarChartWidget";
-import { DateNavigationWidget } from "@/components/dashboard/DateNavigationWidget";
-import { HeatmapCalendar, heatmapColorScales } from "@/components/dashboard/HeatmapCalendar";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
-import { SlotBarChart } from "@/components/dashboard/SlotBarChart";
-import { StatCardWidget, StatGrid } from "@/components/dashboard/StatCardWidget";
-import { TimelineWidget } from "@/components/dashboard/TimelineWidget";
 import { PageIntro } from "@/components/PageIntro";
 import { chart } from "@/lib/palette";
 
@@ -91,7 +91,7 @@ const recommendationImpact = [
 ];
 
 export default function HealthPage() {
-	const { t } = useTranslation();
+	const { t, i18n } = useTranslation();
 
 	const statCards = [
 		{
@@ -239,24 +239,29 @@ export default function HealthPage() {
 						<Heart className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<p className="text-sm text-muted-foreground">{t("pages.health.today")}</p>
 					</div>
-					<DateNavigationWidget
+					<DateNavigation
 						selectedDate={new Date(2026, 1, 13)}
 						onPrevDay={() => {}}
 						onNextDay={() => {}}
 						onToday={() => {}}
+						todayLabel={t("common.today")}
+						previousDayLabel={t("common.previousDay")}
+						nextDayLabel={t("common.nextDay")}
+						locale={i18n.language}
 					/>
 				</div>
 			</div>
 
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (
-					<StatCardWidget
+					<StatCard
 						key={stat.title}
 						title={stat.title}
 						value={stat.value}
 						subtitle={stat.subtitle}
 						icon={stat.icon}
 						trend={stat.trend}
+						className="rounded-card border-0 bg-secondary p-4 md:p-5"
 					/>
 				))}
 			</StatGrid>
@@ -315,7 +320,7 @@ export default function HealthPage() {
 						<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<p className="text-sm text-muted-foreground">{t("pages.health.dailyTimeline")}</p>
 					</div>
-					<TimelineWidget events={timelineEvents} />
+					<Timeline events={timelineEvents} />
 				</div>
 			</div>
 
@@ -329,6 +334,9 @@ export default function HealthPage() {
 					year={2026}
 					colorScale={heatmapColorScales.green}
 					metricLabel={t("pages.health.activities")}
+					locale={i18n.language}
+					lessLabel={t("common.less")}
+					moreLabel={t("common.more")}
 				/>
 			</div>
 
@@ -342,13 +350,14 @@ export default function HealthPage() {
 
 			<StatGrid columns={3}>
 				{aiStatCards.map((stat) => (
-					<StatCardWidget
+					<StatCard
 						key={stat.title}
 						title={stat.title}
 						value={stat.value}
 						subtitle={stat.subtitle}
 						icon={stat.icon}
 						trend={stat.trend}
+						className="rounded-card border-0 bg-secondary p-4 md:p-5"
 					/>
 				))}
 			</StatGrid>
@@ -427,7 +436,7 @@ export default function HealthPage() {
 						<Brain className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<p className="text-sm text-muted-foreground">{t("pages.health.insightTimeline")}</p>
 					</div>
-					<TimelineWidget events={insightTimeline} />
+					<Timeline events={insightTimeline} />
 				</div>
 			</div>
 		</div>
