@@ -1,3 +1,4 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { type ComponentProps, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Button } from "./button";
@@ -447,7 +448,10 @@ export function DatePicker({
 					<Button
 						type="button"
 						variant="ghost"
-						size="sm"
+						size="icon"
+						icon={<ChevronLeft />}
+						aria-label="Prev"
+						className="size-8"
 						disabled={disabled || !previousMonth || previousMonth.y < 1}
 						onClick={() => {
 							if (!previousMonth || previousMonth.y < 1) {
@@ -456,16 +460,17 @@ export function DatePicker({
 							focusDay.current = false;
 							setMonth(previousMonth);
 						}}
-					>
-						Prev
-					</Button>
+					/>
 					<span className="text-sm font-medium">
 						{formatCivil(month, locale, { month: "long", year: "numeric" })}
 					</span>
 					<Button
 						type="button"
 						variant="ghost"
-						size="sm"
+						size="icon"
+						icon={<ChevronRight />}
+						aria-label="Next"
+						className="size-8"
 						disabled={disabled || !followingMonth}
 						onClick={() => {
 							if (!followingMonth) {
@@ -474,9 +479,7 @@ export function DatePicker({
 							focusDay.current = false;
 							setMonth(followingMonth);
 						}}
-					>
-						Next
-					</Button>
+					/>
 				</div>
 				<div
 					className="grid grid-cols-7 gap-1 text-center"
@@ -564,9 +567,10 @@ export function DatePicker({
 									CALENDAR_BUTTON,
 									"flex h-8 w-8 items-center justify-center rounded-basalt-md text-sm",
 									inMonth ? "text-basalt-foreground" : "text-basalt-muted-foreground",
+									inRange && "hover:bg-basalt-accent",
 									inRange &&
 										iso === submitted &&
-										"bg-basalt-primary text-basalt-primary-foreground",
+										"bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary/90",
 								)}
 								onClick={() => inRange && commit(iso)}
 							>

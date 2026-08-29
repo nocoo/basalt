@@ -545,4 +545,14 @@ describe("DatePicker", () => {
 		expect(onChange).toHaveBeenCalled();
 		expect(screen.queryByRole("button", { name: "2024-01-16" })).not.toBeInTheDocument();
 	});
+
+	it("uses icon month controls and hoverable days", () => {
+		render(<DatePicker defaultValue="2024-01-15" aria-label="Date" />);
+		fireEvent.click(screen.getByRole("button", { name: /Date/ }));
+		expect(screen.getByRole("button", { name: "Prev" })).not.toHaveTextContent("Prev");
+		expect(screen.getByRole("button", { name: "Next" })).not.toHaveTextContent("Next");
+		expect(screen.getByRole("button", { name: "2024-01-16" }).className).toContain(
+			"hover:bg-basalt-accent",
+		);
+	});
 });
