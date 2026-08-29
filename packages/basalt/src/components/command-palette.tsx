@@ -28,6 +28,7 @@ export function CommandPalette({ children, shouldFilter, ...props }: CommandPale
 	return (
 		<Dialog {...props}>
 			<DialogContent
+				size="lg"
 				aria-describedby={undefined}
 				className="overflow-hidden bg-basalt-popover p-0 shadow-lg"
 			>

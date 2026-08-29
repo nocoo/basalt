@@ -1,6 +1,15 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { AlertDialog, AlertDialogTrigger } from "./alert-dialog";
+import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "./alert-dialog";
+import { DIALOG_SIZES } from "./dialog";
 
 describe("AlertDialog", () => {
 	it("renders a trigger", () => {
@@ -10,5 +19,39 @@ describe("AlertDialog", () => {
 			</AlertDialog>,
 		);
 		expect(screen.getByText("Delete")).toBeInTheDocument();
+	});
+
+	it("opens a confirmation panel with actions", () => {
+		render(
+			<AlertDialog>
+				<AlertDialogTrigger>Delete</AlertDialogTrigger>
+				<AlertDialogContent>
+					<AlertDialogTitle>Delete Account?</AlertDialogTitle>
+					<AlertDialogDescription>This cannot be undone.</AlertDialogDescription>
+					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogAction>Delete Account</AlertDialogAction>
+				</AlertDialogContent>
+			</AlertDialog>,
+		);
+		fireEvent.click(screen.getByText("Delete"));
+		expect(screen.getByRole("alertdialog", { name: "Delete Account?" })).toBeInTheDocument();
+		expect(screen.getByText("This cannot be undone.")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Cancel" }).className).toContain(
+			"border-basalt-border",
+		);
+		expect(screen.getByRole("button", { name: "Delete Account" }).className).toContain(
+			"bg-basalt-destructive",
+		);
+	});
+
+	it("applies size classes on the panel", () => {
+		render(
+			<AlertDialog defaultOpen>
+				<AlertDialogContent size="lg">
+					<AlertDialogTitle>Wide</AlertDialogTitle>
+				</AlertDialogContent>
+			</AlertDialog>,
+		);
+		expect(screen.getByRole("alertdialog").className).toContain(DIALOG_SIZES.lg);
 	});
 });
