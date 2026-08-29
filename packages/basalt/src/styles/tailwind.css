@@ -84,8 +84,8 @@
 	--animate-pulse: basalt-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 	--animate-basalt-overlay-in: basalt-overlay-in 200ms ease-out;
 	--animate-basalt-overlay-out: basalt-overlay-out 150ms ease-in forwards;
-	--animate-basalt-dialog-in: basalt-dialog-in 200ms ease-out;
-	--animate-basalt-dialog-out: basalt-dialog-out 150ms ease-in forwards;
+	--animate-basalt-dialog-in: basalt-dialog-in 220ms cubic-bezier(0.16, 1, 0.3, 1);
+	--animate-basalt-dialog-out: basalt-dialog-out 140ms cubic-bezier(0.4, 0, 1, 1) forwards;
 	--animate-basalt-collapsible-down: basalt-collapsible-down 150ms ease-out;
 	--animate-basalt-collapsible-up: basalt-collapsible-up 100ms ease-in;
 	--animate-basalt-shimmer: basalt-shimmer 1.5s ease-in-out infinite;

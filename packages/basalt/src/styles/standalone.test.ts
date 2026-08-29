@@ -12,6 +12,7 @@ describe("standalone css", () => {
 		expect(css).not.toMatch(/body\s*\{[^}]*margin:\s*0/);
 		expect(css).toContain("@keyframes basalt-pulse");
 		expect(css).toContain("@keyframes basalt-dialog-in");
+		expect(css).toContain("scale: 0.92");
 		expect(css).toContain("@keyframes basalt-overlay-in");
 		expect(css).toContain("@keyframes basalt-collapsible-down");
 		expect(css).toContain("@keyframes basalt-shimmer");
