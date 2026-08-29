@@ -457,7 +457,22 @@ add(
 	"Transient notification.",
 	() => <Button onClick={() => toast("Saved")}>Toast</Button>,
 	"<Button onClick={() => toast('Saved')}>Toast</Button>",
-	[{ name: "message", type: "string" }],
+	[
+		{ name: "message", type: "string" },
+		{
+			name: "variant",
+			type: '"default" | "success" | "error" | "warning" | "info"',
+			description: "Color and default icon.",
+		},
+		{ name: "icon", type: "ReactNode | false", description: "Override or hide the status icon." },
+		{
+			name: "close",
+			type: "boolean",
+			default: "true",
+			description: "Show an X close control.",
+		},
+		{ name: "description", type: "ReactNode" },
+	],
 	`import { Button } from "@nocoo/basalt/components/button";
 import { toast } from "@nocoo/basalt/components/toast";
 

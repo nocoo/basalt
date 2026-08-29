@@ -1,9 +1,9 @@
+import { Toaster } from "@nocoo/basalt/components/toast";
 import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { BrowserRouter, Route, Routes } from "react-router";
 import { DashboardLayout } from "@/components/DashboardLayout";
-import { Toaster as Sonner } from "@/components/ui/sonner";
 import AccountsPage from "./pages/AccountsPage";
 import BadgeLoginPage from "./pages/BadgeLoginPage";
 import BankingDashboardPage from "./pages/BankingDashboardPage";
@@ -34,7 +34,7 @@ const App = () => (
 	<ThemeProvider>
 		<LinkProvider>
 			<TooltipProvider>
-				<Sonner />
+				<Toaster />
 				<BrowserRouter>
 					<Routes>
 						{/* Layout route: sidebar + header wraps all dashboard pages */}

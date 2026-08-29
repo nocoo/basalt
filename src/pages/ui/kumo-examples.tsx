@@ -999,6 +999,47 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			code: "toast.info('Queued')",
 			render: () => <Button onClick={() => toast.info("Queued")}>Info</Button>,
 		},
+		{
+			title: "Close button",
+			code: 'toast("Saved", { close: true })',
+			render: () => (
+				<Button onClick={() => toast("Saved", { close: true, description: "Dismiss with X." })}>
+					With close
+				</Button>
+			),
+		},
+		{
+			title: "Hidden close",
+			code: 'toast("Saved", { close: false })',
+			render: () => (
+				<Button onClick={() => toast("Saved", { close: false, description: "No X control." })}>
+					No close
+				</Button>
+			),
+		},
+		{
+			title: "Custom icon",
+			code: 'toast.success("Verified", { icon: <Check /> })',
+			render: () => (
+				<Button
+					onClick={() =>
+						toast.success("Verified", {
+							icon: <Check className="size-4" />,
+							description: "Custom icon passed as a parameter.",
+						})
+					}
+				>
+					Custom icon
+				</Button>
+			),
+		},
+		{
+			title: "Hidden icon",
+			code: 'toast.success("Deployed", { icon: false })',
+			render: () => (
+				<Button onClick={() => toast.success("Deployed", { icon: false })}>No icon</Button>
+			),
+		},
 	],
 	dialog: [
 		{

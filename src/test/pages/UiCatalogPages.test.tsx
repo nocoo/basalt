@@ -217,7 +217,18 @@ describe("ui catalog", () => {
 		["empty", ["Basic", "With icon"]],
 		["meter", ["Basic Meter", "Custom Value Display", "Hidden Value"]],
 		["pagination", ["Full Controls (Default)", "Simple Controls"]],
-		["toast", ["Title Only", "Success Variant", "Error Variant"]],
+		[
+			"toast",
+			[
+				"Title Only",
+				"Success Variant",
+				"Error Variant",
+				"Close button",
+				"Hidden close",
+				"Custom icon",
+				"Hidden icon",
+			],
+		],
 		["clipboard-text", ["Short Text", "API Key", "Copy Alternate Text"]],
 		[
 			"dialog",
