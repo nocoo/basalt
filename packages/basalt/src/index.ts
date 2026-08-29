@@ -10,6 +10,14 @@ export {
 export { Avatar, AvatarFallback, AvatarImage } from "./components/avatar";
 export { Badge } from "./components/badge";
 export { Button } from "./components/button";
+export {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "./components/card";
 export { Checkbox } from "./components/checkbox";
 export { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./components/collapsible";
 export {
