@@ -38,8 +38,10 @@ CollapsibleTrigger.displayName = CollapsiblePrimitive.CollapsibleTrigger.display
 
 export const CollapsibleContent = React.forwardRef<
 	React.ElementRef<typeof CollapsiblePrimitive.CollapsibleContent>,
-	React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.CollapsibleContent>
->(({ className, children, ...props }, ref) => (
+	React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.CollapsibleContent> & {
+		unstyled?: boolean;
+	}
+>(({ className, children, unstyled = false, ...props }, ref) => (
 	<CollapsiblePrimitive.CollapsibleContent
 		ref={ref}
 		className={cn(
@@ -48,9 +50,13 @@ export const CollapsibleContent = React.forwardRef<
 		)}
 		{...props}
 	>
-		<div className="my-2 border-l-2 border-basalt-border py-1 pr-1 pl-4 text-base text-basalt-foreground">
-			{children}
-		</div>
+		{unstyled ? (
+			children
+		) : (
+			<div className="my-2 border-l-2 border-basalt-border py-1 pr-1 pl-4 text-base text-basalt-foreground">
+				{children}
+			</div>
+		)}
 	</CollapsiblePrimitive.CollapsibleContent>
 ));
 CollapsibleContent.displayName = CollapsiblePrimitive.CollapsibleContent.displayName;

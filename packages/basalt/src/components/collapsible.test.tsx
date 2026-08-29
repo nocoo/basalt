@@ -33,4 +33,15 @@ describe("Collapsible", () => {
 			"data-[state=open]:animate-basalt-collapsible-down",
 		);
 	});
+
+	it("can render unstyled content", () => {
+		render(
+			<Collapsible defaultOpen>
+				<CollapsibleTrigger>Open</CollapsibleTrigger>
+				<CollapsibleContent unstyled>Plain</CollapsibleContent>
+			</Collapsible>,
+		);
+		const panel = screen.getByText("Plain");
+		expect(panel.className).not.toContain("border-l-2");
+	});
 });
