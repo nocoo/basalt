@@ -84,6 +84,7 @@
 	--color-heatmap-orange-3: hsl(var(--heatmap-orange-3));
 	--color-heatmap-orange-4: hsl(var(--heatmap-orange-4));
 
+	--radius-island: var(--basalt-radius-island);
 	--radius-card: var(--basalt-radius-card);
 	--radius-widget: var(--basalt-radius-widget);
 	--radius-lg: var(--radius);

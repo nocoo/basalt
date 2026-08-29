@@ -21,6 +21,7 @@
 	--basalt-input: 220 13% 88%;
 	--basalt-ring: 217 91% 60%;
 	--basalt-radius: 0.75rem;
+	--basalt-radius-island: 20px;
 	--basalt-radius-card: 14px;
 	--basalt-radius-widget: 10px;
 	--basalt-font-sans: "Inter", system-ui, -apple-system, sans-serif;

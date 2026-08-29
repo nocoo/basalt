@@ -105,7 +105,7 @@ import {
 	SelectValue,
 } from "@nocoo/basalt/components/select";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@nocoo/basalt/components/sheet";
-import { Sidebar } from "@nocoo/basalt/components/sidebar";
+import { ContentIsland, Sidebar } from "@nocoo/basalt/components/sidebar";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Slider } from "@nocoo/basalt/components/slider";
 import {
@@ -339,13 +339,15 @@ add(
 add("toggle", "Pressed toggle.", () => <Toggle aria-label="Bold">B</Toggle>, "<Toggle>B</Toggle>");
 add(
 	"toggle-group",
-	"Grouped toggles.",
+	"Segmented tabs for switching a compact set of modes.",
 	() => (
-		<ToggleGroup type="single">
-			<ToggleGroupItem value="l">Left</ToggleGroupItem>
+		<ToggleGroup type="single" defaultValue="live" aria-label="Mode">
+			<ToggleGroupItem value="live">Live</ToggleGroupItem>
+			<ToggleGroupItem value="mock">Mock</ToggleGroupItem>
+			<ToggleGroupItem value="snapshot">Snapshot</ToggleGroupItem>
 		</ToggleGroup>
 	),
-	"<ToggleGroup />",
+	'<ToggleGroup type="single" defaultValue="live"><ToggleGroupItem value="live">Live</ToggleGroupItem></ToggleGroup>',
 );
 add(
 	"pagination",
@@ -707,7 +709,19 @@ add(
 	() => <CommandPaletteDemo />,
 	'<Button variant="outline">Search pages...</Button>',
 );
-add("sidebar", "App sidebar shell.", () => <Sidebar>Nav</Sidebar>, "<Sidebar />");
+add(
+	"sidebar",
+	"App chrome: L0 sidebar with an L1 content island that floats a corner shadow.",
+	() => (
+		<div className="flex h-56 w-full overflow-hidden bg-basalt-background">
+			<Sidebar className="h-full min-h-0 w-40">Catalog</Sidebar>
+			<div className="flex min-w-0 flex-1 flex-col p-2">
+				<ContentIsland className="p-4">At a glance</ContentIsland>
+			</div>
+		</div>
+	),
+	"<Sidebar>Catalog</Sidebar>\n<ContentIsland>At a glance</ContentIsland>",
+);
 add(
 	"flow",
 	"Step flow.",

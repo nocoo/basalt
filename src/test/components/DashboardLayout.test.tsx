@@ -41,6 +41,14 @@ describe("DashboardLayout", () => {
 		expect(screen.getByRole("heading", { name: "Command Palette" })).toBeInTheDocument();
 	});
 
+	it("floats the content island with a corner shadow", () => {
+		renderLayout("/");
+		const island = screen.getByTestId("dashboard-outlet").parentElement;
+		expect(island).toHaveClass("shadow-sm");
+		expect(island).toHaveClass("ring-1");
+		expect(island).toHaveClass("ring-basalt-border/40");
+	});
+
 	it("opens the mobile drawer and locks body scroll when the menu button is clicked", () => {
 		renderLayout("/");
 		fireEvent.click(screen.getByLabelText("Open navigation menu"));

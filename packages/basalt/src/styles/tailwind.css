@@ -65,6 +65,7 @@
 	--radius-basalt-lg: var(--basalt-radius);
 	--radius-basalt-md: calc(var(--basalt-radius) - 2px);
 	--radius-basalt-sm: calc(var(--basalt-radius) - 4px);
+	--radius-basalt-island: var(--basalt-radius-island);
 	--radius-basalt-card: var(--basalt-radius-card);
 	--radius-basalt-widget: var(--basalt-radius-widget);
 	--font-basalt-sans: var(--basalt-font-sans);

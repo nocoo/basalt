@@ -1,4 +1,5 @@
 import { Link } from "@nocoo/basalt/components/link";
+import { ContentIsland } from "@nocoo/basalt/components/sidebar";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
 import { useTheme } from "@nocoo/basalt/providers/theme";
 import { Menu } from "lucide-react";
@@ -129,12 +130,9 @@ export function DashboardLayout() {
 					</div>
 				</header>
 				<div className="flex min-h-0 flex-1 flex-col px-2 pb-2 md:px-3 md:pb-3">
-					<div
-						data-doc-scroll
-						className="min-h-0 flex-1 overflow-y-auto rounded-[16px] bg-card p-3 md:rounded-[20px] md:p-5"
-					>
+					<ContentIsland data-doc-scroll>
 						<Outlet />
-					</div>
+					</ContentIsland>
 				</div>
 			</main>
 		</div>
