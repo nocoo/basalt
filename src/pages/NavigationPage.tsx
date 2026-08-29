@@ -441,7 +441,10 @@ export default function NavigationPage() {
 							{t("pages.navigation.underlineStyle")}
 						</p>
 						<Tabs defaultValue="all">
-							<TabsList className="bg-transparent border-b border-border rounded-none h-auto p-0 gap-4">
+							<TabsList
+								showIndicator={false}
+								className="h-auto gap-4 rounded-none border-b border-border bg-transparent p-0"
+							>
 								{underlineTabs.map((tab) => (
 									<TabsTrigger
 										key={tab.value}
@@ -481,7 +484,7 @@ export default function NavigationPage() {
 							{t("pages.navigation.pillStyle")}
 						</p>
 						<Tabs defaultValue="day">
-							<TabsList className="bg-transparent gap-1 p-0">
+							<TabsList showIndicator={false} className="gap-1 bg-transparent p-0">
 								{pillTabs.map((tab) => (
 									<TabsTrigger
 										key={tab.value}

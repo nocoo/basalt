@@ -1,12 +1,10 @@
+import { BarChart } from "@nocoo/basalt/charts/bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Bar, BarChart, ResponsiveContainer } from "recharts";
-import { chart, chartPrimary } from "@/lib/palette";
 
-const data = Array.from({ length: 24 }, (_, i) => ({
+const data = Array.from({ length: 24 }, () => ({
 	value: 3000 + Math.random() * 5000,
-	fill: i < 12 ? chartPrimary : chart.gray,
 }));
 
 export function SummaryMetricCard() {
@@ -30,17 +28,11 @@ export function SummaryMetricCard() {
 						<span className="text-sm font-medium text-success font-display">+3.1%</span>
 						<span className="text-sm text-muted-foreground">{t("common.vsLastMonth")}</span>
 					</div>
-					<div
-						className="mt-3 flex-1 min-h-[50px]"
-						role="img"
-						aria-label={t("dashboard.totalBalanceAria")}
-					>
-						<ResponsiveContainer width="100%" height="100%">
-							<BarChart data={data} barGap={1} barCategoryGap={1}>
-								<Bar dataKey="value" radius={[2, 2, 0, 0]} maxBarSize={8} />
-							</BarChart>
-						</ResponsiveContainer>
-					</div>
+					<BarChart
+						data={data.map((row, index) => ({ x: index, y: row.value }))}
+						ariaLabel={t("dashboard.totalBalanceAria")}
+						className="mt-3 min-h-[50px] w-full flex-1"
+					/>
 				</div>
 			</CardContent>
 		</Card>

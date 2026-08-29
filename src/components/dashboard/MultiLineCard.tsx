@@ -1,13 +1,6 @@
+import { LineChart } from "@nocoo/basalt/charts/line";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { useTranslation } from "react-i18next";
-import {
-	Line,
-	LineChart as RechartsLineChart,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-} from "recharts";
-import { CHART_COLORS, chartAxis } from "@/lib/palette";
 
 const data = [
 	{ name: "Week 1", retention: 78, activation: 62, conversion: 34 },
@@ -26,38 +19,12 @@ export function MultiLineCard() {
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="h-56">
-				<ResponsiveContainer width="100%" height="100%">
-					<RechartsLineChart data={data} margin={{ top: 8, right: 0, left: 0, bottom: 0 }}>
-						<XAxis
-							dataKey="name"
-							axisLine={false}
-							tickLine={false}
-							tick={{ fill: chartAxis, fontSize: 11 }}
-						/>
-						<Tooltip contentStyle={{ borderRadius: 10 }} />
-						<Line
-							type="monotone"
-							dataKey="retention"
-							stroke={CHART_COLORS[0]}
-							strokeWidth={2}
-							dot={false}
-						/>
-						<Line
-							type="monotone"
-							dataKey="activation"
-							stroke={CHART_COLORS[2]}
-							strokeWidth={2}
-							dot={false}
-						/>
-						<Line
-							type="monotone"
-							dataKey="conversion"
-							stroke={CHART_COLORS[4]}
-							strokeWidth={2}
-							dot={false}
-						/>
-					</RechartsLineChart>
-				</ResponsiveContainer>
+				<LineChart
+					data={data.map((row) => ({ x: row.name, y: row.retention, y2: row.activation }))}
+					ariaLabel={t("dashboard.multiSeriesTrend")}
+					className="h-full w-full"
+					showAxes
+				/>
 			</CardContent>
 		</Card>
 	);

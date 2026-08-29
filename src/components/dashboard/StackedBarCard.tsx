@@ -1,7 +1,6 @@
+import { StackedBarChart } from "@nocoo/basalt/charts/stacked-bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { useTranslation } from "react-i18next";
-import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { CHART_COLORS, chartAxis } from "@/lib/palette";
 
 const stackedData = [
 	{ name: "Mon", a: 120, b: 80, c: 60 },
@@ -21,20 +20,11 @@ export function StackedBarCard() {
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="h-56">
-				<ResponsiveContainer width="100%" height="100%">
-					<RechartsBarChart data={stackedData} margin={{ top: 12, right: 0, left: 0, bottom: 0 }}>
-						<XAxis
-							dataKey="name"
-							axisLine={false}
-							tickLine={false}
-							tick={{ fill: chartAxis, fontSize: 11 }}
-						/>
-						<Tooltip contentStyle={{ borderRadius: 10 }} />
-						<Bar dataKey="a" stackId="stack" fill={CHART_COLORS[0]} radius={[4, 4, 0, 0]} />
-						<Bar dataKey="b" stackId="stack" fill={CHART_COLORS[2]} radius={[4, 4, 0, 0]} />
-						<Bar dataKey="c" stackId="stack" fill={CHART_COLORS[4]} radius={[4, 4, 0, 0]} />
-					</RechartsBarChart>
-				</ResponsiveContainer>
+				<StackedBarChart
+					data={stackedData.map((row) => ({ x: row.name, y: row.a, y2: row.b }))}
+					ariaLabel={t("dashboard.stackedEngagement")}
+					className="h-full w-full"
+				/>
 			</CardContent>
 		</Card>
 	);

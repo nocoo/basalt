@@ -1,7 +1,6 @@
+import { FunnelChart } from "@nocoo/basalt/charts/funnel";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { useTranslation } from "react-i18next";
-import { Funnel, FunnelChart, LabelList, ResponsiveContainer, Tooltip } from "recharts";
-import { CHART_COLORS } from "@/lib/palette";
 
 const data = [
 	{ name: "Visits", value: 2400 },
@@ -20,14 +19,11 @@ export function FunnelChartCard() {
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="h-56">
-				<ResponsiveContainer width="100%" height="100%">
-					<FunnelChart>
-						<Tooltip />
-						<Funnel data={data} dataKey="value" stroke={CHART_COLORS[1]} fill={CHART_COLORS[1]}>
-							<LabelList position="right" fill="#6b7280" stroke="none" dataKey="name" />
-						</Funnel>
-					</FunnelChart>
-				</ResponsiveContainer>
+				<FunnelChart
+					data={data}
+					ariaLabel={t("dashboard.funnelConversion")}
+					className="h-full w-full"
+				/>
 			</CardContent>
 		</Card>
 	);

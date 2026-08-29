@@ -1,8 +1,7 @@
+import { LineChart } from "@nocoo/basalt/charts/line";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { Activity } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { chartAxis, chartPrimary } from "@/lib/palette";
 
 const data = [
 	{ name: "Mon", value: 2400 },
@@ -33,30 +32,12 @@ export function TrendLineCard() {
 				</div>
 			</CardHeader>
 			<CardContent className="flex flex-col">
-				<div
-					className="flex-1 min-h-[100px]"
-					role="img"
-					aria-label={t("dashboard.spendingTrendAria")}
-				>
-					<ResponsiveContainer width="100%" height="100%">
-						<LineChart data={data}>
-							<XAxis
-								dataKey="name"
-								tick={{ fill: chartAxis, fontSize: 11 }}
-								axisLine={false}
-								tickLine={false}
-							/>
-							<YAxis hide />
-							<Line
-								type="monotone"
-								dataKey="value"
-								stroke={chartPrimary}
-								strokeWidth={2}
-								dot={false}
-							/>
-						</LineChart>
-					</ResponsiveContainer>
-				</div>
+				<LineChart
+					data={data.map((row) => ({ x: row.name, y: row.value }))}
+					ariaLabel={t("dashboard.spendingTrendAria")}
+					className="min-h-[100px] w-full flex-1"
+					showAxes
+				/>
 			</CardContent>
 		</Card>
 	);

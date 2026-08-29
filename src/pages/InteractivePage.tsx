@@ -17,6 +17,7 @@ import {
 } from "@nocoo/basalt/components/collapsible";
 import {
 	Dialog,
+	DialogClose,
 	DialogContent,
 	DialogDescription,
 	DialogFooter,
@@ -26,11 +27,12 @@ import {
 } from "@nocoo/basalt/components/dialog";
 import { Input } from "@nocoo/basalt/components/input";
 import { Label } from "@nocoo/basalt/components/label";
+import { Meter } from "@nocoo/basalt/components/meter";
 import { Popover, PopoverContent, PopoverTrigger } from "@nocoo/basalt/components/popover";
-import { Progress } from "@nocoo/basalt/components/progress";
 import { Separator } from "@nocoo/basalt/components/separator";
 import {
 	Sheet,
+	SheetClose,
 	SheetContent,
 	SheetDescription,
 	SheetFooter,
@@ -314,7 +316,7 @@ export default function InteractivePage() {
 							<span>{t("pages.interactive.uploading")}</span>
 							<span>60%</span>
 						</div>
-						<Progress value={60} />
+						<Meter value={60} hideValue aria-label={t("pages.interactive.uploading")} />
 					</div>
 					<div className="flex items-center gap-6">
 						<div className="flex items-center gap-2">
@@ -396,7 +398,9 @@ export default function InteractivePage() {
 								</div>
 							</div>
 							<SheetFooter className="mt-6">
-								<Button size="sm">{t("common.save")}</Button>
+								<SheetClose asChild>
+									<Button size="sm">{t("common.save")}</Button>
+								</SheetClose>
 							</SheetFooter>
 						</SheetContent>
 					</Sheet>
@@ -411,6 +415,13 @@ export default function InteractivePage() {
 								<SheetTitle>{t("pages.interactive.filters")}</SheetTitle>
 								<SheetDescription>{t("pages.interactive.narrowDownResults")}</SheetDescription>
 							</SheetHeader>
+							<SheetFooter className="mt-6">
+								<SheetClose asChild>
+									<Button variant="outline" size="sm">
+										{t("common.cancel")}
+									</Button>
+								</SheetClose>
+							</SheetFooter>
 						</SheetContent>
 					</Sheet>
 					<Sheet>
@@ -423,6 +434,13 @@ export default function InteractivePage() {
 							<SheetHeader>
 								<SheetTitle>{t("pages.interactive.quickActions")}</SheetTitle>
 							</SheetHeader>
+							<SheetFooter className="mt-6">
+								<SheetClose asChild>
+									<Button variant="outline" size="sm">
+										{t("common.cancel")}
+									</Button>
+								</SheetClose>
+							</SheetFooter>
 						</SheetContent>
 					</Sheet>
 				</div>
@@ -448,7 +466,9 @@ export default function InteractivePage() {
 								</div>
 							</div>
 							<DialogFooter>
-								<Button size="sm">{t("common.save")}</Button>
+								<DialogClose asChild>
+									<Button size="sm">{t("common.save")}</Button>
+								</DialogClose>
 							</DialogFooter>
 						</DialogContent>
 					</Dialog>

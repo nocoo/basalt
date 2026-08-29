@@ -1,7 +1,7 @@
+import { DonutChart } from "@nocoo/basalt/charts/donut";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Pie, PieChart, ResponsiveContainer } from "recharts";
 import { CHART_COLORS } from "@/lib/palette";
 
 const data = [
@@ -26,26 +26,12 @@ export function DonutChartCard() {
 			</CardHeader>
 			<CardContent className="flex flex-col">
 				<div className="flex flex-1 flex-col items-center min-h-0">
-					<div
-						className="flex-1 min-h-0 w-full flex items-center justify-center"
-						role="img"
-						aria-label={t("dashboard.expenseBreakdownAria")}
-					>
-						<div className="aspect-square h-full max-h-[180px] min-h-[100px]">
-							<ResponsiveContainer width="100%" height="100%">
-								<PieChart>
-									<Pie
-										data={data}
-										cx="50%"
-										cy="50%"
-										innerRadius="50%"
-										outerRadius="80%"
-										dataKey="value"
-										strokeWidth={0}
-									/>
-								</PieChart>
-							</ResponsiveContainer>
-						</div>
+					<div className="flex min-h-0 w-full flex-1 items-center justify-center">
+						<DonutChart
+							data={data}
+							ariaLabel={t("dashboard.expenseBreakdownAria")}
+							className="aspect-square h-full max-h-[180px] min-h-[100px]"
+						/>
 					</div>
 					<div className="mt-3 grid w-full grid-cols-3 gap-x-4 gap-y-3">
 						{data.map((item, i) => (

@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -67,11 +67,13 @@ describe("Examples package contract", () => {
 			const usesDashboardChart = source.includes("@/components/dashboard/");
 			expect(usesPackageChart || usesDashboardChart, name).toBe(true);
 		}
-		const barCard = readFileSync(
-			path.join(process.cwd(), "src/components/dashboard/BarChartCard.tsx"),
-			"utf8",
-		);
-		expect(barCard).toMatch(/@nocoo\/basalt\/charts\//);
-		expect(barCard).not.toMatch(/from ["']recharts["']/);
+	});
+
+	it("dashboard modules do not import recharts", () => {
+		const dir = path.join(process.cwd(), "src/components/dashboard");
+		for (const file of readdirSync(dir).filter((name) => name.endsWith(".tsx"))) {
+			const source = readFileSync(path.join(dir, file), "utf8");
+			expect(source, file).not.toMatch(/from ["']recharts["']/);
+		}
 	});
 });

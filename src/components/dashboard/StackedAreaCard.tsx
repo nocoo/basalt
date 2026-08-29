@@ -1,13 +1,6 @@
+import { AreaChart } from "@nocoo/basalt/charts/area";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { useTranslation } from "react-i18next";
-import {
-	Area,
-	AreaChart as RechartsAreaChart,
-	ResponsiveContainer,
-	Tooltip,
-	XAxis,
-} from "recharts";
-import { CHART_COLORS, chartAxis } from "@/lib/palette";
 
 const data = [
 	{ name: "Mon", core: 120, growth: 80, churn: 30 },
@@ -27,41 +20,12 @@ export function StackedAreaCard() {
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="h-56">
-				<ResponsiveContainer width="100%" height="100%">
-					<RechartsAreaChart data={data} margin={{ top: 8, right: 0, left: 0, bottom: 0 }}>
-						<XAxis
-							dataKey="name"
-							axisLine={false}
-							tickLine={false}
-							tick={{ fill: chartAxis, fontSize: 11 }}
-						/>
-						<Tooltip contentStyle={{ borderRadius: 10 }} />
-						<Area
-							type="monotone"
-							dataKey="core"
-							stackId="1"
-							stroke={CHART_COLORS[0]}
-							fill={CHART_COLORS[0]}
-							fillOpacity={0.2}
-						/>
-						<Area
-							type="monotone"
-							dataKey="growth"
-							stackId="1"
-							stroke={CHART_COLORS[2]}
-							fill={CHART_COLORS[2]}
-							fillOpacity={0.2}
-						/>
-						<Area
-							type="monotone"
-							dataKey="churn"
-							stackId="1"
-							stroke={CHART_COLORS[4]}
-							fill={CHART_COLORS[4]}
-							fillOpacity={0.2}
-						/>
-					</RechartsAreaChart>
-				</ResponsiveContainer>
+				<AreaChart
+					data={data.map((row) => ({ x: row.name, y: row.core, y2: row.growth }))}
+					ariaLabel={t("dashboard.stackedActivity")}
+					className="h-full w-full"
+					showAxes
+				/>
 			</CardContent>
 		</Card>
 	);

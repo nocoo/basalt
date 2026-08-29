@@ -1,7 +1,6 @@
+import { BulletChart } from "@nocoo/basalt/charts/bullet";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { useTranslation } from "react-i18next";
-import { Bar, BarChart as RechartsBarChart, ResponsiveContainer, Tooltip, XAxis } from "recharts";
-import { CHART_COLORS, chartAxis } from "@/lib/palette";
 
 const data = [
 	{ name: "Revenue", value: 68, target: 80 },
@@ -17,23 +16,7 @@ export function BulletChartCard() {
 				<CardTitle className="text-sm text-muted-foreground">{t("dashboard.bulletKpis")}</CardTitle>
 			</CardHeader>
 			<CardContent className="h-56">
-				<ResponsiveContainer width="100%" height="100%">
-					<RechartsBarChart
-						data={data}
-						layout="vertical"
-						margin={{ top: 8, right: 0, left: 0, bottom: 0 }}
-					>
-						<XAxis
-							type="number"
-							axisLine={false}
-							tickLine={false}
-							tick={{ fill: chartAxis, fontSize: 11 }}
-						/>
-						<Tooltip contentStyle={{ borderRadius: 10 }} />
-						<Bar dataKey="target" fill={CHART_COLORS[6]} radius={[6, 6, 6, 6]} barSize={10} />
-						<Bar dataKey="value" fill={CHART_COLORS[1]} radius={[6, 6, 6, 6]} barSize={6} />
-					</RechartsBarChart>
-				</ResponsiveContainer>
+				<BulletChart data={data} ariaLabel={t("dashboard.bulletKpis")} className="h-full w-full" />
 			</CardContent>
 		</Card>
 	);

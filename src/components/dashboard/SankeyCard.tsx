@@ -1,7 +1,6 @@
+import { SankeyChart } from "@nocoo/basalt/charts/sankey";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { useTranslation } from "react-i18next";
-import { ResponsiveContainer, Sankey, Tooltip } from "recharts";
-import { CHART_COLORS } from "@/lib/palette";
 
 const data = {
 	nodes: [
@@ -29,18 +28,11 @@ export function SankeyCard() {
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="h-56">
-				<ResponsiveContainer width="100%" height="100%">
-					<Sankey
-						data={data}
-						nodePadding={16}
-						nodeWidth={12}
-						linkCurvature={0.5}
-						node={{ stroke: CHART_COLORS[2], strokeWidth: 1, fill: CHART_COLORS[2] }}
-						link={{ stroke: CHART_COLORS[0], strokeOpacity: 0.3 }}
-					>
-						<Tooltip />
-					</Sankey>
-				</ResponsiveContainer>
+				<SankeyChart
+					data={data}
+					ariaLabel={t("dashboard.userFlowSankey")}
+					className="h-full w-full"
+				/>
 			</CardContent>
 		</Card>
 	);

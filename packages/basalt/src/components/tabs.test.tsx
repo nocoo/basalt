@@ -41,4 +41,15 @@ describe("Tabs", () => {
 		);
 		expect(container.querySelector('[aria-hidden="true"]')).toBeTruthy();
 	});
+
+	it("can hide the sliding indicator", () => {
+		const { container } = render(
+			<Tabs defaultValue="a">
+				<TabsList showIndicator={false}>
+					<TabsTrigger value="a">Home</TabsTrigger>
+				</TabsList>
+			</Tabs>,
+		);
+		expect(container.querySelector('[aria-hidden="true"]')).toBeNull();
+	});
 });

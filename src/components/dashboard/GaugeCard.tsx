@@ -1,14 +1,11 @@
+import { Gauge } from "@nocoo/basalt/charts/gauge";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { Shield } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { PolarAngleAxis, RadialBar, RadialBarChart, ResponsiveContainer } from "recharts";
-import { chart } from "@/lib/palette";
 
 const score = 742;
 const max = 850;
 const pct = Math.round((score / max) * 100);
-
-const data = [{ value: pct }];
 
 export function GaugeCard() {
 	const { t } = useTranslation();
@@ -34,40 +31,11 @@ export function GaugeCard() {
 			</CardHeader>
 			<CardContent className="flex flex-col">
 				<div className="flex flex-1 flex-col items-center min-h-0">
-					<div
-						className="flex-1 min-h-0 w-full flex items-center justify-center"
-						role="img"
-						aria-label={t("dashboard.creditScoreAria", { score, max, rating: label })}
-					>
-						<div className="relative aspect-square h-full max-h-[220px] min-h-[100px]">
-							<ResponsiveContainer width="100%" height="100%">
-								<RadialBarChart
-									cx="50%"
-									cy="50%"
-									innerRadius="75%"
-									outerRadius="95%"
-									startAngle={90}
-									endAngle={-270}
-									data={data}
-									barSize={12}
-								>
-									<PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
-									<RadialBar
-										dataKey="value"
-										cornerRadius={6}
-										fill={chart.green}
-										background={{ fill: chart.gray }}
-									/>
-								</RadialBarChart>
-							</ResponsiveContainer>
-							<div className="absolute inset-0 flex flex-col items-center justify-center">
-								<span className="text-xl font-semibold text-foreground font-display tracking-tight">
-									{score}
-								</span>
-								<span className={`text-[10px] font-medium ${color}`}>{label}</span>
-							</div>
-						</div>
-					</div>
+					<Gauge
+						value={pct}
+						ariaLabel={t("dashboard.creditScoreAria", { score, max, rating: label })}
+						className="w-full"
+					/>
 					<div className="mt-3 grid w-full grid-cols-3 gap-x-4 gap-y-3">
 						<div className="flex flex-col items-center gap-0.5">
 							<span className="text-sm font-medium text-foreground font-display">{score}</span>

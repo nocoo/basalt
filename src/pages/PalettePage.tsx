@@ -4,7 +4,7 @@ import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { LineChart } from "@nocoo/basalt/charts/line";
 import { Activity, BarChart3, LineChart as LineChartIcon, Palette, Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { CHART_COLORS, chart, chartNegative, chartPositive, chartPrimary } from "@/lib/palette";
+import { CHART_COLORS } from "@/lib/palette";
 
 // ── Mock data for example charts ──
 
@@ -132,19 +132,18 @@ export default function PalettePage() {
 	const { t } = useTranslation();
 
 	const lineLegend = [
-		{ label: t("pages.palette.seriesA"), color: chart.primary },
-		{ label: t("pages.palette.seriesB"), color: chart.purple },
-		{ label: t("pages.palette.seriesC"), color: chart.green },
+		{ label: t("pages.palette.seriesA"), color: CHART_COLORS[0] },
+		{ label: t("pages.palette.seriesB"), color: CHART_COLORS[2] },
 	];
 
 	const barLegend = [
-		{ label: t("pages.palette.income"), color: chartPrimary },
-		{ label: t("pages.palette.expense"), color: chart.gray },
+		{ label: t("pages.palette.income"), color: CHART_COLORS[0] },
+		{ label: t("pages.palette.expense"), color: CHART_COLORS[2] },
 	];
 
 	const areaLegend = [
-		{ label: t("pages.palette.inflow"), color: chartPositive },
-		{ label: t("pages.palette.outflow"), color: chartNegative },
+		{ label: t("pages.palette.inflow"), color: CHART_COLORS[0] },
+		{ label: t("pages.palette.outflow"), color: CHART_COLORS[2] },
 	];
 
 	return (

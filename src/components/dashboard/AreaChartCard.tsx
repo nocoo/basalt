@@ -1,8 +1,8 @@
+import { AreaChart } from "@nocoo/basalt/charts/area";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { chart, chartAxis } from "@/lib/palette";
+import { CHART_COLORS } from "@/lib/palette";
 
 const data = [
 	{ day: "Mon", income: 420, expense: 320 },
@@ -29,69 +29,23 @@ export function AreaChartCard() {
 					</div>
 					<div className="flex items-center gap-4">
 						<div className="flex items-center gap-1.5">
-							<div className="h-2 w-2 rounded-full" style={{ background: chart.primary }} />
+							<div className="h-2 w-2 rounded-full" style={{ background: CHART_COLORS[0] }} />
 							<span className="text-xs text-muted-foreground">{t("dashboard.income")}</span>
 						</div>
 						<div className="flex items-center gap-1.5">
-							<div className="h-2 w-2 rounded-full" style={{ background: chart.purple }} />
+							<div className="h-2 w-2 rounded-full" style={{ background: CHART_COLORS[2] }} />
 							<span className="text-xs text-muted-foreground">{t("dashboard.expense")}</span>
 						</div>
 					</div>
 				</div>
 			</CardHeader>
 			<CardContent className="flex flex-col">
-				<div
-					className="flex-1 min-h-[200px]"
-					role="img"
-					aria-label={t("dashboard.weeklyActivityAria")}
-				>
-					<ResponsiveContainer width="100%" height="100%">
-						<AreaChart data={data}>
-							<defs>
-								<linearGradient id="incomeGrad" x1="0" y1="0" x2="0" y2="1">
-									<stop offset="0%" stopColor={chart.primary} stopOpacity={0.3} />
-									<stop offset="100%" stopColor={chart.primary} stopOpacity={0} />
-								</linearGradient>
-								<linearGradient id="expenseGrad" x1="0" y1="0" x2="0" y2="1">
-									<stop offset="0%" stopColor={chart.purple} stopOpacity={0.3} />
-									<stop offset="100%" stopColor={chart.purple} stopOpacity={0} />
-								</linearGradient>
-							</defs>
-							<CartesianGrid
-								strokeDasharray="3 3"
-								stroke={chartAxis}
-								strokeOpacity={0.15}
-								vertical={false}
-							/>
-							<XAxis
-								dataKey="day"
-								tick={{ fill: chartAxis, fontSize: 11 }}
-								axisLine={false}
-								tickLine={false}
-							/>
-							<YAxis
-								tick={{ fill: chartAxis, fontSize: 11 }}
-								axisLine={false}
-								tickLine={false}
-								width={30}
-							/>
-							<Area
-								type="monotone"
-								dataKey="income"
-								stroke={chart.primary}
-								strokeWidth={2}
-								fill="url(#incomeGrad)"
-							/>
-							<Area
-								type="monotone"
-								dataKey="expense"
-								stroke={chart.purple}
-								strokeWidth={2}
-								fill="url(#expenseGrad)"
-							/>
-						</AreaChart>
-					</ResponsiveContainer>
-				</div>
+				<AreaChart
+					data={data.map((row) => ({ x: row.day, y: row.income, y2: row.expense }))}
+					ariaLabel={t("dashboard.weeklyActivityAria")}
+					className="min-h-[200px] w-full flex-1"
+					showAxes
+				/>
 			</CardContent>
 		</Card>
 	);

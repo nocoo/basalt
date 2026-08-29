@@ -1,7 +1,6 @@
+import { RadarChart } from "@nocoo/basalt/charts/radar";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { useTranslation } from "react-i18next";
-import { PolarAngleAxis, PolarGrid, Radar, RadarChart, ResponsiveContainer } from "recharts";
-import { CHART_COLORS, chartAxis } from "@/lib/palette";
 
 const radarData = [
 	{ subject: "Speed", value: 80 },
@@ -21,18 +20,11 @@ export function RadarChartCard() {
 				</CardTitle>
 			</CardHeader>
 			<CardContent className="h-56">
-				<ResponsiveContainer width="100%" height="100%">
-					<RadarChart data={radarData} outerRadius={80}>
-						<PolarGrid stroke={chartAxis} strokeOpacity={0.2} />
-						<PolarAngleAxis dataKey="subject" tick={{ fill: chartAxis, fontSize: 11 }} />
-						<Radar
-							dataKey="value"
-							fill={CHART_COLORS[3]}
-							fillOpacity={0.3}
-							stroke={CHART_COLORS[3]}
-						/>
-					</RadarChart>
-				</ResponsiveContainer>
+				<RadarChart
+					data={radarData}
+					ariaLabel={t("dashboard.capabilityRadar")}
+					className="h-full w-full"
+				/>
 			</CardContent>
 		</Card>
 	);

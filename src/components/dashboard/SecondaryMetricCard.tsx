@@ -1,8 +1,7 @@
+import { BarChart } from "@nocoo/basalt/charts/bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { TrendingUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Bar, BarChart, ResponsiveContainer } from "recharts";
-import { chart } from "@/lib/palette";
 
 const data = Array.from({ length: 20 }, (_, _i) => ({ value: 2000 + Math.random() * 6000 }));
 
@@ -27,17 +26,11 @@ export function SecondaryMetricCard() {
 						<span className="text-sm font-medium text-success font-display">+2.4%</span>
 						<span className="text-sm text-muted-foreground">{t("common.vsLastMonth")}</span>
 					</div>
-					<div
-						className="mt-3 flex-1 min-h-[50px]"
-						role="img"
-						aria-label={t("dashboard.incomeAria")}
-					>
-						<ResponsiveContainer width="100%" height="100%">
-							<BarChart data={data} barGap={1} barCategoryGap={1}>
-								<Bar dataKey="value" fill={chart.purple} radius={[2, 2, 0, 0]} maxBarSize={8} />
-							</BarChart>
-						</ResponsiveContainer>
-					</div>
+					<BarChart
+						data={data.map((row, index) => ({ x: index, y: row.value }))}
+						ariaLabel={t("dashboard.incomeAria")}
+						className="mt-3 min-h-[50px] w-full flex-1"
+					/>
 				</div>
 			</CardContent>
 		</Card>

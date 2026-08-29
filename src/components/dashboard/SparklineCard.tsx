@@ -1,7 +1,6 @@
+import { Sparkline } from "@nocoo/basalt/charts/sparkline";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { useTranslation } from "react-i18next";
-import { Line, LineChart as RechartsLineChart, ResponsiveContainer } from "recharts";
-import { CHART_COLORS } from "@/lib/palette";
 
 const sparkData = [
 	{ value: 18 },
@@ -24,19 +23,11 @@ export function SparklineCard() {
 			</CardHeader>
 			<CardContent className="space-y-3">
 				<div className="text-2xl font-semibold text-foreground">24.8k</div>
-				<div className="h-14">
-					<ResponsiveContainer width="100%" height="100%">
-						<RechartsLineChart data={sparkData} margin={{ top: 4, right: 0, left: 0, bottom: 0 }}>
-							<Line
-								type="monotone"
-								dataKey="value"
-								stroke={CHART_COLORS[1]}
-								strokeWidth={2}
-								dot={false}
-							/>
-						</RechartsLineChart>
-					</ResponsiveContainer>
-				</div>
+				<Sparkline
+					data={sparkData.map((row, index) => ({ x: index, y: row.value }))}
+					ariaLabel={t("dashboard.weeklyActive")}
+					className="h-14 w-full"
+				/>
 				<p className="text-xs text-muted-foreground">{t("dashboard.weeklyActiveChange")}</p>
 			</CardContent>
 		</Card>

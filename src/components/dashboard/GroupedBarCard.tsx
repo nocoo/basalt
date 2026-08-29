@@ -1,8 +1,8 @@
+import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { Card, CardContent, CardHeader, CardTitle } from "@nocoo/basalt/components/card";
 import { ArrowUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { Bar, BarChart, CartesianGrid, ResponsiveContainer, XAxis, YAxis } from "recharts";
-import { chart, chartAxis } from "@/lib/palette";
+import { CHART_COLORS } from "@/lib/palette";
 
 const data = [
 	{ month: "Jul", income: 4200, expense: 3100 },
@@ -27,48 +27,23 @@ export function GroupedBarCard() {
 					</div>
 					<div className="flex items-center gap-4">
 						<div className="flex items-center gap-1.5">
-							<div className="h-2 w-2 rounded-full" style={{ background: chart.green }} />
+							<div className="h-2 w-2 rounded-full" style={{ background: CHART_COLORS[0] }} />
 							<span className="text-xs text-muted-foreground">{t("dashboard.income")}</span>
 						</div>
 						<div className="flex items-center gap-1.5">
-							<div className="h-2 w-2 rounded-full" style={{ background: chart.rose }} />
+							<div className="h-2 w-2 rounded-full" style={{ background: CHART_COLORS[2] }} />
 							<span className="text-xs text-muted-foreground">{t("dashboard.expense")}</span>
 						</div>
 					</div>
 				</div>
 			</CardHeader>
 			<CardContent className="flex flex-col">
-				<div
-					className="flex-1 min-h-[200px]"
-					role="img"
-					aria-label={t("dashboard.incomeVsExpenseAria")}
-				>
-					<ResponsiveContainer width="100%" height="100%">
-						<BarChart data={data} barGap={4} barCategoryGap="20%">
-							<CartesianGrid
-								strokeDasharray="3 3"
-								stroke={chartAxis}
-								strokeOpacity={0.15}
-								vertical={false}
-							/>
-							<XAxis
-								dataKey="month"
-								tick={{ fill: chartAxis, fontSize: 11 }}
-								axisLine={false}
-								tickLine={false}
-							/>
-							<YAxis
-								tick={{ fill: chartAxis, fontSize: 11 }}
-								axisLine={false}
-								tickLine={false}
-								width={35}
-								tickFormatter={(v: number) => `${v / 1000}k`}
-							/>
-							<Bar dataKey="income" fill={chart.green} radius={[4, 4, 0, 0]} />
-							<Bar dataKey="expense" fill={chart.rose} radius={[4, 4, 0, 0]} />
-						</BarChart>
-					</ResponsiveContainer>
-				</div>
+				<GroupedBarChart
+					data={data.map((row) => ({ x: row.month, y: row.income, y2: row.expense }))}
+					ariaLabel={t("dashboard.incomeVsExpenseAria")}
+					className="min-h-[200px] w-full flex-1"
+					showAxes
+				/>
 			</CardContent>
 		</Card>
 	);

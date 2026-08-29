@@ -14,8 +14,8 @@ export const Tabs = TabsPrimitive.Root;
 
 export const TabsList = React.forwardRef<
 	React.ElementRef<typeof TabsPrimitive.List>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
->(({ className, children, ...props }, ref) => {
+	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & { showIndicator?: boolean }
+>(({ className, children, showIndicator = true, ...props }, ref) => {
 	const listRef = React.useRef<HTMLDivElement>(null);
 	const [indicator, setIndicator] = React.useState({ left: 0, width: 0, ready: false });
 
@@ -60,14 +60,16 @@ export const TabsList = React.forwardRef<
 			{...props}
 		>
 			{children}
-			<span
-				aria-hidden="true"
-				className={cn(
-					"pointer-events-none absolute bottom-0 h-0.5 bg-basalt-primary",
-					indicator.ready && "transition-[left,width] duration-200 ease-out",
-				)}
-				style={{ left: indicator.left, width: indicator.width }}
-			/>
+			{showIndicator ? (
+				<span
+					aria-hidden="true"
+					className={cn(
+						"pointer-events-none absolute bottom-0 h-0.5 bg-basalt-primary",
+						indicator.ready && "transition-[left,width] duration-200 ease-out",
+					)}
+					style={{ left: indicator.left, width: indicator.width }}
+				/>
+			) : null}
 		</TabsPrimitive.List>
 	);
 });
