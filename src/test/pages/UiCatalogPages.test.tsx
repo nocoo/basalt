@@ -231,6 +231,7 @@ describe("ui catalog", () => {
 			],
 		],
 		["clipboard-text", ["Short Text", "API Key", "Copy Alternate Text"]],
+		["label", ["Default Label", "Optional Field", "With Tooltip"]],
 		[
 			"dialog",
 			[

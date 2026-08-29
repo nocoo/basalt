@@ -242,9 +242,19 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	label: [
 		{
-			title: "Associated",
-			code: '<Label htmlFor="email">Email</Label>',
-			render: () => <Label htmlFor="demo-ex-label">Email</Label>,
+			title: "Default Label",
+			code: "<Label>Default Label</Label>",
+			render: () => <Label>Default Label</Label>,
+		},
+		{
+			title: "Optional Field",
+			code: "<Label showOptional>Optional Field</Label>",
+			render: () => <Label showOptional>Optional Field</Label>,
+		},
+		{
+			title: "With Tooltip",
+			code: '<Label tooltip="More information">With Tooltip</Label>',
+			render: () => <Label tooltip="More information">With Tooltip</Label>,
 		},
 	],
 	separator: [{ title: "Horizontal", code: "<Separator />", render: () => <Separator /> }],

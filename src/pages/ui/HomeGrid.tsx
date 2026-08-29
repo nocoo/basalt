@@ -191,7 +191,8 @@ function HomeLabel() {
 	return (
 		<div className="flex flex-col gap-2">
 			<Label>Default Label</Label>
-			<Label htmlFor="home-optional">Optional Field</Label>
+			<Label showOptional>Optional Field</Label>
+			<Label tooltip="More information about this field">With Tooltip</Label>
 		</div>
 	);
 }

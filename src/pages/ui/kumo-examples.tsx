@@ -682,18 +682,23 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	label: [
 		{
-			title: "Standalone Label",
-			code: '<Label htmlFor="email">Email</Label>',
-			render: () => <Label htmlFor="ex-standalone-label">Email</Label>,
+			title: "Default Label",
+			code: "<Label>Default Label</Label>",
+			render: () => (
+				<Stack>
+					<Label>Default Label</Label>
+				</Stack>
+			),
 		},
 		{
-			title: "With Form Components (Recommended)",
-			code: '<Field label="Email" htmlFor="email"><Input id="email" /></Field>',
-			render: () => (
-				<Field label="Email" htmlFor="ex-label-field">
-					<Input id="ex-label-field" />
-				</Field>
-			),
+			title: "Optional Field",
+			code: "<Label showOptional>Optional Field</Label>",
+			render: () => <Label showOptional>Optional Field</Label>,
+		},
+		{
+			title: "With Tooltip",
+			code: '<Label tooltip="More information about this field">With Tooltip</Label>',
+			render: () => <Label tooltip="More information about this field">With Tooltip</Label>,
 		},
 	],
 	text: [

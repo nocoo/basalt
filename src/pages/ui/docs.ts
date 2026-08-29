@@ -75,7 +75,20 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		description: "Accessible label associated with a control.",
 		usage: usage("Label", "@nocoo/basalt/components/label", '<Label htmlFor="email">Email</Label>'),
 		variants: [],
-		props: [{ name: "htmlFor", type: "string" }],
+		props: [
+			{ name: "htmlFor", type: "string" },
+			{
+				name: "showOptional",
+				type: "boolean",
+				default: "false",
+				description: "Show gray (optional) after the label.",
+			},
+			{
+				name: "tooltip",
+				type: "ReactNode",
+				description: "Info icon with hover text.",
+			},
+		],
 		source: {
 			repo: "zhe",
 			sha: "c31c239f01c9",
