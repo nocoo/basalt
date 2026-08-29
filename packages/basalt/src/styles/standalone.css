@@ -183,6 +183,20 @@
     transform: rotate(360deg);
   }
 }
+@keyframes basalt-loader-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  12% {
+    transform: rotate(18deg);
+  }
+  55% {
+    transform: rotate(300deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 @keyframes basalt-pulse {
   50% {
     opacity: 0.5;
@@ -512,6 +526,9 @@
   .caption-bottom {
     caption-side: bottom;
   }
+  .origin-center {
+    transform-origin: center;
+  }
   .-translate-x-1\/2 {
     --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
@@ -519,6 +536,9 @@
   .-translate-y-1\/2 {
     --tw-translate-y: calc(calc(1 / 2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .animate-basalt-loader {
+    animation: basalt-loader-spin 1.4s linear infinite;
   }
   .animate-basalt-shimmer {
     animation: basalt-shimmer 1.5s ease-in-out infinite;

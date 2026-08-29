@@ -159,6 +159,21 @@
 	}
 }
 
+@keyframes basalt-loader-spin {
+	0% {
+		transform: rotate(0deg);
+	}
+	12% {
+		transform: rotate(18deg);
+	}
+	55% {
+		transform: rotate(300deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}
+
 @keyframes basalt-pulse {
 	50% {
 		opacity: 0.5;
