@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S0C1 — 稳定 scenario ID 契约（准备下发）
-> 已验收代码基线：`703bd3115eb`（`main`，工作树干净）
+> 当前切片：S0C2a — 内容与结构类 scenario 真值（准备下发）
+> 已验收代码基线：`327e94546cef`（`main`，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-30
 
@@ -86,7 +86,7 @@ Codex 只直接写 `docs/`。Grok 不修改本文，除非调度消息明确授�
 | Ready 页面 | 84 | 公开项 100% ready |
 | Placeholder | 12：9 docs、Maps、ResourceList、DeleteResource | 0 |
 | Kumo 重合控件示例 | Basalt 133 / Kumo 292，名义 45.5% | 场景按 Basalt 契约覆盖；不机械复制品牌场景 |
-| 测试 | 100 文件、569 tests，全部 jsdom | unit + 高风险 browser + consumer gate |
+| 测试 | 101 文件、615 tests，全部 jsdom | unit + 高风险 browser + consumer gate |
 | 外部消费者 | 0 个真实 `@nocoo/basalt` import | 仓外 Vite Tailwind、Vite standalone、Next consumer 全绿 |
 | 包 | `0.0.0`、private、exports 指向 src | dist/types/files/exports/publint/tarball/prepublish 完整；最终 release-ready |
 
@@ -106,7 +106,7 @@ Codex 只直接写 `docs/`。Grok 不修改本文，除非调度消息明确授�
 |------|------|------|----------|
 | S0A | 清理 Kumo/Cloudflare/Worker 用户示例与 fixture | 完成（`0cdbfdc`） | 禁用语境扫描、测试、typecheck、Biome、原子 commit 全绿 |
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
-| S0C | 审计示例标题与真实能力，消除伪对齐 | 执行中（S0C1） | 示例契约测试覆盖 41 个重合控件 |
+| S0C | 审计示例标题与真实能力，消除伪对齐 | 执行中（S0C2a） | 示例契约测试覆盖 41 个重合控件 |
 | S1A | dist/types/files/exports 包契约 | 待办 | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next tarball consumers | 待办 | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | publint、prepublishOnly、Husky/browser 门 | 待办 | 一条发布前命令覆盖所有门，仍不实际 publish |
@@ -167,7 +167,11 @@ Codex 只直接写 `docs/`。Grok 不修改本文，除非调度消息明确授�
 为避免一次混合结构迁移、内容审计和渲染改造，S0C 固定拆成三个原子切片：
 
 1. **S0C1 — scenario ID 契约。** 新增共享 `CatalogScenario` 类型；所有公开 example 携带显式、稳定、与标题无关的 ID；41 个 Kumo 重合 slug 均由测试验证 ID 存在、slug 前缀和全局唯一。页面 anchor / `data-*` 改用 ID。此切片不改标题、代码片段、preview、组件 API 或视觉。
-2. **S0C2 — 41 项真值审计。** 按 scenario ID 逐项核对 title、code、render 与当前实现，只修事实错误和不可运行片段；至少消除 Text “Semantic HTML”、Select `<Select />`、Sidebar 多根节点等已知伪对齐。不得借机扩建组件 API；能力缺口留给 S4–S7。
+2. **S0C2 — 41 项真值审计。** 按 scenario ID 逐项核对 title、code、render 与当前实现，只修事实错误和不可运行片段；至少消除 Text “Semantic HTML”、Select `<Select />`、Sidebar 多根节点等已知伪对齐。不得借机扩建组件 API；能力缺口留给 S4–S7。S0C2 再按家族分四个独立提交，任何一批不得提前处理下一批：
+   - **S0C2a：** Autocomplete、Code、CommandPalette、Flow、Grid、Select、Sidebar、Text；额外审计同模块 CodeBlock。
+   - **S0C2b：** Badge、Banner、Breadcrumbs、Button、ClipboardText、BasaltMark、Empty、Label、LayerCard、Link、Loader、Meter、SkeletonLine、Toast、Tooltip。
+   - **S0C2c：** Checkbox、Combobox、DatePicker、Input、InputArea、InputGroup、Radio、SensitiveInput、Switch。
+   - **S0C2d：** Collapsible、Dialog、DropdownMenu、Pagination、Popover、Table、TableOfContents、Tabs、Toolbar。
 3. **S0C3 — hero 单一真源。** 首屏 preview 与对应 code 必须来自同一个 scenario，移除或生成当前独立 `UI_DEMOS` 映射，防止 `Demo` 与 `docs.usage` 再次漂移。通过后才把 S0C 标为完成并进入 S1A。
 
 三个切片各自一个绿色提交。S0C1 不得提前做 S0C2/S0C3；S0C2/S0C3 的具体授权文件在前一切片验收后再下发。
@@ -320,6 +324,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 |---|------|------|--------------|------|-------------|---------------|
 | D001 | S0A | `eff624881976` | `w14:p1` | 完成 | `0cdbfdc57af` | 9 个授权文件，+47/−47；targeted 4 files / 123 tests；typecheck、Biome、全量 99 files / 558 tests；禁用语境扫描为空；无 API、样式、行为或 provenance 变更 |
 | D002 | S0B | `5e5d806` | `w14:p1` | 完成 | `703bd3115eb` | 6 个授权文件，+447/−80；targeted 2 files / 124 tests；typecheck、Biome、全量 100 files / 569 tests；ready implementation 均指向存在的 `nocoo/basalt@main` 文件，Kumo provenance 指向 `cloudflare/kumo@1159868dfe32`；无 scenario、包契约或组件行为变更 |
-| D003 | S0C1 | `0f515a0b32d3` | `w14:p1` | 准备下发 | — | 只建立稳定 scenario ID、页面 anchor/`data-*` 和 41 个 Kumo 重合 slug 的契约测试；不改任何 title/code/render、组件 API、视觉、package/dist 或 `docs/` |
+| D003 | S0C1 | `4695e60` | `w14:p1` | 完成 | `7c1dccd37ff` + `327e94546cef` | 7 个授权文件，+285/−23；首提交建立 `CatalogScenario`、显式语义 ID、稳定 anchor 与 41 slug 页面契约，review-fix 将 3 个已知错误标题解耦为真实能力 ID 并对全数据集禁止数字下标；targeted 2 files / 163 tests，typecheck、Biome、全量 101 files / 615 tests；title/code/render、顺序、数量、视觉与组件 API 均未变 |
+| D004 | S0C2a | `327e94546cef` | `w14:p1` | 准备下发 | — | 只审计内容/结构组 8 个重合 slug 与 CodeBlock 的 title/code/render、`docs.usage` 真值；不增加组件能力、不进入其它 S0C2 家族或 S0C3 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
