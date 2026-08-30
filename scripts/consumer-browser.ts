@@ -8,15 +8,6 @@ export const PLAYWRIGHT_INSTALL_COMMAND = "bun run playwright:install";
 export const NEXT_TOAST_MESSAGE = "basalt-toast-ok";
 export const NEXT_TOAST_HOST = "[data-basalt-toast-host]";
 
-export type ToastHostEvidence = {
-	hostFound: boolean;
-	ownCount: number;
-	count: number;
-	inBody: boolean;
-	inRoot: boolean;
-	visible: boolean;
-};
-
 export type PageFault = {
 	kind: "console.error" | "pageerror";
 	text: string;
@@ -29,7 +20,7 @@ export type HydrationEvidence = {
 	buttonChanged: true;
 	themeBefore: { className: string; mode: string };
 	themeAfter: { className: string; mode: string };
-	toastPortal: true;
+	toastOutsideRoot: true;
 	profileDir: string;
 	executablePath: string;
 	browserVersion: string;
@@ -200,118 +191,65 @@ export async function withChromiumPage<T>(
 	);
 }
 
-export function assertToastHostEvidence(evidence: ToastHostEvidence) {
-	if (!evidence.hostFound) {
-		throw new Error("missing data-basalt-toast-host");
+export async function assertVisibleToastOutsideRoot(page: Page, timeoutMs = 5000) {
+	const hosts = page.locator(NEXT_TOAST_HOST);
+	const hostCount = await hosts.count();
+	if (hostCount !== 1) {
+		throw new Error(
+			hostCount === 0
+				? "missing data-basalt-toast-host"
+				: `duplicate data-basalt-toast-host: ${hostCount}`,
+		);
 	}
-	if (evidence.count === 0 && evidence.ownCount > 0) {
-		throw new Error("toast message in host is hidden");
+	const toast = hosts.first().locator("[data-sonner-toast]");
+	if (timeoutMs > 0) {
+		await toast.waitFor({ state: "visible", timeout: timeoutMs }).catch(() => undefined);
 	}
-	if (evidence.count === 0) {
-		throw new Error("missing visible toast message in toast host");
+	const toastCount = await toast.count();
+	if (toastCount === 0) {
+		throw new Error("missing [data-sonner-toast] in toast host");
 	}
-	if (evidence.count !== 1) {
-		throw new Error(`duplicate visible toast messages in toast host: ${evidence.count}`);
+	if (toastCount !== 1) {
+		throw new Error(`duplicate [data-sonner-toast] in toast host: ${toastCount}`);
 	}
-	if (!evidence.visible) {
-		throw new Error("toast message in host is hidden");
+	if (!(await toast.isVisible())) {
+		throw new Error("toast in host is hidden");
 	}
-	if (evidence.inRoot) {
-		throw new Error("toast message is contained by data-basalt-root");
+	const title = toast.locator("[data-title]");
+	if (timeoutMs > 0) {
+		await title.waitFor({ state: "visible", timeout: timeoutMs }).catch(() => undefined);
 	}
-	if (!evidence.inBody) {
-		throw new Error("toast message is not in document.body");
+	const titleCount = await title.count();
+	if (titleCount !== 1) {
+		throw new Error(
+			titleCount === 0
+				? "missing [data-title] on sonner toast"
+				: `duplicate [data-title] on sonner toast: ${titleCount}`,
+		);
 	}
-}
-
-export async function readToastHostEvidence(
-	page: Page,
-	message = NEXT_TOAST_MESSAGE,
-): Promise<ToastHostEvidence> {
-	return page.evaluate((msg) => {
+	if (!(await title.isVisible())) {
+		throw new Error("toast title is hidden");
+	}
+	const titleText = (await title.innerText()).replace(/\s+/g, " ").trim();
+	if (titleText !== NEXT_TOAST_MESSAGE) {
+		throw new Error(
+			`toast title ${JSON.stringify(titleText)} does not equal ${JSON.stringify(NEXT_TOAST_MESSAGE)}`,
+		);
+	}
+	const placement = await toast.evaluate((node) => {
 		const root = document.querySelector("[data-basalt-root]");
-		const host = document.querySelector("[data-basalt-toast-host]");
-		if (!host) {
-			return {
-				hostFound: false,
-				ownCount: 0,
-				count: 0,
-				inBody: false,
-				inRoot: false,
-				visible: false,
-			};
-		}
-		const isHidden = (el: Element) => {
-			if (!(el instanceof HTMLElement)) {
-				return true;
-			}
-			if (el.hidden) {
-				return true;
-			}
-			const style = getComputedStyle(el);
-			return style.display === "none" || style.visibility === "hidden";
-		};
-		const isVisible = (el: Element) => {
-			if (isHidden(el)) {
-				return false;
-			}
-			let current: HTMLElement | null = el instanceof HTMLElement ? el : null;
-			while (current) {
-				if (current !== el && isHidden(current)) {
-					return false;
-				}
-				const rect = current.getBoundingClientRect();
-				if (rect.width > 0 && rect.height > 0) {
-					return true;
-				}
-				if (current === host) {
-					break;
-				}
-				current = current.parentElement;
-			}
-			return false;
-		};
-		const ownMatch = (el: Element) => {
-			if (el.matches("script, style, noscript, template")) {
-				return false;
-			}
-			if (!(el.textContent ?? "").includes(msg)) {
-				return false;
-			}
-			return ![...el.children].some((child) => (child.textContent ?? "").includes(msg));
-		};
-		const matches = [host, ...host.querySelectorAll("*")].filter(ownMatch);
-		const visible = matches.filter(isVisible);
-		const node = visible[0];
 		return {
-			hostFound: true,
-			ownCount: matches.length,
-			count: visible.length,
-			inBody: Boolean(node && document.body.contains(node)),
-			inRoot: Boolean(node && root?.contains(node)),
-			visible: Boolean(node && isVisible(node)),
+			inBody: document.body.contains(node),
+			inRoot: Boolean(root?.contains(node)),
 		};
-	}, message);
-}
-
-export async function assertVisibleToastOutsideRoot(
-	page: Page,
-	message = NEXT_TOAST_MESSAGE,
-	timeoutMs = 5000,
-) {
-	const deadline = Date.now() + timeoutMs;
-	while (true) {
-		const evidence = await readToastHostEvidence(page, message);
-		try {
-			assertToastHostEvidence(evidence);
-			return evidence;
-		} catch (error) {
-			if (Date.now() >= deadline) {
-				throw error;
-			}
-			await new Promise((resolve) => setTimeout(resolve, 50));
-		}
+	});
+	if (placement.inRoot) {
+		throw new Error("toast is contained by data-basalt-root");
 	}
+	if (!placement.inBody) {
+		throw new Error("toast is not in document.body");
+	}
+	return { toastOutsideRoot: true as const, inBody: true as const, inRoot: false as const };
 }
 
 async function htmlTheme(page: Page) {
@@ -377,7 +315,7 @@ export async function proveNextHydration(
 			buttonChanged: true,
 			themeBefore,
 			themeAfter,
-			toastPortal: true,
+			toastOutsideRoot: true,
 			profileDir,
 			executablePath: playwrightChromiumExecutable(),
 			browserVersion,
