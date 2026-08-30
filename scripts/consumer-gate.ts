@@ -50,13 +50,14 @@ export const ROOT_EXPORTS = [
 	"LinkProvider",
 ] as const;
 
-export type ConsumerMode = "standalone" | "tailwind" | "next";
+export type ConsumerMode = "standalone" | "tailwind" | "next" | "heavy";
 
 export type Manifest = {
 	dependencies?: Record<string, string>;
 	devDependencies?: Record<string, string>;
 	optionalDependencies?: Record<string, string>;
 	peerDependencies?: Record<string, string>;
+	peerDependenciesMeta?: Record<string, { optional?: boolean }>;
 };
 
 export type ConsumerGateConfig = {
@@ -109,6 +110,47 @@ export const NEXT_GATE: ConsumerGateConfig = {
 	layoutFile: "app/layout.tsx",
 	pageFile: "app/page.tsx",
 	httpMarker: NEXT_HTTP_MARKER,
+};
+
+export const HEAVY_OPTIONAL_PEERS = {
+	recharts: "^3",
+	"react-day-picker": "^10",
+	"@tanstack/react-table": "^9",
+} as const;
+
+export const HEAVY_CONSUMER_VERSIONS = {
+	recharts: "3.10.1",
+	"react-day-picker": "10.0.1",
+	"@tanstack/react-table": "9.1.2",
+} as const;
+
+export const HEAVY_GRANULAR_PROBES = [
+	{
+		spec: "@nocoo/basalt/charts/donut",
+		exportName: "DonutChart",
+		fileSuffix: `${sep}dist${sep}charts${sep}donut.js`,
+	},
+	{
+		spec: "@nocoo/basalt/components/date-picker",
+		exportName: "DatePicker",
+		fileSuffix: `${sep}dist${sep}components${sep}date-picker.js`,
+	},
+	{
+		spec: "@nocoo/basalt/components/data-table",
+		exportName: "DataTable",
+		fileSuffix: `${sep}dist${sep}components${sep}data-table.js`,
+	},
+] as const;
+
+export const HEAVY_GATE: ConsumerGateConfig = {
+	mode: "heavy",
+	fixtureDir: "fixtures/vite-heavy",
+	tempPrefix: "basalt-gate-d-",
+	styleExport: "@nocoo/basalt/styles/standalone",
+	cssFileSuffix: `${sep}dist${sep}styles${sep}standalone.css`,
+	requiredPeers: HEAVY_CONSUMER_VERSIONS,
+	forbiddenPeers: ["tailwindcss"],
+	entryFile: "src/main.tsx",
 };
 
 export function posixPath(value: string) {
@@ -275,7 +317,92 @@ export function assertStandaloneTypecheckGate(tsconfigRaw: string, packageRaw: s
 	}
 }
 
+export function assertOptionalPeerMetadata(manifest: Manifest) {
+	const peers = manifest.peerDependencies ?? {};
+	const meta = manifest.peerDependenciesMeta ?? {};
+	for (const [name, range] of Object.entries(HEAVY_OPTIONAL_PEERS)) {
+		if (peers[name] !== range) {
+			throw new Error(`optional peer ${name} must be ${range}`);
+		}
+		if (meta[name]?.optional !== true) {
+			throw new Error(`${name} must be an optional peer`);
+		}
+	}
+}
+
+export function assertExactVersion(name: string, actual: string, expected: string) {
+	if (actual !== expected) {
+		throw new Error(`${name} version ${actual} does not match fixture ${expected}`);
+	}
+}
+
+export function assertHeavyConsumerSource(source: string) {
+	if (/from\s+"@nocoo\/basalt"/.test(source)) {
+		throw new Error("heavy consumer must not import the package root");
+	}
+	if (source.includes("tailwind") || source.includes("@nocoo/basalt/styles/tailwind")) {
+		throw new Error("heavy consumer must not import Tailwind");
+	}
+	if (!source.includes("@nocoo/basalt/styles/standalone")) {
+		throw new Error("heavy consumer must import standalone styles");
+	}
+	if (!source.includes("@nocoo/basalt/charts/donut")) {
+		throw new Error("heavy consumer must import charts/donut");
+	}
+	if (!source.includes("@nocoo/basalt/components/date-picker")) {
+		throw new Error("heavy consumer must import components/date-picker");
+	}
+	if (!source.includes("@nocoo/basalt/components/data-table")) {
+		throw new Error("heavy consumer must import components/data-table");
+	}
+	for (const name of ["DonutChart", "DatePicker", "DataTable"] as const) {
+		if (!source.includes(name)) {
+			throw new Error(`heavy consumer must use ${name}`);
+		}
+	}
+	for (const name of ROOT_EXPORTS) {
+		if (source.includes(name)) {
+			throw new Error("heavy consumer must not add root business UI");
+		}
+	}
+}
+
+export function assertGranularResolution(options: {
+	spec: string;
+	resolved: string;
+	real: string;
+	exportName: string;
+	hasExport: boolean;
+	expectedRoot: string;
+	repoRoot: string;
+	fileSuffix: string;
+}) {
+	if (!options.hasExport) {
+		throw new Error(`missing named export ${options.exportName} from ${options.spec}`);
+	}
+	const resolvedPath = fileURLToPath(new URL(options.resolved));
+	const realPath = resolve(options.real);
+	if (
+		!isPathInside(options.expectedRoot, resolvedPath) ||
+		!isPathInside(options.expectedRoot, realPath)
+	) {
+		throw new Error(
+			`${options.spec} resolved outside consumer node_modules: resolved=${options.resolved} real=${realPath}`,
+		);
+	}
+	if (isPathInside(options.repoRoot, realPath) || isPathInside(options.repoRoot, resolvedPath)) {
+		throw new Error(`${options.spec} resolved into the repository`);
+	}
+	if (!realPath.endsWith(options.fileSuffix)) {
+		throw new Error(`${options.spec} did not resolve to tarball file: ${realPath}`);
+	}
+}
+
 export function assertRootConsumerSource(source: string, mode: ConsumerMode = "standalone") {
+	if (mode === "heavy") {
+		assertHeavyConsumerSource(source);
+		return;
+	}
 	if (/@nocoo\/basalt\/(?:components|providers|charts)\//.test(source)) {
 		throw new Error("consumer must not import granular paths");
 	}
@@ -615,9 +742,7 @@ export async function runConsumerGate(repoRoot: string, config: ConsumerGateConf
 			const requiredVersions: Record<string, string> = {};
 			for (const [name, version] of Object.entries(config.requiredPeers)) {
 				const actual = installedVersion(nodeModules, name);
-				if (actual !== version) {
-					throw new Error(`${name} version ${actual} does not match fixture ${version}`);
-				}
+				assertExactVersion(name, actual, version);
 				requiredVersions[name] = actual;
 			}
 
@@ -667,6 +792,53 @@ console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
 				throw new Error("@nocoo/basalt resolved into the repository");
 			}
 
+			const granular: Array<Record<string, unknown>> = [];
+			if (config.mode === "heavy") {
+				assertOptionalPeerMetadata(
+					JSON.parse(readFileSync(join(expectedRoot, "package.json"), "utf8")) as Manifest,
+				);
+				for (const item of HEAVY_GRANULAR_PROBES) {
+					const probeOut = run(
+						"node",
+						[
+							"--input-type=module",
+							"-e",
+							`import { realpathSync } from "node:fs";
+const spec = ${JSON.stringify(item.spec)};
+const resolved = import.meta.resolve(spec);
+const mod = await import(spec);
+const real = realpathSync(new URL(resolved));
+console.log(JSON.stringify({
+  spec,
+  resolved,
+  real,
+  hasExport: ${JSON.stringify(item.exportName)} in mod,
+  exportType: typeof mod[${JSON.stringify(item.exportName)}],
+}));`,
+						],
+						consumerRoot,
+					);
+					const parsed = JSON.parse(probeOut.stdout.trim()) as {
+						spec: string;
+						resolved: string;
+						real: string;
+						hasExport: boolean;
+						exportType: string;
+					};
+					assertGranularResolution({
+						spec: item.spec,
+						resolved: parsed.resolved,
+						real: parsed.real,
+						exportName: item.exportName,
+						hasExport: parsed.hasExport && parsed.exportType === "function",
+						expectedRoot,
+						repoRoot: realpathSync(repoRoot),
+						fileSuffix: item.fileSuffix,
+					});
+					granular.push(parsed);
+				}
+			}
+
 			const typecheck = run("npm", ["run", "typecheck"], consumerRoot);
 			run("npm", ["run", "build"], consumerRoot);
 
@@ -681,6 +853,7 @@ console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
 				typecheck: typecheck.stdout.trim() || "ok",
 				requiredVersions,
 				missingHeavyPeers: config.forbiddenPeers.filter((name) => !heavy.includes(name)),
+				...(granular.length > 0 ? { granular } : {}),
 			};
 
 			if (config.mode === "next" && config.httpMarker) {
@@ -754,6 +927,9 @@ export function gateConfigFromArgv(argv: string[]) {
 	}
 	if (argv.includes("tailwind")) {
 		return TAILWIND_GATE;
+	}
+	if (argv.includes("heavy")) {
+		return HEAVY_GATE;
 	}
 	return STANDALONE_GATE;
 }

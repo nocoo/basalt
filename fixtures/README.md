@@ -49,3 +49,19 @@ Guarantees:
 - `tailwindcss`, `recharts`, `react-day-picker`, and `@tanstack/react-table` are not installed.
 - Success and failure close the Playwright page/context/browser, delete the unique Chromium profile, stop the Next process, free the port, and delete the temp tree. Cleanup steps are nested so a profile assertion failure still stops the server and removes temp; proof and cleanup errors are aggregated rather than swallowed.
 - Focused tests launch real Chromium to prove a `console.error` or `pageerror` fails the gate. A same-server regression starts one HTTP process, fails the browser proof, then uses the gate's outer cleanup path to prove PID, port, profile, and temp are gone without a second install or Next build.
+
+## Gate D — optional heavy peers
+
+Command: `bun run consumer:heavy`
+
+`vite-heavy` is a React 19 consumer that installs the approved optional-peer versions and loads charts/DatePicker/DataTable from granular paths. The shared kernel still does clean package build, OS-temp `npm pack`, fixture copy, `file:` tarball inject, real `npm install`, root/CSS resolve, strict Bundler typecheck, production Vite build, and cleanup.
+
+Guarantees:
+
+- The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, or this repository's path.
+- Source granular-imports `DonutChart`, `DatePicker`, and `DataTable` only, plus `@nocoo/basalt/styles/standalone`. It does not import the package root or Tailwind.
+- After install, `recharts` is `3.10.1`, `react-day-picker` is `10.0.1`, and `@tanstack/react-table` is `9.1.2`. `tailwindcss` is not installed.
+- `import.meta.resolve` and dynamic `import()` of `@nocoo/basalt/charts/donut`, `components/date-picker`, and `components/data-table` land inside that consumer's tarball copy and expose the named exports.
+- The published package declares those three libraries as optional peers (`^3` / `^10` / `^9`). DatePicker and DataTable are still self-contained; Gate D does not claim they call react-day-picker or TanStack Table.
+- Production output includes HTML, JS, and standalone CSS with `--basalt-background`.
+- Temp directories and tarballs are deleted on success and failure.

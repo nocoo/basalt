@@ -84,6 +84,8 @@
 		"react-dom": "^19",
 		"lucide-react": "*",
 		"recharts": "^3",
+		"react-day-picker": "^10",
+		"@tanstack/react-table": "^9",
 		"tailwindcss": "^4"
 	},
 	"peerDependenciesMeta": {
@@ -91,6 +93,12 @@
 			"optional": true
 		},
 		"recharts": {
+			"optional": true
+		},
+		"react-day-picker": {
+			"optional": true
+		},
+		"@tanstack/react-table": {
 			"optional": true
 		}
 	}

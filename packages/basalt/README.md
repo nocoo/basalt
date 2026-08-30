@@ -30,4 +30,12 @@ import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { DonutChart } from "@nocoo/basalt/charts/donut";
 ```
 
-Root barrel is small leaves + providers. Charts, DatePicker, and DataTable stay on granular paths with optional peers.
+Root barrel is small leaves + providers. Charts, DatePicker, and DataTable stay on granular paths.
+
+Optional peer ranges for those granular entrypoints:
+
+- `recharts` `^3` — used by chart modules such as `DonutChart`
+- `react-day-picker` `^10` — declared for DatePicker consumers; the current DatePicker implementation does not call it
+- `@tanstack/react-table` `^9` — declared for DataTable consumers; the current DataTable implementation does not call it
+
+Install the matching library in the consumer when you use that granular path. Tailwind `^4` remains optional for the Tailwind stylesheet contract.

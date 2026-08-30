@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, join } from "node:path";
+import { basename, join, sep } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
 	assertNoPageFaults,
@@ -11,10 +11,14 @@ import {
 	withChromiumPage,
 } from "./consumer-browser";
 import {
+	assertExactVersion,
+	assertGranularResolution,
+	assertHeavyConsumerSource,
 	assertHttpClosed,
 	assertNextLayout,
 	assertNextPage,
 	assertNoSuppressHydrationWarning,
+	assertOptionalPeerMetadata,
 	assertRootConsumerSource,
 	assertStandaloneTypecheckGate,
 	assertTailwindStylesheet,
@@ -27,9 +31,12 @@ import {
 	findInstalledPackages,
 	forbiddenInstallRefs,
 	gateConfigFromArgv,
+	HEAVY_CONSUMER_VERSIONS,
+	HEAVY_GATE,
 	injectTarballDependency,
 	isOutsideRepo,
 	isPathInside,
+	type Manifest,
 	NEXT_GATE,
 	OPTIONAL_HEAVY_PEERS,
 	STANDALONE_GATE,
@@ -192,6 +199,7 @@ describe("tailwind consumer gate helpers", () => {
 		expect(gateConfigFromArgv([])).toBe(STANDALONE_GATE);
 		expect(gateConfigFromArgv(["tailwind"])).toBe(TAILWIND_GATE);
 		expect(gateConfigFromArgv(["next"])).toBe(NEXT_GATE);
+		expect(gateConfigFromArgv(["heavy"])).toBe(HEAVY_GATE);
 		expect(STANDALONE_GATE.forbiddenPeers).toContain("tailwindcss");
 		expect(TAILWIND_GATE.forbiddenPeers).toEqual([...OPTIONAL_HEAVY_PEERS]);
 		expect(TAILWIND_GATE.requiredPeers.tailwindcss).toBe("4.3.3");
@@ -199,6 +207,12 @@ describe("tailwind consumer gate helpers", () => {
 		expect(NEXT_GATE.forbiddenPeers).toContain("tailwindcss");
 		expect(NEXT_GATE.styleExport).toBe("@nocoo/basalt/styles/standalone");
 		expect(NEXT_GATE.httpMarker).toBe("basalt-next19-ok");
+		expect(HEAVY_GATE.requiredPeers).toEqual(HEAVY_CONSUMER_VERSIONS);
+		expect(HEAVY_GATE.forbiddenPeers).toEqual(["tailwindcss"]);
+		expect(STANDALONE_GATE.forbiddenPeers).toEqual(
+			expect.arrayContaining([...OPTIONAL_HEAVY_PEERS]),
+		);
+		expect(NEXT_GATE.forbiddenPeers).toEqual(expect.arrayContaining([...OPTIONAL_HEAVY_PEERS]));
 	});
 
 	it("keeps the committed tailwind fixture inside the gate contract", () => {
@@ -529,6 +543,112 @@ export default function RootLayout() { return <html><body /></html>; }
 			"scripts/consumer-http.test.ts",
 			"scripts/consumer-browser.ts",
 			"scripts/consumer-browser.test.ts",
+		];
+		for (const file of files) {
+			expect(readFileSync(file, "utf8").includes(needle), file).toBe(false);
+		}
+	});
+});
+
+describe("heavy consumer gate helpers", () => {
+	it("locks optional peer metadata and exact consumer versions", () => {
+		const pkg = JSON.parse(readFileSync("packages/basalt/package.json", "utf8")) as Manifest;
+		assertOptionalPeerMetadata(pkg);
+		expect(pkg.peerDependencies?.recharts).toBe("^3");
+		expect(pkg.peerDependencies?.["react-day-picker"]).toBe("^10");
+		expect(pkg.peerDependencies?.["@tanstack/react-table"]).toBe("^9");
+		expect(() => assertExactVersion("recharts", "3.0.0", "3.10.1")).toThrow(/3\.0\.0/);
+		assertExactVersion("recharts", "3.10.1", "3.10.1");
+	});
+
+	it("keeps the committed heavy fixture inside the gate contract", () => {
+		const manifest = readFileSync("fixtures/vite-heavy/package.json", "utf8");
+		assertTemplateManifest(manifest);
+		expect(manifest).toContain('"recharts": "3.10.1"');
+		expect(manifest).toContain('"react-day-picker": "10.0.1"');
+		expect(manifest).toContain('"@tanstack/react-table": "9.1.2"');
+		expect(manifest).not.toContain("@nocoo/basalt");
+		assertRootConsumerSource(readFileSync("fixtures/vite-heavy/src/main.tsx", "utf8"), "heavy");
+		assertStandaloneTypecheckGate(
+			readFileSync("fixtures/vite-heavy/tsconfig.json", "utf8"),
+			manifest,
+		);
+		const packageReadme = readFileSync("packages/basalt/README.md", "utf8");
+		expect(packageReadme).toContain("react-day-picker");
+		expect(packageReadme).toContain("the current DatePicker implementation does not call it");
+		expect(packageReadme).toContain("the current DataTable implementation does not call it");
+		expect(HEAVY_GATE.styleExport).toBe("@nocoo/basalt/styles/standalone");
+		expect(HEAVY_GATE.entryFile).toBe("src/main.tsx");
+		expect(readFileSync("package.json", "utf8")).toContain("consumer:heavy");
+	});
+
+	it("rejects root imports and missing granular heavy source", () => {
+		expect(() =>
+			assertHeavyConsumerSource(`import { DonutChart } from "@nocoo/basalt";
+import "@nocoo/basalt/styles/standalone";
+`),
+		).toThrow(/package root/);
+		expect(() =>
+			assertRootConsumerSource(
+				`import { DonutChart } from "@nocoo/basalt/charts/donut";
+import { DatePicker } from "@nocoo/basalt/components/date-picker";
+import { DataTable } from "@nocoo/basalt/components/data-table";
+import "@nocoo/basalt/styles/standalone";
+import { Button } from "@nocoo/basalt";
+`,
+				"heavy",
+			),
+		).toThrow(/package root/);
+		expect(() =>
+			assertHeavyConsumerSource(`import { DonutChart } from "@nocoo/basalt/charts/donut";
+`),
+		).toThrow(/standalone/);
+	});
+
+	it("rejects granular resolution into the repository or a missing export", () => {
+		expect(() =>
+			assertGranularResolution({
+				spec: "@nocoo/basalt/charts/donut",
+				resolved: "file:///repo/node_modules/@nocoo/basalt/dist/charts/donut.js",
+				real: "/repo/node_modules/@nocoo/basalt/dist/charts/donut.js",
+				exportName: "DonutChart",
+				hasExport: true,
+				expectedRoot: "/repo/node_modules/@nocoo/basalt",
+				repoRoot: "/repo",
+				fileSuffix: `${sep}dist${sep}charts${sep}donut.js`,
+			}),
+		).toThrow(/repository/);
+		expect(() =>
+			assertGranularResolution({
+				spec: "@nocoo/basalt/charts/donut",
+				resolved: "file:///tmp/consumer/node_modules/@nocoo/basalt/dist/charts/donut.js",
+				real: "/tmp/consumer/node_modules/@nocoo/basalt/dist/charts/donut.js",
+				exportName: "DonutChart",
+				hasExport: false,
+				expectedRoot: "/tmp/consumer/node_modules/@nocoo/basalt",
+				repoRoot: "/repo",
+				fileSuffix: `${sep}dist${sep}charts${sep}donut.js`,
+			}),
+		).toThrow(/named export/);
+	});
+
+	it("deletes a heavy temp tree on cleanup", async () => {
+		const tempRoot = realpathSync(mkdtempSync(join(tmpdir(), "basalt-gate-d-")));
+		await cleanupConsumerGate({ tempRoot });
+		expect(existsSync(tempRoot)).toBe(false);
+	});
+
+	it("does not embed a developer home path in the heavy slice", () => {
+		const needle = ["/Users", "nocoo"].join("/");
+		const files = [
+			"fixtures/vite-heavy/package.json",
+			"fixtures/vite-heavy/src/main.tsx",
+			"fixtures/vite-heavy/src/css.d.ts",
+			"fixtures/vite-heavy/tsconfig.json",
+			"fixtures/vite-heavy/vite.config.ts",
+			"fixtures/vite-heavy/index.html",
+			"packages/basalt/package.json",
+			"packages/basalt/README.md",
 		];
 		for (const file of files) {
 			expect(readFileSync(file, "utf8").includes(needle), file).toBe(false);

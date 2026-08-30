@@ -23,7 +23,8 @@
 		"playwright:install": "playwright install chromium",
 		"consumer:standalone": "bun scripts/consumer-gate.ts",
 		"consumer:tailwind": "bun scripts/consumer-gate.ts tailwind",
-		"consumer:next": "bun scripts/consumer-gate.ts next"
+		"consumer:next": "bun scripts/consumer-gate.ts next",
+		"consumer:heavy": "bun scripts/consumer-gate.ts heavy"
 	},
 	"dependencies": {
 		"@radix-ui/react-accordion": "1.2.20",
