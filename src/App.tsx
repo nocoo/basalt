@@ -2,7 +2,8 @@ import { Toaster } from "@nocoo/basalt/components/toast";
 import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
-import { BrowserRouter, Route, Routes } from "react-router";
+import type { ReactNode } from "react";
+import { BrowserRouter, Route, Link as RouterLink, Routes } from "react-router";
 import { DashboardLayout } from "@/components/DashboardLayout";
 import AccountsPage from "./pages/AccountsPage";
 import BadgeLoginPage from "./pages/BadgeLoginPage";
@@ -30,12 +31,36 @@ import UiIndexPage from "./pages/ui/UiIndexPage";
 import UiPlaceholderPage from "./pages/ui/UiPlaceholderPage";
 import WearableDashboardPage from "./pages/WearableDashboardPage";
 
+function AppLink({
+	href,
+	className,
+	children,
+	...props
+}: {
+	href: string;
+	className?: string;
+	children?: ReactNode;
+} & Record<string, unknown>) {
+	if (/^(https?:|mailto:|tel:)/.test(href)) {
+		return (
+			<a href={href} className={className} {...props}>
+				{children}
+			</a>
+		);
+	}
+	return (
+		<RouterLink to={href} className={className} {...props}>
+			{children}
+		</RouterLink>
+	);
+}
+
 const App = () => (
 	<ThemeProvider>
-		<LinkProvider>
-			<TooltipProvider>
-				<Toaster />
-				<BrowserRouter>
+		<BrowserRouter>
+			<LinkProvider render={AppLink}>
+				<TooltipProvider>
+					<Toaster />
 					<Routes>
 						{/* Layout route: sidebar + header wraps all dashboard pages */}
 						<Route element={<DashboardLayout />}>
@@ -68,9 +93,9 @@ const App = () => (
 						<Route path="/404" element={<NotFound />} />
 						<Route path="*" element={<NotFound />} />
 					</Routes>
-				</BrowserRouter>
-			</TooltipProvider>
-		</LinkProvider>
+				</TooltipProvider>
+			</LinkProvider>
+		</BrowserRouter>
 	</ThemeProvider>
 );
 
