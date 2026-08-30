@@ -6,12 +6,15 @@ import {
 	assertBrowserCleaned,
 	assertNoPageFaults,
 	assertPinnedChromium,
+	assertToastHostEvidence,
+	assertVisibleToastOutsideRoot,
 	attachPageFaults,
 	closeChromium,
 	combineErrors,
 	createBrowserProfileDir,
 	launchPinnedChromium,
 	missingChromiumError,
+	NEXT_TOAST_MESSAGE,
 	PLAYWRIGHT_INSTALL_COMMAND,
 	playwrightChromiumExecutable,
 	settleWithCleanup,
@@ -167,4 +170,136 @@ describe("consumer browser helpers", () => {
 			rmSync(leftover, { recursive: true, force: true });
 		}
 	});
+
+	it("rejects missing, duplicate, hidden, and root-contained toast evidence", () => {
+		expect(() =>
+			assertToastHostEvidence({
+				hostFound: false,
+				ownCount: 0,
+				count: 0,
+				inBody: false,
+				inRoot: false,
+				visible: false,
+			}),
+		).toThrow(/missing data-basalt-toast-host/);
+		expect(() =>
+			assertToastHostEvidence({
+				hostFound: true,
+				ownCount: 0,
+				count: 0,
+				inBody: false,
+				inRoot: false,
+				visible: false,
+			}),
+		).toThrow(/missing visible toast/);
+		expect(() =>
+			assertToastHostEvidence({
+				hostFound: true,
+				ownCount: 1,
+				count: 0,
+				inBody: false,
+				inRoot: false,
+				visible: false,
+			}),
+		).toThrow(/hidden/);
+		expect(() =>
+			assertToastHostEvidence({
+				hostFound: true,
+				ownCount: 2,
+				count: 2,
+				inBody: true,
+				inRoot: false,
+				visible: true,
+			}),
+		).toThrow(/duplicate visible toast/);
+		expect(() =>
+			assertToastHostEvidence({
+				hostFound: true,
+				ownCount: 1,
+				count: 1,
+				inBody: true,
+				inRoot: true,
+				visible: true,
+			}),
+		).toThrow(/data-basalt-root/);
+		expect(() =>
+			assertToastHostEvidence({
+				hostFound: true,
+				ownCount: 1,
+				count: 1,
+				inBody: false,
+				inRoot: false,
+				visible: true,
+			}),
+		).toThrow(/document.body/);
+	});
+
+	it("rejects a visible root toast with only a hidden lookalike outside root", async () => {
+		const profileDir = createBrowserProfileDir();
+		await withChromiumPage(profileDir, async (page) => {
+			await page.goto(
+				htmlPage(`<div data-basalt-root><div>${NEXT_TOAST_MESSAGE}</div></div>
+<div data-basalt-toast-host><span hidden>${NEXT_TOAST_MESSAGE}</span></div>`),
+			);
+			await expect(assertVisibleToastOutsideRoot(page, NEXT_TOAST_MESSAGE, 0)).rejects.toThrow(
+				/hidden/,
+			);
+		});
+		expect(existsSync(profileDir)).toBe(false);
+	});
+
+	it("rejects script text and ancestor-only matches as toast host evidence", async () => {
+		const profileDir = createBrowserProfileDir();
+		await withChromiumPage(profileDir, async (page) => {
+			await page.goto(
+				htmlPage(`<div data-basalt-root></div>
+<div data-basalt-toast-host><script type="text/plain">${NEXT_TOAST_MESSAGE}</script></div>`),
+			);
+			await expect(assertVisibleToastOutsideRoot(page, NEXT_TOAST_MESSAGE, 0)).rejects.toThrow(
+				/missing visible toast message in toast host/,
+			);
+		});
+		expect(existsSync(profileDir)).toBe(false);
+	});
+
+	it("rejects a visible toast that remains inside data-basalt-root", async () => {
+		const profileDir = createBrowserProfileDir();
+		await withChromiumPage(profileDir, async (page) => {
+			await page.goto(
+				htmlPage(`<div data-basalt-root>
+  <div data-basalt-toast-host><div>${NEXT_TOAST_MESSAGE}</div></div>
+</div>`),
+			);
+			await expect(assertVisibleToastOutsideRoot(page, NEXT_TOAST_MESSAGE, 0)).rejects.toThrow(
+				/data-basalt-root/,
+			);
+		});
+		expect(existsSync(profileDir)).toBe(false);
+	});
+
+	it("accepts a unique visible toast only inside the fixture toast host", async () => {
+		const profileDir = createBrowserProfileDir();
+		await withChromiumPage(profileDir, async (page) => {
+			await page.goto(
+				htmlPage(`<div data-basalt-root>app content</div>
+<div data-basalt-toast-host><div>${NEXT_TOAST_MESSAGE}</div></div>`),
+			);
+			const evidence = await assertVisibleToastOutsideRoot(page, NEXT_TOAST_MESSAGE, 0);
+			expect(evidence).toEqual({
+				hostFound: true,
+				ownCount: 1,
+				count: 1,
+				inBody: true,
+				inRoot: false,
+				visible: true,
+			});
+		});
+		expect(existsSync(profileDir)).toBe(false);
+	});
 });
+
+function htmlPage(body: string) {
+	return `data:text/html;charset=utf-8,${encodeURIComponent(
+		`<!doctype html><html><body>${body}</body></html>`,
+	)}`;
+}

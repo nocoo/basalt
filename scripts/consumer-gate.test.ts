@@ -370,6 +370,9 @@ describe("next consumer gate helpers", () => {
 		expect(app).toContain("data-basalt-root");
 		expect(app).toContain("data-basalt-save");
 		expect(app).toContain("data-basalt-toast");
+		expect(app).toContain("data-basalt-toast-host");
+		expect(app.indexOf("data-basalt-toast-host")).toBeGreaterThan(app.indexOf("data-basalt-root"));
+		expect(app.lastIndexOf("<Toast")).toBeGreaterThan(app.indexOf("data-basalt-toast-host"));
 		expect(manifest).not.toContain("playwright");
 		const rootManifest = readFileSync("package.json", "utf8");
 		expect(rootManifest).toContain('"playwright": "1.62.1"');

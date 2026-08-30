@@ -20,6 +20,8 @@ export function BasaltApp() {
 					<Button data-basalt-toast="" onClick={() => toast("basalt-toast-ok")}>
 						Show toast
 					</Button>
+				</div>
+				<div data-basalt-toast-host="">
 					<Toast />
 				</div>
 			</LinkProvider>

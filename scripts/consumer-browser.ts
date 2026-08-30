@@ -6,6 +6,16 @@ import { listPidsMatching, processAlive } from "./consumer-http";
 
 export const PLAYWRIGHT_INSTALL_COMMAND = "bun run playwright:install";
 export const NEXT_TOAST_MESSAGE = "basalt-toast-ok";
+export const NEXT_TOAST_HOST = "[data-basalt-toast-host]";
+
+export type ToastHostEvidence = {
+	hostFound: boolean;
+	ownCount: number;
+	count: number;
+	inBody: boolean;
+	inRoot: boolean;
+	visible: boolean;
+};
 
 export type PageFault = {
 	kind: "console.error" | "pageerror";
@@ -190,6 +200,120 @@ export async function withChromiumPage<T>(
 	);
 }
 
+export function assertToastHostEvidence(evidence: ToastHostEvidence) {
+	if (!evidence.hostFound) {
+		throw new Error("missing data-basalt-toast-host");
+	}
+	if (evidence.count === 0 && evidence.ownCount > 0) {
+		throw new Error("toast message in host is hidden");
+	}
+	if (evidence.count === 0) {
+		throw new Error("missing visible toast message in toast host");
+	}
+	if (evidence.count !== 1) {
+		throw new Error(`duplicate visible toast messages in toast host: ${evidence.count}`);
+	}
+	if (!evidence.visible) {
+		throw new Error("toast message in host is hidden");
+	}
+	if (evidence.inRoot) {
+		throw new Error("toast message is contained by data-basalt-root");
+	}
+	if (!evidence.inBody) {
+		throw new Error("toast message is not in document.body");
+	}
+}
+
+export async function readToastHostEvidence(
+	page: Page,
+	message = NEXT_TOAST_MESSAGE,
+): Promise<ToastHostEvidence> {
+	return page.evaluate((msg) => {
+		const root = document.querySelector("[data-basalt-root]");
+		const host = document.querySelector("[data-basalt-toast-host]");
+		if (!host) {
+			return {
+				hostFound: false,
+				ownCount: 0,
+				count: 0,
+				inBody: false,
+				inRoot: false,
+				visible: false,
+			};
+		}
+		const isHidden = (el: Element) => {
+			if (!(el instanceof HTMLElement)) {
+				return true;
+			}
+			if (el.hidden) {
+				return true;
+			}
+			const style = getComputedStyle(el);
+			return style.display === "none" || style.visibility === "hidden";
+		};
+		const isVisible = (el: Element) => {
+			if (isHidden(el)) {
+				return false;
+			}
+			let current: HTMLElement | null = el instanceof HTMLElement ? el : null;
+			while (current) {
+				if (current !== el && isHidden(current)) {
+					return false;
+				}
+				const rect = current.getBoundingClientRect();
+				if (rect.width > 0 && rect.height > 0) {
+					return true;
+				}
+				if (current === host) {
+					break;
+				}
+				current = current.parentElement;
+			}
+			return false;
+		};
+		const ownMatch = (el: Element) => {
+			if (el.matches("script, style, noscript, template")) {
+				return false;
+			}
+			if (!(el.textContent ?? "").includes(msg)) {
+				return false;
+			}
+			return ![...el.children].some((child) => (child.textContent ?? "").includes(msg));
+		};
+		const matches = [host, ...host.querySelectorAll("*")].filter(ownMatch);
+		const visible = matches.filter(isVisible);
+		const node = visible[0];
+		return {
+			hostFound: true,
+			ownCount: matches.length,
+			count: visible.length,
+			inBody: Boolean(node && document.body.contains(node)),
+			inRoot: Boolean(node && root?.contains(node)),
+			visible: Boolean(node && isVisible(node)),
+		};
+	}, message);
+}
+
+export async function assertVisibleToastOutsideRoot(
+	page: Page,
+	message = NEXT_TOAST_MESSAGE,
+	timeoutMs = 5000,
+) {
+	const deadline = Date.now() + timeoutMs;
+	while (true) {
+		const evidence = await readToastHostEvidence(page, message);
+		try {
+			assertToastHostEvidence(evidence);
+			return evidence;
+		} catch (error) {
+			if (Date.now() >= deadline) {
+				throw error;
+			}
+			await new Promise((resolve) => setTimeout(resolve, 50));
+		}
+	}
+}
+
 async function htmlTheme(page: Page) {
 	return page.evaluate(() => ({
 		className: document.documentElement.className,
@@ -238,21 +362,7 @@ export async function proveNextHydration(
 		}
 
 		await page.locator("[data-basalt-toast]").click();
-		await page.getByText(NEXT_TOAST_MESSAGE).waitFor({ timeout: 5000 });
-		const portal = await page.evaluate((message) => {
-			const root = document.querySelector("[data-basalt-root]");
-			const hits = [...document.querySelectorAll("body *")].filter((el) =>
-				(el.textContent ?? "").includes(message),
-			);
-			const outside = hits.find((el) => root != null && !root.contains(el));
-			return {
-				outside: Boolean(outside),
-				inBody: Boolean(outside && document.body.contains(outside)),
-			};
-		}, NEXT_TOAST_MESSAGE);
-		if (!portal.outside || !portal.inBody) {
-			throw new Error("toast is not in a portal outside the app root");
-		}
+		await assertVisibleToastOutsideRoot(page);
 
 		assertNoPageFaults(faults);
 		const browser = context.browser();
