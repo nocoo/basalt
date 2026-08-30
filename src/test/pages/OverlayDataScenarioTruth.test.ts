@@ -39,6 +39,11 @@ function declaresPageState(source: string) {
 	return /const \[page,\s*setPage\]\s*=\s*useState/.test(source);
 }
 
+function hasSingleJsxRoot(source: string) {
+	const trimmed = source.trim();
+	return trimmed.startsWith("<>") && trimmed.endsWith("</>");
+}
+
 describe("overlay data scenario truth", () => {
 	it("keeps audited scenario ids and counts", () => {
 		expect(UI_EXAMPLES.collapsible?.map((item) => item.id)).toEqual([
@@ -189,6 +194,9 @@ describe("overlay data scenario truth", () => {
 		expect(scenario("tabs", "tabs-many-tabs").code).toContain("Changelog");
 		expect(scenario("tabs", "tabs-many-tabs").code).not.toContain("…");
 		expect(scenario("tabs", "tabs-many-tabs").code).not.toContain("TabsContent");
+		expect(scenario("tabs", "tabs-many-tabs").code).toContain('defaultValue="overview"');
+		expect(scenario("tabs", "tabs-many-tabs").code).toContain('value="overview"');
+		expect(scenario("tabs", "tabs-many-tabs").code).not.toContain('defaultValue="a"');
 	});
 
 	it("imports dialog and popover overlay parts used by docs usage", () => {
@@ -211,6 +219,7 @@ describe("overlay data scenario truth", () => {
 		]);
 		expect(scenario("dialog", "dialog-basic-dialog").code).toContain("DialogTrigger");
 		expect(scenario("dialog", "dialog-basic-dialog").code).toContain("DialogClose");
+		expect(hasSingleJsxRoot(scenario("dialog", "dialog-sizes").code)).toBe(true);
 		expect(scenario("dialog", "dialog-sizes").code).toContain('size="sm"');
 		expect(scenario("dialog", "dialog-sizes").code).toContain('size="xl"');
 		expect(scenario("dialog", "dialog-sizes").code).toContain("DialogTrigger");
@@ -223,6 +232,7 @@ describe("overlay data scenario truth", () => {
 		expect(scenario("dialog", "dialog-with-combobox").code).toContain("DialogTrigger");
 		expect(scenario("dialog", "dialog-with-dropdown").code).toContain("DialogTrigger");
 		expect(scenario("popover", "popover-basic-popover").code).toContain('variant="outline"');
+		expect(hasSingleJsxRoot(scenario("popover", "popover-sides").code)).toBe(true);
 		expect(scenario("popover", "popover-sides").code).toContain('side="top"');
 		expect(scenario("popover", "popover-sides").code).toContain('side="bottom"');
 		expect(scenario("popover", "popover-sides").code).toContain("PopoverTrigger");

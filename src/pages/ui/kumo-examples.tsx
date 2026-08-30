@@ -1166,7 +1166,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("tabs", "many-tabs"),
 			title: "Many Tabs",
-			code: `<Tabs defaultValue="a">
+			code: `<Tabs defaultValue="overview">
   <TabsList>
     <TabsTrigger value="overview">Overview</TabsTrigger>
     <TabsTrigger value="usage">Usage</TabsTrigger>
@@ -1176,7 +1176,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
   </TabsList>
 </Tabs>`,
 			render: () => (
-				<Tabs defaultValue="a">
+				<Tabs defaultValue="overview">
 					<TabsList>
 						{["Overview", "Usage", "API", "Accessibility", "Changelog"].map((label) => (
 							<TabsTrigger key={label} value={label.toLowerCase()}>
@@ -1308,42 +1308,44 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("dialog", "sizes"),
 			title: "Sizes",
-			code: `<Dialog>
-  <DialogTrigger asChild>
-    <Button variant="outline">Small (288px)</Button>
-  </DialogTrigger>
-  <DialogContent size="sm">
-    <DialogTitle>Small Dialog</DialogTitle>
-    <DialogDescription>This size="sm" dialog stays 288px wide on desktop.</DialogDescription>
-  </DialogContent>
-</Dialog>
-<Dialog>
-  <DialogTrigger asChild>
-    <Button variant="outline">Base (384px)</Button>
-  </DialogTrigger>
-  <DialogContent size="base">
-    <DialogTitle>Base Dialog</DialogTitle>
-    <DialogDescription>This size="base" dialog stays 384px wide on desktop.</DialogDescription>
-  </DialogContent>
-</Dialog>
-<Dialog>
-  <DialogTrigger asChild>
-    <Button variant="outline">Large (512px)</Button>
-  </DialogTrigger>
-  <DialogContent size="lg">
-    <DialogTitle>Large Dialog</DialogTitle>
-    <DialogDescription>This size="lg" dialog stays 512px wide on desktop.</DialogDescription>
-  </DialogContent>
-</Dialog>
-<Dialog>
-  <DialogTrigger asChild>
-    <Button variant="outline">Extra Large (768px)</Button>
-  </DialogTrigger>
-  <DialogContent size="xl">
-    <DialogTitle>Extra Large Dialog</DialogTitle>
-    <DialogDescription>This size="xl" dialog stays 768px wide on desktop.</DialogDescription>
-  </DialogContent>
-</Dialog>`,
+			code: `<>
+  <Dialog>
+    <DialogTrigger asChild>
+      <Button variant="outline">Small (288px)</Button>
+    </DialogTrigger>
+    <DialogContent size="sm">
+      <DialogTitle>Small Dialog</DialogTitle>
+      <DialogDescription>This size="sm" dialog stays 288px wide on desktop.</DialogDescription>
+    </DialogContent>
+  </Dialog>
+  <Dialog>
+    <DialogTrigger asChild>
+      <Button variant="outline">Base (384px)</Button>
+    </DialogTrigger>
+    <DialogContent size="base">
+      <DialogTitle>Base Dialog</DialogTitle>
+      <DialogDescription>This size="base" dialog stays 384px wide on desktop.</DialogDescription>
+    </DialogContent>
+  </Dialog>
+  <Dialog>
+    <DialogTrigger asChild>
+      <Button variant="outline">Large (512px)</Button>
+    </DialogTrigger>
+    <DialogContent size="lg">
+      <DialogTitle>Large Dialog</DialogTitle>
+      <DialogDescription>This size="lg" dialog stays 512px wide on desktop.</DialogDescription>
+    </DialogContent>
+  </Dialog>
+  <Dialog>
+    <DialogTrigger asChild>
+      <Button variant="outline">Extra Large (768px)</Button>
+    </DialogTrigger>
+    <DialogContent size="xl">
+      <DialogTitle>Extra Large Dialog</DialogTitle>
+      <DialogDescription>This size="xl" dialog stays 768px wide on desktop.</DialogDescription>
+    </DialogContent>
+  </Dialog>
+</>`,
 			render: () => <DialogSizesExample />,
 		},
 		{
@@ -1660,42 +1662,44 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("popover", "sides"),
 			title: "Sides",
-			code: `<Popover>
-  <PopoverTrigger asChild>
-    <Button variant="outline">Bottom</Button>
-  </PopoverTrigger>
-  <PopoverContent side="bottom">
-    <PopoverTitle>Bottom</PopoverTitle>
-    <PopoverDescription>Popover on bottom.</PopoverDescription>
-  </PopoverContent>
-</Popover>
-<Popover>
-  <PopoverTrigger asChild>
-    <Button variant="outline">Top</Button>
-  </PopoverTrigger>
-  <PopoverContent side="top">
-    <PopoverTitle>Top</PopoverTitle>
-    <PopoverDescription>Popover on top.</PopoverDescription>
-  </PopoverContent>
-</Popover>
-<Popover>
-  <PopoverTrigger asChild>
-    <Button variant="outline">Left</Button>
-  </PopoverTrigger>
-  <PopoverContent side="left">
-    <PopoverTitle>Left</PopoverTitle>
-    <PopoverDescription>Popover on left.</PopoverDescription>
-  </PopoverContent>
-</Popover>
-<Popover>
-  <PopoverTrigger asChild>
-    <Button variant="outline">Right</Button>
-  </PopoverTrigger>
-  <PopoverContent side="right">
-    <PopoverTitle>Right</PopoverTitle>
-    <PopoverDescription>Popover on right.</PopoverDescription>
-  </PopoverContent>
-</Popover>`,
+			code: `<>
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button variant="outline">Bottom</Button>
+    </PopoverTrigger>
+    <PopoverContent side="bottom">
+      <PopoverTitle>Bottom</PopoverTitle>
+      <PopoverDescription>Popover on bottom.</PopoverDescription>
+    </PopoverContent>
+  </Popover>
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button variant="outline">Top</Button>
+    </PopoverTrigger>
+    <PopoverContent side="top">
+      <PopoverTitle>Top</PopoverTitle>
+      <PopoverDescription>Popover on top.</PopoverDescription>
+    </PopoverContent>
+  </Popover>
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button variant="outline">Left</Button>
+    </PopoverTrigger>
+    <PopoverContent side="left">
+      <PopoverTitle>Left</PopoverTitle>
+      <PopoverDescription>Popover on left.</PopoverDescription>
+    </PopoverContent>
+  </Popover>
+  <Popover>
+    <PopoverTrigger asChild>
+      <Button variant="outline">Right</Button>
+    </PopoverTrigger>
+    <PopoverContent side="right">
+      <PopoverTitle>Right</PopoverTitle>
+      <PopoverDescription>Popover on right.</PopoverDescription>
+    </PopoverContent>
+  </Popover>
+</>`,
 			render: () => (
 				<div className="flex flex-wrap items-center justify-center gap-4 py-16">
 					{(["bottom", "top", "left", "right"] as const).map((side) => (
