@@ -1,7 +1,7 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S1A2 — dist manifest 与 pack 白名单（准备下发）
+> 当前切片：S1A2 — dist manifest 与 pack 白名单（review-fix）
 > 已验收代码基线：`8fc87d7a4a2b`（`main`，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-30
@@ -122,7 +122,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S0A | 清理 Kumo/Cloudflare/Worker 用户示例与 fixture | 完成（`0cdbfdc`） | 禁用语境扫描、测试、typecheck、Biome、原子 commit 全绿 |
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
-| S1A | dist/types/files/exports 包契约 | 执行中（S1A2 准备下发） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
+| S1A | dist/types/files/exports 包契约 | 执行中（S1A2 review-fix） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next tarball consumers | 待办 | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | publint、prepublishOnly、Husky/browser 门 | 待办 | 一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 待办 | 组件类型、API 表、example 不再三份手写漂移 |
@@ -360,6 +360,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D008 | S0C3a | `e05cd19d727b` | `w14:p1` | 完成 | `2a1e45a5dade` | 3 个授权文件，+62/−17；新增只读 `catalogHeroScenario`，ready 改为 docs + hero，首屏 `data-hero-scenario` 的 preview/code 同源，Usage 改为纯 `docs.usage` 代码；targeted 1 file / 162 tests、typecheck、Biome、全量 105 files / 654 tests、Husky 均独立通过；保留旧映射给 S0C3b |
 | D009 | S0C3b | `2a1e45a5dade` + `e837d20c52d9` | `w14:p1` | 完成 | `e57579c592ba` | 4 个授权文件，+33/−113；HomeGrid 非定制 tile 改用 hero helper，删除 `BASE_DEMOS`、`UI_DEMOS`、`EXTRA_DEMOS` 与无用 imports，生产源码负向扫描归零，并以 Accordion 首页交互证明 extra tile 复用首个 scenario；Codex 独立复跑 targeted 1 file / 164 tests、typecheck、Biome、全量 105 files / 656 tests，Husky 通过；未重设计 HomeGrid 或进入 S1 |
 | D010 | S1A1 | `19bdeea` + `752e980` | `w14:p1` | 完成 | `9eba6caab1e2` + `8fc87d7a4a2b` | 5 个授权文件；首提交建立 build:css → Vite clean build → declarations → executable verifier，并更新真实 standalone CSS；review-fix 删除 3 个伪空 map。Codex 从不存在的 dist 独立重建并额外验证：90 JS、90 声明、87 个非空且双向引用闭合的真实 map、61 client entry、3 CSS、0 禁用产物；targeted 2 files / 6 tests、typecheck、Biome、全量 105 files / 659 tests、Husky 通过；未进入 manifest/consumer |
-| D011 | S1A2 | `8fc87d7a4a2b` + 本次调度文档 commit | `w14:p1` | 准备下发 | — | exports/types/import 指向 dist，pack 白名单与许可证可执行自证；保留 private/0.0.0，不改 root surface、consumer、CI/Husky 或 prepublish |
+| D011 | S1A2 | `8fc87d7a4a2b` + `8d72f233cd9b` | `w14:p1` | 执行中（review-fix） | `edc919c15827`（待修） | manifest 本身已得到 273 项 pack（270 dist + 3 metadata）、88 个 wildcard pair，targeted 2 files / 7 tests、全量 105 files / 660 tests；code review 发现 verifier 读取 wildcard `import` pattern 后未用于目标展开，错误 import 目录仍可能由 types 目录自行拼接而漏过。返工必须用真实 types/import pattern 分别替换 `*` 并验证成对目标，同时锁定完整 exports shape；其余范围不扩张 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
