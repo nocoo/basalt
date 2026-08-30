@@ -1,4 +1,4 @@
-import { copyFileSync, existsSync, globSync, mkdirSync, writeFileSync } from "node:fs";
+import { copyFileSync, globSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import react from "@vitejs/plugin-react-swc";
@@ -22,23 +22,6 @@ function copyPublishCss(): Plugin {
 			mkdirSync(dest, { recursive: true });
 			for (const file of publishCss) {
 				copyFileSync(path.resolve(src, "styles", file), path.join(dest, file));
-			}
-			const dist = path.resolve(root, "dist");
-			for (const file of globSync("**/*.js", { cwd: dist })) {
-				const mapPath = path.resolve(dist, `${file}.map`);
-				if (existsSync(mapPath)) {
-					continue;
-				}
-				writeFileSync(
-					mapPath,
-					`${JSON.stringify({
-						version: 3,
-						file: path.basename(file),
-						sources: [],
-						names: [],
-						mappings: "",
-					})}\n`,
-				);
 			}
 		},
 	};

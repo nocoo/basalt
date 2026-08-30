@@ -58,6 +58,21 @@ describe("package build contract", () => {
 			expect(
 				readFileSync(path.join(dist, "styles/tailwind.css"), "utf8").includes("./tokens.css"),
 			).toBe(true);
+			for (const rel of [
+				"components/button.js.map",
+				"providers/theme.js.map",
+				"charts/donut.js.map",
+				"utils/cn.js.map",
+			]) {
+				const map = JSON.parse(readFileSync(path.join(dist, rel), "utf8")) as {
+					version: number;
+					sources: unknown[];
+					mappings: string;
+				};
+				expect(map.version, rel).toBe(3);
+				expect(map.sources.length, rel).toBeGreaterThan(0);
+				expect(map.mappings.length, rel).toBeGreaterThan(0);
+			}
 		},
 	);
 });

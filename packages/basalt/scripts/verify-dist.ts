@@ -48,11 +48,9 @@ const entries = walk(srcRoot)
 
 let jsCount = 0;
 let dtsCount = 0;
-let mapCount = 0;
 for (const entry of entries) {
 	const js = join(distRoot, `${entry}.js`);
 	const dts = join(distRoot, `${entry}.d.ts`);
-	const map = join(distRoot, `${entry}.js.map`);
 	if (existsSync(js)) {
 		jsCount += 1;
 	} else {
@@ -62,11 +60,6 @@ for (const entry of entries) {
 		dtsCount += 1;
 	} else {
 		fail(`missing ${entry}.d.ts`);
-	}
-	if (existsSync(map)) {
-		mapCount += 1;
-	} else {
-		fail(`missing ${entry}.js.map`);
 	}
 }
 
@@ -105,7 +98,8 @@ if (actualCss.join(",") !== expectedCss.join(",")) {
 	}
 }
 
-for (const file of walk(distRoot)) {
+const distFiles = walk(distRoot);
+for (const file of distFiles) {
 	const rel = relative(distRoot, file);
 	const name = basename(file);
 	if (/\.(test|spec)\./.test(name)) {
@@ -116,6 +110,64 @@ for (const file of walk(distRoot)) {
 	}
 	if (name.endsWith(".tsx") || (name.endsWith(".ts") && !name.endsWith(".d.ts"))) {
 		fail(`source ${rel}`);
+	}
+}
+
+function sourceMappingURL(js: string) {
+	return js.match(/[#@]\s*sourceMappingURL=(\S+)/)?.[1];
+}
+
+const jsFiles = distFiles.filter((file) => file.endsWith(".js"));
+for (const jsFile of jsFiles) {
+	const url = sourceMappingURL(readFileSync(jsFile, "utf8"));
+	if (!url) {
+		continue;
+	}
+	const target = join(dirname(jsFile), url);
+	if (!existsSync(target)) {
+		fail(`${relative(distRoot, jsFile)} sourceMappingURL ${url} is missing`);
+	}
+}
+
+const mapFiles = distFiles.filter((file) => file.endsWith(".js.map")).sort();
+let mapCount = 0;
+for (const mapFile of mapFiles) {
+	const rel = relative(distRoot, mapFile);
+	const jsFile = mapFile.slice(0, -".map".length);
+	if (!existsSync(jsFile)) {
+		fail(`${rel} has no matching JS`);
+		continue;
+	}
+	let parsed: { version?: unknown; sources?: unknown; mappings?: unknown };
+	try {
+		parsed = JSON.parse(readFileSync(mapFile, "utf8")) as typeof parsed;
+	} catch {
+		fail(`${rel} is not valid JSON`);
+		continue;
+	}
+	if (parsed.version !== 3) {
+		fail(`${rel} version must be 3`);
+		continue;
+	}
+	if (!Array.isArray(parsed.sources) || parsed.sources.length === 0) {
+		fail(`${rel} sources must be non-empty`);
+		continue;
+	}
+	if (typeof parsed.mappings !== "string" || parsed.mappings.length === 0) {
+		fail(`${rel} mappings must be non-empty`);
+		continue;
+	}
+	mapCount += 1;
+}
+
+for (const rel of [
+	"components/button.js.map",
+	"providers/theme.js.map",
+	"charts/donut.js.map",
+	"utils/cn.js.map",
+]) {
+	if (!existsSync(join(distRoot, rel))) {
+		fail(`missing required map ${rel}`);
 	}
 }
 
