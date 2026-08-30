@@ -1,6 +1,7 @@
 import { cloneElement, type ReactElement } from "react";
 import { ResponsiveContainer } from "recharts";
 import { cn } from "../utils/cn";
+import { RESPONSIVE_CONTAINER_PROPS } from "./config";
 
 export function ChartFrame({
 	ariaLabel,
@@ -14,8 +15,16 @@ export function ChartFrame({
 	size?: string;
 }) {
 	return (
-		<div role="img" aria-label={ariaLabel} className={cn(size, "text-basalt-primary", className)}>
-			<ResponsiveContainer width="100%" height="100%">
+		<div
+			role="img"
+			aria-label={ariaLabel}
+			className={cn(
+				size,
+				"outline-none [&_.recharts-layer]:outline-none [&_.recharts-rectangle]:outline-none [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none [&_.recharts-wrapper]:outline-none",
+				className,
+			)}
+		>
+			<ResponsiveContainer {...RESPONSIVE_CONTAINER_PROPS}>
 				{cloneElement(children, { accessibilityLayer: false })}
 			</ResponsiveContainer>
 		</div>

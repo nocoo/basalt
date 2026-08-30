@@ -10,6 +10,8 @@ vi.mock("recharts", () => ({
 	Bar: () => null,
 	XAxis: () => null,
 	YAxis: () => null,
+	CartesianGrid: () => null,
+	Tooltip: () => null,
 }));
 
 vi.mock("@/viewmodels/useFlowComparisonViewModel", () => ({

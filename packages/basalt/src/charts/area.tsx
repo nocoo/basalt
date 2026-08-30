@@ -1,4 +1,11 @@
-import { Area, AreaChart as RechartsArea, XAxis, YAxis } from "recharts";
+import { Area, CartesianGrid, AreaChart as RechartsArea, Tooltip, XAxis, YAxis } from "recharts";
+import {
+	ANIMATION_PROPS,
+	CHART_TYPE,
+	cartesianAxisProps,
+	chartTooltipProps,
+	GRID_PROPS,
+} from "./config";
 import { ChartFrame } from "./frame";
 import { CHART_COLORS } from "./palette";
 import { SAMPLE, type XYPoint } from "./sample";
@@ -22,14 +29,17 @@ export function AreaChart({
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
 			<RechartsArea data={data}>
-				<XAxis dataKey="x" hide={!showAxes} />
-				<YAxis hide={!showAxes} />
+				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
+				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
+				<YAxis {...cartesianAxisProps(!showAxes)} />
+				<Tooltip {...chartTooltipProps({ cursor: "line" })} />
 				<Area
 					dataKey="y"
 					stackId={stackId}
 					stroke={CHART_COLORS[0]}
 					fill={CHART_COLORS[0]}
-					fillOpacity={0.2}
+					fillOpacity={CHART_TYPE.areaFillAlpha}
+					{...ANIMATION_PROPS}
 				/>
 				{dual ? (
 					<Area
@@ -37,7 +47,8 @@ export function AreaChart({
 						stackId={stackId}
 						stroke={CHART_COLORS[2]}
 						fill={CHART_COLORS[2]}
-						fillOpacity={0.2}
+						fillOpacity={CHART_TYPE.areaFillAlpha}
+						{...ANIMATION_PROPS}
 					/>
 				) : null}
 				{triple ? (
@@ -46,7 +57,8 @@ export function AreaChart({
 						stackId={stackId}
 						stroke={CHART_COLORS[4]}
 						fill={CHART_COLORS[4]}
-						fillOpacity={0.2}
+						fillOpacity={CHART_TYPE.areaFillAlpha}
+						{...ANIMATION_PROPS}
 					/>
 				) : null}
 			</RechartsArea>

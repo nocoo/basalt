@@ -294,6 +294,9 @@
     transform: translateY(0);
   }
 }
+.recharts-wrapper :focus, .recharts-wrapper :focus-visible, .recharts-surface :focus, .recharts-surface :focus-visible, .recharts-sector:focus, .recharts-rectangle:focus, .recharts-layer:focus {
+  outline: none;
+}
 @layer utilities {
   .pointer-events-none {
     pointer-events: none;
@@ -1213,6 +1216,10 @@
     --tw-ease: var(--ease-out);
     transition-timing-function: var(--ease-out);
   }
+  .outline-none {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
   .select-none {
     -webkit-user-select: none;
     user-select: none;
@@ -1481,6 +1488,26 @@
     .lg\:grid-cols-4 {
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
+  }
+  .\[\&_\.recharts-layer\]\:outline-none .recharts-layer {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
+  .\[\&_\.recharts-rectangle\]\:outline-none .recharts-rectangle {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
+  .\[\&_\.recharts-sector\]\:outline-none .recharts-sector {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
+  .\[\&_\.recharts-surface\]\:outline-none .recharts-surface {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
+  .\[\&_\.recharts-wrapper\]\:outline-none .recharts-wrapper {
+    --tw-outline-style: none;
+    outline-style: none;
   }
   .\[\&_\[cmdk-group-heading\]\]\:px-2 [cmdk-group-heading] {
     padding-inline: calc(var(--spacing) * 2);

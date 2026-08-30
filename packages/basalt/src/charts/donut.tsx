@@ -1,4 +1,5 @@
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
+import { ANIMATION_PROPS, chartLegendProps, chartTooltipProps } from "./config";
 import { ChartFrame } from "./frame";
 import { CHART_COLORS } from "./palette";
 import { DONUT_SAMPLE, type NamedValue } from "./sample";
@@ -26,13 +27,14 @@ export function DonutChart({
 					innerRadius={24}
 					outerRadius={48}
 					stroke="none"
+					{...ANIMATION_PROPS}
 				>
 					{data.map((entry, index) => (
 						<Cell key={`${entry.name}-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
 					))}
 				</Pie>
-				{showLegend ? <Legend /> : null}
-				{valueFormatter ? <Tooltip formatter={(value) => valueFormatter(Number(value))} /> : null}
+				{showLegend ? <Legend {...chartLegendProps()} /> : null}
+				<Tooltip {...chartTooltipProps({ formatter: valueFormatter, cursor: false })} />
 			</PieChart>
 		</ChartFrame>
 	);

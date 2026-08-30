@@ -1,5 +1,10 @@
 const v = (token: string) => `hsl(var(--basalt-${token}))`;
 
+export const withAlpha = (token: string, alpha: number) => `hsl(var(--basalt-${token}) / ${alpha})`;
+
+export const chartAxis = v("chart-axis");
+export const chartMuted = v("chart-muted");
+
 export const chart = {
 	primary: v("chart-1"),
 	sky: v("chart-2"),

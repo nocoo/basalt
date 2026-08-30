@@ -91,3 +91,13 @@
 	--animate-basalt-shimmer: basalt-shimmer 1.5s ease-in-out infinite;
 	--animate-basalt-tab-in: basalt-tab-in 180ms ease-out;
 }
+
+.recharts-wrapper :focus,
+.recharts-wrapper :focus-visible,
+.recharts-surface :focus,
+.recharts-surface :focus-visible,
+.recharts-sector:focus,
+.recharts-rectangle:focus,
+.recharts-layer:focus {
+	outline: none;
+}

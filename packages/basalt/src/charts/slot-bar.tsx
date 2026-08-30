@@ -1,6 +1,7 @@
 import { Bar, BarChart as RechartsBar, XAxis, YAxis } from "recharts";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/tooltip";
 import { cn } from "../utils/cn";
+import { ANIMATION_PROPS, BAR_RADIUS, cartesianAxisProps } from "./config";
 import { ChartFrame } from "./frame";
 import { CHART_COLORS } from "./palette";
 import { SAMPLE, type XYPoint } from "./sample";
@@ -43,9 +44,9 @@ export function SlotBarChart({
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
 			<RechartsBar data={data}>
-				<XAxis dataKey="x" hide />
-				<YAxis hide />
-				<Bar dataKey="y" fill={CHART_COLORS[0]} radius={[4, 4, 0, 0]} />
+				<XAxis dataKey="x" {...cartesianAxisProps(true)} />
+				<YAxis {...cartesianAxisProps(true)} />
+				<Bar dataKey="y" fill={CHART_COLORS[0]} radius={BAR_RADIUS.vertical} {...ANIMATION_PROPS} />
 			</RechartsBar>
 		</ChartFrame>
 	);

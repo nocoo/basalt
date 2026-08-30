@@ -1,4 +1,5 @@
-import { Line, LineChart as RechartsLine, Tooltip, XAxis, YAxis } from "recharts";
+import { CartesianGrid, Line, LineChart as RechartsLine, Tooltip, XAxis, YAxis } from "recharts";
+import { ANIMATION_PROPS, cartesianAxisProps, chartTooltipProps, GRID_PROPS } from "./config";
 import { ChartFrame } from "./frame";
 import { CHART_COLORS } from "./palette";
 import { SAMPLE, type XYPoint } from "./sample";
@@ -23,12 +24,35 @@ export function LineChart({
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
 			<RechartsLine data={data}>
-				<XAxis dataKey="x" hide={!showAxes} />
-				<YAxis hide={!showAxes} />
-				{valueFormatter ? <Tooltip formatter={(value) => valueFormatter(Number(value))} /> : null}
-				<Line type="monotone" dataKey="y" stroke={color ?? CHART_COLORS[0]} dot={false} />
-				{dual ? <Line type="monotone" dataKey="y2" stroke={CHART_COLORS[2]} dot={false} /> : null}
-				{triple ? <Line type="monotone" dataKey="y3" stroke={CHART_COLORS[4]} dot={false} /> : null}
+				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
+				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
+				<YAxis {...cartesianAxisProps(!showAxes)} tickFormatter={valueFormatter} />
+				<Tooltip {...chartTooltipProps({ formatter: valueFormatter, cursor: "line" })} />
+				<Line
+					type="monotone"
+					dataKey="y"
+					stroke={color ?? CHART_COLORS[0]}
+					dot={false}
+					{...ANIMATION_PROPS}
+				/>
+				{dual ? (
+					<Line
+						type="monotone"
+						dataKey="y2"
+						stroke={CHART_COLORS[2]}
+						dot={false}
+						{...ANIMATION_PROPS}
+					/>
+				) : null}
+				{triple ? (
+					<Line
+						type="monotone"
+						dataKey="y3"
+						stroke={CHART_COLORS[4]}
+						dot={false}
+						{...ANIMATION_PROPS}
+					/>
+				) : null}
 			</RechartsLine>
 		</ChartFrame>
 	);
