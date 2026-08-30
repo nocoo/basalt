@@ -16,6 +16,11 @@ describe("Checkbox", () => {
 		expect(box.className).not.toContain("rounded-sm");
 	});
 
+	it("keeps keyboard focus visible on the primary fill", () => {
+		render(<Checkbox aria-label="Accept" />);
+		expect(screen.getByRole("checkbox", { name: "Accept" }).className).toContain("ring-offset-2");
+	});
+
 	it("renders an indeterminate state", () => {
 		render(<Checkbox aria-label="Partial" checked="indeterminate" />);
 		const checkbox = screen.getByRole("checkbox", { name: "Partial" });

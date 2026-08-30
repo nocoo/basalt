@@ -2,6 +2,7 @@ import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { Circle } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { FOCUS_RING } from "./overlay";
 
 export const RadioGroup = React.forwardRef<
 	React.ElementRef<typeof RadioGroupPrimitive.Root>,
@@ -18,7 +19,8 @@ export const Radio = React.forwardRef<
 	<RadioGroupPrimitive.Item
 		ref={ref}
 		className={cn(
-			"aspect-square h-4 w-4 rounded-full border border-basalt-primary text-basalt-primary outline-hidden focus-visible:border-basalt-ring disabled:cursor-not-allowed disabled:opacity-50",
+			"aspect-square h-4 w-4 rounded-full border border-basalt-primary text-basalt-primary disabled:cursor-not-allowed disabled:opacity-50",
+			FOCUS_RING,
 			className,
 		)}
 		{...props}

@@ -3,9 +3,10 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { FOCUS_RING } from "./overlay";
 
 const buttonVariants = cva(
-	"inline-flex items-center justify-center gap-2 rounded-basalt-md text-sm font-medium transition-colors outline-hidden focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-basalt-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+	`inline-flex items-center justify-center gap-2 rounded-basalt-md text-sm font-medium transition-colors ${FOCUS_RING} disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0`,
 	{
 		variants: {
 			variant: {
@@ -14,7 +15,7 @@ const buttonVariants = cva(
 				destructive:
 					"bg-basalt-destructive text-basalt-destructive-foreground hover:bg-basalt-destructive/90",
 				outline:
-					"border border-basalt-border bg-basalt-secondary hover:bg-basalt-accent hover:text-basalt-accent-foreground focus-visible:border-basalt-ring focus-visible:ring-0",
+					"border border-basalt-border bg-basalt-secondary hover:bg-basalt-accent hover:text-basalt-accent-foreground",
 				ghost: "hover:bg-basalt-accent hover:text-basalt-accent-foreground",
 				link: "text-basalt-primary underline-offset-4 hover:underline",
 			},

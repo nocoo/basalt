@@ -8,6 +8,11 @@ describe("Button", () => {
 		expect(screen.getByRole("button", { name: "Save" })).toBeEnabled();
 	});
 
+	it("keeps keyboard focus visible on the primary fill", () => {
+		render(<Button>Save</Button>);
+		expect(screen.getByRole("button", { name: "Save" }).className).toContain("ring-offset-2");
+	});
+
 	it("renders a secondary variant", () => {
 		render(<Button variant="secondary">Cancel</Button>);
 		expect(screen.getByRole("button", { name: "Cancel" }).className).toContain(

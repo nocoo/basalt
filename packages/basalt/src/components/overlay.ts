@@ -10,6 +10,9 @@ export const FOCUS_BORDER = "outline-hidden focus-visible:border-basalt-ring";
 /** Inset 1px theme ring for borderless controls. Outer size stays put. */
 export const FOCUS_INSET =
 	"outline-hidden focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-basalt-ring";
+/** Offset ring stays visible on primary fills (ring token equals primary). */
+export const FOCUS_RING =
+	"outline-hidden focus-visible:ring-2 focus-visible:ring-basalt-ring focus-visible:ring-offset-2 focus-visible:ring-offset-basalt-background";
 
 export function overlayPanelClass(className?: string) {
 	return cn(
