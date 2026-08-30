@@ -1,3 +1,26 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@nocoo/basalt/components/avatar";
+import { Button } from "@nocoo/basalt/components/button";
+import {
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+	CommandPalette,
+} from "@nocoo/basalt/components/command-palette";
+import { Separator } from "@nocoo/basalt/components/separator";
+import {
+	Sidebar,
+	SidebarFooter,
+	SidebarGroup,
+	SidebarHeader,
+	SidebarIconItem,
+	SidebarItem,
+	SidebarNav,
+	SidebarPartition,
+	SidebarSearch,
+	SidebarUser,
+} from "@nocoo/basalt/components/sidebar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@nocoo/basalt/components/tooltip";
 import {
 	Accessibility,
@@ -21,7 +44,6 @@ import {
 	ChevronsDown,
 	ChevronsDownUp,
 	ChevronsUpDown,
-	ChevronUp,
 	Circle,
 	Clipboard,
 	Code,
@@ -102,17 +124,6 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Collapsible, CollapsibleTrigger } from "@/components/ui/collapsible";
-import {
-	CommandDialog,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-} from "@/components/ui/command";
-import { cn } from "@/lib/utils";
 import {
 	CATALOG,
 	CATALOG_CATEGORIES,
@@ -308,17 +319,6 @@ const LIBRARY_GROUPS: NavGroup[] = CATALOG_CATEGORIES.map((category) => ({
 
 const ALL_NAV_ITEMS = [...NAV_GROUPS.flatMap((g) => g.items), LIBRARY_HOME];
 
-function navItemClass(active: boolean) {
-	return cn(
-		"flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-normal transition-colors",
-		active
-			? "bg-accent text-foreground"
-			: "text-muted-foreground hover:bg-accent hover:text-foreground",
-	);
-}
-
-// ── Sub-components ──
-
 function itemTitle(item: NavItem, t: (key: string) => string) {
 	return item.title ?? t(item.titleKey ?? "");
 }
@@ -327,76 +327,44 @@ function groupLabel(group: NavGroup, t: (key: string) => string) {
 	return group.label ?? t(group.labelKey ?? "");
 }
 
-function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath: string }) {
-	const [open, setOpen] = useState(group.defaultOpen ?? true);
+function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: string }) {
 	const navigate = useNavigate();
 	const { t } = useTranslation();
-
 	return (
-		<Collapsible open={open} onOpenChange={setOpen}>
-			<div className="px-3 mt-2">
-				<CollapsibleTrigger className="flex w-full items-center justify-between px-3 py-2.5">
-					<span className="text-sm font-normal text-muted-foreground">{groupLabel(group, t)}</span>
-					<span className="flex h-7 w-7 shrink-0 items-center justify-center">
-						<ChevronUp
-							className={cn(
-								"h-4 w-4 text-muted-foreground transition-transform duration-200",
-								!open && "rotate-180",
-							)}
-							strokeWidth={1.5}
-						/>
+		<SidebarItem
+			active={!item.external && currentPath === item.path}
+			onClick={() =>
+				item.external
+					? window.open(item.path, "_blank", "noopener,noreferrer")
+					: navigate(item.path)
+			}
+		>
+			<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+			<span className="flex-1 truncate text-left">{itemTitle(item, t)}</span>
+			{item.external ? (
+				<span className="flex h-7 w-7 shrink-0 items-center justify-center">
+					<ExternalLink className="h-3 w-3 text-basalt-muted-foreground" strokeWidth={1.5} />
+				</span>
+			) : null}
+			{item.badge ? (
+				<span className="flex h-7 w-7 shrink-0 items-center justify-center">
+					<span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-badge-red px-1.5 text-[11px] font-medium text-badge-red-foreground">
+						{item.badge}
 					</span>
-				</CollapsibleTrigger>
-			</div>
-			<div
-				className="grid overflow-hidden"
-				style={{
-					gridTemplateRows: open ? "1fr" : "0fr",
-					transition: "grid-template-rows 200ms ease-out",
-				}}
-			>
-				<div className="min-h-0 overflow-hidden">
-					<div className="flex flex-col gap-0.5 px-3">
-						{group.items.map((item) => (
-							<button
-								type="button"
-								key={item.path}
-								onClick={() =>
-									item.external
-										? window.open(item.path, "_blank", "noopener,noreferrer")
-										: navigate(item.path)
-								}
-								className={navItemClass(!item.external && currentPath === item.path)}
-							>
-								<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
-								<span className="flex-1 truncate text-left">{itemTitle(item, t)}</span>
-								{item.external && (
-									<span className="flex h-7 w-7 shrink-0 items-center justify-center">
-										<ExternalLink className="h-3 w-3 text-muted-foreground" strokeWidth={1.5} />
-									</span>
-								)}
-								{item.badge && (
-									<span className="flex h-7 w-7 shrink-0 items-center justify-center">
-										<span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-badge-red px-1.5 text-[11px] font-medium text-badge-red-foreground">
-											{item.badge}
-										</span>
-									</span>
-								)}
-							</button>
-						))}
-					</div>
-				</div>
-			</div>
-		</Collapsible>
+				</span>
+			) : null}
+		</SidebarItem>
 	);
 }
 
-function PartitionLabel({ labelKey }: { labelKey: string }) {
+function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath: string }) {
 	const { t } = useTranslation();
 	return (
-		<p className="px-6 pt-3 pb-1 text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-			{t(labelKey)}
-		</p>
+		<SidebarGroup label={groupLabel(group, t)} defaultOpen={group.defaultOpen ?? true}>
+			{group.items.map((item) => (
+				<NavItemButton key={item.path} item={item} currentPath={currentPath} />
+			))}
+		</SidebarGroup>
 	);
 }
 
@@ -406,27 +374,22 @@ function LibraryNav({ currentPath }: { currentPath: string }) {
 	return (
 		<div className="pb-3">
 			<div className="mt-2 flex flex-col gap-0.5 px-3">
-				<button
-					type="button"
-					onClick={() => navigate("/ui")}
-					className={navItemClass(currentPath === "/ui")}
-				>
+				<SidebarItem active={currentPath === "/ui"} onClick={() => navigate("/ui")}>
 					<BookOpen className="h-4 w-4 shrink-0" strokeWidth={1.5} />
 					<span className="flex-1 text-left">{t("nav.kitIndex")}</span>
-				</button>
+				</SidebarItem>
 				{libraryDocEntries().map((entry) => {
 					const path = `/ui/${entry.slug}`;
 					const Icon = CATALOG_ICONS[entry.slug] ?? FileText;
 					return (
-						<button
-							type="button"
+						<SidebarItem
 							key={entry.slug}
+							active={currentPath === path}
 							onClick={() => navigate(path)}
-							className={navItemClass(currentPath === path)}
 						>
 							<Icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
 							<span className="flex-1 truncate text-left">{catalogNavName(entry)}</span>
-						</button>
+						</SidebarItem>
 					);
 				})}
 			</div>
@@ -443,27 +406,21 @@ function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: s
 	return (
 		<Tooltip delayDuration={0}>
 			<TooltipTrigger asChild>
-				<button
-					type="button"
+				<SidebarIconItem
+					active={!item.external && currentPath === item.path}
 					onClick={() =>
 						item.external
 							? window.open(item.path, "_blank", "noopener,noreferrer")
 							: navigate(item.path)
 					}
-					className={cn(
-						"relative flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
-						!item.external && currentPath === item.path
-							? "bg-accent text-foreground"
-							: "text-muted-foreground hover:bg-accent hover:text-foreground",
-					)}
 				>
 					<item.icon className="h-4 w-4" strokeWidth={1.5} />
-					{item.badge && (
+					{item.badge ? (
 						<span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-badge-red px-1 text-[10px] font-medium text-badge-red-foreground">
 							{item.badge}
 						</span>
-					)}
-				</button>
+					) : null}
+				</SidebarIconItem>
 			</TooltipTrigger>
 			<TooltipContent side="right" sideOffset={8}>
 				{itemTitle(item, t)}
@@ -506,51 +463,41 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 	);
 
 	return (
-		<aside
-			className={cn(
-				"sticky top-0 flex h-screen shrink-0 flex-col bg-background transition-all duration-300 ease-in-out",
-				collapsed ? "w-[68px] overflow-y-hidden" : "w-[260px] overflow-hidden",
-			)}
-		>
+		<Sidebar collapsed={collapsed}>
 			{collapsed ? (
-				/* ── Collapsed (icon-only) view ── */
 				<div className="flex h-screen w-[68px] flex-col items-center">
-					<div className="flex h-14 items-center justify-center">
-						<Mountain className="h-5 w-5 text-primary" strokeWidth={1.5} />
-					</div>
-
-					<button
-						type="button"
+					<SidebarHeader className="justify-center px-0">
+						<Mountain className="h-5 w-5 text-basalt-primary" strokeWidth={1.5} />
+					</SidebarHeader>
+					<Button
+						variant="ghost"
+						size="icon"
 						onClick={onToggle}
 						aria-label={t("common.expandSidebar")}
-						className="flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors mb-1"
+						className="mb-1"
 					>
-						<PanelLeft className="h-4 w-4" aria-hidden="true" strokeWidth={1.5} />
-					</button>
-
+						<PanelLeft aria-hidden="true" />
+					</Button>
 					<Tooltip delayDuration={0}>
 						<TooltipTrigger asChild>
-							<button
-								type="button"
+							<SidebarIconItem
+								className="mb-2"
 								onClick={() => setSearchOpen(true)}
 								aria-label={`${t("common.search")} (⌘K)`}
-								className="flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors mb-2"
 							>
-								<Search className="h-4 w-4" aria-hidden="true" strokeWidth={1.5} />
-							</button>
+								<Search aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+							</SidebarIconItem>
 						</TooltipTrigger>
 						<TooltipContent side="right" sideOffset={8}>
 							{t("common.search")} (⌘K)
 						</TooltipContent>
 					</Tooltip>
-
-					<nav className="flex-1 flex w-full flex-col items-center gap-1 overflow-y-auto pt-1">
+					<SidebarNav className="w-full items-center gap-1 pt-1">
 						{ALL_NAV_ITEMS.map((item) => (
 							<CollapsedNavItem key={item.path} item={item} currentPath={pathname} />
 						))}
-					</nav>
-
-					<div className="py-3 flex justify-center w-full">
+					</SidebarNav>
+					<SidebarFooter className="flex w-full justify-center px-0">
 						<Tooltip delayDuration={0}>
 							<TooltipTrigger asChild>
 								<Avatar className="h-9 w-9 cursor-pointer">
@@ -562,83 +509,69 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 								Zheng Li
 							</TooltipContent>
 						</Tooltip>
-					</div>
+					</SidebarFooter>
 				</div>
 			) : (
-				/* ── Expanded view ── */
 				<div className="flex h-screen w-[260px] flex-col">
-					<div className="px-3 h-14 flex items-center">
+					<SidebarHeader>
 						<div className="flex w-full items-center justify-between px-3">
 							<div className="flex items-center gap-3">
-								<Mountain className="h-5 w-5 text-primary" strokeWidth={1.5} />
-								<span className="text-lg md:text-xl font-semibold text-foreground">basalt.</span>
-								<span className="rounded-md bg-secondary px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground leading-none">
+								<Mountain className="h-5 w-5 text-basalt-primary" strokeWidth={1.5} />
+								<span className="text-lg font-semibold text-basalt-foreground md:text-xl">
+									basalt.
+								</span>
+								<span className="rounded-md bg-basalt-secondary px-1.5 py-0.5 text-[10px] leading-none font-medium text-basalt-muted-foreground">
 									v{__APP_VERSION__}
 								</span>
 							</div>
-							<button
-								type="button"
+							<Button
+								variant="ghost"
+								size="icon"
+								className="h-7 w-7"
 								onClick={onToggle}
 								aria-label={t("common.collapseSidebar")}
-								className="flex h-7 w-7 items-center justify-center rounded-md text-muted-foreground hover:text-foreground transition-colors"
 							>
-								<PanelLeft className="h-4 w-4" aria-hidden="true" strokeWidth={1.5} />
-							</button>
+								<PanelLeft aria-hidden="true" />
+							</Button>
 						</div>
-					</div>
-
+					</SidebarHeader>
 					<div className="px-3 pb-1">
-						<button
-							type="button"
-							onClick={() => setSearchOpen(true)}
-							className="flex w-full items-center gap-3 rounded-lg bg-secondary px-3 py-1.5 transition-colors hover:bg-accent cursor-pointer"
-						>
-							<Search className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-							<span className="flex-1 text-left text-sm text-muted-foreground">
-								{t("common.search")}
-							</span>
-							<span className="flex h-7 w-7 shrink-0 items-center justify-center">
-								<kbd className="pointer-events-none hidden rounded-sm border border-border bg-card px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground sm:inline-block">
-									⌘K
-								</kbd>
-							</span>
-						</button>
+						<SidebarSearch onClick={() => setSearchOpen(true)}>{t("common.search")}</SidebarSearch>
 					</div>
-
-					<nav className="flex-1 overflow-y-auto pt-1">
-						<PartitionLabel labelKey="nav.examples" />
+					<SidebarNav className="pt-1">
+						<SidebarPartition>{t("nav.examples")}</SidebarPartition>
 						{NAV_GROUPS.map((group) => (
 							<NavGroupSection key={group.labelKey} group={group} currentPath={pathname} />
 						))}
-						<div className="mx-6 my-3 border-t border-border" />
-						<PartitionLabel labelKey="nav.kit" />
+						<Separator className="mx-6 my-3 w-auto" />
+						<SidebarPartition>{t("nav.kit")}</SidebarPartition>
 						<LibraryNav currentPath={pathname} />
-					</nav>
-
-					<div className="px-4 py-3">
-						<div className="flex items-center gap-3">
-							<Avatar className="h-9 w-9 shrink-0">
-								<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-								<AvatarFallback className="text-xs">ZL</AvatarFallback>
-							</Avatar>
-							<div className="flex-1 min-w-0">
-								<p className="text-sm font-medium text-foreground truncate">Zheng Li</p>
-								<p className="text-xs text-muted-foreground truncate">zhengli@example.com</p>
-							</div>
-							<button
-								type="button"
-								aria-label={t("common.logOut")}
-								className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0"
-							>
-								<LogOut className="h-4 w-4" aria-hidden="true" strokeWidth={1.5} />
-							</button>
-						</div>
-					</div>
+					</SidebarNav>
+					<SidebarFooter>
+						<SidebarUser
+							name="Zheng Li"
+							email="zhengli@example.com"
+							avatar={
+								<Avatar className="h-9 w-9 shrink-0">
+									<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
+									<AvatarFallback className="text-xs">ZL</AvatarFallback>
+								</Avatar>
+							}
+							action={
+								<Button
+									variant="ghost"
+									size="icon"
+									className="h-8 w-8 shrink-0"
+									aria-label={t("common.logOut")}
+								>
+									<LogOut aria-hidden="true" />
+								</Button>
+							}
+						/>
+					</SidebarFooter>
 				</div>
 			)}
-
-			{/* Search command palette */}
-			<CommandDialog open={searchOpen} onOpenChange={setSearchOpen}>
+			<CommandPalette open={searchOpen} onOpenChange={setSearchOpen}>
 				<CommandInput placeholder={t("common.searchPages")} />
 				<CommandList>
 					<CommandEmpty>{t("common.noResults")}</CommandEmpty>
@@ -649,9 +582,9 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 									key={item.path}
 									value={itemTitle(item, t)}
 									onSelect={() => handleSelect(item.path)}
-									className="gap-3 cursor-pointer"
+									className="cursor-pointer gap-3"
 								>
-									<item.icon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+									<item.icon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
 									<span>{itemTitle(item, t)}</span>
 								</CommandItem>
 							))}
@@ -661,9 +594,9 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 						<CommandItem
 							value={t("nav.kitIndex")}
 							onSelect={() => handleSelect("/ui")}
-							className="gap-3 cursor-pointer"
+							className="cursor-pointer gap-3"
 						>
-							<BookOpen className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+							<BookOpen className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
 							<span>{t("nav.kitIndex")}</span>
 						</CommandItem>
 						{CATALOG.map((entry) => (
@@ -671,14 +604,14 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 								key={entry.slug}
 								value={`${catalogNavName(entry)} ${entry.name} ${entry.slug}`}
 								onSelect={() => handleSelect(`/ui/${entry.slug}`)}
-								className="gap-3 cursor-pointer"
+								className="cursor-pointer gap-3"
 							>
 								<span>{catalogNavName(entry)}</span>
 							</CommandItem>
 						))}
 					</CommandGroup>
 				</CommandList>
-			</CommandDialog>
-		</aside>
+			</CommandPalette>
+		</Sidebar>
 	);
 }
