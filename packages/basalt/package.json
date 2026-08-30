@@ -4,21 +4,47 @@
 	"private": true,
 	"type": "module",
 	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/nocoo/basalt.git",
+		"directory": "packages/basalt"
+	},
+	"publishConfig": {
+		"access": "public"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
 	"scripts": {
 		"build": "bun run build:css && vite build && tsc -p tsconfig.build.json && bun scripts/verify-dist.ts",
-		"build:css": "bun ../../scripts/build-basalt-standalone.ts"
+		"build:css": "bun ../../scripts/build-basalt-standalone.ts",
+		"pack:check": "bun scripts/verify-pack.ts"
 	},
 	"sideEffects": [
 		"*.css"
 	],
 	"exports": {
-		".": "./src/index.ts",
-		"./components/*": "./src/components/*.tsx",
-		"./providers/*": "./src/providers/*.tsx",
-		"./charts/*": "./src/charts/*.tsx",
-		"./styles": "./src/styles/tailwind.css",
-		"./styles/tailwind": "./src/styles/tailwind.css",
-		"./styles/standalone": "./src/styles/standalone.css"
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./components/*": {
+			"types": "./dist/components/*.d.ts",
+			"import": "./dist/components/*.js"
+		},
+		"./providers/*": {
+			"types": "./dist/providers/*.d.ts",
+			"import": "./dist/providers/*.js"
+		},
+		"./charts/*": {
+			"types": "./dist/charts/*.d.ts",
+			"import": "./dist/charts/*.js"
+		},
+		"./styles": "./dist/styles/tailwind.css",
+		"./styles/tailwind": "./dist/styles/tailwind.css",
+		"./styles/standalone": "./dist/styles/standalone.css"
 	},
 	"dependencies": {
 		"@radix-ui/react-accordion": "1.2.20",

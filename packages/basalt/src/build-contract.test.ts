@@ -42,6 +42,41 @@ describe("package build contract", () => {
 		expect(existsSync(path.join(pkgRoot, "scripts/verify-dist.ts"))).toBe(true);
 	});
 
+	it("keeps the dist pack whitelist and private 0.0.0 manifest", () => {
+		const raw = readFileSync(path.join(pkgRoot, "package.json"), "utf8");
+		const pkg = JSON.parse(raw) as {
+			name: string;
+			version: string;
+			private: boolean;
+			type: string;
+			publishConfig?: { access?: string };
+			files?: string[];
+			scripts: Record<string, string>;
+			exports: Record<string, string | { types?: string; import?: string }>;
+		};
+		expect(pkg.name).toBe("@nocoo/basalt");
+		expect(pkg.version).toBe("0.0.0");
+		expect(pkg.private).toBe(true);
+		expect(pkg.type).toBe("module");
+		expect(pkg.publishConfig?.access).toBe("public");
+		expect(pkg.files).toEqual(["dist", "README.md", "LICENSE"]);
+		expect(pkg.scripts["pack:check"]).toContain("verify-pack");
+		expect(JSON.stringify(pkg.exports)).not.toContain("./src/");
+		expect(pkg.exports["."]).toEqual({
+			types: "./dist/index.d.ts",
+			import: "./dist/index.js",
+		});
+		const rootExport = raw.slice(raw.indexOf('"exports"'));
+		expect(rootExport.indexOf('"types"')).toBeGreaterThanOrEqual(0);
+		expect(rootExport.indexOf('"types"')).toBeLessThan(rootExport.indexOf('"import"'));
+		expect(pkg.exports["./styles"]).toBe("./dist/styles/tailwind.css");
+		expect(pkg.exports["./styles/tailwind"]).toBe("./dist/styles/tailwind.css");
+		expect(pkg.exports["./styles/standalone"]).toBe("./dist/styles/standalone.css");
+		expect(readFileSync(path.join(pkgRoot, "LICENSE"), "utf8")).toBe(
+			readFileSync("LICENSE", "utf8"),
+		);
+	});
+
 	it.skipIf(!existsSync(path.join(pkgRoot, "dist/index.js")))(
 		"built dist matches the publish contract",
 		() => {
