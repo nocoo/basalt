@@ -1,8 +1,9 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S0C2d — 浮层、导航与数据类 scenario 真值（准备下发）
+> 当前切片：S0C2d — 浮层、导航与数据类 scenario 真值（Codex 验收中；review-fix 待下发）
 > 已验收代码基线：`306b6683ecbc`（`main`，工作树干净）
+> 待验收 Grok 提交：`d7c1f6b5c8b`
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-30
 
@@ -54,6 +55,21 @@ Codex 只直接写 `docs/`。Grok 不修改本文，除非调度消息明确授�
 | 完成 | diff、功能和该切片全部门均有证据通过 |
 | 阻塞 | 存在需要用户决策或外部状态变化的问题 |
 
+### 2.4 信息节流与任务包
+
+Codex 每次只向 Grok 暴露一个可独立提交、独立验收的任务包。总表负责保留全局方向，不代表 Grok 获得顺手实现后续阶段的授权。
+
+每个任务包必须明确包含：
+
+1. 精确基线 commit、`main` 和干净工作树前置条件；
+2. 只需阅读的本文小节、允许修改的文件或目录；
+3. 本切片必须成立的行为、测试、文档/example 和 MVVM 条件；
+4. 明确的非目标，尤其是不得提前扩展的公开 API、视觉或下一阶段；
+5. targeted、typecheck、Biome、全量测试和 Husky 提交要求；
+6. 唯一停止点：提交后报告 commit、文件、测试证据和保留缺口，等待 Codex review。
+
+Codex review 发现问题时，只发送当前切片的最小返工包，不夹带下一切片。返工提交通过后，Codex先提交本文验收状态，再下发后续任务。若一个阶段涉及多个独立公开契约，必须继续拆成字母或数字子切片；不得用“同一家族”为理由把多个可独立审查的组件压成一个大提交。
+
 ## 3. 原子化提交与 MVVM 硬规则
 
 ### 3.1 提交
@@ -85,8 +101,8 @@ Codex 只直接写 `docs/`。Grok 不修改本文，除非调度消息明确授�
 | Catalog | 96 项：60 component、24 chart、9 docs、3 block | 每项要么完整实现，要么从公开 catalog 明确移除；禁止 placeholder 冒充出口 |
 | Ready 页面 | 84 | 公开项 100% ready |
 | Placeholder | 12：9 docs、Maps、ResourceList、DeleteResource | 0 |
-| Kumo 重合控件示例 | Basalt 133 / Kumo 292，名义 45.5% | 场景按 Basalt 契约覆盖；不机械复制品牌场景 |
-| 测试 | 104 文件、643 tests，全部 jsdom | unit + 高风险 browser + consumer gate |
+| Kumo 重合控件示例 | Basalt 133 / Kumo live registry 321，名义 41.4% | 场景按 Basalt 契约覆盖；不机械复制品牌场景；动态基线注明抓取日期 |
+| 测试 | 105 文件、652 tests，全部 jsdom | unit + 高风险 browser + consumer gate |
 | 外部消费者 | 0 个真实 `@nocoo/basalt` import | 仓外 Vite Tailwind、Vite standalone、Next consumer 全绿 |
 | 包 | `0.0.0`、private、exports 指向 src | dist/types/files/exports/publint/tarball/prepublish 完整；最终 release-ready |
 
@@ -312,11 +328,12 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 
 1. `git status --short`、`git log`、`git show --stat`，确认 main、原子提交、无无关文件。
 2. 逐行阅读 diff；对照当前切片验收条件，检查 API、MVVM、a11y、SSR 和文档真值。
-3. 运行 targeted tests。
-4. 运行 `bun run typecheck && bun run lint && bun run test`。
-5. 阶段末再运行 coverage/build/browser/consumer 门。
-6. 用 `rg` 做负向审计，例如污染词、placeholder、旧 UI import、默认 SAMPLE。
-7. 通过后把本文切片改为“完成”，记录 commit 和证据；否则给 Grok 单一返工清单。
+3. 对每个新增或修改的 usage/code snippet 检查可解析性、完整 import、单一合法 JSX 根和受控状态声明；字符串存在性测试不能替代这一门。
+4. 运行 targeted tests。
+5. 运行 `bun run typecheck && bun run lint && bun run test`。
+6. 阶段末再运行 coverage/build/browser/consumer 门。
+7. 用 `rg` 做负向审计，例如污染词、placeholder、旧 UI import、默认 SAMPLE。
+8. 通过后把本文切片改为“完成”，记录 commit 和证据；否则给 Grok 单一返工清单。
 
 ## 10. 调度与审查日志
 
@@ -328,6 +345,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D004 | S0C2a | `7fa1bb287294` | `w14:p1` | 完成 | `75754d412ad7` + `ce88ff09bea8` | 3 个授权文件；首提交校正 9 个条目的伪标题、空壳/截断 snippet 和 usage，review-fix 补齐 Code/Select/Grid/Flow/Sidebar 的 compound imports 与 CommandPalette 状态声明；targeted 3 files / 176 tests，typecheck、Biome、全量 102 files / 628 tests；scenario ID/数量/顺序、render、组件 API、行为、视觉与 S0C3 数据源均未变 |
 | D005 | S0C2b | `a6460bdffa6a` | `w14:p1` | 完成 | `1100e184aa30` | 5 个授权文件，+309/−31；锁定 15 个 slug 的 ID/数量/顺序，修复 Empty/Breadcrumbs/Meter 必填参数、Link/Tooltip provider、Skeleton/Loader 多状态、Toast 触发代码、Banner/LayerCard 与 ClipboardText 中性示例；targeted 2 files / 169 tests，typecheck、Biome、全量 103 files / 637 tests；仅 ClipboardText 假凭据文案同步 render，组件 API、行为与 S0C3 数据源未变 |
 | D006 | S0C2c | `5250494cbfcf` | `w14:p1` | 完成 | `306b6683ecbc` | 4 个授权文件，+224/−34；锁定 9 个 slug 的 ID/数量/顺序，对齐 Checkbox/Switch/Input/InputArea/InputGroup/Radio/SensitiveInput 的名称与组合结构，补齐 Combobox items/placeholder 和 DatePicker 可访问 usage；targeted 2 files / 166 tests，typecheck、Biome、全量 104 files / 643 tests；未扩 string-only Combobox、DatePicker range 或 Group/Legend API，留给 S4/S5 |
-| D007 | S0C2d | `306b6683ecbc` | `w14:p1` | 准备下发 | — | 只审计浮层/导航/数据组 Collapsible、Dialog、DropdownMenu、Pagination、Popover、Table、TableOfContents、Tabs、Toolbar 的 title/code/render、`docs.usage` 真值；不增加组件能力、不进入 S0C3 |
+| D007 | S0C2d | `306b6683ecbc` | `w14:p1` | 验收中（review-fix 待下发） | `d7c1f6b5c8b` | 首提交 3 个授权文件，+612/−49；targeted 1 file / 9 tests、typecheck、Biome、全量 105 files / 652 tests 独立复跑通过；review 发现 `dialog-sizes`、`popover-sides` code 为多根非法 JSX，`tabs-many-tabs` 的 defaultValue 不命中 trigger，必须在 D007 内补测试并修正后才可进入 S0C3 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
