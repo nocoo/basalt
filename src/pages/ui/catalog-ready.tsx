@@ -1208,10 +1208,6 @@ add("chart-colors", "Chart color tokens.", () => <Colors />, "<Colors />");
 add("timeseries", "Time series.", () => <Timeseries />, "<Timeseries />");
 add("custom-chart", "Custom chart.", () => <CustomChart />, "<CustomChart />");
 
-export const EXTRA_DEMOS: Record<string, ComponentType> = Object.fromEntries(
-	Object.entries(extra).map(([slug, value]) => [slug, value.demo]),
-);
-
 export const EXTRA_DOCS: Record<string, CatalogDocsDraft> = Object.fromEntries(
 	Object.entries(extra).map(([slug, value]) => [slug, value.docs]),
 );

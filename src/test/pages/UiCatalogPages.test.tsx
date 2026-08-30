@@ -478,4 +478,33 @@ describe("ui catalog", () => {
 		expect(page).not.toMatch(/example-\$\{index\}/);
 		expect(page).toContain("data-scenario");
 	});
+
+	it("removes parallel demo maps from production catalog sources", () => {
+		for (const file of [
+			"src/pages/ui/demos.tsx",
+			"src/pages/ui/catalog-ready.tsx",
+			"src/pages/ui/HomeGrid.tsx",
+		]) {
+			const source = readFileSync(path.join(process.cwd(), file), "utf8");
+			expect(source, file).not.toMatch(/\bBASE_DEMOS\b/);
+			expect(source, file).not.toMatch(/\bUI_DEMOS\b/);
+			expect(source, file).not.toMatch(/\bEXTRA_DEMOS\b/);
+		}
+	});
+
+	it("renders extra home tiles from the first catalog scenario", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui");
+		const accordionLink = screen.getByRole("link", { name: "Accordion" });
+		const tile = accordionLink.closest("li");
+		expect(tile).toBeTruthy();
+		if (!tile) {
+			return;
+		}
+		const preview = within(tile);
+		expect(preview.getByRole("button", { name: "Item" })).toBeInTheDocument();
+		fireEvent.click(preview.getByRole("button", { name: "Item" }));
+		expect(preview.getByText("Body")).toBeInTheDocument();
+	});
 });

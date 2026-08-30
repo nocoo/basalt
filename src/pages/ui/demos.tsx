@@ -23,119 +23,14 @@ import {
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { AlertTriangle, CircleAlert, CircleCheck, Info, X } from "lucide-react";
-import type { ComponentType, ReactNode } from "react";
-import { EXTRA_DEMOS, EXTRA_EXAMPLES } from "./catalog-ready";
+import type { ReactNode } from "react";
+import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { KUMO_EXAMPLES } from "./kumo-examples";
 
 function Preview({ children }: { children: ReactNode }) {
 	return <div className="flex flex-wrap items-center gap-3">{children}</div>;
 }
-
-const BASE_DEMOS: Record<string, ComponentType> = {
-	text: () => (
-		<Preview>
-			<Text>The quick brown fox jumps over the lazy dog.</Text>
-			<Text tone="muted">Muted supporting copy.</Text>
-		</Preview>
-	),
-	label: () => (
-		<Preview>
-			<Label htmlFor="demo-label">Email</Label>
-			<Input id="demo-label" />
-		</Preview>
-	),
-	separator: () => (
-		<div className="w-full max-w-sm space-y-3">
-			<Text>Above</Text>
-			<Separator />
-			<Text>Below</Text>
-		</div>
-	),
-	button: () => (
-		<Preview>
-			<Button>Save</Button>
-			<Button variant="secondary">Cancel</Button>
-			<Button variant="outline">Outline</Button>
-			<Button icon="+">With icon</Button>
-			<Button loading>Saving</Button>
-			<Button size="icon" aria-label="Add">
-				+
-			</Button>
-			<Button disabled>Disabled</Button>
-		</Preview>
-	),
-	"link-button": () => (
-		<Preview>
-			<LinkButton href="#docs">Open docs</LinkButton>
-		</Preview>
-	),
-	link: () => (
-		<LinkProvider>
-			<Link href="#section">Inline link</Link>
-		</LinkProvider>
-	),
-	"link-provider": () => (
-		<LinkProvider>
-			<Link href="#section">Rendered through LinkProvider</Link>
-		</LinkProvider>
-	),
-	tooltip: () => (
-		<TooltipProvider>
-			<Tooltip>
-				<TooltipTrigger asChild>
-					<Button variant="outline">Hover</Button>
-				</TooltipTrigger>
-				<TooltipContent>Helpful hint</TooltipContent>
-			</Tooltip>
-		</TooltipProvider>
-	),
-	"theme-provider": () => (
-		<ThemeProvider>
-			<Text>ThemeProvider is active for the toggle on this page.</Text>
-		</ThemeProvider>
-	),
-	"theme-toggle": () => (
-		<ThemeProvider>
-			<ThemeToggle aria-label="Toggle theme" />
-		</ThemeProvider>
-	),
-	"layer-card": () => (
-		<LayerCard className="w-[250px]">
-			<LayerCard.Secondary>Next Steps</LayerCard.Secondary>
-			<LayerCard.Primary>Hello</LayerCard.Primary>
-		</LayerCard>
-	),
-	input: () => <Input aria-label="Name" placeholder="Jane Doe" />,
-	"input-area": () => <InputArea aria-label="Notes" placeholder="Write a note" />,
-	"input-group": () => (
-		<InputGroup>
-			<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
-			<InputGroup.Suffix>.example.com</InputGroup.Suffix>
-			<InputGroup.Addon align="end">
-				<CircleCheck className="text-basalt-heatmap-green-3" />
-			</InputGroup.Addon>
-		</InputGroup>
-	),
-	"sensitive-input": () => (
-		<SensitiveInput aria-label="Password" revealLabel="Show password" hideLabel="Hide password" />
-	),
-	field: () => (
-		<Field label="Email" htmlFor="field-email" hint="We'll never share this.">
-			<Input id="field-email" />
-		</Field>
-	),
-	checkbox: () => <Checkbox aria-label="Subscribe" />,
-	radio: () => (
-		<RadioGroup defaultValue="a" className="flex gap-4">
-			<Radio value="a" aria-label="Alpha" />
-			<Radio value="b" aria-label="Beta" />
-		</RadioGroup>
-	),
-	switch: () => <Switch aria-label="Notifications" />,
-};
-
-export const UI_DEMOS: Record<string, ComponentType> = { ...BASE_DEMOS, ...EXTRA_DEMOS };
 
 const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	button: [

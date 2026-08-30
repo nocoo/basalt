@@ -26,7 +26,7 @@ import { CircleCheck, Plus, Search } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { Link } from "react-router";
 import { CATALOG } from "./catalog";
-import { UI_DEMOS } from "./demos";
+import { catalogHeroScenario } from "./demos";
 
 const SHOWCASE: { name: string; slug: string }[] = [
 	{ name: "Button", slug: "button" },
@@ -279,7 +279,7 @@ function tileDemo(tile: { name: string; slug: string }): ComponentType | undefin
 	if (tile.name === "Input (with validation)") {
 		return HomeInputValidation;
 	}
-	return HOME_DEMOS[tile.slug] ?? UI_DEMOS[tile.slug];
+	return HOME_DEMOS[tile.slug] ?? catalogHeroScenario(tile.slug)?.render;
 }
 
 export function HomeGrid() {
