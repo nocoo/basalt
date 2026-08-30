@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S1B3a — 仓外 Next + React 19 build/start consumer（准备下发）
-> 已验收代码基线：`feb020bc2133`（`main`，工作树干净）
+> 当前切片：S1B3a — 仓外 Next + React 19 build/start consumer（review-fix 2）
+> 已验收代码基线：`feb020bc2133`；当前候选：`57cb78990b9f`（`main`）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -101,8 +101,8 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | Ready 页面 | 84 | 公开项 100% ready |
 | Placeholder | 12：9 docs、Maps、ResourceList、DeleteResource | 0 |
 | Kumo 重合控件示例 | Basalt 133 / Kumo live registry 321，名义 41.4% | 场景按 Basalt 契约覆盖；不机械复制品牌场景；动态基线注明抓取日期 |
-| 测试 | 108 文件、691 tests，全部 jsdom | unit + 高风险 browser + consumer gate |
-| 外部消费者 | 仓外 Vite Tailwind、Vite standalone tarball 门全绿；Next、optional-peer 待办 | 仓外 Vite Tailwind、Vite standalone、Next consumer 全绿 |
+| 测试 | 109 文件、703 tests，组件测试仍为 jsdom；真实进程与 consumer 门另跑 | unit + 高风险 browser + consumer gate |
+| 外部消费者 | 仓外 Vite Tailwind、Vite standalone tarball 门全绿；Next build/start 候选待最终验收，Next browser、optional-peer 待办 | 仓外 Vite Tailwind、Vite standalone、Next consumer 全绿 |
 | 包 | `0.0.0`、private；dist/exports、Bundler + NodeNext types、273 项 pack 白名单、Vite A/B 门已通过 | publint、Next/optional tarball consumer、prepublish 完整；最终 release-ready |
 
 ### 4.2 成熟度不是示例数量
@@ -123,7 +123,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
-| S1B | 仓外 Vite/Next tarball consumers | 执行中（S1B2 准备下发） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
+| S1B | 仓外 Vite/Next tarball consumers | 执行中（S1B3a review-fix 2） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | publint、prepublishOnly、Husky/browser 门 | 待办 | 一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 待办 | 组件类型、API 表、example 不再三份手写漂移 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
@@ -233,6 +233,16 @@ S1B 固定拆成四个依次解锁的绿色切片，公共 runner 只按当前 c
 3. **S1B3 — Next + React 19 hydration。** `next19` 指 React 19 consumer，不表示 Next 的 major 版本；本轮固定使用 2026-08-31 npm stable 与上级主要项目一致的 Next `16.3.3`、React/React DOM `19.2.8`。为避免把 tarball/Next 运行契约与新浏览器基础设施压进一个提交，固定拆成两刀：
    - **S1B3a — build/start consumer。** 把 `fixtures/next19` 变成无 `@nocoo/basalt` 预声明的真实 App Router 模板；Server Layout 只负责全局 standalone CSS 和文档骨架，显式 `"use client"` 边界从 root 导入并渲染 Button、ThemeProvider、ThemeToggle、Toast、LinkProvider。复用 A/B 已验证的 build/pack/temp/copy/inject/install/resolve/cleanup 内核，不复制第三套 runner；仓外严格 typecheck、`next build`、冲突安全端口上的真实 `next start` 和 HTTP marker 均须通过，root/CSS 必须解析到该 consumer 的 tarball，Tailwind、Recharts、react-day-picker、TanStack Table 均不得安装。禁止 `suppressHydrationWarning`、忽略 stderr、workspace alias、本仓路径或提前加入浏览器依赖。允许改根 `package.json`、共享 `scripts/` 与测试、`fixtures/{README.md,next19/**}`；不得改 Basalt package/API、Vite fixture、Husky、S1B3b/S1B4。
    - **S1B3b — browser hydration。** 在 S1B3a 的同一真实 Next server 上用可复现的 headless browser 验证首次 hydration、ThemeToggle 和 Button 交互、Toast portal、零 hydration/console/page error；浏览器进程、server、端口和 temp 必须在成功失败时清理。此刀才选择并引入浏览器 runner，且必须提供 focused 负例证明不是过滤 warning 文本过门。不得把通用 Dialog/Combobox/Sidebar browser suite 提前混入；该 suite 留给 S1C/S4–S6。
+
+S1B3b 当前任务包固定如下，不得以更窄的静态断言替代真实浏览器证据：
+
+1. 继续复用 `runConsumerGate` 的 build、pack、仓外 install、resolve、typecheck、Next build/start 和 cleanup 生命周期；同一 Gate C 只启动一次 Next server，HTTP marker 通过后再执行 browser proof，禁止复制第四套 runner 或第二次安装 consumer。
+2. 使用 Playwright Chromium 作为根仓测试基础设施，依赖必须精确锁定，浏览器 revision 必须由该版本管理；提供明确的浏览器安装命令和缺失时诊断，禁止静默回退到机器上的任意 Chrome。Playwright 不得进入临时 consumer manifest 或 Basalt package dependencies。
+3. `fixtures/next19` 只增加可确定验证的交互：Button 点击产生可观察状态；ThemeToggle 改变根元素的 theme 状态；另一个触发器调用从 root 导入的 `toast`，并由已渲染的 Toast/Toaster 在 `document.body` portal 中显示唯一消息。不得加入业务 UI、路由、Tailwind 或 granular import。
+4. 浏览器监听必须在 navigation 前安装，收集所有 `console.error`、未处理 `pageerror` 和 hydration 失败；成功门要求集合为空，不得按文本过滤 React/Next warning，也不得加入 `suppressHydrationWarning`。真实 Chromium 负例必须主动制造 console 或 page error 并证明门失败，单纯测试字符串 helper 不算数。
+5. 成功路径至少证明 HTTP 首屏可见、client 已 hydration、Button 状态改变、ThemeToggle 改变 `html` class/data、Toast 消息出现且位于应用根之外。失败路径至少证明 browser context/process、Next 进程、端口、Playwright profile 和整个仓外 temp 均被清理；清理断言不能只依赖 `browser.close()` 没抛错。
+6. 允许修改根 `package.json`、`bun.lock`、共享 `scripts/` 与测试、`fixtures/{README.md,next19/**}`；不得修改 `packages/basalt` API/实现、Vite fixture、Husky、本文、S1B4/S1C，或提前建立 Dialog/Combobox/Sidebar browser suite。
+7. 提交前运行 browser focused tests、现有 consumer-http/gate 回归、`bun run typecheck`、`bun run lint`、全量测试、真实 `consumer:next`，并复跑 standalone 与 Tailwind。唯一提交建议为 `test: verify next hydration`；提交后报告 commit、浏览器版本、修改文件、各门证据和遗留问题，等待 Codex review。
 4. **S1B4 — optional-peer D。** 独立临时 consumer 安装批准的 optional peers，加载 chart/DatePicker/DataTable granular 路径；同时复核 A/B/C 未安装 heavy peers 时 root consumer 仍可构建。不得用本仓已安装依赖冒充。
 
 ### 6.3 S2 — 文档系统
@@ -376,6 +386,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D013 | S1A3b | `82014a6d355b` + `622456148258` | `w14:p1` | 完成 | `62297f296590` | 7 个授权文件，+307/−4；只移除五个冻结表外 root 名字，保留源码与 granular 产物；真实 Node 26.7 self-reference 加载 root/component/provider/chart/DatePicker/DataTable，Bun 负门按预期退出 1；递归闭包为 28 files / 22 externals，0 charts、DatePicker、DataTable、Recharts、react-day-picker、TanStack，并用静态与动态嵌套反例证明不是一层扫描；Codex 独立复跑 clean build、focused 4 files / 20 tests、types:check、273 项 pack、typecheck、Biome 364 files、全量 107 files / 673 tests，全部通过；未进入仓外 consumer |
 | D014 | S1B1 | `62297f296590` + `bfc46dd75f34` | `w14:p1` | 完成 | `0c5342a954a1` + `c824c553261d` | 首提交建立仓外 temp → tarball → npm install → root resolution → Vite build → cleanup 门；Codex 拒绝硬编码腾讯/微软 registry 的半成品并要求 env-only，随后 review 又发现 Vite 不检查声明与测试含本机路径，第二提交补严格 Bundler `tsc`（`skipLibCheck:false`）及 CSS export 真实解析并清除路径。Codex 独立真门：temp `…/basalt-gate-b-KFK2ny` 已删除，root/CSS 均位于其 consumer `node_modules`，typecheck 通过，产物 HTML + JS + 45,480-byte CSS，token/Button class 存在，四个 heavy peers 缺席；focused 1 file / 11 tests、typecheck、Biome 368 files、全量 108 files / 684 tests 全绿；未进入 Tailwind/Next/optional fixture |
 | D015 | S1B2 | `03ba7c2f1f37` | `w14:p1` | 完成 | `7bf19f4832a5` + `feb020bc2133` | 首提交复用 Gate B 内核建立仓外 Tailwind v4 tarball/type/build 门；review-fix 删除 main 的重复 package CSS 入口，并把唯一 `@source` 锁到 consumer `node_modules/@nocoo/basalt/dist` 的精确真实路径与 glob。Codex 独立复跑 focused 1 file / 18 tests、typecheck、Biome 370 files、全量 108 files / 691 tests；Gate A 解析仓外 tarball、Tailwind/plugin 均为 4.3.3、54,321-byte CSS 含 token/Button utilities 且非 standalone dump，三个 heavy peers 缺席；Gate B 回归为 45,480-byte CSS，四个 heavy peers 缺席；两门 temp 均删除，工作树干净；未进入 Next |
-| D016 | S1B3a | `feb020bc2133` + 本次调度文档 commit | `w14:p1` | 准备下发 | — | 只建立 Next 16.3.3 + React 19.2.8 的仓外 build/start consumer；浏览器 hydration 独立留给 S1B3b |
+| D016 | S1B3a | `feb020bc2133` + `dc289fa160b9` | `w14:p1` | 验收中 | `345a21346cb6` + `57cb78990b9f` | 首提交复用 A/B 内核建立 Next 16.3.3 + React 19.2.8 仓外 type/build/start/HTTP 门；首轮 review-fix 改为直接执行临时 consumer 的 Next binary、移除 `transpilePackages`，并增加 readiness timeout、early exit、成功路径清理。第二轮审查发现 `startHttpServer` 在 catch 内先终止 child、后读取可变 `exited`，使 readiness timeout 被自身清理产生的 exit 误分类为 early-exit；当前测试只断言 reject，未锁定原始错误。只修错误分类与对应真实进程回归，未通过前不得进入 browser/S1B4 |
+| D017 | S1B3b | D016 验收 commit + 后续调度文档 commit | `w14:p1` | 待办 | — | 只给 Gate C 增加真实 Playwright Chromium hydration、Button/Theme/Toast portal、错误捕获与双向清理证明；不进入通用组件 browser suite、S1B4 或 S1C |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
