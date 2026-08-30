@@ -224,7 +224,11 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 	},
 	input: {
 		description: "A single-line text field. Light mode uses a white L3 surface.",
-		usage: usage("Input", "@nocoo/basalt/components/input", '<Input placeholder="Jane Doe" />'),
+		usage: usage(
+			"Input",
+			"@nocoo/basalt/components/input",
+			'<Input aria-label="Name" placeholder="Jane Doe" />',
+		),
 		variants: [],
 		props: [{ name: "type", type: "string" }],
 		provenance: provenanceFromLegacy({
@@ -238,7 +242,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 		usage: usage(
 			"InputArea",
 			"@nocoo/basalt/components/input-area",
-			'<InputArea placeholder="Write a note" />',
+			'<InputArea aria-label="Notes" placeholder="Write a note" />',
 		),
 		variants: [],
 		props: [{ name: "rows", type: "number" }],
@@ -281,7 +285,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 		usage: usage(
 			"SensitiveInput",
 			"@nocoo/basalt/components/sensitive-input",
-			'<SensitiveInput revealLabel="Show" hideLabel="Hide" />',
+			'<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />',
 		),
 		variants: [],
 		props: [
@@ -314,7 +318,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 		usage: usage(
 			"Radio, RadioGroup",
 			"@nocoo/basalt/components/radio",
-			'<RadioGroup defaultValue="a"><Radio value="a" /></RadioGroup>',
+			'<RadioGroup defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></RadioGroup>',
 		),
 		variants: [],
 		props: [{ name: "value", type: "string" }],

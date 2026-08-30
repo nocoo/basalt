@@ -813,7 +813,7 @@ add(
 	"combobox",
 	"Searchable select.",
 	() => <Combobox items={["Apple", "Banana"]} placeholder="Select…" />,
-	'<Combobox items={["Apple", "Banana"]} />',
+	'<Combobox items={["Apple", "Banana"]} placeholder="Select…" />',
 	[
 		{ name: "items", type: "string[]" },
 		{ name: "value", type: "string" },
@@ -822,6 +822,11 @@ add(
 		{ name: "name", type: "string" },
 		{ name: "placeholder", type: "string" },
 	],
+	`import { Combobox } from "@nocoo/basalt/components/combobox";
+
+export default function Example() {
+	return <Combobox items={["Apple", "Banana"]} placeholder="Select…" />;
+}`,
 );
 add(
 	"autocomplete",
@@ -829,7 +834,18 @@ add(
 	() => <Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />,
 	'<Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />',
 );
-add("date-picker", "Pick a date.", () => <DatePicker aria-label="Date" />, "<DatePicker />");
+add(
+	"date-picker",
+	"Pick a date.",
+	() => <DatePicker aria-label="Date" />,
+	'<DatePicker aria-label="Date" />',
+	undefined,
+	`import { DatePicker } from "@nocoo/basalt/components/date-picker";
+
+export default function Example() {
+	return <DatePicker aria-label="Date" />;
+}`,
+);
 function CommandPaletteDemo() {
 	const [open, setOpen] = useState(false);
 	return (

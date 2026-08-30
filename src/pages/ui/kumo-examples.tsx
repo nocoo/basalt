@@ -387,13 +387,13 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("checkbox", "default"),
 			title: "Default",
-			code: '<Checkbox aria-label="Subscribe" />',
+			code: '<Checkbox aria-label="Unchecked" />',
 			render: () => <Checkbox aria-label="Unchecked" />,
 		},
 		{
 			id: catalogScenarioId("checkbox", "checked"),
 			title: "Checked",
-			code: '<Checkbox defaultChecked aria-label="Subscribe" />',
+			code: '<Checkbox defaultChecked aria-label="Checked" />',
 			render: () => <Checkbox defaultChecked aria-label="Checked" />,
 		},
 		{
@@ -405,7 +405,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("checkbox", "disabled"),
 			title: "Disabled",
-			code: "<Checkbox disabled />",
+			code: '<Checkbox disabled aria-label="Disabled off" /><Checkbox disabled defaultChecked aria-label="Disabled on" />',
 			render: () => (
 				<Preview>
 					<Checkbox disabled aria-label="Disabled off" />
@@ -416,7 +416,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("checkbox", "error"),
 			title: "Error",
-			code: '<Field label="Terms" htmlFor="terms" error="Required"><Checkbox id="terms" /></Field>',
+			code: '<Field label="Terms" htmlFor="ex-terms" error="Required"><Checkbox id="ex-terms" aria-label="Terms" /></Field>',
 			render: () => (
 				<Field label="Terms" htmlFor="ex-terms" error="Required">
 					<Checkbox id="ex-terms" aria-label="Terms" />
@@ -542,19 +542,19 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("switch", "off-state"),
 			title: "Off State",
-			code: '<Switch aria-label="Notifications" />',
+			code: '<Switch aria-label="Off" />',
 			render: () => <Switch aria-label="Off" />,
 		},
 		{
 			id: catalogScenarioId("switch", "on-state"),
 			title: "On State",
-			code: '<Switch defaultChecked aria-label="Notifications" />',
+			code: '<Switch defaultChecked aria-label="On" />',
 			render: () => <Switch defaultChecked aria-label="On" />,
 		},
 		{
 			id: catalogScenarioId("switch", "disabled"),
 			title: "Disabled",
-			code: "<Switch disabled />",
+			code: '<Switch disabled aria-label="Disabled off" /><Switch disabled defaultChecked aria-label="Disabled on" />',
 			render: () => (
 				<Preview>
 					<Switch disabled aria-label="Disabled off" />
@@ -565,7 +565,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("switch", "sizes"),
 			title: "Sizes",
-			code: '<Switch size="sm" /><Switch />',
+			code: '<Switch size="sm" aria-label="Small" defaultChecked /><Switch aria-label="Default size" defaultChecked />',
 			render: () => (
 				<Preview>
 					<Switch size="sm" aria-label="Small" defaultChecked />
@@ -578,7 +578,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("input", "with-label-and-description"),
 			title: "With Label and Description",
-			code: '<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
+			code: '<Field label="Email" htmlFor="ex-input-email" hint="Never shared"><Input id="ex-input-email" placeholder="you@example.com" /></Field>',
 			render: () => (
 				<Field label="Email" htmlFor="ex-input-email" hint="Never shared">
 					<Input id="ex-input-email" placeholder="you@example.com" />
@@ -588,7 +588,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("input", "with-error-string"),
 			title: "With Error (String)",
-			code: '<Field label="Email" htmlFor="email" error="Required"><Input id="email" /></Field>',
+			code: '<Field label="Email" htmlFor="ex-input-err" error="Required"><Input id="ex-input-err" /></Field>',
 			render: () => (
 				<Field label="Email" htmlFor="ex-input-err" error="Required">
 					<Input id="ex-input-err" />
@@ -598,13 +598,13 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("input", "disabled"),
 			title: "Disabled",
-			code: "<Input disabled />",
+			code: '<Input disabled value="Read only" aria-label="Disabled input" />',
 			render: () => <Input disabled value="Read only" aria-label="Disabled input" />,
 		},
 		{
 			id: catalogScenarioId("input", "input-types"),
 			title: "Input Types",
-			code: '<Input type="email" /><Input type="password" />',
+			code: '<Input type="email" placeholder="Email" aria-label="Email type" /><Input type="password" placeholder="Password" aria-label="Password type" /><Input type="search" placeholder="Search" aria-label="Search type" />',
 			render: () => (
 				<Stack>
 					<Input type="email" placeholder="Email" aria-label="Email type" />
@@ -624,7 +624,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("input-area", "with-label"),
 			title: "With Label",
-			code: '<Field label="Notes" htmlFor="notes"><InputArea id="notes" /></Field>',
+			code: '<Field label="Notes" htmlFor="ex-notes"><InputArea id="ex-notes" /></Field>',
 			render: () => (
 				<Field label="Notes" htmlFor="ex-notes">
 					<InputArea id="ex-notes" />
@@ -634,13 +634,13 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("input-area", "custom-row-count"),
 			title: "Custom Row Count",
-			code: "<InputArea rows={6} />",
+			code: '<InputArea rows={6} aria-label="Tall notes" />',
 			render: () => <InputArea rows={6} aria-label="Tall notes" />,
 		},
 		{
 			id: catalogScenarioId("input-area", "error-state-string"),
 			title: "Error State (String)",
-			code: '<Field label="Bio" htmlFor="bio" error="Too short"><InputArea id="bio" /></Field>',
+			code: '<Field label="Bio" htmlFor="ex-bio" error="Too short"><InputArea id="ex-bio" /></Field>',
 			render: () => (
 				<Field label="Bio" htmlFor="ex-bio" error="Too short">
 					<InputArea id="ex-bio" />
@@ -650,7 +650,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("input-area", "disabled"),
 			title: "Disabled",
-			code: "<InputArea disabled />",
+			code: '<InputArea disabled aria-label="Disabled notes" value="Unavailable" />',
 			render: () => <InputArea disabled aria-label="Disabled notes" value="Unavailable" />,
 		},
 	],
@@ -659,7 +659,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			id: catalogScenarioId("input-group", "inline-suffix"),
 			title: "Inline Suffix",
 			code: `<InputGroup>
-  <InputGroup.Input defaultValue="atlas" />
+  <InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
   <InputGroup.Suffix>.example.com</InputGroup.Suffix>
   <InputGroup.Addon align="end"><CircleCheck /></InputGroup.Addon>
 </InputGroup>`,
@@ -678,7 +678,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			title: "Icon",
 			code: `<InputGroup>
   <InputGroup.Addon><Search /></InputGroup.Addon>
-  <InputGroup.Input placeholder="Search" />
+  <InputGroup.Input aria-label="Search" placeholder="Search" />
 </InputGroup>`,
 			render: () => (
 				<InputGroup className="max-w-sm">
@@ -694,7 +694,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			title: "Text",
 			code: `<InputGroup>
   <InputGroup.Addon>https://</InputGroup.Addon>
-  <InputGroup.Input placeholder="example.com" />
+  <InputGroup.Input aria-label="Host" placeholder="example.com" />
 </InputGroup>`,
 			render: () => (
 				<InputGroup className="max-w-sm">
@@ -707,7 +707,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			id: catalogScenarioId("input-group", "button"),
 			title: "Button",
 			code: `<InputGroup>
-  <InputGroup.Input placeholder="Search" />
+  <InputGroup.Input aria-label="Query" placeholder="Search" />
   <InputGroup.Addon align="end">
     <InputGroup.Button icon={<Search />} aria-label="Search" />
   </InputGroup.Addon>
@@ -725,8 +725,8 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			id: catalogScenarioId("input-group", "loading"),
 			title: "Loading",
 			code: `<InputGroup>
-  <InputGroup.Input defaultValue="atlas" />
-  <InputGroup.Addon align="end"><Loader /></InputGroup.Addon>
+  <InputGroup.Input defaultValue="atlas" aria-label="Loading query" />
+  <InputGroup.Addon align="end"><Loader size={16} /></InputGroup.Addon>
 </InputGroup>`,
 			render: () => (
 				<InputGroup className="max-w-sm">
@@ -978,13 +978,13 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("sensitive-input", "default"),
 			title: "Default",
-			code: '<SensitiveInput revealLabel="Show" hideLabel="Hide" />',
+			code: '<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />',
 			render: () => <SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />,
 		},
 		{
 			id: catalogScenarioId("sensitive-input", "disabled"),
 			title: "Disabled",
-			code: "<SensitiveInput disabled />",
+			code: '<SensitiveInput aria-label="Disabled password" disabled revealLabel="Show" hideLabel="Hide" />',
 			render: () => (
 				<SensitiveInput
 					aria-label="Disabled password"
@@ -999,7 +999,10 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("radio", "default-vertical"),
 			title: "Default (Vertical)",
-			code: '<RadioGroup defaultValue="a"><Radio value="a" /><Radio value="b" /></RadioGroup>',
+			code: `<RadioGroup defaultValue="a" className="flex flex-col gap-2">
+  <Label className="flex items-center gap-2"><Radio value="a" /> Alpha</Label>
+  <Label className="flex items-center gap-2"><Radio value="b" /> Beta</Label>
+</RadioGroup>`,
 			render: () => (
 				<RadioGroup defaultValue="a" className="flex flex-col gap-2">
 					<Label className="flex items-center gap-2">
@@ -1014,7 +1017,10 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("radio", "horizontal"),
 			title: "Horizontal",
-			code: '<RadioGroup className="flex gap-4">…</RadioGroup>',
+			code: `<RadioGroup defaultValue="a" className="flex gap-4">
+  <Label className="flex items-center gap-2"><Radio value="a" /> Alpha</Label>
+  <Label className="flex items-center gap-2"><Radio value="b" /> Beta</Label>
+</RadioGroup>`,
 			render: () => (
 				<RadioGroup defaultValue="a" className="flex gap-4">
 					<Label className="flex items-center gap-2">
@@ -1029,7 +1035,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("radio", "disabled"),
 			title: "Disabled",
-			code: "<Radio disabled />",
+			code: '<RadioGroup defaultValue="a"><Radio value="a" disabled aria-label="Disabled A" /><Radio value="b" disabled aria-label="Disabled B" /></RadioGroup>',
 			render: () => (
 				<RadioGroup defaultValue="a" className="flex gap-4">
 					<Radio value="a" disabled aria-label="Disabled A" />
@@ -1122,7 +1128,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("combobox", "disabled"),
 			title: "Disabled",
-			code: '<Combobox disabled items={["Apple"]} />',
+			code: '<Combobox disabled items={["Apple"]} placeholder="Disabled" />',
 			render: () => <Combobox disabled items={["Apple"]} placeholder="Disabled" />,
 		},
 	],
