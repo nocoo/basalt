@@ -17,7 +17,7 @@ export const TabsList = React.forwardRef<
 	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & { showIndicator?: boolean }
 >(({ className, children, showIndicator = true, ...props }, ref) => {
 	const listRef = React.useRef<HTMLDivElement>(null);
-	const [indicator, setIndicator] = React.useState({ left: 0, width: 0, ready: false });
+	const [indicator, setIndicator] = React.useState({ left: 0, width: 0, top: 0, ready: false });
 
 	const sync = React.useCallback(() => {
 		const list = listRef.current;
@@ -28,7 +28,12 @@ export const TabsList = React.forwardRef<
 		if (!active) {
 			return;
 		}
-		setIndicator({ left: active.offsetLeft, width: active.offsetWidth, ready: true });
+		setIndicator({
+			left: active.offsetLeft,
+			width: active.offsetWidth,
+			top: active.offsetTop + active.offsetHeight,
+			ready: true,
+		});
 	}, []);
 
 	React.useLayoutEffect(() => {
@@ -64,10 +69,10 @@ export const TabsList = React.forwardRef<
 				<span
 					aria-hidden="true"
 					className={cn(
-						"pointer-events-none absolute bottom-0 h-0.5 bg-basalt-primary",
-						indicator.ready && "transition-[left,width] duration-200 ease-out",
+						"pointer-events-none absolute h-0.5 bg-basalt-primary",
+						indicator.ready && "transition-[left,width,top] duration-200 ease-out",
 					)}
-					style={{ left: indicator.left, width: indicator.width }}
+					style={{ left: indicator.left, width: indicator.width, top: indicator.top }}
 				/>
 			) : null}
 		</TabsPrimitive.List>
