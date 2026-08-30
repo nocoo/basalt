@@ -105,8 +105,8 @@ function ReadyDoc({
 		{ id: "granular", text: "Granular", depth: 3 },
 		{ id: "usage", text: "Usage", depth: 2 },
 		{ id: "examples", text: "Examples", depth: 2 },
-		...examples.map((example, index) => ({
-			id: `example-${index}`,
+		...examples.map((example) => ({
+			id: example.id,
 			text: example.title,
 			depth: 3 as const,
 		})),
@@ -167,8 +167,13 @@ function ReadyDoc({
 					</section>
 					<section id="examples" className="scroll-mt-6 space-y-8">
 						<h2 className="text-2xl font-semibold tracking-tight">Examples</h2>
-						{examples.map((example, index) => (
-							<div key={example.title} id={`example-${index}`} className="scroll-mt-6 space-y-3">
+						{examples.map((example) => (
+							<div
+								key={example.id}
+								id={example.id}
+								data-scenario={example.id}
+								className="scroll-mt-6 space-y-3"
+							>
 								<h3 className="text-sm font-medium">{example.title}</h3>
 								<DocExample code={example.code}>
 									<example.render />

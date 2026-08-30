@@ -25,6 +25,7 @@ import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { AlertTriangle, CircleAlert, CircleCheck, Info, X } from "lucide-react";
 import type { ComponentType, ReactNode } from "react";
 import { EXTRA_DEMOS, EXTRA_EXAMPLES } from "./catalog-ready";
+import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { KUMO_EXAMPLES } from "./kumo-examples";
 
 function Preview({ children }: { children: ReactNode }) {
@@ -136,9 +137,10 @@ const BASE_DEMOS: Record<string, ComponentType> = {
 
 export const UI_DEMOS: Record<string, ComponentType> = { ...BASE_DEMOS, ...EXTRA_DEMOS };
 
-const BASE_EXAMPLES: Record<string, { title: string; code: string; render: ComponentType }[]> = {
+const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	button: [
 		{
+			id: catalogScenarioId("button", "variants"),
 			title: "Variants",
 			code: '<Button>Default</Button>\n<Button variant="secondary">Secondary</Button>\n<Button variant="destructive">Destructive</Button>\n<Button variant="outline">Outline</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="link">Link</Button>',
 			render: () => (
@@ -153,6 +155,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("button", "sizes"),
 			title: "Sizes",
 			code: '<Button size="sm">Small</Button>\n<Button>Default</Button>\n<Button size="lg">Large</Button>',
 			render: () => (
@@ -164,11 +167,13 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("button", "with-icon"),
 			title: "With Icon",
 			code: '<Button icon="+">Add</Button>',
 			render: () => <Button icon="+">Add</Button>,
 		},
 		{
+			id: catalogScenarioId("button", "icon-only"),
 			title: "Icon Only",
 			code: '<Button size="icon" aria-label="Add">+</Button>',
 			render: () => (
@@ -178,21 +183,25 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("button", "loading-state"),
 			title: "Loading State",
 			code: "<Button loading>Saving</Button>",
 			render: () => <Button loading>Saving</Button>,
 		},
 		{
+			id: catalogScenarioId("button", "disabled-state"),
 			title: "Disabled State",
 			code: "<Button disabled>Disabled</Button>",
 			render: () => <Button disabled>Disabled</Button>,
 		},
 		{
+			id: catalogScenarioId("button", "title"),
 			title: "Title",
 			code: '<Button title="Creates a new project">Hover title</Button>',
 			render: () => <Button title="Creates a new project">Hover title</Button>,
 		},
 		{
+			id: catalogScenarioId("button", "link-as-button"),
 			title: "Link as Button",
 			code: '<Button asChild><a href="#docs">Open docs</a></Button>',
 			render: () => (
@@ -202,6 +211,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("button", "link-with-tooltip"),
 			title: "Link with Tooltip",
 			code: "<Tooltip><TooltipTrigger asChild><LinkButton href='#docs'>Docs</LinkButton></TooltipTrigger><TooltipContent>Open documentation</TooltipContent></Tooltip>",
 			render: () => (
@@ -216,6 +226,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("button", "disabled-link"),
 			title: "Disabled Link",
 			code: '<LinkButton aria-disabled="true" tabIndex={-1} role="link">Disabled link</LinkButton>',
 			render: () => (
@@ -227,14 +238,21 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	"link-button": [
 		{
+			id: catalogScenarioId("link-button", "default"),
 			title: "Default",
 			code: '<LinkButton href="#docs">Open docs</LinkButton>',
 			render: () => <LinkButton href="#docs">Open docs</LinkButton>,
 		},
 	],
 	text: [
-		{ title: "Default", code: "<Text>Body copy</Text>", render: () => <Text>Body copy</Text> },
 		{
+			id: catalogScenarioId("text", "default"),
+			title: "Default",
+			code: "<Text>Body copy</Text>",
+			render: () => <Text>Body copy</Text>,
+		},
+		{
+			id: catalogScenarioId("text", "muted"),
 			title: "Muted",
 			code: '<Text tone="muted">Muted</Text>',
 			render: () => <Text tone="muted">Muted</Text>,
@@ -242,24 +260,35 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	label: [
 		{
+			id: catalogScenarioId("label", "default-label"),
 			title: "Default Label",
 			code: "<Label>Default Label</Label>",
 			render: () => <Label>Default Label</Label>,
 		},
 		{
+			id: catalogScenarioId("label", "optional-field"),
 			title: "Optional Field",
 			code: "<Label showOptional>Optional Field</Label>",
 			render: () => <Label showOptional>Optional Field</Label>,
 		},
 		{
+			id: catalogScenarioId("label", "with-tooltip"),
 			title: "With Tooltip",
 			code: '<Label tooltip="More information">With Tooltip</Label>',
 			render: () => <Label tooltip="More information">With Tooltip</Label>,
 		},
 	],
-	separator: [{ title: "Horizontal", code: "<Separator />", render: () => <Separator /> }],
+	separator: [
+		{
+			id: catalogScenarioId("separator", "horizontal"),
+			title: "Horizontal",
+			code: "<Separator />",
+			render: () => <Separator />,
+		},
+	],
 	link: [
 		{
+			id: catalogScenarioId("link", "default"),
 			title: "Default",
 			code: '<Link href="#section">Inline link</Link>',
 			render: () => (
@@ -271,6 +300,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	"link-provider": [
 		{
+			id: catalogScenarioId("link-provider", "default"),
 			title: "Default",
 			code: "<LinkProvider><Link href='#section'>Link</Link></LinkProvider>",
 			render: () => (
@@ -282,6 +312,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	tooltip: [
 		{
+			id: catalogScenarioId("tooltip", "default"),
 			title: "Default",
 			code: "<Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip>",
 			render: () => (
@@ -298,6 +329,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	"theme-provider": [
 		{
+			id: catalogScenarioId("theme-provider", "default"),
 			title: "Default",
 			code: "<ThemeProvider>{children}</ThemeProvider>",
 			render: () => (
@@ -309,6 +341,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	"theme-toggle": [
 		{
+			id: catalogScenarioId("theme-toggle", "default"),
 			title: "Default",
 			code: '<ThemeToggle aria-label="Toggle theme" />',
 			render: () => (
@@ -320,6 +353,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	"layer-card": [
 		{
+			id: catalogScenarioId("layer-card", "basic-card"),
 			title: "Basic Card",
 			code: "<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
 			render: () => (
@@ -330,6 +364,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("layer-card", "surface-style-card"),
 			title: "Surface-style Card",
 			code: "<LayerCard className='p-4'>Quick start guide</LayerCard>",
 			render: () => <LayerCard className="w-[250px] p-4">Quick start guide</LayerCard>,
@@ -337,6 +372,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	input: [
 		{
+			id: catalogScenarioId("input", "default"),
 			title: "Default",
 			code: '<Input aria-label="Name" placeholder="Jane Doe" />',
 			render: () => <Input aria-label="Name" placeholder="Jane Doe" />,
@@ -344,6 +380,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	"input-area": [
 		{
+			id: catalogScenarioId("input-area", "default"),
 			title: "Default",
 			code: '<InputArea aria-label="Notes" />',
 			render: () => <InputArea aria-label="Notes" />,
@@ -351,6 +388,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	"input-group": [
 		{
+			id: catalogScenarioId("input-group", "default"),
 			title: "Default",
 			code: `<InputGroup>
   <InputGroup.Input defaultValue="atlas" />
@@ -369,6 +407,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	"sensitive-input": [
 		{
+			id: catalogScenarioId("sensitive-input", "default"),
 			title: "Default",
 			code: '<SensitiveInput revealLabel="Show" hideLabel="Hide" />',
 			render: () => <SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />,
@@ -376,6 +415,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	field: [
 		{
+			id: catalogScenarioId("field", "hint"),
 			title: "Hint",
 			code: '<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
 			render: () => (
@@ -385,6 +425,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("field", "error"),
 			title: "Error",
 			code: '<Field label="Email" htmlFor="email" error="Required"><Input id="email" /></Field>',
 			render: () => (
@@ -396,11 +437,13 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	checkbox: [
 		{
+			id: catalogScenarioId("checkbox", "unchecked"),
 			title: "Unchecked",
 			code: '<Checkbox aria-label="Subscribe" />',
 			render: () => <Checkbox aria-label="Subscribe" />,
 		},
 		{
+			id: catalogScenarioId("checkbox", "indeterminate"),
 			title: "Indeterminate",
 			code: '<Checkbox aria-label="Partial" checked="indeterminate" />',
 			render: () => <Checkbox aria-label="Partial" checked="indeterminate" />,
@@ -408,6 +451,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	radio: [
 		{
+			id: catalogScenarioId("radio", "group"),
 			title: "Group",
 			code: '<RadioGroup defaultValue="a"><Radio value="a" /></RadioGroup>',
 			render: () => (
@@ -420,6 +464,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	switch: [
 		{
+			id: catalogScenarioId("switch", "default"),
 			title: "Default",
 			code: '<Switch aria-label="Notifications" />',
 			render: () => <Switch aria-label="Notifications" />,
@@ -427,6 +472,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 	banner: [
 		{
+			id: catalogScenarioId("banner", "variants"),
 			title: "Variants",
 			code: `<Banner icon={<Info />} title="Update available" description="A new version is ready to install." />
 <Banner icon={<AlertTriangle />} variant="alert" title="Session expiring" description="Your session will expire in 5 minutes." />
@@ -461,6 +507,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("banner", "with-icon"),
 			title: "With icon",
 			code: '<Banner icon={<AlertTriangle />} variant="alert" title="Review required" description="Please review your billing information before proceeding." />',
 			render: () => (
@@ -473,6 +520,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("banner", "with-action"),
 			title: "With action",
 			code: `<Banner
   icon={<Info />}
@@ -514,6 +562,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("banner", "with-multiple-actions"),
 			title: "With multiple actions",
 			code: `<Banner
   icon={<AlertTriangle />}
@@ -543,6 +592,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("banner", "compact-size"),
 			title: "Compact size",
 			code: `<Banner
   size="sm"
@@ -582,6 +632,7 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 			),
 		},
 		{
+			id: catalogScenarioId("banner", "custom-content"),
 			title: "Custom content",
 			code: `<Banner
   icon={<Info />}
@@ -607,9 +658,8 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 	],
 };
 
-export const UI_EXAMPLES: Record<string, { title: string; code: string; render: ComponentType }[]> =
-	{
-		...EXTRA_EXAMPLES,
-		...BASE_EXAMPLES,
-		...KUMO_EXAMPLES,
-	};
+export const UI_EXAMPLES: Record<string, CatalogScenario[]> = {
+	...EXTRA_EXAMPLES,
+	...BASE_EXAMPLES,
+	...KUMO_EXAMPLES,
+};

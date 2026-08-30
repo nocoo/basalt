@@ -11,12 +11,13 @@ import {
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
+import { catalogScenarioMatchesSlug } from "@/pages/ui/catalog-scenario";
 import {
 	catalogSourceCopyText,
 	githubSourceHref,
 	githubSourceLabel,
 } from "@/pages/ui/catalog-source";
-import { UI_DEMOS } from "@/pages/ui/demos";
+import { UI_DEMOS, UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { KUMO_DOCS_SLUGS } from "@/pages/ui/kumo-list";
 import UiIndexPage from "@/pages/ui/UiIndexPage";
@@ -397,5 +398,43 @@ describe("ui catalog", () => {
 		for (const slug of KUMO_DOCS_SLUGS) {
 			expect(slugs.has(slug), slug).toBe(true);
 		}
+	});
+
+	it("gives every catalog example a unique slug-prefixed scenario id", () => {
+		const seen = new Set<string>();
+		expect(Object.keys(UI_EXAMPLES).length).toBeGreaterThan(40);
+		for (const [slug, examples] of Object.entries(UI_EXAMPLES)) {
+			expect(examples.length, slug).toBeGreaterThan(0);
+			for (const example of examples) {
+				expect(catalogScenarioMatchesSlug(example.id, slug), example.id).toBe(true);
+				expect(example.id, example.id).toMatch(new RegExp(`^${slug}-[a-z0-9]+(?:-[a-z0-9]+)*$`));
+				expect(seen.has(example.id), example.id).toBe(false);
+				seen.add(example.id);
+			}
+		}
+	});
+
+	it.each([...KUMO_DOCS_SLUGS])("exposes kumo scenario ids on %s", (slug) => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		const examples = UI_EXAMPLES[slug];
+		expect(examples, slug).toBeDefined();
+		expect(examples?.length, slug).toBeGreaterThan(0);
+		cleanup();
+		renderCatalog(`/ui/${slug}`);
+		for (const example of examples ?? []) {
+			const node = document.querySelector(`[data-scenario="${example.id}"]`);
+			expect(node, example.id).toBeTruthy();
+			expect(node).toHaveAttribute("id", example.id);
+		}
+	});
+
+	it("does not use example index anchors", () => {
+		const page = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/UiPlaceholderPage.tsx"),
+			"utf8",
+		);
+		expect(page).not.toMatch(/example-\$\{index\}/);
+		expect(page).toContain("data-scenario");
 	});
 });

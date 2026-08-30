@@ -110,7 +110,8 @@ import {
 	Search,
 	X,
 } from "lucide-react";
-import { type ComponentType, type ReactNode, useState } from "react";
+import { type ReactNode, useState } from "react";
+import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 
 function Preview({ children, className }: { children: ReactNode; className?: string }) {
 	return <div className={className ?? "flex flex-wrap items-center gap-3"}>{children}</div>;
@@ -229,8 +230,6 @@ function DialogSizesExample() {
 	);
 }
 
-type Example = { title: string; code: string; render: ComponentType };
-
 function CommandPaletteExample({ flat = false }: { flat?: boolean }) {
 	const [open, setOpen] = useState(false);
 	return (
@@ -259,14 +258,16 @@ function CommandPaletteExample({ flat = false }: { flat?: boolean }) {
 	);
 }
 
-export const KUMO_EXAMPLES: Record<string, Example[]> = {
+export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 	badge: [
 		{
+			id: catalogScenarioId("badge", "primary-badges"),
 			title: "Primary Badges",
 			code: "<Badge>Default</Badge>",
 			render: () => <Badge>Default</Badge>,
 		},
 		{
+			id: catalogScenarioId("badge", "other-color-variants"),
 			title: "Other color variants",
 			code: `<Badge variant="secondary">Secondary</Badge>
 <Badge variant="info">Info</Badge>
@@ -288,6 +289,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("badge", "color-tokens"),
 			title: "Color tokens",
 			code: `<Badge variant="red">Red</Badge>
 <Badge variant="orange">Orange</Badge>
@@ -305,6 +307,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("badge", "dot-badges"),
 			title: "Dot badges",
 			code: "<Badge dot>Live</Badge>",
 			render: () => (
@@ -317,6 +320,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("badge", "in-a-sentence"),
 			title: "In a sentence",
 			code: "<Text>Status is <Badge>Stable</Badge></Text>",
 			render: () => (
@@ -326,6 +330,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("badge", "with-an-icon"),
 			title: "With an icon",
 			code: "<Badge><Check /> Verified</Badge>",
 			render: () => (
@@ -349,6 +354,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("badge", "linked-badge"),
 			title: "Linked badge",
 			code: '<Link href="#"><Badge>Docs</Badge></Link>',
 			render: () => (
@@ -360,11 +366,13 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	breadcrumbs: [
 		{
+			id: catalogScenarioId("breadcrumbs", "basic"),
 			title: "Basic",
 			code: '<Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />',
 			render: () => <Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />,
 		},
 		{
+			id: catalogScenarioId("breadcrumbs", "loading"),
 			title: "Loading",
 			code: "<Breadcrumbs items={[{ label: <SkeletonLine minWidth={72} /> }]} />",
 			render: () => <Breadcrumbs items={[{ label: <SkeletonLine minWidth={72} /> }]} />,
@@ -372,21 +380,25 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	checkbox: [
 		{
+			id: catalogScenarioId("checkbox", "default"),
 			title: "Default",
 			code: '<Checkbox aria-label="Subscribe" />',
 			render: () => <Checkbox aria-label="Unchecked" />,
 		},
 		{
+			id: catalogScenarioId("checkbox", "checked"),
 			title: "Checked",
 			code: '<Checkbox defaultChecked aria-label="Subscribe" />',
 			render: () => <Checkbox defaultChecked aria-label="Checked" />,
 		},
 		{
+			id: catalogScenarioId("checkbox", "indeterminate"),
 			title: "Indeterminate",
 			code: '<Checkbox checked="indeterminate" aria-label="Partial" />',
 			render: () => <Checkbox checked="indeterminate" aria-label="Partial" />,
 		},
 		{
+			id: catalogScenarioId("checkbox", "disabled"),
 			title: "Disabled",
 			code: "<Checkbox disabled />",
 			render: () => (
@@ -397,6 +409,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("checkbox", "error"),
 			title: "Error",
 			code: '<Field label="Terms" htmlFor="terms" error="Required"><Checkbox id="terms" /></Field>',
 			render: () => (
@@ -408,21 +421,25 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	"clipboard-text": [
 		{
+			id: catalogScenarioId("clipboard-text", "short-text"),
 			title: "Short Text",
 			code: '<ClipboardText text="bun add @nocoo/basalt" />',
 			render: () => <ClipboardText text="bun add @nocoo/basalt" />,
 		},
 		{
+			id: catalogScenarioId("clipboard-text", "api-key"),
 			title: "API Key",
 			code: '<ClipboardText text="sk-••••••••" copyText="sk-live-secret" />',
 			render: () => <ClipboardText text="sk-••••••••" copyText="sk-live-secret" />,
 		},
 		{
+			id: catalogScenarioId("clipboard-text", "copy-alternate-text"),
 			title: "Copy Alternate Text",
 			code: '<ClipboardText text="Visible label" copyText="copied-value" />',
 			render: () => <ClipboardText text="Visible label" copyText="copied-value" />,
 		},
 		{
+			id: catalogScenarioId("clipboard-text", "long-text"),
 			title: "Long Text",
 			code: '<ClipboardText text="https://basalt.dev.hexly.ai/ui/clipboard-text" />',
 			render: () => <ClipboardText text="https://basalt.dev.hexly.ai/ui/clipboard-text" />,
@@ -430,11 +447,13 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	empty: [
 		{
+			id: catalogScenarioId("empty", "basic"),
 			title: "Basic",
 			code: '<Empty title="No results" description="Try another query." />',
 			render: () => <Empty title="No results" description="Try another query." />,
 		},
 		{
+			id: catalogScenarioId("empty", "with-icon"),
 			title: "With icon",
 			code: '<Empty icon={<Inbox />} title="Inbox zero" description="You are all caught up." />',
 			render: () => (
@@ -444,11 +463,13 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	loader: [
 		{
+			id: catalogScenarioId("loader", "default-size"),
 			title: "Default Size",
 			code: "<Loader />",
 			render: () => <Loader />,
 		},
 		{
+			id: catalogScenarioId("loader", "custom-size"),
 			title: "Custom Size",
 			code: "<Loader size={32} />",
 			render: () => (
@@ -462,26 +483,31 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	meter: [
 		{
+			id: catalogScenarioId("meter", "basic-meter"),
 			title: "Basic Meter",
 			code: '<Meter value={40} label="Usage" />',
 			render: () => <Meter value={40} label="Usage" />,
 		},
 		{
+			id: catalogScenarioId("meter", "custom-value-display"),
 			title: "Custom Value Display",
 			code: '<Meter value={12} label="Storage" customValue="12 GB" />',
 			render: () => <Meter value={12} label="Storage" customValue="12 GB" />,
 		},
 		{
+			id: catalogScenarioId("meter", "hidden-value"),
 			title: "Hidden Value",
 			code: '<Meter value={72} label="Progress" hideValue />',
 			render: () => <Meter value={72} label="Progress" hideValue />,
 		},
 		{
+			id: catalogScenarioId("meter", "full-meter"),
 			title: "Full Meter",
 			code: '<Meter value={100} label="Complete" />',
 			render: () => <Meter value={100} label="Complete" />,
 		},
 		{
+			id: catalogScenarioId("meter", "low-value"),
 			title: "Low Value",
 			code: '<Meter value={8} label="Quota" />',
 			render: () => <Meter value={8} label="Quota" />,
@@ -489,16 +515,19 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	pagination: [
 		{
+			id: catalogScenarioId("pagination", "full-controls-default"),
 			title: "Full Controls (Default)",
 			code: "<Pagination page={1} pageCount={10} onPageChange={setPage} />",
 			render: () => <PaginationExample page={1} pageCount={10} />,
 		},
 		{
+			id: catalogScenarioId("pagination", "simple-controls"),
 			title: "Simple Controls",
 			code: "<Pagination page={2} pageCount={10} simple onPageChange={setPage} />",
 			render: () => <PaginationExample page={2} pageCount={10} simple />,
 		},
 		{
+			id: catalogScenarioId("pagination", "mid-page-state"),
 			title: "Mid-Page State",
 			code: "<Pagination page={5} pageCount={12} onPageChange={setPage} />",
 			render: () => <PaginationExample page={5} pageCount={12} />,
@@ -506,16 +535,19 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	switch: [
 		{
+			id: catalogScenarioId("switch", "off-state"),
 			title: "Off State",
 			code: '<Switch aria-label="Notifications" />',
 			render: () => <Switch aria-label="Off" />,
 		},
 		{
+			id: catalogScenarioId("switch", "on-state"),
 			title: "On State",
 			code: '<Switch defaultChecked aria-label="Notifications" />',
 			render: () => <Switch defaultChecked aria-label="On" />,
 		},
 		{
+			id: catalogScenarioId("switch", "disabled"),
 			title: "Disabled",
 			code: "<Switch disabled />",
 			render: () => (
@@ -526,6 +558,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("switch", "sizes"),
 			title: "Sizes",
 			code: '<Switch size="sm" /><Switch />',
 			render: () => (
@@ -538,6 +571,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	input: [
 		{
+			id: catalogScenarioId("input", "with-label-and-description"),
 			title: "With Label and Description",
 			code: '<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
 			render: () => (
@@ -547,6 +581,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("input", "with-error-string"),
 			title: "With Error (String)",
 			code: '<Field label="Email" htmlFor="email" error="Required"><Input id="email" /></Field>',
 			render: () => (
@@ -556,11 +591,13 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("input", "disabled"),
 			title: "Disabled",
 			code: "<Input disabled />",
 			render: () => <Input disabled value="Read only" aria-label="Disabled input" />,
 		},
 		{
+			id: catalogScenarioId("input", "input-types"),
 			title: "Input Types",
 			code: '<Input type="email" /><Input type="password" />',
 			render: () => (
@@ -572,6 +609,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("input", "bare-input-no-label"),
 			title: "Bare Input (No Label)",
 			code: '<Input aria-label="Name" placeholder="Jane Doe" />',
 			render: () => <Input aria-label="Name" placeholder="Jane Doe" />,
@@ -579,6 +617,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	"input-area": [
 		{
+			id: catalogScenarioId("input-area", "with-label"),
 			title: "With Label",
 			code: '<Field label="Notes" htmlFor="notes"><InputArea id="notes" /></Field>',
 			render: () => (
@@ -588,11 +627,13 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("input-area", "custom-row-count"),
 			title: "Custom Row Count",
 			code: "<InputArea rows={6} />",
 			render: () => <InputArea rows={6} aria-label="Tall notes" />,
 		},
 		{
+			id: catalogScenarioId("input-area", "error-state-string"),
 			title: "Error State (String)",
 			code: '<Field label="Bio" htmlFor="bio" error="Too short"><InputArea id="bio" /></Field>',
 			render: () => (
@@ -602,6 +643,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("input-area", "disabled"),
 			title: "Disabled",
 			code: "<InputArea disabled />",
 			render: () => <InputArea disabled aria-label="Disabled notes" value="Unavailable" />,
@@ -609,6 +651,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	"input-group": [
 		{
+			id: catalogScenarioId("input-group", "inline-suffix"),
 			title: "Inline Suffix",
 			code: `<InputGroup>
   <InputGroup.Input defaultValue="atlas" />
@@ -626,6 +669,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("input-group", "icon"),
 			title: "Icon",
 			code: `<InputGroup>
   <InputGroup.Addon><Search /></InputGroup.Addon>
@@ -641,6 +685,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("input-group", "text"),
 			title: "Text",
 			code: `<InputGroup>
   <InputGroup.Addon>https://</InputGroup.Addon>
@@ -654,6 +699,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("input-group", "button"),
 			title: "Button",
 			code: `<InputGroup>
   <InputGroup.Input placeholder="Search" />
@@ -671,6 +717,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("input-group", "loading"),
 			title: "Loading",
 			code: `<InputGroup>
   <InputGroup.Input defaultValue="atlas" />
@@ -688,6 +735,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	label: [
 		{
+			id: catalogScenarioId("label", "default-label"),
 			title: "Default Label",
 			code: "<Label>Default Label</Label>",
 			render: () => (
@@ -697,11 +745,13 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("label", "optional-field"),
 			title: "Optional Field",
 			code: "<Label showOptional>Optional Field</Label>",
 			render: () => <Label showOptional>Optional Field</Label>,
 		},
 		{
+			id: catalogScenarioId("label", "with-tooltip"),
 			title: "With Tooltip",
 			code: '<Label tooltip="More information about this field">With Tooltip</Label>',
 			render: () => <Label tooltip="More information about this field">With Tooltip</Label>,
@@ -709,6 +759,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	text: [
 		{
+			id: catalogScenarioId("text", "semantic-html"),
 			title: "Semantic HTML",
 			code: "<Text>Body copy</Text>",
 			render: () => (
@@ -722,6 +773,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("text", "restrictions"),
 			title: "Restrictions",
 			code: '<Text tone="muted">Muted supporting copy.</Text>',
 			render: () => <Text tone="muted">Muted supporting copy.</Text>,
@@ -729,6 +781,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	link: [
 		{
+			id: catalogScenarioId("link", "basic-link"),
 			title: "Basic Link",
 			code: '<Link href="#section">Inline link</Link>',
 			render: () => (
@@ -738,6 +791,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("link", "inline-in-paragraph"),
 			title: "Inline in Paragraph",
 			code: "<Text>Read the <Link href='#docs'>docs</Link>.</Text>",
 			render: () => (
@@ -749,6 +803,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("link", "external-links"),
 			title: "External Links",
 			code: '<Link href="https://example.com">Example</Link>',
 			render: () => (
@@ -760,6 +815,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	tooltip: [
 		{
+			id: catalogScenarioId("tooltip", "basic-tooltip"),
 			title: "Basic Tooltip",
 			code: "<Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip>",
 			render: () => (
@@ -774,6 +830,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("tooltip", "multiple-tooltips"),
 			title: "Multiple Tooltips",
 			code: "<Tooltip>…</Tooltip><Tooltip>…</Tooltip>",
 			render: () => (
@@ -798,6 +855,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	"layer-card": [
 		{
+			id: catalogScenarioId("layer-card", "basic-card"),
 			title: "Basic Card",
 			code: "<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
 			render: () => (
@@ -808,11 +866,13 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("layer-card", "surface-style-card"),
 			title: "Surface-style Card",
 			code: "<LayerCard className='p-4'>Quick start guide</LayerCard>",
 			render: () => <LayerCard className="w-[250px] p-4">Quick start guide</LayerCard>,
 		},
 		{
+			id: catalogScenarioId("layer-card", "multiple-cards"),
 			title: "Multiple Cards",
 			code: "<LayerCard><LayerCard.Secondary>Components</LayerCard.Secondary><LayerCard.Primary>Browse</LayerCard.Primary></LayerCard>",
 			render: () => (
@@ -831,6 +891,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	separator: [
 		{
+			id: catalogScenarioId("separator", "horizontal"),
 			title: "Horizontal",
 			code: "<Separator />",
 			render: () => (
@@ -844,6 +905,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	"skeleton-line": [
 		{
+			id: catalogScenarioId("skeleton-line", "default"),
 			title: "Default",
 			code: "<SkeletonLine /><SkeletonLine /><SkeletonLine />",
 			render: () => (
@@ -855,6 +917,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("skeleton-line", "width"),
 			title: "Width",
 			code: "<SkeletonLine minWidth={80} maxWidth={100} />",
 			render: () => (
@@ -866,6 +929,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("skeleton-line", "height"),
 			title: "Height",
 			code: '<SkeletonLine className="h-2" />',
 			render: () => (
@@ -880,11 +944,13 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	"sensitive-input": [
 		{
+			id: catalogScenarioId("sensitive-input", "default"),
 			title: "Default",
 			code: '<SensitiveInput revealLabel="Show" hideLabel="Hide" />',
 			render: () => <SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />,
 		},
 		{
+			id: catalogScenarioId("sensitive-input", "disabled"),
 			title: "Disabled",
 			code: "<SensitiveInput disabled />",
 			render: () => (
@@ -899,6 +965,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	radio: [
 		{
+			id: catalogScenarioId("radio", "default-vertical"),
 			title: "Default (Vertical)",
 			code: '<RadioGroup defaultValue="a"><Radio value="a" /><Radio value="b" /></RadioGroup>',
 			render: () => (
@@ -913,6 +980,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("radio", "horizontal"),
 			title: "Horizontal",
 			code: '<RadioGroup className="flex gap-4">…</RadioGroup>',
 			render: () => (
@@ -927,6 +995,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("radio", "disabled"),
 			title: "Disabled",
 			code: "<Radio disabled />",
 			render: () => (
@@ -939,6 +1008,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	select: [
 		{
+			id: catalogScenarioId("select", "basic"),
 			title: "Basic",
 			code: "<Select><SelectTrigger><SelectValue /></SelectTrigger></Select>",
 			render: () => (
@@ -954,6 +1024,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("select", "placeholder"),
 			title: "Placeholder",
 			code: '<SelectValue placeholder="Choose…" />',
 			render: () => (
@@ -968,6 +1039,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("select", "disabled-options"),
 			title: "Disabled Options",
 			code: '<SelectItem value="b" disabled>Beta</SelectItem>',
 			render: () => (
@@ -987,11 +1059,13 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	combobox: [
 		{
+			id: catalogScenarioId("combobox", "searchable-select-with-placeholder"),
 			title: "Searchable Select with Placeholder",
 			code: '<Combobox items={["Apple", "Banana"]} placeholder="Select…" />',
 			render: () => <Combobox items={["Apple", "Banana"]} placeholder="Select…" />,
 		},
 		{
+			id: catalogScenarioId("combobox", "disabled"),
 			title: "Disabled",
 			code: '<Combobox disabled items={["Apple"]} />',
 			render: () => <Combobox disabled items={["Apple"]} placeholder="Disabled" />,
@@ -999,6 +1073,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	autocomplete: [
 		{
+			id: catalogScenarioId("autocomplete", "default"),
 			title: "Default",
 			code: '<Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />',
 			render: () => <Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />,
@@ -1006,6 +1081,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	tabs: [
 		{
+			id: catalogScenarioId("tabs", "variants"),
 			title: "Variants",
 			code: "<Tabs defaultValue='a'><TabsList><TabsTrigger value='a'>Home</TabsTrigger></TabsList></Tabs>",
 			render: () => (
@@ -1020,6 +1096,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("tabs", "many-tabs"),
 			title: "Many Tabs",
 			code: "<TabsTrigger>…</TabsTrigger>",
 			render: () => (
@@ -1037,11 +1114,13 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	toast: [
 		{
+			id: catalogScenarioId("toast", "title-only"),
 			title: "Title Only",
 			code: '<Button onClick={() => toast("Saved")}>Toast</Button>',
 			render: () => <Button onClick={() => toast("Saved")}>Title only</Button>,
 		},
 		{
+			id: catalogScenarioId("toast", "title-and-description"),
 			title: "Title and Description",
 			code: 'toast("Saved", { description: "Project updated." })',
 			render: () => (
@@ -1051,26 +1130,31 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("toast", "success-variant"),
 			title: "Success Variant",
 			code: "toast.success('Deployed')",
 			render: () => <Button onClick={() => toast.success("Deployed")}>Success</Button>,
 		},
 		{
+			id: catalogScenarioId("toast", "error-variant"),
 			title: "Error Variant",
 			code: "toast.error('Failed')",
 			render: () => <Button onClick={() => toast.error("Failed")}>Error</Button>,
 		},
 		{
+			id: catalogScenarioId("toast", "warning-variant"),
 			title: "Warning Variant",
 			code: "toast.warning('Expiring')",
 			render: () => <Button onClick={() => toast.warning("Expiring")}>Warning</Button>,
 		},
 		{
+			id: catalogScenarioId("toast", "info-variant"),
 			title: "Info Variant",
 			code: "toast.info('Queued')",
 			render: () => <Button onClick={() => toast.info("Queued")}>Info</Button>,
 		},
 		{
+			id: catalogScenarioId("toast", "close-button"),
 			title: "Close button",
 			code: 'toast("Saved", { close: true })',
 			render: () => (
@@ -1080,6 +1164,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("toast", "hidden-close"),
 			title: "Hidden close",
 			code: 'toast("Saved", { close: false })',
 			render: () => (
@@ -1089,6 +1174,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("toast", "custom-icon"),
 			title: "Custom icon",
 			code: 'toast.success("Verified", { icon: <Check /> })',
 			render: () => (
@@ -1105,6 +1191,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("toast", "hidden-icon"),
 			title: "Hidden icon",
 			code: 'toast.success("Deployed", { icon: false })',
 			render: () => (
@@ -1114,6 +1201,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	dialog: [
 		{
+			id: catalogScenarioId("dialog", "basic-dialog"),
 			title: "Basic Dialog",
 			code: `<Dialog>
   <DialogTrigger asChild>
@@ -1142,11 +1230,13 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("dialog", "sizes"),
 			title: "Sizes",
 			code: '<DialogContent size="sm">…</DialogContent>\n<DialogContent size="base">…</DialogContent>\n<DialogContent size="lg">…</DialogContent>\n<DialogContent size="xl">…</DialogContent>',
 			render: () => <DialogSizesExample />,
 		},
 		{
+			id: catalogScenarioId("dialog", "alert-dialog"),
 			title: "Alert Dialog",
 			code: `<AlertDialog>
   <AlertDialogTrigger asChild>
@@ -1184,6 +1274,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("dialog", "confirmation-dialog"),
 			title: "Confirmation Dialog",
 			code: `<Dialog>
   <DialogTrigger asChild>
@@ -1216,6 +1307,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("dialog", "with-actions"),
 			title: "With Actions",
 			code: `<Dialog>
   <DialogTrigger asChild>
@@ -1244,6 +1336,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("dialog", "custom-max-width"),
 			title: "Custom Max Width",
 			code: '<DialogContent size="xl" className="max-w-lg">…</DialogContent>',
 			render: () => (
@@ -1264,6 +1357,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("dialog", "with-select"),
 			title: "With Select",
 			code: `<DialogContent>
   <DialogTitle>Create Resource</DialogTitle>
@@ -1303,6 +1397,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("dialog", "with-combobox"),
 			title: "With Combobox",
 			code: `<DialogContent>
   <DialogTitle>Create Resource</DialogTitle>
@@ -1330,6 +1425,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("dialog", "with-dropdown"),
 			title: "With Dropdown",
 			code: `<DialogContent>
   <DialogTitle>Resource Actions</DialogTitle>
@@ -1373,6 +1469,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	popover: [
 		{
+			id: catalogScenarioId("popover", "basic-popover"),
 			title: "Basic Popover",
 			code: `<Popover>
   <PopoverTrigger asChild><Button>Open Popover</Button></PopoverTrigger>
@@ -1394,6 +1491,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("popover", "sides"),
 			title: "Sides",
 			code: '<PopoverContent side="top">…</PopoverContent>',
 			render: () => (
@@ -1415,6 +1513,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	"dropdown-menu": [
 		{
+			id: catalogScenarioId("dropdown-menu", "basic-dropdown"),
 			title: "Basic Dropdown",
 			code: "<DropdownMenu><DropdownMenuTrigger asChild><Button>Open</Button></DropdownMenuTrigger><DropdownMenuContent><DropdownMenuItem>Item</DropdownMenuItem></DropdownMenuContent></DropdownMenu>",
 			render: () => (
@@ -1432,6 +1531,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	collapsible: [
 		{
+			id: catalogScenarioId("collapsible", "with-default-styling"),
 			title: "With Default Styling",
 			code: "<Collapsible><CollapsibleTrigger>How does this project work?</CollapsibleTrigger><CollapsibleContent>…</CollapsibleContent></Collapsible>",
 			render: () => (
@@ -1442,6 +1542,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("collapsible", "custom-trigger"),
 			title: "Custom Trigger",
 			code: "<CollapsibleTrigger asChild><Button>Show details</Button></CollapsibleTrigger>",
 			render: () => (
@@ -1458,6 +1559,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	table: [
 		{
+			id: catalogScenarioId("table", "basic"),
 			title: "Basic",
 			code: `<Table>
   <TableHeader>
@@ -1499,6 +1601,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("table", "selected-row"),
 			title: "Selected Row",
 			code: '<TableRow variant="selected">…</TableRow>',
 			render: () => (
@@ -1522,6 +1625,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	"table-of-contents": [
 		{
+			id: catalogScenarioId("table-of-contents", "options"),
 			title: "Options",
 			code: "<TableOfContents><TableOfContentsItem active>Intro</TableOfContentsItem></TableOfContents>",
 			render: () => (
@@ -1532,6 +1636,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("table-of-contents", "no-active-item"),
 			title: "No active item",
 			code: "<TableOfContentsItem>Intro</TableOfContentsItem>",
 			render: () => (
@@ -1542,6 +1647,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("table-of-contents", "without-title"),
 			title: "Without title",
 			code: '<TableOfContents title="">…</TableOfContents>',
 			render: () => (
@@ -1553,6 +1659,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	toolbar: [
 		{
+			id: catalogScenarioId("toolbar", "input-shorthand"),
 			title: "Input Shorthand",
 			code: '<Toolbar><Toolbar.Input placeholder="Search..." /><Toolbar.Button aria-label="Search" /><Toolbar.Button aria-label="Add" /></Toolbar>',
 			render: () => (
@@ -1564,6 +1671,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("toolbar", "button-actions"),
 			title: "Button Actions",
 			code: "<Toolbar><Toolbar.Button>Upload</Toolbar.Button><Toolbar.Button>Download</Toolbar.Button></Toolbar>",
 			render: () => (
@@ -1576,6 +1684,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	grid: [
 		{
+			id: catalogScenarioId("grid", "grid"),
 			title: "Grid",
 			code: `<Grid>
   <GridItem>1</GridItem>
@@ -1595,6 +1704,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	flow: [
 		{
+			id: catalogScenarioId("flow", "sequential-flow"),
 			title: "Sequential Flow",
 			code: "<Flow><FlowNode>Step 1</FlowNode><FlowNode>Step 2</FlowNode></Flow>",
 			render: () => (
@@ -1607,6 +1717,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	],
 	code: [
 		{
+			id: catalogScenarioId("code", "typescript"),
 			title: "TypeScript",
 			code: '<CodeHighlighted code="export async function fetchUser(id: string) { … }" />',
 			render: () => (
@@ -1627,6 +1738,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 			),
 		},
 		{
+			id: catalogScenarioId("code", "react"),
 			title: "React",
 			code: '<CodeHighlighted code="export function Counter() { … }" />',
 			render: () => (
@@ -1648,6 +1760,7 @@ export function Counter() {
 	],
 	"code-block": [
 		{
+			id: catalogScenarioId("code-block", "line-numbers"),
 			title: "Line Numbers",
 			code: "<CodeBlock>const n = 1</CodeBlock>",
 			render: () => <CodeBlock>const n = 1</CodeBlock>,
@@ -1655,6 +1768,7 @@ export function Counter() {
 	],
 	avatar: [
 		{
+			id: catalogScenarioId("avatar", "fallback"),
 			title: "Fallback",
 			code: "<Avatar><AvatarFallback>ZL</AvatarFallback></Avatar>",
 			render: () => (
@@ -1666,11 +1780,13 @@ export function Counter() {
 	],
 	slider: [
 		{
+			id: catalogScenarioId("slider", "default"),
 			title: "Default",
 			code: '<Slider defaultValue={[40]} aria-label="Volume" />',
 			render: () => <Slider defaultValue={[40]} aria-label="Volume" />,
 		},
 		{
+			id: catalogScenarioId("slider", "disabled"),
 			title: "Disabled",
 			code: "<Slider disabled defaultValue={[40]} />",
 			render: () => <Slider disabled defaultValue={[40]} aria-label="Disabled volume" />,
@@ -1678,11 +1794,13 @@ export function Counter() {
 	],
 	toggle: [
 		{
+			id: catalogScenarioId("toggle", "default"),
 			title: "Default",
 			code: '<Toggle aria-label="Bold">B</Toggle>',
 			render: () => <Toggle aria-label="Bold">B</Toggle>,
 		},
 		{
+			id: catalogScenarioId("toggle", "sizes"),
 			title: "Sizes",
 			code: '<Toggle size="sm">B</Toggle>',
 			render: () => (
@@ -1700,6 +1818,7 @@ export function Counter() {
 	],
 	"date-picker": [
 		{
+			id: catalogScenarioId("date-picker", "single-date-selection"),
 			title: "Single Date Selection",
 			code: '<DatePicker aria-label="Date" />',
 			render: () => <DatePicker aria-label="Date" />,
@@ -1707,11 +1826,13 @@ export function Counter() {
 	],
 	"command-palette": [
 		{
+			id: catalogScenarioId("command-palette", "with-grouped-items"),
 			title: "With Grouped Items",
 			code: "<CommandPalette><CommandGroup heading='Pages'>…</CommandGroup></CommandPalette>",
 			render: () => <CommandPaletteExample />,
 		},
 		{
+			id: catalogScenarioId("command-palette", "simple-flat-list"),
 			title: "Simple Flat List",
 			code: "<CommandPalette><CommandItem>Button</CommandItem></CommandPalette>",
 			render: () => <CommandPaletteExample flat />,
@@ -1719,11 +1840,13 @@ export function Counter() {
 	],
 	"link-button": [
 		{
+			id: catalogScenarioId("link-button", "default"),
 			title: "Default",
 			code: '<LinkButton href="#docs">Open docs</LinkButton>',
 			render: () => <LinkButton href="#docs">Open docs</LinkButton>,
 		},
 		{
+			id: catalogScenarioId("link-button", "disabled-link"),
 			title: "Disabled Link",
 			code: '<LinkButton aria-disabled="true" tabIndex={-1} role="link">Disabled link</LinkButton>',
 			render: () => (
@@ -1735,6 +1858,7 @@ export function Counter() {
 	],
 	field: [
 		{
+			id: catalogScenarioId("field", "hint"),
 			title: "Hint",
 			code: '<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
 			render: () => (
@@ -1744,6 +1868,7 @@ export function Counter() {
 			),
 		},
 		{
+			id: catalogScenarioId("field", "error"),
 			title: "Error",
 			code: '<Field label="Email" htmlFor="email" error="Required"><Input id="email" /></Field>',
 			render: () => (

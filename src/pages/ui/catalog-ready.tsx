@@ -131,6 +131,7 @@ import { Toolbar } from "@nocoo/basalt/components/toolbar";
 import { AlertTriangle, CircleAlert, Info, Plus, Search, X } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { CATALOG, type CatalogEntry, catalogImportPath } from "./catalog";
+import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { type CatalogDocsDraft, provenanceFromLegacy } from "./catalog-source";
 
 const SRC = { repo: "pew", sha: "97a890fabe6e", file: "packages/web/src/components" };
@@ -934,12 +935,16 @@ export const EXTRA_DOCS: Record<string, CatalogDocsDraft> = Object.fromEntries(
 	Object.entries(extra).map(([slug, value]) => [slug, value.docs]),
 );
 
-export const EXTRA_EXAMPLES: Record<
-	string,
-	{ title: string; code: string; render: ComponentType }[]
-> = Object.fromEntries(
+export const EXTRA_EXAMPLES: Record<string, CatalogScenario[]> = Object.fromEntries(
 	Object.entries(extra).map(([slug, value]) => [
 		slug,
-		[{ title: "Default", code: value.docs.usage, render: value.demo }],
+		[
+			{
+				id: catalogScenarioId(slug, "default"),
+				title: "Default",
+				code: value.docs.usage,
+				render: value.demo,
+			},
+		],
 	]),
 );
