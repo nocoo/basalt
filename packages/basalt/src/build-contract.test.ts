@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { collectEsmClosure, rootBoundaryViolations } from "../scripts/root-boundary";
 
 const pkgRoot = "packages/basalt";
 
@@ -16,11 +17,16 @@ describe("package build contract", () => {
 		const tscAt = build.indexOf("tsc -p tsconfig.build.json");
 		const rewriteAt = build.search(/scripts\/rewrite-declarations/);
 		const verifyAt = build.search(/scripts\/verify-dist/);
+		const closureAt = build.search(/scripts\/root-boundary/);
+		const runtimeAt = build.search(/node scripts\/verify-runtime\.mjs/);
 		expect(cssAt).toBeGreaterThanOrEqual(0);
 		expect(viteAt).toBeGreaterThan(cssAt);
 		expect(tscAt).toBeGreaterThan(viteAt);
 		expect(rewriteAt).toBeGreaterThan(tscAt);
 		expect(verifyAt).toBeGreaterThan(rewriteAt);
+		expect(closureAt).toBeGreaterThan(verifyAt);
+		expect(runtimeAt).toBeGreaterThan(closureAt);
+		expect(build).not.toContain("bun scripts/verify-runtime");
 		expect(pkg.scripts["types:check"]).toContain("type-tests/tsconfig.bundler.json");
 		expect(pkg.scripts["types:check"]).toContain("type-tests/tsconfig.nodenext.json");
 	});
@@ -44,6 +50,18 @@ describe("package build contract", () => {
 
 	it("keeps an executable dist verifier", () => {
 		expect(existsSync(path.join(pkgRoot, "scripts/verify-dist.ts"))).toBe(true);
+		expect(existsSync(path.join(pkgRoot, "scripts/root-boundary.ts"))).toBe(true);
+		expect(existsSync(path.join(pkgRoot, "scripts/verify-runtime.mjs"))).toBe(true);
+		const runtime = readFileSync(path.join(pkgRoot, "scripts/verify-runtime.mjs"), "utf8");
+		expect(runtime).toContain('import("@nocoo/basalt")');
+		expect(runtime).toContain('import("@nocoo/basalt/components/button")');
+		expect(runtime).toContain('import("@nocoo/basalt/providers/theme")');
+		expect(runtime).toContain('import("@nocoo/basalt/charts/donut")');
+		expect(runtime).toContain('import("@nocoo/basalt/components/date-picker")');
+		expect(runtime).toContain('import("@nocoo/basalt/components/data-table")');
+		expect(runtime).toContain("process.versions.bun");
+		expect(runtime).not.toContain("../src/");
+		expect(runtime).not.toContain("workspace:");
 	});
 
 	it("keeps the dist pack whitelist and private 0.0.0 manifest", () => {
@@ -138,6 +156,8 @@ describe("package build contract", () => {
 				expect(map.sources.length, rel).toBeGreaterThan(0);
 				expect(map.mappings.length, rel).toBeGreaterThan(0);
 			}
+			const closure = collectEsmClosure(path.join(dist, "index.js"));
+			expect(rootBoundaryViolations(closure, dist)).toEqual([]);
 		},
 	);
 });

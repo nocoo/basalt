@@ -18,7 +18,7 @@
 		"LICENSE"
 	],
 	"scripts": {
-		"build": "bun run build:css && vite build && tsc -p tsconfig.build.json && bun scripts/rewrite-declarations.ts && bun scripts/verify-dist.ts",
+		"build": "bun run build:css && vite build && tsc -p tsconfig.build.json && bun scripts/rewrite-declarations.ts && bun scripts/verify-dist.ts && bun scripts/root-boundary.ts && node scripts/verify-runtime.mjs",
 		"build:css": "bun ../../scripts/build-basalt-standalone.ts",
 		"pack:check": "bun scripts/verify-pack.ts",
 		"types:check": "tsc -p type-tests/tsconfig.bundler.json --noEmit && tsc -p type-tests/tsconfig.nodenext.json --noEmit"
