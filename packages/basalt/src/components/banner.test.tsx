@@ -55,4 +55,47 @@ describe("Banner", () => {
 		expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Dismiss" })).toBeInTheDocument();
 	});
+
+	it("falls back to default info tint and base padding for null variant and size", () => {
+		render(
+			<Banner variant={null} size={null} title="Restored" role="status" aria-label="Notice" />,
+		);
+		const root = screen.getByRole("status", { name: "Notice" });
+		expect(screen.getByText("Restored")).toBeInTheDocument();
+		expect(root).toHaveClass("bg-basalt-info-tint");
+		expect(root).toHaveClass("text-basalt-info");
+		expect(root).toHaveClass("px-4");
+		expect(root).toHaveClass("py-3");
+		expect(root).not.toHaveClass("px-3");
+		expect(root).not.toHaveClass("py-2");
+	});
+
+	it("keeps a compact plain action inline when description is omitted", () => {
+		render(
+			<Banner
+				size="sm"
+				title="Compact"
+				action={<button type="button">Fix</button>}
+				role="status"
+				aria-label="Compact notice"
+			/>,
+		);
+		const root = screen.getByRole("status", { name: "Compact notice" });
+		const action = screen.getByRole("button", { name: "Fix" });
+		expect(screen.getByText("Compact")).toBeInTheDocument();
+		expect(action).toBeInTheDocument();
+		expect(root).toHaveClass("px-3");
+		expect(root).toHaveClass("py-2");
+		expect(root).not.toHaveClass("px-4");
+		expect(root.children).toHaveLength(1);
+		const content = root.children[0];
+		expect(content).toHaveClass("min-w-0");
+		expect(content).toHaveClass("flex-1");
+		expect(content).not.toHaveClass("shrink-0");
+		expect(content.children).toHaveLength(2);
+		expect(content.children[0].tagName).toBe("P");
+		expect(content.children[0]).toHaveTextContent("Compact");
+		expect(content.children[1].tagName).toBe("DIV");
+		expect(content.children[1].contains(action)).toBe(true);
+	});
 });
