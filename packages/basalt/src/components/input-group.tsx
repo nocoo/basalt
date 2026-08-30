@@ -19,7 +19,8 @@ const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
 				aria-disabled={disabled || undefined}
 				inert={disabled || undefined}
 				className={cn(
-					"flex h-9 w-full items-center overflow-hidden rounded-basalt-lg border border-basalt-border bg-basalt-background text-sm shadow-xs",
+					"flex h-9 w-full items-center rounded-basalt-lg border border-basalt-border bg-basalt-background text-sm shadow-xs",
+					"[&>:first-child]:rounded-l-basalt-lg [&>:last-child]:rounded-r-basalt-lg",
 					"outline-hidden focus-within:border-basalt-ring",
 					"has-[[data-slot=input-group-addon-start]]:[&_input]:pl-2",
 					"has-[[data-slot=input-group-addon-end]]:[&_input]:pr-2",

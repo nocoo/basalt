@@ -3,7 +3,7 @@ import { cn } from "../utils/cn";
 import { Button } from "./button";
 
 const itemClass = cn(
-	"relative h-9 w-9 shrink-0 rounded-none border-0 bg-transparent shadow-none",
+	"relative h-9 w-9 shrink-0 rounded-none border-0 bg-transparent shadow-none first:rounded-l-basalt-lg last:rounded-r-basalt-lg",
 	"hover:bg-basalt-accent",
 	"disabled:pointer-events-none disabled:opacity-100 disabled:text-basalt-muted-foreground",
 );
@@ -30,8 +30,9 @@ export function Pagination({
 		<nav aria-label="Pagination" className={className}>
 			<div
 				className={cn(
-					"inline-flex items-stretch overflow-hidden rounded-basalt-lg bg-basalt-background ring-1 ring-basalt-border",
+					"inline-flex items-stretch rounded-basalt-lg bg-basalt-background ring-1 ring-basalt-border",
 					"[&>*:not(:first-child)]:border-l [&>*:not(:first-child)]:border-basalt-border",
+					"[&>:first-child]:rounded-l-basalt-lg [&>:last-child]:rounded-r-basalt-lg",
 				)}
 			>
 				{simple ? null : (

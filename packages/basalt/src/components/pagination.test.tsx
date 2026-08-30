@@ -8,6 +8,12 @@ describe("Pagination", () => {
 		expect(screen.getByRole("navigation", { name: "Pagination" })).toHaveTextContent("2");
 	});
 
+	it("does not clip the keyboard focus ring", () => {
+		render(<Pagination page={2} pageCount={5} />);
+		const group = screen.getByRole("navigation", { name: "Pagination" }).firstElementChild;
+		expect(group?.className).not.toContain("overflow-hidden");
+	});
+
 	it("moves to the previous and next pages", () => {
 		const onPageChange = vi.fn();
 		render(<Pagination page={2} pageCount={5} onPageChange={onPageChange} />);

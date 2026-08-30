@@ -17,11 +17,11 @@ export function ClipboardText({
 		<div
 			data-slot="clipboard-text"
 			className={cn(
-				"inline-flex max-w-full items-stretch overflow-hidden rounded-basalt-lg border border-basalt-border bg-basalt-background text-sm shadow-xs",
+				"inline-flex max-w-full items-stretch rounded-basalt-lg border border-basalt-border bg-basalt-background text-sm shadow-xs",
 				className,
 			)}
 		>
-			<code className="flex min-w-0 items-center truncate bg-transparent px-4 py-2 font-mono text-sm text-basalt-foreground">
+			<code className="flex min-w-0 items-center truncate rounded-l-basalt-lg bg-transparent px-4 py-2 font-mono text-sm text-basalt-foreground">
 				{text}
 			</code>
 			<Button
@@ -29,7 +29,7 @@ export function ClipboardText({
 				size="icon"
 				variant="ghost"
 				aria-label="Copy"
-				className="h-auto min-h-9 w-9 shrink-0 rounded-none border-0 border-l border-basalt-border shadow-none"
+				className="h-auto min-h-9 w-9 shrink-0 rounded-none rounded-r-basalt-lg border-0 border-l border-basalt-border shadow-none"
 				onClick={async () => {
 					await navigator.clipboard.writeText(copyText ?? text);
 					setCopied(true);

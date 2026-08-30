@@ -11,6 +11,9 @@ describe("ClipboardText", () => {
 		expect(
 			screen.getByText("bun add @nocoo/basalt").closest("[data-slot=clipboard-text]")?.className,
 		).toContain("border-basalt-border");
+		expect(
+			screen.getByText("bun add @nocoo/basalt").closest("[data-slot=clipboard-text]")?.className,
+		).not.toContain("overflow-hidden");
 	});
 
 	it("copies text when clicked", async () => {
