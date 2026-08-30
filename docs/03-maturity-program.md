@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S1C1a — D019 Toast 行为覆盖率恢复
-> 已验收代码基线：`054462d04839`（`main`；S1B A/B/C/D consumer 全部完成）
+> 当前切片：S1C1b — D020 DateNavigation 行为覆盖率恢复
+> 已验收代码基线：`4fe13d03b316`（`main`；D019 Toast 行为覆盖率完成）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -126,7 +126,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
-| S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 执行中（S1C1a D019） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
+| S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 执行中（S1C1b D020） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 待办 | 组件类型、API 表、example 不再三份手写漂移 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -268,6 +268,7 @@ S1B4 已在 `054462d04839` 验收，S1B 完成。S1C 首刀按低覆盖文件拆
 S1C1 当前实测总量为 statements `1385/1463`（94.66%）、branches `1057/1160`（91.12%）、functions `421/449`（93.76%）、lines `1311/1385`（94.65%）；在不改变分母的测试-only 前提下，至少还需命中 5 statement、45 branch、6 function 和 5 line。恢复过程每刀只处理一个组件或紧密家族，每刀后重测明细，不为了数字添加无行为价值 render/assertion。
 
 1. **S1C1a / D019 — Toast 行为覆盖率。** `packages/basalt/src/components/toast.tsx` 当前为 lines `12/25`、branches `6/18`、functions `4/7`，未覆盖默认 callable 路径、custom/default icon 分支以及 error/warning/info 分派；现有测试只实际断言 success + `icon:false`。只修改 `packages/basalt/src/components/toast.test.tsx`：基于现有 Sonner spy 分别证明 callable default 调用基础 toast、四个 convenience method 调用对应 Sonner method、默认 `closeButton:true`、显式 false、default/custom/false icon 策略，以及 description/action/duration/id 等 options 不丢失；调用之间清理 mock，断言消息、目标 method 和关键 payload，而不是只断言函数存在、只 render 或做大 snapshot。可补 `dismiss` 转发和 Toaster 显式 `closeButton`/props 转发，但必须有可观察断言。不得修改生产源码、coverage 配置/阈值/exclude、manifest、其它测试、docs、consumer/Husky 或进入 publint。提交前运行 Toast focused、全量、typecheck、Biome 和 coverage；coverage 仍未整体到 95% 时必须如实报告新的四项数字和逐文件 Toast 数字，不得把预期红门伪报为失败。只做一个原子提交，建议 `test: cover toast behavior`，随后停止等待 Codex review。
+2. **S1C1b / D020 — DateNavigation 行为覆盖率。** D019 后全局为 statements `1398/1463`（95.55%）、branches `1069/1160`（92.15%）、functions `424/449`（94.43%）、lines `1324/1385`（95.59%）；Toast 已达 lines `25/25`、branches `18/18`、functions `7/7`。下一刀只新增 `packages/basalt/src/charts/date-navigation.test.tsx`，不得改已有 `charts.test.tsx`：覆盖 picker 的 uncontrolled 前后日状态与 `onChange`、controlled 只通知而不自行改值、合法 ISO 和固定系统时间下空值/非 ISO fallback、disabled；证明 `ariaLabel`、原生 `aria-label`、默认标签的优先级。Display 模式分别证明 Today/前日/后日/日历 toggle 回调、today 与非 today 禁用状态、无 toggle 的静态日期、自定义 formatter/labels，以及 locale、timeZone、className 的可观察结果。日期断言必须固定时钟并在测试后恢复，回调和 UI 状态都要断言，不以只 render、函数存在或大 snapshot 凑覆盖。不得修改生产源码、coverage 配置/阈值/exclude、manifest、其它测试、docs、consumer/Husky 或进入下一组件/publint。提交前运行 DateNavigation focused、全量、typecheck、Biome 和 coverage；目标为 DateNavigation 从 lines `16/28`、branches `21/27`、functions `8/12` 尽量恢复到 100%，但全局 branch 门预计仍红，必须报告新的四项分子/分母、百分比和本文件明细。只做一个原子提交，建议 `test: cover date navigation behavior`，随后停止等待 Codex review。
 
 ### 6.3 S2 — 文档系统
 
@@ -413,6 +414,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D016 | S1B3a | `feb020bc2133` + `dc289fa160b9` | `w14:p1` | 完成 | `345a21346cb6` + `57cb78990b9f` + `3d993c0559f4` | 首提交建立 Next 16.3.3 + React 19.2.8 仓外 type/build/start/HTTP 门；两轮 review-fix 直接启动临时 consumer 的 Next binary、移除 `transpilePackages`、清理完整进程组，并在主动清理前快照自然退出状态，保证 readiness error 原样重抛。Codex 独立逐行审查；focused 2 files / 31 tests、typecheck、Biome 377 files、全量 109 files / 704 tests 通过；Gate C 从 tarball root/standalone CSS 解析，Next HTTP 200 + marker，四个 heavy peers 缺席，temp 与 Next 进程二次确认清理；Gate A/B 回归 CSS 54,321/45,480 bytes，全部通过；未进入 browser/S1B4 |
 | D017 | S1B3b | `3d993c0559f4` + `a77d0ea65cf2` | `w14:p1` | 完成 | `9f9555fb3d18` + `afdcb8091662` + `23346190f8ee` | 首提交新增 Playwright 1.62.1 / Chromium 151、Button/Theme/Toast 与错误/清理门；两轮 review-fix 分别关闭隐藏同文案假阳性、0 Sonner toast 假阳性，并把虚假 portal 命名改成 in-place outside-root host。Codex 独立复跑 focused 3 files / 55、typecheck、Biome 380 files、全量 110 / 728、root build、A/B/C；Gate C 由临时 tarball完成 HTTP 200、hydration、Button、light→dark、唯一真实 `[data-sonner-toast]`，Chromium 151.0.7922.34，temp/profile/51045/进程全清；A/B CSS 54,321/45,480 bytes。阶段末 coverage 实测 94.66/91.12/93.76/94.65 红，属未被 scripts/fixtures 纳入的既存包源码债务，已锁为 S1C 首刀，不伪报全绿 |
 | D018 | S1B4 | `23346190f8ee` + `8b3333d` | `w14:p1` | 完成 | `ee4a680902fa` + `09e356a3c07f` + `fee140df34af` + `8c1eb85cc95c` + `054462d04839` | 首提交建立 optional-peer D，四轮 review 依次关闭 package specifier/cleanup、文本伪 import、幻影 SWC 依赖与 local binding、`TsParameterProperty.param` 缺口。Codex 独立复跑 focused 1 file / 42、package 90 JS + 90 d.ts + 87 maps、types、273 项 pack、typecheck、Biome 386 files、全量 110 / 745；frozen install 无 lock 漂移，Node 26.7 从根直接 resolve/parse `@swc/core@1.15.46`。Gate D 精确安装 Recharts 3.10.1、react-day-picker 10.0.1、TanStack Table 9.1.2，三条仓外 granular export 均为 function，45,480-byte standalone CSS 且 Tailwind 缺席；A 为 54,321-byte Tailwind CSS 且三个 heavy peers 缺席，B 为 45,480-byte standalone CSS 且四个 heavy peers 缺席，C 为 HTTP 200、hydrated、Button、light→dark、真实 Sonner toast、Chromium 151.0.7922.34。四个 temp、browser profile、端口、进程和 tarball 全清，工作树干净 |
-| D019 | S1C1a | `054462d04839` + 本次调度文档 commit | `w14:p1` | 执行中 | 待提交 | coverage 基线 1385/1463 statements、1057/1160 branches、421/449 functions、1311/1385 lines；只补 Toast 的 callable/variant/icon/options 可观察行为，禁止生产或 coverage 配置变更 |
+| D019 | S1C1a | `054462d04839` + `3478c41` | `w14:p1` | 完成 | `4fe13d03b316` | 仅改 Toast 测试，新增 10 个真实行为用例；focused 1 file / 13 tests、typecheck、Biome 386 files、全量 110 files / 755 tests 全绿。Toast lines `12/25` → `25/25`、branches `6/18` → `18/18`、functions `4/7` → `7/7`；全局提升为 statements `1398/1463`（95.55%）、branches `1069/1160`（92.15%）、functions `424/449`（94.43%）、lines `1324/1385`（95.59%），coverage 仅因剩余 branch/function 债务按预期退出 1。首次 coverage 被既存 Next cleanup 用例偶发 5 秒超时打断；无泄漏且该用例单独复跑通过，第二次全量 755 项通过并生成有效明细 |
+| D020 | S1C1b | `4fe13d03b316` + 本次调度文档 commit | `w14:p1` | 执行中 | 待提交 | 只新增 DateNavigation 专属测试，覆盖 picker/display 两种 contract、受控/非受控、日期 fallback、disabled、标签级联、回调与格式化；禁止生产、coverage 配置、已有测试或下一组件变更 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
