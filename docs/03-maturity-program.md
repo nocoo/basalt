@@ -1,7 +1,7 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S1A1 — 确定性 dist 产物（准备下发）
+> 当前切片：S1A1 — 确定性 dist 产物（review-fix）
 > 已验收代码基线：`e57579c592ba`（`main`，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-30
@@ -122,7 +122,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S0A | 清理 Kumo/Cloudflare/Worker 用户示例与 fixture | 完成（`0cdbfdc`） | 禁用语境扫描、测试、typecheck、Biome、原子 commit 全绿 |
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
-| S1A | dist/types/files/exports 包契约 | 准备下发（S1A1） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
+| S1A | dist/types/files/exports 包契约 | 执行中（S1A1 review-fix） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next tarball consumers | 待办 | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | publint、prepublishOnly、Husky/browser 门 | 待办 | 一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 待办 | 组件类型、API 表、example 不再三份手写漂移 |
@@ -359,6 +359,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D007 | S0C2d | `306b6683ecbc` | `w14:p1` | 完成 | `d7c1f6b5c8b` + `7b37cda26b56` | 首提交 3 个授权文件，+612/−49；review-fix 用 Fragment 修正 `dialog-sizes`、`popover-sides` 多根非法 JSX，并让 `tabs-many-tabs` 的 defaultValue 命中 overview trigger；两轮均独立复跑 targeted 1 file / 9 tests、typecheck、Biome、全量 105 files / 652 tests，Husky 通过；未进入 S0C3 |
 | D008 | S0C3a | `e05cd19d727b` | `w14:p1` | 完成 | `2a1e45a5dade` | 3 个授权文件，+62/−17；新增只读 `catalogHeroScenario`，ready 改为 docs + hero，首屏 `data-hero-scenario` 的 preview/code 同源，Usage 改为纯 `docs.usage` 代码；targeted 1 file / 162 tests、typecheck、Biome、全量 105 files / 654 tests、Husky 均独立通过；保留旧映射给 S0C3b |
 | D009 | S0C3b | `2a1e45a5dade` + `e837d20c52d9` | `w14:p1` | 完成 | `e57579c592ba` | 4 个授权文件，+33/−113；HomeGrid 非定制 tile 改用 hero helper，删除 `BASE_DEMOS`、`UI_DEMOS`、`EXTRA_DEMOS` 与无用 imports，生产源码负向扫描归零，并以 Accordion 首页交互证明 extra tile 复用首个 scenario；Codex 独立复跑 targeted 1 file / 164 tests、typecheck、Biome、全量 105 files / 656 tests，Husky 通过；未重设计 HomeGrid 或进入 S1 |
-| D010 | S1A1 | `19bdeea` + 本次调度文档 commit | `w14:p1` | 准备下发 | — | package build 生成并自检完整 JS/声明/三份发布 CSS；禁止改 manifest 出口、公开 API、fixture、CI/Husky 和发布生命周期 |
+| D010 | S1A1 | `19bdeea` + `752e980` | `w14:p1` | 执行中（review-fix） | `9eba6caab1e2`（待修） | 首提交生成 90 JS / 90 声明、61 client entry 和 3 CSS，targeted 2 files / 6 tests、全量 105 files / 659 tests；code review 拒绝人为补出的 3 个空 `.map`（`sources`/`mappings` 为空且 JS 无 `sourceMappingURL`），校验器必须接受 bundler 对纯 re-export 不产 map，同时验证所有真实 map 非空且引用闭合；其余范围不扩张 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
