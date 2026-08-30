@@ -86,6 +86,16 @@ describe("SlotBarChart", () => {
 		expect(screen.getByTestId("slot-bar").getAttribute("data-state")).toBeNull();
 	});
 
+	it("keeps unlabeled mixed items flexing", () => {
+		const items: SlotBarItem[] = [
+			{ color: "bg-red-500", label: "72 bpm" },
+			{ color: "bg-green-500" },
+		];
+		render(<SlotBarChart items={items} />);
+		const unlabeled = screen.getAllByTestId("slot-bar")[1];
+		expect(unlabeled.parentElement?.className).toContain("flex-1");
+	});
+
 	it("applies custom heightClass and gapClass", () => {
 		const items: SlotBarItem[] = [{ color: "bg-blue-500" }];
 		const { container } = render(

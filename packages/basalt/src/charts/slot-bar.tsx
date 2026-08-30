@@ -79,7 +79,7 @@ function SlotItemBars({
 		return (
 			<div
 				className={cn(
-					"flex-1 rounded-sm",
+					"w-full rounded-sm",
 					isEmpty ? emptyClass : isTailwindColor ? item.color : undefined,
 				)}
 				style={{
@@ -91,17 +91,25 @@ function SlotItemBars({
 		);
 	}
 	const content = items.map((item, index) => {
-		if (hasTooltips && item.label) {
-			return (
-				<Tooltip key={`${item.label}-${index}`}>
+		const bar =
+			hasTooltips && item.label ? (
+				<Tooltip>
 					<TooltipTrigger asChild>{renderBar(item)}</TooltipTrigger>
 					<TooltipContent side="top">
 						<p>{item.label}</p>
 					</TooltipContent>
 				</Tooltip>
+			) : (
+				renderBar(item)
 			);
-		}
-		return <div key={`${item.color}-${index}`}>{renderBar(item)}</div>;
+		return (
+			<div
+				key={`${item.label ?? item.color}-${index}`}
+				className="flex min-h-0 min-w-0 flex-1 items-end self-stretch"
+			>
+				{bar}
+			</div>
+		);
 	});
 	const container = (
 		<div
