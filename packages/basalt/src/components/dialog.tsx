@@ -27,7 +27,7 @@ export function dialogPanelClass({
 	className?: string;
 } = {}) {
 	return cn(
-		"fixed top-1/2 left-1/2 z-50 w-full max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] origin-center -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-basalt-lg bg-basalt-background p-8 text-basalt-foreground shadow-lg ring-1 ring-basalt-border",
+		"fixed top-1/2 left-1/2 z-50 w-full max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] origin-center -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-basalt-lg bg-basalt-background p-8 text-basalt-foreground shadow-lg ring-1 ring-basalt-border",
 		"data-[state=open]:animate-basalt-dialog-in data-[state=closed]:animate-basalt-dialog-out",
 		DIALOG_SIZES[size],
 		className,
