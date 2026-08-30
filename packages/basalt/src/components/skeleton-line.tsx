@@ -1,9 +1,5 @@
-import { type CSSProperties, type HTMLAttributes, useMemo } from "react";
+import type { CSSProperties, HTMLAttributes } from "react";
 import { cn } from "../utils/cn";
-
-function randomInt(min: number, max: number) {
-	return Math.floor(Math.random() * (max - min + 1) + min);
-}
 
 export function SkeletonLine({
 	className,
@@ -17,11 +13,9 @@ export function SkeletonLine({
 	maxWidth?: number;
 	height?: number;
 }) {
-	const width = useMemo(() => {
-		const low = Math.min(minWidth, maxWidth);
-		const high = Math.max(minWidth, maxWidth);
-		return low === high ? low : randomInt(low, high);
-	}, [minWidth, maxWidth]);
+	const low = Math.min(minWidth, maxWidth);
+	const high = Math.max(minWidth, maxWidth);
+	const width = (low + high) / 2;
 	const lineStyle: CSSProperties = {
 		width: `${width}%`,
 		...(height !== undefined ? { height } : {}),

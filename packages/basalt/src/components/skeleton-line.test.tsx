@@ -8,6 +8,11 @@ describe("SkeletonLine", () => {
 		expect(container.firstChild).toHaveStyle({ width: "40%" });
 	});
 
+	it("uses the midpoint when the range has two bounds", () => {
+		const { container } = render(<SkeletonLine minWidth={40} maxWidth={60} />);
+		expect(container.firstChild).toHaveStyle({ width: "50%" });
+	});
+
 	it("accepts a custom bar height", () => {
 		const { container } = render(<SkeletonLine minWidth={100} maxWidth={100} height={24} />);
 		expect(container.firstChild).toHaveStyle({ height: "24px" });
