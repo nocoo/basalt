@@ -1,8 +1,12 @@
 import { describe, expect, it } from "vitest";
 import {
 	assertNextHttpBody,
+	assertServerCleaned,
 	earlyExitError,
+	listPidsMatching,
 	NEXT_HTTP_MARKER,
+	nextStartLaunch,
+	startHttpServer,
 	stopChild,
 	waitForUrl,
 } from "./consumer-http";
@@ -59,6 +63,54 @@ describe("consumer http helpers", () => {
 			once() {},
 		};
 		await stopChild(child as never);
+	});
+
+	it("launches Next with node and the package bin", () => {
+		const launch = nextStartLaunch("/tmp/consumer", 3210);
+		expect(launch.command).toBe("node");
+		expect(launch.args).toEqual([
+			"/tmp/consumer/node_modules/next/dist/bin/next",
+			"start",
+			"-p",
+			"3210",
+			"-H",
+			"127.0.0.1",
+		]);
+		expect(launch.command).not.toBe("npm");
+		expect(launch.args.join(" ")).not.toContain("run start");
+	});
+
+	it("stops a real child when readiness times out", async () => {
+		const unique = `basalt-timeout-${Date.now()}`;
+		const startedAt = Date.now();
+		await expect(
+			startHttpServer({
+				cwd: process.cwd(),
+				command: "node",
+				args: ["-e", `setTimeout(() => {}, 1200); // ${unique}`],
+				url: "http://127.0.0.1:1/",
+				timeoutMs: 200,
+				needles: [unique],
+			}),
+		).rejects.toThrow();
+		expect(Date.now() - startedAt).toBeLessThan(900);
+		expect(listPidsMatching(unique)).toEqual([]);
+		expect(() => assertServerCleaned(undefined, [unique])).not.toThrow();
+	});
+
+	it("cleans up after a real early exit", async () => {
+		const unique = `basalt-early-${Date.now()}`;
+		await expect(
+			startHttpServer({
+				cwd: process.cwd(),
+				command: "node",
+				args: ["-e", `process.exit(7); // ${unique}`],
+				url: "http://127.0.0.1:1/",
+				timeoutMs: 1000,
+				needles: [unique],
+			}),
+		).rejects.toThrow(/exited code=7/);
+		expect(listPidsMatching(unique)).toEqual([]);
 	});
 
 	it("sends SIGTERM and escalates to SIGKILL", async () => {

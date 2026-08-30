@@ -1,5 +1,6 @@
-import { type ChildProcess, spawn } from "node:child_process";
+import { type ChildProcess, spawn, spawnSync } from "node:child_process";
 import { createServer } from "node:net";
+import { join } from "node:path";
 
 export const NEXT_HTTP_MARKER = "basalt-next19-ok";
 
@@ -76,20 +77,94 @@ export async function waitForUrl(
 	throw lastError;
 }
 
+export function nextStartLaunch(consumerRoot: string, port: number) {
+	return {
+		command: "node",
+		args: [
+			join(consumerRoot, "node_modules", "next", "dist", "bin", "next"),
+			"start",
+			"-p",
+			String(port),
+			"-H",
+			"127.0.0.1",
+		],
+	};
+}
+
+export function processAlive(pid: number): boolean {
+	try {
+		process.kill(pid, 0);
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+export function listPidsMatching(needle: string): number[] {
+	const result = spawnSync("/bin/ps", ["-ax", "-o", "pid=,command="], { encoding: "utf8" });
+	if (result.status !== 0) {
+		throw new Error(`ps failed: ${result.stderr}`);
+	}
+	const pids: number[] = [];
+	for (const line of result.stdout.split("\n")) {
+		const trimmed = line.trim();
+		if (!trimmed.includes(needle)) {
+			continue;
+		}
+		const pid = Number(trimmed.split(/\s+/, 1)[0]);
+		if (Number.isInteger(pid) && pid > 0 && pid !== process.pid) {
+			pids.push(pid);
+		}
+	}
+	return pids;
+}
+
+export function assertServerCleaned(pid: number | undefined, needles: string[]) {
+	if (pid !== undefined && processAlive(pid)) {
+		throw new Error(`server PID ${pid} still alive`);
+	}
+	const leftover = needles.flatMap((needle) => listPidsMatching(needle));
+	if (leftover.length > 0) {
+		throw new Error(`leftover processes ${leftover.join(", ")} for ${needles.join(", ")}`);
+	}
+}
+
+function killTree(pid: number, signal: NodeJS.Signals) {
+	try {
+		process.kill(-pid, signal);
+		return;
+	} catch {
+		try {
+			process.kill(pid, signal);
+		} catch {
+			return;
+		}
+	}
+}
+
 export function stopChild(child: ChildProcess, timeoutMs = 8000): Promise<void> {
 	return new Promise((resolve) => {
 		if (child.exitCode !== null || child.signalCode !== null) {
 			resolve();
 			return;
 		}
+		const pid = child.pid;
 		const timer = setTimeout(() => {
-			child.kill("SIGKILL");
+			if (pid !== undefined) {
+				killTree(pid, "SIGKILL");
+			} else {
+				child.kill("SIGKILL");
+			}
 		}, timeoutMs);
 		child.once("exit", () => {
 			clearTimeout(timer);
 			resolve();
 		});
-		child.kill("SIGTERM");
+		if (pid !== undefined) {
+			killTree(pid, "SIGTERM");
+		} else {
+			child.kill("SIGTERM");
+		}
 	});
 }
 
@@ -100,11 +175,13 @@ export async function startHttpServer(options: {
 	url: string;
 	env?: NodeJS.ProcessEnv;
 	timeoutMs?: number;
+	needles?: string[];
 }): Promise<{ child: ChildProcess; response: Response; stdout: string; stderr: string }> {
 	const child = spawn(options.command, options.args, {
 		cwd: options.cwd,
 		env: { ...process.env, NODE_PATH: "", ...options.env },
 		stdio: ["ignore", "pipe", "pipe"],
+		detached: true,
 	});
 	let stdout = "";
 	let stderr = "";
@@ -124,6 +201,8 @@ export async function startHttpServer(options: {
 		});
 		return { child, response, stdout, stderr };
 	} catch (error) {
+		await stopChild(child);
+		assertServerCleaned(child.pid, options.needles ?? []);
 		if (exited) {
 			throw earlyExitError(child.exitCode, child.signalCode, stdout, stderr);
 		}

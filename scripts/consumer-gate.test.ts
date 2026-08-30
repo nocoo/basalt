@@ -351,6 +351,12 @@ describe("next consumer gate helpers", () => {
 		assertNextLayout(readFileSync("fixtures/next19/app/layout.tsx", "utf8"));
 		assertNextPage(readFileSync("fixtures/next19/app/page.tsx", "utf8"), "basalt-next19-ok");
 		assertStandaloneTypecheckGate(readFileSync("fixtures/next19/tsconfig.json", "utf8"), manifest);
+		expect(readFileSync("fixtures/next19/next.config.ts", "utf8")).not.toContain(
+			"transpilePackages",
+		);
+		const runner = readFileSync("scripts/consumer-gate.ts", "utf8");
+		expect(runner).toContain("nextStartLaunch");
+		expect(runner).not.toContain('["run", "start"');
 	});
 
 	it("rejects suppressHydrationWarning and a client layout", () => {

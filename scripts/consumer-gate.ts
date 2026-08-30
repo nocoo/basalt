@@ -10,12 +10,14 @@ import {
 	writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { dirname, join, relative, resolve, sep } from "node:path";
+import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
 	allocatePort,
 	assertNextHttpBody,
+	assertServerCleaned,
 	NEXT_HTTP_MARKER,
+	nextStartLaunch,
 	startHttpServer,
 	stopChild,
 } from "./consumer-http";
@@ -608,12 +610,14 @@ console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
 		if (config.mode === "next" && config.httpMarker) {
 			const port = await allocatePort();
 			const url = `http://127.0.0.1:${port}/`;
+			const launch = nextStartLaunch(consumerRoot, port);
 			const started = await startHttpServer({
 				cwd: consumerRoot,
-				command: "npm",
-				args: ["run", "start", "--", "-p", String(port), "-H", "127.0.0.1"],
+				command: launch.command,
+				args: launch.args,
 				url,
 				env: { PORT: String(port) },
+				needles: [tempRoot, basename(tempRoot)],
 			});
 			child = started.child;
 			const body = await started.response.text();
@@ -621,6 +625,7 @@ console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
 			evidence.port = port;
 			evidence.httpStatus = started.response.status;
 			evidence.marker = true;
+			evidence.launch = `${launch.command} ${launch.args[0]}`;
 		} else {
 			const distRoot = join(consumerRoot, "dist");
 			const distFiles = walkFiles(distRoot);
@@ -656,7 +661,11 @@ console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
 		if (child) {
 			await stopChild(child);
 		}
-		rmSync(tempRoot, { recursive: true, force: true });
+		try {
+			assertServerCleaned(child?.pid, [tempRoot, basename(tempRoot)]);
+		} finally {
+			rmSync(tempRoot, { recursive: true, force: true });
+		}
 	}
 }
 
