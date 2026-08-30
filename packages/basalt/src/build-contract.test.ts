@@ -62,16 +62,42 @@ describe("package build contract", () => {
 		expect(pkg.files).toEqual(["dist", "README.md", "LICENSE"]);
 		expect(pkg.scripts["pack:check"]).toContain("verify-pack");
 		expect(JSON.stringify(pkg.exports)).not.toContain("./src/");
+		expect(Object.keys(pkg.exports)).toEqual([
+			".",
+			"./components/*",
+			"./providers/*",
+			"./charts/*",
+			"./styles",
+			"./styles/tailwind",
+			"./styles/standalone",
+		]);
 		expect(pkg.exports["."]).toEqual({
 			types: "./dist/index.d.ts",
 			import: "./dist/index.js",
 		});
-		const rootExport = raw.slice(raw.indexOf('"exports"'));
-		expect(rootExport.indexOf('"types"')).toBeGreaterThanOrEqual(0);
-		expect(rootExport.indexOf('"types"')).toBeLessThan(rootExport.indexOf('"import"'));
+		expect(pkg.exports["./components/*"]).toEqual({
+			types: "./dist/components/*.d.ts",
+			import: "./dist/components/*.js",
+		});
+		expect(pkg.exports["./providers/*"]).toEqual({
+			types: "./dist/providers/*.d.ts",
+			import: "./dist/providers/*.js",
+		});
+		expect(pkg.exports["./charts/*"]).toEqual({
+			types: "./dist/charts/*.d.ts",
+			import: "./dist/charts/*.js",
+		});
 		expect(pkg.exports["./styles"]).toBe("./dist/styles/tailwind.css");
 		expect(pkg.exports["./styles/tailwind"]).toBe("./dist/styles/tailwind.css");
 		expect(pkg.exports["./styles/standalone"]).toBe("./dist/styles/standalone.css");
+		for (const key of [".", "./components/*", "./providers/*", "./charts/*"] as const) {
+			const value = pkg.exports[key];
+			expect(typeof value).toBe("object");
+			if (typeof value === "string") {
+				continue;
+			}
+			expect(Object.keys(value)).toEqual(["types", "import"]);
+		}
 		expect(readFileSync(path.join(pkgRoot, "LICENSE"), "utf8")).toBe(
 			readFileSync("LICENSE", "utf8"),
 		);

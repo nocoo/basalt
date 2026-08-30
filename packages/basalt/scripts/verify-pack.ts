@@ -165,27 +165,32 @@ function exportTarget(value: string) {
 	return value.replace(/^\.\//, "");
 }
 
+function starCount(value: string) {
+	return value.split("*").length - 1;
+}
+
+function starDir(pattern: string) {
+	const normalized = exportTarget(pattern);
+	const index = normalized.lastIndexOf("/*");
+	if (index < 0) {
+		return "";
+	}
+	return normalized.slice(0, index);
+}
+
+function applyStar(pattern: string, name: string) {
+	return exportTarget(pattern.replace("*", name));
+}
+
 const exactTargets: string[] = [];
-const wildcardDirs: Array<{ dir: string; types: string; js: string }> = [];
+const wildcards: Array<{ key: string; types: string; js: string }> = [];
 for (const [key, value] of Object.entries(pkg.exports)) {
 	if (key.includes("*")) {
 		if (typeof value === "string") {
 			fail(`${key} wildcard must be types/import object`);
 			continue;
 		}
-		const types = value.types ?? "";
-		const js = value.import ?? "";
-		if (!types.includes("*") || !js.includes("*")) {
-			fail(`${key} must use wildcard types/import`);
-		}
-		if (types.includes("src/") || js.includes("src/")) {
-			fail(`${key} export target points at src`);
-		}
-		wildcardDirs.push({
-			dir: types.replace(/^\.\//, "").replace("/*.d.ts", ""),
-			types,
-			js,
-		});
+		wildcards.push({ key, types: value.types ?? "", js: value.import ?? "" });
 		continue;
 	}
 	if (typeof value === "string") {
@@ -217,23 +222,36 @@ for (const target of exactTargets) {
 }
 
 let wildcardPairs = 0;
-for (const item of wildcardDirs) {
-	const abs = join(packageRoot, item.dir);
-	const jsNames = basenames(abs, ".js");
-	const dtsNames = basenames(abs, ".d.ts");
-	const names = [...new Set([...jsNames, ...dtsNames])].sort();
-	for (const name of names) {
-		const typesPath = `${item.dir}/${name}.d.ts`;
-		const importPath = `${item.dir}/${name}.js`;
+for (const item of wildcards) {
+	if (starCount(item.types) !== 1 || !item.types.endsWith("/*.d.ts")) {
+		fail(`${item.key} types must be a /*.d.ts wildcard`);
+		continue;
+	}
+	if (starCount(item.js) !== 1 || !item.js.endsWith("/*.js")) {
+		fail(`${item.key} import must be a /*.js wildcard`);
+		continue;
+	}
+	if (item.types.includes("src/") || item.js.includes("src/")) {
+		fail(`${item.key} export target points at src`);
+		continue;
+	}
+	const typesDir = starDir(item.types);
+	const importDir = starDir(item.js);
+	const dtsNames = basenames(join(packageRoot, typesDir), ".d.ts");
+	const jsNames = basenames(join(packageRoot, importDir), ".js");
+	if (dtsNames.join("\0") !== jsNames.join("\0")) {
+		fail(`${item.key} types/import basenames are not paired`);
+		continue;
+	}
+	for (const name of dtsNames) {
+		const typesPath = applyStar(item.types, name);
+		const importPath = applyStar(item.js, name);
 		wildcardPairs += 1;
 		if (!packedSet.has(typesPath)) {
 			fail(`wildcard types not packed: ${typesPath}`);
 		}
 		if (!packedSet.has(importPath)) {
 			fail(`wildcard import not packed: ${importPath}`);
-		}
-		if (typesPath.startsWith("src/") || importPath.startsWith("src/")) {
-			fail(`wildcard target points at src: ${name}`);
 		}
 	}
 }
