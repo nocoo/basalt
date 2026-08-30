@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S1B4 — 仓外 optional-peer / heavy granular Gate D（准备下发）
-> 已验收代码基线：`23346190f8ee`（`main`）
+> 当前切片：S1B4 — D018-R1 heavy consumer 源码契约与失败清理返工
+> 已验收代码基线：`23346190f8ee`（`main`；`ee4a680902fa` 待返工验收）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -125,7 +125,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
-| S1B | 仓外 Vite/Next/heavy granular tarball consumers | 执行中（S1B4 准备下发） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
+| S1B | 仓外 Vite/Next/heavy granular tarball consumers | 执行中（S1B4 D018-R1） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 待办 | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 待办 | 组件类型、API 表、example 不再三份手写漂移 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
@@ -258,6 +258,7 @@ S1B3b 当前任务包固定如下，不得以更窄的静态断言替代真实�
    5. A/B/C 必须复跑并继续证明未安装 Recharts、react-day-picker、TanStack Table；这三门只消费 root，不能为了通过新增 granular import。为 optional peer metadata、heavy fixture、三条 resolver/runtime probe、版本错配、仓内泄漏和成功/失败 cleanup 提供 focused tests。
    6. 允许修改根 `package.json`、`bun.lock`、`scripts/` 与测试、`fixtures/{README.md,vite-heavy/**}`、`packages/basalt/{package.json,README.md}`；不得修改组件/图表实现、root barrel、其它 fixture、Husky、本文、private/version、S1C 或 coverage 配置。
    7. 提交前运行 focused tests、package build/types/pack、typecheck、Biome、全量测试、真实 Gate D，并顺序回归 A/B/C。只做一个绿色原子提交，建议 `test: add heavy consumer gate`；提交后报告 commit、文件、四门解析/版本/CSS/cleanup 证据，等待 Codex review。
+   8. **D018-R1 — heavy source 契约与失败清理真实性返工。** `ee4a680902fa` 的真实 A/B/C/D、package build/types/pack、focused 2 files / 41 tests、typecheck、Biome 386 files和全量 110 files / 734 tests均通过，文件范围和 optional-peer/granular 运行证据正确；但 `assertHeavyConsumerSource` 只拒绝双引号 root import，并以若干 substring 判断所需路径，Codex 已用三个无文件改动的运行时反例证明它会接受单引号 `from '@nocoo/basalt'`、额外 `components/separator` granular import 和额外 `@nocoo/basalt/styles` import，违反“源码只能包含三条批准 granular 路径和 standalone 样式”的冻结契约。返工必须枚举 entry 中所有 `@nocoo/basalt` 静态 module specifier（兼容单双引号）并要求批准的四个 specifier 各且仅出现一次；root、额外 granular/provider/chart、其它 styles、重复或缺失均失败，同时保留三个 named export/usage 检查。新增上述三个真实负例和重复 specifier 负例。另以仓外临时目录 + `settleWithCleanup` 的受控失败测试证明 Gate D 无 server/browser 时仍保留原始错误并删除 temp；只调用一次无失败的 `cleanupConsumerGate` 不足以证明失败路径。只允许修改 `scripts/consumer-gate.ts` 和 `scripts/consumer-gate.test.ts`，不得改 fixture、manifest、lockfile、docs、组件、Husky、coverage 或进入 S1C。提交前复跑 focused、package build/types/pack、typecheck、Biome、全量测试、真实 D，并顺序回归 A/B/C；单一返工提交建议 `test: harden heavy consumer contract`，然后停止等待 Codex review。
 
 S1B4 验收后才把 S1B 标完成。当前 coverage 红线不混入 Gate D；S1C 首刀必须先按低覆盖文件拆成若干测试原子提交恢复 95% 四项，再允许接 publint/prepublish。禁止降低阈值、扩大 exclude、删生产出口或用无行为价值断言凑覆盖。
 
@@ -404,6 +405,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D015 | S1B2 | `03ba7c2f1f37` | `w14:p1` | 完成 | `7bf19f4832a5` + `feb020bc2133` | 首提交复用 Gate B 内核建立仓外 Tailwind v4 tarball/type/build 门；review-fix 删除 main 的重复 package CSS 入口，并把唯一 `@source` 锁到 consumer `node_modules/@nocoo/basalt/dist` 的精确真实路径与 glob。Codex 独立复跑 focused 1 file / 18 tests、typecheck、Biome 370 files、全量 108 files / 691 tests；Gate A 解析仓外 tarball、Tailwind/plugin 均为 4.3.3、54,321-byte CSS 含 token/Button utilities 且非 standalone dump，三个 heavy peers 缺席；Gate B 回归为 45,480-byte CSS，四个 heavy peers 缺席；两门 temp 均删除，工作树干净；未进入 Next |
 | D016 | S1B3a | `feb020bc2133` + `dc289fa160b9` | `w14:p1` | 完成 | `345a21346cb6` + `57cb78990b9f` + `3d993c0559f4` | 首提交建立 Next 16.3.3 + React 19.2.8 仓外 type/build/start/HTTP 门；两轮 review-fix 直接启动临时 consumer 的 Next binary、移除 `transpilePackages`、清理完整进程组，并在主动清理前快照自然退出状态，保证 readiness error 原样重抛。Codex 独立逐行审查；focused 2 files / 31 tests、typecheck、Biome 377 files、全量 109 files / 704 tests 通过；Gate C 从 tarball root/standalone CSS 解析，Next HTTP 200 + marker，四个 heavy peers 缺席，temp 与 Next 进程二次确认清理；Gate A/B 回归 CSS 54,321/45,480 bytes，全部通过；未进入 browser/S1B4 |
 | D017 | S1B3b | `3d993c0559f4` + `a77d0ea65cf2` | `w14:p1` | 完成 | `9f9555fb3d18` + `afdcb8091662` + `23346190f8ee` | 首提交新增 Playwright 1.62.1 / Chromium 151、Button/Theme/Toast 与错误/清理门；两轮 review-fix 分别关闭隐藏同文案假阳性、0 Sonner toast 假阳性，并把虚假 portal 命名改成 in-place outside-root host。Codex 独立复跑 focused 3 files / 55、typecheck、Biome 380 files、全量 110 / 728、root build、A/B/C；Gate C 由临时 tarball完成 HTTP 200、hydration、Button、light→dark、唯一真实 `[data-sonner-toast]`，Chromium 151.0.7922.34，temp/profile/51045/进程全清；A/B CSS 54,321/45,480 bytes。阶段末 coverage 实测 94.66/91.12/93.76/94.65 红，属未被 scripts/fixtures 纳入的既存包源码债务，已锁为 S1C 首刀，不伪报全绿 |
-| D018 | S1B4 | `23346190f8ee` + 本次验收/调度文档 commit | `w14:p1` | 准备下发 | — | 只建立 heavy optional-peer Gate D：Recharts 3.10.1、react-day-picker 10.0.1、TanStack Table 9.1.2，三条 granular 类型/运行时出口和仓外隔离；不重写组件、不进入 coverage/S1C |
+| D018 | S1B4 | `23346190f8ee` + 本次返工调度文档 commit | `w14:p1` | 验收中（R1） | `ee4a680902fa`（待返工） | 首提交 13 个授权文件，+427/−7；Codex 独立复跑 focused 2 files / 41 tests、package build/types/pack（273 项）、typecheck、Biome 386 files、全量 110 / 734 和真实 A/B/C/D，三个 optional peer 版本、三条 tarball granular 动态 import、CSS、Chromium hydration 与全部清理均通过。但三个运行时反例证明源码门接受单引号 root、额外 granular 和额外 styles；另缺少 D 失败路径清理证据。R1 只收紧这两项，不进入 S1C |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
