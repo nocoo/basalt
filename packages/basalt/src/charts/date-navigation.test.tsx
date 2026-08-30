@@ -84,11 +84,28 @@ describe("DateNavigation picker", () => {
 		expect(onChange).toHaveBeenCalledWith("2026-05-31");
 	});
 
-	it("disables previous, picker, and next without requiring onChange", () => {
-		render(<DateNavigation defaultValue="2026-03-15" disabled formatDate={isoLabel} />);
-		expect(screen.getByRole("button", { name: "Previous day" })).toBeDisabled();
-		expect(screen.getByRole("button", { name: /Date navigation/ })).toBeDisabled();
-		expect(screen.getByRole("button", { name: "Next day" })).toBeDisabled();
+	it("does not notify onChange when disabled controls are clicked", () => {
+		const onChange = vi.fn();
+		render(
+			<DateNavigation
+				defaultValue="2026-03-15"
+				disabled
+				onChange={onChange}
+				formatDate={isoLabel}
+			/>,
+		);
+		const previous = screen.getByRole("button", { name: "Previous day" });
+		const trigger = screen.getByRole("button", { name: /Date navigation/ });
+		const next = screen.getByRole("button", { name: "Next day" });
+		expect(previous).toBeDisabled();
+		expect(trigger).toBeDisabled();
+		expect(next).toBeDisabled();
+		expect(trigger).toHaveTextContent("2026-03-15");
+		fireEvent.click(previous);
+		fireEvent.click(trigger);
+		fireEvent.click(next);
+		expect(onChange).not.toHaveBeenCalled();
+		expect(trigger).toHaveTextContent("2026-03-15");
 	});
 
 	it("prefers ariaLabel, then native aria-label, then Date navigation", () => {
@@ -210,9 +227,38 @@ describe("DateNavigation display", () => {
 	});
 
 	it("formats with locale and timeZone when no custom formatter is provided", () => {
-		freezeUtc("2026-03-15T12:00:00.000Z");
-		const selectedDate = new Date("2026-03-14T12:00:00.000Z");
-		render(
+		const selectedDate = new Date("2026-03-15T00:30:00.000Z");
+		freezeUtc("2026-03-15T00:30:00.000Z");
+		const utcEn = displayLabel(selectedDate, "en-US", "UTC");
+		const laEn = displayLabel(selectedDate, "en-US", "America/Los_Angeles");
+		const utcDe = displayLabel(selectedDate, "de-DE", "UTC");
+		expect(utcEn).not.toBe(laEn);
+		expect(utcEn).not.toBe(utcDe);
+		const { rerender } = render(
+			<DateNavigation
+				selectedDate={selectedDate}
+				onPrevDay={vi.fn()}
+				onNextDay={vi.fn()}
+				onToday={vi.fn()}
+				locale="en-US"
+				timeZone="UTC"
+			/>,
+		);
+		expect(screen.getByText(utcEn)).toBeInTheDocument();
+		expect(screen.queryByText(laEn)).toBeNull();
+		rerender(
+			<DateNavigation
+				selectedDate={selectedDate}
+				onPrevDay={vi.fn()}
+				onNextDay={vi.fn()}
+				onToday={vi.fn()}
+				locale="en-US"
+				timeZone="America/Los_Angeles"
+			/>,
+		);
+		expect(screen.getByText(laEn)).toBeInTheDocument();
+		expect(screen.queryByText(utcEn)).toBeNull();
+		rerender(
 			<DateNavigation
 				selectedDate={selectedDate}
 				onPrevDay={vi.fn()}
@@ -222,7 +268,7 @@ describe("DateNavigation display", () => {
 				timeZone="UTC"
 			/>,
 		);
-		expect(screen.getByText(displayLabel(selectedDate, "de-DE", "UTC"))).toBeInTheDocument();
-		expect(screen.queryByText(displayLabel(selectedDate, "en-US", "UTC"))).toBeNull();
+		expect(screen.getByText(utcDe)).toBeInTheDocument();
+		expect(screen.queryByText(utcEn)).toBeNull();
 	});
 });
