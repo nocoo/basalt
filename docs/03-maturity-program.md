@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S0C2c — 表单与选择类 scenario 真值（准备下发）
-> 已验收代码基线：`1100e184aa30`（`main`，工作树干净）
+> 当前切片：S0C2d — 浮层、导航与数据类 scenario 真值（准备下发）
+> 已验收代码基线：`306b6683ecbc`（`main`，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-30
 
@@ -86,7 +86,7 @@ Codex 只直接写 `docs/`。Grok 不修改本文，除非调度消息明确授�
 | Ready 页面 | 84 | 公开项 100% ready |
 | Placeholder | 12：9 docs、Maps、ResourceList、DeleteResource | 0 |
 | Kumo 重合控件示例 | Basalt 133 / Kumo 292，名义 45.5% | 场景按 Basalt 契约覆盖；不机械复制品牌场景 |
-| 测试 | 103 文件、637 tests，全部 jsdom | unit + 高风险 browser + consumer gate |
+| 测试 | 104 文件、643 tests，全部 jsdom | unit + 高风险 browser + consumer gate |
 | 外部消费者 | 0 个真实 `@nocoo/basalt` import | 仓外 Vite Tailwind、Vite standalone、Next consumer 全绿 |
 | 包 | `0.0.0`、private、exports 指向 src | dist/types/files/exports/publint/tarball/prepublish 完整；最终 release-ready |
 
@@ -106,7 +106,7 @@ Codex 只直接写 `docs/`。Grok 不修改本文，除非调度消息明确授�
 |------|------|------|----------|
 | S0A | 清理 Kumo/Cloudflare/Worker 用户示例与 fixture | 完成（`0cdbfdc`） | 禁用语境扫描、测试、typecheck、Biome、原子 commit 全绿 |
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
-| S0C | 审计示例标题与真实能力，消除伪对齐 | 执行中（S0C2c） | 示例契约测试覆盖 41 个重合控件 |
+| S0C | 审计示例标题与真实能力，消除伪对齐 | 执行中（S0C2d） | 示例契约测试覆盖 41 个重合控件 |
 | S1A | dist/types/files/exports 包契约 | 待办 | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next tarball consumers | 待办 | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | publint、prepublishOnly、Husky/browser 门 | 待办 | 一条发布前命令覆盖所有门，仍不实际 publish |
@@ -327,6 +327,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D003 | S0C1 | `4695e60` | `w14:p1` | 完成 | `7c1dccd37ff` + `327e94546cef` | 7 个授权文件，+285/−23；首提交建立 `CatalogScenario`、显式语义 ID、稳定 anchor 与 41 slug 页面契约，review-fix 将 3 个已知错误标题解耦为真实能力 ID 并对全数据集禁止数字下标；targeted 2 files / 163 tests，typecheck、Biome、全量 101 files / 615 tests；title/code/render、顺序、数量、视觉与组件 API 均未变 |
 | D004 | S0C2a | `7fa1bb287294` | `w14:p1` | 完成 | `75754d412ad7` + `ce88ff09bea8` | 3 个授权文件；首提交校正 9 个条目的伪标题、空壳/截断 snippet 和 usage，review-fix 补齐 Code/Select/Grid/Flow/Sidebar 的 compound imports 与 CommandPalette 状态声明；targeted 3 files / 176 tests，typecheck、Biome、全量 102 files / 628 tests；scenario ID/数量/顺序、render、组件 API、行为、视觉与 S0C3 数据源均未变 |
 | D005 | S0C2b | `a6460bdffa6a` | `w14:p1` | 完成 | `1100e184aa30` | 5 个授权文件，+309/−31；锁定 15 个 slug 的 ID/数量/顺序，修复 Empty/Breadcrumbs/Meter 必填参数、Link/Tooltip provider、Skeleton/Loader 多状态、Toast 触发代码、Banner/LayerCard 与 ClipboardText 中性示例；targeted 2 files / 169 tests，typecheck、Biome、全量 103 files / 637 tests；仅 ClipboardText 假凭据文案同步 render，组件 API、行为与 S0C3 数据源未变 |
-| D006 | S0C2c | `1100e184aa30` | `w14:p1` | 准备下发 | — | 只审计表单/选择组 Checkbox、Combobox、DatePicker、Input、InputArea、InputGroup、Radio、SensitiveInput、Switch 的 title/code/render、`docs.usage` 真值；不增加组件能力、不进入 S0C2d 或 S0C3 |
+| D006 | S0C2c | `5250494cbfcf` | `w14:p1` | 完成 | `306b6683ecbc` | 4 个授权文件，+224/−34；锁定 9 个 slug 的 ID/数量/顺序，对齐 Checkbox/Switch/Input/InputArea/InputGroup/Radio/SensitiveInput 的名称与组合结构，补齐 Combobox items/placeholder 和 DatePicker 可访问 usage；targeted 2 files / 166 tests，typecheck、Biome、全量 104 files / 643 tests；未扩 string-only Combobox、DatePicker range 或 Group/Legend API，留给 S4/S5 |
+| D007 | S0C2d | `306b6683ecbc` | `w14:p1` | 准备下发 | — | 只审计浮层/导航/数据组 Collapsible、Dialog、DropdownMenu、Pagination、Popover、Table、TableOfContents、Tabs、Toolbar 的 title/code/render、`docs.usage` 真值；不增加组件能力、不进入 S0C3 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
