@@ -1,4 +1,8 @@
+import { AppHeader } from "@nocoo/basalt/components/app-header";
+import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
+import { Button } from "@nocoo/basalt/components/button";
 import { Link } from "@nocoo/basalt/components/link";
+import { Sheet, SheetContent, SheetTitle } from "@nocoo/basalt/components/sheet";
 import { ContentIsland } from "@nocoo/basalt/components/sidebar";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
 import { useTheme } from "@nocoo/basalt/providers/theme";
@@ -57,6 +61,9 @@ export function DashboardLayout() {
 	const catalogTitle = catalogEntry ? catalogNavName(catalogEntry) : undefined;
 	const titleKey = PAGE_TITLE_KEYS[location.pathname] ?? "nav.dashboard";
 	const title = catalogTitle ?? t(titleKey);
+	const crumbs = location.pathname.startsWith("/ui")
+		? [{ href: "/ui", label: t("nav.kit") }]
+		: [{ href: "/", label: t("nav.examples") }];
 
 	// Close mobile sidebar on route change: pathname is the intentional trigger.
 	// biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, not a value used inside
@@ -64,7 +71,6 @@ export function DashboardLayout() {
 		setMobileOpen(false);
 	}, [location.pathname]);
 
-	// Prevent body scroll when mobile sidebar is open
 	useEffect(() => {
 		if (mobileOpen) {
 			document.body.style.overflow = "hidden";
@@ -77,64 +83,60 @@ export function DashboardLayout() {
 	}, [mobileOpen]);
 
 	return (
-		<div className="flex h-screen w-full overflow-hidden bg-background">
-			<a
-				href="#main-content"
-				className="sr-only focus:not-sr-only focus:absolute focus:z-[100] focus:top-2 focus:left-2 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground"
-			>
-				{t("common.skipToMain")}
-			</a>
-			{/* Desktop sidebar */}
-			{!isMobile && <AppSidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />}
-
-			{/* Mobile overlay */}
-			{isMobile && mobileOpen && (
-				<>
-					<div
-						className="fixed inset-0 z-40 bg-black/50 backdrop-blur-xs"
-						onClick={() => setMobileOpen(false)}
-					/>
-					<div className="fixed inset-y-0 left-0 z-50 w-[260px]">
+		<AppShell>
+			<AppSkipLink>{t("common.skipToMain")}</AppSkipLink>
+			{!isMobile ? (
+				<AppSidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
+			) : (
+				<Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+					<SheetContent
+						side="left"
+						className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0"
+					>
+						<SheetTitle className="sr-only">{t("common.openNav")}</SheetTitle>
 						<AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} />
-					</div>
-				</>
+					</SheetContent>
+				</Sheet>
 			)}
-
-			<main id="main-content" className="flex h-full min-w-0 flex-1 flex-col overflow-hidden">
-				<header className="flex h-14 shrink-0 items-center justify-between px-4 md:px-6">
-					<div className="flex items-center gap-3">
-						{isMobile && (
-							<button
-								type="button"
+			<AppMain>
+				<AppHeader
+					leading={
+						isMobile ? (
+							<Button
+								variant="ghost"
+								size="icon"
+								className="h-8 w-8"
 								onClick={() => setMobileOpen(true)}
 								aria-label={t("common.openNav")}
-								className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors"
 							>
-								<Menu className="h-5 w-5" aria-hidden="true" strokeWidth={1.5} />
-							</button>
-						)}
-						<h1 className="text-lg font-semibold text-foreground md:text-xl">{title}</h1>
-					</div>
-					<div className="flex items-center gap-1">
-						<LanguageToggle />
-						<Link
-							href="https://github.com/nocoo/basalt"
-							target="_blank"
-							rel="noopener noreferrer"
-							aria-label={t("common.github")}
-							className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors no-underline"
-						>
-							<Github className="h-[18px] w-[18px]" aria-hidden="true" strokeWidth={1.5} />
-						</Link>
-						<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
-					</div>
-				</header>
+								<Menu aria-hidden="true" />
+							</Button>
+						) : null
+					}
+					breadcrumbs={crumbs}
+					title={title}
+					actions={
+						<>
+							<LanguageToggle />
+							<Link
+								href="https://github.com/nocoo/basalt"
+								target="_blank"
+								rel="noopener noreferrer"
+								aria-label={t("common.github")}
+								className="flex h-8 w-8 items-center justify-center rounded-lg text-basalt-muted-foreground no-underline transition-colors hover:bg-basalt-accent hover:text-basalt-foreground"
+							>
+								<Github className="h-[18px] w-[18px]" aria-hidden="true" strokeWidth={1.5} />
+							</Link>
+							<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
+						</>
+					}
+				/>
 				<div className="flex min-h-0 flex-1 flex-col px-2 pb-2 md:px-3 md:pb-3">
 					<ContentIsland data-doc-scroll>
 						<Outlet />
 					</ContentIsland>
 				</div>
-			</main>
-		</div>
+			</AppMain>
+		</AppShell>
 	);
 }
