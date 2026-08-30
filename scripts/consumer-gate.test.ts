@@ -21,8 +21,11 @@ import {
 	STANDALONE_GATE,
 	standaloneCssEvidence,
 	TAILWIND_GATE,
+	TARBALL_SOURCE_GLOB,
 	tailwindCssEvidence,
 } from "./consumer-gate";
+
+const sourceCtx = { fromDir: "/consumer/src", consumerRoot: "/consumer" };
 
 describe("standalone consumer gate helpers", () => {
 	it("rejects a temp path inside the repository", () => {
@@ -194,35 +197,88 @@ describe("tailwind consumer gate helpers", () => {
 			readFileSync("fixtures/vite-tailwind/tsconfig.json", "utf8"),
 			manifest,
 		);
-		assertTailwindStylesheet(readFileSync("fixtures/vite-tailwind/src/index.css", "utf8"));
+		assertTailwindStylesheet(readFileSync("fixtures/vite-tailwind/src/index.css", "utf8"), {
+			fromDir: join("fixtures/vite-tailwind", "src"),
+			consumerRoot: "fixtures/vite-tailwind",
+		});
+		expect(readFileSync("fixtures/vite-tailwind/src/main.tsx", "utf8")).toContain("./index.css");
+		expect(readFileSync("fixtures/vite-tailwind/src/main.tsx", "utf8")).not.toContain(
+			"@nocoo/basalt/styles/",
+		);
 		const vite = readFileSync("fixtures/vite-tailwind/vite.config.ts", "utf8");
 		expect(vite).toContain("@tailwindcss/vite");
 		expect(vite).toContain("tailwindcss()");
 	});
 
 	it("fails the gate when @source is missing or points at the repo", () => {
-		expect(() => assertTarballDistSource([])).toThrow(/missing @source/);
-		expect(() => assertTarballDistSource(["../../packages/basalt/src/**/*.{ts,tsx}"])).toThrow(
-			/repository/,
-		);
-		expect(() => assertTarballDistSource(["./src/**/*.tsx"])).toThrow(/src/);
-		expect(() => assertTarballDistSource(["/tmp/workspace/dist/**/*"])).toThrow(/relative/);
+		expect(() => assertTarballDistSource([], sourceCtx)).toThrow(/missing @source/);
 		expect(() =>
-			assertTarballDistSource(["../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}"]),
-		).not.toThrow();
+			assertTarballDistSource(
+				["../../packages/basalt/src/**/*.{ts,tsx}", TARBALL_SOURCE_GLOB],
+				sourceCtx,
+			),
+		).toThrow(/extra @source/);
+		expect(() =>
+			assertTarballDistSource(["../../packages/basalt/src/**/*.{js,jsx,ts,tsx}"], sourceCtx),
+		).toThrow(/tarball dist/);
+		expect(() => assertTarballDistSource(["./src/**/*.tsx"], sourceCtx)).toThrow(/glob/);
+		expect(() => assertTarballDistSource(["/tmp/workspace/dist/**/*"], sourceCtx)).toThrow(
+			/relative/,
+		);
+		expect(() =>
+			assertTarballDistSource(
+				["../../other/node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}"],
+				sourceCtx,
+			),
+		).toThrow(/tarball dist/);
+		expect(() =>
+			assertTarballDistSource(
+				["../node_modules/@nocoo/basalt/dist-extra/**/*.{js,jsx,ts,tsx}"],
+				sourceCtx,
+			),
+		).toThrow(/tarball dist/);
+		expect(() =>
+			assertTarballDistSource(
+				["../node_modules/@nocoo/basalt/dist/../src/**/*.{js,jsx,ts,tsx}"],
+				sourceCtx,
+			),
+		).toThrow(/tarball dist/);
+		expect(() => assertTarballDistSource([TARBALL_SOURCE_GLOB], sourceCtx)).not.toThrow();
 		expect(
 			consumerSourceGlobs(readFileSync("fixtures/vite-tailwind/src/index.css", "utf8")),
-		).toEqual(["../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}"]);
+		).toEqual([TARBALL_SOURCE_GLOB]);
 		expect(() =>
 			assertTailwindStylesheet(
 				'@import "@nocoo/basalt/styles/tailwind";\n@import "tailwindcss";\n',
+				sourceCtx,
 			),
 		).toThrow(/missing @source/);
 		expect(() =>
 			assertTailwindStylesheet(
-				'@source "../../packages/basalt/src/**/*.{ts,tsx}";\n@import "@nocoo/basalt/styles/tailwind";\n@import "tailwindcss";\n',
+				'@source "../../packages/basalt/src/**/*.{js,jsx,ts,tsx}";\n@import "@nocoo/basalt/styles/tailwind";\n@import "tailwindcss";\n',
+				sourceCtx,
 			),
-		).toThrow(/repository/);
+		).toThrow(/tarball dist/);
+	});
+
+	it("rejects a package-style import in main and a duplicate CSS import", () => {
+		expect(() =>
+			assertRootConsumerSource(
+				`import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast } from "@nocoo/basalt";
+import "@nocoo/basalt/styles/tailwind";
+import "./index.css";
+`,
+				"tailwind",
+			),
+		).toThrow(/package styles from main/);
+		const once = `@source "${TARBALL_SOURCE_GLOB}";
+@import "@nocoo/basalt/styles/tailwind";
+@import "tailwindcss";
+`;
+		expect(() => assertTailwindStylesheet(once, sourceCtx)).not.toThrow();
+		expect(() =>
+			assertTailwindStylesheet(`${once}@import "@nocoo/basalt/styles/tailwind";\n`, sourceCtx),
+		).toThrow(/once/);
 	});
 
 	it("allows Tailwind while still rejecting other heavy peers", () => {

@@ -9,8 +9,8 @@ Same shared consumer kernel as Gate B: clean package build, `npm pack` into an O
 Guarantees:
 
 - The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, or this repository's path.
-- The consumer imports and renders `Button`, `ThemeProvider`, `ThemeToggle`, `Toast`, and `LinkProvider` from `@nocoo/basalt` root and only `@nocoo/basalt/styles/tailwind`.
-- `@source` is relative to the copied consumer and scans `node_modules/@nocoo/basalt/dist`; it does not scan this repository, `src`, or a workspace path. Missing or wrong `@source` fails the gate.
+- The consumer imports and renders `Button`, `ThemeProvider`, `ThemeToggle`, `Toast`, and `LinkProvider` from `@nocoo/basalt` root. `main.tsx` only imports local `./index.css`; `@nocoo/basalt/styles/tailwind` appears once, in that stylesheet.
+- `@source` is the relative glob from `src/index.css` to the copied consumer's `node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}`. Extra sources, path traversal, and lookalike prefixes fail the gate.
 - After install, root and `styles/tailwind` resolve inside that consumer's tarball copy.
 - `tailwindcss` and `@tailwindcss/vite` 4.3.3 are installed; `recharts`, `react-day-picker`, and `@tanstack/react-table` are not.
 - Production CSS contains `--basalt-background` and Button utilities generated from the installed dist scan, not the standalone CSS dump.

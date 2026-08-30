@@ -254,14 +254,17 @@ export function assertRootConsumerSource(source: string, mode: ConsumerMode = "s
 			throw new Error("consumer must import standalone styles");
 		}
 	} else {
-		if (source.includes("@nocoo/basalt/styles/standalone") || /\bstandalone\b/.test(source)) {
+		if (source.includes("@nocoo/basalt/styles/")) {
+			throw new Error("tailwind consumer must not import package styles from main");
+		}
+		if (/\bstandalone\b/.test(source)) {
 			throw new Error("tailwind consumer must not import standalone");
 		}
 		if (!/from\s+"@nocoo\/basalt"/.test(source)) {
 			throw new Error("consumer must import from @nocoo/basalt root");
 		}
-		if (!source.includes("@nocoo/basalt/styles/tailwind")) {
-			throw new Error("consumer must import tailwind styles");
+		if (!source.includes("./index.css")) {
+			throw new Error("tailwind consumer must import ./index.css");
 		}
 	}
 	for (const name of ROOT_EXPORTS) {
@@ -271,38 +274,64 @@ export function assertRootConsumerSource(source: string, mode: ConsumerMode = "s
 	}
 }
 
+export const TARBALL_SOURCE_GLOB = "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
+const TARBALL_SOURCE_PATTERN = "/**/*.{js,jsx,ts,tsx}";
+
+export type SourceContext = {
+	fromDir: string;
+	consumerRoot: string;
+};
+
 export function consumerSourceGlobs(css: string) {
 	return [...css.matchAll(/@source\s+["']([^"']+)["']/g)].map((match) => match[1]);
 }
 
-export function assertTarballDistSource(globs: string[]) {
+export function splitSourceGlob(glob: string) {
+	const posix = posixPath(glob);
+	const star = posix.indexOf("/**");
+	if (star < 0) {
+		return { dir: posix, pattern: "" };
+	}
+	return { dir: posix.slice(0, star), pattern: posix.slice(star) };
+}
+
+export function assertTarballDistSource(globs: string[], context: SourceContext) {
 	if (globs.length === 0) {
 		throw new Error("missing @source");
 	}
-	for (const glob of globs) {
-		const posix = posixPath(glob);
-		if (!posix.startsWith(".")) {
-			throw new Error(`@source must be relative: ${glob}`);
-		}
-		if (posix.includes("packages/basalt") || posix.includes("workspace")) {
-			throw new Error(`@source scans the repository: ${glob}`);
-		}
-		if (/(^|\/)src\//.test(posix)) {
-			throw new Error(`@source scans src: ${glob}`);
-		}
-		if (!posix.includes("node_modules/@nocoo/basalt/dist")) {
-			throw new Error(`@source must scan installed tarball dist: ${glob}`);
-		}
+	if (globs.length !== 1) {
+		throw new Error("extra @source");
+	}
+	const glob = posixPath(globs[0]);
+	if (!glob.startsWith(".")) {
+		throw new Error(`@source must be relative: ${glob}`);
+	}
+	const { dir, pattern } = splitSourceGlob(glob);
+	if (pattern !== TARBALL_SOURCE_PATTERN) {
+		throw new Error(`@source glob must scan dist js/ts: ${glob}`);
+	}
+	const expectedDist = resolve(context.consumerRoot, "node_modules/@nocoo/basalt/dist");
+	const resolved = resolve(context.fromDir, dir);
+	if (resolved !== expectedDist) {
+		throw new Error(`@source must resolve to tarball dist, got ${resolved}`);
 	}
 }
 
-export function assertTailwindStylesheet(css: string) {
-	assertTarballDistSource(consumerSourceGlobs(css));
+export function packageStyleImportCount(css: string) {
+	return [...css.matchAll(/@import\s+["']@nocoo\/basalt\/styles\/tailwind["']/g)].length;
+}
+
+export function assertTailwindStylesheet(css: string, context: SourceContext) {
+	assertTarballDistSource(consumerSourceGlobs(css), context);
 	if (css.includes("standalone")) {
 		throw new Error("tailwind stylesheet must not import standalone");
 	}
-	if (!css.includes("@nocoo/basalt/styles/tailwind")) {
+	const styleImports = packageStyleImportCount(css);
+	if (styleImports === 0) {
 		throw new Error("tailwind stylesheet must import @nocoo/basalt/styles/tailwind");
+	}
+	if (styleImports !== 1) {
+		throw new Error("tailwind stylesheet must import @nocoo/basalt/styles/tailwind once");
 	}
 	if (!css.includes('@import "tailwindcss"') && !css.includes("@import 'tailwindcss'")) {
 		throw new Error("tailwind stylesheet must import tailwindcss");
@@ -358,7 +387,10 @@ export function runConsumerGate(repoRoot: string, config: ConsumerGateConfig) {
 		readFileSync(join(fixtureRoot, "package.json"), "utf8"),
 	);
 	if (config.stylesheet) {
-		assertTailwindStylesheet(readFileSync(join(fixtureRoot, config.stylesheet), "utf8"));
+		assertTailwindStylesheet(readFileSync(join(fixtureRoot, config.stylesheet), "utf8"), {
+			fromDir: join(fixtureRoot, "src"),
+			consumerRoot: fixtureRoot,
+		});
 	}
 
 	run("bun", ["run", "--cwd", "packages/basalt", "build"], repoRoot);
@@ -378,6 +410,12 @@ export function runConsumerGate(repoRoot: string, config: ConsumerGateConfig) {
 		const tarballPath = join(tempRoot, tarballs[0]);
 		const consumerRoot = join(tempRoot, "consumer");
 		cpSync(fixtureRoot, consumerRoot, { recursive: true });
+		if (config.stylesheet) {
+			assertTailwindStylesheet(readFileSync(join(consumerRoot, config.stylesheet), "utf8"), {
+				fromDir: join(consumerRoot, "src"),
+				consumerRoot,
+			});
+		}
 		const manifest = JSON.parse(
 			readFileSync(join(consumerRoot, "package.json"), "utf8"),
 		) as Manifest;
