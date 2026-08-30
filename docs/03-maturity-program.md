@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S1B4 — D018-R4 heavy consumer parameter-property binding 返工
-> 已验收代码基线：`23346190f8ee`（`main`；D018 的 `ee4a680902fa` + `09e356a3c07f` + `fee140df34af` + `8c1eb85cc95c` 待返工验收）
+> 当前切片：S1C1a — D019 Toast 行为覆盖率恢复
+> 已验收代码基线：`054462d04839`（`main`；S1B A/B/C/D consumer 全部完成）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -125,8 +125,8 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
-| S1B | 仓外 Vite/Next/heavy granular tarball consumers | 执行中（S1B4 D018-R4） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
-| S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 待办 | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
+| S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
+| S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 执行中（S1C1a D019） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 待办 | 组件类型、API 表、example 不再三份手写漂移 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -263,7 +263,11 @@ S1B3b 当前任务包固定如下，不得以更窄的静态断言替代真实�
    10. **D018-R3 — parser 所有权与 JSX binding identity 返工。** `fee140df34af` 已用 SWC TSX AST 关闭 R2 的注释/字符串伪 import、side-effect-only 重组件、alias、未渲染、语法错误和 dynamic import/require 缺口，但不能验收。第一，生产 gate 源码加载 `@swc/core`，根 manifest 却未声明该包，而是通过 `createRequire(import.meta.resolve("@vitejs/plugin-react-swc"))` 借用插件的传递依赖；Codex 已证明从仓库根直接解析 `@swc/core` 得到 `ERR_MODULE_NOT_FOUND`。门禁的可启动性不能依赖另一个工具的内部依赖树。第二，AST 只把所有 JSX tag 拼成名字集合，并只扫描 function/class/variable 的简单 identifier；Codex 用无文件改动反例证明，把 `DonutChart`、`DatePicker`、`DataTable` 写成一个嵌套函数的解构参数并在该函数 JSX 中使用，三个 tarball import 完全未使用，`assertHeavyConsumerSource` 仍成功。返工必须在根 `devDependencies` 精确声明并锁定 `@swc/core` `1.15.46`，从本包直接 import/resolve，删除经 Vite plugin 定位 parser 的幻影依赖路径，禁止硬编码 `.bun`/本机路径；若选择同等级的直接 parser，必须同样精确锁定且说明理由。JSX 证据必须对应三个批准 import 的真实 binding；函数/箭头/方法参数、对象或数组解构、rest/default pattern、catch/局部声明等同名 binding 均不得让未使用的 import 过门。新增至少一个“解构参数同名 + JSX”真实反例，并以测试锁住 parser 为根直接依赖且源码不再经 plugin 加载；保留 R1/R2 全部负例、fixture 正例与 cleanup identity。只允许修改根 `package.json`、`bun.lock`、`scripts/consumer-gate.ts`、`scripts/consumer-gate.test.ts`；不得改 fixture、package manifest/API、组件、其它脚本、Husky、coverage、docs 或进入 S1C。单一原子提交建议 `test: bind heavy consumer imports`；提交前依次复跑 focused、package build/types/pack、typecheck、Biome、全量测试、真实 D 和 A/B/C，然后停止等待 Codex review。
    11. **D018-R4 — TypeScript parameter-property binding 返工。** `8c1eb85cc95c` 已把 `@swc/core` `1.15.46` 变为根直接 devDependency，并以全文件 local-binding 禁令关闭普通参数、对象/数组解构、rest/default、method、catch、局部声明和嵌套 `var` 提升绕过；根 Node 现在也能直接 resolve/parse SWC。但其 `collectPatternNames` 为 `TsParameterProperty` 读取 `pat ?? parameter`，而 SWC 1.15.46 的真实节点把绑定放在 `param`。Codex 已用无文件改动反例证明：构造函数的 `public DonutChart`、`private DatePicker`、`protected DataTable` 参数属性在构造函数体 JSX 中遮蔽三个 import，`assertHeavyConsumerSource` 仍成功；AST dump 同时证明三节点均为 `TsParameterProperty.param: Identifier`。返工必须读取真实 `param`，兼容其 Identifier 与 default/rest pattern，并新增构造函数体参数属性 JSX 的失败用例；不能只测试另一个 method 中实际仍解析到 import 的 JSX。保留 R1–R3 全部负例、parser 直接依赖测试、fixture 正例和 cleanup identity。只允许修改 `scripts/consumer-gate.ts`、`scripts/consumer-gate.test.ts`，不得改 manifest/lock、fixture、组件、其它脚本、Husky、coverage、docs 或进入 S1C。单一原子提交建议 `test: cover parameter property shadows`；提交前复跑 focused、package build/types/pack、typecheck、Biome、全量测试、D、A/B/C，然后停止等待 Codex review。
 
-S1B4 验收后才把 S1B 标完成。当前 coverage 红线不混入 Gate D；S1C 首刀必须先按低覆盖文件拆成若干测试原子提交恢复 95% 四项，再允许接 publint/prepublish。禁止降低阈值、扩大 exclude、删生产出口或用无行为价值断言凑覆盖。
+S1B4 已在 `054462d04839` 验收，S1B 完成。S1C 首刀按低覆盖文件拆成若干测试原子提交恢复 95% 四项，再允许接 publint/prepublish。禁止降低阈值、扩大 exclude、删生产出口或用无行为价值断言凑覆盖。
+
+S1C1 当前实测总量为 statements `1385/1463`（94.66%）、branches `1057/1160`（91.12%）、functions `421/449`（93.76%）、lines `1311/1385`（94.65%）；在不改变分母的测试-only 前提下，至少还需命中 5 statement、45 branch、6 function 和 5 line。恢复过程每刀只处理一个组件或紧密家族，每刀后重测明细，不为了数字添加无行为价值 render/assertion。
+
+1. **S1C1a / D019 — Toast 行为覆盖率。** `packages/basalt/src/components/toast.tsx` 当前为 lines `12/25`、branches `6/18`、functions `4/7`，未覆盖默认 callable 路径、custom/default icon 分支以及 error/warning/info 分派；现有测试只实际断言 success + `icon:false`。只修改 `packages/basalt/src/components/toast.test.tsx`：基于现有 Sonner spy 分别证明 callable default 调用基础 toast、四个 convenience method 调用对应 Sonner method、默认 `closeButton:true`、显式 false、default/custom/false icon 策略，以及 description/action/duration/id 等 options 不丢失；调用之间清理 mock，断言消息、目标 method 和关键 payload，而不是只断言函数存在、只 render 或做大 snapshot。可补 `dismiss` 转发和 Toaster 显式 `closeButton`/props 转发，但必须有可观察断言。不得修改生产源码、coverage 配置/阈值/exclude、manifest、其它测试、docs、consumer/Husky 或进入 publint。提交前运行 Toast focused、全量、typecheck、Biome 和 coverage；coverage 仍未整体到 95% 时必须如实报告新的四项数字和逐文件 Toast 数字，不得把预期红门伪报为失败。只做一个原子提交，建议 `test: cover toast behavior`，随后停止等待 Codex review。
 
 ### 6.3 S2 — 文档系统
 
@@ -408,6 +412,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D015 | S1B2 | `03ba7c2f1f37` | `w14:p1` | 完成 | `7bf19f4832a5` + `feb020bc2133` | 首提交复用 Gate B 内核建立仓外 Tailwind v4 tarball/type/build 门；review-fix 删除 main 的重复 package CSS 入口，并把唯一 `@source` 锁到 consumer `node_modules/@nocoo/basalt/dist` 的精确真实路径与 glob。Codex 独立复跑 focused 1 file / 18 tests、typecheck、Biome 370 files、全量 108 files / 691 tests；Gate A 解析仓外 tarball、Tailwind/plugin 均为 4.3.3、54,321-byte CSS 含 token/Button utilities 且非 standalone dump，三个 heavy peers 缺席；Gate B 回归为 45,480-byte CSS，四个 heavy peers 缺席；两门 temp 均删除，工作树干净；未进入 Next |
 | D016 | S1B3a | `feb020bc2133` + `dc289fa160b9` | `w14:p1` | 完成 | `345a21346cb6` + `57cb78990b9f` + `3d993c0559f4` | 首提交建立 Next 16.3.3 + React 19.2.8 仓外 type/build/start/HTTP 门；两轮 review-fix 直接启动临时 consumer 的 Next binary、移除 `transpilePackages`、清理完整进程组，并在主动清理前快照自然退出状态，保证 readiness error 原样重抛。Codex 独立逐行审查；focused 2 files / 31 tests、typecheck、Biome 377 files、全量 109 files / 704 tests 通过；Gate C 从 tarball root/standalone CSS 解析，Next HTTP 200 + marker，四个 heavy peers 缺席，temp 与 Next 进程二次确认清理；Gate A/B 回归 CSS 54,321/45,480 bytes，全部通过；未进入 browser/S1B4 |
 | D017 | S1B3b | `3d993c0559f4` + `a77d0ea65cf2` | `w14:p1` | 完成 | `9f9555fb3d18` + `afdcb8091662` + `23346190f8ee` | 首提交新增 Playwright 1.62.1 / Chromium 151、Button/Theme/Toast 与错误/清理门；两轮 review-fix 分别关闭隐藏同文案假阳性、0 Sonner toast 假阳性，并把虚假 portal 命名改成 in-place outside-root host。Codex 独立复跑 focused 3 files / 55、typecheck、Biome 380 files、全量 110 / 728、root build、A/B/C；Gate C 由临时 tarball完成 HTTP 200、hydration、Button、light→dark、唯一真实 `[data-sonner-toast]`，Chromium 151.0.7922.34，temp/profile/51045/进程全清；A/B CSS 54,321/45,480 bytes。阶段末 coverage 实测 94.66/91.12/93.76/94.65 红，属未被 scripts/fixtures 纳入的既存包源码债务，已锁为 S1C 首刀，不伪报全绿 |
-| D018 | S1B4 | `23346190f8ee` + 本次返工调度文档 commit | `w14:p1` | 验收中（R4） | `ee4a680902fa` + `09e356a3c07f` + `fee140df34af` + `8c1eb85cc95c`（待返工） | 首提交建立 D；R1/R2 依次关闭 specifier/cleanup 与文本伪 import；R3 建立根直接 SWC parser 和递归 local binding 禁令，普通解构及嵌套 `var` 已失败。但 `TsParameterProperty` 错读不存在的 `pat/parameter` 而遗漏真实 `param`，构造函数体内参数属性同名 JSX 仍可让未使用 imports 过门。R4 只修该真实节点并补反例，不进入 S1C |
+| D018 | S1B4 | `23346190f8ee` + `8b3333d` | `w14:p1` | 完成 | `ee4a680902fa` + `09e356a3c07f` + `fee140df34af` + `8c1eb85cc95c` + `054462d04839` | 首提交建立 optional-peer D，四轮 review 依次关闭 package specifier/cleanup、文本伪 import、幻影 SWC 依赖与 local binding、`TsParameterProperty.param` 缺口。Codex 独立复跑 focused 1 file / 42、package 90 JS + 90 d.ts + 87 maps、types、273 项 pack、typecheck、Biome 386 files、全量 110 / 745；frozen install 无 lock 漂移，Node 26.7 从根直接 resolve/parse `@swc/core@1.15.46`。Gate D 精确安装 Recharts 3.10.1、react-day-picker 10.0.1、TanStack Table 9.1.2，三条仓外 granular export 均为 function，45,480-byte standalone CSS 且 Tailwind 缺席；A 为 54,321-byte Tailwind CSS 且三个 heavy peers 缺席，B 为 45,480-byte standalone CSS 且四个 heavy peers 缺席，C 为 HTTP 200、hydrated、Button、light→dark、真实 Sonner toast、Chromium 151.0.7922.34。四个 temp、browser profile、端口、进程和 tarball 全清，工作树干净 |
+| D019 | S1C1a | `054462d04839` + 本次调度文档 commit | `w14:p1` | 执行中 | 待提交 | coverage 基线 1385/1463 statements、1057/1160 branches、421/449 functions、1311/1385 lines；只补 Toast 的 callable/variant/icon/options 可观察行为，禁止生产或 coverage 配置变更 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
