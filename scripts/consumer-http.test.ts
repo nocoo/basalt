@@ -113,6 +113,32 @@ describe("consumer http helpers", () => {
 		expect(listPidsMatching(unique)).toEqual([]);
 	});
 
+	it("rethrows the original readiness error for a live child", async () => {
+		const unique = `basalt-readyfail-${Date.now()}`;
+		const readinessError = new Error("basalt-readiness-fail");
+		let livePid: number | undefined;
+		await expect(
+			startHttpServer({
+				cwd: process.cwd(),
+				command: "node",
+				args: ["-e", `setTimeout(() => {}, 5000); // ${unique}`],
+				url: "http://127.0.0.1:1/",
+				timeoutMs: 200,
+				needles: [unique],
+				fetchImpl: async () => {
+					const pids = listPidsMatching(unique);
+					if (pids.length > 0) {
+						livePid = pids[0];
+					}
+					throw readinessError;
+				},
+			}),
+		).rejects.toBe(readinessError);
+		expect(livePid).toEqual(expect.any(Number));
+		expect(() => assertServerCleaned(livePid, [unique])).not.toThrow();
+		expect(listPidsMatching(unique)).toEqual([]);
+	});
+
 	it("sends SIGTERM and escalates to SIGKILL", async () => {
 		const signals: string[] = [];
 		let onExit: (() => void) | undefined;

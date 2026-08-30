@@ -176,6 +176,7 @@ export async function startHttpServer(options: {
 	env?: NodeJS.ProcessEnv;
 	timeoutMs?: number;
 	needles?: string[];
+	fetchImpl?: typeof fetch;
 }): Promise<{ child: ChildProcess; response: Response; stdout: string; stderr: string }> {
 	const child = spawn(options.command, options.args, {
 		cwd: options.cwd,
@@ -198,12 +199,14 @@ export async function startHttpServer(options: {
 	try {
 		const response = await waitForUrl(options.url, options.timeoutMs ?? 60_000, {
 			isAborted: () => exited,
+			fetchImpl: options.fetchImpl,
 		});
 		return { child, response, stdout, stderr };
 	} catch (error) {
+		const exitedBeforeCleanup = exited;
 		await stopChild(child);
 		assertServerCleaned(child.pid, options.needles ?? []);
-		if (exited) {
+		if (exitedBeforeCleanup) {
 			throw earlyExitError(child.exitCode, child.signalCode, stdout, stderr);
 		}
 		throw error;
