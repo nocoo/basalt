@@ -72,7 +72,6 @@ function basenames(dir: string, ext: string) {
 const pkg = JSON.parse(readFileSync(join(packageRoot, "package.json"), "utf8")) as {
 	name: string;
 	version: string;
-	private: boolean;
 	exports: Record<string, string | { types?: string; import?: string }>;
 };
 
@@ -82,8 +81,8 @@ if (pkg.name !== "@nocoo/basalt") {
 if (pkg.version !== "0.0.0") {
 	fail(`version must stay 0.0.0; got ${pkg.version}`);
 }
-if (pkg.private !== true) {
-	fail("private must stay true");
+if ("private" in pkg) {
+	fail("publish package must not contain private");
 }
 
 if (!existsSync(distRoot) || walk(distRoot).length === 0) {

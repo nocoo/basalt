@@ -4,6 +4,93 @@ import { describe, expect, it } from "vitest";
 import { collectEsmClosure, rootBoundaryViolations } from "../scripts/root-boundary";
 
 const pkgRoot = "packages/basalt";
+const fixtureManifests = [
+	"fixtures/vite-tailwind/package.json",
+	"fixtures/vite-standalone/package.json",
+	"fixtures/next19/package.json",
+	"fixtures/vite-heavy/package.json",
+] as const;
+
+const REQUIRED_PREPUBLISH_STEPS = [
+	"typecheck",
+	"lint",
+	"coverage",
+	"package-build",
+	"package-types",
+	"package-pack",
+	"package-publint",
+	"gate-a",
+	"gate-b",
+	"gate-c",
+	"gate-d",
+] as const;
+
+function classifyPrepublishSegment(segment: string) {
+	switch (segment.trim()) {
+		case "bun run typecheck":
+			return "typecheck";
+		case "bun run lint":
+			return "lint";
+		case "bun run test:coverage":
+			return "coverage";
+		case "bun run --cwd packages/basalt build":
+			return "package-build";
+		case "bun run --cwd packages/basalt types:check":
+			return "package-types";
+		case "bun run --cwd packages/basalt pack:check":
+			return "package-pack";
+		case "bun run --cwd packages/basalt publint":
+			return "package-publint";
+		case "bun run consumer:tailwind":
+			return "gate-a";
+		case "bun run consumer:standalone":
+			return "gate-b";
+		case "bun run consumer:next":
+			return "gate-c";
+		case "bun run consumer:heavy":
+			return "gate-d";
+		default:
+			return undefined;
+	}
+}
+
+function assertPrepublishPipeline(script: string) {
+	if (/\b(npm|bun|pnpm|yarn)\s+publish\b/.test(script)) {
+		throw new Error("lifecycle must not publish");
+	}
+	if (/\bnpx\b|\bbunx\b/.test(script)) {
+		throw new Error("lifecycle must not bypass via npx/bunx");
+	}
+	if (/[;|]/.test(script) || /(?:^|[^&])&(?:[^&]|$)/.test(script)) {
+		throw new Error("lifecycle must be fail-fast");
+	}
+	const steps = script.split(/\s*&&\s*/).map((segment) => {
+		const id = classifyPrepublishSegment(segment);
+		if (!id) {
+			throw new Error(`lifecycle bypass via unknown step: ${segment}`);
+		}
+		return id;
+	});
+	const seen = new Set<string>();
+	for (const step of steps) {
+		if (seen.has(step)) {
+			throw new Error(`duplicate step: ${step}`);
+		}
+		seen.add(step);
+	}
+	for (const required of REQUIRED_PREPUBLISH_STEPS) {
+		if (!seen.has(required)) {
+			throw new Error(`missing step: ${required}`);
+		}
+	}
+	if (steps.length !== REQUIRED_PREPUBLISH_STEPS.length) {
+		throw new Error("lifecycle step count mismatch");
+	}
+	if (steps.some((step, index) => step !== REQUIRED_PREPUBLISH_STEPS[index])) {
+		throw new Error("reordered steps");
+	}
+	return steps;
+}
 
 describe("package build contract", () => {
 	it("runs css, js, declarations, and dist verification in order", () => {
@@ -64,12 +151,11 @@ describe("package build contract", () => {
 		expect(runtime).not.toContain("workspace:");
 	});
 
-	it("keeps the dist pack whitelist and private 0.0.0 manifest", () => {
+	it("keeps the dist pack whitelist and publishable 0.0.0 manifest", () => {
 		const raw = readFileSync(path.join(pkgRoot, "package.json"), "utf8");
 		const pkg = JSON.parse(raw) as {
 			name: string;
 			version: string;
-			private: boolean;
 			type: string;
 			publishConfig?: { access?: string };
 			files?: string[];
@@ -78,11 +164,22 @@ describe("package build contract", () => {
 		};
 		expect(pkg.name).toBe("@nocoo/basalt");
 		expect(pkg.version).toBe("0.0.0");
-		expect(pkg.private).toBe(true);
+		expect(pkg).not.toHaveProperty("private");
+		expect(raw).not.toMatch(/"private"\s*:/);
 		expect(pkg.type).toBe("module");
 		expect(pkg.publishConfig?.access).toBe("public");
 		expect(pkg.files).toEqual(["dist", "README.md", "LICENSE"]);
 		expect(pkg.scripts["pack:check"]).toContain("verify-pack");
+		expect(pkg.scripts.publint).toBe("publint --strict --pack npm");
+		expect(pkg.scripts.prepublishOnly).toBe("bun run --cwd ../.. package:prepublish");
+		expect(pkg.scripts.prepublishOnly.split("&&")).toHaveLength(1);
+		expect(pkg.scripts.prepublishOnly).not.toContain("consumer:");
+		expect(pkg.scripts.prepublishOnly).not.toContain("npx");
+		expect(pkg.scripts.prepublishOnly).not.toContain("bunx");
+		const verifier = readFileSync(path.join(pkgRoot, "scripts/verify-pack.ts"), "utf8");
+		expect(verifier).toContain('"private" in pkg');
+		expect(verifier).toContain("publish package must not contain private");
+		expect(verifier).not.toContain("private must stay true");
 		expect(JSON.stringify(pkg.exports)).not.toContain("./src/");
 		expect(Object.keys(pkg.exports)).toEqual([
 			".",
@@ -123,6 +220,56 @@ describe("package build contract", () => {
 		expect(readFileSync(path.join(pkgRoot, "LICENSE"), "utf8")).toBe(
 			readFileSync("LICENSE", "utf8"),
 		);
+	});
+
+	it("keeps root and consumer fixtures private at package version 0.0.0", () => {
+		const root = JSON.parse(readFileSync("package.json", "utf8")) as {
+			private?: boolean;
+			devDependencies: Record<string, string>;
+		};
+		expect(root.private).toBe(true);
+		expect(root.devDependencies.publint).toBe("0.3.24");
+		expect(root.devDependencies.publint).not.toMatch(/[\^~]|latest/);
+		for (const manifest of fixtureManifests) {
+			const fixture = JSON.parse(readFileSync(manifest, "utf8")) as { private?: boolean };
+			expect(fixture.private, manifest).toBe(true);
+		}
+	});
+
+	it("locks the fail-fast package:prepublish pipeline in unique order", () => {
+		const root = JSON.parse(readFileSync("package.json", "utf8")) as {
+			scripts: Record<string, string>;
+		};
+		const pipeline = root.scripts["package:prepublish"];
+		expect(pipeline).toBeTruthy();
+		expect(pipeline).not.toContain("npx");
+		expect(pipeline).not.toContain("bunx");
+		expect(assertPrepublishPipeline(pipeline)).toEqual([...REQUIRED_PREPUBLISH_STEPS]);
+	});
+
+	it("rejects prepublish pipelines that skip, duplicate, reorder, bypass, or publish", () => {
+		const root = JSON.parse(readFileSync("package.json", "utf8")) as {
+			scripts: Record<string, string>;
+		};
+		const good = root.scripts["package:prepublish"];
+		const withoutCoverage = good.replace(" && bun run test:coverage", "");
+		expect(withoutCoverage).not.toBe(good);
+		expect(() => assertPrepublishPipeline(withoutCoverage)).toThrow(/missing step: coverage/);
+		const duplicated = `${good} && bun run lint`;
+		expect(() => assertPrepublishPipeline(duplicated)).toThrow(/duplicate step: lint/);
+		const reordered = good.replace(
+			"bun run consumer:tailwind && bun run consumer:standalone",
+			"bun run consumer:standalone && bun run consumer:tailwind",
+		);
+		expect(reordered).not.toBe(good);
+		expect(() => assertPrepublishPipeline(reordered)).toThrow(/reordered steps/);
+		const bypassOr = good.replace(" && bun run lint && ", " || bun run lint && ");
+		expect(bypassOr).not.toBe(good);
+		expect(() => assertPrepublishPipeline(bypassOr)).toThrow(/fail-fast/);
+		const unknown = `${good} && bun run build`;
+		expect(() => assertPrepublishPipeline(unknown)).toThrow(/unknown step/);
+		const publishes = `${good} && npm publish`;
+		expect(() => assertPrepublishPipeline(publishes)).toThrow(/must not publish/);
 	});
 
 	it.skipIf(!existsSync(path.join(pkgRoot, "dist/index.js")))(
