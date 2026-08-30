@@ -292,13 +292,13 @@ add(
 }`}
 		/>
 	),
-	'<CodeHighlighted code="export async function fetchUser(id: string) { … }" />',
+	'<CodeHighlighted code={\'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/users/" + id); if (!response.ok) { throw new Error("User not found"); } return response.json(); }\'} />',
 );
 add(
 	"code-block",
 	"A fenced code block.",
 	() => <CodeBlock>const n = 1;</CodeBlock>,
-	"<CodeBlock>code</CodeBlock>",
+	"<CodeBlock>const n = 1;</CodeBlock>",
 );
 add(
 	"clipboard-text",
@@ -466,7 +466,7 @@ add(
 			<GridItem>4</GridItem>
 		</Grid>
 	),
-	"<Grid />",
+	"<Grid><GridItem>1</GridItem><GridItem>2</GridItem><GridItem>3</GridItem><GridItem>4</GridItem></Grid>",
 );
 add(
 	"toolbar",
@@ -687,7 +687,7 @@ add(
 			</SelectContent>
 		</Select>
 	),
-	"<Select />",
+	'<Select><SelectTrigger aria-label="Version"><SelectValue placeholder="Select version" /></SelectTrigger><SelectContent><SelectItem value="1">v1</SelectItem></SelectContent></Select>',
 );
 add(
 	"sheet",
@@ -750,7 +750,7 @@ add(
 	"autocomplete",
 	"Typeahead list.",
 	() => <Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />,
-	"<Autocomplete />",
+	'<Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />',
 );
 add("date-picker", "Pick a date.", () => <DatePicker aria-label="Date" />, "<DatePicker />");
 function CommandPaletteDemo() {
@@ -786,7 +786,39 @@ add(
 	"command-palette",
 	"Search pages and commands.",
 	() => <CommandPaletteDemo />,
-	'<Button variant="outline">Search pages...</Button>',
+	"<CommandPalette><CommandInput placeholder='Search pages...' /><CommandList><CommandEmpty>No results</CommandEmpty><CommandGroup heading='Pages'><CommandItem>Button</CommandItem><CommandItem>Input</CommandItem></CommandGroup></CommandList></CommandPalette>",
+	undefined,
+	`import { Button } from "@nocoo/basalt/components/button";
+import {
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+	CommandPalette,
+} from "@nocoo/basalt/components/command-palette";
+import { useState } from "react";
+
+export default function Example() {
+	const [open, setOpen] = useState(false);
+	return (
+		<>
+			<Button variant="outline" onClick={() => setOpen(true)}>
+				Search pages...
+			</Button>
+			<CommandPalette open={open} onOpenChange={setOpen}>
+				<CommandInput placeholder="Search pages..." />
+				<CommandList>
+					<CommandEmpty>No results</CommandEmpty>
+					<CommandGroup heading="Pages">
+						<CommandItem>Button</CommandItem>
+						<CommandItem>Input</CommandItem>
+					</CommandGroup>
+				</CommandList>
+			</CommandPalette>
+		</>
+	);
+}`,
 );
 add(
 	"sidebar",
@@ -802,7 +834,7 @@ add(
 			</div>
 		</div>
 	),
-	"<Sidebar><SidebarItem active>Catalog</SidebarItem></Sidebar>\n<ContentIsland>At a glance</ContentIsland>",
+	'(<div className="flex h-56 w-full overflow-hidden bg-basalt-background"><Sidebar className="h-full min-h-0 w-40"><SidebarItem active>Catalog</SidebarItem><SidebarItem>Settings</SidebarItem></Sidebar><div className="flex min-w-0 flex-1 flex-col p-2"><ContentIsland className="p-4">At a glance</ContentIsland></div></div>)',
 );
 add(
 	"page-header",
@@ -825,7 +857,7 @@ add(
 			<FlowNode>Step 2</FlowNode>
 		</Flow>
 	),
-	"<Flow />",
+	"<Flow><FlowNode>Step 1</FlowNode><FlowNode>Step 2</FlowNode></Flow>",
 );
 add(
 	"navigation-menu",

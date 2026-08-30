@@ -1,0 +1,132 @@
+import { describe, expect, it } from "vitest";
+import { UI_EXAMPLES } from "@/pages/ui/demos";
+import { CATALOG_DOCS } from "@/pages/ui/docs";
+
+function scenario(slug: string, id: string) {
+	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
+	expect(match, id).toBeDefined();
+	if (!match) {
+		throw new Error(`missing scenario ${id}`);
+	}
+	return match;
+}
+
+describe("content scenario truth", () => {
+	it("keeps audited scenario ids and counts", () => {
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual(["text-sizes", "text-muted-tone"]);
+		expect(UI_EXAMPLES.code?.map((item) => item.id)).toEqual(["code-typescript", "code-react"]);
+		expect(UI_EXAMPLES["code-block"]?.map((item) => item.id)).toEqual(["code-block-basic"]);
+		expect(UI_EXAMPLES.autocomplete?.map((item) => item.id)).toEqual(["autocomplete-default"]);
+		expect(UI_EXAMPLES.select?.map((item) => item.id)).toEqual([
+			"select-basic",
+			"select-placeholder",
+			"select-disabled-options",
+		]);
+		expect(UI_EXAMPLES.grid?.map((item) => item.id)).toEqual(["grid-grid"]);
+		expect(UI_EXAMPLES.flow?.map((item) => item.id)).toEqual(["flow-sequential-flow"]);
+		expect(UI_EXAMPLES["command-palette"]?.map((item) => item.id)).toEqual([
+			"command-palette-with-grouped-items",
+			"command-palette-simple-flat-list",
+		]);
+		expect(UI_EXAMPLES.sidebar?.map((item) => item.id)).toEqual(["sidebar-default"]);
+	});
+
+	it("describes text-sizes as sizes instead of semantic html", () => {
+		const example = scenario("text", "text-sizes");
+		expect(example.title).toBe("Sizes");
+		expect(example.title).not.toMatch(/semantic html/i);
+		expect(example.code).toContain('size="xl"');
+		expect(example.code).toContain('size="xs"');
+		expect(example.code).not.toMatch(/as=|<h[1-6]|<article/i);
+	});
+
+	it("describes text-muted-tone as muted tone instead of restrictions", () => {
+		const example = scenario("text", "text-muted-tone");
+		expect(example.title).toBe("Muted tone");
+		expect(example.title).not.toMatch(/restriction/i);
+		expect(example.code).toContain('tone="muted"');
+	});
+
+	it("describes code-block-basic without line numbers", () => {
+		const example = scenario("code-block", "code-block-basic");
+		expect(example.title).toBe("Basic");
+		expect(example.title).not.toMatch(/line number/i);
+		expect(example.code).toContain("<CodeBlock>");
+		expect(example.code).not.toMatch(/lineNumber|showLineNumbers/i);
+		expect(CATALOG_DOCS["code-block"]?.usage).toContain("<CodeBlock>const n = 1;</CodeBlock>");
+		expect(CATALOG_DOCS["code-block"]?.usage).not.toContain("<CodeBlock>code</CodeBlock>");
+	});
+
+	it("includes autocomplete items in usage", () => {
+		const usage = CATALOG_DOCS.autocomplete?.usage ?? "";
+		expect(usage).toContain("items=");
+		expect(usage).toContain("Apple");
+		expect(usage).not.toMatch(/<Autocomplete\s*\/>/);
+		expect(scenario("autocomplete", "autocomplete-default").code).toContain("items=");
+	});
+
+	it("shows select as a compound tree", () => {
+		const usage = CATALOG_DOCS.select?.usage ?? "";
+		expect(usage).toContain("SelectTrigger");
+		expect(usage).toContain("SelectContent");
+		expect(usage).toContain("SelectItem");
+		expect(usage).not.toMatch(/return <Select\s*\/>/);
+		expect(scenario("select", "select-basic").code).toContain("SelectContent");
+		expect(scenario("select", "select-placeholder").code).toContain('placeholder="Choose…"');
+		expect(scenario("select", "select-disabled-options").code).toContain("disabled");
+	});
+
+	it("shows grid items instead of an empty shell", () => {
+		const usage = CATALOG_DOCS.grid?.usage ?? "";
+		expect(usage).toContain("GridItem");
+		expect(usage).not.toMatch(/return <Grid\s*\/>/);
+		expect(scenario("grid", "grid-grid").code).toContain("<GridItem>4</GridItem>");
+	});
+
+	it("shows flow nodes instead of an empty shell", () => {
+		const usage = CATALOG_DOCS.flow?.usage ?? "";
+		expect(usage).toContain("FlowNode");
+		expect(usage).not.toMatch(/return <Flow\s*\/>/);
+		expect(scenario("flow", "flow-sequential-flow").code).toContain("FlowNode");
+	});
+
+	it("returns a single sidebar tree that matches the preview structure", () => {
+		const usage = CATALOG_DOCS.sidebar?.usage ?? "";
+		expect(usage).toContain("Sidebar");
+		expect(usage).toContain("SidebarItem");
+		expect(usage).toContain("ContentIsland");
+		expect(usage).toContain("Catalog");
+		expect(usage).toContain("Settings");
+		expect(usage).toContain("At a glance");
+		expect(usage).not.toMatch(/<\/Sidebar>\s*<ContentIsland/);
+		expect(scenario("sidebar", "sidebar-default").code).toContain("ContentIsland");
+	});
+
+	it("shows command palette usage instead of only a trigger button", () => {
+		const usage = CATALOG_DOCS["command-palette"]?.usage ?? "";
+		expect(usage).toContain("CommandPalette");
+		expect(usage).toContain("CommandInput");
+		expect(usage).toContain("CommandItem");
+		expect(usage).not.toMatch(/return <Button variant="outline">Search pages\.\.\.<\/Button>;/);
+		expect(scenario("command-palette", "command-palette-with-grouped-items").code).toContain(
+			"CommandGroup",
+		);
+		expect(scenario("command-palette", "command-palette-simple-flat-list").code).toContain(
+			"CommandItem",
+		);
+		expect(scenario("command-palette", "command-palette-simple-flat-list").code).not.toContain(
+			"CommandGroup",
+		);
+	});
+
+	it("keeps highlighted code examples complete", () => {
+		const usage = CATALOG_DOCS.code?.usage ?? "";
+		expect(usage).toContain("CodeHighlighted");
+		expect(usage).toContain("fetchUser");
+		expect(usage).not.toContain("…");
+		expect(scenario("code", "code-typescript").code).toContain("fetchUser");
+		expect(scenario("code", "code-typescript").code).not.toContain("…");
+		expect(scenario("code", "code-react").code).toContain("useState");
+		expect(scenario("code", "code-react").code).not.toContain("…");
+	});
+});

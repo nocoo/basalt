@@ -760,8 +760,12 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 	text: [
 		{
 			id: catalogScenarioId("text", "sizes"),
-			title: "Semantic HTML",
-			code: "<Text>Body copy</Text>",
+			title: "Sizes",
+			code: `<Text size="xl">Extra large</Text>
+<Text size="lg">Large</Text>
+<Text>Body copy</Text>
+<Text size="sm">Small</Text>
+<Text size="xs">Extra small</Text>`,
 			render: () => (
 				<Stack>
 					<Text size="xl">Extra large</Text>
@@ -774,7 +778,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		},
 		{
 			id: catalogScenarioId("text", "muted-tone"),
-			title: "Restrictions",
+			title: "Muted tone",
 			code: '<Text tone="muted">Muted supporting copy.</Text>',
 			render: () => <Text tone="muted">Muted supporting copy.</Text>,
 		},
@@ -1010,7 +1014,15 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("select", "basic"),
 			title: "Basic",
-			code: "<Select><SelectTrigger><SelectValue /></SelectTrigger></Select>",
+			code: `<Select>
+  <SelectTrigger aria-label="Version" className="w-48">
+    <SelectValue placeholder="Select version" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="1">v1</SelectItem>
+    <SelectItem value="2">v2</SelectItem>
+  </SelectContent>
+</Select>`,
 			render: () => (
 				<Select>
 					<SelectTrigger aria-label="Version" className="w-48">
@@ -1026,7 +1038,14 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("select", "placeholder"),
 			title: "Placeholder",
-			code: '<SelectValue placeholder="Choose…" />',
+			code: `<Select>
+  <SelectTrigger aria-label="Empty select" className="w-48">
+    <SelectValue placeholder="Choose…" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="a">Alpha</SelectItem>
+  </SelectContent>
+</Select>`,
 			render: () => (
 				<Select>
 					<SelectTrigger aria-label="Empty select" className="w-48">
@@ -1041,7 +1060,15 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("select", "disabled-options"),
 			title: "Disabled Options",
-			code: '<SelectItem value="b" disabled>Beta</SelectItem>',
+			code: `<Select>
+  <SelectTrigger aria-label="Disabled option" className="w-48">
+    <SelectValue placeholder="Choose…" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="a">Alpha</SelectItem>
+    <SelectItem value="b" disabled>Beta</SelectItem>
+  </SelectContent>
+</Select>`,
 			render: () => (
 				<Select>
 					<SelectTrigger aria-label="Disabled option" className="w-48">
@@ -1686,7 +1713,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("grid", "grid"),
 			title: "Grid",
-			code: `<Grid>
+			code: `<Grid className="w-full max-w-sm">
   <GridItem>1</GridItem>
   <GridItem>2</GridItem>
   <GridItem>3</GridItem>
@@ -1719,7 +1746,17 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("code", "typescript"),
 			title: "TypeScript",
-			code: '<CodeHighlighted code="export async function fetchUser(id: string) { … }" />',
+			code: `<CodeHighlighted code={\`export async function fetchUser(id: string, retries = 3) {
+  const response = await fetch("/api/users/" + id);
+  if (!response.ok) {
+    throw new Error("User not found");
+  }
+  const user = await response.json();
+  return {
+    id: user.id,
+    name: user.firstName + " " + user.lastName,
+  };
+}\`} />`,
 			render: () => (
 				<CodeHighlighted
 					code={`export async function fetchUser(id: string, retries = 3) {
@@ -1740,7 +1777,17 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("code", "react"),
 			title: "React",
-			code: '<CodeHighlighted code="export function Counter() { … }" />',
+			code: `<CodeHighlighted code={\`import { useState } from "react";
+
+export function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    <button onClick={() => setCount((n) => n + 1)}>
+      Count: {count}
+    </button>
+  );
+}\`} />`,
 			render: () => (
 				<CodeHighlighted
 					code={`import { useState } from "react";
@@ -1761,7 +1808,7 @@ export function Counter() {
 	"code-block": [
 		{
 			id: catalogScenarioId("code-block", "basic"),
-			title: "Line Numbers",
+			title: "Basic",
 			code: "<CodeBlock>const n = 1</CodeBlock>",
 			render: () => <CodeBlock>const n = 1</CodeBlock>,
 		},
@@ -1828,13 +1875,35 @@ export function Counter() {
 		{
 			id: catalogScenarioId("command-palette", "with-grouped-items"),
 			title: "With Grouped Items",
-			code: "<CommandPalette><CommandGroup heading='Pages'>…</CommandGroup></CommandPalette>",
+			code: `<>
+  <Button variant="outline" onClick={() => setOpen(true)}>Search pages...</Button>
+  <CommandPalette open={open} onOpenChange={setOpen}>
+    <CommandInput placeholder="Search pages..." />
+    <CommandList>
+      <CommandEmpty>No results</CommandEmpty>
+      <CommandGroup heading="Pages">
+        <CommandItem>Button</CommandItem>
+        <CommandItem>Input</CommandItem>
+      </CommandGroup>
+    </CommandList>
+  </CommandPalette>
+</>`,
 			render: () => <CommandPaletteExample />,
 		},
 		{
 			id: catalogScenarioId("command-palette", "simple-flat-list"),
 			title: "Simple Flat List",
-			code: "<CommandPalette><CommandItem>Button</CommandItem></CommandPalette>",
+			code: `<>
+  <Button variant="outline" onClick={() => setOpen(true)}>Search pages...</Button>
+  <CommandPalette open={open} onOpenChange={setOpen}>
+    <CommandInput placeholder="Search pages..." />
+    <CommandList>
+      <CommandEmpty>No results</CommandEmpty>
+      <CommandItem>Button</CommandItem>
+      <CommandItem>Input</CommandItem>
+    </CommandList>
+  </CommandPalette>
+</>`,
 			render: () => <CommandPaletteExample flat />,
 		},
 	],
