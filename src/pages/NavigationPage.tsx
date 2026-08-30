@@ -1,17 +1,15 @@
+import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
+import { Pagination } from "@nocoo/basalt/components/pagination";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import {
 	CheckCircle2,
-	ChevronLeft,
 	ChevronRight,
-	ChevronRightIcon,
-	ChevronsLeft,
 	ChevronsRight,
 	Circle,
 	FileText,
 	FolderOpen,
 	Home,
-	MoreHorizontal,
 	Navigation,
 } from "lucide-react";
 import { useState } from "react";
@@ -34,121 +32,6 @@ function Section({
 				<p className="text-sm text-muted-foreground">{title}</p>
 			</div>
 			{children}
-		</div>
-	);
-}
-
-/* ── Breadcrumb ── */
-function Breadcrumb({ items }: { items: { label: string; icon?: React.ElementType }[] }) {
-	return (
-		<nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm">
-			{items.map((item, i) => (
-				<div key={item.label} className="flex items-center gap-1">
-					{i > 0 && (
-						<ChevronRight className="h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.5} />
-					)}
-					{item.icon && (
-						<item.icon className="h-3.5 w-3.5 text-muted-foreground" strokeWidth={1.5} />
-					)}
-					<span
-						className={
-							i === items.length - 1
-								? "text-foreground font-medium"
-								: "text-muted-foreground hover:text-foreground cursor-pointer"
-						}
-					>
-						{item.label}
-					</span>
-				</div>
-			))}
-		</nav>
-	);
-}
-
-/* ── Pagination ── */
-function Pagination({
-	currentPage,
-	totalPages,
-	onPageChange,
-}: {
-	currentPage: number;
-	totalPages: number;
-	onPageChange: (p: number) => void;
-}) {
-	const getVisiblePages = () => {
-		const pages: (number | "ellipsis")[] = [];
-		if (totalPages <= 7) {
-			for (let i = 1; i <= totalPages; i++) pages.push(i);
-		} else {
-			pages.push(1);
-			if (currentPage > 3) pages.push("ellipsis");
-			const start = Math.max(2, currentPage - 1);
-			const end = Math.min(totalPages - 1, currentPage + 1);
-			for (let i = start; i <= end; i++) pages.push(i);
-			if (currentPage < totalPages - 2) pages.push("ellipsis");
-			pages.push(totalPages);
-		}
-		return pages;
-	};
-
-	return (
-		<div className="flex items-center gap-1">
-			<Button
-				variant="outline"
-				size="icon"
-				className="h-8 w-8"
-				disabled={currentPage === 1}
-				onClick={() => onPageChange(1)}
-			>
-				<ChevronsLeft className="h-3.5 w-3.5" />
-			</Button>
-			<Button
-				variant="outline"
-				size="icon"
-				className="h-8 w-8"
-				disabled={currentPage === 1}
-				onClick={() => onPageChange(currentPage - 1)}
-			>
-				<ChevronLeft className="h-3.5 w-3.5" />
-			</Button>
-			{getVisiblePages().map((page, i) =>
-				page === "ellipsis" ? (
-					<span
-						key={`e-${i}`}
-						className="flex h-8 w-8 items-center justify-center text-muted-foreground"
-					>
-						<MoreHorizontal className="h-4 w-4" />
-					</span>
-				) : (
-					<Button
-						key={page}
-						variant={page === currentPage ? "default" : "outline"}
-						size="icon"
-						className="h-8 w-8 text-xs"
-						onClick={() => onPageChange(page)}
-					>
-						{page}
-					</Button>
-				),
-			)}
-			<Button
-				variant="outline"
-				size="icon"
-				className="h-8 w-8"
-				disabled={currentPage === totalPages}
-				onClick={() => onPageChange(currentPage + 1)}
-			>
-				<ChevronRightIcon className="h-3.5 w-3.5" />
-			</Button>
-			<Button
-				variant="outline"
-				size="icon"
-				className="h-8 w-8"
-				disabled={currentPage === totalPages}
-				onClick={() => onPageChange(totalPages)}
-			>
-				<ChevronsRight className="h-3.5 w-3.5" />
-			</Button>
 		</div>
 	);
 }
@@ -232,7 +115,7 @@ export default function NavigationPage() {
 						<p className="text-xs text-muted-foreground mb-2 font-mono">
 							{t("pages.navigation.simple")}
 						</p>
-						<Breadcrumb
+						<Breadcrumbs
 							items={[
 								{ label: t("pages.navigation.home") },
 								{ label: t("pages.navigation.products") },
@@ -245,12 +128,24 @@ export default function NavigationPage() {
 						<p className="text-xs text-muted-foreground mb-2 font-mono">
 							{t("pages.navigation.withIcons")}
 						</p>
-						<Breadcrumb
+						<Breadcrumbs
 							items={[
-								{ label: t("pages.navigation.home"), icon: Home },
-								{ label: t("pages.navigation.documents"), icon: FolderOpen },
-								{ label: t("pages.navigation.reports"), icon: FolderOpen },
-								{ label: t("pages.navigation.q4Summary"), icon: FileText },
+								{
+									label: t("pages.navigation.home"),
+									icon: <Home className="h-3.5 w-3.5" strokeWidth={1.5} />,
+								},
+								{
+									label: t("pages.navigation.documents"),
+									icon: <FolderOpen className="h-3.5 w-3.5" strokeWidth={1.5} />,
+								},
+								{
+									label: t("pages.navigation.reports"),
+									icon: <FolderOpen className="h-3.5 w-3.5" strokeWidth={1.5} />,
+								},
+								{
+									label: t("pages.navigation.q4Summary"),
+									icon: <FileText className="h-3.5 w-3.5" strokeWidth={1.5} />,
+								},
 							]}
 						/>
 					</div>
@@ -259,7 +154,7 @@ export default function NavigationPage() {
 							{t("pages.navigation.insideCard")}
 						</p>
 						<div className="rounded-widget border border-border bg-card p-4">
-							<Breadcrumb
+							<Breadcrumbs
 								items={[
 									{ label: t("pages.navigation.dashboard") },
 									{ label: t("pages.navigation.settings") },
@@ -284,13 +179,13 @@ export default function NavigationPage() {
 						<p className="text-xs text-muted-foreground mb-2 font-mono">
 							{t("pages.navigation.short5Pages")}
 						</p>
-						<Pagination currentPage={page1} totalPages={5} onPageChange={setPage1} />
+						<Pagination page={page1} pageCount={5} onPageChange={setPage1} />
 					</div>
 					<div>
 						<p className="text-xs text-muted-foreground mb-2 font-mono">
 							{t("pages.navigation.long20Pages")}
 						</p>
-						<Pagination currentPage={page2} totalPages={20} onPageChange={setPage2} />
+						<Pagination page={page2} pageCount={20} onPageChange={setPage2} />
 					</div>
 					<div>
 						<p className="text-xs text-muted-foreground mb-2 font-mono">
@@ -303,7 +198,7 @@ export default function NavigationPage() {
 									{t("common.of")} <span className="font-medium text-foreground">200</span>{" "}
 									{t("common.results")}
 								</p>
-								<Pagination currentPage={page2} totalPages={20} onPageChange={setPage2} />
+								<Pagination page={page2} pageCount={20} onPageChange={setPage2} />
 							</div>
 						</div>
 					</div>
