@@ -4,12 +4,13 @@
 
 Command: `bun run consumer:standalone`
 
-The command starts from a clean `@nocoo/basalt` package build, writes `npm pack` output into an OS temp directory outside this repository, copies `fixtures/vite-standalone`, injects the tarball as a `file:` dependency on that copy, then runs real `npm install` and a production Vite build.
+The command starts from a clean `@nocoo/basalt` package build, writes `npm pack` output into an OS temp directory outside this repository, copies `fixtures/vite-standalone`, injects the tarball as a `file:` dependency on that copy, then runs real `npm install`, the consumer `typecheck` script (strict Bundler `tsc`, `noEmit`, `skipLibCheck: false` against the installed tarball types), and a production Vite build.
 
 Guarantees:
 
 - The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, or this repository's path.
 - The consumer imports and renders `Button`, `ThemeProvider`, `ThemeToggle`, `Toast`, and `LinkProvider` from `@nocoo/basalt` root and only `@nocoo/basalt/styles/standalone`.
+- After install, the consumer typechecks those root and CSS export specifiers with the tarball declarations; this is not the in-repo `packages/basalt` `types:check`.
 - Resolved `@nocoo/basalt` is the extracted tarball under that consumer's `node_modules`, not this workspace.
 - `tailwindcss`, `recharts`, `react-day-picker`, and `@tanstack/react-table` are not installed.
 - Production output includes HTML, JS, and CSS with `--basalt-background` and `.bg-basalt-primary`.

@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
 	assertRootConsumerSource,
+	assertStandaloneTypecheckGate,
 	assertTemplateManifest,
 	distArtifactKinds,
 	fileDependencyPaths,
@@ -33,7 +34,7 @@ describe("standalone consumer gate helpers", () => {
 		);
 		expect(injected.dependencies?.react).toBe("19.2.8");
 		const raw = JSON.stringify(injected);
-		expect(forbiddenInstallRefs(raw, "/Users/nocoo/workspace/personal/basalt")).toEqual([]);
+		expect(forbiddenInstallRefs(raw, "/repo")).toEqual([]);
 		expect(fileDependencyPaths(injected)).toEqual(["/tmp/basalt-gate-b-1/nocoo-basalt-0.0.0.tgz"]);
 	});
 
@@ -117,5 +118,45 @@ import "@nocoo/basalt/styles/tailwind";`),
 		expect(manifest).toContain('"lucide-react": "1.34.0"');
 		expect(manifest).toContain('"vite": "8.2.2"');
 		assertRootConsumerSource(readFileSync("fixtures/vite-standalone/src/main.tsx", "utf8"));
+		assertStandaloneTypecheckGate(
+			readFileSync("fixtures/vite-standalone/tsconfig.json", "utf8"),
+			manifest,
+		);
+		const runner = readFileSync("scripts/consumer-gate.ts", "utf8");
+		const typecheckAt = runner.indexOf('run("npm", ["run", "typecheck"]');
+		const buildAt = runner.indexOf('run("npm", ["run", "build"]');
+		expect(typecheckAt).toBeGreaterThan(0);
+		expect(buildAt).toBeGreaterThan(typecheckAt);
+	});
+
+	it("rejects a consumer typecheck gate that skips tarball declarations", () => {
+		const tsconfig = readFileSync("fixtures/vite-standalone/tsconfig.json", "utf8");
+		expect(() =>
+			assertStandaloneTypecheckGate(
+				tsconfig.replace('"skipLibCheck": false', '"skipLibCheck": true'),
+				"{}",
+			),
+		).toThrow(/skipLibCheck/);
+		expect(() =>
+			assertStandaloneTypecheckGate(tsconfig, '{"scripts":{"build":"vite build"}}'),
+		).toThrow(/typecheck/);
+	});
+
+	it("does not embed a developer home path in this slice", () => {
+		const needle = ["/Users", "nocoo"].join("/");
+		const files = [
+			"scripts/consumer-gate.ts",
+			"scripts/consumer-gate.test.ts",
+			"fixtures/README.md",
+			"fixtures/vite-standalone/package.json",
+			"fixtures/vite-standalone/src/main.tsx",
+			"fixtures/vite-standalone/src/css.d.ts",
+			"fixtures/vite-standalone/tsconfig.json",
+			"fixtures/vite-standalone/vite.config.ts",
+			"fixtures/vite-standalone/index.html",
+		];
+		for (const file of files) {
+			expect(readFileSync(file, "utf8").includes(needle), file).toBe(false);
+		}
 	});
 });

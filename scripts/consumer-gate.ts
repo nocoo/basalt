@@ -158,6 +158,38 @@ export function assertTemplateManifest(raw: string) {
 	}
 }
 
+export type Tsconfig = {
+	compilerOptions?: {
+		moduleResolution?: string;
+		noEmit?: boolean;
+		skipLibCheck?: boolean;
+		strict?: boolean;
+	};
+	include?: string[];
+};
+
+export function assertStandaloneTypecheckGate(tsconfigRaw: string, packageRaw: string) {
+	const tsconfig = JSON.parse(tsconfigRaw) as Tsconfig;
+	const options = tsconfig.compilerOptions ?? {};
+	if (options.moduleResolution !== "bundler") {
+		throw new Error("consumer tsconfig must use bundler moduleResolution");
+	}
+	if (options.noEmit !== true) {
+		throw new Error("consumer tsconfig must set noEmit");
+	}
+	if (options.skipLibCheck !== false) {
+		throw new Error("consumer tsconfig must set skipLibCheck false");
+	}
+	if (options.strict !== true) {
+		throw new Error("consumer tsconfig must be strict");
+	}
+	const pkg = JSON.parse(packageRaw) as { scripts?: Record<string, string> };
+	const typecheck = pkg.scripts?.typecheck ?? "";
+	if (!typecheck.includes("tsc") || !typecheck.includes("tsconfig.json")) {
+		throw new Error("consumer package must expose a tsc typecheck script");
+	}
+}
+
 export function assertRootConsumerSource(source: string) {
 	if (/@nocoo\/basalt\/(?:components|providers|charts)\//.test(source)) {
 		throw new Error("consumer must not import granular paths");
@@ -214,6 +246,10 @@ export function runStandaloneConsumerGate(repoRoot: string) {
 	const fixtureRoot = join(repoRoot, "fixtures/vite-standalone");
 	assertTemplateManifest(readFileSync(join(fixtureRoot, "package.json"), "utf8"));
 	assertRootConsumerSource(readFileSync(join(fixtureRoot, "src/main.tsx"), "utf8"));
+	assertStandaloneTypecheckGate(
+		readFileSync(join(fixtureRoot, "tsconfig.json"), "utf8"),
+		readFileSync(join(fixtureRoot, "package.json"), "utf8"),
+	);
 
 	run("bun", ["run", "--cwd", "packages/basalt", "build"], repoRoot);
 
@@ -272,27 +308,46 @@ export function runStandaloneConsumerGate(repoRoot: string) {
 				"-e",
 				`import { realpathSync } from "node:fs";
 const resolved = import.meta.resolve("@nocoo/basalt");
+const css = import.meta.resolve("@nocoo/basalt/styles/standalone");
 const real = realpathSync(new URL(resolved));
-console.log(JSON.stringify({ resolved, real }));`,
+const cssReal = realpathSync(new URL(css));
+console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
 			],
 			consumerRoot,
 		);
-		const resolution = JSON.parse(probe.stdout.trim()) as { resolved: string; real: string };
+		const resolution = JSON.parse(probe.stdout.trim()) as {
+			resolved: string;
+			real: string;
+			css: string;
+			cssReal: string;
+		};
 		const expectedRoot = realpathSync(join(nodeModules, "@nocoo/basalt"));
 		const resolvedPath = fileURLToPath(new URL(resolution.resolved));
 		const realPath = realpathSync(resolution.real);
+		const cssPath = fileURLToPath(new URL(resolution.css));
+		const cssReal = realpathSync(resolution.cssReal);
 		if (!isPathInside(expectedRoot, resolvedPath) || !isPathInside(expectedRoot, realPath)) {
 			throw new Error(
 				`@nocoo/basalt resolved outside consumer node_modules: resolved=${resolution.resolved} real=${realPath}`,
 			);
 		}
+		if (!isPathInside(expectedRoot, cssPath) || !isPathInside(expectedRoot, cssReal)) {
+			throw new Error(
+				`standalone CSS resolved outside consumer node_modules: css=${resolution.css} real=${cssReal}`,
+			);
+		}
+		if (!cssReal.endsWith(`${sep}dist${sep}styles${sep}standalone.css`)) {
+			throw new Error(`standalone CSS did not resolve to tarball css: ${cssReal}`);
+		}
 		if (
 			isPathInside(realpathSync(repoRoot), realPath) ||
-			isPathInside(realpathSync(repoRoot), resolvedPath)
+			isPathInside(realpathSync(repoRoot), resolvedPath) ||
+			isPathInside(realpathSync(repoRoot), cssReal)
 		) {
 			throw new Error("@nocoo/basalt resolved into the repository");
 		}
 
+		const typecheck = run("npm", ["run", "typecheck"], consumerRoot);
 		run("npm", ["run", "build"], consumerRoot);
 
 		const distRoot = join(consumerRoot, "dist");
@@ -317,6 +372,9 @@ console.log(JSON.stringify({ resolved, real }));`,
 			tarball: tarballs[0],
 			resolved: resolution.resolved,
 			realpath: realPath,
+			css: resolution.css,
+			cssReal,
+			typecheck: typecheck.stdout.trim() || "ok",
 			distFiles: distFiles.map((file) => posixPath(relative(distRoot, file))).sort(),
 			cssBytes: Buffer.byteLength(css),
 			cssEvidence,
