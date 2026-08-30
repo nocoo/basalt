@@ -1,4 +1,4 @@
-import { spawnSync } from "node:child_process";
+import { type ChildProcess, spawnSync } from "node:child_process";
 import {
 	cpSync,
 	existsSync,
@@ -12,6 +12,13 @@ import {
 import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+	allocatePort,
+	assertNextHttpBody,
+	NEXT_HTTP_MARKER,
+	startHttpServer,
+	stopChild,
+} from "./consumer-http";
 
 export const HEAVY_PEERS = [
 	"tailwindcss",
@@ -34,7 +41,7 @@ export const ROOT_EXPORTS = [
 	"LinkProvider",
 ] as const;
 
-export type ConsumerMode = "standalone" | "tailwind";
+export type ConsumerMode = "standalone" | "tailwind" | "next";
 
 export type Manifest = {
 	dependencies?: Record<string, string>;
@@ -51,7 +58,11 @@ export type ConsumerGateConfig = {
 	cssFileSuffix: string;
 	requiredPeers: Readonly<Record<string, string>>;
 	forbiddenPeers: readonly string[];
+	entryFile: string;
 	stylesheet?: string;
+	layoutFile?: string;
+	pageFile?: string;
+	httpMarker?: string;
 };
 
 export const STANDALONE_GATE: ConsumerGateConfig = {
@@ -62,6 +73,7 @@ export const STANDALONE_GATE: ConsumerGateConfig = {
 	cssFileSuffix: `${sep}dist${sep}styles${sep}standalone.css`,
 	requiredPeers: {},
 	forbiddenPeers: HEAVY_PEERS,
+	entryFile: "src/main.tsx",
 };
 
 export const TAILWIND_GATE: ConsumerGateConfig = {
@@ -72,7 +84,22 @@ export const TAILWIND_GATE: ConsumerGateConfig = {
 	cssFileSuffix: `${sep}dist${sep}styles${sep}tailwind.css`,
 	requiredPeers: { tailwindcss: "4.3.3", "@tailwindcss/vite": "4.3.3" },
 	forbiddenPeers: OPTIONAL_HEAVY_PEERS,
+	entryFile: "src/main.tsx",
 	stylesheet: "src/index.css",
+};
+
+export const NEXT_GATE: ConsumerGateConfig = {
+	mode: "next",
+	fixtureDir: "fixtures/next19",
+	tempPrefix: "basalt-gate-c-",
+	styleExport: "@nocoo/basalt/styles/standalone",
+	cssFileSuffix: `${sep}dist${sep}styles${sep}standalone.css`,
+	requiredPeers: {},
+	forbiddenPeers: HEAVY_PEERS,
+	entryFile: "app/basalt-app.tsx",
+	layoutFile: "app/layout.tsx",
+	pageFile: "app/page.tsx",
+	httpMarker: NEXT_HTTP_MARKER,
 };
 
 export function posixPath(value: string) {
@@ -253,7 +280,7 @@ export function assertRootConsumerSource(source: string, mode: ConsumerMode = "s
 		if (!source.includes("@nocoo/basalt/styles/standalone")) {
 			throw new Error("consumer must import standalone styles");
 		}
-	} else {
+	} else if (mode === "tailwind") {
 		if (source.includes("@nocoo/basalt/styles/")) {
 			throw new Error("tailwind consumer must not import package styles from main");
 		}
@@ -266,11 +293,56 @@ export function assertRootConsumerSource(source: string, mode: ConsumerMode = "s
 		if (!source.includes("./index.css")) {
 			throw new Error("tailwind consumer must import ./index.css");
 		}
+	} else {
+		if (!source.includes('"use client"')) {
+			throw new Error("next client boundary must be explicit");
+		}
+		if (source.includes("tailwind") || source.includes("@nocoo/basalt/styles/")) {
+			throw new Error("next client boundary must not import package styles");
+		}
+		if (!/from\s+"@nocoo\/basalt"/.test(source)) {
+			throw new Error("consumer must import from @nocoo/basalt root");
+		}
 	}
 	for (const name of ROOT_EXPORTS) {
 		if (!source.includes(name)) {
 			throw new Error(`consumer must use ${name}`);
 		}
+	}
+}
+
+export function assertNoSuppressHydrationWarning(source: string) {
+	if (source.includes("suppressHydrationWarning")) {
+		throw new Error("consumer must not suppress hydration warnings");
+	}
+}
+
+export function assertNextLayout(source: string) {
+	assertNoSuppressHydrationWarning(source);
+	if (source.includes('"use client"')) {
+		throw new Error("next layout must stay on the server");
+	}
+	if (/@nocoo\/basalt\/(?:components|providers|charts)\//.test(source)) {
+		throw new Error("consumer must not import granular paths");
+	}
+	if (source.includes("tailwind") || source.includes("@nocoo/basalt/styles/tailwind")) {
+		throw new Error("next layout must not import Tailwind");
+	}
+	if (!source.includes("@nocoo/basalt/styles/standalone")) {
+		throw new Error("next layout must import standalone styles");
+	}
+	if (/from\s+"@nocoo\/basalt"/.test(source)) {
+		throw new Error("next layout must not import the package root");
+	}
+	if (!source.includes("<html") || !source.includes("<body")) {
+		throw new Error("next layout must render html and body");
+	}
+}
+
+export function assertNextPage(source: string, marker: string) {
+	assertNoSuppressHydrationWarning(source);
+	if (!source.includes(marker)) {
+		throw new Error(`next page must include HTTP marker ${marker}`);
 	}
 }
 
@@ -377,21 +449,34 @@ function installedVersion(nodeModules: string, name: string) {
 	return (JSON.parse(readFileSync(pkg, "utf8")) as { version?: string }).version ?? "";
 }
 
-export function runConsumerGate(repoRoot: string, config: ConsumerGateConfig) {
-	const packageRoot = join(repoRoot, "packages/basalt");
-	const fixtureRoot = join(repoRoot, config.fixtureDir);
+function assertFixtureSources(fixtureRoot: string, config: ConsumerGateConfig) {
 	assertTemplateManifest(readFileSync(join(fixtureRoot, "package.json"), "utf8"));
-	assertRootConsumerSource(readFileSync(join(fixtureRoot, "src/main.tsx"), "utf8"), config.mode);
+	assertRootConsumerSource(readFileSync(join(fixtureRoot, config.entryFile), "utf8"), config.mode);
 	assertStandaloneTypecheckGate(
 		readFileSync(join(fixtureRoot, "tsconfig.json"), "utf8"),
 		readFileSync(join(fixtureRoot, "package.json"), "utf8"),
 	);
+	if (config.layoutFile) {
+		assertNextLayout(readFileSync(join(fixtureRoot, config.layoutFile), "utf8"));
+	}
+	if (config.pageFile && config.httpMarker) {
+		assertNextPage(readFileSync(join(fixtureRoot, config.pageFile), "utf8"), config.httpMarker);
+	}
+	for (const file of walkFiles(fixtureRoot).filter((path) => /\.(tsx|ts|jsx|js)$/.test(path))) {
+		assertNoSuppressHydrationWarning(readFileSync(file, "utf8"));
+	}
 	if (config.stylesheet) {
 		assertTailwindStylesheet(readFileSync(join(fixtureRoot, config.stylesheet), "utf8"), {
 			fromDir: join(fixtureRoot, "src"),
 			consumerRoot: fixtureRoot,
 		});
 	}
+}
+
+export async function runConsumerGate(repoRoot: string, config: ConsumerGateConfig) {
+	const packageRoot = join(repoRoot, "packages/basalt");
+	const fixtureRoot = join(repoRoot, config.fixtureDir);
+	assertFixtureSources(fixtureRoot, config);
 
 	run("bun", ["run", "--cwd", "packages/basalt", "build"], repoRoot);
 
@@ -401,6 +486,7 @@ export function runConsumerGate(repoRoot: string, config: ConsumerGateConfig) {
 		throw new Error(`temp root is inside the repository: ${tempRoot}`);
 	}
 
+	let child: ChildProcess | undefined;
 	try {
 		run("npm", ["pack", "--pack-destination", tempRoot], packageRoot);
 		const tarballs = readdirSync(tempRoot).filter((name) => name.endsWith(".tgz"));
@@ -506,31 +592,7 @@ console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
 		const typecheck = run("npm", ["run", "typecheck"], consumerRoot);
 		run("npm", ["run", "build"], consumerRoot);
 
-		const distRoot = join(consumerRoot, "dist");
-		const distFiles = walkFiles(distRoot);
-		const kinds = distArtifactKinds(distFiles);
-		if (!kinds.html || !kinds.js || !kinds.css) {
-			throw new Error(
-				`production dist missing artifacts html=${kinds.html} js=${kinds.js} css=${kinds.css}`,
-			);
-		}
-		const cssFiles = distFiles.filter((file) => file.endsWith(".css"));
-		const css = cssFiles.map((file) => readFileSync(file, "utf8")).join("\n");
-		const cssEvidence =
-			config.mode === "tailwind" ? tailwindCssEvidence(css) : standaloneCssEvidence(css);
-		if (cssEvidence.empty || !cssEvidence.token || !cssEvidence.buttonClass) {
-			throw new Error(
-				`${config.mode} CSS evidence failed empty=${cssEvidence.empty} token=${cssEvidence.token} buttonClass=${cssEvidence.buttonClass}`,
-			);
-		}
-		if ("buttonUtility" in cssEvidence && !cssEvidence.buttonUtility) {
-			throw new Error("tailwind CSS missing Button utility .text-basalt-primary-foreground");
-		}
-		if ("standaloneDump" in cssEvidence && cssEvidence.standaloneDump) {
-			throw new Error("tailwind CSS is a standalone dump");
-		}
-
-		const evidence = {
+		const evidence: Record<string, unknown> = {
 			mode: config.mode,
 			tempRoot,
 			tarball: tarballs[0],
@@ -539,15 +601,61 @@ console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
 			css: resolution.css,
 			cssReal,
 			typecheck: typecheck.stdout.trim() || "ok",
-			distFiles: distFiles.map((file) => posixPath(relative(distRoot, file))).sort(),
-			cssBytes: Buffer.byteLength(css),
-			cssEvidence,
 			requiredVersions,
 			missingHeavyPeers: config.forbiddenPeers.filter((name) => !heavy.includes(name)),
 		};
+
+		if (config.mode === "next" && config.httpMarker) {
+			const port = await allocatePort();
+			const url = `http://127.0.0.1:${port}/`;
+			const started = await startHttpServer({
+				cwd: consumerRoot,
+				command: "npm",
+				args: ["run", "start", "--", "-p", String(port), "-H", "127.0.0.1"],
+				url,
+				env: { PORT: String(port) },
+			});
+			child = started.child;
+			const body = await started.response.text();
+			assertNextHttpBody(started.response.status, body, config.httpMarker);
+			evidence.port = port;
+			evidence.httpStatus = started.response.status;
+			evidence.marker = true;
+		} else {
+			const distRoot = join(consumerRoot, "dist");
+			const distFiles = walkFiles(distRoot);
+			const kinds = distArtifactKinds(distFiles);
+			if (!kinds.html || !kinds.js || !kinds.css) {
+				throw new Error(
+					`production dist missing artifacts html=${kinds.html} js=${kinds.js} css=${kinds.css}`,
+				);
+			}
+			const cssFiles = distFiles.filter((file) => file.endsWith(".css"));
+			const css = cssFiles.map((file) => readFileSync(file, "utf8")).join("\n");
+			const cssEvidence =
+				config.mode === "tailwind" ? tailwindCssEvidence(css) : standaloneCssEvidence(css);
+			if (cssEvidence.empty || !cssEvidence.token || !cssEvidence.buttonClass) {
+				throw new Error(
+					`${config.mode} CSS evidence failed empty=${cssEvidence.empty} token=${cssEvidence.token} buttonClass=${cssEvidence.buttonClass}`,
+				);
+			}
+			if ("buttonUtility" in cssEvidence && !cssEvidence.buttonUtility) {
+				throw new Error("tailwind CSS missing Button utility .text-basalt-primary-foreground");
+			}
+			if ("standaloneDump" in cssEvidence && cssEvidence.standaloneDump) {
+				throw new Error("tailwind CSS is a standalone dump");
+			}
+			evidence.distFiles = distFiles.map((file) => posixPath(relative(distRoot, file))).sort();
+			evidence.cssBytes = Buffer.byteLength(css);
+			evidence.cssEvidence = cssEvidence;
+		}
+
 		console.log(`consumer ${config.mode} ok ${JSON.stringify(evidence, null, 2)}`);
 		return evidence;
 	} finally {
+		if (child) {
+			await stopChild(child);
+		}
 		rmSync(tempRoot, { recursive: true, force: true });
 	}
 }
@@ -557,10 +665,19 @@ export function runStandaloneConsumerGate(repoRoot: string) {
 }
 
 export function gateConfigFromArgv(argv: string[]) {
-	return argv.includes("tailwind") ? TAILWIND_GATE : STANDALONE_GATE;
+	if (argv.includes("next")) {
+		return NEXT_GATE;
+	}
+	if (argv.includes("tailwind")) {
+		return TAILWIND_GATE;
+	}
+	return STANDALONE_GATE;
 }
 
 if (import.meta.main) {
 	const repoRoot = dirname(dirname(fileURLToPath(import.meta.url)));
-	runConsumerGate(repoRoot, gateConfigFromArgv(process.argv.slice(2)));
+	runConsumerGate(repoRoot, gateConfigFromArgv(process.argv.slice(2))).catch((error) => {
+		console.error(error);
+		process.exit(1);
+	});
 }

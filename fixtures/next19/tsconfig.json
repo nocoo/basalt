@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"target": "ES2022",
+		"lib": ["ES2024", "DOM"],
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"jsx": "preserve",
+		"strict": true,
+		"skipLibCheck": false,
+		"noEmit": true,
+		"allowJs": true,
+		"esModuleInterop": true,
+		"isolatedModules": true,
+		"types": []
+	},
+	"include": ["app", "css.d.ts", "next-env.d.ts", "next.config.ts"]
+}

@@ -21,7 +21,8 @@
 		"prepare": "husky",
 		"typecheck": "tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",
 		"consumer:standalone": "bun scripts/consumer-gate.ts",
-		"consumer:tailwind": "bun scripts/consumer-gate.ts tailwind"
+		"consumer:tailwind": "bun scripts/consumer-gate.ts tailwind",
+		"consumer:next": "bun scripts/consumer-gate.ts next"
 	},
 	"dependencies": {
 		"@radix-ui/react-accordion": "1.2.20",

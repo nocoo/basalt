@@ -1,12 +1,10 @@
-"use client";
-
-import { Button } from "@nocoo/basalt/components/button";
-import { ThemeProvider } from "@nocoo/basalt/providers/theme";
+import { BasaltApp } from "./basalt-app";
 
 export default function Page() {
 	return (
-		<ThemeProvider>
-			<Button>Save</Button>
-		</ThemeProvider>
+		<main>
+			<p data-basalt-consumer="next19">basalt-next19-ok</p>
+			<BasaltApp />
+		</main>
 	);
 }

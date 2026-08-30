@@ -3,6 +3,9 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+	assertNextLayout,
+	assertNextPage,
+	assertNoSuppressHydrationWarning,
 	assertRootConsumerSource,
 	assertStandaloneTypecheckGate,
 	assertTailwindStylesheet,
@@ -17,6 +20,7 @@ import {
 	injectTarballDependency,
 	isOutsideRepo,
 	isPathInside,
+	NEXT_GATE,
 	OPTIONAL_HEAVY_PEERS,
 	STANDALONE_GATE,
 	standaloneCssEvidence,
@@ -176,10 +180,14 @@ describe("tailwind consumer gate helpers", () => {
 	it("selects standalone by default and tailwind from argv", () => {
 		expect(gateConfigFromArgv([])).toBe(STANDALONE_GATE);
 		expect(gateConfigFromArgv(["tailwind"])).toBe(TAILWIND_GATE);
+		expect(gateConfigFromArgv(["next"])).toBe(NEXT_GATE);
 		expect(STANDALONE_GATE.forbiddenPeers).toContain("tailwindcss");
 		expect(TAILWIND_GATE.forbiddenPeers).toEqual([...OPTIONAL_HEAVY_PEERS]);
 		expect(TAILWIND_GATE.requiredPeers.tailwindcss).toBe("4.3.3");
 		expect(TAILWIND_GATE.styleExport).toBe("@nocoo/basalt/styles/tailwind");
+		expect(NEXT_GATE.forbiddenPeers).toContain("tailwindcss");
+		expect(NEXT_GATE.styleExport).toBe("@nocoo/basalt/styles/standalone");
+		expect(NEXT_GATE.httpMarker).toBe("basalt-next19-ok");
 	});
 
 	it("keeps the committed tailwind fixture inside the gate contract", () => {
@@ -324,6 +332,57 @@ import "./index.css";
 			"fixtures/vite-tailwind/tsconfig.json",
 			"fixtures/vite-tailwind/vite.config.ts",
 			"fixtures/vite-tailwind/index.html",
+		];
+		for (const file of files) {
+			expect(readFileSync(file, "utf8").includes(needle), file).toBe(false);
+		}
+	});
+});
+
+describe("next consumer gate helpers", () => {
+	it("keeps the committed next fixture inside the gate contract", () => {
+		const manifest = readFileSync("fixtures/next19/package.json", "utf8");
+		assertTemplateManifest(manifest);
+		expect(manifest).toContain('"next": "16.3.3"');
+		expect(manifest).toContain('"react": "19.2.8"');
+		expect(manifest).toContain('"react-dom": "19.2.8"');
+		expect(manifest).not.toContain("@nocoo/basalt");
+		assertRootConsumerSource(readFileSync("fixtures/next19/app/basalt-app.tsx", "utf8"), "next");
+		assertNextLayout(readFileSync("fixtures/next19/app/layout.tsx", "utf8"));
+		assertNextPage(readFileSync("fixtures/next19/app/page.tsx", "utf8"), "basalt-next19-ok");
+		assertStandaloneTypecheckGate(readFileSync("fixtures/next19/tsconfig.json", "utf8"), manifest);
+	});
+
+	it("rejects suppressHydrationWarning and a client layout", () => {
+		expect(() => assertNoSuppressHydrationWarning("<html suppressHydrationWarning>")).toThrow(
+			/suppress hydration/,
+		);
+		expect(() =>
+			assertNextLayout(`"use client";
+import "@nocoo/basalt/styles/standalone";
+export default function RootLayout() { return <html><body /></html>; }
+`),
+		).toThrow(/server/);
+		expect(() =>
+			assertRootConsumerSource(
+				`import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast } from "@nocoo/basalt";
+`,
+				"next",
+			),
+		).toThrow(/explicit/);
+	});
+
+	it("does not embed a developer home path in the next slice", () => {
+		const needle = ["/Users", "nocoo"].join("/");
+		const files = [
+			"fixtures/next19/package.json",
+			"fixtures/next19/app/layout.tsx",
+			"fixtures/next19/app/page.tsx",
+			"fixtures/next19/app/basalt-app.tsx",
+			"fixtures/next19/tsconfig.json",
+			"fixtures/next19/next.config.ts",
+			"scripts/consumer-http.ts",
+			"scripts/consumer-http.test.ts",
 		];
 		for (const file of files) {
 			expect(readFileSync(file, "utf8").includes(needle), file).toBe(false);
