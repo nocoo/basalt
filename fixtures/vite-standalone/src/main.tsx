@@ -1,4 +1,4 @@
-import { Button } from "@nocoo/basalt/components/button";
+import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast } from "@nocoo/basalt";
 import "@nocoo/basalt/styles/standalone";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
@@ -10,6 +10,12 @@ if (!root) {
 
 createRoot(root).render(
 	<StrictMode>
-		<Button>Save</Button>
+		<ThemeProvider>
+			<LinkProvider>
+				<ThemeToggle aria-label="Toggle theme" />
+				<Button>Save</Button>
+				<Toast />
+			</LinkProvider>
+		</ThemeProvider>
 	</StrictMode>,
 );

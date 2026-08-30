@@ -1,11 +1,16 @@
 # Publish-gate fixtures
 
-Templates for 01 §5.3 gates A/B/C. Copy a directory to a tmp folder outside this
-workspace, install a packed tarball of `@nocoo/basalt`, and run the consumer.
-Do not use workspace aliases.
+## Gate B — Vite standalone
 
-| Directory | Gate |
-|-----------|------|
-| `vite-tailwind` | A — Vite + Tailwind + `@source`, no standalone |
-| `vite-standalone` | B — Vite without Tailwind, standalone CSS only |
-| `next19` | C — Next on React 19, hydrate ThemeProvider + Button |
+Command: `bun run consumer:standalone`
+
+The command starts from a clean `@nocoo/basalt` package build, writes `npm pack` output into an OS temp directory outside this repository, copies `fixtures/vite-standalone`, injects the tarball as a `file:` dependency on that copy, then runs real `npm install` and a production Vite build.
+
+Guarantees:
+
+- The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, or this repository's path.
+- The consumer imports and renders `Button`, `ThemeProvider`, `ThemeToggle`, `Toast`, and `LinkProvider` from `@nocoo/basalt` root and only `@nocoo/basalt/styles/standalone`.
+- Resolved `@nocoo/basalt` is the extracted tarball under that consumer's `node_modules`, not this workspace.
+- `tailwindcss`, `recharts`, `react-day-picker`, and `@tanstack/react-table` are not installed.
+- Production output includes HTML, JS, and CSS with `--basalt-background` and `.bg-basalt-primary`.
+- Temp directories and tarballs are deleted on success and failure.
