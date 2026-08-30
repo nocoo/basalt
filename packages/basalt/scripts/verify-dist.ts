@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { basename, dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { collectModuleSpecifiers, isRelativeSpecifier } from "./rewrite-declarations";
 
 const packageRoot = dirname(dirname(fileURLToPath(import.meta.url)));
 const srcRoot = join(packageRoot, "src");
@@ -171,11 +172,38 @@ for (const rel of [
 	}
 }
 
+const EXPLICIT_EXT = /\.(?:js|mjs|cjs|json|css|d\.ts)$/;
+let specifierCount = 0;
+for (const dts of distFiles.filter((file) => file.endsWith(".d.ts"))) {
+	const rel = relative(distRoot, dts);
+	const specs = collectModuleSpecifiers(readFileSync(dts, "utf8")).filter((item) =>
+		isRelativeSpecifier(item.value),
+	);
+	for (const spec of specs) {
+		specifierCount += 1;
+		if (!EXPLICIT_EXT.test(spec.value)) {
+			fail(`${rel} extensionless specifier ${spec.value}`);
+			continue;
+		}
+		if (!spec.value.endsWith(".js")) {
+			continue;
+		}
+		const targetJs = join(dirname(dts), spec.value);
+		const targetDts = targetJs.replace(/\.js$/, ".d.ts");
+		if (!existsSync(targetJs)) {
+			fail(`${rel} missing JS for ${spec.value}`);
+		}
+		if (!existsSync(targetDts)) {
+			fail(`${rel} missing declaration for ${spec.value}`);
+		}
+	}
+}
+
 if (errors.length > 0) {
 	console.error(errors.join("\n"));
 	process.exit(1);
 }
 
 console.log(
-	`verified entries=${entries.length} js=${jsCount} dts=${dtsCount} maps=${mapCount} client=${clientCount} css=${expectedCss.length}`,
+	`verified entries=${entries.length} js=${jsCount} dts=${dtsCount} maps=${mapCount} client=${clientCount} css=${expectedCss.length} specifiers=${specifierCount}`,
 );

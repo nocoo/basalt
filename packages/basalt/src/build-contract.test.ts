@@ -14,11 +14,15 @@ describe("package build contract", () => {
 		const cssAt = build.indexOf("build:css");
 		const viteAt = build.indexOf("vite build");
 		const tscAt = build.indexOf("tsc -p tsconfig.build.json");
+		const rewriteAt = build.search(/scripts\/rewrite-declarations/);
 		const verifyAt = build.search(/scripts\/verify-dist/);
 		expect(cssAt).toBeGreaterThanOrEqual(0);
 		expect(viteAt).toBeGreaterThan(cssAt);
 		expect(tscAt).toBeGreaterThan(viteAt);
-		expect(verifyAt).toBeGreaterThan(tscAt);
+		expect(rewriteAt).toBeGreaterThan(tscAt);
+		expect(verifyAt).toBeGreaterThan(rewriteAt);
+		expect(pkg.scripts["types:check"]).toContain("type-tests/tsconfig.bundler.json");
+		expect(pkg.scripts["types:check"]).toContain("type-tests/tsconfig.nodenext.json");
 	});
 
 	it("empties dist and copies only publish css", () => {
