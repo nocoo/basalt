@@ -309,7 +309,8 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("badge", "dot-badges"),
 			title: "Dot badges",
-			code: "<Badge dot>Live</Badge>",
+			code: `<Badge dot>Live</Badge>
+<Badge dot variant="success">Healthy</Badge>`,
 			render: () => (
 				<Preview>
 					<Badge dot>Live</Badge>
@@ -332,7 +333,11 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("badge", "with-an-icon"),
 			title: "With an icon",
-			code: "<Badge><Check /> Verified</Badge>",
+			code: `<Badge><Check className="size-3" /> Verified</Badge>
+<Badge variant="success"><Check className="size-3" /> Healthy</Badge>
+<Badge variant="warning"><AlertTriangle className="size-3" /> Warning</Badge>
+<Badge variant="error"><CircleAlert className="size-3" /> Error</Badge>
+<Badge variant="info"><Info className="size-3" /> Info</Badge>`,
 			render: () => (
 				<Preview>
 					<Badge>
@@ -429,8 +434,8 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("clipboard-text", "api-key"),
 			title: "API Key",
-			code: '<ClipboardText text="sk-••••••••" copyText="sk-live-secret" />',
-			render: () => <ClipboardText text="sk-••••••••" copyText="sk-live-secret" />,
+			code: '<ClipboardText text="project-••••" copyText="project-atlas" />',
+			render: () => <ClipboardText text="project-••••" copyText="project-atlas" />,
 		},
 		{
 			id: catalogScenarioId("clipboard-text", "copy-alternate-text"),
@@ -471,7 +476,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("loader", "custom-size"),
 			title: "Custom Size",
-			code: "<Loader size={32} />",
+			code: "<Loader size={16} /><Loader size={24} /><Loader size={32} />",
 			render: () => (
 				<Preview>
 					<Loader size={16} />
@@ -787,7 +792,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("link", "basic-link"),
 			title: "Basic Link",
-			code: '<Link href="#section">Inline link</Link>',
+			code: "<LinkProvider><Link href='#section'>Inline link</Link></LinkProvider>",
 			render: () => (
 				<LinkProvider>
 					<Link href="#section">Inline link</Link>
@@ -797,7 +802,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("link", "inline-in-paragraph"),
 			title: "Inline in Paragraph",
-			code: "<Text>Read the <Link href='#docs'>docs</Link>.</Text>",
+			code: "<LinkProvider><Text>Read the <Link href='#docs'>docs</Link>.</Text></LinkProvider>",
 			render: () => (
 				<LinkProvider>
 					<Text>
@@ -809,7 +814,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("link", "external-links"),
 			title: "External Links",
-			code: '<Link href="https://example.com">Example</Link>',
+			code: "<LinkProvider><Link href='https://example.com'>Example</Link></LinkProvider>",
 			render: () => (
 				<LinkProvider>
 					<Link href="https://example.com">Example</Link>
@@ -821,7 +826,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("tooltip", "basic-tooltip"),
 			title: "Basic Tooltip",
-			code: "<Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip>",
+			code: "<TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant='outline'>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip></TooltipProvider>",
 			render: () => (
 				<TooltipProvider>
 					<Tooltip>
@@ -836,7 +841,16 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("tooltip", "multiple-tooltips"),
 			title: "Multiple Tooltips",
-			code: "<Tooltip>…</Tooltip><Tooltip>…</Tooltip>",
+			code: `<TooltipProvider>
+  <Tooltip>
+    <TooltipTrigger asChild><Button variant="outline">One</Button></TooltipTrigger>
+    <TooltipContent>First</TooltipContent>
+  </Tooltip>
+  <Tooltip>
+    <TooltipTrigger asChild><Button variant="outline">Two</Button></TooltipTrigger>
+    <TooltipContent>Second</TooltipContent>
+  </Tooltip>
+</TooltipProvider>`,
 			render: () => (
 				<TooltipProvider>
 					<Preview>
@@ -878,7 +892,14 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("layer-card", "multiple-cards"),
 			title: "Multiple Cards",
-			code: "<LayerCard><LayerCard.Secondary>Components</LayerCard.Secondary><LayerCard.Primary>Browse</LayerCard.Primary></LayerCard>",
+			code: `<LayerCard className="w-[200px]">
+  <LayerCard.Secondary>Components</LayerCard.Secondary>
+  <LayerCard.Primary>Browse all components</LayerCard.Primary>
+</LayerCard>
+<LayerCard className="w-[200px]">
+  <LayerCard.Secondary>Examples</LayerCard.Secondary>
+  <LayerCard.Primary>View code examples</LayerCard.Primary>
+</LayerCard>`,
 			render: () => (
 				<div className="flex w-full gap-4">
 					<LayerCard className="w-[200px]">
@@ -911,7 +932,9 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("skeleton-line", "default"),
 			title: "Default",
-			code: "<SkeletonLine /><SkeletonLine /><SkeletonLine />",
+			code: `<SkeletonLine minWidth={40} maxWidth={55} />
+<SkeletonLine minWidth={75} maxWidth={90} />
+<SkeletonLine minWidth={90} maxWidth={100} />`,
 			render: () => (
 				<div className="flex w-64 flex-col gap-3">
 					<SkeletonLine minWidth={40} maxWidth={55} />
@@ -923,7 +946,9 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("skeleton-line", "width"),
 			title: "Width",
-			code: "<SkeletonLine minWidth={80} maxWidth={100} />",
+			code: `<SkeletonLine minWidth={80} maxWidth={100} />
+<SkeletonLine minWidth={60} maxWidth={80} />
+<SkeletonLine minWidth={40} maxWidth={60} />`,
 			render: () => (
 				<div className="flex w-64 flex-col gap-3">
 					<SkeletonLine minWidth={80} maxWidth={100} />
@@ -935,7 +960,10 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("skeleton-line", "height"),
 			title: "Height",
-			code: '<SkeletonLine className="h-2" />',
+			code: `<SkeletonLine className="h-2" minWidth={90} maxWidth={100} />
+<SkeletonLine className="h-4" minWidth={90} maxWidth={100} />
+<SkeletonLine className="h-6" minWidth={90} maxWidth={100} />
+<SkeletonLine className="h-8" minWidth={90} maxWidth={100} />`,
 			render: () => (
 				<div className="flex w-64 flex-col gap-3">
 					<SkeletonLine className="h-2" minWidth={90} maxWidth={100} />
@@ -1143,13 +1171,13 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("toast", "title-only"),
 			title: "Title Only",
-			code: '<Button onClick={() => toast("Saved")}>Toast</Button>',
+			code: '<Button onClick={() => toast("Saved")}>Title only</Button>',
 			render: () => <Button onClick={() => toast("Saved")}>Title only</Button>,
 		},
 		{
 			id: catalogScenarioId("toast", "title-and-description"),
 			title: "Title and Description",
-			code: 'toast("Saved", { description: "Project updated." })',
+			code: '<Button onClick={() => toast("Saved", { description: "Project updated." })}>With description</Button>',
 			render: () => (
 				<Button onClick={() => toast("Saved", { description: "Project updated." })}>
 					With description
@@ -1159,31 +1187,31 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("toast", "success-variant"),
 			title: "Success Variant",
-			code: "toast.success('Deployed')",
+			code: '<Button onClick={() => toast.success("Deployed")}>Success</Button>',
 			render: () => <Button onClick={() => toast.success("Deployed")}>Success</Button>,
 		},
 		{
 			id: catalogScenarioId("toast", "error-variant"),
 			title: "Error Variant",
-			code: "toast.error('Failed')",
+			code: '<Button onClick={() => toast.error("Failed")}>Error</Button>',
 			render: () => <Button onClick={() => toast.error("Failed")}>Error</Button>,
 		},
 		{
 			id: catalogScenarioId("toast", "warning-variant"),
 			title: "Warning Variant",
-			code: "toast.warning('Expiring')",
+			code: '<Button onClick={() => toast.warning("Expiring")}>Warning</Button>',
 			render: () => <Button onClick={() => toast.warning("Expiring")}>Warning</Button>,
 		},
 		{
 			id: catalogScenarioId("toast", "info-variant"),
 			title: "Info Variant",
-			code: "toast.info('Queued')",
+			code: '<Button onClick={() => toast.info("Queued")}>Info</Button>',
 			render: () => <Button onClick={() => toast.info("Queued")}>Info</Button>,
 		},
 		{
 			id: catalogScenarioId("toast", "close-button"),
 			title: "Close button",
-			code: 'toast("Saved", { close: true })',
+			code: '<Button onClick={() => toast("Saved", { close: true, description: "Dismiss with X." })}>With close</Button>',
 			render: () => (
 				<Button onClick={() => toast("Saved", { close: true, description: "Dismiss with X." })}>
 					With close
@@ -1193,7 +1221,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("toast", "hidden-close"),
 			title: "Hidden close",
-			code: 'toast("Saved", { close: false })',
+			code: '<Button onClick={() => toast("Saved", { close: false, description: "No X control." })}>No close</Button>',
 			render: () => (
 				<Button onClick={() => toast("Saved", { close: false, description: "No X control." })}>
 					No close
@@ -1203,7 +1231,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("toast", "custom-icon"),
 			title: "Custom icon",
-			code: 'toast.success("Verified", { icon: <Check /> })',
+			code: '<Button onClick={() => toast.success("Verified", { icon: <Check className="size-4" />, description: "Custom icon passed as a parameter." })}>Custom icon</Button>',
 			render: () => (
 				<Button
 					onClick={() =>
@@ -1220,7 +1248,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("toast", "hidden-icon"),
 			title: "Hidden icon",
-			code: 'toast.success("Deployed", { icon: false })',
+			code: '<Button onClick={() => toast.success("Deployed", { icon: false })}>No icon</Button>',
 			render: () => (
 				<Button onClick={() => toast.success("Deployed", { icon: false })}>No icon</Button>
 			),

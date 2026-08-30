@@ -213,7 +213,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("button", "link-with-tooltip"),
 			title: "Link with Tooltip",
-			code: "<Tooltip><TooltipTrigger asChild><LinkButton href='#docs'>Docs</LinkButton></TooltipTrigger><TooltipContent>Open documentation</TooltipContent></Tooltip>",
+			code: "<TooltipProvider><Tooltip><TooltipTrigger asChild><LinkButton href='#docs'>Docs</LinkButton></TooltipTrigger><TooltipContent>Open documentation</TooltipContent></Tooltip></TooltipProvider>",
 			render: () => (
 				<TooltipProvider>
 					<Tooltip>
@@ -638,7 +638,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
   icon={<Info />}
   title="Custom content supported"
   description={
-    <Text>
+    <Text className="text-inherit">
       This banner supports <strong>custom content</strong> with Text.
     </Text>
   }

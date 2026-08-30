@@ -119,7 +119,12 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 	},
 	link: {
 		description: "Inline navigation that respects LinkProvider.",
-		usage: usage("Link", "@nocoo/basalt/components/link", '<Link href="/ui">Library</Link>'),
+		usage: usage(
+			"Link",
+			"@nocoo/basalt/components/link",
+			'<LinkProvider><Link href="/ui">Library</Link></LinkProvider>',
+			'import { LinkProvider } from "@nocoo/basalt/providers/link";',
+		),
 		variants: [],
 		props: [{ name: "href", type: "string" }],
 		provenance: provenanceFromLegacy({

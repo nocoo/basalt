@@ -265,12 +265,24 @@ add(
 		</div>
 	),
 	"<SkeletonLine minWidth={40} maxWidth={55} />",
+	undefined,
+	`import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+
+export default function Example() {
+	return <SkeletonLine minWidth={40} maxWidth={55} />;
+}`,
 );
 add(
 	"empty",
 	"Empty-state copy.",
 	() => <Empty title="No results" description="Try another query." />,
-	"<Empty />",
+	'<Empty title="No results" description="Try another query." />',
+	undefined,
+	`import { Empty } from "@nocoo/basalt/components/empty";
+
+export default function Example() {
+	return <Empty title="No results" description="Try another query." />;
+}`,
 );
 add("basalt-mark", "Basalt mark.", () => <BasaltMark />, "<BasaltMark />");
 add(
@@ -312,9 +324,26 @@ add(
 	"clipboard-text",
 	"Copyable text.",
 	() => <ClipboardText text="bun add @nocoo/basalt" />,
-	"<ClipboardText text='…' />",
+	'<ClipboardText text="bun add @nocoo/basalt" />',
+	undefined,
+	`import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
+
+export default function Example() {
+	return <ClipboardText text="bun add @nocoo/basalt" />;
+}`,
 );
-add("meter", "Numeric meter.", () => <Meter value={60} label="Usage" />, "<Meter value={60} />");
+add(
+	"meter",
+	"Numeric meter.",
+	() => <Meter value={60} label="Usage" />,
+	'<Meter value={60} label="Usage" />',
+	undefined,
+	`import { Meter } from "@nocoo/basalt/components/meter";
+
+export default function Example() {
+	return <Meter value={60} label="Usage" />;
+}`,
+);
 add(
 	"avatar",
 	"User avatar.",
@@ -406,7 +435,13 @@ add(
 	"breadcrumbs",
 	"Hierarchical location.",
 	() => <Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />,
-	"<Breadcrumbs />",
+	'<Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />',
+	undefined,
+	`import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
+
+export default function Example() {
+	return <Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />;
+}`,
 );
 add(
 	"table",
