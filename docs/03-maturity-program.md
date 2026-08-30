@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S1B3b — 仓外 Next + React 19 browser hydration（D017-R1 返工）
-> 已验收代码基线：`3d993c0559f4`（`main`；`9f9555fb3d18` 待返工验收）
+> 当前切片：S1B3b — 仓外 Next + React 19 browser hydration（D017-R2 返工）
+> 已验收代码基线：`3d993c0559f4`（`main`；`9f9555fb3d18` + `afdcb8091662` 待返工验收）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -123,7 +123,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
-| S1B | 仓外 Vite/Next/heavy granular tarball consumers | 执行中（S1B3b D017-R1） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
+| S1B | 仓外 Vite/Next/heavy granular tarball consumers | 执行中（S1B3b D017-R2） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | publint、prepublishOnly、Husky/browser 门 | 待办 | 一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 待办 | 组件类型、API 表、example 不再三份手写漂移 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
@@ -244,6 +244,7 @@ S1B3b 当前任务包固定如下，不得以更窄的静态断言替代真实�
 6. 允许修改根 `package.json`、`bun.lock`、共享 `scripts/` 与测试、`fixtures/{README.md,next19/**}`；不得修改 `packages/basalt` API/实现、Vite fixture、Husky、本文、S1B4/S1C，或提前建立 Dialog/Combobox/Sidebar browser suite。
 7. 提交前运行 browser focused tests、现有 consumer-http/gate 回归、`bun run typecheck`、`bun run lint`、全量测试、真实 `consumer:next`，并复跑 standalone 与 Tailwind。唯一提交建议为 `test: verify next hydration`；提交后报告 commit、浏览器版本、修改文件、各门证据和遗留问题，等待 Codex review。
 8. **D017-R1 — Toast DOM 真实性返工。** `9f9555fb3d18` 的门用所有 `body *` 的 `textContent` 寻找 root 外同文案节点，但 Sonner 2.0.8 不创建 portal，且 fixture 把 `<Toast />` 放在 `data-basalt-root` 内；一个 root 外隐藏节点即可让旧判断误报通过。返工必须把 fixture-owned Toaster host 放在应用内容 marker 外，只在该 host 内定位唯一、真实可见的 toast 消息，并对该消息节点同时证明 `document.body.contains(node)` 与 `!root.contains(node)`。新增真实 Chromium 负例：root 内存在可见 toast，而 root 外只有隐藏同文案节点时必须失败；隐藏节点、script 文本或仅匹配宽泛祖先均不得作为 portal/host 证据。仍只允许 D017 的文件范围，不改包 API/实现，不进入 S1B4。
+9. **D017-R2 — Toast 身份返工。** `afdcb8091662` 已建立 host 边界，但其自写 `textContent`/盒模型算法会把 host 内任意普通 `<div>basalt-toast-ok</div>` 当作成功；Codex 用真实 Chromium 证明页面中 `data-sonner-toast` 数量为 0 时仍返回 `count: 1`。返工必须要求恰好一个 fixture host、恰好一个真实 `[data-sonner-toast]`，且其 `[data-title]` 的规范化文本精确等于唯一消息；用 Playwright 对真实 toast locator 做有界 visible 等待，再证明该 toast 节点在 body 内且在 app root 外。禁止自行沿祖先盒模型推导可见性，普通文字、部分匹配、重复 toast、隐藏 toast、script 或无 Sonner marker 都必须失败。内部 evidence 不得再宣称 `toastPortal: true`，应准确命名为 outside-root host 证据。保留 R1 负例并新增“host 内普通可见 div、0 Sonner toast”负例；仍不得进入包实现或 S1B4。
 4. **S1B4 — optional-peer D。** 独立临时 consumer 安装批准的 optional peers，加载 chart/DatePicker/DataTable granular 路径；同时复核 A/B/C 未安装 heavy peers 时 root consumer 仍可构建。不得用本仓已安装依赖冒充。
 
 ### 6.3 S2 — 文档系统
@@ -388,6 +389,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D014 | S1B1 | `62297f296590` + `bfc46dd75f34` | `w14:p1` | 完成 | `0c5342a954a1` + `c824c553261d` | 首提交建立仓外 temp → tarball → npm install → root resolution → Vite build → cleanup 门；Codex 拒绝硬编码腾讯/微软 registry 的半成品并要求 env-only，随后 review 又发现 Vite 不检查声明与测试含本机路径，第二提交补严格 Bundler `tsc`（`skipLibCheck:false`）及 CSS export 真实解析并清除路径。Codex 独立真门：temp `…/basalt-gate-b-KFK2ny` 已删除，root/CSS 均位于其 consumer `node_modules`，typecheck 通过，产物 HTML + JS + 45,480-byte CSS，token/Button class 存在，四个 heavy peers 缺席；focused 1 file / 11 tests、typecheck、Biome 368 files、全量 108 files / 684 tests 全绿；未进入 Tailwind/Next/optional fixture |
 | D015 | S1B2 | `03ba7c2f1f37` | `w14:p1` | 完成 | `7bf19f4832a5` + `feb020bc2133` | 首提交复用 Gate B 内核建立仓外 Tailwind v4 tarball/type/build 门；review-fix 删除 main 的重复 package CSS 入口，并把唯一 `@source` 锁到 consumer `node_modules/@nocoo/basalt/dist` 的精确真实路径与 glob。Codex 独立复跑 focused 1 file / 18 tests、typecheck、Biome 370 files、全量 108 files / 691 tests；Gate A 解析仓外 tarball、Tailwind/plugin 均为 4.3.3、54,321-byte CSS 含 token/Button utilities 且非 standalone dump，三个 heavy peers 缺席；Gate B 回归为 45,480-byte CSS，四个 heavy peers 缺席；两门 temp 均删除，工作树干净；未进入 Next |
 | D016 | S1B3a | `feb020bc2133` + `dc289fa160b9` | `w14:p1` | 完成 | `345a21346cb6` + `57cb78990b9f` + `3d993c0559f4` | 首提交建立 Next 16.3.3 + React 19.2.8 仓外 type/build/start/HTTP 门；两轮 review-fix 直接启动临时 consumer 的 Next binary、移除 `transpilePackages`、清理完整进程组，并在主动清理前快照自然退出状态，保证 readiness error 原样重抛。Codex 独立逐行审查；focused 2 files / 31 tests、typecheck、Biome 377 files、全量 109 files / 704 tests 通过；Gate C 从 tarball root/standalone CSS 解析，Next HTTP 200 + marker，四个 heavy peers 缺席，temp 与 Next 进程二次确认清理；Gate A/B 回归 CSS 54,321/45,480 bytes，全部通过；未进入 browser/S1B4 |
-| D017 | S1B3b | `3d993c0559f4` + `a77d0ea65cf2` | `w14:p1` | 执行中（R1） | `9f9555fb3d18`（待返工） | 首提交新增 Playwright 1.62.1 / Chromium 151、Button/Theme/Toast 与错误/清理门；focused 3 files / 48 tests 通过，但 Codex 独立真实 Chromium 反例证明 portal 判断会接受 root 外隐藏同文案节点，而真实 Sonner toast 仍在 root 内，因此不验收。R1 只修真实 toast 定位、host 边界及对应正负例，不进入 S1B4/S1C |
+| D017 | S1B3b | `3d993c0559f4` + `a77d0ea65cf2` | `w14:p1` | 执行中（R2） | `9f9555fb3d18` + `afdcb8091662`（待返工） | 首提交新增 Playwright 1.62.1 / Chromium 151、Button/Theme/Toast 与错误/清理门；R1 建立 root 外 fixture host，focused 3 files / 53 tests、全量 110 / 726 与 A/B/C 通过。但 Codex 两次独立 Chromium 反例分别证明：旧门接受 root 外隐藏同文案；R1 又接受 host 内普通 div 且页面 0 个 Sonner toast。因此两提交均未验收，R2 只把证据收紧为唯一真实 Sonner toast locator 并消除虚假 portal 命名，不进入 S1B4/S1C |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
