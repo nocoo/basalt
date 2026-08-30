@@ -52,4 +52,16 @@ describe("Tabs", () => {
 		);
 		expect(container.querySelector('[aria-hidden="true"]')).toBeNull();
 	});
+
+	it("hides the indicator when no tab is active", () => {
+		const { container } = render(
+			<Tabs value="">
+				<TabsList>
+					<TabsTrigger value="a">Home</TabsTrigger>
+				</TabsList>
+			</Tabs>,
+		);
+		const indicator = container.querySelector('[aria-hidden="true"]') as HTMLElement;
+		expect(indicator.style.width).toBe("0px");
+	});
 });

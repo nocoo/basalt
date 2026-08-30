@@ -26,6 +26,7 @@ export const TabsList = React.forwardRef<
 		}
 		const active = list.querySelector<HTMLElement>('[data-state="active"]');
 		if (!active) {
+			setIndicator((current) => ({ ...current, width: 0, ready: false }));
 			return;
 		}
 		setIndicator({
@@ -37,15 +38,31 @@ export const TabsList = React.forwardRef<
 	}, []);
 
 	React.useLayoutEffect(() => {
-		sync();
 		const list = listRef.current;
 		if (!list) {
 			return;
 		}
-		const mo = new MutationObserver(sync);
-		mo.observe(list, { attributes: true, subtree: true, attributeFilter: ["data-state"] });
+		const root = list;
 		const ro = new ResizeObserver(sync);
-		ro.observe(list);
+		function observe() {
+			ro.observe(root);
+			for (const tab of root.querySelectorAll('[role="tab"]')) {
+				ro.observe(tab);
+			}
+		}
+		observe();
+		sync();
+		const mo = new MutationObserver(() => {
+			observe();
+			sync();
+		});
+		mo.observe(root, {
+			attributes: true,
+			subtree: true,
+			childList: true,
+			characterData: true,
+			attributeFilter: ["data-state"],
+		});
 		return () => {
 			mo.disconnect();
 			ro.disconnect();
