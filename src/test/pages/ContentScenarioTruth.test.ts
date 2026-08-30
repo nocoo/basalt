@@ -11,6 +11,30 @@ function scenario(slug: string, id: string) {
 	return match;
 }
 
+function importedNames(source: string): Set<string> {
+	const names = new Set<string>();
+	for (const block of source.matchAll(/import\s+\{([^}]+)\}\s+from/g)) {
+		for (const part of block[1].split(",")) {
+			const name = part
+				.trim()
+				.split(/\s+as\s+/)[0]
+				?.trim();
+			if (name) {
+				names.add(name);
+			}
+		}
+	}
+	return names;
+}
+
+function expectUsageImportsCover(usage: string, names: string[]) {
+	const imported = importedNames(usage);
+	for (const name of names) {
+		expect(imported.has(name), `${name} imported`).toBe(true);
+		expect(usage, name).toContain(`<${name}`);
+	}
+}
+
 describe("content scenario truth", () => {
 	it("keeps audited scenario ids and counts", () => {
 		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual(["text-sizes", "text-muted-tone"]);
@@ -128,5 +152,37 @@ describe("content scenario truth", () => {
 		expect(scenario("code", "code-typescript").code).not.toContain("…");
 		expect(scenario("code", "code-react").code).toContain("useState");
 		expect(scenario("code", "code-react").code).not.toContain("…");
+	});
+
+	it("imports every jsx part used by content usage examples", () => {
+		expectUsageImportsCover(CATALOG_DOCS.code?.usage ?? "", ["CodeHighlighted"]);
+		expect(CATALOG_DOCS.code?.usage).not.toMatch(/import\s+\{\s*Code\s*\}/);
+		expectUsageImportsCover(CATALOG_DOCS.select?.usage ?? "", [
+			"Select",
+			"SelectTrigger",
+			"SelectValue",
+			"SelectContent",
+			"SelectItem",
+		]);
+		expectUsageImportsCover(CATALOG_DOCS.grid?.usage ?? "", ["Grid", "GridItem"]);
+		expectUsageImportsCover(CATALOG_DOCS.flow?.usage ?? "", ["Flow", "FlowNode"]);
+		expectUsageImportsCover(CATALOG_DOCS.sidebar?.usage ?? "", [
+			"Sidebar",
+			"SidebarItem",
+			"ContentIsland",
+		]);
+	});
+
+	it("declares command palette open state in copyable code", () => {
+		for (const id of [
+			"command-palette-with-grouped-items",
+			"command-palette-simple-flat-list",
+		] as const) {
+			const source = scenario("command-palette", id).code;
+			expect(source, id).toContain("open");
+			expect(source, id).toContain("setOpen");
+			expect(source, id).toContain("useState");
+			expect(source, id).toMatch(/const \[open,\s*setOpen\]\s*=\s*useState/);
+		}
 	});
 });

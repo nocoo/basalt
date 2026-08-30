@@ -293,6 +293,14 @@ add(
 		/>
 	),
 	'<CodeHighlighted code={\'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/users/" + id); if (!response.ok) { throw new Error("User not found"); } return response.json(); }\'} />',
+	undefined,
+	`import { CodeHighlighted } from "@nocoo/basalt/components/code";
+
+export default function Example() {
+	return (
+		<CodeHighlighted code={'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/users/" + id); if (!response.ok) { throw new Error("User not found"); } return response.json(); }'} />
+	);
+}`,
 );
 add(
 	"code-block",
@@ -467,6 +475,19 @@ add(
 		</Grid>
 	),
 	"<Grid><GridItem>1</GridItem><GridItem>2</GridItem><GridItem>3</GridItem><GridItem>4</GridItem></Grid>",
+	undefined,
+	`import { Grid, GridItem } from "@nocoo/basalt/components/grid";
+
+export default function Example() {
+	return (
+		<Grid>
+			<GridItem>1</GridItem>
+			<GridItem>2</GridItem>
+			<GridItem>3</GridItem>
+			<GridItem>4</GridItem>
+		</Grid>
+	);
+}`,
 );
 add(
 	"toolbar",
@@ -688,6 +709,27 @@ add(
 		</Select>
 	),
 	'<Select><SelectTrigger aria-label="Version"><SelectValue placeholder="Select version" /></SelectTrigger><SelectContent><SelectItem value="1">v1</SelectItem></SelectContent></Select>',
+	undefined,
+	`import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@nocoo/basalt/components/select";
+
+export default function Example() {
+	return (
+		<Select>
+			<SelectTrigger aria-label="Version">
+				<SelectValue placeholder="Select version" />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="1">v1</SelectItem>
+			</SelectContent>
+		</Select>
+	);
+}`,
 );
 add(
 	"sheet",
@@ -835,6 +877,22 @@ add(
 		</div>
 	),
 	'(<div className="flex h-56 w-full overflow-hidden bg-basalt-background"><Sidebar className="h-full min-h-0 w-40"><SidebarItem active>Catalog</SidebarItem><SidebarItem>Settings</SidebarItem></Sidebar><div className="flex min-w-0 flex-1 flex-col p-2"><ContentIsland className="p-4">At a glance</ContentIsland></div></div>)',
+	undefined,
+	`import { ContentIsland, Sidebar, SidebarItem } from "@nocoo/basalt/components/sidebar";
+
+export default function Example() {
+	return (
+		<div className="flex h-56 w-full overflow-hidden bg-basalt-background">
+			<Sidebar className="h-full min-h-0 w-40">
+				<SidebarItem active>Catalog</SidebarItem>
+				<SidebarItem>Settings</SidebarItem>
+			</Sidebar>
+			<div className="flex min-w-0 flex-1 flex-col p-2">
+				<ContentIsland className="p-4">At a glance</ContentIsland>
+			</div>
+		</div>
+	);
+}`,
 );
 add(
 	"page-header",
@@ -858,6 +916,17 @@ add(
 		</Flow>
 	),
 	"<Flow><FlowNode>Step 1</FlowNode><FlowNode>Step 2</FlowNode></Flow>",
+	undefined,
+	`import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
+
+export default function Example() {
+	return (
+		<Flow>
+			<FlowNode>Step 1</FlowNode>
+			<FlowNode>Step 2</FlowNode>
+		</Flow>
+	);
+}`,
 );
 add(
 	"navigation-menu",

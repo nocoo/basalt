@@ -1875,35 +1875,66 @@ export function Counter() {
 		{
 			id: catalogScenarioId("command-palette", "with-grouped-items"),
 			title: "With Grouped Items",
-			code: `<>
-  <Button variant="outline" onClick={() => setOpen(true)}>Search pages...</Button>
-  <CommandPalette open={open} onOpenChange={setOpen}>
-    <CommandInput placeholder="Search pages..." />
-    <CommandList>
-      <CommandEmpty>No results</CommandEmpty>
-      <CommandGroup heading="Pages">
-        <CommandItem>Button</CommandItem>
-        <CommandItem>Input</CommandItem>
-      </CommandGroup>
-    </CommandList>
-  </CommandPalette>
-</>`,
+			code: `import { Button } from "@nocoo/basalt/components/button";
+import {
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandPalette,
+} from "@nocoo/basalt/components/command-palette";
+import { useState } from "react";
+
+export default function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="outline" onClick={() => setOpen(true)}>Search pages...</Button>
+      <CommandPalette open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="Search pages..." />
+        <CommandList>
+          <CommandEmpty>No results</CommandEmpty>
+          <CommandGroup heading="Pages">
+            <CommandItem>Button</CommandItem>
+            <CommandItem>Input</CommandItem>
+          </CommandGroup>
+        </CommandList>
+      </CommandPalette>
+    </>
+  );
+}`,
 			render: () => <CommandPaletteExample />,
 		},
 		{
 			id: catalogScenarioId("command-palette", "simple-flat-list"),
 			title: "Simple Flat List",
-			code: `<>
-  <Button variant="outline" onClick={() => setOpen(true)}>Search pages...</Button>
-  <CommandPalette open={open} onOpenChange={setOpen}>
-    <CommandInput placeholder="Search pages..." />
-    <CommandList>
-      <CommandEmpty>No results</CommandEmpty>
-      <CommandItem>Button</CommandItem>
-      <CommandItem>Input</CommandItem>
-    </CommandList>
-  </CommandPalette>
-</>`,
+			code: `import { Button } from "@nocoo/basalt/components/button";
+import {
+  CommandEmpty,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandPalette,
+} from "@nocoo/basalt/components/command-palette";
+import { useState } from "react";
+
+export default function Example() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <Button variant="outline" onClick={() => setOpen(true)}>Search pages...</Button>
+      <CommandPalette open={open} onOpenChange={setOpen}>
+        <CommandInput placeholder="Search pages..." />
+        <CommandList>
+          <CommandEmpty>No results</CommandEmpty>
+          <CommandItem>Button</CommandItem>
+          <CommandItem>Input</CommandItem>
+        </CommandList>
+      </CommandPalette>
+    </>
+  );
+}`,
 			render: () => <CommandPaletteExample flat />,
 		},
 	],
