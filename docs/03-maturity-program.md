@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S1A1 — 确定性 dist 产物（review-fix）
-> 已验收代码基线：`e57579c592ba`（`main`，工作树干净）
+> 当前切片：S1A2 — dist manifest 与 pack 白名单（准备下发）
+> 已验收代码基线：`8fc87d7a4a2b`（`main`，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-30
 
@@ -101,7 +101,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | Ready 页面 | 84 | 公开项 100% ready |
 | Placeholder | 12：9 docs、Maps、ResourceList、DeleteResource | 0 |
 | Kumo 重合控件示例 | Basalt 133 / Kumo live registry 321，名义 41.4% | 场景按 Basalt 契约覆盖；不机械复制品牌场景；动态基线注明抓取日期 |
-| 测试 | 105 文件、656 tests，全部 jsdom | unit + 高风险 browser + consumer gate |
+| 测试 | 105 文件、659 tests，全部 jsdom | unit + 高风险 browser + consumer gate |
 | 外部消费者 | 0 个真实 `@nocoo/basalt` import | 仓外 Vite Tailwind、Vite standalone、Next consumer 全绿 |
 | 包 | `0.0.0`、private、exports 指向 src | dist/types/files/exports/publint/tarball/prepublish 完整；最终 release-ready |
 
@@ -122,7 +122,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S0A | 清理 Kumo/Cloudflare/Worker 用户示例与 fixture | 完成（`0cdbfdc`） | 禁用语境扫描、测试、typecheck、Biome、原子 commit 全绿 |
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
-| S1A | dist/types/files/exports 包契约 | 执行中（S1A1 review-fix） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
+| S1A | dist/types/files/exports 包契约 | 执行中（S1A2 准备下发） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next tarball consumers | 待办 | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | publint、prepublishOnly、Husky/browser 门 | 待办 | 一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 待办 | 组件类型、API 表、example 不再三份手写漂移 |
@@ -219,10 +219,10 @@ S0C3a、S0C3b 各自一个绿色提交；S0C3b 通过后才把 S0C 标为完成�
 2026-08-30 现场审计：生产源码包含 60 个 component entry、2 个 provider、26 个 chart 和 1 个内部 util。现有 Vite + `tsc` 能生成 JS 与声明，但 `dist` 没有任何 CSS；`npm pack --dry-run --json` 得到 427 个条目，其中 165 个来自 `src`、71 个是测试，另含构建配置，且没有 LICENSE。包仍是 `0.0.0`、`private`、exports 指向源码；三个 fixture 只有模板 package，没有真实依赖或执行脚本。CI 的 `typecheck-command` 仍为 `true`。这些问题分层处理，禁止一刀混合：
 
 1. **S1A1 — 确定性 dist 产物。** 干净执行 package build 时，先更新 standalone CSS，再清空并完整生成 production JS、`.d.ts` 和 source map；只把 `tailwind.css`、其相对依赖 `tokens.css`、`standalone.css` 三个发布样式写入 `dist/styles`，不得带入 `standalone.source.css`、测试或 TS 源码。build 必须自带可执行产物校验：逐个 production entry 对应 JS + `.d.ts`、每个 component chunk 和根入口带 `"use client"`、三份 CSS 存在。此刀不改 exports、`files`、private/version、root barrel、fixture、CI、Husky 或 prepublish。
-2. **S1A2 — dist manifest 与 pack 白名单。** exports 改成带 `types`/`import` 的 dist 目标；补 `files`、public publish metadata 和包内许可证，移除 private，但版本保持 `0.0.0` 直到 S10 正式发布刀。clean build 后 `npm pack --dry-run --json` 只能包含 dist 与批准的 README/LICENSE/package metadata，0 source、0 test、0 build config；每个公开 export 目标必须存在。不得提前跑仓外 consumer。
+2. **S1A2 — dist manifest 与 pack 白名单。** exports 改成带 `types`/`import` 的 dist 目标；补 `files`、public publish metadata 和包内许可证，但保留 private，直到 S1C 的完整 `prepublishOnly` 同时落地再解除；版本保持 `0.0.0` 直到 S10 正式发布刀。clean build 后由仓内可执行 `pack:check` 证明 `npm pack --dry-run --json` 只能包含 dist 与批准的 README/LICENSE/package metadata，0 source、0 test、0 build config，且不会落下 tarball；每个公开 export 目标必须存在。不得提前跑仓外 consumer。
 3. **S1A3 — resolver 与依赖边界。** 用 Node ESM 与 TypeScript consumer config 验证 root/components/providers/charts/styles；按 01 §6.2 审计根 barrel 和 granular surface；证明根入口的静态依赖闭包没有 `recharts`、DatePicker 或 DataTable 的 optional peer，heavy 路径仍独立可解析。此刀不复制 S1B 的仓外安装门。
 
-S1A1、S1A2、S1A3 各自一个绿色提交。只有 S1A3 验收后才进入 S1B；S1B 再分别落 Vite standalone、Vite Tailwind、Next hydration 和 optional-peer D 门，不能以仓内 alias 或当前 `node_modules` 代替。
+S1A1、S1A2、S1A3 各自一个绿色提交。只有 S1A3 验收后才进入 S1B；S1B 再分别落 Vite standalone、Vite Tailwind、Next hydration 和 optional-peer D 门，不能以仓内 alias 或当前 `node_modules` 代替。S1C 必须在同一绿色切片内先装齐发布前门、再解除 private；不得留下无门的可发布中间状态。
 
 ### 6.3 S2 — 文档系统
 
@@ -359,6 +359,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D007 | S0C2d | `306b6683ecbc` | `w14:p1` | 完成 | `d7c1f6b5c8b` + `7b37cda26b56` | 首提交 3 个授权文件，+612/−49；review-fix 用 Fragment 修正 `dialog-sizes`、`popover-sides` 多根非法 JSX，并让 `tabs-many-tabs` 的 defaultValue 命中 overview trigger；两轮均独立复跑 targeted 1 file / 9 tests、typecheck、Biome、全量 105 files / 652 tests，Husky 通过；未进入 S0C3 |
 | D008 | S0C3a | `e05cd19d727b` | `w14:p1` | 完成 | `2a1e45a5dade` | 3 个授权文件，+62/−17；新增只读 `catalogHeroScenario`，ready 改为 docs + hero，首屏 `data-hero-scenario` 的 preview/code 同源，Usage 改为纯 `docs.usage` 代码；targeted 1 file / 162 tests、typecheck、Biome、全量 105 files / 654 tests、Husky 均独立通过；保留旧映射给 S0C3b |
 | D009 | S0C3b | `2a1e45a5dade` + `e837d20c52d9` | `w14:p1` | 完成 | `e57579c592ba` | 4 个授权文件，+33/−113；HomeGrid 非定制 tile 改用 hero helper，删除 `BASE_DEMOS`、`UI_DEMOS`、`EXTRA_DEMOS` 与无用 imports，生产源码负向扫描归零，并以 Accordion 首页交互证明 extra tile 复用首个 scenario；Codex 独立复跑 targeted 1 file / 164 tests、typecheck、Biome、全量 105 files / 656 tests，Husky 通过；未重设计 HomeGrid 或进入 S1 |
-| D010 | S1A1 | `19bdeea` + `752e980` | `w14:p1` | 执行中（review-fix） | `9eba6caab1e2`（待修） | 首提交生成 90 JS / 90 声明、61 client entry 和 3 CSS，targeted 2 files / 6 tests、全量 105 files / 659 tests；code review 拒绝人为补出的 3 个空 `.map`（`sources`/`mappings` 为空且 JS 无 `sourceMappingURL`），校验器必须接受 bundler 对纯 re-export 不产 map，同时验证所有真实 map 非空且引用闭合；其余范围不扩张 |
+| D010 | S1A1 | `19bdeea` + `752e980` | `w14:p1` | 完成 | `9eba6caab1e2` + `8fc87d7a4a2b` | 5 个授权文件；首提交建立 build:css → Vite clean build → declarations → executable verifier，并更新真实 standalone CSS；review-fix 删除 3 个伪空 map。Codex 从不存在的 dist 独立重建并额外验证：90 JS、90 声明、87 个非空且双向引用闭合的真实 map、61 client entry、3 CSS、0 禁用产物；targeted 2 files / 6 tests、typecheck、Biome、全量 105 files / 659 tests、Husky 通过；未进入 manifest/consumer |
+| D011 | S1A2 | `8fc87d7a4a2b` + 本次调度文档 commit | `w14:p1` | 准备下发 | — | exports/types/import 指向 dist，pack 白名单与许可证可执行自证；保留 private/0.0.0，不改 root surface、consumer、CI/Husky 或 prepublish |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
