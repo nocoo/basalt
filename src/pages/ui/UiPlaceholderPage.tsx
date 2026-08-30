@@ -1,6 +1,6 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { Check, ChevronDown, Copy } from "lucide-react";
-import { type ComponentType, useState } from "react";
+import { useState } from "react";
 import { Link, useParams } from "react-router";
 import { Github } from "@/components/icons/github";
 import {
@@ -10,6 +10,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CATALOG_BY_SLUG, type CatalogEntry, catalogImportPath, catalogNavName } from "./catalog";
+import type { CatalogScenario } from "./catalog-scenario";
 import {
 	type CatalogDocs,
 	catalogSourceCopyText,
@@ -18,7 +19,7 @@ import {
 } from "./catalog-source";
 import { DocCode, DocExample } from "./DocCode";
 import { type DocHeading, DocToc } from "./DocToc";
-import { UI_DEMOS, UI_EXAMPLES } from "./demos";
+import { catalogHeroScenario, UI_EXAMPLES } from "./demos";
 import { CATALOG_DOCS } from "./docs";
 
 function barrelImport(entry: CatalogEntry): string | null {
@@ -72,11 +73,11 @@ function CopyPageButton({ markdown }: { markdown: string }) {
 function ReadyDoc({
 	entry,
 	docs,
-	Demo,
+	hero,
 }: {
 	entry: CatalogEntry;
 	docs: CatalogDocs;
-	Demo: ComponentType;
+	hero: CatalogScenario;
 }) {
 	const importPath = catalogImportPath(entry);
 	const barrel = barrelImport(entry);
@@ -141,9 +142,11 @@ function ReadyDoc({
 			</div>
 			<div className="px-6 py-8 md:px-8 md:py-10 xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-16">
 				<article data-status="ready" data-slug={entry.slug} className="min-w-0 space-y-12">
-					<DocExample code={docs.usage}>
-						<Demo />
-					</DocExample>
+					<div data-hero-scenario={hero.id}>
+						<DocExample code={hero.code}>
+							<hero.render />
+						</DocExample>
+					</div>
 					<section id="installation" className="scroll-mt-6 space-y-4">
 						<h2 className="text-2xl font-semibold tracking-tight">Installation</h2>
 						{barrel ? (
@@ -161,9 +164,7 @@ function ReadyDoc({
 					</section>
 					<section id="usage" className="scroll-mt-6 space-y-4">
 						<h2 className="text-2xl font-semibold tracking-tight">Usage</h2>
-						<DocExample code={docs.usage}>
-							<Demo />
-						</DocExample>
+						<DocCode code={docs.usage} />
 					</section>
 					<section id="examples" className="scroll-mt-6 space-y-8">
 						<h2 className="text-2xl font-semibold tracking-tight">Examples</h2>
@@ -273,10 +274,10 @@ export default function UiPlaceholderPage() {
 		);
 	}
 
-	const Demo = UI_DEMOS[entry.slug];
+	const hero = catalogHeroScenario(entry.slug);
 	const docs = CATALOG_DOCS[entry.slug];
-	if (Demo && docs) {
-		return <ReadyDoc entry={entry} docs={docs} Demo={Demo} />;
+	if (hero && docs) {
+		return <ReadyDoc entry={entry} docs={docs} hero={hero} />;
 	}
 
 	return (

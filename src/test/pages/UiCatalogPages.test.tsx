@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -17,7 +17,7 @@ import {
 	githubSourceHref,
 	githubSourceLabel,
 } from "@/pages/ui/catalog-source";
-import { UI_DEMOS, UI_EXAMPLES } from "@/pages/ui/demos";
+import { catalogHeroScenario, UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { KUMO_DOCS_SLUGS } from "@/pages/ui/kumo-list";
 import UiIndexPage from "@/pages/ui/UiIndexPage";
@@ -90,15 +90,17 @@ describe("ui catalog", () => {
 	it.each(inScopeCatalogSlugs())("documents ready catalog page %s", (slug) => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(UI_DEMOS[slug], slug).toBeDefined();
+		const hero = catalogHeroScenario(slug);
+		expect(hero, slug).toBeDefined();
 		const docs = CATALOG_DOCS[slug];
 		expect(docs, slug).toBeDefined();
-		if (!docs) {
+		if (!hero || !docs) {
 			return;
 		}
 		cleanup();
 		renderCatalog(`/ui/${slug}`);
 		expect(document.querySelector(`[data-status='ready'][data-slug='${slug}']`)).toBeTruthy();
+		expect(document.querySelector(`[data-hero-scenario="${hero.id}"]`)).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Installation" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Usage" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "API Reference" })).toBeInTheDocument();
@@ -267,6 +269,44 @@ describe("ui catalog", () => {
 		const preview = document.querySelector(".min-h-\\[140px\\]");
 		expect(preview).toHaveClass("bg-bright");
 		expect(preview?.parentElement).toHaveClass("border", "border-border");
+	});
+
+	it("sources the button hero from the first catalog scenario", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		const hero = catalogHeroScenario("button");
+		expect(hero?.id).toBe("button-variants");
+		if (!hero) {
+			return;
+		}
+		renderCatalog("/ui/button");
+		const block = document.querySelector("[data-hero-scenario]");
+		expect(block).toHaveAttribute("data-hero-scenario", hero.id);
+		expect(block?.querySelector("code")?.textContent).toBe(hero.code);
+		const preview = block?.querySelector(".min-h-\\[140px\\]");
+		expect(preview).toBeTruthy();
+		if (!preview) {
+			return;
+		}
+		const heroPreview = within(preview as HTMLElement);
+		expect(heroPreview.getByRole("button", { name: "Default" })).toBeInTheDocument();
+		expect(heroPreview.getByRole("button", { name: "Secondary" })).toBeInTheDocument();
+		expect(heroPreview.getByRole("button", { name: "Destructive" })).toBeInTheDocument();
+		expect(heroPreview.getByRole("button", { name: "Outline" })).toBeInTheDocument();
+		expect(heroPreview.getByRole("button", { name: "Ghost" })).toBeInTheDocument();
+		expect(heroPreview.getByRole("button", { name: "Link" })).toBeInTheDocument();
+	});
+
+	it("shows usage as docs code without a preview surface", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		const usage = CATALOG_DOCS.button?.usage;
+		expect(usage).toBeDefined();
+		renderCatalog("/ui/button");
+		const section = document.getElementById("usage");
+		expect(section).toBeTruthy();
+		expect(section?.querySelector(".min-h-\\[140px\\]")).toBeNull();
+		expect(section?.querySelector("code")?.textContent).toBe(usage);
 	});
 
 	it("documents banner examples like kumo", () => {

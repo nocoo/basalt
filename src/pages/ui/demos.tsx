@@ -663,3 +663,7 @@ export const UI_EXAMPLES: Record<string, CatalogScenario[]> = {
 	...BASE_EXAMPLES,
 	...KUMO_EXAMPLES,
 };
+
+export function catalogHeroScenario(slug: string): CatalogScenario | undefined {
+	return UI_EXAMPLES[slug]?.[0];
+}
