@@ -680,6 +680,81 @@ export const n = <><DonutChart /><DatePicker /><DataTable /></>;
 		).toThrow(/shadows DonutChart/);
 	});
 
+	it("loads @swc/core as a locked root dependency", () => {
+		const pkg = JSON.parse(readFileSync("package.json", "utf8")) as {
+			devDependencies?: Record<string, string>;
+		};
+		expect(pkg.devDependencies?.["@swc/core"]).toBe("1.15.46");
+		const gate = readFileSync("scripts/consumer-gate.ts", "utf8");
+		expect(gate).toContain('from "@swc/core"');
+		expect(gate).not.toContain("@vitejs/plugin-react-swc");
+		expect(gate).not.toContain("createRequire");
+		expect(gate).not.toContain("node_modules/.bun");
+		expect(import.meta.resolve("@swc/core")).toMatch(/@swc\/core/);
+	});
+
+	it("rejects jsx that uses shadowed bindings instead of heavy imports", () => {
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}function Inner() {
+	if (false) {
+		var DonutChart = () => null;
+		var DatePicker = () => null;
+		var DataTable = () => null;
+	}
+	return <><DonutChart /><DatePicker /><DataTable /></>;
+}
+`),
+		).toThrow(/shadows DonutChart/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}function Inner() {
+	if (false) {
+		var DonutChart = () => null;
+		var DatePicker = () => null;
+		var DataTable = () => null;
+	}
+}
+export const n = <><DonutChart /><DatePicker /><DataTable /></>;
+`),
+		).toThrow(/shadows DonutChart/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}function Inner({ DonutChart, DatePicker, DataTable }) {
+	return <><DonutChart /><DatePicker /><DataTable /></>;
+}
+`),
+		).toThrow(/shadows DonutChart/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}function Inner(DonutChart, DatePicker = 1, ...DataTable) {
+	return <><DonutChart /><DatePicker /><DataTable /></>;
+}
+`),
+		).toThrow(/shadows DonutChart/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}const Inner = ([DonutChart, DatePicker, ...DataTable]) => <><DonutChart /><DatePicker /><DataTable /></>;
+`),
+		).toThrow(/shadows DonutChart/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}class View {
+	render({ DonutChart, DatePicker, DataTable }) {
+		return <><DonutChart /><DatePicker /><DataTable /></>;
+	}
+}
+`),
+		).toThrow(/shadows DonutChart/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}try {} catch ({ DonutChart, DatePicker, DataTable }) {
+	void <><DonutChart /><DatePicker /><DataTable /></>;
+}
+`),
+		).toThrow(/shadows DonutChart/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}function Inner() {
+	const { DonutChart, DatePicker, DataTable } = {};
+	return <><DonutChart /><DatePicker /><DataTable /></>;
+}
+`),
+		).toThrow(/shadows DonutChart/);
+	});
+
 	it("rejects unrendered heavy bindings and syntax errors", () => {
 		expect(() => assertHeavyConsumerSource(heavySource())).toThrow(/does not render DonutChart/);
 		expect(() =>

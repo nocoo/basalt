@@ -9,10 +9,10 @@ import {
 	rmSync,
 	writeFileSync,
 } from "node:fs";
-import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseSync } from "@swc/core";
 import {
 	assertBrowserCleaned,
 	combineErrors,
@@ -409,22 +409,146 @@ function walkSwc(node: unknown, visit: (node: SwcNode) => void): void {
 	}
 }
 
-function loadInTreeTsxParser(): (source: string) => SwcNode {
-	const loadFromReactPlugin = createRequire(import.meta.resolve("@vitejs/plugin-react-swc"));
-	const swc = loadFromReactPlugin("@swc/core") as {
-		parseSync: (source: string, options: { syntax: "typescript"; tsx: true }) => SwcNode;
-	};
-	return (source: string) => {
-		try {
-			return swc.parseSync(source, { syntax: "typescript", tsx: true });
-		} catch (error) {
-			const detail = error instanceof Error ? error.message : String(error);
-			throw new Error(`heavy consumer has syntax errors: ${detail}`);
-		}
-	};
+const HEAVY_BINDING_NAMES = new Set(HEAVY_GRANULAR_PROBES.map((probe) => probe.exportName));
+const WALK_SKIP_KEYS = new Set([
+	"span",
+	"ctxt",
+	"typeAnnotation",
+	"returnType",
+	"typeParameters",
+	"typeArguments",
+	"typeParams",
+	"decorators",
+]);
+
+function parseHeavyTsx(source: string): SwcNode {
+	try {
+		return parseSync(source, { syntax: "typescript", tsx: true }) as SwcNode;
+	} catch (error) {
+		const detail = error instanceof Error ? error.message : String(error);
+		throw new Error(`heavy consumer has syntax errors: ${detail}`);
+	}
 }
 
-const parseHeavyTsx = loadInTreeTsxParser();
+function addLocalBinding(locals: Set<string>, name: string | undefined) {
+	if (name && HEAVY_BINDING_NAMES.has(name)) {
+		locals.add(name);
+	}
+}
+
+function collectPatternNames(node: unknown, names: Set<string>): void {
+	const type = swcType(node);
+	if (!type || !isRecord(node)) {
+		return;
+	}
+	if (type === "Identifier" || type === "JSXIdentifier") {
+		const name = identifierName(node);
+		if (name) {
+			names.add(name);
+		}
+		return;
+	}
+	if (type === "Parameter" || type === "TsParameterProperty") {
+		collectPatternNames(node.pat ?? node.parameter, names);
+		return;
+	}
+	if (type === "AssignmentPattern") {
+		collectPatternNames(node.left, names);
+		return;
+	}
+	if (type === "RestElement") {
+		collectPatternNames(node.argument, names);
+		return;
+	}
+	if (type === "ObjectPattern" && Array.isArray(node.properties)) {
+		for (const property of node.properties) {
+			collectPatternNames(property, names);
+		}
+		return;
+	}
+	if (type === "ArrayPattern" && Array.isArray(node.elements)) {
+		for (const element of node.elements) {
+			collectPatternNames(element, names);
+		}
+		return;
+	}
+	if (type === "AssignmentPatternProperty") {
+		collectPatternNames(node.key, names);
+		return;
+	}
+	if (type === "KeyValuePatternProperty") {
+		collectPatternNames(node.value, names);
+	}
+}
+
+function addPatternBindings(locals: Set<string>, node: unknown) {
+	const names = new Set<string>();
+	collectPatternNames(node, names);
+	for (const name of names) {
+		addLocalBinding(locals, name);
+	}
+}
+
+function collectLocalsAndJsx(node: unknown, locals: Set<string>, jsxNames: Set<string>): void {
+	if (!node || typeof node !== "object") {
+		return;
+	}
+	if (Array.isArray(node)) {
+		for (const item of node) {
+			collectLocalsAndJsx(item, locals, jsxNames);
+		}
+		return;
+	}
+	if (!isRecord(node)) {
+		return;
+	}
+	const type = swcType(node);
+	if (!type) {
+		for (const value of Object.values(node)) {
+			collectLocalsAndJsx(value, locals, jsxNames);
+		}
+		return;
+	}
+	if (type === "ImportDeclaration") {
+		return;
+	}
+	if (type === "JSXOpeningElement") {
+		const name = identifierName(node.name);
+		if (name && HEAVY_BINDING_NAMES.has(name)) {
+			jsxNames.add(name);
+		}
+		collectLocalsAndJsx(node.attributes, locals, jsxNames);
+		return;
+	}
+	if (
+		type === "FunctionDeclaration" ||
+		type === "FunctionExpression" ||
+		type === "ClassDeclaration" ||
+		type === "ClassExpression"
+	) {
+		addLocalBinding(locals, identifierName(node.identifier));
+	}
+	if (type === "ArrowFunctionExpression" && Array.isArray(node.params)) {
+		for (const param of node.params) {
+			addPatternBindings(locals, param);
+		}
+	}
+	if (type === "VariableDeclarator") {
+		addPatternBindings(locals, node.id);
+	}
+	if (type === "Parameter" || type === "TsParameterProperty") {
+		addPatternBindings(locals, node);
+	}
+	if (type === "CatchClause") {
+		addPatternBindings(locals, node.param);
+	}
+	for (const [key, value] of Object.entries(node)) {
+		if (WALK_SKIP_KEYS.has(key)) {
+			continue;
+		}
+		collectLocalsAndJsx(value, locals, jsxNames);
+	}
+}
 
 type HeavyAstEvidence = {
 	specifiers: string[];
@@ -436,13 +560,12 @@ type HeavyAstEvidence = {
 };
 
 function collectHeavyAst(source: string): HeavyAstEvidence {
+	const file = parseHeavyTsx(source);
 	const specifiers: string[] = [];
 	const imports: SwcNode[] = [];
-	const jsxNames = new Set<string>();
-	const localBindings = new Set<string>();
 	const dynamicModules: string[] = [];
 	const requireModules: string[] = [];
-	walkSwc(parseHeavyTsx(source), (node) => {
+	walkSwc(file, (node) => {
 		if (
 			node.type === "ImportDeclaration" ||
 			node.type === "ExportNamedDeclaration" ||
@@ -478,30 +601,10 @@ function collectHeavyAst(source: string): HeavyAstEvidence {
 				}
 			}
 		}
-		if (node.type === "JSXOpeningElement") {
-			const name = identifierName(node.name);
-			if (name) {
-				jsxNames.add(name);
-			}
-		}
-		if (
-			node.type === "FunctionDeclaration" ||
-			node.type === "FunctionExpression" ||
-			node.type === "ClassDeclaration" ||
-			node.type === "ClassExpression"
-		) {
-			const name = identifierName(node.identifier);
-			if (name) {
-				localBindings.add(name);
-			}
-		}
-		if (node.type === "VariableDeclarator") {
-			const name = identifierName(node.id);
-			if (name) {
-				localBindings.add(name);
-			}
-		}
 	});
+	const localBindings = new Set<string>();
+	const jsxNames = new Set<string>();
+	collectLocalsAndJsx(file.body, localBindings, jsxNames);
 	return { specifiers, imports, jsxNames, localBindings, dynamicModules, requireModules };
 }
 
