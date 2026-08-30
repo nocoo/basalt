@@ -408,6 +408,7 @@ describe("ui catalog", () => {
 			for (const example of examples) {
 				expect(catalogScenarioMatchesSlug(example.id, slug), example.id).toBe(true);
 				expect(example.id, example.id).toMatch(new RegExp(`^${slug}-[a-z0-9]+(?:-[a-z0-9]+)*$`));
+				expect(example.id, example.id).not.toMatch(/-\d+$/);
 				expect(seen.has(example.id), example.id).toBe(false);
 				seen.add(example.id);
 			}

@@ -759,7 +759,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 	],
 	text: [
 		{
-			id: catalogScenarioId("text", "semantic-html"),
+			id: catalogScenarioId("text", "sizes"),
 			title: "Semantic HTML",
 			code: "<Text>Body copy</Text>",
 			render: () => (
@@ -773,7 +773,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			),
 		},
 		{
-			id: catalogScenarioId("text", "restrictions"),
+			id: catalogScenarioId("text", "muted-tone"),
 			title: "Restrictions",
 			code: '<Text tone="muted">Muted supporting copy.</Text>',
 			render: () => <Text tone="muted">Muted supporting copy.</Text>,
@@ -1760,7 +1760,7 @@ export function Counter() {
 	],
 	"code-block": [
 		{
-			id: catalogScenarioId("code-block", "line-numbers"),
+			id: catalogScenarioId("code-block", "basic"),
 			title: "Line Numbers",
 			code: "<CodeBlock>const n = 1</CodeBlock>",
 			render: () => <CodeBlock>const n = 1</CodeBlock>,
