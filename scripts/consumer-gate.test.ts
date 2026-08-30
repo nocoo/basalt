@@ -1,8 +1,17 @@
-import { mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { spawn } from "node:child_process";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+	assertNoPageFaults,
+	attachPageFaults,
+	createBrowserProfileDir,
+	settleWithCleanup,
+	withChromiumPage,
+} from "./consumer-browser";
+import {
+	assertHttpClosed,
 	assertNextLayout,
 	assertNextPage,
 	assertNoSuppressHydrationWarning,
@@ -11,6 +20,7 @@ import {
 	assertTailwindStylesheet,
 	assertTarballDistSource,
 	assertTemplateManifest,
+	cleanupConsumerGate,
 	consumerSourceGlobs,
 	distArtifactKinds,
 	fileDependencyPaths,
@@ -28,6 +38,7 @@ import {
 	TARBALL_SOURCE_GLOB,
 	tailwindCssEvidence,
 } from "./consumer-gate";
+import { allocatePort, listPidsMatching, processAlive, startHttpServer } from "./consumer-http";
 
 const sourceCtx = { fromDir: "/consumer/src", consumerRoot: "/consumer" };
 
@@ -354,9 +365,133 @@ describe("next consumer gate helpers", () => {
 		expect(readFileSync("fixtures/next19/next.config.ts", "utf8")).not.toContain(
 			"transpilePackages",
 		);
+		const app = readFileSync("fixtures/next19/app/basalt-app.tsx", "utf8");
+		expect(app).toMatch(/\btoast\b/);
+		expect(app).toContain("data-basalt-root");
+		expect(app).toContain("data-basalt-save");
+		expect(app).toContain("data-basalt-toast");
+		expect(manifest).not.toContain("playwright");
+		const rootManifest = readFileSync("package.json", "utf8");
+		expect(rootManifest).toContain('"playwright": "1.62.1"');
+		expect(rootManifest).toContain("playwright:install");
 		const runner = readFileSync("scripts/consumer-gate.ts", "utf8");
 		expect(runner).toContain("nextStartLaunch");
+		expect(runner).toContain("proveNextHydration");
 		expect(runner).not.toContain('["run", "start"');
+	});
+
+	it("rejects a next client module that never imports toast or marks the root", () => {
+		const source = `"use client";
+import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast } from "@nocoo/basalt";
+export function BasaltApp() { return <Button>Save</Button>; }
+`;
+		expect(() => assertRootConsumerSource(source, "next")).toThrow(/toast/);
+		expect(() =>
+			assertRootConsumerSource(
+				`"use client";
+import { Button, LinkProvider, ThemeProvider, ThemeToggle, Toast, toast } from "@nocoo/basalt";
+export function BasaltApp() { return <Button onClick={() => toast("x")}>Save</Button>; }
+`,
+				"next",
+			),
+		).toThrow(/app root/);
+	});
+
+	it("treats a refused port as closed", async () => {
+		await expect(assertHttpClosed("http://127.0.0.1:1/")).resolves.toBeUndefined();
+	});
+
+	it("still stops the server and deletes temp if profile cleanup fails", async () => {
+		const tempRoot = realpathSync(mkdtempSync(join(tmpdir(), "basalt-gate-c-clean-")));
+		const profileDir = mkdtempSync(join(tmpdir(), "basalt-pw-"));
+		const unique = basename(tempRoot);
+		const zombie = spawn("node", ["-e", `setTimeout(() => {}, 20000); // ${profileDir}`], {
+			detached: true,
+			stdio: "ignore",
+		});
+		zombie.unref();
+		const port = await allocatePort();
+		const url = `http://127.0.0.1:${port}/`;
+		const started = await startHttpServer({
+			cwd: process.cwd(),
+			command: "node",
+			args: [
+				"-e",
+				`require("http").createServer((_, res) => { res.writeHead(200); res.end("ok"); }).listen(${port}, "127.0.0.1"); // ${tempRoot}`,
+			],
+			url,
+			timeoutMs: 5000,
+			needles: [tempRoot, unique],
+		});
+		try {
+			await expect(
+				cleanupConsumerGate({
+					profileDir,
+					child: started.child,
+					nextUrl: url,
+					tempRoot,
+				}),
+			).rejects.toThrow(/leftover Chromium/);
+			expect(existsSync(tempRoot)).toBe(false);
+			expect(processAlive(started.child.pid as number)).toBe(false);
+			await expect(assertHttpClosed(url)).resolves.toBeUndefined();
+		} finally {
+			if (zombie.pid !== undefined) {
+				try {
+					process.kill(-zombie.pid, "SIGKILL");
+				} catch {
+					try {
+						process.kill(zombie.pid, "SIGKILL");
+					} catch {
+						// already gone
+					}
+				}
+			}
+		}
+	});
+
+	it("cleans server pid, port, profile, and temp when browser proof fails on that server", async () => {
+		const tempRoot = realpathSync(mkdtempSync(join(tmpdir(), "basalt-gate-c-fail-")));
+		const unique = basename(tempRoot);
+		const profileDir = createBrowserProfileDir();
+		const port = await allocatePort();
+		const url = `http://127.0.0.1:${port}/`;
+		const html = "<!doctype html><script>console.error('basalt-console-fail')</script>";
+		const started = await startHttpServer({
+			cwd: process.cwd(),
+			command: "node",
+			args: [
+				"-e",
+				`require("http").createServer((_, res) => { res.writeHead(200, { "content-type": "text/html" }); res.end(${JSON.stringify(html)}); }).listen(${port}, "127.0.0.1"); // ${tempRoot}`,
+			],
+			url,
+			timeoutMs: 5000,
+			needles: [tempRoot, unique],
+		});
+		await expect(
+			settleWithCleanup(
+				async () =>
+					withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(url);
+						assertNoPageFaults(faults);
+					}),
+				async () => {
+					await cleanupConsumerGate({
+						profileDir,
+						child: started.child,
+						nextUrl: url,
+						tempRoot,
+					});
+				},
+			),
+		).rejects.toThrow(/basalt-console-fail/);
+		expect(existsSync(tempRoot)).toBe(false);
+		expect(existsSync(profileDir)).toBe(false);
+		expect(listPidsMatching(unique)).toEqual([]);
+		expect(listPidsMatching(profileDir)).toEqual([]);
+		expect(processAlive(started.child.pid as number)).toBe(false);
+		await expect(assertHttpClosed(url)).resolves.toBeUndefined();
 	});
 
 	it("rejects suppressHydrationWarning and a client layout", () => {
@@ -389,6 +524,8 @@ export default function RootLayout() { return <html><body /></html>; }
 			"fixtures/next19/next.config.ts",
 			"scripts/consumer-http.ts",
 			"scripts/consumer-http.test.ts",
+			"scripts/consumer-browser.ts",
+			"scripts/consumer-browser.test.ts",
 		];
 		for (const file of files) {
 			expect(readFileSync(file, "utf8").includes(needle), file).toBe(false);

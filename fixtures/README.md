@@ -32,18 +32,20 @@ Guarantees:
 - Production output includes HTML, JS, and CSS with `--basalt-background` and `.bg-basalt-primary`.
 - Temp directories and tarballs are deleted on success and failure.
 
-## Gate C — Next + React 19 build/start
+## Gate C — Next + React 19 hydration
 
 Command: `bun run consumer:next`
 
-`next19` is a React 19 consumer on Next 16.3.3. The shared kernel still does clean package build, OS-temp `npm pack`, fixture copy, `file:` tarball inject, real `npm install`, root/CSS resolve, and cleanup. This command additionally runs the consumer `typecheck`, `next build`, and `next start` on a free `127.0.0.1` port, then HTTP GET `/` for status 200 and the `basalt-next19-ok` marker.
+Browser prerequisite (root workspace only, never the temp consumer): pinned `playwright@1.62.1`. Install the matching Chromium with `bun run playwright:install`. The gate refuses `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` and does not fall back to a machine Chrome. If the pinned browser is missing, the failure names that install command.
+
+`next19` is a React 19 consumer on Next 16.3.3. The shared kernel still does clean package build, OS-temp `npm pack`, fixture copy, `file:` tarball inject, real `npm install`, root/CSS resolve, and cleanup. This command additionally runs the consumer `typecheck`, `next build`, and one `next start` on a free `127.0.0.1` port. After HTTP GET `/` returns 200 and `basalt-next19-ok`, the same server is driven with Playwright Chromium: first screen, client hydration, Button state, ThemeToggle on `html`, Toast portal outside the app root, and an empty `console.error` / `pageerror` set.
 
 Guarantees:
 
-- The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, or this repository's path.
+- The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, Playwright, or this repository's path.
 - Server `app/layout.tsx` only provides the HTML skeleton and `@nocoo/basalt/styles/standalone`.
-- An explicit `"use client"` module imports and renders `Button`, `ThemeProvider`, `ThemeToggle`, `Toast`, and `LinkProvider` from the package root.
+- An explicit `"use client"` module imports `Button`, `ThemeProvider`, `ThemeToggle`, `Toast`, `toast`, and `LinkProvider` from the package root.
 - Root and standalone CSS resolve inside that consumer's tarball copy.
 - `tailwindcss`, `recharts`, `react-day-picker`, and `@tanstack/react-table` are not installed.
-- The server is terminated and temp/tarball are deleted on success and failure.
-- This gate does not claim browser hydration, console, or interaction checks.
+- Success and failure close the Playwright page/context/browser, delete the unique Chromium profile, stop the Next process, free the port, and delete the temp tree. Cleanup steps are nested so a profile assertion failure still stops the server and removes temp; proof and cleanup errors are aggregated rather than swallowed.
+- Focused tests launch real Chromium to prove a `console.error` or `pageerror` fails the gate. A same-server regression starts one HTTP process, fails the browser proof, then uses the gate's outer cleanup path to prove PID, port, profile, and temp are gone without a second install or Next build.

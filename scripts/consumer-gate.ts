@@ -13,6 +13,13 @@ import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+	assertBrowserCleaned,
+	combineErrors,
+	createBrowserProfileDir,
+	proveNextHydration,
+	settleWithCleanup,
+} from "./consumer-browser";
+import {
 	allocatePort,
 	assertNextHttpBody,
 	assertServerCleaned,
@@ -305,6 +312,12 @@ export function assertRootConsumerSource(source: string, mode: ConsumerMode = "s
 		if (!/from\s+"@nocoo\/basalt"/.test(source)) {
 			throw new Error("consumer must import from @nocoo/basalt root");
 		}
+		if (!/\btoast\b/.test(source)) {
+			throw new Error("next client boundary must import toast");
+		}
+		if (!source.includes("data-basalt-root")) {
+			throw new Error("next client boundary must mark the app root");
+		}
 	}
 	for (const name of ROOT_EXPORTS) {
 		if (!source.includes(name)) {
@@ -345,6 +358,17 @@ export function assertNextPage(source: string, marker: string) {
 	assertNoSuppressHydrationWarning(source);
 	if (!source.includes(marker)) {
 		throw new Error(`next page must include HTTP marker ${marker}`);
+	}
+}
+
+export async function assertHttpClosed(url: string) {
+	try {
+		const response = await fetch(url);
+		throw new Error(`expected closed server, got HTTP ${response.status} for ${url}`);
+	} catch (error) {
+		if (error instanceof Error && error.message.startsWith("expected closed server")) {
+			throw error;
+		}
 	}
 }
 
@@ -475,6 +499,52 @@ function assertFixtureSources(fixtureRoot: string, config: ConsumerGateConfig) {
 	}
 }
 
+export async function cleanupConsumerGate(options: {
+	profileDir?: string;
+	child?: ChildProcess;
+	nextUrl?: string;
+	tempRoot: string;
+}) {
+	const errors: unknown[] = [];
+	try {
+		if (options.profileDir) {
+			rmSync(options.profileDir, { recursive: true, force: true });
+			assertBrowserCleaned(options.profileDir);
+		}
+	} catch (error) {
+		errors.push(error);
+	} finally {
+		try {
+			if (options.child) {
+				await stopChild(options.child);
+			}
+		} catch (error) {
+			errors.push(error);
+		} finally {
+			try {
+				assertServerCleaned(options.child?.pid, [options.tempRoot, basename(options.tempRoot)]);
+				if (options.nextUrl) {
+					await assertHttpClosed(options.nextUrl);
+				}
+			} catch (error) {
+				errors.push(error);
+			} finally {
+				try {
+					rmSync(options.tempRoot, { recursive: true, force: true });
+					if (existsSync(options.tempRoot)) {
+						errors.push(new Error(`temp still exists: ${options.tempRoot}`));
+					}
+				} catch (error) {
+					errors.push(error);
+				}
+			}
+		}
+	}
+	if (errors.length > 0) {
+		throw errors.slice(1).reduce((acc, error) => combineErrors(acc, error), errors[0]);
+	}
+}
+
 export async function runConsumerGate(repoRoot: string, config: ConsumerGateConfig) {
 	const packageRoot = join(repoRoot, "packages/basalt");
 	const fixtureRoot = join(repoRoot, config.fixtureDir);
@@ -489,184 +559,189 @@ export async function runConsumerGate(repoRoot: string, config: ConsumerGateConf
 	}
 
 	let child: ChildProcess | undefined;
-	try {
-		run("npm", ["pack", "--pack-destination", tempRoot], packageRoot);
-		const tarballs = readdirSync(tempRoot).filter((name) => name.endsWith(".tgz"));
-		if (tarballs.length !== 1) {
-			throw new Error(`expected one tarball, got ${tarballs.join(", ") || "(none)"}`);
-		}
-		const tarballPath = join(tempRoot, tarballs[0]);
-		const consumerRoot = join(tempRoot, "consumer");
-		cpSync(fixtureRoot, consumerRoot, { recursive: true });
-		if (config.stylesheet) {
-			assertTailwindStylesheet(readFileSync(join(consumerRoot, config.stylesheet), "utf8"), {
-				fromDir: join(consumerRoot, "src"),
-				consumerRoot,
-			});
-		}
-		const manifest = JSON.parse(
-			readFileSync(join(consumerRoot, "package.json"), "utf8"),
-		) as Manifest;
-		const injected = injectTarballDependency(manifest, tarballPath);
-		writeFileSync(join(consumerRoot, "package.json"), `${JSON.stringify(injected, null, "\t")}\n`);
-		const written = readFileSync(join(consumerRoot, "package.json"), "utf8");
-		const manifestHits = forbiddenInstallRefs(written, realpathSync(repoRoot));
-		if (manifestHits.length > 0) {
-			throw new Error(`injected manifest contains ${manifestHits.join(", ")}`);
-		}
-		for (const fileDep of fileDependencyPaths(injected)) {
-			if (!isOutsideRepo(fileDep, realpathSync(repoRoot))) {
-				throw new Error(`file dependency points at the repository: ${fileDep}`);
+	let profileDir: string | undefined;
+	let nextUrl: string | undefined;
+	return settleWithCleanup(
+		async () => {
+			run("npm", ["pack", "--pack-destination", tempRoot], packageRoot);
+			const tarballs = readdirSync(tempRoot).filter((name) => name.endsWith(".tgz"));
+			if (tarballs.length !== 1) {
+				throw new Error(`expected one tarball, got ${tarballs.join(", ") || "(none)"}`);
 			}
-		}
-
-		run("npm", ["install", "--no-fund", "--no-audit"], consumerRoot);
-
-		const lockPath = join(consumerRoot, "package-lock.json");
-		if (!existsSync(lockPath)) {
-			throw new Error("npm install did not write package-lock.json");
-		}
-		const lockHits = forbiddenInstallRefs(readFileSync(lockPath, "utf8"), realpathSync(repoRoot));
-		if (lockHits.length > 0) {
-			throw new Error(`lockfile contains ${lockHits.join(", ")}`);
-		}
-
-		const nodeModules = join(consumerRoot, "node_modules");
-		const heavy = findInstalledPackages(nodeModules, config.forbiddenPeers);
-		if (heavy.length > 0) {
-			throw new Error(`heavy peers installed: ${heavy.join(", ")}`);
-		}
-		const requiredVersions: Record<string, string> = {};
-		for (const [name, version] of Object.entries(config.requiredPeers)) {
-			const actual = installedVersion(nodeModules, name);
-			if (actual !== version) {
-				throw new Error(`${name} version ${actual} does not match fixture ${version}`);
+			const tarballPath = join(tempRoot, tarballs[0]);
+			const consumerRoot = join(tempRoot, "consumer");
+			cpSync(fixtureRoot, consumerRoot, { recursive: true });
+			if (config.stylesheet) {
+				assertTailwindStylesheet(readFileSync(join(consumerRoot, config.stylesheet), "utf8"), {
+					fromDir: join(consumerRoot, "src"),
+					consumerRoot,
+				});
 			}
-			requiredVersions[name] = actual;
-		}
+			const manifest = JSON.parse(
+				readFileSync(join(consumerRoot, "package.json"), "utf8"),
+			) as Manifest;
+			const injected = injectTarballDependency(manifest, tarballPath);
+			writeFileSync(
+				join(consumerRoot, "package.json"),
+				`${JSON.stringify(injected, null, "\t")}\n`,
+			);
+			const written = readFileSync(join(consumerRoot, "package.json"), "utf8");
+			const manifestHits = forbiddenInstallRefs(written, realpathSync(repoRoot));
+			if (manifestHits.length > 0) {
+				throw new Error(`injected manifest contains ${manifestHits.join(", ")}`);
+			}
+			for (const fileDep of fileDependencyPaths(injected)) {
+				if (!isOutsideRepo(fileDep, realpathSync(repoRoot))) {
+					throw new Error(`file dependency points at the repository: ${fileDep}`);
+				}
+			}
 
-		const probe = run(
-			"node",
-			[
-				"--input-type=module",
-				"-e",
-				`import { realpathSync } from "node:fs";
+			run("npm", ["install", "--no-fund", "--no-audit"], consumerRoot);
+
+			const lockPath = join(consumerRoot, "package-lock.json");
+			if (!existsSync(lockPath)) {
+				throw new Error("npm install did not write package-lock.json");
+			}
+			const lockHits = forbiddenInstallRefs(readFileSync(lockPath, "utf8"), realpathSync(repoRoot));
+			if (lockHits.length > 0) {
+				throw new Error(`lockfile contains ${lockHits.join(", ")}`);
+			}
+
+			const nodeModules = join(consumerRoot, "node_modules");
+			const heavy = findInstalledPackages(nodeModules, config.forbiddenPeers);
+			if (heavy.length > 0) {
+				throw new Error(`heavy peers installed: ${heavy.join(", ")}`);
+			}
+			const requiredVersions: Record<string, string> = {};
+			for (const [name, version] of Object.entries(config.requiredPeers)) {
+				const actual = installedVersion(nodeModules, name);
+				if (actual !== version) {
+					throw new Error(`${name} version ${actual} does not match fixture ${version}`);
+				}
+				requiredVersions[name] = actual;
+			}
+
+			const probe = run(
+				"node",
+				[
+					"--input-type=module",
+					"-e",
+					`import { realpathSync } from "node:fs";
 const resolved = import.meta.resolve("@nocoo/basalt");
 const css = import.meta.resolve(${JSON.stringify(config.styleExport)});
 const real = realpathSync(new URL(resolved));
 const cssReal = realpathSync(new URL(css));
 console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
-			],
-			consumerRoot,
-		);
-		const resolution = JSON.parse(probe.stdout.trim()) as {
-			resolved: string;
-			real: string;
-			css: string;
-			cssReal: string;
-		};
-		const expectedRoot = realpathSync(join(nodeModules, "@nocoo/basalt"));
-		const resolvedPath = fileURLToPath(new URL(resolution.resolved));
-		const realPath = realpathSync(resolution.real);
-		const cssPath = fileURLToPath(new URL(resolution.css));
-		const cssReal = realpathSync(resolution.cssReal);
-		if (!isPathInside(expectedRoot, resolvedPath) || !isPathInside(expectedRoot, realPath)) {
-			throw new Error(
-				`@nocoo/basalt resolved outside consumer node_modules: resolved=${resolution.resolved} real=${realPath}`,
+				],
+				consumerRoot,
 			);
-		}
-		if (!isPathInside(expectedRoot, cssPath) || !isPathInside(expectedRoot, cssReal)) {
-			throw new Error(
-				`style export resolved outside consumer node_modules: css=${resolution.css} real=${cssReal}`,
-			);
-		}
-		if (!cssReal.endsWith(config.cssFileSuffix)) {
-			throw new Error(`style export did not resolve to tarball css: ${cssReal}`);
-		}
-		if (
-			isPathInside(realpathSync(repoRoot), realPath) ||
-			isPathInside(realpathSync(repoRoot), resolvedPath) ||
-			isPathInside(realpathSync(repoRoot), cssReal)
-		) {
-			throw new Error("@nocoo/basalt resolved into the repository");
-		}
-
-		const typecheck = run("npm", ["run", "typecheck"], consumerRoot);
-		run("npm", ["run", "build"], consumerRoot);
-
-		const evidence: Record<string, unknown> = {
-			mode: config.mode,
-			tempRoot,
-			tarball: tarballs[0],
-			resolved: resolution.resolved,
-			realpath: realPath,
-			css: resolution.css,
-			cssReal,
-			typecheck: typecheck.stdout.trim() || "ok",
-			requiredVersions,
-			missingHeavyPeers: config.forbiddenPeers.filter((name) => !heavy.includes(name)),
-		};
-
-		if (config.mode === "next" && config.httpMarker) {
-			const port = await allocatePort();
-			const url = `http://127.0.0.1:${port}/`;
-			const launch = nextStartLaunch(consumerRoot, port);
-			const started = await startHttpServer({
-				cwd: consumerRoot,
-				command: launch.command,
-				args: launch.args,
-				url,
-				env: { PORT: String(port) },
-				needles: [tempRoot, basename(tempRoot)],
-			});
-			child = started.child;
-			const body = await started.response.text();
-			assertNextHttpBody(started.response.status, body, config.httpMarker);
-			evidence.port = port;
-			evidence.httpStatus = started.response.status;
-			evidence.marker = true;
-			evidence.launch = `${launch.command} ${launch.args[0]}`;
-		} else {
-			const distRoot = join(consumerRoot, "dist");
-			const distFiles = walkFiles(distRoot);
-			const kinds = distArtifactKinds(distFiles);
-			if (!kinds.html || !kinds.js || !kinds.css) {
+			const resolution = JSON.parse(probe.stdout.trim()) as {
+				resolved: string;
+				real: string;
+				css: string;
+				cssReal: string;
+			};
+			const expectedRoot = realpathSync(join(nodeModules, "@nocoo/basalt"));
+			const resolvedPath = fileURLToPath(new URL(resolution.resolved));
+			const realPath = realpathSync(resolution.real);
+			const cssPath = fileURLToPath(new URL(resolution.css));
+			const cssReal = realpathSync(resolution.cssReal);
+			if (!isPathInside(expectedRoot, resolvedPath) || !isPathInside(expectedRoot, realPath)) {
 				throw new Error(
-					`production dist missing artifacts html=${kinds.html} js=${kinds.js} css=${kinds.css}`,
+					`@nocoo/basalt resolved outside consumer node_modules: resolved=${resolution.resolved} real=${realPath}`,
 				);
 			}
-			const cssFiles = distFiles.filter((file) => file.endsWith(".css"));
-			const css = cssFiles.map((file) => readFileSync(file, "utf8")).join("\n");
-			const cssEvidence =
-				config.mode === "tailwind" ? tailwindCssEvidence(css) : standaloneCssEvidence(css);
-			if (cssEvidence.empty || !cssEvidence.token || !cssEvidence.buttonClass) {
+			if (!isPathInside(expectedRoot, cssPath) || !isPathInside(expectedRoot, cssReal)) {
 				throw new Error(
-					`${config.mode} CSS evidence failed empty=${cssEvidence.empty} token=${cssEvidence.token} buttonClass=${cssEvidence.buttonClass}`,
+					`style export resolved outside consumer node_modules: css=${resolution.css} real=${cssReal}`,
 				);
 			}
-			if ("buttonUtility" in cssEvidence && !cssEvidence.buttonUtility) {
-				throw new Error("tailwind CSS missing Button utility .text-basalt-primary-foreground");
+			if (!cssReal.endsWith(config.cssFileSuffix)) {
+				throw new Error(`style export did not resolve to tarball css: ${cssReal}`);
 			}
-			if ("standaloneDump" in cssEvidence && cssEvidence.standaloneDump) {
-				throw new Error("tailwind CSS is a standalone dump");
+			if (
+				isPathInside(realpathSync(repoRoot), realPath) ||
+				isPathInside(realpathSync(repoRoot), resolvedPath) ||
+				isPathInside(realpathSync(repoRoot), cssReal)
+			) {
+				throw new Error("@nocoo/basalt resolved into the repository");
 			}
-			evidence.distFiles = distFiles.map((file) => posixPath(relative(distRoot, file))).sort();
-			evidence.cssBytes = Buffer.byteLength(css);
-			evidence.cssEvidence = cssEvidence;
-		}
 
-		console.log(`consumer ${config.mode} ok ${JSON.stringify(evidence, null, 2)}`);
-		return evidence;
-	} finally {
-		if (child) {
-			await stopChild(child);
-		}
-		try {
-			assertServerCleaned(child?.pid, [tempRoot, basename(tempRoot)]);
-		} finally {
-			rmSync(tempRoot, { recursive: true, force: true });
-		}
-	}
+			const typecheck = run("npm", ["run", "typecheck"], consumerRoot);
+			run("npm", ["run", "build"], consumerRoot);
+
+			const evidence: Record<string, unknown> = {
+				mode: config.mode,
+				tempRoot,
+				tarball: tarballs[0],
+				resolved: resolution.resolved,
+				realpath: realPath,
+				css: resolution.css,
+				cssReal,
+				typecheck: typecheck.stdout.trim() || "ok",
+				requiredVersions,
+				missingHeavyPeers: config.forbiddenPeers.filter((name) => !heavy.includes(name)),
+			};
+
+			if (config.mode === "next" && config.httpMarker) {
+				const port = await allocatePort();
+				const url = `http://127.0.0.1:${port}/`;
+				nextUrl = url;
+				const launch = nextStartLaunch(consumerRoot, port);
+				const started = await startHttpServer({
+					cwd: consumerRoot,
+					command: launch.command,
+					args: launch.args,
+					url,
+					env: { PORT: String(port) },
+					needles: [tempRoot, basename(tempRoot)],
+				});
+				child = started.child;
+				const body = await started.response.text();
+				assertNextHttpBody(started.response.status, body, config.httpMarker);
+				profileDir = createBrowserProfileDir();
+				const hydration = await proveNextHydration(url, profileDir);
+				evidence.port = port;
+				evidence.httpStatus = started.response.status;
+				evidence.marker = true;
+				evidence.launch = `${launch.command} ${launch.args[0]}`;
+				evidence.hydration = hydration;
+			} else {
+				const distRoot = join(consumerRoot, "dist");
+				const distFiles = walkFiles(distRoot);
+				const kinds = distArtifactKinds(distFiles);
+				if (!kinds.html || !kinds.js || !kinds.css) {
+					throw new Error(
+						`production dist missing artifacts html=${kinds.html} js=${kinds.js} css=${kinds.css}`,
+					);
+				}
+				const cssFiles = distFiles.filter((file) => file.endsWith(".css"));
+				const css = cssFiles.map((file) => readFileSync(file, "utf8")).join("\n");
+				const cssEvidence =
+					config.mode === "tailwind" ? tailwindCssEvidence(css) : standaloneCssEvidence(css);
+				if (cssEvidence.empty || !cssEvidence.token || !cssEvidence.buttonClass) {
+					throw new Error(
+						`${config.mode} CSS evidence failed empty=${cssEvidence.empty} token=${cssEvidence.token} buttonClass=${cssEvidence.buttonClass}`,
+					);
+				}
+				if ("buttonUtility" in cssEvidence && !cssEvidence.buttonUtility) {
+					throw new Error("tailwind CSS missing Button utility .text-basalt-primary-foreground");
+				}
+				if ("standaloneDump" in cssEvidence && cssEvidence.standaloneDump) {
+					throw new Error("tailwind CSS is a standalone dump");
+				}
+				evidence.distFiles = distFiles.map((file) => posixPath(relative(distRoot, file))).sort();
+				evidence.cssBytes = Buffer.byteLength(css);
+				evidence.cssEvidence = cssEvidence;
+			}
+
+			console.log(`consumer ${config.mode} ok ${JSON.stringify(evidence, null, 2)}`);
+			return evidence;
+		},
+		async () => {
+			await cleanupConsumerGate({ profileDir, child, nextUrl, tempRoot });
+		},
+	);
 }
 
 export function runStandaloneConsumerGate(repoRoot: string) {
