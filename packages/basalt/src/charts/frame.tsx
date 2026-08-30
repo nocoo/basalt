@@ -20,7 +20,7 @@ export function ChartFrame({
 			aria-label={ariaLabel}
 			className={cn(
 				size,
-				"outline-none [&_.recharts-layer]:outline-none [&_.recharts-rectangle]:outline-none [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none [&_.recharts-wrapper]:outline-none",
+				"basalt-chart outline-none [&_.recharts-layer]:outline-none [&_.recharts-rectangle]:outline-none [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none [&_.recharts-wrapper]:outline-none",
 				className,
 			)}
 		>
