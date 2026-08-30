@@ -146,6 +146,18 @@ describe("charts", () => {
 		expect(screen.getByText("Today")).toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: /2026/ })).toBeNull();
 		render(
+			<DateNavigation
+				selectedDate={new Date()}
+				onPrevDay={() => {}}
+				onNextDay={() => {}}
+				onToday={() => {}}
+				todayLabel="Today"
+				timeZone="UTC"
+			/>,
+		);
+		const todayButtons = screen.getAllByRole("button", { name: "Today" });
+		expect(todayButtons[todayButtons.length - 1]).toBeDisabled();
+		render(
 			<Timeline
 				events={[{ id: "i1", time: "08:45", title: "Packet loss", subtitle: "0.6%" }]}
 				ariaLabel="Incidents"

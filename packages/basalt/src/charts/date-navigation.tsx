@@ -16,12 +16,23 @@ function shiftIso(value: string, delta: number) {
 	return `${year}-${month}-${day}`;
 }
 
-function isSameDay(left: Date, right: Date) {
-	return (
-		left.getFullYear() === right.getFullYear() &&
-		left.getMonth() === right.getMonth() &&
-		left.getDate() === right.getDate()
-	);
+function civilInZone(date: Date, timeZone?: string) {
+	const parts = new Intl.DateTimeFormat("en-CA", {
+		timeZone,
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+	}).formatToParts(date);
+	const read = (type: Intl.DateTimeFormatPartTypes) =>
+		Number(parts.find((part) => part.type === type)?.value);
+	return { y: read("year"), m: read("month"), d: read("day") };
+}
+
+function isSameCivil(
+	left: { y: number; m: number; d: number },
+	right: { y: number; m: number; d: number },
+) {
+	return left.y === right.y && left.m === right.m && left.d === right.d;
 }
 
 type PickerProps = ComponentProps<typeof DatePicker> & {
@@ -40,6 +51,7 @@ type DisplayProps = {
 	nextDayLabel?: string;
 	formatDate?: (date: Date) => string;
 	locale?: string;
+	timeZone?: string;
 	className?: string;
 };
 
@@ -109,6 +121,7 @@ function DateNavigationDisplay({
 	nextDayLabel = "Next day",
 	formatDate,
 	locale = "en-US",
+	timeZone,
 	className,
 }: DisplayProps) {
 	const resolvedFormatDate =
@@ -119,9 +132,12 @@ function DateNavigationDisplay({
 				year: "numeric",
 				month: "short",
 				day: "numeric",
+				timeZone,
 			}));
-	const today = new Date();
-	const isToday = isSameDay(selectedDate, today);
+	const isToday = isSameCivil(
+		civilInZone(selectedDate, timeZone),
+		civilInZone(new Date(), timeZone),
+	);
 	const formatted = resolvedFormatDate(selectedDate);
 	return (
 		<div className={cn("flex items-center justify-center gap-2", className)}>
