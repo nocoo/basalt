@@ -232,7 +232,7 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		usage: usage(
 			"InputGroup",
 			"@nocoo/basalt/components/input-group",
-			"<InputGroup><InputGroup.Input defaultValue='kumo' aria-label='Subdomain' /><InputGroup.Suffix>.workers.dev</InputGroup.Suffix></InputGroup>",
+			"<InputGroup><InputGroup.Input defaultValue='atlas' aria-label='Subdomain' /><InputGroup.Suffix>.example.com</InputGroup.Suffix></InputGroup>",
 		),
 		variants: [],
 		props: [

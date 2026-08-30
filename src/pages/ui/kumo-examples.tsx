@@ -611,14 +611,14 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 		{
 			title: "Inline Suffix",
 			code: `<InputGroup>
-  <InputGroup.Input defaultValue="kumo" />
-  <InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+  <InputGroup.Input defaultValue="atlas" />
+  <InputGroup.Suffix>.example.com</InputGroup.Suffix>
   <InputGroup.Addon align="end"><CircleCheck /></InputGroup.Addon>
 </InputGroup>`,
 			render: () => (
 				<InputGroup className="max-w-sm">
-					<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
-					<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+					<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
+					<InputGroup.Suffix>.example.com</InputGroup.Suffix>
 					<InputGroup.Addon align="end">
 						<CircleCheck className="text-basalt-heatmap-green-3" />
 					</InputGroup.Addon>
@@ -673,12 +673,12 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 		{
 			title: "Loading",
 			code: `<InputGroup>
-  <InputGroup.Input defaultValue="kumo" />
+  <InputGroup.Input defaultValue="atlas" />
   <InputGroup.Addon align="end"><Loader /></InputGroup.Addon>
 </InputGroup>`,
 			render: () => (
 				<InputGroup className="max-w-sm">
-					<InputGroup.Input defaultValue="kumo" aria-label="Loading query" />
+					<InputGroup.Input defaultValue="atlas" aria-label="Loading query" />
 					<InputGroup.Addon align="end">
 						<Loader size={16} />
 					</InputGroup.Addon>
@@ -1433,11 +1433,11 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 	collapsible: [
 		{
 			title: "With Default Styling",
-			code: "<Collapsible><CollapsibleTrigger>What is Kumo?</CollapsibleTrigger><CollapsibleContent>…</CollapsibleContent></Collapsible>",
+			code: "<Collapsible><CollapsibleTrigger>How does this project work?</CollapsibleTrigger><CollapsibleContent>…</CollapsibleContent></Collapsible>",
 			render: () => (
 				<Collapsible>
-					<CollapsibleTrigger>What is Kumo?</CollapsibleTrigger>
-					<CollapsibleContent>Kumo is Cloudflare's component library.</CollapsibleContent>
+					<CollapsibleTrigger>How does this project work?</CollapsibleTrigger>
+					<CollapsibleContent>This project is a React component library.</CollapsibleContent>
 				</Collapsible>
 			),
 		},
@@ -1468,7 +1468,7 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell>Worker 1</TableCell>
+      <TableCell>Report 1</TableCell>
       <TableCell>Active</TableCell>
     </TableRow>
   </TableBody>
@@ -1483,15 +1483,15 @@ export const KUMO_EXAMPLES: Record<string, Example[]> = {
 					</TableHeader>
 					<TableBody>
 						<TableRow>
-							<TableCell>Worker 1</TableCell>
+							<TableCell>Report 1</TableCell>
 							<TableCell>Active</TableCell>
 						</TableRow>
 						<TableRow>
-							<TableCell>Worker 2</TableCell>
+							<TableCell>Report 2</TableCell>
 							<TableCell>Paused</TableCell>
 						</TableRow>
 						<TableRow>
-							<TableCell>Worker 3</TableCell>
+							<TableCell>Report 3</TableCell>
 							<TableCell>Active</TableCell>
 						</TableRow>
 					</TableBody>

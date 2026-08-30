@@ -168,8 +168,8 @@ function HomeBanner() {
 function HomeInputGroup() {
 	return (
 		<InputGroup className="max-w-[220px]">
-			<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
-			<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+			<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
+			<InputGroup.Suffix>.example.com</InputGroup.Suffix>
 			<InputGroup.Addon align="end">
 				<CircleCheck className="text-basalt-heatmap-green-3" />
 			</InputGroup.Addon>

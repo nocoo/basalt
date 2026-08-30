@@ -109,8 +109,8 @@ const BASE_DEMOS: Record<string, ComponentType> = {
 	"input-area": () => <InputArea aria-label="Notes" placeholder="Write a note" />,
 	"input-group": () => (
 		<InputGroup>
-			<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
-			<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+			<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
+			<InputGroup.Suffix>.example.com</InputGroup.Suffix>
 			<InputGroup.Addon align="end">
 				<CircleCheck className="text-basalt-heatmap-green-3" />
 			</InputGroup.Addon>
@@ -353,13 +353,13 @@ const BASE_EXAMPLES: Record<string, { title: string; code: string; render: Compo
 		{
 			title: "Default",
 			code: `<InputGroup>
-  <InputGroup.Input defaultValue="kumo" />
-  <InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+  <InputGroup.Input defaultValue="atlas" />
+  <InputGroup.Suffix>.example.com</InputGroup.Suffix>
 </InputGroup>`,
 			render: () => (
 				<InputGroup>
-					<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
-					<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+					<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
+					<InputGroup.Suffix>.example.com</InputGroup.Suffix>
 					<InputGroup.Addon align="end">
 						<CircleCheck className="text-basalt-heatmap-green-3" />
 					</InputGroup.Addon>

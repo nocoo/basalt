@@ -33,11 +33,11 @@ describe("Table", () => {
 				</TableHeader>
 				<TableBody>
 					<TableRow>
-						<TableCell>Worker 1</TableCell>
+						<TableCell>Report 1</TableCell>
 						<TableCell>Active</TableCell>
 					</TableRow>
 					<TableRow>
-						<TableCell>Worker 2</TableCell>
+						<TableCell>Report 2</TableCell>
 						<TableCell>Paused</TableCell>
 					</TableRow>
 				</TableBody>
@@ -45,7 +45,7 @@ describe("Table", () => {
 		);
 		expect(screen.getByText("Name").className).toContain("font-semibold");
 		expect(screen.getByText("Name").className).toContain("bg-basalt-card");
-		expect(screen.getByText("Worker 2").closest("tr")?.className).toContain(
+		expect(screen.getByText("Report 2").closest("tr")?.className).toContain(
 			"even:[&_td]:bg-basalt-secondary",
 		);
 	});

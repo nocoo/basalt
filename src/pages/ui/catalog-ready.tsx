@@ -341,11 +341,11 @@ add(
 	"A composable disclosure for showing and hiding content.",
 	() => (
 		<Collapsible>
-			<CollapsibleTrigger>What is Kumo?</CollapsibleTrigger>
-			<CollapsibleContent>Kumo is Cloudflare's component library.</CollapsibleContent>
+			<CollapsibleTrigger>How does this project work?</CollapsibleTrigger>
+			<CollapsibleContent>This project is a React component library.</CollapsibleContent>
 		</Collapsible>
 	),
-	"<Collapsible><CollapsibleTrigger>What is Kumo?</CollapsibleTrigger><CollapsibleContent>…</CollapsibleContent></Collapsible>",
+	"<Collapsible><CollapsibleTrigger>How does this project work?</CollapsibleTrigger><CollapsibleContent>…</CollapsibleContent></Collapsible>",
 );
 add(
 	"tabs",
@@ -419,21 +419,21 @@ add(
 			</TableHeader>
 			<TableBody>
 				<TableRow>
-					<TableCell>Worker 1</TableCell>
+					<TableCell>Report 1</TableCell>
 					<TableCell>Active</TableCell>
 				</TableRow>
 				<TableRow>
-					<TableCell>Worker 2</TableCell>
+					<TableCell>Report 2</TableCell>
 					<TableCell>Paused</TableCell>
 				</TableRow>
 				<TableRow>
-					<TableCell>Worker 3</TableCell>
+					<TableCell>Report 3</TableCell>
 					<TableCell>Active</TableCell>
 				</TableRow>
 			</TableBody>
 		</Table>
 	),
-	"<Table><TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Status</TableHead></TableRow></TableHeader><TableBody><TableRow><TableCell>Worker 1</TableCell><TableCell>Active</TableCell></TableRow></TableBody></Table>",
+	"<Table><TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Status</TableHead></TableRow></TableHeader><TableBody><TableRow><TableCell>Report 1</TableCell><TableCell>Active</TableCell></TableRow></TableBody></Table>",
 );
 add(
 	"data-table",

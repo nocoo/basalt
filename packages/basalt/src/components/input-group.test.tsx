@@ -15,12 +15,12 @@ describe("InputGroup", () => {
 	it("keeps the suffix inline with the value", () => {
 		render(
 			<InputGroup>
-				<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
-				<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+				<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
+				<InputGroup.Suffix>.example.com</InputGroup.Suffix>
 			</InputGroup>,
 		);
-		expect(screen.getByRole("textbox", { name: "Subdomain" })).toHaveValue("kumo");
-		expect(screen.getByText(".workers.dev")).toBeInTheDocument();
+		expect(screen.getByRole("textbox", { name: "Subdomain" })).toHaveValue("atlas");
+		expect(screen.getByText(".example.com")).toBeInTheDocument();
 	});
 
 	it("disables nested controls when the group is disabled", () => {
@@ -37,11 +37,11 @@ describe("InputGroup", () => {
 	it("focuses the input when the group is clicked", () => {
 		render(
 			<InputGroup>
-				<InputGroup.Input defaultValue="kumo" aria-label="Subdomain" />
-				<InputGroup.Suffix>.workers.dev</InputGroup.Suffix>
+				<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
+				<InputGroup.Suffix>.example.com</InputGroup.Suffix>
 			</InputGroup>,
 		);
-		fireEvent.click(screen.getByText(".workers.dev"));
+		fireEvent.click(screen.getByText(".example.com"));
 		expect(screen.getByRole("textbox", { name: "Subdomain" })).toHaveFocus();
 	});
 });
