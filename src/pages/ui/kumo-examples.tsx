@@ -522,19 +522,19 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("pagination", "full-controls-default"),
 			title: "Full Controls (Default)",
-			code: "<Pagination page={1} pageCount={10} onPageChange={setPage} />",
+			code: "const [page, setPage] = useState(1);\nreturn <Pagination page={page} pageCount={10} onPageChange={setPage} />;",
 			render: () => <PaginationExample page={1} pageCount={10} />,
 		},
 		{
 			id: catalogScenarioId("pagination", "simple-controls"),
 			title: "Simple Controls",
-			code: "<Pagination page={2} pageCount={10} simple onPageChange={setPage} />",
+			code: "const [page, setPage] = useState(2);\nreturn <Pagination page={page} pageCount={10} simple onPageChange={setPage} />;",
 			render: () => <PaginationExample page={2} pageCount={10} simple />,
 		},
 		{
 			id: catalogScenarioId("pagination", "mid-page-state"),
 			title: "Mid-Page State",
-			code: "<Pagination page={5} pageCount={12} onPageChange={setPage} />",
+			code: "const [page, setPage] = useState(5);\nreturn <Pagination page={page} pageCount={12} onPageChange={setPage} />;",
 			render: () => <PaginationExample page={5} pageCount={12} />,
 		},
 	],
@@ -1144,7 +1144,14 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("tabs", "variants"),
 			title: "Variants",
-			code: "<Tabs defaultValue='a'><TabsList><TabsTrigger value='a'>Home</TabsTrigger></TabsList></Tabs>",
+			code: `<Tabs defaultValue="a">
+  <TabsList>
+    <TabsTrigger value="a">Home</TabsTrigger>
+    <TabsTrigger value="b">About</TabsTrigger>
+  </TabsList>
+  <TabsContent value="a">Home overview and getting started.</TabsContent>
+  <TabsContent value="b">About this project and its goals.</TabsContent>
+</Tabs>`,
 			render: () => (
 				<Tabs defaultValue="a">
 					<TabsList>
@@ -1159,7 +1166,15 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("tabs", "many-tabs"),
 			title: "Many Tabs",
-			code: "<TabsTrigger>…</TabsTrigger>",
+			code: `<Tabs defaultValue="a">
+  <TabsList>
+    <TabsTrigger value="overview">Overview</TabsTrigger>
+    <TabsTrigger value="usage">Usage</TabsTrigger>
+    <TabsTrigger value="api">API</TabsTrigger>
+    <TabsTrigger value="accessibility">Accessibility</TabsTrigger>
+    <TabsTrigger value="changelog">Changelog</TabsTrigger>
+  </TabsList>
+</Tabs>`,
 			render: () => (
 				<Tabs defaultValue="a">
 					<TabsList>
@@ -1266,7 +1281,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			title: "Basic Dialog",
 			code: `<Dialog>
   <DialogTrigger asChild>
-    <Button>Click me</Button>
+    <Button variant="outline">Click me</Button>
   </DialogTrigger>
   <DialogContent>
     <div className="mb-4 flex items-start justify-between gap-4">
@@ -1293,7 +1308,42 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("dialog", "sizes"),
 			title: "Sizes",
-			code: '<DialogContent size="sm">…</DialogContent>\n<DialogContent size="base">…</DialogContent>\n<DialogContent size="lg">…</DialogContent>\n<DialogContent size="xl">…</DialogContent>',
+			code: `<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Small (288px)</Button>
+  </DialogTrigger>
+  <DialogContent size="sm">
+    <DialogTitle>Small Dialog</DialogTitle>
+    <DialogDescription>This size="sm" dialog stays 288px wide on desktop.</DialogDescription>
+  </DialogContent>
+</Dialog>
+<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Base (384px)</Button>
+  </DialogTrigger>
+  <DialogContent size="base">
+    <DialogTitle>Base Dialog</DialogTitle>
+    <DialogDescription>This size="base" dialog stays 384px wide on desktop.</DialogDescription>
+  </DialogContent>
+</Dialog>
+<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Large (512px)</Button>
+  </DialogTrigger>
+  <DialogContent size="lg">
+    <DialogTitle>Large Dialog</DialogTitle>
+    <DialogDescription>This size="lg" dialog stays 512px wide on desktop.</DialogDescription>
+  </DialogContent>
+</Dialog>
+<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Extra Large (768px)</Button>
+  </DialogTrigger>
+  <DialogContent size="xl">
+    <DialogTitle>Extra Large Dialog</DialogTitle>
+    <DialogDescription>This size="xl" dialog stays 768px wide on desktop.</DialogDescription>
+  </DialogContent>
+</Dialog>`,
 			render: () => <DialogSizesExample />,
 		},
 		{
@@ -1305,7 +1355,9 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
   </AlertDialogTrigger>
   <AlertDialogContent>
     <AlertDialogTitle>Delete Account?</AlertDialogTitle>
-    <AlertDialogDescription>This action cannot be undone.</AlertDialogDescription>
+    <AlertDialogDescription>
+      This action cannot be undone. All your data will be permanently removed from our servers. Are you sure you want to proceed?
+    </AlertDialogDescription>
     <AlertDialogCancel>Cancel</AlertDialogCancel>
     <AlertDialogAction>Delete Account</AlertDialogAction>
   </AlertDialogContent>
@@ -1343,7 +1395,13 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
   </DialogTrigger>
   <DialogContent disablePointerDismissal>
     <DialogTitle>Delete Project?</DialogTitle>
-    <DialogDescription>This action cannot be undone.</DialogDescription>
+    <DialogDescription>
+      This action cannot be undone. This will permanently delete the project and all associated data.
+    </DialogDescription>
+    <div className="mt-8 flex justify-end gap-2">
+      <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
+      <DialogClose asChild><Button variant="destructive">Delete</Button></DialogClose>
+    </div>
   </DialogContent>
 </Dialog>`,
 			render: () => (
@@ -1372,7 +1430,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			title: "With Actions",
 			code: `<Dialog>
   <DialogTrigger asChild>
-    <Button>Delete</Button>
+    <Button variant="outline">Delete</Button>
   </DialogTrigger>
   <DialogContent>
     <DialogTitle>Delete Resource?</DialogTitle>
@@ -1399,7 +1457,17 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("dialog", "custom-max-width"),
 			title: "Custom Max Width",
-			code: '<DialogContent size="xl" className="max-w-lg">…</DialogContent>',
+			code: `<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Open capped dialog</Button>
+  </DialogTrigger>
+  <DialogContent size="xl" className="max-w-lg">
+    <DialogTitle>Max width override</DialogTitle>
+    <DialogDescription>
+      This dialog uses className="max-w-lg" and stays capped around 512px on desktop.
+    </DialogDescription>
+  </DialogContent>
+</Dialog>`,
 			render: () => (
 				<Dialog>
 					<DialogTrigger asChild>
@@ -1420,13 +1488,29 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("dialog", "with-select"),
 			title: "With Select",
-			code: `<DialogContent>
-  <DialogTitle>Create Resource</DialogTitle>
-  <Select>
-    <SelectTrigger aria-label="Region"><SelectValue placeholder="Select region..." /></SelectTrigger>
-    <SelectContent><SelectItem value="us-east">US East</SelectItem></SelectContent>
-  </Select>
-</DialogContent>`,
+			code: `<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Open Form</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogTitle>Create Resource</DialogTitle>
+    <DialogDescription>Select a region for your new resource.</DialogDescription>
+    <Select>
+      <SelectTrigger aria-label="Region">
+        <SelectValue placeholder="Select region..." />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="us-east">US East</SelectItem>
+        <SelectItem value="us-west">US West</SelectItem>
+        <SelectItem value="eu-west">EU West</SelectItem>
+      </SelectContent>
+    </Select>
+    <div className="mt-8 flex justify-end gap-2">
+      <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
+      <Button>Create</Button>
+    </div>
+  </DialogContent>
+</Dialog>`,
 			render: () => (
 				<Dialog>
 					<DialogTrigger asChild>
@@ -1460,10 +1544,20 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("dialog", "with-combobox"),
 			title: "With Combobox",
-			code: `<DialogContent>
-  <DialogTitle>Create Resource</DialogTitle>
-  <Combobox items={["US East", "US West", "EU West"]} placeholder="Search regions..." />
-</DialogContent>`,
+			code: `<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Open Form</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogTitle>Create Resource</DialogTitle>
+    <DialogDescription>Search and select a region for your new resource.</DialogDescription>
+    <Combobox items={["US East", "US West", "EU West"]} placeholder="Search regions..." />
+    <div className="mt-8 flex justify-end gap-2">
+      <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
+      <Button>Create</Button>
+    </div>
+  </DialogContent>
+</Dialog>`,
 			render: () => (
 				<Dialog>
 					<DialogTrigger asChild>
@@ -1488,16 +1582,26 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("dialog", "with-dropdown"),
 			title: "With Dropdown",
-			code: `<DialogContent>
-  <DialogTitle>Resource Actions</DialogTitle>
-  <DropdownMenu>
-    <DropdownMenuTrigger asChild><Button>Actions</Button></DropdownMenuTrigger>
-    <DropdownMenuContent>
-      <DropdownMenuItem>Edit</DropdownMenuItem>
-      <DropdownMenuItem>Delete</DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
-</DialogContent>`,
+			code: `<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Open Form</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogTitle>Resource Actions</DialogTitle>
+    <DialogDescription>Choose an action for the selected resource.</DialogDescription>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild><Button>Actions</Button></DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <DropdownMenuItem>Duplicate</DropdownMenuItem>
+        <DropdownMenuItem>Delete</DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+    <div className="mt-8 flex justify-end">
+      <DialogClose asChild><Button variant="outline">Close</Button></DialogClose>
+    </div>
+  </DialogContent>
+</Dialog>`,
 			render: () => (
 				<Dialog>
 					<DialogTrigger asChild>
@@ -1533,7 +1637,9 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			id: catalogScenarioId("popover", "basic-popover"),
 			title: "Basic Popover",
 			code: `<Popover>
-  <PopoverTrigger asChild><Button>Open Popover</Button></PopoverTrigger>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Open Popover</Button>
+  </PopoverTrigger>
   <PopoverContent>
     <PopoverTitle>Popover Title</PopoverTitle>
     <PopoverDescription>This is a popover.</PopoverDescription>
@@ -1554,7 +1660,42 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("popover", "sides"),
 			title: "Sides",
-			code: '<PopoverContent side="top">…</PopoverContent>',
+			code: `<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Bottom</Button>
+  </PopoverTrigger>
+  <PopoverContent side="bottom">
+    <PopoverTitle>Bottom</PopoverTitle>
+    <PopoverDescription>Popover on bottom.</PopoverDescription>
+  </PopoverContent>
+</Popover>
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Top</Button>
+  </PopoverTrigger>
+  <PopoverContent side="top">
+    <PopoverTitle>Top</PopoverTitle>
+    <PopoverDescription>Popover on top.</PopoverDescription>
+  </PopoverContent>
+</Popover>
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Left</Button>
+  </PopoverTrigger>
+  <PopoverContent side="left">
+    <PopoverTitle>Left</PopoverTitle>
+    <PopoverDescription>Popover on left.</PopoverDescription>
+  </PopoverContent>
+</Popover>
+<Popover>
+  <PopoverTrigger asChild>
+    <Button variant="outline">Right</Button>
+  </PopoverTrigger>
+  <PopoverContent side="right">
+    <PopoverTitle>Right</PopoverTitle>
+    <PopoverDescription>Popover on right.</PopoverDescription>
+  </PopoverContent>
+</Popover>`,
 			render: () => (
 				<div className="flex flex-wrap items-center justify-center gap-4 py-16">
 					{(["bottom", "top", "left", "right"] as const).map((side) => (
@@ -1576,7 +1717,15 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("dropdown-menu", "basic-dropdown"),
 			title: "Basic Dropdown",
-			code: "<DropdownMenu><DropdownMenuTrigger asChild><Button>Open</Button></DropdownMenuTrigger><DropdownMenuContent><DropdownMenuItem>Item</DropdownMenuItem></DropdownMenuContent></DropdownMenu>",
+			code: `<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Open</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>Copy</DropdownMenuItem>
+    <DropdownMenuItem>Delete</DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`,
 			render: () => (
 				<DropdownMenu>
 					<DropdownMenuTrigger asChild>
@@ -1594,7 +1743,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("collapsible", "with-default-styling"),
 			title: "With Default Styling",
-			code: "<Collapsible><CollapsibleTrigger>How does this project work?</CollapsibleTrigger><CollapsibleContent>…</CollapsibleContent></Collapsible>",
+			code: "<Collapsible><CollapsibleTrigger>How does this project work?</CollapsibleTrigger><CollapsibleContent>This project is a React component library.</CollapsibleContent></Collapsible>",
 			render: () => (
 				<Collapsible>
 					<CollapsibleTrigger>How does this project work?</CollapsibleTrigger>
@@ -1605,7 +1754,12 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("collapsible", "custom-trigger"),
 			title: "Custom Trigger",
-			code: "<CollapsibleTrigger asChild><Button>Show details</Button></CollapsibleTrigger>",
+			code: `<Collapsible>
+  <CollapsibleTrigger asChild>
+    <Button variant="outline" size="sm">Show details</Button>
+  </CollapsibleTrigger>
+  <CollapsibleContent>Expanded copy.</CollapsibleContent>
+</Collapsible>`,
 			render: () => (
 				<Collapsible>
 					<CollapsibleTrigger asChild>
@@ -1632,6 +1786,14 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
   <TableBody>
     <TableRow>
       <TableCell>Report 1</TableCell>
+      <TableCell>Active</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Report 2</TableCell>
+      <TableCell>Paused</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Report 3</TableCell>
       <TableCell>Active</TableCell>
     </TableRow>
   </TableBody>
@@ -1664,7 +1826,21 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("table", "selected-row"),
 			title: "Selected Row",
-			code: '<TableRow variant="selected">…</TableRow>',
+			code: `<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Name</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow variant="selected">
+      <TableCell>Selected</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Idle</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>`,
 			render: () => (
 				<Table className="w-[200px]">
 					<TableHeader>
@@ -1688,7 +1864,10 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("table-of-contents", "options"),
 			title: "Options",
-			code: "<TableOfContents><TableOfContentsItem active>Intro</TableOfContentsItem></TableOfContents>",
+			code: `<TableOfContents>
+  <TableOfContentsItem active>Intro</TableOfContentsItem>
+  <TableOfContentsItem>Usage</TableOfContentsItem>
+</TableOfContents>`,
 			render: () => (
 				<TableOfContents>
 					<TableOfContentsItem active>Intro</TableOfContentsItem>
@@ -1699,7 +1878,10 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("table-of-contents", "no-active-item"),
 			title: "No active item",
-			code: "<TableOfContentsItem>Intro</TableOfContentsItem>",
+			code: `<TableOfContents>
+  <TableOfContentsItem>Intro</TableOfContentsItem>
+  <TableOfContentsItem>Usage</TableOfContentsItem>
+</TableOfContents>`,
 			render: () => (
 				<TableOfContents>
 					<TableOfContentsItem>Intro</TableOfContentsItem>
@@ -1710,7 +1892,9 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("table-of-contents", "without-title"),
 			title: "Without title",
-			code: '<TableOfContents title="">…</TableOfContents>',
+			code: `<TableOfContents title="">
+  <TableOfContentsItem active>Intro</TableOfContentsItem>
+</TableOfContents>`,
 			render: () => (
 				<TableOfContents title="">
 					<TableOfContentsItem active>Intro</TableOfContentsItem>
@@ -1722,7 +1906,7 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 		{
 			id: catalogScenarioId("toolbar", "input-shorthand"),
 			title: "Input Shorthand",
-			code: '<Toolbar><Toolbar.Input placeholder="Search..." /><Toolbar.Button aria-label="Search" /><Toolbar.Button aria-label="Add" /></Toolbar>',
+			code: '<Toolbar><Toolbar.Input aria-label="Search records" placeholder="Search..." /><Toolbar.Button icon={<Search />} aria-label="Search" /><Toolbar.Button icon={<Plus />} aria-label="Add" /></Toolbar>',
 			render: () => (
 				<Toolbar className="w-full max-w-md">
 					<Toolbar.Input aria-label="Search records" placeholder="Search..." className="flex-1" />

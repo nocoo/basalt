@@ -376,7 +376,22 @@ add(
 			<CollapsibleContent>This project is a React component library.</CollapsibleContent>
 		</Collapsible>
 	),
-	"<Collapsible><CollapsibleTrigger>How does this project work?</CollapsibleTrigger><CollapsibleContent>…</CollapsibleContent></Collapsible>",
+	"<Collapsible><CollapsibleTrigger>How does this project work?</CollapsibleTrigger><CollapsibleContent>This project is a React component library.</CollapsibleContent></Collapsible>",
+	undefined,
+	`import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@nocoo/basalt/components/collapsible";
+
+export default function Example() {
+	return (
+		<Collapsible>
+			<CollapsibleTrigger>How does this project work?</CollapsibleTrigger>
+			<CollapsibleContent>This project is a React component library.</CollapsibleContent>
+		</Collapsible>
+	);
+}`,
 );
 add(
 	"tabs",
@@ -389,7 +404,20 @@ add(
 			</TabsList>
 		</Tabs>
 	),
-	"<Tabs />",
+	"<Tabs defaultValue='a'><TabsList><TabsTrigger value='a'>Home</TabsTrigger><TabsTrigger value='b'>About</TabsTrigger></TabsList></Tabs>",
+	undefined,
+	`import { Tabs, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
+
+export default function Example() {
+	return (
+		<Tabs defaultValue="a">
+			<TabsList>
+				<TabsTrigger value="a">Home</TabsTrigger>
+				<TabsTrigger value="b">About</TabsTrigger>
+			</TabsList>
+		</Tabs>
+	);
+}`,
 );
 add(
 	"slider",
@@ -418,7 +446,7 @@ add(
 	"pagination",
 	"Page controls.",
 	() => <PaginationHeroDemo />,
-	"<Pagination page={1} pageCount={10} onPageChange={setPage} />",
+	"<Pagination page={page} pageCount={10} onPageChange={setPage} />",
 	[
 		{ name: "page", type: "number" },
 		{ name: "pageCount", type: "number", default: "10" },
@@ -430,6 +458,13 @@ add(
 			description: "Previous and next only.",
 		},
 	],
+	`import { Pagination } from "@nocoo/basalt/components/pagination";
+import { useState } from "react";
+
+export default function Example() {
+	const [page, setPage] = useState(1);
+	return <Pagination page={page} pageCount={10} onPageChange={setPage} />;
+}`,
 );
 add(
 	"breadcrumbs",
@@ -471,6 +506,34 @@ add(
 		</Table>
 	),
 	"<Table><TableHeader><TableRow><TableHead>Name</TableHead><TableHead>Status</TableHead></TableRow></TableHeader><TableBody><TableRow><TableCell>Report 1</TableCell><TableCell>Active</TableCell></TableRow></TableBody></Table>",
+	undefined,
+	`import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@nocoo/basalt/components/table";
+
+export default function Example() {
+	return (
+		<Table>
+			<TableHeader>
+				<TableRow>
+					<TableHead>Name</TableHead>
+					<TableHead>Status</TableHead>
+				</TableRow>
+			</TableHeader>
+			<TableBody>
+				<TableRow>
+					<TableCell>Report 1</TableCell>
+					<TableCell>Active</TableCell>
+				</TableRow>
+			</TableBody>
+		</Table>
+	);
+}`,
 );
 add(
 	"data-table",
@@ -496,7 +559,17 @@ add(
 			<TableOfContentsItem active>Intro</TableOfContentsItem>
 		</TableOfContents>
 	),
-	"<TableOfContents />",
+	"<TableOfContents><TableOfContentsItem active>Intro</TableOfContentsItem></TableOfContents>",
+	undefined,
+	`import { TableOfContents, TableOfContentsItem } from "@nocoo/basalt/components/table-of-contents";
+
+export default function Example() {
+	return (
+		<TableOfContents>
+			<TableOfContentsItem active>Intro</TableOfContentsItem>
+		</TableOfContents>
+	);
+}`,
 );
 add(
 	"grid",
@@ -534,7 +607,20 @@ add(
 			<Toolbar.Button icon={<Plus />} aria-label="Add" />
 		</Toolbar>
 	),
-	'<Toolbar><Toolbar.Input placeholder="Search..." /><Toolbar.Button aria-label="Search" /></Toolbar>',
+	'<Toolbar><Toolbar.Input aria-label="Search records" placeholder="Search..." /><Toolbar.Button icon={<Search />} aria-label="Search" /><Toolbar.Button icon={<Plus />} aria-label="Add" /></Toolbar>',
+	undefined,
+	`import { Toolbar } from "@nocoo/basalt/components/toolbar";
+import { Plus, Search } from "lucide-react";
+
+export default function Example() {
+	return (
+		<Toolbar>
+			<Toolbar.Input aria-label="Search records" placeholder="Search..." />
+			<Toolbar.Button icon={<Search />} aria-label="Search" />
+			<Toolbar.Button icon={<Plus />} aria-label="Add" />
+		</Toolbar>
+	);
+}`,
 );
 add(
 	"toast",
@@ -629,7 +715,7 @@ export default function Example() {
 	return (
 		<Dialog>
 			<DialogTrigger asChild>
-				<Button>Delete</Button>
+				<Button variant="outline">Delete</Button>
 			</DialogTrigger>
 			<DialogContent>
 				<DialogTitle>Delete Resource?</DialogTitle>
@@ -714,6 +800,28 @@ add(
 			description: "Which side of the trigger the popover appears on.",
 		},
 	],
+	`import { Button } from "@nocoo/basalt/components/button";
+import {
+	Popover,
+	PopoverContent,
+	PopoverDescription,
+	PopoverTitle,
+	PopoverTrigger,
+} from "@nocoo/basalt/components/popover";
+
+export default function Example() {
+	return (
+		<Popover>
+			<PopoverTrigger asChild>
+				<Button variant="outline">Open Popover</Button>
+			</PopoverTrigger>
+			<PopoverContent>
+				<PopoverTitle>Popover Title</PopoverTitle>
+				<PopoverDescription>This is a popover.</PopoverDescription>
+			</PopoverContent>
+		</Popover>
+	);
+}`,
 );
 add(
 	"dropdown-menu",
@@ -728,7 +836,28 @@ add(
 			</DropdownMenuContent>
 		</DropdownMenu>
 	),
-	'<DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline">Open</Button></DropdownMenuTrigger></DropdownMenu>',
+	'<DropdownMenu><DropdownMenuTrigger asChild><Button variant="outline">Open</Button></DropdownMenuTrigger><DropdownMenuContent><DropdownMenuItem>Copy</DropdownMenuItem></DropdownMenuContent></DropdownMenu>',
+	undefined,
+	`import { Button } from "@nocoo/basalt/components/button";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@nocoo/basalt/components/dropdown-menu";
+
+export default function Example() {
+	return (
+		<DropdownMenu>
+			<DropdownMenuTrigger asChild>
+				<Button variant="outline">Open</Button>
+			</DropdownMenuTrigger>
+			<DropdownMenuContent>
+				<DropdownMenuItem>Copy</DropdownMenuItem>
+			</DropdownMenuContent>
+		</DropdownMenu>
+	);
+}`,
 );
 add(
 	"select",
