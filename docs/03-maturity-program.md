@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S0A — 清理参考产品示例语境  
-> Basalt 基线：`9ca458a86732`（`main`，工作树干净）  
+> 当前切片：S0B — 区分 implementation source 与 provenance（准备下发）
+> 已验收代码基线：`0cdbfdc57af`（`main`，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-30
 
@@ -104,8 +104,8 @@ Codex 只直接写 `docs/`。Grok 不修改本文，除非调度消息明确授�
 
 | 切片 | 内容 | 状态 | 解锁条件 |
 |------|------|------|----------|
-| S0A | 清理 Kumo/Cloudflare/Worker 用户示例与 fixture | 执行中 | 禁用语境扫描、测试、typecheck、Biome、原子 commit 全绿 |
-| S0B | 区分 implementation source 与 provenance，修复链接 | 待办 | 所有 View source 指向当前 Basalt；参考来源单独展示 |
+| S0A | 清理 Kumo/Cloudflare/Worker 用户示例与 fixture | 完成（`0cdbfdc`） | 禁用语境扫描、测试、typecheck、Biome、原子 commit 全绿 |
+| S0B | 区分 implementation source 与 provenance，修复链接 | 准备下发 | 所有 View source 指向当前 Basalt；参考来源单独展示 |
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 待办 | 示例契约测试覆盖 41 个重合控件 |
 | S1A | dist/types/files/exports 包契约 | 待办 | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next tarball consumers | 待办 | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
@@ -310,6 +310,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 
 | # | 切片 | 基线 | Herdr 目标 | 状态 | Grok commit | 验收证据/备注 |
 |---|------|------|--------------|------|-------------|---------------|
-| D001 | S0A | `9ca458a86732` | `w14:p1` | 准备下发 | — | 只清理示例与 fixture，不改 API/视觉 |
+| D001 | S0A | `eff624881976` | `w14:p1` | 完成 | `0cdbfdc57af` | 9 个授权文件，+47/−47；targeted 4 files / 123 tests；typecheck、Biome、全量 99 files / 558 tests；禁用语境扫描为空；无 API、样式、行为或 provenance 变更 |
+| D002 | S0B | `0cdbfdc57af` | `w14:p1` | 准备下发 | — | 只拆分当前 Basalt implementation 链接与可选 provenance；不进入 scenario 真值或发布阶段 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
