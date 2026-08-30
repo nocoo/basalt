@@ -36,6 +36,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@nocoo/basalt/components/alert-dialog";
+import { AppHeader } from "@nocoo/basalt/components/app-header";
 import { Autocomplete } from "@nocoo/basalt/components/autocomplete";
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
@@ -110,7 +111,7 @@ import {
 	SelectValue,
 } from "@nocoo/basalt/components/select";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@nocoo/basalt/components/sheet";
-import { ContentIsland, Sidebar } from "@nocoo/basalt/components/sidebar";
+import { ContentIsland, Sidebar, SidebarItem } from "@nocoo/basalt/components/sidebar";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Slider } from "@nocoo/basalt/components/slider";
 import {
@@ -798,13 +799,28 @@ add(
 	"App chrome: L0 sidebar with an L1 content island that floats a corner shadow.",
 	() => (
 		<div className="flex h-56 w-full overflow-hidden bg-basalt-background">
-			<Sidebar className="h-full min-h-0 w-40">Catalog</Sidebar>
+			<Sidebar className="h-full min-h-0 w-40">
+				<SidebarItem active>Catalog</SidebarItem>
+				<SidebarItem>Settings</SidebarItem>
+			</Sidebar>
 			<div className="flex min-w-0 flex-1 flex-col p-2">
 				<ContentIsland className="p-4">At a glance</ContentIsland>
 			</div>
 		</div>
 	),
-	"<Sidebar>Catalog</Sidebar>\n<ContentIsland>At a glance</ContentIsland>",
+	"<Sidebar><SidebarItem active>Catalog</SidebarItem></Sidebar>\n<ContentIsland>At a glance</ContentIsland>",
+);
+add(
+	"page-header",
+	"App header with breadcrumbs and title.",
+	() => (
+		<AppHeader
+			breadcrumbs={[{ href: "#", label: "Examples" }]}
+			title="Dashboard"
+			actions={<Button variant="ghost">Action</Button>}
+		/>
+	),
+	'<AppHeader breadcrumbs={[{ href: "/", label: "Examples" }]} title="Dashboard" />',
 );
 add(
 	"flow",
