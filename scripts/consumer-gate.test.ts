@@ -636,6 +636,68 @@ import { Button } from "@nocoo/basalt";
 		).toThrow(/duplicate specifier @nocoo\/basalt\/styles\/standalone/);
 	});
 
+	it("rejects comment-only, string, and template pseudo-imports", () => {
+		const source = `// import { DonutChart } from "@nocoo/basalt/charts/donut";
+// import { DatePicker } from "@nocoo/basalt/components/date-picker";
+// import { DataTable } from "@nocoo/basalt/components/data-table";
+// import "@nocoo/basalt/styles/standalone";
+const quoted = 'import { DonutChart } from "@nocoo/basalt/charts/donut"';
+const templated = \`import { DatePicker } from "@nocoo/basalt/components/date-picker"\`;
+function DonutChart() {}
+function DatePicker() {}
+function DataTable() {}
+`;
+		expect(staticBasaltSpecifiers(source)).toEqual([]);
+		expect(() => assertHeavyConsumerSource(source)).toThrow(/missing specifier/);
+	});
+
+	it("rejects side-effect heavy imports plus local shadows", () => {
+		expect(() =>
+			assertHeavyConsumerSource(`import "@nocoo/basalt/charts/donut";
+import "@nocoo/basalt/components/date-picker";
+import "@nocoo/basalt/components/data-table";
+import "@nocoo/basalt/styles/standalone";
+function DonutChart() {}
+function DatePicker() {}
+function DataTable() {}
+`),
+		).toThrow(/DonutChart/);
+	});
+
+	it("rejects aliased named imports and local shadows of heavy bindings", () => {
+		expect(() =>
+			assertHeavyConsumerSource(`import { DonutChart as Chart } from "@nocoo/basalt/charts/donut";
+import { DatePicker as Picker } from "@nocoo/basalt/components/date-picker";
+import { DataTable as Table } from "@nocoo/basalt/components/data-table";
+import "@nocoo/basalt/styles/standalone";
+export const n = <><Chart /><Picker /><Table /></>;
+`),
+		).toThrow(/aliased named import DonutChart/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}function DonutChart() { return null; }
+export const n = <><DonutChart /><DatePicker /><DataTable /></>;
+`),
+		).toThrow(/shadows DonutChart/);
+	});
+
+	it("rejects unrendered heavy bindings and syntax errors", () => {
+		expect(() => assertHeavyConsumerSource(heavySource())).toThrow(/does not render DonutChart/);
+		expect(() =>
+			assertHeavyConsumerSource(`import { DonutChart from "@nocoo/basalt/charts/donut"`),
+		).toThrow(/syntax errors/);
+	});
+
+	it("rejects dynamic import and require of basalt modules", () => {
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}void import("@nocoo/basalt/charts/donut");
+`),
+		).toThrow(/dynamic import of @nocoo\/basalt\/charts\/donut/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}require("@nocoo/basalt");
+`),
+		).toThrow(/require of @nocoo\/basalt/);
+	});
+
 	it("preserves a heavy proof error and deletes temp without a server", async () => {
 		const tempRoot = realpathSync(mkdtempSync(join(tmpdir(), "basalt-gate-d-fail-")));
 		const proof = new Error("heavy-proof-fail");

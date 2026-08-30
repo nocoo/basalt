@@ -9,6 +9,7 @@ import {
 	rmSync,
 	writeFileSync,
 } from "node:fs";
+import { createRequire } from "node:module";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -343,20 +344,211 @@ export function assertExactVersion(name: string, actual: string, expected: strin
 	}
 }
 
-export function staticBasaltSpecifiers(source: string): string[] {
-	const specifiers: string[] = [];
-	const pattern = /(?:from|import)\s*(['"])(@nocoo\/basalt(?:\/[^'"]*)?)\1/g;
-	for (const match of source.matchAll(pattern)) {
-		specifiers.push(match[2]);
+type SwcNode = {
+	type?: string;
+	[key: string]: unknown;
+};
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+	return Boolean(value) && typeof value === "object";
+}
+
+function swcType(node: unknown): string | undefined {
+	if (isRecord(node) && typeof node.type === "string") {
+		return node.type;
 	}
-	return specifiers;
+}
+
+function swcString(node: unknown, key: string): string | undefined {
+	if (isRecord(node) && typeof node[key] === "string") {
+		return node[key];
+	}
+}
+
+function identifierName(node: unknown): string | undefined {
+	const type = swcType(node);
+	if (type === "Identifier" || type === "JSXIdentifier") {
+		return swcString(node, "value");
+	}
+}
+
+function literalModuleSpecifier(node: unknown): string | undefined {
+	const type = swcType(node);
+	if (type === "StringLiteral") {
+		return swcString(node, "value");
+	}
+	if (type === "TemplateLiteral" && isRecord(node)) {
+		const expressions = node.expressions;
+		const quasis = node.quasis;
+		if (Array.isArray(expressions) && expressions.length === 0 && Array.isArray(quasis)) {
+			return swcString(quasis[0], "cooked");
+		}
+	}
+}
+
+function isBasaltModule(specifier: string): boolean {
+	return specifier === "@nocoo/basalt" || specifier.startsWith("@nocoo/basalt/");
+}
+
+function walkSwc(node: unknown, visit: (node: SwcNode) => void): void {
+	if (!node || typeof node !== "object") {
+		return;
+	}
+	if (Array.isArray(node)) {
+		for (const item of node) {
+			walkSwc(item, visit);
+		}
+		return;
+	}
+	const current = node as SwcNode;
+	if (typeof current.type === "string") {
+		visit(current);
+	}
+	for (const value of Object.values(current)) {
+		walkSwc(value, visit);
+	}
+}
+
+function loadInTreeTsxParser(): (source: string) => SwcNode {
+	const loadFromReactPlugin = createRequire(import.meta.resolve("@vitejs/plugin-react-swc"));
+	const swc = loadFromReactPlugin("@swc/core") as {
+		parseSync: (source: string, options: { syntax: "typescript"; tsx: true }) => SwcNode;
+	};
+	return (source: string) => {
+		try {
+			return swc.parseSync(source, { syntax: "typescript", tsx: true });
+		} catch (error) {
+			const detail = error instanceof Error ? error.message : String(error);
+			throw new Error(`heavy consumer has syntax errors: ${detail}`);
+		}
+	};
+}
+
+const parseHeavyTsx = loadInTreeTsxParser();
+
+type HeavyAstEvidence = {
+	specifiers: string[];
+	imports: SwcNode[];
+	jsxNames: Set<string>;
+	localBindings: Set<string>;
+	dynamicModules: string[];
+	requireModules: string[];
+};
+
+function collectHeavyAst(source: string): HeavyAstEvidence {
+	const specifiers: string[] = [];
+	const imports: SwcNode[] = [];
+	const jsxNames = new Set<string>();
+	const localBindings = new Set<string>();
+	const dynamicModules: string[] = [];
+	const requireModules: string[] = [];
+	walkSwc(parseHeavyTsx(source), (node) => {
+		if (
+			node.type === "ImportDeclaration" ||
+			node.type === "ExportNamedDeclaration" ||
+			node.type === "ExportAllDeclaration"
+		) {
+			const spec = literalModuleSpecifier(node.source);
+			if (spec && isBasaltModule(spec)) {
+				specifiers.push(spec);
+			}
+			if (node.type === "ImportDeclaration") {
+				imports.push(node);
+			}
+		}
+		if (node.type === "CallExpression") {
+			const args = Array.isArray(node.arguments) ? node.arguments : [];
+			const first = args[0];
+			const spec = literalModuleSpecifier(isRecord(first) ? first.expression : undefined);
+			if (spec && isBasaltModule(spec)) {
+				const calleeType = swcType(node.callee);
+				if (calleeType === "Import") {
+					dynamicModules.push(spec);
+				} else if (calleeType === "Identifier" && swcString(node.callee, "value") === "require") {
+					requireModules.push(spec);
+				}
+			}
+		}
+		if (node.type === "TsImportEqualsDeclaration") {
+			const moduleRef = node.moduleRef;
+			if (swcType(moduleRef) === "TsExternalModuleReference" && isRecord(moduleRef)) {
+				const spec = literalModuleSpecifier(moduleRef.expression);
+				if (spec && isBasaltModule(spec)) {
+					requireModules.push(spec);
+				}
+			}
+		}
+		if (node.type === "JSXOpeningElement") {
+			const name = identifierName(node.name);
+			if (name) {
+				jsxNames.add(name);
+			}
+		}
+		if (
+			node.type === "FunctionDeclaration" ||
+			node.type === "FunctionExpression" ||
+			node.type === "ClassDeclaration" ||
+			node.type === "ClassExpression"
+		) {
+			const name = identifierName(node.identifier);
+			if (name) {
+				localBindings.add(name);
+			}
+		}
+		if (node.type === "VariableDeclarator") {
+			const name = identifierName(node.id);
+			if (name) {
+				localBindings.add(name);
+			}
+		}
+	});
+	return { specifiers, imports, jsxNames, localBindings, dynamicModules, requireModules };
+}
+
+function importSource(decl: SwcNode): string | undefined {
+	return literalModuleSpecifier(decl.source);
+}
+
+function namedImportKind(decl: SwcNode, expectedName: string): "ok" | "alias" | "missing" {
+	if (decl.typeOnly === true) {
+		return "missing";
+	}
+	const specifiers = Array.isArray(decl.specifiers) ? decl.specifiers : [];
+	if (specifiers.length !== 1 || swcType(specifiers[0]) !== "ImportSpecifier") {
+		return "missing";
+	}
+	const spec = specifiers[0];
+	if (!isRecord(spec) || spec.isTypeOnly === true) {
+		return "missing";
+	}
+	const local = identifierName(spec.local);
+	const imported = spec.imported == null ? local : identifierName(spec.imported);
+	if (imported !== expectedName) {
+		return "missing";
+	}
+	if (spec.imported != null || local !== expectedName) {
+		return "alias";
+	}
+	return "ok";
+}
+
+function isSideEffectImport(decl: SwcNode): boolean {
+	if (decl.typeOnly === true) {
+		return false;
+	}
+	const specifiers = Array.isArray(decl.specifiers) ? decl.specifiers : [];
+	return specifiers.length === 0;
+}
+
+export function staticBasaltSpecifiers(source: string): string[] {
+	return collectHeavyAst(source).specifiers;
 }
 
 export function assertHeavyConsumerSource(source: string) {
-	const specifiers = staticBasaltSpecifiers(source);
+	const evidence = collectHeavyAst(source);
 	const approved = new Set<string>(HEAVY_SOURCE_SPECIFIERS);
 	const counts = new Map<string, number>();
-	for (const spec of specifiers) {
+	for (const spec of evidence.specifiers) {
 		counts.set(spec, (counts.get(spec) ?? 0) + 1);
 		if (!approved.has(spec)) {
 			if (spec === "@nocoo/basalt") {
@@ -374,9 +566,32 @@ export function assertHeavyConsumerSource(source: string) {
 			throw new Error(`heavy consumer duplicate specifier ${spec}`);
 		}
 	}
-	for (const name of ["DonutChart", "DatePicker", "DataTable"] as const) {
-		if (!source.includes(name)) {
-			throw new Error(`heavy consumer must use ${name}`);
+	if (evidence.dynamicModules[0]) {
+		throw new Error(`heavy consumer has dynamic import of ${evidence.dynamicModules[0]}`);
+	}
+	if (evidence.requireModules[0]) {
+		throw new Error(`heavy consumer has require of ${evidence.requireModules[0]}`);
+	}
+	for (const probe of HEAVY_GRANULAR_PROBES) {
+		const decl = evidence.imports.find((node) => importSource(node) === probe.spec);
+		const kind = decl ? namedImportKind(decl, probe.exportName) : "missing";
+		if (kind === "alias") {
+			throw new Error(`heavy consumer aliased named import ${probe.exportName}`);
+		}
+		if (kind !== "ok") {
+			throw new Error(`heavy consumer missing named import ${probe.exportName}`);
+		}
+	}
+	const standalone = evidence.imports.find((node) => importSource(node) === HEAVY_GATE.styleExport);
+	if (!standalone || !isSideEffectImport(standalone)) {
+		throw new Error(`heavy consumer must side-effect import ${HEAVY_GATE.styleExport}`);
+	}
+	for (const probe of HEAVY_GRANULAR_PROBES) {
+		if (evidence.localBindings.has(probe.exportName)) {
+			throw new Error(`heavy consumer shadows ${probe.exportName}`);
+		}
+		if (!evidence.jsxNames.has(probe.exportName)) {
+			throw new Error(`heavy consumer does not render ${probe.exportName}`);
 		}
 	}
 }
