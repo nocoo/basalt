@@ -1,19 +1,19 @@
-export interface CatalogDocs {
-	description: string;
-	usage: string;
-	variants: string[];
-	props: { name: string; type: string; default?: string; description?: string }[];
-	source: { repo: string; sha: string; file: string };
-}
+import { EXTRA_DOCS } from "./catalog-ready";
+import {
+	type CatalogDocs,
+	type CatalogDocsDraft,
+	catalogDocsWithImplementation,
+	provenanceFromLegacy,
+} from "./catalog-source";
+
+export type { CatalogDocs };
 
 function usage(name: string, from: string, sample: string, extraImports = ""): string {
 	const extras = extraImports ? `${extraImports}\n` : "";
 	return `${extras}import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
 }
 
-import { EXTRA_DOCS } from "./catalog-ready";
-
-const BASE_DOCS: Record<string, CatalogDocs> = {
+const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 	button: {
 		description: "Primary actions, including loading and icon slots.",
 		usage: usage(
@@ -32,11 +32,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 			{ name: "loading", type: "boolean" },
 			{ name: "icon", type: "ReactNode" },
 		],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
 			file: "packages/web/src/components/ui/button.tsx",
-		},
+		}),
 	},
 	"link-button": {
 		description: "A link that looks like a Button.",
@@ -55,11 +55,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 			{ name: "icon", type: "ReactNode" },
 			{ name: "href", type: "string" },
 		],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
 			file: "packages/web/src/components/ui/button.tsx",
-		},
+		}),
 	},
 	text: {
 		description: "Body copy with size and tone.",
@@ -69,7 +69,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 			{ name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"' },
 			{ name: "tone", type: '"default" | "muted"' },
 		],
-		source: { repo: "basalt", sha: "2727ae6a8d3f", file: "src/index.css" },
+		provenance: provenanceFromLegacy({
+			repo: "basalt",
+			sha: "2727ae6a8d3f",
+			file: "src/index.css",
+		}),
 	},
 	label: {
 		description: "Accessible label associated with a control.",
@@ -89,11 +93,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 				description: "Info icon with hover text.",
 			},
 		],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",
 			file: "components/ui/label.tsx",
-		},
+		}),
 	},
 	separator: {
 		description: "A visual divider between content.",
@@ -107,22 +111,22 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 			{ name: "orientation", type: '"horizontal" | "vertical"' },
 			{ name: "decorative", type: "boolean" },
 		],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
 			file: "packages/web/src/components/ui/separator.tsx",
-		},
+		}),
 	},
 	link: {
 		description: "Inline navigation that respects LinkProvider.",
 		usage: usage("Link", "@nocoo/basalt/components/link", '<Link href="/ui">Library</Link>'),
 		variants: [],
 		props: [{ name: "href", type: "string" }],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "kumo",
 			sha: "1159868dfe32",
 			file: "packages/kumo/src/utils/link-provider.tsx",
-		},
+		}),
 	},
 	tooltip: {
 		description: "Short contextual help on hover or focus.",
@@ -141,11 +145,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 				description: "Delay before the tooltip opens, in milliseconds.",
 			},
 		],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
 			file: "packages/web/src/components/ui/tooltip.tsx",
-		},
+		}),
 	},
 	"theme-toggle": {
 		description: "Cycles system, light, and dark theme.",
@@ -163,7 +167,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 				description: "Accessible name for the toggle.",
 			},
 		],
-		source: { repo: "basalt", sha: "2727ae6a8d3f", file: "src/components/ThemeToggle.tsx" },
+		provenance: provenanceFromLegacy({
+			repo: "basalt",
+			sha: "2727ae6a8d3f",
+			file: "src/components/ThemeToggle.tsx",
+		}),
 	},
 	"layer-card": {
 		description: "A card with a layered visual effect for headers and raised content.",
@@ -174,7 +182,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		),
 		variants: [],
 		props: [{ name: "className", type: "string" }],
-		source: { repo: "zhe", sha: "c31c239f01c9", file: "components/ui/card.tsx" },
+		provenance: provenanceFromLegacy({
+			repo: "zhe",
+			sha: "c31c239f01c9",
+			file: "components/ui/card.tsx",
+		}),
 	},
 	field: {
 		description: "A labeled control with optional hint and error.",
@@ -199,18 +211,22 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 				description: "Replaces the hint and marks the control invalid.",
 			},
 		],
-		source: { repo: "signoff.now", sha: "92033c89d807", file: "apps/web/src/components/Field.tsx" },
+		provenance: provenanceFromLegacy({
+			repo: "signoff.now",
+			sha: "92033c89d807",
+			file: "apps/web/src/components/Field.tsx",
+		}),
 	},
 	input: {
 		description: "A single-line text field. Light mode uses a white L3 surface.",
 		usage: usage("Input", "@nocoo/basalt/components/input", '<Input placeholder="Jane Doe" />'),
 		variants: [],
 		props: [{ name: "type", type: "string" }],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",
 			file: "components/ui/input.tsx",
-		},
+		}),
 	},
 	"input-area": {
 		description: "A multi-line text field on the L3 surface.",
@@ -221,11 +237,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		),
 		variants: [],
 		props: [{ name: "rows", type: "number" }],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",
 			file: "components/ui/textarea.tsx",
-		},
+		}),
 	},
 	"input-group": {
 		description: "Compose an input with addons, an inline suffix, and status icons.",
@@ -249,7 +265,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 			},
 			{ name: "InputGroup.Button", type: "button", description: "Compact action inside an addon." },
 		],
-		source: { repo: "basalt", sha: "2727ae6a8d3f", file: "src/pages/FormsPage.tsx" },
+		provenance: provenanceFromLegacy({
+			repo: "basalt",
+			sha: "2727ae6a8d3f",
+			file: "src/pages/FormsPage.tsx",
+		}),
 	},
 	"sensitive-input": {
 		description: "A password field with a reveal control.",
@@ -263,7 +283,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 			{ name: "revealLabel", type: "string" },
 			{ name: "hideLabel", type: "string" },
 		],
-		source: { repo: "basalt", sha: "2727ae6a8d3f", file: "src/pages/FormsPage.tsx" },
+		provenance: provenanceFromLegacy({
+			repo: "basalt",
+			sha: "2727ae6a8d3f",
+			file: "src/pages/FormsPage.tsx",
+		}),
 	},
 	checkbox: {
 		description: "A check control with an indeterminate state.",
@@ -274,11 +298,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		),
 		variants: ["checked", "unchecked", "indeterminate"],
 		props: [{ name: "checked", type: 'boolean | "indeterminate"' }],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",
 			file: "components/ui/checkbox.tsx",
-		},
+		}),
 	},
 	radio: {
 		description: "A radio button used inside RadioGroup.",
@@ -289,11 +313,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		),
 		variants: [],
 		props: [{ name: "value", type: "string" }],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
 			file: "packages/web/src/components",
-		},
+		}),
 	},
 	switch: {
 		description: "A binary toggle.",
@@ -304,11 +328,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		),
 		variants: ["checked", "unchecked"],
 		props: [{ name: "checked", type: "boolean" }],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",
 			file: "components/ui/switch.tsx",
-		},
+		}),
 	},
 	"theme-provider": {
 		description: "Provides theme state without reading storage at module scope.",
@@ -319,11 +343,11 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 		),
 		variants: ["system", "light", "dark"],
 		props: [{ name: "children", type: "ReactNode" }],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
 			file: "packages/web/src/components/theme-provider.tsx",
-		},
+		}),
 	},
 	"link-provider": {
 		description: "Injects the app Link renderer into Basalt Link.",
@@ -342,12 +366,15 @@ const BASE_DOCS: Record<string, CatalogDocs> = {
 			},
 			{ name: "children", type: "ReactNode" },
 		],
-		source: {
+		provenance: provenanceFromLegacy({
 			repo: "kumo",
 			sha: "1159868dfe32",
 			file: "packages/kumo/src/utils/link-provider.tsx",
-		},
+		}),
 	},
 };
 
-export const CATALOG_DOCS: Record<string, CatalogDocs> = { ...EXTRA_DOCS, ...BASE_DOCS };
+export const CATALOG_DOCS: Record<string, CatalogDocs> = catalogDocsWithImplementation({
+	...EXTRA_DOCS,
+	...BASE_DOCS,
+});

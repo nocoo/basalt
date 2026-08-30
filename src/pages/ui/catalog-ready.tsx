@@ -131,14 +131,7 @@ import { Toolbar } from "@nocoo/basalt/components/toolbar";
 import { AlertTriangle, CircleAlert, Info, Plus, Search, X } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { CATALOG, type CatalogEntry, catalogImportPath } from "./catalog";
-
-type CatalogDocs = {
-	description: string;
-	usage: string;
-	variants: string[];
-	props: { name: string; type: string; default?: string; description?: string }[];
-	source: { repo: string; sha: string; file: string };
-};
+import { type CatalogDocsDraft, provenanceFromLegacy } from "./catalog-source";
 
 const SRC = { repo: "pew", sha: "97a890fabe6e", file: "packages/web/src/components" };
 
@@ -147,9 +140,9 @@ function page(
 	description: string,
 	Demo: ComponentType,
 	sample: string,
-	props: CatalogDocs["props"] = [{ name: "className", type: "string" }],
+	props: CatalogDocsDraft["props"] = [{ name: "className", type: "string" }],
 	usage?: string,
-): { demo: ComponentType; docs: CatalogDocs } {
+): { demo: ComponentType; docs: CatalogDocsDraft } {
 	return {
 		demo: Demo,
 		docs: {
@@ -162,19 +155,19 @@ function page(
 				...prop,
 				description: prop.description ?? prop.name,
 			})),
-			source: SRC,
+			provenance: provenanceFromLegacy(SRC),
 		},
 	};
 }
 
-const extra: Record<string, { demo: ComponentType; docs: CatalogDocs }> = {};
+const extra: Record<string, { demo: ComponentType; docs: CatalogDocsDraft }> = {};
 
 function add(
 	slug: string,
 	description: string,
 	Demo: ComponentType,
 	sample: string,
-	props?: CatalogDocs["props"],
+	props?: CatalogDocsDraft["props"],
 	usage?: string,
 ) {
 	const entry = CATALOG.find((item) => item.slug === slug);
@@ -600,11 +593,11 @@ export default function Example() {
 }`,
 );
 if (extra.dialog) {
-	extra.dialog.docs.source = {
+	extra.dialog.docs.provenance = provenanceFromLegacy({
 		repo: "kumo",
 		sha: "1159868dfe32",
 		file: "packages/kumo/src/components/dialog/dialog.tsx",
-	};
+	});
 }
 add(
 	"alert-dialog",
@@ -937,7 +930,7 @@ export const EXTRA_DEMOS: Record<string, ComponentType> = Object.fromEntries(
 	Object.entries(extra).map(([slug, value]) => [slug, value.demo]),
 );
 
-export const EXTRA_DOCS: Record<string, CatalogDocs> = Object.fromEntries(
+export const EXTRA_DOCS: Record<string, CatalogDocsDraft> = Object.fromEntries(
 	Object.entries(extra).map(([slug, value]) => [slug, value.docs]),
 );
 

@@ -1,4 +1,6 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { existsSync, readFileSync } from "node:fs";
+import path from "node:path";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -9,6 +11,11 @@ import {
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
+import {
+	catalogSourceCopyText,
+	githubSourceHref,
+	githubSourceLabel,
+} from "@/pages/ui/catalog-source";
 import { UI_DEMOS } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { KUMO_DOCS_SLUGS } from "@/pages/ui/kumo-list";
@@ -100,7 +107,22 @@ describe("ui catalog", () => {
 		expect(screen.getAllByRole("navigation", { name: "On this page" }).length).toBeGreaterThan(0);
 		expect(document.querySelector("aside .sticky")).toBeTruthy();
 		expect(screen.getAllByRole("combobox", { name: "Jump to section" }).length).toBeGreaterThan(0);
-		expect(screen.getByRole("link", { name: new RegExp(docs.source.sha) })).toBeInTheDocument();
+		const implementationHref = githubSourceHref(docs.implementationSource);
+		const implementationLink = screen.getByRole("link", {
+			name: "View Basalt implementation on GitHub",
+		});
+		expect(implementationLink).toHaveAttribute("href", implementationHref);
+		expect(implementationLink).toHaveAttribute("rel", "noopener noreferrer");
+		expect(implementationLink).toHaveAttribute("target", "_blank");
+		expect(
+			screen.getByRole("link", { name: githubSourceLabel(docs.implementationSource) }),
+		).toHaveAttribute("href", implementationHref);
+		if (docs.provenance) {
+			expect(implementationLink.getAttribute("href")).not.toBe(githubSourceHref(docs.provenance));
+			expect(
+				screen.getByRole("link", { name: githubSourceLabel(docs.provenance) }),
+			).toHaveAttribute("href", githubSourceHref(docs.provenance));
+		}
 	});
 
 	it("orders library nav like kumo", () => {
@@ -137,8 +159,75 @@ describe("ui catalog", () => {
 
 	it("does not cite meowth or pika as catalog sources", () => {
 		for (const [slug, docs] of Object.entries(CATALOG_DOCS)) {
-			expect(docs.source.repo, slug).not.toMatch(/^(meowth|pika)$/);
+			expect(docs.implementationSource.repo, slug).not.toMatch(/^(meowth|pika)$/);
+			expect(docs.provenance?.repo, slug).not.toMatch(/^(meowth|pika)$/);
 		}
+	});
+
+	it("points every ready catalog docs implementation at nocoo/basalt@main", () => {
+		expect(Object.keys(CATALOG_DOCS).length).toBeGreaterThan(40);
+		for (const [slug, docs] of Object.entries(CATALOG_DOCS)) {
+			expect(docs.implementationSource, slug).toMatchObject({
+				owner: "nocoo",
+				repo: "basalt",
+				ref: "main",
+			});
+			expect(docs.implementationSource.file, slug).toMatch(/^packages\/basalt\/src\//);
+			expect(
+				existsSync(path.join(process.cwd(), docs.implementationSource.file)),
+				`${slug} ${docs.implementationSource.file}`,
+			).toBe(true);
+		}
+	});
+
+	it("keeps kumo provenance on cloudflare and never infers nocoo/kumo", () => {
+		for (const slug of ["link", "link-provider", "dialog"]) {
+			const docs = CATALOG_DOCS[slug];
+			expect(docs?.provenance, slug).toBeDefined();
+			if (!docs?.provenance) {
+				continue;
+			}
+			expect(docs.provenance, slug).toMatchObject({
+				owner: "cloudflare",
+				repo: "kumo",
+				ref: "1159868dfe32",
+			});
+			const href = githubSourceHref(docs.provenance);
+			expect(href, slug).toContain("https://github.com/cloudflare/kumo/blob/1159868dfe32/");
+			expect(href, slug).not.toContain("github.com/nocoo/kumo");
+		}
+	});
+
+	it("copies implementation and provenance instead of a mixed source line", async () => {
+		const docs = CATALOG_DOCS.dialog;
+		expect(docs?.provenance).toBeDefined();
+		if (!docs?.provenance) {
+			return;
+		}
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/dialog");
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		expect(writeText).toHaveBeenCalled();
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain(catalogSourceCopyText(docs));
+		expect(markdown).toContain("## Implementation");
+		expect(markdown).toContain(githubSourceHref(docs.implementationSource));
+		expect(markdown).toContain("## Provenance");
+		expect(markdown).toContain(githubSourceHref(docs.provenance));
+		expect(markdown).not.toContain("github.com/nocoo/kumo");
+	});
+
+	it("does not infer github owner from a repo name", () => {
+		const page = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/UiPlaceholderPage.tsx"),
+			"utf8",
+		);
+		const model = readFileSync(path.join(process.cwd(), "src/pages/ui/catalog-source.ts"), "utf8");
+		expect(page).not.toContain("github.com/nocoo/${");
+		expect(model).not.toContain("github.com/nocoo/${");
 	});
 
 	it("opens overlay demos with the button control", () => {

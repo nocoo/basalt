@@ -10,20 +10,22 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CATALOG_BY_SLUG, type CatalogEntry, catalogImportPath, catalogNavName } from "./catalog";
+import {
+	type CatalogDocs,
+	catalogSourceCopyText,
+	githubSourceHref,
+	githubSourceLabel,
+} from "./catalog-source";
 import { DocCode, DocExample } from "./DocCode";
 import { type DocHeading, DocToc } from "./DocToc";
 import { UI_DEMOS, UI_EXAMPLES } from "./demos";
-import { CATALOG_DOCS, type CatalogDocs } from "./docs";
+import { CATALOG_DOCS } from "./docs";
 
 function barrelImport(entry: CatalogEntry): string | null {
 	if (entry.kind !== "stable" && entry.kind !== "provider") {
 		return null;
 	}
 	return `import { ${entry.name} } from "@nocoo/basalt";`;
-}
-
-function sourceHref(source: CatalogDocs["source"]): string {
-	return `https://github.com/nocoo/${source.repo}/blob/${source.sha}/${source.file}`;
 }
 
 function CopyPageButton({ markdown }: { markdown: string }) {
@@ -95,8 +97,7 @@ function ReadyDoc({
 			(prop) =>
 				`- ${prop.name} (${prop.type}, default ${prop.default ?? "—"}): ${prop.description ?? ""}`,
 		),
-		"## Source",
-		`${docs.source.repo}@${docs.source.sha} ${docs.source.file}`,
+		catalogSourceCopyText(docs),
 	].join("\n\n");
 	const headings: DocHeading[] = [
 		{ id: "installation", text: "Installation", depth: 2 },
@@ -120,11 +121,11 @@ function ReadyDoc({
 							{catalogNavName(entry)}
 						</h1>
 						<a
-							href={sourceHref(docs.source)}
+							href={githubSourceHref(docs.implementationSource)}
 							target="_blank"
 							rel="noopener noreferrer"
 							className="text-muted-foreground transition-colors hover:text-foreground"
-							aria-label="View source on GitHub"
+							aria-label="View Basalt implementation on GitHub"
 						>
 							<Github className="h-7 w-7" />
 						</a>
@@ -204,15 +205,34 @@ function ReadyDoc({
 							</table>
 						</div>
 					</section>
-					<p className="text-sm text-muted-foreground">
-						<a
-							className="text-foreground underline underline-offset-4"
-							href={sourceHref(docs.source)}
-						>
-							{docs.source.repo}@{docs.source.sha}
-						</a>{" "}
-						{docs.source.file}
-					</p>
+					<div className="space-y-1 text-sm text-muted-foreground">
+						<p>
+							Implementation{" "}
+							<a
+								className="text-foreground underline underline-offset-4"
+								href={githubSourceHref(docs.implementationSource)}
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								{githubSourceLabel(docs.implementationSource)}
+							</a>{" "}
+							{docs.implementationSource.file}
+						</p>
+						{docs.provenance ? (
+							<p>
+								Provenance{" "}
+								<a
+									className="text-foreground underline underline-offset-4"
+									href={githubSourceHref(docs.provenance)}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									{githubSourceLabel(docs.provenance)}
+								</a>{" "}
+								{docs.provenance.file}
+							</p>
+						) : null}
+					</div>
 				</article>
 				<aside className="hidden min-w-0 xl:block">
 					<div className="sticky top-4">
