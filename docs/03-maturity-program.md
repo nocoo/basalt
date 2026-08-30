@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S1C2 — D027 package prepublish lifecycle
-> 已验收代码基线：`ef01a0251d9c`（`main`；D026 Banner fallback 覆盖率完成，95% 四项 coverage 恢复）
+> 当前切片：S2A1 — D028 source-backed Button scenarios
+> 已验收代码基线：`c5256403b362`（`main`；D027 package prepublish lifecycle 完成，S1 生产发布地基闭环）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -126,8 +126,8 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
-| S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 执行中（S1C2 D027） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 待办 | 组件类型、API 表、example 不再三份手写漂移 |
+| S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
@@ -286,6 +286,12 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
 
 目标是让组件实现、公开类型、API 表、scenario 和测试共享一份契约。具体工具由实现时比较后决定，但最终不能继续由 `docs.props` 手工复制真实 props。
 
+当前 Basalt 已消除 hero 与 examples 的两套演示 map，但仍把每个 scenario 的 `code` 字符串和 `render` JSX 并排手写在 `demos.tsx`、`kumo-examples.tsx`、`catalog-ready.tsx` 三个大文件中（合计 3994 行）。Button 的 disabled-link 已出现可复现漂移：预览 JSX 有 `className="opacity-50"`，展示代码没有。Kumo `1159868dfe32` 的可借鉴边界是按控件拆分 `*Demo.tsx`，再由工具从 demo 源码提取 examples；Basalt 不复制其 Cloudflare/Worker 文案，也不照搬其全局 registry/fallback 复杂度。先建立本仓最小 source-backed scenario contract，再单独选择 API 类型生成器，禁止把两个风险不同的问题塞进一刀。
+
+1. **S2A1 / D028 — source-backed Button scenarios。** 新增通用 module-scenario loader：同一 `.tsx` example 模块的 default React component 作为 preview，Vite `?raw` 的同一路径作为展示代码，scenario id 只由 catalog slug 与稳定文件 key 生成；metadata 只保存有序 key/title，不再允许第三份 `code` 字符串。loader 必须在运行时拒绝缺 raw source、缺 render、非 component default export、重复/非法 key、metadata 之外的孤儿模块或 render/raw 文件集合不一致，不能靠调用方手工把两个任意 import 配成一对。Button 的 10 个既有场景各自迁入 `src/pages/ui/examples/button/` 的独立、自包含 TSX 模块，保持现有 id、title、顺序、预览行为与可访问名称；展示代码可以成为完整可复制模块，但必须直接来自该模块 raw source。`demos.tsx` 只消费生成的 `BUTTON_EXAMPLES`，不得再保留 Button 的 inline `code:`/`render:` 双写；disabled-link 的展示与预览必须因此同时包含 inert contract 与相同视觉 class。所有新示例文案、URL、标识符扫描不得出现 Cloudflare、Worker/Workers 或 Kumo 用户语境。
+
+   只允许修改 `src/pages/ui/catalog-scenario.ts`、`src/pages/ui/catalog-scenario.test.ts`、`src/pages/ui/demos.tsx`、新增 `src/pages/ui/examples/button/**`，以及与 Button scenario truth 直接相关的 `src/test/pages/FoundationFeedbackScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx`；若 Vite raw 类型确有缺口才允许修改 `src/vite-env.d.ts`。不得改 package/lock、Basalt 组件实现/API、其它控件 examples/docs、catalog IA、HomeGrid、coverage 配置、Husky/CI 或进入 API generator。focused tests 必须以真实 glob 正例证明 10 个 source-backed 场景，并对 loader 注入缺失、孤儿、错配、重复与非法 key 负例；页面测试必须证明 hero/example code 等于 raw module、preview 仍可交互，且源文件不再含 Button 双写对象。提交前运行 focused、`bun run typecheck`、Biome、全量、coverage 与 showcase production build；四项 coverage 不得低于 D027，build 现有 chunk warning 如实报告但不得顺手拆包。只做一个绿色原子提交，建议 `refactor: source button scenarios from modules`，随后停止等待 Codex review。
+
 文档站必须使用 `@nocoo/basalt` 出口实现自身界面，包括 Dropdown、Table、Select、Tabs、TOC、Button、Code 等，不能为展示 Basalt 再依赖一套 `src/components/ui` 旧实现。
 
 首页按 Components/Charts/Blocks 分类，支持搜索、stable/catalog 状态和完成度；不再渲染 88 个等权 `aspect-square` tile。
@@ -434,6 +440,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D024 | S1C1f | `4c472c87e9e8` + `7062e86` | `w14:p1` | 完成 | `d9ae8a406251` | 只新增 Timeline 专属测试，以 2 项行为覆盖无 id/at item 与同一小时内 colored subtitle/bare event；focused 1 file / 2 tests、typecheck、Biome 388 files、全量 112 files / 779 tests 全绿。Timeline 达 lines `16/16`、branches `23/24`、functions `7/7`，仅保留 string split 不可达 nullish fallback；全局为 statements `1417/1463`（96.85%）、branches `1096/1160`（94.48%）、functions `430/449`（95.76%）、lines `1343/1385`（96.96%），coverage 仅因 branch 门按预期退出 1；工作树干净，未改生产或 coverage 配置 |
 | D025 | S1C1g | `d9ae8a406251` + `0de41c1` | `w14:p1` | 完成 | `fed681831ff6` | 只扩充 app-shell 既有测试，新增最小 Header 场景并以具名 banner、leading、无 navigation/svg/heading 及直接子结构锁住三个可选区域；focused 1 file / 3 tests、typecheck、Biome 388 files、全量重跑 112 files / 780 tests 全绿。AppHeader 达 lines/statements/functions `1/1`、branches `8/8`；全局为 statements `1417/1463`（96.85%）、branches `1099/1160`（94.74%）、functions `430/449`（95.76%）、lines `1343/1385`（96.96%），coverage 仅因 branch 门按预期退出 1。Grok 与 Codex 的首次全量各遇到同两条既有 Chromium 5 秒 timeout，双方立即重跑及 Codex coverage 内全量均通过；工作树干净，未改生产或 coverage 配置 |
 | D026 | S1C1h | `fed681831ff6` + `ff7d74f` | `w14:p1` | 完成 | `ef01a0251d9c` | 只扩充 Banner 既有测试，新增 null variant/size fallback 与 compact 无 description 普通 inline action 两项行为；focused 1 file / 7 tests、typecheck、Biome 388 files、全量 112 files / 782 tests 全绿。Banner 达 statements `19/19`、lines `18/18`、branches `49/49`、functions `4/4`；全局 statements `1417/1463`（96.85%）、branches `1102/1160`（95.00%）、functions `430/449`（95.76%）、lines `1343/1385`（96.96%），coverage 首次 exit 0、四门全绿；工作树干净，未改生产或 coverage 配置 |
-| D027 | S1C2 | `ef01a0251d9c` + 本次调度文档 commit | `w14:p1` | 执行中 | 待提交 | 原子加入 pinned publint、完整 package prepublishOnly 与 publishability verifier，再解除 package private；真实 lifecycle 必须跑通 coverage、build/types/pack/publint、browser 和 A/B/C/D，禁止实际 publish/tag/push |
+| D027 | S1C2 | `ef01a0251d9c` + `af40437` | `w14:p1` | 完成 | `c5256403b362` | 五个授权文件原子加入 pinned `publint@0.3.24`、strict npm-pack publint、唯一有序的 root prepublish 聚合门和 package lifecycle 委托，并在同提交删除发布包 `private`；root/四 fixture 仍 private、package 仍 `0.0.0`，build-contract 以缺失/重复/重排/绕过/publish 负例锁门，pack verifier 主动拒绝 `private` 键。Codex 独立验收 focused 1 file / 9 tests、frozen install 307 installs / 392 packages、package build 90 JS + 90 d.ts + 87 maps + 3 CSS、Bundler/NodeNext、273-file pack、publint、typecheck、Biome 388 files、全量 112 files / 785 tests及 coverage 四项全绿；真实 `npm run prepublishOnly --workspace @nocoo/basalt` 在公司镜像因缺既有 `lucide-react@1.34.0` fail-fast 于 A 且清理，腾讯镜像原命令重跑依序通过 A/B/C/D，C 为 HTTP 200 + Chromium 151 hydration/交互/theme，D 从 tarball 加载三项 heavy granular export。Codex 本轮四 temp、browser profile、动态端口、进程、tgz 全清，未动 7003 dev server；唯一 `basalt-gate-c-fail-4cUPl1` 为运行前已有残留，未擅删；工作树干净，无 publish/tag/push |
+| D028 | S2A1 | `c5256403b362` + 本次调度文档 commit | `w14:p1` | 执行中 | 待提交 | 建立同一 TSX 模块驱动 preview 与 raw code 的 scenario contract，只迁移 Button 10 场景并以失败负例消除 code/render 漂移；禁止 Cloudflare/Worker 用户语境、API generator 或其它控件顺手迁移 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
