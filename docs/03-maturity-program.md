@@ -1,9 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S0C2d — 浮层、导航与数据类 scenario 真值（Codex 验收中；review-fix 待下发）
-> 已验收代码基线：`306b6683ecbc`（`main`，工作树干净）
-> 待验收 Grok 提交：`d7c1f6b5c8b`
+> 当前切片：S0C3a — 文档页 hero 单一真源（准备下发）
+> 已验收代码基线：`7b37cda26b56`（`main`，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-30
 
@@ -122,7 +121,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 |------|------|------|----------|
 | S0A | 清理 Kumo/Cloudflare/Worker 用户示例与 fixture | 完成（`0cdbfdc`） | 禁用语境扫描、测试、typecheck、Biome、原子 commit 全绿 |
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
-| S0C | 审计示例标题与真实能力，消除伪对齐 | 执行中（S0C2d） | 示例契约测试覆盖 41 个重合控件 |
+| S0C | 审计示例标题与真实能力，消除伪对齐 | 执行中（S0C3a） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
 | S1A | dist/types/files/exports 包契约 | 待办 | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next tarball consumers | 待办 | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | publint、prepublishOnly、Husky/browser 门 | 待办 | 一条发布前命令覆盖所有门，仍不实际 publish |
@@ -188,9 +187,13 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
    - **S0C2b：** Badge、Banner、Breadcrumbs、Button、ClipboardText、BasaltMark、Empty、Label、LayerCard、Link、Loader、Meter、SkeletonLine、Toast、Tooltip。
    - **S0C2c：** Checkbox、Combobox、DatePicker、Input、InputArea、InputGroup、Radio、SensitiveInput、Switch。
    - **S0C2d：** Collapsible、Dialog、DropdownMenu、Pagination、Popover、Table、TableOfContents、Tabs、Toolbar。
-3. **S0C3 — hero 单一真源。** 首屏 preview 与对应 code 必须来自同一个 scenario，移除或生成当前独立 `UI_DEMOS` 映射，防止 `Demo` 与 `docs.usage` 再次漂移。通过后才把 S0C 标为完成并进入 S1A。
+3. **S0C3 — hero 单一真源。** 首屏 preview 与对应 code 必须来自同一个 scenario，移除当前独立 `UI_DEMOS` 映射，防止 `Demo`、`docs.usage` 和 scenario 再次漂移。为避免把页面渲染语义和大段旧映射删除混成一次提交，固定拆成两刀：
+   - **S0C3a：文档页 hero。** 提供从 `UI_EXAMPLES[slug][0]` 取得 hero scenario 的唯一 helper；`UiPlaceholderPage` 以该 scenario 同时提供首屏 preview 与 code，并用稳定 `data-hero-scenario` 暴露对应 ID。Usage 章节只展示 `docs.usage` 代码，不再拿另一份 preview 假装与它同源。ready 判定必须依赖 docs + hero scenario，而不是 `UI_DEMOS`。此刀保留 `UI_DEMOS` 仅供 HomeGrid 兼容，不删除旧映射。
+   - **S0C3b：删除旧映射。** HomeGrid 的非定制 tile 回退到同一 hero helper；保留有明确首页构图目的的 `HOME_DEMOS` override。删除 `BASE_DEMOS`、`UI_DEMOS` 和 `EXTRA_DEMOS` 出口及无用 imports，并加负向契约保证它们不再出现。此刀不重设计 HomeGrid，完整 IA 留给 S2B。
 
-三个切片各自一个绿色提交。S0C1 不得提前做 S0C2/S0C3；S0C2/S0C3 的具体授权文件在前一切片验收后再下发。
+S0C3a、S0C3b 各自一个绿色提交；S0C3b 通过后才把 S0C 标为完成并进入 S1A。
+
+每个编号或字母子切片各自一个绿色提交。S0C1 不得提前做 S0C2/S0C3；S0C2/S0C3 的具体授权文件在前一切片验收后再下发。
 
 ### 6.2 S1 — 包与消费契约
 
@@ -345,6 +348,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D004 | S0C2a | `7fa1bb287294` | `w14:p1` | 完成 | `75754d412ad7` + `ce88ff09bea8` | 3 个授权文件；首提交校正 9 个条目的伪标题、空壳/截断 snippet 和 usage，review-fix 补齐 Code/Select/Grid/Flow/Sidebar 的 compound imports 与 CommandPalette 状态声明；targeted 3 files / 176 tests，typecheck、Biome、全量 102 files / 628 tests；scenario ID/数量/顺序、render、组件 API、行为、视觉与 S0C3 数据源均未变 |
 | D005 | S0C2b | `a6460bdffa6a` | `w14:p1` | 完成 | `1100e184aa30` | 5 个授权文件，+309/−31；锁定 15 个 slug 的 ID/数量/顺序，修复 Empty/Breadcrumbs/Meter 必填参数、Link/Tooltip provider、Skeleton/Loader 多状态、Toast 触发代码、Banner/LayerCard 与 ClipboardText 中性示例；targeted 2 files / 169 tests，typecheck、Biome、全量 103 files / 637 tests；仅 ClipboardText 假凭据文案同步 render，组件 API、行为与 S0C3 数据源未变 |
 | D006 | S0C2c | `5250494cbfcf` | `w14:p1` | 完成 | `306b6683ecbc` | 4 个授权文件，+224/−34；锁定 9 个 slug 的 ID/数量/顺序，对齐 Checkbox/Switch/Input/InputArea/InputGroup/Radio/SensitiveInput 的名称与组合结构，补齐 Combobox items/placeholder 和 DatePicker 可访问 usage；targeted 2 files / 166 tests，typecheck、Biome、全量 104 files / 643 tests；未扩 string-only Combobox、DatePicker range 或 Group/Legend API，留给 S4/S5 |
-| D007 | S0C2d | `306b6683ecbc` | `w14:p1` | 验收中（review-fix 待下发） | `d7c1f6b5c8b` | 首提交 3 个授权文件，+612/−49；targeted 1 file / 9 tests、typecheck、Biome、全量 105 files / 652 tests 独立复跑通过；review 发现 `dialog-sizes`、`popover-sides` code 为多根非法 JSX，`tabs-many-tabs` 的 defaultValue 不命中 trigger，必须在 D007 内补测试并修正后才可进入 S0C3 |
+| D007 | S0C2d | `306b6683ecbc` | `w14:p1` | 完成 | `d7c1f6b5c8b` + `7b37cda26b56` | 首提交 3 个授权文件，+612/−49；review-fix 用 Fragment 修正 `dialog-sizes`、`popover-sides` 多根非法 JSX，并让 `tabs-many-tabs` 的 defaultValue 命中 overview trigger；两轮均独立复跑 targeted 1 file / 9 tests、typecheck、Biome、全量 105 files / 652 tests，Husky 通过；未进入 S0C3 |
+| D008 | S0C3a | `7b37cda26b56` + 本次调度文档 commit | `w14:p1` | 准备下发 | — | 只建立 hero scenario helper 并迁移文档页 ready/hero/usage 渲染；暂不删除 `UI_DEMOS`，不改 HomeGrid、scenario 内容/顺序/数量、组件 API 或视觉规范 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
