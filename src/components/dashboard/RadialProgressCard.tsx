@@ -23,6 +23,7 @@ export function RadialProgressCard() {
 				<div className="flex flex-1 flex-col items-center min-h-0">
 					<Gauge
 						value={pct}
+						valueFormatter={(next) => `${next}%`}
 						ariaLabel={t("dashboard.savingsGoalAria", {
 							percent: 68,
 							saved: "6,800",

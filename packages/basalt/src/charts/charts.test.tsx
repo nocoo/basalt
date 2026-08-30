@@ -123,6 +123,10 @@ describe("charts", () => {
 		render(<Gauge value={20} ariaLabel="Load" />);
 		expect(screen.getByRole("img", { name: "Load" })).toBeInTheDocument();
 		expect(screen.getByText("20")).toBeInTheDocument();
+		render(<Gauge value={742} max={850} ariaLabel="Score" />);
+		expect(screen.getByText("742")).toBeInTheDocument();
+		render(<Gauge value={68} valueFormatter={(next) => `${next}%`} ariaLabel="Saved" />);
+		expect(screen.getByText("68%")).toBeInTheDocument();
 		render(<Gauge value={40} ariaLabel="Quiet" hideValue />);
 		expect(screen.getByRole("img", { name: "Quiet" })).toBeInTheDocument();
 		expect(screen.queryByText("40")).toBeNull();
@@ -140,6 +144,7 @@ describe("charts", () => {
 			/>,
 		);
 		expect(screen.getByText("Today")).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: /2026/ })).toBeNull();
 		render(
 			<Timeline
 				events={[{ id: "i1", time: "08:45", title: "Packet loss", subtitle: "0.6%" }]}

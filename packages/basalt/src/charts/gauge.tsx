@@ -5,16 +5,21 @@ import { CHART_COLORS } from "./palette";
 
 export function Gauge({
 	value = 72,
+	max = 100,
 	ariaLabel = "Gauge",
 	className,
 	hideValue = false,
+	valueFormatter,
 }: {
 	value?: number;
+	max?: number;
 	ariaLabel?: string;
 	className?: string;
 	hideValue?: boolean;
+	valueFormatter?: (value: number) => string;
 }) {
-	const clamped = Math.min(100, Math.max(0, value));
+	const percent = max === 0 ? 0 : Math.min(100, Math.max(0, (value / max) * 100));
+	const display = valueFormatter ? valueFormatter(value) : String(value);
 	return (
 		<div className={cn("relative h-36 w-36", className)}>
 			<ChartFrame ariaLabel={ariaLabel} className="h-full w-full" size="h-full w-full">
@@ -25,7 +30,7 @@ export function Gauge({
 					outerRadius="95%"
 					startAngle={90}
 					endAngle={-270}
-					data={[{ value: clamped }]}
+					data={[{ value: percent }]}
 					barSize={12}
 				>
 					<PolarAngleAxis type="number" domain={[0, 100]} angleAxisId={0} tick={false} />
@@ -39,7 +44,7 @@ export function Gauge({
 			</ChartFrame>
 			{hideValue ? null : (
 				<span className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm font-semibold text-basalt-foreground">
-					{clamped}
+					{display}
 				</span>
 			)}
 		</div>

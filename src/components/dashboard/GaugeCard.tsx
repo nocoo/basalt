@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 const score = 742;
 const max = 850;
-const pct = Math.round((score / max) * 100);
 
 export function GaugeCard() {
 	const { t } = useTranslation();
@@ -32,7 +31,8 @@ export function GaugeCard() {
 			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 flex flex-col">
 				<div className="flex flex-1 flex-col items-center min-h-0">
 					<Gauge
-						value={pct}
+						value={score}
+						max={max}
 						ariaLabel={t("dashboard.creditScoreAria", { score, max, rating: label })}
 						className="w-full"
 					/>
