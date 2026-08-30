@@ -1,5 +1,21 @@
 # Publish-gate fixtures
 
+## Gate A — Vite Tailwind
+
+Command: `bun run consumer:tailwind`
+
+Same shared consumer kernel as Gate B: clean package build, `npm pack` into an OS temp directory outside this repository, copy `fixtures/vite-tailwind`, inject the tarball as a `file:` dependency, real `npm install`, consumer `typecheck` (strict Bundler `tsc`, `noEmit`, `skipLibCheck: false`), then production Vite build.
+
+Guarantees:
+
+- The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, or this repository's path.
+- The consumer imports and renders `Button`, `ThemeProvider`, `ThemeToggle`, `Toast`, and `LinkProvider` from `@nocoo/basalt` root and only `@nocoo/basalt/styles/tailwind`.
+- `@source` is relative to the copied consumer and scans `node_modules/@nocoo/basalt/dist`; it does not scan this repository, `src`, or a workspace path. Missing or wrong `@source` fails the gate.
+- After install, root and `styles/tailwind` resolve inside that consumer's tarball copy.
+- `tailwindcss` and `@tailwindcss/vite` 4.3.3 are installed; `recharts`, `react-day-picker`, and `@tanstack/react-table` are not.
+- Production CSS contains `--basalt-background` and Button utilities generated from the installed dist scan, not the standalone CSS dump.
+- Temp directories and tarballs are deleted on success and failure.
+
 ## Gate B — Vite standalone
 
 Command: `bun run consumer:standalone`

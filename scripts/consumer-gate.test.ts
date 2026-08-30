@@ -5,15 +5,23 @@ import { describe, expect, it } from "vitest";
 import {
 	assertRootConsumerSource,
 	assertStandaloneTypecheckGate,
+	assertTailwindStylesheet,
+	assertTarballDistSource,
 	assertTemplateManifest,
+	consumerSourceGlobs,
 	distArtifactKinds,
 	fileDependencyPaths,
 	findInstalledPackages,
 	forbiddenInstallRefs,
+	gateConfigFromArgv,
 	injectTarballDependency,
 	isOutsideRepo,
 	isPathInside,
+	OPTIONAL_HEAVY_PEERS,
+	STANDALONE_GATE,
 	standaloneCssEvidence,
+	TAILWIND_GATE,
+	tailwindCssEvidence,
 } from "./consumer-gate";
 
 describe("standalone consumer gate helpers", () => {
@@ -154,6 +162,112 @@ import "@nocoo/basalt/styles/tailwind";`),
 			"fixtures/vite-standalone/tsconfig.json",
 			"fixtures/vite-standalone/vite.config.ts",
 			"fixtures/vite-standalone/index.html",
+		];
+		for (const file of files) {
+			expect(readFileSync(file, "utf8").includes(needle), file).toBe(false);
+		}
+	});
+});
+
+describe("tailwind consumer gate helpers", () => {
+	it("selects standalone by default and tailwind from argv", () => {
+		expect(gateConfigFromArgv([])).toBe(STANDALONE_GATE);
+		expect(gateConfigFromArgv(["tailwind"])).toBe(TAILWIND_GATE);
+		expect(STANDALONE_GATE.forbiddenPeers).toContain("tailwindcss");
+		expect(TAILWIND_GATE.forbiddenPeers).toEqual([...OPTIONAL_HEAVY_PEERS]);
+		expect(TAILWIND_GATE.requiredPeers.tailwindcss).toBe("4.3.3");
+		expect(TAILWIND_GATE.styleExport).toBe("@nocoo/basalt/styles/tailwind");
+	});
+
+	it("keeps the committed tailwind fixture inside the gate contract", () => {
+		const manifest = readFileSync("fixtures/vite-tailwind/package.json", "utf8");
+		assertTemplateManifest(manifest);
+		expect(manifest).toContain('"react": "19.2.8"');
+		expect(manifest).toContain('"tailwindcss": "4.3.3"');
+		expect(manifest).toContain('"@tailwindcss/vite": "4.3.3"');
+		expect(manifest).not.toContain("standalone");
+		assertRootConsumerSource(
+			readFileSync("fixtures/vite-tailwind/src/main.tsx", "utf8"),
+			"tailwind",
+		);
+		assertStandaloneTypecheckGate(
+			readFileSync("fixtures/vite-tailwind/tsconfig.json", "utf8"),
+			manifest,
+		);
+		assertTailwindStylesheet(readFileSync("fixtures/vite-tailwind/src/index.css", "utf8"));
+		const vite = readFileSync("fixtures/vite-tailwind/vite.config.ts", "utf8");
+		expect(vite).toContain("@tailwindcss/vite");
+		expect(vite).toContain("tailwindcss()");
+	});
+
+	it("fails the gate when @source is missing or points at the repo", () => {
+		expect(() => assertTarballDistSource([])).toThrow(/missing @source/);
+		expect(() => assertTarballDistSource(["../../packages/basalt/src/**/*.{ts,tsx}"])).toThrow(
+			/repository/,
+		);
+		expect(() => assertTarballDistSource(["./src/**/*.tsx"])).toThrow(/src/);
+		expect(() => assertTarballDistSource(["/tmp/workspace/dist/**/*"])).toThrow(/relative/);
+		expect(() =>
+			assertTarballDistSource(["../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}"]),
+		).not.toThrow();
+		expect(
+			consumerSourceGlobs(readFileSync("fixtures/vite-tailwind/src/index.css", "utf8")),
+		).toEqual(["../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}"]);
+		expect(() =>
+			assertTailwindStylesheet(
+				'@import "@nocoo/basalt/styles/tailwind";\n@import "tailwindcss";\n',
+			),
+		).toThrow(/missing @source/);
+		expect(() =>
+			assertTailwindStylesheet(
+				'@source "../../packages/basalt/src/**/*.{ts,tsx}";\n@import "@nocoo/basalt/styles/tailwind";\n@import "tailwindcss";\n',
+			),
+		).toThrow(/repository/);
+	});
+
+	it("allows Tailwind while still rejecting other heavy peers", () => {
+		const root = mkdtempSync(join(tmpdir(), "basalt-gate-tw-"));
+		try {
+			mkdirSync(join(root, "tailwindcss"), { recursive: true });
+			mkdirSync(join(root, "recharts"), { recursive: true });
+			expect(findInstalledPackages(root, OPTIONAL_HEAVY_PEERS)).toEqual(["recharts"]);
+			expect(findInstalledPackages(root, ["tailwindcss"])).toEqual(["tailwindcss"]);
+		} finally {
+			rmSync(root, { recursive: true, force: true });
+		}
+	});
+
+	it("requires token and Button utilities and rejects a standalone dump", () => {
+		const generated = `
+:root { --basalt-background: 220 14% 94%; }
+.bg-basalt-primary { color: blue; }
+.text-basalt-primary-foreground { color: white; }
+`;
+		expect(tailwindCssEvidence(generated)).toEqual({
+			empty: false,
+			token: true,
+			buttonClass: true,
+			buttonUtility: true,
+			standaloneDump: false,
+		});
+		expect(
+			tailwindCssEvidence(
+				"/* Generated from standalone.source.css. Do not edit. */\n:root{--basalt-background:0}\n.bg-basalt-primary{}\n.text-basalt-primary-foreground{}",
+			).standaloneDump,
+		).toBe(true);
+		expect(tailwindCssEvidence(":root{--basalt-background:0}").buttonClass).toBe(false);
+	});
+
+	it("does not embed a developer home path in the tailwind slice", () => {
+		const needle = ["/Users", "nocoo"].join("/");
+		const files = [
+			"fixtures/vite-tailwind/package.json",
+			"fixtures/vite-tailwind/src/main.tsx",
+			"fixtures/vite-tailwind/src/index.css",
+			"fixtures/vite-tailwind/src/css.d.ts",
+			"fixtures/vite-tailwind/tsconfig.json",
+			"fixtures/vite-tailwind/vite.config.ts",
+			"fixtures/vite-tailwind/index.html",
 		];
 		for (const file of files) {
 			expect(readFileSync(file, "utf8").includes(needle), file).toBe(false);

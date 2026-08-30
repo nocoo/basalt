@@ -20,6 +20,12 @@ export const HEAVY_PEERS = [
 	"@tanstack/react-table",
 ] as const;
 
+export const OPTIONAL_HEAVY_PEERS = [
+	"recharts",
+	"react-day-picker",
+	"@tanstack/react-table",
+] as const;
+
 export const ROOT_EXPORTS = [
 	"Button",
 	"ThemeProvider",
@@ -28,11 +34,45 @@ export const ROOT_EXPORTS = [
 	"LinkProvider",
 ] as const;
 
+export type ConsumerMode = "standalone" | "tailwind";
+
 export type Manifest = {
 	dependencies?: Record<string, string>;
 	devDependencies?: Record<string, string>;
 	optionalDependencies?: Record<string, string>;
 	peerDependencies?: Record<string, string>;
+};
+
+export type ConsumerGateConfig = {
+	mode: ConsumerMode;
+	fixtureDir: string;
+	tempPrefix: string;
+	styleExport: string;
+	cssFileSuffix: string;
+	requiredPeers: Readonly<Record<string, string>>;
+	forbiddenPeers: readonly string[];
+	stylesheet?: string;
+};
+
+export const STANDALONE_GATE: ConsumerGateConfig = {
+	mode: "standalone",
+	fixtureDir: "fixtures/vite-standalone",
+	tempPrefix: "basalt-gate-b-",
+	styleExport: "@nocoo/basalt/styles/standalone",
+	cssFileSuffix: `${sep}dist${sep}styles${sep}standalone.css`,
+	requiredPeers: {},
+	forbiddenPeers: HEAVY_PEERS,
+};
+
+export const TAILWIND_GATE: ConsumerGateConfig = {
+	mode: "tailwind",
+	fixtureDir: "fixtures/vite-tailwind",
+	tempPrefix: "basalt-gate-a-",
+	styleExport: "@nocoo/basalt/styles/tailwind",
+	cssFileSuffix: `${sep}dist${sep}styles${sep}tailwind.css`,
+	requiredPeers: { tailwindcss: "4.3.3", "@tailwindcss/vite": "4.3.3" },
+	forbiddenPeers: OPTIONAL_HEAVY_PEERS,
+	stylesheet: "src/index.css",
 };
 
 export function posixPath(value: string) {
@@ -91,6 +131,15 @@ export function standaloneCssEvidence(css: string) {
 		empty: css.trim().length === 0,
 		token: css.includes("--basalt-background"),
 		buttonClass: css.includes(".bg-basalt-primary"),
+	};
+}
+
+export function tailwindCssEvidence(css: string) {
+	const base = standaloneCssEvidence(css);
+	return {
+		...base,
+		buttonUtility: css.includes(".text-basalt-primary-foreground"),
+		standaloneDump: css.includes("Generated from standalone.source.css"),
 	};
 }
 
@@ -190,23 +239,73 @@ export function assertStandaloneTypecheckGate(tsconfigRaw: string, packageRaw: s
 	}
 }
 
-export function assertRootConsumerSource(source: string) {
+export function assertRootConsumerSource(source: string, mode: ConsumerMode = "standalone") {
 	if (/@nocoo\/basalt\/(?:components|providers|charts)\//.test(source)) {
 		throw new Error("consumer must not import granular paths");
 	}
-	if (source.includes("tailwind") || source.includes("@nocoo/basalt/styles/tailwind")) {
-		throw new Error("standalone consumer must not import Tailwind");
-	}
-	if (!/from\s+"@nocoo\/basalt"/.test(source)) {
-		throw new Error("consumer must import from @nocoo/basalt root");
-	}
-	if (!source.includes("@nocoo/basalt/styles/standalone")) {
-		throw new Error("consumer must import standalone styles");
+	if (mode === "standalone") {
+		if (source.includes("tailwind") || source.includes("@nocoo/basalt/styles/tailwind")) {
+			throw new Error("standalone consumer must not import Tailwind");
+		}
+		if (!/from\s+"@nocoo\/basalt"/.test(source)) {
+			throw new Error("consumer must import from @nocoo/basalt root");
+		}
+		if (!source.includes("@nocoo/basalt/styles/standalone")) {
+			throw new Error("consumer must import standalone styles");
+		}
+	} else {
+		if (source.includes("@nocoo/basalt/styles/standalone") || /\bstandalone\b/.test(source)) {
+			throw new Error("tailwind consumer must not import standalone");
+		}
+		if (!/from\s+"@nocoo\/basalt"/.test(source)) {
+			throw new Error("consumer must import from @nocoo/basalt root");
+		}
+		if (!source.includes("@nocoo/basalt/styles/tailwind")) {
+			throw new Error("consumer must import tailwind styles");
+		}
 	}
 	for (const name of ROOT_EXPORTS) {
 		if (!source.includes(name)) {
 			throw new Error(`consumer must use ${name}`);
 		}
+	}
+}
+
+export function consumerSourceGlobs(css: string) {
+	return [...css.matchAll(/@source\s+["']([^"']+)["']/g)].map((match) => match[1]);
+}
+
+export function assertTarballDistSource(globs: string[]) {
+	if (globs.length === 0) {
+		throw new Error("missing @source");
+	}
+	for (const glob of globs) {
+		const posix = posixPath(glob);
+		if (!posix.startsWith(".")) {
+			throw new Error(`@source must be relative: ${glob}`);
+		}
+		if (posix.includes("packages/basalt") || posix.includes("workspace")) {
+			throw new Error(`@source scans the repository: ${glob}`);
+		}
+		if (/(^|\/)src\//.test(posix)) {
+			throw new Error(`@source scans src: ${glob}`);
+		}
+		if (!posix.includes("node_modules/@nocoo/basalt/dist")) {
+			throw new Error(`@source must scan installed tarball dist: ${glob}`);
+		}
+	}
+}
+
+export function assertTailwindStylesheet(css: string) {
+	assertTarballDistSource(consumerSourceGlobs(css));
+	if (css.includes("standalone")) {
+		throw new Error("tailwind stylesheet must not import standalone");
+	}
+	if (!css.includes("@nocoo/basalt/styles/tailwind")) {
+		throw new Error("tailwind stylesheet must import @nocoo/basalt/styles/tailwind");
+	}
+	if (!css.includes('@import "tailwindcss"') && !css.includes("@import 'tailwindcss'")) {
+		throw new Error("tailwind stylesheet must import tailwindcss");
 	}
 }
 
@@ -241,19 +340,30 @@ function walkFiles(dir: string): string[] {
 	return files;
 }
 
-export function runStandaloneConsumerGate(repoRoot: string) {
+function installedVersion(nodeModules: string, name: string) {
+	const pkg = join(nodeModules, ...name.split("/"), "package.json");
+	if (!existsSync(pkg)) {
+		throw new Error(`required package missing: ${name}`);
+	}
+	return (JSON.parse(readFileSync(pkg, "utf8")) as { version?: string }).version ?? "";
+}
+
+export function runConsumerGate(repoRoot: string, config: ConsumerGateConfig) {
 	const packageRoot = join(repoRoot, "packages/basalt");
-	const fixtureRoot = join(repoRoot, "fixtures/vite-standalone");
+	const fixtureRoot = join(repoRoot, config.fixtureDir);
 	assertTemplateManifest(readFileSync(join(fixtureRoot, "package.json"), "utf8"));
-	assertRootConsumerSource(readFileSync(join(fixtureRoot, "src/main.tsx"), "utf8"));
+	assertRootConsumerSource(readFileSync(join(fixtureRoot, "src/main.tsx"), "utf8"), config.mode);
 	assertStandaloneTypecheckGate(
 		readFileSync(join(fixtureRoot, "tsconfig.json"), "utf8"),
 		readFileSync(join(fixtureRoot, "package.json"), "utf8"),
 	);
+	if (config.stylesheet) {
+		assertTailwindStylesheet(readFileSync(join(fixtureRoot, config.stylesheet), "utf8"));
+	}
 
 	run("bun", ["run", "--cwd", "packages/basalt", "build"], repoRoot);
 
-	const tempRoot = realpathSync(mkdtempSync(join(tmpdir(), "basalt-gate-b-")));
+	const tempRoot = realpathSync(mkdtempSync(join(tmpdir(), config.tempPrefix)));
 	if (!isOutsideRepo(tempRoot, realpathSync(repoRoot))) {
 		rmSync(tempRoot, { recursive: true, force: true });
 		throw new Error(`temp root is inside the repository: ${tempRoot}`);
@@ -296,9 +406,17 @@ export function runStandaloneConsumerGate(repoRoot: string) {
 		}
 
 		const nodeModules = join(consumerRoot, "node_modules");
-		const heavy = findInstalledPackages(nodeModules, HEAVY_PEERS);
+		const heavy = findInstalledPackages(nodeModules, config.forbiddenPeers);
 		if (heavy.length > 0) {
 			throw new Error(`heavy peers installed: ${heavy.join(", ")}`);
+		}
+		const requiredVersions: Record<string, string> = {};
+		for (const [name, version] of Object.entries(config.requiredPeers)) {
+			const actual = installedVersion(nodeModules, name);
+			if (actual !== version) {
+				throw new Error(`${name} version ${actual} does not match fixture ${version}`);
+			}
+			requiredVersions[name] = actual;
 		}
 
 		const probe = run(
@@ -308,7 +426,7 @@ export function runStandaloneConsumerGate(repoRoot: string) {
 				"-e",
 				`import { realpathSync } from "node:fs";
 const resolved = import.meta.resolve("@nocoo/basalt");
-const css = import.meta.resolve("@nocoo/basalt/styles/standalone");
+const css = import.meta.resolve(${JSON.stringify(config.styleExport)});
 const real = realpathSync(new URL(resolved));
 const cssReal = realpathSync(new URL(css));
 console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
@@ -333,11 +451,11 @@ console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
 		}
 		if (!isPathInside(expectedRoot, cssPath) || !isPathInside(expectedRoot, cssReal)) {
 			throw new Error(
-				`standalone CSS resolved outside consumer node_modules: css=${resolution.css} real=${cssReal}`,
+				`style export resolved outside consumer node_modules: css=${resolution.css} real=${cssReal}`,
 			);
 		}
-		if (!cssReal.endsWith(`${sep}dist${sep}styles${sep}standalone.css`)) {
-			throw new Error(`standalone CSS did not resolve to tarball css: ${cssReal}`);
+		if (!cssReal.endsWith(config.cssFileSuffix)) {
+			throw new Error(`style export did not resolve to tarball css: ${cssReal}`);
 		}
 		if (
 			isPathInside(realpathSync(repoRoot), realPath) ||
@@ -360,14 +478,22 @@ console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
 		}
 		const cssFiles = distFiles.filter((file) => file.endsWith(".css"));
 		const css = cssFiles.map((file) => readFileSync(file, "utf8")).join("\n");
-		const cssEvidence = standaloneCssEvidence(css);
+		const cssEvidence =
+			config.mode === "tailwind" ? tailwindCssEvidence(css) : standaloneCssEvidence(css);
 		if (cssEvidence.empty || !cssEvidence.token || !cssEvidence.buttonClass) {
 			throw new Error(
-				`standalone CSS evidence failed empty=${cssEvidence.empty} token=${cssEvidence.token} buttonClass=${cssEvidence.buttonClass}`,
+				`${config.mode} CSS evidence failed empty=${cssEvidence.empty} token=${cssEvidence.token} buttonClass=${cssEvidence.buttonClass}`,
 			);
+		}
+		if ("buttonUtility" in cssEvidence && !cssEvidence.buttonUtility) {
+			throw new Error("tailwind CSS missing Button utility .text-basalt-primary-foreground");
+		}
+		if ("standaloneDump" in cssEvidence && cssEvidence.standaloneDump) {
+			throw new Error("tailwind CSS is a standalone dump");
 		}
 
 		const evidence = {
+			mode: config.mode,
 			tempRoot,
 			tarball: tarballs[0],
 			resolved: resolution.resolved,
@@ -378,16 +504,25 @@ console.log(JSON.stringify({ resolved, real, css, cssReal }));`,
 			distFiles: distFiles.map((file) => posixPath(relative(distRoot, file))).sort(),
 			cssBytes: Buffer.byteLength(css),
 			cssEvidence,
-			missingHeavyPeers: HEAVY_PEERS.filter((name) => !heavy.includes(name)),
+			requiredVersions,
+			missingHeavyPeers: config.forbiddenPeers.filter((name) => !heavy.includes(name)),
 		};
-		console.log(`consumer standalone ok ${JSON.stringify(evidence, null, 2)}`);
+		console.log(`consumer ${config.mode} ok ${JSON.stringify(evidence, null, 2)}`);
 		return evidence;
 	} finally {
 		rmSync(tempRoot, { recursive: true, force: true });
 	}
 }
 
+export function runStandaloneConsumerGate(repoRoot: string) {
+	return runConsumerGate(repoRoot, STANDALONE_GATE);
+}
+
+export function gateConfigFromArgv(argv: string[]) {
+	return argv.includes("tailwind") ? TAILWIND_GATE : STANDALONE_GATE;
+}
+
 if (import.meta.main) {
 	const repoRoot = dirname(dirname(fileURLToPath(import.meta.url)));
-	runStandaloneConsumerGate(repoRoot);
+	runConsumerGate(repoRoot, gateConfigFromArgv(process.argv.slice(2)));
 }
