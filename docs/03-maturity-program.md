@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S0C3b — 删除旧 demo 映射（准备下发）
-> 已验收代码基线：`2a1e45a5dade`（`main`，工作树干净）
+> 当前切片：S1A — 包契约拆分（规划中）
+> 已验收代码基线：`e57579c592ba`（`main`，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-30
 
@@ -101,7 +101,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | Ready 页面 | 84 | 公开项 100% ready |
 | Placeholder | 12：9 docs、Maps、ResourceList、DeleteResource | 0 |
 | Kumo 重合控件示例 | Basalt 133 / Kumo live registry 321，名义 41.4% | 场景按 Basalt 契约覆盖；不机械复制品牌场景；动态基线注明抓取日期 |
-| 测试 | 105 文件、654 tests，全部 jsdom | unit + 高风险 browser + consumer gate |
+| 测试 | 105 文件、656 tests，全部 jsdom | unit + 高风险 browser + consumer gate |
 | 外部消费者 | 0 个真实 `@nocoo/basalt` import | 仓外 Vite Tailwind、Vite standalone、Next consumer 全绿 |
 | 包 | `0.0.0`、private、exports 指向 src | dist/types/files/exports/publint/tarball/prepublish 完整；最终 release-ready |
 
@@ -121,7 +121,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 |------|------|------|----------|
 | S0A | 清理 Kumo/Cloudflare/Worker 用户示例与 fixture | 完成（`0cdbfdc`） | 禁用语境扫描、测试、typecheck、Biome、原子 commit 全绿 |
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
-| S0C | 审计示例标题与真实能力，消除伪对齐 | 执行中（S0C3b） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
+| S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
 | S1A | dist/types/files/exports 包契约 | 待办 | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next tarball consumers | 待办 | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | publint、prepublishOnly、Husky/browser 门 | 待办 | 一条发布前命令覆盖所有门，仍不实际 publish |
@@ -350,6 +350,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D006 | S0C2c | `5250494cbfcf` | `w14:p1` | 完成 | `306b6683ecbc` | 4 个授权文件，+224/−34；锁定 9 个 slug 的 ID/数量/顺序，对齐 Checkbox/Switch/Input/InputArea/InputGroup/Radio/SensitiveInput 的名称与组合结构，补齐 Combobox items/placeholder 和 DatePicker 可访问 usage；targeted 2 files / 166 tests，typecheck、Biome、全量 104 files / 643 tests；未扩 string-only Combobox、DatePicker range 或 Group/Legend API，留给 S4/S5 |
 | D007 | S0C2d | `306b6683ecbc` | `w14:p1` | 完成 | `d7c1f6b5c8b` + `7b37cda26b56` | 首提交 3 个授权文件，+612/−49；review-fix 用 Fragment 修正 `dialog-sizes`、`popover-sides` 多根非法 JSX，并让 `tabs-many-tabs` 的 defaultValue 命中 overview trigger；两轮均独立复跑 targeted 1 file / 9 tests、typecheck、Biome、全量 105 files / 652 tests，Husky 通过；未进入 S0C3 |
 | D008 | S0C3a | `e05cd19d727b` | `w14:p1` | 完成 | `2a1e45a5dade` | 3 个授权文件，+62/−17；新增只读 `catalogHeroScenario`，ready 改为 docs + hero，首屏 `data-hero-scenario` 的 preview/code 同源，Usage 改为纯 `docs.usage` 代码；targeted 1 file / 162 tests、typecheck、Biome、全量 105 files / 654 tests、Husky 均独立通过；保留旧映射给 S0C3b |
-| D009 | S0C3b | `2a1e45a5dade` + 本次调度文档 commit | `w14:p1` | 准备下发 | — | HomeGrid 非定制 tile 改用 hero helper；删除 `BASE_DEMOS`、`UI_DEMOS`、`EXTRA_DEMOS` 和无用 imports，以负向契约证明旧并行真源归零；不改文档页和 HomeGrid 构图 |
+| D009 | S0C3b | `2a1e45a5dade` + `e837d20c52d9` | `w14:p1` | 完成 | `e57579c592ba` | 4 个授权文件，+33/−113；HomeGrid 非定制 tile 改用 hero helper，删除 `BASE_DEMOS`、`UI_DEMOS`、`EXTRA_DEMOS` 与无用 imports，生产源码负向扫描归零，并以 Accordion 首页交互证明 extra tile 复用首个 scenario；Codex 独立复跑 targeted 1 file / 164 tests、typecheck、Biome、全量 105 files / 656 tests，Husky 通过；未重设计 HomeGrid 或进入 S1 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
