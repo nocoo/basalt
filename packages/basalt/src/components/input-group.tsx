@@ -7,38 +7,44 @@ export type InputGroupProps = React.HTMLAttributes<HTMLDivElement> & {
 	disabled?: boolean;
 };
 
+const InputGroupDisabled = React.createContext(false);
+
 const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
 	({ className, disabled, onClick, children, ...props }, ref) => (
-		<div
-			ref={ref}
-			data-slot="input-group"
-			data-disabled={disabled ? "" : undefined}
-			className={cn(
-				"flex h-9 w-full items-center overflow-hidden rounded-basalt-lg border border-basalt-border bg-basalt-background text-sm shadow-xs",
-				"outline-hidden focus-within:border-basalt-ring",
-				"has-[[data-slot=input-group-addon-start]]:[&_input]:pl-2",
-				"has-[[data-slot=input-group-addon-end]]:[&_input]:pr-2",
-				"has-[[data-slot=input-group-suffix]]:[&_input]:flex-none",
-				"has-[[data-slot=input-group-suffix]]:[&_input]:[field-sizing:content]",
-				"has-[[data-slot=input-group-suffix]]:[&_input]:pr-0",
-				"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-				className,
-			)}
-			onClick={(event) => {
-				onClick?.(event);
-				if (event.defaultPrevented) {
-					return;
-				}
-				const target = event.target as HTMLElement;
-				if (target.closest("input, textarea, button, a")) {
-					return;
-				}
-				event.currentTarget.querySelector("input")?.focus();
-			}}
-			{...props}
-		>
-			{children}
-		</div>
+		<InputGroupDisabled.Provider value={Boolean(disabled)}>
+			<div
+				ref={ref}
+				data-slot="input-group"
+				data-disabled={disabled ? "" : undefined}
+				aria-disabled={disabled || undefined}
+				inert={disabled || undefined}
+				className={cn(
+					"flex h-9 w-full items-center overflow-hidden rounded-basalt-lg border border-basalt-border bg-basalt-background text-sm shadow-xs",
+					"outline-hidden focus-within:border-basalt-ring",
+					"has-[[data-slot=input-group-addon-start]]:[&_input]:pl-2",
+					"has-[[data-slot=input-group-addon-end]]:[&_input]:pr-2",
+					"has-[[data-slot=input-group-suffix]]:[&_input]:flex-none",
+					"has-[[data-slot=input-group-suffix]]:[&_input]:[field-sizing:content]",
+					"has-[[data-slot=input-group-suffix]]:[&_input]:pr-0",
+					"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+					className,
+				)}
+				onClick={(event) => {
+					onClick?.(event);
+					if (event.defaultPrevented || disabled) {
+						return;
+					}
+					const target = event.target as HTMLElement;
+					if (target.closest("input, textarea, button, a")) {
+						return;
+					}
+					event.currentTarget.querySelector("input")?.focus();
+				}}
+				{...props}
+			>
+				{children}
+			</div>
+		</InputGroupDisabled.Provider>
 	),
 );
 InputGroupRoot.displayName = "InputGroup";
@@ -46,17 +52,21 @@ InputGroupRoot.displayName = "InputGroup";
 const InputGroupInput = React.forwardRef<
 	HTMLInputElement,
 	React.ComponentPropsWithoutRef<typeof Input>
->(({ className, ...props }, ref) => (
-	<Input
-		ref={ref}
-		className={cn(
-			"h-full min-w-0 w-auto! flex-1 rounded-none border-0 bg-transparent px-3 py-0 shadow-none",
-			"outline-hidden focus-visible:border-transparent focus-visible:ring-0",
-			className,
-		)}
-		{...props}
-	/>
-));
+>(({ className, disabled, ...props }, ref) => {
+	const groupDisabled = React.useContext(InputGroupDisabled);
+	return (
+		<Input
+			ref={ref}
+			disabled={disabled || groupDisabled}
+			className={cn(
+				"h-full min-w-0 w-auto! flex-1 rounded-none border-0 bg-transparent px-3 py-0 shadow-none",
+				"outline-hidden focus-visible:border-transparent focus-visible:ring-0",
+				className,
+			)}
+			{...props}
+		/>
+	);
+});
 InputGroupInput.displayName = "InputGroup.Input";
 
 export type InputGroupAddonProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -97,15 +107,19 @@ function InputGroupSuffix({ className, children, ...props }: React.HTMLAttribute
 InputGroupSuffix.displayName = "InputGroup.Suffix";
 
 const InputGroupButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
-	({ className, variant = "ghost", size = "icon", ...props }, ref) => (
-		<Button
-			ref={ref}
-			variant={variant}
-			size={size}
-			className={cn("h-7 w-7 shrink-0 rounded-basalt-sm", className)}
-			{...props}
-		/>
-	),
+	({ className, variant = "ghost", size = "icon", disabled, ...props }, ref) => {
+		const groupDisabled = React.useContext(InputGroupDisabled);
+		return (
+			<Button
+				ref={ref}
+				variant={variant}
+				size={size}
+				disabled={disabled || groupDisabled}
+				className={cn("h-7 w-7 shrink-0 rounded-basalt-sm", className)}
+				{...props}
+			/>
+		);
+	},
 );
 InputGroupButton.displayName = "InputGroup.Button";
 

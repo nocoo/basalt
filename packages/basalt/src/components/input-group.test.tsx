@@ -23,6 +23,17 @@ describe("InputGroup", () => {
 		expect(screen.getByText(".workers.dev")).toBeInTheDocument();
 	});
 
+	it("disables nested controls when the group is disabled", () => {
+		render(
+			<InputGroup disabled>
+				<InputGroup.Input aria-label="Query" />
+				<InputGroup.Button aria-label="Go" />
+			</InputGroup>,
+		);
+		expect(screen.getByRole("textbox", { name: "Query" })).toBeDisabled();
+		expect(screen.getByRole("button", { name: "Go" })).toBeDisabled();
+	});
+
 	it("focuses the input when the group is clicked", () => {
 		render(
 			<InputGroup>
