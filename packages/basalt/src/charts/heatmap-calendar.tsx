@@ -64,7 +64,8 @@ function getYearWeeks(year: number): Date[][] {
 			break;
 		}
 		currentWeek.push(new Date(currentDate));
-		currentDate = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
+		currentDate = new Date(currentDate);
+		currentDate.setDate(currentDate.getDate() + 1);
 	}
 	if (currentWeek.length > 0) {
 		weeks.push(currentWeek);
