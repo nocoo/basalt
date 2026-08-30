@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S1A3b — ESM runtime 与 root 边界（准备下发）
-> 已验收代码基线：`82014a6d355b`（`main`，工作树干净）
+> 当前切片：S1B1 — 仓外 Vite standalone consumer（准备下发）
+> 已验收代码基线：`62297f296590`（`main`，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-30
 
@@ -122,8 +122,8 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S0A | 清理 Kumo/Cloudflare/Worker 用户示例与 fixture | 完成（`0cdbfdc`） | 禁用语境扫描、测试、typecheck、Biome、原子 commit 全绿 |
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
-| S1A | dist/types/files/exports 包契约 | 执行中（S1A3b 准备下发） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
-| S1B | 仓外 Vite/Next tarball consumers | 待办 | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
+| S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
+| S1B | 仓外 Vite/Next tarball consumers | 执行中（S1B1 准备下发） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | publint、prepublishOnly、Husky/browser 门 | 待办 | 一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 待办 | 组件类型、API 表、example 不再三份手写漂移 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
@@ -225,6 +225,13 @@ S0C3a、S0C3b 各自一个绿色提交；S0C3b 通过后才把 S0C 标为完成�
    - **S1A3b — ESM runtime 与 root 边界。** 以真实 Node ESM 进程通过 package self-reference 加载 root、`components/button`、`providers/theme`、`charts/donut`、`components/date-picker` 和 `components/data-table`；不得用源码相对 import、Bun resolver 或 workspace alias 代替。按 01 §6.2 只从根 barrel 删除未批准的 AppHeader、AppMain/AppShell/AppSkipLink、LoadingScreen 导出，保留其源码、测试和当前 granular 构建，其余已批准 stable/provider 根导出不得顺手增删。构建后的机器门必须从 `dist/index.js` 递归跟随相对 ESM import/export，证明闭包不进入 `charts/`、`components/date-picker.js`、`components/data-table.js`，也不引用 `recharts`、`react-day-picker`、`@tanstack/react-table`；禁止只扫描根文件一层。Node runtime 同时断言批准的代表性根导出存在、上述五个名字从 root 缺席，而对应 granular/heavy 模块仍可单独加载。允许修改 `packages/basalt/{package.json,src/index.ts,src/index.test.ts,src/build-contract.test.ts,scripts/,type-tests/}` 中与本契约直接相关的文件；不得改依赖版本或分类、其它组件实现、docs/examples、仓外 fixture、S1B consumer、private/version。此刀不做仓外安装。
 
 S1A1、S1A2、S1A3a、S1A3b 各自一个绿色提交。只有 S1A3b 验收后才进入 S1B；S1B 再分别落 Vite standalone、Vite Tailwind、Next hydration 和 optional-peer D 门，不能以仓内 alias 或当前 `node_modules` 代替。S1C 必须在同一绿色切片内先装齐发布前门、再解除 private；不得留下无门的可发布中间状态。
+
+S1B 固定拆成四个依次解锁的绿色切片，公共 runner 只按当前 consumer 的需要演进：
+
+1. **S1B1 — Vite standalone。** 把 `fixtures/vite-standalone` 变成真实消费模板：从 root 同时导入并渲染 Button、ThemeProvider、ThemeToggle、Toast、LinkProvider，只导入 `@nocoo/basalt/styles/standalone`，manifest 明确 React 19、Lucide、Vite、TypeScript 等直接依赖但不写 workspace 或仓库路径。新增一条仓库命令，从 clean Basalt build 开始，将 `npm pack` tarball 直接产到操作系统临时目录，复制 fixture、在临时副本注入 tarball `file:` 依赖、执行真实 npm install 与 production build；临时目录必须位于仓库外，解析到的 Basalt 必须位于该临时 consumer 的 `node_modules`，且不得向上借用本仓 `node_modules`。门还要证明该 consumer 未安装 Tailwind、Recharts、react-day-picker、TanStack Table，构建输出含 JS、standalone CSS 和 Basalt token/控件样式；无论成功失败都清理临时目录与 tarball。runner 的路径/manifest/输出判定要有无网络的 focused unit test。此刀允许改根 `package.json`、`scripts/`、对应测试、`fixtures/{README.md,vite-standalone/**}`；不得改 Basalt package manifest/API、其它 fixture、Husky 或 S1B2。
+2. **S1B2 — Vite Tailwind。** 在复用同一 runner 的前提下，只完成 `vite-tailwind` 仓外安装、Tailwind v4 `@source` 和 production CSS 证据；不得顺手进入 Next。
+3. **S1B3 — Next 19 hydration。** 仓外安装并同时验证 `next build`、真实启动、浏览器 hydration/console；client boundary 必须由消费代码显式承担，不用忽略 warning 过门。
+4. **S1B4 — optional-peer D。** 独立临时 consumer 安装批准的 optional peers，加载 chart/DatePicker/DataTable granular 路径；同时复核 A/B/C 未安装 heavy peers 时 root consumer 仍可构建。不得用本仓已安装依赖冒充。
 
 ### 6.3 S2 — 文档系统
 
@@ -364,6 +371,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D010 | S1A1 | `19bdeea` + `752e980` | `w14:p1` | 完成 | `9eba6caab1e2` + `8fc87d7a4a2b` | 5 个授权文件；首提交建立 build:css → Vite clean build → declarations → executable verifier，并更新真实 standalone CSS；review-fix 删除 3 个伪空 map。Codex 从不存在的 dist 独立重建并额外验证：90 JS、90 声明、87 个非空且双向引用闭合的真实 map、61 client entry、3 CSS、0 禁用产物；targeted 2 files / 6 tests、typecheck、Biome、全量 105 files / 659 tests、Husky 通过；未进入 manifest/consumer |
 | D011 | S1A2 | `8fc87d7a4a2b` + `8d72f233cd9b` | `w14:p1` | 完成 | `edc919c15827` + `5535b9842bd3` | 4 个授权文件；manifest 指向 dist，新增 files/public metadata/包内 MIT LICENSE 与真实 dry-run verifier；review-fix 让 wildcard 从实际 types/import pattern 分别展开并锁定完整 exports shape。Codex 独立验证 273 项 = 270 dist + 3 metadata、5 exact targets、88 wildcard pairs、0 tgz/禁用路径，并在临时副本把 component import 错指 charts 后确认退出 1；targeted 2 files / 7 tests、typecheck、Biome、全量 105 files / 660 tests、Husky 通过；private/0.0.0 保留 |
 | D012 | S1A3a | `5535b9842bd3` + `e6cdf47e4d74` | `w14:p1` | 完成 | `82014a6d355b` | 8 个授权文件，+365/−4；build 在声明生成后精确重写 23 个文件中的 50 个相对 specifier，并由 verifier 证明 90 JS、90 声明、87 个有效 map、61 client entry、3 CSS、50 个引用目标闭合；严格 Bundler + NodeNext self-reference fixture 均为 `skipLibCheck: false`，覆盖 root、component、provider、chart、DatePicker、DataTable；Codex 独立复跑相关 2 files / 14 tests、typecheck、Biome、全量 106 files / 668 tests、build、types:check、273 项 pack 白名单，全部通过；未改源码 import、root surface、依赖或仓外 consumer。Grok 原报告的 targeted 3 files / 15 tests 未被独立复现，不作为验收证据 |
-| D013 | S1A3b | `82014a6d355b` + 本次调度文档 commit | `w14:p1` | 准备下发 | — | 用真实 Node package self-reference 锁定 root/runtime/递归依赖闭包；只移除五个未批准 root 名字，保留 granular 构建，不进入仓外 consumer 或依赖调整 |
+| D013 | S1A3b | `82014a6d355b` + `622456148258` | `w14:p1` | 完成 | `62297f296590` | 7 个授权文件，+307/−4；只移除五个冻结表外 root 名字，保留源码与 granular 产物；真实 Node 26.7 self-reference 加载 root/component/provider/chart/DatePicker/DataTable，Bun 负门按预期退出 1；递归闭包为 28 files / 22 externals，0 charts、DatePicker、DataTable、Recharts、react-day-picker、TanStack，并用静态与动态嵌套反例证明不是一层扫描；Codex 独立复跑 clean build、focused 4 files / 20 tests、types:check、273 项 pack、typecheck、Biome 364 files、全量 107 files / 673 tests，全部通过；未进入仓外 consumer |
+| D014 | S1B1 | `62297f296590` + 本次调度文档 commit | `w14:p1` | 准备下发 | — | 只建立仓外 Vite standalone 真 tarball/npm install/build 门及可复用 runner 骨架；不改 Tailwind/Next/optional-peer fixture |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
