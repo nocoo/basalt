@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S1B1 — 仓外 Vite standalone consumer（准备下发）
-> 已验收代码基线：`62297f296590`（`main`，工作树干净）
+> 当前切片：S1B2 — 仓外 Vite Tailwind consumer（准备下发）
+> 已验收代码基线：`c824c553261d`（`main`，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-30
 
@@ -123,7 +123,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S0B | 区分 implementation source 与 provenance，修复链接 | 完成（`703bd31`） | 所有 View source 指向当前 Basalt；参考来源单独展示 |
 | S0C | 审计示例标题与真实能力，消除伪对齐 | 完成（`e57579c`） | 示例契约测试覆盖 41 个重合控件，hero 与 code 单一真源 |
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
-| S1B | 仓外 Vite/Next tarball consumers | 执行中（S1B1 准备下发） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
+| S1B | 仓外 Vite/Next tarball consumers | 执行中（S1B2 准备下发） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | publint、prepublishOnly、Husky/browser 门 | 待办 | 一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 待办 | 组件类型、API 表、example 不再三份手写漂移 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
@@ -229,7 +229,7 @@ S1A1、S1A2、S1A3a、S1A3b 各自一个绿色提交。只有 S1A3b 验收后才
 S1B 固定拆成四个依次解锁的绿色切片，公共 runner 只按当前 consumer 的需要演进：
 
 1. **S1B1 — Vite standalone。** 把 `fixtures/vite-standalone` 变成真实消费模板：从 root 同时导入并渲染 Button、ThemeProvider、ThemeToggle、Toast、LinkProvider，只导入 `@nocoo/basalt/styles/standalone`，manifest 明确 React 19、Lucide、Vite、TypeScript 等直接依赖但不写 workspace 或仓库路径。新增一条仓库命令，从 clean Basalt build 开始，将 `npm pack` tarball 直接产到操作系统临时目录，复制 fixture、在临时副本注入 tarball `file:` 依赖、执行真实 npm install 与 production build；临时目录必须位于仓库外，解析到的 Basalt 必须位于该临时 consumer 的 `node_modules`，且不得向上借用本仓 `node_modules`。门还要证明该 consumer 未安装 Tailwind、Recharts、react-day-picker、TanStack Table，构建输出含 JS、standalone CSS 和 Basalt token/控件样式；无论成功失败都清理临时目录与 tarball。runner 的路径/manifest/输出判定要有无网络的 focused unit test。此刀允许改根 `package.json`、`scripts/`、对应测试、`fixtures/{README.md,vite-standalone/**}`；不得改 Basalt package manifest/API、其它 fixture、Husky 或 S1B2。
-2. **S1B2 — Vite Tailwind。** 在复用同一 runner 的前提下，只完成 `vite-tailwind` 仓外安装、Tailwind v4 `@source` 和 production CSS 证据；不得顺手进入 Next。
+2. **S1B2 — Vite Tailwind。** 将 S1B1 已验证的 build/pack/temp/copy/inject/install/resolve/typecheck/build/cleanup 流程抽成共享内核，禁止复制第二套 runner；standalone 的命令与全部断言必须继续通过。把 `vite-tailwind` 变成真实 React 19 + Tailwind v4 consumer，同样从 root 导入并渲染五个共用控件，但只导入 `@nocoo/basalt/styles/tailwind`；配置 `@tailwindcss/vite`，其 `@source` 必须相对指向临时 consumer 中已安装 tarball 的 `dist`，不得扫本仓源码或使用 standalone CSS。仓外严格 Bundler typecheck 后执行 production build，机器证明 root 与 Tailwind CSS export 均解析到当前临时 `node_modules`，产物 CSS 包含 Basalt token 和由包内 Button class 生成的规则；允许且必须安装 Tailwind，仍禁止 Recharts、react-day-picker、TanStack Table。提供独立根命令、无网络 focused tests，并在本刀真实运行 standalone 与 Tailwind 两门，证明重构无回归。允许改根 `package.json`、共享 `scripts/` 与测试、`fixtures/{README.md,vite-tailwind/**}`；不得改 Basalt package、standalone fixture 内容、Next/optional fixture、Husky 或 S1B3。
 3. **S1B3 — Next 19 hydration。** 仓外安装并同时验证 `next build`、真实启动、浏览器 hydration/console；client boundary 必须由消费代码显式承担，不用忽略 warning 过门。
 4. **S1B4 — optional-peer D。** 独立临时 consumer 安装批准的 optional peers，加载 chart/DatePicker/DataTable granular 路径；同时复核 A/B/C 未安装 heavy peers 时 root consumer 仍可构建。不得用本仓已安装依赖冒充。
 
@@ -372,6 +372,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D011 | S1A2 | `8fc87d7a4a2b` + `8d72f233cd9b` | `w14:p1` | 完成 | `edc919c15827` + `5535b9842bd3` | 4 个授权文件；manifest 指向 dist，新增 files/public metadata/包内 MIT LICENSE 与真实 dry-run verifier；review-fix 让 wildcard 从实际 types/import pattern 分别展开并锁定完整 exports shape。Codex 独立验证 273 项 = 270 dist + 3 metadata、5 exact targets、88 wildcard pairs、0 tgz/禁用路径，并在临时副本把 component import 错指 charts 后确认退出 1；targeted 2 files / 7 tests、typecheck、Biome、全量 105 files / 660 tests、Husky 通过；private/0.0.0 保留 |
 | D012 | S1A3a | `5535b9842bd3` + `e6cdf47e4d74` | `w14:p1` | 完成 | `82014a6d355b` | 8 个授权文件，+365/−4；build 在声明生成后精确重写 23 个文件中的 50 个相对 specifier，并由 verifier 证明 90 JS、90 声明、87 个有效 map、61 client entry、3 CSS、50 个引用目标闭合；严格 Bundler + NodeNext self-reference fixture 均为 `skipLibCheck: false`，覆盖 root、component、provider、chart、DatePicker、DataTable；Codex 独立复跑相关 2 files / 14 tests、typecheck、Biome、全量 106 files / 668 tests、build、types:check、273 项 pack 白名单，全部通过；未改源码 import、root surface、依赖或仓外 consumer。Grok 原报告的 targeted 3 files / 15 tests 未被独立复现，不作为验收证据 |
 | D013 | S1A3b | `82014a6d355b` + `622456148258` | `w14:p1` | 完成 | `62297f296590` | 7 个授权文件，+307/−4；只移除五个冻结表外 root 名字，保留源码与 granular 产物；真实 Node 26.7 self-reference 加载 root/component/provider/chart/DatePicker/DataTable，Bun 负门按预期退出 1；递归闭包为 28 files / 22 externals，0 charts、DatePicker、DataTable、Recharts、react-day-picker、TanStack，并用静态与动态嵌套反例证明不是一层扫描；Codex 独立复跑 clean build、focused 4 files / 20 tests、types:check、273 项 pack、typecheck、Biome 364 files、全量 107 files / 673 tests，全部通过；未进入仓外 consumer |
-| D014 | S1B1 | `62297f296590` + 本次调度文档 commit | `w14:p1` | 准备下发 | — | 只建立仓外 Vite standalone 真 tarball/npm install/build 门及可复用 runner 骨架；不改 Tailwind/Next/optional-peer fixture |
+| D014 | S1B1 | `62297f296590` + `bfc46dd75f34` | `w14:p1` | 完成 | `0c5342a954a1` + `c824c553261d` | 首提交建立仓外 temp → tarball → npm install → root resolution → Vite build → cleanup 门；Codex 拒绝硬编码腾讯/微软 registry 的半成品并要求 env-only，随后 review 又发现 Vite 不检查声明与测试含本机路径，第二提交补严格 Bundler `tsc`（`skipLibCheck:false`）及 CSS export 真实解析并清除路径。Codex 独立真门：temp `…/basalt-gate-b-KFK2ny` 已删除，root/CSS 均位于其 consumer `node_modules`，typecheck 通过，产物 HTML + JS + 45,480-byte CSS，token/Button class 存在，四个 heavy peers 缺席；focused 1 file / 11 tests、typecheck、Biome 368 files、全量 108 files / 684 tests 全绿；未进入 Tailwind/Next/optional fixture |
+| D015 | S1B2 | `c824c553261d` + 本次调度文档 commit | `w14:p1` | 准备下发 | — | 复用而不复制 runner 内核，建立仓外 Vite Tailwind v4/@source/type/build 门；同时复跑 standalone 防回归，不进入 Next |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
