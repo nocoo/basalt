@@ -33,6 +33,7 @@ import {
 	gateConfigFromArgv,
 	HEAVY_CONSUMER_VERSIONS,
 	HEAVY_GATE,
+	HEAVY_SOURCE_SPECIFIERS,
 	injectTarballDependency,
 	isOutsideRepo,
 	isPathInside,
@@ -41,6 +42,7 @@ import {
 	OPTIONAL_HEAVY_PEERS,
 	STANDALONE_GATE,
 	standaloneCssEvidence,
+	staticBasaltSpecifiers,
 	TAILWIND_GATE,
 	TARBALL_SOURCE_GLOB,
 	tailwindCssEvidence,
@@ -568,7 +570,9 @@ describe("heavy consumer gate helpers", () => {
 		expect(manifest).toContain('"react-day-picker": "10.0.1"');
 		expect(manifest).toContain('"@tanstack/react-table": "9.1.2"');
 		expect(manifest).not.toContain("@nocoo/basalt");
-		assertRootConsumerSource(readFileSync("fixtures/vite-heavy/src/main.tsx", "utf8"), "heavy");
+		const entry = readFileSync("fixtures/vite-heavy/src/main.tsx", "utf8");
+		assertRootConsumerSource(entry, "heavy");
+		expect([...staticBasaltSpecifiers(entry)].sort()).toEqual([...HEAVY_SOURCE_SPECIFIERS].sort());
 		assertStandaloneTypecheckGate(
 			readFileSync("fixtures/vite-heavy/tsconfig.json", "utf8"),
 			manifest,
@@ -600,9 +604,52 @@ import { Button } from "@nocoo/basalt";
 			),
 		).toThrow(/package root/);
 		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}import { Button } from '@nocoo/basalt';
+`),
+		).toThrow(/package root/);
+		expect(() =>
 			assertHeavyConsumerSource(`import { DonutChart } from "@nocoo/basalt/charts/donut";
 `),
-		).toThrow(/standalone/);
+		).toThrow(/missing specifier/);
+	});
+
+	it("rejects extra granular, extra styles, and duplicate heavy specifiers", () => {
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}import { Separator } from "@nocoo/basalt/components/separator";
+`),
+		).toThrow(/extra specifier @nocoo\/basalt\/components\/separator/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}import { ThemeProvider } from "@nocoo/basalt/providers/theme";
+`),
+		).toThrow(/extra specifier @nocoo\/basalt\/providers\/theme/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}import { BarChart } from "@nocoo/basalt/charts/bar";
+`),
+		).toThrow(/extra specifier @nocoo\/basalt\/charts\/bar/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}import "@nocoo/basalt/styles";
+`),
+		).toThrow(/extra specifier @nocoo\/basalt\/styles/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}import "@nocoo/basalt/styles/standalone";
+`),
+		).toThrow(/duplicate specifier @nocoo\/basalt\/styles\/standalone/);
+	});
+
+	it("preserves a heavy proof error and deletes temp without a server", async () => {
+		const tempRoot = realpathSync(mkdtempSync(join(tmpdir(), "basalt-gate-d-fail-")));
+		const proof = new Error("heavy-proof-fail");
+		await expect(
+			settleWithCleanup(
+				async () => {
+					throw proof;
+				},
+				async () => {
+					await cleanupConsumerGate({ tempRoot });
+				},
+			),
+		).rejects.toBe(proof);
+		expect(existsSync(tempRoot)).toBe(false);
 	});
 
 	it("rejects granular resolution into the repository or a missing export", () => {
@@ -638,6 +685,16 @@ import { Button } from "@nocoo/basalt";
 		expect(existsSync(tempRoot)).toBe(false);
 	});
 
+	it("still requires the three named heavy exports", () => {
+		expect(() =>
+			assertHeavyConsumerSource(`import "@nocoo/basalt/charts/donut";
+import "@nocoo/basalt/components/date-picker";
+import "@nocoo/basalt/components/data-table";
+import "@nocoo/basalt/styles/standalone";
+`),
+		).toThrow(/DonutChart/);
+	});
+
 	it("does not embed a developer home path in the heavy slice", () => {
 		const needle = ["/Users", "nocoo"].join("/");
 		const files = [
@@ -655,3 +712,11 @@ import { Button } from "@nocoo/basalt";
 		}
 	});
 });
+
+function heavySource() {
+	return `import { DonutChart } from "@nocoo/basalt/charts/donut";
+import { DatePicker } from "@nocoo/basalt/components/date-picker";
+import { DataTable } from "@nocoo/basalt/components/data-table";
+import "@nocoo/basalt/styles/standalone";
+`;
+}

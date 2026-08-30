@@ -124,6 +124,13 @@ export const HEAVY_CONSUMER_VERSIONS = {
 	"@tanstack/react-table": "9.1.2",
 } as const;
 
+export const HEAVY_SOURCE_SPECIFIERS = [
+	"@nocoo/basalt/charts/donut",
+	"@nocoo/basalt/components/date-picker",
+	"@nocoo/basalt/components/data-table",
+	"@nocoo/basalt/styles/standalone",
+] as const;
+
 export const HEAVY_GRANULAR_PROBES = [
 	{
 		spec: "@nocoo/basalt/charts/donut",
@@ -336,33 +343,40 @@ export function assertExactVersion(name: string, actual: string, expected: strin
 	}
 }
 
+export function staticBasaltSpecifiers(source: string): string[] {
+	const specifiers: string[] = [];
+	const pattern = /(?:from|import)\s*(['"])(@nocoo\/basalt(?:\/[^'"]*)?)\1/g;
+	for (const match of source.matchAll(pattern)) {
+		specifiers.push(match[2]);
+	}
+	return specifiers;
+}
+
 export function assertHeavyConsumerSource(source: string) {
-	if (/from\s+"@nocoo\/basalt"/.test(source)) {
-		throw new Error("heavy consumer must not import the package root");
+	const specifiers = staticBasaltSpecifiers(source);
+	const approved = new Set<string>(HEAVY_SOURCE_SPECIFIERS);
+	const counts = new Map<string, number>();
+	for (const spec of specifiers) {
+		counts.set(spec, (counts.get(spec) ?? 0) + 1);
+		if (!approved.has(spec)) {
+			if (spec === "@nocoo/basalt") {
+				throw new Error("heavy consumer must not import the package root");
+			}
+			throw new Error(`heavy consumer has extra specifier ${spec}`);
+		}
 	}
-	if (source.includes("tailwind") || source.includes("@nocoo/basalt/styles/tailwind")) {
-		throw new Error("heavy consumer must not import Tailwind");
-	}
-	if (!source.includes("@nocoo/basalt/styles/standalone")) {
-		throw new Error("heavy consumer must import standalone styles");
-	}
-	if (!source.includes("@nocoo/basalt/charts/donut")) {
-		throw new Error("heavy consumer must import charts/donut");
-	}
-	if (!source.includes("@nocoo/basalt/components/date-picker")) {
-		throw new Error("heavy consumer must import components/date-picker");
-	}
-	if (!source.includes("@nocoo/basalt/components/data-table")) {
-		throw new Error("heavy consumer must import components/data-table");
+	for (const spec of HEAVY_SOURCE_SPECIFIERS) {
+		const count = counts.get(spec) ?? 0;
+		if (count === 0) {
+			throw new Error(`heavy consumer missing specifier ${spec}`);
+		}
+		if (count !== 1) {
+			throw new Error(`heavy consumer duplicate specifier ${spec}`);
+		}
 	}
 	for (const name of ["DonutChart", "DatePicker", "DataTable"] as const) {
 		if (!source.includes(name)) {
 			throw new Error(`heavy consumer must use ${name}`);
-		}
-	}
-	for (const name of ROOT_EXPORTS) {
-		if (source.includes(name)) {
-			throw new Error("heavy consumer must not add root business UI");
 		}
 	}
 }
