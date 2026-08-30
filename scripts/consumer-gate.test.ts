@@ -755,6 +755,25 @@ export const n = <><DonutChart /><DatePicker /><DataTable /></>;
 		).toThrow(/shadows DonutChart/);
 	});
 
+	it("rejects constructor parameter-property shadows used in the same body", () => {
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}class Fake {
+	constructor(public DonutChart: any, private DatePicker: any, protected DataTable: any) {
+		void <><DonutChart /><DatePicker /><DataTable /></>;
+	}
+}
+`),
+		).toThrow(/shadows DonutChart/);
+		expect(() =>
+			assertHeavyConsumerSource(`${heavySource()}class Fake {
+	constructor(public DonutChart = 1, private DatePicker: any = null, protected DataTable = () => null) {
+		void <><DonutChart /><DatePicker /><DataTable /></>;
+	}
+}
+`),
+		).toThrow(/shadows DonutChart/);
+	});
+
 	it("rejects unrendered heavy bindings and syntax errors", () => {
 		expect(() => assertHeavyConsumerSource(heavySource())).toThrow(/does not render DonutChart/);
 		expect(() =>

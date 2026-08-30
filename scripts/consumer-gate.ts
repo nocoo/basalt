@@ -448,8 +448,12 @@ function collectPatternNames(node: unknown, names: Set<string>): void {
 		}
 		return;
 	}
-	if (type === "Parameter" || type === "TsParameterProperty") {
-		collectPatternNames(node.pat ?? node.parameter, names);
+	if (type === "Parameter") {
+		collectPatternNames(node.pat, names);
+		return;
+	}
+	if (type === "TsParameterProperty") {
+		collectPatternNames(node.param, names);
 		return;
 	}
 	if (type === "AssignmentPattern") {
