@@ -120,7 +120,9 @@ function DateNavigationDisplay({
 				month: "short",
 				day: "numeric",
 			}));
-	const isToday = isSameDay(selectedDate, new Date());
+	const today = new Date();
+	const isToday = isSameDay(selectedDate, today);
+	const formatted = resolvedFormatDate(selectedDate);
 	return (
 		<div className={cn("flex items-center justify-center gap-2", className)}>
 			<button
@@ -144,19 +146,20 @@ function DateNavigationDisplay({
 			>
 				<ChevronLeft className="h-4 w-4" strokeWidth={1.5} />
 			</button>
-			<button
-				type="button"
-				onClick={onToggleCalendar}
-				className={cn(
-					"flex items-center gap-2 rounded-lg px-3 py-1.5 text-lg font-medium transition-colors",
-					onToggleCalendar ? "cursor-pointer hover:bg-basalt-accent" : "cursor-default",
-				)}
-			>
-				<span>{resolvedFormatDate(selectedDate)}</span>
-				{onToggleCalendar ? (
+			{onToggleCalendar ? (
+				<button
+					type="button"
+					onClick={onToggleCalendar}
+					className="flex cursor-pointer items-center gap-2 rounded-lg px-3 py-1.5 text-lg font-medium transition-colors hover:bg-basalt-accent"
+				>
+					<span>{formatted}</span>
 					<CalendarIcon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
-				) : null}
-			</button>
+				</button>
+			) : (
+				<span className="flex items-center gap-2 rounded-lg px-3 py-1.5 text-lg font-medium">
+					{formatted}
+				</span>
+			)}
 			<button
 				type="button"
 				onClick={onNextDay}
