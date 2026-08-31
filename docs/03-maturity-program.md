@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A — D029 待冻结
-> 已验收代码基线：`0252251a980c`（`main`；D028 source-backed Button scenarios 完成，完整模块路径配对契约闭环）
+> 当前切片：S2V — D029A control surface 与字号一致性
+> 已验收代码基线：`df06b75e3177`（`main`；D028 source-backed Button scenarios 与验收台账均完成）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -128,6 +128,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028 完成） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 执行中（D029A） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
@@ -291,6 +292,18 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
 1. **S2A1 / D028 — source-backed Button scenarios。** 新增通用 module-scenario loader：同一 `.tsx` example 模块的 default React component 作为 preview，Vite `?raw` 的同一路径作为展示代码，scenario id 只由 catalog slug 与稳定文件 key 生成；metadata 只保存有序 key/title，不再允许第三份 `code` 字符串。loader 必须在运行时拒绝缺 raw source、缺 render、非 component default export、重复/非法 key、metadata 之外的孤儿模块或 render/raw 文件集合不一致，不能靠调用方手工把两个任意 import 配成一对。Button 的 10 个既有场景各自迁入 `src/pages/ui/examples/button/` 的独立、自包含 TSX 模块，保持现有 id、title、顺序、预览行为与可访问名称；展示代码可以成为完整可复制模块，但必须直接来自该模块 raw source。`demos.tsx` 只消费生成的 `BUTTON_EXAMPLES`，不得再保留 Button 的 inline `code:`/`render:` 双写；disabled-link 的展示与预览必须因此同时包含 inert contract 与相同视觉 class。所有新示例文案、URL、标识符扫描不得出现 Cloudflare、Worker/Workers 或 Kumo 用户语境。
 
    只允许修改 `src/pages/ui/catalog-scenario.ts`、`src/pages/ui/catalog-scenario.test.ts`、`src/pages/ui/demos.tsx`、新增 `src/pages/ui/examples/button/**`，以及与 Button scenario truth 直接相关的 `src/test/pages/FoundationFeedbackScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx`；若 Vite raw 类型确有缺口才允许修改 `src/vite-env.d.ts`。不得改 package/lock、Basalt 组件实现/API、其它控件 examples/docs、catalog IA、HomeGrid、coverage 配置、Husky/CI 或进入 API generator。focused tests 必须以真实 glob 正例证明 10 个 source-backed 场景，并对 loader 注入缺失、孤儿、错配、重复与非法 key 负例；页面测试必须证明 hero/example code 等于 raw module、preview 仍可交互，且源文件不再含 Button 双写对象。提交前运行 focused、`bun run typecheck`、Biome、全量、coverage 与 showcase production build；四项 coverage 不得低于 D027，build 现有 chunk warning 如实报告但不得顺手拆包。只做一个绿色原子提交，建议 `refactor: source button scenarios from modules`，随后停止等待 Codex review。
+
+### 6.3.1 S2V — 用户视觉纠偏插队切片
+
+2026-08-31 用户复核展示站后，要求先关闭同类控件 surface/字号漂移、顶部 breadcrumb 层级漂移和 segmented control 无移动反馈，再继续 S2A。根因不是 token 数值本身，而是 Basalt 多处重复拼接 control class，以及从自定义 `text-base = 14px` 的参考实现机械带回 class 后落到本仓 Tailwind 默认 `16px`。本段只修共享视觉契约，不扩公开 API、example 数量或业务模块。
+
+1. **D029A — control surface 与 14px 字号。** 建立包内私有、可复用的 control surface class 真源，让 `Input`、`InputArea`、`SelectTrigger`、`InputGroup`、`ClipboardText`、`CodeBlock`、`CodeHighlighted` 和 `Pagination` 的共同行为不再分别手写：默认 surface 为 `bg-basalt-secondary`，边界为 `border border-basalt-border`，control 圆角为 `rounded-basalt-md`，正文为 `text-sm`。已正确的 Input/InputArea/Select 视觉不得漂移；InputGroup 与 ClipboardText 从页面灰底及 12px 圆角收敛到同一 surface，并保持 36px 控件高度；CodeBlock/CodeHighlighted 从 13px 收敛为 14px；Collapsible 默认 trigger 与 styled content 从 16px 收敛为 14px；Pagination resting surface 必须是亮 control surface，按钮静止态透明以透出该 surface，只在 hover/focus/active 时进入 accent，不得让可操作项常驻页面灰底。inline `Code`、页面 AppShell/Sidebar/LoadingScreen、Dialog/Popover/Menu、Slider thumb 等非本契约 surface 不得被机械改写。
+
+   允许修改或新增 `packages/basalt/src/components/control-surface.ts`，以及 `input.tsx`、`input-area.tsx`、`select.tsx`、`input-group.tsx`、`clipboard-text.tsx`、`code.tsx`、`collapsible.tsx`、`pagination.tsx` 和这些组件的同名测试。不得改公开 exports/API、tokens 数值、package/lock、展示站 examples/docs、其它组件、coverage/Husky/CI，亦不得进入 D029B/C。focused tests 必须锁住共享真源被各目标消费、surface/background/border/radius/height/font-size 和 Pagination resting/hover contract，并保留既有交互/a11y；同类扫描须证明 package 中剩余 `bg-basalt-background` 都是列明的合法页面/overlay/thumb surface。提交前运行 focused、typecheck、Biome、全量、coverage、package build/types/pack 和 showcase build；四项 coverage 不得低于 D028。一个绿色原子提交后停止等待 Codex review。
+
+2. **D029B — Breadcrumbs 与 AppHeader。** `Breadcrumbs` 中 ancestor、无链接非当前项和 `aria-current=page` 项一律 14px/400；当前项只用 `text-basalt-foreground` 相对 muted ancestor 强化，不加粗、不放大。`AppHeader` 的当前 `title` 继续保留语义 `<h1>` 与截断，但视觉上必须与前置 crumbs 同为 14px/400，并只靠前景色表示当前页；separator、无 breadcrumbs/title、leading/actions 和现有 API 行为保持不变。只允许修改 `breadcrumbs.tsx`、`breadcrumbs.test.tsx`、`app-header.tsx`、`app-shell.test.tsx`。测试除 class contract 外必须覆盖含链接 ancestor + 当前标题、Breadcrumbs 自身当前项和可访问语义；另在真实浏览器 light/dark 下核对 computed `font-size`/`font-weight` 相等。不得改全局 typography、header 高度/API、DashboardLayout、example 或 D029C。
+
+3. **D029C — ToggleGroup segmented motion。** 单选 `ToggleGroup` 必须有位于 items 后方的真实 selection indicator，在选中项切换、文本/容器 resize 与受控值变化时以 180–200ms ease-out 平滑移动并同步宽度；首次定位不得从零飞入，`prefers-reduced-motion: reduce` 下必须取消位移 transition。抽取 Tabs/ToggleGroup 可共用的私有测量/observer 逻辑，避免复制 ResizeObserver/MutationObserver；Tabs 外观、位置与公开 API 不得漂移。`type="multiple"` 不使用单一移动底板，继续用 item-local 的颜色/背景 transition 表达多个 on 状态。LanguageToggle 必须自然消费包内新行为，不在应用层复制动画。允许修改/新增 package 内私有 selection-indicator helper、`tabs.tsx`/tests、`toggle-group.tsx`/tests、必要的 standalone CSS contract test，以及仅用于行为证明的 `src/components/LanguageToggle.test.tsx`；不得改公开 API、业务 i18n、tokens、package/lock、其它组件/example。除 unit/type/lint/full/coverage/package build/types/pack/showcase build 外，必须用真实 Chromium 在 7003 既有服务上证明 indicator 切换前后几何位置不同、transition 为 180–200ms，且 reduced-motion 后 computed transition 归零；不得停止 7003。
 
 文档站必须使用 `@nocoo/basalt` 出口实现自身界面，包括 Dropdown、Table、Select、Tabs、TOC、Button、Code 等，不能为展示 Basalt 再依赖一套 `src/components/ui` 旧实现。
 
