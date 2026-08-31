@@ -3,7 +3,14 @@ import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
 import { FOCUS_BORDER } from "./overlay";
 
-export const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
+export type InputProps = Omit<React.ComponentProps<"input">, "type"> & {
+	/**
+	 * The type of input control to render.
+	 */
+	type?: React.HTMLInputTypeAttribute;
+};
+
+export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 	({ className, type, ...props }, ref) => (
 		<input
 			type={type}

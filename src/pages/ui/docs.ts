@@ -180,7 +180,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<Input aria-label="Name" placeholder="Jane Doe" />',
 		),
 		variants: [],
-		props: [{ name: "type", type: "string" }],
+		props: CATALOG_API.input,
 		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",

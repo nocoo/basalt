@@ -173,6 +173,9 @@ describe("catalog source contract", () => {
 			"className",
 			"children",
 		]);
+		expect(implementationFileFor(entry("input"))).toBe("packages/basalt/src/components/input.tsx");
+		expect(CATALOG_DOCS.input?.props).toEqual(CATALOG_API.input);
+		expect(CATALOG_API.input?.map((prop) => prop.name)).toEqual(["type"]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);

@@ -72,6 +72,11 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/field.tsx",
 		propsType: "FieldProps",
 	},
+	{
+		slug: "input",
+		sourceFile: "packages/basalt/src/components/input.tsx",
+		propsType: "InputProps",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";
@@ -695,6 +700,13 @@ function printType(
 			return left.text.localeCompare(right.text);
 		});
 		return visible.map((part) => part.text).join(" | ");
+	}
+	if (node && (ts.isTypeReferenceNode(node) || ts.isExpressionWithTypeArguments(node))) {
+		const referenced = checker.getTypeFromTypeNode(node);
+		const alias = printAlias(referenced, checker, enclosing, node);
+		if (alias) {
+			return alias;
+		}
 	}
 	if (node && ts.isArrayTypeNode(node)) {
 		return `${printType(checker.getTypeFromTypeNode(node.elementType), checker, enclosing, false, node.elementType)}[]`;

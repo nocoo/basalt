@@ -930,6 +930,67 @@ describe("ui catalog", () => {
 		expect(block).toContain('repo: "signoff.now"');
 	});
 
+	it("sources input API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS.input?.props).toEqual(CATALOG_API.input);
+		expect(CATALOG_API.input).toEqual([
+			{
+				name: "type",
+				type: "React.HTMLInputTypeAttribute",
+				required: false,
+				description: "The type of input control to render.",
+			},
+		]);
+		renderCatalog("/ui/input");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api).toHaveTextContent("type?");
+		expect(api).toHaveTextContent("React.HTMLInputTypeAttribute");
+		expect(api).toHaveTextContent("The type of input control to render.");
+		expect(api).not.toHaveTextContent("className");
+		expect(api).not.toHaveTextContent("placeholder");
+		expect(api).not.toHaveTextContent("onChange");
+		expect(screen.getByRole("heading", { name: "With Label and Description" })).toBeInTheDocument();
+		expect(
+			document.querySelector('[data-hero-scenario="input-with-label-and-description"]'),
+		).toBeTruthy();
+		expect(document.querySelector('[data-scenario="input-input-types"]')).toBeTruthy();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain(
+			"- type (React.HTMLInputTypeAttribute, optional, default —): The type of input control to render.",
+		);
+		expect(markdown).not.toContain("- className (");
+		expect(markdown).not.toContain("- placeholder (");
+		expect(markdown).toContain(UI_EXAMPLES.input?.[0]?.code ?? "");
+		expect(markdown).toContain(UI_EXAMPLES.input?.[3]?.code ?? "");
+		expect(markdown).toContain('<div className="flex w-full flex-col gap-3">');
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+	});
+
+	it("does not keep a handwritten input prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf("\tinput: {");
+		const end = docs.indexOf('\t"input-area": {');
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain("props: CATALOG_API.input");
+		expect(block).not.toContain('name: "type"');
+		expect(block).not.toContain('type: "string"');
+		expect(block).toContain(
+			'description: "A single-line text field. Light mode uses a white L3 surface."',
+		);
+		expect(block).toContain('<Input aria-label="Name" placeholder="Jane Doe" />');
+		expect(block).toContain('repo: "zhe"');
+		expect(block).toContain('sha: "c31c239f01c9"');
+		expect(block).toContain('file: "components/ui/input.tsx"');
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });

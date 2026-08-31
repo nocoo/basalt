@@ -74,6 +74,14 @@ export const CATALOG_API = {
 			description: "The control or content to render.",
 		},
 	],
+	input: [
+		{
+			name: "type",
+			type: "React.HTMLInputTypeAttribute",
+			required: false,
+			description: "The type of input control to render.",
+		},
+	],
 	label: [
 		{
 			name: "showOptional",

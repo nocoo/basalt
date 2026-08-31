@@ -142,6 +142,11 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/field.tsx",
 				propsType: "FieldProps",
 			},
+			{
+				slug: "input",
+				sourceFile: "packages/basalt/src/components/input.tsx",
+				propsType: "InputProps",
+			},
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames|props:\s*\[/);
@@ -165,6 +170,7 @@ describe("catalog API generator contract", () => {
 			"layer-card",
 			"basalt-mark",
 			"field",
+			"input",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -592,6 +598,60 @@ describe("catalog API generator contract", () => {
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
 		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
+	}, 20_000);
+
+	it("extracts Input props from InputProps as a single optional type", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated.input?.map((prop) => prop.name)).toEqual(["type"]);
+		expect(generated.input).toEqual([
+			{
+				name: "type",
+				type: "React.HTMLInputTypeAttribute",
+				required: false,
+				description: "The type of input control to render.",
+			},
+		]);
+		expect(generated.input?.[0]).not.toHaveProperty("default");
+		expect(generated.input?.some((prop) => prop.name === "className")).toBe(false);
+		expect(generated.input?.some((prop) => prop.name === "id")).toBe(false);
+		expect(generated.input?.some((prop) => prop.name === "name")).toBe(false);
+		expect(generated.input?.some((prop) => prop.name === "value")).toBe(false);
+		expect(generated.input?.some((prop) => prop.name === "defaultValue")).toBe(false);
+		expect(generated.input?.some((prop) => prop.name === "placeholder")).toBe(false);
+		expect(generated.input?.some((prop) => prop.name === "disabled")).toBe(false);
+		expect(generated.input?.some((prop) => prop.name === "required")).toBe(false);
+		expect(generated.input?.some((prop) => prop.name === "aria-label")).toBe(false);
+		expect(generated.input?.some((prop) => prop.name === "onChange")).toBe(false);
+		expect(generated.input?.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated.input?.some((prop) => prop.name === "ref")).toBe(false);
+		expect(generated.button?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"asChild",
+			"loading",
+			"icon",
+		]);
+		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
+		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
+		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(generated.field?.map((prop) => prop.name)).toEqual([
+			"label",
+			"htmlFor",
+			"hint",
+			"error",
+			"className",
+			"children",
+		]);
 	}, 20_000);
 
 	it("emits a locally quoted property name", () => {
@@ -1473,8 +1533,9 @@ export interface WidgetProps {
 		expect(first).toContain('\t"layer-card": [');
 		expect(first).toContain('\t"basalt-mark": [');
 		expect(first).toContain("\tfield: [");
+		expect(first).toContain("\tinput: [");
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"052ae825a7c5b8d6a31832cb32dec6a32393ee145fa2bea05db1d883625b064e",
+			"75b042af768acd58ce8bf0258c347f58dbbe21ca601c54d340eccfbcec0a1e35",
 		);
 	}, 20_000);
 });
