@@ -21,6 +21,7 @@ import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { RADIO_EXAMPLES } from "./examples/radio";
 import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
+import { SWITCH_EXAMPLES } from "./examples/switch";
 import { TEXT_EXAMPLES } from "./examples/text";
 import { THEME_TOGGLE_EXAMPLES } from "./examples/theme-toggle";
 import { TOOLTIP_EXAMPLES } from "./examples/tooltip";
@@ -251,6 +252,21 @@ const RADIO_TITLES = ["Default (Vertical)", "Horizontal", "Disabled"] as const;
 
 const radioRenders = import.meta.glob("./examples/radio/*.tsx", { eager: true });
 const radioSources = import.meta.glob("./examples/radio/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const SWITCH_IDS = [
+	"switch-off-state",
+	"switch-on-state",
+	"switch-disabled",
+	"switch-sizes",
+] as const;
+const SWITCH_TITLES = ["Off State", "On State", "Disabled", "Sizes"] as const;
+
+const switchRenders = import.meta.glob("./examples/switch/*.tsx", { eager: true });
+const switchSources = import.meta.glob("./examples/switch/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -1433,6 +1449,7 @@ describe("source-backed radio scenarios", () => {
 		expect(RADIO_EXAMPLES.map((item) => item.id)).toEqual([...RADIO_IDS]);
 		expect(RADIO_EXAMPLES.map((item) => item.title)).toEqual([...RADIO_TITLES]);
 		expect(UI_EXAMPLES.radio).toBe(RADIO_EXAMPLES);
+		expect(UI_EXAMPLES.switch).toBe(SWITCH_EXAMPLES);
 		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
 		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
 		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
@@ -1467,6 +1484,7 @@ describe("source-backed radio scenarios", () => {
 			...SENSITIVE_INPUT_IDS,
 		]);
 		expect(UI_EXAMPLES.checkbox?.map((item) => item.id)).toEqual([...CHECKBOX_IDS]);
+		expect(UI_EXAMPLES.switch?.map((item) => item.id)).toEqual([...SWITCH_IDS]);
 		const fileKeys = new Set(
 			Object.keys(radioRenders).map((modulePath) => moduleFileKey(modulePath)),
 		);
@@ -1513,6 +1531,106 @@ describe("source-backed radio scenarios", () => {
 		expect(RADIO_EXAMPLES[2]?.code).toContain('aria-label="Disabled A"');
 		expect(RADIO_EXAMPLES[2]?.code).toContain('aria-label="Disabled B"');
 		expect(RADIO_EXAMPLES[2]?.code).toContain("disabled");
+	});
+});
+
+describe("source-backed switch scenarios", () => {
+	it("loads four switch scenarios from the same glob modules", () => {
+		expect(Object.keys(switchRenders)).toHaveLength(4);
+		expect(Object.keys(switchSources)).toHaveLength(4);
+		const loaded = loadModuleScenarios({
+			slug: "switch",
+			metas: SWITCH_TITLES.map((title, index) => ({
+				key: SWITCH_IDS[index].slice("switch-".length),
+				title,
+			})),
+			renderModules: switchRenders,
+			sourceModules: switchSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...SWITCH_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...SWITCH_TITLES]);
+		expect(SWITCH_EXAMPLES.map((item) => item.id)).toEqual([...SWITCH_IDS]);
+		expect(SWITCH_EXAMPLES.map((item) => item.title)).toEqual([...SWITCH_TITLES]);
+		expect(UI_EXAMPLES.switch).toBe(SWITCH_EXAMPLES);
+		expect(UI_EXAMPLES.radio).toBe(RADIO_EXAMPLES);
+		expect(UI_EXAMPLES.checkbox).toBe(CHECKBOX_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
+		expect(UI_EXAMPLES["theme-toggle"]).toBe(THEME_TOGGLE_EXAMPLES);
+		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
+		expect(UI_EXAMPLES["basalt-mark"]).toBe(BASALT_MARK_EXAMPLES);
+		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
+		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
+		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
+		expect(UI_EXAMPLES["sensitive-input"]).toBe(SENSITIVE_INPUT_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		expect(UI_EXAMPLES["theme-toggle"]?.map((item) => item.id)).toEqual([...THEME_TOGGLE_IDS]);
+		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
+		expect(UI_EXAMPLES["basalt-mark"]?.map((item) => item.id)).toEqual([...BASALT_MARK_IDS]);
+		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
+		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
+		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
+		expect(UI_EXAMPLES["sensitive-input"]?.map((item) => item.id)).toEqual([
+			...SENSITIVE_INPUT_IDS,
+		]);
+		expect(UI_EXAMPLES.checkbox?.map((item) => item.id)).toEqual([...CHECKBOX_IDS]);
+		expect(UI_EXAMPLES.radio?.map((item) => item.id)).toEqual([...RADIO_IDS]);
+		const fileKeys = new Set(
+			Object.keys(switchRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(SWITCH_IDS.map((id) => id.slice("switch-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("switch-".length);
+			const modulePath = Object.keys(switchSources).find((path) => path.endsWith(`/${key}.tsx`));
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = switchSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(SWITCH_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((switchRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				SWITCH_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).not.toContain("@cloudflare/kumo");
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/switch");
+			expect(scenario.code).toContain("import { Switch }");
+			expect(scenario.code).not.toContain("useState");
+			expect(scenario.code).not.toContain("Label");
+			expect(scenario.code).not.toContain("Field");
+		}
+		expect(SWITCH_EXAMPLES[0]?.code).toContain('aria-label="Off"');
+		expect(SWITCH_EXAMPLES[0]?.code).not.toContain("defaultChecked");
+		expect(SWITCH_EXAMPLES[0]?.code).not.toContain("disabled");
+		expect(SWITCH_EXAMPLES[1]?.code).toContain("defaultChecked");
+		expect(SWITCH_EXAMPLES[1]?.code).toContain('aria-label="On"');
+		expect(SWITCH_EXAMPLES[1]?.code).not.toContain("disabled");
+		expect(SWITCH_EXAMPLES[2]?.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(SWITCH_EXAMPLES[2]?.code).toContain('aria-label="Disabled off"');
+		expect(SWITCH_EXAMPLES[2]?.code).toContain('aria-label="Disabled on"');
+		expect(SWITCH_EXAMPLES[2]?.code).toContain("disabled");
+		expect(SWITCH_EXAMPLES[3]?.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(SWITCH_EXAMPLES[3]?.code).toContain('size="sm"');
+		expect(SWITCH_EXAMPLES[3]?.code).toContain('aria-label="Small"');
+		expect(SWITCH_EXAMPLES[3]?.code).toContain('aria-label="Default size"');
+		expect(SWITCH_EXAMPLES[3]?.code).toContain("defaultChecked");
 	});
 });
 

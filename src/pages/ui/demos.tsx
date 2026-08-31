@@ -1,6 +1,5 @@
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Link } from "@nocoo/basalt/components/link";
-import { Switch } from "@nocoo/basalt/components/switch";
 import { Text } from "@nocoo/basalt/components/text";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
@@ -21,6 +20,7 @@ import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { RADIO_EXAMPLES } from "./examples/radio";
 import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
+import { SWITCH_EXAMPLES } from "./examples/switch";
 import { TEXT_EXAMPLES } from "./examples/text";
 import { THEME_TOGGLE_EXAMPLES } from "./examples/theme-toggle";
 import { TOOLTIP_EXAMPLES } from "./examples/tooltip";
@@ -68,14 +68,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	"sensitive-input": SENSITIVE_INPUT_EXAMPLES,
 	checkbox: CHECKBOX_EXAMPLES,
 	radio: RADIO_EXAMPLES,
-	switch: [
-		{
-			id: catalogScenarioId("switch", "default"),
-			title: "Default",
-			code: '<Switch aria-label="Notifications" />',
-			render: () => <Switch aria-label="Notifications" />,
-		},
-	],
+	switch: SWITCH_EXAMPLES,
 	banner: [
 		{
 			id: catalogScenarioId("banner", "variants"),

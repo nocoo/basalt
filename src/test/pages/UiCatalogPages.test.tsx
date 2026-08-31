@@ -2622,6 +2622,106 @@ describe("ui catalog", () => {
 		expect(kumo).toContain("function Preview");
 	});
 
+	it("keeps switch hero, four states, sizes, and copy modules", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/switch");
+		expect(screen.getByRole("heading", { name: "Off State" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "On State" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="switch-off-state"]');
+		const off = document.querySelector('[data-scenario="switch-off-state"]');
+		const on = document.querySelector('[data-scenario="switch-on-state"]');
+		const disabled = document.querySelector('[data-scenario="switch-disabled"]');
+		const sizes = document.querySelector('[data-scenario="switch-sizes"]');
+		expect(hero).toBeTruthy();
+		expect(off).toBeTruthy();
+		expect(on).toBeTruthy();
+		expect(disabled).toBeTruthy();
+		expect(sizes).toBeTruthy();
+		if (!hero || !off || !on || !disabled || !sizes) {
+			throw new Error("missing switch scenario surfaces");
+		}
+		const heroSwitch = within(hero as HTMLElement).getByRole("switch", { name: "Off" });
+		expect(heroSwitch).not.toBeChecked();
+		expect(heroSwitch).toBeEnabled();
+		fireEvent.click(heroSwitch);
+		expect(heroSwitch).toBeChecked();
+		expect(within(off as HTMLElement).getByRole("switch", { name: "Off" })).not.toBeChecked();
+		const onSwitch = within(on as HTMLElement).getByRole("switch", { name: "On" });
+		expect(onSwitch).toBeChecked();
+		fireEvent.click(onSwitch);
+		expect(onSwitch).not.toBeChecked();
+		expect(within(hero as HTMLElement).getByRole("switch", { name: "Off" })).toBeChecked();
+		expect(disabled.querySelector(".flex.flex-wrap.items-center.gap-3")).toBeTruthy();
+		const disabledOff = within(disabled as HTMLElement).getByRole("switch", {
+			name: "Disabled off",
+		});
+		const disabledOn = within(disabled as HTMLElement).getByRole("switch", {
+			name: "Disabled on",
+		});
+		expect(disabledOff).toBeDisabled();
+		expect(disabledOn).toBeDisabled();
+		expect(disabledOff).not.toBeChecked();
+		expect(disabledOn).toBeChecked();
+		fireEvent.click(disabledOff);
+		fireEvent.click(disabledOn);
+		expect(disabledOff).not.toBeChecked();
+		expect(disabledOn).toBeChecked();
+		expect(sizes.querySelector(".flex.flex-wrap.items-center.gap-3")).toBeTruthy();
+		const small = within(sizes as HTMLElement).getByRole("switch", { name: "Small" });
+		const defaultSize = within(sizes as HTMLElement).getByRole("switch", { name: "Default size" });
+		expect(small).toBeChecked();
+		expect(defaultSize).toBeChecked();
+		expect(small).toBeEnabled();
+		expect(defaultSize).toBeEnabled();
+		expect(small.className).toContain("h-4");
+		expect(small.className).toContain("w-7");
+		expect(defaultSize.className).toContain("h-6");
+		expect(defaultSize.className).toContain("w-11");
+		for (const scenario of UI_EXAMPLES.switch ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/switch");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(UI_EXAMPLES.switch).toHaveLength(4);
+		for (const scenario of UI_EXAMPLES.switch ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
+		expect(CATALOG_DOCS.switch?.api).toEqual([
+			{ name: "Switch", props: [{ name: "checked", type: "boolean" }] },
+		]);
+		expect(UI_EXAMPLES.radio).toHaveLength(3);
+	});
+
+	it("does not keep inline switch scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("SWITCH_EXAMPLES");
+		expect(demos).toMatch(/\bswitch: SWITCH_EXAMPLES/);
+		expect(demos).not.toMatch(/\bswitch:\s*\[/);
+		expect(kumo).not.toMatch(/\bswitch:\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("switch"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("switch"/);
+		expect(demos).not.toContain('from "@nocoo/basalt/components/switch"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/switch"');
+		expect(kumo).toContain("function Preview");
+		expect(kumo).toContain("ReactNode");
+		expect(kumo).toContain("useState");
+		expect(kumo).toContain("catalogScenarioId");
+	});
+
 	it("does not keep inline input scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");

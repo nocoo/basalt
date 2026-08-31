@@ -67,7 +67,6 @@ import {
 } from "@nocoo/basalt/components/select";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Slider } from "@nocoo/basalt/components/slider";
-import { Switch } from "@nocoo/basalt/components/switch";
 import {
 	Table,
 	TableBody,
@@ -464,42 +463,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			title: "Mid-Page State",
 			code: "const [page, setPage] = useState(5);\nreturn <Pagination page={page} pageCount={12} onPageChange={setPage} />;",
 			render: () => <PaginationExample page={5} pageCount={12} />,
-		},
-	],
-	switch: [
-		{
-			id: catalogScenarioId("switch", "off-state"),
-			title: "Off State",
-			code: '<Switch aria-label="Off" />',
-			render: () => <Switch aria-label="Off" />,
-		},
-		{
-			id: catalogScenarioId("switch", "on-state"),
-			title: "On State",
-			code: '<Switch defaultChecked aria-label="On" />',
-			render: () => <Switch defaultChecked aria-label="On" />,
-		},
-		{
-			id: catalogScenarioId("switch", "disabled"),
-			title: "Disabled",
-			code: '<Switch disabled aria-label="Disabled off" /><Switch disabled defaultChecked aria-label="Disabled on" />',
-			render: () => (
-				<Preview>
-					<Switch disabled aria-label="Disabled off" />
-					<Switch disabled defaultChecked aria-label="Disabled on" />
-				</Preview>
-			),
-		},
-		{
-			id: catalogScenarioId("switch", "sizes"),
-			title: "Sizes",
-			code: '<Switch size="sm" aria-label="Small" defaultChecked /><Switch aria-label="Default size" defaultChecked />',
-			render: () => (
-				<Preview>
-					<Switch size="sm" aria-label="Small" defaultChecked />
-					<Switch aria-label="Default size" defaultChecked />
-				</Preview>
-			),
 		},
 	],
 	"skeleton-line": [

@@ -10,6 +10,7 @@ import { INPUT_AREA_EXAMPLES } from "@/pages/ui/examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "@/pages/ui/examples/input-group";
 import { RADIO_EXAMPLES } from "@/pages/ui/examples/radio";
 import { SENSITIVE_INPUT_EXAMPLES } from "@/pages/ui/examples/sensitive-input";
+import { SWITCH_EXAMPLES } from "@/pages/ui/examples/switch";
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
@@ -99,6 +100,7 @@ describe("form selection scenario truth", () => {
 			"sensitive-input-default",
 			"sensitive-input-disabled",
 		]);
+		expect(UI_EXAMPLES.switch).toBe(SWITCH_EXAMPLES);
 		expect(UI_EXAMPLES.switch?.map((item) => item.id)).toEqual([
 			"switch-off-state",
 			"switch-on-state",
@@ -195,6 +197,69 @@ describe("form selection scenario truth", () => {
 		expect(scenario("switch", "switch-on-state").code).toContain('aria-label="On"');
 		expect(scenario("switch", "switch-disabled").code).toContain('aria-label="Disabled off"');
 		expect(scenario("switch", "switch-sizes").code).toContain('aria-label="Small"');
+	});
+
+	it("toggles switch off and on, keeps disabled frozen, and preserves size classes", () => {
+		expect(UI_EXAMPLES.switch).toBe(SWITCH_EXAMPLES);
+		const off = scenario("switch", "switch-off-state");
+		expect(off.code).toContain("export default");
+		expect(off.code).toContain("@nocoo/basalt/components/switch");
+		expect(off.code).toContain("import { Switch }");
+		expect(off.code).toContain('aria-label="Off"');
+		expect(off.code).not.toContain("defaultChecked");
+		expect(off.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		render(createElement(off.render));
+		const offSwitch = screen.getByRole("switch", { name: "Off" });
+		expect(offSwitch).not.toBeChecked();
+		expect(offSwitch).toBeEnabled();
+		fireEvent.click(offSwitch);
+		expect(offSwitch).toBeChecked();
+		fireEvent.click(offSwitch);
+		expect(offSwitch).not.toBeChecked();
+		cleanup();
+		const on = scenario("switch", "switch-on-state");
+		expect(on.code).toContain("defaultChecked");
+		expect(on.code).toContain('aria-label="On"');
+		render(createElement(on.render));
+		const onSwitch = screen.getByRole("switch", { name: "On" });
+		expect(onSwitch).toBeChecked();
+		expect(onSwitch).toBeEnabled();
+		fireEvent.click(onSwitch);
+		expect(onSwitch).not.toBeChecked();
+		cleanup();
+		const disabled = scenario("switch", "switch-disabled");
+		expect(disabled.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(disabled.code).toContain('aria-label="Disabled off"');
+		expect(disabled.code).toContain('aria-label="Disabled on"');
+		render(createElement(disabled.render));
+		const disabledOff = screen.getByRole("switch", { name: "Disabled off" });
+		const disabledOn = screen.getByRole("switch", { name: "Disabled on" });
+		expect(disabledOff).toBeDisabled();
+		expect(disabledOn).toBeDisabled();
+		expect(disabledOff).not.toBeChecked();
+		expect(disabledOn).toBeChecked();
+		fireEvent.click(disabledOff);
+		fireEvent.click(disabledOn);
+		expect(disabledOff).not.toBeChecked();
+		expect(disabledOn).toBeChecked();
+		cleanup();
+		const sizes = scenario("switch", "switch-sizes");
+		expect(sizes.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(sizes.code).toContain('size="sm"');
+		expect(sizes.code).toContain('aria-label="Small"');
+		expect(sizes.code).toContain('aria-label="Default size"');
+		render(createElement(sizes.render));
+		const small = screen.getByRole("switch", { name: "Small" });
+		const defaultSize = screen.getByRole("switch", { name: "Default size" });
+		expect(small).toBeChecked();
+		expect(defaultSize).toBeChecked();
+		expect(small).toBeEnabled();
+		expect(defaultSize).toBeEnabled();
+		expect(small.className).toContain("h-4");
+		expect(small.className).toContain("w-7");
+		expect(defaultSize.className).toContain("h-6");
+		expect(defaultSize.className).toContain("w-11");
+		cleanup();
 	});
 
 	it("keeps standalone inputs named and input groups labelled", () => {
