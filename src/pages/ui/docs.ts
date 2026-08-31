@@ -240,7 +240,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<Checkbox aria-label="Subscribe" />',
 		),
 		variants: ["checked", "unchecked", "indeterminate"],
-		api: [{ name: "Checkbox", props: [{ name: "checked", type: 'boolean | "indeterminate"' }] }],
+		api: CATALOG_API.checkbox,
 		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",

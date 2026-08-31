@@ -1247,6 +1247,81 @@ describe("ui catalog", () => {
 		expect(block).toContain('file: "src/pages/FormsPage.tsx"');
 	});
 
+	it("sources checkbox API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS.checkbox?.api).toEqual(CATALOG_API.checkbox);
+		expect(CATALOG_API.checkbox).toEqual([
+			{
+				name: "Checkbox",
+				props: [
+					{
+						name: "checked",
+						type: '"indeterminate" | boolean',
+						required: false,
+						description: "The controlled checked state of the checkbox.",
+					},
+				],
+			},
+		]);
+		renderCatalog("/ui/checkbox");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		expect(document.getElementById("api-Checkbox")?.tagName).toBe("H3");
+		expect(document.querySelector('[data-toc-id="api-Checkbox"]')).toBeTruthy();
+		expect(screen.getByRole("heading", { name: "Checkbox", level: 3 })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "Checkbox props" })).toBeInTheDocument();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api).toHaveTextContent("checked?");
+		expect(api).toHaveTextContent('"indeterminate" | boolean');
+		expect(api).toHaveTextContent("The controlled checked state of the checkbox.");
+		expect(api).toHaveTextContent("—");
+		expect(api).not.toHaveTextContent("defaultChecked");
+		expect(api).not.toHaveTextContent("onCheckedChange");
+		expect(api).not.toHaveTextContent("className");
+		expect(api).not.toHaveTextContent("disabled?");
+		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Checked" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Indeterminate" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Error" })).toBeInTheDocument();
+		expect(document.querySelector('[data-hero-scenario="checkbox-default"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="checkbox-error"]')).toBeTruthy();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### Checkbox");
+		expect(markdown).toContain(
+			'- checked ("indeterminate" | boolean, optional, default —): The controlled checked state of the checkbox.',
+		);
+		expect(markdown).not.toContain("- defaultChecked (");
+		expect(markdown).not.toContain("- className (");
+		expect(UI_EXAMPLES.checkbox).toHaveLength(5);
+		for (const scenario of UI_EXAMPLES.checkbox ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+	});
+
+	it("does not keep a handwritten checkbox prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf("\tcheckbox: {");
+		const end = docs.indexOf("\tradio: {");
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain("api: CATALOG_API.checkbox");
+		expect(block).not.toContain('name: "checked"');
+		expect(block).not.toContain('boolean | "indeterminate"');
+		expect(block).toContain('description: "A check control with an indeterminate state."');
+		expect(block).toContain('<Checkbox aria-label="Subscribe" />');
+		expect(block).toContain('variants: ["checked", "unchecked", "indeterminate"]');
+		expect(block).toContain('repo: "zhe"');
+		expect(block).toContain('sha: "c31c239f01c9"');
+		expect(block).toContain('file: "components/ui/checkbox.tsx"');
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
@@ -2178,8 +2253,10 @@ describe("ui catalog", () => {
 		expect(generator).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 		expect(generator).not.toMatch(/\bif\s*\([^)]*InputGroup|\bswitch\s*\([^)]*input-group/);
 		expect(generator).not.toMatch(/\bif\s*\([^)]*SensitiveInput|\bswitch\s*\([^)]*sensitive-input/);
+		expect(generator).not.toMatch(/\bif\s*\([^)]*Checkbox|\bswitch\s*\([^)]*checkbox/);
 		expect(page).not.toMatch(/input-group|InputGroup/);
 		expect(page).not.toMatch(/sensitive-input|SensitiveInput/);
+		expect(page).not.toMatch(/\bcheckbox\b|Checkbox/);
 		expect(page).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 	});
 

@@ -139,6 +139,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "SensitiveInputProps",
 		surface: "SensitiveInput",
 	},
+	{
+		slug: "checkbox",
+		sourceFile: "packages/basalt/src/components/checkbox.tsx",
+		propsType: "CheckboxProps",
+		surface: "Checkbox",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

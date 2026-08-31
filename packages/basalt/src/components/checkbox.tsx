@@ -4,9 +4,19 @@ import * as React from "react";
 import { cn } from "../utils/cn";
 import { FOCUS_RING } from "./overlay";
 
+export type CheckboxProps = Omit<
+	React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>,
+	"checked"
+> & {
+	/**
+	 * The controlled checked state of the checkbox.
+	 */
+	checked?: boolean | "indeterminate";
+};
+
 export const Checkbox = React.forwardRef<
 	React.ElementRef<typeof CheckboxPrimitive.Root>,
-	React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>
+	CheckboxProps
 >(({ className, ...props }, ref) => (
 	<CheckboxPrimitive.Root
 		ref={ref}

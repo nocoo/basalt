@@ -199,6 +199,11 @@ describe("catalog source contract", () => {
 			"revealLabel",
 			"hideLabel",
 		]);
+		expect(implementationFileFor(entry("checkbox"))).toBe(
+			"packages/basalt/src/components/checkbox.tsx",
+		);
+		expect(CATALOG_DOCS.checkbox?.api).toEqual(CATALOG_API.checkbox);
+		expect(CATALOG_API.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked"]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);
@@ -272,6 +277,7 @@ describe("catalog source contract", () => {
 			"input-area",
 			"input-group",
 			"sensitive-input",
+			"checkbox",
 		];
 		for (const slug of generated) {
 			expect(CATALOG_DOCS[slug]?.api).toBe(CATALOG_API[slug as keyof typeof CATALOG_API]);
@@ -288,6 +294,8 @@ describe("catalog source contract", () => {
 		expect(CATALOG_DOCS["sensitive-input"]?.api.map((surface) => surface.name)).toEqual([
 			"SensitiveInput",
 		]);
+		expect(CATALOG_DOCS.checkbox?.api).toHaveLength(1);
+		expect(CATALOG_DOCS.checkbox?.api.map((surface) => surface.name)).toEqual(["Checkbox"]);
 	});
 
 	it("always points implementation source at nocoo/basalt@main", () => {

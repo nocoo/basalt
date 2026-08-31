@@ -46,6 +46,19 @@ export const CATALOG_API = {
 			],
 		},
 	],
+	checkbox: [
+		{
+			name: "Checkbox",
+			props: [
+				{
+					name: "checked",
+					type: '"indeterminate" | boolean',
+					required: false,
+					description: "The controlled checked state of the checkbox.",
+				},
+			],
+		},
+	],
 	field: [
 		{
 			name: "Field",
