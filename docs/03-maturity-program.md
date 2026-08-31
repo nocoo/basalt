@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A10 D038 — Separator API type source；待 Grok 实现
-> 当前代码前置：`0315055`（D037 验收台账已提交）
+> 当前切片：S2A10 D038 — Separator API type source；完成，下一切片待拆
+> 当前代码前置：`02d067b`（D038 实现已验收）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037 完成） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038 完成） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -542,6 +542,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D035 | S2A7 | `27d2648` + `5d1c028` | `w14:p1` | 完成 | `9e1142e` | 三个当前生效的 Label 场景成为独立、自包含的 source-backed modules，最终 `UI_EXAMPLES.label === LABEL_EXAMPLES`；删除 BASE 死 entry 与 KUMO 生效 inline owner，保留 KUMO 文件仍被 Radio 使用的 `Label` import 和仍被 Input 使用的 `Stack`。Default preview/code 同时携带既有 stack wrapper，Optional 与 Tooltip 的文案、可访问名称和行为不变；Button、LinkButton、Text 与其它 slug 均未改。Codex 独立验收 9 个授权文件、focused 3 files / 206 tests、catalog check、typecheck、Biome 419 files、全量及 coverage 116 files / 907 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2801 modules 通过，既有 1,557.33 kB chunk warning 保留。OpenCLI/Chromium 前后对照证实 hero 仍为 `label-default-label`，三场景 label 均为 14px/500/14px，wrapper、optional marker、`More information` trigger 与完整 tooltip 文案可达；真实 Copy page 为 1,432 字符并含三个完整 raw modules、无禁用语境，控制台 0。7003/PID 95907 保持运行，构建后工作树干净。 |
 | D036 | S2A8 | `9dfffd2` + `88ed7a2` | `w14:p1` | 完成 | `1bc74d5` | 生成器以通用 JSDoc tag 读取可选 `@default`，空值和重复 tag 均 fail closed，稳定输出 `name/type/required/default/description`；Label 真实类型生成 `showOptional`、`tooltip` 两项专属 API，保留说明与 `false` 默认值，删除 docs 手写 inventory，runtime/type shape/CSS/scenarios 均未改。Codex 独立验收 8 个授权文件、focused 4 files / 251 tests、连续两次 generate/check、typecheck、Biome 419 files、全量及 coverage 116 files / 914 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2801 modules、package 92 JS + 92 d.ts + 89 maps、Bundler/NodeNext types 与 279-file pack 全绿，既有 1,557.34 kB chunk warning 保留。generated SHA-256 为 `b32677917c6e9d77eed9f659f221ded96e81b88d08b879108b47ba790b9358fb`。OpenCLI/Chromium 实测 `/ui/label` API 恰有两行，Usage、三个 source-backed scenarios 与 tooltip 行为完整；真实 Copy page 为 1,425 字符并包含生成默认值和说明，无 inherited/Kumo-only props，控制台 0。7003/PID 95907 保持运行，构建后工作树干净。 |
 | D037 | S2A9 | `754b72c` + `1805452` | `w14:p1` | 完成 | `9fed53e` | 唯一 Horizontal composite scenario 成为独立、自包含的同路径 render/raw module，最终 `UI_EXAMPLES.separator === SEPARATOR_EXAMPLES`；删除 BASE 死 entry、KUMO 生效 inline owner及两处无用 Separator import，保留 KUMO 其它场景所需 Text。hero、ID/title/order、`Above`/`Below`、384×1px horizontal rule、`role=none` 和背景色均未漂移，展示代码改为完整可复制 module。Codex 独立验收 7 个授权文件、focused 3 files / 211 tests、catalog check、typecheck、Biome 421 files、全量及 coverage 116 files / 917 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2804 modules 通过，既有 1,557.68 kB chunk warning 保留。OpenCLI/Chromium 实测 hero 与 Examples 均为 384×1px、`rgb(220, 223, 228)`、`role=none` 的同一 composite preview；真实 Copy page 为 1,122 字符并含完整 imports、wrapper 与三个内容节点，无禁用语境，控制台 0。Grok 首次全量及首次 commit hook 遇既有 Chromium 5 秒 timeout，隔离/原样重跑与 Codex 独立全量均通过，未改门或跳过 hooks；7003/PID 95907 保持运行，构建后工作树干净。 |
-| D038 | S2A10 | `0315055` | `w14:p1` | 准备下发 | — | 显式命名等价 `SeparatorProps`，以真实 orientation/decorative 默认与说明生成两项专属 API；冻结 runtime、scenario、视觉及后续阶段。 |
+| D038 | S2A10 | `0315055` + `4de44d3` | `w14:p1` | 完成 | `02d067b` | 导出等价 `SeparatorProps`，只在本地重新声明并记录既有 `orientation` / `decorative` 默认与说明；forwardRef 改用该命名类型，runtime、DOM、class、CSS、scenario 与 root barrel 均未漂移。生成器新增第五个声明式 target，Separator API 精确为两项 optional，docs/API/Copy page 共用 `CATALOG_API.separator`，inherited Radix/DOM props 未泄漏。Codex 独立验收 8 个授权文件、focused 4 files / 256 tests、连续两次 check、typecheck、Biome 421 files、全量与 coverage 116 files / 922 tests；coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）。Showcase 2804 modules、package 92 JS + 92 d.ts + 89 maps、Bundler/NodeNext types 与 279-file pack 全绿，generated SHA-256 为 `57ad14c202cb02e731f21b060a83b80a54524f0a32f771731c2e5e44273d9cab`。OpenCLI/Chromium 实测 API 两行及 default/description 正确，hero/Examples 保持水平 `role=none`、384×1px 和 `rgb(220, 223, 228)`；真实 Copy page 为 1,230 字符且无 inherited props，控制台 0。Grok/full/coverage/Husky 曾遇既有 Chromium 5 秒并发 flake，隔离重跑与 4-worker 完整 hooks 均通过，未改门或跳过 hooks；7003/PID 95907 保持运行，构建后工作树干净。 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
