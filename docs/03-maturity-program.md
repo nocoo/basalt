@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A39 D067 — Select granular props 与 generated compound API；已完成
-> 当前代码前置：`804d94b`（D067 review-fix 已提交，工作树干净）
+> 当前切片：S2B1 D068 — catalog index model、分类 IA 与双状态展示；规格已固化，待 Grok 实现
+> 当前代码前置：`523265c`（D067 台账已提交，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
 
@@ -129,7 +129,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 完成（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062、S2A35 D063、S2A36 D064、S2A37 D065、S2A38 D066、S2A39 D067） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
-| S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
+| S2B | 文档页 IA、搜索、分类、成熟度过滤 | 执行中（S2B1 D068 待实现） | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 待办 | 泛型、group/multiple/loading/error/range + browser 门完整 |
@@ -643,9 +643,25 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
 
    **D029C-R1 review。** `507b273fddd9` 的单选底板、multiple 分流、私有 helper、首次帧、reduced-motion 与 Chromium 几何证据成立，真实 Tabs 也能从 `left 0/width 63` 移到 `left 67/width 64`；但 `bindRef(ref)` 在每次 render 返回新 callback，ToggleGroup 首次测量已可复现外部稳定 callback ref 收到 `node → null → node`，相较原实现产生伪 detach/attach。R1 必须让合并 ref 在外部 ref 身份不变时保持稳定，并以 callback ref 锁住首次测量和后续切换不重复通知；同时补回真实 Tabs active 切换的 left/width/top + motion contract，不能只由 ToggleGroup 间接代测。只改 selection helper/tests、Tabs/ToggleGroup 及其测试；不得改变已通过的视觉、CSS、公开 API 或进入后续切片。
 
-文档站必须使用 `@nocoo/basalt` 出口实现自身界面，包括 Dropdown、Table、Select、Tabs、TOC、Button、Code 等，不能为展示 Basalt 再依赖一套 `src/components/ui` 旧实现。
+### 6.3.2 S2B — 文档信息架构、可达性与拆包
 
-首页按 Components/Charts/Blocks 分类，支持搜索、stable/catalog 状态和完成度；不再渲染 88 个等权 `aspect-square` tile。
+文档站必须使用 `@nocoo/basalt` 出口实现自身界面，包括 Dropdown、Table、Select、Tabs、TOC、Button、Code 等，不能为展示 Basalt 再依赖一套 `src/components/ui` 旧实现。首页按 Components/Charts/Blocks 分类，支持搜索、stable/catalog 发布状态和 ready/planned 页面完成度；不再渲染 88 个等权 `aspect-square` tile。该目标取代 `02-implementation.md` §5.2b 的旧 HomeGrid 正方形平铺约束；Kumo 首页只作为保留可交互预览和 title-link 分离的参考，不复制其 Cloudflare/Worker 用户语境。
+
+1. **S2B1 / D068 — catalog index model、分类 IA 与双状态展示。** 2026-09-01 只读现场证明 `CATALOG` 共 96 项：60 Components、24 Charts、3 Blocks、9 Docs；首页应覆盖前三组恰好 87 个唯一 slug。现有 `SHOWCASE` 为 40 行但只有 39 个唯一 slug，`input` 以 `Input` 与 `Input (with validation)` 重复，再与 `extraTiles` 拼成 88 个无分组等权 tile。当前 `kind` 同时承载 root 出口资格与命名空间，值为 `stable | catalog | chart | provider`，不能冒充页面完成度；真实 route ready 判定仍是同一 slug 同时存在 `CATALOG_DOCS` 和首个 hero scenario。按该判定，首页为 84 ready / 3 planned：Components 60/60、Charts 23/24（Maps planned）、Blocks 1/3（Resource List、Delete Resource planned）；全 catalog 另有 9 个 Docs planned。
+
+   新增一个非 JSX 的 catalog index model，直接消费 `CATALOG`、`CATALOG_DOCS` 和 `catalogHeroScenario`，输出固定顺序 Components / Charts / Blocks 三组以及每项两个正交状态。`releaseStatus` 只表示发布入口：`stable`、`provider` 映射为 `stable`，`catalog`、`chart` 映射为 `catalog`；`pageStatus` 只表示页面是否已有 docs + hero，值为 `ready | planned`。模型必须 fail-closed：非 docs 条目各且仅出现一次，未知 category/kind 不得静默归组；不得另建第二份 slug/name inventory、手写 ready allowlist 或从示例标题猜状态。`UiPlaceholderPage` 必须消费同一个 page-state helper 取得 ready docs/hero，删除本地重复的 `hero && docs` 判定；既有 ready/missing/placeholder DOM、Copy page、TOC 与路由行为不变。
+
+   `HomeGrid` 删除 `SHOWCASE`、`extraTiles`、`TILES`、`Input (with validation)` name 特判、`HomeInputValidation` 及只服务它的 Field import；`HOME_DEMOS` 继续作为少量、有明确首页构图目的的 slug-keyed override，其余 preview 继续回退到同一个 hero scenario，但该 override 不得承担条目 inventory 或状态。页面渲染三个带语义 heading 和计数的 section，87 张响应式、非 `aspect-square` 卡片；每张卡同时可见 Stable/Catalog 与 Ready/Planned，不能把 release status 与 page status合成一个 badge。Ready title 是唯一 `/ui/:slug` 链接，preview 继续可交互且不能被整卡 overlay 截获；三个 Planned 条目仍可发现，但 title 不得渲染链接、不得伪造 demo。`UiIndexPage` 补唯一页面级标题、简述和 `84 / 87 ready` 总览，分类 section 与卡片仍位于现有 ContentIsland 内，不改 DashboardLayout、sidebar 或顶栏。
+
+   D068 只建立首页模型和静态 IA，不实现搜索、category/release/page 过滤、URL query state，不修改 AppSidebar/Command Palette，因此不能提前宣称全站 12 个 placeholder 已不可达；这些进入 D069/D070。也不得做 lazy route、拆 `catalog-ready.tsx`、改变 CATALOG 条目/顺序/kind、实现 Maps/两个 block/九个 docs、修改 package 组件/API、generated API、scenario/examples、Kumo owner、依赖/lock、全局 tokens 或视觉纠偏。只允许修改 `src/pages/ui/catalog.ts`、新增 `src/pages/ui/catalog-index.ts` 及同名测试、修改 `src/pages/ui/HomeGrid.tsx`、`src/pages/ui/UiIndexPage.tsx`、`src/pages/ui/UiPlaceholderPage.tsx` 和 `src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容；若模型不需要改 `catalog.ts` 或首页标题不需要额外 wrapper，应主动缩小文件数而非制造触碰。
+
+   模型测试必须锁三组顺序、`60 / 24 / 3`、总计 87 个唯一非 Docs slug、`84 / 3` page 状态、三个 planned slug、两种 release status及其与 page status 的独立性，并用缺 docs/hero、未知 kind/category、重复输入等注入负例证明不是碰巧通过当前常量。页面测试须证明三个 section/计数、唯一 Input 卡、双 badge、全部 ready title 可导航、planned title 没有对应 href，首页源码不再含上述五个旧 owner/特判或 `aspect-square`；Button/Accordion 等代表性 preview 仍真实交互。提交前运行 catalog-index/page focused tests、`bun run catalog-api:check`、typecheck、Biome、串行全量、coverage 与 showcase production build；coverage 四项不得低于 D067 的 `97.13 / 95.44 / 95.89 / 97.32`，构建后工作树必须干净，既有 chunk warning 如实记录且不得在本刀顺手修复。必须用真实 Chromium 在 7003 既有服务上验收桌面与约 390px 窄屏的三组/87项、唯一 Input、双状态、三个 Planned 不可点击、Button/Accordion/Chart/Page Header 导航、preview 交互、light/dark 无裁切或横向溢出及 console/page error/failed network 0；不得停止 7003/PID 95907。只做一个绿色原子提交，建议 `refactor: model catalog index`，随后停止等待 Codex review。
+
+2. **S2B2 / D069 — 首页搜索与组合过滤。** 在 D068 唯一 index model 上加入本地搜索，以及 category、Stable/Catalog、Ready/Planned 组合过滤与可恢复空结果；过滤必须作用于同一 87 项，键盘/label/focus、窄屏和 URL state 契约在该刀单独固化，不在 D068 预埋平行数据。
+
+3. **S2B3 / D070 — 全站可达集合。** AppSidebar、Command Palette 和公开导航统一消费 page status；planned 项可显示成熟度但不得触发 placeholder route，关闭当前 9 Docs + Maps + Resource List + Delete Resource 共 12 个 placeholder 导航入口，并保持 unknown slug 的 missing 语义。
+
+4. **S2B4 — 路由与文档数据拆包。** 在 IA 与可达性稳定后再拆 route/catalog-ready/examples 数据，解释并关闭当前约 1.57 MB 单 JS chunk warning；不得以隐藏功能、删除 examples 或绕过真实 production build 换体积。
 
 ### 6.4 S3 — 可直接提取的通用组合
 
