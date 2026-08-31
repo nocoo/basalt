@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A23 D051 — source-backed Input scenarios 已完成；下一切片 S2A24 D052 — Input API type source 调查中
-> 当前代码前置：`97728a9`（D051 实现已独立验收，工作树干净）
+> 当前切片：S2A24 D052 — Input API type source；规格已固化，待实现
+> 当前代码前置：`29c3d30`（D051 台账已完成，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051 完成；S2A24 D052 调查中） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051 完成；S2A24 D052 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -446,6 +446,14 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    `demos.tsx` 只以 `input: INPUT_EXAMPLES` 接入并删除 BASE dead owner；其直接 `Input` import 因此无用必须删除，`InputGroup.Input` 不受影响。`kumo-examples.tsx` 删除整个生效 input owner；直接 `Input` import 和只被 Input Types 使用的 `Stack` helper 因此一并删除，`Field` 仍被 Checkbox/InputArea 场景使用且 `ReactNode` 仍被 Preview 使用，不得误删。最终 `UI_EXAMPLES.input === INPUT_EXAMPLES`，后三层 spread 不再有第二个 input owner；前十一组 source-backed arrays 与其它 slug 全部冻结。Kumo 现站还包含 built-in Field、validation object、四 size、optional、label tooltip、ReactNode label、controlled onChange/onValueChange、error without label、password-manager overlay 和更多 native types；全部只记作 S4 差距，本刀不得扩 Input/Field API、增加场景或引入 Base UI/Kumo 文案。
 
    测试须以真实 render/raw glob 证明恰有五个 Input modules，metadata/file key/ID/title/order 与文件集合闭合，code 等于 trimmed raw、render 等于同路径 default export、最终数组与 scenario 引用同一。契约与页面级断言须覆盖完整 imports/default exports、上述文案/类型/disabled/a11y、两项 Field ARIA 关系、Input Types 单根 wrapper 及三项顺序、hero/Examples 和 Copy page 五个 raw modules；生产源负门须证明 `demos.tsx`、`kumo-examples.tsx` 不再有 `input:` inline owner、`catalogScenarioId("input", ...)`、直接 Input import 或 Stack helper，新 modules 不出现 Cloudflare、Kumo、Worker/Workers 用户语境。只允许新增 `src/pages/ui/examples/input/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/FormSelectionScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 package Input/Field 实现、类型或测试、scenario loader、docs/generated API、catalog IA/CSS、其它 examples、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入 Input API 真源或后续 S2A/S2B。提交前运行三个 focused test files、catalog API check、typecheck、Biome、全量、coverage 与 showcase build；四项 coverage 不得低于 D050，既有 chunk warning 如实报告，构建后工作树必须干净。只做一个绿色原子提交，建议 `refactor: source input scenarios`，随后停止等待 Codex review。
+
+24. **S2A24 / D052 — Input API type source 与原生属性边界。** D051 已使五个 Input scenarios 同源；生产 `Input` 仍直接把 `React.ComponentProps<"input">` 内联在 `forwardRef` generic，docs 则手写唯一 `type: string` 行，组件公开类型、API 表和真实 React input type 仍不共用真源。导出 `InputProps`，精确写成 `Omit<React.ComponentProps<"input">, "type">` 与本地 optional `type?: React.HTMLInputTypeAttribute` 的交集，并为该本地 prop 写入说明 `The type of input control to render.`；`Input` 的 `forwardRef` 只把 generic 切换为 `InputProps`。这必须与当前类型和运行时等价：全部标准 input attributes、data/ARIA、events、controlled/uncontrolled value、className、ref 与 children 类型继续来自 React，`type` 仍 optional，未传时仍保持浏览器 text 默认；函数体、属性 spread 顺序、class、surface、disabled/focus/file/placeholder 状态和 displayName 不得变化。
+
+   `type` 是本刀唯一 locally owned catalog prop；不得本地重声明或生成 `className`、id、name、value、defaultValue、placeholder、disabled、required、aria-*、onChange、children、ref 等 inherited props，也不得把 `InputProps` 加进 root barrel，只保留 granular `@nocoo/basalt/components/input` 的类型出口。Kumo 2026-08-31 现站的 built-in Field、ReactNode label/description、validation object、four sizes、optional/tooltip、onValueChange、error without label、password-manager overlay、development accessible-name warning 和 Base UI 实现均继续留 S4；本刀不得添加上述 prop、依赖、场景、警告或行为。
+
+   `CATALOG_API_TARGETS` 追加第十二个声明式 target：slug `input`、source `packages/basalt/src/components/input.tsx`、type `InputProps`；不得添加 Input allowlist、fallback、allow-empty 或名字特判。生成结果必须只有 optional `type: React.HTMLInputTypeAttribute` 一项、无 default、携带上述说明；前十一组 generated 数据逐字保持，完整 generated 文件的实际新 SHA-256 必须由确定性双次 generate/check 取得并锁入既有 hash 门。`BASE_DOCS.input.props` 只消费 `CATALOG_API.input` 并删除手写 inventory；description、Usage、variants、provenance 与 D051 五个 source-backed scenarios 全部冻结。
+
+   Input 单测须以类型证据证明 `InputProps` 接受 email/search 等 type、className、placeholder、disabled、ARIA、value/defaultValue、onChange 与 ref，并以 expected compile error 锁住非字符串 type；运行时补足 type/原生属性与 ref 透传、调用方 class 合并和 change handler，保留既有 enabled/disabled/control-surface 断言。Generator、catalog-source 与页面测试须锁住十二 targets、Input 精确一项、optional/type/default/description、前十一组不回归、generated hash/check 及 docs 无手写 Input inventory；`/ui/input` API 表必须恰一行 `type?`，显示准确 type 与说明，Copy page 标出 optional/no-default，同时 D051 hero、五场景、完整 raw modules、wrapper 和 ARIA 均不回归。只允许修改 `packages/basalt/src/components/input.tsx`、`packages/basalt/src/components/input.test.tsx`、`scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/docs.ts`、`src/pages/ui/catalog-source.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 root barrel、Field、D051 examples/scenario/loader、其它组件/docs/API、catalog IA/CSS、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入 Input 能力扩展或后续 S2A/S2B。提交前运行 Input/generator/catalog-source/page focused tests、generate + 连续两次 check、typecheck、Biome、全量、coverage、showcase build，以及 package build/types/pack；四项 coverage 不得低于 D051，所有 build 后工作树必须干净。只做一个绿色原子提交，建议 `refactor: generate input api docs`，随后停止等待 Codex review。
 
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
