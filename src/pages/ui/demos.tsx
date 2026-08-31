@@ -14,6 +14,7 @@ import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { AlertTriangle, CircleAlert, CircleCheck, Info, X } from "lucide-react";
 import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
+import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
@@ -35,6 +36,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	tooltip: TOOLTIP_EXAMPLES,
 	"theme-toggle": THEME_TOGGLE_EXAMPLES,
 	"layer-card": LAYER_CARD_EXAMPLES,
+	"basalt-mark": BASALT_MARK_EXAMPLES,
 	"link-provider": [
 		{
 			id: catalogScenarioId("link-provider", "default"),

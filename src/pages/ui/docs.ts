@@ -145,6 +145,17 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			file: "components/ui/card.tsx",
 		}),
 	},
+	"basalt-mark": {
+		description: "Basalt mark.",
+		usage: usage("BasaltMark", "@nocoo/basalt/components/basalt-mark", "<BasaltMark />"),
+		variants: [],
+		props: [{ name: "className", type: "string", description: "className" }],
+		provenance: provenanceFromLegacy({
+			repo: "pew",
+			sha: "97a890fabe6e",
+			file: "packages/web/src/components",
+		}),
+	},
 	field: {
 		description: "A labeled control with optional hint and error.",
 		usage: usage(

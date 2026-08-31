@@ -41,7 +41,6 @@ import { Autocomplete } from "@nocoo/basalt/components/autocomplete";
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
-import { BasaltMark } from "@nocoo/basalt/components/basalt-mark";
 import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
 import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
@@ -284,7 +283,6 @@ export default function Example() {
 	return <Empty title="No results" description="Try another query." />;
 }`,
 );
-add("basalt-mark", "Basalt mark.", () => <BasaltMark />, "<BasaltMark />");
 add(
 	"code",
 	"Syntax-highlighted code.",

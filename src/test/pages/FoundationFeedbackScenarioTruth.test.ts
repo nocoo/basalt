@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
+import { BASALT_MARK_EXAMPLES } from "@/pages/ui/examples/basalt-mark";
 import { LABEL_EXAMPLES } from "@/pages/ui/examples/label";
 import { LINK_EXAMPLES } from "@/pages/ui/examples/link";
 import { SEPARATOR_EXAMPLES } from "@/pages/ui/examples/separator";
@@ -85,6 +86,7 @@ describe("foundation feedback scenario truth", () => {
 			"clipboard-text-copy-alternate-text",
 			"clipboard-text-long-text",
 		]);
+		expect(UI_EXAMPLES["basalt-mark"]).toBe(BASALT_MARK_EXAMPLES);
 		expect(UI_EXAMPLES["basalt-mark"]?.map((item) => item.id)).toEqual(["basalt-mark-default"]);
 		expect(UI_EXAMPLES.empty?.map((item) => item.id)).toEqual(["empty-basic", "empty-with-icon"]);
 		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
@@ -227,8 +229,26 @@ describe("foundation feedback scenario truth", () => {
 	});
 
 	it("does not expand basalt mark beyond the current mark", () => {
+		expect(UI_EXAMPLES["basalt-mark"]).toBe(BASALT_MARK_EXAMPLES);
 		expect(UI_EXAMPLES["basalt-mark"]).toHaveLength(1);
-		expect(scenario("basalt-mark", "basalt-mark-default").code).toContain("<BasaltMark");
-		expect(CATALOG_DOCS["basalt-mark"]?.usage).toContain("<BasaltMark");
+		const example = scenario("basalt-mark", "basalt-mark-default");
+		expect(example.title).toBe("Default");
+		expect(example.code).toContain("export default function Example");
+		expect(example.code).toContain("@nocoo/basalt/components/basalt-mark");
+		expect(example.code).toContain("<BasaltMark />");
+		expect(example.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		expect(CATALOG_DOCS["basalt-mark"]?.description).toBe("Basalt mark.");
+		expect(CATALOG_DOCS["basalt-mark"]?.variants).toEqual([]);
+		expect(CATALOG_DOCS["basalt-mark"]?.props).toEqual([
+			{ name: "className", type: "string", description: "className" },
+		]);
+		expect(CATALOG_DOCS["basalt-mark"]?.usage).toContain("<BasaltMark />");
+		expect(CATALOG_DOCS["basalt-mark"]?.usage).toContain("@nocoo/basalt/components/basalt-mark");
+		expect(CATALOG_DOCS["basalt-mark"]?.provenance).toEqual({
+			owner: "nocoo",
+			repo: "pew",
+			ref: "97a890fabe6e",
+			file: "packages/web/src/components",
+		});
 	});
 });

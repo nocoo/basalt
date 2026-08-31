@@ -784,7 +784,7 @@ describe("ui catalog", () => {
 	it("does not keep a handwritten layer-card prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const start = docs.indexOf('\t"layer-card": {');
-		const end = docs.indexOf("\tfield: {");
+		const end = docs.indexOf('\t"basalt-mark": {');
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
@@ -793,6 +793,29 @@ describe("ui catalog", () => {
 		expect(block).toContain(
 			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
 		);
+	});
+
+	it("keeps handwritten basalt-mark docs after catalog-ready decoupling", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf('\t"basalt-mark": {');
+		const end = docs.indexOf("\tfield: {");
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain('description: "Basalt mark."');
+		expect(block).toContain('name: "className"');
+		expect(block).toContain('type: "string"');
+		expect(block).toContain('description: "className"');
+		expect(block).not.toContain("CATALOG_API");
+		expect(block).toContain('repo: "pew"');
+		expect(block).toContain('sha: "97a890fabe6e"');
+		expect(block).toContain('file: "packages/web/src/components"');
+		expect(block).toContain("<BasaltMark />");
+		expect(block).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		expect(CATALOG_DOCS["basalt-mark"]?.props).toEqual([
+			{ name: "className", type: "string", description: "className" },
+		]);
+		expect(Object.keys(CATALOG_API)).not.toContain("basalt-mark");
 	});
 
 	it("shows usage as docs code without a preview surface", () => {
@@ -1337,6 +1360,62 @@ describe("ui catalog", () => {
 		for (const scenario of UI_EXAMPLES["layer-card"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
+	});
+
+	it("keeps basalt-mark hero, mountain mark, and copyable module", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/basalt-mark");
+		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="basalt-mark-default"]');
+		const example = document.querySelector('[data-scenario="basalt-mark-default"]');
+		expect(hero).toBeTruthy();
+		expect(example).toBeTruthy();
+		if (!hero || !example) {
+			throw new Error("missing basalt-mark scenario surfaces");
+		}
+		const heroMark = hero.querySelector('svg[aria-label="Basalt"]');
+		const exampleMark = example.querySelector('svg[aria-label="Basalt"]');
+		expect(heroMark).toBeTruthy();
+		expect(exampleMark).toBeTruthy();
+		expect(heroMark?.tagName).toBe("svg");
+		expect(heroMark).toHaveClass("h-5", "w-5", "text-basalt-primary");
+		expect(heroMark).toHaveAttribute("stroke-width", "1.5");
+		expect(heroMark).toHaveAttribute("aria-label", "Basalt");
+		expect(heroMark?.getAttribute("class") ?? "").toContain("lucide-mountain");
+		expect(exampleMark).toHaveClass("h-5", "w-5", "text-basalt-primary");
+		expect(exampleMark).toHaveAttribute("stroke-width", "1.5");
+		expect(exampleMark).toHaveAccessibleName("Basalt");
+		for (const scenario of UI_EXAMPLES["basalt-mark"] ?? []) {
+			expect(scenario.code).toContain("export default function Example");
+			expect(scenario.code).toContain("@nocoo/basalt/components/basalt-mark");
+			expect(scenario.code).toContain("<BasaltMark />");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain(UI_EXAMPLES["basalt-mark"]?.[0]?.code ?? "");
+		expect(markdown).toContain("export default function Example");
+		expect(markdown).toContain("@nocoo/basalt/components/basalt-mark");
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+	});
+
+	it("does not keep inline basalt-mark scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const ready = readFileSync(path.join(process.cwd(), "src/pages/ui/catalog-ready.tsx"), "utf8");
+		expect(demos).toContain("BASALT_MARK_EXAMPLES");
+		expect(demos).toMatch(/"basalt-mark": BASALT_MARK_EXAMPLES/);
+		expect(demos).not.toMatch(/"basalt-mark":\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("basalt-mark"/);
+		expect(ready).not.toContain('add("basalt-mark"');
+		expect(ready).not.toMatch(/import \{ BasaltMark \}/);
+		expect(ready).not.toMatch(/from "@nocoo\/basalt\/components\/basalt-mark"/);
+		expect(ready).not.toContain("<BasaltMark");
 	});
 
 	it("does not keep inline layer-card scenario owners", () => {

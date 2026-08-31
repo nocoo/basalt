@@ -7,6 +7,7 @@ import {
 	normalizeModulePath,
 } from "./catalog-scenario";
 import { UI_EXAMPLES } from "./demos";
+import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
@@ -129,6 +130,16 @@ const LAYER_CARD_TITLES = ["Basic Card", "Surface-style Card", "Multiple Cards"]
 
 const layerCardRenders = import.meta.glob("./examples/layer-card/*.tsx", { eager: true });
 const layerCardSources = import.meta.glob("./examples/layer-card/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const BASALT_MARK_IDS = ["basalt-mark-default"] as const;
+const BASALT_MARK_TITLES = ["Default"] as const;
+
+const basaltMarkRenders = import.meta.glob("./examples/basalt-mark/*.tsx", { eager: true });
+const basaltMarkSources = import.meta.glob("./examples/basalt-mark/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -667,6 +678,75 @@ describe("source-backed layer-card scenarios", () => {
 		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain("Browse all components");
 		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain("View code examples");
 		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain('<div className="flex w-full gap-4">');
+	});
+});
+
+describe("source-backed basalt-mark scenarios", () => {
+	it("loads one basalt-mark scenario from the same glob modules", () => {
+		expect(Object.keys(basaltMarkRenders)).toHaveLength(1);
+		expect(Object.keys(basaltMarkSources)).toHaveLength(1);
+		const loaded = loadModuleScenarios({
+			slug: "basalt-mark",
+			metas: BASALT_MARK_TITLES.map((title, index) => ({
+				key: BASALT_MARK_IDS[index].slice("basalt-mark-".length),
+				title,
+			})),
+			renderModules: basaltMarkRenders,
+			sourceModules: basaltMarkSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...BASALT_MARK_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...BASALT_MARK_TITLES]);
+		expect(BASALT_MARK_EXAMPLES.map((item) => item.id)).toEqual([...BASALT_MARK_IDS]);
+		expect(BASALT_MARK_EXAMPLES.map((item) => item.title)).toEqual([...BASALT_MARK_TITLES]);
+		expect(UI_EXAMPLES["basalt-mark"]).toBe(BASALT_MARK_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
+		expect(UI_EXAMPLES["theme-toggle"]).toBe(THEME_TOGGLE_EXAMPLES);
+		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		expect(UI_EXAMPLES["theme-toggle"]?.map((item) => item.id)).toEqual([...THEME_TOGGLE_IDS]);
+		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
+		const fileKeys = new Set(
+			Object.keys(basaltMarkRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(BASALT_MARK_IDS.map((id) => id.slice("basalt-mark-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("basalt-mark-".length);
+			const modulePath = Object.keys(basaltMarkSources).find((path) =>
+				path.endsWith(`/${key}.tsx`),
+			);
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = basaltMarkSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(
+				BASALT_MARK_EXAMPLES.find((item) => item.id === scenario.id)?.code,
+			);
+			expect(scenario.render).toBe((basaltMarkRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				BASALT_MARK_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).toContain("export default function Example");
+			expect(scenario.code).toContain("@nocoo/basalt/components/basalt-mark");
+			expect(scenario.code).toContain("import { BasaltMark }");
+			expect(scenario.code).toContain("<BasaltMark />");
+		}
+		expect(BASALT_MARK_EXAMPLES[0]?.code).not.toBe("<BasaltMark />");
 	});
 });
 
