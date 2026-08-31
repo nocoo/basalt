@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A 下一原子切片；待审计定义
-> 当前代码前置：`92e5166`（D033 代码已独立验收）
+> 当前切片：S2A6 D034 — Text API type source；待 Grok 实现
+> 当前代码前置：`f914366`（D033 验收台账已提交）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -333,6 +333,12 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
 
    只允许新增 `src/pages/ui/examples/text/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/ContentScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 `catalog-scenario.ts` loader、Button/LinkButton examples、package 生产组件/API、`docs.ts`/generated API、catalog IA、HomeGrid、视觉、依赖/lock、coverage/Husky/consumer，亦不得进入 Text API 或后续 S2A/S2B。提交前运行上述三个 focused test files、`bun run catalog-api:check`、typecheck、Biome、全量、coverage 与 showcase production build；四项 coverage 不得低于 D032，既有 chunk warning 如实报告，构建后工作树必须干净。只做一个绿色原子提交，建议 `refactor: source text scenarios`，随后停止等待 Codex review。
 
+6. **S2A6 / D034 — Text API type source。** 在 D032 已验证的 fail-closed `CATALOG_API_TARGETS` 中新增第三个声明式 target：slug 为 `text`，真实实现文件为 `packages/basalt/src/components/text.tsx`，公开类型为 `TextProps`；配置仍只能声明 slug/source/type，不得出现逐 prop allowlist、fallback 或组件名特判。仓外只读试生成已证明当前真实类型应稳定得到源码顺序的两项组件专属 API：`size` 为 `"lg" | "md" | "sm" | "xl" | "xs" | null`，`tone` 为 `"default" | "muted" | null`，两项均 optional。继承的 `React.HTMLAttributes<HTMLParagraphElement>` 中 `children`、`className`、`id`、`title`、`style`、event、ARIA 等不得进入专属表；尚不存在于 Basalt `TextProps` 的 `as`、heading/body/mono、bold、truncate 和额外 tone 也不得因 Kumo 参考而伪造，能力扩展仍留 S4。
+
+   生成模块必须保留 Button 五项和 LinkButton 三项逐字节内容，并以 `text` identifier key 输出第三组纯数据；完整文件二次生成逐字节确定，当前三 target 的预期试生成 SHA-256 为 `1e5fffe4f0001a7eb196998a3b1d2e445751fad9e965d865383137338b415c2a`。`BASE_DOCS.text.props` 改为只消费 `CATALOG_API.text`，删除当前 `size`/`tone` 手写 inventory，不保留影子数组；description、variants、provenance 与 `<Text tone='muted'>Copy</Text>` Usage 逐字保持。页面 API 表和 Copy page 必须来自同一 generated 引用，显示 `size?`/`tone?`、完整 null union 和 optional 语义，同时不得出现 DOM inherited 或 Kumo-only prop。D033 的两个 source-backed Text scenarios、ID/title/order/code/render/hero 及 Button/LinkButton scenarios 全部冻结。
+
+   测试须锁住三个 target 的精确声明顺序、Text 两项完整结果、Button/LinkButton 不回归、HTML inheritance 过滤、generated 三组字节/check stale 门，以及 `docs.ts` 的 Text block 不再手写 `size`/`tone` prop name/type。页面级须证明 `CATALOG_DOCS.text.props === CATALOG_API.text`、两行均为 optional、API/Copy page 都含生成类型，Usage 与两个 source-backed examples 仍在且没有 Kumo-only 能力。只允许修改 `scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/docs.ts`，以及 `src/pages/ui/catalog-source.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与 Text generated API 直接相关的最小测试。不得修改 package 生产组件/type、scenario/loader/examples、catalog IA、视觉、依赖/lock、CLI/tsconfig、coverage/Husky/consumer 或其它组件 docs/API，亦不得进入后续 S2A/S2B。提交前运行 generator/page focused tests、generate + 连续两次 check、typecheck、Biome、全量、coverage、showcase build，以及 package build/types/pack；四项 coverage 不得低于 D033，generated 哈希与构建后工作树必须干净。只做一个绿色原子提交，建议 `refactor: generate text api docs`，随后停止等待 Codex review。
+
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
 2026-08-31 用户复核展示站后，要求先关闭同类控件 surface/字号漂移、顶部 breadcrumb 层级漂移和 segmented control 无移动反馈，再继续 S2A。根因不是 token 数值本身，而是 Basalt 多处重复拼接 control class，以及从自定义 `text-base = 14px` 的参考实现机械带回 class 后落到本仓 Tailwind 默认 `16px`。本段只修共享视觉契约，不扩公开 API、example 数量或业务模块。
@@ -508,5 +514,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D031 | S2A3 | `a20c691` + `471f7b5` | `w14:p1` | 完成 | `60aa67e8ac7b` | 两个 LinkButton 场景各自成为独立、自包含的 source-backed module，最终数组与 `LINK_BUTTON_EXAMPLES` 引用相同；删除 BASE 死 entry、KUMO 生效 inline owner 及无用 imports，Disabled Link 的 preview/code 同时携带 inert 与 `opacity-50` 契约，Button 十场景和所有冻结范围未改。Codex 独立验收 focused 3 files / 196 tests、catalog check、typecheck、Biome 412 files、全量与 coverage 116 files / 895 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2789 modules 通过，既有 1,556.70 kB warning 保留。OpenCLI/Chromium 实测 `/ui/link-button` 的 hero、两个 `#docs` 链接及 disabled 无 href/不导航契约均成立；禁用语境与旧 owner 扫描为空，7003 保持运行，工作树干净。 |
 | D032 | S2A4 | `84322c3` + `2a52afd` | `w14:p1` | 完成 | `629a8ab` | 在既有 fail-closed generator 中声明 `link-button / LinkButtonProps` 第二 target，生成源码顺序的 `variant`、`size`、`icon` 三项专属 API；Button 五项字节不变，Button-only 与原生 anchor props 均未泄漏，scenarios、组件实现和冻结范围未改。Codex 独立验收 6 个授权文件、focused 3 files / 234 tests、连续两次 generate/check、typecheck、Biome、全量及 coverage 116 files / 898 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2789 modules、package 92 JS + 92 d.ts + 89 maps、Bundler/NodeNext types 与 279-file pack 全绿，既有 1,556.76 kB chunk warning 保留。generated SHA-256 为 `20620051323df8e3fc7a4991009647c35b74eb36af8a5901488743147cad34a2`。OpenCLI/Chromium 实测 `/ui/link-button` API 表只有三项且顺序/类型正确；页面内拦截真实 Copy page 写入得到 1,345 字符 Markdown，三项 API、两个 source-backed example 与 Disabled Link 的 inert/`opacity-50` 契约完整。7003 保持运行，构建后工作树干净。 |
 | D033 | S2A5 | `c59edbe` + `e1fd2d5` | `w14:p1` | 完成 | `92e5166` | 两个当前生效的 Text 场景成为独立、自包含的 source-backed modules，最终 `UI_EXAMPLES.text === TEXT_EXAMPLES`；删除 BASE 的 Default/Muted 死 entry 与 KUMO 生效 inline owner，保留其它场景仍需的 `Text` imports/`Stack`，Button、LinkButton 与其它 slug 均未改。Codex 独立验收 8 个授权文件、focused 3 files / 205 tests、catalog check、typecheck、Biome 415 files、全量及 coverage 116 files / 901 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2794 modules 通过，既有 1,557.03 kB warning 保留。OpenCLI/Chromium 迁移前后逐项对照：hero 仍为 `text-sizes`，五档文案、class、computed font-size/line-height 及 muted `rgb(115, 115, 115)` 完全一致；两个页面 code block 逐字来自完整 raw modules，真实 Copy page 为 1,184 字符并含 Sizes/Muted tone 两模块且无 `as`、heading 或 Semantic HTML 伪声明。禁用用户语境与旧 owner 扫描为空，7003 保持运行，工作树干净。 |
+| D034 | S2A6 | `f914366` | `w14:p1` | 执行中 | — | 只把 Text 文档 API 接入既有 fail-closed type generator，保持当前两项真实能力并冻结组件、scenarios 与后续阶段。 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
