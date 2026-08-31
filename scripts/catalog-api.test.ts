@@ -714,6 +714,98 @@ export interface WidgetProps {
 		]);
 	});
 
+	it("rejects impersonation through an external generic mapped type", () => {
+		const root = fixture({
+			"other.ts": `export type Other<T> = { [K in "value"]?: T };\n`,
+			"widget.ts": `import type { Other } from "./other";
+export interface WidgetProps extends Other<string> {
+	value?: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("rejects impersonation through an external generic Record type", () => {
+		const root = fixture({
+			"other.ts": `export type Other<K extends string> = Record<K, string>;\n`,
+			"widget.ts": `import type { Other } from "./other";
+export interface WidgetProps extends Other<"value"> {
+	value: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("rejects impersonation through an external mapped intersection alias", () => {
+		const root = fixture({
+			"other.ts": `export type Other = { [K in "value"]?: string } & { extra?: boolean };\n`,
+			"widget.ts": `import type { Other } from "./other";
+export interface WidgetProps extends Other {
+	value?: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("rejects impersonation through an external mapped union alias", () => {
+		const root = fixture({
+			"other.ts": `export type Other = { [K in "value"]?: string } | { extra?: boolean };\n`,
+			"widget.ts": `import type { Other } from "./other";
+export type WidgetProps = Other & { value?: string };
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("canonicalizes a React JSX element namespace import", () => {
+		const root = fixture(
+			{
+				"widget.ts": `import type * as R from "react";
+export interface WidgetProps {
+	el?: R.JSX.Element;
+}
+`,
+			},
+			{
+				compilerOptions: {
+					baseUrl: ".",
+					paths: {
+						react: [path.join(repoRoot, "node_modules/@types/react")],
+					},
+				},
+			},
+		);
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "el", type: "React.JSX.Element", required: false },
+		]);
+	});
+
+	it("canonicalizes a renamed React JSX namespace import", () => {
+		const root = fixture(
+			{
+				"widget.ts": `import type { JSX as J } from "react";
+export interface WidgetProps {
+	el?: J.Element;
+}
+`,
+			},
+			{
+				compilerOptions: {
+					baseUrl: ".",
+					paths: {
+						react: [path.join(repoRoot, "node_modules/@types/react")],
+					},
+				},
+			},
+		);
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "el", type: "React.JSX.Element", required: false },
+		]);
+	});
+
 	it("prints an explicit true false union as boolean", () => {
 		const root = fixture({
 			"widget.ts": `export interface WidgetProps {

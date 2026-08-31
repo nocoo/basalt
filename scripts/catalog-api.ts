@@ -147,15 +147,23 @@ function eachHeritageTypeNode(
 	visit(decl.type);
 }
 
-function isCompleteTypeAlias(decl: ts.Declaration): decl is ts.TypeAliasDeclaration {
-	return ts.isTypeAliasDeclaration(decl) && (decl.typeParameters?.length ?? 0) === 0;
+function isDefaultLibraryFile(file: ts.SourceFile): boolean {
+	if (file.hasNoDefaultLib) {
+		return true;
+	}
+	return /\/lib\.es[^/]*\.d\.ts$/.test(file.fileName.replace(/\\/g, "/"));
 }
 
 function enclosingOriginDeclarations(type: ts.Type): ts.Declaration[] {
 	if (!type.aliasSymbol) {
 		return [];
 	}
-	return (type.aliasSymbol.getDeclarations() ?? []).filter(isCompleteTypeAlias);
+	return (type.aliasSymbol.getDeclarations() ?? []).filter((decl) => {
+		if (!ts.isTypeAliasDeclaration(decl)) {
+			return false;
+		}
+		return !isDefaultLibraryFile(decl.getSourceFile());
+	});
 }
 
 interface HeritagePropOrigins {
@@ -168,18 +176,20 @@ function collectHeritageOriginsFromType(
 	sourceFile: ts.SourceFile,
 	origins: HeritagePropOrigins,
 	visited: Set<ts.Type>,
+	inheritedOrigin: readonly ts.Declaration[] = [],
 ) {
 	if (visited.has(type)) {
 		return;
 	}
 	visited.add(type);
+	const ownOrigin = enclosingOriginDeclarations(type);
+	const originDecls = ownOrigin.length > 0 ? ownOrigin : inheritedOrigin;
 	if (type.isUnion() || type.isIntersection()) {
 		for (const part of type.types) {
-			collectHeritageOriginsFromType(part, sourceFile, origins, visited);
+			collectHeritageOriginsFromType(part, sourceFile, origins, visited, originDecls);
 		}
 		return;
 	}
-	const originDecls = enclosingOriginDeclarations(type);
 	for (const property of type.getProperties()) {
 		const name = property.getName();
 		const decls = property.getDeclarations() ?? [];
@@ -468,7 +478,10 @@ function printAlias(
 		if (resolvedName.startsWith("__")) {
 			return undefined;
 		}
-		qualified = `React.${resolvedName}`;
+		const resolvedDecl = (resolved.getDeclarations() ?? [])[0];
+		const ns = resolvedDecl ? namespaceQualifiers(resolvedDecl) : [];
+		const nested = ns[0] === "React" ? ns.slice(1) : ns;
+		qualified = ["React", ...nested, resolvedName].join(".");
 	} else {
 		const written = writtenReferenceName(typeNode);
 		qualified = written ?? name;
