@@ -170,6 +170,11 @@ describe("foundation feedback scenario truth", () => {
 		expect(scenario("link", "link-basic-link").code).toContain("LinkProvider");
 		expect(scenario("button", "button-link-with-tooltip").code).toContain("TooltipProvider");
 		expect(scenario("button", "button-link-with-tooltip").code).toContain("LinkButton");
+		const disabledLink = scenario("button", "button-disabled-link").code;
+		expect(disabledLink).toContain('aria-disabled="true"');
+		expect(disabledLink).toContain("tabIndex={-1}");
+		expect(disabledLink).toContain('className="opacity-50"');
+		expect(disabledLink).not.toContain("href=");
 	});
 
 	it("aligns skeleton line and loader codes with current sizes", () => {

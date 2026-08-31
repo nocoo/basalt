@@ -23,114 +23,13 @@ import {
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { AlertTriangle, CircleAlert, CircleCheck, Info, X } from "lucide-react";
-import type { ReactNode } from "react";
 import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
+import { BUTTON_EXAMPLES } from "./examples/button";
 import { KUMO_EXAMPLES } from "./kumo-examples";
 
-function Preview({ children }: { children: ReactNode }) {
-	return <div className="flex flex-wrap items-center gap-3">{children}</div>;
-}
-
 const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
-	button: [
-		{
-			id: catalogScenarioId("button", "variants"),
-			title: "Variants",
-			code: '<Button>Default</Button>\n<Button variant="secondary">Secondary</Button>\n<Button variant="destructive">Destructive</Button>\n<Button variant="outline">Outline</Button>\n<Button variant="ghost">Ghost</Button>\n<Button variant="link">Link</Button>',
-			render: () => (
-				<Preview>
-					<Button>Default</Button>
-					<Button variant="secondary">Secondary</Button>
-					<Button variant="destructive">Destructive</Button>
-					<Button variant="outline">Outline</Button>
-					<Button variant="ghost">Ghost</Button>
-					<Button variant="link">Link</Button>
-				</Preview>
-			),
-		},
-		{
-			id: catalogScenarioId("button", "sizes"),
-			title: "Sizes",
-			code: '<Button size="sm">Small</Button>\n<Button>Default</Button>\n<Button size="lg">Large</Button>',
-			render: () => (
-				<Preview>
-					<Button size="sm">Small</Button>
-					<Button>Default</Button>
-					<Button size="lg">Large</Button>
-				</Preview>
-			),
-		},
-		{
-			id: catalogScenarioId("button", "with-icon"),
-			title: "With Icon",
-			code: '<Button icon="+">Add</Button>',
-			render: () => <Button icon="+">Add</Button>,
-		},
-		{
-			id: catalogScenarioId("button", "icon-only"),
-			title: "Icon Only",
-			code: '<Button size="icon" aria-label="Add">+</Button>',
-			render: () => (
-				<Button size="icon" aria-label="Add">
-					+
-				</Button>
-			),
-		},
-		{
-			id: catalogScenarioId("button", "loading-state"),
-			title: "Loading State",
-			code: "<Button loading>Saving</Button>",
-			render: () => <Button loading>Saving</Button>,
-		},
-		{
-			id: catalogScenarioId("button", "disabled-state"),
-			title: "Disabled State",
-			code: "<Button disabled>Disabled</Button>",
-			render: () => <Button disabled>Disabled</Button>,
-		},
-		{
-			id: catalogScenarioId("button", "title"),
-			title: "Title",
-			code: '<Button title="Creates a new project">Hover title</Button>',
-			render: () => <Button title="Creates a new project">Hover title</Button>,
-		},
-		{
-			id: catalogScenarioId("button", "link-as-button"),
-			title: "Link as Button",
-			code: '<Button asChild><a href="#docs">Open docs</a></Button>',
-			render: () => (
-				<Button asChild>
-					<a href="#docs">Open docs</a>
-				</Button>
-			),
-		},
-		{
-			id: catalogScenarioId("button", "link-with-tooltip"),
-			title: "Link with Tooltip",
-			code: "<TooltipProvider><Tooltip><TooltipTrigger asChild><LinkButton href='#docs'>Docs</LinkButton></TooltipTrigger><TooltipContent>Open documentation</TooltipContent></Tooltip></TooltipProvider>",
-			render: () => (
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<LinkButton href="#docs">Docs</LinkButton>
-						</TooltipTrigger>
-						<TooltipContent>Open documentation</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-			),
-		},
-		{
-			id: catalogScenarioId("button", "disabled-link"),
-			title: "Disabled Link",
-			code: '<LinkButton aria-disabled="true" tabIndex={-1} role="link">Disabled link</LinkButton>',
-			render: () => (
-				<LinkButton aria-disabled="true" tabIndex={-1} role="link" className="opacity-50">
-					Disabled link
-				</LinkButton>
-			),
-		},
-	],
+	button: BUTTON_EXAMPLES,
 	"link-button": [
 		{
 			id: catalogScenarioId("link-button", "default"),

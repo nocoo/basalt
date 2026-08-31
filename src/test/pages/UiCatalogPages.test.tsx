@@ -413,6 +413,11 @@ describe("ui catalog", () => {
 		expect(link).toHaveAttribute("aria-disabled", "true");
 		expect(link).toHaveAttribute("tabindex", "-1");
 		expect(link).not.toHaveAttribute("href");
+		expect(link).toHaveClass("opacity-50");
+		const disabled = UI_EXAMPLES.button?.find((item) => item.id === "button-disabled-link");
+		expect(disabled?.code).toContain('className="opacity-50"');
+		expect(disabled?.code).toContain('aria-disabled="true"');
+		expect(disabled?.code).not.toContain("href=");
 		fireEvent.click(link);
 		expect(window.location.hash).not.toBe("#docs");
 	});
@@ -490,6 +495,15 @@ describe("ui catalog", () => {
 			expect(source, file).not.toMatch(/\bUI_DEMOS\b/);
 			expect(source, file).not.toMatch(/\bEXTRA_DEMOS\b/);
 		}
+	});
+
+	it("does not keep inline button scenario dual-writes", () => {
+		const source = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		expect(source).toContain("BUTTON_EXAMPLES");
+		expect(source).not.toMatch(/button:\s*\[/);
+		expect(source).not.toMatch(/catalogScenarioId\("button"/);
+		expect(source).not.toMatch(/code:\s*'<Button/);
+		expect(source).not.toMatch(/code:\s*"<Button/);
 	});
 
 	it("renders extra home tiles from the first catalog scenario", () => {
