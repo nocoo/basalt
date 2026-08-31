@@ -19,6 +19,7 @@ import {
 } from "@/pages/ui/catalog-source";
 import { catalogHeroScenario, UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
+import { CATALOG_API } from "@/pages/ui/generated/catalog-api";
 import { KUMO_DOCS_SLUGS } from "@/pages/ui/kumo-list";
 import UiIndexPage from "@/pages/ui/UiIndexPage";
 import UiPlaceholderPage from "@/pages/ui/UiPlaceholderPage";
@@ -295,6 +296,49 @@ describe("ui catalog", () => {
 		expect(heroPreview.getByRole("button", { name: "Outline" })).toBeInTheDocument();
 		expect(heroPreview.getByRole("button", { name: "Ghost" })).toBeInTheDocument();
 		expect(heroPreview.getByRole("button", { name: "Link" })).toBeInTheDocument();
+	});
+
+	it("sources button API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS.button?.props).toEqual(CATALOG_API.button);
+		expect(CATALOG_API.button.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"asChild",
+			"loading",
+			"icon",
+		]);
+		renderCatalog("/ui/button");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		for (const prop of CATALOG_API.button) {
+			expect(api).toHaveTextContent(prop.name);
+			expect(api).toHaveTextContent(prop.type);
+			expect(api).toHaveTextContent(`${prop.name}?`);
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		for (const prop of CATALOG_API.button) {
+			expect(markdown).toContain(`- ${prop.name} (${prop.type}, optional`);
+		}
+	});
+
+	it("does not keep a handwritten button prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf("\tbutton: {");
+		const end = docs.indexOf('\t"link-button":');
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain("props: CATALOG_API.button");
+		expect(block).not.toContain('name: "variant"');
+		expect(block).not.toContain('name: "asChild"');
+		expect(block).not.toContain('name: "loading"');
+		expect(block).not.toContain('name: "icon"');
+		expect(block).not.toContain("ReactNode");
 	});
 
 	it("shows usage as docs code without a preview surface", () => {

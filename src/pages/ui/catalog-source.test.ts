@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CATALOG_BY_SLUG } from "./catalog";
 import {
+	catalogDocsWithImplementation,
 	githubSourceHref,
 	githubSourceLabel,
 	implementationFileFor,
@@ -123,6 +124,32 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);
+	});
+
+	it("preserves generated required semantics on catalog docs", () => {
+		const docs = catalogDocsWithImplementation({
+			button: {
+				description: "Primary actions, including loading and icon slots.",
+				usage: 'import { Button } from "@nocoo/basalt/components/button";',
+				variants: [],
+				props: [
+					{
+						name: "loading",
+						type: "boolean",
+						required: false,
+						description: "Shows a spinner.",
+					},
+				],
+			},
+		});
+		expect(docs.button?.props).toEqual([
+			{
+				name: "loading",
+				type: "boolean",
+				required: false,
+				description: "Shows a spinner.",
+			},
+		]);
 	});
 
 	it("always points implementation source at nocoo/basalt@main", () => {

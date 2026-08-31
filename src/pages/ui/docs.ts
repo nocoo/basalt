@@ -5,6 +5,7 @@ import {
 	catalogDocsWithImplementation,
 	provenanceFromLegacy,
 } from "./catalog-source";
+import { CATALOG_API } from "./generated/catalog-api";
 
 export type { CatalogDocs };
 
@@ -22,16 +23,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<Button icon="+" loading={false}>Save</Button>',
 		),
 		variants: ["default", "secondary", "destructive", "outline", "ghost", "link"],
-		props: [
-			{
-				name: "variant",
-				type: '"default" | "secondary" | "destructive" | "outline" | "ghost" | "link"',
-			},
-			{ name: "size", type: '"default" | "sm" | "lg" | "icon"' },
-			{ name: "asChild", type: "boolean" },
-			{ name: "loading", type: "boolean" },
-			{ name: "icon", type: "ReactNode" },
-		],
+		props: CATALOG_API.button,
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",

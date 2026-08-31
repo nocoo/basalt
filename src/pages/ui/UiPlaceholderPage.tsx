@@ -94,10 +94,11 @@ function ReadyDoc({
 		"## Examples",
 		...examples.flatMap((example) => [`### ${example.title}`, example.code]),
 		"## API Reference",
-		...docs.props.map(
-			(prop) =>
-				`- ${prop.name} (${prop.type}, default ${prop.default ?? "—"}): ${prop.description ?? ""}`,
-		),
+		...docs.props.map((prop) => {
+			const required =
+				prop.required === undefined ? "" : prop.required ? ", required" : ", optional";
+			return `- ${prop.name} (${prop.type}${required}, default ${prop.default ?? "—"}): ${prop.description ?? ""}`;
+		}),
 		catalogSourceCopyText(docs),
 	].join("\n\n");
 	const headings: DocHeading[] = [
@@ -197,7 +198,10 @@ function ReadyDoc({
 								<tbody>
 									{docs.props.map((prop) => (
 										<tr key={prop.name} className="border-t border-border">
-											<td className="px-4 py-2.5 font-medium text-foreground">{prop.name}</td>
+											<td className="px-4 py-2.5 font-medium text-foreground">
+												{prop.name}
+												{prop.required === false ? "?" : ""}
+											</td>
 											<td className="px-4 py-2.5 text-muted-foreground">
 												<code>{prop.type}</code>
 											</td>
