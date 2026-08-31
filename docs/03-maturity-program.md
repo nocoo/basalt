@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A27 D055 — source-backed InputGroup scenarios 已完成；下一切片 S2A28 D056 调查中
-> 当前代码前置：`baf9fda`（D055 实现已独立验收，工作树干净）
+> 当前切片：S2A28 D056 — compound API surface 数据模型待 Grok 实现
+> 当前代码前置：`0ab91fc`（D055 台账已提交，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055 完成；S2A28 D056 调查中） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055 完成；S2A28 D056 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -478,6 +478,18 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    `demos.tsx` 只以 `"input-group": INPUT_GROUP_EXAMPLES` 接入并删除 BASE dead owner；其直接 InputGroup import 和仅由该 dead owner 使用的 `CircleCheck` 必须删除。`kumo-examples.tsx` 删除整个生效 input-group owner及仅因此存在的直接 InputGroup import和 `CircleCheck` named import；`Search` 与 granular `Loader` 仍被其它场景使用，必须保留。最终 `UI_EXAMPLES["input-group"] === INPUT_GROUP_EXAMPLES`，后三层 spread 不再有第二个 input-group owner；前十四组 source-backed arrays 与其它 slug 全部冻结。Kumo 2026-08-31 现站另有 built-in Field、label/description/error/required/labelTooltip、四 size、Button tooltip、Kbd、controlled status、states、container/individual/hybrid focus、context warnings 和更多 disabled/error propagation；仓外本地同类实现还展示 Command/Combobox/place-autocomplete 组合。这些全部留给后续 InputGroup API/表单成熟度切片，不得在本刀扩 prop、场景、依赖或行为；尤其不得复制 Kumo 的 `.workers.dev`、Cloudflare/Worker 或其它品牌业务语境。
 
    测试须以真实 render/raw glob 证明恰有五个 InputGroup modules，metadata/file key/ID/title/order 与文件集合闭合，code 等于 trimmed raw、render 等于同路径 default export、最终数组与 scenario 引用同一。契约与页面级断言须覆盖完整 imports/default exports、五个 max-w-sm roots、上述 value/placeholder/suffix/addon/icon/button/Loader/accessibility、hero/Examples 和 Copy page 五个 raw modules；生产源负门须证明 `demos.tsx`、`kumo-examples.tsx` 不再有 input-group inline owner、对应 `catalogScenarioId` 或直接 InputGroup import，新 modules 与最终 Copy page 不出现 Cloudflare、Kumo、Worker/Workers 用户语境。只允许新增 `src/pages/ui/examples/input-group/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/FormSelectionScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 package InputGroup/Input/Button/Loader 实现、类型或测试、scenario loader、docs/generated API、HomeGrid、catalog IA/CSS、其它 examples、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入 InputGroup API 真源或后续 S2A/S2B。提交前运行三个 focused test files、catalog API check、typecheck、Biome、全量、coverage 与 showcase build；四项 coverage不得低于 D054，既有 chunk warning 如实报告，构建后工作树必须干净。只做一个绿色原子提交，建议 `refactor: source input group scenarios`，随后停止等待 Codex review。
+
+28. **S2A28 / D056 — compound API surface 通用数据模型与文档 IA。** D055 后 InputGroup 的 preview/code 已同源，但 API 区仍把 `InputGroup.Input`、`InputGroup.Suffix`、`InputGroup.Addon`、`InputGroup.Button` 四个子组件伪装成 root props。根因是 `CatalogApiTarget`、generated artifact、`CatalogDocs.props`、API table 与 Copy page 全部只能表达 `slug -> props[]`：生成器拒绝同 slug target，页面也没有 Root/Input/Addon/Suffix/Button 这种多 surface 层级。Kumo 现站能把 compound component 拆为多个具名 API surface；这属于 Basalt 也需要的通用文档能力，但不得用 InputGroup 名字分支、假扁平表或复制 Kumo API 来绕过模型缺口。本刀只建立统一模型和 IA，下一刀 D057 才接入 InputGroup 的真实类型真源。
+
+   将 generator contract 统一为 `slug -> CatalogApiSurface[]`，每个 surface 精确包含稳定的公开 `name` 与 `props: CatalogApiProp[]`。`CatalogApiTarget` 必须显式声明 `surface`，现有十三个 target 依次使用真实公开名 `Button`、`LinkButton`、`Text`、`Label`、`Separator`、`Link`、`Tooltip`、`ThemeToggle`、`LayerCard`、`BasaltMark`、`Field`、`Input`、`InputArea`；不得从 slug 猜名称。相同 slug 可以有多个 target，但同一 slug 内 surface 名必须唯一并 fail-closed；surface 顺序保持 target 声明顺序，生成 module 的 slug 继续字典序稳定。为以后真实无组件特有 prop 的 compound surface 提供显式 `allowEmpty?: true`：只有提取结果确实为空时才合法；未声明时空结果继续报错，声明 allowEmpty 后若出现本地 prop 也必须报配置过期，不能把提取失败或新 API 静默吞掉。该能力只用通用 fixture 验证，本刀的十三个生产 target 均不得设置 allowEmpty，也不得加入 InputGroup target、prop allowlist、fallback 或组件名特判。
+
+   Generated `CATALOG_API` 的每个现有 key 都迁移为单 surface 数组，surface 内 props 的 name/type/required/default/description、顺序和来源必须与 D054 完全一致；只允许外层 shape 与确定性 hash 改变。`CatalogDocs` 将扁平 `props` 唯一迁移为 `api: CatalogApiSurface[]`，禁止同时保留 legacy props/api 双真源或运行时猜 shape。`BASE_DOCS` 中十三个 generated 页面直接消费对应 `CATALOG_API`；其它手写页面与 `catalog-ready.tsx` 的 page helper 也必须显式构造一个具名 surface，名称使用其实际公开组件或 compound root，不得把 prop 名改成 surface 名。InputGroup 本刀只把现有四行临时 inventory 原样包入名为 `InputGroup` 的单 surface，四行内容、Usage、provenance 与五个 D055 scenarios 全部冻结；D057 会删除该临时 inventory并接入真实五 surface generated data。
+
+   `UiPlaceholderPage` 的 API Reference 必须按 `docs.api` 遍历 surface：每个 surface 都有稳定、可链接且不碰 scenario id 的三级 heading，并紧邻自己的 props table；table 应有可区分该 surface 的 accessible label。单 surface 与多 surface 走同一渲染路径，不得另设 compound 分支。显式合法空 surface 显示中性文案 `No component-specific props.` 而不是空表或隐藏 surface。右侧/移动目录在 API Reference 下按数据顺序列出所有 surface，Copy page 在 API Reference 下为每个 surface 输出 `### {name}` 后再输出其 props；required/optional/default/description 格式保持。页面不得把 surface 名用更大正文或额外粗体制造新的视觉层级，继续使用既有 h3 规范。
+
+   Generator 测试须锁住十三个显式 surface target、现有每组唯一 surface 与 props 不回归、同 slug 多 surface 聚合及声明顺序、跨不同 source/type 复用、duplicate surface 拒绝、未授权 empty 拒绝、精确 allowEmpty 成功、allowEmpty 配置过期拒绝、确定性 render/check 与新的真实 SHA-256；原有 provenance/type printer 的全部反例继续通过。Catalog-source/page 测试须证明没有 legacy `CatalogDocs.props` 消费，十三个 generated docs 直接引用 nested data，手写 docs 全部只有合法 surface；`/ui/button` 至少显示 `Button` surface heading/table/TOC/Copy markdown，通用测试构造两 surface 和空 surface 验证顺序、anchor、可访问 table 与空态；`/ui/input-group` 在 D057 前仍只有临时 `InputGroup` surface，D055 hero、五场景、code、a11y 与 Copy page 不回归。生产源负门须证明 page/generator 没有 `input-group`、`InputGroup`、Kumo、Cloudflare、Worker/Workers 的名字特判。
+
+   只允许修改 `scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/catalog-source.ts`、`src/pages/ui/catalog-source.test.ts`、`src/pages/ui/docs.ts`、`src/pages/ui/catalog-ready.tsx`、`src/pages/ui/UiPlaceholderPage.tsx`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改任何 `packages/basalt` 源码/类型/测试/产物、examples/scenario/loader、HomeGrid、catalog registry/routes/CSS、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得提前进入 InputGroup 真源、能力扩展、S2B 或其它组件 API。提交前运行 generator/catalog-source/page 三个 focused test files、generate 后连续两次 check、typecheck、Biome、全量、coverage 与 showcase production build；coverage 四项不得低于 D055，新的 hash 与构建后工作树必须干净，既有 chunk warning如实报告。只做一个绿色原子提交，建议 `refactor: model compound api surfaces`，随后停止等待 Codex review。
 
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
