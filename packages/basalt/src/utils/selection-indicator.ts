@@ -54,12 +54,20 @@ export function useSelectionIndicator({
 	itemSelector,
 	enabled = true,
 	mapGeometry = measureSelectionItem,
+	ref,
 }: {
 	itemSelector: string;
 	enabled?: boolean;
 	mapGeometry?: (item: HTMLElement, root: HTMLElement) => SelectionGeometry;
+	ref?: React.Ref<HTMLElement | null>;
 }) {
 	const rootRef = React.useRef<HTMLElement | null>(null);
+	const composedRef = React.useMemo(() => {
+		return (node: HTMLElement | null) => {
+			rootRef.current = node;
+			assignRef(ref, node);
+		};
+	}, [ref]);
 	const [state, setState] = React.useState<SelectionIndicatorState>({
 		...EMPTY,
 		visible: false,
@@ -133,15 +141,8 @@ export function useSelectionIndicator({
 		};
 	}, [enabled, sync]);
 
-	const bindRef = React.useCallback(<T extends HTMLElement>(external?: React.Ref<T | null>) => {
-		return (node: T | null) => {
-			rootRef.current = node;
-			assignRef(external, node);
-		};
-	}, []);
-
 	return {
-		bindRef,
+		ref: composedRef,
 		state,
 		motionClassName: state.animated && !reduced ? SELECTION_INDICATOR_MOTION_CLASS : undefined,
 	};

@@ -231,9 +231,9 @@ for (const spec of specs) {
 });
 
 function Probe({ selector }: { selector: string }) {
-	const { bindRef, state } = useSelectionIndicator({ itemSelector: selector });
+	const { ref, state } = useSelectionIndicator({ itemSelector: selector });
 	return (
-		<div ref={bindRef()}>
+		<div ref={ref}>
 			<button type="button" data-state="on">
 				On
 			</button>

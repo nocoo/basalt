@@ -23,15 +23,20 @@ export const TabsList = React.forwardRef<
 	React.ElementRef<typeof TabsPrimitive.List>,
 	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & { showIndicator?: boolean }
 >(({ className, children, showIndicator = true, ...props }, ref) => {
-	const { bindRef, state, motionClassName } = useSelectionIndicator({
+	const {
+		ref: listRef,
+		state,
+		motionClassName,
+	} = useSelectionIndicator({
 		itemSelector: '[role="tab"][data-state="active"]',
 		enabled: showIndicator,
 		mapGeometry: measureTabUnderline,
+		ref,
 	});
 
 	return (
 		<TabsPrimitive.List
-			ref={bindRef(ref)}
+			ref={listRef}
 			className={cn(
 				"relative flex flex-wrap items-center gap-1 border-b border-basalt-border",
 				className,

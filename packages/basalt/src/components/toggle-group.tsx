@@ -11,15 +11,20 @@ export const ToggleGroup = React.forwardRef<
 	React.ComponentPropsWithoutRef<typeof ToggleGroupPrimitive.Root>
 >(({ className, children, ...props }, ref) => {
 	const sliding = props.type === "single";
-	const { bindRef, state, motionClassName } = useSelectionIndicator({
+	const {
+		ref: rootRef,
+		state,
+		motionClassName,
+	} = useSelectionIndicator({
 		itemSelector: '[data-state="on"]',
 		enabled: sliding,
+		ref,
 	});
 
 	return (
 		<ToggleGroupMode.Provider value={props.type}>
 			<ToggleGroupPrimitive.Root
-				ref={bindRef(ref)}
+				ref={rootRef}
 				className={cn(
 					"relative inline-flex h-8 shrink-0 items-center gap-0.5 rounded-full bg-basalt-muted p-0.5 ring-1 ring-basalt-border/70",
 					className,

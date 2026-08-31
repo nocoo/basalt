@@ -187,4 +187,30 @@ describe("ToggleGroup", () => {
 		);
 		expect(ref.current).toBe(screen.getByRole("radiogroup"));
 	});
+
+	it("keeps a stable callback ref across first measure and selection updates", async () => {
+		const calls: Array<HTMLElement | null> = [];
+		const ref = (node: HTMLDivElement | null) => {
+			calls.push(node);
+		};
+		const restore = mockItemBoxes({
+			Live: { left: 4, width: 42, height: 28 },
+			Mock: { left: 50, width: 48, height: 28 },
+		});
+		const { unmount } = render(
+			<ToggleGroup ref={ref} type="single" defaultValue="live">
+				<ToggleGroupItem value="live">Live</ToggleGroupItem>
+				<ToggleGroupItem value="mock">Mock</ToggleGroupItem>
+			</ToggleGroup>,
+		);
+		fireEvent.click(screen.getByText("Mock"));
+		await flushFrame();
+		expect(calls.filter((node) => node === null)).toEqual([]);
+		expect(calls.filter(Boolean)).toHaveLength(1);
+		expect(calls[0]).toBe(screen.getByRole("radiogroup"));
+		unmount();
+		expect(calls[calls.length - 1]).toBeNull();
+		expect(calls.filter(Boolean)).toHaveLength(1);
+		restore();
+	});
 });
