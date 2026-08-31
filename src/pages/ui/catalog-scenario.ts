@@ -34,9 +34,13 @@ function fail(slug: string, message: string): never {
 	throw new Error(`${slug} scenario loader: ${message}`);
 }
 
+export function normalizeModulePath(modulePath: string): string {
+	const unified = modulePath.replace(/\\/g, "/");
+	return unified.endsWith("?raw") ? unified.slice(0, -"?raw".length) : unified;
+}
+
 export function moduleFileKey(modulePath: string): string {
-	const withoutQuery = modulePath.split("?")[0] ?? modulePath;
-	const normalized = withoutQuery.replace(/\\/g, "/");
+	const normalized = normalizeModulePath(modulePath);
 	const file = normalized.slice(normalized.lastIndexOf("/") + 1);
 	if (!file.endsWith(".tsx")) {
 		fail("module", `illegal path ${modulePath}`);
@@ -92,6 +96,12 @@ export function loadModuleScenarios(input: LoadModuleScenariosInput): CatalogSce
 		}
 		if (!sourceEntry) {
 			fail(slug, `missing raw source for key "${meta.key}" at ${renderEntry.path}`);
+		}
+		if (normalizeModulePath(renderEntry.path) !== normalizeModulePath(sourceEntry.path)) {
+			fail(
+				slug,
+				`render/raw path mismatch for key "${meta.key}": render ${renderEntry.path} vs raw ${sourceEntry.path}`,
+			);
 		}
 	}
 

@@ -4,6 +4,7 @@ import {
 	catalogScenarioMatchesSlug,
 	loadModuleScenarios,
 	moduleFileKey,
+	normalizeModulePath,
 } from "./catalog-scenario";
 import { BUTTON_EXAMPLES } from "./examples/button";
 
@@ -107,6 +108,51 @@ describe("module scenario loader", () => {
 	it("extracts canonical keys from glob paths", () => {
 		expect(moduleFileKey("./examples/button/variants.tsx")).toBe("variants");
 		expect(moduleFileKey("./variants.tsx?raw")).toBe("variants");
+		expect(moduleFileKey(".\\examples\\button\\variants.tsx")).toBe("variants");
+	});
+
+	it("normalizes only the raw query and path separators", () => {
+		expect(normalizeModulePath("./variants.tsx?raw")).toBe("./variants.tsx");
+		expect(normalizeModulePath("./variants.tsx?foo")).toBe("./variants.tsx?foo");
+		expect(normalizeModulePath("./variants.tsx?raw&lang")).toBe("./variants.tsx?raw&lang");
+		expect(normalizeModulePath(".\\examples\\button\\variants.tsx")).toBe(
+			"./examples/button/variants.tsx",
+		);
+		expect(() => moduleFileKey("./variants.tsx?foo")).toThrow(
+			/illegal path \.\/variants\.tsx\?foo/,
+		);
+	});
+
+	it("pairs render and raw that differ only by ?raw or separators", () => {
+		const fromRawQuery = loadModuleScenarios({
+			...validInput(),
+			sourceModules: {
+				"./variants.tsx?raw": "export default function Sample() { return null }",
+			},
+		});
+		expect(fromRawQuery).toHaveLength(1);
+		expect(fromRawQuery[0].id).toBe("button-variants");
+		const fromSeparators = loadModuleScenarios({
+			...validInput(),
+			renderModules: { ".\\variants.tsx": { default: Sample } },
+		});
+		expect(fromSeparators).toHaveLength(1);
+		expect(fromSeparators[0].render).toBe(Sample);
+	});
+
+	it("rejects the same basename in different directories", () => {
+		expect(() =>
+			loadModuleScenarios({
+				slug: "button",
+				metas: [{ key: "variants", title: "Variants" }],
+				renderModules: { "./render/variants.tsx": { default: Sample } },
+				sourceModules: {
+					"./source/variants.tsx?raw": "export default function Sample() { return null }",
+				},
+			}),
+		).toThrow(
+			/render\/raw path mismatch for key "variants": render \.\/render\/variants\.tsx vs raw \.\/source\/variants\.tsx\?raw/,
+		);
 	});
 
 	it("rejects missing raw source", () => {
