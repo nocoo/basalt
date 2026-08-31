@@ -14,6 +14,12 @@ describe("Label", () => {
 		expect(screen.getByLabelText("Email")).toBeInTheDocument();
 	});
 
+	it("omits the optional marker by default", () => {
+		render(<Label>Default Label</Label>);
+		expect(screen.getByText("Default Label")).toBeInTheDocument();
+		expect(screen.queryByText("(optional)")).not.toBeInTheDocument();
+	});
+
 	it("shows an optional marker", () => {
 		render(<Label showOptional>Optional Field</Label>);
 		expect(screen.getByText("Optional Field")).toBeInTheDocument();

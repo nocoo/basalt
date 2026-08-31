@@ -28,6 +28,21 @@ export const CATALOG_API = {
 			required: false,
 		},
 	],
+	label: [
+		{
+			name: "showOptional",
+			type: "boolean",
+			required: false,
+			default: "false",
+			description: "Show gray (optional) after the label.",
+		},
+		{
+			name: "tooltip",
+			type: "React.ReactNode",
+			required: false,
+			description: "Info icon with hover text.",
+		},
+	],
 	"link-button": [
 		{
 			name: "variant",

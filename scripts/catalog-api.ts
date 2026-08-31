@@ -12,6 +12,7 @@ export interface CatalogApiProp {
 	name: string;
 	type: string;
 	required: boolean;
+	default?: string;
 	description?: string;
 }
 
@@ -30,6 +31,11 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		slug: "text",
 		sourceFile: "packages/basalt/src/components/text.tsx",
 		propsType: "TextProps",
+	},
+	{
+		slug: "label",
+		sourceFile: "packages/basalt/src/components/label.tsx",
+		propsType: "LabelProps",
 	},
 ];
 
@@ -716,6 +722,21 @@ function jsDocFor(symbol: ts.Symbol, checker: ts.TypeChecker): string | undefine
 	return text.length > 0 ? text : undefined;
 }
 
+function jsDocDefaultFor(symbol: ts.Symbol, checker: ts.TypeChecker): string | undefined {
+	const tags = symbol.getJsDocTags(checker).filter((tag) => tag.name === "default");
+	if (tags.length === 0) {
+		return undefined;
+	}
+	if (tags.length > 1) {
+		failCatalogApi(`duplicate @default for ${symbol.getName()}`);
+	}
+	const text = ts.displayPartsToString(tags[0]?.text ?? []).trim();
+	if (text.length === 0) {
+		failCatalogApi(`empty @default for ${symbol.getName()}`);
+	}
+	return text;
+}
+
 function resolveSourceFile(
 	program: ts.Program,
 	repoRoot: string,
@@ -832,12 +853,14 @@ function extractTargetProps(
 				: undefined;
 		const propType = checker.getTypeOfSymbolAtLocation(symbol, decl);
 		const description = jsDocFor(symbol, checker);
+		const defaultValue = jsDocDefaultFor(symbol, checker);
 		collected.push({
 			position,
 			prop: {
 				name,
 				type: printPropType(propType, checker, ownDecl ?? decl, typeNode),
 				required: (symbol.flags & ts.SymbolFlags.Optional) === 0,
+				...(defaultValue ? { default: defaultValue } : {}),
 				...(description ? { description } : {}),
 			},
 		});
@@ -888,6 +911,9 @@ function renderProp(prop: CatalogApiProp): string {
 		`\t\t\ttype: ${emitString(prop.type)},`,
 		`\t\t\trequired: ${prop.required ? "true" : "false"},`,
 	];
+	if (prop.default !== undefined) {
+		lines.push(`\t\t\tdefault: ${emitString(prop.default)},`);
+	}
 	if (prop.description !== undefined) {
 		lines.push(`\t\t\tdescription: ${emitString(prop.description)},`);
 	}

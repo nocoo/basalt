@@ -5,7 +5,12 @@ import { cn } from "../utils/cn";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 export type LabelProps = React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {
+	/**
+	 * Show gray (optional) after the label.
+	 * @default false
+	 */
 	showOptional?: boolean;
+	/** Info icon with hover text. */
 	tooltip?: React.ReactNode;
 };
 

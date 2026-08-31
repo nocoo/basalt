@@ -432,6 +432,65 @@ describe("ui catalog", () => {
 		expect(block).toContain("<Text tone='muted'>Copy</Text>");
 	});
 
+	it("sources label API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS.label?.props).toEqual(CATALOG_API.label);
+		expect(CATALOG_API.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
+		expect(CATALOG_API.label).toHaveLength(2);
+		renderCatalog("/ui/label");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(2);
+		for (const prop of CATALOG_API.label ?? []) {
+			expect(api).toHaveTextContent(prop.name);
+			expect(api).toHaveTextContent(prop.type);
+			expect(api).toHaveTextContent(`${prop.name}?`);
+			if (prop.description) {
+				expect(api).toHaveTextContent(prop.description);
+			}
+		}
+		expect(api).toHaveTextContent("false");
+		expect(api).not.toHaveTextContent("htmlFor");
+		expect(api).not.toHaveTextContent("children");
+		expect(api).not.toHaveTextContent("className");
+		expect(api).not.toHaveTextContent("asContent");
+		expect(document.body.textContent).toContain('<Label htmlFor="email">Email</Label>');
+		expect(screen.getByRole("heading", { name: "Default Label" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Optional Field" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "With Tooltip" })).toBeInTheDocument();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		for (const prop of CATALOG_API.label ?? []) {
+			expect(markdown).toContain(`- ${prop.name} (${prop.type}, optional`);
+			if (prop.description) {
+				expect(markdown).toContain(prop.description);
+			}
+		}
+		expect(markdown).toContain("default false");
+		expect(markdown).toContain('<Label htmlFor="email">Email</Label>');
+		expect(markdown).not.toContain("- htmlFor (");
+		expect(markdown).not.toContain("- children (");
+		expect(markdown).not.toContain("- asContent (");
+	});
+
+	it("does not keep a handwritten label prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf("\tlabel: {");
+		const end = docs.indexOf("\tseparator: {");
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain("props: CATALOG_API.label");
+		expect(block).not.toContain('name: "htmlFor"');
+		expect(block).not.toContain('name: "showOptional"');
+		expect(block).not.toContain('name: "tooltip"');
+		expect(block).not.toContain("ReactNode");
+		expect(block).toContain('<Label htmlFor="email">Email</Label>');
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
