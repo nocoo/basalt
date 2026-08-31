@@ -49,7 +49,6 @@ import { Empty } from "@nocoo/basalt/components/empty";
 import { Field } from "@nocoo/basalt/components/field";
 import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
 import { Grid, GridItem } from "@nocoo/basalt/components/grid";
-import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { Label } from "@nocoo/basalt/components/label";
 import { Link } from "@nocoo/basalt/components/link";
 import { Loader } from "@nocoo/basalt/components/loader";
@@ -88,17 +87,7 @@ import { Text } from "@nocoo/basalt/components/text";
 import { toast } from "@nocoo/basalt/components/toast";
 import { Toggle } from "@nocoo/basalt/components/toggle";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import {
-	AlertTriangle,
-	Check,
-	CircleAlert,
-	CircleCheck,
-	Inbox,
-	Info,
-	Plus,
-	Search,
-	X,
-} from "lucide-react";
+import { AlertTriangle, Check, CircleAlert, Inbox, Info, Plus, Search, X } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 
@@ -556,90 +545,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 					<Switch size="sm" aria-label="Small" defaultChecked />
 					<Switch aria-label="Default size" defaultChecked />
 				</Preview>
-			),
-		},
-	],
-	"input-group": [
-		{
-			id: catalogScenarioId("input-group", "inline-suffix"),
-			title: "Inline Suffix",
-			code: `<InputGroup>
-  <InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
-  <InputGroup.Suffix>.example.com</InputGroup.Suffix>
-  <InputGroup.Addon align="end"><CircleCheck /></InputGroup.Addon>
-</InputGroup>`,
-			render: () => (
-				<InputGroup className="max-w-sm">
-					<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
-					<InputGroup.Suffix>.example.com</InputGroup.Suffix>
-					<InputGroup.Addon align="end">
-						<CircleCheck className="text-basalt-heatmap-green-3" />
-					</InputGroup.Addon>
-				</InputGroup>
-			),
-		},
-		{
-			id: catalogScenarioId("input-group", "icon"),
-			title: "Icon",
-			code: `<InputGroup>
-  <InputGroup.Addon><Search /></InputGroup.Addon>
-  <InputGroup.Input aria-label="Search" placeholder="Search" />
-</InputGroup>`,
-			render: () => (
-				<InputGroup className="max-w-sm">
-					<InputGroup.Addon>
-						<Search />
-					</InputGroup.Addon>
-					<InputGroup.Input aria-label="Search" placeholder="Search" />
-				</InputGroup>
-			),
-		},
-		{
-			id: catalogScenarioId("input-group", "text"),
-			title: "Text",
-			code: `<InputGroup>
-  <InputGroup.Addon>https://</InputGroup.Addon>
-  <InputGroup.Input aria-label="Host" placeholder="example.com" />
-</InputGroup>`,
-			render: () => (
-				<InputGroup className="max-w-sm">
-					<InputGroup.Addon>https://</InputGroup.Addon>
-					<InputGroup.Input aria-label="Host" placeholder="example.com" />
-				</InputGroup>
-			),
-		},
-		{
-			id: catalogScenarioId("input-group", "button"),
-			title: "Button",
-			code: `<InputGroup>
-  <InputGroup.Input aria-label="Query" placeholder="Search" />
-  <InputGroup.Addon align="end">
-    <InputGroup.Button icon={<Search />} aria-label="Search" />
-  </InputGroup.Addon>
-</InputGroup>`,
-			render: () => (
-				<InputGroup className="max-w-sm">
-					<InputGroup.Input aria-label="Query" placeholder="Search" />
-					<InputGroup.Addon align="end">
-						<InputGroup.Button icon={<Search />} aria-label="Search" />
-					</InputGroup.Addon>
-				</InputGroup>
-			),
-		},
-		{
-			id: catalogScenarioId("input-group", "loading"),
-			title: "Loading",
-			code: `<InputGroup>
-  <InputGroup.Input defaultValue="atlas" aria-label="Loading query" />
-  <InputGroup.Addon align="end"><Loader size={16} /></InputGroup.Addon>
-</InputGroup>`,
-			render: () => (
-				<InputGroup className="max-w-sm">
-					<InputGroup.Input defaultValue="atlas" aria-label="Loading query" />
-					<InputGroup.Addon align="end">
-						<Loader size={16} />
-					</InputGroup.Addon>
-				</InputGroup>
 			),
 		},
 	],

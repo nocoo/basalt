@@ -1843,6 +1843,88 @@ describe("ui catalog", () => {
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 	});
 
+	it("keeps input-group hero, compound previews, and copy modules", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/input-group");
+		expect(screen.getByRole("heading", { name: "Inline Suffix" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Icon" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Text" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Button" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Loading" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="input-group-inline-suffix"]');
+		const suffix = document.querySelector('[data-scenario="input-group-inline-suffix"]');
+		const icon = document.querySelector('[data-scenario="input-group-icon"]');
+		const text = document.querySelector('[data-scenario="input-group-text"]');
+		const button = document.querySelector('[data-scenario="input-group-button"]');
+		const loading = document.querySelector('[data-scenario="input-group-loading"]');
+		expect(hero).toBeTruthy();
+		expect(suffix).toBeTruthy();
+		expect(icon).toBeTruthy();
+		expect(text).toBeTruthy();
+		expect(button).toBeTruthy();
+		expect(loading).toBeTruthy();
+		if (!hero || !suffix || !icon || !text || !button || !loading) {
+			throw new Error("missing input-group scenario surfaces");
+		}
+		for (const node of [hero, suffix, icon, text, button, loading]) {
+			expect(node.querySelector('[data-slot="input-group"]')).toHaveClass("max-w-sm");
+		}
+		expect(within(hero as HTMLElement).getByRole("textbox", { name: "Subdomain" })).toHaveValue(
+			"atlas",
+		);
+		expect(hero).toHaveTextContent(".example.com");
+		expect(hero.querySelector(".text-basalt-heatmap-green-3")).toBeTruthy();
+		expect(within(suffix as HTMLElement).getByRole("textbox", { name: "Subdomain" })).toHaveValue(
+			"atlas",
+		);
+		expect(suffix).toHaveTextContent(".example.com");
+		expect(suffix.querySelector(".text-basalt-heatmap-green-3")).toBeTruthy();
+		expect(within(icon as HTMLElement).getByRole("textbox", { name: "Search" })).toHaveAttribute(
+			"placeholder",
+			"Search",
+		);
+		expect(within(text as HTMLElement).getByRole("textbox", { name: "Host" })).toHaveAttribute(
+			"placeholder",
+			"example.com",
+		);
+		expect(text).toHaveTextContent("https://");
+		expect(within(button as HTMLElement).getByRole("textbox", { name: "Query" })).toHaveAttribute(
+			"placeholder",
+			"Search",
+		);
+		expect(
+			within(button as HTMLElement).getByRole("button", { name: "Search" }),
+		).toBeInTheDocument();
+		expect(
+			within(loading as HTMLElement).getByRole("textbox", { name: "Loading query" }),
+		).toHaveValue("atlas");
+		expect(within(loading as HTMLElement).getByRole("status", { name: "Loading" })).toHaveAttribute(
+			"width",
+			"16",
+		);
+		for (const scenario of UI_EXAMPLES["input-group"] ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/input-group");
+			expect(scenario.code).toContain('className="max-w-sm"');
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(UI_EXAMPLES["input-group"]).toHaveLength(5);
+		for (const scenario of UI_EXAMPLES["input-group"] ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).toContain('className="text-basalt-heatmap-green-3"');
+		expect(markdown).toContain("<Loader size={16} />");
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+	});
+
 	it("does not keep inline input-area scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
@@ -1855,6 +1937,23 @@ describe("ui catalog", () => {
 		expect(demos).not.toContain('from "@nocoo/basalt/components/input-area"');
 		expect(kumo).not.toContain('from "@nocoo/basalt/components/input-area"');
 		expect(kumo).toContain('from "@nocoo/basalt/components/field"');
+	});
+
+	it("does not keep inline input-group scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("INPUT_GROUP_EXAMPLES");
+		expect(demos).toMatch(/"input-group": INPUT_GROUP_EXAMPLES/);
+		expect(demos).not.toMatch(/"input-group":\s*\[/);
+		expect(kumo).not.toMatch(/"input-group":\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("input-group"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("input-group"/);
+		expect(demos).not.toContain('from "@nocoo/basalt/components/input-group"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/input-group"');
+		expect(demos).not.toContain("CircleCheck");
+		expect(kumo).not.toContain("CircleCheck");
+		expect(kumo).toContain('from "@nocoo/basalt/components/loader"');
+		expect(kumo).toContain("Search");
 	});
 
 	it("does not keep inline input scenario owners", () => {
@@ -1871,7 +1970,6 @@ describe("ui catalog", () => {
 		expect(kumo).toContain('from "@nocoo/basalt/components/field"');
 		expect(kumo).not.toMatch(/function Stack\b/);
 		expect(kumo).not.toMatch(/<Stack[\s>]/);
-		expect(demos).toContain("InputGroup.Input");
 	});
 
 	it("does not keep inline field scenario owners", () => {

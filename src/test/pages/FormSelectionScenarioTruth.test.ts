@@ -4,6 +4,7 @@ import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { FIELD_EXAMPLES } from "@/pages/ui/examples/field";
 import { INPUT_EXAMPLES } from "@/pages/ui/examples/input";
 import { INPUT_AREA_EXAMPLES } from "@/pages/ui/examples/input-area";
+import { INPUT_GROUP_EXAMPLES } from "@/pages/ui/examples/input-group";
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
@@ -73,6 +74,7 @@ describe("form selection scenario truth", () => {
 			"input-area-error-state-string",
 			"input-area-disabled",
 		]);
+		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
 		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([
 			"input-group-inline-suffix",
 			"input-group-icon",
@@ -192,9 +194,36 @@ describe("form selection scenario truth", () => {
 		expect(scenario("sensitive-input", "sensitive-input-default").code).toContain("aria-label=");
 		expect(scenario("sensitive-input", "sensitive-input-disabled").code).toContain("aria-label=");
 		for (const example of UI_EXAMPLES["input-group"] ?? []) {
+			expect(example.code, example.id).toContain("export default");
+			expect(example.code, example.id).toContain("@nocoo/basalt/components/input-group");
+			expect(example.code, example.id).toContain("import { InputGroup }");
+			expect(example.code, example.id).toContain('className="max-w-sm"');
 			expect(example.code, example.id).toContain("aria-label=");
+			expect(example.code, example.id).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 		}
-		expect(scenario("input-group", "input-group-loading").code).toContain("Loader size={16}");
+		const inlineSuffix = scenario("input-group", "input-group-inline-suffix");
+		expect(inlineSuffix.code).toContain("import { CircleCheck }");
+		expect(inlineSuffix.code).toContain('defaultValue="atlas"');
+		expect(inlineSuffix.code).toContain('aria-label="Subdomain"');
+		expect(inlineSuffix.code).toContain("<InputGroup.Suffix>.example.com</InputGroup.Suffix>");
+		expect(inlineSuffix.code).toContain('className="text-basalt-heatmap-green-3"');
+		expect(scenario("input-group", "input-group-icon").code).toContain('aria-label="Search"');
+		expect(scenario("input-group", "input-group-icon").code).toContain('placeholder="Search"');
+		expect(scenario("input-group", "input-group-icon").code).toContain("<Search />");
+		expect(scenario("input-group", "input-group-text").code).toContain("https://");
+		expect(scenario("input-group", "input-group-text").code).toContain('aria-label="Host"');
+		expect(scenario("input-group", "input-group-text").code).toContain('placeholder="example.com"');
+		expect(scenario("input-group", "input-group-button").code).toContain('aria-label="Query"');
+		expect(scenario("input-group", "input-group-button").code).toContain(
+			'<InputGroup.Button icon={<Search />} aria-label="Search" />',
+		);
+		expect(scenario("input-group", "input-group-loading").code).toContain(
+			"@nocoo/basalt/components/loader",
+		);
+		expect(scenario("input-group", "input-group-loading").code).toContain("<Loader size={16} />");
+		expect(scenario("input-group", "input-group-loading").code).toContain(
+			'aria-label="Loading query"',
+		);
 	});
 
 	it("shows radio labels instead of ellipsis shells", () => {

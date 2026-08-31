@@ -12,6 +12,7 @@ import { BUTTON_EXAMPLES } from "./examples/button";
 import { FIELD_EXAMPLES } from "./examples/field";
 import { INPUT_EXAMPLES } from "./examples/input";
 import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
+import { INPUT_GROUP_EXAMPLES } from "./examples/input-group";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
@@ -195,6 +196,22 @@ const INPUT_AREA_TITLES = [
 
 const inputAreaRenders = import.meta.glob("./examples/input-area/*.tsx", { eager: true });
 const inputAreaSources = import.meta.glob("./examples/input-area/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const INPUT_GROUP_IDS = [
+	"input-group-inline-suffix",
+	"input-group-icon",
+	"input-group-text",
+	"input-group-button",
+	"input-group-loading",
+] as const;
+const INPUT_GROUP_TITLES = ["Inline Suffix", "Icon", "Text", "Button", "Loading"] as const;
+
+const inputGroupRenders = import.meta.glob("./examples/input-group/*.tsx", { eager: true });
+const inputGroupSources = import.meta.glob("./examples/input-group/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -1065,6 +1082,113 @@ describe("source-backed input-area scenarios", () => {
 		expect(INPUT_AREA_EXAMPLES[3]?.code).toContain("disabled");
 		expect(INPUT_AREA_EXAMPLES[3]?.code).toContain('aria-label="Disabled notes"');
 		expect(INPUT_AREA_EXAMPLES[3]?.code).toContain('value="Unavailable"');
+	});
+});
+
+describe("source-backed input-group scenarios", () => {
+	it("loads five input-group scenarios from the same glob modules", () => {
+		expect(Object.keys(inputGroupRenders)).toHaveLength(5);
+		expect(Object.keys(inputGroupSources)).toHaveLength(5);
+		const loaded = loadModuleScenarios({
+			slug: "input-group",
+			metas: INPUT_GROUP_TITLES.map((title, index) => ({
+				key: INPUT_GROUP_IDS[index].slice("input-group-".length),
+				title,
+			})),
+			renderModules: inputGroupRenders,
+			sourceModules: inputGroupSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...INPUT_GROUP_TITLES]);
+		expect(INPUT_GROUP_EXAMPLES.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
+		expect(INPUT_GROUP_EXAMPLES.map((item) => item.title)).toEqual([...INPUT_GROUP_TITLES]);
+		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
+		expect(UI_EXAMPLES["theme-toggle"]).toBe(THEME_TOGGLE_EXAMPLES);
+		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
+		expect(UI_EXAMPLES["basalt-mark"]).toBe(BASALT_MARK_EXAMPLES);
+		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
+		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
+		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		expect(UI_EXAMPLES["theme-toggle"]?.map((item) => item.id)).toEqual([...THEME_TOGGLE_IDS]);
+		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
+		expect(UI_EXAMPLES["basalt-mark"]?.map((item) => item.id)).toEqual([...BASALT_MARK_IDS]);
+		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
+		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
+		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		const fileKeys = new Set(
+			Object.keys(inputGroupRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(INPUT_GROUP_IDS.map((id) => id.slice("input-group-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("input-group-".length);
+			const modulePath = Object.keys(inputGroupSources).find((path) =>
+				path.endsWith(`/${key}.tsx`),
+			);
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = inputGroupSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(
+				INPUT_GROUP_EXAMPLES.find((item) => item.id === scenario.id)?.code,
+			);
+			expect(scenario.render).toBe((inputGroupRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				INPUT_GROUP_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/input-group");
+			expect(scenario.code).toContain("import { InputGroup }");
+			expect(scenario.code).toContain('className="max-w-sm"');
+		}
+		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('from "lucide-react"');
+		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain("import { CircleCheck }");
+		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('defaultValue="atlas"');
+		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('aria-label="Subdomain"');
+		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain(
+			"<InputGroup.Suffix>.example.com</InputGroup.Suffix>",
+		);
+		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('align="end"');
+		expect(INPUT_GROUP_EXAMPLES[0]?.code).toContain('className="text-basalt-heatmap-green-3"');
+		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain('from "lucide-react"');
+		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain("import { Search }");
+		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain("<Search />");
+		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain('aria-label="Search"');
+		expect(INPUT_GROUP_EXAMPLES[1]?.code).toContain('placeholder="Search"');
+		expect(INPUT_GROUP_EXAMPLES[2]?.code).toContain(
+			"<InputGroup.Addon>https://</InputGroup.Addon>",
+		);
+		expect(INPUT_GROUP_EXAMPLES[2]?.code).toContain('aria-label="Host"');
+		expect(INPUT_GROUP_EXAMPLES[2]?.code).toContain('placeholder="example.com"');
+		expect(INPUT_GROUP_EXAMPLES[3]?.code).toContain('from "lucide-react"');
+		expect(INPUT_GROUP_EXAMPLES[3]?.code).toContain("import { Search }");
+		expect(INPUT_GROUP_EXAMPLES[3]?.code).toContain('aria-label="Query"');
+		expect(INPUT_GROUP_EXAMPLES[3]?.code).toContain('placeholder="Search"');
+		expect(INPUT_GROUP_EXAMPLES[3]?.code).toContain(
+			'<InputGroup.Button icon={<Search />} aria-label="Search" />',
+		);
+		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain("@nocoo/basalt/components/loader");
+		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain("import { Loader }");
+		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain('defaultValue="atlas"');
+		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain('aria-label="Loading query"');
+		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain("<Loader size={16} />");
 	});
 });
 

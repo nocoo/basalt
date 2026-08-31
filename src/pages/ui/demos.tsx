@@ -1,6 +1,5 @@
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
-import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { Link } from "@nocoo/basalt/components/link";
 import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
 import { SensitiveInput } from "@nocoo/basalt/components/sensitive-input";
@@ -8,7 +7,7 @@ import { Switch } from "@nocoo/basalt/components/switch";
 import { Text } from "@nocoo/basalt/components/text";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
-import { AlertTriangle, CircleAlert, CircleCheck, Info, X } from "lucide-react";
+import { AlertTriangle, CircleAlert, Info, X } from "lucide-react";
 import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
@@ -16,6 +15,7 @@ import { BUTTON_EXAMPLES } from "./examples/button";
 import { FIELD_EXAMPLES } from "./examples/field";
 import { INPUT_EXAMPLES } from "./examples/input";
 import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
+import { INPUT_GROUP_EXAMPLES } from "./examples/input-group";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
@@ -64,25 +64,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 		},
 	],
 	"input-area": INPUT_AREA_EXAMPLES,
-	"input-group": [
-		{
-			id: catalogScenarioId("input-group", "default"),
-			title: "Default",
-			code: `<InputGroup>
-  <InputGroup.Input defaultValue="atlas" />
-  <InputGroup.Suffix>.example.com</InputGroup.Suffix>
-</InputGroup>`,
-			render: () => (
-				<InputGroup>
-					<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
-					<InputGroup.Suffix>.example.com</InputGroup.Suffix>
-					<InputGroup.Addon align="end">
-						<CircleCheck className="text-basalt-heatmap-green-3" />
-					</InputGroup.Addon>
-				</InputGroup>
-			),
-		},
-	],
+	"input-group": INPUT_GROUP_EXAMPLES,
 	"sensitive-input": [
 		{
 			id: catalogScenarioId("sensitive-input", "default"),
