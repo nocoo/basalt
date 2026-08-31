@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A4 D032 — LinkButton API type source；待 Grok 实现
-> 当前代码前置：`84322c3`（D031 验收台账已提交）
+> 当前切片：S2A 下一原子切片；待审计定义
+> 当前代码前置：`629a8ab`（D032 代码已独立验收）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031 完成） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032 完成） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -500,6 +500,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D029C | S2V | `ba2a0c6` | `w14:p1` | 完成 | `507b273fddd9` + `da54f6e90871` | 单选 ToggleGroup 使用真实移动底板，multiple 保留 item-local 多选，Tabs 共用 `utils/` 私有 observer/测量 helper，LanguageToggle 自然继承；R1 修复内部 state render 造成 callback ref `node → null → node` 的伪 detach/attach，并补真实 Tabs 几何切换门。Codex 独立验收 focused 5 files / 28 tests、typecheck、Biome 404 files、全量 115 / 835、coverage `1460/1503`（97.13%）/`1132/1186`（95.44%）/`444/463`（95.89%）/`1383/1421`（97.32%）、package 92 JS + 92 d.ts + 89 maps、types、279-file pack、连续两次 package build 幂等及 showcase build。Chromium 151 首帧 indicator width 43px 且连续两帧 transition 0s；Live→Mock、EN→中文、Home→About 均真实改变 x/width 并在 200ms ease-out 后对齐 item，reduced-motion 切换前后均 0s；light/dark surface 与 selected contrast 正常。helper 的两个 package import 均被拒绝，7003 保持运行，工作树干净 |
 | D030 | S2A2 | `fbb0637` + `74a906d` + `24cf497` + `5251071` + `2d29d43` + `971f3fc` + `a6ef2c9` | `w14:p1` | 完成 | `ae26450caaec` + `6c8fd7fe04fc` + `2b804e7d1e56` + `0634c5c05ce4` + `6e8226e33adc` + `b0da0516a68e` + `12ac523f11c5` | 首提交建立 Button API 类型真源；R1–R6 依次关闭 export、alias/泛型打印、value-type、synthetic provenance、Array、React namespace、boolean 与伪默认库文件名绕过，最终以 `program.isSourceFileDefaultLibrary()` 使用 compiler library identity。Codex 独立以仓外 fixtures 验证 external generic mapped/Record、mapped union/intersection 与普通 `lib.eswidgets.d.ts` 均拒绝本地同名冒充，direct built-in `Record` fail-closed，local generic mapped 完整生成，`R.JSX.Element`/重命名 `J.Element` 均规范为 `React.JSX.Element`；focused 54 tests、连续两次 generate check、frozen install 308 installs、typecheck、Biome、全量 116 files / 892 tests、coverage statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）、showcase build 2784 modules、package 92 JS + 92 d.ts + 89 maps、Bundler/NodeNext types 与 279-file pack 全绿。generated SHA-256 为 `791ae59300604d7afaad13cf06765770bf0db9308d128dca575ca3125c25c693`；既有 1,556.36 kB chunk warning 留给 S2B/S9，构建后工作树干净。 |
 | D031 | S2A3 | `a20c691` + `471f7b5` | `w14:p1` | 完成 | `60aa67e8ac7b` | 两个 LinkButton 场景各自成为独立、自包含的 source-backed module，最终数组与 `LINK_BUTTON_EXAMPLES` 引用相同；删除 BASE 死 entry、KUMO 生效 inline owner 及无用 imports，Disabled Link 的 preview/code 同时携带 inert 与 `opacity-50` 契约，Button 十场景和所有冻结范围未改。Codex 独立验收 focused 3 files / 196 tests、catalog check、typecheck、Biome 412 files、全量与 coverage 116 files / 895 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2789 modules 通过，既有 1,556.70 kB warning 保留。OpenCLI/Chromium 实测 `/ui/link-button` 的 hero、两个 `#docs` 链接及 disabled 无 href/不导航契约均成立；禁用语境与旧 owner 扫描为空，7003 保持运行，工作树干净。 |
-| D032 | S2A4 | `84322c3` | `w14:p1` | 执行中 | — | 只把 LinkButton 文档 API 接入既有 fail-closed type generator，保持 Button 五项、组件类型、scenarios 与后续阶段冻结。 |
+| D032 | S2A4 | `84322c3` + `2a52afd` | `w14:p1` | 完成 | `629a8ab` | 在既有 fail-closed generator 中声明 `link-button / LinkButtonProps` 第二 target，生成源码顺序的 `variant`、`size`、`icon` 三项专属 API；Button 五项字节不变，Button-only 与原生 anchor props 均未泄漏，scenarios、组件实现和冻结范围未改。Codex 独立验收 6 个授权文件、focused 3 files / 234 tests、连续两次 generate/check、typecheck、Biome、全量及 coverage 116 files / 898 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2789 modules、package 92 JS + 92 d.ts + 89 maps、Bundler/NodeNext types 与 279-file pack 全绿，既有 1,556.76 kB chunk warning 保留。generated SHA-256 为 `20620051323df8e3fc7a4991009647c35b74eb36af8a5901488743147cad34a2`。OpenCLI/Chromium 实测 `/ui/link-button` API 表只有三项且顺序/类型正确；页面内拦截真实 Copy page 写入得到 1,345 字符 Markdown，三项 API、两个 source-backed example 与 Disabled Link 的 inert/`opacity-50` 契约完整。7003 保持运行，构建后工作树干净。 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
