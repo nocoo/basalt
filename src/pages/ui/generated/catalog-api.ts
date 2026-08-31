@@ -82,6 +82,14 @@ export const CATALOG_API = {
 			description: "The type of input control to render.",
 		},
 	],
+	"input-area": [
+		{
+			name: "rows",
+			type: "number",
+			required: false,
+			description: "The visible text row count.",
+		},
+	],
 	label: [
 		{
 			name: "showOptional",

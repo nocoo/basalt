@@ -195,7 +195,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<InputArea aria-label="Notes" placeholder="Write a note" />',
 		),
 		variants: [],
-		props: [{ name: "rows", type: "number" }],
+		props: CATALOG_API["input-area"],
 		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",

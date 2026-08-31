@@ -147,6 +147,11 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/input.tsx",
 				propsType: "InputProps",
 			},
+			{
+				slug: "input-area",
+				sourceFile: "packages/basalt/src/components/input-area.tsx",
+				propsType: "InputAreaProps",
+			},
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames|props:\s*\[/);
@@ -171,6 +176,7 @@ describe("catalog API generator contract", () => {
 			"basalt-mark",
 			"field",
 			"input",
+			"input-area",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -652,6 +658,61 @@ describe("catalog API generator contract", () => {
 			"className",
 			"children",
 		]);
+	}, 20_000);
+
+	it("extracts InputArea props from InputAreaProps as a single optional rows", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated["input-area"]?.map((prop) => prop.name)).toEqual(["rows"]);
+		expect(generated["input-area"]).toEqual([
+			{
+				name: "rows",
+				type: "number",
+				required: false,
+				description: "The visible text row count.",
+			},
+		]);
+		expect(generated["input-area"]?.[0]).not.toHaveProperty("default");
+		expect(generated["input-area"]?.some((prop) => prop.name === "className")).toBe(false);
+		expect(generated["input-area"]?.some((prop) => prop.name === "id")).toBe(false);
+		expect(generated["input-area"]?.some((prop) => prop.name === "name")).toBe(false);
+		expect(generated["input-area"]?.some((prop) => prop.name === "value")).toBe(false);
+		expect(generated["input-area"]?.some((prop) => prop.name === "defaultValue")).toBe(false);
+		expect(generated["input-area"]?.some((prop) => prop.name === "placeholder")).toBe(false);
+		expect(generated["input-area"]?.some((prop) => prop.name === "disabled")).toBe(false);
+		expect(generated["input-area"]?.some((prop) => prop.name === "required")).toBe(false);
+		expect(generated["input-area"]?.some((prop) => prop.name === "aria-label")).toBe(false);
+		expect(generated["input-area"]?.some((prop) => prop.name === "onChange")).toBe(false);
+		expect(generated["input-area"]?.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated["input-area"]?.some((prop) => prop.name === "ref")).toBe(false);
+		expect(generated.button?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"asChild",
+			"loading",
+			"icon",
+		]);
+		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
+		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
+		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(generated.field?.map((prop) => prop.name)).toEqual([
+			"label",
+			"htmlFor",
+			"hint",
+			"error",
+			"className",
+			"children",
+		]);
+		expect(generated.input?.map((prop) => prop.name)).toEqual(["type"]);
 	}, 20_000);
 
 	it("emits a locally quoted property name", () => {
@@ -1549,8 +1610,9 @@ export interface WidgetProps {
 		expect(first).toContain('\t"basalt-mark": [');
 		expect(first).toContain("\tfield: [");
 		expect(first).toContain("\tinput: [");
+		expect(first).toContain('\t"input-area": [');
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"75b042af768acd58ce8bf0258c347f58dbbe21ca601c54d340eccfbcec0a1e35",
+			"e32b4a0cd186b4ca95c8f0f1231bd2a73fea6c98ba4d1257102cab4cecf255a4",
 		);
 	}, 20_000);
 });

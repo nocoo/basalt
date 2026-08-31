@@ -176,6 +176,11 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("input"))).toBe("packages/basalt/src/components/input.tsx");
 		expect(CATALOG_DOCS.input?.props).toEqual(CATALOG_API.input);
 		expect(CATALOG_API.input?.map((prop) => prop.name)).toEqual(["type"]);
+		expect(implementationFileFor(entry("input-area"))).toBe(
+			"packages/basalt/src/components/input-area.tsx",
+		);
+		expect(CATALOG_DOCS["input-area"]?.props).toEqual(CATALOG_API["input-area"]);
+		expect(CATALOG_API["input-area"]?.map((prop) => prop.name)).toEqual(["rows"]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);

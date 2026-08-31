@@ -3,7 +3,14 @@ import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
 import { FOCUS_BORDER } from "./overlay";
 
-export const InputArea = React.forwardRef<HTMLTextAreaElement, React.ComponentProps<"textarea">>(
+export type InputAreaProps = Omit<React.ComponentProps<"textarea">, "rows"> & {
+	/**
+	 * The visible text row count.
+	 */
+	rows?: number;
+};
+
+export const InputArea = React.forwardRef<HTMLTextAreaElement, InputAreaProps>(
 	({ className, ...props }, ref) => (
 		<textarea
 			ref={ref}

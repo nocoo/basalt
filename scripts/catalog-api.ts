@@ -77,6 +77,11 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/input.tsx",
 		propsType: "InputProps",
 	},
+	{
+		slug: "input-area",
+		sourceFile: "packages/basalt/src/components/input-area.tsx",
+		propsType: "InputAreaProps",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";
