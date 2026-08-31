@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A32 D060 — Checkbox source-backed scenarios；规格已固化，待 Grok 实现
-> 当前代码前置：`2dfde8c`（D059 台账已提交，工作树干净）
+> 当前切片：S2A33 D061 — Checkbox API 类型真源；待调查与规格固化
+> 当前代码前置：`b1b03ab`（D060 Grok 实现已独立验收，待台账提交）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059 完成；S2A32 D060 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060 完成；S2A33 D061 待规格） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -743,5 +743,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D058 | S2A30 | `0dc2bc8` + `c3dcd9d` | `w14:p1` | 完成 | `990221a` | SensitiveInput 的 Default/Disabled 两个生效场景迁为独立、自包含的同路径 render/raw modules，最终 `UI_EXAMPLES["sensitive-input"] === SENSITIVE_INPUT_EXAMPLES`；删除 BASE 单项死 owner、KUMO 生效 inline owner与两处无用直接 import。ID/title/order、hero、可访问名称、生产 runtime 与手写 API 均未漂移，Default 完整代码补回原死 owner 漏掉的 `aria-label="Password"`；未加入 Kumo 的 size、controlled、Field、copy、focus 或其它 S5 能力。Grok 提交恰好 8 个授权文件、+233/−33；Codex 独立逐行审查，focused 3 files / 260 tests、catalog check、typecheck、Biome 459 files、全量与 coverage 116 files / 1015 tests 全绿，coverage 保持 `97.13 / 95.44 / 95.89 / 97.32`。Showcase 2870 modules、1,566.33 kB 既有 warning。Chromium 实测 hero password→text→password、Show→Hide→Show，Default example 独立保持 hidden，Disabled input/button 均不可操作；真实 Copy page 为 1,294 字符并含两个完整 raw modules，无 Cloudflare/Kumo/Worker 或凭据语境，console 0。无需 review-fix，7003 保持运行，构建后仅本台账待提交。 |
 
 | D059 | S2A31 | `3d4bd5f` + `cd4c1ce` | `w14:p1` | 完成 | `51eb71e` | `SensitiveInputProps` 继续从原生 input props 排除 `type`，仅为 required `revealLabel` / `hideLabel` 补精确 JSDoc；forwardRef、destructuring、ref/spread、password/text 往返与 disabled runtime 逐字不变。第十九个 generator target、第十五个 slug 生成唯一 `SensitiveInput` surface 和两项 required string，无 default、无 inherited API、无名字特判；docs 删除手写 inventory 并消费同一 generated 数据，SHA-256 为 `f225fb9f3e7521ccde7c1b32af8e43e5275c7d1399540c9f2cc68ac4218d5678`。Grok 提交恰好 8 个授权文件、+341/−14；Codex 独立逐行审查，generate + 连续两次 check、focused 4 files / 319 tests、typecheck、Biome 459 files、全量与 coverage 116 files / 1022 tests 全绿，coverage 保持 `97.13 / 95.44 / 95.89 / 97.32`。Showcase 2870 modules、1,566.50 kB 既有 warning；package build、Bundler/NodeNext types 与 279-file pack 全绿。Chromium 实测唯一 API H3、两行 required props、hero password→text→password、Disabled 双控件不可操作；真实 Copy page 为 1,390 字符并逐字含两个 raw modules，无禁用业务语境，console/page errors 均为 0。无需 review-fix，7003 保持运行，构建后仅本台账待提交。 |
+| D060 | S2A32 | `2dfde8c` + `43d3eff` | `w14:p1` | 完成 | `b1b03ab` | Checkbox 的 Default、Checked、Indeterminate、Disabled、Error 五个生效场景成为独立、自包含的 source-backed modules，最终 `UI_EXAMPLES.checkbox === CHECKBOX_EXAMPLES`；删除 BASE 死 owner、KUMO 生效 inline owner和两处无用直接 Checkbox import。规格曾误判 `kumo-examples.tsx` 的 Field 仍被其它场景消费；实施前以全文件引用核对纠正为 Field 只服务旧 Checkbox Error owner，因此同时删除该无用 import，Preview 因其它场景仍使用而保留，11 文件授权边界不变。五项 ID/title/order、hero、checked/mixed/disabled 与 Field error ARIA 均未漂移，Disabled 的真实 `flex flex-wrap items-center gap-3` wrapper 首次进入可复制源码；未提前引入 Kumo 的 Group/Item/Legend、rich label、variant 或其它 S4 能力。Grok 提交恰好 11 个授权文件、+334/−66；Codex 独立逐行审查，focused 3 files / 265 tests、catalog check、typecheck、Biome 465 files、串行全量与 coverage 116 files / 1025 tests 全绿，coverage 保持 `97.13 / 95.44 / 95.89 / 97.32`。Showcase 2881 modules、1,567.32 kB 既有 warning。真实 Chromium 实测 hero unchecked→checked→unchecked、Checked 初始选中、Indeterminate 为 mixed、Disabled 两项不可操作且状态不变、Error id/invalid/described-by/alert 关系正确；Copy page 为 1,921 字符并逐字含五个 raw modules，无 Cloudflare/Kumo/Worker 或 page error。控制台仅有站点既有 `/favicon.ico` 404 资源噪声，无应用 console error；无需 review-fix，7003 保持运行，工作树仅本台账待提交。 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
