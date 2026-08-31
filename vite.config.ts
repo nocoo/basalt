@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react-swc";
 import { defineConfig, type PluginOption } from "vite";
 
 function getVersion(): string {
-	const pkg = JSON.parse(readFileSync(path.resolve(__dirname, "package.json"), "utf-8"));
+	const pkg = JSON.parse(readFileSync(path.resolve(import.meta.dirname, "package.json"), "utf-8"));
 	return pkg.version as string;
 }
 
@@ -40,21 +40,21 @@ export default defineConfig(() => ({
 		alias: [
 			{
 				find: "@nocoo/basalt/components",
-				replacement: path.resolve(__dirname, "./packages/basalt/src/components"),
+				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/components"),
 			},
 			{
 				find: "@nocoo/basalt/providers",
-				replacement: path.resolve(__dirname, "./packages/basalt/src/providers"),
+				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/providers"),
 			},
 			{
 				find: "@nocoo/basalt/charts",
-				replacement: path.resolve(__dirname, "./packages/basalt/src/charts"),
+				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/charts"),
 			},
 			{
 				find: "@nocoo/basalt",
-				replacement: path.resolve(__dirname, "./packages/basalt/src/index.ts"),
+				replacement: path.resolve(import.meta.dirname, "./packages/basalt/src/index.ts"),
 			},
-			{ find: "@", replacement: path.resolve(__dirname, "./src") },
+			{ find: "@", replacement: path.resolve(import.meta.dirname, "./src") },
 		],
 		dedupe: ["react", "react-dom", "react/jsx-runtime", "@radix-ui/react-tooltip"],
 	},
