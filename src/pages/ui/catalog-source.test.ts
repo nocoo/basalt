@@ -143,6 +143,11 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("link"))).toBe("packages/basalt/src/components/link.tsx");
 		expect(CATALOG_DOCS.link?.props).toEqual(CATALOG_API.link);
 		expect(CATALOG_API.link?.map((prop) => prop.name)).toEqual(["href"]);
+		expect(implementationFileFor(entry("tooltip"))).toBe(
+			"packages/basalt/src/components/tooltip.tsx",
+		);
+		expect(CATALOG_DOCS.tooltip?.props).toEqual(CATALOG_API.tooltip);
+		expect(CATALOG_API.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);

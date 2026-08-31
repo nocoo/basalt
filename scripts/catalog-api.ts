@@ -47,6 +47,11 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/link.tsx",
 		propsType: "LinkProps",
 	},
+	{
+		slug: "tooltip",
+		sourceFile: "packages/basalt/src/components/tooltip.tsx",
+		propsType: "TooltipProps",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

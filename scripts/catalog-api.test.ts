@@ -117,6 +117,11 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/link.tsx",
 				propsType: "LinkProps",
 			},
+			{
+				slug: "tooltip",
+				sourceFile: "packages/basalt/src/components/tooltip.tsx",
+				propsType: "TooltipProps",
+			},
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames|props:\s*\[/);
@@ -135,6 +140,7 @@ describe("catalog API generator contract", () => {
 			"label",
 			"separator",
 			"link",
+			"tooltip",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -330,6 +336,46 @@ describe("catalog API generator contract", () => {
 		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
+	}, 20_000);
+
+	it("extracts Tooltip props from TooltipProps as a single optional delayDuration", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(generated.tooltip).toEqual([
+			{
+				name: "delayDuration",
+				type: "number",
+				required: false,
+				default: "700",
+				description: "Delay before the tooltip opens, in milliseconds.",
+			},
+		]);
+		expect(generated.tooltip?.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated.tooltip?.some((prop) => prop.name === "open")).toBe(false);
+		expect(generated.tooltip?.some((prop) => prop.name === "defaultOpen")).toBe(false);
+		expect(generated.tooltip?.some((prop) => prop.name === "onOpenChange")).toBe(false);
+		expect(generated.tooltip?.some((prop) => prop.name === "disableHoverableContent")).toBe(false);
+		expect(generated.tooltip?.some((prop) => prop.name === "skipDelayDuration")).toBe(false);
+		expect(generated.tooltip?.some((prop) => prop.name === "side")).toBe(false);
+		expect(generated.tooltip?.some((prop) => prop.name === "align")).toBe(false);
+		expect(generated.tooltip?.some((prop) => prop.name === "sideOffset")).toBe(false);
+		expect(generated.tooltip?.some((prop) => prop.name === "className")).toBe(false);
+		expect(generated.button?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"asChild",
+			"loading",
+			"icon",
+		]);
+		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
+		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
+		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 	}, 20_000);
 
 	it("filters DOM, event, ARIA, and className inheritance", () => {
@@ -1164,8 +1210,9 @@ export interface WidgetProps {
 		expect(first).toContain("\tlabel: [");
 		expect(first).toContain("\tseparator: [");
 		expect(first).toContain("\tlink: [");
+		expect(first).toContain("\ttooltip: [");
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"74a9ecc40d12dfb97e8323ce4a626a32eebdc14f51e543355606cc8bf6f27dd6",
+			"11a9b2bd23bc56864fa8f46451404e4c07818684f59811bb49d73ccbde1edf33",
 		);
 	}, 20_000);
 });

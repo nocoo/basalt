@@ -96,4 +96,13 @@ export const CATALOG_API = {
 			required: false,
 		},
 	],
+	tooltip: [
+		{
+			name: "delayDuration",
+			type: "number",
+			required: false,
+			default: "700",
+			description: "Delay before the tooltip opens, in milliseconds.",
+		},
+	],
 };

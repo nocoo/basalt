@@ -107,14 +107,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'import { Button } from "@nocoo/basalt/components/button";',
 		),
 		variants: [],
-		props: [
-			{
-				name: "delayDuration",
-				type: "number",
-				default: "700",
-				description: "Delay before the tooltip opens, in milliseconds.",
-			},
-		],
+		props: CATALOG_API.tooltip,
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
