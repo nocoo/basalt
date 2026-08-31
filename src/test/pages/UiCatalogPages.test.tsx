@@ -2122,6 +2122,72 @@ describe("ui catalog", () => {
 		expect(kumo).toContain("Search");
 	});
 
+	it("keeps sensitive-input hero, reveal toggle, disabled controls, and copy modules", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/sensitive-input");
+		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="sensitive-input-default"]');
+		const labeled = document.querySelector('[data-scenario="sensitive-input-default"]');
+		const disabled = document.querySelector('[data-scenario="sensitive-input-disabled"]');
+		expect(hero).toBeTruthy();
+		expect(labeled).toBeTruthy();
+		expect(disabled).toBeTruthy();
+		if (!hero || !labeled || !disabled) {
+			throw new Error("missing sensitive-input scenario surfaces");
+		}
+		const heroInput = within(hero as HTMLElement).getByLabelText("Password");
+		expect(heroInput).toHaveAttribute("type", "password");
+		expect(heroInput).toBeEnabled();
+		fireEvent.click(within(hero as HTMLElement).getByRole("button", { name: "Show" }));
+		expect(heroInput).toHaveAttribute("type", "text");
+		fireEvent.click(within(hero as HTMLElement).getByRole("button", { name: "Hide" }));
+		expect(heroInput).toHaveAttribute("type", "password");
+		expect(within(hero as HTMLElement).getByRole("button", { name: "Show" })).toBeEnabled();
+		expect(within(labeled as HTMLElement).getByLabelText("Password")).toHaveAttribute(
+			"type",
+			"password",
+		);
+		const disabledInput = within(disabled as HTMLElement).getByLabelText("Disabled password");
+		const disabledToggle = within(disabled as HTMLElement).getByRole("button", { name: "Show" });
+		expect(disabledInput).toHaveAttribute("type", "password");
+		expect(disabledInput).toBeDisabled();
+		expect(disabledToggle).toBeDisabled();
+		fireEvent.click(disabledToggle);
+		expect(disabledInput).toHaveAttribute("type", "password");
+		for (const scenario of UI_EXAMPLES["sensitive-input"] ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/sensitive-input");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|API key|secret|token/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(UI_EXAMPLES["sensitive-input"]).toHaveLength(2);
+		for (const scenario of UI_EXAMPLES["sensitive-input"] ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|API key|secret|token/i);
+	});
+
+	it("does not keep inline sensitive-input scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("SENSITIVE_INPUT_EXAMPLES");
+		expect(demos).toMatch(/"sensitive-input": SENSITIVE_INPUT_EXAMPLES/);
+		expect(demos).not.toMatch(/"sensitive-input":\s*\[/);
+		expect(kumo).not.toMatch(/"sensitive-input":\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("sensitive-input"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("sensitive-input"/);
+		expect(demos).not.toContain('from "@nocoo/basalt/components/sensitive-input"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/sensitive-input"');
+	});
+
 	it("does not keep inline input scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");

@@ -69,7 +69,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@nocoo/basalt/components/select";
-import { SensitiveInput } from "@nocoo/basalt/components/sensitive-input";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Slider } from "@nocoo/basalt/components/slider";
 import { Switch } from "@nocoo/basalt/components/switch";
@@ -591,27 +590,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 					<SkeletonLine className="h-6" minWidth={90} maxWidth={100} />
 					<SkeletonLine className="h-8" minWidth={90} maxWidth={100} />
 				</div>
-			),
-		},
-	],
-	"sensitive-input": [
-		{
-			id: catalogScenarioId("sensitive-input", "default"),
-			title: "Default",
-			code: '<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />',
-			render: () => <SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />,
-		},
-		{
-			id: catalogScenarioId("sensitive-input", "disabled"),
-			title: "Disabled",
-			code: '<SensitiveInput aria-label="Disabled password" disabled revealLabel="Show" hideLabel="Hide" />',
-			render: () => (
-				<SensitiveInput
-					aria-label="Disabled password"
-					disabled
-					revealLabel="Show"
-					hideLabel="Hide"
-				/>
 			),
 		},
 	],

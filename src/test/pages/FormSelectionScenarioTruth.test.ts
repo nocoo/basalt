@@ -1,3 +1,5 @@
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
@@ -5,6 +7,7 @@ import { FIELD_EXAMPLES } from "@/pages/ui/examples/field";
 import { INPUT_EXAMPLES } from "@/pages/ui/examples/input";
 import { INPUT_AREA_EXAMPLES } from "@/pages/ui/examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "@/pages/ui/examples/input-group";
+import { SENSITIVE_INPUT_EXAMPLES } from "@/pages/ui/examples/sensitive-input";
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
@@ -87,6 +90,7 @@ describe("form selection scenario truth", () => {
 			"radio-horizontal",
 			"radio-disabled",
 		]);
+		expect(UI_EXAMPLES["sensitive-input"]).toBe(SENSITIVE_INPUT_EXAMPLES);
 		expect(UI_EXAMPLES["sensitive-input"]?.map((item) => item.id)).toEqual([
 			"sensitive-input-default",
 			"sensitive-input-disabled",
@@ -191,8 +195,39 @@ describe("form selection scenario truth", () => {
 		);
 		expect(scenario("input-area", "input-area-disabled").code).toContain("disabled");
 		expect(scenario("input-area", "input-area-disabled").code).toContain('value="Unavailable"');
-		expect(scenario("sensitive-input", "sensitive-input-default").code).toContain("aria-label=");
-		expect(scenario("sensitive-input", "sensitive-input-disabled").code).toContain("aria-label=");
+		const sensitiveDefault = scenario("sensitive-input", "sensitive-input-default");
+		expect(sensitiveDefault.code).toContain("export default");
+		expect(sensitiveDefault.code).toContain("@nocoo/basalt/components/sensitive-input");
+		expect(sensitiveDefault.code).toContain("import { SensitiveInput }");
+		expect(sensitiveDefault.code).toContain('aria-label="Password"');
+		expect(sensitiveDefault.code).toContain('revealLabel="Show"');
+		expect(sensitiveDefault.code).toContain('hideLabel="Hide"');
+		expect(sensitiveDefault.code).not.toContain("disabled");
+		expect(sensitiveDefault.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|API key|secret|token/i);
+		render(createElement(sensitiveDefault.render));
+		const password = screen.getByLabelText("Password");
+		expect(password).toHaveAttribute("type", "password");
+		expect(password).toBeEnabled();
+		fireEvent.click(screen.getByRole("button", { name: "Show" }));
+		expect(password).toHaveAttribute("type", "text");
+		fireEvent.click(screen.getByRole("button", { name: "Hide" }));
+		expect(password).toHaveAttribute("type", "password");
+		expect(screen.getByRole("button", { name: "Show" })).toBeEnabled();
+		cleanup();
+		const sensitiveDisabled = scenario("sensitive-input", "sensitive-input-disabled");
+		expect(sensitiveDisabled.code).toContain('aria-label="Disabled password"');
+		expect(sensitiveDisabled.code).toContain("disabled");
+		expect(sensitiveDisabled.code).toContain('revealLabel="Show"');
+		expect(sensitiveDisabled.code).toContain('hideLabel="Hide"');
+		expect(sensitiveDisabled.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|API key|secret|token/i);
+		render(createElement(sensitiveDisabled.render));
+		const disabledInput = screen.getByLabelText("Disabled password");
+		expect(disabledInput).toHaveAttribute("type", "password");
+		expect(disabledInput).toBeDisabled();
+		const disabledToggle = screen.getByRole("button", { name: "Show" });
+		expect(disabledToggle).toBeDisabled();
+		fireEvent.click(disabledToggle);
+		expect(disabledInput).toHaveAttribute("type", "password");
 		for (const example of UI_EXAMPLES["input-group"] ?? []) {
 			expect(example.code, example.id).toContain("export default");
 			expect(example.code, example.id).toContain("@nocoo/basalt/components/input-group");

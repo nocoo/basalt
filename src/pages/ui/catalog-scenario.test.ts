@@ -17,6 +17,7 @@ import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
+import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
 import { THEME_TOGGLE_EXAMPLES } from "./examples/theme-toggle";
@@ -212,6 +213,16 @@ const INPUT_GROUP_TITLES = ["Inline Suffix", "Icon", "Text", "Button", "Loading"
 
 const inputGroupRenders = import.meta.glob("./examples/input-group/*.tsx", { eager: true });
 const inputGroupSources = import.meta.glob("./examples/input-group/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const SENSITIVE_INPUT_IDS = ["sensitive-input-default", "sensitive-input-disabled"] as const;
+const SENSITIVE_INPUT_TITLES = ["Default", "Disabled"] as const;
+
+const sensitiveInputRenders = import.meta.glob("./examples/sensitive-input/*.tsx", { eager: true });
+const sensitiveInputSources = import.meta.glob("./examples/sensitive-input/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -1189,6 +1200,94 @@ describe("source-backed input-group scenarios", () => {
 		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain('defaultValue="atlas"');
 		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain('aria-label="Loading query"');
 		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain("<Loader size={16} />");
+	});
+});
+
+describe("source-backed sensitive-input scenarios", () => {
+	it("loads two sensitive-input scenarios from the same glob modules", () => {
+		expect(Object.keys(sensitiveInputRenders)).toHaveLength(2);
+		expect(Object.keys(sensitiveInputSources)).toHaveLength(2);
+		const loaded = loadModuleScenarios({
+			slug: "sensitive-input",
+			metas: SENSITIVE_INPUT_TITLES.map((title, index) => ({
+				key: SENSITIVE_INPUT_IDS[index].slice("sensitive-input-".length),
+				title,
+			})),
+			renderModules: sensitiveInputRenders,
+			sourceModules: sensitiveInputSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...SENSITIVE_INPUT_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...SENSITIVE_INPUT_TITLES]);
+		expect(SENSITIVE_INPUT_EXAMPLES.map((item) => item.id)).toEqual([...SENSITIVE_INPUT_IDS]);
+		expect(SENSITIVE_INPUT_EXAMPLES.map((item) => item.title)).toEqual([...SENSITIVE_INPUT_TITLES]);
+		expect(UI_EXAMPLES["sensitive-input"]).toBe(SENSITIVE_INPUT_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
+		expect(UI_EXAMPLES["theme-toggle"]).toBe(THEME_TOGGLE_EXAMPLES);
+		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
+		expect(UI_EXAMPLES["basalt-mark"]).toBe(BASALT_MARK_EXAMPLES);
+		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
+		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
+		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		expect(UI_EXAMPLES["theme-toggle"]?.map((item) => item.id)).toEqual([...THEME_TOGGLE_IDS]);
+		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
+		expect(UI_EXAMPLES["basalt-mark"]?.map((item) => item.id)).toEqual([...BASALT_MARK_IDS]);
+		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
+		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
+		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
+		const fileKeys = new Set(
+			Object.keys(sensitiveInputRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(
+			new Set(SENSITIVE_INPUT_IDS.map((id) => id.slice("sensitive-input-".length))),
+		);
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("sensitive-input-".length);
+			const modulePath = Object.keys(sensitiveInputSources).find((path) =>
+				path.endsWith(`/${key}.tsx`),
+			);
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = sensitiveInputSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(
+				SENSITIVE_INPUT_EXAMPLES.find((item) => item.id === scenario.id)?.code,
+			);
+			expect(scenario.render).toBe(
+				(sensitiveInputRenders[modulePath] as { default: unknown }).default,
+			);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				SENSITIVE_INPUT_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).not.toMatch(/API key|secret|token/i);
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/sensitive-input");
+			expect(scenario.code).toContain("import { SensitiveInput }");
+			expect(scenario.code).toContain('revealLabel="Show"');
+			expect(scenario.code).toContain('hideLabel="Hide"');
+		}
+		expect(SENSITIVE_INPUT_EXAMPLES[0]?.code).toContain('aria-label="Password"');
+		expect(SENSITIVE_INPUT_EXAMPLES[0]?.code).not.toContain("disabled");
+		expect(SENSITIVE_INPUT_EXAMPLES[1]?.code).toContain('aria-label="Disabled password"');
+		expect(SENSITIVE_INPUT_EXAMPLES[1]?.code).toContain("disabled");
 	});
 });
 

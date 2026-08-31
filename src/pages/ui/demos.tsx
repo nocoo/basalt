@@ -2,7 +2,6 @@ import { Banner } from "@nocoo/basalt/components/banner";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { Link } from "@nocoo/basalt/components/link";
 import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
-import { SensitiveInput } from "@nocoo/basalt/components/sensitive-input";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Text } from "@nocoo/basalt/components/text";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
@@ -20,6 +19,7 @@ import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
+import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
 import { THEME_TOGGLE_EXAMPLES } from "./examples/theme-toggle";
@@ -65,14 +65,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	],
 	"input-area": INPUT_AREA_EXAMPLES,
 	"input-group": INPUT_GROUP_EXAMPLES,
-	"sensitive-input": [
-		{
-			id: catalogScenarioId("sensitive-input", "default"),
-			title: "Default",
-			code: '<SensitiveInput revealLabel="Show" hideLabel="Hide" />',
-			render: () => <SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />,
-		},
-	],
+	"sensitive-input": SENSITIVE_INPUT_EXAMPLES,
 	checkbox: [
 		{
 			id: catalogScenarioId("checkbox", "unchecked"),
