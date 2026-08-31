@@ -4,7 +4,6 @@ import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
-import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Link } from "@nocoo/basalt/components/link";
 import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
 import { SensitiveInput } from "@nocoo/basalt/components/sensitive-input";
@@ -17,6 +16,7 @@ import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { LABEL_EXAMPLES } from "./examples/label";
+import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
@@ -34,6 +34,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	link: LINK_EXAMPLES,
 	tooltip: TOOLTIP_EXAMPLES,
 	"theme-toggle": THEME_TOGGLE_EXAMPLES,
+	"layer-card": LAYER_CARD_EXAMPLES,
 	"link-provider": [
 		{
 			id: catalogScenarioId("link-provider", "default"),
@@ -56,25 +57,6 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 					<Text>Provider is active.</Text>
 				</ThemeProvider>
 			),
-		},
-	],
-	"layer-card": [
-		{
-			id: catalogScenarioId("layer-card", "basic-card"),
-			title: "Basic Card",
-			code: "<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
-			render: () => (
-				<LayerCard className="w-[250px]">
-					<LayerCard.Secondary>Next Steps</LayerCard.Secondary>
-					<LayerCard.Primary>Hello</LayerCard.Primary>
-				</LayerCard>
-			),
-		},
-		{
-			id: catalogScenarioId("layer-card", "surface-style-card"),
-			title: "Surface-style Card",
-			code: "<LayerCard className='p-4'>Quick start guide</LayerCard>",
-			render: () => <LayerCard className="w-[250px] p-4">Quick start guide</LayerCard>,
 		},
 	],
 	input: [

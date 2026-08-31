@@ -1225,6 +1225,74 @@ describe("ui catalog", () => {
 		expect(markdown).toContain("@nocoo/basalt/providers/theme");
 	});
 
+	it("keeps layer-card hero, width, padding, and wrapper contracts", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/layer-card");
+		expect(screen.getByRole("heading", { name: "Basic Card" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Surface-style Card" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Multiple Cards" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="layer-card-basic-card"]');
+		expect(hero).toBeTruthy();
+		if (!hero) {
+			throw new Error("missing layer-card hero");
+		}
+		const heroCard = hero.querySelector(".w-\\[250px\\]");
+		expect(heroCard).toBeTruthy();
+		expect(hero).toHaveTextContent("Next Steps");
+		expect(hero).toHaveTextContent("Hello");
+		const surface = document.querySelector('[data-scenario="layer-card-surface-style-card"]');
+		expect(surface).toBeTruthy();
+		expect(surface?.querySelector(".w-\\[250px\\].p-4")).toBeTruthy();
+		expect(surface).toHaveTextContent("Quick start guide");
+		const multiple = document.querySelector('[data-scenario="layer-card-multiple-cards"]');
+		expect(multiple).toBeTruthy();
+		if (!multiple) {
+			throw new Error("missing multiple cards scenario");
+		}
+		expect(multiple.querySelector(".flex.w-full.gap-4")).toBeTruthy();
+		expect(multiple.querySelectorAll(".w-\\[200px\\]")).toHaveLength(2);
+		expect(multiple).toHaveTextContent("Components");
+		expect(multiple).toHaveTextContent("Browse all components");
+		expect(multiple).toHaveTextContent("Examples");
+		expect(multiple).toHaveTextContent("View code examples");
+		for (const scenario of UI_EXAMPLES["layer-card"] ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/layer-card");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		expect(UI_EXAMPLES["layer-card"]?.[0]?.code).toContain('className="w-[250px]"');
+		expect(UI_EXAMPLES["layer-card"]?.[1]?.code).toContain('className="w-[250px] p-4"');
+		expect(UI_EXAMPLES["layer-card"]?.[2]?.code).toContain('className="flex w-full gap-4"');
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		for (const scenario of UI_EXAMPLES["layer-card"] ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+	});
+
+	it("does not keep inline layer-card scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("LAYER_CARD_EXAMPLES");
+		expect(demos).toMatch(/"layer-card": LAYER_CARD_EXAMPLES/);
+		expect(demos).not.toMatch(/"layer-card":\s*\[/);
+		expect(kumo).not.toMatch(/"layer-card":\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("layer-card"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("layer-card"/);
+		expect(demos).not.toMatch(/code:\s*['"`]<LayerCard/);
+		expect(kumo).not.toMatch(/code:\s*['"`]<LayerCard/);
+		expect(demos).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<LayerCard/);
+		expect(kumo).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<LayerCard/);
+		expect(demos).not.toContain("LayerCard.Secondary");
+		expect(kumo).not.toContain("LayerCard.Secondary");
+	});
+
 	it("does not keep inline theme-toggle scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		expect(demos).toContain("THEME_TOGGLE_EXAMPLES");

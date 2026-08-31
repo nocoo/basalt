@@ -53,7 +53,6 @@ import { Input } from "@nocoo/basalt/components/input";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { Label } from "@nocoo/basalt/components/label";
-import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Link } from "@nocoo/basalt/components/link";
 import { Loader } from "@nocoo/basalt/components/loader";
 import { Meter } from "@nocoo/basalt/components/meter";
@@ -727,49 +726,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 						<Loader size={16} />
 					</InputGroup.Addon>
 				</InputGroup>
-			),
-		},
-	],
-	"layer-card": [
-		{
-			id: catalogScenarioId("layer-card", "basic-card"),
-			title: "Basic Card",
-			code: "<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
-			render: () => (
-				<LayerCard className="w-[250px]">
-					<LayerCard.Secondary>Next Steps</LayerCard.Secondary>
-					<LayerCard.Primary>Hello</LayerCard.Primary>
-				</LayerCard>
-			),
-		},
-		{
-			id: catalogScenarioId("layer-card", "surface-style-card"),
-			title: "Surface-style Card",
-			code: "<LayerCard className='p-4'>Quick start guide</LayerCard>",
-			render: () => <LayerCard className="w-[250px] p-4">Quick start guide</LayerCard>,
-		},
-		{
-			id: catalogScenarioId("layer-card", "multiple-cards"),
-			title: "Multiple Cards",
-			code: `<LayerCard className="w-[200px]">
-  <LayerCard.Secondary>Components</LayerCard.Secondary>
-  <LayerCard.Primary>Browse all components</LayerCard.Primary>
-</LayerCard>
-<LayerCard className="w-[200px]">
-  <LayerCard.Secondary>Examples</LayerCard.Secondary>
-  <LayerCard.Primary>View code examples</LayerCard.Primary>
-</LayerCard>`,
-			render: () => (
-				<div className="flex w-full gap-4">
-					<LayerCard className="w-[200px]">
-						<LayerCard.Secondary>Components</LayerCard.Secondary>
-						<LayerCard.Primary>Browse all components</LayerCard.Primary>
-					</LayerCard>
-					<LayerCard className="w-[200px]">
-						<LayerCard.Secondary>Examples</LayerCard.Secondary>
-						<LayerCard.Primary>View code examples</LayerCard.Primary>
-					</LayerCard>
-				</div>
 			),
 		},
 	],

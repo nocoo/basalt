@@ -9,6 +9,7 @@ import {
 import { UI_EXAMPLES } from "./demos";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { LABEL_EXAMPLES } from "./examples/label";
+import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
@@ -114,6 +115,20 @@ const THEME_TOGGLE_TITLES = ["Default"] as const;
 
 const themeToggleRenders = import.meta.glob("./examples/theme-toggle/*.tsx", { eager: true });
 const themeToggleSources = import.meta.glob("./examples/theme-toggle/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const LAYER_CARD_IDS = [
+	"layer-card-basic-card",
+	"layer-card-surface-style-card",
+	"layer-card-multiple-cards",
+] as const;
+const LAYER_CARD_TITLES = ["Basic Card", "Surface-style Card", "Multiple Cards"] as const;
+
+const layerCardRenders = import.meta.glob("./examples/layer-card/*.tsx", { eager: true });
+const layerCardSources = import.meta.glob("./examples/layer-card/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -578,6 +593,80 @@ describe("source-backed theme-toggle scenarios", () => {
 		expect(THEME_TOGGLE_EXAMPLES[0]?.code).toContain("@nocoo/basalt/components/theme-toggle");
 		expect(THEME_TOGGLE_EXAMPLES[0]?.code).toContain("@nocoo/basalt/providers/theme");
 		expect(THEME_TOGGLE_EXAMPLES[0]?.code).not.toBe('<ThemeToggle aria-label="Toggle theme" />');
+	});
+});
+
+describe("source-backed layer-card scenarios", () => {
+	it("loads three layer-card scenarios from the same glob modules", () => {
+		expect(Object.keys(layerCardRenders)).toHaveLength(3);
+		expect(Object.keys(layerCardSources)).toHaveLength(3);
+		const loaded = loadModuleScenarios({
+			slug: "layer-card",
+			metas: LAYER_CARD_TITLES.map((title, index) => ({
+				key: LAYER_CARD_IDS[index].slice("layer-card-".length),
+				title,
+			})),
+			renderModules: layerCardRenders,
+			sourceModules: layerCardSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...LAYER_CARD_TITLES]);
+		expect(LAYER_CARD_EXAMPLES.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
+		expect(LAYER_CARD_EXAMPLES.map((item) => item.title)).toEqual([...LAYER_CARD_TITLES]);
+		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
+		expect(UI_EXAMPLES["theme-toggle"]).toBe(THEME_TOGGLE_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		expect(UI_EXAMPLES["theme-toggle"]?.map((item) => item.id)).toEqual([...THEME_TOGGLE_IDS]);
+		const fileKeys = new Set(
+			Object.keys(layerCardRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(LAYER_CARD_IDS.map((id) => id.slice("layer-card-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("layer-card-".length);
+			const modulePath = Object.keys(layerCardSources).find((path) => path.endsWith(`/${key}.tsx`));
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = layerCardSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(LAYER_CARD_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((layerCardRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				LAYER_CARD_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/layer-card");
+			expect(scenario.code).toContain("import { LayerCard }");
+		}
+		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain('className="w-[250px]"');
+		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain("Next Steps");
+		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain("Hello");
+		expect(LAYER_CARD_EXAMPLES[0]?.code).not.toBe(
+			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
+		);
+		expect(LAYER_CARD_EXAMPLES[1]?.code).toContain('className="w-[250px] p-4"');
+		expect(LAYER_CARD_EXAMPLES[1]?.code).toContain("Quick start guide");
+		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain('className="flex w-full gap-4"');
+		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain('className="w-[200px]"');
+		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain("Browse all components");
+		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain("View code examples");
+		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain('<div className="flex w-full gap-4">');
 	});
 });
 

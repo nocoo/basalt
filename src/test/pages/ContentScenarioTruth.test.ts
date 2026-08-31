@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
+import { LAYER_CARD_EXAMPLES } from "@/pages/ui/examples/layer-card";
 import { TEXT_EXAMPLES } from "@/pages/ui/examples/text";
 
 function scenario(slug: string, id: string) {
@@ -55,6 +56,28 @@ describe("content scenario truth", () => {
 			"command-palette-simple-flat-list",
 		]);
 		expect(UI_EXAMPLES.sidebar?.map((item) => item.id)).toEqual(["sidebar-default"]);
+		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
+		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([
+			"layer-card-basic-card",
+			"layer-card-surface-style-card",
+			"layer-card-multiple-cards",
+		]);
+	});
+
+	it("keeps layer-card copyable code aligned with preview wrappers", () => {
+		const basic = scenario("layer-card", "layer-card-basic-card");
+		expect(basic.code).toContain('className="w-[250px]"');
+		expect(basic.code).toContain("Next Steps");
+		expect(basic.code).toContain("Hello");
+		expect(basic.code).toContain("export default");
+		const surface = scenario("layer-card", "layer-card-surface-style-card");
+		expect(surface.code).toContain('className="w-[250px] p-4"');
+		expect(surface.code).toContain("Quick start guide");
+		const multiple = scenario("layer-card", "layer-card-multiple-cards");
+		expect(multiple.code).toContain('className="flex w-full gap-4"');
+		expect(multiple.code).toContain('className="w-[200px]"');
+		expect(multiple.code).toContain("Browse all components");
+		expect(multiple.code).toContain("View code examples");
 	});
 
 	it("describes text-sizes as sizes instead of semantic html", () => {
