@@ -140,6 +140,9 @@ describe("catalog source contract", () => {
 		);
 		expect(CATALOG_DOCS.separator?.props).toEqual(CATALOG_API.separator);
 		expect(CATALOG_API.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
+		expect(implementationFileFor(entry("link"))).toBe("packages/basalt/src/components/link.tsx");
+		expect(CATALOG_DOCS.link?.props).toEqual(CATALOG_API.link);
+		expect(CATALOG_API.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);

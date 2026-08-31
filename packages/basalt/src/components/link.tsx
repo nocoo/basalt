@@ -1,17 +1,16 @@
-import type { ReactNode } from "react";
+import type * as React from "react";
 import { useLinkComponent } from "../providers/link";
 import { cn } from "../utils/cn";
 
-export function Link({
-	className,
-	href,
-	children,
-	...props
-}: {
-	href: string;
-	className?: string;
-	children?: ReactNode;
-} & Record<string, unknown>) {
+export type LinkProps = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, "href"> &
+	Record<string, unknown> & {
+		/**
+		 * The link destination.
+		 */
+		href: string;
+	};
+
+export function Link({ className, href, children, ...props }: LinkProps) {
 	const Comp = useLinkComponent();
 	return (
 		<Comp

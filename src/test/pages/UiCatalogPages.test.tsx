@@ -549,6 +549,64 @@ describe("ui catalog", () => {
 		expect(block).toContain("<Separator orientation='horizontal' />");
 	});
 
+	it("sources link API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS.link?.props).toEqual(CATALOG_API.link);
+		expect(CATALOG_API.link?.map((prop) => prop.name)).toEqual(["href"]);
+		expect(CATALOG_API.link).toEqual([
+			{
+				name: "href",
+				type: "string",
+				required: true,
+				description: "The link destination.",
+			},
+		]);
+		renderCatalog("/ui/link");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api).toHaveTextContent("href");
+		expect(api).not.toHaveTextContent("href?");
+		expect(api).toHaveTextContent("string");
+		expect(api).toHaveTextContent("The link destination.");
+		expect(api).toHaveTextContent("—");
+		expect(api).not.toHaveTextContent("className");
+		expect(api).not.toHaveTextContent("children");
+		expect(api).not.toHaveTextContent("target");
+		expect(api).not.toHaveTextContent("rel");
+		expect(api).not.toHaveTextContent("download");
+		expect(document.body.textContent).toContain(
+			'<LinkProvider><Link href="/ui">Library</Link></LinkProvider>',
+		);
+		expect(screen.getByRole("heading", { name: "Basic Link" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Inline in Paragraph" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "External Links" })).toBeInTheDocument();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("- href (string, required, default —): The link destination.");
+		expect(markdown).toContain('<LinkProvider><Link href="/ui">Library</Link></LinkProvider>');
+		expect(markdown).not.toContain("- className (");
+		expect(markdown).not.toContain("- children (");
+		expect(markdown).not.toContain("- target (");
+		expect(markdown).not.toContain("- rel (");
+		expect(markdown).not.toContain("- download (");
+	});
+
+	it("does not keep a handwritten link prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf("\tlink: {");
+		const end = docs.indexOf("\ttooltip: {");
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain("props: CATALOG_API.link");
+		expect(block).not.toContain('name: "href"');
+		expect(block).toContain('<LinkProvider><Link href="/ui">Library</Link></LinkProvider>');
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });

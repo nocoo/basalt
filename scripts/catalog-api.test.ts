@@ -112,6 +112,11 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/separator.tsx",
 				propsType: "SeparatorProps",
 			},
+			{
+				slug: "link",
+				sourceFile: "packages/basalt/src/components/link.tsx",
+				propsType: "LinkProps",
+			},
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames|props:\s*\[/);
@@ -123,7 +128,14 @@ describe("catalog API generator contract", () => {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toEqual(["button", "link-button", "text", "label", "separator"]);
+		expect(Object.keys(generated)).toEqual([
+			"button",
+			"link-button",
+			"text",
+			"label",
+			"separator",
+			"link",
+		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",
@@ -281,6 +293,43 @@ describe("catalog API generator contract", () => {
 		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
 		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
+	}, 20_000);
+
+	it("extracts Link props from LinkProps as a single required href", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
+		expect(generated.link).toEqual([
+			{
+				name: "href",
+				type: "string",
+				required: true,
+				description: "The link destination.",
+			},
+		]);
+		expect(generated.link?.[0]).not.toHaveProperty("default");
+		expect(generated.link?.some((prop) => prop.name === "className")).toBe(false);
+		expect(generated.link?.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated.link?.some((prop) => prop.name === "target")).toBe(false);
+		expect(generated.link?.some((prop) => prop.name === "rel")).toBe(false);
+		expect(generated.link?.some((prop) => prop.name === "download")).toBe(false);
+		expect(generated.link?.some((prop) => prop.name === "style")).toBe(false);
+		expect(generated.link?.some((prop) => prop.name === "onClick")).toBe(false);
+		expect(generated.link?.some((prop) => prop.name === "aria-label")).toBe(false);
+		expect(generated.button?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"asChild",
+			"loading",
+			"icon",
+		]);
+		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
+		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 	}, 20_000);
 
 	it("filters DOM, event, ARIA, and className inheritance", () => {
@@ -1114,8 +1163,9 @@ export interface WidgetProps {
 		expect(first).toContain("\ttext: [");
 		expect(first).toContain("\tlabel: [");
 		expect(first).toContain("\tseparator: [");
+		expect(first).toContain("\tlink: [");
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"57ad14c202cb02e731f21b060a83b80a54524f0a32f771731c2e5e44273d9cab",
+			"74a9ecc40d12dfb97e8323ce4a626a32eebdc14f51e543355606cc8bf6f27dd6",
 		);
 	}, 20_000);
 });

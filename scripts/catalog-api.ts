@@ -42,6 +42,11 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/separator.tsx",
 		propsType: "SeparatorProps",
 	},
+	{
+		slug: "link",
+		sourceFile: "packages/basalt/src/components/link.tsx",
+		propsType: "LinkProps",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

@@ -91,7 +91,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'import { LinkProvider } from "@nocoo/basalt/providers/link";',
 		),
 		variants: [],
-		props: [{ name: "href", type: "string" }],
+		props: CATALOG_API.link,
 		provenance: provenanceFromLegacy({
 			repo: "kumo",
 			sha: "1159868dfe32",

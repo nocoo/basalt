@@ -43,6 +43,14 @@ export const CATALOG_API = {
 			description: "Info icon with hover text.",
 		},
 	],
+	link: [
+		{
+			name: "href",
+			type: "string",
+			required: true,
+			description: "The link destination.",
+		},
+	],
 	"link-button": [
 		{
 			name: "variant",
