@@ -710,6 +710,21 @@ export interface WidgetProps extends Dom {
 		]);
 	});
 
+	it("strips top-level undefined from required and optional Maybe aliases", () => {
+		const root = fixture({
+			"widget.ts": `type Maybe = string | undefined;
+export interface WidgetProps {
+	required: Maybe;
+	optional?: Maybe;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "required", type: "string", required: true },
+			{ name: "optional", type: "string", required: false },
+		]);
+	});
+
 	it("copies available JSDoc onto generated props", () => {
 		const root = fixture({
 			"widget.ts": `export interface WidgetProps {

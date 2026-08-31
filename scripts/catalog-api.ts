@@ -647,6 +647,24 @@ function arrayElementType(type: ts.Type, checker: ts.TypeChecker): ts.Type | und
 	return namedTypeArguments(type, checker)?.[0];
 }
 
+function containsTopLevelUndefined(type: ts.Type): boolean {
+	if (type.flags & ts.TypeFlags.Undefined) {
+		return true;
+	}
+	if (type.isUnion()) {
+		return type.types.some((part) => (part.flags & ts.TypeFlags.Undefined) !== 0);
+	}
+	return false;
+}
+
+function writtenAliasHidesTopLevelUndefined(referenced: ts.Type, checker: ts.TypeChecker): boolean {
+	if (!containsTopLevelUndefined(referenced)) {
+		return false;
+	}
+	const alias = namedTypeSymbol(referenced);
+	return !alias || !isReactAlias(alias, checker);
+}
+
 function printType(
 	type: ts.Type,
 	checker: ts.TypeChecker,
@@ -701,11 +719,14 @@ function printType(
 		});
 		return visible.map((part) => part.text).join(" | ");
 	}
+	let referencedType: ts.Type | undefined;
 	if (node && (ts.isTypeReferenceNode(node) || ts.isExpressionWithTypeArguments(node))) {
-		const referenced = checker.getTypeFromTypeNode(node);
-		const alias = printAlias(referenced, checker, enclosing, node);
-		if (alias) {
-			return alias;
+		referencedType = checker.getTypeFromTypeNode(node);
+		if (!containsTopLevelUndefined(referencedType)) {
+			const alias = printAlias(referencedType, checker, enclosing, node);
+			if (alias) {
+				return alias;
+			}
 		}
 	}
 	if (node && ts.isArrayTypeNode(node)) {
@@ -716,7 +737,14 @@ function printType(
 		return `${printType(element, checker, enclosing, false)}[]`;
 	}
 	const alias = printAlias(type, checker, enclosing, typeNode);
-	if (alias) {
+	if (
+		alias &&
+		!(
+			stripTopLevelUndefined &&
+			referencedType !== undefined &&
+			writtenAliasHidesTopLevelUndefined(referencedType, checker)
+		)
+	) {
 		return alias;
 	}
 	const parts = type.isUnion() ? type.types : [type];
