@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
@@ -91,6 +92,11 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/button.tsx",
 				propsType: "ButtonProps",
 			},
+			{
+				slug: "link-button",
+				sourceFile: "packages/basalt/src/components/button.tsx",
+				propsType: "LinkButtonProps",
+			},
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames|props:\s*\[/);
@@ -102,7 +108,7 @@ describe("catalog API generator contract", () => {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toEqual(["button"]);
+		expect(Object.keys(generated)).toEqual(["button", "link-button"]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",
@@ -137,6 +143,36 @@ describe("catalog API generator contract", () => {
 				required: false,
 			},
 		]);
+	}, 20_000);
+
+	it("extracts LinkButton props from the same file without Button-only or DOM fields", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
+		expect(generated["link-button"]).toEqual([
+			{
+				name: "variant",
+				type: '"default" | "destructive" | "ghost" | "link" | "outline" | "secondary" | null',
+				required: false,
+			},
+			{
+				name: "size",
+				type: '"default" | "icon" | "lg" | "sm" | null',
+				required: false,
+			},
+			{
+				name: "icon",
+				type: "React.ReactNode",
+				required: false,
+			},
+		]);
+		expect(generated["link-button"]?.some((prop) => prop.name === "asChild")).toBe(false);
+		expect(generated["link-button"]?.some((prop) => prop.name === "loading")).toBe(false);
+		expect(generated["link-button"]?.some((prop) => prop.name === "href")).toBe(false);
+		expect(generated["link-button"]?.some((prop) => prop.name === "className")).toBe(false);
 	}, 20_000);
 
 	it("filters DOM, event, ARIA, and className inheritance", () => {
@@ -892,5 +928,10 @@ export interface WidgetProps {
 		expect(first).toBe(second);
 		expect(first).toContain('"variant"');
 		expect(first).toContain("| null");
+		expect(first).toContain('\t"link-button": [');
+		expect(first).toContain("\tbutton: [");
+		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
+			"20620051323df8e3fc7a4991009647c35b74eb36af8a5901488743147cad34a2",
+		);
 	}, 20_000);
 });

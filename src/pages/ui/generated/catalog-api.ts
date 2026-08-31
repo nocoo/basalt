@@ -28,4 +28,21 @@ export const CATALOG_API = {
 			required: false,
 		},
 	],
+	"link-button": [
+		{
+			name: "variant",
+			type: '"default" | "destructive" | "ghost" | "link" | "outline" | "secondary" | null',
+			required: false,
+		},
+		{
+			name: "size",
+			type: '"default" | "icon" | "lg" | "sm" | null',
+			required: false,
+		},
+		{
+			name: "icon",
+			type: "React.ReactNode",
+			required: false,
+		},
+	],
 };

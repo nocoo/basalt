@@ -38,15 +38,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<LinkButton href="/docs">Docs</LinkButton>',
 		),
 		variants: ["default", "secondary", "destructive", "outline", "ghost", "link"],
-		props: [
-			{
-				name: "variant",
-				type: '"default" | "secondary" | "destructive" | "outline" | "ghost" | "link"',
-			},
-			{ name: "size", type: '"default" | "sm" | "lg" | "icon"' },
-			{ name: "icon", type: "ReactNode" },
-			{ name: "href", type: "string" },
-		],
+		props: CATALOG_API["link-button"],
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",

@@ -21,6 +21,11 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/button.tsx",
 		propsType: "ButtonProps",
 	},
+	{
+		slug: "link-button",
+		sourceFile: "packages/basalt/src/components/button.tsx",
+		propsType: "LinkButtonProps",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

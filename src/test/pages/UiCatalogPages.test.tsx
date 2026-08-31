@@ -341,6 +341,53 @@ describe("ui catalog", () => {
 		expect(block).not.toContain("ReactNode");
 	});
 
+	it("sources link-button API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS["link-button"]?.props).toEqual(CATALOG_API["link-button"]);
+		expect(CATALOG_API["link-button"]?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"icon",
+		]);
+		renderCatalog("/ui/link-button");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		for (const prop of CATALOG_API["link-button"] ?? []) {
+			expect(api).toHaveTextContent(prop.name);
+			expect(api).toHaveTextContent(prop.type);
+			expect(api).toHaveTextContent(`${prop.name}?`);
+		}
+		expect(api).not.toHaveTextContent("asChild");
+		expect(api).not.toHaveTextContent("loading");
+		expect(document.body.textContent).toContain('<LinkButton href="/docs">');
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		for (const prop of CATALOG_API["link-button"] ?? []) {
+			expect(markdown).toContain(`- ${prop.name} (${prop.type}, optional`);
+		}
+		expect(markdown).toContain('<LinkButton href="/docs">');
+		expect(markdown).not.toContain("- href (");
+	});
+
+	it("does not keep a handwritten link-button prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf('\t"link-button": {');
+		const end = docs.indexOf("\ttext: {");
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain('props: CATALOG_API["link-button"]');
+		expect(block).not.toContain('name: "variant"');
+		expect(block).not.toContain('name: "size"');
+		expect(block).not.toContain('name: "icon"');
+		expect(block).not.toContain('name: "href"');
+		expect(block).not.toContain("ReactNode");
+		expect(block).toContain('href="/docs"');
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });

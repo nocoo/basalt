@@ -8,6 +8,8 @@ import {
 	implementationSourceFor,
 	provenanceFromLegacy,
 } from "./catalog-source";
+import { CATALOG_DOCS } from "./docs";
+import { CATALOG_API } from "./generated/catalog-api";
 
 function entry(slug: string) {
 	const found = CATALOG_BY_SLUG.get(slug);
@@ -121,6 +123,12 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("link-button"))).toBe(
 			"packages/basalt/src/components/button.tsx",
 		);
+		expect(CATALOG_DOCS["link-button"]?.props).toEqual(CATALOG_API["link-button"]);
+		expect(CATALOG_API["link-button"]?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"icon",
+		]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);
