@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A7 D035 — Label source-backed scenarios；待 Grok 实现
-> 当前代码前置：`27d2648`（D034 验收台账已提交）
+> 当前切片：S2A7 D035 — Label source-backed scenarios；验收完成，下一切片待定义
+> 当前代码前置：`9e1142e`（D035 代码已独立验收）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034 完成） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035 完成） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -521,6 +521,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D032 | S2A4 | `84322c3` + `2a52afd` | `w14:p1` | 完成 | `629a8ab` | 在既有 fail-closed generator 中声明 `link-button / LinkButtonProps` 第二 target，生成源码顺序的 `variant`、`size`、`icon` 三项专属 API；Button 五项字节不变，Button-only 与原生 anchor props 均未泄漏，scenarios、组件实现和冻结范围未改。Codex 独立验收 6 个授权文件、focused 3 files / 234 tests、连续两次 generate/check、typecheck、Biome、全量及 coverage 116 files / 898 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2789 modules、package 92 JS + 92 d.ts + 89 maps、Bundler/NodeNext types 与 279-file pack 全绿，既有 1,556.76 kB chunk warning 保留。generated SHA-256 为 `20620051323df8e3fc7a4991009647c35b74eb36af8a5901488743147cad34a2`。OpenCLI/Chromium 实测 `/ui/link-button` API 表只有三项且顺序/类型正确；页面内拦截真实 Copy page 写入得到 1,345 字符 Markdown，三项 API、两个 source-backed example 与 Disabled Link 的 inert/`opacity-50` 契约完整。7003 保持运行，构建后工作树干净。 |
 | D033 | S2A5 | `c59edbe` + `e1fd2d5` | `w14:p1` | 完成 | `92e5166` | 两个当前生效的 Text 场景成为独立、自包含的 source-backed modules，最终 `UI_EXAMPLES.text === TEXT_EXAMPLES`；删除 BASE 的 Default/Muted 死 entry 与 KUMO 生效 inline owner，保留其它场景仍需的 `Text` imports/`Stack`，Button、LinkButton 与其它 slug 均未改。Codex 独立验收 8 个授权文件、focused 3 files / 205 tests、catalog check、typecheck、Biome 415 files、全量及 coverage 116 files / 901 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2794 modules 通过，既有 1,557.03 kB warning 保留。OpenCLI/Chromium 迁移前后逐项对照：hero 仍为 `text-sizes`，五档文案、class、computed font-size/line-height 及 muted `rgb(115, 115, 115)` 完全一致；两个页面 code block 逐字来自完整 raw modules，真实 Copy page 为 1,184 字符并含 Sizes/Muted tone 两模块且无 `as`、heading 或 Semantic HTML 伪声明。禁用用户语境与旧 owner 扫描为空，7003 保持运行，工作树干净。 |
 | D034 | S2A6 | `f914366` + `bf7ddf6` | `w14:p1` | 完成 | `facbcaa` | 在既有 fail-closed generator 中声明 `text / TextProps` 第三个 target，生成源码顺序的 `size`、`tone` 两项专属 API；Button/LinkButton 数据不变，HTML 继承与 Kumo-only 字段未泄漏，组件、scenarios 与冻结范围未改。Codex 独立验收 6 个授权文件、focused 3 files / 239 tests、连续两次 generate/check、typecheck、Biome 415 files、全量及 coverage 116 files / 904 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2794 modules、package 92 JS + 92 d.ts + 89 maps、Bundler/NodeNext types 与 279-file pack 全绿，既有 1,557.09 kB chunk warning 保留。generated SHA-256 为 `1e5fffe4f0001a7eb196998a3b1d2e445751fad9e965d865383137338b415c2a`。OpenCLI/Chromium 实测 `/ui/text` API 只有两项 optional 精确类型，真实 Copy page 为 1,218 字符并保留 Usage、`text-sizes`、`text-muted-tone`，无 DOM inherited/Kumo-only props，控制台 0；7003 保持运行，构建后工作树干净。 |
-| D035 | S2A7 | `27d2648` | `w14:p1` | 执行中 | — | 只把当前三个 Label scenarios 迁到 render/raw 同路径真源并消除 BASE/KUMO 重复 owner；冻结组件/API、场景能力与后续阶段。 |
+| D035 | S2A7 | `27d2648` + `5d1c028` | `w14:p1` | 完成 | `9e1142e` | 三个当前生效的 Label 场景成为独立、自包含的 source-backed modules，最终 `UI_EXAMPLES.label === LABEL_EXAMPLES`；删除 BASE 死 entry 与 KUMO 生效 inline owner，保留 KUMO 文件仍被 Radio 使用的 `Label` import 和仍被 Input 使用的 `Stack`。Default preview/code 同时携带既有 stack wrapper，Optional 与 Tooltip 的文案、可访问名称和行为不变；Button、LinkButton、Text 与其它 slug 均未改。Codex 独立验收 9 个授权文件、focused 3 files / 206 tests、catalog check、typecheck、Biome 419 files、全量及 coverage 116 files / 907 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2801 modules 通过，既有 1,557.33 kB chunk warning 保留。OpenCLI/Chromium 前后对照证实 hero 仍为 `label-default-label`，三场景 label 均为 14px/500/14px，wrapper、optional marker、`More information` trigger 与完整 tooltip 文案可达；真实 Copy page 为 1,432 字符并含三个完整 raw modules、无禁用语境，控制台 0。7003/PID 95907 保持运行，构建后工作树干净。 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
