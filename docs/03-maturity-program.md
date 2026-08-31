@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A1 — D028 source-backed Button scenarios
-> 已验收代码基线：`c5256403b362`（`main`；D027 package prepublish lifecycle 完成，S1 生产发布地基闭环）
+> 当前切片：S2A — D029 待冻结
+> 已验收代码基线：`0252251a980c`（`main`；D028 source-backed Button scenarios 完成，完整模块路径配对契约闭环）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028 完成） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
@@ -441,6 +441,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D025 | S1C1g | `d9ae8a406251` + `0de41c1` | `w14:p1` | 完成 | `fed681831ff6` | 只扩充 app-shell 既有测试，新增最小 Header 场景并以具名 banner、leading、无 navigation/svg/heading 及直接子结构锁住三个可选区域；focused 1 file / 3 tests、typecheck、Biome 388 files、全量重跑 112 files / 780 tests 全绿。AppHeader 达 lines/statements/functions `1/1`、branches `8/8`；全局为 statements `1417/1463`（96.85%）、branches `1099/1160`（94.74%）、functions `430/449`（95.76%）、lines `1343/1385`（96.96%），coverage 仅因 branch 门按预期退出 1。Grok 与 Codex 的首次全量各遇到同两条既有 Chromium 5 秒 timeout，双方立即重跑及 Codex coverage 内全量均通过；工作树干净，未改生产或 coverage 配置 |
 | D026 | S1C1h | `fed681831ff6` + `ff7d74f` | `w14:p1` | 完成 | `ef01a0251d9c` | 只扩充 Banner 既有测试，新增 null variant/size fallback 与 compact 无 description 普通 inline action 两项行为；focused 1 file / 7 tests、typecheck、Biome 388 files、全量 112 files / 782 tests 全绿。Banner 达 statements `19/19`、lines `18/18`、branches `49/49`、functions `4/4`；全局 statements `1417/1463`（96.85%）、branches `1102/1160`（95.00%）、functions `430/449`（95.76%）、lines `1343/1385`（96.96%），coverage 首次 exit 0、四门全绿；工作树干净，未改生产或 coverage 配置 |
 | D027 | S1C2 | `ef01a0251d9c` + `af40437` | `w14:p1` | 完成 | `c5256403b362` | 五个授权文件原子加入 pinned `publint@0.3.24`、strict npm-pack publint、唯一有序的 root prepublish 聚合门和 package lifecycle 委托，并在同提交删除发布包 `private`；root/四 fixture 仍 private、package 仍 `0.0.0`，build-contract 以缺失/重复/重排/绕过/publish 负例锁门，pack verifier 主动拒绝 `private` 键。Codex 独立验收 focused 1 file / 9 tests、frozen install 307 installs / 392 packages、package build 90 JS + 90 d.ts + 87 maps + 3 CSS、Bundler/NodeNext、273-file pack、publint、typecheck、Biome 388 files、全量 112 files / 785 tests及 coverage 四项全绿；真实 `npm run prepublishOnly --workspace @nocoo/basalt` 在公司镜像因缺既有 `lucide-react@1.34.0` fail-fast 于 A 且清理，腾讯镜像原命令重跑依序通过 A/B/C/D，C 为 HTTP 200 + Chromium 151 hydration/交互/theme，D 从 tarball 加载三项 heavy granular export。Codex 本轮四 temp、browser profile、动态端口、进程、tgz 全清，未动 7003 dev server；唯一 `basalt-gate-c-fail-4cUPl1` 为运行前已有残留，未擅删；工作树干净，无 publish/tag/push |
-| D028 | S2A1 | `c5256403b362` + 本次调度文档 commit | `w14:p1` | 执行中 | 待提交 | 建立同一 TSX 模块驱动 preview 与 raw code 的 scenario contract，只迁移 Button 10 场景并以失败负例消除 code/render 漂移；禁止 Cloudflare/Worker 用户语境、API generator 或其它控件顺手迁移 |
+| D028 | S2A1 | `c5256403b362` + `a55e545a2b23` | `w14:p1` | 完成 | `9fcee558e192` + `0252251a980c` | 首提交以通用 loader 和 10 个自包含 Button TSX 模块让 preview/default export 与展示代码/同路径 raw 共用真源，保持 id、title、顺序、交互与可访问名称，并修复 disabled-link 的 inert/视觉漂移；Codex review 复现 basename 配对会错误接受跨目录 render/raw，返工改为只移除精确 `?raw`、统一路径分隔符后比较完整相对路径，真实负例同时锁住双方原路径，任意其它 query 不被吞掉。Codex 独立复跑 focused 3 files / 191 tests、typecheck、Biome 399 files、全量 112 files / 800 tests、coverage `1417/1463`（96.85%）/`1102/1160`（95.00%）/`430/449`（95.76%）/`1343/1385`（96.96%）及 production build 2781 modules 全绿；既有 1,554.77 kB chunk warning 如实保留。Grok coverage 首轮遇到既有 5 秒 timeout、重跑通过，Codex 单独复跑一次通过；禁用用户语境扫描为空，7003 服务与运行前残留均未动，工作树干净 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
