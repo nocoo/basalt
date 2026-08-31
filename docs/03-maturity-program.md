@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A3 D031 已完成；待定义下一 S2A 切片
-> 当前代码前置：`60aa67e`（D031 已验收）
+> 当前切片：S2A4 D032 — LinkButton API type source；待 Grok 实现
+> 当前代码前置：`84322c3`（D031 验收台账已提交）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -321,6 +321,12 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
 
    只允许新增 `src/pages/ui/examples/link-button/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/FoundationFeedbackScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 `catalog-scenario.ts` loader、Button examples、package 生产组件/API、`docs.ts`/generated API、catalog IA、视觉、依赖/lock、coverage/Husky/consumer，亦不得实现 Kumo 的 `disabled`/`external`/tooltip LinkButton 能力或进入后续 S2A/S2B。提交前运行相关 focused tests、`bun run catalog-api:check`、`bun run typecheck`、Biome、全量、coverage 和 showcase production build；四项 coverage 不得低于 D030，既有 chunk warning 如实报告，构建后工作树必须干净。只做一个绿色原子提交，建议 `refactor: source link button scenarios`，随后停止等待 Codex review。
 
+4. **S2A4 / D032 — LinkButton API type source。** 在已经 fail-closed 的 `CATALOG_API_TARGETS` 中新增第二个声明式 target：slug 为 `link-button`，与 Button 共用真实实现文件 `packages/basalt/src/components/button.tsx`，公开类型为 `LinkButtonProps`；配置仍只能声明 slug/source/type，不得出现逐 prop allowlist、fallback 或组件名特判。仓外只读试生成已证明当前真实类型应稳定得到三项组件专属 API，源码顺序为 `variant`、`size`、`icon`，三项均 optional；`variant` 与 `size` 必须分别完整保留既有 CVA literals 加 `null`，`icon` 必须为 `React.ReactNode`。Button 的五项及其字节内容必须不变，Button-only 的 `asChild` / `loading` 不得泄漏到 LinkButton；React 原生 anchor 的 `href`、`target`、`rel`、`download`、`children`、`className`、event 和 ARIA 继续按 D030 的 component-specific 规则过滤，不把 essential usage 示例中的 `href` 从真实类型或 Usage 文本删掉。
+
+   生成模块必须以合法的 quoted `"link-button"` key 输出第二组纯数据，完整文件二次生成逐字节确定，预期试生成 SHA-256 为 `20620051323df8e3fc7a4991009647c35b74eb36af8a5901488743147cad34a2`。`BASE_DOCS["link-button"].props` 改为只消费 `CATALOG_API["link-button"]`，删除当前四项手写 inventory，不保留 `href` 或其它影子数组；页面 API 表和 Copy page 文本必须来自同一 generated 引用并显示三项 optional 语义，Usage 仍展示 `<LinkButton href="/docs">`。测试须锁住两个同源 target、两组精确生成结果、hyphenated key、Button 不回归、DOM inheritance 过滤、generated 字节/check stale 门，以及 `docs.ts` 不再手写 LinkButton prop 名或 `ReactNode`。
+
+   只允许修改 `scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/docs.ts`，以及 `src/pages/ui/catalog-source.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与 LinkButton generated API 直接相关的最小测试。不得修改 package 生产组件/type、scenario/loader、catalog IA、视觉、依赖/lock、CLI/tsconfig、coverage/Husky/consumer 或其它组件 docs/API，亦不得进入后续 S2A/S2B。提交前运行 generator/page focused tests、generate + 连续两次 check、typecheck、Biome、全量、coverage、showcase build，以及 package build/types/pack；四项 coverage 不得低于 D031，generated 哈希与构建后工作树必须干净。只做一个绿色原子提交，建议 `refactor: generate link button api docs`，随后停止等待 Codex review。
+
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
 2026-08-31 用户复核展示站后，要求先关闭同类控件 surface/字号漂移、顶部 breadcrumb 层级漂移和 segmented control 无移动反馈，再继续 S2A。根因不是 token 数值本身，而是 Basalt 多处重复拼接 control class，以及从自定义 `text-base = 14px` 的参考实现机械带回 class 后落到本仓 Tailwind 默认 `16px`。本段只修共享视觉契约，不扩公开 API、example 数量或业务模块。
@@ -494,5 +500,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D029C | S2V | `ba2a0c6` | `w14:p1` | 完成 | `507b273fddd9` + `da54f6e90871` | 单选 ToggleGroup 使用真实移动底板，multiple 保留 item-local 多选，Tabs 共用 `utils/` 私有 observer/测量 helper，LanguageToggle 自然继承；R1 修复内部 state render 造成 callback ref `node → null → node` 的伪 detach/attach，并补真实 Tabs 几何切换门。Codex 独立验收 focused 5 files / 28 tests、typecheck、Biome 404 files、全量 115 / 835、coverage `1460/1503`（97.13%）/`1132/1186`（95.44%）/`444/463`（95.89%）/`1383/1421`（97.32%）、package 92 JS + 92 d.ts + 89 maps、types、279-file pack、连续两次 package build 幂等及 showcase build。Chromium 151 首帧 indicator width 43px 且连续两帧 transition 0s；Live→Mock、EN→中文、Home→About 均真实改变 x/width 并在 200ms ease-out 后对齐 item，reduced-motion 切换前后均 0s；light/dark surface 与 selected contrast 正常。helper 的两个 package import 均被拒绝，7003 保持运行，工作树干净 |
 | D030 | S2A2 | `fbb0637` + `74a906d` + `24cf497` + `5251071` + `2d29d43` + `971f3fc` + `a6ef2c9` | `w14:p1` | 完成 | `ae26450caaec` + `6c8fd7fe04fc` + `2b804e7d1e56` + `0634c5c05ce4` + `6e8226e33adc` + `b0da0516a68e` + `12ac523f11c5` | 首提交建立 Button API 类型真源；R1–R6 依次关闭 export、alias/泛型打印、value-type、synthetic provenance、Array、React namespace、boolean 与伪默认库文件名绕过，最终以 `program.isSourceFileDefaultLibrary()` 使用 compiler library identity。Codex 独立以仓外 fixtures 验证 external generic mapped/Record、mapped union/intersection 与普通 `lib.eswidgets.d.ts` 均拒绝本地同名冒充，direct built-in `Record` fail-closed，local generic mapped 完整生成，`R.JSX.Element`/重命名 `J.Element` 均规范为 `React.JSX.Element`；focused 54 tests、连续两次 generate check、frozen install 308 installs、typecheck、Biome、全量 116 files / 892 tests、coverage statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）、showcase build 2784 modules、package 92 JS + 92 d.ts + 89 maps、Bundler/NodeNext types 与 279-file pack 全绿。generated SHA-256 为 `791ae59300604d7afaad13cf06765770bf0db9308d128dca575ca3125c25c693`；既有 1,556.36 kB chunk warning 留给 S2B/S9，构建后工作树干净。 |
 | D031 | S2A3 | `a20c691` + `471f7b5` | `w14:p1` | 完成 | `60aa67e8ac7b` | 两个 LinkButton 场景各自成为独立、自包含的 source-backed module，最终数组与 `LINK_BUTTON_EXAMPLES` 引用相同；删除 BASE 死 entry、KUMO 生效 inline owner 及无用 imports，Disabled Link 的 preview/code 同时携带 inert 与 `opacity-50` 契约，Button 十场景和所有冻结范围未改。Codex 独立验收 focused 3 files / 196 tests、catalog check、typecheck、Biome 412 files、全量与 coverage 116 files / 895 tests，coverage 为 statements `1460/1503`（97.13%）/ branches `1132/1186`（95.44%）/ functions `444/463`（95.89%）/ lines `1383/1421`（97.32%）；showcase build 2789 modules 通过，既有 1,556.70 kB warning 保留。OpenCLI/Chromium 实测 `/ui/link-button` 的 hero、两个 `#docs` 链接及 disabled 无 href/不导航契约均成立；禁用语境与旧 owner 扫描为空，7003 保持运行，工作树干净。 |
+| D032 | S2A4 | `84322c3` | `w14:p1` | 执行中 | — | 只把 LinkButton 文档 API 接入既有 fail-closed type generator，保持 Button 五项、组件类型、scenarios 与后续阶段冻结。 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
