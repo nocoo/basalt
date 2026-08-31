@@ -854,6 +854,82 @@ describe("ui catalog", () => {
 		expect(block).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 	});
 
+	it("sources field API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS.field?.props).toEqual(CATALOG_API.field);
+		expect(CATALOG_API.field?.map((prop) => prop.name)).toEqual([
+			"label",
+			"htmlFor",
+			"hint",
+			"error",
+			"className",
+			"children",
+		]);
+		renderCatalog("/ui/field");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(6);
+		expect(api).toHaveTextContent("label");
+		expect(api).not.toHaveTextContent("label?");
+		expect(api).toHaveTextContent("htmlFor?");
+		expect(api).toHaveTextContent("hint?");
+		expect(api).toHaveTextContent("error?");
+		expect(api).toHaveTextContent("className?");
+		expect(api).toHaveTextContent("children");
+		expect(api).not.toHaveTextContent("children?");
+		expect(api).toHaveTextContent("Visible label text.");
+		expect(api).toHaveTextContent("Associates the label and described-by ids.");
+		expect(api).toHaveTextContent("Supporting text when there is no error.");
+		expect(api).toHaveTextContent("Replaces the hint and marks the control invalid.");
+		expect(api).toHaveTextContent("Additional classes for the field root.");
+		expect(api).toHaveTextContent("The control or content to render.");
+		expect(api).toHaveTextContent("React.ReactNode");
+		expect(screen.getByRole("heading", { name: "Hint" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Error" })).toBeInTheDocument();
+		expect(document.querySelector('[data-hero-scenario="field-hint"]')).toBeTruthy();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("- label (string, required, default —): Visible label text.");
+		expect(markdown).toContain(
+			"- htmlFor (string, optional, default —): Associates the label and described-by ids.",
+		);
+		expect(markdown).toContain(
+			"- hint (string, optional, default —): Supporting text when there is no error.",
+		);
+		expect(markdown).toContain(
+			"- error (string, optional, default —): Replaces the hint and marks the control invalid.",
+		);
+		expect(markdown).toContain(
+			"- className (string, optional, default —): Additional classes for the field root.",
+		);
+		expect(markdown).toContain(
+			"- children (React.ReactNode, required, default —): The control or content to render.",
+		);
+		expect(markdown).toContain(UI_EXAMPLES.field?.[0]?.code ?? "");
+		expect(markdown).toContain(UI_EXAMPLES.field?.[1]?.code ?? "");
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+	});
+
+	it("does not keep a handwritten field prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf("\tfield: {");
+		const end = docs.indexOf("\tinput: {");
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain("props: CATALOG_API.field");
+		expect(block).not.toContain('name: "label"');
+		expect(block).not.toContain('name: "htmlFor"');
+		expect(block).toContain('description: "A labeled control with optional hint and error."');
+		expect(block).toContain(
+			'<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
+		);
+		expect(block).toContain('repo: "signoff.now"');
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });

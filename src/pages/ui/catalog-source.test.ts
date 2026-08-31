@@ -163,6 +163,16 @@ describe("catalog source contract", () => {
 		);
 		expect(CATALOG_DOCS["basalt-mark"]?.props).toEqual(CATALOG_API["basalt-mark"]);
 		expect(CATALOG_API["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(implementationFileFor(entry("field"))).toBe("packages/basalt/src/components/field.tsx");
+		expect(CATALOG_DOCS.field?.props).toEqual(CATALOG_API.field);
+		expect(CATALOG_API.field?.map((prop) => prop.name)).toEqual([
+			"label",
+			"htmlFor",
+			"hint",
+			"error",
+			"className",
+			"children",
+		]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);

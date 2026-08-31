@@ -36,6 +36,44 @@ export const CATALOG_API = {
 			required: false,
 		},
 	],
+	field: [
+		{
+			name: "label",
+			type: "string",
+			required: true,
+			description: "Visible label text.",
+		},
+		{
+			name: "htmlFor",
+			type: "string",
+			required: false,
+			description: "Associates the label and described-by ids.",
+		},
+		{
+			name: "hint",
+			type: "string",
+			required: false,
+			description: "Supporting text when there is no error.",
+		},
+		{
+			name: "error",
+			type: "string",
+			required: false,
+			description: "Replaces the hint and marks the control invalid.",
+		},
+		{
+			name: "className",
+			type: "string",
+			required: false,
+			description: "Additional classes for the field root.",
+		},
+		{
+			name: "children",
+			type: "React.ReactNode",
+			required: true,
+			description: "The control or content to render.",
+		},
+	],
 	label: [
 		{
 			name: "showOptional",

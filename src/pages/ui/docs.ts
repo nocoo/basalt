@@ -165,20 +165,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'import { Input } from "@nocoo/basalt/components/input";',
 		),
 		variants: [],
-		props: [
-			{ name: "label", type: "string", description: "Visible label text." },
-			{
-				name: "htmlFor",
-				type: "string",
-				description: "Associates the label and described-by ids.",
-			},
-			{ name: "hint", type: "string", description: "Supporting text when there is no error." },
-			{
-				name: "error",
-				type: "string",
-				description: "Replaces the hint and marks the control invalid.",
-			},
-		],
+		props: CATALOG_API.field,
 		provenance: provenanceFromLegacy({
 			repo: "signoff.now",
 			sha: "92033c89d807",

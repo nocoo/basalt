@@ -2,21 +2,34 @@ import * as React from "react";
 import { cn } from "../utils/cn";
 import { Label } from "./label";
 
-export function Field({
-	label,
-	htmlFor,
-	error,
-	hint,
-	className,
-	children,
-}: {
+export type FieldProps = {
+	/**
+	 * Visible label text.
+	 */
 	label: string;
+	/**
+	 * Associates the label and described-by ids.
+	 */
 	htmlFor?: string;
-	error?: string;
+	/**
+	 * Supporting text when there is no error.
+	 */
 	hint?: string;
+	/**
+	 * Replaces the hint and marks the control invalid.
+	 */
+	error?: string;
+	/**
+	 * Additional classes for the field root.
+	 */
 	className?: string;
+	/**
+	 * The control or content to render.
+	 */
 	children: React.ReactNode;
-}) {
+};
+
+export function Field({ label, htmlFor, hint, error, className, children }: FieldProps) {
 	const hintId = htmlFor ? `${htmlFor}-hint` : undefined;
 	const errorId = htmlFor ? `${htmlFor}-error` : undefined;
 	const describedBy = [error ? errorId : null, !error && hint ? hintId : null]

@@ -137,6 +137,11 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/basalt-mark.tsx",
 				propsType: "BasaltMarkProps",
 			},
+			{
+				slug: "field",
+				sourceFile: "packages/basalt/src/components/field.tsx",
+				propsType: "FieldProps",
+			},
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames|props:\s*\[/);
@@ -159,6 +164,7 @@ describe("catalog API generator contract", () => {
 			"theme-toggle",
 			"layer-card",
 			"basalt-mark",
+			"field",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -515,6 +521,77 @@ describe("catalog API generator contract", () => {
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+	}, 20_000);
+
+	it("extracts Field props from FieldProps in source order with required label and children", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated.field?.map((prop) => prop.name)).toEqual([
+			"label",
+			"htmlFor",
+			"hint",
+			"error",
+			"className",
+			"children",
+		]);
+		expect(generated.field).toEqual([
+			{
+				name: "label",
+				type: "string",
+				required: true,
+				description: "Visible label text.",
+			},
+			{
+				name: "htmlFor",
+				type: "string",
+				required: false,
+				description: "Associates the label and described-by ids.",
+			},
+			{
+				name: "hint",
+				type: "string",
+				required: false,
+				description: "Supporting text when there is no error.",
+			},
+			{
+				name: "error",
+				type: "string",
+				required: false,
+				description: "Replaces the hint and marks the control invalid.",
+			},
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Additional classes for the field root.",
+			},
+			{
+				name: "children",
+				type: "React.ReactNode",
+				required: true,
+				description: "The control or content to render.",
+			},
+		]);
+		expect(generated.field?.every((prop) => !("default" in prop))).toBe(true);
+		expect(generated.button?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"asChild",
+			"loading",
+			"icon",
+		]);
+		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
+		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
+		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 	}, 20_000);
 
 	it("emits a locally quoted property name", () => {
@@ -1395,8 +1472,9 @@ export interface WidgetProps {
 		expect(first).toContain('\t"theme-toggle": [');
 		expect(first).toContain('\t"layer-card": [');
 		expect(first).toContain('\t"basalt-mark": [');
+		expect(first).toContain("\tfield: [");
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"59051c422225d16cd8697e5b5d56b8b62f9251cdbca3d97148e2ea1a99f20a79",
+			"052ae825a7c5b8d6a31832cb32dec6a32393ee145fa2bea05db1d883625b064e",
 		);
 	}, 20_000);
 });

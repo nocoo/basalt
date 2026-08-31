@@ -67,6 +67,11 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/basalt-mark.tsx",
 		propsType: "BasaltMarkProps",
 	},
+	{
+		slug: "field",
+		sourceFile: "packages/basalt/src/components/field.tsx",
+		propsType: "FieldProps",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";
