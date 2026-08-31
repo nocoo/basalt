@@ -123,13 +123,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'import { ThemeProvider } from "@nocoo/basalt/providers/theme";',
 		),
 		variants: ["system", "light", "dark"],
-		props: [
-			{
-				name: "aria-label",
-				type: "string",
-				description: "Accessible name for the toggle.",
-			},
-		],
+		props: CATALOG_API["theme-toggle"],
 		provenance: provenanceFromLegacy({
 			repo: "basalt",
 			sha: "2727ae6a8d3f",

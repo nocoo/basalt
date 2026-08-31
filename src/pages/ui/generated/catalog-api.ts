@@ -96,6 +96,14 @@ export const CATALOG_API = {
 			required: false,
 		},
 	],
+	"theme-toggle": [
+		{
+			name: "aria-label",
+			type: "string",
+			required: true,
+			description: "Accessible name for the toggle.",
+		},
+	],
 	tooltip: [
 		{
 			name: "delayDuration",

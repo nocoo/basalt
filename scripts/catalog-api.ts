@@ -52,6 +52,11 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/tooltip.tsx",
 		propsType: "TooltipProps",
 	},
+	{
+		slug: "theme-toggle",
+		sourceFile: "packages/basalt/src/components/theme-toggle.tsx",
+		propsType: "ThemeToggleProps",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

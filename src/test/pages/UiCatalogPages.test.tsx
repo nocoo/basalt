@@ -670,6 +670,68 @@ describe("ui catalog", () => {
 		);
 	});
 
+	it("sources theme-toggle API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS["theme-toggle"]?.props).toEqual(CATALOG_API["theme-toggle"]);
+		expect(CATALOG_API["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(CATALOG_API["theme-toggle"]).toEqual([
+			{
+				name: "aria-label",
+				type: "string",
+				required: true,
+				description: "Accessible name for the toggle.",
+			},
+		]);
+		renderCatalog("/ui/theme-toggle");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api).toHaveTextContent("aria-label");
+		expect(api).not.toHaveTextContent("aria-label?");
+		expect(api).toHaveTextContent("string");
+		expect(api).toHaveTextContent("Accessible name for the toggle.");
+		expect(api).toHaveTextContent("—");
+		expect(api).not.toHaveTextContent("variant");
+		expect(api).not.toHaveTextContent("size");
+		expect(api).not.toHaveTextContent("loading");
+		expect(api).not.toHaveTextContent("asChild");
+		expect(api).not.toHaveTextContent("className");
+		expect(document.body.textContent).toContain(
+			'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+		);
+		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain(
+			"- aria-label (string, required, default —): Accessible name for the toggle.",
+		);
+		expect(markdown).toContain(
+			'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+		);
+		expect(markdown).not.toContain("- variant (");
+		expect(markdown).not.toContain("- size (");
+		expect(markdown).not.toContain("- loading (");
+		expect(markdown).not.toContain("- asChild (");
+		expect(markdown).not.toContain("- className (");
+	});
+
+	it("does not keep a handwritten theme-toggle prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf('\t"theme-toggle": {');
+		const end = docs.indexOf('\t"layer-card": {');
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain('props: CATALOG_API["theme-toggle"]');
+		expect(block).not.toContain('name: "aria-label"');
+		expect(block).toContain(
+			'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+		);
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });

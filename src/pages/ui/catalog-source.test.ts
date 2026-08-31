@@ -148,6 +148,11 @@ describe("catalog source contract", () => {
 		);
 		expect(CATALOG_DOCS.tooltip?.props).toEqual(CATALOG_API.tooltip);
 		expect(CATALOG_API.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(implementationFileFor(entry("theme-toggle"))).toBe(
+			"packages/basalt/src/components/theme-toggle.tsx",
+		);
+		expect(CATALOG_DOCS["theme-toggle"]?.props).toEqual(CATALOG_API["theme-toggle"]);
+		expect(CATALOG_API["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);

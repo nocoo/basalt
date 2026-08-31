@@ -122,6 +122,11 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/tooltip.tsx",
 				propsType: "TooltipProps",
 			},
+			{
+				slug: "theme-toggle",
+				sourceFile: "packages/basalt/src/components/theme-toggle.tsx",
+				propsType: "ThemeToggleProps",
+			},
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames|props:\s*\[/);
@@ -141,6 +146,7 @@ describe("catalog API generator contract", () => {
 			"separator",
 			"link",
 			"tooltip",
+			"theme-toggle",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -377,6 +383,57 @@ describe("catalog API generator contract", () => {
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 	}, 20_000);
+
+	it("extracts ThemeToggle props from ThemeToggleProps as a single required aria-label", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(generated["theme-toggle"]).toEqual([
+			{
+				name: "aria-label",
+				type: "string",
+				required: true,
+				description: "Accessible name for the toggle.",
+			},
+		]);
+		expect(generated["theme-toggle"]?.[0]).not.toHaveProperty("default");
+		expect(generated["theme-toggle"]?.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated["theme-toggle"]?.some((prop) => prop.name === "type")).toBe(false);
+		expect(generated["theme-toggle"]?.some((prop) => prop.name === "variant")).toBe(false);
+		expect(generated["theme-toggle"]?.some((prop) => prop.name === "size")).toBe(false);
+		expect(generated["theme-toggle"]?.some((prop) => prop.name === "loading")).toBe(false);
+		expect(generated["theme-toggle"]?.some((prop) => prop.name === "icon")).toBe(false);
+		expect(generated["theme-toggle"]?.some((prop) => prop.name === "asChild")).toBe(false);
+		expect(generated["theme-toggle"]?.some((prop) => prop.name === "className")).toBe(false);
+		expect(generated.button?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"asChild",
+			"loading",
+			"icon",
+		]);
+		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
+		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
+		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+	}, 20_000);
+
+	it("emits a locally quoted property name", () => {
+		const root = fixture({
+			"widget.ts": `export interface WidgetProps {
+	"aria-label": string;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "aria-label", type: "string", required: true },
+		]);
+	});
 
 	it("filters DOM, event, ARIA, and className inheritance", () => {
 		const root = fixture({
@@ -1211,8 +1268,9 @@ export interface WidgetProps {
 		expect(first).toContain("\tseparator: [");
 		expect(first).toContain("\tlink: [");
 		expect(first).toContain("\ttooltip: [");
+		expect(first).toContain('\t"theme-toggle": [');
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"11a9b2bd23bc56864fa8f46451404e4c07818684f59811bb49d73ccbde1edf33",
+			"454a8ad4fcb543b4c39ebc3d1b0b104944fc62f4d5ee985fe34991863b27f248",
 		);
 	}, 20_000);
 });

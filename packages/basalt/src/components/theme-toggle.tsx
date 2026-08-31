@@ -4,7 +4,14 @@ import { Button } from "./button";
 
 const ICON_PROPS = { className: "h-4 w-4", "aria-hidden": true as const, strokeWidth: 1.5 };
 
-export function ThemeToggle({ "aria-label": ariaLabel }: { "aria-label": string }) {
+export interface ThemeToggleProps {
+	/**
+	 * Accessible name for the toggle.
+	 */
+	"aria-label": string;
+}
+
+export function ThemeToggle({ "aria-label": ariaLabel }: ThemeToggleProps) {
 	const { theme, setTheme } = useTheme();
 	const cycle = () => {
 		if (theme === "system") setTheme("light");
