@@ -726,6 +726,18 @@ export interface WidgetProps extends Other<string> {
 		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
 	});
 
+	it("rejects impersonation from a user file whose name resembles a default library", () => {
+		const root = fixture({
+			"lib.eswidgets.d.ts": `export type Other<T> = { [K in "value"]?: T };\n`,
+			"widget.ts": `import type { Other } from "./lib.eswidgets";
+export interface WidgetProps extends Other<string> {
+	value?: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
 	it("rejects impersonation through an external generic Record type", () => {
 		const root = fixture({
 			"other.ts": `export type Other<K extends string> = Record<K, string>;\n`,

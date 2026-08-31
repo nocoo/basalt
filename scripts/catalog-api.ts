@@ -147,14 +147,7 @@ function eachHeritageTypeNode(
 	visit(decl.type);
 }
 
-function isDefaultLibraryFile(file: ts.SourceFile): boolean {
-	if (file.hasNoDefaultLib) {
-		return true;
-	}
-	return /\/lib\.es[^/]*\.d\.ts$/.test(file.fileName.replace(/\\/g, "/"));
-}
-
-function enclosingOriginDeclarations(type: ts.Type): ts.Declaration[] {
+function enclosingOriginDeclarations(type: ts.Type, program: ts.Program): ts.Declaration[] {
 	if (!type.aliasSymbol) {
 		return [];
 	}
@@ -162,7 +155,7 @@ function enclosingOriginDeclarations(type: ts.Type): ts.Declaration[] {
 		if (!ts.isTypeAliasDeclaration(decl)) {
 			return false;
 		}
-		return !isDefaultLibraryFile(decl.getSourceFile());
+		return !program.isSourceFileDefaultLibrary(decl.getSourceFile());
 	});
 }
 
@@ -174,6 +167,7 @@ interface HeritagePropOrigins {
 function collectHeritageOriginsFromType(
 	type: ts.Type,
 	sourceFile: ts.SourceFile,
+	program: ts.Program,
 	origins: HeritagePropOrigins,
 	visited: Set<ts.Type>,
 	inheritedOrigin: readonly ts.Declaration[] = [],
@@ -182,11 +176,11 @@ function collectHeritageOriginsFromType(
 		return;
 	}
 	visited.add(type);
-	const ownOrigin = enclosingOriginDeclarations(type);
+	const ownOrigin = enclosingOriginDeclarations(type, program);
 	const originDecls = ownOrigin.length > 0 ? ownOrigin : inheritedOrigin;
 	if (type.isUnion() || type.isIntersection()) {
 		for (const part of type.types) {
-			collectHeritageOriginsFromType(part, sourceFile, origins, visited, originDecls);
+			collectHeritageOriginsFromType(part, sourceFile, program, origins, visited, originDecls);
 		}
 		return;
 	}
@@ -221,6 +215,7 @@ function collectHeritageOriginsFromType(
 function collectHeritageOrigins(
 	decl: ts.InterfaceDeclaration | ts.TypeAliasDeclaration,
 	sourceFile: ts.SourceFile,
+	program: ts.Program,
 	checker: ts.TypeChecker,
 ): HeritagePropOrigins {
 	const origins: HeritagePropOrigins = {
@@ -232,6 +227,7 @@ function collectHeritageOrigins(
 		collectHeritageOriginsFromType(
 			checker.getTypeFromTypeNode(typeNode),
 			sourceFile,
+			program,
 			origins,
 			visited,
 		);
@@ -780,7 +776,7 @@ function extractTargetProps(
 	const checker = program.getTypeChecker();
 	const decl = findExportedPropsDeclaration(sourceFile, target.propsType, checker);
 	const cvaPositions = collectCvaPositions(decl, sourceFile, checker);
-	const origins = collectHeritageOrigins(decl, sourceFile, checker);
+	const origins = collectHeritageOrigins(decl, sourceFile, program, checker);
 	const type = checker.getTypeAtLocation(decl);
 	const collected: Array<{ prop: CatalogApiProp; position: number }> = [];
 	const seenPositions = new Map<number, string>();
