@@ -8,6 +8,7 @@ import {
 } from "./catalog-scenario";
 import { UI_EXAMPLES } from "./demos";
 import { BUTTON_EXAMPLES } from "./examples/button";
+import { LABEL_EXAMPLES } from "./examples/label";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { TEXT_EXAMPLES } from "./examples/text";
 
@@ -59,6 +60,16 @@ const TEXT_TITLES = ["Sizes", "Muted tone"] as const;
 
 const textRenders = import.meta.glob("./examples/text/*.tsx", { eager: true });
 const textSources = import.meta.glob("./examples/text/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const LABEL_IDS = ["label-default-label", "label-optional-field", "label-with-tooltip"] as const;
+const LABEL_TITLES = ["Default Label", "Optional Field", "With Tooltip"] as const;
+
+const labelRenders = import.meta.glob("./examples/label/*.tsx", { eager: true });
+const labelSources = import.meta.glob("./examples/label/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -219,6 +230,58 @@ describe("source-backed text scenarios", () => {
 			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 			expect(scenario.code).not.toMatch(/as=|<h[1-6]|Semantic HTML/i);
 		}
+	});
+});
+
+describe("source-backed label scenarios", () => {
+	it("loads three label scenarios from the same glob modules", () => {
+		expect(Object.keys(labelRenders)).toHaveLength(3);
+		expect(Object.keys(labelSources)).toHaveLength(3);
+		const loaded = loadModuleScenarios({
+			slug: "label",
+			metas: LABEL_TITLES.map((title, index) => ({
+				key: LABEL_IDS[index].slice("label-".length),
+				title,
+			})),
+			renderModules: labelRenders,
+			sourceModules: labelSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...LABEL_TITLES]);
+		expect(LABEL_EXAMPLES.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(LABEL_EXAMPLES.map((item) => item.title)).toEqual([...LABEL_TITLES]);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		const fileKeys = new Set(
+			Object.keys(labelRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(LABEL_IDS.map((id) => id.slice("label-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("label-".length);
+			const modulePath = Object.keys(labelSources).find((path) => path.endsWith(`/${key}.tsx`));
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = labelSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(LABEL_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((labelRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				LABEL_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).toContain("export default");
+		}
+		expect(LABEL_EXAMPLES[0]?.code).toContain("flex w-full flex-col gap-3");
+		expect(LABEL_EXAMPLES[2]?.code).toContain("More information about this field");
+		expect(LABEL_EXAMPLES[2]?.code).not.toMatch(/tooltip="More information"/);
 	});
 });
 

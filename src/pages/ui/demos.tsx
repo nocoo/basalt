@@ -5,7 +5,6 @@ import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
-import { Label } from "@nocoo/basalt/components/label";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Link } from "@nocoo/basalt/components/link";
 import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
@@ -26,6 +25,7 @@ import { AlertTriangle, CircleAlert, CircleCheck, Info, X } from "lucide-react";
 import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { BUTTON_EXAMPLES } from "./examples/button";
+import { LABEL_EXAMPLES } from "./examples/label";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { TEXT_EXAMPLES } from "./examples/text";
 import { KUMO_EXAMPLES } from "./kumo-examples";
@@ -34,26 +34,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	button: BUTTON_EXAMPLES,
 	"link-button": LINK_BUTTON_EXAMPLES,
 	text: TEXT_EXAMPLES,
-	label: [
-		{
-			id: catalogScenarioId("label", "default-label"),
-			title: "Default Label",
-			code: "<Label>Default Label</Label>",
-			render: () => <Label>Default Label</Label>,
-		},
-		{
-			id: catalogScenarioId("label", "optional-field"),
-			title: "Optional Field",
-			code: "<Label showOptional>Optional Field</Label>",
-			render: () => <Label showOptional>Optional Field</Label>,
-		},
-		{
-			id: catalogScenarioId("label", "with-tooltip"),
-			title: "With Tooltip",
-			code: '<Label tooltip="More information">With Tooltip</Label>',
-			render: () => <Label tooltip="More information">With Tooltip</Label>,
-		},
-	],
+	label: LABEL_EXAMPLES,
 	separator: [
 		{
 			id: catalogScenarioId("separator", "horizontal"),

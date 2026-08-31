@@ -694,6 +694,47 @@ describe("ui catalog", () => {
 		expect(muted).toHaveTextContent("Muted supporting copy.");
 	});
 
+	it("keeps label hero, optional marker, and tooltip contracts", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/label");
+		expect(screen.getByRole("heading", { name: "Default Label" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Optional Field" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "With Tooltip" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="label-default-label"]');
+		expect(hero).toBeTruthy();
+		expect(hero?.querySelector(".flex.w-full.flex-col.gap-3")).toBeTruthy();
+		expect(hero).toHaveTextContent("Default Label");
+		expect(screen.getAllByText("(optional)").length).toBeGreaterThan(0);
+		const triggers = screen.getAllByRole("button", { name: "More information" });
+		expect(triggers.length).toBeGreaterThan(0);
+		await act(async () => {
+			fireEvent.focus(triggers[0] as HTMLElement);
+			fireEvent.pointerEnter(triggers[0] as HTMLElement);
+		});
+		expect(await screen.findByRole("tooltip")).toHaveTextContent(
+			"More information about this field",
+		);
+		for (const scenario of UI_EXAMPLES.label ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/label");
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+	});
+
+	it("does not keep inline label scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("LABEL_EXAMPLES");
+		expect(demos).toMatch(/\blabel: LABEL_EXAMPLES/);
+		expect(demos).not.toMatch(/\blabel:\s*\[/);
+		expect(kumo).not.toMatch(/\blabel:\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("label"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("label"/);
+	});
+
 	it("does not keep inline text scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");

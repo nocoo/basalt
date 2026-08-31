@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
+import { LABEL_EXAMPLES } from "@/pages/ui/examples/label";
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
@@ -82,6 +83,7 @@ describe("foundation feedback scenario truth", () => {
 		]);
 		expect(UI_EXAMPLES["basalt-mark"]?.map((item) => item.id)).toEqual(["basalt-mark-default"]);
 		expect(UI_EXAMPLES.empty?.map((item) => item.id)).toEqual(["empty-basic", "empty-with-icon"]);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
 		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([
 			"label-default-label",
 			"label-optional-field",

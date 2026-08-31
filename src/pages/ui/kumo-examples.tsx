@@ -738,30 +738,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			),
 		},
 	],
-	label: [
-		{
-			id: catalogScenarioId("label", "default-label"),
-			title: "Default Label",
-			code: "<Label>Default Label</Label>",
-			render: () => (
-				<Stack>
-					<Label>Default Label</Label>
-				</Stack>
-			),
-		},
-		{
-			id: catalogScenarioId("label", "optional-field"),
-			title: "Optional Field",
-			code: "<Label showOptional>Optional Field</Label>",
-			render: () => <Label showOptional>Optional Field</Label>,
-		},
-		{
-			id: catalogScenarioId("label", "with-tooltip"),
-			title: "With Tooltip",
-			code: '<Label tooltip="More information about this field">With Tooltip</Label>',
-			render: () => <Label tooltip="More information about this field">With Tooltip</Label>,
-		},
-	],
 	link: [
 		{
 			id: catalogScenarioId("link", "basic-link"),
