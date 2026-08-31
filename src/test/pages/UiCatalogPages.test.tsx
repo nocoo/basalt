@@ -123,7 +123,7 @@ describe("ui catalog", () => {
 		expect(searchInput).toHaveValue("input");
 		expect(screen.getByRole("radiogroup", { name: "Category" })).toBeInTheDocument();
 		expect(screen.getByRole("radiogroup", { name: "Release" })).toBeInTheDocument();
-		expect(screen.getByRole("radiogroup", { name: "Status" })).toBeInTheDocument();
+		expect(screen.getByRole("radiogroup", { name: "Page status" })).toBeInTheDocument();
 		expect(screen.getByRole("radio", { name: "Catalog" })).toHaveAttribute("aria-checked", "true");
 		expect(screen.getByRole("radio", { name: "Ready" })).toHaveAttribute("aria-checked", "true");
 		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("3 results");
@@ -136,9 +136,11 @@ describe("ui catalog", () => {
 		expect(screen.queryByRole("region", { name: "Charts" })).not.toBeInTheDocument();
 
 		searchInput.focus();
+		fireEvent.change(searchInput, { target: { value: "input " } });
+		expect(searchInput).toHaveValue("input ");
 		fireEvent.change(searchInput, { target: { value: "input group" } });
 		expect(searchInput).toHaveFocus();
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("1 result");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent(/^1 result$/);
 		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(1);
 		expect(document.querySelector('[data-catalog-card="input-group"]')).toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
@@ -153,7 +155,7 @@ describe("ui catalog", () => {
 
 	it("shows a planned chart without a link and clears an active toggle to All", () => {
 		renderCatalog("/ui?category=chart&status=planned");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("1 result");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent(/^1 result$/);
 		const mapsCard = document.querySelector('[data-catalog-card="maps"]');
 		expect(mapsCard).toBeInTheDocument();
 		expect(mapsCard?.querySelector('a[href="/ui/maps"]')).toBeNull();

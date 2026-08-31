@@ -2,7 +2,7 @@ import { Button } from "@nocoo/basalt/components/button";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
 import { Search } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import {
 	CATALOG_INDEX_GROUPS,
@@ -85,6 +85,7 @@ export default function UiIndexPage() {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const searchInputRef = useRef<HTMLInputElement>(null);
 	const query = parseCatalogIndexQuery(searchParams);
+	const [searchValue, setSearchValue] = useState(query.q);
 	const canonicalSearchParams = serializeCatalogIndexQuery(query, searchParams);
 	const groups = filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, query);
 	const resultCount = groups.reduce((count, group) => count + group.items.length, 0);
@@ -95,6 +96,10 @@ export default function UiIndexPage() {
 			setSearchParams(canonicalSearchParams, { replace: true });
 		}
 	}, [canonicalSearchParams, searchParams, setSearchParams]);
+
+	useEffect(() => {
+		setSearchValue(query.q);
+	}, [query.q]);
 
 	function updateQuery(update: Partial<CatalogIndexQuery>) {
 		setSearchParams(serializeCatalogIndexQuery({ ...query, ...update }, searchParams), {
@@ -138,8 +143,12 @@ export default function UiIndexPage() {
 								ref={searchInputRef}
 								id="catalog-search"
 								type="search"
-								value={query.q}
-								onChange={(event) => updateQuery({ q: event.currentTarget.value })}
+								value={searchValue}
+								onChange={(event) => {
+									const nextValue = event.currentTarget.value;
+									setSearchValue(nextValue);
+									updateQuery({ q: nextValue });
+								}}
 								placeholder="Search components, charts, and blocks"
 								autoComplete="off"
 							/>
@@ -161,7 +170,7 @@ export default function UiIndexPage() {
 					/>
 					<FilterToggle
 						id="catalog-status-filter"
-						label="Status"
+						label="Page status"
 						value={query.status}
 						options={STATUS_OPTIONS}
 						onValueChange={(status) => updateQuery({ status })}
@@ -175,7 +184,7 @@ export default function UiIndexPage() {
 						data-result-summary
 						className="text-sm text-muted-foreground"
 					>
-						{resultCount} results
+						{resultCount} {resultCount === 1 ? "result" : "results"}
 					</p>
 					{hasFilters ? (
 						<Button variant="ghost" size="sm" onClick={resetFilters}>
