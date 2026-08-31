@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A24 D052 — Input API type source 已完成；下一切片 S2A25 D053 — source-backed InputArea scenarios 调查中
-> 当前代码前置：`477d7b2`（D052 实现与返工已独立验收，工作树干净）
+> 当前切片：S2A25 D053 — source-backed InputArea scenarios；规格已固化，待实现
+> 当前代码前置：`7582728`（D052 台账已完成，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052 完成；S2A25 D053 调查中） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052 完成；S2A25 D053 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -454,6 +454,14 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    `CATALOG_API_TARGETS` 追加第十二个声明式 target：slug `input`、source `packages/basalt/src/components/input.tsx`、type `InputProps`；不得添加 Input allowlist、fallback、allow-empty 或名字特判。生成结果必须只有 optional `type: React.HTMLInputTypeAttribute` 一项、无 default、携带上述说明；前十一组 generated 数据逐字保持，完整 generated 文件的实际新 SHA-256 必须由确定性双次 generate/check 取得并锁入既有 hash 门。`BASE_DOCS.input.props` 只消费 `CATALOG_API.input` 并删除手写 inventory；description、Usage、variants、provenance 与 D051 五个 source-backed scenarios 全部冻结。
 
    Input 单测须以类型证据证明 `InputProps` 接受 email/search 等 type、className、placeholder、disabled、ARIA、value/defaultValue、onChange 与 ref，并以 expected compile error 锁住非字符串 type；运行时补足 type/原生属性与 ref 透传、调用方 class 合并和 change handler，保留既有 enabled/disabled/control-surface 断言。Generator、catalog-source 与页面测试须锁住十二 targets、Input 精确一项、optional/type/default/description、前十一组不回归、generated hash/check 及 docs 无手写 Input inventory；`/ui/input` API 表必须恰一行 `type?`，显示准确 type 与说明，Copy page 标出 optional/no-default，同时 D051 hero、五场景、完整 raw modules、wrapper 和 ARIA 均不回归。只允许修改 `packages/basalt/src/components/input.tsx`、`packages/basalt/src/components/input.test.tsx`、`scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/docs.ts`、`src/pages/ui/catalog-source.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 root barrel、Field、D051 examples/scenario/loader、其它组件/docs/API、catalog IA/CSS、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入 Input 能力扩展或后续 S2A/S2B。提交前运行 Input/generator/catalog-source/page focused tests、generate + 连续两次 check、typecheck、Biome、全量、coverage、showcase build，以及 package build/types/pack；四项 coverage 不得低于 D051，所有 build 后工作树必须干净。只做一个绿色原子提交，建议 `refactor: generate input api docs`，随后停止等待 Codex review。
+
+25. **S2A25 / D053 — source-backed InputArea scenarios 与单一 owner。** 当前 `BASE_EXAMPLES["input-area"]` 内联一个 Default 死 entry，`KUMO_EXAMPLES["input-area"]` 又在后续 spread 以四项完整覆盖；最终四项 render/code 仍是 inline 双写，展示 code 只有 JSX 片段而非可复制 module。新增 `src/pages/ui/examples/input-area/` 下 `with-label.tsx`、`custom-row-count.tsx`、`error-state-string.tsx`、`disabled.tsx` 和 `index.ts`；每个模块完整导入实际使用的 granular `InputArea`，With Label 与 Error State 另导入 granular `Field`，各自默认导出命名清楚的组件。index 只保存同名 key 与现有四个 title/order，通过既有 `loadModuleScenarios` 同路径 glob render/raw，导出 `INPUT_AREA_EXAMPLES`。
+
+   保持最终 ID/title/order 和 preview 逐项不变：`input-area-with-label` / With Label 继续使用 `Field label="Notes" htmlFor="ex-notes"` 与同 id InputArea，并继续作为 hero；`input-area-custom-row-count` / Custom Row Count 继续是 rows 6、accessible name Tall notes；`input-area-error-state-string` / Error State (String) 继续使用 `Field label="Bio" htmlFor="ex-bio" error="Too short"` 与同 id InputArea；`input-area-disabled` / Disabled 继续是 accessible name Disabled notes、value Unavailable 的 disabled InputArea。With Label 的 label/control association 和无 invalid 状态必须保持；Error State 必须继续得到 `aria-describedby="ex-bio-error"`、`aria-invalid="true"` 与 id `ex-bio-error` 的 `role="alert"`。展示 code 只因成为含 imports/default export 的完整 module 而变化，不得改 DOM、class、surface、尺寸或 textarea 行为。
+
+   `demos.tsx` 只以 `"input-area": INPUT_AREA_EXAMPLES` 接入并删除 BASE dead owner；其直接 `InputArea` import 因此无用必须删除。`kumo-examples.tsx` 删除整个生效 input-area owner及仅因此存在的直接 `InputArea` import；`Field` 仍被 Checkbox 等其它场景使用，不得误删。最终 `UI_EXAMPLES["input-area"] === INPUT_AREA_EXAMPLES`，后三层 spread 不再有第二个 input-area owner；前十三组 source-backed arrays 与其它 slug 全部冻结。Kumo 2026-08-31 现站的 built-in Field、validation object、four sizes、autoResize/minRows/maxRows、Textarea alias、optional/tooltip、ReactNode label、onValueChange、accessible-name warning 与 Base UI 实现全部留 S4；尤其 Kumo 的 Worker Script / Cloudflare Worker tooltip 示例属于禁用业务语境，绝不能进入 Basalt module、fixture、测试或 Copy page。
+
+   测试须以真实 render/raw glob 证明恰有四个 InputArea modules，metadata/file key/ID/title/order 与文件集合闭合，code 等于 trimmed raw、render 等于同路径 default export、最终数组与 scenario 引用同一。契约与页面级断言须覆盖完整 imports/default exports、上述 rows/disabled/value/a11y、两项 Field 关系、hero/Examples 和 Copy page 四个 raw modules；生产源负门须证明 `demos.tsx`、`kumo-examples.tsx` 不再有 input-area inline owner、对应 `catalogScenarioId` 或直接 InputArea import，新 modules 与最终 Copy page 不出现 Cloudflare、Kumo、Worker/Workers 用户语境。只允许新增 `src/pages/ui/examples/input-area/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/FormSelectionScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 package InputArea/Field 实现、类型或测试、scenario loader、docs/generated API、catalog IA/CSS、其它 examples、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入 InputArea API 真源或后续 S2A/S2B。提交前运行三个 focused test files、catalog API check、typecheck、Biome、全量、coverage 与 showcase build；四项 coverage不得低于 D052，既有 chunk warning 如实报告，构建后工作树必须干净。只做一个绿色原子提交，建议 `refactor: source input area scenarios`，随后停止等待 Codex review。
 
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
