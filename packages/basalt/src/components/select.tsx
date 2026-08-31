@@ -14,7 +14,7 @@ export type SelectProps = Omit<
 	 */
 	value?: string;
 };
-export const Select = SelectPrimitive.Root;
+export const Select: React.FC<SelectProps> = SelectPrimitive.Root;
 
 export type SelectValueProps = Omit<
 	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>,
@@ -25,10 +25,14 @@ export type SelectValueProps = Omit<
 	 */
 	placeholder?: React.ReactNode;
 };
-export const SelectValue = SelectPrimitive.Value;
+export const SelectValue: React.ForwardRefExoticComponent<
+	SelectValueProps & React.RefAttributes<React.ElementRef<typeof SelectPrimitive.Value>>
+> = SelectPrimitive.Value;
 
 export type SelectGroupProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Group>;
-export const SelectGroup = SelectPrimitive.Group;
+export const SelectGroup: React.ForwardRefExoticComponent<
+	SelectGroupProps & React.RefAttributes<React.ElementRef<typeof SelectPrimitive.Group>>
+> = SelectPrimitive.Group;
 
 export type SelectTriggerProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>;
 

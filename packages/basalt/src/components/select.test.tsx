@@ -1,6 +1,6 @@
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { createRef } from "react";
+import { type ComponentPropsWithoutRef, type ComponentPropsWithRef, createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
 import {
@@ -19,10 +19,13 @@ import {
 } from "./select";
 
 function acceptSelectProps(_props: SelectProps) {}
+function acceptSelectComponent(_props: ComponentPropsWithoutRef<typeof Select>) {}
 function acceptTriggerProps(_props: SelectTriggerProps) {}
 function acceptValueProps(_props: SelectValueProps) {}
+function acceptValueComponent(_props: ComponentPropsWithRef<typeof SelectValue>) {}
 function acceptContentProps(_props: SelectContentProps) {}
 function acceptGroupProps(_props: SelectGroupProps) {}
+function acceptGroupComponent(_props: ComponentPropsWithRef<typeof SelectGroup>) {}
 function acceptItemProps(_props: SelectItemProps) {}
 
 describe("Select", () => {
@@ -88,7 +91,18 @@ describe("Select", () => {
 
 	it("accepts named props types and rejects illegal values", () => {
 		acceptSelectProps({ value: "1" });
+		acceptSelectComponent({ value: "1" });
 		acceptSelectProps({
+			defaultValue: "1",
+			onValueChange: () => undefined,
+			open: false,
+			defaultOpen: true,
+			disabled: true,
+			name: "version",
+			required: true,
+			form: "signup",
+		});
+		acceptSelectComponent({
 			defaultValue: "1",
 			onValueChange: () => undefined,
 			open: false,
@@ -101,9 +115,20 @@ describe("Select", () => {
 		acceptTriggerProps({ className: "extra", id: "trigger", "aria-label": "Version" });
 		acceptValueProps({ placeholder: "Select version" });
 		acceptValueProps({ placeholder: <span>Choose</span> });
+		acceptValueComponent({
+			placeholder: "Select version",
+			className: "value",
+			id: "value",
+			ref: createRef<HTMLSpanElement>(),
+		});
 		acceptContentProps({ position: "popper", sideOffset: 4 });
 		acceptContentProps({ position: "item-aligned" });
 		acceptGroupProps({ className: "group", id: "group" });
+		acceptGroupComponent({
+			className: "group",
+			id: "group",
+			ref: createRef<HTMLDivElement>(),
+		});
 		acceptItemProps({ value: "1" });
 		acceptItemProps({
 			value: "1",
@@ -115,7 +140,11 @@ describe("Select", () => {
 		// @ts-expect-error value must be a string
 		acceptSelectProps({ value: 1 });
 		// @ts-expect-error value must be a string
+		acceptSelectComponent({ value: 1 });
+		// @ts-expect-error value must be a string
 		acceptSelectProps({ value: {} });
+		// @ts-expect-error value must be a string
+		acceptSelectComponent({ value: {} });
 		// @ts-expect-error position must be item-aligned or popper
 		acceptContentProps({ position: "top" });
 		// @ts-expect-error sideOffset must be a number
@@ -126,6 +155,28 @@ describe("Select", () => {
 		acceptItemProps({ value: 1 });
 		// @ts-expect-error value must be a string
 		acceptItemProps({ value: {} });
+	});
+
+	it("forwards value and group refs and inherited attributes", () => {
+		const valueRef = createRef<HTMLSpanElement>();
+		const groupRef = createRef<HTMLDivElement>();
+		render(
+			<Select defaultOpen>
+				<SelectTrigger aria-label="Version">
+					<SelectValue ref={valueRef} id="select-value" placeholder="Select version" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectGroup ref={groupRef} className="group-extra" id="version-group">
+						<SelectItem value="1">v1</SelectItem>
+					</SelectGroup>
+				</SelectContent>
+			</Select>,
+		);
+		expect(valueRef.current).toBeInstanceOf(HTMLSpanElement);
+		expect(valueRef.current).toHaveAttribute("id", "select-value");
+		expect(groupRef.current).toBeInstanceOf(HTMLDivElement);
+		expect(groupRef.current).toHaveClass("group-extra");
+		expect(groupRef.current).toHaveAttribute("id", "version-group");
 	});
 
 	it("forwards trigger ref and className", () => {
