@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2B3 D070 — 全站可达集合已完成，待固化 S2B4 拆包规格
-> 当前代码前置：`c20d0f2`（D070 review-fix 已提交，工作树干净）
+> 当前切片：S2B4a D071 — 轻量 page-status manifest 与全路由 lazy 边界；规格已固化，待 Grok 实现
+> 当前代码前置：`24bf726`（D070 台账已提交，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
 
@@ -129,7 +129,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 完成（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062、S2A35 D063、S2A36 D064、S2A37 D065、S2A38 D066、S2A39 D067） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
-| S2B | 文档页 IA、搜索、分类、成熟度过滤 | 执行中（S2B1–S2B3 完成，S2B4 待固化） | 不再平铺 88 个等权方块；placeholder 不可达 |
+| S2B | 文档页 IA、搜索、分类、成熟度过滤 | 执行中（S2B1–S2B3 完成，S2B4a D071 待实现） | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 待办 | 泛型、group/multiple/loading/error/range + browser 门完整 |
@@ -679,7 +679,19 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
 
    模型测试须锁全 96 项的 `84 / 12` 和上述精确 planned 集合，并继续证明 docs + hero 缺一即 planned；Sidebar 测试须锁 84 个 catalog ready button 可用、12 个 planned button 原生 disabled 且可见状态、planned click/Enter/Space 不改 pathname、代表性 ready 项仍导航。Command Palette 测试须锁同一 12 个 disabled item、状态可见、搜索 planned 名称仍可发现但 click/Enter 不导航或关闭、代表性 ready 结果可选择并关闭后导航；页面测试继续锁首页三个 planned title 无链接、直接 `/ui/maps` 为 placeholder、未知 slug 为 missing。提交前运行 catalog-index/AppSidebar/page focused tests、`bun run catalog-api:check`、typecheck、Biome、串行全量、coverage 与 showcase production build；coverage 四项不得低于 D069 的 `97.13 / 95.44 / 95.89 / 97.32`，既有约 1.58 MB chunk warning 留待 S2B4。必须用真实 Chromium 在 7003 既有服务上验证桌面 Sidebar 与约 390px mobile Sheet、ready 导航、12 个 planned 禁用、Command Palette 搜索/键盘选择、planned/unknown deep link 区分、light/dark 无横向溢出及 console/page error/failed network 0；不得停止 7003/PID 95907。只做一个绿色原子提交，建议 `fix: disable planned catalog navigation`，随后停止等待 Codex review。
 
-4. **S2B4 — 路由与文档数据拆包。** 在 IA 与可达性稳定后再拆 route/catalog-ready/examples 数据，解释并关闭当前约 1.57 MB 单 JS chunk warning；不得以隐藏功能、删除 examples 或绕过真实 production build 换体积。
+4. **S2B4 — 路由与文档数据拆包。** 在 IA 与可达性稳定后再拆 route/catalog-ready/examples 数据，解释并关闭当前约 1.58 MB 单 JS chunk warning；不得以隐藏功能、删除 examples、调高 `chunkSizeWarningLimit`、关闭 warning 或绕过真实 production build 换体积。现场依赖链为 `AppSidebar → catalog-index → docs/demos → catalog-ready/kumo-examples`，因此只把 `App.tsx` 页面改成 `React.lazy` 不能算完成；必须先让常驻 shell 只消费轻量、可验证的页面状态，再拆重型数据。
+
+   **S2B4a / D071 — 轻量 page-status manifest 与全路由 lazy 边界。** 以 `24bf726` 为干净基线。新增确定性生成、显式 write/check 的轻量 catalog page-status manifest；生成输入必须通过 Vite 的真实模块解析加载 `CATALOG`、`CATALOG_DOCS` 与 `UI_EXAMPLES`，并继续以 docs + hero 缺一即 planned 的同一 fail-closed 规则得到 96 项 `84 / 12`。产物只能包含 slug 与 `ready | planned` 等 shell 所需纯数据，不得包含 React element、docs、scenario code、component/chart import，也不得手写第二份 ready/planned slug allowlist。正常 `typecheck` 与 showcase `build` 必须先 byte-check manifest，发现缺失或陈旧时失败并提示唯一生成命令，不能在构建中静默改写工作树；生成两次必须逐字一致。重型 `resolveCatalogPageState` 继续为详情页返回真实 docs/hero，且测试必须证明 generated status 与它对全 96 项完全一致。
+
+   `AppSidebar` 改为只消费轻量 manifest，不得再从常驻依赖闭包静态进入 `catalog-index`、`docs`、`demos`、`catalog-ready` 或 `kumo-examples`；D070 的 84 Ready / 12 Planned、Maps/Colors 搜索语义、桌面/移动禁用与深链语义全部冻结。`App.tsx` 中所有 dashboard、catalog 与 standalone page module 改为真实动态 import 的 route boundary；provider、router、Toaster、DashboardLayout 等 shell 保持常驻。必须提供统一、可访问且无布局溢出的 Suspense loading UI，不能为每个 route 复制 fallback，也不能把 route import promise 提前执行成伪 lazy。现有路径、嵌套 layout、404、title/breadcrumb、页面 state、preview 交互和 light/dark 均不得漂移。
+
+   D071 的 production build 必须产出多个真实 JS chunks；入口 chunk 必须低于 500 kB，production manifest/module graph 必须证明入口与 `DashboardLayout`/`AppSidebar` 的静态闭包不含 `catalog-ready.tsx`、`kumo-examples.tsx`、`docs.ts`、`demos.tsx` 或任一 page module。真实 Chromium 从冷 context 直接打开 `/` 时不得请求 catalog/docs/examples chunks，随后客户端导航 `/ui`、`/ui/button`、`/ui/chart-colors`、`/login` 与 unknown route 均须显示同一最终内容且无白屏、重复 shell、console/page error 或 hydration fault；1440px/390px light/dark 无横向溢出。D071 可如实保留仅属于 lazy catalog route 的 >500 kB warning，但必须报告每个 chunk 的实际尺寸和剩余静态闭包；最终所有 warning 由 D072 关闭，不能在 D071 伪报 S2B 完成。
+
+   允许修改根 `package.json`、`src/App.tsx`、`src/components/AppSidebar.tsx`、`src/pages/ui/catalog-index.ts`，新增最小的 `scripts/catalog-page-status*`、`src/pages/ui/catalog-page-status.ts`、`src/pages/ui/generated/catalog-page-status.ts` 与对应 tests，并修改 `src/test/components/AppSidebar.test.tsx`、必要的 App/route/build-contract tests。若能保持命令一致，可复用现有 catalog-api CLI/check 基础设施，但不得把两个生成器的业务模型混成一份。不得修改 `CATALOG` inventory/顺序/kind、docs/scenario/example 内容、`catalog-ready.tsx`、`kumo-examples.tsx`、任何 package 生产组件/API/CSS、依赖/lock、coverage/Husky/consumer、全局 tokens，亦不得进入 D072 的物理数据分组。
+
+   提交前运行 manifest generator focused tests、generate + 连续两次 check、route/AppSidebar/catalog focused tests、`bun run typecheck`、Biome、串行全量、coverage 与真实 showcase production build；coverage不得低于 D070 的 `97.13 / 95.53 / 95.89 / 97.32`，构建后 generated 字节与工作树必须干净。使用 Playwright Chromium 在 7003 既有服务上复验 D070 全部导航门及上述 route 行为；不得停止 7003/PID 95907。只做一个绿色原子提交，建议 `perf: lazy load application routes`，提交后报告 commit、生成命令、文件、测试、entry/lazy chunk 明细、仍超限的 chunk 与浏览器证据，停止等待 Codex review。
+
+   **S2B4b / D072 — docs/examples 家族拆包与最终体积门。** D071 验收后再按实际 module graph 固化授权范围：把 `catalog-ready`、`kumo-examples`、docs 与 source-backed examples 拆成可按 slug/family 动态取得的数据模块，保持全部 84 ready 页、首页 87 卡及每个 preview/code/API/Copy page 的真值，不让一个详情页下载无关 chart/form/overlay 家族。最终 production build 的每个 JS chunk 均低于 500 kB，0 chunk warning，并以机器门和冷浏览器网络证据锁住；不得靠 manual vendor 名单掩盖仍然全量下载的数据图。
 
 ### 6.4 S3 — 可直接提取的通用组合
 
