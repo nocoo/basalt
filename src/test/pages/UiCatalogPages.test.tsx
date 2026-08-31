@@ -22,7 +22,10 @@ import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { CATALOG_API } from "@/pages/ui/generated/catalog-api";
 import { KUMO_DOCS_SLUGS } from "@/pages/ui/kumo-list";
 import UiIndexPage from "@/pages/ui/UiIndexPage";
-import UiPlaceholderPage from "@/pages/ui/UiPlaceholderPage";
+import UiPlaceholderPage, {
+	CatalogApiReference,
+	catalogApiSurfaceId,
+} from "@/pages/ui/UiPlaceholderPage";
 
 function renderCatalog(path: string) {
 	return render(
@@ -301,8 +304,8 @@ describe("ui catalog", () => {
 	it("sources button API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS.button?.props).toEqual(CATALOG_API.button);
-		expect(CATALOG_API.button.map((prop) => prop.name)).toEqual([
+		expect(CATALOG_DOCS.button?.api).toEqual(CATALOG_API.button);
+		expect(CATALOG_API.button[0]?.props.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",
 			"asChild",
@@ -312,7 +315,12 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/button");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		for (const prop of CATALOG_API.button) {
+		const heading = document.getElementById("api-Button");
+		expect(heading?.tagName).toBe("H3");
+		expect(heading).toHaveTextContent("Button");
+		expect(screen.getByRole("table", { name: "Button props" })).toBeInTheDocument();
+		expect(document.querySelector('[data-toc-id="api-Button"]')).toBeTruthy();
+		for (const prop of CATALOG_API.button[0]?.props ?? []) {
 			expect(api).toHaveTextContent(prop.name);
 			expect(api).toHaveTextContent(prop.type);
 			expect(api).toHaveTextContent(`${prop.name}?`);
@@ -321,7 +329,9 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		for (const prop of CATALOG_API.button) {
+		expect(markdown).toContain("### Button");
+		expect(markdown.indexOf("## API Reference")).toBeLessThan(markdown.indexOf("### Button"));
+		for (const prop of CATALOG_API.button[0]?.props ?? []) {
 			expect(markdown).toContain(`- ${prop.name} (${prop.type}, optional`);
 		}
 	});
@@ -333,7 +343,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain("props: CATALOG_API.button");
+		expect(block).toContain("api: CATALOG_API.button");
 		expect(block).not.toContain('name: "variant"');
 		expect(block).not.toContain('name: "asChild"');
 		expect(block).not.toContain('name: "loading"');
@@ -341,11 +351,40 @@ describe("ui catalog", () => {
 		expect(block).not.toContain("ReactNode");
 	});
 
+	it("renders multiple and empty API surfaces in declaration order", () => {
+		render(
+			<CatalogApiReference
+				api={[
+					{
+						name: "Alpha",
+						props: [{ name: "one", type: "string", required: true, description: "First" }],
+					},
+					{ name: "Beta", props: [] },
+				]}
+			/>,
+		);
+		const alpha = document.getElementById(catalogApiSurfaceId("Alpha"));
+		const beta = document.getElementById(catalogApiSurfaceId("Beta"));
+		expect(alpha?.tagName).toBe("H3");
+		expect(beta?.tagName).toBe("H3");
+		expect(alpha).toHaveTextContent("Alpha");
+		expect(beta).toHaveTextContent("Beta");
+		if (!alpha || !beta) {
+			throw new Error("missing API surface headings");
+		}
+		expect(alpha.compareDocumentPosition(beta) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
+			Node.DOCUMENT_POSITION_FOLLOWING,
+		);
+		expect(screen.getByRole("table", { name: "Alpha props" })).toHaveTextContent("one");
+		expect(screen.queryByRole("table", { name: "Beta props" })).not.toBeInTheDocument();
+		expect(beta?.parentElement).toHaveTextContent("No component-specific props.");
+	});
+
 	it("sources link-button API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS["link-button"]?.props).toEqual(CATALOG_API["link-button"]);
-		expect(CATALOG_API["link-button"]?.map((prop) => prop.name)).toEqual([
+		expect(CATALOG_DOCS["link-button"]?.api).toEqual(CATALOG_API["link-button"]);
+		expect(CATALOG_API["link-button"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",
 			"icon",
@@ -353,7 +392,7 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/link-button");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		for (const prop of CATALOG_API["link-button"] ?? []) {
+		for (const prop of CATALOG_API["link-button"]?.[0]?.props ?? []) {
 			expect(api).toHaveTextContent(prop.name);
 			expect(api).toHaveTextContent(prop.type);
 			expect(api).toHaveTextContent(`${prop.name}?`);
@@ -365,7 +404,7 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		for (const prop of CATALOG_API["link-button"] ?? []) {
+		for (const prop of CATALOG_API["link-button"]?.[0]?.props ?? []) {
 			expect(markdown).toContain(`- ${prop.name} (${prop.type}, optional`);
 		}
 		expect(markdown).toContain('<LinkButton href="/docs">');
@@ -379,7 +418,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain('props: CATALOG_API["link-button"]');
+		expect(block).toContain('api: CATALOG_API["link-button"]');
 		expect(block).not.toContain('name: "variant"');
 		expect(block).not.toContain('name: "size"');
 		expect(block).not.toContain('name: "icon"');
@@ -391,12 +430,12 @@ describe("ui catalog", () => {
 	it("sources text API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS.text?.props).toEqual(CATALOG_API.text);
-		expect(CATALOG_API.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(CATALOG_DOCS.text?.api).toEqual(CATALOG_API.text);
+		expect(CATALOG_API.text?.[0]?.props.map((prop) => prop.name)).toEqual(["size", "tone"]);
 		renderCatalog("/ui/text");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		for (const prop of CATALOG_API.text ?? []) {
+		for (const prop of CATALOG_API.text?.[0]?.props ?? []) {
 			expect(api).toHaveTextContent(prop.name);
 			expect(api).toHaveTextContent(prop.type);
 			expect(api).toHaveTextContent(`${prop.name}?`);
@@ -411,7 +450,7 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		for (const prop of CATALOG_API.text ?? []) {
+		for (const prop of CATALOG_API.text?.[0]?.props ?? []) {
 			expect(markdown).toContain(`- ${prop.name} (${prop.type}, optional`);
 		}
 		expect(markdown).toContain("<Text tone='muted'>Copy</Text>");
@@ -426,7 +465,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain("props: CATALOG_API.text");
+		expect(block).toContain("api: CATALOG_API.text");
 		expect(block).not.toContain('name: "size"');
 		expect(block).not.toContain('name: "tone"');
 		expect(block).toContain("<Text tone='muted'>Copy</Text>");
@@ -435,14 +474,17 @@ describe("ui catalog", () => {
 	it("sources label API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS.label?.props).toEqual(CATALOG_API.label);
-		expect(CATALOG_API.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
-		expect(CATALOG_API.label).toHaveLength(2);
+		expect(CATALOG_DOCS.label?.api).toEqual(CATALOG_API.label);
+		expect(CATALOG_API.label?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"showOptional",
+			"tooltip",
+		]);
+		expect(CATALOG_API.label?.[0]?.props).toHaveLength(2);
 		renderCatalog("/ui/label");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
 		expect(api?.querySelectorAll("tbody tr")).toHaveLength(2);
-		for (const prop of CATALOG_API.label ?? []) {
+		for (const prop of CATALOG_API.label?.[0]?.props ?? []) {
 			expect(api).toHaveTextContent(prop.name);
 			expect(api).toHaveTextContent(prop.type);
 			expect(api).toHaveTextContent(`${prop.name}?`);
@@ -463,7 +505,7 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		for (const prop of CATALOG_API.label ?? []) {
+		for (const prop of CATALOG_API.label?.[0]?.props ?? []) {
 			expect(markdown).toContain(`- ${prop.name} (${prop.type}, optional`);
 			if (prop.description) {
 				expect(markdown).toContain(prop.description);
@@ -483,7 +525,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain("props: CATALOG_API.label");
+		expect(block).toContain("api: CATALOG_API.label");
 		expect(block).not.toContain('name: "htmlFor"');
 		expect(block).not.toContain('name: "showOptional"');
 		expect(block).not.toContain('name: "tooltip"');
@@ -494,14 +536,17 @@ describe("ui catalog", () => {
 	it("sources separator API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS.separator?.props).toEqual(CATALOG_API.separator);
-		expect(CATALOG_API.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
-		expect(CATALOG_API.separator).toHaveLength(2);
+		expect(CATALOG_DOCS.separator?.api).toEqual(CATALOG_API.separator);
+		expect(CATALOG_API.separator?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"orientation",
+			"decorative",
+		]);
+		expect(CATALOG_API.separator?.[0]?.props).toHaveLength(2);
 		renderCatalog("/ui/separator");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
 		expect(api?.querySelectorAll("tbody tr")).toHaveLength(2);
-		for (const prop of CATALOG_API.separator ?? []) {
+		for (const prop of CATALOG_API.separator?.[0]?.props ?? []) {
 			expect(api).toHaveTextContent(prop.name);
 			expect(api).toHaveTextContent(prop.type);
 			expect(api).toHaveTextContent(`${prop.name}?`);
@@ -522,7 +567,7 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		for (const prop of CATALOG_API.separator ?? []) {
+		for (const prop of CATALOG_API.separator?.[0]?.props ?? []) {
 			expect(markdown).toContain(`- ${prop.name} (${prop.type}, optional`);
 			if (prop.description) {
 				expect(markdown).toContain(prop.description);
@@ -543,7 +588,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain("props: CATALOG_API.separator");
+		expect(block).toContain("api: CATALOG_API.separator");
 		expect(block).not.toContain('name: "orientation"');
 		expect(block).not.toContain('name: "decorative"');
 		expect(block).toContain("<Separator orientation='horizontal' />");
@@ -552,14 +597,19 @@ describe("ui catalog", () => {
 	it("sources link API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS.link?.props).toEqual(CATALOG_API.link);
-		expect(CATALOG_API.link?.map((prop) => prop.name)).toEqual(["href"]);
+		expect(CATALOG_DOCS.link?.api).toEqual(CATALOG_API.link);
+		expect(CATALOG_API.link?.[0]?.props.map((prop) => prop.name)).toEqual(["href"]);
 		expect(CATALOG_API.link).toEqual([
 			{
-				name: "href",
-				type: "string",
-				required: true,
-				description: "The link destination.",
+				name: "Link",
+				props: [
+					{
+						name: "href",
+						type: "string",
+						required: true,
+						description: "The link destination.",
+					},
+				],
 			},
 		]);
 		renderCatalog("/ui/link");
@@ -602,7 +652,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain("props: CATALOG_API.link");
+		expect(block).toContain("api: CATALOG_API.link");
 		expect(block).not.toContain('name: "href"');
 		expect(block).toContain('<LinkProvider><Link href="/ui">Library</Link></LinkProvider>');
 	});
@@ -610,15 +660,20 @@ describe("ui catalog", () => {
 	it("sources tooltip API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS.tooltip?.props).toEqual(CATALOG_API.tooltip);
-		expect(CATALOG_API.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(CATALOG_DOCS.tooltip?.api).toEqual(CATALOG_API.tooltip);
+		expect(CATALOG_API.tooltip?.[0]?.props.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(CATALOG_API.tooltip).toEqual([
 			{
-				name: "delayDuration",
-				type: "number",
-				required: false,
-				default: "700",
-				description: "Delay before the tooltip opens, in milliseconds.",
+				name: "Tooltip",
+				props: [
+					{
+						name: "delayDuration",
+						type: "number",
+						required: false,
+						default: "700",
+						description: "Delay before the tooltip opens, in milliseconds.",
+					},
+				],
 			},
 		]);
 		renderCatalog("/ui/tooltip");
@@ -663,7 +718,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain("props: CATALOG_API.tooltip");
+		expect(block).toContain("api: CATALOG_API.tooltip");
 		expect(block).not.toContain('name: "delayDuration"');
 		expect(block).toContain(
 			"<TooltipProvider><Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip></TooltipProvider>",
@@ -673,14 +728,21 @@ describe("ui catalog", () => {
 	it("sources theme-toggle API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS["theme-toggle"]?.props).toEqual(CATALOG_API["theme-toggle"]);
-		expect(CATALOG_API["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+		expect(CATALOG_DOCS["theme-toggle"]?.api).toEqual(CATALOG_API["theme-toggle"]);
+		expect(CATALOG_API["theme-toggle"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"aria-label",
+		]);
 		expect(CATALOG_API["theme-toggle"]).toEqual([
 			{
-				name: "aria-label",
-				type: "string",
-				required: true,
-				description: "Accessible name for the toggle.",
+				name: "ThemeToggle",
+				props: [
+					{
+						name: "aria-label",
+						type: "string",
+						required: true,
+						description: "Accessible name for the toggle.",
+					},
+				],
 			},
 		]);
 		renderCatalog("/ui/theme-toggle");
@@ -725,7 +787,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain('props: CATALOG_API["theme-toggle"]');
+		expect(block).toContain('api: CATALOG_API["theme-toggle"]');
 		expect(block).not.toContain('name: "aria-label"');
 		expect(block).toContain(
 			'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
@@ -735,14 +797,19 @@ describe("ui catalog", () => {
 	it("sources layer-card API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS["layer-card"]?.props).toEqual(CATALOG_API["layer-card"]);
-		expect(CATALOG_API["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(CATALOG_DOCS["layer-card"]?.api).toEqual(CATALOG_API["layer-card"]);
+		expect(CATALOG_API["layer-card"]?.[0]?.props.map((prop) => prop.name)).toEqual(["className"]);
 		expect(CATALOG_API["layer-card"]).toEqual([
 			{
-				name: "className",
-				type: "string",
-				required: false,
-				description: "Additional classes for the card root.",
+				name: "LayerCard",
+				props: [
+					{
+						name: "className",
+						type: "string",
+						required: false,
+						description: "Additional classes for the card root.",
+					},
+				],
 			},
 		]);
 		renderCatalog("/ui/layer-card");
@@ -788,7 +855,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain('props: CATALOG_API["layer-card"]');
+		expect(block).toContain('api: CATALOG_API["layer-card"]');
 		expect(block).not.toContain('name: "className"');
 		expect(block).toContain(
 			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
@@ -798,14 +865,19 @@ describe("ui catalog", () => {
 	it("sources basalt-mark API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS["basalt-mark"]?.props).toEqual(CATALOG_API["basalt-mark"]);
-		expect(CATALOG_API["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(CATALOG_DOCS["basalt-mark"]?.api).toEqual(CATALOG_API["basalt-mark"]);
+		expect(CATALOG_API["basalt-mark"]?.[0]?.props.map((prop) => prop.name)).toEqual(["className"]);
 		expect(CATALOG_API["basalt-mark"]).toEqual([
 			{
-				name: "className",
-				type: "string",
-				required: false,
-				description: "Additional classes for the mark.",
+				name: "BasaltMark",
+				props: [
+					{
+						name: "className",
+						type: "string",
+						required: false,
+						description: "Additional classes for the mark.",
+					},
+				],
 			},
 		]);
 		renderCatalog("/ui/basalt-mark");
@@ -844,7 +916,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain('props: CATALOG_API["basalt-mark"]');
+		expect(block).toContain('api: CATALOG_API["basalt-mark"]');
 		expect(block).not.toContain('name: "className"');
 		expect(block).toContain('description: "Basalt mark."');
 		expect(block).toContain("<BasaltMark />");
@@ -857,8 +929,8 @@ describe("ui catalog", () => {
 	it("sources field API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS.field?.props).toEqual(CATALOG_API.field);
-		expect(CATALOG_API.field?.map((prop) => prop.name)).toEqual([
+		expect(CATALOG_DOCS.field?.api).toEqual(CATALOG_API.field);
+		expect(CATALOG_API.field?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"label",
 			"htmlFor",
 			"hint",
@@ -920,7 +992,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain("props: CATALOG_API.field");
+		expect(block).toContain("api: CATALOG_API.field");
 		expect(block).not.toContain('name: "label"');
 		expect(block).not.toContain('name: "htmlFor"');
 		expect(block).toContain('description: "A labeled control with optional hint and error."');
@@ -933,13 +1005,18 @@ describe("ui catalog", () => {
 	it("sources input API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS.input?.props).toEqual(CATALOG_API.input);
+		expect(CATALOG_DOCS.input?.api).toEqual(CATALOG_API.input);
 		expect(CATALOG_API.input).toEqual([
 			{
-				name: "type",
-				type: "React.HTMLInputTypeAttribute",
-				required: false,
-				description: "The type of input control to render.",
+				name: "Input",
+				props: [
+					{
+						name: "type",
+						type: "React.HTMLInputTypeAttribute",
+						required: false,
+						description: "The type of input control to render.",
+					},
+				],
 			},
 		]);
 		renderCatalog("/ui/input");
@@ -979,7 +1056,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain("props: CATALOG_API.input");
+		expect(block).toContain("api: CATALOG_API.input");
 		expect(block).not.toContain('name: "type"');
 		expect(block).not.toContain('type: "string"');
 		expect(block).toContain(
@@ -994,13 +1071,18 @@ describe("ui catalog", () => {
 	it("sources input-area API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
-		expect(CATALOG_DOCS["input-area"]?.props).toEqual(CATALOG_API["input-area"]);
+		expect(CATALOG_DOCS["input-area"]?.api).toEqual(CATALOG_API["input-area"]);
 		expect(CATALOG_API["input-area"]).toEqual([
 			{
-				name: "rows",
-				type: "number",
-				required: false,
-				description: "The visible text row count.",
+				name: "InputArea",
+				props: [
+					{
+						name: "rows",
+						type: "number",
+						required: false,
+						description: "The visible text row count.",
+					},
+				],
 			},
 		]);
 		renderCatalog("/ui/input-area");
@@ -1039,7 +1121,7 @@ describe("ui catalog", () => {
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
-		expect(block).toContain('props: CATALOG_API["input-area"]');
+		expect(block).toContain('api: CATALOG_API["input-area"]');
 		expect(block).not.toContain('name: "rows"');
 		expect(block).not.toContain('type: "number"');
 		expect(block).toContain('description: "A multi-line text field on the L3 surface."');
@@ -1065,7 +1147,8 @@ describe("ui catalog", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		renderCatalog("/ui/banner");
-		expect(screen.getByRole("heading", { name: "Banner" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { level: 1, name: "Banner" })).toBeInTheDocument();
+		expect(document.getElementById("api-Banner")?.tagName).toBe("H3");
 		for (const title of [
 			"Variants",
 			"With icon",
@@ -1923,6 +2006,45 @@ describe("ui catalog", () => {
 		expect(markdown).toContain('className="text-basalt-heatmap-green-3"');
 		expect(markdown).toContain("<Loader size={16} />");
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		expect(CATALOG_DOCS["input-group"]?.api).toEqual([
+			{
+				name: "InputGroup",
+				props: [
+					{ name: "InputGroup.Input", type: "input", description: "The editable value." },
+					{
+						name: "InputGroup.Suffix",
+						type: "ReactNode",
+						description: "Inline text that sits against the value, such as a domain.",
+					},
+					{
+						name: "InputGroup.Addon",
+						type: '"start" | "end"',
+						description: "Leading or trailing icons, text, or buttons.",
+					},
+					{
+						name: "InputGroup.Button",
+						type: "button",
+						description: "Compact action inside an addon.",
+					},
+				],
+			},
+		]);
+		expect(document.getElementById("api-InputGroup")?.tagName).toBe("H3");
+		expect(screen.getByRole("table", { name: "InputGroup props" })).toBeInTheDocument();
+		expect(markdown).toContain("### InputGroup");
+		expect(markdown).not.toContain("### InputGroup.Input");
+	});
+
+	it("does not special-case InputGroup or vendor names in the API page or generator", () => {
+		const generator = readFileSync(path.join(process.cwd(), "scripts/catalog-api.ts"), "utf8");
+		const page = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/UiPlaceholderPage.tsx"),
+			"utf8",
+		);
+		expect(generator).not.toMatch(/input-group|InputGroup/);
+		expect(generator).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
+		expect(page).not.toMatch(/input-group|InputGroup/);
+		expect(page).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 	});
 
 	it("does not keep inline input-area scenario owners", () => {

@@ -6,6 +6,8 @@ export interface CatalogApiTarget {
 	slug: string;
 	sourceFile: string;
 	propsType: string;
+	surface: string;
+	allowEmpty?: true;
 }
 
 export interface CatalogApiProp {
@@ -16,71 +18,89 @@ export interface CatalogApiProp {
 	description?: string;
 }
 
+export interface CatalogApiSurface {
+	name: string;
+	props: CatalogApiProp[];
+}
+
 export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "button",
 		sourceFile: "packages/basalt/src/components/button.tsx",
 		propsType: "ButtonProps",
+		surface: "Button",
 	},
 	{
 		slug: "link-button",
 		sourceFile: "packages/basalt/src/components/button.tsx",
 		propsType: "LinkButtonProps",
+		surface: "LinkButton",
 	},
 	{
 		slug: "text",
 		sourceFile: "packages/basalt/src/components/text.tsx",
 		propsType: "TextProps",
+		surface: "Text",
 	},
 	{
 		slug: "label",
 		sourceFile: "packages/basalt/src/components/label.tsx",
 		propsType: "LabelProps",
+		surface: "Label",
 	},
 	{
 		slug: "separator",
 		sourceFile: "packages/basalt/src/components/separator.tsx",
 		propsType: "SeparatorProps",
+		surface: "Separator",
 	},
 	{
 		slug: "link",
 		sourceFile: "packages/basalt/src/components/link.tsx",
 		propsType: "LinkProps",
+		surface: "Link",
 	},
 	{
 		slug: "tooltip",
 		sourceFile: "packages/basalt/src/components/tooltip.tsx",
 		propsType: "TooltipProps",
+		surface: "Tooltip",
 	},
 	{
 		slug: "theme-toggle",
 		sourceFile: "packages/basalt/src/components/theme-toggle.tsx",
 		propsType: "ThemeToggleProps",
+		surface: "ThemeToggle",
 	},
 	{
 		slug: "layer-card",
 		sourceFile: "packages/basalt/src/components/layer-card.tsx",
 		propsType: "LayerCardProps",
+		surface: "LayerCard",
 	},
 	{
 		slug: "basalt-mark",
 		sourceFile: "packages/basalt/src/components/basalt-mark.tsx",
 		propsType: "BasaltMarkProps",
+		surface: "BasaltMark",
 	},
 	{
 		slug: "field",
 		sourceFile: "packages/basalt/src/components/field.tsx",
 		propsType: "FieldProps",
+		surface: "Field",
 	},
 	{
 		slug: "input",
 		sourceFile: "packages/basalt/src/components/input.tsx",
 		propsType: "InputProps",
+		surface: "Input",
 	},
 	{
 		slug: "input-area",
 		sourceFile: "packages/basalt/src/components/input-area.tsx",
 		propsType: "InputAreaProps",
+		surface: "InputArea",
 	},
 ];
 
@@ -946,9 +966,6 @@ function extractTargetProps(
 		});
 	}
 
-	if (collected.length === 0) {
-		failCatalogApi(`empty result for ${target.slug}`);
-	}
 	collected.sort((left, right) => left.position - right.position);
 	return collected.map((item) => item.prop);
 }
@@ -957,18 +974,33 @@ export function generateCatalogApi(input: {
 	repoRoot: string;
 	tsconfigPath: string;
 	targets: CatalogApiTarget[];
-}): Record<string, CatalogApiProp[]> {
-	const slugs = new Set<string>();
+}): Record<string, CatalogApiSurface[]> {
+	const surfacesBySlug = new Map<string, Set<string>>();
 	for (const target of input.targets) {
-		if (slugs.has(target.slug)) {
-			failCatalogApi(`duplicate slug ${target.slug}`);
+		if (!target.surface) {
+			failCatalogApi(`missing surface for ${target.slug}`);
 		}
-		slugs.add(target.slug);
+		const names = surfacesBySlug.get(target.slug) ?? new Set<string>();
+		if (names.has(target.surface)) {
+			failCatalogApi(`duplicate surface ${target.surface} for ${target.slug}`);
+		}
+		names.add(target.surface);
+		surfacesBySlug.set(target.slug, names);
 	}
 	const program = createCatalogApiProgram(input.repoRoot, input.tsconfigPath);
-	const result: Record<string, CatalogApiProp[]> = {};
+	const result: Record<string, CatalogApiSurface[]> = {};
 	for (const target of input.targets) {
-		result[target.slug] = extractTargetProps(program, input.repoRoot, target);
+		const props = extractTargetProps(program, input.repoRoot, target);
+		if (props.length === 0) {
+			if (target.allowEmpty !== true) {
+				failCatalogApi(`empty result for ${target.slug}`);
+			}
+		} else if (target.allowEmpty === true) {
+			failCatalogApi(`allowEmpty expired for ${target.slug} surface ${target.surface}`);
+		}
+		const surfaces = result[target.slug] ?? [];
+		surfaces.push({ name: target.surface, props });
+		result[target.slug] = surfaces;
 	}
 	return result;
 }
@@ -986,29 +1018,37 @@ function emitKey(key: string): string {
 
 function renderProp(prop: CatalogApiProp): string {
 	const lines = [
-		"\t\t{",
-		`\t\t\tname: ${emitString(prop.name)},`,
-		`\t\t\ttype: ${emitString(prop.type)},`,
-		`\t\t\trequired: ${prop.required ? "true" : "false"},`,
+		"\t\t\t\t{",
+		`\t\t\t\t\tname: ${emitString(prop.name)},`,
+		`\t\t\t\t\ttype: ${emitString(prop.type)},`,
+		`\t\t\t\t\trequired: ${prop.required ? "true" : "false"},`,
 	];
 	if (prop.default !== undefined) {
-		lines.push(`\t\t\tdefault: ${emitString(prop.default)},`);
+		lines.push(`\t\t\t\t\tdefault: ${emitString(prop.default)},`);
 	}
 	if (prop.description !== undefined) {
-		lines.push(`\t\t\tdescription: ${emitString(prop.description)},`);
+		lines.push(`\t\t\t\t\tdescription: ${emitString(prop.description)},`);
 	}
-	lines.push("\t\t}");
+	lines.push("\t\t\t\t}");
 	return lines.join("\n");
 }
 
-export function renderCatalogApiModule(data: Record<string, CatalogApiProp[]>): string {
+function renderSurface(surface: CatalogApiSurface): string {
+	const propsBlock =
+		surface.props.length === 0
+			? "\t\t\tprops: [],"
+			: `\t\t\tprops: [\n${surface.props.map((prop) => renderProp(prop)).join(",\n")},\n\t\t\t],`;
+	return `\t\t{\n\t\t\tname: ${emitString(surface.name)},\n${propsBlock}\n\t\t}`;
+}
+
+export function renderCatalogApiModule(data: Record<string, CatalogApiSurface[]>): string {
 	const slugs = Object.keys(data).sort();
 	const entries = slugs.map((slug) => {
-		const props = data[slug];
-		if (!props) {
-			failCatalogApi(`missing generated props for ${slug}`);
+		const surfaces = data[slug];
+		if (!surfaces) {
+			failCatalogApi(`missing generated surfaces for ${slug}`);
 		}
-		const rendered = props.map((prop) => renderProp(prop)).join(",\n");
+		const rendered = surfaces.map((surface) => renderSurface(surface)).join(",\n");
 		return `\t${emitKey(slug)}: [\n${rendered},\n\t]`;
 	});
 	return [

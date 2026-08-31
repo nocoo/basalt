@@ -131,7 +131,7 @@ import { AlertTriangle, CircleAlert, Info, Plus, Search, X } from "lucide-react"
 import { type ComponentType, useState } from "react";
 import { CATALOG, type CatalogEntry, catalogImportPath } from "./catalog";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
-import { type CatalogDocsDraft, provenanceFromLegacy } from "./catalog-source";
+import { type CatalogApiProp, type CatalogDocsDraft, provenanceFromLegacy } from "./catalog-source";
 
 const SRC = { repo: "pew", sha: "97a890fabe6e", file: "packages/web/src/components" };
 
@@ -140,7 +140,7 @@ function page(
 	description: string,
 	Demo: ComponentType,
 	sample: string,
-	props: CatalogDocsDraft["props"] = [{ name: "className", type: "string" }],
+	props: CatalogApiProp[] = [{ name: "className", type: "string" }],
 	usage?: string,
 ): { demo: ComponentType; docs: CatalogDocsDraft } {
 	return {
@@ -151,10 +151,15 @@ function page(
 				usage ??
 				`import { ${entry.name.replace(/ /g, "")} } from "${catalogImportPath(entry)}";\n\nexport default function Example() {\n\treturn ${sample};\n}`,
 			variants: [],
-			props: props.map((prop) => ({
-				...prop,
-				description: prop.description ?? prop.name,
-			})),
+			api: [
+				{
+					name: entry.name.replace(/ /g, ""),
+					props: props.map((prop) => ({
+						...prop,
+						description: prop.description ?? prop.name,
+					})),
+				},
+			],
 			provenance: provenanceFromLegacy(SRC),
 		},
 	};
@@ -167,7 +172,7 @@ function add(
 	description: string,
 	Demo: ComponentType,
 	sample: string,
-	props?: CatalogDocsDraft["props"],
+	props?: CatalogApiProp[],
 	usage?: string,
 ) {
 	const entry = CATALOG.find((item) => item.slug === slug);

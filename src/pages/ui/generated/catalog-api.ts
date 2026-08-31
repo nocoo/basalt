@@ -3,184 +3,249 @@
 export const CATALOG_API = {
 	"basalt-mark": [
 		{
-			name: "className",
-			type: "string",
-			required: false,
-			description: "Additional classes for the mark.",
+			name: "BasaltMark",
+			props: [
+				{
+					name: "className",
+					type: "string",
+					required: false,
+					description: "Additional classes for the mark.",
+				},
+			],
 		},
 	],
 	button: [
 		{
-			name: "variant",
-			type: '"default" | "destructive" | "ghost" | "link" | "outline" | "secondary" | null',
-			required: false,
-		},
-		{
-			name: "size",
-			type: '"default" | "icon" | "lg" | "sm" | null',
-			required: false,
-		},
-		{
-			name: "asChild",
-			type: "boolean",
-			required: false,
-		},
-		{
-			name: "loading",
-			type: "boolean",
-			required: false,
-		},
-		{
-			name: "icon",
-			type: "React.ReactNode",
-			required: false,
+			name: "Button",
+			props: [
+				{
+					name: "variant",
+					type: '"default" | "destructive" | "ghost" | "link" | "outline" | "secondary" | null',
+					required: false,
+				},
+				{
+					name: "size",
+					type: '"default" | "icon" | "lg" | "sm" | null',
+					required: false,
+				},
+				{
+					name: "asChild",
+					type: "boolean",
+					required: false,
+				},
+				{
+					name: "loading",
+					type: "boolean",
+					required: false,
+				},
+				{
+					name: "icon",
+					type: "React.ReactNode",
+					required: false,
+				},
+			],
 		},
 	],
 	field: [
 		{
-			name: "label",
-			type: "string",
-			required: true,
-			description: "Visible label text.",
-		},
-		{
-			name: "htmlFor",
-			type: "string",
-			required: false,
-			description: "Associates the label and described-by ids.",
-		},
-		{
-			name: "hint",
-			type: "string",
-			required: false,
-			description: "Supporting text when there is no error.",
-		},
-		{
-			name: "error",
-			type: "string",
-			required: false,
-			description: "Replaces the hint and marks the control invalid.",
-		},
-		{
-			name: "className",
-			type: "string",
-			required: false,
-			description: "Additional classes for the field root.",
-		},
-		{
-			name: "children",
-			type: "React.ReactNode",
-			required: true,
-			description: "The control or content to render.",
+			name: "Field",
+			props: [
+				{
+					name: "label",
+					type: "string",
+					required: true,
+					description: "Visible label text.",
+				},
+				{
+					name: "htmlFor",
+					type: "string",
+					required: false,
+					description: "Associates the label and described-by ids.",
+				},
+				{
+					name: "hint",
+					type: "string",
+					required: false,
+					description: "Supporting text when there is no error.",
+				},
+				{
+					name: "error",
+					type: "string",
+					required: false,
+					description: "Replaces the hint and marks the control invalid.",
+				},
+				{
+					name: "className",
+					type: "string",
+					required: false,
+					description: "Additional classes for the field root.",
+				},
+				{
+					name: "children",
+					type: "React.ReactNode",
+					required: true,
+					description: "The control or content to render.",
+				},
+			],
 		},
 	],
 	input: [
 		{
-			name: "type",
-			type: "React.HTMLInputTypeAttribute",
-			required: false,
-			description: "The type of input control to render.",
+			name: "Input",
+			props: [
+				{
+					name: "type",
+					type: "React.HTMLInputTypeAttribute",
+					required: false,
+					description: "The type of input control to render.",
+				},
+			],
 		},
 	],
 	"input-area": [
 		{
-			name: "rows",
-			type: "number",
-			required: false,
-			description: "The visible text row count.",
+			name: "InputArea",
+			props: [
+				{
+					name: "rows",
+					type: "number",
+					required: false,
+					description: "The visible text row count.",
+				},
+			],
 		},
 	],
 	label: [
 		{
-			name: "showOptional",
-			type: "boolean",
-			required: false,
-			default: "false",
-			description: "Show gray (optional) after the label.",
-		},
-		{
-			name: "tooltip",
-			type: "React.ReactNode",
-			required: false,
-			description: "Info icon with hover text.",
+			name: "Label",
+			props: [
+				{
+					name: "showOptional",
+					type: "boolean",
+					required: false,
+					default: "false",
+					description: "Show gray (optional) after the label.",
+				},
+				{
+					name: "tooltip",
+					type: "React.ReactNode",
+					required: false,
+					description: "Info icon with hover text.",
+				},
+			],
 		},
 	],
 	"layer-card": [
 		{
-			name: "className",
-			type: "string",
-			required: false,
-			description: "Additional classes for the card root.",
+			name: "LayerCard",
+			props: [
+				{
+					name: "className",
+					type: "string",
+					required: false,
+					description: "Additional classes for the card root.",
+				},
+			],
 		},
 	],
 	link: [
 		{
-			name: "href",
-			type: "string",
-			required: true,
-			description: "The link destination.",
+			name: "Link",
+			props: [
+				{
+					name: "href",
+					type: "string",
+					required: true,
+					description: "The link destination.",
+				},
+			],
 		},
 	],
 	"link-button": [
 		{
-			name: "variant",
-			type: '"default" | "destructive" | "ghost" | "link" | "outline" | "secondary" | null',
-			required: false,
-		},
-		{
-			name: "size",
-			type: '"default" | "icon" | "lg" | "sm" | null',
-			required: false,
-		},
-		{
-			name: "icon",
-			type: "React.ReactNode",
-			required: false,
+			name: "LinkButton",
+			props: [
+				{
+					name: "variant",
+					type: '"default" | "destructive" | "ghost" | "link" | "outline" | "secondary" | null',
+					required: false,
+				},
+				{
+					name: "size",
+					type: '"default" | "icon" | "lg" | "sm" | null',
+					required: false,
+				},
+				{
+					name: "icon",
+					type: "React.ReactNode",
+					required: false,
+				},
+			],
 		},
 	],
 	separator: [
 		{
-			name: "orientation",
-			type: '"horizontal" | "vertical"',
-			required: false,
-			default: "horizontal",
-			description: "The orientation of the separator.",
-		},
-		{
-			name: "decorative",
-			type: "boolean",
-			required: false,
-			default: "true",
-			description: "Whether the separator is purely decorative.",
+			name: "Separator",
+			props: [
+				{
+					name: "orientation",
+					type: '"horizontal" | "vertical"',
+					required: false,
+					default: "horizontal",
+					description: "The orientation of the separator.",
+				},
+				{
+					name: "decorative",
+					type: "boolean",
+					required: false,
+					default: "true",
+					description: "Whether the separator is purely decorative.",
+				},
+			],
 		},
 	],
 	text: [
 		{
-			name: "size",
-			type: '"lg" | "md" | "sm" | "xl" | "xs" | null',
-			required: false,
-		},
-		{
-			name: "tone",
-			type: '"default" | "muted" | null',
-			required: false,
+			name: "Text",
+			props: [
+				{
+					name: "size",
+					type: '"lg" | "md" | "sm" | "xl" | "xs" | null',
+					required: false,
+				},
+				{
+					name: "tone",
+					type: '"default" | "muted" | null',
+					required: false,
+				},
+			],
 		},
 	],
 	"theme-toggle": [
 		{
-			name: "aria-label",
-			type: "string",
-			required: true,
-			description: "Accessible name for the toggle.",
+			name: "ThemeToggle",
+			props: [
+				{
+					name: "aria-label",
+					type: "string",
+					required: true,
+					description: "Accessible name for the toggle.",
+				},
+			],
 		},
 	],
 	tooltip: [
 		{
-			name: "delayDuration",
-			type: "number",
-			required: false,
-			default: "700",
-			description: "Delay before the tooltip opens, in milliseconds.",
+			name: "Tooltip",
+			props: [
+				{
+					name: "delayDuration",
+					type: "number",
+					required: false,
+					default: "700",
+					description: "Delay before the tooltip opens, in milliseconds.",
+				},
+			],
 		},
 	],
 };

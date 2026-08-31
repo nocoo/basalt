@@ -239,12 +239,17 @@ describe("foundation feedback scenario truth", () => {
 		expect(example.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 		expect(CATALOG_DOCS["basalt-mark"]?.description).toBe("Basalt mark.");
 		expect(CATALOG_DOCS["basalt-mark"]?.variants).toEqual([]);
-		expect(CATALOG_DOCS["basalt-mark"]?.props).toEqual([
+		expect(CATALOG_DOCS["basalt-mark"]?.api).toEqual([
 			{
-				name: "className",
-				type: "string",
-				required: false,
-				description: "Additional classes for the mark.",
+				name: "BasaltMark",
+				props: [
+					{
+						name: "className",
+						type: "string",
+						required: false,
+						description: "Additional classes for the mark.",
+					},
+				],
 			},
 		]);
 		expect(CATALOG_DOCS["basalt-mark"]?.usage).toContain("<BasaltMark />");

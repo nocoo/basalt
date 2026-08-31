@@ -7,17 +7,24 @@ export interface GitHubSource {
 	file: string;
 }
 
+export interface CatalogApiProp {
+	name: string;
+	type: string;
+	required?: boolean;
+	default?: string;
+	description?: string;
+}
+
+export interface CatalogApiSurface {
+	name: string;
+	props: CatalogApiProp[];
+}
+
 export interface CatalogDocs {
 	description: string;
 	usage: string;
 	variants: string[];
-	props: {
-		name: string;
-		type: string;
-		required?: boolean;
-		default?: string;
-		description?: string;
-	}[];
+	api: CatalogApiSurface[];
 	implementationSource: GitHubSource;
 	provenance?: GitHubSource;
 }

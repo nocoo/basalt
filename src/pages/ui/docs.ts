@@ -23,7 +23,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<Button icon="+" loading={false}>Save</Button>',
 		),
 		variants: ["default", "secondary", "destructive", "outline", "ghost", "link"],
-		props: CATALOG_API.button,
+		api: CATALOG_API.button,
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
@@ -38,7 +38,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<LinkButton href="/docs">Docs</LinkButton>',
 		),
 		variants: ["default", "secondary", "destructive", "outline", "ghost", "link"],
-		props: CATALOG_API["link-button"],
+		api: CATALOG_API["link-button"],
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
@@ -49,7 +49,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 		description: "Body copy with size and tone.",
 		usage: usage("Text", "@nocoo/basalt/components/text", "<Text tone='muted'>Copy</Text>"),
 		variants: ["xs", "sm", "md", "lg", "xl"],
-		props: CATALOG_API.text,
+		api: CATALOG_API.text,
 		provenance: provenanceFromLegacy({
 			repo: "basalt",
 			sha: "2727ae6a8d3f",
@@ -60,7 +60,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 		description: "Accessible label associated with a control.",
 		usage: usage("Label", "@nocoo/basalt/components/label", '<Label htmlFor="email">Email</Label>'),
 		variants: [],
-		props: CATALOG_API.label,
+		api: CATALOG_API.label,
 		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",
@@ -75,7 +75,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			"<Separator orientation='horizontal' />",
 		),
 		variants: ["horizontal", "vertical"],
-		props: CATALOG_API.separator,
+		api: CATALOG_API.separator,
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
@@ -91,7 +91,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'import { LinkProvider } from "@nocoo/basalt/providers/link";',
 		),
 		variants: [],
-		props: CATALOG_API.link,
+		api: CATALOG_API.link,
 		provenance: provenanceFromLegacy({
 			repo: "kumo",
 			sha: "1159868dfe32",
@@ -107,7 +107,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'import { Button } from "@nocoo/basalt/components/button";',
 		),
 		variants: [],
-		props: CATALOG_API.tooltip,
+		api: CATALOG_API.tooltip,
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
@@ -123,7 +123,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'import { ThemeProvider } from "@nocoo/basalt/providers/theme";',
 		),
 		variants: ["system", "light", "dark"],
-		props: CATALOG_API["theme-toggle"],
+		api: CATALOG_API["theme-toggle"],
 		provenance: provenanceFromLegacy({
 			repo: "basalt",
 			sha: "2727ae6a8d3f",
@@ -138,7 +138,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
 		),
 		variants: [],
-		props: CATALOG_API["layer-card"],
+		api: CATALOG_API["layer-card"],
 		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",
@@ -149,7 +149,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 		description: "Basalt mark.",
 		usage: usage("BasaltMark", "@nocoo/basalt/components/basalt-mark", "<BasaltMark />"),
 		variants: [],
-		props: CATALOG_API["basalt-mark"],
+		api: CATALOG_API["basalt-mark"],
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
@@ -165,7 +165,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'import { Input } from "@nocoo/basalt/components/input";',
 		),
 		variants: [],
-		props: CATALOG_API.field,
+		api: CATALOG_API.field,
 		provenance: provenanceFromLegacy({
 			repo: "signoff.now",
 			sha: "92033c89d807",
@@ -180,7 +180,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<Input aria-label="Name" placeholder="Jane Doe" />',
 		),
 		variants: [],
-		props: CATALOG_API.input,
+		api: CATALOG_API.input,
 		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",
@@ -195,7 +195,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<InputArea aria-label="Notes" placeholder="Write a note" />',
 		),
 		variants: [],
-		props: CATALOG_API["input-area"],
+		api: CATALOG_API["input-area"],
 		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",
@@ -210,19 +210,28 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			"<InputGroup><InputGroup.Input defaultValue='atlas' aria-label='Subdomain' /><InputGroup.Suffix>.example.com</InputGroup.Suffix></InputGroup>",
 		),
 		variants: [],
-		props: [
-			{ name: "InputGroup.Input", type: "input", description: "The editable value." },
+		api: [
 			{
-				name: "InputGroup.Suffix",
-				type: "ReactNode",
-				description: "Inline text that sits against the value, such as a domain.",
+				name: "InputGroup",
+				props: [
+					{ name: "InputGroup.Input", type: "input", description: "The editable value." },
+					{
+						name: "InputGroup.Suffix",
+						type: "ReactNode",
+						description: "Inline text that sits against the value, such as a domain.",
+					},
+					{
+						name: "InputGroup.Addon",
+						type: '"start" | "end"',
+						description: "Leading or trailing icons, text, or buttons.",
+					},
+					{
+						name: "InputGroup.Button",
+						type: "button",
+						description: "Compact action inside an addon.",
+					},
+				],
 			},
-			{
-				name: "InputGroup.Addon",
-				type: '"start" | "end"',
-				description: "Leading or trailing icons, text, or buttons.",
-			},
-			{ name: "InputGroup.Button", type: "button", description: "Compact action inside an addon." },
 		],
 		provenance: provenanceFromLegacy({
 			repo: "basalt",
@@ -238,9 +247,14 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />',
 		),
 		variants: [],
-		props: [
-			{ name: "revealLabel", type: "string" },
-			{ name: "hideLabel", type: "string" },
+		api: [
+			{
+				name: "SensitiveInput",
+				props: [
+					{ name: "revealLabel", type: "string" },
+					{ name: "hideLabel", type: "string" },
+				],
+			},
 		],
 		provenance: provenanceFromLegacy({
 			repo: "basalt",
@@ -256,7 +270,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<Checkbox aria-label="Subscribe" />',
 		),
 		variants: ["checked", "unchecked", "indeterminate"],
-		props: [{ name: "checked", type: 'boolean | "indeterminate"' }],
+		api: [{ name: "Checkbox", props: [{ name: "checked", type: 'boolean | "indeterminate"' }] }],
 		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",
@@ -271,7 +285,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<RadioGroup defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></RadioGroup>',
 		),
 		variants: [],
-		props: [{ name: "value", type: "string" }],
+		api: [{ name: "Radio", props: [{ name: "value", type: "string" }] }],
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
@@ -286,7 +300,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<Switch aria-label="Notifications" />',
 		),
 		variants: ["checked", "unchecked"],
-		props: [{ name: "checked", type: "boolean" }],
+		api: [{ name: "Switch", props: [{ name: "checked", type: "boolean" }] }],
 		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",
@@ -301,7 +315,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			"<ThemeProvider><span>Content</span></ThemeProvider>",
 		),
 		variants: ["system", "light", "dark"],
-		props: [{ name: "children", type: "ReactNode" }],
+		api: [{ name: "ThemeProvider", props: [{ name: "children", type: "ReactNode" }] }],
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",
@@ -316,14 +330,19 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			"<LinkProvider>{children}</LinkProvider>",
 		),
 		variants: [],
-		props: [
+		api: [
 			{
-				name: "render",
-				type: 'ComponentType<{ href: string }> | "a"',
-				default: '"a"',
-				description: "Link renderer injected into Basalt Link.",
+				name: "LinkProvider",
+				props: [
+					{
+						name: "render",
+						type: 'ComponentType<{ href: string }> | "a"',
+						default: '"a"',
+						description: "Link renderer injected into Basalt Link.",
+					},
+					{ name: "children", type: "ReactNode" },
+				],
 			},
-			{ name: "children", type: "ReactNode" },
 		],
 		provenance: provenanceFromLegacy({
 			repo: "kumo",

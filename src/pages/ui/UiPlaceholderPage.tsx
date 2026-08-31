@@ -12,6 +12,7 @@ import {
 import { CATALOG_BY_SLUG, type CatalogEntry, catalogImportPath, catalogNavName } from "./catalog";
 import type { CatalogScenario } from "./catalog-scenario";
 import {
+	type CatalogApiSurface,
 	type CatalogDocs,
 	catalogSourceCopyText,
 	githubSourceHref,
@@ -70,6 +71,74 @@ function CopyPageButton({ markdown }: { markdown: string }) {
 	);
 }
 
+export function catalogApiSurfaceId(name: string): string {
+	return `api-${name}`;
+}
+
+function catalogApiCopyLines(api: CatalogApiSurface[]): string[] {
+	return [
+		"## API Reference",
+		...api.flatMap((surface) => [
+			`### ${surface.name}`,
+			...(surface.props.length === 0
+				? ["No component-specific props."]
+				: surface.props.map((prop) => {
+						const required =
+							prop.required === undefined ? "" : prop.required ? ", required" : ", optional";
+						return `- ${prop.name} (${prop.type}${required}, default ${prop.default ?? "—"}): ${prop.description ?? ""}`;
+					})),
+		]),
+	];
+}
+
+export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
+	return (
+		<section id="api-reference" className="scroll-mt-6 space-y-4">
+			<h2 className="text-2xl font-semibold tracking-tight">API Reference</h2>
+			{api.map((surface) => (
+				<div key={surface.name} className="space-y-4">
+					<h3 id={catalogApiSurfaceId(surface.name)} className="scroll-mt-6 text-sm font-medium">
+						{surface.name}
+					</h3>
+					{surface.props.length === 0 ? (
+						<p>No component-specific props.</p>
+					) : (
+						<div className="overflow-hidden rounded-lg border border-border">
+							<table aria-label={`${surface.name} props`} className="w-full text-sm">
+								<thead>
+									<tr className="border-b border-border bg-background text-left text-muted-foreground">
+										<th className="px-4 py-2.5 font-medium">Prop</th>
+										<th className="px-4 py-2.5 font-medium">Type</th>
+										<th className="px-4 py-2.5 font-medium">Default</th>
+										<th className="px-4 py-2.5 font-medium">Description</th>
+									</tr>
+								</thead>
+								<tbody>
+									{surface.props.map((prop) => (
+										<tr key={prop.name} className="border-t border-border">
+											<td className="px-4 py-2.5 font-medium text-foreground">
+												{prop.name}
+												{prop.required === false ? "?" : ""}
+											</td>
+											<td className="px-4 py-2.5 text-muted-foreground">
+												<code>{prop.type}</code>
+											</td>
+											<td className="px-4 py-2.5 text-muted-foreground">{prop.default ?? "—"}</td>
+											<td className="px-4 py-2.5 text-muted-foreground">
+												{prop.description ?? prop.name}
+											</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					)}
+				</div>
+			))}
+		</section>
+	);
+}
+
 function ReadyDoc({
 	entry,
 	docs,
@@ -93,12 +162,7 @@ function ReadyDoc({
 		docs.usage,
 		"## Examples",
 		...examples.flatMap((example) => [`### ${example.title}`, example.code]),
-		"## API Reference",
-		...docs.props.map((prop) => {
-			const required =
-				prop.required === undefined ? "" : prop.required ? ", required" : ", optional";
-			return `- ${prop.name} (${prop.type}${required}, default ${prop.default ?? "—"}): ${prop.description ?? ""}`;
-		}),
+		...catalogApiCopyLines(docs.api),
 		catalogSourceCopyText(docs),
 	].join("\n\n");
 	const headings: DocHeading[] = [
@@ -113,6 +177,11 @@ function ReadyDoc({
 			depth: 3 as const,
 		})),
 		{ id: "api-reference", text: "API Reference", depth: 2 },
+		...docs.api.map((surface) => ({
+			id: catalogApiSurfaceId(surface.name),
+			text: surface.name,
+			depth: 3 as const,
+		})),
 	];
 	return (
 		<div>
@@ -183,38 +252,7 @@ function ReadyDoc({
 							</div>
 						))}
 					</section>
-					<section id="api-reference" className="scroll-mt-6 space-y-4">
-						<h2 className="text-2xl font-semibold tracking-tight">API Reference</h2>
-						<div className="overflow-hidden rounded-lg border border-border">
-							<table className="w-full text-sm">
-								<thead>
-									<tr className="border-b border-border bg-background text-left text-muted-foreground">
-										<th className="px-4 py-2.5 font-medium">Prop</th>
-										<th className="px-4 py-2.5 font-medium">Type</th>
-										<th className="px-4 py-2.5 font-medium">Default</th>
-										<th className="px-4 py-2.5 font-medium">Description</th>
-									</tr>
-								</thead>
-								<tbody>
-									{docs.props.map((prop) => (
-										<tr key={prop.name} className="border-t border-border">
-											<td className="px-4 py-2.5 font-medium text-foreground">
-												{prop.name}
-												{prop.required === false ? "?" : ""}
-											</td>
-											<td className="px-4 py-2.5 text-muted-foreground">
-												<code>{prop.type}</code>
-											</td>
-											<td className="px-4 py-2.5 text-muted-foreground">{prop.default ?? "—"}</td>
-											<td className="px-4 py-2.5 text-muted-foreground">
-												{prop.description ?? prop.name}
-											</td>
-										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-					</section>
+					<CatalogApiReference api={docs.api} />
 					<div className="space-y-1 text-sm text-muted-foreground">
 						<p>
 							Implementation{" "}

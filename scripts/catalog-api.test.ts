@@ -60,8 +60,26 @@ function generateFixture(root: string, sourceFile = "widget.ts", slug = "widget"
 	return generateCatalogApi({
 		repoRoot: root,
 		tsconfigPath: "tsconfig.json",
-		targets: [{ slug, sourceFile, propsType: "WidgetProps" }],
+		targets: [{ slug, sourceFile, propsType: "WidgetProps", surface: "Widget" }],
 	});
+}
+
+function fixtureProps(root: string, sourceFile = "widget.ts", slug = "widget") {
+	return generateFixture(root, sourceFile, slug)[slug]?.[0]?.props;
+}
+
+function generateProductionProps() {
+	const generated = generateCatalogApi({
+		repoRoot,
+		tsconfigPath: DEFAULT_TSCONFIG,
+		targets: CATALOG_API_TARGETS,
+	});
+	return Object.fromEntries(
+		Object.entries(generated).map(([slug, surfaces]) => {
+			expect(surfaces, slug).toHaveLength(1);
+			return [slug, surfaces[0]?.props ?? []];
+		}),
+	);
 }
 
 describe("catalog API generator contract", () => {
@@ -91,78 +109,90 @@ describe("catalog API generator contract", () => {
 				slug: "button",
 				sourceFile: "packages/basalt/src/components/button.tsx",
 				propsType: "ButtonProps",
+				surface: "Button",
 			},
 			{
 				slug: "link-button",
 				sourceFile: "packages/basalt/src/components/button.tsx",
 				propsType: "LinkButtonProps",
+				surface: "LinkButton",
 			},
 			{
 				slug: "text",
 				sourceFile: "packages/basalt/src/components/text.tsx",
 				propsType: "TextProps",
+				surface: "Text",
 			},
 			{
 				slug: "label",
 				sourceFile: "packages/basalt/src/components/label.tsx",
 				propsType: "LabelProps",
+				surface: "Label",
 			},
 			{
 				slug: "separator",
 				sourceFile: "packages/basalt/src/components/separator.tsx",
 				propsType: "SeparatorProps",
+				surface: "Separator",
 			},
 			{
 				slug: "link",
 				sourceFile: "packages/basalt/src/components/link.tsx",
 				propsType: "LinkProps",
+				surface: "Link",
 			},
 			{
 				slug: "tooltip",
 				sourceFile: "packages/basalt/src/components/tooltip.tsx",
 				propsType: "TooltipProps",
+				surface: "Tooltip",
 			},
 			{
 				slug: "theme-toggle",
 				sourceFile: "packages/basalt/src/components/theme-toggle.tsx",
 				propsType: "ThemeToggleProps",
+				surface: "ThemeToggle",
 			},
 			{
 				slug: "layer-card",
 				sourceFile: "packages/basalt/src/components/layer-card.tsx",
 				propsType: "LayerCardProps",
+				surface: "LayerCard",
 			},
 			{
 				slug: "basalt-mark",
 				sourceFile: "packages/basalt/src/components/basalt-mark.tsx",
 				propsType: "BasaltMarkProps",
+				surface: "BasaltMark",
 			},
 			{
 				slug: "field",
 				sourceFile: "packages/basalt/src/components/field.tsx",
 				propsType: "FieldProps",
+				surface: "Field",
 			},
 			{
 				slug: "input",
 				sourceFile: "packages/basalt/src/components/input.tsx",
 				propsType: "InputProps",
+				surface: "Input",
 			},
 			{
 				slug: "input-area",
 				sourceFile: "packages/basalt/src/components/input-area.tsx",
 				propsType: "InputAreaProps",
+				surface: "InputArea",
 			},
 		]);
+		expect(CATALOG_API_TARGETS.every((target) => target.allowEmpty === undefined)).toBe(true);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
-		expect(source).not.toMatch(/allowlist|propNames|props:\s*\[/);
+		expect(source).not.toMatch(/allowlist|propNames/);
+		expect(source).not.toMatch(/input-group|InputGroup/);
+		expect(source).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 	});
 
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(Object.keys(generated)).toEqual([
 			"button",
 			"link-button",
@@ -215,11 +245,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts LinkButton props from the same file without Button-only or DOM fields", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
 		expect(generated["link-button"]).toEqual([
 			{
@@ -245,11 +271,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts Text props from TextProps without HTML or Kumo-only fields", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
 		expect(generated.text).toEqual([
 			{
@@ -271,11 +293,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts Label props from LabelProps with JSDoc defaults and descriptions", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.label).toEqual([
 			{
@@ -299,11 +317,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts Separator props from SeparatorProps with JSDoc defaults and descriptions", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.separator).toEqual([
 			{
@@ -338,11 +352,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts Link props from LinkProps as a single required href", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(generated.link).toEqual([
 			{
@@ -375,11 +385,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts Tooltip props from TooltipProps as a single optional delayDuration", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated.tooltip).toEqual([
 			{
@@ -415,11 +421,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts ThemeToggle props from ThemeToggleProps as a single required aria-label", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
 		expect(generated["theme-toggle"]).toEqual([
 			{
@@ -454,11 +456,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts LayerCard props from LayerCardProps as a single optional className", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
 		expect(generated["layer-card"]).toEqual([
 			{
@@ -493,11 +491,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts BasaltMark props from BasaltMarkProps as a single optional className", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 		expect(generated["basalt-mark"]).toEqual([
 			{
@@ -536,11 +530,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts Field props from FieldProps in source order with required label and children", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated.field?.map((prop) => prop.name)).toEqual([
 			"label",
 			"htmlFor",
@@ -607,11 +597,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts Input props from InputProps as a single optional type", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated.input?.map((prop) => prop.name)).toEqual(["type"]);
 		expect(generated.input).toEqual([
 			{
@@ -661,11 +647,7 @@ describe("catalog API generator contract", () => {
 	}, 20_000);
 
 	it("extracts InputArea props from InputAreaProps as a single optional rows", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionProps();
 		expect(generated["input-area"]?.map((prop) => prop.name)).toEqual(["rows"]);
 		expect(generated["input-area"]).toEqual([
 			{
@@ -722,9 +704,7 @@ describe("catalog API generator contract", () => {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
-			{ name: "aria-label", type: "string", required: true },
-		]);
+		expect(fixtureProps(root)).toEqual([{ name: "aria-label", type: "string", required: true }]);
 	});
 
 	it("filters DOM, event, ARIA, and className inheritance", () => {
@@ -741,9 +721,7 @@ export interface WidgetProps extends Dom {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
-			{ name: "tone", type: '"a" | "b"', required: false },
-		]);
+		expect(fixtureProps(root)).toEqual([{ name: "tone", type: '"a" | "b"', required: false }]);
 	});
 
 	it("sorts props by source declaration position, not name", () => {
@@ -754,7 +732,7 @@ export interface WidgetProps extends Dom {
 }
 `,
 		});
-		expect(generateFixture(root).widget?.map((prop) => prop.name)).toEqual(["zebra", "alpha"]);
+		expect(fixtureProps(root)?.map((prop) => prop.name)).toEqual(["zebra", "alpha"]);
 	});
 
 	it("strips top-level undefined and keeps null", () => {
@@ -765,7 +743,7 @@ export interface WidgetProps extends Dom {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "value", type: "string | null", required: false },
 			{ name: "label", type: "string", required: true },
 		]);
@@ -780,7 +758,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "required", type: "string", required: true },
 			{ name: "optional", type: "string", required: false },
 		]);
@@ -794,7 +772,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{
 				name: "loading",
 				type: "boolean",
@@ -817,7 +795,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{
 				name: "loading",
 				type: "boolean",
@@ -862,7 +840,9 @@ export interface WidgetProps {
 			generateCatalogApi({
 				repoRoot: fixture({ "widget.ts": "export interface WidgetProps { a?: boolean }" }),
 				tsconfigPath: "missing.json",
-				targets: [{ slug: "widget", sourceFile: "widget.ts", propsType: "WidgetProps" }],
+				targets: [
+					{ slug: "widget", sourceFile: "widget.ts", propsType: "WidgetProps", surface: "Widget" },
+				],
 			}),
 		).toThrow(/missing tsconfig missing.json/);
 	});
@@ -875,7 +855,9 @@ export interface WidgetProps {
 			generateCatalogApi({
 				repoRoot: root,
 				tsconfigPath: "tsconfig.json",
-				targets: [{ slug: "widget", sourceFile: "missing.ts", propsType: "WidgetProps" }],
+				targets: [
+					{ slug: "widget", sourceFile: "missing.ts", propsType: "WidgetProps", surface: "Widget" },
+				],
 			}),
 		).toThrow(/missing source missing.ts/);
 	});
@@ -897,7 +879,78 @@ export interface WidgetProps {
 		expect(() => generateFixture(root)).toThrow(/TypeScript diagnostics/);
 	});
 
-	it("fails on duplicate slugs", () => {
+	it("keeps one explicit public surface per production target", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(
+			Object.fromEntries(
+				Object.entries(generated).map(([slug, surfaces]) => [
+					slug,
+					surfaces.map((surface) => surface.name),
+				]),
+			),
+		).toEqual({
+			button: ["Button"],
+			"link-button": ["LinkButton"],
+			text: ["Text"],
+			label: ["Label"],
+			separator: ["Separator"],
+			link: ["Link"],
+			tooltip: ["Tooltip"],
+			"theme-toggle": ["ThemeToggle"],
+			"layer-card": ["LayerCard"],
+			"basalt-mark": ["BasaltMark"],
+			field: ["Field"],
+			input: ["Input"],
+			"input-area": ["InputArea"],
+		});
+	}, 20_000);
+
+	it("aggregates multiple surfaces for the same slug in declaration order", () => {
+		const root = fixture({
+			"root.ts": "export interface RootProps { open?: boolean }",
+			"item.ts": "export interface ItemProps { value?: string }",
+		});
+		const generated = generateCatalogApi({
+			repoRoot: root,
+			tsconfigPath: "tsconfig.json",
+			targets: [
+				{ slug: "widget", sourceFile: "item.ts", propsType: "ItemProps", surface: "Item" },
+				{ slug: "widget", sourceFile: "root.ts", propsType: "RootProps", surface: "Root" },
+			],
+		});
+		expect(generated.widget?.map((surface) => surface.name)).toEqual(["Item", "Root"]);
+		expect(generated.widget?.[0]?.props).toEqual([
+			{ name: "value", type: "string", required: false },
+		]);
+		expect(generated.widget?.[1]?.props).toEqual([
+			{ name: "open", type: "boolean", required: false },
+		]);
+	});
+
+	it("reuses different source files and props types for one slug", () => {
+		const root = fixture({
+			"alpha.ts": "export interface AlphaProps { a?: number }",
+			"beta.ts": "export interface BetaProps { b?: boolean }",
+		});
+		const generated = generateCatalogApi({
+			repoRoot: root,
+			tsconfigPath: "tsconfig.json",
+			targets: [
+				{ slug: "combo", sourceFile: "alpha.ts", propsType: "AlphaProps", surface: "Alpha" },
+				{ slug: "combo", sourceFile: "beta.ts", propsType: "BetaProps", surface: "Beta" },
+			],
+		});
+		expect(generated.combo).toEqual([
+			{ name: "Alpha", props: [{ name: "a", type: "number", required: false }] },
+			{ name: "Beta", props: [{ name: "b", type: "boolean", required: false }] },
+		]);
+	});
+
+	it("fails on duplicate surfaces for the same slug", () => {
 		const root = fixture({
 			"widget.ts": "export interface WidgetProps { a?: boolean }",
 		});
@@ -906,11 +959,71 @@ export interface WidgetProps {
 				repoRoot: root,
 				tsconfigPath: "tsconfig.json",
 				targets: [
-					{ slug: "widget", sourceFile: "widget.ts", propsType: "WidgetProps" },
-					{ slug: "widget", sourceFile: "widget.ts", propsType: "WidgetProps" },
+					{ slug: "widget", sourceFile: "widget.ts", propsType: "WidgetProps", surface: "Widget" },
+					{ slug: "widget", sourceFile: "widget.ts", propsType: "WidgetProps", surface: "Widget" },
 				],
 			}),
-		).toThrow(/duplicate slug widget/);
+		).toThrow(/duplicate surface Widget for widget/);
+	});
+
+	it("fails when a target omits the surface name", () => {
+		const root = fixture({
+			"widget.ts": "export interface WidgetProps { a?: boolean }",
+		});
+		expect(() =>
+			generateCatalogApi({
+				repoRoot: root,
+				tsconfigPath: "tsconfig.json",
+				targets: [
+					{ slug: "widget", sourceFile: "widget.ts", propsType: "WidgetProps", surface: "" },
+				],
+			}),
+		).toThrow(/missing surface for widget/);
+	});
+
+	it("emits an empty surface only when allowEmpty is declared", () => {
+		const root = fixture({
+			"dom.ts": "export interface Dom { className?: string }",
+			"widget.ts": `import type { Dom } from "./dom";
+export interface WidgetProps extends Dom {}
+`,
+		});
+		expect(
+			generateCatalogApi({
+				repoRoot: root,
+				tsconfigPath: "tsconfig.json",
+				targets: [
+					{
+						slug: "widget",
+						sourceFile: "widget.ts",
+						propsType: "WidgetProps",
+						surface: "Widget",
+						allowEmpty: true,
+					},
+				],
+			}).widget,
+		).toEqual([{ name: "Widget", props: [] }]);
+	});
+
+	it("fails when allowEmpty is declared but local props exist", () => {
+		const root = fixture({
+			"widget.ts": "export interface WidgetProps { a?: boolean }",
+		});
+		expect(() =>
+			generateCatalogApi({
+				repoRoot: root,
+				tsconfigPath: "tsconfig.json",
+				targets: [
+					{
+						slug: "widget",
+						sourceFile: "widget.ts",
+						propsType: "WidgetProps",
+						surface: "Widget",
+						allowEmpty: true,
+					},
+				],
+			}),
+		).toThrow(/allowEmpty expired for widget surface Widget/);
 	});
 
 	it("fails on an empty component-specific result", () => {
@@ -948,9 +1061,7 @@ export type WidgetProps = Omit<Dom, "className"> & {
 };
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
-			{ name: "className", type: "string", required: false },
-		]);
+		expect(fixtureProps(root)).toEqual([{ name: "className", type: "string", required: false }]);
 	});
 
 	it("still rejects a local className that impersonates a foreign DOM-like prop", () => {
@@ -982,9 +1093,7 @@ interface WidgetProps { a?: boolean }
 export type { WidgetProps };
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
-			{ name: "tone", type: '"a" | "b"', required: false },
-		]);
+		expect(fixtureProps(root)).toEqual([{ name: "tone", type: '"a" | "b"', required: false }]);
 	});
 
 	it("preserves nested generic arguments on aliases", () => {
@@ -996,7 +1105,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "box", type: "Box<string>", required: false },
 			{ name: "nested", type: "Box<Box<string>>", required: false },
 		]);
@@ -1037,9 +1146,7 @@ export interface WidgetProps extends Top {
 export type { Inner as WidgetProps };
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
-			{ name: "tone", type: '"a" | "b"', required: false },
-		]);
+		expect(fixtureProps(root)).toEqual([{ name: "tone", type: '"a" | "b"', required: false }]);
 	});
 
 	it("rejects an external re-export of the props type", () => {
@@ -1059,7 +1166,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "explicit", type: "Defaulted<string>", required: false },
 		]);
 	});
@@ -1073,7 +1180,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "maybe", type: "Box<string | undefined>", required: false },
 			{ name: "nullable", type: "Box<string | null>", required: false },
 		]);
@@ -1097,7 +1204,7 @@ export interface WidgetProps {
 				},
 			},
 		);
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{
 				name: "el",
 				type: "React.ReactElement<string | undefined>",
@@ -1117,7 +1224,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "box", type: "A.Box<string> | B.Box<string>", required: false },
 		]);
 	});
@@ -1135,7 +1242,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "box", type: "A.Box<string> | B.Box<string>", required: false },
 		]);
 	});
@@ -1215,7 +1322,7 @@ export interface WidgetProps extends Holder<Other> {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "data", type: "Other", required: false },
 			{ name: "value", type: "string", required: false },
 		]);
@@ -1231,7 +1338,7 @@ export interface WidgetProps extends List<Other> {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "items", type: "Other[]", required: false },
 			{ name: "value", type: "string", required: false },
 		]);
@@ -1246,7 +1353,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "box", type: "RenamedBox<string>", required: false },
 		]);
 	});
@@ -1262,7 +1369,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "box", type: "ABox<string> | BBox<string>", required: false },
 		]);
 	});
@@ -1299,7 +1406,7 @@ export interface WidgetProps extends Mapped {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "mapped", type: "string", required: false },
 			{ name: "value", type: "string", required: false },
 		]);
@@ -1313,7 +1420,7 @@ export interface WidgetProps extends Mapped {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "mapped", type: "string", required: true },
 			{ name: "value", type: "string", required: false },
 		]);
@@ -1340,7 +1447,7 @@ export interface WidgetProps extends List<Other> {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "items", type: "Other[]", required: false },
 			{ name: "values", type: "Array<string>", required: false },
 		]);
@@ -1364,7 +1471,7 @@ export interface WidgetProps {
 				},
 			},
 		);
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{
 				name: "el",
 				type: "React.ReactElement<string | undefined>",
@@ -1391,7 +1498,7 @@ export interface WidgetProps {
 				},
 			},
 		);
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{
 				name: "el",
 				type: "React.ReactElement<string | undefined>",
@@ -1476,7 +1583,7 @@ export interface WidgetProps {
 				},
 			},
 		);
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "el", type: "React.JSX.Element", required: false },
 		]);
 	});
@@ -1499,7 +1606,7 @@ export interface WidgetProps {
 				},
 			},
 		);
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "el", type: "React.JSX.Element", required: false },
 		]);
 	});
@@ -1511,9 +1618,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
-			{ name: "flag", type: "boolean", required: false },
-		]);
+		expect(fixtureProps(root)).toEqual([{ name: "flag", type: "boolean", required: false }]);
 	});
 
 	it("does not treat @types/reactive as the React package", () => {
@@ -1527,7 +1632,7 @@ export interface WidgetProps {
 }
 `,
 		});
-		expect(generateFixture(root).widget).toEqual([
+		expect(fixtureProps(root)).toEqual([
 			{ name: "vessel", type: "Vessel<string>", required: false },
 		]);
 	});
@@ -1536,9 +1641,14 @@ export interface WidgetProps {
 		const data = {
 			button: [
 				{
-					name: "variant",
-					type: '"default" | null',
-					required: false,
+					name: "Button",
+					props: [
+						{
+							name: "variant",
+							type: '"default" | null',
+							required: false,
+						},
+					],
 				},
 			],
 		};
@@ -1546,26 +1656,40 @@ export interface WidgetProps {
 		const second = renderCatalogApiModule(data);
 		expect(first).toBe(second);
 		expect(first.startsWith("// Generated by scripts/catalog-api.ts. Do not edit.\n")).toBe(true);
+		expect(first).toContain('name: "Button"');
 		expect(first).toContain('name: "variant"');
+		expect(first).toContain("\t\t\tprops: [");
 		const withDefault = renderCatalogApiModule({
 			button: [
 				{
-					name: "loading",
-					type: "boolean",
-					required: false,
-					default: "false",
-					description: "Enables the spinner.",
+					name: "Button",
+					props: [
+						{
+							name: "loading",
+							type: "boolean",
+							required: false,
+							default: "false",
+							description: "Enables the spinner.",
+						},
+					],
 				},
 			],
 		});
-		expect(withDefault).toContain("\t\t\tname: ");
-		expect(withDefault.indexOf("\t\t\tname:")).toBeLessThan(withDefault.indexOf("\t\t\ttype:"));
-		expect(withDefault.indexOf("\t\t\ttype:")).toBeLessThan(withDefault.indexOf("\t\t\trequired:"));
-		expect(withDefault.indexOf("\t\t\trequired:")).toBeLessThan(
-			withDefault.indexOf("\t\t\tdefault:"),
+		expect(withDefault).toContain("\t\t\t\t\tname: ");
+		expect(withDefault.indexOf("\t\t\t\t\tname:")).toBeLessThan(
+			withDefault.indexOf("\t\t\t\t\ttype:"),
 		);
-		expect(withDefault.indexOf("\t\t\tdefault:")).toBeLessThan(
-			withDefault.indexOf("\t\t\tdescription:"),
+		expect(withDefault.indexOf("\t\t\t\t\ttype:")).toBeLessThan(
+			withDefault.indexOf("\t\t\t\t\trequired:"),
+		);
+		expect(withDefault.indexOf("\t\t\t\t\trequired:")).toBeLessThan(
+			withDefault.indexOf("\t\t\t\t\tdefault:"),
+		);
+		expect(withDefault.indexOf("\t\t\t\t\tdefault:")).toBeLessThan(
+			withDefault.indexOf("\t\t\t\t\tdescription:"),
+		);
+		expect(renderCatalogApiModule({ empty: [{ name: "Empty", props: [] }] })).toContain(
+			"\t\t\tprops: [],",
 		);
 		const root = fixture({});
 		const filePath = path.join(root, GENERATED_RELATIVE_PATH);
@@ -1611,8 +1735,10 @@ export interface WidgetProps {
 		expect(first).toContain("\tfield: [");
 		expect(first).toContain("\tinput: [");
 		expect(first).toContain('\t"input-area": [');
+		expect(first).toContain('name: "Button"');
+		expect(first).toContain('name: "InputArea"');
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"e32b4a0cd186b4ca95c8f0f1231bd2a73fea6c98ba4d1257102cab4cecf255a4",
+			"83d462b4f4a0e3049615a16e51d50b82581075b2324d3d76292fa27b48e4fdb0",
 		);
 	}, 20_000);
 });
