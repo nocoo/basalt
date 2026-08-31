@@ -1,7 +1,7 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
-import { act, cleanup, fireEvent, render, screen, within } from "@testing-library/react";
-import { MemoryRouter, Route, Routes } from "react-router";
+import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { MemoryRouter, Route, Routes, useLocation, useNavigationType } from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import {
 	CATALOG,
@@ -28,9 +28,22 @@ import UiPlaceholderPage, {
 	catalogApiSurfaceId,
 } from "@/pages/ui/UiPlaceholderPage";
 
+function RouterProbe() {
+	const location = useLocation();
+	const navigationType = useNavigationType();
+	return (
+		<span
+			hidden
+			data-router-location={`${location.pathname}${location.search}`}
+			data-navigation-type={navigationType}
+		/>
+	);
+}
+
 function renderCatalog(path: string) {
 	return render(
 		<MemoryRouter initialEntries={[path]}>
+			<RouterProbe />
 			<Routes>
 				<Route path="/ui" element={<UiIndexPage />} />
 				<Route path="/ui/:slug" element={<UiPlaceholderPage />} />
@@ -102,6 +115,96 @@ describe("ui catalog", () => {
 			);
 		}
 		expect(screen.getAllByRole("button", { name: "Create project" })).toHaveLength(3);
+	});
+
+	it("filters the catalog from URL-backed search and toggle controls", () => {
+		renderCatalog("/ui?q=input&release=catalog&status=ready");
+		const searchInput = screen.getByRole("searchbox", { name: "Search" });
+		expect(searchInput).toHaveValue("input");
+		expect(screen.getByRole("radiogroup", { name: "Category" })).toBeInTheDocument();
+		expect(screen.getByRole("radiogroup", { name: "Release" })).toBeInTheDocument();
+		expect(screen.getByRole("radiogroup", { name: "Status" })).toBeInTheDocument();
+		expect(screen.getByRole("radio", { name: "Catalog" })).toHaveAttribute("aria-checked", "true");
+		expect(screen.getByRole("radio", { name: "Ready" })).toHaveAttribute("aria-checked", "true");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("3 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(3);
+		expect(
+			Array.from(document.querySelectorAll<HTMLElement>("[data-catalog-card]")).map(
+				(card) => card.dataset.catalogCard,
+			),
+		).toEqual(["input-area", "input-group", "sensitive-input"]);
+		expect(screen.queryByRole("region", { name: "Charts" })).not.toBeInTheDocument();
+
+		searchInput.focus();
+		fireEvent.change(searchInput, { target: { value: "input group" } });
+		expect(searchInput).toHaveFocus();
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("1 result");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(1);
+		expect(document.querySelector('[data-catalog-card="input-group"]')).toBeInTheDocument();
+		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
+			"data-router-location",
+			"/ui?q=input+group&release=catalog&status=ready",
+		);
+		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
+			"data-navigation-type",
+			"REPLACE",
+		);
+	});
+
+	it("shows a planned chart without a link and clears an active toggle to All", () => {
+		renderCatalog("/ui?category=chart&status=planned");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("1 result");
+		const mapsCard = document.querySelector('[data-catalog-card="maps"]');
+		expect(mapsCard).toBeInTheDocument();
+		expect(mapsCard?.querySelector('a[href="/ui/maps"]')).toBeNull();
+		expect(screen.queryByRole("region", { name: "Components" })).not.toBeInTheDocument();
+
+		fireEvent.click(screen.getByRole("radio", { name: "Charts" }));
+		expect(
+			within(screen.getByRole("radiogroup", { name: "Category" })).getByRole("radio", {
+				name: "All",
+			}),
+		).toHaveAttribute("aria-checked", "true");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("3 results");
+		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
+			"data-router-location",
+			"/ui?status=planned",
+		);
+	});
+
+	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
+		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
+		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("84 results");
+		await waitFor(() => {
+			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
+				"data-router-location",
+				"/ui?foreign=one&foreign=two&status=ready",
+			);
+		});
+		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
+			"data-navigation-type",
+			"REPLACE",
+		);
+	});
+
+	it("renders one empty state and resets owned filters while preserving foreign values", () => {
+		renderCatalog("/ui?foreign=kept&q=does-not-exist&category=block");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("0 results");
+		expect(document.querySelector("[data-empty-status]")).toBeInTheDocument();
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(0);
+		expect(screen.queryByRole("region")).not.toBeInTheDocument();
+		expect(screen.getAllByRole("button", { name: "Reset filters" })).toHaveLength(1);
+
+		fireEvent.click(screen.getByRole("button", { name: "Reset filters" }));
+		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveFocus();
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("87 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(87);
+		expect(screen.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
+		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
+			"data-router-location",
+			"/ui?foreign=kept",
+		);
 	});
 
 	it("renders a placeholder catalog page for a known slug", () => {

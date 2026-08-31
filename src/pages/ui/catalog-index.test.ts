@@ -6,7 +6,13 @@ import {
 	CATALOG_INDEX_READY_COUNT,
 	catalogReleaseStatus,
 	createCatalogIndex,
+	DEFAULT_CATALOG_INDEX_QUERY,
+	filterCatalogIndexGroups,
+	normalizeCatalogIndexQuery,
+	normalizeCatalogSearchText,
+	parseCatalogIndexQuery,
 	resolveCatalogPageState,
+	serializeCatalogIndexQuery,
 } from "./catalog-index";
 import type { CatalogScenario } from "./catalog-scenario";
 import type { CatalogDocs } from "./catalog-source";
@@ -106,5 +112,86 @@ describe("catalog index model", () => {
 				heroForSlug: () => undefined,
 			}),
 		).toThrow("Duplicate catalog slug: same");
+	});
+
+	it("normalizes whitespace, hyphens, and PascalCase for text search", () => {
+		expect(normalizeCatalogSearchText("  SensitiveInput--FIELD\tValue ")).toBe(
+			"sensitive input field value",
+		);
+		expect(normalizeCatalogSearchText("XMLHttpRequest")).toBe("xml http request");
+		expect(
+			filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, { q: "SENSITIVE-input" }).flatMap(
+				(group) => group.items,
+			),
+		).toHaveLength(1);
+	});
+
+	it("filters text tokens and enum dimensions with AND semantics", () => {
+		const inputResults = filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, { q: "input" });
+		expect(inputResults.flatMap((group) => group.items)).toHaveLength(4);
+
+		const catalogInputResults = filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, {
+			q: "input",
+			release: "catalog",
+			status: "ready",
+		});
+		expect(catalogInputResults.flatMap((group) => group.items)).toHaveLength(3);
+
+		const plannedCharts = filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, {
+			category: "chart",
+			status: "planned",
+		});
+		expect(plannedCharts).toHaveLength(1);
+		expect(plannedCharts[0]?.label).toBe("Charts");
+		expect(plannedCharts[0]?.items.map((item) => item.entry.slug)).toEqual(["maps"]);
+		expect(
+			filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, { q: "input area" })[0]?.items,
+		).toHaveLength(1);
+	});
+
+	it("preserves source order and omits empty groups", () => {
+		const result = filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, { release: "stable" });
+		expect(result.map((group) => group.id)).toEqual(["component"]);
+		expect(result[0]?.items.map((item) => item.entry.slug)).toEqual(
+			CATALOG_INDEX_GROUPS[0]?.items
+				.filter((item) => item.releaseStatus === "stable")
+				.map((item) => item.entry.slug),
+		);
+	});
+
+	it("parses and normalizes catalog query values fail-closed", () => {
+		expect(parseCatalogIndexQuery(new URLSearchParams())).toEqual(DEFAULT_CATALOG_INDEX_QUERY);
+		expect(
+			parseCatalogIndexQuery(
+				new URLSearchParams("q=%20input%20%20group%20&category=chart&release=catalog&status=ready"),
+			),
+		).toEqual({ q: "input group", category: "chart", release: "catalog", status: "ready" });
+		expect(
+			normalizeCatalogIndexQuery({
+				category: "other" as never,
+				release: "preview" as never,
+				status: "missing" as never,
+			}),
+		).toEqual(DEFAULT_CATALOG_INDEX_QUERY);
+		expect(
+			parseCatalogIndexQuery(
+				new URLSearchParams("q=input&q=button&category=chart&category=chart&status=ready"),
+			),
+		).toEqual({ ...DEFAULT_CATALOG_INDEX_QUERY, status: "ready" });
+	});
+
+	it("serializes canonical owned keys while preserving foreign parameters", () => {
+		const current = new URLSearchParams(
+			"status=ready&foreign=one&q=old&q=duplicate&category=unknown&foreign=two",
+		);
+		expect(
+			serializeCatalogIndexQuery(
+				{ q: "  input   group ", category: "component", release: "catalog", status: "ready" },
+				current,
+			).toString(),
+		).toBe("foreign=one&foreign=two&q=input+group&category=component&release=catalog&status=ready");
+		expect(serializeCatalogIndexQuery(DEFAULT_CATALOG_INDEX_QUERY, current).toString()).toBe(
+			"foreign=one&foreign=two",
+		);
 	});
 });

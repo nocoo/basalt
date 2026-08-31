@@ -26,7 +26,7 @@ import { CircleCheck, Plus, Search } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { Link } from "react-router";
 import { catalogNavName } from "./catalog";
-import { CATALOG_INDEX_GROUPS, type CatalogIndexItem } from "./catalog-index";
+import type { CatalogIndexGroup, CatalogIndexItem } from "./catalog-index";
 
 function HomeButton() {
 	return (
@@ -219,10 +219,14 @@ function itemDemo(item: CatalogIndexItem): ComponentType | undefined {
 	return HOME_DEMOS[item.entry.slug] ?? item.hero.render;
 }
 
-export function HomeGrid() {
+export interface HomeGridProps {
+	groups: readonly CatalogIndexGroup[];
+}
+
+export function HomeGrid({ groups }: HomeGridProps) {
 	return (
 		<div className="space-y-12 px-6 py-8 md:px-8 md:py-10">
-			{CATALOG_INDEX_GROUPS.map((group) => (
+			{groups.map((group) => (
 				<section key={group.id} aria-labelledby={`catalog-group-${group.id}`} className="space-y-5">
 					<div className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
 						<h2

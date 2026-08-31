@@ -6,6 +6,25 @@ import { CATALOG_DOCS } from "./docs";
 
 export type CatalogReleaseStatus = "stable" | "catalog";
 export type CatalogPageStatus = "ready" | "planned";
+export type CatalogIndexCategory = "all" | Exclude<CatalogCategory, "docs">;
+export type CatalogIndexRelease = "all" | CatalogReleaseStatus;
+export type CatalogIndexStatus = "all" | CatalogPageStatus;
+
+export interface CatalogIndexQuery {
+	q: string;
+	category: CatalogIndexCategory;
+	release: CatalogIndexRelease;
+	status: CatalogIndexStatus;
+}
+
+export const DEFAULT_CATALOG_INDEX_QUERY: CatalogIndexQuery = {
+	q: "",
+	category: "all",
+	release: "all",
+	status: "all",
+};
+
+export const CATALOG_INDEX_QUERY_KEYS = ["q", "category", "release", "status"] as const;
 
 export type CatalogPageState =
 	| {
@@ -46,6 +65,115 @@ const KNOWN_CATEGORIES = new Set<CatalogCategory>([
 	"docs",
 	...INDEX_GROUPS.map((group) => group.id),
 ]);
+
+const CATEGORY_FILTERS = new Set<CatalogIndexCategory>(["all", "component", "chart", "block"]);
+const RELEASE_FILTERS = new Set<CatalogIndexRelease>(["all", "stable", "catalog"]);
+const STATUS_FILTERS = new Set<CatalogIndexStatus>(["all", "ready", "planned"]);
+const OWNED_QUERY_KEYS = new Set<string>(CATALOG_INDEX_QUERY_KEYS);
+
+function normalizedEnumValue<T extends string>(
+	value: string | null | undefined,
+	allowed: ReadonlySet<T>,
+	fallback: T,
+): T {
+	return value && allowed.has(value as T) ? (value as T) : fallback;
+}
+
+function normalizeQueryValue(value: string | null | undefined): string {
+	return value?.trim().replace(/\s+/g, " ") ?? "";
+}
+
+export function normalizeCatalogSearchText(value: string): string {
+	return value
+		.replace(/([A-Z]+)([A-Z][a-z])/g, "$1 $2")
+		.replace(/([a-z\d])([A-Z])/g, "$1 $2")
+		.toLocaleLowerCase("en")
+		.replace(/[\s-]+/g, " ")
+		.trim();
+}
+
+export function normalizeCatalogIndexQuery(query: Partial<CatalogIndexQuery>): CatalogIndexQuery {
+	return {
+		q: normalizeQueryValue(query.q),
+		category: normalizedEnumValue(
+			query.category,
+			CATEGORY_FILTERS,
+			DEFAULT_CATALOG_INDEX_QUERY.category,
+		),
+		release: normalizedEnumValue(
+			query.release,
+			RELEASE_FILTERS,
+			DEFAULT_CATALOG_INDEX_QUERY.release,
+		),
+		status: normalizedEnumValue(query.status, STATUS_FILTERS, DEFAULT_CATALOG_INDEX_QUERY.status),
+	};
+}
+
+export function parseCatalogIndexQuery(searchParams: URLSearchParams): CatalogIndexQuery {
+	const uniqueValue = (key: (typeof CATALOG_INDEX_QUERY_KEYS)[number]) => {
+		const values = searchParams.getAll(key);
+		return values.length === 1 ? values[0] : undefined;
+	};
+	return normalizeCatalogIndexQuery({
+		q: uniqueValue("q"),
+		category: uniqueValue("category") as CatalogIndexCategory | undefined,
+		release: uniqueValue("release") as CatalogIndexRelease | undefined,
+		status: uniqueValue("status") as CatalogIndexStatus | undefined,
+	});
+}
+
+export function serializeCatalogIndexQuery(
+	query: Partial<CatalogIndexQuery>,
+	currentSearchParams: URLSearchParams = new URLSearchParams(),
+): URLSearchParams {
+	const normalized = normalizeCatalogIndexQuery(query);
+	const result = new URLSearchParams();
+	for (const [key, value] of currentSearchParams) {
+		if (!OWNED_QUERY_KEYS.has(key)) {
+			result.append(key, value);
+		}
+	}
+	if (normalized.q) {
+		result.set("q", normalized.q);
+	}
+	if (normalized.category !== "all") {
+		result.set("category", normalized.category);
+	}
+	if (normalized.release !== "all") {
+		result.set("release", normalized.release);
+	}
+	if (normalized.status !== "all") {
+		result.set("status", normalized.status);
+	}
+	return result;
+}
+
+export function filterCatalogIndexGroups(
+	groups: readonly CatalogIndexGroup[],
+	query: Partial<CatalogIndexQuery>,
+): CatalogIndexGroup[] {
+	const normalized = normalizeCatalogIndexQuery(query);
+	const tokens = normalizeCatalogSearchText(normalized.q).split(" ").filter(Boolean);
+
+	return groups.flatMap((group) => {
+		if (normalized.category !== "all" && group.id !== normalized.category) {
+			return [];
+		}
+		const items = group.items.filter((item) => {
+			if (normalized.release !== "all" && item.releaseStatus !== normalized.release) {
+				return false;
+			}
+			if (normalized.status !== "all" && item.pageStatus !== normalized.status) {
+				return false;
+			}
+			const searchableText = normalizeCatalogSearchText(
+				[item.entry.name, item.entry.navName, item.entry.slug].filter(Boolean).join(" "),
+			);
+			return tokens.every((token) => searchableText.includes(token));
+		});
+		return items.length > 0 ? [{ ...group, items }] : [];
+	});
+}
 
 export function catalogReleaseStatus(kind: CatalogKind): CatalogReleaseStatus {
 	switch (kind) {
