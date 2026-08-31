@@ -147,10 +147,26 @@ function eachHeritageTypeNode(
 	visit(decl.type);
 }
 
-function collectForeignPropNamesFromType(
+function isCompleteTypeAlias(decl: ts.Declaration): decl is ts.TypeAliasDeclaration {
+	return ts.isTypeAliasDeclaration(decl) && (decl.typeParameters?.length ?? 0) === 0;
+}
+
+function enclosingOriginDeclarations(type: ts.Type): ts.Declaration[] {
+	if (!type.aliasSymbol) {
+		return [];
+	}
+	return (type.aliasSymbol.getDeclarations() ?? []).filter(isCompleteTypeAlias);
+}
+
+interface HeritagePropOrigins {
+	foreign: Set<string>;
+	localSynthetic: Map<string, number>;
+}
+
+function collectHeritageOriginsFromType(
 	type: ts.Type,
 	sourceFile: ts.SourceFile,
-	names: Set<string>,
+	origins: HeritagePropOrigins,
 	visited: Set<ts.Type>,
 ) {
 	if (visited.has(type)) {
@@ -159,36 +175,58 @@ function collectForeignPropNamesFromType(
 	visited.add(type);
 	if (type.isUnion() || type.isIntersection()) {
 		for (const part of type.types) {
-			collectForeignPropNamesFromType(part, sourceFile, names, visited);
+			collectHeritageOriginsFromType(part, sourceFile, origins, visited);
 		}
 		return;
 	}
+	const originDecls = enclosingOriginDeclarations(type);
 	for (const property of type.getProperties()) {
-		const hasForeignDeclaration = (property.getDeclarations() ?? []).some(
-			(item) => !isInFile(item, sourceFile),
-		);
-		if (hasForeignDeclaration) {
-			names.add(property.getName());
+		const name = property.getName();
+		const decls = property.getDeclarations() ?? [];
+		if (decls.length > 0) {
+			if (decls.some((item) => !isInFile(item, sourceFile))) {
+				origins.foreign.add(name);
+			}
+			continue;
+		}
+		if (originDecls.length === 0) {
+			continue;
+		}
+		if (originDecls.some((item) => !isInFile(item, sourceFile))) {
+			origins.foreign.add(name);
+			continue;
+		}
+		const localOrigins = originDecls.filter((item) => isInFile(item, sourceFile));
+		if (localOrigins.length === 0) {
+			continue;
+		}
+		const position = Math.min(...localOrigins.map((item) => item.getStart(sourceFile)));
+		const previous = origins.localSynthetic.get(name);
+		if (previous === undefined || position < previous) {
+			origins.localSynthetic.set(name, position);
 		}
 	}
 }
 
-function collectForeignPropNames(
+function collectHeritageOrigins(
 	decl: ts.InterfaceDeclaration | ts.TypeAliasDeclaration,
 	sourceFile: ts.SourceFile,
 	checker: ts.TypeChecker,
-): Set<string> {
-	const names = new Set<string>();
+): HeritagePropOrigins {
+	const origins: HeritagePropOrigins = {
+		foreign: new Set<string>(),
+		localSynthetic: new Map<string, number>(),
+	};
 	const visited = new Set<ts.Type>();
 	eachHeritageTypeNode(decl, (typeNode) => {
-		collectForeignPropNamesFromType(
+		collectHeritageOriginsFromType(
 			checker.getTypeFromTypeNode(typeNode),
 			sourceFile,
-			names,
+			origins,
 			visited,
 		);
 	});
-	return names;
+	return origins;
 }
 
 function findLocalTypeDeclaration(
@@ -424,32 +462,38 @@ function printAlias(
 	}
 	const resolved = skipAlias(alias, checker);
 	const decls = [...(alias.getDeclarations() ?? []), ...(resolved.getDeclarations() ?? [])];
-	const written = writtenReferenceName(typeNode);
-	let qualified = written ?? name;
-	if (!written) {
-		for (const decl of decls) {
-			const parts = namespaceQualifiers(decl);
-			if (parts.length > 0) {
-				qualified = [...parts, name].join(".");
-				break;
-			}
+	let qualified: string;
+	if (isReactAlias(alias, checker)) {
+		const resolvedName = resolved.getName();
+		if (resolvedName.startsWith("__")) {
+			return undefined;
 		}
-		if (!qualified.includes(".")) {
-			const enclosingFile = enclosing.getSourceFile();
-			const aliasFile = decls[0]?.getSourceFile();
-			if (
-				aliasFile &&
-				normalizeFsPath(aliasFile.fileName) !== normalizeFsPath(enclosingFile.fileName)
-			) {
-				const imported = importNamespaceForSourceFile(enclosingFile, aliasFile, checker);
-				if (imported) {
-					qualified = `${imported}.${name}`;
+		qualified = `React.${resolvedName}`;
+	} else {
+		const written = writtenReferenceName(typeNode);
+		qualified = written ?? name;
+		if (!written) {
+			for (const decl of decls) {
+				const parts = namespaceQualifiers(decl);
+				if (parts.length > 0) {
+					qualified = [...parts, name].join(".");
+					break;
+				}
+			}
+			if (!qualified.includes(".")) {
+				const enclosingFile = enclosing.getSourceFile();
+				const aliasFile = decls[0]?.getSourceFile();
+				if (
+					aliasFile &&
+					normalizeFsPath(aliasFile.fileName) !== normalizeFsPath(enclosingFile.fileName)
+				) {
+					const imported = importNamespaceForSourceFile(enclosingFile, aliasFile, checker);
+					if (imported) {
+						qualified = `${imported}.${name}`;
+					}
 				}
 			}
 		}
-	}
-	if (isReactAlias(alias, checker) && !qualified.startsWith("React.")) {
-		qualified = `React.${qualified}`;
 	}
 	const inferred = namedTypeArguments(type, checker) ?? [];
 	const explicit = explicitTypeArgumentNodes(typeNode);
@@ -532,8 +576,7 @@ function printUnionParts(
 }
 
 function arrayElementType(type: ts.Type, checker: ts.TypeChecker): ts.Type | undefined {
-	const symbol = namedTypeSymbol(type) ?? type.getSymbol();
-	if (symbol?.getName() !== "Array") {
+	if (!checker.isArrayType(type)) {
 		return undefined;
 	}
 	return namedTypeArguments(type, checker)?.[0];
@@ -564,6 +607,26 @@ function printType(
 			: printed;
 		if (visible.length === 0) {
 			failCatalogApi("empty type after removing undefined");
+		}
+		const visibleTypes = visible.map((part) => part.type);
+		if (isBooleanParts(visibleTypes)) {
+			return "boolean";
+		}
+		const withoutUndefined = visible.filter((part) => !(part.type.flags & ts.TypeFlags.Undefined));
+		const withoutNull = withoutUndefined.filter((part) => !(part.type.flags & ts.TypeFlags.Null));
+		const hasUndefined = withoutUndefined.length !== visible.length;
+		const hasNull = withoutNull.length !== withoutUndefined.length;
+		if (isBooleanParts(withoutNull.map((part) => part.type))) {
+			if (hasNull && hasUndefined) {
+				return "boolean | null | undefined";
+			}
+			if (hasNull) {
+				return "boolean | null";
+			}
+			if (hasUndefined) {
+				return "boolean | undefined";
+			}
+			return "boolean";
 		}
 		visible.sort((left, right) => {
 			if (left.rank !== right.rank) {
@@ -704,7 +767,7 @@ function extractTargetProps(
 	const checker = program.getTypeChecker();
 	const decl = findExportedPropsDeclaration(sourceFile, target.propsType, checker);
 	const cvaPositions = collectCvaPositions(decl, sourceFile, checker);
-	const foreignNames = collectForeignPropNames(decl, sourceFile, checker);
+	const origins = collectHeritageOrigins(decl, sourceFile, checker);
 	const type = checker.getTypeAtLocation(decl);
 	const collected: Array<{ prop: CatalogApiProp; position: number }> = [];
 	const seenPositions = new Map<number, string>();
@@ -716,18 +779,27 @@ function extractTargetProps(
 		);
 		let position: number | undefined;
 		if (localDecls.length > 0) {
-			if (foreignNames.has(name)) {
+			if (origins.foreign.has(name)) {
 				failCatalogApi(`cross-file prop impersonation: ${name}`);
 			}
 			position = localDecls[0].getStart(sourceFile);
 		} else if (cvaPositions.has(name)) {
-			if (foreignNames.has(name)) {
+			if (origins.foreign.has(name)) {
 				failCatalogApi(`cross-file prop impersonation: ${name}`);
 			}
 			position = cvaPositions.get(name);
+		} else if (origins.localSynthetic.has(name)) {
+			if (origins.foreign.has(name)) {
+				failCatalogApi(`cross-file prop impersonation: ${name}`);
+			}
+			position = origins.localSynthetic.get(name);
+		} else if (origins.foreign.has(name)) {
+			continue;
+		} else {
+			failCatalogApi(`unresolved provenance for ${name}`);
 		}
 		if (position === undefined) {
-			continue;
+			failCatalogApi(`unresolved provenance for ${name}`);
 		}
 		const existing = seenPositions.get(position);
 		if (existing) {

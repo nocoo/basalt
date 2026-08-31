@@ -581,6 +581,151 @@ export interface WidgetProps {
 		]);
 	});
 
+	it("rejects impersonation through an external mapped type", () => {
+		const root = fixture({
+			"other.ts": `export type Other = { [K in "value"]?: string };\n`,
+			"widget.ts": `import type { Other } from "./other";
+export interface WidgetProps extends Other {
+	value?: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("rejects impersonation through an external Record type", () => {
+		const root = fixture({
+			"other.ts": `export type Other = Record<"value", string>;\n`,
+			"widget.ts": `import type { Other } from "./other";
+export interface WidgetProps extends Other {
+	value: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("emits local mapped heritage properties in declaration order", () => {
+		const root = fixture({
+			"widget.ts": `type Mapped = { [K in "mapped"]?: string };
+export interface WidgetProps extends Mapped {
+	value?: string;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "mapped", type: "string", required: false },
+			{ name: "value", type: "string", required: false },
+		]);
+	});
+
+	it("emits local Record heritage properties in declaration order", () => {
+		const root = fixture({
+			"widget.ts": `type Mapped = Record<"mapped", string>;
+export interface WidgetProps extends Mapped {
+	value?: string;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "mapped", type: "string", required: true },
+			{ name: "value", type: "string", required: false },
+		]);
+	});
+
+	it("fails closed when a synthetic heritage property has unresolved provenance", () => {
+		const root = fixture({
+			"widget.ts": `export interface WidgetProps extends Record<"mapped", string> {
+	value?: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/unresolved provenance for mapped/);
+	});
+
+	it("keeps a user Array alias and prints built-in arrays as brackets", () => {
+		const root = fixture({
+			"other.ts": "export interface Other { nested?: boolean }\n",
+			"widget.ts": `import type { Other } from "./other";
+type Array<T> = { custom: T };
+type List<T> = { items?: T[] };
+export interface WidgetProps extends List<Other> {
+	values?: Array<string>;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "items", type: "Other[]", required: false },
+			{ name: "values", type: "Array<string>", required: false },
+		]);
+	});
+
+	it("canonicalizes a renamed React element import", () => {
+		const root = fixture(
+			{
+				"widget.ts": `import type { ReactElement as ElementAlias } from "react";
+export interface WidgetProps {
+	el?: ElementAlias<string | undefined>;
+}
+`,
+			},
+			{
+				compilerOptions: {
+					baseUrl: ".",
+					paths: {
+						react: [path.join(repoRoot, "node_modules/@types/react")],
+					},
+				},
+			},
+		);
+		expect(generateFixture(root).widget).toEqual([
+			{
+				name: "el",
+				type: "React.ReactElement<string | undefined>",
+				required: false,
+			},
+		]);
+	});
+
+	it("canonicalizes a React namespace element import", () => {
+		const root = fixture(
+			{
+				"widget.ts": `import type * as R from "react";
+export interface WidgetProps {
+	el?: R.ReactElement<string | undefined>;
+}
+`,
+			},
+			{
+				compilerOptions: {
+					baseUrl: ".",
+					paths: {
+						react: [path.join(repoRoot, "node_modules/@types/react")],
+					},
+				},
+			},
+		);
+		expect(generateFixture(root).widget).toEqual([
+			{
+				name: "el",
+				type: "React.ReactElement<string | undefined>",
+				required: false,
+			},
+		]);
+	});
+
+	it("prints an explicit true false union as boolean", () => {
+		const root = fixture({
+			"widget.ts": `export interface WidgetProps {
+	flag?: true | false;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "flag", type: "boolean", required: false },
+		]);
+	});
+
 	it("does not treat @types/reactive as the React package", () => {
 		const root = fixture({
 			"node_modules/@types/reactive/package.json":
