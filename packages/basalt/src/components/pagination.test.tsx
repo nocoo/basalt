@@ -1,11 +1,29 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { CONTROL_SURFACE_CLASS } from "./control-surface";
 import { Pagination } from "./pagination";
 
 describe("Pagination", () => {
 	it("shows the current page", () => {
 		render(<Pagination page={2} pageCount={5} />);
 		expect(screen.getByRole("navigation", { name: "Pagination" })).toHaveTextContent("2");
+		const group = screen.getByRole("navigation", { name: "Pagination" }).firstElementChild;
+		expect(group?.className.split(/\s+/)).toEqual(
+			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
+		);
+		expect(group?.className.split(/\s+/)).toContain("h-9");
+		expect(group?.className).not.toContain("bg-basalt-background");
+		expect(group?.className).not.toContain("rounded-basalt-lg");
+		expect(group?.className).not.toContain("ring-1");
+		const previous = screen.getByRole("button", { name: "Previous page" });
+		expect(previous.className.split(/\s+/)).toEqual(
+			expect.arrayContaining([
+				"bg-transparent",
+				"hover:bg-basalt-accent",
+				"focus-visible:bg-basalt-accent",
+				"active:bg-basalt-accent",
+			]),
+		);
 	});
 
 	it("does not clip the keyboard focus ring", () => {

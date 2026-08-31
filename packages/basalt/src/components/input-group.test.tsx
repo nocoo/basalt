@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { CONTROL_SURFACE_CLASS } from "./control-surface";
 import { InputGroup } from "./input-group";
 
 describe("InputGroup", () => {
@@ -10,6 +11,16 @@ describe("InputGroup", () => {
 			</InputGroup>,
 		);
 		expect(screen.getByRole("textbox", { name: "Query" })).toBeInTheDocument();
+		const root = document.querySelector("[data-slot=input-group]");
+		expect(root).toBeTruthy();
+		expect(root?.className.split(/\s+/)).toEqual(
+			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
+		);
+		expect(root?.className.split(/\s+/)).toEqual(
+			expect.arrayContaining(["h-9", "[&>:first-child]:rounded-l-basalt-md"]),
+		);
+		expect(root?.className).not.toContain("bg-basalt-background");
+		expect(root?.className).not.toContain("rounded-basalt-lg");
 	});
 
 	it("keeps the suffix inline with the value", () => {

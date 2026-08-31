@@ -1,16 +1,24 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Code, CodeBlock, CodeHighlighted } from "./code";
+import { CONTROL_SURFACE_CLASS } from "./control-surface";
 
 describe("Code", () => {
 	it("renders inline code", () => {
 		render(<Code>cn()</Code>);
-		expect(screen.getByText("cn()")).toBeInTheDocument();
+		const inline = screen.getByText("cn()");
+		expect(inline.className.split(/\s+/)).toContain("text-[13px]");
+		expect(inline.className.split(/\s+/)).not.toContain("text-sm");
+		expect(inline.className).not.toContain("rounded-basalt-md");
 	});
 
 	it("renders a block", () => {
 		render(<CodeBlock>const x = 1;</CodeBlock>);
-		expect(screen.getByText("const x = 1;")).toBeInTheDocument();
+		const block = screen.getByText("const x = 1;");
+		expect(block.className.split(/\s+/)).toEqual(
+			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
+		);
+		expect(block.className.split(/\s+/)).not.toContain("text-[13px]");
 	});
 
 	it("highlights keywords in a real function", () => {
@@ -25,5 +33,10 @@ describe("Code", () => {
 		expect(screen.getByText("export")).toHaveClass("text-basalt-primary");
 		expect(screen.getByText(/fetchUser/)).toBeInTheDocument();
 		expect(screen.getByText('"/api/users"')).toHaveClass("text-basalt-chart-5");
+		const pre = screen.getByText("export").closest("pre");
+		expect(pre?.className.split(/\s+/)).toEqual(
+			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
+		);
+		expect(pre?.querySelector("code")?.className.split(/\s+/)).not.toContain("text-[13px]");
 	});
 });

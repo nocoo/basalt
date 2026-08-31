@@ -12,6 +12,8 @@ describe("Collapsible", () => {
 		);
 		const trigger = screen.getByRole("button", { name: "How does this project work?" });
 		expect(trigger.className).toContain("font-medium");
+		expect(trigger.className.split(/\s+/)).toContain("text-sm");
+		expect(trigger.className.split(/\s+/)).not.toContain("text-base");
 		expect(trigger.querySelector("svg")).toBeTruthy();
 		expect(trigger).toHaveAttribute("data-state", "closed");
 	});
@@ -29,6 +31,8 @@ describe("Collapsible", () => {
 		expect(trigger.className).toContain("data-[state=open]:[&_svg]:rotate-180");
 		const panel = screen.getByText("This project is a React component library.");
 		expect(panel.className).toContain("border-l-2");
+		expect(panel.className.split(/\s+/)).toContain("text-sm");
+		expect(panel.className.split(/\s+/)).not.toContain("text-base");
 		expect(panel.parentElement?.className).toContain(
 			"data-[state=open]:animate-basalt-collapsible-down",
 		);
@@ -43,5 +47,6 @@ describe("Collapsible", () => {
 		);
 		const panel = screen.getByText("Plain");
 		expect(panel.className).not.toContain("border-l-2");
+		expect(panel.className).not.toContain("text-sm");
 	});
 });

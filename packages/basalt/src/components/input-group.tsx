@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { Button, type ButtonProps } from "./button";
+import { controlSurfaceClass } from "./control-surface";
 import { Input } from "./input";
 
 export type InputGroupProps = React.HTMLAttributes<HTMLDivElement> & {
@@ -18,17 +19,19 @@ const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
 				data-disabled={disabled ? "" : undefined}
 				aria-disabled={disabled || undefined}
 				inert={disabled || undefined}
-				className={cn(
-					"flex h-9 w-full items-center rounded-basalt-lg border border-basalt-border bg-basalt-background text-sm shadow-xs",
-					"[&>:first-child]:rounded-l-basalt-lg [&>:last-child]:rounded-r-basalt-lg",
-					"outline-hidden focus-within:border-basalt-ring",
-					"has-[[data-slot=input-group-addon-start]]:[&_input]:pl-2",
-					"has-[[data-slot=input-group-addon-end]]:[&_input]:pr-2",
-					"has-[[data-slot=input-group-suffix]]:[&_input]:flex-none",
-					"has-[[data-slot=input-group-suffix]]:[&_input]:[field-sizing:content]",
-					"has-[[data-slot=input-group-suffix]]:[&_input]:pr-0",
-					"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
-					className,
+				className={controlSurfaceClass(
+					cn(
+						"flex h-9 w-full items-center shadow-xs",
+						"[&>:first-child]:rounded-l-basalt-md [&>:last-child]:rounded-r-basalt-md",
+						"outline-hidden focus-within:border-basalt-ring",
+						"has-[[data-slot=input-group-addon-start]]:[&_input]:pl-2",
+						"has-[[data-slot=input-group-addon-end]]:[&_input]:pr-2",
+						"has-[[data-slot=input-group-suffix]]:[&_input]:flex-none",
+						"has-[[data-slot=input-group-suffix]]:[&_input]:[field-sizing:content]",
+						"has-[[data-slot=input-group-suffix]]:[&_input]:pr-0",
+						"data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+						className,
+					),
 				)}
 				onClick={(event) => {
 					onClick?.(event);

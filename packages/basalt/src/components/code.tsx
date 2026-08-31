@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../utils/cn";
+import { controlSurfaceClass } from "./control-surface";
 
 const TOKEN =
 	/(\/\/[^\n]*)|("[^"]*"|'[^']*'|`[^`]*`)|\b(import|from|export|default|async|await|function|return|const|let|var|type|interface|as|if|else|throw|new|typeof)\b|(\b\d+\b)|(<\/?[A-Za-z][\w.-]*)/g;
@@ -51,9 +52,8 @@ export function Code({ className, ...props }: HTMLAttributes<HTMLElement>) {
 export function CodeBlock({ className, ...props }: HTMLAttributes<HTMLPreElement>) {
 	return (
 		<pre
-			className={cn(
-				"overflow-x-auto rounded-basalt-md border border-basalt-border bg-basalt-secondary p-4 font-mono text-[13px] text-basalt-foreground",
-				className,
+			className={controlSurfaceClass(
+				cn("overflow-x-auto p-4 font-mono text-basalt-foreground", className),
 			)}
 			{...props}
 		/>
@@ -67,13 +67,10 @@ export function CodeHighlighted({
 }: HTMLAttributes<HTMLPreElement> & { code: string }) {
 	return (
 		<pre
-			className={cn(
-				"overflow-x-auto rounded-basalt-md border border-basalt-border bg-basalt-secondary p-4 text-basalt-foreground",
-				className,
-			)}
+			className={controlSurfaceClass(cn("overflow-x-auto p-4 text-basalt-foreground", className))}
 			{...props}
 		>
-			<code className="font-mono text-[13px] leading-6">{highlight(code)}</code>
+			<code className="font-mono leading-6">{highlight(code)}</code>
 		</pre>
 	);
 }

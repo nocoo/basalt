@@ -2,6 +2,7 @@ import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { cn } from "../utils/cn";
 import { Button } from "./button";
+import { controlSurfaceClass } from "./control-surface";
 
 export function ClipboardText({
 	text,
@@ -16,12 +17,11 @@ export function ClipboardText({
 	return (
 		<div
 			data-slot="clipboard-text"
-			className={cn(
-				"inline-flex max-w-full items-stretch rounded-basalt-lg border border-basalt-border bg-basalt-background text-sm shadow-xs",
-				className,
+			className={controlSurfaceClass(
+				cn("inline-flex h-9 max-w-full items-stretch shadow-xs", className),
 			)}
 		>
-			<code className="flex min-w-0 items-center truncate rounded-l-basalt-lg bg-transparent px-4 py-2 font-mono text-sm text-basalt-foreground">
+			<code className="flex h-full min-w-0 items-center truncate rounded-l-basalt-md bg-transparent px-4 font-mono text-sm text-basalt-foreground">
 				{text}
 			</code>
 			<Button
@@ -29,7 +29,7 @@ export function ClipboardText({
 				size="icon"
 				variant="ghost"
 				aria-label="Copy"
-				className="h-auto min-h-9 w-9 shrink-0 rounded-none rounded-r-basalt-lg border-0 border-l border-basalt-border shadow-none"
+				className="h-full min-h-0 w-9 shrink-0 rounded-none rounded-r-basalt-md border-0 border-l border-basalt-border shadow-none"
 				onClick={async () => {
 					await navigator.clipboard.writeText(copyText ?? text);
 					setCopied(true);

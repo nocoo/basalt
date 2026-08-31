@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { CONTROL_SURFACE_CLASS } from "./control-surface";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
 
 describe("Select", () => {
@@ -11,7 +12,12 @@ describe("Select", () => {
 				</SelectTrigger>
 			</Select>,
 		);
-		expect(screen.getByRole("combobox", { name: "Version" })).toBeInTheDocument();
+		const trigger = screen.getByRole("combobox", { name: "Version" });
+		expect(trigger).toBeInTheDocument();
+		expect(trigger.className.split(/\s+/)).toEqual(
+			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
+		);
+		expect(trigger.className.split(/\s+/)).toEqual(expect.arrayContaining(["h-9", "px-3"]));
 	});
 
 	it("opens the list below the trigger", () => {

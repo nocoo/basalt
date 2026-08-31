@@ -21,7 +21,7 @@ export const CollapsibleTrigger = React.forwardRef<
 		<CollapsiblePrimitive.CollapsibleTrigger
 			ref={ref}
 			className={cn(
-				"m-0 inline-flex cursor-pointer items-center gap-1 border-none bg-transparent p-0 text-base font-medium text-basalt-foreground shadow-none select-none",
+				"m-0 inline-flex cursor-pointer items-center gap-1 border-none bg-transparent p-0 text-sm font-medium text-basalt-foreground shadow-none select-none",
 				FOCUS_INSET,
 				"[&_svg]:size-3 [&_svg]:shrink-0 [&_svg]:origin-center [&_svg]:transition-transform [&_svg]:duration-100 [&_svg]:ease-out",
 				"data-[state=open]:[&_svg]:rotate-180",
@@ -53,7 +53,7 @@ export const CollapsibleContent = React.forwardRef<
 		{unstyled ? (
 			children
 		) : (
-			<div className="my-2 border-l-2 border-basalt-border py-1 pr-1 pl-4 text-base text-basalt-foreground">
+			<div className="my-2 border-l-2 border-basalt-border py-1 pr-1 pl-4 text-sm text-basalt-foreground">
 				{children}
 			</div>
 		)}

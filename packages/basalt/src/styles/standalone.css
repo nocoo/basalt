@@ -777,13 +777,13 @@
   .rounded-sm {
     border-radius: var(--radius-sm);
   }
-  .rounded-l-basalt-lg {
-    border-top-left-radius: var(--basalt-radius);
-    border-bottom-left-radius: var(--basalt-radius);
+  .rounded-l-basalt-md {
+    border-top-left-radius: calc(var(--basalt-radius) - 2px);
+    border-bottom-left-radius: calc(var(--basalt-radius) - 2px);
   }
-  .rounded-r-basalt-lg {
-    border-top-right-radius: var(--basalt-radius);
-    border-bottom-right-radius: var(--basalt-radius);
+  .rounded-r-basalt-md {
+    border-top-right-radius: calc(var(--basalt-radius) - 2px);
+    border-bottom-right-radius: calc(var(--basalt-radius) - 2px);
   }
   .border {
     border-style: var(--tw-border-style);
@@ -1281,20 +1281,12 @@
   .placeholder\:text-basalt-muted-foreground::placeholder {
     color: hsl(var(--basalt-muted-foreground));
   }
-  .first\:rounded-l-basalt-lg:first-child {
-    border-top-left-radius: var(--basalt-radius);
-    border-bottom-left-radius: var(--basalt-radius);
-  }
   .first\:rounded-l-basalt-md:first-child {
     border-top-left-radius: calc(var(--basalt-radius) - 2px);
     border-bottom-left-radius: calc(var(--basalt-radius) - 2px);
   }
   .first\:rounded-tl-basalt-md:first-child {
     border-top-left-radius: calc(var(--basalt-radius) - 2px);
-  }
-  .last\:rounded-r-basalt-lg:last-child {
-    border-top-right-radius: var(--basalt-radius);
-    border-bottom-right-radius: var(--basalt-radius);
   }
   .last\:rounded-r-basalt-md:last-child {
     border-top-right-radius: calc(var(--basalt-radius) - 2px);
@@ -1423,6 +1415,9 @@
   }
   .focus-visible\:ring-inset:focus-visible {
     --tw-ring-inset: inset;
+  }
+  .active\:bg-basalt-accent:active {
+    background-color: hsl(var(--basalt-accent));
   }
   .disabled\:pointer-events-none:disabled {
     pointer-events: none;
@@ -1712,13 +1707,13 @@
   .\[\&\>\*\:not\(\:first-child\)\]\:border-basalt-border > :not(:first-child) {
     border-color: hsl(var(--basalt-border));
   }
-  .\[\&\>\:first-child\]\:rounded-l-basalt-lg > :first-child {
-    border-top-left-radius: var(--basalt-radius);
-    border-bottom-left-radius: var(--basalt-radius);
+  .\[\&\>\:first-child\]\:rounded-l-basalt-md > :first-child {
+    border-top-left-radius: calc(var(--basalt-radius) - 2px);
+    border-bottom-left-radius: calc(var(--basalt-radius) - 2px);
   }
-  .\[\&\>\:last-child\]\:rounded-r-basalt-lg > :last-child {
-    border-top-right-radius: var(--basalt-radius);
-    border-bottom-right-radius: var(--basalt-radius);
+  .\[\&\>\:last-child\]\:rounded-r-basalt-md > :last-child {
+    border-top-right-radius: calc(var(--basalt-radius) - 2px);
+    border-bottom-right-radius: calc(var(--basalt-radius) - 2px);
   }
   .sr-only {
     position: absolute;
