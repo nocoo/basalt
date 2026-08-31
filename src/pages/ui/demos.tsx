@@ -9,7 +9,6 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Link } from "@nocoo/basalt/components/link";
 import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
 import { SensitiveInput } from "@nocoo/basalt/components/sensitive-input";
-import { Separator } from "@nocoo/basalt/components/separator";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Text } from "@nocoo/basalt/components/text";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
@@ -27,6 +26,7 @@ import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
+import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
 import { KUMO_EXAMPLES } from "./kumo-examples";
 
@@ -35,14 +35,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	"link-button": LINK_BUTTON_EXAMPLES,
 	text: TEXT_EXAMPLES,
 	label: LABEL_EXAMPLES,
-	separator: [
-		{
-			id: catalogScenarioId("separator", "horizontal"),
-			title: "Horizontal",
-			code: "<Separator />",
-			render: () => <Separator />,
-		},
-	],
+	separator: SEPARATOR_EXAMPLES,
 	link: [
 		{
 			id: catalogScenarioId("link", "default"),

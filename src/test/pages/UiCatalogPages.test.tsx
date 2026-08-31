@@ -783,6 +783,52 @@ describe("ui catalog", () => {
 		}
 	});
 
+	it("keeps separator hero and composite preview contracts", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/separator");
+		expect(screen.getByRole("heading", { name: "Horizontal" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="separator-horizontal"]');
+		expect(hero).toBeTruthy();
+		expect(hero?.querySelector(".w-full.max-w-sm.space-y-3")).toBeTruthy();
+		expect(hero).toHaveTextContent("Above");
+		expect(hero).toHaveTextContent("Below");
+		const heroRule = hero?.querySelector('[data-orientation="horizontal"]');
+		expect(heroRule).toBeTruthy();
+		expect(heroRule).toHaveClass("h-px", "w-full");
+		const example = document.querySelector('[data-scenario="separator-horizontal"]');
+		expect(example).toBeTruthy();
+		expect(example?.querySelector(".w-full.max-w-sm.space-y-3")).toBeTruthy();
+		expect(example).toHaveTextContent("Above");
+		expect(example).toHaveTextContent("Below");
+		expect(example?.querySelector('[data-orientation="horizontal"]')).toBeTruthy();
+		for (const scenario of UI_EXAMPLES.separator ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/separator");
+			expect(scenario.code).toContain("w-full max-w-sm space-y-3");
+			expect(scenario.code).toContain("<Text>Above</Text>");
+			expect(scenario.code).toContain("<Separator />");
+			expect(scenario.code).toContain("<Text>Below</Text>");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+	});
+
+	it("does not keep inline separator scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("SEPARATOR_EXAMPLES");
+		expect(demos).toMatch(/\bseparator: SEPARATOR_EXAMPLES/);
+		expect(demos).not.toMatch(/\bseparator:\s*\[/);
+		expect(kumo).not.toMatch(/\bseparator:\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("separator"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("separator"/);
+		expect(demos).not.toMatch(/code:\s*["']<Separator \/>["']/);
+		expect(kumo).not.toMatch(/code:\s*["']<Separator \/>["']/);
+	});
+
 	it("does not keep inline label scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");

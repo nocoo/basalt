@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { LABEL_EXAMPLES } from "@/pages/ui/examples/label";
+import { SEPARATOR_EXAMPLES } from "@/pages/ui/examples/separator";
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
@@ -89,6 +90,8 @@ describe("foundation feedback scenario truth", () => {
 			"label-optional-field",
 			"label-with-tooltip",
 		]);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual(["separator-horizontal"]);
 		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([
 			"layer-card-basic-card",
 			"layer-card-surface-style-card",

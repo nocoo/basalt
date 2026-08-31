@@ -74,7 +74,6 @@ import {
 	SelectValue,
 } from "@nocoo/basalt/components/select";
 import { SensitiveInput } from "@nocoo/basalt/components/sensitive-input";
-import { Separator } from "@nocoo/basalt/components/separator";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Slider } from "@nocoo/basalt/components/slider";
 import { Switch } from "@nocoo/basalt/components/switch";
@@ -860,20 +859,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 						<LayerCard.Secondary>Examples</LayerCard.Secondary>
 						<LayerCard.Primary>View code examples</LayerCard.Primary>
 					</LayerCard>
-				</div>
-			),
-		},
-	],
-	separator: [
-		{
-			id: catalogScenarioId("separator", "horizontal"),
-			title: "Horizontal",
-			code: "<Separator />",
-			render: () => (
-				<div className="w-full max-w-sm space-y-3">
-					<Text>Above</Text>
-					<Separator />
-					<Text>Below</Text>
 				</div>
 			),
 		},

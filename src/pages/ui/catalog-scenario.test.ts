@@ -10,6 +10,7 @@ import { UI_EXAMPLES } from "./demos";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
+import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
 
 const BUTTON_IDS = [
@@ -70,6 +71,16 @@ const LABEL_TITLES = ["Default Label", "Optional Field", "With Tooltip"] as cons
 
 const labelRenders = import.meta.glob("./examples/label/*.tsx", { eager: true });
 const labelSources = import.meta.glob("./examples/label/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const SEPARATOR_IDS = ["separator-horizontal"] as const;
+const SEPARATOR_TITLES = ["Horizontal"] as const;
+
+const separatorRenders = import.meta.glob("./examples/separator/*.tsx", { eager: true });
+const separatorSources = import.meta.glob("./examples/separator/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -282,6 +293,62 @@ describe("source-backed label scenarios", () => {
 		expect(LABEL_EXAMPLES[0]?.code).toContain("flex w-full flex-col gap-3");
 		expect(LABEL_EXAMPLES[2]?.code).toContain("More information about this field");
 		expect(LABEL_EXAMPLES[2]?.code).not.toMatch(/tooltip="More information"/);
+	});
+});
+
+describe("source-backed separator scenarios", () => {
+	it("loads one separator scenario from the same glob modules", () => {
+		expect(Object.keys(separatorRenders)).toHaveLength(1);
+		expect(Object.keys(separatorSources)).toHaveLength(1);
+		const loaded = loadModuleScenarios({
+			slug: "separator",
+			metas: SEPARATOR_TITLES.map((title, index) => ({
+				key: SEPARATOR_IDS[index].slice("separator-".length),
+				title,
+			})),
+			renderModules: separatorRenders,
+			sourceModules: separatorSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...SEPARATOR_TITLES]);
+		expect(SEPARATOR_EXAMPLES.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(SEPARATOR_EXAMPLES.map((item) => item.title)).toEqual([...SEPARATOR_TITLES]);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		const fileKeys = new Set(
+			Object.keys(separatorRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(SEPARATOR_IDS.map((id) => id.slice("separator-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("separator-".length);
+			const modulePath = Object.keys(separatorSources).find((path) => path.endsWith(`/${key}.tsx`));
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = separatorSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(SEPARATOR_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((separatorRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				SEPARATOR_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).toContain("export default");
+		}
+		expect(SEPARATOR_EXAMPLES[0]?.code).toContain("w-full max-w-sm space-y-3");
+		expect(SEPARATOR_EXAMPLES[0]?.code).toContain("<Text>Above</Text>");
+		expect(SEPARATOR_EXAMPLES[0]?.code).toContain("<Separator />");
+		expect(SEPARATOR_EXAMPLES[0]?.code).toContain("<Text>Below</Text>");
+		expect(SEPARATOR_EXAMPLES[0]?.code).not.toBe("<Separator />");
 	});
 });
 
