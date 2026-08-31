@@ -49,10 +49,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 		description: "Body copy with size and tone.",
 		usage: usage("Text", "@nocoo/basalt/components/text", "<Text tone='muted'>Copy</Text>"),
 		variants: ["xs", "sm", "md", "lg", "xl"],
-		props: [
-			{ name: "size", type: '"xs" | "sm" | "md" | "lg" | "xl"' },
-			{ name: "tone", type: '"default" | "muted"' },
-		],
+		props: CATALOG_API.text,
 		provenance: provenanceFromLegacy({
 			repo: "basalt",
 			sha: "2727ae6a8d3f",

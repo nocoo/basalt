@@ -129,6 +129,9 @@ describe("catalog source contract", () => {
 			"size",
 			"icon",
 		]);
+		expect(implementationFileFor(entry("text"))).toBe("packages/basalt/src/components/text.tsx");
+		expect(CATALOG_DOCS.text?.props).toEqual(CATALOG_API.text);
+		expect(CATALOG_API.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);

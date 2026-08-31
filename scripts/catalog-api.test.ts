@@ -97,6 +97,11 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/button.tsx",
 				propsType: "LinkButtonProps",
 			},
+			{
+				slug: "text",
+				sourceFile: "packages/basalt/src/components/text.tsx",
+				propsType: "TextProps",
+			},
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames|props:\s*\[/);
@@ -108,7 +113,7 @@ describe("catalog API generator contract", () => {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toEqual(["button", "link-button"]);
+		expect(Object.keys(generated)).toEqual(["button", "link-button", "text"]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",
@@ -173,6 +178,32 @@ describe("catalog API generator contract", () => {
 		expect(generated["link-button"]?.some((prop) => prop.name === "loading")).toBe(false);
 		expect(generated["link-button"]?.some((prop) => prop.name === "href")).toBe(false);
 		expect(generated["link-button"]?.some((prop) => prop.name === "className")).toBe(false);
+	}, 20_000);
+
+	it("extracts Text props from TextProps without HTML or Kumo-only fields", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.text).toEqual([
+			{
+				name: "size",
+				type: '"lg" | "md" | "sm" | "xl" | "xs" | null',
+				required: false,
+			},
+			{
+				name: "tone",
+				type: '"default" | "muted" | null',
+				required: false,
+			},
+		]);
+		expect(generated.text?.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated.text?.some((prop) => prop.name === "className")).toBe(false);
+		expect(generated.text?.some((prop) => prop.name === "as")).toBe(false);
+		expect(generated.text?.some((prop) => prop.name === "bold")).toBe(false);
+		expect(generated.text?.some((prop) => prop.name === "truncate")).toBe(false);
 	}, 20_000);
 
 	it("filters DOM, event, ARIA, and className inheritance", () => {
@@ -930,8 +961,9 @@ export interface WidgetProps {
 		expect(first).toContain("| null");
 		expect(first).toContain('\t"link-button": [');
 		expect(first).toContain("\tbutton: [");
+		expect(first).toContain("\ttext: [");
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"20620051323df8e3fc7a4991009647c35b74eb36af8a5901488743147cad34a2",
+			"1e5fffe4f0001a7eb196998a3b1d2e445751fad9e965d865383137338b415c2a",
 		);
 	}, 20_000);
 });

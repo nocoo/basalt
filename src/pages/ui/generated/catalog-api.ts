@@ -45,4 +45,16 @@ export const CATALOG_API = {
 			required: false,
 		},
 	],
+	text: [
+		{
+			name: "size",
+			type: '"lg" | "md" | "sm" | "xl" | "xs" | null',
+			required: false,
+		},
+		{
+			name: "tone",
+			type: '"default" | "muted" | null',
+			required: false,
+		},
+	],
 };
