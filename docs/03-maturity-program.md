@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A19 D047 — source-backed BasaltMark scenario；准备下发
-> 当前代码前置：`bd06af1`（D046 已完成，工作树干净）
+> 当前切片：S2A19 D047 — source-backed BasaltMark scenario；已完成，下一切片调查中
+> 当前代码前置：`bc5dabf`（D047 实现已验收，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046 完成；S2A19 D047 准备下发） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047 完成） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -605,6 +605,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D044 | S2A16 | `4588bda` + `aa19e40` | `w14:p1` | 完成 | `6d309e7` | 导出只含必填 `"aria-label": string` 的 `ThemeToggleProps`，函数消费命名类型而函数体、DOM、样式、三态与 D043 scenario 零漂移；缺失 label 与 Button size 均有 compile-error 负门。生成器新增第八 target，API 精确一项 required prop，docs/API/Copy page 共用 generated 数据，Button props 未泄漏；本地 quoted property 与跨文件 inherited ARIA 过滤均有测试。Codex 独立验收 8 个授权文件、focused 4 files / 270 tests、两轮 generate/check、typecheck、Biome 430 files、全量与 coverage 116 files / 947 tests；coverage 保持 `97.13 / 95.44 / 95.89 / 97.32`。Showcase 2819 modules、package 92 JS + 92 d.ts + 89 maps、Bundler/NodeNext types 与 279-file pack 全绿；generated SHA-256 为 `454a8ad4fcb543b4c39ebc3d1b0b104944fc62f4d5ee985fe34991863b27f248`，既有 1,559.71 kB warning 保留。OpenCLI 实测 API 恰一行、无问号/默认值，三态仍为 Monitor/system → Sun/light → Moon/dark → Monitor/system；Copy page 为 1,181 字符并标 required、含完整 raw/provider、无 Button props，console 0。Grok 全量首跑遇既有 Chromium flake后 4-worker 原样重跑；未改门或跳 hooks，7003/PID 95907 保持运行，工作树干净。 |
 | D045 | S2A17 | `5c02a9b` + `229436c` | `w14:p1` | 完成 | `bf36a81` | 三个生效 LayerCard 场景成为独立、自包含的同路径 render/raw modules，最终 `UI_EXAMPLES["layer-card"] === LAYER_CARD_EXAMPLES`；删除 BASE/KUMO 双 inline owner 及两处无用 imports。Basic 的 `w-[250px]`、Surface 的 `w-[250px] p-4`、Multiple 的 `flex w-full gap-4` + 两张 `w-[200px]` card 及全部文字/DOM/视觉未漂移，三段代码改为完整可复制 module。Codex 独立验收 9 个授权文件、focused 3 files / 236 tests、catalog check、typecheck、Biome 434 files、全量与 coverage 116 files / 951 tests；coverage 保持 `97.13 / 95.44 / 95.89 / 97.32`。Showcase 2826 modules 通过，既有 1,559.98 kB chunk warning 保留给 S2B/S9。OpenCLI 实测 hero/三个场景结构与 class 正确，Copy page 为 1,898 字符并含三个完整 modules、无禁用语境，console 0。Grok 首次全量遇既有 Chromium 5 秒 flake，4-worker 原样重跑及随后全量、Codex 独立全量均通过；未改门或跳 hooks，7003/PID 95907 保持运行，工作树干净。 |
 | D046 | S2A18 | `e44266d` + `c3ec817` | `w14:p1` | 完成 | `bb7389e` | `LayerCardProps` 等价重述为先从外部 DOM attributes 排除 `className`、再本地声明 optional `className`，保留 children、id/style、data/ARIA、events、ref、compound runtime 与 D045 三场景；第九个生成 target 只产出一项 `className`，未泄漏 DOM props、events、ARIA 或 section props。通用 fixture 同时证明显式 `Omit` ownership 合法、未 Omit 的跨文件同名伪装继续 fail-closed。Codex 独立验收 8 个授权文件、focused 4 files / 282 tests、两轮 generate/check、typecheck、Biome、全量 116 files / 958 tests 及 coverage；coverage 保持 `97.13 / 95.44 / 95.89 / 97.32`。Showcase 2826 modules、package 92 JS + 92 d.ts + 89 maps、Bundler/NodeNext types 与 279-file pack 全绿；generated SHA-256 为 `de637e6ee86ee3af1f2030754f27d121a64ffc73fcf712feffcee15f4f241a79`，既有约 1.56 MB chunk warning 保留。OpenCLI 实测 API 恰一行、Copy page 1,945 字符、D045 三场景布局不变、console 0；7003/PID 95907 保持运行，构建后工作树干净。 |
-| D047 | S2A19 | `bd06af1` | `w14:p1` | 准备下发 | — | 将唯一 BasaltMark 场景迁为同路径 render/raw module，并把 `catalog-ready` 耦合的 docs 原样移交 `BASE_DOCS`；冻结山形标记、单场景、手写 API 和全部视觉/能力，不引入任何 Cloudflare 语境。 |
+| D047 | S2A19 | `bd06af1` + `3fd9da4` | `w14:p1` | 完成 | `bc5dabf` | 唯一 `basalt-mark-default` 场景成为独立、自包含的同路径 render/raw module，最终 `UI_EXAMPLES["basalt-mark"] === BASALT_MARK_EXAMPLES`；删除 `catalog-ready.tsx` 的 inline owner 与只因此存在的 import，并由 `BASE_DOCS` 原样接管 description、Usage、空 variants、手写 `className` 和 provenance。Mountain SVG、`h-5 w-5 text-basalt-primary`、`stroke-width=1.5`、名称 `Basalt`、单场景和 API 均未漂移。Codex 独立验收 8 个授权文件、focused 3 files / 237 tests、catalog check、typecheck、Biome 436 files、全量及 coverage 116 files / 962 tests；coverage 保持 `97.13 / 95.44 / 95.89 / 97.32`。Showcase 2829 modules 通过，既有 1,560.67 kB chunk warning 保留。OpenCLI 实测一个 hero、一个 example、两处正确 Mountain SVG、完整 module code、API 一行、禁用语境与 console 均为 0；7003/PID 95907 保持运行，构建后工作树干净。 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
