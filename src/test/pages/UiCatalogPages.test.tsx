@@ -550,6 +550,52 @@ describe("ui catalog", () => {
 		expect(source).not.toMatch(/code:\s*"<Button/);
 	});
 
+	it("keeps link-button default hero and disabled link contracts", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/link-button");
+		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled Link" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="link-button-default"]');
+		expect(hero).toBeTruthy();
+		const docs = screen.getAllByRole("link", { name: "Open docs" });
+		expect(docs.length).toBeGreaterThan(0);
+		for (const link of docs) {
+			expect(link).toHaveAttribute("href", "#docs");
+		}
+		const disabled = screen.getByRole("link", { name: "Disabled link" });
+		expect(disabled).toHaveAttribute("aria-disabled", "true");
+		expect(disabled).toHaveAttribute("tabindex", "-1");
+		expect(disabled).toHaveAttribute("role", "link");
+		expect(disabled).not.toHaveAttribute("href");
+		expect(disabled).toHaveClass("opacity-50");
+		const disabledScenario = UI_EXAMPLES["link-button"]?.find(
+			(item) => item.id === "link-button-disabled-link",
+		);
+		expect(disabledScenario?.code).toContain('aria-disabled="true"');
+		expect(disabledScenario?.code).toContain("tabIndex={-1}");
+		expect(disabledScenario?.code).toContain('role="link"');
+		expect(disabledScenario?.code).toContain('className="opacity-50"');
+		expect(disabledScenario?.code).not.toContain("href=");
+		fireEvent.click(disabled);
+		expect(window.location.hash).not.toBe("#docs");
+	});
+
+	it("does not keep inline link-button scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("LINK_BUTTON_EXAMPLES");
+		expect(demos).toMatch(/"link-button": LINK_BUTTON_EXAMPLES/);
+		expect(demos).not.toMatch(/"link-button":\s*\[/);
+		expect(kumo).not.toMatch(/"link-button":\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("link-button"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("link-button"/);
+		expect(demos).not.toMatch(/code:\s*['"`]<LinkButton/);
+		expect(kumo).not.toMatch(/code:\s*['"`]<LinkButton/);
+		expect(demos).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<LinkButton/);
+		expect(kumo).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<LinkButton/);
+	});
+
 	it("renders extra home tiles from the first catalog scenario", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });

@@ -70,6 +70,10 @@ describe("foundation feedback scenario truth", () => {
 			"button-link-with-tooltip",
 			"button-disabled-link",
 		]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([
+			"link-button-default",
+			"link-button-disabled-link",
+		]);
 		expect(UI_EXAMPLES["clipboard-text"]?.map((item) => item.id)).toEqual([
 			"clipboard-text-short-text",
 			"clipboard-text-api-key",

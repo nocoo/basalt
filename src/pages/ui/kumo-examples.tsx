@@ -11,7 +11,7 @@ import { Autocomplete } from "@nocoo/basalt/components/autocomplete";
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
-import { Button, LinkButton } from "@nocoo/basalt/components/button";
+import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
 import { CodeBlock, CodeHighlighted } from "@nocoo/basalt/components/code";
@@ -2158,24 +2158,6 @@ export default function Example() {
   );
 }`,
 			render: () => <CommandPaletteExample flat />,
-		},
-	],
-	"link-button": [
-		{
-			id: catalogScenarioId("link-button", "default"),
-			title: "Default",
-			code: '<LinkButton href="#docs">Open docs</LinkButton>',
-			render: () => <LinkButton href="#docs">Open docs</LinkButton>,
-		},
-		{
-			id: catalogScenarioId("link-button", "disabled-link"),
-			title: "Disabled Link",
-			code: '<LinkButton aria-disabled="true" tabIndex={-1} role="link">Disabled link</LinkButton>',
-			render: () => (
-				<LinkButton aria-disabled="true" tabIndex={-1} role="link" className="opacity-50">
-					Disabled link
-				</LinkButton>
-			),
 		},
 	],
 	field: [

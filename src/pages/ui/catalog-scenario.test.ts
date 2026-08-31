@@ -6,7 +6,9 @@ import {
 	moduleFileKey,
 	normalizeModulePath,
 } from "./catalog-scenario";
+import { UI_EXAMPLES } from "./demos";
 import { BUTTON_EXAMPLES } from "./examples/button";
+import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 
 const BUTTON_IDS = [
 	"button-variants",
@@ -36,6 +38,16 @@ const BUTTON_TITLES = [
 
 const buttonRenders = import.meta.glob("./examples/button/*.tsx", { eager: true });
 const buttonSources = import.meta.glob("./examples/button/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const LINK_BUTTON_IDS = ["link-button-default", "link-button-disabled-link"] as const;
+const LINK_BUTTON_TITLES = ["Default", "Disabled Link"] as const;
+
+const linkButtonRenders = import.meta.glob("./examples/link-button/*.tsx", { eager: true });
+const linkButtonSources = import.meta.glob("./examples/link-button/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -99,6 +111,54 @@ describe("source-backed button scenarios", () => {
 			expect(scenario.code).toBe((raw as string).trim());
 			expect(scenario.code).toBe(BUTTON_EXAMPLES.find((item) => item.id === scenario.id)?.code);
 			expect(scenario.render).toBe((buttonRenders[modulePath] as { default: unknown }).default);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		}
+	});
+});
+
+describe("source-backed link-button scenarios", () => {
+	it("loads two link-button scenarios from the same glob modules", () => {
+		expect(Object.keys(linkButtonRenders)).toHaveLength(2);
+		expect(Object.keys(linkButtonSources)).toHaveLength(2);
+		const loaded = loadModuleScenarios({
+			slug: "link-button",
+			metas: LINK_BUTTON_TITLES.map((title, index) => ({
+				key: LINK_BUTTON_IDS[index].slice("link-button-".length),
+				title,
+			})),
+			renderModules: linkButtonRenders,
+			sourceModules: linkButtonSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...LINK_BUTTON_TITLES]);
+		expect(LINK_BUTTON_EXAMPLES.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(LINK_BUTTON_EXAMPLES.map((item) => item.title)).toEqual([...LINK_BUTTON_TITLES]);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		const fileKeys = new Set(
+			Object.keys(linkButtonRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(LINK_BUTTON_IDS.map((id) => id.slice("link-button-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("link-button-".length);
+			const modulePath = Object.keys(linkButtonSources).find((path) =>
+				path.endsWith(`/${key}.tsx`),
+			);
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = linkButtonSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(
+				LINK_BUTTON_EXAMPLES.find((item) => item.id === scenario.id)?.code,
+			);
+			expect(scenario.render).toBe((linkButtonRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				LINK_BUTTON_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
 			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 		}
 	});

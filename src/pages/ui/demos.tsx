@@ -1,5 +1,5 @@
 import { Banner } from "@nocoo/basalt/components/banner";
-import { Button, LinkButton } from "@nocoo/basalt/components/button";
+import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
@@ -26,18 +26,12 @@ import { AlertTriangle, CircleAlert, CircleCheck, Info, X } from "lucide-react";
 import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { BUTTON_EXAMPLES } from "./examples/button";
+import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { KUMO_EXAMPLES } from "./kumo-examples";
 
 const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	button: BUTTON_EXAMPLES,
-	"link-button": [
-		{
-			id: catalogScenarioId("link-button", "default"),
-			title: "Default",
-			code: '<LinkButton href="#docs">Open docs</LinkButton>',
-			render: () => <LinkButton href="#docs">Open docs</LinkButton>,
-		},
-	],
+	"link-button": LINK_BUTTON_EXAMPLES,
 	text: [
 		{
 			id: catalogScenarioId("text", "default"),
