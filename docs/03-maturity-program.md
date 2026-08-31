@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2V — D029A-R1 private control helper boundary
-> 已验收代码基线：`df06b75e3177`（`main`；D028 source-backed Button scenarios 与验收台账均完成）
+> 当前切片：S2V — D029B Breadcrumbs 与 AppHeader 层级一致性
+> 已验收代码基线：`1b23083a08f5`（`main`；D029A control surface、字号与 private helper boundary 完成）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -128,7 +128,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028 完成） | 组件类型、API 表、example 不再三份手写漂移 |
-| S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 执行中（D029A） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
+| S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 执行中（D029A 完成，D029B 待下发） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
@@ -457,6 +457,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D026 | S1C1h | `fed681831ff6` + `ff7d74f` | `w14:p1` | 完成 | `ef01a0251d9c` | 只扩充 Banner 既有测试，新增 null variant/size fallback 与 compact 无 description 普通 inline action 两项行为；focused 1 file / 7 tests、typecheck、Biome 388 files、全量 112 files / 782 tests 全绿。Banner 达 statements `19/19`、lines `18/18`、branches `49/49`、functions `4/4`；全局 statements `1417/1463`（96.85%）、branches `1102/1160`（95.00%）、functions `430/449`（95.76%）、lines `1343/1385`（96.96%），coverage 首次 exit 0、四门全绿；工作树干净，未改生产或 coverage 配置 |
 | D027 | S1C2 | `ef01a0251d9c` + `af40437` | `w14:p1` | 完成 | `c5256403b362` | 五个授权文件原子加入 pinned `publint@0.3.24`、strict npm-pack publint、唯一有序的 root prepublish 聚合门和 package lifecycle 委托，并在同提交删除发布包 `private`；root/四 fixture 仍 private、package 仍 `0.0.0`，build-contract 以缺失/重复/重排/绕过/publish 负例锁门，pack verifier 主动拒绝 `private` 键。Codex 独立验收 focused 1 file / 9 tests、frozen install 307 installs / 392 packages、package build 90 JS + 90 d.ts + 87 maps + 3 CSS、Bundler/NodeNext、273-file pack、publint、typecheck、Biome 388 files、全量 112 files / 785 tests及 coverage 四项全绿；真实 `npm run prepublishOnly --workspace @nocoo/basalt` 在公司镜像因缺既有 `lucide-react@1.34.0` fail-fast 于 A 且清理，腾讯镜像原命令重跑依序通过 A/B/C/D，C 为 HTTP 200 + Chromium 151 hydration/交互/theme，D 从 tarball 加载三项 heavy granular export。Codex 本轮四 temp、browser profile、动态端口、进程、tgz 全清，未动 7003 dev server；唯一 `basalt-gate-c-fail-4cUPl1` 为运行前已有残留，未擅删；工作树干净，无 publish/tag/push |
 | D028 | S2A1 | `c5256403b362` + `a55e545a2b23` | `w14:p1` | 完成 | `9fcee558e192` + `0252251a980c` | 首提交以通用 loader 和 10 个自包含 Button TSX 模块让 preview/default export 与展示代码/同路径 raw 共用真源，保持 id、title、顺序、交互与可访问名称，并修复 disabled-link 的 inert/视觉漂移；Codex review 复现 basename 配对会错误接受跨目录 render/raw，返工改为只移除精确 `?raw`、统一路径分隔符后比较完整相对路径，真实负例同时锁住双方原路径，任意其它 query 不被吞掉。Codex 独立复跑 focused 3 files / 191 tests、typecheck、Biome 399 files、全量 112 files / 800 tests、coverage `1417/1463`（96.85%）/`1102/1160`（95.00%）/`430/449`（95.76%）/`1343/1385`（96.96%）及 production build 2781 modules 全绿；既有 1,554.77 kB chunk warning 如实保留。Grok coverage 首轮遇到既有 5 秒 timeout、重跑通过，Codex 单独复跑一次通过；禁用用户语境扫描为空，7003 服务与运行前残留均未动，工作树干净 |
-| D029A | S2V | `0548bfe070ff` | `w14:p1` | 执行中（R1） | `5e86eeac5143`（待返工） | 首提交统一 8 个 control surface、Code/Collapsible 字号与 Pagination resting/interaction surface，113 files / 810 tests、coverage `96.86/95.00/95.77/96.97` 及 package/build 门由 Grok 报绿；Codex scope/diff review 发现新增 helper 位于 `components/` 后被 wildcard granular export 公开，真实 Node self-reference 已成功导入两个本应私有的符号。R1 只迁移到未公开的 `utils/` 并锁 private boundary，保留视觉 diff 与 generated standalone CSS |
+| D029A | S2V | `0548bfe070ff` | `w14:p1` | 完成 | `5e86eeac5143` + `1b23083a08f5` | 首提交统一 8 个 control surface、Code/Collapsible 字号与 Pagination resting/interaction surface；Codex review 发现 helper 被 `./components/*` 意外公开，R1 迁至未导出的 `utils/` 并锁住两个 package import 负门。Codex 独立验收 focused 9 files / 38 tests、typecheck、Biome 401 files、全量 113 files / 812 tests、coverage `1419/1465`（96.86%）/`1102/1160`（95.00%）/`431/450`（95.78%）/`1345/1387`（96.97%）、package 91 JS + 91 d.ts + 88 maps、types、276-file pack、showcase build；Node 实证旧 components 路径 `ERR_MODULE_NOT_FOUND`、utils 路径 `ERR_PACKAGE_PATH_NOT_EXPORTED`。Chromium light/dark computed style 证明 Input/Select/InputGroup/Clipboard/Code/Pagination surface 与 border 完全一致，radius 10px/font 14px，五个长控件 36px，Collapsible trigger/default panel 14px。7003 在验收前已无 listener，Codex 恢复服务后保留运行 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
