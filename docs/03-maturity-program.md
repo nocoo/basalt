@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2V — D029C-R1 stable composed ref 与 Tabs motion contract
-> 已验收代码基线：`cae03fe29f90`（`main`；D029B breadcrumb hierarchy 完成）
+> 当前切片：S2V 完成；下一切片尚未下发
+> 已验收代码基线：`da54f6e90871`（`main`；D029C segmented selection motion 完成）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -128,7 +128,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028 完成） | 组件类型、API 表、example 不再三份手写漂移 |
-| S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 执行中（D029A/B 完成，D029C 待下发） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
+| S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
@@ -463,6 +463,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D028 | S2A1 | `c5256403b362` + `a55e545a2b23` | `w14:p1` | 完成 | `9fcee558e192` + `0252251a980c` | 首提交以通用 loader 和 10 个自包含 Button TSX 模块让 preview/default export 与展示代码/同路径 raw 共用真源，保持 id、title、顺序、交互与可访问名称，并修复 disabled-link 的 inert/视觉漂移；Codex review 复现 basename 配对会错误接受跨目录 render/raw，返工改为只移除精确 `?raw`、统一路径分隔符后比较完整相对路径，真实负例同时锁住双方原路径，任意其它 query 不被吞掉。Codex 独立复跑 focused 3 files / 191 tests、typecheck、Biome 399 files、全量 112 files / 800 tests、coverage `1417/1463`（96.85%）/`1102/1160`（95.00%）/`430/449`（95.76%）/`1343/1385`（96.96%）及 production build 2781 modules 全绿；既有 1,554.77 kB chunk warning 如实保留。Grok coverage 首轮遇到既有 5 秒 timeout、重跑通过，Codex 单独复跑一次通过；禁用用户语境扫描为空，7003 服务与运行前残留均未动，工作树干净 |
 | D029A | S2V | `0548bfe070ff` | `w14:p1` | 完成 | `5e86eeac5143` + `1b23083a08f5` | 首提交统一 8 个 control surface、Code/Collapsible 字号与 Pagination resting/interaction surface；Codex review 发现 helper 被 `./components/*` 意外公开，R1 迁至未导出的 `utils/` 并锁住两个 package import 负门。Codex 独立验收 focused 9 files / 38 tests、typecheck、Biome 401 files、全量 113 files / 812 tests、coverage `1419/1465`（96.86%）/`1102/1160`（95.00%）/`431/450`（95.78%）/`1345/1387`（96.97%）、package 91 JS + 91 d.ts + 88 maps、types、276-file pack、showcase build；Node 实证旧 components 路径 `ERR_MODULE_NOT_FOUND`、utils 路径 `ERR_PACKAGE_PATH_NOT_EXPORTED`。Chromium light/dark computed style 证明 Input/Select/InputGroup/Clipboard/Code/Pagination surface 与 border 完全一致，radius 10px/font 14px，五个长控件 36px，Collapsible trigger/default panel 14px。7003 在验收前已无 listener，Codex 恢复服务后保留运行 |
 | D029B | S2V | `b060080` | `w14:p1` | 完成 | `cc85e477269f` + `cae03fe29f90` | Breadcrumbs linked/plain/current 与 AppHeader h1 均收敛至 14px/400，当前只用 foreground 色强化；h1、aria-current、separator 与 optional regions 保留。Codex review 发现首次提交漏闭包 build:css 确定性删除的 4 行 `.md:text-xl`，R1 只补该生成产物。Codex 独立验收 focused 2 files / 6 tests、typecheck、Biome 401 files、全量 113 / 814、coverage `1420/1466`（96.86%）/`1103/1160`（95.08%）/`431/450`（95.77%）/`1346/1388`（96.97%）、package 91 JS + 91 d.ts + 88 maps、types、276-file pack、连续两次 package build 幂等及 showcase build；Chromium light/dark 均实证 ancestor/current 为 14px/400 且只以 muted/foreground 色区分。工作树干净，7003 保持运行 |
-| D029C | S2V | `ba2a0c6` | `w14:p1` | 验收中（R1） | `507b273fddd9`（待 stable ref 修复） | 单选 ToggleGroup 已有真实移动底板，multiple 保留局部多选，Tabs 共用私有 observer helper，LanguageToggle 自然继承；首帧直接落位、正常 200ms ease-out、reduced-motion 0s 的 Chromium 证据成立。Codex review 复现稳定 callback ref 被内部 state render 伪 detach/attach，并要求补 Tabs 切换几何回归测试；其余已通过行为不得重写 |
+| D029C | S2V | `ba2a0c6` | `w14:p1` | 完成 | `507b273fddd9` + `da54f6e90871` | 单选 ToggleGroup 使用真实移动底板，multiple 保留 item-local 多选，Tabs 共用 `utils/` 私有 observer/测量 helper，LanguageToggle 自然继承；R1 修复内部 state render 造成 callback ref `node → null → node` 的伪 detach/attach，并补真实 Tabs 几何切换门。Codex 独立验收 focused 5 files / 28 tests、typecheck、Biome 404 files、全量 115 / 835、coverage `1460/1503`（97.13%）/`1132/1186`（95.44%）/`444/463`（95.89%）/`1383/1421`（97.32%）、package 92 JS + 92 d.ts + 89 maps、types、279-file pack、连续两次 package build 幂等及 showcase build。Chromium 151 首帧 indicator width 43px 且连续两帧 transition 0s；Live→Mock、EN→中文、Home→About 均真实改变 x/width 并在 200ms ease-out 后对齐 item，reduced-motion 切换前后均 0s；light/dark surface 与 selected contrast 正常。helper 的两个 package import 均被拒绝，7003 保持运行，工作树干净 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
