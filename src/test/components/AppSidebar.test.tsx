@@ -129,17 +129,30 @@ describe("AppSidebar", () => {
 		const search = within(dialog).getByPlaceholderText("Search pages...");
 		fireEvent.change(search, { target: { value: "Maps" } });
 		const maps = await within(dialog).findByRole("option", { name: /^Maps.*Planned$/ });
+		expect(
+			within(dialog).queryByRole("option", { name: "Flow Comparison" }),
+		).not.toBeInTheDocument();
 		fireEvent.click(maps);
+		fireEvent.keyDown(search, { key: "Enter" });
 		expect(screen.getByTestId("router-location")).toHaveAttribute("data-pathname", "/ui/button");
 		expect(screen.getByRole("dialog")).toBeInTheDocument();
 
-		fireEvent.change(search, { target: { value: "Colors" } });
-		const plannedColors = dialog.querySelector<HTMLElement>('[data-catalog-slug="colors"]');
-		const readyColors = dialog.querySelector<HTMLElement>('[data-catalog-slug="chart-colors"]');
+		fireEvent.keyDown(document, { key: "k", ctrlKey: true });
+		await waitFor(() => expect(screen.queryByRole("dialog")).not.toBeInTheDocument());
+		fireEvent.keyDown(document, { key: "k", ctrlKey: true });
+		const reopenedDialog = screen.getByRole("dialog");
+		const reopenedSearch = within(reopenedDialog).getByPlaceholderText("Search pages...");
+		expect(reopenedSearch).toHaveValue("");
+
+		fireEvent.change(reopenedSearch, { target: { value: "Colors" } });
+		const plannedColors = reopenedDialog.querySelector<HTMLElement>('[data-catalog-slug="colors"]');
+		const readyColors = reopenedDialog.querySelector<HTMLElement>(
+			'[data-catalog-slug="chart-colors"]',
+		);
 		expect(plannedColors).toHaveAttribute("data-disabled", "true");
 		expect(readyColors).toHaveAttribute("data-disabled", "false");
 		expect(readyColors).toHaveAttribute("data-selected", "true");
-		fireEvent.keyDown(search, { key: "Enter" });
+		fireEvent.keyDown(reopenedSearch, { key: "Enter" });
 		await waitFor(() => {
 			expect(screen.getByTestId("router-location")).toHaveAttribute(
 				"data-pathname",

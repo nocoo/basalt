@@ -342,6 +342,16 @@ function groupLabel(group: NavGroup, t: (key: string) => string) {
 	return group.label ?? t(group.labelKey ?? "");
 }
 
+function commandSearchMatches(value: string, query: string) {
+	const tokens = query.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
+	const normalizedValue = value.toLocaleLowerCase();
+	return tokens.every((token) => normalizedValue.includes(token));
+}
+
+function catalogCommandValue(entry: CatalogEntry) {
+	return `${catalogNavName(entry)} ${entry.name} ${entry.slug}`;
+}
+
 function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: string }) {
 	const navigate = useNavigate();
 	const { t } = useTranslation();
@@ -460,25 +470,41 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const [searchOpen, setSearchOpen] = useState(false);
+	const [searchQuery, setSearchQuery] = useState("");
+	const handleSearchOpenChange = useCallback((open: boolean) => {
+		setSearchOpen(open);
+		if (!open) {
+			setSearchQuery("");
+		}
+	}, []);
 
 	// ⌘K / Ctrl+K shortcut
 	useEffect(() => {
 		const handleKeyDown = (e: KeyboardEvent) => {
 			if ((e.metaKey || e.ctrlKey) && e.key === "k") {
 				e.preventDefault();
-				setSearchOpen((prev) => !prev);
+				handleSearchOpenChange(!searchOpen);
 			}
 		};
 		document.addEventListener("keydown", handleKeyDown);
 		return () => document.removeEventListener("keydown", handleKeyDown);
-	}, []);
+	}, [handleSearchOpenChange, searchOpen]);
 
 	const handleSelect = useCallback(
 		(path: string) => {
 			setSearchOpen(false);
+			setSearchQuery("");
 			navigate(path);
 		},
 		[navigate],
+	);
+	const commandNavGroups = NAV_GROUPS.map((group) => ({
+		...group,
+		items: group.items.filter((item) => commandSearchMatches(itemTitle(item, t), searchQuery)),
+	})).filter((group) => group.items.length > 0);
+	const commandLibraryHomeMatches = commandSearchMatches(t("nav.kitIndex"), searchQuery);
+	const commandCatalogEntries = CATALOG.filter((entry) =>
+		commandSearchMatches(catalogCommandValue(entry), searchQuery),
 	);
 
 	return (
@@ -590,11 +616,15 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 					</SidebarFooter>
 				</div>
 			)}
-			<CommandPalette open={searchOpen} onOpenChange={setSearchOpen}>
-				<CommandInput placeholder={t("common.searchPages")} />
+			<CommandPalette open={searchOpen} onOpenChange={handleSearchOpenChange} shouldFilter={false}>
+				<CommandInput
+					placeholder={t("common.searchPages")}
+					value={searchQuery}
+					onValueChange={setSearchQuery}
+				/>
 				<CommandList>
 					<CommandEmpty>{t("common.noResults")}</CommandEmpty>
-					{NAV_GROUPS.map((group) => (
+					{commandNavGroups.map((group) => (
 						<CommandGroup key={group.labelKey} heading={groupLabel(group, t)}>
 							{group.items.map((item) => (
 								<CommandItem
@@ -609,40 +639,44 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 							))}
 						</CommandGroup>
 					))}
-					<CommandGroup heading={t("nav.kit")}>
-						<CommandItem
-							value={t("nav.kitIndex")}
-							onSelect={() => handleSelect("/ui")}
-							className="cursor-pointer gap-3"
-						>
-							<BookOpen className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
-							<span>{t("nav.kitIndex")}</span>
-						</CommandItem>
-						{CATALOG.map((entry) => {
-							const isPlanned = CATALOG_PAGE_STATUS_BY_SLUG.get(entry.slug) === "planned";
-							return (
+					{commandLibraryHomeMatches || commandCatalogEntries.length > 0 ? (
+						<CommandGroup heading={t("nav.kit")}>
+							{commandLibraryHomeMatches ? (
 								<CommandItem
-									key={entry.slug}
-									value={`${catalogNavName(entry)} ${entry.name} ${entry.slug}`}
-									disabled={isPlanned}
-									data-catalog-slug={entry.slug}
-									onSelect={isPlanned ? undefined : () => handleSelect(`/ui/${entry.slug}`)}
-									className={isPlanned ? "gap-3" : "cursor-pointer gap-3"}
+									value={t("nav.kitIndex")}
+									onSelect={() => handleSelect("/ui")}
+									className="cursor-pointer gap-3"
 								>
-									<span>{catalogNavName(entry)}</span>
-									{isPlanned ? (
-										<Badge
-											variant="outline"
-											data-page-status="planned"
-											className="ml-auto shrink-0"
-										>
-											Planned
-										</Badge>
-									) : null}
+									<BookOpen className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+									<span>{t("nav.kitIndex")}</span>
 								</CommandItem>
-							);
-						})}
-					</CommandGroup>
+							) : null}
+							{commandCatalogEntries.map((entry) => {
+								const isPlanned = CATALOG_PAGE_STATUS_BY_SLUG.get(entry.slug) === "planned";
+								return (
+									<CommandItem
+										key={entry.slug}
+										value={catalogCommandValue(entry)}
+										disabled={isPlanned}
+										data-catalog-slug={entry.slug}
+										onSelect={isPlanned ? undefined : () => handleSelect(`/ui/${entry.slug}`)}
+										className={isPlanned ? "gap-3" : "cursor-pointer gap-3"}
+									>
+										<span>{catalogNavName(entry)}</span>
+										{isPlanned ? (
+											<Badge
+												variant="outline"
+												data-page-status="planned"
+												className="ml-auto shrink-0"
+											>
+												Planned
+											</Badge>
+										) : null}
+									</CommandItem>
+								);
+							})}
+						</CommandGroup>
+					) : null}
 				</CommandList>
 			</CommandPalette>
 		</Sidebar>
