@@ -1,6 +1,5 @@
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
-import { InputArea } from "@nocoo/basalt/components/input-area";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { Link } from "@nocoo/basalt/components/link";
 import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
@@ -16,6 +15,7 @@ import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { FIELD_EXAMPLES } from "./examples/field";
 import { INPUT_EXAMPLES } from "./examples/input";
+import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
@@ -63,14 +63,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 			),
 		},
 	],
-	"input-area": [
-		{
-			id: catalogScenarioId("input-area", "default"),
-			title: "Default",
-			code: '<InputArea aria-label="Notes" />',
-			render: () => <InputArea aria-label="Notes" />,
-		},
-	],
+	"input-area": INPUT_AREA_EXAMPLES,
 	"input-group": [
 		{
 			id: catalogScenarioId("input-group", "default"),

@@ -49,7 +49,6 @@ import { Empty } from "@nocoo/basalt/components/empty";
 import { Field } from "@nocoo/basalt/components/field";
 import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
 import { Grid, GridItem } from "@nocoo/basalt/components/grid";
-import { InputArea } from "@nocoo/basalt/components/input-area";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { Label } from "@nocoo/basalt/components/label";
 import { Link } from "@nocoo/basalt/components/link";
@@ -558,40 +557,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 					<Switch aria-label="Default size" defaultChecked />
 				</Preview>
 			),
-		},
-	],
-	"input-area": [
-		{
-			id: catalogScenarioId("input-area", "with-label"),
-			title: "With Label",
-			code: '<Field label="Notes" htmlFor="ex-notes"><InputArea id="ex-notes" /></Field>',
-			render: () => (
-				<Field label="Notes" htmlFor="ex-notes">
-					<InputArea id="ex-notes" />
-				</Field>
-			),
-		},
-		{
-			id: catalogScenarioId("input-area", "custom-row-count"),
-			title: "Custom Row Count",
-			code: '<InputArea rows={6} aria-label="Tall notes" />',
-			render: () => <InputArea rows={6} aria-label="Tall notes" />,
-		},
-		{
-			id: catalogScenarioId("input-area", "error-state-string"),
-			title: "Error State (String)",
-			code: '<Field label="Bio" htmlFor="ex-bio" error="Too short"><InputArea id="ex-bio" /></Field>',
-			render: () => (
-				<Field label="Bio" htmlFor="ex-bio" error="Too short">
-					<InputArea id="ex-bio" />
-				</Field>
-			),
-		},
-		{
-			id: catalogScenarioId("input-area", "disabled"),
-			title: "Disabled",
-			code: '<InputArea disabled aria-label="Disabled notes" value="Unavailable" />',
-			render: () => <InputArea disabled aria-label="Disabled notes" value="Unavailable" />,
 		},
 	],
 	"input-group": [

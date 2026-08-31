@@ -1721,6 +1721,84 @@ describe("ui catalog", () => {
 		expect(markdown).toContain('htmlFor="ex-input-err"');
 	});
 
+	it("keeps input-area hero, field associations, rows, and copy modules", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/input-area");
+		expect(screen.getByRole("heading", { name: "With Label" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Custom Row Count" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Error State (String)" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="input-area-with-label"]');
+		const labeled = document.querySelector('[data-scenario="input-area-with-label"]');
+		const rows = document.querySelector('[data-scenario="input-area-custom-row-count"]');
+		const error = document.querySelector('[data-scenario="input-area-error-state-string"]');
+		const disabled = document.querySelector('[data-scenario="input-area-disabled"]');
+		expect(hero).toBeTruthy();
+		expect(labeled).toBeTruthy();
+		expect(rows).toBeTruthy();
+		expect(error).toBeTruthy();
+		expect(disabled).toBeTruthy();
+		if (!hero || !labeled || !rows || !error || !disabled) {
+			throw new Error("missing input-area scenario surfaces");
+		}
+		const heroLabel = hero.querySelector('label[for="ex-notes"]');
+		const heroArea = hero.querySelector("#ex-notes");
+		expect(heroLabel).toHaveTextContent("Notes");
+		expect(heroArea).not.toHaveAttribute("aria-invalid");
+		expect(labeled.querySelector('label[for="ex-notes"]')).toHaveTextContent("Notes");
+		expect(labeled.querySelector("#ex-notes")).toHaveAttribute("id", "ex-notes");
+		expect(
+			within(rows as HTMLElement).getByRole("textbox", { name: "Tall notes" }),
+		).toHaveAttribute("rows", "6");
+		const errorArea = error.querySelector("#ex-bio");
+		expect(error.querySelector('label[for="ex-bio"]')).toHaveTextContent("Bio");
+		expect(errorArea).toHaveAttribute("aria-describedby", "ex-bio-error");
+		expect(errorArea).toHaveAttribute("aria-invalid", "true");
+		const alert = within(error as HTMLElement).getByRole("alert");
+		expect(alert).toHaveTextContent("Too short");
+		expect(alert).toHaveAttribute("id", "ex-bio-error");
+		const disabledArea = within(disabled as HTMLElement).getByRole("textbox", {
+			name: "Disabled notes",
+		});
+		expect(disabledArea).toBeDisabled();
+		expect(disabledArea).toHaveValue("Unavailable");
+		for (const scenario of UI_EXAMPLES["input-area"] ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/input-area");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(UI_EXAMPLES["input-area"]).toHaveLength(4);
+		for (const scenario of UI_EXAMPLES["input-area"] ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).toContain('htmlFor="ex-notes"');
+		expect(markdown).toContain('htmlFor="ex-bio"');
+		expect(markdown).toContain("rows={6}");
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+	});
+
+	it("does not keep inline input-area scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("INPUT_AREA_EXAMPLES");
+		expect(demos).toMatch(/"input-area": INPUT_AREA_EXAMPLES/);
+		expect(demos).not.toMatch(/"input-area":\s*\[/);
+		expect(kumo).not.toMatch(/"input-area":\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("input-area"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("input-area"/);
+		expect(demos).not.toContain('from "@nocoo/basalt/components/input-area"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/input-area"');
+		expect(kumo).toContain('from "@nocoo/basalt/components/field"');
+	});
+
 	it("does not keep inline input scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");

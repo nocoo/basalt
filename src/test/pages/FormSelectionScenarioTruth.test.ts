@@ -3,6 +3,7 @@ import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { FIELD_EXAMPLES } from "@/pages/ui/examples/field";
 import { INPUT_EXAMPLES } from "@/pages/ui/examples/input";
+import { INPUT_AREA_EXAMPLES } from "@/pages/ui/examples/input-area";
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
@@ -65,6 +66,7 @@ describe("form selection scenario truth", () => {
 			"input-input-types",
 			"input-bare-input-no-label",
 		]);
+		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
 		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([
 			"input-area-with-label",
 			"input-area-custom-row-count",
@@ -162,8 +164,31 @@ describe("form selection scenario truth", () => {
 		expect(types.code.indexOf('type="password"')).toBeLessThan(types.code.indexOf('type="search"'));
 		expect(scenario("input", "input-bare-input-no-label").code).toContain('aria-label="Name"');
 		expect(scenario("input", "input-bare-input-no-label").code).toContain('placeholder="Jane Doe"');
+		const areaLabel = scenario("input-area", "input-area-with-label");
+		expect(areaLabel.code).toContain("export default");
+		expect(areaLabel.code).toContain("@nocoo/basalt/components/field");
+		expect(areaLabel.code).toContain("@nocoo/basalt/components/input-area");
+		expect(areaLabel.code).toContain("<Field ");
+		expect(areaLabel.code).toContain('htmlFor="ex-notes"');
+		expect(areaLabel.code).toContain('id="ex-notes"');
+		expect(areaLabel.code).toContain('label="Notes"');
+		expect(areaLabel.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 		expect(scenario("input-area", "input-area-custom-row-count").code).toContain("aria-label=");
+		expect(scenario("input-area", "input-area-custom-row-count").code).toContain("rows={6}");
+		expect(scenario("input-area", "input-area-custom-row-count").code).toContain(
+			'aria-label="Tall notes"',
+		);
+		const areaError = scenario("input-area", "input-area-error-state-string");
+		expect(areaError.code).toContain('htmlFor="ex-bio"');
+		expect(areaError.code).toContain('id="ex-bio"');
+		expect(areaError.code).toContain('error="Too short"');
+		expect(areaError.code).toContain("export default");
 		expect(scenario("input-area", "input-area-disabled").code).toContain("aria-label=");
+		expect(scenario("input-area", "input-area-disabled").code).toContain(
+			'aria-label="Disabled notes"',
+		);
+		expect(scenario("input-area", "input-area-disabled").code).toContain("disabled");
+		expect(scenario("input-area", "input-area-disabled").code).toContain('value="Unavailable"');
 		expect(scenario("sensitive-input", "sensitive-input-default").code).toContain("aria-label=");
 		expect(scenario("sensitive-input", "sensitive-input-disabled").code).toContain("aria-label=");
 		for (const example of UI_EXAMPLES["input-group"] ?? []) {
