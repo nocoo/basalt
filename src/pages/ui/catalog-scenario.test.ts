@@ -9,6 +9,7 @@ import {
 import { UI_EXAMPLES } from "./demos";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { LABEL_EXAMPLES } from "./examples/label";
+import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
@@ -81,6 +82,16 @@ const SEPARATOR_TITLES = ["Horizontal"] as const;
 
 const separatorRenders = import.meta.glob("./examples/separator/*.tsx", { eager: true });
 const separatorSources = import.meta.glob("./examples/separator/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const LINK_IDS = ["link-basic-link", "link-inline-in-paragraph", "link-external-links"] as const;
+const LINK_TITLES = ["Basic Link", "Inline in Paragraph", "External Links"] as const;
+
+const linkRenders = import.meta.glob("./examples/link/*.tsx", { eager: true });
+const linkSources = import.meta.glob("./examples/link/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -349,6 +360,66 @@ describe("source-backed separator scenarios", () => {
 		expect(SEPARATOR_EXAMPLES[0]?.code).toContain("<Separator />");
 		expect(SEPARATOR_EXAMPLES[0]?.code).toContain("<Text>Below</Text>");
 		expect(SEPARATOR_EXAMPLES[0]?.code).not.toBe("<Separator />");
+	});
+});
+
+describe("source-backed link scenarios", () => {
+	it("loads three link scenarios from the same glob modules", () => {
+		expect(Object.keys(linkRenders)).toHaveLength(3);
+		expect(Object.keys(linkSources)).toHaveLength(3);
+		const loaded = loadModuleScenarios({
+			slug: "link",
+			metas: LINK_TITLES.map((title, index) => ({
+				key: LINK_IDS[index].slice("link-".length),
+				title,
+			})),
+			renderModules: linkRenders,
+			sourceModules: linkSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...LINK_TITLES]);
+		expect(LINK_EXAMPLES.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(LINK_EXAMPLES.map((item) => item.title)).toEqual([...LINK_TITLES]);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		const fileKeys = new Set(
+			Object.keys(linkRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(LINK_IDS.map((id) => id.slice("link-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("link-".length);
+			const modulePath = Object.keys(linkSources).find((path) => path.endsWith(`/${key}.tsx`));
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = linkSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(LINK_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((linkRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				LINK_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("LinkProvider");
+		}
+		expect(LINK_EXAMPLES[0]?.code).toContain('href="#section"');
+		expect(LINK_EXAMPLES[0]?.code).toContain("Inline link");
+		expect(LINK_EXAMPLES[1]?.code).toContain('href="#docs"');
+		expect(LINK_EXAMPLES[2]?.code).toContain('href="https://example.com"');
+		expect(LINK_EXAMPLES[2]?.code).toContain("Example");
+		expect(LINK_EXAMPLES[2]?.code).not.toMatch(/\btarget=|\brel=|ExternalIcon/);
 	});
 });
 

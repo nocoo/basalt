@@ -25,6 +25,7 @@ import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { LABEL_EXAMPLES } from "./examples/label";
+import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
@@ -36,18 +37,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	text: TEXT_EXAMPLES,
 	label: LABEL_EXAMPLES,
 	separator: SEPARATOR_EXAMPLES,
-	link: [
-		{
-			id: catalogScenarioId("link", "default"),
-			title: "Default",
-			code: '<Link href="#section">Inline link</Link>',
-			render: () => (
-				<LinkProvider>
-					<Link href="#section">Inline link</Link>
-				</LinkProvider>
-			),
-		},
-	],
+	link: LINK_EXAMPLES,
 	"link-provider": [
 		{
 			id: catalogScenarioId("link-provider", "default"),

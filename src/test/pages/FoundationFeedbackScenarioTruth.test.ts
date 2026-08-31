@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { LABEL_EXAMPLES } from "@/pages/ui/examples/label";
+import { LINK_EXAMPLES } from "@/pages/ui/examples/link";
 import { SEPARATOR_EXAMPLES } from "@/pages/ui/examples/separator";
 
 function scenario(slug: string, id: string) {
@@ -92,6 +93,7 @@ describe("foundation feedback scenario truth", () => {
 		]);
 		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
 		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual(["separator-horizontal"]);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
 		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([
 			"layer-card-basic-card",
 			"layer-card-surface-style-card",

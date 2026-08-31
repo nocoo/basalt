@@ -874,6 +874,56 @@ describe("ui catalog", () => {
 		}
 	});
 
+	it("keeps link hero, paragraph, and external contracts", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/link");
+		expect(screen.getByRole("heading", { name: "Basic Link" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Inline in Paragraph" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "External Links" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="link-basic-link"]');
+		expect(hero).toBeTruthy();
+		const sectionLinks = screen.getAllByRole("link", { name: "Inline link" });
+		expect(sectionLinks).toHaveLength(2);
+		for (const link of sectionLinks) {
+			expect(link).toHaveAttribute("href", "#section");
+		}
+		const docsLink = screen.getByRole("link", { name: "docs" });
+		expect(docsLink).toHaveAttribute("href", "#docs");
+		const external = screen.getByRole("link", { name: "Example" });
+		expect(external).toHaveAttribute("href", "https://example.com");
+		expect(external).not.toHaveAttribute("target");
+		expect(external).not.toHaveAttribute("rel");
+		for (const scenario of UI_EXAMPLES.link ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/link");
+			expect(scenario.code).toContain("LinkProvider");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		for (const scenario of UI_EXAMPLES.link ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+	});
+
+	it("does not keep inline link scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("LINK_EXAMPLES");
+		expect(demos).toMatch(/\blink: LINK_EXAMPLES/);
+		expect(demos).not.toMatch(/\blink:\s*\[/);
+		expect(kumo).not.toMatch(/\blink:\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("link",/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("link",/);
+		expect(kumo).not.toContain("LinkProvider");
+	});
+
 	it("does not keep inline separator scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");

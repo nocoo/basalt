@@ -97,7 +97,6 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@nocoo/basalt/components/tooltip";
-import { LinkProvider } from "@nocoo/basalt/providers/link";
 import {
 	AlertTriangle,
 	Check,
@@ -734,40 +733,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 						<Loader size={16} />
 					</InputGroup.Addon>
 				</InputGroup>
-			),
-		},
-	],
-	link: [
-		{
-			id: catalogScenarioId("link", "basic-link"),
-			title: "Basic Link",
-			code: "<LinkProvider><Link href='#section'>Inline link</Link></LinkProvider>",
-			render: () => (
-				<LinkProvider>
-					<Link href="#section">Inline link</Link>
-				</LinkProvider>
-			),
-		},
-		{
-			id: catalogScenarioId("link", "inline-in-paragraph"),
-			title: "Inline in Paragraph",
-			code: "<LinkProvider><Text>Read the <Link href='#docs'>docs</Link>.</Text></LinkProvider>",
-			render: () => (
-				<LinkProvider>
-					<Text>
-						Read the <Link href="#docs">docs</Link>.
-					</Text>
-				</LinkProvider>
-			),
-		},
-		{
-			id: catalogScenarioId("link", "external-links"),
-			title: "External Links",
-			code: "<LinkProvider><Link href='https://example.com'>Example</Link></LinkProvider>",
-			render: () => (
-				<LinkProvider>
-					<Link href="https://example.com">Example</Link>
-				</LinkProvider>
 			),
 		},
 	],
