@@ -1,16 +1,37 @@
 import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
-import { fireEvent, render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router";
-import { describe, expect, it } from "vitest";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { MemoryRouter, useLocation } from "react-router";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 import { AppSidebar } from "@/components/AppSidebar";
 import { CATALOG, catalogNavName } from "@/pages/ui/catalog";
 
-function renderSidebar() {
+const PLANNED_SLUGS = [
+	"installation",
+	"contributing",
+	"colors",
+	"accessibility",
+	"figma",
+	"cli",
+	"skill",
+	"registry",
+	"changelog",
+	"maps",
+	"resource-list",
+	"delete-resource",
+];
+
+function RouterProbe() {
+	const { pathname } = useLocation();
+	return <span hidden data-testid="router-location" data-pathname={pathname} />;
+}
+
+function renderSidebar(path = "/ui/button") {
 	return render(
 		<ThemeProvider>
 			<TooltipProvider>
-				<MemoryRouter initialEntries={["/ui/button"]}>
+				<MemoryRouter initialEntries={[path]}>
+					<RouterProbe />
 					<AppSidebar collapsed={false} onToggle={() => undefined} />
 				</MemoryRouter>
 			</TooltipProvider>
@@ -19,6 +40,10 @@ function renderSidebar() {
 }
 
 describe("AppSidebar", () => {
+	beforeAll(() => {
+		Element.prototype.scrollIntoView = vi.fn();
+	});
+
 	it("keeps example pages and lists every library export", { timeout: 15_000 }, () => {
 		renderSidebar();
 		expect(screen.getByText("Examples")).toBeInTheDocument();
@@ -26,15 +51,15 @@ describe("AppSidebar", () => {
 		expect(screen.getByRole("button", { name: "Home" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Dashboard" })).toBeInTheDocument();
 		for (const entry of CATALOG) {
-			expect(screen.getAllByRole("button", { name: catalogNavName(entry) }).length).toBeGreaterThan(
-				0,
-			);
+			expect(
+				screen.getAllByRole("button", { name: new RegExp(`^${catalogNavName(entry)}`) }).length,
+			).toBeGreaterThan(0);
 		}
-		expect(screen.getByRole("button", { name: "Installation" })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Changelog" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: /^Installation.*Planned$/ })).toBeDisabled();
+		expect(screen.getByRole("button", { name: /^Changelog.*Planned$/ })).toBeDisabled();
 		expect(screen.getByRole("button", { name: "Clipboard Text" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Page Header" })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Maps" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: /^Maps.*Planned$/ })).toBeDisabled();
 		const components = screen.getByRole("button", { name: "Components", expanded: true });
 		expect(components).toHaveAttribute("aria-expanded", "true");
 		fireEvent.click(components);
@@ -42,5 +67,85 @@ describe("AppSidebar", () => {
 		expect(screen.getByRole("button", { name: "Dashboard" })).toBeInTheDocument();
 		expect(screen.getAllByRole("button", { name: "Charts" }).length).toBeGreaterThan(1);
 		expect(screen.getAllByRole("button", { name: "Blocks" }).length).toBeGreaterThan(1);
+	});
+
+	it("disables exactly the planned sidebar entries without changing ready navigation", () => {
+		const { unmount } = renderSidebar("/ui/maps");
+		const directMaps = screen.getByRole("button", { name: /^Maps.*Planned$/ });
+		expect(directMaps).not.toHaveClass("bg-basalt-accent");
+		unmount();
+
+		renderSidebar();
+		const catalogButtons = Array.from(
+			document.querySelectorAll<HTMLButtonElement>("aside button[data-catalog-slug]"),
+		);
+		const disabledButtons = catalogButtons.filter((button) => button.disabled);
+
+		expect(catalogButtons).toHaveLength(96);
+		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(84);
+		expect(disabledButtons.map((button) => button.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
+		for (const button of disabledButtons) {
+			expect(button).toHaveTextContent("Planned");
+			expect(button.querySelector('[data-page-status="planned"]')).toBeInTheDocument();
+		}
+
+		const maps = screen.getByRole("button", { name: /^Maps.*Planned$/ });
+		expect(maps).toBeDisabled();
+		fireEvent.click(maps);
+		fireEvent.keyDown(maps, { key: "Enter" });
+		fireEvent.keyUp(maps, { key: "Enter" });
+		fireEvent.keyDown(maps, { key: " " });
+		fireEvent.keyUp(maps, { key: " " });
+		expect(screen.getByTestId("router-location")).toHaveAttribute("data-pathname", "/ui/button");
+
+		fireEvent.click(screen.getByRole("button", { name: "Clipboard Text" }));
+		expect(screen.getByTestId("router-location")).toHaveAttribute(
+			"data-pathname",
+			"/ui/clipboard-text",
+		);
+	});
+
+	it("applies the same planned gate in the command palette", async () => {
+		renderSidebar();
+		fireEvent.keyDown(document, { key: "k", ctrlKey: true });
+		const dialog = screen.getByRole("dialog");
+		const catalogOptions = Array.from(
+			dialog.querySelectorAll<HTMLElement>("[cmdk-item][data-catalog-slug]"),
+		);
+		const disabledOptions = catalogOptions.filter(
+			(option) => option.getAttribute("data-disabled") === "true",
+		);
+
+		expect(catalogOptions).toHaveLength(96);
+		expect(
+			catalogOptions.filter((option) => option.getAttribute("data-disabled") !== "true"),
+		).toHaveLength(84);
+		expect(disabledOptions.map((option) => option.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
+		for (const option of disabledOptions) {
+			expect(option).toHaveTextContent("Planned");
+			expect(option.querySelector('[data-page-status="planned"]')).toBeInTheDocument();
+		}
+
+		const search = within(dialog).getByPlaceholderText("Search pages...");
+		fireEvent.change(search, { target: { value: "Maps" } });
+		const maps = await within(dialog).findByRole("option", { name: /^Maps.*Planned$/ });
+		fireEvent.click(maps);
+		expect(screen.getByTestId("router-location")).toHaveAttribute("data-pathname", "/ui/button");
+		expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+		fireEvent.change(search, { target: { value: "Colors" } });
+		const plannedColors = dialog.querySelector<HTMLElement>('[data-catalog-slug="colors"]');
+		const readyColors = dialog.querySelector<HTMLElement>('[data-catalog-slug="chart-colors"]');
+		expect(plannedColors).toHaveAttribute("data-disabled", "true");
+		expect(readyColors).toHaveAttribute("data-disabled", "false");
+		expect(readyColors).toHaveAttribute("data-selected", "true");
+		fireEvent.keyDown(search, { key: "Enter" });
+		await waitFor(() => {
+			expect(screen.getByTestId("router-location")).toHaveAttribute(
+				"data-pathname",
+				"/ui/chart-colors",
+			);
+			expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+		});
 	});
 });

@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@nocoo/basalt/components/avatar";
+import { Badge } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
 import {
 	CommandEmpty,
@@ -127,10 +128,12 @@ import { useLocation, useNavigate } from "react-router";
 import {
 	CATALOG,
 	CATALOG_CATEGORIES,
+	type CatalogEntry,
 	catalogNavName,
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
+import { type CatalogPageStatus, resolveCatalogPageState } from "@/pages/ui/catalog-index";
 
 // ── Navigation data model ──
 
@@ -141,6 +144,8 @@ interface NavItem {
 	path: string;
 	badge?: number;
 	external?: boolean;
+	catalogSlug?: string;
+	pageStatus?: CatalogPageStatus;
 }
 
 interface NavGroup {
@@ -307,14 +312,24 @@ const CATALOG_ICONS: Record<string, React.ElementType> = {
 	"chart-colors": SwatchBook,
 };
 
+const CATALOG_PAGE_STATUS_BY_SLUG = new Map(
+	CATALOG.map((entry) => [entry.slug, resolveCatalogPageState(entry.slug).pageStatus]),
+);
+
+function catalogNavItem(entry: CatalogEntry, fallbackIcon: React.ElementType): NavItem {
+	return {
+		title: catalogNavName(entry),
+		path: `/ui/${entry.slug}`,
+		icon: CATALOG_ICONS[entry.slug] ?? fallbackIcon,
+		catalogSlug: entry.slug,
+		pageStatus: CATALOG_PAGE_STATUS_BY_SLUG.get(entry.slug),
+	};
+}
+
 const LIBRARY_GROUPS: NavGroup[] = CATALOG_CATEGORIES.map((category) => ({
 	label: category.label,
 	defaultOpen: true,
-	items: libraryNavEntries(category.id).map((entry) => ({
-		title: catalogNavName(entry),
-		path: `/ui/${entry.slug}`,
-		icon: CATALOG_ICONS[entry.slug] ?? RectangleEllipsis,
-	})),
+	items: libraryNavEntries(category.id).map((entry) => catalogNavItem(entry, RectangleEllipsis)),
 }));
 
 const ALL_NAV_ITEMS = [...NAV_GROUPS.flatMap((g) => g.items), LIBRARY_HOME];
@@ -330,13 +345,19 @@ function groupLabel(group: NavGroup, t: (key: string) => string) {
 function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: string }) {
 	const navigate = useNavigate();
 	const { t } = useTranslation();
+	const isPlanned = item.pageStatus === "planned";
 	return (
 		<SidebarItem
-			active={!item.external && currentPath === item.path}
-			onClick={() =>
-				item.external
-					? window.open(item.path, "_blank", "noopener,noreferrer")
-					: navigate(item.path)
+			active={!isPlanned && !item.external && currentPath === item.path}
+			disabled={isPlanned}
+			data-catalog-slug={item.catalogSlug}
+			onClick={
+				isPlanned
+					? undefined
+					: () =>
+							item.external
+								? window.open(item.path, "_blank", "noopener,noreferrer")
+								: navigate(item.path)
 			}
 		>
 			<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
@@ -352,6 +373,11 @@ function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: stri
 						{item.badge}
 					</span>
 				</span>
+			) : null}
+			{isPlanned ? (
+				<Badge variant="outline" data-page-status="planned" className="ml-auto shrink-0">
+					Planned
+				</Badge>
 			) : null}
 		</SidebarItem>
 	);
@@ -378,20 +404,13 @@ function LibraryNav({ currentPath }: { currentPath: string }) {
 					<BookOpen className="h-4 w-4 shrink-0" strokeWidth={1.5} />
 					<span className="flex-1 text-left">{t("nav.kitIndex")}</span>
 				</SidebarItem>
-				{libraryDocEntries().map((entry) => {
-					const path = `/ui/${entry.slug}`;
-					const Icon = CATALOG_ICONS[entry.slug] ?? FileText;
-					return (
-						<SidebarItem
-							key={entry.slug}
-							active={currentPath === path}
-							onClick={() => navigate(path)}
-						>
-							<Icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
-							<span className="flex-1 truncate text-left">{catalogNavName(entry)}</span>
-						</SidebarItem>
-					);
-				})}
+				{libraryDocEntries().map((entry) => (
+					<NavItemButton
+						key={entry.slug}
+						item={catalogNavItem(entry, FileText)}
+						currentPath={currentPath}
+					/>
+				))}
 			</div>
 			{LIBRARY_GROUPS.map((group) => (
 				<NavGroupSection key={group.label} group={group} currentPath={currentPath} />
@@ -599,16 +618,30 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 							<BookOpen className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
 							<span>{t("nav.kitIndex")}</span>
 						</CommandItem>
-						{CATALOG.map((entry) => (
-							<CommandItem
-								key={entry.slug}
-								value={`${catalogNavName(entry)} ${entry.name} ${entry.slug}`}
-								onSelect={() => handleSelect(`/ui/${entry.slug}`)}
-								className="cursor-pointer gap-3"
-							>
-								<span>{catalogNavName(entry)}</span>
-							</CommandItem>
-						))}
+						{CATALOG.map((entry) => {
+							const isPlanned = CATALOG_PAGE_STATUS_BY_SLUG.get(entry.slug) === "planned";
+							return (
+								<CommandItem
+									key={entry.slug}
+									value={`${catalogNavName(entry)} ${entry.name} ${entry.slug}`}
+									disabled={isPlanned}
+									data-catalog-slug={entry.slug}
+									onSelect={isPlanned ? undefined : () => handleSelect(`/ui/${entry.slug}`)}
+									className={isPlanned ? "gap-3" : "cursor-pointer gap-3"}
+								>
+									<span>{catalogNavName(entry)}</span>
+									{isPlanned ? (
+										<Badge
+											variant="outline"
+											data-page-status="planned"
+											className="ml-auto shrink-0"
+										>
+											Planned
+										</Badge>
+									) : null}
+								</CommandItem>
+							);
+						})}
 					</CommandGroup>
 				</CommandList>
 			</CommandPalette>

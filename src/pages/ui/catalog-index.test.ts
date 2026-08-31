@@ -69,6 +69,30 @@ describe("catalog index model", () => {
 		]);
 	});
 
+	it("models all public catalog navigation as 84 ready and 12 planned pages", () => {
+		const states = CATALOG.map((entry) => ({
+			slug: entry.slug,
+			pageStatus: resolveCatalogPageState(entry.slug).pageStatus,
+		}));
+		expect(states.filter((item) => item.pageStatus === "ready")).toHaveLength(84);
+		expect(states.filter((item) => item.pageStatus === "planned").map((item) => item.slug)).toEqual(
+			[
+				"installation",
+				"contributing",
+				"colors",
+				"accessibility",
+				"figma",
+				"cli",
+				"skill",
+				"registry",
+				"changelog",
+				"maps",
+				"resource-list",
+				"delete-resource",
+			],
+		);
+	});
+
 	it("requires both docs and hero for a ready page", () => {
 		expect(resolveCatalogPageState("missing-docs", {}, () => HERO).pageStatus).toBe("planned");
 		expect(
