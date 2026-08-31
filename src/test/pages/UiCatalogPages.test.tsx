@@ -11,6 +11,7 @@ import {
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
+import { CATALOG_INDEX_GROUPS, CATALOG_INDEX_ITEMS } from "@/pages/ui/catalog-index";
 import { catalogScenarioMatchesSlug } from "@/pages/ui/catalog-scenario";
 import {
 	catalogSourceCopyText,
@@ -49,17 +50,58 @@ describe("ui catalog", () => {
 		expect(new Set(slugs).size).toBe(96);
 	});
 
-	it("renders the index with links to every export", () => {
+	it("renders the categorized index with orthogonal release and page states", () => {
 		renderCatalog("/ui");
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
-		expect(document.querySelector("li.bg-bright")).toBeTruthy();
-		expect(screen.getByRole("link", { name: "Button" })).toHaveAttribute("href", "/ui/button");
-		expect(screen.getByRole("link", { name: "Toolbar" })).toHaveAttribute("href", "/ui/toolbar");
-		for (const entry of CATALOG.filter((item) => item.category !== "docs")) {
-			const href = `/ui/${entry.slug}`;
-			const match = screen.getAllByRole("link").some((link) => link.getAttribute("href") === href);
-			expect(match, entry.slug).toBe(true);
+		expect(screen.getByRole("heading", { name: "Component library" })).toBeInTheDocument();
+		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("84 / 87 ready");
+
+		for (const [index, group] of CATALOG_INDEX_GROUPS.entries()) {
+			const section = screen.getByRole("region", { name: group.label });
+			expect(within(section).getByText(`${group.items.length} items`)).toBeInTheDocument();
+			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([60, 24, 3][index]);
 		}
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(87);
+		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
+		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
+
+		for (const item of CATALOG_INDEX_ITEMS) {
+			const card = document.querySelector(`[data-catalog-card="${item.entry.slug}"]`);
+			expect(card, item.entry.slug).toBeTruthy();
+			if (!card) {
+				continue;
+			}
+			const href = `/ui/${item.entry.slug}`;
+			if (item.pageStatus === "ready") {
+				expect(card.querySelector(`a[href="${href}"]`), item.entry.slug).toBeTruthy();
+			} else {
+				expect(card.querySelector(`a[href="${href}"]`), item.entry.slug).toBeNull();
+			}
+		}
+
+		const buttonCard = document.querySelector('[data-catalog-card="button"]');
+		const mapsCard = document.querySelector('[data-catalog-card="maps"]');
+		expect(buttonCard).toBeTruthy();
+		expect(mapsCard).toBeTruthy();
+		if (buttonCard && mapsCard) {
+			expect(within(buttonCard as HTMLElement).getByText("Stable")).toHaveAttribute(
+				"data-release-status",
+				"stable",
+			);
+			expect(within(buttonCard as HTMLElement).getByText("Ready")).toHaveAttribute(
+				"data-page-status",
+				"ready",
+			);
+			expect(within(mapsCard as HTMLElement).getByText("Catalog")).toHaveAttribute(
+				"data-release-status",
+				"catalog",
+			);
+			expect(within(mapsCard as HTMLElement).getByText("Planned")).toHaveAttribute(
+				"data-page-status",
+				"planned",
+			);
+		}
+		expect(screen.getAllByRole("button", { name: "Create project" })).toHaveLength(3);
 	});
 
 	it("renders a placeholder catalog page for a known slug", () => {
@@ -1881,6 +1923,17 @@ describe("ui catalog", () => {
 			expect(source, file).not.toMatch(/\bUI_DEMOS\b/);
 			expect(source, file).not.toMatch(/\bEXTRA_DEMOS\b/);
 		}
+	});
+
+	it("removes the legacy home inventory and duplicate input branch", () => {
+		const source = readFileSync(path.join(process.cwd(), "src/pages/ui/HomeGrid.tsx"), "utf8");
+		expect(source).not.toMatch(/\bSHOWCASE\b/);
+		expect(source).not.toMatch(/\bextraTiles\b/);
+		expect(source).not.toMatch(/\bTILES\b/);
+		expect(source).not.toContain("Input (with validation)");
+		expect(source).not.toMatch(/\bHomeInputValidation\b/);
+		expect(source).not.toContain("aspect-square");
+		expect(source).toContain("HOME_DEMOS[item.entry.slug] ?? item.hero.render");
 	});
 
 	it("does not keep inline button scenario dual-writes", () => {

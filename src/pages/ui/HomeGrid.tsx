@@ -1,7 +1,7 @@
+import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
-import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
@@ -25,51 +25,8 @@ import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { CircleCheck, Plus, Search } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { Link } from "react-router";
-import { CATALOG } from "./catalog";
-import { catalogHeroScenario } from "./demos";
-
-const SHOWCASE: { name: string; slug: string }[] = [
-	{ name: "Button", slug: "button" },
-	{ name: "Input", slug: "input" },
-	{ name: "Select", slug: "select" },
-	{ name: "Toolbar", slug: "toolbar" },
-	{ name: "Autocomplete", slug: "autocomplete" },
-	{ name: "Combobox", slug: "combobox" },
-	{ name: "Switch", slug: "switch" },
-	{ name: "Input (with validation)", slug: "input" },
-	{ name: "Dialog", slug: "dialog" },
-	{ name: "Tooltip", slug: "tooltip" },
-	{ name: "Dropdown", slug: "dropdown-menu" },
-	{ name: "Collapsible", slug: "collapsible" },
-	{ name: "Checkbox", slug: "checkbox" },
-	{ name: "LayerCard", slug: "layer-card" },
-	{ name: "Loader", slug: "loader" },
-	{ name: "SkeletonLine", slug: "skeleton-line" },
-	{ name: "CodeHighlighted", slug: "code" },
-	{ name: "Banner", slug: "banner" },
-	{ name: "Tabs", slug: "tabs" },
-	{ name: "Badge", slug: "badge" },
-	{ name: "Toast", slug: "toast" },
-	{ name: "Pagination", slug: "pagination" },
-	{ name: "InputArea", slug: "input-area" },
-	{ name: "InputGroup", slug: "input-group" },
-	{ name: "Meter", slug: "meter" },
-	{ name: "DatePicker", slug: "date-picker" },
-	{ name: "Breadcrumbs", slug: "breadcrumbs" },
-	{ name: "ClipboardText", slug: "clipboard-text" },
-	{ name: "Command Palette", slug: "command-palette" },
-	{ name: "Flow", slug: "flow" },
-	{ name: "Link", slug: "link" },
-	{ name: "Empty", slug: "empty" },
-	{ name: "Grid", slug: "grid" },
-	{ name: "Label", slug: "label" },
-	{ name: "Popover", slug: "popover" },
-	{ name: "Radio", slug: "radio" },
-	{ name: "SensitiveInput", slug: "sensitive-input" },
-	{ name: "Table", slug: "table" },
-	{ name: "TableOfContents", slug: "table-of-contents" },
-	{ name: "Text", slug: "text" },
-];
+import { catalogNavName } from "./catalog";
+import { CATALOG_INDEX_GROUPS, type CatalogIndexItem } from "./catalog-index";
 
 function HomeButton() {
 	return (
@@ -97,20 +54,6 @@ function HomeInput() {
 function HomeSwitch() {
 	const [on, setOn] = useState(true);
 	return <Switch checked={on} onCheckedChange={setOn} aria-label="Notifications" />;
-}
-
-function HomeInputValidation() {
-	return (
-		<Field label="Email" htmlFor="home-email" error="Please enter a valid email.">
-			<Input
-				id="home-email"
-				type="email"
-				placeholder="name@example.com"
-				defaultValue="name@example.com"
-				className="border-destructive"
-			/>
-		</Field>
-	);
 }
 
 function HomeTooltip() {
@@ -269,41 +212,68 @@ const HOME_DEMOS: Record<string, ComponentType> = {
 	"theme-toggle": HomeThemeToggle,
 };
 
-const extraTiles = CATALOG.filter(
-	(entry) => entry.category !== "docs" && !SHOWCASE.some((tile) => tile.slug === entry.slug),
-).map((entry) => ({ name: entry.name, slug: entry.slug }));
-
-const TILES = [...SHOWCASE, ...extraTiles];
-
-function tileDemo(tile: { name: string; slug: string }): ComponentType | undefined {
-	if (tile.name === "Input (with validation)") {
-		return HomeInputValidation;
+function itemDemo(item: CatalogIndexItem): ComponentType | undefined {
+	if (item.pageStatus !== "ready") {
+		return undefined;
 	}
-	return HOME_DEMOS[tile.slug] ?? catalogHeroScenario(tile.slug)?.render;
+	return HOME_DEMOS[item.entry.slug] ?? item.hero.render;
 }
 
 export function HomeGrid() {
 	return (
-		<ul className="grid auto-rows-min grid-cols-1 gap-px bg-border md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-			{TILES.map((tile) => {
-				const Demo = tileDemo(tile);
-				return (
-					<li
-						key={tile.name}
-						className="relative flex aspect-square items-center justify-center overflow-hidden bg-bright"
-					>
-						<Link
-							to={`/ui/${tile.slug}`}
-							className="absolute top-4 left-4 z-10 text-base font-medium text-muted-foreground hover:text-foreground"
+		<div className="space-y-12 px-6 py-8 md:px-8 md:py-10">
+			{CATALOG_INDEX_GROUPS.map((group) => (
+				<section key={group.id} aria-labelledby={`catalog-group-${group.id}`} className="space-y-5">
+					<div className="flex items-baseline justify-between gap-4 border-b border-border pb-3">
+						<h2
+							id={`catalog-group-${group.id}`}
+							className="text-2xl font-semibold tracking-tight text-foreground"
 						>
-							{tile.name}
-						</Link>
-						<div className="flex w-full items-center justify-center p-8 pt-14">
-							{Demo ? <Demo /> : null}
-						</div>
-					</li>
-				);
-			})}
-		</ul>
+							{group.label}
+						</h2>
+						<span className="text-sm text-muted-foreground">{group.items.length} items</span>
+					</div>
+					<ul className="grid grid-cols-1 gap-4 md:grid-cols-2 2xl:grid-cols-3">
+						{group.items.map((item) => {
+							const Demo = itemDemo(item);
+							const title = catalogNavName(item.entry);
+							const titleClass =
+								"text-sm font-medium text-foreground underline-offset-4 hover:underline";
+							return (
+								<li
+									key={item.entry.slug}
+									data-catalog-card={item.entry.slug}
+									className="flex min-h-48 flex-col overflow-hidden rounded-xl border border-border bg-bright"
+								>
+									<div className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-4 py-3">
+										{item.pageStatus === "ready" ? (
+											<Link to={`/ui/${item.entry.slug}`} className={titleClass}>
+												{title}
+											</Link>
+										) : (
+											<span className="text-sm font-medium text-muted-foreground">{title}</span>
+										)}
+										<div className="flex items-center gap-1.5">
+											<Badge variant="outline" data-release-status={item.releaseStatus}>
+												{item.releaseStatus === "stable" ? "Stable" : "Catalog"}
+											</Badge>
+											<Badge
+												variant={item.pageStatus === "ready" ? "success" : "secondary"}
+												data-page-status={item.pageStatus}
+											>
+												{item.pageStatus === "ready" ? "Ready" : "Planned"}
+											</Badge>
+										</div>
+									</div>
+									<div className="flex min-h-36 flex-1 items-center justify-center p-6">
+										{Demo ? <Demo /> : null}
+									</div>
+								</li>
+							);
+						})}
+					</ul>
+				</section>
+			))}
+		</div>
 	);
 }

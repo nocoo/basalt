@@ -10,6 +10,7 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CATALOG_BY_SLUG, type CatalogEntry, catalogImportPath, catalogNavName } from "./catalog";
+import { resolveCatalogPageState } from "./catalog-index";
 import type { CatalogScenario } from "./catalog-scenario";
 import {
 	type CatalogApiSurface,
@@ -20,8 +21,7 @@ import {
 } from "./catalog-source";
 import { DocCode, DocExample } from "./DocCode";
 import { type DocHeading, DocToc } from "./DocToc";
-import { catalogHeroScenario, UI_EXAMPLES } from "./demos";
-import { CATALOG_DOCS } from "./docs";
+import { UI_EXAMPLES } from "./demos";
 
 function barrelImport(entry: CatalogEntry): string | null {
 	if (entry.kind !== "stable" && entry.kind !== "provider") {
@@ -316,10 +316,9 @@ export default function UiPlaceholderPage() {
 		);
 	}
 
-	const hero = catalogHeroScenario(entry.slug);
-	const docs = CATALOG_DOCS[entry.slug];
-	if (hero && docs) {
-		return <ReadyDoc entry={entry} docs={docs} hero={hero} />;
+	const pageState = resolveCatalogPageState(entry.slug);
+	if (pageState.pageStatus === "ready") {
+		return <ReadyDoc entry={entry} docs={pageState.docs} hero={pageState.hero} />;
 	}
 
 	return (
