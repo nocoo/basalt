@@ -1,13 +1,20 @@
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { useSelectionIndicator } from "../utils/selection-indicator";
 
-function assignRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
-	if (typeof ref === "function") {
-		ref(value);
-	} else if (ref) {
-		(ref as React.MutableRefObject<T | null>).current = value;
-	}
+function measureTabUnderline(item: HTMLElement): {
+	left: number;
+	width: number;
+	top: number;
+	height: number;
+} {
+	return {
+		left: item.offsetLeft,
+		width: item.offsetWidth,
+		top: item.offsetTop + item.offsetHeight,
+		height: 0,
+	};
 }
 
 export const Tabs = TabsPrimitive.Root;
@@ -16,65 +23,15 @@ export const TabsList = React.forwardRef<
 	React.ElementRef<typeof TabsPrimitive.List>,
 	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & { showIndicator?: boolean }
 >(({ className, children, showIndicator = true, ...props }, ref) => {
-	const listRef = React.useRef<HTMLDivElement>(null);
-	const [indicator, setIndicator] = React.useState({ left: 0, width: 0, top: 0, ready: false });
-
-	const sync = React.useCallback(() => {
-		const list = listRef.current;
-		if (!list) {
-			return;
-		}
-		const active = list.querySelector<HTMLElement>('[data-state="active"]');
-		if (!active) {
-			setIndicator((current) => ({ ...current, width: 0, ready: false }));
-			return;
-		}
-		setIndicator({
-			left: active.offsetLeft,
-			width: active.offsetWidth,
-			top: active.offsetTop + active.offsetHeight,
-			ready: true,
-		});
-	}, []);
-
-	React.useLayoutEffect(() => {
-		const list = listRef.current;
-		if (!list) {
-			return;
-		}
-		const root = list;
-		const ro = new ResizeObserver(sync);
-		function observe() {
-			ro.observe(root);
-			for (const tab of root.querySelectorAll('[role="tab"]')) {
-				ro.observe(tab);
-			}
-		}
-		observe();
-		sync();
-		const mo = new MutationObserver(() => {
-			observe();
-			sync();
-		});
-		mo.observe(root, {
-			attributes: true,
-			subtree: true,
-			childList: true,
-			characterData: true,
-			attributeFilter: ["data-state"],
-		});
-		return () => {
-			mo.disconnect();
-			ro.disconnect();
-		};
-	}, [sync]);
+	const { bindRef, state, motionClassName } = useSelectionIndicator({
+		itemSelector: '[role="tab"][data-state="active"]',
+		enabled: showIndicator,
+		mapGeometry: measureTabUnderline,
+	});
 
 	return (
 		<TabsPrimitive.List
-			ref={(node) => {
-				listRef.current = node;
-				assignRef(ref, node);
-			}}
+			ref={bindRef(ref)}
 			className={cn(
 				"relative flex flex-wrap items-center gap-1 border-b border-basalt-border",
 				className,
@@ -85,11 +42,13 @@ export const TabsList = React.forwardRef<
 			{showIndicator ? (
 				<span
 					aria-hidden="true"
-					className={cn(
-						"pointer-events-none absolute h-0.5 bg-basalt-primary",
-						indicator.ready && "transition-[left,width,top] duration-200 ease-out",
-					)}
-					style={{ left: indicator.left, width: indicator.width, top: indicator.top }}
+					data-slot="selection-indicator"
+					className={cn("pointer-events-none absolute h-0.5 bg-basalt-primary", motionClassName)}
+					style={{
+						left: state.left,
+						width: state.visible ? state.width : 0,
+						top: state.top,
+					}}
 				/>
 			) : null}
 		</TabsPrimitive.List>

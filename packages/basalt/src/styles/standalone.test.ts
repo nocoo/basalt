@@ -18,6 +18,8 @@ describe("standalone css", () => {
 		expect(css).toContain("@keyframes basalt-shimmer");
 		expect(css).toContain("@keyframes basalt-loader-spin");
 		expect(css).toContain("@keyframes basalt-tab-in");
+		expect(css).toContain("transition-property: left,width,top,height");
+		expect(css).toContain(".shadow-sm");
 		expect(css).toContain("backdrop-filter");
 		expect(css).not.toMatch(/@keyframes pulse\s*\{/);
 	});

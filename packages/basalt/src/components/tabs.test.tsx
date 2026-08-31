@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it } from "vitest";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs";
 
@@ -63,5 +64,17 @@ describe("Tabs", () => {
 		);
 		const indicator = container.querySelector('[aria-hidden="true"]') as HTMLElement;
 		expect(indicator.style.width).toBe("0px");
+	});
+
+	it("forwards the list ref", () => {
+		const ref = createRef<HTMLDivElement>();
+		render(
+			<Tabs defaultValue="a">
+				<TabsList ref={ref}>
+					<TabsTrigger value="a">Home</TabsTrigger>
+				</TabsList>
+			</Tabs>,
+		);
+		expect(ref.current).toBe(screen.getByRole("tablist"));
 	});
 });
