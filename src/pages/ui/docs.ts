@@ -75,10 +75,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			"<Separator orientation='horizontal' />",
 		),
 		variants: ["horizontal", "vertical"],
-		props: [
-			{ name: "orientation", type: '"horizontal" | "vertical"' },
-			{ name: "decorative", type: "boolean" },
-		],
+		props: CATALOG_API.separator,
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",

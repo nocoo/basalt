@@ -60,6 +60,22 @@ export const CATALOG_API = {
 			required: false,
 		},
 	],
+	separator: [
+		{
+			name: "orientation",
+			type: '"horizontal" | "vertical"',
+			required: false,
+			default: "horizontal",
+			description: "The orientation of the separator.",
+		},
+		{
+			name: "decorative",
+			type: "boolean",
+			required: false,
+			default: "true",
+			description: "Whether the separator is purely decorative.",
+		},
+	],
 	text: [
 		{
 			name: "size",

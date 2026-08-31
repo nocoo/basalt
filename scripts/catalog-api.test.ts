@@ -107,6 +107,11 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/label.tsx",
 				propsType: "LabelProps",
 			},
+			{
+				slug: "separator",
+				sourceFile: "packages/basalt/src/components/separator.tsx",
+				propsType: "SeparatorProps",
+			},
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames|props:\s*\[/);
@@ -118,7 +123,7 @@ describe("catalog API generator contract", () => {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toEqual(["button", "link-button", "text", "label"]);
+		expect(Object.keys(generated)).toEqual(["button", "link-button", "text", "label", "separator"]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",
@@ -237,6 +242,45 @@ describe("catalog API generator contract", () => {
 		expect(generated.label?.some((prop) => prop.name === "children")).toBe(false);
 		expect(generated.label?.some((prop) => prop.name === "className")).toBe(false);
 		expect(generated.label?.some((prop) => prop.name === "asContent")).toBe(false);
+	}, 20_000);
+
+	it("extracts Separator props from SeparatorProps with JSDoc defaults and descriptions", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
+		expect(generated.separator).toEqual([
+			{
+				name: "orientation",
+				type: '"horizontal" | "vertical"',
+				required: false,
+				default: "horizontal",
+				description: "The orientation of the separator.",
+			},
+			{
+				name: "decorative",
+				type: "boolean",
+				required: false,
+				default: "true",
+				description: "Whether the separator is purely decorative.",
+			},
+		]);
+		expect(generated.separator?.some((prop) => prop.name === "asChild")).toBe(false);
+		expect(generated.separator?.some((prop) => prop.name === "className")).toBe(false);
+		expect(generated.separator?.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated.separator?.some((prop) => prop.name === "id")).toBe(false);
+		expect(generated.button?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"asChild",
+			"loading",
+			"icon",
+		]);
+		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 	}, 20_000);
 
 	it("filters DOM, event, ARIA, and className inheritance", () => {
@@ -1069,8 +1113,9 @@ export interface WidgetProps {
 		expect(first).toContain("\tbutton: [");
 		expect(first).toContain("\ttext: [");
 		expect(first).toContain("\tlabel: [");
+		expect(first).toContain("\tseparator: [");
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"b32677917c6e9d77eed9f659f221ded96e81b88d08b879108b47ba790b9358fb",
+			"57ad14c202cb02e731f21b060a83b80a54524f0a32f771731c2e5e44273d9cab",
 		);
 	}, 20_000);
 });

@@ -37,6 +37,11 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/label.tsx",
 		propsType: "LabelProps",
 	},
+	{
+		slug: "separator",
+		sourceFile: "packages/basalt/src/components/separator.tsx",
+		propsType: "SeparatorProps",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";
