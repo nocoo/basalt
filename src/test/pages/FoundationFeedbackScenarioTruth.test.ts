@@ -4,6 +4,7 @@ import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { LABEL_EXAMPLES } from "@/pages/ui/examples/label";
 import { LINK_EXAMPLES } from "@/pages/ui/examples/link";
 import { SEPARATOR_EXAMPLES } from "@/pages/ui/examples/separator";
+import { TOOLTIP_EXAMPLES } from "@/pages/ui/examples/tooltip";
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
@@ -132,6 +133,7 @@ describe("foundation feedback scenario truth", () => {
 			"toast-custom-icon",
 			"toast-hidden-icon",
 		]);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
 		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([
 			"tooltip-basic-tooltip",
 			"tooltip-multiple-tooltips",

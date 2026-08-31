@@ -92,12 +92,6 @@ import { toast } from "@nocoo/basalt/components/toast";
 import { Toggle } from "@nocoo/basalt/components/toggle";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
 import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@nocoo/basalt/components/tooltip";
-import {
 	AlertTriangle,
 	Check,
 	CircleAlert,
@@ -733,55 +727,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 						<Loader size={16} />
 					</InputGroup.Addon>
 				</InputGroup>
-			),
-		},
-	],
-	tooltip: [
-		{
-			id: catalogScenarioId("tooltip", "basic-tooltip"),
-			title: "Basic Tooltip",
-			code: "<TooltipProvider><Tooltip><TooltipTrigger asChild><Button variant='outline'>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip></TooltipProvider>",
-			render: () => (
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button variant="outline">Hover</Button>
-						</TooltipTrigger>
-						<TooltipContent>Hint</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-			),
-		},
-		{
-			id: catalogScenarioId("tooltip", "multiple-tooltips"),
-			title: "Multiple Tooltips",
-			code: `<TooltipProvider>
-  <Tooltip>
-    <TooltipTrigger asChild><Button variant="outline">One</Button></TooltipTrigger>
-    <TooltipContent>First</TooltipContent>
-  </Tooltip>
-  <Tooltip>
-    <TooltipTrigger asChild><Button variant="outline">Two</Button></TooltipTrigger>
-    <TooltipContent>Second</TooltipContent>
-  </Tooltip>
-</TooltipProvider>`,
-			render: () => (
-				<TooltipProvider>
-					<Preview>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Button variant="outline">One</Button>
-							</TooltipTrigger>
-							<TooltipContent>First</TooltipContent>
-						</Tooltip>
-						<Tooltip>
-							<TooltipTrigger asChild>
-								<Button variant="outline">Two</Button>
-							</TooltipTrigger>
-							<TooltipContent>Second</TooltipContent>
-						</Tooltip>
-					</Preview>
-				</TooltipProvider>
 			),
 		},
 	],

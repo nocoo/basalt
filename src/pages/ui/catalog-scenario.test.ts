@@ -13,6 +13,7 @@ import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
+import { TOOLTIP_EXAMPLES } from "./examples/tooltip";
 
 const BUTTON_IDS = [
 	"button-variants",
@@ -92,6 +93,16 @@ const LINK_TITLES = ["Basic Link", "Inline in Paragraph", "External Links"] as c
 
 const linkRenders = import.meta.glob("./examples/link/*.tsx", { eager: true });
 const linkSources = import.meta.glob("./examples/link/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const TOOLTIP_IDS = ["tooltip-basic-tooltip", "tooltip-multiple-tooltips"] as const;
+const TOOLTIP_TITLES = ["Basic Tooltip", "Multiple Tooltips"] as const;
+
+const tooltipRenders = import.meta.glob("./examples/tooltip/*.tsx", { eager: true });
+const tooltipSources = import.meta.glob("./examples/tooltip/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -420,6 +431,71 @@ describe("source-backed link scenarios", () => {
 		expect(LINK_EXAMPLES[2]?.code).toContain('href="https://example.com"');
 		expect(LINK_EXAMPLES[2]?.code).toContain("Example");
 		expect(LINK_EXAMPLES[2]?.code).not.toMatch(/\btarget=|\brel=|ExternalIcon/);
+	});
+});
+
+describe("source-backed tooltip scenarios", () => {
+	it("loads two tooltip scenarios from the same glob modules", () => {
+		expect(Object.keys(tooltipRenders)).toHaveLength(2);
+		expect(Object.keys(tooltipSources)).toHaveLength(2);
+		const loaded = loadModuleScenarios({
+			slug: "tooltip",
+			metas: TOOLTIP_TITLES.map((title, index) => ({
+				key: TOOLTIP_IDS[index].slice("tooltip-".length),
+				title,
+			})),
+			renderModules: tooltipRenders,
+			sourceModules: tooltipSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...TOOLTIP_TITLES]);
+		expect(TOOLTIP_EXAMPLES.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		expect(TOOLTIP_EXAMPLES.map((item) => item.title)).toEqual([...TOOLTIP_TITLES]);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([...LINK_IDS]);
+		const fileKeys = new Set(
+			Object.keys(tooltipRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(TOOLTIP_IDS.map((id) => id.slice("tooltip-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("tooltip-".length);
+			const modulePath = Object.keys(tooltipSources).find((path) => path.endsWith(`/${key}.tsx`));
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = tooltipSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(TOOLTIP_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((tooltipRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				TOOLTIP_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("TooltipProvider");
+			expect(scenario.code).toContain("TooltipTrigger asChild");
+			expect(scenario.code).toContain("TooltipContent");
+		}
+		expect(TOOLTIP_EXAMPLES[0]?.code).toContain(">Hover</Button>");
+		expect(TOOLTIP_EXAMPLES[0]?.code).toContain(">Hint</TooltipContent>");
+		expect(TOOLTIP_EXAMPLES[1]?.code).toContain("flex flex-wrap items-center gap-3");
+		expect(TOOLTIP_EXAMPLES[1]?.code).toContain(">One</Button>");
+		expect(TOOLTIP_EXAMPLES[1]?.code).toContain(">First</TooltipContent>");
+		expect(TOOLTIP_EXAMPLES[1]?.code).toContain(">Two</Button>");
+		expect(TOOLTIP_EXAMPLES[1]?.code).toContain(">Second</TooltipContent>");
 	});
 });
 

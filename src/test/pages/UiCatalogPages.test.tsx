@@ -970,6 +970,93 @@ describe("ui catalog", () => {
 		}
 	});
 
+	it("keeps tooltip hero, compound triggers, and popup contracts", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/tooltip");
+		expect(screen.getByRole("heading", { name: "Basic Tooltip" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Multiple Tooltips" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="tooltip-basic-tooltip"]');
+		expect(hero).toBeTruthy();
+		if (!hero) {
+			throw new Error("missing tooltip hero");
+		}
+		const hover = within(hero as HTMLElement).getByRole("button", { name: "Hover" });
+		expect(hover.tagName).toBe("BUTTON");
+		expect(hover).toHaveClass("border");
+		await act(async () => {
+			fireEvent.focus(hover);
+			fireEvent.pointerMove(hover);
+			fireEvent.pointerEnter(hover);
+		});
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Hint");
+		await act(async () => {
+			fireEvent.pointerLeave(hover);
+			fireEvent.blur(hover);
+		});
+		const multiple = document.querySelector('[data-scenario="tooltip-multiple-tooltips"]');
+		expect(multiple).toBeTruthy();
+		if (!multiple) {
+			throw new Error("missing multiple tooltips scenario");
+		}
+		expect(multiple.querySelector(".flex.flex-wrap.items-center.gap-3")).toBeTruthy();
+		const one = within(multiple as HTMLElement).getByRole("button", { name: "One" });
+		const two = within(multiple as HTMLElement).getByRole("button", { name: "Two" });
+		expect(one.tagName).toBe("BUTTON");
+		expect(two.tagName).toBe("BUTTON");
+		await act(async () => {
+			fireEvent.focus(one);
+			fireEvent.pointerMove(one);
+			fireEvent.pointerEnter(one);
+		});
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("First");
+		await act(async () => {
+			fireEvent.pointerLeave(one);
+			fireEvent.blur(one);
+		});
+		await act(async () => {
+			fireEvent.focus(two);
+			fireEvent.pointerMove(two);
+			fireEvent.pointerEnter(two);
+		});
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Second");
+		for (const scenario of UI_EXAMPLES.tooltip ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/tooltip");
+			expect(scenario.code).toContain("TooltipProvider");
+			expect(scenario.code).toContain("TooltipTrigger asChild");
+			expect(scenario.code).toContain("TooltipContent");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		for (const scenario of UI_EXAMPLES.tooltip ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+	});
+
+	it("does not keep inline tooltip scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("TOOLTIP_EXAMPLES");
+		expect(demos).toMatch(/\btooltip: TOOLTIP_EXAMPLES/);
+		expect(demos).not.toMatch(/\btooltip:\s*\[/);
+		expect(kumo).not.toMatch(/\btooltip:\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("tooltip"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("tooltip"/);
+		expect(demos).not.toMatch(/code:\s*['"`]<Tooltip/);
+		expect(kumo).not.toMatch(/code:\s*['"`]<Tooltip/);
+		expect(demos).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<TooltipProvider/);
+		expect(kumo).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<TooltipProvider/);
+		expect(kumo).not.toContain("TooltipProvider");
+		expect(demos).not.toContain("TooltipProvider");
+	});
+
 	it("does not keep inline link scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");

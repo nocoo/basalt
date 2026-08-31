@@ -1,5 +1,4 @@
 import { Banner } from "@nocoo/basalt/components/banner";
-import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
@@ -12,12 +11,6 @@ import { SensitiveInput } from "@nocoo/basalt/components/sensitive-input";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Text } from "@nocoo/basalt/components/text";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { AlertTriangle, CircleAlert, CircleCheck, Info, X } from "lucide-react";
@@ -29,6 +22,7 @@ import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
+import { TOOLTIP_EXAMPLES } from "./examples/tooltip";
 import { KUMO_EXAMPLES } from "./kumo-examples";
 
 const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
@@ -38,6 +32,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	label: LABEL_EXAMPLES,
 	separator: SEPARATOR_EXAMPLES,
 	link: LINK_EXAMPLES,
+	tooltip: TOOLTIP_EXAMPLES,
 	"link-provider": [
 		{
 			id: catalogScenarioId("link-provider", "default"),
@@ -47,23 +42,6 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 				<LinkProvider>
 					<Link href="#section">Link</Link>
 				</LinkProvider>
-			),
-		},
-	],
-	tooltip: [
-		{
-			id: catalogScenarioId("tooltip", "default"),
-			title: "Default",
-			code: "<Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip>",
-			render: () => (
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button variant="outline">Hover</Button>
-						</TooltipTrigger>
-						<TooltipContent>Hint</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
 			),
 		},
 	],
