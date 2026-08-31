@@ -378,6 +378,10 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("table", { name: "Alpha props" })).toHaveTextContent("one");
 		expect(screen.queryByRole("table", { name: "Beta props" })).not.toBeInTheDocument();
 		expect(beta?.parentElement).toHaveTextContent("No component-specific props.");
+		const empty = beta.parentElement?.querySelector("p");
+		expect(empty).toHaveTextContent("No component-specific props.");
+		expect(empty).toHaveClass("text-sm");
+		expect(empty).toHaveClass("text-muted-foreground");
 	});
 
 	it("sources link-button API rows from generated catalog data", async () => {

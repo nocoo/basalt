@@ -101,7 +101,7 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 						{surface.name}
 					</h3>
 					{surface.props.length === 0 ? (
-						<p>No component-specific props.</p>
+						<p className="text-sm text-muted-foreground">No component-specific props.</p>
 					) : (
 						<div className="overflow-hidden rounded-lg border border-border">
 							<table aria-label={`${surface.name} props`} className="w-full text-sm">
