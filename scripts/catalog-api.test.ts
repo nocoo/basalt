@@ -25,7 +25,10 @@ afterEach(() => {
 	}
 });
 
-function fixture(files: Record<string, string>): string {
+function fixture(
+	files: Record<string, string>,
+	options?: { compilerOptions?: Record<string, unknown> },
+): string {
 	const root = mkdtempSync(path.join(tmpdir(), "catalog-api-"));
 	fixtureRoots.push(root);
 	writeFileSync(
@@ -39,6 +42,7 @@ function fixture(files: Record<string, string>): string {
 				jsx: "react-jsx",
 				skipLibCheck: true,
 				noEmit: true,
+				...options?.compilerOptions,
 			},
 			include: ["./**/*.ts", "./**/*.tsx"],
 		}),
@@ -318,6 +322,196 @@ export interface WidgetProps {
 			"widget.ts": `import type { Other } from "./other";
 type LocalOther = Other;
 export interface WidgetProps extends LocalOther {
+	value?: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("pierces multilayer interface aliases when detecting impersonation", () => {
+		const root = fixture({
+			"other.ts": "export interface Other { value?: string }",
+			"widget.ts": `import type { Other } from "./other";
+interface Mid extends Other {}
+interface Top extends Mid {}
+export interface WidgetProps extends Top {
+	value?: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("accepts a renamed local export", () => {
+		const root = fixture({
+			"widget.ts": `interface Inner {
+	tone?: "a" | "b";
+}
+export type { Inner as WidgetProps };
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "tone", type: '"a" | "b"', required: false },
+		]);
+	});
+
+	it("rejects an external re-export of the props type", () => {
+		const root = fixture({
+			"other.ts": "export interface WidgetProps { value?: string }",
+			"widget.ts": `export type { WidgetProps } from "./other";
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/not declared in/);
+	});
+
+	it("keeps explicit type arguments that match parameter defaults", () => {
+		const root = fixture({
+			"widget.ts": `export type Defaulted<T = string> = { value: T };
+export interface WidgetProps {
+	explicit?: Defaulted<string>;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "explicit", type: "Defaulted<string>", required: false },
+		]);
+	});
+
+	it("keeps nested undefined and null inside generic arguments", () => {
+		const root = fixture({
+			"widget.ts": `export type Box<T> = { value: T };
+export interface WidgetProps {
+	maybe?: Box<string | undefined>;
+	nullable?: Box<string | null>;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "maybe", type: "Box<string | undefined>", required: false },
+			{ name: "nullable", type: "Box<string | null>", required: false },
+		]);
+	});
+
+	it("keeps nested undefined inside React generics with a React prefix", () => {
+		const root = fixture(
+			{
+				"widget.ts": `import type { ReactElement } from "react";
+export interface WidgetProps {
+	el?: ReactElement<string | undefined>;
+}
+`,
+			},
+			{
+				compilerOptions: {
+					baseUrl: ".",
+					paths: {
+						react: [path.join(repoRoot, "node_modules/@types/react")],
+					},
+				},
+			},
+		);
+		expect(generateFixture(root).widget).toEqual([
+			{
+				name: "el",
+				type: "React.ReactElement<string | undefined>",
+				required: false,
+			},
+		]);
+	});
+
+	it("qualifies namespace imports of same-named exported aliases", () => {
+		const root = fixture({
+			"a.ts": "export type Box<T> = { a: T };\n",
+			"b.ts": "export type Box<T> = { b: T };\n",
+			"widget.ts": `import type * as A from "./a";
+import type * as B from "./b";
+export interface WidgetProps {
+	box?: A.Box<string> | B.Box<string>;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "box", type: "A.Box<string> | B.Box<string>", required: false },
+		]);
+	});
+
+	it("qualifies same-named local namespaces in a union", () => {
+		const root = fixture({
+			"widget.ts": `export namespace A {
+	export type Box<T> = { a: T };
+}
+export namespace B {
+	export type Box<T> = { b: T };
+}
+export interface WidgetProps {
+	box?: A.Box<string> | B.Box<string>;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "box", type: "A.Box<string> | B.Box<string>", required: false },
+		]);
+	});
+
+	it("rejects impersonation through identity generic aliases", () => {
+		const root = fixture({
+			"other.ts": "export interface Other { value?: string }",
+			"widget.ts": `import type { Other } from "./other";
+type Identity<T> = T;
+export interface WidgetProps extends Identity<Identity<Other>> {
+	value?: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("rejects impersonation through layered generic aliases", () => {
+		const root = fixture({
+			"other.ts": "export interface Other { value?: string }",
+			"widget.ts": `import type { Other } from "./other";
+type Identity<T> = T;
+type Layer<T> = Identity<T>;
+export interface WidgetProps extends Layer<Other> {
+	value?: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("rejects impersonation through a local union alias", () => {
+		const root = fixture({
+			"other.ts": "export interface Other { value?: string }",
+			"widget.ts": `import type { Other } from "./other";
+type Mix = Other | { localOnly?: boolean };
+export type WidgetProps = Mix & { value?: string };
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("rejects impersonation through a tuple-index alias", () => {
+		const root = fixture({
+			"other.ts": "export interface Other { value?: string }",
+			"widget.ts": `import type { Other } from "./other";
+type First<T> = [T][0];
+export interface WidgetProps extends First<Other> {
+	value?: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("rejects impersonation through a mixed type-query generic", () => {
+		const root = fixture({
+			"other.ts": "export interface Other { value?: string }",
+			"widget.ts": `import type { Other } from "./other";
+const local = { localOnly: true };
+type Pair<Left, Right> = Left;
+export interface WidgetProps extends Pair<Other, typeof local> {
 	value?: string;
 }
 `,

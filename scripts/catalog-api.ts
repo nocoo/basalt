@@ -201,42 +201,91 @@ function eachHeritageTypeNode(
 	visit(decl.type);
 }
 
+function typeArgumentNodes(typeNode: ts.TypeNode): readonly ts.TypeNode[] {
+	if (ts.isTypeReferenceNode(typeNode) || ts.isExpressionWithTypeArguments(typeNode)) {
+		return typeNode.typeArguments ?? [];
+	}
+	return [];
+}
+
 function collectForeignPropNamesFromTypeNode(
 	typeNode: ts.TypeNode,
 	sourceFile: ts.SourceFile,
 	checker: ts.TypeChecker,
 	names: Set<string>,
 	visited: Set<ts.Node>,
+	visitedDecls: Set<ts.Declaration>,
 ) {
 	if (visited.has(typeNode)) {
 		return;
 	}
 	visited.add(typeNode);
+	const recurse = (node: ts.TypeNode) => {
+		collectForeignPropNamesFromTypeNode(node, sourceFile, checker, names, visited, visitedDecls);
+	};
 	if (ts.isParenthesizedTypeNode(typeNode)) {
-		collectForeignPropNamesFromTypeNode(typeNode.type, sourceFile, checker, names, visited);
+		recurse(typeNode.type);
 		return;
 	}
-	if (ts.isIntersectionTypeNode(typeNode)) {
+	if (ts.isUnionTypeNode(typeNode) || ts.isIntersectionTypeNode(typeNode)) {
 		for (const part of typeNode.types) {
-			collectForeignPropNamesFromTypeNode(part, sourceFile, checker, names, visited);
+			recurse(part);
 		}
 		return;
 	}
 	if (ts.isTypeLiteralNode(typeNode)) {
 		return;
 	}
-	if (containsLocalTypeQuery(typeNode, sourceFile, checker)) {
+	if (ts.isIndexedAccessTypeNode(typeNode)) {
+		recurse(typeNode.objectType);
+		recurse(typeNode.indexType);
 		return;
+	}
+	if (ts.isTupleTypeNode(typeNode)) {
+		for (const element of typeNode.elements) {
+			recurse(ts.isNamedTupleMember(element) ? element.type : element);
+		}
+		return;
+	}
+	if (ts.isArrayTypeNode(typeNode)) {
+		recurse(typeNode.elementType);
+		return;
+	}
+	if (ts.isOptionalTypeNode(typeNode) || ts.isRestTypeNode(typeNode)) {
+		recurse(typeNode.type);
+		return;
+	}
+	if (ts.isTypeOperatorNode(typeNode)) {
+		recurse(typeNode.type);
+		return;
+	}
+	if (ts.isTypeQueryNode(typeNode)) {
+		const symbol = checker.getSymbolAtLocation(typeNode.exprName);
+		const resolved = symbol ? skipAlias(symbol, checker) : undefined;
+		if ((resolved?.getDeclarations() ?? []).some((decl) => isInFile(decl, sourceFile))) {
+			return;
+		}
+		return;
+	}
+	for (const argument of typeArgumentNodes(typeNode)) {
+		recurse(argument);
 	}
 	const local = localTypeDeclaration(typeNode, sourceFile, checker);
 	if (local && ts.isTypeAliasDeclaration(local) && local.type) {
-		collectForeignPropNamesFromTypeNode(local.type, sourceFile, checker, names, visited);
+		if (!visitedDecls.has(local)) {
+			visitedDecls.add(local);
+			recurse(local.type);
+		}
 		return;
 	}
 	if (local && ts.isInterfaceDeclaration(local)) {
-		eachHeritageTypeNode(local, (heritage) => {
-			collectForeignPropNamesFromTypeNode(heritage, sourceFile, checker, names, visited);
-		});
+		if (!visitedDecls.has(local)) {
+			visitedDecls.add(local);
+			eachHeritageTypeNode(local, recurse);
+		}
+		return;
+	}
+	if (containsLocalTypeQuery(typeNode, sourceFile, checker)) {
 		return;
 	}
 	for (const property of checker.getTypeFromTypeNode(typeNode).getProperties()) {
@@ -251,8 +300,16 @@ function collectForeignPropNames(
 ): Set<string> {
 	const names = new Set<string>();
 	const visited = new Set<ts.Node>();
+	const visitedDecls = new Set<ts.Declaration>();
 	eachHeritageTypeNode(decl, (typeNode) => {
-		collectForeignPropNamesFromTypeNode(typeNode, sourceFile, checker, names, visited);
+		collectForeignPropNamesFromTypeNode(
+			typeNode,
+			sourceFile,
+			checker,
+			names,
+			visited,
+			visitedDecls,
+		);
 	});
 	return names;
 }
@@ -321,23 +378,139 @@ function findExportedPropsDeclaration(
 	if (local) {
 		return local;
 	}
-	failCatalogApi(`missing type ${typeName} in ${sourceFile.fileName}`);
+	failCatalogApi(`type ${typeName} is not declared in ${sourceFile.fileName}`);
 }
 
-function isReactAlias(alias: ts.Symbol): boolean {
-	const declFile =
-		(alias.getDeclarations() ?? [])[0]?.getSourceFile().fileName.replace(/\\/g, "/") ?? "";
-	return (
-		declFile.includes("/node_modules/@types/react/") || declFile.includes("/node_modules/react/")
-	);
+function isReactAlias(alias: ts.Symbol, checker: ts.TypeChecker): boolean {
+	const resolved = skipAlias(alias, checker);
+	for (const symbol of [alias, resolved]) {
+		for (const decl of symbol.getDeclarations() ?? []) {
+			const declFile = decl.getSourceFile().fileName.replace(/\\/g, "/");
+			if (
+				declFile.includes("/node_modules/@types/react") ||
+				declFile.includes("/node_modules/react/")
+			) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+function namespaceQualifiers(decl: ts.Declaration): string[] {
+	const parts: string[] = [];
+	let node: ts.Node | undefined = decl.parent;
+	while (node) {
+		if (ts.isModuleDeclaration(node) && ts.isIdentifier(node.name)) {
+			parts.unshift(node.name.text);
+		}
+		node = node.parent;
+	}
+	return parts;
+}
+
+function sourceFileOfSymbol(symbol: ts.Symbol, checker: ts.TypeChecker): ts.SourceFile | undefined {
+	const resolved = skipAlias(symbol, checker);
+	for (const decl of resolved.getDeclarations() ?? []) {
+		if (ts.isSourceFile(decl)) {
+			return decl;
+		}
+	}
+	return resolved.getDeclarations()?.[0]?.getSourceFile();
+}
+
+function importNamespaceForSourceFile(
+	fromFile: ts.SourceFile,
+	targetFile: ts.SourceFile,
+	checker: ts.TypeChecker,
+): string | undefined {
+	const names: string[] = [];
+	const targetPath = normalizeFsPath(targetFile.fileName);
+	for (const statement of fromFile.statements) {
+		if (!ts.isImportDeclaration(statement) || !statement.importClause) {
+			continue;
+		}
+		const bindings = statement.importClause.namedBindings;
+		if (!bindings || !ts.isNamespaceImport(bindings) || !statement.moduleSpecifier) {
+			continue;
+		}
+		const moduleSymbol = checker.getSymbolAtLocation(statement.moduleSpecifier);
+		if (!moduleSymbol) {
+			continue;
+		}
+		const moduleFile = sourceFileOfSymbol(moduleSymbol, checker);
+		if (!moduleFile || normalizeFsPath(moduleFile.fileName) !== targetPath) {
+			continue;
+		}
+		names.push(bindings.name.text);
+	}
+	if (names.length !== 1) {
+		return undefined;
+	}
+	return names[0];
+}
+
+function namedTypeSymbol(type: ts.Type): ts.Symbol | undefined {
+	if (type.aliasSymbol) {
+		return type.aliasSymbol;
+	}
+	const symbol = type.getSymbol();
+	if (
+		symbol &&
+		symbol.flags & (ts.SymbolFlags.Interface | ts.SymbolFlags.Class | ts.SymbolFlags.TypeAlias)
+	) {
+		return symbol;
+	}
+	return undefined;
+}
+
+function namedTypeArguments(
+	type: ts.Type,
+	checker: ts.TypeChecker,
+): readonly ts.Type[] | undefined {
+	if (type.aliasTypeArguments && type.aliasTypeArguments.length > 0) {
+		return type.aliasTypeArguments;
+	}
+	if (type.flags & ts.TypeFlags.Object) {
+		const objectType = type as ts.ObjectType;
+		if (objectType.objectFlags & ts.ObjectFlags.Reference) {
+			const args = checker.getTypeArguments(type as ts.TypeReference);
+			if (args.length > 0) {
+				return args;
+			}
+		}
+	}
+	return undefined;
+}
+
+function unwrapTypeNode(typeNode: ts.TypeNode): ts.TypeNode {
+	let node = typeNode;
+	while (ts.isParenthesizedTypeNode(node)) {
+		node = node.type;
+	}
+	return node;
+}
+
+function explicitTypeArgumentNodes(
+	typeNode: ts.TypeNode | undefined,
+): readonly ts.TypeNode[] | undefined {
+	if (!typeNode) {
+		return undefined;
+	}
+	const unwrapped = unwrapTypeNode(typeNode);
+	if (ts.isTypeReferenceNode(unwrapped) || ts.isExpressionWithTypeArguments(unwrapped)) {
+		return unwrapped.typeArguments ?? [];
+	}
+	return undefined;
 }
 
 function printAlias(
 	type: ts.Type,
 	checker: ts.TypeChecker,
 	enclosing: ts.Node,
+	typeNode?: ts.TypeNode,
 ): string | undefined {
-	const alias = type.aliasSymbol;
+	const alias = namedTypeSymbol(type);
 	if (!alias) {
 		return undefined;
 	}
@@ -345,12 +518,48 @@ function printAlias(
 	if (name.startsWith("__")) {
 		return undefined;
 	}
-	const qualified = isReactAlias(alias) ? `React.${name}` : name;
-	const typeArguments = type.aliasTypeArguments;
-	if (!typeArguments || typeArguments.length === 0) {
+	const resolved = skipAlias(alias, checker);
+	const decls = [...(alias.getDeclarations() ?? []), ...(resolved.getDeclarations() ?? [])];
+	let qualified = name;
+	for (const decl of decls) {
+		const parts = namespaceQualifiers(decl);
+		if (parts.length > 0) {
+			qualified = [...parts, name].join(".");
+			break;
+		}
+	}
+	if (!qualified.includes(".")) {
+		const enclosingFile = enclosing.getSourceFile();
+		const aliasFile = decls[0]?.getSourceFile();
+		if (
+			aliasFile &&
+			normalizeFsPath(aliasFile.fileName) !== normalizeFsPath(enclosingFile.fileName)
+		) {
+			const imported = importNamespaceForSourceFile(enclosingFile, aliasFile, checker);
+			if (imported) {
+				qualified = `${imported}.${name}`;
+			}
+		}
+	}
+	if (isReactAlias(alias, checker) && !qualified.startsWith("React.")) {
+		qualified = `React.${qualified}`;
+	}
+	const inferred = namedTypeArguments(type, checker) ?? [];
+	const explicit = explicitTypeArgumentNodes(typeNode);
+	if (explicit) {
+		if (explicit.length === 0) {
+			return qualified;
+		}
+		const args = explicit.map((node, index) => {
+			const argument = inferred[index] ?? checker.getTypeFromTypeNode(node);
+			return printType(argument, checker, enclosing, false, node);
+		});
+		return `${qualified}<${args.join(", ")}>`;
+	}
+	if (inferred.length === 0) {
 		return qualified;
 	}
-	const args = typeArguments.map((argument) => printPropType(argument, checker, enclosing));
+	const args = inferred.map((argument) => printType(argument, checker, enclosing, false));
 	return `${qualified}<${args.join(", ")}>`;
 }
 
@@ -363,8 +572,13 @@ function isBooleanParts(parts: readonly ts.Type[]): boolean {
 	);
 }
 
-function printAtomicType(type: ts.Type, checker: ts.TypeChecker, enclosing: ts.Node): string {
-	const alias = printAlias(type, checker, enclosing);
+function printAtomicType(
+	type: ts.Type,
+	checker: ts.TypeChecker,
+	enclosing: ts.Node,
+	typeNode?: ts.TypeNode,
+): string {
+	const alias = printAlias(type, checker, enclosing, typeNode);
 	if (alias) {
 		return alias;
 	}
@@ -378,50 +592,88 @@ function printAtomicType(type: ts.Type, checker: ts.TypeChecker, enclosing: ts.N
 	return text;
 }
 
+function unionRank(part: ts.Type): number {
+	if (part.flags & ts.TypeFlags.Undefined) {
+		return 2;
+	}
+	if (part.flags & ts.TypeFlags.Null) {
+		return 1;
+	}
+	return 0;
+}
+
 function printUnionParts(
 	parts: readonly ts.Type[],
 	checker: ts.TypeChecker,
 	enclosing: ts.Node,
 ): string {
 	const printed = parts.map((part) => ({
-		isNull: (part.flags & ts.TypeFlags.Null) !== 0,
+		rank: unionRank(part),
 		text: printAtomicType(part, checker, enclosing),
 	}));
 	printed.sort((left, right) => {
-		if (left.isNull !== right.isNull) {
-			return left.isNull ? 1 : -1;
+		if (left.rank !== right.rank) {
+			return left.rank - right.rank;
 		}
 		return left.text.localeCompare(right.text);
 	});
 	return printed.map((part) => part.text).join(" | ");
 }
 
-function printPropType(type: ts.Type, checker: ts.TypeChecker, enclosing: ts.Node): string {
-	const alias = printAlias(type, checker, enclosing);
+function printType(
+	type: ts.Type,
+	checker: ts.TypeChecker,
+	enclosing: ts.Node,
+	stripTopLevelUndefined: boolean,
+	typeNode?: ts.TypeNode,
+): string {
+	const alias = printAlias(type, checker, enclosing, typeNode);
 	if (alias) {
 		return alias;
 	}
-	const parts = (type.isUnion() ? type.types : [type]).filter(
-		(part) => !(part.flags & ts.TypeFlags.Undefined),
-	);
-	if (parts.length === 0) {
+	const parts = type.isUnion() ? type.types : [type];
+	const visible = stripTopLevelUndefined
+		? parts.filter((part) => !(part.flags & ts.TypeFlags.Undefined))
+		: parts;
+	if (visible.length === 0) {
 		failCatalogApi("empty type after removing undefined");
 	}
-	if (isBooleanParts(parts)) {
+	if (isBooleanParts(visible)) {
 		return "boolean";
 	}
-	const withoutNull = parts.filter((part) => !(part.flags & ts.TypeFlags.Null));
-	if (withoutNull.length !== parts.length && isBooleanParts(withoutNull)) {
-		return "boolean | null";
+	const withoutUndefined = visible.filter((part) => !(part.flags & ts.TypeFlags.Undefined));
+	const withoutNull = withoutUndefined.filter((part) => !(part.flags & ts.TypeFlags.Null));
+	const hasUndefined = withoutUndefined.length !== visible.length;
+	const hasNull = withoutNull.length !== withoutUndefined.length;
+	if (isBooleanParts(withoutNull)) {
+		if (hasNull && hasUndefined) {
+			return "boolean | null | undefined";
+		}
+		if (hasNull) {
+			return "boolean | null";
+		}
+		if (hasUndefined) {
+			return "boolean | undefined";
+		}
+		return "boolean";
 	}
-	if (parts.length === 1) {
-		const only = parts[0];
+	if (visible.length === 1) {
+		const only = visible[0];
 		if (!only) {
 			failCatalogApi("empty type after removing undefined");
 		}
-		return printAtomicType(only, checker, enclosing);
+		return printAtomicType(only, checker, enclosing, typeNode);
 	}
-	return printUnionParts(parts, checker, enclosing);
+	return printUnionParts(visible, checker, enclosing);
+}
+
+function printPropType(
+	type: ts.Type,
+	checker: ts.TypeChecker,
+	enclosing: ts.Node,
+	typeNode?: ts.TypeNode,
+): string {
+	return printType(type, checker, enclosing, true, typeNode);
 }
 
 function jsDocFor(symbol: ts.Symbol, checker: ts.TypeChecker): string | undefined {
@@ -489,7 +741,10 @@ function extractTargetProps(
 		);
 		let position: number | undefined;
 		if (localDecls.length > 0) {
-			if (foreignNames.has(name)) {
+			const hasForeignDeclaration = (symbol.getDeclarations() ?? []).some(
+				(item) => !isInFile(item, sourceFile),
+			);
+			if (hasForeignDeclaration || foreignNames.has(name)) {
 				failCatalogApi(`cross-file prop impersonation: ${name}`);
 			}
 			position = localDecls[0].getStart(sourceFile);
@@ -521,7 +776,7 @@ function extractTargetProps(
 			position,
 			prop: {
 				name,
-				type: printPropType(propType, checker, context),
+				type: printPropType(propType, checker, context, typeNode),
 				required: (symbol.flags & ts.SymbolFlags.Optional) === 0,
 				...(description ? { description } : {}),
 			},
