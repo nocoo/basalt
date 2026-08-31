@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { FIELD_EXAMPLES } from "@/pages/ui/examples/field";
+import { INPUT_EXAMPLES } from "@/pages/ui/examples/input";
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
@@ -56,6 +57,7 @@ describe("form selection scenario truth", () => {
 		expect(UI_EXAMPLES["date-picker"]?.map((item) => item.id)).toEqual([
 			"date-picker-single-date-selection",
 		]);
+		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
 		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([
 			"input-with-label-and-description",
 			"input-with-error-string",
@@ -127,11 +129,39 @@ describe("form selection scenario truth", () => {
 	});
 
 	it("keeps standalone inputs named and input groups labelled", () => {
-		expect(scenario("input", "input-disabled").code).toContain("aria-label=");
-		expect(scenario("input", "input-input-types").code).toContain('type="search"');
-		expect(scenario("input", "input-input-types").code).toContain("aria-label=");
-		expect(scenario("input", "input-with-label-and-description").code).toContain("placeholder=");
-		expect(scenario("input", "input-with-label-and-description").code).toContain("<Field ");
+		const labeled = scenario("input", "input-with-label-and-description");
+		expect(labeled.code).toContain("export default");
+		expect(labeled.code).toContain("@nocoo/basalt/components/field");
+		expect(labeled.code).toContain("@nocoo/basalt/components/input");
+		expect(labeled.code).toContain("<Field ");
+		expect(labeled.code).toContain('htmlFor="ex-input-email"');
+		expect(labeled.code).toContain('id="ex-input-email"');
+		expect(labeled.code).toContain('hint="Never shared"');
+		expect(labeled.code).toContain('placeholder="you@example.com"');
+		expect(labeled.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		const error = scenario("input", "input-with-error-string");
+		expect(error.code).toContain('htmlFor="ex-input-err"');
+		expect(error.code).toContain('id="ex-input-err"');
+		expect(error.code).toContain('error="Required"');
+		expect(error.code).toContain("export default");
+		const disabled = scenario("input", "input-disabled");
+		expect(disabled.code).toContain("aria-label=");
+		expect(disabled.code).toContain('aria-label="Disabled input"');
+		expect(disabled.code).toContain('value="Read only"');
+		expect(disabled.code).toContain("disabled");
+		const types = scenario("input", "input-input-types");
+		expect(types.code).toContain('type="search"');
+		expect(types.code).toContain("aria-label=");
+		expect(types.code).toContain('<div className="flex w-full flex-col gap-3">');
+		expect(types.code).toContain('type="email"');
+		expect(types.code).toContain('type="password"');
+		expect(types.code).toContain('aria-label="Email type"');
+		expect(types.code).toContain('aria-label="Password type"');
+		expect(types.code).toContain('aria-label="Search type"');
+		expect(types.code.indexOf('type="email"')).toBeLessThan(types.code.indexOf('type="password"'));
+		expect(types.code.indexOf('type="password"')).toBeLessThan(types.code.indexOf('type="search"'));
+		expect(scenario("input", "input-bare-input-no-label").code).toContain('aria-label="Name"');
+		expect(scenario("input", "input-bare-input-no-label").code).toContain('placeholder="Jane Doe"');
 		expect(scenario("input-area", "input-area-custom-row-count").code).toContain("aria-label=");
 		expect(scenario("input-area", "input-area-disabled").code).toContain("aria-label=");
 		expect(scenario("sensitive-input", "sensitive-input-default").code).toContain("aria-label=");

@@ -1576,6 +1576,107 @@ describe("ui catalog", () => {
 		expect(markdown).toContain('htmlFor="field-error-email"');
 	});
 
+	it("keeps input hero, field associations, types wrapper, and copy modules", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/input");
+		expect(screen.getByRole("heading", { name: "With Label and Description" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "With Error (String)" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Input Types" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Bare Input (No Label)" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="input-with-label-and-description"]');
+		const labeled = document.querySelector('[data-scenario="input-with-label-and-description"]');
+		const error = document.querySelector('[data-scenario="input-with-error-string"]');
+		const disabled = document.querySelector('[data-scenario="input-disabled"]');
+		const types = document.querySelector('[data-scenario="input-input-types"]');
+		const bare = document.querySelector('[data-scenario="input-bare-input-no-label"]');
+		expect(hero).toBeTruthy();
+		expect(labeled).toBeTruthy();
+		expect(error).toBeTruthy();
+		expect(disabled).toBeTruthy();
+		expect(types).toBeTruthy();
+		expect(bare).toBeTruthy();
+		if (!hero || !labeled || !error || !disabled || !types || !bare) {
+			throw new Error("missing input scenario surfaces");
+		}
+		const heroLabel = hero.querySelector('label[for="ex-input-email"]');
+		const heroInput = hero.querySelector("#ex-input-email");
+		expect(heroLabel).toHaveTextContent("Email");
+		expect(heroInput).toHaveAttribute("aria-describedby", "ex-input-email-hint");
+		expect(heroInput).not.toHaveAttribute("aria-invalid");
+		expect(hero.querySelector("#ex-input-email-hint")).toHaveTextContent("Never shared");
+		const labeledInput = labeled.querySelector("#ex-input-email");
+		expect(labeled.querySelector('label[for="ex-input-email"]')).toHaveTextContent("Email");
+		expect(labeledInput).toHaveAttribute("placeholder", "you@example.com");
+		expect(labeledInput).toHaveAttribute("aria-describedby", "ex-input-email-hint");
+		const errorInput = error.querySelector("#ex-input-err");
+		expect(error.querySelector('label[for="ex-input-err"]')).toHaveTextContent("Email");
+		expect(errorInput).toHaveAttribute("aria-describedby", "ex-input-err-error");
+		expect(errorInput).toHaveAttribute("aria-invalid", "true");
+		const alert = within(error as HTMLElement).getByRole("alert");
+		expect(alert).toHaveTextContent("Required");
+		expect(alert).toHaveAttribute("id", "ex-input-err-error");
+		const disabledInput = within(disabled as HTMLElement).getByRole("textbox", {
+			name: "Disabled input",
+		});
+		expect(disabledInput).toBeDisabled();
+		expect(disabledInput).toHaveValue("Read only");
+		const typeRoot = types.querySelector("div.flex.w-full.flex-col.gap-3");
+		expect(typeRoot).toBeTruthy();
+		const typeInputs = typeRoot?.querySelectorAll("input") ?? [];
+		expect(typeInputs).toHaveLength(3);
+		expect(typeInputs[0]).toHaveAttribute("type", "email");
+		expect(typeInputs[0]).toHaveAttribute("placeholder", "Email");
+		expect(typeInputs[0]).toHaveAccessibleName("Email type");
+		expect(typeInputs[1]).toHaveAttribute("type", "password");
+		expect(typeInputs[1]).toHaveAttribute("placeholder", "Password");
+		expect(typeInputs[1]).toHaveAccessibleName("Password type");
+		expect(typeInputs[2]).toHaveAttribute("type", "search");
+		expect(typeInputs[2]).toHaveAttribute("placeholder", "Search");
+		expect(typeInputs[2]).toHaveAccessibleName("Search type");
+		expect(within(bare as HTMLElement).getByRole("textbox", { name: "Name" })).toHaveAttribute(
+			"placeholder",
+			"Jane Doe",
+		);
+		for (const scenario of UI_EXAMPLES.input ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/input");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(UI_EXAMPLES.input).toHaveLength(5);
+		for (const scenario of UI_EXAMPLES.input ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).toContain('<div className="flex w-full flex-col gap-3">');
+		expect(markdown).toContain('htmlFor="ex-input-email"');
+		expect(markdown).toContain('htmlFor="ex-input-err"');
+	});
+
+	it("does not keep inline input scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("INPUT_EXAMPLES");
+		expect(demos).toMatch(/\binput: INPUT_EXAMPLES/);
+		expect(demos).not.toMatch(/\binput:\s*\[/);
+		expect(kumo).not.toMatch(/\binput:\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("input",/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("input",/);
+		expect(demos).not.toContain('from "@nocoo/basalt/components/input";');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/input";');
+		expect(kumo).toContain('from "@nocoo/basalt/components/field"');
+		expect(kumo).not.toMatch(/function Stack\b/);
+		expect(kumo).not.toMatch(/<Stack[\s>]/);
+		expect(demos).toContain("InputGroup.Input");
+	});
+
 	it("does not keep inline field scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");

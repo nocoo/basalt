@@ -49,7 +49,6 @@ import { Empty } from "@nocoo/basalt/components/empty";
 import { Field } from "@nocoo/basalt/components/field";
 import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
 import { Grid, GridItem } from "@nocoo/basalt/components/grid";
-import { Input } from "@nocoo/basalt/components/input";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { Label } from "@nocoo/basalt/components/label";
@@ -119,10 +118,6 @@ function PaginationExample({
 }) {
 	const [page, setPage] = useState(initialPage);
 	return <Pagination page={page} pageCount={pageCount} onPageChange={setPage} simple={simple} />;
-}
-
-function Stack({ children }: { children: ReactNode }) {
-	return <div className="flex w-full flex-col gap-3">{children}</div>;
 }
 
 const DIALOG_LOREM =
@@ -563,52 +558,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 					<Switch aria-label="Default size" defaultChecked />
 				</Preview>
 			),
-		},
-	],
-	input: [
-		{
-			id: catalogScenarioId("input", "with-label-and-description"),
-			title: "With Label and Description",
-			code: '<Field label="Email" htmlFor="ex-input-email" hint="Never shared"><Input id="ex-input-email" placeholder="you@example.com" /></Field>',
-			render: () => (
-				<Field label="Email" htmlFor="ex-input-email" hint="Never shared">
-					<Input id="ex-input-email" placeholder="you@example.com" />
-				</Field>
-			),
-		},
-		{
-			id: catalogScenarioId("input", "with-error-string"),
-			title: "With Error (String)",
-			code: '<Field label="Email" htmlFor="ex-input-err" error="Required"><Input id="ex-input-err" /></Field>',
-			render: () => (
-				<Field label="Email" htmlFor="ex-input-err" error="Required">
-					<Input id="ex-input-err" />
-				</Field>
-			),
-		},
-		{
-			id: catalogScenarioId("input", "disabled"),
-			title: "Disabled",
-			code: '<Input disabled value="Read only" aria-label="Disabled input" />',
-			render: () => <Input disabled value="Read only" aria-label="Disabled input" />,
-		},
-		{
-			id: catalogScenarioId("input", "input-types"),
-			title: "Input Types",
-			code: '<Input type="email" placeholder="Email" aria-label="Email type" /><Input type="password" placeholder="Password" aria-label="Password type" /><Input type="search" placeholder="Search" aria-label="Search type" />',
-			render: () => (
-				<Stack>
-					<Input type="email" placeholder="Email" aria-label="Email type" />
-					<Input type="password" placeholder="Password" aria-label="Password type" />
-					<Input type="search" placeholder="Search" aria-label="Search type" />
-				</Stack>
-			),
-		},
-		{
-			id: catalogScenarioId("input", "bare-input-no-label"),
-			title: "Bare Input (No Label)",
-			code: '<Input aria-label="Name" placeholder="Jane Doe" />',
-			render: () => <Input aria-label="Name" placeholder="Jane Doe" />,
 		},
 	],
 	"input-area": [

@@ -10,6 +10,7 @@ import { UI_EXAMPLES } from "./demos";
 import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { FIELD_EXAMPLES } from "./examples/field";
+import { INPUT_EXAMPLES } from "./examples/input";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
@@ -151,6 +152,28 @@ const FIELD_TITLES = ["Hint", "Error"] as const;
 
 const fieldRenders = import.meta.glob("./examples/field/*.tsx", { eager: true });
 const fieldSources = import.meta.glob("./examples/field/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const INPUT_IDS = [
+	"input-with-label-and-description",
+	"input-with-error-string",
+	"input-disabled",
+	"input-input-types",
+	"input-bare-input-no-label",
+] as const;
+const INPUT_TITLES = [
+	"With Label and Description",
+	"With Error (String)",
+	"Disabled",
+	"Input Types",
+	"Bare Input (No Label)",
+] as const;
+
+const inputRenders = import.meta.glob("./examples/input/*.tsx", { eager: true });
+const inputSources = import.meta.glob("./examples/input/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -836,6 +859,106 @@ describe("source-backed field scenarios", () => {
 		expect(FIELD_EXAMPLES[1]?.code).toContain('error="Required"');
 		expect(FIELD_EXAMPLES[1]?.code).not.toContain("ex-email-err");
 		expect(FIELD_EXAMPLES[1]?.code).not.toContain("kumo-ex-email-err");
+	});
+});
+
+describe("source-backed input scenarios", () => {
+	it("loads five input scenarios from the same glob modules", () => {
+		expect(Object.keys(inputRenders)).toHaveLength(5);
+		expect(Object.keys(inputSources)).toHaveLength(5);
+		const loaded = loadModuleScenarios({
+			slug: "input",
+			metas: INPUT_TITLES.map((title, index) => ({
+				key: INPUT_IDS[index].slice("input-".length),
+				title,
+			})),
+			renderModules: inputRenders,
+			sourceModules: inputSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...INPUT_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...INPUT_TITLES]);
+		expect(INPUT_EXAMPLES.map((item) => item.id)).toEqual([...INPUT_IDS]);
+		expect(INPUT_EXAMPLES.map((item) => item.title)).toEqual([...INPUT_TITLES]);
+		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
+		expect(UI_EXAMPLES["theme-toggle"]).toBe(THEME_TOGGLE_EXAMPLES);
+		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
+		expect(UI_EXAMPLES["basalt-mark"]).toBe(BASALT_MARK_EXAMPLES);
+		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		expect(UI_EXAMPLES["theme-toggle"]?.map((item) => item.id)).toEqual([...THEME_TOGGLE_IDS]);
+		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
+		expect(UI_EXAMPLES["basalt-mark"]?.map((item) => item.id)).toEqual([...BASALT_MARK_IDS]);
+		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
+		const fileKeys = new Set(
+			Object.keys(inputRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(INPUT_IDS.map((id) => id.slice("input-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("input-".length);
+			const modulePath = Object.keys(inputSources).find((path) => path.endsWith(`/${key}.tsx`));
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = inputSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(INPUT_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((inputRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				INPUT_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/input");
+			expect(scenario.code).toContain("import { Input }");
+		}
+		expect(INPUT_EXAMPLES[0]?.code).toContain("@nocoo/basalt/components/field");
+		expect(INPUT_EXAMPLES[0]?.code).toContain("import { Field }");
+		expect(INPUT_EXAMPLES[0]?.code).toContain('htmlFor="ex-input-email"');
+		expect(INPUT_EXAMPLES[0]?.code).toContain('id="ex-input-email"');
+		expect(INPUT_EXAMPLES[0]?.code).toContain('label="Email"');
+		expect(INPUT_EXAMPLES[0]?.code).toContain('hint="Never shared"');
+		expect(INPUT_EXAMPLES[0]?.code).toContain('placeholder="you@example.com"');
+		expect(INPUT_EXAMPLES[1]?.code).toContain("@nocoo/basalt/components/field");
+		expect(INPUT_EXAMPLES[1]?.code).toContain("import { Field }");
+		expect(INPUT_EXAMPLES[1]?.code).toContain('htmlFor="ex-input-err"');
+		expect(INPUT_EXAMPLES[1]?.code).toContain('id="ex-input-err"');
+		expect(INPUT_EXAMPLES[1]?.code).toContain('error="Required"');
+		expect(INPUT_EXAMPLES[2]?.code).toContain("disabled");
+		expect(INPUT_EXAMPLES[2]?.code).toContain('value="Read only"');
+		expect(INPUT_EXAMPLES[2]?.code).toContain('aria-label="Disabled input"');
+		expect(INPUT_EXAMPLES[3]?.code).toContain('<div className="flex w-full flex-col gap-3">');
+		expect(INPUT_EXAMPLES[3]?.code).toContain('type="email"');
+		expect(INPUT_EXAMPLES[3]?.code).toContain('placeholder="Email"');
+		expect(INPUT_EXAMPLES[3]?.code).toContain('aria-label="Email type"');
+		expect(INPUT_EXAMPLES[3]?.code).toContain('type="password"');
+		expect(INPUT_EXAMPLES[3]?.code).toContain('placeholder="Password"');
+		expect(INPUT_EXAMPLES[3]?.code).toContain('aria-label="Password type"');
+		expect(INPUT_EXAMPLES[3]?.code).toContain('type="search"');
+		expect(INPUT_EXAMPLES[3]?.code).toContain('placeholder="Search"');
+		expect(INPUT_EXAMPLES[3]?.code).toContain('aria-label="Search type"');
+		expect(INPUT_EXAMPLES[3]?.code).not.toBe(
+			'<Input type="email" placeholder="Email" aria-label="Email type" /><Input type="password" placeholder="Password" aria-label="Password type" /><Input type="search" placeholder="Search" aria-label="Search type" />',
+		);
+		expect(INPUT_EXAMPLES[4]?.code).toContain('aria-label="Name"');
+		expect(INPUT_EXAMPLES[4]?.code).toContain('placeholder="Jane Doe"');
+		const typesOrder = INPUT_EXAMPLES[3]?.code ?? "";
+		expect(typesOrder.indexOf('type="email"')).toBeLessThan(typesOrder.indexOf('type="password"'));
+		expect(typesOrder.indexOf('type="password"')).toBeLessThan(typesOrder.indexOf('type="search"'));
 	});
 });
 

@@ -1,6 +1,5 @@
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
-import { Input } from "@nocoo/basalt/components/input";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { Link } from "@nocoo/basalt/components/link";
@@ -16,6 +15,7 @@ import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { FIELD_EXAMPLES } from "./examples/field";
+import { INPUT_EXAMPLES } from "./examples/input";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
@@ -38,6 +38,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	"layer-card": LAYER_CARD_EXAMPLES,
 	"basalt-mark": BASALT_MARK_EXAMPLES,
 	field: FIELD_EXAMPLES,
+	input: INPUT_EXAMPLES,
 	"link-provider": [
 		{
 			id: catalogScenarioId("link-provider", "default"),
@@ -60,14 +61,6 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 					<Text>Provider is active.</Text>
 				</ThemeProvider>
 			),
-		},
-	],
-	input: [
-		{
-			id: catalogScenarioId("input", "default"),
-			title: "Default",
-			code: '<Input aria-label="Name" placeholder="Jane Doe" />',
-			render: () => <Input aria-label="Name" placeholder="Jane Doe" />,
 		},
 	],
 	"input-area": [
