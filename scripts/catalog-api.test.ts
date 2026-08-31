@@ -275,6 +275,56 @@ export interface WidgetProps extends Other {
 		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
 	});
 
+	it("rejects a private WidgetProps type", () => {
+		const root = fixture({
+			"widget.ts": `export interface OtherStuff { x?: boolean }
+interface WidgetProps { a?: boolean }
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/not exported type WidgetProps/);
+	});
+
+	it("accepts a type exported only through an export list", () => {
+		const root = fixture({
+			"widget.ts": `interface WidgetProps {
+	tone?: "a" | "b";
+}
+export type { WidgetProps };
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "tone", type: '"a" | "b"', required: false },
+		]);
+	});
+
+	it("preserves nested generic arguments on aliases", () => {
+		const root = fixture({
+			"widget.ts": `export type Box<T> = { value: T };
+export interface WidgetProps {
+	box?: Box<string>;
+	nested?: Box<Box<string>>;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "box", type: "Box<string>", required: false },
+			{ name: "nested", type: "Box<Box<string>>", required: false },
+		]);
+	});
+
+	it("pierces local aliases when detecting cross-file impersonation", () => {
+		const root = fixture({
+			"other.ts": "export interface Other { value?: string }",
+			"widget.ts": `import type { Other } from "./other";
+type LocalOther = Other;
+export interface WidgetProps extends LocalOther {
+	value?: string;
+}
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
 	it("renders deterministic modules and rejects missing or stale artifacts", () => {
 		const data = {
 			button: [

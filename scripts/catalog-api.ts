@@ -64,27 +64,58 @@ function isTruncatedType(text: string): boolean {
 	return /\.\.\. \d+ more/.test(text) || /\| \.\.\./.test(text) || text === "...";
 }
 
-function typeNodeOriginatesFromFile(
+function typeReferenceName(typeNode: ts.TypeNode): ts.EntityName | ts.Expression | undefined {
+	if (ts.isTypeReferenceNode(typeNode)) {
+		return typeNode.typeName;
+	}
+	if (ts.isExpressionWithTypeArguments(typeNode)) {
+		return typeNode.expression;
+	}
+	return undefined;
+}
+
+function containsLocalTypeQuery(
 	typeNode: ts.TypeNode,
 	sourceFile: ts.SourceFile,
 	checker: ts.TypeChecker,
 ): boolean {
-	let local = false;
+	let found = false;
 	function visit(node: ts.Node) {
-		if (ts.isIdentifier(node)) {
-			const symbol = checker.getSymbolAtLocation(node);
-			if (!symbol) {
-				return;
-			}
-			const resolved = skipAlias(symbol, checker);
-			if ((resolved.getDeclarations() ?? []).some((decl) => isInFile(decl, sourceFile))) {
-				local = true;
+		if (ts.isTypeQueryNode(node)) {
+			const symbol = checker.getSymbolAtLocation(node.exprName);
+			const resolved = symbol ? skipAlias(symbol, checker) : undefined;
+			if ((resolved?.getDeclarations() ?? []).some((decl) => isInFile(decl, sourceFile))) {
+				found = true;
 			}
 		}
 		ts.forEachChild(node, visit);
 	}
 	visit(typeNode);
-	return local;
+	return found;
+}
+
+function localTypeDeclaration(
+	typeNode: ts.TypeNode,
+	sourceFile: ts.SourceFile,
+	checker: ts.TypeChecker,
+): ts.TypeAliasDeclaration | ts.InterfaceDeclaration | undefined {
+	const name = typeReferenceName(typeNode);
+	if (!name) {
+		return undefined;
+	}
+	const symbol = checker.getSymbolAtLocation(name);
+	if (!symbol) {
+		return undefined;
+	}
+	const immediate = (symbol.getDeclarations() ?? []).find(
+		(decl) =>
+			isInFile(decl, sourceFile) &&
+			(ts.isTypeAliasDeclaration(decl) || ts.isInterfaceDeclaration(decl)),
+	);
+	if (immediate && (ts.isTypeAliasDeclaration(immediate) || ts.isInterfaceDeclaration(immediate))) {
+		return immediate;
+	}
+	return undefined;
 }
 
 function collectCvaVariantKeys(
@@ -170,27 +201,66 @@ function eachHeritageTypeNode(
 	visit(decl.type);
 }
 
+function collectForeignPropNamesFromTypeNode(
+	typeNode: ts.TypeNode,
+	sourceFile: ts.SourceFile,
+	checker: ts.TypeChecker,
+	names: Set<string>,
+	visited: Set<ts.Node>,
+) {
+	if (visited.has(typeNode)) {
+		return;
+	}
+	visited.add(typeNode);
+	if (ts.isParenthesizedTypeNode(typeNode)) {
+		collectForeignPropNamesFromTypeNode(typeNode.type, sourceFile, checker, names, visited);
+		return;
+	}
+	if (ts.isIntersectionTypeNode(typeNode)) {
+		for (const part of typeNode.types) {
+			collectForeignPropNamesFromTypeNode(part, sourceFile, checker, names, visited);
+		}
+		return;
+	}
+	if (ts.isTypeLiteralNode(typeNode)) {
+		return;
+	}
+	if (containsLocalTypeQuery(typeNode, sourceFile, checker)) {
+		return;
+	}
+	const local = localTypeDeclaration(typeNode, sourceFile, checker);
+	if (local && ts.isTypeAliasDeclaration(local) && local.type) {
+		collectForeignPropNamesFromTypeNode(local.type, sourceFile, checker, names, visited);
+		return;
+	}
+	if (local && ts.isInterfaceDeclaration(local)) {
+		eachHeritageTypeNode(local, (heritage) => {
+			collectForeignPropNamesFromTypeNode(heritage, sourceFile, checker, names, visited);
+		});
+		return;
+	}
+	for (const property of checker.getTypeFromTypeNode(typeNode).getProperties()) {
+		names.add(property.getName());
+	}
+}
+
 function collectForeignPropNames(
 	decl: ts.InterfaceDeclaration | ts.TypeAliasDeclaration,
 	sourceFile: ts.SourceFile,
 	checker: ts.TypeChecker,
 ): Set<string> {
 	const names = new Set<string>();
+	const visited = new Set<ts.Node>();
 	eachHeritageTypeNode(decl, (typeNode) => {
-		if (typeNodeOriginatesFromFile(typeNode, sourceFile, checker)) {
-			return;
-		}
-		for (const property of checker.getTypeFromTypeNode(typeNode).getProperties()) {
-			names.add(property.getName());
-		}
+		collectForeignPropNamesFromTypeNode(typeNode, sourceFile, checker, names, visited);
 	});
 	return names;
 }
 
-function findPropsDeclaration(
+function findLocalTypeDeclaration(
 	sourceFile: ts.SourceFile,
 	typeName: string,
-): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
+): ts.InterfaceDeclaration | ts.TypeAliasDeclaration | undefined {
 	let found: ts.InterfaceDeclaration | ts.TypeAliasDeclaration | undefined;
 	for (const statement of sourceFile.statements) {
 		if (
@@ -203,13 +273,70 @@ function findPropsDeclaration(
 			found = statement;
 		}
 	}
-	if (!found) {
-		failCatalogApi(`missing type ${typeName} in ${sourceFile.fileName}`);
-	}
 	return found;
 }
 
-function printAlias(type: ts.Type): string | undefined {
+function asTypeDeclaration(
+	decl: ts.Declaration | undefined,
+): ts.InterfaceDeclaration | ts.TypeAliasDeclaration | undefined {
+	if (!decl) {
+		return undefined;
+	}
+	if (ts.isInterfaceDeclaration(decl) || ts.isTypeAliasDeclaration(decl)) {
+		return decl;
+	}
+	return undefined;
+}
+
+function findExportedPropsDeclaration(
+	sourceFile: ts.SourceFile,
+	typeName: string,
+	checker: ts.TypeChecker,
+): ts.InterfaceDeclaration | ts.TypeAliasDeclaration {
+	const local = findLocalTypeDeclaration(sourceFile, typeName);
+	const moduleSymbol = checker.getSymbolAtLocation(sourceFile);
+	const exported = moduleSymbol
+		? checker.getExportsOfModule(moduleSymbol).filter((symbol) => symbol.getName() === typeName)
+		: [];
+	if (exported.length === 0) {
+		if (local) {
+			failCatalogApi(`not exported type ${typeName} in ${sourceFile.fileName}`);
+		}
+		failCatalogApi(`missing type ${typeName} in ${sourceFile.fileName}`);
+	}
+	if (exported.length > 1) {
+		failCatalogApi(`duplicate exported type ${typeName} in ${sourceFile.fileName}`);
+	}
+	const exportedSymbol = exported[0];
+	if (!exportedSymbol) {
+		failCatalogApi(`missing type ${typeName} in ${sourceFile.fileName}`);
+	}
+	const resolved = skipAlias(exportedSymbol, checker);
+	const fromExport = (resolved.getDeclarations() ?? [])
+		.map((decl) => asTypeDeclaration(decl))
+		.find((decl) => decl && isInFile(decl, sourceFile));
+	if (fromExport) {
+		return fromExport;
+	}
+	if (local) {
+		return local;
+	}
+	failCatalogApi(`missing type ${typeName} in ${sourceFile.fileName}`);
+}
+
+function isReactAlias(alias: ts.Symbol): boolean {
+	const declFile =
+		(alias.getDeclarations() ?? [])[0]?.getSourceFile().fileName.replace(/\\/g, "/") ?? "";
+	return (
+		declFile.includes("/node_modules/@types/react/") || declFile.includes("/node_modules/react/")
+	);
+}
+
+function printAlias(
+	type: ts.Type,
+	checker: ts.TypeChecker,
+	enclosing: ts.Node,
+): string | undefined {
 	const alias = type.aliasSymbol;
 	if (!alias) {
 		return undefined;
@@ -218,15 +345,13 @@ function printAlias(type: ts.Type): string | undefined {
 	if (name.startsWith("__")) {
 		return undefined;
 	}
-	const declFile =
-		(alias.getDeclarations() ?? [])[0]?.getSourceFile().fileName.replace(/\\/g, "/") ?? "";
-	if (
-		declFile.includes("/node_modules/@types/react/") ||
-		declFile.includes("/node_modules/react/")
-	) {
-		return `React.${name}`;
+	const qualified = isReactAlias(alias) ? `React.${name}` : name;
+	const typeArguments = type.aliasTypeArguments;
+	if (!typeArguments || typeArguments.length === 0) {
+		return qualified;
 	}
-	return name;
+	const args = typeArguments.map((argument) => printPropType(argument, checker, enclosing));
+	return `${qualified}<${args.join(", ")}>`;
 }
 
 function isBooleanParts(parts: readonly ts.Type[]): boolean {
@@ -239,7 +364,7 @@ function isBooleanParts(parts: readonly ts.Type[]): boolean {
 }
 
 function printAtomicType(type: ts.Type, checker: ts.TypeChecker, enclosing: ts.Node): string {
-	const alias = printAlias(type);
+	const alias = printAlias(type, checker, enclosing);
 	if (alias) {
 		return alias;
 	}
@@ -272,7 +397,7 @@ function printUnionParts(
 }
 
 function printPropType(type: ts.Type, checker: ts.TypeChecker, enclosing: ts.Node): string {
-	const alias = printAlias(type);
+	const alias = printAlias(type, checker, enclosing);
 	if (alias) {
 		return alias;
 	}
@@ -350,7 +475,7 @@ function extractTargetProps(
 ): CatalogApiProp[] {
 	const sourceFile = resolveSourceFile(program, repoRoot, target.sourceFile);
 	const checker = program.getTypeChecker();
-	const decl = findPropsDeclaration(sourceFile, target.propsType);
+	const decl = findExportedPropsDeclaration(sourceFile, target.propsType, checker);
 	const cvaPositions = collectCvaPositions(decl, sourceFile, checker);
 	const foreignNames = collectForeignPropNames(decl, sourceFile, checker);
 	const type = checker.getTypeAtLocation(decl);
