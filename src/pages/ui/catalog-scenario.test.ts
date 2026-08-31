@@ -18,6 +18,7 @@ import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
+import { RADIO_EXAMPLES } from "./examples/radio";
 import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
@@ -240,6 +241,16 @@ const CHECKBOX_TITLES = ["Default", "Checked", "Indeterminate", "Disabled", "Err
 
 const checkboxRenders = import.meta.glob("./examples/checkbox/*.tsx", { eager: true });
 const checkboxSources = import.meta.glob("./examples/checkbox/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const RADIO_IDS = ["radio-default-vertical", "radio-horizontal", "radio-disabled"] as const;
+const RADIO_TITLES = ["Default (Vertical)", "Horizontal", "Disabled"] as const;
+
+const radioRenders = import.meta.glob("./examples/radio/*.tsx", { eager: true });
+const radioSources = import.meta.glob("./examples/radio/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -1401,6 +1412,107 @@ describe("source-backed checkbox scenarios", () => {
 		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('error="Required"');
 		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('id="ex-terms"');
 		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('aria-label="Terms"');
+	});
+});
+
+describe("source-backed radio scenarios", () => {
+	it("loads three radio scenarios from the same glob modules", () => {
+		expect(Object.keys(radioRenders)).toHaveLength(3);
+		expect(Object.keys(radioSources)).toHaveLength(3);
+		const loaded = loadModuleScenarios({
+			slug: "radio",
+			metas: RADIO_TITLES.map((title, index) => ({
+				key: RADIO_IDS[index].slice("radio-".length),
+				title,
+			})),
+			renderModules: radioRenders,
+			sourceModules: radioSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...RADIO_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...RADIO_TITLES]);
+		expect(RADIO_EXAMPLES.map((item) => item.id)).toEqual([...RADIO_IDS]);
+		expect(RADIO_EXAMPLES.map((item) => item.title)).toEqual([...RADIO_TITLES]);
+		expect(UI_EXAMPLES.radio).toBe(RADIO_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
+		expect(UI_EXAMPLES["theme-toggle"]).toBe(THEME_TOGGLE_EXAMPLES);
+		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
+		expect(UI_EXAMPLES["basalt-mark"]).toBe(BASALT_MARK_EXAMPLES);
+		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
+		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
+		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
+		expect(UI_EXAMPLES["sensitive-input"]).toBe(SENSITIVE_INPUT_EXAMPLES);
+		expect(UI_EXAMPLES.checkbox).toBe(CHECKBOX_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		expect(UI_EXAMPLES["theme-toggle"]?.map((item) => item.id)).toEqual([...THEME_TOGGLE_IDS]);
+		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
+		expect(UI_EXAMPLES["basalt-mark"]?.map((item) => item.id)).toEqual([...BASALT_MARK_IDS]);
+		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
+		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
+		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
+		expect(UI_EXAMPLES["sensitive-input"]?.map((item) => item.id)).toEqual([
+			...SENSITIVE_INPUT_IDS,
+		]);
+		expect(UI_EXAMPLES.checkbox?.map((item) => item.id)).toEqual([...CHECKBOX_IDS]);
+		const fileKeys = new Set(
+			Object.keys(radioRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(RADIO_IDS.map((id) => id.slice("radio-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("radio-".length);
+			const modulePath = Object.keys(radioSources).find((path) => path.endsWith(`/${key}.tsx`));
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = radioSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(RADIO_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((radioRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				RADIO_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).not.toContain("@cloudflare/kumo");
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/radio");
+			expect(scenario.code).toContain("import { Radio, RadioGroup }");
+			expect(scenario.code).toContain('defaultValue="a"');
+		}
+		expect(RADIO_EXAMPLES[0]?.code).toContain("@nocoo/basalt/components/label");
+		expect(RADIO_EXAMPLES[0]?.code).toContain("import { Label }");
+		expect(RADIO_EXAMPLES[0]?.code).toContain('className="flex flex-col gap-2"');
+		expect(RADIO_EXAMPLES[0]?.code).toContain('className="flex items-center gap-2"');
+		expect(RADIO_EXAMPLES[0]?.code).toContain('value="a"');
+		expect(RADIO_EXAMPLES[0]?.code).toContain('value="b"');
+		expect(RADIO_EXAMPLES[0]?.code).toContain("Alpha");
+		expect(RADIO_EXAMPLES[0]?.code).toContain("Beta");
+		expect(RADIO_EXAMPLES[0]?.code).not.toContain("disabled");
+		expect(RADIO_EXAMPLES[1]?.code).toContain("@nocoo/basalt/components/label");
+		expect(RADIO_EXAMPLES[1]?.code).toContain("import { Label }");
+		expect(RADIO_EXAMPLES[1]?.code).toContain('className="flex gap-4"');
+		expect(RADIO_EXAMPLES[1]?.code).toContain("Alpha");
+		expect(RADIO_EXAMPLES[1]?.code).toContain("Beta");
+		expect(RADIO_EXAMPLES[1]?.code).not.toContain("disabled");
+		expect(RADIO_EXAMPLES[2]?.code).not.toContain("@nocoo/basalt/components/label");
+		expect(RADIO_EXAMPLES[2]?.code).toContain('className="flex gap-4"');
+		expect(RADIO_EXAMPLES[2]?.code).toContain('aria-label="Disabled A"');
+		expect(RADIO_EXAMPLES[2]?.code).toContain('aria-label="Disabled B"');
+		expect(RADIO_EXAMPLES[2]?.code).toContain("disabled");
 	});
 });
 

@@ -8,6 +8,7 @@ import { FIELD_EXAMPLES } from "@/pages/ui/examples/field";
 import { INPUT_EXAMPLES } from "@/pages/ui/examples/input";
 import { INPUT_AREA_EXAMPLES } from "@/pages/ui/examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "@/pages/ui/examples/input-group";
+import { RADIO_EXAMPLES } from "@/pages/ui/examples/radio";
 import { SENSITIVE_INPUT_EXAMPLES } from "@/pages/ui/examples/sensitive-input";
 
 function scenario(slug: string, id: string) {
@@ -87,6 +88,7 @@ describe("form selection scenario truth", () => {
 			"input-group-button",
 			"input-group-loading",
 		]);
+		expect(UI_EXAMPLES.radio).toBe(RADIO_EXAMPLES);
 		expect(UI_EXAMPLES.radio?.map((item) => item.id)).toEqual([
 			"radio-default-vertical",
 			"radio-horizontal",
@@ -321,12 +323,57 @@ describe("form selection scenario truth", () => {
 	});
 
 	it("shows radio labels instead of ellipsis shells", () => {
-		expect(scenario("radio", "radio-default-vertical").code).toContain("<Label");
-		expect(scenario("radio", "radio-default-vertical").code).toContain("Alpha");
-		expect(scenario("radio", "radio-horizontal").code).not.toContain("…");
-		expect(scenario("radio", "radio-horizontal").code).toContain("<Label");
-		expect(scenario("radio", "radio-disabled").code).toContain("RadioGroup");
-		expect(scenario("radio", "radio-disabled").code).toContain("aria-label=");
+		const radioDefault = scenario("radio", "radio-default-vertical");
+		expect(radioDefault.code).toContain("export default");
+		expect(radioDefault.code).toContain("@nocoo/basalt/components/radio");
+		expect(radioDefault.code).toContain("import { Radio, RadioGroup }");
+		expect(radioDefault.code).toContain("@nocoo/basalt/components/label");
+		expect(radioDefault.code).toContain("<Label");
+		expect(radioDefault.code).toContain("Alpha");
+		expect(radioDefault.code).toContain("Beta");
+		expect(radioDefault.code).toContain('className="flex flex-col gap-2"');
+		expect(radioDefault.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		render(createElement(radioDefault.render));
+		const defaultAlpha = screen.getByRole("radio", { name: "Alpha" });
+		const defaultBeta = screen.getByRole("radio", { name: "Beta" });
+		expect(defaultAlpha).toBeChecked();
+		expect(defaultBeta).not.toBeChecked();
+		fireEvent.click(defaultBeta);
+		expect(defaultBeta).toBeChecked();
+		expect(defaultAlpha).not.toBeChecked();
+		cleanup();
+		const radioHorizontal = scenario("radio", "radio-horizontal");
+		expect(radioHorizontal.code).not.toContain("…");
+		expect(radioHorizontal.code).toContain("<Label");
+		expect(radioHorizontal.code).toContain('className="flex gap-4"');
+		expect(radioHorizontal.code).toContain("Alpha");
+		expect(radioHorizontal.code).toContain("Beta");
+		render(createElement(radioHorizontal.render));
+		const horizontalAlpha = screen.getByRole("radio", { name: "Alpha" });
+		const horizontalBeta = screen.getByRole("radio", { name: "Beta" });
+		expect(horizontalAlpha).toBeChecked();
+		expect(horizontalBeta).not.toBeChecked();
+		fireEvent.click(horizontalBeta);
+		expect(horizontalBeta).toBeChecked();
+		expect(horizontalAlpha).not.toBeChecked();
+		cleanup();
+		const radioDisabled = scenario("radio", "radio-disabled");
+		expect(radioDisabled.code).toContain("RadioGroup");
+		expect(radioDisabled.code).toContain("aria-label=");
+		expect(radioDisabled.code).toContain('className="flex gap-4"');
+		expect(radioDisabled.code).toContain('aria-label="Disabled A"');
+		expect(radioDisabled.code).toContain('aria-label="Disabled B"');
+		render(createElement(radioDisabled.render));
+		const disabledA = screen.getByRole("radio", { name: "Disabled A" });
+		const disabledB = screen.getByRole("radio", { name: "Disabled B" });
+		expect(disabledA).toBeDisabled();
+		expect(disabledB).toBeDisabled();
+		expect(disabledA).toBeChecked();
+		expect(disabledB).not.toBeChecked();
+		fireEvent.click(disabledB);
+		expect(disabledA).toBeChecked();
+		expect(disabledB).not.toBeChecked();
+		cleanup();
 	});
 
 	it("keeps combobox items and date picker names in usage", () => {

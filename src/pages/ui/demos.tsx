@@ -1,6 +1,5 @@
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Link } from "@nocoo/basalt/components/link";
-import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Text } from "@nocoo/basalt/components/text";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
@@ -19,6 +18,7 @@ import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
+import { RADIO_EXAMPLES } from "./examples/radio";
 import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
@@ -67,19 +67,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	"input-group": INPUT_GROUP_EXAMPLES,
 	"sensitive-input": SENSITIVE_INPUT_EXAMPLES,
 	checkbox: CHECKBOX_EXAMPLES,
-	radio: [
-		{
-			id: catalogScenarioId("radio", "group"),
-			title: "Group",
-			code: '<RadioGroup defaultValue="a"><Radio value="a" /></RadioGroup>',
-			render: () => (
-				<RadioGroup defaultValue="a" className="flex gap-4">
-					<Radio value="a" aria-label="Alpha" />
-					<Radio value="b" aria-label="Beta" />
-				</RadioGroup>
-			),
-		},
-	],
+	radio: RADIO_EXAMPLES,
 	switch: [
 		{
 			id: catalogScenarioId("switch", "default"),

@@ -47,7 +47,6 @@ import {
 import { Empty } from "@nocoo/basalt/components/empty";
 import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
 import { Grid, GridItem } from "@nocoo/basalt/components/grid";
-import { Label } from "@nocoo/basalt/components/label";
 import { Link } from "@nocoo/basalt/components/link";
 import { Loader } from "@nocoo/basalt/components/loader";
 import { Meter } from "@nocoo/basalt/components/meter";
@@ -59,7 +58,6 @@ import {
 	PopoverTitle,
 	PopoverTrigger,
 } from "@nocoo/basalt/components/popover";
-import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
 import {
 	Select,
 	SelectContent,
@@ -547,55 +545,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 					<SkeletonLine className="h-6" minWidth={90} maxWidth={100} />
 					<SkeletonLine className="h-8" minWidth={90} maxWidth={100} />
 				</div>
-			),
-		},
-	],
-	radio: [
-		{
-			id: catalogScenarioId("radio", "default-vertical"),
-			title: "Default (Vertical)",
-			code: `<RadioGroup defaultValue="a" className="flex flex-col gap-2">
-  <Label className="flex items-center gap-2"><Radio value="a" /> Alpha</Label>
-  <Label className="flex items-center gap-2"><Radio value="b" /> Beta</Label>
-</RadioGroup>`,
-			render: () => (
-				<RadioGroup defaultValue="a" className="flex flex-col gap-2">
-					<Label className="flex items-center gap-2">
-						<Radio value="a" /> Alpha
-					</Label>
-					<Label className="flex items-center gap-2">
-						<Radio value="b" /> Beta
-					</Label>
-				</RadioGroup>
-			),
-		},
-		{
-			id: catalogScenarioId("radio", "horizontal"),
-			title: "Horizontal",
-			code: `<RadioGroup defaultValue="a" className="flex gap-4">
-  <Label className="flex items-center gap-2"><Radio value="a" /> Alpha</Label>
-  <Label className="flex items-center gap-2"><Radio value="b" /> Beta</Label>
-</RadioGroup>`,
-			render: () => (
-				<RadioGroup defaultValue="a" className="flex gap-4">
-					<Label className="flex items-center gap-2">
-						<Radio value="a" /> Alpha
-					</Label>
-					<Label className="flex items-center gap-2">
-						<Radio value="b" /> Beta
-					</Label>
-				</RadioGroup>
-			),
-		},
-		{
-			id: catalogScenarioId("radio", "disabled"),
-			title: "Disabled",
-			code: '<RadioGroup defaultValue="a"><Radio value="a" disabled aria-label="Disabled A" /><Radio value="b" disabled aria-label="Disabled B" /></RadioGroup>',
-			render: () => (
-				<RadioGroup defaultValue="a" className="flex gap-4">
-					<Radio value="a" disabled aria-label="Disabled A" />
-					<Radio value="b" disabled aria-label="Disabled B" />
-				</RadioGroup>
 			),
 		},
 	],

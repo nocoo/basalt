@@ -2454,6 +2454,89 @@ describe("ui catalog", () => {
 		expect(kumo).toContain("function Preview");
 	});
 
+	it("keeps radio hero, exclusive selection, disabled radios, and copy modules", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/radio");
+		expect(screen.getByRole("heading", { name: "Default (Vertical)" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Horizontal" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="radio-default-vertical"]');
+		const labeled = document.querySelector('[data-scenario="radio-default-vertical"]');
+		const horizontal = document.querySelector('[data-scenario="radio-horizontal"]');
+		const disabled = document.querySelector('[data-scenario="radio-disabled"]');
+		expect(hero).toBeTruthy();
+		expect(labeled).toBeTruthy();
+		expect(horizontal).toBeTruthy();
+		expect(disabled).toBeTruthy();
+		if (!hero || !labeled || !horizontal || !disabled) {
+			throw new Error("missing radio scenario surfaces");
+		}
+		const heroAlpha = within(hero as HTMLElement).getByRole("radio", { name: "Alpha" });
+		const heroBeta = within(hero as HTMLElement).getByRole("radio", { name: "Beta" });
+		expect(heroAlpha).toBeChecked();
+		expect(heroBeta).not.toBeChecked();
+		fireEvent.click(heroBeta);
+		expect(heroBeta).toBeChecked();
+		expect(heroAlpha).not.toBeChecked();
+		expect(within(labeled as HTMLElement).getByRole("radio", { name: "Alpha" })).toBeChecked();
+		expect(within(labeled as HTMLElement).getByRole("radio", { name: "Beta" })).not.toBeChecked();
+		const horizontalAlpha = within(horizontal as HTMLElement).getByRole("radio", { name: "Alpha" });
+		const horizontalBeta = within(horizontal as HTMLElement).getByRole("radio", { name: "Beta" });
+		expect(horizontalAlpha).toBeChecked();
+		expect(horizontalBeta).not.toBeChecked();
+		fireEvent.click(horizontalBeta);
+		expect(horizontalBeta).toBeChecked();
+		expect(horizontalAlpha).not.toBeChecked();
+		expect(horizontal.querySelector(".flex.gap-4")).toBeTruthy();
+		const disabledA = within(disabled as HTMLElement).getByRole("radio", { name: "Disabled A" });
+		const disabledB = within(disabled as HTMLElement).getByRole("radio", { name: "Disabled B" });
+		expect(disabled.querySelector(".flex.gap-4")).toBeTruthy();
+		expect(disabledA).toBeDisabled();
+		expect(disabledB).toBeDisabled();
+		expect(disabledA).toBeChecked();
+		expect(disabledB).not.toBeChecked();
+		fireEvent.click(disabledB);
+		expect(disabledA).toBeChecked();
+		expect(disabledB).not.toBeChecked();
+		for (const scenario of UI_EXAMPLES.radio ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/radio");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(UI_EXAMPLES.radio).toHaveLength(3);
+		for (const scenario of UI_EXAMPLES.radio ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).toContain('className="flex flex-col gap-2"');
+		expect(markdown).toContain('className="flex gap-4"');
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		expect(CATALOG_DOCS.checkbox?.api).toEqual(CATALOG_API.checkbox);
+		expect(UI_EXAMPLES.checkbox).toHaveLength(5);
+	});
+
+	it("does not keep inline radio scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("RADIO_EXAMPLES");
+		expect(demos).toMatch(/\bradio: RADIO_EXAMPLES/);
+		expect(demos).not.toMatch(/\bradio:\s*\[/);
+		expect(kumo).not.toMatch(/\bradio:\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("radio"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("radio"/);
+		expect(demos).not.toContain('from "@nocoo/basalt/components/radio"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/radio"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/label"');
+		expect(kumo).toContain("function Preview");
+	});
+
 	it("does not keep inline input scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
