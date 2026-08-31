@@ -1441,6 +1441,80 @@ describe("ui catalog", () => {
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 	});
 
+	it("keeps field hero, hint, error, and association contracts", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/field");
+		expect(screen.getByRole("heading", { name: "Hint" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Error" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="field-hint"]');
+		const hint = document.querySelector('[data-scenario="field-hint"]');
+		const error = document.querySelector('[data-scenario="field-error"]');
+		expect(hero).toBeTruthy();
+		expect(hint).toBeTruthy();
+		expect(error).toBeTruthy();
+		if (!hero || !hint || !error) {
+			throw new Error("missing field scenario surfaces");
+		}
+		const heroLabel = hero.querySelector('label[for="field-hint-email"]');
+		const heroInput = hero.querySelector("#field-hint-email");
+		expect(heroLabel).toHaveTextContent("Email");
+		expect(heroInput).toHaveAttribute("aria-describedby", "field-hint-email-hint");
+		expect(heroInput).not.toHaveAttribute("aria-invalid");
+		expect(hero.querySelector("#field-hint-email-hint")).toHaveTextContent("Never shared");
+		const hintLabel = hint.querySelector('label[for="field-hint-email"]');
+		const hintInput = hint.querySelector("#field-hint-email");
+		expect(hintLabel).toHaveTextContent("Email");
+		expect(hintInput).toHaveAttribute("id", "field-hint-email");
+		expect(hintInput).toHaveAttribute("aria-describedby", "field-hint-email-hint");
+		expect(hint.querySelector("#field-hint-email-hint")).toHaveClass(
+			"text-xs",
+			"text-basalt-muted-foreground",
+		);
+		const errorLabel = error.querySelector('label[for="field-error-email"]');
+		const errorInput = error.querySelector("#field-error-email");
+		expect(errorLabel).toHaveTextContent("Email");
+		expect(errorInput).toHaveAttribute("aria-describedby", "field-error-email-error");
+		expect(errorInput).toHaveAttribute("aria-invalid", "true");
+		const alert = within(error as HTMLElement).getByRole("alert");
+		expect(alert).toHaveTextContent("Required");
+		expect(alert).toHaveAttribute("id", "field-error-email-error");
+		expect(alert).toHaveClass("text-xs", "text-basalt-destructive");
+		for (const scenario of UI_EXAMPLES.field ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/field");
+			expect(scenario.code).toContain("@nocoo/basalt/components/input");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		for (const scenario of UI_EXAMPLES.field ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).toContain('htmlFor="field-hint-email"');
+		expect(markdown).toContain('htmlFor="field-error-email"');
+	});
+
+	it("does not keep inline field scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("FIELD_EXAMPLES");
+		expect(demos).toMatch(/\bfield: FIELD_EXAMPLES/);
+		expect(demos).not.toMatch(/\bfield:\s*\[/);
+		expect(kumo).not.toMatch(/\bfield:\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("field"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("field"/);
+		expect(demos).not.toContain('from "@nocoo/basalt/components/field"');
+		expect(kumo).toContain('from "@nocoo/basalt/components/field"');
+		expect(demos).not.toContain("ex-email");
+		expect(kumo).not.toContain("kumo-ex-email");
+	});
+
 	it("does not keep inline basalt-mark scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const ready = readFileSync(path.join(process.cwd(), "src/pages/ui/catalog-ready.tsx"), "utf8");

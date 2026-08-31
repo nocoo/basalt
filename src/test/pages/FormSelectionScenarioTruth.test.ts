@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
+import { FIELD_EXAMPLES } from "@/pages/ui/examples/field";
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
@@ -90,6 +91,27 @@ describe("form selection scenario truth", () => {
 			"switch-disabled",
 			"switch-sizes",
 		]);
+		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
+		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual(["field-hint", "field-error"]);
+	});
+
+	it("keeps field hint and error ids aligned with preview", () => {
+		const hint = scenario("field", "field-hint");
+		expect(hint.title).toBe("Hint");
+		expect(hint.code).toContain("export default");
+		expect(hint.code).toContain("@nocoo/basalt/components/field");
+		expect(hint.code).toContain("@nocoo/basalt/components/input");
+		expect(hint.code).toContain('htmlFor="field-hint-email"');
+		expect(hint.code).toContain('id="field-hint-email"');
+		expect(hint.code).toContain('label="Email"');
+		expect(hint.code).toContain('hint="Never shared"');
+		expect(hint.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		const error = scenario("field", "field-error");
+		expect(error.title).toBe("Error");
+		expect(error.code).toContain('htmlFor="field-error-email"');
+		expect(error.code).toContain('id="field-error-email"');
+		expect(error.code).toContain('error="Required"');
+		expect(error.code).not.toContain("kumo-ex-email");
 	});
 
 	it("keeps checkbox and switch codes named like their renders", () => {

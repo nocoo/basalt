@@ -1961,26 +1961,4 @@ export default function Example() {
 			render: () => <CommandPaletteExample flat />,
 		},
 	],
-	field: [
-		{
-			id: catalogScenarioId("field", "hint"),
-			title: "Hint",
-			code: '<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
-			render: () => (
-				<Field label="Email" htmlFor="kumo-ex-email" hint="Never shared">
-					<Input id="kumo-ex-email" />
-				</Field>
-			),
-		},
-		{
-			id: catalogScenarioId("field", "error"),
-			title: "Error",
-			code: '<Field label="Email" htmlFor="email" error="Required"><Input id="email" /></Field>',
-			render: () => (
-				<Field label="Email" htmlFor="kumo-ex-email-err" error="Required">
-					<Input id="kumo-ex-email-err" />
-				</Field>
-			),
-		},
-	],
 };

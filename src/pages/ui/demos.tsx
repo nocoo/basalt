@@ -1,6 +1,5 @@
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
-import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
@@ -16,6 +15,7 @@ import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "./examples/button";
+import { FIELD_EXAMPLES } from "./examples/field";
 import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
@@ -37,6 +37,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	"theme-toggle": THEME_TOGGLE_EXAMPLES,
 	"layer-card": LAYER_CARD_EXAMPLES,
 	"basalt-mark": BASALT_MARK_EXAMPLES,
+	field: FIELD_EXAMPLES,
 	"link-provider": [
 		{
 			id: catalogScenarioId("link-provider", "default"),
@@ -102,28 +103,6 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 			title: "Default",
 			code: '<SensitiveInput revealLabel="Show" hideLabel="Hide" />',
 			render: () => <SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />,
-		},
-	],
-	field: [
-		{
-			id: catalogScenarioId("field", "hint"),
-			title: "Hint",
-			code: '<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
-			render: () => (
-				<Field label="Email" htmlFor="ex-email" hint="Never shared">
-					<Input id="ex-email" />
-				</Field>
-			),
-		},
-		{
-			id: catalogScenarioId("field", "error"),
-			title: "Error",
-			code: '<Field label="Email" htmlFor="email" error="Required"><Input id="email" /></Field>',
-			render: () => (
-				<Field label="Email" htmlFor="ex-email-err" error="Required">
-					<Input id="ex-email-err" />
-				</Field>
-			),
 		},
 	],
 	checkbox: [
