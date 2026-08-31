@@ -11,6 +11,7 @@ import {
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
+import { loadCatalogPageContent } from "@/pages/ui/catalog-content-loader";
 import { CATALOG_INDEX_GROUPS, CATALOG_INDEX_ITEMS } from "@/pages/ui/catalog-index";
 import { catalogScenarioMatchesSlug } from "@/pages/ui/catalog-scenario";
 import {
@@ -27,6 +28,8 @@ import UiPlaceholderPage, {
 	CatalogApiReference,
 	catalogApiSurfaceId,
 } from "@/pages/ui/UiPlaceholderPage";
+
+await Promise.all(CATALOG.map((entry) => loadCatalogPageContent(entry.slug)));
 
 function RouterProbe() {
 	const location = useLocation();

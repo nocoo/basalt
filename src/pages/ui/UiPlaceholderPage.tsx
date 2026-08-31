@@ -1,6 +1,6 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { Check, ChevronDown, Copy } from "lucide-react";
-import { useState } from "react";
+import { use, useState } from "react";
 import { Link, useParams } from "react-router";
 import { Github } from "@/components/icons/github";
 import {
@@ -10,7 +10,8 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { CATALOG_BY_SLUG, type CatalogEntry, catalogImportPath, catalogNavName } from "./catalog";
-import { resolveCatalogPageState } from "./catalog-index";
+import { loadCatalogPageContent } from "./catalog-content-loader";
+import { catalogPageStatus } from "./catalog-page-status";
 import type { CatalogScenario } from "./catalog-scenario";
 import {
 	type CatalogApiSurface,
@@ -21,7 +22,6 @@ import {
 } from "./catalog-source";
 import { DocCode, DocExample } from "./DocCode";
 import { type DocHeading, DocToc } from "./DocToc";
-import { UI_EXAMPLES } from "./demos";
 
 function barrelImport(entry: CatalogEntry): string | null {
 	if (entry.kind !== "stable" && entry.kind !== "provider") {
@@ -142,16 +142,19 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 function ReadyDoc({
 	entry,
 	docs,
-	hero,
+	examples,
 }: {
 	entry: CatalogEntry;
 	docs: CatalogDocs;
-	hero: CatalogScenario;
+	examples: readonly CatalogScenario[];
 }) {
+	const hero = examples[0];
+	if (!hero) {
+		throw new Error(`Ready catalog page "${entry.slug}" is missing examples[0].`);
+	}
 	const importPath = catalogImportPath(entry);
 	const barrel = barrelImport(entry);
 	const granular = `import { ${entry.name} } from "${importPath}";`;
-	const examples = UI_EXAMPLES[entry.slug] ?? [];
 	const pageMarkdown = [
 		`# ${catalogNavName(entry)}`,
 		docs.description,
@@ -292,6 +295,14 @@ function ReadyDoc({
 	);
 }
 
+function ReadyCatalogPage({ entry }: { entry: CatalogEntry }) {
+	const content = use(loadCatalogPageContent(entry.slug));
+	if (!content) {
+		throw new Error(`Ready catalog page "${entry.slug}" did not load content.`);
+	}
+	return <ReadyDoc entry={entry} docs={content.docs} examples={content.examples} />;
+}
+
 function CatalogHero({ title, description }: { title: string; description: string }) {
 	return (
 		<header className="border-b border-border px-6 py-8 md:px-8 md:py-10">
@@ -316,9 +327,8 @@ export default function UiPlaceholderPage() {
 		);
 	}
 
-	const pageState = resolveCatalogPageState(entry.slug);
-	if (pageState.pageStatus === "ready") {
-		return <ReadyDoc entry={entry} docs={pageState.docs} hero={pageState.hero} />;
+	if (catalogPageStatus(entry.slug) === "ready") {
+		return <ReadyCatalogPage entry={entry} />;
 	}
 
 	return (

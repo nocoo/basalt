@@ -125,5 +125,43 @@ describe("application route build boundary", () => {
 			).toBe(true);
 		}
 		expect(entry?.dynamicImports.length).toBeGreaterThanOrEqual(PAGE_MODULES.length);
+
+		const catalogPage = chunks.find((chunk) =>
+			chunk.facadeModuleId?.endsWith("/src/pages/ui/UiPlaceholderPage.tsx"),
+		);
+		expect(catalogPage?.isDynamicEntry).toBe(true);
+		const catalogPageFiles = new Set<string>();
+		const visitCatalogPageStatic = (chunk: BuiltChunk | undefined) => {
+			if (!chunk || catalogPageFiles.has(chunk.fileName)) return;
+			catalogPageFiles.add(chunk.fileName);
+			for (const imported of chunk.imports) visitCatalogPageStatic(chunksByFile.get(imported));
+		};
+		visitCatalogPageStatic(catalogPage);
+		const catalogPageModules = chunks
+			.filter((chunk) => catalogPageFiles.has(chunk.fileName))
+			.flatMap((chunk) => chunk.modules);
+		for (const suffix of [
+			"/src/pages/ui/catalog-index.ts",
+			"/src/pages/ui/catalog-ready.tsx",
+			"/src/pages/ui/kumo-examples.tsx",
+			"/src/pages/ui/docs.ts",
+			"/src/pages/ui/demos.tsx",
+		]) {
+			expect(
+				catalogPageModules.some((id) => id.endsWith(suffix)),
+				`catalog detail static closure contains ${suffix}`,
+			).toBe(false);
+		}
+		for (const suffix of [
+			"/src/pages/ui/catalog-ready.tsx",
+			"/src/pages/ui/kumo-examples.tsx",
+			"/src/pages/ui/docs.ts",
+			"/src/pages/ui/demos.tsx",
+		]) {
+			expect(
+				chunks.some((chunk) => chunk.modules.some((id) => id.endsWith(suffix))),
+				`production build is missing legacy owner ${suffix}`,
+			).toBe(true);
+		}
 	});
 });
