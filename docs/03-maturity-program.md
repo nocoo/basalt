@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2B4b D072 — docs/examples 家族拆包；正在按 D071 真实 module graph 固化原子子切片
-> 当前代码前置：`b1cec5a`（D071 实现已独立验收，工作树仅本台账）
+> 当前切片：S2B4b D072a — 异步 page-content contract 与 legacy adapter；规格已固化，待 Grok 实现
+> 当前代码前置：`3da4528`（D071 台账已提交，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
 
@@ -695,7 +695,23 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
 
    D072 必须把 `catalog-ready`、`kumo-examples`、docs 与 source-backed examples 拆成可按 slug/family 动态取得的数据模块，保持全部 84 ready 页、首页 87 卡及每个 preview/code/API/Copy page 的真值，不让一个详情页下载无关 chart/form/overlay 家族。loader 映射必须由 `CATALOG`、模块文件或可验证的生成结果形成单一真源；不得手写第二份 84-slug ready allowlist，也不得把 async import promise 在模块初始化时提前执行。直接访问、同页 slug 切换、浏览器前后与快速连续切换均须有明确 loading/error/stale-result 语义，planned/missing 区分继续由 D071 manifest fail-closed。
 
-   为控制移动式重构风险，D072 在只读 owner/依赖审计完成后拆成多个各自绿色、可独立回退的原子子切片：先建立异步 page-data loader 与竞态安全页面边界，再按真实 family 逐批迁移 base/source-backed、Kumo component families、catalog-ready/chart families，最后删除四个全量聚合闭包并固化网络体积门。任一中间刀不得删 example、改 scenario ID/title/order/render/code、改 docs/API/provenance、改变 96/84/12 或首页 87 卡，也不得修改 package 生产组件/API/CSS。最终 production build 每个 JS chunk 均低于 500 kB、0 chunk warning；冷 `/ui/button` 不得请求 chart/overlay families，冷 `/ui/dialog` 不得请求 chart/form families，冷 `/ui/area` 不得请求 form/overlay families，并以机器 module-graph 门和真实 Chromium 网络证据锁住。不得调高 `chunkSizeWarningLimit`、关闭 warning，亦不得靠 manual vendor 名单掩盖仍然全量下载的数据图。
+   D072 只读审计确认：84 个 ready 页的 docs owner 为 `BASE 21 + EXTRA 63`，无重叠；最终 examples owner 为 `BASE 22 + EXTRA 34 + KUMO 28`。原始 owner 有 29 个覆盖冲突：28 个 `EXTRA ∩ KUMO` 由 KUMO 胜出，`banner` 的 `EXTRA ∩ BASE` 由 BASE 胜出，搬迁不得复活被覆盖的 Default。BASE 22 中 19 个已 source-backed，只有 `banner`、`theme-provider`、`link-provider` 仍 inline。物理拆分固定为 7 family、合计恰好 84：foundation 11、forms 15、feedback 11、overlay 10、navigation 9、data-layout 5、charts 23。
+
+   新 contract 为 `CatalogPageContent = { docs, examples }`，hero 只由 `examples[0]` 派生。`loadCatalogPageContent(slug)` 先消费 D071 page-status：missing/planned 不触发 heavy import，ready 才加载内容，ready 缺 docs 或非空 examples 必须直接失败，不得伪装为 placeholder。family record key 是唯一内容 owner，生成的 slug→family manifest 只从实际 record keys 得出，不得维护 runtime ready/planned/family slug 数组；跨 family 重复 key、scenario ID 前缀错误或 ready keys 未闭合均失败。loader 使用模块级 promise cache 与稳定 promise，页面复用 App 既有 Suspense；不得在 render 内制造新 promise、复制 fallback 或卸载 DashboardLayout。family 由 `import.meta.glob(..., { import: "default" })` 发现，不手写 family→import switch，也不在模块初始化时执行 import promise。
+
+   D072 按以下顺序执行，每刀必须独立绿色、可回退，不能并行写代码：
+
+   1. **D072a — contract/legacy。** 新增最小 content contract、loader、legacy adapter 与 tests；只改 `UiPlaceholderPage`、详情页接线和 build graph test。legacy 动态加载现有 docs/demos；不拆 `catalog-ready`、`kumo-examples`、docs/demos owner，不改 scenario。锁定 84/12、ready/planned/missing、hero/API/Copy page；机器门证明详情 shell 的静态闭包已无四个全量 owner，planned/missing 不请求 legacy。
+   2. **D072b — foundation + content manifest + API shards。** 先让现有 catalog API generator 为 19 个 generated API slug 产出独立 shard，再迁 foundation 11。9 个既有 source-backed 目录内容不改；`button` 静态/动态闭包不得包含 legacy、forms、overlay、charts。
+   3. **D072c — forms。** 迁 forms 15，保持 BASE/KUMO/EXTRA 最终 winner；`input-group` 不得请求 legacy、foundation、overlay、charts。
+   4. **D072d — overlay。** 迁 overlay 10；`dialog`/`tooltip` 只加载 overlay 内容，不得请求 forms/charts。
+   5. **D072e — feedback。** 迁 feedback 11，特别锁定 `banner` 使用 BASE winner，不复活 EXTRA Default。
+   6. **D072f — navigation。** 迁 navigation 9，锁定 tabs、pagination、command palette 真值及 family 隔离。
+   7. **D072g — data-layout。** 迁 data-layout 5，锁定 table、data-table、grid、flow、page-header 真值及 family 隔离。
+   8. **D072h — charts。** 迁 charts 23；非 chart family 不得触达 Recharts/sample，`line` 只允许 charts family 与共享 chart runtime。
+   9. **D072i — final cleanup/gates。** 达到 migrated ready keys 与 manifest ready keys 精确 `84 / 84` 后删除 legacy 与空 monolith；`/ui` 通过同一 lazy registry 并行加载 7 family，再把真实 docs + hero 交给纯逻辑 catalog index。保持 Components/Charts/Blocks `60 / 24 / 3`、首页 87 卡、84 个真实 hero、3 个 planned 无伪 preview，以及 17 个 HOME_DEMOS override。
+
+   任一中间刀不得删 example、改 scenario ID/title/order/render/raw code、改 docs description/usage/variants/API/provenance、改变 96/84/12 或首页 87 卡，也不得修改 package 生产组件/API/CSS、tokens、CATALOG inventory、依赖/lock 或 App route。每刀运行 content contract、受影响真值、UiCatalog Copy page focused tests、typecheck、Biome、全量、coverage 与 production build；涉及 generator 时必须 generate 后连续两次 check。机器门检查 Rollup modules 及 transitive imports，不能只比文件名。最终所有未压缩 JS chunk 均低于 500,000 B、0 warning；冷 `/ui/button`、`/ui/input-group`、`/ui/dialog`、`/ui/banner`、`/ui/tabs`、`/ui/table`、`/ui/line` 逐 family 证明隔离，并复验 `/ui`、`/ui/chart-colors`、Maps、unknown、Copy page 及 1440/390 light/dark。不得新增 data `manualChunks`、调高 `chunkSizeWarningLimit` 或关闭 warning。7003/PID 95907 始终不停止；需要 production 网络证据时另启临时 preview 端口并清理。
 
 ### 6.4 S3 — 可直接提取的通用组合
 
