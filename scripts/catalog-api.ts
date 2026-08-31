@@ -102,6 +102,37 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "InputAreaProps",
 		surface: "InputArea",
 	},
+	{
+		slug: "input-group",
+		sourceFile: "packages/basalt/src/components/input-group.tsx",
+		propsType: "InputGroupProps",
+		surface: "InputGroup",
+	},
+	{
+		slug: "input-group",
+		sourceFile: "packages/basalt/src/components/input-group.tsx",
+		propsType: "InputGroupInputProps",
+		surface: "InputGroup.Input",
+	},
+	{
+		slug: "input-group",
+		sourceFile: "packages/basalt/src/components/input-group.tsx",
+		propsType: "InputGroupAddonProps",
+		surface: "InputGroup.Addon",
+	},
+	{
+		slug: "input-group",
+		sourceFile: "packages/basalt/src/components/input-group.tsx",
+		propsType: "InputGroupButtonProps",
+		surface: "InputGroup.Button",
+	},
+	{
+		slug: "input-group",
+		sourceFile: "packages/basalt/src/components/input-group.tsx",
+		propsType: "InputGroupSuffixProps",
+		surface: "InputGroup.Suffix",
+		allowEmpty: true,
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

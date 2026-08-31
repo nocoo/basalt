@@ -108,7 +108,7 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("heading", { name: "Installation" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Usage" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "API Reference" })).toBeInTheDocument();
-		expect(screen.getByRole("columnheader", { name: "Default" })).toBeInTheDocument();
+		expect(screen.getAllByRole("columnheader", { name: "Default" }).length).toBeGreaterThan(0);
 		expect(screen.getByRole("button", { name: "Copy page" })).toBeInTheDocument();
 		expect(screen.getAllByRole("button", { name: "Copy" }).length).toBeGreaterThan(0);
 		expect(screen.getAllByRole("navigation", { name: "On this page" }).length).toBeGreaterThan(0);
@@ -1135,6 +1135,28 @@ describe("ui catalog", () => {
 		expect(block).toContain('file: "components/ui/textarea.tsx"');
 	});
 
+	it("does not keep a handwritten input-group prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf('\t"input-group": {');
+		const end = docs.indexOf('\t"sensitive-input": {');
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain('api: CATALOG_API["input-group"]');
+		expect(block).not.toContain('name: "InputGroup.Input"');
+		expect(block).not.toContain('type: "input"');
+		expect(block).not.toContain("The editable value.");
+		expect(block).toContain(
+			'description: "Compose an input with addons, an inline suffix, and status icons."',
+		);
+		expect(block).toContain(
+			"<InputGroup><InputGroup.Input defaultValue='atlas' aria-label='Subdomain' /><InputGroup.Suffix>.example.com</InputGroup.Suffix></InputGroup>",
+		);
+		expect(block).toContain('repo: "basalt"');
+		expect(block).toContain('sha: "2727ae6a8d3f"');
+		expect(block).toContain('file: "src/pages/FormsPage.tsx"');
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
@@ -2010,43 +2032,61 @@ describe("ui catalog", () => {
 		expect(markdown).toContain('className="text-basalt-heatmap-green-3"');
 		expect(markdown).toContain("<Loader size={16} />");
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
-		expect(CATALOG_DOCS["input-group"]?.api).toEqual([
-			{
-				name: "InputGroup",
-				props: [
-					{ name: "InputGroup.Input", type: "input", description: "The editable value." },
-					{
-						name: "InputGroup.Suffix",
-						type: "ReactNode",
-						description: "Inline text that sits against the value, such as a domain.",
-					},
-					{
-						name: "InputGroup.Addon",
-						type: '"start" | "end"',
-						description: "Leading or trailing icons, text, or buttons.",
-					},
-					{
-						name: "InputGroup.Button",
-						type: "button",
-						description: "Compact action inside an addon.",
-					},
-				],
-			},
+		expect(CATALOG_DOCS["input-group"]?.api).toEqual(CATALOG_API["input-group"]);
+		expect(CATALOG_API["input-group"]?.map((surface) => surface.name)).toEqual([
+			"InputGroup",
+			"InputGroup.Input",
+			"InputGroup.Addon",
+			"InputGroup.Button",
+			"InputGroup.Suffix",
 		]);
-		expect(document.getElementById("api-InputGroup")?.tagName).toBe("H3");
+		const surfaceIds = [
+			"api-InputGroup",
+			"api-InputGroup.Input",
+			"api-InputGroup.Addon",
+			"api-InputGroup.Button",
+			"api-InputGroup.Suffix",
+		];
+		for (const id of surfaceIds) {
+			expect(document.getElementById(id)?.tagName).toBe("H3");
+			expect(document.querySelector(`[data-toc-id="${id}"]`)).toBeTruthy();
+		}
 		expect(screen.getByRole("table", { name: "InputGroup props" })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "InputGroup.Input props" })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "InputGroup.Addon props" })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "InputGroup.Button props" })).toBeInTheDocument();
+		expect(
+			screen.queryByRole("table", { name: "InputGroup.Suffix props" }),
+		).not.toBeInTheDocument();
+		const suffixHeading = document.getElementById("api-InputGroup.Suffix");
+		const empty = suffixHeading?.parentElement?.querySelector("p");
+		expect(empty).toHaveTextContent("No component-specific props.");
+		expect(empty).toHaveClass("text-sm");
+		expect(empty).toHaveClass("text-muted-foreground");
 		expect(markdown).toContain("### InputGroup");
-		expect(markdown).not.toContain("### InputGroup.Input");
+		expect(markdown).toContain("### InputGroup.Input");
+		expect(markdown).toContain("### InputGroup.Addon");
+		expect(markdown).toContain("### InputGroup.Button");
+		expect(markdown).toContain("### InputGroup.Suffix");
+		expect(markdown).toContain(
+			"- disabled (boolean, optional, default false): Disable the input and nested actions.",
+		);
+		expect(markdown).toContain("- type (React.HTMLInputTypeAttribute, optional, default —):");
+		expect(markdown).toContain("- align (");
+		expect(markdown).toContain("default ghost");
+		expect(markdown).toContain("default icon");
+		expect(markdown).toContain("default false");
+		expect(markdown).toContain("No component-specific props.");
 	});
 
-	it("does not special-case InputGroup or vendor names in the API page or generator", () => {
+	it("does not special-case InputGroup or vendor names in the API page", () => {
 		const generator = readFileSync(path.join(process.cwd(), "scripts/catalog-api.ts"), "utf8");
 		const page = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/UiPlaceholderPage.tsx"),
 			"utf8",
 		);
-		expect(generator).not.toMatch(/input-group|InputGroup/);
 		expect(generator).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
+		expect(generator).not.toMatch(/\bif\s*\([^)]*InputGroup|\bswitch\s*\([^)]*input-group/);
 		expect(page).not.toMatch(/input-group|InputGroup/);
 		expect(page).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 	});

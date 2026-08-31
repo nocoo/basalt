@@ -262,10 +262,19 @@ describe("catalog source contract", () => {
 			"field",
 			"input",
 			"input-area",
+			"input-group",
 		];
 		for (const slug of generated) {
 			expect(CATALOG_DOCS[slug]?.api).toBe(CATALOG_API[slug as keyof typeof CATALOG_API]);
 		}
+		expect(CATALOG_DOCS["input-group"]?.api).toHaveLength(5);
+		expect(CATALOG_DOCS["input-group"]?.api.map((surface) => surface.name)).toEqual([
+			"InputGroup",
+			"InputGroup.Input",
+			"InputGroup.Addon",
+			"InputGroup.Button",
+			"InputGroup.Suffix",
+		]);
 	});
 
 	it("always points implementation source at nocoo/basalt@main", () => {

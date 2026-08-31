@@ -210,29 +210,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			"<InputGroup><InputGroup.Input defaultValue='atlas' aria-label='Subdomain' /><InputGroup.Suffix>.example.com</InputGroup.Suffix></InputGroup>",
 		),
 		variants: [],
-		api: [
-			{
-				name: "InputGroup",
-				props: [
-					{ name: "InputGroup.Input", type: "input", description: "The editable value." },
-					{
-						name: "InputGroup.Suffix",
-						type: "ReactNode",
-						description: "Inline text that sits against the value, such as a domain.",
-					},
-					{
-						name: "InputGroup.Addon",
-						type: '"start" | "end"',
-						description: "Leading or trailing icons, text, or buttons.",
-					},
-					{
-						name: "InputGroup.Button",
-						type: "button",
-						description: "Compact action inside an addon.",
-					},
-				],
-			},
-		],
+		api: CATALOG_API["input-group"],
 		provenance: provenanceFromLegacy({
 			repo: "basalt",
 			sha: "2727ae6a8d3f",

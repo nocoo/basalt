@@ -75,10 +75,12 @@ function generateProductionProps() {
 		targets: CATALOG_API_TARGETS,
 	});
 	return Object.fromEntries(
-		Object.entries(generated).map(([slug, surfaces]) => {
-			expect(surfaces, slug).toHaveLength(1);
-			return [slug, surfaces[0]?.props ?? []];
-		}),
+		Object.entries(generated)
+			.filter(([, surfaces]) => surfaces.length === 1)
+			.map(([slug, surfaces]) => {
+				expect(surfaces, slug).toHaveLength(1);
+				return [slug, surfaces[0]?.props ?? []];
+			}),
 	);
 }
 
@@ -183,12 +185,48 @@ describe("catalog API generator contract", () => {
 				propsType: "InputAreaProps",
 				surface: "InputArea",
 			},
+			{
+				slug: "input-group",
+				sourceFile: "packages/basalt/src/components/input-group.tsx",
+				propsType: "InputGroupProps",
+				surface: "InputGroup",
+			},
+			{
+				slug: "input-group",
+				sourceFile: "packages/basalt/src/components/input-group.tsx",
+				propsType: "InputGroupInputProps",
+				surface: "InputGroup.Input",
+			},
+			{
+				slug: "input-group",
+				sourceFile: "packages/basalt/src/components/input-group.tsx",
+				propsType: "InputGroupAddonProps",
+				surface: "InputGroup.Addon",
+			},
+			{
+				slug: "input-group",
+				sourceFile: "packages/basalt/src/components/input-group.tsx",
+				propsType: "InputGroupButtonProps",
+				surface: "InputGroup.Button",
+			},
+			{
+				slug: "input-group",
+				sourceFile: "packages/basalt/src/components/input-group.tsx",
+				propsType: "InputGroupSuffixProps",
+				surface: "InputGroup.Suffix",
+				allowEmpty: true,
+			},
 		]);
-		expect(CATALOG_API_TARGETS.every((target) => target.allowEmpty === undefined)).toBe(true);
+		expect(CATALOG_API_TARGETS).toHaveLength(18);
+		expect(
+			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
+				(target) => target.surface,
+			),
+		).toEqual(["InputGroup.Suffix"]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames/);
-		expect(source).not.toMatch(/input-group|InputGroup/);
 		expect(source).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
+		expect(source).not.toMatch(/\bif\s*\([^)]*InputGroup|\bswitch\s*\([^)]*input-group/);
 	});
 
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
@@ -906,7 +944,115 @@ export interface WidgetProps {
 			field: ["Field"],
 			input: ["Input"],
 			"input-area": ["InputArea"],
+			"input-group": [
+				"InputGroup",
+				"InputGroup.Input",
+				"InputGroup.Addon",
+				"InputGroup.Button",
+				"InputGroup.Suffix",
+			],
 		});
+	}, 20_000);
+
+	it("extracts five InputGroup surfaces with wrapper defaults and an empty Suffix", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(Object.keys(generated)).toHaveLength(14);
+		expect(generated["input-group"]).toEqual([
+			{
+				name: "InputGroup",
+				props: [
+					{
+						name: "disabled",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Disable the input and nested actions.",
+					},
+				],
+			},
+			{
+				name: "InputGroup.Input",
+				props: [
+					{
+						name: "type",
+						type: "React.HTMLInputTypeAttribute",
+						required: false,
+						description: "The type of input control to render.",
+					},
+				],
+			},
+			{
+				name: "InputGroup.Addon",
+				props: [
+					{
+						name: "align",
+						type: '"end" | "start"',
+						required: false,
+						default: "start",
+						description: "Place the addon at the start or end of the group.",
+					},
+				],
+			},
+			{
+				name: "InputGroup.Button",
+				props: [
+					{
+						name: "variant",
+						type: '"default" | "destructive" | "ghost" | "link" | "outline" | "secondary" | null',
+						required: false,
+						default: "ghost",
+						description: "Visual style for the nested action.",
+					},
+					{
+						name: "size",
+						type: '"default" | "icon" | "lg" | "sm" | null',
+						required: false,
+						default: "icon",
+						description: "Size for the nested action.",
+					},
+					{
+						name: "asChild",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Render the nested action through its child element.",
+					},
+					{
+						name: "loading",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Show a spinner and disable the nested action.",
+					},
+					{
+						name: "icon",
+						type: "React.ReactNode",
+						required: false,
+						description: "Icon rendered before the nested action label.",
+					},
+				],
+			},
+			{
+				name: "InputGroup.Suffix",
+				props: [],
+			},
+		]);
+		expect(generated["input-group"]?.[2]?.props[0]?.type).not.toContain("className");
+		expect(
+			generated["input-group"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "children"),
+			),
+		).toBe(false);
+		expect(
+			generated["input-group"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "className"),
+			),
+		).toBe(false);
+		expect(generated.button?.[0]?.name).toBe("Button");
 	}, 20_000);
 
 	it("aggregates multiple surfaces for the same slug in declaration order", () => {
@@ -1735,10 +1881,13 @@ export interface WidgetProps {
 		expect(first).toContain("\tfield: [");
 		expect(first).toContain("\tinput: [");
 		expect(first).toContain('\t"input-area": [');
+		expect(first).toContain('\t"input-group": [');
 		expect(first).toContain('name: "Button"');
 		expect(first).toContain('name: "InputArea"');
+		expect(first).toContain('name: "InputGroup.Button"');
+		expect(first).toContain('name: "InputGroup.Suffix"');
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"83d462b4f4a0e3049615a16e51d50b82581075b2324d3d76292fa27b48e4fdb0",
+			"56956b88e2a3384fffdc16307e34522643fb141bffed681f4b8fa43d841776bd",
 		);
 	}, 20_000);
 });

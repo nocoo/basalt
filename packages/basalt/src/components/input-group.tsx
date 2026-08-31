@@ -5,6 +5,10 @@ import { Button, type ButtonProps } from "./button";
 import { Input } from "./input";
 
 export type InputGroupProps = React.HTMLAttributes<HTMLDivElement> & {
+	/**
+	 * Disable the input and nested actions.
+	 * @default false
+	 */
 	disabled?: boolean;
 };
 
@@ -53,27 +57,37 @@ const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
 );
 InputGroupRoot.displayName = "InputGroup";
 
-const InputGroupInput = React.forwardRef<
-	HTMLInputElement,
-	React.ComponentPropsWithoutRef<typeof Input>
->(({ className, disabled, ...props }, ref) => {
-	const groupDisabled = React.useContext(InputGroupDisabled);
-	return (
-		<Input
-			ref={ref}
-			disabled={disabled || groupDisabled}
-			className={cn(
-				"h-full min-w-0 w-auto! flex-1 rounded-none border-0 bg-transparent px-3 py-0 shadow-none",
-				"outline-hidden focus-visible:border-transparent focus-visible:ring-0",
-				className,
-			)}
-			{...props}
-		/>
-	);
-});
+export type InputGroupInputProps = Omit<React.ComponentPropsWithoutRef<typeof Input>, "type"> & {
+	/**
+	 * The type of input control to render.
+	 */
+	type?: React.HTMLInputTypeAttribute;
+};
+
+const InputGroupInput = React.forwardRef<HTMLInputElement, InputGroupInputProps>(
+	({ className, disabled, ...props }, ref) => {
+		const groupDisabled = React.useContext(InputGroupDisabled);
+		return (
+			<Input
+				ref={ref}
+				disabled={disabled || groupDisabled}
+				className={cn(
+					"h-full min-w-0 w-auto! flex-1 rounded-none border-0 bg-transparent px-3 py-0 shadow-none",
+					"outline-hidden focus-visible:border-transparent focus-visible:ring-0",
+					className,
+				)}
+				{...props}
+			/>
+		);
+	},
+);
 InputGroupInput.displayName = "InputGroup.Input";
 
 export type InputGroupAddonProps = React.HTMLAttributes<HTMLDivElement> & {
+	/**
+	 * Place the addon at the start or end of the group.
+	 * @default start
+	 */
 	align?: "start" | "end";
 };
 
@@ -94,7 +108,9 @@ function InputGroupAddon({ align = "start", className, children, ...props }: Inp
 }
 InputGroupAddon.displayName = "InputGroup.Addon";
 
-function InputGroupSuffix({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+export type InputGroupSuffixProps = React.HTMLAttributes<HTMLDivElement>;
+
+function InputGroupSuffix({ className, children, ...props }: InputGroupSuffixProps) {
 	return (
 		<div
 			data-slot="input-group-suffix"
@@ -110,7 +126,35 @@ function InputGroupSuffix({ className, children, ...props }: React.HTMLAttribute
 }
 InputGroupSuffix.displayName = "InputGroup.Suffix";
 
-const InputGroupButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
+export interface InputGroupButtonProps
+	extends Omit<ButtonProps, "variant" | "size" | "asChild" | "loading" | "icon"> {
+	/**
+	 * Visual style for the nested action.
+	 * @default ghost
+	 */
+	variant?: ButtonProps["variant"];
+	/**
+	 * Size for the nested action.
+	 * @default icon
+	 */
+	size?: ButtonProps["size"];
+	/**
+	 * Render the nested action through its child element.
+	 * @default false
+	 */
+	asChild?: boolean;
+	/**
+	 * Show a spinner and disable the nested action.
+	 * @default false
+	 */
+	loading?: boolean;
+	/**
+	 * Icon rendered before the nested action label.
+	 */
+	icon?: React.ReactNode;
+}
+
+const InputGroupButton = React.forwardRef<HTMLButtonElement, InputGroupButtonProps>(
 	({ className, variant = "ghost", size = "icon", disabled, ...props }, ref) => {
 		const groupDisabled = React.useContext(InputGroupDisabled);
 		return (
