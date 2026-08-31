@@ -1475,7 +1475,7 @@ describe("ui catalog", () => {
 	it("does not keep a handwritten switch prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const start = docs.indexOf("\tswitch: {");
-		const end = docs.indexOf('\t"theme-provider": {');
+		const end = docs.indexOf("\tselect: {");
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
@@ -1489,6 +1489,197 @@ describe("ui catalog", () => {
 		expect(block).toContain('repo: "zhe"');
 		expect(block).toContain('sha: "c31c239f01c9"');
 		expect(block).toContain('file: "components/ui/switch.tsx"');
+	});
+
+	it("sources select API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS.select?.api).toEqual(CATALOG_API.select);
+		expect(CATALOG_API.select).toEqual([
+			{
+				name: "Select",
+				props: [
+					{
+						name: "value",
+						type: "string",
+						required: false,
+						description: "The controlled value of the select.",
+					},
+				],
+			},
+			{ name: "SelectTrigger", props: [] },
+			{
+				name: "SelectValue",
+				props: [
+					{
+						name: "placeholder",
+						type: "React.ReactNode",
+						required: false,
+						description: "Content shown when no value is selected.",
+					},
+				],
+			},
+			{
+				name: "SelectContent",
+				props: [
+					{
+						name: "position",
+						type: '"item-aligned" | "popper"',
+						required: false,
+						default: "popper",
+						description: "The positioning mode for the select content.",
+					},
+					{
+						name: "sideOffset",
+						type: "number",
+						required: false,
+						default: "4",
+						description: "The distance between the trigger and the select content.",
+					},
+				],
+			},
+			{ name: "SelectGroup", props: [] },
+			{
+				name: "SelectItem",
+				props: [
+					{
+						name: "value",
+						type: "string",
+						required: true,
+						description: "The value associated with the select item.",
+					},
+				],
+			},
+		]);
+		renderCatalog("/ui/select");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		const surfaceIds = [
+			"api-Select",
+			"api-SelectTrigger",
+			"api-SelectValue",
+			"api-SelectContent",
+			"api-SelectGroup",
+			"api-SelectItem",
+		];
+		for (const id of surfaceIds) {
+			expect(document.getElementById(id)?.tagName).toBe("H3");
+			expect(document.querySelectorAll(`[data-toc-id="${id}"]`)).toHaveLength(2);
+		}
+		expect(screen.getByRole("heading", { name: "Select", level: 3 })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "SelectTrigger", level: 3 })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "SelectValue", level: 3 })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "SelectContent", level: 3 })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "SelectGroup", level: 3 })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "SelectItem", level: 3 })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "Select props" })).toBeInTheDocument();
+		expect(screen.queryByRole("table", { name: "SelectTrigger props" })).not.toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "SelectValue props" })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "SelectContent props" })).toBeInTheDocument();
+		expect(screen.queryByRole("table", { name: "SelectGroup props" })).not.toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "SelectItem props" })).toBeInTheDocument();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(5);
+		expect(
+			screen.getByRole("table", { name: "Select props" }).querySelectorAll("tbody tr"),
+		).toHaveLength(1);
+		expect(
+			screen.getByRole("table", { name: "SelectValue props" }).querySelectorAll("tbody tr"),
+		).toHaveLength(1);
+		expect(
+			screen.getByRole("table", { name: "SelectContent props" }).querySelectorAll("tbody tr"),
+		).toHaveLength(2);
+		expect(
+			screen.getByRole("table", { name: "SelectItem props" }).querySelectorAll("tbody tr"),
+		).toHaveLength(1);
+		expect(api).toHaveTextContent("value?");
+		expect(api).toHaveTextContent("placeholder?");
+		expect(api).toHaveTextContent("position?");
+		expect(api).toHaveTextContent("sideOffset?");
+		expect(api).toHaveTextContent("The controlled value of the select.");
+		expect(api).toHaveTextContent("Content shown when no value is selected.");
+		expect(api).toHaveTextContent("The positioning mode for the select content.");
+		expect(api).toHaveTextContent("The distance between the trigger and the select content.");
+		expect(api).toHaveTextContent("The value associated with the select item.");
+		expect(api).toHaveTextContent('"item-aligned" | "popper"');
+		expect(api).toHaveTextContent("React.ReactNode");
+		expect(api).toHaveTextContent("popper");
+		expect(api).toHaveTextContent("4");
+		expect(api).not.toHaveTextContent("defaultValue");
+		expect(api).not.toHaveTextContent("onValueChange");
+		expect(api).not.toHaveTextContent("className");
+		expect(api).not.toHaveTextContent("Select.Option");
+		expect(api).not.toHaveTextContent("GroupLabel");
+		expect(api).not.toHaveTextContent("textValue");
+		for (const name of ["SelectTrigger", "SelectGroup"]) {
+			const heading = document.getElementById(`api-${name}`);
+			const empty = heading?.parentElement?.querySelector("p");
+			expect(empty).toHaveTextContent("No component-specific props.");
+			expect(empty).toHaveClass("text-sm");
+			expect(empty).toHaveClass("text-muted-foreground");
+		}
+		expect(screen.getByRole("heading", { name: "Basic" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Placeholder" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled Options" })).toBeInTheDocument();
+		expect(document.querySelector('[data-hero-scenario="select-basic"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="select-disabled-options"]')).toBeTruthy();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### Select");
+		expect(markdown).toContain("### SelectTrigger");
+		expect(markdown).toContain("### SelectValue");
+		expect(markdown).toContain("### SelectContent");
+		expect(markdown).toContain("### SelectGroup");
+		expect(markdown).toContain("### SelectItem");
+		expect(markdown).toContain(
+			"- value (string, optional, default —): The controlled value of the select.",
+		);
+		expect(markdown).toContain("No component-specific props.");
+		expect(markdown).toContain(
+			"- placeholder (React.ReactNode, optional, default —): Content shown when no value is selected.",
+		);
+		expect(markdown).toContain(
+			'- position ("item-aligned" | "popper", optional, default popper): The positioning mode for the select content.',
+		);
+		expect(markdown).toContain(
+			"- sideOffset (number, optional, default 4): The distance between the trigger and the select content.",
+		);
+		expect(markdown).toContain(
+			"- value (string, required, default —): The value associated with the select item.",
+		);
+		expect(markdown).not.toContain("- className (");
+		expect(markdown).not.toContain("- defaultValue (");
+		expect(markdown).not.toContain("- onValueChange (");
+		expect(markdown).not.toContain("Select.Option");
+		expect(markdown).not.toContain("GroupLabel");
+		expect(UI_EXAMPLES.select).toHaveLength(3);
+		for (const scenario of UI_EXAMPLES.select ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+	});
+
+	it("does not keep a handwritten select prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf("\tselect: {");
+		const end = docs.indexOf('\t"theme-provider": {');
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain("api: CATALOG_API.select");
+		expect(block).not.toContain('name: "value"');
+		expect(block).not.toContain('name: "className"');
+		expect(block).not.toContain('name: "placeholder"');
+		expect(block).not.toContain('name: "position"');
+		expect(block).not.toContain('name: "sideOffset"');
+		expect(block).not.toContain('type: "string"');
+		expect(block).toContain('description: "Choose one option."');
+		expect(block).toContain("Select version");
+		expect(block).toContain("variants: []");
+		expect(block).toContain('repo: "pew"');
+		expect(block).toContain('sha: "97a890fabe6e"');
+		expect(block).toContain('file: "packages/web/src/components"');
 	});
 
 	it("shows usage as docs code without a preview surface", () => {
@@ -2425,11 +2616,15 @@ describe("ui catalog", () => {
 		expect(generator).not.toMatch(/\bif\s*\([^)]*Checkbox|\bswitch\s*\([^)]*checkbox/);
 		expect(generator).not.toMatch(/\bif\s*\([^)]*Radio|\bswitch\s*\([^)]*radio/);
 		expect(generator).not.toMatch(/\bif\s*\([^)]*Switch|\bswitch\s*\([^)]*switch/);
+		expect(generator).not.toMatch(/\bif\s*\([^)]*Select|\bswitch\s*\([^)]*select/);
 		expect(page).not.toMatch(/input-group|InputGroup/);
 		expect(page).not.toMatch(/sensitive-input|SensitiveInput/);
 		expect(page).not.toMatch(/\bcheckbox\b|Checkbox/);
 		expect(page).not.toMatch(/\bradio\b|Radio/);
 		expect(page).not.toMatch(/\bswitch\b|Switch/);
+		expect(page).not.toMatch(
+			/\bSelectTrigger\b|\bSelectValue\b|\bSelectContent\b|\bSelectGroup\b|\bSelectItem\b/,
+		);
 		expect(page).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 	});
 
@@ -2854,13 +3049,22 @@ describe("ui catalog", () => {
 		expect(disabledTrigger).toHaveTextContent("Choose…");
 		const api = document.getElementById("api-reference");
 		expect(document.getElementById("api-Select")?.tagName).toBe("H3");
+		expect(document.getElementById("api-SelectTrigger")?.tagName).toBe("H3");
+		expect(document.getElementById("api-SelectValue")?.tagName).toBe("H3");
+		expect(document.getElementById("api-SelectContent")?.tagName).toBe("H3");
+		expect(document.getElementById("api-SelectGroup")?.tagName).toBe("H3");
+		expect(document.getElementById("api-SelectItem")?.tagName).toBe("H3");
 		expect(screen.getByRole("table", { name: "Select props" })).toBeInTheDocument();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
-		expect(api).toHaveTextContent("className");
-		expect(api).toHaveTextContent("string");
-		expect(CATALOG_DOCS.select?.api).toEqual([
-			{ name: "Select", props: [{ name: "className", type: "string", description: "className" }] },
-		]);
+		expect(screen.getByRole("table", { name: "SelectValue props" })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "SelectContent props" })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "SelectItem props" })).toBeInTheDocument();
+		expect(screen.queryByRole("table", { name: "SelectTrigger props" })).not.toBeInTheDocument();
+		expect(screen.queryByRole("table", { name: "SelectGroup props" })).not.toBeInTheDocument();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(5);
+		expect(api).toHaveTextContent("value?");
+		expect(api).toHaveTextContent("placeholder?");
+		expect(api).not.toHaveTextContent("className");
+		expect(CATALOG_DOCS.select?.api).toEqual(CATALOG_API.select);
 		fireEvent.click(heroTrigger);
 		fireEvent.click(screen.getByRole("option", { name: "v2" }));
 		expect(heroTrigger).toHaveTextContent("v2");

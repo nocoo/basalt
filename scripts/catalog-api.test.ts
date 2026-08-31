@@ -240,13 +240,51 @@ describe("catalog API generator contract", () => {
 				propsType: "SwitchProps",
 				surface: "Switch",
 			},
+			{
+				slug: "select",
+				sourceFile: "packages/basalt/src/components/select.tsx",
+				propsType: "SelectProps",
+				surface: "Select",
+			},
+			{
+				slug: "select",
+				sourceFile: "packages/basalt/src/components/select.tsx",
+				propsType: "SelectTriggerProps",
+				surface: "SelectTrigger",
+				allowEmpty: true,
+			},
+			{
+				slug: "select",
+				sourceFile: "packages/basalt/src/components/select.tsx",
+				propsType: "SelectValueProps",
+				surface: "SelectValue",
+			},
+			{
+				slug: "select",
+				sourceFile: "packages/basalt/src/components/select.tsx",
+				propsType: "SelectContentProps",
+				surface: "SelectContent",
+			},
+			{
+				slug: "select",
+				sourceFile: "packages/basalt/src/components/select.tsx",
+				propsType: "SelectGroupProps",
+				surface: "SelectGroup",
+				allowEmpty: true,
+			},
+			{
+				slug: "select",
+				sourceFile: "packages/basalt/src/components/select.tsx",
+				propsType: "SelectItemProps",
+				surface: "SelectItem",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(22);
+		expect(CATALOG_API_TARGETS).toHaveLength(28);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
 			),
-		).toEqual(["InputGroup.Suffix"]);
+		).toEqual(["InputGroup.Suffix", "SelectTrigger", "SelectGroup"]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames/);
 		expect(source).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
@@ -255,6 +293,7 @@ describe("catalog API generator contract", () => {
 		expect(source).not.toMatch(/\bif\s*\([^)]*Checkbox|\bswitch\s*\([^)]*checkbox/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*Radio|\bswitch\s*\([^)]*radio/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*Switch|\bswitch\s*\([^)]*switch/);
+		expect(source).not.toMatch(/\bif\s*\([^)]*Select|\bswitch\s*\([^)]*select/);
 	});
 
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
@@ -987,6 +1026,14 @@ export interface WidgetProps {
 			checkbox: ["Checkbox"],
 			radio: ["Radio"],
 			switch: ["Switch"],
+			select: [
+				"Select",
+				"SelectTrigger",
+				"SelectValue",
+				"SelectContent",
+				"SelectGroup",
+				"SelectItem",
+			],
 		});
 	}, 20_000);
 
@@ -996,7 +1043,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(18);
+		expect(Object.keys(generated)).toHaveLength(19);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1097,7 +1144,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(18);
+		expect(Object.keys(generated)).toHaveLength(19);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1197,7 +1244,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(18);
+		expect(Object.keys(generated)).toHaveLength(19);
 		expect(generated.checkbox).toEqual([
 			{
 				name: "Checkbox",
@@ -1276,7 +1323,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(18);
+		expect(Object.keys(generated)).toHaveLength(19);
 		expect(generated.radio).toEqual([
 			{
 				name: "Radio",
@@ -1334,7 +1381,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(18);
+		expect(Object.keys(generated)).toHaveLength(19);
 		expect(generated.switch).toEqual([
 			{
 				name: "Switch",
@@ -1399,6 +1446,162 @@ export interface WidgetProps {
 			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "aria-label")),
 		).toBe(false);
 		expect(generated.button?.[0]?.name).toBe("Button");
+		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
+		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked"]);
+		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
+			"InputGroup",
+			"InputGroup.Input",
+			"InputGroup.Addon",
+			"InputGroup.Button",
+			"InputGroup.Suffix",
+		]);
+	}, 20_000);
+
+	it("extracts Select props from six named types as five local rows and two empty surfaces", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(Object.keys(generated)).toHaveLength(19);
+		expect(generated.select).toEqual([
+			{
+				name: "Select",
+				props: [
+					{
+						name: "value",
+						type: "string",
+						required: false,
+						description: "The controlled value of the select.",
+					},
+				],
+			},
+			{
+				name: "SelectTrigger",
+				props: [],
+			},
+			{
+				name: "SelectValue",
+				props: [
+					{
+						name: "placeholder",
+						type: "React.ReactNode",
+						required: false,
+						description: "Content shown when no value is selected.",
+					},
+				],
+			},
+			{
+				name: "SelectContent",
+				props: [
+					{
+						name: "position",
+						type: '"item-aligned" | "popper"',
+						required: false,
+						default: "popper",
+						description: "The positioning mode for the select content.",
+					},
+					{
+						name: "sideOffset",
+						type: "number",
+						required: false,
+						default: "4",
+						description: "The distance between the trigger and the select content.",
+					},
+				],
+			},
+			{
+				name: "SelectGroup",
+				props: [],
+			},
+			{
+				name: "SelectItem",
+				props: [
+					{
+						name: "value",
+						type: "string",
+						required: true,
+						description: "The value associated with the select item.",
+					},
+				],
+			},
+		]);
+		expect(generated.select).toHaveLength(6);
+		expect(generated.select?.map((surface) => surface.name)).toEqual([
+			"Select",
+			"SelectTrigger",
+			"SelectValue",
+			"SelectContent",
+			"SelectGroup",
+			"SelectItem",
+		]);
+		expect(generated.select?.[0]?.props).toHaveLength(1);
+		expect(generated.select?.[1]?.props).toEqual([]);
+		expect(generated.select?.[2]?.props).toHaveLength(1);
+		expect(generated.select?.[3]?.props).toHaveLength(2);
+		expect(generated.select?.[4]?.props).toEqual([]);
+		expect(generated.select?.[5]?.props).toHaveLength(1);
+		expect(generated.select?.[0]?.props[0]).not.toHaveProperty("default");
+		expect(generated.select?.[2]?.props[0]).not.toHaveProperty("default");
+		expect(generated.select?.[5]?.props[0]).not.toHaveProperty("default");
+		expect(
+			generated.select?.some((surface) =>
+				surface.props.some((prop) => prop.name === "defaultValue"),
+			),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) =>
+				surface.props.some((prop) => prop.name === "onValueChange"),
+			),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "open")),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) =>
+				surface.props.some((prop) => prop.name === "defaultOpen"),
+			),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) =>
+				surface.props.some((prop) => prop.name === "onOpenChange"),
+			),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "disabled")),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "name")),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "required")),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "form")),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "children")),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "className")),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "ref")),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "aria-label")),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "textValue")),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "side")),
+		).toBe(false);
+		expect(
+			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "align")),
+		).toBe(false);
+		expect(generated.button?.[0]?.name).toBe("Button");
+		expect(generated.switch?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
 		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
 		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked"]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
@@ -2241,6 +2444,7 @@ export interface WidgetProps {
 		expect(first).toContain("\tcheckbox: [");
 		expect(first).toContain("\tradio: [");
 		expect(first).toContain("\tswitch: [");
+		expect(first).toContain("\tselect: [");
 		expect(first).toContain('name: "Button"');
 		expect(first).toContain('name: "InputArea"');
 		expect(first).toContain('name: "InputGroup.Button"');
@@ -2249,8 +2453,14 @@ export interface WidgetProps {
 		expect(first).toContain('name: "Checkbox"');
 		expect(first).toContain('name: "Radio"');
 		expect(first).toContain('name: "Switch"');
+		expect(first).toContain('name: "Select"');
+		expect(first).toContain('name: "SelectTrigger"');
+		expect(first).toContain('name: "SelectValue"');
+		expect(first).toContain('name: "SelectContent"');
+		expect(first).toContain('name: "SelectGroup"');
+		expect(first).toContain('name: "SelectItem"');
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"2b82cfcee09b58abdf67557b79f3e48e8c3fd755d87a0843d50ff5240f2bc86b",
+			"6d8dc27740ab8d0e1f97e95dfa19a66d6a83cf8eba10ac56ea1cdffe1260e222",
 		);
 	}, 20_000);
 });

@@ -5,13 +5,36 @@ import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
 import { FOCUS_BORDER, OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
+export type SelectProps = Omit<
+	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>,
+	"value"
+> & {
+	/**
+	 * The controlled value of the select.
+	 */
+	value?: string;
+};
 export const Select = SelectPrimitive.Root;
+
+export type SelectValueProps = Omit<
+	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Value>,
+	"placeholder"
+> & {
+	/**
+	 * Content shown when no value is selected.
+	 */
+	placeholder?: React.ReactNode;
+};
 export const SelectValue = SelectPrimitive.Value;
+
+export type SelectGroupProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Group>;
 export const SelectGroup = SelectPrimitive.Group;
+
+export type SelectTriggerProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>;
 
 export const SelectTrigger = React.forwardRef<
 	React.ElementRef<typeof SelectPrimitive.Trigger>,
-	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>
+	SelectTriggerProps
 >(({ className, children, ...props }, ref) => (
 	<SelectPrimitive.Trigger
 		ref={ref}
@@ -26,9 +49,25 @@ export const SelectTrigger = React.forwardRef<
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
+export type SelectContentProps = Omit<
+	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>,
+	"position" | "sideOffset"
+> & {
+	/**
+	 * The positioning mode for the select content.
+	 * @default popper
+	 */
+	position?: "item-aligned" | "popper";
+	/**
+	 * The distance between the trigger and the select content.
+	 * @default 4
+	 */
+	sideOffset?: number;
+};
+
 export const SelectContent = React.forwardRef<
 	React.ElementRef<typeof SelectPrimitive.Content>,
-	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>
+	SelectContentProps
 >(({ className, children, position = "popper", sideOffset = OVERLAY_GAP, ...props }, ref) => (
 	<SelectPrimitive.Portal>
 		<SelectPrimitive.Content
@@ -46,9 +85,19 @@ export const SelectContent = React.forwardRef<
 ));
 SelectContent.displayName = SelectPrimitive.Content.displayName;
 
+export type SelectItemProps = Omit<
+	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>,
+	"value"
+> & {
+	/**
+	 * The value associated with the select item.
+	 */
+	value: string;
+};
+
 export const SelectItem = React.forwardRef<
 	React.ElementRef<typeof SelectPrimitive.Item>,
-	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Item>
+	SelectItemProps
 >(({ className, children, ...props }, ref) => (
 	<SelectPrimitive.Item
 		ref={ref}

@@ -300,9 +300,7 @@ export default function Example() {
 	);
 }`,
 		variants: [],
-		api: [
-			{ name: "Select", props: [{ name: "className", type: "string", description: "className" }] },
-		],
+		api: CATALOG_API.select,
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",

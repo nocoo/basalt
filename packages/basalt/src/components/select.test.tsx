@@ -1,7 +1,29 @@
+import * as SelectPrimitive from "@radix-ui/react-select";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { createRef } from "react";
+import { describe, expect, it, vi } from "vitest";
 import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
+import {
+	Select,
+	SelectContent,
+	type SelectContentProps,
+	SelectGroup,
+	type SelectGroupProps,
+	SelectItem,
+	type SelectItemProps,
+	type SelectProps,
+	SelectTrigger,
+	type SelectTriggerProps,
+	SelectValue,
+	type SelectValueProps,
+} from "./select";
+
+function acceptSelectProps(_props: SelectProps) {}
+function acceptTriggerProps(_props: SelectTriggerProps) {}
+function acceptValueProps(_props: SelectValueProps) {}
+function acceptContentProps(_props: SelectContentProps) {}
+function acceptGroupProps(_props: SelectGroupProps) {}
+function acceptItemProps(_props: SelectItemProps) {}
 
 describe("Select", () => {
 	it("renders a trigger", () => {
@@ -56,5 +78,131 @@ describe("Select", () => {
 		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
 		fireEvent.click(screen.getByRole("combobox", { name: "Version" }));
 		expect(screen.getByRole("listbox")).toHaveAttribute("data-side", "bottom");
+	});
+
+	it("keeps Root, Value, and Group as the same primitive references", () => {
+		expect(Select).toBe(SelectPrimitive.Root);
+		expect(SelectValue).toBe(SelectPrimitive.Value);
+		expect(SelectGroup).toBe(SelectPrimitive.Group);
+	});
+
+	it("accepts named props types and rejects illegal values", () => {
+		acceptSelectProps({ value: "1" });
+		acceptSelectProps({
+			defaultValue: "1",
+			onValueChange: () => undefined,
+			open: false,
+			defaultOpen: true,
+			disabled: true,
+			name: "version",
+			required: true,
+			form: "signup",
+		});
+		acceptTriggerProps({ className: "extra", id: "trigger", "aria-label": "Version" });
+		acceptValueProps({ placeholder: "Select version" });
+		acceptValueProps({ placeholder: <span>Choose</span> });
+		acceptContentProps({ position: "popper", sideOffset: 4 });
+		acceptContentProps({ position: "item-aligned" });
+		acceptGroupProps({ className: "group", id: "group" });
+		acceptItemProps({ value: "1" });
+		acceptItemProps({
+			value: "1",
+			disabled: true,
+			textValue: "v1",
+			className: "extra",
+			"aria-label": "v1",
+		});
+		// @ts-expect-error value must be a string
+		acceptSelectProps({ value: 1 });
+		// @ts-expect-error value must be a string
+		acceptSelectProps({ value: {} });
+		// @ts-expect-error position must be item-aligned or popper
+		acceptContentProps({ position: "top" });
+		// @ts-expect-error sideOffset must be a number
+		acceptContentProps({ sideOffset: "4" });
+		// @ts-expect-error value is required
+		acceptItemProps({});
+		// @ts-expect-error value must be a string
+		acceptItemProps({ value: 1 });
+		// @ts-expect-error value must be a string
+		acceptItemProps({ value: {} });
+	});
+
+	it("forwards trigger ref and className", () => {
+		const ref = createRef<HTMLButtonElement>();
+		render(
+			<Select>
+				<SelectTrigger ref={ref} className="extra" aria-label="Version">
+					<SelectValue placeholder="Select version" />
+				</SelectTrigger>
+			</Select>,
+		);
+		const trigger = screen.getByRole("combobox", { name: "Version" });
+		expect(trigger.tagName).toBe("BUTTON");
+		expect(ref.current).toBe(trigger);
+		expect(trigger.className).toContain("extra");
+		expect(trigger.className).toContain("h-9");
+	});
+
+	it("selects an uncontrolled value and reports a controlled next value", () => {
+		render(
+			<Select defaultValue="1">
+				<SelectTrigger aria-label="Version">
+					<SelectValue placeholder="Select version" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="1">v1</SelectItem>
+					<SelectItem value="2">v2</SelectItem>
+				</SelectContent>
+			</Select>,
+		);
+		const trigger = screen.getByRole("combobox", { name: "Version" });
+		expect(trigger).toHaveTextContent("v1");
+		fireEvent.click(trigger);
+		fireEvent.click(screen.getByRole("option", { name: "v2" }));
+		expect(trigger).toHaveTextContent("v2");
+	});
+
+	it("keeps a controlled value and reports the next selection", () => {
+		const onValueChange = vi.fn();
+		render(
+			<Select value="1" onValueChange={onValueChange}>
+				<SelectTrigger aria-label="Version">
+					<SelectValue placeholder="Select version" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="1">v1</SelectItem>
+					<SelectItem value="2">v2</SelectItem>
+				</SelectContent>
+			</Select>,
+		);
+		const trigger = screen.getByRole("combobox", { name: "Version" });
+		expect(trigger).toHaveTextContent("v1");
+		fireEvent.click(trigger);
+		fireEvent.click(screen.getByRole("option", { name: "v2" }));
+		expect(trigger).toHaveTextContent("v1");
+		expect(onValueChange).toHaveBeenCalledWith("2");
+	});
+
+	it("keeps a disabled item from becoming the value", () => {
+		render(
+			<Select>
+				<SelectTrigger aria-label="Disabled option">
+					<SelectValue placeholder="Choose…" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem value="a">Alpha</SelectItem>
+					<SelectItem value="b" disabled>
+						Beta
+					</SelectItem>
+				</SelectContent>
+			</Select>,
+		);
+		const trigger = screen.getByRole("combobox", { name: "Disabled option" });
+		fireEvent.click(trigger);
+		const beta = screen.getByRole("option", { name: "Beta" });
+		expect(beta).toHaveAttribute("aria-disabled", "true");
+		fireEvent.click(beta);
+		expect(trigger).toHaveTextContent("Choose…");
 	});
 });

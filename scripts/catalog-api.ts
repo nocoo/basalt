@@ -157,6 +157,44 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "SwitchProps",
 		surface: "Switch",
 	},
+	{
+		slug: "select",
+		sourceFile: "packages/basalt/src/components/select.tsx",
+		propsType: "SelectProps",
+		surface: "Select",
+	},
+	{
+		slug: "select",
+		sourceFile: "packages/basalt/src/components/select.tsx",
+		propsType: "SelectTriggerProps",
+		surface: "SelectTrigger",
+		allowEmpty: true,
+	},
+	{
+		slug: "select",
+		sourceFile: "packages/basalt/src/components/select.tsx",
+		propsType: "SelectValueProps",
+		surface: "SelectValue",
+	},
+	{
+		slug: "select",
+		sourceFile: "packages/basalt/src/components/select.tsx",
+		propsType: "SelectContentProps",
+		surface: "SelectContent",
+	},
+	{
+		slug: "select",
+		sourceFile: "packages/basalt/src/components/select.tsx",
+		propsType: "SelectGroupProps",
+		surface: "SelectGroup",
+		allowEmpty: true,
+	},
+	{
+		slug: "select",
+		sourceFile: "packages/basalt/src/components/select.tsx",
+		propsType: "SelectItemProps",
+		surface: "SelectItem",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

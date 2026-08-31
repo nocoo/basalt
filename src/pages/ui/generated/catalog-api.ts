@@ -289,6 +289,68 @@ export const CATALOG_API = {
 			],
 		},
 	],
+	select: [
+		{
+			name: "Select",
+			props: [
+				{
+					name: "value",
+					type: "string",
+					required: false,
+					description: "The controlled value of the select.",
+				},
+			],
+		},
+		{
+			name: "SelectTrigger",
+			props: [],
+		},
+		{
+			name: "SelectValue",
+			props: [
+				{
+					name: "placeholder",
+					type: "React.ReactNode",
+					required: false,
+					description: "Content shown when no value is selected.",
+				},
+			],
+		},
+		{
+			name: "SelectContent",
+			props: [
+				{
+					name: "position",
+					type: '"item-aligned" | "popper"',
+					required: false,
+					default: "popper",
+					description: "The positioning mode for the select content.",
+				},
+				{
+					name: "sideOffset",
+					type: "number",
+					required: false,
+					default: "4",
+					description: "The distance between the trigger and the select content.",
+				},
+			],
+		},
+		{
+			name: "SelectGroup",
+			props: [],
+		},
+		{
+			name: "SelectItem",
+			props: [
+				{
+					name: "value",
+					type: "string",
+					required: true,
+					description: "The value associated with the select item.",
+				},
+			],
+		},
+	],
 	"sensitive-input": [
 		{
 			name: "SensitiveInput",
