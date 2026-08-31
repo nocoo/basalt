@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A32 D060 — Checkbox source-backed scenarios；待规格固化
-> 当前代码前置：`51eb71e`（D059 实现已独立验收，仅本台账待提交）
+> 当前切片：S2A32 D060 — Checkbox source-backed scenarios；规格已固化，待 Grok 实现
+> 当前代码前置：`2dfde8c`（D059 台账已提交，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059 完成；S2A32 D060 待规格） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059 完成；S2A32 D060 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -528,6 +528,18 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    组件测试须以 `SensitiveInputProps` 类型证据证明 required reveal/hide labels、native aria-label/name/autoComplete/required/disabled/value/onChange/className 能力可用；分别缺失 revealLabel 或 hideLabel、传入 `type`、非 string label 必须有真实 `@ts-expect-error`，不得用 `as any`。运行时测试补齐 ref 指向内部 input、native props/className/value 透传、初始 password、Show→Hide→Show 往返、disabled input/button 不可切换；不重复实现状态。Generator/catalog-source/page 测试须锁十九 targets、十五 slug、唯一现有 allowEmpty 仍是 InputGroup.Suffix、SensitiveInput 两项精确 shape、前十四组不回归、连续 generate/check 与新的真实 SHA-256；源码负门证明 docs 不再手写两项且 generator/page 无名字特判。
 
    只允许修改 `packages/basalt/src/components/sensitive-input.tsx`、`packages/basalt/src/components/sensitive-input.test.tsx`、`scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/docs.ts`、`src/pages/ui/catalog-source.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 root barrel、Input/Button 生产实现或类型、D058 examples/scenario/loader、page/TOC/Copy renderer、catalog registry/IA/CSS、HomeGrid、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得加入 size、controlled mask、label/Field、labelTooltip、description/error、copy、focus reveal、其它 Kumo-only 能力或进入 S2A32/S2B/S5。提交前运行 SensitiveInput/generator/catalog-source/page 四个 focused test files、generate 后连续两次 check、typecheck、Biome、全量、coverage、showcase build，以及 clean package build/types/pack；coverage不得低于 D058，构建后工作树必须干净，既有 chunk warning如实报告。只做一个绿色原子提交，建议 `refactor: generate sensitive input api docs`，随后停止等待 Codex review。
+
+32. **S2A32 / D060 — source-backed Checkbox primitive scenarios。** Catalog 稳定顺序在 SensitiveInput 后是 Checkbox。当前最终生效的 `UI_EXAMPLES.checkbox` 来自 `KUMO_EXAMPLES` 的 Default、Checked、Indeterminate、Disabled、Error 五项 inline 场景；`BASE_EXAMPLES.checkbox` 另保留 Unchecked、Indeterminate 两项死 owner，被后续 spread 静默覆盖。五项 code/render 继续双写，Disabled 的展示 code 还是两个无共同根节点的 JSX 且漏掉 preview 使用的 `Preview` wrapper，无法作为可复制模块。新增 `src/pages/ui/examples/checkbox/` 下 `default.tsx`、`checked.tsx`、`indeterminate.tsx`、`disabled.tsx`、`error.tsx` 与 `index.ts`。五个 TSX 模块必须完整、可复制、默认导出命名清楚的无参数组件；都从 granular `@nocoo/basalt/components/checkbox` 导入 `Checkbox`，Error 另从 granular `@nocoo/basalt/components/field` 导入 `Field`。index 只保存稳定 key/title/order，通过既有 `loadModuleScenarios` 的同路径 render/raw glob 导出 `CHECKBOX_EXAMPLES`。
+
+   生效真值逐项冻结，顺序固定为 `checkbox-default` / `Default`、`checkbox-checked` / `Checked`、`checkbox-indeterminate` / `Indeterminate`、`checkbox-disabled` / `Disabled`、`checkbox-error` / `Error`。Default 继续是 accessible name `Unchecked` 的未选中 Checkbox 并作为 hero；Checked 继续以 `defaultChecked` 初始选中且名为 `Checked`；Indeterminate 继续以 `checked="indeterminate"` 呈现 accessible name `Partial` 和 mixed state。Disabled 继续在一个 `flex flex-wrap items-center gap-3` 根 div 内依次渲染名为 `Disabled off` 的未选中 disabled 控件和名为 `Disabled on` 的 `defaultChecked` disabled 控件；这个 div 必须与旧 `Preview` 的实际 DOM/class 等价，并进入 raw code，两个控件点击后状态均不变。Error 继续是 `<Field label="Terms" htmlFor="ex-terms" error="Required">` 包住 `id="ex-terms"`、accessible name `Terms` 的 Checkbox；现有 Field clone 必须继续产生 `aria-invalid="true"`、`aria-describedby="ex-terms-error"` 和相同 id 的 `role="alert"`，不得改成 Kumo 的 `variant="error"`。五段 preview 与展示代码必须来自同一模块，Checkbox package DOM、class、尺寸、焦点、Radix 行为和公开 API 均不改。
+
+   `BASE_EXAMPLES.checkbox` 改为直接引用 `CHECKBOX_EXAMPLES`；`KUMO_EXAMPLES` 删除该 slug 的 inline owner。两处只因这些 owners 存在的直接 `Checkbox` import 都必须删除；`kumo-examples.tsx` 的 `Field` 与 `Preview` 仍被其它场景消费，不得误删。最终必须有 `UI_EXAMPLES.checkbox === CHECKBOX_EXAMPLES`，五个 module key 与稳定 ID 一一对应，render/source glob 集合相等，0 orphan、0 inline `code:`/`render:`、0 legacy `catalogScenarioId("checkbox", ...)` owner。既有通用 loader、docs description/Usage/variants/手写 API/provenance、HomeGrid 与其它 slug 全部冻结。
+
+   2026-08-31 通过 OpenCLI 只读核对的 Kumo 现站 Checkbox 页面已有 10 个场景和 `Checkbox`、`Checkbox.Group`、`Checkbox.Legend`、`Checkbox.Item` 四个 surface，另含 built-in ReactNode label、labelTooltip、controlFirst、controlled checked、独立 indeterminate、error variant、Group legend/description/error/value/allValues/disabled、visually hidden/custom legend 与 label requirement warning。这些是 Basalt S4 的能力差距，不得在本迁移刀增加 label、labelTooltip、controlFirst、variant、Group/Item/Legend、description/error、value array、context、warning或任何新类型/导出。Basalt 示例不得复制 `@cloudflare/kumo`、Cloudflare/Kumo/Worker 业务语境；新 modules、最终 Copy page 与用户可见示例只能保留上述中性 Basalt 内容。
+
+   Scenario loader 测试须以真实 glob 重新调用 `loadModuleScenarios`，锁住五个 metadata、同路径 render/raw、精确 ID/title/order、集合闭合与 `UI_EXAMPLES` 引用同一实例，并逐项证明 raw code 含 granular import、default export和对应 checked/mixed/disabled/Field 契约。Form-selection 真值测试须导入 `CHECKBOX_EXAMPLES`，锁同一引用，并真实 render 验证 Default 可由点击 unchecked→checked→unchecked、Checked 初始选中、Indeterminate 为 mixed、Disabled 两控件均禁用且状态不变、Error 的 label/control/error ARIA 关系；不得只做字符串存在性。页面测试须验证 `/ui/checkbox` hero 与五场景、标题/顺序、上述状态与 Error 关系；Copy page 必须逐字包含五个完整 raw modules，Disabled code 含真实 wrapper，且没有禁用品牌语境。源码负门须证明 demos/Kumo 文件无 checkbox inline owner、legacy scenario ID 或直接 Checkbox import，同时 D058/D059 SensitiveInput 的两场景与 generated API 不回归。
+
+   只允许新增 `src/pages/ui/examples/checkbox/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/FormSelectionScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容，合计应为 11 个文件。不得修改 `catalog-scenario.ts` loader、package Checkbox/Field 实现、类型或测试、其它 examples、`docs.ts`/generated API/generator、catalog registry/IA/CSS、HomeGrid、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入 Checkbox API 真源、S2A33、S2B 或 S4。提交前运行 catalog-scenario/form-selection/page 三个 focused test files、`bun run catalog-api:check`、typecheck、Biome、全量、coverage 与 showcase production build；coverage 四项不得低于 D059，既有 chunk warning如实报告，构建后工作树必须干净。必须用真实 Chromium 在 7003 既有服务上验证五项状态、Error ARIA、Copy page 与 console 0，且不得停止 7003。只做一个绿色原子提交，建议 `refactor: source checkbox scenarios`，随后停止等待 Codex review。
 
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
