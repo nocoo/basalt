@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A37 D065 — Switch API 类型真源；待调查与规格固化
-> 当前代码前置：`0366c96`（D064 Grok 实现已独立验收，待台账提交）
+> 当前切片：S2A37 D065 — Switch API 类型真源；规格已固化，待 Grok 实现
+> 当前代码前置：`c3b2dcf`（D064 台账已提交，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062、S2A35 D063、S2A36 D064 完成；S2A37 D065 待规格） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062、S2A35 D063、S2A36 D064 完成；S2A37 D065 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -588,6 +588,18 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    Scenario loader 测试须以真实 glob 重新调用 `loadModuleScenarios`，锁住四个 metadata、同路径 render/raw、精确 ID/title/order、集合闭合与 `UI_EXAMPLES` 引用同一实例，并逐项证明 raw code 含 granular import、default export、aria-label/defaultChecked/disabled/size 与两个显式 wrapper 契约。Form-selection 真值测试须导入 `SWITCH_EXAMPLES` 并锁同一引用，真实 render 验证 Off 和 On 的初态与点击切换、Disabled 两项均禁用且状态不变、Sizes 两项的 checked/enabled/root size class；不得只做字符串存在性。页面测试须验证 `/ui/switch` hero 与四场景、标题/顺序、hero/example 状态隔离、上述交互和真实 wrapper；Copy page 必须逐字包含四个完整 raw modules且没有禁用品牌语境。源码负门须证明 demos/Kumo 文件无 switch inline owner、legacy scenario ID 或直接 Switch import，同时 D062/D063 Radio 三场景与 generated API 不回归。
 
    只允许新增 `src/pages/ui/examples/switch/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/FormSelectionScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容，恰好 10 个文件。不得修改 `catalog-scenario.ts` loader、package Switch 实现/类型/测试、其它 examples、`docs.ts`/generated API/generator、catalog registry/IA/CSS、HomeGrid、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入 Switch API 真源、S2A37、S2B 或 S4。提交前运行 catalog-scenario/form-selection/page 三个 focused test files、`bun run catalog-api:check`、typecheck、Biome、串行全量、coverage 与 showcase production build；coverage 四项不得低于 D063，构建后工作树必须干净，既有 chunk warning与 favicon 404 资源噪声如实报告。必须用真实 Chromium 在 7003 既有服务上验证 hero/四场景、开关切换、状态隔离、disabled、sizes、Copy page handler/payload 和零应用 console/page error，系统剪贴板若受浏览器桥权限限制必须单独如实记录，且不得停止7003。只做一个绿色原子提交，建议 `refactor: source switch scenarios`，随后停止等待Codex review。
+
+37. **S2A37 / D065 — Switch API 类型真源与 checked/size 契约。** D064 已把 Switch 四个现有 primitive 场景收敛为 source-backed modules；当前 docs 仍手写唯一 `Switch.checked: boolean` 行且没有 optional 语义，生产 `Switch` 则把匿名 Radix Root props与本地 `size?: "default" | "sm"` 交给 `forwardRef`，导致真实 size API 不在文档真源。本刀将两项现有能力一次接入命名类型与 generator，不增加运行时能力。导出 granular `SwitchProps`，精确等价于 `Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitives.Root>, "checked"> & { checked?: boolean; size?: "default" | "sm" }`：本地只重声明 optional `checked` 和既有 optional `size`，其余 inherited defaultChecked/onCheckedChange/disabled/required/name/value/form、button/data/ARIA/asChild/children/className 能力全部保留；props type 自身保持 `WithoutRef`，`forwardRef` 组件继续通过 `RefAttributes` 接受 `HTMLButtonElement` ref。root barrel 与 wildcard granular export 规则均不改。
+
+   `checked` 只补固定 JSDoc `The controlled checked state of the switch.`，不得添加 default；`size` 只补 `The visual size of the switch.` 与 `@default default`。不得添加 alias或本地重声明 defaultChecked/callback/native props。`Switch` 的 forwardRef element type、函数体、destructuring及 `size = "default"`、Radix Root/Thumb、全部 class 字符串、FOCUS_RING、条件分支、ref与 `{...props}` 顺序必须逐字保持，只能把匿名 props generic 替换为 `SwitchProps`。现有 controlled/uncontrolled checked、form bubble、disabled、sm/default root和thumb尺寸、transition、键盘与焦点行为不得漂移。
+
+   `CATALOG_API_TARGETS` 在 Radio 后追加第二十二个声明式 target：slug `switch`，source `packages/basalt/src/components/switch.tsx`，props type `SwitchProps`，surface `Switch`，不得使用 `allowEmpty`、prop allowlist、fallback或组件特判。Generated 数据新增第十八个 slug、唯一 `Switch` surface与源码顺序的两项 props：`checked` 精确为 `type: "boolean"`、`required: false`、无 default并带上述说明；`size` 精确为 `type: '"default" | "sm"'`、`required: false`、`default: "default"`并带上述说明。不得生成 inherited defaultChecked/onCheckedChange/disabled/required/name/value/form/asChild/className/children/ref/button/data/ARIA props。前十七个 slug、二十一 targets、InputGroup 五 surface、Checkbox/Radio 单 surface与唯一 allowEmpty必须逐字不变；不新增 Switch.Group/Legend/Item API surface。
+
+   `BASE_DOCS.switch.api` 只改为 `CATALOG_API.switch` 并删除手写 inventory；description、Usage、checked/unchecked variants、provenance与 D064 四个 source-backed scenarios全部冻结。API Reference 必须显示唯一 `Switch` H3和一张 accessible label 为 `Switch props` 的两行表，顺序为 `checked?`、`size?`，两项均 optional；checked 无默认值，size 显示 default，类型和固定说明准确。TOC与 Copy page继续走通用 surface path；Copy Markdown 必须包含两条 optional API 行与 D064 四个完整 raw modules，不得出现 Cloudflare/Kumo/Worker 业务语境。
+
+   组件测试须以 `SwitchProps` 类型证据证明 checked false/true、size default/sm及 inherited defaultChecked/onCheckedChange/disabled/required/name/value/form/asChild/className/ARIA/data能力可用；非法 checked string/number/indeterminate、size base/lg/任意 string必须有真实 `@ts-expect-error`，不得用 `as any`。运行时测试补齐 ref 指向 Root button、id/data/className透传、非受控 unchecked→checked→unchecked、受控 checked点击后保持且 callback收到下一值、disabled与sm/default root/thumb尺寸不回归。Generator/catalog-source/page测试须锁二十二 targets、十八 slug、唯一 allowEmpty仍是 InputGroup.Suffix、Switch单 surface两项精确shape、前十七组不回归、连续 generate/check与新的真实 SHA-256；源码负门证明 docs不再手写 checked且generator/page无Switch名字特判。D064现有四场景、状态隔离、sizes与source-backed Copy断言不得削弱。
+
+   只允许修改 `packages/basalt/src/components/switch.tsx`、`packages/basalt/src/components/switch.test.tsx`、`scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/docs.ts`、`src/pages/ui/catalog-source.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容，恰好8个文件。不得修改root barrel、Radix dependency、其它package runtime/type、D064 examples/scenario/loader、page/TOC/Copy renderer、catalog registry/IA/CSS、HomeGrid、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得加入built-in label/Field、labelTooltip、required UI、controlFirst、neutral variant、base/lg size、transitioning、Group/Legend/Item或其它S4能力，或进入S2A38/S2B。提交前运行Switch/generator/catalog-source/page四个focused test files、generate后连续两次check、typecheck、Biome、串行全量、coverage、showcase build，以及clean package build/types/pack；coverage不得低于D064，构建后工作树必须干净，既有chunk warning与favicon 404资源噪声如实报告。必须用真实Chromium在7003既有服务上验证两行API、四场景、checked切换、状态隔离、disabled、sizes、Copy page handler/payload和零应用console/page error，系统剪贴板桥限制单独如实记录，且不得停止7003。只做一个绿色原子提交，建议 `refactor: generate switch api docs`，随后停止等待Codex review。
 
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
