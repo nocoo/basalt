@@ -19,6 +19,7 @@ import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { RADIO_EXAMPLES } from "./examples/radio";
+import { SELECT_EXAMPLES } from "./examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { SWITCH_EXAMPLES } from "./examples/switch";
@@ -267,6 +268,16 @@ const SWITCH_TITLES = ["Off State", "On State", "Disabled", "Sizes"] as const;
 
 const switchRenders = import.meta.glob("./examples/switch/*.tsx", { eager: true });
 const switchSources = import.meta.glob("./examples/switch/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const SELECT_IDS = ["select-basic", "select-placeholder", "select-disabled-options"] as const;
+const SELECT_TITLES = ["Basic", "Placeholder", "Disabled Options"] as const;
+
+const selectRenders = import.meta.glob("./examples/select/*.tsx", { eager: true });
+const selectSources = import.meta.glob("./examples/select/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -1552,6 +1563,7 @@ describe("source-backed switch scenarios", () => {
 		expect(SWITCH_EXAMPLES.map((item) => item.id)).toEqual([...SWITCH_IDS]);
 		expect(SWITCH_EXAMPLES.map((item) => item.title)).toEqual([...SWITCH_TITLES]);
 		expect(UI_EXAMPLES.switch).toBe(SWITCH_EXAMPLES);
+		expect(UI_EXAMPLES.select).toBe(SELECT_EXAMPLES);
 		expect(UI_EXAMPLES.radio).toBe(RADIO_EXAMPLES);
 		expect(UI_EXAMPLES.checkbox).toBe(CHECKBOX_EXAMPLES);
 		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
@@ -1588,6 +1600,7 @@ describe("source-backed switch scenarios", () => {
 		]);
 		expect(UI_EXAMPLES.checkbox?.map((item) => item.id)).toEqual([...CHECKBOX_IDS]);
 		expect(UI_EXAMPLES.radio?.map((item) => item.id)).toEqual([...RADIO_IDS]);
+		expect(UI_EXAMPLES.select?.map((item) => item.id)).toEqual([...SELECT_IDS]);
 		const fileKeys = new Set(
 			Object.keys(switchRenders).map((modulePath) => moduleFileKey(modulePath)),
 		);
@@ -1631,6 +1644,115 @@ describe("source-backed switch scenarios", () => {
 		expect(SWITCH_EXAMPLES[3]?.code).toContain('aria-label="Small"');
 		expect(SWITCH_EXAMPLES[3]?.code).toContain('aria-label="Default size"');
 		expect(SWITCH_EXAMPLES[3]?.code).toContain("defaultChecked");
+	});
+});
+
+describe("source-backed select scenarios", () => {
+	it("loads three select scenarios from the same glob modules", () => {
+		expect(Object.keys(selectRenders)).toHaveLength(3);
+		expect(Object.keys(selectSources)).toHaveLength(3);
+		const loaded = loadModuleScenarios({
+			slug: "select",
+			metas: SELECT_TITLES.map((title, index) => ({
+				key: SELECT_IDS[index].slice("select-".length),
+				title,
+			})),
+			renderModules: selectRenders,
+			sourceModules: selectSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...SELECT_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...SELECT_TITLES]);
+		expect(SELECT_EXAMPLES.map((item) => item.id)).toEqual([...SELECT_IDS]);
+		expect(SELECT_EXAMPLES.map((item) => item.title)).toEqual([...SELECT_TITLES]);
+		expect(UI_EXAMPLES.select).toBe(SELECT_EXAMPLES);
+		expect(UI_EXAMPLES.switch).toBe(SWITCH_EXAMPLES);
+		expect(UI_EXAMPLES.radio).toBe(RADIO_EXAMPLES);
+		expect(UI_EXAMPLES.checkbox).toBe(CHECKBOX_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
+		expect(UI_EXAMPLES["theme-toggle"]).toBe(THEME_TOGGLE_EXAMPLES);
+		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
+		expect(UI_EXAMPLES["basalt-mark"]).toBe(BASALT_MARK_EXAMPLES);
+		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
+		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
+		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
+		expect(UI_EXAMPLES["sensitive-input"]).toBe(SENSITIVE_INPUT_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		expect(UI_EXAMPLES["theme-toggle"]?.map((item) => item.id)).toEqual([...THEME_TOGGLE_IDS]);
+		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
+		expect(UI_EXAMPLES["basalt-mark"]?.map((item) => item.id)).toEqual([...BASALT_MARK_IDS]);
+		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
+		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
+		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
+		expect(UI_EXAMPLES["sensitive-input"]?.map((item) => item.id)).toEqual([
+			...SENSITIVE_INPUT_IDS,
+		]);
+		expect(UI_EXAMPLES.checkbox?.map((item) => item.id)).toEqual([...CHECKBOX_IDS]);
+		expect(UI_EXAMPLES.radio?.map((item) => item.id)).toEqual([...RADIO_IDS]);
+		expect(UI_EXAMPLES.switch?.map((item) => item.id)).toEqual([...SWITCH_IDS]);
+		const fileKeys = new Set(
+			Object.keys(selectRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(SELECT_IDS.map((id) => id.slice("select-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("select-".length);
+			const modulePath = Object.keys(selectSources).find((path) => path.endsWith(`/${key}.tsx`));
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = selectSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(SELECT_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((selectRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				SELECT_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).not.toContain("@cloudflare/kumo");
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/select");
+			expect(scenario.code).toContain("import {");
+			expect(scenario.code).toContain("Select");
+			expect(scenario.code).toContain("SelectContent");
+			expect(scenario.code).toContain("SelectItem");
+			expect(scenario.code).toContain("SelectTrigger");
+			expect(scenario.code).toContain("SelectValue");
+			expect(scenario.code).toContain('className="w-48"');
+		}
+		expect(SELECT_EXAMPLES[0]?.code).toContain('aria-label="Version"');
+		expect(SELECT_EXAMPLES[0]?.code).toContain('placeholder="Select version"');
+		expect(SELECT_EXAMPLES[0]?.code).toContain('value="1"');
+		expect(SELECT_EXAMPLES[0]?.code).toContain("v1");
+		expect(SELECT_EXAMPLES[0]?.code).toContain('value="2"');
+		expect(SELECT_EXAMPLES[0]?.code).toContain("v2");
+		expect(SELECT_EXAMPLES[0]?.code).not.toContain("disabled");
+		expect(SELECT_EXAMPLES[1]?.code).toContain('aria-label="Empty select"');
+		expect(SELECT_EXAMPLES[1]?.code).toContain('placeholder="Choose…"');
+		expect(SELECT_EXAMPLES[1]?.code).toContain('value="a"');
+		expect(SELECT_EXAMPLES[1]?.code).toContain("Alpha");
+		expect(SELECT_EXAMPLES[1]?.code).not.toContain("disabled");
+		expect(SELECT_EXAMPLES[2]?.code).toContain('aria-label="Disabled option"');
+		expect(SELECT_EXAMPLES[2]?.code).toContain('placeholder="Choose…"');
+		expect(SELECT_EXAMPLES[2]?.code).toContain('value="a"');
+		expect(SELECT_EXAMPLES[2]?.code).toContain("Alpha");
+		expect(SELECT_EXAMPLES[2]?.code).toContain('value="b"');
+		expect(SELECT_EXAMPLES[2]?.code).toContain("Beta");
+		expect(SELECT_EXAMPLES[2]?.code).toContain("disabled");
 	});
 });
 

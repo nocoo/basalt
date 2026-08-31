@@ -18,6 +18,7 @@ import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { RADIO_EXAMPLES } from "./examples/radio";
+import { SELECT_EXAMPLES } from "./examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { SWITCH_EXAMPLES } from "./examples/switch";
@@ -69,6 +70,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	checkbox: CHECKBOX_EXAMPLES,
 	radio: RADIO_EXAMPLES,
 	switch: SWITCH_EXAMPLES,
+	select: SELECT_EXAMPLES,
 	banner: [
 		{
 			id: catalogScenarioId("banner", "variants"),

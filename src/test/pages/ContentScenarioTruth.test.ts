@@ -1,7 +1,11 @@
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { createElement } from "react";
 import { describe, expect, it } from "vitest";
+import { EXTRA_DOCS, EXTRA_EXAMPLES } from "@/pages/ui/catalog-ready";
 import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { LAYER_CARD_EXAMPLES } from "@/pages/ui/examples/layer-card";
+import { SELECT_EXAMPLES } from "@/pages/ui/examples/select";
 import { TEXT_EXAMPLES } from "@/pages/ui/examples/text";
 
 function scenario(slug: string, id: string) {
@@ -44,11 +48,14 @@ describe("content scenario truth", () => {
 		expect(UI_EXAMPLES.code?.map((item) => item.id)).toEqual(["code-typescript", "code-react"]);
 		expect(UI_EXAMPLES["code-block"]?.map((item) => item.id)).toEqual(["code-block-basic"]);
 		expect(UI_EXAMPLES.autocomplete?.map((item) => item.id)).toEqual(["autocomplete-default"]);
+		expect(UI_EXAMPLES.select).toBe(SELECT_EXAMPLES);
 		expect(UI_EXAMPLES.select?.map((item) => item.id)).toEqual([
 			"select-basic",
 			"select-placeholder",
 			"select-disabled-options",
 		]);
+		expect(EXTRA_DOCS.select).toBeUndefined();
+		expect(EXTRA_EXAMPLES.select).toBeUndefined();
 		expect(UI_EXAMPLES.grid?.map((item) => item.id)).toEqual(["grid-grid"]);
 		expect(UI_EXAMPLES.flow?.map((item) => item.id)).toEqual(["flow-sequential-flow"]);
 		expect(UI_EXAMPLES["command-palette"]?.map((item) => item.id)).toEqual([
@@ -123,6 +130,48 @@ describe("content scenario truth", () => {
 		expect(scenario("select", "select-basic").code).toContain("SelectContent");
 		expect(scenario("select", "select-placeholder").code).toContain('placeholder="Choose…"');
 		expect(scenario("select", "select-disabled-options").code).toContain("disabled");
+	});
+
+	it("renders select basic, placeholder, and disabled options from source modules", () => {
+		expect(UI_EXAMPLES.select).toBe(SELECT_EXAMPLES);
+		const basic = scenario("select", "select-basic");
+		expect(basic.code).toContain("export default");
+		expect(basic.code).toContain("@nocoo/basalt/components/select");
+		expect(basic.code).toContain('aria-label="Version"');
+		expect(basic.code).toContain('className="w-48"');
+		expect(basic.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		render(createElement(basic.render));
+		const trigger = screen.getByRole("combobox", { name: "Version" });
+		expect(trigger).toHaveTextContent("Select version");
+		expect(trigger.className).toContain("w-48");
+		fireEvent.click(trigger);
+		fireEvent.click(screen.getByRole("option", { name: "v2" }));
+		expect(trigger).toHaveTextContent("v2");
+		cleanup();
+		const placeholder = scenario("select", "select-placeholder");
+		expect(placeholder.code).toContain('aria-label="Empty select"');
+		expect(placeholder.code).toContain('placeholder="Choose…"');
+		render(createElement(placeholder.render));
+		const empty = screen.getByRole("combobox", { name: "Empty select" });
+		expect(empty).toHaveTextContent("Choose…");
+		fireEvent.click(empty);
+		fireEvent.click(screen.getByRole("option", { name: "Alpha" }));
+		expect(empty).toHaveTextContent("Alpha");
+		cleanup();
+		const disabled = scenario("select", "select-disabled-options");
+		expect(disabled.code).toContain('aria-label="Disabled option"');
+		expect(disabled.code).toContain("disabled");
+		render(createElement(disabled.render));
+		const disabledTrigger = screen.getByRole("combobox", { name: "Disabled option" });
+		expect(disabledTrigger).toHaveTextContent("Choose…");
+		fireEvent.click(disabledTrigger);
+		const alpha = screen.getByRole("option", { name: "Alpha" });
+		const beta = screen.getByRole("option", { name: "Beta" });
+		expect(alpha).not.toHaveAttribute("aria-disabled", "true");
+		expect(beta).toHaveAttribute("aria-disabled", "true");
+		fireEvent.click(beta);
+		expect(disabledTrigger).toHaveTextContent("Choose…");
+		cleanup();
 	});
 
 	it("shows grid items instead of an empty shell", () => {

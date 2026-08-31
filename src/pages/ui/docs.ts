@@ -277,6 +277,38 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			file: "components/ui/switch.tsx",
 		}),
 	},
+	select: {
+		description: "Choose one option.",
+		usage: `import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@nocoo/basalt/components/select";
+
+export default function Example() {
+	return (
+		<Select>
+			<SelectTrigger aria-label="Version">
+				<SelectValue placeholder="Select version" />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="1">v1</SelectItem>
+			</SelectContent>
+		</Select>
+	);
+}`,
+		variants: [],
+		api: [
+			{ name: "Select", props: [{ name: "className", type: "string", description: "className" }] },
+		],
+		provenance: provenanceFromLegacy({
+			repo: "pew",
+			sha: "97a890fabe6e",
+			file: "packages/web/src/components",
+		}),
+	},
 	"theme-provider": {
 		description: "Provides theme state without reading storage at module scope.",
 		usage: usage(

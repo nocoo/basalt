@@ -2818,6 +2818,106 @@ describe("ui catalog", () => {
 		expect(kumo).toContain("catalogScenarioId");
 	});
 
+	it("keeps select hero, three states, disabled option, and copy modules", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/select");
+		expect(screen.getByRole("heading", { name: "Basic" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Placeholder" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled Options" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="select-basic"]');
+		const basic = document.querySelector('[data-scenario="select-basic"]');
+		const placeholder = document.querySelector('[data-scenario="select-placeholder"]');
+		const disabled = document.querySelector('[data-scenario="select-disabled-options"]');
+		expect(hero).toBeTruthy();
+		expect(basic).toBeTruthy();
+		expect(placeholder).toBeTruthy();
+		expect(disabled).toBeTruthy();
+		if (!hero || !basic || !placeholder || !disabled) {
+			throw new Error("missing select scenario surfaces");
+		}
+		const heroTrigger = within(hero as HTMLElement).getByRole("combobox", { name: "Version" });
+		const labeledTrigger = within(basic as HTMLElement).getByRole("combobox", { name: "Version" });
+		const emptyTrigger = within(placeholder as HTMLElement).getByRole("combobox", {
+			name: "Empty select",
+		});
+		const disabledTrigger = within(disabled as HTMLElement).getByRole("combobox", {
+			name: "Disabled option",
+		});
+		expect(heroTrigger.className).toContain("w-48");
+		expect(labeledTrigger.className).toContain("w-48");
+		expect(emptyTrigger.className).toContain("w-48");
+		expect(disabledTrigger.className).toContain("w-48");
+		expect(heroTrigger).toHaveTextContent("Select version");
+		expect(labeledTrigger).toHaveTextContent("Select version");
+		expect(emptyTrigger).toHaveTextContent("Choose…");
+		expect(disabledTrigger).toHaveTextContent("Choose…");
+		const api = document.getElementById("api-reference");
+		expect(document.getElementById("api-Select")?.tagName).toBe("H3");
+		expect(screen.getByRole("table", { name: "Select props" })).toBeInTheDocument();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api).toHaveTextContent("className");
+		expect(api).toHaveTextContent("string");
+		expect(CATALOG_DOCS.select?.api).toEqual([
+			{ name: "Select", props: [{ name: "className", type: "string", description: "className" }] },
+		]);
+		fireEvent.click(heroTrigger);
+		fireEvent.click(screen.getByRole("option", { name: "v2" }));
+		expect(heroTrigger).toHaveTextContent("v2");
+		expect(labeledTrigger).toHaveTextContent("Select version");
+		fireEvent.click(emptyTrigger);
+		fireEvent.click(screen.getByRole("option", { name: "Alpha" }));
+		expect(emptyTrigger).toHaveTextContent("Alpha");
+		fireEvent.click(disabledTrigger);
+		const beta = screen.getByRole("option", { name: "Beta" });
+		expect(screen.getByRole("option", { name: "Alpha" })).not.toHaveAttribute(
+			"aria-disabled",
+			"true",
+		);
+		expect(beta).toHaveAttribute("aria-disabled", "true");
+		fireEvent.click(beta);
+		expect(disabledTrigger).toHaveTextContent("Choose…");
+		fireEvent.keyDown(disabledTrigger, { key: "Escape" });
+		for (const scenario of UI_EXAMPLES.select ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/select");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(UI_EXAMPLES.select).toHaveLength(3);
+		for (const scenario of UI_EXAMPLES.select ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).toContain('className="w-48"');
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		expect(CATALOG_DOCS.switch?.api).toEqual(CATALOG_API.switch);
+		expect(UI_EXAMPLES.switch).toHaveLength(4);
+	});
+
+	it("does not keep inline select scenario owners", () => {
+		const ready = readFileSync(path.join(process.cwd(), "src/pages/ui/catalog-ready.tsx"), "utf8");
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("SELECT_EXAMPLES");
+		expect(demos).toMatch(/\bselect: SELECT_EXAMPLES/);
+		expect(demos).not.toMatch(/\bselect:\s*\[/);
+		expect(kumo).not.toMatch(/\bselect:\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("select"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("select"/);
+		expect(demos).not.toContain('from "@nocoo/basalt/components/select"');
+		expect(ready).not.toMatch(/add\(\s*"select"/);
+		expect(ready).not.toContain('from "@nocoo/basalt/components/select"');
+		expect(kumo).toContain('from "@nocoo/basalt/components/select"');
+		expect(kumo).toContain('catalogScenarioId("dialog", "with-select")');
+		expect(kumo).toContain('aria-label="Region"');
+	});
+
 	it("does not keep inline input scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");

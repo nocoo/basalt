@@ -102,13 +102,6 @@ import {
 	PopoverTitle,
 	PopoverTrigger,
 } from "@nocoo/basalt/components/popover";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@nocoo/basalt/components/select";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@nocoo/basalt/components/sheet";
 import { ContentIsland, Sidebar, SidebarItem } from "@nocoo/basalt/components/sidebar";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
@@ -859,42 +852,6 @@ export default function Example() {
 				<DropdownMenuItem>Copy</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
-	);
-}`,
-);
-add(
-	"select",
-	"Choose one option.",
-	() => (
-		<Select>
-			<SelectTrigger aria-label="Version">
-				<SelectValue placeholder="Select version" />
-			</SelectTrigger>
-			<SelectContent>
-				<SelectItem value="1">v1</SelectItem>
-			</SelectContent>
-		</Select>
-	),
-	'<Select><SelectTrigger aria-label="Version"><SelectValue placeholder="Select version" /></SelectTrigger><SelectContent><SelectItem value="1">v1</SelectItem></SelectContent></Select>',
-	undefined,
-	`import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@nocoo/basalt/components/select";
-
-export default function Example() {
-	return (
-		<Select>
-			<SelectTrigger aria-label="Version">
-				<SelectValue placeholder="Select version" />
-			</SelectTrigger>
-			<SelectContent>
-				<SelectItem value="1">v1</SelectItem>
-			</SelectContent>
-		</Select>
 	);
 }`,
 );

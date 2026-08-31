@@ -9,6 +9,7 @@ import { INPUT_EXAMPLES } from "@/pages/ui/examples/input";
 import { INPUT_AREA_EXAMPLES } from "@/pages/ui/examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "@/pages/ui/examples/input-group";
 import { RADIO_EXAMPLES } from "@/pages/ui/examples/radio";
+import { SELECT_EXAMPLES } from "@/pages/ui/examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "@/pages/ui/examples/sensitive-input";
 import { SWITCH_EXAMPLES } from "@/pages/ui/examples/switch";
 
@@ -106,6 +107,12 @@ describe("form selection scenario truth", () => {
 			"switch-on-state",
 			"switch-disabled",
 			"switch-sizes",
+		]);
+		expect(UI_EXAMPLES.select).toBe(SELECT_EXAMPLES);
+		expect(UI_EXAMPLES.select?.map((item) => item.id)).toEqual([
+			"select-basic",
+			"select-placeholder",
+			"select-disabled-options",
 		]);
 		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
 		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual(["field-hint", "field-error"]);
@@ -259,6 +266,44 @@ describe("form selection scenario truth", () => {
 		expect(small.className).toContain("w-7");
 		expect(defaultSize.className).toContain("h-6");
 		expect(defaultSize.className).toContain("w-11");
+		cleanup();
+	});
+
+	it("selects options, keeps placeholder isolation, and leaves disabled beta unselected", () => {
+		expect(UI_EXAMPLES.select).toBe(SELECT_EXAMPLES);
+		const basic = scenario("select", "select-basic");
+		expect(basic.code).toContain("export default");
+		expect(basic.code).toContain("@nocoo/basalt/components/select");
+		expect(basic.code).toContain('aria-label="Version"');
+		expect(basic.code).toContain('className="w-48"');
+		expect(basic.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		render(createElement(basic.render));
+		const trigger = screen.getByRole("combobox", { name: "Version" });
+		expect(trigger).toHaveTextContent("Select version");
+		fireEvent.click(trigger);
+		expect(screen.getByRole("option", { name: "v1" })).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("option", { name: "v2" }));
+		expect(trigger).toHaveTextContent("v2");
+		cleanup();
+		const placeholder = scenario("select", "select-placeholder");
+		render(createElement(placeholder.render));
+		const empty = screen.getByRole("combobox", { name: "Empty select" });
+		expect(empty).toHaveTextContent("Choose…");
+		fireEvent.click(empty);
+		fireEvent.click(screen.getByRole("option", { name: "Alpha" }));
+		expect(empty).toHaveTextContent("Alpha");
+		cleanup();
+		const disabled = scenario("select", "select-disabled-options");
+		render(createElement(disabled.render));
+		const disabledTrigger = screen.getByRole("combobox", { name: "Disabled option" });
+		fireEvent.click(disabledTrigger);
+		expect(screen.getByRole("option", { name: "Alpha" })).not.toHaveAttribute(
+			"aria-disabled",
+			"true",
+		);
+		expect(screen.getByRole("option", { name: "Beta" })).toHaveAttribute("aria-disabled", "true");
+		fireEvent.click(screen.getByRole("option", { name: "Beta" }));
+		expect(disabledTrigger).toHaveTextContent("Choose…");
 		cleanup();
 	});
 
