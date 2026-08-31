@@ -1,7 +1,7 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2V — D029C ToggleGroup segmented motion（待下发）
+> 当前切片：S2V — D029C-R1 stable composed ref 与 Tabs motion contract
 > 已验收代码基线：`cae03fe29f90`（`main`；D029B breadcrumb hierarchy 完成）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
@@ -309,6 +309,8 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
 
 3. **D029C — ToggleGroup segmented motion。** 单选 `ToggleGroup` 必须有位于 items 后方的真实 selection indicator，在选中项切换、文本/容器 resize 与受控值变化时以 180–200ms ease-out 平滑移动并同步宽度；首次定位不得从零飞入，`prefers-reduced-motion: reduce` 下必须取消位移 transition。抽取 Tabs/ToggleGroup 可共用的私有测量/observer 逻辑，避免复制 ResizeObserver/MutationObserver；Tabs 外观、位置与公开 API 不得漂移。`type="multiple"` 不使用单一移动底板，继续用 item-local 的颜色/背景 transition 表达多个 on 状态。LanguageToggle 必须自然消费包内新行为，不在应用层复制动画。允许修改/新增 package 内私有 selection-indicator helper、`tabs.tsx`/tests、`toggle-group.tsx`/tests、必要的 standalone CSS contract test，以及仅用于行为证明的 `src/components/LanguageToggle.test.tsx`；不得改公开 API、业务 i18n、tokens、package/lock、其它组件/example。除 unit/type/lint/full/coverage/package build/types/pack/showcase build 外，必须用真实 Chromium 在 7003 既有服务上证明 indicator 切换前后几何位置不同、transition 为 180–200ms，且 reduced-motion 后 computed transition 归零；不得停止 7003。
 
+   **D029C-R1 review。** `507b273fddd9` 的单选底板、multiple 分流、私有 helper、首次帧、reduced-motion 与 Chromium 几何证据成立，真实 Tabs 也能从 `left 0/width 63` 移到 `left 67/width 64`；但 `bindRef(ref)` 在每次 render 返回新 callback，ToggleGroup 首次测量已可复现外部稳定 callback ref 收到 `node → null → node`，相较原实现产生伪 detach/attach。R1 必须让合并 ref 在外部 ref 身份不变时保持稳定，并以 callback ref 锁住首次测量和后续切换不重复通知；同时补回真实 Tabs active 切换的 left/width/top + motion contract，不能只由 ToggleGroup 间接代测。只改 selection helper/tests、Tabs/ToggleGroup 及其测试；不得改变已通过的视觉、CSS、公开 API 或进入后续切片。
+
 文档站必须使用 `@nocoo/basalt` 出口实现自身界面，包括 Dropdown、Table、Select、Tabs、TOC、Button、Code 等，不能为展示 Basalt 再依赖一套 `src/components/ui` 旧实现。
 
 首页按 Components/Charts/Blocks 分类，支持搜索、stable/catalog 状态和完成度；不再渲染 88 个等权 `aspect-square` tile。
@@ -461,5 +463,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D028 | S2A1 | `c5256403b362` + `a55e545a2b23` | `w14:p1` | 完成 | `9fcee558e192` + `0252251a980c` | 首提交以通用 loader 和 10 个自包含 Button TSX 模块让 preview/default export 与展示代码/同路径 raw 共用真源，保持 id、title、顺序、交互与可访问名称，并修复 disabled-link 的 inert/视觉漂移；Codex review 复现 basename 配对会错误接受跨目录 render/raw，返工改为只移除精确 `?raw`、统一路径分隔符后比较完整相对路径，真实负例同时锁住双方原路径，任意其它 query 不被吞掉。Codex 独立复跑 focused 3 files / 191 tests、typecheck、Biome 399 files、全量 112 files / 800 tests、coverage `1417/1463`（96.85%）/`1102/1160`（95.00%）/`430/449`（95.76%）/`1343/1385`（96.96%）及 production build 2781 modules 全绿；既有 1,554.77 kB chunk warning 如实保留。Grok coverage 首轮遇到既有 5 秒 timeout、重跑通过，Codex 单独复跑一次通过；禁用用户语境扫描为空，7003 服务与运行前残留均未动，工作树干净 |
 | D029A | S2V | `0548bfe070ff` | `w14:p1` | 完成 | `5e86eeac5143` + `1b23083a08f5` | 首提交统一 8 个 control surface、Code/Collapsible 字号与 Pagination resting/interaction surface；Codex review 发现 helper 被 `./components/*` 意外公开，R1 迁至未导出的 `utils/` 并锁住两个 package import 负门。Codex 独立验收 focused 9 files / 38 tests、typecheck、Biome 401 files、全量 113 files / 812 tests、coverage `1419/1465`（96.86%）/`1102/1160`（95.00%）/`431/450`（95.78%）/`1345/1387`（96.97%）、package 91 JS + 91 d.ts + 88 maps、types、276-file pack、showcase build；Node 实证旧 components 路径 `ERR_MODULE_NOT_FOUND`、utils 路径 `ERR_PACKAGE_PATH_NOT_EXPORTED`。Chromium light/dark computed style 证明 Input/Select/InputGroup/Clipboard/Code/Pagination surface 与 border 完全一致，radius 10px/font 14px，五个长控件 36px，Collapsible trigger/default panel 14px。7003 在验收前已无 listener，Codex 恢复服务后保留运行 |
 | D029B | S2V | `b060080` | `w14:p1` | 完成 | `cc85e477269f` + `cae03fe29f90` | Breadcrumbs linked/plain/current 与 AppHeader h1 均收敛至 14px/400，当前只用 foreground 色强化；h1、aria-current、separator 与 optional regions 保留。Codex review 发现首次提交漏闭包 build:css 确定性删除的 4 行 `.md:text-xl`，R1 只补该生成产物。Codex 独立验收 focused 2 files / 6 tests、typecheck、Biome 401 files、全量 113 / 814、coverage `1420/1466`（96.86%）/`1103/1160`（95.08%）/`431/450`（95.77%）/`1346/1388`（96.97%）、package 91 JS + 91 d.ts + 88 maps、types、276-file pack、连续两次 package build 幂等及 showcase build；Chromium light/dark 均实证 ancestor/current 为 14px/400 且只以 muted/foreground 色区分。工作树干净，7003 保持运行 |
+| D029C | S2V | `ba2a0c6` | `w14:p1` | 验收中（R1） | `507b273fddd9`（待 stable ref 修复） | 单选 ToggleGroup 已有真实移动底板，multiple 保留局部多选，Tabs 共用私有 observer helper，LanguageToggle 自然继承；首帧直接落位、正常 200ms ease-out、reduced-motion 0s 的 Chromium 证据成立。Codex review 复现稳定 callback ref 被内部 state render 伪 detach/attach，并要求补 Tabs 切换几何回归测试；其余已通过行为不得重写 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
