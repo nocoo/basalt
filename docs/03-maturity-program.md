@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A33 D061 — Checkbox API 类型真源；待调查与规格固化
-> 当前代码前置：`b1b03ab`（D060 Grok 实现已独立验收，待台账提交）
+> 当前切片：S2A33 D061 — Checkbox API 类型真源；规格已固化，待 Grok 实现
+> 当前代码前置：`e00a9ff`（D060 台账已提交，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060 完成；S2A33 D061 待规格） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060 完成；S2A33 D061 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -540,6 +540,18 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    Scenario loader 测试须以真实 glob 重新调用 `loadModuleScenarios`，锁住五个 metadata、同路径 render/raw、精确 ID/title/order、集合闭合与 `UI_EXAMPLES` 引用同一实例，并逐项证明 raw code 含 granular import、default export和对应 checked/mixed/disabled/Field 契约。Form-selection 真值测试须导入 `CHECKBOX_EXAMPLES`，锁同一引用，并真实 render 验证 Default 可由点击 unchecked→checked→unchecked、Checked 初始选中、Indeterminate 为 mixed、Disabled 两控件均禁用且状态不变、Error 的 label/control/error ARIA 关系；不得只做字符串存在性。页面测试须验证 `/ui/checkbox` hero 与五场景、标题/顺序、上述状态与 Error 关系；Copy page 必须逐字包含五个完整 raw modules，Disabled code 含真实 wrapper，且没有禁用品牌语境。源码负门须证明 demos/Kumo 文件无 checkbox inline owner、legacy scenario ID 或直接 Checkbox import，同时 D058/D059 SensitiveInput 的两场景与 generated API 不回归。
 
    只允许新增 `src/pages/ui/examples/checkbox/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/FormSelectionScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容，合计应为 11 个文件。不得修改 `catalog-scenario.ts` loader、package Checkbox/Field 实现、类型或测试、其它 examples、`docs.ts`/generated API/generator、catalog registry/IA/CSS、HomeGrid、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入 Checkbox API 真源、S2A33、S2B 或 S4。提交前运行 catalog-scenario/form-selection/page 三个 focused test files、`bun run catalog-api:check`、typecheck、Biome、全量、coverage 与 showcase production build；coverage 四项不得低于 D059，既有 chunk warning如实报告，构建后工作树必须干净。必须用真实 Chromium 在 7003 既有服务上验证五项状态、Error ARIA、Copy page 与 console 0，且不得停止 7003。只做一个绿色原子提交，建议 `refactor: source checkbox scenarios`，随后停止等待 Codex review。
+
+33. **S2A33 / D061 — Checkbox API 类型真源与 checked 契约。** D060 已把 Checkbox 五个 primitive 场景的 preview/code 收敛为同源模块；当前 docs 仍手写唯一 `checked: boolean | "indeterminate"` 行，而生产组件直接把匿名 Radix Root props 交给 `forwardRef`，因此文档没有可校验的本地类型真源。本刀只导出 granular `CheckboxProps` 并让现有单行 API 由 generator 产生，不增加任何运行时能力或文档行。`CheckboxProps` 必须精确等价于 `Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, "checked"> & { checked?: boolean | "indeterminate" }`：本地只重声明 optional `checked`，保留 inherited `defaultChecked`、`onCheckedChange`、`disabled`、`required`、`name`、`value`、`form`、button/data/ARIA attributes、`asChild`、children 与 className；props type 自身保持 `WithoutRef`，而 `forwardRef` 组件继续通过 `RefAttributes` 接受 `HTMLButtonElement` ref。root barrel 与 wildcard granular export 规则均不改。
+
+   `checked` 只补固定 JSDoc `The controlled checked state of the checkbox.`，不得加 `@default`、额外 alias 或本地重声明 `defaultChecked` / callback / native props。`Checkbox` 的 forwardRef element type、函数体、destructuring、Radix Root/Indicator、class 字符串、FOCUS_RING、Check/Minus 图标、ref 与 `{...props}` 顺序必须逐字保持；只能把 forwardRef 的匿名 props generic 替换为 `CheckboxProps`。受控 true/false/indeterminate、非受控 defaultChecked、disabled、form bubble、键盘与焦点行为不得漂移。
+
+   `CATALOG_API_TARGETS` 在 SensitiveInput 后追加第二十个声明式 target：slug `checkbox`，source `packages/basalt/src/components/checkbox.tsx`，props type `CheckboxProps`，surface `Checkbox`，不得使用 `allowEmpty`、prop allowlist、fallback 或组件特判。Generated 数据新增第十六个 slug、唯一 `Checkbox` surface和唯一 `checked` prop；因 generator 的稳定 union 排序，其 shape 必须为 `type: '"indeterminate" | boolean'`、`required: false`、无 default，并携带上述说明。不得生成 inherited `defaultChecked`、`onCheckedChange`、disabled/required/name/value/form/asChild/className/children/ref 或 button/data/ARIA props；前十五个 slug、十九 targets、InputGroup 五 surface与唯一 allowEmpty 必须逐字不变。
+
+   `BASE_DOCS.checkbox.api` 只改为 `CATALOG_API.checkbox` 并删除手写 inventory；description、Usage、三个 variants、provenance 与 D060 五个 source-backed scenarios 全部冻结。API Reference 必须显示唯一 `Checkbox` H3 和一张 accessible label 为 `Checkbox props` 的单行表，`checked?` 为 optional、无默认值、显示 canonical union 与说明；TOC 和 Copy page 继续走通用 surface path。Copy Markdown 必须包含 optional checked 行及 D060 五个完整 raw modules，且不得出现 Cloudflare/Kumo/Worker 业务语境。
+
+   组件测试须以 `CheckboxProps` 类型证据证明 checked 的 false/true/indeterminate、inherited defaultChecked/onCheckedChange/disabled/required/name/value/form/asChild/className/ARIA 能力可用；非法 `checked="mixed"` 与 number 必须有真实 `@ts-expect-error`，不得用 `as any`。运行时测试补齐 ref 指向 Root button、native props/className 透传、非受控 unchecked→checked→unchecked、受控 checked 在 click 后保持且回调收到下一个 state、indeterminate 与 disabled 不回归。Generator/catalog-source/page 测试须锁二十 targets、十六 slug、唯一 allowEmpty 仍为 InputGroup.Suffix、Checkbox 单项精确 shape、前十五组不回归、连续 generate/check 与新的真实 SHA-256；源码负门证明 docs 不再手写 checked 且 generator/page 不出现 Checkbox 名字特判。D060 scenario/form-selection/page 现有五状态、Error ARIA 与 source-backed Copy 断言不得削弱或重复造假。
+
+   只允许修改 `packages/basalt/src/components/checkbox.tsx`、`packages/basalt/src/components/checkbox.test.tsx`、`scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/docs.ts`、`src/pages/ui/catalog-source.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容，恰好 8 个文件。不得修改 root barrel、Radix dependency、Field 或其它 package runtime/type、D060 examples/scenario/loader、page/TOC/Copy renderer、catalog registry/IA/CSS、HomeGrid、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得加入 Kumo 的 label/tooltip/controlFirst/variant/Group/Item/Legend/error/value arrays 等 S4 能力，或进入 S2A34/S2B。提交前运行 Checkbox/generator/catalog-source/page 四个 focused test files、generate 后连续两次 check、typecheck、Biome、串行全量、coverage、showcase build，以及 clean package build/types/pack；coverage不得低于 D060，构建后工作树必须干净，既有 chunk warning与 favicon 404 资源噪声如实报告。必须用真实 Chromium 在 7003 既有服务上验证单行 API、五场景、Error ARIA、Copy page 和零应用 console/page error，且不得停止 7003。只做一个绿色原子提交，建议 `refactor: generate checkbox api docs`，随后停止等待 Codex review。
 
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
