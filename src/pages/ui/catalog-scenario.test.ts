@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import foundation from "./catalog-content/families/foundation";
 import {
 	catalogScenarioId,
 	catalogScenarioMatchesSlug,
@@ -6,7 +7,15 @@ import {
 	moduleFileKey,
 	normalizeModulePath,
 } from "./catalog-scenario";
-import { UI_EXAMPLES } from "./demos";
+import { UI_EXAMPLES as LEGACY_UI_EXAMPLES } from "./demos";
+
+const UI_EXAMPLES = {
+	...LEGACY_UI_EXAMPLES,
+	...Object.fromEntries(
+		Object.entries(foundation).map(([slug, content]) => [slug, content.examples]),
+	),
+};
+
 import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { CHECKBOX_EXAMPLES } from "./examples/checkbox";

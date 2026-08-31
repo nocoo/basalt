@@ -1,6 +1,7 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { createServer } from "vite";
+import { loadCatalogFamilyRecords } from "./catalog-content-manifest";
 
 export const GENERATED_RELATIVE_PATH = "src/pages/ui/generated/catalog-page-status.ts";
 export const GENERATE_COMMAND = "bun run catalog-page-status:generate";
@@ -62,15 +63,31 @@ export async function loadCatalogModulesWithVite(repoRoot: string): Promise<Cata
 	});
 
 	try {
-		const [catalogModule, docsModule, demosModule] = await Promise.all([
+		const [catalogModule, docsModule, demosModule, families] = await Promise.all([
 			server.ssrLoadModule("/src/pages/ui/catalog.ts"),
 			server.ssrLoadModule("/src/pages/ui/docs.ts"),
 			server.ssrLoadModule("/src/pages/ui/demos.tsx"),
+			loadCatalogFamilyRecords(repoRoot, server),
 		]);
+		const docsBySlug = {
+			...(docsModule.CATALOG_DOCS as Record<string, unknown>),
+		};
+		const examplesBySlug = {
+			...(demosModule.UI_EXAMPLES as Record<string, readonly unknown[] | undefined>),
+		};
+		for (const { family, record } of families) {
+			for (const [slug, content] of Object.entries(record)) {
+				if (docsBySlug[slug] || examplesBySlug[slug]) {
+					throw new Error(`Catalog content owner collision for "${slug}" with family "${family}"`);
+				}
+				docsBySlug[slug] = content.docs;
+				examplesBySlug[slug] = content.examples;
+			}
+		}
 		return {
 			entries: catalogModule.CATALOG as readonly CatalogEntryShape[],
-			docsBySlug: docsModule.CATALOG_DOCS as Record<string, unknown>,
-			examplesBySlug: demosModule.UI_EXAMPLES as Record<string, readonly unknown[] | undefined>,
+			docsBySlug,
+			examplesBySlug,
 		};
 	} finally {
 		await server.close();

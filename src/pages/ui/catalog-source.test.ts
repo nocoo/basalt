@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { CATALOG_BY_SLUG } from "./catalog";
+import foundation from "./catalog-content/families/foundation";
 import {
 	catalogDocsWithImplementation,
 	githubSourceHref,
@@ -125,17 +126,17 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("link-button"))).toBe(
 			"packages/basalt/src/components/button.tsx",
 		);
-		expect(CATALOG_DOCS["link-button"]?.api).toEqual(CATALOG_API["link-button"]);
+		expect(foundation["link-button"]?.docs.api).toEqual(CATALOG_API["link-button"]);
 		expect(CATALOG_API["link-button"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",
 			"icon",
 		]);
 		expect(implementationFileFor(entry("text"))).toBe("packages/basalt/src/components/text.tsx");
-		expect(CATALOG_DOCS.text?.api).toEqual(CATALOG_API.text);
+		expect(foundation.text?.docs.api).toEqual(CATALOG_API.text);
 		expect(CATALOG_API.text?.[0]?.props.map((prop) => prop.name)).toEqual(["size", "tone"]);
 		expect(implementationFileFor(entry("label"))).toBe("packages/basalt/src/components/label.tsx");
-		expect(CATALOG_DOCS.label?.api).toEqual(CATALOG_API.label);
+		expect(foundation.label?.docs.api).toEqual(CATALOG_API.label);
 		expect(CATALOG_API.label?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"showOptional",
 			"tooltip",
@@ -143,13 +144,13 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("separator"))).toBe(
 			"packages/basalt/src/components/separator.tsx",
 		);
-		expect(CATALOG_DOCS.separator?.api).toEqual(CATALOG_API.separator);
+		expect(foundation.separator?.docs.api).toEqual(CATALOG_API.separator);
 		expect(CATALOG_API.separator?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"orientation",
 			"decorative",
 		]);
 		expect(implementationFileFor(entry("link"))).toBe("packages/basalt/src/components/link.tsx");
-		expect(CATALOG_DOCS.link?.api).toEqual(CATALOG_API.link);
+		expect(foundation.link?.docs.api).toEqual(CATALOG_API.link);
 		expect(CATALOG_API.link?.[0]?.props.map((prop) => prop.name)).toEqual(["href"]);
 		expect(implementationFileFor(entry("tooltip"))).toBe(
 			"packages/basalt/src/components/tooltip.tsx",
@@ -159,19 +160,19 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("theme-toggle"))).toBe(
 			"packages/basalt/src/components/theme-toggle.tsx",
 		);
-		expect(CATALOG_DOCS["theme-toggle"]?.api).toEqual(CATALOG_API["theme-toggle"]);
+		expect(foundation["theme-toggle"]?.docs.api).toEqual(CATALOG_API["theme-toggle"]);
 		expect(CATALOG_API["theme-toggle"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"aria-label",
 		]);
 		expect(implementationFileFor(entry("layer-card"))).toBe(
 			"packages/basalt/src/components/layer-card.tsx",
 		);
-		expect(CATALOG_DOCS["layer-card"]?.api).toEqual(CATALOG_API["layer-card"]);
+		expect(foundation["layer-card"]?.docs.api).toEqual(CATALOG_API["layer-card"]);
 		expect(CATALOG_API["layer-card"]?.[0]?.props.map((prop) => prop.name)).toEqual(["className"]);
 		expect(implementationFileFor(entry("basalt-mark"))).toBe(
 			"packages/basalt/src/components/basalt-mark.tsx",
 		);
-		expect(CATALOG_DOCS["basalt-mark"]?.api).toEqual(CATALOG_API["basalt-mark"]);
+		expect(foundation["basalt-mark"]?.docs.api).toEqual(CATALOG_API["basalt-mark"]);
 		expect(CATALOG_API["basalt-mark"]?.[0]?.props.map((prop) => prop.name)).toEqual(["className"]);
 		expect(implementationFileFor(entry("field"))).toBe("packages/basalt/src/components/field.tsx");
 		expect(CATALOG_DOCS.field?.api).toEqual(CATALOG_API.field);
@@ -283,16 +284,7 @@ describe("catalog source contract", () => {
 			}
 		}
 		const generated = [
-			"button",
-			"link-button",
-			"text",
-			"label",
-			"separator",
-			"link",
 			"tooltip",
-			"theme-toggle",
-			"layer-card",
-			"basalt-mark",
 			"field",
 			"input",
 			"input-area",
@@ -305,6 +297,19 @@ describe("catalog source contract", () => {
 		];
 		for (const slug of generated) {
 			expect(CATALOG_DOCS[slug]?.api).toBe(CATALOG_API[slug as keyof typeof CATALOG_API]);
+		}
+		for (const slug of [
+			"button",
+			"link-button",
+			"text",
+			"label",
+			"separator",
+			"link",
+			"theme-toggle",
+			"layer-card",
+			"basalt-mark",
+		]) {
+			expect(foundation[slug]?.docs.api).toBe(CATALOG_API[slug as keyof typeof CATALOG_API]);
 		}
 		expect(CATALOG_DOCS["input-group"]?.api).toHaveLength(5);
 		expect(CATALOG_DOCS["input-group"]?.api.map((surface) => surface.name)).toEqual([

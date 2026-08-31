@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CATALOG } from "./catalog";
 import type { CatalogPageContentCandidate } from "./catalog-content";
@@ -24,6 +25,14 @@ beforeEach(() => {
 });
 
 describe("catalog page content loader", () => {
+	it("discovers families lazily without executing import promises at module init", () => {
+		const source = readFileSync("src/pages/ui/catalog-content-loader.ts", "utf8");
+		expect(source).toContain("import.meta.glob");
+		expect(source).toContain('{ import: "default" }');
+		expect(source).not.toMatch(/eager:\s*true/);
+		expect(source).not.toMatch(/switch\s*\([^)]*family/);
+	});
+
 	it("uses the generated 84 ready / 12 planned status truth", () => {
 		const statuses = CATALOG.map((entry) => catalogPageStatus(entry.slug));
 		expect(statuses).toHaveLength(96);
@@ -42,25 +51,35 @@ describe("catalog page content loader", () => {
 		expect(loadLegacy).not.toHaveBeenCalled();
 	});
 
-	it("loads ready content once and returns one stable promise", async () => {
-		const examples = [example];
-		loadLegacy.mockResolvedValue({ docs, examples });
+	it("loads migrated ready content from the family without the legacy adapter", async () => {
 		const { loadCatalogPageContent } = await importLoader();
 		const first = loadCatalogPageContent("button");
 		expect(loadCatalogPageContent("button")).toBe(first);
+		const content = await first;
+		expect(content?.docs.description).toBe("Primary actions, including loading and icon slots.");
+		expect(content?.examples[0]?.id).toBe("button-variants");
+		expect(loadLegacy).not.toHaveBeenCalled();
+	});
+
+	it("loads unmigrated ready content once from the legacy adapter", async () => {
+		const examples = [example];
+		loadLegacy.mockResolvedValue({ docs, examples });
+		const { loadCatalogPageContent } = await importLoader();
+		const first = loadCatalogPageContent("input");
+		expect(loadCatalogPageContent("input")).toBe(first);
 		await expect(first).resolves.toEqual({ docs, examples });
 		expect(loadLegacy).toHaveBeenCalledTimes(1);
-		expect(loadLegacy).toHaveBeenCalledWith("button");
+		expect(loadLegacy).toHaveBeenCalledWith("input");
 	});
 
 	it("rejects ready content when docs or examples[0] is absent", async () => {
 		loadLegacy.mockResolvedValueOnce({ examples: [example] }).mockResolvedValueOnce({ docs });
 		const { loadCatalogPageContent } = await importLoader();
-		await expect(loadCatalogPageContent("button")).rejects.toThrow(
-			'Ready catalog page "button" is missing docs.',
-		);
 		await expect(loadCatalogPageContent("input")).rejects.toThrow(
-			'Ready catalog page "input" is missing examples[0].',
+			'Ready catalog page "input" is missing docs.',
+		);
+		await expect(loadCatalogPageContent("checkbox")).rejects.toThrow(
+			'Ready catalog page "checkbox" is missing examples[0].',
 		);
 	});
 });

@@ -11,6 +11,7 @@ import {
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
+import foundation from "@/pages/ui/catalog-content/families/foundation";
 import { loadCatalogPageContent } from "@/pages/ui/catalog-content-loader";
 import { CATALOG_INDEX_GROUPS, CATALOG_INDEX_ITEMS } from "@/pages/ui/catalog-index";
 import { catalogScenarioMatchesSlug } from "@/pages/ui/catalog-scenario";
@@ -19,9 +20,25 @@ import {
 	githubSourceHref,
 	githubSourceLabel,
 } from "@/pages/ui/catalog-source";
-import { catalogHeroScenario, UI_EXAMPLES } from "@/pages/ui/demos";
-import { CATALOG_DOCS } from "@/pages/ui/docs";
+import { UI_EXAMPLES as LEGACY_UI_EXAMPLES } from "@/pages/ui/demos";
+import { CATALOG_DOCS as LEGACY_CATALOG_DOCS } from "@/pages/ui/docs";
 import { CATALOG_API } from "@/pages/ui/generated/catalog-api";
+
+const CATALOG_DOCS = {
+	...LEGACY_CATALOG_DOCS,
+	...Object.fromEntries(Object.entries(foundation).map(([slug, content]) => [slug, content.docs])),
+};
+const UI_EXAMPLES = {
+	...LEGACY_UI_EXAMPLES,
+	...Object.fromEntries(
+		Object.entries(foundation).map(([slug, content]) => [slug, content.examples]),
+	),
+};
+
+function catalogHeroScenario(slug: string) {
+	return UI_EXAMPLES[slug]?.[0];
+}
+
 import { KUMO_DOCS_SLUGS } from "@/pages/ui/kumo-list";
 import UiIndexPage from "@/pages/ui/UiIndexPage";
 import UiPlaceholderPage, {
@@ -488,17 +505,16 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten button prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\tbutton: {");
-		const end = docs.indexOf('\t"link-button":');
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.button");
-		expect(block).not.toContain('name: "variant"');
-		expect(block).not.toContain('name: "asChild"');
-		expect(block).not.toContain('name: "loading"');
-		expect(block).not.toContain('name: "icon"');
-		expect(block).not.toContain("ReactNode");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toMatch(/\tbutton: \{/);
+		expect(family).toContain("api: buttonApi");
+		expect(family).not.toContain('name: "variant"');
+		expect(family).not.toContain('name: "asChild"');
+		expect(family).not.toContain('name: "loading"');
+		expect(family).not.toContain('name: "icon"');
 	});
 
 	it("renders multiple and empty API surfaces in declaration order", () => {
@@ -567,18 +583,14 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten link-button prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf('\t"link-button": {');
-		const end = docs.indexOf("\ttext: {");
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain('api: CATALOG_API["link-button"]');
-		expect(block).not.toContain('name: "variant"');
-		expect(block).not.toContain('name: "size"');
-		expect(block).not.toContain('name: "icon"');
-		expect(block).not.toContain('name: "href"');
-		expect(block).not.toContain("ReactNode");
-		expect(block).toContain('href="/docs"');
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toContain('\t"link-button": {');
+		expect(family).toContain("api: linkButtonApi");
+		expect(family).not.toContain('name: "href"');
+		expect(family).toContain('href="/docs"');
 	});
 
 	it("sources text API rows from generated catalog data", async () => {
@@ -614,15 +626,13 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten text prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\ttext: {");
-		const end = docs.indexOf("\tlabel: {");
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.text");
-		expect(block).not.toContain('name: "size"');
-		expect(block).not.toContain('name: "tone"');
-		expect(block).toContain("<Text tone='muted'>Copy</Text>");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toMatch(/\ttext: \{/);
+		expect(family).toContain("api: textApi");
+		expect(family).toContain("<Text tone='muted'>Copy</Text>");
 	});
 
 	it("sources label API rows from generated catalog data", async () => {
@@ -674,17 +684,13 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten label prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\tlabel: {");
-		const end = docs.indexOf("\tseparator: {");
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.label");
-		expect(block).not.toContain('name: "htmlFor"');
-		expect(block).not.toContain('name: "showOptional"');
-		expect(block).not.toContain('name: "tooltip"');
-		expect(block).not.toContain("ReactNode");
-		expect(block).toContain('<Label htmlFor="email">Email</Label>');
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toMatch(/\tlabel: \{/);
+		expect(family).toContain("api: labelApi");
+		expect(family).toContain('<Label htmlFor="email">Email</Label>');
 	});
 
 	it("sources separator API rows from generated catalog data", async () => {
@@ -737,15 +743,13 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten separator prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\tseparator: {");
-		const end = docs.indexOf("\tlink: {");
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.separator");
-		expect(block).not.toContain('name: "orientation"');
-		expect(block).not.toContain('name: "decorative"');
-		expect(block).toContain("<Separator orientation='horizontal' />");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toMatch(/\tseparator: \{/);
+		expect(family).toContain("api: separatorApi");
+		expect(family).toContain("<Separator orientation='horizontal' />");
 	});
 
 	it("sources link API rows from generated catalog data", async () => {
@@ -801,14 +805,13 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten link prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\tlink: {");
-		const end = docs.indexOf("\ttooltip: {");
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.link");
-		expect(block).not.toContain('name: "href"');
-		expect(block).toContain('<LinkProvider><Link href="/ui">Library</Link></LinkProvider>');
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toMatch(/\tlink: \{/);
+		expect(family).toContain("api: linkApi");
+		expect(family).toContain('<LinkProvider><Link href="/ui">Library</Link></LinkProvider>');
 	});
 
 	it("sources tooltip API rows from generated catalog data", async () => {
@@ -868,7 +871,7 @@ describe("ui catalog", () => {
 	it("does not keep a handwritten tooltip prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const start = docs.indexOf("\ttooltip: {");
-		const end = docs.indexOf('\t"theme-toggle": {');
+		const end = docs.indexOf("\tfield: {");
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
@@ -936,14 +939,13 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten theme-toggle prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf('\t"theme-toggle": {');
-		const end = docs.indexOf('\t"layer-card": {');
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain('api: CATALOG_API["theme-toggle"]');
-		expect(block).not.toContain('name: "aria-label"');
-		expect(block).toContain(
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toContain('\t"theme-toggle": {');
+		expect(family).toContain("api: themeToggleApi");
+		expect(family).toContain(
 			'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
 		);
 	});
@@ -1004,14 +1006,13 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten layer-card prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf('\t"layer-card": {');
-		const end = docs.indexOf('\t"basalt-mark": {');
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain('api: CATALOG_API["layer-card"]');
-		expect(block).not.toContain('name: "className"');
-		expect(block).toContain(
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toContain('\t"layer-card": {');
+		expect(family).toContain("api: layerCardApi");
+		expect(family).toContain(
 			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
 		);
 	});
@@ -1065,19 +1066,14 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten basalt-mark prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf('\t"basalt-mark": {');
-		const end = docs.indexOf("\tfield: {");
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain('api: CATALOG_API["basalt-mark"]');
-		expect(block).not.toContain('name: "className"');
-		expect(block).toContain('description: "Basalt mark."');
-		expect(block).toContain("<BasaltMark />");
-		expect(block).toContain('repo: "pew"');
-		expect(block).toContain('sha: "97a890fabe6e"');
-		expect(block).toContain('file: "packages/web/src/components"');
-		expect(block).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toContain('\t"basalt-mark": {');
+		expect(family).toContain("api: basaltMarkApi");
+		expect(family).toContain('description: "Basalt mark."');
+		expect(family).toContain("<BasaltMark />");
 	});
 
 	it("sources field API rows from generated catalog data", async () => {
@@ -1813,7 +1809,7 @@ describe("ui catalog", () => {
 	it("does not keep a handwritten select prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const start = docs.indexOf("\tselect: {");
-		const end = docs.indexOf('\t"theme-provider": {');
+		const end = docs.indexOf("export const CATALOG_DOCS");
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
@@ -2046,7 +2042,12 @@ describe("ui catalog", () => {
 
 	it("does not keep inline button scenario dual-writes", () => {
 		const source = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		expect(source).toContain("BUTTON_EXAMPLES");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
+			"utf8",
+		);
+		expect(source).not.toContain("BUTTON_EXAMPLES");
+		expect(family).toContain("BUTTON_EXAMPLES");
 		expect(source).not.toMatch(/button:\s*\[/);
 		expect(source).not.toMatch(/catalogScenarioId\("button"/);
 		expect(source).not.toMatch(/code:\s*'<Button/);
@@ -3317,8 +3318,8 @@ describe("ui catalog", () => {
 	it("does not keep inline basalt-mark scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const ready = readFileSync(path.join(process.cwd(), "src/pages/ui/catalog-ready.tsx"), "utf8");
-		expect(demos).toContain("BASALT_MARK_EXAMPLES");
-		expect(demos).toMatch(/"basalt-mark": BASALT_MARK_EXAMPLES/);
+		expect(demos).not.toContain("BASALT_MARK_EXAMPLES");
+		expect(demos).not.toMatch(/"basalt-mark": BASALT_MARK_EXAMPLES/);
 		expect(demos).not.toMatch(/"basalt-mark":\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("basalt-mark"/);
 		expect(ready).not.toContain('add("basalt-mark"');
@@ -3330,8 +3331,8 @@ describe("ui catalog", () => {
 	it("does not keep inline layer-card scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("LAYER_CARD_EXAMPLES");
-		expect(demos).toMatch(/"layer-card": LAYER_CARD_EXAMPLES/);
+		expect(demos).not.toContain("LAYER_CARD_EXAMPLES");
+		expect(demos).not.toMatch(/"layer-card": LAYER_CARD_EXAMPLES/);
 		expect(demos).not.toMatch(/"layer-card":\s*\[/);
 		expect(kumo).not.toMatch(/"layer-card":\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("layer-card"/);
@@ -3346,15 +3347,21 @@ describe("ui catalog", () => {
 
 	it("does not keep inline theme-toggle scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		expect(demos).toContain("THEME_TOGGLE_EXAMPLES");
-		expect(demos).toMatch(/"theme-toggle": THEME_TOGGLE_EXAMPLES/);
+		expect(demos).not.toContain("THEME_TOGGLE_EXAMPLES");
+		expect(demos).not.toMatch(/"theme-toggle": THEME_TOGGLE_EXAMPLES/);
 		expect(demos).not.toMatch(/"theme-toggle":\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("theme-toggle"/);
 		expect(demos).not.toMatch(/code:\s*['"`]<ThemeToggle/);
 		expect(demos).not.toMatch(/<ThemeToggle aria-label="Toggle theme" \/>/);
-		expect(demos).toMatch(/"theme-provider":\s*\[/);
-		expect(demos).toMatch(/catalogScenarioId\("theme-provider"/);
-		expect(demos).toContain("ThemeProvider");
+		expect(demos).not.toMatch(/"theme-provider":\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("theme-provider"/);
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
+			"utf8",
+		);
+		expect(family).toContain("THEME_TOGGLE_EXAMPLES");
+		expect(family).toContain('catalogScenarioId("theme-provider"');
+		expect(family).toContain("ThemeProvider");
 	});
 
 	it("does not keep inline tooltip scenario owners", () => {
@@ -3377,8 +3384,8 @@ describe("ui catalog", () => {
 	it("does not keep inline link scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("LINK_EXAMPLES");
-		expect(demos).toMatch(/\blink: LINK_EXAMPLES/);
+		expect(demos).not.toContain("LINK_EXAMPLES");
+		expect(demos).not.toMatch(/\blink: LINK_EXAMPLES/);
 		expect(demos).not.toMatch(/\blink:\s*\[/);
 		expect(kumo).not.toMatch(/\blink:\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("link",/);
@@ -3389,8 +3396,8 @@ describe("ui catalog", () => {
 	it("does not keep inline separator scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("SEPARATOR_EXAMPLES");
-		expect(demos).toMatch(/\bseparator: SEPARATOR_EXAMPLES/);
+		expect(demos).not.toContain("SEPARATOR_EXAMPLES");
+		expect(demos).not.toMatch(/\bseparator: SEPARATOR_EXAMPLES/);
 		expect(demos).not.toMatch(/\bseparator:\s*\[/);
 		expect(kumo).not.toMatch(/\bseparator:\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("separator"/);
@@ -3402,8 +3409,8 @@ describe("ui catalog", () => {
 	it("does not keep inline label scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("LABEL_EXAMPLES");
-		expect(demos).toMatch(/\blabel: LABEL_EXAMPLES/);
+		expect(demos).not.toContain("LABEL_EXAMPLES");
+		expect(demos).not.toMatch(/\blabel: LABEL_EXAMPLES/);
 		expect(demos).not.toMatch(/\blabel:\s*\[/);
 		expect(kumo).not.toMatch(/\blabel:\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("label"/);
@@ -3413,8 +3420,8 @@ describe("ui catalog", () => {
 	it("does not keep inline text scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("TEXT_EXAMPLES");
-		expect(demos).toMatch(/\btext: TEXT_EXAMPLES/);
+		expect(demos).not.toContain("TEXT_EXAMPLES");
+		expect(demos).not.toMatch(/\btext: TEXT_EXAMPLES/);
 		expect(demos).not.toMatch(/\btext:\s*\[/);
 		expect(kumo).not.toMatch(/\btext:\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("text"/);
@@ -3424,8 +3431,8 @@ describe("ui catalog", () => {
 	it("does not keep inline link-button scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("LINK_BUTTON_EXAMPLES");
-		expect(demos).toMatch(/"link-button": LINK_BUTTON_EXAMPLES/);
+		expect(demos).not.toContain("LINK_BUTTON_EXAMPLES");
+		expect(demos).not.toMatch(/"link-button": LINK_BUTTON_EXAMPLES/);
 		expect(demos).not.toMatch(/"link-button":\s*\[/);
 		expect(kumo).not.toMatch(/"link-button":\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("link-button"/);

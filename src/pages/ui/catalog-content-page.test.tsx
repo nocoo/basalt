@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { MemoryRouter, Route, Routes, useNavigate } from "react-router";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CatalogPageContent } from "./catalog-content";
+import foundation from "./catalog-content/families/foundation";
 import { UI_EXAMPLES } from "./demos";
 import { CATALOG_DOCS } from "./docs";
 import UiPlaceholderPage from "./UiPlaceholderPage";
@@ -22,6 +23,10 @@ function deferred<T>() {
 }
 
 function contentFor(slug: string): CatalogPageContent {
+	const family = foundation[slug];
+	if (family) {
+		return family;
+	}
 	const docs = CATALOG_DOCS[slug];
 	const examples = UI_EXAMPLES[slug];
 	if (!docs || !examples?.[0]) {

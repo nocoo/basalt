@@ -163,5 +163,46 @@ describe("application route build boundary", () => {
 				`production build is missing legacy owner ${suffix}`,
 			).toBe(true);
 		}
+
+		const foundation = chunks.find((chunk) =>
+			chunk.modules.some((id) =>
+				id.endsWith("/src/pages/ui/catalog-content/families/foundation.tsx"),
+			),
+		);
+		expect(foundation).toBeDefined();
+		const foundationFiles = new Set<string>();
+		const visitFoundation = (chunk: BuiltChunk | undefined) => {
+			if (!chunk || foundationFiles.has(chunk.fileName)) return;
+			foundationFiles.add(chunk.fileName);
+			for (const imported of chunk.imports) visitFoundation(chunksByFile.get(imported));
+		};
+		visitFoundation(foundation);
+		const foundationModules = chunks
+			.filter((chunk) => foundationFiles.has(chunk.fileName))
+			.flatMap((chunk) => chunk.modules);
+		for (const suffix of [
+			"/src/pages/ui/catalog-content-legacy.ts",
+			"/src/pages/ui/catalog-ready.tsx",
+			"/src/pages/ui/kumo-examples.tsx",
+			"/src/pages/ui/docs.ts",
+			"/src/pages/ui/demos.tsx",
+			"/src/charts/sample.ts",
+			"/packages/basalt/src/charts/sample.ts",
+		]) {
+			expect(
+				foundationModules.some((id) => id.endsWith(suffix)),
+				`button family closure contains ${suffix}`,
+			).toBe(false);
+		}
+		expect(
+			foundationModules.some((id) => /recharts/i.test(id)),
+			"button family closure contains recharts",
+		).toBe(false);
+		expect(
+			foundationModules.some((id) =>
+				/catalog-content\/families\/(forms|overlay|charts)\.tsx$/.test(id),
+			),
+			"button family closure contains another family",
+		).toBe(false);
 	});
 });

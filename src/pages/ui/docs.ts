@@ -15,89 +15,6 @@ function usage(name: string, from: string, sample: string, extraImports = ""): s
 }
 
 const BASE_DOCS: Record<string, CatalogDocsDraft> = {
-	button: {
-		description: "Primary actions, including loading and icon slots.",
-		usage: usage(
-			"Button",
-			"@nocoo/basalt/components/button",
-			'<Button icon="+" loading={false}>Save</Button>',
-		),
-		variants: ["default", "secondary", "destructive", "outline", "ghost", "link"],
-		api: CATALOG_API.button,
-		provenance: provenanceFromLegacy({
-			repo: "pew",
-			sha: "97a890fabe6e",
-			file: "packages/web/src/components/ui/button.tsx",
-		}),
-	},
-	"link-button": {
-		description: "A link that looks like a Button.",
-		usage: usage(
-			"LinkButton",
-			"@nocoo/basalt/components/button",
-			'<LinkButton href="/docs">Docs</LinkButton>',
-		),
-		variants: ["default", "secondary", "destructive", "outline", "ghost", "link"],
-		api: CATALOG_API["link-button"],
-		provenance: provenanceFromLegacy({
-			repo: "pew",
-			sha: "97a890fabe6e",
-			file: "packages/web/src/components/ui/button.tsx",
-		}),
-	},
-	text: {
-		description: "Body copy with size and tone.",
-		usage: usage("Text", "@nocoo/basalt/components/text", "<Text tone='muted'>Copy</Text>"),
-		variants: ["xs", "sm", "md", "lg", "xl"],
-		api: CATALOG_API.text,
-		provenance: provenanceFromLegacy({
-			repo: "basalt",
-			sha: "2727ae6a8d3f",
-			file: "src/index.css",
-		}),
-	},
-	label: {
-		description: "Accessible label associated with a control.",
-		usage: usage("Label", "@nocoo/basalt/components/label", '<Label htmlFor="email">Email</Label>'),
-		variants: [],
-		api: CATALOG_API.label,
-		provenance: provenanceFromLegacy({
-			repo: "zhe",
-			sha: "c31c239f01c9",
-			file: "components/ui/label.tsx",
-		}),
-	},
-	separator: {
-		description: "A visual divider between content.",
-		usage: usage(
-			"Separator",
-			"@nocoo/basalt/components/separator",
-			"<Separator orientation='horizontal' />",
-		),
-		variants: ["horizontal", "vertical"],
-		api: CATALOG_API.separator,
-		provenance: provenanceFromLegacy({
-			repo: "pew",
-			sha: "97a890fabe6e",
-			file: "packages/web/src/components/ui/separator.tsx",
-		}),
-	},
-	link: {
-		description: "Inline navigation that respects LinkProvider.",
-		usage: usage(
-			"Link",
-			"@nocoo/basalt/components/link",
-			'<LinkProvider><Link href="/ui">Library</Link></LinkProvider>',
-			'import { LinkProvider } from "@nocoo/basalt/providers/link";',
-		),
-		variants: [],
-		api: CATALOG_API.link,
-		provenance: provenanceFromLegacy({
-			repo: "kumo",
-			sha: "1159868dfe32",
-			file: "packages/kumo/src/utils/link-provider.tsx",
-		}),
-	},
 	tooltip: {
 		description: "Short contextual help on hover or focus.",
 		usage: usage(
@@ -112,48 +29,6 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			repo: "pew",
 			sha: "97a890fabe6e",
 			file: "packages/web/src/components/ui/tooltip.tsx",
-		}),
-	},
-	"theme-toggle": {
-		description: "Cycles system, light, and dark theme.",
-		usage: usage(
-			"ThemeToggle",
-			"@nocoo/basalt/components/theme-toggle",
-			'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
-			'import { ThemeProvider } from "@nocoo/basalt/providers/theme";',
-		),
-		variants: ["system", "light", "dark"],
-		api: CATALOG_API["theme-toggle"],
-		provenance: provenanceFromLegacy({
-			repo: "basalt",
-			sha: "2727ae6a8d3f",
-			file: "src/components/ThemeToggle.tsx",
-		}),
-	},
-	"layer-card": {
-		description: "A card with a layered visual effect for headers and raised content.",
-		usage: usage(
-			"LayerCard",
-			"@nocoo/basalt/components/layer-card",
-			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
-		),
-		variants: [],
-		api: CATALOG_API["layer-card"],
-		provenance: provenanceFromLegacy({
-			repo: "zhe",
-			sha: "c31c239f01c9",
-			file: "components/ui/card.tsx",
-		}),
-	},
-	"basalt-mark": {
-		description: "Basalt mark.",
-		usage: usage("BasaltMark", "@nocoo/basalt/components/basalt-mark", "<BasaltMark />"),
-		variants: [],
-		api: CATALOG_API["basalt-mark"],
-		provenance: provenanceFromLegacy({
-			repo: "pew",
-			sha: "97a890fabe6e",
-			file: "packages/web/src/components",
 		}),
 	},
 	field: {
@@ -305,49 +180,6 @@ export default function Example() {
 			repo: "pew",
 			sha: "97a890fabe6e",
 			file: "packages/web/src/components",
-		}),
-	},
-	"theme-provider": {
-		description: "Provides theme state without reading storage at module scope.",
-		usage: usage(
-			"ThemeProvider",
-			"@nocoo/basalt/providers/theme",
-			"<ThemeProvider><span>Content</span></ThemeProvider>",
-		),
-		variants: ["system", "light", "dark"],
-		api: [{ name: "ThemeProvider", props: [{ name: "children", type: "ReactNode" }] }],
-		provenance: provenanceFromLegacy({
-			repo: "pew",
-			sha: "97a890fabe6e",
-			file: "packages/web/src/components/theme-provider.tsx",
-		}),
-	},
-	"link-provider": {
-		description: "Injects the app Link renderer into Basalt Link.",
-		usage: usage(
-			"LinkProvider",
-			"@nocoo/basalt/providers/link",
-			"<LinkProvider>{children}</LinkProvider>",
-		),
-		variants: [],
-		api: [
-			{
-				name: "LinkProvider",
-				props: [
-					{
-						name: "render",
-						type: 'ComponentType<{ href: string }> | "a"',
-						default: '"a"',
-						description: "Link renderer injected into Basalt Link.",
-					},
-					{ name: "children", type: "ReactNode" },
-				],
-			},
-		],
-		provenance: provenanceFromLegacy({
-			repo: "kumo",
-			sha: "1159868dfe32",
-			file: "packages/kumo/src/utils/link-provider.tsx",
 		}),
 	},
 };

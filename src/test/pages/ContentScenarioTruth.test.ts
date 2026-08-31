@@ -1,9 +1,22 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
+import foundation from "@/pages/ui/catalog-content/families/foundation";
 import { EXTRA_DOCS, EXTRA_EXAMPLES } from "@/pages/ui/catalog-ready";
-import { UI_EXAMPLES } from "@/pages/ui/demos";
-import { CATALOG_DOCS } from "@/pages/ui/docs";
+import { UI_EXAMPLES as LEGACY_UI_EXAMPLES } from "@/pages/ui/demos";
+import { CATALOG_DOCS as LEGACY_CATALOG_DOCS } from "@/pages/ui/docs";
+
+const UI_EXAMPLES = {
+	...LEGACY_UI_EXAMPLES,
+	...Object.fromEntries(
+		Object.entries(foundation).map(([slug, content]) => [slug, content.examples]),
+	),
+};
+const CATALOG_DOCS = {
+	...LEGACY_CATALOG_DOCS,
+	...Object.fromEntries(Object.entries(foundation).map(([slug, content]) => [slug, content.docs])),
+};
+
 import { LAYER_CARD_EXAMPLES } from "@/pages/ui/examples/layer-card";
 import { SELECT_EXAMPLES } from "@/pages/ui/examples/select";
 import { TEXT_EXAMPLES } from "@/pages/ui/examples/text";

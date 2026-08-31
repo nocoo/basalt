@@ -1,9 +1,18 @@
 import { CATALOG, type CatalogCategory, type CatalogEntry, type CatalogKind } from "./catalog";
+import foundation from "./catalog-content/families/foundation";
 import type { CatalogPageStatus } from "./catalog-page-status";
 import type { CatalogScenario } from "./catalog-scenario";
 import type { CatalogDocs } from "./catalog-source";
 import { catalogHeroScenario } from "./demos";
 import { CATALOG_DOCS } from "./docs";
+
+const FAMILY_DOCS = Object.fromEntries(
+	Object.entries(foundation).map(([slug, content]) => [slug, content.docs]),
+);
+
+function familyOrLegacyHero(slug: string): CatalogScenario | undefined {
+	return foundation[slug]?.examples[0] ?? catalogHeroScenario(slug);
+}
 
 export type CatalogReleaseStatus = "stable" | "catalog";
 export type { CatalogPageStatus } from "./catalog-page-status";
@@ -191,8 +200,8 @@ export function catalogReleaseStatus(kind: CatalogKind): CatalogReleaseStatus {
 
 export function resolveCatalogPageState(
 	slug: string,
-	docsBySlug: Partial<Record<string, CatalogDocs>> = CATALOG_DOCS,
-	heroForSlug: (slug: string) => CatalogScenario | undefined = catalogHeroScenario,
+	docsBySlug: Partial<Record<string, CatalogDocs>> = { ...CATALOG_DOCS, ...FAMILY_DOCS },
+	heroForSlug: (slug: string) => CatalogScenario | undefined = familyOrLegacyHero,
 ): CatalogPageState {
 	const docs = docsBySlug[slug];
 	const hero = heroForSlug(slug);
@@ -249,8 +258,8 @@ export function createCatalogIndex({
 
 export const CATALOG_INDEX_GROUPS = createCatalogIndex({
 	entries: CATALOG,
-	docsBySlug: CATALOG_DOCS,
-	heroForSlug: catalogHeroScenario,
+	docsBySlug: { ...CATALOG_DOCS, ...FAMILY_DOCS },
+	heroForSlug: familyOrLegacyHero,
 });
 
 export const CATALOG_INDEX_ITEMS = CATALOG_INDEX_GROUPS.flatMap((group) => group.items);

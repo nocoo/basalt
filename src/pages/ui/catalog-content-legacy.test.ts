@@ -5,9 +5,15 @@ import { CATALOG_DOCS } from "./docs";
 
 describe("legacy catalog content adapter", () => {
 	it("returns the existing docs and examples without changing their owners", async () => {
+		const content = await loadLegacyCatalogPageContent("input");
+		expect(content.docs).toBe(CATALOG_DOCS.input);
+		expect(content.examples).toBe(UI_EXAMPLES.input);
+	});
+
+	it("does not keep migrated foundation owners", async () => {
 		const content = await loadLegacyCatalogPageContent("button");
-		expect(content.docs).toBe(CATALOG_DOCS.button);
-		expect(content.examples).toBe(UI_EXAMPLES.button);
+		expect(content.docs).toBeUndefined();
+		expect(content.examples).toBeUndefined();
 	});
 
 	it("leaves missing legacy values for the loader to reject", async () => {

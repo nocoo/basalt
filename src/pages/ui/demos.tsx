@@ -1,69 +1,25 @@
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Link } from "@nocoo/basalt/components/link";
 import { Text } from "@nocoo/basalt/components/text";
-import { LinkProvider } from "@nocoo/basalt/providers/link";
-import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { AlertTriangle, CircleAlert, Info, X } from "lucide-react";
 import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
-import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
-import { BUTTON_EXAMPLES } from "./examples/button";
 import { CHECKBOX_EXAMPLES } from "./examples/checkbox";
 import { FIELD_EXAMPLES } from "./examples/field";
 import { INPUT_EXAMPLES } from "./examples/input";
 import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "./examples/input-group";
-import { LABEL_EXAMPLES } from "./examples/label";
-import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
-import { LINK_EXAMPLES } from "./examples/link";
-import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { RADIO_EXAMPLES } from "./examples/radio";
 import { SELECT_EXAMPLES } from "./examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
-import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { SWITCH_EXAMPLES } from "./examples/switch";
-import { TEXT_EXAMPLES } from "./examples/text";
-import { THEME_TOGGLE_EXAMPLES } from "./examples/theme-toggle";
 import { TOOLTIP_EXAMPLES } from "./examples/tooltip";
 import { KUMO_EXAMPLES } from "./kumo-examples";
 
 const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
-	button: BUTTON_EXAMPLES,
-	"link-button": LINK_BUTTON_EXAMPLES,
-	text: TEXT_EXAMPLES,
-	label: LABEL_EXAMPLES,
-	separator: SEPARATOR_EXAMPLES,
-	link: LINK_EXAMPLES,
 	tooltip: TOOLTIP_EXAMPLES,
-	"theme-toggle": THEME_TOGGLE_EXAMPLES,
-	"layer-card": LAYER_CARD_EXAMPLES,
-	"basalt-mark": BASALT_MARK_EXAMPLES,
 	field: FIELD_EXAMPLES,
 	input: INPUT_EXAMPLES,
-	"link-provider": [
-		{
-			id: catalogScenarioId("link-provider", "default"),
-			title: "Default",
-			code: "<LinkProvider><Link href='#section'>Link</Link></LinkProvider>",
-			render: () => (
-				<LinkProvider>
-					<Link href="#section">Link</Link>
-				</LinkProvider>
-			),
-		},
-	],
-	"theme-provider": [
-		{
-			id: catalogScenarioId("theme-provider", "default"),
-			title: "Default",
-			code: "<ThemeProvider>{children}</ThemeProvider>",
-			render: () => (
-				<ThemeProvider>
-					<Text>Provider is active.</Text>
-				</ThemeProvider>
-			),
-		},
-	],
 	"input-area": INPUT_AREA_EXAMPLES,
 	"input-group": INPUT_GROUP_EXAMPLES,
 	"sensitive-input": SENSITIVE_INPUT_EXAMPLES,

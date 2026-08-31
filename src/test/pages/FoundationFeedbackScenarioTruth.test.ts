@@ -1,6 +1,19 @@
 import { describe, expect, it } from "vitest";
-import { UI_EXAMPLES } from "@/pages/ui/demos";
-import { CATALOG_DOCS } from "@/pages/ui/docs";
+import foundation from "@/pages/ui/catalog-content/families/foundation";
+import { UI_EXAMPLES as LEGACY_UI_EXAMPLES } from "@/pages/ui/demos";
+import { CATALOG_DOCS as LEGACY_CATALOG_DOCS } from "@/pages/ui/docs";
+
+const UI_EXAMPLES = {
+	...LEGACY_UI_EXAMPLES,
+	...Object.fromEntries(
+		Object.entries(foundation).map(([slug, content]) => [slug, content.examples]),
+	),
+};
+const CATALOG_DOCS = {
+	...LEGACY_CATALOG_DOCS,
+	...Object.fromEntries(Object.entries(foundation).map(([slug, content]) => [slug, content.docs])),
+};
+
 import { BASALT_MARK_EXAMPLES } from "@/pages/ui/examples/basalt-mark";
 import { LABEL_EXAMPLES } from "@/pages/ui/examples/label";
 import { LINK_EXAMPLES } from "@/pages/ui/examples/link";
