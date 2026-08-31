@@ -519,6 +519,84 @@ export interface WidgetProps extends Pair<Other, typeof local> {
 		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
 	});
 
+	it("instantiates Holder generic field types without treating value-type members as heritage", () => {
+		const root = fixture({
+			"other.ts": "export interface Other { value?: string }",
+			"widget.ts": `import type { Other } from "./other";
+type Holder<T> = { data?: T };
+export interface WidgetProps extends Holder<Other> {
+	value?: string;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "data", type: "Other", required: false },
+			{ name: "value", type: "string", required: false },
+		]);
+	});
+
+	it("instantiates List generic array elements without heritage impersonation", () => {
+		const root = fixture({
+			"other.ts": "export interface Other { value?: string }",
+			"widget.ts": `import type { Other } from "./other";
+type List<T> = { items?: T[] };
+export interface WidgetProps extends List<Other> {
+	value?: string;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "items", type: "Other[]", required: false },
+			{ name: "value", type: "string", required: false },
+		]);
+	});
+
+	it("keeps named import aliases for generic props", () => {
+		const root = fixture({
+			"box.ts": "export type Box<T> = { a: T };\n",
+			"widget.ts": `import type { Box as RenamedBox } from "./box";
+export interface WidgetProps {
+	box?: RenamedBox<string>;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "box", type: "RenamedBox<string>", required: false },
+		]);
+	});
+
+	it("distinguishes renamed named imports of same-named aliases in a union", () => {
+		const root = fixture({
+			"a.ts": "export type Box<T> = { a: T };\n",
+			"b.ts": "export type Box<T> = { b: T };\n",
+			"widget.ts": `import type { Box as ABox } from "./a";
+import type { Box as BBox } from "./b";
+export interface WidgetProps {
+	box?: ABox<string> | BBox<string>;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "box", type: "ABox<string> | BBox<string>", required: false },
+		]);
+	});
+
+	it("does not treat @types/reactive as the React package", () => {
+		const root = fixture({
+			"node_modules/@types/reactive/package.json":
+				'{ "name": "@types/reactive", "version": "1.0.0", "types": "index.d.ts" }\n',
+			"node_modules/@types/reactive/index.d.ts": "export type Vessel<T> = { cargo: T };\n",
+			"widget.ts": `import type { Vessel } from "reactive";
+export interface WidgetProps {
+	vessel?: Vessel<string>;
+}
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "vessel", type: "Vessel<string>", required: false },
+		]);
+	});
+
 	it("renders deterministic modules and rejects missing or stale artifacts", () => {
 		const data = {
 			button: [
