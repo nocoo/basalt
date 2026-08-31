@@ -628,6 +628,39 @@ describe("ui catalog", () => {
 		expect(window.location.hash).not.toBe("#docs");
 	});
 
+	it("keeps text sizes hero and muted tone contracts", () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/text");
+		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Muted tone" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="text-sizes"]');
+		expect(hero).toBeTruthy();
+		const stack = hero?.querySelector(".flex.w-full.flex-col.gap-3");
+		expect(stack).toBeTruthy();
+		expect(
+			[...((stack?.querySelectorAll("p") ?? []) as NodeListOf<HTMLElement>)].map(
+				(node) => node.textContent,
+			),
+		).toEqual(["Extra large", "Large", "Body copy", "Small", "Extra small"]);
+		const mutedSection = document.querySelector('[data-scenario="text-muted-tone"]');
+		expect(mutedSection).toHaveTextContent("Muted supporting copy.");
+		const muted = mutedSection?.querySelector("p");
+		expect(muted).toHaveClass("text-basalt-muted-foreground");
+		expect(muted).toHaveTextContent("Muted supporting copy.");
+	});
+
+	it("does not keep inline text scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("TEXT_EXAMPLES");
+		expect(demos).toMatch(/\btext: TEXT_EXAMPLES/);
+		expect(demos).not.toMatch(/\btext:\s*\[/);
+		expect(kumo).not.toMatch(/\btext:\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("text"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("text"/);
+	});
+
 	it("does not keep inline link-button scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");

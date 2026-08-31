@@ -27,25 +27,13 @@ import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
+import { TEXT_EXAMPLES } from "./examples/text";
 import { KUMO_EXAMPLES } from "./kumo-examples";
 
 const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	button: BUTTON_EXAMPLES,
 	"link-button": LINK_BUTTON_EXAMPLES,
-	text: [
-		{
-			id: catalogScenarioId("text", "default"),
-			title: "Default",
-			code: "<Text>Body copy</Text>",
-			render: () => <Text>Body copy</Text>,
-		},
-		{
-			id: catalogScenarioId("text", "muted"),
-			title: "Muted",
-			code: '<Text tone="muted">Muted</Text>',
-			render: () => <Text tone="muted">Muted</Text>,
-		},
-	],
+	text: TEXT_EXAMPLES,
 	label: [
 		{
 			id: catalogScenarioId("label", "default-label"),

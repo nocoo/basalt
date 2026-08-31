@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
+import { TEXT_EXAMPLES } from "@/pages/ui/examples/text";
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);
@@ -37,6 +38,7 @@ function expectUsageImportsCover(usage: string, names: string[]) {
 
 describe("content scenario truth", () => {
 	it("keeps audited scenario ids and counts", () => {
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
 		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual(["text-sizes", "text-muted-tone"]);
 		expect(UI_EXAMPLES.code?.map((item) => item.id)).toEqual(["code-typescript", "code-react"]);
 		expect(UI_EXAMPLES["code-block"]?.map((item) => item.id)).toEqual(["code-block-basic"]);

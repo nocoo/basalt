@@ -762,32 +762,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			render: () => <Label tooltip="More information about this field">With Tooltip</Label>,
 		},
 	],
-	text: [
-		{
-			id: catalogScenarioId("text", "sizes"),
-			title: "Sizes",
-			code: `<Text size="xl">Extra large</Text>
-<Text size="lg">Large</Text>
-<Text>Body copy</Text>
-<Text size="sm">Small</Text>
-<Text size="xs">Extra small</Text>`,
-			render: () => (
-				<Stack>
-					<Text size="xl">Extra large</Text>
-					<Text size="lg">Large</Text>
-					<Text>Body copy</Text>
-					<Text size="sm">Small</Text>
-					<Text size="xs">Extra small</Text>
-				</Stack>
-			),
-		},
-		{
-			id: catalogScenarioId("text", "muted-tone"),
-			title: "Muted tone",
-			code: '<Text tone="muted">Muted supporting copy.</Text>',
-			render: () => <Text tone="muted">Muted supporting copy.</Text>,
-		},
-	],
 	link: [
 		{
 			id: catalogScenarioId("link", "basic-link"),

@@ -9,6 +9,7 @@ import {
 import { UI_EXAMPLES } from "./demos";
 import { BUTTON_EXAMPLES } from "./examples/button";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
+import { TEXT_EXAMPLES } from "./examples/text";
 
 const BUTTON_IDS = [
 	"button-variants",
@@ -48,6 +49,16 @@ const LINK_BUTTON_TITLES = ["Default", "Disabled Link"] as const;
 
 const linkButtonRenders = import.meta.glob("./examples/link-button/*.tsx", { eager: true });
 const linkButtonSources = import.meta.glob("./examples/link-button/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const TEXT_IDS = ["text-sizes", "text-muted-tone"] as const;
+const TEXT_TITLES = ["Sizes", "Muted tone"] as const;
+
+const textRenders = import.meta.glob("./examples/text/*.tsx", { eager: true });
+const textSources = import.meta.glob("./examples/text/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -160,6 +171,53 @@ describe("source-backed link-button scenarios", () => {
 				LINK_BUTTON_EXAMPLES.find((item) => item.id === scenario.id)?.render,
 			);
 			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		}
+	});
+});
+
+describe("source-backed text scenarios", () => {
+	it("loads two text scenarios from the same glob modules", () => {
+		expect(Object.keys(textRenders)).toHaveLength(2);
+		expect(Object.keys(textSources)).toHaveLength(2);
+		const loaded = loadModuleScenarios({
+			slug: "text",
+			metas: TEXT_TITLES.map((title, index) => ({
+				key: TEXT_IDS[index].slice("text-".length),
+				title,
+			})),
+			renderModules: textRenders,
+			sourceModules: textSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...TEXT_TITLES]);
+		expect(TEXT_EXAMPLES.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(TEXT_EXAMPLES.map((item) => item.title)).toEqual([...TEXT_TITLES]);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		const fileKeys = new Set(
+			Object.keys(textRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(TEXT_IDS.map((id) => id.slice("text-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("text-".length);
+			const modulePath = Object.keys(textSources).find((path) => path.endsWith(`/${key}.tsx`));
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = textSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(TEXT_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((textRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				TEXT_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).not.toMatch(/as=|<h[1-6]|Semantic HTML/i);
 		}
 	});
 });
