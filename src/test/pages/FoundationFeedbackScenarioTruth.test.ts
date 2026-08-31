@@ -240,7 +240,12 @@ describe("foundation feedback scenario truth", () => {
 		expect(CATALOG_DOCS["basalt-mark"]?.description).toBe("Basalt mark.");
 		expect(CATALOG_DOCS["basalt-mark"]?.variants).toEqual([]);
 		expect(CATALOG_DOCS["basalt-mark"]?.props).toEqual([
-			{ name: "className", type: "string", description: "className" },
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Additional classes for the mark.",
+			},
 		]);
 		expect(CATALOG_DOCS["basalt-mark"]?.usage).toContain("<BasaltMark />");
 		expect(CATALOG_DOCS["basalt-mark"]?.usage).toContain("@nocoo/basalt/components/basalt-mark");

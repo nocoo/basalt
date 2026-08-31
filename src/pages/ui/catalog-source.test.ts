@@ -158,6 +158,11 @@ describe("catalog source contract", () => {
 		);
 		expect(CATALOG_DOCS["layer-card"]?.props).toEqual(CATALOG_API["layer-card"]);
 		expect(CATALOG_API["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(implementationFileFor(entry("basalt-mark"))).toBe(
+			"packages/basalt/src/components/basalt-mark.tsx",
+		);
+		expect(CATALOG_DOCS["basalt-mark"]?.props).toEqual(CATALOG_API["basalt-mark"]);
+		expect(CATALOG_API["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);

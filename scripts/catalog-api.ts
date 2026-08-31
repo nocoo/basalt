@@ -62,6 +62,11 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/layer-card.tsx",
 		propsType: "LayerCardProps",
 	},
+	{
+		slug: "basalt-mark",
+		sourceFile: "packages/basalt/src/components/basalt-mark.tsx",
+		propsType: "BasaltMarkProps",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

@@ -149,7 +149,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 		description: "Basalt mark.",
 		usage: usage("BasaltMark", "@nocoo/basalt/components/basalt-mark", "<BasaltMark />"),
 		variants: [],
-		props: [{ name: "className", type: "string", description: "className" }],
+		props: CATALOG_API["basalt-mark"],
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",

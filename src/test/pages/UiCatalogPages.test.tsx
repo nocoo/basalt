@@ -795,27 +795,63 @@ describe("ui catalog", () => {
 		);
 	});
 
-	it("keeps handwritten basalt-mark docs after catalog-ready decoupling", () => {
+	it("sources basalt-mark API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS["basalt-mark"]?.props).toEqual(CATALOG_API["basalt-mark"]);
+		expect(CATALOG_API["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(CATALOG_API["basalt-mark"]).toEqual([
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Additional classes for the mark.",
+			},
+		]);
+		renderCatalog("/ui/basalt-mark");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api).toHaveTextContent("className?");
+		expect(api).toHaveTextContent("string");
+		expect(api).toHaveTextContent("Additional classes for the mark.");
+		expect(api).toHaveTextContent("—");
+		expect(api).not.toHaveTextContent("children");
+		expect(api).not.toHaveTextContent("strokeWidth");
+		expect(api).not.toHaveTextContent("role");
+		expect(document.body.textContent).toContain("<BasaltMark />");
+		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="basalt-mark-default"]');
+		expect(hero?.querySelector('svg[aria-label="Basalt"]')).toBeTruthy();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain(
+			"- className (string, optional, default —): Additional classes for the mark.",
+		);
+		expect(markdown).toContain("<BasaltMark />");
+		expect(markdown).toContain(UI_EXAMPLES["basalt-mark"]?.[0]?.code ?? "");
+		expect(markdown).not.toContain("- children (");
+		expect(markdown).not.toContain("- strokeWidth (");
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+	});
+
+	it("does not keep a handwritten basalt-mark prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const start = docs.indexOf('\t"basalt-mark": {');
 		const end = docs.indexOf("\tfield: {");
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
+		expect(block).toContain('props: CATALOG_API["basalt-mark"]');
+		expect(block).not.toContain('name: "className"');
 		expect(block).toContain('description: "Basalt mark."');
-		expect(block).toContain('name: "className"');
-		expect(block).toContain('type: "string"');
-		expect(block).toContain('description: "className"');
-		expect(block).not.toContain("CATALOG_API");
+		expect(block).toContain("<BasaltMark />");
 		expect(block).toContain('repo: "pew"');
 		expect(block).toContain('sha: "97a890fabe6e"');
 		expect(block).toContain('file: "packages/web/src/components"');
-		expect(block).toContain("<BasaltMark />");
 		expect(block).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
-		expect(CATALOG_DOCS["basalt-mark"]?.props).toEqual([
-			{ name: "className", type: "string", description: "className" },
-		]);
-		expect(Object.keys(CATALOG_API)).not.toContain("basalt-mark");
 	});
 
 	it("shows usage as docs code without a preview surface", () => {
