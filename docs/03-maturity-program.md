@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A29 D057 — InputGroup 五 surface API 真源待 Grok 实现
-> 当前代码前置：`026b27a`（D056 台账已提交，工作树干净）
+> 当前切片：S2A30 D058 — source-backed SensitiveInput scenarios；规格已固化，待 Grok 实现
+> 当前代码前置：`0dc2bc8`（D057 台账已提交，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056 完成；S2A29 D057 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057 完成；S2A30 D058 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -504,6 +504,18 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    Generator、catalog-source 与页面测试须锁住十八 targets、十四 slug、InputGroup 五 surface 的名称/顺序/行数/类型/required/default/description、只有 Suffix allowEmpty、前十三组 generated 数据不回归、连续 generate/check 与新的真实 SHA-256。`/ui/input-group` API Reference、TOC 与 Copy page 必须按五 surface 顺序出现，四个非空 table accessible label 正确，Suffix 显示 `text-sm text-muted-foreground` 的 `No component-specific props.`；临时 `InputGroup.Input` 等伪 root rows 必须从 docs 源消失。Copy page 必须包含五个 `###` surface heading、disabled/type/align/Button rows及 ghost/icon/false defaults，同时继续逐字包含 D055 五个完整 raw modules；hero、五个 max-w-sm roots、绿色状态、Search、Loader、可访问名称与禁用语境负门均不回归。
 
    只允许修改 `packages/basalt/src/components/input-group.tsx`、`packages/basalt/src/components/input-group.test.tsx`、`scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/docs.ts`、`src/pages/ui/catalog-source.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 root barrel、Button/Input 生产实现或类型、其它 package 组件、D055 examples/scenario/loader、page/TOC/Copy renderer、catalog IA/CSS、HomeGrid、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得加入 Field/label/description/error/required/labelTooltip、size、tooltip/Kbd、focus mode、context warning、controlled status、其它 Kumo-only 能力或进入 S2B/S4。提交前运行 InputGroup/generator/catalog-source/page 四个 focused test files、generate 后连续两次 check、typecheck、Biome、全量、coverage、showcase build，以及 clean package build/types/pack；coverage不得低于 D056，前后 package 文件计数与构建后工作树必须干净，既有 chunk warning如实报告。只做一个绿色原子提交，建议 `refactor: generate input group api docs`，随后停止等待 Codex review。
+
+30. **S2A30 / D058 — source-backed SensitiveInput scenarios 与 reveal 真相。** Catalog 稳定顺序在 InputGroup 后是 SensitiveInput。当前最终生效的 `UI_EXAMPLES["sensitive-input"]` 来自 `KUMO_EXAMPLES` 的 Default、Disabled 两个 inline 场景，而 `BASE_EXAMPLES` 另有同 slug 的单项死 owner，被后续 spread 静默覆盖；死 owner 的展示 code 还漏掉 preview 必需的 `aria-label="Password"`。新增 `src/pages/ui/examples/sensitive-input/` 下 `default.tsx`、`disabled.tsx` 与 `index.ts`：两个 TSX 模块都只从 granular `@nocoo/basalt/components/sensitive-input` 导入 `SensitiveInput`，完整、可复制并默认导出命名清楚的无参数组件；index 只保存稳定 key/title/order，通过既有 `loadModuleScenarios` 的同路径 render/raw glob 导出 `SENSITIVE_INPUT_EXAMPLES`。不得从 Button/Input 拼装平行实现，也不得在 example 中复制 reveal state。
+
+   生效真值逐项冻结。顺序固定为 `sensitive-input-default` / `Default`、`sensitive-input-disabled` / `Disabled`。Default 的单一根节点仍为 `<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />`：初始真实 input type 为 password，名为 Show 的 toggle 可将它切换为 text，随后 toggle 可访问名称变为 Hide，再次点击恢复 password/Show。Disabled 仍为 `<SensitiveInput aria-label="Disabled password" disabled revealLabel="Show" hideLabel="Hide" />`，input 与 toggle 都 disabled，点击不得揭示；不添加 defaultValue、假凭据、业务 token 或额外 wrapper/class。两段 raw module 必须自然包含 granular import、完整 props 和 `export default`，preview 与展示代码继续来自同一文件。Hero 仍取 Default，HomeGrid 的独立 API-key 构图不属于 catalog scenario，冻结不改。
+
+   `BASE_EXAMPLES["sensitive-input"]` 改为直接引用 `SENSITIVE_INPUT_EXAMPLES`；`KUMO_EXAMPLES` 删除该 slug 的 inline owner。两处只因这些 owners 存在的直接 `SensitiveInput` import 都应删除，但各文件其它 imports、scenario 顺序与 spread 语义不得变化。最终必须有 `UI_EXAMPLES["sensitive-input"] === SENSITIVE_INPUT_EXAMPLES`，两个 module key 与稳定 ID 一一对应，render/source glob 集合相等，0 orphan、0 inline `code:`/`render:`、0 legacy `catalogScenarioId("sensitive-input", ...)` owner。既有通用 loader 不修改。
+
+   2026-08-31 只读核对的 Kumo 2.12.0 / docs 1.5.18 页面已提供 Sizes、Controlled、States，以及 size、label、labelTooltip、description、error、mask/reveal/copy/focus 等更丰富 contract；这些是 Basalt S5 的能力差距，不得在本迁移刀提前加入。Basalt 当前 `SensitiveInputProps`、生产 runtime、root/granular exports、手写 API 两行、docs description/Usage/variants/provenance 均冻结；D059 才把当前真实 `revealLabel` / `hideLabel` 接入 generator。新模块及相关 source/test 不得出现 Cloudflare、Kumo、Worker/Workers、API key、secret/token 等品牌或凭据用户语境。
+
+   Scenario loader 测试须以真实 glob 重新调用 `loadModuleScenarios`，锁住两个 metadata、同路径 render/raw、精确 ID/title/order、集合闭合与 `UI_EXAMPLES` 引用同一实例，并逐项证明 raw code 含 granular import、default export、可访问名称与对应 disabled 契约。Form-selection 真值测试须锁 preview/code 的 aria-label、reveal/hide label、默认交互和 disabled 双控件行为；不得只做字符串存在性。页面测试须验证 `/ui/sensitive-input` hero 与两个 scenario、默认 password→text→password、Show→Hide→Show、Disabled input/button 不可操作；Copy page 必须逐字包含两个完整 raw modules且没有禁用语境。源码负门须证明 demos/Kumo 文件无该 slug inline owner或直接 import，同时 D057 InputGroup 的五场景/API 不回归。
+
+   只允许新增 `src/pages/ui/examples/sensitive-input/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/FormSelectionScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 `catalog-scenario.ts` loader、package 生产组件/type/test、其它 examples、`docs.ts`/generated API、catalog registry/IA/CSS、HomeGrid、视觉、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入 SensitiveInput API、S2A31、S2B 或 S5。提交前运行 catalog-scenario/form-selection/page 三个 focused test files、`bun run catalog-api:check`、typecheck、Biome、全量、coverage 与 showcase production build；coverage 四项不得低于 D057，既有 chunk warning如实报告，构建后工作树必须干净。只做一个绿色原子提交，建议 `refactor: source sensitive input scenarios`，随后停止等待 Codex review。
 
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
