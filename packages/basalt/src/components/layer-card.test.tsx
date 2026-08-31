@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { Fragment } from "react";
+import { createRef, Fragment } from "react";
 import { describe, expect, it } from "vitest";
-import { LayerCard } from "./layer-card";
+import { LayerCard, type LayerCardProps } from "./layer-card";
+
+function acceptLayerCardProps(_props: LayerCardProps) {}
 
 describe("LayerCard", () => {
 	it("renders a single surface by default", () => {
@@ -71,5 +73,33 @@ describe("LayerCard", () => {
 		expect(body.className).toContain("rounded-basalt-lg");
 		expect(body.parentElement?.className).toContain("bg-basalt-muted");
 		expect(body.parentElement?.className).toContain("flex-col");
+	});
+
+	it("accepts className and native div props and rejects a wrong className type", () => {
+		acceptLayerCardProps({ className: "w-[250px]" });
+		acceptLayerCardProps({
+			id: "card",
+			role: "region",
+			style: { display: "block" },
+			"aria-label": "Card",
+			onClick: () => undefined,
+		});
+		// @ts-expect-error className must be a string
+		acceptLayerCardProps({ className: 1 });
+	});
+
+	it("forwards class, id, data attributes, and ref", () => {
+		const ref = createRef<HTMLDivElement>();
+		render(
+			<LayerCard ref={ref} className="extra" id="card" data-kind="card">
+				Body
+			</LayerCard>,
+		);
+		const root = screen.getByText("Body");
+		expect(root).toHaveAttribute("id", "card");
+		expect(root).toHaveAttribute("data-kind", "card");
+		expect(root.className).toContain("extra");
+		expect(root.className).toContain("bg-basalt-bright");
+		expect(ref.current).toBe(root);
 	});
 });

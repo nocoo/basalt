@@ -732,6 +732,69 @@ describe("ui catalog", () => {
 		);
 	});
 
+	it("sources layer-card API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS["layer-card"]?.props).toEqual(CATALOG_API["layer-card"]);
+		expect(CATALOG_API["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(CATALOG_API["layer-card"]).toEqual([
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Additional classes for the card root.",
+			},
+		]);
+		renderCatalog("/ui/layer-card");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api).toHaveTextContent("className?");
+		expect(api).toHaveTextContent("string");
+		expect(api).toHaveTextContent("Additional classes for the card root.");
+		expect(api).toHaveTextContent("—");
+		expect(api).not.toHaveTextContent("children");
+		expect(api).not.toHaveTextContent("id");
+		expect(api).not.toHaveTextContent("style");
+		expect(api).not.toHaveTextContent("role");
+		expect(api).not.toHaveTextContent("LayerCardSectionProps");
+		expect(document.body.textContent).toContain(
+			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
+		);
+		expect(screen.getByRole("heading", { name: "Basic Card" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Surface-style Card" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Multiple Cards" })).toBeInTheDocument();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain(
+			"- className (string, optional, default —): Additional classes for the card root.",
+		);
+		expect(markdown).toContain(
+			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
+		);
+		expect(markdown).not.toContain("- children (");
+		expect(markdown).not.toContain("- id (");
+		expect(markdown).not.toContain("- style (");
+		expect(markdown).not.toContain("- role (");
+		expect(markdown).not.toContain("LayerCardSectionProps");
+	});
+
+	it("does not keep a handwritten layer-card prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf('\t"layer-card": {');
+		const end = docs.indexOf("\tfield: {");
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain('props: CATALOG_API["layer-card"]');
+		expect(block).not.toContain('name: "className"');
+		expect(block).toContain(
+			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
+		);
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });

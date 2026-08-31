@@ -57,6 +57,11 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/theme-toggle.tsx",
 		propsType: "ThemeToggleProps",
 	},
+	{
+		slug: "layer-card",
+		sourceFile: "packages/basalt/src/components/layer-card.tsx",
+		propsType: "LayerCardProps",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

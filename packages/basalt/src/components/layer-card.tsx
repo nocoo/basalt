@@ -18,7 +18,12 @@ const SECONDARY_CLASSES =
 const PRIMARY_CLASSES =
 	"relative flex flex-col gap-2 overflow-hidden rounded-basalt-lg bg-basalt-bright p-4 pr-3 text-basalt-foreground ring-1 ring-basalt-border";
 
-export type LayerCardProps = HTMLAttributes<HTMLDivElement>;
+export type LayerCardProps = Omit<HTMLAttributes<HTMLDivElement>, "className"> & {
+	/**
+	 * Additional classes for the card root.
+	 */
+	className?: string;
+};
 export type LayerCardSectionProps = HTMLAttributes<HTMLDivElement>;
 
 function hasLayerCardSections(children: ReactNode): boolean {

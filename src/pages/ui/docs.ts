@@ -138,7 +138,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
 		),
 		variants: [],
-		props: [{ name: "className", type: "string" }],
+		props: CATALOG_API["layer-card"],
 		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",

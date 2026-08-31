@@ -127,6 +127,11 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/theme-toggle.tsx",
 				propsType: "ThemeToggleProps",
 			},
+			{
+				slug: "layer-card",
+				sourceFile: "packages/basalt/src/components/layer-card.tsx",
+				propsType: "LayerCardProps",
+			},
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames|props:\s*\[/);
@@ -147,6 +152,7 @@ describe("catalog API generator contract", () => {
 			"link",
 			"tooltip",
 			"theme-toggle",
+			"layer-card",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -423,6 +429,45 @@ describe("catalog API generator contract", () => {
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 	}, 20_000);
 
+	it("extracts LayerCard props from LayerCardProps as a single optional className", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(generated["layer-card"]).toEqual([
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Additional classes for the card root.",
+			},
+		]);
+		expect(generated["layer-card"]?.[0]).not.toHaveProperty("default");
+		expect(generated["layer-card"]?.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated["layer-card"]?.some((prop) => prop.name === "id")).toBe(false);
+		expect(generated["layer-card"]?.some((prop) => prop.name === "style")).toBe(false);
+		expect(generated["layer-card"]?.some((prop) => prop.name === "role")).toBe(false);
+		expect(generated["layer-card"]?.some((prop) => prop.name === "onClick")).toBe(false);
+		expect(generated["layer-card"]?.some((prop) => prop.name === "aria-label")).toBe(false);
+		expect(generated["layer-card"]?.some((prop) => prop.name === "data-kind")).toBe(false);
+		expect(generated.button?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"asChild",
+			"loading",
+			"icon",
+		]);
+		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
+		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
+		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
+	}, 20_000);
+
 	it("emits a locally quoted property name", () => {
 		const root = fixture({
 			"widget.ts": `export interface WidgetProps {
@@ -626,6 +671,36 @@ export interface WidgetProps extends Other {
 `,
 		});
 		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: value/);
+	});
+
+	it("emits a local className after omitting it from a foreign DOM-like type", () => {
+		const root = fixture({
+			"dom.ts": `export interface Dom {
+	className?: string;
+	id?: string;
+}
+`,
+			"widget.ts": `import type { Dom } from "./dom";
+export type WidgetProps = Omit<Dom, "className"> & {
+	className?: string;
+};
+`,
+		});
+		expect(generateFixture(root).widget).toEqual([
+			{ name: "className", type: "string", required: false },
+		]);
+	});
+
+	it("still rejects a local className that impersonates a foreign DOM-like prop", () => {
+		const root = fixture({
+			"dom.ts": "export interface Dom { className?: string }",
+			"widget.ts": `import type { Dom } from "./dom";
+export type WidgetProps = Dom & {
+	className?: string;
+};
+`,
+		});
+		expect(() => generateFixture(root)).toThrow(/cross-file prop impersonation: className/);
 	});
 
 	it("rejects a private WidgetProps type", () => {
@@ -1269,8 +1344,9 @@ export interface WidgetProps {
 		expect(first).toContain("\tlink: [");
 		expect(first).toContain("\ttooltip: [");
 		expect(first).toContain('\t"theme-toggle": [');
+		expect(first).toContain('\t"layer-card": [');
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"454a8ad4fcb543b4c39ebc3d1b0b104944fc62f4d5ee985fe34991863b27f248",
+			"de637e6ee86ee3af1f2030754f27d121a64ffc73fcf712feffcee15f4f241a79",
 		);
 	}, 20_000);
 });

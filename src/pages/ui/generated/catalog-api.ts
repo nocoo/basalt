@@ -43,6 +43,14 @@ export const CATALOG_API = {
 			description: "Info icon with hover text.",
 		},
 	],
+	"layer-card": [
+		{
+			name: "className",
+			type: "string",
+			required: false,
+			description: "Additional classes for the card root.",
+		},
+	],
 	link: [
 		{
 			name: "href",
