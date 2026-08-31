@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { describe, expect, it } from "vitest";
 import { UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS } from "@/pages/ui/docs";
+import { CHECKBOX_EXAMPLES } from "@/pages/ui/examples/checkbox";
 import { FIELD_EXAMPLES } from "@/pages/ui/examples/field";
 import { INPUT_EXAMPLES } from "@/pages/ui/examples/input";
 import { INPUT_AREA_EXAMPLES } from "@/pages/ui/examples/input-area";
@@ -48,6 +49,7 @@ function hasAccessibleName(source: string) {
 
 describe("form selection scenario truth", () => {
 	it("keeps audited scenario ids and counts", () => {
+		expect(UI_EXAMPLES.checkbox).toBe(CHECKBOX_EXAMPLES);
 		expect(UI_EXAMPLES.checkbox?.map((item) => item.id)).toEqual([
 			"checkbox-default",
 			"checkbox-checked",
@@ -125,11 +127,68 @@ describe("form selection scenario truth", () => {
 	});
 
 	it("keeps checkbox and switch codes named like their renders", () => {
-		expect(scenario("checkbox", "checkbox-default").code).toContain('aria-label="Unchecked"');
-		expect(scenario("checkbox", "checkbox-checked").code).toContain('aria-label="Checked"');
-		expect(scenario("checkbox", "checkbox-disabled").code).toContain('aria-label="Disabled off"');
-		expect(scenario("checkbox", "checkbox-disabled").code).toContain('aria-label="Disabled on"');
-		expect(scenario("checkbox", "checkbox-error").code).toContain("<Field ");
+		const checkboxDefault = scenario("checkbox", "checkbox-default");
+		expect(checkboxDefault.code).toContain("export default");
+		expect(checkboxDefault.code).toContain("@nocoo/basalt/components/checkbox");
+		expect(checkboxDefault.code).toContain("import { Checkbox }");
+		expect(checkboxDefault.code).toContain('aria-label="Unchecked"');
+		expect(checkboxDefault.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		render(createElement(checkboxDefault.render));
+		const unchecked = screen.getByRole("checkbox", { name: "Unchecked" });
+		expect(unchecked).not.toBeChecked();
+		expect(unchecked).toBeEnabled();
+		fireEvent.click(unchecked);
+		expect(unchecked).toBeChecked();
+		fireEvent.click(unchecked);
+		expect(unchecked).not.toBeChecked();
+		cleanup();
+		const checkboxChecked = scenario("checkbox", "checkbox-checked");
+		expect(checkboxChecked.code).toContain("defaultChecked");
+		expect(checkboxChecked.code).toContain('aria-label="Checked"');
+		render(createElement(checkboxChecked.render));
+		expect(screen.getByRole("checkbox", { name: "Checked" })).toBeChecked();
+		cleanup();
+		const checkboxIndeterminate = scenario("checkbox", "checkbox-indeterminate");
+		expect(checkboxIndeterminate.code).toContain('checked="indeterminate"');
+		expect(checkboxIndeterminate.code).toContain('aria-label="Partial"');
+		render(createElement(checkboxIndeterminate.render));
+		const partial = screen.getByRole("checkbox", { name: "Partial" });
+		expect(partial).toHaveAttribute("data-state", "indeterminate");
+		expect(partial).toHaveAttribute("aria-checked", "mixed");
+		cleanup();
+		const checkboxDisabled = scenario("checkbox", "checkbox-disabled");
+		expect(checkboxDisabled.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(checkboxDisabled.code).toContain('aria-label="Disabled off"');
+		expect(checkboxDisabled.code).toContain('aria-label="Disabled on"');
+		render(createElement(checkboxDisabled.render));
+		const disabledOff = screen.getByRole("checkbox", { name: "Disabled off" });
+		const disabledOn = screen.getByRole("checkbox", { name: "Disabled on" });
+		expect(disabledOff).toBeDisabled();
+		expect(disabledOn).toBeDisabled();
+		expect(disabledOff).not.toBeChecked();
+		expect(disabledOn).toBeChecked();
+		fireEvent.click(disabledOff);
+		fireEvent.click(disabledOn);
+		expect(disabledOff).not.toBeChecked();
+		expect(disabledOn).toBeChecked();
+		cleanup();
+		const checkboxError = scenario("checkbox", "checkbox-error");
+		expect(checkboxError.code).toContain("@nocoo/basalt/components/field");
+		expect(checkboxError.code).toContain("<Field ");
+		expect(checkboxError.code).toContain('label="Terms"');
+		expect(checkboxError.code).toContain('htmlFor="ex-terms"');
+		expect(checkboxError.code).toContain('error="Required"');
+		expect(checkboxError.code).toContain('id="ex-terms"');
+		expect(checkboxError.code).not.toContain('variant="error"');
+		render(createElement(checkboxError.render));
+		const terms = screen.getByRole("checkbox", { name: "Terms" });
+		expect(terms).toHaveAttribute("id", "ex-terms");
+		expect(terms).toHaveAttribute("aria-invalid", "true");
+		expect(terms).toHaveAttribute("aria-describedby", "ex-terms-error");
+		const alert = screen.getByRole("alert");
+		expect(alert).toHaveAttribute("id", "ex-terms-error");
+		expect(alert).toHaveTextContent("Required");
+		cleanup();
 		expect(scenario("switch", "switch-off-state").code).toContain('aria-label="Off"');
 		expect(scenario("switch", "switch-on-state").code).toContain('aria-label="On"');
 		expect(scenario("switch", "switch-disabled").code).toContain('aria-label="Disabled off"');

@@ -1,5 +1,4 @@
 import { Banner } from "@nocoo/basalt/components/banner";
-import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { Link } from "@nocoo/basalt/components/link";
 import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
 import { Switch } from "@nocoo/basalt/components/switch";
@@ -11,6 +10,7 @@ import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "./examples/button";
+import { CHECKBOX_EXAMPLES } from "./examples/checkbox";
 import { FIELD_EXAMPLES } from "./examples/field";
 import { INPUT_EXAMPLES } from "./examples/input";
 import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
@@ -66,20 +66,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	"input-area": INPUT_AREA_EXAMPLES,
 	"input-group": INPUT_GROUP_EXAMPLES,
 	"sensitive-input": SENSITIVE_INPUT_EXAMPLES,
-	checkbox: [
-		{
-			id: catalogScenarioId("checkbox", "unchecked"),
-			title: "Unchecked",
-			code: '<Checkbox aria-label="Subscribe" />',
-			render: () => <Checkbox aria-label="Subscribe" />,
-		},
-		{
-			id: catalogScenarioId("checkbox", "indeterminate"),
-			title: "Indeterminate",
-			code: '<Checkbox aria-label="Partial" checked="indeterminate" />',
-			render: () => <Checkbox aria-label="Partial" checked="indeterminate" />,
-		},
-	],
+	checkbox: CHECKBOX_EXAMPLES,
 	radio: [
 		{
 			id: catalogScenarioId("radio", "group"),

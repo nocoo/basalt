@@ -2194,7 +2194,7 @@ describe("ui catalog", () => {
 		expect(kumo).not.toMatch(/catalogScenarioId\("input-area"/);
 		expect(demos).not.toContain('from "@nocoo/basalt/components/input-area"');
 		expect(kumo).not.toContain('from "@nocoo/basalt/components/input-area"');
-		expect(kumo).toContain('from "@nocoo/basalt/components/field"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/field"');
 	});
 
 	it("does not keep inline input-group scenario owners", () => {
@@ -2280,6 +2280,103 @@ describe("ui catalog", () => {
 		expect(kumo).not.toContain('from "@nocoo/basalt/components/sensitive-input"');
 	});
 
+	it("keeps checkbox hero, five states, error ARIA, and copy modules", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		renderCatalog("/ui/checkbox");
+		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Checked" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Indeterminate" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Error" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="checkbox-default"]');
+		const labeled = document.querySelector('[data-scenario="checkbox-default"]');
+		const checked = document.querySelector('[data-scenario="checkbox-checked"]');
+		const indeterminate = document.querySelector('[data-scenario="checkbox-indeterminate"]');
+		const disabled = document.querySelector('[data-scenario="checkbox-disabled"]');
+		const error = document.querySelector('[data-scenario="checkbox-error"]');
+		expect(hero).toBeTruthy();
+		expect(labeled).toBeTruthy();
+		expect(checked).toBeTruthy();
+		expect(indeterminate).toBeTruthy();
+		expect(disabled).toBeTruthy();
+		expect(error).toBeTruthy();
+		if (!hero || !labeled || !checked || !indeterminate || !disabled || !error) {
+			throw new Error("missing checkbox scenario surfaces");
+		}
+		const heroBox = within(hero as HTMLElement).getByRole("checkbox", { name: "Unchecked" });
+		expect(heroBox).not.toBeChecked();
+		expect(heroBox).toBeEnabled();
+		fireEvent.click(heroBox);
+		expect(heroBox).toBeChecked();
+		fireEvent.click(heroBox);
+		expect(heroBox).not.toBeChecked();
+		expect(
+			within(labeled as HTMLElement).getByRole("checkbox", { name: "Unchecked" }),
+		).not.toBeChecked();
+		expect(within(checked as HTMLElement).getByRole("checkbox", { name: "Checked" })).toBeChecked();
+		const mixed = within(indeterminate as HTMLElement).getByRole("checkbox", { name: "Partial" });
+		expect(mixed).toHaveAttribute("data-state", "indeterminate");
+		expect(mixed).toHaveAttribute("aria-checked", "mixed");
+		const disabledOff = within(disabled as HTMLElement).getByRole("checkbox", {
+			name: "Disabled off",
+		});
+		const disabledOn = within(disabled as HTMLElement).getByRole("checkbox", {
+			name: "Disabled on",
+		});
+		expect(disabled.querySelector(".flex.flex-wrap.items-center.gap-3")).toBeTruthy();
+		expect(disabledOff).toBeDisabled();
+		expect(disabledOn).toBeDisabled();
+		expect(disabledOff).not.toBeChecked();
+		expect(disabledOn).toBeChecked();
+		fireEvent.click(disabledOff);
+		fireEvent.click(disabledOn);
+		expect(disabledOff).not.toBeChecked();
+		expect(disabledOn).toBeChecked();
+		const terms = within(error as HTMLElement).getByRole("checkbox", { name: "Terms" });
+		expect(terms).toHaveAttribute("id", "ex-terms");
+		expect(terms).toHaveAttribute("aria-invalid", "true");
+		expect(terms).toHaveAttribute("aria-describedby", "ex-terms-error");
+		const alert = within(error as HTMLElement).getByRole("alert");
+		expect(alert).toHaveAttribute("id", "ex-terms-error");
+		expect(alert).toHaveTextContent("Required");
+		for (const scenario of UI_EXAMPLES.checkbox ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/checkbox");
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(UI_EXAMPLES.checkbox).toHaveLength(5);
+		for (const scenario of UI_EXAMPLES.checkbox ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		expect(CATALOG_DOCS["sensitive-input"]?.api).toEqual(CATALOG_API["sensitive-input"]);
+		expect(UI_EXAMPLES["sensitive-input"]).toHaveLength(2);
+	});
+
+	it("does not keep inline checkbox scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
+		expect(demos).toContain("CHECKBOX_EXAMPLES");
+		expect(demos).toMatch(/\bcheckbox: CHECKBOX_EXAMPLES/);
+		expect(demos).not.toMatch(/\bcheckbox:\s*\[/);
+		expect(kumo).not.toMatch(/\bcheckbox:\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("checkbox"/);
+		expect(kumo).not.toMatch(/catalogScenarioId\("checkbox"/);
+		expect(demos).not.toContain('from "@nocoo/basalt/components/checkbox"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/checkbox"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/field"');
+		expect(kumo).toContain("function Preview");
+	});
+
 	it("does not keep inline input scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
@@ -2291,7 +2388,7 @@ describe("ui catalog", () => {
 		expect(kumo).not.toMatch(/catalogScenarioId\("input",/);
 		expect(demos).not.toContain('from "@nocoo/basalt/components/input";');
 		expect(kumo).not.toContain('from "@nocoo/basalt/components/input";');
-		expect(kumo).toContain('from "@nocoo/basalt/components/field"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/field"');
 		expect(kumo).not.toMatch(/function Stack\b/);
 		expect(kumo).not.toMatch(/<Stack[\s>]/);
 	});
@@ -2306,7 +2403,7 @@ describe("ui catalog", () => {
 		expect(demos).not.toMatch(/catalogScenarioId\("field"/);
 		expect(kumo).not.toMatch(/catalogScenarioId\("field"/);
 		expect(demos).not.toContain('from "@nocoo/basalt/components/field"');
-		expect(kumo).toContain('from "@nocoo/basalt/components/field"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/field"');
 		expect(demos).not.toContain("ex-email");
 		expect(kumo).not.toContain("kumo-ex-email");
 	});

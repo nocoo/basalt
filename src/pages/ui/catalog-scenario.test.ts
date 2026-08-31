@@ -9,6 +9,7 @@ import {
 import { UI_EXAMPLES } from "./demos";
 import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "./examples/button";
+import { CHECKBOX_EXAMPLES } from "./examples/checkbox";
 import { FIELD_EXAMPLES } from "./examples/field";
 import { INPUT_EXAMPLES } from "./examples/input";
 import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
@@ -223,6 +224,22 @@ const SENSITIVE_INPUT_TITLES = ["Default", "Disabled"] as const;
 
 const sensitiveInputRenders = import.meta.glob("./examples/sensitive-input/*.tsx", { eager: true });
 const sensitiveInputSources = import.meta.glob("./examples/sensitive-input/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const CHECKBOX_IDS = [
+	"checkbox-default",
+	"checkbox-checked",
+	"checkbox-indeterminate",
+	"checkbox-disabled",
+	"checkbox-error",
+] as const;
+const CHECKBOX_TITLES = ["Default", "Checked", "Indeterminate", "Disabled", "Error"] as const;
+
+const checkboxRenders = import.meta.glob("./examples/checkbox/*.tsx", { eager: true });
+const checkboxSources = import.meta.glob("./examples/checkbox/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -1288,6 +1305,102 @@ describe("source-backed sensitive-input scenarios", () => {
 		expect(SENSITIVE_INPUT_EXAMPLES[0]?.code).not.toContain("disabled");
 		expect(SENSITIVE_INPUT_EXAMPLES[1]?.code).toContain('aria-label="Disabled password"');
 		expect(SENSITIVE_INPUT_EXAMPLES[1]?.code).toContain("disabled");
+	});
+});
+
+describe("source-backed checkbox scenarios", () => {
+	it("loads five checkbox scenarios from the same glob modules", () => {
+		expect(Object.keys(checkboxRenders)).toHaveLength(5);
+		expect(Object.keys(checkboxSources)).toHaveLength(5);
+		const loaded = loadModuleScenarios({
+			slug: "checkbox",
+			metas: CHECKBOX_TITLES.map((title, index) => ({
+				key: CHECKBOX_IDS[index].slice("checkbox-".length),
+				title,
+			})),
+			renderModules: checkboxRenders,
+			sourceModules: checkboxSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...CHECKBOX_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...CHECKBOX_TITLES]);
+		expect(CHECKBOX_EXAMPLES.map((item) => item.id)).toEqual([...CHECKBOX_IDS]);
+		expect(CHECKBOX_EXAMPLES.map((item) => item.title)).toEqual([...CHECKBOX_TITLES]);
+		expect(UI_EXAMPLES.checkbox).toBe(CHECKBOX_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
+		expect(UI_EXAMPLES["theme-toggle"]).toBe(THEME_TOGGLE_EXAMPLES);
+		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
+		expect(UI_EXAMPLES["basalt-mark"]).toBe(BASALT_MARK_EXAMPLES);
+		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
+		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
+		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
+		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
+		expect(UI_EXAMPLES["sensitive-input"]).toBe(SENSITIVE_INPUT_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		expect(UI_EXAMPLES["theme-toggle"]?.map((item) => item.id)).toEqual([...THEME_TOGGLE_IDS]);
+		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([...LAYER_CARD_IDS]);
+		expect(UI_EXAMPLES["basalt-mark"]?.map((item) => item.id)).toEqual([...BASALT_MARK_IDS]);
+		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([...FIELD_IDS]);
+		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([...INPUT_IDS]);
+		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([...INPUT_AREA_IDS]);
+		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([...INPUT_GROUP_IDS]);
+		expect(UI_EXAMPLES["sensitive-input"]?.map((item) => item.id)).toEqual([
+			...SENSITIVE_INPUT_IDS,
+		]);
+		const fileKeys = new Set(
+			Object.keys(checkboxRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(new Set(CHECKBOX_IDS.map((id) => id.slice("checkbox-".length))));
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("checkbox-".length);
+			const modulePath = Object.keys(checkboxSources).find((path) => path.endsWith(`/${key}.tsx`));
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = checkboxSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(CHECKBOX_EXAMPLES.find((item) => item.id === scenario.id)?.code);
+			expect(scenario.render).toBe((checkboxRenders[modulePath] as { default: unknown }).default);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				CHECKBOX_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).not.toContain("@cloudflare/kumo");
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/checkbox");
+			expect(scenario.code).toContain("import { Checkbox }");
+		}
+		expect(CHECKBOX_EXAMPLES[0]?.code).toContain('aria-label="Unchecked"');
+		expect(CHECKBOX_EXAMPLES[0]?.code).not.toContain("disabled");
+		expect(CHECKBOX_EXAMPLES[0]?.code).not.toContain("defaultChecked");
+		expect(CHECKBOX_EXAMPLES[1]?.code).toContain("defaultChecked");
+		expect(CHECKBOX_EXAMPLES[1]?.code).toContain('aria-label="Checked"');
+		expect(CHECKBOX_EXAMPLES[2]?.code).toContain('checked="indeterminate"');
+		expect(CHECKBOX_EXAMPLES[2]?.code).toContain('aria-label="Partial"');
+		expect(CHECKBOX_EXAMPLES[3]?.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(CHECKBOX_EXAMPLES[3]?.code).toContain('aria-label="Disabled off"');
+		expect(CHECKBOX_EXAMPLES[3]?.code).toContain('aria-label="Disabled on"');
+		expect(CHECKBOX_EXAMPLES[3]?.code).toContain("disabled");
+		expect(CHECKBOX_EXAMPLES[4]?.code).toContain("@nocoo/basalt/components/field");
+		expect(CHECKBOX_EXAMPLES[4]?.code).toContain("import { Field }");
+		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('label="Terms"');
+		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('htmlFor="ex-terms"');
+		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('error="Required"');
+		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('id="ex-terms"');
+		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('aria-label="Terms"');
 	});
 });
 

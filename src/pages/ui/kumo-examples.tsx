@@ -12,7 +12,6 @@ import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
-import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
 import { CodeBlock, CodeHighlighted } from "@nocoo/basalt/components/code";
 import {
@@ -46,7 +45,6 @@ import {
 	DropdownMenuTrigger,
 } from "@nocoo/basalt/components/dropdown-menu";
 import { Empty } from "@nocoo/basalt/components/empty";
-import { Field } from "@nocoo/basalt/components/field";
 import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
 import { Grid, GridItem } from "@nocoo/basalt/components/grid";
 import { Label } from "@nocoo/basalt/components/label";
@@ -354,47 +352,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 			title: "Loading",
 			code: "<Breadcrumbs items={[{ label: <SkeletonLine minWidth={72} /> }]} />",
 			render: () => <Breadcrumbs items={[{ label: <SkeletonLine minWidth={72} /> }]} />,
-		},
-	],
-	checkbox: [
-		{
-			id: catalogScenarioId("checkbox", "default"),
-			title: "Default",
-			code: '<Checkbox aria-label="Unchecked" />',
-			render: () => <Checkbox aria-label="Unchecked" />,
-		},
-		{
-			id: catalogScenarioId("checkbox", "checked"),
-			title: "Checked",
-			code: '<Checkbox defaultChecked aria-label="Checked" />',
-			render: () => <Checkbox defaultChecked aria-label="Checked" />,
-		},
-		{
-			id: catalogScenarioId("checkbox", "indeterminate"),
-			title: "Indeterminate",
-			code: '<Checkbox checked="indeterminate" aria-label="Partial" />',
-			render: () => <Checkbox checked="indeterminate" aria-label="Partial" />,
-		},
-		{
-			id: catalogScenarioId("checkbox", "disabled"),
-			title: "Disabled",
-			code: '<Checkbox disabled aria-label="Disabled off" /><Checkbox disabled defaultChecked aria-label="Disabled on" />',
-			render: () => (
-				<Preview>
-					<Checkbox disabled aria-label="Disabled off" />
-					<Checkbox disabled defaultChecked aria-label="Disabled on" />
-				</Preview>
-			),
-		},
-		{
-			id: catalogScenarioId("checkbox", "error"),
-			title: "Error",
-			code: '<Field label="Terms" htmlFor="ex-terms" error="Required"><Checkbox id="ex-terms" aria-label="Terms" /></Field>',
-			render: () => (
-				<Field label="Terms" htmlFor="ex-terms" error="Required">
-					<Checkbox id="ex-terms" aria-label="Terms" />
-				</Field>
-			),
 		},
 	],
 	"clipboard-text": [
