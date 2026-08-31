@@ -42,6 +42,32 @@ describe("AppHeader", () => {
 		expect(banner.children[0]).not.toHaveClass("gap-1");
 		expect(banner.children[0].contains(screen.getByRole("button", { name: "Menu" }))).toBe(true);
 	});
+
+	it("keeps crumb ancestor and title at the same size and weight", () => {
+		render(
+			<AppHeader
+				aria-label="Workspace chrome"
+				breadcrumbs={[{ href: "/", label: "Examples" }]}
+				title="Dashboard"
+			/>,
+		);
+		const banner = screen.getByRole("banner", { name: "Workspace chrome" });
+		expect(banner.className.split(/\s+/)).toContain("h-14");
+		const ancestor = screen.getByRole("link", { name: "Examples" });
+		const title = screen.getByRole("heading", { level: 1, name: "Dashboard" });
+		expect(title.tagName).toBe("H1");
+		for (const token of ["text-sm", "font-normal"]) {
+			expect(ancestor.className.split(/\s+/)).toContain(token);
+			expect(title.className.split(/\s+/)).toContain(token);
+		}
+		expect(ancestor.className.split(/\s+/)).toContain("text-basalt-muted-foreground");
+		expect(title.className.split(/\s+/)).toContain("text-basalt-foreground");
+		expect(title.className.split(/\s+/)).not.toContain("font-semibold");
+		expect(title.className.split(/\s+/)).not.toContain("text-lg");
+		expect(title.className.split(/\s+/)).not.toContain("md:text-xl");
+		expect(banner.querySelector("svg")).toBeTruthy();
+		expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toBeInTheDocument();
+	});
 });
 
 describe("LoadingScreen", () => {

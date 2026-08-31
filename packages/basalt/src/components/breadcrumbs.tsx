@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
 import { Link } from "./link";
 
+const crumbTypeClass = "text-sm font-normal";
+
 export function Breadcrumbs({
 	items,
 	className,
@@ -13,7 +15,10 @@ export function Breadcrumbs({
 	return (
 		<nav
 			aria-label="Breadcrumb"
-			className={cn("flex items-center gap-1 text-sm text-basalt-muted-foreground", className)}
+			className={cn(
+				"flex items-center gap-1 text-sm font-normal text-basalt-muted-foreground",
+				className,
+			)}
 		>
 			{items.map((item, index) => {
 				const current = index === items.length - 1 && !item.href;
@@ -31,14 +36,20 @@ export function Breadcrumbs({
 						{item.href ? (
 							<Link
 								href={item.href}
-								className="text-basalt-muted-foreground no-underline transition-colors hover:text-basalt-foreground"
+								className={cn(
+									crumbTypeClass,
+									"text-basalt-muted-foreground no-underline transition-colors hover:text-basalt-foreground",
+								)}
 							>
 								{label}
 							</Link>
 						) : (
 							<span
 								aria-current={current ? "page" : undefined}
-								className={cn(current && "font-medium text-basalt-foreground")}
+								className={cn(
+									crumbTypeClass,
+									current ? "text-basalt-foreground" : "text-basalt-muted-foreground",
+								)}
 							>
 								{label}
 							</span>

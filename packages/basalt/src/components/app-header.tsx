@@ -37,9 +37,7 @@ export function AppHeader({
 						</>
 					) : null}
 					{title ? (
-						<h1 className="truncate text-lg font-semibold text-basalt-foreground md:text-xl">
-							{title}
-						</h1>
+						<h1 className="truncate text-sm font-normal text-basalt-foreground">{title}</h1>
 					) : null}
 				</div>
 			</div>
