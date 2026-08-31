@@ -133,7 +133,7 @@ import {
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
-import { type CatalogPageStatus, resolveCatalogPageState } from "@/pages/ui/catalog-index";
+import { type CatalogPageStatus, catalogPageStatus } from "@/pages/ui/catalog-page-status";
 
 // ── Navigation data model ──
 
@@ -313,7 +313,7 @@ const CATALOG_ICONS: Record<string, React.ElementType> = {
 };
 
 const CATALOG_PAGE_STATUS_BY_SLUG = new Map(
-	CATALOG.map((entry) => [entry.slug, resolveCatalogPageState(entry.slug).pageStatus]),
+	CATALOG.map((entry) => [entry.slug, catalogPageStatus(entry.slug)]),
 );
 
 function catalogNavItem(entry: CatalogEntry, fallbackIcon: React.ElementType): NavItem {

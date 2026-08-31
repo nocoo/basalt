@@ -1,11 +1,12 @@
 import { CATALOG, type CatalogCategory, type CatalogEntry, type CatalogKind } from "./catalog";
+import type { CatalogPageStatus } from "./catalog-page-status";
 import type { CatalogScenario } from "./catalog-scenario";
 import type { CatalogDocs } from "./catalog-source";
 import { catalogHeroScenario } from "./demos";
 import { CATALOG_DOCS } from "./docs";
 
 export type CatalogReleaseStatus = "stable" | "catalog";
-export type CatalogPageStatus = "ready" | "planned";
+export type { CatalogPageStatus } from "./catalog-page-status";
 export type CatalogIndexCategory = "all" | Exclude<CatalogCategory, "docs">;
 export type CatalogIndexRelease = "all" | CatalogReleaseStatus;
 export type CatalogIndexStatus = "all" | CatalogPageStatus;
