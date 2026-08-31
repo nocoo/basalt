@@ -151,6 +151,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "RadioProps",
 		surface: "Radio",
 	},
+	{
+		slug: "switch",
+		sourceFile: "packages/basalt/src/components/switch.tsx",
+		propsType: "SwitchProps",
+		surface: "Switch",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

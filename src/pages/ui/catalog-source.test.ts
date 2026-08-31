@@ -207,6 +207,11 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("radio"))).toBe("packages/basalt/src/components/radio.tsx");
 		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
 		expect(CATALOG_API.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
+		expect(implementationFileFor(entry("switch"))).toBe(
+			"packages/basalt/src/components/switch.tsx",
+		);
+		expect(CATALOG_DOCS.switch?.api).toEqual(CATALOG_API.switch);
+		expect(CATALOG_API.switch?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);
@@ -282,6 +287,7 @@ describe("catalog source contract", () => {
 			"sensitive-input",
 			"checkbox",
 			"radio",
+			"switch",
 		];
 		for (const slug of generated) {
 			expect(CATALOG_DOCS[slug]?.api).toBe(CATALOG_API[slug as keyof typeof CATALOG_API]);
@@ -302,6 +308,8 @@ describe("catalog source contract", () => {
 		expect(CATALOG_DOCS.checkbox?.api.map((surface) => surface.name)).toEqual(["Checkbox"]);
 		expect(CATALOG_DOCS.radio?.api).toHaveLength(1);
 		expect(CATALOG_DOCS.radio?.api.map((surface) => surface.name)).toEqual(["Radio"]);
+		expect(CATALOG_DOCS.switch?.api).toHaveLength(1);
+		expect(CATALOG_DOCS.switch?.api.map((surface) => surface.name)).toEqual(["Switch"]);
 	});
 
 	it("always points implementation source at nocoo/basalt@main", () => {

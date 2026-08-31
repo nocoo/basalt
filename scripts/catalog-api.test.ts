@@ -234,8 +234,14 @@ describe("catalog API generator contract", () => {
 				propsType: "RadioProps",
 				surface: "Radio",
 			},
+			{
+				slug: "switch",
+				sourceFile: "packages/basalt/src/components/switch.tsx",
+				propsType: "SwitchProps",
+				surface: "Switch",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(21);
+		expect(CATALOG_API_TARGETS).toHaveLength(22);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -248,6 +254,7 @@ describe("catalog API generator contract", () => {
 		expect(source).not.toMatch(/\bif\s*\([^)]*SensitiveInput|\bswitch\s*\([^)]*sensitive-input/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*Checkbox|\bswitch\s*\([^)]*checkbox/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*Radio|\bswitch\s*\([^)]*radio/);
+		expect(source).not.toMatch(/\bif\s*\([^)]*Switch|\bswitch\s*\([^)]*switch/);
 	});
 
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
@@ -269,6 +276,7 @@ describe("catalog API generator contract", () => {
 			"sensitive-input",
 			"checkbox",
 			"radio",
+			"switch",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -978,6 +986,7 @@ export interface WidgetProps {
 			"sensitive-input": ["SensitiveInput"],
 			checkbox: ["Checkbox"],
 			radio: ["Radio"],
+			switch: ["Switch"],
 		});
 	}, 20_000);
 
@@ -987,7 +996,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(17);
+		expect(Object.keys(generated)).toHaveLength(18);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1088,7 +1097,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(17);
+		expect(Object.keys(generated)).toHaveLength(18);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1188,7 +1197,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(17);
+		expect(Object.keys(generated)).toHaveLength(18);
 		expect(generated.checkbox).toEqual([
 			{
 				name: "Checkbox",
@@ -1267,7 +1276,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(17);
+		expect(Object.keys(generated)).toHaveLength(18);
 		expect(generated.radio).toEqual([
 			{
 				name: "Radio",
@@ -1309,6 +1318,88 @@ export interface WidgetProps {
 		expect(generated.radio).toHaveLength(1);
 		expect(generated.radio?.[0]?.props).toHaveLength(1);
 		expect(generated.button?.[0]?.name).toBe("Button");
+		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked"]);
+		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
+			"InputGroup",
+			"InputGroup.Input",
+			"InputGroup.Addon",
+			"InputGroup.Button",
+			"InputGroup.Suffix",
+		]);
+	}, 20_000);
+
+	it("extracts Switch props from SwitchProps as optional checked and size", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(Object.keys(generated)).toHaveLength(18);
+		expect(generated.switch).toEqual([
+			{
+				name: "Switch",
+				props: [
+					{
+						name: "checked",
+						type: "boolean",
+						required: false,
+						description: "The controlled checked state of the switch.",
+					},
+					{
+						name: "size",
+						type: '"default" | "sm"',
+						required: false,
+						default: "default",
+						description: "The visual size of the switch.",
+					},
+				],
+			},
+		]);
+		expect(generated.switch?.[0]?.props[0]).not.toHaveProperty("default");
+		expect(generated.switch).toHaveLength(1);
+		expect(generated.switch?.[0]?.props).toHaveLength(2);
+		expect(
+			generated.switch?.some((surface) =>
+				surface.props.some((prop) => prop.name === "defaultChecked"),
+			),
+		).toBe(false);
+		expect(
+			generated.switch?.some((surface) =>
+				surface.props.some((prop) => prop.name === "onCheckedChange"),
+			),
+		).toBe(false);
+		expect(
+			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "disabled")),
+		).toBe(false);
+		expect(
+			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "required")),
+		).toBe(false);
+		expect(
+			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "name")),
+		).toBe(false);
+		expect(
+			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "value")),
+		).toBe(false);
+		expect(
+			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "form")),
+		).toBe(false);
+		expect(
+			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "asChild")),
+		).toBe(false);
+		expect(
+			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "className")),
+		).toBe(false);
+		expect(
+			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "children")),
+		).toBe(false);
+		expect(
+			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "ref")),
+		).toBe(false);
+		expect(
+			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "aria-label")),
+		).toBe(false);
+		expect(generated.button?.[0]?.name).toBe("Button");
+		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
 		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked"]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
 			"InputGroup",
@@ -2149,6 +2240,7 @@ export interface WidgetProps {
 		expect(first).toContain('\t"sensitive-input": [');
 		expect(first).toContain("\tcheckbox: [");
 		expect(first).toContain("\tradio: [");
+		expect(first).toContain("\tswitch: [");
 		expect(first).toContain('name: "Button"');
 		expect(first).toContain('name: "InputArea"');
 		expect(first).toContain('name: "InputGroup.Button"');
@@ -2156,8 +2248,9 @@ export interface WidgetProps {
 		expect(first).toContain('name: "SensitiveInput"');
 		expect(first).toContain('name: "Checkbox"');
 		expect(first).toContain('name: "Radio"');
+		expect(first).toContain('name: "Switch"');
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"0139c12df79f9dd9cc4c50fd97cec3eeef79585cf221b3591b184f7ca6c941dd",
+			"2b82cfcee09b58abdf67557b79f3e48e8c3fd755d87a0843d50ff5240f2bc86b",
 		);
 	}, 20_000);
 });

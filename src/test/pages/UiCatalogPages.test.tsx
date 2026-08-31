@@ -1401,6 +1401,96 @@ describe("ui catalog", () => {
 		expect(block).toContain('file: "packages/web/src/components"');
 	});
 
+	it("sources switch API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS.switch?.api).toEqual(CATALOG_API.switch);
+		expect(CATALOG_API.switch).toEqual([
+			{
+				name: "Switch",
+				props: [
+					{
+						name: "checked",
+						type: "boolean",
+						required: false,
+						description: "The controlled checked state of the switch.",
+					},
+					{
+						name: "size",
+						type: '"default" | "sm"',
+						required: false,
+						default: "default",
+						description: "The visual size of the switch.",
+					},
+				],
+			},
+		]);
+		renderCatalog("/ui/switch");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		expect(document.getElementById("api-Switch")?.tagName).toBe("H3");
+		expect(document.querySelector('[data-toc-id="api-Switch"]')).toBeTruthy();
+		expect(screen.getByRole("heading", { name: "Switch", level: 3 })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "Switch props" })).toBeInTheDocument();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(2);
+		expect(api).toHaveTextContent("checked?");
+		expect(api).toHaveTextContent("size?");
+		expect(api).toHaveTextContent("boolean");
+		expect(api).toHaveTextContent('"default" | "sm"');
+		expect(api).toHaveTextContent("The controlled checked state of the switch.");
+		expect(api).toHaveTextContent("The visual size of the switch.");
+		expect(api).toHaveTextContent("—");
+		expect(api).toHaveTextContent("default");
+		expect(api).not.toHaveTextContent("defaultChecked");
+		expect(api).not.toHaveTextContent("onCheckedChange");
+		expect(api).not.toHaveTextContent("disabled?");
+		expect(api).not.toHaveTextContent("className");
+		expect(screen.getByRole("heading", { name: "Off State" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "On State" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
+		expect(document.querySelector('[data-hero-scenario="switch-off-state"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="switch-sizes"]')).toBeTruthy();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### Switch");
+		expect(markdown).toContain(
+			"- checked (boolean, optional, default —): The controlled checked state of the switch.",
+		);
+		expect(markdown).toContain(
+			'- size ("default" | "sm", optional, default default): The visual size of the switch.',
+		);
+		expect(markdown).not.toContain("- defaultChecked (");
+		expect(markdown).not.toContain("- className (");
+		expect(markdown).not.toContain("- disabled (");
+		expect(UI_EXAMPLES.switch).toHaveLength(4);
+		for (const scenario of UI_EXAMPLES.switch ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+	});
+
+	it("does not keep a handwritten switch prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf("\tswitch: {");
+		const end = docs.indexOf('\t"theme-provider": {');
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain("api: CATALOG_API.switch");
+		expect(block).not.toContain('name: "checked"');
+		expect(block).not.toContain('name: "size"');
+		expect(block).not.toContain('type: "boolean"');
+		expect(block).toContain('description: "A binary toggle."');
+		expect(block).toContain('<Switch aria-label="Notifications" />');
+		expect(block).toContain('variants: ["checked", "unchecked"]');
+		expect(block).toContain('repo: "zhe"');
+		expect(block).toContain('sha: "c31c239f01c9"');
+		expect(block).toContain('file: "components/ui/switch.tsx"');
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
@@ -2334,10 +2424,12 @@ describe("ui catalog", () => {
 		expect(generator).not.toMatch(/\bif\s*\([^)]*SensitiveInput|\bswitch\s*\([^)]*sensitive-input/);
 		expect(generator).not.toMatch(/\bif\s*\([^)]*Checkbox|\bswitch\s*\([^)]*checkbox/);
 		expect(generator).not.toMatch(/\bif\s*\([^)]*Radio|\bswitch\s*\([^)]*radio/);
+		expect(generator).not.toMatch(/\bif\s*\([^)]*Switch|\bswitch\s*\([^)]*switch/);
 		expect(page).not.toMatch(/input-group|InputGroup/);
 		expect(page).not.toMatch(/sensitive-input|SensitiveInput/);
 		expect(page).not.toMatch(/\bcheckbox\b|Checkbox/);
 		expect(page).not.toMatch(/\bradio\b|Radio/);
+		expect(page).not.toMatch(/\bswitch\b|Switch/);
 		expect(page).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 	});
 
@@ -2697,11 +2789,15 @@ describe("ui catalog", () => {
 			expect(markdown).toContain(scenario.code);
 		}
 		expect(markdown).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(markdown).toContain(
+			"- checked (boolean, optional, default —): The controlled checked state of the switch.",
+		);
+		expect(markdown).toContain(
+			'- size ("default" | "sm", optional, default default): The visual size of the switch.',
+		);
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
 		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
-		expect(CATALOG_DOCS.switch?.api).toEqual([
-			{ name: "Switch", props: [{ name: "checked", type: "boolean" }] },
-		]);
+		expect(CATALOG_DOCS.switch?.api).toEqual(CATALOG_API.switch);
 		expect(UI_EXAMPLES.radio).toHaveLength(3);
 	});
 

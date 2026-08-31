@@ -270,7 +270,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<Switch aria-label="Notifications" />',
 		),
 		variants: ["checked", "unchecked"],
-		api: [{ name: "Switch", props: [{ name: "checked", type: "boolean" }] }],
+		api: CATALOG_API.switch,
 		provenance: provenanceFromLegacy({
 			repo: "zhe",
 			sha: "c31c239f01c9",

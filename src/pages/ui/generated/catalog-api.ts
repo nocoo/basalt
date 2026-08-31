@@ -329,6 +329,26 @@ export const CATALOG_API = {
 			],
 		},
 	],
+	switch: [
+		{
+			name: "Switch",
+			props: [
+				{
+					name: "checked",
+					type: "boolean",
+					required: false,
+					description: "The controlled checked state of the switch.",
+				},
+				{
+					name: "size",
+					type: '"default" | "sm"',
+					required: false,
+					default: "default",
+					description: "The visual size of the switch.",
+				},
+			],
+		},
+	],
 	text: [
 		{
 			name: "Text",
