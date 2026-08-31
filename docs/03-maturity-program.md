@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A35 D063 — Radio API 类型真源；待调查与规格固化
-> 当前代码前置：`f2d9dec`（D062 Grok 实现已独立验收，待台账提交）
+> 当前切片：S2A35 D063 — Radio API 类型真源；规格已固化，待 Grok 实现
+> 当前代码前置：`ec18a4d`（D062 台账已提交，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062 完成；S2A35 D063 待规格） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062 完成；S2A35 D063 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -564,6 +564,18 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    Scenario loader 测试须以真实 glob 重新调用 `loadModuleScenarios`，锁住三个 metadata、同路径 render/raw、精确 ID/title/order、集合闭合与 `UI_EXAMPLES` 引用同一实例，并逐项证明 raw code 含 granular imports、default export、Label/layout/defaultValue/disabled 契约。Form-selection 真值测试须导入 `RADIO_EXAMPLES`，锁同一引用，并真实 render 验证 Default 与 Horizontal 的 Alpha/Beta 可访问名称、初态和 click 互斥选择，Disabled 两项均禁用且状态不变；不得只做字符串存在性。页面测试须验证 `/ui/radio` hero 与三场景、标题/顺序、上述状态与真实 wrapper；Copy page 必须逐字包含三个完整 raw modules且没有禁用品牌语境。源码负门须证明 demos/Kumo 文件无 radio inline owner、legacy scenario ID 或直接 Radio import，并证明 Kumo 文件不再保留无用 direct Label import，同时 D060/D061 Checkbox 五场景与 generated API 不回归。
 
    只允许新增 `src/pages/ui/examples/radio/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/FormSelectionScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容，恰好 9 个文件。不得修改 `catalog-scenario.ts` loader、package Radio/Label 实现、类型或测试、其它 examples、`docs.ts`/generated API/generator、catalog registry/IA/CSS、HomeGrid、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入 Radio API 真源、S2A35、S2B 或 S4。提交前运行 catalog-scenario/form-selection/page 三个 focused test files、`bun run catalog-api:check`、typecheck、Biome、串行全量、coverage 与 showcase production build；coverage 四项不得低于 D061，既有 chunk warning和 favicon 404 资源噪声如实报告，构建后工作树必须干净。必须用真实 Chromium 在 7003 既有服务上验证 hero/三场景、互斥选择、disabled、Copy page 和零应用 console/page error，且不得停止 7003。只做一个绿色原子提交，建议 `refactor: source radio scenarios`，随后停止等待 Codex review。
+
+35. **S2A35 / D063 — Radio API 类型真源与 required value 契约。** D062 已把 Radio 三个现有 primitive 场景收敛为 source-backed modules；当前 docs 仍手写唯一 `Radio.value: string` 行且没有 required 语义，生产 `Radio` 直接把匿名 Radix Item props 交给 `forwardRef`。本刀只把这一现有 surface/prop 接入类型真源，不新增文档行或运行时能力。导出 granular `RadioProps`，精确等价于 `Omit<React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>, "value"> & { value: string }`：本地只重声明 required `value`，其余 inherited disabled/required/form、button/data/ARIA/asChild/children/className 能力全部保留；props type 自身保持 `WithoutRef`，`forwardRef` 组件继续通过 `RefAttributes` 接受 `HTMLButtonElement` ref。`RadioGroup` 的匿名 props generic、root barrel 和 wildcard granular export 规则均不改。
+
+   `value` 只补固定 JSDoc `The value associated with the radio item.`，不得添加 `@default`、额外 alias或本地重声明 disabled/required/native props。`Radio` 的 forwardRef element type、函数体、destructuring、Radix Item/Indicator、class 字符串、FOCUS_RING、Circle 图标、ref与 `{...props}` 顺序必须逐字保持，只能把 Item forwardRef 的匿名 props generic 替换为 `RadioProps`；`RadioGroup` 生产实现逐字不动。现有 default/controlled selection、form bridge、disabled、roving focus 与键盘行为不得漂移。
+
+   `CATALOG_API_TARGETS` 在 Checkbox 后追加第二十一个声明式 target：slug `radio`，source `packages/basalt/src/components/radio.tsx`，props type `RadioProps`，surface `Radio`，不得使用 `allowEmpty`、prop allowlist、fallback或组件特判。Generated 数据新增第十七个 slug、唯一 `Radio` surface与唯一 `value` prop，shape 精确为 `type: "string"`、`required: true`、无 default并携带上述说明；不得生成 inherited disabled/required/form/asChild/className/children/ref/button/data/ARIA props。前十六个 slug、二十 targets、InputGroup 五 surface、Checkbox单 surface与唯一 allowEmpty 必须逐字不变。本刀明确不新增 `RadioGroupProps` target或 `RadioGroup` API surface：当前 docs 没有该手写 inventory，而 Group/Item/Legend 的完整模型留 S4 一次设计。
+
+   `BASE_DOCS.radio.api` 只改为 `CATALOG_API.radio` 并删除手写 inventory；description、Usage、空 variants、provenance与 D062 三个 source-backed scenarios全部冻结。API Reference 必须显示唯一 `Radio` H3和一张 accessible label 为 `Radio props` 的单行表，`value` 显示 required、无 `?`、无默认值及固定说明；TOC与 Copy page继续走通用 surface path。Copy Markdown 必须包含 required value 行与 D062 三个完整 raw modules，不得出现 Cloudflare/Kumo/Worker 业务语境。
+
+   组件测试须以 `RadioProps` 类型证据证明 required string value及 inherited disabled/required/form/asChild/className/ARIA/data能力可用；缺失 value、number value与非法对象 value必须有真实 `@ts-expect-error`，不得用 `as any`。运行时测试补齐 ref 指向 Item button、id/data/className透传、Default Alpha checked/Beta unchecked后 click互斥切换、disabled不回归；value/form由 Radix context/bubble input消费，不得伪断言为 Item button attribute。Generator/catalog-source/page测试须锁二十一 targets、十七 slug、唯一 allowEmpty仍是 InputGroup.Suffix、Radio单项精确shape、前十六组不回归、连续 generate/check与新的真实 SHA-256；源码负门证明 docs不再手写 value且generator/page无Radio名字特判。D062现有三场景、互斥选择与source-backed Copy断言不得削弱。
+
+   只允许修改 `packages/basalt/src/components/radio.tsx`、`packages/basalt/src/components/radio.test.tsx`、`scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/docs.ts`、`src/pages/ui/catalog-source.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容，恰好8个文件。不得修改root barrel、Radix dependency、Label或其它package runtime/type、D062 examples/scenario/loader、page/TOC/Copy renderer、catalog registry/IA/CSS、HomeGrid、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得加入RadioGroup type/API、Kumo compound aliases、legend/description/error/card/rich label/controlPosition/generic typed values等S4能力，或进入S2A36/S2B。提交前运行Radio/generator/catalog-source/page四个focused test files、generate后连续两次check、typecheck、Biome、串行全量、coverage、showcase build，以及clean package build/types/pack；coverage不得低于D062，构建后工作树必须干净，既有chunk warning与favicon 404资源噪声如实报告。必须用真实Chromium在7003既有服务上验证单行API、三场景、互斥选择、disabled、Copy page和零应用console/page error，且不得停止7003。只做一个绿色原子提交，建议 `refactor: generate radio api docs`，随后停止等待Codex review。
 
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
