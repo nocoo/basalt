@@ -5,7 +5,13 @@ import { Button } from "./button";
 import { Input } from "./input";
 
 export interface SensitiveInputProps extends Omit<React.ComponentProps<"input">, "type"> {
+	/**
+	 * Accessible label for the reveal action.
+	 */
 	revealLabel: string;
+	/**
+	 * Accessible label for the hide action.
+	 */
 	hideLabel: string;
 }
 

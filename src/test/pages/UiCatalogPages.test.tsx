@@ -1157,6 +1157,96 @@ describe("ui catalog", () => {
 		expect(block).toContain('file: "src/pages/FormsPage.tsx"');
 	});
 
+	it("sources sensitive-input API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS["sensitive-input"]?.api).toEqual(CATALOG_API["sensitive-input"]);
+		expect(CATALOG_API["sensitive-input"]).toEqual([
+			{
+				name: "SensitiveInput",
+				props: [
+					{
+						name: "revealLabel",
+						type: "string",
+						required: true,
+						description: "Accessible label for the reveal action.",
+					},
+					{
+						name: "hideLabel",
+						type: "string",
+						required: true,
+						description: "Accessible label for the hide action.",
+					},
+				],
+			},
+		]);
+		renderCatalog("/ui/sensitive-input");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		expect(document.getElementById("api-SensitiveInput")?.tagName).toBe("H3");
+		expect(document.querySelector('[data-toc-id="api-SensitiveInput"]')).toBeTruthy();
+		expect(screen.getByRole("heading", { name: "SensitiveInput" })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "SensitiveInput props" })).toBeInTheDocument();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(2);
+		expect(api).toHaveTextContent("revealLabel");
+		expect(api).not.toHaveTextContent("revealLabel?");
+		expect(api).toHaveTextContent("hideLabel");
+		expect(api).not.toHaveTextContent("hideLabel?");
+		expect(api).toHaveTextContent("string");
+		expect(api).toHaveTextContent("Accessible label for the reveal action.");
+		expect(api).toHaveTextContent("Accessible label for the hide action.");
+		expect(api).toHaveTextContent("—");
+		expect(api).not.toHaveTextContent("className");
+		expect(api).not.toHaveTextContent("disabled");
+		expect(api).not.toHaveTextContent("aria-label");
+		expect(api).not.toHaveTextContent("type?");
+		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		expect(document.querySelector('[data-hero-scenario="sensitive-input-default"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="sensitive-input-default"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="sensitive-input-disabled"]')).toBeTruthy();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### SensitiveInput");
+		expect(markdown).toContain(
+			"- revealLabel (string, required, default —): Accessible label for the reveal action.",
+		);
+		expect(markdown).toContain(
+			"- hideLabel (string, required, default —): Accessible label for the hide action.",
+		);
+		expect(markdown).not.toContain("- className (");
+		expect(markdown).not.toContain("- type (");
+		expect(markdown).not.toContain("- disabled (");
+		expect(UI_EXAMPLES["sensitive-input"]).toHaveLength(2);
+		for (const scenario of UI_EXAMPLES["sensitive-input"] ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|API key|secret|token/i);
+	});
+
+	it("does not keep a handwritten sensitive-input prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf('\t"sensitive-input": {');
+		const end = docs.indexOf("\tcheckbox: {");
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain('api: CATALOG_API["sensitive-input"]');
+		expect(block).not.toContain('name: "revealLabel"');
+		expect(block).not.toContain('name: "hideLabel"');
+		expect(block).not.toContain('type: "string"');
+		expect(block).toContain('description: "A password field with a reveal control."');
+		expect(block).toContain(
+			'<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />',
+		);
+		expect(block).toContain("variants: []");
+		expect(block).toContain('repo: "basalt"');
+		expect(block).toContain('sha: "2727ae6a8d3f"');
+		expect(block).toContain('file: "src/pages/FormsPage.tsx"');
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
@@ -2087,7 +2177,9 @@ describe("ui catalog", () => {
 		);
 		expect(generator).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 		expect(generator).not.toMatch(/\bif\s*\([^)]*InputGroup|\bswitch\s*\([^)]*input-group/);
+		expect(generator).not.toMatch(/\bif\s*\([^)]*SensitiveInput|\bswitch\s*\([^)]*sensitive-input/);
 		expect(page).not.toMatch(/input-group|InputGroup/);
+		expect(page).not.toMatch(/sensitive-input|SensitiveInput/);
 		expect(page).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 	});
 

@@ -191,6 +191,14 @@ describe("catalog source contract", () => {
 		);
 		expect(CATALOG_DOCS["input-area"]?.api).toEqual(CATALOG_API["input-area"]);
 		expect(CATALOG_API["input-area"]?.[0]?.props.map((prop) => prop.name)).toEqual(["rows"]);
+		expect(implementationFileFor(entry("sensitive-input"))).toBe(
+			"packages/basalt/src/components/sensitive-input.tsx",
+		);
+		expect(CATALOG_DOCS["sensitive-input"]?.api).toEqual(CATALOG_API["sensitive-input"]);
+		expect(CATALOG_API["sensitive-input"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"revealLabel",
+			"hideLabel",
+		]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);
@@ -263,6 +271,7 @@ describe("catalog source contract", () => {
 			"input",
 			"input-area",
 			"input-group",
+			"sensitive-input",
 		];
 		for (const slug of generated) {
 			expect(CATALOG_DOCS[slug]?.api).toBe(CATALOG_API[slug as keyof typeof CATALOG_API]);
@@ -274,6 +283,10 @@ describe("catalog source contract", () => {
 			"InputGroup.Addon",
 			"InputGroup.Button",
 			"InputGroup.Suffix",
+		]);
+		expect(CATALOG_DOCS["sensitive-input"]?.api).toHaveLength(1);
+		expect(CATALOG_DOCS["sensitive-input"]?.api.map((surface) => surface.name)).toEqual([
+			"SensitiveInput",
 		]);
 	});
 

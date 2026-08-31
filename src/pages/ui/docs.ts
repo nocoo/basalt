@@ -225,15 +225,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />',
 		),
 		variants: [],
-		api: [
-			{
-				name: "SensitiveInput",
-				props: [
-					{ name: "revealLabel", type: "string" },
-					{ name: "hideLabel", type: "string" },
-				],
-			},
-		],
+		api: CATALOG_API["sensitive-input"],
 		provenance: provenanceFromLegacy({
 			repo: "basalt",
 			sha: "2727ae6a8d3f",

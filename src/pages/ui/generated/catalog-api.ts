@@ -263,6 +263,25 @@ export const CATALOG_API = {
 			],
 		},
 	],
+	"sensitive-input": [
+		{
+			name: "SensitiveInput",
+			props: [
+				{
+					name: "revealLabel",
+					type: "string",
+					required: true,
+					description: "Accessible label for the reveal action.",
+				},
+				{
+					name: "hideLabel",
+					type: "string",
+					required: true,
+					description: "Accessible label for the hide action.",
+				},
+			],
+		},
+	],
 	separator: [
 		{
 			name: "Separator",

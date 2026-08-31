@@ -133,6 +133,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "InputGroup.Suffix",
 		allowEmpty: true,
 	},
+	{
+		slug: "sensitive-input",
+		sourceFile: "packages/basalt/src/components/sensitive-input.tsx",
+		propsType: "SensitiveInputProps",
+		surface: "SensitiveInput",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

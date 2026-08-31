@@ -216,8 +216,14 @@ describe("catalog API generator contract", () => {
 				surface: "InputGroup.Suffix",
 				allowEmpty: true,
 			},
+			{
+				slug: "sensitive-input",
+				sourceFile: "packages/basalt/src/components/sensitive-input.tsx",
+				propsType: "SensitiveInputProps",
+				surface: "SensitiveInput",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(18);
+		expect(CATALOG_API_TARGETS).toHaveLength(19);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -227,6 +233,7 @@ describe("catalog API generator contract", () => {
 		expect(source).not.toMatch(/allowlist|propNames/);
 		expect(source).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*InputGroup|\bswitch\s*\([^)]*input-group/);
+		expect(source).not.toMatch(/\bif\s*\([^)]*SensitiveInput|\bswitch\s*\([^)]*sensitive-input/);
 	});
 
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
@@ -245,6 +252,7 @@ describe("catalog API generator contract", () => {
 			"field",
 			"input",
 			"input-area",
+			"sensitive-input",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -951,6 +959,7 @@ export interface WidgetProps {
 				"InputGroup.Button",
 				"InputGroup.Suffix",
 			],
+			"sensitive-input": ["SensitiveInput"],
 		});
 	}, 20_000);
 
@@ -960,7 +969,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(14);
+		expect(Object.keys(generated)).toHaveLength(15);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1053,6 +1062,106 @@ export interface WidgetProps {
 			),
 		).toBe(false);
 		expect(generated.button?.[0]?.name).toBe("Button");
+	}, 20_000);
+
+	it("extracts SensitiveInput props from SensitiveInputProps as required reveal and hide labels", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(Object.keys(generated)).toHaveLength(15);
+		expect(generated["sensitive-input"]).toEqual([
+			{
+				name: "SensitiveInput",
+				props: [
+					{
+						name: "revealLabel",
+						type: "string",
+						required: true,
+						description: "Accessible label for the reveal action.",
+					},
+					{
+						name: "hideLabel",
+						type: "string",
+						required: true,
+						description: "Accessible label for the hide action.",
+					},
+				],
+			},
+		]);
+		expect(generated["sensitive-input"]?.[0]?.props[0]).not.toHaveProperty("default");
+		expect(generated["sensitive-input"]?.[0]?.props[1]).not.toHaveProperty("default");
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "type"),
+			),
+		).toBe(false);
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "aria-label"),
+			),
+		).toBe(false);
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "value"),
+			),
+		).toBe(false);
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "defaultValue"),
+			),
+		).toBe(false);
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "name"),
+			),
+		).toBe(false);
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "autoComplete"),
+			),
+		).toBe(false);
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "required"),
+			),
+		).toBe(false);
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "disabled"),
+			),
+		).toBe(false);
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "className"),
+			),
+		).toBe(false);
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "children"),
+			),
+		).toBe(false);
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "ref"),
+			),
+		).toBe(false);
+		expect(
+			generated["sensitive-input"]?.some((surface) =>
+				surface.props.some((prop) => prop.name === "onChange"),
+			),
+		).toBe(false);
+		expect(generated.button?.[0]?.name).toBe("Button");
+		expect(generated.input?.[0]?.props.map((prop) => prop.name)).toEqual(["type"]);
+		expect(generated["input-area"]?.[0]?.props.map((prop) => prop.name)).toEqual(["rows"]);
+		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
+			"InputGroup",
+			"InputGroup.Input",
+			"InputGroup.Addon",
+			"InputGroup.Button",
+			"InputGroup.Suffix",
+		]);
 	}, 20_000);
 
 	it("aggregates multiple surfaces for the same slug in declaration order", () => {
@@ -1882,12 +1991,14 @@ export interface WidgetProps {
 		expect(first).toContain("\tinput: [");
 		expect(first).toContain('\t"input-area": [');
 		expect(first).toContain('\t"input-group": [');
+		expect(first).toContain('\t"sensitive-input": [');
 		expect(first).toContain('name: "Button"');
 		expect(first).toContain('name: "InputArea"');
 		expect(first).toContain('name: "InputGroup.Button"');
 		expect(first).toContain('name: "InputGroup.Suffix"');
+		expect(first).toContain('name: "SensitiveInput"');
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"56956b88e2a3384fffdc16307e34522643fb141bffed681f4b8fa43d841776bd",
+			"f225fb9f3e7521ccde7c1b32af8e43e5275c7d1399540c9f2cc68ac4218d5678",
 		);
 	}, 20_000);
 });
