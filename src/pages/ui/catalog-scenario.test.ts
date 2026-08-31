@@ -13,6 +13,7 @@ import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
+import { THEME_TOGGLE_EXAMPLES } from "./examples/theme-toggle";
 import { TOOLTIP_EXAMPLES } from "./examples/tooltip";
 
 const BUTTON_IDS = [
@@ -103,6 +104,16 @@ const TOOLTIP_TITLES = ["Basic Tooltip", "Multiple Tooltips"] as const;
 
 const tooltipRenders = import.meta.glob("./examples/tooltip/*.tsx", { eager: true });
 const tooltipSources = import.meta.glob("./examples/tooltip/*.tsx", {
+	query: "?raw",
+	import: "default",
+	eager: true,
+});
+
+const THEME_TOGGLE_IDS = ["theme-toggle-default"] as const;
+const THEME_TOGGLE_TITLES = ["Default"] as const;
+
+const themeToggleRenders = import.meta.glob("./examples/theme-toggle/*.tsx", { eager: true });
+const themeToggleSources = import.meta.glob("./examples/theme-toggle/*.tsx", {
 	query: "?raw",
 	import: "default",
 	eager: true,
@@ -496,6 +507,77 @@ describe("source-backed tooltip scenarios", () => {
 		expect(TOOLTIP_EXAMPLES[1]?.code).toContain(">First</TooltipContent>");
 		expect(TOOLTIP_EXAMPLES[1]?.code).toContain(">Two</Button>");
 		expect(TOOLTIP_EXAMPLES[1]?.code).toContain(">Second</TooltipContent>");
+	});
+});
+
+describe("source-backed theme-toggle scenarios", () => {
+	it("loads one theme-toggle scenario from the same glob modules", () => {
+		expect(Object.keys(themeToggleRenders)).toHaveLength(1);
+		expect(Object.keys(themeToggleSources)).toHaveLength(1);
+		const loaded = loadModuleScenarios({
+			slug: "theme-toggle",
+			metas: THEME_TOGGLE_TITLES.map((title, index) => ({
+				key: THEME_TOGGLE_IDS[index].slice("theme-toggle-".length),
+				title,
+			})),
+			renderModules: themeToggleRenders,
+			sourceModules: themeToggleSources as Record<string, string>,
+		});
+		expect(loaded.map((item) => item.id)).toEqual([...THEME_TOGGLE_IDS]);
+		expect(loaded.map((item) => item.title)).toEqual([...THEME_TOGGLE_TITLES]);
+		expect(THEME_TOGGLE_EXAMPLES.map((item) => item.id)).toEqual([...THEME_TOGGLE_IDS]);
+		expect(THEME_TOGGLE_EXAMPLES.map((item) => item.title)).toEqual([...THEME_TOGGLE_TITLES]);
+		expect(UI_EXAMPLES["theme-toggle"]).toBe(THEME_TOGGLE_EXAMPLES);
+		expect(UI_EXAMPLES.button).toBe(BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES["link-button"]).toBe(LINK_BUTTON_EXAMPLES);
+		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
+		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
+		expect(UI_EXAMPLES.separator).toBe(SEPARATOR_EXAMPLES);
+		expect(UI_EXAMPLES.link).toBe(LINK_EXAMPLES);
+		expect(UI_EXAMPLES.tooltip).toBe(TOOLTIP_EXAMPLES);
+		expect(UI_EXAMPLES.button?.map((item) => item.id)).toEqual([...BUTTON_IDS]);
+		expect(UI_EXAMPLES["link-button"]?.map((item) => item.id)).toEqual([...LINK_BUTTON_IDS]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([...TEXT_IDS]);
+		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([...LABEL_IDS]);
+		expect(UI_EXAMPLES.separator?.map((item) => item.id)).toEqual([...SEPARATOR_IDS]);
+		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([...LINK_IDS]);
+		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([...TOOLTIP_IDS]);
+		const fileKeys = new Set(
+			Object.keys(themeToggleRenders).map((modulePath) => moduleFileKey(modulePath)),
+		);
+		expect(fileKeys).toEqual(
+			new Set(THEME_TOGGLE_IDS.map((id) => id.slice("theme-toggle-".length))),
+		);
+		for (const scenario of loaded) {
+			const key = scenario.id.slice("theme-toggle-".length);
+			const modulePath = Object.keys(themeToggleSources).find((path) =>
+				path.endsWith(`/${key}.tsx`),
+			);
+			expect(modulePath, key).toBeTruthy();
+			if (!modulePath) {
+				continue;
+			}
+			const raw = themeToggleSources[modulePath];
+			expect(typeof raw).toBe("string");
+			expect(scenario.code).toBe((raw as string).trim());
+			expect(scenario.code).toBe(
+				THEME_TOGGLE_EXAMPLES.find((item) => item.id === scenario.id)?.code,
+			);
+			expect(scenario.render).toBe(
+				(themeToggleRenders[modulePath] as { default: unknown }).default,
+			);
+			expect(loaded.find((item) => item.id === scenario.id)?.render).toBe(
+				THEME_TOGGLE_EXAMPLES.find((item) => item.id === scenario.id)?.render,
+			);
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("ThemeProvider");
+			expect(scenario.code).toContain("ThemeToggle");
+			expect(scenario.code).toContain('aria-label="Toggle theme"');
+		}
+		expect(THEME_TOGGLE_EXAMPLES[0]?.code).toContain("@nocoo/basalt/components/theme-toggle");
+		expect(THEME_TOGGLE_EXAMPLES[0]?.code).toContain("@nocoo/basalt/providers/theme");
+		expect(THEME_TOGGLE_EXAMPLES[0]?.code).not.toBe('<ThemeToggle aria-label="Toggle theme" />');
 	});
 });
 

@@ -10,7 +10,6 @@ import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
 import { SensitiveInput } from "@nocoo/basalt/components/sensitive-input";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Text } from "@nocoo/basalt/components/text";
-import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { AlertTriangle, CircleAlert, CircleCheck, Info, X } from "lucide-react";
@@ -22,6 +21,7 @@ import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
+import { THEME_TOGGLE_EXAMPLES } from "./examples/theme-toggle";
 import { TOOLTIP_EXAMPLES } from "./examples/tooltip";
 import { KUMO_EXAMPLES } from "./kumo-examples";
 
@@ -33,6 +33,7 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	separator: SEPARATOR_EXAMPLES,
 	link: LINK_EXAMPLES,
 	tooltip: TOOLTIP_EXAMPLES,
+	"theme-toggle": THEME_TOGGLE_EXAMPLES,
 	"link-provider": [
 		{
 			id: catalogScenarioId("link-provider", "default"),
@@ -53,18 +54,6 @@ const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 			render: () => (
 				<ThemeProvider>
 					<Text>Provider is active.</Text>
-				</ThemeProvider>
-			),
-		},
-	],
-	"theme-toggle": [
-		{
-			id: catalogScenarioId("theme-toggle", "default"),
-			title: "Default",
-			code: '<ThemeToggle aria-label="Toggle theme" />',
-			render: () => (
-				<ThemeProvider>
-					<ThemeToggle aria-label="Toggle theme" />
 				</ThemeProvider>
 			),
 		},

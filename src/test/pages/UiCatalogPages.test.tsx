@@ -1103,6 +1103,79 @@ describe("ui catalog", () => {
 		}
 	});
 
+	it("keeps theme-toggle hero, accessible name, and cycle contracts", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		window.localStorage.removeItem("theme");
+		document.documentElement.classList.remove("dark", "light");
+		delete document.documentElement.dataset.mode;
+		renderCatalog("/ui/theme-toggle");
+		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
+		const hero = document.querySelector('[data-hero-scenario="theme-toggle-default"]');
+		const example = document.querySelector('[data-scenario="theme-toggle-default"]');
+		expect(hero).toBeTruthy();
+		expect(example).toBeTruthy();
+		if (!hero || !example) {
+			throw new Error("missing theme-toggle scenario surfaces");
+		}
+		const heroButton = within(hero as HTMLElement).getByRole("button", { name: "Toggle theme" });
+		const exampleButton = within(example as HTMLElement).getByRole("button", {
+			name: "Toggle theme",
+		});
+		expect(heroButton).toHaveClass("h-9", "w-9", "hover:bg-basalt-accent");
+		const iconClass = (button: HTMLElement) =>
+			button.querySelector("svg")?.getAttribute("class") ?? "";
+		expect(iconClass(heroButton)).toContain("lucide-monitor");
+		expect(window.localStorage.getItem("theme")).toBeNull();
+		fireEvent.click(heroButton);
+		expect(window.localStorage.getItem("theme")).toBe("light");
+		expect(document.documentElement).toHaveClass("light");
+		expect(document.documentElement.dataset.mode).toBe("light");
+		expect(iconClass(heroButton)).toContain("lucide-sun");
+		fireEvent.click(heroButton);
+		expect(window.localStorage.getItem("theme")).toBe("dark");
+		expect(document.documentElement).toHaveClass("dark");
+		expect(document.documentElement.dataset.mode).toBe("dark");
+		expect(iconClass(heroButton)).toContain("lucide-moon");
+		fireEvent.click(heroButton);
+		expect(window.localStorage.getItem("theme")).toBe("system");
+		expect(document.documentElement).toHaveClass("light");
+		expect(document.documentElement.dataset.mode).toBe("light");
+		expect(iconClass(heroButton)).toContain("lucide-monitor");
+		expect(exampleButton).toHaveAccessibleName("Toggle theme");
+		for (const scenario of UI_EXAMPLES["theme-toggle"] ?? []) {
+			expect(scenario.code).toContain("export default");
+			expect(scenario.code).toContain("@nocoo/basalt/components/theme-toggle");
+			expect(scenario.code).toContain("@nocoo/basalt/providers/theme");
+			expect(scenario.code).toContain("ThemeProvider");
+			expect(scenario.code).toContain('aria-label="Toggle theme"');
+			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+			const node = document.querySelector(`[data-scenario="${scenario.id}"]`);
+			expect(node).toBeTruthy();
+			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
+		}
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain(UI_EXAMPLES["theme-toggle"]?.[0]?.code ?? "");
+		expect(markdown).toContain("ThemeProvider");
+		expect(markdown).toContain("@nocoo/basalt/providers/theme");
+	});
+
+	it("does not keep inline theme-toggle scenario owners", () => {
+		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		expect(demos).toContain("THEME_TOGGLE_EXAMPLES");
+		expect(demos).toMatch(/"theme-toggle": THEME_TOGGLE_EXAMPLES/);
+		expect(demos).not.toMatch(/"theme-toggle":\s*\[/);
+		expect(demos).not.toMatch(/catalogScenarioId\("theme-toggle"/);
+		expect(demos).not.toMatch(/code:\s*['"`]<ThemeToggle/);
+		expect(demos).not.toMatch(/<ThemeToggle aria-label="Toggle theme" \/>/);
+		expect(demos).toMatch(/"theme-provider":\s*\[/);
+		expect(demos).toMatch(/catalogScenarioId\("theme-provider"/);
+		expect(demos).toContain("ThemeProvider");
+	});
+
 	it("does not keep inline tooltip scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");

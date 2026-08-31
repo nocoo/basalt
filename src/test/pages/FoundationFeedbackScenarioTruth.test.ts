@@ -4,6 +4,7 @@ import { CATALOG_DOCS } from "@/pages/ui/docs";
 import { LABEL_EXAMPLES } from "@/pages/ui/examples/label";
 import { LINK_EXAMPLES } from "@/pages/ui/examples/link";
 import { SEPARATOR_EXAMPLES } from "@/pages/ui/examples/separator";
+import { THEME_TOGGLE_EXAMPLES } from "@/pages/ui/examples/theme-toggle";
 import { TOOLTIP_EXAMPLES } from "@/pages/ui/examples/tooltip";
 
 function scenario(slug: string, id: string) {
@@ -137,6 +138,11 @@ describe("foundation feedback scenario truth", () => {
 		expect(UI_EXAMPLES.tooltip?.map((item) => item.id)).toEqual([
 			"tooltip-basic-tooltip",
 			"tooltip-multiple-tooltips",
+		]);
+		expect(UI_EXAMPLES["theme-toggle"]).toBe(THEME_TOGGLE_EXAMPLES);
+		expect(UI_EXAMPLES["theme-toggle"]?.map((item) => item.id)).toEqual(["theme-toggle-default"]);
+		expect(UI_EXAMPLES["theme-provider"]?.map((item) => item.id)).toEqual([
+			"theme-provider-default",
 		]);
 	});
 
