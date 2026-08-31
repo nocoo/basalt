@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A20 D048 — BasaltMark API type source；已完成，下一切片调查中
-> 当前代码前置：`3c8ffb8`（D048 实现已验收，工作树干净）
+> 当前切片：S2A21 D049 — source-backed Field scenarios；规格已固化，待实现
+> 当前代码前置：`d94f2c3`（D048 台账已完成，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048 完成） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048 完成；S2A21 D049 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -422,6 +422,14 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    `CATALOG_API_TARGETS` 追加第十个声明式 target：slug `basalt-mark`、source `packages/basalt/src/components/basalt-mark.tsx`、type `BasaltMarkProps`；配置不得含逐 prop allowlist、fallback、allow-empty 或组件特判，生成算法与 D046 的通用 foreign-Omit ownership 正反例保持不变。生成结果只允许一项 `className / string / optional / no default / Additional classes for the mark.`；children、id、style、role、data/ARIA、events、strokeWidth 与 Lucide props 均不得泄漏。前九组生成数据逐字保持，按 slug 确定性排序后的完整十-target 文件预期 SHA-256 为 `59051c422225d16cd8697e5b5d56b8b62f9251cdbca3d97148e2ea1a99f20a79`。
 
    `BASE_DOCS["basalt-mark"].props` 改为只消费 `CATALOG_API["basalt-mark"]`，删除 D047 暂存的手写 inventory；description、variants、provenance、Usage 与 D047 source-backed scenario 逐字保持。BasaltMark 单测必须以类型证据锁住本地 className 与标准 SVG/ARIA/event props 可用、错误 className 类型拒绝，并以运行时断言证明基础 class、额外 class、id/data、默认 accessible name/stroke width 及消费者对 aria-label/strokeWidth 的既有 override 顺序。Generator、catalog source 和页面测试须锁住十 targets、BasaltMark 精确一项、前九组不回归、generated hash/check、docs 无手写 inventory；页面 API 表恰一行并显示 `className?`、string、无默认值和生成说明，Copy page 标 optional，D047 hero/Examples/Mountain SVG/完整 raw module 均保持，且所有新内容无 Cloudflare、Kumo 或 Worker/Workers 语境。只允许修改 `packages/basalt/src/components/basalt-mark.tsx`、`packages/basalt/src/components/basalt-mark.test.tsx`、`scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/docs.ts`、`src/pages/ui/catalog-source.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容；D047 在 `src/test/pages/FoundationFeedbackScenarioTruth.test.ts` 新增的旧手写 props shape 断言也必须同步为 generated shape，因此该测试作为第九个授权文件。不得修改 root barrel、D047 examples/scenario/loader、其它组件/docs/API、catalog IA/CSS、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入品牌能力扩展或后续 S2A/S2B。提交前运行 BasaltMark/generator/page focused tests、generate + 连续两次 check、typecheck、Biome、全量、coverage、showcase build，以及 package build/types/pack；四项 coverage 不得低于 D047，所有 build 后工作树必须干净。只做一个绿色原子提交，建议 `refactor: generate basalt mark api docs`，随后停止等待 Codex review。
+
+21. **S2A21 / D049 — source-backed Field scenarios 与单一 owner。** 当前 `BASE_EXAMPLES.field` 内联 Hint、Error 两项，`KUMO_EXAMPLES.field` 又以同一 scenario ID/title/order 在最后 spread 覆盖它，形成一套死 owner 和一套生效 owner；两套展示 code 都使用 `email`，真实 preview 却分别使用 `ex-email` / `ex-email-err` 与最终生效的 `kumo-ex-email` / `kumo-ex-email-err`，因此 code、render 和可访问关系没有同一路径真源。新增 `src/pages/ui/examples/field/hint.tsx`、`error.tsx` 与 `index.ts`：两个模块完整导入 granular `Field`、`Input`，各自默认导出命名清楚的组件；index 只保存 `hint` / `Hint`、`error` / `Error` 的 key/title/order，并通过既有 `loadModuleScenarios` 同路径 glob render/raw，导出 `FIELD_EXAMPLES`。
+
+   最终场景继续精确为 `field-hint` / Hint、`field-error` / Error，Hint 继续作为 hero，顺序、label `Email`、hint `Never shared`、error `Required`、Field/Input 结构、14px label 与 12px supporting text、control surface 和页面 section/IA 均不变。为同时消除 raw code 与 preview 漂移、重复 Kumo 命名污染，Hint module 的 `htmlFor` 与 Input `id` 统一为中性的 `field-hint-email`，Error module 统一为 `field-error-email`；这两处只允许发生无视觉影响的 DOM id 规范化。运行时必须继续证明 label/control association，Hint input 的 `aria-describedby="field-hint-email-hint"`、无 `aria-invalid` 且页面出现对应 hint，Error input 的 `aria-describedby="field-error-email-error"`、`aria-invalid="true"` 且对应 `role="alert"` error 出现；不得因为 source migration 改写 Field 实现。
+
+   `demos.tsx` 只以 `field: FIELD_EXAMPLES` 接入并删除 BASE inline owner；其 `Field` import 因此无用必须删除，`Input` 仍被其它场景使用不得误删。`kumo-examples.tsx` 删除末尾 Field inline owner，但文件内 Checkbox、Input、InputArea 场景仍消费 `Field`，故其 import 必须保留。最终 `UI_EXAMPLES.field === FIELD_EXAMPLES`，后三层 spread 不得再出现第二个 `field` owner；前十组 source-backed arrays 与所有其它 slug 的 ID/title/数量/顺序/render/code 均冻结。Kumo 2026-08-31 现站没有独立 `/components/field` 文档页，Field 只作为 Input/InputArea/InputGroup/Select/Combobox/Autocomplete/Switch 等内部组合能力；参考源码已有 ReactNode label/description、structured validation error、required/optional、labelTooltip、controlFirst、hideLabel 等更丰富契约，全部只记为 S4 差距，本刀不得扩 Field/Input API、增加场景或引入 Base UI。
+
+   测试必须用真实 render/raw glob 证明恰有两个 Field modules，metadata/file key/ID/title/order 与文件集合闭合；每项 `code` 逐字等于对应 trimmed raw，`render` 等于同路径 default export，最终数组及 scenario 引用同一。契约与页面级断言须覆盖完整 imports/default exports、中性且 code/render 一致的 ID、上述 label/hint/error/ARIA 关系、hero 与 Examples 结构、Copy page 同时包含两个完整 raw modules；生产源负门须证明 `demos.tsx`、`kumo-examples.tsx` 不再保留 `field:` inline owner 或 `catalogScenarioId("field", ...)`，新 modules 不出现 Cloudflare、Kumo、Worker/Workers 用户语境。只允许新增 `src/pages/ui/examples/field/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/FormSelectionScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 package Field/Input 实现、类型或测试、`catalog-scenario.ts` loader、`docs.ts`/generated API、catalog IA/CSS、其它 examples、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，也不得进入 Field API 真源或后续 S2A/S2B。提交前运行三个 focused test files、`bun run catalog-api:check`、typecheck、Biome、全量、coverage 和 showcase production build；四项 coverage 不得低于 D048，既有 chunk warning 如实报告，构建后工作树必须干净。只做一个绿色原子提交，建议 `refactor: source field scenarios`，随后停止等待 Codex review。
 
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
