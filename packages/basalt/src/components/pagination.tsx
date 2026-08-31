@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import { cn } from "../utils/cn";
+import { controlSurfaceClass } from "../utils/control-surface";
 import { Button } from "./button";
-import { controlSurfaceClass } from "./control-surface";
 
 const itemClass = cn(
 	"relative h-full w-9 shrink-0 rounded-none border-0 bg-transparent shadow-none first:rounded-l-basalt-md last:rounded-r-basalt-md",

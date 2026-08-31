@@ -1,8 +1,8 @@
 import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { cn } from "../utils/cn";
+import { controlSurfaceClass } from "../utils/control-surface";
 import { Button } from "./button";
-import { controlSurfaceClass } from "./control-surface";
 
 export function ClipboardText({
 	text,

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { controlSurfaceClass } from "./control-surface";
+import { controlSurfaceClass } from "../utils/control-surface";
 import { FOCUS_BORDER } from "./overlay";
 
 export const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(

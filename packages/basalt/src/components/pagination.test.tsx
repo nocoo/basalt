@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { CONTROL_SURFACE_CLASS } from "./control-surface";
+import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
 import { Pagination } from "./pagination";
 
 describe("Pagination", () => {

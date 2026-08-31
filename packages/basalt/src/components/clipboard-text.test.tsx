@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
 import { ClipboardText } from "./clipboard-text";
-import { CONTROL_SURFACE_CLASS } from "./control-surface";
 
 describe("ClipboardText", () => {
 	it("renders the value and a copy control", () => {

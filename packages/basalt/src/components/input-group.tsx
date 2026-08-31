@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { controlSurfaceClass } from "../utils/control-surface";
 import { Button, type ButtonProps } from "./button";
-import { controlSurfaceClass } from "./control-surface";
 import { Input } from "./input";
 
 export type InputGroupProps = React.HTMLAttributes<HTMLDivElement> & {

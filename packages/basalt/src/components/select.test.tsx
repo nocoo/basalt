@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { CONTROL_SURFACE_CLASS } from "./control-surface";
+import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./select";
 
 describe("Select", () => {

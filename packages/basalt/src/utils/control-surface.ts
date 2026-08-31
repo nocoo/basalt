@@ -1,4 +1,4 @@
-import { cn } from "../utils/cn";
+import { cn } from "./cn";
 
 export const CONTROL_SURFACE_CLASS =
 	"rounded-basalt-md border border-basalt-border bg-basalt-secondary text-sm";

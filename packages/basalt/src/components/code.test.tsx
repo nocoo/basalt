@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
 import { Code, CodeBlock, CodeHighlighted } from "./code";
-import { CONTROL_SURFACE_CLASS } from "./control-surface";
 
 describe("Code", () => {
 	it("renders inline code", () => {

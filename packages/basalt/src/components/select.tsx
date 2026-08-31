@@ -2,7 +2,7 @@ import * as SelectPrimitive from "@radix-ui/react-select";
 import { Check, ChevronDown } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { controlSurfaceClass } from "./control-surface";
+import { controlSurfaceClass } from "../utils/control-surface";
 import { FOCUS_BORDER, OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
 export const Select = SelectPrimitive.Root;

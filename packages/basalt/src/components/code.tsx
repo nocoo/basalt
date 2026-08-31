@@ -1,6 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../utils/cn";
-import { controlSurfaceClass } from "./control-surface";
+import { controlSurfaceClass } from "../utils/control-surface";
 
 const TOKEN =
 	/(\/\/[^\n]*)|("[^"]*"|'[^']*'|`[^`]*`)|\b(import|from|export|default|async|await|function|return|const|let|var|type|interface|as|if|else|throw|new|typeof)\b|(\b\d+\b)|(<\/?[A-Za-z][\w.-]*)/g;
