@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2A30 D058 — source-backed SensitiveInput scenarios 已完成；待固化 S2A31 D059
-> 当前代码前置：`990221a`（D058 Grok 实现已验收，待台账提交）
+> 当前切片：S2A31 D059 — SensitiveInput API 类型真源；规格已固化，待 Grok 实现
+> 当前代码前置：`3d4bd5f`（D058 台账已提交，工作树干净）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-08-31
 
@@ -127,7 +127,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1A | dist/types/files/exports 包契约 | 完成（`62297f2`） | 构建产物可由 Node/TS 解析，根出口不拖入 optional peers |
 | S1B | 仓外 Vite/Next/heavy granular tarball consumers | 完成（`054462d`） | A/B/C/D 门不使用 workspace alias 或根 node_modules 泄漏 |
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
-| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058 完成；下一刀 S2A31 D059） | 组件类型、API 表、example 不再三份手写漂移 |
+| S2A | 类型驱动的 docs/API/scenario 数据模型 | 执行中（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058 完成；S2A31 D059 待实现） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 待办 | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
@@ -516,6 +516,18 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    Scenario loader 测试须以真实 glob 重新调用 `loadModuleScenarios`，锁住两个 metadata、同路径 render/raw、精确 ID/title/order、集合闭合与 `UI_EXAMPLES` 引用同一实例，并逐项证明 raw code 含 granular import、default export、可访问名称与对应 disabled 契约。Form-selection 真值测试须锁 preview/code 的 aria-label、reveal/hide label、默认交互和 disabled 双控件行为；不得只做字符串存在性。页面测试须验证 `/ui/sensitive-input` hero 与两个 scenario、默认 password→text→password、Show→Hide→Show、Disabled input/button 不可操作；Copy page 必须逐字包含两个完整 raw modules且没有禁用语境。源码负门须证明 demos/Kumo 文件无该 slug inline owner或直接 import，同时 D057 InputGroup 的五场景/API 不回归。
 
    只允许新增 `src/pages/ui/examples/sensitive-input/**`，并修改 `src/pages/ui/demos.tsx`、`src/pages/ui/kumo-examples.tsx`、`src/pages/ui/catalog-scenario.test.ts`、`src/test/pages/FormSelectionScenarioTruth.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 `catalog-scenario.ts` loader、package 生产组件/type/test、其它 examples、`docs.ts`/generated API、catalog registry/IA/CSS、HomeGrid、视觉、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得进入 SensitiveInput API、S2A31、S2B 或 S5。提交前运行 catalog-scenario/form-selection/page 三个 focused test files、`bun run catalog-api:check`、typecheck、Biome、全量、coverage 与 showcase production build；coverage 四项不得低于 D057，既有 chunk warning如实报告，构建后工作树必须干净。只做一个绿色原子提交，建议 `refactor: source sensitive input scenarios`，随后停止等待 Codex review。
+
+31. **S2A31 / D059 — SensitiveInput API 类型真源与强制 mask 契约。** D058 已把 Default/Disabled 的 preview 与展示代码收敛为同源模块；当前 docs 仍手写 `revealLabel` / `hideLabel` 两行，未表达二者 required，也可能与真实 `SensitiveInputProps` 漂移。本刀只让现有命名 props type 成为文档 API 真源，不增加任何运行时能力。`SensitiveInputProps` 继续精确继承 `Omit<React.ComponentProps<"input">, "type">`，保持全部合法 native input/data/ARIA/form/value/event/className/disabled attributes与 ref 消费能力，同时明确拒绝消费者传入 `type`，因为组件必须在内部 password/text 间切换。
+
+   在 `sensitive-input.tsx` 只为既有两个 required string 字段补 JSDoc：`revealLabel` 说明固定为 `Accessible label for the reveal action.`，`hideLabel` 固定为 `Accessible label for the hide action.`；不得添加 `@default`、optional 标记、默认文案或本地重声明任何 inherited prop。`SensitiveInput` 的 forwardRef generic、destructuring、初始 hidden state、password/text 切换、Show/Hide 名称选择、disabled 双控件传播、class merge、ref和 spread 顺序必须逐字保持；root/granular exports 均不改。
+
+   `CATALOG_API_TARGETS` 在 InputGroup 五 surface 后追加一个声明式 target：slug `sensitive-input`，source 为 `packages/basalt/src/components/sensitive-input.tsx`，props type `SensitiveInputProps`，surface `SensitiveInput`，不得使用 `allowEmpty`、prop allowlist、fallback或组件特判。Generated 数据新增唯一 surface，props 顺序精确为 `revealLabel`、`hideLabel`，两项 `type: "string"`、`required: true`、无 default，并携带上述说明。不得生成 `type`、aria-label、value/defaultValue、name、autoComplete、required、disabled、className、children、ref、event等 inherited API；D057 的十八 targets、十四 slug、InputGroup 五 surface及此前所有 generated 数据逐字不变。
+
+   `BASE_DOCS["sensitive-input"].api` 只改为 `CATALOG_API["sensitive-input"]` 并删除两行手写 inventory；description、Usage、空 variants、provenance 与 D058 两个 source-backed scenarios 全部冻结。API Reference 应显示唯一 `SensitiveInput` H3 与一张 accessible label 为 `SensitiveInput props` 的两行表，两项都显示 required、没有默认值；TOC 与 Copy page继续走通用 surface path。Copy Markdown 必须包含两个 required prop及说明，并逐字包含 D058 Default/Disabled 两个完整 raw modules；不得出现 Kumo/Cloudflare/Worker 或凭据语境。
+
+   组件测试须以 `SensitiveInputProps` 类型证据证明 required reveal/hide labels、native aria-label/name/autoComplete/required/disabled/value/onChange/className 能力可用；分别缺失 revealLabel 或 hideLabel、传入 `type`、非 string label 必须有真实 `@ts-expect-error`，不得用 `as any`。运行时测试补齐 ref 指向内部 input、native props/className/value 透传、初始 password、Show→Hide→Show 往返、disabled input/button 不可切换；不重复实现状态。Generator/catalog-source/page 测试须锁十九 targets、十五 slug、唯一现有 allowEmpty 仍是 InputGroup.Suffix、SensitiveInput 两项精确 shape、前十四组不回归、连续 generate/check 与新的真实 SHA-256；源码负门证明 docs 不再手写两项且 generator/page 无名字特判。
+
+   只允许修改 `packages/basalt/src/components/sensitive-input.tsx`、`packages/basalt/src/components/sensitive-input.test.tsx`、`scripts/catalog-api.ts`、`scripts/catalog-api.test.ts`、`src/pages/ui/generated/catalog-api.ts`、`src/pages/ui/docs.ts`、`src/pages/ui/catalog-source.test.ts`、`src/test/pages/UiCatalogPages.test.tsx` 中与本契约直接相关的最小内容。不得修改 root barrel、Input/Button 生产实现或类型、D058 examples/scenario/loader、page/TOC/Copy renderer、catalog registry/IA/CSS、HomeGrid、依赖/lock、CLI/tsconfig、coverage/Husky/consumer，亦不得加入 size、controlled mask、label/Field、labelTooltip、description/error、copy、focus reveal、其它 Kumo-only 能力或进入 S2A32/S2B/S5。提交前运行 SensitiveInput/generator/catalog-source/page 四个 focused test files、generate 后连续两次 check、typecheck、Biome、全量、coverage、showcase build，以及 clean package build/types/pack；coverage不得低于 D058，构建后工作树必须干净，既有 chunk warning如实报告。只做一个绿色原子提交，建议 `refactor: generate sensitive input api docs`，随后停止等待 Codex review。
 
 ### 6.3.1 S2V — 用户视觉纠偏插队切片
 
