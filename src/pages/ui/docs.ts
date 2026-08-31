@@ -255,7 +255,7 @@ const BASE_DOCS: Record<string, CatalogDocsDraft> = {
 			'<RadioGroup defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></RadioGroup>',
 		),
 		variants: [],
-		api: [{ name: "Radio", props: [{ name: "value", type: "string" }] }],
+		api: CATALOG_API.radio,
 		provenance: provenanceFromLegacy({
 			repo: "pew",
 			sha: "97a890fabe6e",

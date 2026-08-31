@@ -1322,6 +1322,85 @@ describe("ui catalog", () => {
 		expect(block).toContain('file: "components/ui/checkbox.tsx"');
 	});
 
+	it("sources radio API rows from generated catalog data", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
+		expect(CATALOG_API.radio).toEqual([
+			{
+				name: "Radio",
+				props: [
+					{
+						name: "value",
+						type: "string",
+						required: true,
+						description: "The value associated with the radio item.",
+					},
+				],
+			},
+		]);
+		renderCatalog("/ui/radio");
+		const api = document.getElementById("api-reference");
+		expect(api).toBeTruthy();
+		expect(document.getElementById("api-Radio")?.tagName).toBe("H3");
+		expect(document.querySelector('[data-toc-id="api-Radio"]')).toBeTruthy();
+		expect(screen.getByRole("heading", { name: "Radio", level: 3 })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "Radio props" })).toBeInTheDocument();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api).toHaveTextContent("value");
+		expect(api).not.toHaveTextContent("value?");
+		expect(api).toHaveTextContent("string");
+		expect(api).toHaveTextContent("The value associated with the radio item.");
+		expect(api).toHaveTextContent("—");
+		expect(api).not.toHaveTextContent("disabled?");
+		expect(api).not.toHaveTextContent("required?");
+		expect(api).not.toHaveTextContent("form");
+		expect(api).not.toHaveTextContent("asChild");
+		expect(api).not.toHaveTextContent("className");
+		expect(api).not.toHaveTextContent("children");
+		expect(screen.getByRole("heading", { name: "Default (Vertical)" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Horizontal" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		expect(document.querySelector('[data-hero-scenario="radio-default-vertical"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="radio-disabled"]')).toBeTruthy();
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### Radio");
+		expect(markdown).toContain(
+			"- value (string, required, default —): The value associated with the radio item.",
+		);
+		expect(markdown).not.toContain("- disabled (");
+		expect(markdown).not.toContain("- className (");
+		expect(markdown).not.toContain("- form (");
+		expect(UI_EXAMPLES.radio).toHaveLength(3);
+		for (const scenario of UI_EXAMPLES.radio ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+	});
+
+	it("does not keep a handwritten radio prop inventory", () => {
+		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
+		const start = docs.indexOf("\tradio: {");
+		const end = docs.indexOf("\tswitch: {");
+		expect(start).toBeGreaterThanOrEqual(0);
+		expect(end).toBeGreaterThan(start);
+		const block = docs.slice(start, end);
+		expect(block).toContain("api: CATALOG_API.radio");
+		expect(block).not.toContain('name: "value"');
+		expect(block).not.toContain('type: "string"');
+		expect(block).toContain('description: "A radio button used inside RadioGroup."');
+		expect(block).toContain(
+			'<RadioGroup defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></RadioGroup>',
+		);
+		expect(block).toContain("variants: []");
+		expect(block).toContain('repo: "pew"');
+		expect(block).toContain('sha: "97a890fabe6e"');
+		expect(block).toContain('file: "packages/web/src/components"');
+	});
+
 	it("shows usage as docs code without a preview surface", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
@@ -2254,9 +2333,11 @@ describe("ui catalog", () => {
 		expect(generator).not.toMatch(/\bif\s*\([^)]*InputGroup|\bswitch\s*\([^)]*input-group/);
 		expect(generator).not.toMatch(/\bif\s*\([^)]*SensitiveInput|\bswitch\s*\([^)]*sensitive-input/);
 		expect(generator).not.toMatch(/\bif\s*\([^)]*Checkbox|\bswitch\s*\([^)]*checkbox/);
+		expect(generator).not.toMatch(/\bif\s*\([^)]*Radio|\bswitch\s*\([^)]*radio/);
 		expect(page).not.toMatch(/input-group|InputGroup/);
 		expect(page).not.toMatch(/sensitive-input|SensitiveInput/);
 		expect(page).not.toMatch(/\bcheckbox\b|Checkbox/);
+		expect(page).not.toMatch(/\bradio\b|Radio/);
 		expect(page).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 	});
 
@@ -2517,8 +2598,12 @@ describe("ui catalog", () => {
 		}
 		expect(markdown).toContain('className="flex flex-col gap-2"');
 		expect(markdown).toContain('className="flex gap-4"');
+		expect(markdown).toContain(
+			"- value (string, required, default —): The value associated with the radio item.",
+		);
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
 		expect(CATALOG_DOCS.checkbox?.api).toEqual(CATALOG_API.checkbox);
+		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
 		expect(UI_EXAMPLES.checkbox).toHaveLength(5);
 	});
 

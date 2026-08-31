@@ -145,6 +145,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "CheckboxProps",
 		surface: "Checkbox",
 	},
+	{
+		slug: "radio",
+		sourceFile: "packages/basalt/src/components/radio.tsx",
+		propsType: "RadioProps",
+		surface: "Radio",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

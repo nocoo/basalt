@@ -228,8 +228,14 @@ describe("catalog API generator contract", () => {
 				propsType: "CheckboxProps",
 				surface: "Checkbox",
 			},
+			{
+				slug: "radio",
+				sourceFile: "packages/basalt/src/components/radio.tsx",
+				propsType: "RadioProps",
+				surface: "Radio",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(20);
+		expect(CATALOG_API_TARGETS).toHaveLength(21);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -241,6 +247,7 @@ describe("catalog API generator contract", () => {
 		expect(source).not.toMatch(/\bif\s*\([^)]*InputGroup|\bswitch\s*\([^)]*input-group/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*SensitiveInput|\bswitch\s*\([^)]*sensitive-input/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*Checkbox|\bswitch\s*\([^)]*checkbox/);
+		expect(source).not.toMatch(/\bif\s*\([^)]*Radio|\bswitch\s*\([^)]*radio/);
 	});
 
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
@@ -261,6 +268,7 @@ describe("catalog API generator contract", () => {
 			"input-area",
 			"sensitive-input",
 			"checkbox",
+			"radio",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -969,6 +977,7 @@ export interface WidgetProps {
 			],
 			"sensitive-input": ["SensitiveInput"],
 			checkbox: ["Checkbox"],
+			radio: ["Radio"],
 		});
 	}, 20_000);
 
@@ -978,7 +987,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(16);
+		expect(Object.keys(generated)).toHaveLength(17);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1079,7 +1088,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(16);
+		expect(Object.keys(generated)).toHaveLength(17);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1179,7 +1188,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(16);
+		expect(Object.keys(generated)).toHaveLength(17);
 		expect(generated.checkbox).toEqual([
 			{
 				name: "Checkbox",
@@ -1243,6 +1252,64 @@ export interface WidgetProps {
 			"revealLabel",
 			"hideLabel",
 		]);
+		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
+			"InputGroup",
+			"InputGroup.Input",
+			"InputGroup.Addon",
+			"InputGroup.Button",
+			"InputGroup.Suffix",
+		]);
+	}, 20_000);
+
+	it("extracts Radio props from RadioProps as a required string value", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(Object.keys(generated)).toHaveLength(17);
+		expect(generated.radio).toEqual([
+			{
+				name: "Radio",
+				props: [
+					{
+						name: "value",
+						type: "string",
+						required: true,
+						description: "The value associated with the radio item.",
+					},
+				],
+			},
+		]);
+		expect(generated.radio?.[0]?.props[0]).not.toHaveProperty("default");
+		expect(
+			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "disabled")),
+		).toBe(false);
+		expect(
+			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "required")),
+		).toBe(false);
+		expect(
+			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "form")),
+		).toBe(false);
+		expect(
+			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "asChild")),
+		).toBe(false);
+		expect(
+			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "className")),
+		).toBe(false);
+		expect(
+			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "children")),
+		).toBe(false);
+		expect(
+			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "ref")),
+		).toBe(false);
+		expect(
+			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "aria-label")),
+		).toBe(false);
+		expect(generated.radio).toHaveLength(1);
+		expect(generated.radio?.[0]?.props).toHaveLength(1);
+		expect(generated.button?.[0]?.name).toBe("Button");
+		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked"]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
 			"InputGroup",
 			"InputGroup.Input",
@@ -2081,14 +2148,16 @@ export interface WidgetProps {
 		expect(first).toContain('\t"input-group": [');
 		expect(first).toContain('\t"sensitive-input": [');
 		expect(first).toContain("\tcheckbox: [");
+		expect(first).toContain("\tradio: [");
 		expect(first).toContain('name: "Button"');
 		expect(first).toContain('name: "InputArea"');
 		expect(first).toContain('name: "InputGroup.Button"');
 		expect(first).toContain('name: "InputGroup.Suffix"');
 		expect(first).toContain('name: "SensitiveInput"');
 		expect(first).toContain('name: "Checkbox"');
+		expect(first).toContain('name: "Radio"');
 		expect(createHash("sha256").update(first, "utf8").digest("hex")).toBe(
-			"b3efef6241647c18ce26ad3af528ec02b7ed83bb9562932fe8839c52f191209b",
+			"0139c12df79f9dd9cc4c50fd97cec3eeef79585cf221b3591b184f7ca6c941dd",
 		);
 	}, 20_000);
 });

@@ -276,6 +276,19 @@ export const CATALOG_API = {
 			],
 		},
 	],
+	radio: [
+		{
+			name: "Radio",
+			props: [
+				{
+					name: "value",
+					type: "string",
+					required: true,
+					description: "The value associated with the radio item.",
+				},
+			],
+		},
+	],
 	"sensitive-input": [
 		{
 			name: "SensitiveInput",
