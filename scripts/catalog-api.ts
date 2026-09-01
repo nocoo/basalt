@@ -261,6 +261,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "SegmentControlProps",
 		surface: "SegmentControl",
 	},
+	{
+		slug: "page-header",
+		sourceFile: "packages/basalt/src/components/page-header.tsx",
+		propsType: "PageHeaderProps",
+		surface: "PageHeader",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

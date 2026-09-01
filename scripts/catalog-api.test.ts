@@ -344,8 +344,14 @@ describe("catalog API generator contract", () => {
 				propsType: "SegmentControlProps",
 				surface: "SegmentControl",
 			},
+			{
+				slug: "page-header",
+				sourceFile: "packages/basalt/src/components/page-header.tsx",
+				propsType: "PageHeaderProps",
+				surface: "PageHeader",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(37);
+		expect(CATALOG_API_TARGETS).toHaveLength(38);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -371,6 +377,7 @@ describe("catalog API generator contract", () => {
 		expect(source).not.toMatch(/\bif\s*\([^)]*Select|\bswitch\s*\([^)]*select/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*ScrollArea|\bswitch\s*\([^)]*scroll-area/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*SegmentControl|\bswitch\s*\([^)]*segment-control/);
+		expect(source).not.toMatch(/\bif\s*\([^)]*PageHeader|\bswitch\s*\([^)]*page-header/);
 	});
 
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
@@ -395,6 +402,7 @@ describe("catalog API generator contract", () => {
 			"radio",
 			"switch",
 			"segment-control",
+			"page-header",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -1163,6 +1171,7 @@ export interface WidgetProps {
 			radio: ["Radio"],
 			switch: ["Switch"],
 			"segment-control": ["SegmentControl"],
+			"page-header": ["PageHeader"],
 			select: [
 				"Select",
 				"SelectTrigger",
@@ -1180,7 +1189,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(21);
+		expect(Object.keys(generated)).toHaveLength(22);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1281,7 +1290,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(21);
+		expect(Object.keys(generated)).toHaveLength(22);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1381,7 +1390,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(21);
+		expect(Object.keys(generated)).toHaveLength(22);
 		expect(generated.checkbox).toEqual([
 			{
 				name: "Checkbox",
@@ -1460,7 +1469,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(21);
+		expect(Object.keys(generated)).toHaveLength(22);
 		expect(generated.radio).toEqual([
 			{
 				name: "Radio",
@@ -1518,7 +1527,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(21);
+		expect(Object.keys(generated)).toHaveLength(22);
 		expect(generated.switch).toEqual([
 			{
 				name: "Switch",
@@ -1600,7 +1609,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(21);
+		expect(Object.keys(generated)).toHaveLength(22);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -1806,6 +1815,55 @@ export interface WidgetProps {
 		expect(generated["segment-control"]?.[0]?.props.map((prop) => prop.name)).not.toContain(
 			"children",
 		);
+	}, 20_000);
+
+	it("extracts the PageHeader surface without inherited header props", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated["page-header"]).toEqual([
+			{
+				name: "PageHeader",
+				props: [
+					{
+						name: "title",
+						type: "React.ReactNode",
+						required: true,
+						description: "The page title, rendered as the only heading.",
+					},
+					{
+						name: "description",
+						type: "React.ReactNode",
+						required: false,
+						description: "Supporting text below the title.",
+					},
+					{
+						name: "eyebrow",
+						type: "React.ReactNode",
+						required: false,
+						description: "A short label above the title.",
+					},
+					{
+						name: "breadcrumbs",
+						type: "PageHeaderBreadcrumb[]",
+						required: false,
+						description: "Trail of parent pages.",
+					},
+					{
+						name: "actions",
+						type: "React.ReactNode",
+						required: false,
+						description: "Actions aligned beside the title on wide screens.",
+					},
+				],
+			},
+		]);
+		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain(
+			"className",
+		);
+		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain("children");
 	}, 20_000);
 
 	it("aggregates multiple surfaces for the same slug in declaration order", () => {
@@ -2609,8 +2667,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(21);
-		expect(Object.keys(first)).toHaveLength(22);
+		expect(slugs).toHaveLength(22);
+		expect(Object.keys(first)).toHaveLength(23);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -2624,6 +2682,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "LayerCard.Empty"');
 		expect(joined).toContain('name: "ScrollArea"');
 		expect(joined).toContain('name: "SegmentControl"');
+		expect(joined).toContain('name: "PageHeader"');
 		expect(joined).toContain('name: "SensitiveInput"');
 		expect(joined).toContain('name: "Checkbox"');
 		expect(joined).toContain('name: "Radio"');
@@ -2641,7 +2700,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"4d926c75d1d697c188d7eeb0a771733ec2be266b925bfd7d371e518c405d7700",
+			"fc52b241844dea088752e8a08b075e20cf7d0617979389fbe163bf0abe854a00",
 		);
 	}, 20_000);
 

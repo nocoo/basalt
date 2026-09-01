@@ -11,6 +11,7 @@ import { API as labelApi } from "./catalog-api/label";
 import { API as layerCardApi } from "./catalog-api/layer-card";
 import { API as linkApi } from "./catalog-api/link";
 import { API as linkButtonApi } from "./catalog-api/link-button";
+import { API as pageHeaderApi } from "./catalog-api/page-header";
 import { API as radioApi } from "./catalog-api/radio";
 import { API as scrollAreaApi } from "./catalog-api/scroll-area";
 import { API as segmentControlApi } from "./catalog-api/segment-control";
@@ -34,6 +35,7 @@ export const CATALOG_API = {
 	"layer-card": layerCardApi,
 	link: linkApi,
 	"link-button": linkButtonApi,
+	"page-header": pageHeaderApi,
 	radio: radioApi,
 	"scroll-area": scrollAreaApi,
 	"segment-control": segmentControlApi,

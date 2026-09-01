@@ -1,5 +1,3 @@
-import { AppHeader } from "@nocoo/basalt/components/app-header";
-import { Button } from "@nocoo/basalt/components/button";
 import { DataTable } from "@nocoo/basalt/components/data-table";
 import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
 import { Grid, GridItem } from "@nocoo/basalt/components/grid";
@@ -18,6 +16,8 @@ import {
 	type CatalogDocsDraft,
 	provenanceFromLegacy,
 } from "../../catalog-source";
+import { PAGE_HEADER_EXAMPLES } from "../../examples/page-header";
+import { API as pageHeaderApi } from "../../generated/catalog-api/page-header";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
 	repo: "pew",
@@ -97,12 +97,6 @@ export default function Example() {
 			<GridItem>4</GridItem>
 		</Grid>
 	);
-}`;
-
-const PAGE_HEADER_USAGE = `import { PageHeader } from "@nocoo/basalt/components/page-header";
-
-export default function Example() {
-	return <AppHeader breadcrumbs={[{ href: "/", label: "Examples" }]} title="Dashboard" />;
 }`;
 
 const FLOW_USAGE = `import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
@@ -296,27 +290,18 @@ export default catalogContentFamily({
 		],
 	},
 	"page-header": {
-		docs: extraDocs(
-			"PageHeader",
-			"page-header",
-			"App header with breadcrumbs and title.",
-			'<AppHeader breadcrumbs={[{ href: "/", label: "Examples" }]} title="Dashboard" />',
-			undefined,
-			PAGE_HEADER_USAGE,
-		),
-		examples: [
-			{
-				id: catalogScenarioId("page-header", "default"),
-				title: "Default",
-				code: PAGE_HEADER_USAGE,
-				render: () => (
-					<AppHeader
-						breadcrumbs={[{ href: "#", label: "Examples" }]}
-						title="Dashboard"
-						actions={<Button variant="ghost">Action</Button>}
-					/>
-				),
-			},
-		],
+		docs: {
+			description:
+				"A content page heading with optional description, eyebrow, breadcrumbs, and actions.",
+			usage: `import { PageHeader } from "@nocoo/basalt/components/page-header";
+
+export default function Example() {
+	return <PageHeader title="Dashboard" description="Overview of recent project activity." />;
+}`,
+			variants: [],
+			api: pageHeaderApi,
+			provenance: EXTRA_PROVENANCE,
+		},
+		examples: PAGE_HEADER_EXAMPLES,
 	},
 });

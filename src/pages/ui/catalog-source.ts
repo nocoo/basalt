@@ -38,10 +38,6 @@ export const BASALT_IMPLEMENTATION_REF = "main";
 const PACKAGE_IMPORT_PREFIX = "@nocoo/basalt/";
 const IMPLEMENTATION_ROOT = "packages/basalt/src";
 
-const IMPLEMENTATION_FILE_BY_SLUG: Record<string, string> = {
-	"page-header": `${IMPLEMENTATION_ROOT}/components/app-header.tsx`,
-};
-
 export function githubSourceHref(source: GitHubSource): string {
 	return `https://github.com/${source.owner}/${source.repo}/blob/${source.ref}/${source.file}`;
 }
@@ -51,10 +47,6 @@ export function githubSourceLabel(source: GitHubSource): string {
 }
 
 export function implementationFileFor(entry: CatalogEntry): string {
-	const exception = IMPLEMENTATION_FILE_BY_SLUG[entry.slug];
-	if (exception) {
-		return exception;
-	}
 	const importPath = catalogImportPath(entry);
 	if (!importPath.startsWith(PACKAGE_IMPORT_PREFIX)) {
 		throw new Error(`Cannot derive implementation file from ${importPath}`);

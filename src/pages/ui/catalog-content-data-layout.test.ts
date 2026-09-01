@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
 import dataLayout from "./catalog-content/families/data-layout";
+import { PAGE_HEADER_EXAMPLES } from "./examples/page-header";
+import { API as pageHeaderApi } from "./generated/catalog-api/page-header";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
 const DATA_LAYOUT_SCENARIOS = {
@@ -7,7 +9,7 @@ const DATA_LAYOUT_SCENARIOS = {
 	"data-table": ["data-table-default"],
 	grid: ["grid-grid"],
 	flow: ["flow-sequential-flow"],
-	"page-header": ["page-header-default"],
+	"page-header": ["page-header-default", "page-header-long-responsive-content"],
 } as const;
 
 const DATA_LAYOUT_DESCRIPTIONS = {
@@ -15,7 +17,8 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 	"data-table": "Sortable data table.",
 	grid: "Simple grid.",
 	flow: "Step flow.",
-	"page-header": "App header with breadcrumbs and title.",
+	"page-header":
+		"A content page heading with optional description, eyebrow, breadcrumbs, and actions.",
 } as const;
 
 describe("data-layout catalog content family", () => {
@@ -31,7 +34,7 @@ describe("data-layout catalog content family", () => {
 		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(86);
 	});
 
-	it("keeps the six final winner scenarios in their audited order", () => {
+	it("keeps the seven final winner scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(DATA_LAYOUT_SCENARIOS)) {
 			const examples = dataLayout[slug]?.examples ?? [];
@@ -50,7 +53,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(6);
+		expect(count).toBe(7);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {
@@ -66,12 +69,11 @@ describe("data-layout catalog content family", () => {
 				ref: "97a890fabe6e",
 				file: "packages/web/src/components",
 			});
-			const implementationSlug = slug === "page-header" ? "app-header" : slug;
 			expect(docs?.implementationSource, slug).toEqual({
 				owner: "nocoo",
 				repo: "basalt",
 				ref: "main",
-				file: `packages/basalt/src/components/${implementationSlug}.tsx`,
+				file: `packages/basalt/src/components/${slug}.tsx`,
 			});
 		}
 		expect(dataLayout["data-table"]?.docs.api[0]?.props.map((prop) => prop.name)).toEqual([
@@ -80,6 +82,12 @@ describe("data-layout catalog content family", () => {
 			"filter",
 		]);
 		expect(dataLayout.table?.docs.usage).toContain("<TableHeader>");
-		expect(dataLayout["page-header"]?.docs.usage).toContain("<AppHeader");
+		expect(dataLayout["page-header"]?.examples).toBe(PAGE_HEADER_EXAMPLES);
+		expect(dataLayout["page-header"]?.docs.api).toBe(pageHeaderApi);
+		expect(dataLayout["page-header"]?.docs.usage).toContain("<PageHeader");
+		expect(dataLayout["page-header"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "page-header-default", title: "Default" },
+			{ id: "page-header-long-responsive-content", title: "Long responsive content" },
+		]);
 	});
 });

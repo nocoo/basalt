@@ -890,6 +890,79 @@ describe("ui catalog", () => {
 		expect(markdown).not.toContain("- children (");
 	});
 
+	it("keeps PageHeader docs, generated API, source examples, and Copy page aligned", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		const docs = CATALOG_DOCS["page-header"];
+		expect(docs?.api).toBe(CATALOG_API["page-header"]);
+		expect(docs).toMatchObject({
+			description:
+				"A content page heading with optional description, eyebrow, breadcrumbs, and actions.",
+			variants: [],
+		});
+		expect(CATALOG_API["page-header"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"title",
+			"description",
+			"eyebrow",
+			"breadcrumbs",
+			"actions",
+		]);
+		expect(UI_EXAMPLES["page-header"]?.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "page-header-default", title: "Default" },
+			{ id: "page-header-long-responsive-content", title: "Long responsive content" },
+		]);
+
+		renderCatalog("/ui/page-header");
+		const api = document.getElementById("api-reference");
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(5);
+		const hero = document.querySelector('[data-hero-scenario="page-header-default"]');
+		expect(hero).toBeTruthy();
+		if (!hero) {
+			throw new Error("missing PageHeader hero");
+		}
+		expect(
+			within(hero as HTMLElement).getByRole("heading", { level: 1, name: "Dashboard" }),
+		).toBeInTheDocument();
+		expect(
+			within(hero as HTMLElement).getByRole("navigation", { name: "Breadcrumb" }),
+		).toBeInTheDocument();
+		const longContent = document.querySelector(
+			'[data-scenario="page-header-long-responsive-content"]',
+		);
+		expect(longContent).toBeTruthy();
+		if (!longContent) {
+			throw new Error("missing PageHeader long content");
+		}
+		expect(
+			within(longContent as HTMLElement).getByRole("heading", {
+				level: 1,
+				name: "Quarterly operations review for the north-region delivery network",
+			}),
+		).toBeInTheDocument();
+		expect(within(longContent as HTMLElement).getByText("Workspace")).toBeInTheDocument();
+		expect(
+			within(longContent as HTMLElement).getByRole("button", { name: "Create report" }),
+		).toBeInTheDocument();
+		for (const scenario of UI_EXAMPLES["page-header"] ?? []) {
+			expect(scenario.code).toContain("@nocoo/basalt/components/page-header");
+			expect(scenario.code).toContain("export default function");
+			expect(document.querySelector(`[data-scenario="${scenario.id}"]`)).toBeTruthy();
+		}
+
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### PageHeader");
+		expect(markdown).toContain("- title (React.ReactNode, required, default —)");
+		expect(markdown).toContain("- breadcrumbs (PageHeaderBreadcrumb[], optional, default —)");
+		for (const scenario of UI_EXAMPLES["page-header"] ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).not.toContain("- className (");
+		expect(markdown).not.toContain("- children (");
+	});
+
 	it("sources link API rows from generated catalog data", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });

@@ -8,6 +8,7 @@ const unapprovedRootNames = [
 	"AppShell",
 	"AppSkipLink",
 	"LoadingScreen",
+	"PageHeader",
 ] as const;
 
 describe("root barrel", () => {

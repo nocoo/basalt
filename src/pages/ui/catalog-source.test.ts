@@ -128,8 +128,15 @@ describe("catalog source contract", () => {
 
 	it("maps shared and renamed implementation files", () => {
 		expect(implementationFileFor(entry("page-header"))).toBe(
-			"packages/basalt/src/components/app-header.tsx",
+			"packages/basalt/src/components/page-header.tsx",
 		);
+		expect(CATALOG_API["page-header"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"title",
+			"description",
+			"eyebrow",
+			"breadcrumbs",
+			"actions",
+		]);
 		expect(implementationFileFor(entry("link-button"))).toBe(
 			"packages/basalt/src/components/button.tsx",
 		);
