@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中
-> 当前切片：S6 完成；Codex review 待 Sign-off
-> 当前实现真值：`e6e58a3`（S6 完成；Codex review 待 Sign-off）
+> 当前切片：S7 待办
+> 当前实现真值：`2193aed`（S6 Codex Sign-off）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`
 > 最后更新：2026-09-01
 
@@ -50,7 +50,7 @@ Conventional Commits；一次一个逻辑问题；禁止 `git add -A` / `--no-ve
 | S3 | LayerCard、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager | 完成（`6eed42f`） |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 完成（`5e325a3`） |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 完成（`fe5c56a`） |
-| S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 完成（`e6e58a3`） |
+| S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 完成（`2193aed`） |
 | S7 | Table/DataTable、TOC、Code、Flow、Grid、Pagination | 待办 |
 | S8 | 图表 kit 与组合层 | 待办 |
 | S9 | Blocks、layout examples、全站自消费 | 待办 |
