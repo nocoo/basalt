@@ -186,6 +186,22 @@ describe("Sidebar", () => {
 		fireEvent.pointerUp(handle);
 	});
 
+	it("shrinks a right-side rail with arrows and clamps width", () => {
+		HTMLElement.prototype.setPointerCapture = vi.fn();
+		render(
+			<SidebarProvider side="right" defaultWidth={260}>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		const handle = screen.getByRole("separator", { name: "Resize sidebar" });
+		expect(handle.className).toContain("left-0");
+		fireEvent.keyDown(handle, { key: "ArrowRight" });
+		expect(screen.getByText("Nav")).toHaveStyle({ width: "252px" });
+		fireEvent.pointerDown(handle, { clientX: 0, pointerId: 1 });
+		fireEvent.pointerMove(handle, { clientX: 500 });
+		expect(Number.parseFloat(screen.getByText("Nav").style.width)).toBeLessThanOrEqual(400);
+	});
+
 	it("resizes the rail with arrow keys", () => {
 		render(
 			<SidebarProvider defaultWidth={260}>

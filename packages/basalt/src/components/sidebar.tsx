@@ -266,6 +266,21 @@ export function Sidebar({
 						aria-busy={context.loading || undefined}
 						onMouseEnter={onMouseEnter}
 						onMouseLeave={onMouseLeave}
+						ref={(node) => {
+							if (
+								node &&
+								document.activeElement instanceof HTMLElement &&
+								!node.contains(document.activeElement)
+							) {
+								context.lastFocusRef.current = document.activeElement;
+							}
+						}}
+						onOpenAutoFocus={(event) => {
+							const from = "relatedTarget" in event ? event.relatedTarget : null;
+							if (from instanceof HTMLElement) {
+								context.lastFocusRef.current = from;
+							}
+						}}
 						onCloseAutoFocus={(event) => {
 							event.preventDefault();
 							context.lastFocusRef.current?.focus();

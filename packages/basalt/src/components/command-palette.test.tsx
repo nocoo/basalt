@@ -95,6 +95,18 @@ describe("CommandPalette", () => {
 		expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
 	});
 
+	it("labels the field Command Palette when no placeholder is given", () => {
+		render(
+			<CommandPalette open>
+				<CommandInput />
+				<CommandList>
+					<CommandItem>Button</CommandItem>
+				</CommandList>
+			</CommandPalette>,
+		);
+		expect(screen.getByRole("combobox")).toHaveAttribute("aria-label", "Command Palette");
+	});
+
 	it("renders shortcut and separator chrome", () => {
 		render(
 			<CommandPalette open>
