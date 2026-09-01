@@ -128,6 +128,7 @@ import { useLocation, useNavigate } from "react-router";
 import {
 	CATALOG,
 	CATALOG_CATEGORIES,
+	type CatalogCategory,
 	type CatalogEntry,
 	catalogNavName,
 	libraryDocEntries,
@@ -146,6 +147,8 @@ interface NavItem {
 	external?: boolean;
 	catalogSlug?: string;
 	pageStatus?: CatalogPageStatus;
+	catalogCategory?: CatalogCategory;
+	maturity?: CatalogEntry["maturity"];
 }
 
 interface NavGroup {
@@ -323,6 +326,8 @@ function catalogNavItem(entry: CatalogEntry, fallbackIcon: React.ElementType): N
 		icon: CATALOG_ICONS[entry.slug] ?? fallbackIcon,
 		catalogSlug: entry.slug,
 		pageStatus: CATALOG_PAGE_STATUS_BY_SLUG.get(entry.slug),
+		catalogCategory: entry.category,
+		maturity: entry.maturity,
 	};
 }
 
@@ -356,6 +361,8 @@ function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: stri
 	const navigate = useNavigate();
 	const { t } = useTranslation();
 	const isPlanned = item.pageStatus === "planned";
+	const showPendingMaturity =
+		item.catalogCategory === "component" && item.maturity !== "mvp-complete";
 	return (
 		<SidebarItem
 			active={!isPlanned && !item.external && currentPath === item.path}
@@ -383,6 +390,11 @@ function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: stri
 						{item.badge}
 					</span>
 				</span>
+			) : null}
+			{showPendingMaturity ? (
+				<Badge variant="outline" data-maturity-status="pending" className="ml-auto shrink-0">
+					待规范
+				</Badge>
 			) : null}
 			{isPlanned ? (
 				<Badge variant="outline" data-page-status="planned" className="ml-auto shrink-0">

@@ -6,6 +6,12 @@ import { beforeAll, describe, expect, it, vi } from "vitest";
 import { AppSidebar } from "@/components/AppSidebar";
 import { CATALOG, catalogNavName } from "@/pages/ui/catalog";
 
+function catalogButtons() {
+	return Array.from(
+		document.querySelectorAll<HTMLButtonElement>("aside button[data-catalog-slug]"),
+	);
+}
+
 const PLANNED_SLUGS = [
 	"installation",
 	"contributing",
@@ -26,13 +32,13 @@ function RouterProbe() {
 	return <span hidden data-testid="router-location" data-pathname={pathname} />;
 }
 
-function renderSidebar(path = "/ui/button") {
+function renderSidebar(path = "/ui/button", collapsed = false) {
 	return render(
 		<ThemeProvider>
 			<TooltipProvider>
 				<MemoryRouter initialEntries={[path]}>
 					<RouterProbe />
-					<AppSidebar collapsed={false} onToggle={() => undefined} />
+					<AppSidebar collapsed={collapsed} onToggle={() => undefined} />
 				</MemoryRouter>
 			</TooltipProvider>
 		</ThemeProvider>,
@@ -57,7 +63,7 @@ describe("AppSidebar", () => {
 		}
 		expect(screen.getByRole("button", { name: /^Installation.*Planned$/ })).toBeDisabled();
 		expect(screen.getByRole("button", { name: /^Changelog.*Planned$/ })).toBeDisabled();
-		expect(screen.getByRole("button", { name: "Clipboard Text" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: /^Clipboard Text/ })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Page Header" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: /^Maps.*Planned$/ })).toBeDisabled();
 		const components = screen.getByRole("button", { name: "Components", expanded: true });
@@ -98,7 +104,7 @@ describe("AppSidebar", () => {
 		fireEvent.keyUp(maps, { key: " " });
 		expect(screen.getByTestId("router-location")).toHaveAttribute("data-pathname", "/ui/button");
 
-		fireEvent.click(screen.getByRole("button", { name: "Clipboard Text" }));
+		fireEvent.click(screen.getByRole("button", { name: /^Clipboard Text/ }));
 		expect(screen.getByTestId("router-location")).toHaveAttribute(
 			"data-pathname",
 			"/ui/clipboard-text",
@@ -160,5 +166,43 @@ describe("AppSidebar", () => {
 			);
 			expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 		});
+	});
+
+	it("labels pending component rows from catalog entries only", () => {
+		const components = CATALOG.filter((entry) => entry.category === "component");
+		const complete = components.filter((entry) => entry.maturity === "mvp-complete");
+		const pending = components.filter((entry) => entry.maturity !== "mvp-complete");
+		expect(components).toHaveLength(65);
+		expect(complete).toHaveLength(8);
+		expect(pending).toHaveLength(57);
+
+		renderSidebar();
+		const buttons = catalogButtons();
+		expect(buttons).toHaveLength(101);
+		for (const button of buttons) {
+			const entry = CATALOG.find((item) => item.slug === button.dataset.catalogSlug);
+			expect(entry).toBeDefined();
+			const labels = button.querySelectorAll('[data-maturity-status="pending"]');
+			if (entry?.category === "component" && entry.maturity !== "mvp-complete") {
+				expect(labels).toHaveLength(1);
+				expect(labels[0]).toHaveTextContent("待规范");
+			} else {
+				expect(labels).toHaveLength(0);
+				expect(button).not.toHaveTextContent("待规范");
+			}
+		}
+		expect(document.querySelectorAll('aside [data-maturity-status="pending"]')).toHaveLength(57);
+	});
+
+	it("does not show maturity labels in collapsed sidebar or command palette", async () => {
+		const { unmount } = renderSidebar("/ui/button", true);
+		expect(document.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
+		unmount();
+
+		renderSidebar();
+		fireEvent.keyDown(document, { key: "k", ctrlKey: true });
+		const dialog = screen.getByRole("dialog");
+		expect(dialog.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
+		expect(within(dialog).queryByText("待规范")).not.toBeInTheDocument();
 	});
 });

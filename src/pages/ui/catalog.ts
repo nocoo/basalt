@@ -2,12 +2,15 @@ export type CatalogKind = "stable" | "catalog" | "chart" | "provider";
 
 export type CatalogCategory = "docs" | "component" | "chart" | "block";
 
+export type CatalogMaturity = "mvp-complete";
+
 export interface CatalogEntry {
 	slug: string;
 	name: string;
 	kind: CatalogKind;
 	category: CatalogCategory;
 	navName?: string;
+	maturity?: CatalogMaturity;
 }
 
 export const CATALOG_CATEGORIES: { id: CatalogCategory; label: string }[] = [
@@ -19,7 +22,7 @@ export const CATALOG_CATEGORIES: { id: CatalogCategory; label: string }[] = [
 export const CATALOG: CatalogEntry[] = [
 	{ slug: "button", name: "Button", kind: "stable", category: "component" },
 	{ slug: "link-button", name: "LinkButton", kind: "catalog", category: "component" },
-	{ slug: "text", name: "Text", kind: "stable", category: "component" },
+	{ slug: "text", name: "Text", kind: "stable", category: "component", maturity: "mvp-complete" },
 	{ slug: "label", name: "Label", kind: "stable", category: "component" },
 	{ slug: "separator", name: "Separator", kind: "stable", category: "component" },
 	{
@@ -28,6 +31,7 @@ export const CATALOG: CatalogEntry[] = [
 		kind: "stable",
 		category: "component",
 		navName: "Scroll Area",
+		maturity: "mvp-complete",
 	},
 	{ slug: "link", name: "Link", kind: "stable", category: "component" },
 	{ slug: "tooltip", name: "Tooltip", kind: "stable", category: "component" },
@@ -38,6 +42,7 @@ export const CATALOG: CatalogEntry[] = [
 		kind: "stable",
 		category: "component",
 		navName: "Layer Card",
+		maturity: "mvp-complete",
 	},
 	{
 		slug: "basalt-mark",
@@ -46,7 +51,7 @@ export const CATALOG: CatalogEntry[] = [
 		category: "component",
 		navName: "Basalt Mark",
 	},
-	{ slug: "field", name: "Field", kind: "stable", category: "component" },
+	{ slug: "field", name: "Field", kind: "stable", category: "component", maturity: "mvp-complete" },
 	{ slug: "input", name: "Input", kind: "stable", category: "component" },
 	{ slug: "input-area", name: "InputArea", kind: "catalog", category: "component" },
 	{ slug: "input-group", name: "InputGroup", kind: "catalog", category: "component" },
@@ -79,6 +84,7 @@ export const CATALOG: CatalogEntry[] = [
 		kind: "stable",
 		category: "component",
 		navName: "Segment Control",
+		maturity: "mvp-complete",
 	},
 	{ slug: "badge", name: "Badge", kind: "stable", category: "component" },
 	{ slug: "banner", name: "Banner", kind: "catalog", category: "component" },
@@ -118,6 +124,7 @@ export const CATALOG: CatalogEntry[] = [
 		kind: "stable",
 		category: "component",
 		navName: "Confirm Dialog",
+		maturity: "mvp-complete",
 	},
 	{ slug: "popover", name: "Popover", kind: "stable", category: "component" },
 	{
@@ -162,6 +169,7 @@ export const CATALOG: CatalogEntry[] = [
 		kind: "stable",
 		category: "component",
 		navName: "Stat Strip",
+		maturity: "mvp-complete",
 	},
 	{
 		slug: "table-pager",
@@ -169,6 +177,7 @@ export const CATALOG: CatalogEntry[] = [
 		kind: "stable",
 		category: "component",
 		navName: "Table Pager",
+		maturity: "mvp-complete",
 	},
 	{ slug: "theme-provider", name: "ThemeProvider", kind: "provider", category: "component" },
 	{ slug: "link-provider", name: "LinkProvider", kind: "provider", category: "component" },
