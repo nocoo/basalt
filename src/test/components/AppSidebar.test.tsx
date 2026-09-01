@@ -168,41 +168,15 @@ describe("AppSidebar", () => {
 		});
 	});
 
-	it("labels pending component rows from catalog entries only", () => {
-		const components = CATALOG.filter((entry) => entry.category === "component");
-		const complete = components.filter((entry) => entry.maturity === "mvp-complete");
-		const pending = components.filter((entry) => entry.maturity !== "mvp-complete");
-		expect(components).toHaveLength(65);
-		expect(complete).toHaveLength(8);
-		expect(pending).toHaveLength(57);
-
+	it("does not show pending maturity badges in the components sidebar", () => {
 		renderSidebar();
 		const buttons = catalogButtons();
 		expect(buttons).toHaveLength(101);
-		for (const button of buttons) {
-			const entry = CATALOG.find((item) => item.slug === button.dataset.catalogSlug);
-			expect(entry).toBeDefined();
-			const labels = button.querySelectorAll('[data-maturity-status="pending"]');
-			if (entry?.category === "component" && entry.maturity !== "mvp-complete") {
-				expect(labels).toHaveLength(1);
-				expect(labels[0]).toHaveTextContent("待规范");
-			} else {
-				expect(labels).toHaveLength(0);
-				expect(button).not.toHaveTextContent("待规范");
-			}
-		}
-		expect(document.querySelectorAll('aside [data-maturity-status="pending"]')).toHaveLength(57);
-	});
-
-	it("does not show maturity labels in collapsed sidebar or command palette", async () => {
-		const { unmount } = renderSidebar("/ui/button", true);
 		expect(document.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
-		unmount();
-
-		renderSidebar();
-		fireEvent.keyDown(document, { key: "k", ctrlKey: true });
-		const dialog = screen.getByRole("dialog");
-		expect(dialog.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
-		expect(within(dialog).queryByText("待规范")).not.toBeInTheDocument();
+		expect(document.querySelector("aside")?.textContent).not.toContain("待规范");
+		for (const button of buttons) {
+			expect(button).not.toHaveTextContent("待规范");
+			expect(button.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
+		}
 	});
 });
