@@ -678,6 +678,33 @@ describe("DatePicker", () => {
 		expect(control.checkValidity()).toBe(false);
 	});
 
+	it("applies a single-date preset in range mode", async () => {
+		const onRangeChange = vi.fn();
+		render(
+			<DatePicker
+				mode="range"
+				presets={[{ label: "New year", value: "2026-01-01" }]}
+				onRangeChange={onRangeChange}
+				aria-label="Stay"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Stay" }));
+		fireEvent.click(await screen.findByRole("button", { name: "New year" }));
+		expect(onRangeChange).toHaveBeenCalledWith({ from: "2026-01-01", to: "2026-01-01" });
+	});
+
+	it("formats a completed range with formatDate", () => {
+		render(
+			<DatePicker
+				mode="range"
+				defaultRangeValue={{ from: "2024-01-10", to: "2024-01-12" }}
+				formatDate={(date) => `${date.getMonth() + 1}/${date.getDate()}`}
+				aria-label="Stay"
+			/>,
+		);
+		expect(screen.getByRole("button", { name: /Stay/ })).toHaveTextContent("1/10 – 1/12");
+	});
+
 	it("applies a range preset", async () => {
 		const onRangeChange = vi.fn();
 		render(

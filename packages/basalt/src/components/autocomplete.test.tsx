@@ -56,6 +56,18 @@ describe("Autocomplete", () => {
 		expect(input).toHaveValue("Banana");
 	});
 
+	it("commits a typed label as the matching item value", () => {
+		const onValueChange = vi.fn();
+		render(
+			<Autocomplete items={[APPLE, BANANA]} placeholder="Fruit" onValueChange={onValueChange} />,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.change(input, { target: { value: "Apple" } });
+		fireEvent.keyDown(input, { key: "Enter" });
+		expect(onValueChange).toHaveBeenCalledWith("apple");
+		expect(input).toHaveValue("Apple");
+	});
+
 	it("advertises list autocomplete", () => {
 		render(<Autocomplete items={[APPLE]} placeholder="Fruit" />);
 		expect(screen.getByLabelText("Fruit")).toHaveAttribute("aria-autocomplete", "list");

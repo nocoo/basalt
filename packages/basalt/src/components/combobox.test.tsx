@@ -519,6 +519,12 @@ describe("Combobox", () => {
 		expect(screen.getByLabelText("Region")).toHaveValue("United States");
 	});
 
+	it("does not open while loading", () => {
+		render(<Combobox items={FRUITS} placeholder="Fruit" loading />);
+		fireEvent.click(screen.getByLabelText("Fruit"));
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+	});
+
 	it("forwards inherited wrapper attributes", () => {
 		const onBlur = vi.fn();
 		render(<Combobox items={FRUITS} placeholder="Fruit" data-testid="fruit-box" onBlur={onBlur} />);
