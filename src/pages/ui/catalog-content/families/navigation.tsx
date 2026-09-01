@@ -390,6 +390,10 @@ export default function Example() {
     <TabsTrigger value="changelog">Changelog</TabsTrigger>
   </TabsList>
   <TabsContent value="overview">Overview of the control.</TabsContent>
+  <TabsContent value="usage">How to use the control.</TabsContent>
+  <TabsContent value="api">Public API.</TabsContent>
+  <TabsContent value="accessibility">Keyboard and labels.</TabsContent>
+  <TabsContent value="changelog">Recent changes.</TabsContent>
 </Tabs>`,
 				render: () => (
 					<Tabs defaultValue="overview">
@@ -401,6 +405,10 @@ export default function Example() {
 							))}
 						</TabsList>
 						<TabsContent value="overview">Overview of the control.</TabsContent>
+						<TabsContent value="usage">How to use the control.</TabsContent>
+						<TabsContent value="api">Public API.</TabsContent>
+						<TabsContent value="accessibility">Keyboard and labels.</TabsContent>
+						<TabsContent value="changelog">Recent changes.</TabsContent>
 					</Tabs>
 				),
 			},

@@ -127,6 +127,23 @@ describe("Sidebar", () => {
 		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 	});
 
+	it("captures focus when overlay is enabled while expanded", () => {
+		const { rerender } = render(
+			<SidebarProvider overlay={false}>
+				<button type="button">Focus</button>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		screen.getByRole("button", { name: "Focus" }).focus();
+		rerender(
+			<SidebarProvider overlay>
+				<button type="button">Focus</button>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByRole("dialog", { name: "Sidebar" })).toBeInTheDocument();
+	});
+
 	it("places overlay chrome on the right edge", () => {
 		render(
 			<SidebarProvider overlay side="right">

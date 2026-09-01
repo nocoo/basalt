@@ -30,59 +30,82 @@ function setRovingTab(items: HTMLElement[], active: HTMLElement) {
 }
 
 const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarProps>(
-	({ className, onKeyDown, onFocus, ...props }, ref) => (
-		<div
-			ref={ref}
-			{...props}
-			role="toolbar"
-			onFocus={(event) => {
-				onFocus?.(event);
-				const items = toolbarItems(event.currentTarget);
-				const target = event.target as HTMLElement;
-				if (items.includes(target)) {
-					setRovingTab(items, target);
-				}
-			}}
-			onKeyDown={(event) => {
-				onKeyDown?.(event);
-				if (event.defaultPrevented || (event.key !== "ArrowRight" && event.key !== "ArrowLeft")) {
-					return;
-				}
-				if (
-					event.target instanceof HTMLInputElement ||
-					event.target instanceof HTMLTextAreaElement
-				) {
-					const start = event.target.selectionStart ?? 0;
-					if (event.key === "ArrowLeft" && start > 0) {
+	({ className, onKeyDown, onFocus, ...props }, ref) => {
+		const innerRef = React.useRef<HTMLDivElement | null>(null);
+		React.useLayoutEffect(() => {
+			const root = innerRef.current;
+			if (!root) {
+				return;
+			}
+			const items = toolbarItems(root);
+			const active =
+				items.find((item) => item.tabIndex === 0 && !(item as HTMLButtonElement).disabled) ??
+				items[0];
+			if (active) {
+				setRovingTab(items, active);
+			}
+		});
+		return (
+			<div
+				ref={(node) => {
+					innerRef.current = node;
+					if (typeof ref === "function") {
+						ref(node);
+					} else if (ref) {
+						ref.current = node;
+					}
+				}}
+				{...props}
+				role="toolbar"
+				onFocus={(event) => {
+					onFocus?.(event);
+					const items = toolbarItems(event.currentTarget);
+					const target = event.target as HTMLElement;
+					if (items.includes(target)) {
+						setRovingTab(items, target);
+					}
+				}}
+				onKeyDown={(event) => {
+					onKeyDown?.(event);
+					if (event.defaultPrevented || (event.key !== "ArrowRight" && event.key !== "ArrowLeft")) {
 						return;
 					}
-					if (event.key === "ArrowRight" && start < event.target.value.length) {
+					if (
+						event.target instanceof HTMLInputElement ||
+						event.target instanceof HTMLTextAreaElement
+					) {
+						const start = event.target.selectionStart ?? 0;
+						if (event.key === "ArrowLeft" && start > 0) {
+							return;
+						}
+						if (event.key === "ArrowRight" && start < event.target.value.length) {
+							return;
+						}
+					}
+					const items = toolbarItems(event.currentTarget);
+					const index = items.indexOf(event.target as HTMLElement);
+					if (index < 0 || items.length === 0) {
 						return;
 					}
-				}
-				const items = toolbarItems(event.currentTarget);
-				const index = items.indexOf(event.target as HTMLElement);
-				if (index < 0 || items.length === 0) {
-					return;
-				}
-				event.preventDefault();
-				const next =
-					event.key === "ArrowRight"
-						? (index + 1) % items.length
-						: (index - 1 + items.length) % items.length;
-				const node = items[next];
-				if (node) {
-					setRovingTab(items, node);
-					node.focus();
-				}
-			}}
-			className={cn(
-				"inline-flex w-fit items-stretch rounded-basalt-md bg-basalt-secondary shadow-xs ring-1 ring-basalt-border",
-				"[&>*:not(:first-child)]:border-l [&>*:not(:first-child)]:border-basalt-border",
-				className,
-			)}
-		/>
-	),
+					event.preventDefault();
+					const next =
+						event.key === "ArrowRight"
+							? (index + 1) % items.length
+							: (index - 1 + items.length) % items.length;
+					const node = items[next];
+					if (node) {
+						setRovingTab(items, node);
+						node.focus();
+					}
+				}}
+				className={cn(
+					"inline-flex w-fit items-stretch rounded-basalt-md bg-basalt-secondary shadow-xs ring-1 ring-basalt-border",
+					"[&>*:not(:first-child)]:border-l [&>*:not(:first-child)]:border-basalt-border",
+					className,
+				)}
+			/>
+		);
+	},
 );
 ToolbarRoot.displayName = "Toolbar";
 
