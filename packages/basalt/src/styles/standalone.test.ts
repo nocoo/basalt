@@ -6,6 +6,10 @@ const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
 describe("standalone css", () => {
 	it("includes control utilities without preflight", () => {
 		expect(css).toContain(".h-9");
+		expect(css).toContain(".min-h-\\[64px\\]");
+		expect(css).toContain(".min-h-\\[96px\\]");
+		expect(css).toContain(".h-1\\.5");
+		expect(css).toContain("aria-invalid\\:border-basalt-destructive");
 		expect(css).toContain(".bg-basalt-primary");
 		expect(css).toContain("--basalt-primary");
 		expect(css).not.toContain("img, svg, video, canvas");
