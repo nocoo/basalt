@@ -317,8 +317,17 @@ const SWITCH_IDS = [
 	"switch-on-state",
 	"switch-disabled",
 	"switch-sizes",
+	"switch-group-and-legend",
+	"switch-controlled-and-error",
 ] as const;
-const SWITCH_TITLES = ["Off State", "On State", "Disabled", "Sizes"] as const;
+const SWITCH_TITLES = [
+	"Off State",
+	"On State",
+	"Disabled",
+	"Sizes",
+	"Group and legend",
+	"Controlled and error",
+] as const;
 
 const switchRenders = import.meta.glob("./examples/switch/*.tsx", { eager: true });
 const switchSources = import.meta.glob("./examples/switch/*.tsx", {
@@ -1650,9 +1659,9 @@ describe("source-backed radio scenarios", () => {
 });
 
 describe("source-backed switch scenarios", () => {
-	it("loads four switch scenarios from the same glob modules", () => {
-		expect(Object.keys(switchRenders)).toHaveLength(4);
-		expect(Object.keys(switchSources)).toHaveLength(4);
+	it("loads six switch scenarios from the same glob modules", () => {
+		expect(Object.keys(switchRenders)).toHaveLength(6);
+		expect(Object.keys(switchSources)).toHaveLength(6);
 		const loaded = loadModuleScenarios({
 			slug: "switch",
 			metas: SWITCH_TITLES.map((title, index) => ({
@@ -1729,9 +1738,14 @@ describe("source-backed switch scenarios", () => {
 			expect(scenario.code).toContain("export default");
 			expect(scenario.code).toContain("@nocoo/basalt/components/switch");
 			expect(scenario.code).toContain("import { Switch }");
-			expect(scenario.code).not.toContain("useState");
-			expect(scenario.code).not.toContain("Label");
-			expect(scenario.code).not.toContain("Field");
+			if (
+				scenario.id !== "switch-group-and-legend" &&
+				scenario.id !== "switch-controlled-and-error"
+			) {
+				expect(scenario.code).not.toContain("useState");
+				expect(scenario.code).not.toContain("Label");
+				expect(scenario.code).not.toContain("Field");
+			}
 		}
 		expect(SWITCH_EXAMPLES[0]?.code).toContain('aria-label="Off"');
 		expect(SWITCH_EXAMPLES[0]?.code).not.toContain("defaultChecked");
@@ -1748,6 +1762,12 @@ describe("source-backed switch scenarios", () => {
 		expect(SWITCH_EXAMPLES[3]?.code).toContain('aria-label="Small"');
 		expect(SWITCH_EXAMPLES[3]?.code).toContain('aria-label="Default size"');
 		expect(SWITCH_EXAMPLES[3]?.code).toContain("defaultChecked");
+		expect(SWITCH_EXAMPLES[4]?.code).toContain("Switch.Group");
+		expect(SWITCH_EXAMPLES[4]?.code).toContain("Switch.Legend");
+		expect(SWITCH_EXAMPLES[4]?.code).toContain("Switch.Item");
+		expect(SWITCH_EXAMPLES[5]?.code).toContain("useState");
+		expect(SWITCH_EXAMPLES[5]?.code).toContain("onValueChange");
+		expect(SWITCH_EXAMPLES[5]?.code).toContain('error="Turn on at least two"');
 	});
 });
 

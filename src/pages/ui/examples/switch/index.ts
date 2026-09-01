@@ -5,6 +5,8 @@ const SWITCH_SCENARIO_META = [
 	{ key: "on-state", title: "On State" },
 	{ key: "disabled", title: "Disabled" },
 	{ key: "sizes", title: "Sizes" },
+	{ key: "group-and-legend", title: "Group and legend" },
+	{ key: "controlled-and-error", title: "Controlled and error" },
 ] as const;
 
 export const SWITCH_EXAMPLES = loadModuleScenarios({

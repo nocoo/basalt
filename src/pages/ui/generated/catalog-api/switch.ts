@@ -19,4 +19,62 @@ export const API = [
 			},
 		],
 	},
+	{
+		name: "Switch.Group",
+		props: [
+			{
+				name: "value",
+				type: "string[]",
+				required: false,
+				description: "The controlled selected values.",
+			},
+			{
+				name: "defaultValue",
+				type: "string[]",
+				required: false,
+				description: "The initially selected values.",
+			},
+			{
+				name: "onValueChange",
+				type: "(value: string[]) => void",
+				required: false,
+				description: "Called when the selected values change.",
+			},
+			{
+				name: "error",
+				type: "React.ReactNode",
+				required: false,
+				description: "Marks the group invalid and shows alert copy.",
+			},
+			{
+				name: "disabled",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Disable every item in the group.",
+			},
+		],
+	},
+	{
+		name: "Switch.Legend",
+		props: [],
+	},
+	{
+		name: "Switch.Item",
+		props: [
+			{
+				name: "size",
+				type: '"default" | "sm"',
+				required: false,
+				default: "default",
+				description: "The visual size of the switch.",
+			},
+			{
+				name: "value",
+				type: "string",
+				required: true,
+				description: "The value stored in the group when this item is on.",
+			},
+		],
+	},
 ];

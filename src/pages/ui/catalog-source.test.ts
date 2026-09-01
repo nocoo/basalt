@@ -295,6 +295,12 @@ describe("catalog source contract", () => {
 		);
 		expect(forms.switch?.docs.api).toEqual(CATALOG_API.switch);
 		expect(CATALOG_API.switch?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
+		expect(CATALOG_API.switch?.map((surface) => surface.name)).toEqual([
+			"Switch",
+			"Switch.Group",
+			"Switch.Legend",
+			"Switch.Item",
+		]);
 		expect(implementationFileFor(entry("select"))).toBe(
 			"packages/basalt/src/components/select.tsx",
 		);
@@ -417,8 +423,13 @@ describe("catalog source contract", () => {
 			"Radio.Group",
 			"Radio.Legend",
 		]);
-		expect(forms.switch?.docs.api).toHaveLength(1);
-		expect(forms.switch?.docs.api.map((surface) => surface.name)).toEqual(["Switch"]);
+		expect(forms.switch?.docs.api).toHaveLength(4);
+		expect(forms.switch?.docs.api.map((surface) => surface.name)).toEqual([
+			"Switch",
+			"Switch.Group",
+			"Switch.Legend",
+			"Switch.Item",
+		]);
 		expect(forms.select?.docs.api).toHaveLength(6);
 		expect(forms.select?.docs.api.map((surface) => surface.name)).toEqual([
 			"Select",

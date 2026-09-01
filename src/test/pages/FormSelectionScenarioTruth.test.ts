@@ -123,6 +123,8 @@ describe("form selection scenario truth", () => {
 			"switch-on-state",
 			"switch-disabled",
 			"switch-sizes",
+			"switch-group-and-legend",
+			"switch-controlled-and-error",
 		]);
 		expect(UI_EXAMPLES.select).toBe(SELECT_EXAMPLES);
 		expect(UI_EXAMPLES.select?.map((item) => item.id)).toEqual([

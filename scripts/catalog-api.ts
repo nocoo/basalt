@@ -250,6 +250,25 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "Switch",
 	},
 	{
+		slug: "switch",
+		sourceFile: "packages/basalt/src/components/switch.tsx",
+		propsType: "SwitchGroupProps",
+		surface: "Switch.Group",
+	},
+	{
+		slug: "switch",
+		sourceFile: "packages/basalt/src/components/switch.tsx",
+		propsType: "SwitchLegendProps",
+		surface: "Switch.Legend",
+		allowEmpty: true,
+	},
+	{
+		slug: "switch",
+		sourceFile: "packages/basalt/src/components/switch.tsx",
+		propsType: "SwitchItemProps",
+		surface: "Switch.Item",
+	},
+	{
 		slug: "select",
 		sourceFile: "packages/basalt/src/components/select.tsx",
 		propsType: "SelectProps",

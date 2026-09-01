@@ -174,18 +174,18 @@ export default catalogContentFamily({
 	},
 	switch: {
 		docs: {
-			description: "A binary toggle.",
+			description: "A binary toggle with group, legend, size, and error.",
 			usage: usage(
 				"Switch",
 				"@nocoo/basalt/components/switch",
 				'<Switch aria-label="Notifications" />',
 			),
-			variants: ["checked", "unchecked"],
+			variants: ["checked", "unchecked", "sm", "default"],
 			api: switchApi,
 			provenance: provenanceFromLegacy({
-				repo: "zhe",
-				sha: "c31c239f01c9",
-				file: "components/ui/switch.tsx",
+				repo: "kumo",
+				sha: "1159868dfe32",
+				file: "packages/kumo/src/components/switch/switch.tsx",
 			}),
 		},
 		examples: SWITCH_EXAMPLES,

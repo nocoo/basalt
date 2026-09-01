@@ -2152,25 +2152,11 @@ describe("ui catalog", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		expect(CATALOG_DOCS.switch?.api).toEqual(CATALOG_API.switch);
-		expect(CATALOG_API.switch).toEqual([
-			{
-				name: "Switch",
-				props: [
-					{
-						name: "checked",
-						type: "boolean",
-						required: false,
-						description: "The controlled checked state of the switch.",
-					},
-					{
-						name: "size",
-						type: '"default" | "sm"',
-						required: false,
-						default: "default",
-						description: "The visual size of the switch.",
-					},
-				],
-			},
+		expect(CATALOG_API.switch?.map((surface) => surface.name)).toEqual([
+			"Switch",
+			"Switch.Group",
+			"Switch.Legend",
+			"Switch.Item",
 		]);
 		renderCatalog("/ui/switch");
 		const api = document.getElementById("api-reference");
@@ -2179,25 +2165,26 @@ describe("ui catalog", () => {
 		expect(document.querySelector('[data-toc-id="api-Switch"]')).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Switch", level: 3 })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "Switch props" })).toBeInTheDocument();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(2);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(9);
 		expect(api).toHaveTextContent("checked?");
 		expect(api).toHaveTextContent("size?");
 		expect(api).toHaveTextContent("boolean");
 		expect(api).toHaveTextContent('"default" | "sm"');
 		expect(api).toHaveTextContent("The controlled checked state of the switch.");
 		expect(api).toHaveTextContent("The visual size of the switch.");
-		expect(api).toHaveTextContent("—");
-		expect(api).toHaveTextContent("default");
+		expect(api).toHaveTextContent("Switch.Group");
 		expect(api).not.toHaveTextContent("defaultChecked");
 		expect(api).not.toHaveTextContent("onCheckedChange");
-		expect(api).not.toHaveTextContent("disabled?");
 		expect(api).not.toHaveTextContent("className");
 		expect(screen.getByRole("heading", { name: "Off State" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "On State" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Group and legend" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Controlled and error" })).toBeInTheDocument();
 		expect(document.querySelector('[data-hero-scenario="switch-off-state"]')).toBeTruthy();
 		expect(document.querySelector('[data-scenario="switch-sizes"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="switch-group-and-legend"]')).toBeTruthy();
 		await act(async () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
@@ -2211,12 +2198,12 @@ describe("ui catalog", () => {
 		);
 		expect(markdown).not.toContain("- defaultChecked (");
 		expect(markdown).not.toContain("- className (");
-		expect(markdown).not.toContain("- disabled (");
-		expect(UI_EXAMPLES.switch).toHaveLength(4);
+		expect(UI_EXAMPLES.switch).toHaveLength(6);
 		for (const scenario of UI_EXAMPLES.switch ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
+		expect(markdown).not.toContain("github.com/nocoo/kumo");
 	});
 
 	it("does not keep a handwritten switch prop inventory", () => {
@@ -2227,12 +2214,12 @@ describe("ui catalog", () => {
 		expect(family).toContain("api: switchApi");
 		expect(family).not.toContain('name: "checked"');
 		expect(family).not.toContain('name: "size"');
-		expect(family).toContain('description: "A binary toggle."');
+		expect(family).toContain('description: "A binary toggle with group, legend, size, and error."');
 		expect(family).toContain('<Switch aria-label="Notifications" />');
-		expect(family).toContain('variants: ["checked", "unchecked"]');
-		expect(family).toContain('repo: "zhe"');
-		expect(family).toContain('sha: "c31c239f01c9"');
-		expect(family).toContain('file: "components/ui/switch.tsx"');
+		expect(family).toContain('variants: ["checked", "unchecked", "sm", "default"]');
+		expect(family).toContain('repo: "kumo"');
+		expect(family).toContain('sha: "1159868dfe32"');
+		expect(family).toContain('file: "packages/kumo/src/components/switch/switch.tsx"');
 	});
 
 	it("sources select API rows from generated catalog data", async () => {
@@ -2484,7 +2471,10 @@ describe("ui catalog", () => {
 				"Controlled and error",
 			],
 		],
-		["switch", ["Off State", "On State", "Disabled", "Sizes"]],
+		[
+			"switch",
+			["Off State", "On State", "Disabled", "Sizes", "Group and legend", "Controlled and error"],
+		],
 		["input", ["With Label and Description", "With Error (String)", "Disabled", "Input Types"]],
 		["loader", ["Default Size", "Custom Size"]],
 		["empty", ["Basic", "With icon"]],
@@ -3764,7 +3754,7 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(UI_EXAMPLES.switch).toHaveLength(4);
+		expect(UI_EXAMPLES.switch).toHaveLength(6);
 		for (const scenario of UI_EXAMPLES.switch ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
@@ -3775,7 +3765,8 @@ describe("ui catalog", () => {
 		expect(markdown).toContain(
 			'- size ("default" | "sm", optional, default default): The visual size of the switch.',
 		);
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
+		expect(markdown).not.toContain("github.com/nocoo/kumo");
 		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
 		expect(CATALOG_DOCS.switch?.api).toEqual(CATALOG_API.switch);
 		expect(UI_EXAMPLES.radio).toHaveLength(5);
@@ -3869,7 +3860,7 @@ describe("ui catalog", () => {
 		expect(markdown).toContain('className="w-48"');
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
 		expect(CATALOG_DOCS.switch?.api).toEqual(CATALOG_API.switch);
-		expect(UI_EXAMPLES.switch).toHaveLength(4);
+		expect(UI_EXAMPLES.switch).toHaveLength(6);
 	});
 
 	it("renders extra home tiles from the first catalog scenario", () => {

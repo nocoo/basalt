@@ -1,9 +1,19 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { Switch, type SwitchProps } from "./switch";
+import {
+	nextSwitchGroupValue,
+	Switch,
+	type SwitchGroupProps,
+	type SwitchItemProps,
+	type SwitchLegendProps,
+	type SwitchProps,
+} from "./switch";
 
 function acceptSwitchProps(_props: SwitchProps) {}
+function acceptSwitchGroupProps(_props: SwitchGroupProps) {}
+function acceptSwitchLegendProps(_props: SwitchLegendProps) {}
+function acceptSwitchItemProps(_props: SwitchItemProps) {}
 
 describe("Switch", () => {
 	it("renders an enabled switch", () => {
@@ -93,6 +103,36 @@ describe("Switch", () => {
 		fireEvent.click(root);
 		expect(root).toBeChecked();
 		expect(onCheckedChange).toHaveBeenCalledWith(false);
+	});
+
+	it("toggles grouped values with legend, error, and controlled updates", () => {
+		expect(nextSwitchGroupValue(["alpha"], "beta", true)).toEqual(["alpha", "beta"]);
+		expect(nextSwitchGroupValue(["alpha", "beta"], "beta", false)).toEqual(["alpha"]);
+		const onValueChange = vi.fn();
+		render(
+			<Switch.Group value={["alpha"]} onValueChange={onValueChange} error="Turn on at least two">
+				<Switch.Legend>Alerts</Switch.Legend>
+				<Switch.Item value="alpha">Alpha</Switch.Item>
+				<Switch.Item value="beta">Beta</Switch.Item>
+			</Switch.Group>,
+		);
+		expect(screen.getByRole("group", { name: "Alerts" }).tagName).toBe("FIELDSET");
+		expect(screen.getByRole("alert")).toHaveTextContent("Turn on at least two");
+		expect(screen.getByRole("switch", { name: "Alpha" })).toBeChecked();
+		expect(screen.getByRole("switch", { name: "Beta" })).not.toBeChecked();
+		fireEvent.click(screen.getByRole("switch", { name: "Beta" }));
+		expect(onValueChange).toHaveBeenCalledWith(["alpha", "beta"]);
+		expect(screen.getByRole("switch", { name: "Beta" })).not.toBeChecked();
+	});
+
+	it("accepts group, legend, and item props and rejects illegal values", () => {
+		acceptSwitchGroupProps({ value: ["a"], error: "Required", disabled: true });
+		acceptSwitchLegendProps({ children: "Alerts" });
+		acceptSwitchItemProps({ value: "a" });
+		// @ts-expect-error item value is required
+		acceptSwitchItemProps({});
+		// @ts-expect-error item cannot take checked
+		acceptSwitchItemProps({ value: "a", checked: true });
 	});
 
 	it("keeps default and compact root and thumb sizes", () => {

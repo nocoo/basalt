@@ -213,6 +213,24 @@ describe("forms catalog content family", () => {
 			ref: "1159868dfe32",
 			file: "packages/kumo/src/components/radio/radio.tsx",
 		});
+		expect(forms.switch?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "switch-off-state", title: "Off State" },
+			{ id: "switch-on-state", title: "On State" },
+			{ id: "switch-disabled", title: "Disabled" },
+			{ id: "switch-sizes", title: "Sizes" },
+			{ id: "switch-group-and-legend", title: "Group and legend" },
+			{ id: "switch-controlled-and-error", title: "Controlled and error" },
+		]);
+		expect(forms.switch?.docs.description).toBe(
+			"A binary toggle with group, legend, size, and error.",
+		);
+		expect(forms.switch?.docs.variants).toEqual(["checked", "unchecked", "sm", "default"]);
+		expect(forms.switch?.docs.provenance).toEqual({
+			owner: "cloudflare",
+			repo: "kumo",
+			ref: "1159868dfe32",
+			file: "packages/kumo/src/components/switch/switch.tsx",
+		});
 		expect(forms.combobox?.examples).toHaveLength(2);
 		expect(forms.combobox?.examples.map((example) => example.id)).toEqual([
 			"combobox-searchable-select-with-placeholder",

@@ -333,6 +333,25 @@ describe("catalog API generator contract", () => {
 				surface: "Switch",
 			},
 			{
+				slug: "switch",
+				sourceFile: "packages/basalt/src/components/switch.tsx",
+				propsType: "SwitchGroupProps",
+				surface: "Switch.Group",
+			},
+			{
+				slug: "switch",
+				sourceFile: "packages/basalt/src/components/switch.tsx",
+				propsType: "SwitchLegendProps",
+				surface: "Switch.Legend",
+				allowEmpty: true,
+			},
+			{
+				slug: "switch",
+				sourceFile: "packages/basalt/src/components/switch.tsx",
+				propsType: "SwitchItemProps",
+				surface: "Switch.Item",
+			},
+			{
 				slug: "select",
 				sourceFile: "packages/basalt/src/components/select.tsx",
 				propsType: "SelectProps",
@@ -407,7 +426,7 @@ describe("catalog API generator contract", () => {
 				surface: "TablePager",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(47);
+		expect(CATALOG_API_TARGETS).toHaveLength(50);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -421,6 +440,7 @@ describe("catalog API generator contract", () => {
 			"InputGroup.Suffix",
 			"Checkbox.Legend",
 			"Radio.Legend",
+			"Switch.Legend",
 			"SelectTrigger",
 			"SelectGroup",
 		]);
@@ -1393,7 +1413,7 @@ export interface WidgetProps {
 			"sensitive-input": ["SensitiveInput"],
 			checkbox: ["Checkbox", "Checkbox.Group", "Checkbox.Legend", "Checkbox.Item"],
 			radio: ["Radio", "Radio.Group", "Radio.Legend"],
-			switch: ["Switch"],
+			switch: ["Switch", "Switch.Group", "Switch.Legend", "Switch.Item"],
 			"segment-control": ["SegmentControl"],
 			"page-header": ["PageHeader"],
 			"stat-strip": ["StatStrip"],
@@ -1732,69 +1752,39 @@ export interface WidgetProps {
 			targets: CATALOG_API_TARGETS,
 		});
 		expect(Object.keys(generated)).toHaveLength(25);
-		expect(generated.switch).toEqual([
-			{
-				name: "Switch",
-				props: [
-					{
-						name: "checked",
-						type: "boolean",
-						required: false,
-						description: "The controlled checked state of the switch.",
-					},
-					{
-						name: "size",
-						type: '"default" | "sm"',
-						required: false,
-						default: "default",
-						description: "The visual size of the switch.",
-					},
-				],
-			},
+		expect(generated.switch?.map((surface) => surface.name)).toEqual([
+			"Switch",
+			"Switch.Group",
+			"Switch.Legend",
+			"Switch.Item",
 		]);
+		expect(generated.switch?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
+		expect(generated.switch?.[1]?.props.map((prop) => prop.name)).toEqual([
+			"value",
+			"defaultValue",
+			"onValueChange",
+			"error",
+			"disabled",
+		]);
+		expect(generated.switch?.[2]?.props).toEqual([]);
+		expect(generated.switch?.[3]?.props.map((prop) => prop.name)).toEqual(["size", "value"]);
 		expect(generated.switch?.[0]?.props[0]).not.toHaveProperty("default");
-		expect(generated.switch).toHaveLength(1);
+		expect(generated.switch).toHaveLength(4);
 		expect(generated.switch?.[0]?.props).toHaveLength(2);
-		expect(
-			generated.switch?.some((surface) =>
-				surface.props.some((prop) => prop.name === "defaultChecked"),
-			),
-		).toBe(false);
-		expect(
-			generated.switch?.some((surface) =>
-				surface.props.some((prop) => prop.name === "onCheckedChange"),
-			),
-		).toBe(false);
-		expect(
-			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "disabled")),
-		).toBe(false);
-		expect(
-			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "required")),
-		).toBe(false);
-		expect(
-			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "name")),
-		).toBe(false);
-		expect(
-			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "value")),
-		).toBe(false);
-		expect(
-			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "form")),
-		).toBe(false);
-		expect(
-			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "asChild")),
-		).toBe(false);
-		expect(
-			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "className")),
-		).toBe(false);
-		expect(
-			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "children")),
-		).toBe(false);
-		expect(
-			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "ref")),
-		).toBe(false);
-		expect(
-			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "aria-label")),
-		).toBe(false);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "defaultChecked")).toBe(false);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "onCheckedChange")).toBe(
+			false,
+		);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "disabled")).toBe(false);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "required")).toBe(false);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "name")).toBe(false);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "value")).toBe(false);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "form")).toBe(false);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "asChild")).toBe(false);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "className")).toBe(false);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "ref")).toBe(false);
+		expect(generated.switch?.[0]?.props.some((prop) => prop.name === "aria-label")).toBe(false);
 		expect(generated.button?.[0]?.name).toBe("Button");
 		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value", "size"]);
 		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
@@ -3044,7 +3034,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"4af291cde5220ef32b5b555c294eefc1860629f8a70cf86b791f0c9676931d33",
+			"c01f6cdee6a6dcd175c137c718ed901c0e6c6dd6c69ced27e1531683f3c6203c",
 		);
 	}, 20_000);
 
