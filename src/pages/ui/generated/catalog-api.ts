@@ -13,6 +13,7 @@ import { API as linkApi } from "./catalog-api/link";
 import { API as linkButtonApi } from "./catalog-api/link-button";
 import { API as radioApi } from "./catalog-api/radio";
 import { API as scrollAreaApi } from "./catalog-api/scroll-area";
+import { API as segmentControlApi } from "./catalog-api/segment-control";
 import { API as selectApi } from "./catalog-api/select";
 import { API as sensitiveInputApi } from "./catalog-api/sensitive-input";
 import { API as separatorApi } from "./catalog-api/separator";
@@ -35,6 +36,7 @@ export const CATALOG_API = {
 	"link-button": linkButtonApi,
 	radio: radioApi,
 	"scroll-area": scrollAreaApi,
+	"segment-control": segmentControlApi,
 	select: selectApi,
 	"sensitive-input": sensitiveInputApi,
 	separator: separatorApi,

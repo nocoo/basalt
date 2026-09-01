@@ -1,6 +1,6 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
-import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
+import { SegmentControl } from "@nocoo/basalt/components/segment-control";
 import { Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
@@ -18,20 +18,17 @@ import { readCatalogIndex } from "./catalog-index-loader";
 import { HomeGrid } from "./HomeGrid";
 
 const CATEGORY_OPTIONS: ReadonlyArray<{ value: CatalogIndexCategory; label: string }> = [
-	{ value: "all", label: "All" },
 	{ value: "component", label: "Components" },
 	{ value: "chart", label: "Charts" },
 	{ value: "block", label: "Blocks" },
 ];
 
 const RELEASE_OPTIONS: ReadonlyArray<{ value: CatalogIndexRelease; label: string }> = [
-	{ value: "all", label: "All" },
 	{ value: "stable", label: "Stable" },
 	{ value: "catalog", label: "Catalog" },
 ];
 
 const STATUS_OPTIONS: ReadonlyArray<{ value: CatalogIndexStatus; label: string }> = [
-	{ value: "all", label: "All" },
 	{ value: "ready", label: "Ready" },
 	{ value: "planned", label: "Planned" },
 ];
@@ -39,43 +36,6 @@ const STATUS_OPTIONS: ReadonlyArray<{ value: CatalogIndexStatus; label: string }
 function queryIsDefault(query: CatalogIndexQuery): boolean {
 	return (
 		query.q === "" && query.category === "all" && query.release === "all" && query.status === "all"
-	);
-}
-
-interface FilterToggleProps<T extends string> {
-	id: string;
-	label: string;
-	value: T;
-	options: ReadonlyArray<{ value: T; label: string }>;
-	onValueChange: (value: T) => void;
-}
-
-function FilterToggle<T extends string>({
-	id,
-	label,
-	value,
-	options,
-	onValueChange,
-}: FilterToggleProps<T>) {
-	return (
-		<div className="min-w-0 space-y-2">
-			<p id={id} className="text-xs font-medium text-muted-foreground">
-				{label}
-			</p>
-			<ToggleGroup
-				type="single"
-				value={value}
-				onValueChange={(nextValue) => onValueChange((nextValue || "all") as T)}
-				aria-labelledby={id}
-				className="h-auto min-h-8 max-w-full flex-wrap"
-			>
-				{options.map((option) => (
-					<ToggleGroupItem key={option.value} value={option.value}>
-						{option.label}
-					</ToggleGroupItem>
-				))}
-			</ToggleGroup>
-		</div>
 	);
 }
 
@@ -153,26 +113,28 @@ export default function UiIndexPage() {
 							/>
 						</InputGroup>
 					</div>
-					<FilterToggle
-						id="catalog-category-filter"
-						label="Category"
+					<SegmentControl
+						legend="Category"
 						value={query.category}
 						options={CATEGORY_OPTIONS}
-						onValueChange={(category) => updateQuery({ category })}
+						allOption={{ value: "all" }}
+						onValueChange={(category) =>
+							updateQuery({ category: category as CatalogIndexCategory })
+						}
 					/>
-					<FilterToggle
-						id="catalog-release-filter"
-						label="Release"
+					<SegmentControl
+						legend="Release"
 						value={query.release}
 						options={RELEASE_OPTIONS}
-						onValueChange={(release) => updateQuery({ release })}
+						allOption={{ value: "all" }}
+						onValueChange={(release) => updateQuery({ release: release as CatalogIndexRelease })}
 					/>
-					<FilterToggle
-						id="catalog-status-filter"
-						label="Page status"
+					<SegmentControl
+						legend="Page status"
 						value={query.status}
 						options={STATUS_OPTIONS}
-						onValueChange={(status) => updateQuery({ status })}
+						allOption={{ value: "all" }}
+						onValueChange={(status) => updateQuery({ status: status as CatalogIndexStatus })}
 					/>
 				</div>
 				<div className="mt-5 flex min-h-8 flex-wrap items-center justify-between gap-3">

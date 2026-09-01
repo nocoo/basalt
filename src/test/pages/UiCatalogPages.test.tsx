@@ -77,22 +77,22 @@ describe("ui catalog", () => {
 
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(97);
-		expect(new Set(slugs).size).toBe(97);
+		expect(slugs).toHaveLength(98);
+		expect(new Set(slugs).size).toBe(98);
 	});
 
 	it("renders the categorized index with orthogonal release and page states", () => {
 		renderCatalog("/ui");
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Component library" })).toBeInTheDocument();
-		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("85 / 88 ready");
+		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("86 / 89 ready");
 
 		for (const [index, group] of CATALOG_INDEX_GROUPS.entries()) {
 			const section = screen.getByRole("region", { name: group.label });
 			expect(within(section).getByText(`${group.items.length} items`)).toBeInTheDocument();
-			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([61, 24, 3][index]);
+			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([62, 24, 3][index]);
 		}
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(88);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(89);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
 
@@ -171,7 +171,7 @@ describe("ui catalog", () => {
 		);
 	});
 
-	it("shows a planned chart without a link and clears an active toggle to All", () => {
+	it("shows a planned chart without a link and switches explicitly to All", () => {
 		renderCatalog("/ui?category=chart&status=planned");
 		expect(document.querySelector("[data-result-summary]")).toHaveTextContent(/^1 result$/);
 		const mapsCard = document.querySelector('[data-catalog-card="maps"]');
@@ -179,12 +179,12 @@ describe("ui catalog", () => {
 		expect(mapsCard?.querySelector('a[href="/ui/maps"]')).toBeNull();
 		expect(screen.queryByRole("region", { name: "Components" })).not.toBeInTheDocument();
 
-		fireEvent.click(screen.getByRole("radio", { name: "Charts" }));
-		expect(
-			within(screen.getByRole("radiogroup", { name: "Category" })).getByRole("radio", {
-				name: "All",
-			}),
-		).toHaveAttribute("aria-checked", "true");
+		const categoryGroup = screen.getByRole("radiogroup", { name: "Category" });
+		fireEvent.click(within(categoryGroup).getByRole("radio", { name: "All" }));
+		expect(within(categoryGroup).getByRole("radio", { name: "All" })).toHaveAttribute(
+			"aria-checked",
+			"true",
+		);
 		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("3 results");
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
@@ -195,7 +195,7 @@ describe("ui catalog", () => {
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
 		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("85 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("86 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",
@@ -218,8 +218,8 @@ describe("ui catalog", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: "Reset filters" }));
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveFocus();
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("88 results");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(88);
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("89 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(89);
 		expect(screen.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
@@ -819,6 +819,75 @@ describe("ui catalog", () => {
 		expect(markdown).not.toContain("- onScroll (");
 		expect(markdown).not.toContain("- tabIndex (");
 		expect(markdown).not.toContain("- aria-label (");
+	});
+
+	it("keeps SegmentControl docs, generated API, source examples, and Copy page aligned", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		const docs = CATALOG_DOCS["segment-control"];
+		expect(docs?.api).toBe(CATALOG_API["segment-control"]);
+		expect(docs).toMatchObject({
+			description:
+				"A controlled, labelled segmented filter with an optional All choice and horizontal overflow.",
+			variants: ["all", "overflow", "disabled"],
+		});
+		expect(CATALOG_API["segment-control"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"value",
+			"onValueChange",
+			"legend",
+			"options",
+			"allOption",
+			"disabled",
+		]);
+		expect(UI_EXAMPLES["segment-control"]?.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "segment-control-controlled-status", title: "Controlled status filter" },
+			{ id: "segment-control-overflow-disabled", title: "Overflow and disabled" },
+		]);
+
+		renderCatalog("/ui/segment-control");
+		const api = document.getElementById("api-reference");
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(6);
+		const statusHero = document.querySelector(
+			'[data-hero-scenario="segment-control-controlled-status"]',
+		);
+		expect(statusHero).toBeTruthy();
+		if (!statusHero) {
+			throw new Error("missing SegmentControl hero");
+		}
+		const statusGroup = within(statusHero as HTMLElement).getByRole("radiogroup", {
+			name: "Status",
+		});
+		fireEvent.click(within(statusGroup).getByRole("radio", { name: "Ready" }));
+		expect(within(statusGroup).getByRole("radio", { name: "Ready" })).toHaveAttribute(
+			"aria-checked",
+			"true",
+		);
+		expect(screen.getByRole("radio", { name: "90 days" })).toBeDisabled();
+		const overflowScenario = document.querySelector(
+			'[data-scenario="segment-control-overflow-disabled"]',
+		);
+		expect(
+			overflowScenario?.querySelector('[data-slot="segment-control-viewport"]')?.className,
+		).toContain("overflow-x-auto");
+		for (const scenario of UI_EXAMPLES["segment-control"] ?? []) {
+			expect(scenario.code).toContain("@nocoo/basalt/components/segment-control");
+			expect(document.querySelector(`[data-scenario="${scenario.id}"]`)).toBeTruthy();
+		}
+
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### SegmentControl");
+		expect(markdown).toContain(
+			"- value (string, required, default —): The currently selected value.",
+		);
+		expect(markdown).toContain("- allOption (SegmentControlAllOption, optional, default —)");
+		for (const scenario of UI_EXAMPLES["segment-control"] ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).not.toContain("- defaultValue (");
+		expect(markdown).not.toContain("- children (");
 	});
 
 	it("sources link API rows from generated catalog data", async () => {

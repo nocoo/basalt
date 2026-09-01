@@ -19,7 +19,7 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 } as const;
 
 describe("data-layout catalog content family", () => {
-	it("owns exactly five migrated slugs and eighty-five generated owners", () => {
+	it("owns exactly five migrated slugs and eighty-six generated owners", () => {
 		expect(Object.keys(dataLayout)).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS));
 		expect(Object.keys(dataLayout)).toHaveLength(5);
 		expect(
@@ -28,7 +28,7 @@ describe("data-layout catalog content family", () => {
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(85);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(86);
 	});
 
 	it("keeps the six final winner scenarios in their audited order", () => {

@@ -54,6 +54,7 @@ export {
 	PopoverTrigger,
 } from "./components/popover";
 export { ScrollArea } from "./components/scroll-area";
+export { SegmentControl } from "./components/segment-control";
 export { Separator } from "./components/separator";
 export {
 	Sheet,

@@ -27,6 +27,7 @@ export const CATALOG_PAGE_STATUS = {
 	slider: "ready",
 	toggle: "ready",
 	"toggle-group": "ready",
+	"segment-control": "ready",
 	badge: "ready",
 	banner: "ready",
 	empty: "ready",

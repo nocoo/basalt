@@ -73,6 +73,13 @@ export const CATALOG: CatalogEntry[] = [
 	{ slug: "slider", name: "Slider", kind: "catalog", category: "component" },
 	{ slug: "toggle", name: "Toggle", kind: "catalog", category: "component" },
 	{ slug: "toggle-group", name: "ToggleGroup", kind: "catalog", category: "component" },
+	{
+		slug: "segment-control",
+		name: "SegmentControl",
+		kind: "stable",
+		category: "component",
+		navName: "Segment Control",
+	},
 	{ slug: "badge", name: "Badge", kind: "stable", category: "component" },
 	{ slug: "banner", name: "Banner", kind: "catalog", category: "component" },
 	{ slug: "empty", name: "Empty", kind: "catalog", category: "component" },

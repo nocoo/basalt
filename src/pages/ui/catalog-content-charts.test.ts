@@ -29,7 +29,7 @@ const CHART_DESCRIPTIONS = {
 } as const;
 
 describe("charts catalog content family", () => {
-	it("owns exactly twenty-three slugs and all eighty-five ready owners", () => {
+	it("owns exactly twenty-three slugs and all eighty-six ready owners", () => {
 		expect(Object.keys(charts)).toEqual(Object.keys(CHART_DESCRIPTIONS));
 		expect(Object.keys(charts)).toHaveLength(23);
 		expect(
@@ -38,7 +38,7 @@ describe("charts catalog content family", () => {
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(CHART_DESCRIPTIONS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(85);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(86);
 	});
 
 	it("keeps one audited Default scenario for every chart", () => {

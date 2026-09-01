@@ -255,6 +255,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "SelectItemProps",
 		surface: "SelectItem",
 	},
+	{
+		slug: "segment-control",
+		sourceFile: "packages/basalt/src/components/segment-control.tsx",
+		propsType: "SegmentControlProps",
+		surface: "SegmentControl",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

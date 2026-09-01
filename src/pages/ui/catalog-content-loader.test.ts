@@ -33,10 +33,10 @@ describe("catalog page content loader", () => {
 		expect(source).not.toMatch(/const\s+\w+Promise\s*=\s*loadCatalogContentFamily/);
 	});
 
-	it("uses the generated 85 ready / 12 planned status truth", () => {
+	it("uses the generated 86 ready / 12 planned status truth", () => {
 		const statuses = CATALOG.map((entry) => catalogPageStatus(entry.slug));
-		expect(statuses).toHaveLength(97);
-		expect(statuses.filter((status) => status === "ready")).toHaveLength(85);
+		expect(statuses).toHaveLength(98);
+		expect(statuses.filter((status) => status === "ready")).toHaveLength(86);
 		expect(statuses.filter((status) => status === "planned")).toHaveLength(12);
 	});
 
@@ -81,6 +81,17 @@ describe("catalog page content loader", () => {
 			"Compose an input with addons, an inline suffix, and status icons.",
 		);
 		expect(content?.examples[0]?.id).toBe("input-group-inline-suffix");
+		expect(loadFamily).toHaveBeenCalledWith("forms");
+	});
+
+	it("loads the SegmentControl owner from forms", async () => {
+		const { loadCatalogPageContent } = await importLoader();
+		const content = await loadCatalogPageContent("segment-control");
+		expect(content?.docs.api[0]?.name).toBe("SegmentControl");
+		expect(content?.examples.map((example) => example.id)).toEqual([
+			"segment-control-controlled-status",
+			"segment-control-overflow-disabled",
+		]);
 		expect(loadFamily).toHaveBeenCalledWith("forms");
 	});
 

@@ -6,6 +6,7 @@ import { INPUT_EXAMPLES } from "./examples/input";
 import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "./examples/input-group";
 import { RADIO_EXAMPLES } from "./examples/radio";
+import { SEGMENT_CONTROL_EXAMPLES } from "./examples/segment-control";
 import { SELECT_EXAMPLES } from "./examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SWITCH_EXAMPLES } from "./examples/switch";
@@ -15,6 +16,7 @@ import { API as inputApi } from "./generated/catalog-api/input";
 import { API as inputAreaApi } from "./generated/catalog-api/input-area";
 import { API as inputGroupApi } from "./generated/catalog-api/input-group";
 import { API as radioApi } from "./generated/catalog-api/radio";
+import { API as segmentControlApi } from "./generated/catalog-api/segment-control";
 import { API as selectApi } from "./generated/catalog-api/select";
 import { API as sensitiveInputApi } from "./generated/catalog-api/sensitive-input";
 import { API as switchApi } from "./generated/catalog-api/switch";
@@ -36,6 +38,7 @@ const FORMS_SLUGS = [
 	"slider",
 	"toggle",
 	"toggle-group",
+	"segment-control",
 ] as const;
 
 const SOURCE_BACKED = {
@@ -51,9 +54,9 @@ const SOURCE_BACKED = {
 } as const;
 
 describe("forms catalog content family", () => {
-	it("owns exactly fifteen migrated slugs and eighty-five generated owners", () => {
+	it("owns exactly sixteen slugs and eighty-six generated owners", () => {
 		expect(Object.keys(forms)).toEqual([...FORMS_SLUGS]);
-		expect(Object.keys(forms)).toHaveLength(15);
+		expect(Object.keys(forms)).toHaveLength(16);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "forms")
@@ -63,7 +66,7 @@ describe("forms catalog content family", () => {
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "foundation"),
 		).toHaveLength(12);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(85);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(86);
 	});
 
 	it("keeps source-backed example owners and generated API shards by reference", () => {
@@ -85,6 +88,8 @@ describe("forms catalog content family", () => {
 		expect(forms.radio?.docs.api).toBe(radioApi);
 		expect(forms.switch?.docs.api).toBe(switchApi);
 		expect(forms.select?.docs.api).toBe(selectApi);
+		expect(forms["segment-control"]?.examples).toBe(SEGMENT_CONTROL_EXAMPLES);
+		expect(forms["segment-control"]?.docs.api).toBe(segmentControlApi);
 		for (const [slug, examples] of Object.entries(SOURCE_BACKED)) {
 			expect(forms[slug]?.examples.map((example) => example.id)).toEqual(
 				examples.map((example) => example.id),
@@ -163,6 +168,34 @@ describe("forms catalog content family", () => {
 		expect(forms["toggle-group"]?.docs.description).toBe(
 			"Segmented tabs for switching a compact set of modes.",
 		);
+		expect(forms["segment-control"]?.docs).toMatchObject({
+			description:
+				"A controlled, labelled segmented filter with an optional All choice and horizontal overflow.",
+			variants: ["all", "overflow", "disabled"],
+			provenance: {
+				owner: "nocoo",
+				repo: "basalt",
+				ref: "23046c3",
+				file: "src/pages/ui/UiIndexPage.tsx",
+			},
+			implementationSource: {
+				owner: "nocoo",
+				repo: "basalt",
+				ref: "main",
+				file: "packages/basalt/src/components/segment-control.tsx",
+			},
+		});
+		expect(forms["segment-control"]?.docs.usage).toContain(
+			'import { SegmentControl } from "@nocoo/basalt/components/segment-control";',
+		);
+		expect(forms["segment-control"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "segment-control-controlled-status", title: "Controlled status filter" },
+			{ id: "segment-control-overflow-disabled", title: "Overflow and disabled" },
+		]);
+		for (const example of forms["segment-control"]?.examples ?? []) {
+			expect(example.code).toContain("@nocoo/basalt/components/segment-control");
+			expect(example.render).toBeTypeOf("function");
+		}
 		for (const slug of FORMS_SLUGS) {
 			const content = forms[slug];
 			expect(content?.docs.description.length, slug).toBeGreaterThan(0);

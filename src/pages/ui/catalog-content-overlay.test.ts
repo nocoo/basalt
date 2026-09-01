@@ -18,7 +18,7 @@ const OVERLAY_SLUGS = [
 ] as const;
 
 describe("overlay catalog content family", () => {
-	it("owns exactly ten migrated slugs and eighty-five generated owners", () => {
+	it("owns exactly ten migrated slugs and eighty-six generated owners", () => {
 		expect(Object.keys(overlay)).toEqual([...OVERLAY_SLUGS]);
 		expect(Object.keys(overlay)).toHaveLength(10);
 		expect(
@@ -32,8 +32,8 @@ describe("overlay catalog content family", () => {
 		).toHaveLength(12);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "forms"),
-		).toHaveLength(15);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(85);
+		).toHaveLength(16);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(86);
 	});
 
 	it("keeps tooltip examples and generated API shard by reference", () => {

@@ -61,6 +61,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	radio: "forms",
 	sankey: "charts",
 	"scroll-area": "foundation",
+	"segment-control": "forms",
 	select: "forms",
 	"sensitive-input": "forms",
 	separator: "foundation",

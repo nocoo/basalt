@@ -338,8 +338,14 @@ describe("catalog API generator contract", () => {
 				propsType: "SelectItemProps",
 				surface: "SelectItem",
 			},
+			{
+				slug: "segment-control",
+				sourceFile: "packages/basalt/src/components/segment-control.tsx",
+				propsType: "SegmentControlProps",
+				surface: "SegmentControl",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(36);
+		expect(CATALOG_API_TARGETS).toHaveLength(37);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -364,6 +370,7 @@ describe("catalog API generator contract", () => {
 		expect(source).not.toMatch(/\bif\s*\([^)]*Switch|\bswitch\s*\([^)]*switch/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*Select|\bswitch\s*\([^)]*select/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*ScrollArea|\bswitch\s*\([^)]*scroll-area/);
+		expect(source).not.toMatch(/\bif\s*\([^)]*SegmentControl|\bswitch\s*\([^)]*segment-control/);
 	});
 
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
@@ -387,6 +394,7 @@ describe("catalog API generator contract", () => {
 			"checkbox",
 			"radio",
 			"switch",
+			"segment-control",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -1154,6 +1162,7 @@ export interface WidgetProps {
 			checkbox: ["Checkbox"],
 			radio: ["Radio"],
 			switch: ["Switch"],
+			"segment-control": ["SegmentControl"],
 			select: [
 				"Select",
 				"SelectTrigger",
@@ -1171,7 +1180,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(20);
+		expect(Object.keys(generated)).toHaveLength(21);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1272,7 +1281,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(20);
+		expect(Object.keys(generated)).toHaveLength(21);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1372,7 +1381,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(20);
+		expect(Object.keys(generated)).toHaveLength(21);
 		expect(generated.checkbox).toEqual([
 			{
 				name: "Checkbox",
@@ -1451,7 +1460,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(20);
+		expect(Object.keys(generated)).toHaveLength(21);
 		expect(generated.radio).toEqual([
 			{
 				name: "Radio",
@@ -1509,7 +1518,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(20);
+		expect(Object.keys(generated)).toHaveLength(21);
 		expect(generated.switch).toEqual([
 			{
 				name: "Switch",
@@ -1591,7 +1600,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(20);
+		expect(Object.keys(generated)).toHaveLength(21);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -1739,6 +1748,64 @@ export interface WidgetProps {
 			"InputGroup.Button",
 			"InputGroup.Suffix",
 		]);
+	}, 20_000);
+
+	it("extracts the controlled SegmentControl surface without inherited fieldset props", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated["segment-control"]).toEqual([
+			{
+				name: "SegmentControl",
+				props: [
+					{
+						name: "value",
+						type: "string",
+						required: true,
+						description: "The currently selected value.",
+					},
+					{
+						name: "onValueChange",
+						type: "(value: string) => void",
+						required: true,
+						description: "Called when the user selects a different segment.",
+					},
+					{
+						name: "legend",
+						type: "React.ReactNode",
+						required: true,
+						description: "The visible legend that names the control.",
+					},
+					{
+						name: "options",
+						type: "SegmentControlOption[]",
+						required: true,
+						description: "The selectable segments shown after the optional All segment.",
+					},
+					{
+						name: "allOption",
+						type: "SegmentControlAllOption",
+						required: false,
+						description: "Add a leading unfiltered segment, labelled All by default.",
+					},
+					{
+						name: "disabled",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Disable every segment.",
+					},
+				],
+			},
+		]);
+		expect(generated["segment-control"]?.[0]?.props.map((prop) => prop.name)).not.toContain(
+			"defaultValue",
+		);
+		expect(generated["segment-control"]?.[0]?.props.map((prop) => prop.name)).not.toContain(
+			"children",
+		);
 	}, 20_000);
 
 	it("aggregates multiple surfaces for the same slug in declaration order", () => {
@@ -2542,8 +2609,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(20);
-		expect(Object.keys(first)).toHaveLength(21);
+		expect(slugs).toHaveLength(21);
+		expect(Object.keys(first)).toHaveLength(22);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -2556,6 +2623,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "LayerCard.Loading"');
 		expect(joined).toContain('name: "LayerCard.Empty"');
 		expect(joined).toContain('name: "ScrollArea"');
+		expect(joined).toContain('name: "SegmentControl"');
 		expect(joined).toContain('name: "SensitiveInput"');
 		expect(joined).toContain('name: "Checkbox"');
 		expect(joined).toContain('name: "Radio"');
@@ -2573,7 +2641,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"63dca8ab90c9ec2a19273b38a4d9c0109eedc333797ccebe2c594ed0e9da2e8a",
+			"4d926c75d1d697c188d7eeb0a771733ec2be266b925bfd7d371e518c405d7700",
 		);
 	}, 20_000);
 
