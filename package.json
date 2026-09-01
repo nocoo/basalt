@@ -15,9 +15,10 @@
 		"lint:fix": "biome check --write .",
 		"format": "biome format --write .",
 		"preview": "vite preview",
-		"test": "vitest run --maxWorkers=4",
-		"test:coverage": "vitest run --coverage --maxWorkers=4",
-		"test:watch": "vitest",
+		"test": "vitest run --maxWorkers=4 --exclude scripts/consumer-browser.test.ts --exclude scripts/consumer-gate.browser.test.ts",
+		"test:coverage": "vitest run --coverage --maxWorkers=4 --exclude scripts/consumer-browser.test.ts --exclude scripts/consumer-gate.browser.test.ts",
+		"test:watch": "vitest --exclude scripts/consumer-browser.test.ts --exclude scripts/consumer-gate.browser.test.ts",
+		"test:browser": "vitest run scripts/consumer-browser.test.ts scripts/consumer-gate.browser.test.ts --maxWorkers=1",
 		"prepare": "husky",
 		"typecheck": "bun run catalog-api:check && bun run catalog-page-status:check && bun run catalog-content:check && tsc -p tsconfig.app.json --noEmit && tsc -p tsconfig.node.json --noEmit",
 		"catalog-api:generate": "bun scripts/catalog-api-cli.ts generate",
@@ -30,7 +31,7 @@
 		"package:prepublish": "bun run typecheck && bun run lint && bun run test:coverage && bun run --cwd packages/basalt build && bun run --cwd packages/basalt types:check && bun run --cwd packages/basalt pack:check && bun run --cwd packages/basalt publint && bun run consumer:tailwind && bun run consumer:standalone && bun run consumer:next && bun run consumer:heavy",
 		"consumer:standalone": "bun scripts/consumer-gate.ts",
 		"consumer:tailwind": "bun scripts/consumer-gate.ts tailwind",
-		"consumer:next": "bun scripts/consumer-gate.ts next",
+		"consumer:next": "bun run test:browser && bun scripts/consumer-gate.ts next",
 		"consumer:heavy": "bun scripts/consumer-gate.ts heavy"
 	},
 	"dependencies": {

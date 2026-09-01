@@ -3,13 +3,7 @@ import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync 
 import { tmpdir } from "node:os";
 import { basename, join, sep } from "node:path";
 import { describe, expect, it } from "vitest";
-import {
-	assertNoPageFaults,
-	attachPageFaults,
-	createBrowserProfileDir,
-	settleWithCleanup,
-	withChromiumPage,
-} from "./consumer-browser";
+import { settleWithCleanup } from "./consumer-browser";
 import {
 	assertExactVersion,
 	assertGranularResolution,
@@ -47,7 +41,7 @@ import {
 	TARBALL_SOURCE_GLOB,
 	tailwindCssEvidence,
 } from "./consumer-gate";
-import { allocatePort, listPidsMatching, processAlive, startHttpServer } from "./consumer-http";
+import { allocatePort, processAlive, startHttpServer } from "./consumer-http";
 
 const sourceCtx = { fromDir: "/consumer/src", consumerRoot: "/consumer" };
 
@@ -393,6 +387,17 @@ describe("next consumer gate helpers", () => {
 		const rootManifest = readFileSync("package.json", "utf8");
 		expect(rootManifest).toContain('"playwright": "1.62.1"');
 		expect(rootManifest).toContain("playwright:install");
+		const rootScripts = (JSON.parse(rootManifest) as { scripts: Record<string, string> }).scripts;
+		for (const scriptName of ["test", "test:coverage", "test:watch"] as const) {
+			expect(rootScripts[scriptName]).toContain("--exclude scripts/consumer-browser.test.ts");
+			expect(rootScripts[scriptName]).toContain("--exclude scripts/consumer-gate.browser.test.ts");
+		}
+		expect(rootScripts["test:browser"]).toContain("scripts/consumer-browser.test.ts");
+		expect(rootScripts["test:browser"]).toContain("scripts/consumer-gate.browser.test.ts");
+		expect(rootScripts["test:browser"]).toContain("--maxWorkers=1");
+		expect(rootScripts["consumer:next"]).toMatch(
+			/^bun run test:browser && bun scripts\/consumer-gate\.ts next$/,
+		);
 		const runner = readFileSync("scripts/consumer-gate.ts", "utf8");
 		expect(runner).toContain("nextStartLaunch");
 		expect(runner).toContain("proveNextHydration");
@@ -469,50 +474,6 @@ export function BasaltApp() { return <Button onClick={() => toast("x")}>Save</Bu
 		}
 	});
 
-	it("cleans server pid, port, profile, and temp when browser proof fails on that server", async () => {
-		const tempRoot = realpathSync(mkdtempSync(join(tmpdir(), "basalt-gate-c-fail-")));
-		const unique = basename(tempRoot);
-		const profileDir = createBrowserProfileDir();
-		const port = await allocatePort();
-		const url = `http://127.0.0.1:${port}/`;
-		const html = "<!doctype html><script>console.error('basalt-console-fail')</script>";
-		const started = await startHttpServer({
-			cwd: process.cwd(),
-			command: "node",
-			args: [
-				"-e",
-				`require("http").createServer((_, res) => { res.writeHead(200, { "content-type": "text/html" }); res.end(${JSON.stringify(html)}); }).listen(${port}, "127.0.0.1"); // ${tempRoot}`,
-			],
-			url,
-			timeoutMs: 5000,
-			needles: [tempRoot, unique],
-		});
-		await expect(
-			settleWithCleanup(
-				async () =>
-					withChromiumPage(profileDir, async (page) => {
-						const faults = attachPageFaults(page);
-						await page.goto(url);
-						assertNoPageFaults(faults);
-					}),
-				async () => {
-					await cleanupConsumerGate({
-						profileDir,
-						child: started.child,
-						nextUrl: url,
-						tempRoot,
-					});
-				},
-			),
-		).rejects.toThrow(/basalt-console-fail/);
-		expect(existsSync(tempRoot)).toBe(false);
-		expect(existsSync(profileDir)).toBe(false);
-		expect(listPidsMatching(unique)).toEqual([]);
-		expect(listPidsMatching(profileDir)).toEqual([]);
-		expect(processAlive(started.child.pid as number)).toBe(false);
-		await expect(assertHttpClosed(url)).resolves.toBeUndefined();
-	});
-
 	it("rejects suppressHydrationWarning and a client layout", () => {
 		expect(() => assertNoSuppressHydrationWarning("<html suppressHydrationWarning>")).toThrow(
 			/suppress hydration/,
@@ -545,6 +506,7 @@ export default function RootLayout() { return <html><body /></html>; }
 			"scripts/consumer-http.test.ts",
 			"scripts/consumer-browser.ts",
 			"scripts/consumer-browser.test.ts",
+			"scripts/consumer-gate.browser.test.ts",
 		];
 		for (const file of files) {
 			expect(readFileSync(file, "utf8").includes(needle), file).toBe(false);
