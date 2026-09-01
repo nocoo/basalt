@@ -1,6 +1,7 @@
 import { CATALOG, type CatalogCategory, type CatalogEntry, type CatalogKind } from "./catalog";
 import forms from "./catalog-content/families/forms";
 import foundation from "./catalog-content/families/foundation";
+import overlay from "./catalog-content/families/overlay";
 import type { CatalogPageStatus } from "./catalog-page-status";
 import type { CatalogScenario } from "./catalog-scenario";
 import type { CatalogDocs } from "./catalog-source";
@@ -8,14 +9,18 @@ import { catalogHeroScenario } from "./demos";
 import { CATALOG_DOCS } from "./docs";
 
 const FAMILY_DOCS = Object.fromEntries(
-	[...Object.entries(foundation), ...Object.entries(forms)].map(([slug, content]) => [
-		slug,
-		content.docs,
-	]),
+	[...Object.entries(foundation), ...Object.entries(forms), ...Object.entries(overlay)].map(
+		([slug, content]) => [slug, content.docs],
+	),
 );
 
 function familyOrLegacyHero(slug: string): CatalogScenario | undefined {
-	return foundation[slug]?.examples[0] ?? forms[slug]?.examples[0] ?? catalogHeroScenario(slug);
+	return (
+		foundation[slug]?.examples[0] ??
+		forms[slug]?.examples[0] ??
+		overlay[slug]?.examples[0] ??
+		catalogHeroScenario(slug)
+	);
 }
 
 export type CatalogReleaseStatus = "stable" | "catalog";

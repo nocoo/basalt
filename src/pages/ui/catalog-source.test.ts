@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 import { CATALOG_BY_SLUG } from "./catalog";
 import forms from "./catalog-content/families/forms";
 import foundation from "./catalog-content/families/foundation";
+import overlay from "./catalog-content/families/overlay";
 import {
 	catalogDocsWithImplementation,
 	githubSourceHref,
@@ -156,7 +157,7 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("tooltip"))).toBe(
 			"packages/basalt/src/components/tooltip.tsx",
 		);
-		expect(CATALOG_DOCS.tooltip?.api).toEqual(CATALOG_API.tooltip);
+		expect(overlay.tooltip?.docs.api).toEqual(CATALOG_API.tooltip);
 		expect(CATALOG_API.tooltip?.[0]?.props.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(implementationFileFor(entry("theme-toggle"))).toBe(
 			"packages/basalt/src/components/theme-toggle.tsx",
@@ -284,7 +285,7 @@ describe("catalog source contract", () => {
 				expect(Array.isArray(surface.props), slug).toBe(true);
 			}
 		}
-		expect(CATALOG_DOCS.tooltip?.api).toBe(CATALOG_API.tooltip);
+		expect(overlay.tooltip?.docs.api).toBe(CATALOG_API.tooltip);
 		for (const slug of [
 			"button",
 			"link-button",

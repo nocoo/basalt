@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CatalogPageContent } from "./catalog-content";
 import forms from "./catalog-content/families/forms";
 import foundation from "./catalog-content/families/foundation";
+import overlay from "./catalog-content/families/overlay";
 import { UI_EXAMPLES } from "./demos";
 import { CATALOG_DOCS } from "./docs";
 import UiPlaceholderPage from "./UiPlaceholderPage";
@@ -24,7 +25,7 @@ function deferred<T>() {
 }
 
 function contentFor(slug: string): CatalogPageContent {
-	const family = foundation[slug] ?? forms[slug];
+	const family = foundation[slug] ?? forms[slug] ?? overlay[slug];
 	if (family) {
 		return family;
 	}

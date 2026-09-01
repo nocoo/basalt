@@ -243,5 +243,44 @@ describe("application route build boundary", () => {
 			),
 			"input-group family closure contains another family",
 		).toBe(false);
+
+		const overlay = chunks.find((chunk) =>
+			chunk.modules.some((id) => id.endsWith("/src/pages/ui/catalog-content/families/overlay.tsx")),
+		);
+		expect(overlay).toBeDefined();
+		const overlayFiles = new Set<string>();
+		const visitOverlay = (chunk: BuiltChunk | undefined) => {
+			if (!chunk || overlayFiles.has(chunk.fileName)) return;
+			overlayFiles.add(chunk.fileName);
+			for (const imported of chunk.imports) visitOverlay(chunksByFile.get(imported));
+		};
+		visitOverlay(overlay);
+		const overlayModules = chunks
+			.filter((chunk) => overlayFiles.has(chunk.fileName))
+			.flatMap((chunk) => chunk.modules);
+		for (const suffix of [
+			"/src/pages/ui/catalog-content-legacy.ts",
+			"/src/pages/ui/catalog-ready.tsx",
+			"/src/pages/ui/kumo-examples.tsx",
+			"/src/pages/ui/docs.ts",
+			"/src/pages/ui/demos.tsx",
+			"/src/charts/sample.ts",
+			"/packages/basalt/src/charts/sample.ts",
+		]) {
+			expect(
+				overlayModules.some((id) => id.endsWith(suffix)),
+				`dialog family closure contains ${suffix}`,
+			).toBe(false);
+		}
+		expect(
+			overlayModules.some((id) => /recharts/i.test(id)),
+			"dialog family closure contains recharts",
+		).toBe(false);
+		expect(
+			overlayModules.some((id) =>
+				/catalog-content\/families\/(foundation|forms|charts)\.tsx$/.test(id),
+			),
+			"dialog family closure contains another family",
+		).toBe(false);
 	});
 });

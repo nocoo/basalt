@@ -4,11 +4,9 @@ import { Text } from "@nocoo/basalt/components/text";
 import { AlertTriangle, CircleAlert, Info, X } from "lucide-react";
 import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
-import { TOOLTIP_EXAMPLES } from "./examples/tooltip";
 import { KUMO_EXAMPLES } from "./kumo-examples";
 
 const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
-	tooltip: TOOLTIP_EXAMPLES,
 	banner: [
 		{
 			id: catalogScenarioId("banner", "variants"),

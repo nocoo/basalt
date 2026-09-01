@@ -13,6 +13,7 @@ import {
 } from "@/pages/ui/catalog";
 import forms from "@/pages/ui/catalog-content/families/forms";
 import foundation from "@/pages/ui/catalog-content/families/foundation";
+import overlay from "@/pages/ui/catalog-content/families/overlay";
 import { loadCatalogPageContent } from "@/pages/ui/catalog-content-loader";
 import { CATALOG_INDEX_GROUPS, CATALOG_INDEX_ITEMS } from "@/pages/ui/catalog-index";
 import { catalogScenarioMatchesSlug } from "@/pages/ui/catalog-scenario";
@@ -29,6 +30,7 @@ const CATALOG_DOCS = {
 	...LEGACY_CATALOG_DOCS,
 	...Object.fromEntries(Object.entries(foundation).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.docs])),
+	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.docs])),
 };
 const UI_EXAMPLES = {
 	...LEGACY_UI_EXAMPLES,
@@ -36,6 +38,7 @@ const UI_EXAMPLES = {
 		Object.entries(foundation).map(([slug, content]) => [slug, content.examples]),
 	),
 	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.examples])),
+	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.examples])),
 };
 
 function catalogHeroScenario(slug: string) {
@@ -873,12 +876,17 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten tooltip prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\ttooltip: {");
-		const end = docs.indexOf("export const CATALOG_DOCS");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/overlay.tsx"),
+			"utf8",
+		);
+		const start = family.indexOf("\ttooltip: {");
+		const end = family.indexOf("\taccordion: {");
+		expect(docs).not.toMatch(/\ttooltip: \{/);
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.tooltip");
+		const block = family.slice(start, end);
+		expect(block).toContain("api: tooltipApi");
 		expect(block).not.toContain('name: "delayDuration"');
 		expect(block).toContain(
 			"<TooltipProvider><Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip></TooltipProvider>",
@@ -3312,9 +3320,15 @@ describe("ui catalog", () => {
 		expect(demos).not.toContain('from "@nocoo/basalt/components/select"');
 		expect(ready).not.toMatch(/add\(\s*"select"/);
 		expect(ready).not.toContain('from "@nocoo/basalt/components/select"');
-		expect(kumo).toContain('from "@nocoo/basalt/components/select"');
-		expect(kumo).toContain('catalogScenarioId("dialog", "with-select")');
-		expect(kumo).toContain('aria-label="Region"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/select"');
+		expect(kumo).not.toContain('catalogScenarioId("dialog", "with-select")');
+		const overlay = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/overlay.tsx"),
+			"utf8",
+		);
+		expect(overlay).toContain('from "@nocoo/basalt/components/select"');
+		expect(overlay).toContain('catalogScenarioId("dialog", "with-select")');
+		expect(overlay).toContain('aria-label="Region"');
 	});
 
 	it("does not keep inline input scenario owners", () => {
@@ -3407,9 +3421,13 @@ describe("ui catalog", () => {
 
 	it("does not keep inline tooltip scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/overlay.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("TOOLTIP_EXAMPLES");
-		expect(demos).toMatch(/\btooltip: TOOLTIP_EXAMPLES/);
+		expect(demos).not.toContain("TOOLTIP_EXAMPLES");
+		expect(family).toContain("TOOLTIP_EXAMPLES");
 		expect(demos).not.toMatch(/\btooltip:\s*\[/);
 		expect(kumo).not.toMatch(/\btooltip:\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("tooltip"/);

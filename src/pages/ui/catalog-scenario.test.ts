@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import forms from "./catalog-content/families/forms";
 import foundation from "./catalog-content/families/foundation";
+import overlay from "./catalog-content/families/overlay";
 import {
 	catalogScenarioId,
 	catalogScenarioMatchesSlug,
@@ -16,6 +17,7 @@ const UI_EXAMPLES = {
 		Object.entries(foundation).map(([slug, content]) => [slug, content.examples]),
 	),
 	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.examples])),
+	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.examples])),
 };
 
 import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
