@@ -32,7 +32,13 @@ const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarProps>(
 					event.target instanceof HTMLInputElement ||
 					event.target instanceof HTMLTextAreaElement
 				) {
-					return;
+					const start = event.target.selectionStart ?? 0;
+					if (event.key === "ArrowLeft" && start > 0) {
+						return;
+					}
+					if (event.key === "ArrowRight" && start < event.target.value.length) {
+						return;
+					}
 				}
 				const root = event.currentTarget;
 				const items = [

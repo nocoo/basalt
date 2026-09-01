@@ -101,6 +101,41 @@ describe("Sidebar", () => {
 		expect(screen.queryByText("Nav")).not.toBeInTheDocument();
 	});
 
+	it("forwards overlay hover and restores focus on close", () => {
+		const onMouseEnter = vi.fn();
+		function Toggle() {
+			const { setCollapsed } = useSidebar();
+			return (
+				<button type="button" onClick={() => setCollapsed(false)}>
+					Open
+				</button>
+			);
+		}
+		render(
+			<SidebarProvider overlay defaultCollapsed>
+				<Toggle />
+				<Sidebar onMouseEnter={onMouseEnter}>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		const open = screen.getByRole("button", { name: "Open" });
+		open.focus();
+		fireEvent.click(open);
+		const panel = screen.getByRole("dialog", { name: "Sidebar" });
+		fireEvent.mouseEnter(panel);
+		expect(onMouseEnter).toHaveBeenCalled();
+		fireEvent.keyDown(document, { key: "Escape" });
+		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+	});
+
+	it("places overlay chrome on the right edge", () => {
+		render(
+			<SidebarProvider overlay side="right">
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByRole("dialog", { name: "Sidebar" }).className).toContain("right-0");
+	});
+
 	it("places an in-flow rail last when side is right", () => {
 		render(
 			<SidebarProvider side="right">

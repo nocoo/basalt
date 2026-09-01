@@ -27,6 +27,7 @@ describe("standalone css", () => {
 		expect(css).toContain(".sticky");
 		expect(css).toContain(".w-\\[68px\\]");
 		expect(css).toContain(".cursor-col-resize");
+		expect(css).toContain(".order-last");
 		expect(css).toContain("backdrop-filter");
 		expect(css).not.toMatch(/@keyframes pulse\s*\{/);
 	});

@@ -69,4 +69,17 @@ describe("Toolbar", () => {
 		fireEvent.keyDown(upload, { key: "ArrowRight" });
 		expect(download).toHaveFocus();
 	});
+
+	it("leaves an empty input with arrows", () => {
+		render(
+			<Toolbar aria-label="Record tools">
+				<Toolbar.Input aria-label="Query" />
+				<Toolbar.Button>Save</Toolbar.Button>
+			</Toolbar>,
+		);
+		const input = screen.getByRole("textbox", { name: "Query" });
+		input.focus();
+		fireEvent.keyDown(input, { key: "ArrowRight" });
+		expect(screen.getByRole("button", { name: "Save" })).toHaveFocus();
+	});
 });

@@ -6,8 +6,10 @@ import {
 	type HTMLAttributes,
 	type ReactNode,
 	type PointerEvent as ReactPointerEvent,
+	type RefObject,
 	useCallback,
 	useContext,
+	useRef,
 	useState,
 } from "react";
 import { cn } from "../utils/cn";
@@ -29,6 +31,7 @@ type SidebarContextValue = {
 	overlay: boolean;
 	width: number;
 	setWidth: (next: number) => void;
+	lastFocusRef: RefObject<HTMLElement | null>;
 };
 
 const SidebarContext = createContext<SidebarContextValue | null>(null);
@@ -100,9 +103,13 @@ export function SidebarProvider({
 	const [uncontrolled, setUncontrolled] = useState(defaultCollapsed);
 	const [peeking, setPeeking] = useState(false);
 	const [width, setWidth] = useState(defaultWidth);
+	const lastFocusRef = useRef<HTMLElement | null>(null);
 	const resolved = collapsed ?? uncontrolled;
 	const setCollapsed = useCallback(
 		(next: boolean) => {
+			if (!next && document.activeElement instanceof HTMLElement) {
+				lastFocusRef.current = document.activeElement;
+			}
 			if (collapsed === undefined) {
 				setUncontrolled(next);
 			}
@@ -123,6 +130,7 @@ export function SidebarProvider({
 				overlay,
 				width,
 				setWidth,
+				lastFocusRef,
 			}}
 		>
 			{children}
@@ -241,6 +249,12 @@ export function Sidebar({
 						data-overlay=""
 						data-side={side}
 						aria-busy={context.loading || undefined}
+						onMouseEnter={onMouseEnter}
+						onMouseLeave={onMouseLeave}
+						onCloseAutoFocus={(event) => {
+							event.preventDefault();
+							context.lastFocusRef.current?.focus();
+						}}
 						className={cn(
 							frameClass,
 							OVERLAY_LAYER,

@@ -71,7 +71,7 @@ describe("CommandPalette", () => {
 		expect(screen.getByText("Hidden").getAttribute("data-disabled")).toBe("true");
 	});
 
-	it("names the search field and restores focus to the trigger", () => {
+	it("names the search field and closes from the trigger", () => {
 		render(
 			<CommandPalette>
 				<CommandPaletteTrigger>Search pages...</CommandPaletteTrigger>
