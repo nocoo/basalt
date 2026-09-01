@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
+import { useState } from "react";
 import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
 import { Button } from "./button";
@@ -9,23 +10,59 @@ const itemClass = cn(
 	"disabled:pointer-events-none disabled:opacity-100 disabled:text-basalt-muted-foreground",
 );
 
+export type PaginationProps = {
+	/**
+	 * Controlled 1-based page.
+	 */
+	page?: number;
+	/**
+	 * Uncontrolled initial page.
+	 * @default 1
+	 */
+	defaultPage?: number;
+	/**
+	 * Last page number.
+	 * @default 10
+	 */
+	pageCount?: number;
+	/**
+	 * Called when the page changes.
+	 */
+	onPageChange?: (page: number) => void;
+	/**
+	 * Hide first, last, and page number controls.
+	 * @default false
+	 */
+	simple?: boolean;
+	/**
+	 * Disable every control.
+	 * @default false
+	 */
+	disabled?: boolean;
+	/**
+	 * Additional classes for the nav.
+	 */
+	className?: string;
+};
+
 export function Pagination({
 	page,
+	defaultPage = 1,
 	pageCount = 10,
 	onPageChange,
 	simple = false,
 	disabled = false,
 	className,
-}: {
-	page: number;
-	pageCount?: number;
-	onPageChange?: (page: number) => void;
-	simple?: boolean;
-	disabled?: boolean;
-	className?: string;
-}) {
+}: PaginationProps) {
+	const [uncontrolled, setUncontrolled] = useState(defaultPage);
 	const last = Math.max(1, pageCount);
-	const current = Math.min(last, Math.max(1, page));
+	const current = Math.min(last, Math.max(1, page ?? uncontrolled));
+	const go = (next: number) => {
+		if (page === undefined) {
+			setUncontrolled(next);
+		}
+		onPageChange?.(next);
+	};
 	const atStart = current <= 1;
 	const atEnd = current >= last;
 	const startDisabled = disabled || atStart;
@@ -50,7 +87,7 @@ export function Pagination({
 						className={itemClass}
 						aria-label="First page"
 						disabled={startDisabled}
-						onClick={() => onPageChange?.(1)}
+						onClick={() => go(1)}
 					/>
 				)}
 				<Button
@@ -60,7 +97,7 @@ export function Pagination({
 					className={itemClass}
 					aria-label="Previous page"
 					disabled={startDisabled}
-					onClick={() => onPageChange?.(Math.max(1, current - 1))}
+					onClick={() => go(Math.max(1, current - 1))}
 				/>
 				{simple ? null : (
 					<span
@@ -77,7 +114,7 @@ export function Pagination({
 					className={itemClass}
 					aria-label="Next page"
 					disabled={endDisabled}
-					onClick={() => onPageChange?.(Math.min(last, current + 1))}
+					onClick={() => go(Math.min(last, current + 1))}
 				/>
 				{simple ? null : (
 					<Button
@@ -87,7 +124,7 @@ export function Pagination({
 						className={itemClass}
 						aria-label="Last page"
 						disabled={endDisabled}
-						onClick={() => onPageChange?.(last)}
+						onClick={() => go(last)}
 					/>
 				)}
 			</div>

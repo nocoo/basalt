@@ -4,6 +4,13 @@ import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
 import { Pagination } from "./pagination";
 
 describe("Pagination", () => {
+	it("moves an uncontrolled pager from defaultPage", () => {
+		render(<Pagination defaultPage={2} pageCount={5} />);
+		expect(screen.getByRole("navigation", { name: "Pagination" })).toHaveTextContent("2");
+		fireEvent.click(screen.getByRole("button", { name: "Next page" }));
+		expect(screen.getByRole("navigation", { name: "Pagination" })).toHaveTextContent("3");
+	});
+
 	it("shows the current page", () => {
 		render(<Pagination page={2} pageCount={5} />);
 		expect(screen.getByRole("navigation", { name: "Pagination" })).toHaveTextContent("2");
