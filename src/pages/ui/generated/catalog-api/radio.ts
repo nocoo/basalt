@@ -23,6 +23,24 @@ export const API = [
 		name: "Radio.Group",
 		props: [
 			{
+				name: "value",
+				type: "string",
+				required: false,
+				description: "The controlled selected value.",
+			},
+			{
+				name: "defaultValue",
+				type: "string",
+				required: false,
+				description: "The initially selected value.",
+			},
+			{
+				name: "onValueChange",
+				type: "(value: string) => void",
+				required: false,
+				description: "Called when the selected value changes.",
+			},
+			{
 				name: "error",
 				type: "React.ReactNode",
 				required: false,

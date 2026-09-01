@@ -18,8 +18,20 @@ const RADIO_INDICATOR_CLASS: Record<RadioSize, string> = {
 
 export type RadioGroupProps = Omit<
 	React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Root>,
-	"disabled"
+	"disabled" | "value" | "defaultValue" | "onValueChange"
 > & {
+	/**
+	 * The controlled selected value.
+	 */
+	value?: string;
+	/**
+	 * The initially selected value.
+	 */
+	defaultValue?: string;
+	/**
+	 * Called when the selected value changes.
+	 */
+	onValueChange?: (value: string) => void;
 	/**
 	 * Marks the group invalid and shows alert copy.
 	 */

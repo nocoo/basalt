@@ -1721,7 +1721,13 @@ export interface WidgetProps {
 			"Radio.Legend",
 		]);
 		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value", "size"]);
-		expect(generated.radio?.[1]?.props.map((prop) => prop.name)).toEqual(["error", "disabled"]);
+		expect(generated.radio?.[1]?.props.map((prop) => prop.name)).toEqual([
+			"value",
+			"defaultValue",
+			"onValueChange",
+			"error",
+			"disabled",
+		]);
 		expect(generated.radio?.[2]?.props).toEqual([]);
 		expect(generated.radio?.[0]?.props[0]).not.toHaveProperty("default");
 		expect(generated.radio?.[0]?.props.some((prop) => prop.name === "disabled")).toBe(false);
@@ -3034,7 +3040,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"c01f6cdee6a6dcd175c137c718ed901c0e6c6dd6c69ced27e1531683f3c6203c",
+			"eeb48d6dee33cfc640b1fb185a17bdad9abfa4c72b7370f0edbe74c87e4a9a6e",
 		);
 	}, 20_000);
 

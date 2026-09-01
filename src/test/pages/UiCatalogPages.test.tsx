@@ -2064,6 +2064,24 @@ describe("ui catalog", () => {
 				name: "Radio.Group",
 				props: [
 					{
+						name: "value",
+						type: "string",
+						required: false,
+						description: "The controlled selected value.",
+					},
+					{
+						name: "defaultValue",
+						type: "string",
+						required: false,
+						description: "The initially selected value.",
+					},
+					{
+						name: "onValueChange",
+						type: "(value: string) => void",
+						required: false,
+						description: "Called when the selected value changes.",
+					},
+					{
 						name: "error",
 						type: "React.ReactNode",
 						required: false,
@@ -2090,11 +2108,14 @@ describe("ui catalog", () => {
 		expect(document.querySelector('[data-toc-id="api-Radio"]')).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Radio", level: 3 })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "Radio props" })).toBeInTheDocument();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(4);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(7);
 		expect(api).toHaveTextContent("value");
-		expect(api).not.toHaveTextContent("value?");
+		expect(api).toHaveTextContent("value?");
+		expect(api).toHaveTextContent("defaultValue?");
+		expect(api).toHaveTextContent("onValueChange?");
 		expect(api).toHaveTextContent("string");
 		expect(api).toHaveTextContent("The value associated with the radio item.");
+		expect(api).toHaveTextContent("The controlled selected value.");
 		expect(api).toHaveTextContent("size?");
 		expect(api).toHaveTextContent("Radio.Group");
 		expect(api).not.toHaveTextContent("required?");
