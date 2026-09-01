@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中
-> 当前切片：D091 — Sidebar 临时成熟度标签；契约已冻结，等待通过 Herdr 下发
-> 当前实现真值：`5dac358`（D090 Field MVP + review fix；S4B 完成）
+> 当前切片：S5 待办
+> 当前实现真值：`a5a9ee4`（S4 表单族 MVP 完成；Sidebar 待规范标签已移除）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
 
@@ -132,7 +132,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 完成（`eeb8c43`） | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 完成（S3A D082、S3B D083、S3C D084、S3D D085、S3E D086、S3F D087、S3G D088） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
-| S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 执行中（S4A D089 Text、S4B D090 Field 完成；D091 临时成熟度标签先行，S4C D092 Input MVP 契约已冻结） | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
+| S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 完成（Text `b963bf1`、Field `52c27b7`+`5dac358`、Input `bddbeee`、InputArea `d1085b0`、Checkbox `ca7b534`、Radio `e456c27`、Switch `77fb95b`；D091 标签已移除 `a5a9ee4`） | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 待办 | 泛型、group/multiple/loading/error/range + browser 门完整 |
 | S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 待办 | compound、焦点、键盘、mobile、resize/scroll 状态完整 |
 | S7 | Table/DataTable、TOC、Code、Flow、Grid、Pagination | 待办 | 数据与内容控件覆盖实际产品场景 |
@@ -886,7 +886,9 @@ Sidebar 目标不是复制 Kumo 2606 行，而是提供实际项目需要的稳�
 | 基础 | Text | MVP 完成（D089） | S4/S10 |
 | 品牌 | BasaltMark | 只有单一场景；禁止复制 Cloudflare 品牌 | S2/S10 |
 | 表单 | Field | MVP 完成（D090） | S4/S10 |
-| 表单 | Input、InputArea、InputGroup、Checkbox、Radio、Switch | API/场景浅 | S4 |
+| 表单 | Input、InputArea | MVP 完成 | S4/S10 |
+| 表单 | Checkbox、Radio、Switch | MVP 完成（Group/Legend/error/size/controlled） | S4/S10 |
+| 表单 | InputGroup | API/场景浅 | S4/S10 |
 | 选择 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 结构性不足 | S5 |
 | 浮层 | Popover、Dropdown、Collapsible、Tabs、CommandPalette、Tooltip | 部分 | S6 |
 | 导航 | Breadcrumbs、Toolbar、Sidebar | 部分；Sidebar 缺 Provider contract | S6 |
@@ -1030,5 +1032,11 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D089 | S4A | `ab80184` | `basalt_d089` / `w14:p4`（Grok） | 完成 | `b963bf1` | Text 从固定 `<p>` 的 catalog-only 控件收敛为 stable typography primitive：body/heading/mono 只控制视觉，文档层级由受限 `as` 显式选择；保留五档 size、两档 tone，新增 bold 与单行 truncate。旧 Sizes/Muted tone scenario 文件与 DOM/class 未改，新增 Semantic variants、Bold and truncate 两份 source-backed scenario；root、stable filter、foundation docs、generated API 与 Copy page 同批接通。最终 CATALOG 101、Components/Charts/Blocks `65 / 24 / 3`、Ready/Planned `89 / 12`、首页 92、foundation 12 owner / 34 scenarios、API 25 shard / 42 targets、stable/catalog `31 / 70`。实现提交 18 files、+487/−53；focused 11 files / 428 tests、日常全量及 Husky 137 files / 1,165 tests、coverage `97.28 / 95.77 / 96.13 / 97.46`、typecheck、Biome、三套 generator 双 check、showcase 与 package build/types/pack 全绿；最大 JS 349.94 kB、0 warning。Text shard、aggregate、完整 API digest、page-status、content family、standalone SHA-256 分别为 `40f56991735d9b0391ce1a9206872516ea17ab97a9cb40609874bb0e79f218c1`、`9865e41d5a39cc312e26770b7f12ce22d232c98edc731929f3b6403083e2cef3`、`0d8d1829fe5b1a1b6517e5730761d773d6cb60ccdc583747f2f896b8e89ff16d`、`3df76fdd6a7660d52f6c916a79dd68a6e38494a530b5f2b672f172842aae25c9`、`ad2ce9c980278f2a1d73a334771c7363deca324baf4d9042189b007298141bf1`、`0866b09d17b1819430c2b36081a4ef4f61f909dc21ca76b6c40beaad08465b6e`。Codex review 无 finding，独立复跑三套 generator 双 check、typecheck 与 11 files / 428 tests；普通开发门未运行 Chromium，7003/PID 73541 保持运行，未进入 Field。 |
 | D090 | S4B | `51a93a0` | `basalt_d090` / `w14:p4`（Grok） | 完成 | `52c27b7` + `5dac358`（review fix） | Field 从 string-only、手工 id、catalog-only wrapper 收敛为 stable：ReactNode label/hint/error、structured error、optional marker、label tooltip、`htmlFor → child id → useId` 自动关联、root ref/标准 div props与八项 generated API 同批完成；旧 Hint/Error 两份 scenario 逐字未改，新增两份 source-backed scenario。主提交后 Codex 发现 direct 与 structured falsy message 的存在性不等价，Grok 以两文件 follow-up 统一按归一化 message 判断并补回归，未 amend。最终 CATALOG 101、Ready/Planned `89 / 12`、首页 92、forms 16 owner / Field 4 scenarios、API 25 shard / 42 targets、stable/catalog `32 / 69`；基线至最终 18 files、+450/−87。日常全量与 Husky 137 files / 1,175 tests，coverage `97.29 / 95.82 / 96.16 / 97.48` 且 Field 100%；Codex 独立三套 generator generate + 双 check、13 files / 437 tests、typecheck、Biome 572 files、showcase 2,988 modules / 最大 JS 349.94 kB / 0 warning，以及 package 98 JS / 98 d.ts / 95 maps、Bundler/NodeNext、297-file pack 全绿。普通开发门未运行 Chromium；工作树干净，未进入 Input。 |
 | D091 | 临时可视化 | `f694243`（实现真值 `5dac358`） | `basalt_d091` / `w14:p4`（Grok） | 已规划，待下发 | — | Sidebar 的 Components 分组将从 CATALOG 单一真值显示临时 `待规范` 标签；初始 65 项中 8 项 MVP complete、57 项 pending，完成一个即随对应 entry 消标。Charts、Blocks、Docs、Planned 与导航语义冻结；D092 Input 尚未下发。 |
+| D092 | S4C Input | `5dac358` | Grok | 完成 | `bddbeee` | Input 补齐 `sm/default/lg`、`aria-invalid` 错误边框、`passwordManagerIgnore`、受控/非受控/form reset；旧五 scenario 不改，新增 Sizes 与 Controlled and reset。 |
+| D093 | S4 InputArea | `bddbeee` | Grok | 完成 | `d1085b0` | InputArea 对齐 Input：size、invalid 视觉、password-manager ignore、controlled/reset；新增两份 source-backed scenario。 |
+| D094 | S4 Checkbox | `d1085b0` | Grok | 完成 | `ca7b534` | Checkbox.Group/Legend/Item、size、error、controlled 值数组；旧五 scenario 保留。 |
+| D095 | S4 Radio | `ca7b534` | Grok | 完成 | `e456c27` | Radio.Group/Legend/Item、size、error、controlled；旧三 scenario 保留。 |
+| D096 | S4 Switch | `e456c27` | Grok | 完成 | `77fb95b` | Switch.Group/Legend/Item、既有 size、error、controlled；旧四 scenario 保留。 |
+| D097 | 去掉 D091 标签 | `77fb95b` | Grok | 完成 | `a5a9ee4` | 删除 Sidebar `待规范` 与 catalog `maturity` 字段。S4 完成。 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
