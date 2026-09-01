@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -150,6 +150,32 @@ describe("Checkbox", () => {
 		fireEvent.click(screen.getByRole("checkbox", { name: "Beta" }));
 		expect(onValueChange).toHaveBeenCalledWith(["alpha", "beta"]);
 		expect(screen.getByRole("checkbox", { name: "Beta" })).not.toBeChecked();
+	});
+
+	it("restores grouped defaultValue on native form reset", async () => {
+		render(
+			<form>
+				<Checkbox.Group defaultValue={["a"]}>
+					<Checkbox.Legend>Topics</Checkbox.Legend>
+					<Checkbox.Item value="a">Alpha</Checkbox.Item>
+					<Checkbox.Item value="b">Beta</Checkbox.Item>
+				</Checkbox.Group>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		const alpha = screen.getByRole("checkbox", { name: "Alpha" });
+		const beta = screen.getByRole("checkbox", { name: "Beta" });
+		expect(alpha).toBeChecked();
+		expect(beta).not.toBeChecked();
+		fireEvent.click(alpha);
+		fireEvent.click(beta);
+		expect(alpha).not.toBeChecked();
+		expect(beta).toBeChecked();
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await waitFor(() => {
+			expect(alpha).toBeChecked();
+			expect(beta).not.toBeChecked();
+		});
 	});
 
 	it("disables grouped items and keeps uncontrolled default values", () => {

@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
 import {
@@ -123,6 +123,32 @@ describe("Switch", () => {
 		fireEvent.click(screen.getByRole("switch", { name: "Beta" }));
 		expect(onValueChange).toHaveBeenCalledWith(["alpha", "beta"]);
 		expect(screen.getByRole("switch", { name: "Beta" })).not.toBeChecked();
+	});
+
+	it("restores grouped defaultValue on native form reset", async () => {
+		render(
+			<form>
+				<Switch.Group defaultValue={["a"]}>
+					<Switch.Legend>Alerts</Switch.Legend>
+					<Switch.Item value="a">Alpha</Switch.Item>
+					<Switch.Item value="b">Beta</Switch.Item>
+				</Switch.Group>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		const alpha = screen.getByRole("switch", { name: "Alpha" });
+		const beta = screen.getByRole("switch", { name: "Beta" });
+		expect(alpha).toBeChecked();
+		expect(beta).not.toBeChecked();
+		fireEvent.click(alpha);
+		fireEvent.click(beta);
+		expect(alpha).not.toBeChecked();
+		expect(beta).toBeChecked();
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await waitFor(() => {
+			expect(alpha).toBeChecked();
+			expect(beta).not.toBeChecked();
+		});
 	});
 
 	it("accepts group, legend, and item props and rejects illegal values", () => {

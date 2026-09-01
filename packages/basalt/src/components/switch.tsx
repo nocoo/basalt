@@ -108,6 +108,7 @@ const SwitchGroup = React.forwardRef<HTMLFieldSetElement, SwitchGroupProps>(
 		ref,
 	) => {
 		const generatedId = React.useId();
+		const nodeRef = React.useRef<HTMLFieldSetElement | null>(null);
 		const [uncontrolled, setUncontrolled] = React.useState(defaultValue ?? []);
 		const current = value ?? uncontrolled;
 		const invalid = Boolean(error);
@@ -121,10 +122,37 @@ const SwitchGroup = React.forwardRef<HTMLFieldSetElement, SwitchGroupProps>(
 			},
 			[onValueChange, value],
 		);
+		const setRefs = React.useCallback(
+			(node: HTMLFieldSetElement | null) => {
+				nodeRef.current = node;
+				if (typeof ref === "function") {
+					ref(node);
+				} else if (ref) {
+					ref.current = node;
+				}
+			},
+			[ref],
+		);
+		React.useEffect(() => {
+			const form = nodeRef.current?.form;
+			if (!form || value !== undefined) {
+				return;
+			}
+			const onReset = (event: Event) => {
+				queueMicrotask(() => {
+					if (event.defaultPrevented) {
+						return;
+					}
+					setUncontrolled(defaultValue ?? []);
+				});
+			};
+			form.addEventListener("reset", onReset);
+			return () => form.removeEventListener("reset", onReset);
+		}, [defaultValue, value]);
 		return (
 			<SwitchGroupContext.Provider value={{ value: current, setValue, disabled, invalid }}>
 				<fieldset
-					ref={ref}
+					ref={setRefs}
 					{...props}
 					disabled={disabled}
 					aria-invalid={invalid || undefined}
