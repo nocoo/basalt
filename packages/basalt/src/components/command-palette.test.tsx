@@ -35,4 +35,38 @@ describe("CommandPalette", () => {
 		fireEvent.change(screen.getByPlaceholderText("Search pages..."), { target: { value: "Inp" } });
 		expect(screen.getByText("Input")).toBeInTheDocument();
 	});
+
+	it("shows empty copy when nothing matches", () => {
+		render(
+			<CommandPalette open>
+				<CommandInput placeholder="Search pages..." />
+				<CommandList>
+					<CommandEmpty>No results</CommandEmpty>
+					<CommandItem>Button</CommandItem>
+				</CommandList>
+			</CommandPalette>,
+		);
+		fireEvent.change(screen.getByPlaceholderText("Search pages..."), {
+			target: { value: "zzzz" },
+		});
+		expect(screen.getByText("No results")).toBeInTheDocument();
+	});
+
+	it("skips a disabled command", () => {
+		const onSelect = vi.fn();
+		render(
+			<CommandPalette open shouldFilter={false}>
+				<CommandInput placeholder="Search pages..." />
+				<CommandList>
+					<CommandItem disabled onSelect={onSelect}>
+						Hidden
+					</CommandItem>
+					<CommandItem>Button</CommandItem>
+				</CommandList>
+			</CommandPalette>,
+		);
+		fireEvent.click(screen.getByText("Hidden"));
+		expect(onSelect).not.toHaveBeenCalled();
+		expect(screen.getByText("Hidden").getAttribute("data-disabled")).toBe("true");
+	});
 });

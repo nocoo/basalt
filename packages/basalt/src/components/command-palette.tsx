@@ -20,7 +20,19 @@ const Command = React.forwardRef<
 ));
 Command.displayName = CommandPrimitive.displayName;
 
-type CommandPaletteProps = DialogProps & {
+export type CommandPaletteProps = Omit<DialogProps, "open" | "onOpenChange"> & {
+	/**
+	 * The controlled open state.
+	 */
+	open?: boolean;
+	/**
+	 * Called when the open state changes.
+	 */
+	onOpenChange?: (open: boolean) => void;
+	/**
+	 * Filter items as the query changes.
+	 * @default true
+	 */
 	shouldFilter?: boolean;
 };
 
