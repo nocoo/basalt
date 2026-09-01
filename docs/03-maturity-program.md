@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S2B4b D072h — charts family 23 个 owner 迁移；执行中（规划基线 `abfed19`，Codex 单写）
-> 当前代码前置：`abfed19`（D072g data-layout 已独立验收；D072h 开始前基线）
+> 当前切片：S2B4b D072i — final cleanup/gates；规划完成（代码基线 `b3faea1`，Codex 单写）
+> 当前代码前置：`b3faea1`（D072h charts 已独立验收；84 / 84 Ready owner 已全部 family-owned）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
 
@@ -129,7 +129,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S1C | coverage、publint、prepublishOnly、Husky/browser 门 | 完成（`c525640`） | 95% 四项 coverage 恢复；一条发布前命令覆盖所有门，仍不实际 publish |
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 完成（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062、S2A35 D063、S2A36 D064、S2A37 D065、S2A38 D066、S2A39 D067） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
-| S2B | 文档页 IA、搜索、分类、成熟度过滤 | 执行中（S2B1–S2B4a、D072a–D072e 完成；D072f 执行中） | 不再平铺 88 个等权方块；placeholder 不可达 |
+| S2B | 文档页 IA、搜索、分类、成熟度过滤 | 执行中（S2B1–S2B4a、D072a–D072h 完成；D072i 执行中） | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 待办 | Panel、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 待办 | 泛型、group/multiple/loading/error/range + browser 门完整 |
@@ -706,10 +706,10 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    3. **D072c — forms（完成，`d25a2cc`）。** 迁 forms 15，保持 BASE/KUMO/EXTRA 最终 winner；`input-group` 不得请求 legacy、foundation、overlay、charts。
    4. **D072d — overlay（完成，`9817a6a`）。** 迁 overlay 10；`dialog`/`tooltip` 只加载 overlay 内容，不得请求 forms/charts。
    5. **D072e — feedback（完成，`79eea95`）。** 迁 feedback 11，特别锁定 `banner` 使用 BASE winner，不复活 EXTRA Default。
-   6. **D072f — navigation（执行中，规划基线 `c34f67d`，Codex 单写）。** 迁 navigation 9，锁定 tabs、pagination、command palette 真值及 family 隔离。
-   7. **D072g — data-layout。** 迁 data-layout 5，锁定 table、data-table、grid、flow、page-header 真值及 family 隔离。
-   8. **D072h — charts。** 迁 charts 23；非 chart family 不得触达 Recharts/sample，`line` 只允许 charts family 与共享 chart runtime。
-   9. **D072i — final cleanup/gates。** 达到 migrated ready keys 与 manifest ready keys 精确 `84 / 84` 后删除 legacy 与空 monolith；`/ui` 通过同一 lazy registry 并行加载 7 family，再把真实 docs + hero 交给纯逻辑 catalog index。保持 Components/Charts/Blocks `60 / 24 / 3`、首页 87 卡、84 个真实 hero、3 个 planned 无伪 preview，以及 17 个 HOME_DEMOS override。
+   6. **D072f — navigation（完成，`0fd86da`）。** 迁 navigation 9，锁定 tabs、pagination、command palette 真值及 family 隔离。
+   7. **D072g — data-layout（完成，`abfed19`）。** 迁 data-layout 5，锁定 table、data-table、grid、flow、page-header 真值及 family 隔离。
+   8. **D072h — charts（完成，`b3faea1`）。** 迁 charts 23；非 chart family 不得触达 Recharts/sample，`line` 只允许 charts family 与共享 chart runtime。
+   9. **D072i — final cleanup/gates（执行中，规划基线 `b3faea1`，Codex 单写）。** migrated ready keys 与 manifest ready keys 已精确达到 `84 / 84`；删除 legacy adapter 与四个空 monolith，`/ui` 通过同一 lazy registry 并行加载 7 family，再把真实 docs + hero 交给纯逻辑 catalog index。保持 Components/Charts/Blocks `60 / 24 / 3`、首页 87 卡、84 个真实 hero、3 个 planned 无伪 preview，以及 17 个 HOME_DEMOS override。
 
    任一中间刀不得删 example、改 scenario ID/title/order/render/raw code、改 docs description/usage/variants/API/provenance、改变 96/84/12 或首页 87 卡，也不得修改 package 生产组件/API/CSS、tokens、CATALOG inventory、依赖/lock 或 App route。每刀运行 content contract、受影响真值、UiCatalog Copy page focused tests、typecheck、Biome、全量、coverage 与 production build；涉及 generator 时必须 generate 后连续两次 check。机器门检查 Rollup modules 及 transitive imports，不能只比文件名。最终所有未压缩 JS chunk 均低于 500,000 B、0 warning；冷 `/ui/button`、`/ui/input-group`、`/ui/dialog`、`/ui/banner`、`/ui/tabs`、`/ui/table`、`/ui/line` 逐 family 证明隔离，并复验 `/ui`、`/ui/chart-colors`、Maps、unknown、Copy page 及 1440/390 light/dark。不得新增 data `manualChunks`、调高 `chunkSizeWarningLimit` 或关闭 warning。7003/PID 95907 始终不停止；需要 production 网络证据时另启临时 preview 端口并清理。
 
@@ -917,6 +917,8 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 
 | D079 | S2B4b-g / D072g | `0fd86da` | Codex | 完成 | `abfed19` | data-layout family 精确迁移 table、data-table、grid、flow、page-header 5 个 owner；主提交恰好 18 个授权文件、+543/−306，manifest 累计 61 owner，SHA-256 为 `0345b98069275d8be0a28642f13affd4379b4c130d41303c508ae02b9ab2055d`。Codex 用临时 detached worktree 和 Vite SSR 同时加载 `28c9e32` 旧真值与当前 family，逐项证明 5 份 docs 完整对象相等、6 个 scenario 的顺序/ID/title/raw code相等，归一化编译器 file/line/column 与内部 import 编号后 6 个 render 全部相等；旧 monolith不再保留这 5 个 owner。双 generator 均在 generate 后连续两次 check 且 generated 字节不变；focused 11 files / 309 tests、typecheck、Biome 531 files、日常全量 130 files / 1117 tests与 coverage全绿，coverage保持 `97.13 / 95.53 / 95.89 / 97.32`。Production build为 2,935 modules，data-layout 11.54 kB、最大 JS 349.94 kB，所有 JS <500,000 B且 0 warning。独立冷 Chromium 验证 Table、DataTable、PageHeader 均只请求 `data-layout-BhUuSyYh.js`，Maps/unknown 为 0 family heavy import；五条均 HTTP 200且 console/page/request/response failures为 0。临时 7010 已清理，7003/PID 73541保持运行；无需 review-fix，未进入 charts。 |
 
-| D080 | S2B4b-h / D072h | `abfed19` | Codex | 执行中 | — | 以 MVP 边界迁最后一个 charts family 恰好 23 个 owner：line、bar、area、donut、sparkline、gauge、stat-card、palette、slot-bar、grouped-bar、stacked-bar、heatmap-calendar、radar、funnel、bullet、timeline、sankey、item-list、date-navigation、charts、chart-colors、timeseries、custom-chart。23 份 docs 与各自唯一的 Default scenario 均保持当前 EXTRA 真值，不重写 chart API、数据、视觉或交互；Recharts 与 sample 作为图表本身的相关依赖允许只存在于 charts closure。只新增最小 charts family 与 contract test，并修改 manifest/生成产物、build graph、legacy/loader/page、catalog index、旧 monolith及直接相关 truth/source/scenario/UiCatalog tests；不得修改 package 生产组件/API/CSS/tokens、其它 family 或 owner、CATALOG/page status、依赖/lock、App routes。迁移后 manifest 必须恰好覆盖全部 84 Ready owner，继续保持 84 Ready / 12 Planned、首页 87 卡；逐项锁定 23 份 docs 的 description、usage、variants、API、provenance、implementationSource及 23 个 scenario 的顺序、ID、title、render、raw code不漂移。冷 Line、Charts、CustomChart 只加载 charts content family及其相关图表依赖，不请求 legacy、其它 content family或四个旧 monolith；Maps/unknown继续 0 heavy。运行 content generate 后连续两次 check、API双 check、focused truth/generator/loader/UiCatalog/build graph、typecheck、Biome、4-worker全量、coverage与 production build；coverage不低于 `97.13 / 95.53 / 95.89 / 97.32`，所有 JS <500,000 B且 0 warning。只做一个绿色原子提交，不进入 D072i cleanup；提交后停止等待验收。 |
+| D080 | S2B4b-h / D072h | `abfed19` | Codex | 完成 | `b3faea1` | charts family 精确迁移 line、bar、area、donut、sparkline、gauge、stat-card、palette、slot-bar、grouped-bar、stacked-bar、heatmap-calendar、radar、funnel、bullet、timeline、sankey、item-list、date-navigation、charts、chart-colors、timeseries、custom-chart 23 个 owner；主提交 15 个授权文件、+351/−226，manifest 达到全部 84 Ready owner，SHA-256 为 `03050b696063abb6ce1a40d1ffcc37fc8c99d0ea6b074c65fab7fae271867828`。Codex 以 `a1063b4` 旧真值逐项证明 23 份 docs、23 个 Default scenario 及归一化 render 不漂移；双 generator 均在 generate 后连续两次 check。focused 15 files / 304 tests、typecheck、Biome 533 files、日常全量 131 files / 1119 tests 与 coverage 全绿，coverage 保持 `97.13 / 95.53 / 95.89 / 97.32`。Production build 2,936 modules，charts content 4.58 kB、最大 JS 349.94 kB，所有 JS <500,000 B 且 0 warning；冷 Line、Charts、CustomChart 只请求 `charts-CmS92ME6.js`，Maps/unknown 为 0 family 与 0 sample 请求，五条均 HTTP 200 且 console/page/request/response failures 为 0。临时 7010 已清理，7003/PID 73541 保持运行；无需 review-fix，D072i 尚未开始。 |
+
+| D081 | S2B4b-i / D072i | `b3faea1` | Codex | 执行中 | — | 只完成最终清理与 S2B4b 总门：删除已空的 `catalog-ready.tsx`、`kumo-examples.tsx`、`docs.ts`、`demos.tsx` 及不可达 `catalog-content-legacy.ts`，移除所有直接 import、兼容测试和 ready loader fallback；loader 对 84 Ready 必须全部经 generated slug→family manifest，Planned/missing 仍在任何 family import 前返回。抽取 loader 与 `/ui` 共用的 lazy family registry；索引页并行取得 7 个 family record 后，把 docs/hero 映射交给保持纯逻辑的 `createCatalogIndex`，不得为首页另写 family switch、slug allowlist或静态 family imports。页面继续精确保持 `60 / 24 / 3`、87 卡、84 Ready、3 Planned、84 个真实 hero与 17 个 HOME_DEMOS override；详情 hero/API/Copy page、快速切换和 84 / 12 page status不漂移。允许修改最小 contract/registry/loader/index/page及直接相关 generator、truth、UiCatalog和 build graph tests；禁止修改 package生产组件/API/CSS/tokens、任何 family record/example、CATALOG inventory、依赖/lock、App routes或进入 S3。运行 content/page-status generate 后各连续两次 check、API双 check、focused manifest/loader/index/page/build tests、typecheck、Biome、日常全量、coverage与 production build；普通测试不启动 Chromium。build graph必须证明五个已删文件在全产物中不存在、冷详情仍按 family隔离，`/ui`只在自身 route加载 7 family；所有 JS <500,000 B且 0 warning。最后只做一次最小浏览器总验收：`/ui`、七个 family代表、Maps、unknown与 Copy page均正确、无应用故障；完成后关闭 S2B4b并进入 S3 MVP，不在本切片重做七轮迁移验收。 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
