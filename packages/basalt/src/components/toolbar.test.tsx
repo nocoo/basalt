@@ -82,4 +82,55 @@ describe("Toolbar", () => {
 		fireEvent.keyDown(input, { key: "ArrowRight" });
 		expect(screen.getByRole("button", { name: "Save" })).toHaveFocus();
 	});
+
+	it("keeps caret motion inside a filled input", () => {
+		render(
+			<Toolbar aria-label="Record tools">
+				<Toolbar.Input aria-label="Query" defaultValue="ab" />
+				<Toolbar.Button>Save</Toolbar.Button>
+			</Toolbar>,
+		);
+		const input = screen.getByRole("textbox", { name: "Query" }) as HTMLInputElement;
+		input.focus();
+		input.setSelectionRange(1, 1);
+		fireEvent.keyDown(input, { key: "ArrowLeft" });
+		expect(input).toHaveFocus();
+		input.setSelectionRange(1, 1);
+		fireEvent.keyDown(input, { key: "ArrowRight" });
+		expect(input).toHaveFocus();
+	});
+
+	it("wraps arrow focus from the last button", () => {
+		render(
+			<Toolbar aria-label="Record tools">
+				<Toolbar.Button>Upload</Toolbar.Button>
+				<Toolbar.Button>Download</Toolbar.Button>
+			</Toolbar>,
+		);
+		const upload = screen.getByRole("button", { name: "Upload" });
+		const download = screen.getByRole("button", { name: "Download" });
+		download.focus();
+		fireEvent.keyDown(download, { key: "ArrowRight" });
+		expect(upload).toHaveFocus();
+		fireEvent.keyDown(upload, { key: "Home" });
+		expect(upload).toHaveFocus();
+	});
+
+	it("honors a prevented keydown", () => {
+		render(
+			<Toolbar
+				aria-label="Record tools"
+				onKeyDown={(event) => {
+					event.preventDefault();
+				}}
+			>
+				<Toolbar.Button>Upload</Toolbar.Button>
+				<Toolbar.Button>Download</Toolbar.Button>
+			</Toolbar>,
+		);
+		const upload = screen.getByRole("button", { name: "Upload" });
+		upload.focus();
+		fireEvent.keyDown(upload, { key: "ArrowRight" });
+		expect(upload).toHaveFocus();
+	});
 });

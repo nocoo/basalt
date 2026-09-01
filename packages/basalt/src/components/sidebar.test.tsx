@@ -165,10 +165,27 @@ describe("Sidebar", () => {
 				<Sidebar>Nav</Sidebar>
 			</SidebarProvider>,
 		);
-		fireEvent.keyDown(screen.getByRole("separator", { name: "Resize sidebar" }), {
-			key: "ArrowRight",
-		});
+		const handle = screen.getByRole("separator", { name: "Resize sidebar" });
+		fireEvent.keyDown(handle, { key: "ArrowRight" });
 		expect(screen.getByText("Nav")).toHaveStyle({ width: "268px" });
+		fireEvent.keyDown(handle, { key: "ArrowLeft" });
+		expect(screen.getByText("Nav")).toHaveStyle({ width: "260px" });
+		fireEvent.keyDown(handle, { key: "Home" });
+		expect(screen.getByText("Nav")).toHaveStyle({ width: "260px" });
+	});
+
+	it("clears resize listeners on cancel", () => {
+		HTMLElement.prototype.setPointerCapture = vi.fn();
+		render(
+			<SidebarProvider defaultWidth={260}>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		const handle = screen.getByRole("separator", { name: "Resize sidebar" });
+		fireEvent.pointerDown(handle, { clientX: 260, pointerId: 1 });
+		fireEvent.pointerCancel(handle);
+		fireEvent.pointerMove(handle, { clientX: 320 });
+		expect(screen.getByText("Nav")).toHaveStyle({ width: "260px" });
 	});
 
 	it("throws useSidebar outside a provider", () => {

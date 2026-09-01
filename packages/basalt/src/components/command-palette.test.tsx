@@ -8,6 +8,8 @@ import {
 	CommandList,
 	CommandPalette,
 	CommandPaletteTrigger,
+	CommandSeparator,
+	CommandShortcut,
 } from "./command-palette";
 
 describe("CommandPalette", () => {
@@ -91,5 +93,22 @@ describe("CommandPalette", () => {
 		fireEvent.keyDown(document, { key: "Escape" });
 		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 		expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
+	});
+
+	it("renders shortcut and separator chrome", () => {
+		render(
+			<CommandPalette open>
+				<CommandInput />
+				<CommandList>
+					<CommandItem>
+						Save
+						<CommandShortcut className="kbd">⌘S</CommandShortcut>
+					</CommandItem>
+					<CommandSeparator className="rule" />
+				</CommandList>
+			</CommandPalette>,
+		);
+		expect(screen.getByText("⌘S")).toHaveClass("kbd");
+		expect(screen.getByText("⌘S").parentElement?.nextElementSibling).toHaveClass("rule");
 	});
 });
