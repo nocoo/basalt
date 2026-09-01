@@ -37,7 +37,6 @@ import {
 	AlertDialogTrigger,
 } from "@nocoo/basalt/components/alert-dialog";
 import { AppHeader } from "@nocoo/basalt/components/app-header";
-import { Autocomplete } from "@nocoo/basalt/components/autocomplete";
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
@@ -50,7 +49,6 @@ import {
 	CollapsibleContent,
 	CollapsibleTrigger,
 } from "@nocoo/basalt/components/collapsible";
-import { Combobox } from "@nocoo/basalt/components/combobox";
 import {
 	CommandEmpty,
 	CommandGroup,
@@ -66,7 +64,6 @@ import {
 	ContextMenuTrigger,
 } from "@nocoo/basalt/components/context-menu";
 import { DataTable } from "@nocoo/basalt/components/data-table";
-import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import {
 	Dialog,
 	DialogClose,
@@ -105,7 +102,6 @@ import {
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@nocoo/basalt/components/sheet";
 import { ContentIsland, Sidebar, SidebarItem } from "@nocoo/basalt/components/sidebar";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
-import { Slider } from "@nocoo/basalt/components/slider";
 import {
 	Table,
 	TableBody,
@@ -117,8 +113,6 @@ import {
 import { TableOfContents, TableOfContentsItem } from "@nocoo/basalt/components/table-of-contents";
 import { Tabs, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { toast } from "@nocoo/basalt/components/toast";
-import { Toggle } from "@nocoo/basalt/components/toggle";
-import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
 import { AlertTriangle, CircleAlert, Info, Plus, Search, X } from "lucide-react";
 import { type ComponentType, useState } from "react";
@@ -414,25 +408,6 @@ export default function Example() {
 		</Tabs>
 	);
 }`,
-);
-add(
-	"slider",
-	"Range slider.",
-	() => <Slider defaultValue={[40]} aria-label="Volume" />,
-	"<Slider />",
-);
-add("toggle", "Pressed toggle.", () => <Toggle aria-label="Bold">B</Toggle>, "<Toggle>B</Toggle>");
-add(
-	"toggle-group",
-	"Segmented tabs for switching a compact set of modes.",
-	() => (
-		<ToggleGroup type="single" defaultValue="live" aria-label="Mode">
-			<ToggleGroupItem value="live">Live</ToggleGroupItem>
-			<ToggleGroupItem value="mock">Mock</ToggleGroupItem>
-			<ToggleGroupItem value="snapshot">Snapshot</ToggleGroupItem>
-		</ToggleGroup>
-	),
-	'<ToggleGroup type="single" defaultValue="live"><ToggleGroupItem value="live">Live</ToggleGroupItem></ToggleGroup>',
 );
 function PaginationHeroDemo() {
 	const [page, setPage] = useState(1);
@@ -897,43 +872,6 @@ add(
 		</ContextMenu>
 	),
 	"<ContextMenu />",
-);
-add(
-	"combobox",
-	"Searchable select.",
-	() => <Combobox items={["Apple", "Banana"]} placeholder="Select…" />,
-	'<Combobox items={["Apple", "Banana"]} placeholder="Select…" />',
-	[
-		{ name: "items", type: "string[]" },
-		{ name: "value", type: "string" },
-		{ name: "defaultValue", type: "string" },
-		{ name: "onValueChange", type: "(value: string) => void" },
-		{ name: "name", type: "string" },
-		{ name: "placeholder", type: "string" },
-	],
-	`import { Combobox } from "@nocoo/basalt/components/combobox";
-
-export default function Example() {
-	return <Combobox items={["Apple", "Banana"]} placeholder="Select…" />;
-}`,
-);
-add(
-	"autocomplete",
-	"Typeahead list.",
-	() => <Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />,
-	'<Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />',
-);
-add(
-	"date-picker",
-	"Pick a date.",
-	() => <DatePicker aria-label="Date" />,
-	'<DatePicker aria-label="Date" />',
-	undefined,
-	`import { DatePicker } from "@nocoo/basalt/components/date-picker";
-
-export default function Example() {
-	return <DatePicker aria-label="Date" />;
-}`,
 );
 function CommandPaletteDemo() {
 	const [open, setOpen] = useState(false);

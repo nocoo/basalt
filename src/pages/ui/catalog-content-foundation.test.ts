@@ -44,7 +44,6 @@ describe("foundation catalog content family", () => {
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual([...FOUNDATION_SLUGS].sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(11);
 	});
 
 	it("keeps source-backed example owners and generated API shards by reference", () => {

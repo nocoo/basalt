@@ -61,25 +61,37 @@ describe("catalog page content loader", () => {
 		expect(loadLegacy).not.toHaveBeenCalled();
 	});
 
+	it("loads forms family content without the legacy adapter", async () => {
+		const { loadCatalogPageContent } = await importLoader();
+		const first = loadCatalogPageContent("input-group");
+		expect(loadCatalogPageContent("input-group")).toBe(first);
+		const content = await first;
+		expect(content?.docs.description).toBe(
+			"Compose an input with addons, an inline suffix, and status icons.",
+		);
+		expect(content?.examples[0]?.id).toBe("input-group-inline-suffix");
+		expect(loadLegacy).not.toHaveBeenCalled();
+	});
+
 	it("loads unmigrated ready content once from the legacy adapter", async () => {
 		const examples = [example];
 		loadLegacy.mockResolvedValue({ docs, examples });
 		const { loadCatalogPageContent } = await importLoader();
-		const first = loadCatalogPageContent("input");
-		expect(loadCatalogPageContent("input")).toBe(first);
+		const first = loadCatalogPageContent("tooltip");
+		expect(loadCatalogPageContent("tooltip")).toBe(first);
 		await expect(first).resolves.toEqual({ docs, examples });
 		expect(loadLegacy).toHaveBeenCalledTimes(1);
-		expect(loadLegacy).toHaveBeenCalledWith("input");
+		expect(loadLegacy).toHaveBeenCalledWith("tooltip");
 	});
 
 	it("rejects ready content when docs or examples[0] is absent", async () => {
 		loadLegacy.mockResolvedValueOnce({ examples: [example] }).mockResolvedValueOnce({ docs });
 		const { loadCatalogPageContent } = await importLoader();
-		await expect(loadCatalogPageContent("input")).rejects.toThrow(
-			'Ready catalog page "input" is missing docs.',
+		await expect(loadCatalogPageContent("tooltip")).rejects.toThrow(
+			'Ready catalog page "tooltip" is missing docs.',
 		);
-		await expect(loadCatalogPageContent("checkbox")).rejects.toThrow(
-			'Ready catalog page "checkbox" is missing examples[0].',
+		await expect(loadCatalogPageContent("dialog")).rejects.toThrow(
+			'Ready catalog page "dialog" is missing examples[0].',
 		);
 	});
 });

@@ -12,7 +12,7 @@ import {
 
 describe("catalog content family manifest", () => {
 	it("discovers family files from disk without a handwritten family allowlist", () => {
-		expect(listCatalogFamilyFiles(process.cwd())).toEqual(["foundation.tsx"]);
+		expect(listCatalogFamilyFiles(process.cwd())).toEqual(["forms.tsx", "foundation.tsx"]);
 		expect(familyIdFromFile("foundation.tsx")).toBe("foundation");
 		expect(GENERATE_COMMAND).toBe("bun run catalog-content:generate");
 	});

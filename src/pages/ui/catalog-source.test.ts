@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { CATALOG_BY_SLUG } from "./catalog";
+import forms from "./catalog-content/families/forms";
 import foundation from "./catalog-content/families/foundation";
 import {
 	catalogDocsWithImplementation,
@@ -175,7 +176,7 @@ describe("catalog source contract", () => {
 		expect(foundation["basalt-mark"]?.docs.api).toEqual(CATALOG_API["basalt-mark"]);
 		expect(CATALOG_API["basalt-mark"]?.[0]?.props.map((prop) => prop.name)).toEqual(["className"]);
 		expect(implementationFileFor(entry("field"))).toBe("packages/basalt/src/components/field.tsx");
-		expect(CATALOG_DOCS.field?.api).toEqual(CATALOG_API.field);
+		expect(forms.field?.docs.api).toEqual(CATALOG_API.field);
 		expect(CATALOG_API.field?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"label",
 			"htmlFor",
@@ -185,17 +186,17 @@ describe("catalog source contract", () => {
 			"children",
 		]);
 		expect(implementationFileFor(entry("input"))).toBe("packages/basalt/src/components/input.tsx");
-		expect(CATALOG_DOCS.input?.api).toEqual(CATALOG_API.input);
+		expect(forms.input?.docs.api).toEqual(CATALOG_API.input);
 		expect(CATALOG_API.input?.[0]?.props.map((prop) => prop.name)).toEqual(["type"]);
 		expect(implementationFileFor(entry("input-area"))).toBe(
 			"packages/basalt/src/components/input-area.tsx",
 		);
-		expect(CATALOG_DOCS["input-area"]?.api).toEqual(CATALOG_API["input-area"]);
+		expect(forms["input-area"]?.docs.api).toEqual(CATALOG_API["input-area"]);
 		expect(CATALOG_API["input-area"]?.[0]?.props.map((prop) => prop.name)).toEqual(["rows"]);
 		expect(implementationFileFor(entry("sensitive-input"))).toBe(
 			"packages/basalt/src/components/sensitive-input.tsx",
 		);
-		expect(CATALOG_DOCS["sensitive-input"]?.api).toEqual(CATALOG_API["sensitive-input"]);
+		expect(forms["sensitive-input"]?.docs.api).toEqual(CATALOG_API["sensitive-input"]);
 		expect(CATALOG_API["sensitive-input"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"revealLabel",
 			"hideLabel",
@@ -203,20 +204,20 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("checkbox"))).toBe(
 			"packages/basalt/src/components/checkbox.tsx",
 		);
-		expect(CATALOG_DOCS.checkbox?.api).toEqual(CATALOG_API.checkbox);
+		expect(forms.checkbox?.docs.api).toEqual(CATALOG_API.checkbox);
 		expect(CATALOG_API.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked"]);
 		expect(implementationFileFor(entry("radio"))).toBe("packages/basalt/src/components/radio.tsx");
-		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
+		expect(forms.radio?.docs.api).toEqual(CATALOG_API.radio);
 		expect(CATALOG_API.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
 		expect(implementationFileFor(entry("switch"))).toBe(
 			"packages/basalt/src/components/switch.tsx",
 		);
-		expect(CATALOG_DOCS.switch?.api).toEqual(CATALOG_API.switch);
+		expect(forms.switch?.docs.api).toEqual(CATALOG_API.switch);
 		expect(CATALOG_API.switch?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
 		expect(implementationFileFor(entry("select"))).toBe(
 			"packages/basalt/src/components/select.tsx",
 		);
-		expect(CATALOG_DOCS.select?.api).toEqual(CATALOG_API.select);
+		expect(forms.select?.docs.api).toEqual(CATALOG_API.select);
 		expect(CATALOG_API.select?.map((surface) => surface.name)).toEqual([
 			"Select",
 			"SelectTrigger",
@@ -283,21 +284,7 @@ describe("catalog source contract", () => {
 				expect(Array.isArray(surface.props), slug).toBe(true);
 			}
 		}
-		const generated = [
-			"tooltip",
-			"field",
-			"input",
-			"input-area",
-			"input-group",
-			"sensitive-input",
-			"checkbox",
-			"radio",
-			"switch",
-			"select",
-		];
-		for (const slug of generated) {
-			expect(CATALOG_DOCS[slug]?.api).toBe(CATALOG_API[slug as keyof typeof CATALOG_API]);
-		}
+		expect(CATALOG_DOCS.tooltip?.api).toBe(CATALOG_API.tooltip);
 		for (const slug of [
 			"button",
 			"link-button",
@@ -311,26 +298,39 @@ describe("catalog source contract", () => {
 		]) {
 			expect(foundation[slug]?.docs.api).toBe(CATALOG_API[slug as keyof typeof CATALOG_API]);
 		}
-		expect(CATALOG_DOCS["input-group"]?.api).toHaveLength(5);
-		expect(CATALOG_DOCS["input-group"]?.api.map((surface) => surface.name)).toEqual([
+		for (const slug of [
+			"field",
+			"input",
+			"input-area",
+			"input-group",
+			"sensitive-input",
+			"checkbox",
+			"radio",
+			"switch",
+			"select",
+		]) {
+			expect(forms[slug]?.docs.api).toBe(CATALOG_API[slug as keyof typeof CATALOG_API]);
+		}
+		expect(forms["input-group"]?.docs.api).toHaveLength(5);
+		expect(forms["input-group"]?.docs.api.map((surface) => surface.name)).toEqual([
 			"InputGroup",
 			"InputGroup.Input",
 			"InputGroup.Addon",
 			"InputGroup.Button",
 			"InputGroup.Suffix",
 		]);
-		expect(CATALOG_DOCS["sensitive-input"]?.api).toHaveLength(1);
-		expect(CATALOG_DOCS["sensitive-input"]?.api.map((surface) => surface.name)).toEqual([
+		expect(forms["sensitive-input"]?.docs.api).toHaveLength(1);
+		expect(forms["sensitive-input"]?.docs.api.map((surface) => surface.name)).toEqual([
 			"SensitiveInput",
 		]);
-		expect(CATALOG_DOCS.checkbox?.api).toHaveLength(1);
-		expect(CATALOG_DOCS.checkbox?.api.map((surface) => surface.name)).toEqual(["Checkbox"]);
-		expect(CATALOG_DOCS.radio?.api).toHaveLength(1);
-		expect(CATALOG_DOCS.radio?.api.map((surface) => surface.name)).toEqual(["Radio"]);
-		expect(CATALOG_DOCS.switch?.api).toHaveLength(1);
-		expect(CATALOG_DOCS.switch?.api.map((surface) => surface.name)).toEqual(["Switch"]);
-		expect(CATALOG_DOCS.select?.api).toHaveLength(6);
-		expect(CATALOG_DOCS.select?.api.map((surface) => surface.name)).toEqual([
+		expect(forms.checkbox?.docs.api).toHaveLength(1);
+		expect(forms.checkbox?.docs.api.map((surface) => surface.name)).toEqual(["Checkbox"]);
+		expect(forms.radio?.docs.api).toHaveLength(1);
+		expect(forms.radio?.docs.api.map((surface) => surface.name)).toEqual(["Radio"]);
+		expect(forms.switch?.docs.api).toHaveLength(1);
+		expect(forms.switch?.docs.api.map((surface) => surface.name)).toEqual(["Switch"]);
+		expect(forms.select?.docs.api).toHaveLength(6);
+		expect(forms.select?.docs.api.map((surface) => surface.name)).toEqual([
 			"Select",
 			"SelectTrigger",
 			"SelectValue",

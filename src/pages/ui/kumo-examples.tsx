@@ -7,7 +7,6 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@nocoo/basalt/components/alert-dialog";
-import { Autocomplete } from "@nocoo/basalt/components/autocomplete";
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
@@ -28,7 +27,6 @@ import {
 	CommandList,
 	CommandPalette,
 } from "@nocoo/basalt/components/command-palette";
-import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import {
 	Dialog,
 	DialogClose,
@@ -66,7 +64,6 @@ import {
 	SelectValue,
 } from "@nocoo/basalt/components/select";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
-import { Slider } from "@nocoo/basalt/components/slider";
 import {
 	Table,
 	TableBody,
@@ -79,7 +76,6 @@ import { TableOfContents, TableOfContentsItem } from "@nocoo/basalt/components/t
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { Text } from "@nocoo/basalt/components/text";
 import { toast } from "@nocoo/basalt/components/toast";
-import { Toggle } from "@nocoo/basalt/components/toggle";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
 import { AlertTriangle, Check, CircleAlert, Inbox, Info, Plus, Search, X } from "lucide-react";
 import { type ReactNode, useState } from "react";
@@ -509,28 +505,6 @@ export const KUMO_EXAMPLES: Record<string, CatalogScenario[]> = {
 					<SkeletonLine className="h-8" minWidth={90} maxWidth={100} />
 				</div>
 			),
-		},
-	],
-	combobox: [
-		{
-			id: catalogScenarioId("combobox", "searchable-select-with-placeholder"),
-			title: "Searchable Select with Placeholder",
-			code: '<Combobox items={["Apple", "Banana"]} placeholder="Select…" />',
-			render: () => <Combobox items={["Apple", "Banana"]} placeholder="Select…" />,
-		},
-		{
-			id: catalogScenarioId("combobox", "disabled"),
-			title: "Disabled",
-			code: '<Combobox disabled items={["Apple"]} placeholder="Disabled" />',
-			render: () => <Combobox disabled items={["Apple"]} placeholder="Disabled" />,
-		},
-	],
-	autocomplete: [
-		{
-			id: catalogScenarioId("autocomplete", "default"),
-			title: "Default",
-			code: '<Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />',
-			render: () => <Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />,
 		},
 	],
 	tabs: [
@@ -1438,52 +1412,6 @@ export function Counter() {
 					<AvatarFallback>ZL</AvatarFallback>
 				</Avatar>
 			),
-		},
-	],
-	slider: [
-		{
-			id: catalogScenarioId("slider", "default"),
-			title: "Default",
-			code: '<Slider defaultValue={[40]} aria-label="Volume" />',
-			render: () => <Slider defaultValue={[40]} aria-label="Volume" />,
-		},
-		{
-			id: catalogScenarioId("slider", "disabled"),
-			title: "Disabled",
-			code: "<Slider disabled defaultValue={[40]} />",
-			render: () => <Slider disabled defaultValue={[40]} aria-label="Disabled volume" />,
-		},
-	],
-	toggle: [
-		{
-			id: catalogScenarioId("toggle", "default"),
-			title: "Default",
-			code: '<Toggle aria-label="Bold">B</Toggle>',
-			render: () => <Toggle aria-label="Bold">B</Toggle>,
-		},
-		{
-			id: catalogScenarioId("toggle", "sizes"),
-			title: "Sizes",
-			code: '<Toggle size="sm">B</Toggle>',
-			render: () => (
-				<Preview>
-					<Toggle size="sm" aria-label="Small bold">
-						B
-					</Toggle>
-					<Toggle aria-label="Default bold">B</Toggle>
-					<Toggle size="lg" aria-label="Large bold">
-						B
-					</Toggle>
-				</Preview>
-			),
-		},
-	],
-	"date-picker": [
-		{
-			id: catalogScenarioId("date-picker", "single-date-selection"),
-			title: "Single Date Selection",
-			code: '<DatePicker aria-label="Date" />',
-			render: () => <DatePicker aria-label="Date" />,
 		},
 	],
 	"command-palette": [

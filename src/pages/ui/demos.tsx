@@ -4,29 +4,11 @@ import { Text } from "@nocoo/basalt/components/text";
 import { AlertTriangle, CircleAlert, Info, X } from "lucide-react";
 import { EXTRA_EXAMPLES } from "./catalog-ready";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
-import { CHECKBOX_EXAMPLES } from "./examples/checkbox";
-import { FIELD_EXAMPLES } from "./examples/field";
-import { INPUT_EXAMPLES } from "./examples/input";
-import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
-import { INPUT_GROUP_EXAMPLES } from "./examples/input-group";
-import { RADIO_EXAMPLES } from "./examples/radio";
-import { SELECT_EXAMPLES } from "./examples/select";
-import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
-import { SWITCH_EXAMPLES } from "./examples/switch";
 import { TOOLTIP_EXAMPLES } from "./examples/tooltip";
 import { KUMO_EXAMPLES } from "./kumo-examples";
 
 const BASE_EXAMPLES: Record<string, CatalogScenario[]> = {
 	tooltip: TOOLTIP_EXAMPLES,
-	field: FIELD_EXAMPLES,
-	input: INPUT_EXAMPLES,
-	"input-area": INPUT_AREA_EXAMPLES,
-	"input-group": INPUT_GROUP_EXAMPLES,
-	"sensitive-input": SENSITIVE_INPUT_EXAMPLES,
-	checkbox: CHECKBOX_EXAMPLES,
-	radio: RADIO_EXAMPLES,
-	switch: SWITCH_EXAMPLES,
-	select: SELECT_EXAMPLES,
 	banner: [
 		{
 			id: catalogScenarioId("banner", "variants"),

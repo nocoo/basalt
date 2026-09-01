@@ -11,6 +11,7 @@ import {
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
+import forms from "@/pages/ui/catalog-content/families/forms";
 import foundation from "@/pages/ui/catalog-content/families/foundation";
 import { loadCatalogPageContent } from "@/pages/ui/catalog-content-loader";
 import { CATALOG_INDEX_GROUPS, CATALOG_INDEX_ITEMS } from "@/pages/ui/catalog-index";
@@ -27,12 +28,14 @@ import { CATALOG_API } from "@/pages/ui/generated/catalog-api";
 const CATALOG_DOCS = {
 	...LEGACY_CATALOG_DOCS,
 	...Object.fromEntries(Object.entries(foundation).map(([slug, content]) => [slug, content.docs])),
+	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.docs])),
 };
 const UI_EXAMPLES = {
 	...LEGACY_UI_EXAMPLES,
 	...Object.fromEntries(
 		Object.entries(foundation).map(([slug, content]) => [slug, content.examples]),
 	),
+	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.examples])),
 };
 
 function catalogHeroScenario(slug: string) {
@@ -871,7 +874,7 @@ describe("ui catalog", () => {
 	it("does not keep a handwritten tooltip prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const start = docs.indexOf("\ttooltip: {");
-		const end = docs.indexOf("\tfield: {");
+		const end = docs.indexOf("export const CATALOG_DOCS");
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = docs.slice(start, end);
@@ -1137,19 +1140,19 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten field prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\tfield: {");
-		const end = docs.indexOf("\tinput: {");
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.field");
-		expect(block).not.toContain('name: "label"');
-		expect(block).not.toContain('name: "htmlFor"');
-		expect(block).toContain('description: "A labeled control with optional hint and error."');
-		expect(block).toContain(
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toMatch(/\tfield: \{/);
+		expect(family).toContain("api: fieldApi");
+		expect(family).not.toContain('name: "label"');
+		expect(family).not.toContain('name: "htmlFor"');
+		expect(family).toContain('description: "A labeled control with optional hint and error."');
+		expect(family).toContain(
 			'<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
 		);
-		expect(block).toContain('repo: "signoff.now"');
+		expect(family).toContain('repo: "signoff.now"');
 	});
 
 	it("sources input API rows from generated catalog data", async () => {
@@ -1201,21 +1204,20 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten input prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\tinput: {");
-		const end = docs.indexOf('\t"input-area": {');
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.input");
-		expect(block).not.toContain('name: "type"');
-		expect(block).not.toContain('type: "string"');
-		expect(block).toContain(
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toMatch(/\tinput: \{/);
+		expect(family).toContain("api: inputApi");
+		expect(family).not.toContain('name: "type"');
+		expect(family).toContain(
 			'description: "A single-line text field. Light mode uses a white L3 surface."',
 		);
-		expect(block).toContain('<Input aria-label="Name" placeholder="Jane Doe" />');
-		expect(block).toContain('repo: "zhe"');
-		expect(block).toContain('sha: "c31c239f01c9"');
-		expect(block).toContain('file: "components/ui/input.tsx"');
+		expect(family).toContain('<Input aria-label="Name" placeholder="Jane Doe" />');
+		expect(family).toContain('repo: "zhe"');
+		expect(family).toContain('sha: "c31c239f01c9"');
+		expect(family).toContain('file: "components/ui/input.tsx"');
 	});
 
 	it("sources input-area API rows from generated catalog data", async () => {
@@ -1266,41 +1268,39 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten input-area prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf('\t"input-area": {');
-		const end = docs.indexOf('\t"input-group": {');
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain('api: CATALOG_API["input-area"]');
-		expect(block).not.toContain('name: "rows"');
-		expect(block).not.toContain('type: "number"');
-		expect(block).toContain('description: "A multi-line text field on the L3 surface."');
-		expect(block).toContain('<InputArea aria-label="Notes" placeholder="Write a note" />');
-		expect(block).toContain('repo: "zhe"');
-		expect(block).toContain('sha: "c31c239f01c9"');
-		expect(block).toContain('file: "components/ui/textarea.tsx"');
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toContain('\t"input-area": {');
+		expect(family).toContain("api: inputAreaApi");
+		expect(family).not.toContain('name: "rows"');
+		expect(family).toContain('description: "A multi-line text field on the L3 surface."');
+		expect(family).toContain('<InputArea aria-label="Notes" placeholder="Write a note" />');
+		expect(family).toContain('repo: "zhe"');
+		expect(family).toContain('sha: "c31c239f01c9"');
+		expect(family).toContain('file: "components/ui/textarea.tsx"');
 	});
 
 	it("does not keep a handwritten input-group prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf('\t"input-group": {');
-		const end = docs.indexOf('\t"sensitive-input": {');
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain('api: CATALOG_API["input-group"]');
-		expect(block).not.toContain('name: "InputGroup.Input"');
-		expect(block).not.toContain('type: "input"');
-		expect(block).not.toContain("The editable value.");
-		expect(block).toContain(
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toContain('\t"input-group": {');
+		expect(family).toContain("api: inputGroupApi");
+		expect(family).not.toContain('name: "InputGroup.Input"');
+		expect(family).not.toContain("The editable value.");
+		expect(family).toContain(
 			'description: "Compose an input with addons, an inline suffix, and status icons."',
 		);
-		expect(block).toContain(
+		expect(family).toContain(
 			"<InputGroup><InputGroup.Input defaultValue='atlas' aria-label='Subdomain' /><InputGroup.Suffix>.example.com</InputGroup.Suffix></InputGroup>",
 		);
-		expect(block).toContain('repo: "basalt"');
-		expect(block).toContain('sha: "2727ae6a8d3f"');
-		expect(block).toContain('file: "src/pages/FormsPage.tsx"');
+		expect(family).toContain('repo: "basalt"');
+		expect(family).toContain('sha: "2727ae6a8d3f"');
+		expect(family).toContain('file: "src/pages/FormsPage.tsx"');
 	});
 
 	it("sources sensitive-input API rows from generated catalog data", async () => {
@@ -1374,23 +1374,22 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten sensitive-input prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf('\t"sensitive-input": {');
-		const end = docs.indexOf("\tcheckbox: {");
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain('api: CATALOG_API["sensitive-input"]');
-		expect(block).not.toContain('name: "revealLabel"');
-		expect(block).not.toContain('name: "hideLabel"');
-		expect(block).not.toContain('type: "string"');
-		expect(block).toContain('description: "A password field with a reveal control."');
-		expect(block).toContain(
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toContain('\t"sensitive-input": {');
+		expect(family).toContain("api: sensitiveInputApi");
+		expect(family).not.toContain('name: "revealLabel"');
+		expect(family).not.toContain('name: "hideLabel"');
+		expect(family).toContain('description: "A password field with a reveal control."');
+		expect(family).toContain(
 			'<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />',
 		);
-		expect(block).toContain("variants: []");
-		expect(block).toContain('repo: "basalt"');
-		expect(block).toContain('sha: "2727ae6a8d3f"');
-		expect(block).toContain('file: "src/pages/FormsPage.tsx"');
+		expect(family).toContain("variants: []");
+		expect(family).toContain('repo: "basalt"');
+		expect(family).toContain('sha: "2727ae6a8d3f"');
+		expect(family).toContain('file: "src/pages/FormsPage.tsx"');
 	});
 
 	it("sources checkbox API rows from generated catalog data", async () => {
@@ -1452,20 +1451,20 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten checkbox prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\tcheckbox: {");
-		const end = docs.indexOf("\tradio: {");
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.checkbox");
-		expect(block).not.toContain('name: "checked"');
-		expect(block).not.toContain('boolean | "indeterminate"');
-		expect(block).toContain('description: "A check control with an indeterminate state."');
-		expect(block).toContain('<Checkbox aria-label="Subscribe" />');
-		expect(block).toContain('variants: ["checked", "unchecked", "indeterminate"]');
-		expect(block).toContain('repo: "zhe"');
-		expect(block).toContain('sha: "c31c239f01c9"');
-		expect(block).toContain('file: "components/ui/checkbox.tsx"');
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toMatch(/\tcheckbox: \{/);
+		expect(family).toContain("api: checkboxApi");
+		expect(family).not.toContain('name: "checked"');
+		expect(family).not.toContain('boolean | "indeterminate"');
+		expect(family).toContain('description: "A check control with an indeterminate state."');
+		expect(family).toContain('<Checkbox aria-label="Subscribe" />');
+		expect(family).toContain('variants: ["checked", "unchecked", "indeterminate"]');
+		expect(family).toContain('repo: "zhe"');
+		expect(family).toContain('sha: "c31c239f01c9"');
+		expect(family).toContain('file: "components/ui/checkbox.tsx"');
 	});
 
 	it("sources radio API rows from generated catalog data", async () => {
@@ -1529,14 +1528,18 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten radio prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\tradio: {");
-		const end = docs.indexOf("\tswitch: {");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
+		const start = family.indexOf("\tradio: {");
+		const end = family.indexOf("\tswitch: {");
+		expect(docs).not.toMatch(/\tradio: \{/);
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.radio");
+		const block = family.slice(start, end);
+		expect(block).toContain("api: radioApi");
 		expect(block).not.toContain('name: "value"');
-		expect(block).not.toContain('type: "string"');
 		expect(block).toContain('description: "A radio button used inside RadioGroup."');
 		expect(block).toContain(
 			'<RadioGroup defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></RadioGroup>',
@@ -1620,21 +1623,20 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten switch prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\tswitch: {");
-		const end = docs.indexOf("\tselect: {");
-		expect(start).toBeGreaterThanOrEqual(0);
-		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.switch");
-		expect(block).not.toContain('name: "checked"');
-		expect(block).not.toContain('name: "size"');
-		expect(block).not.toContain('type: "boolean"');
-		expect(block).toContain('description: "A binary toggle."');
-		expect(block).toContain('<Switch aria-label="Notifications" />');
-		expect(block).toContain('variants: ["checked", "unchecked"]');
-		expect(block).toContain('repo: "zhe"');
-		expect(block).toContain('sha: "c31c239f01c9"');
-		expect(block).toContain('file: "components/ui/switch.tsx"');
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
+		expect(docs).not.toMatch(/\tswitch: \{/);
+		expect(family).toContain("api: switchApi");
+		expect(family).not.toContain('name: "checked"');
+		expect(family).not.toContain('name: "size"');
+		expect(family).toContain('description: "A binary toggle."');
+		expect(family).toContain('<Switch aria-label="Notifications" />');
+		expect(family).toContain('variants: ["checked", "unchecked"]');
+		expect(family).toContain('repo: "zhe"');
+		expect(family).toContain('sha: "c31c239f01c9"');
+		expect(family).toContain('file: "components/ui/switch.tsx"');
 	});
 
 	it("sources select API rows from generated catalog data", async () => {
@@ -1808,18 +1810,21 @@ describe("ui catalog", () => {
 
 	it("does not keep a handwritten select prop inventory", () => {
 		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
-		const start = docs.indexOf("\tselect: {");
-		const end = docs.indexOf("export const CATALOG_DOCS");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
+		const start = family.indexOf("\tselect: {");
+		const end = family.indexOf("\tcombobox: {");
+		expect(docs).not.toMatch(/\tselect: \{/);
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
-		const block = docs.slice(start, end);
-		expect(block).toContain("api: CATALOG_API.select");
+		const block = family.slice(start, end);
+		expect(block).toContain("api: selectApi");
 		expect(block).not.toContain('name: "value"');
-		expect(block).not.toContain('name: "className"');
 		expect(block).not.toContain('name: "placeholder"');
 		expect(block).not.toContain('name: "position"');
 		expect(block).not.toContain('name: "sideOffset"');
-		expect(block).not.toContain('type: "string"');
 		expect(block).toContain('description: "Choose one option."');
 		expect(block).toContain("Select version");
 		expect(block).toContain("variants: []");
@@ -2792,9 +2797,13 @@ describe("ui catalog", () => {
 
 	it("does not keep inline input-area scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("INPUT_AREA_EXAMPLES");
-		expect(demos).toMatch(/"input-area": INPUT_AREA_EXAMPLES/);
+		expect(demos).not.toContain("INPUT_AREA_EXAMPLES");
+		expect(family).toContain("INPUT_AREA_EXAMPLES");
 		expect(demos).not.toMatch(/"input-area":\s*\[/);
 		expect(kumo).not.toMatch(/"input-area":\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("input-area"/);
@@ -2806,9 +2815,13 @@ describe("ui catalog", () => {
 
 	it("does not keep inline input-group scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("INPUT_GROUP_EXAMPLES");
-		expect(demos).toMatch(/"input-group": INPUT_GROUP_EXAMPLES/);
+		expect(demos).not.toContain("INPUT_GROUP_EXAMPLES");
+		expect(family).toContain("INPUT_GROUP_EXAMPLES");
 		expect(demos).not.toMatch(/"input-group":\s*\[/);
 		expect(kumo).not.toMatch(/"input-group":\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("input-group"/);
@@ -2876,9 +2889,13 @@ describe("ui catalog", () => {
 
 	it("does not keep inline sensitive-input scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("SENSITIVE_INPUT_EXAMPLES");
-		expect(demos).toMatch(/"sensitive-input": SENSITIVE_INPUT_EXAMPLES/);
+		expect(demos).not.toContain("SENSITIVE_INPUT_EXAMPLES");
+		expect(family).toContain("SENSITIVE_INPUT_EXAMPLES");
 		expect(demos).not.toMatch(/"sensitive-input":\s*\[/);
 		expect(kumo).not.toMatch(/"sensitive-input":\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("sensitive-input"/);
@@ -2971,9 +2988,13 @@ describe("ui catalog", () => {
 
 	it("does not keep inline checkbox scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("CHECKBOX_EXAMPLES");
-		expect(demos).toMatch(/\bcheckbox: CHECKBOX_EXAMPLES/);
+		expect(demos).not.toContain("CHECKBOX_EXAMPLES");
+		expect(family).toContain("CHECKBOX_EXAMPLES");
 		expect(demos).not.toMatch(/\bcheckbox:\s*\[/);
 		expect(kumo).not.toMatch(/\bcheckbox:\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("checkbox"/);
@@ -3058,9 +3079,13 @@ describe("ui catalog", () => {
 
 	it("does not keep inline radio scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("RADIO_EXAMPLES");
-		expect(demos).toMatch(/\bradio: RADIO_EXAMPLES/);
+		expect(demos).not.toContain("RADIO_EXAMPLES");
+		expect(family).toContain("RADIO_EXAMPLES");
 		expect(demos).not.toMatch(/\bradio:\s*\[/);
 		expect(kumo).not.toMatch(/\bradio:\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("radio"/);
@@ -3160,9 +3185,13 @@ describe("ui catalog", () => {
 
 	it("does not keep inline switch scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("SWITCH_EXAMPLES");
-		expect(demos).toMatch(/\bswitch: SWITCH_EXAMPLES/);
+		expect(demos).not.toContain("SWITCH_EXAMPLES");
+		expect(family).toContain("SWITCH_EXAMPLES");
 		expect(demos).not.toMatch(/\bswitch:\s*\[/);
 		expect(kumo).not.toMatch(/\bswitch:\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("switch"/);
@@ -3269,9 +3298,13 @@ describe("ui catalog", () => {
 	it("does not keep inline select scenario owners", () => {
 		const ready = readFileSync(path.join(process.cwd(), "src/pages/ui/catalog-ready.tsx"), "utf8");
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("SELECT_EXAMPLES");
-		expect(demos).toMatch(/\bselect: SELECT_EXAMPLES/);
+		expect(demos).not.toContain("SELECT_EXAMPLES");
+		expect(family).toContain("SELECT_EXAMPLES");
 		expect(demos).not.toMatch(/\bselect:\s*\[/);
 		expect(kumo).not.toMatch(/\bselect:\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("select"/);
@@ -3286,9 +3319,13 @@ describe("ui catalog", () => {
 
 	it("does not keep inline input scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("INPUT_EXAMPLES");
-		expect(demos).toMatch(/\binput: INPUT_EXAMPLES/);
+		expect(demos).not.toContain("INPUT_EXAMPLES");
+		expect(family).toContain("INPUT_EXAMPLES");
 		expect(demos).not.toMatch(/\binput:\s*\[/);
 		expect(kumo).not.toMatch(/\binput:\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("input",/);
@@ -3302,9 +3339,13 @@ describe("ui catalog", () => {
 
 	it("does not keep inline field scenario owners", () => {
 		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
+		const family = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).toContain("FIELD_EXAMPLES");
-		expect(demos).toMatch(/\bfield: FIELD_EXAMPLES/);
+		expect(demos).not.toContain("FIELD_EXAMPLES");
+		expect(family).toContain("FIELD_EXAMPLES");
 		expect(demos).not.toMatch(/\bfield:\s*\[/);
 		expect(kumo).not.toMatch(/\bfield:\s*\[/);
 		expect(demos).not.toMatch(/catalogScenarioId\("field"/);

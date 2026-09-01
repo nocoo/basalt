@@ -204,5 +204,44 @@ describe("application route build boundary", () => {
 			),
 			"button family closure contains another family",
 		).toBe(false);
+
+		const forms = chunks.find((chunk) =>
+			chunk.modules.some((id) => id.endsWith("/src/pages/ui/catalog-content/families/forms.tsx")),
+		);
+		expect(forms).toBeDefined();
+		const formsFiles = new Set<string>();
+		const visitForms = (chunk: BuiltChunk | undefined) => {
+			if (!chunk || formsFiles.has(chunk.fileName)) return;
+			formsFiles.add(chunk.fileName);
+			for (const imported of chunk.imports) visitForms(chunksByFile.get(imported));
+		};
+		visitForms(forms);
+		const formsModules = chunks
+			.filter((chunk) => formsFiles.has(chunk.fileName))
+			.flatMap((chunk) => chunk.modules);
+		for (const suffix of [
+			"/src/pages/ui/catalog-content-legacy.ts",
+			"/src/pages/ui/catalog-ready.tsx",
+			"/src/pages/ui/kumo-examples.tsx",
+			"/src/pages/ui/docs.ts",
+			"/src/pages/ui/demos.tsx",
+			"/src/charts/sample.ts",
+			"/packages/basalt/src/charts/sample.ts",
+		]) {
+			expect(
+				formsModules.some((id) => id.endsWith(suffix)),
+				`input-group family closure contains ${suffix}`,
+			).toBe(false);
+		}
+		expect(
+			formsModules.some((id) => /recharts/i.test(id)),
+			"input-group family closure contains recharts",
+		).toBe(false);
+		expect(
+			formsModules.some((id) =>
+				/catalog-content\/families\/(foundation|overlay|charts)\.tsx$/.test(id),
+			),
+			"input-group family closure contains another family",
+		).toBe(false);
 	});
 });
