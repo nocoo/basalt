@@ -1,7 +1,7 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中
-> 当前切片：S3 已完成；下一切片尚未规划
+> 当前切片：S4A D089 — Text MVP；契约已冻结，等待通过 Herdr 下发
 > 当前实现真值：`6eed42f`（D088 TablePager MVP；S3 七个 MVP 全部完成）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
@@ -132,7 +132,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 完成（`eeb8c43`） | 不再平铺 88 个等权方块；placeholder 不可达 |
 | S3 | 通用组合地基 | 完成（S3A D082、S3B D083、S3C D084、S3D D085、S3E D086、S3F D087、S3G D088） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
-| S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
+| S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 执行中（S4A D089 Text MVP 契约已冻结；其余待办） | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 待办 | 泛型、group/multiple/loading/error/range + browser 门完整 |
 | S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 待办 | compound、焦点、键盘、mobile、resize/scroll 状态完整 |
 | S7 | Table/DataTable、TOC、Code、Flow、Grid、Pagination | 待办 | 数据与内容控件覆盖实际产品场景 |
@@ -790,6 +790,16 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
 - Select：single/multiple、typed items、groups、disabled item/group、custom rendering、loading、长列表。
 - Combobox/Autocomplete：不能再是 `string[]` + alias；定义可解释的共同 core 与不同交互契约。
 - DatePicker：保留现有 locale/timezone/min/max/表单优点，增加 multiple/range/presets/disabled-date policy。
+
+1. **S4A / D089 — Text MVP（契约冻结；尚未下发；实现真值基线 `6eed42f`，规划前基线 `3457c7e`）。** 把当前永远渲染 `<p>`、只有 `size/tone` 且仍标为 catalog-only 的 Text 收敛为可发布的 stable typography primitive；只借鉴 Kumo `1159868dfe32` 的视觉与语义解耦，不复制 deprecated `heading1/2/3`、危险样式逃生口或其完整条件泛型。`TextVariant` 精确为 `"body" | "heading" | "mono"`，`TextSize` 保留现有 `"xs" | "sm" | "md" | "lg" | "xl"`，`TextTone` 保留现有 `"default" | "muted"`；`TextElement` 只允许 `h1`–`h6`、`p`、`span`、`label`、`dt`、`dd`、`li`、`figcaption`、`legend`、`pre`、`code`、`em`、`strong`、`small`、`abbr`、`time`，拒绝任意 ComponentType、`div/section/button/a/input` 等非文字出口。`TextProps` 的本地公开项精确为 `variant`、`size`、`tone`、`as`、`bold`、`truncate`；继续接收共同 HTML attributes、children/className/style/events/ARIA，并把 ref 落到实际渲染的 `HTMLElement`，但这些继承项不得进入组件专属 API 表。
+
+   `variant` 只控制视觉，不猜文档层级：body 默认 `<p>` + 现有 md，heading 默认 `<span>` + lg + semibold，mono 默认 `<span>` + sm + monospace；调用方必须通过 `as="h1"`–`as="h6"` 显式加入文档 outline，也可用 heading + span 表达装饰标题。显式 size 对三类 variant 都使用现有五档映射，不重命名 md 为 base、不改变现有 Sizes 场景字节或 computed 尺寸；tone 默认 default，muted 继续用现有 muted foreground。`bold` 默认 false，只增加 semibold；`truncate` 默认 false，只增加 `min-w-0 truncate`，不做多行 clamp、tooltip、title 推断或 resize 测量。调用方 className 继续最后合并；不得增加 success/error/info/warning tone、responsive size、weight 枚举、italic/alignment、text balance、asChild、链接行为或业务文案。
+
+   保留现有 `text-sizes / Sizes` 与 `text-muted-tone / Muted tone` 两份 source-backed module 的 ID、title、order、render、raw code 和 DOM/class 完全不变；恰好追加 `text-semantic-variants / Semantic variants` 与 `text-bold-and-truncate / Bold and truncate` 两份自包含 module。前者必须同时证明显式 `h2` heading、默认 body paragraph、inline body span 与 mono code；后者只证明 body bold 和固定窄容器内单行 ellipsis，不引入 JS 测量。Text docs 改为描述真实 polymorphic typography，variants 只列 body/heading/mono，usage 展示显式 heading element；provenance 精确指向 `cloudflare/kumo@1159868dfe32` 的 `packages/kumo/src/components/text/text.tsx`，implementation source 继续自然指向当前 Basalt。页面 hero 仍为 Sizes，四个 source-backed example、API 表和 Copy page 共用同一 owner/shard。
+
+   Text 加入 package root barrel，并把既有 CATALOG kind 从 catalog 改为 stable；不得新增 catalog item、route 或 family。最终 CATALOG、Components/Charts/Blocks、Ready/Planned、首页分别保持 `101`、`65 / 24 / 3`、`89 / 12`、`92`，全 catalog release bucket 只允许 stable `30→31`、catalog `71→70`；foundation 保持 12 owner、scenario `32→34`。API generator 仍为 25 shard / 42 targets，只把 Text shard 从 `size/tone` 更新为源码真值顺序 `variant/size/tone/as/bold/truncate`，不得手写第二份 prop inventory、泄漏 HTML attributes 或改其它 24 shard。package build/types/pack 必须证明 root 与 granular 产物、Bundler/NodeNext 类型和 standalone CSS 都包含 Text；catalog index release filter 必须证明它已进入 stable。现有 HomeGrid/Link/Separator/provider 对 Text 的消费不得漂移，本刀不迁移 app 页面中手写的 heading/paragraph，统一自消费留 S9。
+
+   只允许修改 Text 实现/单测、root barrel/测试、Text 的两份新增 example 与 index、CATALOG kind、foundation docs/测试、API generator 测试及 generated Text/aggregate 产物、直接相关 catalog scenario/source/index/loader/Copy page/truth/build graph 测试和确定性 standalone 产物。不得修改其它 package 组件、既有两份 Text example 内容、tokens/手写 CSS、依赖/lock、routes、page-status/content manifest 真值、browser timeout、consumer harness 或 S4B 之后内容。测试必须覆盖默认 body/p/ref、heading 默认 span 与显式 h1–h6、mono span/code、五档 size、两档 tone、bold、truncate、class/HTML/ARIA/event 转发及非法 `as` 类型负门；证明旧两场景逐项不漂移、新两场景 render/raw 同源、stable filter、generated API/Copy page/root export 和 family 隔离。三套 generator 均 generate 后连续两次 check，再运行 Text/root、generator、foundation/scenario/source/index/loader/Copy page/build graph focused、typecheck、Biome、日常全量、coverage、showcase production build及 package build/types/pack；coverage 不得低于 D088，生成后工作树必须干净。普通开发门不运行 Chromium；只做一个绿色实现提交，建议 `feat: complete text mvp`，随后停止等待 Codex review。
 
 ### 6.6 S6 — Overlay、导航与 Sidebar
 
