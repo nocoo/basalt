@@ -9,6 +9,7 @@ import {
 	type RefObject,
 	useCallback,
 	useContext,
+	useLayoutEffect,
 	useRef,
 	useState,
 } from "react";
@@ -115,8 +116,10 @@ export function SidebarProvider({
 	) {
 		lastFocusRef.current = document.activeElement;
 	}
-	prevCollapsed.current = resolved;
-	prevOverlay.current = overlay;
+	useLayoutEffect(() => {
+		prevCollapsed.current = resolved;
+		prevOverlay.current = overlay;
+	});
 	const setCollapsed = useCallback(
 		(next: boolean) => {
 			if (!next && document.activeElement instanceof HTMLElement) {

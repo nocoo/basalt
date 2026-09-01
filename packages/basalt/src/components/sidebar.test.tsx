@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import {
 	ContentIsland,
@@ -128,20 +129,29 @@ describe("Sidebar", () => {
 	});
 
 	it("captures focus when overlay is enabled while expanded", () => {
-		const { rerender } = render(
-			<SidebarProvider overlay={false}>
-				<button type="button">Focus</button>
-				<Sidebar>Nav</Sidebar>
-			</SidebarProvider>,
-		);
-		screen.getByRole("button", { name: "Focus" }).focus();
-		rerender(
-			<SidebarProvider overlay>
-				<button type="button">Focus</button>
-				<Sidebar>Nav</Sidebar>
-			</SidebarProvider>,
-		);
+		let captured: HTMLElement | null = null;
+		function Probe() {
+			const [overlay, setOverlay] = useState(false);
+			function Read() {
+				captured = useSidebar().lastFocusRef.current;
+				return null;
+			}
+			return (
+				<SidebarProvider overlay={overlay}>
+					<Read />
+					<button type="button" onClick={() => setOverlay(true)}>
+						Focus
+					</button>
+					<Sidebar>Nav</Sidebar>
+				</SidebarProvider>
+			);
+		}
+		render(<Probe />);
+		const trigger = screen.getByRole("button", { name: "Focus" });
+		trigger.focus();
+		fireEvent.click(trigger);
 		expect(screen.getByRole("dialog", { name: "Sidebar" })).toBeInTheDocument();
+		expect(captured).toBe(trigger);
 	});
 
 	it("places overlay chrome on the right edge", () => {

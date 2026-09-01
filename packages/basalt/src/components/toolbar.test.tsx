@@ -120,6 +120,25 @@ describe("Toolbar", () => {
 		expect(upload).toHaveFocus();
 	});
 
+	it("restores a tab stop after the active control is disabled", () => {
+		const { rerender } = render(
+			<Toolbar aria-label="Record tools">
+				<Toolbar.Button>Upload</Toolbar.Button>
+				<Toolbar.Button>Download</Toolbar.Button>
+			</Toolbar>,
+		);
+		const upload = screen.getByRole("button", { name: "Upload" });
+		upload.focus();
+		expect(screen.getByRole("button", { name: "Download" }).tabIndex).toBe(-1);
+		rerender(
+			<Toolbar aria-label="Record tools">
+				<Toolbar.Button disabled>Upload</Toolbar.Button>
+				<Toolbar.Button>Download</Toolbar.Button>
+			</Toolbar>,
+		);
+		expect(screen.getByRole("button", { name: "Download" }).tabIndex).toBe(0);
+	});
+
 	it("honors a prevented keydown", () => {
 		render(
 			<Toolbar
