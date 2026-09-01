@@ -82,6 +82,7 @@ export {
 } from "./components/sidebar";
 export { StatStrip } from "./components/stat-strip";
 export { Switch } from "./components/switch";
+export { TablePager } from "./components/table-pager";
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/tabs";
 export { ThemeToggle } from "./components/theme-toggle";
 export { Toast, Toaster, toast } from "./components/toast";

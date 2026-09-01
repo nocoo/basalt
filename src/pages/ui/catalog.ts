@@ -163,6 +163,13 @@ export const CATALOG: CatalogEntry[] = [
 		category: "component",
 		navName: "Stat Strip",
 	},
+	{
+		slug: "table-pager",
+		name: "TablePager",
+		kind: "stable",
+		category: "component",
+		navName: "Table Pager",
+	},
 	{ slug: "theme-provider", name: "ThemeProvider", kind: "provider", category: "component" },
 	{ slug: "link-provider", name: "LinkProvider", kind: "provider", category: "component" },
 	{ slug: "installation", name: "Installation", kind: "catalog", category: "docs" },

@@ -63,6 +63,7 @@ export const CATALOG_PAGE_STATUS = {
 	sidebar: "ready",
 	flow: "ready",
 	"stat-strip": "ready",
+	"table-pager": "ready",
 	"theme-provider": "ready",
 	"link-provider": "ready",
 	installation: "planned",

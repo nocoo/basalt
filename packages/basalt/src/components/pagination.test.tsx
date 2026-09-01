@@ -70,4 +70,17 @@ describe("Pagination", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Next page" }));
 		expect(onPageChange).not.toHaveBeenCalled();
 	});
+
+	it("disables every control when disabled without changing default visuals", () => {
+		const onPageChange = vi.fn();
+		render(<Pagination page={3} pageCount={5} disabled onPageChange={onPageChange} />);
+		expect(screen.getByRole("navigation", { name: "Pagination" })).toHaveTextContent("3");
+		expect(screen.getByRole("button", { name: "First page" })).toBeDisabled();
+		expect(screen.getByRole("button", { name: "Previous page" })).toBeDisabled();
+		expect(screen.getByRole("button", { name: "Next page" })).toBeDisabled();
+		expect(screen.getByRole("button", { name: "Last page" })).toBeDisabled();
+		fireEvent.click(screen.getByRole("button", { name: "First page" }));
+		fireEvent.click(screen.getByRole("button", { name: "Next page" }));
+		expect(onPageChange).not.toHaveBeenCalled();
+	});
 });

@@ -26,6 +26,7 @@ describe("root barrel", () => {
 		expect(root.StatStrip).toBeTruthy();
 		expect(root.ConfirmDialog).toBeTruthy();
 		expect(root.useConfirm).toBeTypeOf("function");
+		expect(root.TablePager).toBeTruthy();
 	});
 
 	it("omits unapproved layout names from the frozen root surface", () => {

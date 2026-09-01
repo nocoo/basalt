@@ -179,6 +179,12 @@ const paginationDocs = extraDocs(
 			default: "false",
 			description: "Previous and next only.",
 		},
+		{
+			name: "disabled",
+			type: "boolean",
+			default: "false",
+			description: "Disable every pagination control.",
+		},
 	],
 	`import { Pagination } from "@nocoo/basalt/components/pagination";
 import { useState } from "react";

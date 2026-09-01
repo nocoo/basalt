@@ -18,8 +18,10 @@ import {
 } from "../../catalog-source";
 import { PAGE_HEADER_EXAMPLES } from "../../examples/page-header";
 import { STAT_STRIP_EXAMPLES } from "../../examples/stat-strip";
+import { TABLE_PAGER_EXAMPLES } from "../../examples/table-pager";
 import { API as pageHeaderApi } from "../../generated/catalog-api/page-header";
 import { API as statStripApi } from "../../generated/catalog-api/stat-strip";
+import { API as tablePagerApi } from "../../generated/catalog-api/table-pager";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
 	repo: "pew",
@@ -324,5 +326,23 @@ export default function Example() {
 			}),
 		},
 		examples: STAT_STRIP_EXAMPLES,
+	},
+	"table-pager": {
+		docs: {
+			description: "A table footer that pairs a result range with page controls.",
+			usage: `import { TablePager } from "@nocoo/basalt/components/table-pager";
+
+export default function Example() {
+	return <TablePager page={page} pageSize={10} totalCount={47} onPageChange={setPage} />;
+}`,
+			variants: [],
+			api: tablePagerApi,
+			provenance: provenanceFromLegacy({
+				repo: "pika",
+				sha: "d9b12caf26a4",
+				file: "packages/web/src/components/ui/data-table-pagination.tsx",
+			}),
+		},
+		examples: TABLE_PAGER_EXAMPLES,
 	},
 });

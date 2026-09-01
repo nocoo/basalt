@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 import dataLayout from "./catalog-content/families/data-layout";
 import { PAGE_HEADER_EXAMPLES } from "./examples/page-header";
 import { STAT_STRIP_EXAMPLES } from "./examples/stat-strip";
+import { TABLE_PAGER_EXAMPLES } from "./examples/table-pager";
 import { API as pageHeaderApi } from "./generated/catalog-api/page-header";
 import { API as statStripApi } from "./generated/catalog-api/stat-strip";
+import { API as tablePagerApi } from "./generated/catalog-api/table-pager";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
 const DATA_LAYOUT_SCENARIOS = {
@@ -13,6 +15,7 @@ const DATA_LAYOUT_SCENARIOS = {
 	flow: ["flow-sequential-flow"],
 	"page-header": ["page-header-default", "page-header-long-responsive-content"],
 	"stat-strip": ["stat-strip-overview", "stat-strip-loading-values"],
+	"table-pager": ["table-pager-range-navigation", "table-pager-disabled-and-localized"],
 } as const;
 
 const DATA_LAYOUT_DESCRIPTIONS = {
@@ -25,19 +28,19 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 } as const;
 
 describe("data-layout catalog content family", () => {
-	it("owns exactly six slugs and eighty-seven generated owners", () => {
+	it("owns exactly seven slugs and eighty-nine generated owners", () => {
 		expect(Object.keys(dataLayout)).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS));
-		expect(Object.keys(dataLayout)).toHaveLength(6);
+		expect(Object.keys(dataLayout)).toHaveLength(7);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "data-layout")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(88);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(89);
 	});
 
-	it("keeps the nine final winner scenarios in their audited order", () => {
+	it("keeps the eleven final winner scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(DATA_LAYOUT_SCENARIOS)) {
 			const examples = dataLayout[slug]?.examples ?? [];
@@ -56,7 +59,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(9);
+		expect(count).toBe(11);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {
@@ -114,6 +117,28 @@ describe("data-layout catalog content family", () => {
 		expect(dataLayout["stat-strip"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
 			{ id: "stat-strip-overview", title: "Overview" },
 			{ id: "stat-strip-loading-values", title: "Loading values" },
+		]);
+		expect(dataLayout["table-pager"]?.examples).toBe(TABLE_PAGER_EXAMPLES);
+		expect(dataLayout["table-pager"]?.docs.api).toBe(tablePagerApi);
+		expect(dataLayout["table-pager"]?.docs).toMatchObject({
+			description: "A table footer that pairs a result range with page controls.",
+			variants: [],
+			provenance: {
+				owner: "nocoo",
+				repo: "pika",
+				ref: "d9b12caf26a4",
+				file: "packages/web/src/components/ui/data-table-pagination.tsx",
+			},
+			implementationSource: {
+				owner: "nocoo",
+				repo: "basalt",
+				ref: "main",
+				file: "packages/basalt/src/components/table-pager.tsx",
+			},
+		});
+		expect(dataLayout["table-pager"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "table-pager-range-navigation", title: "Range navigation" },
+			{ id: "table-pager-disabled-and-localized", title: "Disabled and localized" },
 		]);
 	});
 });

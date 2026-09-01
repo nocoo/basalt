@@ -78,6 +78,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	switch: "forms",
 	table: "data-layout",
 	"table-of-contents": "navigation",
+	"table-pager": "data-layout",
 	tabs: "navigation",
 	text: "foundation",
 	"theme-provider": "foundation",

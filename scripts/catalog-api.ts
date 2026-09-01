@@ -285,6 +285,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "UseConfirmOptions",
 		surface: "useConfirm",
 	},
+	{
+		slug: "table-pager",
+		sourceFile: "packages/basalt/src/components/table-pager.tsx",
+		propsType: "TablePagerProps",
+		surface: "TablePager",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

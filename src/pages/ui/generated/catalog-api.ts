@@ -21,6 +21,7 @@ import { API as sensitiveInputApi } from "./catalog-api/sensitive-input";
 import { API as separatorApi } from "./catalog-api/separator";
 import { API as statStripApi } from "./catalog-api/stat-strip";
 import { API as switchApi } from "./catalog-api/switch";
+import { API as tablePagerApi } from "./catalog-api/table-pager";
 import { API as textApi } from "./catalog-api/text";
 import { API as themeToggleApi } from "./catalog-api/theme-toggle";
 import { API as tooltipApi } from "./catalog-api/tooltip";
@@ -47,6 +48,7 @@ export const CATALOG_API = {
 	separator: separatorApi,
 	"stat-strip": statStripApi,
 	switch: switchApi,
+	"table-pager": tablePagerApi,
 	text: textApi,
 	"theme-toggle": themeToggleApi,
 	tooltip: tooltipApi,

@@ -77,22 +77,22 @@ describe("ui catalog", () => {
 
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(100);
-		expect(new Set(slugs).size).toBe(100);
+		expect(slugs).toHaveLength(101);
+		expect(new Set(slugs).size).toBe(101);
 	});
 
 	it("renders the categorized index with orthogonal release and page states", () => {
 		renderCatalog("/ui");
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Component library" })).toBeInTheDocument();
-		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("88 / 91 ready");
+		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("89 / 92 ready");
 
 		for (const [index, group] of CATALOG_INDEX_GROUPS.entries()) {
 			const section = screen.getByRole("region", { name: group.label });
 			expect(within(section).getByText(`${group.items.length} items`)).toBeInTheDocument();
-			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([64, 24, 3][index]);
+			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([65, 24, 3][index]);
 		}
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(91);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(92);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
 
@@ -195,7 +195,7 @@ describe("ui catalog", () => {
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
 		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("88 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("89 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",
@@ -218,8 +218,8 @@ describe("ui catalog", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: "Reset filters" }));
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveFocus();
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("91 results");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(91);
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("92 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(92);
 		expect(screen.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
@@ -334,6 +334,10 @@ describe("ui catalog", () => {
 			expect(docs.implementationSource.repo, slug).not.toMatch(/^(meowth|pika)$/);
 			if (slug === "confirm-dialog") {
 				expect(docs.provenance?.repo, slug).toBe("meowth");
+				continue;
+			}
+			if (slug === "table-pager") {
+				expect(docs.provenance?.repo, slug).toBe("pika");
 				continue;
 			}
 			expect(docs.provenance?.repo, slug).not.toMatch(/^(meowth|pika)$/);
@@ -1079,6 +1083,73 @@ describe("ui catalog", () => {
 		expect(markdown).toContain("- onConfirm (() => void | Promise<void>, required, default —)");
 		expect(markdown).toContain("- title (React.ReactNode, required, default —)");
 		for (const scenario of UI_EXAMPLES["confirm-dialog"] ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).not.toContain("- children (");
+	});
+
+	it("keeps TablePager docs, generated API, source examples, and Copy page aligned", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		const docs = CATALOG_DOCS["table-pager"];
+		expect(docs?.api).toBe(CATALOG_API["table-pager"]);
+		expect(docs).toMatchObject({
+			description: "A table footer that pairs a result range with page controls.",
+			variants: [],
+		});
+		expect(CATALOG_API["table-pager"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"page",
+			"pageSize",
+			"totalCount",
+			"onPageChange",
+			"disabled",
+			"formatRange",
+			"className",
+		]);
+		expect(UI_EXAMPLES["table-pager"]?.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "table-pager-range-navigation", title: "Range navigation" },
+			{ id: "table-pager-disabled-and-localized", title: "Disabled and localized" },
+		]);
+
+		renderCatalog("/ui/table-pager");
+		const api = document.getElementById("api-reference");
+		expect(api?.querySelectorAll("h3").length).toBe(1);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(7);
+		const hero = document.querySelector('[data-hero-scenario="table-pager-range-navigation"]');
+		expect(hero).toBeTruthy();
+		if (!hero) {
+			throw new Error("missing TablePager hero");
+		}
+		expect(within(hero as HTMLElement).getByText("Showing 11–20 of 47")).toBeInTheDocument();
+		const localized = document.querySelector(
+			'[data-scenario="table-pager-disabled-and-localized"]',
+		);
+		expect(localized).toBeTruthy();
+		if (!localized) {
+			throw new Error("missing TablePager localized example");
+		}
+		expect(
+			within(localized as HTMLElement).getByText("Showing 1,001–2,000 of 1,234,567"),
+		).toBeInTheDocument();
+		expect(
+			within(localized as HTMLElement).getByRole("button", { name: "Next page" }),
+		).toBeDisabled();
+		for (const scenario of UI_EXAMPLES["table-pager"] ?? []) {
+			expect(scenario.code).toContain("@nocoo/basalt/components/table-pager");
+			expect(scenario.code).toContain("export default function");
+			expect(document.querySelector(`[data-scenario="${scenario.id}"]`)).toBeTruthy();
+		}
+
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### TablePager");
+		expect(markdown).toContain("- page (number, required, default —)");
+		expect(markdown).toContain(
+			"- formatRange ((range: TablePagerRange) => React.ReactNode, optional, default —)",
+		);
+		for (const scenario of UI_EXAMPLES["table-pager"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
 		expect(markdown).not.toContain("- children (");

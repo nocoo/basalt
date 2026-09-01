@@ -152,6 +152,18 @@ describe("catalog source contract", () => {
 			"ConfirmDialog",
 			"useConfirm",
 		]);
+		expect(implementationFileFor(entry("table-pager"))).toBe(
+			"packages/basalt/src/components/table-pager.tsx",
+		);
+		expect(CATALOG_API["table-pager"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"page",
+			"pageSize",
+			"totalCount",
+			"onPageChange",
+			"disabled",
+			"formatRange",
+			"className",
+		]);
 		expect(implementationFileFor(entry("link-button"))).toBe(
 			"packages/basalt/src/components/button.tsx",
 		);

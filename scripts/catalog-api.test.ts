@@ -368,8 +368,14 @@ describe("catalog API generator contract", () => {
 				propsType: "UseConfirmOptions",
 				surface: "useConfirm",
 			},
+			{
+				slug: "table-pager",
+				sourceFile: "packages/basalt/src/components/table-pager.tsx",
+				propsType: "TablePagerProps",
+				surface: "TablePager",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(41);
+		expect(CATALOG_API_TARGETS).toHaveLength(42);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -398,6 +404,7 @@ describe("catalog API generator contract", () => {
 		expect(source).not.toMatch(/\bif\s*\([^)]*PageHeader|\bswitch\s*\([^)]*page-header/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*StatStrip|\bswitch\s*\([^)]*stat-strip/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*ConfirmDialog|\bswitch\s*\([^)]*confirm-dialog/);
+		expect(source).not.toMatch(/\bif\s*\([^)]*TablePager|\bswitch\s*\([^)]*table-pager/);
 	});
 
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
@@ -425,6 +432,7 @@ describe("catalog API generator contract", () => {
 			"page-header",
 			"stat-strip",
 			"confirm-dialog",
+			"table-pager",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -1196,6 +1204,7 @@ export interface WidgetProps {
 			"page-header": ["PageHeader"],
 			"stat-strip": ["StatStrip"],
 			"confirm-dialog": ["ConfirmDialog", "useConfirm"],
+			"table-pager": ["TablePager"],
 			select: [
 				"Select",
 				"SelectTrigger",
@@ -1213,7 +1222,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(24);
+		expect(Object.keys(generated)).toHaveLength(25);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1314,7 +1323,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(24);
+		expect(Object.keys(generated)).toHaveLength(25);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1414,7 +1423,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(24);
+		expect(Object.keys(generated)).toHaveLength(25);
 		expect(generated.checkbox).toEqual([
 			{
 				name: "Checkbox",
@@ -1493,7 +1502,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(24);
+		expect(Object.keys(generated)).toHaveLength(25);
 		expect(generated.radio).toEqual([
 			{
 				name: "Radio",
@@ -1551,7 +1560,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(24);
+		expect(Object.keys(generated)).toHaveLength(25);
 		expect(generated.switch).toEqual([
 			{
 				name: "Switch",
@@ -1633,7 +1642,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(24);
+		expect(Object.keys(generated)).toHaveLength(25);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -1964,6 +1973,66 @@ export interface WidgetProps {
 				surface.props.some((prop) => prop.name === "className"),
 			),
 		).toBe(false);
+	}, 20_000);
+
+	it("extracts the TablePager surface without inherited DOM inventory", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated["table-pager"]).toEqual([
+			{
+				name: "TablePager",
+				props: [
+					{
+						name: "page",
+						type: "number",
+						required: true,
+						description: "1-based current page.",
+					},
+					{
+						name: "pageSize",
+						type: "number",
+						required: true,
+						description: "Number of rows on each page.",
+					},
+					{
+						name: "totalCount",
+						type: "number",
+						required: true,
+						description: "Total number of rows.",
+					},
+					{
+						name: "onPageChange",
+						type: "(page: number) => void",
+						required: true,
+						description: "Called with the next 1-based page.",
+					},
+					{
+						name: "disabled",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Disable every pagination control while keeping the range visible.",
+					},
+					{
+						name: "formatRange",
+						type: "(range: TablePagerRange) => React.ReactNode",
+						required: false,
+						description: "Replace the default range copy with a custom node.",
+					},
+					{
+						name: "className",
+						type: "string",
+						required: false,
+						description: "Additional classes for the pager bar.",
+					},
+				],
+			},
+		]);
+		expect(generated["table-pager"]?.[0]?.props.map((prop) => prop.name)).not.toContain("children");
+		expect(generated["table-pager"]?.[0]?.props.map((prop) => prop.name)).not.toContain("id");
 	}, 20_000);
 
 	it("aggregates multiple surfaces for the same slug in declaration order", () => {
@@ -2767,8 +2836,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(24);
-		expect(Object.keys(first)).toHaveLength(25);
+		expect(slugs).toHaveLength(25);
+		expect(Object.keys(first)).toHaveLength(26);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -2786,6 +2855,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "StatStrip"');
 		expect(joined).toContain('name: "ConfirmDialog"');
 		expect(joined).toContain('name: "useConfirm"');
+		expect(joined).toContain('name: "TablePager"');
 		expect(joined).toContain('name: "SensitiveInput"');
 		expect(joined).toContain('name: "Checkbox"');
 		expect(joined).toContain('name: "Radio"');
@@ -2803,7 +2873,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"44417ceac620ee98256b6cb7adb47a424a2d5d7bd3e384949a7ef213f00bb771",
+			"c564e5090add91ea194d8906c1ff968a4a7fe9c5106313b2d8ece7693732b85c",
 		);
 	}, 20_000);
 

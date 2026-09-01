@@ -14,18 +14,22 @@ export function Pagination({
 	pageCount = 10,
 	onPageChange,
 	simple = false,
+	disabled = false,
 	className,
 }: {
 	page: number;
 	pageCount?: number;
 	onPageChange?: (page: number) => void;
 	simple?: boolean;
+	disabled?: boolean;
 	className?: string;
 }) {
 	const last = Math.max(1, pageCount);
 	const current = Math.min(last, Math.max(1, page));
 	const atStart = current <= 1;
 	const atEnd = current >= last;
+	const startDisabled = disabled || atStart;
+	const endDisabled = disabled || atEnd;
 
 	return (
 		<nav aria-label="Pagination" className={className}>
@@ -45,7 +49,7 @@ export function Pagination({
 						icon={<ChevronsLeft />}
 						className={itemClass}
 						aria-label="First page"
-						disabled={atStart}
+						disabled={startDisabled}
 						onClick={() => onPageChange?.(1)}
 					/>
 				)}
@@ -55,7 +59,7 @@ export function Pagination({
 					icon={<ChevronLeft />}
 					className={itemClass}
 					aria-label="Previous page"
-					disabled={atStart}
+					disabled={startDisabled}
 					onClick={() => onPageChange?.(Math.max(1, current - 1))}
 				/>
 				{simple ? null : (
@@ -72,7 +76,7 @@ export function Pagination({
 					icon={<ChevronRight />}
 					className={itemClass}
 					aria-label="Next page"
-					disabled={atEnd}
+					disabled={endDisabled}
 					onClick={() => onPageChange?.(Math.min(last, current + 1))}
 				/>
 				{simple ? null : (
@@ -82,7 +86,7 @@ export function Pagination({
 						icon={<ChevronsRight />}
 						className={itemClass}
 						aria-label="Last page"
-						disabled={atEnd}
+						disabled={endDisabled}
 						onClick={() => onPageChange?.(last)}
 					/>
 				)}

@@ -33,10 +33,10 @@ describe("catalog page content loader", () => {
 		expect(source).not.toMatch(/const\s+\w+Promise\s*=\s*loadCatalogContentFamily/);
 	});
 
-	it("uses the generated 88 ready / 12 planned status truth", () => {
+	it("uses the generated 89 ready / 12 planned status truth", () => {
 		const statuses = CATALOG.map((entry) => catalogPageStatus(entry.slug));
-		expect(statuses).toHaveLength(100);
-		expect(statuses.filter((status) => status === "ready")).toHaveLength(88);
+		expect(statuses).toHaveLength(101);
+		expect(statuses.filter((status) => status === "ready")).toHaveLength(89);
 		expect(statuses.filter((status) => status === "planned")).toHaveLength(12);
 	});
 
@@ -150,6 +150,17 @@ describe("catalog page content loader", () => {
 		expect(content?.examples.map((example) => example.id)).toEqual([
 			"stat-strip-overview",
 			"stat-strip-loading-values",
+		]);
+		expect(loadFamily).toHaveBeenCalledWith("data-layout");
+	});
+
+	it("loads the TablePager owner from data-layout", async () => {
+		const { loadCatalogPageContent } = await importLoader();
+		const content = await loadCatalogPageContent("table-pager");
+		expect(content?.docs.api[0]?.name).toBe("TablePager");
+		expect(content?.examples.map((example) => example.id)).toEqual([
+			"table-pager-range-navigation",
+			"table-pager-disabled-and-localized",
 		]);
 		expect(loadFamily).toHaveBeenCalledWith("data-layout");
 	});

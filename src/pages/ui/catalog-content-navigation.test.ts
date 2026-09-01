@@ -44,7 +44,7 @@ describe("navigation catalog content family", () => {
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(NAVIGATION_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(88);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(89);
 	});
 
 	it("keeps the seventeen final winner scenarios in their audited order", () => {
@@ -94,6 +94,7 @@ describe("navigation catalog content family", () => {
 			"pageCount",
 			"onPageChange",
 			"simple",
+			"disabled",
 		]);
 	});
 });

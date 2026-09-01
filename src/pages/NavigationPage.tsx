@@ -1,6 +1,7 @@
 import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
 import { Pagination } from "@nocoo/basalt/components/pagination";
+import { TablePager } from "@nocoo/basalt/components/table-pager";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import {
 	CheckCircle2,
@@ -192,14 +193,23 @@ export default function NavigationPage() {
 							{t("pages.navigation.withContext")}
 						</p>
 						<div className="rounded-widget border border-border bg-card p-4">
-							<div className="flex items-center justify-between">
-								<p className="text-xs text-muted-foreground">
-									{t("common.showing")} <span className="font-medium text-foreground">41-50</span>{" "}
-									{t("common.of")} <span className="font-medium text-foreground">200</span>{" "}
-									{t("common.results")}
-								</p>
-								<Pagination page={page2} pageCount={20} onPageChange={setPage2} />
-							</div>
+							<TablePager
+								page={page2}
+								pageSize={10}
+								totalCount={200}
+								onPageChange={setPage2}
+								formatRange={({ start, end, totalCount }) => (
+									<>
+										{t("common.showing")}{" "}
+										<span className="font-medium text-foreground">
+											{start}-{end}
+										</span>{" "}
+										{t("common.of")}{" "}
+										<span className="font-medium text-foreground">{totalCount}</span>{" "}
+										{t("common.results")}
+									</>
+								)}
+							/>
 						</div>
 					</div>
 				</div>
