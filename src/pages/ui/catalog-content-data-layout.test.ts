@@ -1,7 +1,9 @@
 import { describe, expect, it } from "vitest";
 import dataLayout from "./catalog-content/families/data-layout";
 import { PAGE_HEADER_EXAMPLES } from "./examples/page-header";
+import { STAT_STRIP_EXAMPLES } from "./examples/stat-strip";
 import { API as pageHeaderApi } from "./generated/catalog-api/page-header";
+import { API as statStripApi } from "./generated/catalog-api/stat-strip";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
 const DATA_LAYOUT_SCENARIOS = {
@@ -10,6 +12,7 @@ const DATA_LAYOUT_SCENARIOS = {
 	grid: ["grid-grid"],
 	flow: ["flow-sequential-flow"],
 	"page-header": ["page-header-default", "page-header-long-responsive-content"],
+	"stat-strip": ["stat-strip-overview", "stat-strip-loading-values"],
 } as const;
 
 const DATA_LAYOUT_DESCRIPTIONS = {
@@ -22,19 +25,19 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 } as const;
 
 describe("data-layout catalog content family", () => {
-	it("owns exactly five migrated slugs and eighty-six generated owners", () => {
+	it("owns exactly six slugs and eighty-seven generated owners", () => {
 		expect(Object.keys(dataLayout)).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS));
-		expect(Object.keys(dataLayout)).toHaveLength(5);
+		expect(Object.keys(dataLayout)).toHaveLength(6);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "data-layout")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(86);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(87);
 	});
 
-	it("keeps the seven final winner scenarios in their audited order", () => {
+	it("keeps the nine final winner scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(DATA_LAYOUT_SCENARIOS)) {
 			const examples = dataLayout[slug]?.examples ?? [];
@@ -53,7 +56,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(7);
+		expect(count).toBe(9);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {
@@ -88,6 +91,29 @@ describe("data-layout catalog content family", () => {
 		expect(dataLayout["page-header"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
 			{ id: "page-header-default", title: "Default" },
 			{ id: "page-header-long-responsive-content", title: "Long responsive content" },
+		]);
+		expect(dataLayout["stat-strip"]?.examples).toBe(STAT_STRIP_EXAMPLES);
+		expect(dataLayout["stat-strip"]?.docs.api).toBe(statStripApi);
+		expect(dataLayout["stat-strip"]?.docs).toMatchObject({
+			description:
+				"A responsive definition list of labelled values for page or dashboard overviews.",
+			variants: [],
+			provenance: {
+				owner: "nocoo",
+				repo: "ai-arsenal",
+				ref: "78114d43df59",
+				file: "src/components/ui/page-header.tsx",
+			},
+			implementationSource: {
+				owner: "nocoo",
+				repo: "basalt",
+				ref: "main",
+				file: "packages/basalt/src/components/stat-strip.tsx",
+			},
+		});
+		expect(dataLayout["stat-strip"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "stat-strip-overview", title: "Overview" },
+			{ id: "stat-strip-loading-values", title: "Loading values" },
 		]);
 	});
 });

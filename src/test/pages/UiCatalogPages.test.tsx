@@ -77,22 +77,22 @@ describe("ui catalog", () => {
 
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(98);
-		expect(new Set(slugs).size).toBe(98);
+		expect(slugs).toHaveLength(99);
+		expect(new Set(slugs).size).toBe(99);
 	});
 
 	it("renders the categorized index with orthogonal release and page states", () => {
 		renderCatalog("/ui");
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Component library" })).toBeInTheDocument();
-		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("86 / 89 ready");
+		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("87 / 90 ready");
 
 		for (const [index, group] of CATALOG_INDEX_GROUPS.entries()) {
 			const section = screen.getByRole("region", { name: group.label });
 			expect(within(section).getByText(`${group.items.length} items`)).toBeInTheDocument();
-			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([62, 24, 3][index]);
+			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([63, 24, 3][index]);
 		}
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(89);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(90);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
 
@@ -195,7 +195,7 @@ describe("ui catalog", () => {
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
 		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("86 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("87 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",
@@ -218,8 +218,8 @@ describe("ui catalog", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: "Reset filters" }));
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveFocus();
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("89 results");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(89);
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("90 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(90);
 		expect(screen.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
@@ -960,6 +960,62 @@ describe("ui catalog", () => {
 			expect(markdown).toContain(scenario.code);
 		}
 		expect(markdown).not.toContain("- className (");
+		expect(markdown).not.toContain("- children (");
+	});
+
+	it("keeps StatStrip docs, generated API, source examples, and Copy page aligned", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		const docs = CATALOG_DOCS["stat-strip"];
+		expect(docs?.api).toBe(CATALOG_API["stat-strip"]);
+		expect(docs).toMatchObject({
+			description:
+				"A responsive definition list of labelled values for page or dashboard overviews.",
+			variants: [],
+		});
+		expect(CATALOG_API["stat-strip"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"className",
+			"items",
+			"loading",
+		]);
+		expect(UI_EXAMPLES["stat-strip"]?.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "stat-strip-overview", title: "Overview" },
+			{ id: "stat-strip-loading-values", title: "Loading values" },
+		]);
+
+		renderCatalog("/ui/stat-strip");
+		const api = document.getElementById("api-reference");
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(3);
+		const hero = document.querySelector('[data-hero-scenario="stat-strip-overview"]');
+		expect(hero).toBeTruthy();
+		if (!hero) {
+			throw new Error("missing StatStrip hero");
+		}
+		expect(within(hero as HTMLElement).getByText("Projects")).toBeInTheDocument();
+		expect(within(hero as HTMLElement).getByText("24")).toBeInTheDocument();
+		const loading = document.querySelector('[data-scenario="stat-strip-loading-values"]');
+		expect(loading).toBeTruthy();
+		if (!loading) {
+			throw new Error("missing StatStrip loading example");
+		}
+		expect(loading.querySelector("dl")).toHaveAttribute("aria-busy", "true");
+		expect(within(loading as HTMLElement).queryByText("24")).toBeNull();
+		for (const scenario of UI_EXAMPLES["stat-strip"] ?? []) {
+			expect(scenario.code).toContain("@nocoo/basalt/components/stat-strip");
+			expect(scenario.code).toContain("export default function");
+			expect(document.querySelector(`[data-scenario="${scenario.id}"]`)).toBeTruthy();
+		}
+
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### StatStrip");
+		expect(markdown).toContain("- items (StatStripItem[], required, default —)");
+		expect(markdown).toContain("- loading (boolean, optional, default false)");
+		for (const scenario of UI_EXAMPLES["stat-strip"] ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
 		expect(markdown).not.toContain("- children (");
 	});
 

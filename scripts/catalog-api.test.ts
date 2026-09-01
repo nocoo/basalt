@@ -350,8 +350,14 @@ describe("catalog API generator contract", () => {
 				propsType: "PageHeaderProps",
 				surface: "PageHeader",
 			},
+			{
+				slug: "stat-strip",
+				sourceFile: "packages/basalt/src/components/stat-strip.tsx",
+				propsType: "StatStripProps",
+				surface: "StatStrip",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(38);
+		expect(CATALOG_API_TARGETS).toHaveLength(39);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -378,6 +384,7 @@ describe("catalog API generator contract", () => {
 		expect(source).not.toMatch(/\bif\s*\([^)]*ScrollArea|\bswitch\s*\([^)]*scroll-area/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*SegmentControl|\bswitch\s*\([^)]*segment-control/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*PageHeader|\bswitch\s*\([^)]*page-header/);
+		expect(source).not.toMatch(/\bif\s*\([^)]*StatStrip|\bswitch\s*\([^)]*stat-strip/);
 	});
 
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
@@ -403,6 +410,7 @@ describe("catalog API generator contract", () => {
 			"switch",
 			"segment-control",
 			"page-header",
+			"stat-strip",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -1172,6 +1180,7 @@ export interface WidgetProps {
 			switch: ["Switch"],
 			"segment-control": ["SegmentControl"],
 			"page-header": ["PageHeader"],
+			"stat-strip": ["StatStrip"],
 			select: [
 				"Select",
 				"SelectTrigger",
@@ -1189,7 +1198,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(22);
+		expect(Object.keys(generated)).toHaveLength(23);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1290,7 +1299,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(22);
+		expect(Object.keys(generated)).toHaveLength(23);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1390,7 +1399,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(22);
+		expect(Object.keys(generated)).toHaveLength(23);
 		expect(generated.checkbox).toEqual([
 			{
 				name: "Checkbox",
@@ -1469,7 +1478,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(22);
+		expect(Object.keys(generated)).toHaveLength(23);
 		expect(generated.radio).toEqual([
 			{
 				name: "Radio",
@@ -1527,7 +1536,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(22);
+		expect(Object.keys(generated)).toHaveLength(23);
 		expect(generated.switch).toEqual([
 			{
 				name: "Switch",
@@ -1609,7 +1618,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(22);
+		expect(Object.keys(generated)).toHaveLength(23);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -1864,6 +1873,42 @@ export interface WidgetProps {
 			"className",
 		);
 		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain("children");
+	}, 20_000);
+
+	it("extracts the StatStrip surface without inherited dl props", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated["stat-strip"]).toEqual([
+			{
+				name: "StatStrip",
+				props: [
+					{
+						name: "className",
+						type: "string",
+						required: false,
+						description: "Additional classes for the definition list.",
+					},
+					{
+						name: "items",
+						type: "StatStripItem[]",
+						required: true,
+						description: "The labelled values shown in the strip.",
+					},
+					{
+						name: "loading",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Replace each value with a skeleton while keeping labels visible.",
+					},
+				],
+			},
+		]);
+		expect(generated["stat-strip"]?.[0]?.props.map((prop) => prop.name)).not.toContain("children");
+		expect(generated["stat-strip"]?.[0]?.props.map((prop) => prop.name)).not.toContain("id");
 	}, 20_000);
 
 	it("aggregates multiple surfaces for the same slug in declaration order", () => {
@@ -2667,8 +2712,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(22);
-		expect(Object.keys(first)).toHaveLength(23);
+		expect(slugs).toHaveLength(23);
+		expect(Object.keys(first)).toHaveLength(24);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -2683,6 +2728,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "ScrollArea"');
 		expect(joined).toContain('name: "SegmentControl"');
 		expect(joined).toContain('name: "PageHeader"');
+		expect(joined).toContain('name: "StatStrip"');
 		expect(joined).toContain('name: "SensitiveInput"');
 		expect(joined).toContain('name: "Checkbox"');
 		expect(joined).toContain('name: "Radio"');
@@ -2700,7 +2746,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"fc52b241844dea088752e8a08b075e20cf7d0617979389fbe163bf0abe854a00",
+			"5387de09719d59788a2020f5451783b64036947b781e8d96dc989df099e80408",
 		);
 	}, 20_000);
 

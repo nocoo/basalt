@@ -137,6 +137,14 @@ describe("catalog source contract", () => {
 			"breadcrumbs",
 			"actions",
 		]);
+		expect(implementationFileFor(entry("stat-strip"))).toBe(
+			"packages/basalt/src/components/stat-strip.tsx",
+		);
+		expect(CATALOG_API["stat-strip"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"className",
+			"items",
+			"loading",
+		]);
 		expect(implementationFileFor(entry("link-button"))).toBe(
 			"packages/basalt/src/components/button.tsx",
 		);

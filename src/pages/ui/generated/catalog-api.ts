@@ -18,6 +18,7 @@ import { API as segmentControlApi } from "./catalog-api/segment-control";
 import { API as selectApi } from "./catalog-api/select";
 import { API as sensitiveInputApi } from "./catalog-api/sensitive-input";
 import { API as separatorApi } from "./catalog-api/separator";
+import { API as statStripApi } from "./catalog-api/stat-strip";
 import { API as switchApi } from "./catalog-api/switch";
 import { API as textApi } from "./catalog-api/text";
 import { API as themeToggleApi } from "./catalog-api/theme-toggle";
@@ -42,6 +43,7 @@ export const CATALOG_API = {
 	select: selectApi,
 	"sensitive-input": sensitiveInputApi,
 	separator: separatorApi,
+	"stat-strip": statStripApi,
 	switch: switchApi,
 	text: textApi,
 	"theme-toggle": themeToggleApi,

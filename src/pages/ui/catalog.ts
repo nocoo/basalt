@@ -149,6 +149,13 @@ export const CATALOG: CatalogEntry[] = [
 	{ slug: "grid", name: "Grid", kind: "catalog", category: "component" },
 	{ slug: "sidebar", name: "Sidebar", kind: "stable", category: "component" },
 	{ slug: "flow", name: "Flow", kind: "catalog", category: "component" },
+	{
+		slug: "stat-strip",
+		name: "StatStrip",
+		kind: "stable",
+		category: "component",
+		navName: "Stat Strip",
+	},
 	{ slug: "theme-provider", name: "ThemeProvider", kind: "provider", category: "component" },
 	{ slug: "link-provider", name: "LinkProvider", kind: "provider", category: "component" },
 	{ slug: "installation", name: "Installation", kind: "catalog", category: "docs" },

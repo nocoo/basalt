@@ -23,6 +23,7 @@ describe("root barrel", () => {
 		expect(root.LinkProvider).toBeTruthy();
 		expect(root.ScrollArea).toBeTruthy();
 		expect(root.SegmentControl).toBeTruthy();
+		expect(root.StatStrip).toBeTruthy();
 	});
 
 	it("omits unapproved layout names from the frozen root surface", () => {

@@ -17,7 +17,9 @@ import {
 	provenanceFromLegacy,
 } from "../../catalog-source";
 import { PAGE_HEADER_EXAMPLES } from "../../examples/page-header";
+import { STAT_STRIP_EXAMPLES } from "../../examples/stat-strip";
 import { API as pageHeaderApi } from "../../generated/catalog-api/page-header";
+import { API as statStripApi } from "../../generated/catalog-api/stat-strip";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
 	repo: "pew",
@@ -303,5 +305,24 @@ export default function Example() {
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: PAGE_HEADER_EXAMPLES,
+	},
+	"stat-strip": {
+		docs: {
+			description:
+				"A responsive definition list of labelled values for page or dashboard overviews.",
+			usage: `import { StatStrip } from "@nocoo/basalt/components/stat-strip";
+
+export default function Example() {
+	return <StatStrip items={[{ label: "Projects", value: "24" }]} />;
+}`,
+			variants: [],
+			api: statStripApi,
+			provenance: provenanceFromLegacy({
+				repo: "ai-arsenal",
+				sha: "78114d43df59",
+				file: "src/components/ui/page-header.tsx",
+			}),
+		},
+		examples: STAT_STRIP_EXAMPLES,
 	},
 });

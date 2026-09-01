@@ -73,6 +73,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	sparkline: "charts",
 	"stacked-bar": "charts",
 	"stat-card": "charts",
+	"stat-strip": "data-layout",
 	switch: "forms",
 	table: "data-layout",
 	"table-of-contents": "navigation",

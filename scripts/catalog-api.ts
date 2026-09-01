@@ -267,6 +267,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "PageHeaderProps",
 		surface: "PageHeader",
 	},
+	{
+		slug: "stat-strip",
+		sourceFile: "packages/basalt/src/components/stat-strip.tsx",
+		propsType: "StatStripProps",
+		surface: "StatStrip",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

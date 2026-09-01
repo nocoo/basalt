@@ -86,7 +86,7 @@ describe("feedback catalog content family", () => {
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "overlay"),
 		).toHaveLength(10);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(86);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(87);
 	});
 
 	it("keeps the forty-three final winner scenarios in their audited order", () => {

@@ -81,8 +81,8 @@ describe("AppSidebar", () => {
 		);
 		const disabledButtons = catalogButtons.filter((button) => button.disabled);
 
-		expect(catalogButtons).toHaveLength(98);
-		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(86);
+		expect(catalogButtons).toHaveLength(99);
+		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(87);
 		expect(disabledButtons.map((button) => button.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const button of disabledButtons) {
 			expect(button).toHaveTextContent("Planned");
@@ -116,10 +116,10 @@ describe("AppSidebar", () => {
 			(option) => option.getAttribute("data-disabled") === "true",
 		);
 
-		expect(catalogOptions).toHaveLength(98);
+		expect(catalogOptions).toHaveLength(99);
 		expect(
 			catalogOptions.filter((option) => option.getAttribute("data-disabled") !== "true"),
-		).toHaveLength(86);
+		).toHaveLength(87);
 		expect(disabledOptions.map((option) => option.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const option of disabledOptions) {
 			expect(option).toHaveTextContent("Planned");

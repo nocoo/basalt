@@ -61,6 +61,7 @@ export const CATALOG_PAGE_STATUS = {
 	grid: "ready",
 	sidebar: "ready",
 	flow: "ready",
+	"stat-strip": "ready",
 	"theme-provider": "ready",
 	"link-provider": "ready",
 	installation: "planned",
