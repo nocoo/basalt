@@ -53,6 +53,8 @@ describe("Sidebar", () => {
 			</SidebarProvider>,
 		);
 		expect(screen.queryByText("Nav")).not.toBeInTheDocument();
+		expect(screen.getByRole("status")).toBeInTheDocument();
+		expect(screen.getByRole("status").closest("aside")).toHaveAttribute("aria-busy");
 	});
 
 	it("keeps a controlled collapsed value", () => {
@@ -83,11 +85,29 @@ describe("Sidebar", () => {
 				<Sidebar>Nav</Sidebar>
 			</SidebarProvider>,
 		);
-		const nav = screen.getByText("Nav");
+		const nav = screen.getByRole("dialog", { name: "Sidebar" });
 		expect(nav).toHaveAttribute("data-overlay");
-		expect(nav.className).toContain("absolute");
+		expect(nav.className).toContain("fixed");
 		expect(nav.className).toContain("z-50");
 		expect(nav).toHaveStyle({ width: "300px" });
+	});
+
+	it("hides overlay chrome when collapsed", () => {
+		render(
+			<SidebarProvider overlay defaultCollapsed>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.queryByText("Nav")).not.toBeInTheDocument();
+	});
+
+	it("places an in-flow rail last when side is right", () => {
+		render(
+			<SidebarProvider side="right">
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByText("Nav").className).toContain("order-last");
 	});
 
 	it("resizes the expanded rail from the handle", () => {
@@ -97,11 +117,23 @@ describe("Sidebar", () => {
 				<Sidebar>Nav</Sidebar>
 			</SidebarProvider>,
 		);
-		const handle = screen.getByRole("button", { name: "Resize sidebar" });
+		const handle = screen.getByRole("separator", { name: "Resize sidebar" });
 		fireEvent.pointerDown(handle, { clientX: 260, pointerId: 1 });
 		fireEvent.pointerMove(handle, { clientX: 320 });
 		expect(screen.getByText("Nav")).toHaveStyle({ width: "320px" });
 		fireEvent.pointerUp(handle);
+	});
+
+	it("resizes the rail with arrow keys", () => {
+		render(
+			<SidebarProvider defaultWidth={260}>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		fireEvent.keyDown(screen.getByRole("separator", { name: "Resize sidebar" }), {
+			key: "ArrowRight",
+		});
+		expect(screen.getByText("Nav")).toHaveStyle({ width: "268px" });
 	});
 
 	it("throws useSidebar outside a provider", () => {
@@ -124,6 +156,10 @@ describe("Sidebar", () => {
 		render(<SidebarItem active>Dashboard</SidebarItem>);
 		expect(screen.getByRole("button", { name: "Dashboard" }).className).toContain(
 			"bg-basalt-accent",
+		);
+		expect(screen.getByRole("button", { name: "Dashboard" })).toHaveAttribute(
+			"aria-current",
+			"page",
 		);
 	});
 

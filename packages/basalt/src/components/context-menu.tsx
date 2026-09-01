@@ -29,9 +29,11 @@ export function ContextMenuPanel({
 	...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Content>) {
 	return (
-		<ContextMenuPrimitive.Content
-			className={overlayPanelClass(cn("min-w-40", className))}
-			{...props}
-		/>
+		<ContextMenuPrimitive.Portal>
+			<ContextMenuPrimitive.Content
+				className={overlayPanelClass(cn("min-w-40", className))}
+				{...props}
+			/>
+		</ContextMenuPrimitive.Portal>
 	);
 }

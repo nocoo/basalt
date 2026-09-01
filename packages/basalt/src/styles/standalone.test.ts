@@ -24,6 +24,9 @@ describe("standalone css", () => {
 		expect(css).toContain("@keyframes basalt-tab-in");
 		expect(css).toContain("transition-property: left,width,top,height");
 		expect(css).toContain(".shadow-sm");
+		expect(css).toContain(".sticky");
+		expect(css).toContain(".w-\\[68px\\]");
+		expect(css).toContain(".cursor-col-resize");
 		expect(css).toContain("backdrop-filter");
 		expect(css).not.toMatch(/@keyframes pulse\s*\{/);
 	});

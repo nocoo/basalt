@@ -18,11 +18,39 @@ export type ToolbarProps = Omit<React.HTMLAttributes<HTMLDivElement>, "aria-labe
 };
 
 const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarProps>(
-	({ className, ...props }, ref) => (
+	({ className, onKeyDown, ...props }, ref) => (
 		<div
 			ref={ref}
 			{...props}
 			role="toolbar"
+			onKeyDown={(event) => {
+				onKeyDown?.(event);
+				if (event.defaultPrevented || (event.key !== "ArrowRight" && event.key !== "ArrowLeft")) {
+					return;
+				}
+				if (
+					event.target instanceof HTMLInputElement ||
+					event.target instanceof HTMLTextAreaElement
+				) {
+					return;
+				}
+				const root = event.currentTarget;
+				const items = [
+					...root.querySelectorAll<HTMLElement>(
+						'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+					),
+				].filter((node) => node.closest('[role="toolbar"]') === root);
+				const index = items.indexOf(event.target as HTMLElement);
+				if (index < 0 || items.length === 0) {
+					return;
+				}
+				event.preventDefault();
+				const next =
+					event.key === "ArrowRight"
+						? (index + 1) % items.length
+						: (index - 1 + items.length) % items.length;
+				items[next]?.focus();
+			}}
 			className={cn(
 				"inline-flex w-fit items-stretch rounded-basalt-md bg-basalt-secondary shadow-xs ring-1 ring-basalt-border",
 				"[&>*:not(:first-child)]:border-l [&>*:not(:first-child)]:border-basalt-border",

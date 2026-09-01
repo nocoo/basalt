@@ -40,11 +40,28 @@ export const API = [
 		name: "TabsTrigger",
 		props: [
 			{
+				name: "value",
+				type: "string",
+				required: true,
+				description: "The tab value.",
+			},
+			{
 				name: "disabled",
 				type: "boolean",
 				required: false,
 				default: "false",
 				description: "Disable the tab trigger.",
+			},
+		],
+	},
+	{
+		name: "TabsContent",
+		props: [
+			{
+				name: "value",
+				type: "string",
+				required: true,
+				description: "The tab value this panel belongs to.",
 			},
 		],
 	},

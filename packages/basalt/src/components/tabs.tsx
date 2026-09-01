@@ -89,8 +89,12 @@ TabsList.displayName = TabsPrimitive.List.displayName;
 
 export type TabsTriggerProps = Omit<
 	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>,
-	"disabled"
+	"disabled" | "value"
 > & {
+	/**
+	 * The tab value.
+	 */
+	value: string;
 	/**
 	 * Disable the tab trigger.
 	 * @default false
@@ -114,9 +118,19 @@ export const TabsTrigger = React.forwardRef<
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
+export type TabsContentProps = Omit<
+	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>,
+	"value"
+> & {
+	/**
+	 * The tab value this panel belongs to.
+	 */
+	value: string;
+};
+
 export const TabsContent = React.forwardRef<
 	React.ElementRef<typeof TabsPrimitive.Content>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
+	TabsContentProps
 >(({ className, ...props }, ref) => (
 	<TabsPrimitive.Content
 		ref={ref}

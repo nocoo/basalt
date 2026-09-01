@@ -7,6 +7,7 @@ import {
 	CommandItem,
 	CommandList,
 	CommandPalette,
+	CommandPaletteTrigger,
 } from "./command-palette";
 
 describe("CommandPalette", () => {
@@ -29,7 +30,7 @@ describe("CommandPalette", () => {
 			</CommandPalette>,
 		);
 		expect(screen.getByRole("dialog")).toBeInTheDocument();
-		expect(screen.getByText("Command Palette")).toBeInTheDocument();
+		expect(screen.getByRole("dialog", { name: "Command Palette" })).toBeInTheDocument();
 		expect(screen.getByPlaceholderText("Search pages...")).toBeInTheDocument();
 		expect(screen.getByText("Button")).toBeInTheDocument();
 		fireEvent.change(screen.getByPlaceholderText("Search pages..."), { target: { value: "Inp" } });
@@ -68,5 +69,27 @@ describe("CommandPalette", () => {
 		fireEvent.click(screen.getByText("Hidden"));
 		expect(onSelect).not.toHaveBeenCalled();
 		expect(screen.getByText("Hidden").getAttribute("data-disabled")).toBe("true");
+	});
+
+	it("names the search field and restores focus to the trigger", () => {
+		render(
+			<CommandPalette>
+				<CommandPaletteTrigger>Search pages...</CommandPaletteTrigger>
+				<CommandInput placeholder="Search pages..." />
+				<CommandList>
+					<CommandItem>Button</CommandItem>
+				</CommandList>
+			</CommandPalette>,
+		);
+		const trigger = screen.getByRole("button", { name: "Search pages..." });
+		trigger.focus();
+		fireEvent.click(trigger);
+		expect(screen.getByPlaceholderText("Search pages...")).toHaveAttribute(
+			"aria-label",
+			"Search pages...",
+		);
+		fireEvent.keyDown(document, { key: "Escape" });
+		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+		expect(trigger).toHaveAttribute("aria-haspopup", "dialog");
 	});
 });

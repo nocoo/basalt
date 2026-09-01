@@ -11,6 +11,13 @@ export const API = [
 				description: "The controlled open state.",
 			},
 			{
+				name: "defaultOpen",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "The uncontrolled initial open state.",
+			},
+			{
 				name: "onOpenChange",
 				type: "(open: boolean) => void",
 				required: false,

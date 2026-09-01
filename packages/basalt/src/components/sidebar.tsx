@@ -1,15 +1,19 @@
+import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { ChevronUp, Search } from "lucide-react";
 import {
 	type ButtonHTMLAttributes,
 	createContext,
 	type HTMLAttributes,
 	type ReactNode,
+	type PointerEvent as ReactPointerEvent,
 	useCallback,
 	useContext,
 	useState,
 } from "react";
 import { cn } from "../utils/cn";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
+import { Dialog, DialogOverlay, DialogPortal } from "./dialog";
+import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 import { SkeletonLine } from "./skeleton-line";
 
 export type SidebarSide = "left" | "right";
@@ -134,7 +138,74 @@ export type SidebarProps = HTMLAttributes<HTMLElement> & {
 	collapsed?: boolean;
 };
 
-export function Sidebar({ collapsed: collapsedProp, className, children, ...props }: SidebarProps) {
+function clampSidebarWidth(next: number) {
+	return Math.min(400, Math.max(180, next));
+}
+
+function SidebarResize({
+	side,
+	width,
+	onWidth,
+}: {
+	side: SidebarSide;
+	width: number;
+	onWidth: (next: number) => void;
+}) {
+	const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+		event.preventDefault();
+		event.currentTarget.setPointerCapture(event.pointerId);
+		const startX = event.clientX;
+		const startWidth = width;
+		const target = event.currentTarget;
+		const onMove = (move: PointerEvent) => {
+			const delta = side === "right" ? startX - move.clientX : move.clientX - startX;
+			onWidth(clampSidebarWidth(startWidth + delta));
+		};
+		const onUp = () => {
+			target.removeEventListener("pointermove", onMove);
+			target.removeEventListener("pointerup", onUp);
+			target.removeEventListener("pointercancel", onUp);
+		};
+		target.addEventListener("pointermove", onMove);
+		target.addEventListener("pointerup", onUp);
+		target.addEventListener("pointercancel", onUp);
+	};
+	return (
+		<div
+			role="separator"
+			aria-orientation="vertical"
+			aria-valuenow={width}
+			aria-valuemin={180}
+			aria-valuemax={400}
+			aria-label="Resize sidebar"
+			tabIndex={0}
+			className={cn(
+				"absolute top-0 h-full w-1 cursor-col-resize bg-transparent",
+				side === "right" ? "left-0" : "right-0",
+			)}
+			onPointerDown={onPointerDown}
+			onKeyDown={(event) => {
+				if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") {
+					return;
+				}
+				event.preventDefault();
+				const dir = event.key === "ArrowRight" ? 1 : -1;
+				const delta = side === "right" ? -dir * 8 : dir * 8;
+				onWidth(clampSidebarWidth(width + delta));
+			}}
+		/>
+	);
+}
+
+export function Sidebar({
+	collapsed: collapsedProp,
+	className,
+	children,
+	onMouseEnter,
+	onMouseLeave,
+	style,
+	...props
+}: SidebarProps) {
 	const context = useContext(SidebarContext);
 	const collapsed = context
 		? context.collapsed && !(context.peek && context.peeking)
@@ -142,59 +213,78 @@ export function Sidebar({ collapsed: collapsedProp, className, children, ...prop
 	const side = context?.side ?? "left";
 	const overlay = context?.overlay ?? false;
 	const width = context?.width ?? 260;
+	const body = context?.loading ? (
+		<div className="flex flex-col gap-2 p-3" role="status" aria-live="polite">
+			<SkeletonLine />
+			<SkeletonLine />
+			<SkeletonLine />
+		</div>
+	) : (
+		children
+	);
+	const resize =
+		context && !collapsed ? (
+			<SidebarResize side={side} width={context.width} onWidth={context.setWidth} />
+		) : null;
+	const frameClass = cn(
+		"relative flex h-screen shrink-0 flex-col bg-basalt-background text-sm text-basalt-foreground",
+		OVERLAY_MOTION,
+		className,
+	);
+	if (overlay && context) {
+		return (
+			<Dialog open={!context.collapsed} onOpenChange={(open) => context.setCollapsed(!open)}>
+				<DialogPortal>
+					<DialogOverlay />
+					<DialogPrimitive.Content
+						aria-label="Sidebar"
+						data-overlay=""
+						data-side={side}
+						aria-busy={context.loading || undefined}
+						className={cn(
+							frameClass,
+							OVERLAY_LAYER,
+							"fixed inset-y-0 overflow-hidden shadow-md",
+							side === "right" ? "right-0" : "left-0",
+						)}
+						style={{ width, ...style }}
+						{...props}
+					>
+						{body}
+						{resize}
+					</DialogPrimitive.Content>
+				</DialogPortal>
+			</Dialog>
+		);
+	}
 	return (
 		<aside
 			data-collapsed={collapsed ? "" : undefined}
 			data-side={side}
-			data-overlay={overlay ? "" : undefined}
-			onMouseEnter={() => context?.peek && context.collapsed && context.setPeeking(true)}
-			onMouseLeave={() => context?.peek && context.setPeeking(false)}
+			aria-busy={context?.loading || undefined}
+			onMouseEnter={(event) => {
+				if (context?.peek && context.collapsed) {
+					context.setPeeking(true);
+				}
+				onMouseEnter?.(event);
+			}}
+			onMouseLeave={(event) => {
+				if (context?.peek) {
+					context.setPeeking(false);
+				}
+				onMouseLeave?.(event);
+			}}
 			className={cn(
-				"relative sticky top-0 flex h-screen shrink-0 flex-col bg-basalt-background text-sm text-basalt-foreground motion-reduce:transition-none",
-				overlay ? "absolute z-50 shadow-md" : "transition-all duration-300 ease-in-out",
-				side === "right" ? "right-0" : "left-0",
+				frameClass,
+				"sticky top-0 transition-all duration-300 ease-in-out",
+				side === "right" ? "order-last" : undefined,
 				collapsed ? "w-[68px] overflow-y-hidden" : "overflow-hidden",
-				className,
 			)}
-			style={!collapsed ? { width } : undefined}
+			style={!collapsed ? { width, ...style } : style}
 			{...props}
 		>
-			{context?.loading ? (
-				<div className="flex flex-col gap-2 p-3">
-					<SkeletonLine />
-					<SkeletonLine />
-					<SkeletonLine />
-				</div>
-			) : (
-				children
-			)}
-			{context && !collapsed ? (
-				<button
-					type="button"
-					aria-label="Resize sidebar"
-					className={cn(
-						"absolute top-0 h-full w-1 cursor-col-resize bg-transparent",
-						side === "right" ? "left-0" : "right-0",
-					)}
-					onPointerDown={(event) => {
-						event.preventDefault();
-						event.currentTarget.setPointerCapture(event.pointerId);
-						const startX = event.clientX;
-						const startWidth = context.width;
-						const target = event.currentTarget;
-						const onMove = (move: PointerEvent) => {
-							const delta = side === "right" ? startX - move.clientX : move.clientX - startX;
-							context.setWidth(Math.min(400, Math.max(180, startWidth + delta)));
-						};
-						const onUp = () => {
-							target.removeEventListener("pointermove", onMove);
-							target.removeEventListener("pointerup", onUp);
-						};
-						target.addEventListener("pointermove", onMove);
-						target.addEventListener("pointerup", onUp);
-					}}
-				/>
-			) : null}
+			{body}
+			{resize}
 		</aside>
 	);
 }
@@ -245,14 +335,19 @@ export function SidebarPartition({ className, ...props }: HTMLAttributes<HTMLPar
 	);
 }
 
-export function SidebarItem({
-	active = false,
-	className,
-	...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { active?: boolean }) {
+export type SidebarItemProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+	/**
+	 * Mark the item as the current page.
+	 * @default false
+	 */
+	active?: boolean;
+};
+
+export function SidebarItem({ active = false, className, ...props }: SidebarItemProps) {
 	return (
 		<button
 			type="button"
+			aria-current={active ? "page" : undefined}
 			className={cn(
 				"flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-normal transition-colors",
 				active
@@ -273,6 +368,7 @@ export function SidebarIconItem({
 	return (
 		<button
 			type="button"
+			aria-current={active ? "page" : undefined}
 			className={cn(
 				"relative flex h-10 w-10 items-center justify-center rounded-lg transition-colors",
 				active

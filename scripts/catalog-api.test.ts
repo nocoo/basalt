@@ -486,6 +486,12 @@ describe("catalog API generator contract", () => {
 				surface: "TabsTrigger",
 			},
 			{
+				slug: "tabs",
+				sourceFile: "packages/basalt/src/components/tabs.tsx",
+				propsType: "TabsContentProps",
+				surface: "TabsContent",
+			},
+			{
 				slug: "command-palette",
 				sourceFile: "packages/basalt/src/components/command-palette.tsx",
 				propsType: "CommandPaletteProps",
@@ -502,6 +508,12 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/sidebar.tsx",
 				propsType: "SidebarProps",
 				surface: "Sidebar",
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarItemProps",
+				surface: "SidebarItem",
 			},
 			{
 				slug: "popover",
@@ -540,7 +552,7 @@ describe("catalog API generator contract", () => {
 				surface: "CollapsibleContent",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(69);
+		expect(CATALOG_API_TARGETS).toHaveLength(71);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1556,9 +1568,9 @@ export interface WidgetProps {
 			autocomplete: ["Autocomplete"],
 			"date-picker": ["DatePicker"],
 			toolbar: ["Toolbar", "Toolbar.Button", "Toolbar.Input"],
-			tabs: ["Tabs", "TabsList", "TabsTrigger"],
+			tabs: ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
 			"command-palette": ["CommandPalette"],
-			sidebar: ["SidebarProvider", "Sidebar"],
+			sidebar: ["SidebarProvider", "Sidebar", "SidebarItem"],
 			popover: ["Popover", "PopoverContent"],
 			"dropdown-menu": ["DropdownMenu", "DropdownMenuItem"],
 			collapsible: ["Collapsible", "CollapsibleContent"],
@@ -3238,6 +3250,8 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "Toolbar"');
 		expect(joined).toContain('name: "Toolbar.Button"');
 		expect(joined).toContain('name: "Tabs"');
+		expect(joined).toContain('name: "TabsContent"');
+		expect(joined).toContain('name: "SidebarItem"');
 		expect(joined).toContain('name: "CommandPalette"');
 		expect(joined).toContain('name: "SidebarProvider"');
 		expect(joined).toContain('name: "Popover"');
@@ -3250,7 +3264,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"b22e7f6714fdc7324515d9ee8577212f2b81ba5cff2190a3aa1a2d7208250e4a",
+			"68c57c9e30c9d34b449e170fd50fc00c27be92b3ea68a259416a3578b4a63a95",
 		);
 	}, 20_000);
 

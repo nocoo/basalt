@@ -538,6 +538,9 @@
   .min-h-\[96px\] {
     min-height: 96px;
   }
+  .w-1 {
+    width: var(--spacing);
+  }
   .w-1\.5 {
     width: calc(var(--spacing) * 1.5);
   }
@@ -671,6 +674,9 @@
   }
   .animate-basalt-spin {
     animation: basalt-spin 1s linear infinite;
+  }
+  .cursor-col-resize {
+    cursor: col-resize;
   }
   .cursor-default {
     cursor: default;
@@ -1818,6 +1824,12 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+  }
+  .sticky {
+    position: sticky;
+  }
+  .w-\[68px\] {
+    width: 68px;
   }
   .h-7 {
     height: 1.75rem;

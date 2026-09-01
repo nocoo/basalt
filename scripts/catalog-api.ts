@@ -403,6 +403,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "TabsTrigger",
 	},
 	{
+		slug: "tabs",
+		sourceFile: "packages/basalt/src/components/tabs.tsx",
+		propsType: "TabsContentProps",
+		surface: "TabsContent",
+	},
+	{
 		slug: "command-palette",
 		sourceFile: "packages/basalt/src/components/command-palette.tsx",
 		propsType: "CommandPaletteProps",
@@ -419,6 +425,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/sidebar.tsx",
 		propsType: "SidebarProps",
 		surface: "Sidebar",
+	},
+	{
+		slug: "sidebar",
+		sourceFile: "packages/basalt/src/components/sidebar.tsx",
+		propsType: "SidebarItemProps",
+		surface: "SidebarItem",
 	},
 	{
 		slug: "popover",

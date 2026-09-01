@@ -3,7 +3,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { Dialog, DialogContent, DialogTitle } from "./dialog";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./dialog";
 
 const Command = React.forwardRef<
 	React.ElementRef<typeof CommandPrimitive>,
@@ -20,11 +20,16 @@ const Command = React.forwardRef<
 ));
 Command.displayName = CommandPrimitive.displayName;
 
-export type CommandPaletteProps = Omit<DialogProps, "open" | "onOpenChange"> & {
+export type CommandPaletteProps = Omit<DialogProps, "open" | "defaultOpen" | "onOpenChange"> & {
 	/**
 	 * The controlled open state.
 	 */
 	open?: boolean;
+	/**
+	 * The uncontrolled initial open state.
+	 * @default false
+	 */
+	defaultOpen?: boolean;
 	/**
 	 * Called when the open state changes.
 	 */
@@ -36,9 +41,19 @@ export type CommandPaletteProps = Omit<DialogProps, "open" | "onOpenChange"> & {
 	shouldFilter?: boolean;
 };
 
+export const CommandPaletteTrigger = DialogTrigger;
+
 export function CommandPalette({ children, shouldFilter, ...props }: CommandPaletteProps) {
+	const kids = React.Children.toArray(children);
+	const triggers = kids.filter(
+		(child) => React.isValidElement(child) && child.type === CommandPaletteTrigger,
+	);
+	const content = kids.filter(
+		(child) => !(React.isValidElement(child) && child.type === CommandPaletteTrigger),
+	);
 	return (
 		<Dialog {...props}>
+			{triggers}
 			<DialogContent
 				size="lg"
 				aria-describedby={undefined}
@@ -46,10 +61,11 @@ export function CommandPalette({ children, shouldFilter, ...props }: CommandPale
 			>
 				<DialogTitle className="sr-only">Command Palette</DialogTitle>
 				<Command
+					label="Command Palette"
 					{...(shouldFilter !== undefined && { shouldFilter })}
 					className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5"
 				>
-					{children}
+					{content}
 				</Command>
 			</DialogContent>
 		</Dialog>
@@ -69,6 +85,10 @@ export const CommandInput = React.forwardRef<
 				className,
 			)}
 			{...props}
+			aria-label={
+				props["aria-label"] ??
+				(typeof props.placeholder === "string" ? props.placeholder : "Command Palette")
+			}
 		/>
 	</div>
 ));

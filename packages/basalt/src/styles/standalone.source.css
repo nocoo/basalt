@@ -17,6 +17,12 @@
 		white-space: nowrap;
 		border-width: 0;
 	}
+	.sticky {
+		position: sticky;
+	}
+	.w-\[68px\] {
+		width: 68px;
+	}
 	.h-7 {
 		height: 1.75rem;
 	}

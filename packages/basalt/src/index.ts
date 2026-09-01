@@ -21,6 +21,7 @@ export {
 	CommandItem,
 	CommandList,
 	CommandPalette,
+	CommandPaletteTrigger,
 	CommandSeparator,
 	CommandShortcut,
 } from "./components/command-palette";

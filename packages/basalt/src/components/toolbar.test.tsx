@@ -55,4 +55,18 @@ describe("Toolbar", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Save" }));
 		expect(onClick).not.toHaveBeenCalled();
 	});
+
+	it("moves focus between buttons with arrows", () => {
+		render(
+			<Toolbar aria-label="Record tools">
+				<Toolbar.Button>Upload</Toolbar.Button>
+				<Toolbar.Button>Download</Toolbar.Button>
+			</Toolbar>,
+		);
+		const upload = screen.getByRole("button", { name: "Upload" });
+		const download = screen.getByRole("button", { name: "Download" });
+		upload.focus();
+		fireEvent.keyDown(upload, { key: "ArrowRight" });
+		expect(download).toHaveFocus();
+	});
 });

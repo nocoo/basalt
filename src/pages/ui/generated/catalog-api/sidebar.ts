@@ -78,4 +78,16 @@ export const API = [
 			},
 		],
 	},
+	{
+		name: "SidebarItem",
+		props: [
+			{
+				name: "active",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Mark the item as the current page.",
+			},
+		],
+	},
 ];

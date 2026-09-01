@@ -7,6 +7,7 @@ import {
 	CommandItem,
 	CommandList,
 	CommandPalette,
+	CommandPaletteTrigger,
 } from "@nocoo/basalt/components/command-palette";
 import { MenuBarMenu, MenuBarRoot, MenuBarTrigger } from "@nocoo/basalt/components/menu-bar";
 import {
@@ -82,30 +83,27 @@ function PaginationExample({
 }
 
 function CommandPaletteExample({ flat = false }: { flat?: boolean }) {
-	const [open, setOpen] = useState(false);
 	return (
-		<>
-			<Button variant="outline" onClick={() => setOpen(true)}>
-				Search pages...
-			</Button>
-			<CommandPalette open={open} onOpenChange={setOpen}>
-				<CommandInput placeholder="Search pages..." />
-				<CommandList>
-					<CommandEmpty>No results</CommandEmpty>
-					{flat ? (
-						<>
-							<CommandItem>Button</CommandItem>
-							<CommandItem>Input</CommandItem>
-						</>
-					) : (
-						<CommandGroup heading="Pages">
-							<CommandItem>Button</CommandItem>
-							<CommandItem>Input</CommandItem>
-						</CommandGroup>
-					)}
-				</CommandList>
-			</CommandPalette>
-		</>
+		<CommandPalette>
+			<CommandPaletteTrigger asChild>
+				<Button variant="outline">Search pages...</Button>
+			</CommandPaletteTrigger>
+			<CommandInput placeholder="Search pages..." />
+			<CommandList>
+				<CommandEmpty>No results</CommandEmpty>
+				{flat ? (
+					<>
+						<CommandItem>Button</CommandItem>
+						<CommandItem>Input</CommandItem>
+					</>
+				) : (
+					<CommandGroup heading="Pages">
+						<CommandItem>Button</CommandItem>
+						<CommandItem>Input</CommandItem>
+					</CommandGroup>
+				)}
+			</CommandList>
+		</CommandPalette>
 	);
 }
 
@@ -123,27 +121,26 @@ import {
 	CommandItem,
 	CommandList,
 	CommandPalette,
+	CommandPaletteTrigger,
 } from "@nocoo/basalt/components/command-palette";
 import { useState } from "react";
 
 export default function Example() {
 	const [open, setOpen] = useState(false);
 	return (
-		<>
-			<Button variant="outline" onClick={() => setOpen(true)}>
-				Search pages...
-			</Button>
-			<CommandPalette open={open} onOpenChange={setOpen}>
-				<CommandInput placeholder="Search pages..." />
-				<CommandList>
-					<CommandEmpty>No results</CommandEmpty>
-					<CommandGroup heading="Pages">
-						<CommandItem>Button</CommandItem>
-						<CommandItem>Input</CommandItem>
-					</CommandGroup>
-				</CommandList>
-			</CommandPalette>
-		</>
+		<CommandPalette open={open} onOpenChange={setOpen}>
+			<CommandPaletteTrigger asChild>
+				<Button variant="outline">Search pages...</Button>
+			</CommandPaletteTrigger>
+			<CommandInput placeholder="Search pages..." />
+			<CommandList>
+				<CommandEmpty>No results</CommandEmpty>
+				<CommandGroup heading="Pages">
+					<CommandItem>Button</CommandItem>
+					<CommandItem>Input</CommandItem>
+				</CommandGroup>
+			</CommandList>
+		</CommandPalette>
 	);
 }`,
 );
@@ -296,25 +293,26 @@ import {
   CommandItem,
   CommandList,
   CommandPalette,
+  CommandPaletteTrigger,
 } from "@nocoo/basalt/components/command-palette";
 import { useState } from "react";
 
 export default function Example() {
   const [open, setOpen] = useState(false);
   return (
-    <>
-      <Button variant="outline" onClick={() => setOpen(true)}>Search pages...</Button>
-      <CommandPalette open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Search pages..." />
-        <CommandList>
-          <CommandEmpty>No results</CommandEmpty>
-          <CommandGroup heading="Pages">
-            <CommandItem>Button</CommandItem>
-            <CommandItem>Input</CommandItem>
-          </CommandGroup>
-        </CommandList>
-      </CommandPalette>
-    </>
+    <CommandPalette open={open} onOpenChange={setOpen}>
+      <CommandPaletteTrigger asChild>
+        <Button variant="outline">Search pages...</Button>
+      </CommandPaletteTrigger>
+      <CommandInput placeholder="Search pages..." />
+      <CommandList>
+        <CommandEmpty>No results</CommandEmpty>
+        <CommandGroup heading="Pages">
+          <CommandItem>Button</CommandItem>
+          <CommandItem>Input</CommandItem>
+        </CommandGroup>
+      </CommandList>
+    </CommandPalette>
   );
 }`,
 				render: () => <CommandPaletteExample />,
@@ -329,23 +327,24 @@ import {
   CommandItem,
   CommandList,
   CommandPalette,
+  CommandPaletteTrigger,
 } from "@nocoo/basalt/components/command-palette";
 import { useState } from "react";
 
 export default function Example() {
   const [open, setOpen] = useState(false);
   return (
-    <>
-      <Button variant="outline" onClick={() => setOpen(true)}>Search pages...</Button>
-      <CommandPalette open={open} onOpenChange={setOpen}>
-        <CommandInput placeholder="Search pages..." />
-        <CommandList>
-          <CommandEmpty>No results</CommandEmpty>
-          <CommandItem>Button</CommandItem>
-          <CommandItem>Input</CommandItem>
-        </CommandList>
-      </CommandPalette>
-    </>
+    <CommandPalette open={open} onOpenChange={setOpen}>
+      <CommandPaletteTrigger asChild>
+        <Button variant="outline">Search pages...</Button>
+      </CommandPaletteTrigger>
+      <CommandInput placeholder="Search pages..." />
+      <CommandList>
+        <CommandEmpty>No results</CommandEmpty>
+        <CommandItem>Button</CommandItem>
+        <CommandItem>Input</CommandItem>
+      </CommandList>
+    </CommandPalette>
   );
 }`,
 				render: () => <CommandPaletteExample flat />,
