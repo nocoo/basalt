@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中
-> 当前切片：S3E D086 — StatStrip MVP；D085 PageHeader 已验收，D086 尚未规划或调度
-> 当前实现真值：`af88575`（D085 PageHeader MVP）；下一刀继续由 Grok 单写、Codex 只 review
+> 当前切片：S3E D086 — StatStrip MVP；契约已冻结，等待通过 Herdr 下发
+> 当前实现真值：`af88575`（D085 PageHeader MVP）；规划前基线为 `953a4cf`
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
 
@@ -131,7 +131,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 完成（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062、S2A35 D063、S2A36 D064、S2A37 D065、S2A38 D066、S2A39 D067） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 完成（`eeb8c43`） | 不再平铺 88 个等权方块；placeholder 不可达 |
-| S3 | 通用组合地基 | 执行中（7 个 MVP 已完成 4 个：S3A D082、S3B D083、S3C D084、S3D D085；S3E D086 尚未规划） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
+| S3 | 通用组合地基 | 执行中（7 个 MVP 已完成 4 个：S3A D082、S3B D083、S3C D084、S3D D085；S3E D086 契约已冻结） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 待办 | 泛型、group/multiple/loading/error/range + browser 门完整 |
 | S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 待办 | compound、焦点、键盘、mobile、resize/scroll 状态完整 |
@@ -751,6 +751,14 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    复用现有 catalog `page-header` block 与 data-layout family owner，不新增 CATALOG 项、family 或 page status；把当前错误的“import PageHeader、render AppHeader” owner 换成 PageHeader 真源，并以 source-backed `Default` 和 `Long responsive content` 两个 module 取代单个 inline scenario，首个 `page-header-default` ID/title 继续稳定。catalog source 删除 app-header 特例并自然指向新文件；API generator 新增 PageHeader target，生成 `title`、`description`、`eyebrow`、`breadcrumbs`、`actions` 五项专属 API，shard 从 21 增至 22，DOM/header props 不泄漏。PageHeader 仍为 catalog/block，仅 granular export，不加入 stable root barrel。
 
    实现恰好落在上述边界内：AppHeader/Breadcrumbs runtime、PageIntro、DashboardLayout、CATALOG inventory、其它 owner/scenario、tokens、依赖/lock、routes、consumer、coverage/Husky 与 browser timeout 均未改。PageHeader 两份 source-backed example、五项 generated API、data-layout owner、Copy page与 package granular 产物同批完成；三套 generator、focused、typecheck、Biome、日常全量、coverage、showcase build及 package build/types/pack 全绿。普通开发门没有启动 Chromium，真实 browser suite继续只保留在显式发布门。完整证据见 D085 日志；下一刀单独规划 StatStrip。
+
+5. **S3E / D086 — StatStrip MVP（契约冻结；尚未下发；实现真值基线 `af88575`，规划前基线 `953a4cf`）。** 新增 `@nocoo/basalt/components/stat-strip`，把详情页或 Dashboard 顶部的一组标签和值表达为真实 definition list。导出 `StatStripItem`，精确只有必填 `label: ReactNode` 与 `value: ReactNode`；`StatStripProps` 在保留标准 `dl` 的 id/data/ARIA/event 能力和 ref 的同时，显式公开 `className`、必填只读 `items` 与默认 false 的 `loading`。root 必须是单一 `<dl>`，每项使用一个布局 wrapper 包住配对的 `<dt>` / `<dd>`，不得用 heading、纯 div 或视觉顺序代替语义关系。
+
+   视觉只提供一个固定层级：窄屏两列、宽屏四列，多于四项自然换行；cell 使用现有 Basalt muted surface、圆角、间距、muted label 与 tabular value，不增加第二套 token。`loading` 只把每个 `<dd>` 的值替换为现有 reduced-motion-safe `SkeletonLine`，继续显示 `<dt>`，并令 `<dl aria-busy="true">`；不得显示旧值、伪造计数或在组件内请求数据。MVP 不增加 columns、size/variant、tone、trend/delta、icon、formatter/locale、action、chart、empty/error、单项 loading、动画数字或 ViewModel。现有 Dashboard 顶部 stats 还含 change/tone，本刀不为迁移它们扩张 API，也不修改 DashboardPage、ComponentsPage 或 AI Arsenal 参考源；全站自消费仍留给 S9。
+
+   StatStrip 作为无 optional peer 的 stable component 加入 root barrel 和 CATALOG，由 data-layout family 持有；新增 `Overview` 与 `Loading values` 两份 source-backed module，docs、API 表与 Copy page 只消费同一个 generated `stat-strip` shard。provenance 精确记录只读参考 `nocoo/ai-arsenal@78114d43df59` 的 `src/components/ui/page-header.tsx`，implementation source 自然指向当前 Basalt 文件。CATALOG 预期从 98 增至 99，Components/Charts/Blocks 从 `62 / 24 / 3` 增至 `63 / 24 / 3`，Ready/Planned 从 `86 / 12` 增至 `87 / 12`，首页从 89 增至 90 卡，data-layout 从 5 增至 6 owner、7 增至 9 scenarios，generated API shard 从 22 增至 23；其它 86 个 owner、12 个 planned slug、已有 scenario 和 7-family 边界不得漂移。
+
+   只允许新增 StatStrip 实现、单测和 `src/pages/ui/examples/stat-strip/**`，并最小修改 root barrel/测试、CATALOG、data-layout family/测试、API generator/测试、直接 catalog/page-status/content/loader/Copy page/build graph 计数测试及 generated/standalone 产物。不得修改其它 package 组件或 chart、Dashboard 业务组件、tokens/手写 CSS、依赖/lock、routes、consumer、coverage/Husky、browser timeout 或后续 ConfirmDialog/TablePager。单测必须锁住 dl/dt/dd 配对顺序、ReactNode label/value、ref 与标准 dl props、class 合并、2→4 列响应式类，以及 loading 保留 labels、隐藏真实 values、每项一个 skeleton 和 aria-busy；类型/API 测试锁住 exact local surface，不泄漏 children 或 DOM inventory。提交前运行 StatStrip/root、generator、catalog source、data-layout/loader/Copy page/build graph focused tests；三套 generator 均 generate 后连续两次 check，再跑 typecheck、Biome、日常全量、coverage、showcase production build及 package build/types/pack，所有生成后工作树必须干净。普通开发门不运行 Chromium；只做一个绿色实现提交，建议 `feat: add stat strip mvp`，随后停止等待 Codex review。
 
 ### 6.5 S4/S5 — 表单族
 
