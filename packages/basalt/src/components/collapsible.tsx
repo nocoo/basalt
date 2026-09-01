@@ -4,7 +4,25 @@ import * as React from "react";
 import { cn } from "../utils/cn";
 import { FOCUS_INSET, OVERLAY_MOTION } from "./overlay";
 
-export const Collapsible = CollapsiblePrimitive.Root;
+export type CollapsibleProps = Omit<
+	React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Root>,
+	"open" | "defaultOpen" | "onOpenChange"
+> & {
+	/**
+	 * The controlled open state.
+	 */
+	open?: boolean;
+	/**
+	 * The uncontrolled initial open state.
+	 * @default false
+	 */
+	defaultOpen?: boolean;
+	/**
+	 * Called when the open state changes.
+	 */
+	onOpenChange?: (open: boolean) => void;
+};
+export const Collapsible: React.FC<CollapsibleProps> = CollapsiblePrimitive.Root;
 
 export const CollapsibleTrigger = React.forwardRef<
 	React.ElementRef<typeof CollapsiblePrimitive.CollapsibleTrigger>,
@@ -37,11 +55,19 @@ export const CollapsibleTrigger = React.forwardRef<
 });
 CollapsibleTrigger.displayName = CollapsiblePrimitive.CollapsibleTrigger.displayName;
 
+export type CollapsibleContentProps = React.ComponentPropsWithoutRef<
+	typeof CollapsiblePrimitive.CollapsibleContent
+> & {
+	/**
+	 * Render children without the default inset border.
+	 * @default false
+	 */
+	unstyled?: boolean;
+};
+
 export const CollapsibleContent = React.forwardRef<
 	React.ElementRef<typeof CollapsiblePrimitive.CollapsibleContent>,
-	React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.CollapsibleContent> & {
-		unstyled?: boolean;
-	}
+	CollapsibleContentProps
 >(({ className, children, unstyled = false, ...props }, ref) => (
 	<CollapsiblePrimitive.CollapsibleContent
 		ref={ref}

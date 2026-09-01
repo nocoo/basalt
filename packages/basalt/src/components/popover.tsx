@@ -6,13 +6,35 @@ import { MENU_GAP, OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 export const POPOVER_SIDES = ["top", "bottom", "left", "right"] as const;
 export type PopoverSide = (typeof POPOVER_SIDES)[number];
 
-export const Popover = PopoverPrimitive.Root;
+export type PopoverProps = Omit<
+	React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Root>,
+	"open" | "defaultOpen" | "onOpenChange"
+> & {
+	/**
+	 * The controlled open state.
+	 */
+	open?: boolean;
+	/**
+	 * The uncontrolled initial open state.
+	 * @default false
+	 */
+	defaultOpen?: boolean;
+	/**
+	 * Called when the open state changes.
+	 */
+	onOpenChange?: (open: boolean) => void;
+};
+export const Popover: React.FC<PopoverProps> = PopoverPrimitive.Root;
 export const PopoverTrigger = PopoverPrimitive.Trigger;
 export const PopoverClose = PopoverPrimitive.Close;
 
 export type PopoverContentProps = React.ComponentPropsWithoutRef<
 	typeof PopoverPrimitive.Content
 > & {
+	/**
+	 * Show the pointing arrow.
+	 * @default true
+	 */
 	arrow?: boolean;
 };
 
