@@ -1,9 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CATALOG } from "./catalog";
+import { loadCatalogContentRecord } from "./catalog-content-registry";
 import {
-	CATALOG_INDEX_GROUPS,
-	CATALOG_INDEX_ITEMS,
-	CATALOG_INDEX_READY_COUNT,
 	catalogReleaseStatus,
 	createCatalogIndex,
 	DEFAULT_CATALOG_INDEX_QUERY,
@@ -14,6 +12,7 @@ import {
 	resolveCatalogPageState,
 	serializeCatalogIndexQuery,
 } from "./catalog-index";
+import { loadCatalogIndex } from "./catalog-index-loader";
 import type { CatalogScenario } from "./catalog-scenario";
 import type { CatalogDocs } from "./catalog-source";
 
@@ -24,9 +23,19 @@ const HERO: CatalogScenario = {
 	code: "export default null",
 	render: () => null,
 };
+const catalogContent = await loadCatalogContentRecord();
+const catalogIndex = await loadCatalogIndex();
+const CATALOG_INDEX_GROUPS = catalogIndex.groups;
+const CATALOG_INDEX_ITEMS = catalogIndex.items;
+const CATALOG_INDEX_READY_COUNT = catalogIndex.readyCount;
+const catalogDocs = Object.fromEntries(
+	Object.entries(catalogContent).map(([slug, content]) => [slug, content.docs]),
+);
+const catalogHero = (slug: string) => catalogContent[slug]?.examples[0];
 
 describe("catalog index model", () => {
 	it("groups every non-doc catalog entry exactly once", () => {
+		expect(loadCatalogIndex()).toBe(loadCatalogIndex());
 		expect(CATALOG_INDEX_GROUPS.map((group) => group.label)).toEqual([
 			"Components",
 			"Charts",
@@ -72,7 +81,7 @@ describe("catalog index model", () => {
 	it("models all public catalog navigation as 84 ready and 12 planned pages", () => {
 		const states = CATALOG.map((entry) => ({
 			slug: entry.slug,
-			pageStatus: resolveCatalogPageState(entry.slug).pageStatus,
+			pageStatus: resolveCatalogPageState(entry.slug, catalogDocs, catalogHero).pageStatus,
 		}));
 		expect(states.filter((item) => item.pageStatus === "ready")).toHaveLength(84);
 		expect(states.filter((item) => item.pageStatus === "planned").map((item) => item.slug)).toEqual(

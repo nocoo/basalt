@@ -1,26 +1,13 @@
 import { describe, expect, it } from "vitest";
-import dataLayout from "@/pages/ui/catalog-content/families/data-layout";
-import navigation from "@/pages/ui/catalog-content/families/navigation";
-import overlay from "@/pages/ui/catalog-content/families/overlay";
-import { UI_EXAMPLES as LEGACY_UI_EXAMPLES } from "@/pages/ui/demos";
-import { CATALOG_DOCS as LEGACY_CATALOG_DOCS } from "@/pages/ui/docs";
+import { loadCatalogContentRecord } from "@/pages/ui/catalog-content-registry";
 
-const UI_EXAMPLES = {
-	...LEGACY_UI_EXAMPLES,
-	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.examples])),
-	...Object.fromEntries(
-		Object.entries(navigation).map(([slug, content]) => [slug, content.examples]),
-	),
-	...Object.fromEntries(
-		Object.entries(dataLayout).map(([slug, content]) => [slug, content.examples]),
-	),
-};
-const CATALOG_DOCS = {
-	...LEGACY_CATALOG_DOCS,
-	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(navigation).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(dataLayout).map(([slug, content]) => [slug, content.docs])),
-};
+const catalogContent = await loadCatalogContentRecord();
+const UI_EXAMPLES = Object.fromEntries(
+	Object.entries(catalogContent).map(([slug, content]) => [slug, content.examples]),
+);
+const CATALOG_DOCS = Object.fromEntries(
+	Object.entries(catalogContent).map(([slug, content]) => [slug, content.docs]),
+);
 
 function scenario(slug: string, id: string) {
 	const match = UI_EXAMPLES[slug]?.find((item) => item.id === id);

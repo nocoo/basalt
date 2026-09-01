@@ -63,18 +63,12 @@ export async function loadCatalogModulesWithVite(repoRoot: string): Promise<Cata
 	});
 
 	try {
-		const [catalogModule, docsModule, demosModule, families] = await Promise.all([
+		const [catalogModule, families] = await Promise.all([
 			server.ssrLoadModule("/src/pages/ui/catalog.ts"),
-			server.ssrLoadModule("/src/pages/ui/docs.ts"),
-			server.ssrLoadModule("/src/pages/ui/demos.tsx"),
 			loadCatalogFamilyRecords(repoRoot, server),
 		]);
-		const docsBySlug = {
-			...(docsModule.CATALOG_DOCS as Record<string, unknown>),
-		};
-		const examplesBySlug = {
-			...(demosModule.UI_EXAMPLES as Record<string, readonly unknown[] | undefined>),
-		};
+		const docsBySlug: Record<string, unknown> = {};
+		const examplesBySlug: Record<string, readonly unknown[] | undefined> = {};
 		for (const { family, record } of families) {
 			for (const [slug, content] of Object.entries(record)) {
 				if (docsBySlug[slug] || examplesBySlug[slug]) {

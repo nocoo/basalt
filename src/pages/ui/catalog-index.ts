@@ -1,41 +1,7 @@
-import { CATALOG, type CatalogCategory, type CatalogEntry, type CatalogKind } from "./catalog";
-import charts from "./catalog-content/families/charts";
-import dataLayout from "./catalog-content/families/data-layout";
-import feedback from "./catalog-content/families/feedback";
-import forms from "./catalog-content/families/forms";
-import foundation from "./catalog-content/families/foundation";
-import navigation from "./catalog-content/families/navigation";
-import overlay from "./catalog-content/families/overlay";
+import type { CatalogCategory, CatalogEntry, CatalogKind } from "./catalog";
 import type { CatalogPageStatus } from "./catalog-page-status";
 import type { CatalogScenario } from "./catalog-scenario";
 import type { CatalogDocs } from "./catalog-source";
-import { catalogHeroScenario } from "./demos";
-import { CATALOG_DOCS } from "./docs";
-
-const FAMILY_DOCS = Object.fromEntries(
-	[
-		...Object.entries(foundation),
-		...Object.entries(forms),
-		...Object.entries(overlay),
-		...Object.entries(feedback),
-		...Object.entries(navigation),
-		...Object.entries(dataLayout),
-		...Object.entries(charts),
-	].map(([slug, content]) => [slug, content.docs]),
-);
-
-function familyOrLegacyHero(slug: string): CatalogScenario | undefined {
-	return (
-		foundation[slug]?.examples[0] ??
-		forms[slug]?.examples[0] ??
-		overlay[slug]?.examples[0] ??
-		feedback[slug]?.examples[0] ??
-		navigation[slug]?.examples[0] ??
-		dataLayout[slug]?.examples[0] ??
-		charts[slug]?.examples[0] ??
-		catalogHeroScenario(slug)
-	);
-}
 
 export type CatalogReleaseStatus = "stable" | "catalog";
 export type { CatalogPageStatus } from "./catalog-page-status";
@@ -223,8 +189,8 @@ export function catalogReleaseStatus(kind: CatalogKind): CatalogReleaseStatus {
 
 export function resolveCatalogPageState(
 	slug: string,
-	docsBySlug: Partial<Record<string, CatalogDocs>> = { ...CATALOG_DOCS, ...FAMILY_DOCS },
-	heroForSlug: (slug: string) => CatalogScenario | undefined = familyOrLegacyHero,
+	docsBySlug: Partial<Record<string, CatalogDocs>>,
+	heroForSlug: (slug: string) => CatalogScenario | undefined,
 ): CatalogPageState {
 	const docs = docsBySlug[slug];
 	const hero = heroForSlug(slug);
@@ -278,14 +244,3 @@ export function createCatalogIndex({
 		return { ...group, items };
 	});
 }
-
-export const CATALOG_INDEX_GROUPS = createCatalogIndex({
-	entries: CATALOG,
-	docsBySlug: { ...CATALOG_DOCS, ...FAMILY_DOCS },
-	heroForSlug: familyOrLegacyHero,
-});
-
-export const CATALOG_INDEX_ITEMS = CATALOG_INDEX_GROUPS.flatMap((group) => group.items);
-export const CATALOG_INDEX_READY_COUNT = CATALOG_INDEX_ITEMS.filter(
-	(item) => item.pageStatus === "ready",
-).length;

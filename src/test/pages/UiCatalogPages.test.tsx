@@ -11,53 +11,27 @@ import {
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
-import charts from "@/pages/ui/catalog-content/families/charts";
-import dataLayout from "@/pages/ui/catalog-content/families/data-layout";
-import feedback from "@/pages/ui/catalog-content/families/feedback";
-import forms from "@/pages/ui/catalog-content/families/forms";
-import foundation from "@/pages/ui/catalog-content/families/foundation";
-import navigation from "@/pages/ui/catalog-content/families/navigation";
-import overlay from "@/pages/ui/catalog-content/families/overlay";
 import { loadCatalogPageContent } from "@/pages/ui/catalog-content-loader";
-import { CATALOG_INDEX_GROUPS, CATALOG_INDEX_ITEMS } from "@/pages/ui/catalog-index";
+import { loadCatalogContentRecord } from "@/pages/ui/catalog-content-registry";
+import { loadCatalogIndex } from "@/pages/ui/catalog-index-loader";
 import { catalogScenarioMatchesSlug } from "@/pages/ui/catalog-scenario";
 import {
 	catalogSourceCopyText,
 	githubSourceHref,
 	githubSourceLabel,
 } from "@/pages/ui/catalog-source";
-import { UI_EXAMPLES as LEGACY_UI_EXAMPLES } from "@/pages/ui/demos";
-import { CATALOG_DOCS as LEGACY_CATALOG_DOCS } from "@/pages/ui/docs";
 import { CATALOG_API } from "@/pages/ui/generated/catalog-api";
 
-const CATALOG_DOCS = {
-	...LEGACY_CATALOG_DOCS,
-	...Object.fromEntries(Object.entries(foundation).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(feedback).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(navigation).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(dataLayout).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(charts).map(([slug, content]) => [slug, content.docs])),
-};
-const UI_EXAMPLES = {
-	...LEGACY_UI_EXAMPLES,
-	...Object.fromEntries(
-		Object.entries(foundation).map(([slug, content]) => [slug, content.examples]),
-	),
-	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.examples])),
-	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.examples])),
-	...Object.fromEntries(
-		Object.entries(feedback).map(([slug, content]) => [slug, content.examples]),
-	),
-	...Object.fromEntries(
-		Object.entries(navigation).map(([slug, content]) => [slug, content.examples]),
-	),
-	...Object.fromEntries(
-		Object.entries(dataLayout).map(([slug, content]) => [slug, content.examples]),
-	),
-	...Object.fromEntries(Object.entries(charts).map(([slug, content]) => [slug, content.examples])),
-};
+const catalogContent = await loadCatalogContentRecord();
+const CATALOG_DOCS = Object.fromEntries(
+	Object.entries(catalogContent).map(([slug, content]) => [slug, content.docs]),
+);
+const UI_EXAMPLES = Object.fromEntries(
+	Object.entries(catalogContent).map(([slug, content]) => [slug, content.examples]),
+);
+const catalogIndex = await loadCatalogIndex();
+const CATALOG_INDEX_GROUPS = catalogIndex.groups;
+const CATALOG_INDEX_ITEMS = catalogIndex.items;
 
 function catalogHeroScenario(slug: string) {
 	return UI_EXAMPLES[slug]?.[0];
@@ -528,12 +502,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten button prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toMatch(/\tbutton: \{/);
 		expect(family).toContain("api: buttonApi");
 		expect(family).not.toContain('name: "variant"');
 		expect(family).not.toContain('name: "asChild"');
@@ -606,12 +578,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten link-button prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toContain('\t"link-button": {');
 		expect(family).toContain("api: linkButtonApi");
 		expect(family).not.toContain('name: "href"');
 		expect(family).toContain('href="/docs"');
@@ -649,12 +619,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten text prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toMatch(/\ttext: \{/);
 		expect(family).toContain("api: textApi");
 		expect(family).toContain("<Text tone='muted'>Copy</Text>");
 	});
@@ -707,12 +675,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten label prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toMatch(/\tlabel: \{/);
 		expect(family).toContain("api: labelApi");
 		expect(family).toContain('<Label htmlFor="email">Email</Label>');
 	});
@@ -766,12 +732,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten separator prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toMatch(/\tseparator: \{/);
 		expect(family).toContain("api: separatorApi");
 		expect(family).toContain("<Separator orientation='horizontal' />");
 	});
@@ -828,12 +792,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten link prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toMatch(/\tlink: \{/);
 		expect(family).toContain("api: linkApi");
 		expect(family).toContain('<LinkProvider><Link href="/ui">Library</Link></LinkProvider>');
 	});
@@ -893,14 +855,12 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten tooltip prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/overlay.tsx"),
 			"utf8",
 		);
 		const start = family.indexOf("\ttooltip: {");
 		const end = family.indexOf("\taccordion: {");
-		expect(docs).not.toMatch(/\ttooltip: \{/);
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = family.slice(start, end);
@@ -967,12 +927,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten theme-toggle prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toContain('\t"theme-toggle": {');
 		expect(family).toContain("api: themeToggleApi");
 		expect(family).toContain(
 			'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
@@ -1034,12 +992,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten layer-card prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toContain('\t"layer-card": {');
 		expect(family).toContain("api: layerCardApi");
 		expect(family).toContain(
 			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
@@ -1094,12 +1050,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten basalt-mark prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toContain('\t"basalt-mark": {');
 		expect(family).toContain("api: basaltMarkApi");
 		expect(family).toContain('description: "Basalt mark."');
 		expect(family).toContain("<BasaltMark />");
@@ -1165,12 +1119,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten field prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toMatch(/\tfield: \{/);
 		expect(family).toContain("api: fieldApi");
 		expect(family).not.toContain('name: "label"');
 		expect(family).not.toContain('name: "htmlFor"');
@@ -1229,12 +1181,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten input prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toMatch(/\tinput: \{/);
 		expect(family).toContain("api: inputApi");
 		expect(family).not.toContain('name: "type"');
 		expect(family).toContain(
@@ -1293,12 +1243,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten input-area prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toContain('\t"input-area": {');
 		expect(family).toContain("api: inputAreaApi");
 		expect(family).not.toContain('name: "rows"');
 		expect(family).toContain('description: "A multi-line text field on the L3 surface."');
@@ -1309,12 +1257,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten input-group prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toContain('\t"input-group": {');
 		expect(family).toContain("api: inputGroupApi");
 		expect(family).not.toContain('name: "InputGroup.Input"');
 		expect(family).not.toContain("The editable value.");
@@ -1399,12 +1345,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten sensitive-input prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toContain('\t"sensitive-input": {');
 		expect(family).toContain("api: sensitiveInputApi");
 		expect(family).not.toContain('name: "revealLabel"');
 		expect(family).not.toContain('name: "hideLabel"');
@@ -1476,12 +1420,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten checkbox prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toMatch(/\tcheckbox: \{/);
 		expect(family).toContain("api: checkboxApi");
 		expect(family).not.toContain('name: "checked"');
 		expect(family).not.toContain('boolean | "indeterminate"');
@@ -1553,14 +1495,12 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten radio prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
 		const start = family.indexOf("\tradio: {");
 		const end = family.indexOf("\tswitch: {");
-		expect(docs).not.toMatch(/\tradio: \{/);
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = family.slice(start, end);
@@ -1648,12 +1588,10 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten switch prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
-		expect(docs).not.toMatch(/\tswitch: \{/);
 		expect(family).toContain("api: switchApi");
 		expect(family).not.toContain('name: "checked"');
 		expect(family).not.toContain('name: "size"');
@@ -1835,14 +1773,12 @@ describe("ui catalog", () => {
 	});
 
 	it("does not keep a handwritten select prop inventory", () => {
-		const docs = readFileSync(path.join(process.cwd(), "src/pages/ui/docs.ts"), "utf8");
 		const family = readFileSync(
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
 		const start = family.indexOf("\tselect: {");
 		const end = family.indexOf("\tcombobox: {");
-		expect(docs).not.toMatch(/\tselect: \{/);
 		expect(start).toBeGreaterThanOrEqual(0);
 		expect(end).toBeGreaterThan(start);
 		const block = family.slice(start, end);
@@ -2047,19 +1983,6 @@ describe("ui catalog", () => {
 		expect(page).toContain("data-scenario");
 	});
 
-	it("removes parallel demo maps from production catalog sources", () => {
-		for (const file of [
-			"src/pages/ui/demos.tsx",
-			"src/pages/ui/catalog-ready.tsx",
-			"src/pages/ui/HomeGrid.tsx",
-		]) {
-			const source = readFileSync(path.join(process.cwd(), file), "utf8");
-			expect(source, file).not.toMatch(/\bBASE_DEMOS\b/);
-			expect(source, file).not.toMatch(/\bUI_DEMOS\b/);
-			expect(source, file).not.toMatch(/\bEXTRA_DEMOS\b/);
-		}
-	});
-
 	it("removes the legacy home inventory and duplicate input branch", () => {
 		const source = readFileSync(path.join(process.cwd(), "src/pages/ui/HomeGrid.tsx"), "utf8");
 		expect(source).not.toMatch(/\bSHOWCASE\b/);
@@ -2069,20 +1992,6 @@ describe("ui catalog", () => {
 		expect(source).not.toMatch(/\bHomeInputValidation\b/);
 		expect(source).not.toContain("aspect-square");
 		expect(source).toContain("HOME_DEMOS[item.entry.slug] ?? item.hero.render");
-	});
-
-	it("does not keep inline button scenario dual-writes", () => {
-		const source = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
-			"utf8",
-		);
-		expect(source).not.toContain("BUTTON_EXAMPLES");
-		expect(family).toContain("BUTTON_EXAMPLES");
-		expect(source).not.toMatch(/button:\s*\[/);
-		expect(source).not.toMatch(/catalogScenarioId\("button"/);
-		expect(source).not.toMatch(/code:\s*'<Button/);
-		expect(source).not.toMatch(/code:\s*"<Button/);
 	});
 
 	it("keeps link-button default hero and disabled link contracts", () => {
@@ -2821,54 +2730,6 @@ describe("ui catalog", () => {
 		expect(page).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 	});
 
-	it("does not keep inline input-area scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
-			"utf8",
-		);
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("INPUT_AREA_EXAMPLES");
-		expect(family).toContain("INPUT_AREA_EXAMPLES");
-		expect(demos).not.toMatch(/"input-area":\s*\[/);
-		expect(kumo).not.toMatch(/"input-area":\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("input-area"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("input-area"/);
-		expect(demos).not.toContain('from "@nocoo/basalt/components/input-area"');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/input-area"');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/field"');
-	});
-
-	it("does not keep inline input-group scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
-			"utf8",
-		);
-		const feedbackFamily = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/feedback.tsx"),
-			"utf8",
-		);
-		const navigationFamily = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/navigation.tsx"),
-			"utf8",
-		);
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("INPUT_GROUP_EXAMPLES");
-		expect(family).toContain("INPUT_GROUP_EXAMPLES");
-		expect(demos).not.toMatch(/"input-group":\s*\[/);
-		expect(kumo).not.toMatch(/"input-group":\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("input-group"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("input-group"/);
-		expect(demos).not.toContain('from "@nocoo/basalt/components/input-group"');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/input-group"');
-		expect(demos).not.toContain("CircleCheck");
-		expect(kumo).not.toContain("CircleCheck");
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/loader"');
-		expect(feedbackFamily).toContain('from "@nocoo/basalt/components/loader"');
-		expect(navigationFamily).toContain("Search");
-	});
-
 	it("keeps sensitive-input hero, reveal toggle, disabled controls, and copy modules", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
@@ -2920,23 +2781,6 @@ describe("ui catalog", () => {
 			expect(markdown).toContain(scenario.code);
 		}
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|API key|secret|token/i);
-	});
-
-	it("does not keep inline sensitive-input scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
-			"utf8",
-		);
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("SENSITIVE_INPUT_EXAMPLES");
-		expect(family).toContain("SENSITIVE_INPUT_EXAMPLES");
-		expect(demos).not.toMatch(/"sensitive-input":\s*\[/);
-		expect(kumo).not.toMatch(/"sensitive-input":\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("sensitive-input"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("sensitive-input"/);
-		expect(demos).not.toContain('from "@nocoo/basalt/components/sensitive-input"');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/sensitive-input"');
 	});
 
 	it("keeps checkbox hero, five states, error ARIA, and copy modules", async () => {
@@ -3021,30 +2865,6 @@ describe("ui catalog", () => {
 		expect(UI_EXAMPLES["sensitive-input"]).toHaveLength(2);
 	});
 
-	it("does not keep inline checkbox scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
-			"utf8",
-		);
-		const feedbackFamily = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/feedback.tsx"),
-			"utf8",
-		);
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("CHECKBOX_EXAMPLES");
-		expect(family).toContain("CHECKBOX_EXAMPLES");
-		expect(demos).not.toMatch(/\bcheckbox:\s*\[/);
-		expect(kumo).not.toMatch(/\bcheckbox:\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("checkbox"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("checkbox"/);
-		expect(demos).not.toContain('from "@nocoo/basalt/components/checkbox"');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/checkbox"');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/field"');
-		expect(kumo).not.toContain("function Preview");
-		expect(feedbackFamily).toContain("function Preview");
-	});
-
 	it("keeps radio hero, exclusive selection, disabled radios, and copy modules", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
@@ -3115,30 +2935,6 @@ describe("ui catalog", () => {
 		expect(CATALOG_DOCS.checkbox?.api).toEqual(CATALOG_API.checkbox);
 		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
 		expect(UI_EXAMPLES.checkbox).toHaveLength(5);
-	});
-
-	it("does not keep inline radio scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
-			"utf8",
-		);
-		const feedbackFamily = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/feedback.tsx"),
-			"utf8",
-		);
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("RADIO_EXAMPLES");
-		expect(family).toContain("RADIO_EXAMPLES");
-		expect(demos).not.toMatch(/\bradio:\s*\[/);
-		expect(kumo).not.toMatch(/\bradio:\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("radio"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("radio"/);
-		expect(demos).not.toContain('from "@nocoo/basalt/components/radio"');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/radio"');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/label"');
-		expect(kumo).not.toContain("function Preview");
-		expect(feedbackFamily).toContain("function Preview");
 	});
 
 	it("keeps switch hero, four states, sizes, and copy modules", async () => {
@@ -3226,37 +3022,6 @@ describe("ui catalog", () => {
 		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
 		expect(CATALOG_DOCS.switch?.api).toEqual(CATALOG_API.switch);
 		expect(UI_EXAMPLES.radio).toHaveLength(3);
-	});
-
-	it("does not keep inline switch scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
-			"utf8",
-		);
-		const feedbackFamily = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/feedback.tsx"),
-			"utf8",
-		);
-		const navigationFamily = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/navigation.tsx"),
-			"utf8",
-		);
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("SWITCH_EXAMPLES");
-		expect(family).toContain("SWITCH_EXAMPLES");
-		expect(demos).not.toMatch(/\bswitch:\s*\[/);
-		expect(kumo).not.toMatch(/\bswitch:\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("switch"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("switch"/);
-		expect(demos).not.toContain('from "@nocoo/basalt/components/switch"');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/switch"');
-		expect(kumo).not.toContain("function Preview");
-		expect(kumo).not.toContain("ReactNode");
-		expect(feedbackFamily).toContain("function Preview");
-		expect(feedbackFamily).toContain("ReactNode");
-		expect(navigationFamily).toContain("useState");
-		expect(kumo).not.toContain("catalogScenarioId");
 	});
 
 	it("keeps select hero, three states, disabled option, and copy modules", async () => {
@@ -3348,205 +3113,6 @@ describe("ui catalog", () => {
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
 		expect(CATALOG_DOCS.switch?.api).toEqual(CATALOG_API.switch);
 		expect(UI_EXAMPLES.switch).toHaveLength(4);
-	});
-
-	it("does not keep inline select scenario owners", () => {
-		const ready = readFileSync(path.join(process.cwd(), "src/pages/ui/catalog-ready.tsx"), "utf8");
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
-			"utf8",
-		);
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("SELECT_EXAMPLES");
-		expect(family).toContain("SELECT_EXAMPLES");
-		expect(demos).not.toMatch(/\bselect:\s*\[/);
-		expect(kumo).not.toMatch(/\bselect:\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("select"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("select"/);
-		expect(demos).not.toContain('from "@nocoo/basalt/components/select"');
-		expect(ready).not.toMatch(/add\(\s*"select"/);
-		expect(ready).not.toContain('from "@nocoo/basalt/components/select"');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/select"');
-		expect(kumo).not.toContain('catalogScenarioId("dialog", "with-select")');
-		const overlay = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/overlay.tsx"),
-			"utf8",
-		);
-		expect(overlay).toContain('from "@nocoo/basalt/components/select"');
-		expect(overlay).toContain('catalogScenarioId("dialog", "with-select")');
-		expect(overlay).toContain('aria-label="Region"');
-	});
-
-	it("does not keep inline input scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
-			"utf8",
-		);
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("INPUT_EXAMPLES");
-		expect(family).toContain("INPUT_EXAMPLES");
-		expect(demos).not.toMatch(/\binput:\s*\[/);
-		expect(kumo).not.toMatch(/\binput:\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("input",/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("input",/);
-		expect(demos).not.toContain('from "@nocoo/basalt/components/input";');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/input";');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/field"');
-		expect(kumo).not.toMatch(/function Stack\b/);
-		expect(kumo).not.toMatch(/<Stack[\s>]/);
-	});
-
-	it("does not keep inline field scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
-			"utf8",
-		);
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("FIELD_EXAMPLES");
-		expect(family).toContain("FIELD_EXAMPLES");
-		expect(demos).not.toMatch(/\bfield:\s*\[/);
-		expect(kumo).not.toMatch(/\bfield:\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("field"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("field"/);
-		expect(demos).not.toContain('from "@nocoo/basalt/components/field"');
-		expect(kumo).not.toContain('from "@nocoo/basalt/components/field"');
-		expect(demos).not.toContain("ex-email");
-		expect(kumo).not.toContain("kumo-ex-email");
-	});
-
-	it("does not keep inline basalt-mark scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const ready = readFileSync(path.join(process.cwd(), "src/pages/ui/catalog-ready.tsx"), "utf8");
-		expect(demos).not.toContain("BASALT_MARK_EXAMPLES");
-		expect(demos).not.toMatch(/"basalt-mark": BASALT_MARK_EXAMPLES/);
-		expect(demos).not.toMatch(/"basalt-mark":\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("basalt-mark"/);
-		expect(ready).not.toContain('add("basalt-mark"');
-		expect(ready).not.toMatch(/import \{ BasaltMark \}/);
-		expect(ready).not.toMatch(/from "@nocoo\/basalt\/components\/basalt-mark"/);
-		expect(ready).not.toContain("<BasaltMark");
-	});
-
-	it("does not keep inline layer-card scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("LAYER_CARD_EXAMPLES");
-		expect(demos).not.toMatch(/"layer-card": LAYER_CARD_EXAMPLES/);
-		expect(demos).not.toMatch(/"layer-card":\s*\[/);
-		expect(kumo).not.toMatch(/"layer-card":\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("layer-card"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("layer-card"/);
-		expect(demos).not.toMatch(/code:\s*['"`]<LayerCard/);
-		expect(kumo).not.toMatch(/code:\s*['"`]<LayerCard/);
-		expect(demos).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<LayerCard/);
-		expect(kumo).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<LayerCard/);
-		expect(demos).not.toContain("LayerCard.Secondary");
-		expect(kumo).not.toContain("LayerCard.Secondary");
-	});
-
-	it("does not keep inline theme-toggle scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		expect(demos).not.toContain("THEME_TOGGLE_EXAMPLES");
-		expect(demos).not.toMatch(/"theme-toggle": THEME_TOGGLE_EXAMPLES/);
-		expect(demos).not.toMatch(/"theme-toggle":\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("theme-toggle"/);
-		expect(demos).not.toMatch(/code:\s*['"`]<ThemeToggle/);
-		expect(demos).not.toMatch(/<ThemeToggle aria-label="Toggle theme" \/>/);
-		expect(demos).not.toMatch(/"theme-provider":\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("theme-provider"/);
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/foundation.tsx"),
-			"utf8",
-		);
-		expect(family).toContain("THEME_TOGGLE_EXAMPLES");
-		expect(family).toContain('catalogScenarioId("theme-provider"');
-		expect(family).toContain("ThemeProvider");
-	});
-
-	it("does not keep inline tooltip scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const family = readFileSync(
-			path.join(process.cwd(), "src/pages/ui/catalog-content/families/overlay.tsx"),
-			"utf8",
-		);
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("TOOLTIP_EXAMPLES");
-		expect(family).toContain("TOOLTIP_EXAMPLES");
-		expect(demos).not.toMatch(/\btooltip:\s*\[/);
-		expect(kumo).not.toMatch(/\btooltip:\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("tooltip"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("tooltip"/);
-		expect(demos).not.toMatch(/code:\s*['"`]<Tooltip/);
-		expect(kumo).not.toMatch(/code:\s*['"`]<Tooltip/);
-		expect(demos).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<TooltipProvider/);
-		expect(kumo).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<TooltipProvider/);
-		expect(kumo).not.toContain("TooltipProvider");
-		expect(demos).not.toContain("TooltipProvider");
-	});
-
-	it("does not keep inline link scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("LINK_EXAMPLES");
-		expect(demos).not.toMatch(/\blink: LINK_EXAMPLES/);
-		expect(demos).not.toMatch(/\blink:\s*\[/);
-		expect(kumo).not.toMatch(/\blink:\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("link",/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("link",/);
-		expect(kumo).not.toContain("LinkProvider");
-	});
-
-	it("does not keep inline separator scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("SEPARATOR_EXAMPLES");
-		expect(demos).not.toMatch(/\bseparator: SEPARATOR_EXAMPLES/);
-		expect(demos).not.toMatch(/\bseparator:\s*\[/);
-		expect(kumo).not.toMatch(/\bseparator:\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("separator"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("separator"/);
-		expect(demos).not.toMatch(/code:\s*["']<Separator \/>["']/);
-		expect(kumo).not.toMatch(/code:\s*["']<Separator \/>["']/);
-	});
-
-	it("does not keep inline label scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("LABEL_EXAMPLES");
-		expect(demos).not.toMatch(/\blabel: LABEL_EXAMPLES/);
-		expect(demos).not.toMatch(/\blabel:\s*\[/);
-		expect(kumo).not.toMatch(/\blabel:\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("label"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("label"/);
-	});
-
-	it("does not keep inline text scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("TEXT_EXAMPLES");
-		expect(demos).not.toMatch(/\btext: TEXT_EXAMPLES/);
-		expect(demos).not.toMatch(/\btext:\s*\[/);
-		expect(kumo).not.toMatch(/\btext:\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("text"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("text"/);
-	});
-
-	it("does not keep inline link-button scenario owners", () => {
-		const demos = readFileSync(path.join(process.cwd(), "src/pages/ui/demos.tsx"), "utf8");
-		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
-		expect(demos).not.toContain("LINK_BUTTON_EXAMPLES");
-		expect(demos).not.toMatch(/"link-button": LINK_BUTTON_EXAMPLES/);
-		expect(demos).not.toMatch(/"link-button":\s*\[/);
-		expect(kumo).not.toMatch(/"link-button":\s*\[/);
-		expect(demos).not.toMatch(/catalogScenarioId\("link-button"/);
-		expect(kumo).not.toMatch(/catalogScenarioId\("link-button"/);
-		expect(demos).not.toMatch(/code:\s*['"`]<LinkButton/);
-		expect(kumo).not.toMatch(/code:\s*['"`]<LinkButton/);
-		expect(demos).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<LinkButton/);
-		expect(kumo).not.toMatch(/render:\s*\(\)\s*=>\s*\(?\s*<LinkButton/);
 	});
 
 	it("renders extra home tiles from the first catalog scenario", () => {

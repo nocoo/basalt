@@ -1,42 +1,15 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import dataLayout from "@/pages/ui/catalog-content/families/data-layout";
-import feedback from "@/pages/ui/catalog-content/families/feedback";
-import forms from "@/pages/ui/catalog-content/families/forms";
-import foundation from "@/pages/ui/catalog-content/families/foundation";
-import navigation from "@/pages/ui/catalog-content/families/navigation";
-import overlay from "@/pages/ui/catalog-content/families/overlay";
-import { EXTRA_DOCS, EXTRA_EXAMPLES } from "@/pages/ui/catalog-ready";
-import { UI_EXAMPLES as LEGACY_UI_EXAMPLES } from "@/pages/ui/demos";
-import { CATALOG_DOCS as LEGACY_CATALOG_DOCS } from "@/pages/ui/docs";
+import { loadCatalogContentRecord } from "@/pages/ui/catalog-content-registry";
 
-const UI_EXAMPLES = {
-	...LEGACY_UI_EXAMPLES,
-	...Object.fromEntries(
-		Object.entries(foundation).map(([slug, content]) => [slug, content.examples]),
-	),
-	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.examples])),
-	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.examples])),
-	...Object.fromEntries(
-		Object.entries(feedback).map(([slug, content]) => [slug, content.examples]),
-	),
-	...Object.fromEntries(
-		Object.entries(navigation).map(([slug, content]) => [slug, content.examples]),
-	),
-	...Object.fromEntries(
-		Object.entries(dataLayout).map(([slug, content]) => [slug, content.examples]),
-	),
-};
-const CATALOG_DOCS = {
-	...LEGACY_CATALOG_DOCS,
-	...Object.fromEntries(Object.entries(foundation).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(feedback).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(navigation).map(([slug, content]) => [slug, content.docs])),
-	...Object.fromEntries(Object.entries(dataLayout).map(([slug, content]) => [slug, content.docs])),
-};
+const catalogContent = await loadCatalogContentRecord();
+const UI_EXAMPLES = Object.fromEntries(
+	Object.entries(catalogContent).map(([slug, content]) => [slug, content.examples]),
+);
+const CATALOG_DOCS = Object.fromEntries(
+	Object.entries(catalogContent).map(([slug, content]) => [slug, content.docs]),
+);
 
 import { LAYER_CARD_EXAMPLES } from "@/pages/ui/examples/layer-card";
 import { SELECT_EXAMPLES } from "@/pages/ui/examples/select";
@@ -88,8 +61,6 @@ describe("content scenario truth", () => {
 			"select-placeholder",
 			"select-disabled-options",
 		]);
-		expect(EXTRA_DOCS.select).toBeUndefined();
-		expect(EXTRA_EXAMPLES.select).toBeUndefined();
 		expect(UI_EXAMPLES.grid?.map((item) => item.id)).toEqual(["grid-grid"]);
 		expect(UI_EXAMPLES.flow?.map((item) => item.id)).toEqual(["flow-sequential-flow"]);
 		expect(UI_EXAMPLES["command-palette"]?.map((item) => item.id)).toEqual([

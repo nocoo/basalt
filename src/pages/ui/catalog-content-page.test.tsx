@@ -3,17 +3,11 @@ import { Suspense } from "react";
 import { MemoryRouter, Route, Routes, useNavigate } from "react-router";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CatalogPageContent } from "./catalog-content";
-import dataLayout from "./catalog-content/families/data-layout";
-import feedback from "./catalog-content/families/feedback";
-import forms from "./catalog-content/families/forms";
-import foundation from "./catalog-content/families/foundation";
-import navigation from "./catalog-content/families/navigation";
-import overlay from "./catalog-content/families/overlay";
-import { UI_EXAMPLES } from "./demos";
-import { CATALOG_DOCS } from "./docs";
+import { loadCatalogContentRecord } from "./catalog-content-registry";
 import UiPlaceholderPage from "./UiPlaceholderPage";
 
 const loadContent = vi.hoisted(() => vi.fn());
+const catalogContent = await loadCatalogContentRecord();
 
 vi.mock("./catalog-content-loader", () => ({
 	loadCatalogPageContent: loadContent,
@@ -28,22 +22,11 @@ function deferred<T>() {
 }
 
 function contentFor(slug: string): CatalogPageContent {
-	const family =
-		foundation[slug] ??
-		forms[slug] ??
-		overlay[slug] ??
-		feedback[slug] ??
-		navigation[slug] ??
-		dataLayout[slug];
-	if (family) {
-		return family;
-	}
-	const docs = CATALOG_DOCS[slug];
-	const examples = UI_EXAMPLES[slug];
-	if (!docs || !examples?.[0]) {
+	const content = catalogContent[slug];
+	if (!content) {
 		throw new Error(`Missing test content for ${slug}`);
 	}
-	return { docs, examples };
+	return content;
 }
 
 function renderPage(path: string) {

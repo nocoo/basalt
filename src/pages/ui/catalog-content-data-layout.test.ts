@@ -1,8 +1,6 @@
 import { describe, expect, it } from "vitest";
 import dataLayout from "./catalog-content/families/data-layout";
-import { EXTRA_DOCS, EXTRA_EXAMPLES } from "./catalog-ready";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
-import { KUMO_EXAMPLES } from "./kumo-examples";
 
 const DATA_LAYOUT_SCENARIOS = {
 	table: ["table-basic", "table-selected-row"],
@@ -83,13 +81,5 @@ describe("data-layout catalog content family", () => {
 		]);
 		expect(dataLayout.table?.docs.usage).toContain("<TableHeader>");
 		expect(dataLayout["page-header"]?.docs.usage).toContain("<AppHeader");
-	});
-
-	it("removes the migrated owners from both legacy monoliths", () => {
-		for (const slug of Object.keys(DATA_LAYOUT_SCENARIOS)) {
-			expect(EXTRA_DOCS[slug], `${slug} docs`).toBeUndefined();
-			expect(EXTRA_EXAMPLES[slug], `${slug} extra examples`).toBeUndefined();
-			expect(KUMO_EXAMPLES[slug], `${slug} kumo examples`).toBeUndefined();
-		}
 	});
 });

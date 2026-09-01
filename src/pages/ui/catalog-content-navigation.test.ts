@@ -1,8 +1,6 @@
 import { describe, expect, it } from "vitest";
 import navigation from "./catalog-content/families/navigation";
-import { EXTRA_DOCS, EXTRA_EXAMPLES } from "./catalog-ready";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
-import { KUMO_EXAMPLES } from "./kumo-examples";
 
 const NAVIGATION_SCENARIOS = {
 	"command-palette": ["command-palette-with-grouped-items", "command-palette-simple-flat-list"],
@@ -97,13 +95,5 @@ describe("navigation catalog content family", () => {
 			"onPageChange",
 			"simple",
 		]);
-	});
-
-	it("removes the migrated owners from both legacy monoliths", () => {
-		for (const slug of Object.keys(NAVIGATION_SCENARIOS)) {
-			expect(EXTRA_DOCS[slug], `${slug} docs`).toBeUndefined();
-			expect(EXTRA_EXAMPLES[slug], `${slug} extra examples`).toBeUndefined();
-			expect(KUMO_EXAMPLES[slug], `${slug} kumo examples`).toBeUndefined();
-		}
 	});
 });

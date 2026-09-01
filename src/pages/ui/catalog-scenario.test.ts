@@ -1,7 +1,5 @@
 import { describe, expect, it } from "vitest";
-import forms from "./catalog-content/families/forms";
-import foundation from "./catalog-content/families/foundation";
-import overlay from "./catalog-content/families/overlay";
+import { loadCatalogContentRecord } from "./catalog-content-registry";
 import {
 	catalogScenarioId,
 	catalogScenarioMatchesSlug,
@@ -9,16 +7,11 @@ import {
 	moduleFileKey,
 	normalizeModulePath,
 } from "./catalog-scenario";
-import { UI_EXAMPLES as LEGACY_UI_EXAMPLES } from "./demos";
 
-const UI_EXAMPLES = {
-	...LEGACY_UI_EXAMPLES,
-	...Object.fromEntries(
-		Object.entries(foundation).map(([slug, content]) => [slug, content.examples]),
-	),
-	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.examples])),
-	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.examples])),
-};
+const catalogContent = await loadCatalogContentRecord();
+const UI_EXAMPLES = Object.fromEntries(
+	Object.entries(catalogContent).map(([slug, content]) => [slug, content.examples]),
+);
 
 import { BASALT_MARK_EXAMPLES } from "./examples/basalt-mark";
 import { BUTTON_EXAMPLES } from "./examples/button";

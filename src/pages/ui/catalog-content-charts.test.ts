@@ -1,6 +1,5 @@
 import { describe, expect, it } from "vitest";
 import charts from "./catalog-content/families/charts";
-import { EXTRA_DOCS, EXTRA_EXAMPLES } from "./catalog-ready";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
 const CHART_DESCRIPTIONS = {
@@ -80,10 +79,5 @@ describe("charts catalog content family", () => {
 		]);
 		expect(charts.timeline?.docs.usage).toContain('id: "created"');
 		expect(charts.sankey?.docs.usage).toContain("nodes:");
-	});
-
-	it("removes every chart owner from the legacy monolith", () => {
-		expect(EXTRA_DOCS).toEqual({});
-		expect(EXTRA_EXAMPLES).toEqual({});
 	});
 });

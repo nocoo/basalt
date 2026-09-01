@@ -93,6 +93,18 @@ describe("application route build boundary", () => {
 		expect(new TextEncoder().encode(entry?.code).byteLength).toBeLessThan(500_000);
 
 		const chunksByFile = new Map(chunks.map((chunk) => [chunk.fileName, chunk]));
+		for (const suffix of [
+			"/src/pages/ui/catalog-content-legacy.ts",
+			"/src/pages/ui/catalog-ready.tsx",
+			"/src/pages/ui/kumo-examples.tsx",
+			"/src/pages/ui/docs.ts",
+			"/src/pages/ui/demos.tsx",
+		]) {
+			expect(
+				chunks.some((chunk) => chunk.modules.some((id) => id.endsWith(suffix))),
+				`production build contains removed owner ${suffix}`,
+			).toBe(false);
+		}
 		const staticFiles = new Set<string>();
 		const visitStatic = (chunk: BuiltChunk | undefined) => {
 			if (!chunk || staticFiles.has(chunk.fileName)) return;
@@ -152,17 +164,50 @@ describe("application route build boundary", () => {
 				`catalog detail static closure contains ${suffix}`,
 			).toBe(false);
 		}
-		for (const suffix of [
-			"/src/pages/ui/catalog-ready.tsx",
-			"/src/pages/ui/kumo-examples.tsx",
-			"/src/pages/ui/docs.ts",
-			"/src/pages/ui/demos.tsx",
-		]) {
-			expect(
-				chunks.some((chunk) => chunk.modules.some((id) => id.endsWith(suffix))),
-				`production build is missing legacy owner ${suffix}`,
-			).toBe(true);
-		}
+
+		const indexPage = chunks.find((chunk) =>
+			chunk.facadeModuleId?.endsWith("/src/pages/ui/UiIndexPage.tsx"),
+		);
+		expect(indexPage?.isDynamicEntry).toBe(true);
+		const indexStaticFiles = new Set<string>();
+		const visitIndexStatic = (chunk: BuiltChunk | undefined) => {
+			if (!chunk || indexStaticFiles.has(chunk.fileName)) return;
+			indexStaticFiles.add(chunk.fileName);
+			for (const imported of chunk.imports) visitIndexStatic(chunksByFile.get(imported));
+		};
+		visitIndexStatic(indexPage);
+		const indexStaticModules = chunks
+			.filter((chunk) => indexStaticFiles.has(chunk.fileName))
+			.flatMap((chunk) => chunk.modules);
+		expect(
+			indexStaticModules.some((id) => /catalog-content\/families\/[^/]+\.tsx$/.test(id)),
+			"catalog index statically imports a content family",
+		).toBe(false);
+
+		const indexReachableFiles = new Set<string>();
+		const visitIndexReachable = (chunk: BuiltChunk | undefined) => {
+			if (!chunk || indexReachableFiles.has(chunk.fileName)) return;
+			indexReachableFiles.add(chunk.fileName);
+			for (const imported of [...chunk.imports, ...chunk.dynamicImports]) {
+				visitIndexReachable(chunksByFile.get(imported));
+			}
+		};
+		visitIndexReachable(indexPage);
+		const indexFamilies = new Set(
+			chunks
+				.filter((chunk) => indexReachableFiles.has(chunk.fileName))
+				.flatMap((chunk) => chunk.modules)
+				.flatMap((id) => id.match(/catalog-content\/families\/([^/]+)\.tsx$/)?.[1] ?? []),
+		);
+		expect([...indexFamilies].sort()).toEqual([
+			"charts",
+			"data-layout",
+			"feedback",
+			"forms",
+			"foundation",
+			"navigation",
+			"overlay",
+		]);
 
 		const foundation = chunks.find((chunk) =>
 			chunk.modules.some((id) =>

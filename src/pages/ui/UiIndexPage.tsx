@@ -5,9 +5,6 @@ import { Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import {
-	CATALOG_INDEX_GROUPS,
-	CATALOG_INDEX_ITEMS,
-	CATALOG_INDEX_READY_COUNT,
 	type CatalogIndexCategory,
 	type CatalogIndexQuery,
 	type CatalogIndexRelease,
@@ -17,6 +14,7 @@ import {
 	parseCatalogIndexQuery,
 	serializeCatalogIndexQuery,
 } from "./catalog-index";
+import { readCatalogIndex } from "./catalog-index-loader";
 import { HomeGrid } from "./HomeGrid";
 
 const CATEGORY_OPTIONS: ReadonlyArray<{ value: CatalogIndexCategory; label: string }> = [
@@ -82,12 +80,13 @@ function FilterToggle<T extends string>({
 }
 
 export default function UiIndexPage() {
+	const index = readCatalogIndex();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const searchInputRef = useRef<HTMLInputElement>(null);
 	const query = parseCatalogIndexQuery(searchParams);
 	const [searchValue, setSearchValue] = useState(query.q);
 	const canonicalSearchParams = serializeCatalogIndexQuery(query, searchParams);
-	const groups = filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, query);
+	const groups = filterCatalogIndexGroups(index.groups, query);
 	const resultCount = groups.reduce((count, group) => count + group.items.length, 0);
 	const hasFilters = !queryIsDefault(query);
 
@@ -122,7 +121,7 @@ export default function UiIndexPage() {
 					Explore Basalt components, charts, and reusable blocks.
 				</p>
 				<p data-ready-summary className="mt-3 text-sm font-medium text-foreground">
-					{CATALOG_INDEX_READY_COUNT} / {CATALOG_INDEX_ITEMS.length} ready
+					{index.readyCount} / {index.items.length} ready
 				</p>
 			</header>
 

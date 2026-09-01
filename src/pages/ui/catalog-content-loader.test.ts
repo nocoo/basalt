@@ -1,14 +1,18 @@
 import { readFileSync } from "node:fs";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CATALOG } from "./catalog";
-import type { CatalogPageContentCandidate } from "./catalog-content";
+import type { CatalogPageContent } from "./catalog-content";
 import { catalogPageStatus } from "./catalog-page-status";
 
-const loadLegacy = vi.fn<(slug: string) => Promise<CatalogPageContentCandidate>>();
+const loadFamily = vi.hoisted(() =>
+	vi.fn<(family: string) => Promise<Record<string, CatalogPageContent>>>(),
+);
 
-vi.mock("./catalog-content-legacy", () => ({
-	loadLegacyCatalogPageContent: loadLegacy,
-}));
+vi.mock("./catalog-content-registry", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("./catalog-content-registry")>();
+	loadFamily.mockImplementation(actual.loadCatalogContentFamily);
+	return { ...actual, loadCatalogContentFamily: loadFamily };
+});
 
 async function importLoader() {
 	return import("./catalog-content-loader");
@@ -16,16 +20,17 @@ async function importLoader() {
 
 beforeEach(() => {
 	vi.resetModules();
-	loadLegacy.mockReset();
+	loadFamily.mockClear();
 });
 
 describe("catalog page content loader", () => {
 	it("discovers families lazily without executing import promises at module init", () => {
-		const source = readFileSync("src/pages/ui/catalog-content-loader.ts", "utf8");
+		const source = readFileSync("src/pages/ui/catalog-content-registry.ts", "utf8");
 		expect(source).toContain("import.meta.glob");
 		expect(source).toContain('{ import: "default" }');
 		expect(source).not.toMatch(/eager:\s*true/);
 		expect(source).not.toMatch(/switch\s*\([^)]*family/);
+		expect(source).not.toMatch(/const\s+\w+Promise\s*=\s*loadCatalogContentFamily/);
 	});
 
 	it("uses the generated 84 ready / 12 planned status truth", () => {
@@ -35,7 +40,7 @@ describe("catalog page content loader", () => {
 		expect(statuses.filter((status) => status === "planned")).toHaveLength(12);
 	});
 
-	it("does not call the heavy adapter for planned or missing slugs", async () => {
+	it("does not load a family for planned or missing slugs", async () => {
 		const { loadCatalogPageContent } = await importLoader();
 		const planned = loadCatalogPageContent("maps");
 		const missing = loadCatalogPageContent("not-a-control");
@@ -43,17 +48,17 @@ describe("catalog page content loader", () => {
 		expect(loadCatalogPageContent("not-a-control")).toBe(missing);
 		await expect(planned).resolves.toBeUndefined();
 		await expect(missing).resolves.toBeUndefined();
-		expect(loadLegacy).not.toHaveBeenCalled();
+		expect(loadFamily).not.toHaveBeenCalled();
 	});
 
-	it("loads migrated ready content from the family without the legacy adapter", async () => {
+	it("loads foundation content from the generated family owner", async () => {
 		const { loadCatalogPageContent } = await importLoader();
 		const first = loadCatalogPageContent("button");
 		expect(loadCatalogPageContent("button")).toBe(first);
 		const content = await first;
 		expect(content?.docs.description).toBe("Primary actions, including loading and icon slots.");
 		expect(content?.examples[0]?.id).toBe("button-variants");
-		expect(loadLegacy).not.toHaveBeenCalled();
+		expect(loadFamily).toHaveBeenCalledWith("foundation");
 	});
 
 	it("loads forms family content without the legacy adapter", async () => {
@@ -65,7 +70,7 @@ describe("catalog page content loader", () => {
 			"Compose an input with addons, an inline suffix, and status icons.",
 		);
 		expect(content?.examples[0]?.id).toBe("input-group-inline-suffix");
-		expect(loadLegacy).not.toHaveBeenCalled();
+		expect(loadFamily).toHaveBeenCalledWith("forms");
 	});
 
 	it("loads overlay family content without the legacy adapter", async () => {
@@ -77,7 +82,7 @@ describe("catalog page content loader", () => {
 			"A window overlaid on the primary window, rendering the content underneath inert.",
 		);
 		expect(content?.examples[0]?.id).toBe("dialog-basic-dialog");
-		expect(loadLegacy).not.toHaveBeenCalled();
+		expect(loadFamily).toHaveBeenCalledWith("overlay");
 	});
 
 	it("loads feedback family content without the legacy adapter", async () => {
@@ -89,7 +94,7 @@ describe("catalog page content loader", () => {
 			"Displays contextual inline messages for informational, alert, or error states.",
 		);
 		expect(content?.examples[0]?.id).toBe("banner-variants");
-		expect(loadLegacy).not.toHaveBeenCalled();
+		expect(loadFamily).toHaveBeenCalledWith("feedback");
 	});
 
 	it("loads navigation family content without the legacy adapter", async () => {
@@ -99,7 +104,7 @@ describe("catalog page content loader", () => {
 		const content = await first;
 		expect(content?.docs.description).toBe("Tabbed navigation.");
 		expect(content?.examples[0]?.id).toBe("tabs-variants");
-		expect(loadLegacy).not.toHaveBeenCalled();
+		expect(loadFamily).toHaveBeenCalledWith("navigation");
 	});
 
 	it("loads data-layout family content without the legacy adapter", async () => {
@@ -109,7 +114,7 @@ describe("catalog page content loader", () => {
 		const content = await first;
 		expect(content?.docs.description).toBe("Tabular data with a header bar and striped rows.");
 		expect(content?.examples[0]?.id).toBe("table-basic");
-		expect(loadLegacy).not.toHaveBeenCalled();
+		expect(loadFamily).toHaveBeenCalledWith("data-layout");
 	});
 
 	it("loads charts family content without the legacy adapter", async () => {
@@ -119,6 +124,6 @@ describe("catalog page content loader", () => {
 		const content = await first;
 		expect(content?.docs.description).toBe("Line series.");
 		expect(content?.examples[0]?.id).toBe("line-default");
-		expect(loadLegacy).not.toHaveBeenCalled();
+		expect(loadFamily).toHaveBeenCalledWith("charts");
 	});
 });

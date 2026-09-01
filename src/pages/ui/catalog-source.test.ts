@@ -5,6 +5,7 @@ import { CATALOG_BY_SLUG } from "./catalog";
 import forms from "./catalog-content/families/forms";
 import foundation from "./catalog-content/families/foundation";
 import overlay from "./catalog-content/families/overlay";
+import { loadCatalogContentRecord } from "./catalog-content-registry";
 import {
 	catalogDocsWithImplementation,
 	githubSourceHref,
@@ -13,8 +14,12 @@ import {
 	implementationSourceFor,
 	provenanceFromLegacy,
 } from "./catalog-source";
-import { CATALOG_DOCS } from "./docs";
 import { CATALOG_API } from "./generated/catalog-api";
+
+const catalogContent = await loadCatalogContentRecord();
+const CATALOG_DOCS = Object.fromEntries(
+	Object.entries(catalogContent).map(([slug, content]) => [slug, content.docs]),
+);
 
 function entry(slug: string) {
 	const found = CATALOG_BY_SLUG.get(slug);

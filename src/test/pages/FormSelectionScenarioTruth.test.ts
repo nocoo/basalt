@@ -1,18 +1,15 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
-import forms from "@/pages/ui/catalog-content/families/forms";
-import { UI_EXAMPLES as LEGACY_UI_EXAMPLES } from "@/pages/ui/demos";
-import { CATALOG_DOCS as LEGACY_CATALOG_DOCS } from "@/pages/ui/docs";
+import { loadCatalogContentRecord } from "@/pages/ui/catalog-content-registry";
 
-const UI_EXAMPLES = {
-	...LEGACY_UI_EXAMPLES,
-	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.examples])),
-};
-const CATALOG_DOCS = {
-	...LEGACY_CATALOG_DOCS,
-	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.docs])),
-};
+const catalogContent = await loadCatalogContentRecord();
+const UI_EXAMPLES = Object.fromEntries(
+	Object.entries(catalogContent).map(([slug, content]) => [slug, content.examples]),
+);
+const CATALOG_DOCS = Object.fromEntries(
+	Object.entries(catalogContent).map(([slug, content]) => [slug, content.docs]),
+);
 
 import { CHECKBOX_EXAMPLES } from "@/pages/ui/examples/checkbox";
 import { FIELD_EXAMPLES } from "@/pages/ui/examples/field";
