@@ -1,9 +1,17 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { createRef } from "react";
-import { describe, expect, it } from "vitest";
-import { Radio, RadioGroup, type RadioProps } from "./radio";
+import { describe, expect, it, vi } from "vitest";
+import {
+	Radio,
+	RadioGroup,
+	type RadioGroupProps,
+	type RadioLegendProps,
+	type RadioProps,
+} from "./radio";
 
 function acceptRadioProps(_props: RadioProps) {}
+function acceptRadioGroupProps(_props: RadioGroupProps) {}
+function acceptRadioLegendProps(_props: RadioLegendProps) {}
 
 describe("Radio", () => {
 	it("renders options", () => {
@@ -69,6 +77,46 @@ describe("Radio", () => {
 		expect(item.className).toContain("extra");
 		expect(item.className).toContain("rounded-full");
 		expect(item).not.toHaveAttribute("form");
+	});
+
+	it("applies named sizes and keeps the default class", () => {
+		render(
+			<RadioGroup defaultValue="a">
+				<Radio value="a" aria-label="Default size" />
+				<Radio value="b" size="sm" aria-label="Small" />
+			</RadioGroup>,
+		);
+		expect(screen.getByRole("radio", { name: "Default size" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining(["h-4", "w-4"]),
+		);
+		expect(screen.getByRole("radio", { name: "Small" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining(["h-3", "w-3"]),
+		);
+	});
+
+	it("keeps a controlled group value, legend, and error", () => {
+		const onValueChange = vi.fn();
+		render(
+			<Radio.Group value="a" onValueChange={onValueChange} error="Pick one">
+				<Radio.Legend>Plan</Radio.Legend>
+				<Radio.Item value="a" aria-label="Alpha" />
+				<Radio.Item value="b" aria-label="Beta" />
+			</Radio.Group>,
+		);
+		expect(screen.getByRole("group", { name: "Plan" }).tagName).toBe("FIELDSET");
+		expect(screen.getByRole("alert")).toHaveTextContent("Pick one");
+		expect(screen.getByRole("radio", { name: "Alpha" })).toBeChecked();
+		fireEvent.click(screen.getByRole("radio", { name: "Beta" }));
+		expect(onValueChange).toHaveBeenCalledWith("b");
+		expect(screen.getByRole("radio", { name: "Alpha" })).toBeChecked();
+	});
+
+	it("accepts group and legend props and rejects illegal values", () => {
+		acceptRadioProps({ value: "a", size: "sm" });
+		acceptRadioGroupProps({ value: "a", error: "Required", disabled: true });
+		acceptRadioLegendProps({ children: "Plan" });
+		// @ts-expect-error size must be sm or default
+		acceptRadioProps({ value: "a", size: "lg" });
 	});
 
 	it("selects options exclusively", () => {

@@ -290,8 +290,20 @@ const checkboxSources = import.meta.glob("./examples/checkbox/*.tsx", {
 	eager: true,
 });
 
-const RADIO_IDS = ["radio-default-vertical", "radio-horizontal", "radio-disabled"] as const;
-const RADIO_TITLES = ["Default (Vertical)", "Horizontal", "Disabled"] as const;
+const RADIO_IDS = [
+	"radio-default-vertical",
+	"radio-horizontal",
+	"radio-disabled",
+	"radio-group-and-legend",
+	"radio-controlled-and-error",
+] as const;
+const RADIO_TITLES = [
+	"Default (Vertical)",
+	"Horizontal",
+	"Disabled",
+	"Group and legend",
+	"Controlled and error",
+] as const;
 
 const radioRenders = import.meta.glob("./examples/radio/*.tsx", { eager: true });
 const radioSources = import.meta.glob("./examples/radio/*.tsx", {
@@ -1528,9 +1540,9 @@ describe("source-backed checkbox scenarios", () => {
 });
 
 describe("source-backed radio scenarios", () => {
-	it("loads three radio scenarios from the same glob modules", () => {
-		expect(Object.keys(radioRenders)).toHaveLength(3);
-		expect(Object.keys(radioSources)).toHaveLength(3);
+	it("loads five radio scenarios from the same glob modules", () => {
+		expect(Object.keys(radioRenders)).toHaveLength(5);
+		expect(Object.keys(radioSources)).toHaveLength(5);
 		const loaded = loadModuleScenarios({
 			slug: "radio",
 			metas: RADIO_TITLES.map((title, index) => ({
@@ -1604,8 +1616,7 @@ describe("source-backed radio scenarios", () => {
 			expect(scenario.code).not.toContain("@cloudflare/kumo");
 			expect(scenario.code).toContain("export default");
 			expect(scenario.code).toContain("@nocoo/basalt/components/radio");
-			expect(scenario.code).toContain("import { Radio, RadioGroup }");
-			expect(scenario.code).toContain('defaultValue="a"');
+			expect(scenario.code).toContain("import { Radio");
 		}
 		expect(RADIO_EXAMPLES[0]?.code).toContain("@nocoo/basalt/components/label");
 		expect(RADIO_EXAMPLES[0]?.code).toContain("import { Label }");
@@ -1627,6 +1638,14 @@ describe("source-backed radio scenarios", () => {
 		expect(RADIO_EXAMPLES[2]?.code).toContain('aria-label="Disabled A"');
 		expect(RADIO_EXAMPLES[2]?.code).toContain('aria-label="Disabled B"');
 		expect(RADIO_EXAMPLES[2]?.code).toContain("disabled");
+		expect(RADIO_EXAMPLES[0]?.code).toContain("import { Radio, RadioGroup }");
+		expect(RADIO_EXAMPLES[0]?.code).toContain('defaultValue="a"');
+		expect(RADIO_EXAMPLES[3]?.code).toContain("Radio.Group");
+		expect(RADIO_EXAMPLES[3]?.code).toContain("Radio.Legend");
+		expect(RADIO_EXAMPLES[3]?.code).toContain("Radio.Item");
+		expect(RADIO_EXAMPLES[4]?.code).toContain("useState");
+		expect(RADIO_EXAMPLES[4]?.code).toContain("onValueChange");
+		expect(RADIO_EXAMPLES[4]?.code).toContain('error="Pick a plan"');
 	});
 });
 

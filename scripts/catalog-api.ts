@@ -231,6 +231,19 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "Radio",
 	},
 	{
+		slug: "radio",
+		sourceFile: "packages/basalt/src/components/radio.tsx",
+		propsType: "RadioGroupProps",
+		surface: "Radio.Group",
+	},
+	{
+		slug: "radio",
+		sourceFile: "packages/basalt/src/components/radio.tsx",
+		propsType: "RadioLegendProps",
+		surface: "Radio.Legend",
+		allowEmpty: true,
+	},
+	{
 		slug: "switch",
 		sourceFile: "packages/basalt/src/components/switch.tsx",
 		propsType: "SwitchProps",

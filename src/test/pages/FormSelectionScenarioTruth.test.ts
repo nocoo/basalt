@@ -109,6 +109,8 @@ describe("form selection scenario truth", () => {
 			"radio-default-vertical",
 			"radio-horizontal",
 			"radio-disabled",
+			"radio-group-and-legend",
+			"radio-controlled-and-error",
 		]);
 		expect(UI_EXAMPLES["sensitive-input"]).toBe(SENSITIVE_INPUT_EXAMPLES);
 		expect(UI_EXAMPLES["sensitive-input"]?.map((item) => item.id)).toEqual([
@@ -556,7 +558,7 @@ describe("form selection scenario truth", () => {
 		expect(hasAccessibleName(CATALOG_DOCS.checkbox?.usage ?? "")).toBe(true);
 		expectUsageImportsCover(CATALOG_DOCS.switch?.usage ?? "", ["Switch"]);
 		expect(hasAccessibleName(CATALOG_DOCS.switch?.usage ?? "")).toBe(true);
-		expectUsageImportsCover(CATALOG_DOCS.radio?.usage ?? "", ["RadioGroup", "Radio"]);
+		expectUsageImportsCover(CATALOG_DOCS.radio?.usage ?? "", ["Radio"]);
 		expect(hasAccessibleName(CATALOG_DOCS.radio?.usage ?? "")).toBe(true);
 		expectUsageImportsCover(CATALOG_DOCS["input-group"]?.usage ?? "", ["InputGroup"]);
 		expect(CATALOG_DOCS["input-group"]?.usage).toContain("InputGroup.Input");

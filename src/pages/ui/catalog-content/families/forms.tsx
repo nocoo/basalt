@@ -156,18 +156,18 @@ export default catalogContentFamily({
 	},
 	radio: {
 		docs: {
-			description: "A radio button used inside RadioGroup.",
+			description: "A radio control with group, legend, size, and error.",
 			usage: usage(
-				"Radio, RadioGroup",
+				"Radio",
 				"@nocoo/basalt/components/radio",
-				'<RadioGroup defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></RadioGroup>',
+				'<Radio.Group defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></Radio.Group>',
 			),
-			variants: [],
+			variants: ["sm", "default"],
 			api: radioApi,
 			provenance: provenanceFromLegacy({
-				repo: "pew",
-				sha: "97a890fabe6e",
-				file: "packages/web/src/components",
+				repo: "kumo",
+				sha: "1159868dfe32",
+				file: "packages/kumo/src/components/radio/radio.tsx",
 			}),
 		},
 		examples: RADIO_EXAMPLES,

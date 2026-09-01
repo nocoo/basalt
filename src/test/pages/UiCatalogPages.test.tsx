@@ -2051,7 +2051,36 @@ describe("ui catalog", () => {
 						required: true,
 						description: "The value associated with the radio item.",
 					},
+					{
+						name: "size",
+						type: "RadioSize",
+						required: false,
+						default: "default",
+						description: "The visual size of the radio.",
+					},
 				],
+			},
+			{
+				name: "Radio.Group",
+				props: [
+					{
+						name: "error",
+						type: "React.ReactNode",
+						required: false,
+						description: "Marks the group invalid and shows alert copy.",
+					},
+					{
+						name: "disabled",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Disable every item in the group.",
+					},
+				],
+			},
+			{
+				name: "Radio.Legend",
+				props: [],
 			},
 		]);
 		renderCatalog("/ui/radio");
@@ -2061,23 +2090,24 @@ describe("ui catalog", () => {
 		expect(document.querySelector('[data-toc-id="api-Radio"]')).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Radio", level: 3 })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "Radio props" })).toBeInTheDocument();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(4);
 		expect(api).toHaveTextContent("value");
 		expect(api).not.toHaveTextContent("value?");
 		expect(api).toHaveTextContent("string");
 		expect(api).toHaveTextContent("The value associated with the radio item.");
-		expect(api).toHaveTextContent("—");
-		expect(api).not.toHaveTextContent("disabled?");
+		expect(api).toHaveTextContent("size?");
+		expect(api).toHaveTextContent("Radio.Group");
 		expect(api).not.toHaveTextContent("required?");
-		expect(api).not.toHaveTextContent("form");
 		expect(api).not.toHaveTextContent("asChild");
 		expect(api).not.toHaveTextContent("className");
-		expect(api).not.toHaveTextContent("children");
 		expect(screen.getByRole("heading", { name: "Default (Vertical)" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Horizontal" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Group and legend" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Controlled and error" })).toBeInTheDocument();
 		expect(document.querySelector('[data-hero-scenario="radio-default-vertical"]')).toBeTruthy();
 		expect(document.querySelector('[data-scenario="radio-disabled"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="radio-group-and-legend"]')).toBeTruthy();
 		await act(async () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
@@ -2086,14 +2116,14 @@ describe("ui catalog", () => {
 		expect(markdown).toContain(
 			"- value (string, required, default —): The value associated with the radio item.",
 		);
-		expect(markdown).not.toContain("- disabled (");
 		expect(markdown).not.toContain("- className (");
 		expect(markdown).not.toContain("- form (");
-		expect(UI_EXAMPLES.radio).toHaveLength(3);
+		expect(UI_EXAMPLES.radio).toHaveLength(5);
 		for (const scenario of UI_EXAMPLES.radio ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
+		expect(markdown).not.toContain("github.com/nocoo/kumo");
 	});
 
 	it("does not keep a handwritten radio prop inventory", () => {
@@ -2108,14 +2138,14 @@ describe("ui catalog", () => {
 		const block = family.slice(start, end);
 		expect(block).toContain("api: radioApi");
 		expect(block).not.toContain('name: "value"');
-		expect(block).toContain('description: "A radio button used inside RadioGroup."');
+		expect(block).toContain('description: "A radio control with group, legend, size, and error."');
 		expect(block).toContain(
-			'<RadioGroup defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></RadioGroup>',
+			'<Radio.Group defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></Radio.Group>',
 		);
-		expect(block).toContain("variants: []");
-		expect(block).toContain('repo: "pew"');
-		expect(block).toContain('sha: "97a890fabe6e"');
-		expect(block).toContain('file: "packages/web/src/components"');
+		expect(block).toContain('variants: ["sm", "default"]');
+		expect(block).toContain('repo: "kumo"');
+		expect(block).toContain('sha: "1159868dfe32"');
+		expect(block).toContain('file: "packages/kumo/src/components/radio/radio.tsx"');
 	});
 
 	it("sources switch API rows from generated catalog data", async () => {
@@ -3648,7 +3678,7 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(UI_EXAMPLES.radio).toHaveLength(3);
+		expect(UI_EXAMPLES.radio).toHaveLength(5);
 		for (const scenario of UI_EXAMPLES.radio ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
@@ -3657,7 +3687,8 @@ describe("ui catalog", () => {
 		expect(markdown).toContain(
 			"- value (string, required, default —): The value associated with the radio item.",
 		);
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
+		expect(markdown).not.toContain("github.com/nocoo/kumo");
 		expect(CATALOG_DOCS.checkbox?.api).toEqual(CATALOG_API.checkbox);
 		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
 		expect(UI_EXAMPLES.checkbox).toHaveLength(7);
@@ -3747,7 +3778,7 @@ describe("ui catalog", () => {
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
 		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
 		expect(CATALOG_DOCS.switch?.api).toEqual(CATALOG_API.switch);
-		expect(UI_EXAMPLES.radio).toHaveLength(3);
+		expect(UI_EXAMPLES.radio).toHaveLength(5);
 	});
 
 	it("keeps select hero, three states, disabled option, and copy modules", async () => {

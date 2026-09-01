@@ -4,6 +4,8 @@ const RADIO_SCENARIO_META = [
 	{ key: "default-vertical", title: "Default (Vertical)" },
 	{ key: "horizontal", title: "Horizontal" },
 	{ key: "disabled", title: "Disabled" },
+	{ key: "group-and-legend", title: "Group and legend" },
+	{ key: "controlled-and-error", title: "Controlled and error" },
 ] as const;
 
 export const RADIO_EXAMPLES = loadModuleScenarios({

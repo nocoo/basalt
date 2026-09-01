@@ -10,6 +10,35 @@ export const API = [
 				required: true,
 				description: "The value associated with the radio item.",
 			},
+			{
+				name: "size",
+				type: "RadioSize",
+				required: false,
+				default: "default",
+				description: "The visual size of the radio.",
+			},
 		],
+	},
+	{
+		name: "Radio.Group",
+		props: [
+			{
+				name: "error",
+				type: "React.ReactNode",
+				required: false,
+				description: "Marks the group invalid and shows alert copy.",
+			},
+			{
+				name: "disabled",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Disable every item in the group.",
+			},
+		],
+	},
+	{
+		name: "Radio.Legend",
+		props: [],
 	},
 ];

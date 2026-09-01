@@ -314,6 +314,19 @@ describe("catalog API generator contract", () => {
 				surface: "Radio",
 			},
 			{
+				slug: "radio",
+				sourceFile: "packages/basalt/src/components/radio.tsx",
+				propsType: "RadioGroupProps",
+				surface: "Radio.Group",
+			},
+			{
+				slug: "radio",
+				sourceFile: "packages/basalt/src/components/radio.tsx",
+				propsType: "RadioLegendProps",
+				surface: "Radio.Legend",
+				allowEmpty: true,
+			},
+			{
 				slug: "switch",
 				sourceFile: "packages/basalt/src/components/switch.tsx",
 				propsType: "SwitchProps",
@@ -394,7 +407,7 @@ describe("catalog API generator contract", () => {
 				surface: "TablePager",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(45);
+		expect(CATALOG_API_TARGETS).toHaveLength(47);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -407,6 +420,7 @@ describe("catalog API generator contract", () => {
 			"LayerCard.Footer",
 			"InputGroup.Suffix",
 			"Checkbox.Legend",
+			"Radio.Legend",
 			"SelectTrigger",
 			"SelectGroup",
 		]);
@@ -1378,7 +1392,7 @@ export interface WidgetProps {
 			],
 			"sensitive-input": ["SensitiveInput"],
 			checkbox: ["Checkbox", "Checkbox.Group", "Checkbox.Legend", "Checkbox.Item"],
-			radio: ["Radio"],
+			radio: ["Radio", "Radio.Group", "Radio.Legend"],
 			switch: ["Switch"],
 			"segment-control": ["SegmentControl"],
 			"page-header": ["PageHeader"],
@@ -1681,46 +1695,25 @@ export interface WidgetProps {
 			targets: CATALOG_API_TARGETS,
 		});
 		expect(Object.keys(generated)).toHaveLength(25);
-		expect(generated.radio).toEqual([
-			{
-				name: "Radio",
-				props: [
-					{
-						name: "value",
-						type: "string",
-						required: true,
-						description: "The value associated with the radio item.",
-					},
-				],
-			},
+		expect(generated.radio?.map((surface) => surface.name)).toEqual([
+			"Radio",
+			"Radio.Group",
+			"Radio.Legend",
 		]);
+		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value", "size"]);
+		expect(generated.radio?.[1]?.props.map((prop) => prop.name)).toEqual(["error", "disabled"]);
+		expect(generated.radio?.[2]?.props).toEqual([]);
 		expect(generated.radio?.[0]?.props[0]).not.toHaveProperty("default");
-		expect(
-			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "disabled")),
-		).toBe(false);
-		expect(
-			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "required")),
-		).toBe(false);
-		expect(
-			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "form")),
-		).toBe(false);
-		expect(
-			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "asChild")),
-		).toBe(false);
-		expect(
-			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "className")),
-		).toBe(false);
-		expect(
-			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "children")),
-		).toBe(false);
-		expect(
-			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "ref")),
-		).toBe(false);
-		expect(
-			generated.radio?.some((surface) => surface.props.some((prop) => prop.name === "aria-label")),
-		).toBe(false);
-		expect(generated.radio).toHaveLength(1);
-		expect(generated.radio?.[0]?.props).toHaveLength(1);
+		expect(generated.radio?.[0]?.props.some((prop) => prop.name === "disabled")).toBe(false);
+		expect(generated.radio?.[0]?.props.some((prop) => prop.name === "required")).toBe(false);
+		expect(generated.radio?.[0]?.props.some((prop) => prop.name === "form")).toBe(false);
+		expect(generated.radio?.[0]?.props.some((prop) => prop.name === "asChild")).toBe(false);
+		expect(generated.radio?.[0]?.props.some((prop) => prop.name === "className")).toBe(false);
+		expect(generated.radio?.[0]?.props.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated.radio?.[0]?.props.some((prop) => prop.name === "ref")).toBe(false);
+		expect(generated.radio?.[0]?.props.some((prop) => prop.name === "aria-label")).toBe(false);
+		expect(generated.radio).toHaveLength(3);
+		expect(generated.radio?.[0]?.props).toHaveLength(2);
 		expect(generated.button?.[0]?.name).toBe("Button");
 		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
@@ -1803,7 +1796,7 @@ export interface WidgetProps {
 			generated.switch?.some((surface) => surface.props.some((prop) => prop.name === "aria-label")),
 		).toBe(false);
 		expect(generated.button?.[0]?.name).toBe("Button");
-		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
+		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value", "size"]);
 		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
 			"InputGroup",
@@ -1959,7 +1952,7 @@ export interface WidgetProps {
 		).toBe(false);
 		expect(generated.button?.[0]?.name).toBe("Button");
 		expect(generated.switch?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
-		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
+		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value", "size"]);
 		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
 			"InputGroup",
@@ -3051,7 +3044,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"d43a7afab1203a1db57347e6a74b7f0de633894dc4b47e4517c886f12bd24250",
+			"4af291cde5220ef32b5b555c294eefc1860629f8a70cf86b791f0c9676931d33",
 		);
 	}, 20_000);
 

@@ -196,6 +196,23 @@ describe("forms catalog content family", () => {
 			ref: "1159868dfe32",
 			file: "packages/kumo/src/components/checkbox/checkbox.tsx",
 		});
+		expect(forms.radio?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "radio-default-vertical", title: "Default (Vertical)" },
+			{ id: "radio-horizontal", title: "Horizontal" },
+			{ id: "radio-disabled", title: "Disabled" },
+			{ id: "radio-group-and-legend", title: "Group and legend" },
+			{ id: "radio-controlled-and-error", title: "Controlled and error" },
+		]);
+		expect(forms.radio?.docs.description).toBe(
+			"A radio control with group, legend, size, and error.",
+		);
+		expect(forms.radio?.docs.variants).toEqual(["sm", "default"]);
+		expect(forms.radio?.docs.provenance).toEqual({
+			owner: "cloudflare",
+			repo: "kumo",
+			ref: "1159868dfe32",
+			file: "packages/kumo/src/components/radio/radio.tsx",
+		});
 		expect(forms.combobox?.examples).toHaveLength(2);
 		expect(forms.combobox?.examples.map((example) => example.id)).toEqual([
 			"combobox-searchable-select-with-placeholder",

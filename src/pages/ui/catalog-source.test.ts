@@ -284,7 +284,12 @@ describe("catalog source contract", () => {
 		]);
 		expect(implementationFileFor(entry("radio"))).toBe("packages/basalt/src/components/radio.tsx");
 		expect(forms.radio?.docs.api).toEqual(CATALOG_API.radio);
-		expect(CATALOG_API.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
+		expect(CATALOG_API.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value", "size"]);
+		expect(CATALOG_API.radio?.map((surface) => surface.name)).toEqual([
+			"Radio",
+			"Radio.Group",
+			"Radio.Legend",
+		]);
 		expect(implementationFileFor(entry("switch"))).toBe(
 			"packages/basalt/src/components/switch.tsx",
 		);
@@ -406,8 +411,12 @@ describe("catalog source contract", () => {
 			"Checkbox.Legend",
 			"Checkbox.Item",
 		]);
-		expect(forms.radio?.docs.api).toHaveLength(1);
-		expect(forms.radio?.docs.api.map((surface) => surface.name)).toEqual(["Radio"]);
+		expect(forms.radio?.docs.api).toHaveLength(3);
+		expect(forms.radio?.docs.api.map((surface) => surface.name)).toEqual([
+			"Radio",
+			"Radio.Group",
+			"Radio.Legend",
+		]);
 		expect(forms.switch?.docs.api).toHaveLength(1);
 		expect(forms.switch?.docs.api.map((surface) => surface.name)).toEqual(["Switch"]);
 		expect(forms.select?.docs.api).toHaveLength(6);
