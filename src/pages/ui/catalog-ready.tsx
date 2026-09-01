@@ -22,13 +22,8 @@ import { StatCard } from "@nocoo/basalt/charts/stat-card";
 import { Timeline } from "@nocoo/basalt/charts/timeline";
 import { Timeseries } from "@nocoo/basalt/charts/timeseries";
 import { AppHeader } from "@nocoo/basalt/components/app-header";
-import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
-import { Badge } from "@nocoo/basalt/components/badge";
-import { Banner } from "@nocoo/basalt/components/banner";
 import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
-import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
-import { CodeBlock, CodeHighlighted } from "@nocoo/basalt/components/code";
 import {
 	CommandEmpty,
 	CommandGroup,
@@ -38,12 +33,9 @@ import {
 	CommandPalette,
 } from "@nocoo/basalt/components/command-palette";
 import { DataTable } from "@nocoo/basalt/components/data-table";
-import { Empty } from "@nocoo/basalt/components/empty";
 import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
 import { Grid, GridItem } from "@nocoo/basalt/components/grid";
-import { Loader } from "@nocoo/basalt/components/loader";
 import { MenuBarMenu, MenuBarRoot, MenuBarTrigger } from "@nocoo/basalt/components/menu-bar";
-import { Meter } from "@nocoo/basalt/components/meter";
 import {
 	NavigationMenu,
 	NavigationMenuItem,
@@ -52,7 +44,6 @@ import {
 } from "@nocoo/basalt/components/navigation-menu";
 import { Pagination } from "@nocoo/basalt/components/pagination";
 import { ContentIsland, Sidebar, SidebarItem } from "@nocoo/basalt/components/sidebar";
-import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import {
 	Table,
 	TableBody,
@@ -63,9 +54,8 @@ import {
 } from "@nocoo/basalt/components/table";
 import { TableOfContents, TableOfContentsItem } from "@nocoo/basalt/components/table-of-contents";
 import { Tabs, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
-import { toast } from "@nocoo/basalt/components/toast";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import { AlertTriangle, CircleAlert, Info, Plus, Search } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { type ComponentType, useState } from "react";
 import { CATALOG, type CatalogEntry, catalogImportPath } from "./catalog";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
@@ -120,181 +110,6 @@ function add(
 	extra[slug] = page(entry, description, Demo, sample, props, usage);
 }
 
-add("badge", "Compact status labels.", () => <Badge>Stable</Badge>, "<Badge>Stable</Badge>");
-function BannerVariantsDemo() {
-	return (
-		<div className="w-full space-y-3">
-			<Banner
-				icon={<Info />}
-				title="Update available"
-				description="A new version is ready to install."
-			/>
-			<Banner
-				icon={<AlertTriangle />}
-				variant="alert"
-				title="Session expiring"
-				description="Your session will expire in 5 minutes."
-			/>
-			<Banner
-				icon={<CircleAlert />}
-				variant="error"
-				title="Save failed"
-				description="We couldn't save your changes. Please try again."
-			/>
-			<Banner
-				icon={<Info />}
-				variant="secondary"
-				title="Maintenance scheduled"
-				description="This service will be unavailable for 10 minutes."
-			/>
-		</div>
-	);
-}
-add(
-	"banner",
-	"Displays contextual inline messages for informational, alert, or error states.",
-	() => <BannerVariantsDemo />,
-	'<Banner icon={<Info />} title="Update available" description="A new version is ready to install." />',
-	[
-		{
-			name: "variant",
-			type: '"default" | "alert" | "error" | "secondary"',
-			default: '"default"',
-			description: "Visual style of the banner.",
-		},
-		{
-			name: "size",
-			type: '"base" | "sm"',
-			default: '"base"',
-			description: "Compact size for dialogs and tight spaces.",
-		},
-		{ name: "icon", type: "ReactNode", description: "Icon rendered before the banner content." },
-		{ name: "title", type: "string", description: "Primary heading text." },
-		{
-			name: "description",
-			type: "ReactNode",
-			description: "Secondary copy below the title.",
-		},
-		{
-			name: "action",
-			type: "ReactNode",
-			description: "Trailing CTA slot. Use Banner.Action for accent-aware buttons.",
-		},
-		{ name: "className", type: "string" },
-	],
-	`import { Banner } from "@nocoo/basalt/components/banner";
-import { Info } from "lucide-react";
-
-export default function Example() {
-	return (
-		<Banner
-			icon={<Info />}
-			title="Update available"
-			description="A new version is ready to install."
-		/>
-	);
-}`,
-);
-add("loader", "Indicates a pending state.", () => <Loader />, "<Loader />");
-add(
-	"skeleton-line",
-	"Placeholder lines while content loads.",
-	() => (
-		<div className="flex w-64 flex-col gap-3">
-			<SkeletonLine minWidth={40} maxWidth={55} />
-			<SkeletonLine minWidth={75} maxWidth={90} />
-			<SkeletonLine minWidth={90} maxWidth={100} />
-		</div>
-	),
-	"<SkeletonLine minWidth={40} maxWidth={55} />",
-	undefined,
-	`import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
-
-export default function Example() {
-	return <SkeletonLine minWidth={40} maxWidth={55} />;
-}`,
-);
-add(
-	"empty",
-	"Empty-state copy.",
-	() => <Empty title="No results" description="Try another query." />,
-	'<Empty title="No results" description="Try another query." />',
-	undefined,
-	`import { Empty } from "@nocoo/basalt/components/empty";
-
-export default function Example() {
-	return <Empty title="No results" description="Try another query." />;
-}`,
-);
-add(
-	"code",
-	"Syntax-highlighted code.",
-	() => (
-		<CodeHighlighted
-			code={`export async function fetchUser(id: string, retries = 3) {
-  // Resolve a profile, then return a display name.
-  const response = await fetch(\`/api/users/\${id}\`);
-  if (!response.ok) {
-    throw new Error("User not found");
-  }
-  const user = await response.json();
-  return {
-    id: user.id,
-    name: \`\${user.firstName} \${user.lastName}\`,
-  };
-}`}
-		/>
-	),
-	'<CodeHighlighted code={\'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/users/" + id); if (!response.ok) { throw new Error("User not found"); } return response.json(); }\'} />',
-	undefined,
-	`import { CodeHighlighted } from "@nocoo/basalt/components/code";
-
-export default function Example() {
-	return (
-		<CodeHighlighted code={'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/users/" + id); if (!response.ok) { throw new Error("User not found"); } return response.json(); }'} />
-	);
-}`,
-);
-add(
-	"code-block",
-	"A fenced code block.",
-	() => <CodeBlock>const n = 1;</CodeBlock>,
-	"<CodeBlock>const n = 1;</CodeBlock>",
-);
-add(
-	"clipboard-text",
-	"Copyable text.",
-	() => <ClipboardText text="bun add @nocoo/basalt" />,
-	'<ClipboardText text="bun add @nocoo/basalt" />',
-	undefined,
-	`import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
-
-export default function Example() {
-	return <ClipboardText text="bun add @nocoo/basalt" />;
-}`,
-);
-add(
-	"meter",
-	"Numeric meter.",
-	() => <Meter value={60} label="Usage" />,
-	'<Meter value={60} label="Usage" />',
-	undefined,
-	`import { Meter } from "@nocoo/basalt/components/meter";
-
-export default function Example() {
-	return <Meter value={60} label="Usage" />;
-}`,
-);
-add(
-	"avatar",
-	"User avatar.",
-	() => (
-		<Avatar>
-			<AvatarFallback>ZL</AvatarFallback>
-		</Avatar>
-	),
-	"<Avatar />",
-);
 add(
 	"tabs",
 	"Tabbed navigation.",
@@ -503,34 +318,6 @@ export default function Example() {
 			<Toolbar.Button icon={<Plus />} aria-label="Add" />
 		</Toolbar>
 	);
-}`,
-);
-add(
-	"toast",
-	"Transient notification.",
-	() => <Button onClick={() => toast("Saved")}>Toast</Button>,
-	"<Button onClick={() => toast('Saved')}>Toast</Button>",
-	[
-		{ name: "message", type: "string" },
-		{
-			name: "variant",
-			type: '"default" | "success" | "error" | "warning" | "info"',
-			description: "Color and default icon.",
-		},
-		{ name: "icon", type: "ReactNode | false", description: "Override or hide the status icon." },
-		{
-			name: "close",
-			type: "boolean",
-			default: "true",
-			description: "Show an X close control.",
-		},
-		{ name: "description", type: "ReactNode" },
-	],
-	`import { Button } from "@nocoo/basalt/components/button";
-import { toast } from "@nocoo/basalt/components/toast";
-
-export default function Example() {
-	return <Button onClick={() => toast("Saved")}>Toast</Button>;
 }`,
 );
 function CommandPaletteDemo() {

@@ -11,6 +11,7 @@ import {
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
+import feedback from "@/pages/ui/catalog-content/families/feedback";
 import forms from "@/pages/ui/catalog-content/families/forms";
 import foundation from "@/pages/ui/catalog-content/families/foundation";
 import overlay from "@/pages/ui/catalog-content/families/overlay";
@@ -31,6 +32,7 @@ const CATALOG_DOCS = {
 	...Object.fromEntries(Object.entries(foundation).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.docs])),
+	...Object.fromEntries(Object.entries(feedback).map(([slug, content]) => [slug, content.docs])),
 };
 const UI_EXAMPLES = {
 	...LEGACY_UI_EXAMPLES,
@@ -39,6 +41,9 @@ const UI_EXAMPLES = {
 	),
 	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.examples])),
 	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.examples])),
+	...Object.fromEntries(
+		Object.entries(feedback).map(([slug, content]) => [slug, content.examples]),
+	),
 };
 
 function catalogHeroScenario(slug: string) {
@@ -2827,6 +2832,10 @@ describe("ui catalog", () => {
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
+		const feedbackFamily = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/feedback.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
 		expect(demos).not.toContain("INPUT_GROUP_EXAMPLES");
 		expect(family).toContain("INPUT_GROUP_EXAMPLES");
@@ -2838,7 +2847,8 @@ describe("ui catalog", () => {
 		expect(kumo).not.toContain('from "@nocoo/basalt/components/input-group"');
 		expect(demos).not.toContain("CircleCheck");
 		expect(kumo).not.toContain("CircleCheck");
-		expect(kumo).toContain('from "@nocoo/basalt/components/loader"');
+		expect(kumo).not.toContain('from "@nocoo/basalt/components/loader"');
+		expect(feedbackFamily).toContain('from "@nocoo/basalt/components/loader"');
 		expect(kumo).toContain("Search");
 	});
 
@@ -3000,6 +3010,10 @@ describe("ui catalog", () => {
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
+		const feedbackFamily = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/feedback.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
 		expect(demos).not.toContain("CHECKBOX_EXAMPLES");
 		expect(family).toContain("CHECKBOX_EXAMPLES");
@@ -3010,7 +3024,8 @@ describe("ui catalog", () => {
 		expect(demos).not.toContain('from "@nocoo/basalt/components/checkbox"');
 		expect(kumo).not.toContain('from "@nocoo/basalt/components/checkbox"');
 		expect(kumo).not.toContain('from "@nocoo/basalt/components/field"');
-		expect(kumo).toContain("function Preview");
+		expect(kumo).not.toContain("function Preview");
+		expect(feedbackFamily).toContain("function Preview");
 	});
 
 	it("keeps radio hero, exclusive selection, disabled radios, and copy modules", async () => {
@@ -3091,6 +3106,10 @@ describe("ui catalog", () => {
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
+		const feedbackFamily = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/feedback.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
 		expect(demos).not.toContain("RADIO_EXAMPLES");
 		expect(family).toContain("RADIO_EXAMPLES");
@@ -3101,7 +3120,8 @@ describe("ui catalog", () => {
 		expect(demos).not.toContain('from "@nocoo/basalt/components/radio"');
 		expect(kumo).not.toContain('from "@nocoo/basalt/components/radio"');
 		expect(kumo).not.toContain('from "@nocoo/basalt/components/label"');
-		expect(kumo).toContain("function Preview");
+		expect(kumo).not.toContain("function Preview");
+		expect(feedbackFamily).toContain("function Preview");
 	});
 
 	it("keeps switch hero, four states, sizes, and copy modules", async () => {
@@ -3197,6 +3217,10 @@ describe("ui catalog", () => {
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/forms.tsx"),
 			"utf8",
 		);
+		const feedbackFamily = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/feedback.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
 		expect(demos).not.toContain("SWITCH_EXAMPLES");
 		expect(family).toContain("SWITCH_EXAMPLES");
@@ -3206,8 +3230,10 @@ describe("ui catalog", () => {
 		expect(kumo).not.toMatch(/catalogScenarioId\("switch"/);
 		expect(demos).not.toContain('from "@nocoo/basalt/components/switch"');
 		expect(kumo).not.toContain('from "@nocoo/basalt/components/switch"');
-		expect(kumo).toContain("function Preview");
-		expect(kumo).toContain("ReactNode");
+		expect(kumo).not.toContain("function Preview");
+		expect(kumo).not.toContain("ReactNode");
+		expect(feedbackFamily).toContain("function Preview");
+		expect(feedbackFamily).toContain("ReactNode");
 		expect(kumo).toContain("useState");
 		expect(kumo).toContain("catalogScenarioId");
 	});

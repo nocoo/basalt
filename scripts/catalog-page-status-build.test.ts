@@ -282,5 +282,46 @@ describe("application route build boundary", () => {
 			),
 			"dialog family closure contains another family",
 		).toBe(false);
+
+		const feedback = chunks.find((chunk) =>
+			chunk.modules.some((id) =>
+				id.endsWith("/src/pages/ui/catalog-content/families/feedback.tsx"),
+			),
+		);
+		expect(feedback).toBeDefined();
+		const feedbackFiles = new Set<string>();
+		const visitFeedback = (chunk: BuiltChunk | undefined) => {
+			if (!chunk || feedbackFiles.has(chunk.fileName)) return;
+			feedbackFiles.add(chunk.fileName);
+			for (const imported of chunk.imports) visitFeedback(chunksByFile.get(imported));
+		};
+		visitFeedback(feedback);
+		const feedbackModules = chunks
+			.filter((chunk) => feedbackFiles.has(chunk.fileName))
+			.flatMap((chunk) => chunk.modules);
+		for (const suffix of [
+			"/src/pages/ui/catalog-content-legacy.ts",
+			"/src/pages/ui/catalog-ready.tsx",
+			"/src/pages/ui/kumo-examples.tsx",
+			"/src/pages/ui/docs.ts",
+			"/src/pages/ui/demos.tsx",
+			"/src/charts/sample.ts",
+			"/packages/basalt/src/charts/sample.ts",
+		]) {
+			expect(
+				feedbackModules.some((id) => id.endsWith(suffix)),
+				`banner family closure contains ${suffix}`,
+			).toBe(false);
+		}
+		expect(
+			feedbackModules.some((id) => /recharts/i.test(id)),
+			"banner family closure contains recharts",
+		).toBe(false);
+		expect(
+			feedbackModules.some((id) =>
+				/catalog-content\/families\/(foundation|forms|overlay|charts)\.tsx$/.test(id),
+			),
+			"banner family closure contains another family",
+		).toBe(false);
 	});
 });

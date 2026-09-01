@@ -13,6 +13,7 @@ import {
 describe("catalog content family manifest", () => {
 	it("discovers family files from disk without a handwritten family allowlist", () => {
 		expect(listCatalogFamilyFiles(process.cwd())).toEqual([
+			"feedback.tsx",
 			"forms.tsx",
 			"foundation.tsx",
 			"overlay.tsx",

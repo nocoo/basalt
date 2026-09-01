@@ -85,22 +85,34 @@ describe("catalog page content loader", () => {
 		expect(loadLegacy).not.toHaveBeenCalled();
 	});
 
+	it("loads feedback family content without the legacy adapter", async () => {
+		const { loadCatalogPageContent } = await importLoader();
+		const first = loadCatalogPageContent("banner");
+		expect(loadCatalogPageContent("banner")).toBe(first);
+		const content = await first;
+		expect(content?.docs.description).toBe(
+			"Displays contextual inline messages for informational, alert, or error states.",
+		);
+		expect(content?.examples[0]?.id).toBe("banner-variants");
+		expect(loadLegacy).not.toHaveBeenCalled();
+	});
+
 	it("loads unmigrated ready content once from the legacy adapter", async () => {
 		const examples = [example];
 		loadLegacy.mockResolvedValue({ docs, examples });
 		const { loadCatalogPageContent } = await importLoader();
-		const first = loadCatalogPageContent("banner");
-		expect(loadCatalogPageContent("banner")).toBe(first);
+		const first = loadCatalogPageContent("tabs");
+		expect(loadCatalogPageContent("tabs")).toBe(first);
 		await expect(first).resolves.toEqual({ docs, examples });
 		expect(loadLegacy).toHaveBeenCalledTimes(1);
-		expect(loadLegacy).toHaveBeenCalledWith("banner");
+		expect(loadLegacy).toHaveBeenCalledWith("tabs");
 	});
 
 	it("rejects ready content when docs or examples[0] is absent", async () => {
 		loadLegacy.mockResolvedValueOnce({ examples: [example] }).mockResolvedValueOnce({ docs });
 		const { loadCatalogPageContent } = await importLoader();
-		await expect(loadCatalogPageContent("banner")).rejects.toThrow(
-			'Ready catalog page "banner" is missing docs.',
+		await expect(loadCatalogPageContent("breadcrumbs")).rejects.toThrow(
+			'Ready catalog page "breadcrumbs" is missing docs.',
 		);
 		await expect(loadCatalogPageContent("tabs")).rejects.toThrow(
 			'Ready catalog page "tabs" is missing examples[0].',

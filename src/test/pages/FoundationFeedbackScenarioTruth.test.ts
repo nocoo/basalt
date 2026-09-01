@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import feedback from "@/pages/ui/catalog-content/families/feedback";
 import forms from "@/pages/ui/catalog-content/families/forms";
 import foundation from "@/pages/ui/catalog-content/families/foundation";
 import overlay from "@/pages/ui/catalog-content/families/overlay";
@@ -12,12 +13,16 @@ const UI_EXAMPLES = {
 	),
 	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.examples])),
 	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.examples])),
+	...Object.fromEntries(
+		Object.entries(feedback).map(([slug, content]) => [slug, content.examples]),
+	),
 };
 const CATALOG_DOCS = {
 	...LEGACY_CATALOG_DOCS,
 	...Object.fromEntries(Object.entries(foundation).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.docs])),
+	...Object.fromEntries(Object.entries(feedback).map(([slug, content]) => [slug, content.docs])),
 };
 
 import { BASALT_MARK_EXAMPLES } from "@/pages/ui/examples/basalt-mark";

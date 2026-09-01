@@ -5,13 +5,23 @@ import { CATALOG_DOCS } from "./docs";
 
 describe("legacy catalog content adapter", () => {
 	it("returns the existing docs and examples without changing their owners", async () => {
-		const content = await loadLegacyCatalogPageContent("banner");
-		expect(content.docs).toBe(CATALOG_DOCS.banner);
-		expect(content.examples).toBe(UI_EXAMPLES.banner);
+		const content = await loadLegacyCatalogPageContent("tabs");
+		expect(content.docs).toBe(CATALOG_DOCS.tabs);
+		expect(content.examples).toBe(UI_EXAMPLES.tabs);
 	});
 
-	it("does not keep migrated foundation, forms, or overlay owners", async () => {
-		for (const slug of ["button", "field", "input-group", "tooltip", "dialog", "collapsible"]) {
+	it("does not keep migrated foundation, forms, overlay, or feedback owners", async () => {
+		for (const slug of [
+			"button",
+			"field",
+			"input-group",
+			"tooltip",
+			"dialog",
+			"collapsible",
+			"banner",
+			"badge",
+			"toast",
+		]) {
 			const content = await loadLegacyCatalogPageContent(slug);
 			expect(content.docs, slug).toBeUndefined();
 			expect(content.examples, slug).toBeUndefined();
