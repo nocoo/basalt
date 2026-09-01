@@ -88,6 +88,20 @@ describe("Toolbar", () => {
 		expect(screen.getByRole("button", { name: "Save" })).toHaveFocus();
 	});
 
+	it("keeps caret motion when text is selected from the start", () => {
+		render(
+			<Toolbar aria-label="Record tools">
+				<Toolbar.Input aria-label="Query" defaultValue="ab" />
+				<Toolbar.Button>Save</Toolbar.Button>
+			</Toolbar>,
+		);
+		const input = screen.getByRole("textbox", { name: "Query" }) as HTMLInputElement;
+		input.focus();
+		input.setSelectionRange(0, 2);
+		fireEvent.keyDown(input, { key: "ArrowLeft" });
+		expect(input).toHaveFocus();
+	});
+
 	it("keeps caret motion inside a filled input", () => {
 		render(
 			<Toolbar aria-label="Record tools">

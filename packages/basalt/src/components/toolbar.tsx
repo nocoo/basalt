@@ -75,6 +75,10 @@ const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarProps>(
 						event.target instanceof HTMLTextAreaElement
 					) {
 						const start = event.target.selectionStart ?? 0;
+						const end = event.target.selectionEnd ?? start;
+						if (start !== end) {
+							return;
+						}
 						if (event.key === "ArrowLeft" && start > 0) {
 							return;
 						}
@@ -109,7 +113,7 @@ const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarProps>(
 );
 ToolbarRoot.displayName = "Toolbar";
 
-export type ToolbarButtonProps = Omit<ButtonProps, "variant" | "disabled"> & {
+export type ToolbarButtonProps = Omit<ButtonProps, "variant" | "disabled" | "asChild"> & {
 	/**
 	 * Disable the toolbar button.
 	 * @default false
