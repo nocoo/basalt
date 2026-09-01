@@ -53,4 +53,25 @@
 	.cursor-pointer {
 		cursor: pointer;
 	}
+	.max-h-\[300px\] {
+		max-height: 300px;
+	}
+	.overflow-x-hidden {
+		overflow-x: hidden;
+	}
+	.overflow-y-hidden {
+		overflow-y: hidden;
+	}
+	.data-\[disabled\=true\]\:pointer-events-none[data-disabled="true"] {
+		pointer-events: none;
+	}
+	.data-\[disabled\=true\]\:opacity-50[data-disabled="true"] {
+		opacity: 0.5;
+	}
+	.data-\[selected\=true\]\:bg-basalt-accent[data-selected="true"] {
+		background-color: hsl(var(--basalt-accent));
+	}
+	.data-\[selected\=true\]\:text-basalt-accent-foreground[data-selected="true"] {
+		color: hsl(var(--basalt-accent-foreground));
+	}
 }
