@@ -63,6 +63,10 @@ function fieldErrorMessage(error: FieldError | undefined): React.ReactNode | und
 	return isStructuredError(error) ? error.message : error;
 }
 
+function hasFieldError(message: React.ReactNode | undefined): boolean {
+	return Boolean(message);
+}
+
 export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 	({ label, htmlFor, hint, error, required, labelTooltip, className, children, ...props }, ref) => {
 		const generatedId = React.useId();
@@ -73,7 +77,8 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 		const hintId = controlId ? `${controlId}-hint` : undefined;
 		const errorId = controlId ? `${controlId}-error` : undefined;
 		const errorMessage = fieldErrorMessage(error);
-		const describedBy = [error ? errorId : null, !error && hint ? hintId : null]
+		const hasError = hasFieldError(errorMessage);
+		const describedBy = [hasError ? errorId : null, !hasError && hint ? hintId : null]
 			.filter(Boolean)
 			.join(" ");
 		const mergedDescribedBy = [describedBy, child?.props["aria-describedby"]]
@@ -87,16 +92,16 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 				{child
 					? React.cloneElement(child, {
 							id: controlId,
-							"aria-invalid": error ? true : child.props["aria-invalid"],
+							"aria-invalid": hasError ? true : child.props["aria-invalid"],
 							"aria-describedby": mergedDescribedBy || undefined,
 						})
 					: children}
-				{hint && !error ? (
+				{hint && !hasError ? (
 					<p id={hintId} className="text-xs text-basalt-muted-foreground">
 						{hint}
 					</p>
 				) : null}
-				{error ? (
+				{hasError ? (
 					<p id={errorId} className="text-xs text-basalt-destructive" role="alert">
 						{errorMessage}
 					</p>

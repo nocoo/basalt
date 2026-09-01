@@ -158,6 +158,32 @@ describe("Field", () => {
 		expect(screen.getByRole("alert")).toHaveTextContent("Must be unique");
 	});
 
+	it("treats direct and structured absent or falsy messages as no error", () => {
+		const cases: Array<FieldError | undefined> = [
+			undefined,
+			"",
+			{ message: "" },
+			0,
+			{ message: 0 },
+			null,
+			{ message: null },
+			{ message: undefined },
+		];
+		for (const error of cases) {
+			const { unmount } = render(
+				<Field label="Email" htmlFor="email-falsy" hint="Never shared" error={error}>
+					<Input id="email-falsy" />
+				</Field>,
+			);
+			const input = screen.getByLabelText("Email");
+			expect(input).not.toHaveAttribute("aria-invalid", "true");
+			expect(input).toHaveAttribute("aria-describedby", "email-falsy-hint");
+			expect(screen.getByText("Never shared")).toBeInTheDocument();
+			expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+			unmount();
+		}
+	});
+
 	it("treats structured error messages like string errors", () => {
 		render(
 			<Field label="Email" error={{ message: <span>Enter a valid email</span> }}>
