@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S3C D084 — SegmentControl MVP；完成（`0be9f36`）
-> 当前代码前置：`0be9f36`（D084 SegmentControl MVP 已实现并独立验收）
+> 当前切片：S3D D085 — PageHeader MVP；规划完成（代码基线 `c2bc055`，Codex 单写）
+> 当前代码前置：`c2bc055`（D084 SegmentControl MVP 已独立验收并收口台账）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
 
@@ -130,7 +130,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 完成（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062、S2A35 D063、S2A36 D064、S2A37 D065、S2A38 D066、S2A39 D067） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 完成（`eeb8c43`） | 不再平铺 88 个等权方块；placeholder 不可达 |
-| S3 | 通用组合地基 | 执行中（S3A D082、S3B D083、S3C D084 完成；下一刀 S3D） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
+| S3 | 通用组合地基 | 执行中（S3A D082、S3B D083、S3C D084 完成；S3D D085） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 待办 | 泛型、group/multiple/loading/error/range + browser 门完整 |
 | S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 待办 | compound、焦点、键盘、mobile、resize/scroll 状态完整 |
@@ -743,6 +743,14 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
 
    实现只新增 SegmentControl 实现/单测与两份 example，并修改 root barrel、catalog、forms family、UiIndexPage、API generator、直接计数/真值测试和 generated/standalone 产物；ToggleGroup 公开 API/视觉、其它组件、tokens、依赖/lock、App route、consumer fixture、coverage/Husky 与 browser timeout 均未改。focused、三套 generator 双 check、typecheck、Biome、日常全量、coverage、showcase build 及 package build/types/pack 全绿。D077 的真实 browser suite 继续只由显式发布门运行；本刀额外手工 Chromium 因错误/模糊 locator 触发无效自动等待，改为 3 秒 fail-fast 后页面与精确 Copy 动作约 3.4 秒完成，按用户指示不再作为本刀阻塞门。完整证据见 D084 日志；下一刀单独规划 PageHeader。
 
+4. **S3D / D085 — PageHeader MVP（执行中，规划基线 `c2bc055`，Codex 单写）。** 新增 granular-only `@nocoo/basalt/components/page-header`，承担内容页标题组合，不改 shell chrome 专用的 `AppHeader`，也不把 app-only `PageIntro` 改名后塞进公开根出口。PageHeader 的 root 为语义 `header`，必填 `title` 渲染唯一 `h1` 并作为默认 accessible name；可选 `description`、`eyebrow`、`breadcrumbs`、`actions`。breadcrumbs 复用现有 `Breadcrumbs`，item 只沿用 `href`、`label`、`icon`；actions 只负责布局，不接管点击、loading 或权限。
+
+   默认布局沿用 Basalt 内容卡 surface：小屏纵向排列，较宽屏标题区与 actions 横向对齐；长 title/description 可自然换行，actions 自身可换行，breadcrumbs 不强制业务截断。只提供一个视觉层级，不加 size/variant、sticky、tabs、back button、status/badge、loading skeleton、editable title、heading-level/asChild 或路由感知。原 `AppHeader`、DashboardLayout、PageIntro 与十个 app 页面保持不动，避免 shell 的 14px 当前页层级和内容页大标题混成一个 API。
+
+   复用现有 catalog `page-header` block 与 data-layout family owner，不新增 CATALOG 项、family 或 page status；把当前错误的“import PageHeader、render AppHeader” owner 换成 PageHeader 真源，并以 source-backed `Default` 和 `Long responsive content` 两个 module 取代单个 inline scenario，首个 `page-header-default` ID/title 继续稳定。catalog source 删除 app-header 特例并自然指向新文件；API generator 新增 PageHeader target，生成 `title`、`description`、`eyebrow`、`breadcrumbs`、`actions` 五项专属 API，shard 从 21 增至 22，DOM/header props 不泄漏。PageHeader 仍为 catalog/block，仅 granular export，不加入 stable root barrel。
+
+   允许新增 PageHeader 实现/单测与两份 example，修改 data-layout family、catalog source、API generator、直接真值测试和 generated/standalone 产物；不改 AppHeader/Breadcrumbs runtime、PageIntro、DashboardLayout、CATALOG inventory、其它 owner/scenario、tokens、依赖/lock、routes、consumer、coverage/Husky 或 browser timeout。提交前运行 PageHeader/AppHeader/Breadcrumbs、generator、catalog source、data-layout/loader/Copy page focused tests，API generate 后连续两次 check并确认两套 manifest 字节不变，再跑 typecheck、Biome、日常全量、coverage、showcase build与 package build/types/pack。普通开发门不启动 Chromium；真实 browser suite继续只保留在显式发布门。只做一个实现提交，随后更新台账，再单独规划 StatStrip。
+
 ### 6.5 S4/S5 — 表单族
 
 每个控件提交必须同时包含实现、单测、文档和 example。统一验证：default、size、controlled、uncontrolled、disabled、loading、error、description、ReactNode label、form reset、键盘、可访问名称。
@@ -942,5 +950,7 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 | D083 | S3B | `7707981` | Codex | 完成 | `7325e34` | ScrollArea MVP 使用精确 `@radix-ui/react-scroll-area@1.2.18`，只公开一个高层 surface 和 `vertical / horizontal / both` 三种方向；ref、onScroll、tabIndex、ARIA naming/description 与可选 role 均落在真实 viewport，root 保留 id/data/Radix Root props。新增 Vertical list、Horizontal row 两份 source-backed example、stable root export 和 foundation owner；CATALOG 达 97、85 Ready / 12 Planned、首页 88 卡且分组 `61 / 24 / 3`，foundation 12 owner，API 20 shard。ScrollArea shard SHA-256 为 `6526583dc56cf3fc834fb35b4e206b364a74642eac98e5fe868bb93dfaa6a695`，aggregate 为 `2a56ea3bb01072e6516185d76e0721986b668778fd7177e86f4012f26a4368d5`，完整 API 产物 digest 为 `63dca8ab90c9ec2a19273b38a4d9c0109eedc333797ccebe2c594ed0e9da2e8a`；page-status/content manifest SHA-256 分别为 `8e5e1e2a0fdb88e952e1e96d38e536cec101d6b80409fa07948188898dd2be2f`、`e022e83732ac25e7f6a1cc095ed9698fdce5421b5b8de6eb45ca957b498450ef`，三套 generator 均 generate 后连续两次 check。实现提交 31 文件、+622/−52；focused 17 files / 378 tests 与最终 component/build-graph 2 files / 9 tests、typecheck、Biome 537 files、日常全量及 hook 131 files / 1,109 tests 全绿，coverage 为 `97.17 / 95.62 / 95.95 / 97.36`。Showcase build 2,945 modules、foundation 42.05 kB、最大 JS 349.94 kB、0 warning；package 93 JS / 93 d.ts / 90 maps，Bundler/NodeNext types、282-file pack 全绿，standalone CSS 连续 build SHA-256 稳定为 `8061cf8c8be53f3b31e1d784ce004b4ea347de3933f6eac194f13a100dbe4f50`。7003/PID 73541 上最终 Chromium context 实测纵向 max 84、PageDown 后 scrollTop 2、程序化 scrollTop 84，横向 max/scrollLeft 472，3 行 API、Copy payload 2,675 bytes，console/page/request/response faults 0；临时 profile 已清理且服务保持运行。未进入 SegmentControl。 |
 
 | D084 | S3C | `23046c3` | Codex | 完成 | `0be9f36` | SegmentControl MVP 作为单选 ToggleGroup 的受控高层组合落地：真实 fieldset/legend、可选且默认标为 All 的前置项、整组/单项 disabled、重复点击保持当前值、内容宽度单行 track 与原生横向 overflow；未增加 uncontrolled、multiple、hidden input、业务状态或第二套 motion。`/ui` 三组旧 FilterToggle 已迁为真实消费者，URL/All/reset 语义保持；新增两份 source-backed example、stable root export、forms owner 与 generated API shard。最终 CATALOG 98、Ready/Planned `86 / 12`、首页 89 卡且分组 `62 / 24 / 3`、forms 16 owner、API 21 shard；SegmentControl shard、aggregate、完整 API digest、page-status、content manifest、standalone CSS SHA-256 分别为 `da096e7dd3422e26652dd232c73044122e6ae1bc256adf2b7fc9a21f12eb5d4c`、`0d74dedea1e3a122b74dbc625b4a16aef7ad8f56f5b61d0fa2983bb7bb845e5c`、`4d926c75d1d697c188d7eeb0a771733ec2be266b925bfd7d371e518c405d7700`、`4045bd1787fad075721cee94a2b380fddb16cff584de06f0d31dcf42f3494dfe`、`703db011f8b8ff9e17f0e52a508daef72e2d5e6b3f3403f98d223f64fd35521a`、`d0a6c33d5dc2c76ece3fee82509859cacfde0d4f54c8581809269063fe118d47`。实现提交 29 files、+616/−110；focused 18 files / 388 tests、typecheck、Biome 543 files、三套 generator generate 后连续两次 check、日常全量及 hook 132 files / 1,118 tests 全绿，coverage `97.18 / 95.64 / 95.98 / 97.37`。Showcase 2,952 modules、forms 46.50 kB、最大 JS 349.94 kB、0 warning；package 94 JS / 94 d.ts / 91 maps，Bundler/NodeNext types 与 285-file pack 全绿。按用户要求不再重复额外 Chromium 验收；诊断确认慢点是错误/模糊 locator 的自动等待而非浏览器执行，D077 的串行 browser 发布门保留，7003/PID 73541 未停止。未进入 PageHeader。 |
+
+| D085 | S3D | `c2bc055` | Codex | 执行中 | — | 只实现 granular-only PageHeader MVP：语义 header/h1，title、description、eyebrow、breadcrumbs、actions 与 responsive 布局；替换现有错误的 AppHeader catalog owner，但保持 AppHeader、PageIntro、DashboardLayout、CATALOG/page status 和根出口不动。 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
