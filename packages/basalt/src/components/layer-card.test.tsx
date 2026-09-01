@@ -76,7 +76,7 @@ describe("LayerCard", () => {
 	});
 
 	it("accepts className and native div props and rejects a wrong className type", () => {
-		acceptLayerCardProps({ className: "w-[250px]" });
+		acceptLayerCardProps({ className: "w-[250px]", padding: "md" });
 		acceptLayerCardProps({
 			id: "card",
 			role: "region",
@@ -86,6 +86,70 @@ describe("LayerCard", () => {
 		});
 		// @ts-expect-error className must be a string
 		acceptLayerCardProps({ className: 1 });
+		// @ts-expect-error padding must be a supported spacing token
+		acceptLayerCardProps({ padding: "xl" });
+	});
+
+	it("applies optional root padding without changing the default surface", () => {
+		const { rerender } = render(<LayerCard data-testid="card">Body</LayerCard>);
+		const card = screen.getByTestId("card");
+		expect(card).not.toHaveClass("p-3", "p-4", "p-6");
+
+		for (const [padding, className] of [
+			["sm", "p-3"],
+			["md", "p-4"],
+			["lg", "p-6"],
+		] as const) {
+			rerender(
+				<LayerCard data-testid="card" padding={padding}>
+					Body
+				</LayerCard>,
+			);
+			expect(card).toHaveClass(className);
+		}
+	});
+
+	it("composes header, body, and footer sections", () => {
+		render(
+			<LayerCard aria-label="Deployment">
+				<LayerCard.Header data-testid="header">Release</LayerCard.Header>
+				<LayerCard.Body data-testid="body">Ready to deploy</LayerCard.Body>
+				<LayerCard.Footer data-testid="footer">Actions</LayerCard.Footer>
+			</LayerCard>,
+		);
+		expect(screen.getByLabelText("Deployment")).toHaveClass("bg-basalt-bright", "ring-1");
+		expect(screen.getByTestId("header")).toHaveClass("border-b", "px-4", "py-3");
+		expect(screen.getByTestId("body")).toHaveClass("p-4");
+		expect(screen.getByTestId("footer")).toHaveClass("border-t", "justify-end", "px-4", "py-3");
+	});
+
+	it("renders an accessible loading state with reduced-motion-safe skeletons", () => {
+		render(<LayerCard.Loading label="Loading metrics" data-testid="loading" />);
+		const loading = screen.getByRole("status", { name: "Loading metrics" });
+		expect(loading).toBe(screen.getByTestId("loading"));
+		expect(loading).toHaveClass("space-y-3", "p-4");
+		const skeletons = loading.querySelectorAll('[aria-hidden="true"]');
+		expect(skeletons).toHaveLength(3);
+		for (const skeleton of skeletons) {
+			expect(skeleton.querySelector("span")).toHaveClass("motion-reduce:animate-none");
+		}
+	});
+
+	it("renders a reusable empty state and forwards native props", () => {
+		render(
+			<LayerCard.Empty
+				title="No activity"
+				description="New events will appear here."
+				icon={<svg aria-label="Inbox" />}
+				data-testid="empty"
+				className="extra"
+			/>,
+		);
+		const empty = screen.getByTestId("empty");
+		expect(empty).toHaveClass("p-8", "extra");
+		expect(screen.getByText("No activity")).toBeInTheDocument();
+		expect(screen.getByText("New events will appear here.")).toBeInTheDocument();
+		expect(screen.getByLabelText("Inbox")).toBeInTheDocument();
 	});
 
 	it("forwards class, id, data attributes, and ref", () => {

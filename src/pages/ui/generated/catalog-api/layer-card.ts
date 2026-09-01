@@ -10,6 +10,69 @@ export const API = [
 				required: false,
 				description: "Additional classes for the card root.",
 			},
+			{
+				name: "padding",
+				type: '"lg" | "md" | "none" | "sm"',
+				required: false,
+				default: '"none"',
+				description: "Inner spacing for unstructured card content.",
+			},
+		],
+	},
+	{
+		name: "LayerCard.Primary",
+		props: [],
+	},
+	{
+		name: "LayerCard.Secondary",
+		props: [],
+	},
+	{
+		name: "LayerCard.Header",
+		props: [],
+	},
+	{
+		name: "LayerCard.Body",
+		props: [],
+	},
+	{
+		name: "LayerCard.Footer",
+		props: [],
+	},
+	{
+		name: "LayerCard.Loading",
+		props: [
+			{
+				name: "label",
+				type: "string",
+				required: false,
+				default: '"Loading"',
+				description: "Accessible label announced for the loading state.",
+			},
+		],
+	},
+	{
+		name: "LayerCard.Empty",
+		props: [
+			{
+				name: "title",
+				type: "string",
+				required: false,
+				default: '"No content"',
+				description: "Empty-state heading.",
+			},
+			{
+				name: "description",
+				type: "string",
+				required: false,
+				description: "Supporting empty-state text.",
+			},
+			{
+				name: "icon",
+				type: "React.ReactNode",
+				required: false,
+				description: "Optional empty-state icon.",
+			},
 		],
 	},
 ];

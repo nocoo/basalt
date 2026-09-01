@@ -140,8 +140,16 @@ const LAYER_CARD_IDS = [
 	"layer-card-basic-card",
 	"layer-card-surface-style-card",
 	"layer-card-multiple-cards",
+	"layer-card-structured-card",
+	"layer-card-loading-empty",
 ] as const;
-const LAYER_CARD_TITLES = ["Basic Card", "Surface-style Card", "Multiple Cards"] as const;
+const LAYER_CARD_TITLES = [
+	"Basic Card",
+	"Surface-style Card",
+	"Multiple Cards",
+	"Structured Card",
+	"Loading and Empty",
+] as const;
 
 const layerCardRenders = import.meta.glob("./examples/layer-card/*.tsx", { eager: true });
 const layerCardSources = import.meta.glob("./examples/layer-card/*.tsx", {
@@ -752,9 +760,9 @@ describe("source-backed theme-toggle scenarios", () => {
 });
 
 describe("source-backed layer-card scenarios", () => {
-	it("loads three layer-card scenarios from the same glob modules", () => {
-		expect(Object.keys(layerCardRenders)).toHaveLength(3);
-		expect(Object.keys(layerCardSources)).toHaveLength(3);
+	it("loads five layer-card scenarios from the same glob modules", () => {
+		expect(Object.keys(layerCardRenders)).toHaveLength(5);
+		expect(Object.keys(layerCardSources)).toHaveLength(5);
 		const loaded = loadModuleScenarios({
 			slug: "layer-card",
 			metas: LAYER_CARD_TITLES.map((title, index) => ({
@@ -822,6 +830,13 @@ describe("source-backed layer-card scenarios", () => {
 		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain("Browse all components");
 		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain("View code examples");
 		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain('<div className="flex w-full gap-4">');
+		expect(LAYER_CARD_EXAMPLES[3]?.code).toContain("<LayerCard.Header>");
+		expect(LAYER_CARD_EXAMPLES[3]?.code).toContain("<LayerCard.Body>");
+		expect(LAYER_CARD_EXAMPLES[3]?.code).toContain("<LayerCard.Footer>");
+		expect(LAYER_CARD_EXAMPLES[4]?.code).toContain(
+			'<LayerCard.Loading label="Loading account activity" />',
+		);
+		expect(LAYER_CARD_EXAMPLES[4]?.code).toContain("<LayerCard.Empty");
 	});
 });
 

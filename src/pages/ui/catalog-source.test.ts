@@ -175,7 +175,20 @@ describe("catalog source contract", () => {
 			"packages/basalt/src/components/layer-card.tsx",
 		);
 		expect(foundation["layer-card"]?.docs.api).toEqual(CATALOG_API["layer-card"]);
-		expect(CATALOG_API["layer-card"]?.[0]?.props.map((prop) => prop.name)).toEqual(["className"]);
+		expect(CATALOG_API["layer-card"]?.map((surface) => surface.name)).toEqual([
+			"LayerCard",
+			"LayerCard.Primary",
+			"LayerCard.Secondary",
+			"LayerCard.Header",
+			"LayerCard.Body",
+			"LayerCard.Footer",
+			"LayerCard.Loading",
+			"LayerCard.Empty",
+		]);
+		expect(CATALOG_API["layer-card"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"className",
+			"padding",
+		]);
 		expect(implementationFileFor(entry("basalt-mark"))).toBe(
 			"packages/basalt/src/components/basalt-mark.tsx",
 		);

@@ -80,11 +80,12 @@ function generateProductionProps() {
 		tsconfigPath: DEFAULT_TSCONFIG,
 		targets: CATALOG_API_TARGETS,
 	});
+	const separatelyAssertedMultiSurfaceSlugs = new Set(["input-group", "select"]);
 	return Object.fromEntries(
 		Object.entries(generated)
-			.filter(([, surfaces]) => surfaces.length === 1)
+			.filter(([slug]) => !separatelyAssertedMultiSurfaceSlugs.has(slug))
 			.map(([slug, surfaces]) => {
-				expect(surfaces, slug).toHaveLength(1);
+				expect(surfaces.length, slug).toBeGreaterThan(0);
 				return [slug, surfaces[0]?.props ?? []];
 			}),
 	);
@@ -166,6 +167,53 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/layer-card.tsx",
 				propsType: "LayerCardProps",
 				surface: "LayerCard",
+			},
+			{
+				slug: "layer-card",
+				sourceFile: "packages/basalt/src/components/layer-card.tsx",
+				propsType: "LayerCardSectionProps",
+				surface: "LayerCard.Primary",
+				allowEmpty: true,
+			},
+			{
+				slug: "layer-card",
+				sourceFile: "packages/basalt/src/components/layer-card.tsx",
+				propsType: "LayerCardSectionProps",
+				surface: "LayerCard.Secondary",
+				allowEmpty: true,
+			},
+			{
+				slug: "layer-card",
+				sourceFile: "packages/basalt/src/components/layer-card.tsx",
+				propsType: "LayerCardSectionProps",
+				surface: "LayerCard.Header",
+				allowEmpty: true,
+			},
+			{
+				slug: "layer-card",
+				sourceFile: "packages/basalt/src/components/layer-card.tsx",
+				propsType: "LayerCardSectionProps",
+				surface: "LayerCard.Body",
+				allowEmpty: true,
+			},
+			{
+				slug: "layer-card",
+				sourceFile: "packages/basalt/src/components/layer-card.tsx",
+				propsType: "LayerCardSectionProps",
+				surface: "LayerCard.Footer",
+				allowEmpty: true,
+			},
+			{
+				slug: "layer-card",
+				sourceFile: "packages/basalt/src/components/layer-card.tsx",
+				propsType: "LayerCardLoadingProps",
+				surface: "LayerCard.Loading",
+			},
+			{
+				slug: "layer-card",
+				sourceFile: "packages/basalt/src/components/layer-card.tsx",
+				propsType: "LayerCardEmptyProps",
+				surface: "LayerCard.Empty",
 			},
 			{
 				slug: "basalt-mark",
@@ -285,12 +333,21 @@ describe("catalog API generator contract", () => {
 				surface: "SelectItem",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(28);
+		expect(CATALOG_API_TARGETS).toHaveLength(35);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
 			),
-		).toEqual(["InputGroup.Suffix", "SelectTrigger", "SelectGroup"]);
+		).toEqual([
+			"LayerCard.Primary",
+			"LayerCard.Secondary",
+			"LayerCard.Header",
+			"LayerCard.Body",
+			"LayerCard.Footer",
+			"InputGroup.Suffix",
+			"SelectTrigger",
+			"SelectGroup",
+		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames/);
 		expect(source).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
@@ -570,15 +627,22 @@ describe("catalog API generator contract", () => {
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 	}, 20_000);
 
-	it("extracts LayerCard props from LayerCardProps as a single optional className", () => {
+	it("extracts LayerCard root props from LayerCardProps", () => {
 		const generated = generateProductionProps();
-		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
 		expect(generated["layer-card"]).toEqual([
 			{
 				name: "className",
 				type: "string",
 				required: false,
 				description: "Additional classes for the card root.",
+			},
+			{
+				name: "padding",
+				type: '"lg" | "md" | "none" | "sm"',
+				required: false,
+				default: '"none"',
+				description: "Inner spacing for unstructured card content.",
 			},
 		]);
 		expect(generated["layer-card"]?.[0]).not.toHaveProperty("default");
@@ -641,7 +705,7 @@ describe("catalog API generator contract", () => {
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
-		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
 	}, 20_000);
 
 	it("extracts Field props from FieldProps in source order with required label and children", () => {
@@ -707,7 +771,7 @@ describe("catalog API generator contract", () => {
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
-		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
 		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 	}, 20_000);
 
@@ -749,7 +813,7 @@ describe("catalog API generator contract", () => {
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
-		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
 		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 		expect(generated.field?.map((prop) => prop.name)).toEqual([
 			"label",
@@ -799,7 +863,7 @@ describe("catalog API generator contract", () => {
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
-		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
 		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 		expect(generated.field?.map((prop) => prop.name)).toEqual([
 			"label",
@@ -1016,7 +1080,16 @@ export interface WidgetProps {
 			link: ["Link"],
 			tooltip: ["Tooltip"],
 			"theme-toggle": ["ThemeToggle"],
-			"layer-card": ["LayerCard"],
+			"layer-card": [
+				"LayerCard",
+				"LayerCard.Primary",
+				"LayerCard.Secondary",
+				"LayerCard.Header",
+				"LayerCard.Body",
+				"LayerCard.Footer",
+				"LayerCard.Loading",
+				"LayerCard.Empty",
+			],
 			"basalt-mark": ["BasaltMark"],
 			field: ["Field"],
 			input: ["Input"],
@@ -2412,7 +2485,7 @@ export interface WidgetProps {
 		expect(() => checkCatalogApiFile(filePath, first)).not.toThrow();
 	});
 
-	it("produces the same Button module on a second generation", () => {
+	it("produces the same complete API set on a second generation", () => {
 		const first = generateCatalogApiFiles(repoRoot);
 		const second = generateCatalogApiFiles(repoRoot);
 		expect(first).toEqual(second);
@@ -2431,6 +2504,8 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "InputArea"');
 		expect(joined).toContain('name: "InputGroup.Button"');
 		expect(joined).toContain('name: "InputGroup.Suffix"');
+		expect(joined).toContain('name: "LayerCard.Loading"');
+		expect(joined).toContain('name: "LayerCard.Empty"');
 		expect(joined).toContain('name: "SensitiveInput"');
 		expect(joined).toContain('name: "Checkbox"');
 		expect(joined).toContain('name: "Radio"');
@@ -2448,7 +2523,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"cc03553add149d002a4c542944aa80733062b98e88bdf71a2c831d9a339b0a67",
+			"403316e5eda52302279fafdf6ec43ffa4201dded7f0ba1d7f25d5128a789905e",
 		);
 	}, 20_000);
 

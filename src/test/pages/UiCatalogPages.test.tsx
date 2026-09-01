@@ -941,25 +941,37 @@ describe("ui catalog", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		expect(CATALOG_DOCS["layer-card"]?.api).toEqual(CATALOG_API["layer-card"]);
-		expect(CATALOG_API["layer-card"]?.[0]?.props.map((prop) => prop.name)).toEqual(["className"]);
-		expect(CATALOG_API["layer-card"]).toEqual([
-			{
-				name: "LayerCard",
-				props: [
-					{
-						name: "className",
-						type: "string",
-						required: false,
-						description: "Additional classes for the card root.",
-					},
-				],
-			},
+		expect(CATALOG_API["layer-card"]?.map((surface) => surface.name)).toEqual([
+			"LayerCard",
+			"LayerCard.Primary",
+			"LayerCard.Secondary",
+			"LayerCard.Header",
+			"LayerCard.Body",
+			"LayerCard.Footer",
+			"LayerCard.Loading",
+			"LayerCard.Empty",
+		]);
+		expect(
+			CATALOG_API["layer-card"]?.map((surface) => surface.props.map((prop) => prop.name)),
+		).toEqual([
+			["className", "padding"],
+			[],
+			[],
+			[],
+			[],
+			[],
+			["label"],
+			["title", "description", "icon"],
 		]);
 		renderCatalog("/ui/layer-card");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(6);
 		expect(api).toHaveTextContent("className?");
+		expect(api).toHaveTextContent("padding?");
+		expect(api).toHaveTextContent("LayerCard.Loading");
+		expect(api).toHaveTextContent("LayerCard.Empty");
+		expect(api?.querySelectorAll("p")).toHaveLength(5);
 		expect(api).toHaveTextContent("string");
 		expect(api).toHaveTextContent("Additional classes for the card root.");
 		expect(api).toHaveTextContent("—");
@@ -969,11 +981,13 @@ describe("ui catalog", () => {
 		expect(api).not.toHaveTextContent("role");
 		expect(api).not.toHaveTextContent("LayerCardSectionProps");
 		expect(document.body.textContent).toContain(
-			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
+			"<LayerCard><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body>Content</LayerCard.Body><LayerCard.Footer>Actions</LayerCard.Footer></LayerCard>",
 		);
 		expect(screen.getByRole("heading", { name: "Basic Card" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Surface-style Card" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Multiple Cards" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Structured Card" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Loading and Empty" })).toBeInTheDocument();
 		await act(async () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
@@ -982,7 +996,12 @@ describe("ui catalog", () => {
 			"- className (string, optional, default —): Additional classes for the card root.",
 		);
 		expect(markdown).toContain(
-			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
+			'- padding ("lg" | "md" | "none" | "sm", optional, default "none"): Inner spacing for unstructured card content.',
+		);
+		expect(markdown).toContain("### LayerCard.Loading");
+		expect(markdown).toContain("### LayerCard.Empty");
+		expect(markdown).toContain(
+			"<LayerCard><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body>Content</LayerCard.Body><LayerCard.Footer>Actions</LayerCard.Footer></LayerCard>",
 		);
 		expect(markdown).not.toContain("- children (");
 		expect(markdown).not.toContain("- id (");
@@ -998,7 +1017,7 @@ describe("ui catalog", () => {
 		);
 		expect(family).toContain("api: layerCardApi");
 		expect(family).toContain(
-			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
+			"<LayerCard><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body>Content</LayerCard.Body><LayerCard.Footer>Actions</LayerCard.Footer></LayerCard>",
 		);
 	});
 
@@ -2285,6 +2304,8 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("heading", { name: "Basic Card" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Surface-style Card" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Multiple Cards" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Structured Card" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Loading and Empty" })).toBeInTheDocument();
 		const hero = document.querySelector('[data-hero-scenario="layer-card-basic-card"]');
 		expect(hero).toBeTruthy();
 		if (!hero) {
@@ -2309,6 +2330,17 @@ describe("ui catalog", () => {
 		expect(multiple).toHaveTextContent("Browse all components");
 		expect(multiple).toHaveTextContent("Examples");
 		expect(multiple).toHaveTextContent("View code examples");
+		const structured = document.querySelector('[data-scenario="layer-card-structured-card"]');
+		expect(structured).toHaveTextContent("Deployment");
+		expect(structured).toHaveTextContent("All checks have passed.");
+		expect(structured).toHaveTextContent("Review");
+		expect(structured).toHaveTextContent("Deploy");
+		const states = document.querySelector('[data-scenario="layer-card-loading-empty"]');
+		expect(states).toHaveTextContent("No activity");
+		expect(states).toHaveTextContent("New events will appear here.");
+		const loading = states?.querySelector('[role="status"]');
+		expect(loading).toHaveAttribute("aria-label", "Loading account activity");
+		expect(loading?.querySelectorAll('[aria-hidden="true"]')).toHaveLength(3);
 		for (const scenario of UI_EXAMPLES["layer-card"] ?? []) {
 			expect(scenario.code).toContain("export default");
 			expect(scenario.code).toContain("@nocoo/basalt/components/layer-card");
@@ -2320,6 +2352,10 @@ describe("ui catalog", () => {
 		expect(UI_EXAMPLES["layer-card"]?.[0]?.code).toContain('className="w-[250px]"');
 		expect(UI_EXAMPLES["layer-card"]?.[1]?.code).toContain('className="w-[250px] p-4"');
 		expect(UI_EXAMPLES["layer-card"]?.[2]?.code).toContain('className="flex w-full gap-4"');
+		expect(UI_EXAMPLES["layer-card"]?.[3]?.code).toContain("<LayerCard.Header>");
+		expect(UI_EXAMPLES["layer-card"]?.[4]?.code).toContain(
+			'<LayerCard.Loading label="Loading account activity" />',
+		);
 		await act(async () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});

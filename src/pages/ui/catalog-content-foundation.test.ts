@@ -106,6 +106,18 @@ describe("foundation catalog content family", () => {
 		expect(foundation.button?.examples.map((example) => example.render)).toEqual(
 			BUTTON_EXAMPLES.map((example) => example.render),
 		);
+		expect(foundation["layer-card"]?.docs.description).toBe(
+			"A layered or structured card shell with consistent spacing, sections, loading, and empty states.",
+		);
+		expect(foundation["layer-card"]?.docs.variants).toEqual(["none", "sm", "md", "lg"]);
+		expect(foundation["layer-card"]?.docs.api).toBe(layerCardApi);
+		expect(foundation["layer-card"]?.examples.map((example) => example.id)).toEqual([
+			"layer-card-basic-card",
+			"layer-card-surface-style-card",
+			"layer-card-multiple-cards",
+			"layer-card-structured-card",
+			"layer-card-loading-empty",
+		]);
 		expect(foundation["theme-provider"]?.examples).toHaveLength(1);
 		expect(foundation["theme-provider"]?.examples[0]).toMatchObject({
 			id: "theme-provider-default",

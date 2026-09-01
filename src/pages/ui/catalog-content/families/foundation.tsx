@@ -156,13 +156,14 @@ export default catalogContentFamily({
 	},
 	"layer-card": {
 		docs: {
-			description: "A card with a layered visual effect for headers and raised content.",
+			description:
+				"A layered or structured card shell with consistent spacing, sections, loading, and empty states.",
 			usage: usage(
 				"LayerCard",
 				"@nocoo/basalt/components/layer-card",
-				"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
+				"<LayerCard><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body>Content</LayerCard.Body><LayerCard.Footer>Actions</LayerCard.Footer></LayerCard>",
 			),
-			variants: [],
+			variants: ["none", "sm", "md", "lg"],
 			api: layerCardApi,
 			provenance: provenanceFromLegacy({
 				repo: "zhe",

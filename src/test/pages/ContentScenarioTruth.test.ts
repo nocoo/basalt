@@ -73,6 +73,8 @@ describe("content scenario truth", () => {
 			"layer-card-basic-card",
 			"layer-card-surface-style-card",
 			"layer-card-multiple-cards",
+			"layer-card-structured-card",
+			"layer-card-loading-empty",
 		]);
 	});
 
@@ -90,6 +92,13 @@ describe("content scenario truth", () => {
 		expect(multiple.code).toContain('className="w-[200px]"');
 		expect(multiple.code).toContain("Browse all components");
 		expect(multiple.code).toContain("View code examples");
+		const structured = scenario("layer-card", "layer-card-structured-card");
+		expect(structured.code).toContain("<LayerCard.Header>");
+		expect(structured.code).toContain("<LayerCard.Body>");
+		expect(structured.code).toContain("<LayerCard.Footer>");
+		const states = scenario("layer-card", "layer-card-loading-empty");
+		expect(states.code).toContain('<LayerCard.Loading label="Loading account activity" />');
+		expect(states.code).toContain('title="No activity"');
 	});
 
 	it("describes text-sizes as sizes instead of semantic html", () => {

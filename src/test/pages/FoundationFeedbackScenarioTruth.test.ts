@@ -110,6 +110,8 @@ describe("foundation feedback scenario truth", () => {
 			"layer-card-basic-card",
 			"layer-card-surface-style-card",
 			"layer-card-multiple-cards",
+			"layer-card-structured-card",
+			"layer-card-loading-empty",
 		]);
 		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([
 			"link-basic-link",
