@@ -40,10 +40,23 @@ function FlowArrow() {
 	);
 }
 
-export function Flow({ className, children }: { className?: string; children: ReactNode }) {
+export type FlowProps = {
+	/**
+	 * Accessible name for the step list.
+	 * @default "Flow"
+	 */
+	"aria-label"?: string;
+	/**
+	 * Additional classes for the list.
+	 */
+	className?: string;
+	children: ReactNode;
+};
+
+export function Flow({ className, children, "aria-label": ariaLabel = "Flow" }: FlowProps) {
 	const nodes = Children.toArray(children);
 	return (
-		<ol className={cn("flex items-center", className)}>
+		<ol aria-label={ariaLabel} className={cn("flex items-center", className)}>
 			{nodes.map((child, index) => (
 				<Fragment key={index}>
 					{child}
@@ -54,7 +67,11 @@ export function Flow({ className, children }: { className?: string; children: Re
 	);
 }
 
-export function FlowNode({ children }: { children: ReactNode }) {
+export type FlowNodeProps = {
+	children: ReactNode;
+};
+
+export function FlowNode({ children }: FlowNodeProps) {
 	return (
 		<li className="rounded-basalt-md border border-basalt-border bg-basalt-secondary px-3 py-2 text-sm">
 			{children}

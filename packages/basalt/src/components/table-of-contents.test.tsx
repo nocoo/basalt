@@ -13,6 +13,19 @@ describe("TableOfContents", () => {
 		expect(screen.getByText("Intro")).toBeInTheDocument();
 	});
 
+	it("renders a current section link", () => {
+		render(
+			<TableOfContents>
+				<TableOfContentsItem href="#intro" active>
+					Intro
+				</TableOfContentsItem>
+			</TableOfContents>,
+		);
+		const link = screen.getByRole("link", { name: "Intro" });
+		expect(link).toHaveAttribute("href", "#intro");
+		expect(link).toHaveAttribute("aria-current", "location");
+	});
+
 	it("renders inactive items", () => {
 		render(
 			<TableOfContents title="Sections">

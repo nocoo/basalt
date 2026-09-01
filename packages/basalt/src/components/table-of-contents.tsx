@@ -1,15 +1,24 @@
 import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
 
+export type TableOfContentsProps = {
+	/**
+	 * Accessible name and heading. Pass an empty string to hide the heading.
+	 * @default "On this page"
+	 */
+	title?: string;
+	children: ReactNode;
+	/**
+	 * Additional classes for the nav.
+	 */
+	className?: string;
+};
+
 export function TableOfContents({
 	title = "On this page",
 	children,
 	className,
-}: {
-	title?: string;
-	children: ReactNode;
-	className?: string;
-}) {
+}: TableOfContentsProps) {
 	return (
 		<nav aria-label={title || "On this page"} className={cn("text-sm", className)}>
 			{title ? (
@@ -22,25 +31,35 @@ export function TableOfContents({
 	);
 }
 
-export function TableOfContentsItem({
-	active,
-	children,
-}: {
+export type TableOfContentsItemProps = {
+	/**
+	 * Mark the current section.
+	 * @default false
+	 */
 	active?: boolean;
+	/**
+	 * Optional in-page href. Renders a link when set.
+	 */
+	href?: string;
 	children: ReactNode;
-}) {
+};
+
+export function TableOfContentsItem({ active, href, children }: TableOfContentsItemProps) {
+	const className = cn(
+		"block border-l-2 py-0.5 pl-4",
+		active
+			? "border-basalt-primary font-medium text-basalt-foreground"
+			: "border-transparent text-basalt-muted-foreground",
+	);
 	return (
 		<li className="-ml-0.5">
-			<span
-				className={cn(
-					"block border-l-2 py-0.5 pl-4",
-					active
-						? "border-basalt-primary font-medium text-basalt-foreground"
-						: "border-transparent text-basalt-muted-foreground",
-				)}
-			>
-				{children}
-			</span>
+			{href ? (
+				<a href={href} aria-current={active ? "location" : undefined} className={className}>
+					{children}
+				</a>
+			) : (
+				<span className={className}>{children}</span>
+			)}
 		</li>
 	);
 }

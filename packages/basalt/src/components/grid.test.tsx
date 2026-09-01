@@ -12,6 +12,17 @@ describe("Grid", () => {
 		expect(screen.getByText("1")).toBeInTheDocument();
 	});
 
+	it("sets an explicit column count", () => {
+		const { container } = render(
+			<Grid columns={3}>
+				<GridItem>1</GridItem>
+			</Grid>,
+		);
+		expect(container.firstElementChild).toHaveStyle({
+			gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+		});
+	});
+
 	it("lays out a two-by-two card grid", () => {
 		render(
 			<Grid>

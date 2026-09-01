@@ -3,6 +3,15 @@ import { describe, expect, it } from "vitest";
 import { Flow, FlowNode } from "./flow";
 
 describe("Flow", () => {
+	it("names the step list", () => {
+		render(
+			<Flow>
+				<FlowNode>Step 1</FlowNode>
+			</Flow>,
+		);
+		expect(screen.getByRole("list", { name: "Flow" })).toBeInTheDocument();
+	});
+
 	it("renders nodes", () => {
 		render(
 			<Flow>

@@ -37,7 +37,14 @@ function highlight(code: string): ReactNode[] {
 	return nodes;
 }
 
-export function Code({ className, ...props }: HTMLAttributes<HTMLElement>) {
+export type CodeProps = {
+	/**
+	 * Additional classes for the inline code.
+	 */
+	className?: string;
+};
+
+export function Code({ className, ...props }: CodeProps & HTMLAttributes<HTMLElement>) {
 	return (
 		<code
 			className={cn(
@@ -49,7 +56,17 @@ export function Code({ className, ...props }: HTMLAttributes<HTMLElement>) {
 	);
 }
 
-export function CodeBlock({ className, ...props }: HTMLAttributes<HTMLPreElement>) {
+export type CodeBlockProps = {
+	/**
+	 * Additional classes for the block.
+	 */
+	className?: string;
+};
+
+export function CodeBlock({
+	className,
+	...props
+}: CodeBlockProps & HTMLAttributes<HTMLPreElement>) {
 	return (
 		<pre
 			className={controlSurfaceClass(
@@ -60,11 +77,22 @@ export function CodeBlock({ className, ...props }: HTMLAttributes<HTMLPreElement
 	);
 }
 
+export type CodeHighlightedProps = {
+	/**
+	 * Source text to highlight.
+	 */
+	code: string;
+	/**
+	 * Additional classes for the block.
+	 */
+	className?: string;
+};
+
 export function CodeHighlighted({
 	code,
 	className,
 	...props
-}: HTMLAttributes<HTMLPreElement> & { code: string }) {
+}: CodeHighlightedProps & HTMLAttributes<HTMLPreElement>) {
 	return (
 		<pre
 			className={controlSurfaceClass(cn("overflow-x-auto p-4 text-basalt-foreground", className))}
