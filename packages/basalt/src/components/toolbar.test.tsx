@@ -1,4 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
+import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Toolbar } from "./toolbar";
 
@@ -137,6 +138,43 @@ describe("Toolbar", () => {
 			</Toolbar>,
 		);
 		expect(screen.getByRole("button", { name: "Download" }).tabIndex).toBe(0);
+	});
+
+	it("forwards function and object refs", () => {
+		const objectRef = createRef<HTMLDivElement>();
+		const functionRef = vi.fn();
+		const { rerender } = render(<Toolbar ref={objectRef}>Tools</Toolbar>);
+		expect(objectRef.current).toHaveAttribute("role", "toolbar");
+		rerender(<Toolbar ref={functionRef}>Tools</Toolbar>);
+		expect(functionRef).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+	});
+
+	it("ignores arrows that do not start on a control", () => {
+		render(
+			<Toolbar aria-label="Record tools">
+				<Toolbar.Button>Upload</Toolbar.Button>
+				<Toolbar.Button>Download</Toolbar.Button>
+			</Toolbar>,
+		);
+		const toolbar = screen.getByRole("toolbar", { name: "Record tools" });
+		const upload = screen.getByRole("button", { name: "Upload" });
+		upload.focus();
+		fireEvent.keyDown(toolbar, { key: "ArrowRight" });
+		expect(upload).toHaveFocus();
+	});
+
+	it("wraps arrow focus from the first button", () => {
+		render(
+			<Toolbar aria-label="Record tools">
+				<Toolbar.Button>Upload</Toolbar.Button>
+				<Toolbar.Button>Download</Toolbar.Button>
+			</Toolbar>,
+		);
+		const upload = screen.getByRole("button", { name: "Upload" });
+		const download = screen.getByRole("button", { name: "Download" });
+		upload.focus();
+		fireEvent.keyDown(upload, { key: "ArrowLeft" });
+		expect(download).toHaveFocus();
 	});
 
 	it("honors a prevented keydown", () => {

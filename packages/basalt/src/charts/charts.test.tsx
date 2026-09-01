@@ -70,6 +70,8 @@ describe("charts", () => {
 		expect(screen.getByRole("img", { name: "Grouped" })).toBeInTheDocument();
 		render(<StackedBarChart data={points} ariaLabel="Stacked" />);
 		expect(screen.getByRole("img", { name: "Stacked" })).toBeInTheDocument();
+		render(<StackedBarChart data={points} ariaLabel="Axes stacked" showAxes />);
+		expect(screen.getByRole("img", { name: "Axes stacked" })).toBeInTheDocument();
 		render(<Sparkline data={points} ariaLabel="Spark" />);
 		expect(screen.getByRole("img", { name: "Spark" })).toBeInTheDocument();
 		render(<SlotBarChart data={points} ariaLabel="Slots" />);
@@ -130,6 +132,8 @@ describe("charts", () => {
 		render(<Gauge value={40} ariaLabel="Quiet" hideValue />);
 		expect(screen.getByRole("img", { name: "Quiet" })).toBeInTheDocument();
 		expect(screen.queryByText("40")).toBeNull();
+		render(<Gauge value={20} max={0} ariaLabel="Zero max" />);
+		expect(screen.getByRole("img", { name: "Zero max" })).toBeInTheDocument();
 		render(<DateNavigation ariaLabel="When" />);
 		expect(screen.getByRole("button", { name: "When" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Previous day" })).toBeInTheDocument();
