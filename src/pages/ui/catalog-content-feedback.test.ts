@@ -68,7 +68,7 @@ const FEEDBACK_DESCRIPTIONS = {
 } as const;
 
 describe("feedback catalog content family", () => {
-	it("owns exactly eleven migrated slugs and forty-seven generated owners", () => {
+	it("owns exactly eleven migrated slugs and fifty-six generated owners", () => {
 		expect(Object.keys(feedback)).toEqual(Object.keys(FEEDBACK_SCENARIOS));
 		expect(Object.keys(feedback)).toHaveLength(11);
 		expect(
@@ -86,7 +86,7 @@ describe("feedback catalog content family", () => {
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "overlay"),
 		).toHaveLength(10);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(47);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(56);
 	});
 
 	it("keeps the forty-three final winner scenarios in their audited order", () => {

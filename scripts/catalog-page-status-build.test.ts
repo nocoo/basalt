@@ -200,7 +200,7 @@ describe("application route build boundary", () => {
 		).toBe(false);
 		expect(
 			foundationModules.some((id) =>
-				/catalog-content\/families\/(forms|overlay|charts)\.tsx$/.test(id),
+				/catalog-content\/families\/(forms|overlay|feedback|navigation|charts)\.tsx$/.test(id),
 			),
 			"button family closure contains another family",
 		).toBe(false);
@@ -239,7 +239,7 @@ describe("application route build boundary", () => {
 		).toBe(false);
 		expect(
 			formsModules.some((id) =>
-				/catalog-content\/families\/(foundation|overlay|charts)\.tsx$/.test(id),
+				/catalog-content\/families\/(foundation|overlay|feedback|navigation|charts)\.tsx$/.test(id),
 			),
 			"input-group family closure contains another family",
 		).toBe(false);
@@ -278,7 +278,7 @@ describe("application route build boundary", () => {
 		).toBe(false);
 		expect(
 			overlayModules.some((id) =>
-				/catalog-content\/families\/(foundation|forms|charts)\.tsx$/.test(id),
+				/catalog-content\/families\/(foundation|forms|feedback|navigation|charts)\.tsx$/.test(id),
 			),
 			"dialog family closure contains another family",
 		).toBe(false);
@@ -319,9 +319,50 @@ describe("application route build boundary", () => {
 		).toBe(false);
 		expect(
 			feedbackModules.some((id) =>
-				/catalog-content\/families\/(foundation|forms|overlay|charts)\.tsx$/.test(id),
+				/catalog-content\/families\/(foundation|forms|overlay|navigation|charts)\.tsx$/.test(id),
 			),
 			"banner family closure contains another family",
+		).toBe(false);
+
+		const navigation = chunks.find((chunk) =>
+			chunk.modules.some((id) =>
+				id.endsWith("/src/pages/ui/catalog-content/families/navigation.tsx"),
+			),
+		);
+		expect(navigation).toBeDefined();
+		const navigationFiles = new Set<string>();
+		const visitNavigation = (chunk: BuiltChunk | undefined) => {
+			if (!chunk || navigationFiles.has(chunk.fileName)) return;
+			navigationFiles.add(chunk.fileName);
+			for (const imported of chunk.imports) visitNavigation(chunksByFile.get(imported));
+		};
+		visitNavigation(navigation);
+		const navigationModules = chunks
+			.filter((chunk) => navigationFiles.has(chunk.fileName))
+			.flatMap((chunk) => chunk.modules);
+		for (const suffix of [
+			"/src/pages/ui/catalog-content-legacy.ts",
+			"/src/pages/ui/catalog-ready.tsx",
+			"/src/pages/ui/kumo-examples.tsx",
+			"/src/pages/ui/docs.ts",
+			"/src/pages/ui/demos.tsx",
+			"/src/charts/sample.ts",
+			"/packages/basalt/src/charts/sample.ts",
+		]) {
+			expect(
+				navigationModules.some((id) => id.endsWith(suffix)),
+				`tabs family closure contains ${suffix}`,
+			).toBe(false);
+		}
+		expect(
+			navigationModules.some((id) => /recharts/i.test(id)),
+			"tabs family closure contains recharts",
+		).toBe(false);
+		expect(
+			navigationModules.some((id) =>
+				/catalog-content\/families\/(foundation|forms|overlay|feedback|charts)\.tsx$/.test(id),
+			),
+			"tabs family closure contains another family",
 		).toBe(false);
 	});
 });

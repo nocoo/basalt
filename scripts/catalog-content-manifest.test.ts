@@ -16,6 +16,7 @@ describe("catalog content family manifest", () => {
 			"feedback.tsx",
 			"forms.tsx",
 			"foundation.tsx",
+			"navigation.tsx",
 			"overlay.tsx",
 		]);
 		expect(familyIdFromFile("foundation.tsx")).toBe("foundation");

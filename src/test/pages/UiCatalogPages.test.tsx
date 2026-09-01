@@ -14,6 +14,7 @@ import {
 import feedback from "@/pages/ui/catalog-content/families/feedback";
 import forms from "@/pages/ui/catalog-content/families/forms";
 import foundation from "@/pages/ui/catalog-content/families/foundation";
+import navigation from "@/pages/ui/catalog-content/families/navigation";
 import overlay from "@/pages/ui/catalog-content/families/overlay";
 import { loadCatalogPageContent } from "@/pages/ui/catalog-content-loader";
 import { CATALOG_INDEX_GROUPS, CATALOG_INDEX_ITEMS } from "@/pages/ui/catalog-index";
@@ -33,6 +34,7 @@ const CATALOG_DOCS = {
 	...Object.fromEntries(Object.entries(forms).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(feedback).map(([slug, content]) => [slug, content.docs])),
+	...Object.fromEntries(Object.entries(navigation).map(([slug, content]) => [slug, content.docs])),
 };
 const UI_EXAMPLES = {
 	...LEGACY_UI_EXAMPLES,
@@ -43,6 +45,9 @@ const UI_EXAMPLES = {
 	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.examples])),
 	...Object.fromEntries(
 		Object.entries(feedback).map(([slug, content]) => [slug, content.examples]),
+	),
+	...Object.fromEntries(
+		Object.entries(navigation).map(([slug, content]) => [slug, content.examples]),
 	),
 };
 
@@ -2836,6 +2841,10 @@ describe("ui catalog", () => {
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/feedback.tsx"),
 			"utf8",
 		);
+		const navigationFamily = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/navigation.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
 		expect(demos).not.toContain("INPUT_GROUP_EXAMPLES");
 		expect(family).toContain("INPUT_GROUP_EXAMPLES");
@@ -2849,7 +2858,7 @@ describe("ui catalog", () => {
 		expect(kumo).not.toContain("CircleCheck");
 		expect(kumo).not.toContain('from "@nocoo/basalt/components/loader"');
 		expect(feedbackFamily).toContain('from "@nocoo/basalt/components/loader"');
-		expect(kumo).toContain("Search");
+		expect(navigationFamily).toContain("Search");
 	});
 
 	it("keeps sensitive-input hero, reveal toggle, disabled controls, and copy modules", async () => {
@@ -3221,6 +3230,10 @@ describe("ui catalog", () => {
 			path.join(process.cwd(), "src/pages/ui/catalog-content/families/feedback.tsx"),
 			"utf8",
 		);
+		const navigationFamily = readFileSync(
+			path.join(process.cwd(), "src/pages/ui/catalog-content/families/navigation.tsx"),
+			"utf8",
+		);
 		const kumo = readFileSync(path.join(process.cwd(), "src/pages/ui/kumo-examples.tsx"), "utf8");
 		expect(demos).not.toContain("SWITCH_EXAMPLES");
 		expect(family).toContain("SWITCH_EXAMPLES");
@@ -3234,7 +3247,7 @@ describe("ui catalog", () => {
 		expect(kumo).not.toContain("ReactNode");
 		expect(feedbackFamily).toContain("function Preview");
 		expect(feedbackFamily).toContain("ReactNode");
-		expect(kumo).toContain("useState");
+		expect(navigationFamily).toContain("useState");
 		expect(kumo).toContain("catalogScenarioId");
 	});
 

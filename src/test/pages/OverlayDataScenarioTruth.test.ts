@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import navigation from "@/pages/ui/catalog-content/families/navigation";
 import overlay from "@/pages/ui/catalog-content/families/overlay";
 import { UI_EXAMPLES as LEGACY_UI_EXAMPLES } from "@/pages/ui/demos";
 import { CATALOG_DOCS as LEGACY_CATALOG_DOCS } from "@/pages/ui/docs";
@@ -6,10 +7,14 @@ import { CATALOG_DOCS as LEGACY_CATALOG_DOCS } from "@/pages/ui/docs";
 const UI_EXAMPLES = {
 	...LEGACY_UI_EXAMPLES,
 	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.examples])),
+	...Object.fromEntries(
+		Object.entries(navigation).map(([slug, content]) => [slug, content.examples]),
+	),
 };
 const CATALOG_DOCS = {
 	...LEGACY_CATALOG_DOCS,
 	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.docs])),
+	...Object.fromEntries(Object.entries(navigation).map(([slug, content]) => [slug, content.docs])),
 };
 
 function scenario(slug: string, id: string) {

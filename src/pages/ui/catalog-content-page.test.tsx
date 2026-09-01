@@ -6,6 +6,7 @@ import type { CatalogPageContent } from "./catalog-content";
 import feedback from "./catalog-content/families/feedback";
 import forms from "./catalog-content/families/forms";
 import foundation from "./catalog-content/families/foundation";
+import navigation from "./catalog-content/families/navigation";
 import overlay from "./catalog-content/families/overlay";
 import { UI_EXAMPLES } from "./demos";
 import { CATALOG_DOCS } from "./docs";
@@ -26,7 +27,8 @@ function deferred<T>() {
 }
 
 function contentFor(slug: string): CatalogPageContent {
-	const family = foundation[slug] ?? forms[slug] ?? overlay[slug] ?? feedback[slug];
+	const family =
+		foundation[slug] ?? forms[slug] ?? overlay[slug] ?? feedback[slug] ?? navigation[slug];
 	if (family) {
 		return family;
 	}

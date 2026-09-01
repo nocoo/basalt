@@ -2,6 +2,7 @@ import { CATALOG, type CatalogCategory, type CatalogEntry, type CatalogKind } fr
 import feedback from "./catalog-content/families/feedback";
 import forms from "./catalog-content/families/forms";
 import foundation from "./catalog-content/families/foundation";
+import navigation from "./catalog-content/families/navigation";
 import overlay from "./catalog-content/families/overlay";
 import type { CatalogPageStatus } from "./catalog-page-status";
 import type { CatalogScenario } from "./catalog-scenario";
@@ -15,6 +16,7 @@ const FAMILY_DOCS = Object.fromEntries(
 		...Object.entries(forms),
 		...Object.entries(overlay),
 		...Object.entries(feedback),
+		...Object.entries(navigation),
 	].map(([slug, content]) => [slug, content.docs]),
 );
 
@@ -24,6 +26,7 @@ function familyOrLegacyHero(slug: string): CatalogScenario | undefined {
 		forms[slug]?.examples[0] ??
 		overlay[slug]?.examples[0] ??
 		feedback[slug]?.examples[0] ??
+		navigation[slug]?.examples[0] ??
 		catalogHeroScenario(slug)
 	);
 }

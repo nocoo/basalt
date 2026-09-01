@@ -22,28 +22,10 @@ import { StatCard } from "@nocoo/basalt/charts/stat-card";
 import { Timeline } from "@nocoo/basalt/charts/timeline";
 import { Timeseries } from "@nocoo/basalt/charts/timeseries";
 import { AppHeader } from "@nocoo/basalt/components/app-header";
-import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
-import {
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-	CommandPalette,
-} from "@nocoo/basalt/components/command-palette";
 import { DataTable } from "@nocoo/basalt/components/data-table";
 import { Flow, FlowNode } from "@nocoo/basalt/components/flow";
 import { Grid, GridItem } from "@nocoo/basalt/components/grid";
-import { MenuBarMenu, MenuBarRoot, MenuBarTrigger } from "@nocoo/basalt/components/menu-bar";
-import {
-	NavigationMenu,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-} from "@nocoo/basalt/components/navigation-menu";
-import { Pagination } from "@nocoo/basalt/components/pagination";
-import { ContentIsland, Sidebar, SidebarItem } from "@nocoo/basalt/components/sidebar";
 import {
 	Table,
 	TableBody,
@@ -52,11 +34,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@nocoo/basalt/components/table";
-import { TableOfContents, TableOfContentsItem } from "@nocoo/basalt/components/table-of-contents";
-import { Tabs, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
-import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import { Plus, Search } from "lucide-react";
-import { type ComponentType, useState } from "react";
+import type { ComponentType } from "react";
 import { CATALOG, type CatalogEntry, catalogImportPath } from "./catalog";
 import { type CatalogScenario, catalogScenarioId } from "./catalog-scenario";
 import { type CatalogApiProp, type CatalogDocsDraft, provenanceFromLegacy } from "./catalog-source";
@@ -110,72 +88,6 @@ function add(
 	extra[slug] = page(entry, description, Demo, sample, props, usage);
 }
 
-add(
-	"tabs",
-	"Tabbed navigation.",
-	() => (
-		<Tabs defaultValue="a">
-			<TabsList>
-				<TabsTrigger value="a">Home</TabsTrigger>
-				<TabsTrigger value="b">About</TabsTrigger>
-			</TabsList>
-		</Tabs>
-	),
-	"<Tabs defaultValue='a'><TabsList><TabsTrigger value='a'>Home</TabsTrigger><TabsTrigger value='b'>About</TabsTrigger></TabsList></Tabs>",
-	undefined,
-	`import { Tabs, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
-
-export default function Example() {
-	return (
-		<Tabs defaultValue="a">
-			<TabsList>
-				<TabsTrigger value="a">Home</TabsTrigger>
-				<TabsTrigger value="b">About</TabsTrigger>
-			</TabsList>
-		</Tabs>
-	);
-}`,
-);
-function PaginationHeroDemo() {
-	const [page, setPage] = useState(1);
-	return <Pagination page={page} pageCount={10} onPageChange={setPage} />;
-}
-add(
-	"pagination",
-	"Page controls.",
-	() => <PaginationHeroDemo />,
-	"<Pagination page={page} pageCount={10} onPageChange={setPage} />",
-	[
-		{ name: "page", type: "number" },
-		{ name: "pageCount", type: "number", default: "10" },
-		{ name: "onPageChange", type: "(page: number) => void" },
-		{
-			name: "simple",
-			type: "boolean",
-			default: "false",
-			description: "Previous and next only.",
-		},
-	],
-	`import { Pagination } from "@nocoo/basalt/components/pagination";
-import { useState } from "react";
-
-export default function Example() {
-	const [page, setPage] = useState(1);
-	return <Pagination page={page} pageCount={10} onPageChange={setPage} />;
-}`,
-);
-add(
-	"breadcrumbs",
-	"Hierarchical location.",
-	() => <Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />,
-	'<Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />',
-	undefined,
-	`import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
-
-export default function Example() {
-	return <Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />;
-}`,
-);
 add(
 	"table",
 	"Tabular data with a header bar and striped rows.",
@@ -250,26 +162,6 @@ add(
 	],
 );
 add(
-	"table-of-contents",
-	"On-this-page list.",
-	() => (
-		<TableOfContents>
-			<TableOfContentsItem active>Intro</TableOfContentsItem>
-		</TableOfContents>
-	),
-	"<TableOfContents><TableOfContentsItem active>Intro</TableOfContentsItem></TableOfContents>",
-	undefined,
-	`import { TableOfContents, TableOfContentsItem } from "@nocoo/basalt/components/table-of-contents";
-
-export default function Example() {
-	return (
-		<TableOfContents>
-			<TableOfContentsItem active>Intro</TableOfContentsItem>
-		</TableOfContents>
-	);
-}`,
-);
-add(
 	"grid",
 	"Simple grid.",
 	() => (
@@ -292,130 +184,6 @@ export default function Example() {
 			<GridItem>3</GridItem>
 			<GridItem>4</GridItem>
 		</Grid>
-	);
-}`,
-);
-add(
-	"toolbar",
-	"Compose explicit toolbar controls into one grouped card.",
-	() => (
-		<Toolbar className="w-full max-w-md">
-			<Toolbar.Input aria-label="Search records" placeholder="Search..." className="flex-1" />
-			<Toolbar.Button icon={<Search />} aria-label="Search" />
-			<Toolbar.Button icon={<Plus />} aria-label="Add" />
-		</Toolbar>
-	),
-	'<Toolbar><Toolbar.Input aria-label="Search records" placeholder="Search..." /><Toolbar.Button icon={<Search />} aria-label="Search" /><Toolbar.Button icon={<Plus />} aria-label="Add" /></Toolbar>',
-	undefined,
-	`import { Toolbar } from "@nocoo/basalt/components/toolbar";
-import { Plus, Search } from "lucide-react";
-
-export default function Example() {
-	return (
-		<Toolbar>
-			<Toolbar.Input aria-label="Search records" placeholder="Search..." />
-			<Toolbar.Button icon={<Search />} aria-label="Search" />
-			<Toolbar.Button icon={<Plus />} aria-label="Add" />
-		</Toolbar>
-	);
-}`,
-);
-function CommandPaletteDemo() {
-	const [open, setOpen] = useState(false);
-	return (
-		<>
-			<Button
-				variant="outline"
-				icon={<Search />}
-				className="w-full max-w-sm justify-start font-normal text-basalt-muted-foreground"
-				onClick={() => setOpen(true)}
-			>
-				Search pages...
-				<kbd className="pointer-events-none ml-auto rounded-sm border border-basalt-border bg-basalt-card px-1.5 py-0.5 text-[10px] font-medium text-basalt-muted-foreground">
-					⌘K
-				</kbd>
-			</Button>
-			<CommandPalette open={open} onOpenChange={setOpen}>
-				<CommandInput placeholder="Search pages..." />
-				<CommandList>
-					<CommandEmpty>No results</CommandEmpty>
-					<CommandGroup heading="Pages">
-						<CommandItem>Button</CommandItem>
-						<CommandItem>Input</CommandItem>
-					</CommandGroup>
-				</CommandList>
-			</CommandPalette>
-		</>
-	);
-}
-
-add(
-	"command-palette",
-	"Search pages and commands.",
-	() => <CommandPaletteDemo />,
-	"<CommandPalette><CommandInput placeholder='Search pages...' /><CommandList><CommandEmpty>No results</CommandEmpty><CommandGroup heading='Pages'><CommandItem>Button</CommandItem><CommandItem>Input</CommandItem></CommandGroup></CommandList></CommandPalette>",
-	undefined,
-	`import { Button } from "@nocoo/basalt/components/button";
-import {
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-	CommandPalette,
-} from "@nocoo/basalt/components/command-palette";
-import { useState } from "react";
-
-export default function Example() {
-	const [open, setOpen] = useState(false);
-	return (
-		<>
-			<Button variant="outline" onClick={() => setOpen(true)}>
-				Search pages...
-			</Button>
-			<CommandPalette open={open} onOpenChange={setOpen}>
-				<CommandInput placeholder="Search pages..." />
-				<CommandList>
-					<CommandEmpty>No results</CommandEmpty>
-					<CommandGroup heading="Pages">
-						<CommandItem>Button</CommandItem>
-						<CommandItem>Input</CommandItem>
-					</CommandGroup>
-				</CommandList>
-			</CommandPalette>
-		</>
-	);
-}`,
-);
-add(
-	"sidebar",
-	"App chrome: L0 sidebar with an L1 content island that floats a corner shadow.",
-	() => (
-		<div className="flex h-56 w-full overflow-hidden bg-basalt-background">
-			<Sidebar className="h-full min-h-0 w-40">
-				<SidebarItem active>Catalog</SidebarItem>
-				<SidebarItem>Settings</SidebarItem>
-			</Sidebar>
-			<div className="flex min-w-0 flex-1 flex-col p-2">
-				<ContentIsland className="p-4">At a glance</ContentIsland>
-			</div>
-		</div>
-	),
-	'(<div className="flex h-56 w-full overflow-hidden bg-basalt-background"><Sidebar className="h-full min-h-0 w-40"><SidebarItem active>Catalog</SidebarItem><SidebarItem>Settings</SidebarItem></Sidebar><div className="flex min-w-0 flex-1 flex-col p-2"><ContentIsland className="p-4">At a glance</ContentIsland></div></div>)',
-	undefined,
-	`import { ContentIsland, Sidebar, SidebarItem } from "@nocoo/basalt/components/sidebar";
-
-export default function Example() {
-	return (
-		<div className="flex h-56 w-full overflow-hidden bg-basalt-background">
-			<Sidebar className="h-full min-h-0 w-40">
-				<SidebarItem active>Catalog</SidebarItem>
-				<SidebarItem>Settings</SidebarItem>
-			</Sidebar>
-			<div className="flex min-w-0 flex-1 flex-col p-2">
-				<ContentIsland className="p-4">At a glance</ContentIsland>
-			</div>
-		</div>
 	);
 }`,
 );
@@ -452,32 +220,6 @@ export default function Example() {
 		</Flow>
 	);
 }`,
-);
-add(
-	"navigation-menu",
-	"Site navigation.",
-	() => (
-		<NavigationMenu>
-			<NavigationMenuList>
-				<NavigationMenuItem>
-					<NavigationMenuLink href="#docs">Docs</NavigationMenuLink>
-				</NavigationMenuItem>
-			</NavigationMenuList>
-		</NavigationMenu>
-	),
-	"<NavigationMenu />",
-);
-add(
-	"menu-bar",
-	"Desktop menu bar.",
-	() => (
-		<MenuBarRoot>
-			<MenuBarMenu>
-				<MenuBarTrigger>File</MenuBarTrigger>
-			</MenuBarMenu>
-		</MenuBarRoot>
-	),
-	"<MenuBar />",
 );
 add("line", "Line series.", () => <LineChart />, "<LineChart />");
 add("bar", "Bar series.", () => <BarChart />, "<BarChart />");
