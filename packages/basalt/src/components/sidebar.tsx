@@ -123,18 +123,15 @@ export function SidebarProvider({
 	);
 }
 
-export function Sidebar({
-	collapsed: collapsedProp,
-	className,
-	children,
-	...props
-}: HTMLAttributes<HTMLElement> & {
+export type SidebarProps = HTMLAttributes<HTMLElement> & {
 	/**
 	 * Collapse the rail when no provider is present.
 	 * @default false
 	 */
 	collapsed?: boolean;
-}) {
+};
+
+export function Sidebar({ collapsed: collapsedProp, className, children, ...props }: SidebarProps) {
 	const context = useContext(SidebarContext);
 	const collapsed = context
 		? context.collapsed && !(context.peek && context.peeking)

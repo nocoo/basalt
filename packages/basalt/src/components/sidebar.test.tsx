@@ -77,6 +77,33 @@ describe("Sidebar", () => {
 		expect(screen.getByText("Nav").className).toContain("w-[68px]");
 	});
 
+	it("renders overlay chrome at the overlay layer", () => {
+		render(
+			<SidebarProvider overlay defaultWidth={300}>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		const nav = screen.getByText("Nav");
+		expect(nav).toHaveAttribute("data-overlay");
+		expect(nav.className).toContain("absolute");
+		expect(nav.className).toContain("z-50");
+		expect(nav).toHaveStyle({ width: "300px" });
+	});
+
+	it("resizes the expanded rail from the handle", () => {
+		HTMLElement.prototype.setPointerCapture = vi.fn();
+		render(
+			<SidebarProvider defaultWidth={260}>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		const handle = screen.getByRole("button", { name: "Resize sidebar" });
+		fireEvent.pointerDown(handle, { clientX: 260, pointerId: 1 });
+		fireEvent.pointerMove(handle, { clientX: 320 });
+		expect(screen.getByText("Nav")).toHaveStyle({ width: "320px" });
+		fireEvent.pointerUp(handle);
+	});
+
 	it("throws useSidebar outside a provider", () => {
 		expect(() => render(<Sidebar>Nav</Sidebar>)).not.toThrow();
 		expect(() => {
