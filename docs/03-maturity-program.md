@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中  
-> 当前切片：S3A D082 — LayerCard CardShell MVP；规划完成（代码基线 `940058a`，Codex 单写）
-> 当前代码前置：`940058a`（S2B 已完成；S3 只启动首个 MVP 组件切片）
+> 当前切片：S3B MVP planning；尚未开始实现（代码基线 `7b21797`）
+> 当前代码前置：`7b21797`（D082 LayerCard CardShell MVP 已独立验收）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
 
@@ -130,7 +130,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 完成（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062、S2A35 D063、S2A36 D064、S2A37 D065、S2A38 D066、S2A39 D067） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 完成（`eeb8c43`） | 不再平铺 88 个等权方块；placeholder 不可达 |
-| S3 | 通用组合地基 | 执行中（S3A D082） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
+| S3 | 通用组合地基 | 执行中（S3A D082 已完成；S3B 规划中） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 待办 | 泛型、group/multiple/loading/error/range + browser 门完整 |
 | S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 待办 | compound、焦点、键盘、mobile、resize/scroll 状态完整 |
@@ -727,7 +727,7 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
 
 主要只读参考：Whiteboard `data/dashboard/src/view`、Meowth ConfirmDialog、Noheir ScrollArea、AI Arsenal PageHeader/StatStrip。
 
-1. **S3A / D082 — LayerCard CardShell MVP（执行中，规划基线 `940058a`，Codex 单写）。** 复用已发布且已有 catalog owner 的 `LayerCard` 承担通用 CardShell，不新增语义重叠的 `Panel` / `CardShell` 名称，也不增加 catalog 条目。root 新增 `padding: none | sm | md | lg`，默认 `none`，保证既有普通 surface 与 `Primary` / `Secondary` layered 结构逐项不漂移；新增 `Header`、`Body`、`Footer` 三个原生 div slot，以及组合既有 `SkeletonLine` / `Empty` 的 `Loading`、`Empty` 状态 slot。状态 slot 只负责可访问展示，不接管请求、Promise、数据或条件选择；loading 使用可覆盖的 accessible label 与 reduced-motion 安全 skeleton，empty 支持 title、description、icon。API generator 为 `LayerCard`、既有 `Primary` / `Secondary` 和五个新增 slot 生成同一 `layer-card` shard；无组件特有 props 的 slot 显式 `allowEmpty`，不得伪造 prop 行。保留原三份 source-backed example 的 ID、title、order、render 与 raw code，追加一个 structured card 和一个 loading/empty states module；docs 更新为真实 CardShell 能力并继续只引用 generated shard。root barrel 仍只导出 `LayerCard`，granular path 自然公开 compound/type；不加依赖、不改 tokens/CSS、其它组件、catalog inventory、family owner 或路由。运行 LayerCard、generator、scenario/foundation/source/page focused tests，generate 后连续两次 check、typecheck、Biome、日常全量、coverage、showcase build及 package build/types/pack；普通测试不启动 Chromium，最后只在既有 7003 验证 `/ui/layer-card` 与 Copy page。只做一个实现提交，随后更新台账，不提前进入 ScrollArea。
+1. **S3A / D082 — LayerCard CardShell MVP（完成，`7b21797`）。** 复用已发布且已有 catalog owner 的 `LayerCard` 承担通用 CardShell，不新增语义重叠的 `Panel` / `CardShell` 名称，也不增加 catalog 条目。root 新增 `padding: none | sm | md | lg`，默认 `none`，保证既有普通 surface 与 `Primary` / `Secondary` layered 结构逐项不漂移；新增 `Header`、`Body`、`Footer` 三个原生 div slot，以及组合既有 `SkeletonLine` / `Empty` 的 `Loading`、`Empty` 状态 slot。状态 slot 只负责可访问展示，不接管请求、Promise、数据或条件选择；loading 使用可覆盖的 accessible label 与 reduced-motion 安全 skeleton，empty 支持 title、description、icon。API generator 为 `LayerCard`、既有 `Primary` / `Secondary` 和五个新增 slot 生成同一 `layer-card` shard；无组件特有 props 的 slot 显式 `allowEmpty`，不得伪造 prop 行。保留原三份 source-backed example 的 ID、title、order、render 与 raw code，追加一个 structured card 和一个 loading/empty states module；docs 更新为真实 CardShell 能力并继续只引用 generated shard。root barrel 仍只导出 `LayerCard`，granular path 自然公开 compound/type；不加依赖、不改 tokens/CSS、其它组件、catalog inventory、family owner 或路由。实现与完整验收证据见 D082 日志；下一刀单独规划 ScrollArea。
 
 ### 6.5 S4/S5 — 表单族
 
@@ -923,6 +923,6 @@ Basalt 额外公开项同样执行完成门：LinkButton、Separator、ThemeTogg
 
 | D081 | S2B4b-i / D072i | `b3faea1` | Codex | 完成 | `eeb8c43` | 删除 legacy adapter 与 `catalog-ready.tsx`、`kumo-examples.tsx`、`docs.ts`、`demos.tsx` 四个空 monolith；84 个 Ready 全部经 generated slug→family manifest，Planned/missing 在 family import 前返回。新增共用 lazy family registry 与 catalog index loader，`/ui` 并行加载恰好 7 个 family，纯逻辑 `createCatalogIndex` 无静态 family import、第二份 switch 或 allowlist。页面保持 Components/Charts/Blocks `60 / 24 / 3`、87 卡、`84 / 87 ready`、84 个真实 hero、3 个 planned 无伪 preview，以及实现前后均为 16 个的 `HOME_DEMOS` override；旧规划中的 17 已按实际基线纠正。content/page-status 均 generate 后连续两次 check，API 双 check；SHA-256 分别为 `03050b696063abb6ce1a40d1ffcc37fc8c99d0ea6b074c65fab7fae271867828`、`566ad787c32e2aa05b04255eee7fdfc99a5e49031da0d91028466d2475348ecf`、aggregate API `966e17d7a42d66f74933b16b97aba1190988493235c8880eebe59f582912102e`。focused 14 files / 345 tests、typecheck、Biome 529 files、日常全量 130 files / 1,094 tests与 coverage全绿，coverage保持 `97.13 / 95.53 / 95.89 / 97.32`。Production build 2,933 modules、最大 JS 349.94 kB、0 warning；build graph 证明五个旧文件完全不存在，`/ui` 静态闭包无 family、动态可达恰好 7 family。7003/PID 73541 上真实 Chromium 验证 `/ui`、Button、InputGroup、Dialog、Banner、Tabs、Table、Line、Maps、unknown 与 Copy page 均 HTTP 200，Copy page 为 3,625 字符，console/page/request/response failures 均为 0；服务保持运行，browser profile 已清理。提交共 27 个授权文件、+313/−804；S2B4b 与 S2B 完成，尚未调度 S3。 |
 
-| D082 | S3A | `940058a` | Codex | 执行中 | — | 只实现 LayerCard CardShell MVP：在不新增 Panel/CardShell alias 或 catalog item 的前提下补 padding、Header/Body/Footer、Loading/Empty、generated API 与两份 source-backed example；保持既有三场景、layered 视觉、root barrel、依赖与 tokens。 |
+| D082 | S3A | `940058a` | Codex | 完成 | `7b21797` | LayerCard 在不新增 Panel/CardShell alias、root export 或 catalog item 的前提下完成 CardShell MVP：新增 `padding: none | sm | md | lg`、Header/Body/Footer、Loading/Empty；原三场景与 plain/layered 视觉不漂移，新增两份 source-backed module 后共 5 个场景。generated shard 有 LayerCard、Primary、Secondary、Header、Body、Footer、Loading、Empty 共 8 个 surface，shard SHA-256 `79a8911b8c002c6e162a42e45cd6cb17bace7224990ab42288cc32d6a3b2b87c`，完整 API 产物 digest `403316e5eda52302279fafdf6ec43ffa4201dded7f0ba1d7f25d5128a789905e`，兼容 aggregate 仍为 `966e17d7a42d66f74933b16b97aba1190988493235c8880eebe59f582912102e`。实现提交 15 个文件、+522/−40；focused 8 files / 393 tests、typecheck、Biome 531 files、日常全量 130 files / 1,098 tests与 coverage全绿，coverage 为 `97.15 / 95.54 / 95.94 / 97.34`。Showcase build 2,937 modules、最大 JS 349.94 kB、0 warning；package 92 JS / 92 d.ts / 89 maps，Bundler/NodeNext types 与 279-file pack 全绿。7003/PID 73541 上真实 Chromium 验证 `/ui/layer-card` HTTP 200、8 个 API surface、Copy payload 4,041 字符及 console/page/request faults 0；服务保持运行。 |
 
 后续日志只追加，不覆盖历史。若 Herdr pane 变化，记录新的明确 pane ID 或唯一 agent name。
