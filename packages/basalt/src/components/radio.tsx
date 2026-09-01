@@ -62,43 +62,68 @@ RadioLegend.displayName = "Radio.Legend";
 export const RadioGroup = React.forwardRef<
 	React.ElementRef<typeof RadioGroupPrimitive.Root>,
 	RadioGroupProps
->(({ className, error, disabled = false, children, ...props }, ref) => {
-	const generatedId = React.useId();
-	const invalid = Boolean(error);
-	const errorId = `${generatedId}-error`;
-	const legends: React.ReactNode[] = [];
-	const items: React.ReactNode[] = [];
-	React.Children.forEach(children, (child) => {
-		if (React.isValidElement(child) && child.type === RadioLegend) {
-			legends.push(child);
-			return;
-		}
-		items.push(child);
-	});
-	return (
-		<fieldset
-			disabled={disabled}
-			aria-invalid={invalid || undefined}
-			aria-describedby={invalid ? errorId : undefined}
-			className="flex flex-col gap-2"
-		>
-			{legends}
-			<RadioGroupPrimitive.Root
-				ref={ref}
-				disabled={disabled}
-				className={cn("grid gap-2", className)}
-				{...props}
-			>
-				{items}
-			</RadioGroupPrimitive.Root>
-			{invalid ? (
-				<p id={errorId} className="text-xs text-basalt-destructive" role="alert">
-					{error}
-				</p>
-			) : null}
-		</fieldset>
-	);
-});
+>(
+	(
+		{
+			className,
+			error,
+			disabled = false,
+			children,
+			"aria-describedby": describedBy,
+			"aria-invalid": ariaInvalid,
+			"aria-labelledby": labelledBy,
+			...props
+		},
+		ref,
+	) => {
+		const generatedId = React.useId();
+		const invalid = Boolean(error);
+		const errorId = `${generatedId}-error`;
+		const defaultLegendId = `${generatedId}-legend`;
+		const legends: React.ReactElement<RadioLegendProps>[] = [];
+		const items: React.ReactNode[] = [];
+		React.Children.forEach(children, (child) => {
+			if (React.isValidElement(child) && child.type === RadioLegend) {
+				legends.push(child as React.ReactElement<RadioLegendProps>);
+				return;
+			}
+			items.push(child);
+		});
+		const labeledLegends = legends.map((legend, index) => {
+			const legendId =
+				legend.props.id ?? (index === 0 ? defaultLegendId : `${defaultLegendId}-${index}`);
+			return React.cloneElement(legend, { key: legendId, id: legendId });
+		});
+		const legendIds = labeledLegends
+			.map((legend) => legend.props.id)
+			.filter(Boolean)
+			.join(" ");
+		const mergedLabelledBy = [legendIds, labelledBy].filter(Boolean).join(" ") || undefined;
+		const mergedDescribedBy =
+			[invalid ? errorId : null, describedBy].filter(Boolean).join(" ") || undefined;
+		return (
+			<fieldset disabled={disabled} className="flex flex-col gap-2">
+				{labeledLegends}
+				<RadioGroupPrimitive.Root
+					ref={ref}
+					disabled={disabled}
+					className={cn("grid gap-2", className)}
+					{...props}
+					aria-labelledby={mergedLabelledBy}
+					aria-describedby={mergedDescribedBy}
+					aria-invalid={invalid ? true : ariaInvalid}
+				>
+					{items}
+				</RadioGroupPrimitive.Root>
+				{invalid ? (
+					<p id={errorId} className="text-xs text-basalt-destructive" role="alert">
+						{error}
+					</p>
+				) : null}
+			</fieldset>
+		);
+	},
+);
 RadioGroup.displayName = "Radio.Group";
 
 const RadioRoot = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.Item>, RadioProps>(

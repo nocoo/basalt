@@ -97,14 +97,18 @@ describe("Radio", () => {
 	it("keeps a controlled group value, legend, and error", () => {
 		const onValueChange = vi.fn();
 		render(
-			<Radio.Group value="a" onValueChange={onValueChange} error="Pick one">
+			<Radio.Group value="a" onValueChange={onValueChange} error="Pick one" aria-describedby="hint">
 				<Radio.Legend>Plan</Radio.Legend>
 				<Radio.Item value="a" aria-label="Alpha" />
 				<Radio.Item value="b" aria-label="Beta" />
 			</Radio.Group>,
 		);
 		expect(screen.getByRole("group", { name: "Plan" }).tagName).toBe("FIELDSET");
-		expect(screen.getByRole("alert")).toHaveTextContent("Pick one");
+		const radiogroup = screen.getByRole("radiogroup", { name: "Plan" });
+		const alert = screen.getByRole("alert");
+		expect(alert).toHaveTextContent("Pick one");
+		expect(radiogroup).toHaveAttribute("aria-invalid", "true");
+		expect(radiogroup).toHaveAttribute("aria-describedby", `${alert.id} hint`);
 		expect(screen.getByRole("radio", { name: "Alpha" })).toBeChecked();
 		fireEvent.click(screen.getByRole("radio", { name: "Beta" }));
 		expect(onValueChange).toHaveBeenCalledWith("b");
