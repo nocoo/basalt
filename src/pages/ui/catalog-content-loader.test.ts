@@ -33,10 +33,10 @@ describe("catalog page content loader", () => {
 		expect(source).not.toMatch(/const\s+\w+Promise\s*=\s*loadCatalogContentFamily/);
 	});
 
-	it("uses the generated 84 ready / 12 planned status truth", () => {
+	it("uses the generated 85 ready / 12 planned status truth", () => {
 		const statuses = CATALOG.map((entry) => catalogPageStatus(entry.slug));
-		expect(statuses).toHaveLength(96);
-		expect(statuses.filter((status) => status === "ready")).toHaveLength(84);
+		expect(statuses).toHaveLength(97);
+		expect(statuses.filter((status) => status === "ready")).toHaveLength(85);
 		expect(statuses.filter((status) => status === "planned")).toHaveLength(12);
 	});
 
@@ -58,6 +58,17 @@ describe("catalog page content loader", () => {
 		const content = await first;
 		expect(content?.docs.description).toBe("Primary actions, including loading and icon slots.");
 		expect(content?.examples[0]?.id).toBe("button-variants");
+		expect(loadFamily).toHaveBeenCalledWith("foundation");
+	});
+
+	it("loads the ScrollArea owner from foundation", async () => {
+		const { loadCatalogPageContent } = await importLoader();
+		const content = await loadCatalogPageContent("scroll-area");
+		expect(content?.docs.api[0]?.name).toBe("ScrollArea");
+		expect(content?.examples.map((example) => example.id)).toEqual([
+			"scroll-area-vertical-list",
+			"scroll-area-horizontal-row",
+		]);
 		expect(loadFamily).toHaveBeenCalledWith("foundation");
 	});
 

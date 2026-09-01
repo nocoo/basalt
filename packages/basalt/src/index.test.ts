@@ -20,6 +20,7 @@ describe("root barrel", () => {
 		expect(root.ThemeProvider).toBeTruthy();
 		expect(root.ThemeToggle).toBeTruthy();
 		expect(root.LinkProvider).toBeTruthy();
+		expect(root.ScrollArea).toBeTruthy();
 	});
 
 	it("omits unapproved layout names from the frozen root surface", () => {

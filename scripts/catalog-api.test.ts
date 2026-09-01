@@ -145,6 +145,12 @@ describe("catalog API generator contract", () => {
 				surface: "Separator",
 			},
 			{
+				slug: "scroll-area",
+				sourceFile: "packages/basalt/src/components/scroll-area.tsx",
+				propsType: "ScrollAreaProps",
+				surface: "ScrollArea",
+			},
+			{
 				slug: "link",
 				sourceFile: "packages/basalt/src/components/link.tsx",
 				propsType: "LinkProps",
@@ -333,7 +339,7 @@ describe("catalog API generator contract", () => {
 				surface: "SelectItem",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(35);
+		expect(CATALOG_API_TARGETS).toHaveLength(36);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -357,6 +363,7 @@ describe("catalog API generator contract", () => {
 		expect(source).not.toMatch(/\bif\s*\([^)]*Radio|\bswitch\s*\([^)]*radio/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*Switch|\bswitch\s*\([^)]*switch/);
 		expect(source).not.toMatch(/\bif\s*\([^)]*Select|\bswitch\s*\([^)]*select/);
+		expect(source).not.toMatch(/\bif\s*\([^)]*ScrollArea|\bswitch\s*\([^)]*scroll-area/);
 	});
 
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
@@ -367,6 +374,7 @@ describe("catalog API generator contract", () => {
 			"text",
 			"label",
 			"separator",
+			"scroll-area",
 			"link",
 			"tooltip",
 			"theme-toggle",
@@ -414,6 +422,46 @@ describe("catalog API generator contract", () => {
 				required: false,
 			},
 		]);
+	}, 20_000);
+
+	it("extracts ScrollArea props without inherited Radix, DOM, event, or ARIA inventory", () => {
+		const generated = generateProductionProps();
+		expect(generated["scroll-area"]).toEqual([
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Classes applied to the non-scrolling root.",
+			},
+			{
+				name: "orientation",
+				type: "ScrollAreaOrientation",
+				required: false,
+				default: '"vertical"',
+				description: "Axes that may scroll.",
+			},
+			{
+				name: "viewportClassName",
+				type: "string",
+				required: false,
+				description: "Classes applied to the actual scrolling viewport.",
+			},
+		]);
+		for (const inherited of [
+			"children",
+			"onScroll",
+			"tabIndex",
+			"role",
+			"aria-label",
+			"id",
+			"type",
+			"scrollHideDelay",
+		]) {
+			expect(
+				generated["scroll-area"]?.some((prop) => prop.name === inherited),
+				inherited,
+			).toBe(false);
+		}
 	}, 20_000);
 
 	it("extracts LinkButton props from the same file without Button-only or DOM fields", () => {
@@ -1077,6 +1125,7 @@ export interface WidgetProps {
 			text: ["Text"],
 			label: ["Label"],
 			separator: ["Separator"],
+			"scroll-area": ["ScrollArea"],
 			link: ["Link"],
 			tooltip: ["Tooltip"],
 			"theme-toggle": ["ThemeToggle"],
@@ -1122,7 +1171,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(19);
+		expect(Object.keys(generated)).toHaveLength(20);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1223,7 +1272,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(19);
+		expect(Object.keys(generated)).toHaveLength(20);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1323,7 +1372,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(19);
+		expect(Object.keys(generated)).toHaveLength(20);
 		expect(generated.checkbox).toEqual([
 			{
 				name: "Checkbox",
@@ -1402,7 +1451,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(19);
+		expect(Object.keys(generated)).toHaveLength(20);
 		expect(generated.radio).toEqual([
 			{
 				name: "Radio",
@@ -1460,7 +1509,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(19);
+		expect(Object.keys(generated)).toHaveLength(20);
 		expect(generated.switch).toEqual([
 			{
 				name: "Switch",
@@ -1542,7 +1591,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(19);
+		expect(Object.keys(generated)).toHaveLength(20);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -2493,8 +2542,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(19);
-		expect(Object.keys(first)).toHaveLength(20);
+		expect(slugs).toHaveLength(20);
+		expect(Object.keys(first)).toHaveLength(21);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -2506,6 +2555,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "InputGroup.Suffix"');
 		expect(joined).toContain('name: "LayerCard.Loading"');
 		expect(joined).toContain('name: "LayerCard.Empty"');
+		expect(joined).toContain('name: "ScrollArea"');
 		expect(joined).toContain('name: "SensitiveInput"');
 		expect(joined).toContain('name: "Checkbox"');
 		expect(joined).toContain('name: "Radio"');
@@ -2523,7 +2573,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"403316e5eda52302279fafdf6ec43ffa4201dded7f0ba1d7f25d5128a789905e",
+			"63dca8ab90c9ec2a19273b38a4d9c0109eedc333797ccebe2c594ed0e9da2e8a",
 		);
 	}, 20_000);
 

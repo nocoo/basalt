@@ -60,6 +60,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	radar: "charts",
 	radio: "forms",
 	sankey: "charts",
+	"scroll-area": "foundation",
 	select: "forms",
 	"sensitive-input": "forms",
 	separator: "foundation",

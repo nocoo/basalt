@@ -68,7 +68,7 @@ const FEEDBACK_DESCRIPTIONS = {
 } as const;
 
 describe("feedback catalog content family", () => {
-	it("owns exactly eleven migrated slugs and eighty-four generated owners", () => {
+	it("owns exactly eleven migrated slugs and eighty-five generated owners", () => {
 		expect(Object.keys(feedback)).toEqual(Object.keys(FEEDBACK_SCENARIOS));
 		expect(Object.keys(feedback)).toHaveLength(11);
 		expect(
@@ -79,14 +79,14 @@ describe("feedback catalog content family", () => {
 		).toEqual(Object.keys(FEEDBACK_SCENARIOS).sort());
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "foundation"),
-		).toHaveLength(11);
+		).toHaveLength(12);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "forms"),
 		).toHaveLength(15);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "overlay"),
 		).toHaveLength(10);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(84);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(85);
 	});
 
 	it("keeps the forty-three final winner scenarios in their audited order", () => {

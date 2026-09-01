@@ -53,6 +53,7 @@ export {
 	PopoverTitle,
 	PopoverTrigger,
 } from "./components/popover";
+export { ScrollArea } from "./components/scroll-area";
 export { Separator } from "./components/separator";
 export {
 	Sheet,

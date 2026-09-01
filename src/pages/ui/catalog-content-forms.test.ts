@@ -51,7 +51,7 @@ const SOURCE_BACKED = {
 } as const;
 
 describe("forms catalog content family", () => {
-	it("owns exactly fifteen migrated slugs and eighty-four generated owners", () => {
+	it("owns exactly fifteen migrated slugs and eighty-five generated owners", () => {
 		expect(Object.keys(forms)).toEqual([...FORMS_SLUGS]);
 		expect(Object.keys(forms)).toHaveLength(15);
 		expect(
@@ -62,8 +62,8 @@ describe("forms catalog content family", () => {
 		).toEqual([...FORMS_SLUGS].sort());
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "foundation"),
-		).toHaveLength(11);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(84);
+		).toHaveLength(12);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(85);
 	});
 
 	it("keeps source-backed example owners and generated API shards by reference", () => {

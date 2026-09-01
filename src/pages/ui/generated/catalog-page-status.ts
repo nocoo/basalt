@@ -6,6 +6,7 @@ export const CATALOG_PAGE_STATUS = {
 	text: "ready",
 	label: "ready",
 	separator: "ready",
+	"scroll-area": "ready",
 	link: "ready",
 	tooltip: "ready",
 	"theme-toggle": "ready",

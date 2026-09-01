@@ -22,6 +22,13 @@ export const CATALOG: CatalogEntry[] = [
 	{ slug: "text", name: "Text", kind: "catalog", category: "component" },
 	{ slug: "label", name: "Label", kind: "stable", category: "component" },
 	{ slug: "separator", name: "Separator", kind: "stable", category: "component" },
+	{
+		slug: "scroll-area",
+		name: "ScrollArea",
+		kind: "stable",
+		category: "component",
+		navName: "Scroll Area",
+	},
 	{ slug: "link", name: "Link", kind: "stable", category: "component" },
 	{ slug: "tooltip", name: "Tooltip", kind: "stable", category: "component" },
 	{ slug: "theme-toggle", name: "ThemeToggle", kind: "stable", category: "component" },

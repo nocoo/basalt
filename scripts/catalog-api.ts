@@ -62,6 +62,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "Separator",
 	},
 	{
+		slug: "scroll-area",
+		sourceFile: "packages/basalt/src/components/scroll-area.tsx",
+		propsType: "ScrollAreaProps",
+		surface: "ScrollArea",
+	},
+	{
 		slug: "link",
 		sourceFile: "packages/basalt/src/components/link.tsx",
 		propsType: "LinkProps",

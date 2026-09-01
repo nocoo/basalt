@@ -6,6 +6,7 @@ import { LABEL_EXAMPLES } from "./examples/label";
 import { LAYER_CARD_EXAMPLES } from "./examples/layer-card";
 import { LINK_EXAMPLES } from "./examples/link";
 import { LINK_BUTTON_EXAMPLES } from "./examples/link-button";
+import { SCROLL_AREA_EXAMPLES } from "./examples/scroll-area";
 import { SEPARATOR_EXAMPLES } from "./examples/separator";
 import { TEXT_EXAMPLES } from "./examples/text";
 import { THEME_TOGGLE_EXAMPLES } from "./examples/theme-toggle";
@@ -15,6 +16,7 @@ import { API as labelApi } from "./generated/catalog-api/label";
 import { API as layerCardApi } from "./generated/catalog-api/layer-card";
 import { API as linkApi } from "./generated/catalog-api/link";
 import { API as linkButtonApi } from "./generated/catalog-api/link-button";
+import { API as scrollAreaApi } from "./generated/catalog-api/scroll-area";
 import { API as separatorApi } from "./generated/catalog-api/separator";
 import { API as textApi } from "./generated/catalog-api/text";
 import { API as themeToggleApi } from "./generated/catalog-api/theme-toggle";
@@ -26,6 +28,7 @@ const FOUNDATION_SLUGS = [
 	"text",
 	"label",
 	"separator",
+	"scroll-area",
 	"link",
 	"theme-toggle",
 	"layer-card",
@@ -35,9 +38,9 @@ const FOUNDATION_SLUGS = [
 ] as const;
 
 describe("foundation catalog content family", () => {
-	it("owns exactly eleven migrated slugs", () => {
+	it("owns exactly twelve foundation slugs", () => {
 		expect(Object.keys(foundation)).toEqual([...FOUNDATION_SLUGS]);
-		expect(Object.keys(foundation)).toHaveLength(11);
+		expect(Object.keys(foundation)).toHaveLength(12);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "foundation")
@@ -52,6 +55,7 @@ describe("foundation catalog content family", () => {
 		expect(foundation.text?.examples).toBe(TEXT_EXAMPLES);
 		expect(foundation.label?.examples).toBe(LABEL_EXAMPLES);
 		expect(foundation.separator?.examples).toBe(SEPARATOR_EXAMPLES);
+		expect(foundation["scroll-area"]?.examples).toBe(SCROLL_AREA_EXAMPLES);
 		expect(foundation.link?.examples).toBe(LINK_EXAMPLES);
 		expect(foundation["theme-toggle"]?.examples).toBe(THEME_TOGGLE_EXAMPLES);
 		expect(foundation["layer-card"]?.examples).toBe(LAYER_CARD_EXAMPLES);
@@ -61,6 +65,7 @@ describe("foundation catalog content family", () => {
 		expect(foundation.text?.docs.api).toBe(textApi);
 		expect(foundation.label?.docs.api).toBe(labelApi);
 		expect(foundation.separator?.docs.api).toBe(separatorApi);
+		expect(foundation["scroll-area"]?.docs.api).toBe(scrollAreaApi);
 		expect(foundation.link?.docs.api).toBe(linkApi);
 		expect(foundation["theme-toggle"]?.docs.api).toBe(themeToggleApi);
 		expect(foundation["layer-card"]?.docs.api).toBe(layerCardApi);
@@ -118,6 +123,35 @@ describe("foundation catalog content family", () => {
 			"layer-card-structured-card",
 			"layer-card-loading-empty",
 		]);
+		expect(foundation["scroll-area"]?.docs).toMatchObject({
+			description:
+				"A keyboard-accessible viewport for vertically, horizontally, or bidirectionally overflowing content.",
+			variants: ["vertical", "horizontal", "both"],
+			provenance: {
+				owner: "nocoo",
+				repo: "noheir",
+				ref: "4835e80997fc",
+				file: "src/components/ui/scroll-area.tsx",
+			},
+			implementationSource: {
+				owner: "nocoo",
+				repo: "basalt",
+				ref: "main",
+				file: "packages/basalt/src/components/scroll-area.tsx",
+			},
+		});
+		expect(foundation["scroll-area"]?.docs.usage).toContain(
+			'import { ScrollArea } from "@nocoo/basalt/components/scroll-area";',
+		);
+		expect(foundation["scroll-area"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "scroll-area-vertical-list", title: "Vertical list" },
+			{ id: "scroll-area-horizontal-row", title: "Horizontal row" },
+		]);
+		for (const example of foundation["scroll-area"]?.examples ?? []) {
+			expect(example.code).toContain("@nocoo/basalt/components/scroll-area");
+			expect(example.code).toContain("export default function");
+			expect(example.render).toBeTypeOf("function");
+		}
 		expect(foundation["theme-provider"]?.examples).toHaveLength(1);
 		expect(foundation["theme-provider"]?.examples[0]).toMatchObject({
 			id: "theme-provider-default",

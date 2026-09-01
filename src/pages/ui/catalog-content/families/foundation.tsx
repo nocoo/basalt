@@ -11,6 +11,7 @@ import { LABEL_EXAMPLES } from "../../examples/label";
 import { LAYER_CARD_EXAMPLES } from "../../examples/layer-card";
 import { LINK_EXAMPLES } from "../../examples/link";
 import { LINK_BUTTON_EXAMPLES } from "../../examples/link-button";
+import { SCROLL_AREA_EXAMPLES } from "../../examples/scroll-area";
 import { SEPARATOR_EXAMPLES } from "../../examples/separator";
 import { TEXT_EXAMPLES } from "../../examples/text";
 import { THEME_TOGGLE_EXAMPLES } from "../../examples/theme-toggle";
@@ -20,6 +21,7 @@ import { API as labelApi } from "../../generated/catalog-api/label";
 import { API as layerCardApi } from "../../generated/catalog-api/layer-card";
 import { API as linkApi } from "../../generated/catalog-api/link";
 import { API as linkButtonApi } from "../../generated/catalog-api/link-button";
+import { API as scrollAreaApi } from "../../generated/catalog-api/scroll-area";
 import { API as separatorApi } from "../../generated/catalog-api/separator";
 import { API as textApi } from "../../generated/catalog-api/text";
 import { API as themeToggleApi } from "../../generated/catalog-api/theme-toggle";
@@ -28,6 +30,20 @@ function usage(name: string, from: string, sample: string, extraImports = ""): s
 	const extras = extraImports ? `${extraImports}\n` : "";
 	return `${extras}import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
 }
+
+const SCROLL_AREA_USAGE = `import { ScrollArea } from "@nocoo/basalt/components/scroll-area";
+
+const activity = ["Created the project", "Published the first release", "Added a domain"];
+
+export default function Example() {
+	return (
+		<ScrollArea aria-label="Recent activity" className="h-48">
+			<ul className="space-y-2 p-3">
+				{activity.map((item) => <li key={item}>{item}</li>)}
+			</ul>
+		</ScrollArea>
+	);
+}`;
 
 export default catalogContentFamily({
 	button: {
@@ -115,6 +131,21 @@ export default catalogContentFamily({
 			}),
 		},
 		examples: SEPARATOR_EXAMPLES,
+	},
+	"scroll-area": {
+		docs: {
+			description:
+				"A keyboard-accessible viewport for vertically, horizontally, or bidirectionally overflowing content.",
+			usage: SCROLL_AREA_USAGE,
+			variants: ["vertical", "horizontal", "both"],
+			api: scrollAreaApi,
+			provenance: provenanceFromLegacy({
+				repo: "noheir",
+				sha: "4835e80997fc",
+				file: "src/components/ui/scroll-area.tsx",
+			}),
+		},
+		examples: SCROLL_AREA_EXAMPLES,
 	},
 	link: {
 		docs: {
