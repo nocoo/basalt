@@ -108,15 +108,15 @@ export function SidebarProvider({
 	const prevCollapsed = useRef(collapsed ?? defaultCollapsed);
 	const prevOverlay = useRef(overlay);
 	const resolved = collapsed ?? uncontrolled;
-	if (
-		overlay &&
-		!resolved &&
-		(prevCollapsed.current || !prevOverlay.current) &&
-		document.activeElement instanceof HTMLElement
-	) {
-		lastFocusRef.current = document.activeElement;
-	}
 	useLayoutEffect(() => {
+		if (
+			overlay &&
+			!resolved &&
+			(prevCollapsed.current || !prevOverlay.current) &&
+			document.activeElement instanceof HTMLElement
+		) {
+			lastFocusRef.current = document.activeElement;
+		}
 		prevCollapsed.current = resolved;
 		prevOverlay.current = overlay;
 	});

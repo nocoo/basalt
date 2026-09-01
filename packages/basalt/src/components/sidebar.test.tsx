@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { useState } from "react";
+import { type RefObject, useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import {
 	ContentIsland,
@@ -129,11 +129,11 @@ describe("Sidebar", () => {
 	});
 
 	it("captures focus when overlay is enabled while expanded", () => {
-		let captured: HTMLElement | null = null;
+		let lastFocus: RefObject<HTMLElement | null> | undefined;
 		function Probe() {
 			const [overlay, setOverlay] = useState(false);
 			function Read() {
-				captured = useSidebar().lastFocusRef.current;
+				lastFocus = useSidebar().lastFocusRef;
 				return null;
 			}
 			return (
@@ -151,7 +151,7 @@ describe("Sidebar", () => {
 		trigger.focus();
 		fireEvent.click(trigger);
 		expect(screen.getByRole("dialog", { name: "Sidebar" })).toBeInTheDocument();
-		expect(captured).toBe(trigger);
+		expect(lastFocus?.current).toBe(trigger);
 	});
 
 	it("places overlay chrome on the right edge", () => {
