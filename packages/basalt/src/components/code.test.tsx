@@ -21,6 +21,13 @@ describe("Code", () => {
 		expect(block.className.split(/\s+/)).not.toContain("text-[13px]");
 	});
 
+	it("highlights comments numbers and leftover text", () => {
+		render(<CodeHighlighted code={"const n = 1; // note\nplain"} />);
+		expect(screen.getByText("// note")).toHaveClass("text-basalt-muted-foreground");
+		expect(screen.getByText("1")).toHaveClass("text-basalt-chart-4");
+		expect(screen.getByText(/plain/)).toBeInTheDocument();
+	});
+
 	it("highlights keywords in a real function", () => {
 		render(
 			<CodeHighlighted

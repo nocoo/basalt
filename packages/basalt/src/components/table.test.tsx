@@ -5,6 +5,7 @@ import {
 	TableBody,
 	TableCaption,
 	TableCell,
+	TableFooter,
 	TableHead,
 	TableHeader,
 	TableRow,
@@ -30,6 +31,19 @@ describe("Table", () => {
 		expect(screen.getByRole("table", { name: "Roster" }).tagName).toBe("TABLE");
 		expect(screen.getByRole("columnheader", { name: "Name" }).tagName).toBe("TH");
 		expect(screen.getByRole("cell", { name: "Atlas" }).tagName).toBe("TD");
+	});
+
+	it("renders a footer row", () => {
+		render(
+			<Table>
+				<TableFooter>
+					<TableRow>
+						<TableCell>Total</TableCell>
+					</TableRow>
+				</TableFooter>
+			</Table>,
+		);
+		expect(screen.getByText("Total").closest("tfoot")).toBeTruthy();
 	});
 
 	it("renders headers", () => {

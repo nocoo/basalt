@@ -1033,6 +1033,33 @@ describe("DataTable", () => {
 		expect(screen.getByText("Amy").closest("tr")).toHaveAttribute("aria-selected", "true");
 	});
 
+	it("selects multiple rows and can clear one", () => {
+		const onSelectedChange = vi.fn();
+		render(
+			<DataTable
+				data={rows}
+				columns={columns}
+				getRowId={(row) => row.name}
+				multiple
+				defaultSelected={["Zed"]}
+				onSelectedChange={onSelectedChange}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("checkbox", { name: "Select Amy" }));
+		expect(onSelectedChange).toHaveBeenCalledWith(["Zed", "Amy"]);
+		fireEvent.click(screen.getByRole("checkbox", { name: "Select Zed" }));
+		expect(onSelectedChange).toHaveBeenCalledWith(["Amy"]);
+	});
+
+	it("pages rows from an uncontrolled start", () => {
+		render(<DataTable data={rows} columns={columns} pageSize={1} />);
+		expect(screen.getByText("Zed")).toBeInTheDocument();
+		expect(screen.queryByText("Amy")).not.toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Next page" }));
+		expect(screen.getByText("Amy")).toBeInTheDocument();
+		expect(screen.queryByText("Zed")).not.toBeInTheDocument();
+	});
+
 	it("pages rows and moves with the pager", () => {
 		const onPageChange = vi.fn();
 		render(
