@@ -49,7 +49,7 @@ export const CollapsibleTrigger = React.forwardRef<
 			{...props}
 		>
 			<span>{children}</span>
-			<ChevronDown aria-hidden="true" />
+			<ChevronDown aria-hidden="true" className={OVERLAY_MOTION} />
 		</CollapsiblePrimitive.CollapsibleTrigger>
 	);
 });

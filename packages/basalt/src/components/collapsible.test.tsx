@@ -14,7 +14,9 @@ describe("Collapsible", () => {
 		expect(trigger.className).toContain("font-medium");
 		expect(trigger.className.split(/\s+/)).toContain("text-sm");
 		expect(trigger.className.split(/\s+/)).not.toContain("text-base");
-		expect(trigger.querySelector("svg")).toBeTruthy();
+		expect(trigger.querySelector("svg")?.getAttribute("class")).toContain(
+			"motion-reduce:transition-none",
+		);
 		expect(trigger).toHaveAttribute("data-state", "closed");
 	});
 

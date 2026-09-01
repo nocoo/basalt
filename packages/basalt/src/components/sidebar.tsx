@@ -103,7 +103,10 @@ export function SidebarProvider({
 }: SidebarProviderProps) {
 	const [uncontrolled, setUncontrolled] = useState(defaultCollapsed);
 	const [peeking, setPeeking] = useState(false);
-	const [width, setWidth] = useState(defaultWidth);
+	const [width, setWidthState] = useState(() => clampSidebarWidth(defaultWidth));
+	const setWidth = useCallback((next: number) => {
+		setWidthState(clampSidebarWidth(next));
+	}, []);
 	const lastFocusRef = useRef<HTMLElement | null>(null);
 	const prevCollapsed = useRef(collapsed ?? defaultCollapsed);
 	const prevOverlay = useRef(overlay);
@@ -445,6 +448,7 @@ export function SidebarGroup({
 							<ChevronUp
 								className={cn(
 									"h-4 w-4 text-basalt-muted-foreground transition-transform duration-200",
+									OVERLAY_MOTION,
 									!open && "rotate-180",
 								)}
 								strokeWidth={1.5}

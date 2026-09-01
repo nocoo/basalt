@@ -172,6 +172,26 @@ describe("Sidebar", () => {
 		expect(screen.getByText("Nav").className).toContain("order-last");
 	});
 
+	it("clamps default width to the resize range", () => {
+		const { unmount } = render(
+			<SidebarProvider defaultWidth={80}>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByText("Nav")).toHaveStyle({ width: "180px" });
+		expect(screen.getByRole("separator", { name: "Resize sidebar" })).toHaveAttribute(
+			"aria-valuenow",
+			"180",
+		);
+		unmount();
+		render(
+			<SidebarProvider defaultWidth={520}>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByText("Nav")).toHaveStyle({ width: "400px" });
+	});
+
 	it("resizes the expanded rail from the handle", () => {
 		HTMLElement.prototype.setPointerCapture = vi.fn();
 		render(
