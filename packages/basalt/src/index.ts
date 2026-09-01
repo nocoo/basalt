@@ -78,6 +78,7 @@ export {
 	SidebarItem,
 	SidebarNav,
 	SidebarPartition,
+	SidebarProvider,
 	SidebarSearch,
 	SidebarUser,
 } from "./components/sidebar";

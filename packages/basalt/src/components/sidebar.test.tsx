@@ -1,13 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
 	ContentIsland,
 	Sidebar,
 	SidebarGroup,
 	SidebarIconItem,
 	SidebarItem,
+	SidebarProvider,
 	SidebarSearch,
 	SidebarUser,
+	useSidebar,
 } from "./sidebar";
 
 describe("Sidebar", () => {
@@ -17,6 +19,73 @@ describe("Sidebar", () => {
 		expect(nav.tagName).toBe("ASIDE");
 		expect(nav.className).toContain("bg-basalt-background");
 		expect(nav.className).not.toContain("border-r");
+	});
+
+	it("uses provider collapsed and side", () => {
+		render(
+			<SidebarProvider defaultCollapsed side="right">
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		const nav = screen.getByText("Nav");
+		expect(nav.className).toContain("w-[68px]");
+		expect(nav).toHaveAttribute("data-side", "right");
+	});
+
+	it("expands a collapsed rail on peek hover", () => {
+		render(
+			<SidebarProvider defaultCollapsed peek>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		const nav = screen.getByText("Nav");
+		expect(nav.className).toContain("w-[68px]");
+		fireEvent.mouseEnter(nav);
+		expect(nav).not.toHaveAttribute("data-collapsed");
+		fireEvent.mouseLeave(nav);
+		expect(nav).toHaveAttribute("data-collapsed");
+	});
+
+	it("shows loading placeholders", () => {
+		render(
+			<SidebarProvider loading>
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.queryByText("Nav")).not.toBeInTheDocument();
+	});
+
+	it("keeps a controlled collapsed value", () => {
+		const onCollapsedChange = vi.fn();
+		function Toggle() {
+			const { collapsed, setCollapsed } = useSidebar();
+			return (
+				<button type="button" onClick={() => setCollapsed(!collapsed)}>
+					Toggle
+				</button>
+			);
+		}
+		render(
+			<SidebarProvider collapsed onCollapsedChange={onCollapsedChange}>
+				<Toggle />
+				<Sidebar>Nav</Sidebar>
+			</SidebarProvider>,
+		);
+		expect(screen.getByText("Nav").className).toContain("w-[68px]");
+		fireEvent.click(screen.getByRole("button", { name: "Toggle" }));
+		expect(onCollapsedChange).toHaveBeenCalledWith(false);
+		expect(screen.getByText("Nav").className).toContain("w-[68px]");
+	});
+
+	it("throws useSidebar outside a provider", () => {
+		expect(() => render(<Sidebar>Nav</Sidebar>)).not.toThrow();
+		expect(() => {
+			function Probe() {
+				useSidebar();
+				return null;
+			}
+			render(<Probe />);
+		}).toThrow(/SidebarProvider/);
 	});
 
 	it("collapses to the icon rail", () => {

@@ -80,7 +80,10 @@ describe("content scenario truth", () => {
 			"command-palette-with-grouped-items",
 			"command-palette-simple-flat-list",
 		]);
-		expect(UI_EXAMPLES.sidebar?.map((item) => item.id)).toEqual(["sidebar-default"]);
+		expect(UI_EXAMPLES.sidebar?.map((item) => item.id)).toEqual([
+			"sidebar-default",
+			"sidebar-provider",
+		]);
 		expect(UI_EXAMPLES["layer-card"]).toBe(LAYER_CARD_EXAMPLES);
 		expect(UI_EXAMPLES["layer-card"]?.map((item) => item.id)).toEqual([
 			"layer-card-basic-card",

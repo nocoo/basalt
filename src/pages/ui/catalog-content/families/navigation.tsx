@@ -16,7 +16,6 @@ import {
 	NavigationMenuList,
 } from "@nocoo/basalt/components/navigation-menu";
 import { Pagination } from "@nocoo/basalt/components/pagination";
-import { ContentIsland, Sidebar, SidebarItem } from "@nocoo/basalt/components/sidebar";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { TableOfContents, TableOfContentsItem } from "@nocoo/basalt/components/table-of-contents";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
@@ -30,6 +29,7 @@ import {
 	type CatalogDocsDraft,
 	provenanceFromLegacy,
 } from "../../catalog-source";
+import { SIDEBAR_EXAMPLES } from "../../examples/sidebar";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
 	repo: "pew",
@@ -550,23 +550,6 @@ export default function Example() {
 	},
 	sidebar: {
 		docs: sidebarDocs,
-		examples: [
-			{
-				id: catalogScenarioId("sidebar", "default"),
-				title: "Default",
-				code: sidebarDocs.usage,
-				render: () => (
-					<div className="flex h-56 w-full overflow-hidden bg-basalt-background">
-						<Sidebar className="h-full min-h-0 w-40">
-							<SidebarItem active>Catalog</SidebarItem>
-							<SidebarItem>Settings</SidebarItem>
-						</Sidebar>
-						<div className="flex min-w-0 flex-1 flex-col p-2">
-							<ContentIsland className="p-4">At a glance</ContentIsland>
-						</div>
-					</div>
-				),
-			},
-		],
+		examples: SIDEBAR_EXAMPLES,
 	},
 });

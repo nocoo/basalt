@@ -1,23 +1,201 @@
 import { ChevronUp, Search } from "lucide-react";
-import { type ButtonHTMLAttributes, type HTMLAttributes, type ReactNode, useState } from "react";
+import {
+	type ButtonHTMLAttributes,
+	createContext,
+	type HTMLAttributes,
+	type ReactNode,
+	useCallback,
+	useContext,
+	useState,
+} from "react";
 import { cn } from "../utils/cn";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
+import { SkeletonLine } from "./skeleton-line";
+
+export type SidebarSide = "left" | "right";
+
+type SidebarContextValue = {
+	collapsed: boolean;
+	setCollapsed: (next: boolean) => void;
+	side: SidebarSide;
+	loading: boolean;
+	peek: boolean;
+	peeking: boolean;
+	setPeeking: (next: boolean) => void;
+	overlay: boolean;
+	width: number;
+	setWidth: (next: number) => void;
+};
+
+const SidebarContext = createContext<SidebarContextValue | null>(null);
+
+export function useSidebar() {
+	const context = useContext(SidebarContext);
+	if (!context) {
+		throw new Error("useSidebar must be used within SidebarProvider");
+	}
+	return context;
+}
+
+export type SidebarProviderProps = {
+	/**
+	 * The controlled collapsed state.
+	 */
+	collapsed?: boolean;
+	/**
+	 * The uncontrolled initial collapsed state.
+	 * @default false
+	 */
+	defaultCollapsed?: boolean;
+	/**
+	 * Called when the collapsed state changes.
+	 */
+	onCollapsedChange?: (collapsed: boolean) => void;
+	/**
+	 * Which edge the sidebar occupies.
+	 * @default left
+	 */
+	side?: SidebarSide;
+	/**
+	 * Replace the nav with a loading skeleton.
+	 * @default false
+	 */
+	loading?: boolean;
+	/**
+	 * Expand the collapsed rail on hover.
+	 * @default false
+	 */
+	peek?: boolean;
+	/**
+	 * Render as an overlay instead of in-flow chrome.
+	 * @default false
+	 */
+	overlay?: boolean;
+	/**
+	 * Expanded width in pixels.
+	 * @default 260
+	 */
+	defaultWidth?: number;
+	children: ReactNode;
+};
+
+export function SidebarProvider({
+	collapsed,
+	defaultCollapsed = false,
+	onCollapsedChange,
+	side = "left",
+	loading = false,
+	peek = false,
+	overlay = false,
+	defaultWidth = 260,
+	children,
+}: SidebarProviderProps) {
+	const [uncontrolled, setUncontrolled] = useState(defaultCollapsed);
+	const [peeking, setPeeking] = useState(false);
+	const [width, setWidth] = useState(defaultWidth);
+	const resolved = collapsed ?? uncontrolled;
+	const setCollapsed = useCallback(
+		(next: boolean) => {
+			if (collapsed === undefined) {
+				setUncontrolled(next);
+			}
+			onCollapsedChange?.(next);
+		},
+		[collapsed, onCollapsedChange],
+	);
+	return (
+		<SidebarContext.Provider
+			value={{
+				collapsed: resolved,
+				setCollapsed,
+				side,
+				loading,
+				peek,
+				peeking,
+				setPeeking,
+				overlay,
+				width,
+				setWidth,
+			}}
+		>
+			{children}
+		</SidebarContext.Provider>
+	);
+}
 
 export function Sidebar({
-	collapsed = false,
+	collapsed: collapsedProp,
 	className,
+	children,
 	...props
-}: HTMLAttributes<HTMLElement> & { collapsed?: boolean }) {
+}: HTMLAttributes<HTMLElement> & {
+	/**
+	 * Collapse the rail when no provider is present.
+	 * @default false
+	 */
+	collapsed?: boolean;
+}) {
+	const context = useContext(SidebarContext);
+	const collapsed = context
+		? context.collapsed && !(context.peek && context.peeking)
+		: (collapsedProp ?? false);
+	const side = context?.side ?? "left";
+	const overlay = context?.overlay ?? false;
+	const width = context?.width ?? 260;
 	return (
 		<aside
 			data-collapsed={collapsed ? "" : undefined}
+			data-side={side}
+			data-overlay={overlay ? "" : undefined}
+			onMouseEnter={() => context?.peek && context.collapsed && context.setPeeking(true)}
+			onMouseLeave={() => context?.peek && context.setPeeking(false)}
 			className={cn(
-				"sticky top-0 flex h-screen shrink-0 flex-col bg-basalt-background text-sm text-basalt-foreground transition-all duration-300 ease-in-out",
-				collapsed ? "w-[68px] overflow-y-hidden" : "w-[260px] overflow-hidden",
+				"relative sticky top-0 flex h-screen shrink-0 flex-col bg-basalt-background text-sm text-basalt-foreground motion-reduce:transition-none",
+				overlay ? "absolute z-50 shadow-md" : "transition-all duration-300 ease-in-out",
+				side === "right" ? "right-0" : "left-0",
+				collapsed ? "w-[68px] overflow-y-hidden" : "overflow-hidden",
 				className,
 			)}
+			style={!collapsed ? { width } : undefined}
 			{...props}
-		/>
+		>
+			{context?.loading ? (
+				<div className="flex flex-col gap-2 p-3">
+					<SkeletonLine />
+					<SkeletonLine />
+					<SkeletonLine />
+				</div>
+			) : (
+				children
+			)}
+			{context && !collapsed ? (
+				<button
+					type="button"
+					aria-label="Resize sidebar"
+					className={cn(
+						"absolute top-0 h-full w-1 cursor-col-resize bg-transparent",
+						side === "right" ? "left-0" : "right-0",
+					)}
+					onPointerDown={(event) => {
+						event.preventDefault();
+						event.currentTarget.setPointerCapture(event.pointerId);
+						const startX = event.clientX;
+						const startWidth = context.width;
+						const target = event.currentTarget;
+						const onMove = (move: PointerEvent) => {
+							const delta = side === "right" ? startX - move.clientX : move.clientX - startX;
+							context.setWidth(Math.min(400, Math.max(180, startWidth + delta)));
+						};
+						const onUp = () => {
+							target.removeEventListener("pointermove", onMove);
+							target.removeEventListener("pointerup", onUp);
+						};
+						target.addEventListener("pointermove", onMove);
+						target.addEventListener("pointerup", onUp);
+					}}
+				/>
+			) : null}
+		</aside>
 	);
 }
 
