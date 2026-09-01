@@ -82,6 +82,8 @@ describe("form selection scenario truth", () => {
 			"input-disabled",
 			"input-input-types",
 			"input-bare-input-no-label",
+			"input-sizes",
+			"input-controlled-and-reset",
 		]);
 		expect(UI_EXAMPLES["input-area"]).toBe(INPUT_AREA_EXAMPLES);
 		expect(UI_EXAMPLES["input-area"]?.map((item) => item.id)).toEqual([
@@ -364,6 +366,11 @@ describe("form selection scenario truth", () => {
 		expect(types.code.indexOf('type="password"')).toBeLessThan(types.code.indexOf('type="search"'));
 		expect(scenario("input", "input-bare-input-no-label").code).toContain('aria-label="Name"');
 		expect(scenario("input", "input-bare-input-no-label").code).toContain('placeholder="Jane Doe"');
+		expect(scenario("input", "input-sizes").code).toContain('size="sm"');
+		expect(scenario("input", "input-sizes").code).toContain('aria-label="Default"');
+		expect(scenario("input", "input-sizes").code).toContain('size="lg"');
+		expect(scenario("input", "input-controlled-and-reset").code).toContain("useState");
+		expect(scenario("input", "input-controlled-and-reset").code).toContain("Reset");
 		const areaLabel = scenario("input-area", "input-area-with-label");
 		expect(areaLabel.code).toContain("export default");
 		expect(areaLabel.code).toContain("@nocoo/basalt/components/field");

@@ -249,7 +249,11 @@ describe("catalog source contract", () => {
 		]);
 		expect(implementationFileFor(entry("input"))).toBe("packages/basalt/src/components/input.tsx");
 		expect(forms.input?.docs.api).toEqual(CATALOG_API.input);
-		expect(CATALOG_API.input?.[0]?.props.map((prop) => prop.name)).toEqual(["type"]);
+		expect(CATALOG_API.input?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"type",
+			"size",
+			"passwordManagerIgnore",
+		]);
 		expect(implementationFileFor(entry("input-area"))).toBe(
 			"packages/basalt/src/components/input-area.tsx",
 		);

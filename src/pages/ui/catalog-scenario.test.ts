@@ -194,6 +194,8 @@ const INPUT_IDS = [
 	"input-disabled",
 	"input-input-types",
 	"input-bare-input-no-label",
+	"input-sizes",
+	"input-controlled-and-reset",
 ] as const;
 const INPUT_TITLES = [
 	"With Label and Description",
@@ -201,6 +203,8 @@ const INPUT_TITLES = [
 	"Disabled",
 	"Input Types",
 	"Bare Input (No Label)",
+	"Sizes",
+	"Controlled and reset",
 ] as const;
 
 const inputRenders = import.meta.glob("./examples/input/*.tsx", { eager: true });
@@ -1009,9 +1013,9 @@ describe("source-backed field scenarios", () => {
 });
 
 describe("source-backed input scenarios", () => {
-	it("loads five input scenarios from the same glob modules", () => {
-		expect(Object.keys(inputRenders)).toHaveLength(5);
-		expect(Object.keys(inputSources)).toHaveLength(5);
+	it("loads seven input scenarios from the same glob modules", () => {
+		expect(Object.keys(inputRenders)).toHaveLength(7);
+		expect(Object.keys(inputSources)).toHaveLength(7);
 		const loaded = loadModuleScenarios({
 			slug: "input",
 			metas: INPUT_TITLES.map((title, index) => ({
@@ -1102,6 +1106,15 @@ describe("source-backed input scenarios", () => {
 		);
 		expect(INPUT_EXAMPLES[4]?.code).toContain('aria-label="Name"');
 		expect(INPUT_EXAMPLES[4]?.code).toContain('placeholder="Jane Doe"');
+		expect(INPUT_EXAMPLES[5]?.code).toContain('size="sm"');
+		expect(INPUT_EXAMPLES[5]?.code).toContain('aria-label="Small"');
+		expect(INPUT_EXAMPLES[5]?.code).toContain('aria-label="Default"');
+		expect(INPUT_EXAMPLES[5]?.code).toContain('size="lg"');
+		expect(INPUT_EXAMPLES[5]?.code).toContain('aria-label="Large"');
+		expect(INPUT_EXAMPLES[6]?.code).toContain("useState");
+		expect(INPUT_EXAMPLES[6]?.code).toContain("@nocoo/basalt/components/field");
+		expect(INPUT_EXAMPLES[6]?.code).toContain("@nocoo/basalt/components/button");
+		expect(INPUT_EXAMPLES[6]?.code).toContain("Reset");
 		const typesOrder = INPUT_EXAMPLES[3]?.code ?? "";
 		expect(typesOrder.indexOf('type="email"')).toBeLessThan(typesOrder.indexOf('type="password"'));
 		expect(typesOrder.indexOf('type="password"')).toBeLessThan(typesOrder.indexOf('type="search"'));

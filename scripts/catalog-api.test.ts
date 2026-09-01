@@ -971,15 +971,33 @@ describe("catalog API generator contract", () => {
 		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 	}, 20_000);
 
-	it("extracts Input props from InputProps as a single optional type", () => {
+	it("extracts Input props from InputProps as type, size, and passwordManagerIgnore", () => {
 		const generated = generateProductionProps();
-		expect(generated.input?.map((prop) => prop.name)).toEqual(["type"]);
+		expect(generated.input?.map((prop) => prop.name)).toEqual([
+			"type",
+			"size",
+			"passwordManagerIgnore",
+		]);
 		expect(generated.input).toEqual([
 			{
 				name: "type",
 				type: "React.HTMLInputTypeAttribute",
 				required: false,
 				description: "The type of input control to render.",
+			},
+			{
+				name: "size",
+				type: "InputSize",
+				required: false,
+				default: "default",
+				description: "The visual size of the input.",
+			},
+			{
+				name: "passwordManagerIgnore",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Ignore password managers on this field.",
 			},
 		]);
 		expect(generated.input?.[0]).not.toHaveProperty("default");
@@ -1087,7 +1105,11 @@ describe("catalog API generator contract", () => {
 			"className",
 			"children",
 		]);
-		expect(generated.input?.map((prop) => prop.name)).toEqual(["type"]);
+		expect(generated.input?.map((prop) => prop.name)).toEqual([
+			"type",
+			"size",
+			"passwordManagerIgnore",
+		]);
 	}, 20_000);
 
 	it("emits a locally quoted property name", () => {
@@ -1526,7 +1548,11 @@ export interface WidgetProps {
 			),
 		).toBe(false);
 		expect(generated.button?.[0]?.name).toBe("Button");
-		expect(generated.input?.[0]?.props.map((prop) => prop.name)).toEqual(["type"]);
+		expect(generated.input?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"type",
+			"size",
+			"passwordManagerIgnore",
+		]);
 		expect(generated["input-area"]?.[0]?.props.map((prop) => prop.name)).toEqual(["rows"]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
 			"InputGroup",
@@ -2993,7 +3019,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"0ac75370ac9ede267b6015ab8ccfc8ac7957b8ad62da3b4e866905efce291810",
+			"0bf831f6121961680b665c6ffdeade55b6ce3b9bf49005c7b8e25f47e8e7f940",
 		);
 	}, 20_000);
 

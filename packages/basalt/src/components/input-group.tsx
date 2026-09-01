@@ -57,7 +57,10 @@ const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
 );
 InputGroupRoot.displayName = "InputGroup";
 
-export type InputGroupInputProps = Omit<React.ComponentPropsWithoutRef<typeof Input>, "type"> & {
+export type InputGroupInputProps = Omit<
+	React.ComponentPropsWithoutRef<typeof Input>,
+	"type" | "size" | "passwordManagerIgnore"
+> & {
 	/**
 	 * The type of input control to render.
 	 */

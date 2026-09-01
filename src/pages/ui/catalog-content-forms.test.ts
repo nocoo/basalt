@@ -134,6 +134,25 @@ describe("forms catalog content family", () => {
 			ref: "main",
 			file: "packages/basalt/src/components/field.tsx",
 		});
+		expect(forms.input?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "input-with-label-and-description", title: "With Label and Description" },
+			{ id: "input-with-error-string", title: "With Error (String)" },
+			{ id: "input-disabled", title: "Disabled" },
+			{ id: "input-input-types", title: "Input Types" },
+			{ id: "input-bare-input-no-label", title: "Bare Input (No Label)" },
+			{ id: "input-sizes", title: "Sizes" },
+			{ id: "input-controlled-and-reset", title: "Controlled and reset" },
+		]);
+		expect(forms.input?.docs.description).toBe(
+			"A sized native single-line control on the L3 surface.",
+		);
+		expect(forms.input?.docs.variants).toEqual(["sm", "default", "lg"]);
+		expect(forms.input?.docs.provenance).toEqual({
+			owner: "cloudflare",
+			repo: "kumo",
+			ref: "1159868dfe32",
+			file: "packages/kumo/src/components/input/input.tsx",
+		});
 		expect(forms.combobox?.examples).toHaveLength(2);
 		expect(forms.combobox?.examples.map((example) => example.id)).toEqual([
 			"combobox-searchable-select-with-placeholder",

@@ -6,6 +6,8 @@ const INPUT_SCENARIO_META = [
 	{ key: "disabled", title: "Disabled" },
 	{ key: "input-types", title: "Input Types" },
 	{ key: "bare-input-no-label", title: "Bare Input (No Label)" },
+	{ key: "sizes", title: "Sizes" },
+	{ key: "controlled-and-reset", title: "Controlled and reset" },
 ] as const;
 
 export const INPUT_EXAMPLES = loadModuleScenarios({

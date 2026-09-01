@@ -4,7 +4,7 @@ import { cn } from "../utils/cn";
 import { Button } from "./button";
 import { Input } from "./input";
 
-export interface SensitiveInputProps extends Omit<React.ComponentProps<"input">, "type"> {
+export interface SensitiveInputProps extends Omit<React.ComponentProps<"input">, "type" | "size"> {
 	/**
 	 * Accessible label for the reveal action.
 	 */

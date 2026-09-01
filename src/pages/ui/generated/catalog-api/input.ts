@@ -10,6 +10,20 @@ export const API = [
 				required: false,
 				description: "The type of input control to render.",
 			},
+			{
+				name: "size",
+				type: "InputSize",
+				required: false,
+				default: "default",
+				description: "The visual size of the input.",
+			},
+			{
+				name: "passwordManagerIgnore",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Ignore password managers on this field.",
+			},
 		],
 	},
 ];

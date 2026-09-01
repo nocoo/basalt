@@ -66,18 +66,18 @@ export default catalogContentFamily({
 	},
 	input: {
 		docs: {
-			description: "A single-line text field. Light mode uses a white L3 surface.",
+			description: "A sized native single-line control on the L3 surface.",
 			usage: usage(
 				"Input",
 				"@nocoo/basalt/components/input",
 				'<Input aria-label="Name" placeholder="Jane Doe" />',
 			),
-			variants: [],
+			variants: ["sm", "default", "lg"],
 			api: inputApi,
 			provenance: provenanceFromLegacy({
-				repo: "zhe",
-				sha: "c31c239f01c9",
-				file: "components/ui/input.tsx",
+				repo: "kumo",
+				sha: "1159868dfe32",
+				file: "packages/kumo/src/components/input/input.tsx",
 			}),
 		},
 		examples: INPUT_EXAMPLES,

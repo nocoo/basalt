@@ -1615,24 +1615,45 @@ describe("ui catalog", () => {
 						required: false,
 						description: "The type of input control to render.",
 					},
+					{
+						name: "size",
+						type: "InputSize",
+						required: false,
+						default: "default",
+						description: "The visual size of the input.",
+					},
+					{
+						name: "passwordManagerIgnore",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Ignore password managers on this field.",
+					},
 				],
 			},
 		]);
 		renderCatalog("/ui/input");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(3);
 		expect(api).toHaveTextContent("type?");
 		expect(api).toHaveTextContent("React.HTMLInputTypeAttribute");
 		expect(api).toHaveTextContent("The type of input control to render.");
+		expect(api).toHaveTextContent("size?");
+		expect(api).toHaveTextContent("InputSize");
+		expect(api).toHaveTextContent("passwordManagerIgnore?");
 		expect(api).not.toHaveTextContent("className");
 		expect(api).not.toHaveTextContent("placeholder");
 		expect(api).not.toHaveTextContent("onChange");
 		expect(screen.getByRole("heading", { name: "With Label and Description" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Controlled and reset" })).toBeInTheDocument();
 		expect(
 			document.querySelector('[data-hero-scenario="input-with-label-and-description"]'),
 		).toBeTruthy();
 		expect(document.querySelector('[data-scenario="input-input-types"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="input-sizes"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="input-controlled-and-reset"]')).toBeTruthy();
 		await act(async () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
@@ -1640,12 +1661,21 @@ describe("ui catalog", () => {
 		expect(markdown).toContain(
 			"- type (React.HTMLInputTypeAttribute, optional, default —): The type of input control to render.",
 		);
+		expect(markdown).toContain(
+			"- size (InputSize, optional, default default): The visual size of the input.",
+		);
+		expect(markdown).toContain(
+			"- passwordManagerIgnore (boolean, optional, default false): Ignore password managers on this field.",
+		);
 		expect(markdown).not.toContain("- className (");
 		expect(markdown).not.toContain("- placeholder (");
 		expect(markdown).toContain(UI_EXAMPLES.input?.[0]?.code ?? "");
 		expect(markdown).toContain(UI_EXAMPLES.input?.[3]?.code ?? "");
+		expect(markdown).toContain(UI_EXAMPLES.input?.[5]?.code ?? "");
+		expect(markdown).toContain(UI_EXAMPLES.input?.[6]?.code ?? "");
 		expect(markdown).toContain('<div className="flex w-full flex-col gap-3">');
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
+		expect(markdown).not.toContain("github.com/nocoo/kumo");
 	});
 
 	it("does not keep a handwritten input prop inventory", () => {
@@ -1656,12 +1686,13 @@ describe("ui catalog", () => {
 		expect(family).toContain("api: inputApi");
 		expect(family).not.toContain('name: "type"');
 		expect(family).toContain(
-			'description: "A single-line text field. Light mode uses a white L3 surface."',
+			'description: "A sized native single-line control on the L3 surface."',
 		);
 		expect(family).toContain('<Input aria-label="Name" placeholder="Jane Doe" />');
-		expect(family).toContain('repo: "zhe"');
-		expect(family).toContain('sha: "c31c239f01c9"');
-		expect(family).toContain('file: "components/ui/input.tsx"');
+		expect(family).toContain('variants: ["sm", "default", "lg"]');
+		expect(family).toContain('repo: "kumo"');
+		expect(family).toContain('sha: "1159868dfe32"');
+		expect(family).toContain('file: "packages/kumo/src/components/input/input.tsx"');
 	});
 
 	it("sources input-area API rows from generated catalog data", async () => {
@@ -2959,19 +2990,25 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Input Types" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Bare Input (No Label)" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Controlled and reset" })).toBeInTheDocument();
 		const hero = document.querySelector('[data-hero-scenario="input-with-label-and-description"]');
 		const labeled = document.querySelector('[data-scenario="input-with-label-and-description"]');
 		const error = document.querySelector('[data-scenario="input-with-error-string"]');
 		const disabled = document.querySelector('[data-scenario="input-disabled"]');
 		const types = document.querySelector('[data-scenario="input-input-types"]');
 		const bare = document.querySelector('[data-scenario="input-bare-input-no-label"]');
+		const sizes = document.querySelector('[data-scenario="input-sizes"]');
+		const controlled = document.querySelector('[data-scenario="input-controlled-and-reset"]');
 		expect(hero).toBeTruthy();
 		expect(labeled).toBeTruthy();
 		expect(error).toBeTruthy();
 		expect(disabled).toBeTruthy();
 		expect(types).toBeTruthy();
 		expect(bare).toBeTruthy();
-		if (!hero || !labeled || !error || !disabled || !types || !bare) {
+		expect(sizes).toBeTruthy();
+		expect(controlled).toBeTruthy();
+		if (!hero || !labeled || !error || !disabled || !types || !bare || !sizes || !controlled) {
 			throw new Error("missing input scenario surfaces");
 		}
 		const heroLabel = hero.querySelector('label[for="ex-input-email"]');
@@ -3013,6 +3050,19 @@ describe("ui catalog", () => {
 			"placeholder",
 			"Jane Doe",
 		);
+		expect(
+			within(sizes as HTMLElement).getByRole("textbox", { name: "Small" }).className,
+		).toContain("h-8");
+		expect(
+			within(sizes as HTMLElement).getByRole("textbox", { name: "Default" }).className,
+		).toContain("h-9");
+		expect(
+			within(sizes as HTMLElement).getByRole("textbox", { name: "Large" }).className,
+		).toContain("h-10");
+		expect(within(controlled as HTMLElement).getByRole("textbox", { name: "Name" })).toHaveValue(
+			"Ada",
+		);
+		expect(within(controlled as HTMLElement).getByRole("button", { name: "Reset" })).toBeEnabled();
 		for (const scenario of UI_EXAMPLES.input ?? []) {
 			expect(scenario.code).toContain("export default");
 			expect(scenario.code).toContain("@nocoo/basalt/components/input");
@@ -3025,7 +3075,7 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(UI_EXAMPLES.input).toHaveLength(5);
+		expect(UI_EXAMPLES.input).toHaveLength(7);
 		for (const scenario of UI_EXAMPLES.input ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
