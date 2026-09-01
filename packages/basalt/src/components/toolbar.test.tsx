@@ -66,8 +66,12 @@ describe("Toolbar", () => {
 		const upload = screen.getByRole("button", { name: "Upload" });
 		const download = screen.getByRole("button", { name: "Download" });
 		upload.focus();
+		expect(upload.tabIndex).toBe(0);
+		expect(download.tabIndex).toBe(-1);
 		fireEvent.keyDown(upload, { key: "ArrowRight" });
 		expect(download).toHaveFocus();
+		expect(download.tabIndex).toBe(0);
+		expect(upload.tabIndex).toBe(-1);
 	});
 
 	it("leaves an empty input with arrows", () => {

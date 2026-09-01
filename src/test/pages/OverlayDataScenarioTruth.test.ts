@@ -192,15 +192,15 @@ describe("overlay data scenario truth", () => {
 
 	it("shows tabs lists instead of empty roots or ellipsis triggers", () => {
 		const usage = CATALOG_DOCS.tabs?.usage ?? "";
-		expectUsageImportsCover(usage, ["Tabs", "TabsList", "TabsTrigger"]);
+		expectUsageImportsCover(usage, ["Tabs", "TabsList", "TabsTrigger", "TabsContent"]);
 		expect(usage).not.toMatch(/<Tabs\s*\/>/);
-		expect(usage).not.toContain("TabsContent");
+		expect(usage).toContain("TabsContent");
 		expect(scenario("tabs", "tabs-variants").code).toContain('value="b"');
 		expect(scenario("tabs", "tabs-variants").code).toContain("TabsContent");
 		expect(scenario("tabs", "tabs-many-tabs").code).toContain("<Tabs");
 		expect(scenario("tabs", "tabs-many-tabs").code).toContain("Changelog");
 		expect(scenario("tabs", "tabs-many-tabs").code).not.toContain("…");
-		expect(scenario("tabs", "tabs-many-tabs").code).not.toContain("TabsContent");
+		expect(scenario("tabs", "tabs-many-tabs").code).toContain("TabsContent");
 		expect(scenario("tabs", "tabs-many-tabs").code).toContain('defaultValue="overview"');
 		expect(scenario("tabs", "tabs-many-tabs").code).toContain('value="overview"');
 		expect(scenario("tabs", "tabs-many-tabs").code).not.toContain('defaultValue="a"');

@@ -151,7 +151,7 @@ const tabsDocs = extraDocs(
 	"Tabbed navigation.",
 	"<Tabs defaultValue='a'><TabsList><TabsTrigger value='a'>Home</TabsTrigger><TabsTrigger value='b'>About</TabsTrigger></TabsList></Tabs>",
 	undefined,
-	`import { Tabs, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
+	`import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 
 export default function Example() {
 	return (
@@ -160,6 +160,8 @@ export default function Example() {
 				<TabsTrigger value="a">Home</TabsTrigger>
 				<TabsTrigger value="b">About</TabsTrigger>
 			</TabsList>
+			<TabsContent value="a">Home overview and getting started.</TabsContent>
+			<TabsContent value="b">About this project and its goals.</TabsContent>
 		</Tabs>
 	);
 }`,
@@ -387,6 +389,7 @@ export default function Example() {
     <TabsTrigger value="accessibility">Accessibility</TabsTrigger>
     <TabsTrigger value="changelog">Changelog</TabsTrigger>
   </TabsList>
+  <TabsContent value="overview">Overview of the control.</TabsContent>
 </Tabs>`,
 				render: () => (
 					<Tabs defaultValue="overview">
@@ -397,6 +400,7 @@ export default function Example() {
 								</TabsTrigger>
 							))}
 						</TabsList>
+						<TabsContent value="overview">Overview of the control.</TabsContent>
 					</Tabs>
 				),
 			},

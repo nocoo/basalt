@@ -17,12 +17,32 @@ export type ToolbarProps = Omit<React.HTMLAttributes<HTMLDivElement>, "aria-labe
 	"aria-label"?: string;
 };
 
+function toolbarItems(root: HTMLElement) {
+	return [
+		...root.querySelectorAll<HTMLElement>("button:not([disabled]), input:not([disabled])"),
+	].filter((node) => node.closest('[role="toolbar"]') === root);
+}
+
+function setRovingTab(items: HTMLElement[], active: HTMLElement) {
+	for (const item of items) {
+		item.tabIndex = item === active ? 0 : -1;
+	}
+}
+
 const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarProps>(
-	({ className, onKeyDown, ...props }, ref) => (
+	({ className, onKeyDown, onFocus, ...props }, ref) => (
 		<div
 			ref={ref}
 			{...props}
 			role="toolbar"
+			onFocus={(event) => {
+				onFocus?.(event);
+				const items = toolbarItems(event.currentTarget);
+				const target = event.target as HTMLElement;
+				if (items.includes(target)) {
+					setRovingTab(items, target);
+				}
+			}}
 			onKeyDown={(event) => {
 				onKeyDown?.(event);
 				if (event.defaultPrevented || (event.key !== "ArrowRight" && event.key !== "ArrowLeft")) {
@@ -40,12 +60,7 @@ const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarProps>(
 						return;
 					}
 				}
-				const root = event.currentTarget;
-				const items = [
-					...root.querySelectorAll<HTMLElement>(
-						'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
-					),
-				].filter((node) => node.closest('[role="toolbar"]') === root);
+				const items = toolbarItems(event.currentTarget);
 				const index = items.indexOf(event.target as HTMLElement);
 				if (index < 0 || items.length === 0) {
 					return;
@@ -55,7 +70,11 @@ const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarProps>(
 					event.key === "ArrowRight"
 						? (index + 1) % items.length
 						: (index - 1 + items.length) % items.length;
-				items[next]?.focus();
+				const node = items[next];
+				if (node) {
+					setRovingTab(items, node);
+					node.focus();
+				}
 			}}
 			className={cn(
 				"inline-flex w-fit items-stretch rounded-basalt-md bg-basalt-secondary shadow-xs ring-1 ring-basalt-border",

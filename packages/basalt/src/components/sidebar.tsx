@@ -104,7 +104,17 @@ export function SidebarProvider({
 	const [peeking, setPeeking] = useState(false);
 	const [width, setWidth] = useState(defaultWidth);
 	const lastFocusRef = useRef<HTMLElement | null>(null);
+	const prevCollapsed = useRef(collapsed ?? defaultCollapsed);
 	const resolved = collapsed ?? uncontrolled;
+	if (
+		overlay &&
+		prevCollapsed.current &&
+		!resolved &&
+		document.activeElement instanceof HTMLElement
+	) {
+		lastFocusRef.current = document.activeElement;
+	}
+	prevCollapsed.current = resolved;
 	const setCollapsed = useCallback(
 		(next: boolean) => {
 			if (!next && document.activeElement instanceof HTMLElement) {
