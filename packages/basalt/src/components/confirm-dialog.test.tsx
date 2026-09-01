@@ -39,12 +39,12 @@ function HookHarness({ apiRef }: { apiRef: { current: ReturnType<typeof useConfi
 	return <ConfirmDialog {...api.dialogProps} />;
 }
 
-function requireConfirm(apiRef: { current: ReturnType<typeof useConfirm> | null }) {
-	const confirm = apiRef.current?.confirm;
-	if (!confirm) {
+function requireApi(apiRef: { current: ReturnType<typeof useConfirm> | null }) {
+	const api = apiRef.current;
+	if (!api) {
 		throw new Error("missing useConfirm");
 	}
-	return confirm;
+	return api;
 }
 
 describe("ConfirmDialog", () => {
@@ -124,7 +124,7 @@ describe("useConfirm", () => {
 		let confirmed!: Promise<boolean>;
 		const confirmedSeen: boolean[] = [];
 		await act(async () => {
-			confirmed = requireConfirm(apiRef)({
+			confirmed = requireApi(apiRef).confirm({
 				title: "Archive?",
 				description: "Keep history.",
 			});
@@ -138,7 +138,7 @@ describe("useConfirm", () => {
 
 		let cancelled!: Promise<boolean>;
 		await act(async () => {
-			cancelled = requireConfirm(apiRef)({
+			cancelled = requireApi(apiRef).confirm({
 				title: "Archive?",
 				description: "Keep history.",
 			});
@@ -154,10 +154,10 @@ describe("useConfirm", () => {
 		let first!: Promise<boolean>;
 		let second!: Promise<boolean>;
 		await act(async () => {
-			first = requireConfirm(apiRef)({ title: "First", description: "One" });
+			first = requireApi(apiRef).confirm({ title: "First", description: "One" });
 		});
 		await act(async () => {
-			second = requireConfirm(apiRef)({ title: "Second", description: "Two" });
+			second = requireApi(apiRef).confirm({ title: "Second", description: "Two" });
 		});
 		await expect(first).resolves.toBe(false);
 		expect(screen.getByRole("alertdialog", { name: "Second" })).toBeInTheDocument();
@@ -170,9 +170,53 @@ describe("useConfirm", () => {
 		const { unmount } = render(<HookHarness apiRef={apiRef} />);
 		let pending!: Promise<boolean>;
 		await act(async () => {
-			pending = requireConfirm(apiRef)({ title: "Leave?", description: "Unsaved." });
+			pending = requireApi(apiRef).confirm({ title: "Leave?", description: "Unsaved." });
 		});
 		unmount();
 		await expect(pending).resolves.toBe(false);
+	});
+
+	it("settles false once on Escape when not loading", async () => {
+		const apiRef: { current: ReturnType<typeof useConfirm> | null } = { current: null };
+		render(<HookHarness apiRef={apiRef} />);
+
+		let escaped!: Promise<boolean>;
+		const escapedSeen: boolean[] = [];
+		await act(async () => {
+			escaped = requireApi(apiRef).confirm({
+				title: "Archive?",
+				description: "Keep history.",
+			});
+			void escaped.then((value) => {
+				escapedSeen.push(value);
+			});
+		});
+		fireEvent.keyDown(screen.getByRole("alertdialog"), { key: "Escape" });
+		await expect(escaped).resolves.toBe(false);
+		expect(escapedSeen).toEqual([false]);
+		expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+	});
+
+	it("settles false once on a direct controlled close", async () => {
+		const apiRef: { current: ReturnType<typeof useConfirm> | null } = { current: null };
+		render(<HookHarness apiRef={apiRef} />);
+
+		let closed!: Promise<boolean>;
+		const closedSeen: boolean[] = [];
+		await act(async () => {
+			closed = requireApi(apiRef).confirm({
+				title: "Archive?",
+				description: "Keep history.",
+			});
+			void closed.then((value) => {
+				closedSeen.push(value);
+			});
+		});
+		act(() => {
+			requireApi(apiRef).dialogProps.onOpenChange(false);
+		});
+		await expect(closed).resolves.toBe(false);
+		expect(closedSeen).toEqual([false]);
+		expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
 	});
 });
