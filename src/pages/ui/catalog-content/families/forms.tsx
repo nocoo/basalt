@@ -1,4 +1,3 @@
-import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { Slider } from "@nocoo/basalt/components/slider";
 import { Toggle } from "@nocoo/basalt/components/toggle";
 import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
@@ -9,6 +8,7 @@ import { provenanceFromLegacy } from "../../catalog-source";
 import { AUTOCOMPLETE_EXAMPLES } from "../../examples/autocomplete";
 import { CHECKBOX_EXAMPLES } from "../../examples/checkbox";
 import { COMBOBOX_EXAMPLES } from "../../examples/combobox";
+import { DATE_PICKER_EXAMPLES } from "../../examples/date-picker";
 import { FIELD_EXAMPLES } from "../../examples/field";
 import { INPUT_EXAMPLES } from "../../examples/input";
 import { INPUT_AREA_EXAMPLES } from "../../examples/input-area";
@@ -21,6 +21,7 @@ import { SWITCH_EXAMPLES } from "../../examples/switch";
 import { API as autocompleteApi } from "../../generated/catalog-api/autocomplete";
 import { API as checkboxApi } from "../../generated/catalog-api/checkbox";
 import { API as comboboxApi } from "../../generated/catalog-api/combobox";
+import { API as datePickerApi } from "../../generated/catalog-api/date-picker";
 import { API as fieldApi } from "../../generated/catalog-api/field";
 import { API as inputApi } from "../../generated/catalog-api/input";
 import { API as inputAreaApi } from "../../generated/catalog-api/input-area";
@@ -271,29 +272,17 @@ export default function Example() {
 	},
 	"date-picker": {
 		docs: {
-			description: "Pick a date.",
+			description: "A calendar field with bounds, disabled dates, presets, and range.",
 			usage: `import { DatePicker } from "@nocoo/basalt/components/date-picker";
 
 export default function Example() {
 	return <DatePicker aria-label="Date" />;
 }`,
-			variants: [],
-			api: [
-				{
-					name: "DatePicker",
-					props: [{ name: "className", type: "string", description: "className" }],
-				},
-			],
+			variants: ["single", "range"],
+			api: datePickerApi,
 			provenance: EXTRA_PROVENANCE,
 		},
-		examples: [
-			{
-				id: catalogScenarioId("date-picker", "single-date-selection"),
-				title: "Single Date Selection",
-				code: '<DatePicker aria-label="Date" />',
-				render: () => <DatePicker aria-label="Date" />,
-			},
-		],
+		examples: DATE_PICKER_EXAMPLES,
 	},
 	slider: {
 		docs: {

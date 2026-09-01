@@ -408,6 +408,12 @@ describe("catalog API generator contract", () => {
 				surface: "Autocomplete",
 			},
 			{
+				slug: "date-picker",
+				sourceFile: "packages/basalt/src/components/date-picker.tsx",
+				propsType: "DatePickerProps",
+				surface: "DatePicker",
+			},
+			{
 				slug: "segment-control",
 				sourceFile: "packages/basalt/src/components/segment-control.tsx",
 				propsType: "SegmentControlProps",
@@ -444,7 +450,7 @@ describe("catalog API generator contract", () => {
 				surface: "TablePager",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(53);
+		expect(CATALOG_API_TARGETS).toHaveLength(54);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -502,6 +508,7 @@ describe("catalog API generator contract", () => {
 			"switch",
 			"combobox",
 			"autocomplete",
+			"date-picker",
 			"segment-control",
 			"page-header",
 			"stat-strip",
@@ -1450,6 +1457,7 @@ export interface WidgetProps {
 			],
 			combobox: ["Combobox"],
 			autocomplete: ["Autocomplete"],
+			"date-picker": ["DatePicker"],
 		});
 	}, 20_000);
 
@@ -1459,7 +1467,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(27);
+		expect(Object.keys(generated)).toHaveLength(28);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1560,7 +1568,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(27);
+		expect(Object.keys(generated)).toHaveLength(28);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1682,7 +1690,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(27);
+		expect(Object.keys(generated)).toHaveLength(28);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -1753,7 +1761,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(27);
+		expect(Object.keys(generated)).toHaveLength(28);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -1796,7 +1804,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(27);
+		expect(Object.keys(generated)).toHaveLength(28);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -1848,7 +1856,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(27);
+		expect(Object.keys(generated)).toHaveLength(28);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3089,8 +3097,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(27);
-		expect(Object.keys(first)).toHaveLength(28);
+		expect(slugs).toHaveLength(28);
+		expect(Object.keys(first)).toHaveLength(29);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3122,6 +3130,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "SelectLabel"');
 		expect(joined).toContain('name: "Combobox"');
 		expect(joined).toContain('name: "Autocomplete"');
+		expect(joined).toContain('name: "DatePicker"');
 		const digest = createHash("sha256");
 		for (const relative of Object.keys(first).sort()) {
 			digest.update(relative);
@@ -3129,7 +3138,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"8763a152d5402a0af97a2105ab8fa4d65ff35e886d0f6cec9480c07d76c8f4ba",
+			"dca292550cc7ef5f92f9e28ea2217f842053374980100f607075eba98310d483",
 		);
 	}, 20_000);
 

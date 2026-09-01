@@ -71,6 +71,43 @@ function formatCivil(date: Civil, locale: string, options: Intl.DateTimeFormatOp
 	}).format(utcDate(date));
 }
 
+function formatTriggerLabel({
+	mode,
+	selectedDate,
+	rangeFrom,
+	rangeTo,
+	locale,
+	formatDate,
+}: {
+	mode: "single" | "range";
+	selectedDate: Civil | null;
+	rangeFrom: string;
+	rangeTo?: string;
+	locale: string;
+	formatDate?: (date: Date) => string;
+}) {
+	function one(iso: string) {
+		const date = parseIso(iso);
+		if (!date) {
+			return iso;
+		}
+		return formatDate?.(civilDate(date)) ?? formatCivil(date, locale, { dateStyle: "medium" });
+	}
+	if (mode === "range") {
+		if (!rangeFrom) {
+			return "Pick a date";
+		}
+		if (!rangeTo) {
+			return `${one(rangeFrom)} – …`;
+		}
+		return `${one(rangeFrom)} – ${one(rangeTo)}`;
+	}
+	return selectedDate
+		? (formatDate?.(civilDate(selectedDate)) ??
+				formatCivil(selectedDate, locale, { dateStyle: "medium" }))
+		: "Pick a date";
+}
+
 function compareCivil(left: Civil, right: Civil) {
 	if (left.y !== right.y) {
 		return left.y - right.y;
@@ -96,6 +133,112 @@ function withinBounds(iso: string, min?: string, max?: string) {
 	}
 	return true;
 }
+
+function dateSelectable(
+	iso: string,
+	min?: string,
+	max?: string,
+	isDisabledDate?: (iso: string) => boolean,
+) {
+	return withinBounds(iso, min, max) && !isDisabledDate?.(iso);
+}
+
+export type DatePickerRange = { from: string; to?: string };
+
+export type DatePickerPreset = {
+	label: string;
+	value: string | { from: string; to: string };
+};
+
+export type DatePickerProps = Omit<
+	ComponentProps<"input">,
+	| "value"
+	| "defaultValue"
+	| "onChange"
+	| "type"
+	| "children"
+	| "disabled"
+	| "name"
+	| "required"
+	| "min"
+	| "max"
+> & {
+	/**
+	 * The controlled ISO date in single mode.
+	 */
+	value?: string;
+	/**
+	 * The uncontrolled initial ISO date in single mode.
+	 */
+	defaultValue?: string;
+	/**
+	 * Called with the ISO date in single mode.
+	 */
+	onChange?: (value: string) => void;
+	/**
+	 * Selection mode.
+	 * @default single
+	 */
+	mode?: "single" | "range";
+	/**
+	 * The controlled range in range mode.
+	 */
+	rangeValue?: DatePickerRange;
+	/**
+	 * The uncontrolled initial range in range mode.
+	 */
+	defaultRangeValue?: DatePickerRange;
+	/**
+	 * Called when the range changes.
+	 */
+	onRangeChange?: (value: DatePickerRange) => void;
+	/**
+	 * Additional dates that cannot be selected.
+	 */
+	isDisabledDate?: (iso: string) => boolean;
+	/**
+	 * Shortcut values shown above the calendar.
+	 */
+	presets?: DatePickerPreset[];
+	/**
+	 * Locale used to format the trigger and weekday labels.
+	 * @default en-US
+	 */
+	locale?: string;
+	/**
+	 * First day of the week. 0 is Sunday.
+	 * @default 0
+	 */
+	weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+	/**
+	 * IANA time zone used to resolve today.
+	 */
+	timeZone?: string;
+	/**
+	 * Custom formatter for the trigger label.
+	 */
+	formatDate?: (date: Date) => string;
+	/**
+	 * Native form field name.
+	 */
+	name?: string;
+	/**
+	 * Native required constraint.
+	 */
+	required?: boolean;
+	/**
+	 * Inclusive lower ISO bound.
+	 */
+	min?: string;
+	/**
+	 * Inclusive upper ISO bound.
+	 */
+	max?: string;
+	/**
+	 * Disable the trigger and calendar.
+	 */
+	disabled?: boolean;
+};
 
 function clampCivil(date: Civil, min?: string, max?: string) {
 	const minDate = min ? parseIso(min) : null;
@@ -149,6 +292,12 @@ export function DatePicker({
 	value,
 	defaultValue = "",
 	onChange,
+	mode = "single",
+	rangeValue,
+	defaultRangeValue,
+	onRangeChange,
+	isDisabledDate,
+	presets,
 	locale = "en-US",
 	weekStartsOn = 0,
 	timeZone,
@@ -164,42 +313,7 @@ export function DatePicker({
 	"aria-describedby": ariaDescribedBy,
 	"aria-invalid": ariaInvalid,
 	...inputRest
-}: {
-	value?: string;
-	defaultValue?: string;
-	onChange?: (value: string) => void;
-	locale?: string;
-	weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-	timeZone?: string;
-	formatDate?: (date: Date) => string;
-	name?: string;
-	required?: boolean;
-	min?: string;
-	max?: string;
-	disabled?: boolean;
-	className?: string;
-	id?: string;
-	"aria-label"?: string;
-	"aria-describedby"?: string;
-	"aria-invalid"?: boolean | "true" | "false";
-} & Omit<
-	ComponentProps<"input">,
-	| "value"
-	| "defaultValue"
-	| "onChange"
-	| "type"
-	| "children"
-	| "className"
-	| "disabled"
-	| "id"
-	| "name"
-	| "required"
-	| "min"
-	| "max"
-	| "aria-label"
-	| "aria-describedby"
-	| "aria-invalid"
->) {
+}: DatePickerProps) {
 	const {
 		readOnly,
 		autoFocus,
@@ -209,6 +323,9 @@ export function DatePicker({
 		...formRest
 	} = inputRest;
 	const [uncontrolled, setUncontrolled] = useState(defaultValue);
+	const [uncontrolledRange, setUncontrolledRange] = useState<DatePickerRange>(
+		defaultRangeValue ?? { from: "", to: undefined },
+	);
 	const [open, setOpen] = useState(false);
 	const [focusIndex, setFocusIndex] = useState(0);
 	const dayRefs = useRef<Array<HTMLButtonElement | null>>([]);
@@ -260,7 +377,7 @@ export function DatePicker({
 
 	useEffect(() => {
 		const form = hiddenRef.current?.form;
-		if (!form || value !== undefined) {
+		if (!form || (mode === "range" ? rangeValue !== undefined : value !== undefined)) {
 			return;
 		}
 		const onReset = (event: Event) => {
@@ -269,12 +386,13 @@ export function DatePicker({
 					return;
 				}
 				setUncontrolled(defaultValue);
+				setUncontrolledRange(defaultRangeValue ?? { from: "", to: undefined });
 				setOpen(false);
 			});
 		};
 		form.addEventListener("reset", onReset);
 		return () => form.removeEventListener("reset", onReset);
-	}, [defaultValue, value]);
+	}, [defaultRangeValue, defaultValue, mode, rangeValue, value]);
 
 	const weekdayLabels = useMemo(() => {
 		const formatter = new Intl.DateTimeFormat(locale, { weekday: "short", timeZone: "UTC" });
@@ -332,7 +450,7 @@ export function DatePicker({
 			}
 		}
 		const enabled = (date: Civil | null) =>
-			Boolean(date && date.y >= 1 && withinBounds(formatIso(date), min, max));
+			Boolean(date && date.y >= 1 && dateSelectable(formatIso(date), min, max, isDisabledDate));
 		if (!enabled(days[index] ?? null)) {
 			const inMonth = days.findIndex((date) => date?.m === month.m && enabled(date));
 			const any = days.findIndex((date) => enabled(date));
@@ -343,17 +461,48 @@ export function DatePicker({
 			focusDay.current = false;
 			dayRefs.current[index]?.focus();
 		}
-	}, [open, submitted, timeZone, days, month.m, min, max]);
+	}, [open, submitted, timeZone, days, month.m, min, max, isDisabledDate]);
 
 	const previousMonth = shiftMonth(month, -1);
 	const followingMonth = shiftMonth(month, 1);
-	const label = selectedDate
-		? (formatDate?.(civilDate(selectedDate)) ??
-			formatCivil(selectedDate, locale, { dateStyle: "medium" }))
-		: "Pick a date";
+	const selectedRange = rangeValue ?? uncontrolledRange;
+	const rangeFrom = mode === "range" ? selectedRange.from : "";
+	const rangeTo = mode === "range" ? selectedRange.to : undefined;
+	const label = formatTriggerLabel({
+		mode,
+		selectedDate,
+		rangeFrom,
+		rangeTo,
+		locale,
+		formatDate,
+	});
+
+	function selectable(iso: string) {
+		return dateSelectable(iso, min, max, isDisabledDate);
+	}
 
 	function commit(next: string) {
-		if (disabled || readOnly) {
+		if (disabled || readOnly || !selectable(next)) {
+			return;
+		}
+		if (mode === "range") {
+			const current = rangeValue ?? uncontrolledRange;
+			const nextRange =
+				!current.from || current.to
+					? { from: next }
+					: compareCivil(
+								parseIso(next) ?? { y: 1, m: 1, d: 1 },
+								parseIso(current.from) ?? { y: 1, m: 1, d: 1 },
+							) < 0
+						? { from: next, to: current.from }
+						: { from: current.from, to: next };
+			if (rangeValue === undefined) {
+				setUncontrolledRange(nextRange);
+			}
+			onRangeChange?.(nextRange);
+			if (nextRange.to) {
+				setOpen(false);
+			}
 			return;
 		}
 		if (value === undefined) {
@@ -361,6 +510,32 @@ export function DatePicker({
 		}
 		setOpen(false);
 		onChange?.(next);
+	}
+
+	function applyPreset(preset: DatePickerPreset) {
+		if (disabled || readOnly) {
+			return;
+		}
+		if (typeof preset.value === "string") {
+			if (mode === "range") {
+				const nextRange = { from: preset.value, to: preset.value };
+				if (rangeValue === undefined) {
+					setUncontrolledRange(nextRange);
+				}
+				onRangeChange?.(nextRange);
+				setOpen(false);
+				return;
+			}
+			commit(preset.value);
+			return;
+		}
+		if (mode === "range") {
+			if (rangeValue === undefined) {
+				setUncontrolledRange(preset.value);
+			}
+			onRangeChange?.(preset.value);
+			setOpen(false);
+		}
 	}
 
 	return (
@@ -380,11 +555,11 @@ export function DatePicker({
 		>
 			<input
 				ref={hiddenRef}
-				type="date"
+				type={mode === "range" ? "text" : "date"}
 				name={name}
 				required={required}
-				min={min}
-				max={max}
+				min={mode === "range" ? undefined : min}
+				max={mode === "range" ? undefined : max}
 				className="sr-only mb-2 h-7"
 				style={{
 					position: "absolute",
@@ -393,7 +568,7 @@ export function DatePicker({
 					overflow: "hidden",
 					clip: "rect(0, 0, 0, 0)",
 				}}
-				value={submitted}
+				value={mode === "range" ? [rangeFrom, rangeTo].filter(Boolean).join("/") : submitted}
 				onChange={() => undefined}
 				disabled={disabled}
 				aria-hidden="true"
@@ -410,7 +585,9 @@ export function DatePicker({
 					onFocus={onFocus as ComponentProps<"button">["onFocus"]}
 					onBlur={onBlur as ComponentProps<"button">["onBlur"]}
 					aria-labelledby={ariaLabelledBy}
-					aria-label={ariaLabel ? (selectedDate ? `${ariaLabel}: ${label}` : ariaLabel) : undefined}
+					aria-label={
+						ariaLabel ? (label === "Pick a date" ? ariaLabel : `${ariaLabel}: ${label}`) : undefined
+					}
 					aria-describedby={ariaDescribedBy}
 					aria-invalid={ariaInvalid}
 					className={cn("justify-start font-normal", className)}
@@ -445,6 +622,22 @@ export function DatePicker({
 					});
 				}}
 			>
+				{presets && presets.length > 0 ? (
+					<div className="mb-2 flex flex-wrap gap-1">
+						{presets.map((preset) => (
+							<Button
+								key={preset.label}
+								type="button"
+								variant="ghost"
+								className="h-7 px-2 text-xs"
+								disabled={disabled || readOnly}
+								onClick={() => applyPreset(preset)}
+							>
+								{preset.label}
+							</Button>
+						))}
+					</div>
+				) : null}
 				<div className="mb-2 flex items-center justify-between gap-2">
 					<Button
 						type="button"
@@ -505,7 +698,7 @@ export function DatePicker({
 											? 7
 											: -7;
 							const next = addDays(current, delta);
-							if (!next || next.y < 1 || !withinBounds(formatIso(next), min, max)) {
+							if (!next || next.y < 1 || !selectable(formatIso(next))) {
 								return;
 							}
 							if (next.y !== month.y || next.m !== month.m) {
@@ -524,7 +717,7 @@ export function DatePicker({
 						if (event.key === "Enter" || event.key === " ") {
 							event.preventDefault();
 							const iso = formatIso(current);
-							if (current.y >= 1 && withinBounds(iso, min, max)) {
+							if (current.y >= 1 && selectable(iso)) {
 								commit(iso);
 							}
 						}
@@ -552,7 +745,18 @@ export function DatePicker({
 						}
 						const iso = formatIso(date);
 						const inMonth = date.m === month.m;
-						const inRange = date.y >= 1 && withinBounds(iso, min, max);
+						const inRange = date.y >= 1 && selectable(iso);
+						const fromDate = rangeFrom ? parseIso(rangeFrom) : null;
+						const toDate = rangeTo ? parseIso(rangeTo) : null;
+						const thisDate = parseIso(iso);
+						const inSelectedRange = Boolean(
+							fromDate &&
+								toDate &&
+								thisDate &&
+								compareCivil(thisDate, fromDate) >= 0 &&
+								compareCivil(thisDate, toDate) <= 0,
+						);
+						const isRangeEdge = iso === rangeFrom || iso === rangeTo;
 						return (
 							<button
 								type="button"
@@ -562,15 +766,20 @@ export function DatePicker({
 								}}
 								tabIndex={index === focusIndex ? 0 : -1}
 								aria-label={iso}
-								aria-pressed={Boolean(submitted) && iso === submitted}
+								aria-pressed={
+									mode === "range"
+										? iso === rangeFrom || iso === rangeTo
+										: Boolean(submitted) && iso === submitted
+								}
 								disabled={disabled || readOnly || !inRange}
 								className={cn(
 									CALENDAR_BUTTON,
 									"flex h-8 w-8 items-center justify-center rounded-basalt-md text-sm",
 									inMonth ? "text-basalt-foreground" : "text-basalt-muted-foreground",
 									inRange && "hover:bg-basalt-accent",
+									inSelectedRange && !isRangeEdge && "bg-basalt-accent",
 									inRange &&
-										iso === submitted &&
+										(mode === "range" ? isRangeEdge : iso === submitted) &&
 										"bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary/90",
 								)}
 								onClick={() => inRange && commit(iso)}

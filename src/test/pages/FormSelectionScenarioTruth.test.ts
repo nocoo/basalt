@@ -78,6 +78,9 @@ describe("form selection scenario truth", () => {
 		]);
 		expect(UI_EXAMPLES["date-picker"]?.map((item) => item.id)).toEqual([
 			"date-picker-single-date-selection",
+			"date-picker-disabled-dates",
+			"date-picker-presets",
+			"date-picker-range",
 		]);
 		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
 		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([

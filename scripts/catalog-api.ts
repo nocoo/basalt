@@ -325,6 +325,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "Autocomplete",
 	},
 	{
+		slug: "date-picker",
+		sourceFile: "packages/basalt/src/components/date-picker.tsx",
+		propsType: "DatePickerProps",
+		surface: "DatePicker",
+	},
+	{
 		slug: "segment-control",
 		sourceFile: "packages/basalt/src/components/segment-control.tsx",
 		propsType: "SegmentControlProps",

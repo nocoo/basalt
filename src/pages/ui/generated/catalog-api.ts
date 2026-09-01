@@ -6,6 +6,7 @@ import { API as buttonApi } from "./catalog-api/button";
 import { API as checkboxApi } from "./catalog-api/checkbox";
 import { API as comboboxApi } from "./catalog-api/combobox";
 import { API as confirmDialogApi } from "./catalog-api/confirm-dialog";
+import { API as datePickerApi } from "./catalog-api/date-picker";
 import { API as fieldApi } from "./catalog-api/field";
 import { API as inputApi } from "./catalog-api/input";
 import { API as inputAreaApi } from "./catalog-api/input-area";
@@ -35,6 +36,7 @@ export const CATALOG_API = {
 	checkbox: checkboxApi,
 	combobox: comboboxApi,
 	"confirm-dialog": confirmDialogApi,
+	"date-picker": datePickerApi,
 	field: fieldApi,
 	input: inputApi,
 	"input-area": inputAreaApi,

@@ -555,4 +555,68 @@ describe("DatePicker", () => {
 			"hover:bg-basalt-accent",
 		);
 	});
+
+	it("disables dates rejected by isDisabledDate", async () => {
+		const onChange = vi.fn();
+		render(
+			<DatePicker
+				defaultValue="2024-01-15"
+				isDisabledDate={(iso) => iso === "2024-01-16"}
+				onChange={onChange}
+				aria-label="Date"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Date: Jan 15, 2024" }));
+		expect(await screen.findByRole("button", { name: "2024-01-16" })).toBeDisabled();
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-16" }));
+		expect(onChange).not.toHaveBeenCalled();
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-17" }));
+		expect(onChange).toHaveBeenCalledWith("2024-01-17");
+	});
+
+	it("applies a single-date preset", async () => {
+		const onChange = vi.fn();
+		render(
+			<DatePicker
+				presets={[{ label: "New year", value: "2026-01-01" }]}
+				onChange={onChange}
+				aria-label="Date"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Date" }));
+		fireEvent.click(await screen.findByRole("button", { name: "New year" }));
+		expect(onChange).toHaveBeenCalledWith("2026-01-01");
+	});
+
+	it("selects a range across two days", async () => {
+		const onRangeChange = vi.fn();
+		render(
+			<DatePicker
+				mode="range"
+				defaultValue="2024-01-15"
+				onRangeChange={onRangeChange}
+				aria-label="Stay"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Stay" }));
+		fireEvent.click(await screen.findByRole("button", { name: "2024-01-10" }));
+		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-10" });
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-12" }));
+		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-10", to: "2024-01-12" });
+	});
+
+	it("applies a range preset", async () => {
+		const onRangeChange = vi.fn();
+		render(
+			<DatePicker
+				mode="range"
+				presets={[{ label: "Weekend", value: { from: "2024-01-13", to: "2024-01-14" } }]}
+				onRangeChange={onRangeChange}
+				aria-label="Stay"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Stay" }));
+		fireEvent.click(await screen.findByRole("button", { name: "Weekend" }));
+		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-13", to: "2024-01-14" });
+	});
 });

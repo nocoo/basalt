@@ -3,6 +3,7 @@ import forms from "./catalog-content/families/forms";
 import { AUTOCOMPLETE_EXAMPLES } from "./examples/autocomplete";
 import { CHECKBOX_EXAMPLES } from "./examples/checkbox";
 import { COMBOBOX_EXAMPLES } from "./examples/combobox";
+import { DATE_PICKER_EXAMPLES } from "./examples/date-picker";
 import { FIELD_EXAMPLES } from "./examples/field";
 import { INPUT_EXAMPLES } from "./examples/input";
 import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
@@ -15,6 +16,7 @@ import { SWITCH_EXAMPLES } from "./examples/switch";
 import { API as autocompleteApi } from "./generated/catalog-api/autocomplete";
 import { API as checkboxApi } from "./generated/catalog-api/checkbox";
 import { API as comboboxApi } from "./generated/catalog-api/combobox";
+import { API as datePickerApi } from "./generated/catalog-api/date-picker";
 import { API as fieldApi } from "./generated/catalog-api/field";
 import { API as inputApi } from "./generated/catalog-api/input";
 import { API as inputAreaApi } from "./generated/catalog-api/input-area";
@@ -57,6 +59,7 @@ const SOURCE_BACKED = {
 	select: SELECT_EXAMPLES,
 	combobox: COMBOBOX_EXAMPLES,
 	autocomplete: AUTOCOMPLETE_EXAMPLES,
+	"date-picker": DATE_PICKER_EXAMPLES,
 } as const;
 
 describe("forms catalog content family", () => {
@@ -87,6 +90,7 @@ describe("forms catalog content family", () => {
 		expect(forms.select?.examples).toBe(SELECT_EXAMPLES);
 		expect(forms.combobox?.examples).toBe(COMBOBOX_EXAMPLES);
 		expect(forms.autocomplete?.examples).toBe(AUTOCOMPLETE_EXAMPLES);
+		expect(forms["date-picker"]?.examples).toBe(DATE_PICKER_EXAMPLES);
 		expect(forms.field?.docs.api).toBe(fieldApi);
 		expect(forms.input?.docs.api).toBe(inputApi);
 		expect(forms["input-area"]?.docs.api).toBe(inputAreaApi);
@@ -98,6 +102,7 @@ describe("forms catalog content family", () => {
 		expect(forms.select?.docs.api).toBe(selectApi);
 		expect(forms.combobox?.docs.api).toBe(comboboxApi);
 		expect(forms.autocomplete?.docs.api).toBe(autocompleteApi);
+		expect(forms["date-picker"]?.docs.api).toBe(datePickerApi);
 		expect(forms["segment-control"]?.examples).toBe(SEGMENT_CONTROL_EXAMPLES);
 		expect(forms["segment-control"]?.docs.api).toBe(segmentControlApi);
 		for (const [slug, examples] of Object.entries(SOURCE_BACKED)) {
@@ -252,12 +257,12 @@ describe("forms catalog content family", () => {
 			{ id: "autocomplete-disabled", title: "Disabled" },
 			{ id: "autocomplete-controlled-and-reset", title: "Controlled and reset" },
 		]);
-		expect(forms["date-picker"]?.examples).toHaveLength(1);
-		expect(forms["date-picker"]?.examples[0]).toMatchObject({
-			id: "date-picker-single-date-selection",
-			title: "Single Date Selection",
-			code: '<DatePicker aria-label="Date" />',
-		});
+		expect(forms["date-picker"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "date-picker-single-date-selection", title: "Single Date Selection" },
+			{ id: "date-picker-disabled-dates", title: "Disabled dates" },
+			{ id: "date-picker-presets", title: "Presets" },
+			{ id: "date-picker-range", title: "Range" },
+		]);
 		expect(forms.slider?.examples.map((example) => example.id)).toEqual([
 			"slider-default",
 			"slider-disabled",
