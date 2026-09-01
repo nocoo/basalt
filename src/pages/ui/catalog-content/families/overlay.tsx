@@ -70,7 +70,9 @@ import type { ReactNode } from "react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
 import { provenanceFromLegacy } from "../../catalog-source";
+import { CONFIRM_DIALOG_EXAMPLES } from "../../examples/confirm-dialog";
 import { TOOLTIP_EXAMPLES } from "../../examples/tooltip";
+import { API as confirmDialogApi } from "../../generated/catalog-api/confirm-dialog";
 import { API as tooltipApi } from "../../generated/catalog-api/tooltip";
 
 function usage(name: string, from: string, sample: string, extraImports = ""): string {
@@ -1066,5 +1068,24 @@ export default function Example() {
 				),
 			},
 		],
+	},
+	"confirm-dialog": {
+		docs: {
+			description:
+				"A controlled confirmation dialog with explicit loading and a Promise-based hook.",
+			usage: usage(
+				"ConfirmDialog",
+				"@nocoo/basalt/components/confirm-dialog",
+				'<ConfirmDialog open={open} title="Delete project?" description="This cannot be undone." onOpenChange={setOpen} onConfirm={onConfirm} />',
+			),
+			variants: ["default", "destructive"],
+			api: confirmDialogApi,
+			provenance: provenanceFromLegacy({
+				repo: "meowth",
+				sha: "bb02d5a18e00",
+				file: "apps/dashboard/src/components/ui/confirm-dialog.tsx",
+			}),
+		},
+		examples: CONFIRM_DIALOG_EXAMPLES,
 	},
 });

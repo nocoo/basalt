@@ -22,6 +22,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	collapsible: "overlay",
 	combobox: "forms",
 	"command-palette": "navigation",
+	"confirm-dialog": "overlay",
 	"context-menu": "overlay",
 	"custom-chart": "charts",
 	"data-table": "data-layout",

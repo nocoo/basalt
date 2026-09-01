@@ -3,6 +3,7 @@
 import { API as basaltMarkApi } from "./catalog-api/basalt-mark";
 import { API as buttonApi } from "./catalog-api/button";
 import { API as checkboxApi } from "./catalog-api/checkbox";
+import { API as confirmDialogApi } from "./catalog-api/confirm-dialog";
 import { API as fieldApi } from "./catalog-api/field";
 import { API as inputApi } from "./catalog-api/input";
 import { API as inputAreaApi } from "./catalog-api/input-area";
@@ -28,6 +29,7 @@ export const CATALOG_API = {
 	"basalt-mark": basaltMarkApi,
 	button: buttonApi,
 	checkbox: checkboxApi,
+	"confirm-dialog": confirmDialogApi,
 	field: fieldApi,
 	input: inputApi,
 	"input-area": inputAreaApi,

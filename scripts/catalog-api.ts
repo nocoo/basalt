@@ -273,6 +273,18 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "StatStripProps",
 		surface: "StatStrip",
 	},
+	{
+		slug: "confirm-dialog",
+		sourceFile: "packages/basalt/src/components/confirm-dialog.tsx",
+		propsType: "ConfirmDialogProps",
+		surface: "ConfirmDialog",
+	},
+	{
+		slug: "confirm-dialog",
+		sourceFile: "packages/basalt/src/components/confirm-dialog.tsx",
+		propsType: "UseConfirmOptions",
+		surface: "useConfirm",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

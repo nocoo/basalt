@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import overlay from "./catalog-content/families/overlay";
+import { CONFIRM_DIALOG_EXAMPLES } from "./examples/confirm-dialog";
 import { TOOLTIP_EXAMPLES } from "./examples/tooltip";
+import { API as confirmDialogApi } from "./generated/catalog-api/confirm-dialog";
 import { API as tooltipApi } from "./generated/catalog-api/tooltip";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
@@ -15,12 +17,13 @@ const OVERLAY_SLUGS = [
 	"hover-card",
 	"sheet",
 	"collapsible",
+	"confirm-dialog",
 ] as const;
 
 describe("overlay catalog content family", () => {
-	it("owns exactly ten migrated slugs and eighty-six generated owners", () => {
+	it("owns exactly eleven slugs and eighty-eight generated owners", () => {
 		expect(Object.keys(overlay)).toEqual([...OVERLAY_SLUGS]);
-		expect(Object.keys(overlay)).toHaveLength(10);
+		expect(Object.keys(overlay)).toHaveLength(11);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "overlay")
@@ -33,12 +36,14 @@ describe("overlay catalog content family", () => {
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "forms"),
 		).toHaveLength(16);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(87);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(88);
 	});
 
 	it("keeps tooltip examples and generated API shard by reference", () => {
 		expect(overlay.tooltip?.examples).toBe(TOOLTIP_EXAMPLES);
 		expect(overlay.tooltip?.docs.api).toBe(tooltipApi);
+		expect(overlay["confirm-dialog"]?.examples).toBe(CONFIRM_DIALOG_EXAMPLES);
+		expect(overlay["confirm-dialog"]?.docs.api).toBe(confirmDialogApi);
 		expect(overlay.tooltip?.examples.map((example) => example.id)).toEqual(
 			TOOLTIP_EXAMPLES.map((example) => example.id),
 		);
@@ -100,6 +105,16 @@ describe("overlay catalog content family", () => {
 		expect(overlay["context-menu"]?.examples[0]?.id).toBe("context-menu-default");
 		expect(overlay["hover-card"]?.examples[0]?.id).toBe("hover-card-default");
 		expect(overlay.sheet?.examples[0]?.id).toBe("sheet-default");
+		expect(overlay["confirm-dialog"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "confirm-dialog-controlled-async-loading", title: "Controlled async loading" },
+			{ id: "confirm-dialog-promise-result", title: "Promise result" },
+		]);
+		expect(overlay["confirm-dialog"]?.docs.provenance).toEqual({
+			owner: "nocoo",
+			repo: "meowth",
+			ref: "bb02d5a18e00",
+			file: "apps/dashboard/src/components/ui/confirm-dialog.tsx",
+		});
 		for (const slug of OVERLAY_SLUGS) {
 			const content = overlay[slug];
 			expect(content?.docs.description.length, slug).toBeGreaterThan(0);

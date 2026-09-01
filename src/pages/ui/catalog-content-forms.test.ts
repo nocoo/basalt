@@ -66,7 +66,7 @@ describe("forms catalog content family", () => {
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "foundation"),
 		).toHaveLength(12);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(87);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(88);
 	});
 
 	it("keeps source-backed example owners and generated API shards by reference", () => {

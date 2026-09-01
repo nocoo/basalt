@@ -112,6 +112,13 @@ export const CATALOG: CatalogEntry[] = [
 	{ slug: "accordion", name: "Accordion", kind: "catalog", category: "component" },
 	{ slug: "dialog", name: "Dialog", kind: "stable", category: "component" },
 	{ slug: "alert-dialog", name: "AlertDialog", kind: "stable", category: "component" },
+	{
+		slug: "confirm-dialog",
+		name: "ConfirmDialog",
+		kind: "stable",
+		category: "component",
+		navName: "Confirm Dialog",
+	},
 	{ slug: "popover", name: "Popover", kind: "stable", category: "component" },
 	{
 		slug: "dropdown-menu",

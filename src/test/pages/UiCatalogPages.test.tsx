@@ -77,22 +77,22 @@ describe("ui catalog", () => {
 
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(99);
-		expect(new Set(slugs).size).toBe(99);
+		expect(slugs).toHaveLength(100);
+		expect(new Set(slugs).size).toBe(100);
 	});
 
 	it("renders the categorized index with orthogonal release and page states", () => {
 		renderCatalog("/ui");
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Component library" })).toBeInTheDocument();
-		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("87 / 90 ready");
+		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("88 / 91 ready");
 
 		for (const [index, group] of CATALOG_INDEX_GROUPS.entries()) {
 			const section = screen.getByRole("region", { name: group.label });
 			expect(within(section).getByText(`${group.items.length} items`)).toBeInTheDocument();
-			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([63, 24, 3][index]);
+			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([64, 24, 3][index]);
 		}
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(90);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(91);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
 
@@ -195,7 +195,7 @@ describe("ui catalog", () => {
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
 		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("87 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("88 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",
@@ -218,8 +218,8 @@ describe("ui catalog", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: "Reset filters" }));
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveFocus();
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("90 results");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(90);
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("91 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(91);
 		expect(screen.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
@@ -332,6 +332,10 @@ describe("ui catalog", () => {
 	it("does not cite meowth or pika as catalog sources", () => {
 		for (const [slug, docs] of Object.entries(CATALOG_DOCS)) {
 			expect(docs.implementationSource.repo, slug).not.toMatch(/^(meowth|pika)$/);
+			if (slug === "confirm-dialog") {
+				expect(docs.provenance?.repo, slug).toBe("meowth");
+				continue;
+			}
 			expect(docs.provenance?.repo, slug).not.toMatch(/^(meowth|pika)$/);
 		}
 	});
@@ -1014,6 +1018,67 @@ describe("ui catalog", () => {
 		expect(markdown).toContain("- items (StatStripItem[], required, default —)");
 		expect(markdown).toContain("- loading (boolean, optional, default false)");
 		for (const scenario of UI_EXAMPLES["stat-strip"] ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).not.toContain("- children (");
+	});
+
+	it("keeps ConfirmDialog docs, generated API, source examples, and Copy page aligned", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		const docs = CATALOG_DOCS["confirm-dialog"];
+		expect(docs?.api).toBe(CATALOG_API["confirm-dialog"]);
+		expect(docs).toMatchObject({
+			description:
+				"A controlled confirmation dialog with explicit loading and a Promise-based hook.",
+			variants: ["default", "destructive"],
+		});
+		expect(CATALOG_API["confirm-dialog"]?.map((surface) => surface.name)).toEqual([
+			"ConfirmDialog",
+			"useConfirm",
+		]);
+		expect(UI_EXAMPLES["confirm-dialog"]?.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "confirm-dialog-controlled-async-loading", title: "Controlled async loading" },
+			{ id: "confirm-dialog-promise-result", title: "Promise result" },
+		]);
+
+		renderCatalog("/ui/confirm-dialog");
+		const api = document.getElementById("api-reference");
+		expect(api?.querySelectorAll("h3").length).toBe(2);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(14);
+		const hero = document.querySelector(
+			'[data-hero-scenario="confirm-dialog-controlled-async-loading"]',
+		);
+		expect(hero).toBeTruthy();
+		if (!hero) {
+			throw new Error("missing ConfirmDialog hero");
+		}
+		expect(
+			within(hero as HTMLElement).getByRole("button", { name: "Delete project" }),
+		).toBeInTheDocument();
+		const promiseResult = document.querySelector('[data-scenario="confirm-dialog-promise-result"]');
+		expect(promiseResult).toBeTruthy();
+		if (!promiseResult) {
+			throw new Error("missing ConfirmDialog promise example");
+		}
+		expect(
+			within(promiseResult as HTMLElement).getByRole("button", { name: "Archive report" }),
+		).toBeInTheDocument();
+		for (const scenario of UI_EXAMPLES["confirm-dialog"] ?? []) {
+			expect(scenario.code).toContain("@nocoo/basalt/components/confirm-dialog");
+			expect(scenario.code).toContain("export default function");
+			expect(document.querySelector(`[data-scenario="${scenario.id}"]`)).toBeTruthy();
+		}
+
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### ConfirmDialog");
+		expect(markdown).toContain("### useConfirm");
+		expect(markdown).toContain("- onConfirm (() => void | Promise<void>, required, default —)");
+		expect(markdown).toContain("- title (React.ReactNode, required, default —)");
+		for (const scenario of UI_EXAMPLES["confirm-dialog"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
 		expect(markdown).not.toContain("- children (");

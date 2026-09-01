@@ -42,6 +42,7 @@ export const CATALOG_PAGE_STATUS = {
 	accordion: "ready",
 	dialog: "ready",
 	"alert-dialog": "ready",
+	"confirm-dialog": "ready",
 	popover: "ready",
 	"dropdown-menu": "ready",
 	"context-menu": "ready",

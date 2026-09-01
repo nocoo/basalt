@@ -24,6 +24,7 @@ export {
 	CommandSeparator,
 	CommandShortcut,
 } from "./components/command-palette";
+export { ConfirmDialog, useConfirm } from "./components/confirm-dialog";
 export {
 	Dialog,
 	DialogClose,

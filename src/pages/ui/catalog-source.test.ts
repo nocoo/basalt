@@ -145,6 +145,13 @@ describe("catalog source contract", () => {
 			"items",
 			"loading",
 		]);
+		expect(implementationFileFor(entry("confirm-dialog"))).toBe(
+			"packages/basalt/src/components/confirm-dialog.tsx",
+		);
+		expect(CATALOG_API["confirm-dialog"]?.map((surface) => surface.name)).toEqual([
+			"ConfirmDialog",
+			"useConfirm",
+		]);
 		expect(implementationFileFor(entry("link-button"))).toBe(
 			"packages/basalt/src/components/button.tsx",
 		);

@@ -33,10 +33,10 @@ describe("catalog page content loader", () => {
 		expect(source).not.toMatch(/const\s+\w+Promise\s*=\s*loadCatalogContentFamily/);
 	});
 
-	it("uses the generated 87 ready / 12 planned status truth", () => {
+	it("uses the generated 88 ready / 12 planned status truth", () => {
 		const statuses = CATALOG.map((entry) => catalogPageStatus(entry.slug));
-		expect(statuses).toHaveLength(99);
-		expect(statuses.filter((status) => status === "ready")).toHaveLength(87);
+		expect(statuses).toHaveLength(100);
+		expect(statuses.filter((status) => status === "ready")).toHaveLength(88);
 		expect(statuses.filter((status) => status === "planned")).toHaveLength(12);
 	});
 
@@ -93,6 +93,20 @@ describe("catalog page content loader", () => {
 			"segment-control-overflow-disabled",
 		]);
 		expect(loadFamily).toHaveBeenCalledWith("forms");
+	});
+
+	it("loads the ConfirmDialog owner from overlay", async () => {
+		const { loadCatalogPageContent } = await importLoader();
+		const content = await loadCatalogPageContent("confirm-dialog");
+		expect(content?.docs.api.map((surface) => surface.name)).toEqual([
+			"ConfirmDialog",
+			"useConfirm",
+		]);
+		expect(content?.examples.map((example) => example.id)).toEqual([
+			"confirm-dialog-controlled-async-loading",
+			"confirm-dialog-promise-result",
+		]);
+		expect(loadFamily).toHaveBeenCalledWith("overlay");
 	});
 
 	it("loads overlay family content without the legacy adapter", async () => {

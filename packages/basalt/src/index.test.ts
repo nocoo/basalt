@@ -24,6 +24,8 @@ describe("root barrel", () => {
 		expect(root.ScrollArea).toBeTruthy();
 		expect(root.SegmentControl).toBeTruthy();
 		expect(root.StatStrip).toBeTruthy();
+		expect(root.ConfirmDialog).toBeTruthy();
+		expect(root.useConfirm).toBeTypeOf("function");
 	});
 
 	it("omits unapproved layout names from the frozen root surface", () => {
