@@ -1,5 +1,7 @@
-import { type ReactNode, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../utils/cn";
+import { Pagination } from "./pagination";
+import { SkeletonLine } from "./skeleton-line";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
 
 export type DataTableColumn<T> = {
@@ -141,20 +143,94 @@ function filterSource<T>(column: DataTableColumn<T>, row: T): string {
 	return "";
 }
 
+export type DataTableProps<T> = {
+	/**
+	 * Rows to render.
+	 */
+	data: T[];
+	/**
+	 * Column descriptors.
+	 */
+	columns: DataTableColumn<T>[];
+	/**
+	 * Filter query matched against column values.
+	 * @default ""
+	 */
+	filter?: string;
+	/**
+	 * Replace rows with a loading placeholder.
+	 * @default false
+	 */
+	loading?: boolean;
+	/**
+	 * Copy shown when no rows remain after filtering.
+	 * @default "No results"
+	 */
+	empty?: ReactNode;
+	/**
+	 * Controlled selected row ids.
+	 */
+	selected?: string[];
+	/**
+	 * Uncontrolled initial selected row ids.
+	 */
+	defaultSelected?: string[];
+	/**
+	 * Called when selected row ids change.
+	 */
+	onSelectedChange?: (ids: string[]) => void;
+	/**
+	 * Allow more than one selected row.
+	 * @default false
+	 */
+	multiple?: boolean;
+	/**
+	 * Controlled 1-based page. Used with pageSize.
+	 */
+	page?: number;
+	/**
+	 * Uncontrolled initial page.
+	 * @default 1
+	 */
+	defaultPage?: number;
+	/**
+	 * Rows per page. Omit to show every row.
+	 */
+	pageSize?: number;
+	/**
+	 * Called when the page changes.
+	 */
+	onPageChange?: (page: number) => void;
+	/**
+	 * Stable id for a row.
+	 */
+	getRowId?: (row: T, index: number) => string;
+	/**
+	 * Additional classes for the table.
+	 */
+	className?: string;
+};
+
 export function DataTable<T>({
 	data,
 	columns,
 	filter = "",
+	loading = false,
+	empty = "No results",
+	selected,
+	defaultSelected,
+	onSelectedChange,
+	multiple = false,
+	page,
+	defaultPage = 1,
+	pageSize,
+	onPageChange,
 	getRowId,
 	className,
-}: {
-	data: T[];
-	columns: DataTableColumn<T>[];
-	filter?: string;
-	getRowId?: (row: T, index: number) => string;
-	className?: string;
-}) {
+}: DataTableProps<T>) {
 	const [sort, setSort] = useState<{ id: string; dir: "asc" | "desc" } | null>(null);
+	const [uncontrolledSelected, setUncontrolledSelected] = useState<string[]>(defaultSelected ?? []);
+	const [uncontrolledPage, setUncontrolledPage] = useState(defaultPage);
 	const rowIds = useRef(new WeakMap<object, string>());
 	const rowSeq = useRef(0);
 	const assignedKeys = useRef(new WeakMap<object, string[]>());
@@ -246,7 +322,7 @@ export function DataTable<T>({
 			const objectRow = isRefRow(row) ? row : null;
 			if (reserved) {
 				rememberKey(row, index, reserved, objectRow);
-				return { row, key: reserved };
+				return { row, key: reserved, selectId: getRowId?.(row, index) ?? reserved };
 			}
 			const isRepeat = occurrence > 0;
 			let key: string | undefined;
@@ -282,7 +358,7 @@ export function DataTable<T>({
 			}
 			used.add(key);
 			rememberKey(row, index, key, objectRow);
-			return { row, key };
+			return { row, key, selectId: getRowId?.(row, index) ?? key };
 		});
 		const filtered = query
 			? keyed.filter(({ row }) =>
@@ -324,49 +400,142 @@ export function DataTable<T>({
 		lastDupsByCanonical.current = rows.dups;
 	}, [rows]);
 
+	const selectable =
+		selected !== undefined || defaultSelected !== undefined || onSelectedChange !== undefined;
+	const selectedIds = selected ?? uncontrolledSelected;
+	const setSelectedIds = useCallback(
+		(next: string[]) => {
+			if (selected === undefined) {
+				setUncontrolledSelected(next);
+			}
+			onSelectedChange?.(next);
+		},
+		[onSelectedChange, selected],
+	);
+	const pageCount =
+		pageSize && pageSize > 0 ? Math.max(1, Math.ceil(rows.rows.length / pageSize)) : 1;
+	const resolvedPage = Math.min(pageCount, Math.max(1, page ?? uncontrolledPage));
+	const setResolvedPage = useCallback(
+		(next: number) => {
+			if (page === undefined) {
+				setUncontrolledPage(next);
+			}
+			onPageChange?.(next);
+		},
+		[onPageChange, page],
+	);
+	const paged =
+		pageSize && pageSize > 0
+			? rows.rows.slice((resolvedPage - 1) * pageSize, resolvedPage * pageSize)
+			: rows.rows;
+	const colCount = columns.length + (selectable ? 1 : 0);
+	const toggleSelected = (id: string) => {
+		if (multiple) {
+			setSelectedIds(
+				selectedIds.includes(id) ? selectedIds.filter((item) => item !== id) : [...selectedIds, id],
+			);
+			return;
+		}
+		setSelectedIds(selectedIds.includes(id) ? [] : [id]);
+	};
+
 	return (
-		<Table className={cn("w-full", className)}>
-			<TableHeader>
-				<TableRow>
-					{columns.map((column) => (
-						<TableHead
-							key={column.id}
-							aria-sort={
-								sort?.id === column.id ? (sort.dir === "asc" ? "ascending" : "descending") : "none"
-							}
-						>
-							<button
-								type="button"
-								className="appearance-none border-0 bg-transparent p-0 font-inherit text-inherit font-medium cursor-pointer"
-								onClick={() =>
-									setSort((current) =>
-										current?.id === column.id && current.dir === "asc"
-											? { id: column.id, dir: "desc" }
-											: { id: column.id, dir: "asc" },
-									)
+		<div className="flex flex-col gap-3">
+			<Table className={cn("w-full", className)} aria-busy={loading || undefined}>
+				<TableHeader>
+					<TableRow>
+						{selectable ? (
+							<TableHead>
+								<span className="sr-only">Select</span>
+							</TableHead>
+						) : null}
+						{columns.map((column) => (
+							<TableHead
+								key={column.id}
+								aria-sort={
+									sort?.id === column.id
+										? sort.dir === "asc"
+											? "ascending"
+											: "descending"
+										: "none"
 								}
 							>
-								{column.header}
-								{sort?.id === column.id ? (sort.dir === "asc" ? " ↑" : " ↓") : ""}
-							</button>
-						</TableHead>
-					))}
-				</TableRow>
-			</TableHeader>
-			<TableBody>
-				{rows.rows.map(({ row, key }) => (
-					<TableRow key={key}>
-						{columns.map((column) => {
-							const cell = column.accessor(row);
-							return (
-								<TableCell key={column.id}>
-									{typeof cell === "bigint" ? String(cell) : cell}
-								</TableCell>
-							);
-						})}
+								<button
+									type="button"
+									className="appearance-none border-0 bg-transparent p-0 font-inherit text-inherit font-medium cursor-pointer"
+									onClick={() =>
+										setSort((current) =>
+											current?.id === column.id && current.dir === "asc"
+												? { id: column.id, dir: "desc" }
+												: { id: column.id, dir: "asc" },
+										)
+									}
+								>
+									{column.header}
+									{sort?.id === column.id ? (sort.dir === "asc" ? " ↑" : " ↓") : ""}
+								</button>
+							</TableHead>
+						))}
 					</TableRow>
-				))}
-			</TableBody>
-		</Table>
+				</TableHeader>
+				<TableBody>
+					{loading ? (
+						<TableRow>
+							<TableCell colSpan={colCount}>
+								<div role="status" className="flex flex-col gap-2 py-2">
+									<SkeletonLine />
+									<SkeletonLine />
+									<SkeletonLine />
+								</div>
+							</TableCell>
+						</TableRow>
+					) : paged.length === 0 ? (
+						<TableRow>
+							<TableCell colSpan={colCount}>
+								<div role="status">{empty}</div>
+							</TableCell>
+						</TableRow>
+					) : (
+						paged.map(({ row, key, selectId }) => {
+							const isSelected = selectedIds.includes(selectId);
+							return (
+								<TableRow
+									key={key}
+									variant={isSelected ? "selected" : "default"}
+									aria-selected={selectable ? isSelected : undefined}
+								>
+									{selectable ? (
+										<TableCell>
+											<input
+												type="checkbox"
+												checked={isSelected}
+												aria-label={`Select ${selectId}`}
+												onChange={() => toggleSelected(selectId)}
+											/>
+										</TableCell>
+									) : null}
+									{columns.map((column) => {
+										const cell = column.accessor(row);
+										return (
+											<TableCell key={column.id}>
+												{typeof cell === "bigint" ? String(cell) : cell}
+											</TableCell>
+										);
+									})}
+								</TableRow>
+							);
+						})
+					)}
+				</TableBody>
+			</Table>
+			{pageSize && pageSize > 0 ? (
+				<Pagination
+					page={resolvedPage}
+					pageCount={pageCount}
+					disabled={loading}
+					onPageChange={setResolvedPage}
+				/>
+			) : null}
+		</div>
 	);
 }

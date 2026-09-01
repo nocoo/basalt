@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { DataTable } from "./data-table";
 
 const rows = [
@@ -1004,6 +1004,44 @@ describe("DataTable", () => {
 		expect(screen.getByText("A")).toBeInTheDocument();
 		expect(screen.getByText("10")).toBeInTheDocument();
 		expect(screen.queryByText("B")).not.toBeInTheDocument();
+	});
+
+	it("shows a loading status instead of rows", () => {
+		render(<DataTable data={rows} columns={columns} loading />);
+		expect(screen.getByRole("status")).toBeInTheDocument();
+		expect(screen.getByRole("table")).toHaveAttribute("aria-busy");
+		expect(screen.queryByText("Zed")).not.toBeInTheDocument();
+	});
+
+	it("shows empty copy when no rows remain", () => {
+		render(<DataTable data={[]} columns={columns} empty="Nothing here" />);
+		expect(screen.getByRole("status")).toHaveTextContent("Nothing here");
+	});
+
+	it("selects a row and reports the id", () => {
+		const onSelectedChange = vi.fn();
+		render(
+			<DataTable
+				data={rows}
+				columns={columns}
+				getRowId={(row) => row.name}
+				onSelectedChange={onSelectedChange}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("checkbox", { name: "Select Amy" }));
+		expect(onSelectedChange).toHaveBeenCalledWith(["Amy"]);
+		expect(screen.getByText("Amy").closest("tr")).toHaveAttribute("aria-selected", "true");
+	});
+
+	it("pages rows and moves with the pager", () => {
+		const onPageChange = vi.fn();
+		render(
+			<DataTable data={rows} columns={columns} pageSize={1} page={1} onPageChange={onPageChange} />,
+		);
+		expect(screen.getByText("Zed")).toBeInTheDocument();
+		expect(screen.queryByText("Amy")).not.toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Next page" }));
+		expect(onPageChange).toHaveBeenCalledWith(2);
 	});
 
 	it("keeps equal sort keys stable", () => {
