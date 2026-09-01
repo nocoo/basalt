@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中
-> 当前切片：S3F D087 — ConfirmDialog/useConfirm MVP；D086 StatStrip 已验收，D087 尚未规划或调度
-> 当前实现真值：`63e7e8c`（D086 StatStrip MVP + review fix）
+> 当前切片：S3F D087 — ConfirmDialog/useConfirm MVP；契约已冻结，等待通过 Herdr 下发
+> 当前实现真值：`63e7e8c`（D086 StatStrip MVP + review fix）；规划前基线为 `e8fccd8`
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
 
@@ -131,7 +131,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 完成（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062、S2A35 D063、S2A36 D064、S2A37 D065、S2A38 D066、S2A39 D067） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 完成（`eeb8c43`） | 不再平铺 88 个等权方块；placeholder 不可达 |
-| S3 | 通用组合地基 | 执行中（7 个 MVP 已完成 5 个：S3A D082、S3B D083、S3C D084、S3D D085、S3E D086；S3F D087 尚未规划） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
+| S3 | 通用组合地基 | 执行中（7 个 MVP 已完成 5 个：S3A D082、S3B D083、S3C D084、S3D D085、S3E D086；S3F D087 契约已冻结） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 待办 | 泛型、group/multiple/loading/error/range + browser 门完整 |
 | S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 待办 | compound、焦点、键盘、mobile、resize/scroll 状态完整 |
@@ -759,6 +759,16 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    StatStrip 作为无 optional peer 的 stable component 加入 root barrel 和 CATALOG，由 data-layout family 持有；新增 `Overview` 与 `Loading values` 两份 source-backed module，docs、API 表与 Copy page 只消费同一个 generated `stat-strip` shard。provenance 精确记录只读参考 `nocoo/ai-arsenal@78114d43df59` 的 `src/components/ui/page-header.tsx`，implementation source 自然指向当前 Basalt 文件。CATALOG 预期从 98 增至 99，Components/Charts/Blocks 从 `62 / 24 / 3` 增至 `63 / 24 / 3`，Ready/Planned 从 `86 / 12` 增至 `87 / 12`，首页从 89 增至 90 卡，data-layout 从 5 增至 6 owner、7 增至 9 scenarios，generated API shard 从 22 增至 23；其它 86 个 owner、12 个 planned slug、已有 scenario 和 7-family 边界不得漂移。
 
    实现保持在上述边界内：新增 StatStrip、单测与两份 source-backed example，并只修改 root/catalog/data-layout/generator/直接计数测试及生成产物；其它 package 组件、Dashboard 业务、tokens、依赖/lock、routes、consumer、coverage/Husky、browser timeout 与后续组件均未改。Codex review 发现初版的 props spread 可让调用方以 `aria-busy={false}` 覆盖 loading；Grok 以独立两文件 follow-up 修复为 loading 强制 true、非 loading 保留调用方值并补回归测试，未 amend。三套 generator、focused、typecheck、Biome、日常全量、coverage、showcase build与 package build/types/pack 全绿；普通开发门未运行 Chromium。完整证据见 D086 日志；下一刀单独规划 ConfirmDialog/useConfirm。
+
+6. **S3F / D087 — ConfirmDialog/useConfirm MVP（契约冻结；尚未下发；实现真值基线 `63e7e8c`，规划前基线 `e8fccd8`）。** 新增 stable `@nocoo/basalt/components/confirm-dialog`，在既有 AlertDialog primitive 之上提供一个受控、高层确认流程，不修改或复制底层 overlay/focus/portal 实现。`ConfirmDialogProps` 精确公开必填 `open`、`onOpenChange`、`onConfirm: () => void | Promise<void>`、`title: ReactNode`、`description: ReactNode`，以及可选 `confirmLabel: ReactNode = "Confirm"`、`cancelLabel: ReactNode = "Cancel"`、`variant: "default" | "destructive" = "default"`、`loading = false`。component 不拥有 trigger；使用现有 AlertDialogContent/Title/Description/Header/Footer 与 Button，default/destructive 只改变确认按钮现有 variant。
+
+   `loading` 是应用层显式控制的单一真值：确认按钮显示 Button 既有 spinner/label 且禁用，取消按钮也禁用，Escape 或其它 Radix close request 不得令 `onOpenChange(false)` 生效；确认点击只调用 `onConfirm` 一次，不猜测 Promise 状态、不自动关闭。非 loading 时取消按钮、Escape 与受控 close 正常回调 false；点击遮罩继续沿用 AlertDialog 不可 dismiss 的既有语义。组件不捕获或展示业务错误，调用方在 `onConfirm` 内负责 pending/error/toast 并在成功后关闭。
+
+   同文件导出 `useConfirm`、`UseConfirmOptions` 与 `UseConfirmResult`。`confirm(options)` 的 options 精确为必填 title/description 和可选 confirmLabel/cancelLabel/variant，返回 `Promise<boolean>`；返回的 `dialogProps` 可直接展开到 ConfirmDialog。确认精确结算 true，取消/Escape/controlled close 精确结算 false并关闭；同一 hook 实例不实现队列，第二次 confirm 先以 false 结算前一请求再替换，unmount 也以 false 结算尚未完成的请求，任一 resolver 只能执行一次。不得新增 Provider、全局 singleton、并发队列、命令式 DOM、AbortController、timeout、错误状态或业务副作用。
+
+   ConfirmDialog 与 useConfirm 加入 root barrel；新增 stable `confirm-dialog` CATALOG component，由 overlay family 持有，并以 `Controlled async loading` 与 `Promise result` 两份 source-backed module 展示上述两条路径。docs/API/Copy page 只消费同一个 generated `confirm-dialog` shard；API generator 为 `ConfirmDialogProps` 和 `UseConfirmOptions` 生成 `ConfirmDialog`、`useConfirm` 两个 surface，不手写 API 表或泄漏 Radix/DOM props。provenance 精确记录 `nocoo/meowth@bb02d5a18e00` 的 `apps/dashboard/src/components/ui/confirm-dialog.tsx`。CATALOG 预期 99→100，Components/Charts/Blocks `63 / 24 / 3`→`64 / 24 / 3`，Ready/Planned `87 / 12`→`88 / 12`，首页 90→91 卡，overlay 10→11 owner、21→23 scenarios，API shard 23→24、target 39→41；其它 87 owner、12 planned、既有 AlertDialog/docs/scenarios 与 7-family 边界不得漂移。
+
+   只允许新增 ConfirmDialog 实现/单测与 `src/pages/ui/examples/confirm-dialog/**`，并最小修改 root barrel/测试、CATALOG、overlay family/测试、API generator/测试、直接 catalog/page-status/content/loader/Copy page/build graph 计数测试及 generated/standalone 产物。不得修改 AlertDialog/Dialog/Button runtime、InteractivePage 或本地 `src/components/ui`、tokens/手写 CSS、依赖/lock、routes、consumer、coverage/Husky、browser timeout 或 TablePager。组件测试必须覆盖 accessible alertdialog/title/description、ReactNode labels、default/destructive、confirm/cancel、loading spinner/双禁用/Escape guard和 async callback；hook harness 必须逐项证明 true/false Promise、单次结算、第二请求替换与 unmount 结算。两份 example 的 raw/render/ID/title同源，Copy page 包含两个 API surface与完整源码。三套 generator 均 generate 后连续两次 check；再运行 ConfirmDialog/AlertDialog/root、generator、overlay/loader/Copy page/build graph focused、typecheck、Biome、日常全量、coverage、showcase production build及 package build/types/pack，生成后工作树必须干净。普通开发门不运行 Chromium；只做一个绿色实现提交，建议 `feat: add confirm dialog mvp`，随后停止等待 Codex review。
 
 ### 6.5 S4/S5 — 表单族
 
