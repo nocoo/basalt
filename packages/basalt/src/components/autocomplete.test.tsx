@@ -56,6 +56,11 @@ describe("Autocomplete", () => {
 		expect(input).toHaveValue("Banana");
 	});
 
+	it("advertises list autocomplete", () => {
+		render(<Autocomplete items={[APPLE]} placeholder="Fruit" />);
+		expect(screen.getByLabelText("Fruit")).toHaveAttribute("aria-autocomplete", "list");
+	});
+
 	it("accepts item objects and rejects string items", () => {
 		acceptAutocompleteProps({ items: [APPLE], size: "lg", loading: false });
 		// @ts-expect-error items must be objects with value and label

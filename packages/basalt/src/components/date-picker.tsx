@@ -334,34 +334,36 @@ export function DatePicker({
 	const hiddenRef = useRef<HTMLInputElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const selected = value ?? uncontrolled;
-	const selectedDate = selected ? parseIso(selected) : null;
-	const submitted = selectedDate ? formatIso(selectedDate) : "";
+	const selectedRange = rangeValue ?? uncontrolledRange;
+	const cursorIso = mode === "range" ? selectedRange.to || selectedRange.from || "" : selected;
+	const selectedDate = cursorIso ? parseIso(cursorIso) : null;
+	const submitted = mode === "range" ? "" : selectedDate ? formatIso(selectedDate) : "";
 	const cursor = selectedDate ?? todayCivil(timeZone);
 	const [month, setMonth] = useState<Civil>({ y: cursor.y, m: cursor.m, d: 1 });
-	const prevSelected = useRef(selected);
-	if (open && prevSelected.current !== selected) {
+	const prevSelected = useRef(cursorIso);
+	if (open && prevSelected.current !== cursorIso) {
 		focusDay.current = true;
 		const next = selectedDate ?? todayCivil(timeZone);
 		if (month.y !== next.y || month.m !== next.m) {
 			setMonth({ y: next.y, m: next.m, d: 1 });
 		}
 	}
-	prevSelected.current = selected;
+	prevSelected.current = cursorIso;
 
 	useEffect(() => {
 		if (!open) {
 			return;
 		}
 		const next = clampCivil(
-			(selected ? parseIso(selected) : null) ?? todayCivil(timeZone),
+			(cursorIso ? parseIso(cursorIso) : null) ?? todayCivil(timeZone),
 			min,
 			max,
 		);
 		setMonth({ y: next.y, m: next.m, d: 1 });
-		if (!selected) {
+		if (!cursorIso) {
 			focusDay.current = true;
 		}
-	}, [open, selected, timeZone, min, max]);
+	}, [open, cursorIso, timeZone, min, max]);
 
 	useEffect(() => {
 		if (disabled) {
@@ -465,7 +467,6 @@ export function DatePicker({
 
 	const previousMonth = shiftMonth(month, -1);
 	const followingMonth = shiftMonth(month, 1);
-	const selectedRange = rangeValue ?? uncontrolledRange;
 	const rangeFrom = mode === "range" ? selectedRange.from : "";
 	const rangeTo = mode === "range" ? selectedRange.to : undefined;
 	const label = formatTriggerLabel({
@@ -518,6 +519,9 @@ export function DatePicker({
 		}
 		if (typeof preset.value === "string") {
 			if (mode === "range") {
+				if (!selectable(preset.value)) {
+					return;
+				}
 				const nextRange = { from: preset.value, to: preset.value };
 				if (rangeValue === undefined) {
 					setUncontrolledRange(nextRange);
@@ -530,6 +534,9 @@ export function DatePicker({
 			return;
 		}
 		if (mode === "range") {
+			if (!selectable(preset.value.from) || !selectable(preset.value.to)) {
+				return;
+			}
 			if (rangeValue === undefined) {
 				setUncontrolledRange(preset.value);
 			}
@@ -546,7 +553,7 @@ export function DatePicker({
 					return;
 				}
 				if (next) {
-					const synced = (selected ? parseIso(selected) : null) ?? todayCivil(timeZone);
+					const synced = (cursorIso ? parseIso(cursorIso) : null) ?? todayCivil(timeZone);
 					setMonth({ y: synced.y, m: synced.m, d: 1 });
 					focusDay.current = true;
 				}
@@ -568,7 +575,9 @@ export function DatePicker({
 					overflow: "hidden",
 					clip: "rect(0, 0, 0, 0)",
 				}}
-				value={mode === "range" ? [rangeFrom, rangeTo].filter(Boolean).join("/") : submitted}
+				value={
+					mode === "range" ? (rangeFrom && rangeTo ? `${rangeFrom}/${rangeTo}` : "") : submitted
+				}
 				onChange={() => undefined}
 				disabled={disabled}
 				aria-hidden="true"
@@ -604,7 +613,9 @@ export function DatePicker({
 					const iso = submitted || formatIso(todayCivil(timeZone));
 					const selectedIndex = days.findIndex((date) => isoOf(date) === iso);
 					const enabled = (date: Civil | null) =>
-						Boolean(date && date.y >= 1 && withinBounds(formatIso(date), min, max));
+						Boolean(
+							date && date.y >= 1 && dateSelectable(formatIso(date), min, max, isDisabledDate),
+						);
 					let index =
 						selectedIndex >= 0 && days[selectedIndex]?.m === month.m
 							? selectedIndex
@@ -697,7 +708,14 @@ export function DatePicker({
 										: event.key === "ArrowDown"
 											? 7
 											: -7;
-							const next = addDays(current, delta);
+							let next = addDays(current, delta);
+							for (
+								let step = 0;
+								next && next.y >= 1 && !selectable(formatIso(next)) && step < 42;
+								step += 1
+							) {
+								next = addDays(next, delta);
+							}
 							if (!next || next.y < 1 || !selectable(formatIso(next))) {
 								return;
 							}

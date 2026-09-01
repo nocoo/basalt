@@ -270,6 +270,7 @@ describe("Select", () => {
 		fireEvent.click(trigger);
 		const beta = screen.getByRole("option", { name: "Beta" });
 		expect(beta).toHaveAttribute("aria-disabled", "true");
+		expect(beta.className).toContain("data-[disabled]:opacity-50");
 		fireEvent.click(beta);
 		expect(trigger).toHaveTextContent("Choose…");
 	});

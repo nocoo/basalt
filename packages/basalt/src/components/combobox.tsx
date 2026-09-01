@@ -65,6 +65,7 @@ export function Combobox({
 	"aria-label": ariaLabel,
 	"aria-describedby": ariaDescribedBy,
 	"aria-invalid": ariaInvalid,
+	...rest
 }: ComboboxProps) {
 	return (
 		<TypeaheadField
@@ -83,6 +84,7 @@ export function Combobox({
 			aria-label={ariaLabel}
 			aria-describedby={ariaDescribedBy}
 			aria-invalid={ariaInvalid}
+			{...rest}
 		/>
 	);
 }

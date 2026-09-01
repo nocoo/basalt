@@ -478,6 +478,52 @@ describe("Combobox", () => {
 		expect(screen.getByRole("option", { name: "A2" })).toHaveAttribute("aria-selected", "true");
 	});
 
+	it("restores a controlled query on form reset", async () => {
+		render(
+			<form>
+				<Combobox items={FRUITS} value="apple" placeholder="Fruit" name="fruit" />
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.change(input, { target: { value: "Ba" } });
+		expect(input).toHaveValue("Ba");
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await waitFor(() => {
+			expect(screen.getByLabelText("Fruit")).toHaveValue("Apple");
+		});
+		expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
+	});
+
+	it("does not submit a disabled named field", () => {
+		render(
+			<form>
+				<Combobox items={FRUITS} defaultValue="apple" placeholder="Fruit" name="fruit" disabled />
+			</form>,
+		);
+		expect(document.querySelector('input[name="fruit"]')).toBeDisabled();
+	});
+
+	it("updates the display when item labels change", () => {
+		const { rerender } = render(
+			<Combobox items={[{ value: "us", label: "US" }]} value="us" placeholder="Region" />,
+		);
+		expect(screen.getByLabelText("Region")).toHaveValue("US");
+		rerender(
+			<Combobox
+				items={[{ value: "us", label: "United States" }]}
+				value="us"
+				placeholder="Region"
+			/>,
+		);
+		expect(screen.getByLabelText("Region")).toHaveValue("United States");
+	});
+
+	it("forwards inherited wrapper attributes", () => {
+		render(<Combobox items={FRUITS} placeholder="Fruit" data-testid="fruit-box" />);
+		expect(screen.getByTestId("fruit-box")).toBeInTheDocument();
+	});
+
 	it("marks the active duplicate option by index", () => {
 		render(
 			<Combobox

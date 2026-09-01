@@ -593,16 +593,75 @@ describe("DatePicker", () => {
 		render(
 			<DatePicker
 				mode="range"
+				defaultRangeValue={{ from: "2024-01-10", to: "2024-01-12" }}
+				onRangeChange={onRangeChange}
+				aria-label="Stay"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Stay/ }));
+		fireEvent.click(await screen.findByRole("button", { name: "2024-01-15" }));
+		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-15" });
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-17" }));
+		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-15", to: "2024-01-17" });
+	});
+
+	it("opens range mode on the default range month", async () => {
+		render(
+			<DatePicker
+				mode="range"
+				defaultRangeValue={{ from: "2024-01-10", to: "2024-01-12" }}
+				aria-label="Stay"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Stay/ }));
+		expect(await screen.findByText("January 2024")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "2024-01-10" })).toHaveAttribute(
+			"aria-pressed",
+			"true",
+		);
+	});
+
+	it("skips a disabled date when moving with arrow keys", async () => {
+		render(
+			<DatePicker
 				defaultValue="2024-01-15"
+				isDisabledDate={(iso) => iso === "2024-01-16"}
+				aria-label="Date"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Date: Jan 15, 2024" }));
+		const start = await screen.findByRole("button", { name: "2024-01-15" });
+		start.focus();
+		fireEvent.keyDown(start, { key: "ArrowRight" });
+		expect(document.activeElement).toHaveAttribute("aria-label", "2024-01-17");
+	});
+
+	it("rejects a range preset outside min and max", async () => {
+		const onRangeChange = vi.fn();
+		render(
+			<DatePicker
+				mode="range"
+				min="2024-01-10"
+				max="2024-01-20"
+				presets={[{ label: "Weekend", value: { from: "2024-01-01", to: "2024-01-02" } }]}
 				onRangeChange={onRangeChange}
 				aria-label="Stay"
 			/>,
 		);
 		fireEvent.click(screen.getByRole("button", { name: "Stay" }));
-		fireEvent.click(await screen.findByRole("button", { name: "2024-01-10" }));
-		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-10" });
-		fireEvent.click(screen.getByRole("button", { name: "2024-01-12" }));
-		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-10", to: "2024-01-12" });
+		fireEvent.click(await screen.findByRole("button", { name: "Weekend" }));
+		expect(onRangeChange).not.toHaveBeenCalled();
+	});
+
+	it("keeps an incomplete required range invalid", () => {
+		const { container } = render(
+			<form>
+				<DatePicker mode="range" required name="stay" aria-label="Stay" />
+			</form>,
+		);
+		const control = container.querySelector('input[name="stay"]') as HTMLInputElement;
+		expect(control.value).toBe("");
+		expect(control.checkValidity()).toBe(false);
 	});
 
 	it("applies a range preset", async () => {

@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { type ComponentPropsWithoutRef, useEffect, useId, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Input, type InputSize } from "./input";
 import { overlayItemClass, overlayPanelClass } from "./overlay";
@@ -25,6 +25,7 @@ export function TypeaheadField({
 	"aria-label": ariaLabel,
 	"aria-describedby": ariaDescribedBy,
 	"aria-invalid": ariaInvalid,
+	...rest
 }: {
 	items: TypeaheadItem[];
 	value?: string;
@@ -41,7 +42,7 @@ export function TypeaheadField({
 	"aria-label"?: string;
 	"aria-describedby"?: string;
 	"aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
-}) {
+} & Omit<ComponentPropsWithoutRef<"div">, "children" | "defaultValue" | "onChange">) {
 	const [uncontrolled, setUncontrolled] = useState(defaultValue);
 	const selected = value ?? uncontrolled;
 	const [query, setQuery] = useState(displayOf(items, selected));
@@ -60,10 +61,18 @@ export function TypeaheadField({
 			setQuery(displayOf(items, prevValue));
 		}
 	}
+	const selectedDisplay = displayOf(items, selected);
+	const [prevDisplay, setPrevDisplay] = useState(selectedDisplay);
+	if (selectedDisplay !== prevDisplay) {
+		setPrevDisplay(selectedDisplay);
+		if (!open || query === prevDisplay) {
+			setQuery(selectedDisplay);
+		}
+	}
 	useEffect(() => {
 		const node = inputRef.current;
 		const form = node?.form;
-		if (!form || value !== undefined) {
+		if (!form) {
 			return;
 		}
 		const onReset = (event: Event) => {
@@ -71,8 +80,12 @@ export function TypeaheadField({
 				if (event.defaultPrevented) {
 					return;
 				}
-				setUncontrolled(defaultValue);
-				setQuery(displayOf(items, defaultValue));
+				if (value === undefined) {
+					setUncontrolled(defaultValue);
+					setQuery(displayOf(items, defaultValue));
+				} else {
+					setQuery(displayOf(items, value));
+				}
 				setOpen(false);
 				setActive(null);
 			});
@@ -162,6 +175,7 @@ export function TypeaheadField({
 
 	return (
 		<div
+			{...rest}
 			className={cn("relative w-full", className)}
 			onBlur={(event) => {
 				if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
@@ -178,7 +192,7 @@ export function TypeaheadField({
 				}
 			}}
 		>
-			{name ? <input type="hidden" name={name} value={selected} /> : null}
+			{name ? <input type="hidden" name={name} value={selected} disabled={busy} /> : null}
 			<Input
 				ref={inputRef}
 				id={id}
@@ -257,7 +271,7 @@ export function TypeaheadField({
 				role="combobox"
 				aria-label={ariaLabel ?? (id ? undefined : placeholder)}
 				aria-expanded={listOpen}
-				aria-autocomplete={allowFreeform ? "both" : "list"}
+				aria-autocomplete="list"
 				aria-controls={listOpen ? listId : undefined}
 				aria-activedescendant={
 					listOpen && activeItem && activeIndex !== null

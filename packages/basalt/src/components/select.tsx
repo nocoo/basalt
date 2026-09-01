@@ -164,7 +164,7 @@ export const SelectItem = React.forwardRef<
 		ref={ref}
 		className={overlayItemClass(
 			cn(
-				"relative pr-8 outline-hidden hover:bg-basalt-accent focus-visible:bg-basalt-accent",
+				"relative pr-8 outline-hidden hover:bg-basalt-accent focus-visible:bg-basalt-accent data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[disabled]:hover:bg-transparent",
 				className,
 			),
 		)}

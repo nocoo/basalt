@@ -65,6 +65,7 @@ export function Autocomplete({
 	"aria-label": ariaLabel,
 	"aria-describedby": ariaDescribedBy,
 	"aria-invalid": ariaInvalid,
+	...rest
 }: AutocompleteProps) {
 	return (
 		<TypeaheadField
@@ -83,6 +84,7 @@ export function Autocomplete({
 			aria-label={ariaLabel}
 			aria-describedby={ariaDescribedBy}
 			aria-invalid={ariaInvalid}
+			{...rest}
 		/>
 	);
 }
