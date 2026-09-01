@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import forms from "./catalog-content/families/forms";
+import { AUTOCOMPLETE_EXAMPLES } from "./examples/autocomplete";
 import { CHECKBOX_EXAMPLES } from "./examples/checkbox";
+import { COMBOBOX_EXAMPLES } from "./examples/combobox";
 import { FIELD_EXAMPLES } from "./examples/field";
 import { INPUT_EXAMPLES } from "./examples/input";
 import { INPUT_AREA_EXAMPLES } from "./examples/input-area";
@@ -10,7 +12,9 @@ import { SEGMENT_CONTROL_EXAMPLES } from "./examples/segment-control";
 import { SELECT_EXAMPLES } from "./examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "./examples/sensitive-input";
 import { SWITCH_EXAMPLES } from "./examples/switch";
+import { API as autocompleteApi } from "./generated/catalog-api/autocomplete";
 import { API as checkboxApi } from "./generated/catalog-api/checkbox";
+import { API as comboboxApi } from "./generated/catalog-api/combobox";
 import { API as fieldApi } from "./generated/catalog-api/field";
 import { API as inputApi } from "./generated/catalog-api/input";
 import { API as inputAreaApi } from "./generated/catalog-api/input-area";
@@ -51,6 +55,8 @@ const SOURCE_BACKED = {
 	radio: RADIO_EXAMPLES,
 	switch: SWITCH_EXAMPLES,
 	select: SELECT_EXAMPLES,
+	combobox: COMBOBOX_EXAMPLES,
+	autocomplete: AUTOCOMPLETE_EXAMPLES,
 } as const;
 
 describe("forms catalog content family", () => {
@@ -79,6 +85,8 @@ describe("forms catalog content family", () => {
 		expect(forms.radio?.examples).toBe(RADIO_EXAMPLES);
 		expect(forms.switch?.examples).toBe(SWITCH_EXAMPLES);
 		expect(forms.select?.examples).toBe(SELECT_EXAMPLES);
+		expect(forms.combobox?.examples).toBe(COMBOBOX_EXAMPLES);
+		expect(forms.autocomplete?.examples).toBe(AUTOCOMPLETE_EXAMPLES);
 		expect(forms.field?.docs.api).toBe(fieldApi);
 		expect(forms.input?.docs.api).toBe(inputApi);
 		expect(forms["input-area"]?.docs.api).toBe(inputAreaApi);
@@ -88,6 +96,8 @@ describe("forms catalog content family", () => {
 		expect(forms.radio?.docs.api).toBe(radioApi);
 		expect(forms.switch?.docs.api).toBe(switchApi);
 		expect(forms.select?.docs.api).toBe(selectApi);
+		expect(forms.combobox?.docs.api).toBe(comboboxApi);
+		expect(forms.autocomplete?.docs.api).toBe(autocompleteApi);
 		expect(forms["segment-control"]?.examples).toBe(SEGMENT_CONTROL_EXAMPLES);
 		expect(forms["segment-control"]?.docs.api).toBe(segmentControlApi);
 		for (const [slug, examples] of Object.entries(SOURCE_BACKED)) {
@@ -231,24 +241,17 @@ describe("forms catalog content family", () => {
 			ref: "1159868dfe32",
 			file: "packages/kumo/src/components/switch/switch.tsx",
 		});
-		expect(forms.combobox?.examples).toHaveLength(2);
-		expect(forms.combobox?.examples.map((example) => example.id)).toEqual([
-			"combobox-searchable-select-with-placeholder",
-			"combobox-disabled",
+		expect(forms.combobox?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "combobox-default", title: "Default" },
+			{ id: "combobox-disabled", title: "Disabled" },
+			{ id: "combobox-sizes", title: "Sizes" },
+			{ id: "combobox-controlled-and-error", title: "Controlled and error" },
 		]);
-		expect(forms.combobox?.examples.map((example) => example.title)).toEqual([
-			"Searchable Select with Placeholder",
-			"Disabled",
+		expect(forms.autocomplete?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "autocomplete-default", title: "Default" },
+			{ id: "autocomplete-disabled", title: "Disabled" },
+			{ id: "autocomplete-controlled-and-reset", title: "Controlled and reset" },
 		]);
-		expect(forms.combobox?.examples[0]?.code).toBe(
-			'<Combobox items={["Apple", "Banana"]} placeholder="Select…" />',
-		);
-		expect(forms.autocomplete?.examples).toHaveLength(1);
-		expect(forms.autocomplete?.examples[0]).toMatchObject({
-			id: "autocomplete-default",
-			title: "Default",
-			code: '<Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />',
-		});
 		expect(forms["date-picker"]?.examples).toHaveLength(1);
 		expect(forms["date-picker"]?.examples[0]).toMatchObject({
 			id: "date-picker-single-date-selection",
@@ -271,7 +274,12 @@ describe("forms catalog content family", () => {
 		expect(forms["toggle-group"]?.examples[0]?.code).toContain(
 			'import { ToggleGroup } from "@nocoo/basalt/components/toggle-group";',
 		);
-		expect(forms.combobox?.docs.description).toBe("Searchable select.");
+		expect(forms.combobox?.docs.description).toBe(
+			"A searchable list that commits only listed values.",
+		);
+		expect(forms.autocomplete?.docs.description).toBe(
+			"A typeahead field that also accepts freeform text.",
+		);
 		expect(forms["toggle-group"]?.docs.description).toBe(
 			"Segmented tabs for switching a compact set of modes.",
 		);

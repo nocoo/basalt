@@ -581,7 +581,7 @@ export default function Example() {
   <DialogContent>
     <DialogTitle>Create Resource</DialogTitle>
     <DialogDescription>Search and select a region for your new resource.</DialogDescription>
-    <Combobox items={["US East", "US West", "EU West"]} placeholder="Search regions..." />
+    <Combobox items={[{ value: "us-east", label: "US East" }, { value: "us-west", label: "US West" }, { value: "eu-west", label: "EU West" }]} placeholder="Search regions..." />
     <div className="mt-8 flex justify-end gap-2">
       <DialogClose asChild><Button variant="outline">Cancel</Button></DialogClose>
       <Button>Create</Button>
@@ -598,7 +598,14 @@ export default function Example() {
 							<DialogDescription className="mb-4">
 								Search and select a region for your new resource.
 							</DialogDescription>
-							<Combobox items={["US East", "US West", "EU West"]} placeholder="Search regions..." />
+							<Combobox
+								items={[
+									{ value: "us-east", label: "US East" },
+									{ value: "us-west", label: "US West" },
+									{ value: "eu-west", label: "EU West" },
+								]}
+								placeholder="Search regions..."
+							/>
 							<div className="mt-8 flex justify-end gap-2">
 								<DialogClose asChild>
 									<Button variant="outline">Cancel</Button>

@@ -313,6 +313,18 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		allowEmpty: true,
 	},
 	{
+		slug: "combobox",
+		sourceFile: "packages/basalt/src/components/combobox.tsx",
+		propsType: "ComboboxProps",
+		surface: "Combobox",
+	},
+	{
+		slug: "autocomplete",
+		sourceFile: "packages/basalt/src/components/autocomplete.tsx",
+		propsType: "AutocompleteProps",
+		surface: "Autocomplete",
+	},
+	{
 		slug: "segment-control",
 		sourceFile: "packages/basalt/src/components/segment-control.tsx",
 		propsType: "SegmentControlProps",

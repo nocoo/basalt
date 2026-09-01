@@ -1,5 +1,3 @@
-import { Autocomplete } from "@nocoo/basalt/components/autocomplete";
-import { Combobox } from "@nocoo/basalt/components/combobox";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { Slider } from "@nocoo/basalt/components/slider";
 import { Toggle } from "@nocoo/basalt/components/toggle";
@@ -8,7 +6,9 @@ import type { ReactNode } from "react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
 import { provenanceFromLegacy } from "../../catalog-source";
+import { AUTOCOMPLETE_EXAMPLES } from "../../examples/autocomplete";
 import { CHECKBOX_EXAMPLES } from "../../examples/checkbox";
+import { COMBOBOX_EXAMPLES } from "../../examples/combobox";
 import { FIELD_EXAMPLES } from "../../examples/field";
 import { INPUT_EXAMPLES } from "../../examples/input";
 import { INPUT_AREA_EXAMPLES } from "../../examples/input-area";
@@ -18,7 +18,9 @@ import { SEGMENT_CONTROL_EXAMPLES } from "../../examples/segment-control";
 import { SELECT_EXAMPLES } from "../../examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "../../examples/sensitive-input";
 import { SWITCH_EXAMPLES } from "../../examples/switch";
+import { API as autocompleteApi } from "../../generated/catalog-api/autocomplete";
 import { API as checkboxApi } from "../../generated/catalog-api/checkbox";
+import { API as comboboxApi } from "../../generated/catalog-api/combobox";
 import { API as fieldApi } from "../../generated/catalog-api/field";
 import { API as inputApi } from "../../generated/catalog-api/input";
 import { API as inputAreaApi } from "../../generated/catalog-api/input-area";
@@ -225,72 +227,47 @@ export default function Example() {
 	},
 	combobox: {
 		docs: {
-			description: "Searchable select.",
+			description: "A searchable list that commits only listed values.",
 			usage: `import { Combobox } from "@nocoo/basalt/components/combobox";
 
 export default function Example() {
-	return <Combobox items={["Apple", "Banana"]} placeholder="Select…" />;
+	return (
+		<Combobox
+			items={[
+				{ value: "apple", label: "Apple" },
+				{ value: "banana", label: "Banana" },
+			]}
+			placeholder="Select…"
+		/>
+	);
 }`,
-			variants: [],
-			api: [
-				{
-					name: "Combobox",
-					props: [
-						{ name: "items", type: "string[]", description: "items" },
-						{ name: "value", type: "string", description: "value" },
-						{ name: "defaultValue", type: "string", description: "defaultValue" },
-						{
-							name: "onValueChange",
-							type: "(value: string) => void",
-							description: "onValueChange",
-						},
-						{ name: "name", type: "string", description: "name" },
-						{ name: "placeholder", type: "string", description: "placeholder" },
-					],
-				},
-			],
+			variants: ["sm", "default", "lg"],
+			api: comboboxApi,
 			provenance: EXTRA_PROVENANCE,
 		},
-		examples: [
-			{
-				id: catalogScenarioId("combobox", "searchable-select-with-placeholder"),
-				title: "Searchable Select with Placeholder",
-				code: '<Combobox items={["Apple", "Banana"]} placeholder="Select…" />',
-				render: () => <Combobox items={["Apple", "Banana"]} placeholder="Select…" />,
-			},
-			{
-				id: catalogScenarioId("combobox", "disabled"),
-				title: "Disabled",
-				code: '<Combobox disabled items={["Apple"]} placeholder="Disabled" />',
-				render: () => <Combobox disabled items={["Apple"]} placeholder="Disabled" />,
-			},
-		],
+		examples: COMBOBOX_EXAMPLES,
 	},
 	autocomplete: {
 		docs: {
-			description: "Typeahead list.",
-			usage: usage(
-				"Autocomplete",
-				"@nocoo/basalt/components/autocomplete",
-				'<Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />',
-			),
-			variants: [],
-			api: [
-				{
-					name: "Autocomplete",
-					props: [{ name: "className", type: "string", description: "className" }],
-				},
-			],
+			description: "A typeahead field that also accepts freeform text.",
+			usage: `import { Autocomplete } from "@nocoo/basalt/components/autocomplete";
+
+export default function Example() {
+	return (
+		<Autocomplete
+			items={[
+				{ value: "apple", label: "Apple" },
+				{ value: "banana", label: "Banana" },
+			]}
+			placeholder="Search fruits"
+		/>
+	);
+}`,
+			variants: ["sm", "default", "lg"],
+			api: autocompleteApi,
 			provenance: EXTRA_PROVENANCE,
 		},
-		examples: [
-			{
-				id: catalogScenarioId("autocomplete", "default"),
-				title: "Default",
-				code: '<Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />',
-				render: () => <Autocomplete items={["Apple", "Banana"]} placeholder="Search fruits" />,
-			},
-		],
+		examples: AUTOCOMPLETE_EXAMPLES,
 	},
 	"date-picker": {
 		docs: {

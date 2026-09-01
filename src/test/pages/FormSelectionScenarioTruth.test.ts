@@ -71,8 +71,10 @@ describe("form selection scenario truth", () => {
 			"checkbox-controlled-and-error",
 		]);
 		expect(UI_EXAMPLES.combobox?.map((item) => item.id)).toEqual([
-			"combobox-searchable-select-with-placeholder",
+			"combobox-default",
 			"combobox-disabled",
+			"combobox-sizes",
+			"combobox-controlled-and-error",
 		]);
 		expect(UI_EXAMPLES["date-picker"]?.map((item) => item.id)).toEqual([
 			"date-picker-single-date-selection",

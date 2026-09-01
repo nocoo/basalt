@@ -396,6 +396,18 @@ describe("catalog API generator contract", () => {
 				allowEmpty: true,
 			},
 			{
+				slug: "combobox",
+				sourceFile: "packages/basalt/src/components/combobox.tsx",
+				propsType: "ComboboxProps",
+				surface: "Combobox",
+			},
+			{
+				slug: "autocomplete",
+				sourceFile: "packages/basalt/src/components/autocomplete.tsx",
+				propsType: "AutocompleteProps",
+				surface: "Autocomplete",
+			},
+			{
 				slug: "segment-control",
 				sourceFile: "packages/basalt/src/components/segment-control.tsx",
 				propsType: "SegmentControlProps",
@@ -432,7 +444,7 @@ describe("catalog API generator contract", () => {
 				surface: "TablePager",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(51);
+		expect(CATALOG_API_TARGETS).toHaveLength(53);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -488,6 +500,8 @@ describe("catalog API generator contract", () => {
 			"checkbox",
 			"radio",
 			"switch",
+			"combobox",
+			"autocomplete",
 			"segment-control",
 			"page-header",
 			"stat-strip",
@@ -1434,6 +1448,8 @@ export interface WidgetProps {
 				"SelectItem",
 				"SelectLabel",
 			],
+			combobox: ["Combobox"],
+			autocomplete: ["Autocomplete"],
 		});
 	}, 20_000);
 
@@ -1443,7 +1459,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(25);
+		expect(Object.keys(generated)).toHaveLength(27);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1544,7 +1560,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(25);
+		expect(Object.keys(generated)).toHaveLength(27);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1666,7 +1682,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(25);
+		expect(Object.keys(generated)).toHaveLength(27);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -1737,7 +1753,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(25);
+		expect(Object.keys(generated)).toHaveLength(27);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -1780,7 +1796,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(25);
+		expect(Object.keys(generated)).toHaveLength(27);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -1832,7 +1848,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(25);
+		expect(Object.keys(generated)).toHaveLength(27);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3073,8 +3089,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(25);
-		expect(Object.keys(first)).toHaveLength(26);
+		expect(slugs).toHaveLength(27);
+		expect(Object.keys(first)).toHaveLength(28);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3104,6 +3120,8 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "SelectGroup"');
 		expect(joined).toContain('name: "SelectItem"');
 		expect(joined).toContain('name: "SelectLabel"');
+		expect(joined).toContain('name: "Combobox"');
+		expect(joined).toContain('name: "Autocomplete"');
 		const digest = createHash("sha256");
 		for (const relative of Object.keys(first).sort()) {
 			digest.update(relative);
@@ -3111,7 +3129,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"37b6a409c86d004de6c85d3e5c1730067478f072fb565909731fd3908987fbed",
+			"8763a152d5402a0af97a2105ab8fa4d65ff35e886d0f6cec9480c07d76c8f4ba",
 		);
 	}, 20_000);
 

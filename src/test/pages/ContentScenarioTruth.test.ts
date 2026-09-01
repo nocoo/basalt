@@ -59,7 +59,11 @@ describe("content scenario truth", () => {
 		]);
 		expect(UI_EXAMPLES.code?.map((item) => item.id)).toEqual(["code-typescript", "code-react"]);
 		expect(UI_EXAMPLES["code-block"]?.map((item) => item.id)).toEqual(["code-block-basic"]);
-		expect(UI_EXAMPLES.autocomplete?.map((item) => item.id)).toEqual(["autocomplete-default"]);
+		expect(UI_EXAMPLES.autocomplete?.map((item) => item.id)).toEqual([
+			"autocomplete-default",
+			"autocomplete-disabled",
+			"autocomplete-controlled-and-reset",
+		]);
 		expect(UI_EXAMPLES.select).toBe(SELECT_EXAMPLES);
 		expect(UI_EXAMPLES.select?.map((item) => item.id)).toEqual([
 			"select-basic",
