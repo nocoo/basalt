@@ -270,6 +270,8 @@ describe("catalog source contract", () => {
 		expect(CATALOG_API["sensitive-input"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"revealLabel",
 			"hideLabel",
+			"size",
+			"passwordManagerIgnore",
 		]);
 		expect(implementationFileFor(entry("checkbox"))).toBe(
 			"packages/basalt/src/components/checkbox.tsx",

@@ -3,6 +3,8 @@ import { loadModuleScenarios } from "../../catalog-scenario";
 const SENSITIVE_INPUT_SCENARIO_META = [
 	{ key: "default", title: "Default" },
 	{ key: "disabled", title: "Disabled" },
+	{ key: "sizes", title: "Sizes" },
+	{ key: "controlled-and-reset", title: "Controlled and reset" },
 ] as const;
 
 export const SENSITIVE_INPUT_EXAMPLES = loadModuleScenarios({

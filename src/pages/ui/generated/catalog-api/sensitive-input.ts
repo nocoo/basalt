@@ -16,6 +16,20 @@ export const API = [
 				required: true,
 				description: "Accessible label for the hide action.",
 			},
+			{
+				name: "size",
+				type: "InputSize",
+				required: false,
+				default: "default",
+				description: "The visual size of the field.",
+			},
+			{
+				name: "passwordManagerIgnore",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Ignore password managers on this field.",
+			},
 		],
 	},
 ];

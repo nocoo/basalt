@@ -254,8 +254,13 @@ const inputGroupSources = import.meta.glob("./examples/input-group/*.tsx", {
 	eager: true,
 });
 
-const SENSITIVE_INPUT_IDS = ["sensitive-input-default", "sensitive-input-disabled"] as const;
-const SENSITIVE_INPUT_TITLES = ["Default", "Disabled"] as const;
+const SENSITIVE_INPUT_IDS = [
+	"sensitive-input-default",
+	"sensitive-input-disabled",
+	"sensitive-input-sizes",
+	"sensitive-input-controlled-and-reset",
+] as const;
+const SENSITIVE_INPUT_TITLES = ["Default", "Disabled", "Sizes", "Controlled and reset"] as const;
 
 const sensitiveInputRenders = import.meta.glob("./examples/sensitive-input/*.tsx", { eager: true });
 const sensitiveInputSources = import.meta.glob("./examples/sensitive-input/*.tsx", {
@@ -1357,9 +1362,9 @@ describe("source-backed input-group scenarios", () => {
 });
 
 describe("source-backed sensitive-input scenarios", () => {
-	it("loads two sensitive-input scenarios from the same glob modules", () => {
-		expect(Object.keys(sensitiveInputRenders)).toHaveLength(2);
-		expect(Object.keys(sensitiveInputSources)).toHaveLength(2);
+	it("loads four sensitive-input scenarios from the same glob modules", () => {
+		expect(Object.keys(sensitiveInputRenders)).toHaveLength(4);
+		expect(Object.keys(sensitiveInputSources)).toHaveLength(4);
 		const loaded = loadModuleScenarios({
 			slug: "sensitive-input",
 			metas: SENSITIVE_INPUT_TITLES.map((title, index) => ({

@@ -1825,6 +1825,20 @@ describe("ui catalog", () => {
 						required: true,
 						description: "Accessible label for the hide action.",
 					},
+					{
+						name: "size",
+						type: "InputSize",
+						required: false,
+						default: "default",
+						description: "The visual size of the field.",
+					},
+					{
+						name: "passwordManagerIgnore",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Ignore password managers on this field.",
+					},
 				],
 			},
 		]);
@@ -1835,11 +1849,13 @@ describe("ui catalog", () => {
 		expect(document.querySelector('[data-toc-id="api-SensitiveInput"]')).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "SensitiveInput" })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SensitiveInput props" })).toBeInTheDocument();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(2);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(4);
 		expect(api).toHaveTextContent("revealLabel");
 		expect(api).not.toHaveTextContent("revealLabel?");
 		expect(api).toHaveTextContent("hideLabel");
 		expect(api).not.toHaveTextContent("hideLabel?");
+		expect(api).toHaveTextContent("size?");
+		expect(api).toHaveTextContent("passwordManagerIgnore?");
 		expect(api).toHaveTextContent("string");
 		expect(api).toHaveTextContent("Accessible label for the reveal action.");
 		expect(api).toHaveTextContent("Accessible label for the hide action.");
@@ -1850,9 +1866,15 @@ describe("ui catalog", () => {
 		expect(api).not.toHaveTextContent("type?");
 		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Controlled and reset" })).toBeInTheDocument();
 		expect(document.querySelector('[data-hero-scenario="sensitive-input-default"]')).toBeTruthy();
 		expect(document.querySelector('[data-scenario="sensitive-input-default"]')).toBeTruthy();
 		expect(document.querySelector('[data-scenario="sensitive-input-disabled"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="sensitive-input-sizes"]')).toBeTruthy();
+		expect(
+			document.querySelector('[data-scenario="sensitive-input-controlled-and-reset"]'),
+		).toBeTruthy();
 		await act(async () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
@@ -1867,7 +1889,7 @@ describe("ui catalog", () => {
 		expect(markdown).not.toContain("- className (");
 		expect(markdown).not.toContain("- type (");
 		expect(markdown).not.toContain("- disabled (");
-		expect(UI_EXAMPLES["sensitive-input"]).toHaveLength(2);
+		expect(UI_EXAMPLES["sensitive-input"]).toHaveLength(4);
 		for (const scenario of UI_EXAMPLES["sensitive-input"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
@@ -1882,11 +1904,13 @@ describe("ui catalog", () => {
 		expect(family).toContain("api: sensitiveInputApi");
 		expect(family).not.toContain('name: "revealLabel"');
 		expect(family).not.toContain('name: "hideLabel"');
-		expect(family).toContain('description: "A password field with a reveal control."');
+		expect(family).toContain(
+			'description: "A password field with reveal, size, and invalid styles."',
+		);
 		expect(family).toContain(
 			'<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />',
 		);
-		expect(family).toContain("variants: []");
+		expect(family).toContain('variants: ["sm", "default", "lg"]');
 		expect(family).toContain('repo: "basalt"');
 		expect(family).toContain('sha: "2727ae6a8d3f"');
 		expect(family).toContain('file: "src/pages/FormsPage.tsx"');
@@ -3520,7 +3544,7 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(UI_EXAMPLES["sensitive-input"]).toHaveLength(2);
+		expect(UI_EXAMPLES["sensitive-input"]).toHaveLength(4);
 		for (const scenario of UI_EXAMPLES["sensitive-input"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
@@ -3629,7 +3653,7 @@ describe("ui catalog", () => {
 		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
 		expect(markdown).not.toContain("github.com/nocoo/kumo");
 		expect(CATALOG_DOCS["sensitive-input"]?.api).toEqual(CATALOG_API["sensitive-input"]);
-		expect(UI_EXAMPLES["sensitive-input"]).toHaveLength(2);
+		expect(UI_EXAMPLES["sensitive-input"]).toHaveLength(4);
 	});
 
 	it("keeps radio hero, exclusive selection, disabled radios, and copy modules", async () => {

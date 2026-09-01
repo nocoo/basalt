@@ -1554,6 +1554,20 @@ export interface WidgetProps {
 						required: true,
 						description: "Accessible label for the hide action.",
 					},
+					{
+						name: "size",
+						type: "InputSize",
+						required: false,
+						default: "default",
+						description: "The visual size of the field.",
+					},
+					{
+						name: "passwordManagerIgnore",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Ignore password managers on this field.",
+					},
 				],
 			},
 		]);
@@ -1698,6 +1712,8 @@ export interface WidgetProps {
 		expect(generated["sensitive-input"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"revealLabel",
 			"hideLabel",
+			"size",
+			"passwordManagerIgnore",
 		]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
 			"InputGroup",
@@ -3040,7 +3056,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"eeb48d6dee33cfc640b1fb185a17bdad9abfa4c72b7370f0edbe74c87e4a9a6e",
+			"91fbd2e9b3e1eb2502f33dd2396f4883de3ddf12de1e67863d6b516821efbc7a",
 		);
 	}, 20_000);
 

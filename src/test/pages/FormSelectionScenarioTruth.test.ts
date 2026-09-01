@@ -116,6 +116,8 @@ describe("form selection scenario truth", () => {
 		expect(UI_EXAMPLES["sensitive-input"]?.map((item) => item.id)).toEqual([
 			"sensitive-input-default",
 			"sensitive-input-disabled",
+			"sensitive-input-sizes",
+			"sensitive-input-controlled-and-reset",
 		]);
 		expect(UI_EXAMPLES.switch).toBe(SWITCH_EXAMPLES);
 		expect(UI_EXAMPLES.switch?.map((item) => item.id)).toEqual([

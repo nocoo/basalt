@@ -120,13 +120,13 @@ export default catalogContentFamily({
 	},
 	"sensitive-input": {
 		docs: {
-			description: "A password field with a reveal control.",
+			description: "A password field with reveal, size, and invalid styles.",
 			usage: usage(
 				"SensitiveInput",
 				"@nocoo/basalt/components/sensitive-input",
 				'<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />',
 			),
-			variants: [],
+			variants: ["sm", "default", "lg"],
 			api: sensitiveInputApi,
 			provenance: provenanceFromLegacy({
 				repo: "basalt",
