@@ -3,7 +3,7 @@ import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Button } from "@nocoo/basalt/components/button";
 import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
-import { CodeBlock, CodeHighlighted } from "@nocoo/basalt/components/code";
+import { CodeBlock } from "@nocoo/basalt/components/code";
 import { Empty } from "@nocoo/basalt/components/empty";
 import { Link } from "@nocoo/basalt/components/link";
 import { Loader } from "@nocoo/basalt/components/loader";
@@ -20,6 +20,8 @@ import {
 	type CatalogDocsDraft,
 	provenanceFromLegacy,
 } from "../../catalog-source";
+import { CODE_EXAMPLES } from "../../examples/code";
+import { API as codeApi } from "../../generated/catalog-api/code";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
 	repo: "pew",
@@ -731,83 +733,24 @@ export default function Example() {
 		],
 	},
 	code: {
-		docs: extraDocs(
-			"Code",
-			"code",
-			"Syntax-highlighted code.",
-			'<CodeHighlighted code={\'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/users/" + id); if (!response.ok) { throw new Error("User not found"); } return response.json(); }\'} />',
-			undefined,
-			`import { CodeHighlighted } from "@nocoo/basalt/components/code";
+		docs: {
+			...extraDocs(
+				"Code",
+				"code",
+				"Syntax-highlighted code.",
+				'<CodeHighlighted code={\'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/users/" + id); if (!response.ok) { throw new Error("User not found"); } return response.json(); }\'} />',
+				undefined,
+				`import { CodeHighlighted } from "@nocoo/basalt/components/code";
 
 export default function Example() {
 	return (
 		<CodeHighlighted code={'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/users/" + id); if (!response.ok) { throw new Error("User not found"); } return response.json(); }'} />
 	);
 }`,
-		),
-		examples: [
-			{
-				id: catalogScenarioId("code", "typescript"),
-				title: "TypeScript",
-				code: `<CodeHighlighted code={\`export async function fetchUser(id: string, retries = 3) {
-  const response = await fetch("/api/users/" + id);
-  if (!response.ok) {
-    throw new Error("User not found");
-  }
-  const user = await response.json();
-  return {
-    id: user.id,
-    name: user.firstName + " " + user.lastName,
-  };
-}\`} />`,
-				render: () => (
-					<CodeHighlighted
-						code={`export async function fetchUser(id: string, retries = 3) {
-  // Resolve a profile, then return a display name.
-  const response = await fetch(\`/api/users/\${id}\`);
-  if (!response.ok) {
-    throw new Error("User not found");
-  }
-  const user = await response.json();
-  return {
-    id: user.id,
-    name: \`\${user.firstName} \${user.lastName}\`,
-  };
-}`}
-					/>
-				),
-			},
-			{
-				id: catalogScenarioId("code", "react"),
-				title: "React",
-				code: `<CodeHighlighted code={\`import { useState } from "react";
-
-export function Counter() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <button onClick={() => setCount((n) => n + 1)}>
-      Count: {count}
-    </button>
-  );
-}\`} />`,
-				render: () => (
-					<CodeHighlighted
-						code={`import { useState } from "react";
-
-export function Counter() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <button onClick={() => setCount((n) => n + 1)}>
-      Count: {count}
-    </button>
-  );
-}`}
-					/>
-				),
-			},
-		],
+			),
+			api: codeApi,
+		},
+		examples: CODE_EXAMPLES,
 	},
 	"code-block": {
 		docs: extraDocs(

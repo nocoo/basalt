@@ -1,16 +1,30 @@
 import { describe, expect, it } from "vitest";
 import dataLayout from "./catalog-content/families/data-layout";
+import { DATA_TABLE_EXAMPLES } from "./examples/data-table";
+import { FLOW_EXAMPLES } from "./examples/flow";
+import { GRID_EXAMPLES } from "./examples/grid";
 import { PAGE_HEADER_EXAMPLES } from "./examples/page-header";
 import { STAT_STRIP_EXAMPLES } from "./examples/stat-strip";
+import { TABLE_EXAMPLES } from "./examples/table";
 import { TABLE_PAGER_EXAMPLES } from "./examples/table-pager";
+import { API as dataTableApi } from "./generated/catalog-api/data-table";
+import { API as flowApi } from "./generated/catalog-api/flow";
+import { API as gridApi } from "./generated/catalog-api/grid";
 import { API as pageHeaderApi } from "./generated/catalog-api/page-header";
 import { API as statStripApi } from "./generated/catalog-api/stat-strip";
+import { API as tableApi } from "./generated/catalog-api/table";
 import { API as tablePagerApi } from "./generated/catalog-api/table-pager";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
 const DATA_LAYOUT_SCENARIOS = {
 	table: ["table-basic", "table-selected-row"],
-	"data-table": ["data-table-default"],
+	"data-table": [
+		"data-table-default",
+		"data-table-loading",
+		"data-table-empty",
+		"data-table-selection",
+		"data-table-pagination",
+	],
 	grid: ["grid-grid"],
 	flow: ["flow-sequential-flow"],
 	"page-header": ["page-header-default", "page-header-long-responsive-content"],
@@ -40,7 +54,7 @@ describe("data-layout catalog content family", () => {
 		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(89);
 	});
 
-	it("keeps the eleven final winner scenarios in their audited order", () => {
+	it("keeps the fifteen final winner scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(DATA_LAYOUT_SCENARIOS)) {
 			const examples = dataLayout[slug]?.examples ?? [];
@@ -59,7 +73,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(11);
+		expect(count).toBe(15);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {
@@ -86,7 +100,27 @@ describe("data-layout catalog content family", () => {
 			"data",
 			"columns",
 			"filter",
+			"loading",
+			"empty",
+			"selected",
+			"defaultSelected",
+			"onSelectedChange",
+			"multiple",
+			"page",
+			"defaultPage",
+			"pageSize",
+			"onPageChange",
+			"getRowId",
+			"className",
 		]);
+		expect(dataLayout.table?.examples).toBe(TABLE_EXAMPLES);
+		expect(dataLayout.table?.docs.api).toBe(tableApi);
+		expect(dataLayout["data-table"]?.examples).toBe(DATA_TABLE_EXAMPLES);
+		expect(dataLayout["data-table"]?.docs.api).toBe(dataTableApi);
+		expect(dataLayout.grid?.examples).toBe(GRID_EXAMPLES);
+		expect(dataLayout.grid?.docs.api).toBe(gridApi);
+		expect(dataLayout.flow?.examples).toBe(FLOW_EXAMPLES);
+		expect(dataLayout.flow?.docs.api).toBe(flowApi);
 		expect(dataLayout.table?.docs.usage).toContain("<TableHeader>");
 		expect(dataLayout["page-header"]?.examples).toBe(PAGE_HEADER_EXAMPLES);
 		expect(dataLayout["page-header"]?.docs.api).toBe(pageHeaderApi);

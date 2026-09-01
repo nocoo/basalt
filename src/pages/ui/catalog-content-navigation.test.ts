@@ -91,10 +91,12 @@ describe("navigation catalog content family", () => {
 		}
 		expect(navigation.pagination?.docs.api[0]?.props.map((prop) => prop.name)).toEqual([
 			"page",
+			"defaultPage",
 			"pageCount",
 			"onPageChange",
 			"simple",
 			"disabled",
+			"className",
 		]);
 	});
 });

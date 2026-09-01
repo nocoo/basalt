@@ -16,13 +16,10 @@ import {
 	NavigationMenuLink,
 	NavigationMenuList,
 } from "@nocoo/basalt/components/navigation-menu";
-import { Pagination } from "@nocoo/basalt/components/pagination";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
-import { TableOfContents, TableOfContentsItem } from "@nocoo/basalt/components/table-of-contents";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { Toolbar } from "@nocoo/basalt/components/toolbar";
 import { Plus, Search } from "lucide-react";
-import { useState } from "react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
 import {
@@ -30,9 +27,13 @@ import {
 	type CatalogDocsDraft,
 	provenanceFromLegacy,
 } from "../../catalog-source";
+import { PAGINATION_EXAMPLES } from "../../examples/pagination";
 import { SIDEBAR_EXAMPLES } from "../../examples/sidebar";
+import { TABLE_OF_CONTENTS_EXAMPLES } from "../../examples/table-of-contents";
 import { API as commandPaletteApi } from "../../generated/catalog-api/command-palette";
+import { API as paginationApi } from "../../generated/catalog-api/pagination";
 import { API as sidebarApi } from "../../generated/catalog-api/sidebar";
+import { API as tableOfContentsApi } from "../../generated/catalog-api/table-of-contents";
 import { API as tabsApi } from "../../generated/catalog-api/tabs";
 import { API as toolbarApi } from "../../generated/catalog-api/toolbar";
 
@@ -67,19 +68,6 @@ function extraDocs(
 		],
 		provenance: EXTRA_PROVENANCE,
 	};
-}
-
-function PaginationExample({
-	page: initialPage = 1,
-	pageCount = 10,
-	simple = false,
-}: {
-	page?: number;
-	pageCount?: number;
-	simple?: boolean;
-}) {
-	const [page, setPage] = useState(initialPage);
-	return <Pagination page={page} pageCount={pageCount} onPageChange={setPage} simple={simple} />;
 }
 
 function CommandPaletteExample({ flat = false }: { flat?: boolean }) {
@@ -415,27 +403,8 @@ export default function Example() {
 		],
 	},
 	pagination: {
-		docs: paginationDocs,
-		examples: [
-			{
-				id: catalogScenarioId("pagination", "full-controls-default"),
-				title: "Full Controls (Default)",
-				code: "const [page, setPage] = useState(1);\nreturn <Pagination page={page} pageCount={10} onPageChange={setPage} />;",
-				render: () => <PaginationExample page={1} pageCount={10} />,
-			},
-			{
-				id: catalogScenarioId("pagination", "simple-controls"),
-				title: "Simple Controls",
-				code: "const [page, setPage] = useState(2);\nreturn <Pagination page={page} pageCount={10} simple onPageChange={setPage} />;",
-				render: () => <PaginationExample page={2} pageCount={10} simple />,
-			},
-			{
-				id: catalogScenarioId("pagination", "mid-page-state"),
-				title: "Mid-Page State",
-				code: "const [page, setPage] = useState(5);\nreturn <Pagination page={page} pageCount={12} onPageChange={setPage} />;",
-				render: () => <PaginationExample page={5} pageCount={12} />,
-			},
-		],
+		docs: { ...paginationDocs, api: paginationApi },
+		examples: PAGINATION_EXAMPLES,
 	},
 	breadcrumbs: {
 		docs: breadcrumbsDocs,
@@ -519,49 +488,8 @@ export default function Example() {
 		],
 	},
 	"table-of-contents": {
-		docs: tableOfContentsDocs,
-		examples: [
-			{
-				id: catalogScenarioId("table-of-contents", "options"),
-				title: "Options",
-				code: `<TableOfContents>
-  <TableOfContentsItem active>Intro</TableOfContentsItem>
-  <TableOfContentsItem>Usage</TableOfContentsItem>
-</TableOfContents>`,
-				render: () => (
-					<TableOfContents>
-						<TableOfContentsItem active>Intro</TableOfContentsItem>
-						<TableOfContentsItem>Usage</TableOfContentsItem>
-					</TableOfContents>
-				),
-			},
-			{
-				id: catalogScenarioId("table-of-contents", "no-active-item"),
-				title: "No active item",
-				code: `<TableOfContents>
-  <TableOfContentsItem>Intro</TableOfContentsItem>
-  <TableOfContentsItem>Usage</TableOfContentsItem>
-</TableOfContents>`,
-				render: () => (
-					<TableOfContents>
-						<TableOfContentsItem>Intro</TableOfContentsItem>
-						<TableOfContentsItem>Usage</TableOfContentsItem>
-					</TableOfContents>
-				),
-			},
-			{
-				id: catalogScenarioId("table-of-contents", "without-title"),
-				title: "Without title",
-				code: `<TableOfContents title="">
-  <TableOfContentsItem active>Intro</TableOfContentsItem>
-</TableOfContents>`,
-				render: () => (
-					<TableOfContents title="">
-						<TableOfContentsItem active>Intro</TableOfContentsItem>
-					</TableOfContents>
-				),
-			},
-		],
+		docs: { ...tableOfContentsDocs, api: tableOfContentsApi },
+		examples: TABLE_OF_CONTENTS_EXAMPLES,
 	},
 	sidebar: {
 		docs: { ...sidebarDocs, api: sidebarApi },
