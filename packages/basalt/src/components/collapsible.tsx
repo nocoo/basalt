@@ -2,7 +2,7 @@ import * as CollapsiblePrimitive from "@radix-ui/react-collapsible";
 import { ChevronDown } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { FOCUS_INSET } from "./overlay";
+import { FOCUS_INSET, OVERLAY_MOTION } from "./overlay";
 
 export const Collapsible = CollapsiblePrimitive.Root;
 
@@ -25,6 +25,7 @@ export const CollapsibleTrigger = React.forwardRef<
 				FOCUS_INSET,
 				"[&_svg]:size-3 [&_svg]:shrink-0 [&_svg]:origin-center [&_svg]:transition-transform [&_svg]:duration-100 [&_svg]:ease-out",
 				"data-[state=open]:[&_svg]:rotate-180",
+				OVERLAY_MOTION,
 				className,
 			)}
 			{...props}
@@ -46,6 +47,7 @@ export const CollapsibleContent = React.forwardRef<
 		ref={ref}
 		className={cn(
 			"overflow-hidden data-[state=closed]:animate-basalt-collapsible-up data-[state=open]:animate-basalt-collapsible-down",
+			OVERLAY_MOTION,
 			className,
 		)}
 		{...props}

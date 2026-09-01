@@ -29,6 +29,8 @@ describe("Tooltip", () => {
 		);
 		expect(screen.getByRole("button", { name: "Hint" })).toBeInTheDocument();
 		expect(screen.getByText("More")).toBeInTheDocument();
+		expect(screen.getByText("More").className).toContain("motion-reduce:animate-none");
+		expect(screen.getByText("More").className).toContain("z-50");
 	});
 
 	it("accepts root controlled props and documented delayDuration", () => {

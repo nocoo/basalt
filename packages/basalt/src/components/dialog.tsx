@@ -1,6 +1,7 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
 export const DIALOG_SIZES = {
 	sm: "sm:w-72",
@@ -13,8 +14,10 @@ export type DialogSize = keyof typeof DIALOG_SIZES;
 
 export function dialogOverlayClass(className?: string) {
 	return cn(
-		"fixed inset-0 z-50 bg-black/40 backdrop-blur-md",
+		"fixed inset-0 bg-black/40 backdrop-blur-md",
+		OVERLAY_LAYER,
 		"data-[state=open]:animate-basalt-overlay-in data-[state=closed]:animate-basalt-overlay-out",
+		OVERLAY_MOTION,
 		className,
 	);
 }
@@ -27,8 +30,10 @@ export function dialogPanelClass({
 	className?: string;
 } = {}) {
 	return cn(
-		"fixed top-1/2 left-1/2 z-50 w-full max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] origin-center -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-basalt-lg bg-basalt-background p-8 text-basalt-foreground shadow-lg ring-1 ring-basalt-border",
+		"fixed top-1/2 left-1/2 w-full max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] origin-center -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-basalt-lg bg-basalt-background p-8 text-basalt-foreground shadow-lg ring-1 ring-basalt-border",
+		OVERLAY_LAYER,
 		"data-[state=open]:animate-basalt-dialog-in data-[state=closed]:animate-basalt-dialog-out",
+		OVERLAY_MOTION,
 		DIALOG_SIZES[size],
 		className,
 	);

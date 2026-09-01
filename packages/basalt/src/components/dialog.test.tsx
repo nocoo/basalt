@@ -49,6 +49,8 @@ describe("Dialog", () => {
 		expect(classes).toContain(DIALOG_SIZES.sm);
 		expect(classes).toContain("data-[state=open]:animate-basalt-dialog-in");
 		expect(classes).toContain("data-[state=closed]:animate-basalt-dialog-out");
+		expect(classes).toContain("motion-reduce:animate-none");
+		expect(classes).toContain("z-50");
 		expect(classes).toContain("overflow-y-auto");
 		expect(classes).not.toContain("overflow-hidden");
 		expect(classes).not.toContain("top-8");
@@ -60,6 +62,8 @@ describe("Dialog", () => {
 		expect(classes).toContain("bg-black/40");
 		expect(classes).toContain("data-[state=open]:animate-basalt-overlay-in");
 		expect(classes).toContain("data-[state=closed]:animate-basalt-overlay-out");
+		expect(classes).toContain("motion-reduce:animate-none");
+		expect(classes).toContain("z-50");
 	});
 
 	it("renders each size on the panel", () => {

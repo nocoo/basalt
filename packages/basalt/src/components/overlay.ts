@@ -4,6 +4,10 @@ import { cn } from "../utils/cn";
 export const OVERLAY_GAP = 4;
 /** Gap between a menu trigger and its panel. Matches Kumo Dropdown/Popover. */
 export const MENU_GAP = 8;
+/** Shared stacking layer for portals, menus, and chrome overlays. */
+export const OVERLAY_LAYER = "z-50";
+/** Kill CSS animation and transition when the user prefers reduced motion. */
+export const OVERLAY_MOTION = "motion-reduce:animate-none motion-reduce:transition-none";
 
 /** Recolor the existing 1px border. No extra ring, no layout shift. */
 export const FOCUS_BORDER = "outline-hidden focus-visible:border-basalt-ring";
@@ -16,7 +20,9 @@ export const FOCUS_RING =
 
 export function overlayPanelClass(className?: string) {
 	return cn(
-		"z-50 overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover py-1.5 text-sm text-basalt-popover-foreground shadow-md motion-reduce:animate-none motion-reduce:transition-none",
+		OVERLAY_LAYER,
+		"overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover py-1.5 text-sm text-basalt-popover-foreground shadow-md",
+		OVERLAY_MOTION,
 		className,
 	);
 }

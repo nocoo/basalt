@@ -83,6 +83,7 @@ describe("Tabs", () => {
 		);
 		expect(screen.getByText("Home panel")).toBeInTheDocument();
 		expect(screen.getByText("Home panel").className).toContain("animate-basalt-tab-in");
+		expect(screen.getByText("Home panel").className).toContain("motion-reduce:animate-none");
 	});
 
 	it("renders a sliding active indicator", () => {

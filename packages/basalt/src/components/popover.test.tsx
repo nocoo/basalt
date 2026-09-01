@@ -30,9 +30,10 @@ describe("Popover", () => {
 		);
 		expect(screen.getByText("Popover Title")).toBeInTheDocument();
 		expect(screen.getByText("This is a popover.")).toBeInTheDocument();
-		expect(
-			screen.getByText("Popover Title").closest("[data-side]")?.querySelector("svg"),
-		).toBeTruthy();
+		const panel = screen.getByText("Popover Title").closest("[data-side]");
+		expect(panel?.querySelector("svg")).toBeTruthy();
+		expect(panel?.className).toContain("motion-reduce:animate-none");
+		expect(panel?.className).toContain("z-50");
 	});
 
 	it.each(["top", "bottom", "left", "right"] as const)("places content on the %s", (side) => {

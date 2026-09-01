@@ -5,6 +5,8 @@ import {
 	FOCUS_RING,
 	MENU_GAP,
 	OVERLAY_GAP,
+	OVERLAY_LAYER,
+	OVERLAY_MOTION,
 	overlayItemClass,
 	overlayPanelClass,
 } from "./overlay";
@@ -19,7 +21,14 @@ describe("overlay", () => {
 		expect(overlayPanelClass()).toContain("py-1.5");
 		expect(overlayItemClass()).toContain("mx-1.5");
 		expect(overlayItemClass()).toContain("py-1.5");
-		expect(overlayPanelClass()).toContain("motion-reduce:transition-none");
+		expect(overlayPanelClass()).toContain(OVERLAY_LAYER);
+		expect(overlayPanelClass()).toContain(OVERLAY_MOTION);
+	});
+
+	it("shares a stacking layer and reduced-motion kill switch", () => {
+		expect(OVERLAY_LAYER).toBe("z-50");
+		expect(OVERLAY_MOTION).toContain("motion-reduce:animate-none");
+		expect(OVERLAY_MOTION).toContain("motion-reduce:transition-none");
 	});
 
 	it("focuses by recoloring the border instead of growing a ring", () => {

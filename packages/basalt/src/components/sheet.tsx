@@ -1,6 +1,7 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
 export const Sheet = DialogPrimitive.Root;
 export const SheetTrigger = DialogPrimitive.Trigger;
@@ -31,11 +32,11 @@ SheetDescription.displayName = DialogPrimitive.Description.displayName;
 
 const SIDE = {
 	right:
-		"fixed inset-y-0 right-0 z-50 box-border flex h-full w-80 flex-col gap-3 border-l border-basalt-border bg-basalt-popover p-6 text-sm text-basalt-popover-foreground shadow-lg",
-	left: "fixed inset-y-0 left-0 z-50 box-border flex h-full w-80 flex-col gap-3 border-r border-basalt-border bg-basalt-popover p-6 text-sm text-basalt-popover-foreground shadow-lg",
-	top: "fixed inset-x-0 top-0 z-50 box-border flex h-80 w-full flex-col gap-3 border-b border-basalt-border bg-basalt-popover p-6 text-sm text-basalt-popover-foreground shadow-lg",
+		"fixed inset-y-0 right-0 box-border flex h-full w-80 flex-col gap-3 border-l border-basalt-border bg-basalt-popover p-6 text-sm text-basalt-popover-foreground shadow-lg",
+	left: "fixed inset-y-0 left-0 box-border flex h-full w-80 flex-col gap-3 border-r border-basalt-border bg-basalt-popover p-6 text-sm text-basalt-popover-foreground shadow-lg",
+	top: "fixed inset-x-0 top-0 box-border flex h-80 w-full flex-col gap-3 border-b border-basalt-border bg-basalt-popover p-6 text-sm text-basalt-popover-foreground shadow-lg",
 	bottom:
-		"fixed inset-x-0 bottom-0 z-50 box-border flex h-80 w-full flex-col gap-3 border-t border-basalt-border bg-basalt-popover p-6 text-sm text-basalt-popover-foreground shadow-lg",
+		"fixed inset-x-0 bottom-0 box-border flex h-80 w-full flex-col gap-3 border-t border-basalt-border bg-basalt-popover p-6 text-sm text-basalt-popover-foreground shadow-lg",
 } as const;
 
 export type SheetSide = keyof typeof SIDE;
@@ -45,10 +46,12 @@ export const SheetContent = React.forwardRef<
 	React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & { side?: SheetSide }
 >(({ className, side = "right", children, ...props }, ref) => (
 	<DialogPrimitive.Portal>
-		<DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs" />
+		<DialogPrimitive.Overlay
+			className={cn("fixed inset-0 bg-black/50 backdrop-blur-xs", OVERLAY_LAYER, OVERLAY_MOTION)}
+		/>
 		<DialogPrimitive.Content
 			ref={ref}
-			className={cn(SIDE[side], className)}
+			className={cn(OVERLAY_LAYER, OVERLAY_MOTION, SIDE[side], className)}
 			{...props}
 			style={{ boxSizing: "border-box", ...props.style }}
 		>

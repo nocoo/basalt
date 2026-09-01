@@ -24,6 +24,8 @@ describe("Sheet", () => {
 		const panel = screen.getByRole("dialog");
 		expect(panel.className).toContain("left-0");
 		expect(panel.className).not.toContain("left-1/2");
+		expect(panel.className).toContain("motion-reduce:animate-none");
+		expect(panel.className).toContain("z-50");
 		expect(panel).toHaveStyle({ boxSizing: "border-box" });
 	});
 

@@ -1,7 +1,7 @@
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import * as React from "react";
 import { cn } from "../utils/cn";
-import { MENU_GAP } from "./overlay";
+import { MENU_GAP, OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
 export const POPOVER_SIDES = ["top", "bottom", "left", "right"] as const;
 export type PopoverSide = (typeof POPOVER_SIDES)[number];
@@ -39,7 +39,9 @@ export const PopoverContent = React.forwardRef<
 				side={side}
 				sideOffset={sideOffset}
 				className={cn(
-					"z-50 rounded-basalt-md border border-basalt-border bg-basalt-popover px-4 py-3 text-sm text-basalt-popover-foreground shadow-md outline-hidden",
+					OVERLAY_LAYER,
+					OVERLAY_MOTION,
+					"rounded-basalt-md border border-basalt-border bg-basalt-popover px-4 py-3 text-sm text-basalt-popover-foreground shadow-md outline-hidden",
 					className,
 				)}
 				{...props}

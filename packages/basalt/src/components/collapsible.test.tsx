@@ -36,6 +36,7 @@ describe("Collapsible", () => {
 		expect(panel.parentElement?.className).toContain(
 			"data-[state=open]:animate-basalt-collapsible-down",
 		);
+		expect(panel.parentElement?.className).toContain("motion-reduce:animate-none");
 	});
 
 	it("can render unstyled content", () => {

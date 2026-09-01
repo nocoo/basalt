@@ -2,6 +2,7 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { useSelectionIndicator } from "../utils/selection-indicator";
+import { OVERLAY_MOTION } from "./overlay";
 
 function measureTabUnderline(item: HTMLElement): {
 	left: number;
@@ -69,6 +70,7 @@ export const TabsTrigger = React.forwardRef<
 		ref={ref}
 		className={cn(
 			"inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-basalt-muted-foreground transition-colors hover:text-basalt-foreground data-[state=active]:text-basalt-primary",
+			OVERLAY_MOTION,
 			className,
 		)}
 		{...props}
@@ -84,6 +86,7 @@ export const TabsContent = React.forwardRef<
 		ref={ref}
 		className={cn(
 			"mt-3 text-sm text-basalt-foreground data-[state=active]:animate-basalt-tab-in",
+			OVERLAY_MOTION,
 			className,
 		)}
 		{...props}
