@@ -23,13 +23,13 @@ export interface StatStripProps
 }
 
 export const StatStrip = React.forwardRef<HTMLDListElement, StatStripProps>(
-	({ className, items, loading = false, ...props }, ref) => {
+	({ "aria-busy": ariaBusy, className, items, loading = false, ...props }, ref) => {
 		return (
 			<dl
 				ref={ref}
-				aria-busy={loading || undefined}
 				className={cn("grid grid-cols-2 gap-3 md:grid-cols-4", className)}
 				{...props}
+				aria-busy={loading ? true : ariaBusy}
 			>
 				{items.map((item, index) => (
 					<div

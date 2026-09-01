@@ -86,4 +86,12 @@ describe("StatStrip", () => {
 		expect(screen.queryByText("128")).toBeNull();
 		expect(list.querySelectorAll("dd [aria-hidden='true']")).toHaveLength(4);
 	});
+
+	it("keeps the list busy while loading even if the caller sets aria-busy false", () => {
+		const { container, rerender } = render(<StatStrip loading aria-busy={false} items={ITEMS} />);
+		expect(container.querySelector("dl")).toHaveAttribute("aria-busy", "true");
+
+		rerender(<StatStrip aria-busy={false} items={ITEMS} />);
+		expect(container.querySelector("dl")).toHaveAttribute("aria-busy", "false");
+	});
 });
