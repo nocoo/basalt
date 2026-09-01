@@ -188,6 +188,96 @@ describe("Checkbox", () => {
 		});
 	});
 
+	it("forwards object and function refs to the group", () => {
+		const objectRef = createRef<HTMLFieldSetElement>();
+		const functionRef = vi.fn();
+		const { rerender } = render(
+			<Checkbox.Group ref={objectRef}>
+				<Checkbox.Legend>Topics</Checkbox.Legend>
+				<Checkbox.Item value="a">Alpha</Checkbox.Item>
+			</Checkbox.Group>,
+		);
+		expect(objectRef.current?.tagName).toBe("FIELDSET");
+		rerender(
+			<Checkbox.Group ref={functionRef}>
+				<Checkbox.Legend>Topics</Checkbox.Legend>
+				<Checkbox.Item value="a">Alpha</Checkbox.Item>
+			</Checkbox.Group>,
+		);
+		expect(functionRef).toHaveBeenCalledWith(expect.any(HTMLFieldSetElement));
+	});
+
+	it("keeps caller invalid and described-by when there is no group error", () => {
+		render(
+			<Checkbox.Group aria-invalid={true} aria-describedby="hint">
+				<Checkbox.Legend>Topics</Checkbox.Legend>
+				<Checkbox.Item value="a">Alpha</Checkbox.Item>
+			</Checkbox.Group>,
+		);
+		const group = screen.getByRole("group", { name: "Topics" });
+		expect(group).toHaveAttribute("aria-invalid", "true");
+		expect(group).toHaveAttribute("aria-describedby", "hint");
+		expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+	});
+
+	it("does not restore a controlled group on native form reset", async () => {
+		render(
+			<form>
+				<Checkbox.Group value={["b"]}>
+					<Checkbox.Legend>Topics</Checkbox.Legend>
+					<Checkbox.Item value="a">Alpha</Checkbox.Item>
+					<Checkbox.Item value="b">Beta</Checkbox.Item>
+				</Checkbox.Group>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await waitFor(() => {
+			expect(screen.getByRole("checkbox", { name: "Alpha" })).not.toBeChecked();
+			expect(screen.getByRole("checkbox", { name: "Beta" })).toBeChecked();
+		});
+	});
+
+	it("does not restore when form reset is canceled", async () => {
+		render(
+			<form
+				onReset={(event) => {
+					event.preventDefault();
+				}}
+			>
+				<Checkbox.Group defaultValue={["a"]}>
+					<Checkbox.Legend>Topics</Checkbox.Legend>
+					<Checkbox.Item value="a">Alpha</Checkbox.Item>
+					<Checkbox.Item value="b">Beta</Checkbox.Item>
+				</Checkbox.Group>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		fireEvent.click(screen.getByRole("checkbox", { name: "Alpha" }));
+		fireEvent.click(screen.getByRole("checkbox", { name: "Beta" }));
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await Promise.resolve();
+		expect(screen.getByRole("checkbox", { name: "Alpha" })).not.toBeChecked();
+	});
+
+	it("clears grouped values on reset when defaultValue is omitted", async () => {
+		render(
+			<form>
+				<Checkbox.Group>
+					<Checkbox.Legend>Topics</Checkbox.Legend>
+					<Checkbox.Item value="a">Alpha</Checkbox.Item>
+				</Checkbox.Group>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		fireEvent.click(screen.getByRole("checkbox", { name: "Alpha" }));
+		expect(screen.getByRole("checkbox", { name: "Alpha" })).toBeChecked();
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await waitFor(() => {
+			expect(screen.getByRole("checkbox", { name: "Alpha" })).not.toBeChecked();
+		});
+	});
+
 	it("disables grouped items and keeps uncontrolled default values", () => {
 		render(
 			<Checkbox.Group defaultValue={["alpha"]} disabled>

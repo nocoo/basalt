@@ -161,6 +161,96 @@ describe("Switch", () => {
 		});
 	});
 
+	it("forwards object and function refs to the group", () => {
+		const objectRef = createRef<HTMLFieldSetElement>();
+		const functionRef = vi.fn();
+		const { rerender } = render(
+			<Switch.Group ref={objectRef}>
+				<Switch.Legend>Alerts</Switch.Legend>
+				<Switch.Item value="a">Alpha</Switch.Item>
+			</Switch.Group>,
+		);
+		expect(objectRef.current?.tagName).toBe("FIELDSET");
+		rerender(
+			<Switch.Group ref={functionRef}>
+				<Switch.Legend>Alerts</Switch.Legend>
+				<Switch.Item value="a">Alpha</Switch.Item>
+			</Switch.Group>,
+		);
+		expect(functionRef).toHaveBeenCalledWith(expect.any(HTMLFieldSetElement));
+	});
+
+	it("keeps caller invalid and described-by when there is no group error", () => {
+		render(
+			<Switch.Group aria-invalid={true} aria-describedby="hint">
+				<Switch.Legend>Alerts</Switch.Legend>
+				<Switch.Item value="a">Alpha</Switch.Item>
+			</Switch.Group>,
+		);
+		const group = screen.getByRole("group", { name: "Alerts" });
+		expect(group).toHaveAttribute("aria-invalid", "true");
+		expect(group).toHaveAttribute("aria-describedby", "hint");
+		expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+	});
+
+	it("does not restore a controlled group on native form reset", async () => {
+		render(
+			<form>
+				<Switch.Group value={["b"]}>
+					<Switch.Legend>Alerts</Switch.Legend>
+					<Switch.Item value="a">Alpha</Switch.Item>
+					<Switch.Item value="b">Beta</Switch.Item>
+				</Switch.Group>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await waitFor(() => {
+			expect(screen.getByRole("switch", { name: "Alpha" })).not.toBeChecked();
+			expect(screen.getByRole("switch", { name: "Beta" })).toBeChecked();
+		});
+	});
+
+	it("does not restore when form reset is canceled", async () => {
+		render(
+			<form
+				onReset={(event) => {
+					event.preventDefault();
+				}}
+			>
+				<Switch.Group defaultValue={["a"]}>
+					<Switch.Legend>Alerts</Switch.Legend>
+					<Switch.Item value="a">Alpha</Switch.Item>
+					<Switch.Item value="b">Beta</Switch.Item>
+				</Switch.Group>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		fireEvent.click(screen.getByRole("switch", { name: "Alpha" }));
+		fireEvent.click(screen.getByRole("switch", { name: "Beta" }));
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await Promise.resolve();
+		expect(screen.getByRole("switch", { name: "Alpha" })).not.toBeChecked();
+	});
+
+	it("clears grouped values on reset when defaultValue is omitted", async () => {
+		render(
+			<form>
+				<Switch.Group>
+					<Switch.Legend>Alerts</Switch.Legend>
+					<Switch.Item value="a">Alpha</Switch.Item>
+				</Switch.Group>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		fireEvent.click(screen.getByRole("switch", { name: "Alpha" }));
+		expect(screen.getByRole("switch", { name: "Alpha" })).toBeChecked();
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await waitFor(() => {
+			expect(screen.getByRole("switch", { name: "Alpha" })).not.toBeChecked();
+		});
+	});
+
 	it("accepts group, legend, and item props and rejects illegal values", () => {
 		acceptSwitchGroupProps({ value: ["a"], error: "Required", disabled: true });
 		acceptSwitchLegendProps({ children: "Alerts" });
