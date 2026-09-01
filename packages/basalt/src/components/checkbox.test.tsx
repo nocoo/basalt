@@ -7,7 +7,6 @@ import {
 	type CheckboxItemProps,
 	type CheckboxLegendProps,
 	type CheckboxProps,
-	nextCheckboxGroupValue,
 } from "./checkbox";
 
 function acceptCheckboxProps(_props: CheckboxProps) {}
@@ -131,8 +130,6 @@ describe("Checkbox", () => {
 	});
 
 	it("toggles grouped values with legend, error, and controlled updates", () => {
-		expect(nextCheckboxGroupValue(["alpha"], "beta", true)).toEqual(["alpha", "beta"]);
-		expect(nextCheckboxGroupValue(["alpha", "beta"], "beta", false)).toEqual(["alpha"]);
 		const onValueChange = vi.fn();
 		render(
 			<Checkbox.Group value={["alpha"]} onValueChange={onValueChange} error="Pick at least two">

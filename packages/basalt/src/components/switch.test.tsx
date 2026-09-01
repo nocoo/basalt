@@ -2,7 +2,6 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
 import {
-	nextSwitchGroupValue,
 	Switch,
 	type SwitchGroupProps,
 	type SwitchItemProps,
@@ -106,8 +105,6 @@ describe("Switch", () => {
 	});
 
 	it("toggles grouped values with legend, error, and controlled updates", () => {
-		expect(nextSwitchGroupValue(["alpha"], "beta", true)).toEqual(["alpha", "beta"]);
-		expect(nextSwitchGroupValue(["alpha", "beta"], "beta", false)).toEqual(["alpha"]);
 		const onValueChange = vi.fn();
 		render(
 			<Switch.Group value={["alpha"]} onValueChange={onValueChange} error="Turn on at least two">

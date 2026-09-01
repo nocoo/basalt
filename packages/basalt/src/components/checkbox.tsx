@@ -30,11 +30,7 @@ type CheckboxGroupContextValue = {
 
 const CheckboxGroupContext = React.createContext<CheckboxGroupContextValue | null>(null);
 
-export function nextCheckboxGroupValue(
-	current: string[],
-	itemValue: string,
-	checked: boolean,
-): string[] {
+function nextCheckboxGroupValue(current: string[], itemValue: string, checked: boolean): string[] {
 	if (checked) {
 		return current.includes(itemValue) ? current : [...current, itemValue];
 	}

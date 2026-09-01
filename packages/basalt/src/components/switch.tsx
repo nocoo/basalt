@@ -12,11 +12,7 @@ type SwitchGroupContextValue = {
 
 const SwitchGroupContext = React.createContext<SwitchGroupContextValue | null>(null);
 
-export function nextSwitchGroupValue(
-	current: string[],
-	itemValue: string,
-	checked: boolean,
-): string[] {
+function nextSwitchGroupValue(current: string[], itemValue: string, checked: boolean): string[] {
 	if (checked) {
 		return current.includes(itemValue) ? current : [...current, itemValue];
 	}
