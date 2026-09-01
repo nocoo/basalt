@@ -18,11 +18,36 @@ function measureTabUnderline(item: HTMLElement): {
 	};
 }
 
-export const Tabs = TabsPrimitive.Root;
+export type TabsProps = Omit<
+	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>,
+	"value" | "defaultValue" | "onValueChange"
+> & {
+	/**
+	 * The controlled selected tab.
+	 */
+	value?: string;
+	/**
+	 * The uncontrolled initial tab.
+	 */
+	defaultValue?: string;
+	/**
+	 * Called when the selected tab changes.
+	 */
+	onValueChange?: (value: string) => void;
+};
+export const Tabs: React.FC<TabsProps> = TabsPrimitive.Root;
+
+export type TabsListProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & {
+	/**
+	 * Show the sliding active underline.
+	 * @default true
+	 */
+	showIndicator?: boolean;
+};
 
 export const TabsList = React.forwardRef<
 	React.ElementRef<typeof TabsPrimitive.List>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & { showIndicator?: boolean }
+	TabsListProps
 >(({ className, children, showIndicator = true, ...props }, ref) => {
 	const {
 		ref: listRef,
@@ -62,9 +87,20 @@ export const TabsList = React.forwardRef<
 });
 TabsList.displayName = TabsPrimitive.List.displayName;
 
+export type TabsTriggerProps = Omit<
+	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>,
+	"disabled"
+> & {
+	/**
+	 * Disable the tab trigger.
+	 * @default false
+	 */
+	disabled?: boolean;
+};
+
 export const TabsTrigger = React.forwardRef<
 	React.ElementRef<typeof TabsPrimitive.Trigger>,
-	React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
+	TabsTriggerProps
 >(({ className, ...props }, ref) => (
 	<TabsPrimitive.Trigger
 		ref={ref}

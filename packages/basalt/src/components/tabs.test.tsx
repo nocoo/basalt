@@ -58,6 +58,24 @@ describe("Tabs", () => {
 		vi.restoreAllMocks();
 	});
 
+	it("keeps a controlled value and skips a disabled tab", () => {
+		const onValueChange = vi.fn();
+		render(
+			<Tabs value="a" onValueChange={onValueChange}>
+				<TabsList>
+					<TabsTrigger value="a">Home</TabsTrigger>
+					<TabsTrigger value="b" disabled>
+						About
+					</TabsTrigger>
+				</TabsList>
+			</Tabs>,
+		);
+		expect(screen.getByRole("tab", { name: "Home" })).toHaveAttribute("aria-selected", "true");
+		expect(screen.getByRole("tab", { name: "About" })).toBeDisabled();
+		fireEvent.mouseDown(screen.getByRole("tab", { name: "About" }));
+		expect(onValueChange).not.toHaveBeenCalled();
+	});
+
 	it("renders tab triggers", () => {
 		render(
 			<Tabs defaultValue="a">
