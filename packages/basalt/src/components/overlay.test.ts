@@ -19,6 +19,7 @@ describe("overlay", () => {
 		expect(overlayPanelClass()).toContain("py-1.5");
 		expect(overlayItemClass()).toContain("mx-1.5");
 		expect(overlayItemClass()).toContain("py-1.5");
+		expect(overlayPanelClass()).toContain("motion-reduce:transition-none");
 	});
 
 	it("focuses by recoloring the border instead of growing a ring", () => {

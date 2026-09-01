@@ -16,7 +16,7 @@ export const FOCUS_RING =
 
 export function overlayPanelClass(className?: string) {
 	return cn(
-		"z-50 overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover py-1.5 text-sm text-basalt-popover-foreground shadow-md",
+		"z-50 overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover py-1.5 text-sm text-basalt-popover-foreground shadow-md motion-reduce:animate-none motion-reduce:transition-none",
 		className,
 	);
 }
