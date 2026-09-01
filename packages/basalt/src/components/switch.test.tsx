@@ -125,6 +125,19 @@ describe("Switch", () => {
 		expect(screen.getByRole("switch", { name: "Beta" })).not.toBeChecked();
 	});
 
+	it("merges caller described-by with generated group error", () => {
+		render(
+			<Switch.Group error="Turn on at least two" aria-describedby="hint">
+				<Switch.Legend>Alerts</Switch.Legend>
+				<Switch.Item value="alpha">Alpha</Switch.Item>
+			</Switch.Group>,
+		);
+		const group = screen.getByRole("group", { name: "Alerts" });
+		const alert = screen.getByRole("alert");
+		expect(group).toHaveAttribute("aria-invalid", "true");
+		expect(group).toHaveAttribute("aria-describedby", `${alert.id} hint`);
+	});
+
 	it("restores grouped defaultValue on native form reset", async () => {
 		render(
 			<form>

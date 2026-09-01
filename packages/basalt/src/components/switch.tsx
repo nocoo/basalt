@@ -104,7 +104,18 @@ SwitchRoot.displayName = SwitchPrimitives.Root.displayName;
 
 const SwitchGroup = React.forwardRef<HTMLFieldSetElement, SwitchGroupProps>(
 	(
-		{ className, value, defaultValue, onValueChange, error, disabled = false, children, ...props },
+		{
+			className,
+			value,
+			defaultValue,
+			onValueChange,
+			error,
+			disabled = false,
+			children,
+			"aria-describedby": describedBy,
+			"aria-invalid": ariaInvalid,
+			...props
+		},
 		ref,
 	) => {
 		const generatedId = React.useId();
@@ -113,6 +124,8 @@ const SwitchGroup = React.forwardRef<HTMLFieldSetElement, SwitchGroupProps>(
 		const current = value ?? uncontrolled;
 		const invalid = Boolean(error);
 		const errorId = `${generatedId}-error`;
+		const mergedDescribedBy =
+			[invalid ? errorId : null, describedBy].filter(Boolean).join(" ") || undefined;
 		const setValue = React.useCallback(
 			(next: string[]) => {
 				if (value === undefined) {
@@ -155,8 +168,8 @@ const SwitchGroup = React.forwardRef<HTMLFieldSetElement, SwitchGroupProps>(
 					ref={setRefs}
 					{...props}
 					disabled={disabled}
-					aria-invalid={invalid || undefined}
-					aria-describedby={invalid ? errorId : undefined}
+					aria-invalid={invalid ? true : ariaInvalid}
+					aria-describedby={mergedDescribedBy}
 					className={cn("flex flex-col gap-2", className)}
 				>
 					{children}

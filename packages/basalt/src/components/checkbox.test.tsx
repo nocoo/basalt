@@ -152,6 +152,19 @@ describe("Checkbox", () => {
 		expect(screen.getByRole("checkbox", { name: "Beta" })).not.toBeChecked();
 	});
 
+	it("merges caller described-by with generated group error", () => {
+		render(
+			<Checkbox.Group error="Pick at least two" aria-describedby="hint">
+				<Checkbox.Legend>Topics</Checkbox.Legend>
+				<Checkbox.Item value="alpha">Alpha</Checkbox.Item>
+			</Checkbox.Group>,
+		);
+		const group = screen.getByRole("group", { name: "Topics" });
+		const alert = screen.getByRole("alert");
+		expect(group).toHaveAttribute("aria-invalid", "true");
+		expect(group).toHaveAttribute("aria-describedby", `${alert.id} hint`);
+	});
+
 	it("restores grouped defaultValue on native form reset", async () => {
 		render(
 			<form>

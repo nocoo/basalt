@@ -119,7 +119,18 @@ CheckboxRoot.displayName = CheckboxPrimitive.Root.displayName;
 
 const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(
 	(
-		{ className, value, defaultValue, onValueChange, error, disabled = false, children, ...props },
+		{
+			className,
+			value,
+			defaultValue,
+			onValueChange,
+			error,
+			disabled = false,
+			children,
+			"aria-describedby": describedBy,
+			"aria-invalid": ariaInvalid,
+			...props
+		},
 		ref,
 	) => {
 		const generatedId = React.useId();
@@ -128,6 +139,8 @@ const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(
 		const current = value ?? uncontrolled;
 		const invalid = Boolean(error);
 		const errorId = `${generatedId}-error`;
+		const mergedDescribedBy =
+			[invalid ? errorId : null, describedBy].filter(Boolean).join(" ") || undefined;
 		const setValue = React.useCallback(
 			(next: string[]) => {
 				if (value === undefined) {
@@ -170,8 +183,8 @@ const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(
 					ref={setRefs}
 					{...props}
 					disabled={disabled}
-					aria-invalid={invalid || undefined}
-					aria-describedby={invalid ? errorId : undefined}
+					aria-invalid={invalid ? true : ariaInvalid}
+					aria-describedby={mergedDescribedBy}
 					className={cn("flex flex-col gap-2", className)}
 				>
 					{children}
