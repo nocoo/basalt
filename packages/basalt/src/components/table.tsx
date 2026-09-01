@@ -1,18 +1,26 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
 
-export const Table = React.forwardRef<HTMLTableElement, React.HTMLAttributes<HTMLTableElement>>(
-	({ className, ...props }, ref) => (
-		<table
-			ref={ref}
-			className={cn(
-				"w-full border-separate border-spacing-0 caption-bottom text-left text-sm text-basalt-foreground",
-				className,
-			)}
-			{...props}
-		/>
-	),
-);
+export type TableProps = {
+	/**
+	 * Additional classes for the table.
+	 */
+	className?: string;
+};
+
+export const Table = React.forwardRef<
+	HTMLTableElement,
+	TableProps & React.HTMLAttributes<HTMLTableElement>
+>(({ className, ...props }, ref) => (
+	<table
+		ref={ref}
+		className={cn(
+			"w-full border-separate border-spacing-0 caption-bottom text-left text-sm text-basalt-foreground",
+			className,
+		)}
+		{...props}
+	/>
+));
 Table.displayName = "Table";
 
 export const TableHeader = (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
@@ -27,11 +35,23 @@ export const TableFooter = (props: React.HTMLAttributes<HTMLTableSectionElement>
 
 export type TableRowVariant = "default" | "selected";
 
+export type TableRowProps = {
+	/**
+	 * Highlight the row as selected.
+	 * @default "default"
+	 */
+	variant?: TableRowVariant;
+	/**
+	 * Additional classes for the row.
+	 */
+	className?: string;
+};
+
 export const TableRow = ({
 	className,
 	variant = "default",
 	...props
-}: React.HTMLAttributes<HTMLTableRowElement> & { variant?: TableRowVariant }) => (
+}: TableRowProps & React.HTMLAttributes<HTMLTableRowElement>) => (
 	<tr
 		className={cn(
 			variant === "selected" ? "[&_td]:bg-basalt-accent" : "even:[&_td]:bg-basalt-secondary",
@@ -60,3 +80,12 @@ export const TableCell = ({
 }: React.TdHTMLAttributes<HTMLTableCellElement>) => (
 	<td className={cn("p-3", className)} {...props} />
 );
+
+export function TableCaption({
+	className,
+	...props
+}: React.HTMLAttributes<HTMLTableCaptionElement>) {
+	return (
+		<caption className={cn("mt-2 text-sm text-basalt-muted-foreground", className)} {...props} />
+	);
+}

@@ -1,8 +1,37 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
+import {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "./table";
 
 describe("Table", () => {
+	it("renders a native table with caption", () => {
+		render(
+			<Table>
+				<TableCaption>Roster</TableCaption>
+				<TableHeader>
+					<TableRow>
+						<TableHead>Name</TableHead>
+					</TableRow>
+				</TableHeader>
+				<TableBody>
+					<TableRow>
+						<TableCell>Atlas</TableCell>
+					</TableRow>
+				</TableBody>
+			</Table>,
+		);
+		expect(screen.getByRole("table", { name: "Roster" }).tagName).toBe("TABLE");
+		expect(screen.getByRole("columnheader", { name: "Name" }).tagName).toBe("TH");
+		expect(screen.getByRole("cell", { name: "Atlas" }).tagName).toBe("TD");
+	});
+
 	it("renders headers", () => {
 		render(
 			<Table>
