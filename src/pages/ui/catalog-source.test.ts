@@ -242,6 +242,8 @@ describe("catalog source contract", () => {
 			"htmlFor",
 			"hint",
 			"error",
+			"required",
+			"labelTooltip",
 			"className",
 			"children",
 		]);

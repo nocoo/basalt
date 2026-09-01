@@ -886,15 +886,17 @@ describe("catalog API generator contract", () => {
 			"htmlFor",
 			"hint",
 			"error",
+			"required",
+			"labelTooltip",
 			"className",
 			"children",
 		]);
 		expect(generated.field).toEqual([
 			{
 				name: "label",
-				type: "string",
+				type: "React.ReactNode",
 				required: true,
-				description: "Visible label text.",
+				description: "Visible label.",
 			},
 			{
 				name: "htmlFor",
@@ -904,15 +906,27 @@ describe("catalog API generator contract", () => {
 			},
 			{
 				name: "hint",
-				type: "string",
+				type: "React.ReactNode",
 				required: false,
 				description: "Supporting text when there is no error.",
 			},
 			{
 				name: "error",
-				type: "string",
+				type: "FieldError",
 				required: false,
 				description: "Replaces the hint and marks the control invalid.",
+			},
+			{
+				name: "required",
+				type: "boolean",
+				required: false,
+				description: "When false, show (optional) after the label.",
+			},
+			{
+				name: "labelTooltip",
+				type: "React.ReactNode",
+				required: false,
+				description: "Info icon with hover text on the label.",
 			},
 			{
 				name: "className",
@@ -928,6 +942,10 @@ describe("catalog API generator contract", () => {
 			},
 		]);
 		expect(generated.field?.every((prop) => !("default" in prop))).toBe(true);
+		expect(generated.field?.some((prop) => prop.name === "id")).toBe(false);
+		expect(generated.field?.some((prop) => prop.name === "style")).toBe(false);
+		expect(generated.field?.some((prop) => prop.name === "onClick")).toBe(false);
+		expect(generated.field?.some((prop) => prop.name === "ref")).toBe(false);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",
@@ -1005,6 +1023,8 @@ describe("catalog API generator contract", () => {
 			"htmlFor",
 			"hint",
 			"error",
+			"required",
+			"labelTooltip",
 			"className",
 			"children",
 		]);
@@ -1062,6 +1082,8 @@ describe("catalog API generator contract", () => {
 			"htmlFor",
 			"hint",
 			"error",
+			"required",
+			"labelTooltip",
 			"className",
 			"children",
 		]);
@@ -2971,7 +2993,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"0d8d1829fe5b1a1b6517e5730761d773d6cb60ccdc583747f2f896b8e89ff16d",
+			"0ac75370ac9ede267b6015ab8ccfc8ac7957b8ad62da3b4e866905efce291810",
 		);
 	}, 20_000);
 

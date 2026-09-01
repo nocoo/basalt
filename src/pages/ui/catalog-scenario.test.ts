@@ -173,8 +173,13 @@ const basaltMarkSources = import.meta.glob("./examples/basalt-mark/*.tsx", {
 	eager: true,
 });
 
-const FIELD_IDS = ["field-hint", "field-error"] as const;
-const FIELD_TITLES = ["Hint", "Error"] as const;
+const FIELD_IDS = [
+	"field-hint",
+	"field-error",
+	"field-rich-label-and-optional",
+	"field-structured-error",
+] as const;
+const FIELD_TITLES = ["Hint", "Error", "Rich label and optional", "Structured error"] as const;
 
 const fieldRenders = import.meta.glob("./examples/field/*.tsx", { eager: true });
 const fieldSources = import.meta.glob("./examples/field/*.tsx", {
@@ -917,9 +922,9 @@ describe("source-backed basalt-mark scenarios", () => {
 });
 
 describe("source-backed field scenarios", () => {
-	it("loads two field scenarios from the same glob modules", () => {
-		expect(Object.keys(fieldRenders)).toHaveLength(2);
-		expect(Object.keys(fieldSources)).toHaveLength(2);
+	it("loads four field scenarios from the same glob modules", () => {
+		expect(Object.keys(fieldRenders)).toHaveLength(4);
+		expect(Object.keys(fieldSources)).toHaveLength(4);
 		const loaded = loadModuleScenarios({
 			slug: "field",
 			metas: FIELD_TITLES.map((title, index) => ({
@@ -991,6 +996,15 @@ describe("source-backed field scenarios", () => {
 		expect(FIELD_EXAMPLES[1]?.code).toContain('error="Required"');
 		expect(FIELD_EXAMPLES[1]?.code).not.toContain("ex-email-err");
 		expect(FIELD_EXAMPLES[1]?.code).not.toContain("kumo-ex-email-err");
+		expect(FIELD_EXAMPLES[2]?.code).toContain("label={<span>Workspace name</span>}");
+		expect(FIELD_EXAMPLES[2]?.code).toContain("hint={<span>Shown on invoices</span>}");
+		expect(FIELD_EXAMPLES[2]?.code).toContain("required={false}");
+		expect(FIELD_EXAMPLES[2]?.code).toContain('labelTooltip="Used in billing"');
+		expect(FIELD_EXAMPLES[3]?.code).toContain(
+			"error={{ message: <span>Enter a valid email</span> }}",
+		);
+		expect(FIELD_EXAMPLES[3]?.code).not.toContain("htmlFor");
+		expect(FIELD_EXAMPLES[3]?.code).not.toContain("id=");
 	});
 });
 

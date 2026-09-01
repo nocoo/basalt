@@ -46,7 +46,7 @@ export const CATALOG: CatalogEntry[] = [
 		category: "component",
 		navName: "Basalt Mark",
 	},
-	{ slug: "field", name: "Field", kind: "catalog", category: "component" },
+	{ slug: "field", name: "Field", kind: "stable", category: "component" },
 	{ slug: "input", name: "Input", kind: "stable", category: "component" },
 	{ slug: "input-area", name: "InputArea", kind: "catalog", category: "component" },
 	{ slug: "input-group", name: "InputGroup", kind: "catalog", category: "component" },

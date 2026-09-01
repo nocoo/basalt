@@ -47,19 +47,19 @@ const EXTRA_PROVENANCE = provenanceFromLegacy({
 export default catalogContentFamily({
 	field: {
 		docs: {
-			description: "A labeled control with optional hint and error.",
+			description: "Accessible association and metadata for a labeled control.",
 			usage: usage(
 				"Field",
 				"@nocoo/basalt/components/field",
-				'<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
+				'<Field label="Email"><Input /></Field>',
 				'import { Input } from "@nocoo/basalt/components/input";',
 			),
 			variants: [],
 			api: fieldApi,
 			provenance: provenanceFromLegacy({
-				repo: "signoff.now",
-				sha: "92033c89d807",
-				file: "apps/web/src/components/Field.tsx",
+				repo: "kumo",
+				sha: "1159868dfe32",
+				file: "packages/kumo/src/components/field/field.tsx",
 			}),
 		},
 		examples: FIELD_EXAMPLES,

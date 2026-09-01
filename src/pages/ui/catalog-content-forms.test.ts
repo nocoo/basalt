@@ -107,16 +107,26 @@ describe("forms catalog content family", () => {
 	});
 
 	it("preserves docs truth and extra scenario identity for every forms slug", () => {
-		expect(forms.field?.docs.description).toBe("A labeled control with optional hint and error.");
+		expect(forms.field?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "field-hint", title: "Hint" },
+			{ id: "field-error", title: "Error" },
+			{ id: "field-rich-label-and-optional", title: "Rich label and optional" },
+			{ id: "field-structured-error", title: "Structured error" },
+		]);
+		expect(forms.field?.docs.description).toBe(
+			"Accessible association and metadata for a labeled control.",
+		);
 		expect(forms.field?.docs.usage).toContain(
 			'import { Field } from "@nocoo/basalt/components/field";',
 		);
+		expect(forms.field?.docs.usage).toContain('<Field label="Email"><Input /></Field>');
+		expect(forms.field?.docs.usage).not.toContain("htmlFor");
 		expect(forms.field?.docs.variants).toEqual([]);
 		expect(forms.field?.docs.provenance).toEqual({
-			owner: "nocoo",
-			repo: "signoff.now",
-			ref: "92033c89d807",
-			file: "apps/web/src/components/Field.tsx",
+			owner: "cloudflare",
+			repo: "kumo",
+			ref: "1159868dfe32",
+			file: "packages/kumo/src/components/field/field.tsx",
 		});
 		expect(forms.field?.docs.implementationSource).toEqual({
 			owner: "nocoo",

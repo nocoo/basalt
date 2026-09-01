@@ -3,6 +3,8 @@ import { loadModuleScenarios } from "../../catalog-scenario";
 const FIELD_SCENARIO_META = [
 	{ key: "hint", title: "Hint" },
 	{ key: "error", title: "Error" },
+	{ key: "rich-label-and-optional", title: "Rich label and optional" },
+	{ key: "structured-error", title: "Structured error" },
 ] as const;
 
 export const FIELD_EXAMPLES = loadModuleScenarios({

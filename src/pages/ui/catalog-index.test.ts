@@ -191,11 +191,12 @@ describe("catalog index model", () => {
 				.map((item) => item.entry.slug),
 		);
 		expect(result[0]?.items.some((item) => item.entry.slug === "text")).toBe(true);
+		expect(result[0]?.items.some((item) => item.entry.slug === "field")).toBe(true);
 		expect(CATALOG.filter((entry) => catalogReleaseStatus(entry.kind) === "stable")).toHaveLength(
-			31,
+			32,
 		);
 		expect(CATALOG.filter((entry) => catalogReleaseStatus(entry.kind) === "catalog")).toHaveLength(
-			70,
+			69,
 		);
 	});
 

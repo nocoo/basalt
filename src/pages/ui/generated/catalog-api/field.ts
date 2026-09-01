@@ -6,9 +6,9 @@ export const API = [
 		props: [
 			{
 				name: "label",
-				type: "string",
+				type: "React.ReactNode",
 				required: true,
-				description: "Visible label text.",
+				description: "Visible label.",
 			},
 			{
 				name: "htmlFor",
@@ -18,15 +18,27 @@ export const API = [
 			},
 			{
 				name: "hint",
-				type: "string",
+				type: "React.ReactNode",
 				required: false,
 				description: "Supporting text when there is no error.",
 			},
 			{
 				name: "error",
-				type: "string",
+				type: "FieldError",
 				required: false,
 				description: "Replaces the hint and marks the control invalid.",
+			},
+			{
+				name: "required",
+				type: "boolean",
+				required: false,
+				description: "When false, show (optional) after the label.",
+			},
+			{
+				name: "labelTooltip",
+				type: "React.ReactNode",
+				required: false,
+				description: "Info icon with hover text on the label.",
 			},
 			{
 				name: "className",

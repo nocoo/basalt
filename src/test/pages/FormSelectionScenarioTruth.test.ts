@@ -123,7 +123,12 @@ describe("form selection scenario truth", () => {
 			"select-disabled-options",
 		]);
 		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
-		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual(["field-hint", "field-error"]);
+		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([
+			"field-hint",
+			"field-error",
+			"field-rich-label-and-optional",
+			"field-structured-error",
+		]);
 	});
 
 	it("keeps field hint and error ids aligned with preview", () => {
@@ -143,6 +148,16 @@ describe("form selection scenario truth", () => {
 		expect(error.code).toContain('id="field-error-email"');
 		expect(error.code).toContain('error="Required"');
 		expect(error.code).not.toContain("kumo-ex-email");
+		const rich = scenario("field", "field-rich-label-and-optional");
+		expect(rich.title).toBe("Rich label and optional");
+		expect(rich.code).toContain("label={<span>Workspace name</span>}");
+		expect(rich.code).toContain("required={false}");
+		expect(rich.code).toContain('labelTooltip="Used in billing"');
+		const structured = scenario("field", "field-structured-error");
+		expect(structured.title).toBe("Structured error");
+		expect(structured.code).toContain("error={{ message: <span>Enter a valid email</span> }}");
+		expect(structured.code).not.toContain("htmlFor");
+		expect(structured.code).not.toContain("id=");
 	});
 
 	it("keeps checkbox and switch codes named like their renders", () => {

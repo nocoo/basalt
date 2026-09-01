@@ -41,6 +41,7 @@ export {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "./components/dropdown-menu";
+export { Field } from "./components/field";
 export { Input } from "./components/input";
 export { Label } from "./components/label";
 export { LayerCard } from "./components/layer-card";

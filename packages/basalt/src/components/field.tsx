@@ -2,11 +2,20 @@ import * as React from "react";
 import { cn } from "../utils/cn";
 import { Label } from "./label";
 
-export type FieldProps = {
+export type FieldError = Exclude<React.ReactNode, undefined> | { message: React.ReactNode };
+
+type FieldControlProps = {
+	id?: string;
+	"aria-describedby"?: string;
+	"aria-invalid"?: boolean | "true" | "false";
+};
+
+export interface FieldProps
+	extends Omit<React.ComponentPropsWithoutRef<"div">, "children" | "className"> {
 	/**
-	 * Visible label text.
+	 * Visible label.
 	 */
-	label: string;
+	label: React.ReactNode;
 	/**
 	 * Associates the label and described-by ids.
 	 */
@@ -14,11 +23,19 @@ export type FieldProps = {
 	/**
 	 * Supporting text when there is no error.
 	 */
-	hint?: string;
+	hint?: React.ReactNode;
 	/**
 	 * Replaces the hint and marks the control invalid.
 	 */
-	error?: string;
+	error?: FieldError;
+	/**
+	 * When false, show (optional) after the label.
+	 */
+	required?: boolean;
+	/**
+	 * Info icon with hover text on the label.
+	 */
+	labelTooltip?: React.ReactNode;
 	/**
 	 * Additional classes for the field root.
 	 */
@@ -27,42 +44,65 @@ export type FieldProps = {
 	 * The control or content to render.
 	 */
 	children: React.ReactNode;
-};
+}
 
-export function Field({ label, htmlFor, hint, error, className, children }: FieldProps) {
-	const hintId = htmlFor ? `${htmlFor}-hint` : undefined;
-	const errorId = htmlFor ? `${htmlFor}-error` : undefined;
-	const describedBy = [error ? errorId : null, !error && hint ? hintId : null]
-		.filter(Boolean)
-		.join(" ");
-	const child = React.isValidElement(children)
-		? (children as React.ReactElement<{
-				"aria-describedby"?: string;
-				"aria-invalid"?: boolean | "true" | "false";
-			}>)
-		: null;
-	const mergedDescribedBy = [describedBy, child?.props["aria-describedby"]]
-		.filter(Boolean)
-		.join(" ");
+function isStructuredError(error: FieldError): error is { message: React.ReactNode } {
 	return (
-		<div className={cn("flex flex-col gap-1.5", className)}>
-			<Label htmlFor={htmlFor}>{label}</Label>
-			{child
-				? React.cloneElement(child, {
-						"aria-invalid": error ? true : child.props["aria-invalid"],
-						"aria-describedby": mergedDescribedBy || undefined,
-					})
-				: children}
-			{hint && !error ? (
-				<p id={hintId} className="text-xs text-basalt-muted-foreground">
-					{hint}
-				</p>
-			) : null}
-			{error ? (
-				<p id={errorId} className="text-xs text-basalt-destructive" role="alert">
-					{error}
-				</p>
-			) : null}
-		</div>
+		typeof error === "object" &&
+		error !== null &&
+		!Array.isArray(error) &&
+		!React.isValidElement(error) &&
+		"message" in error
 	);
 }
+
+function fieldErrorMessage(error: FieldError | undefined): React.ReactNode | undefined {
+	if (error == null) {
+		return undefined;
+	}
+	return isStructuredError(error) ? error.message : error;
+}
+
+export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
+	({ label, htmlFor, hint, error, required, labelTooltip, className, children, ...props }, ref) => {
+		const generatedId = React.useId();
+		const child = React.isValidElement(children)
+			? (children as React.ReactElement<FieldControlProps>)
+			: null;
+		const controlId = child ? (htmlFor ?? child.props.id ?? generatedId) : htmlFor;
+		const hintId = controlId ? `${controlId}-hint` : undefined;
+		const errorId = controlId ? `${controlId}-error` : undefined;
+		const errorMessage = fieldErrorMessage(error);
+		const describedBy = [error ? errorId : null, !error && hint ? hintId : null]
+			.filter(Boolean)
+			.join(" ");
+		const mergedDescribedBy = [describedBy, child?.props["aria-describedby"]]
+			.filter(Boolean)
+			.join(" ");
+		return (
+			<div ref={ref} {...props} className={cn("flex flex-col gap-1.5", className)}>
+				<Label htmlFor={controlId} showOptional={required === false} tooltip={labelTooltip}>
+					{label}
+				</Label>
+				{child
+					? React.cloneElement(child, {
+							id: controlId,
+							"aria-invalid": error ? true : child.props["aria-invalid"],
+							"aria-describedby": mergedDescribedBy || undefined,
+						})
+					: children}
+				{hint && !error ? (
+					<p id={hintId} className="text-xs text-basalt-muted-foreground">
+						{hint}
+					</p>
+				) : null}
+				{error ? (
+					<p id={errorId} className="text-xs text-basalt-destructive" role="alert">
+						{errorMessage}
+					</p>
+				) : null}
+			</div>
+		);
+	},
+);
+Field.displayName = "Field";

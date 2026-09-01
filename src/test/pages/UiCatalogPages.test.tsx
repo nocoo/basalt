@@ -1517,44 +1517,59 @@ describe("ui catalog", () => {
 			"htmlFor",
 			"hint",
 			"error",
+			"required",
+			"labelTooltip",
 			"className",
 			"children",
 		]);
 		renderCatalog("/ui/field");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(6);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(8);
 		expect(api).toHaveTextContent("label");
 		expect(api).not.toHaveTextContent("label?");
 		expect(api).toHaveTextContent("htmlFor?");
 		expect(api).toHaveTextContent("hint?");
 		expect(api).toHaveTextContent("error?");
+		expect(api).toHaveTextContent("required?");
+		expect(api).toHaveTextContent("labelTooltip?");
 		expect(api).toHaveTextContent("className?");
 		expect(api).toHaveTextContent("children");
 		expect(api).not.toHaveTextContent("children?");
-		expect(api).toHaveTextContent("Visible label text.");
+		expect(api).toHaveTextContent("Visible label.");
 		expect(api).toHaveTextContent("Associates the label and described-by ids.");
 		expect(api).toHaveTextContent("Supporting text when there is no error.");
 		expect(api).toHaveTextContent("Replaces the hint and marks the control invalid.");
+		expect(api).toHaveTextContent("When false, show (optional) after the label.");
+		expect(api).toHaveTextContent("Info icon with hover text on the label.");
 		expect(api).toHaveTextContent("Additional classes for the field root.");
 		expect(api).toHaveTextContent("The control or content to render.");
 		expect(api).toHaveTextContent("React.ReactNode");
+		expect(api).toHaveTextContent("FieldError");
 		expect(screen.getByRole("heading", { name: "Hint" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Error" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Rich label and optional" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Structured error" })).toBeInTheDocument();
 		expect(document.querySelector('[data-hero-scenario="field-hint"]')).toBeTruthy();
 		await act(async () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(markdown).toContain("- label (string, required, default —): Visible label text.");
+		expect(markdown).toContain("- label (React.ReactNode, required, default —): Visible label.");
 		expect(markdown).toContain(
 			"- htmlFor (string, optional, default —): Associates the label and described-by ids.",
 		);
 		expect(markdown).toContain(
-			"- hint (string, optional, default —): Supporting text when there is no error.",
+			"- hint (React.ReactNode, optional, default —): Supporting text when there is no error.",
 		);
 		expect(markdown).toContain(
-			"- error (string, optional, default —): Replaces the hint and marks the control invalid.",
+			"- error (FieldError, optional, default —): Replaces the hint and marks the control invalid.",
+		);
+		expect(markdown).toContain(
+			"- required (boolean, optional, default —): When false, show (optional) after the label.",
+		);
+		expect(markdown).toContain(
+			"- labelTooltip (React.ReactNode, optional, default —): Info icon with hover text on the label.",
 		);
 		expect(markdown).toContain(
 			"- className (string, optional, default —): Additional classes for the field root.",
@@ -1564,7 +1579,10 @@ describe("ui catalog", () => {
 		);
 		expect(markdown).toContain(UI_EXAMPLES.field?.[0]?.code ?? "");
 		expect(markdown).toContain(UI_EXAMPLES.field?.[1]?.code ?? "");
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		expect(markdown).toContain(UI_EXAMPLES.field?.[2]?.code ?? "");
+		expect(markdown).toContain(UI_EXAMPLES.field?.[3]?.code ?? "");
+		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
+		expect(markdown).not.toContain("github.com/nocoo/kumo");
 	});
 
 	it("does not keep a handwritten field prop inventory", () => {
@@ -1575,11 +1593,12 @@ describe("ui catalog", () => {
 		expect(family).toContain("api: fieldApi");
 		expect(family).not.toContain('name: "label"');
 		expect(family).not.toContain('name: "htmlFor"');
-		expect(family).toContain('description: "A labeled control with optional hint and error."');
 		expect(family).toContain(
-			'<Field label="Email" htmlFor="email" hint="Never shared"><Input id="email" /></Field>',
+			'description: "Accessible association and metadata for a labeled control."',
 		);
-		expect(family).toContain('repo: "signoff.now"');
+		expect(family).toContain('<Field label="Email"><Input /></Field>');
+		expect(family).toContain('repo: "kumo"');
+		expect(family).toContain("packages/kumo/src/components/field/field.tsx");
 	});
 
 	it("sources input API rows from generated catalog data", async () => {
@@ -2854,13 +2873,19 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/field");
 		expect(screen.getByRole("heading", { name: "Hint" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Error" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Rich label and optional" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Structured error" })).toBeInTheDocument();
 		const hero = document.querySelector('[data-hero-scenario="field-hint"]');
 		const hint = document.querySelector('[data-scenario="field-hint"]');
 		const error = document.querySelector('[data-scenario="field-error"]');
+		const rich = document.querySelector('[data-scenario="field-rich-label-and-optional"]');
+		const structured = document.querySelector('[data-scenario="field-structured-error"]');
 		expect(hero).toBeTruthy();
 		expect(hint).toBeTruthy();
 		expect(error).toBeTruthy();
-		if (!hero || !hint || !error) {
+		expect(rich).toBeTruthy();
+		expect(structured).toBeTruthy();
+		if (!hero || !hint || !error || !rich || !structured) {
 			throw new Error("missing field scenario surfaces");
 		}
 		const heroLabel = hero.querySelector('label[for="field-hint-email"]');
@@ -2887,6 +2912,24 @@ describe("ui catalog", () => {
 		expect(alert).toHaveTextContent("Required");
 		expect(alert).toHaveAttribute("id", "field-error-email-error");
 		expect(alert).toHaveClass("text-xs", "text-basalt-destructive");
+		expect(rich).toHaveTextContent("Workspace name");
+		expect(rich).toHaveTextContent("(optional)");
+		expect(rich).toHaveTextContent("Shown on invoices");
+		expect(rich.querySelector('button[aria-label="More information"]')).toBeTruthy();
+		const richInput = rich.querySelector("input");
+		expect(richInput).toHaveAttribute("id");
+		expect(rich.querySelector(`label[for="${richInput?.getAttribute("id")}"]`)).toHaveTextContent(
+			"Workspace name",
+		);
+		expect(structured).toHaveTextContent("Enter a valid email");
+		const structuredInput = structured.querySelector("input");
+		expect(structuredInput).toBeTruthy();
+		const structuredId = structuredInput?.getAttribute("id");
+		expect(structuredInput).toHaveAttribute("aria-invalid", "true");
+		expect(structuredInput).toHaveAttribute("aria-describedby", `${structuredId}-error`);
+		expect(within(structured as HTMLElement).getByRole("alert")).toHaveTextContent(
+			"Enter a valid email",
+		);
 		for (const scenario of UI_EXAMPLES.field ?? []) {
 			expect(scenario.code).toContain("export default");
 			expect(scenario.code).toContain("@nocoo/basalt/components/field");
