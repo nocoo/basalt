@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中
-> 当前切片：S5 待办
-> 当前实现真值：`5e325a3`（S4 完成；Codex review-fix 已 Sign-off）
+> 当前切片：S6 待办
+> 当前实现真值：`ed883b5`（S5 完成；Codex review 待 Sign-off）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`
 > 最后更新：2026-09-01
 
@@ -49,7 +49,7 @@ Conventional Commits；一次一个逻辑问题；禁止 `git add -A` / `--no-ve
 | S2 | 类型驱动 docs/API/scenario、视觉纠偏、文档 IA | 完成（`eeb8c43`） |
 | S3 | LayerCard、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager | 完成（`6eed42f`） |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 完成（`5e325a3`） |
-| S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 待办 |
+| S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 完成（`ed883b5`） |
 | S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 待办 |
 | S7 | Table/DataTable、TOC、Code、Flow、Grid、Pagination | 待办 |
 | S8 | 图表 kit 与组合层 | 待办 |
@@ -58,24 +58,18 @@ Conventional Commits；一次一个逻辑问题；禁止 `git add -A` / `--no-ve
 
 ## 6. 已完成
 
-S0–S4 的公开结果：
+S0–S5 的公开结果：
 
 - 用户可见示例无 Cloudflare/Kumo/Worker 业务语境；View source 指向本仓，Kumo 只作 provenance。
 - 包可仓外 tarball 消费（Vite Tailwind / standalone / Next hydration / heavy optional peers）；coverage 四项 ≥ 95%；prepublish 链存在，尚未正式 publish。
 - 组件类型、API 表、example 同源生成，不再三份手写漂移。
-- Text / Field / Input / InputArea / Checkbox / Radio / Switch 已有可发布 MVP：size、invalid、controlled、form reset、Group/Legend/error。Sidebar 临时「待规范」标签已删除。
-- InputGroup 仍浅，留给后续表单补强，不阻塞 S5。
+- Text / Field / Input / InputArea / Checkbox / Radio / Switch 已有可发布 MVP：size、invalid、controlled、form reset、Group/Legend/error。
+- Select / Combobox / Autocomplete / SensitiveInput / DatePicker 已有可发布 MVP：size、invalid、loading、groups、list-only vs freeform、disabled-date、presets、range。Radix Select 保持单选。
+- InputGroup 仍浅，留给后续表单补强，不阻塞 S6。
 
-## 7. 下一刀：S5 及之后
+## 7. 下一刀：S6 及之后
 
 每个控件提交仍须带实现、单测、文档和 example。统一验证：default、size、controlled、uncontrolled、disabled、loading、error、description、ReactNode label、form reset、键盘、可访问名称。
-
-**S5 — 选择族**
-
-- Select：single/multiple、typed items、groups、disabled item/group、custom rendering、loading、长列表。
-- Combobox / Autocomplete：不能再是 `string[]` + alias；共同 core 与不同交互契约必须可解释。
-- DatePicker：保留 locale/timezone/min/max/表单优点，增加 multiple/range/presets/disabled-date policy。
-- SensitiveInput：与 Input 对齐的可发布契约，不复制禁用业务语境。
 
 **S6 — Overlay 与导航**
 
@@ -105,7 +99,7 @@ Table 保持语义 primitive；DataTable 轻量 core + 可选 TanStack adapter�
 | 品牌 | BasaltMark | 单一场景；禁止抄品牌 | S10 |
 | 表单 | Field、Input、InputArea、Checkbox、Radio、Switch | MVP 完成 | S10 |
 | 表单 | InputGroup | 浅 | 后续 |
-| 选择 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 结构性不足 | S5 |
+| 选择 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | MVP 完成 | S10 |
 | 浮层 | Popover、Dropdown、Collapsible、Tabs、CommandPalette、Tooltip | 部分 | S6 |
 | 导航 | Breadcrumbs、Toolbar、Sidebar | 部分；Sidebar 缺 Provider | S6 |
 | 数据 | Table、TableOfContents、Pagination | 部分 | S7 |
