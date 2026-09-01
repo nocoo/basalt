@@ -366,6 +366,96 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "TablePagerProps",
 		surface: "TablePager",
 	},
+	{
+		slug: "toolbar",
+		sourceFile: "packages/basalt/src/components/toolbar.tsx",
+		propsType: "ToolbarProps",
+		surface: "Toolbar",
+	},
+	{
+		slug: "toolbar",
+		sourceFile: "packages/basalt/src/components/toolbar.tsx",
+		propsType: "ToolbarButtonProps",
+		surface: "Toolbar.Button",
+	},
+	{
+		slug: "toolbar",
+		sourceFile: "packages/basalt/src/components/toolbar.tsx",
+		propsType: "ToolbarInputProps",
+		surface: "Toolbar.Input",
+	},
+	{
+		slug: "tabs",
+		sourceFile: "packages/basalt/src/components/tabs.tsx",
+		propsType: "TabsProps",
+		surface: "Tabs",
+	},
+	{
+		slug: "tabs",
+		sourceFile: "packages/basalt/src/components/tabs.tsx",
+		propsType: "TabsListProps",
+		surface: "TabsList",
+	},
+	{
+		slug: "tabs",
+		sourceFile: "packages/basalt/src/components/tabs.tsx",
+		propsType: "TabsTriggerProps",
+		surface: "TabsTrigger",
+	},
+	{
+		slug: "command-palette",
+		sourceFile: "packages/basalt/src/components/command-palette.tsx",
+		propsType: "CommandPaletteProps",
+		surface: "CommandPalette",
+	},
+	{
+		slug: "sidebar",
+		sourceFile: "packages/basalt/src/components/sidebar.tsx",
+		propsType: "SidebarProviderProps",
+		surface: "SidebarProvider",
+	},
+	{
+		slug: "sidebar",
+		sourceFile: "packages/basalt/src/components/sidebar.tsx",
+		propsType: "SidebarProps",
+		surface: "Sidebar",
+	},
+	{
+		slug: "popover",
+		sourceFile: "packages/basalt/src/components/popover.tsx",
+		propsType: "PopoverProps",
+		surface: "Popover",
+	},
+	{
+		slug: "popover",
+		sourceFile: "packages/basalt/src/components/popover.tsx",
+		propsType: "PopoverContentProps",
+		surface: "PopoverContent",
+	},
+	{
+		slug: "dropdown-menu",
+		sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+		propsType: "DropdownMenuProps",
+		surface: "DropdownMenu",
+	},
+	{
+		slug: "dropdown-menu",
+		sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+		propsType: "DropdownMenuItemProps",
+		surface: "DropdownMenuItem",
+	},
+	{
+		slug: "collapsible",
+		sourceFile: "packages/basalt/src/components/collapsible.tsx",
+		propsType: "CollapsibleProps",
+		surface: "Collapsible",
+	},
+	{
+		slug: "collapsible",
+		sourceFile: "packages/basalt/src/components/collapsible.tsx",
+		propsType: "CollapsibleContentProps",
+		surface: "CollapsibleContent",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

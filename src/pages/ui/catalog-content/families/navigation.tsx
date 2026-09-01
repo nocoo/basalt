@@ -30,6 +30,10 @@ import {
 	provenanceFromLegacy,
 } from "../../catalog-source";
 import { SIDEBAR_EXAMPLES } from "../../examples/sidebar";
+import { API as commandPaletteApi } from "../../generated/catalog-api/command-palette";
+import { API as sidebarApi } from "../../generated/catalog-api/sidebar";
+import { API as tabsApi } from "../../generated/catalog-api/tabs";
+import { API as toolbarApi } from "../../generated/catalog-api/toolbar";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
 	repo: "pew",
@@ -279,7 +283,7 @@ export default function Example() {
 
 export default catalogContentFamily({
 	"command-palette": {
-		docs: commandPaletteDocs,
+		docs: { ...commandPaletteDocs, api: commandPaletteApi },
 		examples: [
 			{
 				id: catalogScenarioId("command-palette", "with-grouped-items"),
@@ -349,7 +353,7 @@ export default function Example() {
 		],
 	},
 	tabs: {
-		docs: tabsDocs,
+		docs: { ...tabsDocs, api: tabsApi },
 		examples: [
 			{
 				id: catalogScenarioId("tabs", "variants"),
@@ -476,7 +480,7 @@ export default function Example() {
 		],
 	},
 	toolbar: {
-		docs: toolbarDocs,
+		docs: { ...toolbarDocs, api: toolbarApi },
 		examples: [
 			{
 				id: catalogScenarioId("toolbar", "input-shorthand"),
@@ -549,7 +553,7 @@ export default function Example() {
 		],
 	},
 	sidebar: {
-		docs: sidebarDocs,
+		docs: { ...sidebarDocs, api: sidebarApi },
 		examples: SIDEBAR_EXAMPLES,
 	},
 });

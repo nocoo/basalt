@@ -76,6 +76,9 @@ export type SidebarProviderProps = {
 	 * @default 260
 	 */
 	defaultWidth?: number;
+	/**
+	 * Sidebar chrome and page content.
+	 */
 	children: ReactNode;
 };
 

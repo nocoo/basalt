@@ -449,8 +449,98 @@ describe("catalog API generator contract", () => {
 				propsType: "TablePagerProps",
 				surface: "TablePager",
 			},
+			{
+				slug: "toolbar",
+				sourceFile: "packages/basalt/src/components/toolbar.tsx",
+				propsType: "ToolbarProps",
+				surface: "Toolbar",
+			},
+			{
+				slug: "toolbar",
+				sourceFile: "packages/basalt/src/components/toolbar.tsx",
+				propsType: "ToolbarButtonProps",
+				surface: "Toolbar.Button",
+			},
+			{
+				slug: "toolbar",
+				sourceFile: "packages/basalt/src/components/toolbar.tsx",
+				propsType: "ToolbarInputProps",
+				surface: "Toolbar.Input",
+			},
+			{
+				slug: "tabs",
+				sourceFile: "packages/basalt/src/components/tabs.tsx",
+				propsType: "TabsProps",
+				surface: "Tabs",
+			},
+			{
+				slug: "tabs",
+				sourceFile: "packages/basalt/src/components/tabs.tsx",
+				propsType: "TabsListProps",
+				surface: "TabsList",
+			},
+			{
+				slug: "tabs",
+				sourceFile: "packages/basalt/src/components/tabs.tsx",
+				propsType: "TabsTriggerProps",
+				surface: "TabsTrigger",
+			},
+			{
+				slug: "command-palette",
+				sourceFile: "packages/basalt/src/components/command-palette.tsx",
+				propsType: "CommandPaletteProps",
+				surface: "CommandPalette",
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarProviderProps",
+				surface: "SidebarProvider",
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarProps",
+				surface: "Sidebar",
+			},
+			{
+				slug: "popover",
+				sourceFile: "packages/basalt/src/components/popover.tsx",
+				propsType: "PopoverProps",
+				surface: "Popover",
+			},
+			{
+				slug: "popover",
+				sourceFile: "packages/basalt/src/components/popover.tsx",
+				propsType: "PopoverContentProps",
+				surface: "PopoverContent",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuProps",
+				surface: "DropdownMenu",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuItemProps",
+				surface: "DropdownMenuItem",
+			},
+			{
+				slug: "collapsible",
+				sourceFile: "packages/basalt/src/components/collapsible.tsx",
+				propsType: "CollapsibleProps",
+				surface: "Collapsible",
+			},
+			{
+				slug: "collapsible",
+				sourceFile: "packages/basalt/src/components/collapsible.tsx",
+				propsType: "CollapsibleContentProps",
+				surface: "CollapsibleContent",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(54);
+		expect(CATALOG_API_TARGETS).toHaveLength(69);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -514,6 +604,13 @@ describe("catalog API generator contract", () => {
 			"stat-strip",
 			"confirm-dialog",
 			"table-pager",
+			"toolbar",
+			"tabs",
+			"command-palette",
+			"sidebar",
+			"popover",
+			"dropdown-menu",
+			"collapsible",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -1458,6 +1555,13 @@ export interface WidgetProps {
 			combobox: ["Combobox"],
 			autocomplete: ["Autocomplete"],
 			"date-picker": ["DatePicker"],
+			toolbar: ["Toolbar", "Toolbar.Button", "Toolbar.Input"],
+			tabs: ["Tabs", "TabsList", "TabsTrigger"],
+			"command-palette": ["CommandPalette"],
+			sidebar: ["SidebarProvider", "Sidebar"],
+			popover: ["Popover", "PopoverContent"],
+			"dropdown-menu": ["DropdownMenu", "DropdownMenuItem"],
+			collapsible: ["Collapsible", "CollapsibleContent"],
 		});
 	}, 20_000);
 
@@ -1467,7 +1571,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(28);
+		expect(Object.keys(generated)).toHaveLength(35);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1568,7 +1672,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(28);
+		expect(Object.keys(generated)).toHaveLength(35);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1690,7 +1794,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(28);
+		expect(Object.keys(generated)).toHaveLength(35);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -1761,7 +1865,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(28);
+		expect(Object.keys(generated)).toHaveLength(35);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -1804,7 +1908,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(28);
+		expect(Object.keys(generated)).toHaveLength(35);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -1856,7 +1960,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(28);
+		expect(Object.keys(generated)).toHaveLength(35);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3097,8 +3201,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(28);
-		expect(Object.keys(first)).toHaveLength(29);
+		expect(slugs).toHaveLength(35);
+		expect(Object.keys(first)).toHaveLength(36);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3131,6 +3235,14 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "Combobox"');
 		expect(joined).toContain('name: "Autocomplete"');
 		expect(joined).toContain('name: "DatePicker"');
+		expect(joined).toContain('name: "Toolbar"');
+		expect(joined).toContain('name: "Toolbar.Button"');
+		expect(joined).toContain('name: "Tabs"');
+		expect(joined).toContain('name: "CommandPalette"');
+		expect(joined).toContain('name: "SidebarProvider"');
+		expect(joined).toContain('name: "Popover"');
+		expect(joined).toContain('name: "DropdownMenu"');
+		expect(joined).toContain('name: "Collapsible"');
 		const digest = createHash("sha256");
 		for (const relative of Object.keys(first).sort()) {
 			digest.update(relative);
@@ -3138,7 +3250,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"dca292550cc7ef5f92f9e28ea2217f842053374980100f607075eba98310d483",
+			"b22e7f6714fdc7324515d9ee8577212f2b81ba5cff2190a3aa1a2d7208250e4a",
 		);
 	}, 20_000);
 

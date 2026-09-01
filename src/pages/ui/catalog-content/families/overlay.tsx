@@ -72,7 +72,10 @@ import { catalogScenarioId } from "../../catalog-scenario";
 import { provenanceFromLegacy } from "../../catalog-source";
 import { CONFIRM_DIALOG_EXAMPLES } from "../../examples/confirm-dialog";
 import { TOOLTIP_EXAMPLES } from "../../examples/tooltip";
+import { API as collapsibleApi } from "../../generated/catalog-api/collapsible";
 import { API as confirmDialogApi } from "../../generated/catalog-api/confirm-dialog";
+import { API as dropdownMenuApi } from "../../generated/catalog-api/dropdown-menu";
+import { API as popoverApi } from "../../generated/catalog-api/popover";
 import { API as tooltipApi } from "../../generated/catalog-api/tooltip";
 
 function usage(name: string, from: string, sample: string, extraImports = ""): string {
@@ -751,19 +754,7 @@ export default function Example() {
 	);
 }`,
 			variants: [],
-			api: [
-				{
-					name: "Popover",
-					props: [
-						{
-							name: "side",
-							type: '"top" | "bottom" | "left" | "right"',
-							default: '"bottom"',
-							description: "Which side of the trigger the popover appears on.",
-						},
-					],
-				},
-			],
+			api: popoverApi,
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: [
@@ -874,12 +865,7 @@ export default function Example() {
 	);
 }`,
 			variants: [],
-			api: [
-				{
-					name: "DropdownMenu",
-					props: [{ name: "className", type: "string", description: "className" }],
-				},
-			],
+			api: dropdownMenuApi,
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: [
@@ -1034,12 +1020,7 @@ export default function Example() {
 	);
 }`,
 			variants: [],
-			api: [
-				{
-					name: "Collapsible",
-					props: [{ name: "className", type: "string", description: "className" }],
-				},
-			],
+			api: collapsibleApi,
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: [
