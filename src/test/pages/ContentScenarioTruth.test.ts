@@ -1,6 +1,7 @@
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { createElement } from "react";
 import { describe, expect, it } from "vitest";
+import dataLayout from "@/pages/ui/catalog-content/families/data-layout";
 import feedback from "@/pages/ui/catalog-content/families/feedback";
 import forms from "@/pages/ui/catalog-content/families/forms";
 import foundation from "@/pages/ui/catalog-content/families/foundation";
@@ -23,6 +24,9 @@ const UI_EXAMPLES = {
 	...Object.fromEntries(
 		Object.entries(navigation).map(([slug, content]) => [slug, content.examples]),
 	),
+	...Object.fromEntries(
+		Object.entries(dataLayout).map(([slug, content]) => [slug, content.examples]),
+	),
 };
 const CATALOG_DOCS = {
 	...LEGACY_CATALOG_DOCS,
@@ -31,6 +35,7 @@ const CATALOG_DOCS = {
 	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(feedback).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(navigation).map(([slug, content]) => [slug, content.docs])),
+	...Object.fromEntries(Object.entries(dataLayout).map(([slug, content]) => [slug, content.docs])),
 };
 
 import { LAYER_CARD_EXAMPLES } from "@/pages/ui/examples/layer-card";

@@ -11,6 +11,7 @@ import {
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
+import dataLayout from "@/pages/ui/catalog-content/families/data-layout";
 import feedback from "@/pages/ui/catalog-content/families/feedback";
 import forms from "@/pages/ui/catalog-content/families/forms";
 import foundation from "@/pages/ui/catalog-content/families/foundation";
@@ -35,6 +36,7 @@ const CATALOG_DOCS = {
 	...Object.fromEntries(Object.entries(overlay).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(feedback).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(navigation).map(([slug, content]) => [slug, content.docs])),
+	...Object.fromEntries(Object.entries(dataLayout).map(([slug, content]) => [slug, content.docs])),
 };
 const UI_EXAMPLES = {
 	...LEGACY_UI_EXAMPLES,
@@ -48,6 +50,9 @@ const UI_EXAMPLES = {
 	),
 	...Object.fromEntries(
 		Object.entries(navigation).map(([slug, content]) => [slug, content.examples]),
+	),
+	...Object.fromEntries(
+		Object.entries(dataLayout).map(([slug, content]) => [slug, content.examples]),
 	),
 };
 
@@ -3248,7 +3253,7 @@ describe("ui catalog", () => {
 		expect(feedbackFamily).toContain("function Preview");
 		expect(feedbackFamily).toContain("ReactNode");
 		expect(navigationFamily).toContain("useState");
-		expect(kumo).toContain("catalogScenarioId");
+		expect(kumo).not.toContain("catalogScenarioId");
 	});
 
 	it("keeps select hero, three states, disabled option, and copy modules", async () => {

@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { MemoryRouter, Route, Routes, useNavigate } from "react-router";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { CatalogPageContent } from "./catalog-content";
+import dataLayout from "./catalog-content/families/data-layout";
 import feedback from "./catalog-content/families/feedback";
 import forms from "./catalog-content/families/forms";
 import foundation from "./catalog-content/families/foundation";
@@ -28,7 +29,12 @@ function deferred<T>() {
 
 function contentFor(slug: string): CatalogPageContent {
 	const family =
-		foundation[slug] ?? forms[slug] ?? overlay[slug] ?? feedback[slug] ?? navigation[slug];
+		foundation[slug] ??
+		forms[slug] ??
+		overlay[slug] ??
+		feedback[slug] ??
+		navigation[slug] ??
+		dataLayout[slug];
 	if (family) {
 		return family;
 	}

@@ -107,25 +107,35 @@ describe("catalog page content loader", () => {
 		expect(loadLegacy).not.toHaveBeenCalled();
 	});
 
+	it("loads data-layout family content without the legacy adapter", async () => {
+		const { loadCatalogPageContent } = await importLoader();
+		const first = loadCatalogPageContent("table");
+		expect(loadCatalogPageContent("table")).toBe(first);
+		const content = await first;
+		expect(content?.docs.description).toBe("Tabular data with a header bar and striped rows.");
+		expect(content?.examples[0]?.id).toBe("table-basic");
+		expect(loadLegacy).not.toHaveBeenCalled();
+	});
+
 	it("loads unmigrated ready content once from the legacy adapter", async () => {
 		const examples = [example];
 		loadLegacy.mockResolvedValue({ docs, examples });
 		const { loadCatalogPageContent } = await importLoader();
-		const first = loadCatalogPageContent("table");
-		expect(loadCatalogPageContent("table")).toBe(first);
+		const first = loadCatalogPageContent("line");
+		expect(loadCatalogPageContent("line")).toBe(first);
 		await expect(first).resolves.toEqual({ docs, examples });
 		expect(loadLegacy).toHaveBeenCalledTimes(1);
-		expect(loadLegacy).toHaveBeenCalledWith("table");
+		expect(loadLegacy).toHaveBeenCalledWith("line");
 	});
 
 	it("rejects ready content when docs or examples[0] is absent", async () => {
 		loadLegacy.mockResolvedValueOnce({ examples: [example] }).mockResolvedValueOnce({ docs });
 		const { loadCatalogPageContent } = await importLoader();
-		await expect(loadCatalogPageContent("data-table")).rejects.toThrow(
-			'Ready catalog page "data-table" is missing docs.',
+		await expect(loadCatalogPageContent("line")).rejects.toThrow(
+			'Ready catalog page "line" is missing docs.',
 		);
-		await expect(loadCatalogPageContent("table")).rejects.toThrow(
-			'Ready catalog page "table" is missing examples[0].',
+		await expect(loadCatalogPageContent("bar")).rejects.toThrow(
+			'Ready catalog page "bar" is missing examples[0].',
 		);
 	});
 });

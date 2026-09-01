@@ -37,7 +37,7 @@ const NAVIGATION_DESCRIPTIONS = {
 } as const;
 
 describe("navigation catalog content family", () => {
-	it("owns exactly nine migrated slugs and fifty-six generated owners", () => {
+	it("owns exactly nine migrated slugs and sixty-one generated owners", () => {
 		expect(Object.keys(navigation)).toEqual(Object.keys(NAVIGATION_SCENARIOS));
 		expect(Object.keys(navigation)).toHaveLength(9);
 		expect(
@@ -46,7 +46,7 @@ describe("navigation catalog content family", () => {
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(NAVIGATION_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(56);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(61);
 	});
 
 	it("keeps the seventeen final winner scenarios in their audited order", () => {
