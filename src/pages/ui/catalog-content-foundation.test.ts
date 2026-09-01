@@ -53,6 +53,12 @@ describe("foundation catalog content family", () => {
 		expect(foundation.button?.examples).toBe(BUTTON_EXAMPLES);
 		expect(foundation["link-button"]?.examples).toBe(LINK_BUTTON_EXAMPLES);
 		expect(foundation.text?.examples).toBe(TEXT_EXAMPLES);
+		expect(foundation.text?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "text-sizes", title: "Sizes" },
+			{ id: "text-muted-tone", title: "Muted tone" },
+			{ id: "text-semantic-variants", title: "Semantic variants" },
+			{ id: "text-bold-and-truncate", title: "Bold and truncate" },
+		]);
 		expect(foundation.label?.examples).toBe(LABEL_EXAMPLES);
 		expect(foundation.separator?.examples).toBe(SEPARATOR_EXAMPLES);
 		expect(foundation["scroll-area"]?.examples).toBe(SCROLL_AREA_EXAMPLES);
@@ -170,6 +176,27 @@ describe("foundation catalog content family", () => {
 		expect(foundation["link-provider"]?.docs.implementationSource.file).toBe(
 			"packages/basalt/src/providers/link.tsx",
 		);
+		expect(foundation.text?.docs).toMatchObject({
+			description:
+				"Polymorphic typography whose visual variant is independent of the document outline.",
+			variants: ["body", "heading", "mono"],
+			provenance: {
+				owner: "cloudflare",
+				repo: "kumo",
+				ref: "1159868dfe32",
+				file: "packages/kumo/src/components/text/text.tsx",
+			},
+			implementationSource: {
+				owner: "nocoo",
+				repo: "basalt",
+				ref: "main",
+				file: "packages/basalt/src/components/text.tsx",
+			},
+		});
+		expect(foundation.text?.docs.usage).toContain('as="h1"');
+		expect(
+			FOUNDATION_SLUGS.reduce((count, slug) => count + (foundation[slug]?.examples.length ?? 0), 0),
+		).toBe(34);
 		for (const slug of FOUNDATION_SLUGS) {
 			const content = foundation[slug];
 			expect(content?.docs.description.length, slug).toBeGreaterThan(0);

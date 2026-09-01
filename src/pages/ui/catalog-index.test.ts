@@ -190,6 +190,13 @@ describe("catalog index model", () => {
 				.filter((item) => item.releaseStatus === "stable")
 				.map((item) => item.entry.slug),
 		);
+		expect(result[0]?.items.some((item) => item.entry.slug === "text")).toBe(true);
+		expect(CATALOG.filter((entry) => catalogReleaseStatus(entry.kind) === "stable")).toHaveLength(
+			31,
+		);
+		expect(CATALOG.filter((entry) => catalogReleaseStatus(entry.kind) === "catalog")).toHaveLength(
+			70,
+		);
 	});
 
 	it("parses and normalizes catalog query values fail-closed", () => {

@@ -538,24 +538,59 @@ describe("catalog API generator contract", () => {
 
 	it("extracts Text props from TextProps without HTML or Kumo-only fields", () => {
 		const generated = generateProductionProps();
-		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		expect(generated.text).toEqual([
 			{
-				name: "size",
-				type: '"lg" | "md" | "sm" | "xl" | "xs" | null',
+				name: "variant",
+				type: "TextVariant",
 				required: false,
+				default: '"body"',
+				description: "Visual role. Does not infer document outline.",
+			},
+			{
+				name: "size",
+				type: "TextSize",
+				required: false,
+				description: "Type scale. Defaults by variant: body md, heading lg, mono sm.",
 			},
 			{
 				name: "tone",
-				type: '"default" | "muted" | null',
+				type: "TextTone",
 				required: false,
+				default: '"default"',
+				description: "Foreground tone.",
+			},
+			{
+				name: "as",
+				type: "TextElement",
+				required: false,
+				description: "Rendered HTML element. Defaults by variant: body p, heading/mono span.",
+			},
+			{
+				name: "bold",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Apply semibold weight.",
+			},
+			{
+				name: "truncate",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Ellipsize overflow on one line.",
 			},
 		]);
 		expect(generated.text?.some((prop) => prop.name === "children")).toBe(false);
 		expect(generated.text?.some((prop) => prop.name === "className")).toBe(false);
-		expect(generated.text?.some((prop) => prop.name === "as")).toBe(false);
-		expect(generated.text?.some((prop) => prop.name === "bold")).toBe(false);
-		expect(generated.text?.some((prop) => prop.name === "truncate")).toBe(false);
+		expect(generated.text?.some((prop) => prop.name === "id")).toBe(false);
 	}, 20_000);
 
 	it("extracts Label props from LabelProps with JSDoc defaults and descriptions", () => {
@@ -613,7 +648,14 @@ describe("catalog API generator contract", () => {
 			"icon",
 		]);
 		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
-		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 	}, 20_000);
 
@@ -645,7 +687,14 @@ describe("catalog API generator contract", () => {
 			"icon",
 		]);
 		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
-		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 	}, 20_000);
@@ -680,7 +729,14 @@ describe("catalog API generator contract", () => {
 			"icon",
 		]);
 		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
-		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
@@ -714,7 +770,14 @@ describe("catalog API generator contract", () => {
 			"icon",
 		]);
 		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
-		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
@@ -755,7 +818,14 @@ describe("catalog API generator contract", () => {
 			"icon",
 		]);
 		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
-		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
@@ -793,7 +863,14 @@ describe("catalog API generator contract", () => {
 			"icon",
 		]);
 		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
-		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
@@ -859,7 +936,14 @@ describe("catalog API generator contract", () => {
 			"icon",
 		]);
 		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
-		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
@@ -901,7 +985,14 @@ describe("catalog API generator contract", () => {
 			"icon",
 		]);
 		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
-		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
@@ -951,7 +1042,14 @@ describe("catalog API generator contract", () => {
 			"icon",
 		]);
 		expect(generated["link-button"]?.map((prop) => prop.name)).toEqual(["variant", "size", "icon"]);
-		expect(generated.text?.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(generated.text?.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
@@ -2873,7 +2971,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"c564e5090add91ea194d8906c1ff968a4a7fe9c5106313b2d8ece7693732b85c",
+			"0d8d1829fe5b1a1b6517e5730761d773d6cb60ccdc583747f2f896b8e89ff16d",
 		);
 	}, 20_000);
 

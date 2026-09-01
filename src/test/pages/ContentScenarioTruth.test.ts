@@ -51,7 +51,12 @@ function expectUsageImportsCover(usage: string, names: string[]) {
 describe("content scenario truth", () => {
 	it("keeps audited scenario ids and counts", () => {
 		expect(UI_EXAMPLES.text).toBe(TEXT_EXAMPLES);
-		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual(["text-sizes", "text-muted-tone"]);
+		expect(UI_EXAMPLES.text?.map((item) => item.id)).toEqual([
+			"text-sizes",
+			"text-muted-tone",
+			"text-semantic-variants",
+			"text-bold-and-truncate",
+		]);
 		expect(UI_EXAMPLES.code?.map((item) => item.id)).toEqual(["code-typescript", "code-react"]);
 		expect(UI_EXAMPLES["code-block"]?.map((item) => item.id)).toEqual(["code-block-basic"]);
 		expect(UI_EXAMPLES.autocomplete?.map((item) => item.id)).toEqual(["autocomplete-default"]);

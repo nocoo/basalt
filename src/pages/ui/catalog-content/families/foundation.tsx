@@ -84,14 +84,19 @@ export default catalogContentFamily({
 	},
 	text: {
 		docs: {
-			description: "Body copy with size and tone.",
-			usage: usage("Text", "@nocoo/basalt/components/text", "<Text tone='muted'>Copy</Text>"),
-			variants: ["xs", "sm", "md", "lg", "xl"],
+			description:
+				"Polymorphic typography whose visual variant is independent of the document outline.",
+			usage: usage(
+				"Text",
+				"@nocoo/basalt/components/text",
+				'<Text variant="heading" as="h1">Page title</Text>',
+			),
+			variants: ["body", "heading", "mono"],
 			api: textApi,
 			provenance: provenanceFromLegacy({
-				repo: "basalt",
-				sha: "2727ae6a8d3f",
-				file: "src/index.css",
+				repo: "kumo",
+				sha: "1159868dfe32",
+				file: "packages/kumo/src/components/text/text.tsx",
 			}),
 		},
 		examples: TEXT_EXAMPLES,

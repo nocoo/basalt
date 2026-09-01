@@ -19,7 +19,7 @@ export const CATALOG_CATEGORIES: { id: CatalogCategory; label: string }[] = [
 export const CATALOG: CatalogEntry[] = [
 	{ slug: "button", name: "Button", kind: "stable", category: "component" },
 	{ slug: "link-button", name: "LinkButton", kind: "catalog", category: "component" },
-	{ slug: "text", name: "Text", kind: "catalog", category: "component" },
+	{ slug: "text", name: "Text", kind: "stable", category: "component" },
 	{ slug: "label", name: "Label", kind: "stable", category: "component" },
 	{ slug: "separator", name: "Separator", kind: "stable", category: "component" },
 	{

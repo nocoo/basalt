@@ -599,10 +599,18 @@ describe("ui catalog", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		expect(CATALOG_DOCS.text?.api).toEqual(CATALOG_API.text);
-		expect(CATALOG_API.text?.[0]?.props.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(CATALOG_API.text?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		renderCatalog("/ui/text");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(6);
 		for (const prop of CATALOG_API.text?.[0]?.props ?? []) {
 			expect(api).toHaveTextContent(prop.name);
 			expect(api).toHaveTextContent(prop.type);
@@ -610,10 +618,13 @@ describe("ui catalog", () => {
 		}
 		expect(api).not.toHaveTextContent("children");
 		expect(api).not.toHaveTextContent("className");
-		expect(api).not.toHaveTextContent("truncate");
-		expect(document.body.textContent).toContain("<Text tone='muted'>Copy</Text>");
+		expect(document.body.textContent).toContain(
+			'<Text variant="heading" as="h1">Page title</Text>',
+		);
 		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Muted tone" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Semantic variants" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Bold and truncate" })).toBeInTheDocument();
 		await act(async () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
@@ -621,9 +632,12 @@ describe("ui catalog", () => {
 		for (const prop of CATALOG_API.text?.[0]?.props ?? []) {
 			expect(markdown).toContain(`- ${prop.name} (${prop.type}, optional`);
 		}
-		expect(markdown).toContain("<Text tone='muted'>Copy</Text>");
-		expect(markdown).not.toContain("- as (");
+		expect(markdown).toContain('<Text variant="heading" as="h1">Page title</Text>');
+		expect(markdown).toContain("- as (TextElement, optional, default —)");
 		expect(markdown).not.toContain("- children (");
+		for (const scenario of UI_EXAMPLES.text ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
 	});
 
 	it("does not keep a handwritten text prop inventory", () => {
@@ -632,7 +646,8 @@ describe("ui catalog", () => {
 			"utf8",
 		);
 		expect(family).toContain("api: textApi");
-		expect(family).toContain("<Text tone='muted'>Copy</Text>");
+		expect(family).toContain('<Text variant="heading" as="h1">Page title</Text>');
+		expect(family).not.toContain('name: "variant"');
 	});
 
 	it("sources label API rows from generated catalog data", async () => {
@@ -2479,6 +2494,16 @@ describe("ui catalog", () => {
 		const muted = mutedSection?.querySelector("p");
 		expect(muted).toHaveClass("text-basalt-muted-foreground");
 		expect(muted).toHaveTextContent("Muted supporting copy.");
+		const semantic = document.querySelector('[data-scenario="text-semantic-variants"]');
+		expect(semantic).toBeTruthy();
+		expect(semantic?.querySelector("h2")).toHaveTextContent("Section title");
+		expect(semantic?.querySelector("p")).toHaveTextContent("Body paragraph");
+		expect(semantic?.querySelector("span")).toHaveTextContent("Inline body");
+		expect(semantic?.querySelector("code")).toHaveTextContent("const ready = true");
+		const truncated = document.querySelector('[data-scenario="text-bold-and-truncate"]');
+		expect(truncated).toBeTruthy();
+		expect(truncated).toHaveTextContent("Bold body copy");
+		expect(truncated?.querySelector(".truncate")).toBeTruthy();
 	});
 
 	it("keeps label hero, optional marker, and tooltip contracts", async () => {

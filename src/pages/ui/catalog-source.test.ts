@@ -175,7 +175,14 @@ describe("catalog source contract", () => {
 		]);
 		expect(implementationFileFor(entry("text"))).toBe("packages/basalt/src/components/text.tsx");
 		expect(foundation.text?.docs.api).toEqual(CATALOG_API.text);
-		expect(CATALOG_API.text?.[0]?.props.map((prop) => prop.name)).toEqual(["size", "tone"]);
+		expect(CATALOG_API.text?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"tone",
+			"as",
+			"bold",
+			"truncate",
+		]);
 		expect(implementationFileFor(entry("label"))).toBe("packages/basalt/src/components/label.tsx");
 		expect(foundation.label?.docs.api).toEqual(CATALOG_API.label);
 		expect(CATALOG_API.label?.[0]?.props.map((prop) => prop.name)).toEqual([

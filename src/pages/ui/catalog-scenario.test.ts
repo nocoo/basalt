@@ -76,8 +76,13 @@ const linkButtonSources = import.meta.glob("./examples/link-button/*.tsx", {
 	eager: true,
 });
 
-const TEXT_IDS = ["text-sizes", "text-muted-tone"] as const;
-const TEXT_TITLES = ["Sizes", "Muted tone"] as const;
+const TEXT_IDS = [
+	"text-sizes",
+	"text-muted-tone",
+	"text-semantic-variants",
+	"text-bold-and-truncate",
+] as const;
+const TEXT_TITLES = ["Sizes", "Muted tone", "Semantic variants", "Bold and truncate"] as const;
 
 const textRenders = import.meta.glob("./examples/text/*.tsx", { eager: true });
 const textSources = import.meta.glob("./examples/text/*.tsx", {
@@ -409,9 +414,9 @@ describe("source-backed link-button scenarios", () => {
 });
 
 describe("source-backed text scenarios", () => {
-	it("loads two text scenarios from the same glob modules", () => {
-		expect(Object.keys(textRenders)).toHaveLength(2);
-		expect(Object.keys(textSources)).toHaveLength(2);
+	it("loads four text scenarios from the same glob modules", () => {
+		expect(Object.keys(textRenders)).toHaveLength(4);
+		expect(Object.keys(textSources)).toHaveLength(4);
 		const loaded = loadModuleScenarios({
 			slug: "text",
 			metas: TEXT_TITLES.map((title, index) => ({
@@ -450,7 +455,9 @@ describe("source-backed text scenarios", () => {
 				TEXT_EXAMPLES.find((item) => item.id === scenario.id)?.render,
 			);
 			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
-			expect(scenario.code).not.toMatch(/as=|<h[1-6]|Semantic HTML/i);
+			if (scenario.id === "text-sizes" || scenario.id === "text-muted-tone") {
+				expect(scenario.code).not.toMatch(/as=|<h[1-6]|Semantic HTML/i);
+			}
 		}
 	});
 });
