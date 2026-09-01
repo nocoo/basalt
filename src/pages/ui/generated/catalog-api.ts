@@ -4,13 +4,17 @@ import { API as autocompleteApi } from "./catalog-api/autocomplete";
 import { API as basaltMarkApi } from "./catalog-api/basalt-mark";
 import { API as buttonApi } from "./catalog-api/button";
 import { API as checkboxApi } from "./catalog-api/checkbox";
+import { API as codeApi } from "./catalog-api/code";
 import { API as collapsibleApi } from "./catalog-api/collapsible";
 import { API as comboboxApi } from "./catalog-api/combobox";
 import { API as commandPaletteApi } from "./catalog-api/command-palette";
 import { API as confirmDialogApi } from "./catalog-api/confirm-dialog";
+import { API as dataTableApi } from "./catalog-api/data-table";
 import { API as datePickerApi } from "./catalog-api/date-picker";
 import { API as dropdownMenuApi } from "./catalog-api/dropdown-menu";
 import { API as fieldApi } from "./catalog-api/field";
+import { API as flowApi } from "./catalog-api/flow";
+import { API as gridApi } from "./catalog-api/grid";
 import { API as inputApi } from "./catalog-api/input";
 import { API as inputAreaApi } from "./catalog-api/input-area";
 import { API as inputGroupApi } from "./catalog-api/input-group";
@@ -19,6 +23,7 @@ import { API as layerCardApi } from "./catalog-api/layer-card";
 import { API as linkApi } from "./catalog-api/link";
 import { API as linkButtonApi } from "./catalog-api/link-button";
 import { API as pageHeaderApi } from "./catalog-api/page-header";
+import { API as paginationApi } from "./catalog-api/pagination";
 import { API as popoverApi } from "./catalog-api/popover";
 import { API as radioApi } from "./catalog-api/radio";
 import { API as scrollAreaApi } from "./catalog-api/scroll-area";
@@ -29,6 +34,8 @@ import { API as separatorApi } from "./catalog-api/separator";
 import { API as sidebarApi } from "./catalog-api/sidebar";
 import { API as statStripApi } from "./catalog-api/stat-strip";
 import { API as switchApi } from "./catalog-api/switch";
+import { API as tableApi } from "./catalog-api/table";
+import { API as tableOfContentsApi } from "./catalog-api/table-of-contents";
 import { API as tablePagerApi } from "./catalog-api/table-pager";
 import { API as tabsApi } from "./catalog-api/tabs";
 import { API as textApi } from "./catalog-api/text";
@@ -41,13 +48,17 @@ export const CATALOG_API = {
 	"basalt-mark": basaltMarkApi,
 	button: buttonApi,
 	checkbox: checkboxApi,
+	code: codeApi,
 	collapsible: collapsibleApi,
 	combobox: comboboxApi,
 	"command-palette": commandPaletteApi,
 	"confirm-dialog": confirmDialogApi,
+	"data-table": dataTableApi,
 	"date-picker": datePickerApi,
 	"dropdown-menu": dropdownMenuApi,
 	field: fieldApi,
+	flow: flowApi,
+	grid: gridApi,
 	input: inputApi,
 	"input-area": inputAreaApi,
 	"input-group": inputGroupApi,
@@ -56,6 +67,7 @@ export const CATALOG_API = {
 	link: linkApi,
 	"link-button": linkButtonApi,
 	"page-header": pageHeaderApi,
+	pagination: paginationApi,
 	popover: popoverApi,
 	radio: radioApi,
 	"scroll-area": scrollAreaApi,
@@ -66,6 +78,8 @@ export const CATALOG_API = {
 	sidebar: sidebarApi,
 	"stat-strip": statStripApi,
 	switch: switchApi,
+	table: tableApi,
+	"table-of-contents": tableOfContentsApi,
 	"table-pager": tablePagerApi,
 	tabs: tabsApi,
 	text: textApi,

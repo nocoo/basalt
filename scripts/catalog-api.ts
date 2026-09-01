@@ -468,6 +468,78 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "CollapsibleContentProps",
 		surface: "CollapsibleContent",
 	},
+	{
+		slug: "table",
+		sourceFile: "packages/basalt/src/components/table.tsx",
+		propsType: "TableProps",
+		surface: "Table",
+	},
+	{
+		slug: "table",
+		sourceFile: "packages/basalt/src/components/table.tsx",
+		propsType: "TableRowProps",
+		surface: "TableRow",
+	},
+	{
+		slug: "data-table",
+		sourceFile: "packages/basalt/src/components/data-table.tsx",
+		propsType: "DataTableProps",
+		surface: "DataTable",
+	},
+	{
+		slug: "pagination",
+		sourceFile: "packages/basalt/src/components/pagination.tsx",
+		propsType: "PaginationProps",
+		surface: "Pagination",
+	},
+	{
+		slug: "table-of-contents",
+		sourceFile: "packages/basalt/src/components/table-of-contents.tsx",
+		propsType: "TableOfContentsProps",
+		surface: "TableOfContents",
+	},
+	{
+		slug: "table-of-contents",
+		sourceFile: "packages/basalt/src/components/table-of-contents.tsx",
+		propsType: "TableOfContentsItemProps",
+		surface: "TableOfContentsItem",
+	},
+	{
+		slug: "code",
+		sourceFile: "packages/basalt/src/components/code.tsx",
+		propsType: "CodeProps",
+		surface: "Code",
+	},
+	{
+		slug: "code",
+		sourceFile: "packages/basalt/src/components/code.tsx",
+		propsType: "CodeBlockProps",
+		surface: "CodeBlock",
+	},
+	{
+		slug: "code",
+		sourceFile: "packages/basalt/src/components/code.tsx",
+		propsType: "CodeHighlightedProps",
+		surface: "CodeHighlighted",
+	},
+	{
+		slug: "flow",
+		sourceFile: "packages/basalt/src/components/flow.tsx",
+		propsType: "FlowProps",
+		surface: "Flow",
+	},
+	{
+		slug: "flow",
+		sourceFile: "packages/basalt/src/components/flow.tsx",
+		propsType: "FlowNodeProps",
+		surface: "FlowNode",
+	},
+	{
+		slug: "grid",
+		sourceFile: "packages/basalt/src/components/grid.tsx",
+		propsType: "GridProps",
+		surface: "Grid",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

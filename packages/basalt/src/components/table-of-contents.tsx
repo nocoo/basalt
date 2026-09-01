@@ -7,6 +7,9 @@ export type TableOfContentsProps = {
 	 * @default "On this page"
 	 */
 	title?: string;
+	/**
+	 * Section items.
+	 */
 	children: ReactNode;
 	/**
 	 * Additional classes for the nav.
@@ -41,6 +44,9 @@ export type TableOfContentsItemProps = {
 	 * Optional in-page href. Renders a link when set.
 	 */
 	href?: string;
+	/**
+	 * Section label.
+	 */
 	children: ReactNode;
 };
 

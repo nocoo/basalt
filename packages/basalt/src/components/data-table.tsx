@@ -143,15 +143,15 @@ function filterSource<T>(column: DataTableColumn<T>, row: T): string {
 	return "";
 }
 
-export type DataTableProps<T> = {
+export type DataTableProps = {
 	/**
 	 * Rows to render.
 	 */
-	data: T[];
+	data: unknown[];
 	/**
 	 * Column descriptors.
 	 */
-	columns: DataTableColumn<T>[];
+	columns: DataTableColumn<unknown>[];
 	/**
 	 * Filter query matched against column values.
 	 * @default ""
@@ -204,7 +204,7 @@ export type DataTableProps<T> = {
 	/**
 	 * Stable id for a row.
 	 */
-	getRowId?: (row: T, index: number) => string;
+	getRowId?: (row: unknown, index: number) => string;
 	/**
 	 * Additional classes for the table.
 	 */
@@ -227,7 +227,11 @@ export function DataTable<T>({
 	onPageChange,
 	getRowId,
 	className,
-}: DataTableProps<T>) {
+}: Omit<DataTableProps, "data" | "columns" | "getRowId"> & {
+	data: T[];
+	columns: DataTableColumn<T>[];
+	getRowId?: (row: T, index: number) => string;
+}) {
 	const [sort, setSort] = useState<{ id: string; dir: "asc" | "desc" } | null>(null);
 	const [uncontrolledSelected, setUncontrolledSelected] = useState<string[]>(defaultSelected ?? []);
 	const [uncontrolledPage, setUncontrolledPage] = useState(defaultPage);

@@ -551,8 +551,80 @@ describe("catalog API generator contract", () => {
 				propsType: "CollapsibleContentProps",
 				surface: "CollapsibleContent",
 			},
+			{
+				slug: "table",
+				sourceFile: "packages/basalt/src/components/table.tsx",
+				propsType: "TableProps",
+				surface: "Table",
+			},
+			{
+				slug: "table",
+				sourceFile: "packages/basalt/src/components/table.tsx",
+				propsType: "TableRowProps",
+				surface: "TableRow",
+			},
+			{
+				slug: "data-table",
+				sourceFile: "packages/basalt/src/components/data-table.tsx",
+				propsType: "DataTableProps",
+				surface: "DataTable",
+			},
+			{
+				slug: "pagination",
+				sourceFile: "packages/basalt/src/components/pagination.tsx",
+				propsType: "PaginationProps",
+				surface: "Pagination",
+			},
+			{
+				slug: "table-of-contents",
+				sourceFile: "packages/basalt/src/components/table-of-contents.tsx",
+				propsType: "TableOfContentsProps",
+				surface: "TableOfContents",
+			},
+			{
+				slug: "table-of-contents",
+				sourceFile: "packages/basalt/src/components/table-of-contents.tsx",
+				propsType: "TableOfContentsItemProps",
+				surface: "TableOfContentsItem",
+			},
+			{
+				slug: "code",
+				sourceFile: "packages/basalt/src/components/code.tsx",
+				propsType: "CodeProps",
+				surface: "Code",
+			},
+			{
+				slug: "code",
+				sourceFile: "packages/basalt/src/components/code.tsx",
+				propsType: "CodeBlockProps",
+				surface: "CodeBlock",
+			},
+			{
+				slug: "code",
+				sourceFile: "packages/basalt/src/components/code.tsx",
+				propsType: "CodeHighlightedProps",
+				surface: "CodeHighlighted",
+			},
+			{
+				slug: "flow",
+				sourceFile: "packages/basalt/src/components/flow.tsx",
+				propsType: "FlowProps",
+				surface: "Flow",
+			},
+			{
+				slug: "flow",
+				sourceFile: "packages/basalt/src/components/flow.tsx",
+				propsType: "FlowNodeProps",
+				surface: "FlowNode",
+			},
+			{
+				slug: "grid",
+				sourceFile: "packages/basalt/src/components/grid.tsx",
+				propsType: "GridProps",
+				surface: "Grid",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(71);
+		expect(CATALOG_API_TARGETS).toHaveLength(83);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -623,6 +695,13 @@ describe("catalog API generator contract", () => {
 			"popover",
 			"dropdown-menu",
 			"collapsible",
+			"table",
+			"data-table",
+			"pagination",
+			"table-of-contents",
+			"code",
+			"flow",
+			"grid",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -1574,6 +1653,13 @@ export interface WidgetProps {
 			popover: ["Popover", "PopoverContent"],
 			"dropdown-menu": ["DropdownMenu", "DropdownMenuItem"],
 			collapsible: ["Collapsible", "CollapsibleContent"],
+			table: ["Table", "TableRow"],
+			"data-table": ["DataTable"],
+			pagination: ["Pagination"],
+			"table-of-contents": ["TableOfContents", "TableOfContentsItem"],
+			code: ["Code", "CodeBlock", "CodeHighlighted"],
+			flow: ["Flow", "FlowNode"],
+			grid: ["Grid"],
 		});
 	}, 20_000);
 
@@ -1583,7 +1669,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(35);
+		expect(Object.keys(generated)).toHaveLength(42);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1684,7 +1770,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(35);
+		expect(Object.keys(generated)).toHaveLength(42);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1806,7 +1892,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(35);
+		expect(Object.keys(generated)).toHaveLength(42);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -1877,7 +1963,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(35);
+		expect(Object.keys(generated)).toHaveLength(42);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -1920,7 +2006,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(35);
+		expect(Object.keys(generated)).toHaveLength(42);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -1972,7 +2058,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(35);
+		expect(Object.keys(generated)).toHaveLength(42);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3213,8 +3299,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(35);
-		expect(Object.keys(first)).toHaveLength(36);
+		expect(slugs).toHaveLength(42);
+		expect(Object.keys(first)).toHaveLength(43);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3257,6 +3343,13 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "Popover"');
 		expect(joined).toContain('name: "DropdownMenu"');
 		expect(joined).toContain('name: "Collapsible"');
+		expect(joined).toContain('name: "Table"');
+		expect(joined).toContain('name: "DataTable"');
+		expect(joined).toContain('name: "Pagination"');
+		expect(joined).toContain('name: "TableOfContents"');
+		expect(joined).toContain('name: "CodeHighlighted"');
+		expect(joined).toContain('name: "Flow"');
+		expect(joined).toContain('name: "Grid"');
 		const digest = createHash("sha256");
 		for (const relative of Object.keys(first).sort()) {
 			digest.update(relative);
@@ -3264,7 +3357,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"68c57c9e30c9d34b449e170fd50fc00c27be92b3ea68a259416a3578b4a63a95",
+			"4038213f32a23867cd3eac760e3e19b09dbf681731f1dfef3b4b53946131a8d8",
 		);
 	}, 20_000);
 

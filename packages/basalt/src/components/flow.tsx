@@ -50,6 +50,9 @@ export type FlowProps = {
 	 * Additional classes for the list.
 	 */
 	className?: string;
+	/**
+	 * Step nodes.
+	 */
 	children: ReactNode;
 };
 
@@ -68,6 +71,9 @@ export function Flow({ className, children, "aria-label": ariaLabel = "Flow" }: 
 }
 
 export type FlowNodeProps = {
+	/**
+	 * Label for the step.
+	 */
 	children: ReactNode;
 };
 
