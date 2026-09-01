@@ -1709,36 +1709,66 @@ describe("ui catalog", () => {
 						required: false,
 						description: "The visible text row count.",
 					},
+					{
+						name: "size",
+						type: "InputAreaSize",
+						required: false,
+						default: "default",
+						description: "The visual size of the text area.",
+					},
+					{
+						name: "passwordManagerIgnore",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Ignore password managers on this field.",
+					},
 				],
 			},
 		]);
 		renderCatalog("/ui/input-area");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(3);
 		expect(api).toHaveTextContent("rows?");
 		expect(api).toHaveTextContent("number");
 		expect(api).toHaveTextContent("The visible text row count.");
+		expect(api).toHaveTextContent("size?");
+		expect(api).toHaveTextContent("InputAreaSize");
+		expect(api).toHaveTextContent("passwordManagerIgnore?");
 		expect(api).not.toHaveTextContent("className");
 		expect(api).not.toHaveTextContent("placeholder");
 		expect(api).not.toHaveTextContent("onChange");
 		expect(screen.getByRole("heading", { name: "With Label" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Controlled and reset" })).toBeInTheDocument();
 		expect(document.querySelector('[data-hero-scenario="input-area-with-label"]')).toBeTruthy();
 		expect(document.querySelector('[data-scenario="input-area-custom-row-count"]')).toBeTruthy();
 		expect(document.querySelector('[data-scenario="input-area-error-state-string"]')).toBeTruthy();
 		expect(document.querySelector('[data-scenario="input-area-disabled"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="input-area-sizes"]')).toBeTruthy();
+		expect(
+			document.querySelector('[data-scenario="input-area-controlled-and-reset"]'),
+		).toBeTruthy();
 		await act(async () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
 		expect(markdown).toContain("- rows (number, optional, default —): The visible text row count.");
+		expect(markdown).toContain(
+			"- size (InputAreaSize, optional, default default): The visual size of the text area.",
+		);
+		expect(markdown).toContain(
+			"- passwordManagerIgnore (boolean, optional, default false): Ignore password managers on this field.",
+		);
 		expect(markdown).not.toContain("- className (");
 		expect(markdown).not.toContain("- placeholder (");
 		expect(markdown).toContain(UI_EXAMPLES["input-area"]?.[0]?.code ?? "");
 		expect(markdown).toContain(UI_EXAMPLES["input-area"]?.[1]?.code ?? "");
 		expect(markdown).toContain("rows={6}");
 		expect(markdown).toContain('htmlFor="ex-notes"');
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
+		expect(markdown).not.toContain("github.com/nocoo/kumo");
 	});
 
 	it("does not keep a handwritten input-area prop inventory", () => {
@@ -1748,11 +1778,12 @@ describe("ui catalog", () => {
 		);
 		expect(family).toContain("api: inputAreaApi");
 		expect(family).not.toContain('name: "rows"');
-		expect(family).toContain('description: "A multi-line text field on the L3 surface."');
+		expect(family).toContain('description: "A sized native multi-line control on the L3 surface."');
 		expect(family).toContain('<InputArea aria-label="Notes" placeholder="Write a note" />');
-		expect(family).toContain('repo: "zhe"');
-		expect(family).toContain('sha: "c31c239f01c9"');
-		expect(family).toContain('file: "components/ui/textarea.tsx"');
+		expect(family).toContain('variants: ["sm", "default", "lg"]');
+		expect(family).toContain('repo: "kumo"');
+		expect(family).toContain('sha: "1159868dfe32"');
+		expect(family).toContain('file: "packages/kumo/src/components/input-area/input-area.tsx"');
 	});
 
 	it("does not keep a handwritten input-group prop inventory", () => {
@@ -3092,17 +3123,23 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("heading", { name: "Custom Row Count" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Error State (String)" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Controlled and reset" })).toBeInTheDocument();
 		const hero = document.querySelector('[data-hero-scenario="input-area-with-label"]');
 		const labeled = document.querySelector('[data-scenario="input-area-with-label"]');
 		const rows = document.querySelector('[data-scenario="input-area-custom-row-count"]');
 		const error = document.querySelector('[data-scenario="input-area-error-state-string"]');
 		const disabled = document.querySelector('[data-scenario="input-area-disabled"]');
+		const sizes = document.querySelector('[data-scenario="input-area-sizes"]');
+		const controlled = document.querySelector('[data-scenario="input-area-controlled-and-reset"]');
 		expect(hero).toBeTruthy();
 		expect(labeled).toBeTruthy();
 		expect(rows).toBeTruthy();
 		expect(error).toBeTruthy();
 		expect(disabled).toBeTruthy();
-		if (!hero || !labeled || !rows || !error || !disabled) {
+		expect(sizes).toBeTruthy();
+		expect(controlled).toBeTruthy();
+		if (!hero || !labeled || !rows || !error || !disabled || !sizes || !controlled) {
 			throw new Error("missing input-area scenario surfaces");
 		}
 		const heroLabel = hero.querySelector('label[for="ex-notes"]');
@@ -3126,6 +3163,19 @@ describe("ui catalog", () => {
 		});
 		expect(disabledArea).toBeDisabled();
 		expect(disabledArea).toHaveValue("Unavailable");
+		expect(
+			within(sizes as HTMLElement).getByRole("textbox", { name: "Small notes" }).className,
+		).toContain("min-h-[64px]");
+		expect(
+			within(sizes as HTMLElement).getByRole("textbox", { name: "Default notes" }).className,
+		).toContain("min-h-[80px]");
+		expect(
+			within(sizes as HTMLElement).getByRole("textbox", { name: "Large notes" }).className,
+		).toContain("min-h-[96px]");
+		expect(within(controlled as HTMLElement).getByRole("textbox", { name: "Notes" })).toHaveValue(
+			"Ada",
+		);
+		expect(within(controlled as HTMLElement).getByRole("button", { name: "Reset" })).toBeEnabled();
 		for (const scenario of UI_EXAMPLES["input-area"] ?? []) {
 			expect(scenario.code).toContain("export default");
 			expect(scenario.code).toContain("@nocoo/basalt/components/input-area");
@@ -3138,14 +3188,15 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(UI_EXAMPLES["input-area"]).toHaveLength(4);
+		expect(UI_EXAMPLES["input-area"]).toHaveLength(6);
 		for (const scenario of UI_EXAMPLES["input-area"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
 		expect(markdown).toContain('htmlFor="ex-notes"');
 		expect(markdown).toContain('htmlFor="ex-bio"');
 		expect(markdown).toContain("rows={6}");
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
+		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
+		expect(markdown).not.toContain("github.com/nocoo/kumo");
 	});
 
 	it("keeps input-group hero, compound previews, and copy modules", async () => {

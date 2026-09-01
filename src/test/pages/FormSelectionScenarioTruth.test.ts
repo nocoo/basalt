@@ -91,6 +91,8 @@ describe("form selection scenario truth", () => {
 			"input-area-custom-row-count",
 			"input-area-error-state-string",
 			"input-area-disabled",
+			"input-area-sizes",
+			"input-area-controlled-and-reset",
 		]);
 		expect(UI_EXAMPLES["input-group"]).toBe(INPUT_GROUP_EXAMPLES);
 		expect(UI_EXAMPLES["input-group"]?.map((item) => item.id)).toEqual([
@@ -396,6 +398,11 @@ describe("form selection scenario truth", () => {
 		);
 		expect(scenario("input-area", "input-area-disabled").code).toContain("disabled");
 		expect(scenario("input-area", "input-area-disabled").code).toContain('value="Unavailable"');
+		expect(scenario("input-area", "input-area-sizes").code).toContain('size="sm"');
+		expect(scenario("input-area", "input-area-sizes").code).toContain('aria-label="Default notes"');
+		expect(scenario("input-area", "input-area-sizes").code).toContain('size="lg"');
+		expect(scenario("input-area", "input-area-controlled-and-reset").code).toContain("useState");
+		expect(scenario("input-area", "input-area-controlled-and-reset").code).toContain("Reset");
 		const sensitiveDefault = scenario("sensitive-input", "sensitive-input-default");
 		expect(sensitiveDefault.code).toContain("export default");
 		expect(sensitiveDefault.code).toContain("@nocoo/basalt/components/sensitive-input");

@@ -10,6 +10,20 @@ export const API = [
 				required: false,
 				description: "The visible text row count.",
 			},
+			{
+				name: "size",
+				type: "InputAreaSize",
+				required: false,
+				default: "default",
+				description: "The visual size of the text area.",
+			},
+			{
+				name: "passwordManagerIgnore",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Ignore password managers on this field.",
+			},
 		],
 	},
 ];

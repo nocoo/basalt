@@ -6,6 +6,12 @@ import { InputArea, type InputAreaProps } from "./input-area";
 
 function acceptInputAreaProps(_props: InputAreaProps) {}
 
+const SIZE_CLASS = {
+	sm: ["min-h-[64px]", "px-2.5", "py-1.5", "text-xs"],
+	default: ["min-h-[80px]", "px-3", "py-2", "text-sm"],
+	lg: ["min-h-[96px]", "px-4", "py-2", "text-base"],
+} as const;
+
 describe("InputArea", () => {
 	it("renders a textarea", () => {
 		render(<InputArea aria-label="Notes" />);
@@ -26,8 +32,90 @@ describe("InputArea", () => {
 		expect(screen.getByRole("textbox", { name: "Notes" })).toBeDisabled();
 	});
 
-	it("accepts numeric rows, native attributes, and ref, and rejects a string rows", () => {
+	it("applies named sizes and keeps the default class", () => {
+		const { rerender } = render(<InputArea aria-label="Notes" />);
+		expect(screen.getByRole("textbox", { name: "Notes" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining([...SIZE_CLASS.default]),
+		);
+		rerender(<InputArea aria-label="Notes" size="default" />);
+		expect(screen.getByRole("textbox", { name: "Notes" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining([...SIZE_CLASS.default]),
+		);
+		rerender(<InputArea aria-label="Notes" size="sm" />);
+		expect(screen.getByRole("textbox", { name: "Notes" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining([...SIZE_CLASS.sm]),
+		);
+		rerender(<InputArea aria-label="Notes" size="lg" />);
+		expect(screen.getByRole("textbox", { name: "Notes" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining([...SIZE_CLASS.lg]),
+		);
+	});
+
+	it("keeps a destructive invalid border that focus-visible cannot replace", () => {
+		render(<InputArea aria-label="Notes" aria-invalid />);
+		const area = screen.getByRole("textbox", { name: "Notes" });
+		expect(area.className).toContain("aria-invalid:border-basalt-destructive");
+		expect(area.className).toContain("aria-invalid:focus-visible:border-basalt-destructive");
+		expect(area.className).toContain("focus-visible:border-basalt-ring");
+	});
+
+	it("adds password-manager markers only when requested and does not let callers override them", () => {
+		const { rerender } = render(<InputArea aria-label="Notes" />);
+		const unmarked = screen.getByRole("textbox", { name: "Notes" });
+		expect(unmarked.className).not.toContain("keeper-ignore");
+		expect(unmarked).not.toHaveAttribute("data-1p-ignore");
+		expect(unmarked).not.toHaveAttribute("data-bwignore");
+		expect(unmarked).not.toHaveAttribute("data-form-type");
+		expect(unmarked).not.toHaveAttribute("data-lpignore");
+		rerender(
+			<InputArea
+				aria-label="Notes"
+				passwordManagerIgnore
+				data-1p-ignore="false"
+				data-bwignore="false"
+				data-form-type="login"
+				data-lpignore="false"
+			/>,
+		);
+		const marked = screen.getByRole("textbox", { name: "Notes" });
+		expect(marked.className).toContain("keeper-ignore");
+		expect(marked).toHaveAttribute("data-1p-ignore", "true");
+		expect(marked).toHaveAttribute("data-bwignore", "true");
+		expect(marked).toHaveAttribute("data-form-type", "other");
+		expect(marked).toHaveAttribute("data-lpignore", "true");
+	});
+
+	it("keeps a controlled value and reports change", () => {
+		const onChange = vi.fn();
+		render(<InputArea aria-label="Notes" value="Ada" onChange={onChange} />);
+		const area = screen.getByRole("textbox", { name: "Notes" });
+		expect(area).toHaveValue("Ada");
+		fireEvent.change(area, { target: { value: "Grace" } });
+		expect(area).toHaveValue("Ada");
+		expect(onChange).toHaveBeenCalled();
+	});
+
+	it("edits an uncontrolled value and restores it on native form reset", () => {
+		render(
+			<form>
+				<InputArea aria-label="Notes" name="notes" defaultValue="Ada" />
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		const area = screen.getByRole("textbox", { name: "Notes" });
+		expect(area).toHaveValue("Ada");
+		fireEvent.change(area, { target: { value: "Grace" } });
+		expect(area).toHaveValue("Grace");
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		expect(area).toHaveValue("Ada");
+	});
+
+	it("accepts numeric rows, size, passwordManagerIgnore, native attributes, and ref, and rejects illegal values", () => {
 		acceptInputAreaProps({ rows: 6 });
+		acceptInputAreaProps({ size: "sm" });
+		acceptInputAreaProps({ size: "default" });
+		acceptInputAreaProps({ size: "lg" });
+		acceptInputAreaProps({ passwordManagerIgnore: true });
 		acceptInputAreaProps({
 			className: "extra",
 			placeholder: "Write a note",
@@ -40,6 +128,8 @@ describe("InputArea", () => {
 		acceptInputAreaProps({ defaultValue: "y" });
 		// @ts-expect-error rows must be a number
 		acceptInputAreaProps({ rows: "6" });
+		// @ts-expect-error size must be sm, default, or lg
+		acceptInputAreaProps({ size: "xl" });
 	});
 
 	it("forwards rows, native attributes, ref, className, and change", () => {

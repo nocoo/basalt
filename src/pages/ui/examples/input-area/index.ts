@@ -5,6 +5,8 @@ const INPUT_AREA_SCENARIO_META = [
 	{ key: "custom-row-count", title: "Custom Row Count" },
 	{ key: "error-state-string", title: "Error State (String)" },
 	{ key: "disabled", title: "Disabled" },
+	{ key: "sizes", title: "Sizes" },
+	{ key: "controlled-and-reset", title: "Controlled and reset" },
 ] as const;
 
 export const INPUT_AREA_EXAMPLES = loadModuleScenarios({

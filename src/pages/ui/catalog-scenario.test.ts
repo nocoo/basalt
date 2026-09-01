@@ -219,12 +219,16 @@ const INPUT_AREA_IDS = [
 	"input-area-custom-row-count",
 	"input-area-error-state-string",
 	"input-area-disabled",
+	"input-area-sizes",
+	"input-area-controlled-and-reset",
 ] as const;
 const INPUT_AREA_TITLES = [
 	"With Label",
 	"Custom Row Count",
 	"Error State (String)",
 	"Disabled",
+	"Sizes",
+	"Controlled and reset",
 ] as const;
 
 const inputAreaRenders = import.meta.glob("./examples/input-area/*.tsx", { eager: true });
@@ -1122,9 +1126,9 @@ describe("source-backed input scenarios", () => {
 });
 
 describe("source-backed input-area scenarios", () => {
-	it("loads four input-area scenarios from the same glob modules", () => {
-		expect(Object.keys(inputAreaRenders)).toHaveLength(4);
-		expect(Object.keys(inputAreaSources)).toHaveLength(4);
+	it("loads six input-area scenarios from the same glob modules", () => {
+		expect(Object.keys(inputAreaRenders)).toHaveLength(6);
+		expect(Object.keys(inputAreaSources)).toHaveLength(6);
 		const loaded = loadModuleScenarios({
 			slug: "input-area",
 			metas: INPUT_AREA_TITLES.map((title, index) => ({
@@ -1203,6 +1207,14 @@ describe("source-backed input-area scenarios", () => {
 		expect(INPUT_AREA_EXAMPLES[3]?.code).toContain("disabled");
 		expect(INPUT_AREA_EXAMPLES[3]?.code).toContain('aria-label="Disabled notes"');
 		expect(INPUT_AREA_EXAMPLES[3]?.code).toContain('value="Unavailable"');
+		expect(INPUT_AREA_EXAMPLES[4]?.code).toContain('size="sm"');
+		expect(INPUT_AREA_EXAMPLES[4]?.code).toContain('aria-label="Small notes"');
+		expect(INPUT_AREA_EXAMPLES[4]?.code).toContain('aria-label="Default notes"');
+		expect(INPUT_AREA_EXAMPLES[4]?.code).toContain('size="lg"');
+		expect(INPUT_AREA_EXAMPLES[5]?.code).toContain("useState");
+		expect(INPUT_AREA_EXAMPLES[5]?.code).toContain("@nocoo/basalt/components/field");
+		expect(INPUT_AREA_EXAMPLES[5]?.code).toContain("@nocoo/basalt/components/button");
+		expect(INPUT_AREA_EXAMPLES[5]?.code).toContain("Reset");
 	});
 });
 

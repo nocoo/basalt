@@ -1048,15 +1048,33 @@ describe("catalog API generator contract", () => {
 		]);
 	}, 20_000);
 
-	it("extracts InputArea props from InputAreaProps as a single optional rows", () => {
+	it("extracts InputArea props from InputAreaProps as rows, size, and passwordManagerIgnore", () => {
 		const generated = generateProductionProps();
-		expect(generated["input-area"]?.map((prop) => prop.name)).toEqual(["rows"]);
+		expect(generated["input-area"]?.map((prop) => prop.name)).toEqual([
+			"rows",
+			"size",
+			"passwordManagerIgnore",
+		]);
 		expect(generated["input-area"]).toEqual([
 			{
 				name: "rows",
 				type: "number",
 				required: false,
 				description: "The visible text row count.",
+			},
+			{
+				name: "size",
+				type: "InputAreaSize",
+				required: false,
+				default: "default",
+				description: "The visual size of the text area.",
+			},
+			{
+				name: "passwordManagerIgnore",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Ignore password managers on this field.",
 			},
 		]);
 		expect(generated["input-area"]?.[0]).not.toHaveProperty("default");
@@ -1553,7 +1571,11 @@ export interface WidgetProps {
 			"size",
 			"passwordManagerIgnore",
 		]);
-		expect(generated["input-area"]?.[0]?.props.map((prop) => prop.name)).toEqual(["rows"]);
+		expect(generated["input-area"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"rows",
+			"size",
+			"passwordManagerIgnore",
+		]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
 			"InputGroup",
 			"InputGroup.Input",
@@ -3019,7 +3041,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"0bf831f6121961680b665c6ffdeade55b6ce3b9bf49005c7b8e25f47e8e7f940",
+			"f04781ba533f9b4ee072868279ef530191a4fc6cba9af5bc9c24e79504019ff6",
 		);
 	}, 20_000);
 

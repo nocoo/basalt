@@ -84,18 +84,18 @@ export default catalogContentFamily({
 	},
 	"input-area": {
 		docs: {
-			description: "A multi-line text field on the L3 surface.",
+			description: "A sized native multi-line control on the L3 surface.",
 			usage: usage(
 				"InputArea",
 				"@nocoo/basalt/components/input-area",
 				'<InputArea aria-label="Notes" placeholder="Write a note" />',
 			),
-			variants: [],
+			variants: ["sm", "default", "lg"],
 			api: inputAreaApi,
 			provenance: provenanceFromLegacy({
-				repo: "zhe",
-				sha: "c31c239f01c9",
-				file: "components/ui/textarea.tsx",
+				repo: "kumo",
+				sha: "1159868dfe32",
+				file: "packages/kumo/src/components/input-area/input-area.tsx",
 			}),
 		},
 		examples: INPUT_AREA_EXAMPLES,
