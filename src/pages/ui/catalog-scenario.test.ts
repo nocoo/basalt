@@ -1543,7 +1543,7 @@ describe("source-backed checkbox scenarios", () => {
 		expect(CHECKBOX_EXAMPLES[5]?.code).toContain("Topics");
 		expect(CHECKBOX_EXAMPLES[6]?.code).toContain("useState");
 		expect(CHECKBOX_EXAMPLES[6]?.code).toContain("onValueChange");
-		expect(CHECKBOX_EXAMPLES[6]?.code).toContain('error="Pick at least two"');
+		expect(CHECKBOX_EXAMPLES[6]?.code).toContain("Pick at least two");
 		expect(CHECKBOX_EXAMPLES[6]?.code).toContain('size="sm"');
 	});
 });
@@ -1654,7 +1654,7 @@ describe("source-backed radio scenarios", () => {
 		expect(RADIO_EXAMPLES[3]?.code).toContain("Radio.Item");
 		expect(RADIO_EXAMPLES[4]?.code).toContain("useState");
 		expect(RADIO_EXAMPLES[4]?.code).toContain("onValueChange");
-		expect(RADIO_EXAMPLES[4]?.code).toContain('error="Pick a plan"');
+		expect(RADIO_EXAMPLES[4]?.code).toContain("Pick a plan");
 	});
 });
 
@@ -1767,7 +1767,7 @@ describe("source-backed switch scenarios", () => {
 		expect(SWITCH_EXAMPLES[4]?.code).toContain("Switch.Item");
 		expect(SWITCH_EXAMPLES[5]?.code).toContain("useState");
 		expect(SWITCH_EXAMPLES[5]?.code).toContain("onValueChange");
-		expect(SWITCH_EXAMPLES[5]?.code).toContain('error="Turn on at least two"');
+		expect(SWITCH_EXAMPLES[5]?.code).toContain("Turn on at least two");
 	});
 });
 

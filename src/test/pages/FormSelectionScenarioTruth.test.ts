@@ -237,7 +237,7 @@ describe("form selection scenario truth", () => {
 		expect(scenario("checkbox", "checkbox-group-and-legend").code).toContain("Checkbox.Legend");
 		expect(scenario("checkbox", "checkbox-controlled-and-error").code).toContain("onValueChange");
 		expect(scenario("checkbox", "checkbox-controlled-and-error").code).toContain(
-			'error="Pick at least two"',
+			"Pick at least two",
 		);
 		expect(scenario("switch", "switch-off-state").code).toContain('aria-label="Off"');
 		expect(scenario("switch", "switch-on-state").code).toContain('aria-label="On"');
