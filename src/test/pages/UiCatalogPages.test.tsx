@@ -1906,6 +1906,71 @@ describe("ui catalog", () => {
 						required: false,
 						description: "The controlled checked state of the checkbox.",
 					},
+					{
+						name: "size",
+						type: "CheckboxSize",
+						required: false,
+						default: "default",
+						description: "The visual size of the checkbox.",
+					},
+				],
+			},
+			{
+				name: "Checkbox.Group",
+				props: [
+					{
+						name: "value",
+						type: "string[]",
+						required: false,
+						description: "The controlled selected values.",
+					},
+					{
+						name: "defaultValue",
+						type: "string[]",
+						required: false,
+						description: "The initially selected values.",
+					},
+					{
+						name: "onValueChange",
+						type: "(value: string[]) => void",
+						required: false,
+						description: "Called when the selected values change.",
+					},
+					{
+						name: "error",
+						type: "React.ReactNode",
+						required: false,
+						description: "Marks the group invalid and shows alert copy.",
+					},
+					{
+						name: "disabled",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Disable every item in the group.",
+					},
+				],
+			},
+			{
+				name: "Checkbox.Legend",
+				props: [],
+			},
+			{
+				name: "Checkbox.Item",
+				props: [
+					{
+						name: "size",
+						type: '"default" | "sm"',
+						required: false,
+						default: "default",
+						description: "The visual size of the checkbox.",
+					},
+					{
+						name: "value",
+						type: "string",
+						required: true,
+						description: "The value stored in the group when this item is checked.",
+					},
 				],
 			},
 		]);
@@ -1916,22 +1981,26 @@ describe("ui catalog", () => {
 		expect(document.querySelector('[data-toc-id="api-Checkbox"]')).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Checkbox", level: 3 })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "Checkbox props" })).toBeInTheDocument();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(9);
 		expect(api).toHaveTextContent("checked?");
 		expect(api).toHaveTextContent('"indeterminate" | boolean');
 		expect(api).toHaveTextContent("The controlled checked state of the checkbox.");
-		expect(api).toHaveTextContent("—");
+		expect(api).toHaveTextContent("size?");
+		expect(api).toHaveTextContent("Checkbox.Group");
+		expect(api).toHaveTextContent("Checkbox.Item");
 		expect(api).not.toHaveTextContent("defaultChecked");
 		expect(api).not.toHaveTextContent("onCheckedChange");
 		expect(api).not.toHaveTextContent("className");
-		expect(api).not.toHaveTextContent("disabled?");
 		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Checked" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Indeterminate" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Error" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Group and legend" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Controlled and error" })).toBeInTheDocument();
 		expect(document.querySelector('[data-hero-scenario="checkbox-default"]')).toBeTruthy();
 		expect(document.querySelector('[data-scenario="checkbox-error"]')).toBeTruthy();
+		expect(document.querySelector('[data-scenario="checkbox-group-and-legend"]')).toBeTruthy();
 		await act(async () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
@@ -1942,11 +2011,12 @@ describe("ui catalog", () => {
 		);
 		expect(markdown).not.toContain("- defaultChecked (");
 		expect(markdown).not.toContain("- className (");
-		expect(UI_EXAMPLES.checkbox).toHaveLength(5);
+		expect(UI_EXAMPLES.checkbox).toHaveLength(7);
 		for (const scenario of UI_EXAMPLES.checkbox ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
+		expect(markdown).not.toContain("github.com/nocoo/kumo");
 	});
 
 	it("does not keep a handwritten checkbox prop inventory", () => {
@@ -1957,12 +2027,14 @@ describe("ui catalog", () => {
 		expect(family).toContain("api: checkboxApi");
 		expect(family).not.toContain('name: "checked"');
 		expect(family).not.toContain('boolean | "indeterminate"');
-		expect(family).toContain('description: "A check control with an indeterminate state."');
+		expect(family).toContain('description: "A check control with group, legend, size, and error."');
 		expect(family).toContain('<Checkbox aria-label="Subscribe" />');
-		expect(family).toContain('variants: ["checked", "unchecked", "indeterminate"]');
-		expect(family).toContain('repo: "zhe"');
-		expect(family).toContain('sha: "c31c239f01c9"');
-		expect(family).toContain('file: "components/ui/checkbox.tsx"');
+		expect(family).toContain(
+			'variants: ["checked", "unchecked", "indeterminate", "sm", "default"]',
+		);
+		expect(family).toContain('repo: "kumo"');
+		expect(family).toContain('sha: "1159868dfe32"');
+		expect(family).toContain('file: "packages/kumo/src/components/checkbox/checkbox.tsx"');
 	});
 
 	it("sources radio API rows from generated catalog data", async () => {
@@ -2370,7 +2442,18 @@ describe("ui catalog", () => {
 				"Linked badge",
 			],
 		],
-		["checkbox", ["Default", "Checked", "Indeterminate", "Disabled", "Error"]],
+		[
+			"checkbox",
+			[
+				"Default",
+				"Checked",
+				"Indeterminate",
+				"Disabled",
+				"Error",
+				"Group and legend",
+				"Controlled and error",
+			],
+		],
 		["switch", ["Off State", "On State", "Disabled", "Sizes"]],
 		["input", ["With Label and Description", "With Error (String)", "Disabled", "Input Types"]],
 		["loader", ["Default Size", "Custom Size"]],
@@ -3412,19 +3495,34 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("heading", { name: "Indeterminate" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Disabled" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Error" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Group and legend" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Controlled and error" })).toBeInTheDocument();
 		const hero = document.querySelector('[data-hero-scenario="checkbox-default"]');
 		const labeled = document.querySelector('[data-scenario="checkbox-default"]');
 		const checked = document.querySelector('[data-scenario="checkbox-checked"]');
 		const indeterminate = document.querySelector('[data-scenario="checkbox-indeterminate"]');
 		const disabled = document.querySelector('[data-scenario="checkbox-disabled"]');
 		const error = document.querySelector('[data-scenario="checkbox-error"]');
+		const grouped = document.querySelector('[data-scenario="checkbox-group-and-legend"]');
+		const controlled = document.querySelector('[data-scenario="checkbox-controlled-and-error"]');
 		expect(hero).toBeTruthy();
 		expect(labeled).toBeTruthy();
 		expect(checked).toBeTruthy();
 		expect(indeterminate).toBeTruthy();
 		expect(disabled).toBeTruthy();
 		expect(error).toBeTruthy();
-		if (!hero || !labeled || !checked || !indeterminate || !disabled || !error) {
+		expect(grouped).toBeTruthy();
+		expect(controlled).toBeTruthy();
+		if (
+			!hero ||
+			!labeled ||
+			!checked ||
+			!indeterminate ||
+			!disabled ||
+			!error ||
+			!grouped ||
+			!controlled
+		) {
 			throw new Error("missing checkbox scenario surfaces");
 		}
 		const heroBox = within(hero as HTMLElement).getByRole("checkbox", { name: "Unchecked" });
@@ -3463,6 +3561,13 @@ describe("ui catalog", () => {
 		const alert = within(error as HTMLElement).getByRole("alert");
 		expect(alert).toHaveAttribute("id", "ex-terms-error");
 		expect(alert).toHaveTextContent("Required");
+		expect(within(grouped as HTMLElement).getByRole("checkbox", { name: "Alpha" })).toBeChecked();
+		expect(
+			within(grouped as HTMLElement).getByRole("checkbox", { name: "Beta" }),
+		).not.toBeChecked();
+		expect(within(controlled as HTMLElement).getByRole("alert")).toHaveTextContent(
+			"Pick at least two",
+		);
 		for (const scenario of UI_EXAMPLES.checkbox ?? []) {
 			expect(scenario.code).toContain("export default");
 			expect(scenario.code).toContain("@nocoo/basalt/components/checkbox");
@@ -3475,12 +3580,13 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(UI_EXAMPLES.checkbox).toHaveLength(5);
+		expect(UI_EXAMPLES.checkbox).toHaveLength(7);
 		for (const scenario of UI_EXAMPLES.checkbox ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
 		expect(markdown).toContain('className="flex flex-wrap items-center gap-3"');
-		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
+		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
+		expect(markdown).not.toContain("github.com/nocoo/kumo");
 		expect(CATALOG_DOCS["sensitive-input"]?.api).toEqual(CATALOG_API["sensitive-input"]);
 		expect(UI_EXAMPLES["sensitive-input"]).toHaveLength(2);
 	});
@@ -3554,7 +3660,7 @@ describe("ui catalog", () => {
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
 		expect(CATALOG_DOCS.checkbox?.api).toEqual(CATALOG_API.checkbox);
 		expect(CATALOG_DOCS.radio?.api).toEqual(CATALOG_API.radio);
-		expect(UI_EXAMPLES.checkbox).toHaveLength(5);
+		expect(UI_EXAMPLES.checkbox).toHaveLength(7);
 	});
 
 	it("keeps switch hero, four states, sizes, and copy modules", async () => {

@@ -206,6 +206,25 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "Checkbox",
 	},
 	{
+		slug: "checkbox",
+		sourceFile: "packages/basalt/src/components/checkbox.tsx",
+		propsType: "CheckboxGroupProps",
+		surface: "Checkbox.Group",
+	},
+	{
+		slug: "checkbox",
+		sourceFile: "packages/basalt/src/components/checkbox.tsx",
+		propsType: "CheckboxLegendProps",
+		surface: "Checkbox.Legend",
+		allowEmpty: true,
+	},
+	{
+		slug: "checkbox",
+		sourceFile: "packages/basalt/src/components/checkbox.tsx",
+		propsType: "CheckboxItemProps",
+		surface: "Checkbox.Item",
+	},
+	{
 		slug: "radio",
 		sourceFile: "packages/basalt/src/components/radio.tsx",
 		propsType: "RadioProps",

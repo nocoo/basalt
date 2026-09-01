@@ -171,6 +171,31 @@ describe("forms catalog content family", () => {
 			ref: "1159868dfe32",
 			file: "packages/kumo/src/components/input-area/input-area.tsx",
 		});
+		expect(forms.checkbox?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "checkbox-default", title: "Default" },
+			{ id: "checkbox-checked", title: "Checked" },
+			{ id: "checkbox-indeterminate", title: "Indeterminate" },
+			{ id: "checkbox-disabled", title: "Disabled" },
+			{ id: "checkbox-error", title: "Error" },
+			{ id: "checkbox-group-and-legend", title: "Group and legend" },
+			{ id: "checkbox-controlled-and-error", title: "Controlled and error" },
+		]);
+		expect(forms.checkbox?.docs.description).toBe(
+			"A check control with group, legend, size, and error.",
+		);
+		expect(forms.checkbox?.docs.variants).toEqual([
+			"checked",
+			"unchecked",
+			"indeterminate",
+			"sm",
+			"default",
+		]);
+		expect(forms.checkbox?.docs.provenance).toEqual({
+			owner: "cloudflare",
+			repo: "kumo",
+			ref: "1159868dfe32",
+			file: "packages/kumo/src/components/checkbox/checkbox.tsx",
+		});
 		expect(forms.combobox?.examples).toHaveLength(2);
 		expect(forms.combobox?.examples.map((example) => example.id)).toEqual([
 			"combobox-searchable-select-with-placeholder",

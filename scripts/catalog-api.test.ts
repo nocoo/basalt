@@ -289,6 +289,25 @@ describe("catalog API generator contract", () => {
 				surface: "Checkbox",
 			},
 			{
+				slug: "checkbox",
+				sourceFile: "packages/basalt/src/components/checkbox.tsx",
+				propsType: "CheckboxGroupProps",
+				surface: "Checkbox.Group",
+			},
+			{
+				slug: "checkbox",
+				sourceFile: "packages/basalt/src/components/checkbox.tsx",
+				propsType: "CheckboxLegendProps",
+				surface: "Checkbox.Legend",
+				allowEmpty: true,
+			},
+			{
+				slug: "checkbox",
+				sourceFile: "packages/basalt/src/components/checkbox.tsx",
+				propsType: "CheckboxItemProps",
+				surface: "Checkbox.Item",
+			},
+			{
 				slug: "radio",
 				sourceFile: "packages/basalt/src/components/radio.tsx",
 				propsType: "RadioProps",
@@ -375,7 +394,7 @@ describe("catalog API generator contract", () => {
 				surface: "TablePager",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(42);
+		expect(CATALOG_API_TARGETS).toHaveLength(45);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -387,6 +406,7 @@ describe("catalog API generator contract", () => {
 			"LayerCard.Body",
 			"LayerCard.Footer",
 			"InputGroup.Suffix",
+			"Checkbox.Legend",
 			"SelectTrigger",
 			"SelectGroup",
 		]);
@@ -1357,7 +1377,7 @@ export interface WidgetProps {
 				"InputGroup.Suffix",
 			],
 			"sensitive-input": ["SensitiveInput"],
-			checkbox: ["Checkbox"],
+			checkbox: ["Checkbox", "Checkbox.Group", "Checkbox.Legend", "Checkbox.Item"],
 			radio: ["Radio"],
 			switch: ["Switch"],
 			"segment-control": ["SegmentControl"],
@@ -1592,64 +1612,54 @@ export interface WidgetProps {
 			targets: CATALOG_API_TARGETS,
 		});
 		expect(Object.keys(generated)).toHaveLength(25);
-		expect(generated.checkbox).toEqual([
+		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
+			"Checkbox",
+			"Checkbox.Group",
+			"Checkbox.Legend",
+			"Checkbox.Item",
+		]);
+		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
+		expect(generated.checkbox?.[0]?.props).toEqual([
 			{
-				name: "Checkbox",
-				props: [
-					{
-						name: "checked",
-						type: '"indeterminate" | boolean',
-						required: false,
-						description: "The controlled checked state of the checkbox.",
-					},
-				],
+				name: "checked",
+				type: '"indeterminate" | boolean',
+				required: false,
+				description: "The controlled checked state of the checkbox.",
+			},
+			{
+				name: "size",
+				type: "CheckboxSize",
+				required: false,
+				default: "default",
+				description: "The visual size of the checkbox.",
 			},
 		]);
+		expect(generated.checkbox?.[1]?.props.map((prop) => prop.name)).toEqual([
+			"value",
+			"defaultValue",
+			"onValueChange",
+			"error",
+			"disabled",
+		]);
+		expect(generated.checkbox?.[2]?.props).toEqual([]);
+		expect(generated.checkbox?.[3]?.props.map((prop) => prop.name)).toEqual(["size", "value"]);
 		expect(generated.checkbox?.[0]?.props[0]).not.toHaveProperty("default");
-		expect(
-			generated.checkbox?.some((surface) =>
-				surface.props.some((prop) => prop.name === "defaultChecked"),
-			),
-		).toBe(false);
-		expect(
-			generated.checkbox?.some((surface) =>
-				surface.props.some((prop) => prop.name === "onCheckedChange"),
-			),
-		).toBe(false);
-		expect(
-			generated.checkbox?.some((surface) => surface.props.some((prop) => prop.name === "disabled")),
-		).toBe(false);
-		expect(
-			generated.checkbox?.some((surface) => surface.props.some((prop) => prop.name === "required")),
-		).toBe(false);
-		expect(
-			generated.checkbox?.some((surface) => surface.props.some((prop) => prop.name === "name")),
-		).toBe(false);
-		expect(
-			generated.checkbox?.some((surface) => surface.props.some((prop) => prop.name === "value")),
-		).toBe(false);
-		expect(
-			generated.checkbox?.some((surface) => surface.props.some((prop) => prop.name === "form")),
-		).toBe(false);
-		expect(
-			generated.checkbox?.some((surface) => surface.props.some((prop) => prop.name === "asChild")),
-		).toBe(false);
-		expect(
-			generated.checkbox?.some((surface) =>
-				surface.props.some((prop) => prop.name === "className"),
-			),
-		).toBe(false);
-		expect(
-			generated.checkbox?.some((surface) => surface.props.some((prop) => prop.name === "children")),
-		).toBe(false);
-		expect(
-			generated.checkbox?.some((surface) => surface.props.some((prop) => prop.name === "ref")),
-		).toBe(false);
-		expect(
-			generated.checkbox?.some((surface) =>
-				surface.props.some((prop) => prop.name === "aria-label"),
-			),
-		).toBe(false);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "defaultChecked")).toBe(
+			false,
+		);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "onCheckedChange")).toBe(
+			false,
+		);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "disabled")).toBe(false);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "required")).toBe(false);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "name")).toBe(false);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "value")).toBe(false);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "form")).toBe(false);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "asChild")).toBe(false);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "className")).toBe(false);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "children")).toBe(false);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "ref")).toBe(false);
+		expect(generated.checkbox?.[0]?.props.some((prop) => prop.name === "aria-label")).toBe(false);
 		expect(generated.button?.[0]?.name).toBe("Button");
 		expect(generated["sensitive-input"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"revealLabel",
@@ -1712,7 +1722,7 @@ export interface WidgetProps {
 		expect(generated.radio).toHaveLength(1);
 		expect(generated.radio?.[0]?.props).toHaveLength(1);
 		expect(generated.button?.[0]?.name).toBe("Button");
-		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked"]);
+		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
 			"InputGroup",
 			"InputGroup.Input",
@@ -1794,7 +1804,7 @@ export interface WidgetProps {
 		).toBe(false);
 		expect(generated.button?.[0]?.name).toBe("Button");
 		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
-		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked"]);
+		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
 			"InputGroup",
 			"InputGroup.Input",
@@ -1950,7 +1960,7 @@ export interface WidgetProps {
 		expect(generated.button?.[0]?.name).toBe("Button");
 		expect(generated.switch?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
 		expect(generated.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
-		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked"]);
+		expect(generated.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
 		expect(generated["input-group"]?.map((surface) => surface.name)).toEqual([
 			"InputGroup",
 			"InputGroup.Input",
@@ -3041,7 +3051,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"f04781ba533f9b4ee072868279ef530191a4fc6cba9af5bc9c24e79504019ff6",
+			"d43a7afab1203a1db57347e6a74b7f0de633894dc4b47e4517c886f12bd24250",
 		);
 	}, 20_000);
 

@@ -270,8 +270,18 @@ const CHECKBOX_IDS = [
 	"checkbox-indeterminate",
 	"checkbox-disabled",
 	"checkbox-error",
+	"checkbox-group-and-legend",
+	"checkbox-controlled-and-error",
 ] as const;
-const CHECKBOX_TITLES = ["Default", "Checked", "Indeterminate", "Disabled", "Error"] as const;
+const CHECKBOX_TITLES = [
+	"Default",
+	"Checked",
+	"Indeterminate",
+	"Disabled",
+	"Error",
+	"Group and legend",
+	"Controlled and error",
+] as const;
 
 const checkboxRenders = import.meta.glob("./examples/checkbox/*.tsx", { eager: true });
 const checkboxSources = import.meta.glob("./examples/checkbox/*.tsx", {
@@ -1414,9 +1424,9 @@ describe("source-backed sensitive-input scenarios", () => {
 });
 
 describe("source-backed checkbox scenarios", () => {
-	it("loads five checkbox scenarios from the same glob modules", () => {
-		expect(Object.keys(checkboxRenders)).toHaveLength(5);
-		expect(Object.keys(checkboxSources)).toHaveLength(5);
+	it("loads seven checkbox scenarios from the same glob modules", () => {
+		expect(Object.keys(checkboxRenders)).toHaveLength(7);
+		expect(Object.keys(checkboxSources)).toHaveLength(7);
 		const loaded = loadModuleScenarios({
 			slug: "checkbox",
 			metas: CHECKBOX_TITLES.map((title, index) => ({
@@ -1506,6 +1516,14 @@ describe("source-backed checkbox scenarios", () => {
 		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('error="Required"');
 		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('id="ex-terms"');
 		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('aria-label="Terms"');
+		expect(CHECKBOX_EXAMPLES[5]?.code).toContain("Checkbox.Group");
+		expect(CHECKBOX_EXAMPLES[5]?.code).toContain("Checkbox.Legend");
+		expect(CHECKBOX_EXAMPLES[5]?.code).toContain("Checkbox.Item");
+		expect(CHECKBOX_EXAMPLES[5]?.code).toContain("Topics");
+		expect(CHECKBOX_EXAMPLES[6]?.code).toContain("useState");
+		expect(CHECKBOX_EXAMPLES[6]?.code).toContain("onValueChange");
+		expect(CHECKBOX_EXAMPLES[6]?.code).toContain('error="Pick at least two"');
+		expect(CHECKBOX_EXAMPLES[6]?.code).toContain('size="sm"');
 	});
 });
 

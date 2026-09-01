@@ -1,9 +1,19 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { createRef } from "react";
 import { describe, expect, it, vi } from "vitest";
-import { Checkbox, type CheckboxProps } from "./checkbox";
+import {
+	Checkbox,
+	type CheckboxGroupProps,
+	type CheckboxItemProps,
+	type CheckboxLegendProps,
+	type CheckboxProps,
+	nextCheckboxGroupValue,
+} from "./checkbox";
 
 function acceptCheckboxProps(_props: CheckboxProps) {}
+function acceptCheckboxGroupProps(_props: CheckboxGroupProps) {}
+function acceptCheckboxLegendProps(_props: CheckboxLegendProps) {}
+function acceptCheckboxItemProps(_props: CheckboxItemProps) {}
 
 describe("Checkbox", () => {
 	it("renders an enabled checkbox", () => {
@@ -44,10 +54,27 @@ describe("Checkbox", () => {
 		expect(screen.getByRole("checkbox", { name: "Accept" })).toBeDisabled();
 	});
 
+	it("applies named sizes and keeps the default class", () => {
+		const { rerender } = render(<Checkbox aria-label="Accept" />);
+		expect(screen.getByRole("checkbox", { name: "Accept" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining(["h-4", "w-4"]),
+		);
+		rerender(<Checkbox aria-label="Accept" size="default" />);
+		expect(screen.getByRole("checkbox", { name: "Accept" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining(["h-4", "w-4"]),
+		);
+		rerender(<Checkbox aria-label="Accept" size="sm" />);
+		expect(screen.getByRole("checkbox", { name: "Accept" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining(["h-3", "w-3"]),
+		);
+	});
+
 	it("accepts checked states and inherited attributes, and rejects illegal checked values", () => {
 		acceptCheckboxProps({ checked: false });
 		acceptCheckboxProps({ checked: true });
 		acceptCheckboxProps({ checked: "indeterminate" });
+		acceptCheckboxProps({ size: "sm" });
+		acceptCheckboxProps({ size: "default" });
 		acceptCheckboxProps({
 			defaultChecked: true,
 			onCheckedChange: () => undefined,
@@ -64,6 +91,8 @@ describe("Checkbox", () => {
 		acceptCheckboxProps({ checked: "mixed" });
 		// @ts-expect-error checked must be boolean or indeterminate
 		acceptCheckboxProps({ checked: 1 });
+		// @ts-expect-error size must be sm or default
+		acceptCheckboxProps({ size: "lg" });
 	});
 
 	it("forwards ref, native attributes, and className", () => {
@@ -99,5 +128,61 @@ describe("Checkbox", () => {
 		fireEvent.click(box);
 		expect(box).toBeChecked();
 		expect(onCheckedChange).toHaveBeenCalledWith(false);
+	});
+
+	it("toggles grouped values with legend, error, and controlled updates", () => {
+		expect(nextCheckboxGroupValue(["alpha"], "beta", true)).toEqual(["alpha", "beta"]);
+		expect(nextCheckboxGroupValue(["alpha", "beta"], "beta", false)).toEqual(["alpha"]);
+		const onValueChange = vi.fn();
+		render(
+			<Checkbox.Group value={["alpha"]} onValueChange={onValueChange} error="Pick at least two">
+				<Checkbox.Legend>Topics</Checkbox.Legend>
+				<Checkbox.Item value="alpha">Alpha</Checkbox.Item>
+				<Checkbox.Item value="beta">Beta</Checkbox.Item>
+			</Checkbox.Group>,
+		);
+		const group = screen.getByRole("group", { name: "Topics" });
+		expect(group.tagName).toBe("FIELDSET");
+		expect(group).toHaveAttribute("aria-invalid", "true");
+		expect(screen.getByRole("alert")).toHaveTextContent("Pick at least two");
+		expect(screen.getByRole("checkbox", { name: "Alpha" })).toBeChecked();
+		expect(screen.getByRole("checkbox", { name: "Beta" })).not.toBeChecked();
+		fireEvent.click(screen.getByRole("checkbox", { name: "Beta" }));
+		expect(onValueChange).toHaveBeenCalledWith(["alpha", "beta"]);
+		expect(screen.getByRole("checkbox", { name: "Beta" })).not.toBeChecked();
+	});
+
+	it("disables grouped items and keeps uncontrolled default values", () => {
+		render(
+			<Checkbox.Group defaultValue={["alpha"]} disabled>
+				<Checkbox.Legend>Topics</Checkbox.Legend>
+				<Checkbox.Item value="alpha">Alpha</Checkbox.Item>
+				<Checkbox.Item value="beta">Beta</Checkbox.Item>
+			</Checkbox.Group>,
+		);
+		expect(screen.getByRole("checkbox", { name: "Alpha" })).toBeChecked();
+		expect(screen.getByRole("checkbox", { name: "Alpha" })).toBeDisabled();
+		expect(screen.getByRole("checkbox", { name: "Beta" })).toBeDisabled();
+	});
+
+	it("accepts group, legend, and item props and rejects illegal values", () => {
+		acceptCheckboxGroupProps({ value: ["a"] });
+		acceptCheckboxGroupProps({
+			defaultValue: ["a"],
+			onValueChange: () => undefined,
+			error: "Required",
+			disabled: true,
+			className: "extra",
+			children: "x",
+		});
+		acceptCheckboxLegendProps({ children: "Topics", className: "legend" });
+		acceptCheckboxItemProps({ value: "a" });
+		acceptCheckboxItemProps({ value: "a", size: "sm", children: "Alpha" });
+		// @ts-expect-error value must be a string array
+		acceptCheckboxGroupProps({ value: "a" });
+		// @ts-expect-error item value is required
+		acceptCheckboxItemProps({});
+		// @ts-expect-error item cannot take checked
+		acceptCheckboxItemProps({ value: "a", checked: true });
 	});
 });

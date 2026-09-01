@@ -6,6 +6,8 @@ const CHECKBOX_SCENARIO_META = [
 	{ key: "indeterminate", title: "Indeterminate" },
 	{ key: "disabled", title: "Disabled" },
 	{ key: "error", title: "Error" },
+	{ key: "group-and-legend", title: "Group and legend" },
+	{ key: "controlled-and-error", title: "Controlled and error" },
 ] as const;
 
 export const CHECKBOX_EXAMPLES = loadModuleScenarios({

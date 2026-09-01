@@ -67,6 +67,8 @@ describe("form selection scenario truth", () => {
 			"checkbox-indeterminate",
 			"checkbox-disabled",
 			"checkbox-error",
+			"checkbox-group-and-legend",
+			"checkbox-controlled-and-error",
 		]);
 		expect(UI_EXAMPLES.combobox?.map((item) => item.id)).toEqual([
 			"combobox-searchable-select-with-placeholder",
@@ -227,6 +229,12 @@ describe("form selection scenario truth", () => {
 		expect(alert).toHaveAttribute("id", "ex-terms-error");
 		expect(alert).toHaveTextContent("Required");
 		cleanup();
+		expect(scenario("checkbox", "checkbox-group-and-legend").code).toContain("Checkbox.Group");
+		expect(scenario("checkbox", "checkbox-group-and-legend").code).toContain("Checkbox.Legend");
+		expect(scenario("checkbox", "checkbox-controlled-and-error").code).toContain("onValueChange");
+		expect(scenario("checkbox", "checkbox-controlled-and-error").code).toContain(
+			'error="Pick at least two"',
+		);
 		expect(scenario("switch", "switch-off-state").code).toContain('aria-label="Off"');
 		expect(scenario("switch", "switch-on-state").code).toContain('aria-label="On"');
 		expect(scenario("switch", "switch-disabled").code).toContain('aria-label="Disabled off"');

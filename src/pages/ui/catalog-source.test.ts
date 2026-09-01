@@ -275,7 +275,13 @@ describe("catalog source contract", () => {
 			"packages/basalt/src/components/checkbox.tsx",
 		);
 		expect(forms.checkbox?.docs.api).toEqual(CATALOG_API.checkbox);
-		expect(CATALOG_API.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked"]);
+		expect(CATALOG_API.checkbox?.[0]?.props.map((prop) => prop.name)).toEqual(["checked", "size"]);
+		expect(CATALOG_API.checkbox?.map((surface) => surface.name)).toEqual([
+			"Checkbox",
+			"Checkbox.Group",
+			"Checkbox.Legend",
+			"Checkbox.Item",
+		]);
 		expect(implementationFileFor(entry("radio"))).toBe("packages/basalt/src/components/radio.tsx");
 		expect(forms.radio?.docs.api).toEqual(CATALOG_API.radio);
 		expect(CATALOG_API.radio?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
@@ -393,8 +399,13 @@ describe("catalog source contract", () => {
 		expect(forms["sensitive-input"]?.docs.api.map((surface) => surface.name)).toEqual([
 			"SensitiveInput",
 		]);
-		expect(forms.checkbox?.docs.api).toHaveLength(1);
-		expect(forms.checkbox?.docs.api.map((surface) => surface.name)).toEqual(["Checkbox"]);
+		expect(forms.checkbox?.docs.api).toHaveLength(4);
+		expect(forms.checkbox?.docs.api.map((surface) => surface.name)).toEqual([
+			"Checkbox",
+			"Checkbox.Group",
+			"Checkbox.Legend",
+			"Checkbox.Item",
+		]);
 		expect(forms.radio?.docs.api).toHaveLength(1);
 		expect(forms.radio?.docs.api.map((surface) => surface.name)).toEqual(["Radio"]);
 		expect(forms.switch?.docs.api).toHaveLength(1);

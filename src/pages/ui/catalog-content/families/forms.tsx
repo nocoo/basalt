@@ -138,18 +138,18 @@ export default catalogContentFamily({
 	},
 	checkbox: {
 		docs: {
-			description: "A check control with an indeterminate state.",
+			description: "A check control with group, legend, size, and error.",
 			usage: usage(
 				"Checkbox",
 				"@nocoo/basalt/components/checkbox",
 				'<Checkbox aria-label="Subscribe" />',
 			),
-			variants: ["checked", "unchecked", "indeterminate"],
+			variants: ["checked", "unchecked", "indeterminate", "sm", "default"],
 			api: checkboxApi,
 			provenance: provenanceFromLegacy({
-				repo: "zhe",
-				sha: "c31c239f01c9",
-				file: "components/ui/checkbox.tsx",
+				repo: "kumo",
+				sha: "1159868dfe32",
+				file: "packages/kumo/src/components/checkbox/checkbox.tsx",
 			}),
 		},
 		examples: CHECKBOX_EXAMPLES,
