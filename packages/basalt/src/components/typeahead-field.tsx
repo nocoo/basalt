@@ -25,6 +25,7 @@ export function TypeaheadField({
 	"aria-label": ariaLabel,
 	"aria-describedby": ariaDescribedBy,
 	"aria-invalid": ariaInvalid,
+	onBlur,
 	...rest
 }: {
 	items: TypeaheadItem[];
@@ -178,6 +179,7 @@ export function TypeaheadField({
 			{...rest}
 			className={cn("relative w-full", className)}
 			onBlur={(event) => {
+				onBlur?.(event);
 				if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
 					if (allowFreeform) {
 						if (query.trim() !== displayOf(items, selected)) {

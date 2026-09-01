@@ -605,6 +605,20 @@ describe("DatePicker", () => {
 		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-15", to: "2024-01-17" });
 	});
 
+	it("focuses the range end when opened", async () => {
+		render(
+			<DatePicker
+				mode="range"
+				defaultRangeValue={{ from: "2024-01-10", to: "2024-01-12" }}
+				aria-label="Stay"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /Stay/ }));
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2024-01-12");
+		});
+	});
+
 	it("opens range mode on the default range month", async () => {
 		render(
 			<DatePicker

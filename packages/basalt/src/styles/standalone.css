@@ -1514,6 +1514,17 @@
   .data-disabled\:opacity-50[data-disabled] {
     opacity: 50%;
   }
+  .data-\[disabled\]\:pointer-events-none[data-disabled] {
+    pointer-events: none;
+  }
+  .data-\[disabled\]\:opacity-50[data-disabled] {
+    opacity: 50%;
+  }
+  @media (hover: hover) {
+    .data-\[disabled\]\:hover\:bg-transparent[data-disabled]:hover {
+      background-color: transparent;
+    }
+  }
   .data-\[state\=active\]\:animate-basalt-tab-in[data-state="active"] {
     animation: basalt-tab-in 180ms ease-out;
   }

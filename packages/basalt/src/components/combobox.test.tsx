@@ -520,8 +520,11 @@ describe("Combobox", () => {
 	});
 
 	it("forwards inherited wrapper attributes", () => {
-		render(<Combobox items={FRUITS} placeholder="Fruit" data-testid="fruit-box" />);
+		const onBlur = vi.fn();
+		render(<Combobox items={FRUITS} placeholder="Fruit" data-testid="fruit-box" onBlur={onBlur} />);
 		expect(screen.getByTestId("fruit-box")).toBeInTheDocument();
+		fireEvent.blur(screen.getByTestId("fruit-box"), { relatedTarget: document.body });
+		expect(onBlur).toHaveBeenCalled();
 	});
 
 	it("marks the active duplicate option by index", () => {

@@ -335,9 +335,11 @@ export function DatePicker({
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const selected = value ?? uncontrolled;
 	const selectedRange = rangeValue ?? uncontrolledRange;
-	const cursorIso = mode === "range" ? selectedRange.to || selectedRange.from || "" : selected;
-	const selectedDate = cursorIso ? parseIso(cursorIso) : null;
-	const submitted = mode === "range" ? "" : selectedDate ? formatIso(selectedDate) : "";
+	const selectedDate = parseIso(
+		mode === "range" ? selectedRange.to || selectedRange.from || "" : selected,
+	);
+	const cursorIso = selectedDate ? formatIso(selectedDate) : "";
+	const submitted = mode === "range" ? "" : cursorIso;
 	const cursor = selectedDate ?? todayCivil(timeZone);
 	const [month, setMonth] = useState<Civil>({ y: cursor.y, m: cursor.m, d: 1 });
 	const prevSelected = useRef(cursorIso);
@@ -441,7 +443,7 @@ export function DatePicker({
 			if (focusedIndex >= 0) {
 				index = focusedIndex;
 			} else {
-				const iso = submitted || formatIso(todayCivil(timeZone));
+				const iso = cursorIso || submitted || formatIso(todayCivil(timeZone));
 				const selectedIndex = days.findIndex((date) => isoOf(date) === iso);
 				if (selectedIndex >= 0 && days[selectedIndex]?.m === month.m) {
 					index = selectedIndex;
@@ -463,7 +465,7 @@ export function DatePicker({
 			focusDay.current = false;
 			dayRefs.current[index]?.focus();
 		}
-	}, [open, submitted, timeZone, days, month.m, min, max, isDisabledDate]);
+	}, [open, cursorIso, submitted, timeZone, days, month.m, min, max, isDisabledDate]);
 
 	const previousMonth = shiftMonth(month, -1);
 	const followingMonth = shiftMonth(month, 1);
@@ -610,7 +612,7 @@ export function DatePicker({
 				aria-label={ariaLabel ? `${ariaLabel} calendar` : "Date calendar"}
 				onOpenAutoFocus={(event) => {
 					event.preventDefault();
-					const iso = submitted || formatIso(todayCivil(timeZone));
+					const iso = cursorIso || submitted || formatIso(todayCivil(timeZone));
 					const selectedIndex = days.findIndex((date) => isoOf(date) === iso);
 					const enabled = (date: Civil | null) =>
 						Boolean(
