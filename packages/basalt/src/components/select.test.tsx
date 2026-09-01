@@ -11,6 +11,8 @@ import {
 	type SelectGroupProps,
 	SelectItem,
 	type SelectItemProps,
+	SelectLabel,
+	type SelectLabelProps,
 	type SelectProps,
 	SelectTrigger,
 	type SelectTriggerProps,
@@ -27,6 +29,13 @@ function acceptContentProps(_props: SelectContentProps) {}
 function acceptGroupProps(_props: SelectGroupProps) {}
 function acceptGroupComponent(_props: ComponentPropsWithRef<typeof SelectGroup>) {}
 function acceptItemProps(_props: SelectItemProps) {}
+function acceptLabelProps(_props: SelectLabelProps) {}
+
+const SIZE_CLASS = {
+	sm: ["h-8", "px-2.5", "text-xs"],
+	default: ["h-9", "px-3", "text-sm"],
+	lg: ["h-10", "px-4", "text-base"],
+} as const;
 
 describe("Select", () => {
 	it("renders a trigger", () => {
@@ -113,6 +122,10 @@ describe("Select", () => {
 			form: "signup",
 		});
 		acceptTriggerProps({ className: "extra", id: "trigger", "aria-label": "Version" });
+		acceptTriggerProps({ size: "sm", loading: true, disabled: true });
+		acceptTriggerProps({ size: "default" });
+		acceptTriggerProps({ size: "lg" });
+		acceptLabelProps({ className: "label", id: "group-label" });
 		acceptValueProps({ placeholder: "Select version" });
 		acceptValueProps({ placeholder: <span>Choose</span> });
 		acceptValueComponent({
@@ -155,6 +168,10 @@ describe("Select", () => {
 		acceptItemProps({ value: 1 });
 		// @ts-expect-error value must be a string
 		acceptItemProps({ value: {} });
+		// @ts-expect-error size must be sm, default, or lg
+		acceptTriggerProps({ size: "xl" });
+		// @ts-expect-error loading must be a boolean
+		acceptTriggerProps({ loading: "yes" });
 	});
 
 	it("forwards value and group refs and inherited attributes", () => {
@@ -255,5 +272,121 @@ describe("Select", () => {
 		expect(beta).toHaveAttribute("aria-disabled", "true");
 		fireEvent.click(beta);
 		expect(trigger).toHaveTextContent("Choose…");
+	});
+
+	it("applies named sizes and keeps the default class", () => {
+		const { rerender } = render(
+			<Select>
+				<SelectTrigger aria-label="Version">
+					<SelectValue placeholder="Choose…" />
+				</SelectTrigger>
+			</Select>,
+		);
+		expect(screen.getByRole("combobox", { name: "Version" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining([...SIZE_CLASS.default]),
+		);
+		rerender(
+			<Select>
+				<SelectTrigger aria-label="Version" size="default">
+					<SelectValue placeholder="Choose…" />
+				</SelectTrigger>
+			</Select>,
+		);
+		expect(screen.getByRole("combobox", { name: "Version" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining([...SIZE_CLASS.default]),
+		);
+		rerender(
+			<Select>
+				<SelectTrigger aria-label="Version" size="sm">
+					<SelectValue placeholder="Choose…" />
+				</SelectTrigger>
+			</Select>,
+		);
+		expect(screen.getByRole("combobox", { name: "Version" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining([...SIZE_CLASS.sm]),
+		);
+		rerender(
+			<Select>
+				<SelectTrigger aria-label="Version" size="lg">
+					<SelectValue placeholder="Choose…" />
+				</SelectTrigger>
+			</Select>,
+		);
+		expect(screen.getByRole("combobox", { name: "Version" }).className.split(/\s+/)).toEqual(
+			expect.arrayContaining([...SIZE_CLASS.lg]),
+		);
+	});
+
+	it("keeps a destructive invalid border that focus-visible cannot replace", () => {
+		render(
+			<Select>
+				<SelectTrigger aria-label="Version" aria-invalid>
+					<SelectValue placeholder="Choose…" />
+				</SelectTrigger>
+			</Select>,
+		);
+		const trigger = screen.getByRole("combobox", { name: "Version" });
+		expect(trigger).toHaveAttribute("aria-invalid", "true");
+		expect(trigger.className).toContain("aria-invalid:border-basalt-destructive");
+		expect(trigger.className).toContain("aria-invalid:focus-visible:border-basalt-destructive");
+	});
+
+	it("disables the trigger while loading", () => {
+		render(
+			<Select>
+				<SelectTrigger aria-label="Version" loading>
+					<SelectValue placeholder="Choose…" />
+				</SelectTrigger>
+			</Select>,
+		);
+		const trigger = screen.getByRole("combobox", { name: "Version" });
+		expect(trigger).toBeDisabled();
+		expect(trigger).toHaveAttribute("aria-busy", "true");
+	});
+
+	it("renders group labels", () => {
+		const labelRef = createRef<HTMLDivElement>();
+		render(
+			<Select defaultOpen>
+				<SelectTrigger aria-label="Version">
+					<SelectValue placeholder="Choose…" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectGroup>
+						<SelectLabel ref={labelRef} className="label-extra">
+							Stable
+						</SelectLabel>
+						<SelectItem value="1">v1</SelectItem>
+					</SelectGroup>
+				</SelectContent>
+			</Select>,
+		);
+		expect(screen.getByText("Stable")).toBeInTheDocument();
+		expect(labelRef.current).toBeInstanceOf(HTMLDivElement);
+		expect(labelRef.current).toHaveClass("label-extra");
+	});
+
+	it("restores defaultValue on native form reset", () => {
+		render(
+			<form>
+				<Select name="version" defaultValue="1">
+					<SelectTrigger aria-label="Version">
+						<SelectValue placeholder="Choose…" />
+					</SelectTrigger>
+					<SelectContent>
+						<SelectItem value="1">v1</SelectItem>
+						<SelectItem value="2">v2</SelectItem>
+					</SelectContent>
+				</Select>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		const trigger = screen.getByRole("combobox", { name: "Version" });
+		expect(trigger).toHaveTextContent("v1");
+		fireEvent.click(trigger);
+		fireEvent.click(screen.getByRole("option", { name: "v2" }));
+		expect(trigger).toHaveTextContent("v2");
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		expect(trigger).toHaveTextContent("v1");
 	});
 });

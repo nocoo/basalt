@@ -192,7 +192,7 @@ export default catalogContentFamily({
 	},
 	select: {
 		docs: {
-			description: "Choose one option.",
+			description: "A single-value list with size, loading, groups, and invalid.",
 			usage: `import {
 	Select,
 	SelectContent,
@@ -213,7 +213,7 @@ export default function Example() {
 		</Select>
 	);
 }`,
-			variants: [],
+			variants: ["sm", "default", "lg"],
 			api: selectApi,
 			provenance: provenanceFromLegacy({
 				repo: "pew",

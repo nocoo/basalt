@@ -2281,9 +2281,46 @@ describe("ui catalog", () => {
 						required: false,
 						description: "The controlled value of the select.",
 					},
+					{
+						name: "defaultValue",
+						type: "string",
+						required: false,
+						description: "The uncontrolled initial value of the select.",
+					},
+					{
+						name: "onValueChange",
+						type: "(value: string) => void",
+						required: false,
+						description: "Called when the selected value changes.",
+					},
 				],
 			},
-			{ name: "SelectTrigger", props: [] },
+			{
+				name: "SelectTrigger",
+				props: [
+					{
+						name: "size",
+						type: "SelectSize",
+						required: false,
+						default: "default",
+						description: "The visual size of the trigger.",
+					},
+					{
+						name: "loading",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Disable the trigger and mark it busy.",
+					},
+					{
+						name: "disabled",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Disable the trigger.",
+					},
+				],
+			},
 			{
 				name: "SelectValue",
 				props: [
@@ -2326,6 +2363,7 @@ describe("ui catalog", () => {
 					},
 				],
 			},
+			{ name: "SelectLabel", props: [] },
 		]);
 		renderCatalog("/ui/select");
 		const api = document.getElementById("api-reference");
@@ -2337,6 +2375,7 @@ describe("ui catalog", () => {
 			"api-SelectContent",
 			"api-SelectGroup",
 			"api-SelectItem",
+			"api-SelectLabel",
 		];
 		for (const id of surfaceIds) {
 			expect(document.getElementById(id)?.tagName).toBe("H3");
@@ -2348,16 +2387,21 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("heading", { name: "SelectContent", level: 3 })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "SelectGroup", level: 3 })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "SelectItem", level: 3 })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "SelectLabel", level: 3 })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "Select props" })).toBeInTheDocument();
-		expect(screen.queryByRole("table", { name: "SelectTrigger props" })).not.toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "SelectTrigger props" })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SelectValue props" })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SelectContent props" })).toBeInTheDocument();
 		expect(screen.queryByRole("table", { name: "SelectGroup props" })).not.toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SelectItem props" })).toBeInTheDocument();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(5);
+		expect(screen.queryByRole("table", { name: "SelectLabel props" })).not.toBeInTheDocument();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(10);
 		expect(
 			screen.getByRole("table", { name: "Select props" }).querySelectorAll("tbody tr"),
-		).toHaveLength(1);
+		).toHaveLength(3);
+		expect(
+			screen.getByRole("table", { name: "SelectTrigger props" }).querySelectorAll("tbody tr"),
+		).toHaveLength(3);
 		expect(
 			screen.getByRole("table", { name: "SelectValue props" }).querySelectorAll("tbody tr"),
 		).toHaveLength(1);
@@ -2368,6 +2412,11 @@ describe("ui catalog", () => {
 			screen.getByRole("table", { name: "SelectItem props" }).querySelectorAll("tbody tr"),
 		).toHaveLength(1);
 		expect(api).toHaveTextContent("value?");
+		expect(api).toHaveTextContent("defaultValue?");
+		expect(api).toHaveTextContent("onValueChange?");
+		expect(api).toHaveTextContent("size?");
+		expect(api).toHaveTextContent("loading?");
+		expect(api).toHaveTextContent("disabled?");
 		expect(api).toHaveTextContent("placeholder?");
 		expect(api).toHaveTextContent("position?");
 		expect(api).toHaveTextContent("sideOffset?");
@@ -2380,13 +2429,11 @@ describe("ui catalog", () => {
 		expect(api).toHaveTextContent("React.ReactNode");
 		expect(api).toHaveTextContent("popper");
 		expect(api).toHaveTextContent("4");
-		expect(api).not.toHaveTextContent("defaultValue");
-		expect(api).not.toHaveTextContent("onValueChange");
 		expect(api).not.toHaveTextContent("className");
 		expect(api).not.toHaveTextContent("Select.Option");
 		expect(api).not.toHaveTextContent("GroupLabel");
 		expect(api).not.toHaveTextContent("textValue");
-		for (const name of ["SelectTrigger", "SelectGroup"]) {
+		for (const name of ["SelectGroup", "SelectLabel"]) {
 			const heading = document.getElementById(`api-${name}`);
 			const empty = heading?.parentElement?.querySelector("p");
 			expect(empty).toHaveTextContent("No component-specific props.");
@@ -2408,8 +2455,15 @@ describe("ui catalog", () => {
 		expect(markdown).toContain("### SelectContent");
 		expect(markdown).toContain("### SelectGroup");
 		expect(markdown).toContain("### SelectItem");
+		expect(markdown).toContain("### SelectLabel");
 		expect(markdown).toContain(
 			"- value (string, optional, default —): The controlled value of the select.",
+		);
+		expect(markdown).toContain(
+			"- defaultValue (string, optional, default —): The uncontrolled initial value of the select.",
+		);
+		expect(markdown).toContain(
+			"- onValueChange ((value: string) => void, optional, default —): Called when the selected value changes.",
 		);
 		expect(markdown).toContain("No component-specific props.");
 		expect(markdown).toContain(
@@ -2425,11 +2479,9 @@ describe("ui catalog", () => {
 			"- value (string, required, default —): The value associated with the select item.",
 		);
 		expect(markdown).not.toContain("- className (");
-		expect(markdown).not.toContain("- defaultValue (");
-		expect(markdown).not.toContain("- onValueChange (");
 		expect(markdown).not.toContain("Select.Option");
 		expect(markdown).not.toContain("GroupLabel");
-		expect(UI_EXAMPLES.select).toHaveLength(3);
+		expect(UI_EXAMPLES.select).toHaveLength(7);
 		for (const scenario of UI_EXAMPLES.select ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
@@ -2451,9 +2503,11 @@ describe("ui catalog", () => {
 		expect(block).not.toContain('name: "placeholder"');
 		expect(block).not.toContain('name: "position"');
 		expect(block).not.toContain('name: "sideOffset"');
-		expect(block).toContain('description: "Choose one option."');
+		expect(block).toContain(
+			'description: "A single-value list with size, loading, groups, and invalid."',
+		);
 		expect(block).toContain("Select version");
-		expect(block).toContain("variants: []");
+		expect(block).toContain('variants: ["sm", "default", "lg"]');
 		expect(block).toContain('repo: "pew"');
 		expect(block).toContain('sha: "97a890fabe6e"');
 		expect(block).toContain('file: "packages/web/src/components"');
@@ -3493,7 +3547,7 @@ describe("ui catalog", () => {
 		expect(page).not.toMatch(/\bradio\b|Radio/);
 		expect(page).not.toMatch(/\bswitch\b|Switch/);
 		expect(page).not.toMatch(
-			/\bSelectTrigger\b|\bSelectValue\b|\bSelectContent\b|\bSelectGroup\b|\bSelectItem\b/,
+			/\bSelectTrigger\b|\bSelectValue\b|\bSelectContent\b|\bSelectGroup\b|\bSelectItem\b|\bSelectLabel\b/,
 		);
 		expect(page).not.toMatch(/Cloudflare|Kumo|Workers?\b/);
 	});
@@ -3817,13 +3871,17 @@ describe("ui catalog", () => {
 		expect(UI_EXAMPLES.radio).toHaveLength(5);
 	});
 
-	it("keeps select hero, three states, disabled option, and copy modules", async () => {
+	it("keeps select hero, seven states, disabled option, and copy modules", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		renderCatalog("/ui/select");
 		expect(screen.getByRole("heading", { name: "Basic" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Placeholder" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Disabled Options" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Sizes" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Loading" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Groups" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Controlled and error" })).toBeInTheDocument();
 		const hero = document.querySelector('[data-hero-scenario="select-basic"]');
 		const basic = document.querySelector('[data-scenario="select-basic"]');
 		const placeholder = document.querySelector('[data-scenario="select-placeholder"]');
@@ -3858,15 +3916,18 @@ describe("ui catalog", () => {
 		expect(document.getElementById("api-SelectContent")?.tagName).toBe("H3");
 		expect(document.getElementById("api-SelectGroup")?.tagName).toBe("H3");
 		expect(document.getElementById("api-SelectItem")?.tagName).toBe("H3");
+		expect(document.getElementById("api-SelectLabel")?.tagName).toBe("H3");
 		expect(screen.getByRole("table", { name: "Select props" })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "SelectTrigger props" })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SelectValue props" })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SelectContent props" })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SelectItem props" })).toBeInTheDocument();
-		expect(screen.queryByRole("table", { name: "SelectTrigger props" })).not.toBeInTheDocument();
 		expect(screen.queryByRole("table", { name: "SelectGroup props" })).not.toBeInTheDocument();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(5);
+		expect(screen.queryByRole("table", { name: "SelectLabel props" })).not.toBeInTheDocument();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(10);
 		expect(api).toHaveTextContent("value?");
 		expect(api).toHaveTextContent("placeholder?");
+		expect(api).toHaveTextContent("size?");
 		expect(api).not.toHaveTextContent("className");
 		expect(CATALOG_DOCS.select?.api).toEqual(CATALOG_API.select);
 		fireEvent.click(heroTrigger);
@@ -3898,7 +3959,7 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(UI_EXAMPLES.select).toHaveLength(3);
+		expect(UI_EXAMPLES.select).toHaveLength(7);
 		for (const scenario of UI_EXAMPLES.select ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}

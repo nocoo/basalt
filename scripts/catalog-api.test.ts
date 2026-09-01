@@ -362,7 +362,6 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/select.tsx",
 				propsType: "SelectTriggerProps",
 				surface: "SelectTrigger",
-				allowEmpty: true,
 			},
 			{
 				slug: "select",
@@ -388,6 +387,13 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/select.tsx",
 				propsType: "SelectItemProps",
 				surface: "SelectItem",
+			},
+			{
+				slug: "select",
+				sourceFile: "packages/basalt/src/components/select.tsx",
+				propsType: "SelectLabelProps",
+				surface: "SelectLabel",
+				allowEmpty: true,
 			},
 			{
 				slug: "segment-control",
@@ -426,7 +432,7 @@ describe("catalog API generator contract", () => {
 				surface: "TablePager",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(50);
+		expect(CATALOG_API_TARGETS).toHaveLength(51);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -441,8 +447,8 @@ describe("catalog API generator contract", () => {
 			"Checkbox.Legend",
 			"Radio.Legend",
 			"Switch.Legend",
-			"SelectTrigger",
 			"SelectGroup",
+			"SelectLabel",
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames/);
@@ -1426,6 +1432,7 @@ export interface WidgetProps {
 				"SelectContent",
 				"SelectGroup",
 				"SelectItem",
+				"SelectLabel",
 			],
 		});
 	}, 20_000);
@@ -1819,7 +1826,7 @@ export interface WidgetProps {
 		]);
 	}, 20_000);
 
-	it("extracts Select props from six named types as five local rows and two empty surfaces", () => {
+	it("extracts Select props from seven named types as ten local rows and two empty surfaces", () => {
 		const generated = generateCatalogApi({
 			repoRoot,
 			tsconfigPath: DEFAULT_TSCONFIG,
@@ -1836,11 +1843,45 @@ export interface WidgetProps {
 						required: false,
 						description: "The controlled value of the select.",
 					},
+					{
+						name: "defaultValue",
+						type: "string",
+						required: false,
+						description: "The uncontrolled initial value of the select.",
+					},
+					{
+						name: "onValueChange",
+						type: "(value: string) => void",
+						required: false,
+						description: "Called when the selected value changes.",
+					},
 				],
 			},
 			{
 				name: "SelectTrigger",
-				props: [],
+				props: [
+					{
+						name: "size",
+						type: "SelectSize",
+						required: false,
+						default: "default",
+						description: "The visual size of the trigger.",
+					},
+					{
+						name: "loading",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Disable the trigger and mark it busy.",
+					},
+					{
+						name: "disabled",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description: "Disable the trigger.",
+					},
+				],
 			},
 			{
 				name: "SelectValue",
@@ -1887,8 +1928,12 @@ export interface WidgetProps {
 					},
 				],
 			},
+			{
+				name: "SelectLabel",
+				props: [],
+			},
 		]);
-		expect(generated.select).toHaveLength(6);
+		expect(generated.select).toHaveLength(7);
 		expect(generated.select?.map((surface) => surface.name)).toEqual([
 			"Select",
 			"SelectTrigger",
@@ -1896,13 +1941,15 @@ export interface WidgetProps {
 			"SelectContent",
 			"SelectGroup",
 			"SelectItem",
+			"SelectLabel",
 		]);
-		expect(generated.select?.[0]?.props).toHaveLength(1);
-		expect(generated.select?.[1]?.props).toEqual([]);
+		expect(generated.select?.[0]?.props).toHaveLength(3);
+		expect(generated.select?.[1]?.props).toHaveLength(3);
 		expect(generated.select?.[2]?.props).toHaveLength(1);
 		expect(generated.select?.[3]?.props).toHaveLength(2);
 		expect(generated.select?.[4]?.props).toEqual([]);
 		expect(generated.select?.[5]?.props).toHaveLength(1);
+		expect(generated.select?.[6]?.props).toEqual([]);
 		expect(generated.select?.[0]?.props[0]).not.toHaveProperty("default");
 		expect(generated.select?.[2]?.props[0]).not.toHaveProperty("default");
 		expect(generated.select?.[5]?.props[0]).not.toHaveProperty("default");
@@ -1910,12 +1957,12 @@ export interface WidgetProps {
 			generated.select?.some((surface) =>
 				surface.props.some((prop) => prop.name === "defaultValue"),
 			),
-		).toBe(false);
+		).toBe(true);
 		expect(
 			generated.select?.some((surface) =>
 				surface.props.some((prop) => prop.name === "onValueChange"),
 			),
-		).toBe(false);
+		).toBe(true);
 		expect(
 			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "open")),
 		).toBe(false);
@@ -1930,7 +1977,14 @@ export interface WidgetProps {
 			),
 		).toBe(false);
 		expect(
-			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "disabled")),
+			generated.select
+				?.find((surface) => surface.name === "SelectTrigger")
+				?.props.some((prop) => prop.name === "disabled"),
+		).toBe(true);
+		expect(
+			generated.select
+				?.filter((surface) => surface.name !== "SelectTrigger")
+				.some((surface) => surface.props.some((prop) => prop.name === "disabled")),
 		).toBe(false);
 		expect(
 			generated.select?.some((surface) => surface.props.some((prop) => prop.name === "name")),
@@ -3049,6 +3103,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "SelectContent"');
 		expect(joined).toContain('name: "SelectGroup"');
 		expect(joined).toContain('name: "SelectItem"');
+		expect(joined).toContain('name: "SelectLabel"');
 		const digest = createHash("sha256");
 		for (const relative of Object.keys(first).sort()) {
 			digest.update(relative);
@@ -3056,7 +3111,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"91fbd2e9b3e1eb2502f33dd2396f4883de3ddf12de1e67863d6b516821efbc7a",
+			"37b6a409c86d004de6c85d3e5c1730067478f072fb565909731fd3908987fbed",
 		);
 	}, 20_000);
 

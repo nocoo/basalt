@@ -7,12 +7,20 @@ import { FOCUS_BORDER, OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "
 
 export type SelectProps = Omit<
 	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root>,
-	"value"
+	"value" | "defaultValue" | "onValueChange"
 > & {
 	/**
 	 * The controlled value of the select.
 	 */
 	value?: string;
+	/**
+	 * The uncontrolled initial value of the select.
+	 */
+	defaultValue?: string;
+	/**
+	 * Called when the selected value changes.
+	 */
+	onValueChange?: (value: string) => void;
 };
 export const Select: React.FC<SelectProps> = SelectPrimitive.Root;
 
@@ -34,24 +42,73 @@ export const SelectGroup: React.ForwardRefExoticComponent<
 	SelectGroupProps & React.RefAttributes<React.ElementRef<typeof SelectPrimitive.Group>>
 > = SelectPrimitive.Group;
 
-export type SelectTriggerProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>;
+export type SelectSize = "sm" | "default" | "lg";
+
+const SELECT_SIZE_CLASS: Record<SelectSize, string> = {
+	sm: "h-8 px-2.5 text-xs",
+	default: "h-9 px-3 text-sm",
+	lg: "h-10 px-4 text-base",
+};
+
+export type SelectTriggerProps = Omit<
+	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Trigger>,
+	"disabled"
+> & {
+	/**
+	 * The visual size of the trigger.
+	 * @default default
+	 */
+	size?: SelectSize;
+	/**
+	 * Disable the trigger and mark it busy.
+	 * @default false
+	 */
+	loading?: boolean;
+	/**
+	 * Disable the trigger.
+	 * @default false
+	 */
+	disabled?: boolean;
+};
 
 export const SelectTrigger = React.forwardRef<
 	React.ElementRef<typeof SelectPrimitive.Trigger>,
 	SelectTriggerProps
->(({ className, children, ...props }, ref) => (
+>(({ className, children, size = "default", loading = false, disabled = false, ...props }, ref) => (
 	<SelectPrimitive.Trigger
 		ref={ref}
-		className={controlSurfaceClass(
-			cn("flex h-9 w-full items-center justify-between px-3", FOCUS_BORDER, className),
-		)}
 		{...props}
+		disabled={disabled || loading}
+		aria-busy={loading || undefined}
+		className={controlSurfaceClass(
+			cn(
+				"flex w-full items-center justify-between",
+				SELECT_SIZE_CLASS[size],
+				FOCUS_BORDER,
+				"aria-invalid:border-basalt-destructive aria-invalid:focus-visible:border-basalt-destructive",
+				className,
+			),
+		)}
 	>
 		{children}
 		<ChevronDown className="h-4 w-4 opacity-50" />
 	</SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
+
+export type SelectLabelProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>;
+
+export const SelectLabel = React.forwardRef<
+	React.ElementRef<typeof SelectPrimitive.Label>,
+	SelectLabelProps
+>(({ className, ...props }, ref) => (
+	<SelectPrimitive.Label
+		ref={ref}
+		className={cn("px-2 py-1.5 text-xs text-basalt-muted-foreground", className)}
+		{...props}
+	/>
+));
+SelectLabel.displayName = SelectPrimitive.Label.displayName;
 
 export type SelectContentProps = Omit<
 	React.ComponentPropsWithoutRef<typeof SelectPrimitive.Content>,

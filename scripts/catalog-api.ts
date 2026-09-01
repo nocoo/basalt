@@ -279,7 +279,6 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/select.tsx",
 		propsType: "SelectTriggerProps",
 		surface: "SelectTrigger",
-		allowEmpty: true,
 	},
 	{
 		slug: "select",
@@ -305,6 +304,13 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/select.tsx",
 		propsType: "SelectItemProps",
 		surface: "SelectItem",
+	},
+	{
+		slug: "select",
+		sourceFile: "packages/basalt/src/components/select.tsx",
+		propsType: "SelectLabelProps",
+		surface: "SelectLabel",
+		allowEmpty: true,
 	},
 	{
 		slug: "segment-control",

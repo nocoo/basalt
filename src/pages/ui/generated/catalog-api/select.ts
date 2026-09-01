@@ -10,11 +10,45 @@ export const API = [
 				required: false,
 				description: "The controlled value of the select.",
 			},
+			{
+				name: "defaultValue",
+				type: "string",
+				required: false,
+				description: "The uncontrolled initial value of the select.",
+			},
+			{
+				name: "onValueChange",
+				type: "(value: string) => void",
+				required: false,
+				description: "Called when the selected value changes.",
+			},
 		],
 	},
 	{
 		name: "SelectTrigger",
-		props: [],
+		props: [
+			{
+				name: "size",
+				type: "SelectSize",
+				required: false,
+				default: "default",
+				description: "The visual size of the trigger.",
+			},
+			{
+				name: "loading",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Disable the trigger and mark it busy.",
+			},
+			{
+				name: "disabled",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Disable the trigger.",
+			},
+		],
 	},
 	{
 		name: "SelectValue",
@@ -60,5 +94,9 @@ export const API = [
 				description: "The value associated with the select item.",
 			},
 		],
+	},
+	{
+		name: "SelectLabel",
+		props: [],
 	},
 ];

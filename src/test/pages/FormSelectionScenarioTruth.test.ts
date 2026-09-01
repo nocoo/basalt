@@ -133,6 +133,10 @@ describe("form selection scenario truth", () => {
 			"select-basic",
 			"select-placeholder",
 			"select-disabled-options",
+			"select-sizes",
+			"select-loading",
+			"select-groups",
+			"select-controlled-and-error",
 		]);
 		expect(UI_EXAMPLES.field).toBe(FIELD_EXAMPLES);
 		expect(UI_EXAMPLES.field?.map((item) => item.id)).toEqual([
@@ -345,6 +349,38 @@ describe("form selection scenario truth", () => {
 		expect(screen.getByRole("option", { name: "Beta" })).toHaveAttribute("aria-disabled", "true");
 		fireEvent.click(screen.getByRole("option", { name: "Beta" }));
 		expect(disabledTrigger).toHaveTextContent("Choose…");
+		cleanup();
+		const sizes = scenario("select", "select-sizes");
+		expect(sizes.code).toContain('size="sm"');
+		expect(sizes.code).toContain('size="lg"');
+		render(createElement(sizes.render));
+		expect(screen.getByRole("combobox", { name: "Small" })).toHaveTextContent("Small");
+		expect(screen.getByRole("combobox", { name: "Default size" })).toHaveTextContent("Default");
+		expect(screen.getByRole("combobox", { name: "Large" })).toHaveTextContent("Large");
+		cleanup();
+		const loading = scenario("select", "select-loading");
+		render(createElement(loading.render));
+		const loadingTrigger = screen.getByRole("combobox", { name: "Loading version" });
+		expect(loadingTrigger).toBeDisabled();
+		expect(loadingTrigger).toHaveAttribute("aria-busy", "true");
+		cleanup();
+		const groups = scenario("select", "select-groups");
+		expect(groups.code).toContain("SelectLabel");
+		render(createElement(groups.render));
+		fireEvent.click(screen.getByRole("combobox", { name: "Channel" }));
+		expect(screen.getByText("Stable")).toBeInTheDocument();
+		expect(screen.getByText("Preview")).toBeInTheDocument();
+		expect(screen.getByRole("option", { name: "next" })).toHaveAttribute("aria-disabled", "true");
+		cleanup();
+		const controlled = scenario("select", "select-controlled-and-error");
+		expect(controlled.code).toContain("Pick a version");
+		render(createElement(controlled.render));
+		expect(screen.getByText("Pick a version")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("combobox", { name: "Version" }));
+		fireEvent.click(screen.getByRole("option", { name: "v2" }));
+		expect(screen.queryByText("Pick a version")).not.toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		expect(screen.getByText("Pick a version")).toBeInTheDocument();
 		cleanup();
 	});
 

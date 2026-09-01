@@ -341,8 +341,24 @@ const switchSources = import.meta.glob("./examples/switch/*.tsx", {
 	eager: true,
 });
 
-const SELECT_IDS = ["select-basic", "select-placeholder", "select-disabled-options"] as const;
-const SELECT_TITLES = ["Basic", "Placeholder", "Disabled Options"] as const;
+const SELECT_IDS = [
+	"select-basic",
+	"select-placeholder",
+	"select-disabled-options",
+	"select-sizes",
+	"select-loading",
+	"select-groups",
+	"select-controlled-and-error",
+] as const;
+const SELECT_TITLES = [
+	"Basic",
+	"Placeholder",
+	"Disabled Options",
+	"Sizes",
+	"Loading",
+	"Groups",
+	"Controlled and error",
+] as const;
 
 const selectRenders = import.meta.glob("./examples/select/*.tsx", { eager: true });
 const selectSources = import.meta.glob("./examples/select/*.tsx", {
@@ -1777,9 +1793,9 @@ describe("source-backed switch scenarios", () => {
 });
 
 describe("source-backed select scenarios", () => {
-	it("loads three select scenarios from the same glob modules", () => {
-		expect(Object.keys(selectRenders)).toHaveLength(3);
-		expect(Object.keys(selectSources)).toHaveLength(3);
+	it("loads seven select scenarios from the same glob modules", () => {
+		expect(Object.keys(selectRenders)).toHaveLength(7);
+		expect(Object.keys(selectSources)).toHaveLength(7);
 		const loaded = loadModuleScenarios({
 			slug: "select",
 			metas: SELECT_TITLES.map((title, index) => ({
@@ -1882,6 +1898,19 @@ describe("source-backed select scenarios", () => {
 		expect(SELECT_EXAMPLES[2]?.code).toContain('value="b"');
 		expect(SELECT_EXAMPLES[2]?.code).toContain("Beta");
 		expect(SELECT_EXAMPLES[2]?.code).toContain("disabled");
+		expect(SELECT_EXAMPLES[3]?.code).toContain('size="sm"');
+		expect(SELECT_EXAMPLES[3]?.code).toContain('aria-label="Small"');
+		expect(SELECT_EXAMPLES[3]?.code).toContain('aria-label="Default size"');
+		expect(SELECT_EXAMPLES[3]?.code).toContain('aria-label="Large"');
+		expect(SELECT_EXAMPLES[4]?.code).toContain("loading");
+		expect(SELECT_EXAMPLES[4]?.code).toContain('aria-label="Loading version"');
+		expect(SELECT_EXAMPLES[5]?.code).toContain("SelectGroup");
+		expect(SELECT_EXAMPLES[5]?.code).toContain("SelectLabel");
+		expect(SELECT_EXAMPLES[5]?.code).toContain("Stable");
+		expect(SELECT_EXAMPLES[5]?.code).toContain("Preview");
+		expect(SELECT_EXAMPLES[6]?.code).toContain("useState");
+		expect(SELECT_EXAMPLES[6]?.code).toContain("onValueChange");
+		expect(SELECT_EXAMPLES[6]?.code).toContain("Pick a version");
 	});
 });
 

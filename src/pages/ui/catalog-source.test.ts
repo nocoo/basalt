@@ -314,8 +314,13 @@ describe("catalog source contract", () => {
 			"SelectContent",
 			"SelectGroup",
 			"SelectItem",
+			"SelectLabel",
 		]);
-		expect(CATALOG_API.select?.[0]?.props.map((prop) => prop.name)).toEqual(["value"]);
+		expect(CATALOG_API.select?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"value",
+			"defaultValue",
+			"onValueChange",
+		]);
 		expect(implementationFileFor(entry("code-block"))).toBe(
 			"packages/basalt/src/components/code.tsx",
 		);
@@ -432,7 +437,7 @@ describe("catalog source contract", () => {
 			"Switch.Legend",
 			"Switch.Item",
 		]);
-		expect(forms.select?.docs.api).toHaveLength(6);
+		expect(forms.select?.docs.api).toHaveLength(7);
 		expect(forms.select?.docs.api.map((surface) => surface.name)).toEqual([
 			"Select",
 			"SelectTrigger",
@@ -440,6 +445,7 @@ describe("catalog source contract", () => {
 			"SelectContent",
 			"SelectGroup",
 			"SelectItem",
+			"SelectLabel",
 		]);
 	});
 

@@ -65,6 +65,10 @@ describe("content scenario truth", () => {
 			"select-basic",
 			"select-placeholder",
 			"select-disabled-options",
+			"select-sizes",
+			"select-loading",
+			"select-groups",
+			"select-controlled-and-error",
 		]);
 		expect(UI_EXAMPLES.grid?.map((item) => item.id)).toEqual(["grid-grid"]);
 		expect(UI_EXAMPLES.flow?.map((item) => item.id)).toEqual(["flow-sequential-flow"]);
