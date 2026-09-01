@@ -40,4 +40,19 @@ describe("Toolbar", () => {
 		fireEvent.click(button);
 		expect(onClick).toHaveBeenCalledOnce();
 	});
+
+	it("names the toolbar and disables a control", () => {
+		const onClick = vi.fn();
+		render(
+			<Toolbar aria-label="Record tools">
+				<Toolbar.Button disabled onClick={onClick}>
+					Save
+				</Toolbar.Button>
+			</Toolbar>,
+		);
+		expect(screen.getByRole("toolbar", { name: "Record tools" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+		fireEvent.click(screen.getByRole("button", { name: "Save" }));
+		expect(onClick).not.toHaveBeenCalled();
+	});
 });

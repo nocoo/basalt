@@ -10,7 +10,14 @@ const toolbarControlClass = cn(
 	"focus-within:z-2 focus:z-2 focus-visible:z-2",
 );
 
-const ToolbarRoot = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+export type ToolbarProps = Omit<React.HTMLAttributes<HTMLDivElement>, "aria-label"> & {
+	/**
+	 * Accessible name for the toolbar.
+	 */
+	"aria-label"?: string;
+};
+
+const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarProps>(
 	({ className, ...props }, ref) => (
 		<div
 			ref={ref}
@@ -26,7 +33,13 @@ const ToolbarRoot = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
 );
 ToolbarRoot.displayName = "Toolbar";
 
-export type ToolbarButtonProps = Omit<ButtonProps, "variant">;
+export type ToolbarButtonProps = Omit<ButtonProps, "variant" | "disabled"> & {
+	/**
+	 * Disable the toolbar button.
+	 * @default false
+	 */
+	disabled?: boolean;
+};
 
 export const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonProps>(
 	({ className, size, icon, children, ...props }, ref) => {
@@ -52,16 +65,23 @@ export const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonPr
 );
 ToolbarButton.displayName = "Toolbar.Button";
 
-export const ToolbarInput = React.forwardRef<
-	HTMLInputElement,
-	React.ComponentPropsWithoutRef<typeof Input>
->(({ className, ...props }, ref) => (
-	<Input
-		ref={ref}
-		className={cn(toolbarControlClass, FOCUS_INSET, "h-auto min-h-9", className)}
-		{...props}
-	/>
-));
+export type ToolbarInputProps = Omit<React.ComponentPropsWithoutRef<typeof Input>, "disabled"> & {
+	/**
+	 * Disable the toolbar input.
+	 * @default false
+	 */
+	disabled?: boolean;
+};
+
+export const ToolbarInput = React.forwardRef<HTMLInputElement, ToolbarInputProps>(
+	({ className, ...props }, ref) => (
+		<Input
+			ref={ref}
+			className={cn(toolbarControlClass, FOCUS_INSET, "h-auto min-h-9", className)}
+			{...props}
+		/>
+	),
+);
 ToolbarInput.displayName = "Toolbar.Input";
 
 export const Toolbar = Object.assign(ToolbarRoot, {

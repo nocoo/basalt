@@ -89,6 +89,7 @@ export { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/tabs";
 export { Text } from "./components/text";
 export { ThemeToggle } from "./components/theme-toggle";
 export { Toast, Toaster, toast } from "./components/toast";
+export { Toolbar } from "./components/toolbar";
 export { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./components/tooltip";
 export { LinkProvider } from "./providers/link";
 export { ThemeProvider } from "./providers/theme";
