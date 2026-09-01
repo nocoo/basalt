@@ -417,5 +417,40 @@ describe("application route build boundary", () => {
 			),
 			"table family closure contains another family",
 		).toBe(false);
+
+		const charts = chunks.find((chunk) =>
+			chunk.modules.some((id) => id.endsWith("/src/pages/ui/catalog-content/families/charts.tsx")),
+		);
+		expect(charts).toBeDefined();
+		const chartsFiles = new Set<string>();
+		const visitCharts = (chunk: BuiltChunk | undefined) => {
+			if (!chunk || chartsFiles.has(chunk.fileName)) return;
+			chartsFiles.add(chunk.fileName);
+			for (const imported of chunk.imports) visitCharts(chunksByFile.get(imported));
+		};
+		visitCharts(charts);
+		const chartsModules = chunks
+			.filter((chunk) => chartsFiles.has(chunk.fileName))
+			.flatMap((chunk) => chunk.modules);
+		for (const suffix of [
+			"/src/pages/ui/catalog-content-legacy.ts",
+			"/src/pages/ui/catalog-ready.tsx",
+			"/src/pages/ui/kumo-examples.tsx",
+			"/src/pages/ui/docs.ts",
+			"/src/pages/ui/demos.tsx",
+		]) {
+			expect(
+				chartsModules.some((id) => id.endsWith(suffix)),
+				`charts family closure contains ${suffix}`,
+			).toBe(false);
+		}
+		expect(
+			chartsModules.some((id) =>
+				/catalog-content\/families\/(data-layout|foundation|forms|overlay|feedback|navigation)\.tsx$/.test(
+					id,
+				),
+			),
+			"charts family closure contains another family",
+		).toBe(false);
 	});
 });

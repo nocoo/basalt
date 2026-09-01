@@ -11,6 +11,7 @@ import {
 	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
+import charts from "@/pages/ui/catalog-content/families/charts";
 import dataLayout from "@/pages/ui/catalog-content/families/data-layout";
 import feedback from "@/pages/ui/catalog-content/families/feedback";
 import forms from "@/pages/ui/catalog-content/families/forms";
@@ -37,6 +38,7 @@ const CATALOG_DOCS = {
 	...Object.fromEntries(Object.entries(feedback).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(navigation).map(([slug, content]) => [slug, content.docs])),
 	...Object.fromEntries(Object.entries(dataLayout).map(([slug, content]) => [slug, content.docs])),
+	...Object.fromEntries(Object.entries(charts).map(([slug, content]) => [slug, content.docs])),
 };
 const UI_EXAMPLES = {
 	...LEGACY_UI_EXAMPLES,
@@ -54,6 +56,7 @@ const UI_EXAMPLES = {
 	...Object.fromEntries(
 		Object.entries(dataLayout).map(([slug, content]) => [slug, content.examples]),
 	),
+	...Object.fromEntries(Object.entries(charts).map(([slug, content]) => [slug, content.examples])),
 };
 
 function catalogHeroScenario(slug: string) {

@@ -1,35 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { loadLegacyCatalogPageContent } from "./catalog-content-legacy";
-import { UI_EXAMPLES } from "./demos";
-import { CATALOG_DOCS } from "./docs";
+import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
 describe("legacy catalog content adapter", () => {
-	it("returns the existing docs and examples without changing their owners", async () => {
-		const content = await loadLegacyCatalogPageContent("line");
-		expect(content.docs).toBe(CATALOG_DOCS.line);
-		expect(content.examples).toBe(UI_EXAMPLES.line);
-	});
-
-	it("does not keep migrated family owners", async () => {
-		for (const slug of [
-			"button",
-			"field",
-			"input-group",
-			"tooltip",
-			"dialog",
-			"collapsible",
-			"banner",
-			"badge",
-			"toast",
-			"tabs",
-			"command-palette",
-			"sidebar",
-			"table",
-			"data-table",
-			"grid",
-			"flow",
-			"page-header",
-		]) {
+	it("does not keep any of the eighty-four migrated ready owners", async () => {
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(84);
+		for (const slug of Object.keys(CATALOG_CONTENT_FAMILY)) {
 			const content = await loadLegacyCatalogPageContent(slug);
 			expect(content.docs, slug).toBeUndefined();
 			expect(content.examples, slug).toBeUndefined();

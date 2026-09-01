@@ -3,17 +3,12 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CATALOG } from "./catalog";
 import type { CatalogPageContentCandidate } from "./catalog-content";
 import { catalogPageStatus } from "./catalog-page-status";
-import type { CatalogScenario } from "./catalog-scenario";
-import type { CatalogDocs } from "./catalog-source";
 
 const loadLegacy = vi.fn<(slug: string) => Promise<CatalogPageContentCandidate>>();
 
 vi.mock("./catalog-content-legacy", () => ({
 	loadLegacyCatalogPageContent: loadLegacy,
 }));
-
-const docs = { description: "Docs" } as CatalogDocs;
-const example = { id: "button-default" } as CatalogScenario;
 
 async function importLoader() {
 	return import("./catalog-content-loader");
@@ -117,25 +112,13 @@ describe("catalog page content loader", () => {
 		expect(loadLegacy).not.toHaveBeenCalled();
 	});
 
-	it("loads unmigrated ready content once from the legacy adapter", async () => {
-		const examples = [example];
-		loadLegacy.mockResolvedValue({ docs, examples });
+	it("loads charts family content without the legacy adapter", async () => {
 		const { loadCatalogPageContent } = await importLoader();
 		const first = loadCatalogPageContent("line");
 		expect(loadCatalogPageContent("line")).toBe(first);
-		await expect(first).resolves.toEqual({ docs, examples });
-		expect(loadLegacy).toHaveBeenCalledTimes(1);
-		expect(loadLegacy).toHaveBeenCalledWith("line");
-	});
-
-	it("rejects ready content when docs or examples[0] is absent", async () => {
-		loadLegacy.mockResolvedValueOnce({ examples: [example] }).mockResolvedValueOnce({ docs });
-		const { loadCatalogPageContent } = await importLoader();
-		await expect(loadCatalogPageContent("line")).rejects.toThrow(
-			'Ready catalog page "line" is missing docs.',
-		);
-		await expect(loadCatalogPageContent("bar")).rejects.toThrow(
-			'Ready catalog page "bar" is missing examples[0].',
-		);
+		const content = await first;
+		expect(content?.docs.description).toBe("Line series.");
+		expect(content?.examples[0]?.id).toBe("line-default");
+		expect(loadLegacy).not.toHaveBeenCalled();
 	});
 });
