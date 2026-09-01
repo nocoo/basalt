@@ -1,7 +1,7 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中
-> 当前切片：S3G D088 — TablePager MVP；D087 已完成，等待冻结下一刀契约
+> 当前切片：S3G D088 — TablePager MVP；契约已冻结，等待通过 Herdr 下发
 > 当前实现真值：`bd6370a`（D087 ConfirmDialog/useConfirm MVP + review fix）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`  
 > 最后更新：2026-09-01
@@ -131,7 +131,7 @@ Codex review 发现问题时，只发送当前切片的最小返工包，不夹�
 | S2A | 类型驱动的 docs/API/scenario 数据模型 | 完成（S2A1 D028、S2A2 D030、S2A3 D031、S2A4 D032、S2A5 D033、S2A6 D034、S2A7 D035、S2A8 D036、S2A9 D037、S2A10 D038、S2A11 D039、S2A12 D040、S2A13 D041、S2A14 D042、S2A15 D043、S2A16 D044、S2A17 D045、S2A18 D046、S2A19 D047、S2A20 D048、S2A21 D049、S2A22 D050、S2A23 D051、S2A24 D052、S2A25 D053、S2A26 D054、S2A27 D055、S2A28 D056、S2A29 D057、S2A30 D058、S2A31 D059、S2A32 D060、S2A33 D061、S2A34 D062、S2A35 D063、S2A36 D064、S2A37 D065、S2A38 D066、S2A39 D067） | 组件类型、API 表、example 不再三份手写漂移 |
 | S2V | 用户视觉纠偏：control surface、breadcrumb、segmented motion | 完成（`da54f6e`） | 同类控件不再漂移；当前页只靠颜色；单选切换有 reduced-motion 安全的移动反馈 |
 | S2B | 文档页 IA、搜索、分类、成熟度过滤 | 完成（`eeb8c43`） | 不再平铺 88 个等权方块；placeholder 不可达 |
-| S3 | 通用组合地基 | 执行中（7 个 MVP 已完成 6 个：S3A D082、S3B D083、S3C D084、S3D D085、S3E D086、S3F D087；下一刀 S3G D088） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
+| S3 | 通用组合地基 | 执行中（7 个 MVP 已完成 6 个：S3A D082、S3B D083、S3C D084、S3D D085、S3E D086、S3F D087；S3G D088 契约已冻结） | LayerCard CardShell、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager 的 MVP 完整 |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 待办 | 表单 Field/Group/Legend/error/size/controlled 场景完整 |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 待办 | 泛型、group/multiple/loading/error/range + browser 门完整 |
 | S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 待办 | compound、焦点、键盘、mobile、resize/scroll 状态完整 |
@@ -769,6 +769,14 @@ S1C1 已在 D026 恢复四项 95% 门，后续不得因新源码扩张而回退�
    ConfirmDialog 与 useConfirm 加入 root barrel；新增 stable `confirm-dialog` CATALOG component，由 overlay family 持有，并以 `Controlled async loading` 与 `Promise result` 两份 source-backed module 展示上述两条路径。docs/API/Copy page 只消费同一个 generated `confirm-dialog` shard；API generator 为 `ConfirmDialogProps` 和 `UseConfirmOptions` 生成 `ConfirmDialog`、`useConfirm` 两个 surface，不手写 API 表或泄漏 Radix/DOM props。provenance 精确记录 `nocoo/meowth@bb02d5a18e00` 的 `apps/dashboard/src/components/ui/confirm-dialog.tsx`。CATALOG 预期 99→100，Components/Charts/Blocks `63 / 24 / 3`→`64 / 24 / 3`，Ready/Planned `87 / 12`→`88 / 12`，首页 90→91 卡，overlay 10→11 owner、21→23 scenarios，API shard 23→24、target 39→41；其它 87 owner、12 planned、既有 AlertDialog/docs/scenarios 与 7-family 边界不得漂移。
 
    实现保持在上述边界内：主提交 `9bcafc7` 新增受控 ConfirmDialog、每实例 useConfirm、两份 source-backed example、stable root/CATALOG/overlay owner、双 surface generated API 与直接真值门；未修改 AlertDialog/Dialog/Button runtime、依赖、tokens、路由、browser timeout 或 TablePager。Codex review 发现首版 `Controlled async loading` 只进入 loading 而没有成功收口，且 hook 测试未逐项锁定 Escape/controlled close；Grok 以仅两文件的 `bd6370a` 增加 400ms 有界 async 成功路径、卸载 timer 清理，以及两条 false/单次结算回归，未 amend。最终 CATALOG 100，Components/Charts/Blocks `64 / 24 / 3`，Ready/Planned `88 / 12`，首页 91 卡，overlay 11 owner / 23 scenarios，API 24 shard / 41 targets。三套 generator、focused、typecheck、Biome、日常全量、coverage、showcase build 与 package build/types/pack 全绿；Codex 独立复跑 6 files / 266 tests 和三套 check。普通开发门未运行 Chromium；完整证据见 D087 日志，下一刀单独规划 TablePager。
+
+7. **S3G / D088 — TablePager MVP（契约冻结；尚未下发；实现真值基线 `bd6370a`，规划前基线 `5706b2e`）。** 新增 stable `@nocoo/basalt/components/table-pager`，作为既有 `Pagination` 之上的表格底栏组合，不复制 Chevron/Button、页边界或 controlled page 逻辑。`TablePagerProps` 精确公开必填 `page`、`pageSize`、`totalCount`、`onPageChange: (page: number) => void`，以及可选 `disabled = false`、`formatRange?: (range: TablePagerRange) => ReactNode`、`className`；`TablePagerRange` 精确只有 `start`、`end`、`totalCount`。page 继续是 1-based controlled 值；pageCount 由 totalCount/pageSize 派生，显示页与 range 使用和 Pagination 相同的 `[1, pageCount]` clamp，但组件不得在 render/effect 中回调调用方“纠正”page。MVP 约定调用方传入整数 `page >= 1`、`pageSize >= 1`、`totalCount >= 0`，不为非法数值增加第二套校验策略。
+
+   默认范围文案在零条时为 `No results`，否则为确定性的 `Showing {start}–{end} of {totalCount}`；最后一页 end 不得超过 totalCount。`formatRange` 接收已经归一到当前页的三个数字并可返回 ReactNode，调用方用它同时负责语言与数字格式；package 不调用 `useTranslation`，默认实现不使用环境相关的隐式 locale，保证 SSR/hydration 一致。窄屏为 range 与 controls 纵向排列，宽屏左右对齐，只使用既有 text/gap token。`disabled` 保留范围文本并原生禁用所有分页按钮、阻止 onPageChange；为此只给既有 Pagination 增加默认 false 的 `disabled`，四个按钮统一合并边界与全局 disabled，现有默认/simple 视觉、aria label、clamp 与三份 catalog scenario 必须逐项不漂移，Pagination 手写 API 表同步增加该真实 prop。
+
+   TablePager 加入 stable root barrel 与新 CATALOG component，由 data-layout family 持有；新增 `Range navigation` 与 `Disabled and localized` 两份 source-backed module，后者以固定显式 locale 的 formatter 证明大数字格式且不依赖 app i18n。docs/API/Copy page 只引用 generated `table-pager` shard；API generator 只从本地 `TablePagerProps` 生成一个 TablePager surface，不泄漏 children/DOM inventory。provenance 精确记录只读参考 `nocoo/pika@d9b12caf26a4` 的 `packages/web/src/components/ui/data-table-pagination.tsx`，implementation source 指向当前 Basalt 文件。把 `NavigationPage` 现有 with-context 卡片中手拼的 range + Pagination 精确换成 TablePager，并用 formatRange 复用既有 `common.showing/of/results` 文案；短/长 Pagination 两段和其它页面保持不动。CATALOG 预期 100→101，Components/Charts/Blocks `64 / 24 / 3`→`65 / 24 / 3`，Ready/Planned `88 / 12`→`89 / 12`，首页 91→92 卡，data-layout 6→7 owner、9→11 scenarios，API 24→25 shard、41→42 targets；其它 88 owner、12 planned 与 7-family 边界不得漂移。
+
+   本刀不增加 page-size selector/options、onPageSizeChange、loading spinner、unknown-total/cursor pagination、compact/simple/size/variant、jump-to-page、URL/request/sort/filter/selection 状态、table/data-table 耦合或新 Model/ViewModel；这些留给 S7。只允许新增 TablePager 实现/单测与 `src/pages/ui/examples/table-pager/**`，最小修改 Pagination 实现/单测与既有 docs API、root barrel/测试、CATALOG、data-layout family/测试、API generator/测试、NavigationPage 和直接 catalog/page-status/content/loader/Copy page/build graph/页面测试及 generated/standalone 产物。不得修改其它 package 组件、DataTable/Table、tokens/手写 CSS、依赖/lock、routes、consumer、coverage/Husky、browser timeout 或 S4 内容。测试必须覆盖中间页/部分尾页/零条/越界显示、default/custom ReactNode formatter、响应式结构、disabled 与四个边界按钮、callback 页码、Pagination 默认行为不漂移、NavigationPage 不再手拼范围。三套 generator 均 generate 后连续两次 check；再运行 TablePager/Pagination/root、generator、data-layout/navigation/loader/Copy page/build graph/NavigationPage focused、typecheck、Biome、日常全量、coverage、showcase production build及 package build/types/pack，生成后工作树必须干净。普通开发门不运行 Chromium；只做一个绿色实现提交，建议 `feat: add table pager mvp`，随后停止等待 Codex review。
 
 ### 6.5 S4/S5 — 表单族
 
