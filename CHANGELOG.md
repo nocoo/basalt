@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.0-rc.3] - 2026-09-02
+
+### Added
+
+- Shared `ChartLegend` below cartesian and donut plots (`showLegend`).
+
+### Changed
+
+- Showcase chart cards are one L2 surface; `/components` no longer nests
+  those cards in a second section card.
+
+### Fixed
+
+- Bar/line metric cards no longer wrap the plot in an inner border.
+- Legend markers follow the lead `color` prop, and stay inside the chart
+  height.
+
 ## [2.0.0-rc.2] - 2026-09-02
 
 ### Added
