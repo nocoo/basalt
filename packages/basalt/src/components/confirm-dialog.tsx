@@ -47,7 +47,7 @@ export interface ConfirmDialogProps {
 	/**
 	 * Control that opens the dialog. When set, closing restores focus to it.
 	 */
-	trigger?: React.ReactNode;
+	trigger?: React.ReactElement;
 }
 
 export interface UseConfirmOptions {
@@ -81,6 +81,8 @@ export function ConfirmDialog({
 	variant = "default",
 }: ConfirmDialogProps) {
 	const triggerRef = React.useRef<HTMLButtonElement>(null);
+	const panelRef = React.useRef<HTMLDivElement>(null);
+	const cancelRef = React.useRef<HTMLButtonElement>(null);
 	const wasOpenRef = React.useRef(open);
 	React.useEffect(() => {
 		if (wasOpenRef.current && !open) {
@@ -98,12 +100,21 @@ export function ConfirmDialog({
 				onOpenChange(next);
 			}}
 		>
-			{trigger ? (
+			{React.isValidElement(trigger) ? (
 				<AlertDialogTrigger ref={triggerRef} asChild>
 					{trigger}
 				</AlertDialogTrigger>
 			) : null}
 			<AlertDialogContent
+				ref={panelRef}
+				onOpenAutoFocus={(event) => {
+					event.preventDefault();
+					if (cancelRef.current && !cancelRef.current.disabled) {
+						cancelRef.current.focus();
+						return;
+					}
+					panelRef.current?.focus();
+				}}
 				onCloseAutoFocus={(event) => {
 					event.preventDefault();
 					triggerRef.current?.focus();
@@ -115,7 +126,7 @@ export function ConfirmDialog({
 				</AlertDialogHeader>
 				<AlertDialogFooter>
 					<AlertDialogPrimitive.Cancel asChild>
-						<Button disabled={loading} variant="outline">
+						<Button ref={cancelRef} disabled={loading} variant="outline">
 							{cancelLabel}
 						</Button>
 					</AlertDialogPrimitive.Cancel>

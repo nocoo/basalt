@@ -86,6 +86,12 @@ describe("ConfirmDialog", () => {
 		expect(onOpenChange).toHaveBeenCalledWith(false);
 	});
 
+	it("focuses the alertdialog panel when it opens already loading", () => {
+		render(<ControlledExample loading />);
+		const dialog = screen.getByRole("alertdialog", { name: "Delete project?" });
+		expect(dialog.contains(document.activeElement)).toBe(true);
+	});
+
 	it("shows a spinner, disables both actions, and ignores Escape while loading", () => {
 		const onConfirm = vi.fn();
 		const onOpenChange = vi.fn();

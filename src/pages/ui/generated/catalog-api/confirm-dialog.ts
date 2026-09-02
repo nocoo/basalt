@@ -64,7 +64,7 @@ export const API = [
 			},
 			{
 				name: "trigger",
-				type: "React.ReactNode",
+				type: "React.ReactElement",
 				required: false,
 				description: "Control that opens the dialog. When set, closing restores focus to it.",
 			},
