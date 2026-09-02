@@ -4,7 +4,6 @@ import { describe, expect, it } from "vitest";
 
 const EXAMPLE_PAGES = [
 	"AccountsPage.tsx",
-	"BadgeLoginPage.tsx",
 	"BankingDashboardPage.tsx",
 	"ComponentsPage.tsx",
 	"DashboardPage.tsx",

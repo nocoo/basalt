@@ -3,12 +3,13 @@ import { describe, expect, it } from "vitest";
 import LoginPage from "@/pages/LoginPage";
 
 describe("LoginPage", () => {
-	it("uses library form controls for sign-in", () => {
+	it("uses the badge login as the default sign-in surface", () => {
 		render(<LoginPage />);
 
-		expect(screen.getByRole("button", { name: "Sign in" })).toHaveAttribute("type", "submit");
-		expect(screen.getByRole("button", { name: "Show password" })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Forgot password?" })).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Sign up" })).toHaveAttribute("href", "/");
+		expect(screen.getByRole("button", { name: "Continue with Google" })).toHaveAttribute(
+			"type",
+			"button",
+		);
+		expect(screen.getByText("basalt.")).toBeInTheDocument();
 	});
 });

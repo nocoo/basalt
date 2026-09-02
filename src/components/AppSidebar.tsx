@@ -69,7 +69,6 @@ import {
 	HeartHandshake,
 	HeartPulse,
 	History,
-	IdCard,
 	Inbox,
 	Layers,
 	LayoutDashboard,
@@ -194,7 +193,6 @@ const NAV_GROUPS: NavGroup[] = [
 		defaultOpen: true,
 		items: [
 			{ titleKey: "nav.login", icon: LogIn, path: "/login", external: true },
-			{ titleKey: "nav.badgeLogin", icon: IdCard, path: "/badge-login", external: true },
 			{ titleKey: "nav.staticPage", icon: FileText, path: "/static-page", external: true },
 			{ titleKey: "nav.loading", icon: Loader, path: "/loading", external: true },
 			{ titleKey: "nav.notFoundPage", icon: FileQuestion, path: "/404", external: true },

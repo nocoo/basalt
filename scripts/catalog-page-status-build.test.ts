@@ -16,7 +16,6 @@ interface BuiltChunk {
 
 const PAGE_MODULES = [
 	"AccountsPage.tsx",
-	"BadgeLoginPage.tsx",
 	"BankingDashboardPage.tsx",
 	"ComponentsPage.tsx",
 	"DashboardPage.tsx",

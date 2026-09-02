@@ -7,7 +7,6 @@ import { BrowserRouter, Route, Link as RouterLink, Routes } from "react-router";
 import { DashboardLayout } from "@/components/DashboardLayout";
 
 const AccountsPage = lazy(() => import("./pages/AccountsPage"));
-const BadgeLoginPage = lazy(() => import("./pages/BadgeLoginPage"));
 const BankingDashboardPage = lazy(() => import("./pages/BankingDashboardPage"));
 const ComponentsPage = lazy(() => import("./pages/ComponentsPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
@@ -108,7 +107,6 @@ const App = () => (
 						</Route>
 						{/* Standalone pages (no sidebar) */}
 						<Route path="/login" element={routeElement(LoginPage)} />
-						<Route path="/badge-login" element={routeElement(BadgeLoginPage)} />
 						<Route path="/static-page" element={routeElement(StaticPage)} />
 						<Route path="/loading" element={routeElement(LoadingPage)} />
 						<Route path="/404" element={routeElement(NotFound)} />
