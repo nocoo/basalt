@@ -215,7 +215,7 @@ export function classifyCommits(commits: Commit[]): ChangelogSections {
 }
 
 export function formatChangelogSection(version: string, sections: ChangelogSections): string {
-	const date = new Date().toISOString().split("T")[0];
+	const date = new Date().toLocaleDateString("en-CA");
 	const lines: string[] = [`## [${version}] - ${date}`];
 	const order: [keyof ChangelogSections, string][] = [
 		["added", "Added"],
