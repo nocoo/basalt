@@ -36,6 +36,8 @@ export function DeleteResource({ name, onDelete }: DeleteResourceProps) {
 					try {
 						await onDelete();
 						setOpen(false);
+					} catch {
+						setOpen(true);
 					} finally {
 						setLoading(false);
 					}

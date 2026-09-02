@@ -10,9 +10,11 @@ import { STAT_STRIP_EXAMPLES } from "./examples/stat-strip";
 import { TABLE_EXAMPLES } from "./examples/table";
 import { TABLE_PAGER_EXAMPLES } from "./examples/table-pager";
 import { API as dataTableApi } from "./generated/catalog-api/data-table";
+import { API as deleteResourceApi } from "./generated/catalog-api/delete-resource";
 import { API as flowApi } from "./generated/catalog-api/flow";
 import { API as gridApi } from "./generated/catalog-api/grid";
 import { API as pageHeaderApi } from "./generated/catalog-api/page-header";
+import { API as resourceListApi } from "./generated/catalog-api/resource-list";
 import { API as statStripApi } from "./generated/catalog-api/stat-strip";
 import { API as tableApi } from "./generated/catalog-api/table";
 import { API as tablePagerApi } from "./generated/catalog-api/table-pager";
@@ -180,6 +182,8 @@ describe("data-layout catalog content family", () => {
 			{ id: "table-pager-disabled-and-localized", title: "Disabled and localized" },
 		]);
 		expect(dataLayout["resource-list"]?.examples).toBe(RESOURCE_LIST_EXAMPLES);
+		expect(dataLayout["resource-list"]?.docs.api).toBe(resourceListApi);
 		expect(dataLayout["delete-resource"]?.examples).toBe(DELETE_RESOURCE_EXAMPLES);
+		expect(dataLayout["delete-resource"]?.docs.api).toBe(deleteResourceApi);
 	});
 });

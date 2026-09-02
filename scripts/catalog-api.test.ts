@@ -809,8 +809,20 @@ describe("catalog API generator contract", () => {
 				propsType: "CustomChartProps",
 				surface: "CustomChart",
 			},
+			{
+				slug: "resource-list",
+				sourceFile: "packages/basalt/src/components/resource-list.tsx",
+				propsType: "ResourceListProps",
+				surface: "ResourceList",
+			},
+			{
+				slug: "delete-resource",
+				sourceFile: "packages/basalt/src/components/delete-resource.tsx",
+				propsType: "DeleteResourceProps",
+				surface: "DeleteResource",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(114);
+		expect(CATALOG_API_TARGETS).toHaveLength(116);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -912,6 +924,8 @@ describe("catalog API generator contract", () => {
 			"chart-colors",
 			"timeseries",
 			"custom-chart",
+			"resource-list",
+			"delete-resource",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -1894,6 +1908,8 @@ export interface WidgetProps {
 			"chart-colors": ["Colors"],
 			timeseries: ["Timeseries"],
 			"custom-chart": ["CustomChart"],
+			"resource-list": ["ResourceList"],
+			"delete-resource": ["DeleteResource"],
 		});
 	}, 20_000);
 
@@ -1903,7 +1919,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(66);
+		expect(Object.keys(generated)).toHaveLength(68);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -2004,7 +2020,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(66);
+		expect(Object.keys(generated)).toHaveLength(68);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -2126,7 +2142,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(66);
+		expect(Object.keys(generated)).toHaveLength(68);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -2197,7 +2213,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(66);
+		expect(Object.keys(generated)).toHaveLength(68);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2240,7 +2256,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(66);
+		expect(Object.keys(generated)).toHaveLength(68);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2292,7 +2308,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(66);
+		expect(Object.keys(generated)).toHaveLength(68);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3533,8 +3549,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(66);
-		expect(Object.keys(first)).toHaveLength(67);
+		expect(slugs).toHaveLength(68);
+		expect(Object.keys(first)).toHaveLength(69);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3600,6 +3616,8 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "DateNavigation.Display"');
 		expect(joined).toContain('name: "StatGrid"');
 		expect(joined).toContain('name: "ChartPalette"');
+		expect(joined).toContain('name: "ResourceList"');
+		expect(joined).toContain('name: "DeleteResource"');
 		expect(joined).toContain('type: "ChartSeriesDescriptor[]"');
 		const digest = createHash("sha256");
 		for (const relative of Object.keys(first).sort()) {
@@ -3608,7 +3626,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"36740bbcd35056eaa79f5a93f2963c0131bfb54288ddcaf8fdef7f5f494ddaa2",
+			"17a3df3ea2052b40fc115ce05a3c0d01575a21f9a6ff7f96c19cd25519a1fd79",
 		);
 	}, 20_000);
 

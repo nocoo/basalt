@@ -31,4 +31,16 @@ describe("DeleteResource", () => {
 		});
 		expect(screen.queryByRole("heading", { name: "Delete Atlas?" })).toBeNull();
 	});
+
+	it("keeps the dialog open when delete work rejects", async () => {
+		const onDelete = vi.fn(() => Promise.reject(new Error("busy")));
+		render(<DeleteResource name="Atlas" onDelete={onDelete} />);
+		fireEvent.click(screen.getByRole("button", { name: "Delete Atlas" }));
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+		});
+		expect(onDelete).toHaveBeenCalledTimes(1);
+		expect(screen.getByRole("heading", { name: "Delete Atlas?" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Delete" })).toBeEnabled();
+	});
 });

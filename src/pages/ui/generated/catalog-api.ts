@@ -19,6 +19,7 @@ import { API as customChartApi } from "./catalog-api/custom-chart";
 import { API as dataTableApi } from "./catalog-api/data-table";
 import { API as dateNavigationApi } from "./catalog-api/date-navigation";
 import { API as datePickerApi } from "./catalog-api/date-picker";
+import { API as deleteResourceApi } from "./catalog-api/delete-resource";
 import { API as donutApi } from "./catalog-api/donut";
 import { API as dropdownMenuApi } from "./catalog-api/dropdown-menu";
 import { API as fieldApi } from "./catalog-api/field";
@@ -43,6 +44,7 @@ import { API as paletteApi } from "./catalog-api/palette";
 import { API as popoverApi } from "./catalog-api/popover";
 import { API as radarApi } from "./catalog-api/radar";
 import { API as radioApi } from "./catalog-api/radio";
+import { API as resourceListApi } from "./catalog-api/resource-list";
 import { API as sankeyApi } from "./catalog-api/sankey";
 import { API as scrollAreaApi } from "./catalog-api/scroll-area";
 import { API as segmentControlApi } from "./catalog-api/segment-control";
@@ -87,6 +89,7 @@ export const CATALOG_API = {
 	"data-table": dataTableApi,
 	"date-navigation": dateNavigationApi,
 	"date-picker": datePickerApi,
+	"delete-resource": deleteResourceApi,
 	donut: donutApi,
 	"dropdown-menu": dropdownMenuApi,
 	field: fieldApi,
@@ -111,6 +114,7 @@ export const CATALOG_API = {
 	popover: popoverApi,
 	radar: radarApi,
 	radio: radioApi,
+	"resource-list": resourceListApi,
 	sankey: sankeyApi,
 	"scroll-area": scrollAreaApi,
 	"segment-control": segmentControlApi,

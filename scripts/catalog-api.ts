@@ -726,6 +726,18 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "CustomChartProps",
 		surface: "CustomChart",
 	},
+	{
+		slug: "resource-list",
+		sourceFile: "packages/basalt/src/components/resource-list.tsx",
+		propsType: "ResourceListProps",
+		surface: "ResourceList",
+	},
+	{
+		slug: "delete-resource",
+		sourceFile: "packages/basalt/src/components/delete-resource.tsx",
+		propsType: "DeleteResourceProps",
+		surface: "DeleteResource",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

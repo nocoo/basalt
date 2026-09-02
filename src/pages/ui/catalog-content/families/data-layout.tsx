@@ -14,9 +14,11 @@ import { STAT_STRIP_EXAMPLES } from "../../examples/stat-strip";
 import { TABLE_EXAMPLES } from "../../examples/table";
 import { TABLE_PAGER_EXAMPLES } from "../../examples/table-pager";
 import { API as dataTableApi } from "../../generated/catalog-api/data-table";
+import { API as deleteResourceApi } from "../../generated/catalog-api/delete-resource";
 import { API as flowApi } from "../../generated/catalog-api/flow";
 import { API as gridApi } from "../../generated/catalog-api/grid";
 import { API as pageHeaderApi } from "../../generated/catalog-api/page-header";
+import { API as resourceListApi } from "../../generated/catalog-api/resource-list";
 import { API as statStripApi } from "../../generated/catalog-api/stat-strip";
 import { API as tableApi } from "../../generated/catalog-api/table";
 import { API as tablePagerApi } from "../../generated/catalog-api/table-pager";
@@ -222,30 +224,27 @@ export default function Example() {
 		examples: TABLE_PAGER_EXAMPLES,
 	},
 	"resource-list": {
-		docs: extraDocs(
-			"ResourceList",
-			"resource-list",
-			"A page heading and table of named resources.",
-			'<ResourceList title="Projects" data={[{ name: "Atlas", status: "Active" }]} />',
-			[
-				{ name: "title", type: "string", required: true },
-				{ name: "description", type: "string" },
-				{ name: "data", type: "ResourceListRow[]", required: true },
-			],
-		),
+		docs: {
+			...extraDocs(
+				"ResourceList",
+				"resource-list",
+				"A page heading and table of named resources.",
+				'<ResourceList title="Projects" data={[{ name: "Atlas", status: "Active" }]} />',
+			),
+			api: resourceListApi,
+		},
 		examples: RESOURCE_LIST_EXAMPLES,
 	},
 	"delete-resource": {
-		docs: extraDocs(
-			"DeleteResource",
-			"delete-resource",
-			"A confirmation dialog that deletes a named resource.",
-			'<DeleteResource name="Atlas" onDelete={() => undefined} />',
-			[
-				{ name: "name", type: "string", required: true },
-				{ name: "onDelete", type: "() => void | Promise<void>", required: true },
-			],
-		),
+		docs: {
+			...extraDocs(
+				"DeleteResource",
+				"delete-resource",
+				"A confirmation dialog that deletes a named resource.",
+				'<DeleteResource name="Atlas" onDelete={() => undefined} />',
+			),
+			api: deleteResourceApi,
+		},
 		examples: DELETE_RESOURCE_EXAMPLES,
 	},
 });
