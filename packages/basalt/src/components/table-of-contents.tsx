@@ -64,7 +64,9 @@ export function TableOfContentsItem({ active, href, children }: TableOfContentsI
 					{children}
 				</a>
 			) : (
-				<span className={className}>{children}</span>
+				<span aria-current={active ? "location" : undefined} className={className}>
+					{children}
+				</span>
 			)}
 		</li>
 	);

@@ -10,7 +10,7 @@ describe("TableOfContents", () => {
 			</TableOfContents>,
 		);
 		expect(screen.getByText("On this page")).toBeInTheDocument();
-		expect(screen.getByText("Intro")).toBeInTheDocument();
+		expect(screen.getByText("Intro")).toHaveAttribute("aria-current", "location");
 	});
 
 	it("renders a current section link", () => {
