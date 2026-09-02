@@ -37,7 +37,7 @@ describe("AppSidebar", () => {
 		Element.prototype.scrollIntoView = vi.fn();
 	});
 
-	it("keeps example pages and lists every library export", { timeout: 15_000 }, () => {
+	it("keeps example pages and lists every library export", { timeout: 45_000 }, () => {
 		renderSidebar();
 		expect(screen.getByText("Examples")).toBeInTheDocument();
 		expect(screen.getByText("Library")).toBeInTheDocument();

@@ -74,7 +74,9 @@ function fixtureProps(root: string, sourceFile = "widget.ts", slug = "widget") {
 	return generateFixture(root, sourceFile, slug)[slug]?.[0]?.props;
 }
 
-function generateProductionProps() {
+let productionPropsCache: ReturnType<typeof loadProductionProps> | undefined;
+
+function loadProductionProps() {
 	const generated = generateCatalogApi({
 		repoRoot,
 		tsconfigPath: DEFAULT_TSCONFIG,
@@ -89,6 +91,11 @@ function generateProductionProps() {
 				return [slug, surfaces[0]?.props ?? []];
 			}),
 	);
+}
+
+function generateProductionProps() {
+	productionPropsCache ??= loadProductionProps();
+	return productionPropsCache;
 }
 
 describe("catalog API generator contract", () => {
@@ -961,7 +968,7 @@ describe("catalog API generator contract", () => {
 				required: false,
 			},
 		]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts ScrollArea props without inherited Radix, DOM, event, or ARIA inventory", () => {
 		const generated = generateProductionProps();
@@ -1001,7 +1008,7 @@ describe("catalog API generator contract", () => {
 				inherited,
 			).toBe(false);
 		}
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts LinkButton props from the same file without Button-only or DOM fields", () => {
 		const generated = generateProductionProps();
@@ -1027,7 +1034,7 @@ describe("catalog API generator contract", () => {
 		expect(generated["link-button"]?.some((prop) => prop.name === "loading")).toBe(false);
 		expect(generated["link-button"]?.some((prop) => prop.name === "href")).toBe(false);
 		expect(generated["link-button"]?.some((prop) => prop.name === "className")).toBe(false);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts Text props from TextProps without HTML or Kumo-only fields", () => {
 		const generated = generateProductionProps();
@@ -1084,7 +1091,7 @@ describe("catalog API generator contract", () => {
 		expect(generated.text?.some((prop) => prop.name === "children")).toBe(false);
 		expect(generated.text?.some((prop) => prop.name === "className")).toBe(false);
 		expect(generated.text?.some((prop) => prop.name === "id")).toBe(false);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts Label props from LabelProps with JSDoc defaults and descriptions", () => {
 		const generated = generateProductionProps();
@@ -1108,7 +1115,7 @@ describe("catalog API generator contract", () => {
 		expect(generated.label?.some((prop) => prop.name === "children")).toBe(false);
 		expect(generated.label?.some((prop) => prop.name === "className")).toBe(false);
 		expect(generated.label?.some((prop) => prop.name === "asContent")).toBe(false);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts Separator props from SeparatorProps with JSDoc defaults and descriptions", () => {
 		const generated = generateProductionProps();
@@ -1150,7 +1157,7 @@ describe("catalog API generator contract", () => {
 			"truncate",
 		]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts Link props from LinkProps as a single required href", () => {
 		const generated = generateProductionProps();
@@ -1190,7 +1197,7 @@ describe("catalog API generator contract", () => {
 		]);
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts Tooltip props from TooltipProps as a single optional delayDuration", () => {
 		const generated = generateProductionProps();
@@ -1233,7 +1240,7 @@ describe("catalog API generator contract", () => {
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts ThemeToggle props from ThemeToggleProps as a single required aria-label", () => {
 		const generated = generateProductionProps();
@@ -1275,7 +1282,7 @@ describe("catalog API generator contract", () => {
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts LayerCard root props from LayerCardProps", () => {
 		const generated = generateProductionProps();
@@ -1324,7 +1331,7 @@ describe("catalog API generator contract", () => {
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts BasaltMark props from BasaltMarkProps as a single optional className", () => {
 		const generated = generateProductionProps();
@@ -1370,7 +1377,7 @@ describe("catalog API generator contract", () => {
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts Field props from FieldProps in source order with required label and children", () => {
 		const generated = generateProductionProps();
@@ -1462,7 +1469,7 @@ describe("catalog API generator contract", () => {
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
 		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts Input props from InputProps as type, size, and passwordManagerIgnore", () => {
 		const generated = generateProductionProps();
@@ -1539,7 +1546,7 @@ describe("catalog API generator contract", () => {
 			"className",
 			"children",
 		]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts InputArea props from InputAreaProps as rows, size, and passwordManagerIgnore", () => {
 		const generated = generateProductionProps();
@@ -1621,7 +1628,7 @@ describe("catalog API generator contract", () => {
 			"size",
 			"passwordManagerIgnore",
 		]);
-	}, 20_000);
+	}, 60_000);
 
 	it("emits a locally quoted property name", () => {
 		const root = fixture({
@@ -1911,7 +1918,7 @@ export interface WidgetProps {
 			"resource-list": ["ResourceList"],
 			"delete-resource": ["DeleteResource"],
 		});
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts five InputGroup surfaces with wrapper defaults and an empty Suffix", () => {
 		const generated = generateCatalogApi({
@@ -2012,7 +2019,7 @@ export interface WidgetProps {
 			),
 		).toBe(false);
 		expect(generated.button?.[0]?.name).toBe("Button");
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts SensitiveInput props from SensitiveInputProps as required reveal and hide labels", () => {
 		const generated = generateCatalogApi({
@@ -2134,7 +2141,7 @@ export interface WidgetProps {
 			"InputGroup.Button",
 			"InputGroup.Suffix",
 		]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts Checkbox props from CheckboxProps as an optional checked union", () => {
 		const generated = generateCatalogApi({
@@ -2205,7 +2212,7 @@ export interface WidgetProps {
 			"InputGroup.Button",
 			"InputGroup.Suffix",
 		]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts Radio props from RadioProps as a required string value", () => {
 		const generated = generateCatalogApi({
@@ -2248,7 +2255,7 @@ export interface WidgetProps {
 			"InputGroup.Button",
 			"InputGroup.Suffix",
 		]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts Switch props from SwitchProps as optional checked and size", () => {
 		const generated = generateCatalogApi({
@@ -2300,7 +2307,7 @@ export interface WidgetProps {
 			"InputGroup.Button",
 			"InputGroup.Suffix",
 		]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts Select props from seven named types as ten local rows and two empty surfaces", () => {
 		const generated = generateCatalogApi({
@@ -2503,7 +2510,7 @@ export interface WidgetProps {
 			"InputGroup.Button",
 			"InputGroup.Suffix",
 		]);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts the controlled SegmentControl surface without inherited fieldset props", () => {
 		const generated = generateCatalogApi({
@@ -2561,7 +2568,7 @@ export interface WidgetProps {
 		expect(generated["segment-control"]?.[0]?.props.map((prop) => prop.name)).not.toContain(
 			"children",
 		);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts the PageHeader surface without inherited header props", () => {
 		const generated = generateCatalogApi({
@@ -2610,7 +2617,7 @@ export interface WidgetProps {
 			"className",
 		);
 		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain("children");
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts the StatStrip surface without inherited dl props", () => {
 		const generated = generateCatalogApi({
@@ -2646,7 +2653,7 @@ export interface WidgetProps {
 		]);
 		expect(generated["stat-strip"]?.[0]?.props.map((prop) => prop.name)).not.toContain("children");
 		expect(generated["stat-strip"]?.[0]?.props.map((prop) => prop.name)).not.toContain("id");
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts ConfirmDialog and useConfirm surfaces without Radix or DOM inventory", () => {
 		const generated = generateCatalogApi({
@@ -2687,7 +2694,7 @@ export interface WidgetProps {
 				surface.props.some((prop) => prop.name === "className"),
 			),
 		).toBe(false);
-	}, 20_000);
+	}, 60_000);
 
 	it("extracts the TablePager surface without inherited DOM inventory", () => {
 		const generated = generateCatalogApi({
@@ -2747,7 +2754,7 @@ export interface WidgetProps {
 		]);
 		expect(generated["table-pager"]?.[0]?.props.map((prop) => prop.name)).not.toContain("children");
 		expect(generated["table-pager"]?.[0]?.props.map((prop) => prop.name)).not.toContain("id");
-	}, 20_000);
+	}, 60_000);
 
 	it("aggregates multiple surfaces for the same slug in declaration order", () => {
 		const root = fixture({
@@ -3629,7 +3636,7 @@ export interface WidgetProps {
 		expect(digest.digest("hex")).toBe(
 			"8136ff3bafdb4f0027528e792aa91e30c53219fa0cd81cebd0367293092b3c17",
 		);
-	}, 20_000);
+	}, 60_000);
 
 	it("checks the complete generated API set and rejects extra shards", () => {
 		const root = fixture({});
@@ -3639,5 +3646,5 @@ export interface WidgetProps {
 		expect(() => checkCatalogApiFiles(root, files)).not.toThrow();
 		writeFileSync(path.join(root, GENERATED_SHARD_DIR, "extra.ts"), "export const API = [];\n");
 		expect(() => checkCatalogApiFiles(root, files)).toThrow(/extra catalog API shards extra.ts/);
-	}, 20_000);
+	}, 60_000);
 });

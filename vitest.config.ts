@@ -13,6 +13,7 @@ export default defineConfig({
 	test: {
 		environment: "jsdom",
 		globals: true,
+		maxWorkers: process.env.CI ? 2 : 4,
 		setupFiles: ["./src/test/setup.ts"],
 		include: [
 			"src/**/*.{test,spec}.{ts,tsx}",

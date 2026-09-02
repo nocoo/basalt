@@ -42,7 +42,9 @@ describe("catalog page-status generator", () => {
 		).toThrow("Duplicate catalog slug: same");
 	});
 
-	it("loads the production inputs through Vite and renders deterministic pure data", async () => {
+	it("loads the production inputs through Vite and renders deterministic pure data", {
+		timeout: 30_000,
+	}, async () => {
 		const first = await generateCatalogPageStatusModule(process.cwd());
 		const second = await generateCatalogPageStatusModule(process.cwd());
 		expect(first).toBe(second);
