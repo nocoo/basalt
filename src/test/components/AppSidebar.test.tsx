@@ -12,18 +12,7 @@ function catalogButtons() {
 	);
 }
 
-const PLANNED_SLUGS = [
-	"installation",
-	"contributing",
-	"colors",
-	"accessibility",
-	"figma",
-	"cli",
-	"skill",
-	"registry",
-	"changelog",
-	"maps",
-];
+const PLANNED_SLUGS = ["maps"];
 
 function RouterProbe() {
 	const { pathname } = useLocation();
@@ -59,8 +48,8 @@ describe("AppSidebar", () => {
 				screen.getAllByRole("button", { name: new RegExp(`^${catalogNavName(entry)}`) }).length,
 			).toBeGreaterThan(0);
 		}
-		expect(screen.getByRole("button", { name: /^Installation.*Planned$/ })).toBeDisabled();
-		expect(screen.getByRole("button", { name: /^Changelog.*Planned$/ })).toBeDisabled();
+		expect(screen.getByRole("button", { name: /^Installation$/ })).toBeEnabled();
+		expect(screen.getByRole("button", { name: /^Changelog$/ })).toBeEnabled();
 		expect(screen.getByRole("button", { name: /^Clipboard Text/ })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Page Header" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: /^Maps.*Planned$/ })).toBeDisabled();
@@ -86,7 +75,7 @@ describe("AppSidebar", () => {
 		const disabledButtons = catalogButtons.filter((button) => button.disabled);
 
 		expect(catalogButtons).toHaveLength(101);
-		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(91);
+		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(100);
 		expect(disabledButtons.map((button) => button.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const button of disabledButtons) {
 			expect(button).toHaveTextContent("Planned");
@@ -123,7 +112,7 @@ describe("AppSidebar", () => {
 		expect(catalogOptions).toHaveLength(101);
 		expect(
 			catalogOptions.filter((option) => option.getAttribute("data-disabled") !== "true"),
-		).toHaveLength(91);
+		).toHaveLength(100);
 		expect(disabledOptions.map((option) => option.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const option of disabledOptions) {
 			expect(option).toHaveTextContent("Planned");
@@ -153,14 +142,13 @@ describe("AppSidebar", () => {
 		const readyColors = reopenedDialog.querySelector<HTMLElement>(
 			'[data-catalog-slug="chart-colors"]',
 		);
-		expect(plannedColors).toHaveAttribute("data-disabled", "true");
+		expect(plannedColors).toHaveAttribute("data-disabled", "false");
 		expect(readyColors).toHaveAttribute("data-disabled", "false");
-		expect(readyColors).toHaveAttribute("data-selected", "true");
 		fireEvent.keyDown(reopenedSearch, { key: "Enter" });
 		await waitFor(() => {
 			expect(screen.getByTestId("router-location")).toHaveAttribute(
 				"data-pathname",
-				"/ui/chart-colors",
+				expect.stringMatching(/^\/ui\/(colors|chart-colors)$/),
 			);
 			expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 		});

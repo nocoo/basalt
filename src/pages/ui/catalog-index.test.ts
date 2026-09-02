@@ -78,25 +78,14 @@ describe("catalog index model", () => {
 		]);
 	});
 
-	it("models all public catalog navigation as 91 ready and 10 planned pages", () => {
+	it("models all public catalog navigation as 100 ready and maps planned", () => {
 		const states = CATALOG.map((entry) => ({
 			slug: entry.slug,
 			pageStatus: resolveCatalogPageState(entry.slug, catalogDocs, catalogHero).pageStatus,
 		}));
-		expect(states.filter((item) => item.pageStatus === "ready")).toHaveLength(91);
+		expect(states.filter((item) => item.pageStatus === "ready")).toHaveLength(100);
 		expect(states.filter((item) => item.pageStatus === "planned").map((item) => item.slug)).toEqual(
-			[
-				"installation",
-				"contributing",
-				"colors",
-				"accessibility",
-				"figma",
-				"cli",
-				"skill",
-				"registry",
-				"changelog",
-				"maps",
-			],
+			["maps"],
 		);
 	});
 

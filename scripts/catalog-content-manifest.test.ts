@@ -15,6 +15,7 @@ describe("catalog content family manifest", () => {
 		expect(listCatalogFamilyFiles(process.cwd())).toEqual([
 			"charts.tsx",
 			"data-layout.tsx",
+			"docs.tsx",
 			"feedback.tsx",
 			"forms.tsx",
 			"foundation.tsx",

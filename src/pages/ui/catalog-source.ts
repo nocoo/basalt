@@ -29,7 +29,9 @@ export interface CatalogDocs {
 	provenance?: GitHubSource;
 }
 
-export type CatalogDocsDraft = Omit<CatalogDocs, "implementationSource">;
+export type CatalogDocsDraft = Omit<CatalogDocs, "implementationSource"> & {
+	implementationSource?: GitHubSource;
+};
 
 export const BASALT_IMPLEMENTATION_OWNER = "nocoo";
 export const BASALT_IMPLEMENTATION_REPO = "basalt";
@@ -85,7 +87,14 @@ export function catalogDocsWithImplementation(
 			if (!entry) {
 				throw new Error(`Unknown catalog slug: ${slug}`);
 			}
-			return [slug, { ...docs, implementationSource: implementationSourceFor(entry) }];
+			const { implementationSource, ...rest } = docs;
+			return [
+				slug,
+				{
+					...rest,
+					implementationSource: implementationSource ?? implementationSourceFor(entry),
+				},
+			];
 		}),
 	);
 }

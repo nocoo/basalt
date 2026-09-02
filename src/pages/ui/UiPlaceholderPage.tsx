@@ -152,26 +152,29 @@ function ReadyDoc({
 	if (!hero) {
 		throw new Error(`Ready catalog page "${entry.slug}" is missing examples[0].`);
 	}
-	const importPath = catalogImportPath(entry);
-	const barrel = barrelImport(entry);
-	const granular = `import { ${entry.name} } from "${importPath}";`;
+	const isDocs = entry.category === "docs";
+	const importPath = isDocs ? null : catalogImportPath(entry);
+	const barrel = isDocs ? null : barrelImport(entry);
+	const granular = importPath ? `import { ${entry.name} } from "${importPath}";` : null;
 	const pageMarkdown = [
 		`# ${catalogNavName(entry)}`,
 		docs.description,
-		"## Installation",
-		barrel ?? "",
-		granular,
+		...(granular ? ["## Installation", barrel ?? "", granular] : []),
 		"## Usage",
 		docs.usage,
 		"## Examples",
 		...examples.flatMap((example) => [`### ${example.title}`, example.code]),
-		...catalogApiCopyLines(docs.api),
+		...(!isDocs ? catalogApiCopyLines(docs.api) : []),
 		catalogSourceCopyText(docs),
 	].join("\n\n");
 	const headings: DocHeading[] = [
-		{ id: "installation", text: "Installation", depth: 2 },
-		...(barrel ? [{ id: "barrel", text: "Barrel", depth: 3 as const }] : []),
-		{ id: "granular", text: "Granular", depth: 3 },
+		...(granular
+			? [
+					{ id: "installation", text: "Installation", depth: 2 as const },
+					...(barrel ? [{ id: "barrel", text: "Barrel", depth: 3 as const }] : []),
+					{ id: "granular", text: "Granular", depth: 3 as const },
+				]
+			: []),
 		{ id: "usage", text: "Usage", depth: 2 },
 		{ id: "examples", text: "Examples", depth: 2 },
 		...examples.map((example) => ({
@@ -179,12 +182,16 @@ function ReadyDoc({
 			text: example.title,
 			depth: 3 as const,
 		})),
-		{ id: "api-reference", text: "API Reference", depth: 2 },
-		...docs.api.map((surface) => ({
-			id: catalogApiSurfaceId(surface.name),
-			text: surface.name,
-			depth: 3 as const,
-		})),
+		...(!isDocs
+			? [
+					{ id: "api-reference", text: "API Reference", depth: 2 as const },
+					...docs.api.map((surface) => ({
+						id: catalogApiSurfaceId(surface.name),
+						text: surface.name,
+						depth: 3 as const,
+					})),
+				]
+			: []),
 	];
 	return (
 		<div>
@@ -220,21 +227,23 @@ function ReadyDoc({
 							<hero.render />
 						</DocExample>
 					</div>
-					<section id="installation" className="scroll-mt-6 space-y-4">
-						<h2 className="text-2xl font-semibold tracking-tight">Installation</h2>
-						{barrel ? (
-							<>
-								<h3 id="barrel" className="scroll-mt-6 text-sm font-medium text-muted-foreground">
-									Barrel
-								</h3>
-								<DocCode code={barrel} />
-							</>
-						) : null}
-						<h3 id="granular" className="scroll-mt-6 text-sm font-medium text-muted-foreground">
-							Granular
-						</h3>
-						<DocCode code={granular} />
-					</section>
+					{granular ? (
+						<section id="installation" className="scroll-mt-6 space-y-4">
+							<h2 className="text-2xl font-semibold tracking-tight">Installation</h2>
+							{barrel ? (
+								<>
+									<h3 id="barrel" className="scroll-mt-6 text-sm font-medium text-muted-foreground">
+										Barrel
+									</h3>
+									<DocCode code={barrel} />
+								</>
+							) : null}
+							<h3 id="granular" className="scroll-mt-6 text-sm font-medium text-muted-foreground">
+								Granular
+							</h3>
+							<DocCode code={granular} />
+						</section>
+					) : null}
 					<section id="usage" className="scroll-mt-6 space-y-4">
 						<h2 className="text-2xl font-semibold tracking-tight">Usage</h2>
 						<DocCode code={docs.usage} />
@@ -255,7 +264,7 @@ function ReadyDoc({
 							</div>
 						))}
 					</section>
-					<CatalogApiReference api={docs.api} />
+					{isDocs ? null : <CatalogApiReference api={docs.api} />}
 					<div className="space-y-1 text-sm text-muted-foreground">
 						<p>
 							Implementation{" "}

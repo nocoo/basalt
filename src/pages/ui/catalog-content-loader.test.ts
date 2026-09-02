@@ -33,11 +33,11 @@ describe("catalog page content loader", () => {
 		expect(source).not.toMatch(/const\s+\w+Promise\s*=\s*loadCatalogContentFamily/);
 	});
 
-	it("uses the generated 91 ready / 10 planned status truth", () => {
+	it("uses the generated 100 ready / 1 planned status truth", () => {
 		const statuses = CATALOG.map((entry) => catalogPageStatus(entry.slug));
 		expect(statuses).toHaveLength(101);
-		expect(statuses.filter((status) => status === "ready")).toHaveLength(91);
-		expect(statuses.filter((status) => status === "planned")).toHaveLength(10);
+		expect(statuses.filter((status) => status === "ready")).toHaveLength(100);
+		expect(statuses.filter((status) => status === "planned")).toHaveLength(1);
 	});
 
 	it("does not load a family for planned or missing slugs", async () => {

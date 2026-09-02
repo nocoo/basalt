@@ -202,6 +202,7 @@ describe("application route build boundary", () => {
 		expect([...indexFamilies].sort()).toEqual([
 			"charts",
 			"data-layout",
+			"docs",
 			"feedback",
 			"forms",
 			"foundation",

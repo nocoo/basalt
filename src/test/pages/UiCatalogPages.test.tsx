@@ -5,6 +5,7 @@ import { MemoryRouter, Route, Routes, useLocation, useNavigationType } from "rea
 import { describe, expect, it, vi } from "vitest";
 import {
 	CATALOG,
+	CATALOG_BY_SLUG,
 	catalogImportPath,
 	catalogNavName,
 	inScopeCatalogSlugs,
@@ -340,7 +341,9 @@ describe("ui catalog", () => {
 				expect(docs.provenance?.repo, slug).toBe("pika");
 				continue;
 			}
-			expect(docs.provenance?.repo, slug).not.toMatch(/^(meowth|pika)$/);
+			if (docs.provenance) {
+				expect(docs.provenance.repo, slug).not.toMatch(/^(meowth|pika)$/);
+			}
 		}
 	});
 
@@ -352,6 +355,13 @@ describe("ui catalog", () => {
 				repo: "basalt",
 				ref: "main",
 			});
+			if (CATALOG_BY_SLUG.get(slug)?.category === "docs") {
+				expect(
+					existsSync(path.join(process.cwd(), docs.implementationSource.file)),
+					`${slug} ${docs.implementationSource.file}`,
+				).toBe(true);
+				continue;
+			}
 			expect(docs.implementationSource.file, slug).toMatch(/^packages\/basalt\/src\//);
 			expect(
 				existsSync(path.join(process.cwd(), docs.implementationSource.file)),
