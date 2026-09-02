@@ -17,9 +17,9 @@ function Probe() {
 describe("accent", () => {
 	it("applies primary, ring, and chart-1 from the swatch", () => {
 		applyAccent("teal", false);
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("186 80% 32%");
-		expect(document.documentElement.style.getPropertyValue("--basalt-ring")).toBe("186 80% 32%");
-		expect(document.documentElement.style.getPropertyValue("--basalt-chart-1")).toBe("186 80% 32%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("186 72% 28%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-ring")).toBe("186 72% 28%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-chart-1")).toBe("186 72% 28%");
 		expect(document.documentElement.style.getPropertyValue("--basalt-primary-foreground")).toBe(
 			"0 0% 100%",
 		);
@@ -35,7 +35,17 @@ describe("accent", () => {
 
 	it("uses the dark stop when the page is dark", () => {
 		applyAccent("green", true);
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("142 71% 48%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("142 64% 32%");
+	});
+
+	it("keeps white-on-accent lightness at or below 38% in dark mode", () => {
+		for (const swatch of ACCENT_SWATCHES) {
+			if (swatch.foreground !== "0 0% 100%") {
+				continue;
+			}
+			const lightness = Number(swatch.dark.trim().split(/\s+/)[2]?.replace("%", ""));
+			expect(lightness, swatch.id).toBeLessThanOrEqual(38);
+		}
 	});
 
 	it("persists the chosen swatch", () => {

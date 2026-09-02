@@ -17,36 +17,36 @@ export type AccentSwatch = {
 };
 
 export const ACCENT_SWATCHES: readonly AccentSwatch[] = [
-	{ id: "blue", label: "Blue", light: "217 91% 42%", dark: "217 91% 62%", foreground: "0 0% 100%" },
-	{ id: "teal", label: "Teal", light: "186 80% 32%", dark: "186 80% 48%", foreground: "0 0% 100%" },
+	{ id: "blue", label: "Blue", light: "217 80% 36%", dark: "217 80% 38%", foreground: "0 0% 100%" },
+	{ id: "teal", label: "Teal", light: "186 72% 28%", dark: "186 72% 32%", foreground: "0 0% 100%" },
 	{
 		id: "green",
 		label: "Green",
-		light: "142 71% 32%",
-		dark: "142 71% 48%",
+		light: "142 64% 28%",
+		dark: "142 64% 32%",
 		foreground: "0 0% 100%",
 	},
-	{ id: "amber", label: "Amber", light: "38 90% 38%", dark: "38 90% 52%", foreground: "0 0% 10%" },
+	{ id: "amber", label: "Amber", light: "38 88% 44%", dark: "38 88% 56%", foreground: "0 0% 10%" },
 	{
 		id: "orange",
 		label: "Orange",
-		light: "24 90% 40%",
-		dark: "24 90% 52%",
+		light: "24 86% 36%",
+		dark: "24 86% 38%",
 		foreground: "0 0% 100%",
 	},
-	{ id: "rose", label: "Rose", light: "340 82% 40%", dark: "340 82% 58%", foreground: "0 0% 100%" },
+	{ id: "rose", label: "Rose", light: "340 72% 36%", dark: "340 72% 38%", foreground: "0 0% 100%" },
 	{
 		id: "purple",
 		label: "Purple",
-		light: "270 60% 42%",
-		dark: "270 65% 62%",
+		light: "270 52% 36%",
+		dark: "270 52% 38%",
 		foreground: "0 0% 100%",
 	},
 	{
 		id: "indigo",
 		label: "Indigo",
-		light: "250 55% 42%",
-		dark: "250 60% 62%",
+		light: "250 52% 36%",
+		dark: "250 52% 38%",
 		foreground: "0 0% 100%",
 	},
 ] as const;
