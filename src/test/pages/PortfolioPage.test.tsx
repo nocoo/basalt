@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import PortfolioPage from "@/pages/PortfolioPage";
 
@@ -54,7 +54,15 @@ describe("PortfolioPage", () => {
 		render(<PortfolioPage />);
 
 		expect(screen.getByText("Holdings")).toBeInTheDocument();
-		// Each holding name appears twice: legend + holdings list
+		const table = screen.getByRole("table", { name: "Holdings" });
+		expect(
+			within(table)
+				.getAllByRole("columnheader")
+				.map((cell) => cell.textContent),
+		).toEqual(["Asset", "Value", "Change"]);
+		expect(within(table).getByRole("cell", { name: /Stocks/ })).toBeInTheDocument();
+		expect(within(table).getByRole("cell", { name: /Bonds/ })).toBeInTheDocument();
+		expect(within(table).getByRole("cell", { name: /Crypto/ })).toBeInTheDocument();
 		expect(screen.getAllByText("Stocks")).toHaveLength(2);
 		expect(screen.getAllByText("Bonds")).toHaveLength(2);
 		expect(screen.getAllByText("Crypto")).toHaveLength(2);

@@ -1,5 +1,13 @@
 import { DonutChart } from "@nocoo/basalt/charts/donut";
 import { LineChart } from "@nocoo/basalt/charts/line";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@nocoo/basalt/components/table";
 import { Briefcase, PieChart as PieChartIcon, TrendingDown, TrendingUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { CHART_COLORS, CHART_TOKENS, withAlpha } from "@/lib/palette";
@@ -94,55 +102,54 @@ export default function PortfolioPage() {
 					/>
 					<p className="text-sm text-muted-foreground">{t("pages.portfolio.holdings")}</p>
 				</div>
-				<table className="w-full">
-					<thead className="sr-only">
-						<tr>
-							<th scope="col">{t("pages.portfolio.asset")}</th>
-							<th scope="col">{t("pages.portfolio.value")}</th>
-							<th scope="col">{t("pages.portfolio.change")}</th>
-						</tr>
-					</thead>
-					<tbody className="flex flex-col gap-3">
+				<Table aria-label={t("pages.portfolio.holdings")}>
+					<TableHeader>
+						<TableRow>
+							<TableHead>{t("pages.portfolio.asset")}</TableHead>
+							<TableHead className="text-right">{t("pages.portfolio.value")}</TableHead>
+							<TableHead className="text-right">{t("pages.portfolio.change")}</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
 						{holdings.map((item, i) => (
-							<tr
-								key={item.name}
-								className="flex items-center justify-between rounded-widget bg-card p-3"
-							>
-								<td className="flex items-center gap-3">
-									<div
-										className="h-8 w-8 rounded-lg flex items-center justify-center"
-										style={{ background: withAlpha(CHART_TOKENS[i], 0.12) }}
-									>
-										{item.up ? (
-											<TrendingUp
-												className="h-3.5 w-3.5"
-												style={{ color: CHART_COLORS[i] }}
-												strokeWidth={1.5}
-												aria-hidden="true"
-											/>
-										) : (
-											<TrendingDown
-												className="h-3.5 w-3.5"
-												style={{ color: CHART_COLORS[i] }}
-												strokeWidth={1.5}
-												aria-hidden="true"
-											/>
-										)}
+							<TableRow key={item.name}>
+								<TableCell>
+									<div className="flex items-center gap-3">
+										<div
+											className="flex h-8 w-8 items-center justify-center rounded-lg"
+											style={{ background: withAlpha(CHART_TOKENS[i], 0.12) }}
+										>
+											{item.up ? (
+												<TrendingUp
+													className="h-3.5 w-3.5"
+													style={{ color: CHART_COLORS[i] }}
+													strokeWidth={1.5}
+													aria-hidden="true"
+												/>
+											) : (
+												<TrendingDown
+													className="h-3.5 w-3.5"
+													style={{ color: CHART_COLORS[i] }}
+													strokeWidth={1.5}
+													aria-hidden="true"
+												/>
+											)}
+										</div>
+										{item.name}
 									</div>
-									<span className="text-sm text-foreground">{item.name}</span>
-								</td>
-								<td className="text-right">
-									<p className="text-sm font-medium text-foreground">
-										${item.value.toLocaleString()}
-									</p>
-									<p className={`text-xs ${item.up ? "text-success" : "text-destructive"}`}>
-										{item.change}
-									</p>
-								</td>
-							</tr>
+								</TableCell>
+								<TableCell className="text-right font-medium">
+									${item.value.toLocaleString()}
+								</TableCell>
+								<TableCell
+									className={`text-right ${item.up ? "text-success" : "text-destructive"}`}
+								>
+									{item.change}
+								</TableCell>
+							</TableRow>
 						))}
-					</tbody>
-				</table>
+					</TableBody>
+				</Table>
 			</div>
 		</>
 	);

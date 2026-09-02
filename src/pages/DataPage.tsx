@@ -3,6 +3,14 @@ import { Badge } from "@nocoo/basalt/components/badge";
 import { Input } from "@nocoo/basalt/components/input";
 import { Separator } from "@nocoo/basalt/components/separator";
 import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@nocoo/basalt/components/table";
+import {
 	AlertTriangle,
 	BadgeCheck,
 	CheckCircle2,
@@ -192,25 +200,22 @@ export default function DataPage() {
 						</button>
 					</div>
 				</div>
-				<table className="w-full">
-					<thead>
-						<tr className="border-b border-border text-left text-xs text-muted-foreground">
-							<th className="px-5 py-3 font-normal">{t("pages.data.invoice")}</th>
-							<th className="px-5 py-3 font-normal">{t("pages.data.customer")}</th>
-							<th className="px-5 py-3 font-normal">{t("common.status")}</th>
-							<th className="px-5 py-3 font-normal">{t("common.amount")}</th>
-							<th className="px-5 py-3 font-normal">{t("common.date")}</th>
-						</tr>
-					</thead>
-					<tbody>
+				<Table aria-label={t("pages.data.dataTable")}>
+					<TableHeader>
+						<TableRow>
+							<TableHead>{t("pages.data.invoice")}</TableHead>
+							<TableHead>{t("pages.data.customer")}</TableHead>
+							<TableHead>{t("common.status")}</TableHead>
+							<TableHead>{t("common.amount")}</TableHead>
+							<TableHead>{t("common.date")}</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
 						{TABLE_ROWS.map((row) => (
-							<tr
-								key={row.id}
-								className="border-b border-border last:border-b-0 hover:bg-accent/40"
-							>
-								<td className="px-5 py-3 text-sm text-foreground">{row.id}</td>
-								<td className="px-5 py-3 text-sm text-foreground">{row.customer}</td>
-								<td className="px-5 py-3 text-xs">
+							<TableRow key={row.id}>
+								<TableCell>{row.id}</TableCell>
+								<TableCell>{row.customer}</TableCell>
+								<TableCell>
 									<span
 										className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${
 											row.status === "Paid"
@@ -222,13 +227,13 @@ export default function DataPage() {
 									>
 										{row.status}
 									</span>
-								</td>
-								<td className="px-5 py-3 text-sm text-foreground">{row.amount}</td>
-								<td className="px-5 py-3 text-sm text-muted-foreground">{row.date}</td>
-							</tr>
+								</TableCell>
+								<TableCell>{row.amount}</TableCell>
+								<TableCell className="text-basalt-muted-foreground">{row.date}</TableCell>
+							</TableRow>
 						))}
-					</tbody>
-				</table>
+					</TableBody>
+				</Table>
 			</div>
 
 			<Section title={t("pages.data.avatars")} icon={Users}>

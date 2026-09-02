@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import AccountsPage from "@/pages/AccountsPage";
 
@@ -94,5 +94,18 @@ describe("AccountsPage", () => {
 		expect(screen.getByText("2 transactions")).toBeInTheDocument();
 		expect(screen.getByText("Food")).toBeInTheDocument();
 		expect(screen.getByText("Income")).toBeInTheDocument();
+	});
+
+	it("renders transactions through the library table", () => {
+		render(<AccountsPage />);
+
+		const table = screen.getByRole("table", { name: "Transactions", hidden: true });
+		expect(
+			within(table)
+				.getAllByRole("columnheader")
+				.map((cell) => cell.textContent),
+		).toEqual(["Transaction", "Category", "Date", "Amount", "Status"]);
+		expect(within(table).getByRole("cell", { name: /Grocery Store/ })).toBeInTheDocument();
+		expect(within(table).getByRole("cell", { name: "Food" })).toBeInTheDocument();
 	});
 });

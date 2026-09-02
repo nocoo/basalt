@@ -1,5 +1,13 @@
 import { Switch } from "@nocoo/basalt/components/switch";
 import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@nocoo/basalt/components/table";
+import {
 	Activity,
 	ArrowDownLeft,
 	ArrowLeftRight,
@@ -298,45 +306,20 @@ export default function AccountsPage() {
 					/>
 					<p className="text-sm text-muted-foreground">{t("pages.accounts.transactionsTitle")}</p>
 				</div>
-				<table className="w-full">
-					<thead>
-						<tr className="border-b border-border">
-							<th
-								scope="col"
-								className="px-5 py-3 text-left text-xs font-normal text-muted-foreground"
-							>
-								{t("pages.accounts.transaction")}
-							</th>
-							<th
-								scope="col"
-								className="w-[100px] py-3 text-left text-xs font-normal text-muted-foreground"
-							>
-								{t("pages.accounts.category")}
-							</th>
-							<th
-								scope="col"
-								className="w-[120px] py-3 text-left text-xs font-normal text-muted-foreground"
-							>
-								{t("pages.accounts.date")}
-							</th>
-							<th
-								scope="col"
-								className="w-[100px] py-3 text-right text-xs font-normal text-muted-foreground"
-							>
-								{t("pages.accounts.amount")}
-							</th>
-							<th
-								scope="col"
-								className="w-[90px] py-3 pr-5 text-right text-xs font-normal text-muted-foreground"
-							>
-								{t("pages.accounts.status")}
-							</th>
-						</tr>
-					</thead>
-					<tbody>
+				<Table aria-label={t("pages.accounts.transactionsTitle")}>
+					<TableHeader>
+						<TableRow>
+							<TableHead>{t("pages.accounts.transaction")}</TableHead>
+							<TableHead>{t("pages.accounts.category")}</TableHead>
+							<TableHead>{t("pages.accounts.date")}</TableHead>
+							<TableHead className="text-right">{t("pages.accounts.amount")}</TableHead>
+							<TableHead className="text-right">{t("pages.accounts.status")}</TableHead>
+						</TableRow>
+					</TableHeader>
+					<TableBody>
 						{records.map((tx) => (
-							<tr key={tx.id} className="hover:bg-accent/50 transition-colors">
-								<td className="px-5 py-3">
+							<TableRow key={tx.id}>
+								<TableCell>
 									<div className="flex items-center gap-3">
 										<div
 											className={`flex h-7 w-7 items-center justify-center rounded-md ${tx.direction === "positive" ? "bg-success/10" : "bg-destructive/10"}`}
@@ -355,27 +338,27 @@ export default function AccountsPage() {
 												/>
 											)}
 										</div>
-										<span className="text-sm text-foreground">{tx.name}</span>
+										{tx.name}
 									</div>
-								</td>
-								<td className="py-3 text-xs text-muted-foreground">{tx.category}</td>
-								<td className="py-3 text-xs text-muted-foreground">{tx.date}</td>
-								<td
-									className={`py-3 text-sm font-medium text-right ${tx.direction === "positive" ? "text-success" : "text-foreground"}`}
+								</TableCell>
+								<TableCell className="text-basalt-muted-foreground">{tx.category}</TableCell>
+								<TableCell className="text-basalt-muted-foreground">{tx.date}</TableCell>
+								<TableCell
+									className={`text-right font-medium ${tx.direction === "positive" ? "text-success" : ""}`}
 								>
 									{tx.formattedAmount}
-								</td>
-								<td className="py-3 pr-5 text-right">
+								</TableCell>
+								<TableCell className="text-right">
 									<span
-										className={`text-[10px] px-2 py-0.5 rounded-full ${tx.statusVariant === "success" ? "bg-success/10 text-success" : "bg-yellow-500/10 text-yellow-500"}`}
+										className={`rounded-full px-2 py-0.5 text-[10px] ${tx.statusVariant === "success" ? "bg-success/10 text-success" : "bg-yellow-500/10 text-yellow-500"}`}
 									>
 										{tx.status}
 									</span>
-								</td>
-							</tr>
+								</TableCell>
+							</TableRow>
 						))}
-					</tbody>
-				</table>
+					</TableBody>
+				</Table>
 			</div>
 
 			{/* Mobile transaction list */}
