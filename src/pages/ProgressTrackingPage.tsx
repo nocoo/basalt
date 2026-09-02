@@ -1,6 +1,7 @@
 import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { BarChart3, LayoutGrid } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatUsd } from "@/lib/format";
 import { useProgressTrackingViewModel } from "@/viewmodels/useProgressTrackingViewModel";
 
 export default function ProgressTrackingPage() {
@@ -80,9 +81,15 @@ export default function ProgressTrackingPage() {
 				</div>
 				<GroupedBarChart
 					data={comparisonData.map((row) => ({ x: row.month, y: row.budget, y2: row.actual }))}
+					series={[
+						{ key: "y", label: t("pages.progressTracking.budget") },
+						{ key: "y2", label: t("pages.progressTracking.actual") },
+					]}
 					ariaLabel={t("pages.progressTracking.budgetVsActualAria")}
 					className="h-[180px] w-full md:h-[200px]"
 					showAxes
+					showLegend
+					valueFormatter={formatUsd}
 				/>
 			</div>
 		</>

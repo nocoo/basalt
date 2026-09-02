@@ -2,6 +2,7 @@ import { AreaChart } from "@nocoo/basalt/charts/area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatUsd } from "@/lib/format";
 
 const data = [
 	{ day: "Mon", income: 420, expense: 320 },
@@ -37,6 +38,7 @@ export function AreaChartCard() {
 					className="min-h-[200px] w-full flex-1"
 					showAxes
 					showLegend
+					valueFormatter={formatUsd}
 				/>
 			</div>
 		</LayerCard>

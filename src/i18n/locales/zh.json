@@ -584,7 +584,9 @@
 			"remaining": "剩余",
 			"categoryBudgets": "分类预算",
 			"budgetVsActual": "预算 vs 实际",
-			"budgetVsActualAria": "按月份分组的预算与实际支出柱状图"
+			"budgetVsActualAria": "按月份分组的预算与实际支出柱状图",
+			"budget": "预算",
+			"actual": "实际"
 		},
 		"portfolio": {
 			"portfolioValue": "投资组合价值",
@@ -607,7 +609,10 @@
 			"cashFlowOverTime": "现金流趋势",
 			"cashFlowOverTimeAria": "显示流入和流出的现金流面积图",
 			"netCashFlowByMonth": "月度净现金流",
-			"netCashFlowByMonthAria": "月度净现金流柱状图"
+			"netCashFlowByMonthAria": "月度净现金流柱状图",
+			"inflow": "流入",
+			"outflow": "流出",
+			"net": "净额"
 		},
 		"palette": {
 			"baseColors": "基础颜色",
@@ -733,6 +738,7 @@
 		"rating": "评级",
 		"weeklyActivity": "每周活动",
 		"weeklyActivityAria": "周一至周日收入与支出对比每周活动面积图",
+		"spend": "支出",
 		"usageCategory": "使用类别",
 		"totalTransactions": "总交易额",
 		"usageCategoryAria": "1 月至 12 月月度交易金额柱状图，总计 $15,200",

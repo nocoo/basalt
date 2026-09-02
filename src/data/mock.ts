@@ -202,10 +202,20 @@ export const portfolio: PortfolioItem[] = [
 	{ name: "Cash", value: 10000, allocation: 10, change: "+0.5%", up: true },
 ];
 
-export const performanceData = Array.from({ length: 12 }, (_, i) => ({
-	month: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][i],
-	value: 80000 + Math.sin(i / 2) * 10000 + i * 2000 + Math.random() * 3000,
-}));
+export const performanceData = [
+	{ month: "Jan", value: 82000 },
+	{ month: "Feb", value: 84800 },
+	{ month: "Mar", value: 87100 },
+	{ month: "Apr", value: 85900 },
+	{ month: "May", value: 90300 },
+	{ month: "Jun", value: 92800 },
+	{ month: "Jul", value: 94100 },
+	{ month: "Aug", value: 96600 },
+	{ month: "Sep", value: 95200 },
+	{ month: "Oct", value: 98700 },
+	{ month: "Nov", value: 101200 },
+	{ month: "Dec", value: 104800 },
+];
 
 // ── Help ──
 export const faqs: FAQ[] = [

@@ -25,6 +25,7 @@ import { BarChartWidget } from "@/components/dashboard/BarChartWidget";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
 import { PageIntro } from "@/components/PageIntro";
+import { formatPercent } from "@/lib/format";
 import { chart } from "@/lib/palette";
 
 const weeklySteps = [
@@ -315,7 +316,12 @@ export default function HealthPage() {
 						<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<p className="text-sm text-muted-foreground">{t("pages.health.activityBreakdown")}</p>
 					</div>
-					<DonutChartWidget data={activityBreakdown} height={220} showLegend />
+					<DonutChartWidget
+						data={activityBreakdown}
+						height={220}
+						showLegend
+						valueFormatter={formatPercent}
+					/>
 				</div>
 				<div className="rounded-card bg-secondary p-4 md:p-5 lg:col-span-2 max-h-[400px] overflow-y-auto">
 					<div className="mb-4 flex items-center gap-2">
@@ -370,7 +376,12 @@ export default function HealthPage() {
 						<ShieldCheck className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<p className="text-sm text-muted-foreground">{t("pages.health.aiReadinessTrend")}</p>
 					</div>
-					<LineChartWidget data={readinessTrend} height={200} color={chart.primary} />
+					<LineChartWidget
+						data={readinessTrend}
+						height={200}
+						color={chart.primary}
+						valueFormatter={formatPercent}
+					/>
 				</div>
 				<div className="rounded-card bg-secondary p-4 md:p-5">
 					<div className="mb-4 flex items-center gap-2">

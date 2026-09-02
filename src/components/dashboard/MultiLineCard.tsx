@@ -1,6 +1,7 @@
 import { LineChart } from "@nocoo/basalt/charts/line";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
+import { formatPercent } from "@/lib/format";
 
 const data = [
 	{ name: "Week 1", retention: 78, activation: 62, conversion: 34 },
@@ -33,6 +34,7 @@ export function MultiLineCard() {
 					className="h-full w-full"
 					showAxes
 					showLegend
+					valueFormatter={formatPercent}
 				/>
 			</div>
 		</LayerCard>

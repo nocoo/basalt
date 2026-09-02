@@ -2,6 +2,7 @@ import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { ArrowUpDown } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatUsd } from "@/lib/format";
 
 const data = [
 	{ month: "Jul", income: 4200, expense: 3100 },
@@ -35,6 +36,7 @@ export function GroupedBarCard() {
 					className="min-h-[200px] w-full flex-1"
 					showAxes
 					showLegend
+					valueFormatter={formatUsd}
 				/>
 			</div>
 		</LayerCard>

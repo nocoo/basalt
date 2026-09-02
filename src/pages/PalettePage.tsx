@@ -4,6 +4,7 @@ import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { LineChart } from "@nocoo/basalt/charts/line";
 import { Activity, BarChart3, LineChart as LineChartIcon, Palette, Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatPercent, formatUsd } from "@/lib/format";
 import { CHART_COLORS } from "@/lib/palette";
 
 // ── Mock data for example charts ──
@@ -191,6 +192,7 @@ export default function PalettePage() {
 							data={pieData}
 							ariaLabel={t("pages.palette.donutChartAria")}
 							className="h-[180px] w-[180px]"
+							valueFormatter={formatPercent}
 						/>
 						<div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
 							{pieData.map((item, i) => (
@@ -220,6 +222,7 @@ export default function PalettePage() {
 						className="h-[200px] w-full"
 						showAxes
 						showLegend
+						valueFormatter={formatUsd}
 					/>
 				</Section>
 
@@ -235,6 +238,7 @@ export default function PalettePage() {
 						className="h-[200px] w-full"
 						showAxes
 						showLegend
+						valueFormatter={formatUsd}
 					/>
 				</Section>
 			</div>

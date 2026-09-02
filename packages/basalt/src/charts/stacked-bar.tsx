@@ -20,6 +20,7 @@ export type StackedBarChartProps = {
 	className?: string;
 	showAxes?: boolean;
 	showLegend?: boolean;
+	valueFormatter?: (value: number) => string;
 };
 
 export function StackedBarChart({
@@ -29,6 +30,7 @@ export function StackedBarChart({
 	className,
 	showAxes = false,
 	showLegend = false,
+	valueFormatter,
 }: StackedBarChartProps) {
 	const bars = resolveChartSeries(series, ["y", "y2", "y3"]);
 	return (
@@ -40,8 +42,8 @@ export function StackedBarChart({
 			<RechartsBar data={data} margin={showAxes ? CHART_PLOT_MARGIN : CHART_PLOT_MARGIN_BARE}>
 				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
-				<YAxis {...cartesianAxisProps(!showAxes)} />
-				<Tooltip {...chartTooltipProps({ cursor: "bar" })} />
+				<YAxis {...cartesianAxisProps(!showAxes)} tickFormatter={valueFormatter} />
+				<Tooltip {...chartTooltipProps({ formatter: valueFormatter, cursor: "bar" })} />
 				{bars.map((item, index) => (
 					<Bar
 						key={item.key}

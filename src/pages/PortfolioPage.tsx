@@ -10,6 +10,7 @@ import {
 } from "@nocoo/basalt/components/table";
 import { Briefcase, PieChart as PieChartIcon, TrendingDown, TrendingUp } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatPercent, formatUsd } from "@/lib/format";
 import { CHART_COLORS, CHART_TOKENS, withAlpha } from "@/lib/palette";
 import { usePortfolioViewModel } from "@/viewmodels/usePortfolioViewModel";
 
@@ -59,9 +60,11 @@ export default function PortfolioPage() {
 					</div>
 					<LineChart
 						data={performanceData.map((row) => ({ x: row.month, y: row.value }))}
+						series={[{ key: "y", label: t("pages.portfolio.value") }]}
 						ariaLabel={t("pages.portfolio.performanceAria")}
 						className="h-[180px] w-full md:h-[200px]"
 						showAxes
+						valueFormatter={formatUsd}
 					/>
 				</div>
 
@@ -75,6 +78,7 @@ export default function PortfolioPage() {
 							data={holdings.map((item) => ({ name: item.name, value: item.allocation }))}
 							ariaLabel={t("pages.portfolio.allocationAria")}
 							className="h-[160px] w-[160px] md:h-[180px] md:w-[180px]"
+							valueFormatter={formatPercent}
 						/>
 						<div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
 							{holdings.map((item, i) => (

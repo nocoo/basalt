@@ -20,6 +20,7 @@ export type GroupedBarChartProps = {
 	className?: string;
 	showAxes?: boolean;
 	showLegend?: boolean;
+	valueFormatter?: (value: number) => string;
 };
 
 export function GroupedBarChart({
@@ -29,6 +30,7 @@ export function GroupedBarChart({
 	className,
 	showAxes = false,
 	showLegend = false,
+	valueFormatter,
 }: GroupedBarChartProps) {
 	const bars = resolveChartSeries(series, ["y", "y2"]);
 	return (
@@ -40,8 +42,8 @@ export function GroupedBarChart({
 			<RechartsBar data={data} margin={showAxes ? CHART_PLOT_MARGIN : CHART_PLOT_MARGIN_BARE}>
 				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
-				<YAxis {...cartesianAxisProps(!showAxes)} />
-				<Tooltip {...chartTooltipProps({ cursor: "bar" })} />
+				<YAxis {...cartesianAxisProps(!showAxes)} tickFormatter={valueFormatter} />
+				<Tooltip {...chartTooltipProps({ formatter: valueFormatter, cursor: "bar" })} />
 				{bars.map((item, index) => (
 					<Bar
 						key={item.key}

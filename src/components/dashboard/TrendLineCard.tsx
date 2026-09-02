@@ -2,6 +2,7 @@ import { LineChart } from "@nocoo/basalt/charts/line";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Activity } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatUsd } from "@/lib/format";
 
 const data = [
 	{ name: "Mon", value: 2400 },
@@ -34,9 +35,11 @@ export function TrendLineCard() {
 			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 flex flex-col">
 				<LineChart
 					data={data.map((row) => ({ x: row.name, y: row.value }))}
+					series={[{ key: "y", label: t("dashboard.spendingTrend") }]}
 					ariaLabel={t("dashboard.spendingTrendAria")}
 					className="min-h-[100px] w-full flex-1"
 					showAxes
+					valueFormatter={formatUsd}
 				/>
 			</div>
 		</LayerCard>

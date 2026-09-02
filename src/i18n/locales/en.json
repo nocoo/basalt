@@ -584,7 +584,9 @@
 			"remaining": "Remaining",
 			"categoryBudgets": "Category Budgets",
 			"budgetVsActual": "Budget vs Actual",
-			"budgetVsActualAria": "Budget vs actual spending grouped bar chart by month"
+			"budgetVsActualAria": "Budget vs actual spending grouped bar chart by month",
+			"budget": "Budget",
+			"actual": "Actual"
 		},
 		"portfolio": {
 			"portfolioValue": "Portfolio Value",
@@ -607,7 +609,10 @@
 			"cashFlowOverTime": "Cash Flow Over Time",
 			"cashFlowOverTimeAria": "Cash flow over time area chart showing inflow and outflow",
 			"netCashFlowByMonth": "Net Cash Flow by Month",
-			"netCashFlowByMonthAria": "Net cash flow by month bar chart"
+			"netCashFlowByMonthAria": "Net cash flow by month bar chart",
+			"inflow": "Inflow",
+			"outflow": "Outflow",
+			"net": "Net"
 		},
 		"palette": {
 			"baseColors": "Base Colors",
@@ -733,6 +738,7 @@
 		"rating": "Rating",
 		"weeklyActivity": "Weekly Activity",
 		"weeklyActivityAria": "Weekly activity area chart comparing income and expense from Monday to Sunday",
+		"spend": "Spend",
 		"usageCategory": "Usage Category",
 		"totalTransactions": "total transactions",
 		"usageCategoryAria": "Monthly transaction amounts from January to December, bar chart totaling $15,200",

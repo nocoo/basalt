@@ -2,6 +2,7 @@ import { DonutChart } from "@nocoo/basalt/charts/donut";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatPercent } from "@/lib/format";
 import { CHART_COLORS } from "@/lib/palette";
 
 const data = [
@@ -31,6 +32,7 @@ export function DonutChartCard() {
 							data={data}
 							ariaLabel={t("dashboard.expenseBreakdownAria")}
 							className="aspect-square h-full max-h-[180px] min-h-[100px]"
+							valueFormatter={formatPercent}
 						/>
 					</div>
 					<div className="mt-3 grid w-full grid-cols-3 gap-x-4 gap-y-3">

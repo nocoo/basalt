@@ -26,6 +26,7 @@ export type AreaChartProps = {
 	showAxes?: boolean;
 	showLegend?: boolean;
 	stacked?: boolean;
+	valueFormatter?: (value: number) => string;
 };
 
 export function AreaChart({
@@ -36,6 +37,7 @@ export function AreaChart({
 	showAxes = false,
 	showLegend = false,
 	stacked = false,
+	valueFormatter,
 }: AreaChartProps) {
 	const areas = resolveChartSeries(series, xyFallbackKeys(data));
 	const stackId = stacked ? "stack" : undefined;
@@ -48,8 +50,8 @@ export function AreaChart({
 			<RechartsArea data={data} margin={showAxes ? CHART_PLOT_MARGIN : CHART_PLOT_MARGIN_BARE}>
 				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
-				<YAxis {...cartesianAxisProps(!showAxes)} />
-				<Tooltip {...chartTooltipProps({ cursor: "line" })} />
+				<YAxis {...cartesianAxisProps(!showAxes)} tickFormatter={valueFormatter} />
+				<Tooltip {...chartTooltipProps({ formatter: valueFormatter, cursor: "line" })} />
 				{areas.map((item, index) => {
 					const fill = seriesColor(item, index);
 					return (

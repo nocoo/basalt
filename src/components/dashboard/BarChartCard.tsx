@@ -2,6 +2,7 @@ import { BarChart } from "@nocoo/basalt/charts/bar";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { PiggyBank } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatUsd } from "@/lib/format";
 
 const data = [
 	{ name: "Jan", value: 12000 },
@@ -40,9 +41,11 @@ export function BarChartCard() {
 			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 flex flex-col">
 				<BarChart
 					data={data.map((row) => ({ x: row.name, y: row.value }))}
+					series={[{ key: "y", label: t("dashboard.spend") }]}
 					ariaLabel={t("dashboard.usageCategoryAria")}
 					className="min-h-[200px] w-full flex-1"
 					showAxes
+					valueFormatter={formatUsd}
 				/>
 			</div>
 		</LayerCard>

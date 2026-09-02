@@ -1,5 +1,7 @@
+import { createElement } from "react";
 import { CHART_COLORS, chartAxis, withAlpha } from "./palette";
 import type { ChartSeriesDescriptor } from "./series";
+import { ChartTooltipContent, type ChartTooltipItem } from "./tooltip";
 
 export type { ChartSeriesDescriptor } from "./series";
 
@@ -94,13 +96,13 @@ export function chartTooltipContentStyle(): {
 	padding: string;
 } {
 	return {
-		background: "hsl(var(--basalt-popover))",
-		border: "1px solid hsl(var(--basalt-border) / 0.6)",
-		borderRadius: "10px",
-		boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.12), 0 4px 6px -4px rgb(0 0 0 / 0.08)",
+		background: "transparent",
+		border: "none",
+		borderRadius: "0",
+		boxShadow: "none",
 		fontSize: chartFontSize("tooltipBody"),
 		color: "hsl(var(--basalt-foreground))",
-		padding: "8px 12px",
+		padding: "0",
 	};
 }
 
@@ -118,6 +120,7 @@ export function chartTooltipProps(options?: {
 		isAnimationActive: false,
 		animationDuration: 0,
 		offset: 12,
+		allowEscapeViewBox: { x: false, y: false },
 		cursor,
 		wrapperStyle: {
 			outline: "none",
@@ -127,14 +130,17 @@ export function chartTooltipProps(options?: {
 			animation: "none",
 		},
 		contentStyle: chartTooltipContentStyle(),
-		labelStyle: {
-			fontSize: chartFontSize("tooltipTitle"),
-			color: "hsl(var(--basalt-foreground))",
-		},
-		itemStyle: chartTextStyle("tooltipBody"),
-		formatter: options?.formatter
-			? (value: unknown) => options.formatter?.(Number(value))
-			: undefined,
+		content: ((props: {
+			active?: boolean;
+			payload?: readonly ChartTooltipItem[];
+			label?: unknown;
+		}) =>
+			createElement(ChartTooltipContent, {
+				active: props.active,
+				payload: props.payload,
+				label: props.label as string | number | undefined,
+				formatter: options?.formatter,
+			})) as never,
 	};
 }
 

@@ -3,13 +3,13 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
 
 const sparkData = [
-	{ value: 18 },
-	{ value: 24 },
-	{ value: 20 },
-	{ value: 28 },
-	{ value: 26 },
-	{ value: 32 },
-	{ value: 30 },
+	{ day: "Mon", value: 18 },
+	{ day: "Tue", value: 24 },
+	{ day: "Wed", value: 20 },
+	{ day: "Thu", value: 28 },
+	{ day: "Fri", value: 26 },
+	{ day: "Sat", value: 32 },
+	{ day: "Sun", value: 30 },
 ];
 
 export function SparklineCard() {
@@ -22,7 +22,7 @@ export function SparklineCard() {
 			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 space-y-3">
 				<div className="text-2xl font-semibold text-foreground">24.8k</div>
 				<Sparkline
-					data={sparkData.map((row, index) => ({ x: index, y: row.value }))}
+					data={sparkData.map((row) => ({ x: row.day, y: row.value }))}
 					ariaLabel={t("dashboard.weeklyActive")}
 					className="h-14 w-full"
 				/>

@@ -2,6 +2,7 @@ import { AreaChart } from "@nocoo/basalt/charts/area";
 import { BarChart } from "@nocoo/basalt/charts/bar";
 import { Activity, BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { formatUsd } from "@/lib/format";
 import { useFlowComparisonViewModel } from "@/viewmodels/useFlowComparisonViewModel";
 
 export default function FlowComparisonPage() {
@@ -46,9 +47,15 @@ export default function FlowComparisonPage() {
 				</div>
 				<AreaChart
 					data={flowData.map((row) => ({ x: row.month, y: row.inflow, y2: row.outflow }))}
+					series={[
+						{ key: "y", label: t("pages.flowComparison.inflow") },
+						{ key: "y2", label: t("pages.flowComparison.outflow") },
+					]}
 					ariaLabel={t("pages.flowComparison.cashFlowOverTimeAria")}
 					className="h-[200px] w-full md:h-[240px]"
 					showAxes
+					showLegend
+					valueFormatter={formatUsd}
 				/>
 			</div>
 
@@ -61,9 +68,11 @@ export default function FlowComparisonPage() {
 				</div>
 				<BarChart
 					data={netFlowData.map((row) => ({ x: row.month, y: row.net }))}
+					series={[{ key: "y", label: t("pages.flowComparison.net") }]}
 					ariaLabel={t("pages.flowComparison.netCashFlowByMonthAria")}
 					className="h-[160px] w-full md:h-[180px]"
 					showAxes
+					valueFormatter={formatUsd}
 				/>
 			</div>
 		</>

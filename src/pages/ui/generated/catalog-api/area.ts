@@ -39,6 +39,11 @@ export const API = [
 				type: "boolean",
 				required: false,
 			},
+			{
+				name: "valueFormatter",
+				type: "(value: number) => string",
+				required: false,
+			},
 		],
 	},
 ];

@@ -36,10 +36,11 @@ describe("chart type helpers", () => {
 	it("styles grid, tooltip, and legend from the same type scale", () => {
 		expect(GRID_PROPS.strokeDasharray).toBe(CHART_TYPE.gridDash);
 		expect(GRID_PROPS.strokeOpacity).toBe(CHART_TYPE.gridOpacity);
-		expect(chartTooltipContentStyle().fontSize).toBe(12);
-		expect(chartTooltipContentStyle().boxShadow).toContain("0 10px 15px");
+		expect(chartTooltipContentStyle().padding).toBe("0");
+		expect(chartTooltipContentStyle().background).toBe("transparent");
 		expect(chartTooltipProps({ cursor: "line" }).wrapperStyle.outline).toBe("none");
 		expect(chartTooltipProps({ cursor: "line" }).wrapperStyle.transition).toBe("none");
+		expect(chartTooltipProps({ cursor: "line" }).content).toBeTypeOf("function");
 		expect(BAR_RADIUS.vertical).toEqual([4, 4, 0, 0]);
 		expect(ANIMATION_PROPS.isAnimationActive).toBe(false);
 	});
