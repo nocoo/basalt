@@ -4,35 +4,55 @@
 
 ### Single Source of Truth
 
-The **canonical version** lives in `package.json` → `"version"`. All other
-consumers derive from it at build time:
+The **canonical version** lives in the **root** `package.json` → `"version"`.
+Edit that field only. Never hardcode a version string in source, docs
+badges, or tests.
 
 | Consumer | Mechanism |
 |---|---|
-| Sidebar badge (`v1.0.0`) | `__APP_VERSION__` global, injected via `vite.config.ts` → `define` |
-| `/api/live` endpoint | Vite dev-server plugin reads `package.json` at request time |
-| `vitest.config.ts` | Same `define` pattern for test environment |
-| TypeScript | Declared in `src/vite-env.d.ts` as `declare const __APP_VERSION__: string` |
+| Site sidebar badge (`vX.Y.Z`) | `__APP_VERSION__`, injected via `vite.config.ts` → `define` |
+| `/api/live` | Vite plugin reads root `package.json` at request time |
+| `vitest.config.ts` | Same `define` pattern |
+| TypeScript | `src/vite-env.d.ts` → `declare const __APP_VERSION__: string` |
+| `@nocoo/basalt` | `packages/basalt/package.json` `"version"` **must equal** the root. `packages/basalt/scripts/verify-pack.ts` fails the pack gate if they drift. Copy the root value when bumping; do not invent a second number. |
 
-**Never hardcode a version string anywhere.** Always read from `package.json`.
+Root `package.json` is `"private": true` (the site). The npm package is
+`packages/basalt` (`@nocoo/basalt`, public). Publishing the repo root is
+forbidden (`EPRIVATE`).
 
 ### Versioning Rules (SemVer)
 
 - **MAJOR** — breaking changes to public API, routes, or data models
 - **MINOR** — new features, pages, or components (backward-compatible)
 - **PATCH** — bug fixes, styling tweaks, dependency bumps
+- **Prerelease** — `X.Y.Z-rc.N` (or `-alpha` / `-beta`). Site and package
+  stay on the same string.
 
 ### Release Checklist
 
-1. **Bump version** in `package.json`
-2. **Update `CHANGELOG.md`** — add a new `## [x.y.z] - YYYY-MM-DD` section
-3. **Run full verification**: `bun run lint && bun run build && bun run test`
-4. **Commit**: `chore: release vX.Y.Z`
-5. **Tag**: `git tag -a vX.Y.Z -m "vX.Y.Z"`
-6. **Push**: `git push && git push --tags`
-7. **GitHub Release**: `gh release create vX.Y.Z --title "vX.Y.Z" --notes-from-tag`
-   - Attach build artifacts if applicable
-   - Copy the relevant CHANGELOG section into release notes
+Site deploy follows the tag. npm publish is a separate step on
+`packages/basalt` only.
+
+1. **Bump** root `package.json` `"version"`, then copy the same string to
+   `packages/basalt/package.json`.
+2. **CHANGELOG.md** — `## [x.y.z] - YYYY-MM-DD` (Keep a Changelog).
+3. **Commit**: `chore: release vX.Y.Z` (husky: typecheck, lint, test).
+4. **Package gates**: from repo root, `bun run package:prepublish`
+   (typecheck, lint, coverage, package build, types, pack:check, publint,
+   consumer gates A/B/C/D). `consumer:next` runs Chromium.
+5. **npm publish** from `packages/basalt`, never the repo root:
+   - Stable: `npm publish --access public --registry https://registry.npmjs.org/`
+   - Prerelease: add `--tag rc` (or `alpha` / `beta`) so `latest` is
+     untouched. Install with `@nocoo/basalt@X.Y.Z-rc.N` or `@rc`.
+   - 2FA: `--otp=<code>`. After a green `package:prepublish` in the same
+     tree, `--ignore-scripts` is allowed so OTP is not racing another
+     coverage run.
+6. **Tag**: `git tag -a vX.Y.Z -m "vX.Y.Z"` (immutable).
+7. **Push**: `git push && git push --tags`.
+8. **GitHub Release**: `gh release create vX.Y.Z --title "vX.Y.Z"` with
+   the CHANGELOG section. Add `--prerelease` when the version contains
+   `-alpha`, `-beta`, or `-rc`.
+9. Confirm `npm view @nocoo/basalt@version` and `gh run list --limit 5`.
 
 ### CHANGELOG Format
 
@@ -49,7 +69,7 @@ Follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/):
 ### Git Tag Convention
 
 - Annotated tags only: `git tag -a vX.Y.Z -m "vX.Y.Z"`
-- Tag name matches `package.json` version prefixed with `v`
+- Tag name matches root `package.json` version prefixed with `v`
 - Tags are immutable — never delete or move a published tag
 
 ### GitHub Release Convention
