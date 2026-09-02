@@ -23,8 +23,6 @@ const PLANNED_SLUGS = [
 	"registry",
 	"changelog",
 	"maps",
-	"resource-list",
-	"delete-resource",
 ];
 
 function RouterProbe() {
@@ -88,7 +86,7 @@ describe("AppSidebar", () => {
 		const disabledButtons = catalogButtons.filter((button) => button.disabled);
 
 		expect(catalogButtons).toHaveLength(101);
-		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(89);
+		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(91);
 		expect(disabledButtons.map((button) => button.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const button of disabledButtons) {
 			expect(button).toHaveTextContent("Planned");
@@ -125,7 +123,7 @@ describe("AppSidebar", () => {
 		expect(catalogOptions).toHaveLength(101);
 		expect(
 			catalogOptions.filter((option) => option.getAttribute("data-disabled") !== "true"),
-		).toHaveLength(89);
+		).toHaveLength(91);
 		expect(disabledOptions.map((option) => option.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const option of disabledOptions) {
 			expect(option).toHaveTextContent("Planned");

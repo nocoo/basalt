@@ -12,8 +12,8 @@ describe("generated catalog page status", () => {
 		);
 		const statuses = CATALOG.map((entry) => [entry.slug, catalogPageStatus(entry.slug)] as const);
 		expect(statuses).toHaveLength(101);
-		expect(statuses.filter(([, status]) => status === "ready")).toHaveLength(89);
-		expect(statuses.filter(([, status]) => status === "planned")).toHaveLength(12);
+		expect(statuses.filter(([, status]) => status === "ready")).toHaveLength(91);
+		expect(statuses.filter(([, status]) => status === "planned")).toHaveLength(10);
 		for (const [slug, status] of statuses) {
 			expect(status, slug).toBe(
 				resolveCatalogPageState(slug, docs, (key) => content[key]?.examples[0]).pageStatus,

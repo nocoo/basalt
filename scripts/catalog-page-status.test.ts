@@ -57,8 +57,8 @@ describe("catalog page-status generator", () => {
 		expect(first).not.toMatch(/^import /m);
 		expect(first).not.toContain("React");
 		expect(first).not.toContain("render:");
-		expect(first.match(/: "ready",/g)).toHaveLength(89);
-		expect(first.match(/: "planned",/g)).toHaveLength(12);
+		expect(first.match(/: "ready",/g)).toHaveLength(91);
+		expect(first.match(/: "planned",/g)).toHaveLength(10);
 	});
 
 	it("writes explicitly and rejects missing or stale bytes with one repair command", () => {

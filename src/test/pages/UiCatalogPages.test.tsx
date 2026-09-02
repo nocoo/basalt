@@ -85,7 +85,7 @@ describe("ui catalog", () => {
 		renderCatalog("/ui");
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Component library" })).toBeInTheDocument();
-		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("89 / 92 ready");
+		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("91 / 92 ready");
 
 		for (const [index, group] of CATALOG_INDEX_GROUPS.entries()) {
 			const section = screen.getByRole("region", { name: group.label });
@@ -185,7 +185,7 @@ describe("ui catalog", () => {
 			"aria-checked",
 			"true",
 		);
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("3 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent(/^1 result$/);
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
 			"/ui?status=planned",
@@ -195,7 +195,7 @@ describe("ui catalog", () => {
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
 		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("89 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("91 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",

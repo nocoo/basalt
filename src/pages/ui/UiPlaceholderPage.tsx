@@ -1,14 +1,14 @@
 import { Button } from "@nocoo/basalt/components/button";
-import { Check, ChevronDown, Copy } from "lucide-react";
-import { use, useState } from "react";
-import { Link, useParams } from "react-router";
-import { Github } from "@/components/icons/github";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@nocoo/basalt/components/dropdown-menu";
+import { Check, ChevronDown, Copy } from "lucide-react";
+import { use, useState } from "react";
+import { Link, useParams } from "react-router";
+import { Github } from "@/components/icons/github";
 import { CATALOG_BY_SLUG, type CatalogEntry, catalogImportPath, catalogNavName } from "./catalog";
 import { loadCatalogPageContent } from "./catalog-content-loader";
 import { catalogPageStatus } from "./catalog-page-status";

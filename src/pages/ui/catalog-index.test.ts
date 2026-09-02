@@ -52,12 +52,12 @@ describe("catalog index model", () => {
 	});
 
 	it("models the current page and release states independently", () => {
-		expect(CATALOG_INDEX_READY_COUNT).toBe(89);
+		expect(CATALOG_INDEX_READY_COUNT).toBe(91);
 		expect(
 			CATALOG_INDEX_ITEMS.filter((item) => item.pageStatus === "planned").map(
 				(item) => item.entry.slug,
 			),
-		).toEqual(["maps", "resource-list", "delete-resource"]);
+		).toEqual(["maps"]);
 		expect(new Set(CATALOG_INDEX_ITEMS.map((item) => item.releaseStatus))).toEqual(
 			new Set(["stable", "catalog"]),
 		);
@@ -78,12 +78,12 @@ describe("catalog index model", () => {
 		]);
 	});
 
-	it("models all public catalog navigation as 89 ready and 12 planned pages", () => {
+	it("models all public catalog navigation as 91 ready and 10 planned pages", () => {
 		const states = CATALOG.map((entry) => ({
 			slug: entry.slug,
 			pageStatus: resolveCatalogPageState(entry.slug, catalogDocs, catalogHero).pageStatus,
 		}));
-		expect(states.filter((item) => item.pageStatus === "ready")).toHaveLength(89);
+		expect(states.filter((item) => item.pageStatus === "ready")).toHaveLength(91);
 		expect(states.filter((item) => item.pageStatus === "planned").map((item) => item.slug)).toEqual(
 			[
 				"installation",
@@ -96,8 +96,6 @@ describe("catalog index model", () => {
 				"registry",
 				"changelog",
 				"maps",
-				"resource-list",
-				"delete-resource",
 			],
 		);
 	});

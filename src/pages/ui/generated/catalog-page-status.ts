@@ -100,6 +100,6 @@ export const CATALOG_PAGE_STATUS = {
 	"date-navigation": "ready",
 	palette: "ready",
 	"page-header": "ready",
-	"resource-list": "planned",
-	"delete-resource": "planned",
+	"resource-list": "ready",
+	"delete-resource": "ready",
 } as const;

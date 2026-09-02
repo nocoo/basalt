@@ -1,9 +1,11 @@
 import { describe, expect, it } from "vitest";
 import dataLayout from "./catalog-content/families/data-layout";
 import { DATA_TABLE_EXAMPLES } from "./examples/data-table";
+import { DELETE_RESOURCE_EXAMPLES } from "./examples/delete-resource";
 import { FLOW_EXAMPLES } from "./examples/flow";
 import { GRID_EXAMPLES } from "./examples/grid";
 import { PAGE_HEADER_EXAMPLES } from "./examples/page-header";
+import { RESOURCE_LIST_EXAMPLES } from "./examples/resource-list";
 import { STAT_STRIP_EXAMPLES } from "./examples/stat-strip";
 import { TABLE_EXAMPLES } from "./examples/table";
 import { TABLE_PAGER_EXAMPLES } from "./examples/table-pager";
@@ -31,6 +33,8 @@ const DATA_LAYOUT_SCENARIOS = {
 	"page-header": ["page-header-default", "page-header-long-responsive-content"],
 	"stat-strip": ["stat-strip-overview", "stat-strip-loading-values"],
 	"table-pager": ["table-pager-range-navigation", "table-pager-disabled-and-localized"],
+	"resource-list": ["resource-list-default"],
+	"delete-resource": ["delete-resource-default"],
 } as const;
 
 const DATA_LAYOUT_DESCRIPTIONS = {
@@ -43,19 +47,19 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 } as const;
 
 describe("data-layout catalog content family", () => {
-	it("owns exactly seven slugs and eighty-nine generated owners", () => {
+	it("owns exactly nine slugs and ninety-one generated owners", () => {
 		expect(Object.keys(dataLayout)).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS));
-		expect(Object.keys(dataLayout)).toHaveLength(7);
+		expect(Object.keys(dataLayout)).toHaveLength(9);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "data-layout")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(89);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(91);
 	});
 
-	it("keeps the sixteen final winner scenarios in their audited order", () => {
+	it("keeps the eighteen final winner scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(DATA_LAYOUT_SCENARIOS)) {
 			const examples = dataLayout[slug]?.examples ?? [];
@@ -74,7 +78,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(16);
+		expect(count).toBe(18);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {
@@ -175,5 +179,7 @@ describe("data-layout catalog content family", () => {
 			{ id: "table-pager-range-navigation", title: "Range navigation" },
 			{ id: "table-pager-disabled-and-localized", title: "Disabled and localized" },
 		]);
+		expect(dataLayout["resource-list"]?.examples).toBe(RESOURCE_LIST_EXAMPLES);
+		expect(dataLayout["delete-resource"]?.examples).toBe(DELETE_RESOURCE_EXAMPLES);
 	});
 });

@@ -1,3 +1,4 @@
+import { Grid } from "@nocoo/basalt/components/grid";
 import {
 	AlignHorizontalDistributeCenter,
 	Columns3,
@@ -64,21 +65,21 @@ export default function LayoutPage() {
 			{/* Equal columns */}
 			<Section title={t("pages.layout.equalColumns")} icon={Grid3X3}>
 				<div className="space-y-4">
-					<div className="grid grid-cols-2 gap-4">
+					<Grid columns={2} className="gap-4">
 						<LabeledBlock label="1/2" />
 						<LabeledBlock label="1/2" />
-					</div>
-					<div className="grid grid-cols-3 gap-4">
+					</Grid>
+					<Grid columns={3} className="gap-4">
 						<LabeledBlock label="1/3" />
 						<LabeledBlock label="1/3" />
 						<LabeledBlock label="1/3" />
-					</div>
-					<div className="grid grid-cols-4 gap-4">
+					</Grid>
+					<Grid columns={4} className="gap-4">
 						<LabeledBlock label="1/4" />
 						<LabeledBlock label="1/4" />
 						<LabeledBlock label="1/4" />
 						<LabeledBlock label="1/4" />
-					</div>
+					</Grid>
 				</div>
 			</Section>
 
