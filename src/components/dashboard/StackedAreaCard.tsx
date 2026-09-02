@@ -25,9 +25,15 @@ export function StackedAreaCard() {
 						y2: row.growth,
 						y3: row.churn,
 					}))}
+					series={[
+						{ key: "y", label: "Core" },
+						{ key: "y2", label: "Growth" },
+						{ key: "y3", label: "Churn" },
+					]}
 					ariaLabel={t("dashboard.stackedActivity")}
 					className="h-full w-full"
 					showAxes
+					showLegend
 					stacked
 				/>
 			</div>

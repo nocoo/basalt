@@ -30,6 +30,11 @@ export const API = [
 				required: false,
 			},
 			{
+				name: "showLegend",
+				type: "boolean",
+				required: false,
+			},
+			{
 				name: "color",
 				type: "string",
 				required: false,

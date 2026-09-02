@@ -138,16 +138,6 @@ export function chartTooltipProps(options?: {
 	};
 }
 
-export function chartLegendProps() {
-	return {
-		wrapperStyle: {
-			fontSize: chartFontSize("legend"),
-			color: chartAxis,
-		},
-		iconSize: 8,
-	};
-}
-
 export function seriesColor(
 	series: ChartSeriesDescriptor | undefined,
 	index: number,

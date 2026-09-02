@@ -8,7 +8,8 @@ import {
 	GRID_PROPS,
 	seriesColor,
 } from "./config";
-import { ChartFrame } from "./frame";
+import { ChartShell } from "./frame";
+import { ChartLegend } from "./legend";
 import {
 	resolveChartSeries,
 	type XYPoint,
@@ -22,6 +23,7 @@ export type LineChartProps = {
 	ariaLabel?: string;
 	className?: string;
 	showAxes?: boolean;
+	showLegend?: boolean;
 	color?: string;
 	valueFormatter?: (value: number) => string;
 };
@@ -32,12 +34,17 @@ export function LineChart({
 	ariaLabel = "Line chart",
 	className,
 	showAxes = false,
+	showLegend = false,
 	color,
 	valueFormatter,
 }: LineChartProps) {
 	const lines = resolveChartSeries(series, xyFallbackKeys(data));
 	return (
-		<ChartFrame ariaLabel={ariaLabel} className={className}>
+		<ChartShell
+			ariaLabel={ariaLabel}
+			className={className}
+			legend={showLegend ? <ChartLegend items={lines} shape="line" /> : undefined}
+		>
 			<RechartsLine data={data} margin={showAxes ? CHART_PLOT_MARGIN : CHART_PLOT_MARGIN_BARE}>
 				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
@@ -55,6 +62,6 @@ export function LineChart({
 					/>
 				))}
 			</RechartsLine>
-		</ChartFrame>
+		</ChartShell>
 	);
 }

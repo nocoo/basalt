@@ -1,4 +1,4 @@
-import { cloneElement, type ReactElement } from "react";
+import { cloneElement, type ReactElement, type ReactNode } from "react";
 import { ResponsiveContainer } from "recharts";
 import { cn } from "../utils/cn";
 import { RESPONSIVE_CONTAINER_PROPS } from "./config";
@@ -29,6 +29,37 @@ export function ChartFrame({
 			<ResponsiveContainer {...RESPONSIVE_CONTAINER_PROPS}>
 				{cloneElement(children, { accessibilityLayer: false })}
 			</ResponsiveContainer>
+		</div>
+	);
+}
+
+export function ChartShell({
+	ariaLabel,
+	className,
+	children,
+	size,
+	legend,
+}: ChartFrameProps & { legend?: ReactNode }) {
+	if (!legend) {
+		return (
+			<ChartFrame ariaLabel={ariaLabel} className={className} size={size}>
+				{children}
+			</ChartFrame>
+		);
+	}
+	return (
+		<div
+			className={className}
+			style={{ display: "flex", flexDirection: "column", minHeight: 0, minWidth: 0 }}
+		>
+			<ChartFrame
+				ariaLabel={ariaLabel}
+				className="min-h-0 w-full flex-1"
+				size={className ? "h-full w-full" : size}
+			>
+				{children}
+			</ChartFrame>
+			{legend}
 		</div>
 	);
 }

@@ -30,6 +30,11 @@ export const API = [
 				required: false,
 			},
 			{
+				name: "showLegend",
+				type: "boolean",
+				required: false,
+			},
+			{
 				name: "stacked",
 				type: "boolean",
 				required: false,

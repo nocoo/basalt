@@ -24,9 +24,15 @@ export function MultiLineCard() {
 						y2: row.activation,
 						y3: row.conversion,
 					}))}
+					series={[
+						{ key: "y", label: "Retention" },
+						{ key: "y2", label: "Activation" },
+						{ key: "y3", label: "Conversion" },
+					]}
 					ariaLabel={t("dashboard.multiSeriesTrend")}
 					className="h-full w-full"
 					showAxes
+					showLegend
 				/>
 			</div>
 		</LayerCard>

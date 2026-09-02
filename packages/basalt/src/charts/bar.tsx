@@ -9,7 +9,8 @@ import {
 	GRID_PROPS,
 	seriesColor,
 } from "./config";
-import { ChartFrame } from "./frame";
+import { ChartShell } from "./frame";
+import { ChartLegend } from "./legend";
 import { resolveChartSeries, type XYPoint, type XYSeriesDescriptor } from "./series";
 
 export type BarChartProps = {
@@ -18,6 +19,7 @@ export type BarChartProps = {
 	ariaLabel?: string;
 	className?: string;
 	showAxes?: boolean;
+	showLegend?: boolean;
 	color?: string;
 	valueFormatter?: (value: number) => string;
 };
@@ -28,12 +30,17 @@ export function BarChart({
 	ariaLabel = "Bar chart",
 	className,
 	showAxes = false,
+	showLegend = false,
 	color,
 	valueFormatter,
 }: BarChartProps) {
 	const bars = resolveChartSeries(series, ["y"]);
 	return (
-		<ChartFrame ariaLabel={ariaLabel} className={className}>
+		<ChartShell
+			ariaLabel={ariaLabel}
+			className={className}
+			legend={showLegend ? <ChartLegend items={bars} shape="bar" /> : undefined}
+		>
 			<RechartsBar data={data} margin={showAxes ? CHART_PLOT_MARGIN : CHART_PLOT_MARGIN_BARE}>
 				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
@@ -50,6 +57,6 @@ export function BarChart({
 					/>
 				))}
 			</RechartsBar>
-		</ChartFrame>
+		</ChartShell>
 	);
 }

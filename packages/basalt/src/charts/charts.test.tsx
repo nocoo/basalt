@@ -37,6 +37,15 @@ describe("charts", () => {
 	it("accepts caller data and accessible names", () => {
 		render(<LineChart data={points} ariaLabel="Requests" />);
 		expect(screen.getByRole("img", { name: "Requests" })).toBeInTheDocument();
+		render(
+			<LineChart
+				data={points}
+				ariaLabel="Legend line"
+				showLegend
+				series={[{ key: "y", label: "Requests" }]}
+			/>,
+		);
+		expect(screen.getByText("Requests")).toBeInTheDocument();
 		render(<BarChart data={points} ariaLabel="Bars" />);
 		expect(screen.getByRole("img", { name: "Bars" })).toBeInTheDocument();
 		render(<AreaChart data={points} ariaLabel="Area" />);

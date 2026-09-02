@@ -8,6 +8,7 @@ import { DonutChart } from "./donut";
 import { Gauge } from "./gauge";
 import { HeatmapCalendar } from "./heatmap-calendar";
 import { ItemList } from "./item-list";
+import { ChartLegend } from "./legend";
 import { LineChart } from "./line";
 import { ChartPalette } from "./palette";
 import { Sparkline } from "./sparkline";
@@ -17,6 +18,7 @@ import { Timeseries } from "./timeseries";
 describe("chart exports", () => {
 	it("exposes independently importable chart components", () => {
 		expect(LineChart).toBeTypeOf("function");
+		expect(ChartLegend).toBeTypeOf("function");
 		expect(BarChart).toBeTypeOf("function");
 		expect(AreaChart).toBeTypeOf("function");
 		expect(DonutChart).toBeTypeOf("function");

@@ -6,7 +6,6 @@ import {
 	CHART_TYPE,
 	cartesianAxisProps,
 	chartFontSize,
-	chartLegendProps,
 	chartTextStyle,
 	chartTickStyle,
 	chartTooltipContentStyle,
@@ -41,7 +40,6 @@ describe("chart type helpers", () => {
 		expect(chartTooltipContentStyle().boxShadow).toContain("0 10px 15px");
 		expect(chartTooltipProps({ cursor: "line" }).wrapperStyle.outline).toBe("none");
 		expect(chartTooltipProps({ cursor: "line" }).wrapperStyle.transition).toBe("none");
-		expect(chartLegendProps().wrapperStyle.fontSize).toBe(12);
 		expect(BAR_RADIUS.vertical).toEqual([4, 4, 0, 0]);
 		expect(ANIMATION_PROPS.isAnimationActive).toBe(false);
 	});

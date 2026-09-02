@@ -9,7 +9,8 @@ import {
 	GRID_PROPS,
 	seriesColor,
 } from "./config";
-import { ChartFrame } from "./frame";
+import { ChartShell } from "./frame";
+import { ChartLegend } from "./legend";
 import {
 	resolveChartSeries,
 	type XYPoint,
@@ -23,6 +24,7 @@ export type AreaChartProps = {
 	ariaLabel?: string;
 	className?: string;
 	showAxes?: boolean;
+	showLegend?: boolean;
 	stacked?: boolean;
 };
 
@@ -32,12 +34,17 @@ export function AreaChart({
 	ariaLabel = "Area chart",
 	className,
 	showAxes = false,
+	showLegend = false,
 	stacked = false,
 }: AreaChartProps) {
 	const areas = resolveChartSeries(series, xyFallbackKeys(data));
 	const stackId = stacked ? "stack" : undefined;
 	return (
-		<ChartFrame ariaLabel={ariaLabel} className={className}>
+		<ChartShell
+			ariaLabel={ariaLabel}
+			className={className}
+			legend={showLegend ? <ChartLegend items={areas} shape="area" /> : undefined}
+		>
 			<RechartsArea data={data} margin={showAxes ? CHART_PLOT_MARGIN : CHART_PLOT_MARGIN_BARE}>
 				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
@@ -59,6 +66,6 @@ export function AreaChart({
 					);
 				})}
 			</RechartsArea>
-		</ChartFrame>
+		</ChartShell>
 	);
 }

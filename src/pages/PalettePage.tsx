@@ -131,22 +131,6 @@ function Section({
 export default function PalettePage() {
 	const { t } = useTranslation();
 
-	const lineLegend = [
-		{ label: t("pages.palette.seriesA"), color: CHART_COLORS[0] },
-		{ label: t("pages.palette.seriesB"), color: CHART_COLORS[2] },
-		{ label: t("pages.palette.seriesC"), color: CHART_COLORS[4] },
-	];
-
-	const barLegend = [
-		{ label: t("pages.palette.income"), color: CHART_COLORS[0] },
-		{ label: t("pages.palette.expense"), color: CHART_COLORS[2] },
-	];
-
-	const areaLegend = [
-		{ label: t("pages.palette.inflow"), color: CHART_COLORS[0] },
-		{ label: t("pages.palette.outflow"), color: CHART_COLORS[2] },
-	];
-
 	return (
 		<>
 			{/* Base Colors */}
@@ -188,18 +172,16 @@ export default function PalettePage() {
 				<Section title={t("pages.palette.lineChart")} icon={LineChartIcon}>
 					<LineChart
 						data={lineData.map((row) => ({ x: row.name, y: row.a, y2: row.b, y3: row.c }))}
+						series={[
+							{ key: "y", label: t("pages.palette.seriesA") },
+							{ key: "y2", label: t("pages.palette.seriesB") },
+							{ key: "y3", label: t("pages.palette.seriesC") },
+						]}
 						ariaLabel={t("pages.palette.lineChartAria")}
 						className="h-[200px] w-full"
 						showAxes
+						showLegend
 					/>
-					<div className="mt-3 flex flex-wrap gap-4">
-						{lineLegend.map((s) => (
-							<div key={s.label} className="flex items-center gap-2">
-								<div className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />
-								<span className="text-xs text-muted-foreground">{s.label}</span>
-							</div>
-						))}
-					</div>
 				</Section>
 
 				{/* Donut Chart */}
@@ -230,36 +212,30 @@ export default function PalettePage() {
 				<Section title={t("pages.palette.groupedBarChart")} icon={BarChart3}>
 					<GroupedBarChart
 						data={barData.map((row) => ({ x: row.name, y: row.income, y2: row.expense }))}
+						series={[
+							{ key: "y", label: t("pages.palette.income") },
+							{ key: "y2", label: t("pages.palette.expense") },
+						]}
 						ariaLabel={t("pages.palette.groupedBarChartAria")}
 						className="h-[200px] w-full"
 						showAxes
+						showLegend
 					/>
-					<div className="mt-3 flex flex-wrap gap-4">
-						{barLegend.map((s) => (
-							<div key={s.label} className="flex items-center gap-2">
-								<div className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />
-								<span className="text-xs text-muted-foreground">{s.label}</span>
-							</div>
-						))}
-					</div>
 				</Section>
 
 				{/* Area Chart */}
 				<Section title={t("pages.palette.areaChart")} icon={Activity}>
 					<AreaChart
 						data={areaData.map((row) => ({ x: row.name, y: row.inflow, y2: row.outflow }))}
+						series={[
+							{ key: "y", label: t("pages.palette.inflow") },
+							{ key: "y2", label: t("pages.palette.outflow") },
+						]}
 						ariaLabel={t("pages.palette.areaChartAria")}
 						className="h-[200px] w-full"
 						showAxes
+						showLegend
 					/>
-					<div className="mt-3 flex flex-wrap gap-4">
-						{areaLegend.map((s) => (
-							<div key={s.label} className="flex items-center gap-2">
-								<div className="h-2.5 w-2.5 rounded-full" style={{ background: s.color }} />
-								<span className="text-xs text-muted-foreground">{s.label}</span>
-							</div>
-						))}
-					</div>
 				</Section>
 			</div>
 		</>

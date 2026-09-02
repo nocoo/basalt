@@ -29,6 +29,11 @@ export const API = [
 				type: "boolean",
 				required: false,
 			},
+			{
+				name: "showLegend",
+				type: "boolean",
+				required: false,
+			},
 		],
 	},
 ];

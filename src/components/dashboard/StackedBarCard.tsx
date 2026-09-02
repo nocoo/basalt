@@ -20,8 +20,15 @@ export function StackedBarCard() {
 			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 h-56">
 				<StackedBarChart
 					data={stackedData.map((row) => ({ x: row.name, y: row.a, y2: row.b, y3: row.c }))}
+					series={[
+						{ key: "y", label: "Core" },
+						{ key: "y2", label: "Growth" },
+						{ key: "y3", label: "Churn" },
+					]}
 					ariaLabel={t("dashboard.stackedEngagement")}
 					className="h-full w-full"
+					showAxes
+					showLegend
 				/>
 			</div>
 		</LayerCard>

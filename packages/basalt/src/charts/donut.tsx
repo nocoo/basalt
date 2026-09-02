@@ -1,6 +1,7 @@
-import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
-import { ANIMATION_PROPS, chartLegendProps, chartTooltipProps, seriesColor } from "./config";
-import { ChartFrame } from "./frame";
+import { Cell, Pie, PieChart, Tooltip } from "recharts";
+import { ANIMATION_PROPS, chartTooltipProps, seriesColor } from "./config";
+import { ChartShell } from "./frame";
+import { ChartLegend } from "./legend";
 import type { ChartSeriesDescriptor, NamedValue } from "./series";
 
 export type DonutChartProps = {
@@ -20,8 +21,21 @@ export function DonutChart({
 	showLegend = false,
 	valueFormatter,
 }: DonutChartProps) {
+	const legendItems = data.map((entry, index) => {
+		const item = series?.find((candidate) => candidate.key === entry.name);
+		return {
+			key: `${entry.name}-${index}`,
+			label: item?.label ?? entry.name,
+			color: seriesColor(item, index),
+		};
+	});
 	return (
-		<ChartFrame ariaLabel={ariaLabel} className={className} size="h-36 w-36">
+		<ChartShell
+			ariaLabel={ariaLabel}
+			className={className}
+			size="h-36 w-36"
+			legend={showLegend ? <ChartLegend items={legendItems} shape="bar" /> : undefined}
+		>
 			<PieChart>
 				<Pie
 					data={data}
@@ -37,9 +51,8 @@ export function DonutChart({
 						return <Cell key={`${entry.name}-${index}`} fill={seriesColor(item, index)} />;
 					})}
 				</Pie>
-				{showLegend ? <Legend {...chartLegendProps()} /> : null}
 				<Tooltip {...chartTooltipProps({ formatter: valueFormatter, cursor: false })} />
 			</PieChart>
-		</ChartFrame>
+		</ChartShell>
 	);
 }

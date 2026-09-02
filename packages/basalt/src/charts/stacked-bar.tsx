@@ -9,7 +9,8 @@ import {
 	GRID_PROPS,
 	seriesColor,
 } from "./config";
-import { ChartFrame } from "./frame";
+import { ChartShell } from "./frame";
+import { ChartLegend } from "./legend";
 import { resolveChartSeries, type XYPoint, type XYSeriesDescriptor } from "./series";
 
 export type StackedBarChartProps = {
@@ -18,6 +19,7 @@ export type StackedBarChartProps = {
 	ariaLabel?: string;
 	className?: string;
 	showAxes?: boolean;
+	showLegend?: boolean;
 };
 
 export function StackedBarChart({
@@ -26,10 +28,15 @@ export function StackedBarChart({
 	ariaLabel = "Stacked bar chart",
 	className,
 	showAxes = false,
+	showLegend = false,
 }: StackedBarChartProps) {
 	const bars = resolveChartSeries(series, ["y", "y2", "y3"]);
 	return (
-		<ChartFrame ariaLabel={ariaLabel} className={className}>
+		<ChartShell
+			ariaLabel={ariaLabel}
+			className={className}
+			legend={showLegend ? <ChartLegend items={bars} shape="bar" /> : undefined}
+		>
 			<RechartsBar data={data} margin={showAxes ? CHART_PLOT_MARGIN : CHART_PLOT_MARGIN_BARE}>
 				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
@@ -47,6 +54,6 @@ export function StackedBarChart({
 					/>
 				))}
 			</RechartsBar>
-		</ChartFrame>
+		</ChartShell>
 	);
 }
