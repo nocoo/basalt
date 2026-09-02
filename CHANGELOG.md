@@ -1,5 +1,33 @@
 # Changelog
 
+## [2.0.0] - 2026-09-03
+
+First stable 2.0. Includes rc.1–rc.3.
+
+### Added
+
+- Publishable `@nocoo/basalt` package with granular ESM exports, Tailwind v4
+  and standalone CSS, and consumer tarball gates.
+- Shared `ChartLegend` and a custom chart tooltip (swatch, muted label,
+  tabular value, popover chrome).
+- Accent swatches (`AccentProvider`) with a showcase header picker persisted
+  to `localStorage`.
+
+### Changed
+
+- Showcase login is the badge card only.
+- LoadingScreen is a small mark and shimmer bar.
+- Chart cards are one L2 surface; cartesian plots use compact margins.
+- Demo pages consume library Table, Button, Link, SensitiveInput, and
+  InputArea.
+
+### Fixed
+
+- Money and percent examples use integer series, named labels, and formatted
+  tooltip/axis values instead of raw `y` keys.
+- Legend markers follow the lead `color` prop and stay inside chart height.
+- Heatmap and metric cards no longer wrap plots in a second border.
+
 ## [2.0.0-rc.3] - 2026-09-02
 
 ### Added
