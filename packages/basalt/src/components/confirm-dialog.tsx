@@ -1,13 +1,13 @@
+import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import * as React from "react";
 import {
 	AlertDialog,
-	AlertDialogAction,
-	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
 	AlertDialogTitle,
+	AlertDialogTrigger,
 } from "./alert-dialog";
 import { Button } from "./button";
 
@@ -44,6 +44,10 @@ export interface ConfirmDialogProps {
 	 * @default false
 	 */
 	loading?: boolean;
+	/**
+	 * Control that opens the dialog. When set, closing restores focus to it.
+	 */
+	trigger?: React.ReactNode;
 }
 
 export interface UseConfirmOptions {
@@ -73,10 +77,17 @@ export function ConfirmDialog({
 	onOpenChange,
 	open,
 	title,
+	trigger,
 	variant = "default",
 }: ConfirmDialogProps) {
-	const panelRef = React.useRef<HTMLDivElement>(null);
-	const cancelRef = React.useRef<HTMLButtonElement>(null);
+	const triggerRef = React.useRef<HTMLButtonElement>(null);
+	const wasOpenRef = React.useRef(open);
+	React.useEffect(() => {
+		if (wasOpenRef.current && !open) {
+			triggerRef.current?.focus();
+		}
+		wasOpenRef.current = open;
+	}, [open]);
 	return (
 		<AlertDialog
 			open={open}
@@ -87,15 +98,15 @@ export function ConfirmDialog({
 				onOpenChange(next);
 			}}
 		>
+			{trigger ? (
+				<AlertDialogTrigger ref={triggerRef} asChild>
+					{trigger}
+				</AlertDialogTrigger>
+			) : null}
 			<AlertDialogContent
-				ref={panelRef}
-				onOpenAutoFocus={(event) => {
+				onCloseAutoFocus={(event) => {
 					event.preventDefault();
-					if (cancelRef.current && !cancelRef.current.disabled) {
-						cancelRef.current.focus();
-						return;
-					}
-					panelRef.current?.focus();
+					triggerRef.current?.focus();
 				}}
 			>
 				<AlertDialogHeader>
@@ -103,17 +114,12 @@ export function ConfirmDialog({
 					<AlertDialogDescription>{description}</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<AlertDialogCancel asChild>
-						<Button
-							ref={cancelRef}
-							disabled={loading}
-							variant="outline"
-							onClick={() => onOpenChange(false)}
-						>
+					<AlertDialogPrimitive.Cancel asChild>
+						<Button disabled={loading} variant="outline">
 							{cancelLabel}
 						</Button>
-					</AlertDialogCancel>
-					<AlertDialogAction asChild>
+					</AlertDialogPrimitive.Cancel>
+					<AlertDialogPrimitive.Action asChild>
 						<Button
 							loading={loading}
 							variant={variant}
@@ -126,7 +132,7 @@ export function ConfirmDialog({
 						>
 							{confirmLabel}
 						</Button>
-					</AlertDialogAction>
+					</AlertDialogPrimitive.Action>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>

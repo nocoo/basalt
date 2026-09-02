@@ -2668,6 +2668,7 @@ export interface WidgetProps {
 			"cancelLabel",
 			"variant",
 			"loading",
+			"trigger",
 		]);
 		expect(generated["confirm-dialog"]?.[1]?.props.map((prop) => prop.name)).toEqual([
 			"title",
@@ -3626,7 +3627,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"17a3df3ea2052b40fc115ce05a3c0d01575a21f9a6ff7f96c19cd25519a1fd79",
+			"de0e89c25ae57a039bbc0fb607affe49d0ad91077a00db3abef141aca3d14373",
 		);
 	}, 20_000);
 

@@ -62,6 +62,12 @@ export const API = [
 				default: "false",
 				description: "Disable both actions and ignore close requests while work is pending.",
 			},
+			{
+				name: "trigger",
+				type: "React.ReactNode",
+				required: false,
+				description: "Control that opens the dialog. When set, closing restores focus to it.",
+			},
 		],
 	},
 	{

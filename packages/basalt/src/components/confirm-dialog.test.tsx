@@ -82,6 +82,7 @@ describe("ConfirmDialog", () => {
 		expect(screen.getByRole("alertdialog")).toBeInTheDocument();
 
 		fireEvent.click(screen.getByRole("button", { name: "Keep" }));
+		expect(onOpenChange).toHaveBeenCalledTimes(1);
 		expect(onOpenChange).toHaveBeenCalledWith(false);
 	});
 

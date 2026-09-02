@@ -60,4 +60,23 @@ describe("AlertDialog", () => {
 		);
 		expect(screen.getByRole("alertdialog").className).toContain(DIALOG_SIZES.lg);
 	});
+
+	it("keeps default Cancel and Action styles when composed with asChild", () => {
+		render(
+			<AlertDialog defaultOpen>
+				<AlertDialogContent>
+					<AlertDialogCancel asChild>
+						<a href="#keep">Keep</a>
+					</AlertDialogCancel>
+					<AlertDialogAction asChild>
+						<a href="#delete">Delete</a>
+					</AlertDialogAction>
+				</AlertDialogContent>
+			</AlertDialog>,
+		);
+		expect(screen.getByRole("link", { name: "Keep" }).className).toContain("border-basalt-border");
+		expect(screen.getByRole("link", { name: "Delete" }).className).toContain(
+			"bg-basalt-destructive",
+		);
+	});
 });
