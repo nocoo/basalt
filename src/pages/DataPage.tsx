@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
+import { Button } from "@nocoo/basalt/components/button";
 import { Input } from "@nocoo/basalt/components/input";
 import { Separator } from "@nocoo/basalt/components/separator";
 import {
@@ -192,12 +193,9 @@ export default function DataPage() {
 								className="rounded-widget border-border bg-card pl-10 text-sm h-8"
 							/>
 						</div>
-						<button
-							type="button"
-							className="flex items-center gap-2 rounded-widget bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground"
-						>
-							<Filter className="h-3.5 w-3.5" strokeWidth={1.5} /> {t("common.filter")}
-						</button>
+						<Button variant="secondary" size="sm" icon={<Filter strokeWidth={1.5} />}>
+							{t("common.filter")}
+						</Button>
 					</div>
 				</div>
 				<Table aria-label={t("pages.data.dataTable")}>

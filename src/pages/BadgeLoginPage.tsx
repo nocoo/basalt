@@ -1,3 +1,4 @@
+import { Button } from "@nocoo/basalt/components/button";
 import { Mountain, Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -106,17 +107,8 @@ export default function BadgeLoginPage() {
 						<div className="flex-1" />
 
 						{/* Google Sign-in button */}
-						<button
-							type="button"
-							className="flex w-full items-center justify-center gap-2.5 rounded-xl bg-secondary px-4 py-3 text-sm font-medium text-foreground transition-colors hover:bg-accent"
-						>
-							<svg
-								className="h-4 w-4"
-								viewBox="0 0 24 24"
-								role="img"
-								aria-labelledby="google-logo-title"
-							>
-								<title id="google-logo-title">{t("pages.badgeLogin.continueWithGoogle")}</title>
+						<Button variant="secondary" className="w-full rounded-xl py-3">
+							<svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
 								<path
 									d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
 									fill="#4285F4"
@@ -135,7 +127,7 @@ export default function BadgeLoginPage() {
 								/>
 							</svg>
 							{t("pages.badgeLogin.continueWithGoogle")}
-						</button>
+						</Button>
 
 						{/* Terms */}
 						<p className="mt-3 text-center text-[10px] leading-relaxed text-muted-foreground/60">

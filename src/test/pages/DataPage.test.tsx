@@ -15,4 +15,10 @@ describe("DataPage", () => {
 		expect(within(table).getByRole("cell", { name: "INV-2041" })).toBeInTheDocument();
 		expect(within(table).getByRole("cell", { name: "Nova Labs" })).toBeInTheDocument();
 	});
+
+	it("uses a library button for table filter", () => {
+		render(<DataPage />);
+
+		expect(screen.getByRole("button", { name: "Filter" })).toBeInTheDocument();
+	});
 });

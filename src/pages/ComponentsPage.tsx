@@ -1,3 +1,4 @@
+import { Button } from "@nocoo/basalt/components/button";
 import {
 	Activity,
 	BarChart3,
@@ -125,12 +126,9 @@ export default function ComponentsPage() {
 							{t("pages.components.aiReadiness")}
 						</p>
 						<p className="text-xs text-muted-foreground">{t("pages.components.aiReadinessDesc")}</p>
-						<button
-							type="button"
-							className="mt-3 rounded-widget bg-secondary px-3 py-2 text-xs text-foreground"
-						>
+						<Button variant="secondary" size="sm" className="mt-3">
 							{t("common.viewModule")}
-						</button>
+						</Button>
 					</div>
 					<div className="rounded-widget border border-border bg-card p-4">
 						<p className="text-sm font-medium text-foreground">
@@ -139,12 +137,9 @@ export default function ComponentsPage() {
 						<p className="text-xs text-muted-foreground">
 							{t("pages.components.retentionModuleDesc")}
 						</p>
-						<button
-							type="button"
-							className="mt-3 rounded-widget bg-secondary px-3 py-2 text-xs text-foreground"
-						>
+						<Button variant="secondary" size="sm" className="mt-3">
 							{t("common.viewModule")}
-						</button>
+						</Button>
 					</div>
 				</div>
 			</Section>

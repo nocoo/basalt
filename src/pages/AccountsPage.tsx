@@ -1,3 +1,4 @@
+import { Button } from "@nocoo/basalt/components/button";
 import { Switch } from "@nocoo/basalt/components/switch";
 import {
 	Table,
@@ -90,18 +91,10 @@ export default function AccountsPage() {
 			</div>
 
 			<div className="flex gap-3">
-				<button
-					type="button"
-					className="flex items-center gap-2 rounded-widget bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
-				>
-					<Plus className="h-4 w-4" strokeWidth={1.5} /> {t("pages.accounts.addMoney")}
-				</button>
-				<button
-					type="button"
-					className="flex items-center gap-2 rounded-widget bg-secondary px-4 py-2.5 text-sm font-medium text-foreground"
-				>
-					<ArrowUpRight className="h-4 w-4" strokeWidth={1.5} /> {t("pages.accounts.send")}
-				</button>
+				<Button icon={<Plus strokeWidth={1.5} />}>{t("pages.accounts.addMoney")}</Button>
+				<Button variant="secondary" icon={<ArrowUpRight strokeWidth={1.5} />}>
+					{t("pages.accounts.send")}
+				</Button>
 			</div>
 
 			{/* Card showcase */}

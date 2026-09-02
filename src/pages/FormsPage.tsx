@@ -1,3 +1,4 @@
+import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { Input } from "@nocoo/basalt/components/input";
 import { Label } from "@nocoo/basalt/components/label";
@@ -89,12 +90,7 @@ export default function FormsPage() {
 								/>
 							</div>
 						</div>
-						<button
-							type="button"
-							className="rounded-widget bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground"
-						>
-							{t("pages.forms.saveProfile")}
-						</button>
+						<Button>{t("pages.forms.saveProfile")}</Button>
 					</form>
 				</Section>
 
@@ -129,12 +125,7 @@ export default function FormsPage() {
 							</div>
 							<Switch defaultChecked aria-label={t("pages.forms.twoFactorAuth")} />
 						</div>
-						<button
-							type="button"
-							className="rounded-widget bg-secondary px-4 py-2.5 text-sm font-medium text-foreground"
-						>
-							{t("pages.forms.updateSecurity")}
-						</button>
+						<Button variant="secondary">{t("pages.forms.updateSecurity")}</Button>
 					</form>
 				</Section>
 			</div>
@@ -161,12 +152,7 @@ export default function FormsPage() {
 								{t("pages.forms.agreeUpdates")}
 							</label>
 						</div>
-						<button
-							type="button"
-							className="rounded-widget bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-						>
-							{t("pages.forms.subscribe")}
-						</button>
+						<Button>{t("pages.forms.subscribe")}</Button>
 					</form>
 				</Section>
 
@@ -174,12 +160,9 @@ export default function FormsPage() {
 					<div className="rounded-widget border border-dashed border-border bg-card p-4 text-center">
 						<p className="text-sm text-foreground">{t("pages.forms.dropFilesHere")}</p>
 						<p className="text-xs text-muted-foreground">{t("pages.forms.fileTypes")}</p>
-						<button
-							type="button"
-							className="mt-3 rounded-widget bg-secondary px-3 py-2 text-xs font-medium text-foreground"
-						>
+						<Button variant="secondary" size="sm" className="mt-3">
 							{t("pages.forms.browseFiles")}
-						</button>
+						</Button>
 					</div>
 				</Section>
 
@@ -188,12 +171,9 @@ export default function FormsPage() {
 						<p className="text-sm font-medium text-foreground">{t("pages.forms.formSubmitted")}</p>
 						<p className="text-xs text-muted-foreground">{t("pages.forms.responseRecorded")}</p>
 						<Separator className="my-3 bg-border" />
-						<button
-							type="button"
-							className="rounded-widget bg-secondary px-3 py-2 text-xs font-medium text-foreground"
-						>
+						<Button variant="secondary" size="sm">
 							{t("pages.forms.viewDetails")}
-						</button>
+						</Button>
 					</div>
 				</Section>
 			</div>

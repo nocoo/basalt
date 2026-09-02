@@ -78,8 +78,8 @@ describe("AccountsPage", () => {
 	it("renders action buttons", () => {
 		render(<AccountsPage />);
 
-		expect(screen.getByText("Add Money")).toBeInTheDocument();
-		expect(screen.getByText("Send")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Add Money" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
 	});
 
 	it("renders Recent Activity section header", () => {

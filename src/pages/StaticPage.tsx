@@ -1,3 +1,4 @@
+import { Link } from "@nocoo/basalt/components/link";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
@@ -10,9 +11,13 @@ export default function StaticPage() {
 				{/* Header */}
 				<div className="space-y-4 mb-8">
 					<div className="flex items-center gap-2">
-						<a href="/" className="text-muted-foreground hover:text-foreground transition-colors">
+						<Link
+							href="/"
+							aria-label={t("common.back")}
+							className="text-muted-foreground no-underline hover:text-foreground"
+						>
 							<ArrowLeft className="h-5 w-5" strokeWidth={1.5} />
-						</a>
+						</Link>
 						<h1 className="text-2xl font-semibold text-foreground">
 							{t("pages.static.termsOfService")}
 						</h1>

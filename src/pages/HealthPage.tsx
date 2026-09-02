@@ -3,6 +3,8 @@ import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatma
 import { SlotBarChart } from "@nocoo/basalt/charts/slot-bar";
 import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { Timeline } from "@nocoo/basalt/charts/timeline";
+import { Button } from "@nocoo/basalt/components/button";
+import { InputArea } from "@nocoo/basalt/components/input-area";
 import {
 	Activity,
 	AlertTriangle,
@@ -387,10 +389,10 @@ export default function HealthPage() {
 						<MessageSquare className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<p className="text-sm text-muted-foreground">{t("pages.health.promptStudio")}</p>
 					</div>
-					<textarea
+					<InputArea
 						rows={5}
 						placeholder={t("pages.health.promptPlaceholder")}
-						className="w-full rounded-widget border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary"
+						aria-label={t("pages.health.promptStudio")}
 					/>
 					<div className="mt-3 flex flex-wrap gap-2">
 						{[
@@ -408,12 +410,7 @@ export default function HealthPage() {
 							</button>
 						))}
 					</div>
-					<button
-						type="button"
-						className="mt-4 w-full rounded-widget bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
-					>
-						{t("pages.health.generateInsight")}
-					</button>
+					<Button className="mt-4 w-full">{t("pages.health.generateInsight")}</Button>
 				</div>
 
 				<div className="rounded-card bg-secondary p-4 md:p-5">
