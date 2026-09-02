@@ -6,6 +6,7 @@ const DATA_TABLE_SCENARIO_META = [
 	{ key: "empty", title: "Empty" },
 	{ key: "selection", title: "Selection" },
 	{ key: "pagination", title: "Pagination" },
+	{ key: "filter", title: "Filter" },
 ] as const;
 
 export const DATA_TABLE_EXAMPLES = loadModuleScenarios({

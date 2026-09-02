@@ -75,6 +75,8 @@ describe("overlay data scenario truth", () => {
 			"pagination-full-controls-default",
 			"pagination-simple-controls",
 			"pagination-mid-page-state",
+			"pagination-uncontrolled",
+			"pagination-disabled",
 		]);
 		expect(UI_EXAMPLES.popover?.map((item) => item.id)).toEqual([
 			"popover-basic-popover",
@@ -146,6 +148,8 @@ describe("overlay data scenario truth", () => {
 		}
 		expect(scenario("pagination", "pagination-simple-controls").code).toContain("simple");
 		expect(scenario("pagination", "pagination-mid-page-state").code).toContain("pageCount={12}");
+		expect(scenario("pagination", "pagination-uncontrolled").code).toContain("defaultPage={2}");
+		expect(scenario("pagination", "pagination-disabled").code).toContain("disabled");
 	});
 
 	it("keeps table header body and cells complete", () => {

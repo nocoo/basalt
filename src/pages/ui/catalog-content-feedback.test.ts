@@ -48,7 +48,7 @@ const FEEDBACK_SCENARIOS = {
 		"clipboard-text-copy-alternate-text",
 		"clipboard-text-long-text",
 	],
-	code: ["code-typescript", "code-react"],
+	code: ["code-typescript", "code-react", "code-inline"],
 	"code-block": ["code-block-basic"],
 	avatar: ["avatar-fallback"],
 } as const;
@@ -89,7 +89,7 @@ describe("feedback catalog content family", () => {
 		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(89);
 	});
 
-	it("keeps the forty-three final winner scenarios in their audited order", () => {
+	it("keeps the forty-four final winner scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(FEEDBACK_SCENARIOS)) {
 			const examples = feedback[slug]?.examples ?? [];
@@ -107,7 +107,7 @@ describe("feedback catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(43);
+		expect(count).toBe(44);
 	});
 
 	it("keeps the BASE banner winner without reviving the EXTRA default", () => {

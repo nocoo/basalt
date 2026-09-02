@@ -9,6 +9,8 @@ const NAVIGATION_SCENARIOS = {
 		"pagination-full-controls-default",
 		"pagination-simple-controls",
 		"pagination-mid-page-state",
+		"pagination-uncontrolled",
+		"pagination-disabled",
 	],
 	breadcrumbs: ["breadcrumbs-basic", "breadcrumbs-loading"],
 	"navigation-menu": ["navigation-menu-default"],
@@ -47,7 +49,7 @@ describe("navigation catalog content family", () => {
 		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(89);
 	});
 
-	it("keeps the eighteen final winner scenarios in their audited order", () => {
+	it("keeps the twenty final winner scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(NAVIGATION_SCENARIOS)) {
 			const examples = navigation[slug]?.examples ?? [];
@@ -66,7 +68,7 @@ describe("navigation catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(18);
+		expect(count).toBe(20);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {

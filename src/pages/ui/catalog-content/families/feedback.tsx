@@ -3,7 +3,6 @@ import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Button } from "@nocoo/basalt/components/button";
 import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
-import { CodeBlock } from "@nocoo/basalt/components/code";
 import { Empty } from "@nocoo/basalt/components/empty";
 import { Link } from "@nocoo/basalt/components/link";
 import { Loader } from "@nocoo/basalt/components/loader";
@@ -21,6 +20,7 @@ import {
 	provenanceFromLegacy,
 } from "../../catalog-source";
 import { CODE_EXAMPLES } from "../../examples/code";
+import { CODE_BLOCK_EXAMPLES } from "../../examples/code-block";
 import { API as codeApi } from "../../generated/catalog-api/code";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
@@ -759,14 +759,7 @@ export default function Example() {
 			"A fenced code block.",
 			"<CodeBlock>const n = 1;</CodeBlock>",
 		),
-		examples: [
-			{
-				id: catalogScenarioId("code-block", "basic"),
-				title: "Basic",
-				code: "<CodeBlock>const n = 1</CodeBlock>",
-				render: () => <CodeBlock>const n = 1</CodeBlock>,
-			},
-		],
+		examples: CODE_BLOCK_EXAMPLES,
 	},
 	avatar: {
 		docs: extraDocs("Avatar", "avatar", "User avatar.", "<Avatar />"),

@@ -24,6 +24,7 @@ const DATA_LAYOUT_SCENARIOS = {
 		"data-table-empty",
 		"data-table-selection",
 		"data-table-pagination",
+		"data-table-filter",
 	],
 	grid: ["grid-grid"],
 	flow: ["flow-sequential-flow"],
@@ -54,7 +55,7 @@ describe("data-layout catalog content family", () => {
 		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(89);
 	});
 
-	it("keeps the fifteen final winner scenarios in their audited order", () => {
+	it("keeps the sixteen final winner scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(DATA_LAYOUT_SCENARIOS)) {
 			const examples = dataLayout[slug]?.examples ?? [];
@@ -73,7 +74,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(15);
+		expect(count).toBe(16);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {

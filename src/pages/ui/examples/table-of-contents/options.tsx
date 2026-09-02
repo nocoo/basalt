@@ -3,8 +3,10 @@ import { TableOfContents, TableOfContentsItem } from "@nocoo/basalt/components/t
 export default function TableOfContentsOptions() {
 	return (
 		<TableOfContents>
-			<TableOfContentsItem active>Intro</TableOfContentsItem>
-			<TableOfContentsItem>Usage</TableOfContentsItem>
+			<TableOfContentsItem href="#intro" active>
+				Intro
+			</TableOfContentsItem>
+			<TableOfContentsItem href="#usage">Usage</TableOfContentsItem>
 		</TableOfContents>
 	);
 }

@@ -57,7 +57,11 @@ describe("content scenario truth", () => {
 			"text-semantic-variants",
 			"text-bold-and-truncate",
 		]);
-		expect(UI_EXAMPLES.code?.map((item) => item.id)).toEqual(["code-typescript", "code-react"]);
+		expect(UI_EXAMPLES.code?.map((item) => item.id)).toEqual([
+			"code-typescript",
+			"code-react",
+			"code-inline",
+		]);
 		expect(UI_EXAMPLES["code-block"]?.map((item) => item.id)).toEqual(["code-block-basic"]);
 		expect(UI_EXAMPLES.autocomplete?.map((item) => item.id)).toEqual([
 			"autocomplete-default",
