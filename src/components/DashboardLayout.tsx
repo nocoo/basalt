@@ -10,6 +10,7 @@ import { Menu } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router";
+import { AccentPicker } from "@/components/AccentPicker";
 import { AppSidebar } from "@/components/AppSidebar";
 import { Github } from "@/components/icons/github";
 import { LanguageToggle } from "@/components/LanguageToggle";
@@ -118,6 +119,7 @@ export function DashboardLayout() {
 					actions={
 						<>
 							<LanguageToggle />
+							<AccentPicker />
 							<Link
 								href="https://github.com/nocoo/basalt"
 								target="_blank"

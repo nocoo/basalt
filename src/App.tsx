@@ -1,5 +1,6 @@
 import { Toaster } from "@nocoo/basalt/components/toast";
 import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
+import { AccentProvider } from "@nocoo/basalt/providers/accent";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { type ComponentType, lazy, type ReactNode, Suspense } from "react";
@@ -77,44 +78,46 @@ function routeElement(Page: ComponentType) {
 
 const App = () => (
 	<ThemeProvider>
-		<BrowserRouter>
-			<LinkProvider render={AppLink}>
-				<TooltipProvider>
-					<Toaster />
-					<Routes>
-						{/* Layout route: sidebar + header wraps all dashboard pages */}
-						<Route element={<DashboardLayout />}>
-							<Route path="/components" element={routeElement(ComponentsPage)} />
-							<Route path="/forms" element={routeElement(FormsPage)} />
-							<Route path="/navigation" element={routeElement(NavigationPage)} />
-							<Route path="/interactive" element={routeElement(InteractivePage)} />
-							<Route path="/data" element={routeElement(DataPage)} />
-							<Route path="/" element={routeElement(DashboardPage)} />
-							<Route path="/accounts" element={routeElement(AccountsPage)} />
-							<Route path="/progress-tracking" element={routeElement(ProgressTrackingPage)} />
-							<Route path="/flow-comparison" element={routeElement(FlowComparisonPage)} />
-							<Route path="/portfolio" element={routeElement(PortfolioPage)} />
-							<Route path="/layout" element={routeElement(LayoutPage)} />
-							<Route path="/settings" element={routeElement(SettingsPage)} />
-							<Route path="/palette" element={routeElement(PalettePage)} />
-							<Route path="/interactions" element={routeElement(InteractionShowcasePage)} />
-							<Route path="/health" element={routeElement(HealthPage)} />
-							<Route path="/wearable" element={routeElement(WearableDashboardPage)} />
-							<Route path="/banking" element={routeElement(BankingDashboardPage)} />
-							<Route path="/network" element={routeElement(NetworkOpsDashboardPage)} />
-							<Route path="/ui" element={routeElement(UiIndexPage)} />
-							<Route path="/ui/:slug" element={routeElement(UiPlaceholderPage)} />
-						</Route>
-						{/* Standalone pages (no sidebar) */}
-						<Route path="/login" element={routeElement(LoginPage)} />
-						<Route path="/static-page" element={routeElement(StaticPage)} />
-						<Route path="/loading" element={routeElement(LoadingPage)} />
-						<Route path="/404" element={routeElement(NotFound)} />
-						<Route path="*" element={routeElement(NotFound)} />
-					</Routes>
-				</TooltipProvider>
-			</LinkProvider>
-		</BrowserRouter>
+		<AccentProvider>
+			<BrowserRouter>
+				<LinkProvider render={AppLink}>
+					<TooltipProvider>
+						<Toaster />
+						<Routes>
+							{/* Layout route: sidebar + header wraps all dashboard pages */}
+							<Route element={<DashboardLayout />}>
+								<Route path="/components" element={routeElement(ComponentsPage)} />
+								<Route path="/forms" element={routeElement(FormsPage)} />
+								<Route path="/navigation" element={routeElement(NavigationPage)} />
+								<Route path="/interactive" element={routeElement(InteractivePage)} />
+								<Route path="/data" element={routeElement(DataPage)} />
+								<Route path="/" element={routeElement(DashboardPage)} />
+								<Route path="/accounts" element={routeElement(AccountsPage)} />
+								<Route path="/progress-tracking" element={routeElement(ProgressTrackingPage)} />
+								<Route path="/flow-comparison" element={routeElement(FlowComparisonPage)} />
+								<Route path="/portfolio" element={routeElement(PortfolioPage)} />
+								<Route path="/layout" element={routeElement(LayoutPage)} />
+								<Route path="/settings" element={routeElement(SettingsPage)} />
+								<Route path="/palette" element={routeElement(PalettePage)} />
+								<Route path="/interactions" element={routeElement(InteractionShowcasePage)} />
+								<Route path="/health" element={routeElement(HealthPage)} />
+								<Route path="/wearable" element={routeElement(WearableDashboardPage)} />
+								<Route path="/banking" element={routeElement(BankingDashboardPage)} />
+								<Route path="/network" element={routeElement(NetworkOpsDashboardPage)} />
+								<Route path="/ui" element={routeElement(UiIndexPage)} />
+								<Route path="/ui/:slug" element={routeElement(UiPlaceholderPage)} />
+							</Route>
+							{/* Standalone pages (no sidebar) */}
+							<Route path="/login" element={routeElement(LoginPage)} />
+							<Route path="/static-page" element={routeElement(StaticPage)} />
+							<Route path="/loading" element={routeElement(LoadingPage)} />
+							<Route path="/404" element={routeElement(NotFound)} />
+							<Route path="*" element={routeElement(NotFound)} />
+						</Routes>
+					</TooltipProvider>
+				</LinkProvider>
+			</BrowserRouter>
+		</AccentProvider>
 	</ThemeProvider>
 );
 

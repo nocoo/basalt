@@ -12,6 +12,7 @@
 		"logOut": "Log out",
 		"github": "GitHub repository",
 		"toggleTheme": "Toggle theme, currently {{theme}}",
+		"accentColor": "Accent color",
 		"language": "Language",
 		"currentBadge": "Current",
 		"revoke": "Revoke",

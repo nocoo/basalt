@@ -1,3 +1,4 @@
+import { AccentProvider } from "@nocoo/basalt/providers/accent";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
@@ -12,16 +13,18 @@ vi.mock("@/hooks/use-mobile", () => ({
 function renderLayout(initialPath = "/") {
 	return render(
 		<ThemeProvider>
-			<MemoryRouter initialEntries={[initialPath]}>
-				<Routes>
-					<Route element={<DashboardLayout />}>
-						<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
-						<Route path="/accounts" element={<div data-testid="accounts-outlet">Accounts</div>} />
-						<Route path="/settings" element={<div data-testid="settings-outlet">Settings</div>} />
-						<Route path="/ui/:slug" element={<div data-testid="catalog-outlet">Catalog</div>} />
-					</Route>
-				</Routes>
-			</MemoryRouter>
+			<AccentProvider>
+				<MemoryRouter initialEntries={[initialPath]}>
+					<Routes>
+						<Route element={<DashboardLayout />}>
+							<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
+							<Route path="/accounts" element={<div data-testid="accounts-outlet">Accounts</div>} />
+							<Route path="/settings" element={<div data-testid="settings-outlet">Settings</div>} />
+							<Route path="/ui/:slug" element={<div data-testid="catalog-outlet">Catalog</div>} />
+						</Route>
+					</Routes>
+				</MemoryRouter>
+			</AccentProvider>
 		</ThemeProvider>,
 	);
 }
@@ -54,6 +57,7 @@ describe("DashboardLayout", () => {
 		const github = screen.getByRole("link", { name: "GitHub repository" });
 		const theme = screen.getByRole("button", { name: /Toggle theme/ });
 		expect(github.nextElementSibling).toBe(theme);
+		expect(screen.getByRole("button", { name: "Accent color" })).toBeInTheDocument();
 	});
 
 	it("opens the mobile drawer and locks body scroll when the menu button is clicked", () => {
