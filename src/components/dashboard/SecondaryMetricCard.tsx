@@ -14,22 +14,20 @@ export function SecondaryMetricCard() {
 					<TrendingUp className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 					<h3 className="text-sm font-normal text-muted-foreground">{t("dashboard.income")}</h3>
 				</div>
-			</div>
-			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 flex flex-col">
-				<div className="flex flex-col flex-1 rounded-widget border border-border p-4">
+				<div className="flex items-baseline gap-3">
 					<h2 className="text-3xl font-semibold text-foreground font-display tracking-tight">
 						$4,500
 					</h2>
-					<div className="mt-1 flex items-center gap-2">
-						<span className="text-sm font-medium text-success font-display">+2.4%</span>
-						<span className="text-sm text-muted-foreground">{t("common.vsLastMonth")}</span>
-					</div>
-					<BarChart
-						data={data.map((row, index) => ({ x: index, y: row.value }))}
-						ariaLabel={t("dashboard.incomeAria")}
-						className="mt-3 min-h-[50px] w-full flex-1"
-					/>
+					<span className="text-sm font-medium text-success font-display">+2.4%</span>
+					<span className="text-sm text-muted-foreground">{t("common.vsLastMonth")}</span>
 				</div>
+			</div>
+			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 flex flex-col">
+				<BarChart
+					data={data.map((row, index) => ({ x: index, y: row.value }))}
+					ariaLabel={t("dashboard.incomeAria")}
+					className="min-h-[50px] w-full flex-1"
+				/>
 			</div>
 		</LayerCard>
 	);

@@ -131,4 +131,16 @@ describe("Examples package contract", () => {
 			expect(source, file).not.toMatch(/from ["']recharts["']/);
 		}
 	});
+
+	it("dashboard chart cards do not wrap plots in a second frame", () => {
+		const nonChart = new Set(["ActionGridCard.tsx", "ItemListCard.tsx", "RecentListCard.tsx"]);
+		for (const file of readdirSync(DASHBOARD_DIR).filter((name) => name.endsWith(".tsx"))) {
+			if (nonChart.has(file)) {
+				continue;
+			}
+			const source = readFileSync(path.join(DASHBOARD_DIR, file), "utf8");
+			expect(source, file).not.toMatch(/rounded-widget border border-border/);
+			expect(source, file).not.toMatch(/border-border bg-card/);
+		}
+	});
 });

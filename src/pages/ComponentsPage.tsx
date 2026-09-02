@@ -55,7 +55,7 @@ function Section({
 	children: React.ReactNode;
 }) {
 	return (
-		<div className="rounded-card bg-secondary p-4 md:p-5">
+		<div>
 			<div className="flex items-center gap-2 mb-4">
 				<Icon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 				<p className="text-sm text-muted-foreground">{title}</p>
@@ -121,7 +121,7 @@ export default function ComponentsPage() {
 
 			<Section title={t("pages.components.highlights")} icon={Activity}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-					<div className="rounded-widget border border-border bg-card p-4">
+					<div className="rounded-card bg-secondary p-4">
 						<p className="text-sm font-medium text-foreground">
 							{t("pages.components.aiReadiness")}
 						</p>
@@ -130,7 +130,7 @@ export default function ComponentsPage() {
 							{t("common.viewModule")}
 						</Button>
 					</div>
-					<div className="rounded-widget border border-border bg-card p-4">
+					<div className="rounded-card bg-secondary p-4">
 						<p className="text-sm font-medium text-foreground">
 							{t("pages.components.retentionModule")}
 						</p>
@@ -149,7 +149,7 @@ export default function ComponentsPage() {
 					{goals.map((goal) => {
 						const Icon = GOAL_ICONS[goal.icon] ?? Shield;
 						return (
-							<div key={goal.name} className="rounded-widget border border-border bg-card p-5">
+							<div key={goal.name} className="rounded-card bg-secondary p-5">
 								<div className="flex items-center gap-3 mb-4">
 									<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
 										<Icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
