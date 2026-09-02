@@ -1,8 +1,8 @@
 # 03 · Basalt 生产成熟度执行台账
 
-> 状态：执行中
-> 当前切片：S10 待办
-> 当前实现真值：`429399a`（S9 Codex Sign-off）
+> 状态：完成
+> 当前切片：—
+> 当前实现真值：`6a9c214`（S10 Codex Sign-off）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`
 > 最后更新：2026-09-02
 
@@ -54,7 +54,7 @@ Conventional Commits；一次一个逻辑问题；禁止 `git add -A` / `--no-ve
 | S7 | Table/DataTable、TOC、Code、Flow、Grid、Pagination | 完成（`4b5a444`） |
 | S8 | 图表 kit 与组合层 | 完成（`1af515b`） |
 | S9 | Blocks、layout examples、全站自消费 | 完成（`429399a`） |
-| S10 | 文档补全、审计、release-ready | 待办 |
+| S10 | 文档补全、审计、release-ready | 完成（`6a9c214`） |
 
 ## 6. 已完成
 
