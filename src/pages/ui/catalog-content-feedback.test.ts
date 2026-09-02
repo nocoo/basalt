@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import feedback from "./catalog-content/families/feedback";
+import { API as codeBlockApi } from "./generated/catalog-api/code-block";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
 const FEEDBACK_SCENARIOS = {
@@ -165,5 +166,6 @@ describe("feedback catalog content family", () => {
 			"description",
 		]);
 		expect(feedback.code?.docs.usage).toContain("CodeHighlighted");
+		expect(feedback["code-block"]?.docs.api).toBe(codeBlockApi);
 	});
 });

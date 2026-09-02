@@ -13,17 +13,6 @@ export const API = [
 		],
 	},
 	{
-		name: "CodeBlock",
-		props: [
-			{
-				name: "className",
-				type: "string",
-				required: false,
-				description: "Additional classes for the block.",
-			},
-		],
-	},
-	{
 		name: "CodeHighlighted",
 		props: [
 			{

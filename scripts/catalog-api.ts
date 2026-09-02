@@ -529,7 +529,7 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "Code",
 	},
 	{
-		slug: "code",
+		slug: "code-block",
 		sourceFile: "packages/basalt/src/components/code.tsx",
 		propsType: "CodeBlockProps",
 		surface: "CodeBlock",
@@ -1070,6 +1070,71 @@ function isBooleanParts(parts: readonly ts.Type[]): boolean {
 	);
 }
 
+function mentionsTypeParameter(
+	type: ts.Type,
+	checker: ts.TypeChecker,
+	enclosing: ts.Node,
+	seen = new Set<ts.Type>(),
+): boolean {
+	if (seen.has(type)) {
+		return false;
+	}
+	seen.add(type);
+	if (type.flags & ts.TypeFlags.TypeParameter) {
+		return true;
+	}
+	if (type.isUnion() || type.isIntersection()) {
+		return type.types.some((part) => mentionsTypeParameter(part, checker, enclosing, seen));
+	}
+	const args = namedTypeArguments(type, checker);
+	if (args?.some((argument) => mentionsTypeParameter(argument, checker, enclosing, seen))) {
+		return true;
+	}
+	for (const signature of type.getCallSignatures()) {
+		if (mentionsTypeParameter(signature.getReturnType(), checker, enclosing, seen)) {
+			return true;
+		}
+		for (const symbol of signature.getParameters()) {
+			const location = symbol.valueDeclaration ?? enclosing;
+			if (
+				mentionsTypeParameter(
+					checker.getTypeOfSymbolAtLocation(symbol, location),
+					checker,
+					location,
+					seen,
+				)
+			) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+function printCallType(
+	type: ts.Type,
+	checker: ts.TypeChecker,
+	enclosing: ts.Node,
+): string | undefined {
+	const signatures = type.getCallSignatures();
+	if (signatures.length !== 1) {
+		return undefined;
+	}
+	const signature = signatures[0];
+	if (!signature) {
+		return undefined;
+	}
+	const params = signature.getParameters().map((symbol) => {
+		const declaration = symbol.valueDeclaration;
+		const location = declaration ?? enclosing;
+		const paramType = checker.getTypeOfSymbolAtLocation(symbol, location);
+		const typeNode = declaration && ts.isParameter(declaration) ? declaration.type : undefined;
+		const optional = (symbol.flags & ts.SymbolFlags.Optional) !== 0 ? "?" : "";
+		return `${symbol.getName()}${optional}: ${printType(paramType, checker, location, false, typeNode)}`;
+	});
+	return `(${params.join(", ")}) => ${printType(signature.getReturnType(), checker, enclosing, false)}`;
+}
+
 function printAtomicType(
 	type: ts.Type,
 	checker: ts.TypeChecker,
@@ -1086,6 +1151,10 @@ function printAtomicType(
 	}
 	if (type.flags & ts.TypeFlags.Boolean) {
 		return "boolean";
+	}
+	const callType = printCallType(type, checker, enclosing);
+	if (callType && mentionsTypeParameter(type, checker, enclosing)) {
+		return callType;
 	}
 	const text = checker.typeToString(type, enclosing, TYPE_FORMAT);
 	if (isTruncatedType(text)) {

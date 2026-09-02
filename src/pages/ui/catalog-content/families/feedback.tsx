@@ -22,6 +22,7 @@ import {
 import { CODE_EXAMPLES } from "../../examples/code";
 import { CODE_BLOCK_EXAMPLES } from "../../examples/code-block";
 import { API as codeApi } from "../../generated/catalog-api/code";
+import { API as codeBlockApi } from "../../generated/catalog-api/code-block";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
 	repo: "pew",
@@ -753,12 +754,15 @@ export default function Example() {
 		examples: CODE_EXAMPLES,
 	},
 	"code-block": {
-		docs: extraDocs(
-			"CodeBlock",
-			"code-block",
-			"A fenced code block.",
-			"<CodeBlock>const n = 1;</CodeBlock>",
-		),
+		docs: {
+			...extraDocs(
+				"CodeBlock",
+				"code-block",
+				"A fenced code block.",
+				"<CodeBlock>const n = 1;</CodeBlock>",
+			),
+			api: codeBlockApi,
+		},
 		examples: CODE_BLOCK_EXAMPLES,
 	},
 	avatar: {

@@ -5,6 +5,7 @@ import { API as basaltMarkApi } from "./catalog-api/basalt-mark";
 import { API as buttonApi } from "./catalog-api/button";
 import { API as checkboxApi } from "./catalog-api/checkbox";
 import { API as codeApi } from "./catalog-api/code";
+import { API as codeBlockApi } from "./catalog-api/code-block";
 import { API as collapsibleApi } from "./catalog-api/collapsible";
 import { API as comboboxApi } from "./catalog-api/combobox";
 import { API as commandPaletteApi } from "./catalog-api/command-palette";
@@ -49,6 +50,7 @@ export const CATALOG_API = {
 	button: buttonApi,
 	checkbox: checkboxApi,
 	code: codeApi,
+	"code-block": codeBlockApi,
 	collapsible: collapsibleApi,
 	combobox: comboboxApi,
 	"command-palette": commandPaletteApi,

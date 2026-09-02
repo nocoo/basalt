@@ -612,7 +612,7 @@ describe("catalog API generator contract", () => {
 				surface: "Code",
 			},
 			{
-				slug: "code",
+				slug: "code-block",
 				sourceFile: "packages/basalt/src/components/code.tsx",
 				propsType: "CodeBlockProps",
 				surface: "CodeBlock",
@@ -718,6 +718,7 @@ describe("catalog API generator contract", () => {
 			"pagination",
 			"table-of-contents",
 			"code",
+			"code-block",
 			"flow",
 			"grid",
 		]);
@@ -1675,7 +1676,8 @@ export interface WidgetProps {
 			"data-table": ["DataTable"],
 			pagination: ["Pagination"],
 			"table-of-contents": ["TableOfContents", "TableOfContentsItem"],
-			code: ["Code", "CodeBlock", "CodeHighlighted"],
+			code: ["Code", "CodeHighlighted"],
+			"code-block": ["CodeBlock"],
 			flow: ["Flow", "FlowNode"],
 			grid: ["Grid"],
 		});
@@ -1687,7 +1689,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(42);
+		expect(Object.keys(generated)).toHaveLength(43);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1788,7 +1790,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(42);
+		expect(Object.keys(generated)).toHaveLength(43);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1910,7 +1912,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(42);
+		expect(Object.keys(generated)).toHaveLength(43);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -1981,7 +1983,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(42);
+		expect(Object.keys(generated)).toHaveLength(43);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2024,7 +2026,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(42);
+		expect(Object.keys(generated)).toHaveLength(43);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2076,7 +2078,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(42);
+		expect(Object.keys(generated)).toHaveLength(43);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3317,8 +3319,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(42);
-		expect(Object.keys(first)).toHaveLength(43);
+		expect(slugs).toHaveLength(43);
+		expect(Object.keys(first)).toHaveLength(44);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3369,6 +3371,8 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "Pagination"');
 		expect(joined).toContain('name: "TableOfContents"');
 		expect(joined).toContain('name: "CodeHighlighted"');
+		expect(joined).toContain('name: "CodeBlock"');
+		expect(joined).toContain('type: "(row: unknown, index: number) => string"');
 		expect(joined).toContain('name: "Flow"');
 		expect(joined).toContain('name: "Grid"');
 		const digest = createHash("sha256");
@@ -3378,7 +3382,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"2c17027b1c953beb4cfc34a7578ff2c0534070af005446dbd0ba412aaff586e0",
+			"d5a8f5b7bf2b6df468a0e333dae3e1fd83eec868e47dd72d145070cb7dad3d0c",
 		);
 	}, 20_000);
 
