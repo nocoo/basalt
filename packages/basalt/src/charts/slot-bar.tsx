@@ -11,8 +11,8 @@ export type SlotBarItem = {
 	label?: string;
 };
 
-type SlotBarShared = {
-	series?: XYSeriesDescriptor[];
+export type SlotBarItemsProps = {
+	items: SlotBarItem[];
 	ariaLabel?: string;
 	heightClass?: string;
 	gapClass?: string;
@@ -20,20 +20,24 @@ type SlotBarShared = {
 	className?: string;
 };
 
-export type SlotBarItemsProps = SlotBarShared & { items: SlotBarItem[] };
-export type SlotBarDataProps = SlotBarShared & { data: XYPoint[] };
+export type SlotBarDataProps = {
+	data: XYPoint[];
+	series?: XYSeriesDescriptor[];
+	ariaLabel?: string;
+	className?: string;
+};
+
 export type SlotBarChartProps = SlotBarItemsProps | SlotBarDataProps;
 
 export function SlotBarChart(props: SlotBarChartProps) {
-	const {
-		series,
-		ariaLabel = "Slot bar chart",
-		heightClass = "h-6",
-		gapClass = "gap-px",
-		emptyClass = "bg-basalt-muted",
-		className,
-	} = props;
 	if ("items" in props) {
+		const {
+			ariaLabel = "Slot bar chart",
+			heightClass = "h-6",
+			gapClass = "gap-px",
+			emptyClass = "bg-basalt-muted",
+			className,
+		} = props;
 		return (
 			<SlotItemBars
 				items={props.items}
@@ -45,6 +49,7 @@ export function SlotBarChart(props: SlotBarChartProps) {
 			/>
 		);
 	}
+	const { series, ariaLabel = "Slot bar chart", className } = props;
 	const bars = resolveChartSeries(series, ["y"]);
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
