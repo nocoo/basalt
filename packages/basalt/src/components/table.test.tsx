@@ -106,5 +106,6 @@ describe("Table", () => {
 		expect(screen.getByText("Selected").closest("tr")?.className).toContain(
 			"[&_td]:bg-basalt-accent",
 		);
+		expect(screen.getByText("Selected").closest("tr")).toHaveAttribute("aria-selected", "true");
 	});
 });

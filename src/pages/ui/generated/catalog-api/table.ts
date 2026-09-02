@@ -30,4 +30,37 @@ export const API = [
 			},
 		],
 	},
+	{
+		name: "TableCaption",
+		props: [
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Additional classes for the caption.",
+			},
+		],
+	},
+	{
+		name: "TableHead",
+		props: [
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Additional classes for the header cell.",
+			},
+		],
+	},
+	{
+		name: "TableCell",
+		props: [
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Additional classes for the cell.",
+			},
+		],
+	},
 ];

@@ -143,15 +143,31 @@ function filterSource<T>(column: DataTableColumn<T>, row: T): string {
 	return "";
 }
 
-export type DataTableProps = {
+function publicSelectId<T>(
+	row: T,
+	index: number,
+	key: string,
+	getRowId?: (row: T, index: number) => string,
+): string {
+	const requested = getRowId?.(row, index);
+	if (requested !== undefined) {
+		return requested;
+	}
+	if (isRefRow(row) && "id" in row && row.id != null) {
+		return String(row.id);
+	}
+	return key;
+}
+
+export type DataTableProps<T = unknown> = {
 	/**
 	 * Rows to render.
 	 */
-	data: unknown[];
+	data: T[];
 	/**
 	 * Column descriptors.
 	 */
-	columns: DataTableColumn<unknown>[];
+	columns: DataTableColumn<T>[];
 	/**
 	 * Filter query matched against column values.
 	 * @default ""
@@ -204,7 +220,7 @@ export type DataTableProps = {
 	/**
 	 * Stable id for a row.
 	 */
-	getRowId?: (row: unknown, index: number) => string;
+	getRowId?: (row: T, index: number) => string;
 	/**
 	 * Additional classes for the table.
 	 */
@@ -227,11 +243,7 @@ export function DataTable<T>({
 	onPageChange,
 	getRowId,
 	className,
-}: Omit<DataTableProps, "data" | "columns" | "getRowId"> & {
-	data: T[];
-	columns: DataTableColumn<T>[];
-	getRowId?: (row: T, index: number) => string;
-}) {
+}: DataTableProps<T>) {
 	const [sort, setSort] = useState<{ id: string; dir: "asc" | "desc" } | null>(null);
 	const [uncontrolledSelected, setUncontrolledSelected] = useState<string[]>(defaultSelected ?? []);
 	const [uncontrolledPage, setUncontrolledPage] = useState(defaultPage);
@@ -326,7 +338,11 @@ export function DataTable<T>({
 			const objectRow = isRefRow(row) ? row : null;
 			if (reserved) {
 				rememberKey(row, index, reserved, objectRow);
-				return { row, key: reserved, selectId: getRowId?.(row, index) ?? reserved };
+				return {
+					row,
+					key: reserved,
+					selectId: publicSelectId(row, index, reserved, getRowId),
+				};
 			}
 			const isRepeat = occurrence > 0;
 			let key: string | undefined;
@@ -362,7 +378,7 @@ export function DataTable<T>({
 			}
 			used.add(key);
 			rememberKey(row, index, key, objectRow);
-			return { row, key, selectId: getRowId?.(row, index) ?? key };
+			return { row, key, selectId: publicSelectId(row, index, key, getRowId) };
 		});
 		const filtered = query
 			? keyed.filter(({ row }) =>
@@ -487,6 +503,7 @@ export function DataTable<T>({
 						<TableRow>
 							<TableCell colSpan={colCount}>
 								<div role="status" className="flex flex-col gap-2 py-2">
+									<span className="sr-only">Loading</span>
 									<SkeletonLine />
 									<SkeletonLine />
 									<SkeletonLine />

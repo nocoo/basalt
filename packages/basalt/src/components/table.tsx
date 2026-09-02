@@ -53,18 +53,26 @@ export const TableRow = ({
 	...props
 }: TableRowProps & React.HTMLAttributes<HTMLTableRowElement>) => (
 	<tr
+		{...props}
+		aria-selected={variant === "selected" ? true : props["aria-selected"]}
 		className={cn(
 			variant === "selected" ? "[&_td]:bg-basalt-accent" : "even:[&_td]:bg-basalt-secondary",
 			className,
 		)}
-		{...props}
 	/>
 );
+
+export type TableHeadProps = {
+	/**
+	 * Additional classes for the header cell.
+	 */
+	className?: string;
+};
 
 export const TableHead = ({
 	className,
 	...props
-}: React.ThHTMLAttributes<HTMLTableCellElement>) => (
+}: TableHeadProps & React.ThHTMLAttributes<HTMLTableCellElement>) => (
 	<th
 		className={cn(
 			"border-b border-basalt-border bg-basalt-card p-3 text-left font-semibold first:rounded-tl-basalt-md last:rounded-tr-basalt-md",
@@ -74,17 +82,31 @@ export const TableHead = ({
 	/>
 );
 
+export type TableCellProps = {
+	/**
+	 * Additional classes for the cell.
+	 */
+	className?: string;
+};
+
 export const TableCell = ({
 	className,
 	...props
-}: React.TdHTMLAttributes<HTMLTableCellElement>) => (
+}: TableCellProps & React.TdHTMLAttributes<HTMLTableCellElement>) => (
 	<td className={cn("p-3", className)} {...props} />
 );
+
+export type TableCaptionProps = {
+	/**
+	 * Additional classes for the caption.
+	 */
+	className?: string;
+};
 
 export function TableCaption({
 	className,
 	...props
-}: React.HTMLAttributes<HTMLTableCaptionElement>) {
+}: TableCaptionProps & React.HTMLAttributes<HTMLTableCaptionElement>) {
 	return (
 		<caption className={cn("mt-2 text-sm text-basalt-muted-foreground", className)} {...props} />
 	);

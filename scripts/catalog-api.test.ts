@@ -564,6 +564,24 @@ describe("catalog API generator contract", () => {
 				surface: "TableRow",
 			},
 			{
+				slug: "table",
+				sourceFile: "packages/basalt/src/components/table.tsx",
+				propsType: "TableCaptionProps",
+				surface: "TableCaption",
+			},
+			{
+				slug: "table",
+				sourceFile: "packages/basalt/src/components/table.tsx",
+				propsType: "TableHeadProps",
+				surface: "TableHead",
+			},
+			{
+				slug: "table",
+				sourceFile: "packages/basalt/src/components/table.tsx",
+				propsType: "TableCellProps",
+				surface: "TableCell",
+			},
+			{
 				slug: "data-table",
 				sourceFile: "packages/basalt/src/components/data-table.tsx",
 				propsType: "DataTableProps",
@@ -624,7 +642,7 @@ describe("catalog API generator contract", () => {
 				surface: "Grid",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(83);
+		expect(CATALOG_API_TARGETS).toHaveLength(86);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1653,7 +1671,7 @@ export interface WidgetProps {
 			popover: ["Popover", "PopoverContent"],
 			"dropdown-menu": ["DropdownMenu", "DropdownMenuItem"],
 			collapsible: ["Collapsible", "CollapsibleContent"],
-			table: ["Table", "TableRow"],
+			table: ["Table", "TableRow", "TableCaption", "TableHead", "TableCell"],
 			"data-table": ["DataTable"],
 			pagination: ["Pagination"],
 			"table-of-contents": ["TableOfContents", "TableOfContentsItem"],
@@ -3344,6 +3362,9 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "DropdownMenu"');
 		expect(joined).toContain('name: "Collapsible"');
 		expect(joined).toContain('name: "Table"');
+		expect(joined).toContain('name: "TableCaption"');
+		expect(joined).toContain('name: "TableHead"');
+		expect(joined).toContain('name: "TableCell"');
 		expect(joined).toContain('name: "DataTable"');
 		expect(joined).toContain('name: "Pagination"');
 		expect(joined).toContain('name: "TableOfContents"');
@@ -3357,7 +3378,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"4038213f32a23867cd3eac760e3e19b09dbf681731f1dfef3b4b53946131a8d8",
+			"2c17027b1c953beb4cfc34a7578ff2c0534070af005446dbd0ba412aaff586e0",
 		);
 	}, 20_000);
 

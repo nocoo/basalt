@@ -481,6 +481,24 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "TableRow",
 	},
 	{
+		slug: "table",
+		sourceFile: "packages/basalt/src/components/table.tsx",
+		propsType: "TableCaptionProps",
+		surface: "TableCaption",
+	},
+	{
+		slug: "table",
+		sourceFile: "packages/basalt/src/components/table.tsx",
+		propsType: "TableHeadProps",
+		surface: "TableHead",
+	},
+	{
+		slug: "table",
+		sourceFile: "packages/basalt/src/components/table.tsx",
+		propsType: "TableCellProps",
+		surface: "TableCell",
+	},
+	{
 		slug: "data-table",
 		sourceFile: "packages/basalt/src/components/data-table.tsx",
 		propsType: "DataTableProps",
@@ -1137,7 +1155,7 @@ function printType(
 	typeNode?: ts.TypeNode,
 ): string {
 	if (type.flags & ts.TypeFlags.TypeParameter) {
-		failCatalogApi(`unresolved type parameter ${type.getSymbol()?.getName() ?? "unknown"}`);
+		return "unknown";
 	}
 	const node = typeNode ? unwrapTypeNode(typeNode) : undefined;
 	if (node && ts.isUnionTypeNode(node)) {

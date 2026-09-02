@@ -1008,9 +1008,24 @@ describe("DataTable", () => {
 
 	it("shows a loading status instead of rows", () => {
 		render(<DataTable data={rows} columns={columns} loading />);
-		expect(screen.getByRole("status")).toBeInTheDocument();
+		expect(screen.getByRole("status")).toHaveTextContent("Loading");
 		expect(screen.getByRole("table")).toHaveAttribute("aria-busy");
 		expect(screen.queryByText("Zed")).not.toBeInTheDocument();
+	});
+
+	it("selects a row by its id field without getRowId", () => {
+		const onSelectedChange = vi.fn();
+		render(
+			<DataTable
+				data={[{ id: "row", name: "Atlas" }]}
+				columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]}
+				defaultSelected={["row"]}
+				onSelectedChange={onSelectedChange}
+			/>,
+		);
+		expect(screen.getByRole("checkbox", { name: "Select row" })).toBeChecked();
+		fireEvent.click(screen.getByRole("checkbox", { name: "Select row" }));
+		expect(onSelectedChange).toHaveBeenCalledWith([]);
 	});
 
 	it("shows empty copy when no rows remain", () => {

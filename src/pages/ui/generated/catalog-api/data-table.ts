@@ -89,7 +89,7 @@ export const API = [
 			},
 			{
 				name: "getRowId",
-				type: "(row: unknown, index: number) => string",
+				type: "(row: T, index: number) => string",
 				required: false,
 				description: "Stable id for a row.",
 			},
