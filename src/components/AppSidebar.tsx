@@ -124,6 +124,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
+import { APP_VERSION } from "@/lib/version";
 import {
 	CATALOG,
 	CATALOG_CATEGORIES,
@@ -564,7 +565,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 									basalt.
 								</span>
 								<span className="rounded-md bg-basalt-secondary px-1.5 py-0.5 text-[10px] leading-none font-medium text-basalt-muted-foreground">
-									v{__APP_VERSION__}
+									v{APP_VERSION}
 								</span>
 							</div>
 							<Button

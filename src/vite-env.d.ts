@@ -1,3 +1,6 @@
 /// <reference types="vite/client" />
 
-declare const __APP_VERSION__: string;
+declare module "../../package.json" {
+	const pkg: { version: string };
+	export default pkg;
+}

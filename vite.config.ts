@@ -24,9 +24,6 @@ function apiLivePlugin(): PluginOption {
 
 // https://vitejs.dev/config/
 export default defineConfig(() => ({
-	define: {
-		__APP_VERSION__: JSON.stringify(getVersion()),
-	},
 	server: {
 		host: "::",
 		port: 7003,
