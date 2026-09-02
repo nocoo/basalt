@@ -21,9 +21,9 @@ export function StackedBarCard() {
 				<StackedBarChart
 					data={stackedData.map((row) => ({ x: row.name, y: row.a, y2: row.b, y3: row.c }))}
 					series={[
-						{ key: "y", label: "Core" },
-						{ key: "y2", label: "Growth" },
-						{ key: "y3", label: "Churn" },
+						{ key: "y", label: t("dashboard.core") },
+						{ key: "y2", label: t("dashboard.growth") },
+						{ key: "y3", label: t("dashboard.churn") },
 					]}
 					ariaLabel={t("dashboard.stackedEngagement")}
 					className="h-full w-full"

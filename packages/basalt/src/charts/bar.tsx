@@ -11,7 +11,12 @@ import {
 } from "./config";
 import { ChartShell } from "./frame";
 import { ChartLegend } from "./legend";
-import { resolveChartSeries, type XYPoint, type XYSeriesDescriptor } from "./series";
+import {
+	applyLeadColor,
+	resolveChartSeries,
+	type XYPoint,
+	type XYSeriesDescriptor,
+} from "./series";
 
 export type BarChartProps = {
 	data: XYPoint[];
@@ -34,7 +39,7 @@ export function BarChart({
 	color,
 	valueFormatter,
 }: BarChartProps) {
-	const bars = resolveChartSeries(series, ["y"]);
+	const bars = applyLeadColor(resolveChartSeries(series, ["y"]), color);
 	return (
 		<ChartShell
 			ariaLabel={ariaLabel}
@@ -51,7 +56,7 @@ export function BarChart({
 						key={item.key}
 						dataKey={item.key}
 						name={item.label ?? item.key}
-						fill={index === 0 && color ? color : seriesColor(item, index)}
+						fill={seriesColor(item, index)}
 						radius={BAR_RADIUS.vertical}
 						{...ANIMATION_PROPS}
 					/>

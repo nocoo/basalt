@@ -28,6 +28,16 @@ export function resolveChartSeries(
 	return fallbackKeys.map((key) => ({ key }));
 }
 
+export function applyLeadColor(
+	items: ChartSeriesDescriptor[],
+	color?: string,
+): ChartSeriesDescriptor[] {
+	if (!color) {
+		return items;
+	}
+	return items.map((item, index) => (index === 0 ? { ...item, color: item.color ?? color } : item));
+}
+
 export function xyFallbackKeys(data: Array<{ y2?: number; y3?: number }>): string[] {
 	const keys = ["y"];
 	if (data.some((point) => point.y2 != null)) {

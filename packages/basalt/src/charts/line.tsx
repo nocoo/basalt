@@ -11,6 +11,7 @@ import {
 import { ChartShell } from "./frame";
 import { ChartLegend } from "./legend";
 import {
+	applyLeadColor,
 	resolveChartSeries,
 	type XYPoint,
 	type XYSeriesDescriptor,
@@ -38,7 +39,7 @@ export function LineChart({
 	color,
 	valueFormatter,
 }: LineChartProps) {
-	const lines = resolveChartSeries(series, xyFallbackKeys(data));
+	const lines = applyLeadColor(resolveChartSeries(series, xyFallbackKeys(data)), color);
 	return (
 		<ChartShell
 			ariaLabel={ariaLabel}
@@ -56,7 +57,7 @@ export function LineChart({
 						type="monotone"
 						dataKey={item.key}
 						name={item.label ?? item.key}
-						stroke={index === 0 && color ? color : seriesColor(item, index)}
+						stroke={seriesColor(item, index)}
 						dot={false}
 						{...ANIMATION_PROPS}
 					/>

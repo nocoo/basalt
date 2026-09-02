@@ -25,9 +25,9 @@ export function MultiLineCard() {
 						y3: row.conversion,
 					}))}
 					series={[
-						{ key: "y", label: "Retention" },
-						{ key: "y2", label: "Activation" },
-						{ key: "y3", label: "Conversion" },
+						{ key: "y", label: t("dashboard.retention") },
+						{ key: "y2", label: t("dashboard.activation") },
+						{ key: "y3", label: t("dashboard.conversion") },
 					]}
 					ariaLabel={t("dashboard.multiSeriesTrend")}
 					className="h-full w-full"

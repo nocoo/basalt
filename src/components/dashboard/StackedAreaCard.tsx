@@ -26,9 +26,9 @@ export function StackedAreaCard() {
 						y3: row.churn,
 					}))}
 					series={[
-						{ key: "y", label: "Core" },
-						{ key: "y2", label: "Growth" },
-						{ key: "y3", label: "Churn" },
+						{ key: "y", label: t("dashboard.core") },
+						{ key: "y2", label: t("dashboard.growth") },
+						{ key: "y3", label: t("dashboard.churn") },
 					]}
 					ariaLabel={t("dashboard.stackedActivity")}
 					className="h-full w-full"

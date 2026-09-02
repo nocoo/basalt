@@ -46,6 +46,20 @@ describe("charts", () => {
 			/>,
 		);
 		expect(screen.getByText("Requests")).toBeInTheDocument();
+		expect(screen.getByRole("img", { name: "Legend line" })).toHaveClass("h-36", "w-56");
+		const colored = render(
+			<LineChart
+				data={points}
+				ariaLabel="Colored legend"
+				showLegend
+				color="rgb(9, 8, 7)"
+				series={[{ key: "y", label: "Lead" }]}
+			/>,
+		);
+		expect(colored.container.querySelector('[data-testid="chart-legend"] line')).toHaveAttribute(
+			"stroke",
+			"rgb(9, 8, 7)",
+		);
 		render(<BarChart data={points} ariaLabel="Bars" />);
 		expect(screen.getByRole("img", { name: "Bars" })).toBeInTheDocument();
 		render(<AreaChart data={points} ariaLabel="Area" />);
