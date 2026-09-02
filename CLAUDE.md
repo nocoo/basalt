@@ -42,8 +42,10 @@ Site deploy follows the tag. npm publish is a separate step on
    consumer gates A/B/C/D). `consumer:next` runs Chromium.
 5. **npm publish** from `packages/basalt`, never the repo root:
    - Stable: `npm publish --access public --registry https://registry.npmjs.org/`
-   - Prerelease: add `--tag rc` (or `alpha` / `beta`) so `latest` is
-     untouched. Install with `@nocoo/basalt@X.Y.Z-rc.N` or `@rc`.
+   - Prerelease: add `--tag rc` (or `alpha` / `beta`) so later stables
+     keep `latest`. A **new** package's first publish also becomes
+     `latest` (npm behavior). Install with `@nocoo/basalt@X.Y.Z-rc.N`
+     or `@rc`.
    - 2FA: `--otp=<code>`. After a green `package:prepublish` in the same
      tree, `--ignore-scripts` is allowed so OTP is not racing another
      coverage run.
