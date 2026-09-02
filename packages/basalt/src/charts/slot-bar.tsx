@@ -20,9 +20,9 @@ type SlotBarShared = {
 	className?: string;
 };
 
-export type SlotBarChartProps =
-	| (SlotBarShared & { items: SlotBarItem[] })
-	| (SlotBarShared & { data: XYPoint[] });
+export type SlotBarItemsProps = SlotBarShared & { items: SlotBarItem[] };
+export type SlotBarDataProps = SlotBarShared & { data: XYPoint[] };
+export type SlotBarChartProps = SlotBarItemsProps | SlotBarDataProps;
 
 export function SlotBarChart(props: SlotBarChartProps) {
 	const {

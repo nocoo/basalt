@@ -1,11 +1,11 @@
 import { Bar, BarChart as RechartsBar, Tooltip, XAxis, YAxis } from "recharts";
 import { ANIMATION_PROPS, cartesianAxisProps, chartTooltipProps, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { type BulletPoint, type ChartSeriesDescriptor, resolveChartSeries } from "./series";
+import { type BulletPoint, type BulletSeriesDescriptor, resolveChartSeries } from "./series";
 
 export type BulletChartProps = {
 	data: BulletPoint[];
-	series?: ChartSeriesDescriptor[];
+	series?: BulletSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
 	showAxes?: boolean;
@@ -27,12 +27,12 @@ export function BulletChart({
 				<XAxis type="number" {...cartesianAxisProps(!showAxes)} tickFormatter={valueFormatter} />
 				<YAxis type="category" dataKey="name" {...cartesianAxisProps(!showAxes)} />
 				<Tooltip {...chartTooltipProps({ formatter: valueFormatter, cursor: "bar" })} />
-				{bars.map((item, index) => (
+				{bars.map((item) => (
 					<Bar
 						key={item.key}
 						dataKey={item.key}
 						name={item.label ?? item.key}
-						fill={seriesColor(item, item.key === "target" ? 6 : index === 0 ? 6 : 1)}
+						fill={seriesColor(item, item.key === "target" ? 6 : 1)}
 						barSize={item.key === "target" ? 10 : 6}
 						{...ANIMATION_PROPS}
 					/>

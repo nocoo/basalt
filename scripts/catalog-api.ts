@@ -615,8 +615,14 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "slot-bar",
 		sourceFile: "packages/basalt/src/charts/slot-bar.tsx",
-		propsType: "SlotBarChartProps",
+		propsType: "SlotBarDataProps",
 		surface: "SlotBarChart",
+	},
+	{
+		slug: "slot-bar",
+		sourceFile: "packages/basalt/src/charts/slot-bar.tsx",
+		propsType: "SlotBarItemsProps",
+		surface: "SlotBarChart.Items",
 	},
 	{
 		slug: "grouped-bar",
@@ -633,8 +639,14 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "heatmap-calendar",
 		sourceFile: "packages/basalt/src/charts/heatmap-calendar.tsx",
-		propsType: "HeatmapCalendarProps",
+		propsType: "HeatmapCalendarValuesProps",
 		surface: "HeatmapCalendar",
+	},
+	{
+		slug: "heatmap-calendar",
+		sourceFile: "packages/basalt/src/charts/heatmap-calendar.tsx",
+		propsType: "HeatmapCalendarYearProps",
+		surface: "HeatmapCalendar.Year",
 	},
 	{
 		slug: "radar",
@@ -657,8 +669,14 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "timeline",
 		sourceFile: "packages/basalt/src/charts/timeline.tsx",
-		propsType: "TimelineProps",
+		propsType: "TimelineItemsProps",
 		surface: "Timeline",
+	},
+	{
+		slug: "timeline",
+		sourceFile: "packages/basalt/src/charts/timeline.tsx",
+		propsType: "TimelineEventsProps",
+		surface: "Timeline.Events",
 	},
 	{
 		slug: "sankey",

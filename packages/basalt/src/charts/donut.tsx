@@ -33,8 +33,7 @@ export function DonutChart({
 					{...ANIMATION_PROPS}
 				>
 					{data.map((entry, index) => {
-						const item =
-							series?.find((candidate) => candidate.key === entry.name) ?? series?.[index];
+						const item = series?.find((candidate) => candidate.key === entry.name);
 						return <Cell key={`${entry.name}-${index}`} fill={seriesColor(item, index)} />;
 					})}
 				</Pie>

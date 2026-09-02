@@ -16,17 +16,17 @@ function getHour(time: string) {
 
 export type TimelineItem = { id?: string; title: string; at?: string };
 
-export type TimelineProps =
-	| {
-			items: TimelineItem[];
-			ariaLabel?: string;
-			className?: string;
-	  }
-	| {
-			events: TimelineEvent[];
-			ariaLabel?: string;
-			className?: string;
-	  };
+export type TimelineItemsProps = {
+	items: TimelineItem[];
+	ariaLabel?: string;
+	className?: string;
+};
+export type TimelineEventsProps = {
+	events: TimelineEvent[];
+	ariaLabel?: string;
+	className?: string;
+};
+export type TimelineProps = TimelineItemsProps | TimelineEventsProps;
 
 export function Timeline(props: TimelineProps) {
 	const { ariaLabel = "Timeline", className } = props;

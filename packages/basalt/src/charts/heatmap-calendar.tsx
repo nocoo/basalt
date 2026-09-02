@@ -104,9 +104,12 @@ type HeatmapCalendarShared = {
 	className?: string;
 };
 
-export type HeatmapCalendarProps =
-	| (HeatmapCalendarShared & { values: number[] })
-	| (HeatmapCalendarShared & { data: HeatmapDataPoint[]; year: number });
+export type HeatmapCalendarValuesProps = HeatmapCalendarShared & { values: number[] };
+export type HeatmapCalendarYearProps = HeatmapCalendarShared & {
+	data: HeatmapDataPoint[];
+	year: number;
+};
+export type HeatmapCalendarProps = HeatmapCalendarValuesProps | HeatmapCalendarYearProps;
 
 export function HeatmapCalendar(props: HeatmapCalendarProps) {
 	const {

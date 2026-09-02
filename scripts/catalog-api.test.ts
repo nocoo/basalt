@@ -698,8 +698,14 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "slot-bar",
 				sourceFile: "packages/basalt/src/charts/slot-bar.tsx",
-				propsType: "SlotBarChartProps",
+				propsType: "SlotBarDataProps",
 				surface: "SlotBarChart",
+			},
+			{
+				slug: "slot-bar",
+				sourceFile: "packages/basalt/src/charts/slot-bar.tsx",
+				propsType: "SlotBarItemsProps",
+				surface: "SlotBarChart.Items",
 			},
 			{
 				slug: "grouped-bar",
@@ -716,8 +722,14 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "heatmap-calendar",
 				sourceFile: "packages/basalt/src/charts/heatmap-calendar.tsx",
-				propsType: "HeatmapCalendarProps",
+				propsType: "HeatmapCalendarValuesProps",
 				surface: "HeatmapCalendar",
+			},
+			{
+				slug: "heatmap-calendar",
+				sourceFile: "packages/basalt/src/charts/heatmap-calendar.tsx",
+				propsType: "HeatmapCalendarYearProps",
+				surface: "HeatmapCalendar.Year",
 			},
 			{
 				slug: "radar",
@@ -740,8 +752,14 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "timeline",
 				sourceFile: "packages/basalt/src/charts/timeline.tsx",
-				propsType: "TimelineProps",
+				propsType: "TimelineItemsProps",
 				surface: "Timeline",
+			},
+			{
+				slug: "timeline",
+				sourceFile: "packages/basalt/src/charts/timeline.tsx",
+				propsType: "TimelineEventsProps",
+				surface: "Timeline.Events",
 			},
 			{
 				slug: "sankey",
@@ -792,7 +810,7 @@ describe("catalog API generator contract", () => {
 				surface: "CustomChart",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(111);
+		expect(CATALOG_API_TARGETS).toHaveLength(114);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1861,14 +1879,14 @@ export interface WidgetProps {
 			gauge: ["Gauge"],
 			"stat-card": ["StatCard", "StatGrid"],
 			palette: ["ChartPalette"],
-			"slot-bar": ["SlotBarChart"],
+			"slot-bar": ["SlotBarChart", "SlotBarChart.Items"],
 			"grouped-bar": ["GroupedBarChart"],
 			"stacked-bar": ["StackedBarChart"],
-			"heatmap-calendar": ["HeatmapCalendar"],
+			"heatmap-calendar": ["HeatmapCalendar", "HeatmapCalendar.Year"],
 			radar: ["RadarChart"],
 			funnel: ["FunnelChart"],
 			bullet: ["BulletChart"],
-			timeline: ["Timeline"],
+			timeline: ["Timeline", "Timeline.Events"],
 			sankey: ["SankeyChart"],
 			"item-list": ["ItemList"],
 			"date-navigation": ["DateNavigation", "DateNavigation.Display"],
@@ -3575,6 +3593,9 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "DonutChart"');
 		expect(joined).toContain('name: "StatCard"');
 		expect(joined).toContain('name: "HeatmapCalendar"');
+		expect(joined).toContain('name: "HeatmapCalendar.Year"');
+		expect(joined).toContain('name: "SlotBarChart.Items"');
+		expect(joined).toContain('name: "Timeline.Events"');
 		expect(joined).toContain('name: "DateNavigation"');
 		expect(joined).toContain('name: "DateNavigation.Display"');
 		expect(joined).toContain('name: "StatGrid"');
@@ -3587,7 +3608,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"cba9c70404e159d4f64d0486f0cbc69b39ac2defaa59a271af63ab52b77c877c",
+			"76d368a6342e349cc989db61e5ad4c531785a7ee36aaa01193acfdc5342a09ef",
 		);
 	}, 20_000);
 

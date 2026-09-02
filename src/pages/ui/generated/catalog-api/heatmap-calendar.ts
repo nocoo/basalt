@@ -64,6 +64,86 @@ export const API = [
 				type: "string",
 				required: false,
 			},
+			{
+				name: "values",
+				type: "number[]",
+				required: true,
+			},
+		],
+	},
+	{
+		name: "HeatmapCalendar.Year",
+		props: [
+			{
+				name: "colorScale",
+				type: "string[]",
+				required: false,
+			},
+			{
+				name: "valueFormatter",
+				type: "(value: number, date: string) => string",
+				required: false,
+			},
+			{
+				name: "metricLabel",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "cellSize",
+				type: "number",
+				required: false,
+			},
+			{
+				name: "cellGap",
+				type: "number",
+				required: false,
+			},
+			{
+				name: "locale",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "weekdayLabels",
+				type: "string[]",
+				required: false,
+			},
+			{
+				name: "monthLabels",
+				type: "string[]",
+				required: false,
+			},
+			{
+				name: "lessLabel",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "moreLabel",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "ariaLabel",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "className",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "data",
+				type: "HeatmapDataPoint[]",
+				required: true,
+			},
+			{
+				name: "year",
+				type: "number",
+				required: true,
+			},
 		],
 	},
 ];

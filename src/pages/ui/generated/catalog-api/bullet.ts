@@ -11,7 +11,7 @@ export const API = [
 			},
 			{
 				name: "series",
-				type: "ChartSeriesDescriptor[]",
+				type: "BulletSeriesDescriptor[]",
 				required: false,
 			},
 			{

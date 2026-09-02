@@ -34,6 +34,51 @@ export const API = [
 				type: "string",
 				required: false,
 			},
+			{
+				name: "data",
+				type: "XYPoint[]",
+				required: true,
+			},
+		],
+	},
+	{
+		name: "SlotBarChart.Items",
+		props: [
+			{
+				name: "series",
+				type: "XYSeriesDescriptor[]",
+				required: false,
+			},
+			{
+				name: "ariaLabel",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "heightClass",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "gapClass",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "emptyClass",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "className",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "items",
+				type: "SlotBarItem[]",
+				required: true,
+			},
 		],
 	},
 ];

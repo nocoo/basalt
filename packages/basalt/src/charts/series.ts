@@ -6,6 +6,8 @@ export type ChartSeriesDescriptor = {
 
 export type XYSeriesKey = "y" | "y2" | "y3";
 export type XYSeriesDescriptor = ChartSeriesDescriptor & { key: XYSeriesKey };
+export type BulletSeriesKey = "value" | "target";
+export type BulletSeriesDescriptor = ChartSeriesDescriptor & { key: BulletSeriesKey };
 
 export type XYPoint = { x: string | number; y: number; y2?: number; y3?: number };
 export type NamedValue = { name: string; value: number };

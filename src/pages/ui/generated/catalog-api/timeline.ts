@@ -5,6 +5,31 @@ export const API = [
 		name: "Timeline",
 		props: [
 			{
+				name: "items",
+				type: "TimelineItem[]",
+				required: true,
+			},
+			{
+				name: "ariaLabel",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "className",
+				type: "string",
+				required: false,
+			},
+		],
+	},
+	{
+		name: "Timeline.Events",
+		props: [
+			{
+				name: "events",
+				type: "TimelineEvent[]",
+				required: true,
+			},
+			{
 				name: "ariaLabel",
 				type: "string",
 				required: false,
