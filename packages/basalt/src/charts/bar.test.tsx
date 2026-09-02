@@ -4,7 +4,7 @@ import { BarChart } from "./bar";
 
 describe("BarChart", () => {
 	it("renders", () => {
-		expect(render(<BarChart />).container.firstChild).toBeTruthy();
+		expect(render(<BarChart data={[{ x: "Jan", y: 12 }]} />).container.firstChild).toBeTruthy();
 	});
 
 	it("accepts page data and visible axes", () => {

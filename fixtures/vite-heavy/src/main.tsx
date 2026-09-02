@@ -21,7 +21,7 @@ if (!root) {
 
 createRoot(root).render(
 	<StrictMode>
-		<DonutChart />
+		<DonutChart data={[{ name: "alpha", value: 1 }]} />
 		<DatePicker aria-label="Pick date" />
 		<DataTable data={rows} columns={columns} />
 	</StrictMode>,

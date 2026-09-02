@@ -1,18 +1,22 @@
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart as RechartsRadar } from "recharts";
-import { ANIMATION_PROPS, chartTickStyle } from "./config";
+import { ANIMATION_PROPS, chartTickStyle, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { CHART_COLORS } from "./palette";
-import { RADAR_SAMPLE, type RadarPoint } from "./sample";
+import type { ChartSeriesDescriptor, RadarPoint } from "./series";
 
-export function RadarChart({
-	data = RADAR_SAMPLE,
-	ariaLabel = "Radar chart",
-	className,
-}: {
-	data?: RadarPoint[];
+export type RadarChartProps = {
+	data: RadarPoint[];
+	series?: ChartSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
-}) {
+};
+
+export function RadarChart({
+	data,
+	series,
+	ariaLabel = "Radar chart",
+	className,
+}: RadarChartProps) {
+	const fill = seriesColor(series?.[0], 3);
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
 			<RechartsRadar data={data} outerRadius={60}>
@@ -20,9 +24,10 @@ export function RadarChart({
 				<PolarAngleAxis dataKey="subject" tick={chartTickStyle()} tickLine={false} />
 				<Radar
 					dataKey="value"
-					fill={CHART_COLORS[3]}
+					name={series?.[0]?.label}
+					fill={fill}
 					fillOpacity={0.3}
-					stroke={CHART_COLORS[3]}
+					stroke={fill}
 					{...ANIMATION_PROPS}
 				/>
 			</RechartsRadar>

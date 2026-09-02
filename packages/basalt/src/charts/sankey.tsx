@@ -2,7 +2,7 @@ import { Sankey, type SankeyNodeProps, Tooltip } from "recharts";
 import { chartFontSize, chartTooltipProps } from "./config";
 import { ChartFrame } from "./frame";
 import { CHART_COLORS, chartAxis } from "./palette";
-import { SANKEY_SAMPLE, type SankeyData } from "./sample";
+import type { SankeyData } from "./series";
 
 function SankeyNode({ x, y, width, height, payload }: SankeyNodeProps) {
 	return (
@@ -21,15 +21,13 @@ function SankeyNode({ x, y, width, height, payload }: SankeyNodeProps) {
 	);
 }
 
-export function SankeyChart({
-	data = SANKEY_SAMPLE,
-	ariaLabel = "Sankey chart",
-	className,
-}: {
-	data?: SankeyData;
+export type SankeyChartProps = {
+	data: SankeyData;
 	ariaLabel?: string;
 	className?: string;
-}) {
+};
+
+export function SankeyChart({ data, ariaLabel = "Sankey chart", className }: SankeyChartProps) {
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
 			<Sankey

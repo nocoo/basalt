@@ -1,23 +1,29 @@
 import { PolarAngleAxis, RadialBar, RadialBarChart } from "recharts";
 import { cn } from "../utils/cn";
+import { seriesColor } from "./config";
 import { ChartFrame } from "./frame";
 import { CHART_COLORS } from "./palette";
+import type { ChartSeriesDescriptor } from "./series";
 
-export function Gauge({
-	value = 72,
-	max = 100,
-	ariaLabel = "Gauge",
-	className,
-	hideValue = false,
-	valueFormatter,
-}: {
-	value?: number;
+export type GaugeProps = {
+	value: number;
 	max?: number;
+	series?: ChartSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
 	hideValue?: boolean;
 	valueFormatter?: (value: number) => string;
-}) {
+};
+
+export function Gauge({
+	value,
+	max = 100,
+	series,
+	ariaLabel = "Gauge",
+	className,
+	hideValue = false,
+	valueFormatter,
+}: GaugeProps) {
 	const percent = max === 0 ? 0 : Math.min(100, Math.max(0, (value / max) * 100));
 	const display = valueFormatter ? valueFormatter(value) : String(value);
 	return (
@@ -37,7 +43,7 @@ export function Gauge({
 					<RadialBar
 						dataKey="value"
 						cornerRadius={6}
-						fill={CHART_COLORS[4]}
+						fill={seriesColor(series?.[0], 4)}
 						background={{ fill: CHART_COLORS[23] }}
 					/>
 				</RadialBarChart>

@@ -34,7 +34,11 @@ export const chart = {
 
 export const CHART_COLORS = Object.values(chart);
 
-export function ChartPalette({ ariaLabel = "Chart colors" }: { ariaLabel?: string }) {
+export type ChartPaletteProps = {
+	ariaLabel?: string;
+};
+
+export function ChartPalette({ ariaLabel = "Chart colors" }: ChartPaletteProps) {
 	return (
 		<div className="flex flex-wrap gap-2" role="img" aria-label={ariaLabel}>
 			{CHART_COLORS.map((color) => (

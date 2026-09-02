@@ -1,4 +1,7 @@
 import { CHART_COLORS, chartAxis, withAlpha } from "./palette";
+import type { ChartSeriesDescriptor } from "./series";
+
+export type { ChartSeriesDescriptor } from "./series";
 
 export type ChartTypeFace = "axis" | "legend" | "tooltipTitle" | "tooltipBody";
 
@@ -137,6 +140,13 @@ export function chartLegendProps() {
 		},
 		iconSize: 8,
 	};
+}
+
+export function seriesColor(
+	series: ChartSeriesDescriptor | undefined,
+	index: number,
+): string | undefined {
+	return series?.color ?? CHART_COLORS[index % CHART_COLORS.length];
 }
 
 export const RESPONSIVE_CONTAINER_PROPS = {

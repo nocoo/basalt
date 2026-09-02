@@ -1,14 +1,13 @@
 import { LineChart } from "./line";
-import type { XYPoint } from "./sample";
+import type { ChartSeriesDescriptor, XYPoint } from "./series";
 
-export function Charts({
-	data,
-	ariaLabel = "Charts",
-	className,
-}: {
-	data?: XYPoint[];
+export type ChartsProps = {
+	data: XYPoint[];
+	series?: ChartSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
-}) {
-	return <LineChart data={data} ariaLabel={ariaLabel} className={className} />;
+};
+
+export function Charts({ data, series, ariaLabel = "Charts", className }: ChartsProps) {
+	return <LineChart data={data} series={series} ariaLabel={ariaLabel} className={className} />;
 }

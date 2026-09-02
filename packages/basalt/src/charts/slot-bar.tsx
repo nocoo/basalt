@@ -1,10 +1,9 @@
 import { Bar, BarChart as RechartsBar, XAxis, YAxis } from "recharts";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../components/tooltip";
 import { cn } from "../utils/cn";
-import { ANIMATION_PROPS, BAR_RADIUS, cartesianAxisProps } from "./config";
+import { ANIMATION_PROPS, BAR_RADIUS, cartesianAxisProps, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { CHART_COLORS } from "./palette";
-import { SAMPLE, type XYPoint } from "./sample";
+import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
 
 export type SlotBarItem = {
 	color: string;
@@ -12,23 +11,27 @@ export type SlotBarItem = {
 	label?: string;
 };
 
-export function SlotBarChart({
-	data = SAMPLE,
-	items,
-	ariaLabel = "Slot bar chart",
-	heightClass = "h-6",
-	gapClass = "gap-px",
-	emptyClass = "bg-basalt-muted",
-	className,
-}: {
+export type SlotBarChartProps = {
 	data?: XYPoint[];
 	items?: SlotBarItem[];
+	series?: ChartSeriesDescriptor[];
 	ariaLabel?: string;
 	heightClass?: string;
 	gapClass?: string;
 	emptyClass?: string;
 	className?: string;
-}) {
+};
+
+export function SlotBarChart({
+	data,
+	items,
+	series,
+	ariaLabel = "Slot bar chart",
+	heightClass = "h-6",
+	gapClass = "gap-px",
+	emptyClass = "bg-basalt-muted",
+	className,
+}: SlotBarChartProps) {
 	if (items) {
 		return (
 			<SlotItemBars
@@ -41,12 +44,22 @@ export function SlotBarChart({
 			/>
 		);
 	}
+	const bars = resolveChartSeries(series, ["y"]);
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
-			<RechartsBar data={data}>
+			<RechartsBar data={data ?? []}>
 				<XAxis dataKey="x" {...cartesianAxisProps(true)} />
 				<YAxis {...cartesianAxisProps(true)} />
-				<Bar dataKey="y" fill={CHART_COLORS[0]} radius={BAR_RADIUS.vertical} {...ANIMATION_PROPS} />
+				{bars.map((item, index) => (
+					<Bar
+						key={item.key}
+						dataKey={item.key}
+						name={item.label ?? item.key}
+						fill={seriesColor(item, index)}
+						radius={BAR_RADIUS.vertical}
+						{...ANIMATION_PROPS}
+					/>
+				))}
 			</RechartsBar>
 		</ChartFrame>
 	);

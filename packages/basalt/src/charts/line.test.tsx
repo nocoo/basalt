@@ -4,7 +4,7 @@ import { LineChart } from "./line";
 
 describe("LineChart", () => {
 	it("renders a chart container", () => {
-		const { container } = render(<LineChart />);
+		const { container } = render(<LineChart data={[{ x: "Mon", y: 4 }]} />);
 		expect(container.firstChild).toBeTruthy();
 	});
 

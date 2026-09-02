@@ -5,22 +5,27 @@ import {
 	cartesianAxisProps,
 	chartTooltipProps,
 	GRID_PROPS,
+	seriesColor,
 } from "./config";
 import { ChartFrame } from "./frame";
-import { CHART_COLORS } from "./palette";
-import { SAMPLE, type XYPoint } from "./sample";
+import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
 
-export function GroupedBarChart({
-	data = SAMPLE,
-	ariaLabel = "Grouped bar chart",
-	className,
-	showAxes = false,
-}: {
-	data?: XYPoint[];
+export type GroupedBarChartProps = {
+	data: XYPoint[];
+	series?: ChartSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
 	showAxes?: boolean;
-}) {
+};
+
+export function GroupedBarChart({
+	data,
+	series,
+	ariaLabel = "Grouped bar chart",
+	className,
+	showAxes = false,
+}: GroupedBarChartProps) {
+	const bars = resolveChartSeries(series, ["y", "y2"]);
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
 			<RechartsBar data={data}>
@@ -28,13 +33,16 @@ export function GroupedBarChart({
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
 				<YAxis {...cartesianAxisProps(!showAxes)} />
 				<Tooltip {...chartTooltipProps({ cursor: "bar" })} />
-				<Bar dataKey="y" fill={CHART_COLORS[0]} radius={BAR_RADIUS.vertical} {...ANIMATION_PROPS} />
-				<Bar
-					dataKey="y2"
-					fill={CHART_COLORS[2]}
-					radius={BAR_RADIUS.vertical}
-					{...ANIMATION_PROPS}
-				/>
+				{bars.map((item, index) => (
+					<Bar
+						key={item.key}
+						dataKey={item.key}
+						name={item.label ?? item.key}
+						fill={seriesColor(item, index)}
+						radius={BAR_RADIUS.vertical}
+						{...ANIMATION_PROPS}
+					/>
+				))}
 			</RechartsBar>
 		</ChartFrame>
 	);

@@ -5,22 +5,27 @@ import {
 	cartesianAxisProps,
 	chartTooltipProps,
 	GRID_PROPS,
+	seriesColor,
 } from "./config";
 import { ChartFrame } from "./frame";
-import { CHART_COLORS } from "./palette";
-import { SAMPLE, type XYPoint } from "./sample";
+import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
 
-export function StackedBarChart({
-	data = SAMPLE,
-	ariaLabel = "Stacked bar chart",
-	className,
-	showAxes = false,
-}: {
-	data?: XYPoint[];
+export type StackedBarChartProps = {
+	data: XYPoint[];
+	series?: ChartSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
 	showAxes?: boolean;
-}) {
+};
+
+export function StackedBarChart({
+	data,
+	series,
+	ariaLabel = "Stacked bar chart",
+	className,
+	showAxes = false,
+}: StackedBarChartProps) {
+	const bars = resolveChartSeries(series, ["y", "y2", "y3"]);
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
 			<RechartsBar data={data}>
@@ -28,27 +33,17 @@ export function StackedBarChart({
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
 				<YAxis {...cartesianAxisProps(!showAxes)} />
 				<Tooltip {...chartTooltipProps({ cursor: "bar" })} />
-				<Bar
-					dataKey="y"
-					stackId="stack"
-					fill={CHART_COLORS[0]}
-					radius={BAR_RADIUS.vertical}
-					{...ANIMATION_PROPS}
-				/>
-				<Bar
-					dataKey="y2"
-					stackId="stack"
-					fill={CHART_COLORS[2]}
-					radius={BAR_RADIUS.vertical}
-					{...ANIMATION_PROPS}
-				/>
-				<Bar
-					dataKey="y3"
-					stackId="stack"
-					fill={CHART_COLORS[4]}
-					radius={BAR_RADIUS.vertical}
-					{...ANIMATION_PROPS}
-				/>
+				{bars.map((item, index) => (
+					<Bar
+						key={item.key}
+						dataKey={item.key}
+						name={item.label ?? item.key}
+						stackId="stack"
+						fill={seriesColor(item, index)}
+						radius={BAR_RADIUS.vertical}
+						{...ANIMATION_PROPS}
+					/>
+				))}
 			</RechartsBar>
 		</ChartFrame>
 	);

@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest";
 import { StatCard, StatGrid } from "./stat-card";
 
 describe("StatCard", () => {
-	it("renders default Requests and 12.4k", () => {
-		render(<StatCard />);
+	it("renders caller label and value", () => {
+		render(<StatCard label="Requests" value="12.4k" />);
 		expect(screen.getByText("Requests")).toBeInTheDocument();
 		expect(screen.getByText("12.4k")).toBeInTheDocument();
 		expect(screen.getByRole("img", { name: "Requests 12.4k" })).toBeInTheDocument();
@@ -19,11 +19,11 @@ describe("StatCard", () => {
 	});
 
 	it("renders string values and locale-formats number values", () => {
-		const { rerender } = render(<StatCard value="8%" />);
+		const { rerender } = render(<StatCard label="Requests" value="8%" />);
 		expect(screen.getByText("8%")).toBeInTheDocument();
 		expect(screen.getByRole("img", { name: "Requests 8%" })).toBeInTheDocument();
 		const numeric = 12400;
-		rerender(<StatCard value={numeric} />);
+		rerender(<StatCard label="Requests" value={numeric} />);
 		const formatted = numeric.toLocaleString();
 		expect(screen.getByText(formatted)).toBeInTheDocument();
 		expect(screen.getByRole("img", { name: `Requests ${formatted}` })).toBeInTheDocument();
@@ -31,50 +31,63 @@ describe("StatCard", () => {
 
 	it("builds the automatic aria-label from heading, value, subtitle, and trend", () => {
 		const { rerender } = render(
-			<StatCard subtitle="this week" trend={{ value: 12, label: "wow" }} />,
+			<StatCard
+				label="Requests"
+				value="12.4k"
+				subtitle="this week"
+				trend={{ value: 12, label: "wow" }}
+			/>,
 		);
 		expect(
 			screen.getByRole("img", { name: "Requests 12.4k this week +12% wow" }),
 		).toBeInTheDocument();
-		rerender(<StatCard trend={{ value: -5 }} />);
+		rerender(<StatCard label="Requests" value="12.4k" trend={{ value: -5 }} />);
 		expect(screen.getByRole("img", { name: "Requests 12.4k -5%" })).toBeInTheDocument();
-		rerender(<StatCard trend={{ value: 0 }} />);
+		rerender(<StatCard label="Requests" value="12.4k" trend={{ value: 0 }} />);
 		expect(screen.getByRole("img", { name: "Requests 12.4k 0%" })).toBeInTheDocument();
 	});
 
 	it("lets an explicit ariaLabel replace the automatic name", () => {
-		render(<StatCard subtitle="this week" trend={{ value: 12 }} ariaLabel="Exact" />);
+		render(
+			<StatCard
+				label="Requests"
+				value="12.4k"
+				subtitle="this week"
+				trend={{ value: 12 }}
+				ariaLabel="Exact"
+			/>,
+		);
 		expect(screen.getByRole("img", { name: "Exact" })).toBeInTheDocument();
 		expect(screen.queryByRole("img", { name: "Requests 12.4k this week +12%" })).toBeNull();
 	});
 
 	it("shows subtitle only when provided", () => {
-		const { rerender } = render(<StatCard />);
+		const { rerender } = render(<StatCard value="12.4k" />);
 		expect(screen.queryByText("vs last")).toBeNull();
-		rerender(<StatCard subtitle="vs last" />);
+		rerender(<StatCard value="12.4k" subtitle="vs last" />);
 		expect(screen.getByText("vs last")).toBeInTheDocument();
 	});
 
 	it("renders an icon with iconColor and applies the outer className", () => {
 		const { container, rerender } = render(
-			<StatCard icon={Activity} iconColor="text-red-500" className="outer-card" />,
+			<StatCard value="12.4k" icon={Activity} iconColor="text-red-500" className="outer-card" />,
 		);
 		expect(container.firstElementChild).toHaveClass("outer-card");
 		expect(container.querySelector(".text-red-500")).toBeTruthy();
 		expect(container.querySelector("svg")).toBeTruthy();
-		rerender(<StatCard />);
+		rerender(<StatCard value="12.4k" />);
 		expect(container.querySelector("svg")).toBeNull();
 	});
 
 	it("styles positive, negative, and zero trends and optional labels", () => {
-		const { rerender } = render(<StatCard trend={{ value: 12, label: "wow" }} />);
+		const { rerender } = render(<StatCard value="12.4k" trend={{ value: 12, label: "wow" }} />);
 		const positive = screen.getByText("+12%");
 		expect(positive).toHaveClass("text-basalt-heatmap-green-4");
 		expect(screen.getByText("wow")).toBeInTheDocument();
-		rerender(<StatCard trend={{ value: -5 }} />);
+		rerender(<StatCard value="12.4k" trend={{ value: -5 }} />);
 		expect(screen.getByText("-5%")).toHaveClass("text-basalt-destructive");
 		expect(screen.queryByText("wow")).toBeNull();
-		rerender(<StatCard trend={{ value: 0 }} />);
+		rerender(<StatCard value="12.4k" trend={{ value: 0 }} />);
 		expect(screen.getByText("0%")).toHaveClass("text-basalt-muted-foreground");
 	});
 });

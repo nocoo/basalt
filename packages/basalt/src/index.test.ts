@@ -9,6 +9,15 @@ const unapprovedRootNames = [
 	"AppSkipLink",
 	"LoadingScreen",
 	"PageHeader",
+	"LineChart",
+	"BarChart",
+	"AreaChart",
+	"DonutChart",
+	"Sparkline",
+	"Gauge",
+	"StatCard",
+	"ChartPalette",
+	"DataTable",
 ] as const;
 
 describe("root barrel", () => {

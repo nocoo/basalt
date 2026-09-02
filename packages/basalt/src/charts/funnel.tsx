@@ -1,20 +1,24 @@
 import { Funnel, LabelList, FunnelChart as RechartsFunnel, Tooltip } from "recharts";
-import { ANIMATION_PROPS, chartFontSize, chartTooltipProps } from "./config";
+import { ANIMATION_PROPS, chartFontSize, chartTooltipProps, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { CHART_COLORS, chartAxis } from "./palette";
-import { FUNNEL_SAMPLE, type NamedValue } from "./sample";
+import { chartAxis } from "./palette";
+import type { ChartSeriesDescriptor, NamedValue } from "./series";
 
-export function FunnelChart({
-	data = FUNNEL_SAMPLE,
-	ariaLabel = "Funnel chart",
-	className,
-	valueFormatter,
-}: {
-	data?: NamedValue[];
+export type FunnelChartProps = {
+	data: NamedValue[];
+	series?: ChartSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
 	valueFormatter?: (value: number) => string;
-}) {
+};
+
+export function FunnelChart({
+	data,
+	series,
+	ariaLabel = "Funnel chart",
+	className,
+	valueFormatter,
+}: FunnelChartProps) {
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
 			<RechartsFunnel>
@@ -23,7 +27,7 @@ export function FunnelChart({
 					data={data}
 					dataKey="value"
 					nameKey="name"
-					fill={CHART_COLORS[1]}
+					fill={seriesColor(series?.[0], 1)}
 					{...ANIMATION_PROPS}
 				>
 					<LabelList

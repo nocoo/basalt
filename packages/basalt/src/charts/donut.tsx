@@ -1,22 +1,25 @@
 import { Cell, Legend, Pie, PieChart, Tooltip } from "recharts";
-import { ANIMATION_PROPS, chartLegendProps, chartTooltipProps } from "./config";
+import { ANIMATION_PROPS, chartLegendProps, chartTooltipProps, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { CHART_COLORS } from "./palette";
-import { DONUT_SAMPLE, type NamedValue } from "./sample";
+import type { ChartSeriesDescriptor, NamedValue } from "./series";
 
-export function DonutChart({
-	data = DONUT_SAMPLE,
-	ariaLabel = "Donut chart",
-	className,
-	showLegend = false,
-	valueFormatter,
-}: {
-	data?: NamedValue[];
+export type DonutChartProps = {
+	data: NamedValue[];
+	series?: ChartSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
 	showLegend?: boolean;
 	valueFormatter?: (value: number) => string;
-}) {
+};
+
+export function DonutChart({
+	data,
+	series,
+	ariaLabel = "Donut chart",
+	className,
+	showLegend = false,
+	valueFormatter,
+}: DonutChartProps) {
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className} size="h-36 w-36">
 			<PieChart>
@@ -30,7 +33,7 @@ export function DonutChart({
 					{...ANIMATION_PROPS}
 				>
 					{data.map((entry, index) => (
-						<Cell key={`${entry.name}-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+						<Cell key={`${entry.name}-${index}`} fill={seriesColor(series?.[index], index)} />
 					))}
 				</Pie>
 				{showLegend ? <Legend {...chartLegendProps()} /> : null}

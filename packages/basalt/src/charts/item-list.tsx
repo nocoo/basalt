@@ -1,14 +1,14 @@
 import { cn } from "../utils/cn";
 
-export function ItemList({
-	items = [{ label: "North" }, { label: "East" }, { label: "West" }],
-	ariaLabel = "Item list",
-	className,
-}: {
-	items?: { id?: string; label: string; value?: string }[];
+export type ItemListItem = { id?: string; label: string; value?: string };
+
+export type ItemListProps = {
+	items: ItemListItem[];
 	ariaLabel?: string;
 	className?: string;
-}) {
+};
+
+export function ItemList({ items, ariaLabel = "Item list", className }: ItemListProps) {
 	return (
 		<ul className={cn("space-y-1 text-sm", className)} aria-label={ariaLabel}>
 			{items.map((item, index) => (

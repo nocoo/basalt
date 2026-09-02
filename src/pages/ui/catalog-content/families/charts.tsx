@@ -80,22 +80,74 @@ function add(
 	extra[slug] = page(entry, description, Demo, sample, props, usage);
 }
 
-add("line", "Line series.", () => <LineChart />, "<LineChart />");
-add("bar", "Bar series.", () => <BarChart />, "<BarChart />");
-add("area", "Area series.", () => <AreaChart />, "<AreaChart />");
-add("donut", "Donut series.", () => <DonutChart />, "<DonutChart />");
-add("sparkline", "Compact line.", () => <Sparkline />, "<Sparkline />");
-add("gauge", "Radial-style meter.", () => <Gauge />, "<Gauge />");
-add("stat-card", "KPI card.", () => <StatCard />, "<StatCard />");
+const XY = [{ x: "Mon", y: 12, y2: 8 }];
+
+add(
+	"line",
+	"Line series.",
+	() => <LineChart data={XY} />,
+	"<LineChart data={[{ x: 'Mon', y: 12 }]} />",
+);
+add(
+	"bar",
+	"Bar series.",
+	() => <BarChart data={XY} />,
+	"<BarChart data={[{ x: 'Mon', y: 12 }]} />",
+);
+add(
+	"area",
+	"Area series.",
+	() => <AreaChart data={XY} />,
+	"<AreaChart data={[{ x: 'Mon', y: 12 }]} />",
+);
+add(
+	"donut",
+	"Donut series.",
+	() => <DonutChart data={[{ name: "A", value: 40 }]} />,
+	'<DonutChart data={[{ name: "A", value: 40 }]} />',
+);
+add(
+	"sparkline",
+	"Compact line.",
+	() => <Sparkline data={XY} />,
+	"<Sparkline data={[{ x: 'Mon', y: 12 }]} />",
+);
+add("gauge", "Radial-style meter.", () => <Gauge value={72} />, "<Gauge value={72} />");
+add(
+	"stat-card",
+	"KPI card.",
+	() => <StatCard label="Requests" value="12.4k" />,
+	'<StatCard label="Requests" value="12.4k" />',
+);
 add("palette", "Chart colors.", () => <ChartPalette />, "<ChartPalette />");
-add("slot-bar", "Slot bar.", () => <SlotBarChart />, "<SlotBarChart />");
-add("grouped-bar", "Grouped bars.", () => <GroupedBarChart />, "<GroupedBarChart />");
-add("stacked-bar", "Stacked bars.", () => <StackedBarChart />, "<StackedBarChart />");
-add("heatmap-calendar", "Calendar heatmap.", () => <HeatmapCalendar />, "<HeatmapCalendar />");
+add(
+	"slot-bar",
+	"Slot bar.",
+	() => <SlotBarChart data={XY} />,
+	"<SlotBarChart data={[{ x: 'Mon', y: 12 }]} />",
+);
+add(
+	"grouped-bar",
+	"Grouped bars.",
+	() => <GroupedBarChart data={XY} />,
+	"<GroupedBarChart data={[{ x: 'Mon', y: 12 }]} />",
+);
+add(
+	"stacked-bar",
+	"Stacked bars.",
+	() => <StackedBarChart data={XY} />,
+	"<StackedBarChart data={[{ x: 'Mon', y: 12 }]} />",
+);
+add(
+	"heatmap-calendar",
+	"Calendar heatmap.",
+	() => <HeatmapCalendar values={[1, 2, 3]} />,
+	"<HeatmapCalendar values={[1, 2, 3]} />",
+);
 add(
 	"radar",
 	"Radar series.",
-	() => <RadarChart />,
+	() => <RadarChart data={[{ subject: "Speed", value: 80 }]} />,
 	'<RadarChart data={[{ subject: "Speed", value: 80 }]} />',
 	[
 		{ name: "data", type: "RadarPoint[]" },
@@ -105,7 +157,7 @@ add(
 add(
 	"funnel",
 	"Funnel series.",
-	() => <FunnelChart />,
+	() => <FunnelChart data={[{ name: "Visits", value: 2400 }]} />,
 	'<FunnelChart data={[{ name: "Visits", value: 2400 }]} />',
 	[
 		{ name: "data", type: "NamedValue[]" },
@@ -115,7 +167,7 @@ add(
 add(
 	"bullet",
 	"Bullet chart.",
-	() => <BulletChart />,
+	() => <BulletChart data={[{ name: "Revenue", value: 68, target: 80 }]} />,
 	'<BulletChart data={[{ name: "Revenue", value: 68, target: 80 }]} />',
 	[
 		{ name: "data", type: "BulletPoint[]" },
@@ -125,7 +177,7 @@ add(
 add(
 	"timeline",
 	"Timeline.",
-	() => <Timeline />,
+	() => <Timeline items={[{ id: "created", title: "Created", at: "Mon" }]} />,
 	'<Timeline items={[{ id: "created", title: "Created", at: "Mon" }]} />',
 	[
 		{ name: "items", type: "{ id?: string; title: string; at?: string }[]" },
@@ -135,24 +187,51 @@ add(
 add(
 	"sankey",
 	"Sankey-style flow.",
-	() => <SankeyChart />,
+	() => (
+		<SankeyChart
+			data={{
+				nodes: [{ name: "In" }, { name: "Out" }],
+				links: [{ source: 0, target: 1, value: 10 }],
+			}}
+		/>
+	),
 	'<SankeyChart data={{ nodes: [{ name: "In" }, { name: "Out" }], links: [{ source: 0, target: 1, value: 10 }] }} />',
 	[
 		{ name: "data", type: "SankeyData" },
 		{ name: "ariaLabel", type: "string" },
 	],
 );
-add("item-list", "Simple list.", () => <ItemList />, "<ItemList />");
+add(
+	"item-list",
+	"Simple list.",
+	() => <ItemList items={[{ label: "North" }]} />,
+	'<ItemList items={[{ label: "North" }]} />',
+);
 add(
 	"date-navigation",
 	"Date control.",
 	() => <DateNavigation aria-label="Date" />,
 	"<DateNavigation />",
 );
-add("charts", "Chart overview.", () => <Charts />, "<Charts />");
+add(
+	"charts",
+	"Chart overview.",
+	() => <Charts data={XY} />,
+	"<Charts data={[{ x: 'Mon', y: 12 }]} />",
+);
 add("chart-colors", "Chart color tokens.", () => <Colors />, "<Colors />");
-add("timeseries", "Time series.", () => <Timeseries />, "<Timeseries />");
-add("custom-chart", "Custom chart.", () => <CustomChart />, "<CustomChart />");
+add(
+	"timeseries",
+	"Time series.",
+	() => <Timeseries data={XY} />,
+	"<Timeseries data={[{ x: 'Mon', y: 12 }]} />",
+);
+add(
+	"custom-chart",
+	"Custom chart.",
+	() => <CustomChart data={XY} />,
+	"<CustomChart data={[{ x: 'Mon', y: 12 }]} />",
+);
 
 export default catalogContentFamily(
 	Object.fromEntries(

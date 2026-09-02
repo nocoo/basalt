@@ -5,26 +5,34 @@ import {
 	cartesianAxisProps,
 	chartTooltipProps,
 	GRID_PROPS,
+	seriesColor,
 } from "./config";
 import { ChartFrame } from "./frame";
-import { CHART_COLORS } from "./palette";
-import { SAMPLE, type XYPoint } from "./sample";
+import {
+	type ChartSeriesDescriptor,
+	resolveChartSeries,
+	type XYPoint,
+	xyFallbackKeys,
+} from "./series";
 
-export function AreaChart({
-	data = SAMPLE,
-	ariaLabel = "Area chart",
-	className,
-	showAxes = false,
-	stacked = false,
-}: {
-	data?: XYPoint[];
+export type AreaChartProps = {
+	data: XYPoint[];
+	series?: ChartSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
 	showAxes?: boolean;
 	stacked?: boolean;
-}) {
-	const dual = data.some((point) => point.y2 != null);
-	const triple = data.some((point) => point.y3 != null);
+};
+
+export function AreaChart({
+	data,
+	series,
+	ariaLabel = "Area chart",
+	className,
+	showAxes = false,
+	stacked = false,
+}: AreaChartProps) {
+	const areas = resolveChartSeries(series, xyFallbackKeys(data));
 	const stackId = stacked ? "stack" : undefined;
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
@@ -33,34 +41,21 @@ export function AreaChart({
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
 				<YAxis {...cartesianAxisProps(!showAxes)} />
 				<Tooltip {...chartTooltipProps({ cursor: "line" })} />
-				<Area
-					dataKey="y"
-					stackId={stackId}
-					stroke={CHART_COLORS[0]}
-					fill={CHART_COLORS[0]}
-					fillOpacity={CHART_TYPE.areaFillAlpha}
-					{...ANIMATION_PROPS}
-				/>
-				{dual ? (
-					<Area
-						dataKey="y2"
-						stackId={stackId}
-						stroke={CHART_COLORS[2]}
-						fill={CHART_COLORS[2]}
-						fillOpacity={CHART_TYPE.areaFillAlpha}
-						{...ANIMATION_PROPS}
-					/>
-				) : null}
-				{triple ? (
-					<Area
-						dataKey="y3"
-						stackId={stackId}
-						stroke={CHART_COLORS[4]}
-						fill={CHART_COLORS[4]}
-						fillOpacity={CHART_TYPE.areaFillAlpha}
-						{...ANIMATION_PROPS}
-					/>
-				) : null}
+				{areas.map((item, index) => {
+					const fill = seriesColor(item, index);
+					return (
+						<Area
+							key={item.key}
+							dataKey={item.key}
+							name={item.label ?? item.key}
+							stackId={stackId}
+							stroke={fill}
+							fill={fill}
+							fillOpacity={CHART_TYPE.areaFillAlpha}
+							{...ANIMATION_PROPS}
+						/>
+					);
+				})}
 			</RechartsArea>
 		</ChartFrame>
 	);

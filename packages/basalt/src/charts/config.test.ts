@@ -13,6 +13,7 @@ import {
 	chartTooltipProps,
 	GRID_PROPS,
 	getChartColor,
+	seriesColor,
 } from "./config";
 import { CHART_COLORS, chartAxis, withAlpha } from "./palette";
 
@@ -47,5 +48,7 @@ describe("chart type helpers", () => {
 		expect(getChartColor(0)).toBe(CHART_COLORS[0]);
 		expect(getChartColor(CHART_COLORS.length)).toBe(CHART_COLORS[0]);
 		expect(withAlpha("chart-axis", 0.15)).toBe("hsl(var(--basalt-chart-axis) / 0.15)");
+		expect(seriesColor({ key: "y", color: "rgb(9, 8, 7)" }, 3)).toBe("rgb(9, 8, 7)");
+		expect(seriesColor(undefined, 4)).toBe(CHART_COLORS[4]);
 	});
 });

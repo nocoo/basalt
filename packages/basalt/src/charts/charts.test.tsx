@@ -76,7 +76,15 @@ describe("charts", () => {
 		expect(screen.getByRole("img", { name: "Spark" })).toBeInTheDocument();
 		render(<SlotBarChart data={points} ariaLabel="Slots" />);
 		expect(screen.getByRole("img", { name: "Slots" })).toBeInTheDocument();
-		render(<SankeyChart ariaLabel="Flow" />);
+		render(
+			<SankeyChart
+				data={{
+					nodes: [{ name: "In" }, { name: "Out" }],
+					links: [{ source: 0, target: 1, value: 4 }],
+				}}
+				ariaLabel="Flow"
+			/>,
+		);
 		expect(screen.getByRole("img", { name: "Flow" })).toBeInTheDocument();
 		render(<Charts data={points} ariaLabel="Overview" />);
 		expect(screen.getByRole("img", { name: "Overview" })).toBeInTheDocument();

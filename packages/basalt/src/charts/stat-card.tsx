@@ -2,27 +2,29 @@ import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
 
-export function StatCard({
-	label = "Requests",
-	title,
-	value = "12.4k",
-	subtitle,
-	icon: Icon,
-	iconColor = "text-basalt-muted-foreground",
-	trend,
-	ariaLabel,
-	className,
-}: {
+export type StatCardProps = {
 	label?: string;
 	title?: string;
-	value?: string | number;
+	value: string | number;
 	subtitle?: string;
 	icon?: LucideIcon;
 	iconColor?: string;
 	trend?: { value: number; label?: string };
 	ariaLabel?: string;
 	className?: string;
-}) {
+};
+
+export function StatCard({
+	label,
+	title,
+	value,
+	subtitle,
+	icon: Icon,
+	iconColor = "text-basalt-muted-foreground",
+	trend,
+	ariaLabel,
+	className,
+}: StatCardProps) {
 	const heading = title ?? label;
 	const display = typeof value === "number" ? value.toLocaleString() : value;
 	const isPositiveTrend = trend && trend.value > 0;

@@ -89,23 +89,7 @@ function getColorIndex(value: number, maxValue: number, colorScale: readonly str
 	return Math.ceil(normalized * levels);
 }
 
-export function HeatmapCalendar({
-	values = Array.from({ length: 28 }, (_, index) => index % 5),
-	data,
-	year,
-	colorScale = heatmapColorScales.green,
-	valueFormatter = (value) => value.toLocaleString(),
-	metricLabel = "Value",
-	cellSize = 12,
-	cellGap = 2,
-	locale = "en-US",
-	weekdayLabels,
-	monthLabels,
-	lessLabel = "Less",
-	moreLabel = "More",
-	ariaLabel = "Heatmap calendar",
-	className,
-}: {
+export type HeatmapCalendarProps = {
 	values?: number[];
 	data?: HeatmapDataPoint[];
 	year?: number;
@@ -121,7 +105,25 @@ export function HeatmapCalendar({
 	moreLabel?: string;
 	ariaLabel?: string;
 	className?: string;
-}) {
+};
+
+export function HeatmapCalendar({
+	values,
+	data,
+	year,
+	colorScale = heatmapColorScales.green,
+	valueFormatter = (value) => value.toLocaleString(),
+	metricLabel = "Value",
+	cellSize = 12,
+	cellGap = 2,
+	locale = "en-US",
+	weekdayLabels,
+	monthLabels,
+	lessLabel = "Less",
+	moreLabel = "More",
+	ariaLabel = "Heatmap calendar",
+	className,
+}: HeatmapCalendarProps) {
 	if (data && year != null) {
 		return (
 			<YearHeatmap
@@ -144,7 +146,7 @@ export function HeatmapCalendar({
 	}
 	return (
 		<div className={cn("grid grid-cols-7 gap-1", className)} role="img" aria-label={ariaLabel}>
-			{values.map((value, index) => (
+			{(values ?? []).map((value, index) => (
 				<span
 					key={index}
 					className="h-3 w-3 rounded-sm bg-basalt-primary"
