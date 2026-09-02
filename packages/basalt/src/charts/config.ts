@@ -88,15 +88,19 @@ export function chartTooltipContentStyle(): {
 	background: string;
 	border: string;
 	borderRadius: string;
+	boxShadow: string;
 	fontSize: number;
 	color: string;
+	padding: string;
 } {
 	return {
 		background: "hsl(var(--basalt-popover))",
-		border: "1px solid hsl(var(--basalt-border))",
-		borderRadius: "8px",
+		border: "1px solid hsl(var(--basalt-border) / 0.6)",
+		borderRadius: "10px",
+		boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.12), 0 4px 6px -4px rgb(0 0 0 / 0.08)",
 		fontSize: chartFontSize("tooltipBody"),
 		color: "hsl(var(--basalt-foreground))",
+		padding: "8px 12px",
 	};
 }
 
@@ -119,6 +123,8 @@ export function chartTooltipProps(options?: {
 			outline: "none",
 			zIndex: 40,
 			pointerEvents: "none" as const,
+			transition: "none",
+			animation: "none",
 		},
 		contentStyle: chartTooltipContentStyle(),
 		labelStyle: {
@@ -156,3 +162,17 @@ export const RESPONSIVE_CONTAINER_PROPS = {
 	minHeight: 0,
 	debounce: 150,
 };
+
+export const CHART_PLOT_MARGIN = {
+	top: 4,
+	right: 4,
+	bottom: 0,
+	left: 0,
+} as const;
+
+export const CHART_PLOT_MARGIN_BARE = {
+	top: 2,
+	right: 2,
+	bottom: 2,
+	left: 2,
+} as const;

@@ -22,7 +22,7 @@ export function ChartFrame({
 			aria-label={ariaLabel}
 			className={cn(
 				size,
-				"basalt-chart outline-none [&_.recharts-layer]:outline-none [&_.recharts-rectangle]:outline-none [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none [&_.recharts-wrapper]:outline-none",
+				"min-h-0 min-w-0 basalt-chart outline-none [&_.recharts-layer]:outline-none [&_.recharts-rectangle]:outline-none [&_.recharts-sector]:outline-none [&_.recharts-surface]:outline-none [&_.recharts-wrapper]:outline-none",
 				className,
 			)}
 		>

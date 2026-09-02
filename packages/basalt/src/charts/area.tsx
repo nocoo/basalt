@@ -1,6 +1,8 @@
 import { Area, CartesianGrid, AreaChart as RechartsArea, Tooltip, XAxis, YAxis } from "recharts";
 import {
 	ANIMATION_PROPS,
+	CHART_PLOT_MARGIN,
+	CHART_PLOT_MARGIN_BARE,
 	CHART_TYPE,
 	cartesianAxisProps,
 	chartTooltipProps,
@@ -36,7 +38,7 @@ export function AreaChart({
 	const stackId = stacked ? "stack" : undefined;
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
-			<RechartsArea data={data}>
+			<RechartsArea data={data} margin={showAxes ? CHART_PLOT_MARGIN : CHART_PLOT_MARGIN_BARE}>
 				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
 				<YAxis {...cartesianAxisProps(!showAxes)} />

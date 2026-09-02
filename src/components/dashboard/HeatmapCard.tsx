@@ -16,7 +16,7 @@ const heatmapData = Array.from({ length: 365 }).map((_, i) => {
 export function HeatmapCard() {
 	const { t, i18n } = useTranslation();
 	return (
-		<LayerCard className="flex flex-col rounded-card border-border bg-card shadow-none">
+		<LayerCard className="flex h-full flex-col rounded-card border-0 bg-secondary shadow-none ring-0">
 			<div className="flex flex-col space-y-2.5 p-4 pb-2">
 				<h3 className="text-sm text-muted-foreground">{t("dashboard.engagementHeatmap")}</h3>
 			</div>

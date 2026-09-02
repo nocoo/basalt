@@ -1,6 +1,8 @@
 import { CartesianGrid, Line, LineChart as RechartsLine, Tooltip, XAxis, YAxis } from "recharts";
 import {
 	ANIMATION_PROPS,
+	CHART_PLOT_MARGIN,
+	CHART_PLOT_MARGIN_BARE,
 	cartesianAxisProps,
 	chartTooltipProps,
 	GRID_PROPS,
@@ -36,7 +38,7 @@ export function LineChart({
 	const lines = resolveChartSeries(series, xyFallbackKeys(data));
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
-			<RechartsLine data={data}>
+			<RechartsLine data={data} margin={showAxes ? CHART_PLOT_MARGIN : CHART_PLOT_MARGIN_BARE}>
 				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
 				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} />
 				<YAxis {...cartesianAxisProps(!showAxes)} tickFormatter={valueFormatter} />
