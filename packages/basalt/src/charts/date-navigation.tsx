@@ -55,21 +55,12 @@ type DisplayProps = {
 	className?: string;
 };
 
-export type DateNavigationProps = {
+export type DateNavigationPickerProps = {
 	ariaLabel?: string;
 	className?: string;
-	selectedDate?: Date;
-	onPrevDay?: () => void;
-	onNextDay?: () => void;
-	onToday?: () => void;
-	onToggleCalendar?: () => void;
-	todayLabel?: string;
-	previousDayLabel?: string;
-	nextDayLabel?: string;
-	formatDate?: (date: Date) => string;
-	locale?: string;
-	timeZone?: string;
 };
+
+export type DateNavigationDisplayProps = DisplayProps;
 
 export function DateNavigation(props: PickerProps | DisplayProps) {
 	if ("onPrevDay" in props) {

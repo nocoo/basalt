@@ -11,7 +11,7 @@ export const API = [
 			},
 			{
 				name: "series",
-				type: "ChartSeriesDescriptor[]",
+				type: "XYSeriesDescriptor[]",
 				required: false,
 			},
 			{

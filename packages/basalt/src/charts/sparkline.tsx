@@ -1,11 +1,11 @@
 import { Line, LineChart as RechartsLine } from "recharts";
 import { ANIMATION_PROPS, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
+import { resolveChartSeries, type XYPoint, type XYSeriesDescriptor } from "./series";
 
 export type SparklineProps = {
 	data: XYPoint[];
-	series?: ChartSeriesDescriptor[];
+	series?: XYSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
 };

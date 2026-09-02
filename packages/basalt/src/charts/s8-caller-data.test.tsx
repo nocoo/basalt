@@ -29,7 +29,14 @@ describe("S8 caller data", () => {
 		expect(screen.getByRole("img", { name: "Named series" })).toBeInTheDocument();
 		render(<BarChart data={[{ x: "Beta", y: 4 }]} ariaLabel="Caller bars" />);
 		expect(screen.getByRole("img", { name: "Caller bars" })).toBeInTheDocument();
-		render(<DonutChart data={share} ariaLabel={`Share ${share[0]?.name}`} showLegend />);
+		render(
+			<DonutChart
+				data={share}
+				series={[{ key: "Atlas", color: "rgb(4, 5, 6)" }]}
+				ariaLabel={`Share ${share[0]?.name}`}
+				showLegend
+			/>,
+		);
 		expect(screen.getByRole("img", { name: "Share Atlas" })).toBeInTheDocument();
 		expect(screen.queryByRole("img", { name: "Line Mon" })).toBeNull();
 	});

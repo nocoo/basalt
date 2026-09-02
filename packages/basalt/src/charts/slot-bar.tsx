@@ -3,7 +3,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../com
 import { cn } from "../utils/cn";
 import { ANIMATION_PROPS, BAR_RADIUS, cartesianAxisProps, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
+import { resolveChartSeries, type XYPoint, type XYSeriesDescriptor } from "./series";
 
 export type SlotBarItem = {
 	color: string;
@@ -11,10 +11,8 @@ export type SlotBarItem = {
 	label?: string;
 };
 
-export type SlotBarChartProps = {
-	data?: XYPoint[];
-	items?: SlotBarItem[];
-	series?: ChartSeriesDescriptor[];
+type SlotBarShared = {
+	series?: XYSeriesDescriptor[];
 	ariaLabel?: string;
 	heightClass?: string;
 	gapClass?: string;
@@ -22,20 +20,23 @@ export type SlotBarChartProps = {
 	className?: string;
 };
 
-export function SlotBarChart({
-	data,
-	items,
-	series,
-	ariaLabel = "Slot bar chart",
-	heightClass = "h-6",
-	gapClass = "gap-px",
-	emptyClass = "bg-basalt-muted",
-	className,
-}: SlotBarChartProps) {
-	if (items) {
+export type SlotBarChartProps =
+	| (SlotBarShared & { items: SlotBarItem[] })
+	| (SlotBarShared & { data: XYPoint[] });
+
+export function SlotBarChart(props: SlotBarChartProps) {
+	const {
+		series,
+		ariaLabel = "Slot bar chart",
+		heightClass = "h-6",
+		gapClass = "gap-px",
+		emptyClass = "bg-basalt-muted",
+		className,
+	} = props;
+	if ("items" in props) {
 		return (
 			<SlotItemBars
-				items={items}
+				items={props.items}
 				ariaLabel={ariaLabel}
 				heightClass={heightClass}
 				gapClass={gapClass}
@@ -47,7 +48,7 @@ export function SlotBarChart({
 	const bars = resolveChartSeries(series, ["y"]);
 	return (
 		<ChartFrame ariaLabel={ariaLabel} className={className}>
-			<RechartsBar data={data ?? []}>
+			<RechartsBar data={props.data}>
 				<XAxis dataKey="x" {...cartesianAxisProps(true)} />
 				<YAxis {...cartesianAxisProps(true)} />
 				{bars.map((item, index) => (

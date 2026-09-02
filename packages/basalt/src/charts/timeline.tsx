@@ -16,20 +16,26 @@ function getHour(time: string) {
 
 export type TimelineItem = { id?: string; title: string; at?: string };
 
-export type TimelineProps = {
-	items?: TimelineItem[];
-	events?: TimelineEvent[];
-	ariaLabel?: string;
-	className?: string;
-};
+export type TimelineProps =
+	| {
+			items: TimelineItem[];
+			ariaLabel?: string;
+			className?: string;
+	  }
+	| {
+			events: TimelineEvent[];
+			ariaLabel?: string;
+			className?: string;
+	  };
 
-export function Timeline({ items, events, ariaLabel = "Timeline", className }: TimelineProps) {
-	if (events) {
-		return <HourTimeline events={events} ariaLabel={ariaLabel} className={className} />;
+export function Timeline(props: TimelineProps) {
+	const { ariaLabel = "Timeline", className } = props;
+	if ("events" in props) {
+		return <HourTimeline events={props.events} ariaLabel={ariaLabel} className={className} />;
 	}
 	return (
 		<ol className={cn("space-y-2 text-sm", className)} aria-label={ariaLabel}>
-			{(items ?? []).map((item, index) => (
+			{props.items.map((item, index) => (
 				<li key={item.id ?? `${item.at ?? ""}-${item.title}-${index}`} className="flex gap-2">
 					<span className="text-basalt-muted-foreground">{item.at}</span>
 					<span>{item.title}</span>

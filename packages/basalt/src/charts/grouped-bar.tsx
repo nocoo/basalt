@@ -8,11 +8,11 @@ import {
 	seriesColor,
 } from "./config";
 import { ChartFrame } from "./frame";
-import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
+import { resolveChartSeries, type XYPoint, type XYSeriesDescriptor } from "./series";
 
 export type GroupedBarChartProps = {
 	data: XYPoint[];
-	series?: ChartSeriesDescriptor[];
+	series?: XYSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
 	showAxes?: boolean;

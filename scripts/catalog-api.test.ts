@@ -684,6 +684,12 @@ describe("catalog API generator contract", () => {
 				surface: "StatCard",
 			},
 			{
+				slug: "stat-card",
+				sourceFile: "packages/basalt/src/charts/stat-card.tsx",
+				propsType: "StatGridProps",
+				surface: "StatGrid",
+			},
+			{
 				slug: "palette",
 				sourceFile: "packages/basalt/src/charts/palette.tsx",
 				propsType: "ChartPaletteProps",
@@ -752,8 +758,14 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "date-navigation",
 				sourceFile: "packages/basalt/src/charts/date-navigation.tsx",
-				propsType: "DateNavigationProps",
+				propsType: "DateNavigationPickerProps",
 				surface: "DateNavigation",
+			},
+			{
+				slug: "date-navigation",
+				sourceFile: "packages/basalt/src/charts/date-navigation.tsx",
+				propsType: "DateNavigationDisplayProps",
+				surface: "DateNavigation.Display",
 			},
 			{
 				slug: "charts",
@@ -780,7 +792,7 @@ describe("catalog API generator contract", () => {
 				surface: "CustomChart",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(109);
+		expect(CATALOG_API_TARGETS).toHaveLength(111);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1847,7 +1859,7 @@ export interface WidgetProps {
 			donut: ["DonutChart"],
 			sparkline: ["Sparkline"],
 			gauge: ["Gauge"],
-			"stat-card": ["StatCard"],
+			"stat-card": ["StatCard", "StatGrid"],
 			palette: ["ChartPalette"],
 			"slot-bar": ["SlotBarChart"],
 			"grouped-bar": ["GroupedBarChart"],
@@ -1859,7 +1871,7 @@ export interface WidgetProps {
 			timeline: ["Timeline"],
 			sankey: ["SankeyChart"],
 			"item-list": ["ItemList"],
-			"date-navigation": ["DateNavigation"],
+			"date-navigation": ["DateNavigation", "DateNavigation.Display"],
 			charts: ["Charts"],
 			"chart-colors": ["Colors"],
 			timeseries: ["Timeseries"],
@@ -3564,6 +3576,8 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "StatCard"');
 		expect(joined).toContain('name: "HeatmapCalendar"');
 		expect(joined).toContain('name: "DateNavigation"');
+		expect(joined).toContain('name: "DateNavigation.Display"');
+		expect(joined).toContain('name: "StatGrid"');
 		expect(joined).toContain('name: "ChartPalette"');
 		expect(joined).toContain('type: "ChartSeriesDescriptor[]"');
 		const digest = createHash("sha256");
@@ -3573,7 +3587,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"c744a42538fae2e6f5fcf1aa475deb78b9410b6974e735ce1c91afb14b457c35",
+			"cba9c70404e159d4f64d0486f0cbc69b39ac2defaa59a271af63ab52b77c877c",
 		);
 	}, 20_000);
 

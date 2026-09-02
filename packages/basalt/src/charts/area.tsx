@@ -9,15 +9,15 @@ import {
 } from "./config";
 import { ChartFrame } from "./frame";
 import {
-	type ChartSeriesDescriptor,
 	resolveChartSeries,
 	type XYPoint,
+	type XYSeriesDescriptor,
 	xyFallbackKeys,
 } from "./series";
 
 export type AreaChartProps = {
 	data: XYPoint[];
-	series?: ChartSeriesDescriptor[];
+	series?: XYSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
 	showAxes?: boolean;

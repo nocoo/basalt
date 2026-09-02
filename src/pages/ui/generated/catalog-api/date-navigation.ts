@@ -14,25 +14,30 @@ export const API = [
 				type: "string",
 				required: false,
 			},
+		],
+	},
+	{
+		name: "DateNavigation.Display",
+		props: [
 			{
 				name: "selectedDate",
 				type: "Date",
-				required: false,
+				required: true,
 			},
 			{
 				name: "onPrevDay",
 				type: "() => void",
-				required: false,
+				required: true,
 			},
 			{
 				name: "onNextDay",
 				type: "() => void",
-				required: false,
+				required: true,
 			},
 			{
 				name: "onToday",
 				type: "() => void",
-				required: false,
+				required: true,
 			},
 			{
 				name: "onToggleCalendar",
@@ -66,6 +71,11 @@ export const API = [
 			},
 			{
 				name: "timeZone",
+				type: "string",
+				required: false,
+			},
+			{
+				name: "className",
 				type: "string",
 				required: false,
 			},

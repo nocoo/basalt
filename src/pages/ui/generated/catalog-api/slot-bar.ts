@@ -5,18 +5,8 @@ export const API = [
 		name: "SlotBarChart",
 		props: [
 			{
-				name: "data",
-				type: "XYPoint[]",
-				required: false,
-			},
-			{
-				name: "items",
-				type: "SlotBarItem[]",
-				required: false,
-			},
-			{
 				name: "series",
-				type: "ChartSeriesDescriptor[]",
+				type: "XYSeriesDescriptor[]",
 				required: false,
 			},
 			{

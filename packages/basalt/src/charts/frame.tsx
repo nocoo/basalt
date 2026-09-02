@@ -3,17 +3,19 @@ import { ResponsiveContainer } from "recharts";
 import { cn } from "../utils/cn";
 import { RESPONSIVE_CONTAINER_PROPS } from "./config";
 
+export type ChartFrameProps = {
+	ariaLabel: string;
+	className?: string;
+	children: ReactElement<{ accessibilityLayer?: boolean }>;
+	size?: string;
+};
+
 export function ChartFrame({
 	ariaLabel,
 	className,
 	children,
 	size = "h-36 w-56",
-}: {
-	ariaLabel?: string;
-	className?: string;
-	children: ReactElement<{ accessibilityLayer?: boolean }>;
-	size?: string;
-}) {
+}: ChartFrameProps) {
 	return (
 		<div
 			role="img"

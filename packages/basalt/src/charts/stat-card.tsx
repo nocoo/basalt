@@ -82,15 +82,13 @@ export function StatCard({
 	);
 }
 
-export function StatGrid({
-	children,
-	columns = 4,
-	className,
-}: {
+export type StatGridProps = {
 	children: ReactNode;
 	columns?: 2 | 3 | 4;
 	className?: string;
-}) {
+};
+
+export function StatGrid({ children, columns = 4, className }: StatGridProps) {
 	const gridCols = {
 		2: "grid-cols-1 sm:grid-cols-2",
 		3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",

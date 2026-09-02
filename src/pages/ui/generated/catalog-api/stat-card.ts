@@ -51,4 +51,24 @@ export const API = [
 			},
 		],
 	},
+	{
+		name: "StatGrid",
+		props: [
+			{
+				name: "children",
+				type: "React.ReactNode",
+				required: true,
+			},
+			{
+				name: "columns",
+				type: "2 | 3 | 4",
+				required: false,
+			},
+			{
+				name: "className",
+				type: "string",
+				required: false,
+			},
+		],
+	},
 ];

@@ -601,6 +601,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "StatCard",
 	},
 	{
+		slug: "stat-card",
+		sourceFile: "packages/basalt/src/charts/stat-card.tsx",
+		propsType: "StatGridProps",
+		surface: "StatGrid",
+	},
+	{
 		slug: "palette",
 		sourceFile: "packages/basalt/src/charts/palette.tsx",
 		propsType: "ChartPaletteProps",
@@ -669,8 +675,14 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "date-navigation",
 		sourceFile: "packages/basalt/src/charts/date-navigation.tsx",
-		propsType: "DateNavigationProps",
+		propsType: "DateNavigationPickerProps",
 		surface: "DateNavigation",
+	},
+	{
+		slug: "date-navigation",
+		sourceFile: "packages/basalt/src/charts/date-navigation.tsx",
+		propsType: "DateNavigationDisplayProps",
+		surface: "DateNavigation.Display",
 	},
 	{
 		slug: "charts",

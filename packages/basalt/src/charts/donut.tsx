@@ -32,9 +32,11 @@ export function DonutChart({
 					stroke="none"
 					{...ANIMATION_PROPS}
 				>
-					{data.map((entry, index) => (
-						<Cell key={`${entry.name}-${index}`} fill={seriesColor(series?.[index], index)} />
-					))}
+					{data.map((entry, index) => {
+						const item =
+							series?.find((candidate) => candidate.key === entry.name) ?? series?.[index];
+						return <Cell key={`${entry.name}-${index}`} fill={seriesColor(item, index)} />;
+					})}
 				</Pie>
 				{showLegend ? <Legend {...chartLegendProps()} /> : null}
 				<Tooltip {...chartTooltipProps({ formatter: valueFormatter, cursor: false })} />

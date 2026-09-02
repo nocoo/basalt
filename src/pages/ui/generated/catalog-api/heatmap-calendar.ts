@@ -5,21 +5,6 @@ export const API = [
 		name: "HeatmapCalendar",
 		props: [
 			{
-				name: "values",
-				type: "number[]",
-				required: false,
-			},
-			{
-				name: "data",
-				type: "HeatmapDataPoint[]",
-				required: false,
-			},
-			{
-				name: "year",
-				type: "number",
-				required: false,
-			},
-			{
 				name: "colorScale",
 				type: "string[]",
 				required: false,

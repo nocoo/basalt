@@ -89,10 +89,7 @@ function getColorIndex(value: number, maxValue: number, colorScale: readonly str
 	return Math.ceil(normalized * levels);
 }
 
-export type HeatmapCalendarProps = {
-	values?: number[];
-	data?: HeatmapDataPoint[];
-	year?: number;
+type HeatmapCalendarShared = {
 	colorScale?: readonly string[];
 	valueFormatter?: (value: number, date: string) => string;
 	metricLabel?: string;
@@ -107,28 +104,30 @@ export type HeatmapCalendarProps = {
 	className?: string;
 };
 
-export function HeatmapCalendar({
-	values,
-	data,
-	year,
-	colorScale = heatmapColorScales.green,
-	valueFormatter = (value) => value.toLocaleString(),
-	metricLabel = "Value",
-	cellSize = 12,
-	cellGap = 2,
-	locale = "en-US",
-	weekdayLabels,
-	monthLabels,
-	lessLabel = "Less",
-	moreLabel = "More",
-	ariaLabel = "Heatmap calendar",
-	className,
-}: HeatmapCalendarProps) {
-	if (data && year != null) {
+export type HeatmapCalendarProps =
+	| (HeatmapCalendarShared & { values: number[] })
+	| (HeatmapCalendarShared & { data: HeatmapDataPoint[]; year: number });
+
+export function HeatmapCalendar(props: HeatmapCalendarProps) {
+	const {
+		colorScale = heatmapColorScales.green,
+		valueFormatter = (value) => value.toLocaleString(),
+		metricLabel = "Value",
+		cellSize = 12,
+		cellGap = 2,
+		locale = "en-US",
+		weekdayLabels,
+		monthLabels,
+		lessLabel = "Less",
+		moreLabel = "More",
+		ariaLabel = "Heatmap calendar",
+		className,
+	} = props;
+	if ("data" in props) {
 		return (
 			<YearHeatmap
-				data={data}
-				year={year}
+				data={props.data}
+				year={props.year}
 				colorScale={colorScale}
 				valueFormatter={valueFormatter}
 				metricLabel={metricLabel}
@@ -146,7 +145,7 @@ export function HeatmapCalendar({
 	}
 	return (
 		<div className={cn("grid grid-cols-7 gap-1", className)} role="img" aria-label={ariaLabel}>
-			{(values ?? []).map((value, index) => (
+			{props.values.map((value, index) => (
 				<span
 					key={index}
 					className="h-3 w-3 rounded-sm bg-basalt-primary"

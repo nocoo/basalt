@@ -1,9 +1,9 @@
 import { LineChart } from "./line";
-import type { ChartSeriesDescriptor, XYPoint } from "./series";
+import type { XYPoint, XYSeriesDescriptor } from "./series";
 
 export type CustomChartProps = {
 	data: XYPoint[];
-	series?: ChartSeriesDescriptor[];
+	series?: XYSeriesDescriptor[];
 	ariaLabel?: string;
 	className?: string;
 };
