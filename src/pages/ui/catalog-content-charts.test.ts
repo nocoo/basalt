@@ -75,7 +75,9 @@ describe("charts catalog content family", () => {
 		}
 		expect(charts.radar?.docs.api[0]?.props.map((prop) => prop.name)).toEqual([
 			"data",
+			"series",
 			"ariaLabel",
+			"className",
 		]);
 		expect(charts.timeline?.docs.usage).toContain('id: "created"');
 		expect(charts.sankey?.docs.usage).toContain("nodes:");

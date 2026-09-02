@@ -641,8 +641,146 @@ describe("catalog API generator contract", () => {
 				propsType: "GridProps",
 				surface: "Grid",
 			},
+			{
+				slug: "line",
+				sourceFile: "packages/basalt/src/charts/line.tsx",
+				propsType: "LineChartProps",
+				surface: "LineChart",
+			},
+			{
+				slug: "bar",
+				sourceFile: "packages/basalt/src/charts/bar.tsx",
+				propsType: "BarChartProps",
+				surface: "BarChart",
+			},
+			{
+				slug: "area",
+				sourceFile: "packages/basalt/src/charts/area.tsx",
+				propsType: "AreaChartProps",
+				surface: "AreaChart",
+			},
+			{
+				slug: "donut",
+				sourceFile: "packages/basalt/src/charts/donut.tsx",
+				propsType: "DonutChartProps",
+				surface: "DonutChart",
+			},
+			{
+				slug: "sparkline",
+				sourceFile: "packages/basalt/src/charts/sparkline.tsx",
+				propsType: "SparklineProps",
+				surface: "Sparkline",
+			},
+			{
+				slug: "gauge",
+				sourceFile: "packages/basalt/src/charts/gauge.tsx",
+				propsType: "GaugeProps",
+				surface: "Gauge",
+			},
+			{
+				slug: "stat-card",
+				sourceFile: "packages/basalt/src/charts/stat-card.tsx",
+				propsType: "StatCardProps",
+				surface: "StatCard",
+			},
+			{
+				slug: "palette",
+				sourceFile: "packages/basalt/src/charts/palette.tsx",
+				propsType: "ChartPaletteProps",
+				surface: "ChartPalette",
+			},
+			{
+				slug: "slot-bar",
+				sourceFile: "packages/basalt/src/charts/slot-bar.tsx",
+				propsType: "SlotBarChartProps",
+				surface: "SlotBarChart",
+			},
+			{
+				slug: "grouped-bar",
+				sourceFile: "packages/basalt/src/charts/grouped-bar.tsx",
+				propsType: "GroupedBarChartProps",
+				surface: "GroupedBarChart",
+			},
+			{
+				slug: "stacked-bar",
+				sourceFile: "packages/basalt/src/charts/stacked-bar.tsx",
+				propsType: "StackedBarChartProps",
+				surface: "StackedBarChart",
+			},
+			{
+				slug: "heatmap-calendar",
+				sourceFile: "packages/basalt/src/charts/heatmap-calendar.tsx",
+				propsType: "HeatmapCalendarProps",
+				surface: "HeatmapCalendar",
+			},
+			{
+				slug: "radar",
+				sourceFile: "packages/basalt/src/charts/radar.tsx",
+				propsType: "RadarChartProps",
+				surface: "RadarChart",
+			},
+			{
+				slug: "funnel",
+				sourceFile: "packages/basalt/src/charts/funnel.tsx",
+				propsType: "FunnelChartProps",
+				surface: "FunnelChart",
+			},
+			{
+				slug: "bullet",
+				sourceFile: "packages/basalt/src/charts/bullet.tsx",
+				propsType: "BulletChartProps",
+				surface: "BulletChart",
+			},
+			{
+				slug: "timeline",
+				sourceFile: "packages/basalt/src/charts/timeline.tsx",
+				propsType: "TimelineProps",
+				surface: "Timeline",
+			},
+			{
+				slug: "sankey",
+				sourceFile: "packages/basalt/src/charts/sankey.tsx",
+				propsType: "SankeyChartProps",
+				surface: "SankeyChart",
+			},
+			{
+				slug: "item-list",
+				sourceFile: "packages/basalt/src/charts/item-list.tsx",
+				propsType: "ItemListProps",
+				surface: "ItemList",
+			},
+			{
+				slug: "date-navigation",
+				sourceFile: "packages/basalt/src/charts/date-navigation.tsx",
+				propsType: "DateNavigationProps",
+				surface: "DateNavigation",
+			},
+			{
+				slug: "charts",
+				sourceFile: "packages/basalt/src/charts/charts.tsx",
+				propsType: "ChartsProps",
+				surface: "Charts",
+			},
+			{
+				slug: "chart-colors",
+				sourceFile: "packages/basalt/src/charts/chart-colors.tsx",
+				propsType: "ColorsProps",
+				surface: "Colors",
+			},
+			{
+				slug: "timeseries",
+				sourceFile: "packages/basalt/src/charts/timeseries.tsx",
+				propsType: "TimeseriesProps",
+				surface: "Timeseries",
+			},
+			{
+				slug: "custom-chart",
+				sourceFile: "packages/basalt/src/charts/custom-chart.tsx",
+				propsType: "CustomChartProps",
+				surface: "CustomChart",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(86);
+		expect(CATALOG_API_TARGETS).toHaveLength(109);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -721,6 +859,29 @@ describe("catalog API generator contract", () => {
 			"code-block",
 			"flow",
 			"grid",
+			"line",
+			"bar",
+			"area",
+			"donut",
+			"sparkline",
+			"gauge",
+			"stat-card",
+			"palette",
+			"slot-bar",
+			"grouped-bar",
+			"stacked-bar",
+			"heatmap-calendar",
+			"radar",
+			"funnel",
+			"bullet",
+			"timeline",
+			"sankey",
+			"item-list",
+			"date-navigation",
+			"charts",
+			"chart-colors",
+			"timeseries",
+			"custom-chart",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -1680,6 +1841,29 @@ export interface WidgetProps {
 			"code-block": ["CodeBlock"],
 			flow: ["Flow", "FlowNode"],
 			grid: ["Grid"],
+			line: ["LineChart"],
+			bar: ["BarChart"],
+			area: ["AreaChart"],
+			donut: ["DonutChart"],
+			sparkline: ["Sparkline"],
+			gauge: ["Gauge"],
+			"stat-card": ["StatCard"],
+			palette: ["ChartPalette"],
+			"slot-bar": ["SlotBarChart"],
+			"grouped-bar": ["GroupedBarChart"],
+			"stacked-bar": ["StackedBarChart"],
+			"heatmap-calendar": ["HeatmapCalendar"],
+			radar: ["RadarChart"],
+			funnel: ["FunnelChart"],
+			bullet: ["BulletChart"],
+			timeline: ["Timeline"],
+			sankey: ["SankeyChart"],
+			"item-list": ["ItemList"],
+			"date-navigation": ["DateNavigation"],
+			charts: ["Charts"],
+			"chart-colors": ["Colors"],
+			timeseries: ["Timeseries"],
+			"custom-chart": ["CustomChart"],
 		});
 	}, 20_000);
 
@@ -1689,7 +1873,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(43);
+		expect(Object.keys(generated)).toHaveLength(66);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -1790,7 +1974,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(43);
+		expect(Object.keys(generated)).toHaveLength(66);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -1912,7 +2096,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(43);
+		expect(Object.keys(generated)).toHaveLength(66);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -1983,7 +2167,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(43);
+		expect(Object.keys(generated)).toHaveLength(66);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2026,7 +2210,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(43);
+		expect(Object.keys(generated)).toHaveLength(66);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2078,7 +2262,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(43);
+		expect(Object.keys(generated)).toHaveLength(66);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3319,8 +3503,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(43);
-		expect(Object.keys(first)).toHaveLength(44);
+		expect(slugs).toHaveLength(66);
+		expect(Object.keys(first)).toHaveLength(67);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3375,6 +3559,13 @@ export interface WidgetProps {
 		expect(joined).toContain('type: "(row: unknown, index: number) => string"');
 		expect(joined).toContain('name: "Flow"');
 		expect(joined).toContain('name: "Grid"');
+		expect(joined).toContain('name: "LineChart"');
+		expect(joined).toContain('name: "DonutChart"');
+		expect(joined).toContain('name: "StatCard"');
+		expect(joined).toContain('name: "HeatmapCalendar"');
+		expect(joined).toContain('name: "DateNavigation"');
+		expect(joined).toContain('name: "ChartPalette"');
+		expect(joined).toContain('type: "ChartSeriesDescriptor[]"');
 		const digest = createHash("sha256");
 		for (const relative of Object.keys(first).sort()) {
 			digest.update(relative);
@@ -3382,7 +3573,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"d5a8f5b7bf2b6df468a0e333dae3e1fd83eec868e47dd72d145070cb7dad3d0c",
+			"c744a42538fae2e6f5fcf1aa475deb78b9410b6974e735ce1c91afb14b457c35",
 		);
 	}, 20_000);
 
