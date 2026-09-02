@@ -1,111 +1,46 @@
-# 03 · Basalt 生产成熟度执行台账
+# 03 · Basalt 生产成熟度
 
-> 状态：完成
-> 当前切片：—
-> 当前实现真值：`6a9c214`（S10 Codex Sign-off）
-> Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`
+> 状态：S0–S10 完成
+> 真值：代码与 `src/pages/ui/generated/`（page-status / catalog-api / content-family）
+> npm：`@nocoo/basalt@2.0.0-rc.1`（public；`latest` 与 `rc` 均指向该版本）
 > 最后更新：2026-09-02
 
-本文把 01 的架构目标、02 的实现规则收敛成可恢复的执行台账。01 回答“做成什么样”，02 回答“通用实现顺序”，03 只记录“现在做到哪、下一刀做什么”。已完成阶段的切片契约、文件清单、hash 和测试数字以 git 为准，不在此复述。
+01 做成什么样，02 怎么做。本文只记做到哪。切片契约、文件清单和测试数字以 git 为准，不在此复述。
 
-## 1. 最终目标与边界
+## 1. 现在
 
-Basalt 最终必须成为可发布、可被 Next/Vite 项目直接引用的统一 React 控件库，并同时提供：实现/类型/测试、与真实能力一致的文档与 example、表单/导航/数据/Dashboard 组合、自有视觉语言、可验证的 tarball 与 6DQ 门。
+统一 React 控件库，展示站自消费包出口。根 barrel 只放轻叶子与 providers。`AppShell`、`DatePicker`、`DataTable`、图表、`ResourceList`、`DeleteResource` 走子路径。coverage 四项 ≥ 95%。`package:prepublish`（含仓外 tarball 与 Chromium）已绿。
 
-本轮只改本仓。Basalt 不是 Kumo 兼容层：禁止复制品牌、业务名词和示例语境。
+Maps 仍 planned。`InputGroup`、`Breadcrumbs` 有 catalog 页但是薄 API。`DatePicker` / `DataTable` 声明了 optional peer，实现尚未调用。
 
-## 2. 调度
-
-| 角色 | 所有权 |
-|------|--------|
-| Codex | 维护本文、拆切片、只读审查、决定是否进入下一刀 |
-| Grok | 只实现当前切片，在 `main` 原子提交 |
-| 用户 | 视觉和公开 API 分叉的最终裁决 |
-
-同一时刻只做一个切片。任务包必须写清基线、允许改的范围、必须成立的行为/测试/文档、非目标和停止点。返工不得夹带下一刀。
-
-## 3. 提交与 MVVM
-
-Conventional Commits；一次一个逻辑问题；禁止 `git add -A` / `--no-verify`。实现与测试同提交。Husky 全量必须过；阶段末 coverage 四项不低于 95%。
-
-| 层 | 允许 | 禁止 |
-|----|------|------|
-| Model | 纯类型与转换 | DOM、React、路由、i18n |
-| ViewModel | 组合状态、把页面模型适配为 props | JSX 视觉、包内业务文案 |
-| View | 包控件 | 请求、路由、`useTranslation`、顶层 `window` |
-
-受控/非受控必须在 View 边界清楚。业务数据留在应用层。
-
-## 4. 完成判定
-
-示例数量不是成熟度。标题与能力不符、只有 Default、缺 controlled/disabled/error、只在 jsdom 断言、展示站不用包出口，都不能标完成。
-
-## 5. 阶段总表
+## 2. 阶段
 
 | 切片 | 内容 | 状态 |
 |------|------|------|
-| S0 | 示例可信度：去品牌、provenance、scenario 真源 | 完成（`e57579c`） |
-| S1 | 包契约、仓外 consumer、coverage/prepublish 门 | 完成（`c525640`） |
-| S2 | 类型驱动 docs/API/scenario、视觉纠偏、文档 IA | 完成（`eeb8c43`） |
+| S0 | 示例去品牌、provenance、scenario 真源 | 完成（`e57579c`） |
+| S1 | 包契约、仓外 consumer、coverage / prepublish | 完成（`c525640`） |
+| S2 | 类型驱动 docs / API / scenario、文档 IA | 完成（`eeb8c43`） |
 | S3 | LayerCard、ScrollArea、SegmentControl、PageHeader、StatStrip、ConfirmDialog、TablePager | 完成（`6eed42f`） |
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 完成（`5e325a3`） |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 完成（`fe5c56a`） |
-| S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 完成（`2193aed`） |
-| S7 | Table/DataTable、TOC、Code、Flow、Grid、Pagination | 完成（`4b5a444`） |
+| S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar / AppShell | 完成（`2193aed`） |
+| S7 | Table / DataTable、TOC、Code、Flow、Grid、Pagination | 完成（`4b5a444`） |
 | S8 | 图表 kit 与组合层 | 完成（`1af515b`） |
 | S9 | Blocks、layout examples、全站自消费 | 完成（`429399a`） |
-| S10 | 文档补全、审计、release-ready | 完成（`6a9c214`） |
+| S10 | 文档页、审计、release-ready | 完成（`6a9c214`） |
 
-## 6. 已完成
+## 3. Catalog（101，与 `catalog.ts` 一致）
 
-S0–S6 的公开结果：
+100 ready，1 planned（`maps`）。页状态由「有 docs + 有 hero example」生成，不是手写名单。
 
-- 用户可见示例无 Cloudflare/Kumo/Worker 业务语境；View source 指向本仓，Kumo 只作 provenance。
-- 包可仓外 tarball 消费（Vite Tailwind / standalone / Next hydration / heavy optional peers）；coverage 四项 ≥ 95%；prepublish 链存在，尚未正式 publish。
-- 组件类型、API 表、example 同源生成，不再三份手写漂移。
-- Text / Field / Input / InputArea / Checkbox / Radio / Switch 已有可发布 MVP：size、invalid、controlled、form reset、Group/Legend/error。
-- Select / Combobox / Autocomplete / SensitiveInput / DatePicker 已有可发布 MVP：size、invalid、loading、groups、list-only vs freeform、disabled-date、presets、range。Radix Select 保持单选。
-- Overlay 共享 z-50 与 reduced-motion；Toolbar / Tabs / CommandPalette / SidebarProvider 已有可发布 MVP。AppShell 仍走子路径，不进根 barrel。
-- InputGroup 仍浅，留给后续表单补强，不阻塞 S7。
+| 类 | 条目 | 状态 |
+|----|------|------|
+| Docs | Installation、Contributing、Colors、Accessibility、Figma Resources、CLI、Design skill、Registry、Changelog | 全部 ready |
+| Components | Button、LinkButton、Text、Label、Separator、ScrollArea、Link、Tooltip、ThemeToggle、LayerCard、BasaltMark、Field、Input、InputArea、InputGroup、SensitiveInput、Checkbox、Radio、Switch、Select、Combobox、Autocomplete、DatePicker、Slider、Toggle、ToggleGroup、SegmentControl、Badge、Banner、Empty、Loader、SkeletonLine、Meter、Toast、ClipboardText、Code、CodeBlock、Avatar、Accordion、Dialog、AlertDialog、ConfirmDialog、Popover、DropdownMenu、ContextMenu、HoverCard、Sheet、CommandPalette、Tabs、Table、DataTable、Pagination、Collapsible、Breadcrumbs、NavigationMenu、MenuBar、Toolbar、TableOfContents、Grid、Sidebar、Flow、StatStrip、TablePager、ThemeProvider、LinkProvider | 全部 ready |
+| Charts | Charts、Colors、Timeseries、Custom Chart、StatCard、SlotBarChart、BarChart、LineChart、AreaChart、DonutChart、GroupedBarChart、StackedBarChart、Sparkline、HeatmapCalendar、Gauge、RadarChart、FunnelChart、BulletChart、Timeline、Sankey、ItemList、DateNavigation、ChartPalette | 全部 ready |
+| Charts | Maps | planned |
+| Blocks | Page Header、Resource List、Delete Resource | 全部 ready |
 
-## 7. 下一刀：S7 及之后
+包内另有 `AppShell` / `AppHeader` / `LoadingScreen`：有实现、不进根 barrel、无独立 catalog 页。`typeahead-field` 是 Combobox / Autocomplete 内部件，不单独上架。
 
-每个控件提交仍须带实现、单测、文档和 example。统一验证：default、size、controlled、uncontrolled、disabled、loading、error、description、ReactNode label、form reset、键盘、可访问名称。
-
-**S7 — 数据与内容**
-
-Table 保持语义 primitive；DataTable 轻量 core + 可选 TanStack adapter。必须有 loading/empty/selection/pagination/sort/filter。TOC、Code、Flow 覆盖实际产品场景。
-
-**S8 — 图表**
-
-先 kit（Frame、palette、axis、tooltip、legend、series descriptor），再图形。库组件禁止默认 SAMPLE。
-
-**S9 / S10**
-
-展示站和示例只用包出口。0 placeholder、0 污染、6DQ 与 tarball 门有证据后才 release-ready。
-
-## 8. 控件台账
-
-「复核」表示相对完整，仍未满足最终 consumer/browser/docs 门。
-
-| 家族 | 控件 | 判定 | 阶段 |
-|------|------|------|------|
-| 基础 | Button、Badge、Banner、Loader、Meter、Dialog | 复核 | S10 |
-| 基础 | ClipboardText、Empty、Label、Link、SkeletonLine、Toast | 部分 | S6/S10 |
-| 基础 | Text | MVP 完成 | S10 |
-| 品牌 | BasaltMark | 单一场景；禁止抄品牌 | S10 |
-| 表单 | Field、Input、InputArea、Checkbox、Radio、Switch | MVP 完成 | S10 |
-| 表单 | InputGroup | 浅 | 后续 |
-| 选择 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | MVP 完成 | S10 |
-| 浮层 | Popover、Dropdown、Collapsible、Tabs、CommandPalette、Tooltip | MVP 完成 | S10 |
-| 导航 | Breadcrumbs、Toolbar、Sidebar | Toolbar/Sidebar MVP；Breadcrumbs 浅 | S7/S10 |
-| 数据 | Table、TableOfContents、Pagination | 部分 | S7 |
-| 内容 | CodeHighlighted、Flow、Grid、LayerCard | 部分 | S7 |
-
-Charts、Blocks、Docs 分别由 S8/S9/S10 清点。
-
-## 9. 验收
-
-切片证据：unit（默认/主状态/受控/a11y）、typecheck、Biome、全量测试。阶段末加 coverage、build、必要的 browser/consumer。
-
-审查顺序：原子 commit → diff 对契约 → snippet 可解析 → targeted → typecheck/lint/test → 负向扫描（污染词、placeholder、旧 UI import）。通过只更新阶段总表的收口 commit，不把验收数字写回本文。
+Code 的 catalog 显示名是 CodeHighlighted；实现与出口是 `Code` / `CodeBlock`（`./components/code`）。
