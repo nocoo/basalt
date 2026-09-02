@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.0.0-rc.1] - 2026-09-02
+
+### Added
+
+- First publishable `@nocoo/basalt` package: ESM granular exports, Tailwind v4
+  and standalone CSS, consumer tarball gates.
+- Form, selection, overlay, navigation, and data/content MVPs (Table,
+  DataTable, Pagination, TOC, Code, Flow, Grid) with generated catalog API
+  and source-backed examples.
+
+### Changed
+
+- Site and package versions now share root `package.json` as the source of
+  truth. Sidebar badge and `/api/live` read that value.
+
 ## [1.3.5] - 2026-07-29
 
 ### Fixed
