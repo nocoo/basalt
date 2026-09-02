@@ -64,10 +64,11 @@ AlertDialogDescription.displayName = AlertDialogPrimitive.Description.displayNam
 export const AlertDialogCancel = React.forwardRef<
 	React.ElementRef<typeof AlertDialogPrimitive.Cancel>,
 	React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Cancel>
->(({ className, ...props }, ref) => (
+>(({ className, asChild, ...props }, ref) => (
 	<AlertDialogPrimitive.Cancel
 		ref={ref}
-		className={cn(buttonVariants({ variant: "outline" }), className)}
+		asChild={asChild}
+		className={asChild ? className : cn(buttonVariants({ variant: "outline" }), className)}
 		{...props}
 	/>
 ));
@@ -76,10 +77,11 @@ AlertDialogCancel.displayName = AlertDialogPrimitive.Cancel.displayName;
 export const AlertDialogAction = React.forwardRef<
 	React.ElementRef<typeof AlertDialogPrimitive.Action>,
 	React.ComponentPropsWithoutRef<typeof AlertDialogPrimitive.Action>
->(({ className, ...props }, ref) => (
+>(({ className, asChild, ...props }, ref) => (
 	<AlertDialogPrimitive.Action
 		ref={ref}
-		className={cn(buttonVariants({ variant: "destructive" }), className)}
+		asChild={asChild}
+		className={asChild ? className : cn(buttonVariants({ variant: "destructive" }), className)}
 		{...props}
 	/>
 ));

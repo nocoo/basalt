@@ -59,6 +59,12 @@ describe("ConfirmDialog", () => {
 		expect(confirm.className).toContain("bg-basalt-primary");
 	});
 
+	it("moves focus into the alertdialog when it opens", () => {
+		render(<ControlledExample />);
+		const dialog = screen.getByRole("alertdialog", { name: "Delete project?" });
+		expect(dialog.contains(document.activeElement)).toBe(true);
+	});
+
 	it("uses the destructive confirm button variant", () => {
 		render(<ControlledExample variant="destructive" />);
 		expect(screen.getByRole("button", { name: "Delete" }).className).toContain(

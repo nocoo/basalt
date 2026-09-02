@@ -14,6 +14,17 @@ describe("DeleteResource", () => {
 		expect(onDelete).toHaveBeenCalledTimes(1);
 	});
 
+	it("moves focus into the confirmation dialog from the trigger", () => {
+		render(<DeleteResource name="Atlas" onDelete={() => undefined} />);
+		const trigger = screen.getByRole("button", { name: "Delete Atlas" });
+		trigger.focus();
+		expect(document.activeElement).toBe(trigger);
+		fireEvent.click(trigger);
+		const dialog = screen.getByRole("alertdialog", { name: "Delete Atlas?" });
+		expect(dialog.contains(document.activeElement)).toBe(true);
+		expect(document.activeElement).not.toBe(trigger);
+	});
+
 	it("ignores close while delete work is pending", async () => {
 		let finish!: () => void;
 		const pending = new Promise<void>((resolve) => {

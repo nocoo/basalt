@@ -1,6 +1,8 @@
 import * as React from "react";
 import {
 	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
 	AlertDialogContent,
 	AlertDialogDescription,
 	AlertDialogFooter,
@@ -73,6 +75,8 @@ export function ConfirmDialog({
 	title,
 	variant = "default",
 }: ConfirmDialogProps) {
+	const panelRef = React.useRef<HTMLDivElement>(null);
+	const cancelRef = React.useRef<HTMLButtonElement>(null);
 	return (
 		<AlertDialog
 			open={open}
@@ -83,26 +87,46 @@ export function ConfirmDialog({
 				onOpenChange(next);
 			}}
 		>
-			<AlertDialogContent>
+			<AlertDialogContent
+				ref={panelRef}
+				onOpenAutoFocus={(event) => {
+					event.preventDefault();
+					if (cancelRef.current && !cancelRef.current.disabled) {
+						cancelRef.current.focus();
+						return;
+					}
+					panelRef.current?.focus();
+				}}
+			>
 				<AlertDialogHeader>
 					<AlertDialogTitle>{title}</AlertDialogTitle>
 					<AlertDialogDescription>{description}</AlertDialogDescription>
 				</AlertDialogHeader>
 				<AlertDialogFooter>
-					<Button disabled={loading} variant="outline" onClick={() => onOpenChange(false)}>
-						{cancelLabel}
-					</Button>
-					<Button
-						loading={loading}
-						variant={variant}
-						onClick={() => {
-							if (!loading) {
-								void onConfirm();
-							}
-						}}
-					>
-						{confirmLabel}
-					</Button>
+					<AlertDialogCancel asChild>
+						<Button
+							ref={cancelRef}
+							disabled={loading}
+							variant="outline"
+							onClick={() => onOpenChange(false)}
+						>
+							{cancelLabel}
+						</Button>
+					</AlertDialogCancel>
+					<AlertDialogAction asChild>
+						<Button
+							loading={loading}
+							variant={variant}
+							onClick={(event) => {
+								event.preventDefault();
+								if (!loading) {
+									void onConfirm();
+								}
+							}}
+						>
+							{confirmLabel}
+						</Button>
+					</AlertDialogAction>
 				</AlertDialogFooter>
 			</AlertDialogContent>
 		</AlertDialog>
