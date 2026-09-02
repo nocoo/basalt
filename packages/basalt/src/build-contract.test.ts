@@ -151,8 +151,9 @@ describe("package build contract", () => {
 		expect(runtime).not.toContain("workspace:");
 	});
 
-	it("keeps the dist pack whitelist and publishable 0.0.0 manifest", () => {
+	it("keeps the dist pack whitelist and publishable manifest", () => {
 		const raw = readFileSync(path.join(pkgRoot, "package.json"), "utf8");
+		const root = JSON.parse(readFileSync("package.json", "utf8")) as { version: string };
 		const pkg = JSON.parse(raw) as {
 			name: string;
 			version: string;
@@ -163,7 +164,7 @@ describe("package build contract", () => {
 			exports: Record<string, string | { types?: string; import?: string }>;
 		};
 		expect(pkg.name).toBe("@nocoo/basalt");
-		expect(pkg.version).toBe("0.0.0");
+		expect(pkg.version).toBe(root.version);
 		expect(pkg).not.toHaveProperty("private");
 		expect(raw).not.toMatch(/"private"\s*:/);
 		expect(pkg.type).toBe("module");
@@ -222,7 +223,7 @@ describe("package build contract", () => {
 		);
 	});
 
-	it("keeps root and consumer fixtures private at package version 0.0.0", () => {
+	it("keeps root and consumer fixtures private", () => {
 		const root = JSON.parse(readFileSync("package.json", "utf8")) as {
 			private?: boolean;
 			devDependencies: Record<string, string>;

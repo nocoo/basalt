@@ -78,8 +78,11 @@ const pkg = JSON.parse(readFileSync(join(packageRoot, "package.json"), "utf8")) 
 if (pkg.name !== "@nocoo/basalt") {
 	fail(`name must stay @nocoo/basalt; got ${pkg.name}`);
 }
-if (pkg.version !== "0.0.0") {
-	fail(`version must stay 0.0.0; got ${pkg.version}`);
+const rootPkg = JSON.parse(readFileSync(join(repoRoot, "package.json"), "utf8")) as {
+	version: string;
+};
+if (pkg.version !== rootPkg.version) {
+	fail(`version must match root package.json ${rootPkg.version}; got ${pkg.version}`);
 }
 if ("private" in pkg) {
 	fail("publish package must not contain private");
