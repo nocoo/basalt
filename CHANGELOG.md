@@ -1,5 +1,25 @@
 # Changelog
 
+## [2.0.0-rc.2] - 2026-09-02
+
+### Added
+
+- Accent swatches (`AccentProvider`) that restyle `--basalt-primary`,
+  `--basalt-ring`, and `--basalt-chart-1`, with a header picker on the
+  showcase that persists the choice.
+
+### Changed
+
+- Showcase login is the badge card only; `/badge-login` is gone.
+- LoadingScreen is a small mark and shimmer bar.
+- Cartesian charts use compact plot margins and quieter tooltips.
+- Demo pages consume library Table, Button, Link, SensitiveInput, and
+  InputArea instead of leftover local copies.
+
+### Fixed
+
+- HeatmapCard no longer draws a second card inside the page surface.
+
 ## [2.0.0-rc.1] - 2026-09-02
 
 ### Added
