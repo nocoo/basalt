@@ -57,7 +57,7 @@ describe("DashboardLayout", () => {
 		const github = screen.getByRole("link", { name: "GitHub repository" });
 		const theme = screen.getByRole("button", { name: /Toggle theme/ });
 		expect(github.nextElementSibling).toBe(theme);
-		expect(screen.getByRole("button", { name: "Accent color" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Theme Palette" })).toBeInTheDocument();
 	});
 
 	it("opens the mobile drawer and locks body scroll when the menu button is clicked", () => {

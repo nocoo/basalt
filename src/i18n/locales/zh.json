@@ -12,7 +12,7 @@
 		"logOut": "退出登录",
 		"github": "GitHub 仓库",
 		"toggleTheme": "切换主题，当前：{{theme}}",
-		"accentColor": "主色",
+		"themePalette": "主题色板",
 		"language": "语言",
 		"currentBadge": "当前",
 		"revoke": "撤销",
@@ -616,7 +616,7 @@
 		},
 		"palette": {
 			"baseColors": "基础颜色",
-			"vizPalette": "可视化调色板",
+			"themePalette": "主题色板",
 			"utilityTokens": "工具令牌",
 			"lineChart": "折线图",
 			"lineChartAria": "多系列折线图示例",

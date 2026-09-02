@@ -14,7 +14,7 @@ export function AccentPicker() {
 					variant="ghost"
 					size="icon"
 					className="h-8 w-8"
-					aria-label={t("common.accentColor")}
+					aria-label={t("common.themePalette")}
 				>
 					<span
 						className="h-3.5 w-3.5 rounded-full ring-1 ring-basalt-border"
@@ -23,9 +23,9 @@ export function AccentPicker() {
 					/>
 				</Button>
 			</PopoverTrigger>
-			<PopoverContent align="end" className="w-44 p-2">
-				<p className="mb-2 px-1 text-xs text-basalt-muted-foreground">{t("common.accentColor")}</p>
-				<div className="grid grid-cols-4 gap-1.5">
+			<PopoverContent align="end" className="w-56 p-2">
+				<p className="mb-2 px-1 text-xs text-basalt-muted-foreground">{t("common.themePalette")}</p>
+				<div className="grid grid-cols-6 gap-1.5">
 					{swatches.map((swatch) => {
 						const selected = swatch.id === accent;
 						return (
@@ -41,7 +41,7 @@ export function AccentPicker() {
 							>
 								<span
 									className="h-4 w-4 rounded-full"
-									style={{ background: `hsl(${swatch.light})` }}
+									style={{ background: `hsl(var(${swatch.token}))` }}
 									aria-hidden="true"
 								/>
 							</button>

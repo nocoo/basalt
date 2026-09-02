@@ -12,7 +12,7 @@
 		"logOut": "Log out",
 		"github": "GitHub repository",
 		"toggleTheme": "Toggle theme, currently {{theme}}",
-		"accentColor": "Accent color",
+		"themePalette": "Theme Palette",
 		"language": "Language",
 		"currentBadge": "Current",
 		"revoke": "Revoke",
@@ -616,7 +616,7 @@
 		},
 		"palette": {
 			"baseColors": "Base Colors",
-			"vizPalette": "Visualization Palette",
+			"themePalette": "Theme Palette",
 			"utilityTokens": "Utility Tokens",
 			"lineChart": "Line Chart",
 			"lineChartAria": "Example multi-series line chart",

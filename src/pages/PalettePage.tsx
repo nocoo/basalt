@@ -2,6 +2,7 @@ import { AreaChart } from "@nocoo/basalt/charts/area";
 import { DonutChart } from "@nocoo/basalt/charts/donut";
 import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { LineChart } from "@nocoo/basalt/charts/line";
+import { useAccent } from "@nocoo/basalt/providers/accent";
 import { Activity, BarChart3, LineChart as LineChartIcon, Palette, Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatPercent, formatUsd } from "@/lib/format";
@@ -59,32 +60,12 @@ const baseColors = [
 	{ token: "--badge-red", label: "Badge Red", tier: "" },
 ];
 
-const chartColors = [
-	{ token: "--chart-1", label: "Primary", semantic: "Primary" },
-	{ token: "--chart-2", label: "Sky", semantic: "" },
-	{ token: "--chart-3", label: "Teal", semantic: "" },
-	{ token: "--chart-4", label: "Jade", semantic: "" },
-	{ token: "--chart-5", label: "Green", semantic: "Positive" },
-	{ token: "--chart-6", label: "Lime", semantic: "" },
-	{ token: "--chart-7", label: "Amber", semantic: "" },
-	{ token: "--chart-8", label: "Orange", semantic: "" },
-	{ token: "--chart-9", label: "Vermilion", semantic: "" },
-	{ token: "--chart-10", label: "Red", semantic: "Destructive" },
-	{ token: "--chart-11", label: "Rose", semantic: "" },
-	{ token: "--chart-12", label: "Magenta", semantic: "" },
-	{ token: "--chart-13", label: "Orchid", semantic: "" },
-	{ token: "--chart-14", label: "Purple", semantic: "" },
-	{ token: "--chart-15", label: "Indigo", semantic: "" },
-	{ token: "--chart-16", label: "Cobalt", semantic: "" },
-	{ token: "--chart-17", label: "Steel", semantic: "" },
-	{ token: "--chart-18", label: "Cadet", semantic: "" },
-	{ token: "--chart-19", label: "Seafoam", semantic: "" },
-	{ token: "--chart-20", label: "Olive", semantic: "" },
-	{ token: "--chart-21", label: "Gold", semantic: "" },
-	{ token: "--chart-22", label: "Tangerine", semantic: "" },
-	{ token: "--chart-23", label: "Crimson", semantic: "" },
-	{ token: "--chart-24", label: "Gray", semantic: "Muted" },
-];
+const THEME_SEMANTICS: Record<string, string> = {
+	primary: "Primary",
+	green: "Positive",
+	red: "Destructive",
+	gray: "Muted",
+};
 
 const utilityColors = [
 	{ token: "--chart-axis", label: "Axis Text" },
@@ -93,13 +74,42 @@ const utilityColors = [
 
 // ── Components ──
 
-function Swatch({ token, label, subtitle }: { token: string; label: string; subtitle?: string }) {
+function Swatch({
+	token,
+	label,
+	subtitle,
+	selected,
+	onSelect,
+}: {
+	token: string;
+	label: string;
+	subtitle?: string;
+	selected?: boolean;
+	onSelect?: () => void;
+}) {
+	const swatch = (
+		<div
+			className={`h-14 w-14 rounded-widget border border-border shadow-xs ${
+				selected ? "ring-2 ring-basalt-foreground ring-offset-2 ring-offset-basalt-background" : ""
+			}`}
+			style={{ background: `hsl(var(${token}))` }}
+		/>
+	);
 	return (
 		<div className="flex flex-col items-center gap-2">
-			<div
-				className="h-14 w-14 rounded-widget border border-border shadow-xs"
-				style={{ background: `hsl(var(${token}))` }}
-			/>
+			{onSelect ? (
+				<button
+					type="button"
+					className="rounded-widget"
+					aria-label={label}
+					aria-pressed={selected}
+					onClick={onSelect}
+				>
+					{swatch}
+				</button>
+			) : (
+				swatch
+			)}
 			<div className="text-center">
 				<p className="text-xs font-medium text-foreground">{label}</p>
 				{subtitle && <p className="text-[10px] text-muted-foreground">{subtitle}</p>}
@@ -131,6 +141,7 @@ function Section({
 
 export default function PalettePage() {
 	const { t } = useTranslation();
+	const { accent, setAccent, swatches } = useAccent();
 
 	return (
 		<>
@@ -145,14 +156,16 @@ export default function PalettePage() {
 
 			{/* Chart Palette */}
 			<div className="mt-4">
-				<Section title={t("pages.palette.vizPalette")} icon={Palette}>
+				<Section title={t("pages.palette.themePalette")} icon={Palette}>
 					<div className="grid grid-cols-6 gap-4 sm:grid-cols-8 lg:grid-cols-12">
-						{chartColors.map((c) => (
+						{swatches.map((c) => (
 							<Swatch
-								key={c.token}
+								key={c.id}
 								token={c.token}
 								label={c.label}
-								subtitle={c.semantic || undefined}
+								subtitle={THEME_SEMANTICS[c.id]}
+								selected={c.id === accent}
+								onSelect={() => setAccent(c.id)}
 							/>
 						))}
 					</div>

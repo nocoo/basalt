@@ -15,13 +15,13 @@ function Probe() {
 }
 
 describe("accent", () => {
-	it("applies primary, ring, and chart-1 from the swatch", () => {
+	it("applies primary and ring from the theme palette swatch", () => {
 		applyAccent("teal", false);
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("186 72% 28%");
-		expect(document.documentElement.style.getPropertyValue("--basalt-ring")).toBe("186 72% 28%");
-		expect(document.documentElement.style.getPropertyValue("--basalt-chart-1")).toBe("186 72% 28%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("186 80% 45%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-ring")).toBe("186 80% 45%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-chart-1")).toBe("");
 		expect(document.documentElement.style.getPropertyValue("--basalt-primary-foreground")).toBe(
-			"0 0% 100%",
+			"0 0% 10%",
 		);
 		expect(document.documentElement.dataset.accent).toBe("teal");
 	});
@@ -35,17 +35,14 @@ describe("accent", () => {
 
 	it("uses the dark stop when the page is dark", () => {
 		applyAccent("green", true);
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("142 64% 32%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("142 71% 50%");
 	});
 
-	it("keeps white-on-accent lightness at or below 38% in dark mode", () => {
-		for (const swatch of ACCENT_SWATCHES) {
-			if (swatch.foreground !== "0 0% 100%") {
-				continue;
-			}
-			const lightness = Number(swatch.dark.trim().split(/\s+/)[2]?.replace("%", ""));
-			expect(lightness, swatch.id).toBeLessThanOrEqual(38);
-		}
+	it("exposes every visualization color as a theme swatch", () => {
+		expect(ACCENT_SWATCHES).toHaveLength(24);
+		expect(ACCENT_SWATCHES.map((swatch) => swatch.token)).toEqual(
+			Array.from({ length: 24 }, (_, index) => `--basalt-chart-${index + 1}`),
+		);
 	});
 
 	it("persists the chosen swatch", () => {
@@ -55,7 +52,7 @@ describe("accent", () => {
 				<Probe />
 			</AccentProvider>,
 		);
-		expect(screen.getByTestId("accent")).toHaveTextContent("blue");
+		expect(screen.getByTestId("accent")).toHaveTextContent("primary");
 		act(() => {
 			screen.getByRole("button", { name: "pick" }).click();
 		});
