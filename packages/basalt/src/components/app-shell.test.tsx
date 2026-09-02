@@ -71,8 +71,11 @@ describe("AppHeader", () => {
 });
 
 describe("LoadingScreen", () => {
-	it("exposes a status landmark", () => {
+	it("exposes a status landmark without a giant spinner disc", () => {
 		render(<LoadingScreen label="Loading workspace" />);
-		expect(screen.getByRole("status", { name: "Loading workspace" })).toBeInTheDocument();
+		const status = screen.getByRole("status", { name: "Loading workspace" });
+		expect(status).toBeInTheDocument();
+		expect(status.querySelector(".h-72")).toBeNull();
+		expect(status.querySelector(".animate-basalt-shimmer")).not.toBeNull();
 	});
 });

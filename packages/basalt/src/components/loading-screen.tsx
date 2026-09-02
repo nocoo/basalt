@@ -21,11 +21,11 @@ export function LoadingScreen({
 			)}
 			{...props}
 		>
-			<div className="relative">
-				<div className="flex h-72 w-72 items-center justify-center overflow-hidden rounded-full bg-basalt-secondary p-6 ring-1 ring-basalt-border">
-					{mark ?? <BasaltMark className="h-28 w-28 text-basalt-muted-foreground" />}
+			<div className="flex flex-col items-center gap-5">
+				{mark ?? <BasaltMark className="h-8 w-8 text-basalt-foreground" />}
+				<div className="relative h-px w-24 overflow-hidden rounded-full bg-basalt-border">
+					<span className="absolute inset-0 animate-basalt-shimmer bg-gradient-to-r from-transparent via-basalt-foreground/50 to-transparent motion-reduce:animate-none" />
 				</div>
-				<div className="absolute inset-[-4px] animate-basalt-spin rounded-full border-[3px] border-transparent border-t-basalt-primary motion-reduce:animate-none" />
 			</div>
 		</div>
 	);
