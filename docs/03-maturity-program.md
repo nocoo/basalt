@@ -1,10 +1,10 @@
 # 03 · Basalt 生产成熟度执行台账
 
 > 状态：执行中
-> 当前切片：S7 待办
-> 当前实现真值：`2193aed`（S6 Codex Sign-off）
+> 当前切片：S8 待办
+> 当前实现真值：`4b5a444`（S7 Codex Sign-off）
 > Kumo 参考：`1159868dfe32` + `https://kumo-ui.com/`
-> 最后更新：2026-09-01
+> 最后更新：2026-09-02
 
 本文把 01 的架构目标、02 的实现规则收敛成可恢复的执行台账。01 回答“做成什么样”，02 回答“通用实现顺序”，03 只记录“现在做到哪、下一刀做什么”。已完成阶段的切片契约、文件清单、hash 和测试数字以 git 为准，不在此复述。
 
@@ -51,7 +51,7 @@ Conventional Commits；一次一个逻辑问题；禁止 `git add -A` / `--no-ve
 | S4 | Text、Field、Input、InputArea、Checkbox、Radio、Switch | 完成（`5e325a3`） |
 | S5 | Select、Combobox、Autocomplete、SensitiveInput、DatePicker | 完成（`fe5c56a`） |
 | S6 | Overlay、Toolbar、Tabs、CommandPalette、Sidebar/AppShell | 完成（`2193aed`） |
-| S7 | Table/DataTable、TOC、Code、Flow、Grid、Pagination | 待办 |
+| S7 | Table/DataTable、TOC、Code、Flow、Grid、Pagination | 完成（`4b5a444`） |
 | S8 | 图表 kit 与组合层 | 待办 |
 | S9 | Blocks、layout examples、全站自消费 | 待办 |
 | S10 | 文档补全、审计、release-ready | 待办 |
