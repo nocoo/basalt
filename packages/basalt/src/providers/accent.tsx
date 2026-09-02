@@ -13,17 +13,42 @@ export type AccentSwatch = {
 	label: string;
 	light: string;
 	dark: string;
+	foreground: string;
 };
 
 export const ACCENT_SWATCHES: readonly AccentSwatch[] = [
-	{ id: "blue", label: "Blue", light: "217 91% 60%", dark: "217 91% 65%" },
-	{ id: "teal", label: "Teal", light: "186 80% 45%", dark: "186 80% 50%" },
-	{ id: "green", label: "Green", light: "142 71% 45%", dark: "142 71% 50%" },
-	{ id: "amber", label: "Amber", light: "45 93% 47%", dark: "45 93% 52%" },
-	{ id: "orange", label: "Orange", light: "30 90% 55%", dark: "30 90% 60%" },
-	{ id: "rose", label: "Rose", light: "340 82% 55%", dark: "340 82% 60%" },
-	{ id: "purple", label: "Purple", light: "270 70% 60%", dark: "270 70% 65%" },
-	{ id: "indigo", label: "Indigo", light: "250 65% 58%", dark: "250 65% 63%" },
+	{ id: "blue", label: "Blue", light: "217 91% 42%", dark: "217 91% 62%", foreground: "0 0% 100%" },
+	{ id: "teal", label: "Teal", light: "186 80% 32%", dark: "186 80% 48%", foreground: "0 0% 100%" },
+	{
+		id: "green",
+		label: "Green",
+		light: "142 71% 32%",
+		dark: "142 71% 48%",
+		foreground: "0 0% 100%",
+	},
+	{ id: "amber", label: "Amber", light: "38 90% 38%", dark: "38 90% 52%", foreground: "0 0% 10%" },
+	{
+		id: "orange",
+		label: "Orange",
+		light: "24 90% 40%",
+		dark: "24 90% 52%",
+		foreground: "0 0% 100%",
+	},
+	{ id: "rose", label: "Rose", light: "340 82% 40%", dark: "340 82% 58%", foreground: "0 0% 100%" },
+	{
+		id: "purple",
+		label: "Purple",
+		light: "270 60% 42%",
+		dark: "270 65% 62%",
+		foreground: "0 0% 100%",
+	},
+	{
+		id: "indigo",
+		label: "Indigo",
+		light: "250 55% 42%",
+		dark: "250 60% 62%",
+		foreground: "0 0% 100%",
+	},
 ] as const;
 
 export const DEFAULT_ACCENT_ID = "blue";
@@ -46,6 +71,7 @@ export function applyAccent(id: string, dark = false) {
 	const value = dark ? swatch.dark : swatch.light;
 	const root = document.documentElement;
 	root.style.setProperty("--basalt-primary", value);
+	root.style.setProperty("--basalt-primary-foreground", swatch.foreground);
 	root.style.setProperty("--basalt-ring", value);
 	root.style.setProperty("--basalt-chart-1", value);
 	root.dataset.accent = swatch.id;

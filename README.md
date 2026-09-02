@@ -50,8 +50,7 @@
 | `/palette` | Design system color showcase for all chart types |
 | `/interactions` | Toast, dialog, and form component demos |
 | `/life-ai` | Life.ai health and wellness demo dashboard |
-| `/login` | Standalone login page with decorative gradients |
-| `/badge-login` | Standalone badge-style login page |
+| `/login` | Badge-style standalone login |
 
 ## Tech Stack
 

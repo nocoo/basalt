@@ -17,6 +17,6 @@ describe("AccentPicker", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Accent color" }));
 		fireEvent.click(screen.getByRole("button", { name: "Teal" }));
 		expect(window.localStorage.getItem("basalt-accent")).toBe("teal");
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("186 80% 45%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("186 80% 32%");
 	});
 });
