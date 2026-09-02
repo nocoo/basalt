@@ -30,11 +30,15 @@ forbidden (`EPRIVATE`).
 
 ### Release Checklist
 
+Prefer `bun run release` (or `bun run release -- minor` / `-- major` /
+`-- 2.0.1` / `-- --dry-run`). The script copies the root version to
+`packages/basalt/package.json`, prepends CHANGELOG.md, commits
+`chore: release vX.Y.Z`, tags, pushes, and opens the GitHub Release.
+
 Site deploy follows the tag. npm publish is a separate step on
 `packages/basalt` only.
 
-1. **Bump** root `package.json` `"version"`, then copy the same string to
-   `packages/basalt/package.json`.
+1. **Bump** via `bun run release` (root `package.json` is the north star).
 2. **CHANGELOG.md** — `## [x.y.z] - YYYY-MM-DD` (Keep a Changelog).
 3. **Commit**: `chore: release vX.Y.Z` (husky: typecheck, lint, test).
 4. **Package gates**: from repo root, `bun run package:prepublish`

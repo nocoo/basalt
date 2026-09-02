@@ -36,6 +36,7 @@ describe("S10 release evidence", () => {
 			version: string;
 			scripts: Record<string, string>;
 		};
+		expect(pkg.scripts.release).toBe("bun scripts/release.ts");
 		expect(pkg.scripts["package:prepublish"]).toContain("bun run test:coverage");
 		expect(pkg.scripts["package:prepublish"]).toContain("pack:check");
 		expect(pkg.scripts["package:prepublish"]).toContain("publint");
