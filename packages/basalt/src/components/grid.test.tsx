@@ -23,6 +23,18 @@ describe("Grid", () => {
 		});
 	});
 
+	it("keeps column tracks when a caller style is passed", () => {
+		const { container } = render(
+			<Grid columns={3} style={{ gap: "8px" }}>
+				<GridItem>1</GridItem>
+			</Grid>,
+		);
+		expect(container.firstElementChild).toHaveStyle({
+			gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+			gap: "8px",
+		});
+	});
+
 	it("lays out a two-by-two card grid", () => {
 		render(
 			<Grid>

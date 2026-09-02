@@ -17,13 +17,17 @@ export type GridProps = {
 export function Grid({
 	className,
 	columns = 2,
+	style,
 	...props
 }: GridProps & HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
 			className={cn("grid gap-3", className)}
-			style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
 			{...props}
+			style={{
+				gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
+				...style,
+			}}
 		/>
 	);
 }
