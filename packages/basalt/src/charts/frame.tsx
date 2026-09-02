@@ -40,18 +40,23 @@ export function ChartShell({
 	size,
 	legend,
 }: ChartFrameProps & { legend?: ReactNode }) {
-	const frame = (
-		<ChartFrame ariaLabel={ariaLabel} className={className} size={size}>
-			{children}
-		</ChartFrame>
-	);
 	if (!legend) {
-		return frame;
+		return (
+			<ChartFrame ariaLabel={ariaLabel} className={className} size={size}>
+				{children}
+			</ChartFrame>
+		);
 	}
 	return (
-		<>
-			{frame}
+		<div
+			data-testid="chart-shell"
+			className={cn(size ?? "h-36 w-56", className)}
+			style={{ display: "flex", flexDirection: "column", minHeight: 0, minWidth: 0 }}
+		>
+			<ChartFrame ariaLabel={ariaLabel} className="min-h-0 w-full flex-1" size="">
+				{children}
+			</ChartFrame>
 			{legend}
-		</>
+		</div>
 	);
 }

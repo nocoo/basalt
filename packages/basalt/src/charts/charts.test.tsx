@@ -46,7 +46,7 @@ describe("charts", () => {
 			/>,
 		);
 		expect(screen.getByText("Requests")).toBeInTheDocument();
-		expect(screen.getByRole("img", { name: "Legend line" })).toHaveClass("h-36", "w-56");
+		expect(screen.getByTestId("chart-shell")).toHaveClass("h-36", "w-56");
 		const colored = render(
 			<LineChart
 				data={points}
