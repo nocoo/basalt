@@ -1,5 +1,20 @@
 # Changelog
 
+## [2.0.1] - 2026-09-03
+
+### Added
+- Add automated release script
+- Read app version from package.json
+- Share theme palette with header picker
+
+### Changed
+- Rename chrome guide to integration
+- Add app chrome guide for agents
+
+### Fixed
+- Date changelog entries in local timezone
+- Stop ci catalog test timeouts
+
 ## [2.0.0] - 2026-09-03
 
 First stable 2.0. Includes rc.1–rc.3.
