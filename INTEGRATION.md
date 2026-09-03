@@ -118,7 +118,7 @@ One tree for the whole app. Login and the shell both sit under it.
 Every chrome class uses the `basalt-` prefix:
 
 - surfaces: `bg-basalt-background` (L0), `bg-basalt-card` (L1 island), `bg-basalt-secondary` (L2 card), `bg-basalt-bright` (L3 well), `bg-basalt-control` (current-surface controls), `bg-basalt-primary`, `bg-basalt-accent`
-- nest: `ContentIsland` / Dialog / Sheet set `data-basalt-surface-root`. `LayerCard` and `LayerCard.Well` set `data-basalt-surface`. Do not hand-write `bg-card` wells inside the island.
+- nest: see **§14**. `ContentIsland` / Dialog / Sheet / AlertDialog set `data-basalt-surface-root`. `LayerCard` and `LayerCard.Well` set `data-basalt-surface`. Do not hand-write `bg-card` wells.
 - text: `text-basalt-foreground`, `text-basalt-muted-foreground`, `text-basalt-primary-foreground`
 - line: `ring-basalt-border`, `border-basalt-border`
 
@@ -445,6 +445,7 @@ export function LoginPage() {
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-basalt-background p-4">
       <div className="flex flex-col items-center">
         <div
+          data-basalt-surface-root=""
           className="relative flex aspect-[54/86] w-72 flex-col overflow-hidden rounded-2xl bg-basalt-card ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
           style={{
             boxShadow: [
@@ -512,7 +513,96 @@ Boot and route gates use `LoadingScreen` — a centered mark and a 6rem shimmer 
 When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place:
 
 - add routes as `Outlet` pages
-- compose Basalt leaves (`Table`, `Button`, `Field`, charts, …) inside the island
+- compose pages with `LayerCard` on the island (**§14**)
+- compose Basalt leaves (`Table`, `Button`, `Field`, charts, …) inside those cards
 - keep view-models free of layout chrome
 
 The shell file should not grow with page UI. Navigation items are data. Pages are data + controls.
+
+Live recipe: `/layout`. Product acceptance: `/data`.
+
+---
+
+## 14. Nested surfaces
+
+Pages render **inside** `ContentIsland`. That island is already L1. Paint is CSS descendant count. No React context. No `useSurface`.
+
+### Levels
+
+| Where | Mark | Paint |
+|---|---|---|
+| L0 | `AppShell`, login viewport | `--basalt-background` 94% / 9% |
+| L1 | `ContentIsland`, Dialog, Sheet, AlertDialog, login badge | `--basalt-card` 97% / 10.6% |
+| L2 | first `LayerCard` under a root | `--basalt-secondary` 99% / 12.2% |
+| L3 | `LayerCard.Well` or a nested `LayerCard` | `--basalt-bright` 100% / 14% |
+| L3+ | deeper nested surface | transparent, no ring by default |
+| Overlay | Tooltip, Popover, Dropdown, HoverCard | `--basalt-popover` — not a stack step |
+
+`--basalt-muted` is not a content step. Isolated (no root): the outermost `LayerCard` paints as L1; its Well is L2.
+
+`LayerCard.Primary` is `Well`. `LayerCard.Secondary` is `Header`. Keep the names; teach Header / Body / Well.
+
+### Recipe
+
+Unstructured card (KPI, metric, tile) — root padding, one surface:
+
+```tsx
+<LayerCard>
+  <p className="text-xs text-basalt-muted-foreground">Sessions</p>
+  <p className="text-2xl font-semibold">1,284</p>
+</LayerCard>
+```
+
+Structured card — root padding drops. `Body` stays on L2. `Well` raises to L3:
+
+```tsx
+<LayerCard>
+  <LayerCard.Header>Account</LayerCard.Header>
+  <LayerCard.Body>
+    <DescriptionList columns={1}>
+      <DescriptionList.Item term="Status">Active</DescriptionList.Item>
+    </DescriptionList>
+  </LayerCard.Body>
+</LayerCard>
+
+<LayerCard>
+  <LayerCard.Header>Activity</LayerCard.Header>
+  <LayerCard.Well>
+    {/* lists, nested groups, inner frames */}
+  </LayerCard.Well>
+</LayerCard>
+```
+
+Place cards with Grid or flex. Those classes do not paint. A grid of `LayerCard` on the island is L2. A `LayerCard` inside a Well is L3+.
+
+`outlined` draws a hairline when a transparent L3+ nest would otherwise vanish. Default grouping is luminance only.
+
+### Controls and tables
+
+Input, Select, secondary / outline Button use `bg-basalt-control` (`--basalt-control-fill` from the current surface) plus border. Do not override with `bg-card`, `bg-basalt-card`, or `bg-basalt-background`.
+
+`Table` sets `data-basalt-table`. Zebra, hover, and selected paint on `td`, from `--basalt-zebra-fill` / `--basalt-control-fill`.
+
+`DescriptionList` is layout and type only. It is not a surface.
+
+### Overlays
+
+Dialog, AlertDialog, and Sheet portal to `body` and start a **new** L1 root. Do not nest `data-basalt-surface-root` in the same tree.
+
+Popover, Tooltip, Dropdown, and HoverCard stay on the popover token. They do not open the stack.
+
+### Don't
+
+- Hand-write `bg-card` / `bg-muted` / `bg-secondary` wells inside the island
+- Mark page roots with `data-basalt-surface-root` — the island already did
+- Put `h-screen`, side padding, or a second card around `ContentIsland`
+- Mix leftover `standalone.css` with the Tailwind contract
+
+### Import
+
+```ts
+import { DescriptionList } from "@nocoo/basalt/components/description-list";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
+```
+
+`LayerCard` is not on the root barrel.
