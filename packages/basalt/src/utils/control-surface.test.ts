@@ -22,7 +22,7 @@ function sourceOf(file: string) {
 describe("control surface", () => {
 	it("is the shared class truth", () => {
 		expect(CONTROL_SURFACE_CLASS).toBe(
-			"rounded-basalt-md border border-basalt-border bg-basalt-secondary text-sm",
+			"rounded-basalt-md border border-basalt-border bg-basalt-control text-sm",
 		);
 		expect(controlSurfaceClass("h-9").split(/\s+/)).toEqual(
 			expect.arrayContaining([...CONTROL_SURFACE_CLASS.split(/\s+/), "h-9"]),

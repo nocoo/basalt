@@ -24,7 +24,7 @@ describe("InputArea", () => {
 		expect(area.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(["min-h-[80px]", "px-3", "py-2"]),
 		);
-		expect(area.className).toContain("bg-basalt-secondary");
+		expect(area.className).toContain("bg-basalt-control");
 	});
 
 	it("can be disabled", () => {
@@ -155,7 +155,7 @@ describe("InputArea", () => {
 		expect(area).toHaveAttribute("name", "notes");
 		expect(area).toHaveValue("hello");
 		expect(area.className).toContain("extra");
-		expect(area.className).toContain("bg-basalt-secondary");
+		expect(area.className).toContain("bg-basalt-control");
 		expect(ref.current).toBe(area);
 		fireEvent.change(area, { target: { value: "updated" } });
 		expect(onChange).toHaveBeenCalled();

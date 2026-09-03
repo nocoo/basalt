@@ -14,6 +14,7 @@ export const Table = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<table
 		ref={ref}
+		data-basalt-table=""
 		className={cn(
 			"w-full border-separate border-spacing-0 caption-bottom text-left text-sm text-basalt-foreground",
 			className,
@@ -55,10 +56,7 @@ export const TableRow = ({
 	<tr
 		{...props}
 		aria-selected={variant === "selected" ? true : props["aria-selected"]}
-		className={cn(
-			variant === "selected" ? "[&_td]:bg-basalt-accent" : "even:[&_td]:bg-basalt-secondary",
-			className,
-		)}
+		className={className}
 	/>
 );
 
@@ -75,7 +73,7 @@ export const TableHead = ({
 }: TableHeadProps & React.ThHTMLAttributes<HTMLTableCellElement>) => (
 	<th
 		className={cn(
-			"border-b border-basalt-border bg-basalt-card p-3 text-left font-semibold first:rounded-tl-basalt-md last:rounded-tr-basalt-md",
+			"border-b border-basalt-border p-3 text-left text-xs font-medium text-basalt-muted-foreground",
 			className,
 		)}
 		{...props}

@@ -134,7 +134,7 @@ describe("InputGroup", () => {
 			</InputGroup>,
 		);
 		const overridden = screen.getByRole("button", { name: "Go" });
-		expect(overridden.className).toContain("bg-basalt-secondary");
+		expect(overridden.className).toContain("bg-basalt-control");
 		expect(overridden.className).toContain("text-xs");
 	});
 

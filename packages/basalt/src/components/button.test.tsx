@@ -15,9 +15,7 @@ describe("Button", () => {
 
 	it("renders a secondary variant", () => {
 		render(<Button variant="secondary">Cancel</Button>);
-		expect(screen.getByRole("button", { name: "Cancel" }).className).toContain(
-			"bg-basalt-secondary",
-		);
+		expect(screen.getByRole("button", { name: "Cancel" }).className).toContain("bg-basalt-control");
 	});
 
 	it("can be disabled", () => {

@@ -21,7 +21,7 @@ describe("Input", () => {
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
 		expect(input.className.split(/\s+/)).toEqual(expect.arrayContaining(["h-9", "px-3", "py-2"]));
-		expect(input.className).toContain("bg-basalt-secondary");
+		expect(input.className).toContain("bg-basalt-control");
 		expect(input.className).not.toContain("bg-basalt-background");
 	});
 
@@ -156,7 +156,7 @@ describe("Input", () => {
 		expect(input).toHaveAttribute("name", "email");
 		expect(input).toHaveValue("a@b.c");
 		expect(input.className).toContain("extra");
-		expect(input.className).toContain("bg-basalt-secondary");
+		expect(input.className).toContain("bg-basalt-control");
 		expect(ref.current).toBe(input);
 		fireEvent.change(input, { target: { value: "z@z.z" } });
 		expect(onChange).toHaveBeenCalled();

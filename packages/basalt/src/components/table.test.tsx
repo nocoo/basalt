@@ -65,7 +65,7 @@ describe("Table", () => {
 		expect(screen.getByText("Atlas")).toBeInTheDocument();
 	});
 
-	it("styles a header bar with even-row stripes", () => {
+	it("styles a header bar without a recessed fill", () => {
 		render(
 			<Table>
 				<TableHeader>
@@ -86,11 +86,10 @@ describe("Table", () => {
 				</TableBody>
 			</Table>,
 		);
-		expect(screen.getByText("Name").className).toContain("font-semibold");
-		expect(screen.getByText("Name").className).toContain("bg-basalt-card");
-		expect(screen.getByText("Report 2").closest("tr")?.className).toContain(
-			"even:[&_td]:bg-basalt-secondary",
-		);
+		expect(screen.getByRole("table")).toHaveAttribute("data-basalt-table");
+		expect(screen.getByText("Name").className).toContain("font-medium");
+		expect(screen.getByText("Name").className).toContain("text-basalt-muted-foreground");
+		expect(screen.getByText("Name").className).not.toContain("bg-basalt-card");
 	});
 
 	it("highlights a selected row", () => {
@@ -102,9 +101,6 @@ describe("Table", () => {
 					</TableRow>
 				</TableBody>
 			</Table>,
-		);
-		expect(screen.getByText("Selected").closest("tr")?.className).toContain(
-			"[&_td]:bg-basalt-accent",
 		);
 		expect(screen.getByText("Selected").closest("tr")).toHaveAttribute("aria-selected", "true");
 	});
