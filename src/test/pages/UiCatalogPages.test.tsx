@@ -5,11 +5,9 @@ import { MemoryRouter, Route, Routes, useLocation, useNavigationType } from "rea
 import { describe, expect, it, vi } from "vitest";
 import {
 	CATALOG,
-	CATALOG_BY_SLUG,
 	catalogImportPath,
 	catalogNavName,
 	inScopeCatalogSlugs,
-	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
 import { loadCatalogPageContent } from "@/pages/ui/catalog-content-loader";
@@ -78,8 +76,8 @@ describe("ui catalog", () => {
 
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(103);
-		expect(new Set(slugs).size).toBe(103);
+		expect(slugs).toHaveLength(94);
+		expect(new Set(slugs).size).toBe(94);
 	});
 
 	it("renders the categorized index with orthogonal release and page states", () => {
@@ -306,17 +304,6 @@ describe("ui catalog", () => {
 	});
 
 	it("orders library nav like kumo", () => {
-		expect(libraryDocEntries().map(catalogNavName)).toEqual([
-			"Installation",
-			"Contributing",
-			"Colors",
-			"Accessibility",
-			"Figma Resources",
-			"CLI",
-			"Design skill",
-			"Registry",
-			"Changelog",
-		]);
 		const components = libraryNavEntries("component");
 		expect(catalogNavName(components[0])).toBe("Accordion");
 		expect(components.map(catalogNavName)).toEqual(
@@ -362,13 +349,6 @@ describe("ui catalog", () => {
 				repo: "basalt",
 				ref: "main",
 			});
-			if (CATALOG_BY_SLUG.get(slug)?.category === "docs") {
-				expect(
-					existsSync(path.join(process.cwd(), docs.implementationSource.file)),
-					`${slug} ${docs.implementationSource.file}`,
-				).toBe(true);
-				continue;
-			}
 			expect(docs.implementationSource.file, slug).toMatch(/^packages\/basalt\/src\//);
 			expect(
 				existsSync(path.join(process.cwd(), docs.implementationSource.file)),

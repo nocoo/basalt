@@ -116,11 +116,11 @@ describe("catalog source contract", () => {
 		).toBe("nocoo");
 	});
 
-	it("keeps an explicit implementation source for documentation pages", () => {
+	it("keeps an explicit implementation source when provided", () => {
 		const generated = catalogDocsWithImplementation({
-			installation: {
-				description: "Install the package.",
-				usage: "npm install @nocoo/basalt",
+			button: {
+				description: "Primary actions.",
+				usage: "<Button>Save</Button>",
 				variants: [],
 				api: [],
 				implementationSource: {
@@ -131,7 +131,7 @@ describe("catalog source contract", () => {
 				},
 			},
 		});
-		expect(generated.installation?.implementationSource.file).toBe("packages/basalt/README.md");
+		expect(generated.button?.implementationSource.file).toBe("packages/basalt/README.md");
 	});
 
 	it("derives implementation files from catalog import paths", () => {
@@ -398,9 +398,7 @@ describe("catalog source contract", () => {
 		for (const [slug, docs] of Object.entries(CATALOG_DOCS)) {
 			expect(docs, slug).not.toHaveProperty("props");
 			expect(Array.isArray(docs.api), slug).toBe(true);
-			if (CATALOG_BY_SLUG.get(slug)?.category !== "docs") {
-				expect(docs.api.length, slug).toBeGreaterThan(0);
-			}
+			expect(docs.api.length, slug).toBeGreaterThan(0);
 			const names = docs.api.map((surface) => surface.name);
 			expect(new Set(names).size, slug).toBe(names.length);
 			for (const surface of docs.api) {

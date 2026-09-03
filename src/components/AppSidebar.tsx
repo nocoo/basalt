@@ -24,7 +24,6 @@ import {
 } from "@nocoo/basalt/components/sidebar";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@nocoo/basalt/components/tooltip";
 import {
-	Accessibility,
 	Activity,
 	AlignLeft,
 	AppWindow,
@@ -32,7 +31,6 @@ import {
 	BarChart3,
 	Bell,
 	BookOpen,
-	Boxes,
 	Calendar,
 	CalendarDays,
 	CalendarRange,
@@ -51,7 +49,6 @@ import {
 	Columns3,
 	Command,
 	CreditCard,
-	Download,
 	Ellipsis,
 	ExternalLink,
 	Eye,
@@ -66,7 +63,6 @@ import {
 	GitFork,
 	Globe,
 	Hash,
-	HeartHandshake,
 	HeartPulse,
 	History,
 	Inbox,
@@ -93,11 +89,9 @@ import {
 	PanelLeft,
 	PanelRight,
 	PanelTop,
-	PenTool,
 	PiggyBank,
 	Radar,
 	RectangleEllipsis,
-	ScrollText,
 	Search,
 	Settings,
 	SlidersHorizontal,
@@ -109,7 +103,6 @@ import {
 	Table,
 	Table2,
 	Tag,
-	Terminal,
 	TextCursorInput,
 	ToggleLeft,
 	ToggleRight,
@@ -130,7 +123,6 @@ import {
 	CATALOG_CATEGORIES,
 	type CatalogEntry,
 	catalogNavName,
-	libraryDocEntries,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
 import { type CatalogPageStatus, catalogPageStatus } from "@/pages/ui/catalog-page-status";
@@ -300,15 +292,6 @@ const CATALOG_ICONS: Record<string, React.ElementType> = {
 	"page-header": LayoutTemplate,
 	"resource-list": List,
 	"delete-resource": Trash2,
-	installation: Download,
-	contributing: HeartHandshake,
-	colors: Palette,
-	accessibility: Accessibility,
-	figma: PenTool,
-	cli: Terminal,
-	skill: Sparkles,
-	registry: Boxes,
-	changelog: ScrollText,
 	"chart-colors": SwatchBook,
 };
 
@@ -414,13 +397,6 @@ function LibraryNav({ currentPath }: { currentPath: string }) {
 					<BookOpen className="h-4 w-4 shrink-0" strokeWidth={1.5} />
 					<span className="flex-1 text-left">{t("nav.kitIndex")}</span>
 				</SidebarItem>
-				{libraryDocEntries().map((entry) => (
-					<NavItemButton
-						key={entry.slug}
-						item={catalogNavItem(entry, FileText)}
-						currentPath={currentPath}
-					/>
-				))}
 			</div>
 			{LIBRARY_GROUPS.map((group) => (
 				<NavGroupSection key={group.label} group={group} currentPath={currentPath} />

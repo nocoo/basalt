@@ -48,8 +48,8 @@ describe("AppSidebar", () => {
 				screen.getAllByRole("button", { name: new RegExp(`^${catalogNavName(entry)}`) }).length,
 			).toBeGreaterThan(0);
 		}
-		expect(screen.getByRole("button", { name: /^Installation$/ })).toBeEnabled();
-		expect(screen.getByRole("button", { name: /^Changelog$/ })).toBeEnabled();
+		expect(screen.queryByRole("button", { name: /^Installation$/ })).not.toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: /^Changelog$/ })).not.toBeInTheDocument();
 		expect(screen.getByRole("button", { name: /^Clipboard Text/ })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Page Header" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Section Rule" })).toBeInTheDocument();
@@ -75,8 +75,8 @@ describe("AppSidebar", () => {
 		);
 		const disabledButtons = catalogButtons.filter((button) => button.disabled);
 
-		expect(catalogButtons).toHaveLength(103);
-		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(102);
+		expect(catalogButtons).toHaveLength(94);
+		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(93);
 		expect(disabledButtons.map((button) => button.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const button of disabledButtons) {
 			expect(button).toHaveTextContent("Planned");
@@ -110,10 +110,10 @@ describe("AppSidebar", () => {
 			(option) => option.getAttribute("data-disabled") === "true",
 		);
 
-		expect(catalogOptions).toHaveLength(103);
+		expect(catalogOptions).toHaveLength(94);
 		expect(
 			catalogOptions.filter((option) => option.getAttribute("data-disabled") !== "true"),
-		).toHaveLength(102);
+		).toHaveLength(93);
 		expect(disabledOptions.map((option) => option.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const option of disabledOptions) {
 			expect(option).toHaveTextContent("Planned");
@@ -139,17 +139,17 @@ describe("AppSidebar", () => {
 		expect(reopenedSearch).toHaveValue("");
 
 		fireEvent.change(reopenedSearch, { target: { value: "Colors" } });
-		const plannedColors = reopenedDialog.querySelector<HTMLElement>('[data-catalog-slug="colors"]');
+		expect(reopenedDialog.querySelector('[data-catalog-slug="colors"]')).toBeNull();
 		const readyColors = reopenedDialog.querySelector<HTMLElement>(
 			'[data-catalog-slug="chart-colors"]',
 		);
-		expect(plannedColors).toHaveAttribute("data-disabled", "false");
 		expect(readyColors).toHaveAttribute("data-disabled", "false");
+		expect(readyColors).toHaveAttribute("data-selected", "true");
 		fireEvent.keyDown(reopenedSearch, { key: "Enter" });
 		await waitFor(() => {
 			expect(screen.getByTestId("router-location")).toHaveAttribute(
 				"data-pathname",
-				expect.stringMatching(/^\/ui\/(colors|chart-colors)$/),
+				"/ui/chart-colors",
 			);
 			expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 		});
@@ -158,7 +158,7 @@ describe("AppSidebar", () => {
 	it("does not show pending maturity badges in the components sidebar", () => {
 		renderSidebar();
 		const buttons = catalogButtons();
-		expect(buttons).toHaveLength(103);
+		expect(buttons).toHaveLength(94);
 		expect(document.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
 		expect(document.querySelector("aside")?.textContent).not.toContain("待规范");
 		for (const button of buttons) {

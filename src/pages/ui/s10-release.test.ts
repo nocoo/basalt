@@ -7,22 +7,8 @@ import { catalogPageStatus } from "./catalog-page-status";
 const ROOT = process.cwd();
 
 describe("S10 release evidence", () => {
-	it("makes documentation slugs ready and leaves maps planned", () => {
-		const docs = CATALOG.filter((entry) => entry.category === "docs");
-		expect(docs.map((entry) => entry.slug)).toEqual([
-			"installation",
-			"contributing",
-			"colors",
-			"accessibility",
-			"figma",
-			"cli",
-			"skill",
-			"registry",
-			"changelog",
-		]);
-		for (const entry of docs) {
-			expect(catalogPageStatus(entry.slug), entry.slug).toBe("ready");
-		}
+	it("leaves maps planned", () => {
+		expect(CATALOG.map((entry) => entry.slug)).not.toContain("installation");
 		expect(catalogPageStatus("maps")).toBe("planned");
 	});
 

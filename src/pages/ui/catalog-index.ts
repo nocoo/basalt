@@ -5,7 +5,7 @@ import type { CatalogDocs } from "./catalog-source";
 
 export type CatalogReleaseStatus = "stable" | "catalog";
 export type { CatalogPageStatus } from "./catalog-page-status";
-export type CatalogIndexCategory = "all" | Exclude<CatalogCategory, "docs">;
+export type CatalogIndexCategory = "all" | CatalogCategory;
 export type CatalogIndexRelease = "all" | CatalogReleaseStatus;
 export type CatalogIndexStatus = "all" | CatalogPageStatus;
 
@@ -43,7 +43,7 @@ export type CatalogIndexItem = CatalogPageState & {
 };
 
 export interface CatalogIndexGroup {
-	id: Exclude<CatalogCategory, "docs">;
+	id: CatalogCategory;
 	label: string;
 	items: CatalogIndexItem[];
 }
@@ -60,10 +60,7 @@ const INDEX_GROUPS: ReadonlyArray<Pick<CatalogIndexGroup, "id" | "label">> = [
 	{ id: "block", label: "Blocks" },
 ];
 
-const KNOWN_CATEGORIES = new Set<CatalogCategory>([
-	"docs",
-	...INDEX_GROUPS.map((group) => group.id),
-]);
+const KNOWN_CATEGORIES = new Set<CatalogCategory>(INDEX_GROUPS.map((group) => group.id));
 
 const CATEGORY_FILTERS = new Set<CatalogIndexCategory>(["all", "component", "chart", "block"]);
 const RELEASE_FILTERS = new Set<CatalogIndexRelease>(["all", "stable", "catalog"]);
@@ -221,9 +218,6 @@ export function createCatalogIndex({
 		}
 
 		const releaseStatus = catalogReleaseStatus(entry.kind);
-		if (entry.category === "docs") {
-			continue;
-		}
 
 		const categoryItems = itemsByCategory.get(entry.category);
 		if (!categoryItems) {

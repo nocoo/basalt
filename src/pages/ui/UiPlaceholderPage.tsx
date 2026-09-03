@@ -152,29 +152,26 @@ function ReadyDoc({
 	if (!hero) {
 		throw new Error(`Ready catalog page "${entry.slug}" is missing examples[0].`);
 	}
-	const isDocs = entry.category === "docs";
-	const importPath = isDocs ? null : catalogImportPath(entry);
-	const barrel = isDocs ? null : barrelImport(entry);
-	const granular = importPath ? `import { ${entry.name} } from "${importPath}";` : null;
+	const importPath = catalogImportPath(entry);
+	const barrel = barrelImport(entry);
+	const granular = `import { ${entry.name} } from "${importPath}";`;
 	const pageMarkdown = [
 		`# ${catalogNavName(entry)}`,
 		docs.description,
-		...(granular ? ["## Installation", barrel ?? "", granular] : []),
+		"## Installation",
+		barrel ?? "",
+		granular,
 		"## Usage",
 		docs.usage,
 		"## Examples",
 		...examples.flatMap((example) => [`### ${example.title}`, example.code]),
-		...(!isDocs ? catalogApiCopyLines(docs.api) : []),
+		...catalogApiCopyLines(docs.api),
 		catalogSourceCopyText(docs),
 	].join("\n\n");
 	const headings: DocHeading[] = [
-		...(granular
-			? [
-					{ id: "installation", text: "Installation", depth: 2 as const },
-					...(barrel ? [{ id: "barrel", text: "Barrel", depth: 3 as const }] : []),
-					{ id: "granular", text: "Granular", depth: 3 as const },
-				]
-			: []),
+		{ id: "installation", text: "Installation", depth: 2 as const },
+		...(barrel ? [{ id: "barrel", text: "Barrel", depth: 3 as const }] : []),
+		{ id: "granular", text: "Granular", depth: 3 as const },
 		{ id: "usage", text: "Usage", depth: 2 },
 		{ id: "examples", text: "Examples", depth: 2 },
 		...examples.map((example) => ({
@@ -182,16 +179,12 @@ function ReadyDoc({
 			text: example.title,
 			depth: 3 as const,
 		})),
-		...(!isDocs
-			? [
-					{ id: "api-reference", text: "API Reference", depth: 2 as const },
-					...docs.api.map((surface) => ({
-						id: catalogApiSurfaceId(surface.name),
-						text: surface.name,
-						depth: 3 as const,
-					})),
-				]
-			: []),
+		{ id: "api-reference", text: "API Reference", depth: 2 as const },
+		...docs.api.map((surface) => ({
+			id: catalogApiSurfaceId(surface.name),
+			text: surface.name,
+			depth: 3 as const,
+		})),
 	];
 	return (
 		<div>
@@ -264,7 +257,7 @@ function ReadyDoc({
 							</div>
 						))}
 					</section>
-					{isDocs ? null : <CatalogApiReference api={docs.api} />}
+					<CatalogApiReference api={docs.api} />
 					<div className="space-y-1 text-sm text-muted-foreground">
 						<p>
 							Implementation{" "}
