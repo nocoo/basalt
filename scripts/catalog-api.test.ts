@@ -2656,7 +2656,13 @@ export interface WidgetProps {
 						name: "actions",
 						type: "React.ReactNode",
 						required: false,
-						description: "Actions aligned beside the title on wide screens.",
+						description: "Right-side title-row actions. Put the create button last.",
+					},
+					{
+						name: "filters",
+						type: "React.ReactNode",
+						required: false,
+						description: "Own-row filters. Keep short filters in actions.",
 					},
 				],
 			},
@@ -3682,7 +3688,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"cd0933bd8ab7d94c01c93d56560370ebbd643035c2e069e702da105595130a18",
+			"d49a9fbfc936d1fd9fc39d5c76b683582746a60f9fa6ac827cfae47af4e85bca",
 		);
 	}, 60_000);
 

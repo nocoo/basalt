@@ -7,7 +7,12 @@ export default function DefaultExample() {
 			breadcrumbs={[{ href: "#", label: "Examples" }]}
 			title="Dashboard"
 			description="Overview of recent project activity."
-			actions={<Button>Export</Button>}
+			actions={
+				<>
+					<Button variant="outline">Filters</Button>
+					<Button>New project</Button>
+				</>
+			}
 		/>
 	);
 }

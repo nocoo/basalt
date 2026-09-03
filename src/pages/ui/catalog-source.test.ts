@@ -154,6 +154,7 @@ describe("catalog source contract", () => {
 			"eyebrow",
 			"breadcrumbs",
 			"actions",
+			"filters",
 		]);
 		expect(implementationFileFor(entry("stat-strip"))).toBe(
 			"packages/basalt/src/components/stat-strip.tsx",

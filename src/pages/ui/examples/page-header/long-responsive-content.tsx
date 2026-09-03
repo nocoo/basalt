@@ -1,4 +1,5 @@
 import { Button } from "@nocoo/basalt/components/button";
+import { Input } from "@nocoo/basalt/components/input";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 
 export default function LongResponsiveContentExample() {
@@ -17,6 +18,13 @@ export default function LongResponsiveContentExample() {
 					<Button variant="ghost">Share</Button>
 					<Button variant="secondary">Export</Button>
 					<Button>Create report</Button>
+				</>
+			}
+			filters={
+				<>
+					<Input placeholder="Owner" className="max-w-48" />
+					<Input placeholder="Region" className="max-w-48" />
+					<Input placeholder="Risk" className="max-w-48" />
 				</>
 			}
 		/>

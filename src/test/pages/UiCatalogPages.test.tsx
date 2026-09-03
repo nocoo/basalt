@@ -930,7 +930,7 @@ describe("ui catalog", () => {
 		expect(docs?.api).toBe(CATALOG_API["page-header"]);
 		expect(docs).toMatchObject({
 			description:
-				"A content page heading with optional description, eyebrow, breadcrumbs, and actions.",
+				"A flush content page heading with optional description, actions, and a separate filters row.",
 			variants: [],
 		});
 		expect(CATALOG_API["page-header"]?.[0]?.props.map((prop) => prop.name)).toEqual([
@@ -939,6 +939,7 @@ describe("ui catalog", () => {
 			"eyebrow",
 			"breadcrumbs",
 			"actions",
+			"filters",
 		]);
 		expect(UI_EXAMPLES["page-header"]?.map(({ id, title }) => ({ id, title }))).toEqual([
 			{ id: "page-header-default", title: "Default" },
@@ -947,7 +948,7 @@ describe("ui catalog", () => {
 
 		renderCatalog("/ui/page-header");
 		const api = document.getElementById("api-reference");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(5);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(6);
 		const hero = document.querySelector('[data-hero-scenario="page-header-default"]');
 		expect(hero).toBeTruthy();
 		if (!hero) {

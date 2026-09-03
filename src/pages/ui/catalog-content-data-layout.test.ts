@@ -46,7 +46,7 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 	grid: "Simple grid.",
 	flow: "Step flow.",
 	"page-header":
-		"A content page heading with optional description, eyebrow, breadcrumbs, and actions.",
+		"A flush content page heading with optional description, actions, and a separate filters row.",
 } as const;
 
 describe("data-layout catalog content family", () => {

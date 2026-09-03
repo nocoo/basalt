@@ -44,6 +44,28 @@ describe("PageHeader", () => {
 		).toBeInTheDocument();
 		expect(within(banner).getByRole("button", { name: "Share" })).toBeInTheDocument();
 		expect(within(banner).getByRole("button", { name: "Export" })).toBeInTheDocument();
+		expect(banner.className).not.toContain("rounded-");
+		expect(banner.className).not.toContain("bg-basalt-");
+		expect(banner.className).not.toContain("ring-1");
+		expect(
+			within(banner).getByRole("button", { name: "Export" }).parentElement?.className,
+		).toContain("justify-end");
+	});
+
+	it("puts complex filters on their own row", () => {
+		render(
+			<PageHeader
+				title="Projects"
+				actions={<button type="button">New project</button>}
+				filters={<input aria-label="Owner" />}
+			/>,
+		);
+		const banner = screen.getByRole("banner", { name: "Projects" });
+		const heading = within(banner).getByRole("heading", { level: 1 });
+		const titleRow = heading.parentElement?.parentElement;
+		const filter = within(banner).getByLabelText("Owner");
+		expect(titleRow?.contains(filter)).toBe(false);
+		expect(filter.parentElement).not.toBe(titleRow);
 	});
 
 	it("stacks the title and actions on small screens and wraps long content", () => {

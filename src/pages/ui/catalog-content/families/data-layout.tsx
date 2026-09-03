@@ -199,7 +199,7 @@ export default function Example() {
 	"page-header": {
 		docs: {
 			description:
-				"A content page heading with optional description, eyebrow, breadcrumbs, and actions.",
+				"A flush content page heading with optional description, actions, and a separate filters row.",
 			usage: `import { PageHeader } from "@nocoo/basalt/components/page-header";
 
 export default function Example() {
