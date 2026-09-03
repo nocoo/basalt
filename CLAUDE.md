@@ -92,9 +92,9 @@ Today: pre-commit typecheck/lint/`test` (no coverage)/gitleaks `--staged` on the
 
 ## Operations / Release
 
-- Site: bump root + `packages/basalt` `package.json` together, commit, push `main`, wait CI, then push tag `vX.Y.Z` only. Do not use `bun run release` for prod until it requires `main`, waits CI, and pushes that tag only. Who: GitHub write + `production` Environment + `gh`.
+- Site: bump root + `packages/basalt` `package.json` + CHANGELOG.md, commit, push `main`, wait CI, then push tag `vX.Y.Z` only. Do not use `bun run release` for prod until it requires `main`, waits CI, and pushes that tag only. Who: GitHub write + `production` Environment + `gh`.
 - Tag CD deploys immediately. `main` CD waits CI-green. Do not laptop-`wrangler deploy`.
-- npm: `bun run package:prepublish`, then `cd packages/basalt && npm publish --access public --registry https://registry.npmjs.org/ --otp=<code>`. Who: npm 2FA. Live-check: `https://basalt.hexly.ai` and `npm view @nocoo/basalt`.
+- npm: `bun run package:prepublish`, then `cd packages/basalt && npm publish --access public --ignore-scripts --registry https://registry.npmjs.org/ --otp=<code>`. Who: `@nocoo/basalt` npm owner with 2FA. Live-check: `https://basalt.hexly.ai` and `npm view @nocoo/basalt`.
 
 ## Retrospective
 
