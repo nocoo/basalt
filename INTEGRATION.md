@@ -117,7 +117,8 @@ One tree for the whole app. Login and the shell both sit under it.
 
 Every chrome class uses the `basalt-` prefix:
 
-- surfaces: `bg-basalt-background`, `bg-basalt-card`, `bg-basalt-secondary`, `bg-basalt-primary`, `bg-basalt-accent`
+- surfaces: `bg-basalt-background` (L0), `bg-basalt-card` (L1 island), `bg-basalt-secondary` (L2 card), `bg-basalt-bright` (L3 well), `bg-basalt-control` (current-surface controls), `bg-basalt-primary`, `bg-basalt-accent`
+- nest: `ContentIsland` / Dialog / Sheet set `data-basalt-surface-root`. `LayerCard` and `LayerCard.Well` set `data-basalt-surface`. Do not hand-write `bg-card` wells inside the island.
 - text: `text-basalt-foreground`, `text-basalt-muted-foreground`, `text-basalt-primary-foreground`
 - line: `ring-basalt-border`, `border-basalt-border`
 
