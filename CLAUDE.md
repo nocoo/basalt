@@ -2,7 +2,7 @@
 
 Matte design system + catalog site. npm `@nocoo/basalt`. Live: `https://basalt.hexly.ai`.
 Profile: ts-worker-web
-Direction: [docs/01-plan-2-0.md](docs/01-plan-2-0.md). Integration: [INTEGRATION.md](INTEGRATION.md). Frameworks must not rewrite this file.
+Direction: [INTEGRATION.md](INTEGRATION.md). Numbered `docs/01`–`03` are the 2.0 plan archive, not current SoT. Frameworks must not rewrite this file.
 
 ## Sources of Truth
 
@@ -16,7 +16,6 @@ This file is the **contract**. Hooks, CI, and config are **enforcement**. If the
 | Enforcement | `.husky/*`, `.github/workflows/{ci,release}.yml`, `vitest.config.ts`, `packages/basalt/scripts/verify-pack.ts` |
 | Machine rules | global `AGENTS.md`, `rules/git-commit.md` |
 | Accidents | [Retrospective.md](Retrospective.md) |
-| Env files | omit |
 
 ## Project Invariants
 
@@ -24,8 +23,8 @@ This file is the **contract**. Hooks, CI, and config are **enforcement**. If the
 - Worker name is `theme-basalt`; `[assets]` is `./dist`. `/api/live` is Vite middleware only. No D1. Do not laptop-`wrangler deploy` — site CD is `release.yml`.
 - Coverage is models/viewmodels/lib + `packages/basalt/src` (`vitest.config.ts` include). Pages are not in the 95% denominator.
 - MVVM: viewmodels have no View/DOM imports; pages stay thin.
-- CSS tokens ship in the package. No secrets in the tarball. Override a direct dep with `"$name"`.
-- Never `rm bun.lock`. After a mirror install, strip registry URLs before commit (`rg -c '", "https' bun.lock` is 0).
+- CSS tokens ship in the package. No secrets in the tarball.
+- Never `rm bun.lock`. After a mirror install, strip registry URLs before commit (`rg -c --include-zero '", "https' bun.lock` prints 0).
 
 ## Stack / Layout
 
@@ -93,9 +92,9 @@ Today: pre-commit typecheck/lint/`test` (no coverage)/gitleaks `--staged` on the
 
 ## Operations / Release
 
-- Entry: `bun run release` (patch default). Syncs root + `packages/basalt` `package.json` + CHANGELOG, `git push`, then `git push --tags`. No main check, no CI wait. Who: GitHub write + `production` Environment + `gh`.
-- Tag CD deploys the site immediately. `main` CD waits CI-green. Do not laptop-`wrangler deploy`. npm publish is not in the script.
-- npm: `bun run package:prepublish`, then publish `packages/basalt` only (`--otp`). Live-check: `https://basalt.hexly.ai` and `npm view @nocoo/basalt`.
+- Site: bump root + `packages/basalt` `package.json` together, commit, push `main`, wait CI, then push tag `vX.Y.Z` only. Do not use `bun run release` for prod until it requires `main`, waits CI, and pushes that tag only. Who: GitHub write + `production` Environment + `gh`.
+- Tag CD deploys immediately. `main` CD waits CI-green. Do not laptop-`wrangler deploy`.
+- npm: `bun run package:prepublish`, then `cd packages/basalt && npm publish --access public --registry https://registry.npmjs.org/ --otp=<code>`. Who: npm 2FA. Live-check: `https://basalt.hexly.ai` and `npm view @nocoo/basalt`.
 
 ## Retrospective
 
