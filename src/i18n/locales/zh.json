@@ -614,6 +614,8 @@
 			"net": "净额"
 		},
 		"palette": {
+			"title": "调色板",
+			"description": "表面色、强调色，以及图表上的同一套颜色。点选强调色会应用到整个壳层。",
 			"baseColors": "基础颜色",
 			"themePalette": "主题色板",
 			"utilityTokens": "工具令牌",

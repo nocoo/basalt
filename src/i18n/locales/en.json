@@ -614,6 +614,8 @@
 			"net": "Net"
 		},
 		"palette": {
+			"title": "Color palette",
+			"description": "Surface tokens, the accent swatch, and the same colors on charts. Pick an accent to apply it across the shell.",
 			"baseColors": "Base Colors",
 			"themePalette": "Theme Palette",
 			"utilityTokens": "Utility Tokens",

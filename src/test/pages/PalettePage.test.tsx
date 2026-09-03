@@ -11,6 +11,7 @@ describe("PalettePage", () => {
 				<PalettePage />
 			</AccentProvider>,
 		);
+		expect(screen.getByRole("heading", { name: "Color palette" })).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Rose" }));
 		expect(window.localStorage.getItem("basalt-accent")).toBe("rose");
 		expect(document.documentElement.dataset.accent).toBe("rose");

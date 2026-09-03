@@ -2,6 +2,9 @@ import { AreaChart } from "@nocoo/basalt/charts/area";
 import { DonutChart } from "@nocoo/basalt/charts/donut";
 import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { LineChart } from "@nocoo/basalt/charts/line";
+import { Button } from "@nocoo/basalt/components/button";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { useAccent } from "@nocoo/basalt/providers/accent";
 import { useTranslation } from "react-i18next";
@@ -98,15 +101,16 @@ function Swatch({
 	return (
 		<div className="flex flex-col items-center gap-2">
 			{onSelect ? (
-				<button
+				<Button
 					type="button"
-					className="rounded-widget"
+					variant="ghost"
+					className="h-auto rounded-widget p-0"
 					aria-label={label}
 					aria-pressed={selected}
 					onClick={onSelect}
 				>
 					{swatch}
-				</button>
+				</Button>
 			) : (
 				swatch
 			)}
@@ -125,109 +129,128 @@ export default function PalettePage() {
 
 	return (
 		<div className="space-y-8">
+			<PageHeader title={t("pages.palette.title")} description={t("pages.palette.description")} />
+
 			<SectionRule title={t("pages.palette.baseColors")}>
-				<div className="flex flex-wrap gap-5">
-					{baseColors.map((c) => (
-						<Swatch key={c.token} token={c.token} label={c.label} subtitle={c.tier || undefined} />
-					))}
-				</div>
+				<LayerCard>
+					<div className="flex flex-wrap gap-5">
+						{baseColors.map((c) => (
+							<Swatch
+								key={c.token}
+								token={c.token}
+								label={c.label}
+								subtitle={c.tier || undefined}
+							/>
+						))}
+					</div>
+				</LayerCard>
 			</SectionRule>
 
 			<SectionRule title={t("pages.palette.themePalette")}>
-				<div className="grid grid-cols-6 gap-4 sm:grid-cols-8 lg:grid-cols-12">
-					{swatches.map((c) => (
-						<Swatch
-							key={c.id}
-							token={c.token}
-							label={c.label}
-							subtitle={THEME_SEMANTICS[c.id]}
-							selected={c.id === accent}
-							onSelect={() => setAccent(c.id)}
-						/>
-					))}
-				</div>
-				<div className="mt-5 pt-4 border-t border-border">
-					<p className="text-xs text-muted-foreground mb-3">{t("pages.palette.utilityTokens")}</p>
-					<div className="flex flex-wrap gap-5">
-						{utilityColors.map((c) => (
-							<Swatch key={c.token} token={c.token} label={c.label} />
+				<LayerCard>
+					<div className="grid grid-cols-6 gap-4 sm:grid-cols-8 lg:grid-cols-12">
+						{swatches.map((c) => (
+							<Swatch
+								key={c.id}
+								token={c.token}
+								label={c.label}
+								subtitle={THEME_SEMANTICS[c.id]}
+								selected={c.id === accent}
+								onSelect={() => setAccent(c.id)}
+							/>
 						))}
 					</div>
-				</div>
+					<div className="mt-5 border-t border-border pt-4">
+						<p className="mb-3 text-xs text-muted-foreground">{t("pages.palette.utilityTokens")}</p>
+						<div className="flex flex-wrap gap-5">
+							{utilityColors.map((c) => (
+								<Swatch key={c.token} token={c.token} label={c.label} />
+							))}
+						</div>
+					</div>
+				</LayerCard>
 			</SectionRule>
 
 			<div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
 				{/* Line Chart */}
 				<SectionRule title={t("pages.palette.lineChart")}>
-					<LineChart
-						data={lineData.map((row) => ({ x: row.name, y: row.a, y2: row.b, y3: row.c }))}
-						series={[
-							{ key: "y", label: t("pages.palette.seriesA") },
-							{ key: "y2", label: t("pages.palette.seriesB") },
-							{ key: "y3", label: t("pages.palette.seriesC") },
-						]}
-						ariaLabel={t("pages.palette.lineChartAria")}
-						className="h-[200px] w-full"
-						showAxes
-						showLegend
-					/>
-				</SectionRule>
-
-				{/* Donut Chart */}
-				<SectionRule title={t("pages.palette.donutChart")}>
-					<div className="flex flex-col items-center">
-						<DonutChart
-							data={pieData}
-							ariaLabel={t("pages.palette.donutChartAria")}
-							className="h-[180px] w-[180px]"
-							valueFormatter={formatPercent}
+					<LayerCard>
+						<LineChart
+							data={lineData.map((row) => ({ x: row.name, y: row.a, y2: row.b, y3: row.c }))}
+							series={[
+								{ key: "y", label: t("pages.palette.seriesA") },
+								{ key: "y2", label: t("pages.palette.seriesB") },
+								{ key: "y3", label: t("pages.palette.seriesC") },
+							]}
+							ariaLabel={t("pages.palette.lineChartAria")}
+							className="h-[200px] w-full"
+							showAxes
+							showLegend
 						/>
-						<div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
-							{pieData.map((item, i) => (
-								<div key={item.name} className="flex flex-col items-center gap-0.5">
-									<span className="text-sm font-medium text-foreground font-display">
-										{item.value}%
-									</span>
-									<div className="flex items-center gap-1.5">
-										<div className="h-2 w-2 rounded-full" style={{ background: CHART_COLORS[i] }} />
-										<span className="text-xs text-muted-foreground">{item.name}</span>
+					</LayerCard>
+				</SectionRule>
+
+				<SectionRule title={t("pages.palette.donutChart")}>
+					<LayerCard>
+						<div className="flex flex-col items-center">
+							<DonutChart
+								data={pieData}
+								ariaLabel={t("pages.palette.donutChartAria")}
+								className="h-[180px] w-[180px]"
+								valueFormatter={formatPercent}
+							/>
+							<div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
+								{pieData.map((item, i) => (
+									<div key={item.name} className="flex flex-col items-center gap-0.5">
+										<span className="font-display text-sm font-medium text-foreground">
+											{item.value}%
+										</span>
+										<div className="flex items-center gap-1.5">
+											<div
+												className="h-2 w-2 rounded-full"
+												style={{ background: CHART_COLORS[i] }}
+											/>
+											<span className="text-xs text-muted-foreground">{item.name}</span>
+										</div>
 									</div>
-								</div>
-							))}
+								))}
+							</div>
 						</div>
-					</div>
+					</LayerCard>
 				</SectionRule>
 
-				{/* Bar Chart */}
 				<SectionRule title={t("pages.palette.groupedBarChart")}>
-					<GroupedBarChart
-						data={barData.map((row) => ({ x: row.name, y: row.income, y2: row.expense }))}
-						series={[
-							{ key: "y", label: t("pages.palette.income") },
-							{ key: "y2", label: t("pages.palette.expense") },
-						]}
-						ariaLabel={t("pages.palette.groupedBarChartAria")}
-						className="h-[200px] w-full"
-						showAxes
-						showLegend
-						valueFormatter={formatUsd}
-					/>
+					<LayerCard>
+						<GroupedBarChart
+							data={barData.map((row) => ({ x: row.name, y: row.income, y2: row.expense }))}
+							series={[
+								{ key: "y", label: t("pages.palette.income") },
+								{ key: "y2", label: t("pages.palette.expense") },
+							]}
+							ariaLabel={t("pages.palette.groupedBarChartAria")}
+							className="h-[200px] w-full"
+							showAxes
+							showLegend
+							valueFormatter={formatUsd}
+						/>
+					</LayerCard>
 				</SectionRule>
 
-				{/* Area Chart */}
 				<SectionRule title={t("pages.palette.areaChart")}>
-					<AreaChart
-						data={areaData.map((row) => ({ x: row.name, y: row.inflow, y2: row.outflow }))}
-						series={[
-							{ key: "y", label: t("pages.palette.inflow") },
-							{ key: "y2", label: t("pages.palette.outflow") },
-						]}
-						ariaLabel={t("pages.palette.areaChartAria")}
-						className="h-[200px] w-full"
-						showAxes
-						showLegend
-						valueFormatter={formatUsd}
-					/>
+					<LayerCard>
+						<AreaChart
+							data={areaData.map((row) => ({ x: row.name, y: row.inflow, y2: row.outflow }))}
+							series={[
+								{ key: "y", label: t("pages.palette.inflow") },
+								{ key: "y2", label: t("pages.palette.outflow") },
+							]}
+							ariaLabel={t("pages.palette.areaChartAria")}
+							className="h-[200px] w-full"
+							showAxes
+							showLegend
+							valueFormatter={formatUsd}
+						/>
+					</LayerCard>
 				</SectionRule>
 			</div>
 		</div>
