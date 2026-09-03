@@ -513,6 +513,8 @@ Boot and route gates use `LoadingScreen` — a centered mark and a 6rem shimmer 
 When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place:
 
 - add routes as `Outlet` pages
+- start every page with `PageHeader` (**§15**)
+- split regions with `SectionRule` (**§15**)
 - compose pages with `LayerCard` on the island (**§14**)
 - compose Basalt leaves (`Table`, `Button`, `Field`, charts, …) inside those cards
 - keep view-models free of layout chrome
@@ -606,3 +608,62 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 ```
 
 `LayerCard` is not on the root barrel.
+
+---
+
+## 15. Page chrome
+
+`PageHeader` and `SectionRule` are the only page-level chrome. Import them from granular paths. They are not on the root barrel. Do not wrap the title in an island, and do not draw a second title above the `h1` — the shell breadcrumb already names the page.
+
+### PageHeader
+
+Flush heading on the island. Title left, create last in `actions`. Short filters stay in `actions`. Complex filters take the own `filters` row.
+
+```tsx
+import { PageHeader } from "@nocoo/basalt/components/page-header";
+
+<PageHeader
+  title="Projects"
+  description="Active work in this workspace."
+  actions={
+    <>
+      <Button variant="outline">Export</Button>
+      <Button>New project</Button>
+    </>
+  }
+  filters={<Input placeholder="Owner" className="max-w-48" />}
+/>
+```
+
+`breadcrumbs` is optional catalog chrome. Showcase pages already have `AppHeader` breadcrumbs — omit them.
+
+### SectionRule
+
+Title, optional info control, dashed rule, optional actions. Children sit under the rule. Card titles stay on `LayerCard.Header`.
+
+```tsx
+import { SectionRule } from "@nocoo/basalt/components/section-rule";
+
+<SectionRule title="Catalog">
+  <LayerCard>…</LayerCard>
+</SectionRule>
+
+<SectionRule title="Catalog" hint="Published items in this workspace.">
+  <LayerCard>…</LayerCard>
+</SectionRule>
+
+<SectionRule
+  title="Activity"
+  hint="Events from the last 24 hours."
+  actions={
+    <>
+      <Button variant="outline" size="sm">Export</Button>
+      <Button size="sm">Refresh</Button>
+    </>
+  }
+>
+  <LayerCard>…</LayerCard>
+</SectionRule>
+```
+
+Stack one `SectionRule` per region. Live recipe: `/layout`. Catalog: `/ui/page-header`, `/ui/section-rule`.
