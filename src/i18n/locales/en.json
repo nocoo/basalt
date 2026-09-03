@@ -92,7 +92,8 @@
 		"pills": "Pills",
 		"examples": "Examples",
 		"kit": "Library",
-		"kitIndex": "Home"
+		"kitIndex": "Home",
+		"dialogs": "Dialogs"
 	},
 	"pages": {
 		"notFound": {
@@ -611,6 +612,52 @@
 			"inflow": "Inflow",
 			"outflow": "Outflow",
 			"net": "Net"
+		},
+		"dialogs": {
+			"title": "Dialogs",
+			"description": "Standard overlay for decisions, short forms, and confirmations. Use Dialog, AlertDialog, and ConfirmDialog — never a native dialog or button.",
+			"anatomy": "Anatomy",
+			"anatomyHint": "Copy this structure so every product dialog matches.",
+			"width": "Width",
+			"widthValue": "Default size is base (384px). sm 288px, lg 512px, xl 768px. The panel pads 32px and scrolls if content overflows.",
+			"titleRow": "Title and close",
+			"titleRowValue": "Title is top-left. Optional close is an outline icon Button in the top-right, labeled Close.",
+			"subtitle": "Subtitle",
+			"subtitleValue": "DialogDescription sits under the title. One or two sentences, muted.",
+			"actions": "Actions",
+			"actionsValue": "DialogFooter is bottom-right. Cancel is outline first, confirm is last. ConfirmDialog focuses Cancel first and does not dismiss on outside click.",
+			"standard": "Standard",
+			"standardHint": "Informational dialog with close, cancel, and confirm.",
+			"openStandard": "Open standard",
+			"standardTitle": "Rename workspace",
+			"standardBody": "This name appears in the sidebar and in share links. You can change it later.",
+			"sizes": "Sizes",
+			"sizesHint": "Pick a size. Do not set a custom max-width unless the content cannot fit these four.",
+			"size": {
+				"sm": "Small",
+				"base": "Base",
+				"lg": "Large",
+				"xl": "Extra large"
+			},
+			"sizeBody": "size=\"{{size}}\" stays {{width}} wide on desktop.",
+			"form": "Form",
+			"formHint": "Short forms stay on base. Use Field and Input, then cancel and save.",
+			"openForm": "Open form",
+			"formTitle": "Create workspace",
+			"formBody": "A workspace holds projects, members, and billing.",
+			"workspaceName": "Workspace name",
+			"workspacePlaceholder": "Northwind",
+			"confirm": "Confirm and destroy",
+			"confirmHint": "ConfirmDialog for yes/no. AlertDialog for a destructive acknowledgment that cannot be dismissed by clicking outside.",
+			"openConfirm": "Open confirm",
+			"confirmTitle": "Apply this layout?",
+			"confirmBody": "The current arrangement will replace the saved default.",
+			"openDestroy": "Open destructive",
+			"destroyTitle": "Delete workspace?",
+			"destroyBody": "This permanently removes projects, members, and billing history.",
+			"openAlert": "Open alert",
+			"alertTitle": "Delete workspace?",
+			"alertBody": "This action cannot be undone. All data will be permanently removed."
 		},
 		"palette": {
 			"title": "Color palette",

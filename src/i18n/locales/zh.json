@@ -92,7 +92,8 @@
 		"pills": "标签",
 		"examples": "示例",
 		"kit": "控件库",
-		"kitIndex": "首页"
+		"kitIndex": "首页",
+		"dialogs": "对话框"
 	},
 	"pages": {
 		"notFound": {
@@ -611,6 +612,52 @@
 			"inflow": "流入",
 			"outflow": "流出",
 			"net": "净额"
+		},
+		"dialogs": {
+			"title": "对话框",
+			"description": "用于决策、短表单和确认的标准浮层。只用 Dialog、AlertDialog 和 ConfirmDialog，不要用原生 dialog 或 button。",
+			"anatomy": "结构",
+			"anatomyHint": "按这个结构写，产品里的对话框才会统一。",
+			"width": "宽度",
+			"widthValue": "默认 size 是 base（384px）。sm 288px，lg 512px，xl 768px。面板内边距 32px，内容超出时在面板内滚动。",
+			"titleRow": "标题和关闭",
+			"titleRowValue": "标题在左上。可选关闭是右上角 outline 图标 Button，无障碍名称 Close。",
+			"subtitle": "副标题",
+			"subtitleValue": "DialogDescription 在标题下面。一两句，用 muted。",
+			"actions": "操作",
+			"actionsValue": "DialogFooter 在右下。Cancel 是 outline 且在前，确认在最后。ConfirmDialog 先聚焦 Cancel，点击遮罩不能关掉。",
+			"standard": "标准",
+			"standardHint": "带关闭、取消和确认的信息对话框。",
+			"openStandard": "打开标准对话框",
+			"standardTitle": "重命名工作区",
+			"standardBody": "这个名称会出现在侧边栏和分享链接里。之后还可以改。",
+			"sizes": "尺寸",
+			"sizesHint": "在这四档里选。内容能放下就不要自定义 max-width。",
+			"size": {
+				"sm": "小",
+				"base": "默认",
+				"lg": "大",
+				"xl": "特大"
+			},
+			"sizeBody": "size=\"{{size}}\" 在桌面宽度为 {{width}}。",
+			"form": "表单",
+			"formHint": "短表单用 base。控件用 Field 和 Input，然后取消和保存。",
+			"openForm": "打开表单",
+			"formTitle": "创建工作区",
+			"formBody": "工作区里放项目、成员和账单。",
+			"workspaceName": "工作区名称",
+			"workspacePlaceholder": "Northwind",
+			"confirm": "确认与销毁",
+			"confirmHint": "是/否用 ConfirmDialog。不能点遮罩关掉的销毁确认用 AlertDialog。",
+			"openConfirm": "打开确认",
+			"confirmTitle": "应用这个布局？",
+			"confirmBody": "当前排列会覆盖已保存的默认布局。",
+			"openDestroy": "打开销毁",
+			"destroyTitle": "删除工作区？",
+			"destroyBody": "会永久删除项目、成员和账单记录。",
+			"openAlert": "打开警告",
+			"alertTitle": "删除工作区？",
+			"alertBody": "此操作无法撤销。所有数据都会被永久删除。"
 		},
 		"palette": {
 			"title": "调色板",

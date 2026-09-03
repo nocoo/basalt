@@ -20,6 +20,7 @@ const PAGE_MODULES = [
 	"ComponentsPage.tsx",
 	"DashboardPage.tsx",
 	"DataPage.tsx",
+	"DialogsPage.tsx",
 	"FlowComparisonPage.tsx",
 	"FormsPage.tsx",
 	"HealthPage.tsx",

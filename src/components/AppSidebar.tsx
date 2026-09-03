@@ -192,6 +192,7 @@ const LIBRARY_LEAD: NavItem[] = [
 	{ titleKey: "nav.data", icon: Eye, path: "/data" },
 	{ titleKey: "nav.forms", icon: FormInput, path: "/forms" },
 	{ titleKey: "nav.navigation", icon: Navigation, path: "/navigation" },
+	{ titleKey: "nav.dialogs", icon: AppWindow, path: "/dialogs" },
 ];
 
 const CATALOG_ICONS: Record<string, React.ElementType> = {

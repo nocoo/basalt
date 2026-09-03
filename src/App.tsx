@@ -12,6 +12,7 @@ const BankingDashboardPage = lazy(() => import("./pages/BankingDashboardPage"));
 const ComponentsPage = lazy(() => import("./pages/ComponentsPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const DataPage = lazy(() => import("./pages/DataPage"));
+const DialogsPage = lazy(() => import("./pages/DialogsPage"));
 const FlowComparisonPage = lazy(() => import("./pages/FlowComparisonPage"));
 const FormsPage = lazy(() => import("./pages/FormsPage"));
 const HealthPage = lazy(() => import("./pages/HealthPage"));
@@ -97,6 +98,7 @@ const App = () => (
 								<Route path="/flow-comparison" element={routeElement(FlowComparisonPage)} />
 								<Route path="/portfolio" element={routeElement(PortfolioPage)} />
 								<Route path="/layout" element={routeElement(LayoutPage)} />
+								<Route path="/dialogs" element={routeElement(DialogsPage)} />
 								<Route path="/settings" element={routeElement(SettingsPage)} />
 								<Route path="/palette" element={routeElement(PalettePage)} />
 								<Route path="/interactions" element={routeElement(InteractionShowcasePage)} />
