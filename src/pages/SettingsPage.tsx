@@ -150,7 +150,7 @@ function ProfileSection() {
 						<Input
 							id="settings-first-name"
 							defaultValue="Alex"
-							className="rounded-widget border-border bg-card text-sm focus-visible:ring-primary"
+							className="rounded-widget border-border bg-basalt-control text-sm focus-visible:ring-primary"
 						/>
 					</div>
 					<div className="space-y-2">
@@ -160,7 +160,7 @@ function ProfileSection() {
 						<Input
 							id="settings-last-name"
 							defaultValue="Johnson"
-							className="rounded-widget border-border bg-card text-sm focus-visible:ring-primary"
+							className="rounded-widget border-border bg-basalt-control text-sm focus-visible:ring-primary"
 						/>
 					</div>
 					<div className="space-y-2">
@@ -171,7 +171,7 @@ function ProfileSection() {
 							id="settings-email"
 							defaultValue="alex@basalt.app"
 							type="email"
-							className="rounded-widget border-border bg-card text-sm focus-visible:ring-primary"
+							className="rounded-widget border-border bg-basalt-control text-sm focus-visible:ring-primary"
 						/>
 					</div>
 					<div className="space-y-2">
@@ -182,7 +182,7 @@ function ProfileSection() {
 							id="settings-phone"
 							defaultValue="+1 (555) 123-4567"
 							type="tel"
-							className="rounded-widget border-border bg-card text-sm focus-visible:ring-primary"
+							className="rounded-widget border-border bg-basalt-control text-sm focus-visible:ring-primary"
 						/>
 					</div>
 				</div>
@@ -195,14 +195,14 @@ function ProfileSection() {
 						id="settings-bio"
 						defaultValue="Product designer and financial enthusiast."
 						rows={3}
-						className="w-full rounded-widget border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary"
+						className="w-full rounded-widget border border-border bg-basalt-control px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary"
 					/>
 				</div>
 
 				<div className="flex justify-end gap-3">
 					<button
 						type="button"
-						className="rounded-widget bg-card px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+						className="rounded-widget bg-basalt-control px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
 					>
 						{t("common.cancel")}
 					</button>
@@ -282,7 +282,7 @@ function SecuritySection() {
 							id="settings-current-password"
 							type="password"
 							placeholder="••••••••"
-							className="rounded-widget border-border bg-card text-sm focus-visible:ring-primary"
+							className="rounded-widget border-border bg-basalt-control text-sm focus-visible:ring-primary"
 						/>
 					</div>
 					<div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -294,7 +294,7 @@ function SecuritySection() {
 								id="settings-new-password"
 								type="password"
 								placeholder="••••••••"
-								className="rounded-widget border-border bg-card text-sm focus-visible:ring-primary"
+								className="rounded-widget border-border bg-basalt-control text-sm focus-visible:ring-primary"
 							/>
 						</div>
 						<div className="space-y-2">
@@ -305,7 +305,7 @@ function SecuritySection() {
 								id="settings-confirm-password"
 								type="password"
 								placeholder="••••••••"
-								className="rounded-widget border-border bg-card text-sm focus-visible:ring-primary"
+								className="rounded-widget border-border bg-basalt-control text-sm focus-visible:ring-primary"
 							/>
 						</div>
 					</div>
@@ -479,7 +479,7 @@ function AppearanceSection() {
 						</div>
 						<select
 							id="settings-currency"
-							className="rounded-widget border border-border bg-card px-3 py-1.5 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary"
+							className="rounded-widget border border-border bg-basalt-control px-3 py-1.5 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary"
 						>
 							<option>USD ($)</option>
 							<option>EUR (&euro;)</option>
@@ -499,7 +499,7 @@ function AppearanceSection() {
 						</div>
 						<select
 							id="settings-language"
-							className="rounded-widget border border-border bg-card px-3 py-1.5 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary"
+							className="rounded-widget border border-border bg-basalt-control px-3 py-1.5 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary"
 						>
 							<option>{t("pages.settings.english")}</option>
 							<option>{t("pages.settings.spanish")}</option>
