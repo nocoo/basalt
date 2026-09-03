@@ -69,7 +69,7 @@ export default function SettingsPage() {
 	return (
 		<div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
 			{/* Left nav */}
-			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none lg:col-span-1">
+			<LayerCard className="flex flex-col lg:col-span-1" padding="none">
 				<div className="min-h-0 flex-1 px-4 pt-0 pb-4 p-3">
 					<nav className="flex flex-row gap-1 lg:flex-col">
 						{SECTIONS.map(({ id, labelKey, icon: Icon }) => (
@@ -109,7 +109,7 @@ function ProfileSection() {
 	const { t } = useTranslation();
 
 	return (
-		<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+		<LayerCard className="flex flex-col" padding="none">
 			<div className="flex flex-col space-y-2.5 p-4">
 				<div className="flex items-center gap-2">
 					<User className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
@@ -224,7 +224,7 @@ function NotificationsSection() {
 	const { t } = useTranslation();
 
 	return (
-		<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+		<LayerCard className="flex flex-col" padding="none">
 			<div className="flex flex-col space-y-2.5 p-4">
 				<div className="flex items-center gap-2">
 					<Bell className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
@@ -264,7 +264,7 @@ function SecuritySection() {
 	return (
 		<div className="space-y-4">
 			{/* Password */}
-			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+			<LayerCard className="flex flex-col" padding="none">
 				<div className="flex flex-col space-y-2.5 p-4">
 					<div className="flex items-center gap-2">
 						<Shield className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
@@ -321,7 +321,7 @@ function SecuritySection() {
 			</LayerCard>
 
 			{/* Two-factor */}
-			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+			<LayerCard className="flex flex-col" padding="none">
 				<div className="flex flex-col space-y-2.5 p-4">
 					<div className="flex items-center gap-2">
 						<Smartphone className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
@@ -356,7 +356,7 @@ function SecuritySection() {
 			</LayerCard>
 
 			{/* Active sessions */}
-			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+			<LayerCard className="flex flex-col" padding="none">
 				<div className="flex flex-col space-y-2.5 p-4">
 					<div className="flex items-center gap-2">
 						<Globe className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
@@ -410,7 +410,7 @@ function AppearanceSection() {
 	return (
 		<div className="space-y-4">
 			{/* Theme */}
-			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+			<LayerCard className="flex flex-col" padding="none">
 				<div className="flex flex-col space-y-2.5 p-4">
 					<div className="flex items-center gap-2">
 						<Palette className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
@@ -460,7 +460,7 @@ function AppearanceSection() {
 			</LayerCard>
 
 			{/* Currency & language */}
-			<LayerCard className="flex flex-col ring-0 rounded-card border-0 bg-secondary shadow-none">
+			<LayerCard className="flex flex-col" padding="none">
 				<div className="flex flex-col space-y-2.5 p-4">
 					<div className="flex items-center gap-2">
 						<CreditCard className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />

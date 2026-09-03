@@ -21,4 +21,9 @@ describe("DataPage", () => {
 
 		expect(screen.getByRole("button", { name: "Filter" })).toBeInTheDocument();
 	});
+
+	it("does not paint inner wells with bg-card", () => {
+		const { container } = render(<DataPage />);
+		expect(container.innerHTML).not.toContain("bg-card");
+	});
 });
