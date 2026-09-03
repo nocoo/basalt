@@ -496,6 +496,7 @@ export function SidebarUser({
 export function ContentIsland({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
+			data-basalt-surface-root=""
 			className={cn(
 				"min-h-0 flex-1 overflow-y-auto rounded-[16px] bg-basalt-card p-3 text-basalt-card-foreground shadow-sm ring-1 ring-basalt-border/40 md:rounded-basalt-island md:p-5",
 				className,

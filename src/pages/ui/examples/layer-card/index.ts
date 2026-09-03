@@ -6,6 +6,7 @@ const LAYER_CARD_SCENARIO_META = [
 	{ key: "multiple-cards", title: "Multiple Cards" },
 	{ key: "structured-card", title: "Structured Card" },
 	{ key: "loading-empty", title: "Loading and Empty" },
+	{ key: "nested-surfaces", title: "Nested Surfaces" },
 ] as const;
 
 export const LAYER_CARD_EXAMPLES = loadModuleScenarios({

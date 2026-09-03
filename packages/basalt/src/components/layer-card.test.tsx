@@ -6,13 +6,17 @@ import { LayerCard, type LayerCardProps } from "./layer-card";
 function acceptLayerCardProps(_props: LayerCardProps) {}
 
 describe("LayerCard", () => {
-	it("renders a single surface by default", () => {
+	it("paints an unstructured surface with default padding", () => {
 		render(<LayerCard>Body</LayerCard>);
-		expect(screen.getByText("Body").className).toContain("bg-basalt-bright");
-		expect(screen.getByText("Body").className).toContain("ring-1");
+		const root = screen.getByText("Body");
+		expect(root).toHaveAttribute("data-basalt-surface");
+		expect(root.className).toContain("p-4");
+		expect(root.className).not.toContain("bg-basalt-bright");
+		expect(root.className).not.toContain("shadow-xs");
+		expect(root.className).not.toContain("ring-1");
 	});
 
-	it("layers a muted header over a raised primary card", () => {
+	it("raises a well without a muted tray", () => {
 		render(
 			<LayerCard>
 				<LayerCard.Secondary>Next Steps</LayerCard.Secondary>
@@ -22,12 +26,14 @@ describe("LayerCard", () => {
 		const header = screen.getByText("Next Steps");
 		const body = screen.getByText("Hello");
 		expect(header.className).toContain("text-basalt-muted-foreground");
-		expect(body.className).toContain("bg-basalt-bright");
-		expect(body.className).toContain("rounded-basalt-lg");
-		expect(header.parentElement?.className).toContain("bg-basalt-muted");
+		expect(header.className).not.toContain("bg-basalt-muted");
+		expect(body).toHaveAttribute("data-basalt-surface");
+		expect(body.className).toContain("p-4");
+		expect(body.parentElement?.className).not.toContain("p-4");
+		expect(body.parentElement).toHaveAttribute("data-basalt-surface");
 	});
 
-	it("keeps a single bright surface for ordinary element children", () => {
+	it("keeps a single surface for ordinary element children", () => {
 		render(
 			<LayerCard>
 				<span>Plain</span>
@@ -36,8 +42,8 @@ describe("LayerCard", () => {
 		const label = screen.getByText("Plain");
 		const root = label.parentElement;
 		expect(label.tagName).toBe("SPAN");
-		expect(root?.className).toContain("bg-basalt-bright");
-		expect(root?.className).toContain("shadow-xs");
+		expect(root).toHaveAttribute("data-basalt-surface");
+		expect(root?.className).toContain("p-4");
 		expect(root?.className).not.toContain("bg-basalt-muted");
 		expect(root?.className).not.toContain("flex-col");
 	});
@@ -54,24 +60,22 @@ describe("LayerCard", () => {
 		const lead = screen.getByText("Lead");
 		const body = screen.getByText("Raised");
 		const root = lead.parentElement;
-		expect(root?.className).toContain("bg-basalt-muted");
+		expect(root).toHaveAttribute("data-basalt-surface");
 		expect(root?.className).toContain("flex-col");
-		expect(root?.className).not.toContain("shadow-xs");
-		expect(body.className).toContain("bg-basalt-bright");
-		expect(body.className).toContain("rounded-basalt-lg");
+		expect(root?.className).not.toContain("p-4");
+		expect(body).toHaveAttribute("data-basalt-surface");
 		expect(body.parentElement).toBe(root);
 	});
 
-	it("layers from a direct primary without a preceding secondary", () => {
+	it("layers from a direct well without a preceding header", () => {
 		render(
 			<LayerCard>
-				<LayerCard.Primary>Solo</LayerCard.Primary>
+				<LayerCard.Well>Solo</LayerCard.Well>
 			</LayerCard>,
 		);
 		const body = screen.getByText("Solo");
-		expect(body.className).toContain("bg-basalt-bright");
-		expect(body.className).toContain("rounded-basalt-lg");
-		expect(body.parentElement?.className).toContain("bg-basalt-muted");
+		expect(body).toHaveAttribute("data-basalt-surface");
+		expect(body.parentElement).toHaveAttribute("data-basalt-surface");
 		expect(body.parentElement?.className).toContain("flex-col");
 	});
 
@@ -93,6 +97,13 @@ describe("LayerCard", () => {
 	it("applies optional root padding without changing the default surface", () => {
 		const { rerender } = render(<LayerCard data-testid="card">Body</LayerCard>);
 		const card = screen.getByTestId("card");
+		expect(card).toHaveClass("p-4");
+
+		rerender(
+			<LayerCard data-testid="card" padding="none">
+				Body
+			</LayerCard>,
+		);
 		expect(card).not.toHaveClass("p-3", "p-4", "p-6");
 
 		for (const [padding, className] of [
@@ -109,25 +120,54 @@ describe("LayerCard", () => {
 		}
 	});
 
-	it("composes header, body, and footer sections", () => {
+	it("forces root padding off when slots are present", () => {
 		render(
-			<LayerCard aria-label="Deployment">
+			<LayerCard padding="lg" aria-label="Deployment">
 				<LayerCard.Header data-testid="header">Release</LayerCard.Header>
 				<LayerCard.Body data-testid="body">Ready to deploy</LayerCard.Body>
 				<LayerCard.Footer data-testid="footer">Actions</LayerCard.Footer>
 			</LayerCard>,
 		);
-		expect(screen.getByLabelText("Deployment")).toHaveClass("bg-basalt-bright", "ring-1");
+		expect(screen.getByLabelText("Deployment")).not.toHaveClass("p-6");
+		expect(screen.getByLabelText("Deployment")).toHaveAttribute("data-basalt-surface");
 		expect(screen.getByTestId("header")).toHaveClass("border-b", "px-4", "py-3");
 		expect(screen.getByTestId("body")).toHaveClass("p-4");
+		expect(screen.getByTestId("body")).not.toHaveAttribute("data-basalt-surface");
 		expect(screen.getByTestId("footer")).toHaveClass("border-t", "justify-end", "px-4", "py-3");
 	});
 
+	it("omits the header rule when a well follows", () => {
+		render(
+			<LayerCard>
+				<LayerCard.Header data-testid="header">Timeline</LayerCard.Header>
+				<LayerCard.Well data-testid="well">Event</LayerCard.Well>
+			</LayerCard>,
+		);
+		expect(screen.getByTestId("header").className).not.toContain("border-b");
+		expect(screen.getByTestId("well")).toHaveAttribute("data-basalt-surface");
+		expect(screen.getByTestId("well").parentElement?.className).not.toContain("p-4");
+	});
+
+	it("adds an optional ring without a default shadow", () => {
+		render(
+			<LayerCard outlined data-testid="card">
+				Body
+			</LayerCard>,
+		);
+		expect(screen.getByTestId("card")).toHaveClass("ring-1", "ring-basalt-border/40");
+		expect(screen.getByTestId("card").className).not.toContain("shadow-xs");
+	});
+
 	it("renders an accessible loading state with reduced-motion-safe skeletons", () => {
-		render(<LayerCard.Loading label="Loading metrics" data-testid="loading" />);
+		render(
+			<LayerCard>
+				<LayerCard.Loading label="Loading metrics" data-testid="loading" />
+			</LayerCard>,
+		);
 		const loading = screen.getByRole("status", { name: "Loading metrics" });
 		expect(loading).toBe(screen.getByTestId("loading"));
 		expect(loading).toHaveClass("space-y-3", "p-4");
+		expect(loading.parentElement?.className).not.toContain("p-4");
 		const skeletons = loading.querySelectorAll('[aria-hidden="true"]');
 		expect(skeletons).toHaveLength(3);
 		for (const skeleton of skeletons) {
@@ -137,16 +177,19 @@ describe("LayerCard", () => {
 
 	it("renders a reusable empty state and forwards native props", () => {
 		render(
-			<LayerCard.Empty
-				title="No activity"
-				description="New events will appear here."
-				icon={<svg aria-label="Inbox" />}
-				data-testid="empty"
-				className="extra"
-			/>,
+			<LayerCard>
+				<LayerCard.Empty
+					title="No activity"
+					description="New events will appear here."
+					icon={<svg aria-label="Inbox" />}
+					data-testid="empty"
+					className="extra"
+				/>
+			</LayerCard>,
 		);
 		const empty = screen.getByTestId("empty");
 		expect(empty).toHaveClass("p-8", "extra");
+		expect(empty.parentElement?.className).not.toContain("p-4");
 		expect(screen.getByText("No activity")).toBeInTheDocument();
 		expect(screen.getByText("New events will appear here.")).toBeInTheDocument();
 		expect(screen.getByLabelText("Inbox")).toBeInTheDocument();
@@ -162,8 +205,8 @@ describe("LayerCard", () => {
 		const root = screen.getByText("Body");
 		expect(root).toHaveAttribute("id", "card");
 		expect(root).toHaveAttribute("data-kind", "card");
+		expect(root).toHaveAttribute("data-basalt-surface");
 		expect(root.className).toContain("extra");
-		expect(root.className).toContain("bg-basalt-bright");
 		expect(ref.current).toBe(root);
 	});
 });

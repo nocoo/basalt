@@ -193,7 +193,7 @@ export default catalogContentFamily({
 	"layer-card": {
 		docs: {
 			description:
-				"A layered or structured card shell with consistent spacing, sections, loading, and empty states.",
+				"A nestable painted surface. Inside an island it is L2; LayerCard.Well raises L3. Primary aliases Well; Secondary aliases Header.",
 			usage: usage(
 				"LayerCard",
 				"@nocoo/basalt/components/layer-card",

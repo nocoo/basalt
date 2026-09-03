@@ -43,6 +43,7 @@ export default function LoginPage() {
 			/>
 			<div className="flex flex-col items-center">
 				<div
+					data-basalt-surface-root=""
 					className="relative flex aspect-[54/86] w-72 flex-col overflow-hidden rounded-2xl bg-card ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
 					style={{
 						boxShadow: [
