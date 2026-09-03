@@ -1,41 +1,13 @@
 import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { Pagination } from "@nocoo/basalt/components/pagination";
+import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { TablePager } from "@nocoo/basalt/components/table-pager";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
-import {
-	CheckCircle2,
-	ChevronRight,
-	ChevronsRight,
-	Circle,
-	FileText,
-	FolderOpen,
-	Home,
-	Navigation,
-} from "lucide-react";
+import { CheckCircle2, FileText, FolderOpen, Home } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { PageIntro } from "@/components/PageIntro";
-
-function Section({
-	title,
-	icon: Icon,
-	children,
-}: {
-	title: string;
-	icon: React.ElementType;
-	children: React.ReactNode;
-}) {
-	return (
-		<div className="rounded-card bg-secondary p-4 md:p-5">
-			<div className="flex items-center gap-2 mb-4">
-				<Icon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-				<p className="text-sm text-muted-foreground">{title}</p>
-			</div>
-			{children}
-		</div>
-	);
-}
 
 /* ── Stepper ── */
 function Stepper({ steps, current }: { steps: string[]; current: number }) {
@@ -101,16 +73,13 @@ export default function NavigationPage() {
 	];
 
 	return (
-		<div className="space-y-4">
-			<PageIntro
+		<div className="space-y-8">
+			<PageHeader
 				title={t("pages.navigation.title")}
 				description={t("pages.navigation.description")}
-				eyebrow={t("pages.navigation.eyebrow")}
-				icon={Navigation}
 			/>
 
-			{/* Breadcrumbs */}
-			<Section title={t("pages.navigation.breadcrumbs")} icon={ChevronRight}>
+			<SectionRule title={t("pages.navigation.breadcrumbs")}>
 				<div className="space-y-4">
 					<div>
 						<p className="text-xs text-muted-foreground mb-2 font-mono">
@@ -171,10 +140,10 @@ export default function NavigationPage() {
 						</div>
 					</div>
 				</div>
-			</Section>
+			</SectionRule>
 
 			{/* Pagination */}
-			<Section title={t("pages.navigation.pagination")} icon={ChevronsRight}>
+			<SectionRule title={t("pages.navigation.pagination")}>
 				<div className="space-y-6">
 					<div>
 						<p className="text-xs text-muted-foreground mb-2 font-mono">
@@ -213,10 +182,10 @@ export default function NavigationPage() {
 						</div>
 					</div>
 				</div>
-			</Section>
+			</SectionRule>
 
 			{/* Stepper / Wizard */}
-			<Section title={t("pages.navigation.stepperWizard")} icon={Circle}>
+			<SectionRule title={t("pages.navigation.stepperWizard")}>
 				<div className="space-y-6">
 					<div>
 						<p className="text-xs text-muted-foreground mb-3 font-mono">
@@ -295,10 +264,10 @@ export default function NavigationPage() {
 						</div>
 					</div>
 				</div>
-			</Section>
+			</SectionRule>
 
 			{/* Tabs Variants */}
-			<Section title={t("pages.navigation.tabPatterns")} icon={Navigation}>
+			<SectionRule title={t("pages.navigation.tabPatterns")}>
 				<div className="space-y-6">
 					{/* Standard tabs */}
 					<div>
@@ -403,7 +372,7 @@ export default function NavigationPage() {
 						</Tabs>
 					</div>
 				</div>
-			</Section>
+			</SectionRule>
 		</div>
 	);
 }

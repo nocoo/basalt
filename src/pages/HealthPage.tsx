@@ -5,6 +5,8 @@ import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { Timeline } from "@nocoo/basalt/charts/timeline";
 import { Button } from "@nocoo/basalt/components/button";
 import { InputArea } from "@nocoo/basalt/components/input-area";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
+import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import {
 	Activity,
 	AlertTriangle,
@@ -24,7 +26,6 @@ import { useTranslation } from "react-i18next";
 import { BarChartWidget } from "@/components/dashboard/BarChartWidget";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
-import { PageIntro } from "@/components/PageIntro";
 import { formatPercent } from "@/lib/format";
 import { chart } from "@/lib/palette";
 
@@ -228,20 +229,12 @@ export default function HealthPage() {
 	];
 
 	return (
-		<div className="space-y-4">
-			<PageIntro
-				title={t("pages.health.title")}
-				description={t("pages.health.description")}
-				eyebrow={t("pages.health.eyebrow")}
-				icon={Activity}
-			/>
+		<div className="space-y-8">
+			<PageHeader title={t("pages.health.title")} description={t("pages.health.description")} />
 
-			<div className="rounded-card bg-secondary p-4 md:p-5">
-				<div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-					<div className="flex items-center gap-2">
-						<Heart className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.health.today")}</p>
-					</div>
+			<SectionRule
+				title={t("pages.health.today")}
+				actions={
 					<DateNavigation
 						selectedDate={new Date(2026, 1, 13)}
 						onPrevDay={() => {}}
@@ -252,8 +245,8 @@ export default function HealthPage() {
 						nextDayLabel={t("common.nextDay")}
 						locale={i18n.language}
 					/>
-				</div>
-			</div>
+				}
+			/>
 
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (
@@ -348,105 +341,101 @@ export default function HealthPage() {
 				/>
 			</div>
 
-			{/* Life.ai insights */}
-			<div className="flex items-center gap-2 pt-2">
-				<Sparkles className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-				<p className="text-sm font-medium text-muted-foreground">
-					{t("pages.health.lifeAiInsights")}
-				</p>
-			</div>
+			<SectionRule title={t("pages.health.lifeAiInsights")}>
+				<StatGrid columns={3}>
+					{aiStatCards.map((stat) => (
+						<StatCard
+							key={stat.title}
+							title={stat.title}
+							value={stat.value}
+							subtitle={stat.subtitle}
+							icon={stat.icon}
+							trend={stat.trend}
+							className="rounded-card border-0 bg-secondary p-4 md:p-5"
+						/>
+					))}
+				</StatGrid>
 
-			<StatGrid columns={3}>
-				{aiStatCards.map((stat) => (
-					<StatCard
-						key={stat.title}
-						title={stat.title}
-						value={stat.value}
-						subtitle={stat.subtitle}
-						icon={stat.icon}
-						trend={stat.trend}
-						className="rounded-card border-0 bg-secondary p-4 md:p-5"
-					/>
-				))}
-			</StatGrid>
-
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
-						<ShieldCheck className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.health.aiReadinessTrend")}</p>
+				<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+					<div className="rounded-card bg-secondary p-4 md:p-5">
+						<div className="mb-4 flex items-center gap-2">
+							<ShieldCheck className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+							<p className="text-sm text-muted-foreground">{t("pages.health.aiReadinessTrend")}</p>
+						</div>
+						<LineChartWidget
+							data={readinessTrend}
+							height={200}
+							color={chart.primary}
+							valueFormatter={formatPercent}
+						/>
 					</div>
-					<LineChartWidget
-						data={readinessTrend}
-						height={200}
-						color={chart.primary}
-						valueFormatter={formatPercent}
-					/>
-				</div>
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
-						<Zap className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">
-							{t("pages.health.recommendationImpact")}
-						</p>
-					</div>
-					<BarChartWidget data={recommendationImpact} height={200} color={chart.teal} />
-				</div>
-			</div>
-
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
-						<MessageSquare className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.health.promptStudio")}</p>
-					</div>
-					<InputArea
-						rows={5}
-						placeholder={t("pages.health.promptPlaceholder")}
-						aria-label={t("pages.health.promptStudio")}
-					/>
-					<div className="mt-3 flex flex-wrap gap-2">
-						{[
-							t("pages.health.summarizeWeek"),
-							t("pages.health.improveSleep"),
-							t("pages.health.boostFocus"),
-							t("pages.health.planRecovery"),
-						].map((chip) => (
-							<button
-								type="button"
-								key={chip}
-								className="rounded-full bg-card px-3 py-1 text-xs text-muted-foreground"
-							>
-								{chip}
-							</button>
-						))}
-					</div>
-					<Button className="mt-4 w-full">{t("pages.health.generateInsight")}</Button>
-				</div>
-
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
-						<CheckCircle2 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.health.recommendedActions")}</p>
-					</div>
-					<div className="space-y-3">
-						{recommendations.map((item) => (
-							<div key={item.title} className="rounded-widget border border-border bg-card p-3">
-								<p className="text-sm text-foreground">{item.title}</p>
-								<span className="text-xs text-muted-foreground">{item.status}</span>
-							</div>
-						))}
+					<div className="rounded-card bg-secondary p-4 md:p-5">
+						<div className="mb-4 flex items-center gap-2">
+							<Zap className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+							<p className="text-sm text-muted-foreground">
+								{t("pages.health.recommendationImpact")}
+							</p>
+						</div>
+						<BarChartWidget data={recommendationImpact} height={200} color={chart.teal} />
 					</div>
 				</div>
 
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
-						<Brain className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.health.insightTimeline")}</p>
+				<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+					<div className="rounded-card bg-secondary p-4 md:p-5">
+						<div className="mb-4 flex items-center gap-2">
+							<MessageSquare className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+							<p className="text-sm text-muted-foreground">{t("pages.health.promptStudio")}</p>
+						</div>
+						<InputArea
+							rows={5}
+							placeholder={t("pages.health.promptPlaceholder")}
+							aria-label={t("pages.health.promptStudio")}
+						/>
+						<div className="mt-3 flex flex-wrap gap-2">
+							{[
+								t("pages.health.summarizeWeek"),
+								t("pages.health.improveSleep"),
+								t("pages.health.boostFocus"),
+								t("pages.health.planRecovery"),
+							].map((chip) => (
+								<button
+									type="button"
+									key={chip}
+									className="rounded-full bg-card px-3 py-1 text-xs text-muted-foreground"
+								>
+									{chip}
+								</button>
+							))}
+						</div>
+						<Button className="mt-4 w-full">{t("pages.health.generateInsight")}</Button>
 					</div>
-					<Timeline events={insightTimeline} />
+
+					<div className="rounded-card bg-secondary p-4 md:p-5">
+						<div className="mb-4 flex items-center gap-2">
+							<CheckCircle2 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+							<p className="text-sm text-muted-foreground">
+								{t("pages.health.recommendedActions")}
+							</p>
+						</div>
+						<div className="space-y-3">
+							{recommendations.map((item) => (
+								<div key={item.title} className="rounded-widget border border-border bg-card p-3">
+									<p className="text-sm text-foreground">{item.title}</p>
+									<span className="text-xs text-muted-foreground">{item.status}</span>
+								</div>
+							))}
+						</div>
+					</div>
+
+					<div className="rounded-card bg-secondary p-4 md:p-5">
+						<div className="mb-4 flex items-center gap-2">
+							<Brain className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
+							<p className="text-sm text-muted-foreground">{t("pages.health.insightTimeline")}</p>
+						</div>
+						<Timeline events={insightTimeline} />
+					</div>
 				</div>
-			</div>
+			</SectionRule>
 		</div>
 	);
 }

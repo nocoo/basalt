@@ -28,7 +28,9 @@ import {
 import { Input } from "@nocoo/basalt/components/input";
 import { Label } from "@nocoo/basalt/components/label";
 import { Meter } from "@nocoo/basalt/components/meter";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { Popover, PopoverContent, PopoverTrigger } from "@nocoo/basalt/components/popover";
+import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Separator } from "@nocoo/basalt/components/separator";
 import {
 	Sheet,
@@ -44,7 +46,6 @@ import { Switch } from "@nocoo/basalt/components/switch";
 import { toast } from "@nocoo/basalt/components/toast";
 import {
 	AlertTriangle,
-	Bell,
 	Check,
 	CheckCircle2,
 	ChevronDown,
@@ -53,8 +54,6 @@ import {
 	Inbox,
 	Info,
 	Loader2,
-	MessageSquare,
-	MousePointerClick,
 	PanelBottom,
 	PanelLeft,
 	PanelRight,
@@ -66,27 +65,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { PageIntro } from "@/components/PageIntro";
-
-function Section({
-	title,
-	icon: Icon,
-	children,
-}: {
-	title: string;
-	icon: React.ElementType;
-	children: React.ReactNode;
-}) {
-	return (
-		<div className="rounded-card bg-secondary p-4 md:p-5">
-			<div className="flex items-center gap-2 mb-4">
-				<Icon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-				<p className="text-sm text-muted-foreground">{title}</p>
-			</div>
-			{children}
-		</div>
-	);
-}
 
 const ALERT_STYLES = {
 	info: {
@@ -219,15 +197,13 @@ export default function InteractivePage() {
 	];
 
 	return (
-		<div className="space-y-4">
-			<PageIntro
+		<div className="space-y-8">
+			<PageHeader
 				title={t("pages.interactive.title")}
 				description={t("pages.interactive.description")}
-				eyebrow={t("pages.interactive.eyebrow")}
-				icon={MousePointerClick}
 			/>
 
-			<Section title={t("pages.interactive.buttonVariants")} icon={MousePointerClick}>
+			<SectionRule title={t("pages.interactive.buttonVariants")}>
 				<div className="flex flex-wrap items-center gap-3">
 					<Button variant="default">{t("pages.interactive.default")}</Button>
 					<Button variant="secondary">{t("pages.interactive.secondary")}</Button>
@@ -236,9 +212,9 @@ export default function InteractivePage() {
 					<Button variant="ghost">{t("pages.interactive.ghost")}</Button>
 					<Button variant="link">{t("pages.interactive.link")}</Button>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.interactive.buttonSizes")} icon={MousePointerClick}>
+			<SectionRule title={t("pages.interactive.buttonSizes")}>
 				<div className="flex flex-wrap items-end gap-3">
 					<Button size="sm">{t("pages.interactive.small")}</Button>
 					<Button size="default">{t("pages.interactive.default")}</Button>
@@ -247,9 +223,9 @@ export default function InteractivePage() {
 						<Plus className="h-4 w-4" />
 					</Button>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.interactive.buttonStates")} icon={MousePointerClick}>
+			<SectionRule title={t("pages.interactive.buttonStates")}>
 				<div className="space-y-4">
 					<div className="flex flex-wrap items-center gap-3">
 						<Button disabled>{t("pages.interactive.disabled")}</Button>
@@ -257,9 +233,9 @@ export default function InteractivePage() {
 						<CopyButton />
 					</div>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.interactive.toastNotifications")} icon={Bell}>
+			<SectionRule title={t("pages.interactive.toastNotifications")}>
 				<div className="flex flex-wrap gap-3">
 					<Button size="sm" onClick={() => toast.success(t("pages.interactive.toastSuccess"))}>
 						<CheckCircle2 className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.success")}
@@ -286,9 +262,9 @@ export default function InteractivePage() {
 						<Info className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.info")}
 					</Button>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.interactive.inlineAlerts")} icon={AlertTriangle}>
+			<SectionRule title={t("pages.interactive.inlineAlerts")}>
 				<div className="space-y-3">
 					{alertData.map((alert) => (
 						<InlineAlert
@@ -299,17 +275,17 @@ export default function InteractivePage() {
 						/>
 					))}
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.interactive.skeletonLoaders")} icon={Loader2}>
+			<SectionRule title={t("pages.interactive.skeletonLoaders")}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 					<SkeletonCard />
 					<SkeletonCard />
 					<SkeletonCard />
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.interactive.progressIndicators")} icon={Loader2}>
+			<SectionRule title={t("pages.interactive.progressIndicators")}>
 				<div className="space-y-4 max-w-md">
 					<div className="space-y-1">
 						<div className="flex justify-between text-xs text-muted-foreground">
@@ -333,9 +309,9 @@ export default function InteractivePage() {
 						</div>
 					</div>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.interactive.emptyStates")} icon={Inbox}>
+			<SectionRule title={t("pages.interactive.emptyStates")}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
 					<div className="rounded-widget border border-border bg-card p-8 flex flex-col items-center text-center">
 						<Inbox className="h-10 w-10 text-muted-foreground/50 mb-3" strokeWidth={1} />
@@ -372,9 +348,9 @@ export default function InteractivePage() {
 						</Button>
 					</div>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.interactive.sheetDrawer")} icon={PanelRight}>
+			<SectionRule title={t("pages.interactive.sheetDrawer")}>
 				<div className="flex flex-wrap gap-3">
 					<Sheet>
 						<SheetTrigger asChild>
@@ -444,9 +420,9 @@ export default function InteractivePage() {
 						</SheetContent>
 					</Sheet>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.interactive.dialogs")} icon={MessageSquare}>
+			<SectionRule title={t("pages.interactive.dialogs")}>
 				<div className="flex flex-wrap gap-3">
 					<Dialog>
 						<DialogTrigger asChild>
@@ -494,9 +470,9 @@ export default function InteractivePage() {
 						</AlertDialogContent>
 					</AlertDialog>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.interactive.popovers")} icon={Filter}>
+			<SectionRule title={t("pages.interactive.popovers")}>
 				<div className="flex flex-wrap gap-3">
 					<Popover>
 						<PopoverTrigger asChild>
@@ -554,9 +530,9 @@ export default function InteractivePage() {
 						</PopoverContent>
 					</Popover>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.interactive.collapsibleSections")} icon={ChevronDown}>
+			<SectionRule title={t("pages.interactive.collapsibleSections")}>
 				<div className="space-y-3">
 					<Collapsible open={collapsible1} onOpenChange={setCollapsible1}>
 						<div className="rounded-widget border border-border bg-card">
@@ -618,7 +594,7 @@ export default function InteractivePage() {
 						</div>
 					</Collapsible>
 				</div>
-			</Section>
+			</SectionRule>
 		</div>
 	);
 }

@@ -3,12 +3,13 @@ import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatma
 import { SlotBarChart } from "@nocoo/basalt/charts/slot-bar";
 import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { Timeline } from "@nocoo/basalt/charts/timeline";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
+import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Activity, Clock, Flame, Footprints, Heart, Moon, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { BarChartWidget } from "@/components/dashboard/BarChartWidget";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
-import { PageIntro } from "@/components/PageIntro";
 import { formatPercent } from "@/lib/format";
 import { chart } from "@/lib/palette";
 
@@ -129,20 +130,12 @@ export default function WearableDashboardPage() {
 	];
 
 	return (
-		<div className="space-y-4">
-			<PageIntro
-				title={t("pages.wearable.title")}
-				description={t("pages.wearable.description")}
-				eyebrow={t("pages.wearable.eyebrow")}
-				icon={Activity}
-			/>
+		<div className="space-y-8">
+			<PageHeader title={t("pages.wearable.title")} description={t("pages.wearable.description")} />
 
-			<div className="rounded-card bg-secondary p-4 md:p-5">
-				<div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-					<div className="flex items-center gap-2">
-						<Sparkles className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.wearable.todaySummary")}</p>
-					</div>
+			<SectionRule
+				title={t("pages.wearable.todaySummary")}
+				actions={
 					<DateNavigation
 						selectedDate={new Date(2026, 1, 13)}
 						onPrevDay={() => {}}
@@ -153,8 +146,8 @@ export default function WearableDashboardPage() {
 						nextDayLabel={t("common.nextDay")}
 						locale={i18n.language}
 					/>
-				</div>
-			</div>
+				}
+			/>
 
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (

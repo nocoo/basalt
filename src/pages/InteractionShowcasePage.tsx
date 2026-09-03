@@ -9,17 +9,10 @@ import {
 } from "@nocoo/basalt/components/dialog";
 import { Input } from "@nocoo/basalt/components/input";
 import { Label } from "@nocoo/basalt/components/label";
+import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Separator } from "@nocoo/basalt/components/separator";
 import { toast } from "@nocoo/basalt/components/toast";
-import {
-	AlertTriangle,
-	Bell,
-	CheckCircle2,
-	Info,
-	Layers,
-	MessageSquare,
-	XCircle,
-} from "lucide-react";
+import { AlertTriangle, Bell, CheckCircle2, Info, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import type { ToastVariant } from "@/models/types";
@@ -44,26 +37,6 @@ const VARIANT_STYLE: Record<ToastVariant, string> = {
 };
 
 // ── Section wrapper (matches PalettePage pattern) ──
-
-function Section({
-	title,
-	icon: Icon,
-	children,
-}: {
-	title: string;
-	icon: React.ElementType;
-	children: React.ReactNode;
-}) {
-	return (
-		<div className="rounded-card bg-secondary p-4 md:p-5">
-			<div className="flex items-center gap-2 mb-4">
-				<Icon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-				<p className="text-sm text-muted-foreground">{title}</p>
-			</div>
-			{children}
-		</div>
-	);
-}
 
 // ── Toast section ──
 
@@ -91,7 +64,7 @@ function ToastSection() {
 	};
 
 	return (
-		<Section title={t("pages.interactionShowcase.toastNotifications")} icon={Bell}>
+		<SectionRule title={t("pages.interactionShowcase.toastNotifications")}>
 			<p className="text-xs text-muted-foreground mb-4">
 				{t("pages.interactionShowcase.toastDesc")}
 			</p>
@@ -118,7 +91,7 @@ function ToastSection() {
 					);
 				})}
 			</div>
-		</Section>
+		</SectionRule>
 	);
 }
 
@@ -132,7 +105,7 @@ function DialogSection() {
 	const current = activeDialog ? getDialogById(activeDialog) : undefined;
 
 	return (
-		<Section title={t("pages.interactionShowcase.dialogs")} icon={MessageSquare}>
+		<SectionRule title={t("pages.interactionShowcase.dialogs")}>
 			<p className="text-xs text-muted-foreground mb-4">
 				{t("pages.interactionShowcase.dialogDesc")}
 			</p>
@@ -222,7 +195,7 @@ function DialogSection() {
 					</DialogContent>
 				)}
 			</Dialog>
-		</Section>
+		</SectionRule>
 	);
 }
 
@@ -304,20 +277,16 @@ export default function InteractionShowcasePage() {
 	const { t } = useTranslation();
 
 	return (
-		<>
-			<Section title={t("pages.interactionShowcase.overview")} icon={Layers}>
+		<div className="space-y-8">
+			<SectionRule title={t("pages.interactionShowcase.overview")}>
 				<p className="text-sm text-muted-foreground">
 					{t("pages.interactionShowcase.overviewDesc")}
 				</p>
-			</Section>
+			</SectionRule>
 
-			<div className="mt-4">
-				<ToastSection />
-			</div>
+			<ToastSection />
 
-			<div className="mt-4">
-				<DialogSection />
-			</div>
-		</>
+			<DialogSection />
+		</div>
 	);
 }

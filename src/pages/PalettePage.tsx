@@ -2,8 +2,8 @@ import { AreaChart } from "@nocoo/basalt/charts/area";
 import { DonutChart } from "@nocoo/basalt/charts/donut";
 import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { LineChart } from "@nocoo/basalt/charts/line";
+import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { useAccent } from "@nocoo/basalt/providers/accent";
-import { Activity, BarChart3, LineChart as LineChartIcon, Palette, Target } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatPercent, formatUsd } from "@/lib/format";
 import { CHART_COLORS } from "@/lib/palette";
@@ -119,71 +119,46 @@ function Swatch({
 	);
 }
 
-function Section({
-	title,
-	icon: Icon,
-	children,
-}: {
-	title: string;
-	icon?: React.ElementType;
-	children: React.ReactNode;
-}) {
-	return (
-		<div className="rounded-card bg-secondary p-4 md:p-5">
-			<div className="flex items-center gap-2 mb-4">
-				{Icon && <Icon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />}
-				<p className="text-sm text-muted-foreground">{title}</p>
-			</div>
-			{children}
-		</div>
-	);
-}
-
 export default function PalettePage() {
 	const { t } = useTranslation();
 	const { accent, setAccent, swatches } = useAccent();
 
 	return (
-		<>
-			{/* Base Colors */}
-			<Section title={t("pages.palette.baseColors")} icon={Palette}>
+		<div className="space-y-8">
+			<SectionRule title={t("pages.palette.baseColors")}>
 				<div className="flex flex-wrap gap-5">
 					{baseColors.map((c) => (
 						<Swatch key={c.token} token={c.token} label={c.label} subtitle={c.tier || undefined} />
 					))}
 				</div>
-			</Section>
+			</SectionRule>
 
-			{/* Chart Palette */}
-			<div className="mt-4">
-				<Section title={t("pages.palette.themePalette")} icon={Palette}>
-					<div className="grid grid-cols-6 gap-4 sm:grid-cols-8 lg:grid-cols-12">
-						{swatches.map((c) => (
-							<Swatch
-								key={c.id}
-								token={c.token}
-								label={c.label}
-								subtitle={THEME_SEMANTICS[c.id]}
-								selected={c.id === accent}
-								onSelect={() => setAccent(c.id)}
-							/>
+			<SectionRule title={t("pages.palette.themePalette")}>
+				<div className="grid grid-cols-6 gap-4 sm:grid-cols-8 lg:grid-cols-12">
+					{swatches.map((c) => (
+						<Swatch
+							key={c.id}
+							token={c.token}
+							label={c.label}
+							subtitle={THEME_SEMANTICS[c.id]}
+							selected={c.id === accent}
+							onSelect={() => setAccent(c.id)}
+						/>
+					))}
+				</div>
+				<div className="mt-5 pt-4 border-t border-border">
+					<p className="text-xs text-muted-foreground mb-3">{t("pages.palette.utilityTokens")}</p>
+					<div className="flex flex-wrap gap-5">
+						{utilityColors.map((c) => (
+							<Swatch key={c.token} token={c.token} label={c.label} />
 						))}
 					</div>
-					<div className="mt-5 pt-4 border-t border-border">
-						<p className="text-xs text-muted-foreground mb-3">{t("pages.palette.utilityTokens")}</p>
-						<div className="flex flex-wrap gap-5">
-							{utilityColors.map((c) => (
-								<Swatch key={c.token} token={c.token} label={c.label} />
-							))}
-						</div>
-					</div>
-				</Section>
-			</div>
+				</div>
+			</SectionRule>
 
-			{/* Chart Examples */}
-			<div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-2">
+			<div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
 				{/* Line Chart */}
-				<Section title={t("pages.palette.lineChart")} icon={LineChartIcon}>
+				<SectionRule title={t("pages.palette.lineChart")}>
 					<LineChart
 						data={lineData.map((row) => ({ x: row.name, y: row.a, y2: row.b, y3: row.c }))}
 						series={[
@@ -196,10 +171,10 @@ export default function PalettePage() {
 						showAxes
 						showLegend
 					/>
-				</Section>
+				</SectionRule>
 
 				{/* Donut Chart */}
-				<Section title={t("pages.palette.donutChart")} icon={Target}>
+				<SectionRule title={t("pages.palette.donutChart")}>
 					<div className="flex flex-col items-center">
 						<DonutChart
 							data={pieData}
@@ -221,10 +196,10 @@ export default function PalettePage() {
 							))}
 						</div>
 					</div>
-				</Section>
+				</SectionRule>
 
 				{/* Bar Chart */}
-				<Section title={t("pages.palette.groupedBarChart")} icon={BarChart3}>
+				<SectionRule title={t("pages.palette.groupedBarChart")}>
 					<GroupedBarChart
 						data={barData.map((row) => ({ x: row.name, y: row.income, y2: row.expense }))}
 						series={[
@@ -237,10 +212,10 @@ export default function PalettePage() {
 						showLegend
 						valueFormatter={formatUsd}
 					/>
-				</Section>
+				</SectionRule>
 
 				{/* Area Chart */}
-				<Section title={t("pages.palette.areaChart")} icon={Activity}>
+				<SectionRule title={t("pages.palette.areaChart")}>
 					<AreaChart
 						data={areaData.map((row) => ({ x: row.name, y: row.inflow, y2: row.outflow }))}
 						series={[
@@ -253,8 +228,8 @@ export default function PalettePage() {
 						showLegend
 						valueFormatter={formatUsd}
 					/>
-				</Section>
+				</SectionRule>
 			</div>
-		</>
+		</div>
 	);
 }

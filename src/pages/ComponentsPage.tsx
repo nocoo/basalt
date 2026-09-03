@@ -1,17 +1,7 @@
 import { Button } from "@nocoo/basalt/components/button";
-import {
-	Activity,
-	BarChart3,
-	Car,
-	Check,
-	Home,
-	ListChecks,
-	Plane,
-	RectangleEllipsis,
-	Shield,
-	Sparkles,
-	Target,
-} from "lucide-react";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
+import { SectionRule } from "@nocoo/basalt/components/section-rule";
+import { Car, Check, Home, Plane, Shield } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { ActionGridCard } from "@/components/dashboard/ActionGridCard";
 import { AreaChartCard } from "@/components/dashboard/AreaChartCard";
@@ -35,7 +25,6 @@ import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
 import { StackedBarCard } from "@/components/dashboard/StackedBarCard";
 import { SummaryMetricCard } from "@/components/dashboard/SummaryMetricCard";
 import { TrendLineCard } from "@/components/dashboard/TrendLineCard";
-import { PageIntro } from "@/components/PageIntro";
 import { useTargetCardsViewModel } from "@/viewmodels/useTargetCardsViewModel";
 
 const GOAL_ICONS: Record<string, React.ElementType> = {
@@ -45,48 +34,26 @@ const GOAL_ICONS: Record<string, React.ElementType> = {
 	home: Home,
 };
 
-function Section({
-	title,
-	icon: Icon,
-	children,
-}: {
-	title: string;
-	icon: React.ElementType;
-	children: React.ReactNode;
-}) {
-	return (
-		<div>
-			<div className="flex items-center gap-2 mb-4">
-				<Icon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-				<p className="text-sm text-muted-foreground">{title}</p>
-			</div>
-			{children}
-		</div>
-	);
-}
-
 export default function ComponentsPage() {
 	const { goals } = useTargetCardsViewModel();
 	const { t } = useTranslation();
 
 	return (
-		<div className="space-y-4">
-			<PageIntro
+		<div className="space-y-8">
+			<PageHeader
 				title={t("pages.components.title")}
 				description={t("pages.components.description")}
-				eyebrow={t("pages.components.eyebrow")}
-				icon={RectangleEllipsis}
 			/>
-			<Section title={t("pages.components.metricCards")} icon={Sparkles}>
+			<SectionRule title={t("pages.components.metricCards")}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
 					<SummaryMetricCard />
 					<SecondaryMetricCard />
 					<GaugeCard />
 					<RadialProgressCard />
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.components.charts")} icon={BarChart3}>
+			<SectionRule title={t("pages.components.charts")}>
 				<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
 					<BarChartCard />
 					<AreaChartCard />
@@ -103,23 +70,23 @@ export default function ComponentsPage() {
 					<SankeyCard />
 					<FunnelChartCard />
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.components.heatmaps")} icon={BarChart3}>
+			<SectionRule title={t("pages.components.heatmaps")}>
 				<div className="grid grid-cols-1 gap-4">
 					<HeatmapCard />
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.components.listsActions")} icon={ListChecks}>
+			<SectionRule title={t("pages.components.listsActions")}>
 				<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
 					<ActionGridCard />
 					<ItemListCard />
 					<RecentListCard />
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.components.highlights")} icon={Activity}>
+			<SectionRule title={t("pages.components.highlights")}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<div className="rounded-card bg-secondary p-4">
 						<p className="text-sm font-medium text-foreground">
@@ -142,9 +109,9 @@ export default function ComponentsPage() {
 						</Button>
 					</div>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.components.targets")} icon={Target}>
+			<SectionRule title={t("pages.components.targets")}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					{goals.map((goal) => {
 						const Icon = GOAL_ICONS[goal.icon] ?? Shield;
@@ -191,7 +158,7 @@ export default function ComponentsPage() {
 						);
 					})}
 				</div>
-			</Section>
+			</SectionRule>
 		</div>
 	);
 }

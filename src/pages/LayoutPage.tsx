@@ -3,43 +3,10 @@ import { DescriptionList } from "@nocoo/basalt/components/description-list";
 import { Grid } from "@nocoo/basalt/components/grid";
 import { Input } from "@nocoo/basalt/components/input";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import {
-	AlignHorizontalDistributeCenter,
-	Columns3,
-	Grid3X3,
-	Layers,
-	LayoutGrid,
-	ListChecks,
-	Maximize2,
-	Rows3,
-	SlidersHorizontal,
-} from "lucide-react";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
+import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { useTranslation } from "react-i18next";
-import { PageIntro } from "@/components/PageIntro";
 import { cn } from "@/lib/utils";
-
-function Section({
-	title,
-	icon: Icon,
-	hint,
-	children,
-}: {
-	title: string;
-	icon: React.ElementType;
-	hint?: string;
-	children: React.ReactNode;
-}) {
-	return (
-		<div className="space-y-3">
-			<div className="flex items-center gap-2">
-				<Icon className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-				<p className="text-sm text-muted-foreground">{title}</p>
-			</div>
-			{hint ? <p className="text-xs text-muted-foreground">{hint}</p> : null}
-			{children}
-		</div>
-	);
-}
 
 function Tile({ label, className = "" }: { label: string; className?: string }) {
 	return (
@@ -58,15 +25,10 @@ export default function LayoutPage() {
 	const { t } = useTranslation();
 
 	return (
-		<div className="space-y-4">
-			<PageIntro
-				title={t("pages.layout.title")}
-				description={t("pages.layout.description")}
-				eyebrow={t("pages.layout.eyebrow")}
-				icon={LayoutGrid}
-			/>
+		<div className="space-y-8">
+			<PageHeader title={t("pages.layout.title")} description={t("pages.layout.description")} />
 
-			<Section title={t("pages.layout.stack")} icon={Layers} hint={t("pages.layout.stackDesc")}>
+			<SectionRule title={t("pages.layout.stack")} hint={t("pages.layout.stackDesc")}>
 				<LayerCard padding="none">
 					<LayerCard.Header>{t("pages.layout.l2Card")}</LayerCard.Header>
 					<LayerCard.Well className="space-y-3">
@@ -76,9 +38,9 @@ export default function LayoutPage() {
 						</LayerCard>
 					</LayerCard.Well>
 				</LayerCard>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.layout.bodyVsWell")} icon={Rows3}>
+			<SectionRule title={t("pages.layout.bodyVsWell")}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
 					<LayerCard padding="none">
 						<LayerCard.Header>{t("pages.layout.bodyTitle")}</LayerCard.Header>
@@ -109,13 +71,9 @@ export default function LayoutPage() {
 						</LayerCard.Well>
 					</LayerCard>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section
-				title={t("pages.layout.controls")}
-				icon={SlidersHorizontal}
-				hint={t("pages.layout.controlsDesc")}
-			>
+			<SectionRule title={t("pages.layout.controls")} hint={t("pages.layout.controlsDesc")}>
 				<LayerCard padding="none">
 					<LayerCard.Header>{t("pages.layout.onL2")}</LayerCard.Header>
 					<LayerCard.Body className="flex flex-wrap items-center gap-3">
@@ -127,9 +85,9 @@ export default function LayoutPage() {
 						<Button variant="outline">{t("common.cancel")}</Button>
 					</LayerCard.Well>
 				</LayerCard>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.layout.rules")} icon={ListChecks}>
+			<SectionRule title={t("pages.layout.rules")}>
 				<LayerCard>
 					<DescriptionList>
 						<DescriptionList.Item term={t("pages.layout.ruleRoot")}>
@@ -149,9 +107,9 @@ export default function LayoutPage() {
 						</DescriptionList.Item>
 					</DescriptionList>
 				</LayerCard>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.layout.equalColumns")} icon={Grid3X3}>
+			<SectionRule title={t("pages.layout.equalColumns")}>
 				<div className="space-y-4">
 					<Grid columns={2} className="gap-4">
 						<Tile label="1/2" />
@@ -169,9 +127,9 @@ export default function LayoutPage() {
 						<Tile label="1/4" />
 					</Grid>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.layout.asymmetricColumns")} icon={Columns3}>
+			<SectionRule title={t("pages.layout.asymmetricColumns")}>
 				<div className="space-y-4">
 					<div className="grid grid-cols-3 gap-4">
 						<Tile label="1/3" />
@@ -186,11 +144,10 @@ export default function LayoutPage() {
 						<Tile label="7 cols" className="col-span-7" />
 					</div>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section
+			<SectionRule
 				title={t("pages.layout.responsiveBreakpoints")}
-				icon={Maximize2}
 				hint={t("pages.layout.responsiveDesc")}
 			>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -199,18 +156,18 @@ export default function LayoutPage() {
 					<Tile label="C" />
 					<Tile label="D" />
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.layout.spanningRowsCols")} icon={Rows3}>
+			<SectionRule title={t("pages.layout.spanningRowsCols")}>
 				<div className="grid grid-cols-3 grid-rows-2 gap-4">
 					<Tile label={t("pages.layout.span2Rows")} className="row-span-2 min-h-[160px]" />
 					<Tile label="1x1" />
 					<Tile label="1x1" />
 					<Tile label={t("pages.layout.span2Cols")} className="col-span-2" />
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.layout.dashboardComposition")} icon={LayoutGrid}>
+			<SectionRule title={t("pages.layout.dashboardComposition")}>
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
 					<LayerCard className="lg:col-span-2 min-h-[120px]">
 						<p className="text-xs font-medium text-foreground mb-1">{t("pages.layout.wideCard")}</p>
@@ -237,9 +194,9 @@ export default function LayoutPage() {
 						<p className="text-xs text-muted-foreground">{t("pages.layout.sidebarDesc")}</p>
 					</LayerCard>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section title={t("pages.layout.flexboxPatterns")} icon={AlignHorizontalDistributeCenter}>
+			<SectionRule title={t("pages.layout.flexboxPatterns")}>
 				<div className="space-y-4">
 					<div>
 						<p className="text-xs text-muted-foreground mb-2 font-mono">justify-center</p>
@@ -273,13 +230,9 @@ export default function LayoutPage() {
 						</div>
 					</div>
 				</div>
-			</Section>
+			</SectionRule>
 
-			<Section
-				title={t("pages.layout.autoFitGrid")}
-				icon={Grid3X3}
-				hint={t("pages.layout.autoFitDesc")}
-			>
+			<SectionRule title={t("pages.layout.autoFitGrid")} hint={t("pages.layout.autoFitDesc")}>
 				<div
 					className="grid gap-4"
 					style={{ gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}
@@ -293,7 +246,7 @@ export default function LayoutPage() {
 						</LayerCard>
 					))}
 				</div>
-			</Section>
+			</SectionRule>
 		</div>
 	);
 }
