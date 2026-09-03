@@ -15,7 +15,21 @@ describe("DescriptionList", () => {
 		expect(screen.getByText("Status").tagName).toBe("DT");
 		expect(screen.getByText("Active").tagName).toBe("DD");
 		expect(screen.getByText("Active").className).not.toContain("font-medium");
+		expect(screen.getByText("Active").className).not.toContain("truncate");
 		expect(list?.className).not.toContain("bg-basalt-card");
+	});
+
+	it("keeps long values readable", () => {
+		const value = "https://example.com/organizations/northwind/projects/basalt/settings/billing";
+		render(
+			<DescriptionList>
+				<DescriptionList.Item term="Endpoint">{value}</DescriptionList.Item>
+			</DescriptionList>,
+		);
+		const node = screen.getByText(value);
+		expect(node.tagName).toBe("DD");
+		expect(node.className).not.toContain("truncate");
+		expect(node.className).toContain("wrap-break-word");
 	});
 
 	it("can render a single column", () => {

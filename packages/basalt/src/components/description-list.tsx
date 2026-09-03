@@ -38,7 +38,7 @@ function DescriptionListItem({ term, className, children, ...props }: Descriptio
 	return (
 		<div className={cn("min-w-0", className)} {...props}>
 			<dt className="text-xs text-basalt-muted-foreground">{term}</dt>
-			<dd className="mt-0.5 truncate text-basalt-foreground">{children}</dd>
+			<dd className="mt-0.5 wrap-break-word text-basalt-foreground">{children}</dd>
 		</div>
 	);
 }
