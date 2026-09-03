@@ -79,7 +79,8 @@ describe("charts catalog content family", () => {
 			"ariaLabel",
 			"className",
 		]);
-		expect(charts.timeline?.docs.usage).toContain('id: "created"');
+		expect(charts.timeline?.docs.usage).toContain("events=");
+		expect(charts["heatmap-calendar"]?.docs.usage).toContain("year={2026}");
 		expect(charts.sankey?.docs.usage).toContain("nodes:");
 	});
 });

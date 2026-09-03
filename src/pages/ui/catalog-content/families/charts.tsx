@@ -155,12 +155,7 @@ export default catalogContentFamily({
 	},
 	"slot-bar": {
 		docs: {
-			...extraDocs(
-				"SlotBarChart",
-				"slot-bar",
-				"Slot bar.",
-				"<SlotBarChart data={[{ x: 'Mon', y: 12 }]} />",
-			),
+			...extraDocs("SlotBarChart", "slot-bar", "Slot bar.", "<SlotBarChart items={hourSlots} />"),
 			api: slotBarApi,
 		},
 		examples: SLOT_BAR_EXAMPLES,
@@ -195,7 +190,19 @@ export default catalogContentFamily({
 				"HeatmapCalendar",
 				"heatmap-calendar",
 				"Calendar heatmap.",
-				"<HeatmapCalendar values={[1, 2, 3]} />",
+				"<HeatmapCalendar data={yearData} year={2026} />",
+				`import { HeatmapCalendar } from "@nocoo/basalt/charts/heatmap-calendar";
+
+const yearData = Array.from({ length: 365 }, (_, day) => {
+	const date = new Date(2026, 0, 1 + day);
+	const month = String(date.getMonth() + 1).padStart(2, "0");
+	const dateNum = String(date.getDate()).padStart(2, "0");
+	return { date: \`2026-\${month}-\${dateNum}\`, value: (day % 12) + 1 };
+});
+
+export default function Example() {
+	return <HeatmapCalendar data={yearData} year={2026} />;
+}`,
 			),
 			api: heatmapCalendarApi,
 		},
@@ -243,7 +250,7 @@ export default catalogContentFamily({
 				"Timeline",
 				"timeline",
 				"Timeline.",
-				'<Timeline items={[{ id: "created", title: "Created", at: "Mon" }]} />',
+				'<Timeline events={[{ id: "wake", time: "06:30", title: "Wake up" }]} />',
 			),
 			api: timelineApi,
 		},

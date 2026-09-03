@@ -244,7 +244,7 @@ describe("ui catalog", () => {
 		expect(CATALOG_DOCS["data-table"]?.usage).toContain('name: "Atlas"');
 		expect(CATALOG_DOCS["data-table"]?.usage).not.toContain("data={rows}");
 		expect(CATALOG_DOCS.radar?.usage).toContain("subject:");
-		expect(CATALOG_DOCS.timeline?.usage).toContain("Created");
+		expect(CATALOG_DOCS.timeline?.usage).toContain("events=");
 		expect(CATALOG_DOCS.sankey?.usage).toContain("nodes:");
 	});
 
