@@ -1,5 +1,38 @@
 # Changelog
 
+## [2.0.2] - 2026-09-03
+
+### Added
+- Add section-rule page chrome
+- Enrich chart catalog mock data
+- Teach nested surfaces on layout
+- Restyle data page nested surfaces
+- Add description list component
+- Nest layercard surfaces with well
+- Add nested surface css engine
+
+### Changed
+- Spell out mvp chrome setup
+- Document page chrome in integration
+- Reuse page chrome sitewide
+- Document nested surface recipe
+- Amend luminance contract for l3 wells
+- Add changelog and npm ignore-scripts
+- Stop hardcoding version in 01
+- Stop pointing release at unverified tags
+- Sync 01 version with package.json
+- Add claude agent handbook
+- Add Retrospective.md for accident routing
+
+### Fixed
+- Collapse catalog index filters
+- Flatten content page headers
+- Wrap description list values
+- Paint settings controls from surface
+- Parse empty jsx attrs in standalone css
+- Paint alert dialog as surface root
+- Paint tables and controls from surface
+
 ## [2.0.1] - 2026-09-03
 
 ### Added
