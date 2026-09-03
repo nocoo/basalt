@@ -160,6 +160,7 @@ const NAV_GROUPS: NavGroup[] = [
 			{ titleKey: "nav.flowComparison", icon: TrendingUp, path: "/flow-comparison" },
 			{ titleKey: "nav.portfolio", icon: LineChart, path: "/portfolio" },
 			{ titleKey: "nav.interactions", icon: Layers, path: "/interactions", badge: 3 },
+			{ titleKey: "nav.settings", icon: Settings, path: "/settings" },
 		],
 	},
 	{
@@ -191,18 +192,13 @@ const NAV_GROUPS: NavGroup[] = [
 			{ titleKey: "nav.notFoundPage", icon: FileQuestion, path: "/404", external: true },
 		],
 	},
-	{
-		labelKey: "nav.system",
-		defaultOpen: true,
-		items: [
-			{ titleKey: "nav.layout", icon: LayoutGrid, path: "/layout" },
-			{ titleKey: "nav.colorPalette", icon: Palette, path: "/palette" },
-			{ titleKey: "nav.settings", icon: Settings, path: "/settings" },
-		],
-	},
 ];
 
-const LIBRARY_HOME: NavItem = { titleKey: "nav.kitIndex", icon: BookOpen, path: "/ui" };
+const LIBRARY_LEAD: NavItem[] = [
+	{ titleKey: "nav.kitIndex", icon: BookOpen, path: "/ui" },
+	{ titleKey: "nav.layout", icon: LayoutGrid, path: "/layout" },
+	{ titleKey: "nav.colorPalette", icon: Palette, path: "/palette" },
+];
 
 const CATALOG_ICONS: Record<string, React.ElementType> = {
 	button: RectangleEllipsis,
@@ -315,7 +311,7 @@ const LIBRARY_GROUPS: NavGroup[] = CATALOG_CATEGORIES.map((category) => ({
 	items: libraryNavEntries(category.id).map((entry) => catalogNavItem(entry, RectangleEllipsis)),
 }));
 
-const ALL_NAV_ITEMS = [...NAV_GROUPS.flatMap((g) => g.items), LIBRARY_HOME];
+const ALL_NAV_ITEMS = [...NAV_GROUPS.flatMap((g) => g.items), ...LIBRARY_LEAD];
 
 function itemTitle(item: NavItem, t: (key: string) => string) {
 	return item.title ?? t(item.titleKey ?? "");
@@ -388,15 +384,12 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
 }
 
 function LibraryNav({ currentPath }: { currentPath: string }) {
-	const navigate = useNavigate();
-	const { t } = useTranslation();
 	return (
 		<div className="pb-3">
 			<div className="mt-2 flex flex-col gap-0.5 px-3">
-				<SidebarItem active={currentPath === "/ui"} onClick={() => navigate("/ui")}>
-					<BookOpen className="h-4 w-4 shrink-0" strokeWidth={1.5} />
-					<span className="flex-1 text-left">{t("nav.kitIndex")}</span>
-				</SidebarItem>
+				{LIBRARY_LEAD.map((item) => (
+					<NavItemButton key={item.path} item={item} currentPath={currentPath} />
+				))}
 			</div>
 			{LIBRARY_GROUPS.map((group) => (
 				<NavGroupSection key={group.label} group={group} currentPath={currentPath} />
@@ -478,7 +471,9 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 		...group,
 		items: group.items.filter((item) => commandSearchMatches(itemTitle(item, t), searchQuery)),
 	})).filter((group) => group.items.length > 0);
-	const commandLibraryHomeMatches = commandSearchMatches(t("nav.kitIndex"), searchQuery);
+	const commandLibraryLead = LIBRARY_LEAD.filter((item) =>
+		commandSearchMatches(itemTitle(item, t), searchQuery),
+	);
 	const commandCatalogEntries = CATALOG.filter((entry) =>
 		commandSearchMatches(catalogCommandValue(entry), searchQuery),
 	);
@@ -615,18 +610,19 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 							))}
 						</CommandGroup>
 					))}
-					{commandLibraryHomeMatches || commandCatalogEntries.length > 0 ? (
+					{commandLibraryLead.length > 0 || commandCatalogEntries.length > 0 ? (
 						<CommandGroup heading={t("nav.kit")}>
-							{commandLibraryHomeMatches ? (
+							{commandLibraryLead.map((item) => (
 								<CommandItem
-									value={t("nav.kitIndex")}
-									onSelect={() => handleSelect("/ui")}
+									key={item.path}
+									value={itemTitle(item, t)}
+									onSelect={() => handleSelect(item.path)}
 									className="cursor-pointer gap-3"
 								>
-									<BookOpen className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
-									<span>{t("nav.kitIndex")}</span>
+									<item.icon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
+									<span>{itemTitle(item, t)}</span>
 								</CommandItem>
-							) : null}
+							))}
 							{commandCatalogEntries.map((entry) => {
 								const isPlanned = CATALOG_PAGE_STATUS_BY_SLUG.get(entry.slug) === "planned";
 								return (

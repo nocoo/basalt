@@ -42,7 +42,33 @@ describe("AppSidebar", () => {
 		expect(screen.getByText("Examples")).toBeInTheDocument();
 		expect(screen.getByText("Library")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Home" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Layout" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Color Palette" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Settings" })).toBeInTheDocument();
+		expect(screen.queryByText("System")).not.toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Dashboard" })).toBeInTheDocument();
+		const following = Node.DOCUMENT_POSITION_FOLLOWING;
+		expect(
+			screen
+				.getByRole("button", { name: "Home" })
+				.compareDocumentPosition(screen.getByRole("button", { name: "Layout" })) & following,
+		).toBeTruthy();
+		expect(
+			screen
+				.getByRole("button", { name: "Layout" })
+				.compareDocumentPosition(screen.getByRole("button", { name: "Color Palette" })) & following,
+		).toBeTruthy();
+		expect(
+			screen
+				.getByRole("button", { name: /Interactions/ })
+				.compareDocumentPosition(screen.getByRole("button", { name: "Settings" })) & following,
+		).toBeTruthy();
+		expect(
+			screen
+				.getByRole("button", { name: "Settings" })
+				.compareDocumentPosition(screen.getByRole("button", { name: "Wearable Health" })) &
+				following,
+		).toBeTruthy();
 		for (const entry of CATALOG) {
 			expect(
 				screen.getAllByRole("button", { name: new RegExp(`^${catalogNavName(entry)}`) }).length,
