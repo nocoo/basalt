@@ -1,138 +1,109 @@
-# Basalt — Project Notes
+# Basalt
 
-## Version Management
+Matte design system + catalog site. npm `@nocoo/basalt`. Live: `https://basalt.hexly.ai`.
+Profile: ts-worker-web
+Direction: [docs/01-plan-2-0.md](docs/01-plan-2-0.md). Integration: [INTEGRATION.md](INTEGRATION.md). Frameworks must not rewrite this file.
 
-### Single Source of Truth
+## Sources of Truth
 
-The **canonical version** lives in the **root** `package.json` → `"version"`.
-Edit that field only. Never hardcode a version string in source, docs
-badges, or tests.
+This file is the **contract**. Hooks, CI, and config are **enforcement**. If they disagree, raise enforcement; never lower this file.
 
-| Consumer | Mechanism |
+| Fact | Where |
 |---|---|
-| Site sidebar badge (`vX.Y.Z`) | `__APP_VERSION__`, injected via `vite.config.ts` → `define` |
-| `/api/live` | Vite plugin reads root `package.json` at request time |
-| `vitest.config.ts` | Same `define` pattern |
-| TypeScript | `src/vite-env.d.ts` → `declare const __APP_VERSION__: string` |
-| `@nocoo/basalt` | `packages/basalt/package.json` `"version"` **must equal** the root. `packages/basalt/scripts/verify-pack.ts` fails the pack gate if they drift. Copy the root value when bumping; do not invent a second number. |
+| Agent handbook | this file |
+| Human docs | README.md, INTEGRATION.md, CHANGELOG.md, `docs/01`–`03` |
+| Version | root `package.json` `"version"`; `packages/basalt/package.json` must match; site `src/lib/version.ts` `APP_VERSION` |
+| Enforcement | `.husky/*`, `.github/workflows/{ci,release}.yml`, `vitest.config.ts`, `packages/basalt/scripts/verify-pack.ts` |
+| Machine rules | global `AGENTS.md`, `rules/git-commit.md` |
+| Accidents | [Retrospective.md](Retrospective.md) |
+| Env files | omit |
 
-Root `package.json` is `"private": true` (the site). The npm package is
-`packages/basalt` (`@nocoo/basalt`, public). Publishing the repo root is
-forbidden (`EPRIVATE`).
+## Project Invariants
 
-### Versioning Rules (SemVer)
+- Root `package.json` is private (the site). Never `npm publish` the repo root. Publish only `packages/basalt` (`@nocoo/basalt`).
+- Worker name is `theme-basalt`; `[assets]` is `./dist`. `/api/live` is Vite middleware only. No D1. Do not laptop-`wrangler deploy` — site CD is `release.yml`.
+- Coverage is models/viewmodels/lib + `packages/basalt/src` (`vitest.config.ts` include). Pages are not in the 95% denominator.
+- MVVM: viewmodels have no View/DOM imports; pages stay thin.
+- CSS tokens ship in the package. No secrets in the tarball. Override a direct dep with `"$name"`.
+- Never `rm bun.lock`. After a mirror install, strip registry URLs before commit (`rg -c '", "https' bun.lock` is 0).
 
-- **MAJOR** — breaking changes to public API, routes, or data models
-- **MINOR** — new features, pages, or components (backward-compatible)
-- **PATCH** — bug fixes, styling tweaks, dependency bumps
-- **Prerelease** — `X.Y.Z-rc.N` (or `-alpha` / `-beta`). Site and package
-  stay on the same string.
+## Stack / Layout
 
-### Release Checklist
+| Component | Choice |
+|---|---|
+| Language | TypeScript 7 strict |
+| Package manager | Bun (`packageManager` bun@1.3.6; CD 1.3.11; CI bun-quality default `latest`) |
+| Runtime | Vite 8 SPA; CF Workers assets (`theme-basalt`); npm `@nocoo/basalt` |
+| Lint | Biome `check --error-on-warnings .`. No `noSkippedTests` |
+| Tests | Vitest L1 95% all four on models/viewmodels/lib + package src |
+| Data | mock catalog; no backend |
 
-Prefer `bun run release` (or `bun run release -- minor` / `-- major` /
-`-- 2.0.1` / `-- --dry-run`). The script copies the root version to
-`packages/basalt/package.json`, prepends CHANGELOG.md, commits
-`chore: release vX.Y.Z`, tags, pushes, and opens the GitHub Release.
-
-Site deploy follows the tag. npm publish is a separate step on
-`packages/basalt` only.
-
-1. **Bump** via `bun run release` (root `package.json` is the north star).
-2. **CHANGELOG.md** — `## [x.y.z] - YYYY-MM-DD` (Keep a Changelog).
-3. **Commit**: `chore: release vX.Y.Z` (husky: typecheck, lint, test).
-4. **Package gates**: from repo root, `bun run package:prepublish`
-   (typecheck, lint, coverage, package build, types, pack:check, publint,
-   consumer gates A/B/C/D). `consumer:next` runs Chromium.
-5. **npm publish** from `packages/basalt`, never the repo root:
-   - Stable: `npm publish --access public --registry https://registry.npmjs.org/`
-   - Prerelease: add `--tag rc` (or `alpha` / `beta`) so later stables
-     keep `latest`. A **new** package's first publish also becomes
-     `latest` (npm behavior). Install with `@nocoo/basalt@X.Y.Z-rc.N`
-     or `@rc`.
-   - 2FA: `--otp=<code>`. After a green `package:prepublish` in the same
-     tree, `--ignore-scripts` is allowed so OTP is not racing another
-     coverage run.
-6. **Tag**: `git tag -a vX.Y.Z -m "vX.Y.Z"` (immutable).
-7. **Push**: `git push && git push --tags`.
-8. **GitHub Release**: `gh release create vX.Y.Z --title "vX.Y.Z"` with
-   the CHANGELOG section. Add `--prerelease` when the version contains
-   `-alpha`, `-beta`, or `-rc`.
-9. Confirm `npm view @nocoo/basalt@version` and `gh run list --limit 5`.
-
-### CHANGELOG Format
-
-Follow [Keep a Changelog](https://keepachangelog.com/en/1.1.0/):
-
-```markdown
-## [x.y.z] - YYYY-MM-DD
-### Added
-### Changed
-### Fixed
-### Removed
+```
+src/pages/  src/viewmodels/  src/models/  src/lib/
+packages/basalt/   npm library
+docs/              01–03
 ```
 
-### Git Tag Convention
+## Commands
 
-- Annotated tags only: `git tag -a vX.Y.Z -m "vX.Y.Z"`
-- Tag name matches root `package.json` version prefixed with `v`
-- Tags are immutable — never delete or move a published tag
+```bash
+bun dev
+bun run typecheck
+bun run lint
+bun run build
+bun run test:coverage
+bun run package:prepublish
+bun run release
+```
 
-### GitHub Release Convention
+## Verification
 
-- Title: `vX.Y.Z`
-- Body: copy of the CHANGELOG section for that version
-- Mark as pre-release if version contains `-alpha`, `-beta`, `-rc`
+Status: `enforced` | `planned` | `manual` | `N/A`. `enforced` Evidence = hook/CI/config/script.
+
+Org gaps: index-snapshot pre-commit; stdin-range pre-push; `.skip`/`.only`; CI typecheck (`typecheck-command: "true"` skips it).
+
+Today: pre-commit typecheck/lint/`test` (no coverage)/gitleaks `--staged` on the working tree. pre-push `build` + `test:coverage` + `lint` + osv. CI bun-quality `@aec4adc1a817c56790d1698329ef9398a15a754a` (v2026.5): build, `test:coverage`, gitleaks, osv; typecheck skipped.
+
+| Change | Proof | Status | Evidence |
+|---|---|---|---|
+| Logic | L1 vitest ≥95% all four on models/viewmodels/lib + package | enforced | pre-push + CI `test:coverage`; `vitest.config.ts`. pre-commit `test` has no thresholds |
+| API L2 | — | N/A | — |
+| UI L3 | Playwright `consumer:next` | manual | `package:prepublish` (not a hook/CI job) |
+| Types / lint | tsc + Biome 0 warning + catalog checks | enforced | pre-commit typecheck + lint. CI lint only |
+| G2 secrets | gitleaks | enforced | pre-commit `--staged`; CI bun-quality |
+| G2 deps | osv `bun.lock` | enforced | pre-push; CI bun-quality |
+| Bundler | `vite build` → `dist/` | enforced | pre-push `build`; CI pre-command; CD `release.yml` |
+| Docs | numbered doc / INTEGRATION.md if chrome or API changes | manual | human review |
+| Site CD | tag `vX.Y.Z` == root package.json | enforced | `.github/workflows/release.yml` |
+| npm `@nocoo/basalt` | `package:prepublish` then publish package dir | manual | `packages/basalt/scripts/verify-pack.ts` |
+
+| Hook | Org bar | Status | Evidence |
+|---|---|---|---|
+| pre-commit | index snapshot | planned | — |
+| pre-push | stdin ref range | planned | — |
+
+`--no-verify` forbidden on commits and branch pushes. Tag-only may skip.
+
+## Resources / Isolation
+
+| Purpose | Port / resource | Isolation |
+|---|---|---|
+| Dev | 7003 `https://basalt.dev.hexly.ai` | catalog mock; no prod stores |
+| Prod | `https://basalt.hexly.ai` (`theme-basalt`) | static assets |
+
+## Operations / Release
+
+- Entry: `bun run release` (patch default). Syncs root + `packages/basalt` `package.json` + CHANGELOG, `git push`, then `git push --tags`. No main check, no CI wait. Who: GitHub write + `production` Environment + `gh`.
+- Tag CD deploys the site immediately. `main` CD waits CI-green. Do not laptop-`wrangler deploy`. npm publish is not in the script.
+- npm: `bun run package:prepublish`, then publish `packages/basalt` only (`--otp`). Live-check: `https://basalt.hexly.ai` and `npm view @nocoo/basalt`.
 
 ## Retrospective
 
-### `overrides` for a direct dependency must use the `$name` form
+| Kind | Where |
+|---|---|
+| Accident narrative | [Retrospective.md](Retrospective.md) |
+| Recurring project rule | one line here (cap ~10) |
+| Checkable rule | hook or test |
 
-npm refuses an override for a package that is also a direct dependency
-unless both specs match **verbatim** — `^8.5.18` against a direct
-`8.5.22` is semantically compatible but still fails:
-
-```
-npm error code EOVERRIDE
-npm error Override for postcss@8.5.22 conflicts with direct dependency
-```
-
-Always write `"postcss": "$postcss"` instead. The reference form tracks
-the direct dependency automatically, so upgrades only touch one place.
-
-This surfaces **only in the Cloudflare deploy step**: `bun install` and
-`vite build` ignore the rule, and `npx wrangler versions upload` is the
-one command that resolves the tree through npm. CI stays fully green
-while Workers Builds fails — do not read a green CI as "deps are fine".
-
-### Regenerating `bun.lock` when only a mirror is reachable
-
-A mirror install rewrites every entry with `https://mirrors.../*.tgz`,
-which pins CI to that mirror permanently. Two rules make it safe:
-
-1. **Never `rm bun.lock` first.** A full re-resolve drifts versions
-   (postcss silently went `8.5.22` → `8.5.24`). Edit `package.json` and
-   let `bun install` update the lockfile incrementally.
-2. **Strip the URLs afterward**, then verify against the committed file:
-   ```bash
-   perl -pi -e 's/(\["[^"]+", )"https:\/\/[^"]*"(, )/$1""$2/g' bun.lock
-   rg -c '", "https' bun.lock          # must be 0
-   git diff bun.lock                    # must be only the intended lines
-   ```
-   `bun install --frozen-lockfile` accepts the stripped file and does not
-   write the URLs back.
-
-### `~/.npmrc` overrides the registry for bun too
-
-A `registry=` line in `~/.npmrc` silently redirects `bun install`. An
-apparent "network is down" (dozens of `ConnectionClosed`) may just be an
-unreachable proxy configured there — check it before concluding the
-network is unusable, and probe registries with
-`curl -sL --max-time 8 <mirror>/react` rather than guessing.
-
-### Don't infer build duration from GitHub check-run timestamps
-
-For Cloudflare Workers Builds, `started_at` and `completed_at` are the
-same instant (the moment the result is written back), not the real build
-window. A "0-second failure" says nothing about whether the build ran —
-read the actual build log before diagnosing.
+- Override a direct dep with `"$name"`.
+- Never `rm bun.lock`; strip mirror URLs before commit.
