@@ -48,6 +48,7 @@ import { API as radioApi } from "./catalog-api/radio";
 import { API as resourceListApi } from "./catalog-api/resource-list";
 import { API as sankeyApi } from "./catalog-api/sankey";
 import { API as scrollAreaApi } from "./catalog-api/scroll-area";
+import { API as sectionRuleApi } from "./catalog-api/section-rule";
 import { API as segmentControlApi } from "./catalog-api/segment-control";
 import { API as selectApi } from "./catalog-api/select";
 import { API as sensitiveInputApi } from "./catalog-api/sensitive-input";
@@ -119,6 +120,7 @@ export const CATALOG_API = {
 	"resource-list": resourceListApi,
 	sankey: sankeyApi,
 	"scroll-area": scrollAreaApi,
+	"section-rule": sectionRuleApi,
 	"segment-control": segmentControlApi,
 	select: selectApi,
 	"sensitive-input": sensitiveInputApi,

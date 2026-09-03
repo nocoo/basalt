@@ -361,6 +361,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "PageHeader",
 	},
 	{
+		slug: "section-rule",
+		sourceFile: "packages/basalt/src/components/section-rule.tsx",
+		propsType: "SectionRuleProps",
+		surface: "SectionRule",
+	},
+	{
 		slug: "stat-strip",
 		sourceFile: "packages/basalt/src/components/stat-strip.tsx",
 		propsType: "StatStripProps",

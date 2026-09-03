@@ -148,10 +148,17 @@ describe("catalog source contract", () => {
 		expect(implementationFileFor(entry("page-header"))).toBe(
 			"packages/basalt/src/components/page-header.tsx",
 		);
+		expect(implementationFileFor(entry("section-rule"))).toBe(
+			"packages/basalt/src/components/section-rule.tsx",
+		);
+		expect(CATALOG_API["section-rule"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"title",
+			"hint",
+			"actions",
+		]);
 		expect(CATALOG_API["page-header"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"title",
 			"description",
-			"eyebrow",
 			"breadcrumbs",
 			"actions",
 			"filters",

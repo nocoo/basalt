@@ -61,6 +61,7 @@ export const CATALOG_PAGE_STATUS = {
 	toolbar: "ready",
 	"table-of-contents": "ready",
 	grid: "ready",
+	"section-rule": "ready",
 	sidebar: "ready",
 	flow: "ready",
 	"stat-strip": "ready",

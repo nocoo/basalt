@@ -17,12 +17,6 @@ export const API = [
 				description: "Supporting text below the title.",
 			},
 			{
-				name: "eyebrow",
-				type: "React.ReactNode",
-				required: false,
-				description: "A short label above the title.",
-			},
-			{
 				name: "breadcrumbs",
 				type: "PageHeaderBreadcrumb[]",
 				required: false,

@@ -451,6 +451,12 @@ describe("catalog API generator contract", () => {
 				surface: "PageHeader",
 			},
 			{
+				slug: "section-rule",
+				sourceFile: "packages/basalt/src/components/section-rule.tsx",
+				propsType: "SectionRuleProps",
+				surface: "SectionRule",
+			},
+			{
 				slug: "stat-strip",
 				sourceFile: "packages/basalt/src/components/stat-strip.tsx",
 				propsType: "StatStripProps",
@@ -847,7 +853,7 @@ describe("catalog API generator contract", () => {
 				surface: "DeleteResource",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(119);
+		expect(CATALOG_API_TARGETS).toHaveLength(120);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -909,6 +915,7 @@ describe("catalog API generator contract", () => {
 			"date-picker",
 			"segment-control",
 			"page-header",
+			"section-rule",
 			"stat-strip",
 			"confirm-dialog",
 			"table-pager",
@@ -1910,6 +1917,7 @@ export interface WidgetProps {
 			switch: ["Switch", "Switch.Group", "Switch.Legend", "Switch.Item"],
 			"segment-control": ["SegmentControl"],
 			"page-header": ["PageHeader"],
+			"section-rule": ["SectionRule"],
 			"stat-strip": ["StatStrip"],
 			"confirm-dialog": ["ConfirmDialog", "useConfirm"],
 			"table-pager": ["TablePager"],
@@ -1974,7 +1982,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(69);
+		expect(Object.keys(generated)).toHaveLength(70);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -2075,7 +2083,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(69);
+		expect(Object.keys(generated)).toHaveLength(70);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -2197,7 +2205,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(69);
+		expect(Object.keys(generated)).toHaveLength(70);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -2268,7 +2276,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(69);
+		expect(Object.keys(generated)).toHaveLength(70);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2311,7 +2319,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(69);
+		expect(Object.keys(generated)).toHaveLength(70);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2363,7 +2371,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(69);
+		expect(Object.keys(generated)).toHaveLength(70);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -2641,12 +2649,6 @@ export interface WidgetProps {
 						description: "Supporting text below the title.",
 					},
 					{
-						name: "eyebrow",
-						type: "React.ReactNode",
-						required: false,
-						description: "A short label above the title.",
-					},
-					{
 						name: "breadcrumbs",
 						type: "PageHeaderBreadcrumb[]",
 						required: false,
@@ -2671,6 +2673,45 @@ export interface WidgetProps {
 			"className",
 		);
 		expect(generated["page-header"]?.[0]?.props.map((prop) => prop.name)).not.toContain("children");
+	}, 60_000);
+
+	it("extracts the SectionRule surface without inherited section props", () => {
+		const generated = generateCatalogApi({
+			repoRoot,
+			tsconfigPath: DEFAULT_TSCONFIG,
+			targets: CATALOG_API_TARGETS,
+		});
+		expect(generated["section-rule"]).toEqual([
+			{
+				name: "SectionRule",
+				props: [
+					{
+						name: "title",
+						type: "React.ReactNode",
+						required: true,
+						description: "Section title shown before the dashed rule.",
+					},
+					{
+						name: "hint",
+						type: "React.ReactNode",
+						required: false,
+						description: "Info tooltip beside the title.",
+					},
+					{
+						name: "actions",
+						type: "React.ReactNode",
+						required: false,
+						description: "Actions on the right of the dashed rule.",
+					},
+				],
+			},
+		]);
+		expect(generated["section-rule"]?.[0]?.props.map((prop) => prop.name)).not.toContain(
+			"className",
+		);
+		expect(generated["section-rule"]?.[0]?.props.map((prop) => prop.name)).not.toContain(
+			"children",
+		);
 	}, 60_000);
 
 	it("extracts the StatStrip surface without inherited dl props", () => {
@@ -3611,8 +3652,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(69);
-		expect(Object.keys(first)).toHaveLength(70);
+		expect(slugs).toHaveLength(70);
+		expect(Object.keys(first)).toHaveLength(71);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3627,6 +3668,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "ScrollArea"');
 		expect(joined).toContain('name: "SegmentControl"');
 		expect(joined).toContain('name: "PageHeader"');
+		expect(joined).toContain('name: "SectionRule"');
 		expect(joined).toContain('name: "StatStrip"');
 		expect(joined).toContain('name: "ConfirmDialog"');
 		expect(joined).toContain('name: "useConfirm"');
@@ -3688,7 +3730,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"d49a9fbfc936d1fd9fc39d5c76b683582746a60f9fa6ac827cfae47af4e85bca",
+			"614259e2a608d7f295e063d15d0562fbd01374959d1b97caf442c1b72aae612b",
 		);
 	}, 60_000);
 

@@ -5,7 +5,6 @@ import { PageHeader } from "@nocoo/basalt/components/page-header";
 export default function LongResponsiveContentExample() {
 	return (
 		<PageHeader
-			eyebrow="Workspace"
 			breadcrumbs={[
 				{ href: "#", label: "Organization" },
 				{ href: "#", label: "Projects" },

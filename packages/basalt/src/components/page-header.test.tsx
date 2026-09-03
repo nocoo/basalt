@@ -14,10 +14,9 @@ describe("PageHeader", () => {
 		expect(screen.queryByRole("navigation", { name: "Breadcrumb" })).toBeNull();
 	});
 
-	it("renders optional eyebrow, description, breadcrumbs, and wrapping actions", () => {
+	it("renders optional description, breadcrumbs, and wrapping actions", () => {
 		render(
 			<PageHeader
-				eyebrow="Workspace"
 				breadcrumbs={[
 					{ href: "/", label: "Home", icon: <span data-testid="crumb-icon">*</span> },
 					{ label: "Dashboard" },
@@ -34,7 +33,6 @@ describe("PageHeader", () => {
 		);
 
 		const banner = screen.getByRole("banner", { name: "Dashboard" });
-		expect(within(banner).getByText("Workspace").tagName).toBe("P");
 		expect(within(banner).getByText("Overview of recent project activity.").tagName).toBe("P");
 		expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toBeInTheDocument();
 		expect(screen.getByRole("link", { name: "*Home" })).toHaveAttribute("href", "/");

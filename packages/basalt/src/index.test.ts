@@ -9,6 +9,7 @@ const unapprovedRootNames = [
 	"AppSkipLink",
 	"LoadingScreen",
 	"PageHeader",
+	"SectionRule",
 	"LineChart",
 	"BarChart",
 	"AreaChart",

@@ -78,22 +78,22 @@ describe("ui catalog", () => {
 
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(102);
-		expect(new Set(slugs).size).toBe(102);
+		expect(slugs).toHaveLength(103);
+		expect(new Set(slugs).size).toBe(103);
 	});
 
 	it("renders the categorized index with orthogonal release and page states", () => {
 		renderCatalog("/ui");
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Component library" })).toBeInTheDocument();
-		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("92 / 93 ready");
+		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("93 / 94 ready");
 
 		for (const [index, group] of CATALOG_INDEX_GROUPS.entries()) {
 			const section = screen.getByRole("region", { name: group.label });
 			expect(within(section).getByText(`${group.items.length} items`)).toBeInTheDocument();
-			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([66, 24, 3][index]);
+			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([67, 24, 3][index]);
 		}
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(93);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(94);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
 
@@ -196,7 +196,7 @@ describe("ui catalog", () => {
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
 		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("92 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("93 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",
@@ -219,8 +219,8 @@ describe("ui catalog", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: "Reset filters" }));
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveFocus();
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("93 results");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(93);
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("94 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(94);
 		expect(screen.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
@@ -936,7 +936,6 @@ describe("ui catalog", () => {
 		expect(CATALOG_API["page-header"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"title",
 			"description",
-			"eyebrow",
 			"breadcrumbs",
 			"actions",
 			"filters",
@@ -948,7 +947,7 @@ describe("ui catalog", () => {
 
 		renderCatalog("/ui/page-header");
 		const api = document.getElementById("api-reference");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(6);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(5);
 		const hero = document.querySelector('[data-hero-scenario="page-header-default"]');
 		expect(hero).toBeTruthy();
 		if (!hero) {
@@ -973,7 +972,6 @@ describe("ui catalog", () => {
 				name: "Quarterly operations review for the north-region delivery network",
 			}),
 		).toBeInTheDocument();
-		expect(within(longContent as HTMLElement).getByText("Workspace")).toBeInTheDocument();
 		expect(
 			within(longContent as HTMLElement).getByRole("button", { name: "Create report" }),
 		).toBeInTheDocument();
@@ -991,6 +989,78 @@ describe("ui catalog", () => {
 		expect(markdown).toContain("- title (React.ReactNode, required, default —)");
 		expect(markdown).toContain("- breadcrumbs (PageHeaderBreadcrumb[], optional, default —)");
 		for (const scenario of UI_EXAMPLES["page-header"] ?? []) {
+			expect(markdown).toContain(scenario.code);
+		}
+		expect(markdown).not.toContain("- className (");
+		expect(markdown).not.toContain("- children (");
+	});
+
+	it("keeps SectionRule docs, generated API, source examples, and Copy page aligned", async () => {
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		const docs = CATALOG_DOCS["section-rule"];
+		expect(docs?.api).toBe(CATALOG_API["section-rule"]);
+		expect(docs).toMatchObject({
+			description: "Title and dashed rule between page regions.",
+			variants: [],
+		});
+		expect(CATALOG_API["section-rule"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"title",
+			"hint",
+			"actions",
+		]);
+		expect(UI_EXAMPLES["section-rule"]?.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "section-rule-default", title: "Default" },
+			{ id: "section-rule-with-hint", title: "With hint" },
+			{ id: "section-rule-with-actions", title: "With actions" },
+			{ id: "section-rule-with-hint-and-actions", title: "Hint and actions" },
+			{ id: "section-rule-stacked-regions", title: "Stacked regions" },
+		]);
+
+		renderCatalog("/ui/section-rule");
+		const api = document.getElementById("api-reference");
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(3);
+		const hero = document.querySelector('[data-hero-scenario="section-rule-default"]');
+		expect(hero).toBeTruthy();
+		if (!hero) {
+			throw new Error("missing SectionRule hero");
+		}
+		expect(
+			within(hero as HTMLElement).getByRole("heading", { level: 2, name: "Catalog" }),
+		).toBeInTheDocument();
+		expect(
+			within(hero as HTMLElement).queryByRole("button", { name: "More information" }),
+		).toBeNull();
+		const hinted = document.querySelector('[data-scenario="section-rule-with-hint"]');
+		expect(hinted).toBeTruthy();
+		if (!hinted) {
+			throw new Error("missing SectionRule hint");
+		}
+		expect(
+			within(hinted as HTMLElement).getByRole("button", { name: "More information" }),
+		).toBeInTheDocument();
+		const stacked = document.querySelector('[data-scenario="section-rule-stacked-regions"]');
+		expect(stacked).toBeTruthy();
+		if (!stacked) {
+			throw new Error("missing SectionRule stacked regions");
+		}
+		expect(
+			within(stacked as HTMLElement).getByRole("button", { name: "New project" }),
+		).toBeInTheDocument();
+		for (const scenario of UI_EXAMPLES["section-rule"] ?? []) {
+			expect(scenario.code).toContain("@nocoo/basalt/components/section-rule");
+			expect(scenario.code).toContain("export default function");
+			expect(document.querySelector(`[data-scenario="${scenario.id}"]`)).toBeTruthy();
+		}
+
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
+		});
+		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### SectionRule");
+		expect(markdown).toContain("- title (React.ReactNode, required, default —)");
+		expect(markdown).toContain("- hint (React.ReactNode, optional, default —)");
+		for (const scenario of UI_EXAMPLES["section-rule"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
 		expect(markdown).not.toContain("- className (");

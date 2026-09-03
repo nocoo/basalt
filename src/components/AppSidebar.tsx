@@ -269,6 +269,7 @@ const CATALOG_ICONS: Record<string, React.ElementType> = {
 	toolbar: Wrench,
 	"table-of-contents": List,
 	grid: LayoutGrid,
+	"section-rule": Minus,
 	sidebar: PanelLeft,
 	flow: GitBranch,
 	"theme-provider": Palette,

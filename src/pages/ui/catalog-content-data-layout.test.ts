@@ -6,6 +6,7 @@ import { FLOW_EXAMPLES } from "./examples/flow";
 import { GRID_EXAMPLES } from "./examples/grid";
 import { PAGE_HEADER_EXAMPLES } from "./examples/page-header";
 import { RESOURCE_LIST_EXAMPLES } from "./examples/resource-list";
+import { SECTION_RULE_EXAMPLES } from "./examples/section-rule";
 import { STAT_STRIP_EXAMPLES } from "./examples/stat-strip";
 import { TABLE_EXAMPLES } from "./examples/table";
 import { TABLE_PAGER_EXAMPLES } from "./examples/table-pager";
@@ -15,6 +16,7 @@ import { API as flowApi } from "./generated/catalog-api/flow";
 import { API as gridApi } from "./generated/catalog-api/grid";
 import { API as pageHeaderApi } from "./generated/catalog-api/page-header";
 import { API as resourceListApi } from "./generated/catalog-api/resource-list";
+import { API as sectionRuleApi } from "./generated/catalog-api/section-rule";
 import { API as statStripApi } from "./generated/catalog-api/stat-strip";
 import { API as tableApi } from "./generated/catalog-api/table";
 import { API as tablePagerApi } from "./generated/catalog-api/table-pager";
@@ -33,6 +35,13 @@ const DATA_LAYOUT_SCENARIOS = {
 	],
 	grid: ["grid-grid"],
 	flow: ["flow-sequential-flow"],
+	"section-rule": [
+		"section-rule-default",
+		"section-rule-with-hint",
+		"section-rule-with-actions",
+		"section-rule-with-hint-and-actions",
+		"section-rule-stacked-regions",
+	],
 	"page-header": ["page-header-default", "page-header-long-responsive-content"],
 	"stat-strip": ["stat-strip-overview", "stat-strip-loading-values"],
 	"table-pager": ["table-pager-range-navigation", "table-pager-disabled-and-localized"],
@@ -45,24 +54,25 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 	"data-table": "Sortable data table.",
 	grid: "Simple grid.",
 	flow: "Step flow.",
+	"section-rule": "Title and dashed rule between page regions.",
 	"page-header":
 		"A flush content page heading with optional description, actions, and a separate filters row.",
 } as const;
 
 describe("data-layout catalog content family", () => {
-	it("owns exactly ten slugs and generated owners", () => {
+	it("owns exactly eleven slugs and generated owners", () => {
 		expect(Object.keys(dataLayout)).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS));
-		expect(Object.keys(dataLayout)).toHaveLength(10);
+		expect(Object.keys(dataLayout)).toHaveLength(11);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "data-layout")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(101);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(102);
 	});
 
-	it("keeps the nineteen final winner scenarios in their audited order", () => {
+	it("keeps the twenty-four final winner scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(DATA_LAYOUT_SCENARIOS)) {
 			const examples = dataLayout[slug]?.examples ?? [];
@@ -81,7 +91,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(19);
+		expect(count).toBe(24);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {
@@ -130,6 +140,15 @@ describe("data-layout catalog content family", () => {
 		expect(dataLayout.flow?.examples).toBe(FLOW_EXAMPLES);
 		expect(dataLayout.flow?.docs.api).toBe(flowApi);
 		expect(dataLayout.table?.docs.usage).toContain("<TableHeader>");
+		expect(dataLayout["section-rule"]?.examples).toBe(SECTION_RULE_EXAMPLES);
+		expect(dataLayout["section-rule"]?.docs.api).toBe(sectionRuleApi);
+		expect(dataLayout["section-rule"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
+			{ id: "section-rule-default", title: "Default" },
+			{ id: "section-rule-with-hint", title: "With hint" },
+			{ id: "section-rule-with-actions", title: "With actions" },
+			{ id: "section-rule-with-hint-and-actions", title: "Hint and actions" },
+			{ id: "section-rule-stacked-regions", title: "Stacked regions" },
+		]);
 		expect(dataLayout["page-header"]?.examples).toBe(PAGE_HEADER_EXAMPLES);
 		expect(dataLayout["page-header"]?.docs.api).toBe(pageHeaderApi);
 		expect(dataLayout["page-header"]?.docs.usage).toContain("<PageHeader");

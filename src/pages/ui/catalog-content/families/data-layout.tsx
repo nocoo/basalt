@@ -11,6 +11,7 @@ import { FLOW_EXAMPLES } from "../../examples/flow";
 import { GRID_EXAMPLES } from "../../examples/grid";
 import { PAGE_HEADER_EXAMPLES } from "../../examples/page-header";
 import { RESOURCE_LIST_EXAMPLES } from "../../examples/resource-list";
+import { SECTION_RULE_EXAMPLES } from "../../examples/section-rule";
 import { STAT_STRIP_EXAMPLES } from "../../examples/stat-strip";
 import { TABLE_EXAMPLES } from "../../examples/table";
 import { TABLE_PAGER_EXAMPLES } from "../../examples/table-pager";
@@ -21,6 +22,7 @@ import { API as flowApi } from "../../generated/catalog-api/flow";
 import { API as gridApi } from "../../generated/catalog-api/grid";
 import { API as pageHeaderApi } from "../../generated/catalog-api/page-header";
 import { API as resourceListApi } from "../../generated/catalog-api/resource-list";
+import { API as sectionRuleApi } from "../../generated/catalog-api/section-rule";
 import { API as statStripApi } from "../../generated/catalog-api/stat-strip";
 import { API as tableApi } from "../../generated/catalog-api/table";
 import { API as tablePagerApi } from "../../generated/catalog-api/table-pager";
@@ -195,6 +197,18 @@ export default function Example() {
 			api: flowApi,
 		},
 		examples: FLOW_EXAMPLES,
+	},
+	"section-rule": {
+		docs: {
+			...extraDocs(
+				"SectionRule",
+				"section-rule",
+				"Title and dashed rule between page regions.",
+				'<SectionRule title="Catalog" />',
+			),
+			api: sectionRuleApi,
+		},
+		examples: SECTION_RULE_EXAMPLES,
 	},
 	"page-header": {
 		docs: {

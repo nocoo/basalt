@@ -73,6 +73,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	"resource-list": "data-layout",
 	sankey: "charts",
 	"scroll-area": "foundation",
+	"section-rule": "data-layout",
 	"segment-control": "forms",
 	select: "forms",
 	"sensitive-input": "forms",

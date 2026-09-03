@@ -52,6 +52,7 @@ describe("AppSidebar", () => {
 		expect(screen.getByRole("button", { name: /^Changelog$/ })).toBeEnabled();
 		expect(screen.getByRole("button", { name: /^Clipboard Text/ })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Page Header" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Section Rule" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: /^Maps.*Planned$/ })).toBeDisabled();
 		const components = screen.getByRole("button", { name: "Components", expanded: true });
 		expect(components).toHaveAttribute("aria-expanded", "true");
@@ -74,8 +75,8 @@ describe("AppSidebar", () => {
 		);
 		const disabledButtons = catalogButtons.filter((button) => button.disabled);
 
-		expect(catalogButtons).toHaveLength(102);
-		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(101);
+		expect(catalogButtons).toHaveLength(103);
+		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(102);
 		expect(disabledButtons.map((button) => button.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const button of disabledButtons) {
 			expect(button).toHaveTextContent("Planned");
@@ -109,10 +110,10 @@ describe("AppSidebar", () => {
 			(option) => option.getAttribute("data-disabled") === "true",
 		);
 
-		expect(catalogOptions).toHaveLength(102);
+		expect(catalogOptions).toHaveLength(103);
 		expect(
 			catalogOptions.filter((option) => option.getAttribute("data-disabled") !== "true"),
-		).toHaveLength(101);
+		).toHaveLength(102);
 		expect(disabledOptions.map((option) => option.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const option of disabledOptions) {
 			expect(option).toHaveTextContent("Planned");
@@ -157,7 +158,7 @@ describe("AppSidebar", () => {
 	it("does not show pending maturity badges in the components sidebar", () => {
 		renderSidebar();
 		const buttons = catalogButtons();
-		expect(buttons).toHaveLength(102);
+		expect(buttons).toHaveLength(103);
 		expect(document.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
 		expect(document.querySelector("aside")?.textContent).not.toContain("待规范");
 		for (const button of buttons) {

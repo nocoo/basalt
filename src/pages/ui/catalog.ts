@@ -161,6 +161,13 @@ export const CATALOG: CatalogEntry[] = [
 		navName: "Table of Contents",
 	},
 	{ slug: "grid", name: "Grid", kind: "catalog", category: "component" },
+	{
+		slug: "section-rule",
+		name: "SectionRule",
+		kind: "catalog",
+		category: "component",
+		navName: "Section Rule",
+	},
 	{ slug: "sidebar", name: "Sidebar", kind: "stable", category: "component" },
 	{ slug: "flow", name: "Flow", kind: "catalog", category: "component" },
 	{
