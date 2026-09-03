@@ -1,7 +1,8 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SegmentControl } from "@nocoo/basalt/components/segment-control";
-import { Search } from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
 import {
@@ -39,16 +40,27 @@ function queryIsDefault(query: CatalogIndexQuery): boolean {
 	);
 }
 
+function activeFilterCount(query: CatalogIndexQuery): number {
+	return (
+		Number(query.q !== "") +
+		Number(query.category !== "all") +
+		Number(query.release !== "all") +
+		Number(query.status !== "all")
+	);
+}
+
 export default function UiIndexPage() {
 	const index = readCatalogIndex();
 	const [searchParams, setSearchParams] = useSearchParams();
 	const searchInputRef = useRef<HTMLInputElement>(null);
 	const query = parseCatalogIndexQuery(searchParams);
 	const [searchValue, setSearchValue] = useState(query.q);
+	const [filtersOpen, setFiltersOpen] = useState(() => !queryIsDefault(query));
 	const canonicalSearchParams = serializeCatalogIndexQuery(query, searchParams);
 	const groups = filterCatalogIndexGroups(index.groups, query);
 	const resultCount = groups.reduce((count, group) => count + group.items.length, 0);
 	const hasFilters = !queryIsDefault(query);
+	const filterCount = activeFilterCount(query);
 
 	useEffect(() => {
 		if (canonicalSearchParams.toString() !== searchParams.toString()) {
@@ -74,92 +86,116 @@ export default function UiIndexPage() {
 	}
 
 	return (
-		<div data-status="index" className="-m-3 md:-m-5">
-			<header className="border-b border-border px-6 py-8 md:px-8 md:py-10">
-				<h1 className="text-4xl font-semibold tracking-tight text-foreground">Component library</h1>
-				<p className="mt-3 max-w-3xl text-lg leading-normal text-muted-foreground">
-					Explore Basalt components, charts, and reusable blocks.
-				</p>
-				<p data-ready-summary className="mt-3 text-sm font-medium text-foreground">
-					{index.readyCount} / {index.items.length} ready
-				</p>
-			</header>
-
-			<div className="border-b border-border px-6 py-6 md:px-8">
-				<div className="grid gap-5 xl:grid-cols-[minmax(16rem,1fr)_auto_auto_auto] xl:items-end">
-					<div className="min-w-0 space-y-2">
-						<label
-							htmlFor="catalog-search"
-							className="block text-xs font-medium text-muted-foreground"
-						>
-							Search
-						</label>
-						<InputGroup>
-							<InputGroup.Addon>
-								<Search aria-hidden="true" />
-							</InputGroup.Addon>
-							<InputGroup.Input
-								ref={searchInputRef}
-								id="catalog-search"
-								type="search"
-								value={searchValue}
-								onChange={(event) => {
-									const nextValue = event.currentTarget.value;
-									setSearchValue(nextValue);
-									updateQuery({ q: nextValue });
-								}}
-								placeholder="Search components, charts, and blocks"
-								autoComplete="off"
-							/>
-						</InputGroup>
-					</div>
-					<SegmentControl
-						legend="Category"
-						value={query.category}
-						options={CATEGORY_OPTIONS}
-						allOption={{ value: "all" }}
-						onValueChange={(category) =>
-							updateQuery({ category: category as CatalogIndexCategory })
-						}
-					/>
-					<SegmentControl
-						legend="Release"
-						value={query.release}
-						options={RELEASE_OPTIONS}
-						allOption={{ value: "all" }}
-						onValueChange={(release) => updateQuery({ release: release as CatalogIndexRelease })}
-					/>
-					<SegmentControl
-						legend="Page status"
-						value={query.status}
-						options={STATUS_OPTIONS}
-						allOption={{ value: "all" }}
-						onValueChange={(status) => updateQuery({ status: status as CatalogIndexStatus })}
-					/>
-				</div>
-				<div className="mt-5 flex min-h-8 flex-wrap items-center justify-between gap-3">
-					<p
-						role="status"
-						aria-live="polite"
-						aria-atomic="true"
-						data-result-summary
-						className="text-sm text-muted-foreground"
+		<div data-status="index" className="space-y-8">
+			<PageHeader
+				title="Component library"
+				description={
+					<>
+						Explore Basalt components, charts, and reusable blocks.
+						<span data-ready-summary className="mt-1 block font-medium text-basalt-foreground">
+							{index.readyCount} / {index.items.length} ready
+						</span>
+					</>
+				}
+				actions={
+					<Button
+						variant={filtersOpen ? "secondary" : "outline"}
+						size="sm"
+						icon={<SlidersHorizontal />}
+						aria-expanded={filtersOpen}
+						aria-controls="catalog-filters"
+						onClick={() => setFiltersOpen((open) => !open)}
 					>
-						{resultCount} {resultCount === 1 ? "result" : "results"}
-					</p>
-					{hasFilters ? (
-						<Button variant="ghost" size="sm" onClick={resetFilters}>
-							Reset filters
-						</Button>
-					) : null}
+						Filters
+						{filterCount > 0 ? (
+							<span
+								aria-hidden="true"
+								className="flex h-4 min-w-4 items-center justify-center rounded-full bg-basalt-primary px-1 text-[10px] leading-none text-basalt-primary-foreground"
+							>
+								{filterCount}
+							</span>
+						) : null}
+					</Button>
+				}
+			/>
+
+			{filtersOpen ? (
+				<div id="catalog-filters" className="space-y-4">
+					<div className="flex flex-col gap-4 xl:flex-row xl:flex-wrap xl:items-end">
+						<div className="min-w-0 flex-1 space-y-2 xl:max-w-sm">
+							<label
+								htmlFor="catalog-search"
+								className="block text-xs font-medium text-basalt-muted-foreground"
+							>
+								Search
+							</label>
+							<InputGroup>
+								<InputGroup.Addon>
+									<Search aria-hidden="true" />
+								</InputGroup.Addon>
+								<InputGroup.Input
+									ref={searchInputRef}
+									id="catalog-search"
+									type="search"
+									value={searchValue}
+									onChange={(event) => {
+										const nextValue = event.currentTarget.value;
+										setSearchValue(nextValue);
+										updateQuery({ q: nextValue });
+									}}
+									placeholder="Search components, charts, and blocks"
+									autoComplete="off"
+								/>
+							</InputGroup>
+						</div>
+						<SegmentControl
+							legend="Category"
+							value={query.category}
+							options={CATEGORY_OPTIONS}
+							allOption={{ value: "all" }}
+							onValueChange={(category) =>
+								updateQuery({ category: category as CatalogIndexCategory })
+							}
+						/>
+						<SegmentControl
+							legend="Release"
+							value={query.release}
+							options={RELEASE_OPTIONS}
+							allOption={{ value: "all" }}
+							onValueChange={(release) => updateQuery({ release: release as CatalogIndexRelease })}
+						/>
+						<SegmentControl
+							legend="Page status"
+							value={query.status}
+							options={STATUS_OPTIONS}
+							allOption={{ value: "all" }}
+							onValueChange={(status) => updateQuery({ status: status as CatalogIndexStatus })}
+						/>
+					</div>
+					<div className="flex min-h-8 flex-wrap items-center justify-between gap-3">
+						<p
+							role="status"
+							aria-live="polite"
+							aria-atomic="true"
+							data-result-summary
+							className="text-sm text-basalt-muted-foreground"
+						>
+							{resultCount} {resultCount === 1 ? "result" : "results"}
+						</p>
+						{hasFilters ? (
+							<Button variant="ghost" size="sm" onClick={resetFilters}>
+								Reset filters
+							</Button>
+						) : null}
+					</div>
 				</div>
-			</div>
+			) : null}
 
 			{resultCount > 0 ? (
 				<HomeGrid groups={groups} />
 			) : (
-				<div className="px-6 py-16 text-center md:px-8" data-empty-status>
-					<p className="text-sm font-medium text-foreground">No matching catalog items</p>
+				<div className="py-16 text-center" data-empty-status>
+					<p className="text-sm font-medium text-basalt-foreground">No matching catalog items</p>
 				</div>
 			)}
 		</div>

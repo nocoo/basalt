@@ -87,6 +87,13 @@ describe("ui catalog", () => {
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Component library" })).toBeInTheDocument();
 		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("93 / 94 ready");
+		const banner = screen.getByRole("banner", { name: "Component library" });
+		const filtersToggle = within(banner).getByRole("button", { name: "Filters" });
+		expect(filtersToggle).toHaveAttribute("aria-expanded", "false");
+		expect(screen.queryByRole("searchbox", { name: "Search" })).not.toBeInTheDocument();
+		fireEvent.click(filtersToggle);
+		expect(filtersToggle).toHaveAttribute("aria-expanded", "true");
+		expect(screen.getByRole("searchbox", { name: "Search" })).toBeInTheDocument();
 
 		for (const [index, group] of CATALOG_INDEX_GROUPS.entries()) {
 			const section = screen.getByRole("region", { name: group.label });

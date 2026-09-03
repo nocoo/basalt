@@ -225,7 +225,7 @@ export interface HomeGridProps {
 
 export function HomeGrid({ groups }: HomeGridProps) {
 	return (
-		<div className="space-y-12 px-6 py-8 md:px-8 md:py-10">
+		<div className="space-y-12">
 			{groups.map((group) => (
 				<section key={group.id} aria-labelledby={`catalog-group-${group.id}`} className="space-y-5">
 					<div className="flex items-baseline justify-between gap-4 border-b border-border pb-3">

@@ -563,6 +563,7 @@ When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place, 
 - Put the create button last in `actions`.
 - One short filter (search, a single select) stays in `actions`, before create.
 - Two or more filters, or a filter bar, go in `filters` (own row). Create stays in `actions`.
+- If the filter set is large (search plus several segments), keep it **off** `PageHeader.filters`. Put a Filters control in `actions` and reveal the controls below the heading, on the island, with no divider. Open the panel when the URL already has filters.
 - Do not put create in `filters`.
 - Do not pass `breadcrumbs` here if `AppHeader` already has the trail.
 
