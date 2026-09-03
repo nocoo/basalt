@@ -10,6 +10,7 @@
 	--color-basalt-popover: hsl(var(--basalt-popover));
 	--color-basalt-popover-foreground: hsl(var(--basalt-popover-foreground));
 	--color-basalt-bright: hsl(var(--basalt-bright));
+	--color-basalt-control: var(--basalt-control-fill);
 	--color-basalt-primary: hsl(var(--basalt-primary));
 	--color-basalt-primary-foreground: hsl(var(--basalt-primary-foreground));
 	--color-basalt-muted: hsl(var(--basalt-muted));

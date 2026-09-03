@@ -27,6 +27,8 @@
 	--basalt-border: 220 13% 88%;
 	--basalt-input: 220 13% 88%;
 	--basalt-ring: 217 91% 60%;
+	--basalt-control-fill: hsl(var(--basalt-secondary));
+	--basalt-zebra-fill: hsl(var(--basalt-bright));
 	--basalt-radius: 0.75rem;
 	--basalt-radius-island: 20px;
 	--basalt-radius-card: 14px;
@@ -105,6 +107,8 @@
 	--basalt-border: 0 0% 16%;
 	--basalt-input: 0 0% 18%;
 	--basalt-ring: 217 91% 60%;
+	--basalt-control-fill: hsl(var(--basalt-secondary));
+	--basalt-zebra-fill: hsl(var(--basalt-bright));
 	--basalt-chart-1: 217 91% 65%;
 	--basalt-chart-2: 200 90% 60%;
 	--basalt-chart-3: 186 80% 50%;
@@ -147,6 +151,71 @@
 	--basalt-heatmap-orange-2: 30 55% 35%;
 	--basalt-heatmap-orange-3: 30 60% 45%;
 	--basalt-heatmap-orange-4: 30 65% 55%;
+}
+
+[data-basalt-surface-root] {
+	background: hsl(var(--basalt-card));
+	--basalt-control-fill: hsl(var(--basalt-card));
+	--basalt-zebra-fill: hsl(var(--basalt-secondary));
+}
+
+[data-basalt-surface-root] [data-basalt-surface] {
+	background: hsl(var(--basalt-secondary));
+	--basalt-control-fill: hsl(var(--basalt-secondary));
+	--basalt-zebra-fill: hsl(var(--basalt-bright));
+}
+
+[data-basalt-surface-root] [data-basalt-surface] [data-basalt-surface] {
+	background: hsl(var(--basalt-bright));
+	--basalt-control-fill: hsl(var(--basalt-bright));
+	--basalt-zebra-fill: transparent;
+}
+
+[data-basalt-surface-root] [data-basalt-surface] [data-basalt-surface] [data-basalt-surface] {
+	background: transparent;
+	--basalt-control-fill: hsl(var(--basalt-bright));
+	--basalt-zebra-fill: transparent;
+}
+
+[data-basalt-surface]:not([data-basalt-surface-root] *):not([data-basalt-surface] *) {
+	background: hsl(var(--basalt-card));
+	--basalt-control-fill: hsl(var(--basalt-card));
+	--basalt-zebra-fill: hsl(var(--basalt-secondary));
+}
+
+[data-basalt-surface]:not([data-basalt-surface-root] *) [data-basalt-surface] {
+	background: hsl(var(--basalt-secondary));
+	--basalt-control-fill: hsl(var(--basalt-secondary));
+	--basalt-zebra-fill: hsl(var(--basalt-bright));
+}
+
+[data-basalt-surface]:not([data-basalt-surface-root] *)
+	[data-basalt-surface]
+	[data-basalt-surface] {
+	background: hsl(var(--basalt-bright));
+	--basalt-control-fill: hsl(var(--basalt-bright));
+	--basalt-zebra-fill: transparent;
+}
+
+[data-basalt-surface]:not([data-basalt-surface-root] *)
+	[data-basalt-surface]
+	[data-basalt-surface]
+	[data-basalt-surface] {
+	background: transparent;
+	--basalt-control-fill: hsl(var(--basalt-bright));
+	--basalt-zebra-fill: transparent;
+}
+
+[data-basalt-table] tbody tr[aria-selected="true"] td {
+	background: hsl(var(--basalt-accent));
+}
+
+[data-basalt-table] tbody tr:hover:not([aria-selected="true"]) td {
+	background: color-mix(in oklab, hsl(var(--basalt-primary)) 3%, var(--basalt-control-fill));
+}
+
+[data-basalt-table] tbody tr:nth-child(even):not([aria-selected="true"]):not(:hover) td {
+	background: var(--basalt-zebra-fill);
 }
 
 @keyframes basalt-accordion-down {
