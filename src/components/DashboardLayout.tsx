@@ -22,7 +22,6 @@ const PAGE_TITLE_KEYS: Record<string, string> = {
 	"/components": "nav.components",
 	"/forms": "nav.forms",
 	"/tables": "nav.tables",
-	"/controls": "nav.controls",
 	"/buttons": "nav.buttons",
 	"/feedback": "nav.feedback",
 	"/overlays": "nav.overlays",

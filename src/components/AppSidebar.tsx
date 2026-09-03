@@ -173,16 +173,6 @@ const NAV_GROUPS: NavGroup[] = [
 		],
 	},
 	{
-		labelKey: "nav.controls",
-		defaultOpen: true,
-		items: [
-			{ titleKey: "nav.interactive", icon: MousePointerClick, path: "/interactive" },
-			{ titleKey: "nav.data", icon: Eye, path: "/data" },
-			{ titleKey: "nav.forms", icon: FormInput, path: "/forms" },
-			{ titleKey: "nav.navigation", icon: Navigation, path: "/navigation" },
-		],
-	},
-	{
 		labelKey: "nav.pages",
 		defaultOpen: true,
 		items: [
@@ -196,8 +186,12 @@ const NAV_GROUPS: NavGroup[] = [
 
 const LIBRARY_LEAD: NavItem[] = [
 	{ titleKey: "nav.kitIndex", icon: BookOpen, path: "/ui" },
-	{ titleKey: "nav.layout", icon: LayoutGrid, path: "/layout" },
 	{ titleKey: "nav.colorPalette", icon: Palette, path: "/palette" },
+	{ titleKey: "nav.layout", icon: LayoutGrid, path: "/layout" },
+	{ titleKey: "nav.interactive", icon: MousePointerClick, path: "/interactive" },
+	{ titleKey: "nav.data", icon: Eye, path: "/data" },
+	{ titleKey: "nav.forms", icon: FormInput, path: "/forms" },
+	{ titleKey: "nav.navigation", icon: Navigation, path: "/navigation" },
 ];
 
 const CATALOG_ICONS: Record<string, React.ElementType> = {

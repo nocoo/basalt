@@ -46,17 +46,38 @@ describe("AppSidebar", () => {
 		expect(screen.getByRole("button", { name: "Color Palette" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Settings" })).toBeInTheDocument();
 		expect(screen.queryByText("System")).not.toBeInTheDocument();
+		expect(screen.queryByText("Controls")).not.toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Dashboard" })).toBeInTheDocument();
 		const following = Node.DOCUMENT_POSITION_FOLLOWING;
 		expect(
 			screen
 				.getByRole("button", { name: "Home" })
+				.compareDocumentPosition(screen.getByRole("button", { name: "Color Palette" })) & following,
+		).toBeTruthy();
+		expect(
+			screen
+				.getByRole("button", { name: "Color Palette" })
 				.compareDocumentPosition(screen.getByRole("button", { name: "Layout" })) & following,
 		).toBeTruthy();
 		expect(
 			screen
 				.getByRole("button", { name: "Layout" })
-				.compareDocumentPosition(screen.getByRole("button", { name: "Color Palette" })) & following,
+				.compareDocumentPosition(screen.getByRole("button", { name: "Interactive" })) & following,
+		).toBeTruthy();
+		expect(
+			screen
+				.getByRole("button", { name: "Interactive" })
+				.compareDocumentPosition(screen.getByRole("button", { name: "Data" })) & following,
+		).toBeTruthy();
+		expect(
+			screen
+				.getByRole("button", { name: "Data" })
+				.compareDocumentPosition(screen.getByRole("button", { name: "Forms" })) & following,
+		).toBeTruthy();
+		expect(
+			screen
+				.getByRole("button", { name: "Forms" })
+				.compareDocumentPosition(screen.getByRole("button", { name: "Navigation" })) & following,
 		).toBeTruthy();
 		expect(
 			screen
