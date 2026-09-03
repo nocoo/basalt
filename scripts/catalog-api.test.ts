@@ -212,6 +212,12 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "layer-card",
 				sourceFile: "packages/basalt/src/components/layer-card.tsx",
+				propsType: "LayerCardWellProps",
+				surface: "LayerCard.Well",
+			},
+			{
+				slug: "layer-card",
+				sourceFile: "packages/basalt/src/components/layer-card.tsx",
 				propsType: "LayerCardSectionProps",
 				surface: "LayerCard.Footer",
 				allowEmpty: true,
@@ -227,6 +233,18 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/layer-card.tsx",
 				propsType: "LayerCardEmptyProps",
 				surface: "LayerCard.Empty",
+			},
+			{
+				slug: "description-list",
+				sourceFile: "packages/basalt/src/components/description-list.tsx",
+				propsType: "DescriptionListProps",
+				surface: "DescriptionList",
+			},
+			{
+				slug: "description-list",
+				sourceFile: "packages/basalt/src/components/description-list.tsx",
+				propsType: "DescriptionListItemProps",
+				surface: "DescriptionList.Item",
 			},
 			{
 				slug: "basalt-mark",
@@ -829,7 +847,7 @@ describe("catalog API generator contract", () => {
 				surface: "DeleteResource",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(116);
+		expect(CATALOG_API_TARGETS).toHaveLength(119);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -877,6 +895,7 @@ describe("catalog API generator contract", () => {
 			"tooltip",
 			"theme-toggle",
 			"layer-card",
+			"description-list",
 			"basalt-mark",
 			"field",
 			"input",
@@ -1286,7 +1305,11 @@ describe("catalog API generator contract", () => {
 
 	it("extracts LayerCard root props from LayerCardProps", () => {
 		const generated = generateProductionProps();
-		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
+			"className",
+			"outlined",
+			"padding",
+		]);
 		expect(generated["layer-card"]).toEqual([
 			{
 				name: "className",
@@ -1295,10 +1318,17 @@ describe("catalog API generator contract", () => {
 				description: "Additional classes for the card root.",
 			},
 			{
+				name: "outlined",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Draw a hairline ring. Default grouping is luminance only.",
+			},
+			{
 				name: "padding",
 				type: '"lg" | "md" | "none" | "sm"',
 				required: false,
-				default: '"none"',
+				default: '"md"',
 				description: "Inner spacing for unstructured card content.",
 			},
 		]);
@@ -1376,7 +1406,11 @@ describe("catalog API generator contract", () => {
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
-		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
+			"className",
+			"outlined",
+			"padding",
+		]);
 	}, 60_000);
 
 	it("extracts Field props from FieldProps in source order with required label and children", () => {
@@ -1467,7 +1501,11 @@ describe("catalog API generator contract", () => {
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
-		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
+			"className",
+			"outlined",
+			"padding",
+		]);
 		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 	}, 60_000);
 
@@ -1534,7 +1572,11 @@ describe("catalog API generator contract", () => {
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
-		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
+			"className",
+			"outlined",
+			"padding",
+		]);
 		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 		expect(generated.field?.map((prop) => prop.name)).toEqual([
 			"label",
@@ -1611,7 +1653,11 @@ describe("catalog API generator contract", () => {
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
 		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
-		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual(["className", "padding"]);
+		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
+			"className",
+			"outlined",
+			"padding",
+		]);
 		expect(generated["basalt-mark"]?.map((prop) => prop.name)).toEqual(["className"]);
 		expect(generated.field?.map((prop) => prop.name)).toEqual([
 			"label",
@@ -1841,10 +1887,12 @@ export interface WidgetProps {
 				"LayerCard.Secondary",
 				"LayerCard.Header",
 				"LayerCard.Body",
+				"LayerCard.Well",
 				"LayerCard.Footer",
 				"LayerCard.Loading",
 				"LayerCard.Empty",
 			],
+			"description-list": ["DescriptionList", "DescriptionList.Item"],
 			"basalt-mark": ["BasaltMark"],
 			field: ["Field"],
 			input: ["Input"],
@@ -1926,7 +1974,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(68);
+		expect(Object.keys(generated)).toHaveLength(69);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -2027,7 +2075,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(68);
+		expect(Object.keys(generated)).toHaveLength(69);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -2149,7 +2197,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(68);
+		expect(Object.keys(generated)).toHaveLength(69);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -2220,7 +2268,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(68);
+		expect(Object.keys(generated)).toHaveLength(69);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2263,7 +2311,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(68);
+		expect(Object.keys(generated)).toHaveLength(69);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2315,7 +2363,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(68);
+		expect(Object.keys(generated)).toHaveLength(69);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3557,8 +3605,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(68);
-		expect(Object.keys(first)).toHaveLength(69);
+		expect(slugs).toHaveLength(69);
+		expect(Object.keys(first)).toHaveLength(70);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3634,7 +3682,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"8136ff3bafdb4f0027528e792aa91e30c53219fa0cd81cebd0367293092b3c17",
+			"cd0933bd8ab7d94c01c93d56560370ebbd643035c2e069e702da105595130a18",
 		);
 	}, 60_000);
 

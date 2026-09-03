@@ -118,7 +118,7 @@ describe("foundation catalog content family", () => {
 			BUTTON_EXAMPLES.map((example) => example.render),
 		);
 		expect(foundation["layer-card"]?.docs.description).toBe(
-			"A layered or structured card shell with consistent spacing, sections, loading, and empty states.",
+			"A nestable painted surface. Inside an island it is L2; LayerCard.Well raises L3. Primary aliases Well; Secondary aliases Header.",
 		);
 		expect(foundation["layer-card"]?.docs.variants).toEqual(["none", "sm", "md", "lg"]);
 		expect(foundation["layer-card"]?.docs.api).toBe(layerCardApi);
@@ -128,6 +128,7 @@ describe("foundation catalog content family", () => {
 			"layer-card-multiple-cards",
 			"layer-card-structured-card",
 			"layer-card-loading-empty",
+			"layer-card-nested-surfaces",
 		]);
 		expect(foundation["scroll-area"]?.docs).toMatchObject({
 			description:
@@ -196,7 +197,7 @@ describe("foundation catalog content family", () => {
 		expect(foundation.text?.docs.usage).toContain('as="h1"');
 		expect(
 			FOUNDATION_SLUGS.reduce((count, slug) => count + (foundation[slug]?.examples.length ?? 0), 0),
-		).toBe(34);
+		).toBe(35);
 		for (const slug of FOUNDATION_SLUGS) {
 			const content = foundation[slug];
 			expect(content?.docs.description.length, slug).toBeGreaterThan(0);

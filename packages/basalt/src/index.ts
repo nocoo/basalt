@@ -26,6 +26,7 @@ export {
 	CommandShortcut,
 } from "./components/command-palette";
 export { ConfirmDialog, useConfirm } from "./components/confirm-dialog";
+export { DescriptionList } from "./components/description-list";
 export {
 	Dialog,
 	DialogClose,

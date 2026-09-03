@@ -41,18 +41,18 @@ describe("catalog index model", () => {
 			"Charts",
 			"Blocks",
 		]);
-		expect(CATALOG_INDEX_GROUPS.map((group) => group.items.length)).toEqual([65, 24, 3]);
-		expect(CATALOG_INDEX_ITEMS).toHaveLength(92);
+		expect(CATALOG_INDEX_GROUPS.map((group) => group.items.length)).toEqual([66, 24, 3]);
+		expect(CATALOG_INDEX_ITEMS).toHaveLength(93);
 
 		const slugs = CATALOG_INDEX_ITEMS.map((item) => item.entry.slug);
-		expect(new Set(slugs).size).toBe(92);
+		expect(new Set(slugs).size).toBe(93);
 		expect(slugs).toEqual(
 			CATALOG.filter((entry) => entry.category !== "docs").map((entry) => entry.slug),
 		);
 	});
 
 	it("models the current page and release states independently", () => {
-		expect(CATALOG_INDEX_READY_COUNT).toBe(91);
+		expect(CATALOG_INDEX_READY_COUNT).toBe(92);
 		expect(
 			CATALOG_INDEX_ITEMS.filter((item) => item.pageStatus === "planned").map(
 				(item) => item.entry.slug,
@@ -78,12 +78,12 @@ describe("catalog index model", () => {
 		]);
 	});
 
-	it("models all public catalog navigation as 100 ready and maps planned", () => {
+	it("models all public catalog navigation as 101 ready and maps planned", () => {
 		const states = CATALOG.map((entry) => ({
 			slug: entry.slug,
 			pageStatus: resolveCatalogPageState(entry.slug, catalogDocs, catalogHero).pageStatus,
 		}));
-		expect(states.filter((item) => item.pageStatus === "ready")).toHaveLength(100);
+		expect(states.filter((item) => item.pageStatus === "ready")).toHaveLength(101);
 		expect(states.filter((item) => item.pageStatus === "planned").map((item) => item.slug)).toEqual(
 			["maps"],
 		);
@@ -183,7 +183,7 @@ describe("catalog index model", () => {
 			32,
 		);
 		expect(CATALOG.filter((entry) => catalogReleaseStatus(entry.kind) === "catalog")).toHaveLength(
-			69,
+			70,
 		);
 	});
 

@@ -95,6 +95,7 @@ describe("content scenario truth", () => {
 			"layer-card-multiple-cards",
 			"layer-card-structured-card",
 			"layer-card-loading-empty",
+			"layer-card-nested-surfaces",
 		]);
 	});
 

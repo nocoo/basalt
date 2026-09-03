@@ -34,6 +34,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	"date-navigation": "charts",
 	"date-picker": "forms",
 	"delete-resource": "data-layout",
+	"description-list": "data-layout",
 	dialog: "overlay",
 	donut: "charts",
 	"dropdown-menu": "overlay",

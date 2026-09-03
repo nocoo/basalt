@@ -11,6 +11,7 @@ export const CATALOG_PAGE_STATUS = {
 	tooltip: "ready",
 	"theme-toggle": "ready",
 	"layer-card": "ready",
+	"description-list": "ready",
 	"basalt-mark": "ready",
 	field: "ready",
 	input: "ready",

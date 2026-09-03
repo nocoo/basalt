@@ -20,6 +20,7 @@ import { API as dataTableApi } from "./catalog-api/data-table";
 import { API as dateNavigationApi } from "./catalog-api/date-navigation";
 import { API as datePickerApi } from "./catalog-api/date-picker";
 import { API as deleteResourceApi } from "./catalog-api/delete-resource";
+import { API as descriptionListApi } from "./catalog-api/description-list";
 import { API as donutApi } from "./catalog-api/donut";
 import { API as dropdownMenuApi } from "./catalog-api/dropdown-menu";
 import { API as fieldApi } from "./catalog-api/field";
@@ -90,6 +91,7 @@ export const CATALOG_API = {
 	"date-navigation": dateNavigationApi,
 	"date-picker": datePickerApi,
 	"delete-resource": deleteResourceApi,
+	"description-list": descriptionListApi,
 	donut: donutApi,
 	"dropdown-menu": dropdownMenuApi,
 	field: fieldApi,

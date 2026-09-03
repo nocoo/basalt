@@ -11,10 +11,17 @@ export const API = [
 				description: "Additional classes for the card root.",
 			},
 			{
+				name: "outlined",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Draw a hairline ring. Default grouping is luminance only.",
+			},
+			{
 				name: "padding",
 				type: '"lg" | "md" | "none" | "sm"',
 				required: false,
-				default: '"none"',
+				default: '"md"',
 				description: "Inner spacing for unstructured card content.",
 			},
 		],
@@ -34,6 +41,18 @@ export const API = [
 	{
 		name: "LayerCard.Body",
 		props: [],
+	},
+	{
+		name: "LayerCard.Well",
+		props: [
+			{
+				name: "outlined",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Draw a hairline ring on a nested well.",
+			},
+		],
 	},
 	{
 		name: "LayerCard.Footer",

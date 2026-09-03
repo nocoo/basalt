@@ -46,7 +46,7 @@ describe("navigation catalog content family", () => {
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(NAVIGATION_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(100);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(101);
 	});
 
 	it("keeps the twenty final winner scenarios in their audited order", () => {

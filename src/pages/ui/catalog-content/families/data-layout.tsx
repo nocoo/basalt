@@ -6,6 +6,7 @@ import {
 } from "../../catalog-source";
 import { DATA_TABLE_EXAMPLES } from "../../examples/data-table";
 import { DELETE_RESOURCE_EXAMPLES } from "../../examples/delete-resource";
+import { DESCRIPTION_LIST_EXAMPLES } from "../../examples/description-list";
 import { FLOW_EXAMPLES } from "../../examples/flow";
 import { GRID_EXAMPLES } from "../../examples/grid";
 import { PAGE_HEADER_EXAMPLES } from "../../examples/page-header";
@@ -15,6 +16,7 @@ import { TABLE_EXAMPLES } from "../../examples/table";
 import { TABLE_PAGER_EXAMPLES } from "../../examples/table-pager";
 import { API as dataTableApi } from "../../generated/catalog-api/data-table";
 import { API as deleteResourceApi } from "../../generated/catalog-api/delete-resource";
+import { API as descriptionListApi } from "../../generated/catalog-api/description-list";
 import { API as flowApi } from "../../generated/catalog-api/flow";
 import { API as gridApi } from "../../generated/catalog-api/grid";
 import { API as pageHeaderApi } from "../../generated/catalog-api/page-header";
@@ -128,6 +130,29 @@ export default catalogContentFamily({
 			api: tableApi,
 		},
 		examples: TABLE_EXAMPLES,
+	},
+	"description-list": {
+		docs: {
+			...extraDocs(
+				"DescriptionList",
+				"description-list",
+				"Stacked term and value pairs. Not a painted surface.",
+				'<DescriptionList><DescriptionList.Item term="Status">Active</DescriptionList.Item></DescriptionList>',
+				undefined,
+				`import { DescriptionList } from "@nocoo/basalt/components/description-list";
+
+export default function Example() {
+	return (
+		<DescriptionList>
+			<DescriptionList.Item term="Status">Active</DescriptionList.Item>
+			<DescriptionList.Item term="Plan">Enterprise</DescriptionList.Item>
+		</DescriptionList>
+	);
+}`,
+			),
+			api: descriptionListApi,
+		},
+		examples: DESCRIPTION_LIST_EXAMPLES,
 	},
 	"data-table": {
 		docs: {

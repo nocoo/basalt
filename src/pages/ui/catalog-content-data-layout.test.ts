@@ -22,6 +22,7 @@ import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
 const DATA_LAYOUT_SCENARIOS = {
 	table: ["table-basic", "table-selected-row"],
+	"description-list": ["description-list-default"],
 	"data-table": [
 		"data-table-default",
 		"data-table-loading",
@@ -49,19 +50,19 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 } as const;
 
 describe("data-layout catalog content family", () => {
-	it("owns exactly nine slugs and ninety-one generated owners", () => {
+	it("owns exactly ten slugs and generated owners", () => {
 		expect(Object.keys(dataLayout)).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS));
-		expect(Object.keys(dataLayout)).toHaveLength(9);
+		expect(Object.keys(dataLayout)).toHaveLength(10);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "data-layout")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(100);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(101);
 	});
 
-	it("keeps the eighteen final winner scenarios in their audited order", () => {
+	it("keeps the nineteen final winner scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(DATA_LAYOUT_SCENARIOS)) {
 			const examples = dataLayout[slug]?.examples ?? [];
@@ -80,7 +81,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(18);
+		expect(count).toBe(19);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {

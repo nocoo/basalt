@@ -240,12 +240,14 @@ describe("catalog source contract", () => {
 			"LayerCard.Secondary",
 			"LayerCard.Header",
 			"LayerCard.Body",
+			"LayerCard.Well",
 			"LayerCard.Footer",
 			"LayerCard.Loading",
 			"LayerCard.Empty",
 		]);
 		expect(CATALOG_API["layer-card"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"className",
+			"outlined",
 			"padding",
 		]);
 		expect(implementationFileFor(entry("basalt-mark"))).toBe(

@@ -147,6 +147,7 @@ const LAYER_CARD_IDS = [
 	"layer-card-multiple-cards",
 	"layer-card-structured-card",
 	"layer-card-loading-empty",
+	"layer-card-nested-surfaces",
 ] as const;
 const LAYER_CARD_TITLES = [
 	"Basic Card",
@@ -154,6 +155,7 @@ const LAYER_CARD_TITLES = [
 	"Multiple Cards",
 	"Structured Card",
 	"Loading and Empty",
+	"Nested Surfaces",
 ] as const;
 
 const layerCardRenders = import.meta.glob("./examples/layer-card/*.tsx", { eager: true });
@@ -832,9 +834,9 @@ describe("source-backed theme-toggle scenarios", () => {
 });
 
 describe("source-backed layer-card scenarios", () => {
-	it("loads five layer-card scenarios from the same glob modules", () => {
-		expect(Object.keys(layerCardRenders)).toHaveLength(5);
-		expect(Object.keys(layerCardSources)).toHaveLength(5);
+	it("loads six layer-card scenarios from the same glob modules", () => {
+		expect(Object.keys(layerCardRenders)).toHaveLength(6);
+		expect(Object.keys(layerCardSources)).toHaveLength(6);
 		const loaded = loadModuleScenarios({
 			slug: "layer-card",
 			metas: LAYER_CARD_TITLES.map((title, index) => ({

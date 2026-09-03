@@ -112,6 +112,7 @@ describe("foundation feedback scenario truth", () => {
 			"layer-card-multiple-cards",
 			"layer-card-structured-card",
 			"layer-card-loading-empty",
+			"layer-card-nested-surfaces",
 		]);
 		expect(UI_EXAMPLES.link?.map((item) => item.id)).toEqual([
 			"link-basic-link",

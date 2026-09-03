@@ -122,6 +122,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "layer-card",
 		sourceFile: "packages/basalt/src/components/layer-card.tsx",
+		propsType: "LayerCardWellProps",
+		surface: "LayerCard.Well",
+	},
+	{
+		slug: "layer-card",
+		sourceFile: "packages/basalt/src/components/layer-card.tsx",
 		propsType: "LayerCardSectionProps",
 		surface: "LayerCard.Footer",
 		allowEmpty: true,
@@ -137,6 +143,18 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/layer-card.tsx",
 		propsType: "LayerCardEmptyProps",
 		surface: "LayerCard.Empty",
+	},
+	{
+		slug: "description-list",
+		sourceFile: "packages/basalt/src/components/description-list.tsx",
+		propsType: "DescriptionListProps",
+		surface: "DescriptionList",
+	},
+	{
+		slug: "description-list",
+		sourceFile: "packages/basalt/src/components/description-list.tsx",
+		propsType: "DescriptionListItemProps",
+		surface: "DescriptionList.Item",
 	},
 	{
 		slug: "basalt-mark",

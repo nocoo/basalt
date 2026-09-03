@@ -40,6 +40,13 @@ export const CATALOG: CatalogEntry[] = [
 		navName: "Layer Card",
 	},
 	{
+		slug: "description-list",
+		name: "DescriptionList",
+		kind: "catalog",
+		category: "component",
+		navName: "Description List",
+	},
+	{
 		slug: "basalt-mark",
 		name: "BasaltMark",
 		kind: "catalog",

@@ -74,8 +74,8 @@ describe("AppSidebar", () => {
 		);
 		const disabledButtons = catalogButtons.filter((button) => button.disabled);
 
-		expect(catalogButtons).toHaveLength(101);
-		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(100);
+		expect(catalogButtons).toHaveLength(102);
+		expect(catalogButtons.filter((button) => !button.disabled)).toHaveLength(101);
 		expect(disabledButtons.map((button) => button.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const button of disabledButtons) {
 			expect(button).toHaveTextContent("Planned");
@@ -109,10 +109,10 @@ describe("AppSidebar", () => {
 			(option) => option.getAttribute("data-disabled") === "true",
 		);
 
-		expect(catalogOptions).toHaveLength(101);
+		expect(catalogOptions).toHaveLength(102);
 		expect(
 			catalogOptions.filter((option) => option.getAttribute("data-disabled") !== "true"),
-		).toHaveLength(100);
+		).toHaveLength(101);
 		expect(disabledOptions.map((option) => option.dataset.catalogSlug)).toEqual(PLANNED_SLUGS);
 		for (const option of disabledOptions) {
 			expect(option).toHaveTextContent("Planned");
@@ -157,7 +157,7 @@ describe("AppSidebar", () => {
 	it("does not show pending maturity badges in the components sidebar", () => {
 		renderSidebar();
 		const buttons = catalogButtons();
-		expect(buttons).toHaveLength(101);
+		expect(buttons).toHaveLength(102);
 		expect(document.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
 		expect(document.querySelector("aside")?.textContent).not.toContain("待规范");
 		for (const button of buttons) {

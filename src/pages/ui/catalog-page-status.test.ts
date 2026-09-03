@@ -5,14 +5,14 @@ import { resolveCatalogPageState } from "./catalog-index";
 import { catalogPageStatus } from "./catalog-page-status";
 
 describe("generated catalog page status", () => {
-	it("matches the family-owned page resolver for all 101 catalog entries", async () => {
+	it("matches the family-owned page resolver for all 102 catalog entries", async () => {
 		const content = await loadCatalogContentRecord();
 		const docs = Object.fromEntries(
 			Object.entries(content).map(([slug, entry]) => [slug, entry.docs]),
 		);
 		const statuses = CATALOG.map((entry) => [entry.slug, catalogPageStatus(entry.slug)] as const);
-		expect(statuses).toHaveLength(101);
-		expect(statuses.filter(([, status]) => status === "ready")).toHaveLength(100);
+		expect(statuses).toHaveLength(102);
+		expect(statuses.filter(([, status]) => status === "ready")).toHaveLength(101);
 		expect(statuses.filter(([, status]) => status === "planned")).toHaveLength(1);
 		for (const [slug, status] of statuses) {
 			expect(status, slug).toBe(
