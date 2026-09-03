@@ -9,6 +9,7 @@ import {
 } from "@nocoo/basalt/components/dialog";
 import { Input } from "@nocoo/basalt/components/input";
 import { Label } from "@nocoo/basalt/components/label";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Separator } from "@nocoo/basalt/components/separator";
 import { toast } from "@nocoo/basalt/components/toast";
@@ -278,11 +279,10 @@ export default function InteractionShowcasePage() {
 
 	return (
 		<div className="space-y-8">
-			<SectionRule title={t("pages.interactionShowcase.overview")}>
-				<p className="text-sm text-muted-foreground">
-					{t("pages.interactionShowcase.overviewDesc")}
-				</p>
-			</SectionRule>
+			<PageHeader
+				title={t("pages.interactionShowcase.overview")}
+				description={t("pages.interactionShowcase.overviewDesc")}
+			/>
 
 			<ToastSection />
 
