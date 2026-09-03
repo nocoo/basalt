@@ -1,22 +1,57 @@
 # Basalt application chrome
 
-This is the one-pass setup for a Basalt app. Read it before writing layout. After this chrome is in place, every feature is a page inside `ContentIsland`.
+This is the one-pass setup for a Basalt app. An MVP is **login + shell + one page**. After that, product work is arranging `LayerCard` on the island. Do not invent a second header, a second rail, or a second title above the content heading.
 
-The library owns the rail, the main column, collapse motion, and the island. The app owns navigation data, brand, and page bodies.
+The library owns the rail, the main column, collapse motion, the island, the page heading, and region rules. The app owns navigation data, brand, version, identity, and page bodies.
 
 Package: `@nocoo/basalt`. React 19. Tailwind v4.
 
 ---
 
-## 1. Goal
+## 1. MVP
 
-Ship three surfaces, in this order:
+Ship in this order. Each step has a section below. Do not skip ahead to cards.
 
-1. **Providers + CSS** — theme, links, tooltips, tokens.
-2. **Login** — full-viewport badge card. No shell.
-3. **App shell** — skip link, sidebar rail, header, content island.
+1. **Providers + CSS** — §2–5
+2. **Login** — full-viewport badge. No shell. §11
+3. **App frame** — skip link, sidebar (product title + version + nav), header (crumbs + current page + top-right), island. §6–10
+4. **First page** — `PageHeader` (title, subtitle, create, filters) then cards. Optional `SectionRule`. §13–15
 
-Do not start page work until the shell matches the trees in this file.
+### Who owns what
+
+| Layer | Component | Owns | Does not own |
+|---|---|---|---|
+| Login | app page, not `AppShell` | identity badge | rail, header, island |
+| Rail | `Sidebar` | product title, version pill, nav, user | page body |
+| Framework bar | `AppHeader` | ancestor breadcrumbs, current page name, top-right actions (`ThemeToggle`, …) | create, filters, cards |
+| Island | `ContentIsland` | L1 surface and scroll | page chrome |
+| Page heading | `PageHeader` | content title, subtitle, create last, filters | `AppHeader` crumbs |
+| Region | `SectionRule` | dashed title rule, optional hint, optional region actions | `LayerCard.Header` |
+| Card | `LayerCard` | nested surface | page title |
+
+### Tree
+
+```
+LoginPage                         ← /login only. No AppShell.
+
+AppShell                          ← everything else
+├── AppSkipLink
+├── Sidebar                       ← product title + version + nav
+└── AppMain                       ← id="main-content"
+    ├── AppHeader                 ← crumbs + current page | top-right
+    └── island wrap               ← px-2 pb-2 md:px-3 md:pb-3
+        └── ContentIsland
+            ├── PageHeader        ← title + subtitle | create / short filters
+            │                     ← optional own-row complex filters
+            ├── SectionRule?      ← optional region split
+            └── LayerCard…        ← all later product UI
+```
+
+`AppHeader.title` is the current page in the top bar (`h1`, `text-sm`). `PageHeader.title` is the content heading (`h1`, `text-2xl`). They may use the same words. They are different roles. Do not put an icon + page name above `PageHeader` — that duplicates the bar.
+
+When `AppHeader` already has breadcrumbs, **omit** `PageHeader.breadcrumbs`.
+
+Live: `/login`, shell, first page `/data`, surfaces `/layout`. Catalog: `/ui/page-header`, `/ui/section-rule`.
 
 ---
 
@@ -68,18 +103,19 @@ Root barrel is small leaves and providers. Shell chrome is granular.
 
 | From | Import |
 |---|---|
-| `@nocoo/basalt` | `Button`, `Sidebar`, `SidebarHeader`, `SidebarNav`, `SidebarFooter`, `SidebarItem`, `SidebarIconItem`, `SidebarPartition`, `SidebarGroup`, `SidebarSearch`, `SidebarUser`, `ContentIsland`, `Sheet`, `SheetContent`, `SheetTitle`, `Avatar`, `AvatarFallback`, `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`, `ThemeProvider`, `LinkProvider`, `Toaster`, `CommandPalette`, … |
+| `@nocoo/basalt` | `Button`, `Input`, `LayerCard`, `DescriptionList`, `Sidebar`, `SidebarHeader`, `SidebarNav`, `SidebarFooter`, `SidebarItem`, `SidebarIconItem`, `SidebarPartition`, `SidebarGroup`, `SidebarSearch`, `SidebarUser`, `ContentIsland`, `Sheet`, `SheetContent`, `SheetTitle`, `Avatar`, `AvatarFallback`, `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`, `Toaster`, `CommandPalette`, … |
 | `@nocoo/basalt/components/app-shell` | `AppShell`, `AppMain`, `AppSkipLink` |
 | `@nocoo/basalt/components/app-header` | `AppHeader` |
+| `@nocoo/basalt/components/page-header` | `PageHeader` |
+| `@nocoo/basalt/components/section-rule` | `SectionRule` |
 | `@nocoo/basalt/components/loading-screen` | `LoadingScreen` |
 | `@nocoo/basalt/components/basalt-mark` | `BasaltMark` |
-| `@nocoo/basalt/components/theme-toggle` | `ThemeToggle` |
 | `@nocoo/basalt/providers/theme` | `useTheme` (if not taking `ThemeProvider` from the root) |
 | `@nocoo/basalt/charts/*` | charts |
 | `@nocoo/basalt/components/date-picker` | DatePicker |
 | `@nocoo/basalt/components/data-table` | DataTable |
 
-`AppShell`, charts, DatePicker, and DataTable stay off the root barrel.
+Off the root barrel: `AppShell`, `AppMain`, `AppSkipLink`, `AppHeader`, `PageHeader`, `SectionRule`, `LoadingScreen`, `BasaltMark`, charts, DatePicker, DataTable. Import those from the granular paths above. `LayerCard` is on the root barrel **and** `@nocoo/basalt/components/layer-card`.
 
 ---
 
@@ -140,7 +176,7 @@ AppShell                         ← flex row, h-screen, overflow hidden
         └── ContentIsland        ← page outlet
 ```
 
-`AppMain` always gets `tabIndex={-1}`. `AppSkipLink` targets `#main-content` (already on `AppMain`).
+`AppMain` always sets `id="main-content"`. `AppSkipLink` defaults to `href="#main-content"`. Do not change either id.
 
 The island wrap is the only extra layout div in the main column. Pages render **inside** `ContentIsland`. Pages do not set `h-screen`, side padding, or a second card around the island.
 
@@ -176,7 +212,7 @@ Sidebar                          ← collapsed={false}; owns 260px and h-screen
     └── SidebarUser
 ```
 
-`SidebarHeader` already pads horizontally. Brand, version pill, and collapse control go **directly** in it.
+`SidebarHeader` already pads horizontally. Brand, version pill, and collapse control go **directly** in it. The version string is read from the app `package.json` at build time. Never hardcode it.
 
 Nav labels use `SidebarPartition`. The item stack is **one** `px-3` column (the same gutter `SidebarGroup` uses). `SidebarItem` already has its own `px-3`. That is the whole horizontal rhythm: partition at 24px, item content at 24px.
 
@@ -192,7 +228,7 @@ Collapsible sections use `SidebarGroup` instead of Partition + stack. `SidebarGr
           Acme
         </span>
         <span className="shrink-0 rounded-md bg-basalt-secondary px-1.5 py-0.5 text-[10px] leading-none font-medium text-basalt-muted-foreground">
-          v1.0.0
+          v{version}
         </span>
       </div>
       <Button
@@ -371,6 +407,8 @@ export function AppFrame() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
   const { theme } = useTheme();
+  const crumbs = [{ href: "/", label: "Home" }];
+  const title = "Projects";
 
   useEffect(() => {
     setMobileOpen(false);
@@ -399,7 +437,7 @@ export function AppFrame() {
           </SheetContent>
         </Sheet>
       )}
-      <AppMain tabIndex={-1}>
+      <AppMain>
         <AppHeader
           leading={
             isMobile ? (
@@ -429,7 +467,13 @@ export function AppFrame() {
 }
 ```
 
-`AppHeader` is `h-14`, matching `SidebarHeader`. Breadcrumbs are ancestors only; `title` is the current page. Do not repeat the current page in both.
+`AppHeader` is `h-14`, matching `SidebarHeader`.
+
+- `breadcrumbs` — ancestors only. Each item is `{ href?, label }`.
+- `title` — current page name in the bar. Do not also put that page in `breadcrumbs`.
+- `actions` — top-right framework controls (`ThemeToggle`, account, …). **Not** the page create button.
+
+Product title and version live in `SidebarHeader`, not in `AppHeader`. Read the version from the app `package.json` at build time. Do not hardcode it.
 
 ---
 
@@ -508,20 +552,115 @@ Boot and route gates use `LoadingScreen` — a centered mark and a 6rem shimmer 
 
 ---
 
-## 13. After the chrome
+## 13. First page
 
-When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place:
+When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place, add routes as `Outlet` pages. Every page starts with `PageHeader`. The shell file does not grow with page UI.
 
-- add routes as `Outlet` pages
-- start every page with `PageHeader` (**§15**)
-- split regions with `SectionRule` (**§15**)
-- compose pages with `LayerCard` on the island (**§14**)
-- compose Basalt leaves (`Table`, `Button`, `Field`, charts, …) inside those cards
-- keep view-models free of layout chrome
+`PageHeader` is flush on `ContentIsland`. Do not wrap it in another card. Do not put an icon row above the heading.
 
-The shell file should not grow with page UI. Navigation items are data. Pages are data + controls.
+### Create and filters
 
-Live recipe: `/layout`. Product acceptance: `/data`.
+- Put the create button last in `actions`.
+- One short filter (search, a single select) stays in `actions`, before create.
+- Two or more filters, or a filter bar, go in `filters` (own row). Create stays in `actions`.
+- Do not put create in `filters`.
+- Do not pass `breadcrumbs` here if `AppHeader` already has the trail.
+
+### Short filters (same row as create)
+
+```tsx
+import { Button } from "@nocoo/basalt/components/button";
+import { Input } from "@nocoo/basalt/components/input";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
+
+export default function ProjectsPage() {
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        title="Projects"
+        description="Active work in this workspace."
+        actions={
+          <>
+            <Input placeholder="Search" className="max-w-48" />
+            <Button>New project</Button>
+          </>
+        }
+      />
+      <LayerCard>
+        <p className="text-sm text-basalt-muted-foreground">List or board.</p>
+      </LayerCard>
+    </div>
+  );
+}
+```
+
+### Complex filters (own row) and regions
+
+```tsx
+import { Button } from "@nocoo/basalt/components/button";
+import { Input } from "@nocoo/basalt/components/input";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
+import { SectionRule } from "@nocoo/basalt/components/section-rule";
+
+export default function ProjectsPage() {
+  return (
+    <div className="space-y-8">
+      <PageHeader
+        title="Projects"
+        description="Active work in this workspace."
+        actions={
+          <>
+            <Button variant="outline">Export</Button>
+            <Button>New project</Button>
+          </>
+        }
+        filters={
+          <>
+            <Input placeholder="Owner" className="max-w-48" />
+            <Input placeholder="Region" className="max-w-48" />
+            <Input placeholder="Risk" className="max-w-48" />
+          </>
+        }
+      />
+      <SectionRule title="Overview" hint="Live totals for the current workspace.">
+        <div className="grid grid-cols-2 gap-4">
+          <LayerCard>
+            <p className="text-xs text-basalt-muted-foreground">Projects</p>
+            <p className="text-2xl font-semibold">24</p>
+          </LayerCard>
+          <LayerCard>
+            <p className="text-xs text-basalt-muted-foreground">Ready</p>
+            <p className="text-2xl font-semibold">18</p>
+          </LayerCard>
+        </div>
+      </SectionRule>
+      <SectionRule
+        title="Catalog"
+        actions={
+          <Button variant="outline" size="sm">
+            Filter
+          </Button>
+        }
+      >
+        <LayerCard>
+          <LayerCard.Header>Items</LayerCard.Header>
+          <LayerCard.Body>
+            <p className="text-sm text-basalt-muted-foreground">
+              Later work is only more cards in this region.
+            </p>
+          </LayerCard.Body>
+        </LayerCard>
+      </SectionRule>
+    </div>
+  );
+}
+```
+
+After this page exists, stop adding chrome. New features are `LayerCard` (and leaves inside them) under `PageHeader` / `SectionRule`. Keep view-models free of layout.
+
+`PageHeader` and `SectionRule` are not on the root barrel. Live recipe: `/data`. Surfaces: `/layout`.
 
 ---
 
@@ -607,17 +746,19 @@ import { DescriptionList } from "@nocoo/basalt/components/description-list";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 ```
 
-`LayerCard` is not on the root barrel.
+`LayerCard` and `DescriptionList` are also on the root barrel. Chrome (`AppShell`, `AppHeader`, `PageHeader`, `SectionRule`) is not.
 
 ---
 
-## 15. Page chrome
+## 15. PageHeader and SectionRule
 
-`PageHeader` and `SectionRule` are the only page-level chrome. Import them from granular paths. They are not on the root barrel. Do not wrap the title in an island, and do not draw a second title above the `h1` — the shell breadcrumb already names the page.
+`PageHeader` and `SectionRule` are the only page-level chrome inside the island. Import them from granular paths. They are not on the root barrel. Do not wrap the title in an island.
 
 ### PageHeader
 
-Flush heading on the island. Title left, create last in `actions`. Short filters stay in `actions`. Complex filters take the own `filters` row.
+Flush heading. Title left. Create last in `actions`. Short filters in `actions`. Complex filters on `filters`.
+
+`breadcrumbs` is optional. Use it only when there is no `AppHeader` trail (catalog demos, isolated surfaces). Product pages under `AppFrame` omit it.
 
 ```tsx
 import { PageHeader } from "@nocoo/basalt/components/page-header";
@@ -634,8 +775,6 @@ import { PageHeader } from "@nocoo/basalt/components/page-header";
   filters={<Input placeholder="Owner" className="max-w-48" />}
 />
 ```
-
-`breadcrumbs` is optional catalog chrome. Showcase pages already have `AppHeader` breadcrumbs — omit them.
 
 ### SectionRule
 
