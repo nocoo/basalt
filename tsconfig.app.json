@@ -1,6 +1,6 @@
 {
 	"compilerOptions": {
-		"types": ["vitest/globals", "node"],
+		"types": ["vitest/globals", "@testing-library/jest-dom/vitest", "node"],
 		"target": "ES2020",
 		"useDefineForClassFields": true,
 		"lib": ["ES2020", "DOM", "DOM.Iterable"],
