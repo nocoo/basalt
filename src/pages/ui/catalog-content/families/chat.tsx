@@ -77,24 +77,41 @@ export default catalogContentFamily({
 		docs: extraDocs(
 			"Dock",
 			"dock",
-			"An in-flow rail that animates width instead of overlaying the page.",
+			"A right rail. Push shrinks the main column. Overlay covers it with a Dialog scrim.",
 			'<Dock open aria-label="Assistant">Panel</Dock>',
 			[
 				{ name: "open", type: "boolean", required: true },
+				{ name: "mode", type: '"push" | "overlay"', default: '"push"' },
 				{ name: "width", type: "string", default: '"clamp(300px, 32.5vw, 546px)"' },
+				{ name: "onDismiss", type: "() => void" },
 				{ name: "className", type: "string" },
 			],
 		),
 		examples: [
 			{
-				id: catalogScenarioId("dock", "open"),
-				title: "Open",
+				id: catalogScenarioId("dock", "push"),
+				title: "Push",
 				code: '<Dock open width="16rem" aria-label="Assistant" className="h-48">Panel</Dock>',
 				render: () => (
-					<div className="flex h-48 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
+					<div className="relative flex h-48 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
 						<div className="flex-1 bg-basalt-secondary" />
 						<Dock open width="16rem" aria-label="Assistant" className="h-full">
 							<div className="flex h-full items-center justify-center text-sm">Panel</div>
+						</Dock>
+					</div>
+				),
+			},
+			{
+				id: catalogScenarioId("dock", "overlay"),
+				title: "Overlay",
+				code: '<Dock mode="overlay" open width="16rem" aria-label="Assistant">Panel</Dock>',
+				render: () => (
+					<div className="relative flex h-48 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
+						<div className="flex-1 bg-basalt-secondary" />
+						<Dock mode="overlay" open width="16rem" aria-label="Assistant" className="h-full">
+							<div className="flex h-full items-center justify-center bg-basalt-card text-sm">
+								Panel
+							</div>
 						</Dock>
 					</div>
 				),
