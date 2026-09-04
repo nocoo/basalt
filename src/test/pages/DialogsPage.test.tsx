@@ -41,11 +41,38 @@ describe("DialogsPage", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Open confirm" }));
 		expect(screen.getByRole("alertdialog")).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Apply this layout?" })).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: "Close" })).not.toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
 		expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
 
 		fireEvent.click(screen.getByRole("button", { name: "Open alert" }));
 		expect(screen.getByRole("alertdialog")).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Delete workspace?" })).toBeInTheDocument();
+	});
+
+	it("opens money-flow dialogs from small send to wide review", () => {
+		render(<DialogsPage />);
+		fireEvent.click(screen.getByRole("button", { name: "Open send" }));
+		expect(screen.getByRole("dialog").className).toContain("sm:w-72");
+		expect(screen.getByRole("heading", { name: "Send $1,200?" })).toBeInTheDocument();
+		expect(screen.queryByRole("button", { name: "Close" })).not.toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
+		fireEvent.click(screen.getByRole("button", { name: "Open contribution" }));
+		expect(screen.getByRole("heading", { name: "Log contribution" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+		expect(screen.getByLabelText("Amount")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Close" }));
+
+		fireEvent.click(screen.getByRole("button", { name: "Open holding" }));
+		expect(screen.getByRole("dialog").className).toContain("sm:w-[32rem]");
+		expect(screen.getByRole("heading", { name: "Edit holding" })).toBeInTheDocument();
+		expect(screen.getByLabelText(/Note/)).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Close" }));
+
+		fireEvent.click(screen.getByRole("button", { name: "Open review" }));
+		expect(screen.getByRole("dialog").className).toContain("sm:w-[48rem]");
+		expect(screen.getByRole("heading", { name: "Review transfer" })).toBeInTheDocument();
+		expect(screen.getByText("Operating cash")).toBeInTheDocument();
 	});
 });

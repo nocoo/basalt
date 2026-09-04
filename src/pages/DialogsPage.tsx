@@ -24,6 +24,7 @@ import {
 } from "@nocoo/basalt/components/dialog";
 import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
+import { InputArea } from "@nocoo/basalt/components/input-area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
@@ -38,22 +39,27 @@ const DIALOG_SIZES: { size: DialogSize; width: string }[] = [
 	{ size: "xl", width: "768px" },
 ];
 
-function DialogCloseButton() {
+function DialogDismiss() {
 	const { t } = useTranslation();
 	return (
 		<DialogClose asChild>
-			<Button variant="outline" size="icon" aria-label={t("common.close")}>
+			<Button
+				variant="ghost"
+				size="icon"
+				className="absolute top-4 right-4"
+				aria-label={t("common.close")}
+			>
 				<X />
 			</Button>
 		</DialogClose>
 	);
 }
 
-function DialogTitleRow({ title }: { title: string }) {
+function DialogHeading({ title, description }: { title: string; description?: string }) {
 	return (
-		<div className="mb-4 flex items-start justify-between gap-4">
+		<div className="pr-10">
 			<DialogTitle>{title}</DialogTitle>
-			<DialogCloseButton />
+			{description ? <DialogDescription className="mt-1.5">{description}</DialogDescription> : null}
 		</div>
 	);
 }
@@ -93,9 +99,12 @@ export default function DialogsPage() {
 							<Button>{t("pages.dialogs.openStandard")}</Button>
 						</DialogTrigger>
 						<DialogContent size="base">
-							<DialogTitleRow title={t("pages.dialogs.standardTitle")} />
-							<DialogDescription>{t("pages.dialogs.standardBody")}</DialogDescription>
-							<DialogFooter className="mt-8">
+							<DialogDismiss />
+							<DialogHeading
+								title={t("pages.dialogs.standardTitle")}
+								description={t("pages.dialogs.standardBody")}
+							/>
+							<DialogFooter>
 								<DialogClose asChild>
 									<Button variant="outline">{t("common.cancel")}</Button>
 								</DialogClose>
@@ -119,11 +128,12 @@ export default function DialogsPage() {
 									</Button>
 								</DialogTrigger>
 								<DialogContent size={size}>
-									<DialogTitleRow title={t(`pages.dialogs.size.${size}`)} />
-									<DialogDescription>
-										{t("pages.dialogs.sizeBody", { size, width })}
-									</DialogDescription>
-									<DialogFooter className="mt-8">
+									<DialogDismiss />
+									<DialogHeading
+										title={t(`pages.dialogs.size.${size}`)}
+										description={t("pages.dialogs.sizeBody", { size, width })}
+									/>
+									<DialogFooter>
 										<DialogClose asChild>
 											<Button variant="outline">{t("common.close")}</Button>
 										</DialogClose>
@@ -135,6 +145,131 @@ export default function DialogsPage() {
 				</LayerCard>
 			</SectionRule>
 
+			<SectionRule title={t("pages.dialogs.money")} hint={t("pages.dialogs.moneyHint")}>
+				<LayerCard>
+					<div className="flex flex-wrap gap-3">
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button variant="outline">{t("pages.dialogs.openSend")}</Button>
+							</DialogTrigger>
+							<DialogContent size="sm">
+								<DialogHeading
+									title={t("pages.dialogs.sendTitle")}
+									description={t("pages.dialogs.sendBody")}
+								/>
+								<DialogFooter>
+									<DialogClose asChild>
+										<Button variant="outline">{t("common.cancel")}</Button>
+									</DialogClose>
+									<DialogClose asChild>
+										<Button>{t("pages.dialogs.send")}</Button>
+									</DialogClose>
+								</DialogFooter>
+							</DialogContent>
+						</Dialog>
+
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button variant="outline">{t("pages.dialogs.openLog")}</Button>
+							</DialogTrigger>
+							<DialogContent size="base">
+								<DialogDismiss />
+								<DialogHeading
+									title={t("pages.dialogs.logTitle")}
+									description={t("pages.dialogs.logBody")}
+								/>
+								<div className="mt-4 space-y-4">
+									<Field label={t("pages.dialogs.operation")}>
+										<Input defaultValue={t("pages.dialogs.invest")} />
+									</Field>
+									<Field label={t("pages.dialogs.amount")}>
+										<Input defaultValue="12,400.00" inputMode="decimal" />
+									</Field>
+								</div>
+								<DialogFooter>
+									<DialogClose asChild>
+										<Button variant="outline">{t("common.cancel")}</Button>
+									</DialogClose>
+									<DialogClose asChild>
+										<Button>{t("common.save")}</Button>
+									</DialogClose>
+								</DialogFooter>
+							</DialogContent>
+						</Dialog>
+
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button variant="outline">{t("pages.dialogs.openHolding")}</Button>
+							</DialogTrigger>
+							<DialogContent size="lg">
+								<DialogDismiss />
+								<DialogHeading
+									title={t("pages.dialogs.holdingTitle")}
+									description={t("pages.dialogs.holdingBody")}
+								/>
+								<div className="mt-4 space-y-4">
+									<Field label={t("pages.dialogs.holdingName")}>
+										<Input defaultValue={t("pages.dialogs.holdingNameValue")} />
+									</Field>
+									<Field label={t("pages.dialogs.channel")}>
+										<Input defaultValue={t("pages.dialogs.channelValue")} />
+									</Field>
+									<Field label={t("pages.dialogs.amount")}>
+										<Input defaultValue="80,000.00" inputMode="decimal" />
+									</Field>
+									<Field label={t("pages.dialogs.note")} required={false}>
+										<InputArea defaultValue={t("pages.dialogs.noteValue")} />
+									</Field>
+								</div>
+								<DialogFooter>
+									<DialogClose asChild>
+										<Button variant="outline">{t("common.cancel")}</Button>
+									</DialogClose>
+									<DialogClose asChild>
+										<Button>{t("common.save")}</Button>
+									</DialogClose>
+								</DialogFooter>
+							</DialogContent>
+						</Dialog>
+
+						<Dialog>
+							<DialogTrigger asChild>
+								<Button variant="outline">{t("pages.dialogs.openReview")}</Button>
+							</DialogTrigger>
+							<DialogContent size="xl">
+								<DialogDismiss />
+								<DialogHeading
+									title={t("pages.dialogs.reviewTitle")}
+									description={t("pages.dialogs.reviewBody")}
+								/>
+								<div className="mt-4">
+									<DescriptionList columns={2}>
+										<DescriptionList.Item term={t("pages.dialogs.from")}>
+											{t("pages.dialogs.fromValue")}
+										</DescriptionList.Item>
+										<DescriptionList.Item term={t("pages.dialogs.to")}>
+											{t("pages.dialogs.toValue")}
+										</DescriptionList.Item>
+										<DescriptionList.Item term={t("pages.dialogs.amount")}>
+											$12,400.00
+										</DescriptionList.Item>
+										<DescriptionList.Item term={t("pages.dialogs.fee")}>$0.00</DescriptionList.Item>
+									</DescriptionList>
+								</div>
+								<DialogFooter>
+									<DialogClose asChild>
+										<Button variant="outline">{t("common.cancel")}</Button>
+									</DialogClose>
+									<DialogClose asChild>
+										<Button>{t("pages.dialogs.send")}</Button>
+									</DialogClose>
+								</DialogFooter>
+							</DialogContent>
+						</Dialog>
+					</div>
+				</LayerCard>
+			</SectionRule>
+
 			<SectionRule title={t("pages.dialogs.form")} hint={t("pages.dialogs.formHint")}>
 				<LayerCard>
 					<Dialog>
@@ -142,14 +277,17 @@ export default function DialogsPage() {
 							<Button variant="outline">{t("pages.dialogs.openForm")}</Button>
 						</DialogTrigger>
 						<DialogContent size="base">
-							<DialogTitleRow title={t("pages.dialogs.formTitle")} />
-							<DialogDescription>{t("pages.dialogs.formBody")}</DialogDescription>
-							<div className="mt-6">
+							<DialogDismiss />
+							<DialogHeading
+								title={t("pages.dialogs.formTitle")}
+								description={t("pages.dialogs.formBody")}
+							/>
+							<div className="mt-4">
 								<Field label={t("pages.dialogs.workspaceName")}>
 									<Input placeholder={t("pages.dialogs.workspacePlaceholder")} />
 								</Field>
 							</div>
-							<DialogFooter className="mt-8">
+							<DialogFooter>
 								<DialogClose asChild>
 									<Button variant="outline">{t("common.cancel")}</Button>
 								</DialogClose>
@@ -195,7 +333,7 @@ export default function DialogsPage() {
 									<AlertDialogTitle>{t("pages.dialogs.alertTitle")}</AlertDialogTitle>
 									<AlertDialogDescription>{t("pages.dialogs.alertBody")}</AlertDialogDescription>
 								</AlertDialogHeader>
-								<AlertDialogFooter className="mt-8">
+								<AlertDialogFooter>
 									<AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
 									<AlertDialogAction>{t("common.delete")}</AlertDialogAction>
 								</AlertDialogFooter>
