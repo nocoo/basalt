@@ -3,7 +3,7 @@ import { ChatBubble } from "@nocoo/basalt/components/chat-bubble";
 import { ChatComposer } from "@nocoo/basalt/components/chat-composer";
 import { ChatHeader } from "@nocoo/basalt/components/chat-header";
 import { ChatInbox } from "@nocoo/basalt/components/chat-inbox";
-import { Dock } from "@nocoo/basalt/components/dock";
+import { Dock, DockBody } from "@nocoo/basalt/components/dock";
 import { Fab } from "@nocoo/basalt/components/fab";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
@@ -42,9 +42,44 @@ const MESSAGES: Record<
 	],
 };
 
+function AssistantChat({
+	title,
+	subtitle,
+	messages,
+	onClose,
+	placeholder,
+	closeLabel,
+}: {
+	title: string;
+	subtitle?: string;
+	messages: { id: string; variant: "user" | "assistant" | "system"; text: string }[];
+	onClose: () => void;
+	placeholder: string;
+	closeLabel: string;
+}) {
+	return (
+		<>
+			<ChatHeader title={title} subtitle={subtitle} leading={<Sparkles className="h-5 w-5" />}>
+				<Button size="icon" variant="ghost" aria-label={closeLabel} onClick={onClose}>
+					<X />
+				</Button>
+			</ChatHeader>
+			<DockBody>
+				{messages.map((message) => (
+					<ChatBubble key={message.id} variant={message.variant}>
+						{message.text}
+					</ChatBubble>
+				))}
+			</DockBody>
+			<ChatComposer placeholder={placeholder} onSend={() => undefined} />
+		</>
+	);
+}
+
 export default function ChatPage() {
 	const { t } = useTranslation();
-	const [open, setOpen] = useState(true);
+	const [pushOpen, setPushOpen] = useState(true);
+	const [overlayOpen, setOverlayOpen] = useState(true);
 	const [activeId, setActiveId] = useState("analytics");
 	const thread = THREADS.find((item) => item.id === activeId) ?? THREADS[0];
 	const messages = MESSAGES[activeId] ?? [];
@@ -58,37 +93,59 @@ export default function ChatPage() {
 					<div className="min-w-0 flex-1 bg-basalt-secondary p-6 text-sm text-basalt-muted-foreground">
 						{t("pages.chat.pageBody")}
 					</div>
-					<Dock open={open} width="20rem" aria-label={t("pages.chat.assistant")} className="h-full">
-						<div className="flex h-full flex-col bg-basalt-card ring-1 ring-basalt-border/40">
-							<ChatHeader
-								title={t("pages.chat.assistant")}
-								subtitle={thread?.title}
-								leading={<Sparkles className="h-5 w-5" />}
-							>
-								<Button
-									size="icon"
-									variant="ghost"
-									aria-label={t("common.close")}
-									onClick={() => setOpen(false)}
-								>
-									<X />
-								</Button>
-							</ChatHeader>
-							<div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-3 py-3">
-								{messages.map((message) => (
-									<ChatBubble key={message.id} variant={message.variant}>
-										{message.text}
-									</ChatBubble>
-								))}
-							</div>
-							<ChatComposer placeholder={t("pages.chat.placeholder")} onSend={() => undefined} />
-						</div>
+					<Dock
+						open={pushOpen}
+						width="20rem"
+						aria-label={t("pages.chat.assistant")}
+						className="h-full"
+					>
+						<AssistantChat
+							title={t("pages.chat.assistant")}
+							subtitle={thread?.title}
+							messages={messages}
+							onClose={() => setPushOpen(false)}
+							placeholder={t("pages.chat.placeholder")}
+							closeLabel={t("common.close")}
+						/>
 					</Dock>
 					<Fab
-						open={open}
+						open={pushOpen}
+						placement="absolute"
 						aria-label={t("pages.chat.openAssistant")}
-						className="absolute right-4 bottom-4"
-						onClick={() => setOpen(true)}
+						onClick={() => setPushOpen(true)}
+					>
+						<Sparkles />
+					</Fab>
+				</div>
+			</SectionRule>
+
+			<SectionRule title={t("pages.chat.overlay")} hint={t("pages.chat.overlayHint")}>
+				<div className="relative flex h-[32rem] overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
+					<div className="min-w-0 flex-1 bg-basalt-secondary p-6 text-sm text-basalt-muted-foreground">
+						{t("pages.chat.overlayBody")}
+					</div>
+					<Dock
+						mode="overlay"
+						open={overlayOpen}
+						width="20rem"
+						aria-label={t("pages.chat.overlayAssistant")}
+						className="h-full"
+						onDismiss={() => setOverlayOpen(false)}
+					>
+						<AssistantChat
+							title={t("pages.chat.assistant")}
+							subtitle={thread?.title}
+							messages={messages}
+							onClose={() => setOverlayOpen(false)}
+							placeholder={t("pages.chat.placeholder")}
+							closeLabel={t("common.close")}
+						/>
+					</Dock>
+					<Fab
+						open={overlayOpen}
+						placement="absolute"
+						aria-label={t("pages.chat.openOverlay")}
+						onClick={() => setOverlayOpen(true)}
 					>
 						<Sparkles />
 					</Fab>
@@ -117,13 +174,13 @@ export default function ChatPage() {
 								<Eraser />
 							</Button>
 						</ChatHeader>
-						<div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-3 py-3">
+						<DockBody>
 							{messages.map((message) => (
 								<ChatBubble key={message.id} variant={message.variant}>
 									{message.text}
 								</ChatBubble>
 							))}
-						</div>
+						</DockBody>
 						<ChatComposer placeholder={t("pages.chat.placeholder")} onSend={() => undefined} />
 					</div>
 				</div>
