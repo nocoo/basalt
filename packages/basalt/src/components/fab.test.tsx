@@ -8,6 +8,15 @@ describe("Fab", () => {
 		expect(screen.getByRole("button", { name: "Open assistant" })).toBeInTheDocument();
 	});
 
+	it("pins to a containing frame when placement is absolute", () => {
+		render(
+			<Fab placement="absolute" aria-label="Open assistant">
+				AI
+			</Fab>,
+		);
+		expect(screen.getByRole("button", { name: "Open assistant" })).toHaveClass("absolute");
+	});
+
 	it("hides and ignores clicks while open", () => {
 		const onClick = vi.fn();
 		render(

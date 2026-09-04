@@ -1,11 +1,11 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
 import { dialogOverlayClass } from "./dialog";
 import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
-export type DockMode = "push" | "overlay";
+export type DockMode = "overlay" | "push";
 
-export interface DockProps extends HTMLAttributes<HTMLElement> {
+export interface DockProps {
 	/**
 	 * Whether the dock occupies its width.
 	 */
@@ -25,9 +25,24 @@ export interface DockProps extends HTMLAttributes<HTMLElement> {
 	 */
 	onDismiss?: () => void;
 	/**
-	 * Docked panel content. Kept at full width while the rail animates.
+	 * Accessible name.
 	 */
+	"aria-label": string;
+	className?: string;
 	children: ReactNode;
+}
+
+export interface DockBodyProps {
+	className?: string;
+	children: ReactNode;
+}
+
+export function DockBody({ className, children }: DockBodyProps) {
+	return (
+		<div className={cn("flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-3 py-3", className)}>
+			{children}
+		</div>
+	);
 }
 
 export function Dock({
@@ -36,9 +51,8 @@ export function Dock({
 	width = "clamp(300px, 32.5vw, 546px)",
 	onDismiss,
 	className,
-	style,
 	children,
-	...props
+	"aria-label": ariaLabel,
 }: DockProps) {
 	const overlay = mode === "overlay";
 	const panelClass = cn(
@@ -47,9 +61,12 @@ export function Dock({
 		OVERLAY_MOTION,
 		className,
 	);
-	const panelStyle = { width: open ? width : 0, ...style };
+	const panelStyle = { width: open ? width : 0 };
 	const inner = (
-		<div className="flex h-full flex-col" style={{ width }}>
+		<div
+			className="flex h-full flex-col bg-basalt-card shadow-lg ring-1 ring-basalt-border/40"
+			style={{ width }}
+		>
 			{children}
 		</div>
 	);
@@ -59,9 +76,9 @@ export function Dock({
 			<aside
 				className={panelClass}
 				style={panelStyle}
+				aria-label={ariaLabel}
 				aria-hidden={!open}
 				inert={!open || undefined}
-				{...props}
 			>
 				{inner}
 			</aside>
@@ -82,11 +99,11 @@ export function Dock({
 			<div
 				role="dialog"
 				aria-modal={open ? true : undefined}
+				aria-label={ariaLabel}
 				className={panelClass}
 				style={panelStyle}
 				aria-hidden={!open}
 				inert={!open || undefined}
-				{...props}
 			>
 				{inner}
 			</div>

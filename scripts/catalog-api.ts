@@ -391,6 +391,24 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "TablePager",
 	},
 	{
+		slug: "fab",
+		sourceFile: "packages/basalt/src/components/fab.tsx",
+		propsType: "FabProps",
+		surface: "Fab",
+	},
+	{
+		slug: "dock",
+		sourceFile: "packages/basalt/src/components/dock.tsx",
+		propsType: "DockProps",
+		surface: "Dock",
+	},
+	{
+		slug: "dock",
+		sourceFile: "packages/basalt/src/components/dock.tsx",
+		propsType: "DockBodyProps",
+		surface: "DockBody",
+	},
+	{
 		slug: "toolbar",
 		sourceFile: "packages/basalt/src/components/toolbar.tsx",
 		propsType: "ToolbarProps",

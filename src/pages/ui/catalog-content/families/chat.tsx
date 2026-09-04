@@ -3,12 +3,14 @@ import { ChatBubble } from "@nocoo/basalt/components/chat-bubble";
 import { ChatComposer } from "@nocoo/basalt/components/chat-composer";
 import { ChatHeader } from "@nocoo/basalt/components/chat-header";
 import { ChatInbox } from "@nocoo/basalt/components/chat-inbox";
-import { Dock } from "@nocoo/basalt/components/dock";
-import { Fab } from "@nocoo/basalt/components/fab";
 import { MessageCircle, Sparkles, X } from "lucide-react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
 import type { CatalogDocsDraft } from "../../catalog-source";
+import { DOCK_EXAMPLES } from "../../examples/dock";
+import { FAB_EXAMPLES } from "../../examples/fab";
+import { API as dockApi } from "../../generated/catalog-api/dock";
+import { API as fabApi } from "../../generated/catalog-api/fab";
 
 function extraDocs(
 	name: string,
@@ -34,89 +36,37 @@ function extraDocs(
 	};
 }
 
+function usage(name: string, from: string, sample: string): string {
+	return `import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
+}
+
 export default catalogContentFamily({
 	fab: {
-		docs: extraDocs(
-			"Fab",
-			"fab",
-			"A corner launcher that hides while a dock is open.",
-			'<Fab aria-label="Open assistant"><Sparkles /></Fab>',
-			[
-				{ name: "open", type: "boolean", default: "false" },
-				{ name: "className", type: "string" },
-			],
-		),
-		examples: [
-			{
-				id: catalogScenarioId("fab", "closed"),
-				title: "Closed",
-				code: '<Fab aria-label="Open assistant"><Sparkles /></Fab>',
-				render: () => (
-					<div className="relative h-24">
-						<Fab aria-label="Open assistant" className="absolute right-4 bottom-4">
-							<Sparkles />
-						</Fab>
-					</div>
-				),
-			},
-			{
-				id: catalogScenarioId("fab", "open"),
-				title: "Open",
-				code: '<Fab open aria-label="Open assistant"><Sparkles /></Fab>',
-				render: () => (
-					<div className="relative h-24">
-						<Fab open aria-label="Open assistant" className="absolute right-4 bottom-4">
-							<Sparkles />
-						</Fab>
-					</div>
-				),
-			},
-		],
+		docs: {
+			description: "A corner launcher that hides while a dock is open.",
+			usage: usage(
+				"Fab",
+				"@nocoo/basalt/components/fab",
+				'<Fab aria-label="Open assistant"><Sparkles /></Fab>',
+			),
+			variants: [],
+			api: fabApi,
+		},
+		examples: FAB_EXAMPLES,
 	},
 	dock: {
-		docs: extraDocs(
-			"Dock",
-			"dock",
-			"A right rail. Push shrinks the main column. Overlay covers it with a Dialog scrim.",
-			'<Dock open aria-label="Assistant">Panel</Dock>',
-			[
-				{ name: "open", type: "boolean", required: true },
-				{ name: "mode", type: '"push" | "overlay"', default: '"push"' },
-				{ name: "width", type: "string", default: '"clamp(300px, 32.5vw, 546px)"' },
-				{ name: "onDismiss", type: "() => void" },
-				{ name: "className", type: "string" },
-			],
-		),
-		examples: [
-			{
-				id: catalogScenarioId("dock", "push"),
-				title: "Push",
-				code: '<Dock open width="16rem" aria-label="Assistant" className="h-48">Panel</Dock>',
-				render: () => (
-					<div className="relative flex h-48 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
-						<div className="flex-1 bg-basalt-secondary" />
-						<Dock open width="16rem" aria-label="Assistant" className="h-full">
-							<div className="flex h-full items-center justify-center text-sm">Panel</div>
-						</Dock>
-					</div>
-				),
-			},
-			{
-				id: catalogScenarioId("dock", "overlay"),
-				title: "Overlay",
-				code: '<Dock mode="overlay" open width="16rem" aria-label="Assistant">Panel</Dock>',
-				render: () => (
-					<div className="relative flex h-48 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
-						<div className="flex-1 bg-basalt-secondary" />
-						<Dock mode="overlay" open width="16rem" aria-label="Assistant" className="h-full">
-							<div className="flex h-full items-center justify-center bg-basalt-card text-sm">
-								Panel
-							</div>
-						</Dock>
-					</div>
-				),
-			},
-		],
+		docs: {
+			description:
+				"A right rail. Push shrinks the main column. Overlay covers it with a Dialog scrim.",
+			usage: usage(
+				"Dock",
+				"@nocoo/basalt/components/dock",
+				'<Dock open aria-label="Assistant"><DockBody>Panel</DockBody></Dock>',
+			),
+			variants: [],
+			api: dockApi,
+		},
+		examples: DOCK_EXAMPLES,
 	},
 	"chat-bubble": {
 		docs: extraDocs(

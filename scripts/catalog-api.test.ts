@@ -481,6 +481,24 @@ describe("catalog API generator contract", () => {
 				surface: "TablePager",
 			},
 			{
+				slug: "fab",
+				sourceFile: "packages/basalt/src/components/fab.tsx",
+				propsType: "FabProps",
+				surface: "Fab",
+			},
+			{
+				slug: "dock",
+				sourceFile: "packages/basalt/src/components/dock.tsx",
+				propsType: "DockProps",
+				surface: "Dock",
+			},
+			{
+				slug: "dock",
+				sourceFile: "packages/basalt/src/components/dock.tsx",
+				propsType: "DockBodyProps",
+				surface: "DockBody",
+			},
+			{
 				slug: "toolbar",
 				sourceFile: "packages/basalt/src/components/toolbar.tsx",
 				propsType: "ToolbarProps",
@@ -853,7 +871,7 @@ describe("catalog API generator contract", () => {
 				surface: "DeleteResource",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(120);
+		expect(CATALOG_API_TARGETS).toHaveLength(123);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -919,6 +937,8 @@ describe("catalog API generator contract", () => {
 			"stat-strip",
 			"confirm-dialog",
 			"table-pager",
+			"fab",
+			"dock",
 			"toolbar",
 			"tabs",
 			"command-palette",
@@ -1921,6 +1941,8 @@ export interface WidgetProps {
 			"stat-strip": ["StatStrip"],
 			"confirm-dialog": ["ConfirmDialog", "useConfirm"],
 			"table-pager": ["TablePager"],
+			fab: ["Fab"],
+			dock: ["Dock", "DockBody"],
 			select: [
 				"Select",
 				"SelectTrigger",
@@ -1982,7 +2004,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(70);
+		expect(Object.keys(generated)).toHaveLength(72);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -2083,7 +2105,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(70);
+		expect(Object.keys(generated)).toHaveLength(72);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -2205,7 +2227,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(70);
+		expect(Object.keys(generated)).toHaveLength(72);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -2276,7 +2298,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(70);
+		expect(Object.keys(generated)).toHaveLength(72);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2319,7 +2341,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(70);
+		expect(Object.keys(generated)).toHaveLength(72);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2371,7 +2393,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(70);
+		expect(Object.keys(generated)).toHaveLength(72);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3652,8 +3674,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(70);
-		expect(Object.keys(first)).toHaveLength(71);
+		expect(slugs).toHaveLength(72);
+		expect(Object.keys(first)).toHaveLength(73);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3673,6 +3695,9 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "ConfirmDialog"');
 		expect(joined).toContain('name: "useConfirm"');
 		expect(joined).toContain('name: "TablePager"');
+		expect(joined).toContain('name: "Fab"');
+		expect(joined).toContain('name: "Dock"');
+		expect(joined).toContain('name: "DockBody"');
 		expect(joined).toContain('name: "SensitiveInput"');
 		expect(joined).toContain('name: "Checkbox"');
 		expect(joined).toContain('name: "Radio"');
@@ -3730,7 +3755,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"614259e2a608d7f295e063d15d0562fbd01374959d1b97caf442c1b72aae612b",
+			"55a82fba4573a1ac89088d1c78a3e5752f58b035bc294e0b5ea091a099f4aeff",
 		);
 	}, 60_000);
 

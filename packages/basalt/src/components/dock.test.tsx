@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { Dock } from "./dock";
+import { Dock, DockBody } from "./dock";
 
 describe("Dock", () => {
 	it("collapses width when closed", () => {
@@ -45,5 +45,14 @@ describe("Dock", () => {
 		expect(scrim.className).toContain("bg-black/40");
 		fireEvent.click(scrim);
 		expect(onDismiss).toHaveBeenCalled();
+	});
+
+	it("renders body as the scrolling pane", () => {
+		render(
+			<Dock open aria-label="Assistant">
+				<DockBody>Transcript</DockBody>
+			</Dock>,
+		);
+		expect(screen.getByText("Transcript")).toBeInTheDocument();
 	});
 });
