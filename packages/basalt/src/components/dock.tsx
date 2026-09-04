@@ -12,10 +12,14 @@ function tabbables(root: HTMLElement | null) {
 		return [];
 	}
 	return [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((node) => {
-		if (node.closest("[inert]")) {
+		if (node.closest("[inert], [hidden]")) {
 			return false;
 		}
-		return node.tabIndex >= 0;
+		if (node.tabIndex < 0) {
+			return false;
+		}
+		const style = window.getComputedStyle(node);
+		return style.display !== "none" && style.visibility !== "hidden";
 	});
 }
 
