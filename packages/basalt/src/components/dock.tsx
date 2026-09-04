@@ -4,9 +4,8 @@ import { dialogOverlayClass } from "./dialog";
 import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
 const FOCUSABLE =
-	'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-const PORTAL_FOCUS =
-	"[data-radix-popper-content-wrapper], [data-radix-select-content], [data-basalt-surface-root]";
+	'button:not([disabled]), [href], input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+const PORTAL_FOCUS = "[data-radix-popper-content-wrapper], [data-radix-select-viewport]";
 
 export type DockMode = "overlay" | "push";
 
@@ -71,7 +70,7 @@ export function Dock({
 	const setPanel = (node: HTMLElement | null) => {
 		panelRef.current = node;
 	};
-	const wasOpen = useRef(open);
+	const wasOpen = useRef(!overlay && open);
 	const previousFocus = useRef<HTMLElement | null>(null);
 
 	useEffect(() => {
@@ -99,7 +98,7 @@ export function Dock({
 		}
 		const onKeyDown = (event: KeyboardEvent) => {
 			if (event.key === "Escape") {
-				if (!onDismiss) {
+				if (event.defaultPrevented || !onDismiss) {
 					return;
 				}
 				event.preventDefault();
