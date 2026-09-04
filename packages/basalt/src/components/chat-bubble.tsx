@@ -1,9 +1,9 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
 
-export type ChatBubbleVariant = "user" | "assistant" | "system";
+export type ChatBubbleVariant = "assistant" | "system" | "user";
 
-export interface ChatBubbleProps extends HTMLAttributes<HTMLDivElement> {
+export interface ChatBubbleProps {
 	/**
 	 * Alignment and fill.
 	 * @default "assistant"
@@ -14,6 +14,7 @@ export interface ChatBubbleProps extends HTMLAttributes<HTMLDivElement> {
 	 * @default false
 	 */
 	streaming?: boolean;
+	className?: string;
 	children: ReactNode;
 }
 
@@ -22,21 +23,17 @@ export function ChatBubble({
 	streaming = false,
 	className,
 	children,
-	...props
 }: ChatBubbleProps) {
 	if (variant === "system") {
 		return (
-			<p
-				className={cn("px-1 text-center text-[11px] text-basalt-muted-foreground", className)}
-				{...props}
-			>
+			<p className={cn("px-1 text-center text-[11px] text-basalt-muted-foreground", className)}>
 				{children}
 			</p>
 		);
 	}
 	const user = variant === "user";
 	return (
-		<div className={cn("flex w-full", user ? "justify-end" : "justify-start")} {...props}>
+		<div className={cn("flex w-full", user ? "justify-end" : "justify-start")}>
 			<div
 				className={cn(
 					"max-w-[92%] px-3.5 py-2 text-sm leading-5 shadow-sm",

@@ -27,7 +27,7 @@ export interface ChatInboxProps extends Omit<HTMLAttributes<HTMLElement>, "onSel
 	/**
 	 * Called when a thread is chosen.
 	 */
-	onSelect?: (id: string) => void;
+	onSelect: (id: string) => void;
 }
 
 export function ChatInbox({ items, activeId, onSelect, className, ...props }: ChatInboxProps) {
@@ -41,7 +41,7 @@ export function ChatInbox({ items, activeId, onSelect, className, ...props }: Ch
 						type="button"
 						variant="ghost"
 						aria-current={active ? "true" : undefined}
-						onClick={() => onSelect?.(item.id)}
+						onClick={() => onSelect(item.id)}
 						className={cn(
 							"h-auto w-full justify-start gap-2 rounded-basalt-md px-2 py-2 text-left",
 							active ? "bg-basalt-accent" : "",

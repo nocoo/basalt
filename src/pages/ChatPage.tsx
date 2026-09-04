@@ -49,6 +49,9 @@ function AssistantChat({
 	onClose,
 	placeholder,
 	closeLabel,
+	messageLabel,
+	sendLabel,
+	cancelLabel,
 }: {
 	title: string;
 	subtitle?: string;
@@ -56,6 +59,9 @@ function AssistantChat({
 	onClose: () => void;
 	placeholder: string;
 	closeLabel: string;
+	messageLabel: string;
+	sendLabel: string;
+	cancelLabel: string;
 }) {
 	return (
 		<>
@@ -71,7 +77,13 @@ function AssistantChat({
 					</ChatBubble>
 				))}
 			</DockBody>
-			<ChatComposer placeholder={placeholder} onSend={() => undefined} />
+			<ChatComposer
+				label={messageLabel}
+				placeholder={placeholder}
+				sendLabel={sendLabel}
+				cancelLabel={cancelLabel}
+				onSend={() => undefined}
+			/>
 		</>
 	);
 }
@@ -106,6 +118,9 @@ export default function ChatPage() {
 							onClose={() => setPushOpen(false)}
 							placeholder={t("pages.chat.placeholder")}
 							closeLabel={t("common.close")}
+							messageLabel={t("pages.chat.message")}
+							sendLabel={t("pages.chat.send")}
+							cancelLabel={t("pages.chat.stop")}
 						/>
 					</Dock>
 					<Fab
@@ -130,6 +145,7 @@ export default function ChatPage() {
 						width="20rem"
 						aria-label={t("pages.chat.overlayAssistant")}
 						className="h-full"
+						dismissLabel={t("pages.chat.dismiss")}
 						onDismiss={() => setOverlayOpen(false)}
 					>
 						<AssistantChat
@@ -139,6 +155,9 @@ export default function ChatPage() {
 							onClose={() => setOverlayOpen(false)}
 							placeholder={t("pages.chat.placeholder")}
 							closeLabel={t("common.close")}
+							messageLabel={t("pages.chat.message")}
+							sendLabel={t("pages.chat.send")}
+							cancelLabel={t("pages.chat.stop")}
 						/>
 					</Dock>
 					<Fab
@@ -181,7 +200,13 @@ export default function ChatPage() {
 								</ChatBubble>
 							))}
 						</DockBody>
-						<ChatComposer placeholder={t("pages.chat.placeholder")} onSend={() => undefined} />
+						<ChatComposer
+							label={t("pages.chat.message")}
+							placeholder={t("pages.chat.placeholder")}
+							sendLabel={t("pages.chat.send")}
+							cancelLabel={t("pages.chat.stop")}
+							onSend={() => undefined}
+						/>
 					</div>
 				</div>
 			</SectionRule>

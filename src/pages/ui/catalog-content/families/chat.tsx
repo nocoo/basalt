@@ -36,8 +36,9 @@ function extraDocs(
 	};
 }
 
-function usage(name: string, from: string, sample: string): string {
-	return `import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
+function usage(name: string, from: string, sample: string, extraImports = ""): string {
+	const extras = extraImports ? `${extraImports}\n` : "";
+	return `${extras}import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
 }
 
 export default catalogContentFamily({
@@ -48,6 +49,7 @@ export default catalogContentFamily({
 				"Fab",
 				"@nocoo/basalt/components/fab",
 				'<Fab aria-label="Open assistant"><Sparkles /></Fab>',
+				'import { Sparkles } from "lucide-react";',
 			),
 			variants: [],
 			api: fabApi,
@@ -59,7 +61,7 @@ export default catalogContentFamily({
 			description:
 				"A right rail. Push shrinks the main column. Overlay covers it with a Dialog scrim.",
 			usage: usage(
-				"Dock",
+				"Dock, DockBody",
 				"@nocoo/basalt/components/dock",
 				'<Dock open aria-label="Assistant"><DockBody>Panel</DockBody></Dock>',
 			),
@@ -110,6 +112,8 @@ export default catalogContentFamily({
 				{ name: "placeholder", type: "string" },
 				{ name: "onSend", type: "(text: string) => void", required: true },
 				{ name: "onCancel", type: "() => void" },
+				{ name: "sendLabel", type: "string", default: '"Send message"' },
+				{ name: "cancelLabel", type: "string", default: '"Stop generating"' },
 				{ name: "className", type: "string" },
 			],
 		),
@@ -167,11 +171,11 @@ export default catalogContentFamily({
 			"ChatInbox",
 			"chat-inbox",
 			"A selectable list of conversations.",
-			"<ChatInbox items={items} activeId={items[0].id} />",
+			'<ChatInbox items={[{ id: "a", title: "Analytics" }]} activeId="a" onSelect={() => undefined} />',
 			[
 				{ name: "items", type: "readonly ChatInboxItem[]", required: true },
 				{ name: "activeId", type: "string" },
-				{ name: "onSelect", type: "(id: string) => void" },
+				{ name: "onSelect", type: "(id: string) => void", required: true },
 				{ name: "className", type: "string" },
 			],
 		),
@@ -191,6 +195,7 @@ export default catalogContentFamily({
 						<ChatInbox
 							aria-label="Inbox"
 							activeId="a"
+							onSelect={() => undefined}
 							items={[
 								{
 									id: "a",
