@@ -32,6 +32,16 @@ export interface ChatComposerProps {
 	 * Called when the stop control is pressed.
 	 */
 	onCancel?: () => void;
+	/**
+	 * Send control accessible name.
+	 * @default "Send message"
+	 */
+	sendLabel?: string;
+	/**
+	 * Stop control accessible name.
+	 * @default "Stop generating"
+	 */
+	cancelLabel?: string;
 	className?: string;
 }
 
@@ -42,6 +52,8 @@ export function ChatComposer({
 	placeholder,
 	onSend,
 	onCancel,
+	sendLabel = "Send message",
+	cancelLabel = "Stop generating",
 	className,
 }: ChatComposerProps) {
 	const [value, setValue] = useState("");
@@ -64,7 +76,14 @@ export function ChatComposer({
 		}
 		onSend(text);
 		setValue("");
-		requestAnimationFrame(() => ref.current?.focus());
+		requestAnimationFrame(() => {
+			const el = ref.current;
+			if (el) {
+				el.style.height = "0px";
+				el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
+				el.focus();
+			}
+		});
 	};
 
 	const onSubmit = (event: FormEvent) => {
@@ -115,7 +134,8 @@ export function ChatComposer({
 						size="icon"
 						variant="secondary"
 						onClick={onCancel}
-						aria-label="Stop generating"
+						disabled={!onCancel}
+						aria-label={cancelLabel}
 					>
 						<Square className="h-3.5 w-3.5 fill-current" strokeWidth={0} />
 					</Button>
@@ -124,7 +144,7 @@ export function ChatComposer({
 						type="submit"
 						size="icon"
 						disabled={disabled || !value.trim()}
-						aria-label="Send message"
+						aria-label={sendLabel}
 					>
 						<ArrowUp className="h-4 w-4" strokeWidth={2.25} />
 					</Button>

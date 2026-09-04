@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ChatComposer } from "./chat-composer";
 
@@ -17,5 +17,21 @@ describe("ChatComposer", () => {
 		render(<ChatComposer streaming onSend={vi.fn()} onCancel={onCancel} />);
 		fireEvent.click(screen.getByRole("button", { name: "Stop generating" }));
 		expect(onCancel).toHaveBeenCalled();
+	});
+
+	it("disables stop when there is no cancel handler", () => {
+		render(<ChatComposer streaming onSend={vi.fn()} />);
+		expect(screen.getByRole("button", { name: "Stop generating" })).toBeDisabled();
+	});
+
+	it("collapses the field after send", async () => {
+		render(<ChatComposer onSend={vi.fn()} />);
+		const field = screen.getByLabelText("Message");
+		field.style.height = "160px";
+		fireEvent.change(field, { target: { value: "hello" } });
+		fireEvent.click(screen.getByRole("button", { name: "Send message" }));
+		await waitFor(() => {
+			expect(field.style.height).not.toBe("160px");
+		});
 	});
 });
