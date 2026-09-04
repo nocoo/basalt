@@ -185,6 +185,7 @@ export default catalogContentFamily({
 				title: "Threads",
 				code: `<ChatInbox
   activeId="a"
+  onSelect={() => undefined}
   items={[
     { id: "a", title: "Analytics", preview: "Ask about usage", time: "2m" },
     { id: "b", title: "Quality", preview: "Error rate", time: "1h" },
