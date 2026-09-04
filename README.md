@@ -63,7 +63,7 @@
 | **Components** | [shadcn/ui](https://ui.shadcn.com) (12 primitives) |
 | **Charts** | [Recharts 3](https://recharts.org) |
 | **Icons** | [Lucide React](https://lucide.dev) (1.5px stroke) |
-| **Testing** | [Vitest 4](https://vitest.dev) + Testing Library |
+| **Testing** | [Vitest 5](https://vitest.dev) + Testing Library |
 | **Package Manager** | [Bun](https://bun.sh) |
 
 ## Getting Started
