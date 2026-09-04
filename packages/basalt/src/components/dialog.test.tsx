@@ -52,6 +52,8 @@ describe("Dialog", () => {
 		expect(classes).toContain("motion-reduce:animate-none");
 		expect(classes).toContain("z-50");
 		expect(classes).toContain("overflow-y-auto");
+		expect(classes).toContain("p-6");
+		expect(classes).not.toContain("p-8");
 		expect(classes).not.toContain("overflow-hidden");
 		expect(classes).not.toContain("top-8");
 	});
@@ -102,6 +104,7 @@ describe("Dialog", () => {
 			</Dialog>,
 		);
 		expect(screen.getByText("Edit").parentElement?.className).toContain("flex-col");
+		expect(screen.getByText("Save").className).toContain("mt-6");
 		expect(screen.getByText("Save").className).toContain("sm:justify-end");
 	});
 
