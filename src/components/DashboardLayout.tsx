@@ -39,6 +39,7 @@ const PAGE_TITLE_KEYS: Record<string, string> = {
 	"/portfolio": "nav.portfolio",
 	"/layout": "nav.layout",
 	"/dialogs": "nav.dialogs",
+	"/chat": "nav.chat",
 	"/settings": "nav.settings",
 	"/palette": "nav.colorPalette",
 	"/interactions": "nav.interactions",

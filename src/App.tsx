@@ -9,6 +9,7 @@ import { DashboardLayout } from "@/components/DashboardLayout";
 
 const AccountsPage = lazy(() => import("./pages/AccountsPage"));
 const BankingDashboardPage = lazy(() => import("./pages/BankingDashboardPage"));
+const ChatPage = lazy(() => import("./pages/ChatPage"));
 const ComponentsPage = lazy(() => import("./pages/ComponentsPage"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
 const DataPage = lazy(() => import("./pages/DataPage"));
@@ -99,6 +100,7 @@ const App = () => (
 								<Route path="/portfolio" element={routeElement(PortfolioPage)} />
 								<Route path="/layout" element={routeElement(LayoutPage)} />
 								<Route path="/dialogs" element={routeElement(DialogsPage)} />
+								<Route path="/chat" element={routeElement(ChatPage)} />
 								<Route path="/settings" element={routeElement(SettingsPage)} />
 								<Route path="/palette" element={routeElement(PalettePage)} />
 								<Route path="/interactions" element={routeElement(InteractionShowcasePage)} />

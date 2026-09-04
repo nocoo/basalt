@@ -93,7 +93,8 @@
 		"examples": "Examples",
 		"kit": "Library",
 		"kitIndex": "Home",
-		"dialogs": "Dialogs"
+		"dialogs": "Dialogs",
+		"chat": "Chat"
 	},
 	"pages": {
 		"notFound": {
@@ -612,6 +613,20 @@
 			"inflow": "Inflow",
 			"outflow": "Outflow",
 			"net": "Net"
+		},
+		"chat": {
+			"title": "Chat framework",
+			"description": "Fab opens a Dock. Inside: header, stream, and composer. A second pattern adds an inbox list.",
+			"dock": "Fab and dock",
+			"dockHint": "The launcher hides while the rail is open. The rail animates width and keeps its children full-size.",
+			"pageBody": "Main column. Opening the dock shrinks this pane.",
+			"assistant": "Assistant",
+			"openAssistant": "Open assistant",
+			"placeholder": "Ask about this page…",
+			"inbox": "Inbox and stream",
+			"inboxHint": "Thread list on the left, header and bubbles on the right.",
+			"stream": "Stream",
+			"clear": "Clear conversation"
 		},
 		"dialogs": {
 			"title": "Dialogs",

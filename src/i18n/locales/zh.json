@@ -93,7 +93,8 @@
 		"examples": "示例",
 		"kit": "控件库",
 		"kitIndex": "首页",
-		"dialogs": "对话框"
+		"dialogs": "对话框",
+		"chat": "对话"
 	},
 	"pages": {
 		"notFound": {
@@ -612,6 +613,20 @@
 			"inflow": "流入",
 			"outflow": "流出",
 			"net": "净额"
+		},
+		"chat": {
+			"title": "对话框架",
+			"description": "Fab 打开 Dock。里面是 header、消息流和输入。第二种拼法加上 inbox 列表。",
+			"dock": "Fab 与 Dock",
+			"dockHint": "栏打开时启动钮隐藏。栏做宽度动画，内容保持全宽。",
+			"pageBody": "主栏。打开 Dock 会挤这一列。",
+			"assistant": "助手",
+			"openAssistant": "打开助手",
+			"placeholder": "问这页的事…",
+			"inbox": "Inbox 与消息流",
+			"inboxHint": "左边会话列表，右边标题和气泡。",
+			"stream": "消息流",
+			"clear": "清空对话"
 		},
 		"dialogs": {
 			"title": "对话框",
