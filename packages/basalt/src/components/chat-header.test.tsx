@@ -14,4 +14,10 @@ describe("ChatHeader", () => {
 		expect(screen.getByText("AI")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
 	});
+
+	it("renders a title without optional slots", () => {
+		render(<ChatHeader title="Solo" />);
+		expect(screen.getByText("Solo")).toBeInTheDocument();
+		expect(screen.queryByRole("button")).not.toBeInTheDocument();
+	});
 });

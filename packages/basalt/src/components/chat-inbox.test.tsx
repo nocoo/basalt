@@ -23,4 +23,16 @@ describe("ChatInbox", () => {
 		fireEvent.click(screen.getByRole("button", { name: /Quality/ }));
 		expect(onSelect).toHaveBeenCalledWith("b");
 	});
+
+	it("renders a leading mark and omits empty meta", () => {
+		render(
+			<ChatInbox
+				aria-label="Inbox"
+				onSelect={vi.fn()}
+				items={[{ id: "a", title: "Bare", leading: <span>Mark</span> }]}
+			/>,
+		);
+		expect(screen.getByText("Mark")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: /Bare/ })).not.toHaveAttribute("aria-current");
+	});
 });
