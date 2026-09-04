@@ -85,7 +85,7 @@ export function ChatComposer({
 
 	return (
 		<form
-			className={cn("border-t border-basalt-border/50 bg-basalt-card px-3 pt-3 pb-0", className)}
+			className={cn("border-t border-basalt-border/50 bg-basalt-card p-3", className)}
 			onSubmit={onSubmit}
 		>
 			<div className="flex items-end gap-2 rounded-2xl bg-basalt-secondary p-2 ring-1 ring-basalt-border/50">
