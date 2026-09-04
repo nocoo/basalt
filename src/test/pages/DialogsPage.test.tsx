@@ -74,5 +74,16 @@ describe("DialogsPage", () => {
 		expect(screen.getByRole("dialog").className).toContain("sm:w-[48rem]");
 		expect(screen.getByRole("heading", { name: "Review transfer" })).toBeInTheDocument();
 		expect(screen.getByText("Operating cash")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Close" }));
+
+		fireEvent.click(screen.getByRole("button", { name: "Open unit editor" }));
+		const unit = screen.getByRole("dialog");
+		expect(unit.className).toContain("sm:w-[min(72rem,calc(100vw-2rem))]");
+		expect(screen.getByRole("heading", { name: "Edit capital unit · U-2044" })).toBeInTheDocument();
+		expect(screen.getByText("Basics")).toBeInTheDocument();
+		expect(screen.getByText("Product and operations")).toBeInTheDocument();
+		expect(screen.getByText("History")).toBeInTheDocument();
+		expect(screen.getByLabelText("Code")).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
 	});
 });
