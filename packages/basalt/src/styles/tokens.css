@@ -183,6 +183,7 @@
 	--basalt-zebra-fill: hsl(var(--basalt-secondary));
 }
 
+/* biome-ignore lint/style/noDescendingSpecificity: Rootless surface trees cannot overlap a surface-root tree. */
 [data-basalt-surface]:not([data-basalt-surface-root] *) [data-basalt-surface] {
 	background: hsl(var(--basalt-secondary));
 	--basalt-control-fill: hsl(var(--basalt-secondary));
