@@ -38,7 +38,7 @@ describe("charts catalog content family", () => {
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(CHART_DESCRIPTIONS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(93);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(99);
 	});
 
 	it("keeps one audited Default scenario for every chart", () => {

@@ -14,6 +14,7 @@ describe("catalog content family manifest", () => {
 	it("discovers family files from disk without a handwritten family allowlist", () => {
 		expect(listCatalogFamilyFiles(process.cwd())).toEqual([
 			"charts.tsx",
+			"chat.tsx",
 			"data-layout.tsx",
 			"feedback.tsx",
 			"forms.tsx",

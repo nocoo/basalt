@@ -59,7 +59,7 @@ describe("catalog page-status generator", () => {
 		expect(first).not.toMatch(/^import /m);
 		expect(first).not.toContain("React");
 		expect(first).not.toContain("render:");
-		expect(first.match(/: "ready",/g)).toHaveLength(93);
+		expect(first.match(/: "ready",/g)).toHaveLength(99);
 		expect(first.match(/: "planned",/g)).toHaveLength(1);
 	});
 

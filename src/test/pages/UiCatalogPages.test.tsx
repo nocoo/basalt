@@ -76,15 +76,15 @@ describe("ui catalog", () => {
 
 	it("lists unique catalog slugs", () => {
 		const slugs = CATALOG.map((entry) => entry.slug);
-		expect(slugs).toHaveLength(94);
-		expect(new Set(slugs).size).toBe(94);
+		expect(slugs).toHaveLength(100);
+		expect(new Set(slugs).size).toBe(100);
 	});
 
 	it("renders the categorized index with orthogonal release and page states", () => {
 		renderCatalog("/ui");
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
 		expect(screen.getByRole("heading", { name: "Component library" })).toBeInTheDocument();
-		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("93 / 94 ready");
+		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("99 / 100 ready");
 		const banner = screen.getByRole("banner", { name: "Component library" });
 		const filtersToggle = within(banner).getByRole("button", { name: "Filters" });
 		expect(filtersToggle).toHaveAttribute("aria-expanded", "false");
@@ -96,9 +96,9 @@ describe("ui catalog", () => {
 		for (const [index, group] of CATALOG_INDEX_GROUPS.entries()) {
 			const section = screen.getByRole("region", { name: group.label });
 			expect(within(section).getByText(`${group.items.length} items`)).toBeInTheDocument();
-			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([67, 24, 3][index]);
+			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([73, 24, 3][index]);
 		}
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(94);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(100);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
 
@@ -201,7 +201,7 @@ describe("ui catalog", () => {
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
 		renderCatalog("/ui?status=ready&foreign=one&q=input&q=button&category=unknown&foreign=two");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue("");
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("93 results");
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("99 results");
 		await waitFor(() => {
 			expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 				"data-router-location",
@@ -224,8 +224,8 @@ describe("ui catalog", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: "Reset filters" }));
 		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveFocus();
-		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("94 results");
-		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(94);
+		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("100 results");
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(100);
 		expect(screen.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
