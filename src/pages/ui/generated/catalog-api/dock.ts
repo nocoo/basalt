@@ -31,6 +31,13 @@ export const API = [
 				description: "Overlay scrim click. Ignored in push mode.",
 			},
 			{
+				name: "dismissLabel",
+				type: "string",
+				required: false,
+				default: '"Dismiss"',
+				description: "Overlay scrim accessible name.",
+			},
+			{
 				name: "aria-label",
 				type: "string",
 				required: true,

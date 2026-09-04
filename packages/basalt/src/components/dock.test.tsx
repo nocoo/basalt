@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { Dock, DockBody } from "./dock";
 
@@ -45,6 +46,35 @@ describe("Dock", () => {
 		expect(scrim.className).toContain("bg-black/40");
 		fireEvent.click(scrim);
 		expect(onDismiss).toHaveBeenCalled();
+	});
+
+	it("moves focus into the panel when opened and restores it on close", async () => {
+		function Harness() {
+			const [open, setOpen] = useState(false);
+			return (
+				<>
+					<button type="button" onClick={() => setOpen(true)}>
+						Open
+					</button>
+					<Dock open={open} aria-label="Assistant">
+						<button type="button" onClick={() => setOpen(false)}>
+							Inside
+						</button>
+					</Dock>
+				</>
+			);
+		}
+		render(<Harness />);
+		const opener = screen.getByRole("button", { name: "Open" });
+		opener.focus();
+		fireEvent.click(opener);
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "Inside" })).toHaveFocus();
+		});
+		fireEvent.click(screen.getByRole("button", { name: "Inside" }));
+		await waitFor(() => {
+			expect(opener).toHaveFocus();
+		});
 	});
 
 	it("renders body as the scrolling pane", () => {

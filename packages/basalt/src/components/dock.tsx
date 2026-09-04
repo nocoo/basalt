@@ -1,7 +1,10 @@
-import type { ReactNode } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 import { cn } from "../utils/cn";
 import { dialogOverlayClass } from "./dialog";
 import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
+
+const FOCUSABLE =
+	'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 export type DockMode = "overlay" | "push";
 
@@ -24,6 +27,11 @@ export interface DockProps {
 	 * Overlay scrim click. Ignored in push mode.
 	 */
 	onDismiss?: () => void;
+	/**
+	 * Overlay scrim accessible name.
+	 * @default "Dismiss"
+	 */
+	dismissLabel?: string;
 	/**
 	 * Accessible name.
 	 */
@@ -50,11 +58,52 @@ export function Dock({
 	mode = "push",
 	width = "clamp(300px, 32.5vw, 546px)",
 	onDismiss,
+	dismissLabel = "Dismiss",
 	className,
 	children,
 	"aria-label": ariaLabel,
 }: DockProps) {
 	const overlay = mode === "overlay";
+	const panelRef = useRef<HTMLElement | null>(null);
+	const setPanel = (node: HTMLElement | null) => {
+		panelRef.current = node;
+	};
+	const wasOpen = useRef(open);
+	const previousFocus = useRef<HTMLElement | null>(null);
+
+	useEffect(() => {
+		if (open && !wasOpen.current) {
+			previousFocus.current =
+				document.activeElement instanceof HTMLElement ? document.activeElement : null;
+			const timer = window.setTimeout(() => {
+				const root = panelRef.current;
+				const next = root?.querySelector<HTMLElement>(FOCUSABLE) ?? root;
+				next?.focus();
+			}, 0);
+			wasOpen.current = open;
+			return () => window.clearTimeout(timer);
+		}
+		if (!open && wasOpen.current) {
+			previousFocus.current?.focus?.();
+			previousFocus.current = null;
+		}
+		wasOpen.current = open;
+	}, [open]);
+
+	useEffect(() => {
+		if (!overlay || !open) {
+			return;
+		}
+		const onKeyDown = (event: KeyboardEvent) => {
+			if (event.key !== "Escape") {
+				return;
+			}
+			event.preventDefault();
+			onDismiss?.();
+		};
+		window.addEventListener("keydown", onKeyDown);
+		return () => window.removeEventListener("keydown", onKeyDown);
+	}, [overlay, open, onDismiss]);
 	const panelClass = cn(
 		"overflow-hidden bg-basalt-background transition-[width] duration-300 ease-in-out",
 		overlay ? cn("absolute top-0 right-0 h-full", OVERLAY_LAYER) : "sticky top-0 h-screen shrink-0",
@@ -74,11 +123,13 @@ export function Dock({
 	if (!overlay) {
 		return (
 			<aside
+				ref={setPanel}
 				className={panelClass}
 				style={panelStyle}
 				aria-label={ariaLabel}
 				aria-hidden={!open}
 				inert={!open || undefined}
+				tabIndex={open ? -1 : undefined}
 			>
 				{inner}
 			</aside>
@@ -90,13 +141,14 @@ export function Dock({
 			<button
 				type="button"
 				tabIndex={open ? 0 : -1}
-				aria-label="Dismiss"
+				aria-label={dismissLabel}
 				aria-hidden={!open}
 				data-state={open ? "open" : "closed"}
 				className={cn(dialogOverlayClass("absolute"), !open && "opacity-0")}
 				onClick={open ? onDismiss : undefined}
 			/>
 			<div
+				ref={setPanel}
 				role="dialog"
 				aria-modal={open ? true : undefined}
 				aria-label={ariaLabel}
@@ -104,6 +156,7 @@ export function Dock({
 				style={panelStyle}
 				aria-hidden={!open}
 				inert={!open || undefined}
+				tabIndex={open ? -1 : undefined}
 			>
 				{inner}
 			</div>
