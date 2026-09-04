@@ -12,6 +12,9 @@ describe("ChatPage", () => {
 		expect(push).toHaveAttribute("aria-hidden", "true");
 		fireEvent.click(screen.getByRole("button", { name: "Open assistant" }));
 		expect(push).toHaveAttribute("aria-hidden", "false");
+		expect(screen.getByLabelText("Overlay assistant")).toHaveAttribute("aria-hidden", "true");
+		fireEvent.click(screen.getByRole("button", { name: "Open overlay assistant" }));
+		expect(screen.getByLabelText("Overlay assistant")).toHaveAttribute("aria-hidden", "false");
 		fireEvent.click(screen.getByRole("button", { name: "Dismiss" }));
 		expect(screen.getByLabelText("Overlay assistant")).toHaveAttribute("aria-hidden", "true");
 		fireEvent.click(screen.getByRole("button", { name: /Quality/ }));

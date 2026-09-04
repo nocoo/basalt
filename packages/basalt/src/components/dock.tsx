@@ -4,7 +4,9 @@ import { dialogOverlayClass } from "./dialog";
 import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
 const FOCUSABLE =
-	'button:not([disabled]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+	'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+const PORTAL_FOCUS =
+	"[data-radix-popper-content-wrapper], [data-radix-select-content], [data-basalt-surface-root]";
 
 export type DockMode = "overlay" | "push";
 
@@ -122,6 +124,10 @@ export function Dock({
 			const first = nodes[0];
 			const last = nodes[nodes.length - 1];
 			const active = document.activeElement;
+			const inPortal = active instanceof Element && active.closest(PORTAL_FOCUS);
+			if (inPortal) {
+				return;
+			}
 			if (
 				!(active instanceof Node) ||
 				!root.contains(active) ||

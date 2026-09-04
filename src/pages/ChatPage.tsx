@@ -91,7 +91,7 @@ function AssistantChat({
 export default function ChatPage() {
 	const { t } = useTranslation();
 	const [pushOpen, setPushOpen] = useState(true);
-	const [overlayOpen, setOverlayOpen] = useState(true);
+	const [overlayOpen, setOverlayOpen] = useState(false);
 	const [activeId, setActiveId] = useState("analytics");
 	const thread = THREADS.find((item) => item.id === activeId) ?? THREADS[0];
 	const messages = MESSAGES[activeId] ?? [];
