@@ -6,6 +6,9 @@ const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
 describe("standalone css", () => {
 	it("includes control utilities without preflight", () => {
 		expect(css).toContain(".h-9");
+		expect(css).toContain(".h-16");
+		expect(css).toContain(".w-16");
+		expect(css).toContain(".scale-75");
 		expect(css).toContain(".min-h-\\[64px\\]");
 		expect(css).toContain(".min-h-\\[96px\\]");
 		expect(css).toContain(".h-1\\.5");
