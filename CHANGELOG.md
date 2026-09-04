@@ -1,5 +1,41 @@
 # Changelog
 
+## [2.0.3] - 2026-09-04
+
+### Added
+- Demo overlay dock on chat page
+- Normalize fab and dock catalog
+- Add overlay mode to dock
+- Add chat layout page
+- Catalog chat family
+- Add chat bubble composer header inbox
+- Add fab and dock components
+- Add capital unit editor dialog
+- Add money-flow dialog demos
+- Add mountain mark favicon
+- Add library dialogs demo page
+- Move controls into library nav
+- Restack sidebar system pages
+- Remove library placeholder docs
+
+### Fixed
+- Honor visibility overrides in dock trap
+- Skip css-hidden dock trap ancestors
+- Skip hidden nodes in dock trap
+- Honor nested dialogs in dock trap
+- Narrow overlay dock focus trap
+- Keep overlay dock closed by default
+- Copy inbox onSelect in catalog
+- Trap overlay dock keyboard
+- Ship chat utilities in standalone css
+- Tighten chat kit public contracts
+- Reset composer height and stop control
+- Restore focus when dock toggles
+- Pad chat composer bottom
+- Tighten dialog panel padding
+- Add interaction showcase chrome
+- Add palette page chrome
+
 ## [2.0.2] - 2026-09-03
 
 ### Added
