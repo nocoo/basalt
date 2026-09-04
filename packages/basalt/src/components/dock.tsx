@@ -18,8 +18,13 @@ function tabbables(root: HTMLElement | null) {
 		if (node.tabIndex < 0) {
 			return false;
 		}
-		const style = window.getComputedStyle(node);
-		return style.display !== "none" && style.visibility !== "hidden";
+		for (let current: HTMLElement | null = node; current; current = current.parentElement) {
+			const style = window.getComputedStyle(current);
+			if (style.display === "none" || style.visibility === "hidden") {
+				return false;
+			}
+		}
+		return true;
 	});
 }
 
