@@ -7,6 +7,18 @@ const FOCUSABLE =
 	'button:not([disabled]), [href], input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 const PORTAL_FOCUS = "[data-radix-popper-content-wrapper], [data-radix-select-viewport]";
 
+function tabbables(root: HTMLElement | null) {
+	if (!root) {
+		return [];
+	}
+	return [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter((node) => {
+		if (node.closest("[inert]")) {
+			return false;
+		}
+		return node.tabIndex >= 0;
+	});
+}
+
 export type DockMode = "overlay" | "push";
 
 export interface DockProps {
@@ -74,22 +86,25 @@ export function Dock({
 	const previousFocus = useRef<HTMLElement | null>(null);
 
 	useEffect(() => {
-		if (open && !wasOpen.current) {
+		if (open) {
+			if (wasOpen.current) {
+				return;
+			}
 			previousFocus.current =
 				document.activeElement instanceof HTMLElement ? document.activeElement : null;
 			const timer = window.setTimeout(() => {
 				const root = panelRef.current;
-				const next = root?.querySelector<HTMLElement>(FOCUSABLE) ?? root;
-				next?.focus();
+				const nodes = tabbables(root);
+				(nodes[0] ?? root)?.focus();
+				wasOpen.current = true;
 			}, 0);
-			wasOpen.current = open;
 			return () => window.clearTimeout(timer);
 		}
-		if (!open && wasOpen.current) {
+		if (wasOpen.current) {
 			previousFocus.current?.focus?.();
 			previousFocus.current = null;
+			wasOpen.current = false;
 		}
-		wasOpen.current = open;
 	}, [open]);
 
 	useEffect(() => {
@@ -112,9 +127,7 @@ export function Dock({
 			if (!root) {
 				return;
 			}
-			const nodes = [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
-				(node) => !node.closest("[inert]"),
-			);
+			const nodes = tabbables(root);
 			if (nodes.length === 0) {
 				event.preventDefault();
 				panelRef.current?.focus();
@@ -123,9 +136,14 @@ export function Dock({
 			const first = nodes[0];
 			const last = nodes[nodes.length - 1];
 			const active = document.activeElement;
-			const inPortal = active instanceof Element && active.closest(PORTAL_FOCUS);
-			if (inPortal) {
-				return;
+			if (active instanceof Element) {
+				const nestedModal = active.closest("[role='dialog'], [role='alertdialog']");
+				if (nestedModal && nestedModal !== panelRef.current && !root.contains(nestedModal)) {
+					return;
+				}
+				if (active.closest(PORTAL_FOCUS)) {
+					return;
+				}
 			}
 			if (
 				!(active instanceof Node) ||
