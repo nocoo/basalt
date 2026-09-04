@@ -27,6 +27,17 @@ describe("Dock", () => {
 		expect(screen.getByText("Panel")).toBeInTheDocument();
 	});
 
+	it("keeps the overlay scrim inert without onDismiss", () => {
+		render(
+			<div className="relative">
+				<Dock mode="overlay" open width="24rem" aria-label="Assistant">
+					Panel
+				</Dock>
+			</div>,
+		);
+		expect(screen.queryByRole("button", { name: "Dismiss" })).not.toBeInTheDocument();
+	});
+
 	it("covers the frame with a dialog scrim in overlay mode", () => {
 		const onDismiss = vi.fn();
 		render(

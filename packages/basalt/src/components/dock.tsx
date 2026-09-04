@@ -65,6 +65,7 @@ export function Dock({
 }: DockProps) {
 	const overlay = mode === "overlay";
 	const panelRef = useRef<HTMLElement | null>(null);
+	const overlayRootRef = useRef<HTMLDivElement>(null);
 	const setPanel = (node: HTMLElement | null) => {
 		panelRef.current = node;
 	};
@@ -95,11 +96,45 @@ export function Dock({
 			return;
 		}
 		const onKeyDown = (event: KeyboardEvent) => {
-			if (event.key !== "Escape") {
+			if (event.key === "Escape") {
+				if (!onDismiss) {
+					return;
+				}
+				event.preventDefault();
+				onDismiss();
 				return;
 			}
-			event.preventDefault();
-			onDismiss?.();
+			if (event.key !== "Tab") {
+				return;
+			}
+			const root = overlayRootRef.current;
+			if (!root) {
+				return;
+			}
+			const nodes = [...root.querySelectorAll<HTMLElement>(FOCUSABLE)].filter(
+				(node) => !node.closest("[inert]"),
+			);
+			if (nodes.length === 0) {
+				event.preventDefault();
+				panelRef.current?.focus();
+				return;
+			}
+			const first = nodes[0];
+			const last = nodes[nodes.length - 1];
+			const active = document.activeElement;
+			if (
+				!(active instanceof Node) ||
+				!root.contains(active) ||
+				(!event.shiftKey && active === last)
+			) {
+				event.preventDefault();
+				first?.focus();
+				return;
+			}
+			if (event.shiftKey && active === first) {
+				event.preventDefault();
+				last?.focus();
+			}
 		};
 		window.addEventListener("keydown", onKeyDown);
 		return () => window.removeEventListener("keydown", onKeyDown);
@@ -137,16 +172,27 @@ export function Dock({
 	}
 
 	return (
-		<div className={cn("absolute inset-0", OVERLAY_LAYER, !open && "pointer-events-none")}>
-			<button
-				type="button"
-				tabIndex={open ? 0 : -1}
-				aria-label={dismissLabel}
-				aria-hidden={!open}
-				data-state={open ? "open" : "closed"}
-				className={cn(dialogOverlayClass("absolute"), !open && "opacity-0")}
-				onClick={open ? onDismiss : undefined}
-			/>
+		<div
+			ref={overlayRootRef}
+			className={cn("absolute inset-0", OVERLAY_LAYER, !open && "pointer-events-none")}
+		>
+			{onDismiss ? (
+				<button
+					type="button"
+					tabIndex={open ? 0 : -1}
+					aria-label={dismissLabel}
+					aria-hidden={!open}
+					data-state={open ? "open" : "closed"}
+					className={cn(dialogOverlayClass("absolute"), !open && "opacity-0")}
+					onClick={open ? onDismiss : undefined}
+				/>
+			) : (
+				<div
+					aria-hidden
+					data-state={open ? "open" : "closed"}
+					className={cn(dialogOverlayClass("absolute"), !open && "opacity-0")}
+				/>
+			)}
 			<div
 				ref={setPanel}
 				role="dialog"
