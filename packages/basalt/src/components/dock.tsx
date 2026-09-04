@@ -18,9 +18,11 @@ function tabbables(root: HTMLElement | null) {
 		if (node.tabIndex < 0) {
 			return false;
 		}
+		if (window.getComputedStyle(node).visibility === "hidden") {
+			return false;
+		}
 		for (let current: HTMLElement | null = node; current; current = current.parentElement) {
-			const style = window.getComputedStyle(current);
-			if (style.display === "none" || style.visibility === "hidden") {
+			if (window.getComputedStyle(current).display === "none") {
 				return false;
 			}
 		}
