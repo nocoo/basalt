@@ -1,8 +1,9 @@
-import { mkdirSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+	computeDocModuleFilename,
 	extractCompilableDocModules,
 	generateCatalogInstallationSnippets,
 	scanDocFences,
@@ -91,6 +92,46 @@ describe("documentation tarball compilation gate", () => {
 				"```tsx compile:dup-id\nexport const a = 1;\n```\n```tsx compile:dup-id\nexport const b = 2;\n```",
 			);
 			expect(() => scanDocFences(tempFixtureDir)).toThrow(/duplicate code block id 'dup-id'/);
+		} finally {
+			rmSync(tempFixtureDir, { recursive: true, force: true });
+		}
+	});
+
+	it("prevents filename collision between user doc IDs and catalog installation harness", () => {
+		const tempFixtureDir = join(tmpdir(), `basalt-docs-gate-coll-${Date.now()}`);
+		const harnessDir = join(tempFixtureDir, "src/__generated_harness__");
+		const docsDir = join(tempFixtureDir, "src/__generated_docs__");
+		mkdirSync(harnessDir, { recursive: true });
+		mkdirSync(docsDir, { recursive: true });
+
+		try {
+			// Write installation harness
+			const harnessPath = join(harnessDir, "catalog-snippets.tsx");
+			writeFileSync(harnessPath, "// harness content");
+
+			// Doc module with id 'catalog-snippets' must not overwrite or conflict with harness
+			const modFilename0 = computeDocModuleFilename(0, "catalog-snippets");
+			expect(modFilename0).toBe("doc_000_catalog-snippets.tsx");
+			const docPath0 = join(docsDir, modFilename0);
+			writeFileSync(docPath0, "// doc module 0");
+
+			// Distinct user IDs with different punctuation like a.b and a/b must not overwrite each other
+			const modFilename1 = computeDocModuleFilename(1, "a.b");
+			const modFilename2 = computeDocModuleFilename(2, "a/b");
+			expect(modFilename1).not.toBe(modFilename2);
+			expect(modFilename1).toBe("doc_001_a_b.tsx");
+			expect(modFilename2).toBe("doc_002_a_b.tsx");
+
+			const docPath1 = join(docsDir, modFilename1);
+			const docPath2 = join(docsDir, modFilename2);
+			writeFileSync(docPath1, "// doc module 1");
+			writeFileSync(docPath2, "// doc module 2");
+
+			// All four files exist distinctly
+			expect(readFileSync(harnessPath, "utf8")).toBe("// harness content");
+			expect(readFileSync(docPath0, "utf8")).toBe("// doc module 0");
+			expect(readFileSync(docPath1, "utf8")).toBe("// doc module 1");
+			expect(readFileSync(docPath2, "utf8")).toBe("// doc module 2");
 		} finally {
 			rmSync(tempFixtureDir, { recursive: true, force: true });
 		}

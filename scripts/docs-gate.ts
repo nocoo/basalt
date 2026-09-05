@@ -2,6 +2,7 @@ import { spawnSync } from "node:child_process";
 import {
 	cpSync,
 	existsSync,
+	mkdirSync,
 	mkdtempSync,
 	readdirSync,
 	readFileSync,
@@ -175,6 +176,11 @@ export function generateCatalogInstallationSnippets() {
 	};
 }
 
+export function computeDocModuleFilename(index: number, id: string): string {
+	const sanitizedSlug = id.replace(/[^a-zA-Z0-9_-]/g, "_");
+	return `doc_${String(index).padStart(3, "0")}_${sanitizedSlug}.tsx`;
+}
+
 export function runDocsGate(repoRoot = process.cwd()) {
 	const packageRoot = join(repoRoot, "packages/basalt");
 	const tempRoot = realpathSync(mkdtempSync(join(tmpdir(), "basalt-docs-gate-")));
@@ -226,14 +232,30 @@ export function runDocsGate(repoRoot = process.cwd()) {
 			throw new Error(`consumer npm install failed:\n${install.stderr}`);
 		}
 
-		// 5. Generate catalog snippets file
+		// 5. Generate catalog snippets file in dedicated harness location
 		const catalogData = generateCatalogInstallationSnippets();
-		writeFileSync(join(consumerDir, "src/catalog-snippets.tsx"), catalogData.code);
+		const harnessDir = join(consumerDir, "src/__generated_harness__");
+		mkdirSync(harnessDir, { recursive: true });
+		writeFileSync(join(harnessDir, "catalog-snippets.tsx"), catalogData.code);
 
-		// 6. Write out exact compilable documentation modules without synthetic modifications
-		for (const mod of compilableModules) {
-			const safeFilename = `${mod.id.replace(/[^a-zA-Z0-9_-]/g, "_")}.tsx`;
-			writeFileSync(join(consumerDir, `src/${safeFilename}`), mod.code);
+		// 6. Write out exact compilable documentation modules into an isolated docs directory
+		// using collision-proof indexed filenames so arbitrary user IDs can never collide or overwrite
+		const docsDir = join(consumerDir, "src/__generated_docs__");
+		mkdirSync(docsDir, { recursive: true });
+		const writtenDocPaths = new Set<string>();
+
+		for (let idx = 0; idx < compilableModules.length; idx++) {
+			const mod = compilableModules[idx];
+			const docFilename = computeDocModuleFilename(idx, mod.id);
+			const docFilePath = join(docsDir, docFilename);
+
+			if (writtenDocPaths.has(docFilePath) || existsSync(docFilePath)) {
+				throw new Error(
+					`fatal destination file collision for doc module '${mod.id}': ${docFilename}`,
+				);
+			}
+			writtenDocPaths.add(docFilePath);
+			writeFileSync(docFilePath, mod.code);
 		}
 
 		// 7. Strict tsc typecheck of consumer
