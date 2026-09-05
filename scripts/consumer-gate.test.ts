@@ -144,7 +144,7 @@ import "@nocoo/basalt/styles/tailwind";`),
 		assertTemplateManifest(manifest);
 		expect(manifest).toContain('"react": "19.2.8"');
 		expect(manifest).toContain('"react-dom": "19.2.8"');
-		expect(manifest).toContain('"lucide-react": "1.40.0"');
+		expect(manifest).toContain('"lucide-react": "1.41.0"');
 		expect(manifest).toContain('"vite": "8.2.2"');
 		assertRootConsumerSource(readFileSync("fixtures/vite-standalone/src/main.tsx", "utf8"));
 		assertStandaloneTypecheckGate(
