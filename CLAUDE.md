@@ -31,7 +31,7 @@ This file is the **contract**. Hooks, CI, and config are **enforcement**. If the
 | Component | Choice |
 |---|---|
 | Language | TypeScript 7 strict |
-| Package manager | Bun (`packageManager` bun@1.3.6; CD 1.3.11; CI bun-quality default `latest`) |
+| Package manager | Bun (`packageManager` bun@1.4.0; CI/CD pinned `1.4.0`) |
 | Runtime | Vite 8 SPA; CF Workers assets (`theme-basalt`); npm `@nocoo/basalt` |
 | Lint | Biome `check --error-on-warnings .`. No `noSkippedTests` |
 | Tests | Vitest L1 95% all four on models/viewmodels/lib + package src |
@@ -59,21 +59,21 @@ bun run release
 
 Status: `enforced` | `planned` | `manual` | `N/A`. `enforced` Evidence = hook/CI/config/script.
 
-Org gaps: index-snapshot pre-commit; stdin-range pre-push; `.skip`/`.only`; CI typecheck (`typecheck-command: "true"` skips it).
+Org gaps: index-snapshot pre-commit; stdin-range pre-push; `.skip`/`.only`.
 
-Today: pre-commit typecheck/lint/`test` (no coverage)/gitleaks `--staged` on the working tree. pre-push `build` + `test:coverage` + `lint` + osv. CI bun-quality `@aec4adc1a817c56790d1698329ef9398a15a754a` (v2026.5): build, `test:coverage`, gitleaks, osv; typecheck skipped.
+Today: pre-commit typecheck/lint/`test` (no coverage)/gitleaks `--staged` on the working tree. pre-push `build` + `test:coverage` + `lint` + osv. CI: bun-quality `@aec4adc1a817c56790d1698329ef9398a15a754a` (v2026.5) with build, `test:coverage`, `typecheck`, gitleaks, osv; package-gates with package build, types:check, pack:check, publint, and consumer gates A/B/C/D.
 
 | Change | Proof | Status | Evidence |
 |---|---|---|---|
 | Logic | L1 vitest ≥95% all four on models/viewmodels/lib + package | enforced | pre-push + CI `test:coverage`; `vitest.config.ts`. pre-commit `test` has no thresholds |
 | API L2 | — | N/A | — |
-| UI L3 | Playwright `consumer:next` | manual | `package:prepublish` (not a hook/CI job) |
-| Types / lint | tsc + Biome 0 warning + catalog checks | enforced | pre-commit typecheck + lint. CI lint only |
+| UI L3 | Playwright `consumer:next` | enforced | CI `package-gates`; `package:prepublish` |
+| Types / lint | tsc + Biome 0 warning + catalog checks | enforced | pre-commit typecheck + lint. CI typecheck + lint |
 | G2 secrets | gitleaks | enforced | pre-commit `--staged`; CI bun-quality |
 | G2 deps | osv `bun.lock` | enforced | pre-push; CI bun-quality |
 | Bundler | `vite build` → `dist/` | enforced | pre-push `build`; CI pre-command; CD `release.yml` |
 | Docs | numbered doc / INTEGRATION.md if chrome or API changes | manual | human review |
-| Site CD | tag `vX.Y.Z` == root package.json | enforced | `.github/workflows/release.yml` |
+| Site CD | tag `vX.Y.Z` == root package.json, on main, CI validated | enforced | `.github/workflows/release.yml` |
 | npm `@nocoo/basalt` | `package:prepublish` then publish package dir | manual | `packages/basalt/scripts/verify-pack.ts` |
 
 | Hook | Org bar | Status | Evidence |
@@ -92,8 +92,8 @@ Today: pre-commit typecheck/lint/`test` (no coverage)/gitleaks `--staged` on the
 
 ## Operations / Release
 
-- Site: bump root + `packages/basalt` `package.json` + CHANGELOG.md, commit, push `main`, wait CI, then push tag `vX.Y.Z` only. Do not use `bun run release` for prod until it requires `main`, waits CI, and pushes that tag only. Who: GitHub write + `production` Environment + `gh`.
-- Tag CD deploys immediately. `main` CD waits CI-green. Do not laptop-`wrangler deploy`.
+- Site: bump root + `packages/basalt` `package.json` + CHANGELOG.md, commit, push `main`, wait CI, then push tag `vX.Y.Z` only (enforced by `bun run release` and `release.yml`). Who: GitHub write + `production` Environment + `gh`.
+- Tag CD deploys after validating semver, root/package matching version, existence on main, and successful CI on that exact commit. `main` CD waits CI-green. Do not laptop-`wrangler deploy`.
 - npm: `bun run package:prepublish`, then `cd packages/basalt && npm publish --access public --ignore-scripts --registry https://registry.npmjs.org/ --otp=<code>`. Who: `@nocoo/basalt` npm owner with 2FA. Live-check: `https://basalt.hexly.ai` and `npm view @nocoo/basalt`.
 
 ## Retrospective
