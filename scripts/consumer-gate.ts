@@ -122,7 +122,7 @@ export const HEAVY_OPTIONAL_PEERS = {
 export const HEAVY_CONSUMER_VERSIONS = {
 	recharts: "3.10.1",
 	"react-day-picker": "10.0.1",
-	"@tanstack/react-table": "9.1.2",
+	"@tanstack/react-table": "9.2.4",
 } as const;
 
 export const HEAVY_SOURCE_SPECIFIERS = [
