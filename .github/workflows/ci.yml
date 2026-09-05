@@ -15,3 +15,51 @@ jobs:
         test-command: "bun run test:coverage"
         typecheck-command: "bun run typecheck"
         enable-l2: "false"
+
+  package-gates:
+    name: Package Gates & Consumers
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.4.0"
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Install Playwright Chromium with system dependencies
+        run: bunx playwright install --with-deps chromium
+
+      - name: Build package artifacts
+        run: bun run --cwd packages/basalt build
+
+      - name: Check package types
+        run: bun run --cwd packages/basalt types:check
+
+      - name: Check package tarball
+        run: bun run --cwd packages/basalt pack:check
+
+      - name: Run publint
+        run: bun run --cwd packages/basalt publint
+
+      - name: Run consumer gate tailwind
+        run: bun run consumer:tailwind
+
+      - name: Run consumer gate standalone
+        run: bun run consumer:standalone
+
+      - name: Run consumer gate next
+        run: bun run consumer:next
+
+      - name: Run consumer gate heavy
+        run: bun run consumer:heavy
