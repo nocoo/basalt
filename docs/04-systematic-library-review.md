@@ -656,7 +656,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 2. **资源列表 / 榜单**：头像、名称/辅助信息、标签、数字列和操作位；表头与内容的列宽、行高一致。
 3. **资源详情**：页头、元信息、正文与侧栏，覆盖文本段落、媒体或活动流占位。
 
-每个场景可切换 loading/loaded；一处有名称的 `status`/`aria-busy` 表达整体加载，装饰占位不反复朗读；维持主要容器几何；reduced motion 关闭循环动效。可新增通用 Skeleton shape/group 或轻量组合，但保留 `SkeletonLine` 既有接口，业务布局留在 example/recipe。
+每个场景可切换 loading/loaded；一处有名称的 `status`/`aria-busy` 表达整体加载，装饰占位不反复朗读；维持主要容器几何；reduced motion 关闭循环动效。可新增通用 Skeleton shape/group 或轻量组合，但保留 `SkeletonLine` 既有接口，业务布局留在 example/recipe。新组合应作为页面主展示，简单灰线例子继续用于入门说明。
 
 #### S02 · 复杂 Table 与行内展示
 
@@ -669,7 +669,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 
 交互表头必须真实改变排序，支持键盘、焦点和 `aria-sort`；需要列选择或过滤时，控件也必须改变结果。DataTable 增量支持受控排序/分页/总数及手动服务器模式，保留现有本地默认行为和 renderer。展示覆盖搜索/筛选、选择与行内操作的反馈，loading/empty/error/retry，以及至少一个本地异步服务器模拟；不连接业务后端。
 
-格式化由 caller 或 cell renderer 拥有，原始值用于排序。语义颜色与文本/图标共同表达状态；数值采用 tabular alignment。行内 Sparkline/Meter 优先复用，若电量轮廓确有独立复用价值再新增轻量组件；图形带可访问名称/数值且不在根入口引入 Recharts。移动端保持可访问横向滚动或有信息等价的布局，不静默隐藏关键列。所有 copied examples 必须来自实际可编译模块。
+格式化由 caller 或 cell renderer 拥有，原始值用于排序。语义颜色与文本/图标共同表达状态；数值采用 tabular alignment。行内 Sparkline/Meter 优先复用，若电量轮廓确有独立复用价值再新增轻量组件；图形带可访问名称/数值且不在根入口引入 Recharts。移动端保持可访问横向滚动或有信息等价的布局，不静默隐藏关键列。所有 copied examples 必须来自实际可编译模块。Table/DataTable 的主展示改用上述组合，preview 占满可用宽度；现有单行单列示例保留为后置的入门用法。
 
 ### 12.3 阶段计划与状态
 
@@ -677,10 +677,10 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 |---|---|---|---|---|
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
-| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 待调度 | — |
+| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`936f0db`：公开路径基线、严格 import、8 个文档模块与 133 条安装导入的 tarball 编译及负例已验收；继续 API 归属/默认值和版本化指南 |
 | P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
-| P4 | 浮层与语义：10a/b、11a/b、12a/b；C06–C11/R05 | Dock 模态、Confirm 焦点/异常责任、Slider、日历键盘、本地化、Empty action、Storage 拒绝 | 待调度 | — |
-| P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、统一 reduced motion | 待调度 | — |
+| P4 | 浮层与语义：10a/b、11a/b、12a/b；C06–C11/R05 | Dock 模态、Confirm 焦点/异常责任、Slider、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
+| P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
 | P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 待调度 | — |
 | P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 待调度 | — |
 | P8 | 筛选与上传：16a/b/c；R01/R02 | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费 | 待调度 | — |
@@ -710,3 +710,19 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 主 agent 独立执行的证据包括 shell 失败注入、13 个实际工作流 shell 用例、SHA/等待/tag 绑定 probes、正式 Vitest release 19 测试、Actionlint 和最终 diff 审阅。临时验收材料位于 `/var/folders/hh/5b1tphh13wbg8hj9jj_bxbqr0000gn/T/basalt-04-implementation-20260906.jpwb8yyq`。完整内容中的关键结论已保留在本文。
 
 上述是本地实现与隔离行为证据；本轮未推送远端，不能表述为 GitHub 上该分支的 CI 已运行成功。P1 仅关闭 Q01–Q04/Q06；Q05 的浏览器几何、组件交互与展示回归门继续随 P3–P10 实施。组织级 index-snapshot pre-commit、stdin-range pre-push 仍是既有后续项，没有在本阶段伪报完成。
+
+#### P2 验收记录（实施中，2026-09-06）
+
+首组 `ef2bd65` 建立原始 2.0.3 公共出口基线、类型/路径校验和随包兼容政策，并刷新入口文档。主 agent 对当前产物独立核验：110 个模块入口、572 个路径内导出符号（375 个运行时符号）及 3 个 CSS 入口全部保留，原始基线未被替换。
+
+初次验收发现：不带包 `dist` 的隔离 checkout 中新测试 10 项有 5 项失败；最小包故障注入中，声明保留但 JavaScript 删除导出时未报错；新 DatePicker 文档示例混用了 `Date` 与实际 ISO string 接口。修正提交 `b35372f` 后，主 agent 复跑无 `dist` 的正式测试 **10/10 通过**，6 个最小包正负用例全部符合预期，DatePicker 示例也改为 ISO string。
+
+继续验收时发现运行时遍历仍绕开实际 `exports`：把非原抽样入口 Slider 重定向到坏 re-export 模块，静态检查与运行时遍历仍通过，真实公共路径导入却失败。`40ab256` 改为对公开 specifier 解析与求值；主 agent 独立复验正常包 110 个模块 / 375 个运行时符号通过，重定向坏模块用例以预期的缺模块错误退出，此项关闭。
+
+`f236245` 完成严格的 catalog 导入元数据：显示名、`exportName`、`importPath` 与根入口可用性分开，Installation 与 Copy page 共用生成函数。主 agent 独立比对原 catalog，显示名、导航、分类和顺序均保留；99 个 ready 页面对应的 99 条 granular / 34 条 barrel 声明与现有公开出口一致，四个原非法 import 已修正。
+
+`abbb1d2` / `936f0db` 建立 `consumer:docs`，接入 CI package-gates 与 package:prepublish。三个入口文档的完整 TSX 模块从 Markdown 原文提取，应用相关节选明确分类；在仓外安装实际 npm tarball，以 strict TypeScript 编译 **8 个完整模块及 133 条安装导入**。旧的手抄 recipe / `typeof` 测试已移除，生成文件采用相互隔离的目录与唯一文件名。
+
+主 agent 独立验收：8 段均为文档原文，包含两个 ProjectsPage；给其中一个 PageHeader 注入不存在的 prop，消费端以 TS2322 失败；删除 README 明确失败。另用文档 ID `catalog-snippets` 与不存在的 Slider 导出复现了原生成文件覆盖导致的假通过，`936f0db` 后同一真实 tarball 用例以 TS2305 正确失败。普通路径的 99 / 34 / 8 编译通过；该组正常 hooks 为 175 个测试文件、1,457 个测试通过，lint 778 文件无警告，gitleaks 无命中。
+
+继续完成 API 元数据、默认值与版本化指南，P2 尚未整体验收。pi 服务错误均在监控检查中发现，备份并压缩原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
