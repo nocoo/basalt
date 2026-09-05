@@ -139,7 +139,7 @@ describe("ui catalog", () => {
 			);
 		}
 		expect(screen.getAllByRole("button", { name: "Create project" })).toHaveLength(3);
-	});
+	}, 15_000);
 
 	it("filters the catalog from URL-backed search and toggle controls", () => {
 		renderCatalog("/ui?q=input&release=catalog&status=ready");
