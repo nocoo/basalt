@@ -1,41 +1,149 @@
 # @nocoo/basalt
 
-Basalt component library. ESM, granular exports, Tailwind v4 or standalone CSS.
+Matte design system component library. ESM, granular exports, Tailwind CSS v4 or standalone CSS.
 
-## Tailwind
+- **Package:** `@nocoo/basalt`
+- **Documentation & Showcase:** [https://basalt.hexly.ai](https://basalt.hexly.ai)
+- **Repository:** [https://github.com/nocoo/basalt](https://github.com/nocoo/basalt)
+- **Complete Application Guide:** [INTEGRATION.md](https://github.com/nocoo/basalt/blob/main/INTEGRATION.md)
+- **Compatibility & Version Policy:** [ai/COMPATIBILITY.md](ai/COMPATIBILITY.md)
 
-Import order is required:
+---
+
+## Installation
+
+```bash
+npm install @nocoo/basalt lucide-react
+# or
+bun add @nocoo/basalt lucide-react
+```
+
+### Peer Dependencies
+
+- `react`: `^19` (Required)
+- `react-dom`: `^19` (Required)
+- `lucide-react`: `*` (Required for icons across controls)
+- `tailwindcss`: `^4` (Optional; required only if using the Tailwind stylesheet contract)
+- `recharts`: `^3` (Optional; required for chart subpaths such as `@nocoo/basalt/charts/*`)
+- `react-day-picker`: `^10` (Optional; declared peer for custom calendar integrations; the current DatePicker implementation does not call it)
+- `@tanstack/react-table`: `^9` (Optional; declared peer for custom table integrations; the current DataTable implementation does not call it)
+
+> **Note on optional peers:** Basalt's built-in `DatePicker` and `DataTable` operate independently without requiring `react-day-picker` or `@tanstack/react-table`. Only install optional peers when your application directly utilizes them or imports Recharts visualizations.
+
+---
+
+## Styling Contracts
+
+### Contract 1: Tailwind CSS v4
+
+Import order is strict. Register Basalt tokens before the Tailwind framework imports:
 
 ```css
 @source "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
 @import "@nocoo/basalt/styles/tailwind";
 @import "tailwindcss";
+
+@layer base {
+  html, body, #root {
+    height: 100%;
+  }
+  body {
+    @apply bg-basalt-background text-basalt-foreground antialiased;
+  }
+}
 ```
 
-`./styles` points at the Tailwind contract. Basalt `@theme` tokens must register before `tailwindcss`.
+- `@nocoo/basalt/styles/tailwind` (or `@nocoo/basalt/styles`): Defines `--basalt-*` design tokens, luminance surfaces (L0/L1/L2), and `--color-basalt-*` utility classes.
 
-## Standalone (no Tailwind)
+### Contract 2: Standalone CSS (No Tailwind)
+
+For projects without Tailwind CSS (e.g. vanilla Vite, legacy frameworks, or Next.js with custom CSS):
 
 ```ts
 import "@nocoo/basalt/styles/standalone";
 ```
 
-Standalone has no Preflight and no html/body reset. It is compiled tokens + the utilities used by shipped controls + namespaced keyframes. Rebuild with `bun scripts/build-basalt-standalone.ts`.
+Standalone CSS contains compiled design tokens, scoped control classes, keyframes, and base surface properties. It does not inject global CSS resets or Preflight. Ensure your container sets `height: 100%`.
 
-## Components
+---
 
-```ts
-import { Button, ThemeProvider } from "@nocoo/basalt";
-import { DatePicker } from "@nocoo/basalt/components/date-picker";
-import { DonutChart } from "@nocoo/basalt/charts/donut";
+## Import Architecture
+
+### 1. Root Barrel (`@nocoo/basalt`)
+Contains lightweight base components, inputs, layout surfaces, and providers:
+```tsx
+import {
+  Button,
+  Input,
+  LayerCard,
+  ThemeProvider,
+  ThemeToggle,
+  Tooltip,
+  Toast,
+  Sidebar
+} from "@nocoo/basalt";
 ```
 
-Root barrel is small leaves + providers. Charts, DatePicker, and DataTable stay on granular paths.
+### 2. Granular Subpaths (`@nocoo/basalt/components/*`, `@nocoo/basalt/charts/*`, `@nocoo/basalt/providers/*`)
+Keeps initial bundle size small by isolating complex or specialized dependencies:
+```tsx
+import { DatePicker } from "@nocoo/basalt/components/date-picker";
+import { DataTable } from "@nocoo/basalt/components/data-table";
+import { DonutChart } from "@nocoo/basalt/charts/donut";
+import { useTheme } from "@nocoo/basalt/providers/theme";
+```
 
-Optional peer ranges for those granular entrypoints:
+---
 
-- `recharts` `^3` — used by chart modules such as `DonutChart`
-- `react-day-picker` `^10` — declared for DatePicker consumers; the current DatePicker implementation does not call it
-- `@tanstack/react-table` `^9` — declared for DataTable consumers; the current DataTable implementation does not call it
+## Framework Integration Highlights
 
-Install the matching library in the consumer when you use that granular path. Tailwind `^4` remains optional for the Tailwind stylesheet contract.
+### React 19 & Next.js Client Boundaries
+Basalt controls require browser event listeners and React context. When using Next.js App Router, render Basalt components within a client module:
+
+```tsx
+// app/basalt-app.tsx
+"use client";
+
+import { Button, ThemeProvider } from "@nocoo/basalt";
+
+export function BasaltApp() {
+  return (
+    <ThemeProvider>
+      <Button variant="default">Client Control</Button>
+    </ThemeProvider>
+  );
+}
+```
+
+### Server-Side Theme Pre-Hydration
+To eliminate theme flashing (FOUC), inject the theme class before React renders:
+
+```html
+<script>
+  (function() {
+    try {
+      var stored = localStorage.getItem("theme");
+      var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      var isDark = stored === "dark" || (stored !== "light" && prefersDark);
+      document.documentElement.classList.toggle("dark", isDark);
+      document.documentElement.classList.toggle("light", !isDark);
+      document.documentElement.dataset.mode = isDark ? "dark" : "light";
+    } catch (e) {}
+  })();
+</script>
+```
+
+---
+
+## Upgrades & Compatibility Policy
+
+Basalt follows strict [Semantic Versioning (SemVer)](https://semver.org/):
+- **PATCH** (`2.0.x`): Bug fixes, internal optimizations, visual refinements that do not break layout contracts.
+- **MINOR** (`2.x.0`): New components, additive props, opt-in features, and backward-compatible changes.
+- **MAJOR** (`3.0.0`): Breaking changes to public component signatures, DOM/ARIA structures, or removal of deprecated export paths.
+
+All 110 exported entrypoints from `v2.0.3` are locked as a permanent compatibility baseline. See [ai/COMPATIBILITY.md](ai/COMPATIBILITY.md) for full details.
+
+## License
+
+[MIT](https://opensource.org/licenses/MIT)

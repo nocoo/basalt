@@ -169,7 +169,7 @@ describe("package build contract", () => {
 		expect(raw).not.toMatch(/"private"\s*:/);
 		expect(pkg.type).toBe("module");
 		expect(pkg.publishConfig?.access).toBe("public");
-		expect(pkg.files).toEqual(["dist", "README.md", "LICENSE"]);
+		expect(pkg.files).toEqual(["dist", "ai", "README.md", "LICENSE"]);
 		expect(pkg.scripts["pack:check"]).toContain("verify-pack");
 		expect(pkg.scripts.publint).toBe("publint --strict --pack npm");
 		expect(pkg.scripts.prepublishOnly).toBe("bun run --cwd ../.. package:prepublish");

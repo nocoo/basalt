@@ -32,7 +32,7 @@ describe("S10 release evidence", () => {
 		const packed = JSON.parse(
 			readFileSync(path.join(ROOT, "packages/basalt/package.json"), "utf8"),
 		) as { files: string[] };
-		expect(packed.files).toEqual(["dist", "README.md", "LICENSE"]);
+		expect(packed.files).toEqual(["dist", "ai", "README.md", "LICENSE"]);
 		expect(packed.files.join("\n")).not.toMatch(/secret|token|\.env/i);
 	});
 });

@@ -13,16 +13,18 @@
 	},
 	"files": [
 		"dist",
+		"ai",
 		"README.md",
 		"LICENSE"
 	],
 	"scripts": {
-		"build": "bun run build:css && vite build && tsc -p tsconfig.build.json && bun scripts/rewrite-declarations.ts && bun scripts/verify-dist.ts && bun scripts/root-boundary.ts && node scripts/verify-runtime.mjs",
+		"build": "bun run build:css && vite build && tsc -p tsconfig.build.json && bun scripts/rewrite-declarations.ts && bun scripts/verify-dist.ts && bun scripts/verify-public-api.ts && bun scripts/root-boundary.ts && node scripts/verify-runtime.mjs",
 		"build:css": "bun ../../scripts/build-basalt-standalone.ts",
 		"pack:check": "bun scripts/verify-pack.ts",
 		"prepublishOnly": "bun run --cwd ../.. package:prepublish",
 		"publint": "publint --strict --pack npm",
-		"types:check": "tsc -p type-tests/tsconfig.bundler.json --noEmit && tsc -p type-tests/tsconfig.nodenext.json --noEmit"
+		"types:check": "tsc -p type-tests/tsconfig.bundler.json --noEmit && tsc -p type-tests/tsconfig.nodenext.json --noEmit",
+		"verify:api": "bun scripts/verify-public-api.ts"
 	},
 	"sideEffects": [
 		"*.css"

@@ -807,3 +807,94 @@ import { SectionRule } from "@nocoo/basalt/components/section-rule";
 ```
 
 Stack one `SectionRule` per region. Live recipe: `/layout`. Catalog: `/ui/page-header`, `/ui/section-rule`.
+
+---
+
+## 16. Forms, Native Submission, and Reset Handling
+
+Basalt form controls participate in standard forms and controlled state pipelines.
+
+### Working Native HTML Form & FormData Pattern
+
+Standard inputs (`Input`, `InputArea`, `Checkbox`, `Radio`, `Switch`) reliably supply their values via standard `FormData(event.currentTarget)`:
+
+```tsx
+import { Button, Field, Input, Switch } from "@nocoo/basalt";
+
+export function ProfileForm() {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const email = data.get("email");
+    const notifications = data.get("notifications") === "on";
+    console.log({ email, notifications });
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <Field label="Email" hint="Your primary email address">
+        <Input name="email" type="email" required />
+      </Field>
+
+      <Field label="Notifications">
+        <Switch name="notifications" defaultChecked />
+      </Field>
+
+      <div className="flex gap-2 mt-4">
+        <Button type="reset" variant="secondary">Reset</Button>
+        <Button type="submit" variant="default">Save Changes</Button>
+      </div>
+    </form>
+  );
+}
+```
+
+### Form Libraries (React Hook Form, TanStack Form)
+
+When using controlled form libraries, manage state using standard `value` and `onValueChange` / `onChange` contracts:
+
+```tsx
+import { useState } from "react";
+import { DatePicker } from "@nocoo/basalt/components/date-picker";
+
+export function ControlledDatePickerField() {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+
+  return (
+    <DatePicker
+      value={selectedDate}
+      onChange={setSelectedDate}
+      aria-label="Target Date"
+    />
+  );
+}
+```
+
+### Known Form Limitations
+1. `DatePicker` external ref merging: forwarding a custom `ref` currently overrides internal hidden input ref bindings, which impairs form reset behavior.
+2. `Autocomplete` free-text commit on blur: committing unselected free text triggers an unconditional focus call, preventing natural Tab navigation.
+3. Native `required` validation on composite controls: empty required `DatePicker` inputs focus a 1×1px hidden element rather than the visible trigger button.
+
+---
+
+## 17. Step-by-Step Migration Guide
+
+### Migrating to `@nocoo/basalt`
+
+1. **Step 1: Install Package & Peer Dependencies**
+   ```bash
+   bun add @nocoo/basalt lucide-react
+   ```
+2. **Step 2: Configure Stylesheet**
+   - Replace old CSS declarations with the strict 3-line Tailwind contract (§2) or import `@nocoo/basalt/styles/standalone`.
+   - Remove custom `--color-*` or `--basalt-*` overrides in app CSS.
+3. **Step 3: Establish Outer Frame**
+   - Wrap application routes in `ThemeProvider` and `LinkProvider`.
+   - Implement `/login` as an isolated badge page outside `AppShell`.
+   - Use `AppShell` with `Sidebar` and `AppHeader` for authenticated layout.
+4. **Step 4: Update Component Imports**
+   - Import base components from `@nocoo/basalt` root.
+   - Import layout chrome (`PageHeader`, `SectionRule`, `AppHeader`, `AppShell`) from granular subpaths (`@nocoo/basalt/components/*`).
+   - Import chart components from `@nocoo/basalt/charts/*`.
+5. **Step 5: Verify Contrast & Surface Tokens**
+   - Verify all content cards use `LayerCard` or surface classes rather than manual border/background combinations.

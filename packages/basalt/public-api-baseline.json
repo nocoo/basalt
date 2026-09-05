@@ -1,0 +1,3423 @@
+{
+	"packageVersion": "2.0.3",
+	"sourceBaseline": "e61efc1",
+	"capturedAfter": "b8509ec (P1 did not change package runtime/type sources)",
+	"entries": [
+		{
+			"path": "@nocoo/basalt",
+			"symbols": [
+				{
+					"name": "AlertDialog",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogAction",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogCancel",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogDescription",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogFooter",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogHeader",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogTitle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Avatar",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AvatarFallback",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AvatarImage",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Badge",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Button",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Checkbox",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Collapsible",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CollapsibleContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CollapsibleTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandEmpty",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandInput",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandList",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandPalette",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandPaletteTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandSeparator",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandShortcut",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ConfirmDialog",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContentIsland",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DescriptionList",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Dialog",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogClose",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogDescription",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogFooter",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogHeader",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogTitle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenu",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Field",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Input",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Label",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "LayerCard",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Link",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "LinkProvider",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Meter",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Popover",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PopoverClose",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PopoverContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PopoverDescription",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PopoverTitle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PopoverTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ScrollArea",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SegmentControl",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Separator",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Sheet",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetClose",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetDescription",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetFooter",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetHeader",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetTitle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Sidebar",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarFooter",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarHeader",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarIconItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarNav",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarPartition",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarProvider",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarSearch",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarUser",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "StatStrip",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Switch",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TablePager",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Tabs",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TabsContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TabsList",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TabsTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Text",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ThemeProvider",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ThemeToggle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "toast",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Toast",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Toaster",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Toolbar",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Tooltip",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TooltipContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TooltipProvider",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TooltipTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "useConfirm",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/area",
+			"symbols": [
+				{
+					"name": "AreaChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AreaChartProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/bar",
+			"symbols": [
+				{
+					"name": "BarChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "BarChartProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/bullet",
+			"symbols": [
+				{
+					"name": "BulletChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "BulletChartProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/chart-colors",
+			"symbols": [
+				{
+					"name": "CHART_COLORS",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Colors",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ColorsProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/charts",
+			"symbols": [
+				{
+					"name": "Charts",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChartsProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/config",
+			"symbols": [
+				{
+					"name": "ANIMATION_PROPS",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AXIS_CONFIG",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "BAR_RADIUS",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "cartesianAxisProps",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CHART_PLOT_MARGIN",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CHART_PLOT_MARGIN_BARE",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CHART_TOOLTIP_CURSOR_BAR",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CHART_TOOLTIP_CURSOR_LINE",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CHART_TYPE",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "chartFontSize",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChartSeriesDescriptor",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "chartTextStyle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "chartTickStyle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "chartTooltipContentStyle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "chartTooltipProps",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChartTypeFace",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "getChartColor",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "GRID_PROPS",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "RESPONSIVE_CONTAINER_PROPS",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "seriesColor",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/custom-chart",
+			"symbols": [
+				{
+					"name": "CustomChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CustomChartProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/date-navigation",
+			"symbols": [
+				{
+					"name": "DateNavigation",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DateNavigationDisplayProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DateNavigationPickerProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/donut",
+			"symbols": [
+				{
+					"name": "DonutChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DonutChartProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/frame",
+			"symbols": [
+				{
+					"name": "ChartFrame",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChartFrameProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ChartShell",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/funnel",
+			"symbols": [
+				{
+					"name": "FunnelChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "FunnelChartProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/gauge",
+			"symbols": [
+				{
+					"name": "Gauge",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "GaugeProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/grouped-bar",
+			"symbols": [
+				{
+					"name": "GroupedBarChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "GroupedBarChartProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/heatmap-calendar",
+			"symbols": [
+				{
+					"name": "HeatmapCalendar",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "HeatmapCalendarProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "HeatmapCalendarValuesProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "HeatmapCalendarYearProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "heatmapColorScales",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "HeatmapDataPoint",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/item-list",
+			"symbols": [
+				{
+					"name": "ItemList",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ItemListItem",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ItemListProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/legend",
+			"symbols": [
+				{
+					"name": "ChartLegend",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChartLegendProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ChartLegendShape",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/line",
+			"symbols": [
+				{
+					"name": "LineChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "LineChartProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/palette",
+			"symbols": [
+				{
+					"name": "chart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CHART_COLORS",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "chartAxis",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "chartMuted",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChartPalette",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChartPaletteProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "withAlpha",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/radar",
+			"symbols": [
+				{
+					"name": "RadarChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "RadarChartProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/sample",
+			"symbols": [
+				{
+					"name": "BULLET_SAMPLE",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "BulletPoint",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DONUT_SAMPLE",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "FUNNEL_SAMPLE",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "NamedValue",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "RADAR_SAMPLE",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "RadarPoint",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SAMPLE",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SANKEY_SAMPLE",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SankeyData",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "XYPoint",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/sankey",
+			"symbols": [
+				{
+					"name": "SankeyChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SankeyChartProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/series",
+			"symbols": [
+				{
+					"name": "applyLeadColor",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "BulletPoint",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "BulletSeriesDescriptor",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "BulletSeriesKey",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ChartSeriesDescriptor",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "NamedValue",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "RadarPoint",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "resolveChartSeries",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SankeyData",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "xyFallbackKeys",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "XYPoint",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "XYSeriesDescriptor",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "XYSeriesKey",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/slot-bar",
+			"symbols": [
+				{
+					"name": "SlotBarChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SlotBarChartProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SlotBarDataProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SlotBarItem",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SlotBarItemsProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/sparkline",
+			"symbols": [
+				{
+					"name": "Sparkline",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SparklineProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/stacked-bar",
+			"symbols": [
+				{
+					"name": "StackedBarChart",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "StackedBarChartProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/stat-card",
+			"symbols": [
+				{
+					"name": "StatCard",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "StatCardProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "StatGrid",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "StatGridProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/timeline",
+			"symbols": [
+				{
+					"name": "Timeline",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TimelineEvent",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TimelineEventsProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TimelineItem",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TimelineItemsProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TimelineProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/timeseries",
+			"symbols": [
+				{
+					"name": "Timeseries",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TimeseriesProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/charts/tooltip",
+			"symbols": [
+				{
+					"name": "ChartTooltipContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChartTooltipContentProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ChartTooltipItem",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "formatChartNumber",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/accordion",
+			"symbols": [
+				{
+					"name": "Accordion",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AccordionContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AccordionItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AccordionTrigger",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/alert-dialog",
+			"symbols": [
+				{
+					"name": "AlertDialog",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogAction",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogCancel",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogContentProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "AlertDialogDescription",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogFooter",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogHeader",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogOverlay",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogPortal",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogTitle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AlertDialogTrigger",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/app-header",
+			"symbols": [
+				{
+					"name": "AppHeader",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/app-shell",
+			"symbols": [
+				{
+					"name": "AppMain",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AppShell",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AppSkipLink",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/autocomplete",
+			"symbols": [
+				{
+					"name": "Autocomplete",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AutocompleteItem",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "AutocompleteProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/avatar",
+			"symbols": [
+				{
+					"name": "Avatar",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AvatarFallback",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AvatarImage",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/badge",
+			"symbols": [
+				{
+					"name": "Badge",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "BadgeProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/banner",
+			"symbols": [
+				{
+					"name": "Banner",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "BannerAction",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "BannerProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/basalt-mark",
+			"symbols": [
+				{
+					"name": "BasaltMark",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "BasaltMarkProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/breadcrumbs",
+			"symbols": [
+				{
+					"name": "Breadcrumbs",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/button",
+			"symbols": [
+				{
+					"name": "Button",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ButtonProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "buttonVariants",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "LinkButton",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "LinkButtonProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/chat-bubble",
+			"symbols": [
+				{
+					"name": "ChatBubble",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChatBubbleProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ChatBubbleVariant",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/chat-composer",
+			"symbols": [
+				{
+					"name": "ChatComposer",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChatComposerProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/chat-header",
+			"symbols": [
+				{
+					"name": "ChatHeader",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChatHeaderProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/chat-inbox",
+			"symbols": [
+				{
+					"name": "ChatInbox",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ChatInboxItem",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ChatInboxProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/checkbox",
+			"symbols": [
+				{
+					"name": "Checkbox",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CheckboxGroupProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "CheckboxItemProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "CheckboxLegendProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "CheckboxProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "CheckboxSize",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/clipboard-text",
+			"symbols": [
+				{
+					"name": "ClipboardText",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/code",
+			"symbols": [
+				{
+					"name": "Code",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CodeBlock",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CodeBlockProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "CodeHighlighted",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CodeHighlightedProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "CodeProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/collapsible",
+			"symbols": [
+				{
+					"name": "Collapsible",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CollapsibleContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CollapsibleContentProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "CollapsibleProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "CollapsibleTrigger",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/combobox",
+			"symbols": [
+				{
+					"name": "Combobox",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ComboboxItem",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ComboboxProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/command-palette",
+			"symbols": [
+				{
+					"name": "CommandEmpty",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandInput",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandList",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandPalette",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandPaletteProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "CommandPaletteTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandSeparator",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "CommandShortcut",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/confirm-dialog",
+			"symbols": [
+				{
+					"name": "ConfirmDialog",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ConfirmDialogProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ConfirmDialogVariant",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "useConfirm",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "UseConfirmOptions",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "UseConfirmResult",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/context-menu",
+			"symbols": [
+				{
+					"name": "ContextMenu",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuPanel",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ContextMenuTrigger",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/data-table",
+			"symbols": [
+				{
+					"name": "DataTable",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DataTableColumn",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DataTableProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/date-picker",
+			"symbols": [
+				{
+					"name": "DatePicker",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DatePickerPreset",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DatePickerProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DatePickerRange",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/delete-resource",
+			"symbols": [
+				{
+					"name": "DeleteResource",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DeleteResourceProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/description-list",
+			"symbols": [
+				{
+					"name": "DescriptionList",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DescriptionListColumns",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DescriptionListItemProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DescriptionListProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/dialog",
+			"symbols": [
+				{
+					"name": "Dialog",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DIALOG_SIZES",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogClose",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogContentProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DialogDescription",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogFooter",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogHeader",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogOverlay",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "dialogOverlayClass",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "dialogPanelClass",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogPortal",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogSize",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DialogTitle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DialogTrigger",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/dock",
+			"symbols": [
+				{
+					"name": "Dock",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DockBody",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DockBodyProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DockMode",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DockProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/dropdown-menu",
+			"symbols": [
+				{
+					"name": "DropdownMenu",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuItemProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DropdownMenuPortal",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "DropdownMenuRadioGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuSub",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DropdownMenuTrigger",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/empty",
+			"symbols": [
+				{
+					"name": "Empty",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/fab",
+			"symbols": [
+				{
+					"name": "Fab",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "FabPlacement",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "FabProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/field",
+			"symbols": [
+				{
+					"name": "Field",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "FieldError",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "FieldProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/flow",
+			"symbols": [
+				{
+					"name": "Flow",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "FlowNode",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "FlowNodeProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "FlowProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/grid",
+			"symbols": [
+				{
+					"name": "Grid",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "GridItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "GridProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/hover-card",
+			"symbols": [
+				{
+					"name": "HoverCard",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "HoverCardContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "HoverCardTrigger",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/input",
+			"symbols": [
+				{
+					"name": "Input",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "InputProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "InputSize",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/input-area",
+			"symbols": [
+				{
+					"name": "InputArea",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "InputAreaProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "InputAreaSize",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/input-group",
+			"symbols": [
+				{
+					"name": "InputGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "InputGroupAddonProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "InputGroupButtonProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "InputGroupInputProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "InputGroupProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "InputGroupSuffixProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/label",
+			"symbols": [
+				{
+					"name": "Label",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "LabelProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/layer-card",
+			"symbols": [
+				{
+					"name": "LayerCard",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "LayerCardEmptyProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "LayerCardLoadingProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "LayerCardPadding",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "LayerCardProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "LayerCardSectionProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "LayerCardWellProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/link",
+			"symbols": [
+				{
+					"name": "Link",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "LinkProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/loader",
+			"symbols": [
+				{
+					"name": "Loader",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/loading-screen",
+			"symbols": [
+				{
+					"name": "LoadingScreen",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/menu-bar",
+			"symbols": [
+				{
+					"name": "MenuBar",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "MenuBarContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "MenuBarItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "MenuBarMenu",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "MenuBarRoot",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "MenuBarTrigger",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/meter",
+			"symbols": [
+				{
+					"name": "Meter",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/navigation-menu",
+			"symbols": [
+				{
+					"name": "NavigationMenu",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "NavigationMenuItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "NavigationMenuLink",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "NavigationMenuList",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/overlay",
+			"symbols": [
+				{
+					"name": "FOCUS_BORDER",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "FOCUS_INSET",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "FOCUS_RING",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "MENU_GAP",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "OVERLAY_GAP",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "OVERLAY_LAYER",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "OVERLAY_MOTION",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "overlayItemClass",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "overlayPanelClass",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/page-header",
+			"symbols": [
+				{
+					"name": "PageHeader",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PageHeaderBreadcrumb",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "PageHeaderProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/pagination",
+			"symbols": [
+				{
+					"name": "Pagination",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PaginationProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/popover",
+			"symbols": [
+				{
+					"name": "Popover",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "POPOVER_SIDES",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PopoverClose",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PopoverContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PopoverContentProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "PopoverDescription",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PopoverProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "PopoverSide",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "PopoverTitle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "PopoverTrigger",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/radio",
+			"symbols": [
+				{
+					"name": "Radio",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "RadioGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "RadioGroupProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "RadioLegendProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "RadioProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "RadioSize",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/resource-list",
+			"symbols": [
+				{
+					"name": "ResourceList",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ResourceListProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ResourceListRow",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/scroll-area",
+			"symbols": [
+				{
+					"name": "ScrollArea",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ScrollAreaOrientation",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ScrollAreaProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/section-rule",
+			"symbols": [
+				{
+					"name": "SectionRule",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SectionRuleProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/segment-control",
+			"symbols": [
+				{
+					"name": "SegmentControl",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SegmentControlAllOption",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SegmentControlOption",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SegmentControlProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/select",
+			"symbols": [
+				{
+					"name": "Select",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SelectContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SelectContentProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SelectGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SelectGroupProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SelectItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SelectItemProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SelectLabel",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SelectLabelProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SelectProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SelectSize",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SelectTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SelectTriggerProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SelectValue",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SelectValueProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/sensitive-input",
+			"symbols": [
+				{
+					"name": "SensitiveInput",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SensitiveInputProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/separator",
+			"symbols": [
+				{
+					"name": "Separator",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SeparatorProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/sheet",
+			"symbols": [
+				{
+					"name": "Sheet",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetClose",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetDescription",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetFooter",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetHeader",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetSide",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SheetTitle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SheetTrigger",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/sidebar",
+			"symbols": [
+				{
+					"name": "ContentIsland",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Sidebar",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarFooter",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarHeader",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarIconItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarItemProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SidebarNav",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarPartition",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SidebarProvider",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarProviderProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SidebarSearch",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SidebarSide",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SidebarUser",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "useSidebar",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/skeleton-line",
+			"symbols": [
+				{
+					"name": "SkeletonLine",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/slider",
+			"symbols": [
+				{
+					"name": "Slider",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/stat-strip",
+			"symbols": [
+				{
+					"name": "StatStrip",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "StatStripItem",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "StatStripProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/switch",
+			"symbols": [
+				{
+					"name": "Switch",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "SwitchGroupProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SwitchItemProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SwitchLegendProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "SwitchProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/table",
+			"symbols": [
+				{
+					"name": "Table",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TableBody",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TableCaption",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TableCaptionProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TableCell",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TableCellProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TableFooter",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TableHead",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TableHeader",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TableHeadProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TableProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TableRow",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TableRowProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TableRowVariant",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/table-of-contents",
+			"symbols": [
+				{
+					"name": "TableOfContents",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TableOfContentsItem",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TableOfContentsItemProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TableOfContentsProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/table-pager",
+			"symbols": [
+				{
+					"name": "TablePager",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TablePagerProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TablePagerRange",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/tabs",
+			"symbols": [
+				{
+					"name": "Tabs",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TabsContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TabsContentProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TabsList",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TabsListProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TabsProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TabsTrigger",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TabsTriggerProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/text",
+			"symbols": [
+				{
+					"name": "Text",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TextElement",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TextProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TextSize",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TextTone",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TextVariant",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/theme-toggle",
+			"symbols": [
+				{
+					"name": "ThemeToggle",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ThemeToggleProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/toast",
+			"symbols": [
+				{
+					"name": "toast",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Toast",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "Toaster",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ToastOptions",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ToastVariant",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/toggle",
+			"symbols": [
+				{
+					"name": "Toggle",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/toggle-group",
+			"symbols": [
+				{
+					"name": "ToggleGroup",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ToggleGroupItem",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/toolbar",
+			"symbols": [
+				{
+					"name": "Toolbar",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ToolbarButton",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ToolbarButtonProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ToolbarInput",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "ToolbarInputProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ToolbarProps",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/tooltip",
+			"symbols": [
+				{
+					"name": "Tooltip",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TooltipContent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TooltipProps",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "TooltipProvider",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TooltipTrigger",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/components/typeahead-field",
+			"symbols": [
+				{
+					"name": "TypeaheadField",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "TypeaheadItem",
+					"value": false,
+					"type": true
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/providers/accent",
+			"symbols": [
+				{
+					"name": "ACCENT_SWATCHES",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "accentForeground",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AccentProvider",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "AccentSwatch",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "accentSwatchById",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "applyAccent",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "DEFAULT_ACCENT_ID",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "useAccent",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/providers/link",
+			"symbols": [
+				{
+					"name": "LinkProvider",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "useLinkComponent",
+					"value": true,
+					"type": false
+				}
+			]
+		},
+		{
+			"path": "@nocoo/basalt/providers/theme",
+			"symbols": [
+				{
+					"name": "BasaltTheme",
+					"value": false,
+					"type": true
+				},
+				{
+					"name": "ThemeProvider",
+					"value": true,
+					"type": false
+				},
+				{
+					"name": "useTheme",
+					"value": true,
+					"type": false
+				}
+			]
+		}
+	],
+	"capturedCommit": "b8509ec975e2ab369f91d5237e4ca343b0f40609",
+	"cssExports": [
+		"@nocoo/basalt/styles",
+		"@nocoo/basalt/styles/tailwind",
+		"@nocoo/basalt/styles/standalone"
+	]
+}

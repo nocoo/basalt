@@ -139,6 +139,13 @@ for (const file of packFiles) {
 	if (file === "dist" || file.startsWith("dist/")) {
 		continue;
 	}
+	if (file.startsWith("ai/")) {
+		if (file.endsWith(".md") || file.endsWith(".json")) {
+			continue;
+		}
+		fail(`unapproved ai asset in pack: ${file}`);
+		continue;
+	}
 	fail(`pack path not on whitelist: ${file}`);
 	if (file === "src" || file.startsWith("src/")) {
 		fail(`src packed: ${file}`);
