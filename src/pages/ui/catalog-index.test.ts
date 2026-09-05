@@ -62,8 +62,24 @@ describe("catalog index model", () => {
 
 		const groups = createCatalogIndex({
 			entries: [
-				{ slug: "stable-planned", name: "Stable planned", kind: "stable", category: "component" },
-				{ slug: "catalog-ready", name: "Catalog ready", kind: "catalog", category: "component" },
+				{
+					slug: "stable-planned",
+					name: "Stable planned",
+					exportName: "StablePlanned",
+					importPath: "@nocoo/basalt/components/stable-planned",
+					hasRootBarrel: true,
+					kind: "stable",
+					category: "component",
+				},
+				{
+					slug: "catalog-ready",
+					name: "Catalog ready",
+					exportName: "CatalogReady",
+					importPath: "@nocoo/basalt/components/catalog-ready",
+					hasRootBarrel: false,
+					kind: "catalog",
+					category: "component",
+				},
 			],
 			docsBySlug: { "catalog-ready": DOCS },
 			heroForSlug: (slug) => (slug === "catalog-ready" ? HERO : undefined),
@@ -113,7 +129,15 @@ describe("catalog index model", () => {
 		expect(() =>
 			createCatalogIndex({
 				entries: [
-					{ slug: "unknown", name: "Unknown", kind: "catalog", category: "unknown" as never },
+					{
+						slug: "unknown",
+						name: "Unknown",
+						exportName: "Unknown",
+						importPath: "@nocoo/basalt/components/unknown",
+						hasRootBarrel: false,
+						kind: "catalog",
+						category: "unknown" as never,
+					},
 				],
 				docsBySlug: {},
 				heroForSlug: () => undefined,
@@ -123,8 +147,24 @@ describe("catalog index model", () => {
 		expect(() =>
 			createCatalogIndex({
 				entries: [
-					{ slug: "same", name: "First", kind: "stable", category: "component" },
-					{ slug: "same", name: "Second", kind: "catalog", category: "chart" },
+					{
+						slug: "same",
+						name: "First",
+						exportName: "First",
+						importPath: "@nocoo/basalt/components/first",
+						hasRootBarrel: true,
+						kind: "stable",
+						category: "component",
+					},
+					{
+						slug: "same",
+						name: "Second",
+						exportName: "Second",
+						importPath: "@nocoo/basalt/charts/second",
+						hasRootBarrel: false,
+						kind: "catalog",
+						category: "chart",
+					},
 				],
 				docsBySlug: {},
 				heroForSlug: () => undefined,

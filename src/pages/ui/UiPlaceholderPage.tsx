@@ -9,7 +9,13 @@ import { Check, ChevronDown, Copy } from "lucide-react";
 import { use, useState } from "react";
 import { Link, useParams } from "react-router";
 import { Github } from "@/components/icons/github";
-import { CATALOG_BY_SLUG, type CatalogEntry, catalogImportPath, catalogNavName } from "./catalog";
+import {
+	CATALOG_BY_SLUG,
+	type CatalogEntry,
+	catalogBarrelImport,
+	catalogGranularImport,
+	catalogNavName,
+} from "./catalog";
 import { loadCatalogPageContent } from "./catalog-content-loader";
 import { catalogPageStatus } from "./catalog-page-status";
 import type { CatalogScenario } from "./catalog-scenario";
@@ -22,13 +28,6 @@ import {
 } from "./catalog-source";
 import { DocCode, DocExample } from "./DocCode";
 import { type DocHeading, DocToc } from "./DocToc";
-
-function barrelImport(entry: CatalogEntry): string | null {
-	if (entry.kind !== "stable" && entry.kind !== "provider") {
-		return null;
-	}
-	return `import { ${entry.name} } from "@nocoo/basalt";`;
-}
 
 function CopyPageButton({ markdown }: { markdown: string }) {
 	const [copied, setCopied] = useState(false);
@@ -152,14 +151,13 @@ function ReadyDoc({
 	if (!hero) {
 		throw new Error(`Ready catalog page "${entry.slug}" is missing examples[0].`);
 	}
-	const importPath = catalogImportPath(entry);
-	const barrel = barrelImport(entry);
-	const granular = `import { ${entry.name} } from "${importPath}";`;
+	const barrel = catalogBarrelImport(entry);
+	const granular = catalogGranularImport(entry);
 	const pageMarkdown = [
 		`# ${catalogNavName(entry)}`,
 		docs.description,
 		"## Installation",
-		barrel ?? "",
+		...(barrel ? [barrel] : []),
 		granular,
 		"## Usage",
 		docs.usage,
