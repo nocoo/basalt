@@ -123,7 +123,7 @@ Off the root barrel: `AppShell`, `AppMain`, `AppSkipLink`, `AppHeader`, `PageHea
 
 One tree for the whole app. Login and the shell both sit under it.
 
-```tsx
+```tsx excerpt:app-provider-tree
 <ThemeProvider>
   <LinkProvider render={AppLink}>
     <TooltipProvider>
@@ -218,7 +218,7 @@ Nav labels use `SidebarPartition`. The item stack is **one** `px-3` column (the 
 
 Collapsible sections use `SidebarGroup` instead of Partition + stack. `SidebarGroup` already includes the item gutter. Do not add another `px-3` around it.
 
-```tsx
+```tsx excerpt:sidebar-expanded-structure
 <Sidebar collapsed={collapsed}>
   <SidebarHeader>
     <div className="flex w-full items-center justify-between">
@@ -284,7 +284,7 @@ Sidebar                          ← collapsed; owns 68px
 └── SidebarFooter                ← flex w-full justify-center px-0
 ```
 
-```tsx
+```tsx excerpt:sidebar-collapsed-structure
 <Sidebar collapsed={collapsed}>
   <SidebarHeader className="justify-center px-0">
     <BasaltMark className="h-5 w-5" />
@@ -362,7 +362,7 @@ Standard product shell: React state `collapsed` passed into `Sidebar`. A header 
 
 Breakpoint: `768px`. Below that, the in-flow rail is omitted. The same sidebar component opens inside a left `Sheet`, always expanded (`collapsed={false}`).
 
-```tsx
+```tsx excerpt:mobile-sheet-sidebar
 <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
   <SheetContent
     side="left"
@@ -380,7 +380,7 @@ Breakpoint: `768px`. Below that, the in-flow rail is omitted. The same sidebar c
 
 Local hook (not in the package):
 
-```tsx
+```tsx excerpt:use-is-mobile-hook
 const MOBILE_BREAKPOINT = 768;
 
 export function useIsMobile() {
@@ -400,7 +400,7 @@ export function useIsMobile() {
 
 ## 10. Frame component
 
-```tsx
+```tsx excerpt:app-frame-component
 export function AppFrame() {
   const [collapsed, setCollapsed] = useState(false);
   const isMobile = useIsMobile();
@@ -483,7 +483,7 @@ Login is **not** inside `AppShell`. It is a centered badge on the full viewport.
 
 Shape: ISO ID card, `aspect-[54/86]`, `w-72`, `rounded-2xl`, `bg-basalt-card`, layered shadow, hairline ring. Primary strip on top, mark and actions in the body, status strip pinned to the bottom.
 
-```tsx
+```tsx excerpt:login-badge-page
 export function LoginPage() {
   return (
     <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-basalt-background p-4">
@@ -546,7 +546,7 @@ Swap the primary action for the real identity provider. Keep the badge proportio
 
 Boot and route gates use `LoadingScreen` — a centered mark and a 6rem shimmer bar on `bg-basalt-background`. It is a full-viewport status, not a child of the island.
 
-```tsx
+```tsx excerpt:loading-screen-snippet
 <LoadingScreen label="Loading" />
 ```
 
@@ -569,7 +569,7 @@ When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place, 
 
 ### Short filters (same row as create)
 
-```tsx
+```tsx compile:integration-projects-page-basic
 import { Button } from "@nocoo/basalt/components/button";
 import { Input } from "@nocoo/basalt/components/input";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
@@ -598,7 +598,7 @@ export default function ProjectsPage() {
 
 ### Complex filters (own row) and regions
 
-```tsx
+```tsx compile:integration-projects-page-full
 import { Button } from "@nocoo/basalt/components/button";
 import { Input } from "@nocoo/basalt/components/input";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
@@ -688,7 +688,7 @@ Pages render **inside** `ContentIsland`. That island is already L1. Paint is CSS
 
 Unstructured card (KPI, metric, tile) — root padding, one surface:
 
-```tsx
+```tsx excerpt:layercard-unstructured
 <LayerCard>
   <p className="text-xs text-basalt-muted-foreground">Sessions</p>
   <p className="text-2xl font-semibold">1,284</p>
@@ -697,7 +697,7 @@ Unstructured card (KPI, metric, tile) — root padding, one surface:
 
 Structured card — root padding drops. `Body` stays on L2. `Well` raises to L3:
 
-```tsx
+```tsx excerpt:layercard-structured-body
 <LayerCard>
   <LayerCard.Header>Account</LayerCard.Header>
   <LayerCard.Body>
@@ -706,7 +706,9 @@ Structured card — root padding drops. `Body` stays on L2. `Well` raises to L3:
     </DescriptionList>
   </LayerCard.Body>
 </LayerCard>
+```
 
+```tsx excerpt:layercard-structured-well
 <LayerCard>
   <LayerCard.Header>Activity</LayerCard.Header>
   <LayerCard.Well>
@@ -761,7 +763,7 @@ Flush heading. Title left. Create last in `actions`. Short filters in `actions`.
 
 `breadcrumbs` is optional. Use it only when there is no `AppHeader` trail (catalog demos, isolated surfaces). Product pages under `AppFrame` omit it.
 
-```tsx
+```tsx excerpt:page-header-snippet
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 
 <PageHeader
@@ -781,7 +783,7 @@ import { PageHeader } from "@nocoo/basalt/components/page-header";
 
 Title, optional info control, dashed rule, optional actions. Children sit under the rule. Card titles stay on `LayerCard.Header`.
 
-```tsx
+```tsx excerpt:section-rule-snippets
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 
 <SectionRule title="Catalog">
@@ -818,7 +820,8 @@ Basalt form controls participate in standard forms and controlled state pipeline
 
 Standard inputs (`Input`, `InputArea`, `Checkbox`, `Radio`, `Switch`) reliably supply their values via standard `FormData(event.currentTarget)`:
 
-```tsx
+```tsx compile:integration-profile-form
+import type React from "react";
 import { Button, Field, Input, Switch } from "@nocoo/basalt";
 
 export function ProfileForm() {
@@ -853,7 +856,7 @@ export function ProfileForm() {
 
 When using controlled state or building custom form adapters, `DatePicker` accepts an ISO date string (`YYYY-MM-DD`):
 
-```tsx
+```tsx compile:integration-controlled-date-picker
 import { useState } from "react";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 

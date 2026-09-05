@@ -61,7 +61,7 @@ Standalone CSS packages design tokens, control surface utilities, and keyframes 
 
 ### Component Usage
 
-```tsx
+```tsx compile:readme-quickstart
 import { Button, Input, LayerCard, ThemeProvider } from "@nocoo/basalt";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 

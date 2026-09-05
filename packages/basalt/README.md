@@ -71,7 +71,7 @@ Standalone CSS contains compiled design tokens, scoped control classes, keyframe
 
 ### 1. Root Barrel (`@nocoo/basalt`)
 Contains lightweight base components, inputs, layout surfaces, and providers:
-```tsx
+```tsx compile:pkg-readme-root-import
 import {
   Button,
   Input,
@@ -86,7 +86,7 @@ import {
 
 ### 2. Granular Subpaths (`@nocoo/basalt/components/*`, `@nocoo/basalt/charts/*`, `@nocoo/basalt/providers/*`)
 Keeps initial bundle size small by isolating complex or specialized dependencies:
-```tsx
+```tsx compile:pkg-readme-granular-import
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { DataTable } from "@nocoo/basalt/components/data-table";
 import { DonutChart } from "@nocoo/basalt/charts/donut";
@@ -100,7 +100,7 @@ import { useTheme } from "@nocoo/basalt/providers/theme";
 ### React 19 & Next.js Client Boundaries
 Basalt controls require browser event listeners and React context. When using Next.js App Router, render Basalt components within a client module:
 
-```tsx
+```tsx compile:pkg-readme-client-app
 // app/basalt-app.tsx
 "use client";
 

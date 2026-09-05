@@ -64,3 +64,6 @@ jobs:
 
       - name: Run consumer gate heavy
         run: bun run consumer:heavy
+
+      - name: Run consumer gate docs
+        run: bun run consumer:docs
