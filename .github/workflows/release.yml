@@ -38,10 +38,11 @@ jobs:
         with:
           ref: ${{ inputs.tag || github.ref }}
 
-      - name: Resolve version
+      - name: Resolve version and commit
         id: ver
         env:
           INPUT_TAG: ${{ inputs.tag }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           TAG="${INPUT_TAG:-$GITHUB_REF_NAME}"
           VERSION="${TAG#v}"
@@ -52,6 +53,40 @@ jobs:
             echo "❌ Tag $TAG does not match package.json version $PKG_VERSION" >&2
             exit 1
           fi
+
+          # Validate semver format
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Version $VERSION is not valid semver" >&2
+            exit 1
+          fi
+
+          # Verify packages/basalt/package.json version matches
+          SUB_VERSION=$(jq -r .version packages/basalt/package.json)
+          if [ "$SUB_VERSION" != "$VERSION" ]; then
+            echo "❌ packages/basalt version $SUB_VERSION does not match root $VERSION" >&2
+            exit 1
+          fi
+
+          # Get the exact commit SHA for this tag/ref
+          TAG_SHA=$(git rev-parse HEAD)
+          echo "sha=$TAG_SHA" >> "$GITHUB_OUTPUT"
+
+          # Verify that this commit exists on main
+          git fetch origin main --depth=100
+          if ! git merge-base --is-ancestor "$TAG_SHA" origin/main; then
+            echo "❌ Commit $TAG_SHA for tag $TAG is not on origin/main" >&2
+            exit 1
+          fi
+
+          # Verify successful CI run on this exact commit
+          CI_CONCLUSION=$(gh api "repos/${{ github.repository }}/actions/workflows/ci.yml/runs?head_sha=${TAG_SHA}" \
+            --jq '.workflow_runs[] | select(.head_branch == "main" or .event == "push") | .conclusion' | head -n 1)
+
+          if [ "$CI_CONCLUSION" != "success" ]; then
+            echo "❌ CI workflow for commit $TAG_SHA has conclusion '${CI_CONCLUSION}' (must be 'success')" >&2
+            exit 1
+          fi
+          echo "CI verified successful for $TAG_SHA"
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2

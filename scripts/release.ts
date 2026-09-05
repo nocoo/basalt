@@ -247,89 +247,228 @@ function updateChangelog(newSection: string): void {
 	writeFileSync(CHANGELOG_MD, updated);
 }
 
-async function main(): Promise<void> {
-	const rawArgs = process.argv.slice(2).filter((arg) => arg !== "--");
-	const isDryRun = rawArgs.includes("--dry-run");
-	const bumpArg = rawArgs.find((arg) => arg !== "--dry-run") ?? "patch";
+export interface RunnerContext {
+	run: (
+		cmd: string,
+		args: string[],
+		opts?: { cwd?: string; inherit?: boolean },
+	) => Promise<RunResult>;
+	readJsonVersion: (relPath: string) => string;
+	updateJsonVersion: (relPath: string, oldVer: string, newVer: string) => void;
+	readChangelog: () => string;
+	updateChangelog: (newSection: string) => void;
+	writeNotesFile: (path: string, content: string) => void;
+	sleep: (ms: number) => Promise<void>;
+	log: (msg: string) => void;
+	error: (msg: string) => void;
+}
 
-	const status = await runOrDie("git", ["status", "--porcelain"], "Failed to check git status");
-	if (status && !isDryRun) {
-		console.error("Working tree is not clean. Commit or stash changes first.");
-		console.error(status);
-		process.exit(1);
+export function defaultRunnerContext(): RunnerContext {
+	return {
+		run,
+		readJsonVersion: (relPath: string) => {
+			const abs = pathResolve(PROJECT_ROOT, relPath);
+			const pkg = JSON.parse(readFileSync(abs, "utf-8")) as { version: string };
+			return pkg.version;
+		},
+		updateJsonVersion,
+		readChangelog: () => readFileSync(CHANGELOG_MD, "utf-8"),
+		updateChangelog,
+		writeNotesFile: (path: string, content: string) => writeFileSync(path, content),
+		sleep: (ms: number) => new Promise((resolve) => setTimeout(resolve, ms)),
+		log: (msg: string) => console.log(msg),
+		error: (msg: string) => console.error(msg),
+	};
+}
+
+export interface CiPollOptions {
+	pollIntervalMs?: number;
+	timeoutMs?: number;
+}
+
+export async function waitForCiSuccess(
+	sha: string,
+	ctx: RunnerContext,
+	opts: CiPollOptions = {},
+): Promise<void> {
+	const pollIntervalMs = opts.pollIntervalMs ?? 15000;
+	const timeoutMs = opts.timeoutMs ?? 20 * 60 * 1000;
+	const startTime = Date.now();
+
+	ctx.log(`Waiting for CI workflow on commit ${sha} (main push)...`);
+
+	while (Date.now() - startTime < timeoutMs) {
+		const result = await ctx.run("gh", [
+			"api",
+			`repos/:owner/:repo/actions/workflows/ci.yml/runs?head_sha=${sha}`,
+			"--jq",
+			".workflow_runs[] | {id: .id, status: .status, conclusion: .conclusion, head_branch: .head_branch, event: .event, head_sha: .head_sha}",
+		]);
+
+		if (result.code !== 0) {
+			throw new Error(`Failed to query GitHub Actions runs for ${sha}: ${result.stderr.trim()}`);
+		}
+
+		const lines = result.stdout.trim().split("\n").filter(Boolean);
+		if (lines.length > 0) {
+			for (const line of lines) {
+				try {
+					const run = JSON.parse(line) as {
+						id: number;
+						status: string;
+						conclusion: string | null;
+						head_branch: string;
+						event: string;
+						head_sha: string;
+					};
+
+					if (run.head_sha !== sha) {
+						continue;
+					}
+
+					if (run.event === "push" && run.head_branch === "main") {
+						if (run.status === "completed") {
+							if (run.conclusion === "success") {
+								ctx.log(`CI run #${run.id} succeeded for commit ${sha}.`);
+								return;
+							}
+							throw new Error(
+								`CI run #${run.id} for commit ${sha} completed with conclusion: ${run.conclusion}`,
+							);
+						}
+						ctx.log(`CI run #${run.id} status is "${run.status}". Waiting...`);
+					}
+				} catch (e: unknown) {
+					if (e instanceof Error && e.message.includes("conclusion:")) {
+						throw e;
+					}
+					// ignore json parse error for non-json output
+				}
+			}
+		}
+
+		await ctx.sleep(pollIntervalMs);
 	}
 
-	const ghAuthed = (await run("gh", ["auth", "status"])).code === 0;
-	const currentVersion = readCurrentVersion();
+	throw new Error(`Timed out waiting for CI on commit ${sha} after ${timeoutMs / 1000}s`);
+}
+
+export interface ReleaseOptions {
+	bumpArg: string;
+	isDryRun: boolean;
+	pollOptions?: CiPollOptions;
+}
+
+export async function executeRelease(
+	options: ReleaseOptions,
+	ctx: RunnerContext = defaultRunnerContext(),
+): Promise<void> {
+	const { bumpArg, isDryRun } = options;
+
+	const statusResult = await ctx.run("git", ["status", "--porcelain"]);
+	if (statusResult.code !== 0) {
+		throw new Error(`Failed to check git status: ${statusResult.stderr.trim()}`);
+	}
+	if (statusResult.stdout.trim() && !isDryRun) {
+		throw new Error(
+			`Working tree is not clean. Commit or stash changes first.\n${statusResult.stdout.trim()}`,
+		);
+	}
+
+	const branchResult = await ctx.run("git", ["rev-parse", "--abbrev-ref", "HEAD"]);
+	if (branchResult.code !== 0) {
+		throw new Error(`Failed to check current branch: ${branchResult.stderr.trim()}`);
+	}
+	const currentBranch = branchResult.stdout.trim();
+	if (currentBranch !== "main" && !isDryRun) {
+		throw new Error(`Releases can only be run from branch "main", currently on "${currentBranch}"`);
+	}
+
+	const ghAuthResult = await ctx.run("gh", ["auth", "status"]);
+	const ghAuthed = ghAuthResult.code === 0;
+
+	const currentVersion = ctx.readJsonVersion("package.json");
 	const newVersion = bumpVersion(currentVersion, bumpArg);
 	const lastTag = await getLastTag();
 	const tag = `v${newVersion}`;
 
-	console.log(`${currentVersion} → ${newVersion} (${tag})`);
-
-	if (!isDryRun) {
-		for (const target of VERSION_TARGETS) {
-			updateJsonVersion(target, currentVersion, newVersion);
-			console.log(`updated ${target}`);
-		}
-	}
+	ctx.log(`${currentVersion} → ${newVersion} (${tag})`);
 
 	const commits = await getCommitsSinceTag(lastTag);
 	const changelogSection = formatChangelogSection(newVersion, classifyCommits(commits));
-	console.log(changelogSection);
+	ctx.log(changelogSection);
 
 	if (isDryRun) {
-		console.log("dry-run: no files written");
-		process.exit(0);
+		ctx.log("dry-run: no files written");
+		return;
 	}
 
-	updateChangelog(changelogSection);
+	for (const target of VERSION_TARGETS) {
+		ctx.updateJsonVersion(target, currentVersion, newVersion);
+		ctx.log(`updated ${target}`);
+	}
+
+	ctx.updateChangelog(changelogSection);
 
 	const filesToStage = [...VERSION_TARGETS, "CHANGELOG.md"];
-	await runOrDie("git", ["add", ...filesToStage], "Failed to stage files");
-	const commitResult = await run("git", ["commit", "-m", `chore: release v${newVersion}`], {
+	const addResult = await ctx.run("git", ["add", ...filesToStage]);
+	if (addResult.code !== 0) {
+		throw new Error(`Failed to stage files: ${addResult.stderr.trim()}`);
+	}
+
+	const commitResult = await ctx.run("git", ["commit", "-m", `chore: release v${newVersion}`], {
 		inherit: true,
 	});
 	if (commitResult.code !== 0) {
-		console.error("Commit failed");
-		process.exit(1);
+		throw new Error("Commit failed");
 	}
 
-	const pushResult = await run("git", ["push"], { inherit: true });
-	if (pushResult.code !== 0) {
-		console.error("git push failed");
-		process.exit(1);
+	const headShaResult = await ctx.run("git", ["rev-parse", "HEAD"]);
+	if (headShaResult.code !== 0) {
+		throw new Error(`Failed to resolve HEAD SHA: ${headShaResult.stderr.trim()}`);
+	}
+	const headSha = headShaResult.stdout.trim();
+
+	const pushMainResult = await ctx.run("git", ["push", "origin", "main"], { inherit: true });
+	if (pushMainResult.code !== 0) {
+		throw new Error("git push origin main failed");
 	}
 
-	const tagResult = await run("git", ["tag", "-a", tag, "-m", tag]);
+	await waitForCiSuccess(headSha, ctx, options.pollOptions);
+
+	const tagResult = await ctx.run("git", ["tag", "-a", tag, "-m", tag]);
 	if (tagResult.code !== 0) {
-		console.error(`Failed to create tag ${tag}`);
-		process.exit(1);
+		throw new Error(`Failed to create tag ${tag}: ${tagResult.stderr.trim()}`);
 	}
-	const pushTagResult = await run("git", ["push", "--tags"], { inherit: true });
+
+	const pushTagResult = await ctx.run("git", ["push", "origin", tag], { inherit: true });
 	if (pushTagResult.code !== 0) {
-		console.error("git push --tags failed");
-		process.exit(1);
+		throw new Error(`git push origin ${tag} failed: ${pushTagResult.stderr.trim()}`);
 	}
 
 	if (ghAuthed) {
 		const notesPath = pathResolve("/tmp", `basalt-release-${newVersion}.md`);
-		writeFileSync(notesPath, `${changelogSection}\n`);
-		const ghResult = await run(
+		ctx.writeNotesFile(notesPath, `${changelogSection}\n`);
+		const ghResult = await ctx.run(
 			"gh",
 			["release", "create", tag, "--title", tag, "--notes-file", notesPath],
 			{ inherit: true },
 		);
 		if (ghResult.code !== 0) {
-			console.error("gh release create failed");
-			process.exit(1);
+			throw new Error("gh release create failed");
 		}
 	}
 
-	console.log(`release ${tag} complete`);
-	console.log(
-		"npm: cd packages/basalt && npm publish --access public --tag latest --ignore-scripts",
-	);
+	ctx.log(`release ${tag} complete`);
+	ctx.log("npm: cd packages/basalt && npm publish --access public --tag latest --ignore-scripts");
+}
+
+async function main(): Promise<void> {
+	const rawArgs = process.argv.slice(2).filter((arg) => arg !== "--");
+	const isDryRun = rawArgs.includes("--dry-run");
+	const bumpArg = rawArgs.find((arg) => arg !== "--dry-run") ?? "patch";
+
+	await executeRelease({ bumpArg, isDryRun });
 }
 
 if ((import.meta as ImportMeta & { main?: boolean }).main) {
