@@ -223,13 +223,186 @@ describe("executeRelease gates and failure paths", () => {
 
 		const pushes = commands.filter((c) => c.cmd === "git" && c.args[0] === "push");
 		expect(pushes).toHaveLength(2);
-		expect(pushes[0].args).toEqual(["push", "origin", "main"]);
-		expect(pushes[1].args).toEqual(["push", "origin", "v2.0.4"]);
+		expect(pushes[0].args).toEqual(["push", "origin", "commit123:refs/heads/main"]);
+		expect(pushes[1].args).toEqual(["push", "origin", "refs/tags/v2.0.4:refs/tags/v2.0.4"]);
 
-		// Verify --tags is strictly forbidden
-		for (const cmd of commands) {
+		// Verify --tags is strictly forbidden on git push
+		for (const cmd of pushes) {
 			expect(cmd.args).not.toContain("--tags");
 		}
+	});
+
+	it("binds tag to the verified headSha even if HEAD moves during CI wait", async () => {
+		let headQueryCount = 0;
+		const { ctx, commands } = createMockRunnerContext({
+			run: async (cmd, args) => {
+				commands.push({ cmd, args });
+				if (cmd === "git" && args[0] === "rev-parse" && args[1] === "HEAD") {
+					headQueryCount++;
+					return {
+						code: 0,
+						stdout: headQueryCount === 1 ? "commit123\n" : "commit999\n",
+						stderr: "",
+					};
+				}
+				if (cmd === "git" && args[0] === "status") return { code: 0, stdout: "", stderr: "" };
+				if (cmd === "git" && args[0] === "rev-parse" && args[1] === "--abbrev-ref")
+					return { code: 0, stdout: "main\n", stderr: "" };
+				if (cmd === "git" && args[0] === "describe")
+					return { code: 0, stdout: "v2.0.3\n", stderr: "" };
+				if (cmd === "git" && args[0] === "log")
+					return { code: 0, stdout: "commit123|||feat: gate\n", stderr: "" };
+				if (cmd === "git" && args[0] === "add") return { code: 0, stdout: "", stderr: "" };
+				if (cmd === "git" && args[0] === "commit") return { code: 0, stdout: "", stderr: "" };
+				if (cmd === "git" && args[0] === "push") return { code: 0, stdout: "", stderr: "" };
+				if (cmd === "git" && args[0] === "tag") return { code: 0, stdout: "", stderr: "" };
+				if (cmd === "gh" && args[0] === "auth") return { code: 0, stdout: "", stderr: "" };
+				if (cmd === "gh" && args[0] === "release") return { code: 0, stdout: "", stderr: "" };
+				if (cmd === "gh" && args[0] === "api") {
+					return {
+						code: 0,
+						stdout: JSON.stringify({
+							id: 100,
+							status: "completed",
+							conclusion: "success",
+							head_branch: "main",
+							event: "push",
+							head_sha: "commit123",
+						}),
+						stderr: "",
+					};
+				}
+				return { code: 0, stdout: "", stderr: "" };
+			},
+		});
+
+		await executeRelease({ bumpArg: "patch", isDryRun: false }, ctx);
+
+		const tagCmd = commands.find((c) => c.cmd === "git" && c.args[0] === "tag");
+		expect(tagCmd).toBeDefined();
+		// tag args: ["tag", "-a", "v2.0.4", "commit123", "-m", "v2.0.4"]
+		expect(tagCmd?.args).toEqual(["tag", "-a", "v2.0.4", "commit123", "-m", "v2.0.4"]);
+	});
+
+	it("fails fast before modifying files or committing if gh is not authenticated", async () => {
+		const { ctx, commands, filesWritten } = createMockRunnerContext({
+			run: async (cmd, args) => {
+				if (cmd === "gh" && args[0] === "auth") {
+					return { code: 1, stdout: "", stderr: "not logged in" };
+				}
+				if (cmd === "git" && args[0] === "status") return { code: 0, stdout: "", stderr: "" };
+				if (cmd === "git" && args[0] === "rev-parse" && args[1] === "--abbrev-ref")
+					return { code: 0, stdout: "main\n", stderr: "" };
+				return { code: 0, stdout: "", stderr: "" };
+			},
+		});
+
+		await expect(executeRelease({ bumpArg: "patch", isDryRun: false }, ctx)).rejects.toThrow(
+			/gh authentication required/,
+		);
+		expect(Object.keys(filesWritten)).toHaveLength(0);
+		expect(commands.filter((c) => c.cmd === "git" && c.args[0] === "commit")).toHaveLength(0);
+	});
+
+	it("rejects CI run with wrong branch or event and ignores them", async () => {
+		const { ctx } = createMockRunnerContext({
+			run: async (cmd, args) => {
+				if (cmd === "gh" && args[0] === "api") {
+					// Return runs on other branches or events, but none matching main push
+					return {
+						code: 0,
+						stdout: [
+							JSON.stringify({
+								id: 1,
+								status: "completed",
+								conclusion: "success",
+								head_branch: "feature",
+								event: "push",
+								head_sha: "commit123",
+							}),
+							JSON.stringify({
+								id: 2,
+								status: "completed",
+								conclusion: "success",
+								head_branch: "main",
+								event: "pull_request",
+								head_sha: "commit123",
+							}),
+						].join("\n"),
+						stderr: "",
+					};
+				}
+				if (cmd === "git" && args[0] === "status") return { code: 0, stdout: "", stderr: "" };
+				if (cmd === "git" && args[0] === "rev-parse" && args[1] === "--abbrev-ref")
+					return { code: 0, stdout: "main\n", stderr: "" };
+				if (cmd === "git" && args[0] === "rev-parse" && args[1] === "HEAD")
+					return { code: 0, stdout: "commit123\n", stderr: "" };
+				if (cmd === "git" && args[0] === "describe")
+					return { code: 0, stdout: "v2.0.3\n", stderr: "" };
+				if (cmd === "git" && args[0] === "log")
+					return { code: 0, stdout: "commit123|||feat: gate\n", stderr: "" };
+				return { code: 0, stdout: "", stderr: "" };
+			},
+		});
+
+		await expect(
+			executeRelease(
+				{ bumpArg: "patch", isDryRun: false, pollOptions: { pollIntervalMs: 1, timeoutMs: 5 } },
+				ctx,
+			),
+		).rejects.toThrow(/Timed out waiting for CI/);
+	});
+
+	it("does not let an older successful CI run mask a newer pending run regardless of order in output", async () => {
+		const { ctx } = createMockRunnerContext({
+			run: async (cmd, args) => {
+				if (cmd === "gh" && args[0] === "api") {
+					// Deliberately unsorted in stdout: older success first, newer pending second
+					return {
+						code: 0,
+						stdout: [
+							JSON.stringify({
+								id: 100,
+								status: "completed",
+								conclusion: "success",
+								head_branch: "main",
+								event: "push",
+								head_sha: "commit123",
+								created_at: "2026-09-06T06:00:00Z",
+							}),
+							JSON.stringify({
+								id: 200,
+								status: "in_progress",
+								conclusion: null,
+								head_branch: "main",
+								event: "push",
+								head_sha: "commit123",
+								created_at: "2026-09-06T06:30:00Z",
+							}),
+						].join("\n"),
+						stderr: "",
+					};
+				}
+				if (cmd === "git" && args[0] === "status") return { code: 0, stdout: "", stderr: "" };
+				if (cmd === "git" && args[0] === "rev-parse" && args[1] === "--abbrev-ref")
+					return { code: 0, stdout: "main\n", stderr: "" };
+				if (cmd === "git" && args[0] === "rev-parse" && args[1] === "HEAD")
+					return { code: 0, stdout: "commit123\n", stderr: "" };
+				if (cmd === "git" && args[0] === "describe")
+					return { code: 0, stdout: "v2.0.3\n", stderr: "" };
+				if (cmd === "git" && args[0] === "log")
+					return { code: 0, stdout: "commit123|||feat: gate\n", stderr: "" };
+				return { code: 0, stdout: "", stderr: "" };
+			},
+		});
+
+		// Since newest by created_at is in_progress, it should wait and eventually time out, NOT succeed because run 100 was listed first
+		await expect(
+			executeRelease(
+				{ bumpArg: "patch", isDryRun: false, pollOptions: { pollIntervalMs: 1, timeoutMs: 5 } },
+				ctx,
+			),
+		).rejects.toThrow(/Timed out waiting for CI/);
 	});
 
 	it("aborts release if CI fails for the exact commit", async () => {
