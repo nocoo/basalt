@@ -1,6 +1,4 @@
 import { existsSync, readFileSync } from "node:fs";
-import { resolve } from "node:path";
-import { pathToFileURL } from "node:url";
 
 if (process.versions.bun) {
 	throw new Error("runtime gate must run under Node, not Bun");
@@ -85,17 +83,13 @@ if (dataTable.DataTable == null) {
 // Systematically verify all 375 runtime value exports from baseline across all 110 paths
 let totalRuntimeVerified = 0;
 for (const entry of baseline.entries) {
-	const rel = entry.path === "@nocoo/basalt" ? "index" : entry.path.replace("@nocoo/basalt/", "");
-	const fullJsPath = resolve(new URL(packageRoot).pathname, "dist", `${rel}.js`);
-	if (!existsSync(fullJsPath)) {
-		throw new Error(`missing compiled JS file for ${entry.path}: ${fullJsPath}`);
-	}
-	const mod = await import(pathToFileURL(fullJsPath).href);
+	const moduleUrl = import.meta.resolve(entry.path);
+	const mod = await import(moduleUrl);
 	for (const sym of entry.symbols) {
 		if (sym.value) {
 			if (!(sym.name in mod)) {
 				throw new Error(
-					`runtime export "${sym.name}" missing from module ${entry.path} (${fullJsPath})`,
+					`runtime export "${sym.name}" missing from module ${entry.path} (${moduleUrl})`,
 				);
 			}
 			totalRuntimeVerified++;
