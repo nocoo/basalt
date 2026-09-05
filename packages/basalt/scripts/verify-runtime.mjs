@@ -1,3 +1,7 @@
+import { existsSync, readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+
 if (process.versions.bun) {
 	throw new Error("runtime gate must run under Node, not Bun");
 }
@@ -6,6 +10,13 @@ if (!process.versions.node) {
 }
 
 const packageRoot = new URL("..", import.meta.url);
+const baselinePath = new URL("../public-api-baseline.json", import.meta.url);
+
+if (!existsSync(baselinePath)) {
+	throw new Error(`baseline missing: ${baselinePath.pathname}`);
+}
+
+const baseline = JSON.parse(readFileSync(baselinePath, "utf8"));
 const forbidden = ["AppHeader", "AppMain", "AppShell", "AppSkipLink", "LoadingScreen"];
 const required = ["Button", "ThemeProvider", "ThemeToggle", "Toast", "LinkProvider"];
 
@@ -71,4 +82,27 @@ if (dataTable.DataTable == null) {
 	throw new Error("components/data-table did not export DataTable");
 }
 
-console.log(`runtime ok node=${process.versions.node} root=${rootUrl}`);
+// Systematically verify all 375 runtime value exports from baseline across all 110 paths
+let totalRuntimeVerified = 0;
+for (const entry of baseline.entries) {
+	const rel = entry.path === "@nocoo/basalt" ? "index" : entry.path.replace("@nocoo/basalt/", "");
+	const fullJsPath = resolve(new URL(packageRoot).pathname, "dist", `${rel}.js`);
+	if (!existsSync(fullJsPath)) {
+		throw new Error(`missing compiled JS file for ${entry.path}: ${fullJsPath}`);
+	}
+	const mod = await import(pathToFileURL(fullJsPath).href);
+	for (const sym of entry.symbols) {
+		if (sym.value) {
+			if (!(sym.name in mod)) {
+				throw new Error(
+					`runtime export "${sym.name}" missing from module ${entry.path} (${fullJsPath})`,
+				);
+			}
+			totalRuntimeVerified++;
+		}
+	}
+}
+
+console.log(
+	`runtime ok node=${process.versions.node} root=${rootUrl} (verified ${totalRuntimeVerified} runtime symbols across ${baseline.entries.length} modules)`,
+);

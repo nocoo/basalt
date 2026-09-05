@@ -849,16 +849,16 @@ export function ProfileForm() {
 }
 ```
 
-### Form Libraries (React Hook Form, TanStack Form)
+### Controlled DatePicker Pattern
 
-When using controlled form libraries, manage state using standard `value` and `onValueChange` / `onChange` contracts:
+When using controlled state or building custom form adapters, `DatePicker` accepts an ISO date string (`YYYY-MM-DD`):
 
 ```tsx
 import { useState } from "react";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 
 export function ControlledDatePickerField() {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+  const [selectedDate, setSelectedDate] = useState<string>("2026-09-01");
 
   return (
     <DatePicker

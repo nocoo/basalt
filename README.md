@@ -62,9 +62,8 @@ Standalone CSS packages design tokens, control surface utilities, and keyframes 
 ### Component Usage
 
 ```tsx
-import { Button, LayerCard, ThemeProvider } from "@nocoo/basalt";
+import { Button, Input, LayerCard, ThemeProvider } from "@nocoo/basalt";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
-import { DonutChart } from "@nocoo/basalt/charts/donut";
 
 export function App() {
   return (
@@ -74,8 +73,8 @@ export function App() {
           <span className="font-semibold text-basalt-foreground">Overview</span>
         </LayerCard.Header>
         <LayerCard.Body>
-          <DatePicker aria-label="Select Date" />
-          <DonutChart data={[{ name: "Usage", value: 75 }]} />
+          <Input placeholder="Project Name" aria-label="Project Name" />
+          <DatePicker aria-label="Target Date" />
           <Button variant="default">Submit</Button>
         </LayerCard.Body>
       </LayerCard>
@@ -83,6 +82,8 @@ export function App() {
   );
 }
 ```
+
+Optional peer dependencies are only required when importing granular features that depend on them (e.g. `recharts` for `@nocoo/basalt/charts/*`).
 
 See [INTEGRATION.md](INTEGRATION.md) for full application frame recipes, Next.js client boundaries, SSR theme initialization, and form handling.
 

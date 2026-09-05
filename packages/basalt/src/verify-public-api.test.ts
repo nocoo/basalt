@@ -1,16 +1,12 @@
-import { readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
 	type BaselineDoc,
 	resolvePackageExportTarget,
 	runPublicApiVerification,
 } from "../scripts/verify-public-api";
-
-const pkgRoot = join(process.cwd(), "packages/basalt");
-const baseline = JSON.parse(
-	readFileSync(join(pkgRoot, "public-api-baseline.json"), "utf8"),
-) as BaselineDoc;
 
 describe("resolvePackageExportTarget", () => {
 	const exportsField = {
@@ -47,146 +43,143 @@ describe("resolvePackageExportTarget", () => {
 	});
 });
 
-describe("public API baseline verification", () => {
-	it("verifies all 110 baseline paths and 572 symbols successfully", () => {
-		const result = runPublicApiVerification();
+describe("public API baseline verification with isolated fixtures", () => {
+	let tempRoot: string;
+
+	const baseline: BaselineDoc = {
+		packageVersion: "2.0.3",
+		sourceBaseline: "isolated-probe",
+		entries: [
+			{
+				path: "@nocoo/basalt",
+				symbols: [
+					{ name: "Control", value: true, type: false },
+					{ name: "ControlProps", value: false, type: true },
+				],
+			},
+		],
+		cssExports: ["@nocoo/basalt/styles"],
+	};
+
+	const pkg = {
+		name: "@nocoo/basalt",
+		type: "module",
+		exports: {
+			".": { types: "./dist/index.d.ts", import: "./dist/index.js" },
+			"./styles": "./dist/style.css",
+		},
+	};
+
+	const declarations =
+		"export interface ControlProps { value: string; }\nexport declare const Control: (props: ControlProps) => string;\n";
+	const runtime = "export const Control = props => props.value;\n";
+	const validCss = ".control { box-sizing: border-box; }\n";
+
+	beforeAll(() => {
+		tempRoot = mkdtempSync(join(tmpdir(), "basalt-api-test-"));
+		mkdirSync(join(tempRoot, "dist"));
+		writeFileSync(join(tempRoot, "package.json"), JSON.stringify(pkg, null, 2));
+		writeFileSync(join(tempRoot, "dist/index.d.ts"), declarations);
+		writeFileSync(join(tempRoot, "dist/index.js"), runtime);
+		writeFileSync(join(tempRoot, "dist/style.css"), validCss);
+	});
+
+	afterAll(() => {
+		if (tempRoot) {
+			rmSync(tempRoot, { recursive: true, force: true });
+		}
+	});
+
+	it("verifies a valid minimal package successfully without relying on repo dist", () => {
+		const result = runPublicApiVerification(baseline, pkg, tempRoot);
 		expect(result.errors).toEqual([]);
-		expect(result.checkedPaths).toBe(110);
-		expect(result.checkedSymbols).toBe(572);
+		expect(result.checkedPaths).toBe(1);
+		expect(result.checkedSymbols).toBe(2);
 	});
 
-	it("fails fast if a public symbol is removed or renamed", () => {
-		const mutatedBaseline: BaselineDoc = {
-			...baseline,
-			entries: baseline.entries.map((entry) => {
-				if (entry.path === "@nocoo/basalt") {
-					return {
-						...entry,
-						symbols: [...entry.symbols, { name: "NonExistentComponent", value: true, type: false }],
-					};
-				}
-				return entry;
-			}),
-		};
+	it("fails fast when a runtime symbol is removed from JS but kept in d.ts", () => {
+		writeFileSync(join(tempRoot, "dist/index.js"), "export const Other = () => null;\n");
+		try {
+			const result = runPublicApiVerification(baseline, pkg, tempRoot);
+			expect(result.errors.length).toBeGreaterThan(0);
+			expect(result.errors.some((e) => e.includes('runtime symbol "Control" missing'))).toBe(true);
+		} finally {
+			writeFileSync(join(tempRoot, "dist/index.js"), runtime);
+		}
+	});
 
-		const result = runPublicApiVerification(mutatedBaseline);
+	it("fails fast when actual export targets point to missing files", () => {
+		const wrongPkg = {
+			...pkg,
+			exports: {
+				...pkg.exports,
+				".": { types: "./dist/missing.d.ts", import: "./dist/missing.js" },
+			},
+		};
+		const result = runPublicApiVerification(baseline, wrongPkg, tempRoot);
 		expect(result.errors.length).toBeGreaterThan(0);
-		expect(result.errors.some((e) => e.includes("NonExistentComponent"))).toBe(true);
+		expect(result.errors.some((e) => e.includes("missing types file"))).toBe(true);
+		expect(result.errors.some((e) => e.includes("missing JS file"))).toBe(true);
 	});
 
-	it("fails fast if a value symbol is falsely expected as type (Button has value=true, type=false)", () => {
+	it("fails fast when a type-only interface is replaced by a value-only symbol in d.ts", () => {
+		writeFileSync(
+			join(tempRoot, "dist/index.d.ts"),
+			"export declare const Control: () => string;\nexport declare const ControlProps: string;\n",
+		);
+		try {
+			const result = runPublicApiVerification(baseline, pkg, tempRoot);
+			expect(result.errors.length).toBeGreaterThan(0);
+			expect(
+				result.errors.some(
+					(e) => e.includes('symbol "ControlProps"') && e.includes("expected type=true"),
+				),
+			).toBe(true);
+		} finally {
+			writeFileSync(join(tempRoot, "dist/index.d.ts"), declarations);
+		}
+	});
+
+	it("fails fast when a value symbol is falsely expected as type", () => {
 		const mutatedBaseline: BaselineDoc = {
 			...baseline,
-			entries: baseline.entries.map((entry) => {
-				if (entry.path === "@nocoo/basalt") {
-					return {
-						...entry,
-						symbols: entry.symbols.map((s) => {
-							if (s.name === "Button") {
-								// Expect Button to be a type, which must fail since Button is a runtime component
-								return { ...s, type: true, value: false };
-							}
-							return s;
-						}),
-					};
-				}
-				return entry;
-			}),
+			entries: [
+				{
+					path: "@nocoo/basalt",
+					symbols: [
+						{ name: "Control", value: false, type: true },
+						{ name: "ControlProps", value: false, type: true },
+					],
+				},
+			],
 		};
-
-		const result = runPublicApiVerification(mutatedBaseline);
+		const result = runPublicApiVerification(mutatedBaseline, pkg, tempRoot);
 		expect(result.errors.length).toBeGreaterThan(0);
 		expect(
-			result.errors.some((e) => e.includes("Button") && e.includes("expected type=true")),
+			result.errors.some((e) => e.includes('symbol "Control"') && e.includes("expected type=true")),
 		).toBe(true);
 	});
 
-	it("fails fast if symbol type/value identity is degraded (BarChartProps expected value=true)", () => {
-		const mutatedBaseline: BaselineDoc = {
-			...baseline,
-			entries: baseline.entries.map((entry) => {
-				if (entry.path === "@nocoo/basalt/charts/bar") {
-					return {
-						...entry,
-						symbols: entry.symbols.map((s) => {
-							if (s.name === "BarChartProps") {
-								// BarChartProps is an interface/type; require it to be a value
-								return { ...s, value: true };
-							}
-							return s;
-						}),
-					};
-				}
-				return entry;
-			}),
-		};
-
-		const result = runPublicApiVerification(mutatedBaseline);
-		expect(result.errors.length).toBeGreaterThan(0);
-		expect(result.errors.some((e) => e.includes("BarChartProps") && e.includes("value=true"))).toBe(
-			true,
-		);
+	it("fails fast when a CSS target file is empty", () => {
+		writeFileSync(join(tempRoot, "dist/style.css"), "");
+		try {
+			const result = runPublicApiVerification(baseline, pkg, tempRoot);
+			expect(result.errors.length).toBeGreaterThan(0);
+			expect(result.errors.some((e) => e.includes("CSS export target file is empty"))).toBe(true);
+		} finally {
+			writeFileSync(join(tempRoot, "dist/style.css"), validCss);
+		}
 	});
 
-	it("fails fast if package export target points to non-existent files", () => {
-		const mutatedPkg = {
+	it("fails fast when a CSS target points to a JavaScript file", () => {
+		const wrongCssPkg = {
+			...pkg,
 			exports: {
-				".": { types: "./dist/missing.d.ts", import: "./dist/missing.js" },
-				"./components/*": { types: "./dist/components/*.d.ts", import: "./dist/components/*.js" },
-				"./providers/*": { types: "./dist/providers/*.d.ts", import: "./dist/providers/*.js" },
-				"./charts/*": { types: "./dist/charts/*.d.ts", import: "./dist/charts/*.js" },
-				"./styles": "./dist/styles/tailwind.css",
-				"./styles/tailwind": "./dist/styles/tailwind.css",
-				"./styles/standalone": "./dist/styles/standalone.css",
-			},
-		};
-
-		const result = runPublicApiVerification(baseline, mutatedPkg);
-		expect(result.errors.length).toBeGreaterThan(0);
-		expect(result.errors.some((e) => e.includes("missing types file for @nocoo/basalt"))).toBe(
-			true,
-		);
-	});
-
-	it("fails fast if a package export target is completely missing", () => {
-		const mutatedPkg = {
-			exports: {
-				// Missing the root "." export
-				"./components/*": { types: "./dist/components/*.d.ts", import: "./dist/components/*.js" },
-				"./providers/*": { types: "./dist/providers/*.d.ts", import: "./dist/providers/*.js" },
-				"./charts/*": { types: "./dist/charts/*.d.ts", import: "./dist/charts/*.js" },
-				"./styles": "./dist/styles/tailwind.css",
-				"./styles/tailwind": "./dist/styles/tailwind.css",
-				"./styles/standalone": "./dist/styles/standalone.css",
-			},
-		};
-
-		const result = runPublicApiVerification(baseline, mutatedPkg);
-		expect(result.errors.length).toBeGreaterThan(0);
-		expect(result.errors.some((e) => e.includes("@nocoo/basalt is not covered"))).toBe(true);
-	});
-
-	it("fails fast if a required CSS export points to non-css file or is empty", () => {
-		const mutatedBaseline: BaselineDoc = {
-			...baseline,
-			cssExports: ["@nocoo/basalt/styles"],
-		};
-		const mutatedPkg = {
-			exports: {
-				...baseline.entries.reduce(
-					(acc, e) => {
-						const rel = e.path === "@nocoo/basalt" ? "." : e.path.replace("@nocoo/basalt/", "./");
-						acc[rel] = { types: `./dist/${rel}.d.ts`, import: `./dist/${rel}.js` };
-						return acc;
-					},
-					{} as Record<string, unknown>,
-				),
-				// Point CSS to a JS file
+				...pkg.exports,
 				"./styles": "./dist/index.js",
 			},
 		};
-
-		const result = runPublicApiVerification(mutatedBaseline, mutatedPkg);
+		const result = runPublicApiVerification(baseline, wrongCssPkg, tempRoot);
 		expect(result.errors.length).toBeGreaterThan(0);
 		expect(result.errors.some((e) => e.includes("must be a .css file"))).toBe(true);
 	});

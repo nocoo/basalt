@@ -95,6 +95,41 @@ export function resolvePackageExportTarget(
 	return null;
 }
 
+/**
+ * Parses a JavaScript file AST to discover named runtime exports.
+ */
+export function getRuntimeExportNamesFromJs(filePath: string, content: string): Set<string> {
+	const sf = ts.createSourceFile(filePath, content, ts.ScriptTarget.Latest, true, ts.ScriptKind.JS);
+	const names = new Set<string>();
+
+	for (const stmt of sf.statements) {
+		if (ts.isExportDeclaration(stmt)) {
+			if (stmt.exportClause && ts.isNamedExports(stmt.exportClause)) {
+				for (const el of stmt.exportClause.elements) {
+					names.add(el.name.text);
+				}
+			}
+		} else if (
+			ts.canHaveModifiers(stmt) &&
+			ts.getModifiers(stmt)?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)
+		) {
+			if (ts.isVariableStatement(stmt)) {
+				for (const decl of stmt.declarationList.declarations) {
+					if (ts.isIdentifier(decl.name)) {
+						names.add(decl.name.text);
+					}
+				}
+			} else if (ts.isFunctionDeclaration(stmt) && stmt.name) {
+				names.add(stmt.name.text);
+			} else if (ts.isClassDeclaration(stmt) && stmt.name) {
+				names.add(stmt.name.text);
+			}
+		}
+	}
+
+	return names;
+}
+
 export function runPublicApiVerification(
 	customBaseline?: BaselineDoc,
 	customPkg?: { exports: Record<string, unknown> },
@@ -164,16 +199,21 @@ export function runPublicApiVerification(
 		const fullDtsPath = resolve(targetPackageRoot, resolved.typesTarget);
 		const fullJsPath = resolve(targetPackageRoot, resolved.importTarget);
 
+		let missing = false;
 		if (!existsSync(fullDtsPath)) {
 			errors.push(`missing types file for ${entry.path}: ${fullDtsPath}`);
+			missing = true;
 		} else {
 			dtsFilesForCompiler.push(fullDtsPath);
 		}
 		if (!existsSync(fullJsPath)) {
 			errors.push(`missing JS file for ${entry.path}: ${fullJsPath}`);
+			missing = true;
 		}
 
-		pathTargets.set(entry.path, { fullDtsPath, fullJsPath });
+		if (!missing) {
+			pathTargets.set(entry.path, { fullDtsPath, fullJsPath });
+		}
 	}
 
 	// 3. Programmatic symbol and type/value checking via typescript-api
@@ -182,14 +222,14 @@ export function runPublicApiVerification(
 
 	if (dtsFilesForCompiler.length > 0) {
 		const program = ts.createProgram(dtsFilesForCompiler, {
-			target: ts.ScriptTarget.ESNext,
+			target: ts.ScriptTarget.Latest,
 			moduleResolution: ts.ModuleResolutionKind.NodeNext,
 		});
 		const checker = program.getTypeChecker();
 
 		for (const entry of baseline.entries) {
 			const target = pathTargets.get(entry.path);
-			if (!target || !existsSync(target.fullDtsPath)) {
+			if (!target || !existsSync(target.fullDtsPath) || !existsSync(target.fullJsPath)) {
 				continue;
 			}
 			const sf = program.getSourceFile(target.fullDtsPath);
@@ -207,6 +247,10 @@ export function runPublicApiVerification(
 			const expList = checker.getExportsOfModule(modSym);
 			const expMap = new Map(expList.map((e) => [e.getName(), e]));
 
+			// Parse actual runtime JS exports for this entrypoint
+			const jsContent = readFileSync(target.fullJsPath, "utf8");
+			const jsRuntimeExports = getRuntimeExportNamesFromJs(target.fullJsPath, jsContent);
+
 			for (const expected of entry.symbols) {
 				checkedSymbols++;
 				const rawSym = expMap.get(expected.name);
@@ -221,10 +265,18 @@ export function runPublicApiVerification(
 					flags & (ts.SymbolFlags.Type | ts.SymbolFlags.Interface | ts.SymbolFlags.TypeAlias),
 				);
 
-				if (expected.value && !isVal) {
-					errors.push(
-						`${entry.path}: symbol "${expected.name}" expected value=true, but has flags ${flags}`,
-					);
+				if (expected.value) {
+					if (!isVal) {
+						errors.push(
+							`${entry.path}: symbol "${expected.name}" expected value=true in declaration, but has flags ${flags}`,
+						);
+					}
+					// Must also exist in compiled JavaScript runtime output
+					if (!jsRuntimeExports.has(expected.name)) {
+						errors.push(
+							`${entry.path}: runtime symbol "${expected.name}" missing from compiled JS artifact: ${target.fullJsPath}`,
+						);
+					}
 				}
 				if (expected.type && !isType) {
 					errors.push(
