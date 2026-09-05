@@ -530,7 +530,7 @@ describe("heavy consumer gate helpers", () => {
 		assertTemplateManifest(manifest);
 		expect(manifest).toContain('"recharts": "3.10.1"');
 		expect(manifest).toContain('"react-day-picker": "10.0.1"');
-		expect(manifest).toContain('"@tanstack/react-table": "9.1.2"');
+		expect(manifest).toContain('"@tanstack/react-table": "9.2.4"');
 		expect(manifest).not.toContain("@nocoo/basalt");
 		const entry = readFileSync("fixtures/vite-heavy/src/main.tsx", "utf8");
 		assertRootConsumerSource(entry, "heavy");

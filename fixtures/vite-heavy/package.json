@@ -8,7 +8,7 @@
 		"typecheck": "tsc -p tsconfig.json --noEmit"
 	},
 	"dependencies": {
-		"@tanstack/react-table": "9.1.2",
+		"@tanstack/react-table": "9.2.4",
 		"lucide-react": "1.40.0",
 		"react": "19.2.8",
 		"react-day-picker": "10.0.1",

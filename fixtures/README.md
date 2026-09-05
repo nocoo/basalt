@@ -60,7 +60,7 @@ Guarantees:
 
 - The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, or this repository's path.
 - Source granular-imports `DonutChart`, `DatePicker`, and `DataTable` only, plus `@nocoo/basalt/styles/standalone`. It does not import the package root or Tailwind.
-- After install, `recharts` is `3.10.1`, `react-day-picker` is `10.0.1`, and `@tanstack/react-table` is `9.1.2`. `tailwindcss` is not installed.
+- After install, `recharts` is `3.10.1`, `react-day-picker` is `10.0.1`, and `@tanstack/react-table` is `9.2.4`. `tailwindcss` is not installed.
 - `import.meta.resolve` and dynamic `import()` of `@nocoo/basalt/charts/donut`, `components/date-picker`, and `components/data-table` land inside that consumer's tarball copy and expose the named exports.
 - The published package declares those three libraries as optional peers (`^3` / `^10` / `^9`). DatePicker and DataTable are still self-contained; Gate D does not claim they call react-day-picker or TanStack Table.
 - Production output includes HTML, JS, and standalone CSS with `--basalt-background`.
