@@ -59,7 +59,7 @@ bun run release
 
 Status: `enforced` | `planned` | `manual` | `N/A`. `enforced` Evidence = hook/CI/config/script.
 
-Org gaps: index-snapshot pre-commit; stdin-range pre-push; `.skip`/`.only`.
+Org gaps: index-snapshot pre-commit; stdin-range pre-push; `.skip` detection. Vitest 5 already rejects `.only` when `CI` is set.
 
 Today: pre-commit typecheck/lint/`test` (no coverage)/gitleaks `--staged` on the working tree. pre-push `build` + `test:coverage` + `lint` + osv. CI: bun-quality `@aec4adc1a817c56790d1698329ef9398a15a754a` (v2026.5) with build, `test:coverage`, `typecheck`, gitleaks, osv; package-gates with package build, types:check, pack:check, publint, and consumer gates A/B/C/D.
 

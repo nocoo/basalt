@@ -675,8 +675,8 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 
 | 阶段 | 范围 / 原子提交编号 | 必须独立验收的结果 | 状态 | 提交 / 证据 |
 |---|---|---|---|---|
-| P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 实施中 | 本文与 docs 索引 |
-| P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 待调度 | — |
+| P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
+| P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
 | P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 待调度 | — |
 | P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
 | P4 | 浮层与语义：10a/b、11a/b、12a/b；C06–C11/R05 | Dock 模态、Confirm 焦点/异常责任、Slider、日历键盘、本地化、Empty action、Storage 拒绝 | 待调度 | — |
@@ -691,4 +691,22 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 
 ### 12.4 验收记录
 
-尚无实施阶段通过验收。第 2 节是审查前基线，后续证据逐阶段写入本节。最终收口需要列出 D/C/Q/E 编号的解决状态与暂缓理由，不能只用测试总数替代问题闭环。
+第 2 节是审查前基线，后续证据逐阶段写入本节。最终收口需要列出 D/C/Q/E 编号的解决状态与暂缓理由，不能只用测试总数替代问题闭环。
+
+#### P1 验收记录（已验收，2026-09-06）
+
+| 问题 | 实现提交 | 主 agent 独立核验 |
+|---|---|---|
+| Q01 | `987f99c` | 在真实 `/bin/sh -e` 下，成功路径依序执行四项；build/coverage/lint/OSV 分别注入 exit 41，均原样非零退出且不执行后续命令 |
+| Q02 | `b5cb086` | shared CI 明确运行 `bun run typecheck`，不再使用 `true` |
+| Q03 | `b66f457` | 同一 CI workflow 的独立 job 包含 package build、双模块类型、pack、publint 与四类 consumer；Node 24、Chromium 系统依赖明确配置 |
+| Q04 | `2881a59`、`a4418fd` | 正式 Vitest 命令下 19 个 release 测试通过；另以隔离 Git/GitHub 响应执行实际工作流 shell，13 个正负用例全部通过；验证精确 SHA、最新 CI、完整 tag ref、祖先/checkout/版本匹配和零实际发布 |
+| Q06 | `fbc85b7`、`007cc8c`、`e99b4b1` | manifest 与全部 CI/CD Bun 均为 1.4.0；锁文件未变；过期 9 条豁免全部移除，扫描配置保持启用 |
+
+发布验收包含等待期间 HEAD 变化、旧成功与新 pending 并存、错误分支/事件/SHA、缺少 CI、失败 CI、非法/不存在的 tag、tag 与 checkout 不匹配、不在 main 上等边界。`deploy-main` 另限定本仓库的 main push，避免仅凭来源分支名称判定。Actionlint 1.7.7 对工作流的语法检查通过。
+
+阶段末在 `e99b4b1` 上重新执行：typecheck、lint（773 文件）、展示站 build、包 build（113 入口）、Bundler/NodeNext 类型检查、pack（343 文件 / 109 对通配产物）、strict publint、consumer A/B/C/D 全部通过。L1 为 173 文件、1,438 个测试；statements **97.44%**、branches **95.26%**、functions **97.87%**、lines **97.60%**。Next 门的 21 个浏览器门测试及真实 Chromium hydration/主题切换通过；OSV 扫描 390 个包，0 命中、0 未使用豁免。各实现提交均通过正常 pre-commit typecheck/lint/test/gitleaks。
+
+主 agent 独立执行的证据包括 shell 失败注入、13 个实际工作流 shell 用例、SHA/等待/tag 绑定 probes、正式 Vitest release 19 测试、Actionlint 和最终 diff 审阅。临时验收材料位于 `/var/folders/hh/5b1tphh13wbg8hj9jj_bxbqr0000gn/T/basalt-04-implementation-20260906.jpwb8yyq`。完整内容中的关键结论已保留在本文。
+
+上述是本地实现与隔离行为证据；本轮未推送远端，不能表述为 GitHub 上该分支的 CI 已运行成功。P1 仅关闭 Q01–Q04/Q06；Q05 的浏览器几何、组件交互与展示回归门继续随 P3–P10 实施。组织级 index-snapshot pre-commit、stdin-range pre-push 仍是既有后续项，没有在本阶段伪报完成。
