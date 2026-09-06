@@ -76,6 +76,15 @@ function scenarioModule(code: string, imports: string[]): string {
 	return `${importLines}\n\nexport default function Example() {\n\treturn (\n\t\t${code.split("\n").join("\n\t\t")}\n\t);\n}`;
 }
 
+function toastScenarioModule(buttonCode: string, extraImports: string[] = []): string {
+	const allImports = [
+		'import { Button } from "@nocoo/basalt/components/button";',
+		'import { toast } from "@nocoo/basalt/components/toast";',
+		...extraImports,
+	];
+	return `${allImports.join("\n")}\n\n// Mount a single global <Toaster /> at the application root.\nexport default function Example() {\n\treturn (\n\t\t${buttonCode.split("\n").join("\n\t\t")}\n\t);\n}`;
+}
+
 export default catalogContentFamily({
 	badge: {
 		docs: {
@@ -785,13 +794,15 @@ export function App() {
 			{
 				id: catalogScenarioId("toast", "title-only"),
 				title: "Title Only",
-				code: '<Button onClick={() => toast("Saved")}>Title only</Button>',
+				code: toastScenarioModule('<Button onClick={() => toast("Saved")}>Title only</Button>'),
 				render: () => <Button onClick={() => toast("Saved")}>Title only</Button>,
 			},
 			{
 				id: catalogScenarioId("toast", "title-and-description"),
 				title: "Title and Description",
-				code: '<Button onClick={() => toast("Saved", { description: "Project updated." })}>With description</Button>',
+				code: toastScenarioModule(
+					'<Button onClick={() => toast("Saved", { description: "Project updated." })}>\n\tWith description\n</Button>',
+				),
 				render: () => (
 					<Button onClick={() => toast("Saved", { description: "Project updated." })}>
 						With description
@@ -801,31 +812,37 @@ export function App() {
 			{
 				id: catalogScenarioId("toast", "success-variant"),
 				title: "Success Variant",
-				code: '<Button onClick={() => toast.success("Deployed")}>Success</Button>',
+				code: toastScenarioModule(
+					'<Button onClick={() => toast.success("Deployed")}>Success</Button>',
+				),
 				render: () => <Button onClick={() => toast.success("Deployed")}>Success</Button>,
 			},
 			{
 				id: catalogScenarioId("toast", "error-variant"),
 				title: "Error Variant",
-				code: '<Button onClick={() => toast.error("Failed")}>Error</Button>',
+				code: toastScenarioModule('<Button onClick={() => toast.error("Failed")}>Error</Button>'),
 				render: () => <Button onClick={() => toast.error("Failed")}>Error</Button>,
 			},
 			{
 				id: catalogScenarioId("toast", "warning-variant"),
 				title: "Warning Variant",
-				code: '<Button onClick={() => toast.warning("Expiring")}>Warning</Button>',
+				code: toastScenarioModule(
+					'<Button onClick={() => toast.warning("Expiring")}>Warning</Button>',
+				),
 				render: () => <Button onClick={() => toast.warning("Expiring")}>Warning</Button>,
 			},
 			{
 				id: catalogScenarioId("toast", "info-variant"),
 				title: "Info Variant",
-				code: '<Button onClick={() => toast.info("Queued")}>Info</Button>',
+				code: toastScenarioModule('<Button onClick={() => toast.info("Queued")}>Info</Button>'),
 				render: () => <Button onClick={() => toast.info("Queued")}>Info</Button>,
 			},
 			{
 				id: catalogScenarioId("toast", "close-button"),
 				title: "Close button",
-				code: '<Button onClick={() => toast("Saved", { close: true, description: "Dismiss with X." })}>With close</Button>',
+				code: toastScenarioModule(
+					'<Button onClick={() => toast("Saved", { close: true, description: "Dismiss with X." })}>\n\tWith close\n</Button>',
+				),
 				render: () => (
 					<Button onClick={() => toast("Saved", { close: true, description: "Dismiss with X." })}>
 						With close
@@ -835,7 +852,9 @@ export function App() {
 			{
 				id: catalogScenarioId("toast", "hidden-close"),
 				title: "Hidden close",
-				code: '<Button onClick={() => toast("Saved", { close: false, description: "No X control." })}>No close</Button>',
+				code: toastScenarioModule(
+					'<Button onClick={() => toast("Saved", { close: false, description: "No X control." })}>\n\tNo close\n</Button>',
+				),
 				render: () => (
 					<Button onClick={() => toast("Saved", { close: false, description: "No X control." })}>
 						No close
@@ -845,7 +864,19 @@ export function App() {
 			{
 				id: catalogScenarioId("toast", "custom-icon"),
 				title: "Custom icon",
-				code: '<Button onClick={() => toast.success("Verified", { icon: <Check className="size-4" />, description: "Custom icon passed as a parameter." })}>Custom icon</Button>',
+				code: toastScenarioModule(
+					`<Button
+	onClick={() =>
+		toast.success("Verified", {
+			icon: <Check className="size-4" />,
+			description: "Custom icon passed as a parameter.",
+		})
+	}
+>
+	Custom icon
+</Button>`,
+					['import { Check } from "lucide-react";'],
+				),
 				render: () => (
 					<Button
 						onClick={() =>
@@ -862,7 +893,9 @@ export function App() {
 			{
 				id: catalogScenarioId("toast", "hidden-icon"),
 				title: "Hidden icon",
-				code: '<Button onClick={() => toast.success("Deployed", { icon: false })}>No icon</Button>',
+				code: toastScenarioModule(
+					'<Button onClick={() => toast.success("Deployed", { icon: false })}>No icon</Button>',
+				),
 				render: () => (
 					<Button onClick={() => toast.success("Deployed", { icon: false })}>No icon</Button>
 				),
