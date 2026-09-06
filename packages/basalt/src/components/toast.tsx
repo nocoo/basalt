@@ -80,7 +80,138 @@ export const toast = Object.assign(show, {
 	dismiss: sonnerToast.dismiss,
 });
 
-export function Toaster({ closeButton = true, ...props }: ComponentProps<typeof Sonner>) {
+type SonnerComponentProps = ComponentProps<typeof Sonner>;
+
+export type ToasterToastOptions = NonNullable<SonnerComponentProps["toastOptions"]>;
+export type ToasterIcons = NonNullable<SonnerComponentProps["icons"]>;
+export type ToasterSwipeDirection = NonNullable<SonnerComponentProps["swipeDirections"]>[number];
+
+export interface ToasterProps
+	extends Omit<
+		SonnerComponentProps,
+		| "id"
+		| "invert"
+		| "theme"
+		| "position"
+		| "hotkey"
+		| "richColors"
+		| "expand"
+		| "duration"
+		| "gap"
+		| "visibleToasts"
+		| "closeButton"
+		| "toastOptions"
+		| "className"
+		| "style"
+		| "offset"
+		| "mobileOffset"
+		| "dir"
+		| "swipeDirections"
+		| "icons"
+		| "containerAriaLabel"
+		| "customAriaLabel"
+	> {
+	/**
+	 * Unique identifier for this toaster instance. When set, only toasts dispatched with a matching toasterId will display here. Basalt standard toast options do not expose toasterId, so global un-identified mounting is recommended.
+	 */
+	id?: SonnerComponentProps["id"];
+	/**
+	 * Invert toast foreground and background colors.
+	 * @default false
+	 */
+	invert?: SonnerComponentProps["invert"];
+	/**
+	 * Color scheme theme override for toast notifications.
+	 * @default "light"
+	 */
+	theme?: SonnerComponentProps["theme"];
+	/**
+	 * Screen positioning for the toast viewport stack.
+	 * @default "bottom-right"
+	 */
+	position?: SonnerComponentProps["position"];
+	/**
+	 * Keyboard hotkey combination to expand and focus the toast viewport.
+	 * @default ["altKey", "KeyT"]
+	 */
+	hotkey?: SonnerComponentProps["hotkey"];
+	/**
+	 * Whether rich semantic colors should be applied to default notification styles.
+	 * @default false
+	 */
+	richColors?: SonnerComponentProps["richColors"];
+	/**
+	 * Whether toasts should be expanded by default rather than collapsed into a stacked pile.
+	 * @default false
+	 */
+	expand?: SonnerComponentProps["expand"];
+	/**
+	 * Default visibility duration in milliseconds before auto-dismissal. Resolved as `toast.duration || (Toaster.toastOptions.duration ?? Toaster.duration) || 4000`. Passing Infinity prevents auto-closing. When `toastOptions.duration === 0`, it is treated as falsy and bypasses `Toaster.duration`, falling back to 4000.
+	 * @default 4000
+	 */
+	duration?: SonnerComponentProps["duration"];
+	/**
+	 * Pixel gap between stacked toasts.
+	 * @default 14
+	 */
+	gap?: SonnerComponentProps["gap"];
+	/**
+	 * Maximum number of toasts visible simultaneously in the stack.
+	 * @default 3
+	 */
+	visibleToasts?: SonnerComponentProps["visibleToasts"];
+	/**
+	 * Whether a close button is displayed on each toast notification. Basalt enables this by default (`closeButton = true`), and Basalt single-toast calls also default to `close: true`, overriding `Toaster.closeButton = false`. To hide the close button on an individual toast, pass `close: false` in the dispatch options.
+	 * @default true
+	 */
+	closeButton?: SonnerComponentProps["closeButton"];
+	/**
+	 * Default options and custom class names applied to all rendered toasts. Passing a custom `toastOptions` object will override Basalt default styling rather than deep-merging.
+	 */
+	toastOptions?: ToasterToastOptions;
+	/**
+	 * Additional CSS class name applied to each rendered ordered list (`ol`) toast viewport.
+	 */
+	className?: SonnerComponentProps["className"];
+	/**
+	 * Inline style properties applied to each rendered ordered list (`ol`) toast viewport.
+	 */
+	style?: SonnerComponentProps["style"];
+	/**
+	 * Viewport offset margin from screen edges on desktop screens.
+	 * @default "24px"
+	 */
+	offset?: SonnerComponentProps["offset"];
+	/**
+	 * Viewport offset margin from screen edges on mobile devices.
+	 * @default "16px"
+	 */
+	mobileOffset?: SonnerComponentProps["mobileOffset"];
+	/**
+	 * Layout direction of the notification viewport ('ltr', 'rtl', or document direction when unspecified).
+	 * @default document direction
+	 */
+	dir?: SonnerComponentProps["dir"];
+	/**
+	 * Allowed swipe directions to dismiss toasts. Defaults based on position orientation (e.g. ['bottom', 'right'] for bottom-right).
+	 */
+	swipeDirections?: ToasterSwipeDirection[];
+	/**
+	 * Custom icon overrides for toast status variants. Basalt preconfigures Lucide icons; passing an `icons` object replaces defaults rather than deep-merging. Basalt status variant dispatches (`toast.success`, `error`, `warning`, `info`) supply default status icons directly, which take precedence over `Toaster.icons`; custom individual toast icons should be passed via `options.icon`.
+	 */
+	icons?: ToasterIcons;
+	/**
+	 * Accessible label for the notification region container.
+	 * @default "Notifications"
+	 */
+	containerAriaLabel?: SonnerComponentProps["containerAriaLabel"];
+	/**
+	 * Custom accessible label overriding both containerAriaLabel and hotkey text on the section wrapper.
+	 */
+	customAriaLabel?: SonnerComponentProps["customAriaLabel"];
+}
+
+export function Toaster({ closeButton = true, ...props }: ToasterProps) {
 	return (
 		<Sonner
 			closeButton={closeButton}

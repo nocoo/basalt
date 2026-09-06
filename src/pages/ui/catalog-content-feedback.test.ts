@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import feedback from "./catalog-content/families/feedback";
 import { API as bannerApi } from "./generated/catalog-api/banner";
 import { API as codeBlockApi } from "./generated/catalog-api/code-block";
+import { API as toastApi } from "./generated/catalog-api/toast";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
 const FEEDBACK_SCENARIOS = {
@@ -68,7 +69,8 @@ const FEEDBACK_DESCRIPTIONS = {
 		"Placeholder lines while content loads. Forwards standard div element attributes with aria-hidden='true' by default, merges style overrides over computed width geometry, and does not expose a public ref.",
 	meter:
 		"Numeric meter. Renders a percentage progress bar clamped to 0..100% without exposing public ref, arbitrary HTML attributes, or change events.",
-	toast: "Transient notification.",
+	toast:
+		"Transient notification stack. Toast is an alias for Toaster, which mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. Note that icon: false does not suppress default status icons for status methods (toast.success, error, warning, info); only default toast can hide its icon via icon: false.",
 	"clipboard-text":
 		"Copyable text. Inline code snippet paired with an icon copy button; does not forward native HTML attributes or expose a public ref.",
 	code: "Syntax-highlighted code.",
@@ -177,12 +179,29 @@ describe("feedback catalog content family", () => {
 			"icon",
 			"children",
 		]);
+		expect(feedback.toast?.docs.api).toBe(toastApi);
 		expect(feedback.toast?.docs.api[0]?.props.map((prop) => prop.name)).toEqual([
-			"message",
-			"variant",
-			"icon",
-			"close",
-			"description",
+			"id",
+			"invert",
+			"theme",
+			"position",
+			"hotkey",
+			"richColors",
+			"expand",
+			"duration",
+			"gap",
+			"visibleToasts",
+			"closeButton",
+			"toastOptions",
+			"className",
+			"style",
+			"offset",
+			"mobileOffset",
+			"dir",
+			"swipeDirections",
+			"icons",
+			"containerAriaLabel",
+			"customAriaLabel",
 		]);
 		expect(feedback.code?.docs.usage).toContain("CodeHighlighted");
 		expect(feedback["code-block"]?.docs.api).toBe(codeBlockApi);

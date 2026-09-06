@@ -31,6 +31,7 @@ import { API as emptyApi } from "../../generated/catalog-api/empty";
 import { API as loaderApi } from "../../generated/catalog-api/loader";
 import { API as meterApi } from "../../generated/catalog-api/meter";
 import { API as skeletonLineApi } from "../../generated/catalog-api/skeleton-line";
+import { API as toastApi } from "../../generated/catalog-api/toast";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
 	repo: "pew",
@@ -579,38 +580,27 @@ export default function Example() {
 		],
 	},
 	toast: {
-		docs: extraDocs(
-			"Toast",
-			"toast",
-			"Transient notification.",
-			"<Button onClick={() => toast('Saved')}>Toast</Button>",
-			[
-				{ name: "message", type: "string" },
-				{
-					name: "variant",
-					type: '"default" | "success" | "error" | "warning" | "info"',
-					description: "Color and default icon.",
-				},
-				{
-					name: "icon",
-					type: "ReactNode | false",
-					description: "Override or hide the status icon.",
-				},
-				{
-					name: "close",
-					type: "boolean",
-					default: "true",
-					description: "Show an X close control.",
-				},
-				{ name: "description", type: "ReactNode" },
-			],
-			`import { Button } from "@nocoo/basalt/components/button";
-import { toast } from "@nocoo/basalt/components/toast";
+		docs: {
+			...extraDocs(
+				"Toast",
+				"toast",
+				"Transient notification stack. Toast is an alias for Toaster, which mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. Note that icon: false does not suppress default status icons for status methods (toast.success, error, warning, info); only default toast can hide its icon via icon: false.",
+				"<Button onClick={() => toast('Saved')}>Toast</Button>",
+				undefined,
+				`import { Button } from "@nocoo/basalt/components/button";
+import { Toaster, toast } from "@nocoo/basalt/components/toast";
 
-export default function Example() {
-	return <Button onClick={() => toast("Saved")}>Toast</Button>;
+export function App() {
+	return (
+		<>
+			<Toaster />
+			<Button onClick={() => toast("Saved")}>Toast</Button>
+		</>
+	);
 }`,
-		),
+			),
+			api: toastApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("toast", "title-only"),

@@ -1049,6 +1049,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "Banner.Action",
 	},
 	{
+		slug: "toast",
+		sourceFile: "packages/basalt/src/components/toast.tsx",
+		propsType: "ToasterProps",
+		surface: "Toaster",
+	},
+	{
 		slug: "badge",
 		sourceFile: "packages/basalt/src/components/badge.tsx",
 		propsType: "BadgeProps",

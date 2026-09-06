@@ -94,6 +94,7 @@ import { API as themeProviderApi } from "./catalog-api/theme-provider";
 import { API as themeToggleApi } from "./catalog-api/theme-toggle";
 import { API as timelineApi } from "./catalog-api/timeline";
 import { API as timeseriesApi } from "./catalog-api/timeseries";
+import { API as toastApi } from "./catalog-api/toast";
 import { API as toggleApi } from "./catalog-api/toggle";
 import { API as toggleGroupApi } from "./catalog-api/toggle-group";
 import { API as toolbarApi } from "./catalog-api/toolbar";
@@ -194,6 +195,7 @@ export const CATALOG_API = {
 	"theme-toggle": themeToggleApi,
 	timeline: timelineApi,
 	timeseries: timeseriesApi,
+	toast: toastApi,
 	toggle: toggleApi,
 	"toggle-group": toggleGroupApi,
 	toolbar: toolbarApi,

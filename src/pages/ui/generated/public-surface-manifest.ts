@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 679,
+	"totalSymbols": 683,
 	"totalValues": 375,
-	"totalTypes": 304,
+	"totalTypes": 308,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -6126,6 +6126,38 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "toast",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/toast",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/toast"
+				},
+				{
+					"name": "ToasterToastOptions",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/toast",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/toast"
+				},
+				{
+					"name": "ToasterIcons",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/toast",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/toast"
+				},
+				{
+					"name": "ToasterSwipeDirection",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/toast",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/toast"
+				},
+				{
+					"name": "ToasterProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/toast",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/toast"
