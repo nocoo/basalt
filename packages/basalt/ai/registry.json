@@ -9784,7 +9784,7 @@
 			"importPath": "@nocoo/basalt/components/date-picker",
 			"subpath": "./components/date-picker",
 			"sourceFile": "packages/basalt/src/components/date-picker.tsx",
-			"sourceHash": "1acca18125cfc18f",
+			"sourceHash": "2e34a3e84201eff8",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -9930,7 +9930,7 @@
 									"name": "required",
 									"type": "boolean",
 									"required": false,
-									"description": "Native required constraint."
+									"description": "Native required constraint. When readOnly is set, native required validation is disabled.\nWhen an empty required DatePicker submits, the visible trigger receives focus and invalid state."
 								},
 								{
 									"name": "min",
@@ -10050,7 +10050,7 @@
 							"name": "required",
 							"type": "boolean",
 							"required": false,
-							"description": "Native required constraint."
+							"description": "Native required constraint. When readOnly is set, native required validation is disabled.\nWhen an empty required DatePicker submits, the visible trigger receives focus and invalid state."
 						},
 						{
 							"name": "min",
@@ -24164,7 +24164,7 @@
 			"exportName": "DatePicker",
 			"importPath": "@nocoo/basalt/components/date-picker",
 			"sourceFile": "packages/basalt/src/components/date-picker.tsx",
-			"sourceHash": "1acca18125cfc18f",
+			"sourceHash": "2e34a3e84201eff8",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#date-picker",
@@ -24263,7 +24263,7 @@
 							"name": "required",
 							"type": "boolean",
 							"required": false,
-							"description": "Native required constraint."
+							"description": "Native required constraint. When readOnly is set, native required validation is disabled.\nWhen an empty required DatePicker submits, the visible trigger receives focus and invalid state."
 						},
 						{
 							"name": "min",

@@ -719,4 +719,87 @@ describe("DatePicker", () => {
 		fireEvent.click(await screen.findByRole("button", { name: "Weekend" }));
 		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-13", to: "2024-01-14" });
 	});
+
+	it("forwards and cleans up external refs (object, callback, React 19 cleanup)", () => {
+		let cleanupCalled = false;
+		let attachedElement: HTMLInputElement | null = null;
+		const callbackRef = (el: HTMLInputElement | null) => {
+			attachedElement = el;
+			return () => {
+				cleanupCalled = true;
+			};
+		};
+
+		const { unmount } = render(<DatePicker ref={callbackRef} aria-label="Cleanup Date" />);
+		expect(attachedElement).not.toBeNull();
+		expect((attachedElement as unknown as HTMLElement).tagName).toBe("INPUT");
+		unmount();
+		expect(cleanupCalled).toBe(true);
+	});
+
+	it("focuses visible trigger and marks aria-invalid when empty required form submits invalid", () => {
+		const onInvalid = vi.fn();
+		const { rerender } = render(
+			<form onSubmit={(e) => e.preventDefault()}>
+				<DatePicker name="when" required aria-label="Required Date" onInvalid={onInvalid} />
+				<button type="submit">Submit</button>
+			</form>,
+		);
+
+		const trigger = screen.getByRole("button", { name: /Required Date/ });
+		const hiddenInput = document.querySelector('input[name="when"]') as HTMLInputElement;
+		expect(hiddenInput).toHaveAttribute("required");
+
+		// Fire invalid event on input
+		fireEvent.invalid(hiddenInput);
+		expect(onInvalid).toHaveBeenCalled();
+		expect(trigger).toHaveAttribute("aria-invalid", "true");
+		expect(document.activeElement).toBe(trigger);
+
+		// Error message is rendered and accessible via aria-describedby without caller-supplied id
+		const alert = screen.getByRole("alert");
+		expect(alert).toHaveTextContent(/Constraints not satisfied|Please fill out this field/);
+		expect(trigger.getAttribute("aria-describedby")).toContain(alert.id);
+
+		// Controlled value updated to valid ISO date clears the invalid state and error message
+		rerender(
+			<form onSubmit={(e) => e.preventDefault()}>
+				<DatePicker
+					value="2026-09-01"
+					name="when"
+					required
+					aria-label="Required Date"
+					onInvalid={onInvalid}
+				/>
+				<button type="submit">Submit</button>
+			</form>,
+		);
+		expect(trigger).not.toHaveAttribute("aria-invalid");
+		expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+	});
+
+	it("respects onInvalid preventDefault and does not steal focus", () => {
+		const otherButton = document.createElement("button");
+		document.body.appendChild(otherButton);
+		otherButton.focus();
+
+		render(
+			<form onSubmit={(e) => e.preventDefault()}>
+				<DatePicker
+					name="when"
+					required
+					aria-label="Required Date"
+					onInvalid={(e) => {
+						expect(e.target).toBeInstanceOf(HTMLInputElement);
+						e.preventDefault();
+					}}
+				/>
+			</form>,
+		);
+
+		const hiddenInput = document.querySelector('input[name="when"]') as HTMLInputElement;
+		fireEvent.invalid(hiddenInput);
+		expect(document.activeElement).toBe(otherButton);
+		otherButton.remove();
+	});
 });

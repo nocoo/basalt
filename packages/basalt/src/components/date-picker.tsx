@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import * as React from "react";
 import { type ComponentProps, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Button } from "./button";
@@ -223,7 +224,8 @@ export type DatePickerProps = Omit<
 	 */
 	name?: string;
 	/**
-	 * Native required constraint.
+	 * Native required constraint. When readOnly is set, native required validation is disabled.
+	 * When an empty required DatePicker submits, the visible trigger receives focus and invalid state.
 	 */
 	required?: boolean;
 	/**
@@ -315,10 +317,12 @@ export function DatePicker({
 	...inputRest
 }: DatePickerProps) {
 	const {
+		ref: externalRef,
 		readOnly,
 		autoFocus,
 		onFocus,
 		onBlur,
+		onInvalid: externalOnInvalid,
 		"aria-labelledby": ariaLabelledBy,
 		...formRest
 	} = inputRest;
@@ -327,18 +331,30 @@ export function DatePicker({
 		defaultRangeValue ?? { from: "", to: undefined },
 	);
 	const [open, setOpen] = useState(false);
+	const [isInvalid, setIsInvalid] = useState(false);
+	const [validationMessage, setValidationMessage] = useState("");
 	const [focusIndex, setFocusIndex] = useState(0);
 	const dayRefs = useRef<Array<HTMLButtonElement | null>>([]);
 	const pendingFocusIso = useRef<string | null>(null);
 	const focusDay = useRef(false);
 	const hiddenRef = useRef<HTMLInputElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
+	const generatedErrorId = React.useId();
+	const errorId = id ? `${id}-error` : generatedErrorId;
+
 	const selected = value ?? uncontrolled;
 	const selectedRange = rangeValue ?? uncontrolledRange;
 	const selectedDate = parseIso(
 		mode === "range" ? selectedRange.to || selectedRange.from || "" : selected,
 	);
 	const cursorIso = selectedDate ? formatIso(selectedDate) : "";
+
+	useEffect(() => {
+		if (cursorIso) {
+			setIsInvalid(false);
+			setValidationMessage("");
+		}
+	}, [cursorIso]);
 	const submitted = mode === "range" ? "" : cursorIso;
 	const cursor = selectedDate ?? todayCivil(timeZone);
 	const [month, setMonth] = useState<Civil>({ y: cursor.y, m: cursor.m, d: 1 });
@@ -379,24 +395,40 @@ export function DatePicker({
 		}
 	}, [autoFocus]);
 
+	const formAttr = formRest.form;
 	useEffect(() => {
 		const form = hiddenRef.current?.form;
-		if (!form || (mode === "range" ? rangeValue !== undefined : value !== undefined)) {
+		if (!form || (formAttr && form.id !== formAttr)) {
 			return;
 		}
+		let disposed = false;
+		const timers = new Set<ReturnType<typeof setTimeout>>();
 		const onReset = (event: Event) => {
-			queueMicrotask(() => {
-				if (event.defaultPrevented) {
+			const timer = setTimeout(() => {
+				timers.delete(timer);
+				if (disposed || event.defaultPrevented) {
 					return;
 				}
-				setUncontrolled(defaultValue);
-				setUncontrolledRange(defaultRangeValue ?? { from: "", to: undefined });
+				if (mode === "range" ? rangeValue === undefined : value === undefined) {
+					setUncontrolled(defaultValue);
+					setUncontrolledRange(defaultRangeValue ?? { from: "", to: undefined });
+				}
+				setIsInvalid(false);
+				setValidationMessage("");
 				setOpen(false);
-			});
+			}, 0);
+			timers.add(timer);
 		};
 		form.addEventListener("reset", onReset);
-		return () => form.removeEventListener("reset", onReset);
-	}, [defaultRangeValue, defaultValue, mode, rangeValue, value]);
+		return () => {
+			disposed = true;
+			for (const timer of timers) {
+				clearTimeout(timer);
+			}
+			timers.clear();
+			form.removeEventListener("reset", onReset);
+		};
+	}, [defaultRangeValue, defaultValue, mode, rangeValue, value, formAttr]);
 
 	const weekdayLabels = useMemo(() => {
 		const formatter = new Intl.DateTimeFormat(locale, { weekday: "short", timeZone: "UTC" });
@@ -488,6 +520,10 @@ export function DatePicker({
 		if (disabled || readOnly || !selectable(next)) {
 			return;
 		}
+		if (next) {
+			setIsInvalid(false);
+			setValidationMessage("");
+		}
 		if (mode === "range") {
 			const current = rangeValue ?? uncontrolledRange;
 			const nextRange =
@@ -547,6 +583,45 @@ export function DatePicker({
 		}
 	}
 
+	const handleHiddenRef = React.useCallback(
+		(node: HTMLInputElement | null) => {
+			hiddenRef.current = node;
+			if (!externalRef) {
+				return;
+			}
+			if (typeof externalRef === "function") {
+				const cleanup = externalRef(node);
+				if (typeof cleanup === "function") {
+					return () => {
+						hiddenRef.current = null;
+						cleanup();
+					};
+				}
+				return () => {
+					hiddenRef.current = null;
+					externalRef(null);
+				};
+			}
+			(externalRef as React.RefObject<HTMLInputElement | null>).current = node;
+			return () => {
+				hiddenRef.current = null;
+				(externalRef as React.RefObject<HTMLInputElement | null>).current = null;
+			};
+		},
+		[externalRef],
+	);
+
+	const invalidState = ariaInvalid ?? (isInvalid || undefined);
+	const hasDestructiveStyle =
+		invalidState === true ||
+		invalidState === "true" ||
+		invalidState === "grammar" ||
+		invalidState === "spelling";
+
+	const describedBy =
+		[ariaDescribedBy, isInvalid && errorId ? errorId : undefined].filter(Boolean).join(" ") ||
+		undefined;
+
 	return (
 		<Popover
 			open={open}
@@ -563,10 +638,11 @@ export function DatePicker({
 			}}
 		>
 			<input
-				ref={hiddenRef}
+				ref={handleHiddenRef}
 				type={mode === "range" ? "text" : "date"}
 				name={name}
 				required={required}
+				readOnly={readOnly}
 				min={mode === "range" ? undefined : min}
 				max={mode === "range" ? undefined : max}
 				className="sr-only mb-2 h-7"
@@ -581,6 +657,17 @@ export function DatePicker({
 					mode === "range" ? (rangeFrom && rangeTo ? `${rangeFrom}/${rangeTo}` : "") : submitted
 				}
 				onChange={() => undefined}
+				onInvalid={(event) => {
+					externalOnInvalid?.(event);
+					if (!event.defaultPrevented) {
+						event.preventDefault();
+						setIsInvalid(true);
+						setValidationMessage(
+							(event.target as HTMLInputElement).validationMessage || "Please fill out this field.",
+						);
+						triggerRef.current?.focus();
+					}
+				}}
 				disabled={disabled}
 				aria-hidden="true"
 				tabIndex={-1}
@@ -599,13 +686,22 @@ export function DatePicker({
 					aria-label={
 						ariaLabel ? (label === "Pick a date" ? ariaLabel : `${ariaLabel}: ${label}`) : undefined
 					}
-					aria-describedby={ariaDescribedBy}
-					aria-invalid={ariaInvalid}
-					className={cn("justify-start font-normal", className)}
+					aria-describedby={describedBy}
+					aria-invalid={invalidState}
+					className={cn(
+						"justify-start font-normal",
+						hasDestructiveStyle && "border-basalt-destructive text-basalt-destructive",
+						className,
+					)}
 				>
 					{label}
 				</Button>
 			</PopoverTrigger>
+			{isInvalid && validationMessage ? (
+				<span id={errorId} role="alert" className="mt-1 block text-xs text-basalt-destructive">
+					{validationMessage}
+				</span>
+			) : null}
 			<PopoverContent
 				arrow={false}
 				className="w-64 p-3"

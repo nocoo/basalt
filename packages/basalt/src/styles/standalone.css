@@ -1124,6 +1124,9 @@
       border-color: color-mix(in oklab, hsl(var(--basalt-border)) 50%, transparent);
     }
   }
+  .border-basalt-destructive {
+    border-color: hsl(var(--basalt-destructive));
+  }
   .border-basalt-primary {
     border-color: hsl(var(--basalt-primary));
   }

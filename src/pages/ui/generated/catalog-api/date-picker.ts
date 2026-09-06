@@ -96,7 +96,7 @@ export const API = [
 				name: "required",
 				type: "boolean",
 				required: false,
-				description: "Native required constraint.",
+				description: "Native required constraint. When readOnly is set, native required validation is disabled.\nWhen an empty required DatePicker submits, the visible trigger receives focus and invalid state.",
 			},
 			{
 				name: "min",

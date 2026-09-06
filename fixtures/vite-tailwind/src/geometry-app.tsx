@@ -13,6 +13,7 @@ import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { CodeBlock } from "@nocoo/basalt/components/code";
 import { Combobox } from "@nocoo/basalt/components/combobox";
 import { CommandShortcut } from "@nocoo/basalt/components/command-palette";
+import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { DescriptionList } from "@nocoo/basalt/components/description-list";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";
 import { Empty } from "@nocoo/basalt/components/empty";
@@ -42,6 +43,19 @@ export function GeometryApp() {
 	const [dialogCloseAttempts, setDialogCloseAttempts] = React.useState(0);
 	const [autocompleteValue, setAutocompleteValue] = React.useState("");
 	const [autocompleteCommits, setAutocompleteCommits] = React.useState<string[]>([]);
+	const dateRefEvents = React.useRef<string[]>([]);
+	const dateInputRef = React.useRef<HTMLInputElement | null>(null);
+
+	const handleDateRef = React.useCallback((node: HTMLInputElement | null) => {
+		dateInputRef.current = node;
+		if (node) {
+			dateRefEvents.current.push(`attach:${node.tagName}`);
+			return () => {
+				dateRefEvents.current.push("cleanup");
+				dateInputRef.current = null;
+			};
+		}
+	}, []);
 
 	React.useEffect(() => {
 		(
@@ -55,6 +69,8 @@ export function GeometryApp() {
 				};
 				getDialogCloseAttempts?: () => number;
 				getAutocompleteCommits?: () => string[];
+				getDateRefEvents?: () => string[];
+				getDateRefTag?: () => string | null;
 			}
 		).setSwitchLoading = setSwitchLoading;
 		(
@@ -67,6 +83,8 @@ export function GeometryApp() {
 				};
 				getDialogCloseAttempts?: () => number;
 				getAutocompleteCommits?: () => string[];
+				getDateRefEvents?: () => string[];
+				getDateRefTag?: () => string | null;
 			}
 		).getDynamicCounts = () => ({
 			parentClick: parentClickCount,
@@ -84,6 +102,17 @@ export function GeometryApp() {
 				getAutocompleteCommits?: () => string[];
 			}
 		).getAutocompleteCommits = () => autocompleteCommits;
+		(
+			window as unknown as {
+				getDateRefEvents?: () => string[];
+				getDateRefTag?: () => string | null;
+			}
+		).getDateRefEvents = () => [...dateRefEvents.current];
+		(
+			window as unknown as {
+				getDateRefTag?: () => string | null;
+			}
+		).getDateRefTag = () => dateInputRef.current?.tagName ?? null;
 	}, [
 		parentClickCount,
 		childClickCount,
@@ -310,6 +339,46 @@ export function GeometryApp() {
 						After Autocomplete
 					</button>
 				</div>
+
+				{/* DatePicker Native Form & Ref Regression Harness */}
+				<form
+					id="datepicker-test-form"
+					onSubmit={(e) => e.preventDefault()}
+					onReset={(e) => {
+						const w = window as unknown as { shouldCancelDateReset?: boolean };
+						if (w.shouldCancelDateReset) {
+							e.preventDefault();
+						}
+					}}
+				>
+					<DatePicker
+						id="test-date-picker"
+						name="test_date"
+						defaultValue="2026-09-01"
+						required
+						ref={handleDateRef}
+						aria-label="Test Date"
+					/>
+					<button id="datepicker-reset-btn" type="reset">
+						Reset Date Form
+					</button>
+					<button id="datepicker-submit-btn" type="submit">
+						Submit Date Form
+					</button>
+				</form>
+
+				{/* Separate initially-empty required DatePicker form for true native submission validation */}
+				<form id="datepicker-empty-required-form" onSubmit={(e) => e.preventDefault()}>
+					<DatePicker
+						id="test-empty-required-picker"
+						name="empty_required_date"
+						required
+						aria-label="Empty Required Date"
+					/>
+					<button id="datepicker-empty-submit-btn" type="submit">
+						Submit Empty Form
+					</button>
+				</form>
 
 				<Badge id="basalt-badge">Active</Badge>
 

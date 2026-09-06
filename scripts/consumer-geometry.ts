@@ -360,6 +360,83 @@ export async function assertConsumerGeometry(
 		);
 	}
 
+	// 8. Test DatePicker ref forwarding, native reset, and invalid required submission
+	// A: Check forwarded ref attached to underlying native INPUT
+	const dateRefTag = await page.evaluate(
+		() => (window as unknown as { getDateRefTag?: () => string | null }).getDateRefTag?.() ?? null,
+	);
+	if (dateRefTag !== "INPUT") {
+		throw new Error(`expected DatePicker forwarded ref to target native INPUT, got ${dateRefTag}`);
+	}
+	const dateRefEvents = await page.evaluate(
+		() => (window as unknown as { getDateRefEvents?: () => string[] }).getDateRefEvents?.() ?? [],
+	);
+	if (!dateRefEvents.includes("attach:INPUT")) {
+		throw new Error(`expected ref attach event in ${JSON.stringify(dateRefEvents)}`);
+	}
+
+	// B: Select date 2026-09-02 from calendar, assert form value updates, then reset form and assert restored
+	const dateTrigger = page.locator("#test-date-picker");
+	await dateTrigger.click();
+	await page.locator('button[aria-label="2026-09-02"]').click();
+	const formValBeforeReset = await page.evaluate(() =>
+		new FormData(document.getElementById("datepicker-test-form") as HTMLFormElement).get(
+			"test_date",
+		),
+	);
+	if (formValBeforeReset !== "2026-09-02") {
+		throw new Error(`expected form value 2026-09-02 before reset, got ${formValBeforeReset}`);
+	}
+	await page.locator("#datepicker-reset-btn").click();
+	await page.waitForFunction(
+		() =>
+			new FormData(document.getElementById("datepicker-test-form") as HTMLFormElement).get(
+				"test_date",
+			) === "2026-09-01",
+	);
+
+	// C: Cancelled reset test: select 2026-09-02, set shouldCancelDateReset=true, click reset button.
+	// Form's React onReset calls preventDefault(). Value must stay 2026-09-02.
+	await dateTrigger.click();
+	await page.locator('button[aria-label="2026-09-02"]').click();
+	await page.evaluate(() => {
+		(window as unknown as { shouldCancelDateReset?: boolean }).shouldCancelDateReset = true;
+	});
+	await page.locator("#datepicker-reset-btn").click();
+	await page.waitForTimeout(60);
+	const formValAfterCancelledReset = await page.evaluate(() =>
+		new FormData(document.getElementById("datepicker-test-form") as HTMLFormElement).get(
+			"test_date",
+		),
+	);
+	if (formValAfterCancelledReset !== "2026-09-02") {
+		throw new Error(
+			`expected form value 2026-09-02 to be preserved after cancelled reset, got ${formValAfterCancelledReset}`,
+		);
+	}
+	await page.evaluate(() => {
+		(window as unknown as { shouldCancelDateReset?: boolean }).shouldCancelDateReset = false;
+	});
+
+	// D: Submit initially-empty required form, assert visible trigger receives focus and invalid error
+	const emptyRequiredTrigger = page.locator("#test-empty-required-picker");
+	await page.locator("#datepicker-empty-submit-btn").click();
+	await page.waitForTimeout(60);
+	const activeAfterSubmit = await page.evaluate(() => document.activeElement?.id);
+	if (activeAfterSubmit !== "test-empty-required-picker") {
+		throw new Error(
+			`expected visible trigger to receive focus on invalid submit, got ${activeAfterSubmit}`,
+		);
+	}
+	const isTriggerInvalid = await emptyRequiredTrigger.getAttribute("aria-invalid");
+	if (isTriggerInvalid !== "true") {
+		throw new Error(`expected trigger aria-invalid="true", got ${isTriggerInvalid}`);
+	}
+	const alertText = await page.locator("#test-empty-required-picker-error").textContent();
+	if (!alertText) {
+		throw new Error("expected visible error message element for required validation");
+	}
+
 	const data = await page.evaluate(() => {
 		function getEl(id: string): HTMLElement {
 			const el = document.getElementById(id);
