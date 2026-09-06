@@ -15,9 +15,10 @@ export interface ChatInboxItem {
 	leading?: ReactNode;
 }
 
-export interface ChatInboxProps extends Omit<HTMLAttributes<HTMLElement>, "onSelect"> {
+export interface ChatInboxProps
+	extends Omit<HTMLAttributes<HTMLElement>, "onSelect" | "className"> {
 	/**
-	 * Threads to list.
+	 * Threads to list ({ id: string, title: string, preview?: string, time?: string, leading?: ReactNode }[]).
 	 */
 	items: readonly ChatInboxItem[];
 	/**
@@ -28,6 +29,11 @@ export interface ChatInboxProps extends Omit<HTMLAttributes<HTMLElement>, "onSel
 	 * Called when a thread is chosen.
 	 */
 	onSelect: (id: string) => void;
+	/**
+	 * Optional class name applied to the navigation element.
+	 * Component inherits native nav HTMLAttributes on the root element but does not forward ref.
+	 */
+	className?: string;
 }
 
 export function ChatInbox({ items, activeId, onSelect, className, ...props }: ChatInboxProps) {

@@ -13,6 +13,10 @@ import { API as bulletApi } from "./catalog-api/bullet";
 import { API as buttonApi } from "./catalog-api/button";
 import { API as chartColorsApi } from "./catalog-api/chart-colors";
 import { API as chartsApi } from "./catalog-api/charts";
+import { API as chatBubbleApi } from "./catalog-api/chat-bubble";
+import { API as chatComposerApi } from "./catalog-api/chat-composer";
+import { API as chatHeaderApi } from "./catalog-api/chat-header";
+import { API as chatInboxApi } from "./catalog-api/chat-inbox";
 import { API as checkboxApi } from "./catalog-api/checkbox";
 import { API as clipboardTextApi } from "./catalog-api/clipboard-text";
 import { API as codeApi } from "./catalog-api/code";
@@ -106,6 +110,10 @@ export const CATALOG_API = {
 	button: buttonApi,
 	"chart-colors": chartColorsApi,
 	charts: chartsApi,
+	"chat-bubble": chatBubbleApi,
+	"chat-composer": chatComposerApi,
+	"chat-header": chatHeaderApi,
+	"chat-inbox": chatInboxApi,
 	checkbox: checkboxApi,
 	"clipboard-text": clipboardTextApi,
 	code: codeApi,

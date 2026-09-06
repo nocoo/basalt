@@ -1186,6 +1186,30 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "BreadcrumbsProps",
 		surface: "Breadcrumbs",
 	},
+	{
+		slug: "chat-bubble",
+		sourceFile: "packages/basalt/src/components/chat-bubble.tsx",
+		propsType: "ChatBubbleProps",
+		surface: "ChatBubble",
+	},
+	{
+		slug: "chat-composer",
+		sourceFile: "packages/basalt/src/components/chat-composer.tsx",
+		propsType: "ChatComposerProps",
+		surface: "ChatComposer",
+	},
+	{
+		slug: "chat-header",
+		sourceFile: "packages/basalt/src/components/chat-header.tsx",
+		propsType: "ChatHeaderProps",
+		surface: "ChatHeader",
+	},
+	{
+		slug: "chat-inbox",
+		sourceFile: "packages/basalt/src/components/chat-inbox.tsx",
+		propsType: "ChatInboxProps",
+		surface: "ChatInbox",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

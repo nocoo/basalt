@@ -1,7 +1,8 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../utils/cn";
 
-export interface ChatHeaderProps extends Omit<HTMLAttributes<HTMLElement>, "title"> {
+export interface ChatHeaderProps
+	extends Omit<HTMLAttributes<HTMLElement>, "title" | "children" | "className"> {
 	/**
 	 * Conversation title.
 	 */
@@ -18,6 +19,11 @@ export interface ChatHeaderProps extends Omit<HTMLAttributes<HTMLElement>, "titl
 	 * Trailing actions.
 	 */
 	children?: ReactNode;
+	/**
+	 * Optional class name applied to the header element.
+	 * Component inherits native header HTMLAttributes on the root element but does not forward ref.
+	 */
+	className?: string;
 }
 
 export function ChatHeader({

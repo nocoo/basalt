@@ -6,35 +6,14 @@ import { ChatInbox } from "@nocoo/basalt/components/chat-inbox";
 import { MessageCircle, Sparkles, X } from "lucide-react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
-import type { CatalogDocsDraft } from "../../catalog-source";
 import { DOCK_EXAMPLES } from "../../examples/dock";
 import { FAB_EXAMPLES } from "../../examples/fab";
+import { API as chatBubbleApi } from "../../generated/catalog-api/chat-bubble";
+import { API as chatComposerApi } from "../../generated/catalog-api/chat-composer";
+import { API as chatHeaderApi } from "../../generated/catalog-api/chat-header";
+import { API as chatInboxApi } from "../../generated/catalog-api/chat-inbox";
 import { API as dockApi } from "../../generated/catalog-api/dock";
 import { API as fabApi } from "../../generated/catalog-api/fab";
-
-function extraDocs(
-	name: string,
-	slug: string,
-	description: string,
-	sample: string,
-	props: { name: string; type: string; required?: boolean; default?: string }[],
-): CatalogDocsDraft {
-	return {
-		description,
-		usage: `import { ${name} } from "@nocoo/basalt/components/${slug}";\n\nexport default function Example() {\n\treturn ${sample};\n}`,
-		variants: [],
-		api: [
-			{
-				name,
-				props: props.map((prop) => ({
-					...prop,
-					required: prop.required ?? false,
-					description: prop.name,
-				})),
-			},
-		],
-	};
-}
 
 function usage(name: string, from: string, sample: string, extraImports = ""): string {
 	const extras = extraImports ? `${extraImports}\n` : "";
@@ -71,17 +50,16 @@ export default catalogContentFamily({
 		examples: DOCK_EXAMPLES,
 	},
 	"chat-bubble": {
-		docs: extraDocs(
-			"ChatBubble",
-			"chat-bubble",
-			"User, assistant, and system message chrome.",
-			'<ChatBubble variant="user">Hello</ChatBubble>',
-			[
-				{ name: "variant", type: '"assistant" | "system" | "user"', default: '"assistant"' },
-				{ name: "streaming", type: "boolean", default: "false" },
-				{ name: "className", type: "string" },
-			],
-		),
+		docs: {
+			description: "User, assistant, and system message chrome.",
+			usage: `import { ChatBubble } from "@nocoo/basalt/components/chat-bubble";
+
+export default function Example() {
+	return <ChatBubble variant="user">Hello</ChatBubble>;
+}`,
+			variants: [],
+			api: chatBubbleApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("chat-bubble", "roles"),
@@ -100,23 +78,16 @@ export default catalogContentFamily({
 		],
 	},
 	"chat-composer": {
-		docs: extraDocs(
-			"ChatComposer",
-			"chat-composer",
-			"Draft field with send and stop.",
-			"<ChatComposer onSend={() => undefined} />",
-			[
-				{ name: "disabled", type: "boolean", default: "false" },
-				{ name: "streaming", type: "boolean", default: "false" },
-				{ name: "label", type: "string", default: '"Message"' },
-				{ name: "placeholder", type: "string" },
-				{ name: "onSend", type: "(text: string) => void", required: true },
-				{ name: "onCancel", type: "() => void" },
-				{ name: "sendLabel", type: "string", default: '"Send message"' },
-				{ name: "cancelLabel", type: "string", default: '"Stop generating"' },
-				{ name: "className", type: "string" },
-			],
-		),
+		docs: {
+			description: "Draft field with send and stop.",
+			usage: `import { ChatComposer } from "@nocoo/basalt/components/chat-composer";
+
+export default function Example() {
+	return <ChatComposer onSend={() => undefined} />;
+}`,
+			variants: [],
+			api: chatComposerApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("chat-composer", "idle"),
@@ -131,18 +102,16 @@ export default catalogContentFamily({
 		],
 	},
 	"chat-header": {
-		docs: extraDocs(
-			"ChatHeader",
-			"chat-header",
-			"Title, subtitle, and trailing actions for a conversation.",
-			'<ChatHeader title="Assistant" subtitle="Home" />',
-			[
-				{ name: "title", type: "React.ReactNode", required: true },
-				{ name: "subtitle", type: "React.ReactNode" },
-				{ name: "leading", type: "React.ReactNode" },
-				{ name: "className", type: "string" },
-			],
-		),
+		docs: {
+			description: "Title, subtitle, and trailing actions for a conversation.",
+			usage: `import { ChatHeader } from "@nocoo/basalt/components/chat-header";
+
+export default function Example() {
+	return <ChatHeader title="Assistant" subtitle="Home" />;
+}`,
+			variants: [],
+			api: chatHeaderApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("chat-header", "with-actions"),
@@ -167,18 +136,22 @@ export default catalogContentFamily({
 		],
 	},
 	"chat-inbox": {
-		docs: extraDocs(
-			"ChatInbox",
-			"chat-inbox",
-			"A selectable list of conversations.",
-			'<ChatInbox items={[{ id: "a", title: "Analytics" }]} activeId="a" onSelect={() => undefined} />',
-			[
-				{ name: "items", type: "readonly ChatInboxItem[]", required: true },
-				{ name: "activeId", type: "string" },
-				{ name: "onSelect", type: "(id: string) => void", required: true },
-				{ name: "className", type: "string" },
-			],
-		),
+		docs: {
+			description: "A selectable list of conversations.",
+			usage: `import { ChatInbox } from "@nocoo/basalt/components/chat-inbox";
+
+export default function Example() {
+	return (
+		<ChatInbox
+			items={[{ id: "a", title: "Analytics" }]}
+			activeId="a"
+			onSelect={() => undefined}
+		/>
+	);
+}`,
+			variants: [],
+			api: chatInboxApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("chat-inbox", "threads"),

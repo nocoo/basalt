@@ -1279,8 +1279,32 @@ describe("catalog API generator contract", () => {
 				propsType: "BreadcrumbsProps",
 				surface: "Breadcrumbs",
 			},
+			{
+				slug: "chat-bubble",
+				sourceFile: "packages/basalt/src/components/chat-bubble.tsx",
+				propsType: "ChatBubbleProps",
+				surface: "ChatBubble",
+			},
+			{
+				slug: "chat-composer",
+				sourceFile: "packages/basalt/src/components/chat-composer.tsx",
+				propsType: "ChatComposerProps",
+				surface: "ChatComposer",
+			},
+			{
+				slug: "chat-header",
+				sourceFile: "packages/basalt/src/components/chat-header.tsx",
+				propsType: "ChatHeaderProps",
+				surface: "ChatHeader",
+			},
+			{
+				slug: "chat-inbox",
+				sourceFile: "packages/basalt/src/components/chat-inbox.tsx",
+				propsType: "ChatInboxProps",
+				surface: "ChatInbox",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(190);
+		expect(CATALOG_API_TARGETS).toHaveLength(194);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1410,6 +1434,10 @@ describe("catalog API generator contract", () => {
 			"menu-bar",
 			"navigation-menu",
 			"breadcrumbs",
+			"chat-bubble",
+			"chat-composer",
+			"chat-header",
+			"chat-inbox",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -2532,6 +2560,10 @@ export interface WidgetProps {
 				"NavigationMenuLink",
 			],
 			breadcrumbs: ["Breadcrumbs"],
+			"chat-bubble": ["ChatBubble"],
+			"chat-composer": ["ChatComposer"],
+			"chat-header": ["ChatHeader"],
+			"chat-inbox": ["ChatInbox"],
 		});
 	}, 60_000);
 
@@ -2541,7 +2573,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(91);
+		expect(Object.keys(generated)).toHaveLength(95);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -2642,7 +2674,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(91);
+		expect(Object.keys(generated)).toHaveLength(95);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -2764,7 +2796,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(91);
+		expect(Object.keys(generated)).toHaveLength(95);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -2835,7 +2867,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(91);
+		expect(Object.keys(generated)).toHaveLength(95);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2878,7 +2910,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(91);
+		expect(Object.keys(generated)).toHaveLength(95);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2930,7 +2962,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(91);
+		expect(Object.keys(generated)).toHaveLength(95);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -4268,8 +4300,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(91);
-		expect(Object.keys(first)).toHaveLength(92);
+		expect(slugs).toHaveLength(95);
+		expect(Object.keys(first)).toHaveLength(96);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -4349,7 +4381,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"706560a92061be0c266dd6d1fbdd3dddc53abe57d2f19f9a9fb6c6aa5c41dc23",
+			"4dd53eeefbb314afe80a193bf8bbcfc3a68e88b6f48d7acc73d5a002a93b88b2",
 		);
 	}, 60_000);
 

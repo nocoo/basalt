@@ -14,7 +14,14 @@ export interface ChatBubbleProps {
 	 * @default false
 	 */
 	streaming?: boolean;
+	/**
+	 * Optional class name applied to the message bubble.
+	 * Component only accepts variant, streaming, className, and children without native HTML rest forwarding or forwarded ref.
+	 */
 	className?: string;
+	/**
+	 * Message content.
+	 */
 	children: ReactNode;
 }
 

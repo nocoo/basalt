@@ -11,7 +11,7 @@ export interface ChatComposerProps {
 	 */
 	disabled?: boolean;
 	/**
-	 * Replace send with stop.
+	 * Replace send with stop. When streaming is true, the stop button renders and triggers onCancel.
 	 * @default false
 	 */
 	streaming?: boolean;
@@ -25,11 +25,11 @@ export interface ChatComposerProps {
 	 */
 	placeholder?: string;
 	/**
-	 * Called with trimmed text on send.
+	 * Called with trimmed text on send. Operates on internal draft state and does not wait for a Promise (caller manages asynchronous errors).
 	 */
 	onSend: (text: string) => void;
 	/**
-	 * Called when the stop control is pressed.
+	 * Called when the stop control is pressed while streaming is active.
 	 */
 	onCancel?: () => void;
 	/**
@@ -42,6 +42,10 @@ export interface ChatComposerProps {
 	 * @default "Stop generating"
 	 */
 	cancelLabel?: string;
+	/**
+	 * Optional class name applied to the form container.
+	 * Component manages internal draft/height state and does not forward native form rest attributes or ref.
+	 */
 	className?: string;
 }
 
