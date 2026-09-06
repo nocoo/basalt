@@ -33,6 +33,11 @@ function usage(name: string, from: string, sample: string, extraImports = ""): s
 	return `${extras}import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
 }
 
+function scenarioModule(code: string, imports: string[]): string {
+	const importLines = imports.join("\n");
+	return `${importLines}\n\nexport default function Example() {\n\treturn (\n\t\t${code.split("\n").join("\n\t\t")}\n\t);\n}`;
+}
+
 const SCROLL_AREA_USAGE = `import { ScrollArea } from "@nocoo/basalt/components/scroll-area";
 
 const activity = ["Created the project", "Published the first release", "Added a domain"];
@@ -245,7 +250,15 @@ export default catalogContentFamily({
 			{
 				id: catalogScenarioId("theme-provider", "default"),
 				title: "Default",
-				code: "<ThemeProvider>{children}</ThemeProvider>",
+				code: scenarioModule(
+					`<ThemeProvider>
+	<Text>Provider is active.</Text>
+</ThemeProvider>`,
+					[
+						'import { Text } from "@nocoo/basalt/components/text";',
+						'import { ThemeProvider } from "@nocoo/basalt/providers/theme";',
+					],
+				),
 				render: () => (
 					<ThemeProvider>
 						<Text>Provider is active.</Text>
@@ -279,7 +292,15 @@ export default function Example() {
 			{
 				id: catalogScenarioId("link-provider", "default"),
 				title: "Default",
-				code: "<LinkProvider><Link href='#section'>Link</Link></LinkProvider>",
+				code: scenarioModule(
+					`<LinkProvider>
+	<Link href="#section">Link</Link>
+</LinkProvider>`,
+					[
+						'import { Link } from "@nocoo/basalt/components/link";',
+						'import { LinkProvider } from "@nocoo/basalt/providers/link";',
+					],
+				),
 				render: () => (
 					<LinkProvider>
 						<Link href="#section">Link</Link>

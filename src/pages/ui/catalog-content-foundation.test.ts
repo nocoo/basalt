@@ -164,15 +164,19 @@ describe("foundation catalog content family", () => {
 		expect(foundation["theme-provider"]?.examples[0]).toMatchObject({
 			id: "theme-provider-default",
 			title: "Default",
-			code: "<ThemeProvider>{children}</ThemeProvider>",
 		});
+		expect(foundation["theme-provider"]?.examples[0]?.code).toContain(
+			"@nocoo/basalt/providers/theme",
+		);
 		expect(foundation["theme-provider"]?.docs.api).toEqual(themeProviderApi);
 		expect(foundation["link-provider"]?.examples).toHaveLength(1);
 		expect(foundation["link-provider"]?.examples[0]).toMatchObject({
 			id: "link-provider-default",
 			title: "Default",
-			code: "<LinkProvider><Link href='#section'>Link</Link></LinkProvider>",
 		});
+		expect(foundation["link-provider"]?.examples[0]?.code).toContain(
+			"@nocoo/basalt/providers/link",
+		);
 		expect(foundation["link-provider"]?.docs.implementationSource.file).toBe(
 			"packages/basalt/src/providers/link.tsx",
 		);

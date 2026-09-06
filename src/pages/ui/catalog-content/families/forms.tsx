@@ -40,6 +40,11 @@ function usage(name: string, from: string, sample: string, extraImports = ""): s
 	return `${extras}import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
 }
 
+function scenarioModule(code: string, imports: string[]): string {
+	const importLines = imports.join("\n");
+	return `${importLines}\n\nexport default function Example() {\n\treturn (\n\t\t${code.split("\n").join("\n\t\t")}\n\t);\n}`;
+}
+
 function Preview({ children, className }: { children: ReactNode; className?: string }) {
 	return <div className={className ?? "flex flex-wrap items-center gap-3"}>{children}</div>;
 }
@@ -300,13 +305,18 @@ export default function Example() {
 			{
 				id: catalogScenarioId("slider", "default"),
 				title: "Default",
-				code: '<Slider defaultValue={[40]} aria-label="Volume" />',
+				code: scenarioModule('<Slider defaultValue={[40]} aria-label="Volume" />', [
+					'import { Slider } from "@nocoo/basalt/components/slider";',
+				]),
 				render: () => <Slider defaultValue={[40]} aria-label="Volume" />,
 			},
 			{
 				id: catalogScenarioId("slider", "disabled"),
 				title: "Disabled",
-				code: "<Slider disabled defaultValue={[40]} />",
+				code: scenarioModule(
+					'<Slider disabled defaultValue={[40]} aria-label="Disabled volume" />',
+					['import { Slider } from "@nocoo/basalt/components/slider";'],
+				),
 				render: () => <Slider disabled defaultValue={[40]} aria-label="Disabled volume" />,
 			},
 		],
@@ -323,13 +333,26 @@ export default function Example() {
 			{
 				id: catalogScenarioId("toggle", "default"),
 				title: "Default",
-				code: '<Toggle aria-label="Bold">B</Toggle>',
+				code: scenarioModule('<Toggle aria-label="Bold">B</Toggle>', [
+					'import { Toggle } from "@nocoo/basalt/components/toggle";',
+				]),
 				render: () => <Toggle aria-label="Bold">B</Toggle>,
 			},
 			{
 				id: catalogScenarioId("toggle", "sizes"),
 				title: "Sizes",
-				code: '<Toggle size="sm">B</Toggle>',
+				code: scenarioModule(
+					`<div className="flex flex-wrap items-center gap-3">
+	<Toggle size="sm" aria-label="Small bold">
+		B
+	</Toggle>
+	<Toggle aria-label="Default bold">B</Toggle>
+	<Toggle size="lg" aria-label="Large bold">
+		B
+	</Toggle>
+</div>`,
+					['import { Toggle } from "@nocoo/basalt/components/toggle";'],
+				),
 				render: () => (
 					<Preview>
 						<Toggle size="sm" aria-label="Small bold">

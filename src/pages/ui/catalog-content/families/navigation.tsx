@@ -79,6 +79,11 @@ function extraDocs(
 	};
 }
 
+function scenarioModule(code: string, imports: string[]): string {
+	const importLines = imports.join("\n");
+	return `${importLines}\n\nexport default function Example() {\n\treturn (\n\t\t${code.split("\n").join("\n\t\t")}\n\t);\n}`;
+}
+
 function CommandPaletteExample({ flat = false }: { flat?: boolean }) {
 	return (
 		<CommandPalette>
@@ -406,14 +411,19 @@ export default function Example() {
 			{
 				id: catalogScenarioId("tabs", "variants"),
 				title: "Variants",
-				code: `<Tabs defaultValue="a">
-  <TabsList>
-    <TabsTrigger value="a">Home</TabsTrigger>
-    <TabsTrigger value="b">About</TabsTrigger>
-  </TabsList>
-  <TabsContent value="a">Home overview and getting started.</TabsContent>
-  <TabsContent value="b">About this project and its goals.</TabsContent>
+				code: scenarioModule(
+					`<Tabs defaultValue="a">
+	<TabsList>
+		<TabsTrigger value="a">Home</TabsTrigger>
+		<TabsTrigger value="b">About</TabsTrigger>
+	</TabsList>
+	<TabsContent value="a">Home overview and getting started.</TabsContent>
+	<TabsContent value="b">About this project and its goals.</TabsContent>
 </Tabs>`,
+					[
+						'import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";',
+					],
+				),
 				render: () => (
 					<Tabs defaultValue="a">
 						<TabsList>
@@ -428,20 +438,25 @@ export default function Example() {
 			{
 				id: catalogScenarioId("tabs", "many-tabs"),
 				title: "Many Tabs",
-				code: `<Tabs defaultValue="overview">
-  <TabsList>
-    <TabsTrigger value="overview">Overview</TabsTrigger>
-    <TabsTrigger value="usage">Usage</TabsTrigger>
-    <TabsTrigger value="api">API</TabsTrigger>
-    <TabsTrigger value="accessibility">Accessibility</TabsTrigger>
-    <TabsTrigger value="changelog">Changelog</TabsTrigger>
-  </TabsList>
-  <TabsContent value="overview">Overview of the control.</TabsContent>
-  <TabsContent value="usage">How to use the control.</TabsContent>
-  <TabsContent value="api">Public API.</TabsContent>
-  <TabsContent value="accessibility">Keyboard and labels.</TabsContent>
-  <TabsContent value="changelog">Recent changes.</TabsContent>
+				code: scenarioModule(
+					`<Tabs defaultValue="overview">
+	<TabsList>
+		{["Overview", "Usage", "API", "Accessibility", "Changelog"].map((label) => (
+			<TabsTrigger key={label} value={label.toLowerCase()}>
+				{label}
+			</TabsTrigger>
+		))}
+	</TabsList>
+	<TabsContent value="overview">Overview of the control.</TabsContent>
+	<TabsContent value="usage">How to use the control.</TabsContent>
+	<TabsContent value="api">Public API.</TabsContent>
+	<TabsContent value="accessibility">Keyboard and labels.</TabsContent>
+	<TabsContent value="changelog">Recent changes.</TabsContent>
 </Tabs>`,
+					[
+						'import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";',
+					],
+				),
 				render: () => (
 					<Tabs defaultValue="overview">
 						<TabsList>
@@ -471,13 +486,22 @@ export default function Example() {
 			{
 				id: catalogScenarioId("breadcrumbs", "basic"),
 				title: "Basic",
-				code: '<Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />',
+				code: scenarioModule(
+					'<Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />',
+					['import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";'],
+				),
 				render: () => <Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />,
 			},
 			{
 				id: catalogScenarioId("breadcrumbs", "loading"),
 				title: "Loading",
-				code: "<Breadcrumbs items={[{ label: <SkeletonLine minWidth={72} /> }]} />",
+				code: scenarioModule(
+					"<Breadcrumbs items={[{ label: <SkeletonLine minWidth={72} /> }]} />",
+					[
+						'import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";',
+						'import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";',
+					],
+				),
 				render: () => <Breadcrumbs items={[{ label: <SkeletonLine minWidth={72} /> }]} />,
 			},
 		],
@@ -528,7 +552,17 @@ export default function Example() {
 			{
 				id: catalogScenarioId("toolbar", "input-shorthand"),
 				title: "Input Shorthand",
-				code: '<Toolbar><Toolbar.Input aria-label="Search records" placeholder="Search..." /><Toolbar.Button icon={<Search />} aria-label="Search" /><Toolbar.Button icon={<Plus />} aria-label="Add" /></Toolbar>',
+				code: scenarioModule(
+					`<Toolbar className="w-full max-w-md">
+	<Toolbar.Input aria-label="Search records" placeholder="Search..." className="flex-1" />
+	<Toolbar.Button icon={<Search />} aria-label="Search" />
+	<Toolbar.Button icon={<Plus />} aria-label="Add" />
+</Toolbar>`,
+					[
+						'import { Toolbar } from "@nocoo/basalt/components/toolbar";',
+						'import { Plus, Search } from "lucide-react";',
+					],
+				),
 				render: () => (
 					<Toolbar className="w-full max-w-md">
 						<Toolbar.Input aria-label="Search records" placeholder="Search..." className="flex-1" />
@@ -540,7 +574,13 @@ export default function Example() {
 			{
 				id: catalogScenarioId("toolbar", "button-actions"),
 				title: "Button Actions",
-				code: "<Toolbar><Toolbar.Button>Upload</Toolbar.Button><Toolbar.Button>Download</Toolbar.Button></Toolbar>",
+				code: scenarioModule(
+					`<Toolbar>
+	<Toolbar.Button>Upload</Toolbar.Button>
+	<Toolbar.Button>Download</Toolbar.Button>
+</Toolbar>`,
+					['import { Toolbar } from "@nocoo/basalt/components/toolbar";'],
+				),
 				render: () => (
 					<Toolbar>
 						<Toolbar.Button>Upload</Toolbar.Button>
