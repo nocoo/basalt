@@ -9,7 +9,13 @@ import {
 	CommandPalette,
 	CommandPaletteTrigger,
 } from "@nocoo/basalt/components/command-palette";
-import { MenuBarMenu, MenuBarRoot, MenuBarTrigger } from "@nocoo/basalt/components/menu-bar";
+import {
+	MenuBarContent,
+	MenuBarItem,
+	MenuBarMenu,
+	MenuBarRoot,
+	MenuBarTrigger,
+} from "@nocoo/basalt/components/menu-bar";
 import {
 	NavigationMenu,
 	NavigationMenuItem,
@@ -31,6 +37,7 @@ import { PAGINATION_EXAMPLES } from "../../examples/pagination";
 import { SIDEBAR_EXAMPLES } from "../../examples/sidebar";
 import { TABLE_OF_CONTENTS_EXAMPLES } from "../../examples/table-of-contents";
 import { API as commandPaletteApi } from "../../generated/catalog-api/command-palette";
+import { API as menuBarApi } from "../../generated/catalog-api/menu-bar";
 import { API as paginationApi } from "../../generated/catalog-api/pagination";
 import { API as sidebarApi } from "../../generated/catalog-api/sidebar";
 import { API as tableOfContentsApi } from "../../generated/catalog-api/table-of-contents";
@@ -206,7 +213,40 @@ const navigationMenuDocs = extraDocs(
 	"<NavigationMenu />",
 );
 
-const menuBarDocs = extraDocs("MenuBar", "menu-bar", "Desktop menu bar.", "<MenuBar />");
+const menuBarDocs: CatalogDocsDraft = {
+	description: "Desktop menu bar.",
+	usage: `import {
+	MenuBar,
+	MenuBarContent,
+	MenuBarItem,
+	MenuBarMenu,
+	MenuBarTrigger,
+} from "@nocoo/basalt/components/menu-bar";
+
+export default function Example() {
+	return (
+		<MenuBar>
+			<MenuBarMenu>
+				<MenuBarTrigger>File</MenuBarTrigger>
+				<MenuBarContent>
+					<MenuBarItem onSelect={() => console.log("new")}>New Tab</MenuBarItem>
+					<MenuBarItem onSelect={() => console.log("save")}>Save</MenuBarItem>
+				</MenuBarContent>
+			</MenuBarMenu>
+			<MenuBarMenu>
+				<MenuBarTrigger>Edit</MenuBarTrigger>
+				<MenuBarContent>
+					<MenuBarItem onSelect={() => console.log("undo")}>Undo</MenuBarItem>
+					<MenuBarItem onSelect={() => console.log("redo")}>Redo</MenuBarItem>
+				</MenuBarContent>
+			</MenuBarMenu>
+		</MenuBar>
+	);
+}`,
+	variants: [],
+	api: menuBarApi,
+	provenance: EXTRA_PROVENANCE,
+};
 
 const toolbarDocs = extraDocs(
 	"Toolbar",
@@ -453,6 +493,10 @@ export default function Example() {
 					<MenuBarRoot>
 						<MenuBarMenu>
 							<MenuBarTrigger>File</MenuBarTrigger>
+							<MenuBarContent>
+								<MenuBarItem>New Tab</MenuBarItem>
+								<MenuBarItem>Save</MenuBarItem>
+							</MenuBarContent>
 						</MenuBarMenu>
 					</MenuBarRoot>
 				),

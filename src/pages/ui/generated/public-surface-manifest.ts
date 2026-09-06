@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 622,
+	"totalSymbols": 633,
 	"totalValues": 375,
-	"totalTypes": 247,
+	"totalTypes": 258,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -3129,9 +3129,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/context-menu"
 				},
 				{
+					"name": "ContextMenuProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
 					"name": "ContextMenu",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuTriggerProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/context-menu",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/context-menu"
@@ -3145,6 +3161,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/context-menu"
 				},
 				{
+					"name": "ContextMenuContentProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
 					"name": "ContextMenuContent",
 					"isValue": true,
 					"isType": false,
@@ -3153,9 +3177,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/context-menu"
 				},
 				{
+					"name": "ContextMenuItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
 					"name": "ContextMenuItem",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/context-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-menu"
+				},
+				{
+					"name": "ContextMenuPanelProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/context-menu",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/context-menu"
@@ -4197,9 +4237,41 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/menu-bar"
 				},
 				{
+					"name": "MenuBarProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/menu-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/menu-bar"
+				},
+				{
+					"name": "MenuBarMenuProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/menu-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/menu-bar"
+				},
+				{
+					"name": "MenuBarTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/menu-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/menu-bar"
+				},
+				{
 					"name": "MenuBarTrigger",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/menu-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/menu-bar"
+				},
+				{
+					"name": "MenuBarContentProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/menu-bar",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/menu-bar"
@@ -4213,9 +4285,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/menu-bar"
 				},
 				{
+					"name": "MenuBarItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/menu-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/menu-bar"
+				},
+				{
 					"name": "MenuBarItem",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/menu-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/menu-bar"
+				},
+				{
+					"name": "MenuBarRootProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/menu-bar",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/menu-bar"

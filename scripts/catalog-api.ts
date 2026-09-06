@@ -1090,6 +1090,72 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "AlertDialogFooter",
 		allowEmpty: true,
 	},
+	{
+		slug: "context-menu",
+		sourceFile: "packages/basalt/src/components/context-menu.tsx",
+		propsType: "ContextMenuProps",
+		surface: "ContextMenu",
+	},
+	{
+		slug: "context-menu",
+		sourceFile: "packages/basalt/src/components/context-menu.tsx",
+		propsType: "ContextMenuTriggerProps",
+		surface: "ContextMenuTrigger",
+	},
+	{
+		slug: "context-menu",
+		sourceFile: "packages/basalt/src/components/context-menu.tsx",
+		propsType: "ContextMenuContentProps",
+		surface: "ContextMenuContent",
+	},
+	{
+		slug: "context-menu",
+		sourceFile: "packages/basalt/src/components/context-menu.tsx",
+		propsType: "ContextMenuItemProps",
+		surface: "ContextMenuItem",
+	},
+	{
+		slug: "context-menu",
+		sourceFile: "packages/basalt/src/components/context-menu.tsx",
+		propsType: "ContextMenuPanelProps",
+		surface: "ContextMenuPanel",
+	},
+	{
+		slug: "menu-bar",
+		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+		propsType: "MenuBarProps",
+		surface: "MenuBar",
+	},
+	{
+		slug: "menu-bar",
+		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+		propsType: "MenuBarRootProps",
+		surface: "MenuBarRoot",
+	},
+	{
+		slug: "menu-bar",
+		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+		propsType: "MenuBarMenuProps",
+		surface: "MenuBarMenu",
+	},
+	{
+		slug: "menu-bar",
+		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+		propsType: "MenuBarTriggerProps",
+		surface: "MenuBarTrigger",
+	},
+	{
+		slug: "menu-bar",
+		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+		propsType: "MenuBarContentProps",
+		surface: "MenuBarContent",
+	},
+	{
+		slug: "menu-bar",
+		sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+		propsType: "MenuBarItemProps",
+		surface: "MenuBarItem",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

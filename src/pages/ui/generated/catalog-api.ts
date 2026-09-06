@@ -20,6 +20,7 @@ import { API as collapsibleApi } from "./catalog-api/collapsible";
 import { API as comboboxApi } from "./catalog-api/combobox";
 import { API as commandPaletteApi } from "./catalog-api/command-palette";
 import { API as confirmDialogApi } from "./catalog-api/confirm-dialog";
+import { API as contextMenuApi } from "./catalog-api/context-menu";
 import { API as customChartApi } from "./catalog-api/custom-chart";
 import { API as dataTableApi } from "./catalog-api/data-table";
 import { API as dateNavigationApi } from "./catalog-api/date-navigation";
@@ -50,6 +51,7 @@ import { API as lineApi } from "./catalog-api/line";
 import { API as linkApi } from "./catalog-api/link";
 import { API as linkButtonApi } from "./catalog-api/link-button";
 import { API as loaderApi } from "./catalog-api/loader";
+import { API as menuBarApi } from "./catalog-api/menu-bar";
 import { API as meterApi } from "./catalog-api/meter";
 import { API as pageHeaderApi } from "./catalog-api/page-header";
 import { API as paginationApi } from "./catalog-api/pagination";
@@ -109,6 +111,7 @@ export const CATALOG_API = {
 	combobox: comboboxApi,
 	"command-palette": commandPaletteApi,
 	"confirm-dialog": confirmDialogApi,
+	"context-menu": contextMenuApi,
 	"custom-chart": customChartApi,
 	"data-table": dataTableApi,
 	"date-navigation": dateNavigationApi,
@@ -139,6 +142,7 @@ export const CATALOG_API = {
 	link: linkApi,
 	"link-button": linkButtonApi,
 	loader: loaderApi,
+	"menu-bar": menuBarApi,
 	meter: meterApi,
 	"page-header": pageHeaderApi,
 	pagination: paginationApi,

@@ -1183,8 +1183,74 @@ describe("catalog API generator contract", () => {
 				surface: "AlertDialogFooter",
 				allowEmpty: true,
 			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuProps",
+				surface: "ContextMenu",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuTriggerProps",
+				surface: "ContextMenuTrigger",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuContentProps",
+				surface: "ContextMenuContent",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuItemProps",
+				surface: "ContextMenuItem",
+			},
+			{
+				slug: "context-menu",
+				sourceFile: "packages/basalt/src/components/context-menu.tsx",
+				propsType: "ContextMenuPanelProps",
+				surface: "ContextMenuPanel",
+			},
+			{
+				slug: "menu-bar",
+				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+				propsType: "MenuBarProps",
+				surface: "MenuBar",
+			},
+			{
+				slug: "menu-bar",
+				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+				propsType: "MenuBarRootProps",
+				surface: "MenuBarRoot",
+			},
+			{
+				slug: "menu-bar",
+				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+				propsType: "MenuBarMenuProps",
+				surface: "MenuBarMenu",
+			},
+			{
+				slug: "menu-bar",
+				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+				propsType: "MenuBarTriggerProps",
+				surface: "MenuBarTrigger",
+			},
+			{
+				slug: "menu-bar",
+				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+				propsType: "MenuBarContentProps",
+				surface: "MenuBarContent",
+			},
+			{
+				slug: "menu-bar",
+				sourceFile: "packages/basalt/src/components/menu-bar.tsx",
+				propsType: "MenuBarItemProps",
+				surface: "MenuBarItem",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(174);
+		expect(CATALOG_API_TARGETS).toHaveLength(185);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1310,6 +1376,8 @@ describe("catalog API generator contract", () => {
 			"dialog",
 			"sheet",
 			"alert-dialog",
+			"context-menu",
+			"menu-bar",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -2302,6 +2370,13 @@ export interface WidgetProps {
 			"section-rule": ["SectionRule"],
 			"stat-strip": ["StatStrip"],
 			"confirm-dialog": ["ConfirmDialog", "useConfirm"],
+			"context-menu": [
+				"ContextMenu",
+				"ContextMenuTrigger",
+				"ContextMenuContent",
+				"ContextMenuItem",
+				"ContextMenuPanel",
+			],
 			"table-pager": ["TablePager"],
 			fab: ["Fab"],
 			dock: ["Dock", "DockBody"],
@@ -2363,6 +2438,14 @@ export interface WidgetProps {
 			badge: ["Badge"],
 			empty: ["Empty"],
 			loader: ["Loader"],
+			"menu-bar": [
+				"MenuBar",
+				"MenuBarRoot",
+				"MenuBarMenu",
+				"MenuBarTrigger",
+				"MenuBarContent",
+				"MenuBarItem",
+			],
 			"skeleton-line": ["SkeletonLine"],
 			meter: ["Meter"],
 			"clipboard-text": ["ClipboardText"],
@@ -2419,7 +2502,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(87);
+		expect(Object.keys(generated)).toHaveLength(89);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -2520,7 +2603,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(87);
+		expect(Object.keys(generated)).toHaveLength(89);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -2642,7 +2725,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(87);
+		expect(Object.keys(generated)).toHaveLength(89);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -2713,7 +2796,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(87);
+		expect(Object.keys(generated)).toHaveLength(89);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2756,7 +2839,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(87);
+		expect(Object.keys(generated)).toHaveLength(89);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2808,7 +2891,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(87);
+		expect(Object.keys(generated)).toHaveLength(89);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -4146,8 +4229,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(87);
-		expect(Object.keys(first)).toHaveLength(88);
+		expect(slugs).toHaveLength(89);
+		expect(Object.keys(first)).toHaveLength(90);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -4227,7 +4310,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"832bf2404ddfbee0e0ecf3082d4e5317e6cf37458229c1e6ed21c57eb6ca2abe",
+			"3531bb879ec16623b812b00c0cc603d91ebd39168c621dc8a0251cd280c29238",
 		);
 	}, 60_000);
 

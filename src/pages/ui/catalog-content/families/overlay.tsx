@@ -76,6 +76,7 @@ import { API as accordionApi } from "../../generated/catalog-api/accordion";
 import { API as alertDialogApi } from "../../generated/catalog-api/alert-dialog";
 import { API as collapsibleApi } from "../../generated/catalog-api/collapsible";
 import { API as confirmDialogApi } from "../../generated/catalog-api/confirm-dialog";
+import { API as contextMenuApi } from "../../generated/catalog-api/context-menu";
 import { API as dialogApi } from "../../generated/catalog-api/dialog";
 import { API as dropdownMenuApi } from "../../generated/catalog-api/dropdown-menu";
 import { API as hoverCardApi } from "../../generated/catalog-api/hover-card";
@@ -914,25 +915,56 @@ export default function Example() {
 	},
 	"context-menu": {
 		docs: {
-			description: "Right-click menu.",
-			usage: usage("ContextMenu", "@nocoo/basalt/components/context-menu", "<ContextMenu />"),
+			description:
+				"Right-click context menu. Trigger opens a floating menu on secondary pointer click or long press, supporting item selection callbacks, full keyboard navigation, and custom panel styling.",
+			usage: `import { Button } from "@nocoo/basalt/components/button";
+import {
+	ContextMenu,
+	ContextMenuItem,
+	ContextMenuPanel,
+	ContextMenuTrigger,
+} from "@nocoo/basalt/components/context-menu";
+
+export default function Example() {
+	return (
+		<ContextMenu>
+			<ContextMenuTrigger asChild>
+				<Button variant="outline">Right click</Button>
+			</ContextMenuTrigger>
+			<ContextMenuPanel>
+				<ContextMenuItem onSelect={() => console.log("copy")}>Copy</ContextMenuItem>
+				<ContextMenuItem onSelect={() => console.log("delete")}>Delete</ContextMenuItem>
+			</ContextMenuPanel>
+		</ContextMenu>
+	);
+}`,
 			variants: [],
-			api: [
-				{
-					name: "ContextMenu",
-					props: [{ name: "className", type: "string", description: "className" }],
-				},
-			],
+			api: contextMenuApi,
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: [
 			{
 				id: catalogScenarioId("context-menu", "default"),
 				title: "Default",
-				code: `import { ContextMenu } from "@nocoo/basalt/components/context-menu";
+				code: `import { Button } from "@nocoo/basalt/components/button";
+import {
+	ContextMenu,
+	ContextMenuItem,
+	ContextMenuPanel,
+	ContextMenuTrigger,
+} from "@nocoo/basalt/components/context-menu";
 
 export default function Example() {
-	return <ContextMenu />;
+	return (
+		<ContextMenu>
+			<ContextMenuTrigger asChild>
+				<Button variant="outline">Right click</Button>
+			</ContextMenuTrigger>
+			<ContextMenuPanel>
+				<ContextMenuItem>Copy</ContextMenuItem>
+			</ContextMenuPanel>
+		</ContextMenu>
+	);
 }`,
 				render: () => (
 					<ContextMenu>
