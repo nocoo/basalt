@@ -5,15 +5,46 @@ import { Toaster as Sonner, toast as sonnerToast } from "sonner";
 export type ToastVariant = "default" | "success" | "error" | "warning" | "info";
 
 export type ToastOptions = {
+	/**
+	 * Secondary supporting text or node displayed below the main message.
+	 */
 	description?: ReactNode;
+	/**
+	 * Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`).
+	 */
 	icon?: ReactNode | false;
+	/**
+	 * Whether a close button is displayed on this individual toast notification.
+	 * @default true
+	 */
 	close?: boolean;
+	/**
+	 * Visibility duration in milliseconds before auto-dismissal. Resolved as `toast.duration || (Toaster.toastOptions.duration ?? Toaster.duration) || 4000`. Infinity disables auto-closing. Setting to 0 treats it as falsy and falls back through container duration before defaulting to 4000ms.
+	 * @default "inherited from container, finally 4000ms"
+	 */
 	duration?: number;
+	/**
+	 * Unique identifier for this toast notification. Can be used with `toast.dismiss(id)` to manually dismiss this specific toast.
+	 */
 	id?: string | number;
+	/**
+	 * Optional action button configuration with label and onClick handler.
+	 */
 	action?: {
 		label: string;
 		onClick: () => void;
 	};
+};
+
+/**
+ * Options accepted by the root `toast(message, options)` dispatch function, extending `ToastOptions` with an optional `variant`.
+ */
+export type ToastCallOptions = ToastOptions & {
+	/**
+	 * Visual status variant style for this toast.
+	 * @default "default"
+	 */
+	variant?: ToastVariant;
 };
 
 const VARIANT_CLASS: Record<ToastVariant, string> = {
@@ -45,7 +76,13 @@ function resolveIcon(variant: ToastVariant, icon: ToastOptions["icon"]) {
 	return VARIANT_ICON[variant] ?? undefined;
 }
 
-function show(message: ReactNode, options: ToastOptions & { variant?: ToastVariant } = {}) {
+/**
+ * Dispatches a toast notification with the given message and options.
+ * @param message Main notification content or React node.
+ * @param options Notification customization options including optional variant.
+ * @returns The unique toast identifier (string or number).
+ */
+function show(message: ReactNode, options: ToastCallOptions = {}) {
 	const { variant = "default", icon, close = true, ...rest } = options;
 	const payload = {
 		...rest,
@@ -68,15 +105,47 @@ function show(message: ReactNode, options: ToastOptions & { variant?: ToastVaria
 	return sonnerToast(message, payload);
 }
 
+/**
+ * Imperative notification dispatcher. Directly callable as `toast(message, options)` to display a default notification, with helper methods for status variants (`success`, `error`, `warning`, `info`) and dismissal (`dismiss`).
+ */
 export const toast = Object.assign(show, {
+	/**
+	 * Dispatches a success status toast notification.
+	 * @param message Main notification content or React node.
+	 * @param options Notification customization options.
+	 * @returns The unique toast identifier (string or number).
+	 */
 	success: (message: ReactNode, options?: ToastOptions) =>
 		show(message, { ...options, variant: "success" }),
+	/**
+	 * Dispatches an error status toast notification.
+	 * @param message Main notification content or React node.
+	 * @param options Notification customization options.
+	 * @returns The unique toast identifier (string or number).
+	 */
 	error: (message: ReactNode, options?: ToastOptions) =>
 		show(message, { ...options, variant: "error" }),
+	/**
+	 * Dispatches a warning status toast notification.
+	 * @param message Main notification content or React node.
+	 * @param options Notification customization options.
+	 * @returns The unique toast identifier (string or number).
+	 */
 	warning: (message: ReactNode, options?: ToastOptions) =>
 		show(message, { ...options, variant: "warning" }),
+	/**
+	 * Dispatches an info status toast notification.
+	 * @param message Main notification content or React node.
+	 * @param options Notification customization options.
+	 * @returns The unique toast identifier (string or number).
+	 */
 	info: (message: ReactNode, options?: ToastOptions) =>
 		show(message, { ...options, variant: "info" }),
+	/**
+	 * Dismisses an active toast by its identifier, or dismisses all toasts when called without arguments. Note: Calling without arguments returns `undefined` at runtime; calling with `id` returns the dismissed `id`.
+	 * @param id Optional identifier of the toast to dismiss. When omitted, all toasts are dismissed.
+	 * @returns The dismissed toast identifier if provided, or undefined if dismissed without arguments.
+	 */
 	dismiss: sonnerToast.dismiss,
 });
 

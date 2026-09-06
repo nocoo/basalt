@@ -16,6 +16,7 @@ export interface CatalogApiTarget {
 	propsType: string;
 	surface: string;
 	allowEmpty?: true;
+	callableExport?: string;
 }
 
 export interface CatalogApiProp {
@@ -26,9 +27,31 @@ export interface CatalogApiProp {
 	description?: string;
 }
 
+export interface CatalogApiCallableParameter {
+	name: string;
+	type: string;
+	required: boolean;
+	description?: string;
+}
+
+export interface CatalogApiCallableReturn {
+	type: string;
+	description?: string;
+}
+
+export interface CatalogApiCallableOptions {
+	name: string;
+	props: CatalogApiProp[];
+}
+
 export interface CatalogApiSurface {
 	name: string;
 	props: CatalogApiProp[];
+	callSignature?: string;
+	description?: string;
+	parameters?: CatalogApiCallableParameter[];
+	returns?: CatalogApiCallableReturn;
+	options?: CatalogApiCallableOptions;
 }
 
 export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
@@ -1053,6 +1076,7 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/toast.tsx",
 		propsType: "ToasterProps",
 		surface: "Toaster",
+		callableExport: "toast",
 	},
 	{
 		slug: "badge",
@@ -2417,6 +2441,255 @@ function extractTargetProps(
 	return collected.map((item) => item.prop);
 }
 
+function isParameterOptional(paramSym: ts.Symbol): boolean {
+	if (Boolean(paramSym.flags & ts.SymbolFlags.Optional)) {
+		return true;
+	}
+	const decl = paramSym.valueDeclaration;
+	if (decl && ts.isParameter(decl)) {
+		return Boolean(decl.questionToken) || Boolean(decl.initializer);
+	}
+	for (const otherDecl of paramSym.getDeclarations() ?? []) {
+		if (ts.isParameter(otherDecl)) {
+			if (Boolean(otherDecl.questionToken) || Boolean(otherDecl.initializer)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+function extractCallablesForExport(
+	program: ts.Program,
+	repoRoot: string,
+	target: CatalogApiTarget,
+): CatalogApiSurface[] {
+	if (!target.callableExport) {
+		return [];
+	}
+	const sourceFile = resolveSourceFile(program, repoRoot, target.sourceFile);
+	const checker = program.getTypeChecker();
+	const modSym = checker.getSymbolAtLocation(sourceFile);
+	if (!modSym) {
+		failCatalogApi(`failed to get module symbol for ${target.sourceFile}`);
+	}
+	const expList = checker.getExportsOfModule(modSym);
+	const callableSym = expList.find((e) => e.getName() === target.callableExport);
+	if (!callableSym) {
+		failCatalogApi(`callable export ${target.callableExport} not found in ${target.sourceFile}`);
+	}
+	const callableType = checker.getTypeOfSymbolAtLocation(callableSym, sourceFile);
+
+	function formatSig(name: string, sig: ts.Signature): string {
+		const params = sig.parameters.map((p) => {
+			const isOpt = isParameterOptional(p);
+			const decl = p.valueDeclaration;
+			const typeNode = decl && ts.isParameter(decl) ? decl.type : undefined;
+			const pType = checker.getTypeOfSymbolAtLocation(p, decl ?? sourceFile);
+			const printedType = printType(pType, checker, decl ?? sourceFile, false, typeNode);
+			return `${p.getName()}${isOpt ? "?" : ""}: ${printedType}`;
+		});
+		const retType = printType(sig.getReturnType(), checker, sourceFile, false);
+		return `${name}(${params.join(", ")}): ${retType}`;
+	}
+
+	function paramDocFromTag(tag: ts.JSDocTagInfo, paramName: string): string | undefined {
+		if (!tag.text) {
+			return undefined;
+		}
+		if (Array.isArray(tag.text)) {
+			const firstPart = tag.text[0];
+			if (firstPart && firstPart.kind === "parameterName" && firstPart.text === paramName) {
+				const joined = tag.text
+					.slice(1)
+					.map((part) => part.text)
+					.join("")
+					.trim();
+				return joined.length > 0 ? joined : undefined;
+			}
+		}
+		const full = ts.displayPartsToString(tag.text).trim();
+		if (full.startsWith(paramName)) {
+			const remainder = full.slice(paramName.length).trim();
+			return remainder.length > 0 ? remainder : undefined;
+		}
+		return undefined;
+	}
+
+	function extractOptionsForParameter(paramSym: ts.Symbol): CatalogApiCallableOptions | undefined {
+		const decl = paramSym.valueDeclaration;
+		const rawType = checker.getTypeOfSymbolAtLocation(paramSym, decl ?? sourceFile);
+		const nonNullType = checker.getNonNullableType(rawType);
+		const typeName = nonNullType.aliasSymbol?.getName() || nonNullType.getSymbol()?.getName();
+		if (!typeName || typeName === "__type" || typeName === "Object") {
+			return undefined;
+		}
+		const props: CatalogApiProp[] = [];
+		for (const propSym of nonNullType.getProperties()) {
+			const propDecl = propSym.valueDeclaration ?? propSym.getDeclarations()?.[0] ?? sourceFile;
+			const propType = checker.getTypeOfSymbolAtLocation(propSym, propDecl);
+			const desc = jsDocFor(propSym, checker);
+			const def = jsDocDefaultFor(propSym, checker);
+			props.push({
+				name: propSym.getName(),
+				type: printPropType(propType, checker, propDecl),
+				required: (propSym.flags & ts.SymbolFlags.Optional) === 0,
+				...(def !== undefined ? { default: def } : {}),
+				...(desc !== undefined ? { description: desc } : {}),
+			});
+		}
+		if (props.length === 0) {
+			return undefined;
+		}
+		return { name: typeName, props };
+	}
+
+	const surfaces: CatalogApiSurface[] = [];
+
+	// 1. Root call signature
+	const rootSigs = callableType.getCallSignatures();
+	if (rootSigs.length !== 1) {
+		failCatalogApi(
+			`expected exactly 1 call signature for ${target.callableExport}, got ${rootSigs.length}`,
+		);
+	}
+	const rootSig = rootSigs[0];
+	if (!rootSig) {
+		failCatalogApi(`no call signatures on ${target.callableExport}`);
+	}
+	const rootDoc =
+		ts.displayPartsToString(rootSig.getDocumentationComment(checker)) ||
+		ts.displayPartsToString(callableSym.getDocumentationComment(checker));
+	const rootReturnsTag = rootSig
+		.getJsDocTags()
+		.find((t) => t.name === "returns" || t.name === "return");
+	const rootReturnsDoc = rootReturnsTag
+		? ts.displayPartsToString(rootReturnsTag.text).trim()
+		: undefined;
+
+	const rootParams: CatalogApiCallableParameter[] = rootSig.parameters.map((p) => {
+		const isOpt = isParameterOptional(p);
+		const decl = p.valueDeclaration;
+		const typeNode = decl && ts.isParameter(decl) ? decl.type : undefined;
+		const pType = checker.getTypeOfSymbolAtLocation(p, decl ?? sourceFile);
+		let pDoc = ts.displayPartsToString(p.getDocumentationComment(checker)).trim();
+		if (!pDoc) {
+			for (const tag of rootSig.getJsDocTags()) {
+				if (tag.name === "param") {
+					const fallbackDoc = paramDocFromTag(tag, p.getName());
+					if (fallbackDoc) {
+						pDoc = fallbackDoc;
+						break;
+					}
+				}
+			}
+		}
+		return {
+			name: p.getName(),
+			type: printType(pType, checker, decl ?? sourceFile, false, typeNode),
+			required: !isOpt,
+			...(pDoc ? { description: pDoc } : {}),
+		};
+	});
+
+	let rootOptions: CatalogApiCallableOptions | undefined;
+	const rootOptParam = rootSig.parameters.find(
+		(p) => p.getName() === "options" || p.getName() === "opts",
+	);
+	if (rootOptParam) {
+		rootOptions = extractOptionsForParameter(rootOptParam);
+	}
+
+	surfaces.push({
+		name: target.callableExport,
+		props: [],
+		callSignature: formatSig(target.callableExport, rootSig),
+		description: rootDoc || undefined,
+		parameters: rootParams,
+		returns: {
+			type: printType(rootSig.getReturnType(), checker, sourceFile, false),
+			...(rootReturnsDoc ? { description: rootReturnsDoc } : {}),
+		},
+		...(rootOptions ? { options: rootOptions } : {}),
+	});
+
+	// 2. Member methods discovered from callableType.getProperties()
+	for (const memberSym of callableType.getProperties()) {
+		const memberName = memberSym.getName();
+		const memberType = checker.getTypeOfSymbolAtLocation(memberSym, sourceFile);
+		const memberSigs = memberType.getCallSignatures();
+		if (memberSigs.length === 0) {
+			continue;
+		}
+		if (memberSigs.length !== 1) {
+			failCatalogApi(
+				`expected exactly 1 call signature for ${target.callableExport}.${memberName}, got ${memberSigs.length}`,
+			);
+		}
+		const sig = memberSigs[0];
+		if (!sig) {
+			failCatalogApi(`no call signatures on member ${memberName}`);
+		}
+
+		const memberDoc =
+			ts.displayPartsToString(memberSym.getDocumentationComment(checker)) ||
+			ts.displayPartsToString(sig.getDocumentationComment(checker));
+		const retTag = memberSym
+			.getJsDocTags(checker)
+			.find((t) => t.name === "returns" || t.name === "return");
+		const retDoc = retTag ? ts.displayPartsToString(retTag.text).trim() : undefined;
+
+		const memberParams: CatalogApiCallableParameter[] = sig.parameters.map((p) => {
+			const isOpt = isParameterOptional(p);
+			const decl = p.valueDeclaration;
+			const typeNode = decl && ts.isParameter(decl) ? decl.type : undefined;
+			const pType = checker.getTypeOfSymbolAtLocation(p, decl ?? sourceFile);
+			let pDoc = ts.displayPartsToString(p.getDocumentationComment(checker)).trim();
+			if (!pDoc) {
+				const tags = [...memberSym.getJsDocTags(checker), ...sig.getJsDocTags()].filter(
+					(tag) => tag.name === "param",
+				);
+				for (const tag of tags) {
+					const fallbackDoc = paramDocFromTag(tag, p.getName());
+					if (fallbackDoc) {
+						pDoc = fallbackDoc;
+						break;
+					}
+				}
+			}
+			return {
+				name: p.getName(),
+				type: printType(pType, checker, decl ?? sourceFile, false, typeNode),
+				required: !isOpt,
+				...(pDoc ? { description: pDoc } : {}),
+			};
+		});
+
+		let memberOptions: CatalogApiCallableOptions | undefined;
+		const optParam = sig.parameters.find(
+			(p) => p.getName() === "options" || p.getName() === "opts",
+		);
+		if (optParam) {
+			memberOptions = extractOptionsForParameter(optParam);
+		}
+
+		surfaces.push({
+			name: `${target.callableExport}.${memberName}`,
+			props: [],
+			callSignature: formatSig(`${target.callableExport}.${memberName}`, sig),
+			description: memberDoc || undefined,
+			parameters: memberParams,
+			returns: {
+				type: printType(sig.getReturnType(), checker, sourceFile, false),
+				...(retDoc ? { description: retDoc } : {}),
+			},
+			...(memberOptions ? { options: memberOptions } : {}),
+		});
+	}
+
+	return surfaces;
+}
+
 export function generateCatalogApi(input: {
 	repoRoot: string;
 	tsconfigPath: string;
@@ -2447,6 +2720,10 @@ export function generateCatalogApi(input: {
 		}
 		const surfaces = result[target.slug] ?? [];
 		surfaces.push({ name: target.surface, props });
+		if (target.callableExport) {
+			const callables = extractCallablesForExport(program, input.repoRoot, target);
+			surfaces.push(...callables);
+		}
 		result[target.slug] = surfaces;
 	}
 	return result;
@@ -2460,29 +2737,80 @@ function emitKey(key: string): string {
 	return /^[A-Za-z_$][\w$]*$/.test(key) ? key : JSON.stringify(key);
 }
 
-function renderProp(prop: CatalogApiProp): string {
+function renderProp(prop: CatalogApiProp, indent = "\t\t\t"): string {
 	const lines = [
-		"\t\t\t{",
-		`\t\t\t\tname: ${emitString(prop.name)},`,
-		`\t\t\t\ttype: ${emitString(prop.type)},`,
-		`\t\t\t\trequired: ${prop.required ? "true" : "false"},`,
+		`${indent}{`,
+		`${indent}\tname: ${emitString(prop.name)},`,
+		`${indent}\ttype: ${emitString(prop.type)},`,
+		`${indent}\trequired: ${prop.required ? "true" : "false"},`,
 	];
 	if (prop.default !== undefined) {
-		lines.push(`\t\t\t\tdefault: ${emitString(prop.default)},`);
+		lines.push(`${indent}\tdefault: ${emitString(prop.default)},`);
 	}
 	if (prop.description !== undefined) {
-		lines.push(`\t\t\t\tdescription: ${emitString(prop.description)},`);
+		lines.push(`${indent}\tdescription: ${emitString(prop.description)},`);
 	}
-	lines.push("\t\t\t}");
+	lines.push(`${indent}}`);
+	return lines.join("\n");
+}
+
+function renderCallableParameter(param: CatalogApiCallableParameter): string {
+	const lines = [
+		"\t\t\t\t{",
+		`\t\t\t\t\tname: ${emitString(param.name)},`,
+		`\t\t\t\t\ttype: ${emitString(param.type)},`,
+		`\t\t\t\t\trequired: ${param.required ? "true" : "false"},`,
+	];
+	if (param.description !== undefined) {
+		lines.push(`\t\t\t\t\tdescription: ${emitString(param.description)},`);
+	}
+	lines.push("\t\t\t\t}");
 	return lines.join("\n");
 }
 
 function renderSurface(surface: CatalogApiSurface): string {
+	const lines: string[] = ["\t{", `\t\tname: ${emitString(surface.name)},`];
+	if (surface.callSignature !== undefined) {
+		lines.push(`\t\tcallSignature: ${emitString(surface.callSignature)},`);
+	}
+	if (surface.description !== undefined) {
+		lines.push(`\t\tdescription: ${emitString(surface.description)},`);
+	}
+	if (surface.parameters !== undefined) {
+		const paramBlock =
+			surface.parameters.length === 0
+				? "\t\tparameters: [],"
+				: `\t\tparameters: [\n${surface.parameters.map((p) => renderCallableParameter(p)).join(",\n")},\n\t\t],`;
+		lines.push(paramBlock);
+	}
+	if (surface.returns !== undefined) {
+		const retLines = ["\t\treturns: {", `\t\t\ttype: ${emitString(surface.returns.type)},`];
+		if (surface.returns.description !== undefined) {
+			retLines.push(`\t\t\tdescription: ${emitString(surface.returns.description)},`);
+		}
+		retLines.push("\t\t},");
+		lines.push(retLines.join("\n"));
+	}
+	if (surface.options !== undefined) {
+		const optPropsBlock =
+			surface.options.props.length === 0
+				? "\t\t\tprops: [],"
+				: `\t\t\tprops: [\n${surface.options.props.map((p) => renderProp(p, "\t\t\t\t")).join(",\n")},\n\t\t\t],`;
+		const optLines = [
+			"\t\toptions: {",
+			`\t\t\tname: ${emitString(surface.options.name)},`,
+			optPropsBlock,
+			"\t\t},",
+		];
+		lines.push(optLines.join("\n"));
+	}
 	const propsBlock =
 		surface.props.length === 0
 			? "\t\tprops: [],"
 			: `\t\tprops: [\n${surface.props.map((prop) => renderProp(prop)).join(",\n")},\n\t\t],`;
-	return `\t{\n\t\tname: ${emitString(surface.name)},\n${propsBlock}\n\t}`;
+	lines.push(propsBlock);
+	lines.push("\t}");
+	return lines.join("\n");
 }
 
 export function catalogApiShardRelativePath(slug: string): string {
@@ -2533,6 +2861,9 @@ export function renderCatalogApiModule(data: Record<string, CatalogApiSurface[]>
 export function validateCatalogApiCompleteness(data: Record<string, CatalogApiSurface[]>): void {
 	for (const [slug, surfaces] of Object.entries(data)) {
 		for (const surface of surfaces) {
+			if (surface.callSignature) {
+				continue;
+			}
 			const isClassNameOnly = surface.props.length === 1 && surface.props[0]?.name === "className";
 			const isEmptyProps = surface.props.length === 0;
 			if (isClassNameOnly || isEmptyProps) {

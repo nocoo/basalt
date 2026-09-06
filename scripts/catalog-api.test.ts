@@ -1146,6 +1146,7 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/toast.tsx",
 				propsType: "ToasterProps",
 				surface: "Toaster",
+				callableExport: "toast",
 			},
 			{
 				slug: "badge",
@@ -2849,7 +2850,15 @@ export interface WidgetProps {
 			"resource-list": ["ResourceList"],
 			"delete-resource": ["DeleteResource"],
 			banner: ["Banner", "Banner.Action"],
-			toast: ["Toaster"],
+			toast: [
+				"Toaster",
+				"toast",
+				"toast.success",
+				"toast.error",
+				"toast.warning",
+				"toast.info",
+				"toast.dismiss",
+			],
 			badge: ["Badge"],
 			empty: ["Empty"],
 			loader: ["Loader"],
@@ -4738,7 +4747,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"6fc25d551c01fb9e3a1ea9a6630d8f42da08a230289f886aab3956a0a932a213",
+			"eb71533642e28e53ee66c801b7d6726ec89429490b20454c85e45de7d9ac5df1",
 		);
 	}, 60_000);
 
@@ -4905,5 +4914,163 @@ export interface WidgetProps {
 			expect(extractedDefault).toBe(description);
 			expect(extractedDescription).toBe(description);
 		}
+	});
+
+	it("extracts and formats callable surfaces with signatures, parameters, and options", () => {
+		const root = fixture({
+			"callable-widget.ts": `
+				export type SimpleOptions = {
+					/** Option count */
+					count?: number;
+				};
+				/** Root callable description */
+				export function notify(
+					message: string,
+					options: SimpleOptions = {},
+				): string {
+					return message;
+				}
+				notify.dismiss = (id?: string): void => {};
+			`,
+		});
+
+		const result = generateCatalogApi({
+			repoRoot: root,
+			tsconfigPath: "tsconfig.json",
+			targets: [
+				{
+					slug: "notify",
+					sourceFile: "callable-widget.ts",
+					propsType: "SimpleOptions",
+					surface: "Widget",
+					callableExport: "notify",
+				},
+			],
+		});
+
+		const surfaces = result.notify;
+		expect(surfaces).toBeDefined();
+		expect(surfaces?.map((s) => s.name)).toEqual(["Widget", "notify", "notify.dismiss"]);
+
+		const rootCall = surfaces?.find((s) => s.name === "notify");
+		expect(rootCall?.callSignature).toBe(
+			"notify(message: string, options?: SimpleOptions): string",
+		);
+		expect(rootCall?.description).toBe("Root callable description");
+		expect(rootCall?.parameters).toEqual([
+			{ name: "message", type: "string", required: true },
+			{ name: "options", type: "SimpleOptions", required: false },
+		]);
+		expect(rootCall?.returns).toEqual({ type: "string" });
+		expect(rootCall?.options?.name).toBe("SimpleOptions");
+		expect(rootCall?.options?.props).toEqual([
+			{ name: "count", type: "number", required: false, description: "Option count" },
+		]);
+
+		const dismissCall = surfaces?.find((s) => s.name === "notify.dismiss");
+		expect(dismissCall?.callSignature).toBe("notify.dismiss(id?: string | undefined): void");
+		expect(dismissCall?.parameters).toEqual([
+			{ name: "id", type: "string | undefined", required: false },
+		]);
+		expect(dismissCall?.returns).toEqual({ type: "void" });
+		expect(dismissCall?.options).toBeUndefined();
+
+		// Freshness & fidelity regressions:
+		// 1. Preserves declared undefined in return types without stripping it
+		const rootWithUndefinedReturn = fixture({
+			"callable-widget.ts": `
+				export type SimpleOptions = { count?: number };
+				export function notify(message: string): string | undefined { return message; }
+			`,
+		});
+		const resultWithUndefinedReturn = generateCatalogApi({
+			repoRoot: rootWithUndefinedReturn,
+			tsconfigPath: "tsconfig.json",
+			targets: [
+				{
+					slug: "notify",
+					sourceFile: "callable-widget.ts",
+					propsType: "SimpleOptions",
+					surface: "Widget",
+					callableExport: "notify",
+				},
+			],
+		});
+		const undefinedReturnCall = resultWithUndefinedReturn.notify?.find((s) => s.name === "notify");
+		expect(undefinedReturnCall?.returns?.type).toBe("string | undefined");
+
+		// 2. Preserves parameter type unions with undefined on required parameters
+		const rootWithUndefinedParam = fixture({
+			"callable-widget.ts": `
+				export type SimpleOptions = { count?: number };
+				export function notify(message: string, options: SimpleOptions | undefined): string { return message; }
+			`,
+		});
+		const resultWithUndefinedParam = generateCatalogApi({
+			repoRoot: rootWithUndefinedParam,
+			tsconfigPath: "tsconfig.json",
+			targets: [
+				{
+					slug: "notify",
+					sourceFile: "callable-widget.ts",
+					propsType: "SimpleOptions",
+					surface: "Widget",
+					callableExport: "notify",
+				},
+			],
+		});
+		const undefinedParamCall = resultWithUndefinedParam.notify?.find((s) => s.name === "notify");
+		expect(undefinedParamCall?.parameters?.[1]?.type).toBe("SimpleOptions | undefined");
+		expect(undefinedParamCall?.parameters?.[1]?.required).toBe(true);
+
+		// 3. Fallback to @param tag documentation on member methods
+		const rootWithParamTag = fixture({
+			"callable-widget.ts": `
+				export type SimpleOptions = { count?: number };
+				function rawDismiss(id?: string): string { return id ?? ""; }
+				/**
+				 * Dismiss function
+				 */
+				export const notify = Object.assign(() => {}, {
+					/**
+					 * Dismiss function
+					 * @param id Unique target identifier.
+					 */
+					dismiss: rawDismiss,
+				});
+			`,
+		});
+		const resultWithParamTag = generateCatalogApi({
+			repoRoot: rootWithParamTag,
+			tsconfigPath: "tsconfig.json",
+			targets: [
+				{
+					slug: "notify",
+					sourceFile: "callable-widget.ts",
+					propsType: "SimpleOptions",
+					surface: "Widget",
+					callableExport: "notify",
+				},
+			],
+		});
+		const taggedDismissCall = resultWithParamTag.notify?.find((s) => s.name === "notify.dismiss");
+		expect(taggedDismissCall?.parameters?.[0]?.description).toBe("Unique target identifier.");
+
+		// Negative check: missing callable export fails fast
+		expect(() =>
+			generateCatalogApi({
+				repoRoot: root,
+				tsconfigPath: "tsconfig.json",
+				targets: [
+					{
+						slug: "notify",
+						sourceFile: "callable-widget.ts",
+						propsType: "SimpleOptions",
+						surface: "Widget",
+						callableExport: "nonExistentCallable",
+					},
+				],
+			}),
+		).toThrow(/callable export nonExistentCallable not found/);
 	});
 });

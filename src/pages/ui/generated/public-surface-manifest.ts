@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 683,
+	"totalSymbols": 684,
 	"totalValues": 375,
-	"totalTypes": 308,
+	"totalTypes": 309,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -6116,6 +6116,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "ToastOptions",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/toast",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/toast"
+				},
+				{
+					"name": "ToastCallOptions",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/toast",

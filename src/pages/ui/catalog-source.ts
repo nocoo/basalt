@@ -15,9 +15,31 @@ export interface CatalogApiProp {
 	description?: string;
 }
 
+export interface CatalogApiCallableParameter {
+	name: string;
+	type: string;
+	required: boolean;
+	description?: string;
+}
+
+export interface CatalogApiCallableReturn {
+	type: string;
+	description?: string;
+}
+
+export interface CatalogApiCallableOptions {
+	name: string;
+	props: CatalogApiProp[];
+}
+
 export interface CatalogApiSurface {
 	name: string;
 	props: CatalogApiProp[];
+	callSignature?: string;
+	description?: string;
+	parameters?: CatalogApiCallableParameter[];
+	returns?: CatalogApiCallableReturn;
+	options?: CatalogApiCallableOptions;
 }
 
 export interface CatalogDocs {

@@ -83,6 +83,35 @@ function catalogApiCopyLines(api: CatalogApiSurface[]): string[] {
 	return [
 		"## API Reference",
 		...api.flatMap((surface) => {
+			if (surface.callSignature) {
+				const lines = [`### ${surface.name}`, `\`${surface.callSignature}\``];
+				if (surface.description) {
+					lines.push(surface.description);
+				}
+				if (surface.parameters && surface.parameters.length > 0) {
+					lines.push(
+						"Parameters:",
+						...surface.parameters.map((p) => {
+							const req = p.required ? ", required" : ", optional";
+							return `- ${p.name} (${p.type}${req}): ${p.description ?? ""}`;
+						}),
+					);
+				}
+				if (surface.returns) {
+					const retDesc = surface.returns.description ? `: ${surface.returns.description}` : "";
+					lines.push(`Returns: \`${surface.returns.type}\`${retDesc}`);
+				}
+				if (surface.options && surface.options.props.length > 0) {
+					lines.push(
+						`Options (${surface.options.name}):`,
+						...surface.options.props.map((p) => {
+							const req = p.required ? ", required" : ", optional";
+							return `- ${p.name} (${p.type}${req}, default ${p.default ?? "—"}): ${p.description ?? ""}`;
+						}),
+					);
+				}
+				return lines;
+			}
 			const nativeDoc = DOCUMENTED_NATIVE_ONLY_SURFACES[surface.name];
 			const isNative = isDocumentedNativeSurface(
 				surface.name,
@@ -110,6 +139,90 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 		<section id="api-reference" className="scroll-mt-6 space-y-4">
 			<h2 className="text-2xl font-semibold tracking-tight">API Reference</h2>
 			{api.map((surface) => {
+				if (surface.callSignature) {
+					return (
+						<div key={surface.name} className="space-y-4">
+							<h3
+								id={catalogApiSurfaceId(surface.name)}
+								className="scroll-mt-6 text-sm font-medium"
+							>
+								{surface.name}
+							</h3>
+							<div className="overflow-hidden rounded-lg border border-border bg-card p-4 space-y-3 text-sm">
+								<div>
+									<code className="text-xs font-mono text-primary font-semibold">
+										{surface.callSignature}
+									</code>
+								</div>
+								{surface.description ? (
+									<p className="text-sm text-muted-foreground">{surface.description}</p>
+								) : null}
+								{surface.parameters && surface.parameters.length > 0 ? (
+									<div className="space-y-1">
+										<p className="text-xs font-medium text-foreground">Parameters</p>
+										<ul className="list-inside list-disc text-xs text-muted-foreground space-y-0.5">
+											{surface.parameters.map((p) => (
+												<li key={p.name}>
+													<code>{p.name}</code> ({p.type}
+													{p.required ? ", required" : ", optional"})
+													{p.description ? ` — ${p.description}` : ""}
+												</li>
+											))}
+										</ul>
+									</div>
+								) : null}
+								{surface.returns ? (
+									<div className="text-xs text-muted-foreground">
+										<span className="font-medium text-foreground">Returns: </span>
+										<code>{surface.returns.type}</code>
+										{surface.returns.description ? ` — ${surface.returns.description}` : ""}
+									</div>
+								) : null}
+								{surface.options && surface.options.props.length > 0 ? (
+									<div className="space-y-2 pt-2 border-t border-border">
+										<p className="text-xs font-medium text-foreground">
+											Options (<code>{surface.options.name}</code>)
+										</p>
+										<div className="overflow-hidden rounded-md border border-border">
+											<table
+												aria-label={`${surface.options.name} props`}
+												className="w-full text-xs"
+											>
+												<thead>
+													<tr className="border-b border-border bg-background text-left text-muted-foreground">
+														<th className="px-3 py-2 font-medium">Option</th>
+														<th className="px-3 py-2 font-medium">Type</th>
+														<th className="px-3 py-2 font-medium">Default</th>
+														<th className="px-3 py-2 font-medium">Description</th>
+													</tr>
+												</thead>
+												<tbody>
+													{surface.options.props.map((opt) => (
+														<tr key={opt.name} className="border-t border-border">
+															<td className="px-3 py-2 font-medium text-foreground">
+																{opt.name}
+																{opt.required === false ? "?" : ""}
+															</td>
+															<td className="px-3 py-2 text-muted-foreground">
+																<code>{opt.type}</code>
+															</td>
+															<td className="px-3 py-2 text-muted-foreground">
+																{opt.default ?? "—"}
+															</td>
+															<td className="px-3 py-2 text-muted-foreground">
+																{opt.description ?? opt.name}
+															</td>
+														</tr>
+													))}
+												</tbody>
+											</table>
+										</div>
+									</div>
+								) : null}
+							</div>
+						</div>
+					);
+				}
 				const nativeDoc = DOCUMENTED_NATIVE_ONLY_SURFACES[surface.name];
 				const isNative = isDocumentedNativeSurface(
 					surface.name,
