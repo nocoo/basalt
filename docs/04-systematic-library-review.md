@@ -591,6 +591,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | 10e | `fix: honor toast icon suppression` | C18；四种状态通知的 icon=false 真正隐藏图标，保留默认及自定义图标 |
 | 11a | `fix: complete slider values and accessible names` | C08；单值/范围、Thumb 数量及名称 |
 | 11b | `fix: complete calendar keyboard navigation` | C10；日历导航、可访问树与本地化 |
+| 11b2 | `feat: expose controlled calendar months and localized validation` | C10；受控月份、父级接纳/拒绝导航、可本地化验证反馈与键盘说明；与 11b 均验收后关闭 |
 | 12a | `fix: render empty state actions` | C09；明确 slot 并验证所有允许的 children |
 | 12b | `fix: tolerate unavailable theme storage` | C11；回退与持久化行为 |
 | 13a | `fix: improve semantic text contrast` | C12；主题与表面配对验证 |
@@ -686,7 +687,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
 | P2 | 公共接口与文档：04、05、06a/b1/b2；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 已验收 | `ef2bd65`–`2b8f088`：99 页 API、99 Usage、246 场景、随包 registry/指南及正式 tarball 编译门；120 项旧接口契约与 5 项真实 recipe 浏览器检查通过，详见 12.4 |
 | P3 | 基础样式与输入：07、08a/b/c、09/q/b/c/d；C01–C05/C19–C21 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required、Group 原生事件与 ref 清理 | 已验收 | 运行时至 `b85649d`、行为回归 `026a958`；C01–C05/C19–C21 已关闭，177 文件 / 1,544 测试，四维覆盖率均 ≥95%；120 项旧接口与真实安装包验收通过 |
-| P4 | 浮层与语义：10a/b/c/d/e、11a/b、12a/b；C06–C11/C16/C17/C18/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
+| P4 | 浮层与语义：10a/b/c/d/e、11a/b/b2/b3、12a/b/c/d；C06–C11/C16–C18/C22/Q07/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘/受控月份/本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 已验收 | 实现至 `781aadf`，C06–C11/C16–C18/C22/Q07 已关闭；177 文件 / 1,628 测试，四维覆盖率 97.45 / 95.26 / 98.22 / 97.53；最终包、Next 与文档消费通过，详见 12.4 |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
 | P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 待调度 | — |
 | P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 待调度 | — |
@@ -887,9 +888,81 @@ P3 尚未整体验收。追加的调用方重渲染场景发现：onReset 更新
 
 P3 的 **120 项旧公开 props/ref/key/文档类型契约**保持兼容；最终运行时的包 build/types/pack/publint、正式 A/B、主 agent 独立生产 build、consumer:next 与 consumer:docs 均已通过。最终真实包的 **230 份产物 / 111 份源码**与已验收实现绑定，09d 未改变这些内容；完整旧基线保持 `ef2bd65` 原文，版本仍为 **2.0.3**。P3 已整体验收，下一阶段为 P4。证据：`p3-phase-final-120.json`、`p3-phase-final-gates.json`、`p3-runtime-final-artifact-source-binding.json`。
 
+#### P4 验收记录（已验收，2026-09-06–07）
+
+**10a / C06。** `bdbede8` 将 Dock 区域 overlay 改为具名 region，移除错误的全局模态声明与 Tab 限制。原 push/overlay 宽度、遮罩、打开焦点、关闭 inert、Escape 和焦点归还保留；API 与 Library 说明同步。本组没有新增全局模态模式。
+
+主 agent 对真实安装包检查 **6/6 通过**：背景点击与非模态焦点、Tab/Shift+Tab 跨面板、390px 遮罩尺寸、关闭 inert/焦点、嵌套 Popover/Dialog 的两次 Escape、push 尺寸。初次移动端 probe 的默认点击落在被面板覆盖的遮罩中心，改为实际露出的遮罩区域后通过，未修改组件或降低断言。旧 Dock/DockBody 公开契约 **2/2** 保持；**230 份产物、111 份源码、18 个已审文件**与提交一致。
+
+正式 A/B 增加独立 Dock 页面与键盘/焦点回归，两条命令及包 build/types/pack/publint 均通过；原 geometry 检查保留。正常 hooks 为 **177 文件、1,544 测试**；文档摘要快照被 hooks 拦下后仅同步预期摘要，再正常提交。C06 已关闭，P4 其余组继续。证据：`p4-state-p4-10a-root-2.json`、`p4-dock-edge-p4-10a-fixed-probe.json`、`p4-10a-validation-evidence.json`、`p4-10a-final-artifact-source-binding.json`、`p4-10a-commit-evidence.json`、`p4-10a-acceptance.json`。
+
+**10b / C07。** `42060a5` 在独立 ConfirmDialog 打开时记录 opener，并在 Radix 实际关闭回调中归还仍连接的焦点；保留显式 trigger 行为及 useConfirm 的替换、卸载 Promise 结算。DeleteResource 失败后保留弹窗，显示可访问的错误并恢复重试；新增可选 ReactNode / formatter 文案，公开契约保持兼容。
+
+主 agent 对最终真实安装包复验 **5/5**：确认和取消回焦、替换请求分别结算、卸载结算、删除失败后重试成功；**2 项旧公开契约**通过，**230 份产物 / 111 份源码 / 27 个提交文件**绑定一致。包门、正式 A/B 与 docs consumer 通过，正常 hooks 为 **177 文件、1,546 测试**。证据：`p4-10b-final-browser-batch.json`、`p4-10b-final-public-props.log`、`p4-10b-final-artifact-source-binding.json`、`p4-10b-validation-evidence.json`、`p4-10b-core-commit-evidence.json`、`p4-10b-core-acceptance.json`。
+
+补充提交 `182b9a2` 将独立取消的结算/回焦纳入正式 A/B，并提供可反复操作的删除失败、重试成功、重置 Library 示例；正文明确异步错误责任和可定制文案。主 agent 在 **1280px / 390px 两项真实页面检查**中验证完整闭环并查看截图，5 个补充文件与已审哈希一致；A/B 和 docs consumer 再次通过，正常 hooks 为 **177 文件、1,546 测试**。运行时未变，最终产物与源码绑定仍全部一致。C07 已关闭。证据：`p4-10b-library.json`、`p4-10b-supplement-validation-evidence.json`、`p4-10b-supplement-commit-evidence.json`、`p4-10b-accepted-artifact-source-binding.json`、`p4-10b-acceptance.json`。
+
+**10c / C16。** `f11d74f` 为 9 个既有内置 Portal 透传 Content 的 forceMount，保留裸 ContextMenuContent 的直接挂载方式，普通开关、ref 和定位逻辑不变。文档说明外部动画的显隐与显式卸载责任，并区分有模态行为的浮层与 HoverCard、Tooltip、MenuBar。
+
+主 agent 对真实安装包通过 **40/40 挂载与卸载对照、9/9 同页相邻 Dialog 焦点/背景恢复检查**；**10 项旧公开契约**保持兼容。最终 **117 份 JS/CSS、111 份源码**绑定一致；113 份声明中 112 份逐字节不变，MenuBar 仅删除一条不适用的 JSDoc，精确去掉该行后完全相同。机器注册表的 45 处变化仅为说明和源码哈希。正式 A/B 各包含 40 项 Portal 检查，使用明确的组件类型与逐次点击增量；包门与 docs consumer 通过，正常 hooks 为 **177 文件、1,546 测试**，32 个已审文件与提交一致。C16 已关闭。证据：`p4-10c-root-browser-batch.json`、`p4-10c-public-props.log`、`p4-10c-final-artifact-source-binding.json`、`p4-10c-declaration-doc-only.json`、`p4-10c-registry-review.json`、`p4-10c-validation-evidence.json`、`p4-10c-commit-evidence.json`、`p4-10c-acceptance.json`。
+
+**10d / C17。** `bad6c25` 使用已有 Slottable 组合 PopoverContent 的调用方元素与箭头，保留默认 DOM、既有 Portal 和参数。真实安装包通过 **25/25** Content 组合检查（保留原 24 项，新增普通 Popover 隐藏箭头对照），asChild 的元素身份、ref、箭头数量与 child→content 点击顺序均正确；旧 PopoverContent 公开契约通过。
+
+正式 A/B 的 Portal 回归扩展为各 **48 项**，包含两种 asChild 的正常开关、forceMount 和卸载；事件记录逐例重置，既有断言保留。包门、docs consumer 通过，正常 hooks 为 **177 文件、1,547 测试**；**230 份产物 / 111 份源码 / 9 个已审文件**与提交一致。C17 已关闭。证据：`p4-10d-root-browser-batch.json`、`p4-10d-public-props.log`、`p4-10d-final-artifact-source-binding.json`、`p4-10d-validation-evidence.json`、`p4-10d-commit-evidence.json`、`p4-10d-acceptance.json`。
+
+**10e / C18。** `ab2cd97` 仅将明确 icon=false 的内部值转换为 Sonner 的隐藏语义 null，保留省略、null、自定义图标以及其他选项的现有处理；同步源码、机器 API 和 Library 说明。主 agent 的真实安装包 **18/18** 对照及 Library “No icon” **1/1** 通过，图标消失且关闭按钮保留，已查看入场动画完成后的截图。
+
+**113 份公开声明**经 TypeScript AST 规范化后与 10d 完全一致；**230 份产物 / 111 份源码 / 19 个已审文件**与提交绑定。正式 A/B 各包含 18 项 Toast 检查，包门与 docs consumer 通过，正常 hooks 为 **177 文件、1,547 测试**。C18 已关闭。证据：`p4-10e-root-browser-batch.json`、`p4-toast-library.json`、`p4-10e-public-declarations.json`、`p4-10e-final-artifact-source-binding.json`、`p4-10e-validation-evidence.json`、`p4-10e-commit-evidence.json`、`p4-10e-acceptance.json`。
+
+**11a / C08。** `abdafd4` 按受控数组或首次默认值渲染各端点，修正水平/纵向轨道与填充；新增可选 `labels`，单值的 aria-label/aria-labelledby 落到交互 Thumb，多值保留上下文或 Radix 默认名称。非受控默认数组变化不改写已初始化的 Thumb 数量，既有 Root ref、RTL、step/min/max、端点最小间距继续有效。
+
+主 agent 的实际安装包 **14/14** 通过，包含原双轴几何与 12 项名称、受控数组变化、表单提交/reset、禁用和键盘边界。真实 Library 桌面/390px **2/2**：纵向轨道均为 **192×8px**，ArrowUp 从 50 增至 51，已查看截图；新增 Range、Vertical 场景与具名 Usage 可复制。旧 Slider props/ref 契约通过，仅增加 `labels`；最终补充说明后 **113 份声明的类型 AST 相同**，117 份运行时代码/CSS、111 份源码与 21 个已审提交文件匹配。正式 A/B、包门和最终 docs consumer 通过，正常 hooks 为 **177 文件、1,555 测试**。C08 已关闭。证据：`p4-11a-root-browser-batch.json`、`p4-11a-library.json`、`p4-11a-public-props.log`、`p4-11a-final-doc-only-declarations.json`、`p4-11a-final-artifact-source-binding.json`、`p4-11a-commit-evidence.json`、`p4-11a-acceptance.json`。
+
+**11b / C10 日历核心。** `52e7e01` 补齐 table/grid、隐式 row/columnheader 与 gridcell 关系、月份 live region、单一 roving 焦点，以及 Home/End、PageUp/PageDown 和 Shift 跳年；月末落在有效日期。范围模式以 aria-selected 表达完整区间和未完成起点，端点与区间内部保留不同视觉。新增可选 `labels` 和公开 `DatePickerLabels`，中文 Library 场景、键盘说明及可编译语言配置模块同步交付。原 ISO 日期、原生 input ref 和表单契约保持兼容。
+
+最终实际安装包 **26/26** 通过：日历核心 10、范围/语言/边界 8、原生表单/ref/reset/readOnly 回归 8；真实 Library 桌面/390px **2/2**，PageDown 聚焦 `2026-10-09` 并播报十月，弹层均为 **256×290px** 且在视口内，相关 ARIA 检查通过。**230 份产物 / 111 份源码 / 30 个已审提交文件**全部对应。正式 A/B 及包门通过，docs consumer 编译 **28 个文档模块、99 个 Usage、249 个场景**。正常 hooks 为 **177 文件、1,560 测试**，typecheck/lint/gitleaks 均通过。
+
+审查撤回了为日历全局关闭的三条 Biome 规则，只保留 DatePicker 路径内两项 APG grid/roving 模型的例外及原因说明；冗余 row/columnheader 属性改用原生语义。提交 hook 检出的三个旧数量/场景断言按新增类型和中文场景同步后通过。证据：`p4-11b-final-browser-batch.json`、`p4-11b-library.json`、`p4-11b-public-props.log`、`p4-11b-final-artifact-source-binding.json`、`p4-11b-final-validation-evidence.json`、`p4-11b-commit-tree.json`、`p4-11b-commit-evidence.json`、`p4-11b-acceptance.json`。11b 提交时 C10 尚未关闭，受控月份、本地化验证与键盘说明配置由后续 11b2 完成。
+
+**11b2 / C10 受控月份与完整语言接口。** `fa22f1f` 增加可选 `month/defaultMonth/onMonthChange`，月份视图与选中日期独立；`defaultMonth` 只在首次初始化使用。导航回调仅由用户操作触发，父级拒绝、重渲染或延迟接纳月份时保留正确日期焦点。`labels.validationMessage` 与 `labels.keyboardInstructions` 补齐中文原生验证反馈和关联弹层的键盘说明。保留原有正年份范围，包括 `10000` 年，不新增不兼容的上界。
+
+主 agent 的最终真实安装包 **45/45** 通过：月份控制 14、语言与表单 5、既有日历 10、范围/边界 8、原生表单/ref/reset/readOnly 8。独立验收先发现两种空日期翻月后焦点回到月初的问题；修正自动同步条件后通过，正式 A/B 也加入对应回归。Library 桌面/390px **2/2**，弹层均为 **256×290px**，中文错误、实际预约提交及 reset 均通过，已查看截图。示例控制月份，日期值由原生 FormData 获取。
+
+旧 DatePicker props/ref 契约兼容，**230 份产物 / 111 份源码 / 12 个已审提交文件**一致。包门、正式 A/B、最终文档消费通过；文档仍为 **28 个可编译模块、99 个 Usage、249 个场景**。正常 hooks 为 **177 文件、1,565 测试**。指南明确初始 fallback 和 `defaultMonth` 语义，AI 镜像与 API 数据同步。**C10 已由 11b 与 11b2 共同关闭。** 证据：`p4-11b2-fixed-browser-batch.json`、`p4-11b2-library.json`、`p4-11b2-public-props.log`、`p4-11b2-final-artifact-source-binding.json`、`p4-11b2-final-validation-evidence.json`、`p4-11b2-commit-tree.json`、`p4-11b2-commit-evidence.json`、`p4-11b2-acceptance.json`。
+
+**12a / C09 Empty 子内容与操作。** `95a358e` 修正 `Empty` 与 `LayerCard.Empty` 丢弃 children 的问题，新增可选 `action`；结构化图标、标题、说明之后呈现自定义内容及操作，两种 slot 都保留数字 `0`。旧 props/ref、空标题与原生属性行为兼容。Library 新增首次创建、清除无结果搜索、失败→重试→加载→成功的本地组合；LayerCard 原有示例也有实际创建反馈，保留全部旧场景 ID。
+
+独立实际安装包 **4/4**，旧公开类型契约 **2/2**；真实 Library 桌面/390px、浅/深主题 **4/4**。手机展示区宽 **252px**，无内部横向溢出，已查看完整浅深主题截图。正式 A/B 增加两种 Empty 的 children/action 键盘激活与属性检查；原始数字值检查要求两个 `0` 都保留，避免以包在元素中的文字或宽松 OR 条件掩盖缺陷。
+
+**230 份产物 / 111 份源码 / 27 个已审提交文件**对应一致。包门、正式 A/B、文档消费通过，后者编译 **30 份文档模块（含 AI 镜像）、99 个 Usage、250 个场景**。正常 hooks 为 **177 文件、1,567 测试**；首次 hook 检出的旧场景总数断言从 249 同步到 250，保留其余验证后重试通过。**C09 已关闭。** 证据：`p4-12a-root-browser-batch.json`、`p4-12a-library.json`、`p4-12a-public-props.log`、`p4-12a-final-artifact-source-binding.json`、`p4-12a-final-validation-evidence.json`、`p4-12a-commit-tree.json`、`p4-12a-commit-evidence.json`、`p4-12a-acceptance.json`。
+
+**12b / C11 Theme 与 Accent 的存储和宿主边界。** `16143b6` 为两个 Provider 增加可选 storageKey、默认值、persist、受控值/onChange 和 applyToDocument。默认键名及公开用法保持兼容；Storage getter/getItem/setItem 拒绝时保留内存选择，区分读取失败与实际缺值。受控变化由父级接纳，非持久化实例不参与同页同步；保留真实跨页 localStorage 更新，隔离 sessionStorage。SSR 使用稳定 server snapshot，宿主可禁用 root 写入。
+
+主 agent 的最终实际安装包 **18/18** 通过，覆盖拒绝访问、写入失败后的旧值与裸事件、同页/跨页同步、关闭持久化、key/default/persist 切换、父级拒绝/接纳、卸载清理及真实 Node SSR hydration。首次独立 harness 的重新挂载完成信号有误，修正后保留全部行为断言并重新生成 SSR 记录，host 子组 **6/6**。Library 新增独立偏好、宿主控制两个组合；桌面/390px × 浅深主题 **4/4**，键盘操作不改变宿主 root、CSS 和 storage，两份实例互不影响，已查看截图。该手机结果仅验证展示区，不提前关闭 P7 的文档页布局问题。
+
+旧 Provider props/ref/key/文档类型契约 **2/2** 兼容，**230 份产物 / 111 份源码 / 30 个已审提交文件**一致。包门与正式 A/B 通过；正常 hooks 为 **177 文件、1,589 测试**。新增 recipe 与 AI 镜像的完整编译留给 P4 阶段 consumer:docs，尚不计为已通过。当前公开面 **110 模块 / 687 符号（375 value、312 type）/ 3 CSS**，保留 **99 个 Usage、252 个场景**及原始 API 基线，版本仍为 **2.0.3**。**C11 已关闭。** 证据：`p4-12b-final-browser-batch.json`、`p4-12b-root-ssr.json`、`p4-12b-library.json`、`p4-12b-public-props.log`、`p4-12b-final-artifact-source-binding.json`、`p4-12b-final-validation-evidence.json`、`p4-12b-commit-tree.json`、`p4-12b-commit-evidence.json`、`p4-12b-acceptance.json`。
+
+**P4 阶段覆盖率复核（待补回归）。** 12b 后完整 **177 文件、1,589 测试**均通过，但四维为 **94.21% / 91.77% / 97.81% / 94.27%**，语句、分支和行未达到 95%。原始 lcov 与失败日志已保留；主要缺口是 Provider 配置切换和日历新增导航边界。按独立测试提交补充对外行为回归，其后继续 build、Next 与文档消费；不降低阈值或缩小分母。证据：`p4-phase-coverage-before-regressions.json`、`p4-phase-coverage-before-regressions.lcov`。
+
+**12c / Provider 行为回归。** `535d2e0` 仅修改两份 Provider 测试，补充 **22 项**配置、持久化与监听生命周期回归，两个文件共 **51 项**通过。覆盖 key/default/persist 真实重渲染、读取拒绝、存储删除/清空/非法值、重新启用后的失败恢复、受控回调次数、宿主写入切换和卸载；sessionStorage 使用实际实例，卸载验证同一监听器引用。复审修正了未实际变化的 default 参数和未验证后续事件的清理断言。正常 hooks **177 文件、1,611 测试**通过；**230 份产物 / 111 份源码**均未变，复用 12b 的实际包验收。完整覆盖率待日历回归后统一复核。证据：`p4-12c-validation-evidence.json`、`p4-12c-commit-tree.json`、`p4-12c-commit-evidence.json`、`p4-12c-runtime-artifact-source-binding.json`、`p4-12c-acceptance.json`。
+
+**11b3 / 日历键盘回归与原生日期上限。** `9b75ac2` 以公历数值计算目标月天数，在原生日期范围外拒绝月份跳转，保留最后合法月份内的日期。新增 Home/End、PageUp/PageDown、年一边界、受控月份延迟接纳、禁用日期和上限正反例，日期单测共 **95 项**。正式 A/B 同时校验真实 Shift 组合键、焦点、月份、回调次数、FormData 和 Escape 回焦；新增检查保留全部旧场景。
+
+最终新安装包 **55/55** 通过，其中原日历/表单组合 **45 项**、新边界组合 **10 项**；旧 DatePicker props/ref/key/文档类型兼容，前组已授权的四个可选参数保留。**230 份产物 / 111 份源码 / 7 个已审提交文件**一致。包 build/types/pack/publint、正式 A/B 均通过；正常提交首轮遇到 Q07 的格式化子进程超时，未改文件重试后 hooks **177 文件、1,620 测试**通过。**C22 已关闭，Q07 仍观察中。** 证据：`p4-11b3-root-browser-batch.json`、`p4-11b3-public-props.log`、`p4-11b3-final-artifact-source-binding.json`、`p4-11b3-final-validation-evidence.json`、`p4-11b3-commit-tree.json`、`p4-11b3-commit-evidence.json`、`p4-11b3-acceptance.json`。
+
+**P4 第二轮完整覆盖率（12d 补强中）。** 11b3 后的首轮检查再次遇到 Q07；第二轮 **177 文件、1,620 测试全部通过**，四维为 **97.11% / 94.83% / 98.22% / 97.18%**。分支仍低于 95%，原始日志与 lcov 已保存。独立 12d 仅补 Provider 在 Storage/matchMedia 缺失、无关同页事件及非法 accent 下的对外行为回归，不改实现和质量门；通过后继续完整阶段验收。证据：`p4-stage-coverage-attempt-1.log`、`p4-stage-coverage-attempt-2.json`、`p4-stage-coverage-attempt-2.lcov`。
+
+**12d / Provider 缺失 API 与事件隔离回归。** `c35fd84` 仅修改两份测试，新增 **6 项**，Provider 共 **57 项**通过。覆盖不存在的 localStorage、缺失 matchMedia、空 detail/其他 key 的同页事件及无效 accent；检查真实可见值、文档状态、存储和回调，临时环境在 finally 完整恢复；受控非法值以有效 teal 作前置对照。主 agent 的新真实包组合 **5/5**，**230 份产物 / 111 份源码**保持不变。正常 hooks **177 文件、1,626 测试**通过；待 Q07 独立修复后重新完整验收。证据：`p4-provider-missing-p4-12d-root.json`、`p4-12d-runtime-artifact-source-binding.json`、`p4-12d-validation-evidence.json`、`p4-12d-commit-tree.json`、`p4-12d-commit-evidence.json`、`p4-12d-acceptance.json`。
+
+**Q07 / 固定本地 formatter 调用。** `781aadf` 通过当前脚本的依赖解析定位 Biome 2.5.12 CLI，以当前 Node/Bun 可执行程序直接运行，保留 **10 秒**预算、缓冲区和非零退出失败；未加入重试。原有 14 项 registry 回归完整保留，新增确定性格式化、非法 JSON 与故障 PATH 两项测试，共 **16 项**通过。root 的普通/故障 PATH 对照确认有效输入均成功、非法输入均拒绝；registry/sources/指南及原 API 基线保持原文，**230 份产物 / 111 份源码**未变。正常 hooks **177 文件、1,628 测试**通过，完整阶段检查继续。修正移除了额外执行器查找依赖，未声称已证实最初偶发超时机制。证据：`p4-q07-path-before.json`、`p4-q07-path-after.json`、`p4-q07-assets-unchanged.json`、`p4-q07-runtime-artifact-source-binding.json`、`p4-q07-validation-evidence.json`、`p4-q07-commit-tree.json`、`p4-q07-commit-evidence.json`、`p4-q07-acceptance.json`。
+
+**P4 阶段最终验收。** 在 `781aadf` 上完整 **177 文件、1,628 测试**通过，覆盖率为语句 **97.45%**、分支 **95.26%**、函数 **98.22%**、行 **97.53%**，保持原分母和四维 95% 阈值。本轮未复现 formatter 超时。展示站生产构建、Next 门的 **21 项浏览器门测试**及真实水合/主题切换、正式文档消费均通过；文档门编译 **32 个文档模块、99 个 Usage、252 个场景**，核对 **99 个细粒度入口、34 个 root 名称**。
+
+最终运行时是 11b3 的新包，包 build/types/pack/publint 与正式 A/B 已通过；12d/Q07 未改组件运行时或声明，保留 **230 份产物 / 111 份源码**绑定。**113 份声明产物**与已验收的 120 项旧接口检查完全一致，DatePicker 和 Provider 的专项旧契约另有验证。原始 `public-api-baseline.json` 仍为 `ef2bd65` 原文，版本保持 **2.0.3**。P4 已整体验收，下一阶段为 P5；后续不沿用本阶段数值冒充新实现的覆盖率。证据：`p4-stage-coverage-final.json`、`p4-stage-coverage-final.lcov`、`p4-stage-final-validation-evidence.json`、`p4-phase-final-types-binding.json`、`p4-q07-runtime-artifact-source-binding.json`、`p4-phase-acceptance.json`。
+
 ### 12.5 实施中追加的问题
 
-#### C16 · P2 · 内置 Portal 截断 Content 的 forceMount 契约【浏览器＋源码；待 P4 修正】
+#### C16 · P2 · 内置 Portal 截断 Content 的 forceMount 契约【已于 P4 修正】
 
 源码类型继承了 Radix Content 的 `forceMount`，但包装组件没有把它交给外层 Portal。关闭时 Portal 先卸载，因此只在 Content 上传入 `forceMount` 无法保留内容，调用方的挂载或退场动画策略失效。
 
@@ -897,7 +970,7 @@ P3 的 **120 项旧公开 props/ref/key/文档类型契约**保持兼容；最�
 
 P2 的复合 API 说明先明确当前限制；P4 用独立 10c 提交修正内置 Portal 的参数传递，并更新这些说明。保留默认关闭卸载、打开挂载及实际 ref/定位行为；验证外部动画结束并卸载后的焦点、背景和相邻浮层清理，说明使用 forceMount 时调用方承担的显隐与卸载责任。
 
-#### C17 · P2 · PopoverContent 的 asChild 组合无法挂载【浏览器＋源码；待 P4 修正】
+#### C17 · P2 · PopoverContent 的 asChild 组合无法挂载【已于 P4 修正】
 
 [PopoverContent](../packages/basalt/src/components/popover.tsx) 将传入的 children 与 Arrow/null 同时交给底层 Content。启用 `asChild` 后，Slot 收到多个子项，抛出 `Primitive.div failed to slot onto its children`，整块内容无法挂载；显式 `arrow={false}` 仍有同样问题。这是原有包装行为，P2 类型与文档补齐没有引入该变化。
 
@@ -905,7 +978,7 @@ P2 的复合 API 说明先明确当前限制；P4 用独立 10c 提交修正内�
 
 P4 以独立 10d 提交修正 Popover 的子元素组合，验证默认与 asChild、有无箭头、ref 和事件合成。P2 先准确记录限制；不扩大修改已通过的其他浮层，也不改变普通 Popover 的默认几何。
 
-#### C18 · P2 · Toast 的隐藏图标选项在状态通知中无效【浏览器＋源码；待 P4 修正】
+#### C18 · P2 · Toast 的隐藏图标选项在状态通知中无效【已于 P4 修正】
 
 [toast.tsx](../packages/basalt/src/components/toast.tsx) 将 `icon: false` 原样传给 Sonner；当前 Sonner 会把 false 当作未指定图标，继续使用状态默认图标。`/ui/toast` 的 “No icon” 按钮实际仍显示绿色勾选图标，和该示例及原有接口说明不符。
 
@@ -934,3 +1007,17 @@ P4 以独立 10d 提交修正 Popover 的子元素组合，验证默认与 asChi
 Checkbox.Group 与 Switch.Group 的内部 `setRefs` 调用外部 callback，却未向 React 转交其返回的清理函数。替换 ref 和卸载时，调用方收到旧式 `ref(null)`，此前注册的 cleanup 不执行。实际安装包六条生命周期验证 **4/6**：两组 object ref 与普通 callback 的替换/卸载控制通过，两组 React 19 cleanup 失败。
 
 证据：`p3-group-refs-group-refs-before.json`。09c 独立修正这两处合并逻辑，保留 FIELDSET 目标、普通 callback/object 行为及内部表单 ref；不新增公开 API。
+
+#### D07 · P2 · 回调与 ReactNode 联合类型的文档丢失括号【生成结果＋类型复现；待 P10 修正】
+
+P4/10b 新增的错误文案参数暴露出 [catalog-api.ts](../scripts/catalog-api.ts) 的类型打印边界：实际类型为 `React.ReactNode | ((error: unknown) => React.ReactNode)`，生成结果却是 `(error: unknown) => React.ReactNode | React.ReactNode`，变成了仅接受函数的类型。主 agent 从真实安装包取出原文，用 TypeScript 验证同一个字符串：公开参数接受，生成的文档类型以 **TS2322** 拒绝。证据：`p4-d07-union-docs-before.json`。
+
+10b 使用明确的 `DeleteResourceErrorFormatter` 回调别名，使本组公开文档准确且参数兼容。通用打印器的优先级修正在 P10 单独提交：保留联合中的函数/构造函数等必要括号，用实际可赋值性对照验证生成文本，并确认其他已生成 API 没有意外变化；不把当前别名方案计为通用缺陷已关闭。
+
+#### C22 · P2 · 日历超出原生日期上限时跳回一月【已于 P4 修正】
+
+P4 阶段补键盘回归时发现，日期为 `275760-09-13` 时 PageDown 错误聚焦 `275760-01-02`。月末超出 JavaScript Date 范围导致天数 NaN，随后 `utcDate` 的 `setUTCFullYear` 将 Invalid Date 恢复为当年一月。正常按钮已禁用 Next，键盘路径仍可能越界。修复纳入 11b3：拒绝无效月份目标，同时保留最后月份内仍合法日期的导航及原有扩展年份范围；重新执行真实包、类型与消费者验收。证据：`p4-calendar-regression-p4-11b3-native-before.json`、`p4-11b3-native-before-unit.log`。
+
+#### Q07 · P2 · registry 格式化子进程偶发超时【已于 P4 修正调用并复核】
+
+[package-registry.ts](../scripts/package-registry.ts) 通过 `bunx --no-install biome format` 格式化 registry/source JSON，子进程预算为 10 秒。P4 的组合子集验证曾两次遇到 `spawnSync bunx ETIMEDOUT`；11b3 正常提交及阶段首轮 coverage 再次被同类错误拦下，实际均为 **176 文件 / 1,619 测试通过，1 个 registry 版本同步测试超时**。未改文件重试通过不代表问题已关闭。将固定版本 formatter 调用和失败诊断前移至 P4 独立原子组，保持 10 秒预算和全部质量门。root 对真实 registry/sources 的两组调用对照文本一致，支持直接调用已安装的固定 CLI；该有限对照未复现超时，不能据此声称超时根因已确认。证据：`p4-12b-docs-batch-before.log`、`p4-11b3-commit-before-formatter-timeout.log`、`p4-stage-coverage-attempt-1.log`、`p4-q07-formatter-diagnostic.json`。
