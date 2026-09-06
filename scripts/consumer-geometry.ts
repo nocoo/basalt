@@ -143,6 +143,89 @@ export async function assertConsumerGeometry(
 		);
 	}
 
+	// 5. Test Combobox inside overflow-hidden LayerCard renders in portal outside card bounds
+	const cardComboboxInput = page.locator("#card-combobox-input");
+	await cardComboboxInput.focus();
+	const comboboxList = page.getByRole("listbox");
+	await comboboxList.waitFor({ state: "visible", timeout: 5000 });
+	const cardBox = await page.locator("#basalt-card-overflow").boundingBox();
+	const listBox = await comboboxList.boundingBox();
+	const cardInputBox = await cardComboboxInput.boundingBox();
+	if (!cardBox || !listBox || !cardInputBox) {
+		throw new Error("expected bounding boxes for card, listbox, and card input");
+	}
+	// Listbox width matches input trigger width
+	if (Math.abs(listBox.width - cardInputBox.width) > 2) {
+		throw new Error(
+			`expected listbox width (${listBox.width}) to match trigger width (${cardInputBox.width})`,
+		);
+	}
+	// Listbox extends below card bottom (not clipped by overflow:hidden)
+	if (listBox.y + listBox.height <= cardBox.y + cardBox.height) {
+		throw new Error(
+			`expected listbox to render beyond card overflow boundary: list bottom=${listBox.y + listBox.height}, card bottom=${cardBox.y + cardBox.height}`,
+		);
+	}
+
+	// Assert option center is hit by elementFromPoint (proving it is NOT clipped or occluded by card)
+	const option3 = page.getByRole("option", { name: "Clipped 3" });
+	const isOption3Visible = await option3.evaluate((el) => {
+		const r = el.getBoundingClientRect();
+		const topEl = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
+		return el.contains(topEl);
+	});
+	if (!isOption3Visible) {
+		throw new Error(
+			"expected Clipped 3 option center to be hit by elementFromPoint outside card bounds",
+		);
+	}
+
+	// Keyboard navigation: ArrowUp to wrap to last item, assert active descendant scrolls into view and focus stays on input
+	await page.keyboard.press("ArrowUp");
+	const activeDescendantInfo = await cardComboboxInput.evaluate((input) => {
+		const actId = input.getAttribute("aria-activedescendant");
+		const actEl = actId ? document.getElementById(actId) : null;
+		const controlsId = input.getAttribute("aria-controls");
+		const listEl = controlsId ? document.getElementById(controlsId) : null;
+		const r = actEl?.getBoundingClientRect();
+		const b = listEl?.getBoundingClientRect();
+		return {
+			text: actEl?.textContent,
+			focused: document.activeElement === input,
+			visible: Boolean(r && b && r.top >= b.top - 1 && r.bottom <= b.bottom + 1),
+		};
+	});
+	if (activeDescendantInfo.text !== "Clipped 3") {
+		throw new Error(`expected active descendant to be Clipped 3, got ${activeDescendantInfo.text}`);
+	}
+	if (!activeDescendantInfo.focused) {
+		throw new Error("expected input to retain focus during keyboard navigation");
+	}
+	if (!activeDescendantInfo.visible) {
+		throw new Error("expected active descendant option to be scrolled into visible list area");
+	}
+
+	// Pointer selection: click Clipped 3, assert listbox closes and input updates value
+	await option3.click();
+	await comboboxList.waitFor({ state: "hidden", timeout: 5000 });
+	const updatedValue = await cardComboboxInput.inputValue();
+	if (updatedValue !== "Clipped 3") {
+		throw new Error(`expected card combobox input value to be 'Clipped 3', got '${updatedValue}'`);
+	}
+
+	// 6. Test Combobox nested inside Dialog
+	const dialogComboboxInput = page.locator("#dialog-combobox-input");
+	await dialogComboboxInput.focus();
+	const dialogList = page.getByRole("listbox");
+	await dialogList.waitFor({ state: "visible", timeout: 5000 });
+	// First Escape closes nested listbox, Dialog remains open
+	await page.keyboard.press("Escape");
+	await dialogList.waitFor({ state: "hidden", timeout: 5000 });
+	const isDialogStillOpen = await page.getByRole("dialog").count();
+	if (isDialogStillOpen === 0) {
+		throw new Error("Escape closed Dialog instead of closing nested listbox first");
+	}
+
 	const data = await page.evaluate(() => {
 		function getEl(id: string): HTMLElement {
 			const el = document.getElementById(id);

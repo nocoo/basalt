@@ -1,7 +1,8 @@
+import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { type ComponentPropsWithoutRef, useEffect, useId, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { Input, type InputSize } from "./input";
-import { overlayItemClass, overlayPanelClass } from "./overlay";
+import { OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
 export type TypeaheadItem = {
 	value: string;
@@ -102,6 +103,16 @@ export function TypeaheadField({
 	const busy = disabled || loading;
 
 	useEffect(() => {
+		if (!listOpen || activeIndex === null) {
+			return;
+		}
+		const optionElement = document.getElementById(`${listId}-opt-${activeIndex}`);
+		if (typeof optionElement?.scrollIntoView === "function") {
+			optionElement.scrollIntoView({ block: "nearest" });
+		}
+	}, [activeIndex, listId, listOpen]);
+
+	useEffect(() => {
 		if (!open) {
 			return;
 		}
@@ -175,147 +186,170 @@ export function TypeaheadField({
 	}, [items, open, selected]);
 
 	return (
-		<div
-			{...rest}
-			className={cn("relative w-full", className)}
-			onBlur={(event) => {
-				onBlur?.(event);
-				if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
-					if (allowFreeform) {
-						if (query.trim() !== displayOf(items, selected)) {
-							commitFreeform(query);
-							return;
+		<PopoverPrimitive.Root open={listOpen}>
+			<div
+				{...rest}
+				className={cn("relative w-full", className)}
+				onBlur={(event) => {
+					onBlur?.(event);
+					const related = event.relatedTarget as Node | null;
+					const listbox = document.getElementById(listId);
+					if (!event.currentTarget.contains(related) && !listbox?.contains(related)) {
+						if (allowFreeform) {
+							if (query.trim() !== displayOf(items, selected)) {
+								commitFreeform(query);
+								return;
+							}
+						} else {
+							setQuery(displayOf(items, selected));
 						}
-					} else {
-						setQuery(displayOf(items, selected));
-					}
-					setOpen(false);
-					setActive(null);
-				}
-			}}
-		>
-			{name ? <input type="hidden" name={name} value={selected} disabled={busy} /> : null}
-			<Input
-				ref={inputRef}
-				id={id}
-				value={query}
-				disabled={busy}
-				size={size}
-				aria-busy={loading || undefined}
-				aria-invalid={ariaInvalid}
-				aria-describedby={ariaDescribedBy}
-				onChange={(event) => {
-					setQuery(event.target.value);
-					setOpen(true);
-					setActive(null);
-				}}
-				onFocus={() => {
-					if (busy) {
-						return;
-					}
-					if (skipFocusOpen.current) {
-						skipFocusOpen.current = false;
-						return;
-					}
-					setActive(null);
-					setOpen(true);
-				}}
-				onClick={() => {
-					if (busy) {
-						return;
-					}
-					if (!open) {
+						setOpen(false);
 						setActive(null);
 					}
-					setOpen(true);
 				}}
-				onKeyDown={(event) => {
-					if (event.nativeEvent.isComposing || event.key === "Process") {
-						return;
-					}
-					if (event.key === "ArrowDown") {
-						event.preventDefault();
-						setOpen(true);
-						if (filtered.length === 0) {
+			>
+				{name ? <input type="hidden" name={name} value={selected} disabled={busy} /> : null}
+				<PopoverPrimitive.Anchor asChild>
+					<Input
+						ref={inputRef}
+						id={id}
+						value={query}
+						disabled={busy}
+						size={size}
+						aria-busy={loading || undefined}
+						aria-invalid={ariaInvalid}
+						aria-describedby={ariaDescribedBy}
+						onChange={(event) => {
+							setQuery(event.target.value);
+							setOpen(true);
 							setActive(null);
-							return;
-						}
-						setActive((current) => (current === null ? 0 : (current + 1) % filtered.length));
-						return;
-					}
-					if (event.key === "ArrowUp") {
-						event.preventDefault();
-						setOpen(true);
-						if (filtered.length === 0) {
+						}}
+						onFocus={() => {
+							if (busy) {
+								return;
+							}
+							if (skipFocusOpen.current) {
+								skipFocusOpen.current = false;
+								return;
+							}
 							setActive(null);
-							return;
+							setOpen(true);
+						}}
+						onClick={() => {
+							if (busy) {
+								return;
+							}
+							if (!open) {
+								setActive(null);
+							}
+							setOpen(true);
+						}}
+						onKeyDown={(event) => {
+							if (event.nativeEvent.isComposing || event.key === "Process") {
+								return;
+							}
+							if (event.key === "ArrowDown") {
+								event.preventDefault();
+								setOpen(true);
+								if (filtered.length === 0) {
+									setActive(null);
+									return;
+								}
+								setActive((current) => (current === null ? 0 : (current + 1) % filtered.length));
+								return;
+							}
+							if (event.key === "ArrowUp") {
+								event.preventDefault();
+								setOpen(true);
+								if (filtered.length === 0) {
+									setActive(null);
+									return;
+								}
+								setActive((current) =>
+									current === null
+										? filtered.length - 1
+										: (current - 1 + filtered.length) % filtered.length,
+								);
+								return;
+							}
+							if (event.key === "Enter") {
+								if (open && activeItem) {
+									event.preventDefault();
+									commitItem(activeItem);
+									return;
+								}
+								if (allowFreeform && query.trim() !== displayOf(items, selected)) {
+									event.preventDefault();
+									commitFreeform(query);
+								}
+							}
+						}}
+						placeholder={placeholder}
+						role="combobox"
+						aria-label={ariaLabel ?? (id ? undefined : placeholder)}
+						aria-expanded={listOpen}
+						aria-autocomplete="list"
+						aria-controls={listOpen ? listId : undefined}
+						aria-activedescendant={
+							listOpen && activeItem && activeIndex !== null
+								? `${listId}-opt-${activeIndex}`
+								: undefined
 						}
-						setActive((current) =>
-							current === null
-								? filtered.length - 1
-								: (current - 1 + filtered.length) % filtered.length,
-						);
-						return;
-					}
-					if (event.key === "Enter") {
-						if (open && activeItem) {
-							event.preventDefault();
-							commitItem(activeItem);
-							return;
-						}
-						if (allowFreeform && query.trim() !== displayOf(items, selected)) {
-							event.preventDefault();
-							commitFreeform(query);
-						}
-					}
-				}}
-				placeholder={placeholder}
-				role="combobox"
-				aria-label={ariaLabel ?? (id ? undefined : placeholder)}
-				aria-expanded={listOpen}
-				aria-autocomplete="list"
-				aria-controls={listOpen ? listId : undefined}
-				aria-activedescendant={
-					listOpen && activeItem && activeIndex !== null
-						? `${listId}-opt-${activeIndex}`
-						: undefined
-				}
-			/>
-			{listOpen ? (
-				<div
-					id={listId}
-					role="listbox"
-					className={overlayPanelClass("absolute top-full z-20 mt-1 w-full")}
-				>
-					{filtered.map((item, index) => (
-						<button
-							type="button"
-							key={`${listId}-opt-${index}`}
-							id={`${listId}-opt-${index}`}
-							role="option"
-							tabIndex={-1}
-							disabled={item.disabled}
-							aria-disabled={item.disabled || undefined}
-							aria-selected={index === activeIndex}
-							className={cn(
-								overlayItemClass("hover:bg-basalt-accent"),
-								index === activeIndex && "bg-basalt-accent",
-								item.disabled && "opacity-50",
-							)}
-							onMouseEnter={() => {
-								if (!item.disabled) {
-									setActive(index);
+					/>
+				</PopoverPrimitive.Anchor>
+				{listOpen ? (
+					<PopoverPrimitive.Portal>
+						<PopoverPrimitive.Content
+							side="bottom"
+							sideOffset={OVERLAY_GAP}
+							align="start"
+							avoidCollisions
+							collisionPadding={8}
+							onOpenAutoFocus={(e) => e.preventDefault()}
+							onCloseAutoFocus={(e) => e.preventDefault()}
+							onInteractOutside={(e) => {
+								const target = e.target as Node | null;
+								if (inputRef.current?.contains(target)) {
+									e.preventDefault();
 								}
 							}}
-							onMouseDown={(event) => event.preventDefault()}
-							onClick={() => commitItem(item)}
+							id={listId}
+							role="listbox"
+							className={overlayPanelClass(
+								"w-[var(--radix-popover-trigger-width)] max-h-[var(--radix-popover-content-available-height)] overflow-y-auto",
+							)}
 						>
-							{item.label}
-						</button>
-					))}
-				</div>
-			) : null}
-		</div>
+							{filtered.map((item, index) => (
+								<button
+									type="button"
+									key={`${listId}-opt-${index}`}
+									id={`${listId}-opt-${index}`}
+									role="option"
+									tabIndex={-1}
+									disabled={item.disabled}
+									aria-disabled={item.disabled || undefined}
+									aria-selected={index === activeIndex}
+									className={cn(
+										overlayItemClass("hover:bg-basalt-accent"),
+										index === activeIndex && "bg-basalt-accent",
+										item.disabled && "opacity-50",
+									)}
+									onMouseEnter={() => {
+										if (!item.disabled) {
+											setActive(index);
+										}
+									}}
+									onMouseDown={(event) => event.preventDefault()}
+									onClick={() => commitItem(item)}
+								>
+									{item.label}
+								</button>
+							))}
+						</PopoverPrimitive.Content>
+					</PopoverPrimitive.Portal>
+				) : null}
+			</div>
+		</PopoverPrimitive.Root>
 	);
 }
 

@@ -37,8 +37,6 @@ describe("Combobox", () => {
 		render(<Combobox items={FRUITS} placeholder="Fruit" />);
 		typeQuery("Fruit", "a");
 		const list = screen.getByRole("listbox");
-		expect(list.className).toContain("top-full");
-		expect(list.className).toContain("mt-1");
 		expect(list.className).toContain("py-1.5");
 		expect(screen.getByRole("option", { name: "Apple" }).className).toContain("mx-1.5");
 	});

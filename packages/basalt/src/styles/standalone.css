@@ -460,9 +460,6 @@
   .top-2 {
     top: calc(var(--spacing) * 2);
   }
-  .top-full {
-    top: 100%;
-  }
   .right-0 {
     right: 0px;
   }
@@ -486,9 +483,6 @@
   }
   .left-1\/2 {
     left: calc(1 / 2 * 100%);
-  }
-  .z-20 {
-    z-index: 20;
   }
   .z-50 {
     z-index: 50;
@@ -688,6 +682,9 @@
   .max-h-\[calc\(100vh-2rem\)\] {
     max-height: calc(100vh - 2rem);
   }
+  .max-h-\[var\(--radix-popover-content-available-height\)\] {
+    max-height: var(--radix-popover-content-available-height);
+  }
   .min-h-0 {
     min-height: 0px;
   }
@@ -774,6 +771,9 @@
   }
   .w-\[calc\(100\%-0\.75rem\)\] {
     width: calc(100% - 0.75rem);
+  }
+  .w-\[var\(--radix-popover-trigger-width\)\] {
+    width: var(--radix-popover-trigger-width);
   }
   .w-\[var\(--radix-select-trigger-width\)\] {
     width: var(--radix-select-trigger-width);

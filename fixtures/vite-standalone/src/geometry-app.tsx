@@ -10,6 +10,7 @@ import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { CodeBlock } from "@nocoo/basalt/components/code";
+import { Combobox } from "@nocoo/basalt/components/combobox";
 import { CommandShortcut } from "@nocoo/basalt/components/command-palette";
 import { DescriptionList } from "@nocoo/basalt/components/description-list";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";
@@ -153,6 +154,21 @@ export function GeometryApp() {
 					</SelectContent>
 				</Select>
 
+				{/* LayerCard containing Combobox to assert unclipped portal positioning */}
+				<LayerCard id="basalt-card-overflow" padding="md" className="overflow-hidden">
+					<div id="basalt-card-overflow-wrap">
+						<Combobox
+							id="card-combobox-input"
+							items={[
+								{ value: "item-1", label: "Clipped 1" },
+								{ value: "item-2", label: "Clipped 2" },
+								{ value: "item-3", label: "Clipped 3" },
+							]}
+							placeholder="Card Combobox"
+						/>
+					</div>
+				</LayerCard>
+
 				<LayerCard id="basalt-card" padding="md">
 					<div id="basalt-card-wrap">
 						<Input id="basalt-card-input" defaultValue="Card Input" />
@@ -238,6 +254,14 @@ export function GeometryApp() {
 						<DialogTitle id="basalt-dialog-title">Dialog Heading</DialogTitle>
 						<Input id="portal-input" defaultValue="Portal Input" />
 						<Button id="portal-btn">Portal Button</Button>
+						<Combobox
+							id="dialog-combobox-input"
+							items={[
+								{ value: "d-1", label: "Dialog Option 1" },
+								{ value: "d-2", label: "Dialog Option 2" },
+							]}
+							placeholder="Dialog Combobox"
+						/>
 					</DialogContent>
 				</Dialog>
 			</div>
