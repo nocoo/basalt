@@ -679,7 +679,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 |---|---|---|---|---|
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
-| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`003af81`：公开基线、严格 import、入口文档 tarball 编译、97 页源码 API、provider 与非 catalog 正文、Tooltip/Popover、原生策略和类型保真已分组验收；继续复合接口缺项、全部 Library Usage/scenario 编译及版本化指南 |
+| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`30c2ee4`：公开基线、严格 import、入口文档 tarball 编译、97 页源码 API、provider 与非 catalog 正文、overlay/Collapsible/Command、原生策略和类型保真已分组验收；继续 Sidebar/Toast、全部 Library Usage/scenario 编译及版本化指南 |
 | P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
 | P4 | 浮层与语义：10a/b/c/d、11a/b、12a/b；C06–C11/C16/C17/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Popover asChild、Slider 多值/名称/双轴几何、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
@@ -769,14 +769,18 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 
 `003af81` 完成 Tooltip/Popover 的 **10 个 surface**，补齐 Provider 继承、Root 状态、定位与关闭回调、原生属性和 ref。Tooltip 的 700ms 默认值归于 Provider，单个 Root 可覆盖；两种 Content 的 forceMount 限制和 Popover asChild 的 C17 崩溃如实说明，未在文档组改变行为。主 agent 核验 **97 份 API、原有 95 份不变**，**10 个组件**的新旧参数/ref/字段集合及文档类型兼容，运行时 AST **2/2 不变**，真实页面 **2/2**、主 Usage **2/2 编译通过**。已核对的源码与生成文件在提交前后哈希一致。正常 hooks 为 **176 文件、1,477 测试**，typecheck/lint、包 build/types/pack/publint/gitleaks 通过。证据：`p2-c4a1-api-semantic-diff.json`、`p2-c4a1-api-visible.json`、`p2-c4a1-public-props.log`、`p2-c4a1-runtime-source-diff.json`、`p2-c4a1-usage.log`、`p2-c4a1-acceptance.json`。
 
+`0ea3541` 完成 Collapsible/DropdownMenu 共 **11 个 surface**，包括受控状态、键盘循环、定位与事件、Portal 和子组边界。Collapsible 明确公开类型不含 Root ref，以及 Content 的 asChild/unstyled 组合；DropdownMenu 区分公开与内部参数，并说明方向继承、内置 Portal 和未提供的子菜单/单选项出口。主 agent 核验 **97 份 API、此前 95 份不变**，**11 个组件**的参数/ref/字段集合及文档类型兼容，运行时 AST **2/2 不变**，真实页面 **2/2**、主 Usage **2/2 编译通过**。正常 hooks 为 **176 文件、1,477 测试**，包 build/types/pack/publint、typecheck/lint/gitleaks 通过。证据：`p2-c4a2-api-semantic-diff.json`、`p2-c4a2-api-visible.json`、`p2-c4a2-public-props.log`、`p2-c4a2-runtime-source-diff.json`、`p2-c4a2-usage.log`、`p2-c4a2-acceptance.json`。
+
+`30c2ee4` 完成 CommandPalette 的 **9 个 surface**，包括根的直接子 Trigger 约束、Dialog 状态、Input 字符串回调、List 名称、Item 选择与 forceMount 继承；不把 cmdk 根未公开的能力写成 Basalt 接口。主 agent 核验 **97 份 API、此前 96 份不变**，**9 个组件**的参数/ref/字段集合及文档类型兼容，运行时 AST **1/1 不变**，真实页面与主 Usage **1/1 通过**。公开 manifest 为 **110 个模块、664 个符号（375 个运行时、289 个类型）、3 个 CSS 出口**；原始兼容基线保持不变。正常 hooks 为 **176 文件、1,477 测试**，包 build/types/pack/publint、typecheck/lint/gitleaks 通过。证据：`p2-c4a3-api-semantic-diff.json`、`p2-c4a3-api-visible.json`、`p2-c4a3-public-props.log`、`p2-c4a3-runtime-source-diff.json`、`p2-c4a3-usage.log`、`p2-c4a3-acceptance.json`。
+
 P2 后续范围细化如下，发现即登记，不把归属或编译机制已经建立等同于文档全部完成：
 
-- D03b-C4A1 的 Tooltip/Popover 已验收；继续 Collapsible/DropdownMenu、Command、Sidebar/native 子件及 Banner/Toast 的准确来源。CollapsibleContent 现有表只列 unstyled，需补非原生功能与 asChild/inset 的真实边界；SidebarSearch 是按钮，SidebarGroup 只公开 defaultOpen，不能为补文档擅自扩充受控接口。别名复用同一接口说明。Toast 现有手表把 Toaster/Toast 组件与 toast() 函数参数混在一起，需分别说明，实际 message 类型是 ReactNode。
+- D03b-C4A1/A2/A3 已验收；继续 Sidebar/native 子件及 Banner/Toast 的准确来源。SidebarSearch 是按钮，SidebarGroup 只公开 defaultOpen，不能为补文档擅自扩充受控接口。别名复用同一接口说明。Toast 现有手表把 Toaster/Toast 组件与 toast() 函数参数混在一起，需分别说明，实际 message 类型是 ReactNode。
 - D02c 补全部 Library 主 Usage 的真实 tarball 编译。主 agent 从浏览器实际 registry 提取 99 页 Usage，在仓外按公开 package exports（本地包依赖、无源码 alias）诊断编译，初始 **91/99**。失败项为 Accordion、ConfirmDialog、LinkProvider、SegmentControl、Sheet、SlotBar、TablePager、ToggleGroup，原因包括缺必填属性、未声明状态或漏导入；ToggleGroup、Accordion、Sheet、LinkProvider 已修正。该诊断不是新 tarball 安装证明，关闭前仍需正式消费门及独立复验。
 - D02d 将 Copy page 内的全部 scenario code 纳入同一真实 tarball 编译门。浏览器提取共 **99 页、246 个场景**；其中 175 个完整模块的初次仓外诊断为 **174/175 通过**，Sheet 漏导入已在 `feda988` 修正并独立编译，另 **71 段**缺少可独立复制的完整上下文（反馈类 40、其他家族 31）。完整示例必须保留真实 imports、状态和数据，测试 harness 不得注入隐式 import、any 或假全局来制造通过。先前一次混合片段编译因语法错误提前停止，其“未报错文件数”不作为通过数。证据：`p2-scenario-compile-before.json`；正式门尚待实施。
 - 非 catalog 正文与归属已在 C3B 验收；D04 继续处理随版本交付和从包内独立读取的指南。
 
-上述接受的是 D03a、D03b-A/B1/B2A/B2B/C1A/C1B/C2A/C2B/C3A/C3B/C4A1、空参数原生策略及 DOM 类型命名修正。遗漏复合接口、全部 Usage/scenario 和版本化指南继续分组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
+上述接受的是 D03a、D03b-A/B1/B2A/B2B/C1A/C1B/C2A/C2B/C3A/C3B/C4A1/C4A2/C4A3、空参数原生策略及 DOM 类型命名修正。遗漏复合接口、全部 Usage/scenario 和版本化指南继续分组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
 
 ### 12.5 实施中追加的问题
 
