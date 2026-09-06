@@ -681,7 +681,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 |---|---|---|---|---|
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
-| P2 | 公共接口与文档：04、05、06a/b1/b2；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`b4c2839`：公开基线、严格 import、入口文档、99 页源码 API、provider 与非 catalog 正文、复合组件/native/别名及 toast 函数已分组验收；99 个主 Usage 与全部 246 场景已进入正式 tarball 门，继续版本化 registry 与接入指南 |
+| P2 | 公共接口与文档：04、05、06a/b1/b2；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 已验收 | `ef2bd65`–`2b8f088`：99 页 API、99 Usage、246 场景、随包 registry/指南及正式 tarball 编译门；120 项旧接口契约与 5 项真实 recipe 浏览器检查通过，详见 12.4 |
 | P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
 | P4 | 浮层与语义：10a/b/c/d/e、11a/b、12a/b；C06–C11/C16/C17/C18/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
@@ -715,7 +715,7 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 
 上述是本地实现与隔离行为证据；本轮未推送远端，不能表述为 GitHub 上该分支的 CI 已运行成功。P1 仅关闭 Q01–Q04/Q06；Q05 的浏览器几何、组件交互与展示回归门继续随 P3–P10 实施。组织级 index-snapshot pre-commit、stdin-range pre-push 仍是既有后续项，没有在本阶段伪报完成。
 
-#### P2 验收记录（实施中，2026-09-06）
+#### P2 验收记录（已验收，2026-09-06）
 
 首组 `ef2bd65` 建立原始 2.0.3 公共出口基线、类型/路径校验和随包兼容政策，并刷新入口文档。主 agent 对当前产物独立核验：110 个模块入口、572 个路径内导出符号（375 个运行时符号）及 3 个 CSS 入口全部保留，原始基线未被替换。
 
@@ -799,14 +799,24 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 
 完整模块检查采用 TypeScript AST，接受函数、箭头、默认导出、类及包装组件，不强迫原生 JSX 组件添加多余 import。首轮独立控制 **18/25**，发现强制 import 拒绝 5 种合法写法、空导出/类型声明放过 2 种片段；修正后同一组 **25/25 通过**，覆盖新增页面/场景自动纳入、缺失/空代码、重复 ID 和文件名碰撞。主 agent 另在隔离仓库直接改写两个非首屏 Dialog 场景，漏 Button 导入和无效属性均由真实 tarball 的 tsc 拒绝，裸原生 JSX 回退由模块检查拒绝。两份最终文件的哈希与已审实现一致，正常 hooks 均为 **176 文件、1,484 测试**。证据：`p2-scenario-gate-positive.json`、`p2-scenario-loader-fixed-result.json`、`p2-scenario-gate-types-result.json`、`p2-scenario-gate-native-result.json`、`p2-scenario-gate-acceptance.json`。
 
-P2 后续范围细化如下，发现即登记，不把归属或编译机制已经建立等同于文档全部完成：
+`e198a8b` 完成随包版本化 registry、源码获取与 Library Source 查看页。registry 覆盖 **110 个公共模块、684 个符号（375 个运行时、309 个类型）、3 个 CSS 出口、99 个 catalog 条目与 241 个 API surface**，保留共享模块中的独立条目、Toast 函数及逐模块 peer 归属。包内提供当前 INTEGRATION 镜像和基础 agent 指南；源码通过 sourcemap 的 sourcesContent 或自动发现的纯转导出 source bundle 读取，Source 链接以源码指纹校验。根检查与包构建接入 metadata freshness，pack 检查覆盖版本、全部公开源码和冲突的 sourcesContent；release 在暂存前重新生成当前元数据，原始公开基线不变。
+
+主 agent 在不含 dist 的隔离源码中验证 **17/17**，从新构建的真实 npm tarball 中核验 **441/441**（含 111 条包内文档引用、全部模块的 peer 和精确源码）；pack 的故障注入 **8/8** 通过。实际隔离提升到 9.8.7 后，6 个变更文件均正确生成并暂存，生成失败阻断暂存，基线逐字节不变；真实仓库仍为 2.0.3。真实 Library Source 链接、Copy、错误指纹拒绝和 390px 布局 **5/5**，另以延迟 raw 网络响应复现并修正旧请求覆盖新路由错误的问题。正式回归覆盖 metadata 缺失/漂移、包内锚点、模拟版本提升和源码异步竞态；正常 hooks 为 **177 文件、1,505 测试**，包 build/types/pack/publint 与 consumer:docs 通过。证据：`p2-registry-final-controls.json`、`p2-registry-final-artifact.json`、`p2-registry-pack-corrected.json`、`p2-registry-final-release-stage.json`、`p2-source-viewer-final.json`、`p2-source-viewer-race-final.json`、`p2-registry-commit-evidence.json`。
+
+`2b8f088` 完成 Vite/Tailwind 与 standalone、Next 根布局/客户端边界/主题初始化、React Router adapter、原生表单及 React Hook Form 接入指南，原文镜像随包交付。日期控件使用现有 ISO string 契约；Controller 内的 Field 正确关联实际控件；P3/P4 尚未修正的 ref、required、blur 与存储边界明确记录。正式 consumer:docs 递归发现包内 AI Markdown，编译 **26 个完整文档模块、99 个 Usage、246 个场景**及 **99 个 granular / 34 个 root 导入**。
+
+主 agent 从最终真实安装 tarball 独立编译浏览器提取的 **345 个 Usage/场景，全部通过**；再从安装包的指南原文提取 5 个 recipe，在 Chromium 中验证 RHF 必填/最短长度/提交/受控日期重置、原生 Input/Switch FormData 与 reset、真实路由切换、Vite 输入操作和 Next 客户端组件重置，**5/5 通过**。Next 根布局另经完整 TSX 编译与文件边界审查；此处不把 Vite 中的客户端组件检查称为 Next SSR 验收，整体验收仍包含正式 consumer:next。新增顶层及嵌套 AI 文档均自动发现；隔离仓库中新建嵌套 recipe 的错误 import 与无效 prop 均被实际 tarball 消费端 TypeScript 拒绝。初次浏览器 probe 的精确名称与同步路由读取得到两条工具断言失败，按实际含日期的可访问名称和异步路由状态修正 probe 后通过，未改动组件。证据：`p2-final-result.json`、`p2-guides-browser-manifest.json`、`p2-guides-browser-result.json`、`p2-guides-real-negative.json`。
+
+阶段收尾对原始 `e61efc1` 的 **120 项 props/ref/key/文档类型契约全部通过**；最终指南提交未改变绑定的 **212 份库源码和 113 份声明**。原始 `ef2bd65` 公共基线逐字节保留，当前仍为 2.0.3。最终正常 hooks 为 **177 文件、1,506 测试**，typecheck/lint/gitleaks、包 build/types/pack/publint、consumer:docs 与根生产 build 均通过。证据：`p2-final-public-props.json`、`p2-final-public-props-final-binding.json`、`p2-guides-commit-evidence.json`。生成 standalone CSS 的最新完整同步由 P3/07 承接，不把当前已知尺寸问题计为通过。
+
+P2 范围关闭如下：
 
 - D03b-C4A1/A2/A3、C4B、C4C-Banner/Toaster/函数家族已验收；组件参数与通知参数分开，message、五个方法、选项和返回边界均已同源生成。隐藏图标的 C18 限制已说明，运行时修正留在 P4。
 - D02c 已验收：主 Usage 全部修正，**99/99 实际 tarball 安装编译**进入正式 consumer:docs；无效属性、漏导入、缺失/空白 Usage 与新增 ready 纳入均已验证。
 - D02d 已验收：原 175 个完整模块中的 Sheet 漏导入在 `feda988` 修正，其余 **71 个片段全部补齐**，现有 **246/246 场景严格 tarball 编译及完整模块检查**均进入正式 consumer:docs。真实源码负例和 **25 个独立控制**按上述结果通过，harness 不注入隐式 import、any 或假全局。早期混合片段导致语义检查中止的“未报错文件数”不作为通过数。历史诊断：`p2-scenario-compile-before.json`。
-- 非 catalog 正文与归属已在 C3B 验收；D04 分为 06b1 随包 registry/来源/版本 freshness 与 06b2 完整接入指南/可编译 recipes，分别提交和验收。
+- 非 catalog 正文与归属已在 C3B 验收；D04 的 06b1 随包 registry/来源/版本 freshness 已在 `e198a8b` 验收，06b2 完整接入指南与可编译 recipes 已在 `2b8f088` 验收。
 
-上述接受的是 D03a、D03b-A/B1/B2A/B2B/C1A/C1B/C2A/C2B/C3A/C3B/C4A1/C4A2/C4A3/C4B/C4C-Banner/Toaster/函数家族、空参数原生策略、DOM 类型命名修正、D02c 全部主 Usage 和 D02d 全部场景代码及正式门。版本化 registry 与接入指南继续分组验收，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
+P2 的 D01–D06 已整体验收。C01–C18、Example 与新增公共能力按 P3–P10 继续，不把文档完整性验收等同于运行时问题已经解决。pi 服务错误与重复读取循环由监控识别，保留工作区并恢复原会话后按原子组续跑；模型和 pane 保持原配置。下一阶段为 P3。
 
 ### 12.5 实施中追加的问题
 
