@@ -286,4 +286,70 @@ describe("Switch", () => {
 		expect(compact.querySelector("span")?.className).toContain("h-3");
 		expect(compact.querySelector("span")?.className).toContain("w-3");
 	});
+
+	it("forwards and cleans up external refs (object, callback, React 19 cleanup) on group", () => {
+		// 1. Plain callback ref without cleanup
+		const callbackEvents: string[] = [];
+		const callbackRef = (node: HTMLFieldSetElement | null) => {
+			callbackEvents.push(`call:${node ? node.tagName : "null"}`);
+		};
+		const { unmount } = render(
+			<Switch.Group ref={callbackRef} aria-label="Plain Ref Group">
+				<Switch.Item value="a">Alpha</Switch.Item>
+			</Switch.Group>,
+		);
+		expect(callbackEvents).toEqual(["call:FIELDSET"]);
+		unmount();
+		expect(callbackEvents).toEqual(["call:FIELDSET", "call:null"]);
+
+		// 2. React 19 callback ref with cleanup function
+		let cleanupCalls = 0;
+		let attachCalls = 0;
+		const cleanupCallbackRef = (node: HTMLFieldSetElement | null) => {
+			if (node) {
+				attachCalls++;
+				return () => {
+					cleanupCalls++;
+				};
+			}
+		};
+		const { rerender: rerenderCleanup, unmount: unmountCleanup } = render(
+			<Switch.Group ref={cleanupCallbackRef} aria-label="Cleanup Ref Group">
+				<Switch.Item value="a">Alpha</Switch.Item>
+			</Switch.Group>,
+		);
+		expect(attachCalls).toBe(1);
+		expect(cleanupCalls).toBe(0);
+
+		// Swapping callback ref executes cleanup and does not call with null
+		let secondCleanupCalls = 0;
+		const secondCleanupCallbackRef = (node: HTMLFieldSetElement | null) => {
+			if (node) {
+				return () => {
+					secondCleanupCalls++;
+				};
+			}
+		};
+		rerenderCleanup(
+			<Switch.Group ref={secondCleanupCallbackRef} aria-label="Cleanup Ref Group">
+				<Switch.Item value="a">Alpha</Switch.Item>
+			</Switch.Group>,
+		);
+		expect(cleanupCalls).toBe(1);
+		expect(secondCleanupCalls).toBe(0);
+
+		unmountCleanup();
+		expect(secondCleanupCalls).toBe(1);
+
+		// 3. Object ref clearing on unmount
+		const objRef = createRef<HTMLFieldSetElement>();
+		const { unmount: unmountObj } = render(
+			<Switch.Group ref={objRef} aria-label="Object Ref Group">
+				<Switch.Item value="a">Alpha</Switch.Item>
+			</Switch.Group>,
+		);
+		expect(objRef.current?.tagName).toBe("FIELDSET");
+		unmountObj();
+		expect(objRef.current).toBeNull();
+	});
 });

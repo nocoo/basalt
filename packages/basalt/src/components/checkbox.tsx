@@ -156,11 +156,27 @@ const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(
 		const setRefs = React.useCallback(
 			(node: HTMLFieldSetElement | null) => {
 				nodeRef.current = node;
-				if (typeof ref === "function") {
-					ref(node);
-				} else if (ref) {
-					ref.current = node;
+				if (!ref) {
+					return;
 				}
+				if (typeof ref === "function") {
+					const cleanup = (ref as React.RefCallback<HTMLFieldSetElement>)(node);
+					if (typeof cleanup === "function") {
+						return () => {
+							nodeRef.current = null;
+							cleanup();
+						};
+					}
+					return () => {
+						nodeRef.current = null;
+						ref(null);
+					};
+				}
+				(ref as React.RefObject<HTMLFieldSetElement | null>).current = node;
+				return () => {
+					nodeRef.current = null;
+					(ref as React.RefObject<HTMLFieldSetElement | null>).current = null;
+				};
 			},
 			[ref],
 		);

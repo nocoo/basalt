@@ -322,4 +322,70 @@ describe("Checkbox", () => {
 		// @ts-expect-error item cannot take checked
 		acceptCheckboxItemProps({ value: "a", checked: true });
 	});
+
+	it("forwards and cleans up external refs (object, callback, React 19 cleanup) on group", () => {
+		// 1. Plain callback ref without cleanup
+		const callbackEvents: string[] = [];
+		const callbackRef = (node: HTMLFieldSetElement | null) => {
+			callbackEvents.push(`call:${node ? node.tagName : "null"}`);
+		};
+		const { unmount } = render(
+			<Checkbox.Group ref={callbackRef} aria-label="Plain Ref Group">
+				<Checkbox.Item value="a">Alpha</Checkbox.Item>
+			</Checkbox.Group>,
+		);
+		expect(callbackEvents).toEqual(["call:FIELDSET"]);
+		unmount();
+		expect(callbackEvents).toEqual(["call:FIELDSET", "call:null"]);
+
+		// 2. React 19 callback ref with cleanup function
+		let cleanupCalls = 0;
+		let attachCalls = 0;
+		const cleanupCallbackRef = (node: HTMLFieldSetElement | null) => {
+			if (node) {
+				attachCalls++;
+				return () => {
+					cleanupCalls++;
+				};
+			}
+		};
+		const { rerender: rerenderCleanup, unmount: unmountCleanup } = render(
+			<Checkbox.Group ref={cleanupCallbackRef} aria-label="Cleanup Ref Group">
+				<Checkbox.Item value="a">Alpha</Checkbox.Item>
+			</Checkbox.Group>,
+		);
+		expect(attachCalls).toBe(1);
+		expect(cleanupCalls).toBe(0);
+
+		// Swapping callback ref executes cleanup and does not call with null
+		let secondCleanupCalls = 0;
+		const secondCleanupCallbackRef = (node: HTMLFieldSetElement | null) => {
+			if (node) {
+				return () => {
+					secondCleanupCalls++;
+				};
+			}
+		};
+		rerenderCleanup(
+			<Checkbox.Group ref={secondCleanupCallbackRef} aria-label="Cleanup Ref Group">
+				<Checkbox.Item value="a">Alpha</Checkbox.Item>
+			</Checkbox.Group>,
+		);
+		expect(cleanupCalls).toBe(1);
+		expect(secondCleanupCalls).toBe(0);
+
+		unmountCleanup();
+		expect(secondCleanupCalls).toBe(1);
+
+		// 3. Object ref clearing on unmount
+		const objRef = createRef<HTMLFieldSetElement>();
+		const { unmount: unmountObj } = render(
+			<Checkbox.Group ref={objRef} aria-label="Object Ref Group">
+				<Checkbox.Item value="a">Alpha</Checkbox.Item>
+			</Checkbox.Group>,
+		);
+		expect(objRef.current?.tagName).toBe("FIELDSET");
+		unmountObj();
+		expect(objRef.current).toBeNull();
+	});
 });

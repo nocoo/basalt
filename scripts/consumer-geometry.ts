@@ -704,6 +704,170 @@ export async function assertConsumerGeometry(
 		throw new Error("controlled groups must not notify onValueChange on cancelled reset");
 	}
 
+	// C: Checkbox & Switch Group Ref lifecycle & Reset verification
+	for (const kind of ["checkbox", "switch"] as const) {
+		const formSelector = `#ref-reset-form-${kind}`;
+		await page.waitForFunction(
+			(selector) => document.querySelector(selector) != null,
+			formSelector,
+		);
+
+		// 1. Save original DOM node & swap ref
+		await page.evaluate((k) => {
+			const fs = document.getElementById(`ref-reset-group-${k}`) as HTMLFieldSetElement;
+			(window as unknown as Record<string, HTMLFieldSetElement | undefined>)[`original_${k}`] = fs;
+			const w = (window as unknown as Record<string, { swapRef: () => void }>)[`harness_${k}`];
+			w.swapRef();
+		}, kind);
+		await page.waitForTimeout(60);
+
+		// 2. Verify swapped ref (old cleared via cleanup, exact same FIELDSET node kept, event sequence)
+		const swappedProof = await page.evaluate((k) => {
+			const w = (
+				window as unknown as Record<
+					string,
+					{
+						getProof: () => {
+							nodes: (string | null)[];
+							events: string[];
+							changes: string[][];
+							cleared: boolean;
+							same: boolean;
+						};
+					}
+				>
+			)[`harness_${k}`];
+			return w.getProof();
+		}, kind);
+
+		if (!swappedProof.cleared || !swappedProof.same) {
+			throw new Error(
+				`${kind} group ref swap failed cleared/same check: ${JSON.stringify(swappedProof)}`,
+			);
+		}
+		if (
+			JSON.stringify(swappedProof.events) !==
+			JSON.stringify(["set:0:FIELDSET", "cleanup:0", "set:1:FIELDSET"])
+		) {
+			throw new Error(
+				`expected ${kind} ref swap events to match React 19 cleanup protocol, got: ${JSON.stringify(swappedProof.events)}`,
+			);
+		}
+
+		// 3. User selects Beta (click Beta then unclick Alpha)
+		const roleName = kind;
+		const alpha = page.getByRole(roleName, { name: `Alpha ${kind} Harness`, exact: true });
+		const beta = page.getByRole(roleName, { name: `Beta ${kind} Harness`, exact: true });
+		await beta.click();
+		await alpha.click();
+
+		const readState = () =>
+			page.evaluate((k) => {
+				const form = document.getElementById(`ref-reset-form-${k}`) as HTMLFormElement;
+				const fd = new FormData(form);
+				const items = [...form.querySelectorAll(`[role="${k}"]`)] as HTMLElement[];
+				const w = (
+					window as unknown as Record<
+						string,
+						{
+							getProof: () => {
+								nodes: (string | null)[];
+								events: string[];
+								changes: string[][];
+							};
+						}
+					>
+				)[`harness_${k}`];
+				return {
+					values: fd.getAll(`choice_${k}`),
+					states: items.map((el) => el.getAttribute("aria-checked")),
+					changes: w.getProof().changes.length,
+					resets: form.dataset.resets,
+				};
+			}, kind);
+
+		const beforeReset = await readState();
+		if (JSON.stringify(beforeReset.values) !== JSON.stringify(["b"])) {
+			throw new Error(
+				`expected ${kind} value to be ["b"] after selecting Beta, got: ${JSON.stringify(beforeReset.values)}`,
+			);
+		}
+
+		// 4. Cancelled Reset: preventDefault, does not change values, does not add extra changes
+		await page.evaluate(() => {
+			(window as unknown as { cancelGroupRefReset?: boolean }).cancelGroupRefReset = true;
+		});
+		await page.locator(`#ref-reset-btn-${kind}`).click();
+		await page.waitForTimeout(60);
+
+		const cancelledState = await readState();
+		if (
+			JSON.stringify(cancelledState.values) !== JSON.stringify(["b"]) ||
+			JSON.stringify(cancelledState.states) !== JSON.stringify(["false", "true"]) ||
+			cancelledState.changes !== beforeReset.changes ||
+			cancelledState.resets !== "1"
+		) {
+			throw new Error(
+				`expected ${kind} to maintain state on cancelled reset, got: ${JSON.stringify(cancelledState)}`,
+			);
+		}
+
+		// 5. Normal Reset: restores to ["a"], does not add extra changes
+		await page.evaluate(() => {
+			(window as unknown as { cancelGroupRefReset?: boolean }).cancelGroupRefReset = false;
+		});
+		await page.locator(`#ref-reset-btn-${kind}`).click();
+		await page.waitForTimeout(60);
+
+		const normalResetState = await readState();
+		if (
+			JSON.stringify(normalResetState.values) !== JSON.stringify(["a"]) ||
+			JSON.stringify(normalResetState.states) !== JSON.stringify(["true", "false"]) ||
+			normalResetState.changes !== beforeReset.changes ||
+			normalResetState.resets !== "2"
+		) {
+			throw new Error(
+				`expected ${kind} to reset to default on normal reset, got: ${JSON.stringify(normalResetState)}`,
+			);
+		}
+
+		// 6. Unmount group truly via shown=false and verify complete cleanup protocol
+		await page.evaluate((k) => {
+			const w = (window as unknown as Record<string, { unmountGroup: () => void }>)[`harness_${k}`];
+			w.unmountGroup();
+		}, kind);
+		await page.waitForTimeout(60);
+
+		const finalProof = await page.evaluate((k) => {
+			const w = (
+				window as unknown as Record<
+					string,
+					{
+						getProof: () => {
+							nodes: (string | null)[];
+							events: string[];
+						};
+					}
+				>
+			)[`harness_${k}`];
+			return w.getProof();
+		}, kind);
+
+		if (finalProof.nodes.some((n) => n !== null)) {
+			throw new Error(
+				`expected all nodes in ${kind} harness to be null after unmount, got: ${JSON.stringify(finalProof.nodes)}`,
+			);
+		}
+		if (
+			JSON.stringify(finalProof.events) !==
+			JSON.stringify(["set:0:FIELDSET", "cleanup:0", "set:1:FIELDSET", "cleanup:1"])
+		) {
+			throw new Error(
+				`expected ${kind} final events to match cleanup protocol, got: ${JSON.stringify(finalProof.events)}`,
+			);
+		}
+	}
+
 	await page.evaluate(() => {
 		(
 			window as unknown as { shouldCancelTypeaheadGroupReset?: boolean }

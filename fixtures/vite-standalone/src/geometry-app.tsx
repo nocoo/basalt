@@ -34,6 +34,103 @@ import { Table, TableBody, TableCell, TableHeader, TableRow } from "@nocoo/basal
 import { Text } from "@nocoo/basalt/components/text";
 import * as React from "react";
 
+function RefResetHarness({ kind }: { kind: "checkbox" | "switch" }) {
+	const [epoch, setEpoch] = React.useState(0);
+	const [shown, setShown] = React.useState(true);
+	const [resets, setResets] = React.useState(0);
+	const refData = React.useRef<{
+		nodes: (HTMLFieldSetElement | null)[];
+		events: string[];
+		changes: string[][];
+	}>({
+		nodes: [null, null],
+		events: [],
+		changes: [],
+	});
+
+	const ref = React.useCallback(
+		(node: HTMLFieldSetElement | null) => {
+			refData.current.nodes[epoch] = node;
+			refData.current.events.push(`set:${epoch}:${node?.tagName ?? "null"}`);
+			if (node) {
+				return () => {
+					refData.current.nodes[epoch] = null;
+					refData.current.events.push(`cleanup:${epoch}`);
+				};
+			}
+		},
+		[epoch],
+	);
+
+	React.useEffect(() => {
+		const key = `harness_${kind}`;
+		(
+			window as unknown as Record<
+				string,
+				{
+					swapRef: () => void;
+					unmountGroup: () => void;
+					getProof: () => {
+						nodes: (string | null)[];
+						events: string[];
+						changes: string[][];
+						cleared: boolean;
+						same: boolean;
+					};
+				}
+			>
+		)[key] = {
+			swapRef: () => setEpoch(1),
+			unmountGroup: () => setShown(false),
+			getProof: () => {
+				const original = (window as unknown as Record<string, HTMLFieldSetElement | undefined>)[
+					`original_${kind}`
+				];
+				return {
+					nodes: refData.current.nodes.map((n) => n?.tagName ?? null),
+					events: [...refData.current.events],
+					changes: [...refData.current.changes],
+					cleared: refData.current.nodes[0] === null,
+					same: refData.current.nodes[1] != null && refData.current.nodes[1] === original,
+				};
+			},
+		};
+	}, [kind]);
+
+	const Group = kind === "checkbox" ? Checkbox.Group : Switch.Group;
+	const Item = kind === "checkbox" ? Checkbox.Item : Switch.Item;
+
+	return (
+		<form
+			id={`ref-reset-form-${kind}`}
+			data-ready={kind}
+			data-resets={resets}
+			onReset={(e) => {
+				setResets((x) => x + 1);
+				const w = window as unknown as { cancelGroupRefReset?: boolean };
+				if (w.cancelGroupRefReset) {
+					e.preventDefault();
+				}
+			}}
+		>
+			{shown && (
+				<Group
+					id={`ref-reset-group-${kind}`}
+					ref={ref}
+					defaultValue={["a"]}
+					onValueChange={(next) => refData.current.changes.push(next)}
+				>
+					<Item value="a" name={`choice_${kind}`} aria-label={`Alpha ${kind} Harness`} />
+					<Item value="b" name={`choice_${kind}`} aria-label={`Beta ${kind} Harness`} />
+				</Group>
+			)}
+			<button id={`ref-reset-btn-${kind}`} type="reset">
+				Reset Harness
+			</button>
+		</form>
+	);
+}
+
 export function GeometryApp() {
 	const [switchLoading, setSwitchLoading] = React.useState(false);
 	const [parentClickCount, setParentClickCount] = React.useState(0);
@@ -547,6 +644,10 @@ export function GeometryApp() {
 						Reset Controls Form
 					</button>
 				</form>
+
+				{/* Standalone Ref & Reset Harness for Checkbox and Switch */}
+				<RefResetHarness kind="checkbox" />
+				<RefResetHarness kind="switch" />
 
 				<Badge id="basalt-badge">Active</Badge>
 
