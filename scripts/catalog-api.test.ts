@@ -440,6 +440,36 @@ describe("catalog API generator contract", () => {
 				surface: "DatePicker",
 			},
 			{
+				slug: "slider",
+				sourceFile: "packages/basalt/src/components/slider.tsx",
+				propsType: "SliderProps",
+				surface: "Slider",
+			},
+			{
+				slug: "toggle",
+				sourceFile: "packages/basalt/src/components/toggle.tsx",
+				propsType: "ToggleProps",
+				surface: "Toggle",
+			},
+			{
+				slug: "toggle-group",
+				sourceFile: "packages/basalt/src/components/toggle-group.tsx",
+				propsType: "ToggleGroupSingleProps",
+				surface: "ToggleGroup (Single)",
+			},
+			{
+				slug: "toggle-group",
+				sourceFile: "packages/basalt/src/components/toggle-group.tsx",
+				propsType: "ToggleGroupMultipleProps",
+				surface: "ToggleGroup (Multiple)",
+			},
+			{
+				slug: "toggle-group",
+				sourceFile: "packages/basalt/src/components/toggle-group.tsx",
+				propsType: "ToggleGroupItemProps",
+				surface: "ToggleGroupItem",
+			},
+			{
 				slug: "segment-control",
 				sourceFile: "packages/basalt/src/components/segment-control.tsx",
 				propsType: "SegmentControlProps",
@@ -872,7 +902,7 @@ describe("catalog API generator contract", () => {
 				surface: "DeleteResource",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(123);
+		expect(CATALOG_API_TARGETS).toHaveLength(128);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -932,6 +962,9 @@ describe("catalog API generator contract", () => {
 			"combobox",
 			"autocomplete",
 			"date-picker",
+			"slider",
+			"toggle",
+			"toggle-group",
 			"segment-control",
 			"page-header",
 			"section-rule",
@@ -1987,6 +2020,9 @@ export interface WidgetProps {
 			combobox: ["Combobox"],
 			autocomplete: ["Autocomplete"],
 			"date-picker": ["DatePicker"],
+			slider: ["Slider"],
+			toggle: ["Toggle"],
+			"toggle-group": ["ToggleGroup (Single)", "ToggleGroup (Multiple)", "ToggleGroupItem"],
 			toolbar: ["Toolbar", "Toolbar.Button", "Toolbar.Input"],
 			tabs: ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
 			"command-palette": ["CommandPalette"],
@@ -2036,7 +2072,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(72);
+		expect(Object.keys(generated)).toHaveLength(75);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -2137,7 +2173,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(72);
+		expect(Object.keys(generated)).toHaveLength(75);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -2259,7 +2295,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(72);
+		expect(Object.keys(generated)).toHaveLength(75);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -2330,7 +2366,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(72);
+		expect(Object.keys(generated)).toHaveLength(75);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2373,7 +2409,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(72);
+		expect(Object.keys(generated)).toHaveLength(75);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2425,7 +2461,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(72);
+		expect(Object.keys(generated)).toHaveLength(75);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3706,8 +3742,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(72);
-		expect(Object.keys(first)).toHaveLength(73);
+		expect(slugs).toHaveLength(75);
+		expect(Object.keys(first)).toHaveLength(76);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3787,7 +3823,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"92dc8582876086113d9e37041aee45875fe33430139152be4e35c0964174c273",
+			"56a65f88ba86a7dfab1fe273d15815dafe14a70ddeb36e599d3157279b9f1e8c",
 		);
 	}, 60_000);
 

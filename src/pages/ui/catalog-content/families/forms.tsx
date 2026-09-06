@@ -30,7 +30,10 @@ import { API as radioApi } from "../../generated/catalog-api/radio";
 import { API as segmentControlApi } from "../../generated/catalog-api/segment-control";
 import { API as selectApi } from "../../generated/catalog-api/select";
 import { API as sensitiveInputApi } from "../../generated/catalog-api/sensitive-input";
+import { API as sliderApi } from "../../generated/catalog-api/slider";
 import { API as switchApi } from "../../generated/catalog-api/switch";
+import { API as toggleApi } from "../../generated/catalog-api/toggle";
+import { API as toggleGroupApi } from "../../generated/catalog-api/toggle-group";
 
 function usage(name: string, from: string, sample: string, extraImports = ""): string {
 	const extras = extraImports ? `${extraImports}\n` : "";
@@ -289,12 +292,7 @@ export default function Example() {
 			description: "Range slider.",
 			usage: usage("Slider", "@nocoo/basalt/components/slider", "<Slider />"),
 			variants: [],
-			api: [
-				{
-					name: "Slider",
-					props: [{ name: "className", type: "string", description: "className" }],
-				},
-			],
+			api: sliderApi,
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: [
@@ -317,12 +315,7 @@ export default function Example() {
 			description: "Pressed toggle.",
 			usage: usage("Toggle", "@nocoo/basalt/components/toggle", "<Toggle>B</Toggle>"),
 			variants: [],
-			api: [
-				{
-					name: "Toggle",
-					props: [{ name: "className", type: "string", description: "className" }],
-				},
-			],
+			api: toggleApi,
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: [
@@ -353,28 +346,33 @@ export default function Example() {
 	"toggle-group": {
 		docs: {
 			description: "Segmented tabs for switching a compact set of modes.",
-			usage: usage(
-				"ToggleGroup",
-				"@nocoo/basalt/components/toggle-group",
-				'<ToggleGroup type="single" defaultValue="live"><ToggleGroupItem value="live">Live</ToggleGroupItem></ToggleGroup>',
-			),
+			usage: `import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
+
+export default function Example() {
+	return (
+		<ToggleGroup type="single" defaultValue="live">
+			<ToggleGroupItem value="live">Live</ToggleGroupItem>
+		</ToggleGroup>
+	);
+}`,
 			variants: [],
-			api: [
-				{
-					name: "ToggleGroup",
-					props: [{ name: "className", type: "string", description: "className" }],
-				},
-			],
+			api: toggleGroupApi,
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: [
 			{
 				id: catalogScenarioId("toggle-group", "default"),
 				title: "Default",
-				code: `import { ToggleGroup } from "@nocoo/basalt/components/toggle-group";
+				code: `import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
 
 export default function Example() {
-	return <ToggleGroup type="single" defaultValue="live"><ToggleGroupItem value="live">Live</ToggleGroupItem></ToggleGroup>;
+	return (
+		<ToggleGroup type="single" defaultValue="live" aria-label="Mode">
+			<ToggleGroupItem value="live">Live</ToggleGroupItem>
+			<ToggleGroupItem value="mock">Mock</ToggleGroupItem>
+			<ToggleGroupItem value="snapshot">Snapshot</ToggleGroupItem>
+		</ToggleGroup>
+	);
 }`,
 				render: () => (
 					<ToggleGroup type="single" defaultValue="live" aria-label="Mode">

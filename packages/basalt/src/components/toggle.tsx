@@ -18,14 +18,48 @@ const toggleVariants = cva(
 	},
 );
 
-export const Toggle = React.forwardRef<
-	React.ElementRef<typeof TogglePrimitive.Root>,
-	React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants>
->(({ className, variant, size, ...props }, ref) => (
-	<TogglePrimitive.Root
-		ref={ref}
-		className={cn(toggleVariants({ variant, size }), className)}
-		{...props}
-	/>
-));
+type RadixToggleProps = React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root>;
+
+export interface ToggleProps
+	extends Omit<RadixToggleProps, "pressed" | "defaultPressed" | "onPressedChange" | "disabled">,
+		Omit<VariantProps<typeof toggleVariants>, "variant" | "size"> {
+	/**
+	 * Visual style variant.
+	 * @default "default"
+	 */
+	variant?: VariantProps<typeof toggleVariants>["variant"];
+	/**
+	 * Sizing preset.
+	 * @default "default"
+	 */
+	size?: VariantProps<typeof toggleVariants>["size"];
+	/**
+	 * Controlled pressed state of the toggle. Forwards ref to HTMLButtonElement.
+	 */
+	pressed?: RadixToggleProps["pressed"];
+	/**
+	 * Uncontrolled pressed state when initially rendered.
+	 * @default false
+	 */
+	defaultPressed?: RadixToggleProps["defaultPressed"];
+	/**
+	 * Callback invoked when pressed state changes.
+	 */
+	onPressedChange?: RadixToggleProps["onPressedChange"];
+	/**
+	 * Whether the toggle is disabled from user interaction.
+	 * @default false
+	 */
+	disabled?: RadixToggleProps["disabled"];
+}
+
+export const Toggle = React.forwardRef<React.ElementRef<typeof TogglePrimitive.Root>, ToggleProps>(
+	({ className, variant, size, ...props }, ref) => (
+		<TogglePrimitive.Root
+			ref={ref}
+			className={cn(toggleVariants({ variant, size }), className)}
+			{...props}
+		/>
+	),
+);
 Toggle.displayName = TogglePrimitive.Root.displayName;

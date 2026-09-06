@@ -56,6 +56,7 @@ import { API as selectApi } from "./catalog-api/select";
 import { API as sensitiveInputApi } from "./catalog-api/sensitive-input";
 import { API as separatorApi } from "./catalog-api/separator";
 import { API as sidebarApi } from "./catalog-api/sidebar";
+import { API as sliderApi } from "./catalog-api/slider";
 import { API as slotBarApi } from "./catalog-api/slot-bar";
 import { API as sparklineApi } from "./catalog-api/sparkline";
 import { API as stackedBarApi } from "./catalog-api/stacked-bar";
@@ -70,6 +71,8 @@ import { API as textApi } from "./catalog-api/text";
 import { API as themeToggleApi } from "./catalog-api/theme-toggle";
 import { API as timelineApi } from "./catalog-api/timeline";
 import { API as timeseriesApi } from "./catalog-api/timeseries";
+import { API as toggleApi } from "./catalog-api/toggle";
+import { API as toggleGroupApi } from "./catalog-api/toggle-group";
 import { API as toolbarApi } from "./catalog-api/toolbar";
 import { API as tooltipApi } from "./catalog-api/tooltip";
 
@@ -130,6 +133,7 @@ export const CATALOG_API = {
 	"sensitive-input": sensitiveInputApi,
 	separator: separatorApi,
 	sidebar: sidebarApi,
+	slider: sliderApi,
 	"slot-bar": slotBarApi,
 	sparkline: sparklineApi,
 	"stacked-bar": stackedBarApi,
@@ -144,6 +148,8 @@ export const CATALOG_API = {
 	"theme-toggle": themeToggleApi,
 	timeline: timelineApi,
 	timeseries: timeseriesApi,
+	toggle: toggleApi,
+	"toggle-group": toggleGroupApi,
 	toolbar: toolbarApi,
 	tooltip: tooltipApi,
 };

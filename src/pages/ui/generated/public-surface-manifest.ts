@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 572,
+	"totalSymbols": 578,
 	"totalValues": 375,
-	"totalTypes": 197,
+	"totalTypes": 203,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -4873,6 +4873,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Slider component documentation and catalog playground",
 			"symbols": [
 				{
+					"name": "SliderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/slider",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/slider"
+				},
+				{
 					"name": "Slider",
 					"isValue": true,
 					"isType": false,
@@ -5381,6 +5389,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Toggle component documentation and catalog playground",
 			"symbols": [
 				{
+					"name": "ToggleProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/toggle",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/toggle"
+				},
+				{
 					"name": "Toggle",
 					"isValue": true,
 					"isType": false,
@@ -5399,9 +5415,41 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "ToggleGroup component documentation and catalog playground",
 			"symbols": [
 				{
+					"name": "ToggleGroupSingleProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/toggle-group",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/toggle-group"
+				},
+				{
+					"name": "ToggleGroupMultipleProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/toggle-group",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/toggle-group"
+				},
+				{
+					"name": "ToggleGroupProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/toggle-group",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/toggle-group"
+				},
+				{
 					"name": "ToggleGroup",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/toggle-group",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/toggle-group"
+				},
+				{
+					"name": "ToggleGroupItemProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/toggle-group",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/toggle-group"

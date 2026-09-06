@@ -277,7 +277,7 @@ describe("forms catalog content family", () => {
 			title: "Default",
 		});
 		expect(forms["toggle-group"]?.examples[0]?.code).toContain(
-			'import { ToggleGroup } from "@nocoo/basalt/components/toggle-group";',
+			'import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";',
 		);
 		expect(forms.combobox?.docs.description).toBe(
 			"A searchable list that commits only listed values.",
