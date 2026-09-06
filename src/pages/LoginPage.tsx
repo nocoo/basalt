@@ -125,7 +125,7 @@ export default function LoginPage() {
 
 					<div className="absolute right-0 bottom-0 left-0 flex items-center justify-center border-t border-border bg-secondary/50 py-2.5">
 						<div className="flex items-center gap-1.5">
-							<div className="h-1.5 w-1.5 animate-pulse rounded-full bg-success" />
+							<div className="h-1.5 w-1.5 animate-pulse motion-reduce:animate-none rounded-full bg-success" />
 							<span className="text-[10px] text-muted-foreground">
 								{t("pages.badgeLogin.secureAuth")}
 							</span>

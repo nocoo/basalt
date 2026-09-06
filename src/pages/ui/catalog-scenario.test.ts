@@ -39,6 +39,7 @@ const BUTTON_IDS = [
 	"button-with-icon",
 	"button-icon-only",
 	"button-loading-state",
+	"button-reduced-motion",
 	"button-disabled-state",
 	"button-title",
 	"button-link-as-button",
@@ -52,6 +53,7 @@ const BUTTON_TITLES = [
 	"With Icon",
 	"Icon Only",
 	"Loading State",
+	"Reduced Motion & Feedback",
 	"Disabled State",
 	"Title",
 	"Link as Button",
@@ -401,7 +403,7 @@ describe("catalog scenario ids", () => {
 });
 
 describe("source-backed button scenarios", () => {
-	it("loads ten button scenarios from the same glob modules", () => {
+	it("loads eleven button scenarios from the same glob modules", () => {
 		const loaded = loadModuleScenarios({
 			slug: "button",
 			metas: BUTTON_TITLES.map((title, index) => ({

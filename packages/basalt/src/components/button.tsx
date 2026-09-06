@@ -188,7 +188,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		}
 
 		const iconNode = loading ? (
-			<Loader2 className="animate-basalt-spin" aria-hidden="true" />
+			<Loader2 className="animate-basalt-spin motion-reduce:animate-none" aria-hidden="true" />
 		) : (
 			icon
 		);

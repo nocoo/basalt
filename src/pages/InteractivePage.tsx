@@ -115,7 +115,9 @@ function InlineAlert({
 }
 
 function Skeleton({ className = "" }: { className?: string }) {
-	return <div className={`animate-pulse rounded-md bg-muted ${className}`} />;
+	return (
+		<div className={`animate-pulse motion-reduce:animate-none rounded-md bg-muted ${className}`} />
+	);
 }
 
 function SkeletonCard() {
@@ -141,7 +143,7 @@ function LoadingButton() {
 	};
 	return (
 		<Button onClick={handleClick} disabled={loading}>
-			{loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+			{loading && <Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" />}
 			{loading ? t("pages.interactive.processing") : t("common.submit")}
 		</Button>
 	);
@@ -296,13 +298,13 @@ export default function InteractivePage() {
 					</div>
 					<div className="flex items-center gap-6">
 						<div className="flex items-center gap-2">
-							<Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
+							<Loader2 className="h-4 w-4 animate-spin motion-reduce:animate-none text-muted-foreground" />
 							<span className="text-xs text-muted-foreground">
 								{t("pages.interactive.loading")}
 							</span>
 						</div>
 						<div className="flex items-center gap-2">
-							<Loader2 className="h-5 w-5 animate-spin text-primary" />
+							<Loader2 className="h-5 w-5 animate-spin motion-reduce:animate-none text-primary" />
 							<span className="text-sm text-foreground">
 								{t("pages.interactive.progressProcessing")}
 							</span>

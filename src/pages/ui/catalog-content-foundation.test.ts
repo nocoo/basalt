@@ -210,7 +210,7 @@ describe("foundation catalog content family", () => {
 		expect(foundation.text?.docs.usage).toContain('as="h1"');
 		expect(
 			FOUNDATION_SLUGS.reduce((count, slug) => count + (foundation[slug]?.examples.length ?? 0), 0),
-		).toBe(37);
+		).toBe(38);
 		for (const slug of FOUNDATION_SLUGS) {
 			const content = foundation[slug];
 			expect(content?.docs.description.length, slug).toBeGreaterThan(0);

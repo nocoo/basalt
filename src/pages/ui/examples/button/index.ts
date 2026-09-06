@@ -6,6 +6,7 @@ const BUTTON_SCENARIO_META = [
 	{ key: "with-icon", title: "With Icon" },
 	{ key: "icon-only", title: "Icon Only" },
 	{ key: "loading-state", title: "Loading State" },
+	{ key: "reduced-motion", title: "Reduced Motion & Feedback" },
 	{ key: "disabled-state", title: "Disabled State" },
 	{ key: "title", title: "Title" },
 	{ key: "link-as-button", title: "Link as Button" },

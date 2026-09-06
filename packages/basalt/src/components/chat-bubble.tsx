@@ -60,7 +60,7 @@ export function ChatBubble({
 				{children}
 				{streaming ? (
 					<span
-						className="mt-1 inline-block h-3 w-1.5 animate-pulse rounded-sm bg-basalt-primary/70 align-middle"
+						className="mt-1 inline-block h-3 w-1.5 animate-pulse rounded-sm bg-basalt-primary/70 align-middle motion-reduce:animate-none"
 						aria-hidden
 					/>
 				) : null}

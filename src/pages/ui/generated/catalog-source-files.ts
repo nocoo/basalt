@@ -8,13 +8,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 }> = {
 	"button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "01490fedac4991a4",
+		"hash": "167f56cc35a0284b",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
 	"link-button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "01490fedac4991a4",
+		"hash": "167f56cc35a0284b",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
@@ -410,7 +410,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"chat-bubble": {
 		"file": "packages/basalt/src/components/chat-bubble.tsx",
-		"hash": "54c786a8afa09d4a",
+		"hash": "db9bad16e16c9b09",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-bubble.js.map (sourcesContent[0])"
 	},

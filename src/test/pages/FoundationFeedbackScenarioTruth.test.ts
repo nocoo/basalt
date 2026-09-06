@@ -78,6 +78,7 @@ describe("foundation feedback scenario truth", () => {
 			"button-with-icon",
 			"button-icon-only",
 			"button-loading-state",
+			"button-reduced-motion",
 			"button-disabled-state",
 			"button-title",
 			"button-link-as-button",

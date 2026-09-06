@@ -85,6 +85,25 @@ export default function Example() {
 					</div>
 				),
 			},
+			{
+				id: catalogScenarioId("chat-bubble", "streaming"),
+				title: "Streaming & Reduced Motion",
+				code: scenarioModule(
+					`<div className="flex w-full max-w-md flex-col gap-3">
+	<ChatBubble variant="assistant" streaming>
+		Generating query response
+	</ChatBubble>
+</div>`,
+					['import { ChatBubble } from "@nocoo/basalt/components/chat-bubble";'],
+				),
+				render: () => (
+					<div className="flex w-full max-w-md flex-col gap-3">
+						<ChatBubble variant="assistant" streaming>
+							Generating query response
+						</ChatBubble>
+					</div>
+				),
+			},
 		],
 	},
 	"chat-composer": {
