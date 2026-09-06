@@ -15,11 +15,15 @@ import { fileURLToPath } from "node:url";
 import { parseSync } from "@swc/core";
 import {
 	assertBrowserCleaned,
+	assertNoPageFaults,
+	attachPageFaults,
 	combineErrors,
 	createBrowserProfileDir,
 	proveNextHydration,
 	settleWithCleanup,
+	withChromiumPage,
 } from "./consumer-browser";
+import { assertConsumerGeometry } from "./consumer-geometry";
 import {
 	allocatePort,
 	assertNextHttpBody,
@@ -1242,6 +1246,38 @@ console.log(JSON.stringify({
 				evidence.distFiles = distFiles.map((file) => posixPath(relative(distRoot, file))).sort();
 				evidence.cssBytes = Buffer.byteLength(css);
 				evidence.cssEvidence = cssEvidence;
+
+				if (config.mode === "standalone" || config.mode === "tailwind") {
+					const port = await allocatePort();
+					const url = `http://127.0.0.1:${port}/`;
+					nextUrl = url;
+					const viteCli = join(consumerRoot, "node_modules", "vite", "bin", "vite.js");
+					const started = await startHttpServer({
+						cwd: consumerRoot,
+						command: "node",
+						args: [
+							viteCli,
+							"preview",
+							"--port",
+							String(port),
+							"--host",
+							"127.0.0.1",
+							"--strictPort",
+						],
+						url,
+						needles: [tempRoot, basename(tempRoot)],
+					});
+					child = started.child;
+					profileDir = createBrowserProfileDir();
+					const geometryUrl = `http://127.0.0.1:${port}/geometry.html`;
+					evidence.geometry = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(geometryUrl, { waitUntil: "domcontentloaded" });
+						const res = await assertConsumerGeometry(page, config.mode);
+						assertNoPageFaults(faults);
+						return res;
+					});
+				}
 			}
 
 			console.log(`consumer ${config.mode} ok ${JSON.stringify(evidence, null, 2)}`);

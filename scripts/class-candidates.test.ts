@@ -11,6 +11,21 @@ className="border-separate border-spacing-0 caption-bottom"`),
 		).toEqual(expect.arrayContaining(["border-separate", "border-spacing-0", "caption-bottom"]));
 	});
 
+	it("extracts tokens despite quotes in comments and handles template literals", () => {
+		const snippet = `
+			// Comment with 'single' and "double" and \`backticks\`
+			/* Multiline comment saying "don't break" or \`stuff\` */
+			<div className="after-comment-token" />
+			const tpl = \`static-head \${condition ? "inner-interpolated" : 'alt-interpolated'} static-tail\`;
+		`;
+		const candidates = classCandidates(snippet);
+		expect(candidates).toContain("after-comment-token");
+		expect(candidates).toContain("static-head");
+		expect(candidates).toContain("static-tail");
+		expect(candidates).toContain("inner-interpolated");
+		expect(candidates).toContain("alt-interpolated");
+	});
+
 	it("collects table and overlay utilities from source", () => {
 		const table = classCandidates(
 			readFileSync(path.join(process.cwd(), "packages/basalt/src/components/table.tsx"), "utf8"),
