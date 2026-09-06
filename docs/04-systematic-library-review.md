@@ -680,7 +680,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 |---|---|---|---|---|
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
-| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`256e4cf`：公开基线、严格 import、入口文档 tarball 编译、99 页源码 API、provider 与非 catalog 正文、复合组件/native/别名、类型保真已分组验收；继续 toast 函数、全部 Library Usage/scenario 编译及版本化指南 |
+| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`ec88324`：公开基线、严格 import、入口文档、99 页源码 API、provider 与非 catalog 正文、复合组件/native/别名及 toast 函数已分组验收；99 个主 Usage 通过独立 tarball 编译并进入正式门，继续 scenario 与版本化指南 |
 | P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
 | P4 | 浮层与语义：10a/b/c/d/e、11a/b、12a/b；C06–C11/C16/C17/C18/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
@@ -782,14 +782,20 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 
 `256e4cf` 完成 Toaster / Toast 别名的源码 API，保留 **21 个组件参数及 ref/key**。新增 ToasterProps、ToasterToastOptions、ToasterIcons、ToasterSwipeDirection 四个类型，避免把 Sonner 的容器选项与 Basalt ToastOptions 混为一谈。主 agent 核验 **2 个组件/别名**的参数/ref/字段集合，以及 **21 个生成类型表达**与实际参数的一致性；运行时 AST **1/1 不变**，**99 份 API、此前 98 份不变**，真实页面与主 Usage **1/1 通过**。说明单一无 id 容器、关闭按钮/图标/时长优先级及 C18 当前限制；库页面不重复挂载 Toaster。manifest 为 **683 个符号（375 个运行时、308 个类型）**，模块/CSS 出口和原始基线不变。正常 hooks 为 **176 文件、1,477 测试**，包 build/types/pack/publint 通过；6 个已审文件提交后哈希一致。证据：`p2-c4c-toaster-api-semantic-diff.json`、`p2-c4c-toaster-api-visible.json`、`p2-c4c-toaster-public-props.log`、`p2-c4c-toaster-documented-types.json`、`p2-c4c-toaster-runtime-source-diff.json`、`p2-c4c-toaster-usage.log`、`p2-c4c-toaster-acceptance.json`。
 
+`68a3b54` 完成 toast 根调用及 success/error/warning/info/dismiss 的源码生成文档。新增等价的 ToastCallOptions，通知函数与 Toaster 组件参数分开，保留公开函数类型和运行时；说明无参 dismiss 的实际返回边界。主 agent 核验 **6 个公开函数契约、6 个生成签名、11 个参数和 31 条选项记录**，真实 TypeScript 编译全部通过；实际页面与 Copy **7/7**、隔离源码正负例 **9/9**。负例覆盖必填/可选变化、显式 undefined、新增选项/方法、文案变化、缺失出口及多签名，曾发现的两处 undefined 丢失已修正并复验。运行时 AST **1/1 不变**，**99 份 API、此前 98 份不变**；manifest 为 **684 个符号（375 个运行时、309 个类型）**。正常 hooks 为 **176 文件、1,478 测试**，包 build/types/pack/publint 通过；8 个已审文件提交后哈希一致，原始基线不变。证据：`p2-c4c-toast-functions-public-symbols.json`、`p2-c4c-toast-functions-documented-types.json`、`p2-c4c-toast-functions-freshness-final.json`、`p2-c4c-toast-functions-visible-final.json`、`p2-c4c-toast-functions-acceptance.json`。
+
+`d7867a5` 补齐 ConfirmDialog、SegmentControl、SlotBarChart、TablePager 主 Usage 的实际导入、状态和数据。主 agent 从浏览器重新提取全部 **99 页**的原文，在仓库外通过 npm 安装实际 tarball 后，严格 TypeScript 编译 **99/99 通过**；无源码 alias、隐式导入或假全局。首次验证和正常 hook 均发现 SlotBarChart 的完整代码传错 helper 参数，修正后用同一已安装 tarball 复验通过。包源码未变，4 个已审文件提交后哈希一致，正常 hooks 为 **176 文件、1,478 测试**。证据：`p2-usage-independent-result.json`、`p2-usage-fixed-result.json`、`p2-usage-source-acceptance.json`。
+
+`92319ff` 将 **99 个主 Usage** 接入正式 consumer:docs，保留 **8 个 Markdown 模块、99 个 granular 和 34 个 root 导入**。无监听端口的 Vite loader 从指定仓库的真实 registry/catalog/status 取得原文；每个模块独立写入实际 tarball 的仓外消费工程，CLI 真实 await 完成结果。主 agent 核验浏览器/SSR 原文 **99/99 逐字节一致**、隔离提取控制 **6/6**；直接在源码用法中删除 useState 导入、添加无效 TablePager 属性，正式门均因消费端 TypeScript 诊断失败，**2/2 负例通过**。`ec88324` 补入指定 root、空白保真、新 ready 纳入、缺记录与空/缺 Usage 的实际 loader 回归测试。正常 hooks 最终为 **176 文件、1,480 测试**，实现与测试提交均和已审哈希一致。证据：`p2-usage-gate-positive.json`、`p2-usage-loader-final-result.json`、`p2-usage-gate-source-negative-final-result.json`、`p2-usage-gate-acceptance.json`。
+
 P2 后续范围细化如下，发现即登记，不把归属或编译机制已经建立等同于文档全部完成：
 
-- D03b-C4A1/A2/A3、C4B、C4C-Banner/Toaster 已验收；继续 toast 函数家族的源码签名/选项生成。组件参数已与通知参数分开；函数的 message 为 ReactNode，五个公开方法和返回边界仍需同源说明。隐藏图标的 C18 限制已说明，运行时修正留在 P4。
-- D02c 补全部 Library 主 Usage 的真实 tarball 编译。主 agent 从浏览器实际 registry 提取 99 页 Usage，在仓外按公开 package exports（本地包依赖、无源码 alias）诊断编译，初始 **91/99**。失败项为 Accordion、ConfirmDialog、LinkProvider、SegmentControl、Sheet、SlotBar、TablePager、ToggleGroup，原因包括缺必填属性、未声明状态或漏导入；ToggleGroup、Accordion、Sheet、LinkProvider 已修正。该诊断不是新 tarball 安装证明，关闭前仍需正式消费门及独立复验。
+- D03b-C4A1/A2/A3、C4B、C4C-Banner/Toaster/函数家族已验收；组件参数与通知参数分开，message、五个方法、选项和返回边界均已同源生成。隐藏图标的 C18 限制已说明，运行时修正留在 P4。
+- D02c 已验收：主 Usage 全部修正，**99/99 实际 tarball 安装编译**进入正式 consumer:docs；无效属性、漏导入、缺失/空白 Usage 与新增 ready 纳入均已验证。D02d 继续扩展到全部 scenario。
 - D02d 将 Copy page 内的全部 scenario code 纳入同一真实 tarball 编译门。浏览器提取共 **99 页、246 个场景**；其中 175 个完整模块的初次仓外诊断为 **174/175 通过**，Sheet 漏导入已在 `feda988` 修正并独立编译，另 **71 段**缺少可独立复制的完整上下文（反馈类 40、其他家族 31）。完整示例必须保留真实 imports、状态和数据，测试 harness 不得注入隐式 import、any 或假全局来制造通过。先前一次混合片段编译因语法错误提前停止，其“未报错文件数”不作为通过数。证据：`p2-scenario-compile-before.json`；正式门尚待实施。
 - 非 catalog 正文与归属已在 C3B 验收；D04 继续处理随版本交付和从包内独立读取的指南。
 
-上述接受的是 D03a、D03b-A/B1/B2A/B2B/C1A/C1B/C2A/C2B/C3A/C3B/C4A1/C4A2/C4A3/C4B/C4C-Banner/Toaster、空参数原生策略及 DOM 类型命名修正。toast 函数、全部 Usage/scenario 和版本化指南继续分组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
+上述接受的是 D03a、D03b-A/B1/B2A/B2B/C1A/C1B/C2A/C2B/C3A/C3B/C4A1/C4A2/C4A3/C4B/C4C-Banner/Toaster/函数家族、空参数原生策略、DOM 类型命名修正及 D02c 全部主 Usage。场景代码与版本化指南继续分组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
 
 ### 12.5 实施中追加的问题
 
