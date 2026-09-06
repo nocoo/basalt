@@ -642,7 +642,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 - 当前分支：`main`，审查起点 `e61efc1`。按用户在 pi pane 中补充的「直接 main 做即可 / 或者合并」，主 agent 已把本地 main 快进至已完成的实现提交；后续继续在 main 原子提交。现有 Herdr pi pane：`w1R:p2`；主 agent 使用同一仓库，负责验收和本节状态，pi 不并行修改本文或索引。
 - 同一时间只派发一个阶段。pi 完成该阶段的代码、必要文档、检查及原子提交后停下；主 agent 独立查看 diff 和实际行为，未通过则留在本阶段修正。
 - 每个提交描述一个可独立审阅的变化，使用正常 hooks；不得跳过 hooks、降低覆盖率或放宽质量门来通过验收。只提交本阶段明确的文件。
-- 监控每 45 秒采集 pi 状态、会话进展和 Git 状态。进入 blocked/unknown、进程退出或连续 5 分钟无会话进展时检查终端和子进程；长时间构建需要核对实际进度，不能仅凭时间强杀。监控不自动接受审批、不替用户回答问题。
+- 监控每 45 秒采集 pi 状态、会话进展和 Git 状态。进入 blocked/unknown、进程退出或连续 5 分钟无会话进展时检查终端和子进程；长时间构建需要核对实际进度，不能仅凭时间强杀。即使 Herdr 显示 done，也检查最后一次 assistant stopReason；服务端错误结束单独报警，避免误判为完成。监控不自动接受审批、不替用户回答问题。
 - 阶段状态采用「待调度 / 实施中 / 验收中 / 需修正 / 已验收」。完成记录绑定提交与本阶段新证据，不能沿用第 2 节的历史通过结果。
 
 ### 12.2 新增 Library 需求
@@ -678,7 +678,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 |---|---|---|---|---|
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
-| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`5974269`：公开基线、严格 import、入口文档 tarball 编译、surface 归属、输入/反馈与部分复合 API、原生策略及字符串保真已验收；继续其余复合 API、全部 Library Usage/scenario 编译及版本化指南 |
+| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`9a6d0d8`：公开基线、严格 import、入口文档 tarball 编译、surface 归属、输入/反馈与部分复合 API、原生策略、类型/字符串保真已验收；继续 Chat/provider、遗漏子件、全部 Library Usage/scenario 编译及版本化指南 |
 | P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
 | P4 | 浮层与语义：10a/b/c、11a/b、12a/b；C06–C11/C16/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Slider 多值/名称/双轴几何、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
@@ -748,14 +748,26 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 
 字符串生成器独立探针初始 **2/4**：双引号与换行组合生成非法 TypeScript，双引号与反斜杠组合丢失转义。`588c80a` 统一采用可靠的 JSON 字符串编码，并加入解析生成代码、核对原始值的正式回归。主 agent 对相同用例复验 **4/4**，79 页 API 数据全部不变；正常 hooks 为 176 文件、1,475 测试通过。证据：`p2-string-roundtrip-before.json`、`p2-string-roundtrip-fixed.json`、`p2-api-semantic-diff-fixed.json`。
 
+`feda988` 完成 Dialog、AlertDialog、Sheet 共 **29 个 surface** 的源码派生 API，Root 状态、Content 尺寸/焦点/关闭回调、Portal 边界及原生 Header/Footer 各自归属清楚。Sheet 的主 Usage 与场景补齐导入及实际内容。主 agent 对 29 个组件的旧源码、新包公开 props/ref 和文档 Props 作双向检查，全部兼容；从真实页面提取的三页主 Usage 与 Sheet 场景 **4/4 编译通过**。该提交新增 3 份 API 数据，原有 84 份保持逐字不变。
+
+验收另发现生成器把 @types/react/global.d.ts 中的全局 DOM 声明误判为 React 成员，输出不存在的 React.Element、React.DocumentFragment、React.HTMLButtonElement。`927a5da` 按声明所属 namespace 修正，仅改变 DialogPortal、AlertDialogPortal、Fab、HoverCard 的 **4 处类型文本**，87 份 API 数据中其余 **83 份不变**。同一真实 TypeScript 类型片段/公开组件契约检查从 **0/3** 到 **3/3**；修正后真实页面 **5/5** 通过，正式回归同时保留 React.ReactNode 和 React.MouseEventHandler 的正确限定。证据：`p2-c1b-public-props.log`、`p2-c1b-usage.log`、`p2-c1b-committed-shard-diff.json`、`p2-dom-type-before.json`、`p2-dom-type-fixed.json`、`p2-dom-type-semantic-diff.json`、`p2-c1b-dom-api-visible.json`。
+
+两笔提交正常 hooks 为 **176 个文件、1,476 个测试**通过；typecheck/lint、包 build、Bundler/NodeNext 类型、pack、strict publint 和 gitleaks 通过。
+
+参数兼容检查另加入新旧字段集合相等，避免结构赋值关系漏掉可选参数或 ref 的删除。对本阶段此前已修改的 **52 个组件**补查，props、ref 字段集合及双向类型关系全部通过；证据：`p2-retro-exact-props.log`。
+
+`9fb4eb8` 完成 ContextMenu/MenuBar 的 **11 个 surface**。保留新版 ContextMenu 的受控 open，并说明首次触发前的定位边界；MenuBar Root 与 Content 分别记录真实的 loop 默认值，补齐 asChild、原生属性和 React 19 ref 转发。主 agent 核验 **89 份 API 数据、此前 87 份不变**；**11 个组件**的新旧参数、ref、字段集合及公开文档类型兼容；两页实际主 Usage **2/2 编译通过**。浏览器初查发现 MenuBar 场景漏导入而白屏，修正后同一检查 **2/2 通过**。正常 hooks 为 **176 文件、1,476 测试**，类型/lint/包 build/types/pack/publint/gitleaks 通过。证据：`p2-c2a-api-semantic-diff.json`、`p2-c2a-api-visible-before.json`、`p2-c2a-api-visible-fixed.json`、`p2-c2a-public-props.log`、`p2-c2a-usage.log`。
+
+`9a6d0d8` 完成 NavigationMenu 的四个公开组件和 Breadcrumbs，共 **5 个 surface**。保留 React 19 ref、原生属性和 Radix 默认值；Breadcrumbs 明确 item 字段、仅最终无链接项为当前页，以及无 native rest/ref 的边界。主 agent 核验 **91 份 API 数据、原有 89 份不变**；**5 个组件**的参数、ref、字段集合和文档类型兼容；真实页面 **2/2**、复制的主 Usage **2/2 编译通过**。正常 hooks 为 **176 文件、1,476 测试**，typecheck/lint、包 build/types 通过。证据：`p2-c2b-api-semantic-diff.json`、`p2-c2b-api-visible.json`、`p2-c2b-public-props.log`、`p2-c2b-usage.log`。
+
 P2 后续范围细化如下，发现即登记，不把归属或编译机制已经建立等同于文档全部完成：
 
 - D03b-C4 补已有页面遗漏的 overlay/command/sidebar/native 子件，以及 Banner/Toast 的准确来源。别名复用同一接口说明；Toast 现有手表把 Toaster/Toast 组件与 toast() 函数参数混在一起，需分别说明，实际 message 类型是 ReactNode。
-- D02c 补全部 Library 主 Usage 的真实 tarball 编译。主 agent 从浏览器实际 registry 提取 99 页 Usage，在仓外按公开 package exports（本地包依赖、无源码 alias）诊断编译，初始 **91/99**。失败项为 Accordion、ConfirmDialog、LinkProvider、SegmentControl、Sheet、SlotBar、TablePager、ToggleGroup，原因包括缺必填属性、未声明状态或漏导入；ToggleGroup、Accordion 已修正。该诊断不是新 tarball 安装证明，关闭前仍需正式消费门及独立复验。
-- D02d 将 Copy page 内的全部 scenario code 纳入同一真实 tarball 编译门。浏览器提取共 **99 页、246 个场景**；其中 175 个完整模块的仓外诊断为 **174/175 通过**，Sheet 漏导入，另 **71 段**缺少可独立复制的完整上下文（反馈类 40、其他家族 31）。完整示例必须保留真实 imports、状态和数据，测试 harness 不得注入隐式 import、any 或假全局来制造通过。先前一次混合片段编译因语法错误提前停止，其“未报错文件数”不作为通过数。证据：`p2-scenario-compile-before.json`；正式门尚待实施。
+- D02c 补全部 Library 主 Usage 的真实 tarball 编译。主 agent 从浏览器实际 registry 提取 99 页 Usage，在仓外按公开 package exports（本地包依赖、无源码 alias）诊断编译，初始 **91/99**。失败项为 Accordion、ConfirmDialog、LinkProvider、SegmentControl、Sheet、SlotBar、TablePager、ToggleGroup，原因包括缺必填属性、未声明状态或漏导入；ToggleGroup、Accordion、Sheet 已修正。该诊断不是新 tarball 安装证明，关闭前仍需正式消费门及独立复验。
+- D02d 将 Copy page 内的全部 scenario code 纳入同一真实 tarball 编译门。浏览器提取共 **99 页、246 个场景**；其中 175 个完整模块的初次仓外诊断为 **174/175 通过**，Sheet 漏导入已在 `feda988` 修正并独立编译，另 **71 段**缺少可独立复制的完整上下文（反馈类 40、其他家族 31）。完整示例必须保留真实 imports、状态和数据，测试 harness 不得注入隐式 import、any 或假全局来制造通过。先前一次混合片段编译因语法错误提前停止，其“未报错文件数”不作为通过数。证据：`p2-scenario-compile-before.json`；正式门尚待实施。
 - 非 catalog owner 正文探针初始为 **101/111**；10 个锚点尚未接通，含带编号标题与登记 slug 不一致。D03b-C3 必须补有内容的正文或精确归属，不能只增加空锚点。
 
-上述接受的是 D03a、D03b-A/B1/B2A/B2B/C1A 及空参数原生策略修正。其余 compound 家族、非 catalog 正文、全部 Usage 和版本化指南继续分组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
+上述接受的是 D03a、D03b-A/B1/B2A/B2B/C1A/C1B/C2A/C2B、空参数原生策略及 DOM 类型命名修正。其余 compound 家族、非 catalog 正文、全部 Usage 和版本化指南继续分组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
 
 ### 12.5 实施中追加的问题
 
