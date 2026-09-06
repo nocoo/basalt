@@ -71,6 +71,11 @@ function Preview({ children, className }: { children: ReactNode; className?: str
 	return <div className={className ?? "flex flex-wrap items-center gap-3"}>{children}</div>;
 }
 
+function scenarioModule(code: string, imports: string[]): string {
+	const importLines = imports.join("\n");
+	return `${importLines}\n\nexport default function Example() {\n\treturn (\n\t\t${code.split("\n").join("\n\t\t")}\n\t);\n}`;
+}
+
 export default catalogContentFamily({
 	badge: {
 		docs: {
@@ -86,19 +91,26 @@ export default catalogContentFamily({
 			{
 				id: catalogScenarioId("badge", "primary-badges"),
 				title: "Primary Badges",
-				code: "<Badge>Default</Badge>",
+				code: scenarioModule("<Badge>Default</Badge>", [
+					'import { Badge } from "@nocoo/basalt/components/badge";',
+				]),
 				render: () => <Badge>Default</Badge>,
 			},
 			{
 				id: catalogScenarioId("badge", "other-color-variants"),
 				title: "Other color variants",
-				code: `<Badge variant="secondary">Secondary</Badge>
-<Badge variant="info">Info</Badge>
-<Badge variant="success">Success</Badge>
-<Badge variant="warning">Warning</Badge>
-<Badge variant="error">Error</Badge>
-<Badge variant="destructive">Destructive</Badge>
-<Badge variant="outline">Outline</Badge>`,
+				code: scenarioModule(
+					`<div className="flex flex-wrap items-center gap-3">
+	<Badge variant="secondary">Secondary</Badge>
+	<Badge variant="info">Info</Badge>
+	<Badge variant="success">Success</Badge>
+	<Badge variant="warning">Warning</Badge>
+	<Badge variant="error">Error</Badge>
+	<Badge variant="destructive">Destructive</Badge>
+	<Badge variant="outline">Outline</Badge>
+</div>`,
+					['import { Badge } from "@nocoo/basalt/components/badge";'],
+				),
 				render: () => (
 					<Preview>
 						<Badge variant="secondary">Secondary</Badge>
@@ -114,11 +126,16 @@ export default catalogContentFamily({
 			{
 				id: catalogScenarioId("badge", "color-tokens"),
 				title: "Color tokens",
-				code: `<Badge variant="red">Red</Badge>
-<Badge variant="orange">Orange</Badge>
-<Badge variant="teal">Teal</Badge>
-<Badge variant="blue">Blue</Badge>
-<Badge variant="purple">Purple</Badge>`,
+				code: scenarioModule(
+					`<div className="flex flex-wrap items-center gap-3">
+	<Badge variant="red">Red</Badge>
+	<Badge variant="orange">Orange</Badge>
+	<Badge variant="teal">Teal</Badge>
+	<Badge variant="blue">Blue</Badge>
+	<Badge variant="purple">Purple</Badge>
+</div>`,
+					['import { Badge } from "@nocoo/basalt/components/badge";'],
+				),
 				render: () => (
 					<Preview>
 						<Badge variant="red">Red</Badge>
@@ -132,8 +149,15 @@ export default catalogContentFamily({
 			{
 				id: catalogScenarioId("badge", "dot-badges"),
 				title: "Dot badges",
-				code: `<Badge dot>Live</Badge>
-<Badge dot variant="success">Healthy</Badge>`,
+				code: scenarioModule(
+					`<div className="flex flex-wrap items-center gap-3">
+	<Badge dot>Live</Badge>
+	<Badge dot variant="success">
+		Healthy
+	</Badge>
+</div>`,
+					['import { Badge } from "@nocoo/basalt/components/badge";'],
+				),
 				render: () => (
 					<Preview>
 						<Badge dot>Live</Badge>
@@ -146,7 +170,15 @@ export default catalogContentFamily({
 			{
 				id: catalogScenarioId("badge", "in-a-sentence"),
 				title: "In a sentence",
-				code: "<Text>Status is <Badge>Stable</Badge></Text>",
+				code: scenarioModule(
+					`<Text>
+	Status is <Badge>Stable</Badge>
+</Text>`,
+					[
+						'import { Badge } from "@nocoo/basalt/components/badge";',
+						'import { Text } from "@nocoo/basalt/components/text";',
+					],
+				),
 				render: () => (
 					<Text>
 						Status is <Badge>Stable</Badge>
@@ -156,11 +188,29 @@ export default catalogContentFamily({
 			{
 				id: catalogScenarioId("badge", "with-an-icon"),
 				title: "With an icon",
-				code: `<Badge><Check className="size-3" /> Verified</Badge>
-<Badge variant="success"><Check className="size-3" /> Healthy</Badge>
-<Badge variant="warning"><AlertTriangle className="size-3" /> Warning</Badge>
-<Badge variant="error"><CircleAlert className="size-3" /> Error</Badge>
-<Badge variant="info"><Info className="size-3" /> Info</Badge>`,
+				code: scenarioModule(
+					`<div className="flex flex-wrap items-center gap-3">
+	<Badge>
+		<Check className="size-3" /> Verified
+	</Badge>
+	<Badge variant="success">
+		<Check className="size-3" /> Healthy
+	</Badge>
+	<Badge variant="warning">
+		<AlertTriangle className="size-3" /> Warning
+	</Badge>
+	<Badge variant="error">
+		<CircleAlert className="size-3" /> Error
+	</Badge>
+	<Badge variant="info">
+		<Info className="size-3" /> Info
+	</Badge>
+</div>`,
+					[
+						'import { Badge } from "@nocoo/basalt/components/badge";',
+						'import { AlertTriangle, Check, CircleAlert, Info } from "lucide-react";',
+					],
+				),
 				render: () => (
 					<Preview>
 						<Badge>
@@ -184,7 +234,15 @@ export default catalogContentFamily({
 			{
 				id: catalogScenarioId("badge", "linked-badge"),
 				title: "Linked badge",
-				code: '<Link href="#"><Badge>Docs</Badge></Link>',
+				code: scenarioModule(
+					`<Link href="#">
+	<Badge>Docs</Badge>
+</Link>`,
+					[
+						'import { Badge } from "@nocoo/basalt/components/badge";',
+						'import { Link } from "@nocoo/basalt/components/link";',
+					],
+				),
 				render: () => (
 					<Link href="#">
 						<Badge>Docs</Badge>
@@ -220,10 +278,37 @@ export default function Example() {
 			{
 				id: catalogScenarioId("banner", "variants"),
 				title: "Variants",
-				code: `<Banner icon={<Info />} title="Update available" description="A new version is ready to install." />
-<Banner icon={<AlertTriangle />} variant="alert" title="Session expiring" description="Your session will expire in 5 minutes." />
-<Banner icon={<CircleAlert />} variant="error" title="Save failed" description="We couldn't save your changes. Please try again." />
-<Banner icon={<Info />} variant="secondary" title="Maintenance scheduled" description="This service will be unavailable for 10 minutes." />`,
+				code: scenarioModule(
+					`<div className="w-full space-y-3">
+	<Banner
+		icon={<Info />}
+		title="Update available"
+		description="A new version is ready to install."
+	/>
+	<Banner
+		icon={<AlertTriangle />}
+		variant="alert"
+		title="Session expiring"
+		description="Your session will expire in 5 minutes."
+	/>
+	<Banner
+		icon={<CircleAlert />}
+		variant="error"
+		title="Save failed"
+		description="We couldn't save your changes. Please try again."
+	/>
+	<Banner
+		icon={<Info />}
+		variant="secondary"
+		title="Maintenance scheduled"
+		description="This service will be unavailable for 10 minutes."
+	/>
+</div>`,
+					[
+						'import { Banner } from "@nocoo/basalt/components/banner";',
+						'import { AlertTriangle, CircleAlert, Info } from "lucide-react";',
+					],
+				),
 				render: () => (
 					<div className="w-full space-y-3">
 						<Banner
@@ -255,7 +340,18 @@ export default function Example() {
 			{
 				id: catalogScenarioId("banner", "with-icon"),
 				title: "With icon",
-				code: '<Banner icon={<AlertTriangle />} variant="alert" title="Review required" description="Please review your billing information before proceeding." />',
+				code: scenarioModule(
+					`<Banner
+	icon={<AlertTriangle />}
+	variant="alert"
+	title="Review required"
+	description="Please review your billing information before proceeding."
+/>`,
+					[
+						'import { Banner } from "@nocoo/basalt/components/banner";',
+						'import { AlertTriangle } from "lucide-react";',
+					],
+				),
 				render: () => (
 					<Banner
 						icon={<AlertTriangle />}
@@ -268,17 +364,37 @@ export default function Example() {
 			{
 				id: catalogScenarioId("banner", "with-action"),
 				title: "With action",
-				code: `<Banner
-  icon={<Info />}
-  title="Update available"
-  description="A new version is ready to install."
-  action={
-    <>
-      <Banner.Action>Update</Banner.Action>
-      <Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss" />
-    </>
-  }
-/>`,
+				code: scenarioModule(
+					`<div className="w-full space-y-3">
+	<Banner
+		icon={<Info />}
+		title="Update available"
+		description="A new version is ready to install."
+		action={
+			<>
+				<Banner.Action>Update</Banner.Action>
+				<Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss" />
+			</>
+		}
+	/>
+	<Banner
+		variant="error"
+		icon={<CircleAlert />}
+		title="Save failed"
+		description="We couldn't save your changes. Please try again."
+		action={
+			<>
+				<Banner.Action>Retry</Banner.Action>
+				<Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss error" />
+			</>
+		}
+	/>
+</div>`,
+					[
+						'import { Banner } from "@nocoo/basalt/components/banner";',
+						'import { CircleAlert, Info, X } from "lucide-react";',
+					],
+				),
 				render: () => (
 					<div className="w-full space-y-3">
 						<Banner
@@ -310,18 +426,24 @@ export default function Example() {
 			{
 				id: catalogScenarioId("banner", "with-multiple-actions"),
 				title: "With multiple actions",
-				code: `<Banner
-  icon={<AlertTriangle />}
-  variant="error"
-  title="Your account is 90 days past due."
-  description="Pay now to avoid interruption."
-  action={
-    <>
-      <Banner.Action>Pay now</Banner.Action>
-      <Banner.Action variant="secondary">Go to billing</Banner.Action>
-    </>
-  }
+				code: scenarioModule(
+					`<Banner
+	icon={<AlertTriangle />}
+	variant="error"
+	title="Your account is 90 days past due."
+	description="Pay now to avoid interruption."
+	action={
+		<>
+			<Banner.Action>Pay now</Banner.Action>
+			<Banner.Action variant="secondary">Go to billing</Banner.Action>
+		</>
+	}
 />`,
+					[
+						'import { Banner } from "@nocoo/basalt/components/banner";',
+						'import { AlertTriangle } from "lucide-react";',
+					],
+				),
 				render: () => (
 					<Banner
 						icon={<AlertTriangle />}
@@ -340,22 +462,31 @@ export default function Example() {
 			{
 				id: catalogScenarioId("banner", "compact-size"),
 				title: "Compact size",
-				code: `<Banner
-  size="sm"
-  description="A project named Atlas already exists."
-  action={<Link href="#">Open project</Link>}
-/>
-<Banner
-  size="sm"
-  description="A project named Atlas already exists."
-  action={
-    <>
-      <Banner.Action>Open project</Banner.Action>
-      <Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss compact" />
-    </>
-  }
-/>
-<Banner size="sm" description="A project named Atlas already exists." />`,
+				code: scenarioModule(
+					`<div className="w-full space-y-3">
+	<Banner
+		size="sm"
+		description="A project named Atlas already exists."
+		action={<Link href="#">Open project</Link>}
+	/>
+	<Banner
+		size="sm"
+		description="A project named Atlas already exists."
+		action={
+			<>
+				<Banner.Action>Open project</Banner.Action>
+				<Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss compact" />
+			</>
+		}
+	/>
+	<Banner size="sm" description="A project named Atlas already exists." />
+</div>`,
+					[
+						'import { Banner } from "@nocoo/basalt/components/banner";',
+						'import { Link } from "@nocoo/basalt/components/link";',
+						'import { X } from "lucide-react";',
+					],
+				),
 				render: () => (
 					<div className="w-full space-y-3">
 						<Banner
@@ -380,15 +511,22 @@ export default function Example() {
 			{
 				id: catalogScenarioId("banner", "custom-content"),
 				title: "Custom content",
-				code: `<Banner
-  icon={<Info />}
-  title="Custom content supported"
-  description={
-    <Text className="text-inherit">
-      This banner supports <strong>custom content</strong> with Text.
-    </Text>
-  }
+				code: scenarioModule(
+					`<Banner
+	icon={<Info />}
+	title="Custom content supported"
+	description={
+		<Text className="text-inherit">
+			This banner supports <strong>custom content</strong> with Text.
+		</Text>
+	}
 />`,
+					[
+						'import { Banner } from "@nocoo/basalt/components/banner";',
+						'import { Text } from "@nocoo/basalt/components/text";',
+						'import { Info } from "lucide-react";',
+					],
+				),
 				render: () => (
 					<Banner
 						icon={<Info />}
@@ -423,13 +561,21 @@ export default function Example() {
 			{
 				id: catalogScenarioId("empty", "basic"),
 				title: "Basic",
-				code: '<Empty title="No results" description="Try another query." />',
+				code: scenarioModule('<Empty title="No results" description="Try another query." />', [
+					'import { Empty } from "@nocoo/basalt/components/empty";',
+				]),
 				render: () => <Empty title="No results" description="Try another query." />,
 			},
 			{
 				id: catalogScenarioId("empty", "with-icon"),
 				title: "With icon",
-				code: '<Empty icon={<Inbox />} title="Inbox zero" description="You are all caught up." />',
+				code: scenarioModule(
+					'<Empty icon={<Inbox />} title="Inbox zero" description="You are all caught up." />',
+					[
+						'import { Empty } from "@nocoo/basalt/components/empty";',
+						'import { Inbox } from "lucide-react";',
+					],
+				),
 				render: () => (
 					<Empty icon={<Inbox />} title="Inbox zero" description="You are all caught up." />
 				),
@@ -450,13 +596,22 @@ export default function Example() {
 			{
 				id: catalogScenarioId("loader", "default-size"),
 				title: "Default Size",
-				code: "<Loader />",
+				code: scenarioModule("<Loader />", [
+					'import { Loader } from "@nocoo/basalt/components/loader";',
+				]),
 				render: () => <Loader />,
 			},
 			{
 				id: catalogScenarioId("loader", "custom-size"),
 				title: "Custom Size",
-				code: "<Loader size={16} /><Loader size={24} /><Loader size={32} />",
+				code: scenarioModule(
+					`<div className="flex flex-wrap items-center gap-3">
+	<Loader size={16} />
+	<Loader size={24} />
+	<Loader size={32} />
+</div>`,
+					['import { Loader } from "@nocoo/basalt/components/loader";'],
+				),
 				render: () => (
 					<Preview>
 						<Loader size={16} />
@@ -487,9 +642,14 @@ export default function Example() {
 			{
 				id: catalogScenarioId("skeleton-line", "default"),
 				title: "Default",
-				code: `<SkeletonLine minWidth={40} maxWidth={55} />
-<SkeletonLine minWidth={75} maxWidth={90} />
-<SkeletonLine minWidth={90} maxWidth={100} />`,
+				code: scenarioModule(
+					`<div className="flex w-64 flex-col gap-3">
+	<SkeletonLine minWidth={40} maxWidth={55} />
+	<SkeletonLine minWidth={75} maxWidth={90} />
+	<SkeletonLine minWidth={90} maxWidth={100} />
+</div>`,
+					['import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";'],
+				),
 				render: () => (
 					<div className="flex w-64 flex-col gap-3">
 						<SkeletonLine minWidth={40} maxWidth={55} />
@@ -501,9 +661,14 @@ export default function Example() {
 			{
 				id: catalogScenarioId("skeleton-line", "width"),
 				title: "Width",
-				code: `<SkeletonLine minWidth={80} maxWidth={100} />
-<SkeletonLine minWidth={60} maxWidth={80} />
-<SkeletonLine minWidth={40} maxWidth={60} />`,
+				code: scenarioModule(
+					`<div className="flex w-64 flex-col gap-3">
+	<SkeletonLine minWidth={80} maxWidth={100} />
+	<SkeletonLine minWidth={60} maxWidth={80} />
+	<SkeletonLine minWidth={40} maxWidth={60} />
+</div>`,
+					['import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";'],
+				),
 				render: () => (
 					<div className="flex w-64 flex-col gap-3">
 						<SkeletonLine minWidth={80} maxWidth={100} />
@@ -515,10 +680,15 @@ export default function Example() {
 			{
 				id: catalogScenarioId("skeleton-line", "height"),
 				title: "Height",
-				code: `<SkeletonLine className="h-2" minWidth={90} maxWidth={100} />
-<SkeletonLine className="h-4" minWidth={90} maxWidth={100} />
-<SkeletonLine className="h-6" minWidth={90} maxWidth={100} />
-<SkeletonLine className="h-8" minWidth={90} maxWidth={100} />`,
+				code: scenarioModule(
+					`<div className="flex w-64 flex-col gap-3">
+	<SkeletonLine className="h-2" minWidth={90} maxWidth={100} />
+	<SkeletonLine className="h-4" minWidth={90} maxWidth={100} />
+	<SkeletonLine className="h-6" minWidth={90} maxWidth={100} />
+	<SkeletonLine className="h-8" minWidth={90} maxWidth={100} />
+</div>`,
+					['import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";'],
+				),
 				render: () => (
 					<div className="flex w-64 flex-col gap-3">
 						<SkeletonLine className="h-2" minWidth={90} maxWidth={100} />
@@ -550,31 +720,41 @@ export default function Example() {
 			{
 				id: catalogScenarioId("meter", "basic-meter"),
 				title: "Basic Meter",
-				code: '<Meter value={40} label="Usage" />',
+				code: scenarioModule('<Meter value={40} label="Usage" />', [
+					'import { Meter } from "@nocoo/basalt/components/meter";',
+				]),
 				render: () => <Meter value={40} label="Usage" />,
 			},
 			{
 				id: catalogScenarioId("meter", "custom-value-display"),
 				title: "Custom Value Display",
-				code: '<Meter value={12} label="Storage" customValue="12 GB" />',
+				code: scenarioModule('<Meter value={12} label="Storage" customValue="12 GB" />', [
+					'import { Meter } from "@nocoo/basalt/components/meter";',
+				]),
 				render: () => <Meter value={12} label="Storage" customValue="12 GB" />,
 			},
 			{
 				id: catalogScenarioId("meter", "hidden-value"),
 				title: "Hidden Value",
-				code: '<Meter value={72} label="Progress" hideValue />',
+				code: scenarioModule('<Meter value={72} label="Progress" hideValue />', [
+					'import { Meter } from "@nocoo/basalt/components/meter";',
+				]),
 				render: () => <Meter value={72} label="Progress" hideValue />,
 			},
 			{
 				id: catalogScenarioId("meter", "full-meter"),
 				title: "Full Meter",
-				code: '<Meter value={100} label="Complete" />',
+				code: scenarioModule('<Meter value={100} label="Complete" />', [
+					'import { Meter } from "@nocoo/basalt/components/meter";',
+				]),
 				render: () => <Meter value={100} label="Complete" />,
 			},
 			{
 				id: catalogScenarioId("meter", "low-value"),
 				title: "Low Value",
-				code: '<Meter value={8} label="Quota" />',
+				code: scenarioModule('<Meter value={8} label="Quota" />', [
+					'import { Meter } from "@nocoo/basalt/components/meter";',
+				]),
 				render: () => <Meter value={8} label="Quota" />,
 			},
 		],
@@ -709,25 +889,34 @@ export default function Example() {
 			{
 				id: catalogScenarioId("clipboard-text", "short-text"),
 				title: "Short Text",
-				code: '<ClipboardText text="bun add @nocoo/basalt" />',
+				code: scenarioModule('<ClipboardText text="bun add @nocoo/basalt" />', [
+					'import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";',
+				]),
 				render: () => <ClipboardText text="bun add @nocoo/basalt" />,
 			},
 			{
 				id: catalogScenarioId("clipboard-text", "api-key"),
 				title: "API Key",
-				code: '<ClipboardText text="project-••••" copyText="project-atlas" />',
+				code: scenarioModule('<ClipboardText text="project-••••" copyText="project-atlas" />', [
+					'import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";',
+				]),
 				render: () => <ClipboardText text="project-••••" copyText="project-atlas" />,
 			},
 			{
 				id: catalogScenarioId("clipboard-text", "copy-alternate-text"),
 				title: "Copy Alternate Text",
-				code: '<ClipboardText text="Visible label" copyText="copied-value" />',
+				code: scenarioModule('<ClipboardText text="Visible label" copyText="copied-value" />', [
+					'import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";',
+				]),
 				render: () => <ClipboardText text="Visible label" copyText="copied-value" />,
 			},
 			{
 				id: catalogScenarioId("clipboard-text", "long-text"),
 				title: "Long Text",
-				code: '<ClipboardText text="https://basalt.dev.hexly.ai/ui/clipboard-text" />',
+				code: scenarioModule(
+					'<ClipboardText text="https://basalt.dev.hexly.ai/ui/clipboard-text" />',
+					['import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";'],
+				),
 				render: () => <ClipboardText text="https://basalt.dev.hexly.ai/ui/clipboard-text" />,
 			},
 		],
@@ -778,7 +967,12 @@ export default function Example() {
 			{
 				id: catalogScenarioId("avatar", "fallback"),
 				title: "Fallback",
-				code: "<Avatar><AvatarFallback>ZL</AvatarFallback></Avatar>",
+				code: scenarioModule(
+					`<Avatar>
+	<AvatarFallback>ZL</AvatarFallback>
+</Avatar>`,
+					['import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";'],
+				),
 				render: () => (
 					<Avatar>
 						<AvatarFallback>ZL</AvatarFallback>
