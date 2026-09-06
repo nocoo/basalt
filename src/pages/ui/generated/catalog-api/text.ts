@@ -9,7 +9,7 @@ export const API = [
 				name: "variant",
 				type: "TextVariant",
 				required: false,
-				default: '"body"',
+				default: "\"body\"",
 				description: "Visual role. Does not infer document outline.",
 			},
 			{
@@ -22,7 +22,7 @@ export const API = [
 				name: "tone",
 				type: "TextTone",
 				required: false,
-				default: '"default"',
+				default: "\"default\"",
 				description: "Foreground tone.",
 			},
 			{

@@ -25,7 +25,7 @@ export const API = [
 			},
 			{
 				name: "mode",
-				type: '"range" | "single"',
+				type: "\"range\" | \"single\"",
 				required: false,
 				default: "single",
 				description: "Selection mode.",

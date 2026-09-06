@@ -16,7 +16,7 @@ export const API = [
 				name: "placement",
 				type: "FabPlacement",
 				required: false,
-				default: '"fixed"',
+				default: "\"fixed\"",
 				description: "Viewport pin versus containing frame.",
 			},
 			{

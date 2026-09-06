@@ -13,7 +13,7 @@ export const API = [
 			},
 			{
 				name: "size",
-				type: '"default" | "sm"',
+				type: "\"default\" | \"sm\"",
 				required: false,
 				default: "default",
 				description: "The visual size of the switch.",
@@ -65,7 +65,7 @@ export const API = [
 		props: [
 			{
 				name: "size",
-				type: '"default" | "sm"',
+				type: "\"default\" | \"sm\"",
 				required: false,
 				default: "default",
 				description: "The visual size of the switch.",

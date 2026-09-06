@@ -7,7 +7,7 @@ export const API = [
 		props: [
 			{
 				name: "checked",
-				type: '"indeterminate" | boolean',
+				type: "\"indeterminate\" | boolean",
 				required: false,
 				description: "The controlled checked state of the checkbox.",
 			},
@@ -65,7 +65,7 @@ export const API = [
 		props: [
 			{
 				name: "size",
-				type: '"default" | "sm"',
+				type: "\"default\" | \"sm\"",
 				required: false,
 				default: "default",
 				description: "The visual size of the checkbox.",

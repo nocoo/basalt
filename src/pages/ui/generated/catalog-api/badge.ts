@@ -7,9 +7,9 @@ export const API = [
 		props: [
 			{
 				name: "variant",
-				type: '"blue" | "default" | "destructive" | "error" | "info" | "orange" | "outline" | "purple" | "red" | "secondary" | "success" | "teal" | "warning" | null',
+				type: "\"blue\" | \"default\" | \"destructive\" | \"error\" | \"info\" | \"orange\" | \"outline\" | \"purple\" | \"red\" | \"secondary\" | \"success\" | \"teal\" | \"warning\" | null",
 				required: false,
-				default: '"default"',
+				default: "\"default\"",
 				description: "Visual style variant for the badge.\n\nNote: Supports standard semantic tones and decorative color tokens.\nPass null to omit variant styling.",
 			},
 			{

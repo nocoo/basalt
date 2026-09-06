@@ -9,7 +9,7 @@ export const API = [
 				name: "title",
 				type: "string",
 				required: false,
-				default: '"No results"',
+				default: "\"No results\"",
 				description: "Primary title text displayed in the empty state.\n\nNote: Overwrites standard children rendering.",
 			},
 			{

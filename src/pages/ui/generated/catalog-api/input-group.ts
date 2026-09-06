@@ -30,7 +30,7 @@ export const API = [
 		props: [
 			{
 				name: "align",
-				type: '"end" | "start"',
+				type: "\"end\" | \"start\"",
 				required: false,
 				default: "start",
 				description: "Place the addon at the start or end of the group.",
@@ -42,14 +42,14 @@ export const API = [
 		props: [
 			{
 				name: "variant",
-				type: '"default" | "destructive" | "ghost" | "link" | "outline" | "secondary" | null',
+				type: "\"default\" | \"destructive\" | \"ghost\" | \"link\" | \"outline\" | \"secondary\" | null",
 				required: false,
 				default: "ghost",
 				description: "Visual style for the nested action.",
 			},
 			{
 				name: "size",
-				type: '"default" | "icon" | "lg" | "sm" | null',
+				type: "\"default\" | \"icon\" | \"lg\" | \"sm\" | null",
 				required: false,
 				default: "icon",
 				description: "Size for the nested action.",

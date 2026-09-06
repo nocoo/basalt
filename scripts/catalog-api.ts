@@ -1809,9 +1809,6 @@ export function generateCatalogApi(input: {
 }
 
 function emitString(value: string): string {
-	if (value.includes('"') && !value.includes("'")) {
-		return `'${value}'`;
-	}
 	return JSON.stringify(value);
 }
 

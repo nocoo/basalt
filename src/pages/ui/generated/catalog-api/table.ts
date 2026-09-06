@@ -20,7 +20,7 @@ export const API = [
 				name: "variant",
 				type: "TableRowVariant",
 				required: false,
-				default: '"default"',
+				default: "\"default\"",
 				description: "Highlight the row as selected.",
 			},
 			{

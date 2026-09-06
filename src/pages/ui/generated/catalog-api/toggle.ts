@@ -7,16 +7,16 @@ export const API = [
 		props: [
 			{
 				name: "variant",
-				type: '"default" | "outline" | null',
+				type: "\"default\" | \"outline\" | null",
 				required: false,
-				default: '"default"',
+				default: "\"default\"",
 				description: "Visual style variant.",
 			},
 			{
 				name: "size",
-				type: '"default" | "lg" | "sm" | null',
+				type: "\"default\" | \"lg\" | \"sm\" | null",
 				required: false,
-				default: '"default"',
+				default: "\"default\"",
 				description: "Sizing preset.",
 			},
 			{

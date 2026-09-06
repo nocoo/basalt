@@ -7,16 +7,16 @@ export const API = [
 		props: [
 			{
 				name: "variant",
-				type: '"default" | "destructive" | "ghost" | "link" | "outline" | "secondary" | null',
+				type: "\"default\" | \"destructive\" | \"ghost\" | \"link\" | \"outline\" | \"secondary\" | null",
 				required: false,
-				default: '"default"',
+				default: "\"default\"",
 				description: "Visual style variant.",
 			},
 			{
 				name: "size",
-				type: '"default" | "icon" | "lg" | "sm" | null',
+				type: "\"default\" | \"icon\" | \"lg\" | \"sm\" | null",
 				required: false,
-				default: '"default"',
+				default: "\"default\"",
 				description: "Sizing preset.",
 			},
 			{

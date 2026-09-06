@@ -2,6 +2,7 @@ import { createHash } from "node:crypto";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
+import * as tsApi from "typescript-api";
 import { afterEach, describe, expect, it } from "vitest";
 import {
 	CATALOG_API_TARGETS,
@@ -20,6 +21,8 @@ import {
 	writeCatalogApiFiles,
 } from "./catalog-api";
 import { DOCUMENTED_NATIVE_ONLY_SURFACES } from "./catalog-surface-owners";
+
+const ts = (tsApi as unknown as { default?: typeof tsApi }).default ?? tsApi;
 
 const repoRoot = process.cwd();
 const fixtureRoots: string[] = [];
@@ -3855,7 +3858,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"ed2c0bd48efa98d41ef24f346d230348b0ba057c60fcbfce98902722c351b82c",
+			"ad4dc31564b60a88c252447a1644cec63a5f4f4655fa19a364e5ed5daa6a8834",
 		);
 	}, 60_000);
 
@@ -3931,5 +3934,66 @@ export interface WidgetProps {
 
 		// 3. Valid registered entry succeeds
 		expect(() => generateCatalogApiFiles(repoRoot, sampleData("Code"))).not.toThrow();
+	});
+
+	it("reliably encodes string values with exact syntax and semantic roundtrip", () => {
+		const testCases = [
+			"Ordinary description",
+			'Use the "selected" option.\nKeep the second line.',
+			String.raw`Use "path" C:\temp\file.`,
+			'Use "selected" and don\'t drop\nline breaks.',
+			'🎉 Emoji test: 🚀 and "quotes" with `backticks` and \n newlines',
+			"Type with \"quotes\" and <Generics<string>> and 'single'",
+			'{"key": "value", "escaped": "\\n"}',
+		];
+
+		for (const [index, description] of testCases.entries()) {
+			const shardContent = renderCatalogApiShard([
+				{
+					name: `Surface${index}`,
+					props: [
+						{
+							name: "prop",
+							type: "string",
+							required: false,
+							default: description,
+							description,
+						},
+					],
+				},
+			]);
+
+			const sourceFile = ts.createSourceFile(
+				`fixture-${index}.ts`,
+				shardContent,
+				ts.ScriptTarget.Latest,
+				true,
+				ts.ScriptKind.TS,
+			);
+
+			const parseDiagnostics =
+				(sourceFile as unknown as { parseDiagnostics?: tsApi.Diagnostic[] }).parseDiagnostics ?? [];
+			expect(parseDiagnostics).toHaveLength(0);
+
+			let extractedDefault: string | undefined;
+			let extractedDescription: string | undefined;
+
+			const visit = (node: tsApi.Node) => {
+				if (ts.isPropertyAssignment(node)) {
+					const propName = node.name.getText(sourceFile);
+					if (propName === "default" && ts.isStringLiteral(node.initializer)) {
+						extractedDefault = node.initializer.text;
+					} else if (propName === "description" && ts.isStringLiteral(node.initializer)) {
+						extractedDescription = node.initializer.text;
+					}
+				}
+				ts.forEachChild(node, visit);
+			};
+
+			visit(sourceFile);
+
+			expect(extractedDefault).toBe(description);
+			expect(extractedDescription).toBe(description);
+		}
 	});
 });

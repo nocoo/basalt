@@ -7,7 +7,7 @@ export const API = [
 		props: [
 			{
 				name: "orientation",
-				type: '"horizontal" | "vertical"',
+				type: "\"horizontal\" | \"vertical\"",
 				required: false,
 				default: "horizontal",
 				description: "The orientation of the separator.",

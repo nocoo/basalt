@@ -21,7 +21,7 @@ export const API = [
 				name: "filter",
 				type: "string",
 				required: false,
-				default: '""',
+				default: "\"\"",
 				description: "Filter query matched against column values.",
 			},
 			{
@@ -35,7 +35,7 @@ export const API = [
 				name: "empty",
 				type: "React.ReactNode",
 				required: false,
-				default: '"No results"',
+				default: "\"No results\"",
 				description: "Copy shown when no rows remain after filtering.",
 			},
 			{

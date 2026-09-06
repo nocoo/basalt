@@ -9,7 +9,7 @@ export const API = [
 				name: "title",
 				type: "string",
 				required: false,
-				default: '"On this page"',
+				default: "\"On this page\"",
 				description: "Accessible name and heading. Pass an empty string to hide the heading.",
 			},
 			{

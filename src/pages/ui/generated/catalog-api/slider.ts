@@ -65,9 +65,9 @@ export const API = [
 			},
 			{
 				name: "orientation",
-				type: '"horizontal" | "vertical"',
+				type: "\"horizontal\" | \"vertical\"",
 				required: false,
-				default: '"horizontal"',
+				default: "\"horizontal\"",
 				description: "Layout orientation of the slider track.",
 			},
 		],

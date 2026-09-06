@@ -15,7 +15,7 @@ export const API = [
 				name: "orientation",
 				type: "ScrollAreaOrientation",
 				required: false,
-				default: '"vertical"',
+				default: "\"vertical\"",
 				description: "Axes that may scroll.",
 			},
 			{

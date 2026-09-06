@@ -7,7 +7,7 @@ export const API = [
 		props: [
 			{
 				name: "type",
-				type: '"single"',
+				type: "\"single\"",
 				required: true,
 				description: "Single-selection mode.",
 			},
@@ -21,7 +21,7 @@ export const API = [
 				name: "defaultValue",
 				type: "string",
 				required: false,
-				default: '""',
+				default: "\"\"",
 				description: "Default string value in single mode when initially rendered.",
 			},
 			{
@@ -46,7 +46,7 @@ export const API = [
 			},
 			{
 				name: "orientation",
-				type: '"horizontal" | "vertical"',
+				type: "\"horizontal\" | \"vertical\"",
 				required: false,
 				description: "Constrains keyboard navigation axis; does not alter horizontal CSS layout.",
 			},
@@ -57,7 +57,7 @@ export const API = [
 		props: [
 			{
 				name: "type",
-				type: '"multiple"',
+				type: "\"multiple\"",
 				required: true,
 				description: "Multiple-selection mode.",
 			},
@@ -96,7 +96,7 @@ export const API = [
 			},
 			{
 				name: "orientation",
-				type: '"horizontal" | "vertical"',
+				type: "\"horizontal\" | \"vertical\"",
 				required: false,
 				description: "Constrains keyboard navigation axis; does not alter horizontal CSS layout.",
 			},

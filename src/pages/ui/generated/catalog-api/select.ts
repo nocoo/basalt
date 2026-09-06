@@ -67,7 +67,7 @@ export const API = [
 		props: [
 			{
 				name: "position",
-				type: '"item-aligned" | "popper"',
+				type: "\"item-aligned\" | \"popper\"",
 				required: false,
 				default: "popper",
 				description: "The positioning mode for the select content.",

@@ -9,7 +9,7 @@ export const API = [
 				name: "aria-label",
 				type: "string",
 				required: false,
-				default: '"Flow"',
+				default: "\"Flow\"",
 				description: "Accessible name for the step list.",
 			},
 			{

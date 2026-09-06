@@ -15,14 +15,14 @@ export const API = [
 				name: "mode",
 				type: "DockMode",
 				required: false,
-				default: '"push"',
+				default: "\"push\"",
 				description: "`push` shrinks the main column. `overlay` covers it with a Dialog scrim.",
 			},
 			{
 				name: "width",
 				type: "string",
 				required: false,
-				default: '"clamp(300px, 32.5vw, 546px)"',
+				default: "\"clamp(300px, 32.5vw, 546px)\"",
 				description: "Width when open.",
 			},
 			{
@@ -35,7 +35,7 @@ export const API = [
 				name: "dismissLabel",
 				type: "string",
 				required: false,
-				default: '"Dismiss"',
+				default: "\"Dismiss\"",
 				description: "Overlay scrim accessible name.",
 			},
 			{
