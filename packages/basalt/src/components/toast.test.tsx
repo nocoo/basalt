@@ -66,7 +66,7 @@ describe("toast", () => {
 			"Deployed",
 			expect.objectContaining({
 				closeButton: false,
-				icon: false,
+				icon: null,
 				description: "Shipped.",
 			}),
 		);
@@ -175,7 +175,7 @@ describe("toast", () => {
 		expect(payloadOf(sonner.info).icon).toBe(custom);
 		sonner.info.mockClear();
 		toast.error("Quiet", { icon: false });
-		expect(sonner.error).toHaveBeenCalledWith("Quiet", expect.objectContaining({ icon: false }));
+		expect(sonner.error).toHaveBeenCalledWith("Quiet", expect.objectContaining({ icon: null }));
 	});
 
 	it("forwards description, action, duration, and id", async () => {

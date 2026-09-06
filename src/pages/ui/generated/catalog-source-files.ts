@@ -212,7 +212,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"toast": {
 		"file": "packages/basalt/src/components/toast.tsx",
-		"hash": "b5c616728f368e10",
+		"hash": "4780daf45435378d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/toast.js.map (sourcesContent[0])"
 	},

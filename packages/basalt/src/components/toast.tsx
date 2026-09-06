@@ -10,7 +10,7 @@ export type ToastOptions = {
 	 */
 	description?: ReactNode;
 	/**
-	 * Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`).
+	 * Custom icon override. When set to `false`, suppresses default status or notification icons.
 	 */
 	icon?: ReactNode | false;
 	/**
@@ -68,7 +68,7 @@ const VARIANT_ICON: Record<ToastVariant, ReactNode> = {
 
 function resolveIcon(variant: ToastVariant, icon: ToastOptions["icon"]) {
 	if (icon === false) {
-		return false;
+		return null;
 	}
 	if (icon != null) {
 		return icon;

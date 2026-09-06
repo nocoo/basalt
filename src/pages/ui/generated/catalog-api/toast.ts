@@ -182,7 +182,7 @@ export const API = [
 					name: "icon",
 					type: "React.ReactNode",
 					required: false,
-					description: "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`).",
+					description: "Custom icon override. When set to `false`, suppresses default status or notification icons.",
 				},
 				{
 					name: "close",
@@ -256,7 +256,7 @@ export const API = [
 					name: "icon",
 					type: "React.ReactNode",
 					required: false,
-					description: "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`).",
+					description: "Custom icon override. When set to `false`, suppresses default status or notification icons.",
 				},
 				{
 					name: "close",
@@ -323,7 +323,7 @@ export const API = [
 					name: "icon",
 					type: "React.ReactNode",
 					required: false,
-					description: "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`).",
+					description: "Custom icon override. When set to `false`, suppresses default status or notification icons.",
 				},
 				{
 					name: "close",
@@ -390,7 +390,7 @@ export const API = [
 					name: "icon",
 					type: "React.ReactNode",
 					required: false,
-					description: "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`).",
+					description: "Custom icon override. When set to `false`, suppresses default status or notification icons.",
 				},
 				{
 					name: "close",
@@ -457,7 +457,7 @@ export const API = [
 					name: "icon",
 					type: "React.ReactNode",
 					required: false,
-					description: "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`).",
+					description: "Custom icon override. When set to `false`, suppresses default status or notification icons.",
 				},
 				{
 					name: "close",

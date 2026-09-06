@@ -13,6 +13,7 @@ export default defineConfig({
 				dock: resolve(__dirname, "dock.html"),
 				confirm: resolve(__dirname, "confirm.html"),
 				portal: resolve(__dirname, "portal.html"),
+				toast: resolve(__dirname, "toast.html"),
 			},
 		},
 	},

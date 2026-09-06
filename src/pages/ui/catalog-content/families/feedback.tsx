@@ -773,7 +773,7 @@ export default function Example() {
 			...extraDocs(
 				"Toast",
 				"toast",
-				"Transient notification stack. Toast is an alias for Toaster, which mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. Note that icon: false does not suppress default status icons for status methods (toast.success, error, warning, info); only default toast can hide its icon via icon: false.",
+				"Transient notification stack. Toast is an alias for Toaster, which mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. When icon: false is specified, status and default toast icons are suppressed.",
 				"<Button onClick={() => toast('Saved')}>Toast</Button>",
 				undefined,
 				`import { Button } from "@nocoo/basalt/components/button";

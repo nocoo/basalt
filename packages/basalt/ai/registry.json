@@ -20172,7 +20172,7 @@
 			"importPath": "@nocoo/basalt/components/toast",
 			"subpath": "./components/toast",
 			"sourceFile": "packages/basalt/src/components/toast.tsx",
-			"sourceHash": "b5c616728f368e10",
+			"sourceHash": "4780daf45435378d",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -20452,7 +20452,7 @@
 										"name": "icon",
 										"type": "React.ReactNode",
 										"required": false,
-										"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+										"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 									},
 									{
 										"name": "close",
@@ -20526,7 +20526,7 @@
 										"name": "icon",
 										"type": "React.ReactNode",
 										"required": false,
-										"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+										"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 									},
 									{
 										"name": "close",
@@ -20593,7 +20593,7 @@
 										"name": "icon",
 										"type": "React.ReactNode",
 										"required": false,
-										"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+										"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 									},
 									{
 										"name": "close",
@@ -20660,7 +20660,7 @@
 										"name": "icon",
 										"type": "React.ReactNode",
 										"required": false,
-										"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+										"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 									},
 									{
 										"name": "close",
@@ -20727,7 +20727,7 @@
 										"name": "icon",
 										"type": "React.ReactNode",
 										"required": false,
-										"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+										"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 									},
 									{
 										"name": "close",
@@ -20961,7 +20961,7 @@
 								"name": "icon",
 								"type": "React.ReactNode",
 								"required": false,
-								"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 							},
 							{
 								"name": "close",
@@ -21035,7 +21035,7 @@
 								"name": "icon",
 								"type": "React.ReactNode",
 								"required": false,
-								"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 							},
 							{
 								"name": "close",
@@ -21102,7 +21102,7 @@
 								"name": "icon",
 								"type": "React.ReactNode",
 								"required": false,
-								"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 							},
 							{
 								"name": "close",
@@ -21169,7 +21169,7 @@
 								"name": "icon",
 								"type": "React.ReactNode",
 								"required": false,
-								"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 							},
 							{
 								"name": "close",
@@ -21236,7 +21236,7 @@
 								"name": "icon",
 								"type": "React.ReactNode",
 								"required": false,
-								"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 							},
 							{
 								"name": "close",
@@ -24945,7 +24945,7 @@
 			"exportName": "Toast",
 			"importPath": "@nocoo/basalt/components/toast",
 			"sourceFile": "packages/basalt/src/components/toast.tsx",
-			"sourceHash": "b5c616728f368e10",
+			"sourceHash": "4780daf45435378d",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#toast",
@@ -25130,7 +25130,7 @@
 								"name": "icon",
 								"type": "React.ReactNode",
 								"required": false,
-								"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 							},
 							{
 								"name": "close",
@@ -25204,7 +25204,7 @@
 								"name": "icon",
 								"type": "React.ReactNode",
 								"required": false,
-								"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 							},
 							{
 								"name": "close",
@@ -25271,7 +25271,7 @@
 								"name": "icon",
 								"type": "React.ReactNode",
 								"required": false,
-								"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 							},
 							{
 								"name": "close",
@@ -25338,7 +25338,7 @@
 								"name": "icon",
 								"type": "React.ReactNode",
 								"required": false,
-								"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 							},
 							{
 								"name": "close",
@@ -25405,7 +25405,7 @@
 								"name": "icon",
 								"type": "React.ReactNode",
 								"required": false,
-								"description": "Custom icon override. When set to `false`, requests suppression of the default icon (note: currently in status toasts `toast.success/error/warning/info`, default status icons are not suppressed by `icon: false`)."
+								"description": "Custom icon override. When set to `false`, suppresses default status or notification icons."
 							},
 							{
 								"name": "close",

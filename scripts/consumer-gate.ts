@@ -36,6 +36,7 @@ import {
 	stopChild,
 } from "./consumer-http";
 import { assertConsumerPortal } from "./consumer-portal";
+import { assertConsumerToast } from "./consumer-toast";
 
 export const HEAVY_PEERS = [
 	"tailwindcss",
@@ -1304,6 +1305,15 @@ console.log(JSON.stringify({
 						const faults = attachPageFaults(page);
 						await page.goto(portalUrl, { waitUntil: "domcontentloaded" });
 						const res = await assertConsumerPortal(page);
+						assertNoPageFaults(faults);
+						return res;
+					});
+
+					const toastUrl = `http://127.0.0.1:${port}/toast.html`;
+					evidence.toast = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(toastUrl, { waitUntil: "domcontentloaded" });
+						const res = await assertConsumerToast(page);
 						assertNoPageFaults(faults);
 						return res;
 					});
