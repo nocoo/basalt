@@ -7,7 +7,7 @@ import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { FOCUS_RING } from "./overlay";
 
 const buttonVariants = cva(
-	`${BASALT_UI_CLASS} inline-flex items-center justify-center gap-2 rounded-basalt-md text-sm font-medium transition-colors ${FOCUS_RING} disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0`,
+	`${BASALT_UI_CLASS} inline-flex items-center justify-center gap-2 rounded-basalt-md text-sm font-medium transition-colors ${FOCUS_RING} disabled:pointer-events-none disabled:opacity-50 aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0`,
 	{
 		variants: {
 			variant: {
@@ -49,6 +49,13 @@ export interface ButtonProps
 	size?: VariantProps<typeof buttonVariants>["size"];
 	/**
 	 * Pass control to child element slot.
+	 *
+	 * Note: Child element must forward props and ref in all states. When disabled or loading,
+	 * asChild suppresses click, keyboard activation (Enter/Space), and pointer handlers on both
+	 * child and parent while retaining browser default Tab navigation without trapping focus.
+	 * To preserve single DOM node layout and avoid unexpected child layout shifts, no internal
+	 * spinner is inserted in asChild loading mode; visual disabled state is expressed via aria-disabled.
+	 *
 	 * @default false
 	 */
 	asChild?: boolean;
@@ -84,14 +91,102 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 		},
 		ref,
 	) => {
-		const Comp = asChild ? Slot : "button";
+		const isDisabled = Boolean(disabled || loading);
+
 		if (asChild) {
+			if (isDisabled && React.isValidElement(children)) {
+				const childElement = children as React.ReactElement<Record<string, unknown>>;
+				const isNativeButton =
+					typeof childElement.type === "string" && childElement.type.toLowerCase() === "button";
+
+				const blockActivationEvent = (event: React.SyntheticEvent | Event) => {
+					event.preventDefault();
+					event.stopPropagation();
+					if (
+						"stopImmediatePropagation" in event &&
+						typeof event.stopImmediatePropagation === "function"
+					) {
+						event.stopImmediatePropagation();
+					}
+				};
+
+				const handleKeyEvent = (event: React.KeyboardEvent) => {
+					if (event.key === "Enter" || event.key === " " || event.key === "Spacebar") {
+						event.preventDefault();
+						event.stopPropagation();
+						if (typeof event.nativeEvent?.stopImmediatePropagation === "function") {
+							event.nativeEvent.stopImmediatePropagation();
+						}
+					} else {
+						// For non-activation keys like Tab, suppress user handlers from running while preserving browser default navigation
+						event.stopPropagation();
+						if (typeof event.nativeEvent?.stopImmediatePropagation === "function") {
+							event.nativeEvent.stopImmediatePropagation();
+						}
+					}
+				};
+
+				const blockedHandlers = {
+					onClick: blockActivationEvent,
+					onClickCapture: blockActivationEvent,
+					onKeyDown: handleKeyEvent,
+					onKeyDownCapture: handleKeyEvent,
+					onKeyUp: handleKeyEvent,
+					onKeyUpCapture: handleKeyEvent,
+					onKeyPress: handleKeyEvent,
+					onKeyPressCapture: handleKeyEvent,
+					onMouseDown: blockActivationEvent,
+					onMouseDownCapture: blockActivationEvent,
+					onMouseUp: blockActivationEvent,
+					onMouseUpCapture: blockActivationEvent,
+					onPointerDown: blockActivationEvent,
+					onPointerDownCapture: blockActivationEvent,
+					onPointerUp: blockActivationEvent,
+					onPointerUpCapture: blockActivationEvent,
+					onAuxClick: blockActivationEvent,
+					onAuxClickCapture: blockActivationEvent,
+				};
+
+				const { disabled: _ignoredChildDisabled, ...sanitizedProps } = childElement.props;
+
+				const sanitizedChild = React.cloneElement(childElement, {
+					...sanitizedProps,
+					...blockedHandlers,
+					...(isNativeButton ? { disabled: true } : {}),
+					"aria-disabled": true,
+					"aria-busy": loading ? true : undefined,
+					tabIndex: -1,
+				});
+
+				const slotProps: Record<string, unknown> = {
+					...props,
+					...blockedHandlers,
+					"aria-disabled": true,
+					"aria-busy": loading ? "true" : undefined,
+					tabIndex: -1,
+				};
+				if (isNativeButton) {
+					slotProps.disabled = true;
+				}
+
+				return (
+					<Slot
+						className={cn(buttonVariants({ variant, size }), className)}
+						ref={ref}
+						{...slotProps}
+					>
+						{sanitizedChild}
+					</Slot>
+				);
+			}
+
 			return (
-				<Comp className={cn(buttonVariants({ variant, size }), className)} ref={ref} {...props}>
+				<Slot className={cn(buttonVariants({ variant, size }), className)} ref={ref} {...props}>
 					{children}
-				</Comp>
+				</Slot>
 			);
 		}
+
 		const iconNode = loading ? (
 			<Loader2 className="animate-basalt-spin" aria-hidden="true" />
 		) : (
@@ -102,7 +197,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				className={cn(buttonVariants({ variant, size }), className)}
 				ref={ref}
 				type={type}
-				disabled={disabled || loading}
+				disabled={isDisabled}
 				aria-busy={loading || undefined}
 				{...props}
 			>

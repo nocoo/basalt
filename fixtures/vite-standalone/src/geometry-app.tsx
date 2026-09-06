@@ -29,8 +29,43 @@ import {
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@nocoo/basalt/components/table";
 import { Text } from "@nocoo/basalt/components/text";
+import * as React from "react";
 
 export function GeometryApp() {
+	const [switchLoading, setSwitchLoading] = React.useState(false);
+	const [parentClickCount, setParentClickCount] = React.useState(0);
+	const [childClickCount, setChildClickCount] = React.useState(0);
+	const [parentCaptureCount, setParentCaptureCount] = React.useState(0);
+	const [childCaptureCount, setChildCaptureCount] = React.useState(0);
+
+	React.useEffect(() => {
+		(
+			window as unknown as {
+				setSwitchLoading?: (v: boolean) => void;
+				getDynamicCounts?: () => {
+					parentClick: number;
+					childClick: number;
+					parentCapture: number;
+					childCapture: number;
+				};
+			}
+		).setSwitchLoading = setSwitchLoading;
+		(
+			window as unknown as {
+				getDynamicCounts?: () => {
+					parentClick: number;
+					childClick: number;
+					parentCapture: number;
+					childCapture: number;
+				};
+			}
+		).getDynamicCounts = () => ({
+			parentClick: parentClickCount,
+			childClick: childClickCount,
+			parentCapture: parentCaptureCount,
+			childCapture: childCaptureCount,
+		});
+	}, [parentClickCount, childClickCount, parentCaptureCount, childCaptureCount]);
 	return (
 		<div>
 			{/* Host native elements (un-styled, un-marked) for isolation / leak check */}
@@ -67,6 +102,43 @@ export function GeometryApp() {
 				<Button id="basalt-btn-anchor" asChild>
 					<a href="#test-link">Anchor Button</a>
 				</Button>
+				<Button id="basalt-btn-anchor-disabled" disabled asChild>
+					<a href="#forbidden-hash" aria-disabled="false" tabIndex={0}>
+						Disabled Anchor
+					</a>
+				</Button>
+
+				{/* Switch-to-loading interactive test */}
+				<button id="before-dynamic-anchor-btn" type="button">
+					Before Dynamic Target
+				</button>
+				<button
+					id="toggle-loading-btn"
+					type="button"
+					onClick={() => setSwitchLoading((prev) => !prev)}
+				>
+					Toggle Loading
+				</button>
+				<Button
+					id="basalt-btn-dynamic-anchor"
+					loading={switchLoading}
+					asChild
+					onClick={() => setParentClickCount((c) => c + 1)}
+					onClickCapture={() => setParentCaptureCount((c) => c + 1)}
+				>
+					{/* biome-ignore lint/a11y/useValidAnchor: test fixture asserts navigation cancellation on disabled asChild anchor */}
+					<a
+						href="#dynamic-forbidden"
+						id="dynamic-anchor-target"
+						onClick={() => setChildClickCount((c) => c + 1)}
+						onClickCapture={() => setChildCaptureCount((c) => c + 1)}
+					>
+						Dynamic Anchor
+					</a>
+				</Button>
+				<button id="after-dynamic-anchor-btn" type="button">
+					After Dynamic Target
+				</button>
 
 				<Checkbox id="basalt-checkbox" aria-label="Basalt Checkbox" />
 				<Switch id="basalt-switch" aria-label="Basalt Switch" />
@@ -160,7 +232,7 @@ export function GeometryApp() {
 
 				<Badge id="basalt-badge">Active</Badge>
 
-				<Dialog defaultOpen modal={false}>
+				<Dialog open modal={false}>
 					<DialogTrigger id="basalt-dialog-trigger">Open Dialog</DialogTrigger>
 					<DialogContent id="basalt-dialog-content">
 						<DialogTitle id="basalt-dialog-title">Dialog Heading</DialogTitle>

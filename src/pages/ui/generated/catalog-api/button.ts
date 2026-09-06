@@ -24,7 +24,7 @@ export const API = [
 				type: "boolean",
 				required: false,
 				default: "false",
-				description: "Pass control to child element slot.",
+				description: "Pass control to child element slot.\n\nNote: Child element must forward props and ref in all states. When disabled or loading,\nasChild suppresses click, keyboard activation (Enter/Space), and pointer handlers on both\nchild and parent while retaining browser default Tab navigation without trapping focus.\nTo preserve single DOM node layout and avoid unexpected child layout shifts, no internal\nspinner is inserted in asChild loading mode; visual disabled state is expressed via aria-disabled.",
 			},
 			{
 				name: "type",

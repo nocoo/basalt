@@ -39,6 +39,110 @@ export async function assertConsumerGeometry(
 	const accordionContent = page.locator("#basalt-accordion-content");
 	await accordionContent.waitFor({ state: "visible", timeout: 5000 });
 
+	// 4. Test dynamic disabled/loading transition on asChild anchor:
+	// Focus dynamic anchor when enabled, then toggle loading state to true without shifting activeElement.
+	// Verify focus remains on the same element while in loading state.
+	// Pressing Tab must navigate away to next focusable element rather than being trapped.
+	// Pressing Shift+Tab must navigate backward without trapping.
+	const dynamicAnchor = page.locator("#dynamic-anchor-target");
+	await dynamicAnchor.focus();
+	const isFocusedBefore = await page.evaluate(
+		() => document.activeElement?.id === "dynamic-anchor-target",
+	);
+	if (!isFocusedBefore) {
+		throw new Error("expected #dynamic-anchor-target to be focused before toggle");
+	}
+
+	// Toggle loading state via programmatic state setter so activeElement is not shifted
+	await page.evaluate(() => {
+		const win = window as unknown as { setSwitchLoading?: (v: boolean) => void };
+		win.setSwitchLoading?.(true);
+	});
+
+	await page.waitForFunction(() => {
+		const el = document.getElementById("dynamic-anchor-target");
+		return el?.getAttribute("aria-busy") === "true";
+	});
+
+	// Assert activeElement is still the exact same DOM node after transition
+	const isStillFocused = await page.evaluate(
+		() => document.activeElement?.id === "dynamic-anchor-target",
+	);
+	if (!isStillFocused) {
+		throw new Error("expected focus to remain on dynamic anchor during transition to loading");
+	}
+
+	// Attempt physical mouse click using bounding box and page.mouse (bypasses Playwright aria-disabled check)
+	const box = await dynamicAnchor.boundingBox();
+	if (!box) {
+		throw new Error("expected bounding box for dynamic anchor");
+	}
+	await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+
+	// Attempt DOM click()
+	await page.evaluate(() => {
+		const el = document.getElementById("dynamic-anchor-target");
+		el?.click();
+	});
+
+	// Attempt keyboard activation (Enter, Space)
+	await dynamicAnchor.press("Enter");
+	await dynamicAnchor.press(" ");
+
+	// Verify no navigation occurred
+	const currentUrlHash = await page.evaluate(() => window.location.hash);
+	if (currentUrlHash.includes("dynamic-forbidden")) {
+		throw new Error("loading asChild anchor navigated to forbidden hash");
+	}
+
+	// Verify all click and click-capture handlers on parent and child remained at 0 calls
+	const counts = await page.evaluate(() => {
+		const win = window as unknown as {
+			getDynamicCounts?: () => {
+				parentClick: number;
+				childClick: number;
+				parentCapture: number;
+				childCapture: number;
+			};
+		};
+		return (
+			win.getDynamicCounts?.() ?? {
+				parentClick: -1,
+				childClick: -1,
+				parentCapture: -1,
+				childCapture: -1,
+			}
+		);
+	});
+	if (
+		counts.parentClick !== 0 ||
+		counts.childClick !== 0 ||
+		counts.parentCapture !== 0 ||
+		counts.childCapture !== 0
+	) {
+		throw new Error(
+			`expected 0 calls to click/capture handlers when loading, got: ${JSON.stringify(counts)}`,
+		);
+	}
+
+	// Now press Tab to ensure focus leaves the disabled/loading anchor forward to #after-dynamic-anchor-btn
+	await page.keyboard.press("Tab");
+	const activeElementIdAfterTab = await page.evaluate(() => document.activeElement?.id);
+	if (activeElementIdAfterTab !== "after-dynamic-anchor-btn") {
+		throw new Error(
+			`expected focus to leave loading anchor to after-dynamic-anchor-btn, got ${activeElementIdAfterTab}`,
+		);
+	}
+
+	// Now press Shift+Tab from #after-dynamic-anchor-btn to ensure focus navigates backward past the tabIndex=-1 loading anchor to #toggle-loading-btn
+	await page.keyboard.press("Shift+Tab");
+	const activeElementIdAfterShiftTab = await page.evaluate(() => document.activeElement?.id);
+	if (activeElementIdAfterShiftTab !== "toggle-loading-btn") {
+		throw new Error(
+			`expected focus on Shift+Tab to land on toggle-loading-btn, got ${activeElementIdAfterShiftTab}`,
+		);
+	}
+
 	const data = await page.evaluate(() => {
 		function getEl(id: string): HTMLElement {
 			const el = document.getElementById(id);
@@ -67,6 +171,7 @@ export async function assertConsumerGeometry(
 		const basaltBtnDefault = getEl("basalt-btn-default");
 		const basaltBtnOutline = getEl("basalt-btn-outline");
 		const basaltBtnAnchor = getEl("basalt-btn-anchor");
+		const basaltBtnAnchorDisabled = getEl("basalt-btn-anchor-disabled");
 		const basaltCheckbox = getEl("basalt-checkbox");
 		const basaltSwitch = getEl("basalt-switch");
 		const basaltSelectTrigger = getEl("basalt-select-trigger");
@@ -175,6 +280,8 @@ export async function assertConsumerGeometry(
 				btnOutlineBorderStyle: basaltBtnOutlineStyle.borderTopStyle,
 				btnAnchorHeight: basaltBtnAnchor.getBoundingClientRect().height,
 				btnAnchorTextDecoration: basaltBtnAnchorStyle.textDecorationLine,
+				btnAnchorDisabledAriaDisabled: basaltBtnAnchorDisabled.getAttribute("aria-disabled"),
+				btnAnchorDisabledTabIndex: basaltBtnAnchorDisabled.getAttribute("tabindex"),
 				checkboxWidth: basaltCheckbox.getBoundingClientRect().width,
 				checkboxHeight: basaltCheckbox.getBoundingClientRect().height,
 				switchWidth: basaltSwitch.getBoundingClientRect().width,
@@ -310,6 +417,16 @@ export async function assertConsumerGeometry(
 	}
 	if (data.basalt.btnAnchorTextDecoration === "underline") {
 		throw new Error("asChild Anchor Button has native underline");
+	}
+	if (data.basalt.btnAnchorDisabledAriaDisabled !== "true") {
+		throw new Error(
+			`expected disabled asChild Anchor to have aria-disabled="true", got ${data.basalt.btnAnchorDisabledAriaDisabled}`,
+		);
+	}
+	if (data.basalt.btnAnchorDisabledTabIndex !== "-1") {
+		throw new Error(
+			`expected disabled asChild Anchor to have tabindex="-1", got ${data.basalt.btnAnchorDisabledTabIndex}`,
+		);
 	}
 
 	// 5. Checkbox, Switch, SelectTrigger

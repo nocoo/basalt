@@ -6316,7 +6316,7 @@
 			"importPath": "@nocoo/basalt/components/button",
 			"subpath": "./components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "59c9c52fa1835cf5",
+			"sourceHash": "01490fedac4991a4",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -6398,7 +6398,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Pass control to child element slot."
+									"description": "Pass control to child element slot.\n\nNote: Child element must forward props and ref in all states. When disabled or loading,\nasChild suppresses click, keyboard activation (Enter/Space), and pointer handlers on both\nchild and parent while retaining browser default Tab navigation without trapping focus.\nTo preserve single DOM node layout and avoid unexpected child layout shifts, no internal\nspinner is inserted in asChild loading mode; visual disabled state is expressed via aria-disabled."
 								},
 								{
 									"name": "type",
@@ -6483,7 +6483,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Pass control to child element slot."
+							"description": "Pass control to child element slot.\n\nNote: Child element must forward props and ref in all states. When disabled or loading,\nasChild suppresses click, keyboard activation (Enter/Space), and pointer handlers on both\nchild and parent while retaining browser default Tab navigation without trapping focus.\nTo preserve single DOM node layout and avoid unexpected child layout shifts, no internal\nspinner is inserted in asChild loading mode; visual disabled state is expressed via aria-disabled."
 						},
 						{
 							"name": "type",
@@ -22670,7 +22670,7 @@
 			"exportName": "Button",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "59c9c52fa1835cf5",
+			"sourceHash": "01490fedac4991a4",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#button",
@@ -22697,7 +22697,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Pass control to child element slot."
+							"description": "Pass control to child element slot.\n\nNote: Child element must forward props and ref in all states. When disabled or loading,\nasChild suppresses click, keyboard activation (Enter/Space), and pointer handlers on both\nchild and parent while retaining browser default Tab navigation without trapping focus.\nTo preserve single DOM node layout and avoid unexpected child layout shifts, no internal\nspinner is inserted in asChild loading mode; visual disabled state is expressed via aria-disabled."
 						},
 						{
 							"name": "type",
@@ -22729,7 +22729,7 @@
 			"exportName": "LinkButton",
 			"importPath": "@nocoo/basalt/components/button",
 			"sourceFile": "packages/basalt/src/components/button.tsx",
-			"sourceHash": "59c9c52fa1835cf5",
+			"sourceHash": "01490fedac4991a4",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#link-button",

@@ -1869,6 +1869,9 @@
   .disabled\:opacity-100:disabled {
     opacity: 100%;
   }
+  .aria-disabled\:opacity-50[aria-disabled="true"] {
+    opacity: 50%;
+  }
   .aria-invalid\:border-basalt-destructive[aria-invalid="true"] {
     border-color: hsl(var(--basalt-destructive));
   }
