@@ -64,12 +64,15 @@ const FEEDBACK_DESCRIPTIONS = {
 		"Indicates a pending state. Forwards standard SVG attributes with size controlling width and height, defaults role='status' and aria-label='Loading' (overridable via props), and does not expose a public ref.",
 	"skeleton-line":
 		"Placeholder lines while content loads. Forwards standard div element attributes with aria-hidden='true' by default, merges style overrides over computed width geometry, and does not expose a public ref.",
-	meter: "Numeric meter.",
+	meter:
+		"Numeric meter. Renders a percentage progress bar clamped to 0..100% without exposing public ref, arbitrary HTML attributes, or change events.",
 	toast: "Transient notification.",
-	"clipboard-text": "Copyable text.",
+	"clipboard-text":
+		"Copyable text. Inline code snippet paired with an icon copy button; does not forward native HTML attributes or expose a public ref.",
 	code: "Syntax-highlighted code.",
 	"code-block": "A fenced code block.",
-	avatar: "User avatar.",
+	avatar:
+		"User avatar. Composes Avatar, AvatarImage, and AvatarFallback with full ref forwarding and native HTML span/img inheritance.",
 } as const;
 
 describe("feedback catalog content family", () => {

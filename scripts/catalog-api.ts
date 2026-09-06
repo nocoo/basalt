@@ -835,6 +835,36 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "SkeletonLineProps",
 		surface: "SkeletonLine",
 	},
+	{
+		slug: "meter",
+		sourceFile: "packages/basalt/src/components/meter.tsx",
+		propsType: "MeterProps",
+		surface: "Meter",
+	},
+	{
+		slug: "clipboard-text",
+		sourceFile: "packages/basalt/src/components/clipboard-text.tsx",
+		propsType: "ClipboardTextProps",
+		surface: "ClipboardText",
+	},
+	{
+		slug: "avatar",
+		sourceFile: "packages/basalt/src/components/avatar.tsx",
+		propsType: "AvatarProps",
+		surface: "Avatar",
+	},
+	{
+		slug: "avatar",
+		sourceFile: "packages/basalt/src/components/avatar.tsx",
+		propsType: "AvatarImageProps",
+		surface: "AvatarImage",
+	},
+	{
+		slug: "avatar",
+		sourceFile: "packages/basalt/src/components/avatar.tsx",
+		propsType: "AvatarFallbackProps",
+		surface: "AvatarFallback",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

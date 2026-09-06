@@ -2,6 +2,7 @@
 
 import { API as areaApi } from "./catalog-api/area";
 import { API as autocompleteApi } from "./catalog-api/autocomplete";
+import { API as avatarApi } from "./catalog-api/avatar";
 import { API as badgeApi } from "./catalog-api/badge";
 import { API as barApi } from "./catalog-api/bar";
 import { API as basaltMarkApi } from "./catalog-api/basalt-mark";
@@ -10,6 +11,7 @@ import { API as buttonApi } from "./catalog-api/button";
 import { API as chartColorsApi } from "./catalog-api/chart-colors";
 import { API as chartsApi } from "./catalog-api/charts";
 import { API as checkboxApi } from "./catalog-api/checkbox";
+import { API as clipboardTextApi } from "./catalog-api/clipboard-text";
 import { API as codeApi } from "./catalog-api/code";
 import { API as codeBlockApi } from "./catalog-api/code-block";
 import { API as collapsibleApi } from "./catalog-api/collapsible";
@@ -44,6 +46,7 @@ import { API as lineApi } from "./catalog-api/line";
 import { API as linkApi } from "./catalog-api/link";
 import { API as linkButtonApi } from "./catalog-api/link-button";
 import { API as loaderApi } from "./catalog-api/loader";
+import { API as meterApi } from "./catalog-api/meter";
 import { API as pageHeaderApi } from "./catalog-api/page-header";
 import { API as paginationApi } from "./catalog-api/pagination";
 import { API as paletteApi } from "./catalog-api/palette";
@@ -83,6 +86,7 @@ import { API as tooltipApi } from "./catalog-api/tooltip";
 export const CATALOG_API = {
 	area: areaApi,
 	autocomplete: autocompleteApi,
+	avatar: avatarApi,
 	badge: badgeApi,
 	bar: barApi,
 	"basalt-mark": basaltMarkApi,
@@ -91,6 +95,7 @@ export const CATALOG_API = {
 	"chart-colors": chartColorsApi,
 	charts: chartsApi,
 	checkbox: checkboxApi,
+	"clipboard-text": clipboardTextApi,
 	code: codeApi,
 	"code-block": codeBlockApi,
 	collapsible: collapsibleApi,
@@ -125,6 +130,7 @@ export const CATALOG_API = {
 	link: linkApi,
 	"link-button": linkButtonApi,
 	loader: loaderApi,
+	meter: meterApi,
 	"page-header": pageHeaderApi,
 	pagination: paginationApi,
 	palette: paletteApi,

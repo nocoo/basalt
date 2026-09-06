@@ -21,11 +21,14 @@ import {
 } from "../../catalog-source";
 import { CODE_EXAMPLES } from "../../examples/code";
 import { CODE_BLOCK_EXAMPLES } from "../../examples/code-block";
+import { API as avatarApi } from "../../generated/catalog-api/avatar";
 import { API as badgeApi } from "../../generated/catalog-api/badge";
+import { API as clipboardTextApi } from "../../generated/catalog-api/clipboard-text";
 import { API as codeApi } from "../../generated/catalog-api/code";
 import { API as codeBlockApi } from "../../generated/catalog-api/code-block";
 import { API as emptyApi } from "../../generated/catalog-api/empty";
 import { API as loaderApi } from "../../generated/catalog-api/loader";
+import { API as meterApi } from "../../generated/catalog-api/meter";
 import { API as skeletonLineApi } from "../../generated/catalog-api/skeleton-line";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
@@ -553,18 +556,21 @@ export default function Example() {
 		],
 	},
 	meter: {
-		docs: extraDocs(
-			"Meter",
-			"meter",
-			"Numeric meter.",
-			'<Meter value={60} label="Usage" />',
-			undefined,
-			`import { Meter } from "@nocoo/basalt/components/meter";
+		docs: {
+			...extraDocs(
+				"Meter",
+				"meter",
+				"Numeric meter. Renders a percentage progress bar clamped to 0..100% without exposing public ref, arbitrary HTML attributes, or change events.",
+				'<Meter value={60} label="Usage" />',
+				undefined,
+				`import { Meter } from "@nocoo/basalt/components/meter";
 
 export default function Example() {
 	return <Meter value={60} label="Usage" />;
 }`,
-		),
+			),
+			api: meterApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("meter", "basic-meter"),
@@ -720,18 +726,21 @@ export default function Example() {
 		],
 	},
 	"clipboard-text": {
-		docs: extraDocs(
-			"ClipboardText",
-			"clipboard-text",
-			"Copyable text.",
-			'<ClipboardText text="bun add @nocoo/basalt" />',
-			undefined,
-			`import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
+		docs: {
+			...extraDocs(
+				"ClipboardText",
+				"clipboard-text",
+				"Copyable text. Inline code snippet paired with an icon copy button; does not forward native HTML attributes or expose a public ref.",
+				'<ClipboardText text="bun add @nocoo/basalt" />',
+				undefined,
+				`import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
 
 export default function Example() {
 	return <ClipboardText text="bun add @nocoo/basalt" />;
 }`,
-		),
+			),
+			api: clipboardTextApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("clipboard-text", "short-text"),
@@ -792,7 +801,15 @@ export default function Example() {
 		examples: CODE_BLOCK_EXAMPLES,
 	},
 	avatar: {
-		docs: extraDocs("Avatar", "avatar", "User avatar.", "<Avatar />"),
+		docs: {
+			...extraDocs(
+				"Avatar",
+				"avatar",
+				"User avatar. Composes Avatar, AvatarImage, and AvatarFallback with full ref forwarding and native HTML span/img inheritance.",
+				"<Avatar />",
+			),
+			api: avatarApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("avatar", "fallback"),

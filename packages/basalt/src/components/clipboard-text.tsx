@@ -4,15 +4,23 @@ import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
 import { Button } from "./button";
 
-export function ClipboardText({
-	text,
-	copyText,
-	className,
-}: {
+export interface ClipboardTextProps {
+	/**
+	 * Text string displayed in the inline code block and default text copied to the clipboard.
+	 */
 	text: string;
+	/**
+	 * Optional alternate text string written to clipboard instead of `text`.
+	 * @default text
+	 */
 	copyText?: string;
+	/**
+	 * Additional CSS classes applied to the root container.
+	 */
 	className?: string;
-}) {
+}
+
+export function ClipboardText({ text, copyText, className }: ClipboardTextProps) {
 	const [copied, setCopied] = useState(false);
 	return (
 		<div

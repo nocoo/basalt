@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 581,
+	"totalSymbols": 586,
 	"totalValues": 375,
-	"totalTypes": 206,
+	"totalTypes": 211,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2287,6 +2287,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Avatar component documentation and catalog playground",
 			"symbols": [
 				{
+					"name": "AvatarProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/avatar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/avatar"
+				},
+				{
 					"name": "Avatar",
 					"isValue": true,
 					"isType": false,
@@ -2295,9 +2303,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/avatar"
 				},
 				{
+					"name": "AvatarImageProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/avatar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/avatar"
+				},
+				{
 					"name": "AvatarImage",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/avatar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/avatar"
+				},
+				{
+					"name": "AvatarFallbackProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/avatar",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/avatar"
@@ -2656,6 +2680,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "ClipboardText",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/clipboard-text",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/clipboard-text"
+				},
+				{
+					"name": "ClipboardTextProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/clipboard-text",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/clipboard-text"
@@ -3978,6 +4010,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "Meter",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/meter",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/meter"
+				},
+				{
+					"name": "MeterProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/meter",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/meter"
