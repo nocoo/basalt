@@ -17,6 +17,10 @@ import {
 	catalogNavName,
 } from "./catalog";
 import { loadCatalogPageContent } from "./catalog-content-loader";
+import {
+	DOCUMENTED_NATIVE_ONLY_SURFACES,
+	formatNativeSurfaceStrategy,
+} from "./catalog-native-surfaces";
 import { catalogPageStatus } from "./catalog-page-status";
 import type { CatalogScenario } from "./catalog-scenario";
 import {
@@ -77,16 +81,24 @@ export function catalogApiSurfaceId(name: string): string {
 function catalogApiCopyLines(api: CatalogApiSurface[]): string[] {
 	return [
 		"## API Reference",
-		...api.flatMap((surface) => [
-			`### ${surface.name}`,
-			...(surface.props.length === 0
-				? ["No component-specific props."]
-				: surface.props.map((prop) => {
-						const required =
-							prop.required === undefined ? "" : prop.required ? ", required" : ", optional";
-						return `- ${prop.name} (${prop.type}${required}, default ${prop.default ?? "—"}): ${prop.description ?? ""}`;
-					})),
-		]),
+		...api.flatMap((surface) => {
+			const nativeDoc = DOCUMENTED_NATIVE_ONLY_SURFACES[surface.name];
+			const isNativeOnly =
+				surface.props.length === 1 && surface.props[0]?.name === "className" && Boolean(nativeDoc);
+			const strategyLine =
+				isNativeOnly && nativeDoc ? [formatNativeSurfaceStrategy(nativeDoc)] : [];
+			return [
+				`### ${surface.name}`,
+				...strategyLine,
+				...(surface.props.length === 0
+					? ["No component-specific props."]
+					: surface.props.map((prop) => {
+							const required =
+								prop.required === undefined ? "" : prop.required ? ", required" : ", optional";
+							return `- ${prop.name} (${prop.type}${required}, default ${prop.default ?? "—"}): ${prop.description ?? ""}`;
+						})),
+			];
+		}),
 	];
 }
 
@@ -94,46 +106,58 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 	return (
 		<section id="api-reference" className="scroll-mt-6 space-y-4">
 			<h2 className="text-2xl font-semibold tracking-tight">API Reference</h2>
-			{api.map((surface) => (
-				<div key={surface.name} className="space-y-4">
-					<h3 id={catalogApiSurfaceId(surface.name)} className="scroll-mt-6 text-sm font-medium">
-						{surface.name}
-					</h3>
-					{surface.props.length === 0 ? (
-						<p className="text-sm text-muted-foreground">No component-specific props.</p>
-					) : (
-						<div className="overflow-hidden rounded-lg border border-border">
-							<table aria-label={`${surface.name} props`} className="w-full text-sm">
-								<thead>
-									<tr className="border-b border-border bg-background text-left text-muted-foreground">
-										<th className="px-4 py-2.5 font-medium">Prop</th>
-										<th className="px-4 py-2.5 font-medium">Type</th>
-										<th className="px-4 py-2.5 font-medium">Default</th>
-										<th className="px-4 py-2.5 font-medium">Description</th>
-									</tr>
-								</thead>
-								<tbody>
-									{surface.props.map((prop) => (
-										<tr key={prop.name} className="border-t border-border">
-											<td className="px-4 py-2.5 font-medium text-foreground">
-												{prop.name}
-												{prop.required === false ? "?" : ""}
-											</td>
-											<td className="px-4 py-2.5 text-muted-foreground">
-												<code>{prop.type}</code>
-											</td>
-											<td className="px-4 py-2.5 text-muted-foreground">{prop.default ?? "—"}</td>
-											<td className="px-4 py-2.5 text-muted-foreground">
-												{prop.description ?? prop.name}
-											</td>
+			{api.map((surface) => {
+				const nativeDoc = DOCUMENTED_NATIVE_ONLY_SURFACES[surface.name];
+				const isNativeOnly =
+					surface.props.length === 1 &&
+					surface.props[0]?.name === "className" &&
+					Boolean(nativeDoc);
+				return (
+					<div key={surface.name} className="space-y-4">
+						<h3 id={catalogApiSurfaceId(surface.name)} className="scroll-mt-6 text-sm font-medium">
+							{surface.name}
+						</h3>
+						{isNativeOnly && nativeDoc ? (
+							<p className="text-xs text-muted-foreground">
+								{formatNativeSurfaceStrategy(nativeDoc)}
+							</p>
+						) : null}
+						{surface.props.length === 0 ? (
+							<p className="text-sm text-muted-foreground">No component-specific props.</p>
+						) : (
+							<div className="overflow-hidden rounded-lg border border-border">
+								<table aria-label={`${surface.name} props`} className="w-full text-sm">
+									<thead>
+										<tr className="border-b border-border bg-background text-left text-muted-foreground">
+											<th className="px-4 py-2.5 font-medium">Prop</th>
+											<th className="px-4 py-2.5 font-medium">Type</th>
+											<th className="px-4 py-2.5 font-medium">Default</th>
+											<th className="px-4 py-2.5 font-medium">Description</th>
 										</tr>
-									))}
-								</tbody>
-							</table>
-						</div>
-					)}
-				</div>
-			))}
+									</thead>
+									<tbody>
+										{surface.props.map((prop) => (
+											<tr key={prop.name} className="border-t border-border">
+												<td className="px-4 py-2.5 font-medium text-foreground">
+													{prop.name}
+													{prop.required === false ? "?" : ""}
+												</td>
+												<td className="px-4 py-2.5 text-muted-foreground">
+													<code>{prop.type}</code>
+												</td>
+												<td className="px-4 py-2.5 text-muted-foreground">{prop.default ?? "—"}</td>
+												<td className="px-4 py-2.5 text-muted-foreground">
+													{prop.description ?? prop.name}
+												</td>
+											</tr>
+										))}
+									</tbody>
+								</table>
+							</div>
+						)}
+					</div>
+				);
+			})}
 		</section>
 	);
 }

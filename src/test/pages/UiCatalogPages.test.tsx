@@ -479,6 +479,7 @@ describe("ui catalog", () => {
 			"variant",
 			"size",
 			"asChild",
+			"type",
 			"loading",
 			"icon",
 		]);
@@ -1549,7 +1550,6 @@ describe("ui catalog", () => {
 		expect(api).toHaveTextContent("string");
 		expect(api).toHaveTextContent("Additional classes for the mark.");
 		expect(api).toHaveTextContent("—");
-		expect(api).not.toHaveTextContent("children");
 		expect(api).not.toHaveTextContent("strokeWidth");
 		expect(api).not.toHaveTextContent("role");
 		expect(document.body.textContent).toContain("<BasaltMark />");

@@ -984,6 +984,7 @@ describe("catalog API generator contract", () => {
 			"variant",
 			"size",
 			"asChild",
+			"type",
 			"loading",
 			"icon",
 		]);
@@ -992,26 +993,42 @@ describe("catalog API generator contract", () => {
 				name: "variant",
 				type: '"default" | "destructive" | "ghost" | "link" | "outline" | "secondary" | null',
 				required: false,
+				default: '"default"',
+				description: "Visual style variant.",
 			},
 			{
 				name: "size",
 				type: '"default" | "icon" | "lg" | "sm" | null',
 				required: false,
+				default: '"default"',
+				description: "Sizing preset.",
 			},
 			{
 				name: "asChild",
 				type: "boolean",
 				required: false,
+				default: "false",
+				description: "Pass control to child element slot.",
+			},
+			{
+				name: "type",
+				type: '"button" | "reset" | "submit"',
+				required: false,
+				default: '"button"',
+				description: "Button type attribute.",
 			},
 			{
 				name: "loading",
 				type: "boolean",
 				required: false,
+				default: "false",
+				description: "Display loading spinner and disable interactions.",
 			},
 			{
 				name: "icon",
 				type: "React.ReactNode",
 				required: false,
+				description: "Optional leading icon slot.",
 			},
 		]);
 	}, 60_000);
@@ -1064,16 +1081,21 @@ describe("catalog API generator contract", () => {
 				name: "variant",
 				type: '"default" | "destructive" | "ghost" | "link" | "outline" | "secondary" | null',
 				required: false,
+				default: '"default"',
+				description: "Visual style variant.",
 			},
 			{
 				name: "size",
 				type: '"default" | "icon" | "lg" | "sm" | null',
 				required: false,
+				default: '"default"',
+				description: "Sizing preset.",
 			},
 			{
 				name: "icon",
 				type: "React.ReactNode",
 				required: false,
+				description: "Optional leading icon slot.",
 			},
 		]);
 		expect(generated["link-button"]?.some((prop) => prop.name === "asChild")).toBe(false);
@@ -1190,6 +1212,7 @@ describe("catalog API generator contract", () => {
 			"variant",
 			"size",
 			"asChild",
+			"type",
 			"loading",
 			"icon",
 		]);
@@ -1229,6 +1252,7 @@ describe("catalog API generator contract", () => {
 			"variant",
 			"size",
 			"asChild",
+			"type",
 			"loading",
 			"icon",
 		]);
@@ -1271,6 +1295,7 @@ describe("catalog API generator contract", () => {
 			"variant",
 			"size",
 			"asChild",
+			"type",
 			"loading",
 			"icon",
 		]);
@@ -1312,6 +1337,7 @@ describe("catalog API generator contract", () => {
 			"variant",
 			"size",
 			"asChild",
+			"type",
 			"loading",
 			"icon",
 		]);
@@ -1371,6 +1397,7 @@ describe("catalog API generator contract", () => {
 			"variant",
 			"size",
 			"asChild",
+			"type",
 			"loading",
 			"icon",
 		]);
@@ -1416,6 +1443,7 @@ describe("catalog API generator contract", () => {
 			"variant",
 			"size",
 			"asChild",
+			"type",
 			"loading",
 			"icon",
 		]);
@@ -1511,6 +1539,7 @@ describe("catalog API generator contract", () => {
 			"variant",
 			"size",
 			"asChild",
+			"type",
 			"loading",
 			"icon",
 		]);
@@ -1582,6 +1611,7 @@ describe("catalog API generator contract", () => {
 			"variant",
 			"size",
 			"asChild",
+			"type",
 			"loading",
 			"icon",
 		]);
@@ -1663,6 +1693,7 @@ describe("catalog API generator contract", () => {
 			"variant",
 			"size",
 			"asChild",
+			"type",
 			"loading",
 			"icon",
 		]);
@@ -3755,7 +3786,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"185d2a5c4a99b547449d6a9b5396d6c2aff725193ef70fcb122fe2cfcbf32161",
+			"92dc8582876086113d9e37041aee45875fe33430139152be4e35c0964174c273",
 		);
 	}, 60_000);
 

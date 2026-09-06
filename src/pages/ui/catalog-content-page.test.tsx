@@ -98,4 +98,29 @@ describe("async catalog detail page", () => {
 		expect(document.querySelector("[data-status='missing']")).toBeTruthy();
 		expect(loadContent).not.toHaveBeenCalled();
 	});
+
+	it("renders documented native-only strategy note in API section for className-only surfaces", async () => {
+		const basaltMark = deferred<CatalogPageContent | undefined>();
+		loadContent.mockImplementation((slug: string) =>
+			slug === "basalt-mark" ? basaltMark.promise : undefined,
+		);
+		const { navigate } = renderPage("/ui/maps");
+
+		await act(async () => {
+			navigate("/ui/basalt-mark");
+		});
+		expect(loadContent).toHaveBeenCalledWith("basalt-mark");
+
+		await act(async () => {
+			basaltMark.resolve(contentFor("basalt-mark"));
+			await basaltMark.promise;
+		});
+
+		expect(
+			await screen.findByRole("heading", { name: "Basalt Mark", level: 1 }),
+		).toBeInTheDocument();
+		expect(
+			screen.getByText(/inherits and forwards all standard SVGElement attributes/),
+		).toBeInTheDocument();
+	});
 });

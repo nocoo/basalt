@@ -34,10 +34,36 @@ const buttonVariants = cva(
 );
 
 export interface ButtonProps
-	extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-		VariantProps<typeof buttonVariants> {
+	extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type">,
+		Omit<VariantProps<typeof buttonVariants>, "variant" | "size"> {
+	/**
+	 * Visual style variant.
+	 * @default "default"
+	 */
+	variant?: VariantProps<typeof buttonVariants>["variant"];
+	/**
+	 * Sizing preset.
+	 * @default "default"
+	 */
+	size?: VariantProps<typeof buttonVariants>["size"];
+	/**
+	 * Pass control to child element slot.
+	 * @default false
+	 */
 	asChild?: boolean;
+	/**
+	 * Button type attribute.
+	 * @default "button"
+	 */
+	type?: React.ButtonHTMLAttributes<HTMLButtonElement>["type"];
+	/**
+	 * Display loading spinner and disable interactions.
+	 * @default false
+	 */
 	loading?: boolean;
+	/**
+	 * Optional leading icon slot.
+	 */
 	icon?: React.ReactNode;
 }
 
@@ -89,7 +115,20 @@ Button.displayName = "Button";
 
 export interface LinkButtonProps
 	extends React.AnchorHTMLAttributes<HTMLAnchorElement>,
-		VariantProps<typeof buttonVariants> {
+		Omit<VariantProps<typeof buttonVariants>, "variant" | "size"> {
+	/**
+	 * Visual style variant.
+	 * @default "default"
+	 */
+	variant?: VariantProps<typeof buttonVariants>["variant"];
+	/**
+	 * Sizing preset.
+	 * @default "default"
+	 */
+	size?: VariantProps<typeof buttonVariants>["size"];
+	/**
+	 * Optional leading icon slot.
+	 */
 	icon?: React.ReactNode;
 }
 

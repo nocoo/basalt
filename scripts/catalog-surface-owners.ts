@@ -4,8 +4,20 @@ import * as tsApi from "typescript-api";
 import { resolvePackageExportTarget } from "../packages/basalt/scripts/verify-public-api";
 import { CATALOG } from "../src/pages/ui/catalog";
 
+import {
+	DOCUMENTED_NATIVE_ONLY_SURFACES,
+	formatNativeSurfaceStrategy,
+	type NativeOnlySurfaceDocumentation,
+} from "../src/pages/ui/catalog-native-surfaces";
+
 // Robust TypeScript compiler API interop across runtimes
 const ts = (tsApi as unknown as { default?: typeof tsApi }).default ?? tsApi;
+
+export {
+	DOCUMENTED_NATIVE_ONLY_SURFACES,
+	formatNativeSurfaceStrategy,
+	type NativeOnlySurfaceDocumentation,
+};
 
 export type PublicSurfaceKind =
 	| "catalog-component"

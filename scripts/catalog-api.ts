@@ -8,6 +8,7 @@ import {
 } from "node:fs";
 import path from "node:path";
 import * as ts from "typescript-api";
+import { DOCUMENTED_NATIVE_ONLY_SURFACES } from "../src/pages/ui/catalog-native-surfaces";
 
 export interface CatalogApiTarget {
 	slug: string;
@@ -1833,6 +1834,22 @@ export function renderCatalogApiModule(data: Record<string, CatalogApiSurface[]>
 	].join("\n");
 }
 
+export function validateCatalogApiCompleteness(data: Record<string, CatalogApiSurface[]>): void {
+	for (const [slug, surfaces] of Object.entries(data)) {
+		for (const surface of surfaces) {
+			const isClassNameOnly = surface.props.length === 1 && surface.props[0]?.name === "className";
+			if (isClassNameOnly) {
+				const documented = DOCUMENTED_NATIVE_ONLY_SURFACES[surface.name];
+				if (!documented) {
+					failCatalogApi(
+						`surface '${surface.name}' in '${slug}' is className-only without justification in DOCUMENTED_NATIVE_ONLY_SURFACES`,
+					);
+				}
+			}
+		}
+	}
+}
+
 export function generateCatalogApiFiles(
 	repoRoot: string,
 	data = generateCatalogApi({
@@ -1841,6 +1858,7 @@ export function generateCatalogApiFiles(
 		targets: CATALOG_API_TARGETS,
 	}),
 ): Record<string, string> {
+	validateCatalogApiCompleteness(data);
 	const slugs = Object.keys(data).sort();
 	const files: Record<string, string> = {
 		[GENERATED_RELATIVE_PATH]: renderCatalogApiModule(data),

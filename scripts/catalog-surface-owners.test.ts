@@ -311,4 +311,30 @@ describe("public surface documentation ownership and freshness", () => {
 			/stale public surface manifest/,
 		);
 	});
+
+	it("registers documented native-only surfaces with explicit strategies", async () => {
+		const { DOCUMENTED_NATIVE_ONLY_SURFACES, formatNativeSurfaceStrategy } = await import(
+			"../src/pages/ui/catalog-native-surfaces"
+		);
+		const keys = Object.keys(DOCUMENTED_NATIVE_ONLY_SURFACES);
+		expect(keys).toEqual([
+			"BasaltMark",
+			"Code",
+			"CodeBlock",
+			"Table",
+			"TableCaption",
+			"TableHead",
+			"TableCell",
+		]);
+
+		for (const key of keys) {
+			const entry = DOCUMENTED_NATIVE_ONLY_SURFACES[key];
+			expect(entry.justification.length).toBeGreaterThan(10);
+			expect(entry.inheritedElement.length).toBeGreaterThan(0);
+			expect(typeof entry.forwardsRef).toBe("boolean");
+			expect(typeof entry.forwardsRestProps).toBe("boolean");
+			const strategy = formatNativeSurfaceStrategy(entry);
+			expect(strategy).toContain(entry.inheritedElement);
+		}
+	});
 });
