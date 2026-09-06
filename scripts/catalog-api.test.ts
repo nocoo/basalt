@@ -840,6 +840,27 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "table",
 				sourceFile: "packages/basalt/src/components/table.tsx",
+				propsType: "TableHeaderProps",
+				surface: "TableHeader",
+				allowEmpty: true,
+			},
+			{
+				slug: "table",
+				sourceFile: "packages/basalt/src/components/table.tsx",
+				propsType: "TableBodyProps",
+				surface: "TableBody",
+				allowEmpty: true,
+			},
+			{
+				slug: "table",
+				sourceFile: "packages/basalt/src/components/table.tsx",
+				propsType: "TableFooterProps",
+				surface: "TableFooter",
+				allowEmpty: true,
+			},
+			{
+				slug: "table",
+				sourceFile: "packages/basalt/src/components/table.tsx",
 				propsType: "TableRowProps",
 				surface: "TableRow",
 			},
@@ -920,6 +941,13 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/grid.tsx",
 				propsType: "GridProps",
 				surface: "Grid",
+			},
+			{
+				slug: "grid",
+				sourceFile: "packages/basalt/src/components/grid.tsx",
+				propsType: "GridItemProps",
+				surface: "GridItem",
+				allowEmpty: true,
 			},
 			{
 				slug: "line",
@@ -1516,7 +1544,7 @@ describe("catalog API generator contract", () => {
 				surface: "LinkProvider",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(228);
+		expect(CATALOG_API_TARGETS).toHaveLength(232);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1538,6 +1566,10 @@ describe("catalog API generator contract", () => {
 			"ContentIsland",
 			"PopoverTitle",
 			"PopoverDescription",
+			"TableHeader",
+			"TableBody",
+			"TableFooter",
+			"GridItem",
 			"DialogHeader",
 			"DialogFooter",
 			"SheetHeader",
@@ -2754,14 +2786,23 @@ export interface WidgetProps {
 				"DropdownMenuItem",
 			],
 			collapsible: ["Collapsible", "CollapsibleTrigger", "CollapsibleContent"],
-			table: ["Table", "TableRow", "TableCaption", "TableHead", "TableCell"],
+			table: [
+				"Table",
+				"TableHeader",
+				"TableBody",
+				"TableFooter",
+				"TableRow",
+				"TableCaption",
+				"TableHead",
+				"TableCell",
+			],
 			"data-table": ["DataTable"],
 			pagination: ["Pagination"],
 			"table-of-contents": ["TableOfContents", "TableOfContentsItem"],
 			code: ["Code", "CodeHighlighted"],
 			"code-block": ["CodeBlock"],
 			flow: ["Flow", "FlowNode"],
-			grid: ["Grid"],
+			grid: ["Grid", "GridItem"],
 			line: ["LineChart"],
 			bar: ["BarChart"],
 			area: ["AreaChart"],
@@ -4675,7 +4716,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"15ab84bd6cc810b170bca0dc7e11738f2e27d3b955f33058671607194e8d69d2",
+			"d1dc6bfd7d20c4cf4351613954e3db2ea592597687f18fdb8c21a784c9b90cde",
 		);
 	}, 60_000);
 

@@ -270,7 +270,7 @@ export default function Example() {
 const toolbarDocs = extraDocs(
 	"Toolbar",
 	"toolbar",
-	"Compose explicit toolbar controls into one grouped card.",
+	"Compose explicit toolbar controls into one grouped card. ToolbarButton and ToolbarInput are aliases of Toolbar.Button and Toolbar.Input respectively, sharing the same implementation and props interfaces.",
 	'<Toolbar><Toolbar.Input aria-label="Search records" placeholder="Search..." /><Toolbar.Button icon={<Search />} aria-label="Search" /><Toolbar.Button icon={<Plus />} aria-label="Add" /></Toolbar>',
 	undefined,
 	`import { Toolbar } from "@nocoo/basalt/components/toolbar";

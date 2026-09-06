@@ -24,15 +24,17 @@ export const Table = React.forwardRef<
 ));
 Table.displayName = "Table";
 
-export const TableHeader = (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
-	<thead {...props} />
-);
-export const TableBody = (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
-	<tbody {...props} />
-);
-export const TableFooter = (props: React.HTMLAttributes<HTMLTableSectionElement>) => (
-	<tfoot {...props} />
-);
+export interface TableHeaderProps extends React.HTMLAttributes<HTMLTableSectionElement> {}
+
+export const TableHeader = (props: TableHeaderProps) => <thead {...props} />;
+
+export interface TableBodyProps extends React.HTMLAttributes<HTMLTableSectionElement> {}
+
+export const TableBody = (props: TableBodyProps) => <tbody {...props} />;
+
+export interface TableFooterProps extends React.HTMLAttributes<HTMLTableSectionElement> {}
+
+export const TableFooter = (props: TableFooterProps) => <tfoot {...props} />;
 
 export type TableRowVariant = "default" | "selected";
 

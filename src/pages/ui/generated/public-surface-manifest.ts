@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 674,
+	"totalSymbols": 678,
 	"totalValues": 375,
-	"totalTypes": 299,
+	"totalTypes": 303,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -3991,6 +3991,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/grid",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/grid"
+				},
+				{
+					"name": "GridItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/grid",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/grid"
 				}
 			]
 		},
@@ -5727,6 +5735,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/table"
 				},
 				{
+					"name": "TableHeaderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
 					"name": "TableHeader",
 					"isValue": true,
 					"isType": false,
@@ -5735,9 +5751,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/table"
 				},
 				{
+					"name": "TableBodyProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
 					"name": "TableBody",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
+					"name": "TableFooterProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/table",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/table"

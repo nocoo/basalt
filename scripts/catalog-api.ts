@@ -747,6 +747,27 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "table",
 		sourceFile: "packages/basalt/src/components/table.tsx",
+		propsType: "TableHeaderProps",
+		surface: "TableHeader",
+		allowEmpty: true,
+	},
+	{
+		slug: "table",
+		sourceFile: "packages/basalt/src/components/table.tsx",
+		propsType: "TableBodyProps",
+		surface: "TableBody",
+		allowEmpty: true,
+	},
+	{
+		slug: "table",
+		sourceFile: "packages/basalt/src/components/table.tsx",
+		propsType: "TableFooterProps",
+		surface: "TableFooter",
+		allowEmpty: true,
+	},
+	{
+		slug: "table",
+		sourceFile: "packages/basalt/src/components/table.tsx",
 		propsType: "TableRowProps",
 		surface: "TableRow",
 	},
@@ -827,6 +848,13 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/grid.tsx",
 		propsType: "GridProps",
 		surface: "Grid",
+	},
+	{
+		slug: "grid",
+		sourceFile: "packages/basalt/src/components/grid.tsx",
+		propsType: "GridItemProps",
+		surface: "GridItem",
+		allowEmpty: true,
 	},
 	{
 		slug: "line",

@@ -162,7 +162,8 @@ export default catalogContentFamily({
 	},
 	radio: {
 		docs: {
-			description: "A radio control with group, legend, size, and error.",
+			description:
+				"A radio control with group, legend, size, and error. RadioGroup is an alias of Radio.Group and shares the same component implementation and props interface.",
 			usage: usage(
 				"Radio",
 				"@nocoo/basalt/components/radio",

@@ -219,7 +219,7 @@ describe("forms catalog content family", () => {
 			{ id: "radio-controlled-and-error", title: "Controlled and error" },
 		]);
 		expect(forms.radio?.docs.description).toBe(
-			"A radio control with group, legend, size, and error.",
+			"A radio control with group, legend, size, and error. RadioGroup is an alias of Radio.Group and shares the same component implementation and props interface.",
 		);
 		expect(forms.radio?.docs.variants).toEqual(["sm", "default"]);
 		expect(forms.radio?.docs.provenance).toEqual({

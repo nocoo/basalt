@@ -32,7 +32,9 @@ export function Grid({
 	);
 }
 
-export function GridItem({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export interface GridItemProps extends HTMLAttributes<HTMLDivElement> {}
+
+export function GridItem({ className, ...props }: GridItemProps) {
 	return (
 		<div
 			className={cn(

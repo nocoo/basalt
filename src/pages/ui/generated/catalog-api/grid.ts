@@ -25,4 +25,8 @@ export const API = [
 			},
 		],
 	},
+	{
+		name: "GridItem",
+		props: [],
+	},
 ];

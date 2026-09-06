@@ -31,7 +31,8 @@ const NAVIGATION_DESCRIPTIONS = {
 	breadcrumbs: "Hierarchical location.",
 	"navigation-menu": "Site navigation.",
 	"menu-bar": "Desktop menu bar.",
-	toolbar: "Compose explicit toolbar controls into one grouped card.",
+	toolbar:
+		"Compose explicit toolbar controls into one grouped card. ToolbarButton and ToolbarInput are aliases of Toolbar.Button and Toolbar.Input respectively, sharing the same implementation and props interfaces.",
 	"table-of-contents": "On-this-page list.",
 	sidebar:
 		"App chrome: L0 sidebar with an L1 content island that floats a corner shadow. SidebarSearch is a native button supporting button attributes; its shortcut is a visual label only and does not register keyboard shortcuts (defaults to ⌘K). SidebarIconItem requires caller-provided aria-label or aria-labelledby for accessible naming. SidebarGroup provides an uncontrolled collapsible section with defaultOpen and does not accept controlled open props or arbitrary DOM attributes. SidebarProvider.defaultWidth accepts an initial width clamped between 180px and 400px. useSidebar() must be called inside a SidebarProvider (throws an error if called outside) and returns the sidebar context state rather than component props.",

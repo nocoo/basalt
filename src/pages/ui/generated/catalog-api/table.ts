@@ -14,6 +14,18 @@ export const API = [
 		],
 	},
 	{
+		name: "TableHeader",
+		props: [],
+	},
+	{
+		name: "TableBody",
+		props: [],
+	},
+	{
+		name: "TableFooter",
+		props: [],
+	},
+	{
 		name: "TableRow",
 		props: [
 			{

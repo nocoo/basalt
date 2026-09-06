@@ -217,6 +217,34 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		forwardsRef: false,
 		forwardsRestProps: true,
 	},
+	TableHeader: {
+		justification:
+			"Table header section wrapper; inherits HTMLTableSectionElement thead attributes without exposing a forwarded ref.",
+		inheritedElement: "HTMLTableSectionElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	TableBody: {
+		justification:
+			"Table body section wrapper; inherits HTMLTableSectionElement tbody attributes without exposing a forwarded ref.",
+		inheritedElement: "HTMLTableSectionElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	TableFooter: {
+		justification:
+			"Table footer section wrapper; inherits HTMLTableSectionElement tfoot attributes without exposing a forwarded ref.",
+		inheritedElement: "HTMLTableSectionElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	GridItem: {
+		justification:
+			"Grid item layout cell container; inherits HTMLDivElement attributes without exposing a forwarded ref.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
 };
 
 export function formatNativeSurfaceStrategy(doc: NativeOnlySurfaceDocumentation): string {

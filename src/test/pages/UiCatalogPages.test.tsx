@@ -2247,7 +2247,9 @@ describe("ui catalog", () => {
 		const block = family.slice(start, end);
 		expect(block).toContain("api: radioApi");
 		expect(block).not.toContain('name: "value"');
-		expect(block).toContain('description: "A radio control with group, legend, size, and error."');
+		expect(block).toContain(
+			'description:\n\t\t\t\t"A radio control with group, legend, size, and error. RadioGroup is an alias of Radio.Group and shares the same component implementation and props interface."',
+		);
 		expect(block).toContain(
 			'<Radio.Group defaultValue="a"><Radio value="a" aria-label="Alpha" /><Radio value="b" aria-label="Beta" /></Radio.Group>',
 		);
