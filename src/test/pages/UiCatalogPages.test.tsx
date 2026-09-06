@@ -1,7 +1,14 @@
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
-import { MemoryRouter, Route, Routes, useLocation, useNavigationType } from "react-router";
+import {
+	MemoryRouter,
+	Route,
+	Routes,
+	useLocation,
+	useNavigate,
+	useNavigationType,
+} from "react-router";
 import { describe, expect, it, vi } from "vitest";
 import {
 	CATALOG,
@@ -16,6 +23,7 @@ import { loadCatalogIndex } from "@/pages/ui/catalog-index-loader";
 import { catalogScenarioMatchesSlug } from "@/pages/ui/catalog-scenario";
 import {
 	catalogSourceCopyText,
+	catalogSourceViewerHref,
 	githubSourceHref,
 	githubSourceLabel,
 } from "@/pages/ui/catalog-source";
@@ -36,12 +44,14 @@ function catalogHeroScenario(slug: string) {
 	return UI_EXAMPLES[slug]?.[0];
 }
 
+import { CATALOG_SOURCE_FILES } from "@/pages/ui/generated/catalog-source-files";
 import { KUMO_DOCS_SLUGS } from "@/pages/ui/kumo-list";
 import UiIndexPage from "@/pages/ui/UiIndexPage";
 import UiPlaceholderPage, {
 	CatalogApiReference,
 	catalogApiSurfaceId,
 } from "@/pages/ui/UiPlaceholderPage";
+import { UiSourceViewerPage } from "@/pages/ui/UiSourceViewerPage";
 
 await Promise.all(CATALOG.map((entry) => loadCatalogPageContent(entry.slug)));
 
@@ -64,6 +74,7 @@ function renderCatalog(path: string) {
 			<Routes>
 				<Route path="/ui" element={<UiIndexPage />} />
 				<Route path="/ui/:slug" element={<UiPlaceholderPage />} />
+				<Route path="/ui/:slug/source" element={<UiSourceViewerPage />} />
 			</Routes>
 		</MemoryRouter>,
 	);
@@ -285,18 +296,15 @@ describe("ui catalog", () => {
 		expect(screen.getAllByRole("navigation", { name: "On this page" }).length).toBeGreaterThan(0);
 		expect(document.querySelector("aside .sticky")).toBeTruthy();
 		expect(screen.getAllByRole("combobox", { name: "Jump to section" }).length).toBeGreaterThan(0);
-		const implementationHref = githubSourceHref(docs.implementationSource);
+		const viewerHref = catalogSourceViewerHref(slug, docs.implementationSource.hash);
 		const implementationLink = screen.getByRole("link", {
-			name: "View Basalt implementation on GitHub",
+			name: "View Basalt component source",
 		});
-		expect(implementationLink).toHaveAttribute("href", implementationHref);
-		expect(implementationLink).toHaveAttribute("rel", "noopener noreferrer");
-		expect(implementationLink).toHaveAttribute("target", "_blank");
+		expect(implementationLink).toHaveAttribute("href", viewerHref);
 		expect(
 			screen.getByRole("link", { name: githubSourceLabel(docs.implementationSource) }),
-		).toHaveAttribute("href", implementationHref);
+		).toHaveAttribute("href", viewerHref);
 		if (docs.provenance) {
-			expect(implementationLink.getAttribute("href")).not.toBe(githubSourceHref(docs.provenance));
 			expect(
 				screen.getByRole("link", { name: githubSourceLabel(docs.provenance) }),
 			).toHaveAttribute("href", githubSourceHref(docs.provenance));
@@ -389,9 +397,9 @@ describe("ui catalog", () => {
 		});
 		expect(writeText).toHaveBeenCalled();
 		const markdown = String(writeText.mock.calls[0]?.[0]);
-		expect(markdown).toContain(catalogSourceCopyText(docs));
+		expect(markdown).toContain(catalogSourceCopyText(docs, "dialog"));
 		expect(markdown).toContain("## Implementation");
-		expect(markdown).toContain(githubSourceHref(docs.implementationSource));
+		expect(markdown).toContain(catalogSourceViewerHref("dialog", docs.implementationSource.hash));
 		expect(markdown).toContain("## Provenance");
 		expect(markdown).toContain(githubSourceHref(docs.provenance));
 		expect(markdown).not.toContain("github.com/nocoo/kumo");
@@ -4080,5 +4088,102 @@ describe("ui catalog", () => {
 		expect(preview.getByRole("button", { name: "Item" })).toBeInTheDocument();
 		fireEvent.click(preview.getByRole("button", { name: "Item" }));
 		expect(preview.getByText("Body")).toBeInTheDocument();
+	});
+
+	describe("UiSourceViewerPage source viewer and race condition tests", () => {
+		const buttonHash = CATALOG_SOURCE_FILES.button.hash;
+
+		it("renders source content when hash matches component fingerprint", async () => {
+			const view = renderCatalog(`/ui/button/source?hash=${buttonHash}`);
+			expect(screen.getByText("Loading source...")).toBeInTheDocument();
+			await screen.findByText(/export const Button/);
+			expect(screen.queryByText(/Source fingerprint mismatch/)).not.toBeInTheDocument();
+			view.unmount();
+		});
+
+		it("immediately rejects wrong hash without loading source", async () => {
+			const view = renderCatalog("/ui/button/source?hash=0000000000000000");
+			expect(
+				screen.getByText(/Source fingerprint mismatch: requested hash "0000000000000000"/),
+			).toBeInTheDocument();
+			expect(screen.queryByText(/export const Button/)).not.toBeInTheDocument();
+			view.unmount();
+		});
+
+		it("cancels stale in-flight source verification when route changes to wrong hash", async () => {
+			let capturedData: BufferSource | undefined;
+			let finishSlowDigest: (val: ArrayBuffer) => void = () => {};
+			const slowDigestPromise = new Promise<ArrayBuffer>((resolve) => {
+				finishSlowDigest = resolve;
+			});
+
+			const originalDigest = crypto.subtle.digest.bind(crypto.subtle);
+			const digestSpy = vi.spyOn(crypto.subtle, "digest").mockImplementation((_algorithm, data) => {
+				capturedData = data;
+				// Delay the digest for button source
+				return slowDigestPromise;
+			});
+
+			function RouterWithNavigation() {
+				const navigate = useNavigate();
+				return (
+					<>
+						<button
+							type="button"
+							data-testid="nav-wrong-hash"
+							onClick={() => navigate("/ui/button/source?hash=0000000000000000")}
+						>
+							Nav Wrong
+						</button>
+						<Routes>
+							<Route path="/ui/:slug/source" element={<UiSourceViewerPage />} />
+						</Routes>
+					</>
+				);
+			}
+
+			const view = render(
+				<MemoryRouter initialEntries={[`/ui/button/source?hash=${buttonHash}`]}>
+					<RouterWithNavigation />
+				</MemoryRouter>,
+			);
+
+			try {
+				// Initial state: loading with valid hash, waiting on slow crypto.subtle.digest
+				expect(screen.getByText("Loading source...")).toBeInTheDocument();
+
+				// Ensure raw import resolved and crypto.subtle.digest was actively invoked
+				await waitFor(() => expect(digestSpy).toHaveBeenCalled());
+
+				// Navigate to wrong hash route before slow crypto resolves
+				fireEvent.click(screen.getByTestId("nav-wrong-hash"));
+
+				// Now error must be immediately shown for the new route
+				expect(
+					screen.getByText(/Source fingerprint mismatch: requested hash "0000000000000000"/),
+				).toBeInTheDocument();
+
+				// Release the digest with real Button source bytes (not dummy data)
+				expect(capturedData).toBeDefined();
+				const realButtonBuf = await originalDigest(
+					"SHA-256",
+					capturedData ?? new TextEncoder().encode(""),
+				);
+
+				await act(async () => {
+					finishSlowDigest(realButtonBuf);
+					await slowDigestPromise;
+				});
+
+				// Stale response must NOT clear the error or display source
+				expect(
+					screen.getByText(/Source fingerprint mismatch: requested hash "0000000000000000"/),
+				).toBeInTheDocument();
+				expect(screen.queryByText(/export const Button/)).not.toBeInTheDocument();
+			} finally {
+				digestSpy.mockRestore();
+				view.unmount();
+			}
+		});
 	});
 });

@@ -28,8 +28,9 @@ All 110 entrypoints, their export targets, 3 CSS paths, and all 572 exported sym
 
 ### Root Barrel (`@nocoo/basalt`)
 The root barrel is reserved for lightweight, frequently-used leaves, standard inputs, core surfaces, and global providers.
-- **Included on root:** `Button`, `Input`, `Checkbox`, `Radio`, `Switch`, `Badge`, `Text`, `Label`, `Separator`, `LayerCard`, `DescriptionList`, `Sidebar`, `Dialog`, `Sheet`, `Popover`, `Tooltip`, `Toast`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`.
+- **Included on root:** `Button`, `Input`, `Checkbox`, `Switch`, `Badge`, `Text`, `Label`, `Separator`, `LayerCard`, `DescriptionList`, `Sidebar`, `Dialog`, `Sheet`, `Popover`, `Tooltip`, `Toast`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`.
 - **Excluded from root:**
+  - Radio inputs (`@nocoo/basalt/components/radio`)
   - Heavy visualization libraries (`@nocoo/basalt/charts/*`)
   - Complex table implementations (`@nocoo/basalt/components/data-table`)
   - Calendar pickers with complex date logic (`@nocoo/basalt/components/date-picker`)

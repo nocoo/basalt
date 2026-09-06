@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import navigation from "./catalog-content/families/navigation";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
+import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const NAVIGATION_SCENARIOS = {
 	"command-palette": ["command-palette-with-grouped-items", "command-palette-simple-flat-list"],
@@ -91,6 +92,7 @@ describe("navigation catalog content family", () => {
 				repo: "basalt",
 				ref: "main",
 				file: `packages/basalt/src/components/${slug}.tsx`,
+				hash: CATALOG_SOURCE_FILES[slug]?.hash,
 			});
 		}
 		expect(navigation.pagination?.docs.api[0]?.props.map((prop) => prop.name)).toEqual([

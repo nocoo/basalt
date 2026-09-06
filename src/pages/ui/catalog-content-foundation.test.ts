@@ -22,6 +22,7 @@ import { API as textApi } from "./generated/catalog-api/text";
 import { API as themeProviderApi } from "./generated/catalog-api/theme-provider";
 import { API as themeToggleApi } from "./generated/catalog-api/theme-toggle";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
+import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const FOUNDATION_SLUGS = [
 	"button",
@@ -105,6 +106,7 @@ describe("foundation catalog content family", () => {
 			repo: "basalt",
 			ref: "main",
 			file: "packages/basalt/src/components/button.tsx",
+			hash: CATALOG_SOURCE_FILES.button?.hash,
 		});
 		expect(foundation.button?.examples.map((example) => example.id)).toEqual(
 			BUTTON_EXAMPLES.map((example) => example.id),

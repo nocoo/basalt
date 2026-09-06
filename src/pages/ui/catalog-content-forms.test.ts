@@ -27,6 +27,7 @@ import { API as selectApi } from "./generated/catalog-api/select";
 import { API as sensitiveInputApi } from "./generated/catalog-api/sensitive-input";
 import { API as switchApi } from "./generated/catalog-api/switch";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
+import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const FORMS_SLUGS = [
 	"field",
@@ -148,6 +149,7 @@ describe("forms catalog content family", () => {
 			repo: "basalt",
 			ref: "main",
 			file: "packages/basalt/src/components/field.tsx",
+			hash: CATALOG_SOURCE_FILES.field?.hash,
 		});
 		expect(forms.input?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
 			{ id: "input-with-label-and-description", title: "With Label and Description" },

@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import charts from "./catalog-content/families/charts";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
+import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const CHART_DESCRIPTIONS = {
 	line: "Line series.",
@@ -71,6 +72,7 @@ describe("charts catalog content family", () => {
 				repo: "basalt",
 				ref: "main",
 				file: `packages/basalt/src/charts/${slug}.tsx`,
+				hash: CATALOG_SOURCE_FILES[slug]?.hash,
 			});
 		}
 		expect(charts.radar?.docs.api[0]?.props.map((prop) => prop.name)).toEqual([

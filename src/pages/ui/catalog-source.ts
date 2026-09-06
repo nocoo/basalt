@@ -1,10 +1,12 @@
 import { CATALOG_BY_SLUG, type CatalogEntry, catalogImportPath } from "./catalog";
+import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 export interface GitHubSource {
 	owner: string;
 	repo: string;
 	ref: string;
 	file: string;
+	hash?: string;
 }
 
 export interface CatalogApiProp {
@@ -71,19 +73,26 @@ export function githubSourceLabel(source: GitHubSource): string {
 }
 
 export function implementationFileFor(entry: CatalogEntry): string {
+	const mapped = CATALOG_SOURCE_FILES[entry.slug];
+	if (mapped) {
+		return mapped.file;
+	}
 	const importPath = catalogImportPath(entry);
 	if (!importPath.startsWith(PACKAGE_IMPORT_PREFIX)) {
 		throw new Error(`Cannot derive implementation file from ${importPath}`);
 	}
-	return `${IMPLEMENTATION_ROOT}/${importPath.slice(PACKAGE_IMPORT_PREFIX.length)}.tsx`;
+	const rel = importPath.slice(PACKAGE_IMPORT_PREFIX.length);
+	return `${IMPLEMENTATION_ROOT}/${rel}.tsx`;
 }
 
-export function implementationSourceFor(entry: CatalogEntry): GitHubSource {
+export function implementationSourceFor(entry: CatalogEntry, version?: string): GitHubSource {
+	const mapped = CATALOG_SOURCE_FILES[entry.slug];
 	return {
 		owner: BASALT_IMPLEMENTATION_OWNER,
 		repo: BASALT_IMPLEMENTATION_REPO,
-		ref: BASALT_IMPLEMENTATION_REF,
-		file: implementationFileFor(entry),
+		ref: version ?? BASALT_IMPLEMENTATION_REF,
+		file: mapped ? mapped.file : implementationFileFor(entry),
+		hash: mapped?.hash,
 	};
 }
 
@@ -121,11 +130,33 @@ export function catalogDocsWithImplementation(
 	);
 }
 
-export function catalogSourceCopyText(docs: CatalogDocs): string {
+export function catalogSourceViewerHref(slug: string, hash?: string): string {
+	const param = hash ? `?hash=${hash}` : "";
+	return `/ui/${slug}/source${param}`;
+}
+
+export function catalogSourceCopyText(docs: CatalogDocs, slug?: string): string {
+	const hashInfo = docs.implementationSource.hash
+		? ` (sha256: ${docs.implementationSource.hash})`
+		: "";
+	const viewerHref = slug ? catalogSourceViewerHref(slug, docs.implementationSource.hash) : "";
+	const sourceFile = docs.implementationSource.file;
+
+	let packageReadLocation = "";
+	const meta = slug ? CATALOG_SOURCE_FILES[slug] : undefined;
+	if (meta?.packageReadLocation) {
+		packageReadLocation = `Published package source location: ${meta.packageReadLocation}`;
+	} else {
+		const rel = sourceFile.replace(/^packages\/basalt\/src\//, "").replace(/\.(tsx|ts)$/, "");
+		packageReadLocation = `Published package source location: node_modules/@nocoo/basalt/dist/${rel}.js.map (sourcesContent[0])`;
+	}
+
 	const lines = [
 		"## Implementation",
-		`${githubSourceLabel(docs.implementationSource)} ${docs.implementationSource.file}`,
-		githubSourceHref(docs.implementationSource),
+		`${githubSourceLabel(docs.implementationSource)} ${docs.implementationSource.file}${hashInfo}`,
+		viewerHref
+			? `Source Viewer: ${viewerHref}\n${packageReadLocation}`
+			: githubSourceHref(docs.implementationSource),
 	];
 	if (docs.provenance) {
 		lines.push(

@@ -62,6 +62,7 @@
 		}
 	},
 	"files": {
+		"maxSize": 2097152,
 		"includes": [
 			"**",
 			"!**/node_modules",

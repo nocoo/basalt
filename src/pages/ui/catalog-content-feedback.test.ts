@@ -4,6 +4,7 @@ import { API as bannerApi } from "./generated/catalog-api/banner";
 import { API as codeBlockApi } from "./generated/catalog-api/code-block";
 import { API as toastApi } from "./generated/catalog-api/toast";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
+import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const FEEDBACK_SCENARIOS = {
 	badge: [
@@ -158,6 +159,7 @@ describe("feedback catalog content family", () => {
 				repo: "basalt",
 				ref: "main",
 				file: `packages/basalt/src/components/${implementationSlug}.tsx`,
+				hash: CATALOG_SOURCE_FILES[slug]?.hash,
 			});
 		}
 		expect(feedback.banner?.docs.api).toBe(bannerApi);

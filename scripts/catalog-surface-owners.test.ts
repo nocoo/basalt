@@ -71,9 +71,12 @@ function createIsolatedRepoFixture(
 
 describe("public surface documentation ownership and freshness", () => {
 	it("derives complete public surface manifest for the actual repo", () => {
+		const rootPkg = JSON.parse(readFileSync(path.join(process.cwd(), "package.json"), "utf8")) as {
+			version: string;
+		};
 		const manifest = derivePublicSurfaceManifest();
 
-		expect(manifest.packageVersion).toBe("2.0.3");
+		expect(manifest.packageVersion).toBe(rootPkg.version);
 		expect(manifest.totalModules).toBe(110);
 		expect(manifest.totalSymbols).toBe(684);
 		expect(manifest.totalValues).toBe(375);

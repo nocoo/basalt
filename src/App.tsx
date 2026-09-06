@@ -32,6 +32,7 @@ const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const StaticPage = lazy(() => import("./pages/StaticPage"));
 const UiIndexPage = lazy(() => import("./pages/ui/UiIndexPage"));
 const UiPlaceholderPage = lazy(() => import("./pages/ui/UiPlaceholderPage"));
+const UiSourceViewerPage = lazy(() => import("./pages/ui/UiSourceViewerPage"));
 const WearableDashboardPage = lazy(() => import("./pages/WearableDashboardPage"));
 
 function AppLink({
@@ -110,6 +111,7 @@ const App = () => (
 								<Route path="/network" element={routeElement(NetworkOpsDashboardPage)} />
 								<Route path="/ui" element={routeElement(UiIndexPage)} />
 								<Route path="/ui/:slug" element={routeElement(UiPlaceholderPage)} />
+								<Route path="/ui/:slug/source" element={routeElement(UiSourceViewerPage)} />
 							</Route>
 							{/* Standalone pages (no sidebar) */}
 							<Route path="/login" element={routeElement(LoginPage)} />

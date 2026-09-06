@@ -2442,16 +2442,16 @@ function extractTargetProps(
 }
 
 function isParameterOptional(paramSym: ts.Symbol): boolean {
-	if (Boolean(paramSym.flags & ts.SymbolFlags.Optional)) {
+	if ((paramSym.flags & ts.SymbolFlags.Optional) !== 0) {
 		return true;
 	}
 	const decl = paramSym.valueDeclaration;
 	if (decl && ts.isParameter(decl)) {
-		return Boolean(decl.questionToken) || Boolean(decl.initializer);
+		return decl.questionToken !== undefined || decl.initializer !== undefined;
 	}
 	for (const otherDecl of paramSym.getDeclarations() ?? []) {
 		if (ts.isParameter(otherDecl)) {
-			if (Boolean(otherDecl.questionToken) || Boolean(otherDecl.initializer)) {
+			if (otherDecl.questionToken !== undefined || otherDecl.initializer !== undefined) {
 				return true;
 			}
 		}

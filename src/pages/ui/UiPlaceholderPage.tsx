@@ -28,6 +28,7 @@ import {
 	type CatalogApiSurface,
 	type CatalogDocs,
 	catalogSourceCopyText,
+	catalogSourceViewerHref,
 	githubSourceHref,
 	githubSourceLabel,
 } from "./catalog-source";
@@ -305,7 +306,7 @@ function ReadyDoc({
 		"## Examples",
 		...examples.flatMap((example) => [`### ${example.title}`, example.code]),
 		...catalogApiCopyLines(docs.api),
-		catalogSourceCopyText(docs),
+		catalogSourceCopyText(docs, entry.slug),
 	].join("\n\n");
 	const headings: DocHeading[] = [
 		{ id: "installation", text: "Installation", depth: 2 as const },
@@ -334,13 +335,12 @@ function ReadyDoc({
 							{catalogNavName(entry)}
 						</h1>
 						<a
-							href={githubSourceHref(docs.implementationSource)}
-							target="_blank"
-							rel="noopener noreferrer"
-							className="text-muted-foreground transition-colors hover:text-foreground"
-							aria-label="View Basalt implementation on GitHub"
+							href={catalogSourceViewerHref(entry.slug, docs.implementationSource.hash)}
+							className="text-muted-foreground transition-colors hover:text-foreground inline-flex items-center gap-1.5 text-sm font-medium rounded-basalt-md border border-border px-2.5 py-1"
+							aria-label="View Basalt component source"
 						>
-							<Github className="h-7 w-7" />
+							<Github className="h-4 w-4" />
+							<span>Source</span>
 						</a>
 					</div>
 					<CopyPageButton markdown={pageMarkdown} />
@@ -402,13 +402,12 @@ function ReadyDoc({
 							Implementation{" "}
 							<a
 								className="text-foreground underline underline-offset-4"
-								href={githubSourceHref(docs.implementationSource)}
-								target="_blank"
-								rel="noopener noreferrer"
+								href={catalogSourceViewerHref(entry.slug, docs.implementationSource.hash)}
 							>
 								{githubSourceLabel(docs.implementationSource)}
 							</a>{" "}
 							{docs.implementationSource.file}
+							{docs.implementationSource.hash ? ` (sha256: ${docs.implementationSource.hash})` : ""}
 						</p>
 						{docs.provenance ? (
 							<p>

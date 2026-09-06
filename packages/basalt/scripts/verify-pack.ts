@@ -265,6 +265,117 @@ for (const item of wildcards) {
 	}
 }
 
+// Verify AI package assets are present in pack
+const requiredAiAssets = [
+	"ai/registry.json",
+	"ai/USAGE.md",
+	"ai/COMPATIBILITY.md",
+	"ai/INTEGRATION.md",
+	"ai/sources.json",
+];
+for (const asset of requiredAiAssets) {
+	if (!packedSet.has(asset)) {
+		fail(`pack missing required AI asset: ${asset}`);
+	}
+}
+
+// Verify sourcemaps and sourcesContent integrity against registry source hashes
+const registryJsonPath = join(packageRoot, "ai/registry.json");
+const sourcesJsonPath = join(packageRoot, "ai/sources.json");
+if (existsSync(registryJsonPath)) {
+	try {
+		const registry = JSON.parse(readFileSync(registryJsonPath, "utf8")) as {
+			packageVersion?: string;
+			modules: Array<{ importPath: string; sourceFile: string; sourceHash: string }>;
+		};
+		if (registry.packageVersion !== pkg.version) {
+			fail(
+				`registry.packageVersion (${registry.packageVersion}) must match package.json version (${pkg.version})`,
+			);
+		}
+		const fallbackBundle = existsSync(sourcesJsonPath)
+			? (JSON.parse(readFileSync(sourcesJsonPath, "utf8")) as Record<
+					string,
+					{ content: string; hash: string }
+				>)
+			: {};
+
+		const mapFiles = walk(distRoot).filter((f) => f.endsWith(".js.map"));
+		if (mapFiles.length === 0) {
+			fail("dist missing .js.map files");
+		}
+
+		// Build map of source file to its sourcesContent extracted from sourcemaps
+		// Traverse ALL sources in every sourcemap to verify integrity and detect conflicts
+		const extractedSourcesContent = new Map<string, string>();
+		for (const mf of mapFiles) {
+			const mapData = JSON.parse(readFileSync(mf, "utf8")) as {
+				sources?: string[];
+				sourcesContent?: string[];
+			};
+			const sources = mapData.sources ?? [];
+			const sourcesContent = mapData.sourcesContent ?? [];
+			if (sourcesContent.length === 0) {
+				fail(`sourcemap ${relative(packageRoot, mf)} missing sourcesContent`);
+				continue;
+			}
+			for (let i = 0; i < sources.length; i++) {
+				const relSource = sources[i];
+				const content = sourcesContent[i];
+				if (!content) {
+					fail(
+						`sourcemap ${relative(packageRoot, mf)} missing sourcesContent at index ${i} for source '${relSource}'`,
+					);
+					continue;
+				}
+				const resolvedSource = relative(repoRoot, join(dirname(mf), relSource));
+				if (extractedSourcesContent.has(resolvedSource)) {
+					const existingContent = extractedSourcesContent.get(resolvedSource);
+					if (existingContent !== undefined && existingContent !== content) {
+						fail(
+							`conflicting sourcesContent detected for '${resolvedSource}' in sourcemap ${relative(packageRoot, mf)}`,
+						);
+					}
+				} else {
+					extractedSourcesContent.set(resolvedSource, content);
+				}
+			}
+		}
+
+		// Every single public module sourceFile in registry MUST have complete sourcesContent coverage
+		for (const mod of registry.modules) {
+			const sourceFile = mod.sourceFile;
+			let content = extractedSourcesContent.get(sourceFile);
+			if (!content && fallbackBundle[sourceFile]) {
+				content = fallbackBundle[sourceFile].content;
+			}
+
+			if (!content) {
+				fail(
+					`missing sourcesContent in sourcemaps/sources.json for public module source '${sourceFile}'`,
+				);
+				continue;
+			}
+
+			const actualHash = require("node:crypto")
+				.createHash("sha256")
+				.update(content)
+				.digest("hex")
+				.slice(0, 16);
+
+			if (actualHash !== mod.sourceHash) {
+				fail(
+					`sourcesContent hash mismatch for ${sourceFile}: expected ${mod.sourceHash}, got ${actualHash}`,
+				);
+			}
+		}
+	} catch (e) {
+		fail(
+			`failed to verify sourcemap sourcesContent against registry: ${e instanceof Error ? e.message : String(e)}`,
+		);
+	}
+}
+
 if (errors.length > 0) {
 	console.error(errors.join("\n"));
 	process.exit(1);

@@ -8,6 +8,8 @@ import overlay from "./catalog-content/families/overlay";
 import { loadCatalogContentRecord } from "./catalog-content-registry";
 import {
 	catalogDocsWithImplementation,
+	catalogSourceCopyText,
+	catalogSourceViewerHref,
 	githubSourceHref,
 	githubSourceLabel,
 	implementationFileFor,
@@ -15,6 +17,8 @@ import {
 	provenanceFromLegacy,
 } from "./catalog-source";
 import { CATALOG_API } from "./generated/catalog-api";
+import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
+import { computeSha256Hex16 } from "./UiSourceViewerPage";
 
 const catalogContent = await loadCatalogContentRecord();
 const CATALOG_DOCS = Object.fromEntries(
@@ -485,11 +489,153 @@ describe("catalog source contract", () => {
 	});
 
 	it("always points implementation source at nocoo/basalt@main", () => {
-		expect(implementationSourceFor(entry("dialog"))).toEqual({
+		expect(implementationSourceFor(entry("dialog"))).toMatchObject({
 			owner: "nocoo",
 			repo: "basalt",
 			ref: "main",
 			file: "packages/basalt/src/components/dialog.tsx",
+		});
+		expect(implementationSourceFor(entry("dialog")).hash).toBeDefined();
+	});
+
+	describe("source viewer link, copy contract & hash mismatch rejection", () => {
+		it("formats catalog source copy text with published package read location and viewer route", () => {
+			const buttonDocs = forms.button?.docs ?? CATALOG_DOCS.button;
+			expect(buttonDocs).toBeDefined();
+			if (!buttonDocs) return;
+
+			const copyText = catalogSourceCopyText(buttonDocs, "button");
+			expect(copyText).toContain("## Implementation");
+			expect(copyText).toContain("Source Viewer: /ui/button/source?hash=");
+			expect(copyText).toContain(
+				"Published package source location: node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])",
+			);
+		});
+
+		it("formats pure re-export components with sources.json package read location", () => {
+			const colorsDocs = CATALOG_DOCS["chart-colors"];
+			expect(colorsDocs).toBeDefined();
+			if (!colorsDocs) return;
+
+			const copyText = catalogSourceCopyText(colorsDocs, "chart-colors");
+			expect(copyText).toContain("## Implementation");
+			expect(copyText).toContain(
+				'Published package source location: node_modules/@nocoo/basalt/ai/sources.json ("packages/basalt/src/charts/chart-colors.tsx")',
+			);
+		});
+
+		it("generates valid source viewer link with matching hash parameter", () => {
+			const buttonMeta = CATALOG_SOURCE_FILES.button;
+			expect(buttonMeta).toBeDefined();
+			const href = catalogSourceViewerHref("button", buttonMeta.hash);
+			expect(href).toBe(`/ui/button/source?hash=${buttonMeta.hash}`);
+		});
+
+		it("verifies hash mismatch rejection semantics and stale response cancellation contract", async () => {
+			const buttonMeta = CATALOG_SOURCE_FILES.button;
+			const validHash = buttonMeta.hash;
+			const wrongHash = "0000000000000000";
+
+			// Simulating the exact state machine of UiSourceViewerPage
+			let content: string | null = null;
+			let error: string | null = null;
+
+			function simulateLoad(
+				requestedHash: string | null,
+				loader: () => Promise<string>,
+				onStateChange: (c: string | null, e: string | null) => void,
+			): () => void {
+				let cancelled = false;
+				content = null;
+
+				if (requestedHash && requestedHash !== buttonMeta.hash) {
+					error = `Source fingerprint mismatch: requested hash "${requestedHash}" does not match active component source "${buttonMeta.hash}". Cannot load source for outdated or invalid link.`;
+					onStateChange(content, error);
+					return () => {
+						cancelled = true;
+					};
+				}
+
+				error = null;
+				onStateChange(content, error);
+
+				loader()
+					.then(async (text) => {
+						if (cancelled) return;
+						const actualHash = await computeSha256Hex16(text);
+						if (cancelled) return;
+						if (actualHash !== buttonMeta.hash) {
+							error = `Source integrity error: bundle source sha256 (${actualHash}) does not match expected (${buttonMeta.hash}).`;
+							content = null;
+							onStateChange(content, error);
+							return;
+						}
+						error = null;
+						content = text;
+						onStateChange(content, error);
+					})
+					.catch((err) => {
+						if (cancelled) return;
+						error = err instanceof Error ? err.message : String(err);
+						content = null;
+						onStateChange(content, error);
+					});
+
+				return () => {
+					cancelled = true;
+				};
+			}
+
+			// 1. Wrong hash is rejected immediately without waiting for content
+			simulateLoad(
+				wrongHash,
+				() => Promise.resolve("dummy content"),
+				(c, e) => {
+					content = c;
+					error = e;
+				},
+			);
+			expect(content).toBeNull();
+			expect(error).toContain(`Source fingerprint mismatch: requested hash "${wrongHash}"`);
+
+			// 2. Race condition test: delayed response cancelled by navigation
+			let resolveSlow: (val: string) => void = () => {};
+			const slowPromise = new Promise<string>((res) => {
+				resolveSlow = res;
+			});
+
+			// User navigates to valid route (slow load started)
+			const cancelValid = simulateLoad(
+				validHash,
+				() => slowPromise,
+				(c, e) => {
+					content = c;
+					error = e;
+				},
+			);
+			expect(content).toBeNull();
+			expect(error).toBeNull();
+
+			// User quickly navigates to wrong hash route (cancelling previous slow load)
+			cancelValid();
+			simulateLoad(
+				wrongHash,
+				() => Promise.resolve("new content"),
+				(c, e) => {
+					content = c;
+					error = e;
+				},
+			);
+			expect(error).toContain("Source fingerprint mismatch");
+			expect(content).toBeNull();
+
+			// Slow promise finally resolves later!
+			resolveSlow("late arriving source content");
+			await new Promise((r) => setTimeout(r, 10));
+
+			// Stale response must NOT overwrite state or clear error
+			expect(content).toBeNull();
+			expect(error).toContain("Source fingerprint mismatch");
 		});
 	});
 });

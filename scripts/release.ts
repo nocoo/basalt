@@ -423,7 +423,22 @@ export async function executeRelease(
 
 	ctx.updateChangelog(changelogSection);
 
-	const filesToStage = [...VERSION_TARGETS, "CHANGELOG.md"];
+	// Regenerate public surface manifest and package registry with new version
+	const genResult = await ctx.run("bun", ["scripts/catalog-api-cli.ts", "generate"]);
+	if (genResult.code !== 0) {
+		throw new Error(`Failed to regenerate public API metadata: ${genResult.stderr.trim()}`);
+	}
+
+	const filesToStage = [
+		...VERSION_TARGETS,
+		"CHANGELOG.md",
+		"src/pages/ui/generated/public-surface-manifest.ts",
+		"src/pages/ui/generated/catalog-source-files.ts",
+		"packages/basalt/ai/registry.json",
+		"packages/basalt/ai/USAGE.md",
+		"packages/basalt/ai/INTEGRATION.md",
+		"packages/basalt/ai/sources.json",
+	];
 	const addResult = await ctx.run("git", ["add", ...filesToStage]);
 	if (addResult.code !== 0) {
 		throw new Error(`Failed to stage files: ${addResult.stderr.trim()}`);

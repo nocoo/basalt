@@ -32,6 +32,7 @@ bun add @nocoo/basalt lucide-react
 
 ---
 
+<a id="css-setup"></a>
 ## Styling Contracts
 
 ### Contract 1: Tailwind CSS v4
@@ -67,6 +68,7 @@ Standalone CSS contains compiled design tokens, scoped control classes, keyframe
 
 ---
 
+<a id="component-usage"></a>
 ## Import Architecture
 
 ### 1. Root Barrel (`@nocoo/basalt`)

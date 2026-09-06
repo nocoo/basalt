@@ -21,6 +21,7 @@ import { API as statStripApi } from "./generated/catalog-api/stat-strip";
 import { API as tableApi } from "./generated/catalog-api/table";
 import { API as tablePagerApi } from "./generated/catalog-api/table-pager";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
+import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const DATA_LAYOUT_SCENARIOS = {
 	table: ["table-basic", "table-selected-row"],
@@ -112,6 +113,7 @@ describe("data-layout catalog content family", () => {
 				repo: "basalt",
 				ref: "main",
 				file: `packages/basalt/src/components/${slug}.tsx`,
+				hash: CATALOG_SOURCE_FILES[slug]?.hash,
 			});
 		}
 		expect(dataLayout["data-table"]?.docs.api[0]?.props.map((prop) => prop.name)).toEqual([
