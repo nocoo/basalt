@@ -583,6 +583,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | 10a | `fix: align dock overlay semantics` | C06；背景交互与模态边界一致 |
 | 10b | `fix: restore imperative confirm focus` | C07；无 trigger 的 Promise 路径也归还焦点 |
 | 10c | `fix: preserve force mounting across overlay portals` | C16；内置 Portal 尊重既有 forceMount，正常开关及卸载清理保持正确 |
+| 10d | `fix: compose popover content slots` | C17；asChild 在有无箭头时均可挂载，保留子元素与 ref/事件合成 |
 | 11a | `fix: complete slider values and accessible names` | C08；单值/范围、Thumb 数量及名称 |
 | 11b | `fix: complete calendar keyboard navigation` | C10；日历导航、可访问树与本地化 |
 | 12a | `fix: render empty state actions` | C09；明确 slot 并验证所有允许的 children |
@@ -678,9 +679,9 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 |---|---|---|---|---|
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
-| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`ba42589`：公开基线、严格 import、入口文档 tarball 编译、97 页源码 API、provider 与非 catalog 正文、原生策略和类型保真已分组验收；继续复合接口缺项、全部 Library Usage/scenario 编译及版本化指南 |
+| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`003af81`：公开基线、严格 import、入口文档 tarball 编译、97 页源码 API、provider 与非 catalog 正文、Tooltip/Popover、原生策略和类型保真已分组验收；继续复合接口缺项、全部 Library Usage/scenario 编译及版本化指南 |
 | P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
-| P4 | 浮层与语义：10a/b/c、11a/b、12a/b；C06–C11/C16/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Slider 多值/名称/双轴几何、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
+| P4 | 浮层与语义：10a/b/c/d、11a/b、12a/b；C06–C11/C16/C17/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Popover asChild、Slider 多值/名称/双轴几何、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
 | P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 待调度 | — |
 | P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 待调度 | — |
@@ -766,14 +767,16 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 
 非 catalog 归属的缺失锚点修正后，独立检查从 **101/111** 到 **111/111**。文档文件和锚点校验接入生成与 freshness；主 agent 在隔离副本中执行原文对照、删除 10 个真实锚点和 3 份 owner 文档，**14/14** 符合预期。正式回归覆盖缺文件、缺锚点及 `checkSurfaceManifestFreshness` 传播失败；正文内容另外按源码人工审阅。正常 hooks 为 **176 文件、1,477 测试**，包 build/types/pack/publint、typecheck/lint 和真实 tarball `consumer:docs` 的 8 个 Markdown 模块通过。证据：`p2-c3b-owner-body.json`、`p2-c3b-owner-negative.json`、`p2-c3b-api-semantic-diff.json`、`p2-c3b-api-visible.json`、`p2-c3b-public-props.log`、`p2-c3b-usage.log`、`p2-c3b-runtime-source-diff.json`。
 
+`003af81` 完成 Tooltip/Popover 的 **10 个 surface**，补齐 Provider 继承、Root 状态、定位与关闭回调、原生属性和 ref。Tooltip 的 700ms 默认值归于 Provider，单个 Root 可覆盖；两种 Content 的 forceMount 限制和 Popover asChild 的 C17 崩溃如实说明，未在文档组改变行为。主 agent 核验 **97 份 API、原有 95 份不变**，**10 个组件**的新旧参数/ref/字段集合及文档类型兼容，运行时 AST **2/2 不变**，真实页面 **2/2**、主 Usage **2/2 编译通过**。已核对的源码与生成文件在提交前后哈希一致。正常 hooks 为 **176 文件、1,477 测试**，typecheck/lint、包 build/types/pack/publint/gitleaks 通过。证据：`p2-c4a1-api-semantic-diff.json`、`p2-c4a1-api-visible.json`、`p2-c4a1-public-props.log`、`p2-c4a1-runtime-source-diff.json`、`p2-c4a1-usage.log`、`p2-c4a1-acceptance.json`。
+
 P2 后续范围细化如下，发现即登记，不把归属或编译机制已经建立等同于文档全部完成：
 
-- D03b-C4 补已有页面遗漏的 overlay/command/sidebar/native 子件，以及 Banner/Toast 的准确来源。已定位 Tooltip 根仍只列 delayDuration、PopoverContent 只列 arrow、CollapsibleContent 只列 unstyled，需同时补齐这些既有表的非原生功能项。按 Tooltip/Popover、Collapsible/DropdownMenu、Command 分别交接；别名复用同一接口说明。Toast 现有手表把 Toaster/Toast 组件与 toast() 函数参数混在一起，需分别说明，实际 message 类型是 ReactNode。
+- D03b-C4A1 的 Tooltip/Popover 已验收；继续 Collapsible/DropdownMenu、Command、Sidebar/native 子件及 Banner/Toast 的准确来源。CollapsibleContent 现有表只列 unstyled，需补非原生功能与 asChild/inset 的真实边界；SidebarSearch 是按钮，SidebarGroup 只公开 defaultOpen，不能为补文档擅自扩充受控接口。别名复用同一接口说明。Toast 现有手表把 Toaster/Toast 组件与 toast() 函数参数混在一起，需分别说明，实际 message 类型是 ReactNode。
 - D02c 补全部 Library 主 Usage 的真实 tarball 编译。主 agent 从浏览器实际 registry 提取 99 页 Usage，在仓外按公开 package exports（本地包依赖、无源码 alias）诊断编译，初始 **91/99**。失败项为 Accordion、ConfirmDialog、LinkProvider、SegmentControl、Sheet、SlotBar、TablePager、ToggleGroup，原因包括缺必填属性、未声明状态或漏导入；ToggleGroup、Accordion、Sheet、LinkProvider 已修正。该诊断不是新 tarball 安装证明，关闭前仍需正式消费门及独立复验。
 - D02d 将 Copy page 内的全部 scenario code 纳入同一真实 tarball 编译门。浏览器提取共 **99 页、246 个场景**；其中 175 个完整模块的初次仓外诊断为 **174/175 通过**，Sheet 漏导入已在 `feda988` 修正并独立编译，另 **71 段**缺少可独立复制的完整上下文（反馈类 40、其他家族 31）。完整示例必须保留真实 imports、状态和数据，测试 harness 不得注入隐式 import、any 或假全局来制造通过。先前一次混合片段编译因语法错误提前停止，其“未报错文件数”不作为通过数。证据：`p2-scenario-compile-before.json`；正式门尚待实施。
 - 非 catalog 正文与归属已在 C3B 验收；D04 继续处理随版本交付和从包内独立读取的指南。
 
-上述接受的是 D03a、D03b-A/B1/B2A/B2B/C1A/C1B/C2A/C2B/C3A/C3B、空参数原生策略及 DOM 类型命名修正。遗漏复合接口、全部 Usage/scenario 和版本化指南继续分组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
+上述接受的是 D03a、D03b-A/B1/B2A/B2B/C1A/C1B/C2A/C2B/C3A/C3B/C4A1、空参数原生策略及 DOM 类型命名修正。遗漏复合接口、全部 Usage/scenario 和版本化指南继续分组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
 
 ### 12.5 实施中追加的问题
 
@@ -784,3 +787,11 @@ P2 后续范围细化如下，发现即登记，不把归属或编译机制已�
 已复现的 9 个包装组件：[HoverCardContent](../packages/basalt/src/components/hover-card.tsx)、[DialogContent](../packages/basalt/src/components/dialog.tsx)、[AlertDialogContent](../packages/basalt/src/components/alert-dialog.tsx)、[SheetContent](../packages/basalt/src/components/sheet.tsx)、[PopoverContent](../packages/basalt/src/components/popover.tsx)、[TooltipContent](../packages/basalt/src/components/tooltip.tsx)、[DropdownMenuContent](../packages/basalt/src/components/dropdown-menu.tsx)、[ContextMenuPanel](../packages/basalt/src/components/context-menu.tsx)、[MenuBarContent](../packages/basalt/src/components/menu-bar.tsx)。主 agent 的真实 Chromium 对照共 **30 条**：9 条关闭后强制挂载失败，其余 21 条正常开关或裸组件对照通过，浏览器无错误。直接导出的 ContextMenuContent 三条均通过，不能把修正扩大为给裸组件增加 Portal。证据：`p2-portal-mount-before.json`、`p2-portal-mount-probe.mjs`。
 
 P2 的复合 API 说明先明确当前限制；P4 用独立 10c 提交修正内置 Portal 的参数传递，并更新这些说明。保留默认关闭卸载、打开挂载及实际 ref/定位行为；验证外部动画结束并卸载后的焦点、背景和相邻浮层清理，说明使用 forceMount 时调用方承担的显隐与卸载责任。
+
+#### C17 · P2 · PopoverContent 的 asChild 组合无法挂载【浏览器＋源码；待 P4 修正】
+
+[PopoverContent](../packages/basalt/src/components/popover.tsx) 将传入的 children 与 Arrow/null 同时交给底层 Content。启用 `asChild` 后，Slot 收到多个子项，抛出 `Primitive.div failed to slot onto its children`，整块内容无法挂载；显式 `arrow={false}` 仍有同样问题。这是原有包装行为，P2 类型与文档补齐没有引入该变化。
+
+主 agent 在 Chromium 中检查 11 种 Content 的默认与 asChild 组合，共 **24 条**：Popover 的两种箭头设置均崩溃，其余 21 条符合预期；另 1 条 CollapsibleContent 在默认 inset 模式下把属性/ref 放到内部 div，切换 `unstyled={true}` 后才作用于调用方子元素，该既有边界在 P2 文档说明。证据：`p2-content-aschild-before.json`。首轮 probe 在已打开的 ContextMenu 上重复执行右键，被内容遮挡而超时；移除不必要的重复打开步骤后得到上述完整结果，不把工具超时计为组件失败。
+
+P4 以独立 10d 提交修正 Popover 的子元素组合，验证默认与 asChild、有无箭头、ref 和事件合成。P2 先准确记录限制；不扩大修改已通过的其他浮层，也不改变普通 Popover 的默认几何。
