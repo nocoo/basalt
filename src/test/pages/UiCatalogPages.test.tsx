@@ -1455,7 +1455,7 @@ describe("ui catalog", () => {
 			CATALOG_API["layer-card"]?.map((surface) => surface.props.map((prop) => prop.name)),
 		).toEqual([
 			["className", "outlined", "padding"],
-			[],
+			["outlined"],
 			[],
 			[],
 			[],
@@ -1467,7 +1467,7 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/layer-card");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(8);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(9);
 		expect(api).toHaveTextContent("className?");
 		expect(api).toHaveTextContent("outlined?");
 		expect(api).toHaveTextContent("padding?");
@@ -1478,7 +1478,7 @@ describe("ui catalog", () => {
 		expect(api).toHaveTextContent("string");
 		expect(api).toHaveTextContent("Additional classes for the card root.");
 		expect(api).toHaveTextContent("—");
-		expect(api).not.toHaveTextContent("children");
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(9);
 		expect(api).not.toHaveTextContent("id");
 		expect(api).not.toHaveTextContent("style");
 		expect(api).not.toHaveTextContent("role");
@@ -2423,7 +2423,19 @@ describe("ui catalog", () => {
 					},
 				],
 			},
-			{ name: "SelectGroup", props: [] },
+			{
+				name: "SelectGroup",
+				props: [
+					{
+						name: "asChild",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description:
+							"Change the default rendered div element to the child element, merging props and behavior.\nGroup forwards ref to HTMLDivElement and inherits native div attributes.",
+					},
+				],
+			},
 			{
 				name: "SelectItem",
 				props: [
@@ -2435,7 +2447,19 @@ describe("ui catalog", () => {
 					},
 				],
 			},
-			{ name: "SelectLabel", props: [] },
+			{
+				name: "SelectLabel",
+				props: [
+					{
+						name: "asChild",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description:
+							"Change the default rendered div element to the child element, merging props and behavior.\nLabel forwards ref to HTMLDivElement and inherits native div attributes.",
+					},
+				],
+			},
 		]);
 		renderCatalog("/ui/select");
 		const api = document.getElementById("api-reference");
@@ -2464,10 +2488,10 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("table", { name: "SelectTrigger props" })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SelectValue props" })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SelectContent props" })).toBeInTheDocument();
-		expect(screen.queryByRole("table", { name: "SelectGroup props" })).not.toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "SelectGroup props" })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SelectItem props" })).toBeInTheDocument();
-		expect(screen.queryByRole("table", { name: "SelectLabel props" })).not.toBeInTheDocument();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(10);
+		expect(screen.getByRole("table", { name: "SelectLabel props" })).toBeInTheDocument();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(12);
 		expect(
 			screen.getByRole("table", { name: "Select props" }).querySelectorAll("tbody tr"),
 		).toHaveLength(3);
@@ -2481,7 +2505,13 @@ describe("ui catalog", () => {
 			screen.getByRole("table", { name: "SelectContent props" }).querySelectorAll("tbody tr"),
 		).toHaveLength(2);
 		expect(
+			screen.getByRole("table", { name: "SelectGroup props" }).querySelectorAll("tbody tr"),
+		).toHaveLength(1);
+		expect(
 			screen.getByRole("table", { name: "SelectItem props" }).querySelectorAll("tbody tr"),
+		).toHaveLength(1);
+		expect(
+			screen.getByRole("table", { name: "SelectLabel props" }).querySelectorAll("tbody tr"),
 		).toHaveLength(1);
 		expect(api).toHaveTextContent("value?");
 		expect(api).toHaveTextContent("defaultValue?");
@@ -2505,13 +2535,6 @@ describe("ui catalog", () => {
 		expect(api).not.toHaveTextContent("Select.Option");
 		expect(api).not.toHaveTextContent("GroupLabel");
 		expect(api).not.toHaveTextContent("textValue");
-		for (const name of ["SelectGroup", "SelectLabel"]) {
-			const heading = document.getElementById(`api-${name}`);
-			const empty = heading?.parentElement?.querySelector("p");
-			expect(empty).toHaveTextContent("No component-specific props.");
-			expect(empty).toHaveClass("text-sm");
-			expect(empty).toHaveClass("text-muted-foreground");
-		}
 		expect(screen.getByRole("heading", { name: "Basic" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Placeholder" })).toBeInTheDocument();
 		expect(screen.getByRole("heading", { name: "Disabled Options" })).toBeInTheDocument();
@@ -2537,7 +2560,9 @@ describe("ui catalog", () => {
 		expect(markdown).toContain(
 			"- onValueChange ((value: string) => void, optional, default —): Called when the selected value changes.",
 		);
-		expect(markdown).toContain("No component-specific props.");
+		expect(markdown).toContain(
+			"- asChild (boolean, optional, default false): Change the default rendered div element to the child element, merging props and behavior.",
+		);
 		expect(markdown).toContain(
 			"- placeholder (React.ReactNode, optional, default —): Content shown when no value is selected.",
 		);
@@ -3580,7 +3605,13 @@ describe("ui catalog", () => {
 			screen.queryByRole("table", { name: "InputGroup.Suffix props" }),
 		).not.toBeInTheDocument();
 		const suffixHeading = document.getElementById("api-InputGroup.Suffix");
-		const empty = suffixHeading?.parentElement?.querySelector("p");
+		const strategy = suffixHeading?.parentElement?.querySelector("p");
+		expect(strategy).toHaveTextContent(
+			"Native element wrapper: inherits and forwards all standard HTMLDivElement attributes (including children); does not expose ref.",
+		);
+		expect(strategy).toHaveClass("text-xs");
+		expect(strategy).toHaveClass("text-muted-foreground");
+		const empty = suffixHeading?.parentElement?.querySelectorAll("p")[1];
 		expect(empty).toHaveTextContent("No component-specific props.");
 		expect(empty).toHaveClass("text-sm");
 		expect(empty).toHaveClass("text-muted-foreground");
@@ -3994,9 +4025,9 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("table", { name: "SelectValue props" })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SelectContent props" })).toBeInTheDocument();
 		expect(screen.getByRole("table", { name: "SelectItem props" })).toBeInTheDocument();
-		expect(screen.queryByRole("table", { name: "SelectGroup props" })).not.toBeInTheDocument();
-		expect(screen.queryByRole("table", { name: "SelectLabel props" })).not.toBeInTheDocument();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(10);
+		expect(screen.getByRole("table", { name: "SelectGroup props" })).toBeInTheDocument();
+		expect(screen.getByRole("table", { name: "SelectLabel props" })).toBeInTheDocument();
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(12);
 		expect(api).toHaveTextContent("value?");
 		expect(api).toHaveTextContent("placeholder?");
 		expect(api).toHaveTextContent("size?");

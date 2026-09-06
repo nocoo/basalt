@@ -95,9 +95,8 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "layer-card",
 		sourceFile: "packages/basalt/src/components/layer-card.tsx",
-		propsType: "LayerCardSectionProps",
+		propsType: "LayerCardWellProps",
 		surface: "LayerCard.Primary",
-		allowEmpty: true,
 	},
 	{
 		slug: "layer-card",
@@ -316,7 +315,6 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/select.tsx",
 		propsType: "SelectGroupProps",
 		surface: "SelectGroup",
-		allowEmpty: true,
 	},
 	{
 		slug: "select",
@@ -329,7 +327,6 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/select.tsx",
 		propsType: "SelectLabelProps",
 		surface: "SelectLabel",
-		allowEmpty: true,
 	},
 	{
 		slug: "combobox",
@@ -1968,8 +1965,10 @@ export function validateCatalogApiCompleteness(data: Record<string, CatalogApiSu
 	for (const [slug, surfaces] of Object.entries(data)) {
 		for (const surface of surfaces) {
 			const isClassNameOnly = surface.props.length === 1 && surface.props[0]?.name === "className";
-			if (isClassNameOnly) {
+			const isEmptyProps = surface.props.length === 0;
+			if (isClassNameOnly || isEmptyProps) {
 				const documented = DOCUMENTED_NATIVE_ONLY_SURFACES[surface.name];
+				const conditionLabel = isEmptyProps ? "empty" : "className-only";
 				if (
 					!documented ||
 					typeof documented.justification !== "string" ||
@@ -1980,7 +1979,7 @@ export function validateCatalogApiCompleteness(data: Record<string, CatalogApiSu
 					typeof documented.forwardsRestProps !== "boolean"
 				) {
 					failCatalogApi(
-						`surface '${surface.name}' in '${slug}' is className-only without valid justification in DOCUMENTED_NATIVE_ONLY_SURFACES`,
+						`surface '${surface.name}' in '${slug}' is ${conditionLabel} without valid justification in DOCUMENTED_NATIVE_ONLY_SURFACES`,
 					);
 				}
 			}

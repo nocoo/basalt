@@ -29,7 +29,15 @@ export const API = [
 	},
 	{
 		name: "LayerCard.Primary",
-		props: [],
+		props: [
+			{
+				name: "outlined",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Draw a hairline ring on a nested well.",
+			},
+		],
 	},
 	{
 		name: "LayerCard.Secondary",

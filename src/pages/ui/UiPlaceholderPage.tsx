@@ -20,6 +20,7 @@ import { loadCatalogPageContent } from "./catalog-content-loader";
 import {
 	DOCUMENTED_NATIVE_ONLY_SURFACES,
 	formatNativeSurfaceStrategy,
+	isDocumentedNativeSurface,
 } from "./catalog-native-surfaces";
 import { catalogPageStatus } from "./catalog-page-status";
 import type { CatalogScenario } from "./catalog-scenario";
@@ -83,10 +84,12 @@ function catalogApiCopyLines(api: CatalogApiSurface[]): string[] {
 		"## API Reference",
 		...api.flatMap((surface) => {
 			const nativeDoc = DOCUMENTED_NATIVE_ONLY_SURFACES[surface.name];
-			const isNativeOnly =
-				surface.props.length === 1 && surface.props[0]?.name === "className" && Boolean(nativeDoc);
-			const strategyLine =
-				isNativeOnly && nativeDoc ? [formatNativeSurfaceStrategy(nativeDoc)] : [];
+			const isNative = isDocumentedNativeSurface(
+				surface.name,
+				surface.props.length,
+				surface.props[0]?.name,
+			);
+			const strategyLine = isNative && nativeDoc ? [formatNativeSurfaceStrategy(nativeDoc)] : [];
 			return [
 				`### ${surface.name}`,
 				...strategyLine,
@@ -108,16 +111,17 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 			<h2 className="text-2xl font-semibold tracking-tight">API Reference</h2>
 			{api.map((surface) => {
 				const nativeDoc = DOCUMENTED_NATIVE_ONLY_SURFACES[surface.name];
-				const isNativeOnly =
-					surface.props.length === 1 &&
-					surface.props[0]?.name === "className" &&
-					Boolean(nativeDoc);
+				const isNative = isDocumentedNativeSurface(
+					surface.name,
+					surface.props.length,
+					surface.props[0]?.name,
+				);
 				return (
 					<div key={surface.name} className="space-y-4">
 						<h3 id={catalogApiSurfaceId(surface.name)} className="scroll-mt-6 text-sm font-medium">
 							{surface.name}
 						</h3>
-						{isNativeOnly && nativeDoc ? (
+						{isNative && nativeDoc ? (
 							<p className="text-xs text-muted-foreground">
 								{formatNativeSurfaceStrategy(nativeDoc)}
 							</p>

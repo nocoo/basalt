@@ -83,7 +83,15 @@ export const API = [
 	},
 	{
 		name: "SelectGroup",
-		props: [],
+		props: [
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Change the default rendered div element to the child element, merging props and behavior.\nGroup forwards ref to HTMLDivElement and inherits native div attributes.",
+			},
+		],
 	},
 	{
 		name: "SelectItem",
@@ -98,6 +106,14 @@ export const API = [
 	},
 	{
 		name: "SelectLabel",
-		props: [],
+		props: [
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Change the default rendered div element to the child element, merging props and behavior.\nLabel forwards ref to HTMLDivElement and inherits native div attributes.",
+			},
+		],
 	},
 ];

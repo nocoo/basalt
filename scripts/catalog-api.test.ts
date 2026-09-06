@@ -188,9 +188,8 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "layer-card",
 				sourceFile: "packages/basalt/src/components/layer-card.tsx",
-				propsType: "LayerCardSectionProps",
+				propsType: "LayerCardWellProps",
 				surface: "LayerCard.Primary",
-				allowEmpty: true,
 			},
 			{
 				slug: "layer-card",
@@ -409,7 +408,6 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/select.tsx",
 				propsType: "SelectGroupProps",
 				surface: "SelectGroup",
-				allowEmpty: true,
 			},
 			{
 				slug: "select",
@@ -422,7 +420,6 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/select.tsx",
 				propsType: "SelectLabelProps",
 				surface: "SelectLabel",
-				allowEmpty: true,
 			},
 			{
 				slug: "combobox",
@@ -1013,7 +1010,6 @@ describe("catalog API generator contract", () => {
 				(target) => target.surface,
 			),
 		).toEqual([
-			"LayerCard.Primary",
 			"LayerCard.Secondary",
 			"LayerCard.Header",
 			"LayerCard.Body",
@@ -1022,8 +1018,6 @@ describe("catalog API generator contract", () => {
 			"Checkbox.Legend",
 			"Radio.Legend",
 			"Switch.Legend",
-			"SelectGroup",
-			"SelectLabel",
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames/);
@@ -2584,7 +2578,7 @@ export interface WidgetProps {
 		]);
 	}, 60_000);
 
-	it("extracts Select props from seven named types as ten local rows and two empty surfaces", () => {
+	it("extracts Select props from seven named types as twelve local rows", () => {
 		const generated = generateCatalogApi({
 			repoRoot,
 			tsconfigPath: DEFAULT_TSCONFIG,
@@ -2673,7 +2667,16 @@ export interface WidgetProps {
 			},
 			{
 				name: "SelectGroup",
-				props: [],
+				props: [
+					{
+						name: "asChild",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description:
+							"Change the default rendered div element to the child element, merging props and behavior.\nGroup forwards ref to HTMLDivElement and inherits native div attributes.",
+					},
+				],
 			},
 			{
 				name: "SelectItem",
@@ -2688,7 +2691,16 @@ export interface WidgetProps {
 			},
 			{
 				name: "SelectLabel",
-				props: [],
+				props: [
+					{
+						name: "asChild",
+						type: "boolean",
+						required: false,
+						default: "false",
+						description:
+							"Change the default rendered div element to the child element, merging props and behavior.\nLabel forwards ref to HTMLDivElement and inherits native div attributes.",
+					},
+				],
 			},
 		]);
 		expect(generated.select).toHaveLength(7);
@@ -2705,9 +2717,9 @@ export interface WidgetProps {
 		expect(generated.select?.[1]?.props).toHaveLength(3);
 		expect(generated.select?.[2]?.props).toHaveLength(1);
 		expect(generated.select?.[3]?.props).toHaveLength(2);
-		expect(generated.select?.[4]?.props).toEqual([]);
+		expect(generated.select?.[4]?.props).toHaveLength(1);
 		expect(generated.select?.[5]?.props).toHaveLength(1);
-		expect(generated.select?.[6]?.props).toEqual([]);
+		expect(generated.select?.[6]?.props).toHaveLength(1);
 		expect(generated.select?.[0]?.props[0]).not.toHaveProperty("default");
 		expect(generated.select?.[2]?.props[0]).not.toHaveProperty("default");
 		expect(generated.select?.[5]?.props[0]).not.toHaveProperty("default");
@@ -3952,7 +3964,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"d9173cb47afa22d0642d7e717dadbdda8415d6020a023d0c1e90b75d16dd601a",
+			"a6f3600761c7bb1798ed2972615231f4d4c59ab9f010b6d0cd26c8dc7b5447c0",
 		);
 	}, 60_000);
 
@@ -3966,8 +3978,8 @@ export interface WidgetProps {
 		expect(() => checkCatalogApiFiles(root, files)).toThrow(/extra catalog API shards extra.ts/);
 	}, 60_000);
 
-	it("enforces documented justification and strategy for native-only className surfaces", () => {
-		const sampleData = (name: string) => ({
+	it("enforces documented justification and strategy for native-only className and empty surfaces", () => {
+		const sampleClassNameData = (name: string) => ({
 			widget: [
 				{
 					name,
@@ -3981,10 +3993,23 @@ export interface WidgetProps {
 				},
 			],
 		});
+		const sampleEmptyData = (name: string) => ({
+			widget: [
+				{
+					name,
+					props: [],
+				},
+			],
+		});
 
 		// 1. Unknown native-only surface without entry fails
-		expect(() => generateCatalogApiFiles(repoRoot, sampleData("UnregisteredWidget"))).toThrow(
+		expect(() =>
+			generateCatalogApiFiles(repoRoot, sampleClassNameData("UnregisteredWidget")),
+		).toThrow(
 			/surface 'UnregisteredWidget' in 'widget' is className-only without valid justification/,
+		);
+		expect(() => generateCatalogApiFiles(repoRoot, sampleEmptyData("UnregisteredWidget"))).toThrow(
+			/surface 'UnregisteredWidget' in 'widget' is empty without valid justification/,
 		);
 
 		// 2. Temporarily corrupted or blank justification fails
@@ -3995,8 +4020,11 @@ export interface WidgetProps {
 				...originalCode,
 				justification: "   ",
 			};
-			expect(() => generateCatalogApiFiles(repoRoot, sampleData("Code"))).toThrow(
+			expect(() => generateCatalogApiFiles(repoRoot, sampleClassNameData("Code"))).toThrow(
 				/surface 'Code' in 'widget' is className-only without valid justification/,
+			);
+			expect(() => generateCatalogApiFiles(repoRoot, sampleEmptyData("Code"))).toThrow(
+				/surface 'Code' in 'widget' is empty without valid justification/,
 			);
 
 			// Blank inheritedElement
@@ -4004,8 +4032,11 @@ export interface WidgetProps {
 				...originalCode,
 				inheritedElement: "   ",
 			};
-			expect(() => generateCatalogApiFiles(repoRoot, sampleData("Code"))).toThrow(
+			expect(() => generateCatalogApiFiles(repoRoot, sampleClassNameData("Code"))).toThrow(
 				/surface 'Code' in 'widget' is className-only without valid justification/,
+			);
+			expect(() => generateCatalogApiFiles(repoRoot, sampleEmptyData("Code"))).toThrow(
+				/surface 'Code' in 'widget' is empty without valid justification/,
 			);
 
 			// Invalid boolean flag
@@ -4013,21 +4044,32 @@ export interface WidgetProps {
 				...originalCode,
 				forwardsRef: undefined as unknown as boolean,
 			};
-			expect(() => generateCatalogApiFiles(repoRoot, sampleData("Code"))).toThrow(
+			expect(() => generateCatalogApiFiles(repoRoot, sampleClassNameData("Code"))).toThrow(
 				/surface 'Code' in 'widget' is className-only without valid justification/,
+			);
+			expect(() => generateCatalogApiFiles(repoRoot, sampleEmptyData("Code"))).toThrow(
+				/surface 'Code' in 'widget' is empty without valid justification/,
 			);
 
 			// Deleted entry fails
 			delete (DOCUMENTED_NATIVE_ONLY_SURFACES as Record<string, unknown>).Code;
-			expect(() => generateCatalogApiFiles(repoRoot, sampleData("Code"))).toThrow(
+			expect(() => generateCatalogApiFiles(repoRoot, sampleClassNameData("Code"))).toThrow(
 				/surface 'Code' in 'widget' is className-only without valid justification/,
+			);
+			expect(() => generateCatalogApiFiles(repoRoot, sampleEmptyData("Code"))).toThrow(
+				/surface 'Code' in 'widget' is empty without valid justification/,
 			);
 		} finally {
 			DOCUMENTED_NATIVE_ONLY_SURFACES.Code = originalCode;
 		}
 
-		// 3. Valid registered entry succeeds
-		expect(() => generateCatalogApiFiles(repoRoot, sampleData("Code"))).not.toThrow();
+		// 3. Valid registered entry succeeds for both className-only and empty props
+		expect(() => generateCatalogApiFiles(repoRoot, sampleClassNameData("Code"))).not.toThrow();
+		expect(() => generateCatalogApiFiles(repoRoot, sampleEmptyData("Code"))).not.toThrow();
+		// Also verify a documented empty surface with false ref policy
+		expect(() =>
+			generateCatalogApiFiles(repoRoot, sampleEmptyData("LayerCard.Secondary")),
+		).not.toThrow();
 	});
 
 	it("reliably encodes string values with exact syntax and semantic roundtrip", () => {

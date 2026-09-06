@@ -325,6 +325,14 @@ describe("public surface documentation ownership and freshness", () => {
 			"TableCaption",
 			"TableHead",
 			"TableCell",
+			"LayerCard.Secondary",
+			"LayerCard.Header",
+			"LayerCard.Body",
+			"LayerCard.Footer",
+			"InputGroup.Suffix",
+			"Checkbox.Legend",
+			"Radio.Legend",
+			"Switch.Legend",
 		]);
 
 		for (const key of keys) {

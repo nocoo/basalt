@@ -37,7 +37,15 @@ export const SelectValue: React.ForwardRefExoticComponent<
 	SelectValueProps & React.RefAttributes<React.ElementRef<typeof SelectPrimitive.Value>>
 > = SelectPrimitive.Value;
 
-export type SelectGroupProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Group>;
+type RadixSelectGroupProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Group>;
+export type SelectGroupProps = Omit<RadixSelectGroupProps, "asChild"> & {
+	/**
+	 * Change the default rendered div element to the child element, merging props and behavior.
+	 * Group forwards ref to HTMLDivElement and inherits native div attributes.
+	 * @default false
+	 */
+	asChild?: RadixSelectGroupProps["asChild"];
+};
 export const SelectGroup: React.ForwardRefExoticComponent<
 	SelectGroupProps & React.RefAttributes<React.ElementRef<typeof SelectPrimitive.Group>>
 > = SelectPrimitive.Group;
@@ -96,7 +104,15 @@ export const SelectTrigger = React.forwardRef<
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;
 
-export type SelectLabelProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>;
+type RadixSelectLabelProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Label>;
+export type SelectLabelProps = Omit<RadixSelectLabelProps, "asChild"> & {
+	/**
+	 * Change the default rendered div element to the child element, merging props and behavior.
+	 * Label forwards ref to HTMLDivElement and inherits native div attributes.
+	 * @default false
+	 */
+	asChild?: RadixSelectLabelProps["asChild"];
+};
 
 export const SelectLabel = React.forwardRef<
 	React.ElementRef<typeof SelectPrimitive.Label>,

@@ -63,6 +63,62 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		forwardsRef: false,
 		forwardsRestProps: true,
 	},
+	"LayerCard.Secondary": {
+		justification:
+			"Semantic subheader section for card containers; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	"LayerCard.Header": {
+		justification:
+			"Header section for card containers; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	"LayerCard.Body": {
+		justification:
+			"Main body section for card containers; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	"LayerCard.Footer": {
+		justification:
+			"Footer action bar for card containers; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	"InputGroup.Suffix": {
+		justification:
+			"Inline suffix wrapper with truncated span text; forwards HTMLDivElement container attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	"Checkbox.Legend": {
+		justification:
+			"Accessible fieldset legend for grouped checkboxes; forwards HTMLLegendElement attributes and ref without component-specific props.",
+		inheritedElement: "HTMLLegendElement",
+		forwardsRef: true,
+		forwardsRestProps: true,
+	},
+	"Radio.Legend": {
+		justification:
+			"Accessible fieldset legend for grouped radio controls; forwards HTMLLegendElement attributes and ref without component-specific props.",
+		inheritedElement: "HTMLLegendElement",
+		forwardsRef: true,
+		forwardsRestProps: true,
+	},
+	"Switch.Legend": {
+		justification:
+			"Accessible fieldset legend for grouped switch toggles; forwards HTMLLegendElement attributes and ref without component-specific props.",
+		inheritedElement: "HTMLLegendElement",
+		forwardsRef: true,
+		forwardsRestProps: true,
+	},
 };
 
 export function formatNativeSurfaceStrategy(doc: NativeOnlySurfaceDocumentation): string {
@@ -71,4 +127,14 @@ export function formatNativeSurfaceStrategy(doc: NativeOnlySurfaceDocumentation)
 		? `inherits and forwards all standard ${doc.inheritedElement} attributes (including children)`
 		: `does not forward rest props`;
 	return `Native element wrapper: ${restText}; ${refText}.`;
+}
+
+export function isDocumentedNativeSurface(
+	surfaceName: string,
+	propsLength: number,
+	firstPropName?: string,
+): boolean {
+	const isClassNameOnly = propsLength === 1 && firstPropName === "className";
+	const isEmptyProps = propsLength === 0;
+	return (isClassNameOnly || isEmptyProps) && Boolean(DOCUMENTED_NATIVE_ONLY_SURFACES[surfaceName]);
 }
