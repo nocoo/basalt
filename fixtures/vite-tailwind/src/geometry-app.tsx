@@ -155,15 +155,31 @@ export function GeometryApp() {
 				</Select>
 
 				{/* LayerCard containing Combobox to assert unclipped portal positioning */}
-				<LayerCard id="basalt-card-overflow" padding="md" className="overflow-hidden">
+				<button
+					id="outside-prevent-mousedown-btn"
+					type="button"
+					onMouseDown={(e) => e.preventDefault()}
+					onClick={() => {
+						const w = window as unknown as { outsideClicks?: number };
+						w.outsideClicks = (w.outsideClicks ?? 0) + 1;
+					}}
+					style={{ marginBottom: 8 }}
+				>
+					Outside Keep Focus Action
+				</button>
+				<LayerCard
+					id="basalt-card-overflow"
+					padding="md"
+					className="overflow-hidden"
+					style={{ height: 60 }}
+				>
 					<div id="basalt-card-overflow-wrap">
 						<Combobox
 							id="card-combobox-input"
-							items={[
-								{ value: "item-1", label: "Clipped 1" },
-								{ value: "item-2", label: "Clipped 2" },
-								{ value: "item-3", label: "Clipped 3" },
-							]}
+							items={Array.from({ length: 40 }, (_, i) => ({
+								value: `item-${i + 1}`,
+								label: `Clipped ${i + 1}`,
+							}))}
 							placeholder="Card Combobox"
 						/>
 					</div>

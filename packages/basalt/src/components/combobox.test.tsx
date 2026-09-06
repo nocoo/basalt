@@ -49,7 +49,10 @@ describe("Combobox", () => {
 			"aria-selected",
 			"false",
 		);
-		fireEvent.mouseEnter(screen.getByRole("option", { name: "Banana" }));
+		fireEvent.pointerMove(screen.getByRole("option", { name: "Banana" }), {
+			clientX: 10,
+			clientY: 20,
+		});
 		expect(screen.getByRole("option", { name: "Banana" })).toHaveAttribute("aria-selected", "true");
 		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "false");
 	});
@@ -267,7 +270,10 @@ describe("Combobox", () => {
 		);
 		const input = screen.getByLabelText("Fruit");
 		fireEvent.focus(input);
-		fireEvent.mouseEnter(screen.getByRole("option", { name: "Banana" }));
+		fireEvent.pointerMove(screen.getByRole("option", { name: "Banana" }), {
+			clientX: 10,
+			clientY: 20,
+		});
 		expect(screen.getByRole("option", { name: "Banana" })).toHaveAttribute("aria-selected", "true");
 		fireEvent.change(input, { target: { value: "a" } });
 		expect(screen.getByRole("option", { name: "Apple" })).toHaveAttribute("aria-selected", "false");

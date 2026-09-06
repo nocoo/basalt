@@ -54,6 +54,8 @@ export function TypeaheadField({
 	const listId = useId();
 	const inputRef = useRef<HTMLInputElement>(null);
 	const skipFocusOpen = useRef(false);
+	const lastPointerPos = useRef<{ x: number; y: number } | null>(null);
+	const isKeyboardNavRef = useRef(false);
 	if (value !== prevValue) {
 		setPrevValue(value);
 		if (value !== undefined) {
@@ -186,7 +188,18 @@ export function TypeaheadField({
 	}, [items, open, selected]);
 
 	return (
-		<PopoverPrimitive.Root open={listOpen}>
+		<PopoverPrimitive.Root
+			open={listOpen}
+			onOpenChange={(nextOpen) => {
+				if (!nextOpen) {
+					setOpen(false);
+					setActive(null);
+					if (!allowFreeform) {
+						setQuery(displayOf(items, selected));
+					}
+				}
+			}}
+		>
 			<div
 				{...rest}
 				className={cn("relative w-full", className)}
@@ -250,6 +263,7 @@ export function TypeaheadField({
 							}
 							if (event.key === "ArrowDown") {
 								event.preventDefault();
+								isKeyboardNavRef.current = true;
 								setOpen(true);
 								if (filtered.length === 0) {
 									setActive(null);
@@ -260,6 +274,7 @@ export function TypeaheadField({
 							}
 							if (event.key === "ArrowUp") {
 								event.preventDefault();
+								isKeyboardNavRef.current = true;
 								setOpen(true);
 								if (filtered.length === 0) {
 									setActive(null);
@@ -305,6 +320,26 @@ export function TypeaheadField({
 							align="start"
 							avoidCollisions
 							collisionPadding={8}
+							onPointerMove={(event) => {
+								if (
+									lastPointerPos.current &&
+									lastPointerPos.current.x === event.clientX &&
+									lastPointerPos.current.y === event.clientY
+								) {
+									return;
+								}
+								lastPointerPos.current = { x: event.clientX, y: event.clientY };
+								isKeyboardNavRef.current = false;
+							}}
+							onEscapeKeyDown={(e) => {
+								const evt = e as unknown as {
+									isComposing?: boolean;
+									nativeEvent?: { isComposing?: boolean };
+								};
+								if (evt.isComposing || evt.nativeEvent?.isComposing) {
+									e.preventDefault();
+								}
+							}}
 							onOpenAutoFocus={(e) => e.preventDefault()}
 							onCloseAutoFocus={(e) => e.preventDefault()}
 							onInteractOutside={(e) => {
@@ -334,10 +369,21 @@ export function TypeaheadField({
 										index === activeIndex && "bg-basalt-accent",
 										item.disabled && "opacity-50",
 									)}
-									onMouseEnter={() => {
-										if (!item.disabled) {
-											setActive(index);
+									onPointerMove={(event) => {
+										if (item.disabled) {
+											return;
 										}
+										const { clientX, clientY } = event;
+										if (
+											lastPointerPos.current &&
+											lastPointerPos.current.x === clientX &&
+											lastPointerPos.current.y === clientY
+										) {
+											return;
+										}
+										lastPointerPos.current = { x: clientX, y: clientY };
+										isKeyboardNavRef.current = false;
+										setActive(index);
 									}}
 									onMouseDown={(event) => event.preventDefault()}
 									onClick={() => commitItem(item)}

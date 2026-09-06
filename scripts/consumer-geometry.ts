@@ -160,15 +160,87 @@ export async function assertConsumerGeometry(
 			`expected listbox width (${listBox.width}) to match trigger width (${cardInputBox.width})`,
 		);
 	}
-	// Listbox extends below card bottom (not clipped by overflow:hidden)
-	if (listBox.y + listBox.height <= cardBox.y + cardBox.height) {
+	// Listbox renders in portal outside card overflow boundary (flipped above card Y or extends below card bottom)
+	const isRenderedOutsideCard =
+		listBox.y + listBox.height <= cardBox.y ||
+		listBox.y >= cardBox.y + cardBox.height ||
+		listBox.y < cardBox.y ||
+		listBox.y + listBox.height > cardBox.y + cardBox.height;
+	if (!isRenderedOutsideCard) {
 		throw new Error(
-			`expected listbox to render beyond card overflow boundary: list bottom=${listBox.y + listBox.height}, card bottom=${cardBox.y + cardBox.height}`,
+			`expected listbox to render beyond card overflow boundary: list=${JSON.stringify(listBox)}, card=${JSON.stringify(cardBox)}`,
 		);
 	}
 
+	// Keyboard navigation: Explicitly hover Clipped 1 first to establish initial active descendant under pointer.
+	// Then press ArrowUp while keeping pointer stationary to wrap to last item (Clipped 40).
+	// Programmatic list scroll under stationary pointer must NOT revert active descendant.
+	// Verify list is scroll-constrained (scrollHeight > clientHeight),
+	// scrollIntoView triggers (scrollTop > 0), active descendant is visible inside scroll view,
+	// and input keeps activeElement focus.
+	const option1 = page.getByRole("option", { name: "Clipped 1", exact: true });
+	await option1.hover();
+	await page.waitForFunction(
+		() =>
+			document.getElementById(
+				document.querySelector("#card-combobox-input")?.getAttribute("aria-activedescendant") ?? "",
+			)?.textContent === "Clipped 1",
+	);
+
+	await page.keyboard.press("ArrowUp");
+	await page.waitForFunction(() => {
+		const input = document.getElementById("card-combobox-input");
+		const actId = input?.getAttribute("aria-activedescendant");
+		const actEl = actId ? document.getElementById(actId) : null;
+		const controlsId = input?.getAttribute("aria-controls");
+		const listEl = controlsId ? document.getElementById(controlsId) : null;
+		const r = actEl?.getBoundingClientRect();
+		const b = listEl?.getBoundingClientRect();
+		return (
+			actEl?.textContent === "Clipped 40" &&
+			Boolean(r && b && r.top >= b.top - 1 && r.bottom <= b.bottom + 1)
+		);
+	});
+
+	const scrollInfo = await cardComboboxInput.evaluate((input) => {
+		const actId = input.getAttribute("aria-activedescendant");
+		const actEl = actId ? document.getElementById(actId) : null;
+		const controlsId = input.getAttribute("aria-controls");
+		const listEl = controlsId ? document.getElementById(controlsId) : null;
+		const r = actEl?.getBoundingClientRect();
+		const b = listEl?.getBoundingClientRect();
+		return {
+			text: actEl?.textContent,
+			focused: document.activeElement === input,
+			visible: Boolean(r && b && r.top >= b.top - 1 && r.bottom <= b.bottom + 1),
+			scrollHeight: listEl?.scrollHeight ?? 0,
+			clientHeight: listEl?.clientHeight ?? 0,
+			scrollTop: listEl?.scrollTop ?? 0,
+		};
+	});
+	if (scrollInfo.text !== "Clipped 40") {
+		throw new Error(`expected active descendant to be Clipped 40, got ${scrollInfo.text}`);
+	}
+	if (!scrollInfo.focused) {
+		throw new Error("expected input to retain focus during keyboard navigation");
+	}
+	if (scrollInfo.scrollHeight <= scrollInfo.clientHeight) {
+		throw new Error(
+			`expected scrollable list: scrollHeight (${scrollInfo.scrollHeight}) should be greater than clientHeight (${scrollInfo.clientHeight})`,
+		);
+	}
+	if (scrollInfo.scrollTop <= 0) {
+		throw new Error(
+			`expected list to scroll down to last item: scrollTop (${scrollInfo.scrollTop}) should be > 0`,
+		);
+	}
+	if (!scrollInfo.visible) {
+		throw new Error("expected active descendant Clipped 40 to be scrolled into visible list area");
+	}
+
 	// Assert option center is hit by elementFromPoint (proving it is NOT clipped or occluded by card)
-	const option3 = page.getByRole("option", { name: "Clipped 3" });
+	const option3 = page.getByRole("option", { name: "Clipped 3", exact: true });
+	await option3.scrollIntoViewIfNeeded();
 	const isOption3Visible = await option3.evaluate((el) => {
 		const r = el.getBoundingClientRect();
 		const topEl = document.elementFromPoint(r.x + r.width / 2, r.y + r.height / 2);
@@ -180,37 +252,34 @@ export async function assertConsumerGeometry(
 		);
 	}
 
-	// Keyboard navigation: ArrowUp to wrap to last item, assert active descendant scrolls into view and focus stays on input
-	await page.keyboard.press("ArrowUp");
-	const activeDescendantInfo = await cardComboboxInput.evaluate((input) => {
-		const actId = input.getAttribute("aria-activedescendant");
-		const actEl = actId ? document.getElementById(actId) : null;
-		const controlsId = input.getAttribute("aria-controls");
-		const listEl = controlsId ? document.getElementById(controlsId) : null;
-		const r = actEl?.getBoundingClientRect();
-		const b = listEl?.getBoundingClientRect();
-		return {
-			text: actEl?.textContent,
-			focused: document.activeElement === input,
-			visible: Boolean(r && b && r.top >= b.top - 1 && r.bottom <= b.bottom + 1),
-		};
-	});
-	if (activeDescendantInfo.text !== "Clipped 3") {
-		throw new Error(`expected active descendant to be Clipped 3, got ${activeDescendantInfo.text}`);
-	}
-	if (!activeDescendantInfo.focused) {
-		throw new Error("expected input to retain focus during keyboard navigation");
-	}
-	if (!activeDescendantInfo.visible) {
-		throw new Error("expected active descendant option to be scrolled into visible list area");
-	}
-
 	// Pointer selection: click Clipped 3, assert listbox closes and input updates value
 	await option3.click();
 	await comboboxList.waitFor({ state: "hidden", timeout: 5000 });
 	const updatedValue = await cardComboboxInput.inputValue();
 	if (updatedValue !== "Clipped 3") {
 		throw new Error(`expected card combobox input value to be 'Clipped 3', got '${updatedValue}'`);
+	}
+
+	// Reopen combobox list with click, then click an outside button that calls mousedown preventDefault() to keep input focus.
+	// Radix DismissableLayer must still trigger onOpenChange(false) and dismiss the listbox while input remains focused.
+	await cardComboboxInput.click();
+	await comboboxList.waitFor({ state: "visible", timeout: 5000 });
+	const outsideBtn = page.locator("#outside-prevent-mousedown-btn");
+	await outsideBtn.click();
+	await comboboxList.waitFor({ state: "hidden", timeout: 5000 });
+	const isInputStillFocusedAfterOutsideClick = await cardComboboxInput.evaluate(
+		(el) => document.activeElement === el,
+	);
+	if (!isInputStillFocusedAfterOutsideClick) {
+		throw new Error(
+			"expected input to remain focused after clicking mousedown-prevented outside button",
+		);
+	}
+	const outsideClickCount = await page.evaluate(
+		() => (window as unknown as { outsideClicks?: number }).outsideClicks ?? 0,
+	);
+	if (outsideClickCount !== 1) {
+		throw new Error(`expected outside button click handler to fire once, got ${outsideClickCount}`);
 	}
 
 	// 6. Test Combobox nested inside Dialog
