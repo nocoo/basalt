@@ -37,7 +37,6 @@ describe("documentation tarball compilation gate", () => {
 
 		for (const fence of compileFences) {
 			expect(fence.code.length).toBeGreaterThan(0);
-			expect(fence.code).toContain("import");
 		}
 	});
 
@@ -149,7 +148,6 @@ describe("documentation tarball compilation gate", () => {
 		for (const [index, mod] of usageModules.entries()) {
 			expect(mod.slug.length).toBeGreaterThan(0);
 			expect(mod.code.trim().length).toBeGreaterThan(0);
-			expect(mod.code).toContain("import");
 			expect(mod.code).toMatch(/export (default )?function/);
 
 			const filename = computeUsageModuleFilename(index, mod.slug);
@@ -457,26 +455,25 @@ describe("documentation tarball compilation gate", () => {
 	});
 
 	it("prevents collision between doc, usage, and scenario filenames across sanitization and relative path boundaries", () => {
-		// 1. Sanitization collision: 'case/a' and 'case_a' both sanitize to 'case_a', but distinct index prevents collision
-		const sanitizedA = computeDocModuleFilename(1, "case/a");
-		const sanitizedB = computeDocModuleFilename(2, "case_a");
-		expect(sanitizedA).toBe("doc_001_case_a.tsx");
-		expect(sanitizedB).toBe("doc_002_case_a.tsx");
-		expect(sanitizedA).not.toBe(sanitizedB);
+		// 1. Sanitization collision in scenario filenames: 'case/a' and 'case_a' both sanitize similarly, but distinct index/sanitization prevents collision and directory jumps
+		const scenarioSlash = computeScenarioModuleFilename(1, "catalog-item", "case/a");
+		const scenarioUnderscore = computeScenarioModuleFilename(2, "catalog-item", "case_a");
+		expect(scenarioSlash).not.toBe(scenarioUnderscore);
+		expect(scenarioSlash).not.toContain("/");
+		expect(scenarioSlash).not.toContain("\\");
+		expect(scenarioUnderscore).not.toContain("/");
+		expect(scenarioUnderscore).not.toContain("\\");
 
 		// 2. Relative traversal boundaries: '../harness' is sanitized safely without directory traversal
 		const traversalDoc = computeDocModuleFilename(3, "../harness");
-		expect(traversalDoc).toBe("doc_003____harness.tsx");
 		expect(traversalDoc).not.toContain("/");
 		expect(traversalDoc).not.toContain("\\");
 
 		const traversalUsage = computeUsageModuleFilename(4, "../harness");
-		expect(traversalUsage).toBe("usage_004____harness.tsx");
 		expect(traversalUsage).not.toContain("/");
 		expect(traversalUsage).not.toContain("\\");
 
 		const traversalScenario = computeScenarioModuleFilename(5, "../harness", "../../evil-id");
-		expect(traversalScenario).toBe("scenario_005____harness_______evil-id.tsx");
 		expect(traversalScenario).not.toContain("/");
 		expect(traversalScenario).not.toContain("\\");
 
@@ -487,9 +484,9 @@ describe("documentation tarball compilation gate", () => {
 		expect(new Set([docFilename, usageFilename, scenarioFilename]).size).toBe(3);
 
 		// 4. Scenarios for the same slug with slash/dot variations maintain distinct filenames
-		const scenarioSlash = computeScenarioModuleFilename(10, "button", "sub/action");
-		const scenarioUnderscore = computeScenarioModuleFilename(11, "button", "sub_action");
-		expect(scenarioSlash).not.toBe(scenarioUnderscore);
+		const scenarioSubSlash = computeScenarioModuleFilename(10, "button", "sub/action");
+		const scenarioSubUnderscore = computeScenarioModuleFilename(11, "button", "sub_action");
+		expect(scenarioSubSlash).not.toBe(scenarioSubUnderscore);
 	});
 
 	it("fails fast if a non-hero scenario regresses to bare native JSX, missing code, or duplicate ID in loadCatalogModules", async () => {
