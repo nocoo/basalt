@@ -581,6 +581,9 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | 08b | `fix: position typeahead menus outside clipping ancestors` | C03；卡片、Dialog、滚动区和视口边缘 |
 | 08c | `fix: preserve focus when committing autocomplete blur` | C04；Tab/Shift+Tab 提交不抢回焦点 |
 | 09 | `fix: preserve date picker form refs and validity` | C05；ref/reset/FormData/required 真实浏览器验证 |
+| 09q | `test: budget package registry integration validation` | Q05；为实测超过 5 秒的真实生成器用例设置独立预算，保留全部断言与覆盖率阈值 |
+| 09b | `fix: respect cancelled native form resets` | C20；Typeahead、Checkbox.Group、Switch.Group 的普通与取消 reset 对照 |
+| 09c | `fix: preserve group callback ref cleanup` | C21；两个 Group 的 React 19 ref cleanup、替换及卸载 |
 | 10a | `fix: align dock overlay semantics` | C06；背景交互与模态边界一致 |
 | 10b | `fix: restore imperative confirm focus` | C07；无 trigger 的 Promise 路径也归还焦点 |
 | 10c | `fix: preserve force mounting across overlay portals` | C16；内置 Portal 尊重既有 forceMount，正常开关及卸载清理保持正确 |
@@ -682,7 +685,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
 | P2 | 公共接口与文档：04、05、06a/b1/b2；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 已验收 | `ef2bd65`–`2b8f088`：99 页 API、99 Usage、246 场景、随包 registry/指南及正式 tarball 编译门；120 项旧接口契约与 5 项真实 recipe 浏览器检查通过，详见 12.4 |
-| P3 | 基础样式与输入：07、08a/b/c、09；C01–C05/C19 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 实施中 | 07 已验收：`8aa47f0`、`4a75211`、`d17310e`、`10bedff` 关闭 C02/C19 并接入正式 A/B 浏览器门；接续 08a/b/c 与 09 |
+| P3 | 基础样式与输入：07、08a/b/c、09/q/b/c/d；C01–C05/C19–C21 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required、Group 原生事件与 ref 清理 | 已验收 | 运行时至 `b85649d`、行为回归 `026a958`；C01–C05/C19–C21 已关闭，177 文件 / 1,544 测试，四维覆盖率均 ≥95%；120 项旧接口与真实安装包验收通过 |
 | P4 | 浮层与语义：10a/b/c/d/e、11a/b、12a/b；C06–C11/C16/C17/C18/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
 | P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 待调度 | — |
@@ -818,7 +821,7 @@ P2 范围关闭如下：
 
 P2 的 D01–D06 已整体验收。C01–C18、Example 与新增公共能力按 P3–P10 继续，不把文档完整性验收等同于运行时问题已经解决。pi 服务错误与重复读取循环由监控识别，保留工作区并恢复原会话后按原子组续跑；模型和 pane 保持原配置。下一阶段为 P3。
 
-#### P3 验收记录（实施中，2026-09-06）
+#### P3 验收记录（已验收，2026-09-06）
 
 07 的基础实现提交为 `8aa47f0`。Tailwind 与 standalone 共用低优先级 `.basalt-ui` base，由组件自身和 portal 表面携带 scope，修正 box sizing、原生控件字体/边框、链接、列表等默认样式。包内新增内部 `base.css`，三个公共 CSS 出口保持原契约。类名候选扫描改为 TypeScript AST，注释引号不再截断 JSX 与模板中的实际 utility；INTEGRATION 及随包镜像同步说明。
 
@@ -835,6 +838,54 @@ P2 的 D01–D06 已整体验收。C01–C18、Example 与新增公共能力按 
 最终 tarball 的两个实际安装工程通过 **8/8 扩展样式对照**（含默认/显式 heading 字重）与此前 **standalone 7/7、Tailwind 6/6** 几何回归，宿主原生样式和真实 Portal 同时通过；主 agent 查看了前后截图。绑定最终 `10bedff` 的 **230 份 JS/CSS/声明均一致**，其中 **113 份声明与 07 consumer 阶段逐字节不变**。两笔提交均经过正常 hooks，**177 文件、1,510 测试**、typecheck/lint/gitleaks 通过，扩展后的正式 A/B consumer 通过。证据：`p3-css-surfaces-typography-final.json`、`p3-css-surfaces-final-standalone.log`、`p3-css-surfaces-final-tailwind.log`、`p3-surfaces-final-binding.json`、`p3-07-surfaces-commit-evidence.json`、`p3-07-heading-commit-evidence.json`。
 
 07 的 C02/C19 已关闭。这里的样式抽查不等同于 99 个组件的完整行为及可访问性验收；08a/b/c、09 和后续阶段继续按各自契约验证。
+
+08a 提交为 `2e426ad`，关闭 C01。Button 的 asChild 禁用/loading 会覆盖子元素的冲突属性，阻止父子点击、捕获及键盘激活回调，提供 `aria-disabled`、busy 和禁用态视觉；真实 button 子元素设置原生 disabled。保留同一个 DOM/ref、可用时的 Slot 事件顺序，以及已聚焦后切换状态时的 Tab/Shift+Tab 离开能力。asChild loading 保留调用方 children，不插入内部 spinner；所有状态都要求子组件转发 props/ref，源码 API 文档与随包资料同步。
+
+主 agent 使用实际安装包验证原有 **10/10** 与扩展 **12/12** 浏览器用例：包含原生按钮、anchor、转发 props/ref 的自定义 anchor、子属性覆盖、物理/程序/键盘激活、父容器点击不穿透、四种保留焦点的状态切换，以及可用状态的事件合成。扩展用例在修复前为 **2/12**；两项原始 `e61efc1` 公开 props/ref/键名契约通过。**117 份 JS/CSS** 与最终提交产物一致，**111 份源码**与构建 source map 对齐；仅 Button 声明的文档文字相对初测产物变化，最终类型另行复验。检查过的 **10 个文件**与提交哈希全部一致。证据：`p3-input-matrix-p3-08a-precheck.json`、`p3-button-edge-button-08a-precheck.json`、`p3-button-edge-button-transitions-before.json`、`p3-08a-public-props-final.log`、`p3-08a-final-artifact-source-binding.json`、`p3-08a-commit-evidence.json`。
+
+正式 A/B 已加入 loading 激活、父子回调计数和 Tab 顺序回归，两条命令均通过。扩展交互曾使几何 fixture 的非模态 Dialog 正常关闭，误测到退出动画；fixture 改为受控打开，保留原 **36px** Portal Input 及所有旧尺寸断言。正常 hooks 通过 **177 文件、1,513 测试**；文档 freshness 和快照不一致均由 hooks 拦下并修正后重新提交，未绕过检查。08b/c、09 尚待验收。
+
+08b 以 `70b7eba`、`30d80ff` 关闭 C03。Combobox/Autocomplete 改用已有 Radix Portal 与定位能力，保持触发器等宽、视口碰撞处理、可用高度约束和活动选项内部滚动；不改变公开参数及输入 DOM。补充修正受控 Root 的关闭同步，使保持输入焦点的外部点击也能关闭列表；指针激活只响应位置变化，避免程序滚动触发 hover，把键盘活动项从末项改回中间项。IME Escape 保持合成态。
+
+主 agent 使用最终真实安装包通过卡片/Dialog/滚动容器及 resize/选择矩阵 **8/8**、视口边缘/末项/两级 Escape **6/6**、外部点击关闭 **2/2**、静止鼠标下的末项键盘确认 **2/2**。后两组修复前均为 **0/2**；末项修复后保持 `Option 39`、滚动量 **645px** 和输入焦点，并由 Enter 提交正确值。原始公开 props/ref/键名契约 **3/3** 通过，**230 份 JS/CSS/声明**与最终产物一致，**111 份源码**与 source map 对齐，原始公开基线不变。证据：`p3-input-matrix-typeahead-08b-pointer-matrix.json`、`p3-typeahead-edge-typeahead-08b-pointer-edge.json`、`p3-typeahead-dismiss-typeahead-dismiss-pointer-final.json`、`p3-typeahead-hover-typeahead-hover-final.json`、`p3-08b-public-props-final.log`、`p3-08b-final-artifact-source-binding.json`。
+
+正式 A/B 两条消费门通过，40 项列表明确验证真实滚动、末项可见、静止鼠标、选项中心命中、实际选择和保留焦点的外部点击。独立给实际消费页面禁用选项的 `scrollIntoView` 后，正式 CLI 在末项可见条件非零失败；临时工程、浏览器 profile、进程和端口均清理完毕。证据：`p3-08b-formal-evidence.json`、`p3-08b-formal-scroll-negative.json`。两笔实现均经过正常 hooks，**177 文件、1,513 测试**，提交证据见 `p3-08b-portal-commit-evidence.json`、`p3-08b-dismiss-pointer-commit-evidence.json`。08c、09 继续按原子组调度。
+
+08c 提交 `24421f0` 关闭 C04。内部提交函数分别决定值更新和焦点归还；blur 路径连同精确匹配已有 label/value 的路径都保留新的焦点目标，pointer 选择与 Enter 确认保留原行为，清理无效私有导航状态。源码 API、INTEGRATION 及包内兼容资料同步更新，DatePicker 的剩余限制仍明确保留。
+
+最终实际安装包的原 Tab/Shift+Tab **2/2**、扩展边界 **11/11**（其中 blur **5/5**）、静止鼠标和外部关闭各 **2/2** 均通过；原始三项公开类型契约 **3/3**。**230 份产物**、**111 份源码**与提交一致。正式 A/B 新增真实受控输入的提交次数、值和焦点断言；几何 Dialog 通过 `onOpenChange` 关闭请求计数，验证首个 Escape 未向外层请求关闭。正常 hooks 通过 **177 文件、1,514 测试**，文档摘要快照在被拦下后同步并重新提交。证据：`p3-typeahead-edge-typeahead-08c-edge.json`、`p3-input-matrix-typeahead-08c-blur.json`、`p3-typeahead-hover-typeahead-08c-hover.json`、`p3-typeahead-dismiss-typeahead-08c-dismiss.json`、`p3-08c-final-artifact-source-binding.json`、`p3-08c-validation-evidence.json`、`p3-08c-commit-evidence.json`。P3 剩余 09 与阶段末综合验收。
+
+**09 · DatePicker 原生表单与 ref**
+
+`f559290` 合并外部 ref 与内部 input ref，保留原生 INPUT 目标，支持 object、普通 callback 与 React 19 cleanup 的替换/卸载。原生 `form` 归属在 `form=` 改变后重绑；readOnly 保留浏览器校验语义；空 required 将错误、关联说明与焦点放在可见 trigger，尊重调用方取消的 onInvalid。reset 在事件传播完成后检查取消状态，清理待执行任务，受控值由调用方持有。Booleanish `aria-invalid` 的两种 false 均不触发错误样式。
+
+最终实际安装包 **20/20** 通过：核心 **5/5**、边界 **8/8**、动态 owner **2/2**、validity **3/3**、普通 ref **2/2**；原始 DatePicker props/ref/key/文档类型兼容。**230 份产物、111 份源码**与提交一致，13 个已审文件的提交哈希全部匹配。正式 A/B、实际 consumer:docs、包门通过；本阶段 Next 与根 build 的既有成功结果已留证。正常 hooks 为 **177 文件、1,517 测试**。证据：`p3-09-verified-browser-batch.json`、`p3-09-final-artifact-source-binding.json`、`p3-09-validation-evidence.json`、`p3-09-commit-evidence.json`。
+
+P3 尚未整体验收。追加的调用方重渲染场景发现：onReset 更新父组件状态、重新创建 defaultRangeValue 对象时，range 的已接受重置会被 effect 清理取消；六个表单控件对照 **5/6**。这条同属 C20，随 09b 修正，不能把上述 20 项通过表述为所有 reset 边界已关闭。全量覆盖率另两次被同一真实 registry 生成用例的 5 秒预算拦下；单文件 coverage 仍耗时 5.66 秒。09q 仅调整该用例预算，保留全部断言与四维 95% 阈值，09b/c 后再做完整阶段检查。
+
+**09q · 生成器集成测试执行预算**
+
+`aa0dcd4` 只将真实版本同步用例的超时设为 15 秒，并记录实测 5.6–6.7 秒的依据。全部断言、隔离目录与 finally 清理保持原样，全局配置和四维覆盖率阈值未改。正常 hooks **177 文件、1,517 测试**通过；完整 coverage 仍待 09b/c 完成后验证。证据：`p3-09q-commit-evidence.json`。
+
+**09b · 取消重置、受控值与父组件重新渲染**
+
+`4965565` 关闭 C20。TypeaheadField、DatePicker 与两个 Group 的 reset 监听保存最新配置，等待事件传播完成后检查取消状态，避免普通父组件渲染清掉已接受的重置；实际 owner 切换和卸载仍清理计时器。两个 Group 在 reset capture 阶段协调 Radix Item 的同步回调，受控值、可见状态与 FormData 一致，取消重置不再额外触发 onValueChange。
+
+最终真实安装包 **38/38** 通过：Typeahead **4**、Group 普通/取消 **4**、受控 **4**、父组件重渲染 **6**、DatePicker 既有边界 **20**。原始 **8 项**公开 props/ref/key 契约保持兼容。正式 A/B 包含真实选择后重置、回调计数、父组件渲染及日期范围正常/取消重置。**230 份产物、111 份源码、13 个已审文件**均与提交一致；正常 hooks **177 文件、1,520 测试**通过。证据：`p3-09b-final-browser-batch.json`、`p3-09b-public-props.log`、`p3-09b-final-validation-evidence.json`、`p3-09b-final-artifact-source-binding.json`、`p3-09b-commit-evidence.json`。P3 继续 09c 与阶段末覆盖率验收。
+
+**09c · Group 的 React 19 ref 清理**
+
+`b85649d` 关闭 C21。Checkbox.Group 与 Switch.Group 保留调用方返回的 cleanup，替换/卸载时先清内部 ref，再执行 cleanup；普通 callback 仍收到 null，object ref 清空。公开 FIELDSET 目标、组件签名及 09b 的 reset 实现保持不变。
+
+最终真实安装包 **16/16** 通过：object/普通 callback/cleanup 的替换卸载 **6**、换 ref 后的正常/取消 reset **2**、既有普通/取消 reset **4**、受控 reset **4**。正式 A/B 使用两种 Group 的独立表单，验证同一 DOM、父组件渲染、UI/FormData/回调次数和真正卸载。原始 **120 项**公开参数/ref/key/文档类型检查通过；**230 份产物、111 份源码、9 个已审文件**与提交匹配。正常 hooks **177 文件、1,522 测试**通过。证据：`p3-09c-final-browser-batch.json`、`p3-phase-final-120.json`、`p3-09c-validation-evidence.json`、`p3-09c-final-artifact-source-binding.json`、`p3-09c-commit-evidence.json`。
+
+完整阶段 coverage 的 **1,522 项测试全部通过**，但四项结果为 **96.8% / 94.44% / 97.52% / 96.91%**，分支低于 95%。因此 P3 尚未整体验收；追加独立测试组 **09d**，补 DatePicker/原生表单/输入行为的有效 L1 回归，保持实现、阈值与覆盖范围不变。证据：`p3-phase-coverage-before-regressions.log`。不把筛选测试的局部报告计为完整阶段结果。
+
+**09d 与 P3 收尾。** `026a958` 仅补四个测试文件：DatePicker 的 object/callback ref、Booleanish 错误状态、受控单值/范围的正常与取消 reset、真实 FormData；DatePicker 与两个 Group 的动态 form 归属及旧 reset 任务清理；Autocomplete 的受控草稿 reset、IME、blur 和静止 pointer。范围快捷选择补充调用方不接受更新、禁用日期、结束日期越界，以及反向选择后有序提交。主 agent 审查测试实际交互与回调断言，未修改生产实现或质量配置。
+
+中间完整报告分支为 **94.85%**。主 agent 用独立局部 JSON 定位到四个未命中的日期分支；定向补测后确认四个分支从零命中变为实际执行，再运行完整 `bun run test:coverage`。最终 **177 个文件、1,544 项测试全部通过**，statements / branches / functions / lines 为 **97.36% / 95.12% / 97.81% / 97.49%**，分支分母仍为 **2,214**。正常提交 hooks 同样通过，提交与四个已审测试文件一致；两处 FormData 格式化经原文还原校验，仅有换行变化。证据：`p3-09d-new-branches.json`、`p3-09d-full-coverage-final.json`、`p3-09d-commit-evidence.json`。
+
+P3 的 **120 项旧公开 props/ref/key/文档类型契约**保持兼容；最终运行时的包 build/types/pack/publint、正式 A/B、主 agent 独立生产 build、consumer:next 与 consumer:docs 均已通过。最终真实包的 **230 份产物 / 111 份源码**与已验收实现绑定，09d 未改变这些内容；完整旧基线保持 `ef2bd65` 原文，版本仍为 **2.0.3**。P3 已整体验收，下一阶段为 P4。证据：`p3-phase-final-120.json`、`p3-phase-final-gates.json`、`p3-runtime-final-artifact-source-binding.json`。
 
 ### 12.5 实施中追加的问题
 
@@ -867,3 +918,19 @@ P4 以独立 10d 提交修正 Popover 的子元素组合，验证默认与 asChi
 主 agent 对 `ac5e5a0` 的 [CommandShortcut](../packages/basalt/src/components/command-palette.tsx) 实际源码调用该提取器：字面量中的 `ml-auto`、`tracking-widest` 均未提取。尝试改写前置 JSDoc 仍不能可靠修复，因此不采用修改正文或恢复旧生成文件的办法。证据：`p3-class-candidates-before.json`。P3/07 增加语法可靠的类名提取与回归，覆盖注释、JSX 属性、模板静态片段、插值内字符串及原有真实控件，重建后用实际消费 CSS 验证。
 
 修复为 `8aa47f0`，持续浏览器回归为 `4a75211`：实际 CommandShortcut 的右对齐与 `letter-spacing = font-size × 0.1` 在两条生产 consumer 中通过；独立提取控制 5/5，仓库单测覆盖注释和模板片段，详见 12.4。
+
+#### C20 · P1 · 原生 reset 监听早于调用方取消，仍修改组件值【已于 P3 修正】
+
+[TypeaheadField](../packages/basalt/src/components/typeahead-field.tsx)、[Checkbox.Group](../packages/basalt/src/components/checkbox.tsx) 与 [Switch.Group](../packages/basalt/src/components/switch.tsx) 在原生 reset listener 内用微任务恢复默认值。真实 reset 按钮触发时，该任务可能早于 React 委托的 `onReset.preventDefault()`，导致调用方取消后仍丢失用户选择。Combobox/Autocomplete 和两个 Group 的普通 reset 均通过，四条取消 reset 均失败，合计 **4/8**。DatePicker 合并 ref 后也暴露同一时序问题，由 09 直接修正，其余由独立 09b 收口。
+
+证据：`p3-typeahead-reset-typeahead-reset-before-corrected.json`、`p3-group-form-group-reset-before.json`。均使用实际安装 tarball、真实选择与点击，校验显示状态及 FormData；首版 Typeahead helper 未输入查询导致的超时不计为组件证据。修正必须等待取消事件传播完成，保留受控状态并清理待执行任务，正式 A/B 门加入普通和取消对照。
+
+延迟 reset 同时要承受调用方重渲染。`p3-reset-rerender-reset-rerender-before.json` **5/6**：DatePicker range 在父组件 onReset 更新状态后未恢复默认范围，其余五条控制通过。09b 必须避免因 items/defaultRangeValue/defaultValue 数组对象换引用而取消已接受的 reset，仅在真正卸载或所属表单改变后清理失效任务。
+
+两个 Group 还需协调底层 Radix Item 的原生 reset：当前依赖的 Trigger 无条件恢复初始 checked，并通过 Group 的 onCheckedChange 改值。只延后 Group 自己的监听不足以解决取消问题；回归必须保留取消前取消勾选 Alpha、勾选 Beta 的操作，同时检查最终 UI、FormData 与调用方 onValueChange 次数。
+
+#### C21 · P2 · Group 合并 ref 丢弃 React 19 callback cleanup【已于 P3 修正】
+
+Checkbox.Group 与 Switch.Group 的内部 `setRefs` 调用外部 callback，却未向 React 转交其返回的清理函数。替换 ref 和卸载时，调用方收到旧式 `ref(null)`，此前注册的 cleanup 不执行。实际安装包六条生命周期验证 **4/6**：两组 object ref 与普通 callback 的替换/卸载控制通过，两组 React 19 cleanup 失败。
+
+证据：`p3-group-refs-group-refs-before.json`。09c 独立修正这两处合并逻辑，保留 FIELDSET 目标、普通 callback/object 行为及内部表单 ref；不新增公开 API。
