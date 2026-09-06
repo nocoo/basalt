@@ -638,7 +638,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 
 ### 12.1 调度与提交约束
 
-- 工作分支：`work/04-library-maturity`，起点 `e61efc1`。现有 Herdr pi pane：`w1R:p2`；主 agent 使用同一仓库，负责验收和本节状态，pi 不并行修改本文或索引。
+- 当前分支：`main`，审查起点 `e61efc1`。按用户在 pi pane 中补充的「直接 main 做即可 / 或者合并」，主 agent 已把本地 main 快进至已完成的实现提交；后续继续在 main 原子提交。现有 Herdr pi pane：`w1R:p2`；主 agent 使用同一仓库，负责验收和本节状态，pi 不并行修改本文或索引。
 - 同一时间只派发一个阶段。pi 完成该阶段的代码、必要文档、检查及原子提交后停下；主 agent 独立查看 diff 和实际行为，未通过则留在本阶段修正。
 - 每个提交描述一个可独立审阅的变化，使用正常 hooks；不得跳过 hooks、降低覆盖率或放宽质量门来通过验收。只提交本阶段明确的文件。
 - 监控每 45 秒采集 pi 状态、会话进展和 Git 状态。进入 blocked/unknown、进程退出或连续 5 分钟无会话进展时检查终端和子进程；长时间构建需要核对实际进度，不能仅凭时间强杀。监控不自动接受审批、不替用户回答问题。
@@ -677,7 +677,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 |---|---|---|---|---|
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
-| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`414c794`：公开路径基线、严格 import、文档 tarball 编译和公开 surface 归属检查已验收；继续实际 API 参数表、默认值和版本化指南 |
+| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`d4bb86a`：公开路径基线、严格 import、文档 tarball 编译、surface 归属、Button 默认值及原生属性策略已验收；继续输入/反馈与 compound 参数表、版本化指南 |
 | P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
 | P4 | 浮层与语义：10a/b、11a/b、12a/b；C06–C11/R05 | Dock 模态、Confirm 焦点/异常责任、Slider、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
@@ -729,4 +729,8 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 
 主 agent 在该提交上复跑 **12/12** 个 source-only 隔离用例：未知 helper、根出口 helper、显式与通配新路径、实际 target 重定向、重命名通配路径、legacy 模块新增成员均按预期拒绝；`export *`、命名纯类型导出、null 覆盖和缺失/过期生成文件均得到正确结果。另逐项比对原始基线的路径、名称及 type/value 身份，零差异。该组正常 hooks 为 **176 个测试文件、1,471 个测试**，lint 781 文件无警告，typecheck/gitleaks 通过。证据为 `p2-surface-independent-root-final.log`、`p2-surface-current.json`。
 
-上述接受的是归属与新鲜度机制。非 catalog 文档的部分锚点正文、实际 props/默认值和版本化指南继续在 D03b/D04 补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
+`75f3315` 补齐 Button/LinkButton 的真实类型、默认值及说明，保留 CVA 的 `null` 联合类型；Button 明确默认 `type="button"`、`variant/size="default"`、`loading/asChild=false`。7 个原生封装 surface 的继承属性与 ref 策略由 Library 和 Copy page 共用，未编造 CodeBlock 的 language 或未发布的 ref 能力。
+
+主 agent 的真实 Chromium 检查验证 Button、LinkButton、BasaltMark、Code、CodeBlock、Table 共 **6/6 页面**的可见参数表与生成数据一致。另发现原生豁免仅检查对象存在，空白理由仍会通过；独立修正 `d4bb86a` 要求非空说明、继承元素及显式布尔策略，`false` 仍合法。同一独立生成 probe **4/4 通过**，正式 Vitest 负例覆盖未知/删除登记、空白说明及不完整策略；正常 hooks 为 **176 文件、1,474 测试**通过。相关证据为 `p2-api-visible.json`、`p2-native-policy-probe.json`。
+
+上述接受的是 D03a 及 D03b-A。输入/反馈、compound 家族、非 catalog 锚点正文和版本化指南继续在后续原子组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
