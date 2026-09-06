@@ -167,7 +167,9 @@ export interface DialogContentProps
 	asChild?: RadixDialogContentProps["asChild"];
 	/**
 	 * Force mounting content in DOM for external animation controls.
-	 * Note: DialogContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added.
+	 * When forceMount is true, the content remains mounted even when closed.
+	 * The caller is responsible for visibility transitions and unmounting after animation completes.
+	 * Note: Keeping modal content forceMounted may isolate background interactions until unmounted.
 	 */
 	forceMount?: RadixDialogContentProps["forceMount"];
 	/**
@@ -212,8 +214,8 @@ export const DialogContent = React.forwardRef<
 		},
 		ref,
 	) => (
-		<DialogPortal>
-			<DialogOverlay />
+		<DialogPortal forceMount={props.forceMount}>
+			<DialogOverlay forceMount={props.forceMount} />
 			<DialogPrimitive.Content
 				ref={ref}
 				data-basalt-surface-root=""

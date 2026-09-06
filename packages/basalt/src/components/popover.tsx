@@ -141,8 +141,9 @@ export interface PopoverContentProps
 	updatePositionStrategy?: RadixPopoverContentProps["updatePositionStrategy"];
 	/**
 	 * Force mounting content in DOM for external animation controls.
-	 * Note: In Basalt, PopoverContent wraps a built-in Portal without passing forceMount;
-	 * closed content is unmounted by the outer portal.
+	 * When forceMount is true, the content remains mounted even when closed.
+	 * The caller is responsible for visibility transitions and unmounting after animation completes.
+	 * Note: Keeping modal content forceMounted may isolate background interactions until unmounted.
 	 */
 	forceMount?: true;
 	/**
@@ -199,7 +200,7 @@ export const PopoverContent = React.forwardRef<
 		},
 		ref,
 	) => (
-		<PopoverPrimitive.Portal>
+		<PopoverPrimitive.Portal forceMount={props.forceMount}>
 			<PopoverPrimitive.Content
 				ref={ref}
 				align={align}

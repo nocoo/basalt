@@ -118,7 +118,9 @@ export interface AlertDialogContentProps
 	asChild?: RadixAlertDialogContentProps["asChild"];
 	/**
 	 * Force mounting content in DOM for external animation controls.
-	 * Note: AlertDialogContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added.
+	 * When forceMount is true, the content remains mounted even when closed.
+	 * The caller is responsible for visibility transitions and unmounting after animation completes.
+	 * Note: Keeping modal content forceMounted may isolate background interactions until unmounted.
 	 */
 	forceMount?: RadixAlertDialogContentProps["forceMount"];
 	/**
@@ -139,8 +141,8 @@ export const AlertDialogContent = React.forwardRef<
 	React.ElementRef<typeof AlertDialogPrimitive.Content>,
 	AlertDialogContentProps
 >(({ className, size = "base", ...props }, ref) => (
-	<AlertDialogPortal>
-		<AlertDialogOverlay />
+	<AlertDialogPortal forceMount={props.forceMount}>
+		<AlertDialogOverlay forceMount={props.forceMount} />
 		<AlertDialogPrimitive.Content
 			ref={ref}
 			data-basalt-surface-root=""

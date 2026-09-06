@@ -11,6 +11,7 @@ export default defineConfig({
 				geometry: resolve(__dirname, "geometry.html"),
 				dock: resolve(__dirname, "dock.html"),
 				confirm: resolve(__dirname, "confirm.html"),
+				portal: resolve(__dirname, "portal.html"),
 			},
 		},
 	},

@@ -35,6 +35,7 @@ import {
 	startHttpServer,
 	stopChild,
 } from "./consumer-http";
+import { assertConsumerPortal } from "./consumer-portal";
 
 export const HEAVY_PEERS = [
 	"tailwindcss",
@@ -1294,6 +1295,15 @@ console.log(JSON.stringify({
 						const faults = attachPageFaults(page);
 						await page.goto(confirmUrl, { waitUntil: "domcontentloaded" });
 						const res = await assertConsumerConfirm(page);
+						assertNoPageFaults(faults);
+						return res;
+					});
+
+					const portalUrl = `http://127.0.0.1:${port}/portal.html`;
+					evidence.portal = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(portalUrl, { waitUntil: "domcontentloaded" });
+						const res = await assertConsumerPortal(page);
 						assertNoPageFaults(faults);
 						return res;
 					});

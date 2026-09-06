@@ -120,8 +120,8 @@ export interface HoverCardContentProps
 	hideWhenDetached?: RadixHoverCardContentProps["hideWhenDetached"];
 	/**
 	 * Force mounting content in DOM for external animation controls.
-	 * Note: In Basalt, HoverCardContent wraps a built-in Portal without passing forceMount;
-	 * closed content is currently unmounted by the outer portal.
+	 * When forceMount is true, the content remains mounted even when closed.
+	 * The caller is responsible for visibility transitions and unmounting after animation completes.
 	 */
 	forceMount?: true;
 	/**
@@ -146,7 +146,7 @@ export const HoverCardContent = React.forwardRef<
 	React.ElementRef<typeof HoverCardPrimitive.Content>,
 	HoverCardContentProps
 >(({ className, sideOffset = MENU_GAP, ...props }, ref) => (
-	<HoverCardPrimitive.Portal>
+	<HoverCardPrimitive.Portal forceMount={props.forceMount}>
 		<HoverCardPrimitive.Content
 			ref={ref}
 			sideOffset={sideOffset}

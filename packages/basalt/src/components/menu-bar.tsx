@@ -171,8 +171,8 @@ export interface MenuBarContentProps
 	hideWhenDetached?: RadixMenubarContentProps["hideWhenDetached"];
 	/**
 	 * Force mounting content in DOM for external animation controls.
-	 * Note: In Basalt, MenuBarContent wraps a built-in Portal without passing forceMount;
-	 * closed content is currently unmounted by the outer portal.
+	 * When forceMount is true, the content remains mounted even when closed.
+	 * The caller is responsible for visibility transitions and unmounting after animation completes.
 	 */
 	forceMount?: true;
 	/**
@@ -207,7 +207,7 @@ export const MenuBarContent = React.forwardRef<
 	React.ElementRef<typeof MenubarPrimitive.Content>,
 	MenuBarContentProps
 >(({ className, sideOffset = MENU_GAP, ...props }, ref) => (
-	<MenubarPrimitive.Portal>
+	<MenubarPrimitive.Portal forceMount={props.forceMount}>
 		<MenubarPrimitive.Content
 			ref={ref}
 			sideOffset={sideOffset}

@@ -4808,7 +4808,7 @@
 			"importPath": "@nocoo/basalt/components/alert-dialog",
 			"subpath": "./components/alert-dialog",
 			"sourceFile": "packages/basalt/src/components/alert-dialog.tsx",
-			"sourceHash": "9edc13160289cef4",
+			"sourceHash": "ed60a283699ab54e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -5096,7 +5096,7 @@
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nNote: AlertDialogContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added."
+									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 								},
 								{
 									"name": "onOpenAutoFocus",
@@ -5270,7 +5270,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: AlertDialogContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "onOpenAutoFocus",
@@ -8838,7 +8838,7 @@
 			"importPath": "@nocoo/basalt/components/context-menu",
 			"subpath": "./components/context-menu",
 			"sourceFile": "packages/basalt/src/components/context-menu.tsx",
-			"sourceHash": "ed8b129806f037d1",
+			"sourceHash": "8414c276c3efce54",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -9186,7 +9186,7 @@
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, ContextMenuPanel wraps a built-in Portal without passing forceMount;\nclosed content is currently unmounted by the outer portal."
+									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 								},
 								{
 									"name": "asChild",
@@ -9479,7 +9479,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, ContextMenuPanel wraps a built-in Portal without passing forceMount;\nclosed content is currently unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "asChild",
@@ -10292,7 +10292,7 @@
 			"importPath": "@nocoo/basalt/components/dialog",
 			"subpath": "./components/dialog",
 			"sourceFile": "packages/basalt/src/components/dialog.tsx",
-			"sourceHash": "e208525dfa2bf678",
+			"sourceHash": "eddf5036c98a0bd5",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -10610,7 +10610,7 @@
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nNote: DialogContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added."
+									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 								},
 								{
 									"name": "onOpenAutoFocus",
@@ -10804,7 +10804,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: DialogContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "onOpenAutoFocus",
@@ -11106,7 +11106,7 @@
 			"importPath": "@nocoo/basalt/components/dropdown-menu",
 			"subpath": "./components/dropdown-menu",
 			"sourceFile": "packages/basalt/src/components/dropdown-menu.tsx",
-			"sourceHash": "983d5484cd77cb75",
+			"sourceHash": "40669761dacd5b48",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11538,7 +11538,7 @@
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, DropdownMenuContent wraps a built-in Portal without passing forceMount;\nclosed content is unmounted by the outer portal."
+									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 								},
 								{
 									"name": "asChild",
@@ -11868,7 +11868,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, DropdownMenuContent wraps a built-in Portal without passing forceMount;\nclosed content is unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "asChild",
@@ -12574,7 +12574,7 @@
 			"importPath": "@nocoo/basalt/components/hover-card",
 			"subpath": "./components/hover-card",
 			"sourceFile": "packages/basalt/src/components/hover-card.tsx",
-			"sourceHash": "7c9943061d68df53",
+			"sourceHash": "e2819959d6a1d2cd",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -12769,7 +12769,7 @@
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, HoverCardContent wraps a built-in Portal without passing forceMount;\nclosed content is currently unmounted by the outer portal."
+									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
 								},
 								{
 									"name": "onEscapeKeyDown",
@@ -12928,7 +12928,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, HoverCardContent wraps a built-in Portal without passing forceMount;\nclosed content is currently unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
 						},
 						{
 							"name": "onEscapeKeyDown",
@@ -13954,7 +13954,7 @@
 			"importPath": "@nocoo/basalt/components/menu-bar",
 			"subpath": "./components/menu-bar",
 			"sourceFile": "packages/basalt/src/components/menu-bar.tsx",
-			"sourceHash": "b4940f73006b4489",
+			"sourceHash": "0f1c9b3b4d1d0550",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -14274,7 +14274,7 @@
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, MenuBarContent wraps a built-in Portal without passing forceMount;\nclosed content is currently unmounted by the outer portal."
+									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
 								},
 								{
 									"name": "asChild",
@@ -14554,7 +14554,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, MenuBarContent wraps a built-in Portal without passing forceMount;\nclosed content is currently unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
 						},
 						{
 							"name": "asChild",
@@ -15456,7 +15456,7 @@
 			"importPath": "@nocoo/basalt/components/popover",
 			"subpath": "./components/popover",
 			"sourceFile": "packages/basalt/src/components/popover.tsx",
-			"sourceHash": "8b4cabfd4fb4fa20",
+			"sourceHash": "e38b4cd62fa8c520",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -15733,7 +15733,7 @@
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, PopoverContent wraps a built-in Portal without passing forceMount;\nclosed content is unmounted by the outer portal."
+									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 								},
 								{
 									"name": "asChild",
@@ -15944,7 +15944,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, PopoverContent wraps a built-in Portal without passing forceMount;\nclosed content is unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "asChild",
@@ -17228,7 +17228,7 @@
 			"importPath": "@nocoo/basalt/components/sheet",
 			"subpath": "./components/sheet",
 			"sourceFile": "packages/basalt/src/components/sheet.tsx",
-			"sourceHash": "b524fab178d28299",
+			"sourceHash": "1fd48fe8aa7559fa",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17484,7 +17484,7 @@
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nNote: SheetContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added."
+									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 								},
 								{
 									"name": "onOpenAutoFocus",
@@ -17636,7 +17636,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: SheetContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "onOpenAutoFocus",
@@ -21898,7 +21898,7 @@
 			"importPath": "@nocoo/basalt/components/tooltip",
 			"subpath": "./components/tooltip",
 			"sourceFile": "packages/basalt/src/components/tooltip.tsx",
-			"sourceHash": "d239433f7296eeaa",
+			"sourceHash": "62accdd15ce33330",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -22170,7 +22170,7 @@
 									"name": "forceMount",
 									"type": "true",
 									"required": false,
-									"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, TooltipContent wraps a built-in Portal without passing forceMount;\nclosed content is unmounted by the outer portal."
+									"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
 								},
 								{
 									"name": "asChild",
@@ -22373,7 +22373,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, TooltipContent wraps a built-in Portal without passing forceMount;\nclosed content is unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
 						},
 						{
 							"name": "asChild",
@@ -22973,7 +22973,7 @@
 			"exportName": "Tooltip",
 			"importPath": "@nocoo/basalt/components/tooltip",
 			"sourceFile": "packages/basalt/src/components/tooltip.tsx",
-			"sourceHash": "d239433f7296eeaa",
+			"sourceHash": "62accdd15ce33330",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#tooltip",
@@ -23166,7 +23166,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, TooltipContent wraps a built-in Portal without passing forceMount;\nclosed content is unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
 						},
 						{
 							"name": "asChild",
@@ -25808,7 +25808,7 @@
 			"exportName": "Dialog",
 			"importPath": "@nocoo/basalt/components/dialog",
 			"sourceFile": "packages/basalt/src/components/dialog.tsx",
-			"sourceHash": "e208525dfa2bf678",
+			"sourceHash": "eddf5036c98a0bd5",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#dialog",
@@ -25919,7 +25919,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: DialogContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "onOpenAutoFocus",
@@ -26011,7 +26011,7 @@
 			"exportName": "AlertDialog",
 			"importPath": "@nocoo/basalt/components/alert-dialog",
 			"sourceFile": "packages/basalt/src/components/alert-dialog.tsx",
-			"sourceHash": "9edc13160289cef4",
+			"sourceHash": "ed60a283699ab54e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#alert-dialog",
@@ -26108,7 +26108,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: AlertDialogContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "onOpenAutoFocus",
@@ -26311,7 +26311,7 @@
 			"exportName": "Popover",
 			"importPath": "@nocoo/basalt/components/popover",
 			"sourceFile": "packages/basalt/src/components/popover.tsx",
-			"sourceHash": "8b4cabfd4fb4fa20",
+			"sourceHash": "e38b4cd62fa8c520",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#popover",
@@ -26461,7 +26461,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, PopoverContent wraps a built-in Portal without passing forceMount;\nclosed content is unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "asChild",
@@ -26531,7 +26531,7 @@
 			"exportName": "DropdownMenu",
 			"importPath": "@nocoo/basalt/components/dropdown-menu",
 			"sourceFile": "packages/basalt/src/components/dropdown-menu.tsx",
-			"sourceHash": "983d5484cd77cb75",
+			"sourceHash": "40669761dacd5b48",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#dropdown-menu",
@@ -26820,7 +26820,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, DropdownMenuContent wraps a built-in Portal without passing forceMount;\nclosed content is unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "asChild",
@@ -26870,7 +26870,7 @@
 			"exportName": "ContextMenu",
 			"importPath": "@nocoo/basalt/components/context-menu",
 			"sourceFile": "packages/basalt/src/components/context-menu.tsx",
-			"sourceHash": "ed8b129806f037d1",
+			"sourceHash": "8414c276c3efce54",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#context-menu",
@@ -27123,7 +27123,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, ContextMenuPanel wraps a built-in Portal without passing forceMount;\nclosed content is currently unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "asChild",
@@ -27172,7 +27172,7 @@
 			"exportName": "HoverCard",
 			"importPath": "@nocoo/basalt/components/hover-card",
 			"sourceFile": "packages/basalt/src/components/hover-card.tsx",
-			"sourceHash": "7c9943061d68df53",
+			"sourceHash": "e2819959d6a1d2cd",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#hover-card",
@@ -27304,7 +27304,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, HoverCardContent wraps a built-in Portal without passing forceMount;\nclosed content is currently unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
 						},
 						{
 							"name": "onEscapeKeyDown",
@@ -27340,7 +27340,7 @@
 			"exportName": "Sheet",
 			"importPath": "@nocoo/basalt/components/sheet",
 			"sourceFile": "packages/basalt/src/components/sheet.tsx",
-			"sourceHash": "b524fab178d28299",
+			"sourceHash": "1fd48fe8aa7559fa",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sheet",
@@ -27445,7 +27445,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: SheetContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted."
 						},
 						{
 							"name": "onOpenAutoFocus",
@@ -28317,7 +28317,7 @@
 			"exportName": "MenuBar",
 			"importPath": "@nocoo/basalt/components/menu-bar",
 			"sourceFile": "packages/basalt/src/components/menu-bar.tsx",
-			"sourceHash": "b4940f73006b4489",
+			"sourceHash": "0f1c9b3b4d1d0550",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#menu-bar",
@@ -28526,7 +28526,7 @@
 							"name": "forceMount",
 							"type": "true",
 							"required": false,
-							"description": "Force mounting content in DOM for external animation controls.\nNote: In Basalt, MenuBarContent wraps a built-in Portal without passing forceMount;\nclosed content is currently unmounted by the outer portal."
+							"description": "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes."
 						},
 						{
 							"name": "asChild",

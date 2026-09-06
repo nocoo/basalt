@@ -273,8 +273,9 @@ export interface DropdownMenuContentProps
 	onInteractOutside?: RadixDropdownMenuContentProps["onInteractOutside"];
 	/**
 	 * Force mounting content in DOM for external animation controls.
-	 * Note: In Basalt, DropdownMenuContent wraps a built-in Portal without passing forceMount;
-	 * closed content is unmounted by the outer portal.
+	 * When forceMount is true, the content remains mounted even when closed.
+	 * The caller is responsible for visibility transitions and unmounting after animation completes.
+	 * Note: Keeping modal content forceMounted may isolate background interactions until unmounted.
 	 */
 	forceMount?: true;
 	/**
@@ -289,7 +290,7 @@ export const DropdownMenuContent = React.forwardRef<
 	React.ElementRef<typeof DropdownMenuPrimitive.Content>,
 	DropdownMenuContentProps
 >(({ className, sideOffset = MENU_GAP, ...props }, ref) => (
-	<DropdownMenuPrimitive.Portal>
+	<DropdownMenuPrimitive.Portal forceMount={props.forceMount}>
 		<DropdownMenuPrimitive.Content
 			ref={ref}
 			sideOffset={sideOffset}

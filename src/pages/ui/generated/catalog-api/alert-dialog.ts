@@ -94,7 +94,7 @@ export const API = [
 				name: "forceMount",
 				type: "true",
 				required: false,
-				description: "Force mounting content in DOM for external animation controls.\nNote: AlertDialogContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added.",
+				description: "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted.",
 			},
 			{
 				name: "onOpenAutoFocus",

@@ -137,7 +137,9 @@ export interface SheetContentProps
 	asChild?: RadixDialogContentProps["asChild"];
 	/**
 	 * Force mounting content in DOM for external animation controls.
-	 * Note: SheetContent renders inside a built-in Portal without passing forceMount to the portal boundary; closed content remains unmounted by the outer portal until portal boundary forwarding is added.
+	 * When forceMount is true, the content remains mounted even when closed.
+	 * The caller is responsible for visibility transitions and unmounting after animation completes.
+	 * Note: Keeping modal content forceMounted may isolate background interactions until unmounted.
 	 */
 	forceMount?: RadixDialogContentProps["forceMount"];
 	/**
@@ -170,8 +172,9 @@ export const SheetContent = React.forwardRef<
 	React.ElementRef<typeof DialogPrimitive.Content>,
 	SheetContentProps
 >(({ className, side = "right", children, ...props }, ref) => (
-	<DialogPrimitive.Portal>
+	<DialogPrimitive.Portal forceMount={props.forceMount}>
 		<DialogPrimitive.Overlay
+			forceMount={props.forceMount}
 			className={cn("fixed inset-0 bg-black/50 backdrop-blur-xs", OVERLAY_LAYER, OVERLAY_MOTION)}
 		/>
 		<DialogPrimitive.Content

@@ -249,8 +249,9 @@ export interface ContextMenuPanelProps
 	hideWhenDetached?: RadixContextMenuContentProps["hideWhenDetached"];
 	/**
 	 * Force mounting content in DOM for external animation controls.
-	 * Note: In Basalt, ContextMenuPanel wraps a built-in Portal without passing forceMount;
-	 * closed content is currently unmounted by the outer portal.
+	 * When forceMount is true, the content remains mounted even when closed.
+	 * The caller is responsible for visibility transitions and unmounting after animation completes.
+	 * Note: Keeping modal content forceMounted may isolate background interactions until unmounted.
 	 */
 	forceMount?: true;
 	/**
@@ -283,7 +284,7 @@ export interface ContextMenuPanelProps
 
 export function ContextMenuPanel({ className, ...props }: ContextMenuPanelProps) {
 	return (
-		<ContextMenuPrimitive.Portal>
+		<ContextMenuPrimitive.Portal forceMount={props.forceMount}>
 			<ContextMenuPrimitive.Content
 				className={overlayPanelClass(cn("min-w-40", className))}
 				{...props}

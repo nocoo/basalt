@@ -129,7 +129,7 @@ export const API = [
 				name: "forceMount",
 				type: "true",
 				required: false,
-				description: "Force mounting content in DOM for external animation controls.\nNote: In Basalt, HoverCardContent wraps a built-in Portal without passing forceMount;\nclosed content is currently unmounted by the outer portal.",
+				description: "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.",
 			},
 			{
 				name: "onEscapeKeyDown",

@@ -178,8 +178,8 @@ export interface TooltipContentProps
 	updatePositionStrategy?: RadixTooltipContentProps["updatePositionStrategy"];
 	/**
 	 * Force mounting content in DOM for external animation controls.
-	 * Note: In Basalt, TooltipContent wraps a built-in Portal without passing forceMount;
-	 * closed content is unmounted by the outer portal.
+	 * When forceMount is true, the content remains mounted even when closed.
+	 * The caller is responsible for visibility transitions and unmounting after animation completes.
 	 */
 	forceMount?: true;
 	/**
@@ -194,7 +194,7 @@ export const TooltipContent = React.forwardRef<
 	React.ElementRef<typeof TooltipPrimitive.Content>,
 	TooltipContentProps
 >(({ className, sideOffset = 4, ...props }, ref) => (
-	<TooltipPrimitive.Portal>
+	<TooltipPrimitive.Portal forceMount={props.forceMount}>
 		<TooltipPrimitive.Content
 			ref={ref}
 			sideOffset={sideOffset}
