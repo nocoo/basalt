@@ -1,4 +1,4 @@
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -171,5 +171,99 @@ describe("documentation tarball compilation gate", () => {
 		const tablePagerUsage = usageModules.find((m) => m.slug === "table-pager");
 		expect(tablePagerUsage).toBeDefined();
 		expect(tablePagerUsage?.code).toContain("const [page, setPage] = useState(1);");
+	});
+
+	it("handles fixture repoRoot, whitespace fidelity, dynamic ready inclusion, and rejects missing or empty usage", async () => {
+		const tempFixture = mkdtempSync(join(tmpdir(), "basalt-usage-fixture-"));
+		const generatedDir = join(tempFixture, "src/pages/ui/generated");
+		mkdirSync(generatedDir, { recursive: true });
+		writeFileSync(join(tempFixture, "vite.config.ts"), "export default {};\n");
+
+		const whitespaceCode =
+			"\n  export default function Example() { return <span>Whitespace preservation</span>; }\n\n";
+
+		function setupFixture(
+			options: {
+				catalog?: string[];
+				status?: Record<string, string>;
+				record?: Record<string, { docs?: { usage?: string } }>;
+			} = {},
+		) {
+			const catalog = options.catalog ?? ["alpha", "beta", "inactive"];
+			const status = options.status ?? { alpha: "ready", beta: "ready", inactive: "planned" };
+			const record = options.record ?? {
+				alpha: { docs: { usage: whitespaceCode } },
+				beta: { docs: { usage: "export default function Example() { return <i>Beta</i>; }" } },
+			};
+			writeFileSync(
+				join(tempFixture, "src/pages/ui/catalog.ts"),
+				`export const CATALOG = ${JSON.stringify(catalog.map((slug) => ({ slug })))};\n`,
+			);
+			writeFileSync(
+				join(tempFixture, "src/pages/ui/generated/catalog-page-status.ts"),
+				`export const CATALOG_PAGE_STATUS = ${JSON.stringify(status)};\n`,
+			);
+			writeFileSync(
+				join(tempFixture, "src/pages/ui/catalog-content-registry.ts"),
+				`export async function loadCatalogContentRecord() { return ${JSON.stringify(record)}; }\n`,
+			);
+		}
+
+		try {
+			// 1. Alternate root controls inventory and preserves exact whitespace without trimming
+			setupFixture();
+			const loaded = await loadCatalogUsageModules(tempFixture);
+			expect(loaded.map((e) => e.slug).sort()).toEqual(["alpha", "beta"]);
+			const alphaItem = loaded.find((e) => e.slug === "alpha");
+			expect(alphaItem?.code).toBe(whitespaceCode);
+
+			// 2. New ready entry automatically enters inventory
+			setupFixture({
+				catalog: ["alpha", "beta", "gamma"],
+				status: { alpha: "ready", beta: "ready", gamma: "ready" },
+				record: {
+					alpha: { docs: { usage: whitespaceCode } },
+					beta: { docs: { usage: whitespaceCode } },
+					gamma: { docs: { usage: whitespaceCode } },
+				},
+			});
+			const withGamma = await loadCatalogUsageModules(tempFixture);
+			expect(withGamma).toHaveLength(3);
+			expect(withGamma.some((e) => e.slug === "gamma")).toBe(true);
+
+			// 3. Missing ready record throws
+			setupFixture({
+				record: {
+					alpha: { docs: { usage: whitespaceCode } },
+				},
+			});
+			await expect(loadCatalogUsageModules(tempFixture)).rejects.toThrow(
+				/ready catalog entry "beta" did not load in catalog record/,
+			);
+
+			// 4. Missing usage throws
+			setupFixture({
+				record: {
+					alpha: { docs: {} },
+					beta: { docs: { usage: whitespaceCode } },
+				},
+			});
+			await expect(loadCatalogUsageModules(tempFixture)).rejects.toThrow(
+				/ready catalog entry "alpha" is missing docs\.usage/,
+			);
+
+			// 5. Whitespace-only usage throws
+			setupFixture({
+				record: {
+					alpha: { docs: { usage: "  \n\t  " } },
+					beta: { docs: { usage: whitespaceCode } },
+				},
+			});
+			await expect(loadCatalogUsageModules(tempFixture)).rejects.toThrow(
+				/ready catalog entry "alpha" is missing docs\.usage/,
+			);
+		} finally {
+			rmSync(tempFixture, { recursive: true, force: true });
+		}
 	});
 });
