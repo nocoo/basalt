@@ -52,12 +52,3 @@ export const CHART_TOKENS = Array.from(
 // ── Semantic aliases ──
 
 export const chartAxis = v("chart-axis");
-
-/** Positive / income / inflow */
-export const chartPositive = chart.green;
-
-/** Negative / expense / outflow — reuses the destructive token */
-export const chartNegative = v("destructive");
-
-/** Primary chart accent (most-used single color) */
-export const chartPrimary = chart.primary;
