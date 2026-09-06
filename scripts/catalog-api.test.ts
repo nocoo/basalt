@@ -19,6 +19,7 @@ import {
 	writeCatalogApiFile,
 	writeCatalogApiFiles,
 } from "./catalog-api";
+import { DOCUMENTED_NATIVE_ONLY_SURFACES } from "./catalog-surface-owners";
 
 const repoRoot = process.cwd();
 const fixtureRoots: string[] = [];
@@ -3799,4 +3800,68 @@ export interface WidgetProps {
 		writeFileSync(path.join(root, GENERATED_SHARD_DIR, "extra.ts"), "export const API = [];\n");
 		expect(() => checkCatalogApiFiles(root, files)).toThrow(/extra catalog API shards extra.ts/);
 	}, 60_000);
+
+	it("enforces documented justification and strategy for native-only className surfaces", () => {
+		const sampleData = (name: string) => ({
+			widget: [
+				{
+					name,
+					props: [
+						{
+							name: "className",
+							type: "string",
+							required: false,
+						},
+					],
+				},
+			],
+		});
+
+		// 1. Unknown native-only surface without entry fails
+		expect(() => generateCatalogApiFiles(repoRoot, sampleData("UnregisteredWidget"))).toThrow(
+			/surface 'UnregisteredWidget' in 'widget' is className-only without valid justification/,
+		);
+
+		// 2. Temporarily corrupted or blank justification fails
+		const originalCode = DOCUMENTED_NATIVE_ONLY_SURFACES.Code;
+		try {
+			// Blank justification
+			DOCUMENTED_NATIVE_ONLY_SURFACES.Code = {
+				...originalCode,
+				justification: "   ",
+			};
+			expect(() => generateCatalogApiFiles(repoRoot, sampleData("Code"))).toThrow(
+				/surface 'Code' in 'widget' is className-only without valid justification/,
+			);
+
+			// Blank inheritedElement
+			DOCUMENTED_NATIVE_ONLY_SURFACES.Code = {
+				...originalCode,
+				inheritedElement: "   ",
+			};
+			expect(() => generateCatalogApiFiles(repoRoot, sampleData("Code"))).toThrow(
+				/surface 'Code' in 'widget' is className-only without valid justification/,
+			);
+
+			// Invalid boolean flag
+			DOCUMENTED_NATIVE_ONLY_SURFACES.Code = {
+				...originalCode,
+				forwardsRef: undefined as unknown as boolean,
+			};
+			expect(() => generateCatalogApiFiles(repoRoot, sampleData("Code"))).toThrow(
+				/surface 'Code' in 'widget' is className-only without valid justification/,
+			);
+
+			// Deleted entry fails
+			delete (DOCUMENTED_NATIVE_ONLY_SURFACES as Record<string, unknown>).Code;
+			expect(() => generateCatalogApiFiles(repoRoot, sampleData("Code"))).toThrow(
+				/surface 'Code' in 'widget' is className-only without valid justification/,
+			);
+		} finally {
+			DOCUMENTED_NATIVE_ONLY_SURFACES.Code = originalCode;
+		}
+
+		// 3. Valid registered entry succeeds
+		expect(() => generateCatalogApiFiles(repoRoot, sampleData("Code"))).not.toThrow();
+	});
 });

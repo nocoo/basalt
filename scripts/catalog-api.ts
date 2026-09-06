@@ -1840,9 +1840,17 @@ export function validateCatalogApiCompleteness(data: Record<string, CatalogApiSu
 			const isClassNameOnly = surface.props.length === 1 && surface.props[0]?.name === "className";
 			if (isClassNameOnly) {
 				const documented = DOCUMENTED_NATIVE_ONLY_SURFACES[surface.name];
-				if (!documented) {
+				if (
+					!documented ||
+					typeof documented.justification !== "string" ||
+					documented.justification.trim() === "" ||
+					typeof documented.inheritedElement !== "string" ||
+					documented.inheritedElement.trim() === "" ||
+					typeof documented.forwardsRef !== "boolean" ||
+					typeof documented.forwardsRestProps !== "boolean"
+				) {
 					failCatalogApi(
-						`surface '${surface.name}' in '${slug}' is className-only without justification in DOCUMENTED_NATIVE_ONLY_SURFACES`,
+						`surface '${surface.name}' in '${slug}' is className-only without valid justification in DOCUMENTED_NATIVE_ONLY_SURFACES`,
 					);
 				}
 			}
