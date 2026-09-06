@@ -73,9 +73,9 @@ describe("public surface documentation ownership and freshness", () => {
 
 		expect(manifest.packageVersion).toBe("2.0.3");
 		expect(manifest.totalModules).toBe(110);
-		expect(manifest.totalSymbols).toBe(595);
+		expect(manifest.totalSymbols).toBe(622);
 		expect(manifest.totalValues).toBe(375);
-		expect(manifest.totalTypes).toBe(220);
+		expect(manifest.totalTypes).toBe(247);
 		expect(manifest.totalCssExports).toBe(3);
 
 		// Every module must have valid documentation ownership
@@ -333,6 +333,12 @@ describe("public surface documentation ownership and freshness", () => {
 			"Checkbox.Legend",
 			"Radio.Legend",
 			"Switch.Legend",
+			"DialogHeader",
+			"DialogFooter",
+			"SheetHeader",
+			"SheetFooter",
+			"AlertDialogHeader",
+			"AlertDialogFooter",
 		]);
 
 		for (const key of keys) {

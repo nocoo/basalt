@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 595,
+	"totalSymbols": 622,
 	"totalValues": 375,
-	"totalTypes": 220,
+	"totalTypes": 247,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2143,9 +2143,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "AlertDialog component documentation and catalog playground",
 			"symbols": [
 				{
+					"name": "AlertDialogProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/alert-dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/alert-dialog"
+				},
+				{
 					"name": "AlertDialog",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/alert-dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/alert-dialog"
+				},
+				{
+					"name": "AlertDialogTriggerProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/alert-dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/alert-dialog"
@@ -2159,9 +2175,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/alert-dialog"
 				},
 				{
+					"name": "AlertDialogPortalProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/alert-dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/alert-dialog"
+				},
+				{
 					"name": "AlertDialogPortal",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/alert-dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/alert-dialog"
+				},
+				{
+					"name": "AlertDialogOverlayProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/alert-dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/alert-dialog"
@@ -2191,9 +2223,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/alert-dialog"
 				},
 				{
+					"name": "AlertDialogTitleProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/alert-dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/alert-dialog"
+				},
+				{
 					"name": "AlertDialogTitle",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/alert-dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/alert-dialog"
+				},
+				{
+					"name": "AlertDialogDescriptionProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/alert-dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/alert-dialog"
@@ -2207,9 +2255,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/alert-dialog"
 				},
 				{
+					"name": "AlertDialogCancelProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/alert-dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/alert-dialog"
+				},
+				{
 					"name": "AlertDialogCancel",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/alert-dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/alert-dialog"
+				},
+				{
+					"name": "AlertDialogActionProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/alert-dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/alert-dialog"
@@ -2223,9 +2287,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/alert-dialog"
 				},
 				{
+					"name": "AlertDialogHeaderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/alert-dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/alert-dialog"
+				},
+				{
 					"name": "AlertDialogHeader",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/alert-dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/alert-dialog"
+				},
+				{
+					"name": "AlertDialogFooterProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/alert-dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/alert-dialog"
@@ -3267,9 +3347,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/dialog"
 				},
 				{
+					"name": "DialogProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dialog"
+				},
+				{
 					"name": "Dialog",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dialog"
+				},
+				{
+					"name": "DialogTriggerProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/dialog"
@@ -3283,6 +3379,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/dialog"
 				},
 				{
+					"name": "DialogCloseProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dialog"
+				},
+				{
 					"name": "DialogClose",
 					"isValue": true,
 					"isType": false,
@@ -3291,9 +3395,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/dialog"
 				},
 				{
+					"name": "DialogPortalProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dialog"
+				},
+				{
 					"name": "DialogPortal",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dialog"
+				},
+				{
+					"name": "DialogOverlayProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/dialog"
@@ -3323,9 +3443,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/dialog"
 				},
 				{
+					"name": "DialogTitleProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dialog"
+				},
+				{
 					"name": "DialogTitle",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dialog"
+				},
+				{
+					"name": "DialogDescriptionProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/dialog"
@@ -3339,9 +3475,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/dialog"
 				},
 				{
+					"name": "DialogHeaderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dialog"
+				},
+				{
 					"name": "DialogHeader",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/dialog",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dialog"
+				},
+				{
+					"name": "DialogFooterProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/dialog"
@@ -4755,9 +4907,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Sheet component documentation and catalog playground",
 			"symbols": [
 				{
+					"name": "SheetProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sheet",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sheet"
+				},
+				{
 					"name": "Sheet",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/sheet",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sheet"
+				},
+				{
+					"name": "SheetTriggerProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/sheet",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/sheet"
@@ -4771,6 +4939,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/sheet"
 				},
 				{
+					"name": "SheetCloseProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sheet",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sheet"
+				},
+				{
 					"name": "SheetClose",
 					"isValue": true,
 					"isType": false,
@@ -4779,9 +4955,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/sheet"
 				},
 				{
+					"name": "SheetTitleProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sheet",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sheet"
+				},
+				{
 					"name": "SheetTitle",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/sheet",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sheet"
+				},
+				{
+					"name": "SheetDescriptionProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/sheet",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/sheet"
@@ -4803,6 +4995,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/sheet"
 				},
 				{
+					"name": "SheetContentProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sheet",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sheet"
+				},
+				{
 					"name": "SheetContent",
 					"isValue": true,
 					"isType": false,
@@ -4811,9 +5011,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/sheet"
 				},
 				{
+					"name": "SheetHeaderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sheet",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sheet"
+				},
+				{
 					"name": "SheetHeader",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/sheet",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sheet"
+				},
+				{
+					"name": "SheetFooterProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/sheet",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/sheet"

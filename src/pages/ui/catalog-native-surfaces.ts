@@ -119,6 +119,48 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		forwardsRef: true,
 		forwardsRestProps: true,
 	},
+	DialogHeader: {
+		justification:
+			"Semantic dialog header container for title and close actions; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	DialogFooter: {
+		justification:
+			"Semantic dialog footer container for responsive dialog action buttons; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	SheetHeader: {
+		justification:
+			"Semantic sheet header container for drawer titles and actions; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	SheetFooter: {
+		justification:
+			"Semantic sheet footer container for drawer actions; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	AlertDialogHeader: {
+		justification:
+			"Semantic alert dialog header container for alert titles; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	AlertDialogFooter: {
+		justification:
+			"Semantic alert dialog footer container for cancel and confirmation actions; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
 };
 
 export function formatNativeSurfaceStrategy(doc: NativeOnlySurfaceDocumentation): string {

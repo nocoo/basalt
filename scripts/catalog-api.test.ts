@@ -1003,8 +1003,188 @@ describe("catalog API generator contract", () => {
 				propsType: "HoverCardContentProps",
 				surface: "HoverCardContent",
 			},
+			{
+				slug: "dialog",
+				sourceFile: "packages/basalt/src/components/dialog.tsx",
+				propsType: "DialogProps",
+				surface: "Dialog",
+			},
+			{
+				slug: "dialog",
+				sourceFile: "packages/basalt/src/components/dialog.tsx",
+				propsType: "DialogTriggerProps",
+				surface: "DialogTrigger",
+			},
+			{
+				slug: "dialog",
+				sourceFile: "packages/basalt/src/components/dialog.tsx",
+				propsType: "DialogPortalProps",
+				surface: "DialogPortal",
+			},
+			{
+				slug: "dialog",
+				sourceFile: "packages/basalt/src/components/dialog.tsx",
+				propsType: "DialogOverlayProps",
+				surface: "DialogOverlay",
+			},
+			{
+				slug: "dialog",
+				sourceFile: "packages/basalt/src/components/dialog.tsx",
+				propsType: "DialogContentProps",
+				surface: "DialogContent",
+			},
+			{
+				slug: "dialog",
+				sourceFile: "packages/basalt/src/components/dialog.tsx",
+				propsType: "DialogTitleProps",
+				surface: "DialogTitle",
+			},
+			{
+				slug: "dialog",
+				sourceFile: "packages/basalt/src/components/dialog.tsx",
+				propsType: "DialogDescriptionProps",
+				surface: "DialogDescription",
+			},
+			{
+				slug: "dialog",
+				sourceFile: "packages/basalt/src/components/dialog.tsx",
+				propsType: "DialogCloseProps",
+				surface: "DialogClose",
+			},
+			{
+				slug: "dialog",
+				sourceFile: "packages/basalt/src/components/dialog.tsx",
+				propsType: "DialogHeaderProps",
+				surface: "DialogHeader",
+				allowEmpty: true,
+			},
+			{
+				slug: "dialog",
+				sourceFile: "packages/basalt/src/components/dialog.tsx",
+				propsType: "DialogFooterProps",
+				surface: "DialogFooter",
+				allowEmpty: true,
+			},
+			{
+				slug: "sheet",
+				sourceFile: "packages/basalt/src/components/sheet.tsx",
+				propsType: "SheetProps",
+				surface: "Sheet",
+			},
+			{
+				slug: "sheet",
+				sourceFile: "packages/basalt/src/components/sheet.tsx",
+				propsType: "SheetTriggerProps",
+				surface: "SheetTrigger",
+			},
+			{
+				slug: "sheet",
+				sourceFile: "packages/basalt/src/components/sheet.tsx",
+				propsType: "SheetCloseProps",
+				surface: "SheetClose",
+			},
+			{
+				slug: "sheet",
+				sourceFile: "packages/basalt/src/components/sheet.tsx",
+				propsType: "SheetTitleProps",
+				surface: "SheetTitle",
+			},
+			{
+				slug: "sheet",
+				sourceFile: "packages/basalt/src/components/sheet.tsx",
+				propsType: "SheetDescriptionProps",
+				surface: "SheetDescription",
+			},
+			{
+				slug: "sheet",
+				sourceFile: "packages/basalt/src/components/sheet.tsx",
+				propsType: "SheetContentProps",
+				surface: "SheetContent",
+			},
+			{
+				slug: "sheet",
+				sourceFile: "packages/basalt/src/components/sheet.tsx",
+				propsType: "SheetHeaderProps",
+				surface: "SheetHeader",
+				allowEmpty: true,
+			},
+			{
+				slug: "sheet",
+				sourceFile: "packages/basalt/src/components/sheet.tsx",
+				propsType: "SheetFooterProps",
+				surface: "SheetFooter",
+				allowEmpty: true,
+			},
+			{
+				slug: "alert-dialog",
+				sourceFile: "packages/basalt/src/components/alert-dialog.tsx",
+				propsType: "AlertDialogProps",
+				surface: "AlertDialog",
+			},
+			{
+				slug: "alert-dialog",
+				sourceFile: "packages/basalt/src/components/alert-dialog.tsx",
+				propsType: "AlertDialogTriggerProps",
+				surface: "AlertDialogTrigger",
+			},
+			{
+				slug: "alert-dialog",
+				sourceFile: "packages/basalt/src/components/alert-dialog.tsx",
+				propsType: "AlertDialogPortalProps",
+				surface: "AlertDialogPortal",
+			},
+			{
+				slug: "alert-dialog",
+				sourceFile: "packages/basalt/src/components/alert-dialog.tsx",
+				propsType: "AlertDialogOverlayProps",
+				surface: "AlertDialogOverlay",
+			},
+			{
+				slug: "alert-dialog",
+				sourceFile: "packages/basalt/src/components/alert-dialog.tsx",
+				propsType: "AlertDialogContentProps",
+				surface: "AlertDialogContent",
+			},
+			{
+				slug: "alert-dialog",
+				sourceFile: "packages/basalt/src/components/alert-dialog.tsx",
+				propsType: "AlertDialogTitleProps",
+				surface: "AlertDialogTitle",
+			},
+			{
+				slug: "alert-dialog",
+				sourceFile: "packages/basalt/src/components/alert-dialog.tsx",
+				propsType: "AlertDialogDescriptionProps",
+				surface: "AlertDialogDescription",
+			},
+			{
+				slug: "alert-dialog",
+				sourceFile: "packages/basalt/src/components/alert-dialog.tsx",
+				propsType: "AlertDialogCancelProps",
+				surface: "AlertDialogCancel",
+			},
+			{
+				slug: "alert-dialog",
+				sourceFile: "packages/basalt/src/components/alert-dialog.tsx",
+				propsType: "AlertDialogActionProps",
+				surface: "AlertDialogAction",
+			},
+			{
+				slug: "alert-dialog",
+				sourceFile: "packages/basalt/src/components/alert-dialog.tsx",
+				propsType: "AlertDialogHeaderProps",
+				surface: "AlertDialogHeader",
+				allowEmpty: true,
+			},
+			{
+				slug: "alert-dialog",
+				sourceFile: "packages/basalt/src/components/alert-dialog.tsx",
+				propsType: "AlertDialogFooterProps",
+				surface: "AlertDialogFooter",
+				allowEmpty: true,
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(145);
+		expect(CATALOG_API_TARGETS).toHaveLength(174);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1018,6 +1198,12 @@ describe("catalog API generator contract", () => {
 			"Checkbox.Legend",
 			"Radio.Legend",
 			"Switch.Legend",
+			"DialogHeader",
+			"DialogFooter",
+			"SheetHeader",
+			"SheetFooter",
+			"AlertDialogHeader",
+			"AlertDialogFooter",
 		]);
 		const source = readFileSync("scripts/catalog-api.ts", "utf8");
 		expect(source).not.toMatch(/allowlist|propNames/);
@@ -1121,6 +1307,9 @@ describe("catalog API generator contract", () => {
 			"avatar",
 			"accordion",
 			"hover-card",
+			"dialog",
+			"sheet",
+			"alert-dialog",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -2186,6 +2375,41 @@ export interface WidgetProps {
 				"AccordionContent",
 			],
 			"hover-card": ["HoverCard", "HoverCardTrigger", "HoverCardContent"],
+			dialog: [
+				"Dialog",
+				"DialogTrigger",
+				"DialogPortal",
+				"DialogOverlay",
+				"DialogContent",
+				"DialogTitle",
+				"DialogDescription",
+				"DialogClose",
+				"DialogHeader",
+				"DialogFooter",
+			],
+			sheet: [
+				"Sheet",
+				"SheetTrigger",
+				"SheetClose",
+				"SheetTitle",
+				"SheetDescription",
+				"SheetContent",
+				"SheetHeader",
+				"SheetFooter",
+			],
+			"alert-dialog": [
+				"AlertDialog",
+				"AlertDialogTrigger",
+				"AlertDialogPortal",
+				"AlertDialogOverlay",
+				"AlertDialogContent",
+				"AlertDialogTitle",
+				"AlertDialogDescription",
+				"AlertDialogCancel",
+				"AlertDialogAction",
+				"AlertDialogHeader",
+				"AlertDialogFooter",
+			],
 		});
 	}, 60_000);
 
@@ -2195,7 +2419,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(84);
+		expect(Object.keys(generated)).toHaveLength(87);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -2296,7 +2520,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(84);
+		expect(Object.keys(generated)).toHaveLength(87);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -2418,7 +2642,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(84);
+		expect(Object.keys(generated)).toHaveLength(87);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -2489,7 +2713,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(84);
+		expect(Object.keys(generated)).toHaveLength(87);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2532,7 +2756,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(84);
+		expect(Object.keys(generated)).toHaveLength(87);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2584,7 +2808,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(84);
+		expect(Object.keys(generated)).toHaveLength(87);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3883,8 +4107,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(84);
-		expect(Object.keys(first)).toHaveLength(85);
+		expect(slugs).toHaveLength(87);
+		expect(Object.keys(first)).toHaveLength(88);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3964,7 +4188,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"a6f3600761c7bb1798ed2972615231f4d4c59ab9f010b6d0cd26c8dc7b5447c0",
+			"cc6c8ba1da5770ff8e75cb01c6943339e30bfc881729d9b40368d4aa3ee01fcf",
 		);
 	}, 60_000);
 

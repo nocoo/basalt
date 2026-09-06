@@ -73,11 +73,14 @@ import { provenanceFromLegacy } from "../../catalog-source";
 import { CONFIRM_DIALOG_EXAMPLES } from "../../examples/confirm-dialog";
 import { TOOLTIP_EXAMPLES } from "../../examples/tooltip";
 import { API as accordionApi } from "../../generated/catalog-api/accordion";
+import { API as alertDialogApi } from "../../generated/catalog-api/alert-dialog";
 import { API as collapsibleApi } from "../../generated/catalog-api/collapsible";
 import { API as confirmDialogApi } from "../../generated/catalog-api/confirm-dialog";
+import { API as dialogApi } from "../../generated/catalog-api/dialog";
 import { API as dropdownMenuApi } from "../../generated/catalog-api/dropdown-menu";
 import { API as hoverCardApi } from "../../generated/catalog-api/hover-card";
 import { API as popoverApi } from "../../generated/catalog-api/popover";
+import { API as sheetApi } from "../../generated/catalog-api/sheet";
 import { API as tooltipApi } from "../../generated/catalog-api/tooltip";
 
 function usage(name: string, from: string, sample: string, extraImports = ""): string {
@@ -295,26 +298,7 @@ export default function Example() {
 	);
 }`,
 			variants: [],
-			api: [
-				{
-					name: "Dialog",
-					props: [
-						{
-							name: "size",
-							type: '"sm" | "base" | "lg" | "xl"',
-							default: '"base"',
-							description: "Fixed desktop width. Overflowing content scrolls inside the panel.",
-						},
-						{
-							name: "disablePointerDismissal",
-							type: "boolean",
-							default: "false",
-							description: "When true, clicking outside does not close the dialog.",
-						},
-						{ name: "className", type: "string", description: "className" },
-					],
-				},
-			],
+			api: dialogApi,
 			provenance: provenanceFromLegacy({
 				repo: "kumo",
 				sha: "1159868dfe32",
@@ -690,22 +674,40 @@ export default function Example() {
 	},
 	"alert-dialog": {
 		docs: {
-			description: "Confirm destructive work. Not dismissible by clicking outside.",
-			usage: usage("AlertDialog", "@nocoo/basalt/components/alert-dialog", "<AlertDialog />"),
+			description:
+				"Confirm destructive work. Not dismissible by clicking outside. Forwards refs to native div, button, and heading elements.",
+			usage: `import {
+	AlertDialog,
+	AlertDialogAction,
+	AlertDialogCancel,
+	AlertDialogContent,
+	AlertDialogDescription,
+	AlertDialogTitle,
+	AlertDialogTrigger,
+} from "@nocoo/basalt/components/alert-dialog";
+import { Button } from "@nocoo/basalt/components/button";
+
+export default function Example() {
+	return (
+		<AlertDialog>
+			<AlertDialogTrigger asChild>
+				<Button variant="destructive">Delete Account</Button>
+			</AlertDialogTrigger>
+			<AlertDialogContent>
+				<AlertDialogTitle>Delete Account?</AlertDialogTitle>
+				<AlertDialogDescription>
+					This action cannot be undone. All your data will be permanently removed from our servers.
+				</AlertDialogDescription>
+				<div className="mt-8 flex justify-end gap-2">
+					<AlertDialogCancel>Cancel</AlertDialogCancel>
+					<AlertDialogAction>Delete Account</AlertDialogAction>
+				</div>
+			</AlertDialogContent>
+		</AlertDialog>
+	);
+}`,
 			variants: [],
-			api: [
-				{
-					name: "AlertDialog",
-					props: [
-						{
-							name: "size",
-							type: '"sm" | "base" | "lg" | "xl"',
-							default: '"base"',
-							description: "Fixed desktop width, shared with Dialog.",
-						},
-					],
-				},
-			],
+			api: alertDialogApi,
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: [
@@ -992,29 +994,66 @@ export default function Example() {
 	},
 	sheet: {
 		docs: {
-			description: "Side panel.",
-			usage: usage(
-				"Sheet",
-				"@nocoo/basalt/components/sheet",
-				'<Sheet><SheetTrigger asChild><Button variant="outline">Open</Button></SheetTrigger></Sheet>',
-			),
+			description:
+				"Side drawer panel anchored to a viewport edge. Content wraps a built-in Portal and Overlay and forwards refs to native div and button elements.",
+			usage: `import { Button } from "@nocoo/basalt/components/button";
+import {
+	Sheet,
+	SheetClose,
+	SheetContent,
+	SheetDescription,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "@nocoo/basalt/components/sheet";
+
+export default function Example() {
+	return (
+		<Sheet>
+			<SheetTrigger asChild>
+				<Button variant="outline">Open Sheet</Button>
+			</SheetTrigger>
+			<SheetContent side="right">
+				<SheetHeader>
+					<SheetTitle>Sheet Panel</SheetTitle>
+					<SheetDescription>Drawer content anchored to viewport edge.</SheetDescription>
+				</SheetHeader>
+				<div className="mt-8 flex justify-end">
+					<SheetClose asChild>
+						<Button variant="outline">Close</Button>
+					</SheetClose>
+				</div>
+			</SheetContent>
+		</Sheet>
+	);
+}`,
 			variants: [],
-			api: [
-				{
-					name: "Sheet",
-					props: [{ name: "className", type: "string", description: "className" }],
-				},
-			],
+			api: sheetApi,
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: [
 			{
 				id: catalogScenarioId("sheet", "default"),
 				title: "Default",
-				code: `import { Sheet } from "@nocoo/basalt/components/sheet";
+				code: `import { Button } from "@nocoo/basalt/components/button";
+import {
+	Sheet,
+	SheetContent,
+	SheetTitle,
+	SheetTrigger,
+} from "@nocoo/basalt/components/sheet";
 
 export default function Example() {
-	return <Sheet><SheetTrigger asChild><Button variant="outline">Open</Button></SheetTrigger></Sheet>;
+	return (
+		<Sheet>
+			<SheetTrigger asChild>
+				<Button variant="outline">Open</Button>
+			</SheetTrigger>
+			<SheetContent side="right">
+				<SheetTitle>Panel</SheetTitle>
+			</SheetContent>
+		</Sheet>
+	);
 }`,
 				render: () => (
 					<Sheet>
