@@ -606,6 +606,40 @@ describe("DatePicker", () => {
 		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-15", to: "2024-01-17" });
 	});
 
+	it("orders dates correctly when clicking a later date before an earlier date and closes picker", async () => {
+		const onRangeChange = vi.fn();
+		const { container } = render(
+			<form>
+				<DatePicker
+					mode="range"
+					name="stay"
+					defaultRangeValue={{ from: "2024-01-10", to: "2024-01-12" }}
+					onRangeChange={onRangeChange}
+					aria-label="Stay"
+				/>
+			</form>,
+		);
+		const form = container.querySelector("form") as HTMLFormElement;
+		const input = container.querySelector('input[name="stay"]') as HTMLInputElement;
+
+		fireEvent.click(screen.getByRole("button", { name: /Stay/ }));
+		// First click sets from (starting fresh range because current was complete)
+		fireEvent.click(await screen.findByRole("button", { name: "2024-01-20" }));
+		expect(onRangeChange).toHaveBeenLastCalledWith({ from: "2024-01-20" });
+
+		// Second click earlier date (2024-01-14 < 2024-01-20) -> should order as { from: "2024-01-14", to: "2024-01-20" }
+		fireEvent.click(screen.getByRole("button", { name: "2024-01-14" }));
+		expect(onRangeChange).toHaveBeenLastCalledWith({ from: "2024-01-14", to: "2024-01-20" });
+
+		// Check form input and FormData
+		expect(input.value).toBe("2024-01-14/2024-01-20");
+		const data = new FormData(form);
+		expect(data.get("stay")).toBe("2024-01-14/2024-01-20");
+
+		// Dialog should be closed
+		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+	});
+
 	it("focuses the range end when opened", async () => {
 		render(
 			<DatePicker
@@ -721,7 +755,130 @@ describe("DatePicker", () => {
 		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-13", to: "2024-01-14" });
 	});
 
+	it("keeps controlled rangeValue and form state unchanged when applying string preset without state update", async () => {
+		const onRangeChange = vi.fn();
+		const { container } = render(
+			<form>
+				<DatePicker
+					mode="range"
+					name="booking"
+					rangeValue={{ from: "2024-01-10", to: "2024-01-12" }}
+					presets={[{ label: "Single Day", value: "2024-01-15" }]}
+					onRangeChange={onRangeChange}
+					aria-label="Booking"
+				/>
+			</form>,
+		);
+		const form = container.querySelector("form") as HTMLFormElement;
+		const input = container.querySelector('input[name="booking"]') as HTMLInputElement;
+		expect(input.value).toBe("2024-01-10/2024-01-12");
+
+		fireEvent.click(screen.getByRole("button", { name: /Booking/ }));
+		fireEvent.click(await screen.findByRole("button", { name: "Single Day" }));
+
+		expect(onRangeChange).toHaveBeenCalledTimes(1);
+		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-15", to: "2024-01-15" });
+		expect(input.value).toBe("2024-01-10/2024-01-12");
+		const data = new FormData(form);
+		expect(data.get("booking")).toBe("2024-01-10/2024-01-12");
+	});
+
+	it("keeps controlled rangeValue and form state unchanged when applying object preset without state update", async () => {
+		const onRangeChange = vi.fn();
+		const { container } = render(
+			<form>
+				<DatePicker
+					mode="range"
+					name="booking"
+					rangeValue={{ from: "2024-01-10", to: "2024-01-12" }}
+					presets={[{ label: "Next Week", value: { from: "2024-01-20", to: "2024-01-25" } }]}
+					onRangeChange={onRangeChange}
+					aria-label="Booking"
+				/>
+			</form>,
+		);
+		const form = container.querySelector("form") as HTMLFormElement;
+		const input = container.querySelector('input[name="booking"]') as HTMLInputElement;
+		expect(input.value).toBe("2024-01-10/2024-01-12");
+
+		fireEvent.click(screen.getByRole("button", { name: /Booking/ }));
+		fireEvent.click(await screen.findByRole("button", { name: "Next Week" }));
+
+		expect(onRangeChange).toHaveBeenCalledTimes(1);
+		expect(onRangeChange).toHaveBeenCalledWith({ from: "2024-01-20", to: "2024-01-25" });
+		expect(input.value).toBe("2024-01-10/2024-01-12");
+		const data = new FormData(form);
+		expect(data.get("booking")).toBe("2024-01-10/2024-01-12");
+	});
+
+	it("rejects an unselectable string preset in range mode without triggering callback or value change", async () => {
+		const onRangeChange = vi.fn();
+		const { container } = render(
+			<form>
+				<DatePicker
+					mode="range"
+					name="booking"
+					defaultRangeValue={{ from: "2024-01-10", to: "2024-01-12" }}
+					isDisabledDate={(iso) => iso === "2024-01-15"}
+					presets={[{ label: "Holiday", value: "2024-01-15" }]}
+					onRangeChange={onRangeChange}
+					aria-label="Booking"
+				/>
+			</form>,
+		);
+		const input = container.querySelector('input[name="booking"]') as HTMLInputElement;
+		fireEvent.click(screen.getByRole("button", { name: /Booking/ }));
+		fireEvent.click(await screen.findByRole("button", { name: "Holiday" }));
+
+		expect(onRangeChange).not.toHaveBeenCalled();
+		expect(input.value).toBe("2024-01-10/2024-01-12");
+	});
+
+	it("rejects an object preset whose from is valid but to exceeds max", async () => {
+		const onRangeChange = vi.fn();
+		const { container } = render(
+			<form>
+				<DatePicker
+					mode="range"
+					name="booking"
+					defaultRangeValue={{ from: "2024-01-10", to: "2024-01-12" }}
+					max="2024-01-20"
+					presets={[{ label: "Cross Border", value: { from: "2024-01-15", to: "2024-01-25" } }]}
+					onRangeChange={onRangeChange}
+					aria-label="Booking"
+				/>
+			</form>,
+		);
+		const input = container.querySelector('input[name="booking"]') as HTMLInputElement;
+		fireEvent.click(screen.getByRole("button", { name: /Booking/ }));
+		fireEvent.click(await screen.findByRole("button", { name: "Cross Border" }));
+
+		expect(onRangeChange).not.toHaveBeenCalled();
+		expect(input.value).toBe("2024-01-10/2024-01-12");
+	});
+
 	it("forwards and cleans up external refs (object, callback, React 19 cleanup)", () => {
+		// 1. Plain callback ref without cleanup
+		const callbackEvents: string[] = [];
+		const plainCallback = (el: HTMLInputElement | null) => {
+			callbackEvents.push(`call:${el ? el.tagName : "null"}`);
+		};
+		const { rerender: rerenderPlain, unmount: unmountPlain } = render(
+			<DatePicker ref={plainCallback} aria-label="Plain Callback Date" />,
+		);
+		expect(callbackEvents).toEqual(["call:INPUT"]);
+		// Swap callback ref
+		const secondEvents: string[] = [];
+		const secondCallback = (el: HTMLInputElement | null) => {
+			secondEvents.push(`call2:${el ? el.tagName : "null"}`);
+		};
+		rerenderPlain(<DatePicker ref={secondCallback} aria-label="Plain Callback Date" />);
+		expect(callbackEvents).toEqual(["call:INPUT", "call:null"]);
+		expect(secondEvents).toEqual(["call2:INPUT"]);
+		unmountPlain();
+		expect(secondEvents).toEqual(["call2:INPUT", "call2:null"]);
+
+		// 2. React 19 callback with cleanup function
 		let cleanupCalled = false;
 		let attachedElement: HTMLInputElement | null = null;
 		const callbackRef = (el: HTMLInputElement | null) => {
@@ -730,12 +887,25 @@ describe("DatePicker", () => {
 				cleanupCalled = true;
 			};
 		};
-
 		const { unmount } = render(<DatePicker ref={callbackRef} aria-label="Cleanup Date" />);
 		expect(attachedElement).not.toBeNull();
 		expect((attachedElement as unknown as HTMLElement).tagName).toBe("INPUT");
 		unmount();
 		expect(cleanupCalled).toBe(true);
+
+		// 3. Object ref clearing on unmount and swapping
+		const objRef1 = React.createRef<HTMLInputElement>();
+		const objRef2 = React.createRef<HTMLInputElement>();
+		const { rerender: rerenderObj, unmount: unmountObj } = render(
+			<DatePicker ref={objRef1} aria-label="Object Date" />,
+		);
+		expect(objRef1.current?.tagName).toBe("INPUT");
+		const originalInput = objRef1.current;
+		rerenderObj(<DatePicker ref={objRef2} aria-label="Object Date" />);
+		expect(objRef1.current).toBeNull();
+		expect(objRef2.current).toBe(originalInput);
+		unmountObj();
+		expect(objRef2.current).toBeNull();
 	});
 
 	it("focuses visible trigger and marks aria-invalid when empty required form submits invalid", () => {
@@ -802,6 +972,258 @@ describe("DatePicker", () => {
 		fireEvent.invalid(hiddenInput);
 		expect(document.activeElement).toBe(otherButton);
 		otherButton.remove();
+	});
+
+	it("supports booleanish aria-invalid variants and reflects destructive styling and description", () => {
+		const { rerender } = render(
+			<DatePicker aria-label="Valid Date" aria-invalid={false} aria-describedby="desc" />,
+		);
+		let trigger = screen.getByRole("button", { name: "Valid Date" });
+		expect(trigger).not.toHaveClass("border-basalt-destructive");
+		expect(trigger).toHaveAttribute("aria-describedby", "desc");
+		expect(trigger).toHaveAttribute("aria-invalid", "false");
+
+		rerender(<DatePicker aria-label="Valid Date String" aria-invalid="false" />);
+		trigger = screen.getByRole("button", { name: "Valid Date String" });
+		expect(trigger).not.toHaveClass("border-basalt-destructive");
+		expect(trigger).toHaveAttribute("aria-invalid", "false");
+
+		rerender(<DatePicker aria-label="Invalid Date Bool" aria-invalid={true} />);
+		trigger = screen.getByRole("button", { name: "Invalid Date Bool" });
+		expect(trigger).toHaveClass("border-basalt-destructive");
+		expect(trigger).toHaveAttribute("aria-invalid", "true");
+
+		rerender(<DatePicker aria-label="Invalid Date Str" aria-invalid="true" />);
+		trigger = screen.getByRole("button", { name: "Invalid Date Str" });
+		expect(trigger).toHaveClass("border-basalt-destructive");
+		expect(trigger).toHaveAttribute("aria-invalid", "true");
+
+		rerender(<DatePicker aria-label="Grammar Date" aria-invalid="grammar" />);
+		trigger = screen.getByRole("button", { name: "Grammar Date" });
+		expect(trigger).toHaveClass("border-basalt-destructive");
+		expect(trigger).toHaveAttribute("aria-invalid", "grammar");
+
+		rerender(<DatePicker aria-label="Spelling Date" aria-invalid="spelling" />);
+		trigger = screen.getByRole("button", { name: "Spelling Date" });
+		expect(trigger).toHaveClass("border-basalt-destructive");
+		expect(trigger).toHaveAttribute("aria-invalid", "spelling");
+	});
+
+	it("preserves controlled value and form data on normal and cancelled reset without extra onChange notifications", async () => {
+		const onSingleChange = vi.fn();
+		const onRangeChange = vi.fn();
+
+		function ControlledResetFixture({
+			cancel,
+			initialSingle = "2026-09-01",
+			initialRange = { from: "2026-09-01", to: "2026-09-03" },
+		}: {
+			cancel?: boolean;
+			initialSingle?: string;
+			initialRange?: { from: string; to?: string };
+		}) {
+			const [single, setSingle] = React.useState(initialSingle);
+			const [range, setRange] = React.useState(initialRange);
+			return (
+				<form
+					id="controlled-form"
+					onReset={(e) => {
+						if (cancel) {
+							e.preventDefault();
+						}
+					}}
+				>
+					<DatePicker
+						value={single}
+						onChange={(next) => {
+							onSingleChange(next);
+							setSingle(next);
+						}}
+						name="single_date"
+						aria-label="Controlled Single"
+					/>
+					<DatePicker
+						mode="range"
+						rangeValue={range}
+						onRangeChange={(next) => {
+							onRangeChange(next);
+							setRange(next);
+						}}
+						name="range_date"
+						aria-label="Controlled Range"
+					/>
+					<button type="reset">Reset Form</button>
+				</form>
+			);
+		}
+
+		// Update controlled values through actual user selection
+		const { rerender } = render(<ControlledResetFixture />);
+		const singleTrigger = screen.getByRole("button", { name: /Controlled Single/ });
+		const rangeTrigger = screen.getByRole("button", { name: /Controlled Range/ });
+		const singleInput = document.querySelector('input[name="single_date"]') as HTMLInputElement;
+		const rangeInput = document.querySelector('input[name="range_date"]') as HTMLInputElement;
+
+		// Select day 2026-09-10 in single picker
+		fireEvent.click(singleTrigger);
+		fireEvent.click(screen.getByRole("button", { name: "2026-09-10" }));
+		expect(onSingleChange).toHaveBeenCalledWith("2026-09-10");
+		expect(singleInput.value).toBe("2026-09-10");
+
+		// Select range 2026-09-10 to 2026-09-15 in range picker
+		fireEvent.click(rangeTrigger);
+		fireEvent.click(screen.getByRole("button", { name: "2026-09-10" }));
+		fireEvent.click(screen.getByRole("button", { name: "2026-09-15" }));
+		expect(onRangeChange).toHaveBeenCalledWith({ from: "2026-09-10", to: "2026-09-15" });
+		expect(rangeInput.value).toBe("2026-09-10/2026-09-15");
+
+		const singleCallsBefore = onSingleChange.mock.calls.length;
+		const rangeCallsBefore = onRangeChange.mock.calls.length;
+
+		// Normal reset: form reset fires, parent state and input values remain, no extra onChange
+		fireEvent.click(screen.getByRole("button", { name: "Reset Form" }));
+		await new Promise((r) => setTimeout(r, 20));
+		expect(singleInput.value).toBe("2026-09-10");
+		expect(rangeInput.value).toBe("2026-09-10/2026-09-15");
+		const normalFormData = new FormData(
+			document.getElementById("controlled-form") as HTMLFormElement,
+		);
+		expect(normalFormData.get("single_date")).toBe("2026-09-10");
+		expect(normalFormData.get("range_date")).toBe("2026-09-10/2026-09-15");
+		expect(onSingleChange.mock.calls.length).toBe(singleCallsBefore);
+		expect(onRangeChange.mock.calls.length).toBe(rangeCallsBefore);
+
+		// Cancelled reset: form reset cancelled via preventDefault, values remain, no extra onChange
+		rerender(
+			<ControlledResetFixture
+				cancel
+				initialSingle="2026-09-10"
+				initialRange={{ from: "2026-09-10", to: "2026-09-15" }}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Reset Form" }));
+		await new Promise((r) => setTimeout(r, 20));
+		expect(singleInput.value).toBe("2026-09-10");
+		expect(rangeInput.value).toBe("2026-09-10/2026-09-15");
+		const cancelledFormData = new FormData(
+			document.getElementById("controlled-form") as HTMLFormElement,
+		);
+		expect(cancelledFormData.get("single_date")).toBe("2026-09-10");
+		expect(cancelledFormData.get("range_date")).toBe("2026-09-10/2026-09-15");
+		expect(onSingleChange.mock.calls.length).toBe(singleCallsBefore);
+		expect(onRangeChange.mock.calls.length).toBe(rangeCallsBefore);
+	});
+
+	it("switches form owner via form attribute and resets only when matching form resets", async () => {
+		function FormOwnerFixture({ formId }: { formId: string }) {
+			return (
+				<div>
+					<form id="form-a">
+						<button type="reset" id="reset-a">
+							Reset A
+						</button>
+					</form>
+					<form id="form-b">
+						<button type="reset" id="reset-b">
+							Reset B
+						</button>
+					</form>
+					<DatePicker
+						form={formId}
+						defaultValue="2026-09-01"
+						name="date"
+						aria-label="Form Owner Date"
+					/>
+				</div>
+			);
+		}
+
+		const { rerender } = render(<FormOwnerFixture formId="form-a" />);
+		const trigger = screen.getByRole("button", { name: /Form Owner Date/ });
+		const hiddenInput = document.querySelector('input[name="date"]') as HTMLInputElement;
+
+		// Select a different date
+		fireEvent.click(trigger);
+		fireEvent.click(screen.getByRole("button", { name: "2026-09-05" }));
+		expect(hiddenInput.value).toBe("2026-09-05");
+
+		// Reset form B while bound to form A: does not reset
+		fireEvent.click(screen.getByRole("button", { name: "Reset B" }));
+		await new Promise((r) => setTimeout(r, 20));
+		expect(hiddenInput.value).toBe("2026-09-05");
+
+		// Reset form A: restores default
+		fireEvent.click(screen.getByRole("button", { name: "Reset A" }));
+		await waitFor(() => {
+			expect(hiddenInput.value).toBe("2026-09-01");
+		});
+
+		// Switch form owner to form B
+		rerender(<FormOwnerFixture formId="form-b" />);
+		fireEvent.click(trigger);
+		fireEvent.click(screen.getByRole("button", { name: "2026-09-08" }));
+		expect(hiddenInput.value).toBe("2026-09-08");
+
+		// Reset form A while bound to form B: does not reset
+		fireEvent.click(screen.getByRole("button", { name: "Reset A" }));
+		await new Promise((r) => setTimeout(r, 20));
+		expect(hiddenInput.value).toBe("2026-09-08");
+
+		// Reset form B: restores default
+		fireEvent.click(screen.getByRole("button", { name: "Reset B" }));
+		await waitFor(() => {
+			expect(hiddenInput.value).toBe("2026-09-01");
+		});
+	});
+
+	it("cancels pending reset timer when form owner changes immediately after reset event", async () => {
+		function FormOwnerSwitchFixture({ formId }: { formId: string }) {
+			return (
+				<div>
+					<form id="form-a">
+						<button type="reset" id="reset-a">
+							Reset A
+						</button>
+					</form>
+					<form id="form-b">
+						<button type="reset" id="reset-b">
+							Reset B
+						</button>
+					</form>
+					<DatePicker
+						form={formId}
+						defaultValue="2026-09-01"
+						name="date"
+						aria-label="Pending Switch Date"
+					/>
+				</div>
+			);
+		}
+
+		const { rerender } = render(<FormOwnerSwitchFixture formId="form-a" />);
+		const trigger = screen.getByRole("button", { name: /Pending Switch Date/ });
+		const hiddenInput = document.querySelector('input[name="date"]') as HTMLInputElement;
+
+		// Select 2026-09-05
+		fireEvent.click(trigger);
+		fireEvent.click(screen.getByRole("button", { name: "2026-09-05" }));
+		expect(hiddenInput.value).toBe("2026-09-05");
+
+		// Fire reset on Form A, but immediately switch form owner to form-b in the same tick
+		fireEvent.click(screen.getByRole("button", { name: "Reset A" }));
+		rerender(<FormOwnerSwitchFixture formId="form-b" />);
+
+		// Wait for the setTimeout(0) timer from Reset A to have fired
+		await new Promise((r) => setTimeout(r, 20));
+
+		// Because form owner changed before timer execution, disposed cancelled timer on old owner A
+		expect(hiddenInput.value).toBe("2026-09-05");
+
+		// Now resetting form-b resets the datepicker
+		fireEvent.click(screen.getByRole("button", { name: "Reset B" }));
+		await waitFor(() => {
+			expect(hiddenInput.value).toBe("2026-09-01");
+		});
 	});
 
 	it("restores range value or keeps changed range on cancelled reset with parent state update", async () => {

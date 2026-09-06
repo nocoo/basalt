@@ -352,4 +352,139 @@ describe("Switch", () => {
 		unmountObj();
 		expect(objRef.current).toBeNull();
 	});
+
+	it("switches form owner via form attribute and resets only matching form", async () => {
+		function FormOwnerGroup({ formId }: { formId: string }) {
+			return (
+				<div>
+					<form id="form-a">
+						<button type="reset" id="reset-a">
+							Reset A
+						</button>
+					</form>
+					<form id="form-b">
+						<button type="reset" id="reset-b">
+							Reset B
+						</button>
+					</form>
+					<Switch.Group form={formId} defaultValue={["a"]} aria-label="Group Owner">
+						<Switch.Item value="a" name="choice" form={formId}>
+							Alpha
+						</Switch.Item>
+						<Switch.Item value="b" name="choice" form={formId}>
+							Beta
+						</Switch.Item>
+					</Switch.Group>
+				</div>
+			);
+		}
+
+		const { rerender } = render(<FormOwnerGroup formId="form-a" />);
+		const alpha = screen.getByRole("switch", { name: "Alpha" });
+		const beta = screen.getByRole("switch", { name: "Beta" });
+		const formA = document.getElementById("form-a") as HTMLFormElement;
+		const formB = document.getElementById("form-b") as HTMLFormElement;
+
+		expect(new FormData(formA).getAll("choice")).toEqual(["a"]);
+		expect(new FormData(formB).getAll("choice")).toEqual([]);
+
+		fireEvent.click(beta);
+		fireEvent.click(alpha);
+		expect(alpha).not.toBeChecked();
+		expect(beta).toBeChecked();
+		expect(new FormData(formA).getAll("choice")).toEqual(["b"]);
+
+		// Reset form B while bound to A: does nothing
+		fireEvent.click(screen.getByRole("button", { name: "Reset B" }));
+		await new Promise((r) => setTimeout(r, 20));
+		expect(alpha).not.toBeChecked();
+		expect(beta).toBeChecked();
+		expect(new FormData(formA).getAll("choice")).toEqual(["b"]);
+
+		// Reset form A: resets to default
+		fireEvent.click(screen.getByRole("button", { name: "Reset A" }));
+		await waitFor(() => {
+			expect(alpha).toBeChecked();
+			expect(beta).not.toBeChecked();
+		});
+		expect(new FormData(formA).getAll("choice")).toEqual(["a"]);
+
+		// Switch form owner to B
+		rerender(<FormOwnerGroup formId="form-b" />);
+		expect(new FormData(formA).getAll("choice")).toEqual([]);
+		expect(new FormData(formB).getAll("choice")).toEqual(["a"]);
+
+		fireEvent.click(beta);
+		fireEvent.click(alpha);
+		expect(alpha).not.toBeChecked();
+		expect(beta).toBeChecked();
+		expect(new FormData(formB).getAll("choice")).toEqual(["b"]);
+
+		// Reset form A while bound to B: does nothing
+		fireEvent.click(screen.getByRole("button", { name: "Reset A" }));
+		await new Promise((r) => setTimeout(r, 20));
+		expect(alpha).not.toBeChecked();
+		expect(beta).toBeChecked();
+		expect(new FormData(formB).getAll("choice")).toEqual(["b"]);
+
+		// Reset form B: resets to default
+		fireEvent.click(screen.getByRole("button", { name: "Reset B" }));
+		await waitFor(() => {
+			expect(alpha).toBeChecked();
+			expect(beta).not.toBeChecked();
+		});
+		expect(new FormData(formB).getAll("choice")).toEqual(["a"]);
+	});
+
+	it("cancels pending reset timer when form owner changes immediately after reset event", async () => {
+		function FormOwnerSwitchGroup({ formId }: { formId: string }) {
+			return (
+				<div>
+					<form id="form-a">
+						<button type="reset" id="reset-a">
+							Reset A
+						</button>
+					</form>
+					<form id="form-b">
+						<button type="reset" id="reset-b">
+							Reset B
+						</button>
+					</form>
+					<Switch.Group form={formId} defaultValue={["a"]} aria-label="Switch Group Owner">
+						<Switch.Item value="a" name="choice" form={formId}>
+							Alpha
+						</Switch.Item>
+						<Switch.Item value="b" name="choice" form={formId}>
+							Beta
+						</Switch.Item>
+					</Switch.Group>
+				</div>
+			);
+		}
+
+		const { rerender } = render(<FormOwnerSwitchGroup formId="form-a" />);
+		const alpha = screen.getByRole("switch", { name: "Alpha" });
+		const beta = screen.getByRole("switch", { name: "Beta" });
+
+		fireEvent.click(beta);
+		fireEvent.click(alpha);
+		expect(alpha).not.toBeChecked();
+		expect(beta).toBeChecked();
+
+		// Fire reset on Form A, but immediately switch form owner to form-b in the same tick
+		fireEvent.click(screen.getByRole("button", { name: "Reset A" }));
+		rerender(<FormOwnerSwitchGroup formId="form-b" />);
+
+		await new Promise((r) => setTimeout(r, 20));
+		// Disposed cancelled timer on old owner A, value stays "b"
+		expect(alpha).not.toBeChecked();
+		expect(beta).toBeChecked();
+
+		// Now resetting form-b resets the group
+		fireEvent.click(screen.getByRole("button", { name: "Reset B" }));
+		await waitFor(() => {
+			expect(alpha).toBeChecked();
+			expect(beta).not.toBeChecked();
+		});
+	});
 });
