@@ -17,7 +17,7 @@
 | 01 | [01-plan-2-0.md](./01-plan-2-0.md) | **2.0 架构**：包、CSS、6.2 出口、发布门、观感冻结 |
 | 02 | [02-implementation.md](./02-implementation.md) | **2.0 实现**：placeholder 先行、逐控件确认、先小后大、图表 kit、原子化提交 |
 | 03 | [03-maturity-program.md](./03-maturity-program.md) | **生产成熟度执行台账**：Herdr 分段调度、差距闭环、验收状态、发布就绪 |
-| 04 | [04-systematic-library-review.md](./04-systematic-library-review.md) | **系统审查与实施台账**：P1、P2 已验收，包含 99 页 API、345 段用法/场景与随包接入指南；接续 P3 基础样式与输入，后续含复杂 Skeleton/Table Library、Example 与下游复用 |
+| 04 | [04-systematic-library-review.md](./04-systematic-library-review.md) | **系统审查与实施台账**：P1、P2 已验收；P3 的 scoped 样式与 A/B 浏览器门已验收，接续输入交互；后续含复杂 Skeleton/Table Library、Example 与下游复用 |
 
 ## 历史
 

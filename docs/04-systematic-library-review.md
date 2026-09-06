@@ -682,7 +682,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
 | P2 | 公共接口与文档：04、05、06a/b1/b2；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 已验收 | `ef2bd65`–`2b8f088`：99 页 API、99 Usage、246 场景、随包 registry/指南及正式 tarball 编译门；120 项旧接口契约与 5 项真实 recipe 浏览器检查通过，详见 12.4 |
-| P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
+| P3 | 基础样式与输入：07、08a/b/c、09；C01–C05/C19 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 实施中 | 07 已验收：`8aa47f0`、`4a75211`、`d17310e`、`10bedff` 关闭 C02/C19 并接入正式 A/B 浏览器门；接续 08a/b/c 与 09 |
 | P4 | 浮层与语义：10a/b/c/d/e、11a/b、12a/b；C06–C11/C16/C17/C18/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
 | P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 待调度 | — |
@@ -818,6 +818,24 @@ P2 范围关闭如下：
 
 P2 的 D01–D06 已整体验收。C01–C18、Example 与新增公共能力按 P3–P10 继续，不把文档完整性验收等同于运行时问题已经解决。pi 服务错误与重复读取循环由监控识别，保留工作区并恢复原会话后按原子组续跑；模型和 pane 保持原配置。下一阶段为 P3。
 
+#### P3 验收记录（实施中，2026-09-06）
+
+07 的基础实现提交为 `8aa47f0`。Tailwind 与 standalone 共用低优先级 `.basalt-ui` base，由组件自身和 portal 表面携带 scope，修正 box sizing、原生控件字体/边框、链接、列表等默认样式。包内新增内部 `base.css`，三个公共 CSS 出口保持原契约。类名候选扫描改为 TypeScript AST，注释引号不再截断 JSX 与模板中的实际 utility；INTEGRATION 及随包镜像同步说明。
+
+主 agent 使用真实安装 tarball 的两个仓外工程验证 **standalone 7/7、Tailwind 6/6**，其中共用 **6 组计算样式逐项一致**，覆盖表单控件、Button/asChild、Table/LayerCard、Accordion/MenuBar 和真实 Dialog Portal；standalone 另与无样式 iframe 比较原生宿主。Table 保留自身的 `border-separate` 与零 spacing，弹层测量等待入场动画结束。类名提取独立控制 **5/5**；Accordion/Tabs/Button/Toggle/Slider 对原始 `e61efc1` 的 props/ref/key 契约 **5/5**。提交后绑定的 **117 份实际 JS/CSS 产物全部不变**，公共基线与指南镜像验证通过。正常 hooks 为 **177 文件、1,509 测试**。
+
+证据：`p3-css-steady-standalone.json`、`p3-css-steady-tailwind.json`、`p3-07-runtime-parity.json`、`p3-class-candidates-controls.json`、`p3-07-public-props-final.log`、`p3-07-runtime-final-binding.json`、`p3-07-base-commit-evidence.json`。这些是已执行的代表性独立验收。
+
+`4a75211` 将真实控件浏览器回归接入正式 A/B consumer，保留原 root-only 入口、依赖与解析边界，另构建 granular 几何页面。主 agent 在独立源码快照上执行两条真实 CLI，包构建、tarball 安装、类型检查、生产构建及 Chromium 断言均通过，**39 项 Basalt 结果逐项一致**。实际给消费者 Input 注入 `content-box` 后，CLI 因 **346px ≠ 320px** 非零退出；浏览器、profile、临时目录与监听端口均已清理。检查脚本、fixture 等 **12 个文件**与最终提交哈希一致。正常 hooks 为 **177 文件、1,510 测试**。证据：`p3-07-consumer-result.json`、`p3-07-formal-negative.json`、`p3-07-consumer-final-binding.json`、`p3-07-consumer-commit-evidence.json`。现有 CI 的 A/B 命令会执行此门，本轮没有推送或远端 CI 结果。
+
+扩大真实 tarball 抽查后，又确认 C02 的 styled surface 遗漏：320px 容器中的 Banner 宽 **352px**；Empty 高 **96px**，Tailwind 为 **44px**；PageHeader 高 **80px**，Tailwind 为 **56px**；DescriptionList 保留 `dd` 的 **40px** 左缩进，CodeBlock 的 `pre` 有 **14px** 上下外边距。修复前对照为 `p3-css-surfaces-before.json`。`d17310e` 为 **21 个组件模块**补齐自身 styled root 的作用域，并扩展 `pre/dl/dd/menu` 的 base 和两条正式 consumer；没有改动其交互、children 或公共参数。
+
+进一步核对实际 `<Text as="h2">` 的默认 body 字重，发现 standalone 为 **700**、Tailwind 为 **400**，此前显式 heading variant 的样本没有覆盖这个分支。独立修正 `10bedff` 补 scoped heading 的字号/字重继承；正式 A/B 同时断言默认 body 为 400、显式 heading 保持 600。证据：`p3-css-surfaces-typography-current.json`。
+
+最终 tarball 的两个实际安装工程通过 **8/8 扩展样式对照**（含默认/显式 heading 字重）与此前 **standalone 7/7、Tailwind 6/6** 几何回归，宿主原生样式和真实 Portal 同时通过；主 agent 查看了前后截图。绑定最终 `10bedff` 的 **230 份 JS/CSS/声明均一致**，其中 **113 份声明与 07 consumer 阶段逐字节不变**。两笔提交均经过正常 hooks，**177 文件、1,510 测试**、typecheck/lint/gitleaks 通过，扩展后的正式 A/B consumer 通过。证据：`p3-css-surfaces-typography-final.json`、`p3-css-surfaces-final-standalone.log`、`p3-css-surfaces-final-tailwind.log`、`p3-surfaces-final-binding.json`、`p3-07-surfaces-commit-evidence.json`、`p3-07-heading-commit-evidence.json`。
+
+07 的 C02/C19 已关闭。这里的样式抽查不等同于 99 个组件的完整行为及可访问性验收；08a/b/c、09 和后续阶段继续按各自契约验证。
+
 ### 12.5 实施中追加的问题
 
 #### C16 · P2 · 内置 Portal 截断 Content 的 forceMount 契约【浏览器＋源码；待 P4 修正】
@@ -841,3 +859,11 @@ P4 以独立 10d 提交修正 Popover 的子元素组合，验证默认与 asChi
 [toast.tsx](../packages/basalt/src/components/toast.tsx) 将 `icon: false` 原样传给 Sonner；当前 Sonner 会把 false 当作未指定图标，继续使用状态默认图标。`/ui/toast` 的 “No icon” 按钮实际仍显示绿色勾选图标，和该示例及原有接口说明不符。
 
 主 agent 在真实 Library 上检查 **11 条**：实际 “No icon” 按钮及 success/error/warning/info 的 false 选项共 **5 条失败**；default 的 false 选项与五种自定义图标共 **6 条通过**，无页面错误。证据：`p2-toast-icon-before.json`、`p2-toast-hidden-icon-before.png`。P2 的 Toast 文档如实记录当前限制；P4 以独立 10e 修正传递到 Sonner 的隐藏值，验证默认、自定义、隐藏三种路径，不改变其他通知选项和函数签名。
+
+#### C19 · P1 · 类名扫描受注释引号干扰，漏生成真实 standalone utility【已于 P3 修正】
+
+[class-candidates.ts](../scripts/class-candidates.ts) 用简单引号正则扫描整个 TypeScript 源码，没有区分注释、JSX、字符串及模板片段。JSDoc 中的撇号、反引号或双引号可改变后续匹配边界，导致真实 className 中的类漏掉。P2 仅修改文档也会影响生成 CSS，除了额外无用类，还可能丢失已有样式。
+
+主 agent 对 `ac5e5a0` 的 [CommandShortcut](../packages/basalt/src/components/command-palette.tsx) 实际源码调用该提取器：字面量中的 `ml-auto`、`tracking-widest` 均未提取。尝试改写前置 JSDoc 仍不能可靠修复，因此不采用修改正文或恢复旧生成文件的办法。证据：`p3-class-candidates-before.json`。P3/07 增加语法可靠的类名提取与回归，覆盖注释、JSX 属性、模板静态片段、插值内字符串及原有真实控件，重建后用实际消费 CSS 验证。
+
+修复为 `8aa47f0`，持续浏览器回归为 `4a75211`：实际 CommandShortcut 的右对齐与 `letter-spacing = font-size × 0.1` 在两条生产 consumer 中通过；独立提取控制 5/5，仓库单测覆盖注释和模板片段，详见 12.4。
