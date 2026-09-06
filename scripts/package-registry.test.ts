@@ -282,6 +282,8 @@ describe("package registry generator and AI package assets", () => {
 			);
 		});
 
+		// Full isolated tree copy, registry generation, freshness check and baseline comparison
+		// takes ~5.6s - 6.7s under coverage instrumentation, exceeding default 5s budget.
 		it("syncAiPackageAssets correctly synchronizes bumped version while keeping public-api-baseline byte-identical", () => {
 			// Copy public-api-baseline into isolated fixture to verify byte-invariance
 			const fixture = createIsolatedFixture((dir) => {
@@ -323,6 +325,6 @@ describe("package registry generator and AI package assets", () => {
 			} finally {
 				rmSync(fixture, { recursive: true, force: true });
 			}
-		});
+		}, 15000);
 	});
 });
