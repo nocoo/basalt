@@ -110,6 +110,7 @@ export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
 			"ACCENT_SWATCHES",
 			"accentForeground",
 			"AccentProvider",
+			"AccentProviderProps",
 			"AccentSwatch",
 			"accentSwatchById",
 			"applyAccent",

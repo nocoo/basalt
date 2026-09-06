@@ -175,13 +175,43 @@ One tree for the whole app. Login and the shell both sit under it.
 
 `TooltipProvider` is required for collapsed-rail tooltips.
 
+### ThemeProvider Configuration
+
+`ThemeProvider` manages color scheme mode (`"light" | "dark" | "system"`). It synchronizes active classes (`light`/`dark`) and attributes (`data-mode="dark"|"light"`) onto `document.documentElement`, supports cross-tab and same-page synchronization, and provides graceful fallback when storage is restricted.
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `ReactNode` | *(required)* | Application components wrapped by the theme context. |
+| `storageKey` | `string` | `"theme"` | Key used for `localStorage` persistence. |
+| `defaultTheme` | `BasaltTheme` (`"light"` \| `"dark"` \| `"system"`) | `"system"` | Initial fallback theme during SSR or when no stored preference exists. |
+| `persist` | `boolean` | `true` | When `false`, completely isolates the provider from `localStorage` (never reads or writes storage, does not broadcast or listen to external storage events). |
+| `theme` | `BasaltTheme` | `undefined` | Controlled theme value. When supplied, internal state is driven by this prop. |
+| `onThemeChange` | `(theme: BasaltTheme) => void` | `undefined` | Callback fired when a theme change is requested. In controlled mode, callers update `theme`. |
+| `applyToDocument` | `boolean` | `true` | When `false`, disables mutating classes or dataset on `document.documentElement`, allowing a host theme system to manage root DOM state. |
+
+- **Hook `useTheme()`**: Returns `{ theme: BasaltTheme, setTheme: (theme: BasaltTheme) => void }`. Throws an error when invoked outside a `ThemeProvider`.
+- **Storage failure resilience**: If reading or writing `localStorage` throws (e.g. quota exceeded or sandboxed iframe security error), `ThemeProvider` catches the error, retains the explicit selection in memory, and suppresses stale bare storage events from rolling back state.
+- **SSR & Hydration**: During SSR, `ThemeProvider` returns controlled `theme` (if provided) or `defaultTheme`. On the client, it hydrates from `localStorage` if `persist=true`. When custom `storageKey` or `defaultTheme` is configured, pre-hydration inline scripts must match the same key and default.
+- **Host management**: Set `persist={false}` and `applyToDocument={false}` when nested inside an external theme system or embedded widget to prevent mutating the global document root or polluting host storage.
+
 <a id="accent-provider"></a>
 
 ### AccentProvider and useAccent
 
-`AccentProvider` manages dynamic primary accent color overrides (`--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent`) using `localStorage` (key: `"basalt-accent"`, default `"primary"`). It does not alter chart palette tokens (`--basalt-chart-*`).
+`AccentProvider` manages dynamic primary accent color overrides (`--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent`). It does not alter chart palette tokens (`--basalt-chart-*`).
 
-- **Props**: `{ children: ReactNode }`.
+#### AccentProvider Configuration
+
+| Prop | Type | Default | Description |
+|---|---|---|---|
+| `children` | `ReactNode` | *(required)* | Application components wrapped by the accent context. |
+| `storageKey` | `string` | `"basalt-accent"` | Key used for `localStorage` persistence. |
+| `defaultAccent` | `string` | `"primary"` | Initial accent swatch ID during SSR or when no stored preference exists. |
+| `persist` | `boolean` | `true` | When `false`, isolates the provider from `localStorage` (no storage read/write, no cross-tab sync). |
+| `accent` | `string` | `undefined` | Controlled accent value. When supplied, internal state is driven by this prop. |
+| `onAccentChange` | `(accent: string) => void` | `undefined` | Callback fired when an accent change is requested. |
+| `applyToDocument` | `boolean` | `true` | When `false`, disables writing CSS custom properties and `data-accent` to `document.documentElement`. |
+
 - **Hook `useAccent()`**: Returns `{ accent: string, setAccent: (id: string) => void, swatches: readonly AccentSwatch[] }`. Throws an error when invoked outside an `AccentProvider`.
 - **`AccentSwatch` Type**:
   - `id: string`: Unique swatch identifier (e.g., `"primary"`, `"teal"`, `"rose"`).
@@ -195,7 +225,75 @@ One tree for the whole app. Login and the shell both sit under it.
   - `accentSwatchById(id: string | null | undefined): AccentSwatch`: Finds matching swatch by `id`, defaulting to `ACCENT_SWATCHES[0]` if not found.
   - `accentForeground(hsl: string): string`: Computes relative luminance from HSL channels and selects dark foreground (`"0 0% 10%"`) when luminance > 0.35, otherwise light (`"0 0% 100%"`). Note: currently relies on a fixed 0.35 luminance threshold rather than comparing WCAG contrast ratios directly (slated for full contrast verification in P5).
   - `applyAccent(id: string, dark = false): void`: Sets CSS variables `--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent` on the document root element. Accepts optional `dark` flag (defaults to `false`).
-- **Known Limitations**: Storage access uses browser `localStorage`. Disallowed or sandboxed storage environments can throw on read or write (slated for graceful fallback hardening in P4). SSR hydration serves server snapshot defaults (`DEFAULT_ACCENT_ID = "primary"`).
+- **Known Limitations & Resilience**: Storage access gracefully degrades in sandboxed or quota-exceeded environments by preserving in-memory choices without throwing. SSR hydration serves controlled `accent` (if provided) or server snapshot defaults (`DEFAULT_ACCENT_ID = "primary"`). Palette contrast ratio audits remain slated for P5.
+
+### Host-Controlled Preferences Recipe
+
+When host applications (e.g. workspace shells, embedded previews, or multi-tenant panels) manage theme and accent state externally, both providers can run in controlled mode with `persist={false}` and `applyToDocument={false}`. The host application handles the actual root DOM classes, variables, or server cookies while child Basalt components consume standard contexts.
+
+```tsx compile:integration-host-preferences
+import { useState } from "react";
+import { Button } from "@nocoo/basalt/components/button";
+import { AccentProvider, useAccent } from "@nocoo/basalt/providers/accent";
+import { type BasaltTheme, ThemeProvider, useTheme } from "@nocoo/basalt/providers/theme";
+
+function PreferencesControls() {
+  const { theme, setTheme } = useTheme();
+  const { accent, setAccent } = useAccent();
+
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="text-sm font-medium">Theme: {theme}</span>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      >
+        Toggle {theme === "dark" ? "Light" : "Dark"}
+      </Button>
+      <span className="text-sm font-medium ml-2">Accent: {accent}</span>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => {
+          const next = accent === "rose" ? "sky" : "rose";
+          setAccent(next);
+        }}
+      >
+        Toggle Accent
+      </Button>
+    </div>
+  );
+}
+
+export function HostPreferencesApp() {
+  const [theme, setTheme] = useState<BasaltTheme>("light");
+  const [accent, setAccent] = useState("rose");
+
+  return (
+    <ThemeProvider
+      persist={false}
+      applyToDocument={false}
+      theme={theme}
+      onThemeChange={setTheme}
+    >
+      <AccentProvider
+        persist={false}
+        applyToDocument={false}
+        accent={accent}
+        onAccentChange={setAccent}
+      >
+        <div className="p-4 border rounded-lg space-y-3">
+          <p className="text-xs text-basalt-muted-foreground">
+            Host owns document root DOM and persistence. Basalt contexts operate safely without side-effects.
+          </p>
+          <PreferencesControls />
+        </div>
+      </AccentProvider>
+    </ThemeProvider>
+  );
+}
+```
 
 
 
@@ -1274,7 +1372,9 @@ Basalt controls depend on browser event handling and DOM lifecycle observers. In
 #### Next.js Root Layout (`app/layout.tsx`) with Global CSS & Pre-Hydration Script
 
 In Next.js App Router, import your global stylesheet (e.g. `app/globals.css` containing the Tailwind v4 contract or `@nocoo/basalt/styles/standalone`) at the root layout.
-`ThemeProvider` applies the active theme to `document.documentElement` (`class="dark"|"light"` and `data-mode="dark"|"light"`). Note: `ThemeProvider` in `v2.0.3` only accepts `{ children: ReactNode }` (it does not accept `defaultTheme`, `storageKey`, or `forcedTheme`). To eliminate flash of unstyled content (FOUC), inject a pre-hydration script into the root HTML layout before React hydrates:
+`ThemeProvider` applies the active theme to `document.documentElement` (`class="dark"|"light"` and `data-mode="dark"|"light"`). By default, it reads and persists to `localStorage` under key `"theme"` with fallback `"system"`. If custom `storageKey` or `defaultTheme` is configured on `ThemeProvider`, the pre-hydration script must use the identical key and fallback. When an external host system or meta-framework manages root theme attributes, configure `persist={false}` and `applyToDocument={false}`.
+
+To eliminate flash of unstyled content (FOUC) under default persistence, inject a pre-hydration script into the root HTML layout before React hydrates:
 
 ```tsx compile:integration-nextjs-root-layout
 import type React from "react";

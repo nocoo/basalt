@@ -5,6 +5,7 @@ import {
 	useContext,
 	useEffect,
 	useMemo,
+	useState,
 	useSyncExternalStore,
 } from "react";
 
@@ -197,6 +198,9 @@ export function accentForeground(hsl: string) {
 }
 
 export function applyAccent(id: string, dark = false) {
+	if (typeof document === "undefined") {
+		return;
+	}
 	const swatch = accentSwatchById(id);
 	const value = dark ? swatch.dark : swatch.light;
 	const root = document.documentElement;
@@ -206,36 +210,364 @@ export function applyAccent(id: string, dark = false) {
 	root.dataset.accent = swatch.id;
 }
 
-function readAccent(): string {
-	return accentSwatchById(window.localStorage.getItem(STORAGE_KEY)).id;
+export interface AccentProviderProps {
+	/**
+	 * Application components wrapped by the accent context.
+	 */
+	children: ReactNode;
+	/**
+	 * Storage key used for accent persistence.
+	 * @default "basalt-accent"
+	 */
+	storageKey?: string;
+	/**
+	 * Initial accent identifier used when no stored preference exists or during SSR.
+	 * @default "primary"
+	 */
+	defaultAccent?: string;
+	/**
+	 * Whether to persist accent changes to localStorage.
+	 * If false, localStorage is never read or written.
+	 * @default true
+	 */
+	persist?: boolean;
+	/**
+	 * Controlled accent identifier. When provided, the provider acts as a controlled component
+	 * and internal state is driven by this prop.
+	 */
+	accent?: string;
+	/**
+	 * Callback fired when accent change is requested.
+	 * In controlled mode, callers are responsible for updating `accent`.
+	 */
+	onAccentChange?: (accent: string) => void;
+	/**
+	 * Whether to apply accent CSS variables and data-accent attribute to document.documentElement.
+	 * Set to false when a host theme system manages CSS variables directly.
+	 * @default true
+	 */
+	applyToDocument?: boolean;
 }
 
-function subscribe(onStoreChange: () => void) {
-	window.addEventListener("storage", onStoreChange);
-	return () => window.removeEventListener("storage", onStoreChange);
+interface AccentStore {
+	getSnapshot: () => string;
+	subscribe: (listener: () => void) => () => void;
+	setAccent: (next: string) => void;
+	updateConfig: (config: { storageKey: string; defaultAccent: string; persist: boolean }) => void;
+}
+
+function isValidAccentId(value: unknown): value is string {
+	return typeof value === "string" && ACCENT_SWATCHES.some((s) => s.id === value);
+}
+
+type StorageReadResult = { status: "success"; value: string | null } | { status: "error" };
+
+function safeGetStorageItem(key: string): StorageReadResult {
+	try {
+		if (typeof window === "undefined" || !window.localStorage) {
+			return { status: "error" };
+		}
+		const value = window.localStorage.getItem(key);
+		return { status: "success", value };
+	} catch {
+		return { status: "error" };
+	}
+}
+
+function safeSetStorageItem(key: string, value: string): boolean {
+	try {
+		if (typeof window === "undefined" || !window.localStorage) {
+			return false;
+		}
+		window.localStorage.setItem(key, value);
+		return true;
+	} catch {
+		return false;
+	}
+}
+
+function isLocalStorageArea(area: Storage | null | undefined): boolean {
+	if (!area) {
+		return true;
+	}
+	try {
+		if (typeof window !== "undefined" && window.localStorage) {
+			return area === window.localStorage;
+		}
+	} catch {
+		return false;
+	}
+	return false;
+}
+
+const ACCENT_CHANGE_EVENT = "basalt:accent-change";
+
+interface AccentChangeEventDetail {
+	key: string;
+	value: string;
+	writeSucceeded: boolean;
+}
+
+function createAccentStore(
+	initialStorageKey: string,
+	initialDefaultAccent: string,
+	initialPersist: boolean,
+): AccentStore {
+	let storageKey = initialStorageKey;
+	let defaultAccent = accentSwatchById(initialDefaultAccent).id;
+	let persist = initialPersist;
+
+	let memoryAccent: string = defaultAccent;
+	let hasExplicitSelection = false;
+	let lastSetFailed = false;
+
+	if (persist) {
+		const res = safeGetStorageItem(storageKey);
+		if (res.status === "success" && isValidAccentId(res.value)) {
+			memoryAccent = res.value;
+			hasExplicitSelection = true;
+		}
+	}
+
+	const listeners = new Set<() => void>();
+
+	const notify = () => {
+		for (const listener of listeners) {
+			listener();
+		}
+	};
+
+	const onInternalChange = (event: Event) => {
+		if (!persist) {
+			return;
+		}
+		const customEv = event as CustomEvent<AccentChangeEventDetail>;
+		if (!customEv.detail || customEv.detail.key !== storageKey) {
+			return;
+		}
+		const { value, writeSucceeded } = customEv.detail;
+		if (writeSucceeded) {
+			lastSetFailed = false;
+		} else {
+			lastSetFailed = true;
+		}
+		memoryAccent = value;
+		hasExplicitSelection = true;
+		notify();
+	};
+
+	const onStorage = (event: StorageEvent | Event) => {
+		if (!persist) {
+			return;
+		}
+		const storageEv = event as Partial<StorageEvent>;
+		if ("key" in storageEv && storageEv.key !== undefined) {
+			if (!isLocalStorageArea(storageEv.storageArea)) {
+				return;
+			}
+			if (storageEv.key !== null && storageEv.key !== storageKey) {
+				return;
+			}
+			lastSetFailed = false;
+			const rawVal = storageEv.newValue;
+			if (rawVal === null || rawVal === undefined || !isValidAccentId(rawVal)) {
+				memoryAccent = defaultAccent;
+				hasExplicitSelection = false;
+				notify();
+				return;
+			}
+			memoryAccent = rawVal;
+			hasExplicitSelection = true;
+			notify();
+			return;
+		}
+		if (lastSetFailed) {
+			return;
+		}
+		const res = safeGetStorageItem(storageKey);
+		if (res.status === "error") {
+			// Read failed: preserve current cached memory accent, do not revert to default
+			return;
+		}
+		if (isValidAccentId(res.value)) {
+			memoryAccent = res.value;
+			hasExplicitSelection = true;
+			notify();
+		} else {
+			// Key removed or invalid value stored: revert to default
+			memoryAccent = defaultAccent;
+			hasExplicitSelection = false;
+			notify();
+		}
+	};
+
+	let cleanupStorageListener: (() => void) | null = null;
+	const attachStorageListener = () => {
+		if (typeof window === "undefined") {
+			return;
+		}
+		if (listeners.size === 1 && !cleanupStorageListener) {
+			window.addEventListener("storage", onStorage);
+			window.addEventListener(ACCENT_CHANGE_EVENT, onInternalChange);
+			cleanupStorageListener = () => {
+				window.removeEventListener("storage", onStorage);
+				window.removeEventListener(ACCENT_CHANGE_EVENT, onInternalChange);
+				cleanupStorageListener = null;
+			};
+		}
+	};
+
+	const detachStorageListener = () => {
+		if (listeners.size === 0 && cleanupStorageListener) {
+			cleanupStorageListener();
+		}
+	};
+
+	return {
+		getSnapshot: () => memoryAccent,
+		subscribe: (listener: () => void) => {
+			listeners.add(listener);
+			attachStorageListener();
+			return () => {
+				listeners.delete(listener);
+				detachStorageListener();
+			};
+		},
+		setAccent: (next: string) => {
+			const validId = accentSwatchById(next).id;
+			memoryAccent = validId;
+			hasExplicitSelection = true;
+			let writeSucceeded = true;
+			if (persist) {
+				const success = safeSetStorageItem(storageKey, validId);
+				lastSetFailed = !success;
+				writeSucceeded = success;
+				if (typeof window !== "undefined") {
+					try {
+						window.dispatchEvent(
+							new CustomEvent<AccentChangeEventDetail>(ACCENT_CHANGE_EVENT, {
+								detail: { key: storageKey, value: validId, writeSucceeded },
+							}),
+						);
+					} catch {
+						// ignore
+					}
+				}
+			}
+			notify();
+		},
+		updateConfig: (config) => {
+			const keyChanged = storageKey !== config.storageKey;
+			const persistChanged = persist !== config.persist;
+			const normalizedDefault = accentSwatchById(config.defaultAccent).id;
+			const defaultChanged = defaultAccent !== normalizedDefault;
+
+			const oldPersist = persist;
+			storageKey = config.storageKey;
+			defaultAccent = normalizedDefault;
+			persist = config.persist;
+
+			if (keyChanged) {
+				if (persist) {
+					const res = safeGetStorageItem(storageKey);
+					if (res.status === "success") {
+						lastSetFailed = false;
+						if (isValidAccentId(res.value)) {
+							memoryAccent = res.value;
+							hasExplicitSelection = true;
+						} else {
+							memoryAccent = defaultAccent;
+							hasExplicitSelection = false;
+						}
+					}
+					notify();
+				}
+			} else if (persistChanged) {
+				if (!oldPersist && persist) {
+					const res = safeGetStorageItem(storageKey);
+					if (res.status === "success") {
+						lastSetFailed = false;
+						if (isValidAccentId(res.value)) {
+							memoryAccent = res.value;
+							hasExplicitSelection = true;
+							notify();
+						}
+					}
+				}
+			} else if (defaultChanged) {
+				if (!hasExplicitSelection) {
+					if (persist) {
+						const res = safeGetStorageItem(storageKey);
+						if (res.status === "success" && !isValidAccentId(res.value)) {
+							memoryAccent = defaultAccent;
+							notify();
+						}
+					} else {
+						memoryAccent = defaultAccent;
+						notify();
+					}
+				}
+			}
+		},
+	};
 }
 
 function isDarkMode(): boolean {
+	if (typeof document === "undefined") {
+		return false;
+	}
 	return document.documentElement.classList.contains("dark");
 }
 
-export function AccentProvider({ children }: { children: ReactNode }) {
-	const accent = useSyncExternalStore(subscribe, readAccent, () => DEFAULT_ACCENT_ID);
+export function AccentProvider({
+	children,
+	storageKey = STORAGE_KEY,
+	defaultAccent = DEFAULT_ACCENT_ID,
+	persist = true,
+	accent: controlledAccent,
+	onAccentChange,
+	applyToDocument = true,
+}: AccentProviderProps) {
+	const isControlled = controlledAccent !== undefined;
+
+	const [store] = useState(() => createAccentStore(storageKey, defaultAccent, persist));
+
 	useEffect(() => {
-		applyAccent(accent, isDarkMode());
-		const observer = new MutationObserver(() => applyAccent(accent, isDarkMode()));
+		store.updateConfig({ storageKey, defaultAccent, persist });
+	}, [store, storageKey, defaultAccent, persist]);
+
+	const getServerSnapshot = useCallback(() => accentSwatchById(defaultAccent).id, [defaultAccent]);
+
+	const storeAccent = useSyncExternalStore(store.subscribe, store.getSnapshot, getServerSnapshot);
+
+	const currentAccent = isControlled ? accentSwatchById(controlledAccent).id : storeAccent;
+
+	useEffect(() => {
+		if (!applyToDocument || typeof document === "undefined") {
+			return;
+		}
+		applyAccent(currentAccent, isDarkMode());
+		const observer = new MutationObserver(() => applyAccent(currentAccent, isDarkMode()));
 		observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 		return () => observer.disconnect();
-	}, [accent]);
-	const setAccent = useCallback((id: string) => {
-		const next = accentSwatchById(id).id;
-		window.localStorage.setItem(STORAGE_KEY, next);
-		applyAccent(next, isDarkMode());
-		window.dispatchEvent(new Event("storage"));
-	}, []);
+	}, [currentAccent, applyToDocument]);
+
+	const setAccent = useCallback(
+		(next: string) => {
+			const validId = accentSwatchById(next).id;
+			if (isControlled) {
+				onAccentChange?.(validId);
+				return;
+			}
+			store.setAccent(validId);
+			onAccentChange?.(validId);
+		},
+		[isControlled, onAccentChange, store],
+	);
+
 	const value = useMemo(
-		() => ({ accent, setAccent, swatches: ACCENT_SWATCHES }),
-		[accent, setAccent],
+		() => ({ accent: currentAccent, setAccent, swatches: ACCENT_SWATCHES }),
+		[currentAccent, setAccent],
 	);
 	return <AccentContext.Provider value={value}>{children}</AccentContext.Provider>;
 }

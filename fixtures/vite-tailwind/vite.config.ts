@@ -17,6 +17,7 @@ export default defineConfig({
 				slider: resolve(__dirname, "slider.html"),
 				calendar: resolve(__dirname, "calendar.html"),
 				empty: resolve(__dirname, "empty.html"),
+				providers: resolve(__dirname, "providers.html"),
 			},
 		},
 	},

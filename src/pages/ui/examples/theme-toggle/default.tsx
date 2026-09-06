@@ -3,7 +3,7 @@ import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 
 export default function ThemeToggleDefault() {
 	return (
-		<ThemeProvider>
+		<ThemeProvider persist={false} applyToDocument={false}>
 			<ThemeToggle aria-label="Toggle theme" />
 		</ThemeProvider>
 	);

@@ -160,6 +160,8 @@ describe("foundation feedback scenario truth", () => {
 		expect(UI_EXAMPLES["theme-toggle"]?.map((item) => item.id)).toEqual(["theme-toggle-default"]);
 		expect(UI_EXAMPLES["theme-provider"]?.map((item) => item.id)).toEqual([
 			"theme-provider-default",
+			"theme-provider-independent-preferences",
+			"theme-provider-host-preferences",
 		]);
 	});
 

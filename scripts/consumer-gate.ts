@@ -38,6 +38,7 @@ import {
 	stopChild,
 } from "./consumer-http";
 import { assertConsumerPortal } from "./consumer-portal";
+import { assertConsumerProviders } from "./consumer-providers";
 import { assertConsumerSlider } from "./consumer-slider";
 import { assertConsumerToast } from "./consumer-toast";
 
@@ -1344,6 +1345,15 @@ console.log(JSON.stringify({
 						const faults = attachPageFaults(page);
 						await page.goto(emptyUrl, { waitUntil: "domcontentloaded" });
 						const res = await assertConsumerEmpty(page);
+						assertNoPageFaults(faults);
+						return res;
+					});
+
+					const providersUrl = `http://127.0.0.1:${port}/providers.html`;
+					evidence.providers = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(providersUrl, { waitUntil: "domcontentloaded" });
+						const res = await assertConsumerProviders(page);
 						assertNoPageFaults(faults);
 						return res;
 					});

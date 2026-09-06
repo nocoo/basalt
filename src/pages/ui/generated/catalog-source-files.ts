@@ -434,7 +434,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"theme-provider": {
 		"file": "packages/basalt/src/providers/theme.tsx",
-		"hash": "aa6a2216f5d6855f",
+		"hash": "55c2add8be3d6ed6",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/providers/theme.js.map (sourcesContent[0])"
 	},

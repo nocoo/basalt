@@ -162,10 +162,18 @@ describe("foundation catalog content family", () => {
 			expect(example.code).toContain("export default function");
 			expect(example.render).toBeTypeOf("function");
 		}
-		expect(foundation["theme-provider"]?.examples).toHaveLength(1);
+		expect(foundation["theme-provider"]?.examples).toHaveLength(3);
 		expect(foundation["theme-provider"]?.examples[0]).toMatchObject({
 			id: "theme-provider-default",
 			title: "Default",
+		});
+		expect(foundation["theme-provider"]?.examples[1]).toMatchObject({
+			id: "theme-provider-independent-preferences",
+			title: "Independent Preferences",
+		});
+		expect(foundation["theme-provider"]?.examples[2]).toMatchObject({
+			id: "theme-provider-host-preferences",
+			title: "Host Preferences",
 		});
 		expect(foundation["theme-provider"]?.examples[0]?.code).toContain(
 			"@nocoo/basalt/providers/theme",
@@ -202,7 +210,7 @@ describe("foundation catalog content family", () => {
 		expect(foundation.text?.docs.usage).toContain('as="h1"');
 		expect(
 			FOUNDATION_SLUGS.reduce((count, slug) => count + (foundation[slug]?.examples.length ?? 0), 0),
-		).toBe(35);
+		).toBe(37);
 		for (const slug of FOUNDATION_SLUGS) {
 			const content = foundation[slug];
 			expect(content?.docs.description.length, slug).toBeGreaterThan(0);

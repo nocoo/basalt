@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 686,
+	"totalSymbols": 687,
 	"totalValues": 375,
-	"totalTypes": 311,
+	"totalTypes": 312,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -6506,6 +6506,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "DEFAULT_ACCENT_ID",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "INTEGRATION.md#accent-provider",
+					"ownerKind": "provider",
+					"originModule": "@nocoo/basalt/providers/accent"
+				},
+				{
+					"name": "AccentProviderProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "INTEGRATION.md#accent-provider",
 					"ownerKind": "provider",
 					"originModule": "@nocoo/basalt/providers/accent"

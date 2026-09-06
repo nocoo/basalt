@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 686,
+	"totalSymbols": 687,
 	"totalValues": 375,
-	"totalTypes": 311,
+	"totalTypes": 312,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 99,
 	"modules": [
@@ -22544,7 +22544,7 @@
 			"importPath": "@nocoo/basalt/providers/accent",
 			"subpath": "./providers/accent",
 			"sourceFile": "packages/basalt/src/providers/accent.tsx",
-			"sourceHash": "6e3de17063db4b1e",
+			"sourceHash": "90487bbc5bede73e",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "provider",
@@ -22614,6 +22614,14 @@
 					"name": "DEFAULT_ACCENT_ID",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "INTEGRATION.md#accent-provider",
+					"packageDoc": "ai/INTEGRATION.md#accent-provider",
+					"originModule": "@nocoo/basalt/providers/accent"
+				},
+				{
+					"name": "AccentProviderProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "INTEGRATION.md#accent-provider",
 					"packageDoc": "ai/INTEGRATION.md#accent-provider",
 					"originModule": "@nocoo/basalt/providers/accent"
@@ -22724,7 +22732,7 @@
 			"importPath": "@nocoo/basalt/providers/theme",
 			"subpath": "./providers/theme",
 			"sourceFile": "packages/basalt/src/providers/theme.tsx",
-			"sourceHash": "aa6a2216f5d6855f",
+			"sourceHash": "55c2add8be3d6ed6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -22783,7 +22791,47 @@
 									"name": "children",
 									"type": "React.ReactNode",
 									"required": true,
-									"description": "Application components wrapped by the theme context.\nProvider manages theme state (\"light\" | \"dark\" | \"system\", default \"system\") with localStorage (key: \"theme\") and matches prefers-color-scheme.\nuseTheme() returns { theme: BasaltTheme, setTheme: (theme: BasaltTheme) => void } and throws if called outside ThemeProvider.\nComponent renders a React context provider without native HTML rest attribute forwarding or forwarded ref.\nSandboxed or restricted storage environments can throw on read/write (slated for graceful fallback hardening in P4)."
+									"description": "Application components wrapped by the theme context."
+								},
+								{
+									"name": "storageKey",
+									"type": "string",
+									"required": false,
+									"default": "\"theme\"",
+									"description": "Storage key used for theme persistence."
+								},
+								{
+									"name": "defaultTheme",
+									"type": "BasaltTheme",
+									"required": false,
+									"default": "\"system\"",
+									"description": "Initial theme used when no stored preference exists or during SSR."
+								},
+								{
+									"name": "persist",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether to persist theme changes to localStorage.\nIf false, localStorage is never read or written."
+								},
+								{
+									"name": "theme",
+									"type": "BasaltTheme",
+									"required": false,
+									"description": "Controlled theme value. When provided, the provider acts as a controlled component\nand internal state is driven by this prop."
+								},
+								{
+									"name": "onThemeChange",
+									"type": "(theme: BasaltTheme) => void",
+									"required": false,
+									"description": "Callback fired when theme change is requested.\nIn controlled mode, callers are responsible for updating `theme`."
+								},
+								{
+									"name": "applyToDocument",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether to apply mode classes and data-mode attribute to document.documentElement.\nSet to false when a host theme system manages the document root."
 								}
 							]
 						}
@@ -22798,7 +22846,47 @@
 							"name": "children",
 							"type": "React.ReactNode",
 							"required": true,
-							"description": "Application components wrapped by the theme context.\nProvider manages theme state (\"light\" | \"dark\" | \"system\", default \"system\") with localStorage (key: \"theme\") and matches prefers-color-scheme.\nuseTheme() returns { theme: BasaltTheme, setTheme: (theme: BasaltTheme) => void } and throws if called outside ThemeProvider.\nComponent renders a React context provider without native HTML rest attribute forwarding or forwarded ref.\nSandboxed or restricted storage environments can throw on read/write (slated for graceful fallback hardening in P4)."
+							"description": "Application components wrapped by the theme context."
+						},
+						{
+							"name": "storageKey",
+							"type": "string",
+							"required": false,
+							"default": "\"theme\"",
+							"description": "Storage key used for theme persistence."
+						},
+						{
+							"name": "defaultTheme",
+							"type": "BasaltTheme",
+							"required": false,
+							"default": "\"system\"",
+							"description": "Initial theme used when no stored preference exists or during SSR."
+						},
+						{
+							"name": "persist",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether to persist theme changes to localStorage.\nIf false, localStorage is never read or written."
+						},
+						{
+							"name": "theme",
+							"type": "BasaltTheme",
+							"required": false,
+							"description": "Controlled theme value. When provided, the provider acts as a controlled component\nand internal state is driven by this prop."
+						},
+						{
+							"name": "onThemeChange",
+							"type": "(theme: BasaltTheme) => void",
+							"required": false,
+							"description": "Callback fired when theme change is requested.\nIn controlled mode, callers are responsible for updating `theme`."
+						},
+						{
+							"name": "applyToDocument",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether to apply mode classes and data-mode attribute to document.documentElement.\nSet to false when a host theme system manages the document root."
 						}
 					]
 				}
@@ -29737,7 +29825,7 @@
 			"exportName": "ThemeProvider",
 			"importPath": "@nocoo/basalt/providers/theme",
 			"sourceFile": "packages/basalt/src/providers/theme.tsx",
-			"sourceHash": "aa6a2216f5d6855f",
+			"sourceHash": "55c2add8be3d6ed6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#theme-provider",
@@ -29749,7 +29837,47 @@
 							"name": "children",
 							"type": "React.ReactNode",
 							"required": true,
-							"description": "Application components wrapped by the theme context.\nProvider manages theme state (\"light\" | \"dark\" | \"system\", default \"system\") with localStorage (key: \"theme\") and matches prefers-color-scheme.\nuseTheme() returns { theme: BasaltTheme, setTheme: (theme: BasaltTheme) => void } and throws if called outside ThemeProvider.\nComponent renders a React context provider without native HTML rest attribute forwarding or forwarded ref.\nSandboxed or restricted storage environments can throw on read/write (slated for graceful fallback hardening in P4)."
+							"description": "Application components wrapped by the theme context."
+						},
+						{
+							"name": "storageKey",
+							"type": "string",
+							"required": false,
+							"default": "\"theme\"",
+							"description": "Storage key used for theme persistence."
+						},
+						{
+							"name": "defaultTheme",
+							"type": "BasaltTheme",
+							"required": false,
+							"default": "\"system\"",
+							"description": "Initial theme used when no stored preference exists or during SSR."
+						},
+						{
+							"name": "persist",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether to persist theme changes to localStorage.\nIf false, localStorage is never read or written."
+						},
+						{
+							"name": "theme",
+							"type": "BasaltTheme",
+							"required": false,
+							"description": "Controlled theme value. When provided, the provider acts as a controlled component\nand internal state is driven by this prop."
+						},
+						{
+							"name": "onThemeChange",
+							"type": "(theme: BasaltTheme) => void",
+							"required": false,
+							"description": "Callback fired when theme change is requested.\nIn controlled mode, callers are responsible for updating `theme`."
+						},
+						{
+							"name": "applyToDocument",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether to apply mode classes and data-mode attribute to document.documentElement.\nSet to false when a host theme system manages the document root."
 						}
 					]
 				}

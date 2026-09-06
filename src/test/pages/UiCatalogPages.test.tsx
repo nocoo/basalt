@@ -1405,7 +1405,7 @@ describe("ui catalog", () => {
 		expect(api).not.toHaveTextContent("asChild");
 		expect(api).not.toHaveTextContent("className");
 		expect(document.body.textContent).toContain(
-			'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+			'<ThemeProvider persist={false} applyToDocument={false}><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
 		);
 		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
 		await act(async () => {
@@ -1416,7 +1416,7 @@ describe("ui catalog", () => {
 			"- aria-label (string, required, default —): Accessible name for the toggle.",
 		);
 		expect(markdown).toContain(
-			'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+			'<ThemeProvider persist={false} applyToDocument={false}><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
 		);
 		expect(markdown).not.toContain("- variant (");
 		expect(markdown).not.toContain("- size (");
@@ -1432,7 +1432,7 @@ describe("ui catalog", () => {
 		);
 		expect(family).toContain("api: themeToggleApi");
 		expect(family).toContain(
-			'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+			'<ThemeProvider persist={false} applyToDocument={false}><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
 		);
 	});
 
@@ -3067,6 +3067,8 @@ describe("ui catalog", () => {
 		window.localStorage.removeItem("theme");
 		document.documentElement.classList.remove("dark", "light");
 		delete document.documentElement.dataset.mode;
+		document.documentElement.className = "host-root-sentinel";
+		document.documentElement.dataset.mode = "host-mode-sentinel";
 		renderCatalog("/ui/theme-toggle");
 		expect(screen.getByRole("heading", { name: "Default" })).toBeInTheDocument();
 		const hero = document.querySelector('[data-hero-scenario="theme-toggle-default"]');
@@ -3084,22 +3086,35 @@ describe("ui catalog", () => {
 		const iconClass = (button: HTMLElement) =>
 			button.querySelector("svg")?.getAttribute("class") ?? "";
 		expect(iconClass(heroButton)).toContain("lucide-monitor");
+		expect(iconClass(exampleButton)).toContain("lucide-monitor");
 		expect(window.localStorage.getItem("theme")).toBeNull();
+		expect(document.documentElement).toHaveClass("host-root-sentinel");
+		expect(document.documentElement.dataset.mode).toBe("host-mode-sentinel");
+
+		// Click hero button: cycles monitor -> sun (in-memory only; host storage and root DOM untouched)
 		fireEvent.click(heroButton);
-		expect(window.localStorage.getItem("theme")).toBe("light");
-		expect(document.documentElement).toHaveClass("light");
-		expect(document.documentElement.dataset.mode).toBe("light");
 		expect(iconClass(heroButton)).toContain("lucide-sun");
+		expect(iconClass(exampleButton)).toContain("lucide-monitor");
+		expect(window.localStorage.getItem("theme")).toBeNull();
+		expect(document.documentElement).toHaveClass("host-root-sentinel");
+		expect(document.documentElement.dataset.mode).toBe("host-mode-sentinel");
+
+		// Click hero button: cycles sun -> moon (in-memory only; host storage and root DOM untouched)
 		fireEvent.click(heroButton);
-		expect(window.localStorage.getItem("theme")).toBe("dark");
-		expect(document.documentElement).toHaveClass("dark");
-		expect(document.documentElement.dataset.mode).toBe("dark");
 		expect(iconClass(heroButton)).toContain("lucide-moon");
+		expect(iconClass(exampleButton)).toContain("lucide-monitor");
+		expect(window.localStorage.getItem("theme")).toBeNull();
+		expect(document.documentElement).toHaveClass("host-root-sentinel");
+		expect(document.documentElement.dataset.mode).toBe("host-mode-sentinel");
+
+		// Click hero button: cycles moon -> monitor (in-memory only; host storage and root DOM untouched)
 		fireEvent.click(heroButton);
-		expect(window.localStorage.getItem("theme")).toBe("system");
-		expect(document.documentElement).toHaveClass("light");
-		expect(document.documentElement.dataset.mode).toBe("light");
 		expect(iconClass(heroButton)).toContain("lucide-monitor");
+		expect(iconClass(exampleButton)).toContain("lucide-monitor");
+		expect(window.localStorage.getItem("theme")).toBeNull();
+		expect(document.documentElement).toHaveClass("host-root-sentinel");
+		expect(document.documentElement.dataset.mode).toBe("host-mode-sentinel");
+
 		expect(exampleButton).toHaveAccessibleName("Toggle theme");
 		for (const scenario of UI_EXAMPLES["theme-toggle"] ?? []) {
 			expect(scenario.code).toContain("export default");

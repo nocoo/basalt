@@ -14,6 +14,8 @@ import { LINK_BUTTON_EXAMPLES } from "../../examples/link-button";
 import { SCROLL_AREA_EXAMPLES } from "../../examples/scroll-area";
 import { SEPARATOR_EXAMPLES } from "../../examples/separator";
 import { TEXT_EXAMPLES } from "../../examples/text";
+import { HostPreferences, IndependentPreferences } from "../../examples/theme-provider/preferences";
+import preferencesRaw from "../../examples/theme-provider/preferences.tsx?raw";
 import { THEME_TOGGLE_EXAMPLES } from "../../examples/theme-toggle";
 import { API as basaltMarkApi } from "../../generated/catalog-api/basalt-mark";
 import { API as buttonApi } from "../../generated/catalog-api/button";
@@ -184,7 +186,7 @@ export default catalogContentFamily({
 			usage: usage(
 				"ThemeToggle",
 				"@nocoo/basalt/components/theme-toggle",
-				'<ThemeProvider><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
+				'<ThemeProvider persist={false} applyToDocument={false}><ThemeToggle aria-label="Toggle theme" /></ThemeProvider>',
 				'import { ThemeProvider } from "@nocoo/basalt/providers/theme";',
 			),
 			variants: ["system", "light", "dark"],
@@ -236,7 +238,7 @@ export default catalogContentFamily({
 			usage: usage(
 				"ThemeProvider",
 				"@nocoo/basalt/providers/theme",
-				"<ThemeProvider><span>Content</span></ThemeProvider>",
+				"<ThemeProvider persist={false} applyToDocument={false}><span>Content</span></ThemeProvider>",
 			),
 			variants: ["system", "light", "dark"],
 			api: themeProviderApi,
@@ -251,7 +253,7 @@ export default catalogContentFamily({
 				id: catalogScenarioId("theme-provider", "default"),
 				title: "Default",
 				code: scenarioModule(
-					`<ThemeProvider>
+					`<ThemeProvider persist={false} applyToDocument={false}>
 	<Text>Provider is active.</Text>
 </ThemeProvider>`,
 					[
@@ -260,10 +262,22 @@ export default catalogContentFamily({
 					],
 				),
 				render: () => (
-					<ThemeProvider>
+					<ThemeProvider persist={false} applyToDocument={false}>
 						<Text>Provider is active.</Text>
 					</ThemeProvider>
 				),
+			},
+			{
+				id: catalogScenarioId("theme-provider", "independent-preferences"),
+				title: "Independent Preferences",
+				code: `${preferencesRaw}\n\nexport default IndependentPreferences;\n`,
+				render: () => <IndependentPreferences />,
+			},
+			{
+				id: catalogScenarioId("theme-provider", "host-preferences"),
+				title: "Host Preferences",
+				code: `${preferencesRaw}\n\nexport default HostPreferences;\n`,
+				render: () => <HostPreferences />,
 			},
 		],
 	},
