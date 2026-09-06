@@ -574,7 +574,8 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | 04 | `docs: define public API and compatibility policy` | D01/D05/D06；先建立出口、默认值与兼容基线，不删除已发布路径 |
 | 05 | `fix: generate compilable catalog imports` | D02；所有安装/Copy page 代码在消费端编译 |
 | 06a | `docs: complete public API metadata` | D03；公开 surface 归属、默认值和完整性约束 |
-| 06b | `docs: publish versioned agent guides` | D04；机器文档与安装版本一致 |
+| 06b1 | `docs: generate versioned package knowledge` | D04；随包 registry、实际源码/peer 归属及版本 freshness，包含隔离版本提升验证 |
+| 06b2 | `docs: complete integration guides and recipes` | D01/D04；Vite/standalone/Next、真实表单 adapter、迁移步骤与原文编译 |
 | 07 | `fix: scope standalone component base styles` | C02；Tailwind/standalone 两条几何与 portal 验证 |
 | 08a | `fix: preserve button disabled semantics` | C01；鼠标、键盘、loading 与 asChild 契约 |
 | 08b | `fix: position typeahead menus outside clipping ancestors` | C03；卡片、Dialog、滚动区和视口边缘 |
@@ -680,7 +681,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 |---|---|---|---|---|
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
-| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`ec88324`：公开基线、严格 import、入口文档、99 页源码 API、provider 与非 catalog 正文、复合组件/native/别名及 toast 函数已分组验收；99 个主 Usage 通过独立 tarball 编译并进入正式门，继续 scenario 与版本化指南 |
+| P2 | 公共接口与文档：04、05、06a/b1/b2；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`b4c2839`：公开基线、严格 import、入口文档、99 页源码 API、provider 与非 catalog 正文、复合组件/native/别名及 toast 函数已分组验收；99 个主 Usage 与全部 246 场景已进入正式 tarball 门，继续版本化 registry 与接入指南 |
 | P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
 | P4 | 浮层与语义：10a/b/c/d/e、11a/b、12a/b；C06–C11/C16/C17/C18/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
@@ -788,14 +789,24 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 
 `92319ff` 将 **99 个主 Usage** 接入正式 consumer:docs，保留 **8 个 Markdown 模块、99 个 granular 和 34 个 root 导入**。无监听端口的 Vite loader 从指定仓库的真实 registry/catalog/status 取得原文；每个模块独立写入实际 tarball 的仓外消费工程，CLI 真实 await 完成结果。主 agent 核验浏览器/SSR 原文 **99/99 逐字节一致**、隔离提取控制 **6/6**；直接在源码用法中删除 useState 导入、添加无效 TablePager 属性，正式门均因消费端 TypeScript 诊断失败，**2/2 负例通过**。`ec88324` 补入指定 root、空白保真、新 ready 纳入、缺记录与空/缺 Usage 的实际 loader 回归测试。正常 hooks 最终为 **176 文件、1,480 测试**，实现与测试提交均和已审哈希一致。证据：`p2-usage-gate-positive.json`、`p2-usage-loader-final-result.json`、`p2-usage-gate-source-negative-final-result.json`、`p2-usage-gate-acceptance.json`。
 
+`29ceb8b` 和 `0ae7849` 将反馈类 **40 段**代码补为具有显式导入、实际内容与布局的独立模块，前者为 30 个非 Toast 场景，后者为 10 个 Toast 点击场景。主 agent 从浏览器提取原文后，使用已实际安装且包源码未变的 tarball 严格编译 **30/30、10/10 通过**；全库 **246 个场景 ID、99 个主 Usage** 均保持不变，反馈文件的 **40 个 render 函数原文也全部不变**。Toast 代码说明应用只挂一个全局 Toaster，本站未新增容器，C18 仍待 P4。两笔提交均经正常 hooks，**176 文件、1,480 测试**通过，已审哈希与提交一致。证据：`p2-feedback-static-result.json`、`p2-feedback-toast-result.json`、`p2-feedback-all-inventory-diff.json`、`p2-feedback-all-renderers.json`、`p2-feedback-static-acceptance.json`、`p2-feedback-toast-acceptance.json`。
+
+`013cfe1` 补齐 Slider、Toggle、ThemeProvider、LinkProvider、Tabs、Breadcrumbs、Toolbar 的 **12 个场景**，显式提供导入、布局和所需上下文。主 agent 核验真实浏览器原文在已安装 tarball 中严格编译 **12/12 通过**；全库 **246 个场景 ID、99 个主 Usage** 保留，三个家族的 **17 个 render 函数**原文不变，4 个已审文件的哈希与提交一致。正常 hooks 为 **176 文件、1,480 测试**。证据：`p2-scenarios-b-navigation-result.json`、`p2-scenarios-b-navigation-inventory-diff.json`、`p2-scenarios-b-navigation-renderers.json`、`p2-scenarios-b-navigation-acceptance.json`。
+
+`8dde9cb` 补齐剩余 **4 个 Chat、15 个浮层场景**。Dialog 代码同步保留实际标题关闭按钮、尺寸表格、警示图标、页脚操作、长文本截断和间距；Popover 方位示例保留居中布局。主 agent 再次从浏览器提取全库原文，使用实际安装且包源码未变的 tarball 严格编译，**99 个主 Usage、246 个场景全部通过**。B 组只改动计划内 **31 段**场景代码，所有 ID 和 Usage 不变；Chat/overlay 的 **23 个 render 函数**不变，3 个已审文件与提交哈希一致。正常 hooks 为 **176 文件、1,480 测试**。证据：`p2-scenarios-complete-result.json`、`p2-scenarios-b-final-inventory-diff.json`、`p2-scenarios-b-final-renderers.json`、`p2-scenarios-b-chat-overlay-acceptance.json`。
+
+`c6395ac` 把全部场景接入正式 consumer:docs，`b4c2839` 整理旧测试限制和文件名碰撞回归。单个 Vite loader 从指定仓库的实际 ready 记录取得 Usage 与 scenario 原文，每段独立写入仓外消费工程；正式门编译 **8 个 Markdown 模块、99 个 Usage、246 个场景**，保留 **99 个 granular / 34 个 root 导入**。主 agent 实际运行正式 CLI，全部通过，浏览器与 SSR 的 **345 段代码逐字节一致**。
+
+完整模块检查采用 TypeScript AST，接受函数、箭头、默认导出、类及包装组件，不强迫原生 JSX 组件添加多余 import。首轮独立控制 **18/25**，发现强制 import 拒绝 5 种合法写法、空导出/类型声明放过 2 种片段；修正后同一组 **25/25 通过**，覆盖新增页面/场景自动纳入、缺失/空代码、重复 ID 和文件名碰撞。主 agent 另在隔离仓库直接改写两个非首屏 Dialog 场景，漏 Button 导入和无效属性均由真实 tarball 的 tsc 拒绝，裸原生 JSX 回退由模块检查拒绝。两份最终文件的哈希与已审实现一致，正常 hooks 均为 **176 文件、1,484 测试**。证据：`p2-scenario-gate-positive.json`、`p2-scenario-loader-fixed-result.json`、`p2-scenario-gate-types-result.json`、`p2-scenario-gate-native-result.json`、`p2-scenario-gate-acceptance.json`。
+
 P2 后续范围细化如下，发现即登记，不把归属或编译机制已经建立等同于文档全部完成：
 
 - D03b-C4A1/A2/A3、C4B、C4C-Banner/Toaster/函数家族已验收；组件参数与通知参数分开，message、五个方法、选项和返回边界均已同源生成。隐藏图标的 C18 限制已说明，运行时修正留在 P4。
-- D02c 已验收：主 Usage 全部修正，**99/99 实际 tarball 安装编译**进入正式 consumer:docs；无效属性、漏导入、缺失/空白 Usage 与新增 ready 纳入均已验证。D02d 继续扩展到全部 scenario。
-- D02d 将 Copy page 内的全部 scenario code 纳入同一真实 tarball 编译门。浏览器提取共 **99 页、246 个场景**；其中 175 个完整模块的初次仓外诊断为 **174/175 通过**，Sheet 漏导入已在 `feda988` 修正并独立编译，另 **71 段**缺少可独立复制的完整上下文（反馈类 40、其他家族 31）。完整示例必须保留真实 imports、状态和数据，测试 harness 不得注入隐式 import、any 或假全局来制造通过。先前一次混合片段编译因语法错误提前停止，其“未报错文件数”不作为通过数。证据：`p2-scenario-compile-before.json`；正式门尚待实施。
-- 非 catalog 正文与归属已在 C3B 验收；D04 继续处理随版本交付和从包内独立读取的指南。
+- D02c 已验收：主 Usage 全部修正，**99/99 实际 tarball 安装编译**进入正式 consumer:docs；无效属性、漏导入、缺失/空白 Usage 与新增 ready 纳入均已验证。
+- D02d 已验收：原 175 个完整模块中的 Sheet 漏导入在 `feda988` 修正，其余 **71 个片段全部补齐**，现有 **246/246 场景严格 tarball 编译及完整模块检查**均进入正式 consumer:docs。真实源码负例和 **25 个独立控制**按上述结果通过，harness 不注入隐式 import、any 或假全局。早期混合片段导致语义检查中止的“未报错文件数”不作为通过数。历史诊断：`p2-scenario-compile-before.json`。
+- 非 catalog 正文与归属已在 C3B 验收；D04 分为 06b1 随包 registry/来源/版本 freshness 与 06b2 完整接入指南/可编译 recipes，分别提交和验收。
 
-上述接受的是 D03a、D03b-A/B1/B2A/B2B/C1A/C1B/C2A/C2B/C3A/C3B/C4A1/C4A2/C4A3/C4B/C4C-Banner/Toaster/函数家族、空参数原生策略、DOM 类型命名修正及 D02c 全部主 Usage。场景代码与版本化指南继续分组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
+上述接受的是 D03a、D03b-A/B1/B2A/B2B/C1A/C1B/C2A/C2B/C3A/C3B/C4A1/C4A2/C4A3/C4B/C4C-Banner/Toaster/函数家族、空参数原生策略、DOM 类型命名修正、D02c 全部主 Usage 和 D02d 全部场景代码及正式门。版本化 registry 与接入指南继续分组验收，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
 
 ### 12.5 实施中追加的问题
 
