@@ -677,9 +677,9 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 |---|---|---|---|---|
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
-| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`d4bb86a`：公开路径基线、严格 import、文档 tarball 编译、surface 归属、Button 默认值及原生属性策略已验收；继续输入/反馈与 compound 参数表、版本化指南 |
+| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`588c80a`：公开基线、严格 import、入口文档 tarball 编译、surface 归属、输入/基础反馈 API 及生成器字符串保真已验收；继续复合 API、全部 Library Usage 编译及版本化指南 |
 | P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
-| P4 | 浮层与语义：10a/b、11a/b、12a/b；C06–C11/R05 | Dock 模态、Confirm 焦点/异常责任、Slider、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
+| P4 | 浮层与语义：10a/b、11a/b、12a/b；C06–C11/R05 | Dock 模态、Confirm 焦点/异常责任、Slider 多值/名称/双轴几何、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
 | P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 待调度 | — |
 | P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 待调度 | — |
@@ -733,4 +733,18 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 
 主 agent 的真实 Chromium 检查验证 Button、LinkButton、BasaltMark、Code、CodeBlock、Table 共 **6/6 页面**的可见参数表与生成数据一致。另发现原生豁免仅检查对象存在，空白理由仍会通过；独立修正 `d4bb86a` 要求非空说明、继承元素及显式布尔策略，`false` 仍合法。同一独立生成 probe **4/4 通过**，正式 Vitest 负例覆盖未知/删除登记、空白说明及不完整策略；正常 hooks 为 **176 文件、1,474 测试**通过。相关证据为 `p2-api-visible.json`、`p2-native-policy-probe.json`。
 
-上述接受的是 D03a 及 D03b-A。输入/反馈、compound 家族、非 catalog 锚点正文和版本化指南继续在后续原子组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
+`f9ea3c6` 完成 Slider、Toggle 与 ToggleGroup 的源码派生参数表，包括受控状态、回调、范围、变体、默认值及实际 ref 目标。ToggleGroup 保留 single / multiple 判别联合，说明未指定 orientation 时的键盘轴行为，补齐 Usage 与示例漏掉的 ToggleGroupItem 导入。生成器对纯数据声明明确承担格式，解决长说明在生成与 Biome 之间反复失配的问题；该例外不作用于实现代码或类型检查。
+
+主 agent 独立核验：真实 Library **3/3 页面**参数表与生成数据一致；以新构建的公开包声明编译 Radix 输入双向赋值、有效 JSX、CVA null 与三个错误单/多选组合，全部符合预期。75 份 API shard 的纯数据 AST 检查通过，原有 **72 页数据完全不变**，新增 3 页共 5 个 surface。该提交公共清单为 110 模块 / 578 符号（375 value / 203 type）/ 3 CSS，原始 2.0.3 基线未改写。正常 hooks 为 176 文件、1,474 测试通过。证据：`p2-b1-api-visible.json`、`p2-b1-api-semantic-diff.json`、`p2-b1-public-types.log`。
+
+`dd47425` 完成 Badge、Empty、Loader、SkeletonLine 的参数表、真实默认值与原生属性/ref 说明，页面和 Copy 共用来源。保留 Badge 的 CVA null、Empty 当前忽略 children 的行为、Loader 的 size 优先级及 SkeletonLine 的确定性中点宽度；这些行为没有在文档阶段顺带修改。主 agent 在真实页面核对 **4/4**，79 份 API 数据解析通过、此前 **75 页不变**；将旧提交的四个源码类型与新构建包的公开声明作双向赋值检查，**4/4 兼容**。正常 hooks 为 176 文件、1,474 测试通过，提交后工作区干净。证据：`p2-b2a-api-visible.json`、`p2-b2a-api-semantic-diff.json`、`p2-b2a-public-types.log`。
+
+字符串生成器独立探针初始 **2/4**：双引号与换行组合生成非法 TypeScript，双引号与反斜杠组合丢失转义。`588c80a` 统一采用可靠的 JSON 字符串编码，并加入解析生成代码、核对原始值的正式回归。主 agent 对相同用例复验 **4/4**，79 页 API 数据全部不变；正常 hooks 为 176 文件、1,475 测试通过。证据：`p2-string-roundtrip-before.json`、`p2-string-roundtrip-fixed.json`、`p2-api-semantic-diff-fixed.json`。
+
+P2 后续范围细化如下，发现即登记，不把归属或编译机制已经建立等同于文档全部完成：
+
+- D03b-C4 补已有页面遗漏的 overlay/command/sidebar/native 子件，以及 Banner/Toast 的准确来源。别名复用同一接口说明；Toast 现有手表把 Toaster/Toast 组件与 toast() 函数参数混在一起，需分别说明，实际 message 类型是 ReactNode。
+- D02c 补全部 Library 主 Usage 的真实 tarball 编译。主 agent 从浏览器实际 registry 提取 99 页 Usage，在仓外按公开 package exports（本地包依赖、无源码 alias）诊断编译，初始 **91/99**。失败项为 Accordion、ConfirmDialog、LinkProvider、SegmentControl、Sheet、SlotBar、TablePager、ToggleGroup，原因包括缺必填属性、未声明状态或漏导入；ToggleGroup 已修正。该诊断不是新 tarball 安装证明，关闭前仍需正式消费门及独立复验。
+- 非 catalog owner 正文探针初始为 **101/111**；10 个锚点尚未接通，含带编号标题与登记 slug 不一致。D03b-C3 必须补有内容的正文或精确归属，不能只增加空锚点。
+
+上述接受的是 D03a、D03b-A/B1/B2A。其余反馈、compound 家族、非 catalog 正文、全部 Usage 和版本化指南继续分组补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
