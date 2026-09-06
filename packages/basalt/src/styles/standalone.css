@@ -1364,6 +1364,9 @@
   .py-8 {
     padding-block: calc(var(--spacing) * 8);
   }
+  .pt-0\.5 {
+    padding-top: calc(var(--spacing) * 0.5);
+  }
   .pt-3 {
     padding-top: calc(var(--spacing) * 3);
   }

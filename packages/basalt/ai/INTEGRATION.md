@@ -1359,6 +1359,31 @@ Basalt charts are composed of responsive frame, legend, and tooltip subsystem pr
       - Zero values render with clear `:focus-visible` outlines without being faded by parent opacity.
     - **Dynamic Data Updates**: Shrinking or emptying arrays, or switching years, clamps active index safely, restores focus if the element was active, and never steals focus from external controls.
 
+<a id="stat-card"></a>
+
+### StatCard & StatGrid (`@nocoo/basalt/charts/stat-card`)
+
+- **`StatCard`**: High-level KPI and telemetry presentation card supporting incremental interactive slots and status state transitions.
+  - **Props (`StatCardProps`)**:
+    - `value: string | number` (required): Core metric value. Formatted via `toLocaleString()` if numeric. Overridden when `status` is provided.
+    - `title?: string` / `label?: string` (optional): Heading text (`title` takes precedence over `label`).
+    - `subtitle?: string` (optional): Supporting text below value.
+    - `icon?: LucideIcon` (optional): Decorative icon displayed in header.
+    - `iconColor?: string` (optional, default: `"text-basalt-muted-foreground"`): Tailwind text color class for icon.
+    - `trend?: { value: number; label?: string }` (optional): Default percentage trend with automatic positive/negative color coding.
+    - `action?: ReactNode` (optional): Header interactive element (e.g., info tooltip button). When provided, switches card role to `group`.
+    - `status?: ReactNode` (optional): State replacement slot (e.g., loading skeleton, error message, or empty indicator) replacing the numeric `value`. Does not mask caller-managed `subtitle` or `trend`. When callers display an error or empty state, they should omit `trend` so stale metrics are not reported.
+    - `trendContent?: ReactNode` (optional): Custom trend replacement slot (e.g., custom badge, sparkline, or localized text) replacing default `trend`.
+    - `children?: ReactNode` (optional): Custom arbitrary content rendered inside the card below header.
+    - `ariaLabel?: string` (optional): Overrides automatic accessible name calculation.
+    - `className?: string` (optional): Additional container classes.
+  - **Accessibility & Role Semantics**:
+    - Pure display cards render as `role="img"` with an automated compound accessible label.
+    - When `action`, `status`, `trendContent`, or `children` slots are present, the card switches to `role="group"` so interactive descendants remain discoverable and navigable in assistive technology trees.
+    - Falsy values `null`, `undefined`, and `false` are cleanly disregarded without creating empty gap wrappers; `0` is treated as valid content.
+- **`StatGrid`**: Responsive grid container organizing multiple `StatCard` items into 2, 3, or 4 column layouts.
+  - **Props (`StatGridProps`)**: `columns?: 2 | 3 | 4` (default: `4`), `className?: string`, `children: ReactNode`.
+
 ---
 
 ## 19. Complete Framework Recipes & Compilable Guides

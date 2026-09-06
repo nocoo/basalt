@@ -470,7 +470,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"stat-card": {
 		"file": "packages/basalt/src/charts/stat-card.tsx",
-		"hash": "aee98b982d850eb1",
+		"hash": "9645c41801b080e1",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/stat-card.js.map (sourcesContent[0])"
 	},

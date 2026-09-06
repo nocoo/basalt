@@ -4510,7 +4510,7 @@
 			"importPath": "@nocoo/basalt/charts/stat-card",
 			"subpath": "./charts/stat-card",
 			"sourceFile": "packages/basalt/src/charts/stat-card.tsx",
-			"sourceHash": "aee98b982d850eb1",
+			"sourceHash": "9645c41801b080e1",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4568,47 +4568,81 @@
 								{
 									"name": "label",
 									"type": "string",
-									"required": false
+									"required": false,
+									"description": "Secondary heading label for the metric card (overridden by title)."
 								},
 								{
 									"name": "title",
 									"type": "string",
-									"required": false
+									"required": false,
+									"description": "Primary heading title for the metric card (takes precedence over label)."
 								},
 								{
 									"name": "value",
 									"type": "number | string",
-									"required": true
+									"required": true,
+									"description": "Metric value, formatted via toLocaleString() if a number is provided.\nOverridden by the status slot if provided."
 								},
 								{
 									"name": "subtitle",
 									"type": "string",
-									"required": false
+									"required": false,
+									"description": "Supporting descriptive subtitle text rendered below value."
 								},
 								{
 									"name": "icon",
 									"type": "LucideIcon",
-									"required": false
+									"required": false,
+									"description": "Optional decorative Lucide icon component."
 								},
 								{
 									"name": "iconColor",
 									"type": "string",
-									"required": false
+									"required": false,
+									"default": "\"text-basalt-muted-foreground\"",
+									"description": "Color class applied to the icon wrapper."
 								},
 								{
 									"name": "trend",
 									"type": "{ value: number; label?: string; }",
-									"required": false
+									"required": false,
+									"description": "Structured percentage trend value and optional label.\nOverridden by the trendContent slot if provided."
+								},
+								{
+									"name": "action",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Optional header action or interactive element (e.g. tooltip trigger or button).\nRenders alongside the title/icon. Switches card role to group for accessible descendants."
+								},
+								{
+									"name": "status",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Optional custom status replacement slot (e.g. loading skeleton, error state, or empty state).\nTakes precedence over the default value display and excludes value from accessible name.\nSubtitle and trend remain caller-managed; when error/empty state is shown, callers should omit trend."
+								},
+								{
+									"name": "trendContent",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Optional custom trend replacement slot (e.g. custom badge, sparkline, or localized trend indicator).\nTakes precedence over the default trend calculation and excludes default trend from accessible name."
+								},
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Optional custom content rendered below the metric value and above or alongside the trend."
 								},
 								{
 									"name": "ariaLabel",
 									"type": "string",
-									"required": false
+									"required": false,
+									"description": "Explicit accessible label overriding automatic accessible name calculation."
 								},
 								{
 									"name": "className",
 									"type": "string",
-									"required": false
+									"required": false,
+									"description": "Additional CSS class names for styling the card root."
 								}
 							]
 						},
@@ -4642,47 +4676,81 @@
 						{
 							"name": "label",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Secondary heading label for the metric card (overridden by title)."
 						},
 						{
 							"name": "title",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Primary heading title for the metric card (takes precedence over label)."
 						},
 						{
 							"name": "value",
 							"type": "number | string",
-							"required": true
+							"required": true,
+							"description": "Metric value, formatted via toLocaleString() if a number is provided.\nOverridden by the status slot if provided."
 						},
 						{
 							"name": "subtitle",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Supporting descriptive subtitle text rendered below value."
 						},
 						{
 							"name": "icon",
 							"type": "LucideIcon",
-							"required": false
+							"required": false,
+							"description": "Optional decorative Lucide icon component."
 						},
 						{
 							"name": "iconColor",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"text-basalt-muted-foreground\"",
+							"description": "Color class applied to the icon wrapper."
 						},
 						{
 							"name": "trend",
 							"type": "{ value: number; label?: string; }",
-							"required": false
+							"required": false,
+							"description": "Structured percentage trend value and optional label.\nOverridden by the trendContent slot if provided."
+						},
+						{
+							"name": "action",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional header action or interactive element (e.g. tooltip trigger or button).\nRenders alongside the title/icon. Switches card role to group for accessible descendants."
+						},
+						{
+							"name": "status",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional custom status replacement slot (e.g. loading skeleton, error state, or empty state).\nTakes precedence over the default value display and excludes value from accessible name.\nSubtitle and trend remain caller-managed; when error/empty state is shown, callers should omit trend."
+						},
+						{
+							"name": "trendContent",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional custom trend replacement slot (e.g. custom badge, sparkline, or localized trend indicator).\nTakes precedence over the default trend calculation and excludes default trend from accessible name."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional custom content rendered below the metric value and above or alongside the trend."
 						},
 						{
 							"name": "ariaLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Explicit accessible label overriding automatic accessible name calculation."
 						},
 						{
 							"name": "className",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Additional CSS class names for styling the card root."
 						}
 					]
 				},
@@ -30791,7 +30859,7 @@
 			"exportName": "StatCard",
 			"importPath": "@nocoo/basalt/charts/stat-card",
 			"sourceFile": "packages/basalt/src/charts/stat-card.tsx",
-			"sourceHash": "aee98b982d850eb1",
+			"sourceHash": "9645c41801b080e1",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#stat-card",
@@ -30802,47 +30870,81 @@
 						{
 							"name": "label",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Secondary heading label for the metric card (overridden by title)."
 						},
 						{
 							"name": "title",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Primary heading title for the metric card (takes precedence over label)."
 						},
 						{
 							"name": "value",
 							"type": "number | string",
-							"required": true
+							"required": true,
+							"description": "Metric value, formatted via toLocaleString() if a number is provided.\nOverridden by the status slot if provided."
 						},
 						{
 							"name": "subtitle",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Supporting descriptive subtitle text rendered below value."
 						},
 						{
 							"name": "icon",
 							"type": "LucideIcon",
-							"required": false
+							"required": false,
+							"description": "Optional decorative Lucide icon component."
 						},
 						{
 							"name": "iconColor",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"text-basalt-muted-foreground\"",
+							"description": "Color class applied to the icon wrapper."
 						},
 						{
 							"name": "trend",
 							"type": "{ value: number; label?: string; }",
-							"required": false
+							"required": false,
+							"description": "Structured percentage trend value and optional label.\nOverridden by the trendContent slot if provided."
+						},
+						{
+							"name": "action",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional header action or interactive element (e.g. tooltip trigger or button).\nRenders alongside the title/icon. Switches card role to group for accessible descendants."
+						},
+						{
+							"name": "status",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional custom status replacement slot (e.g. loading skeleton, error state, or empty state).\nTakes precedence over the default value display and excludes value from accessible name.\nSubtitle and trend remain caller-managed; when error/empty state is shown, callers should omit trend."
+						},
+						{
+							"name": "trendContent",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional custom trend replacement slot (e.g. custom badge, sparkline, or localized trend indicator).\nTakes precedence over the default trend calculation and excludes default trend from accessible name."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional custom content rendered below the metric value and above or alongside the trend."
 						},
 						{
 							"name": "ariaLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Explicit accessible label overriding automatic accessible name calculation."
 						},
 						{
 							"name": "className",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Additional CSS class names for styling the card root."
 						}
 					]
 				},

@@ -12,6 +12,7 @@ export type ChartsGateResult = {
 	gaugeValidationsChecked: number;
 	heatmapNavigationsChecked: number;
 	valuesValidationsChecked: number;
+	statCardValidationsChecked: number;
 };
 
 const VIEWPORTS = [
@@ -34,6 +35,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 	let gaugeValidationsChecked = 0;
 	let heatmapNavigationsChecked = 0;
 	let valuesValidationsChecked = 0;
+	let statCardValidationsChecked = 0;
 
 	for (const vp of VIEWPORTS) {
 		await page.setViewportSize({ width: vp.width, height: vp.height });
@@ -574,6 +576,90 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			// Restore back to original 10 values for next loop iteration
 			await valuesCase.locator("#values-restore-btn").click();
 			valuesValidationsChecked++;
+
+			// -------------------------------------------------------------
+			// 9. StatCard: Error state -> Retry via Enter -> ready state with Tooltip & Escape
+			// -------------------------------------------------------------
+			const statCardCase = page.locator('[data-testid="case-statcard-interactive"]');
+			const statCardRoot = statCardCase.locator('div[role="group"]');
+			const beforeStatCard = statCardCase.locator("#focus-before-statcard");
+
+			// In error state: old value "1,420" and old trend "+8.5%" must NOT be in DOM or accessible label
+			await beforeStatCard.focus();
+			const errorCardLabel = await statCardRoot.getAttribute("aria-label");
+			assert.ok(
+				!errorCardLabel?.includes("1,420") && !errorCardLabel?.includes("8.5%"),
+				`Error card label must not report overridden value or stale trend (got: "${errorCardLabel}")`,
+			);
+			assert.equal(
+				await statCardCase.locator("#statcard-error-status").isVisible(),
+				true,
+				"Error status message must be visible",
+			);
+			assert.equal(
+				await statCardCase.locator("text='1,420'").count(),
+				0,
+				"Old value must not be in DOM during error state",
+			);
+
+			// Tab from before-button lands on the Retry button
+			await page.keyboard.press("Tab");
+			assert.equal(
+				await page.evaluate(() => document.activeElement?.id),
+				"statcard-retry-btn",
+				"Tab must focus the Retry button in error state",
+			);
+
+			// Press Enter on the focused Retry button to trigger transition to ready
+			await page.keyboard.press("Enter");
+			await page.waitForSelector("#statcard-action-btn", { state: "visible" });
+
+			// In ready state: formatted value 1,420 and trend are rendered and restored to accessible name
+			const readyCardLabel = await statCardRoot.getAttribute("aria-label");
+			assert.ok(
+				readyCardLabel?.includes("1,420") && readyCardLabel?.includes("8.5%"),
+				`Ready card label must include formatted value 1,420 and trend (got: "${readyCardLabel}")`,
+			);
+			const statCardRole = await statCardRoot.getAttribute("role");
+			assert.equal(statCardRole, "group", "Interactive StatCard with action must have role=group");
+
+			// Focus the help action button inside StatCard
+			const helpBtn = statCardCase.locator("#statcard-action-btn");
+			await helpBtn.focus();
+			assert.equal(
+				await page.evaluate(() => document.activeElement?.id),
+				"statcard-action-btn",
+				"Help action button must be focused",
+			);
+
+			// Tooltip must become visible on focus (renders via Portal at body root)
+			await page.waitForSelector("#statcard-tooltip-text", { state: "visible" });
+			const statcardTooltip = await page.locator("#statcard-tooltip-text").textContent();
+			assert.ok(
+				statcardTooltip?.includes("Accounts with at least one active seat"),
+				"StatCard action tooltip must display methodology explanation",
+			);
+
+			// Escape closes tooltip while maintaining active focus on the help button
+			await page.keyboard.press("Escape");
+			await page.waitForSelector("#statcard-tooltip-text", { state: "hidden" });
+			assert.equal(
+				await page.evaluate(() => document.activeElement?.id),
+				"statcard-action-btn",
+				"Focus must remain on the help button after Escape",
+			);
+
+			// Tab out of StatCard -> lands on focus-after-statcard
+			await page.keyboard.press("Tab");
+			assert.equal(
+				await page.evaluate(() => document.activeElement?.id),
+				"focus-after-statcard",
+				"Tab from StatCard action must land on following button",
+			);
+
+			// Reset to error state for next loop iteration
+			await statCardCase.locator("#statcard-set-error").click();
+			statCardValidationsChecked++;
 		}
 	}
 
@@ -588,5 +674,6 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 		gaugeValidationsChecked,
 		heatmapNavigationsChecked,
 		valuesValidationsChecked,
+		statCardValidationsChecked,
 	};
 }

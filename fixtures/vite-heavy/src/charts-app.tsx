@@ -3,7 +3,16 @@ import { ChartFrame, ChartShell } from "@nocoo/basalt/charts/frame";
 import { Gauge } from "@nocoo/basalt/charts/gauge";
 import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatmap-calendar";
 import { LineChart } from "@nocoo/basalt/charts/line";
+import { StatCard } from "@nocoo/basalt/charts/stat-card";
+import { Button } from "@nocoo/basalt/components/button";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@nocoo/basalt/components/tooltip";
 import { type BasaltTheme, ThemeProvider, useTheme } from "@nocoo/basalt/providers/theme";
+import { HelpCircle, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import { Bar, BarChart as RechartsBar } from "recharts";
 
@@ -24,6 +33,7 @@ const LINE_DATA = [
 function ChartsPanel() {
 	const { theme, setTheme } = useTheme();
 	const [valuesData, setValuesData] = useState<number[]>([0, 1, 2, 3, 4, 1, 0, 2, 3, 4]);
+	const [statState, setStatState] = useState<"ready" | "error">("error");
 
 	return (
 		<div id="charts-container" style={{ padding: 16 }}>
@@ -248,6 +258,74 @@ function ChartsPanel() {
 						Focus After Values
 					</button>
 				</div>
+
+				{/* 9. StatCard: Real Tooltip action & error -> Retry -> ready state transition */}
+				<div data-testid="case-statcard-interactive">
+					<h2>KPI Metrics</h2>
+					<div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+						<button id="statcard-set-error" type="button" onClick={() => setStatState("error")}>
+							Set Error State
+						</button>
+						<button id="statcard-set-ready" type="button" onClick={() => setStatState("ready")}>
+							Set Ready State
+						</button>
+					</div>
+					<button id="focus-before-statcard" type="button">
+						Focus Before StatCard
+					</button>
+					<StatCard
+						title="Active Subscriptions"
+						value={1420}
+						subtitle={statState === "error" ? undefined : "Verified active licenses"}
+						trend={statState === "ready" ? { value: 8.5, label: "vs last month" } : undefined}
+						status={
+							statState === "error" ? (
+								<span
+									id="statcard-error-status"
+									className="text-sm font-medium text-basalt-destructive"
+								>
+									Cluster query failed
+								</span>
+							) : undefined
+						}
+						action={
+							statState === "error" ? (
+								<Button
+									id="statcard-retry-btn"
+									size="sm"
+									variant="outline"
+									className="h-7 text-xs"
+									onClick={() => setStatState("ready")}
+								>
+									<RefreshCw className="h-3 w-3 mr-1" />
+									Retry
+								</Button>
+							) : (
+								<Tooltip>
+									<TooltipTrigger asChild>
+										<Button
+											id="statcard-action-btn"
+											size="sm"
+											variant="ghost"
+											className="h-6 w-6"
+											aria-label="Subscription methodology"
+										>
+											<HelpCircle className="h-4 w-4" />
+										</Button>
+									</TooltipTrigger>
+									<TooltipContent>
+										<p id="statcard-tooltip-text">
+											Accounts with at least one active seat renewed in the last 30 days.
+										</p>
+									</TooltipContent>
+								</Tooltip>
+							)
+						}
+					/>
+					<button id="focus-after-statcard" type="button">
+						Focus After StatCard
+					</button>
+				</div>
 			</section>
 		</div>
 	);
@@ -256,7 +334,9 @@ function ChartsPanel() {
 export function ChartsApp() {
 	return (
 		<ThemeProvider defaultTheme="light">
-			<ChartsPanel />
+			<TooltipProvider>
+				<ChartsPanel />
+			</TooltipProvider>
 		</ThemeProvider>
 	);
 }

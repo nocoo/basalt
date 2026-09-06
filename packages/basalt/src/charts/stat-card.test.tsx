@@ -90,6 +90,75 @@ describe("StatCard", () => {
 		rerender(<StatCard value="12.4k" trend={{ value: 0 }} />);
 		expect(screen.getByText("0%")).toHaveClass("text-basalt-muted-foreground");
 	});
+
+	it("supports action slot, custom status, custom trend, and children with accessible group role", () => {
+		// Action slot turns role into group so descendants are accessible
+		render(
+			<StatCard
+				title="Active Sessions"
+				value="4,280"
+				action={
+					<button type="button" aria-label="Metric details">
+						Info
+					</button>
+				}
+			/>,
+		);
+		const group = screen.getByRole("group", { name: "Active Sessions 4,280" });
+		expect(group).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Metric details" })).toBeInTheDocument();
+
+		// Custom status overrides value in rendering and accessible name
+		const { rerender } = render(
+			<StatCard
+				title="Throughput"
+				value="10k"
+				status={<span data-testid="status-loading">Loading metric...</span>}
+			/>,
+		);
+		expect(screen.getByTestId("status-loading")).toBeInTheDocument();
+		expect(screen.queryByText("10k")).toBeNull();
+		expect(screen.getByRole("group", { name: "Throughput" })).toBeInTheDocument();
+
+		// Custom trendContent overrides default trend in rendering and accessible name
+		rerender(
+			<StatCard
+				title="Error Rate"
+				value="0.04%"
+				trend={{ value: 10, label: "spike" }}
+				trendContent={<span data-testid="custom-trend">Steady</span>}
+			/>,
+		);
+		expect(screen.getByTestId("custom-trend")).toBeInTheDocument();
+		expect(screen.queryByText("+10%")).toBeNull();
+		expect(screen.getByRole("group", { name: "Error Rate 0.04%" })).toBeInTheDocument();
+
+		// Slot with bare value 0 is rendered and not dropped as falsy
+		render(
+			<StatCard title="Zero Case" value="99" action={0} status={0} trendContent={0}>
+				{0}
+			</StatCard>,
+		);
+		const zeroes = screen.getAllByText("0");
+		expect(zeroes.length).toBeGreaterThanOrEqual(4);
+		expect(screen.getByRole("group", { name: "Zero Case" })).toBeInTheDocument();
+
+		// null/false/undefined slots fallback cleanly without rendering empty wrappers or breaking role="img"
+		const { container: fallbackContainer } = render(
+			<StatCard
+				title="Pure Metric"
+				value="100"
+				action={null}
+				status={undefined}
+				trendContent={false}
+			>
+				{null}
+			</StatCard>,
+		);
+		expect(screen.getByRole("img", { name: "Pure Metric 100" })).toBeInTheDocument();
+		expect(fallbackContainer.querySelector(".flex.items-center.gap-2.shrink-0")).toBeNull();
+		expect(fallbackContainer.querySelector(".mt-2")).toBeNull();
+	});
 });
 
 describe("StatGrid", () => {

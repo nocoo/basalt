@@ -62,6 +62,15 @@ describe("charts catalog content family", () => {
 					{ id: `${slug}-accessible-year`, title: "Accessible Year Grid" },
 					{ id: `${slug}-accessible-values`, title: "Accessible Values Matrix" },
 				]);
+			} else if (slug === "stat-card") {
+				expect(
+					examples.map(({ id, title }) => ({ id, title })),
+					slug,
+				).toEqual([
+					{ id: `${slug}-default`, title: "Default" },
+					{ id: `${slug}-metric-info`, title: "Metric Info & Custom Trend" },
+					{ id: `${slug}-state-transition`, title: "State Transitions & Retry" },
+				]);
 			} else {
 				expect(
 					examples.map(({ id, title }) => ({ id, title })),
