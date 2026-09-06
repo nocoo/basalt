@@ -223,9 +223,9 @@ One tree for the whole app. Login and the shell both sit under it.
   - `ACCENT_SWATCHES`: Readonly array of 24 predefined `AccentSwatch` objects.
   - `DEFAULT_ACCENT_ID`: Default accent ID (`"primary"`).
   - `accentSwatchById(id: string | null | undefined): AccentSwatch`: Finds matching swatch by `id`, defaulting to `ACCENT_SWATCHES[0]` if not found.
-  - `accentForeground(hsl: string): string`: Computes relative luminance from HSL channels and selects dark foreground (`"0 0% 10%"`) when luminance > 0.35, otherwise light (`"0 0% 100%"`). Note: currently relies on a fixed 0.35 luminance threshold rather than comparing WCAG contrast ratios directly (slated for full contrast verification in P5).
-  - `applyAccent(id: string, dark = false): void`: Sets CSS variables `--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent` on the document root element. Accepts optional `dark` flag (defaults to `false`).
-- **Known Limitations & Resilience**: Storage access gracefully degrades in sandboxed or quota-exceeded environments by preserving in-memory choices without throwing. SSR hydration serves controlled `accent` (if provided) or server snapshot defaults (`DEFAULT_ACCENT_ID = "primary"`). Palette contrast ratio audits remain slated for P5.
+  - `accentForeground(hsl: string)`: Compares WCAG contrast against white and dark text and returns the higher-contrast pairing (`"0 0% 10%"` or `"0 0% 100%"`). Note: selecting higher contrast does not guarantee arbitrary custom colors reach 4.5:1.
+  - `applyAccent(id: string, dark = false): void`: Sets CSS variables `--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent` on the document root element. For built-in palette swatches, semantic `--basalt-primary` is derived to guarantee WCAG 4.5:1 text/button contrast across L0–L3 surfaces and 90% hover states without mutating chart swatch definitions (`ACCENT_SWATCHES`) or chart palette tokens. Badge variants pair corresponding semantic foreground tokens (`text-basalt-badge-*-foreground` / `text-basalt-*-foreground`). Accepts optional `dark` flag (defaults to `false`).
+- **Known Limitations & Resilience**: Storage access gracefully degrades in sandboxed or quota-exceeded environments by preserving in-memory choices without throwing. SSR hydration serves controlled `accent` (if provided) or server snapshot defaults (`DEFAULT_ACCENT_ID = "primary"`). Built-in palette accents satisfy WCAG 4.5:1 across surfaces in both themes.
 
 ### Host-Controlled Preferences Recipe
 

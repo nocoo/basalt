@@ -35,19 +35,20 @@ describe("accent", () => {
 
 	it("applies primary and ring from the theme palette swatch", () => {
 		applyAccent("teal", false);
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("186 80% 45%");
-		expect(document.documentElement.style.getPropertyValue("--basalt-ring")).toBe("186 80% 45%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("186 80% 27%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-ring")).toBe("186 80% 27%");
 		expect(document.documentElement.style.getPropertyValue("--basalt-chart-1")).toBe("");
 		expect(document.documentElement.style.getPropertyValue("--basalt-primary-foreground")).toBe(
-			"0 0% 10%",
+			"0 0% 100%",
 		);
 		expect(document.documentElement.dataset.accent).toBe("teal");
 	});
 
-	it("pairs light amber with dark foreground for contrast", () => {
+	it("pairs light amber with white foreground for derived dark primary contrast", () => {
 		applyAccent("amber", false);
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("45 93% 26%");
 		expect(document.documentElement.style.getPropertyValue("--basalt-primary-foreground")).toBe(
-			"0 0% 10%",
+			"0 0% 100%",
 		);
 	});
 
@@ -61,6 +62,93 @@ describe("accent", () => {
 		expect(ACCENT_SWATCHES.map((swatch) => swatch.token)).toEqual(
 			Array.from({ length: 24 }, (_, index) => `--basalt-chart-${index + 1}`),
 		);
+	});
+
+	it("ensures applyAccent produces >=4.5:1 contrast for all 24 swatches in both themes without mutating swatches", () => {
+		function channel(c: number) {
+			return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
+		}
+		function parseHsl(hsl: string): [number, number, number] {
+			const [h, s, l] = hsl.trim().split(/\s+/);
+			return [Number(h), Number(s.replace("%", "")) / 100, Number(l.replace("%", "")) / 100];
+		}
+		function hslToRgb(h: number, s: number, l: number): [number, number, number] {
+			const k = (n: number) => (n + h / 30) % 12;
+			const a = s * Math.min(l, 1 - l);
+			const f = (n: number) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+			return [255 * f(0), 255 * f(8), 255 * f(4)];
+		}
+		function relLum(rgb: [number, number, number]) {
+			return (
+				0.2126 * channel(rgb[0] / 255) +
+				0.7152 * channel(rgb[1] / 255) +
+				0.0722 * channel(rgb[2] / 255)
+			);
+		}
+		function contrast(a: [number, number, number], b: [number, number, number]) {
+			const la = relLum(a);
+			const lb = relLum(b);
+			return (Math.max(la, lb) + 0.05) / (Math.min(la, lb) + 0.05);
+		}
+		function over(
+			top: [number, number, number, number],
+			bottom: [number, number, number],
+		): [number, number, number] {
+			return [
+				top[0] * top[3] + bottom[0] * (1 - top[3]),
+				top[1] * top[3] + bottom[1] * (1 - top[3]),
+				top[2] * top[3] + bottom[2] * (1 - top[3]),
+			];
+		}
+
+		const lightSurfaces: [number, number, number][] = [
+			[238, 239, 242],
+			[246, 247, 248],
+			[252, 252, 253],
+			[255, 255, 255],
+		];
+		const darkSurfaces: [number, number, number][] = [
+			[23, 23, 23],
+			[27, 27, 27],
+			[31, 31, 31],
+			[36, 36, 36],
+		];
+
+		for (const swatch of ACCENT_SWATCHES) {
+			for (const dark of [false, true]) {
+				applyAccent(swatch.id, dark);
+				const primaryHsl = document.documentElement.style.getPropertyValue("--basalt-primary");
+				const fgHsl = document.documentElement.style.getPropertyValue(
+					"--basalt-primary-foreground",
+				);
+
+				const [ph, ps, pl] = parseHsl(primaryHsl);
+				const pRgb = hslToRgb(ph, ps, pl);
+				const [fh, fs, fl] = parseHsl(fgHsl);
+				const fgRgb = hslToRgb(fh, fs, fl);
+
+				const surfaces = dark ? darkSurfaces : lightSurfaces;
+
+				// 1. Text contrast (e.g. link/text using primary color) against L0-L3 surfaces
+				for (const bg of surfaces) {
+					expect(contrast(pRgb, bg)).toBeGreaterThanOrEqual(4.5);
+				}
+
+				// 2. Default button contrast: foreground on primary background
+				expect(contrast(fgRgb, pRgb)).toBeGreaterThanOrEqual(4.5);
+
+				// 3. Hover button contrast: foreground on 90% opacity primary composite over L0-L3 surfaces
+				for (const bg of surfaces) {
+					const hoverBg = over([...pRgb, 0.9], bg);
+					expect(contrast(fgRgb, hoverBg)).toBeGreaterThanOrEqual(4.5);
+				}
+			}
+		}
+
+		// Ensure chart swatch raw definitions were not mutated
+		expect(ACCENT_SWATCHES[0].light).toBe("217 91% 60%");
+		expect(ACCENT_SWATCHES[0].dark).toBe("217 91% 65%");
+		expect(ACCENT_SWATCHES[1].light).toBe("200 90% 55%");
 	});
 
 	it("persists the chosen swatch", () => {
@@ -360,7 +448,7 @@ describe("accent", () => {
 			</AccentProvider>,
 		);
 		expect(document.documentElement.dataset.accent).toBe("rose");
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("340 82% 55%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("340 82% 45%");
 	});
 
 	it("supports custom storageKey and cross-tab storage sync", () => {
@@ -865,7 +953,7 @@ describe("accent", () => {
 
 		expect(capturedStorageListener).not.toBeNull();
 		expect(document.documentElement.dataset.accent).toBe("green");
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("142 71% 45%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("142 71% 27%");
 
 		// Toggle dark class on documentElement
 		act(() => {

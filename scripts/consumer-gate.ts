@@ -25,6 +25,7 @@ import {
 } from "./consumer-browser";
 import { assertConsumerCalendar } from "./consumer-calendar";
 import { assertConsumerConfirm } from "./consumer-confirm";
+import { assertConsumerContrast } from "./consumer-contrast";
 import { assertConsumerDock } from "./consumer-dock";
 import { assertConsumerEmpty } from "./consumer-empty";
 import { assertConsumerGeometry } from "./consumer-geometry";
@@ -1354,6 +1355,15 @@ console.log(JSON.stringify({
 						const faults = attachPageFaults(page);
 						await page.goto(providersUrl, { waitUntil: "domcontentloaded" });
 						const res = await assertConsumerProviders(page);
+						assertNoPageFaults(faults);
+						return res;
+					});
+
+					const contrastUrl = `http://127.0.0.1:${port}/contrast.html`;
+					evidence.contrast = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(contrastUrl, { waitUntil: "domcontentloaded" });
+						const res = await assertConsumerContrast(page);
 						assertNoPageFaults(faults);
 						return res;
 					});

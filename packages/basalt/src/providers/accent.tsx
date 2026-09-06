@@ -183,18 +183,121 @@ function channel(c: number) {
 	return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
 }
 
-export function accentForeground(hsl: string) {
+function parseHslChannels(hsl: string): [number, number, number] {
 	const [hue, sat, light] = hsl.trim().split(/\s+/);
 	const h = Number(hue);
 	const s = Number(sat.replace("%", "")) / 100;
 	const l = Number(light.replace("%", "")) / 100;
+	return [h, s, l];
+}
+
+function hslToRgbChannels(h: number, s: number, l: number): [number, number, number] {
+	const k = (n: number) => (n + h / 30) % 12;
 	const a = s * Math.min(l, 1 - l);
-	const f = (n: number) => {
-		const k = (n + h / 30) % 12;
-		return l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-	};
-	const luminance = 0.2126 * channel(f(0)) + 0.7152 * channel(f(8)) + 0.0722 * channel(f(4));
-	return luminance > 0.35 ? "0 0% 10%" : "0 0% 100%";
+	const f = (n: number) => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+	return [255 * f(0), 255 * f(8), 255 * f(4)];
+}
+
+function relativeLuminance(rgb: [number, number, number]): number {
+	return (
+		0.2126 * channel(rgb[0] / 255) + 0.7152 * channel(rgb[1] / 255) + 0.0722 * channel(rgb[2] / 255)
+	);
+}
+
+function wcagContrast(rgbA: [number, number, number], rgbB: [number, number, number]): number {
+	const lA = relativeLuminance(rgbA);
+	const lB = relativeLuminance(rgbB);
+	return (Math.max(lA, lB) + 0.05) / (Math.min(lA, lB) + 0.05);
+}
+
+const DARK_TEXT_RGB: [number, number, number] = [26, 26, 26]; // 0 0% 10%
+const WHITE_TEXT_RGB: [number, number, number] = [255, 255, 255]; // 0 0% 100%
+
+const LIGHT_SURFACES_RGB: [number, number, number][] = [
+	[238, 239, 242], // background
+	[246, 247, 248], // card
+	[252, 252, 253], // secondary
+	[255, 255, 255], // bright
+];
+
+const DARK_SURFACES_RGB: [number, number, number][] = [
+	[23, 23, 23], // background
+	[27, 27, 27], // card
+	[31, 31, 31], // secondary
+	[36, 36, 36], // bright
+];
+
+function compositeRgb(
+	top: [number, number, number, number],
+	bottom: [number, number, number],
+): [number, number, number] {
+	return [
+		top[0] * top[3] + bottom[0] * (1 - top[3]),
+		top[1] * top[3] + bottom[1] * (1 - top[3]),
+		top[2] * top[3] + bottom[2] * (1 - top[3]),
+	];
+}
+
+function deriveSemanticPrimary(swatch: AccentSwatch, dark: boolean): string {
+	const [h, s, origL] = parseHslChannels(dark ? swatch.dark : swatch.light);
+	const targetSurfaces = dark ? DARK_SURFACES_RGB : LIGHT_SURFACES_RGB;
+
+	if (!dark) {
+		for (let l = Math.min(Math.round(origL * 100), 60); l >= 15; l--) {
+			const rgb = hslToRgbChannels(h, s, l / 100);
+			const minTextR = Math.min(...targetSurfaces.map((bg) => wcagContrast(rgb, bg)));
+			if (minTextR < 4.55) {
+				continue;
+			}
+			const cWhite = wcagContrast(rgb, WHITE_TEXT_RGB);
+			if (cWhite < 4.55) {
+				continue;
+			}
+			let hoverOk = true;
+			for (const bg of targetSurfaces) {
+				const hoverBg = compositeRgb([...rgb, 0.9], bg);
+				if (wcagContrast(hoverBg, WHITE_TEXT_RGB) < 4.55) {
+					hoverOk = false;
+					break;
+				}
+			}
+			if (hoverOk) {
+				return `${h} ${Math.round(s * 100)}% ${l}%`;
+			}
+		}
+	} else {
+		for (let l = Math.max(Math.round(origL * 100), 45); l <= 85; l++) {
+			const rgb = hslToRgbChannels(h, s, l / 100);
+			const minTextR = Math.min(...targetSurfaces.map((bg) => wcagContrast(rgb, bg)));
+			if (minTextR < 4.55) {
+				continue;
+			}
+			const cDark = wcagContrast(rgb, DARK_TEXT_RGB);
+			if (cDark < 4.55) {
+				continue;
+			}
+			let hoverOk = true;
+			for (const bg of targetSurfaces) {
+				const hoverBg = compositeRgb([...rgb, 0.9], bg);
+				if (wcagContrast(hoverBg, DARK_TEXT_RGB) < 4.55) {
+					hoverOk = false;
+					break;
+				}
+			}
+			if (hoverOk) {
+				return `${h} ${Math.round(s * 100)}% ${l}%`;
+			}
+		}
+	}
+	return dark ? swatch.dark : swatch.light;
+}
+
+export function accentForeground(hsl: string) {
+	const [h, s, l] = parseHslChannels(hsl);
+	const rgb = hslToRgbChannels(h, s, l);
+	const contrastWhite = wcagContrast(rgb, WHITE_TEXT_RGB);
+	const contrastDark = wcagContrast(rgb, DARK_TEXT_RGB);
+	return contrastDark >= contrastWhite ? ("0 0% 10%" as const) : ("0 0% 100%" as const);
 }
 
 export function applyAccent(id: string, dark = false) {
@@ -202,11 +305,11 @@ export function applyAccent(id: string, dark = false) {
 		return;
 	}
 	const swatch = accentSwatchById(id);
-	const value = dark ? swatch.dark : swatch.light;
+	const semanticPrimary = deriveSemanticPrimary(swatch, dark);
 	const root = document.documentElement;
-	root.style.setProperty("--basalt-primary", value);
-	root.style.setProperty("--basalt-primary-foreground", accentForeground(value));
-	root.style.setProperty("--basalt-ring", value);
+	root.style.setProperty("--basalt-primary", semanticPrimary);
+	root.style.setProperty("--basalt-primary-foreground", accentForeground(semanticPrimary));
+	root.style.setProperty("--basalt-ring", semanticPrimary);
 	root.dataset.accent = swatch.id;
 }
 

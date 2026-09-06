@@ -21,10 +21,13 @@
 	--color-basalt-destructive: hsl(var(--basalt-destructive));
 	--color-basalt-destructive-foreground: hsl(var(--basalt-destructive-foreground));
 	--color-basalt-info: hsl(var(--basalt-info));
+	--color-basalt-info-foreground: hsl(var(--basalt-info-foreground));
 	--color-basalt-info-tint: hsl(var(--basalt-info-tint));
 	--color-basalt-warning: hsl(var(--basalt-warning));
+	--color-basalt-warning-foreground: hsl(var(--basalt-warning-foreground));
 	--color-basalt-warning-tint: hsl(var(--basalt-warning-tint));
 	--color-basalt-danger: hsl(var(--basalt-danger));
+	--color-basalt-danger-foreground: hsl(var(--basalt-danger-foreground));
 	--color-basalt-danger-tint: hsl(var(--basalt-danger-tint));
 	--color-basalt-border: hsl(var(--basalt-border));
 	--color-basalt-input: hsl(var(--basalt-input));
@@ -53,6 +56,9 @@
 	--color-basalt-chart-22: hsl(var(--basalt-chart-22));
 	--color-basalt-chart-23: hsl(var(--basalt-chart-23));
 	--color-basalt-chart-24: hsl(var(--basalt-chart-24));
+	--color-basalt-badge-green-foreground: hsl(var(--basalt-badge-green-foreground));
+	--color-basalt-badge-teal-foreground: hsl(var(--basalt-badge-teal-foreground));
+	--color-basalt-badge-purple-foreground: hsl(var(--basalt-badge-purple-foreground));
 	--color-basalt-chart-axis: hsl(var(--basalt-chart-axis));
 	--color-basalt-chart-muted: hsl(var(--basalt-chart-muted));
 	--color-basalt-heatmap-green-1: hsl(var(--basalt-heatmap-green-1));
