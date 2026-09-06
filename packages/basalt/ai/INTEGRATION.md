@@ -992,6 +992,43 @@ export function LocalizedDatePickerExample() {
 }
 ```
 
+### Empty states with actions
+
+`Empty` and `LayerCard.Empty` support custom `children` and an interactive `action` control alongside structured `icon`, `title`, and `description`. Content renders in a consistent visual hierarchy: `icon` → `title` → `description` → `children` → `action`. Both `children` and `action` preserve numeric `0` values without drop.
+
+```tsx compile:integration-empty-actions
+import { useState } from "react";
+import { Button } from "@nocoo/basalt/components/button";
+import { Empty } from "@nocoo/basalt/components/empty";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
+
+export function EmptyActionExample() {
+  const [created, setCreated] = useState(false);
+
+  return (
+    <LayerCard className="max-w-md p-6">
+      {created ? (
+        <p className="text-sm text-basalt-foreground">Project created successfully.</p>
+      ) : (
+        <Empty
+          title="No projects found"
+          description="You haven't created any workspace projects yet."
+          action={
+            <Button size="sm" onClick={() => setCreated(true)}>
+              Create project
+            </Button>
+          }
+        >
+          <span className="text-xs text-basalt-muted-foreground">
+            Get started by launching a new workspace.
+          </span>
+        </Empty>
+      )}
+    </LayerCard>
+  );
+}
+```
+
 ### React Hook Form Adapter
 
 When building forms with form libraries like `react-hook-form`, wrap composite controls like `DatePicker` using `Controller`. For native controls like `Input`, register them directly with validation rules:

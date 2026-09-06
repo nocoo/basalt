@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { createRef, Fragment } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { LayerCard, type LayerCardProps } from "./layer-card";
 
 function acceptLayerCardProps(_props: LayerCardProps) {}
@@ -176,15 +176,23 @@ describe("LayerCard", () => {
 	});
 
 	it("renders a reusable empty state and forwards native props", () => {
+		const onClick = vi.fn();
 		render(
 			<LayerCard>
 				<LayerCard.Empty
 					title="No activity"
 					description="New events will appear here."
 					icon={<svg aria-label="Inbox" />}
+					action={
+						<button type="button" onClick={onClick}>
+							Retry
+						</button>
+					}
 					data-testid="empty"
 					className="extra"
-				/>
+				>
+					Supporting note
+				</LayerCard.Empty>
 			</LayerCard>,
 		);
 		const empty = screen.getByTestId("empty");
@@ -192,7 +200,12 @@ describe("LayerCard", () => {
 		expect(empty.parentElement?.className).not.toContain("p-4");
 		expect(screen.getByText("No activity")).toBeInTheDocument();
 		expect(screen.getByText("New events will appear here.")).toBeInTheDocument();
+		expect(screen.getByText("Supporting note")).toBeInTheDocument();
 		expect(screen.getByLabelText("Inbox")).toBeInTheDocument();
+
+		const btn = screen.getByRole("button", { name: "Retry" });
+		fireEvent.click(btn);
+		expect(onClick).toHaveBeenCalledTimes(1);
 	});
 
 	it("forwards class, id, data attributes, and ref", () => {

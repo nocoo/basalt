@@ -10,7 +10,7 @@ export const API = [
 				type: "string",
 				required: false,
 				default: "\"No results\"",
-				description: "Primary title text displayed in the empty state.\n\nNote: Overwrites standard children rendering.",
+				description: "Primary title text displayed in the empty state.",
 			},
 			{
 				name: "description",
@@ -23,6 +23,18 @@ export const API = [
 				type: "React.ReactNode",
 				required: false,
 				description: "Visual icon element rendered above the title.",
+			},
+			{
+				name: "action",
+				type: "React.ReactNode",
+				required: false,
+				description: "Interactive call-to-action element (e.g. Button or Link) rendered below content.",
+			},
+			{
+				name: "children",
+				type: "React.ReactNode",
+				required: false,
+				description: "Custom supporting content or custom layout rendered between description and action.",
 			},
 		],
 	},

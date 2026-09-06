@@ -96,7 +96,11 @@ describe("foundation feedback scenario truth", () => {
 		]);
 		expect(UI_EXAMPLES["basalt-mark"]).toBe(BASALT_MARK_EXAMPLES);
 		expect(UI_EXAMPLES["basalt-mark"]?.map((item) => item.id)).toEqual(["basalt-mark-default"]);
-		expect(UI_EXAMPLES.empty?.map((item) => item.id)).toEqual(["empty-basic", "empty-with-icon"]);
+		expect(UI_EXAMPLES.empty?.map((item) => item.id)).toEqual([
+			"empty-basic",
+			"empty-with-icon",
+			"empty-action-states",
+		]);
 		expect(UI_EXAMPLES.label).toBe(LABEL_EXAMPLES);
 		expect(UI_EXAMPLES.label?.map((item) => item.id)).toEqual([
 			"label-default-label",

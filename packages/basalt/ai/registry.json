@@ -11974,7 +11974,7 @@
 			"importPath": "@nocoo/basalt/components/empty",
 			"subpath": "./components/empty",
 			"sourceFile": "packages/basalt/src/components/empty.tsx",
-			"sourceHash": "474f2c0e74f8cf9f",
+			"sourceHash": "bfae378db2e00c49",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -12018,7 +12018,7 @@
 									"type": "string",
 									"required": false,
 									"default": "\"No results\"",
-									"description": "Primary title text displayed in the empty state.\n\nNote: Overwrites standard children rendering."
+									"description": "Primary title text displayed in the empty state."
 								},
 								{
 									"name": "description",
@@ -12031,6 +12031,18 @@
 									"type": "React.ReactNode",
 									"required": false,
 									"description": "Visual icon element rendered above the title."
+								},
+								{
+									"name": "action",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Interactive call-to-action element (e.g. Button or Link) rendered below content."
+								},
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Custom supporting content or custom layout rendered between description and action."
 								}
 							]
 						}
@@ -12046,7 +12058,7 @@
 							"type": "string",
 							"required": false,
 							"default": "\"No results\"",
-							"description": "Primary title text displayed in the empty state.\n\nNote: Overwrites standard children rendering."
+							"description": "Primary title text displayed in the empty state."
 						},
 						{
 							"name": "description",
@@ -12059,6 +12071,18 @@
 							"type": "React.ReactNode",
 							"required": false,
 							"description": "Visual icon element rendered above the title."
+						},
+						{
+							"name": "action",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Interactive call-to-action element (e.g. Button or Link) rendered below content."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Custom supporting content or custom layout rendered between description and action."
 						}
 					]
 				}
@@ -13552,7 +13576,7 @@
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"subpath": "./components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "f6f30eb41f184a61",
+			"sourceHash": "09adfa20de985fb2",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -13726,6 +13750,18 @@
 									"type": "React.ReactNode",
 									"required": false,
 									"description": "Optional empty-state icon."
+								},
+								{
+									"name": "action",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Optional interactive action element rendered below empty content."
+								},
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Custom supporting content or custom layout rendered between description and action."
 								}
 							]
 						}
@@ -13831,6 +13867,18 @@
 							"type": "React.ReactNode",
 							"required": false,
 							"description": "Optional empty-state icon."
+						},
+						{
+							"name": "action",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional interactive action element rendered below empty content."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Custom supporting content or custom layout rendered between description and action."
 						}
 					]
 				}
@@ -23279,7 +23327,7 @@
 			"exportName": "LayerCard",
 			"importPath": "@nocoo/basalt/components/layer-card",
 			"sourceFile": "packages/basalt/src/components/layer-card.tsx",
-			"sourceHash": "f6f30eb41f184a61",
+			"sourceHash": "09adfa20de985fb2",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#layer-card",
@@ -23382,6 +23430,18 @@
 							"type": "React.ReactNode",
 							"required": false,
 							"description": "Optional empty-state icon."
+						},
+						{
+							"name": "action",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Optional interactive action element rendered below empty content."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Custom supporting content or custom layout rendered between description and action."
 						}
 					]
 				}
@@ -24890,7 +24950,7 @@
 			"exportName": "Empty",
 			"importPath": "@nocoo/basalt/components/empty",
 			"sourceFile": "packages/basalt/src/components/empty.tsx",
-			"sourceHash": "474f2c0e74f8cf9f",
+			"sourceHash": "bfae378db2e00c49",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#empty",
@@ -24903,7 +24963,7 @@
 							"type": "string",
 							"required": false,
 							"default": "\"No results\"",
-							"description": "Primary title text displayed in the empty state.\n\nNote: Overwrites standard children rendering."
+							"description": "Primary title text displayed in the empty state."
 						},
 						{
 							"name": "description",
@@ -24916,6 +24976,18 @@
 							"type": "React.ReactNode",
 							"required": false,
 							"description": "Visual icon element rendered above the title."
+						},
+						{
+							"name": "action",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Interactive call-to-action element (e.g. Button or Link) rendered below content."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Custom supporting content or custom layout rendered between description and action."
 						}
 					]
 				}

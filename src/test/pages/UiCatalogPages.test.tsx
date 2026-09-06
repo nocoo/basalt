@@ -1462,12 +1462,12 @@ describe("ui catalog", () => {
 			["outlined"],
 			[],
 			["label"],
-			["title", "description", "icon"],
+			["title", "description", "icon", "action", "children"],
 		]);
 		renderCatalog("/ui/layer-card");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(9);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(11);
 		expect(api).toHaveTextContent("className?");
 		expect(api).toHaveTextContent("outlined?");
 		expect(api).toHaveTextContent("padding?");
@@ -1478,7 +1478,7 @@ describe("ui catalog", () => {
 		expect(api).toHaveTextContent("string");
 		expect(api).toHaveTextContent("Additional classes for the card root.");
 		expect(api).toHaveTextContent("—");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(9);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(11);
 		expect(api).not.toHaveTextContent("id");
 		expect(api).not.toHaveTextContent("style");
 		expect(api).not.toHaveTextContent("role");
@@ -1506,7 +1506,9 @@ describe("ui catalog", () => {
 		expect(markdown).toContain(
 			"<LayerCard><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body>Content</LayerCard.Body><LayerCard.Footer>Actions</LayerCard.Footer></LayerCard>",
 		);
-		expect(markdown).not.toContain("- children (");
+		expect(markdown).toContain(
+			"- children (React.ReactNode, optional, default —): Custom supporting content or custom layout rendered between description and action.",
+		);
 		expect(markdown).not.toContain("- id (");
 		expect(markdown).not.toContain("- style (");
 		expect(markdown).not.toContain("- role (");

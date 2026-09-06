@@ -101,6 +101,18 @@ export const API = [
 				required: false,
 				description: "Optional empty-state icon.",
 			},
+			{
+				name: "action",
+				type: "React.ReactNode",
+				required: false,
+				description: "Optional interactive action element rendered below empty content.",
+			},
+			{
+				name: "children",
+				type: "React.ReactNode",
+				required: false,
+				description: "Custom supporting content or custom layout rendered between description and action.",
+			},
 		],
 	},
 ];

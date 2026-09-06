@@ -24,7 +24,7 @@ const FEEDBACK_SCENARIOS = {
 		"banner-compact-size",
 		"banner-custom-content",
 	],
-	empty: ["empty-basic", "empty-with-icon"],
+	empty: ["empty-basic", "empty-with-icon", "empty-action-states"],
 	loader: ["loader-default-size", "loader-custom-size"],
 	"skeleton-line": ["skeleton-line-default", "skeleton-line-width", "skeleton-line-height"],
 	meter: [
@@ -63,7 +63,7 @@ const FEEDBACK_DESCRIPTIONS = {
 	banner:
 		"Displays contextual inline messages for informational, alert, or error states. Inherits standard div element attributes without exposing a public ref; structured mode (activated by title or description) ignores standard children. BannerAction is a named export alias of Banner.Action; both are ordinary function components wrapping Button without a forwarded ref, mapping variant and size contextually while inheriting standard ButtonHTMLAttributes (disabled, aria-*, event handlers).",
 	empty:
-		"Empty-state copy. Inherits standard div element attributes without exposing a public ref; standard children are currently ignored in favor of structured icon, title, and description props.",
+		"Empty-state copy. Inherits standard div element attributes without exposing a public ref; supports structured icon, title, description, custom children content, and interactive action controls.",
 	loader:
 		"Indicates a pending state. Forwards standard SVG attributes with size controlling width and height, defaults role='status' and aria-label='Loading' (overridable via props), and does not expose a public ref.",
 	"skeleton-line":
@@ -102,7 +102,7 @@ describe("feedback catalog content family", () => {
 		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(99);
 	});
 
-	it("keeps the forty-four final winner scenarios in their audited order", () => {
+	it("keeps the forty-five final winner scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(FEEDBACK_SCENARIOS)) {
 			const examples = feedback[slug]?.examples ?? [];
@@ -120,7 +120,7 @@ describe("feedback catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(44);
+		expect(count).toBe(45);
 	});
 
 	it("keeps the BASE banner winner without reviving the EXTRA default", () => {

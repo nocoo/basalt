@@ -26,6 +26,7 @@ import {
 import { assertConsumerCalendar } from "./consumer-calendar";
 import { assertConsumerConfirm } from "./consumer-confirm";
 import { assertConsumerDock } from "./consumer-dock";
+import { assertConsumerEmpty } from "./consumer-empty";
 import { assertConsumerGeometry } from "./consumer-geometry";
 import {
 	allocatePort,
@@ -1334,6 +1335,15 @@ console.log(JSON.stringify({
 						const faults = attachPageFaults(page);
 						await page.goto(calendarUrl, { waitUntil: "domcontentloaded" });
 						const res = await assertConsumerCalendar(page);
+						assertNoPageFaults(faults);
+						return res;
+					});
+
+					const emptyUrl = `http://127.0.0.1:${port}/empty.html`;
+					evidence.empty = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(emptyUrl, { waitUntil: "domcontentloaded" });
+						const res = await assertConsumerEmpty(page);
 						assertNoPageFaults(faults);
 						return res;
 					});

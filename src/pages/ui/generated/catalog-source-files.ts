@@ -62,7 +62,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"layer-card": {
 		"file": "packages/basalt/src/components/layer-card.tsx",
-		"hash": "f6f30eb41f184a61",
+		"hash": "09adfa20de985fb2",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/layer-card.js.map (sourcesContent[0])"
 	},
@@ -188,7 +188,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"empty": {
 		"file": "packages/basalt/src/components/empty.tsx",
-		"hash": "474f2c0e74f8cf9f",
+		"hash": "bfae378db2e00c49",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/empty.js.map (sourcesContent[0])"
 	},

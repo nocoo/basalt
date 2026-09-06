@@ -54,7 +54,7 @@ export type LayerCardLoadingProps = Omit<HTMLAttributes<HTMLDivElement>, "aria-l
 	 */
 	label?: string;
 };
-export type LayerCardEmptyProps = Omit<HTMLAttributes<HTMLDivElement>, "title"> & {
+export type LayerCardEmptyProps = Omit<HTMLAttributes<HTMLDivElement>, "title" | "children"> & {
 	/**
 	 * Empty-state heading.
 	 * @default "No content"
@@ -68,6 +68,14 @@ export type LayerCardEmptyProps = Omit<HTMLAttributes<HTMLDivElement>, "title"> 
 	 * Optional empty-state icon.
 	 */
 	icon?: ReactNode;
+	/**
+	 * Optional interactive action element rendered below empty content.
+	 */
+	action?: ReactNode;
+	/**
+	 * Custom supporting content or custom layout rendered between description and action.
+	 */
+	children?: ReactNode;
 };
 
 function isElement(child: ReactNode): child is ReactElement<{ children?: ReactNode }> {
@@ -211,6 +219,8 @@ function LayerCardEmpty({
 	title = "No content",
 	description,
 	icon,
+	action,
+	children,
 	className,
 	...props
 }: LayerCardEmptyProps) {
@@ -219,9 +229,12 @@ function LayerCardEmpty({
 			title={title}
 			description={description}
 			icon={icon}
+			action={action}
 			className={cn("p-8", className)}
 			{...props}
-		/>
+		>
+			{children}
+		</Empty>
 	);
 }
 LayerCardEmpty.displayName = "LayerCard.Empty";

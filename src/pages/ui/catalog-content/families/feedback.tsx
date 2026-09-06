@@ -21,6 +21,7 @@ import {
 } from "../../catalog-source";
 import { CODE_EXAMPLES } from "../../examples/code";
 import { CODE_BLOCK_EXAMPLES } from "../../examples/code-block";
+import { EMPTY_ACTION_EXAMPLES } from "../../examples/empty";
 import { API as avatarApi } from "../../generated/catalog-api/avatar";
 import { API as badgeApi } from "../../generated/catalog-api/badge";
 import { API as bannerApi } from "../../generated/catalog-api/banner";
@@ -555,7 +556,7 @@ export default function Example() {
 			...extraDocs(
 				"Empty",
 				"empty",
-				"Empty-state copy. Inherits standard div element attributes without exposing a public ref; standard children are currently ignored in favor of structured icon, title, and description props.",
+				"Empty-state copy. Inherits standard div element attributes without exposing a public ref; supports structured icon, title, description, custom children content, and interactive action controls.",
 				'<Empty title="No results" description="Try another query." />',
 				undefined,
 				`import { Empty } from "@nocoo/basalt/components/empty";
@@ -589,6 +590,7 @@ export default function Example() {
 					<Empty icon={<Inbox />} title="Inbox zero" description="You are all caught up." />
 				),
 			},
+			...EMPTY_ACTION_EXAMPLES,
 		],
 	},
 	loader: {
