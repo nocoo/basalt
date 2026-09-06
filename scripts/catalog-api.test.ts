@@ -596,6 +596,55 @@ describe("catalog API generator contract", () => {
 				surface: "CommandPalette",
 			},
 			{
+				slug: "command-palette",
+				sourceFile: "packages/basalt/src/components/command-palette.tsx",
+				propsType: "CommandPaletteTriggerProps",
+				surface: "CommandPaletteTrigger",
+			},
+			{
+				slug: "command-palette",
+				sourceFile: "packages/basalt/src/components/command-palette.tsx",
+				propsType: "CommandInputProps",
+				surface: "CommandInput",
+			},
+			{
+				slug: "command-palette",
+				sourceFile: "packages/basalt/src/components/command-palette.tsx",
+				propsType: "CommandListProps",
+				surface: "CommandList",
+			},
+			{
+				slug: "command-palette",
+				sourceFile: "packages/basalt/src/components/command-palette.tsx",
+				propsType: "CommandEmptyProps",
+				surface: "CommandEmpty",
+			},
+			{
+				slug: "command-palette",
+				sourceFile: "packages/basalt/src/components/command-palette.tsx",
+				propsType: "CommandGroupProps",
+				surface: "CommandGroup",
+			},
+			{
+				slug: "command-palette",
+				sourceFile: "packages/basalt/src/components/command-palette.tsx",
+				propsType: "CommandSeparatorProps",
+				surface: "CommandSeparator",
+			},
+			{
+				slug: "command-palette",
+				sourceFile: "packages/basalt/src/components/command-palette.tsx",
+				propsType: "CommandItemProps",
+				surface: "CommandItem",
+			},
+			{
+				slug: "command-palette",
+				sourceFile: "packages/basalt/src/components/command-palette.tsx",
+				propsType: "CommandShortcutProps",
+				surface: "CommandShortcut",
+				allowEmpty: true,
+			},
+			{
 				slug: "sidebar",
 				sourceFile: "packages/basalt/src/components/sidebar.tsx",
 				propsType: "SidebarProviderProps",
@@ -1402,7 +1451,7 @@ describe("catalog API generator contract", () => {
 				surface: "LinkProvider",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(210);
+		expect(CATALOG_API_TARGETS).toHaveLength(218);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1416,6 +1465,7 @@ describe("catalog API generator contract", () => {
 			"Checkbox.Legend",
 			"Radio.Legend",
 			"Switch.Legend",
+			"CommandShortcut",
 			"PopoverTitle",
 			"PopoverDescription",
 			"DialogHeader",
@@ -2589,7 +2639,17 @@ export interface WidgetProps {
 			"toggle-group": ["ToggleGroup (Single)", "ToggleGroup (Multiple)", "ToggleGroupItem"],
 			toolbar: ["Toolbar", "Toolbar.Button", "Toolbar.Input"],
 			tabs: ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
-			"command-palette": ["CommandPalette"],
+			"command-palette": [
+				"CommandPalette",
+				"CommandPaletteTrigger",
+				"CommandInput",
+				"CommandList",
+				"CommandEmpty",
+				"CommandGroup",
+				"CommandSeparator",
+				"CommandItem",
+				"CommandShortcut",
+			],
 			sidebar: ["SidebarProvider", "Sidebar", "SidebarItem"],
 			popover: [
 				"Popover",
@@ -4531,7 +4591,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"87643ac621f852d69f12709d43a39d1a74c3800bb85d101669d1b6eb235a5b4c",
+			"827f0321b9e1b81da6226e4c815feb96591c463e17b6f61f19f42630e8ee048b",
 		);
 	}, 60_000);
 

@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 656,
+	"totalSymbols": 664,
 	"totalValues": 375,
-	"totalTypes": 281,
+	"totalTypes": 289,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -3021,9 +3021,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/command-palette"
 				},
 				{
+					"name": "CommandPaletteTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
 					"name": "CommandPaletteTrigger",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandInputProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/command-palette",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/command-palette"
@@ -3037,9 +3053,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/command-palette"
 				},
 				{
+					"name": "CommandListProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
 					"name": "CommandList",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandEmptyProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/command-palette",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/command-palette"
@@ -3053,9 +3085,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/command-palette"
 				},
 				{
+					"name": "CommandGroupProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
 					"name": "CommandGroup",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandSeparatorProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/command-palette",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/command-palette"
@@ -3069,9 +3117,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/command-palette"
 				},
 				{
+					"name": "CommandItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
 					"name": "CommandItem",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/command-palette",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/command-palette"
+				},
+				{
+					"name": "CommandShortcutProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/command-palette",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/command-palette"

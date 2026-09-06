@@ -175,6 +175,13 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		forwardsRef: true,
 		forwardsRestProps: true,
 	},
+	CommandShortcut: {
+		justification:
+			"Semantic inline shortcut key indicator span; inherits HTMLSpanElement attributes without exposing a forwarded ref.",
+		inheritedElement: "HTMLSpanElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
 };
 
 export function formatNativeSurfaceStrategy(doc: NativeOnlySurfaceDocumentation): string {

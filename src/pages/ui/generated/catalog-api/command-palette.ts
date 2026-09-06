@@ -6,17 +6,23 @@ export const API = [
 		name: "CommandPalette",
 		props: [
 			{
+				name: "children",
+				type: "React.ReactNode",
+				required: false,
+				description: "Command palette structure elements, including CommandPaletteTrigger and inner command items.\nNote: Triggers must be direct children of CommandPalette (child.type === CommandPaletteTrigger)\nto be separated from modal dialog content. Wrapping triggers in Fragments or HOCs will cause\nthem to be treated as modal content.",
+			},
+			{
 				name: "open",
 				type: "boolean",
 				required: false,
-				description: "The controlled open state.",
+				description: "The controlled open state of the command palette dialog.",
 			},
 			{
 				name: "defaultOpen",
 				type: "boolean",
 				required: false,
 				default: "false",
-				description: "The uncontrolled initial open state.",
+				description: "The uncontrolled initial open state of the command palette dialog.",
 			},
 			{
 				name: "onOpenChange",
@@ -31,6 +37,175 @@ export const API = [
 				default: "true",
 				description: "Filter items as the query changes.",
 			},
+			{
+				name: "modal",
+				type: "boolean",
+				required: false,
+				default: "true",
+				description: "The modality of the dialog. When set to true, interaction with outside elements\nwill be disabled and only dialog content will be visible to screen readers.",
+			},
 		],
+	},
+	{
+		name: "CommandPaletteTrigger",
+		props: [
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Change the default rendered button element to the child element, merging props and behavior.\nCommandPaletteTrigger is an alias for DialogTrigger; forwards ref to HTMLButtonElement and inherits native button attributes.",
+			},
+		],
+	},
+	{
+		name: "CommandInput",
+		props: [
+			{
+				name: "value",
+				type: "string",
+				required: false,
+				description: "Optional controlled state for the search input value.\nNote: Underlying cmdk input excludes standard onChange/type props in favor of value/onValueChange.",
+			},
+			{
+				name: "onValueChange",
+				type: "(search: string) => void",
+				required: false,
+				description: "Event handler called when the search value changes.",
+			},
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Change the default rendered input element to the child element, merging props and behavior.\nCommandInput forwards ref to HTMLInputElement and inherits native input attributes (excluding onChange/type).\nNote: When aria-label is omitted, defaults to placeholder if string, or \"Command Palette\".",
+			},
+		],
+	},
+	{
+		name: "CommandList",
+		props: [
+			{
+				name: "label",
+				type: "string",
+				required: false,
+				default: "\"Suggestions\"",
+				description: "Accessible label for this list of suggestions. Not shown visibly.",
+			},
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Change the default rendered div element to the child element, merging props and behavior.\nCommandList forwards ref to HTMLDivElement and inherits native div attributes.",
+			},
+		],
+	},
+	{
+		name: "CommandEmpty",
+		props: [
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Change the default rendered div element to the child element, merging props and behavior.\nCommandEmpty forwards ref to HTMLDivElement and inherits native div attributes.\nNote: cmdk Empty does not support forceMount.",
+			},
+		],
+	},
+	{
+		name: "CommandGroup",
+		props: [
+			{
+				name: "heading",
+				type: "React.ReactNode",
+				required: false,
+				description: "Heading to render for this group of command items.",
+			},
+			{
+				name: "value",
+				type: "string",
+				required: false,
+				description: "Unique value identifying this group. If no heading is provided, value must be specified.",
+			},
+			{
+				name: "forceMount",
+				type: "boolean",
+				required: false,
+				description: "Whether this group is forcibly rendered regardless of filtering state.",
+			},
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Change the default rendered div element to the child element, merging props and behavior.\nCommandGroup forwards ref to HTMLDivElement and inherits native div attributes.",
+			},
+		],
+	},
+	{
+		name: "CommandSeparator",
+		props: [
+			{
+				name: "alwaysRender",
+				type: "boolean",
+				required: false,
+				description: "Whether this separator should always be rendered. Useful when automatic filtering is disabled.\nWhen false (default), visible only when the search query is empty.",
+			},
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Change the default rendered div element to the child element, merging props and behavior.\nCommandSeparator forwards ref to HTMLDivElement and inherits native div attributes.",
+			},
+		],
+	},
+	{
+		name: "CommandItem",
+		props: [
+			{
+				name: "disabled",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Whether this item is currently disabled from selection.",
+			},
+			{
+				name: "onSelect",
+				type: "(value: string) => void",
+				required: false,
+				description: "Event handler called when this item is selected via click or keyboard.\nNote: cmdk passes the item's resolved value string `(value: string) => void`,\nnot a standard DOM SelectEvent.",
+			},
+			{
+				name: "value",
+				type: "string",
+				required: false,
+				description: "Unique value identifying this item during filtering and selection.\nInferred from children/textContent if omitted.",
+			},
+			{
+				name: "keywords",
+				type: "string[]",
+				required: false,
+				description: "Optional additional keywords matched during filtering.",
+			},
+			{
+				name: "forceMount",
+				type: "boolean",
+				required: false,
+				description: "Whether this item is forcibly rendered regardless of query filtering.\nInherits forceMount from parent CommandGroup when omitted.",
+			},
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Change the default rendered div element to the child element, merging props and behavior.\nCommandItem forwards ref to HTMLDivElement and inherits native div attributes.",
+			},
+		],
+	},
+	{
+		name: "CommandShortcut",
+		props: [],
 	},
 ];
