@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 678,
+	"totalSymbols": 679,
 	"totalValues": 375,
-	"totalTypes": 303,
+	"totalTypes": 304,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2508,6 +2508,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "BannerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/banner",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/banner"
+				},
+				{
+					"name": "BannerActionProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/banner",

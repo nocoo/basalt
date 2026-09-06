@@ -23,6 +23,7 @@ import { CODE_EXAMPLES } from "../../examples/code";
 import { CODE_BLOCK_EXAMPLES } from "../../examples/code-block";
 import { API as avatarApi } from "../../generated/catalog-api/avatar";
 import { API as badgeApi } from "../../generated/catalog-api/badge";
+import { API as bannerApi } from "../../generated/catalog-api/banner";
 import { API as clipboardTextApi } from "../../generated/catalog-api/clipboard-text";
 import { API as codeApi } from "../../generated/catalog-api/code";
 import { API as codeBlockApi } from "../../generated/catalog-api/code-block";
@@ -192,43 +193,14 @@ export default catalogContentFamily({
 		],
 	},
 	banner: {
-		docs: extraDocs(
-			"Banner",
-			"banner",
-			"Displays contextual inline messages for informational, alert, or error states.",
-			'<Banner icon={<Info />} title="Update available" description="A new version is ready to install." />',
-			[
-				{
-					name: "variant",
-					type: '"default" | "alert" | "error" | "secondary"',
-					default: '"default"',
-					description: "Visual style of the banner.",
-				},
-				{
-					name: "size",
-					type: '"base" | "sm"',
-					default: '"base"',
-					description: "Compact size for dialogs and tight spaces.",
-				},
-				{
-					name: "icon",
-					type: "ReactNode",
-					description: "Icon rendered before the banner content.",
-				},
-				{ name: "title", type: "string", description: "Primary heading text." },
-				{
-					name: "description",
-					type: "ReactNode",
-					description: "Secondary copy below the title.",
-				},
-				{
-					name: "action",
-					type: "ReactNode",
-					description: "Trailing CTA slot. Use Banner.Action for accent-aware buttons.",
-				},
-				{ name: "className", type: "string" },
-			],
-			`import { Banner } from "@nocoo/basalt/components/banner";
+		docs: {
+			...extraDocs(
+				"Banner",
+				"banner",
+				"Displays contextual inline messages for informational, alert, or error states. Inherits standard div element attributes without exposing a public ref; structured mode (activated by title or description) ignores standard children. BannerAction is a named export alias of Banner.Action; both are ordinary function components wrapping Button without a forwarded ref, mapping variant and size contextually while inheriting standard ButtonHTMLAttributes (disabled, aria-*, event handlers).",
+				'<Banner icon={<Info />} title="Update available" description="A new version is ready to install." />',
+				undefined,
+				`import { Banner } from "@nocoo/basalt/components/banner";
 import { Info } from "lucide-react";
 
 export default function Example() {
@@ -240,7 +212,9 @@ export default function Example() {
 		/>
 	);
 }`,
-		),
+			),
+			api: bannerApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("banner", "variants"),

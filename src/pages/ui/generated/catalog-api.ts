@@ -6,6 +6,7 @@ import { API as areaApi } from "./catalog-api/area";
 import { API as autocompleteApi } from "./catalog-api/autocomplete";
 import { API as avatarApi } from "./catalog-api/avatar";
 import { API as badgeApi } from "./catalog-api/badge";
+import { API as bannerApi } from "./catalog-api/banner";
 import { API as barApi } from "./catalog-api/bar";
 import { API as basaltMarkApi } from "./catalog-api/basalt-mark";
 import { API as breadcrumbsApi } from "./catalog-api/breadcrumbs";
@@ -105,6 +106,7 @@ export const CATALOG_API = {
 	autocomplete: autocompleteApi,
 	avatar: avatarApi,
 	badge: badgeApi,
+	banner: bannerApi,
 	bar: barApi,
 	"basalt-mark": basaltMarkApi,
 	breadcrumbs: breadcrumbsApi,

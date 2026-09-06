@@ -1130,6 +1130,18 @@ describe("catalog API generator contract", () => {
 				surface: "DeleteResource",
 			},
 			{
+				slug: "banner",
+				sourceFile: "packages/basalt/src/components/banner.tsx",
+				propsType: "BannerProps",
+				surface: "Banner",
+			},
+			{
+				slug: "banner",
+				sourceFile: "packages/basalt/src/components/banner.tsx",
+				propsType: "BannerActionProps",
+				surface: "Banner.Action",
+			},
+			{
 				slug: "badge",
 				sourceFile: "packages/basalt/src/components/badge.tsx",
 				propsType: "BadgeProps",
@@ -1544,7 +1556,7 @@ describe("catalog API generator contract", () => {
 				surface: "LinkProvider",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(232);
+		expect(CATALOG_API_TARGETS).toHaveLength(234);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1670,6 +1682,7 @@ describe("catalog API generator contract", () => {
 			"custom-chart",
 			"resource-list",
 			"delete-resource",
+			"banner",
 			"badge",
 			"empty",
 			"loader",
@@ -2828,6 +2841,7 @@ export interface WidgetProps {
 			"custom-chart": ["CustomChart"],
 			"resource-list": ["ResourceList"],
 			"delete-resource": ["DeleteResource"],
+			banner: ["Banner", "Banner.Action"],
 			badge: ["Badge"],
 			empty: ["Empty"],
 			loader: ["Loader"],
@@ -2908,7 +2922,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(97);
+		expect(Object.keys(generated)).toHaveLength(98);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -3009,7 +3023,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(97);
+		expect(Object.keys(generated)).toHaveLength(98);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -3131,7 +3145,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(97);
+		expect(Object.keys(generated)).toHaveLength(98);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -3202,7 +3216,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(97);
+		expect(Object.keys(generated)).toHaveLength(98);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -3245,7 +3259,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(97);
+		expect(Object.keys(generated)).toHaveLength(98);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -3297,7 +3311,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(97);
+		expect(Object.keys(generated)).toHaveLength(98);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -4635,8 +4649,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(97);
-		expect(Object.keys(first)).toHaveLength(98);
+		expect(slugs).toHaveLength(98);
+		expect(Object.keys(first)).toHaveLength(99);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -4716,7 +4730,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"d1dc6bfd7d20c4cf4351613954e3db2ea592597687f18fdb8c21a784c9b90cde",
+			"10b16f65e6075b50ecb4a787b802db9b4f88353973bfb3093f46017ba259ff30",
 		);
 	}, 60_000);
 

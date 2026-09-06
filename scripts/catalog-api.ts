@@ -1037,6 +1037,18 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "DeleteResource",
 	},
 	{
+		slug: "banner",
+		sourceFile: "packages/basalt/src/components/banner.tsx",
+		propsType: "BannerProps",
+		surface: "Banner",
+	},
+	{
+		slug: "banner",
+		sourceFile: "packages/basalt/src/components/banner.tsx",
+		propsType: "BannerActionProps",
+		surface: "Banner.Action",
+	},
+	{
 		slug: "badge",
 		sourceFile: "packages/basalt/src/components/badge.tsx",
 		propsType: "BadgeProps",

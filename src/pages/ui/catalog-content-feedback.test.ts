@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import feedback from "./catalog-content/families/feedback";
+import { API as bannerApi } from "./generated/catalog-api/banner";
 import { API as codeBlockApi } from "./generated/catalog-api/code-block";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
@@ -57,7 +58,8 @@ const FEEDBACK_SCENARIOS = {
 const FEEDBACK_DESCRIPTIONS = {
 	badge:
 		"Compact status labels. Inherits standard span element attributes and forwards children; does not expose a public ref.",
-	banner: "Displays contextual inline messages for informational, alert, or error states.",
+	banner:
+		"Displays contextual inline messages for informational, alert, or error states. Inherits standard div element attributes without exposing a public ref; structured mode (activated by title or description) ignores standard children. BannerAction is a named export alias of Banner.Action; both are ordinary function components wrapping Button without a forwarded ref, mapping variant and size contextually while inheriting standard ButtonHTMLAttributes (disabled, aria-*, event handlers).",
 	empty:
 		"Empty-state copy. Inherits standard div element attributes without exposing a public ref; standard children are currently ignored in favor of structured icon, title, and description props.",
 	loader:
@@ -156,14 +158,24 @@ describe("feedback catalog content family", () => {
 				file: `packages/basalt/src/components/${implementationSlug}.tsx`,
 			});
 		}
+		expect(feedback.banner?.docs.api).toBe(bannerApi);
 		expect(feedback.banner?.docs.api[0]?.props.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",
-			"icon",
 			"title",
 			"description",
+			"icon",
 			"action",
-			"className",
+			"children",
+		]);
+		expect(feedback.banner?.docs.api[1]?.props.map((prop) => prop.name)).toEqual([
+			"variant",
+			"size",
+			"asChild",
+			"type",
+			"loading",
+			"icon",
+			"children",
 		]);
 		expect(feedback.toast?.docs.api[0]?.props.map((prop) => prop.name)).toEqual([
 			"message",
