@@ -4,11 +4,14 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
 	computeDocModuleFilename,
+	computeScenarioModuleFilename,
 	computeUsageModuleFilename,
 	extractCompilableDocModules,
 	generateCatalogInstallationSnippets,
+	loadCatalogModules,
 	loadCatalogUsageModules,
 	scanDocFences,
+	validateCompleteConsumerModule,
 } from "./docs-gate";
 
 describe("documentation tarball compilation gate", () => {
@@ -180,20 +183,42 @@ describe("documentation tarball compilation gate", () => {
 		writeFileSync(join(tempFixture, "vite.config.ts"), "export default {};\n");
 
 		const whitespaceCode =
-			"\n  export default function Example() { return <span>Whitespace preservation</span>; }\n\n";
+			'\n  import React from "react";\n  export default function Example() { return <span>Whitespace preservation</span>; }\n\n';
+
+		function defaultExamples(slug: string) {
+			return [
+				{
+					id: `${slug}-scenario`,
+					title: "Sample",
+					code: 'import React from "react";\nexport default function Example() { return <div>Ok</div>; }',
+				},
+			];
+		}
 
 		function setupFixture(
 			options: {
 				catalog?: string[];
 				status?: Record<string, string>;
-				record?: Record<string, { docs?: { usage?: string } }>;
+				record?: Record<
+					string,
+					{
+						docs?: { usage?: string };
+						examples?: Array<{ id: string; title: string; code: string }>;
+					}
+				>;
 			} = {},
 		) {
 			const catalog = options.catalog ?? ["alpha", "beta", "inactive"];
 			const status = options.status ?? { alpha: "ready", beta: "ready", inactive: "planned" };
 			const record = options.record ?? {
-				alpha: { docs: { usage: whitespaceCode } },
-				beta: { docs: { usage: "export default function Example() { return <i>Beta</i>; }" } },
+				alpha: { docs: { usage: whitespaceCode }, examples: defaultExamples("alpha") },
+				beta: {
+					docs: {
+						usage:
+							'import React from "react";\nexport default function Example() { return <i>Beta</i>; }',
+					},
+					examples: defaultExamples("beta"),
+				},
 			};
 			writeFileSync(
 				join(tempFixture, "src/pages/ui/catalog.ts"),
@@ -222,9 +247,9 @@ describe("documentation tarball compilation gate", () => {
 				catalog: ["alpha", "beta", "gamma"],
 				status: { alpha: "ready", beta: "ready", gamma: "ready" },
 				record: {
-					alpha: { docs: { usage: whitespaceCode } },
-					beta: { docs: { usage: whitespaceCode } },
-					gamma: { docs: { usage: whitespaceCode } },
+					alpha: { docs: { usage: whitespaceCode }, examples: defaultExamples("alpha") },
+					beta: { docs: { usage: whitespaceCode }, examples: defaultExamples("beta") },
+					gamma: { docs: { usage: whitespaceCode }, examples: defaultExamples("gamma") },
 				},
 			});
 			const withGamma = await loadCatalogUsageModules(tempFixture);
@@ -234,7 +259,7 @@ describe("documentation tarball compilation gate", () => {
 			// 3. Missing ready record throws
 			setupFixture({
 				record: {
-					alpha: { docs: { usage: whitespaceCode } },
+					alpha: { docs: { usage: whitespaceCode }, examples: defaultExamples("alpha") },
 				},
 			});
 			await expect(loadCatalogUsageModules(tempFixture)).rejects.toThrow(
@@ -244,23 +269,337 @@ describe("documentation tarball compilation gate", () => {
 			// 4. Missing usage throws
 			setupFixture({
 				record: {
-					alpha: { docs: {} },
-					beta: { docs: { usage: whitespaceCode } },
+					alpha: { docs: {}, examples: defaultExamples("alpha") },
+					beta: { docs: { usage: whitespaceCode }, examples: defaultExamples("beta") },
 				},
 			});
 			await expect(loadCatalogUsageModules(tempFixture)).rejects.toThrow(
-				/ready catalog entry "alpha" is missing docs\.usage/,
+				/catalog usage "alpha" \(id: "usage"\) is missing or empty code/,
 			);
 
 			// 5. Whitespace-only usage throws
 			setupFixture({
 				record: {
-					alpha: { docs: { usage: "  \n\t  " } },
-					beta: { docs: { usage: whitespaceCode } },
+					alpha: { docs: { usage: "  \n\t  " }, examples: defaultExamples("alpha") },
+					beta: { docs: { usage: whitespaceCode }, examples: defaultExamples("beta") },
 				},
 			});
 			await expect(loadCatalogUsageModules(tempFixture)).rejects.toThrow(
-				/ready catalog entry "alpha" is missing docs\.usage/,
+				/catalog usage "alpha" \(id: "usage"\) is missing or empty code/,
+			);
+		} finally {
+			rmSync(tempFixture, { recursive: true, force: true });
+		}
+	});
+
+	it("loads verbatim scenario modules for all ready catalog items and validates complete consumer modules", async () => {
+		const { usageModules, scenarioModules } = await loadCatalogModules();
+		expect(usageModules).toHaveLength(99);
+		expect(scenarioModules).toHaveLength(246);
+
+		const seenScenarioIds = new Set<string>();
+		const seenFilenames = new Set<string>();
+
+		for (const [index, mod] of scenarioModules.entries()) {
+			expect(mod.slug.length).toBeGreaterThan(0);
+			expect(mod.id.length).toBeGreaterThan(0);
+			expect(mod.code.trim().length).toBeGreaterThan(0);
+
+			expect(seenScenarioIds.has(mod.id)).toBe(false);
+			seenScenarioIds.add(mod.id);
+
+			const filename = computeScenarioModuleFilename(index, mod.slug, mod.id);
+			expect(filename).toMatch(/^scenario_\d{3}_[a-zA-Z0-9_-]+\.tsx$/);
+			expect(seenFilenames.has(filename)).toBe(false);
+			seenFilenames.add(filename);
+		}
+
+		// Ensure specific non-hero and interactive scenarios are present and complete
+		const dialogSizes = scenarioModules.find((m) => m.id === "dialog-sizes");
+		expect(dialogSizes).toBeDefined();
+		expect(dialogSizes?.code).toContain("Table");
+		expect(dialogSizes?.code).toContain('size: "sm"');
+		expect(dialogSizes?.code).toContain('size: "xl"');
+		expect(dialogSizes?.code).toContain('This size="{size}"');
+
+		const toastVariants = scenarioModules.find((m) => m.id === "toast-success-variant");
+		expect(toastVariants).toBeDefined();
+		expect(toastVariants?.code).toContain(
+			'import { toast } from "@nocoo/basalt/components/toast";',
+		);
+		expect(toastVariants?.code).toContain("toast.success");
+
+		const popoverSides = scenarioModules.find((m) => m.id === "popover-sides");
+		expect(popoverSides).toBeDefined();
+		expect(popoverSides?.code).toContain("flex flex-wrap items-center justify-center gap-4 py-16");
+	});
+
+	it("rejects regressions from complete module to bare JSX fragments, empty exports, or unexported code", () => {
+		// 1. Bare native JSX fragment without exports
+		expect(() =>
+			validateCompleteConsumerModule("<span>Incomplete</span>", {
+				slug: "meter",
+				id: "meter-low-value",
+				kind: "scenario",
+			}),
+		).toThrow(/missing export statement/);
+
+		// 2. Unexported code (has import, but no export)
+		expect(() =>
+			validateCompleteConsumerModule(
+				'import { Meter } from "@nocoo/basalt/components/meter";\nconst el = <Meter value={8} label="Quota" />;',
+				{
+					slug: "meter",
+					id: "meter-low-value",
+					kind: "scenario",
+				},
+			),
+		).toThrow(/missing export statement/);
+
+		// 3. Empty export statement export {}; does not complete a bare fragment
+		expect(() =>
+			validateCompleteConsumerModule(
+				'import React from "react";\nexport {};\n<span>Fragment</span>;',
+				{
+					slug: "meter",
+					id: "meter-low-value",
+					kind: "scenario",
+				},
+			),
+		).toThrow(/missing export statement/);
+
+		// 4. Type-only declaration or re-export does not complete a bare fragment
+		expect(() =>
+			validateCompleteConsumerModule(
+				'import React from "react";\nexport type Placeholder = string;\n<span>Fragment</span>;',
+				{
+					slug: "meter",
+					id: "meter-low-value",
+					kind: "scenario",
+				},
+			),
+		).toThrow(/missing export statement/);
+
+		expect(() =>
+			validateCompleteConsumerModule(
+				'export type { ComponentType } from "react";\n<span>Fragment</span>;',
+				{
+					slug: "meter",
+					id: "meter-low-value",
+					kind: "scenario",
+				},
+			),
+		).toThrow(/missing export statement/);
+
+		// 5. Missing / empty code
+		expect(() =>
+			validateCompleteConsumerModule("", {
+				slug: "slider",
+				id: "slider-default",
+				kind: "scenario",
+			}),
+		).toThrow(/missing or empty code/);
+
+		expect(() =>
+			validateCompleteConsumerModule("   \n\t  ", {
+				slug: "slider",
+				id: "slider-default",
+				kind: "scenario",
+			}),
+		).toThrow(/missing or empty code/);
+
+		// 6. Valid native and exported variations are accepted (imports checked by tsc)
+		expect(() =>
+			validateCompleteConsumerModule("export function Example() { return <span>Native</span>; }", {
+				slug: "meter",
+				id: "meter-low-value",
+				kind: "scenario",
+			}),
+		).not.toThrow();
+
+		expect(() =>
+			validateCompleteConsumerModule("export const Example = () => <span>Arrow</span>;", {
+				slug: "meter",
+				id: "meter-low-value",
+				kind: "scenario",
+			}),
+		).not.toThrow();
+
+		expect(() =>
+			validateCompleteConsumerModule("export default () => <span>Arrow</span>;", {
+				slug: "meter",
+				id: "meter-low-value",
+				kind: "scenario",
+			}),
+		).not.toThrow();
+
+		expect(() =>
+			validateCompleteConsumerModule(
+				"const Example = () => <span>Identifier</span>;\nexport default Example;",
+				{
+					slug: "meter",
+					id: "meter-low-value",
+					kind: "scenario",
+				},
+			),
+		).not.toThrow();
+
+		expect(() =>
+			validateCompleteConsumerModule(
+				"function Example() { return <span>Named</span>; }\nexport { Example as Demo };",
+				{
+					slug: "meter",
+					id: "meter-low-value",
+					kind: "scenario",
+				},
+			),
+		).not.toThrow();
+	});
+
+	it("prevents collision between doc, usage, and scenario filenames across sanitization and relative path boundaries", () => {
+		// 1. Sanitization collision: 'case/a' and 'case_a' both sanitize to 'case_a', but distinct index prevents collision
+		const sanitizedA = computeDocModuleFilename(1, "case/a");
+		const sanitizedB = computeDocModuleFilename(2, "case_a");
+		expect(sanitizedA).toBe("doc_001_case_a.tsx");
+		expect(sanitizedB).toBe("doc_002_case_a.tsx");
+		expect(sanitizedA).not.toBe(sanitizedB);
+
+		// 2. Relative traversal boundaries: '../harness' is sanitized safely without directory traversal
+		const traversalDoc = computeDocModuleFilename(3, "../harness");
+		expect(traversalDoc).toBe("doc_003____harness.tsx");
+		expect(traversalDoc).not.toContain("/");
+		expect(traversalDoc).not.toContain("\\");
+
+		const traversalUsage = computeUsageModuleFilename(4, "../harness");
+		expect(traversalUsage).toBe("usage_004____harness.tsx");
+		expect(traversalUsage).not.toContain("/");
+		expect(traversalUsage).not.toContain("\\");
+
+		const traversalScenario = computeScenarioModuleFilename(5, "../harness", "../../evil-id");
+		expect(traversalScenario).toBe("scenario_005____harness_______evil-id.tsx");
+		expect(traversalScenario).not.toContain("/");
+		expect(traversalScenario).not.toContain("\\");
+
+		// 3. Category prefixes ensure no collision between categories for identical slug/id
+		const docFilename = computeDocModuleFilename(0, "common-name");
+		const usageFilename = computeUsageModuleFilename(0, "common-name");
+		const scenarioFilename = computeScenarioModuleFilename(0, "common-name", "default");
+		expect(new Set([docFilename, usageFilename, scenarioFilename]).size).toBe(3);
+
+		// 4. Scenarios for the same slug with slash/dot variations maintain distinct filenames
+		const scenarioSlash = computeScenarioModuleFilename(10, "button", "sub/action");
+		const scenarioUnderscore = computeScenarioModuleFilename(11, "button", "sub_action");
+		expect(scenarioSlash).not.toBe(scenarioUnderscore);
+	});
+
+	it("fails fast if a non-hero scenario regresses to bare native JSX, missing code, or duplicate ID in loadCatalogModules", async () => {
+		const tempFixture = mkdtempSync(join(tmpdir(), "basalt-scenario-fixture-"));
+		const generatedDir = join(tempFixture, "src/pages/ui/generated");
+		mkdirSync(generatedDir, { recursive: true });
+		writeFileSync(join(tempFixture, "vite.config.ts"), "export default {};\n");
+
+		function setupFixture(
+			record: Record<
+				string,
+				{
+					docs?: { usage?: string };
+					examples?: Array<{ id: string; title: string; code: string }>;
+				}
+			>,
+		) {
+			writeFileSync(
+				join(tempFixture, "src/pages/ui/catalog.ts"),
+				`export const CATALOG = ${JSON.stringify(Object.keys(record).map((slug) => ({ slug })))};\n`,
+			);
+			writeFileSync(
+				join(tempFixture, "src/pages/ui/generated/catalog-page-status.ts"),
+				`export const CATALOG_PAGE_STATUS = ${JSON.stringify(
+					Object.fromEntries(Object.keys(record).map((slug) => [slug, "ready"])),
+				)};\n`,
+			);
+			writeFileSync(
+				join(tempFixture, "src/pages/ui/catalog-content-registry.ts"),
+				`export async function loadCatalogContentRecord() { return ${JSON.stringify(record)}; }\n`,
+			);
+		}
+
+		try {
+			// Regression 1: non-hero scenario regresses to bare native JSX (e.g. <span>Incomplete</span>)
+			setupFixture({
+				meter: {
+					docs: {
+						usage:
+							'import { Meter } from "@nocoo/basalt/components/meter";\nexport default function Example() { return <Meter value={50} label="Usage" />; }',
+					},
+					examples: [
+						{
+							id: "meter-basic-meter",
+							title: "Basic",
+							code: 'import { Meter } from "@nocoo/basalt/components/meter";\nexport default function Example() { return <Meter value={50} label="Usage" />; }',
+						},
+						{
+							id: "meter-low-value",
+							title: "Low value",
+							code: "<span>Incomplete</span>", // Bare JSX regression!
+						},
+					],
+				},
+			});
+
+			await expect(loadCatalogModules(tempFixture)).rejects.toThrow(
+				/catalog scenario "meter" \(id: "meter-low-value"\) is not a complete consumable module: missing export statement/,
+			);
+
+			// Regression 2: non-hero scenario missing code
+			setupFixture({
+				meter: {
+					docs: {
+						usage:
+							'import { Meter } from "@nocoo/basalt/components/meter";\nexport default function Example() { return <Meter value={50} label="Usage" />; }',
+					},
+					examples: [
+						{
+							id: "meter-basic-meter",
+							title: "Basic",
+							code: 'import { Meter } from "@nocoo/basalt/components/meter";\nexport default function Example() { return <Meter value={50} label="Usage" />; }',
+						},
+						{
+							id: "meter-low-value",
+							title: "Low value",
+							code: "",
+						},
+					],
+				},
+			});
+
+			await expect(loadCatalogModules(tempFixture)).rejects.toThrow(
+				/catalog scenario "meter" \(id: "meter-low-value"\) is missing or empty code/,
+			);
+
+			// Regression 3: duplicate scenario IDs within ready entries
+			setupFixture({
+				meter: {
+					docs: {
+						usage:
+							'import { Meter } from "@nocoo/basalt/components/meter";\nexport default function Example() { return <Meter value={50} label="Usage" />; }',
+					},
+					examples: [
+						{
+							id: "meter-duplicate-id",
+							title: "First",
+							code: 'import React from "react";\nexport default function First() { return 1; }',
+						},
+						{
+							id: "meter-duplicate-id",
+							title: "Second",
+							code: 'import React from "react";\nexport default function Second() { return 2; }',
+						},
+					],
+				},
+			});
+
+			await expect(loadCatalogModules(tempFixture)).rejects.toThrow(
+				/duplicate scenario id "meter-duplicate-id"/,
 			);
 		} finally {
 			rmSync(tempFixture, { recursive: true, force: true });

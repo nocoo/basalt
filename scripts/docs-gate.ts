@@ -12,6 +12,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import path, { join } from "node:path";
+import * as ts from "typescript-api";
 import { createServer } from "vite";
 import { CATALOG, catalogBarrelImport, catalogGranularImport } from "../src/pages/ui/catalog";
 import type { CatalogPageContent } from "../src/pages/ui/catalog-content";
@@ -188,9 +189,114 @@ export function computeUsageModuleFilename(index: number, slug: string): string 
 	return `usage_${String(index).padStart(3, "0")}_${sanitizedSlug}.tsx`;
 }
 
-export async function loadCatalogUsageModules(
+export function computeScenarioModuleFilename(
+	index: number,
+	slug: string,
+	scenarioId: string,
+): string {
+	const sanitizedSlug = slug.replace(/[^a-zA-Z0-9_-]/g, "_");
+	const sanitizedId = scenarioId.replace(/[^a-zA-Z0-9_-]/g, "_");
+	return `scenario_${String(index).padStart(3, "0")}_${sanitizedSlug}_${sanitizedId}.tsx`;
+}
+
+/**
+ * Validates that code string represents a complete, consumable TypeScript/TSX module:
+ *  - non-empty
+ *  - parses into TypeScript AST
+ *  - contains at least one runtime exported symbol or default export
+ *  - rejects empty export {}, type-only exports, interface/type declarations, and bare unexported JSX fragments
+ *  - missing imports for library/third-party identifiers are strictly rejected by the tsc compilation phase
+ */
+export function validateCompleteConsumerModule(
+	code: string,
+	context: { slug: string; id: string; kind: "usage" | "scenario" },
+): void {
+	if (!code || typeof code !== "string" || code.trim().length === 0) {
+		throw new Error(
+			`catalog ${context.kind} "${context.slug}" (id: "${context.id}") is missing or empty code`,
+		);
+	}
+
+	const sourceFile = ts.createSourceFile(
+		"module.tsx",
+		code,
+		ts.ScriptTarget.Latest,
+		true,
+		ts.ScriptKind.TSX,
+	);
+
+	let hasRuntimeExport = false;
+
+	for (const stmt of sourceFile.statements) {
+		// export default ...
+		if (ts.isExportAssignment(stmt)) {
+			if (!stmt.isExportEquals) {
+				hasRuntimeExport = true;
+				break;
+			}
+		}
+
+		// export function / class / const / let / var / enum
+		if (
+			ts.isFunctionDeclaration(stmt) ||
+			ts.isVariableStatement(stmt) ||
+			ts.isClassDeclaration(stmt) ||
+			ts.isEnumDeclaration(stmt)
+		) {
+			const modifiers = ts.getModifiers(stmt);
+			if (modifiers?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword)) {
+				hasRuntimeExport = true;
+				break;
+			}
+		}
+
+		// export { ... } or export *
+		if (ts.isExportDeclaration(stmt)) {
+			if (stmt.isTypeOnly) {
+				continue;
+			}
+			if (!stmt.exportClause) {
+				hasRuntimeExport = true;
+				break;
+			}
+			if (ts.isNamespaceExport(stmt.exportClause)) {
+				hasRuntimeExport = true;
+				break;
+			}
+			if (ts.isNamedExports(stmt.exportClause)) {
+				const hasValueExport = stmt.exportClause.elements.some((elem) => !elem.isTypeOnly);
+				if (hasValueExport) {
+					hasRuntimeExport = true;
+					break;
+				}
+			}
+		}
+	}
+
+	if (!hasRuntimeExport) {
+		throw new Error(
+			`catalog ${context.kind} "${context.slug}" (id: "${context.id}") is not a complete consumable module: missing export statement (bare JSX fragment or unexported code is not consumable)`,
+		);
+	}
+}
+
+export type CatalogUsageModule = { slug: string; code: string };
+
+export type CatalogScenarioModule = {
+	slug: string;
+	id: string;
+	title: string;
+	code: string;
+};
+
+export type CatalogExtractedModules = {
+	usageModules: CatalogUsageModule[];
+	scenarioModules: CatalogScenarioModule[];
+};
+
+export async function loadCatalogModules(
 	repoRoot = process.cwd(),
-): Promise<Array<{ slug: string; code: string }>> {
+): Promise<CatalogExtractedModules> {
 	const server = await createServer({
 		root: repoRoot,
 		configFile: path.join(repoRoot, "vite.config.ts"),
@@ -226,25 +332,63 @@ export async function loadCatalogUsageModules(
 			}
 		}
 
-		const modules: Array<{ slug: string; code: string }> = [];
+		const usageModules: CatalogUsageModule[] = [];
+		const scenarioModules: CatalogScenarioModule[] = [];
+		const seenScenarioIds = new Set<string>();
+
 		for (const slug of Object.keys(record).sort()) {
 			if (!readySlugs.has(slug)) {
 				continue;
 			}
 			const content = record[slug];
 			const rawUsage = content?.docs?.usage;
-			if (!rawUsage || rawUsage.trim().length === 0) {
-				throw new Error(`ready catalog entry "${slug}" is missing docs.usage`);
+			validateCompleteConsumerModule(rawUsage, { slug, id: "usage", kind: "usage" });
+			usageModules.push({ slug, code: rawUsage });
+
+			const examples = content?.examples;
+			if (!examples || examples.length === 0) {
+				throw new Error(`ready catalog entry "${slug}" has no example scenarios`);
 			}
-			modules.push({ slug, code: rawUsage });
+
+			for (const ex of examples) {
+				if (seenScenarioIds.has(ex.id)) {
+					throw new Error(`duplicate scenario id "${ex.id}" across catalog scenarios`);
+				}
+				seenScenarioIds.add(ex.id);
+				validateCompleteConsumerModule(ex.code, {
+					slug,
+					id: ex.id,
+					kind: "scenario",
+				});
+				scenarioModules.push({
+					slug,
+					id: ex.id,
+					title: ex.title,
+					code: ex.code,
+				});
+			}
 		}
-		if (modules.length !== readySlugs.size) {
-			throw new Error(`expected ${readySlugs.size} ready usage modules, loaded ${modules.length}`);
+
+		if (usageModules.length !== readySlugs.size) {
+			throw new Error(
+				`expected ${readySlugs.size} ready usage modules, loaded ${usageModules.length}`,
+			);
 		}
-		return modules;
+
+		return {
+			usageModules,
+			scenarioModules,
+		};
 	} finally {
 		await server.close();
 	}
+}
+
+export async function loadCatalogUsageModules(
+	repoRoot = process.cwd(),
+): Promise<Array<{ slug: string; code: string }>> {
+	const { usageModules } = await loadCatalogModules(repoRoot);
+	return usageModules;
 }
 
 export async function runDocsGate(repoRoot = process.cwd()) {
@@ -324,8 +468,9 @@ export async function runDocsGate(repoRoot = process.cwd()) {
 			writeFileSync(docFilePath, mod.code);
 		}
 
-		// 7. Write out exact verbatim library usage modules loaded via SSR catalog content registry
-		const usageModules = await loadCatalogUsageModules(repoRoot);
+		// 7. Write out exact verbatim library usage and scenario modules loaded via SSR catalog content registry
+		const { usageModules, scenarioModules } = await loadCatalogModules(repoRoot);
+
 		const usageDir = join(consumerDir, "src/__generated_usages__");
 		mkdirSync(usageDir, { recursive: true });
 		const writtenUsagePaths = new Set<string>();
@@ -344,7 +489,26 @@ export async function runDocsGate(repoRoot = process.cwd()) {
 			writeFileSync(usageFilePath, mod.code);
 		}
 
-		// 8. Strict tsc typecheck of consumer
+		// 8. Write out exact verbatim scenario modules into an isolated scenarios directory
+		const scenarioDir = join(consumerDir, "src/__generated_scenarios__");
+		mkdirSync(scenarioDir, { recursive: true });
+		const writtenScenarioPaths = new Set<string>();
+
+		for (let idx = 0; idx < scenarioModules.length; idx++) {
+			const mod = scenarioModules[idx];
+			const scenarioFilename = computeScenarioModuleFilename(idx, mod.slug, mod.id);
+			const scenarioFilePath = join(scenarioDir, scenarioFilename);
+
+			if (writtenScenarioPaths.has(scenarioFilePath) || existsSync(scenarioFilePath)) {
+				throw new Error(
+					`fatal destination file collision for scenario module '${mod.id}': ${scenarioFilename}`,
+				);
+			}
+			writtenScenarioPaths.add(scenarioFilePath);
+			writeFileSync(scenarioFilePath, mod.code);
+		}
+
+		// 9. Strict tsc typecheck of consumer
 		const tsc = spawnSync("npx", ["tsc", "-p", "tsconfig.json", "--noEmit"], {
 			cwd: consumerDir,
 			stdio: "pipe",
@@ -364,6 +528,8 @@ export async function runDocsGate(repoRoot = process.cwd()) {
 			compilableIds: compilableModules.map((m) => m.id),
 			usageCount: usageModules.length,
 			usageSlugs: usageModules.map((m) => m.slug),
+			scenarioCount: scenarioModules.length,
+			scenarioIds: scenarioModules.map((m) => m.id),
 		};
 	} finally {
 		rmSync(tempRoot, { recursive: true, force: true });
