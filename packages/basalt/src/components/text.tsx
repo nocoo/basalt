@@ -1,6 +1,7 @@
 import { cva } from "class-variance-authority";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 export type TextVariant = "body" | "heading" | "mono";
 export type TextSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -108,6 +109,7 @@ export const Text = React.forwardRef<HTMLElement, TextProps>(
 			...props,
 			ref,
 			className: cn(
+				BASALT_UI_CLASS,
 				textVariants({ size: size ?? defaultSize(variant), tone }),
 				variant === "heading" && "font-semibold",
 				variant === "mono" && "font-mono",

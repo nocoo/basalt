@@ -1,4 +1,6 @@
 import * as React from "react";
+import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Breadcrumbs } from "./breadcrumbs";
 
 export interface PageHeaderBreadcrumb {
@@ -25,7 +27,7 @@ export function PageHeader({ actions, breadcrumbs, description, filters, title }
 
 	return (
 		// biome-ignore lint/a11y/useAriaPropsSupportedByRole: the title heading names this header
-		<header aria-labelledby={titleId} className="space-y-4">
+		<header aria-labelledby={titleId} className={cn(BASALT_UI_CLASS, "space-y-4")}>
 			{breadcrumbs && breadcrumbs.length > 0 ? <Breadcrumbs items={[...breadcrumbs]} /> : null}
 			<div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
 				<div className="min-w-0 flex-1 space-y-1">

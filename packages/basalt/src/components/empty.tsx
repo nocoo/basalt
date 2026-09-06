@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 export interface EmptyProps extends Omit<HTMLAttributes<HTMLDivElement>, "title"> {
 	/**
@@ -30,7 +31,10 @@ export function Empty({
 	...props
 }: EmptyProps) {
 	return (
-		<div className={cn("flex flex-col items-center gap-2 text-center", className)} {...props}>
+		<div
+			className={cn(BASALT_UI_CLASS, "flex flex-col items-center gap-2 text-center", className)}
+			{...props}
+		>
 			{icon ? <div className="text-basalt-muted-foreground [&_svg]:size-8">{icon}</div> : null}
 			<p className="text-sm font-medium text-basalt-foreground">{title}</p>
 			{description ? <p className="text-xs text-basalt-muted-foreground">{description}</p> : null}

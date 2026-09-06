@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 export type DescriptionListColumns = 1 | 2 | 3;
 
@@ -20,7 +21,12 @@ const COLUMN_CLASS: Record<DescriptionListColumns, string> = {
 function DescriptionListRoot({ className, columns = 2, ...props }: DescriptionListProps) {
 	return (
 		<dl
-			className={cn("grid gap-x-8 gap-y-3 text-sm", COLUMN_CLASS[columns], className)}
+			className={cn(
+				BASALT_UI_CLASS,
+				"grid gap-x-8 gap-y-3 text-sm",
+				COLUMN_CLASS[columns],
+				className,
+			)}
 			{...props}
 		/>
 	);

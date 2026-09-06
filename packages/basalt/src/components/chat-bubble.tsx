@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 export type ChatBubbleVariant = "assistant" | "system" | "user";
 
@@ -33,14 +34,20 @@ export function ChatBubble({
 }: ChatBubbleProps) {
 	if (variant === "system") {
 		return (
-			<p className={cn("px-1 text-center text-[11px] text-basalt-muted-foreground", className)}>
+			<p
+				className={cn(
+					BASALT_UI_CLASS,
+					"px-1 text-center text-[11px] text-basalt-muted-foreground",
+					className,
+				)}
+			>
 				{children}
 			</p>
 		);
 	}
 	const user = variant === "user";
 	return (
-		<div className={cn("flex w-full", user ? "justify-end" : "justify-start")}>
+		<div className={cn(BASALT_UI_CLASS, "flex w-full", user ? "justify-end" : "justify-start")}>
 			<div
 				className={cn(
 					"max-w-[92%] px-3.5 py-2 text-sm leading-5 shadow-sm",

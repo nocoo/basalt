@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import type * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 const badgeVariants = cva(
 	"inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium",
@@ -49,7 +50,7 @@ export interface BadgeProps
 
 export function Badge({ className, variant, dot, children, ...props }: BadgeProps) {
 	return (
-		<span className={cn(badgeVariants({ variant }), className)} {...props}>
+		<span className={cn(BASALT_UI_CLASS, badgeVariants({ variant }), className)} {...props}>
 			{dot ? <span className="size-1.5 rounded-full bg-current" aria-hidden="true" /> : null}
 			{children}
 		</span>

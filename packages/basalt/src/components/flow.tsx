@@ -1,5 +1,6 @@
 import { Children, Fragment, type ReactNode, useId } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 function FlowArrow() {
 	const id = `flow-arrow-${useId().replace(/:/g, "")}`;
@@ -59,7 +60,7 @@ export type FlowProps = {
 export function Flow({ className, children, "aria-label": ariaLabel = "Flow" }: FlowProps) {
 	const nodes = Children.toArray(children);
 	return (
-		<ol aria-label={ariaLabel} className={cn("flex items-center", className)}>
+		<ol aria-label={ariaLabel} className={cn(BASALT_UI_CLASS, "flex items-center", className)}>
 			{nodes.map((child, index) => (
 				<Fragment key={index}>
 					{child}

@@ -1,6 +1,7 @@
 import { Info } from "lucide-react";
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 export type SectionRuleProps = Omit<HTMLAttributes<HTMLElement>, "title"> & {
@@ -21,7 +22,7 @@ export function SectionRule({
 	...props
 }: SectionRuleProps) {
 	return (
-		<section className={cn("space-y-3", className)} {...props}>
+		<section className={cn(BASALT_UI_CLASS, "space-y-3", className)} {...props}>
 			<div className="flex items-center gap-3">
 				<div className="flex min-w-0 items-center gap-1.5">
 					<h2 className="text-xs font-medium tracking-wider text-basalt-muted-foreground uppercase">

@@ -1,6 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Breadcrumbs } from "./breadcrumbs";
 
 export function AppHeader({
@@ -19,6 +20,7 @@ export function AppHeader({
 	return (
 		<header
 			className={cn(
+				BASALT_UI_CLASS,
 				"flex h-14 shrink-0 items-center justify-between gap-3 px-4 md:px-6",
 				className,
 			)}

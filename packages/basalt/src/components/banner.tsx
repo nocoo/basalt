@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { Children, createContext, type HTMLAttributes, type ReactNode, useContext } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Button, type ButtonProps } from "./button";
 
 const bannerVariants = cva("flex w-full items-start gap-3 rounded-basalt-md text-sm", {
@@ -171,7 +172,11 @@ function BannerRoot({
 	return (
 		<BannerContext.Provider value={{ variant: resolvedVariant, size: resolvedSize }}>
 			<div
-				className={cn(bannerVariants({ variant: resolvedVariant, size: resolvedSize }), className)}
+				className={cn(
+					BASALT_UI_CLASS,
+					bannerVariants({ variant: resolvedVariant, size: resolvedSize }),
+					className,
+				)}
 				{...props}
 			>
 				{icon ? <span className="mt-0.5 inline-flex shrink-0 [&_svg]:size-5">{icon}</span> : null}

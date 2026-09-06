@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { SkeletonLine } from "./skeleton-line";
 
 export interface StatStripItem {
@@ -27,7 +28,7 @@ export const StatStrip = React.forwardRef<HTMLDListElement, StatStripProps>(
 		return (
 			<dl
 				ref={ref}
-				className={cn("grid grid-cols-2 gap-3 md:grid-cols-4", className)}
+				className={cn(BASALT_UI_CLASS, "grid grid-cols-2 gap-3 md:grid-cols-4", className)}
 				{...props}
 				aria-busy={loading ? true : ariaBusy}
 			>

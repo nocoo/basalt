@@ -1,5 +1,6 @@
 import type { AnchorHTMLAttributes, HTMLAttributes } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 export function AppSkipLink({
 	href = "#main-content",
@@ -11,6 +12,7 @@ export function AppSkipLink({
 		<a
 			href={href}
 			className={cn(
+				BASALT_UI_CLASS,
 				"sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:rounded-lg focus:bg-basalt-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-basalt-primary-foreground",
 				className,
 			)}

@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 export interface ChatHeaderProps
 	extends Omit<HTMLAttributes<HTMLElement>, "title" | "children" | "className"> {
@@ -37,6 +38,7 @@ export function ChatHeader({
 	return (
 		<header
 			className={cn(
+				BASALT_UI_CLASS,
 				"flex items-center justify-between gap-2 border-b border-basalt-border/50 px-3 py-2.5",
 				className,
 			)}

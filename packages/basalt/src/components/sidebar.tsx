@@ -14,6 +14,7 @@ import {
 	useState,
 } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { Dialog, DialogOverlay, DialogPortal } from "./dialog";
 import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
@@ -290,6 +291,7 @@ export function Sidebar({
 			<SidebarResize side={side} width={context.width} onWidth={context.setWidth} />
 		) : null;
 	const frameClass = cn(
+		BASALT_UI_CLASS,
 		"relative flex h-screen shrink-0 flex-col bg-basalt-background text-sm text-basalt-foreground",
 		OVERLAY_MOTION,
 		className,
@@ -400,6 +402,7 @@ export function SidebarSearch({
 		<button
 			type="button"
 			className={cn(
+				BASALT_UI_CLASS,
 				"flex w-full cursor-pointer items-center gap-3 rounded-lg bg-basalt-secondary px-3 py-1.5 transition-colors hover:bg-basalt-accent",
 				className,
 			)}

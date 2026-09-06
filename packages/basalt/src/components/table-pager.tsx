@@ -1,5 +1,6 @@
 import type * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Pagination } from "./pagination";
 
 export interface TablePagerRange {
@@ -58,6 +59,7 @@ export function TablePager({
 	return (
 		<div
 			className={cn(
+				BASALT_UI_CLASS,
 				"flex flex-col gap-3 md:flex-row md:items-center md:justify-between",
 				className,
 			)}

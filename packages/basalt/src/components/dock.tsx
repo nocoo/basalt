@@ -1,5 +1,6 @@
 import { type ReactNode, useEffect, useRef } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { dialogOverlayClass } from "./dialog";
 import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
@@ -193,7 +194,7 @@ export function Dock({
 		return (
 			<aside
 				ref={setPanel}
-				className={panelClass}
+				className={cn(BASALT_UI_CLASS, panelClass)}
 				style={panelStyle}
 				aria-label={ariaLabel}
 				aria-hidden={!open}
@@ -232,7 +233,7 @@ export function Dock({
 				role="dialog"
 				aria-modal={open ? true : undefined}
 				aria-label={ariaLabel}
-				className={panelClass}
+				className={cn(BASALT_UI_CLASS, panelClass)}
 				style={panelStyle}
 				aria-hidden={!open}
 				inert={!open || undefined}

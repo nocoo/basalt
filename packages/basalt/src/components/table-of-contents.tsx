@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 export type TableOfContentsProps = {
 	/**
@@ -23,7 +24,7 @@ export function TableOfContents({
 	className,
 }: TableOfContentsProps) {
 	return (
-		<nav aria-label={title || "On this page"} className={cn("text-sm", className)}>
+		<nav aria-label={title || "On this page"} className={cn(BASALT_UI_CLASS, "text-sm", className)}>
 			{title ? (
 				<p className="mb-3 text-xs font-semibold tracking-wide text-basalt-muted-foreground uppercase">
 					{title}

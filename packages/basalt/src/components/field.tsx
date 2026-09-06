@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Label } from "./label";
 
 export type FieldError = Exclude<React.ReactNode, undefined> | { message: React.ReactNode };
@@ -85,7 +86,7 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 			.filter(Boolean)
 			.join(" ");
 		return (
-			<div ref={ref} {...props} className={cn("flex flex-col gap-1.5", className)}>
+			<div ref={ref} {...props} className={cn(BASALT_UI_CLASS, "flex flex-col gap-1.5", className)}>
 				<Label htmlFor={controlId} showOptional={required === false} tooltip={labelTooltip}>
 					{label}
 				</Label>

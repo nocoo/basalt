@@ -1,6 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Link } from "./link";
 
 const crumbTypeClass = "text-sm font-normal";
@@ -39,6 +40,7 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
 		<nav
 			aria-label="Breadcrumb"
 			className={cn(
+				BASALT_UI_CLASS,
 				"flex items-center gap-1 text-sm font-normal text-basalt-muted-foreground",
 				className,
 			)}

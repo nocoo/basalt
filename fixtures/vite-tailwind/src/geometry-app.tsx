@@ -4,14 +4,21 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@nocoo/basalt/components/accordion";
+import { Badge } from "@nocoo/basalt/components/badge";
+import { Banner } from "@nocoo/basalt/components/banner";
+import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
+import { CodeBlock } from "@nocoo/basalt/components/code";
 import { CommandShortcut } from "@nocoo/basalt/components/command-palette";
+import { DescriptionList } from "@nocoo/basalt/components/description-list";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";
+import { Empty } from "@nocoo/basalt/components/empty";
 import { Input } from "@nocoo/basalt/components/input";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { MenuBarMenu, MenuBarRoot, MenuBarTrigger } from "@nocoo/basalt/components/menu-bar";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
 import {
 	Select,
 	SelectContent,
@@ -21,6 +28,7 @@ import {
 } from "@nocoo/basalt/components/select";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "@nocoo/basalt/components/table";
+import { Text } from "@nocoo/basalt/components/text";
 
 export function GeometryApp() {
 	return (
@@ -114,6 +122,40 @@ export function GeometryApp() {
 					<span id="shortcut-label">Search Action</span>
 					<CommandShortcut id="basalt-command-shortcut">⌘K</CommandShortcut>
 				</div>
+
+				{/* Surface regressions: Banner, Empty, PageHeader, DescriptionList, CodeBlock, Text, Breadcrumbs, Badge */}
+				<Banner id="basalt-banner" title="Banner Title" description="Banner description text" />
+
+				<Empty
+					id="basalt-empty"
+					title="No results found"
+					description="Try adjusting your search criteria."
+				/>
+
+				<div id="basalt-page-header-wrap">
+					<PageHeader title="Page Title" description="Supporting description copy." />
+				</div>
+
+				<DescriptionList id="basalt-description-list" columns={1}>
+					<DescriptionList.Item id="basalt-dl-item" term="Deployment Region">
+						US-East (N. Virginia)
+					</DescriptionList.Item>
+				</DescriptionList>
+
+				<CodeBlock id="basalt-code-block">const greeting = "hello basalt";</CodeBlock>
+
+				<div id="basalt-text-group">
+					<Text id="basalt-text-h2" as="h2">
+						Heading Text
+					</Text>
+					<Text id="basalt-text-p">Paragraph Text</Text>
+				</div>
+
+				<div id="basalt-breadcrumbs-wrap">
+					<Breadcrumbs items={[{ label: "Home", href: "/home" }, { label: "Settings" }]} />
+				</div>
+
+				<Badge id="basalt-badge">Active</Badge>
 
 				<Dialog defaultOpen modal={false}>
 					<DialogTrigger id="basalt-dialog-trigger">Open Dialog</DialogTrigger>

@@ -2,6 +2,7 @@ import * as LabelPrimitive from "@radix-ui/react-label";
 import { Info } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 export type LabelProps = React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> & {
@@ -19,6 +20,7 @@ export const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Roo
 		<LabelPrimitive.Root
 			ref={ref}
 			className={cn(
+				BASALT_UI_CLASS,
 				"inline-flex items-center gap-1 text-sm font-medium leading-none text-basalt-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
 				className,
 			)}

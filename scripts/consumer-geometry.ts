@@ -81,6 +81,25 @@ export async function assertConsumerGeometry(
 		const portalInput = getEl("portal-input");
 		const portalBtn = getEl("portal-btn");
 
+		// Surface elements
+		const basaltBanner = getEl("basalt-banner");
+		const bannerP = basaltBanner.querySelector("p");
+		const basaltEmpty = getEl("basalt-empty");
+		const emptyPs = basaltEmpty.querySelectorAll("p");
+		const pageHeaderWrap = getEl("basalt-page-header-wrap");
+		const basaltPageHeader = pageHeaderWrap.querySelector("header") ?? pageHeaderWrap;
+		const pageHeaderH1 = basaltPageHeader.querySelector("h1");
+		const pageHeaderP = basaltPageHeader.querySelector("p");
+		const basaltDl = getEl("basalt-description-list");
+		const basaltDd = basaltDl.querySelector("dd");
+		const basaltCodeBlock = getEl("basalt-code-block");
+		const basaltTextH2 = getEl("basalt-text-h2");
+		const basaltTextP = getEl("basalt-text-p");
+		const breadcrumbsWrap = getEl("basalt-breadcrumbs-wrap");
+		const basaltBreadcrumbs = breadcrumbsWrap.querySelector("nav") ?? breadcrumbsWrap;
+		const breadcrumbAnchor = basaltBreadcrumbs.querySelector("a");
+		const basaltBadge = getEl("basalt-badge");
+
 		const hostBtnStyle = window.getComputedStyle(hostBtn);
 		const hostInputStyle = window.getComputedStyle(hostInput);
 		const hostTextareaStyle = window.getComputedStyle(hostTextarea);
@@ -103,6 +122,23 @@ export async function assertConsumerGeometry(
 
 		const portalInputStyle = window.getComputedStyle(portalInput);
 		const portalBtnStyle = window.getComputedStyle(portalBtn);
+
+		const bannerStyle = window.getComputedStyle(basaltBanner);
+		const bannerPStyle = bannerP ? window.getComputedStyle(bannerP) : null;
+		const emptyP0Style = emptyPs[0] ? window.getComputedStyle(emptyPs[0]) : null;
+		const emptyP1Style = emptyPs[1] ? window.getComputedStyle(emptyPs[1]) : null;
+		const pageHeaderH1Style = pageHeaderH1 ? window.getComputedStyle(pageHeaderH1) : null;
+		const pageHeaderPStyle = pageHeaderP ? window.getComputedStyle(pageHeaderP) : null;
+		const dlStyle = window.getComputedStyle(basaltDl);
+		const ddStyle = basaltDd ? window.getComputedStyle(basaltDd) : null;
+		const codeBlockStyle = window.getComputedStyle(basaltCodeBlock);
+		const textH2Style = window.getComputedStyle(basaltTextH2);
+		const textPStyle = window.getComputedStyle(basaltTextP);
+		const breadcrumbsStyle = window.getComputedStyle(basaltBreadcrumbs);
+		const breadcrumbAnchorStyle = breadcrumbAnchor
+			? window.getComputedStyle(breadcrumbAnchor)
+			: null;
+		const badgeStyle = window.getComputedStyle(basaltBadge);
 
 		const cardRect = basaltCard.getBoundingClientRect();
 		const cardInputRect = basaltCardInput.getBoundingClientRect();
@@ -164,6 +200,42 @@ export async function assertConsumerGeometry(
 				portalBtnHeight: portalBtn.getBoundingClientRect().height,
 				portalBtnBoxSizing: portalBtnStyle.boxSizing,
 				portalBtnBorderStyle: portalBtnStyle.borderTopStyle,
+
+				// Surface measurements
+				bannerWidth: basaltBanner.getBoundingClientRect().width,
+				bannerBoxSizing: bannerStyle.boxSizing,
+				bannerMarginTop: bannerStyle.marginTop,
+				bannerPMarginTop: bannerPStyle?.marginTop ?? "",
+				bannerPMarginBottom: bannerPStyle?.marginBottom ?? "",
+
+				emptyHeight: basaltEmpty.getBoundingClientRect().height,
+				emptyP0MarginTop: emptyP0Style?.marginTop ?? "",
+				emptyP0MarginBottom: emptyP0Style?.marginBottom ?? "",
+				emptyP1MarginTop: emptyP1Style?.marginTop ?? "",
+				emptyP1MarginBottom: emptyP1Style?.marginBottom ?? "",
+
+				pageHeaderHeight: basaltPageHeader.getBoundingClientRect().height,
+				pageHeaderH1MarginTop: pageHeaderH1Style?.marginTop ?? "",
+				pageHeaderH1MarginBottom: pageHeaderH1Style?.marginBottom ?? "",
+				pageHeaderPMarginTop: pageHeaderPStyle?.marginTop ?? "",
+				pageHeaderPMarginBottom: pageHeaderPStyle?.marginBottom ?? "",
+
+				dlMarginTop: dlStyle.marginTop,
+				dlMarginBottom: dlStyle.marginBottom,
+				ddMarginLeft: ddStyle?.marginLeft ?? "",
+
+				codeBlockMarginTop: codeBlockStyle.marginTop,
+				codeBlockMarginBottom: codeBlockStyle.marginBottom,
+
+				textH2MarginTop: textH2Style.marginTop,
+				textH2MarginBottom: textH2Style.marginBottom,
+				textPMarginTop: textPStyle.marginTop,
+				textPMarginBottom: textPStyle.marginBottom,
+
+				breadcrumbsBoxSizing: breadcrumbsStyle.boxSizing,
+				breadcrumbAnchorTextDecoration: breadcrumbAnchorStyle?.textDecorationLine ?? "",
+
+				badgeBoxSizing: badgeStyle.boxSizing,
 			},
 		};
 	});
@@ -319,6 +391,80 @@ export async function assertConsumerGeometry(
 	}
 	if (data.basalt.portalBtnBorderStyle === "outset") {
 		throw new Error("Portal Button has native UA outset border");
+	}
+
+	// 10. Surface Regressions: Banner, Empty, PageHeader, DescriptionList, CodeBlock, Text, Breadcrumbs, Badge
+	// Banner: 320px in 320px container, border-box, title p has no UA margin top
+	if (Math.round(data.basalt.bannerWidth) !== 320) {
+		throw new Error(`expected Banner width 320px, got ${data.basalt.bannerWidth}`);
+	}
+	if (data.basalt.bannerBoxSizing !== "border-box") {
+		throw new Error(`expected Banner border-box, got ${data.basalt.bannerBoxSizing}`);
+	}
+	if (data.basalt.bannerPMarginTop !== "0px") {
+		throw new Error(`expected Banner p margin-top 0px, got ${data.basalt.bannerPMarginTop}`);
+	}
+
+	// Empty: height 44px (not 96px from 14px UA margins), p margin reset
+	if (Math.round(data.basalt.emptyHeight) !== 44) {
+		throw new Error(`expected Empty height 44px, got ${data.basalt.emptyHeight}`);
+	}
+	if (data.basalt.emptyP0MarginTop !== "0px" || data.basalt.emptyP0MarginBottom !== "0px") {
+		throw new Error(
+			`expected Empty title p margin 0px, got ${data.basalt.emptyP0MarginTop}/${data.basalt.emptyP0MarginBottom}`,
+		);
+	}
+
+	// PageHeader: height <= 60px (not 80px from UA margins), h1/p margin reset
+	if (data.basalt.pageHeaderHeight > 60) {
+		throw new Error(`expected PageHeader height <= 60px, got ${data.basalt.pageHeaderHeight}`);
+	}
+	if (data.basalt.pageHeaderPMarginTop !== "0px" || data.basalt.pageHeaderPMarginBottom !== "0px") {
+		throw new Error(
+			`expected PageHeader description p margin 0px, got ${data.basalt.pageHeaderPMarginTop}/${data.basalt.pageHeaderPMarginBottom}`,
+		);
+	}
+
+	// DescriptionList: dl margin 0px, dd margin-left 0px (not 40px UA indent)
+	if (data.basalt.dlMarginTop !== "0px" || data.basalt.dlMarginBottom !== "0px") {
+		throw new Error(
+			`expected dl margin 0px, got ${data.basalt.dlMarginTop}/${data.basalt.dlMarginBottom}`,
+		);
+	}
+	if (data.basalt.ddMarginLeft !== "0px") {
+		throw new Error(`expected dd margin-left 0px, got ${data.basalt.ddMarginLeft}`);
+	}
+
+	// CodeBlock: pre margin 0px
+	if (data.basalt.codeBlockMarginTop !== "0px" || data.basalt.codeBlockMarginBottom !== "0px") {
+		throw new Error(
+			`expected CodeBlock pre margin 0px, got ${data.basalt.codeBlockMarginTop}/${data.basalt.codeBlockMarginBottom}`,
+		);
+	}
+
+	// Text: h2 & p margin reset to 0px
+	if (data.basalt.textH2MarginTop !== "0px" || data.basalt.textH2MarginBottom !== "0px") {
+		throw new Error(
+			`expected Text h2 margin 0px, got ${data.basalt.textH2MarginTop}/${data.basalt.textH2MarginBottom}`,
+		);
+	}
+	if (data.basalt.textPMarginTop !== "0px" || data.basalt.textPMarginBottom !== "0px") {
+		throw new Error(
+			`expected Text p margin 0px, got ${data.basalt.textPMarginTop}/${data.basalt.textPMarginBottom}`,
+		);
+	}
+
+	// Breadcrumbs & Badge: border-box and link text-decoration reset
+	if (data.basalt.breadcrumbsBoxSizing !== "border-box") {
+		throw new Error(`expected Breadcrumbs border-box, got ${data.basalt.breadcrumbsBoxSizing}`);
+	}
+	if (data.basalt.badgeBoxSizing !== "border-box") {
+		throw new Error(`expected Badge border-box, got ${data.basalt.badgeBoxSizing}`);
+	}
+	if (data.basalt.breadcrumbAnchorTextDecoration === "underline") {
+		throw new Error(
+			`expected Breadcrumb anchor text-decoration none, got ${data.basalt.breadcrumbAnchorTextDecoration}`,
+		);
 	}
 
 	return data;
