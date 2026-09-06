@@ -1401,4 +1401,202 @@ describe("DatePicker", () => {
 		expect(btn12).toHaveAttribute("aria-pressed", "true");
 		expect(btn12.className.split(/\s+/)).toContain("bg-basalt-primary");
 	});
+
+	it("supports controlled month navigation, rejection, rerender, and deferred acceptance", async () => {
+		const onMonthChange = vi.fn();
+		const { rerender } = render(
+			<DatePicker
+				value="2026-09-15"
+				month="2026-09"
+				onMonthChange={onMonthChange}
+				aria-label="ControlledMonth"
+			/>,
+		);
+		const trigger = screen.getByRole("button", { name: /ControlledMonth/ });
+		fireEvent.click(trigger);
+		expect(screen.getByText("September 2026")).toBeInTheDocument();
+
+		// 1. Click Next Month -> triggers onMonthChange("2026-10"), but parent rejects (rerenders same month)
+		const nextBtn = screen.getByRole("button", { name: "Next" });
+		fireEvent.click(nextBtn);
+		expect(onMonthChange).toHaveBeenCalledWith("2026-10");
+		// Still September because parent didn't update prop
+		expect(screen.getByText("September 2026")).toBeInTheDocument();
+
+		// 2. Keyboard nav across month boundary with parent rejection
+		const sep15 = screen.getByRole("button", { name: "2026-09-15" });
+		onMonthChange.mockClear();
+		fireEvent.keyDown(sep15, { key: "PageDown" });
+		expect(onMonthChange).toHaveBeenCalledWith("2026-10");
+		// Parent rerenders with same month
+		rerender(
+			<DatePicker
+				value="2026-09-15"
+				month="2026-09"
+				onMonthChange={onMonthChange}
+				aria-label="ControlledMonth"
+			/>,
+		);
+		// Still in September, focus not lost or jumped to day 1
+		expect(screen.getByText("September 2026")).toBeInTheDocument();
+
+		// 3. Deferred acceptance: parent now accepts "2026-10", pending focus targets 2026-10-15
+		rerender(
+			<DatePicker
+				value="2026-09-15"
+				month="2026-10"
+				onMonthChange={onMonthChange}
+				aria-label="ControlledMonth"
+			/>,
+		);
+		expect(screen.getByText("October 2026")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-10-15");
+		});
+
+		// 4. External month change does not invoke onMonthChange and does not change selected value
+		onMonthChange.mockClear();
+		rerender(
+			<DatePicker
+				value="2026-09-15"
+				month="2026-12"
+				onMonthChange={onMonthChange}
+				aria-label="ControlledMonth"
+			/>,
+		);
+		expect(screen.getByText("December 2026")).toBeInTheDocument();
+		expect(onMonthChange).not.toHaveBeenCalled();
+		expect(trigger).toHaveTextContent("Sep 15, 2026");
+	});
+
+	it("respects defaultMonth for initial view and allows uncontrolled navigation", () => {
+		const onMonthChange = vi.fn();
+		const { rerender } = render(
+			<DatePicker defaultMonth="2026-11" onMonthChange={onMonthChange} aria-label="DefaultMonth" />,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /DefaultMonth/ }));
+		expect(screen.getByText("November 2026")).toBeInTheDocument();
+
+		// ArrowRight from day 1 to day 2
+		const nov1 = screen.getByRole("button", { name: "2026-11-01" });
+		fireEvent.keyDown(nov1, { key: "ArrowRight" });
+		expect(document.activeElement).toHaveAttribute("aria-label", "2026-11-02");
+
+		// Parent rerenders changing defaultMonth prop (which should only act as initial default)
+		rerender(
+			<DatePicker defaultMonth="2027-05" onMonthChange={onMonthChange} aria-label="DefaultMonth" />,
+		);
+
+		// ArrowRight from day 2 should advance to day 3 in November 2026, NOT jump back to day 1
+		const nov2 = screen.getByRole("button", { name: "2026-11-02" });
+		fireEvent.keyDown(nov2, { key: "ArrowRight" });
+		expect(document.activeElement).toHaveAttribute("aria-label", "2026-11-03");
+
+		fireEvent.click(screen.getByRole("button", { name: "Next" }));
+		expect(screen.getByText("December 2026")).toBeInTheDocument();
+		expect(onMonthChange).toHaveBeenCalledWith("2026-12");
+	});
+
+	it("preserves keyboard roving focus sequence after accepting PageDown with empty value", async () => {
+		let currentMonth = "2026-11";
+		const onMonthChange = vi.fn((next: string) => {
+			currentMonth = next;
+		});
+		const { rerender } = render(
+			<DatePicker
+				month={currentMonth}
+				onMonthChange={onMonthChange}
+				aria-label="EmptyControlled"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /EmptyControlled/ }));
+		expect(screen.getByText("November 2026")).toBeInTheDocument();
+
+		// Wait for initial autofocus onto the active grid cell
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("data-date");
+		});
+		expect(document.activeElement).toHaveAttribute("aria-label", "2026-11-01");
+
+		// Roving step to 2026-11-02
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "ArrowRight" });
+		expect(document.activeElement).toHaveAttribute("aria-label", "2026-11-02");
+
+		// PageDown to December 2026
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageDown" });
+		expect(onMonthChange).toHaveBeenCalledWith("2026-12");
+
+		rerender(
+			<DatePicker
+				month={currentMonth}
+				onMonthChange={onMonthChange}
+				aria-label="EmptyControlled"
+			/>,
+		);
+		expect(screen.getByText("December 2026")).toBeInTheDocument();
+
+		// Deferred focus lands on same day in target month: 2026-12-02
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-12-02");
+		});
+
+		// Subsequent ArrowRight advances to 2026-12-03
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "ArrowRight" });
+		expect(document.activeElement).toHaveAttribute("aria-label", "2026-12-03");
+	});
+
+	it("falls back gracefully on invalid month strings and handles extended years across boundaries", () => {
+		const onMonthChange = vi.fn();
+		const { rerender } = render(
+			<DatePicker
+				defaultValue="2026-09-15"
+				month="invalid-month"
+				onMonthChange={onMonthChange}
+				aria-label="ExtendedYear"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /ExtendedYear/ }));
+		// Falls back to defaultValue month (September 2026)
+		expect(screen.getByText("September 2026")).toBeInTheDocument();
+
+		// Extended year: 9999-12 to 10000-01
+		rerender(
+			<DatePicker
+				defaultValue="9999-12-31"
+				month="9999-12"
+				onMonthChange={onMonthChange}
+				aria-label="ExtendedYear"
+			/>,
+		);
+		expect(screen.getByText("December 9999")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Next" }));
+		expect(onMonthChange).toHaveBeenCalledWith("10000-01");
+	});
+
+	it("supports custom validationMessage and keyboardInstructions in labels", () => {
+		render(
+			<form>
+				<DatePicker
+					required
+					labels={{
+						validationMessage: "必须填写预约日期",
+						keyboardInstructions: "使用方向键切换日期，回车确认选择",
+					}}
+					aria-label="CustomLabels"
+				/>
+				<button type="submit">Submit</button>
+			</form>,
+		);
+
+		// Keyboard instructions sr-only container & aria-describedby
+		fireEvent.click(screen.getByRole("button", { name: /CustomLabels/ }));
+		const dialog = screen.getByRole("dialog");
+		const instructions = screen.getByText("使用方向键切换日期，回车确认选择");
+		expect(instructions).toHaveClass("sr-only");
+		expect(dialog).toHaveAttribute("aria-describedby", instructions.id);
+
+		// Custom validation message on invalid form submission
+		fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+		expect(screen.getByRole("alert")).toHaveTextContent("必须填写预约日期");
+	});
 });

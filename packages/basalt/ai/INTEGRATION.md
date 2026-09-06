@@ -928,7 +928,7 @@ export function ProfileForm() {
 
 ### Controlled DatePicker Pattern
 
-When using controlled state or building custom form adapters, `DatePicker` accepts an ISO date string (`YYYY-MM-DD`):
+When using controlled state or building custom form adapters, `DatePicker` accepts an ISO date string (`YYYY-MM-DD`). In addition, you can control the active calendar view month (`YYYY-MM`) independently of the selected value via `month`, `defaultMonth`, and `onMonthChange`:
 
 ```tsx compile:integration-controlled-date-picker
 import { useState } from "react";
@@ -936,16 +936,26 @@ import { DatePicker } from "@nocoo/basalt/components/date-picker";
 
 export function ControlledDatePickerField() {
   const [selectedDate, setSelectedDate] = useState<string>("2026-09-01");
+  const [activeMonth, setActiveMonth] = useState<string>("2026-09");
 
   return (
     <DatePicker
       value={selectedDate}
       onChange={setSelectedDate}
+      month={activeMonth}
+      onMonthChange={setActiveMonth}
       aria-label="Target Date"
     />
   );
 }
 ```
+
+The month configuration rules:
+
+- **`month` / `defaultMonth`**: Accept standard `YYYY-MM` strings with at least 4-digit positive civil years (e.g. `2026-09` and `10000-01`).
+- **`defaultMonth` initialization**: `defaultMonth` only sets the initial displayed month on mount; subsequent changes to this prop do not reset the visible month.
+- **Controlled `month` and fallback**: An active, valid `month` prop controls the displayed view. If the initial configuration is omitted or invalid, it smoothly falls back in sequence to a valid `defaultMonth`, the selected date's month, or the current month today (with the latter two clamped to `min`/`max` bounds).
+- **Callback isolation**: `onMonthChange` is triggered only by user navigation actions (e.g. Prev/Next button clicks, keyboard page jumps), never during render or prop updates. External changes to `month` alter only the visible calendar page and do not modify the selected ISO date.
 
 #### Keyboard Navigation and Labels
 
@@ -958,7 +968,7 @@ The calendar follows the WAI-ARIA grid pattern with a roving tab index:
 - **`Enter` / `Space`**: Select the focused day.
 - **`Escape`**: Dismiss the calendar popover and return focus to the trigger button.
 
-For internationalization, `locale` formats month titles and trigger values, while `labels` customizes accessible strings for navigation and placeholders:
+For internationalization, `locale` formats month titles and trigger values, while `labels` customizes accessible strings for navigation, validation messages, and placeholders:
 
 ```tsx compile:integration-datepicker-labels
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
@@ -973,6 +983,9 @@ export function LocalizedDatePickerExample() {
         previousMonth: "Mois précédent",
         nextMonth: "Mois suivant",
         placeholder: "Sélectionnez une date",
+        validationMessage: "Veuillez sélectionner une date valide.",
+        keyboardInstructions:
+          "Utilisez les flèches pour naviguer et Entrée pour valider.",
       }}
     />
   );

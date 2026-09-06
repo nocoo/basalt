@@ -9784,7 +9784,7 @@
 			"importPath": "@nocoo/basalt/components/date-picker",
 			"subpath": "./components/date-picker",
 			"sourceFile": "packages/basalt/src/components/date-picker.tsx",
-			"sourceHash": "264c5cbc6ce6709b",
+			"sourceHash": "9b5e8a4b1dbe9b37",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -9871,6 +9871,24 @@
 									"required": false,
 									"default": "single",
 									"description": "Selection mode."
+								},
+								{
+									"name": "month",
+									"type": "string",
+									"required": false,
+									"description": "The controlled displayed month in `YYYY-MM` format (at least 4-digit positive year).\nIf omitted or invalid, falls back smoothly to `defaultMonth`, selected date, or today."
+								},
+								{
+									"name": "defaultMonth",
+									"type": "string",
+									"required": false,
+									"description": "The uncontrolled initial displayed month in `YYYY-MM` format (at least 4-digit positive year).\nIf omitted or invalid, falls back smoothly to selected date or today."
+								},
+								{
+									"name": "onMonthChange",
+									"type": "(month: string) => void",
+									"required": false,
+									"description": "Called only when calendar navigation requests a month change (`YYYY-MM`).\nNot invoked during component render or synchronous prop synchronization."
 								},
 								{
 									"name": "rangeValue",
@@ -9997,6 +10015,24 @@
 							"required": false,
 							"default": "single",
 							"description": "Selection mode."
+						},
+						{
+							"name": "month",
+							"type": "string",
+							"required": false,
+							"description": "The controlled displayed month in `YYYY-MM` format (at least 4-digit positive year).\nIf omitted or invalid, falls back smoothly to `defaultMonth`, selected date, or today."
+						},
+						{
+							"name": "defaultMonth",
+							"type": "string",
+							"required": false,
+							"description": "The uncontrolled initial displayed month in `YYYY-MM` format (at least 4-digit positive year).\nIf omitted or invalid, falls back smoothly to selected date or today."
+						},
+						{
+							"name": "onMonthChange",
+							"type": "(month: string) => void",
+							"required": false,
+							"description": "Called only when calendar navigation requests a month change (`YYYY-MM`).\nNot invoked during component render or synchronous prop synchronization."
 						},
 						{
 							"name": "rangeValue",
@@ -24222,7 +24258,7 @@
 			"exportName": "DatePicker",
 			"importPath": "@nocoo/basalt/components/date-picker",
 			"sourceFile": "packages/basalt/src/components/date-picker.tsx",
-			"sourceHash": "264c5cbc6ce6709b",
+			"sourceHash": "9b5e8a4b1dbe9b37",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#date-picker",
@@ -24254,6 +24290,24 @@
 							"required": false,
 							"default": "single",
 							"description": "Selection mode."
+						},
+						{
+							"name": "month",
+							"type": "string",
+							"required": false,
+							"description": "The controlled displayed month in `YYYY-MM` format (at least 4-digit positive year).\nIf omitted or invalid, falls back smoothly to `defaultMonth`, selected date, or today."
+						},
+						{
+							"name": "defaultMonth",
+							"type": "string",
+							"required": false,
+							"description": "The uncontrolled initial displayed month in `YYYY-MM` format (at least 4-digit positive year).\nIf omitted or invalid, falls back smoothly to selected date or today."
+						},
+						{
+							"name": "onMonthChange",
+							"type": "(month: string) => void",
+							"required": false,
+							"description": "Called only when calendar navigation requests a month change (`YYYY-MM`).\nNot invoked during component render or synchronous prop synchronization."
 						},
 						{
 							"name": "rangeValue",

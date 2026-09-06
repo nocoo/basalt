@@ -146,7 +146,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"date-picker": {
 		"file": "packages/basalt/src/components/date-picker.tsx",
-		"hash": "264c5cbc6ce6709b",
+		"hash": "9b5e8a4b1dbe9b37",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/date-picker.js.map (sourcesContent[0])"
 	},

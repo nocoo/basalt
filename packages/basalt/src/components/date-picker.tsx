@@ -49,6 +49,27 @@ function parseIso(value: string): Civil | null {
 	return { y: year, m: month, d: day };
 }
 
+function parseIsoMonth(value: string | undefined): Civil | null {
+	if (!value) {
+		return null;
+	}
+	const match = /^(\d{4,})-(\d{2})$/.exec(value);
+	if (!match) {
+		return null;
+	}
+	const year = Number(match[1]);
+	const month = Number(match[2]);
+	if (year < 1 || month < 1 || month > 12) {
+		return null;
+	}
+	const civil = { y: year, m: month, d: 1 };
+	return isValidCivil(civil) ? civil : null;
+}
+
+function formatIsoMonth(date: Civil): string {
+	return `${String(date.y).padStart(4, "0")}-${pad(date.m)}`;
+}
+
 const CALENDAR_BUTTON =
 	"appearance-none border-0 bg-transparent p-0 font-inherit text-inherit cursor-pointer";
 
@@ -182,6 +203,14 @@ export type DatePickerLabels = {
 	 * @default "Pick a date"
 	 */
 	placeholder?: string;
+	/**
+	 * Custom validation error message displayed when form validation fails.
+	 */
+	validationMessage?: string;
+	/**
+	 * Accessible keyboard navigation instructions announced for the calendar grid.
+	 */
+	keyboardInstructions?: string;
 };
 
 export type DatePickerProps = Omit<
@@ -214,6 +243,21 @@ export type DatePickerProps = Omit<
 	 * @default single
 	 */
 	mode?: "single" | "range";
+	/**
+	 * The controlled displayed month in `YYYY-MM` format (at least 4-digit positive year).
+	 * If omitted or invalid, falls back smoothly to `defaultMonth`, selected date, or today.
+	 */
+	month?: string;
+	/**
+	 * The uncontrolled initial displayed month in `YYYY-MM` format (at least 4-digit positive year).
+	 * If omitted or invalid, falls back smoothly to selected date or today.
+	 */
+	defaultMonth?: string;
+	/**
+	 * Called only when calendar navigation requests a month change (`YYYY-MM`).
+	 * Not invoked during component render or synchronous prop synchronization.
+	 */
+	onMonthChange?: (month: string) => void;
 	/**
 	 * The controlled range in range mode.
 	 */
@@ -332,6 +376,9 @@ export function DatePicker({
 	defaultValue = "",
 	onChange,
 	mode = "single",
+	month: controlledMonthProp,
+	defaultMonth: defaultMonthProp,
+	onMonthChange,
 	rangeValue,
 	defaultRangeValue,
 	onRangeChange,
@@ -373,7 +420,7 @@ export function DatePicker({
 	const [validationMessage, setValidationMessage] = useState("");
 	const [focusIndex, setFocusIndex] = useState(0);
 	const dayRefs = useRef<Array<HTMLButtonElement | null>>([]);
-	const pendingFocusIso = useRef<string | null>(null);
+	const pendingFocus = useRef<{ targetMonthKey: string; iso: string } | null>(null);
 	const focusDay = useRef(false);
 	const hiddenRef = useRef<HTMLInputElement>(null);
 	const triggerRef = useRef<HTMLButtonElement>(null);
@@ -381,6 +428,10 @@ export function DatePicker({
 	const errorId = id ? `${id}-error` : generatedErrorId;
 	const generatedMonthLiveId = React.useId();
 	const monthLiveId = id ? `${id}-month-live` : generatedMonthLiveId;
+	const generatedKeyboardInstructionsId = React.useId();
+	const keyboardInstructionsId = id
+		? `${id}-keyboard-instructions`
+		: generatedKeyboardInstructionsId;
 
 	const selected = value ?? uncontrolled;
 	const selectedRange = rangeValue ?? uncontrolledRange;
@@ -396,32 +447,62 @@ export function DatePicker({
 		}
 	}, [cursorIso]);
 	const submitted = mode === "range" ? "" : cursorIso;
-	const cursor = selectedDate ?? todayCivil(timeZone);
-	const [month, setMonth] = useState<Civil>({ y: cursor.y, m: cursor.m, d: 1 });
+
+	const controlledParsed = useMemo(() => parseIsoMonth(controlledMonthProp), [controlledMonthProp]);
+	const isMonthControlled = controlledParsed !== null;
+
+	const [uncontrolledMonth, setUncontrolledMonth] = useState<Civil>(() => {
+		const parsedDef = parseIsoMonth(defaultMonthProp);
+		if (parsedDef) {
+			return parsedDef;
+		}
+		const initialCursor = selectedDate ?? todayCivil(timeZone);
+		const clampedInitial = clampCivil(initialCursor, min, max);
+		return { y: clampedInitial.y, m: clampedInitial.m, d: 1 };
+	});
+
+	const activeMonth = controlledParsed ?? uncontrolledMonth;
+	const activeMonthKey = formatIsoMonth(activeMonth);
+
+	const requestMonth = (target: Civil) => {
+		const monthKey = formatIsoMonth(target);
+		if (!isMonthControlled) {
+			setUncontrolledMonth(target);
+		}
+		onMonthChange?.(monthKey);
+	};
+
 	const prevSelected = useRef(cursorIso);
 	if (open && prevSelected.current !== cursorIso) {
 		focusDay.current = true;
-		const next = selectedDate ?? todayCivil(timeZone);
-		if (month.y !== next.y || month.m !== next.m) {
-			setMonth({ y: next.y, m: next.m, d: 1 });
+		if (controlledMonthProp === undefined && defaultMonthProp === undefined) {
+			const next = selectedDate ?? todayCivil(timeZone);
+			if (activeMonth.y !== next.y || activeMonth.m !== next.m) {
+				setUncontrolledMonth({ y: next.y, m: next.m, d: 1 });
+			}
 		}
 	}
 	prevSelected.current = cursorIso;
+
+	const hasExplicitMonthConfig =
+		controlledMonthProp !== undefined || defaultMonthProp !== undefined;
 
 	useEffect(() => {
 		if (!open) {
 			return;
 		}
-		const next = clampCivil(
-			(cursorIso ? parseIso(cursorIso) : null) ?? todayCivil(timeZone),
-			min,
-			max,
-		);
-		setMonth({ y: next.y, m: next.m, d: 1 });
-		if (!cursorIso) {
-			focusDay.current = true;
+		if (!hasExplicitMonthConfig) {
+			const next = clampCivil(
+				(cursorIso ? parseIso(cursorIso) : null) ?? todayCivil(timeZone),
+				min,
+				max,
+			);
+			setUncontrolledMonth({ y: next.y, m: next.m, d: 1 });
+			if (!cursorIso) {
+				focusDay.current = true;
+			}
 		}
-	}, [open, cursorIso, timeZone, min, max]);
+	}, [open, cursorIso, timeZone, min, max, hasExplicitMonthConfig]);
 
 	useEffect(() => {
 		if (disabled) {
@@ -497,7 +578,7 @@ export function DatePicker({
 	}, [locale, weekStartsOn]);
 
 	const days = useMemo(() => {
-		const first = { y: month.y, m: month.m, d: 1 };
+		const first = { y: activeMonth.y, m: activeMonth.m, d: 1 };
 		if (!isValidCivil(first)) {
 			return Array.from({ length: 42 }, () => null);
 		}
@@ -507,19 +588,34 @@ export function DatePicker({
 			return Array.from({ length: 42 }, (_, index) => addDays(first, index - startOffset));
 		}
 		return Array.from({ length: 42 }, (_, index) => addDays(start, index));
-	}, [month, weekStartsOn]);
+	}, [activeMonth, weekStartsOn]);
 
 	useLayoutEffect(() => {
 		if (!open) {
 			return;
 		}
-		const pending = pendingFocusIso.current;
+		const pending = pendingFocus.current;
 		let index = 0;
 		if (pending) {
-			pendingFocusIso.current = null;
-			index = days.findIndex((date) => isoOf(date) === pending);
-			if (index < 0) {
-				index = 0;
+			if (pending.targetMonthKey === activeMonthKey) {
+				pendingFocus.current = null;
+				index = days.findIndex((date) => isoOf(date) === pending.iso);
+				if (index < 0) {
+					index = 0;
+				}
+				focusDay.current = true;
+			} else {
+				const focused = document.activeElement;
+				const focusedIso =
+					focused instanceof HTMLElement && dayRefs.current.some((node) => node === focused)
+						? focused.getAttribute("aria-label")
+						: null;
+				const focusedIndex = focusedIso ? days.findIndex((date) => isoOf(date) === focusedIso) : -1;
+				if (focusedIndex >= 0) {
+					index = focusedIndex;
+				} else {
+					index = focusIndex;
+				}
 			}
 		} else {
 			const focused = document.activeElement;
@@ -535,10 +631,10 @@ export function DatePicker({
 			} else {
 				const iso = cursorIso || submitted || formatIso(todayCivil(timeZone));
 				const selectedIndex = days.findIndex((date) => isoOf(date) === iso);
-				if (selectedIndex >= 0 && days[selectedIndex]?.m === month.m) {
+				if (selectedIndex >= 0 && days[selectedIndex]?.m === activeMonth.m) {
 					index = selectedIndex;
 				} else {
-					const firstInMonth = days.findIndex((date) => date?.m === month.m);
+					const firstInMonth = days.findIndex((date) => date?.m === activeMonth.m);
 					index = firstInMonth >= 0 ? firstInMonth : 0;
 				}
 			}
@@ -546,7 +642,7 @@ export function DatePicker({
 		const enabled = (date: Civil | null) =>
 			Boolean(date && date.y >= 1 && dateSelectable(formatIso(date), min, max, isDisabledDate));
 		if (!enabled(days[index] ?? null)) {
-			const inMonth = days.findIndex((date) => date?.m === month.m && enabled(date));
+			const inMonth = days.findIndex((date) => date?.m === activeMonth.m && enabled(date));
 			const any = days.findIndex((date) => enabled(date));
 			index = inMonth >= 0 ? inMonth : any >= 0 ? any : index;
 		}
@@ -555,10 +651,22 @@ export function DatePicker({
 			focusDay.current = false;
 			dayRefs.current[index]?.focus();
 		}
-	}, [open, cursorIso, submitted, timeZone, days, month.m, min, max, isDisabledDate]);
+	}, [
+		open,
+		cursorIso,
+		submitted,
+		timeZone,
+		days,
+		activeMonth.m,
+		activeMonthKey,
+		focusIndex,
+		min,
+		max,
+		isDisabledDate,
+	]);
 
-	const previousMonth = shiftMonth(month, -1);
-	const followingMonth = shiftMonth(month, 1);
+	const previousMonth = shiftMonth(activeMonth, -1);
+	const followingMonth = shiftMonth(activeMonth, 1);
 	const rangeFrom = mode === "range" ? selectedRange.from : "";
 	const rangeTo = mode === "range" ? selectedRange.to : undefined;
 	const label = formatTriggerLabel({
@@ -692,9 +800,14 @@ export function DatePicker({
 					return;
 				}
 				if (next) {
-					const synced = (cursorIso ? parseIso(cursorIso) : null) ?? todayCivil(timeZone);
-					setMonth({ y: synced.y, m: synced.m, d: 1 });
+					pendingFocus.current = null;
+					if (controlledMonthProp === undefined && defaultMonthProp === undefined) {
+						const synced = (cursorIso ? parseIso(cursorIso) : null) ?? todayCivil(timeZone);
+						setUncontrolledMonth({ y: synced.y, m: synced.m, d: 1 });
+					}
 					focusDay.current = true;
+				} else {
+					pendingFocus.current = null;
 				}
 				setOpen(next);
 			}}
@@ -725,7 +838,9 @@ export function DatePicker({
 						event.preventDefault();
 						setIsInvalid(true);
 						setValidationMessage(
-							(event.target as HTMLInputElement).validationMessage || "Please fill out this field.",
+							labels?.validationMessage ||
+								(event.target as HTMLInputElement).validationMessage ||
+								"Please fill out this field.",
 						);
 						triggerRef.current?.focus();
 					}
@@ -768,6 +883,7 @@ export function DatePicker({
 				arrow={false}
 				className="w-64 p-3"
 				aria-label={calendarLabel}
+				aria-describedby={keyboardInstructionsId}
 				onOpenAutoFocus={(event) => {
 					event.preventDefault();
 					const iso = cursorIso || submitted || formatIso(todayCivil(timeZone));
@@ -777,14 +893,14 @@ export function DatePicker({
 							date && date.y >= 1 && dateSelectable(formatIso(date), min, max, isDisabledDate),
 						);
 					let index =
-						selectedIndex >= 0 && days[selectedIndex]?.m === month.m
+						selectedIndex >= 0 && days[selectedIndex]?.m === activeMonth.m
 							? selectedIndex
 							: Math.max(
 									0,
-									days.findIndex((date) => date?.m === month.m),
+									days.findIndex((date) => date?.m === activeMonth.m),
 								);
 					if (!enabled(days[index] ?? null)) {
-						const inMonth = days.findIndex((date) => date?.m === month.m && enabled(date));
+						const inMonth = days.findIndex((date) => date?.m === activeMonth.m && enabled(date));
 						const any = days.findIndex((date) => enabled(date));
 						index = inMonth >= 0 ? inMonth : any >= 0 ? any : index;
 					}
@@ -822,8 +938,9 @@ export function DatePicker({
 							if (!previousMonth || previousMonth.y < 1) {
 								return;
 							}
+							pendingFocus.current = null;
 							focusDay.current = false;
-							setMonth(previousMonth);
+							requestMonth(previousMonth);
 						}}
 					/>
 					<span
@@ -832,7 +949,7 @@ export function DatePicker({
 						aria-atomic="true"
 						className="text-sm font-medium"
 					>
-						{formatCivil(month, locale, { month: "long", year: "numeric" })}
+						{formatCivil(activeMonth, locale, { month: "long", year: "numeric" })}
 					</span>
 					<Button
 						type="button"
@@ -846,11 +963,16 @@ export function DatePicker({
 							if (!followingMonth) {
 								return;
 							}
+							pendingFocus.current = null;
 							focusDay.current = false;
-							setMonth(followingMonth);
+							requestMonth(followingMonth);
 						}}
 					/>
 				</div>
+				<p id={keyboardInstructionsId} className="sr-only">
+					{labels?.keyboardInstructions ??
+						"Use arrow keys to navigate dates, PageUp and PageDown to change months, and Enter or Space to select."}
+				</p>
 				{/* Biome override: WAI-ARIA APG Date Picker pattern uses a semantic table with role="grid" and role="gridcell" on cells while roving tabindex focuses the child button */}
 				<table
 					role="grid"
@@ -888,10 +1010,12 @@ export function DatePicker({
 							if (!next || next.y < 1 || !selectable(formatIso(next))) {
 								return;
 							}
-							if (next.y !== month.y || next.m !== month.m) {
-								pendingFocusIso.current = formatIso(next);
-								focusDay.current = true;
-								setMonth({ y: next.y, m: next.m, d: 1 });
+							if (next.y !== activeMonth.y || next.m !== activeMonth.m) {
+								pendingFocus.current = {
+									targetMonthKey: formatIsoMonth(next),
+									iso: formatIso(next),
+								};
+								requestMonth({ y: next.y, m: next.m, d: 1 });
 								return;
 							}
 							const index = days.findIndex((date) => isoOf(date) === formatIso(next));
@@ -918,10 +1042,12 @@ export function DatePicker({
 							if (!next || next.y < 1 || !selectable(formatIso(next))) {
 								return;
 							}
-							if (next.y !== month.y || next.m !== month.m) {
-								pendingFocusIso.current = formatIso(next);
-								focusDay.current = true;
-								setMonth({ y: next.y, m: next.m, d: 1 });
+							if (next.y !== activeMonth.y || next.m !== activeMonth.m) {
+								pendingFocus.current = {
+									targetMonthKey: formatIsoMonth(next),
+									iso: formatIso(next),
+								};
+								requestMonth({ y: next.y, m: next.m, d: 1 });
 								return;
 							}
 							const index = days.findIndex((date) => isoOf(date) === formatIso(next));
@@ -962,9 +1088,11 @@ export function DatePicker({
 							if (!next || next.y < 1 || !selectable(formatIso(next))) {
 								return;
 							}
-							pendingFocusIso.current = formatIso(next);
-							focusDay.current = true;
-							setMonth({ y: next.y, m: next.m, d: 1 });
+							pendingFocus.current = {
+								targetMonthKey: formatIsoMonth(next),
+								iso: formatIso(next),
+							};
+							requestMonth({ y: next.y, m: next.m, d: 1 });
 							return;
 						}
 						if (event.key === "Enter" || event.key === " ") {
@@ -1007,7 +1135,7 @@ export function DatePicker({
 										);
 									}
 									const iso = formatIso(date);
-									const inMonth = date.m === month.m;
+									const inMonth = date.m === activeMonth.m;
 									const inRange = date.y >= 1 && selectable(iso);
 									const fromDate = rangeFrom ? parseIso(rangeFrom) : null;
 									const toDate = rangeTo ? parseIso(rangeTo) : null;

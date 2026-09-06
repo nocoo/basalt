@@ -12,6 +12,7 @@ import type { Page } from "playwright";
  * - Dialog closing on Escape and focus restoration to the trigger button
  */
 export async function assertConsumerCalendar(page: Page) {
+	await page.clock.setFixedTime(new Date("2026-09-09T12:00:00Z"));
 	await page.waitForFunction(() => Boolean(window.calendarAudit?.mounted));
 
 	// 1. Grid semantics & roving tabindex on appointment picker
@@ -166,10 +167,207 @@ export async function assertConsumerCalendar(page: Page) {
 	await rangeGrid.waitFor({ state: "detached" });
 	await page.waitForFunction(() => document.activeElement?.id === "stay-picker");
 
+	// 7. Controlled month: rejection, rerender retention, deferred acceptance, and external month changes
+	const controlledTrigger = page.locator(
+		"#controlled-month-container button#controlled-month-picker",
+	);
+	await controlledTrigger.click();
+	const controlledGrid = page.locator('table[role="grid"]');
+	await controlledGrid.waitFor({ state: "visible" });
+
+	const controlledLive = page.locator("#controlled-month-picker-month-live");
+	assert.ok((await controlledLive.textContent())?.includes("September 2026"));
+
+	// Clear initial requests
+	await page.evaluate(() => window.calendarAudit?.clearRequestedMonths?.());
+
+	// 7a. User clicks next month button while parent rejects (mode:reject)
+	const nextMonthBtn = page.locator('div[role="dialog"] button[aria-label="Next"]');
+	await nextMonthBtn.click();
+	let requested = await page.evaluate(() => window.calendarAudit?.getRequestedMonths?.() ?? []);
+	assert.equal(requested.length, 1);
+	assert.equal(requested[0], "2026-10", "onMonthChange must receive 2026-10 on next click");
+	// View remains in September because parent rejected update
+	assert.ok((await controlledLive.textContent())?.includes("September 2026"));
+
+	// 7b. Keyboard PageDown navigation while parent rejects
+	const sep15 = controlledGrid.locator('button[data-date="2026-09-15"]');
+	assert.equal(await sep15.getAttribute("tabindex"), "0");
+	await sep15.focus();
+	await page.keyboard.press("PageDown");
+	requested = await page.evaluate(() => window.calendarAudit?.getRequestedMonths?.() ?? []);
+	assert.equal(requested.length, 2);
+	assert.equal(requested[1], "2026-10", "onMonthChange must receive 2026-10 on PageDown");
+	// After rejection, focus must remain on the original date (2026-09-15)
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "2026-09-15",
+	);
+
+	// 7c. Parent re-renders via calendarAudit without pointer/click event outside popover
+	await page.evaluate(() => window.calendarAudit?.rerenderControlledParent?.());
+	// Still in September 2026, focus is not lost or jumped to day 1, popover stays open
+	assert.ok((await controlledLive.textContent())?.includes("September 2026"));
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "2026-09-15",
+	);
+
+	// 7d. Parent now accepts "2026-10": deferred pendingFocus should target 2026-10-15
+	await page.evaluate(() => window.calendarAudit?.acceptPendingControlledMonth?.("2026-10"));
+	await page.waitForFunction(() =>
+		document
+			.querySelector("#controlled-month-picker-month-live")
+			?.textContent?.includes("October 2026"),
+	);
+	await page.waitForFunction(
+		() =>
+			document.activeElement?.getAttribute("data-date") === "2026-10-15" &&
+			document.activeElement?.getAttribute("tabindex") === "0",
+	);
+
+	// 7e. External month change to December 2026 does NOT invoke onMonthChange and does NOT alter selected ISO value
+	const prevReqCount = (
+		await page.evaluate(() => window.calendarAudit?.getRequestedMonths?.() ?? [])
+	).length;
+	await page.evaluate(() => window.calendarAudit?.setExternalControlledMonth?.("2026-12"));
+	await page.waitForFunction(() =>
+		document
+			.querySelector("#controlled-month-picker-month-live")
+			?.textContent?.includes("December 2026"),
+	);
+	const postReqCount = (
+		await page.evaluate(() => window.calendarAudit?.getRequestedMonths?.() ?? [])
+	).length;
+	assert.equal(postReqCount, prevReqCount, "external month change must NOT trigger onMonthChange");
+
+	// Trigger label must still display original selected date (Sep 15, 2026)
+	const controlledTriggerText = await controlledTrigger.textContent();
+	assert.ok(
+		controlledTriggerText?.includes("Sep 15, 2026"),
+		`trigger label must keep original ISO date, got: ${controlledTriggerText}`,
+	);
+
+	await page.keyboard.press("Escape");
+	await controlledGrid.waitFor({ state: "detached" });
+
+	// 8. Regression: Empty date with defaultMonth=2026-11, ArrowRight to 11-02, parent rerenders changing defaultMonth, subsequent ArrowRight advances to 11-03
+	const emptyDefTrigger = page.locator(
+		"#empty-default-month-container button#empty-default-month-picker",
+	);
+	await emptyDefTrigger.click();
+	const emptyDefGrid = page.locator('table[role="grid"]');
+	await emptyDefGrid.waitFor({ state: "visible" });
+
+	// Wait for autofocus on day 1
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "2026-11-01",
+	);
+	// ArrowRight to 2026-11-02
+	await page.keyboard.press("ArrowRight");
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "2026-11-02",
+	);
+
+	// Parent rerenders defaultMonth prop to 2027-05 (should only act as initial default)
+	await page.evaluate(() => window.calendarAudit?.changeDefaultMonthProp?.("2027-05"));
+
+	// Subsequent ArrowRight advances to 2026-11-03 (must NOT jump back to 2026-11-01)
+	await page.keyboard.press("ArrowRight");
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "2026-11-03",
+	);
+
+	await page.keyboard.press("Escape");
+	await emptyDefGrid.waitFor({ state: "detached" });
+
+	// 9. Regression: Empty controlled month=2026-11, ArrowRight to 11-02, PageDown, parent accepts 12月 -> lands on 12-02, subsequent ArrowRight to 12-03
+	const emptyCtrlTrigger = page.locator(
+		"#empty-controlled-month-container button#empty-controlled-month-picker",
+	);
+	await emptyCtrlTrigger.click();
+	const emptyCtrlGrid = page.locator('table[role="grid"]');
+	await emptyCtrlGrid.waitFor({ state: "visible" });
+
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "2026-11-01",
+	);
+	await page.keyboard.press("ArrowRight");
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "2026-11-02",
+	);
+
+	await page.keyboard.press("PageDown");
+	const emptyReq = await page.evaluate(
+		() => window.calendarAudit?.getEmptyRequestedMonths?.() ?? [],
+	);
+	assert.ok(
+		emptyReq.includes("2026-12"),
+		"PageDown must request 2026-12 in empty controlled picker",
+	);
+
+	// Parent accepts 2026-12
+	await page.evaluate(() => window.calendarAudit?.setEmptyControlledMonth?.("2026-12"));
+	// Focus must land on 2026-12-02 (not jump to 2026-12-01)
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "2026-12-02",
+	);
+
+	// Subsequent ArrowRight advances to 2026-12-03
+	await page.keyboard.press("ArrowRight");
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "2026-12-03",
+	);
+
+	await page.keyboard.press("Escape");
+	await emptyCtrlGrid.waitFor({ state: "detached" });
+
+	// 10. Localized Chinese Form: required validation message, custom validation alert & keyboard instructions
+	const localizedTrigger = page.locator(
+		"#localized-form-container button#localized-booking-picker",
+	);
+	assert.equal(await localizedTrigger.textContent(), "请选择服务日期");
+
+	// Open popover to check keyboard instructions
+	await localizedTrigger.click();
+	const localizedDialog = page.locator('div[role="dialog"]');
+	await localizedDialog.waitFor({ state: "visible" });
+	const instructions = localizedDialog.locator("p.sr-only");
+	assert.ok(await instructions.isVisible(), "sr-only instructions element should exist in DOM");
+	const instructionsText = await instructions.textContent();
+	assert.equal(instructionsText, "使用方向键在日期中移动，PageUp/PageDown切换月份，回车确认选择");
+	assert.equal(
+		await localizedDialog.getAttribute("aria-describedby"),
+		await instructions.getAttribute("id"),
+		"dialog aria-describedby must reference keyboard instructions id",
+	);
+
+	await page.keyboard.press("Escape");
+	await localizedDialog.waitFor({ state: "detached" });
+
+	// Submit empty form -> triggers native required validation, displays custom validationMessage in alert role
+	await page.locator("#submit-booking-btn").click();
+	const alert = page.locator("#localized-form-container [role='alert']");
+	await alert.waitFor({ state: "visible" });
+	assert.equal(await alert.textContent(), "请先选择有效的预约日期再提交");
+	// Focus must be directed to visible trigger button
+	await page.waitForFunction(() => document.activeElement?.id === "localized-booking-picker");
+
 	return {
 		gridSemantics: { columnHeaders: 7, multiselectable: true },
 		keyboardNavigation: { arrowRight: "2026-09-10", home: "2026-09-07", end: "2026-09-13" },
 		monthClamping: { leapDay: "2024-02-29", nonLeapNextYear: "2025-02-28" },
 		rangeSelection: { from: "2026-09-10", middle: "2026-09-11", to: "2026-09-12" },
+		controlledMonth: {
+			rejectedMonth: "2026-09",
+			acceptedTarget: "2026-10-15",
+			externalMonth: "2026-12",
+		},
+		emptyRegressions: {
+			defaultMonthRoving: "2026-11-03",
+			emptyControlledRoving: "2026-12-03",
+		},
+		localizedLabels: {
+			placeholder: "请选择服务日期",
+			customValidation: "请先选择有效的预约日期再提交",
+		},
 	};
 }

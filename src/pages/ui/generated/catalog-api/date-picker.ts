@@ -31,6 +31,24 @@ export const API = [
 				description: "Selection mode.",
 			},
 			{
+				name: "month",
+				type: "string",
+				required: false,
+				description: "The controlled displayed month in `YYYY-MM` format (at least 4-digit positive year).\nIf omitted or invalid, falls back smoothly to `defaultMonth`, selected date, or today.",
+			},
+			{
+				name: "defaultMonth",
+				type: "string",
+				required: false,
+				description: "The uncontrolled initial displayed month in `YYYY-MM` format (at least 4-digit positive year).\nIf omitted or invalid, falls back smoothly to selected date or today.",
+			},
+			{
+				name: "onMonthChange",
+				type: "(month: string) => void",
+				required: false,
+				description: "Called only when calendar navigation requests a month change (`YYYY-MM`).\nNot invoked during component render or synchronous prop synchronization.",
+			},
+			{
 				name: "rangeValue",
 				type: "DatePickerRange",
 				required: false,
