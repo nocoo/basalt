@@ -57,7 +57,7 @@ export const API = [
 				type: "number",
 				required: false,
 				default: "260",
-				description: "Expanded width in pixels.",
+				description: "Initial expanded width in pixels, clamped between 180 and 400.",
 			},
 			{
 				name: "children",
@@ -80,6 +80,30 @@ export const API = [
 		],
 	},
 	{
+		name: "SidebarHeader",
+		props: [],
+	},
+	{
+		name: "SidebarSearch",
+		props: [
+			{
+				name: "shortcut",
+				type: "string",
+				required: false,
+				default: "\"⌘K\"",
+				description: "Shortcut key display label rendered inside the trailing kbd tag. Note: this is a visual label only and does not register a global keyboard shortcut.",
+			},
+		],
+	},
+	{
+		name: "SidebarNav",
+		props: [],
+	},
+	{
+		name: "SidebarPartition",
+		props: [],
+	},
+	{
 		name: "SidebarItem",
 		props: [
 			{
@@ -88,6 +112,156 @@ export const API = [
 				required: false,
 				default: "false",
 				description: "Mark the item as the current page.",
+			},
+		],
+	},
+	{
+		name: "SidebarIconItem",
+		props: [
+			{
+				name: "active",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Mark the icon button as active page item.",
+			},
+		],
+	},
+	{
+		name: "SidebarGroup",
+		props: [
+			{
+				name: "label",
+				type: "React.ReactNode",
+				required: true,
+				description: "Section label displayed on the group trigger.",
+			},
+			{
+				name: "defaultOpen",
+				type: "boolean",
+				required: false,
+				default: "true",
+				description: "Uncontrolled initial open state for the collapsible group.",
+			},
+			{
+				name: "children",
+				type: "React.ReactNode",
+				required: true,
+				description: "Navigation items rendered inside the group.",
+			},
+		],
+	},
+	{
+		name: "SidebarFooter",
+		props: [],
+	},
+	{
+		name: "SidebarUser",
+		props: [
+			{
+				name: "name",
+				type: "React.ReactNode",
+				required: true,
+				description: "User display name.",
+			},
+			{
+				name: "email",
+				type: "React.ReactNode",
+				required: false,
+				description: "Optional user email or secondary text.",
+			},
+			{
+				name: "avatar",
+				type: "React.ReactNode",
+				required: false,
+				description: "Avatar element slot.",
+			},
+			{
+				name: "action",
+				type: "React.ReactNode",
+				required: false,
+				description: "Trailing action slot (e.g. settings or logout button).",
+			},
+			{
+				name: "className",
+				type: "string",
+				required: false,
+				description: "Additional CSS class name.",
+			},
+		],
+	},
+	{
+		name: "ContentIsland",
+		props: [],
+	},
+	{
+		name: "useSidebar()",
+		props: [
+			{
+				name: "collapsed",
+				type: "boolean",
+				required: true,
+				description: "Whether the sidebar is currently collapsed.",
+			},
+			{
+				name: "setCollapsed",
+				type: "(next: boolean) => void",
+				required: true,
+				description: "Callback to update the collapsed state.",
+			},
+			{
+				name: "side",
+				type: "SidebarSide",
+				required: true,
+				description: "Which edge the sidebar occupies.",
+			},
+			{
+				name: "loading",
+				type: "boolean",
+				required: true,
+				description: "Whether the sidebar is currently displaying a loading skeleton.",
+			},
+			{
+				name: "peek",
+				type: "boolean",
+				required: true,
+				description: "Whether the sidebar rail expands on pointer hover.",
+			},
+			{
+				name: "peeking",
+				type: "boolean",
+				required: true,
+				description: "Whether the sidebar is actively hovering in peek preview mode.",
+			},
+			{
+				name: "setPeeking",
+				type: "(next: boolean) => void",
+				required: true,
+				description: "Callback to update the peek preview state.",
+			},
+			{
+				name: "overlay",
+				type: "boolean",
+				required: true,
+				description: "Whether the sidebar is rendering as a modal overlay drawer instead of in-flow layout chrome.",
+			},
+			{
+				name: "width",
+				type: "number",
+				required: true,
+				description: "Current expanded width in pixels, clamped between 180 and 400.",
+			},
+			{
+				name: "setWidth",
+				type: "(next: number) => void",
+				required: true,
+				description: "Callback to update the sidebar width. Value is clamped between 180 and 400 pixels.",
+			},
+			{
+				name: "lastFocusRef",
+				type: "React.RefObject<HTMLElement | null>",
+				required: true,
+				description: "Reference to the last active element that held focus before opening the sidebar drawer.",
 			},
 		],
 	},

@@ -75,9 +75,9 @@ describe("public surface documentation ownership and freshness", () => {
 
 		expect(manifest.packageVersion).toBe("2.0.3");
 		expect(manifest.totalModules).toBe(110);
-		expect(manifest.totalSymbols).toBe(664);
+		expect(manifest.totalSymbols).toBe(674);
 		expect(manifest.totalValues).toBe(375);
-		expect(manifest.totalTypes).toBe(289);
+		expect(manifest.totalTypes).toBe(299);
 		expect(manifest.totalCssExports).toBe(3);
 
 		// Every module must have valid documentation ownership
@@ -344,6 +344,11 @@ describe("public surface documentation ownership and freshness", () => {
 			"PopoverTitle",
 			"PopoverDescription",
 			"CommandShortcut",
+			"SidebarHeader",
+			"SidebarNav",
+			"SidebarPartition",
+			"SidebarFooter",
+			"ContentIsland",
 		]);
 
 		for (const key of keys) {

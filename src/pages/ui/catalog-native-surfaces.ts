@@ -182,6 +182,41 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		forwardsRef: false,
 		forwardsRestProps: true,
 	},
+	SidebarHeader: {
+		justification:
+			"Sidebar top branding container header; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	SidebarNav: {
+		justification:
+			"Sidebar navigation container element; inherits HTMLElement nav attributes without component-specific props.",
+		inheritedElement: "HTMLElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	SidebarPartition: {
+		justification:
+			"Sidebar section label paragraph partition; inherits HTMLParagraphElement attributes without component-specific props.",
+		inheritedElement: "HTMLParagraphElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	SidebarFooter: {
+		justification:
+			"Sidebar bottom pinned container footer; inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
+	ContentIsland: {
+		justification:
+			"Primary content card island container; owns data-basalt-surface-root and inherits HTMLDivElement attributes without component-specific props.",
+		inheritedElement: "HTMLDivElement",
+		forwardsRef: false,
+		forwardsRestProps: true,
+	},
 };
 
 export function formatNativeSurfaceStrategy(doc: NativeOnlySurfaceDocumentation): string {

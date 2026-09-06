@@ -659,8 +659,73 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "sidebar",
 				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarHeaderProps",
+				surface: "SidebarHeader",
+				allowEmpty: true,
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarSearchProps",
+				surface: "SidebarSearch",
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarNavProps",
+				surface: "SidebarNav",
+				allowEmpty: true,
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarPartitionProps",
+				surface: "SidebarPartition",
+				allowEmpty: true,
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
 				propsType: "SidebarItemProps",
 				surface: "SidebarItem",
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarIconItemProps",
+				surface: "SidebarIconItem",
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarGroupProps",
+				surface: "SidebarGroup",
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarFooterProps",
+				surface: "SidebarFooter",
+				allowEmpty: true,
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarUserProps",
+				surface: "SidebarUser",
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "ContentIslandProps",
+				surface: "ContentIsland",
+				allowEmpty: true,
+			},
+			{
+				slug: "sidebar",
+				sourceFile: "packages/basalt/src/components/sidebar.tsx",
+				propsType: "SidebarContextValue",
+				surface: "useSidebar()",
 			},
 			{
 				slug: "popover",
@@ -1451,7 +1516,7 @@ describe("catalog API generator contract", () => {
 				surface: "LinkProvider",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(218);
+		expect(CATALOG_API_TARGETS).toHaveLength(228);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1466,6 +1531,11 @@ describe("catalog API generator contract", () => {
 			"Radio.Legend",
 			"Switch.Legend",
 			"CommandShortcut",
+			"SidebarHeader",
+			"SidebarNav",
+			"SidebarPartition",
+			"SidebarFooter",
+			"ContentIsland",
 			"PopoverTitle",
 			"PopoverDescription",
 			"DialogHeader",
@@ -2650,7 +2720,21 @@ export interface WidgetProps {
 				"CommandItem",
 				"CommandShortcut",
 			],
-			sidebar: ["SidebarProvider", "Sidebar", "SidebarItem"],
+			sidebar: [
+				"SidebarProvider",
+				"Sidebar",
+				"SidebarHeader",
+				"SidebarSearch",
+				"SidebarNav",
+				"SidebarPartition",
+				"SidebarItem",
+				"SidebarIconItem",
+				"SidebarGroup",
+				"SidebarFooter",
+				"SidebarUser",
+				"ContentIsland",
+				"useSidebar()",
+			],
 			popover: [
 				"Popover",
 				"PopoverTrigger",
@@ -4591,7 +4675,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"827f0321b9e1b81da6226e4c815feb96591c463e17b6f61f19f42630e8ee048b",
+			"15ab84bd6cc810b170bca0dc7e11738f2e27d3b955f33058671607194e8d69d2",
 		);
 	}, 60_000);
 

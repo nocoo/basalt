@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 664,
+	"totalSymbols": 674,
 	"totalValues": 375,
-	"totalTypes": 289,
+	"totalTypes": 299,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -5453,6 +5453,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/sidebar"
 				},
 				{
+					"name": "SidebarContextValue",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
 					"name": "SidebarProviderProps",
 					"isValue": false,
 					"isType": true,
@@ -5469,7 +5477,79 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/sidebar"
 				},
 				{
+					"name": "SidebarHeaderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarSearchProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarNavProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarPartitionProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
 					"name": "SidebarItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarIconItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarGroupProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarFooterProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "SidebarUserProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/sidebar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/sidebar"
+				},
+				{
+					"name": "ContentIslandProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/sidebar",

@@ -307,7 +307,7 @@ export default function Example() {
 const sidebarDocs = extraDocs(
 	"Sidebar",
 	"sidebar",
-	"App chrome: L0 sidebar with an L1 content island that floats a corner shadow.",
+	"App chrome: L0 sidebar with an L1 content island that floats a corner shadow. SidebarSearch is a native button supporting button attributes; its shortcut is a visual label only and does not register keyboard shortcuts (defaults to ⌘K). SidebarIconItem requires caller-provided aria-label or aria-labelledby for accessible naming. SidebarGroup provides an uncontrolled collapsible section with defaultOpen and does not accept controlled open props or arbitrary DOM attributes. SidebarProvider.defaultWidth accepts an initial width clamped between 180px and 400px. useSidebar() must be called inside a SidebarProvider (throws an error if called outside) and returns the sidebar context state rather than component props.",
 	'(<div className="flex h-56 w-full overflow-hidden bg-basalt-background"><Sidebar className="h-full min-h-0 w-40"><SidebarItem active>Catalog</SidebarItem><SidebarItem>Settings</SidebarItem></Sidebar><div className="flex min-w-0 flex-1 flex-col p-2"><ContentIsland className="p-4">At a glance</ContentIsland></div></div>)',
 	undefined,
 	`import { ContentIsland, Sidebar, SidebarItem } from "@nocoo/basalt/components/sidebar";

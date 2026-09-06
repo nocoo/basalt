@@ -21,23 +21,60 @@ import { SkeletonLine } from "./skeleton-line";
 
 export type SidebarSide = "left" | "right";
 
-type SidebarContextValue = {
+export interface SidebarContextValue {
+	/**
+	 * Whether the sidebar is currently collapsed.
+	 */
 	collapsed: boolean;
+	/**
+	 * Callback to update the collapsed state.
+	 */
 	setCollapsed: (next: boolean) => void;
+	/**
+	 * Which edge the sidebar occupies.
+	 */
 	side: SidebarSide;
+	/**
+	 * Whether the sidebar is currently displaying a loading skeleton.
+	 */
 	loading: boolean;
+	/**
+	 * Whether the sidebar rail expands on pointer hover.
+	 */
 	peek: boolean;
+	/**
+	 * Whether the sidebar is actively hovering in peek preview mode.
+	 */
 	peeking: boolean;
+	/**
+	 * Callback to update the peek preview state.
+	 */
 	setPeeking: (next: boolean) => void;
+	/**
+	 * Whether the sidebar is rendering as a modal overlay drawer instead of in-flow layout chrome.
+	 */
 	overlay: boolean;
+	/**
+	 * Current expanded width in pixels, clamped between 180 and 400.
+	 */
 	width: number;
+	/**
+	 * Callback to update the sidebar width. Value is clamped between 180 and 400 pixels.
+	 */
 	setWidth: (next: number) => void;
+	/**
+	 * Reference to the last active element that held focus before opening the sidebar drawer.
+	 */
 	lastFocusRef: RefObject<HTMLElement | null>;
-};
+}
 
 const SidebarContext = createContext<SidebarContextValue | null>(null);
 
-export function useSidebar() {
+/**
+ * Accesses the sidebar context value. Must be used within a `SidebarProvider`; throws an error if called outside.
+ * Returns the active sidebar state and control callbacks.
+ */
+export function useSidebar(): SidebarContextValue {
 	const context = useContext(SidebarContext);
 	if (!context) {
 		throw new Error("useSidebar must be used within SidebarProvider");
@@ -80,7 +117,7 @@ export type SidebarProviderProps = {
 	 */
 	overlay?: boolean;
 	/**
-	 * Expanded width in pixels.
+	 * Initial expanded width in pixels, clamped between 180 and 400.
 	 * @default 260
 	 */
 	defaultWidth?: number;
@@ -336,8 +373,21 @@ export function Sidebar({
 	);
 }
 
-export function SidebarHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export interface SidebarHeaderProps extends HTMLAttributes<HTMLDivElement> {}
+
+export function SidebarHeader({ className, ...props }: SidebarHeaderProps) {
 	return <div className={cn("flex h-14 shrink-0 items-center px-3", className)} {...props} />;
+}
+
+/**
+ * Props for `SidebarSearch`. Renders a native `<button>` element and accepts all standard button HTML attributes and click handlers.
+ */
+export interface SidebarSearchProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+	/**
+	 * Shortcut key display label rendered inside the trailing kbd tag. Note: this is a visual label only and does not register a global keyboard shortcut.
+	 * @default "⌘K"
+	 */
+	shortcut?: string;
 }
 
 export function SidebarSearch({
@@ -345,7 +395,7 @@ export function SidebarSearch({
 	className,
 	children,
 	...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { shortcut?: string }) {
+}: SidebarSearchProps) {
 	return (
 		<button
 			type="button"
@@ -364,13 +414,17 @@ export function SidebarSearch({
 	);
 }
 
-export function SidebarNav({ className, ...props }: HTMLAttributes<HTMLElement>) {
+export interface SidebarNavProps extends HTMLAttributes<HTMLElement> {}
+
+export function SidebarNav({ className, ...props }: SidebarNavProps) {
 	return (
 		<nav className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto", className)} {...props} />
 	);
 }
 
-export function SidebarPartition({ className, ...props }: HTMLAttributes<HTMLParagraphElement>) {
+export interface SidebarPartitionProps extends HTMLAttributes<HTMLParagraphElement> {}
+
+export function SidebarPartition({ className, ...props }: SidebarPartitionProps) {
 	return (
 		<p
 			className={cn(
@@ -407,11 +461,18 @@ export function SidebarItem({ active = false, className, ...props }: SidebarItem
 	);
 }
 
-export function SidebarIconItem({
-	active = false,
-	className,
-	...props
-}: ButtonHTMLAttributes<HTMLButtonElement> & { active?: boolean }) {
+/**
+ * Props for `SidebarIconItem`. Accepts standard button HTML attributes. The caller is responsible for providing accessible labeling via `aria-label` or `aria-labelledby` as icon buttons do not automatically generate accessible names.
+ */
+export interface SidebarIconItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+	/**
+	 * Mark the icon button as active page item.
+	 * @default false
+	 */
+	active?: boolean;
+}
+
+export function SidebarIconItem({ active = false, className, ...props }: SidebarIconItemProps) {
 	return (
 		<button
 			type="button"
@@ -428,15 +489,26 @@ export function SidebarIconItem({
 	);
 }
 
-export function SidebarGroup({
-	label,
-	defaultOpen = true,
-	children,
-}: {
+/**
+ * Props for `SidebarGroup`. Uncontrolled collapsible section that accepts only the documented properties. It does not accept controlled open props or arbitrary DOM attributes.
+ */
+export interface SidebarGroupProps {
+	/**
+	 * Section label displayed on the group trigger.
+	 */
 	label: ReactNode;
+	/**
+	 * Uncontrolled initial open state for the collapsible group.
+	 * @default true
+	 */
 	defaultOpen?: boolean;
+	/**
+	 * Navigation items rendered inside the group.
+	 */
 	children: ReactNode;
-}) {
+}
+
+export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGroupProps) {
 	const [open, setOpen] = useState(defaultOpen);
 	return (
 		<Collapsible open={open} onOpenChange={setOpen}>
@@ -464,23 +536,36 @@ export function SidebarGroup({
 	);
 }
 
-export function SidebarFooter({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export interface SidebarFooterProps extends HTMLAttributes<HTMLDivElement> {}
+
+export function SidebarFooter({ className, ...props }: SidebarFooterProps) {
 	return <div className={cn("px-4 py-3", className)} {...props} />;
 }
 
-export function SidebarUser({
-	name,
-	email,
-	avatar,
-	action,
-	className,
-}: {
+export interface SidebarUserProps {
+	/**
+	 * User display name.
+	 */
 	name: ReactNode;
+	/**
+	 * Optional user email or secondary text.
+	 */
 	email?: ReactNode;
+	/**
+	 * Avatar element slot.
+	 */
 	avatar?: ReactNode;
+	/**
+	 * Trailing action slot (e.g. settings or logout button).
+	 */
 	action?: ReactNode;
+	/**
+	 * Additional CSS class name.
+	 */
 	className?: string;
-}) {
+}
+
+export function SidebarUser({ name, email, avatar, action, className }: SidebarUserProps) {
 	return (
 		<div className={cn("flex items-center gap-3", className)}>
 			{avatar}
@@ -493,7 +578,9 @@ export function SidebarUser({
 	);
 }
 
-export function ContentIsland({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export interface ContentIslandProps extends HTMLAttributes<HTMLDivElement> {}
+
+export function ContentIsland({ className, ...props }: ContentIslandProps) {
 	return (
 		<div
 			data-basalt-surface-root=""
