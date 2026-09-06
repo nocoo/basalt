@@ -23,6 +23,7 @@ import {
 	settleWithCleanup,
 	withChromiumPage,
 } from "./consumer-browser";
+import { assertConsumerCalendar } from "./consumer-calendar";
 import { assertConsumerConfirm } from "./consumer-confirm";
 import { assertConsumerDock } from "./consumer-dock";
 import { assertConsumerGeometry } from "./consumer-geometry";
@@ -1324,6 +1325,15 @@ console.log(JSON.stringify({
 						const faults = attachPageFaults(page);
 						await page.goto(sliderUrl, { waitUntil: "domcontentloaded" });
 						const res = await assertConsumerSlider(page);
+						assertNoPageFaults(faults);
+						return res;
+					});
+
+					const calendarUrl = `http://127.0.0.1:${port}/calendar.html`;
+					evidence.calendar = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(calendarUrl, { waitUntil: "domcontentloaded" });
+						const res = await assertConsumerCalendar(page);
 						assertNoPageFaults(faults);
 						return res;
 					});

@@ -50,6 +50,19 @@
 		"indentWidth": 2,
 		"lineWidth": 100
 	},
+	"overrides": [
+		{
+			"includes": ["packages/basalt/src/components/date-picker.tsx"],
+			"linter": {
+				"rules": {
+					"a11y": {
+						"noNoninteractiveElementToInteractiveRole": "off",
+						"useFocusableInteractive": "off"
+					}
+				}
+			}
+		}
+	],
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "double",

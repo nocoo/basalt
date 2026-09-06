@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 685,
+	"totalSymbols": 686,
 	"totalValues": 375,
-	"totalTypes": 310,
+	"totalTypes": 311,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -3358,6 +3358,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "DatePickerPreset",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/date-picker",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/date-picker"
+				},
+				{
+					"name": "DatePickerLabels",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/date-picker",

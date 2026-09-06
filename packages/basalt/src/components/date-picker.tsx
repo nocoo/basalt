@@ -72,6 +72,14 @@ function formatCivil(date: Civil, locale: string, options: Intl.DateTimeFormatOp
 	}).format(utcDate(date));
 }
 
+function shiftCivilMonthClamped(current: Civil, deltaMonths: number): Civil {
+	const total = current.y * 12 + (current.m - 1) + deltaMonths;
+	const targetY = Math.floor(total / 12);
+	const targetM = (((total % 12) + 12) % 12) + 1;
+	const maxD = new Date(Date.UTC(targetY, targetM, 0)).getUTCDate();
+	return { y: targetY, m: targetM, d: Math.min(current.d, maxD) };
+}
+
 function formatTriggerLabel({
 	mode,
 	selectedDate,
@@ -79,6 +87,7 @@ function formatTriggerLabel({
 	rangeTo,
 	locale,
 	formatDate,
+	placeholder = "Pick a date",
 }: {
 	mode: "single" | "range";
 	selectedDate: Civil | null;
@@ -86,6 +95,7 @@ function formatTriggerLabel({
 	rangeTo?: string;
 	locale: string;
 	formatDate?: (date: Date) => string;
+	placeholder?: string;
 }) {
 	function one(iso: string) {
 		const date = parseIso(iso);
@@ -96,7 +106,7 @@ function formatTriggerLabel({
 	}
 	if (mode === "range") {
 		if (!rangeFrom) {
-			return "Pick a date";
+			return placeholder;
 		}
 		if (!rangeTo) {
 			return `${one(rangeFrom)} – …`;
@@ -106,7 +116,7 @@ function formatTriggerLabel({
 	return selectedDate
 		? (formatDate?.(civilDate(selectedDate)) ??
 				formatCivil(selectedDate, locale, { dateStyle: "medium" }))
-		: "Pick a date";
+		: placeholder;
 }
 
 function compareCivil(left: Civil, right: Civil) {
@@ -149,6 +159,29 @@ export type DatePickerRange = { from: string; to?: string };
 export type DatePickerPreset = {
 	label: string;
 	value: string | { from: string; to: string };
+};
+
+export type DatePickerLabels = {
+	/**
+	 * Accessible label for the calendar popup container.
+	 * @default "Date calendar" (or derived from `aria-label`)
+	 */
+	calendar?: string;
+	/**
+	 * Accessible label for previous month button.
+	 * @default "Prev"
+	 */
+	previousMonth?: string;
+	/**
+	 * Accessible label for next month button.
+	 * @default "Next"
+	 */
+	nextMonth?: string;
+	/**
+	 * Fallback label for the trigger when no date is chosen.
+	 * @default "Pick a date"
+	 */
+	placeholder?: string;
 };
 
 export type DatePickerProps = Omit<
@@ -219,6 +252,10 @@ export type DatePickerProps = Omit<
 	 * Custom formatter for the trigger label.
 	 */
 	formatDate?: (date: Date) => string;
+	/**
+	 * Optional localized labels for calendar dialog, navigation, and trigger placeholder.
+	 */
+	labels?: DatePickerLabels;
 	/**
 	 * Native form field name.
 	 */
@@ -314,6 +351,7 @@ export function DatePicker({
 	"aria-label": ariaLabel,
 	"aria-describedby": ariaDescribedBy,
 	"aria-invalid": ariaInvalid,
+	labels,
 	...inputRest
 }: DatePickerProps) {
 	const {
@@ -341,6 +379,8 @@ export function DatePicker({
 	const triggerRef = useRef<HTMLButtonElement>(null);
 	const generatedErrorId = React.useId();
 	const errorId = id ? `${id}-error` : generatedErrorId;
+	const generatedMonthLiveId = React.useId();
+	const monthLiveId = id ? `${id}-month-live` : generatedMonthLiveId;
 
 	const selected = value ?? uncontrolled;
 	const selectedRange = rangeValue ?? uncontrolledRange;
@@ -528,7 +568,11 @@ export function DatePicker({
 		rangeTo,
 		locale,
 		formatDate,
+		placeholder: labels?.placeholder,
 	});
+	const calendarLabel = labels?.calendar ?? (ariaLabel ? `${ariaLabel} calendar` : "Date calendar");
+	const prevMonthLabel = labels?.previousMonth ?? "Prev";
+	const nextMonthLabel = labels?.nextMonth ?? "Next";
 
 	function selectable(iso: string) {
 		return dateSelectable(iso, min, max, isDisabledDate);
@@ -723,7 +767,7 @@ export function DatePicker({
 			<PopoverContent
 				arrow={false}
 				className="w-64 p-3"
-				aria-label={ariaLabel ? `${ariaLabel} calendar` : "Date calendar"}
+				aria-label={calendarLabel}
 				onOpenAutoFocus={(event) => {
 					event.preventDefault();
 					const iso = cursorIso || submitted || formatIso(todayCivil(timeZone));
@@ -771,7 +815,7 @@ export function DatePicker({
 						variant="ghost"
 						size="icon"
 						icon={<ChevronLeft />}
-						aria-label="Prev"
+						aria-label={prevMonthLabel}
 						className="size-8"
 						disabled={disabled || !previousMonth || previousMonth.y < 1}
 						onClick={() => {
@@ -782,7 +826,12 @@ export function DatePicker({
 							setMonth(previousMonth);
 						}}
 					/>
-					<span className="text-sm font-medium">
+					<span
+						id={monthLiveId}
+						aria-live="polite"
+						aria-atomic="true"
+						className="text-sm font-medium"
+					>
 						{formatCivil(month, locale, { month: "long", year: "numeric" })}
 					</span>
 					<Button
@@ -790,7 +839,7 @@ export function DatePicker({
 						variant="ghost"
 						size="icon"
 						icon={<ChevronRight />}
-						aria-label="Next"
+						aria-label={nextMonthLabel}
 						className="size-8"
 						disabled={disabled || !followingMonth}
 						onClick={() => {
@@ -802,8 +851,12 @@ export function DatePicker({
 						}}
 					/>
 				</div>
-				<div
-					className="grid grid-cols-7 gap-1 text-center"
+				{/* Biome override: WAI-ARIA APG Date Picker pattern uses a semantic table with role="grid" and role="gridcell" on cells while roving tabindex focuses the child button */}
+				<table
+					role="grid"
+					aria-labelledby={monthLiveId}
+					aria-multiselectable={mode === "range" ? "true" : undefined}
+					className="w-full border-collapse text-center"
 					onKeyDown={(event) => {
 						const current = days[focusIndex];
 						if (!current) {
@@ -848,6 +901,72 @@ export function DatePicker({
 							}
 							return;
 						}
+						if (event.key === "Home" || event.key === "End") {
+							event.preventDefault();
+							const dayOfWeek = utcDate(current).getUTCDay();
+							const col = (dayOfWeek - weekStartsOn + 7) % 7;
+							const deltaToEdge = event.key === "Home" ? -col : 6 - col;
+							let next: Civil | null = addDays(current, deltaToEdge);
+							const stepDir = event.key === "Home" ? 1 : -1;
+							for (
+								let step = 0;
+								next && next.y >= 1 && !selectable(formatIso(next)) && step < 7;
+								step += 1
+							) {
+								next = addDays(next, stepDir);
+							}
+							if (!next || next.y < 1 || !selectable(formatIso(next))) {
+								return;
+							}
+							if (next.y !== month.y || next.m !== month.m) {
+								pendingFocusIso.current = formatIso(next);
+								focusDay.current = true;
+								setMonth({ y: next.y, m: next.m, d: 1 });
+								return;
+							}
+							const index = days.findIndex((date) => isoOf(date) === formatIso(next));
+							if (index >= 0) {
+								setFocusIndex(index);
+								dayRefs.current[index]?.focus();
+							}
+							return;
+						}
+						if (event.key === "PageDown" || event.key === "PageUp") {
+							event.preventDefault();
+							const deltaMonths = event.shiftKey
+								? event.key === "PageDown"
+									? 12
+									: -12
+								: event.key === "PageDown"
+									? 1
+									: -1;
+							const target = shiftCivilMonthClamped(current, deltaMonths);
+							let next: Civil | null = target;
+							for (
+								let step = 0;
+								next && next.y >= 1 && !selectable(formatIso(next)) && step < 42;
+								step += 1
+							) {
+								next = addDays(next, 1);
+							}
+							if (!next || next.y < 1 || !selectable(formatIso(next))) {
+								next = target;
+								for (
+									let step = 0;
+									next && next.y >= 1 && !selectable(formatIso(next)) && step < 42;
+									step += 1
+								) {
+									next = addDays(next, -1);
+								}
+							}
+							if (!next || next.y < 1 || !selectable(formatIso(next))) {
+								return;
+							}
+							pendingFocusIso.current = formatIso(next);
+							focusDay.current = true;
+							setMonth({ y: next.y, m: next.m, d: 1 });
+							return;
+						}
 						if (event.key === "Enter" || event.key === " ") {
 							event.preventDefault();
 							const iso = formatIso(current);
@@ -857,72 +976,93 @@ export function DatePicker({
 						}
 					}}
 				>
-					{weekdayLabels.map((day, index) => (
-						<span
-							key={`${day}-${index}`}
-							className="flex h-8 items-center justify-center text-xs font-medium text-basalt-muted-foreground"
-						>
-							{day}
-						</span>
-					))}
-					{days.map((date, index) => {
-						if (!date) {
-							return (
-								<span
-									key={`empty-${index}`}
-									className="h-8"
-									ref={() => {
-										dayRefs.current[index] = null;
-									}}
-								/>
-							);
-						}
-						const iso = formatIso(date);
-						const inMonth = date.m === month.m;
-						const inRange = date.y >= 1 && selectable(iso);
-						const fromDate = rangeFrom ? parseIso(rangeFrom) : null;
-						const toDate = rangeTo ? parseIso(rangeTo) : null;
-						const thisDate = parseIso(iso);
-						const inSelectedRange = Boolean(
-							fromDate &&
-								toDate &&
-								thisDate &&
-								compareCivil(thisDate, fromDate) >= 0 &&
-								compareCivil(thisDate, toDate) <= 0,
-						);
-						const isRangeEdge = iso === rangeFrom || iso === rangeTo;
-						return (
-							<button
-								type="button"
-								key={iso}
-								ref={(node) => {
-									dayRefs.current[index] = node;
-								}}
-								tabIndex={index === focusIndex ? 0 : -1}
-								aria-label={iso}
-								aria-pressed={
-									mode === "range"
-										? iso === rangeFrom || iso === rangeTo
-										: Boolean(submitted) && iso === submitted
-								}
-								disabled={disabled || readOnly || !inRange}
-								className={cn(
-									CALENDAR_BUTTON,
-									"flex h-8 w-8 items-center justify-center rounded-basalt-md text-sm",
-									inMonth ? "text-basalt-foreground" : "text-basalt-muted-foreground",
-									inRange && "hover:bg-basalt-accent",
-									inSelectedRange && !isRangeEdge && "bg-basalt-accent",
-									inRange &&
-										(mode === "range" ? isRangeEdge : iso === submitted) &&
-										"bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary/90",
-								)}
-								onClick={() => inRange && commit(iso)}
-							>
-								{date.d}
-							</button>
-						);
-					})}
-				</div>
+					<thead>
+						<tr>
+							{weekdayLabels.map((day, index) => (
+								<th
+									key={`${day}-${index}`}
+									scope="col"
+									className="h-8 text-center text-xs font-medium text-basalt-muted-foreground"
+								>
+									{day}
+								</th>
+							))}
+						</tr>
+					</thead>
+					<tbody>
+						{Array.from({ length: 6 }, (_, weekIndex) => (
+							<tr key={`week-${weekIndex}`}>
+								{days.slice(weekIndex * 7, weekIndex * 7 + 7).map((date, colIndex) => {
+									const index = weekIndex * 7 + colIndex;
+									if (!date) {
+										return (
+											<td
+												key={`empty-${index}`}
+												role="gridcell"
+												className="h-8 p-0 text-center"
+												ref={() => {
+													dayRefs.current[index] = null;
+												}}
+											/>
+										);
+									}
+									const iso = formatIso(date);
+									const inMonth = date.m === month.m;
+									const inRange = date.y >= 1 && selectable(iso);
+									const fromDate = rangeFrom ? parseIso(rangeFrom) : null;
+									const toDate = rangeTo ? parseIso(rangeTo) : null;
+									const thisDate = parseIso(iso);
+									const inSelectedRange = Boolean(
+										fromDate &&
+											toDate &&
+											thisDate &&
+											compareCivil(thisDate, fromDate) >= 0 &&
+											compareCivil(thisDate, toDate) <= 0,
+									);
+									const isRangeEdge = iso === rangeFrom || iso === rangeTo;
+									const isSelected =
+										mode === "range"
+											? inSelectedRange || isRangeEdge
+											: Boolean(submitted) && iso === submitted;
+
+									return (
+										<td
+											key={iso}
+											role="gridcell"
+											aria-selected={isSelected ? "true" : undefined}
+											className="h-8 p-0 text-center"
+										>
+											<button
+												type="button"
+												ref={(node) => {
+													dayRefs.current[index] = node;
+												}}
+												tabIndex={index === focusIndex ? 0 : -1}
+												data-date={iso}
+												aria-label={iso}
+												aria-pressed={mode === "range" ? isRangeEdge : isSelected}
+												disabled={disabled || readOnly || !inRange}
+												className={cn(
+													CALENDAR_BUTTON,
+													"mx-auto flex h-8 w-8 items-center justify-center rounded-basalt-md text-sm",
+													inMonth ? "text-basalt-foreground" : "text-basalt-muted-foreground",
+													inRange && "hover:bg-basalt-accent",
+													inSelectedRange && !isRangeEdge && "bg-basalt-accent",
+													inRange &&
+														(mode === "range" ? isRangeEdge : isSelected) &&
+														"bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary/90",
+												)}
+												onClick={() => inRange && commit(iso)}
+											>
+												{date.d}
+											</button>
+										</td>
+									);
+								})}
+							</tr>
+						))}
+					</tbody>
+				</table>
 			</PopoverContent>
 		</Popover>
 	);

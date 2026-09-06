@@ -1276,4 +1276,129 @@ describe("DatePicker", () => {
 		expect(screen.getByTestId("parent-count")).toHaveTextContent("1");
 		expect(document.querySelector('input[name="stay"]')).toHaveValue("2026-09-02/2026-09-04");
 	});
+
+	it("renders semantic table grid with row, columnheader, and gridcell roles", () => {
+		render(<DatePicker defaultValue="2026-09-09" weekStartsOn={1} aria-label="Appointment" />);
+		const trigger = screen.getByRole("button", { name: /Appointment/ });
+		fireEvent.click(trigger);
+
+		const grid = screen.getByRole("grid");
+		expect(grid).toBeInTheDocument();
+		const rows = screen.getAllByRole("row");
+		expect(rows.length).toBeGreaterThanOrEqual(6);
+		const headers = screen.getAllByRole("columnheader");
+		expect(headers).toHaveLength(7);
+		const cells = screen.getAllByRole("gridcell");
+		expect(cells.length).toBeGreaterThanOrEqual(28);
+
+		const rovingTabButtons = grid.querySelectorAll('button[tabindex="0"]');
+		expect(rovingTabButtons).toHaveLength(1);
+		expect(rovingTabButtons[0]).toHaveAttribute("data-date", "2026-09-09");
+	});
+
+	it("supports Home and End keyboard navigation following weekStartsOn", () => {
+		render(<DatePicker defaultValue="2026-09-09" weekStartsOn={1} aria-label="Appointment" />);
+		const trigger = screen.getByRole("button", { name: /Appointment/ });
+		fireEvent.click(trigger);
+
+		const active = screen.getByRole("button", { name: "2026-09-09" });
+		fireEvent.keyDown(active, { key: "Home" });
+		expect(screen.getByRole("button", { name: "2026-09-07" })).toHaveAttribute("tabindex", "0");
+
+		fireEvent.keyDown(screen.getByRole("button", { name: "2026-09-07" }), { key: "End" });
+		expect(screen.getByRole("button", { name: "2026-09-13" })).toHaveAttribute("tabindex", "0");
+	});
+
+	it("supports PageUp and PageDown month clamping and Shift year jump", () => {
+		render(<DatePicker defaultValue="2024-01-31" aria-label="Clamped" />);
+		const trigger = screen.getByRole("button", { name: /Clamped/ });
+		fireEvent.click(trigger);
+
+		// 2024-01-31 + PageDown -> 2024-02-29
+		const btnJan = screen.getByRole("button", { name: "2024-01-31" });
+		fireEvent.keyDown(btnJan, { key: "PageDown" });
+		expect(screen.getByRole("button", { name: "2024-02-29" })).toHaveAttribute("tabindex", "0");
+
+		// 2026-09-09 + Shift+PageDown -> 2027-09-09
+		const { unmount } = render(<DatePicker defaultValue="2026-09-09" aria-label="YearJump" />);
+		const trigger2 = screen.getByRole("button", { name: /YearJump/ });
+		fireEvent.click(trigger2);
+		const btnSep = screen.getByRole("button", { name: "2026-09-09" });
+		fireEvent.keyDown(btnSep, { key: "PageDown", shiftKey: true });
+		expect(screen.getByRole("button", { name: "2027-09-09" })).toHaveAttribute("tabindex", "0");
+		unmount();
+	});
+
+	it("respects custom labels for calendar, prev/next buttons, and placeholder", () => {
+		render(
+			<DatePicker
+				labels={{
+					calendar: "Custom calendar title",
+					previousMonth: "Mois précédent",
+					nextMonth: "Mois suivant",
+					placeholder: "Sélectionnez une date",
+				}}
+			/>,
+		);
+		const trigger = screen.getByRole("button");
+		expect(trigger).toHaveTextContent("Sélectionnez une date");
+		fireEvent.click(trigger);
+
+		expect(screen.getByRole("dialog", { name: "Custom calendar title" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Mois précédent" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Mois suivant" })).toBeInTheDocument();
+	});
+
+	it("handles partial and complete range selection states correctly", () => {
+		// 1. Partial range: only from is set
+		const { rerender } = render(
+			<DatePicker
+				mode="range"
+				rangeValue={{ from: "2026-09-10", to: undefined }}
+				aria-label="PartialStay"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /PartialStay/ }));
+
+		const cell10 = screen.getByRole("button", { name: "2026-09-10" }).closest("td");
+		const button10 = screen.getByRole("button", { name: "2026-09-10" });
+		expect(cell10).toHaveAttribute("aria-selected", "true");
+		expect(button10).toHaveAttribute("aria-pressed", "true");
+		expect(button10.className).toContain("bg-basalt-primary");
+
+		const cell11 = screen.getByRole("button", { name: "2026-09-11" }).closest("td");
+		const button11 = screen.getByRole("button", { name: "2026-09-11" });
+		expect(cell11).not.toHaveAttribute("aria-selected");
+		expect(button11).toHaveAttribute("aria-pressed", "false");
+		expect(button11.className.split(/\s+/)).not.toContain("bg-basalt-primary");
+		expect(button11.className.split(/\s+/)).not.toContain("bg-basalt-accent");
+
+		// 2. Complete range: start, middle, end
+		rerender(
+			<DatePicker
+				mode="range"
+				rangeValue={{ from: "2026-09-10", to: "2026-09-12" }}
+				aria-label="PartialStay"
+			/>,
+		);
+
+		const cell10Complete = screen.getByRole("button", { name: "2026-09-10" }).closest("td");
+		const btn10 = screen.getByRole("button", { name: "2026-09-10" });
+		expect(cell10Complete).toHaveAttribute("aria-selected", "true");
+		expect(btn10).toHaveAttribute("aria-pressed", "true");
+		expect(btn10.className.split(/\s+/)).toContain("bg-basalt-primary");
+
+		const cell11Complete = screen.getByRole("button", { name: "2026-09-11" }).closest("td");
+		const btn11 = screen.getByRole("button", { name: "2026-09-11" });
+		expect(cell11Complete).toHaveAttribute("aria-selected", "true");
+		expect(btn11).toHaveAttribute("aria-pressed", "false");
+		expect(btn11.className.split(/\s+/)).toContain("bg-basalt-accent");
+		expect(btn11.className.split(/\s+/)).not.toContain("bg-basalt-primary");
+
+		const cell12Complete = screen.getByRole("button", { name: "2026-09-12" }).closest("td");
+		const btn12 = screen.getByRole("button", { name: "2026-09-12" });
+		expect(cell12Complete).toHaveAttribute("aria-selected", "true");
+		expect(btn12).toHaveAttribute("aria-pressed", "true");
+		expect(btn12.className.split(/\s+/)).toContain("bg-basalt-primary");
+	});
 });

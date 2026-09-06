@@ -15,6 +15,7 @@ export default defineConfig({
 				portal: resolve(__dirname, "portal.html"),
 				toast: resolve(__dirname, "toast.html"),
 				slider: resolve(__dirname, "slider.html"),
+				calendar: resolve(__dirname, "calendar.html"),
 			},
 		},
 	},

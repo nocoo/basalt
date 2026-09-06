@@ -5,6 +5,7 @@ const DATE_PICKER_SCENARIO_META = [
 	{ key: "disabled-dates", title: "Disabled dates" },
 	{ key: "presets", title: "Presets" },
 	{ key: "range", title: "Range" },
+	{ key: "localized", title: "Localized" },
 ] as const;
 
 export const DATE_PICKER_EXAMPLES = loadModuleScenarios({

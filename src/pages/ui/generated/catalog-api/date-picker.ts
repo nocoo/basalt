@@ -87,6 +87,12 @@ export const API = [
 				description: "Custom formatter for the trigger label.",
 			},
 			{
+				name: "labels",
+				type: "DatePickerLabels",
+				required: false,
+				description: "Optional localized labels for calendar dialog, navigation, and trigger placeholder.",
+			},
+			{
 				name: "name",
 				type: "string",
 				required: false,

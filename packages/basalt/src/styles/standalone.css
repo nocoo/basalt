@@ -523,6 +523,9 @@
   .mx-1\.5 {
     margin-inline: calc(var(--spacing) * 1.5);
   }
+  .mx-auto {
+    margin-inline: auto;
+  }
   .my-2 {
     margin-block: calc(var(--spacing) * 2);
   }
@@ -828,6 +831,9 @@
   }
   .caption-bottom {
     caption-side: bottom;
+  }
+  .border-collapse {
+    border-collapse: collapse;
   }
   .border-separate {
     border-collapse: separate;

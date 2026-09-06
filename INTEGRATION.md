@@ -947,6 +947,38 @@ export function ControlledDatePickerField() {
 }
 ```
 
+#### Keyboard Navigation and Labels
+
+The calendar follows the WAI-ARIA grid pattern with a roving tab index:
+
+- **Arrow keys (`Left` / `Right` / `Up` / `Down`)**: Move focus by day (±1) or week (±7), skipping disabled dates.
+- **`Home` / `End`**: Jump to the start or end of the current row based on `weekStartsOn` (e.g. `0` for Sunday, `1` for Monday).
+- **`PageDown` / `PageUp`**: Move by one month, clamping to valid month bounds (e.g. Jan 31 → Feb 28 or 29).
+- **`Shift + PageDown` / `Shift + PageUp`**: Jump by one full year, maintaining month boundary clamping.
+- **`Enter` / `Space`**: Select the focused day.
+- **`Escape`**: Dismiss the calendar popover and return focus to the trigger button.
+
+For internationalization, `locale` formats month titles and trigger values, while `labels` customizes accessible strings for navigation and placeholders:
+
+```tsx compile:integration-datepicker-labels
+import { DatePicker } from "@nocoo/basalt/components/date-picker";
+
+export function LocalizedDatePickerExample() {
+  return (
+    <DatePicker
+      locale="fr-FR"
+      weekStartsOn={1}
+      labels={{
+        calendar: "Calendrier des dates",
+        previousMonth: "Mois précédent",
+        nextMonth: "Mois suivant",
+        placeholder: "Sélectionnez une date",
+      }}
+    />
+  );
+}
+```
+
 ### React Hook Form Adapter
 
 When building forms with form libraries like `react-hook-form`, wrap composite controls like `DatePicker` using `Controller`. For native controls like `Input`, register them directly with validation rules:

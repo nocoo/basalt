@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 685,
+	"totalSymbols": 686,
 	"totalValues": 375,
-	"totalTypes": 310,
+	"totalTypes": 311,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 99,
 	"modules": [
@@ -9784,7 +9784,7 @@
 			"importPath": "@nocoo/basalt/components/date-picker",
 			"subpath": "./components/date-picker",
 			"sourceFile": "packages/basalt/src/components/date-picker.tsx",
-			"sourceHash": "48b44c0d49af33a8",
+			"sourceHash": "264c5cbc6ce6709b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -9812,6 +9812,14 @@
 				},
 				{
 					"name": "DatePickerPreset",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/date-picker",
+					"packageDoc": "ai/registry.json#date-picker",
+					"originModule": "@nocoo/basalt/components/date-picker"
+				},
+				{
+					"name": "DatePickerLabels",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/date-picker",
@@ -9919,6 +9927,12 @@
 									"type": "(date: Date) => string",
 									"required": false,
 									"description": "Custom formatter for the trigger label."
+								},
+								{
+									"name": "labels",
+									"type": "DatePickerLabels",
+									"required": false,
+									"description": "Optional localized labels for calendar dialog, navigation, and trigger placeholder."
 								},
 								{
 									"name": "name",
@@ -10039,6 +10053,12 @@
 							"type": "(date: Date) => string",
 							"required": false,
 							"description": "Custom formatter for the trigger label."
+						},
+						{
+							"name": "labels",
+							"type": "DatePickerLabels",
+							"required": false,
+							"description": "Optional localized labels for calendar dialog, navigation, and trigger placeholder."
 						},
 						{
 							"name": "name",
@@ -24202,7 +24222,7 @@
 			"exportName": "DatePicker",
 			"importPath": "@nocoo/basalt/components/date-picker",
 			"sourceFile": "packages/basalt/src/components/date-picker.tsx",
-			"sourceHash": "48b44c0d49af33a8",
+			"sourceHash": "264c5cbc6ce6709b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#date-picker",
@@ -24290,6 +24310,12 @@
 							"type": "(date: Date) => string",
 							"required": false,
 							"description": "Custom formatter for the trigger label."
+						},
+						{
+							"name": "labels",
+							"type": "DatePickerLabels",
+							"required": false,
+							"description": "Optional localized labels for calendar dialog, navigation, and trigger placeholder."
 						},
 						{
 							"name": "name",

@@ -264,6 +264,7 @@ describe("forms catalog content family", () => {
 			{ id: "date-picker-disabled-dates", title: "Disabled dates" },
 			{ id: "date-picker-presets", title: "Presets" },
 			{ id: "date-picker-range", title: "Range" },
+			{ id: "date-picker-localized", title: "Localized" },
 		]);
 		expect(forms.slider?.examples.map((example) => example.id)).toEqual([
 			"slider-default",

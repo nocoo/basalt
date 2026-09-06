@@ -81,6 +81,7 @@ describe("form selection scenario truth", () => {
 			"date-picker-disabled-dates",
 			"date-picker-presets",
 			"date-picker-range",
+			"date-picker-localized",
 		]);
 		expect(UI_EXAMPLES.input).toBe(INPUT_EXAMPLES);
 		expect(UI_EXAMPLES.input?.map((item) => item.id)).toEqual([
