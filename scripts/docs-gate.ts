@@ -35,7 +35,43 @@ export const REQUIRED_DOC_FILES = [
 	"README.md",
 	"packages/basalt/README.md",
 	"INTEGRATION.md",
+	"packages/basalt/ai/USAGE.md",
+	"packages/basalt/ai/COMPATIBILITY.md",
+	"packages/basalt/ai/INTEGRATION.md",
 ] as const;
+
+export function discoverDocumentationFiles(repoRoot = process.cwd()): string[] {
+	const files = new Set<string>();
+
+	// 1. Mandatory core doc files (must exist)
+	for (const req of REQUIRED_DOC_FILES) {
+		const absPath = join(repoRoot, req);
+		if (!existsSync(absPath)) {
+			throw new Error(`required documentation file missing: ${req}`);
+		}
+		files.add(req);
+	}
+
+	// 2. Automatically discover all Markdown files under packages/basalt/ai recursively
+	const aiDir = join(repoRoot, "packages/basalt/ai");
+	if (existsSync(aiDir)) {
+		const walkDir = (dir: string, baseRel: string) => {
+			const entries = readdirSync(dir, { withFileTypes: true });
+			for (const entry of entries) {
+				const fullPath = join(dir, entry.name);
+				const relPath = join(baseRel, entry.name);
+				if (entry.isDirectory()) {
+					walkDir(fullPath, relPath);
+				} else if (entry.isFile() && entry.name.endsWith(".md")) {
+					files.add(relPath);
+				}
+			}
+		};
+		walkDir(aiDir, "packages/basalt/ai");
+	}
+
+	return Array.from(files).sort();
+}
 
 /**
  * Scans markdown files by line looking for opening (```lang ...) and closing (```) fences.
@@ -48,13 +84,10 @@ export const REQUIRED_DOC_FILES = [
 export function scanDocFences(repoRoot = process.cwd()): ScannedDocFence[] {
 	const allFences: ScannedDocFence[] = [];
 	const seenIds = new Set<string>();
+	const filesToScan = discoverDocumentationFiles(repoRoot);
 
-	for (const relFile of REQUIRED_DOC_FILES) {
+	for (const relFile of filesToScan) {
 		const absPath = join(repoRoot, relFile);
-		if (!existsSync(absPath)) {
-			throw new Error(`required documentation file missing: ${relFile}`);
-		}
-
 		const content = readFileSync(absPath, "utf8");
 		const lines = content.split("\n");
 
@@ -97,17 +130,24 @@ export function scanDocFences(repoRoot = process.cwd()): ScannedDocFence[] {
 							);
 						}
 
-						if (seenIds.has(id)) {
+						// Namespaced unique ID by relative file path to prevent collision across mirrored docs (e.g. INTEGRATION.md vs packages/basalt/ai/INTEGRATION.md)
+						const uniqueFenceKey = `${relFile}:${id}`;
+						if (seenIds.has(uniqueFenceKey)) {
 							throw new Error(`duplicate code block id '${id}' found in ${relFile}:${startLine}`);
 						}
-						seenIds.add(id);
+						seenIds.add(uniqueFenceKey);
+
+						// Also compute a collision-safe module ID for extracted compilable modules
+						// by stripping non-alphanumeric chars from relFile prefix
+						const filePrefix = relFile.replace(/[^a-zA-Z0-9]/g, "-").replace(/^-+|-+$/g, "");
+						const namespacedId = `${filePrefix}-${id}`;
 
 						allFences.push({
 							file: relFile,
 							line: startLine,
 							lang,
 							kind,
-							id,
+							id: namespacedId,
 							reason,
 							rawHeader,
 							code: codeLines.join("\n"),
@@ -429,6 +469,8 @@ export async function runDocsGate(repoRoot = process.cwd()) {
 			recharts: "3.10.1",
 			"react-day-picker": "10.0.1",
 			"@tanstack/react-table": "9.1.2",
+			"react-hook-form": "7.71.1",
+			"react-router": "7.13.0",
 		};
 		writeFileSync(pkgJsonPath, `${JSON.stringify(pkgJson, null, "\t")}\n`);
 

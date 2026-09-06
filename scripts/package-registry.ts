@@ -451,7 +451,7 @@ It contains:
 
 Basalt distributes complete TypeScript source code embedded directly inside the published package artifacts:
 - **Compiled Modules**: Full TypeScript source code is embedded in the \`sourcesContent\` field of individual sourcemaps under \`node_modules/@nocoo/basalt/dist/<subpath>.js.map\`.
-- **Pure Re-Export Modules**: Files without emitted JS code (such as root barrel and pure type re-exports) are preserved verbatim with integrity hashes in \`node_modules/@nocoo/basalt/ai/sources.json\`.
+- **Pure Re-Export Modules**: Modules without an independent sourcemap (such as pure re-export modules) are preserved verbatim with integrity hashes in \`node_modules/@nocoo/basalt/ai/sources.json\`. The root entrypoint \`@nocoo/basalt\` still emits full JavaScript exports in \`dist/index.js\`.
 
 Inspect \`ai/registry.json\` or the component's catalog metadata to identify the exact package read location and expected SHA-256 integrity hash for each module. Do not attempt to read from unbundled repository source paths or unreleased remote git tags.
 
@@ -462,7 +462,7 @@ Inspect \`ai/registry.json\` or the component's catalog metadata to identify the
 ### Root Import vs. Granular Subpaths
 Basalt supports both lightweight root imports and tree-shakeable granular subpaths:
 
-\`\`\`tsx
+\`\`\`tsx compile:usage-import-conventions
 // Root import for standard components
 import { Button, Input, LayerCard, Dialog, Toaster, toast } from "@nocoo/basalt";
 
@@ -470,6 +470,15 @@ import { Button, Input, LayerCard, Dialog, Toaster, toast } from "@nocoo/basalt"
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { DataTable } from "@nocoo/basalt/components/data-table";
 import { Sparkline } from "@nocoo/basalt/charts/sparkline";
+
+export function ImportConventionsDemo() {
+  return (
+    <div>
+      <Button variant="default">Root Button</Button>
+      <DatePicker aria-label="Target Date" />
+    </div>
+  );
+}
 \`\`\`
 
 ### Optional Peer Dependency Rules
@@ -496,7 +505,8 @@ import "@nocoo/basalt/styles/standalone";
 ## 5. Toast Notification Architecture
 
 Mount a single \`<Toaster />\` globally at the root of your application (without an id):
-\`\`\`tsx
+\`\`\`tsx compile:usage-toast-architecture
+import type React from "react";
 import { Toaster, toast, Button } from "@nocoo/basalt";
 
 export function App() {

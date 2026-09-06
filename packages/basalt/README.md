@@ -5,7 +5,7 @@ Matte design system component library. ESM, granular exports, Tailwind CSS v4 or
 - **Package:** `@nocoo/basalt`
 - **Documentation & Showcase:** [https://basalt.hexly.ai](https://basalt.hexly.ai)
 - **Repository:** [https://github.com/nocoo/basalt](https://github.com/nocoo/basalt)
-- **Complete Application Guide:** [INTEGRATION.md](https://github.com/nocoo/basalt/blob/main/INTEGRATION.md)
+- **Complete Application Guide:** [ai/INTEGRATION.md](ai/INTEGRATION.md)
 - **Compatibility & Version Policy:** [ai/COMPATIBILITY.md](ai/COMPATIBILITY.md)
 
 ---
@@ -145,6 +145,8 @@ Basalt follows strict [Semantic Versioning (SemVer)](https://semver.org/):
 - **MAJOR** (`3.0.0`): Breaking changes to public component signatures, DOM/ARIA structures, or removal of deprecated export paths.
 
 All 110 exported entrypoints from `v2.0.3` are locked as a permanent compatibility baseline. See [ai/COMPATIBILITY.md](ai/COMPATIBILITY.md) for full details.
+
+For comprehensive architectural recipes, form adapters, and framework migration instructions, consult the complete package guide at [ai/INTEGRATION.md](ai/INTEGRATION.md).
 
 ## License
 

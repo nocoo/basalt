@@ -6,6 +6,7 @@ import {
 	computeDocModuleFilename,
 	computeScenarioModuleFilename,
 	computeUsageModuleFilename,
+	discoverDocumentationFiles,
 	extractCompilableDocModules,
 	generateCatalogInstallationSnippets,
 	loadCatalogModules,
@@ -22,18 +23,23 @@ describe("documentation tarball compilation gate", () => {
 		const compileFences = fences.filter((f) => f.kind === "compile");
 		const excerptFences = fences.filter((f) => f.kind === "excerpt");
 
-		expect(compileFences.length).toBe(8);
+		expect(compileFences.length).toBeGreaterThanOrEqual(13);
 		expect(excerptFences.length).toBeGreaterThanOrEqual(10);
 
 		const compileIds = compileFences.map((f) => f.id);
-		expect(compileIds).toContain("readme-quickstart");
-		expect(compileIds).toContain("pkg-readme-root-import");
-		expect(compileIds).toContain("pkg-readme-granular-import");
-		expect(compileIds).toContain("pkg-readme-client-app");
-		expect(compileIds).toContain("integration-projects-page-basic");
-		expect(compileIds).toContain("integration-projects-page-full");
-		expect(compileIds).toContain("integration-profile-form");
-		expect(compileIds).toContain("integration-controlled-date-picker");
+		expect(compileIds).toContain("README-md-readme-quickstart");
+		expect(compileIds).toContain("packages-basalt-README-md-pkg-readme-root-import");
+		expect(compileIds).toContain("packages-basalt-README-md-pkg-readme-granular-import");
+		expect(compileIds).toContain("packages-basalt-README-md-pkg-readme-client-app");
+		expect(compileIds).toContain("INTEGRATION-md-integration-projects-page-basic");
+		expect(compileIds).toContain("INTEGRATION-md-integration-projects-page-full");
+		expect(compileIds).toContain("INTEGRATION-md-integration-profile-form");
+		expect(compileIds).toContain("INTEGRATION-md-integration-controlled-date-picker");
+		expect(compileIds).toContain("INTEGRATION-md-integration-rhf-controller");
+		expect(compileIds).toContain("INTEGRATION-md-integration-vite-standalone");
+		expect(compileIds).toContain("INTEGRATION-md-integration-nextjs-client-boundary");
+		expect(compileIds).toContain("INTEGRATION-md-integration-router-adapter");
+		expect(compileIds).toContain("INTEGRATION-md-integration-native-form-reset");
 
 		for (const fence of compileFences) {
 			expect(fence.code.length).toBeGreaterThan(0);
@@ -42,18 +48,27 @@ describe("documentation tarball compilation gate", () => {
 
 	it("extracts exact verbatim bytes for compilable documentation modules", () => {
 		const modules = extractCompilableDocModules();
-		expect(modules.length).toBe(8);
+		expect(modules.length).toBeGreaterThanOrEqual(13);
 
-		const projectsBasic = modules.find((m) => m.id === "integration-projects-page-basic");
+		const projectsBasic = modules.find(
+			(m) => m.id === "INTEGRATION-md-integration-projects-page-basic",
+		);
 		expect(projectsBasic).toBeDefined();
 		expect(projectsBasic?.code).toContain("export default function ProjectsPage");
 		expect(projectsBasic?.code).toContain(
 			'import { PageHeader } from "@nocoo/basalt/components/page-header"',
 		);
 
-		const projectsFull = modules.find((m) => m.id === "integration-projects-page-full");
+		const projectsFull = modules.find(
+			(m) => m.id === "INTEGRATION-md-integration-projects-page-full",
+		);
 		expect(projectsFull).toBeDefined();
 		expect(projectsFull?.code).toContain('SectionRule title="Overview"');
+
+		const rhfModule = modules.find((m) => m.id === "INTEGRATION-md-integration-rhf-controller");
+		expect(rhfModule).toBeDefined();
+		expect(rhfModule?.code).toContain("useForm<ProjectFormValues>");
+		expect(rhfModule?.code).toContain("Controller");
 	});
 
 	it("generates installation snippets for all ready catalog entries using strict metadata", () => {
@@ -82,11 +97,14 @@ describe("documentation tarball compilation gate", () => {
 
 	it("fails fast if a tsx block is unclassified or duplicate IDs exist", () => {
 		const tempFixtureDir = join(tmpdir(), `basalt-docs-gate-dup-${Date.now()}`);
-		mkdirSync(join(tempFixtureDir, "packages/basalt"), { recursive: true });
+		mkdirSync(join(tempFixtureDir, "packages/basalt/ai"), { recursive: true });
 
 		writeFileSync(join(tempFixtureDir, "README.md"), "```tsx\nexport const x = 1;\n```");
 		writeFileSync(join(tempFixtureDir, "packages/basalt/README.md"), "# empty");
 		writeFileSync(join(tempFixtureDir, "INTEGRATION.md"), "# empty");
+		writeFileSync(join(tempFixtureDir, "packages/basalt/ai/USAGE.md"), "# empty");
+		writeFileSync(join(tempFixtureDir, "packages/basalt/ai/COMPATIBILITY.md"), "# empty");
+		writeFileSync(join(tempFixtureDir, "packages/basalt/ai/INTEGRATION.md"), "# empty");
 
 		try {
 			expect(() => scanDocFences(tempFixtureDir)).toThrow(/unclassified tsx code block/);
@@ -96,6 +114,64 @@ describe("documentation tarball compilation gate", () => {
 				"```tsx compile:dup-id\nexport const a = 1;\n```\n```tsx compile:dup-id\nexport const b = 2;\n```",
 			);
 			expect(() => scanDocFences(tempFixtureDir)).toThrow(/duplicate code block id 'dup-id'/);
+		} finally {
+			rmSync(tempFixtureDir, { recursive: true, force: true });
+		}
+	});
+
+	it("automatically discovers all markdown files in packages/basalt/ai including newly added files", () => {
+		const tempFixtureDir = join(tmpdir(), `basalt-docs-gate-discover-${Date.now()}`);
+		const aiDir = join(tempFixtureDir, "packages/basalt/ai");
+		mkdirSync(aiDir, { recursive: true });
+
+		// Seed all required docs
+		writeFileSync(join(tempFixtureDir, "README.md"), "# Root");
+		writeFileSync(join(tempFixtureDir, "packages/basalt/README.md"), "# Package");
+		writeFileSync(join(tempFixtureDir, "INTEGRATION.md"), "# Integration");
+		writeFileSync(join(aiDir, "USAGE.md"), "# Usage");
+		writeFileSync(join(aiDir, "COMPATIBILITY.md"), "# Compatibility");
+		writeFileSync(join(aiDir, "INTEGRATION.md"), "# Integration mirror");
+
+		// Add an arbitrary newly created in-package ai Markdown file
+		const customDocRel = "packages/basalt/ai/CUSTOM-RECIPES.md";
+		writeFileSync(
+			join(tempFixtureDir, customDocRel),
+			"# Custom Recipes\n```tsx compile:custom-recipe\nexport const x = 42;\n```",
+		);
+
+		// Add a nested in-package ai Markdown file (e.g. packages/basalt/ai/recipes/nested-guide.md)
+		const nestedDir = join(aiDir, "recipes");
+		mkdirSync(nestedDir, { recursive: true });
+		const nestedDocRel = "packages/basalt/ai/recipes/nested-guide.md";
+		writeFileSync(
+			join(tempFixtureDir, nestedDocRel),
+			"# Nested Recipes\n```tsx compile:nested-recipe\nexport const nestedVal = 100;\n```",
+		);
+
+		try {
+			const discovered = discoverDocumentationFiles(tempFixtureDir);
+			expect(discovered).toContain(customDocRel);
+			expect(discovered).toContain(nestedDocRel);
+			expect(discovered.length).toBe(8);
+
+			// Scanning fences picks up both top-level and nested ai doc files
+			const fences = scanDocFences(tempFixtureDir);
+			const customFence = fences.find((f) => f.file === customDocRel);
+			expect(customFence).toBeDefined();
+			expect(customFence?.id).toBe("packages-basalt-ai-CUSTOM-RECIPES-md-custom-recipe");
+
+			const nestedFence = fences.find((f) => f.file === nestedDocRel);
+			expect(nestedFence).toBeDefined();
+			expect(nestedFence?.id).toBe("packages-basalt-ai-recipes-nested-guide-md-nested-recipe");
+
+			// Negative proof: If the nested file has an unclassified tsx fence, scanDocFences must fail
+			writeFileSync(
+				join(tempFixtureDir, nestedDocRel),
+				"# Nested Recipes\n```tsx\nexport const broken = true;\n```",
+			);
+			expect(() => scanDocFences(tempFixtureDir)).toThrow(
+				/unclassified tsx code block in packages\/basalt\/ai\/recipes\/nested-guide\.md/,
+			);
 		} finally {
 			rmSync(tempFixtureDir, { recursive: true, force: true });
 		}

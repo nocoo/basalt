@@ -61,7 +61,27 @@ Live: `/login`, shell, first page `/data`, surfaces `/layout`. Catalog: `/ui/pag
 npm i @nocoo/basalt lucide-react
 ```
 
-Tailwind v4 only. In the app stylesheet, this order is required. The `@source` path is relative to **this CSS file** and must hit `node_modules/@nocoo/basalt/dist`:
+### Option A: Vite + Tailwind CSS v4 Setup
+
+Install Tailwind CSS v4 and the official Vite plugin:
+
+```bash
+npm i -D tailwindcss @tailwindcss/vite
+```
+
+Configure `vite.config.ts`:
+
+```ts
+import tailwindcss from "@tailwindcss/vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [tailwindcss(), react()],
+});
+```
+
+In the app stylesheet (e.g. `src/index.css`), the exact 3-line import order is required. The `@source` path is relative to **this CSS file** and must scan `node_modules/@nocoo/basalt/dist`:
 
 ```css
 @source "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
@@ -82,7 +102,17 @@ Tailwind v4 only. In the app stylesheet, this order is required. The `@source` p
 
 Basalt registers `--basalt-*` tokens and `--color-basalt-*` utilities before Tailwind runs. Use those utilities. Do not add a second color system (`background`, `foreground`, `sidebar`, …) and do not re-declare `--basalt-*`.
 
-Without Tailwind, import `@nocoo/basalt/styles/standalone` instead. Standalone has no Preflight; still set `html, body, #root { height: 100% }`.
+### Option B: Standalone CSS (No Tailwind)
+
+Without Tailwind, import `@nocoo/basalt/styles/standalone` in your application entrypoint instead:
+
+```ts
+import "@nocoo/basalt/styles/standalone";
+```
+
+Standalone packages design tokens, control surface utilities, and animations without injecting global resets or preflight; still set `html, body, #root { height: 100% }`.
+
+### Theme Pre-Hydration
 
 Apply theme on the document **before** React paints:
 
@@ -917,10 +947,114 @@ export function ControlledDatePickerField() {
 }
 ```
 
+### React Hook Form Adapter
+
+When building forms with form libraries like `react-hook-form`, wrap composite controls like `DatePicker` using `Controller`. For native controls like `Input`, register them directly with validation rules:
+
+```tsx compile:integration-rhf-controller
+import React, { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { Button, Field, Input } from "@nocoo/basalt";
+import { DatePicker } from "@nocoo/basalt/components/date-picker";
+
+interface ProjectFormValues {
+  projectName: string;
+  startDate: string;
+}
+
+const defaultValues: ProjectFormValues = {
+  projectName: "",
+  startDate: "2026-09-01",
+};
+
+export function ProjectSettingsForm() {
+  const [submittedData, setSubmittedData] = useState<ProjectFormValues | null>(null);
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<ProjectFormValues>({
+    defaultValues,
+  });
+
+  const onSubmit = (values: ProjectFormValues) => {
+    setSubmittedData(values);
+  };
+
+  const handleControlledReset = () => {
+    reset(defaultValues);
+    setSubmittedData(null);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <Field
+        label="Project Name"
+        hint="Unique name for your project workspace"
+        error={errors.projectName?.message}
+      >
+        <Input
+          {...register("projectName", {
+            required: "Project name is required",
+            minLength: { value: 3, message: "Minimum 3 characters required" },
+          })}
+          placeholder="e.g. Acme Dashboard"
+          aria-label="Project Name"
+        />
+      </Field>
+
+      <Controller
+        name="startDate"
+        control={control}
+        rules={{ required: "Start date is required" }}
+        render={({ field }) => (
+          <Field
+            label="Start Date"
+            hint="Initial project milestone date (YYYY-MM-DD)"
+            error={errors.startDate?.message}
+          >
+            <DatePicker
+              name={field.name}
+              value={field.value}
+              onChange={field.onChange}
+              onBlur={field.onBlur}
+              aria-label="Start Date"
+            />
+          </Field>
+        )}
+      />
+
+      {submittedData && (
+        <div data-testid="submission-output" className="text-sm font-mono p-2 border rounded">
+          Submitted: {JSON.stringify(submittedData)}
+        </div>
+      )}
+
+      <div className="flex gap-2">
+        <Button
+          type="button"
+          variant="secondary"
+          onClick={handleControlledReset}
+        >
+          Reset
+        </Button>
+        <Button type="submit" variant="default" disabled={isSubmitting}>
+          Save Project
+        </Button>
+      </div>
+    </form>
+  );
+}
+```
+
 ### Known Form Limitations
-1. `DatePicker` external ref merging: forwarding a custom `ref` currently overrides internal hidden input ref bindings, which impairs form reset behavior.
-2. `Autocomplete` free-text commit on blur: committing unselected free text triggers an unconditional focus call, preventing natural Tab navigation.
-3. Native `required` validation on composite controls: empty required `DatePicker` inputs focus a 1×1px hidden element rather than the visible trigger button.
+1. `DatePicker` external ref merging & focus target: forwarding a custom `ref` (or RHF's `field.ref`) currently targets the internal hidden input rather than the interactive trigger button, and forwarding overrides internal hidden input ref bindings which impairs form reset behavior. Therefore, form libraries should manage `DatePicker` using controlled `value` / `onChange` / `onBlur` handlers without binding `field.ref` until native ref merging is delivered in P3.
+2. `Field` composition with Form Library Controllers: `Field` clones its immediate child element to inject accessibility IDs (`id`, `aria-describedby`). When wrapping controls with an abstraction like `react-hook-form`'s `<Controller>`, render `<Field>` **inside** the `Controller`'s `render` prop (wrapping the actual input control) rather than nesting `Controller` inside `Field`.
+3. `Autocomplete` free-text commit on blur: committing unselected free text triggers an unconditional focus call, preventing natural Tab navigation.
+4. Native `required` validation on composite controls: empty required `DatePicker` inputs focus a 1×1px hidden element rather than the visible trigger button (remediation slated for P3).
 
 ---
 
@@ -932,19 +1066,26 @@ export function ControlledDatePickerField() {
    ```bash
    bun add @nocoo/basalt lucide-react
    ```
-2. **Step 2: Configure Stylesheet**
-   - Replace old CSS declarations with the strict 3-line Tailwind contract (§2) or import `@nocoo/basalt/styles/standalone`.
+2. **Step 2: Configure Stylesheet & Scan Sources**
+   - In Tailwind v4 setups, configure CSS imports with `@source` scanning `dist`:
+     ```css
+     @source "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
+     @import "@nocoo/basalt/styles/tailwind";
+     @import "tailwindcss";
+     ```
+   - In non-Tailwind applications, import `@nocoo/basalt/styles/standalone` in your application root instead.
    - Remove custom `--color-*` or `--basalt-*` overrides in app CSS.
 3. **Step 3: Establish Outer Frame**
    - Wrap application routes in `ThemeProvider` and `LinkProvider`.
    - Implement `/login` as an isolated badge page outside `AppShell`.
    - Use `AppShell` with `Sidebar` and `AppHeader` for authenticated layout.
-4. **Step 4: Update Component Imports**
+4. **Step 4: Update Component Imports & Subpaths**
    - Import base components from `@nocoo/basalt` root.
    - Import layout chrome (`PageHeader`, `SectionRule`, `AppHeader`, `AppShell`) from granular subpaths (`@nocoo/basalt/components/*`).
-   - Import chart components from `@nocoo/basalt/charts/*`.
-5. **Step 5: Verify Contrast & Surface Tokens**
+   - Import chart components from `@nocoo/basalt/charts/*` (ensure `recharts` peer dependency is installed).
+5. **Step 5: Verify Contrast, Surface Tokens & Form Handling**
    - Verify all content cards use `LayerCard` or surface classes rather than manual border/background combinations.
+   - For composite forms (`DatePicker`, `Autocomplete`), implement controlled state or wrap in form library Controllers (e.g. `react-hook-form`).
 ---
 
 ## 18. Chart Subsystem Primitives
@@ -994,4 +1135,272 @@ Basalt charts are composed of responsive frame, legend, and tooltip subsystem pr
     - `dataKey?: string | number`: Recharts series key binding.
   - **Behavior**: Hides row label text for internal/synthetic keys (`"y"`, `"y2"`, `"y3"`, `"value"`, `"target"`), but still displays their numeric values. Uses `--basalt-popover` background tokens with tabular numeric formatting.
 - **`formatChartNumber(value: number): string`**: Formats numbers via `Intl.NumberFormat` with max 0 decimals for integers and 1 decimal for fractions. Non-finite values return `"—"`.
+
+---
+
+## 19. Complete Framework Recipes & Compilable Guides
+
+### 1. Vite + Standalone CSS Integration (No Tailwind)
+
+For applications that choose not to install or configure Tailwind CSS, Basalt distributes an all-in-one stylesheet `@nocoo/basalt/styles/standalone`. This bundle includes CSS design tokens, typography, and control surfaces.
+
+```tsx compile:integration-vite-standalone
+import "@nocoo/basalt/styles/standalone";
+import React, { useState } from "react";
+import { Button, Input, LayerCard, ThemeProvider, ThemeToggle } from "@nocoo/basalt";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
+
+export function StandaloneViteApp() {
+  const [query, setQuery] = useState("");
+
+  return (
+    <ThemeProvider>
+      <div className="min-h-screen bg-basalt-background text-basalt-foreground p-6 space-y-6">
+        <PageHeader
+          title="Standalone Workspace"
+          description="Rendered with @nocoo/basalt/styles/standalone without Tailwind preflight"
+          actions={<ThemeToggle aria-label="Toggle visual theme" />}
+        />
+        <LayerCard>
+          <LayerCard.Header>
+            <span className="font-semibold text-basalt-foreground">Project Search</span>
+          </LayerCard.Header>
+          <LayerCard.Body>
+            <div className="flex gap-3 max-w-md">
+              <Input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search resources..."
+                aria-label="Search resources"
+              />
+              <Button variant="default" onClick={() => console.log(query)}>
+                Search
+              </Button>
+            </div>
+          </LayerCard.Body>
+        </LayerCard>
+      </div>
+    </ThemeProvider>
+  );
+}
+```
+
+### 2. Next.js App Router Client Boundary & SSR Theme Setup
+
+Basalt controls depend on browser event handling and DOM lifecycle observers. In Next.js App Router applications, mount Basalt components within a dedicated client boundary.
+
+#### Next.js Root Layout (`app/layout.tsx`) with Global CSS & Pre-Hydration Script
+
+In Next.js App Router, import your global stylesheet (e.g. `app/globals.css` containing the Tailwind v4 contract or `@nocoo/basalt/styles/standalone`) at the root layout.
+`ThemeProvider` applies the active theme to `document.documentElement` (`class="dark"|"light"` and `data-mode="dark"|"light"`). Note: `ThemeProvider` in `v2.0.3` only accepts `{ children: ReactNode }` (it does not accept `defaultTheme`, `storageKey`, or `forcedTheme`). To eliminate flash of unstyled content (FOUC), inject a pre-hydration script into the root HTML layout before React hydrates:
+
+```tsx compile:integration-nextjs-root-layout
+import type React from "react";
+import type { ReactNode } from "react";
+// In your Next.js application, import the global stylesheet:
+// import "./globals.css";
+// or with standalone styles:
+import "@nocoo/basalt/styles/standalone";
+
+const themeInitScript = `(function(){try{var s=localStorage.getItem("theme");var d=window.matchMedia("(prefers-color-scheme: dark)").matches;var isDark=s==="dark"||(s!=="light"&&d);document.documentElement.classList.toggle("dark",isDark);document.documentElement.classList.toggle("light",!isDark);document.documentElement.dataset.mode=isDark?"dark":"light";}catch(e){}})();`;
+
+export default function RootLayout({
+  children,
+}: {
+  children: ReactNode;
+}) {
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: themeInitScript,
+          }}
+        />
+      </head>
+      <body className="min-h-screen bg-basalt-background text-basalt-foreground antialiased">
+        {children}
+      </body>
+    </html>
+  );
+}
+```
+
+#### Client Page Component (`app/dashboard/page.tsx`)
+
+In Next.js App Router, mark interactive client components with `"use client"`. Place client UI in a client component or export it as default page export for a route:
+
+```tsx compile:integration-nextjs-client-boundary
+"use client";
+
+import React, { useState } from "react";
+import { Button, Input, LayerCard, ThemeProvider, ThemeToggle } from "@nocoo/basalt";
+
+export default function NextClientDashboardPage() {
+  const [metricName, setMetricName] = useState("Daily Active Users");
+
+  return (
+    <ThemeProvider>
+      <div className="p-6 space-y-4">
+        <div className="flex justify-between items-center">
+          <h2 className="text-xl font-bold text-basalt-foreground">Next.js Client Dashboard</h2>
+          <ThemeToggle aria-label="Toggle theme mode" />
+        </div>
+        <LayerCard>
+          <LayerCard.Header>Metric Details</LayerCard.Header>
+          <LayerCard.Body>
+            <Input
+              value={metricName}
+              onChange={(e) => setMetricName(e.target.value)}
+              aria-label="Metric Name"
+            />
+            <div className="mt-4">
+              <Button variant="outline" onClick={() => setMetricName("Default Metric")}>
+                Reset Metric
+              </Button>
+            </div>
+          </LayerCard.Body>
+        </LayerCard>
+      </div>
+    </ThemeProvider>
+  );
+}
+```
+
+### 3. Router Navigation Adapter with LinkProvider
+
+Basalt components that perform client navigation (such as breadcrumbs, sidebars, and custom action links) consume navigation through `LinkProvider`. `LinkProvider` accepts a custom component via the `render` prop:
+- Prop shape: `render: ComponentType<{ href: string; className?: string; children?: ReactNode }>`
+- Custom components consume the active link implementation using `useLinkComponent()`, which is exported from `@nocoo/basalt/providers/link` (and re-exported by `@nocoo/basalt/components/link`). It returns either the custom adapter or the fallback `"a"`.
+
+The following compilable example demonstrates a real router link adapter integrated with `react-router` (`Link`, `Routes`, `Route`, `MemoryRouter`):
+
+```tsx compile:integration-router-adapter
+import type { ComponentType, ReactNode } from "react";
+import React from "react";
+import { MemoryRouter, Routes, Route, Link as RouterLink, useLocation } from "react-router";
+import { LinkProvider } from "@nocoo/basalt";
+import { useLinkComponent } from "@nocoo/basalt/providers/link";
+
+// Real router adapter mapping Basalt href/className/children to React Router Link
+export const ReactRouterLinkAdapter: ComponentType<{
+  href: string;
+  className?: string;
+  children?: ReactNode;
+}> = ({ href, className, children }) => {
+  const isExternal =
+    href.startsWith("http://") ||
+    href.startsWith("https://") ||
+    href.startsWith("//") ||
+    href.startsWith("mailto:") ||
+    href.startsWith("tel:");
+
+  if (isExternal) {
+    return (
+      <a href={href} className={className} rel="noopener noreferrer" target="_blank">
+        {children}
+      </a>
+    );
+  }
+
+  return (
+    <RouterLink to={href} className={className}>
+      {children}
+    </RouterLink>
+  );
+};
+
+export function RoutedNavigationSection() {
+  return (
+    <MemoryRouter initialEntries={["/dashboard"]}>
+      <LinkProvider render={ReactRouterLinkAdapter}>
+        <nav className="flex gap-4 p-4 border-b border-basalt-border">
+          <NavigationItem href="/dashboard">Dashboard</NavigationItem>
+          <NavigationItem href="/settings">Settings</NavigationItem>
+          <NavigationItem href="https://docs.hexly.ai">External Docs</NavigationItem>
+        </nav>
+        <div className="p-4">
+          <Routes>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+          </Routes>
+        </div>
+      </LinkProvider>
+    </MemoryRouter>
+  );
+}
+
+function NavigationItem({ href, children }: { href: string; children: ReactNode }) {
+  const LinkComponent = useLinkComponent();
+  return (
+    <LinkComponent href={href} className="text-sm font-medium hover:underline text-basalt-foreground">
+      {children}
+    </LinkComponent>
+  );
+}
+
+function DashboardPage() {
+  const location = useLocation();
+  return <div data-testid="active-route">Active Location: {location.pathname}</div>;
+}
+
+function SettingsPage() {
+  const location = useLocation();
+  return <div data-testid="active-route">Settings Location: {location.pathname}</div>;
+}
+```
+
+### 4. Native Form Submission and Reset Handling
+
+For lightweight forms without third-party form libraries, native HTML forms paired with `FormData` provide reliable data collection across Basalt controls:
+
+```tsx compile:integration-native-form-reset
+import type React from "react";
+import { useState } from "react";
+import { Button, Field, Input, Switch } from "@nocoo/basalt";
+
+export function UserPreferencesForm() {
+  const [feedback, setFeedback] = useState<string>("");
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    const username = String(data.get("username") ?? "");
+    const emailAlerts = data.get("emailAlerts") === "on";
+    setFeedback(`Saved preferences for ${username} (alerts: ${emailAlerts ? "enabled" : "disabled"})`);
+  };
+
+  const handleReset = (event: React.FormEvent<HTMLFormElement>) => {
+    setFeedback("Form reset to default values");
+  };
+
+  return (
+    <form onSubmit={handleSubmit} onReset={handleReset} className="space-y-4 max-w-sm">
+      <Field label="Username" hint="Public profile handle">
+        <Input name="username" defaultValue="johndoe" required />
+      </Field>
+
+      <Field label="Email Alerts" hint="Receive daily system digests">
+        <Switch name="emailAlerts" defaultChecked />
+      </Field>
+
+      {feedback && (
+        <div role="status" className="text-sm text-basalt-muted-foreground">
+          {feedback}
+        </div>
+      )}
+
+      <div className="flex gap-2">
+        <Button type="reset" variant="secondary">
+          Reset
+        </Button>
+        <Button type="submit" variant="default">
+          Save
+        </Button>
+      </div>
+    </form>
+  );
+}
+```
+
 
