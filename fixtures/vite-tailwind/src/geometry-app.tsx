@@ -43,6 +43,14 @@ export function GeometryApp() {
 	const [dialogCloseAttempts, setDialogCloseAttempts] = React.useState(0);
 	const [autocompleteValue, setAutocompleteValue] = React.useState("");
 	const [autocompleteCommits, setAutocompleteCommits] = React.useState<string[]>([]);
+	const [resetRerenderCount, setResetRerenderCount] = React.useState(0);
+	const [rangeResetRerenderCount, setRangeResetRerenderCount] = React.useState(0);
+	const [controlledCheckboxes, setControlledCheckboxes] = React.useState<string[]>(["a"]);
+	const [controlledSwitches, setControlledSwitches] = React.useState<string[]>(["a"]);
+	const [controlledCheckboxCalls, setControlledCheckboxCalls] = React.useState<string[][]>([]);
+	const [controlledSwitchCalls, setControlledSwitchCalls] = React.useState<string[][]>([]);
+	const [uncontrolledCheckboxCalls, setUncontrolledCheckboxCalls] = React.useState<string[][]>([]);
+	const [uncontrolledSwitchCalls, setUncontrolledSwitchCalls] = React.useState<string[][]>([]);
 	const dateRefEvents = React.useRef<string[]>([]);
 	const dateInputRef = React.useRef<HTMLInputElement | null>(null);
 
@@ -113,6 +121,38 @@ export function GeometryApp() {
 				getDateRefTag?: () => string | null;
 			}
 		).getDateRefTag = () => dateInputRef.current?.tagName ?? null;
+		(
+			window as unknown as {
+				getResetRerenderCount?: () => number;
+				getRangeResetRerenderCount?: () => number;
+				getControlledGroupEvidence?: () => {
+					checkboxCalls: string[][];
+					switchCalls: string[][];
+					uncontrolledCheckboxCalls: string[][];
+					uncontrolledSwitchCalls: string[][];
+				};
+			}
+		).getResetRerenderCount = () => resetRerenderCount;
+		(
+			window as unknown as {
+				getRangeResetRerenderCount?: () => number;
+			}
+		).getRangeResetRerenderCount = () => rangeResetRerenderCount;
+		(
+			window as unknown as {
+				getControlledGroupEvidence?: () => {
+					checkboxCalls: string[][];
+					switchCalls: string[][];
+					uncontrolledCheckboxCalls: string[][];
+					uncontrolledSwitchCalls: string[][];
+				};
+			}
+		).getControlledGroupEvidence = () => ({
+			checkboxCalls: controlledCheckboxCalls,
+			switchCalls: controlledSwitchCalls,
+			uncontrolledCheckboxCalls,
+			uncontrolledSwitchCalls,
+		});
 	}, [
 		parentClickCount,
 		childClickCount,
@@ -120,6 +160,12 @@ export function GeometryApp() {
 		childCaptureCount,
 		dialogCloseAttempts,
 		autocompleteCommits,
+		resetRerenderCount,
+		rangeResetRerenderCount,
+		controlledCheckboxCalls,
+		controlledSwitchCalls,
+		uncontrolledCheckboxCalls,
+		uncontrolledSwitchCalls,
 	]);
 	return (
 		<div>
@@ -377,6 +423,128 @@ export function GeometryApp() {
 					/>
 					<button id="datepicker-empty-submit-btn" type="submit">
 						Submit Empty Form
+					</button>
+				</form>
+
+				{/* Separate DatePicker range reset form with parent onReset setState */}
+				<form
+					id="datepicker-range-test-form"
+					onSubmit={(e) => e.preventDefault()}
+					onReset={(e) => {
+						setRangeResetRerenderCount((c) => c + 1);
+						const w = window as unknown as { shouldCancelRangeReset?: boolean };
+						if (w.shouldCancelRangeReset) {
+							e.preventDefault();
+						}
+					}}
+				>
+					<span id="range-reset-rerender-count">{rangeResetRerenderCount}</span>
+					<DatePicker
+						id="test-range-date-picker"
+						name="test_range"
+						mode="range"
+						defaultRangeValue={{ from: "2026-09-01", to: "2026-09-03" }}
+						aria-label="Test Stay Range"
+					/>
+					<button id="datepicker-range-reset-btn" type="reset">
+						Reset Range Form
+					</button>
+				</form>
+
+				{/* Typeahead & Group Native Reset Regression Harness */}
+				<form
+					id="typeahead-group-test-form"
+					onSubmit={(e) => e.preventDefault()}
+					onReset={(e) => {
+						setResetRerenderCount((c) => c + 1);
+						const w = window as unknown as {
+							shouldCancelTypeaheadGroupReset?: boolean;
+						};
+						if (w.shouldCancelTypeaheadGroupReset) {
+							e.preventDefault();
+						}
+					}}
+				>
+					<span id="reset-rerender-count">{resetRerenderCount}</span>
+					<Combobox
+						id="test-reset-combobox"
+						name="test_combobox"
+						defaultValue="a"
+						aria-label="Test Combobox"
+						items={[
+							{ value: "a", label: "Alpha" },
+							{ value: "b", label: "Beta" },
+						]}
+					/>
+					<Autocomplete
+						id="test-reset-autocomplete"
+						name="test_autocomplete"
+						defaultValue="a"
+						aria-label="Test Autocomplete"
+						items={[
+							{ value: "a", label: "Alpha" },
+							{ value: "b", label: "Beta" },
+						]}
+					/>
+					<Checkbox.Group
+						id="test-reset-checkbox-group"
+						defaultValue={["a"]}
+						onValueChange={(val) => setUncontrolledCheckboxCalls((prev) => [...prev, val])}
+					>
+						<Checkbox.Item value="a" name="test_checkbox" aria-label="Alpha Checkbox" />
+						<Checkbox.Item value="b" name="test_checkbox" aria-label="Beta Checkbox" />
+					</Checkbox.Group>
+					<Switch.Group
+						id="test-reset-switch-group"
+						defaultValue={["a"]}
+						onValueChange={(val) => setUncontrolledSwitchCalls((prev) => [...prev, val])}
+					>
+						<Switch.Item value="a" name="test_switch" aria-label="Alpha Switch" />
+						<Switch.Item value="b" name="test_switch" aria-label="Beta Switch" />
+					</Switch.Group>
+
+					{/* Controlled Checkbox & Switch Groups for native reset regression */}
+					<Checkbox.Group
+						id="test-controlled-checkbox-group"
+						value={controlledCheckboxes}
+						onValueChange={(val) => {
+							setControlledCheckboxCalls((prev) => [...prev, val]);
+							setControlledCheckboxes(val);
+						}}
+					>
+						<Checkbox.Item
+							value="a"
+							name="test_controlled_checkbox"
+							aria-label="Alpha Controlled Checkbox"
+						/>
+						<Checkbox.Item
+							value="b"
+							name="test_controlled_checkbox"
+							aria-label="Beta Controlled Checkbox"
+						/>
+					</Checkbox.Group>
+					<Switch.Group
+						id="test-controlled-switch-group"
+						value={controlledSwitches}
+						onValueChange={(val) => {
+							setControlledSwitchCalls((prev) => [...prev, val]);
+							setControlledSwitches(val);
+						}}
+					>
+						<Switch.Item
+							value="a"
+							name="test_controlled_switch"
+							aria-label="Alpha Controlled Switch"
+						/>
+						<Switch.Item
+							value="b"
+							name="test_controlled_switch"
+							aria-label="Beta Controlled Switch"
+						/>
+					</Switch.Group>
+
+					<button id="typeahead-group-reset-btn" type="reset">
+						Reset Controls Form
 					</button>
 				</form>
 

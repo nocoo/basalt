@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import * as React from "react";
 import { describe, expect, it, vi } from "vitest";
 import { DatePicker } from "./date-picker";
 import { Field } from "./field";
@@ -801,5 +802,56 @@ describe("DatePicker", () => {
 		fireEvent.invalid(hiddenInput);
 		expect(document.activeElement).toBe(otherButton);
 		otherButton.remove();
+	});
+
+	it("restores range value or keeps changed range on cancelled reset with parent state update", async () => {
+		function RangeResetFixture({ cancel }: { cancel?: boolean }) {
+			const [parentCount, setParentCount] = React.useState(0);
+			return (
+				<form
+					onReset={(e) => {
+						setParentCount((c) => c + 1);
+						if (cancel) {
+							e.preventDefault();
+						}
+					}}
+				>
+					<DatePicker
+						mode="range"
+						name="stay"
+						aria-label="Stay Date"
+						defaultRangeValue={{ from: "2026-09-01", to: "2026-09-03" }}
+					/>
+					<button type="reset">Reset</button>
+					<span data-testid="parent-count">{parentCount}</span>
+				</form>
+			);
+		}
+
+		// Normal reset
+		const { unmount } = render(<RangeResetFixture />);
+		const trigger = screen.getByRole("button", { name: /Stay Date/ });
+		fireEvent.click(trigger);
+		fireEvent.click(screen.getByRole("button", { name: "2026-09-02" }));
+		fireEvent.click(screen.getByRole("button", { name: "2026-09-04" }));
+		expect(document.querySelector('input[name="stay"]')).toHaveValue("2026-09-02/2026-09-04");
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await waitFor(() => {
+			expect(screen.getByTestId("parent-count")).toHaveTextContent("1");
+			expect(document.querySelector('input[name="stay"]')).toHaveValue("2026-09-01/2026-09-03");
+		});
+		unmount();
+
+		// Cancelled reset
+		render(<RangeResetFixture cancel />);
+		const cancelTrigger = screen.getByRole("button", { name: /Stay Date/ });
+		fireEvent.click(cancelTrigger);
+		fireEvent.click(screen.getByRole("button", { name: "2026-09-02" }));
+		fireEvent.click(screen.getByRole("button", { name: "2026-09-04" }));
+		expect(document.querySelector('input[name="stay"]')).toHaveValue("2026-09-02/2026-09-04");
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await new Promise((r) => setTimeout(r, 20));
+		expect(screen.getByTestId("parent-count")).toHaveTextContent("1");
+		expect(document.querySelector('input[name="stay"]')).toHaveValue("2026-09-02/2026-09-04");
 	});
 });

@@ -72,30 +72,55 @@ export function TypeaheadField({
 			setQuery(selectedDisplay);
 		}
 	}
+	const latestConfigRef = useRef({
+		defaultValue,
+		items,
+		value,
+	});
+	useEffect(() => {
+		latestConfigRef.current = {
+			defaultValue,
+			items,
+			value,
+		};
+	});
+
 	useEffect(() => {
 		const node = inputRef.current;
 		const form = node?.form;
 		if (!form) {
 			return;
 		}
+		let disposed = false;
+		const timers = new Set<ReturnType<typeof setTimeout>>();
 		const onReset = (event: Event) => {
-			queueMicrotask(() => {
-				if (event.defaultPrevented) {
+			const timer = setTimeout(() => {
+				timers.delete(timer);
+				if (disposed || event.defaultPrevented) {
 					return;
 				}
-				if (value === undefined) {
-					setUncontrolled(defaultValue);
-					setQuery(displayOf(items, defaultValue));
+				const cfg = latestConfigRef.current;
+				if (cfg.value === undefined) {
+					setUncontrolled(cfg.defaultValue);
+					setQuery(displayOf(cfg.items, cfg.defaultValue));
 				} else {
-					setQuery(displayOf(items, value));
+					setQuery(displayOf(cfg.items, cfg.value));
 				}
 				setOpen(false);
 				setActive(null);
-			});
+			}, 0);
+			timers.add(timer);
 		};
 		form.addEventListener("reset", onReset);
-		return () => form.removeEventListener("reset", onReset);
-	}, [defaultValue, items, value]);
+		return () => {
+			disposed = true;
+			for (const timer of timers) {
+				clearTimeout(timer);
+			}
+			timers.clear();
+			form.removeEventListener("reset", onReset);
+		};
+	}, []);
 	const filtered = filterItems(items, query, !allowFreeform);
 	const activeIndex =
 		active === null || filtered.length === 0 ? null : Math.min(active, filtered.length - 1);

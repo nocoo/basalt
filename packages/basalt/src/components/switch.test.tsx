@@ -194,9 +194,10 @@ describe("Switch", () => {
 	});
 
 	it("does not restore a controlled group on native form reset", async () => {
+		const onValueChange = vi.fn();
 		render(
 			<form>
-				<Switch.Group value={["b"]}>
+				<Switch.Group value={["b"]} onValueChange={onValueChange}>
 					<Switch.Legend>Alerts</Switch.Legend>
 					<Switch.Item value="a">Alpha</Switch.Item>
 					<Switch.Item value="b">Beta</Switch.Item>
@@ -205,20 +206,21 @@ describe("Switch", () => {
 			</form>,
 		);
 		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
-		await waitFor(() => {
-			expect(screen.getByRole("switch", { name: "Alpha" })).not.toBeChecked();
-			expect(screen.getByRole("switch", { name: "Beta" })).toBeChecked();
-		});
+		await new Promise((r) => setTimeout(r, 20));
+		expect(screen.getByRole("switch", { name: "Alpha" })).not.toBeChecked();
+		expect(screen.getByRole("switch", { name: "Beta" })).toBeChecked();
+		expect(onValueChange).not.toHaveBeenCalled();
 	});
 
 	it("does not restore when form reset is canceled", async () => {
+		const onValueChange = vi.fn();
 		render(
 			<form
 				onReset={(event) => {
 					event.preventDefault();
 				}}
 			>
-				<Switch.Group defaultValue={["a"]}>
+				<Switch.Group defaultValue={["a"]} onValueChange={onValueChange}>
 					<Switch.Legend>Alerts</Switch.Legend>
 					<Switch.Item value="a">Alpha</Switch.Item>
 					<Switch.Item value="b">Beta</Switch.Item>
@@ -226,11 +228,20 @@ describe("Switch", () => {
 				<button type="reset">Reset</button>
 			</form>,
 		);
-		fireEvent.click(screen.getByRole("switch", { name: "Alpha" }));
-		fireEvent.click(screen.getByRole("switch", { name: "Beta" }));
+		const alpha = screen.getByRole("switch", { name: "Alpha" });
+		const beta = screen.getByRole("switch", { name: "Beta" });
+		expect(alpha).toBeChecked();
+		expect(beta).not.toBeChecked();
+		fireEvent.click(beta);
+		fireEvent.click(alpha);
+		expect(alpha).not.toBeChecked();
+		expect(beta).toBeChecked();
+		const callCount = onValueChange.mock.calls.length;
 		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
-		await Promise.resolve();
-		expect(screen.getByRole("switch", { name: "Alpha" })).not.toBeChecked();
+		await new Promise((r) => setTimeout(r, 20));
+		expect(alpha).not.toBeChecked();
+		expect(beta).toBeChecked();
+		expect(onValueChange.mock.calls.length).toBe(callCount);
 	});
 
 	it("clears grouped values on reset when defaultValue is omitted", async () => {

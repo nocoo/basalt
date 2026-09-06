@@ -110,7 +110,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"checkbox": {
 		"file": "packages/basalt/src/components/checkbox.tsx",
-		"hash": "e7284e1e2f86897d",
+		"hash": "3fed7b45bbce6b61",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/checkbox.js.map (sourcesContent[0])"
 	},
@@ -122,7 +122,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"switch": {
 		"file": "packages/basalt/src/components/switch.tsx",
-		"hash": "680f5e17981e97a3",
+		"hash": "c44ca6b916ac96dc",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/switch.js.map (sourcesContent[0])"
 	},
@@ -146,7 +146,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"date-picker": {
 		"file": "packages/basalt/src/components/date-picker.tsx",
-		"hash": "2e34a3e84201eff8",
+		"hash": "48b44c0d49af33a8",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/date-picker.js.map (sourcesContent[0])"
 	},

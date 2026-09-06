@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Autocomplete, type AutocompleteProps } from "./autocomplete";
 
@@ -101,6 +101,58 @@ describe("Autocomplete", () => {
 	it("advertises list autocomplete", () => {
 		render(<Autocomplete items={[APPLE]} placeholder="Fruit" />);
 		expect(screen.getByLabelText("Fruit")).toHaveAttribute("aria-autocomplete", "list");
+	});
+
+	it("restores default value on native form reset", async () => {
+		render(
+			<form>
+				<Autocomplete
+					items={[APPLE, BANANA]}
+					defaultValue="apple"
+					placeholder="Fruit"
+					name="fruit"
+				/>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.change(input, { target: { value: "Ba" } });
+		fireEvent.click(screen.getByRole("option", { name: "Banana" }));
+		expect(document.querySelector('input[name="fruit"]')).toHaveValue("banana");
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await waitFor(() => {
+			expect(screen.getByLabelText("Fruit")).toHaveValue("Apple");
+		});
+		expect(document.querySelector('input[name="fruit"]')).toHaveValue("apple");
+	});
+
+	it("does not restore when form reset is canceled", async () => {
+		render(
+			<form
+				onReset={(event) => {
+					event.preventDefault();
+				}}
+			>
+				<Autocomplete
+					items={[APPLE, BANANA]}
+					defaultValue="apple"
+					placeholder="Fruit"
+					name="fruit"
+				/>
+				<button type="reset">Reset</button>
+			</form>,
+		);
+		const input = screen.getByLabelText("Fruit");
+		fireEvent.focus(input);
+		fireEvent.change(input, { target: { value: "Ba" } });
+		fireEvent.click(screen.getByRole("option", { name: "Banana" }));
+		expect(document.querySelector('input[name="fruit"]')).toHaveValue("banana");
+		expect(screen.getByLabelText("Fruit")).toHaveValue("Banana");
+		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
+		await new Promise((r) => setTimeout(r, 20));
+		expect(document.querySelector('input[name="fruit"]')).toHaveValue("banana");
+		expect(screen.getByLabelText("Fruit")).toHaveValue("Banana");
 	});
 
 	it("accepts item objects and rejects string items", () => {

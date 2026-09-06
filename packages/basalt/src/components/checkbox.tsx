@@ -139,8 +139,13 @@ const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(
 		const errorId = `${generatedId}-error`;
 		const mergedDescribedBy =
 			[invalid ? errorId : null, describedBy].filter(Boolean).join(" ") || undefined;
+		const resetEventRef = React.useRef<Event | null>(null);
 		const setValue = React.useCallback(
 			(next: string[]) => {
+				const activeReset = resetEventRef.current;
+				if (activeReset && activeReset.eventPhase !== Event.NONE) {
+					return;
+				}
 				if (value === undefined) {
 					setUncontrolled(next);
 				}
@@ -159,22 +164,50 @@ const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(
 			},
 			[ref],
 		);
+		const formAttr = props.form;
+		const latestConfigRef = React.useRef({
+			defaultValue,
+			value,
+		});
+		React.useEffect(() => {
+			latestConfigRef.current = {
+				defaultValue,
+				value,
+			};
+		});
+
 		React.useEffect(() => {
 			const form = nodeRef.current?.form;
-			if (!form || value !== undefined) {
+			if (!form || (formAttr && form.id !== formAttr)) {
 				return;
 			}
+			let disposed = false;
+			const timers = new Set<ReturnType<typeof setTimeout>>();
 			const onReset = (event: Event) => {
-				queueMicrotask(() => {
-					if (event.defaultPrevented) {
+				resetEventRef.current = event;
+				const timer = setTimeout(() => {
+					timers.delete(timer);
+					if (disposed || event.defaultPrevented) {
 						return;
 					}
-					setUncontrolled(defaultValue ?? []);
-				});
+					const cfg = latestConfigRef.current;
+					if (cfg.value === undefined) {
+						setUncontrolled(cfg.defaultValue ?? []);
+					}
+				}, 0);
+				timers.add(timer);
 			};
-			form.addEventListener("reset", onReset);
-			return () => form.removeEventListener("reset", onReset);
-		}, [defaultValue, value]);
+			form.addEventListener("reset", onReset, true);
+			return () => {
+				disposed = true;
+				resetEventRef.current = null;
+				for (const timer of timers) {
+					clearTimeout(timer);
+				}
+				timers.clear();
+				form.removeEventListener("reset", onReset, true);
+			};
+		}, [formAttr]);
 		return (
 			<CheckboxGroupContext.Provider value={{ value: current, setValue, disabled, invalid }}>
 				<fieldset
@@ -217,6 +250,7 @@ const CheckboxItem = React.forwardRef<
 	const grouped = group != null;
 	const generatedId = React.useId();
 	const controlId = id ?? generatedId;
+	const isChecked = grouped ? group.value.includes(value) : undefined;
 	const box = (
 		<CheckboxRoot
 			ref={ref}
@@ -224,7 +258,8 @@ const CheckboxItem = React.forwardRef<
 			id={controlId}
 			value={value}
 			size={size}
-			checked={grouped ? group.value.includes(value) : undefined}
+			checked={isChecked}
+			defaultChecked={grouped ? isChecked : undefined}
 			disabled={disabled || group?.disabled}
 			aria-invalid={group?.invalid || undefined}
 			className={className}

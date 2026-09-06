@@ -437,6 +437,279 @@ export async function assertConsumerGeometry(
 		throw new Error("expected visible error message element for required validation");
 	}
 
+	// E: DatePicker Range Reset & Cancelled Reset with parent onReset setState
+	const rangeTrigger = page.locator("#test-range-date-picker");
+	await rangeTrigger.click();
+	await page.locator('button[aria-label="2026-09-02"]').click();
+	await page.locator('button[aria-label="2026-09-04"]').click();
+	const rangeValBeforeReset = await page.evaluate(() =>
+		new FormData(document.getElementById("datepicker-range-test-form") as HTMLFormElement).get(
+			"test_range",
+		),
+	);
+	if (rangeValBeforeReset !== "2026-09-02/2026-09-04") {
+		throw new Error(
+			`expected range form value 2026-09-02/2026-09-04 before reset, got ${rangeValBeforeReset}`,
+		);
+	}
+
+	// Normal range reset
+	await page.locator("#datepicker-range-reset-btn").click();
+	await page.waitForFunction(
+		() =>
+			new FormData(document.getElementById("datepicker-range-test-form") as HTMLFormElement).get(
+				"test_range",
+			) === "2026-09-01/2026-09-03" &&
+			document.getElementById("range-reset-rerender-count")?.textContent === "1",
+	);
+
+	// Cancelled range reset
+	await rangeTrigger.click();
+	await page.locator('button[aria-label="2026-09-02"]').click();
+	await page.locator('button[aria-label="2026-09-04"]').click();
+	await page.evaluate(() => {
+		(window as unknown as { shouldCancelRangeReset?: boolean }).shouldCancelRangeReset = true;
+	});
+	await page.locator("#datepicker-range-reset-btn").click();
+	await page.waitForTimeout(60);
+	const rangeValAfterCancelled = await page.evaluate(() => ({
+		val: new FormData(document.getElementById("datepicker-range-test-form") as HTMLFormElement).get(
+			"test_range",
+		),
+		rerender: document.getElementById("range-reset-rerender-count")?.textContent,
+	}));
+	if (rangeValAfterCancelled.val !== "2026-09-02/2026-09-04") {
+		throw new Error(
+			`expected range form value 2026-09-02/2026-09-04 after cancelled reset, got ${rangeValAfterCancelled.val}`,
+		);
+	}
+	if (rangeValAfterCancelled.rerender !== "2") {
+		throw new Error(
+			`expected range rerender count to reach 2, got ${rangeValAfterCancelled.rerender}`,
+		);
+	}
+	await page.evaluate(() => {
+		(window as unknown as { shouldCancelRangeReset?: boolean }).shouldCancelRangeReset = false;
+	});
+
+	// 9. Test Typeahead (Combobox / Autocomplete) & Group (Checkbox.Group / Switch.Group) native reset & cancelled reset
+	// A: Typeahead selection update
+	const cbInput = page.locator("#test-reset-combobox");
+	await cbInput.click();
+	await cbInput.fill("Beta");
+	await page.getByRole("option", { name: "Beta", exact: true }).click();
+	const acInput = page.locator("#test-reset-autocomplete");
+	await acInput.click();
+	await acInput.fill("Beta");
+	await page.getByRole("option", { name: "Beta", exact: true }).click();
+
+	// Checkbox & Switch item toggle: click Beta to check, click Alpha to uncheck
+	const cbAlpha = page.getByRole("checkbox", { name: "Alpha Checkbox", exact: true });
+	const cbBeta = page.getByRole("checkbox", { name: "Beta Checkbox", exact: true });
+	await cbBeta.click();
+	await cbAlpha.click();
+
+	const swAlpha = page.getByRole("switch", { name: "Alpha Switch", exact: true });
+	const swBeta = page.getByRole("switch", { name: "Beta Switch", exact: true });
+	await swBeta.click();
+	await swAlpha.click();
+
+	// Controlled groups: initially "a". Click Beta to check, click Alpha to uncheck -> calls registered and UI/FormData to "b"
+	const ctrlCbAlpha = page.getByRole("checkbox", {
+		name: "Alpha Controlled Checkbox",
+		exact: true,
+	});
+	const ctrlCbBeta = page.getByRole("checkbox", { name: "Beta Controlled Checkbox", exact: true });
+	await ctrlCbBeta.click();
+	await ctrlCbAlpha.click();
+
+	const ctrlSwAlpha = page.getByRole("switch", { name: "Alpha Controlled Switch", exact: true });
+	const ctrlSwBeta = page.getByRole("switch", { name: "Beta Controlled Switch", exact: true });
+	await ctrlSwBeta.click();
+	await ctrlSwAlpha.click();
+
+	// Verify changed values before normal reset
+	const formBeforeReset = await page.evaluate(() => {
+		const f = document.getElementById("typeahead-group-test-form") as HTMLFormElement;
+		const fd = new FormData(f);
+		return {
+			combobox: fd.get("test_combobox"),
+			autocomplete: fd.get("test_autocomplete"),
+			checkboxes: fd.getAll("test_checkbox"),
+			switches: fd.getAll("test_switch"),
+			controlledCheckboxes: fd.getAll("test_controlled_checkbox"),
+			controlledSwitches: fd.getAll("test_controlled_switch"),
+		};
+	});
+	if (
+		formBeforeReset.combobox !== "b" ||
+		formBeforeReset.autocomplete !== "b" ||
+		JSON.stringify(formBeforeReset.checkboxes) !== JSON.stringify(["b"]) ||
+		JSON.stringify(formBeforeReset.switches) !== JSON.stringify(["b"]) ||
+		JSON.stringify(formBeforeReset.controlledCheckboxes) !== JSON.stringify(["b"]) ||
+		JSON.stringify(formBeforeReset.controlledSwitches) !== JSON.stringify(["b"])
+	) {
+		throw new Error(
+			`expected controls to reflect selection before reset, got: ${JSON.stringify(formBeforeReset)}`,
+		);
+	}
+
+	const callsBeforeNormal = await page.evaluate(() => {
+		const w = window as unknown as {
+			getControlledGroupEvidence?: () => {
+				checkboxCalls: string[][];
+				switchCalls: string[][];
+				uncontrolledCheckboxCalls: string[][];
+				uncontrolledSwitchCalls: string[][];
+			};
+			getResetRerenderCount?: () => number;
+		};
+		return {
+			evidence: w.getControlledGroupEvidence?.(),
+			rerenderCount: w.getResetRerenderCount?.() ?? 0,
+		};
+	});
+	if (
+		callsBeforeNormal.evidence?.checkboxCalls.length !== 2 ||
+		callsBeforeNormal.evidence?.switchCalls.length !== 2
+	) {
+		throw new Error(
+			`expected 2 calls each for controlled checkbox and switch updates, got: ${JSON.stringify(callsBeforeNormal.evidence)}`,
+		);
+	}
+
+	// Normal reset: click reset button, verify all restore to defaults ("a"), rerender triggers, controlled stays "b"
+	await page.locator("#typeahead-group-reset-btn").click();
+	await page.waitForFunction(() => {
+		const f = document.getElementById("typeahead-group-test-form") as HTMLFormElement;
+		const fd = new FormData(f);
+		const rerenderEl = document.getElementById("reset-rerender-count");
+		return (
+			fd.get("test_combobox") === "a" &&
+			fd.get("test_autocomplete") === "a" &&
+			JSON.stringify(fd.getAll("test_checkbox")) === JSON.stringify(["a"]) &&
+			JSON.stringify(fd.getAll("test_switch")) === JSON.stringify(["a"]) &&
+			JSON.stringify(fd.getAll("test_controlled_checkbox")) === JSON.stringify(["b"]) &&
+			JSON.stringify(fd.getAll("test_controlled_switch")) === JSON.stringify(["b"]) &&
+			rerenderEl?.textContent === "1"
+		);
+	});
+
+	const callsAfterNormal = await page.evaluate(() => {
+		const w = window as unknown as {
+			getControlledGroupEvidence?: () => {
+				checkboxCalls: string[][];
+				switchCalls: string[][];
+				uncontrolledCheckboxCalls: string[][];
+				uncontrolledSwitchCalls: string[][];
+			};
+		};
+		return w.getControlledGroupEvidence?.();
+	});
+	if (
+		callsAfterNormal?.checkboxCalls.length !== callsBeforeNormal.evidence?.checkboxCalls.length ||
+		callsAfterNormal?.switchCalls.length !== callsBeforeNormal.evidence?.switchCalls.length
+	) {
+		throw new Error(
+			`controlled groups must not notify onValueChange on normal reset: ${JSON.stringify({
+				before: callsBeforeNormal.evidence,
+				after: callsAfterNormal,
+			})}`,
+		);
+	}
+
+	// B: Cancelled reset test
+	// Change controls to "b"
+	await cbInput.click();
+	await cbInput.fill("Beta");
+	await page.getByRole("option", { name: "Beta", exact: true }).click();
+	await acInput.click();
+	await acInput.fill("Beta");
+	await page.getByRole("option", { name: "Beta", exact: true }).click();
+	await cbBeta.click();
+	await cbAlpha.click();
+	await swBeta.click();
+	await swAlpha.click();
+
+	const callsBeforeCancel = await page.evaluate(() => {
+		const w = window as unknown as {
+			getControlledGroupEvidence?: () => {
+				checkboxCalls: string[][];
+				switchCalls: string[][];
+				uncontrolledCheckboxCalls: string[][];
+				uncontrolledSwitchCalls: string[][];
+			};
+			shouldCancelTypeaheadGroupReset?: boolean;
+		};
+		w.shouldCancelTypeaheadGroupReset = true;
+		return w.getControlledGroupEvidence?.();
+	});
+
+	await page.locator("#typeahead-group-reset-btn").click();
+	await page.waitForTimeout(80);
+
+	const formAfterCancelledReset = await page.evaluate(() => {
+		const f = document.getElementById("typeahead-group-test-form") as HTMLFormElement;
+		const fd = new FormData(f);
+		const rerenderEl = document.getElementById("reset-rerender-count");
+		const w = window as unknown as {
+			getControlledGroupEvidence?: () => {
+				checkboxCalls: string[][];
+				switchCalls: string[][];
+				uncontrolledCheckboxCalls: string[][];
+				uncontrolledSwitchCalls: string[][];
+			};
+		};
+		return {
+			combobox: fd.get("test_combobox"),
+			autocomplete: fd.get("test_autocomplete"),
+			checkboxes: fd.getAll("test_checkbox"),
+			switches: fd.getAll("test_switch"),
+			controlledCheckboxes: fd.getAll("test_controlled_checkbox"),
+			controlledSwitches: fd.getAll("test_controlled_switch"),
+			rerender: rerenderEl?.textContent,
+			calls: w.getControlledGroupEvidence?.(),
+		};
+	});
+	if (
+		formAfterCancelledReset.combobox !== "b" ||
+		formAfterCancelledReset.autocomplete !== "b" ||
+		JSON.stringify(formAfterCancelledReset.checkboxes) !== JSON.stringify(["b"]) ||
+		JSON.stringify(formAfterCancelledReset.switches) !== JSON.stringify(["b"]) ||
+		JSON.stringify(formAfterCancelledReset.controlledCheckboxes) !== JSON.stringify(["b"]) ||
+		JSON.stringify(formAfterCancelledReset.controlledSwitches) !== JSON.stringify(["b"])
+	) {
+		throw new Error(
+			`expected controls to preserve selection "b" after cancelled reset, got: ${JSON.stringify(formAfterCancelledReset)}`,
+		);
+	}
+	if (formAfterCancelledReset.rerender !== "2") {
+		throw new Error(
+			`expected rerender count to reach 2 after cancelled reset, got ${formAfterCancelledReset.rerender}`,
+		);
+	}
+	if (
+		formAfterCancelledReset.calls?.uncontrolledCheckboxCalls.length !==
+			callsBeforeCancel?.uncontrolledCheckboxCalls.length ||
+		formAfterCancelledReset.calls?.uncontrolledSwitchCalls.length !==
+			callsBeforeCancel?.uncontrolledSwitchCalls.length
+	) {
+		throw new Error("uncontrolled groups must not notify onValueChange on cancelled reset");
+	}
+	if (
+		formAfterCancelledReset.calls?.checkboxCalls.length !==
+			callsBeforeCancel?.checkboxCalls.length ||
+		formAfterCancelledReset.calls?.switchCalls.length !== callsBeforeCancel?.switchCalls.length
+	) {
+		throw new Error("controlled groups must not notify onValueChange on cancelled reset");
+	}
+
+	await page.evaluate(() => {
+		(
+			window as unknown as { shouldCancelTypeaheadGroupReset?: boolean }
+		).shouldCancelTypeaheadGroupReset = false;
+	});
+
 	const data = await page.evaluate(() => {
 		function getEl(id: string): HTMLElement {
 			const el = document.getElementById(id);

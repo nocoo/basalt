@@ -395,6 +395,23 @@ export function DatePicker({
 		}
 	}, [autoFocus]);
 
+	const latestConfigRef = useRef({
+		defaultValue,
+		defaultRangeValue,
+		mode,
+		rangeValue,
+		value,
+	});
+	useEffect(() => {
+		latestConfigRef.current = {
+			defaultValue,
+			defaultRangeValue,
+			mode,
+			rangeValue,
+			value,
+		};
+	});
+
 	const formAttr = formRest.form;
 	useEffect(() => {
 		const form = hiddenRef.current?.form;
@@ -409,9 +426,10 @@ export function DatePicker({
 				if (disposed || event.defaultPrevented) {
 					return;
 				}
-				if (mode === "range" ? rangeValue === undefined : value === undefined) {
-					setUncontrolled(defaultValue);
-					setUncontrolledRange(defaultRangeValue ?? { from: "", to: undefined });
+				const cfg = latestConfigRef.current;
+				if (cfg.mode === "range" ? cfg.rangeValue === undefined : cfg.value === undefined) {
+					setUncontrolled(cfg.defaultValue);
+					setUncontrolledRange(cfg.defaultRangeValue ?? { from: "", to: undefined });
 				}
 				setIsInvalid(false);
 				setValidationMessage("");
@@ -428,7 +446,7 @@ export function DatePicker({
 			timers.clear();
 			form.removeEventListener("reset", onReset);
 		};
-	}, [defaultRangeValue, defaultValue, mode, rangeValue, value, formAttr]);
+	}, [formAttr]);
 
 	const weekdayLabels = useMemo(() => {
 		const formatter = new Intl.DateTimeFormat(locale, { weekday: "short", timeZone: "UTC" });
