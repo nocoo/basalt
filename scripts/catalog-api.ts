@@ -811,6 +811,30 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "DeleteResourceProps",
 		surface: "DeleteResource",
 	},
+	{
+		slug: "badge",
+		sourceFile: "packages/basalt/src/components/badge.tsx",
+		propsType: "BadgeProps",
+		surface: "Badge",
+	},
+	{
+		slug: "empty",
+		sourceFile: "packages/basalt/src/components/empty.tsx",
+		propsType: "EmptyProps",
+		surface: "Empty",
+	},
+	{
+		slug: "loader",
+		sourceFile: "packages/basalt/src/components/loader.tsx",
+		propsType: "LoaderProps",
+		surface: "Loader",
+	},
+	{
+		slug: "skeleton-line",
+		sourceFile: "packages/basalt/src/components/skeleton-line.tsx",
+		propsType: "SkeletonLineProps",
+		surface: "SkeletonLine",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

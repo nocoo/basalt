@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 578,
+	"totalSymbols": 581,
 	"totalValues": 375,
-	"totalTypes": 203,
+	"totalTypes": 206,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -3431,6 +3431,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/empty",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/empty"
+				},
+				{
+					"name": "EmptyProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/empty",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/empty"
 				}
 			]
 		},
@@ -3868,6 +3876,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "Loader",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/loader",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/loader"
+				},
+				{
+					"name": "LoaderProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/loader",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/loader"
@@ -4858,6 +4874,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "SkeletonLine",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/skeleton-line",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/skeleton-line"
+				},
+				{
+					"name": "SkeletonLineProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/skeleton-line",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/skeleton-line"

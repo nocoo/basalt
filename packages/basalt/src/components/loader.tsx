@@ -1,11 +1,18 @@
 import { type SVGAttributes, useId } from "react";
 import { cn } from "../utils/cn";
 
-export function Loader({
-	className,
-	size = 24,
-	...props
-}: SVGAttributes<SVGSVGElement> & { size?: number }) {
+export interface LoaderProps extends SVGAttributes<SVGSVGElement> {
+	/**
+	 * Width and height of the loader spinner in pixels.
+	 *
+	 * Note: Controls both the SVG width and height dimensions.
+	 *
+	 * @default 24
+	 */
+	size?: number;
+}
+
+export function Loader({ className, size = 24, ...props }: LoaderProps) {
 	const gradientId = `basalt-loader-${useId().replace(/:/g, "")}`;
 	return (
 		<svg

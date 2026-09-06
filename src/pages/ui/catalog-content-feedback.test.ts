@@ -55,11 +55,15 @@ const FEEDBACK_SCENARIOS = {
 } as const;
 
 const FEEDBACK_DESCRIPTIONS = {
-	badge: "Compact status labels.",
+	badge:
+		"Compact status labels. Inherits standard span element attributes and forwards children; does not expose a public ref.",
 	banner: "Displays contextual inline messages for informational, alert, or error states.",
-	empty: "Empty-state copy.",
-	loader: "Indicates a pending state.",
-	"skeleton-line": "Placeholder lines while content loads.",
+	empty:
+		"Empty-state copy. Inherits standard div element attributes without exposing a public ref; standard children are currently ignored in favor of structured icon, title, and description props.",
+	loader:
+		"Indicates a pending state. Forwards standard SVG attributes with size controlling width and height, defaults role='status' and aria-label='Loading' (overridable via props), and does not expose a public ref.",
+	"skeleton-line":
+		"Placeholder lines while content loads. Forwards standard div element attributes with aria-hidden='true' by default, merges style overrides over computed width geometry, and does not expose a public ref.",
 	meter: "Numeric meter.",
 	toast: "Transient notification.",
 	"clipboard-text": "Copyable text.",

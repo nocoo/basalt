@@ -28,7 +28,22 @@ const badgeVariants = cva(
 
 export interface BadgeProps
 	extends React.HTMLAttributes<HTMLSpanElement>,
-		VariantProps<typeof badgeVariants> {
+		Omit<VariantProps<typeof badgeVariants>, "variant"> {
+	/**
+	 * Visual style variant for the badge.
+	 *
+	 * Note: Supports standard semantic tones and decorative color tokens.
+	 * Pass null to omit variant styling.
+	 *
+	 * @default "default"
+	 */
+	variant?: VariantProps<typeof badgeVariants>["variant"];
+
+	/**
+	 * Renders a small circular dot indicator before children.
+	 *
+	 * @default false
+	 */
 	dot?: boolean;
 }
 

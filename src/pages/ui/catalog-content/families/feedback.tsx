@@ -21,8 +21,12 @@ import {
 } from "../../catalog-source";
 import { CODE_EXAMPLES } from "../../examples/code";
 import { CODE_BLOCK_EXAMPLES } from "../../examples/code-block";
+import { API as badgeApi } from "../../generated/catalog-api/badge";
 import { API as codeApi } from "../../generated/catalog-api/code";
 import { API as codeBlockApi } from "../../generated/catalog-api/code-block";
+import { API as emptyApi } from "../../generated/catalog-api/empty";
+import { API as loaderApi } from "../../generated/catalog-api/loader";
+import { API as skeletonLineApi } from "../../generated/catalog-api/skeleton-line";
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
 	repo: "pew",
@@ -64,7 +68,15 @@ function Preview({ children, className }: { children: ReactNode; className?: str
 
 export default catalogContentFamily({
 	badge: {
-		docs: extraDocs("Badge", "badge", "Compact status labels.", "<Badge>Stable</Badge>"),
+		docs: {
+			...extraDocs(
+				"Badge",
+				"badge",
+				"Compact status labels. Inherits standard span element attributes and forwards children; does not expose a public ref.",
+				"<Badge>Stable</Badge>",
+			),
+			api: badgeApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("badge", "primary-badges"),
@@ -414,18 +426,21 @@ export default function Example() {
 		],
 	},
 	empty: {
-		docs: extraDocs(
-			"Empty",
-			"empty",
-			"Empty-state copy.",
-			'<Empty title="No results" description="Try another query." />',
-			undefined,
-			`import { Empty } from "@nocoo/basalt/components/empty";
+		docs: {
+			...extraDocs(
+				"Empty",
+				"empty",
+				"Empty-state copy. Inherits standard div element attributes without exposing a public ref; standard children are currently ignored in favor of structured icon, title, and description props.",
+				'<Empty title="No results" description="Try another query." />',
+				undefined,
+				`import { Empty } from "@nocoo/basalt/components/empty";
 
 export default function Example() {
 	return <Empty title="No results" description="Try another query." />;
 }`,
-		),
+			),
+			api: emptyApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("empty", "basic"),
@@ -444,7 +459,15 @@ export default function Example() {
 		],
 	},
 	loader: {
-		docs: extraDocs("Loader", "loader", "Indicates a pending state.", "<Loader />"),
+		docs: {
+			...extraDocs(
+				"Loader",
+				"loader",
+				"Indicates a pending state. Forwards standard SVG attributes with size controlling width and height, defaults role='status' and aria-label='Loading' (overridable via props), and does not expose a public ref.",
+				"<Loader />",
+			),
+			api: loaderApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("loader", "default-size"),
@@ -467,18 +490,21 @@ export default function Example() {
 		],
 	},
 	"skeleton-line": {
-		docs: extraDocs(
-			"SkeletonLine",
-			"skeleton-line",
-			"Placeholder lines while content loads.",
-			"<SkeletonLine minWidth={40} maxWidth={55} />",
-			undefined,
-			`import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
+		docs: {
+			...extraDocs(
+				"SkeletonLine",
+				"skeleton-line",
+				"Placeholder lines while content loads. Forwards standard div element attributes with aria-hidden='true' by default, merges style overrides over computed width geometry, and does not expose a public ref.",
+				"<SkeletonLine minWidth={40} maxWidth={55} />",
+				undefined,
+				`import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 
 export default function Example() {
 	return <SkeletonLine minWidth={40} maxWidth={55} />;
 }`,
-		),
+			),
+			api: skeletonLineApi,
+		},
 		examples: [
 			{
 				id: catalogScenarioId("skeleton-line", "default"),

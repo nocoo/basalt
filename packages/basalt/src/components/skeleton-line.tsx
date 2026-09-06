@@ -1,6 +1,33 @@
 import type { CSSProperties, HTMLAttributes } from "react";
 import { cn } from "../utils/cn";
 
+export interface SkeletonLineProps extends HTMLAttributes<HTMLDivElement> {
+	/**
+	 * Minimum width percentage used for deterministic width computation.
+	 *
+	 * Note: Sorted with maxWidth to compute the midpoint width percentage.
+	 *
+	 * @default 30
+	 */
+	minWidth?: number;
+
+	/**
+	 * Maximum width percentage used for deterministic width computation.
+	 *
+	 * Note: Sorted with minWidth to compute the midpoint width percentage.
+	 *
+	 * @default 100
+	 */
+	maxWidth?: number;
+
+	/**
+	 * Explicit height of the skeleton line in pixels.
+	 *
+	 * Note: When omitted, default height is governed by CSS class tokens (h-2).
+	 */
+	height?: number;
+}
+
 export function SkeletonLine({
 	className,
 	minWidth = 30,
@@ -8,11 +35,7 @@ export function SkeletonLine({
 	height,
 	style,
 	...props
-}: HTMLAttributes<HTMLDivElement> & {
-	minWidth?: number;
-	maxWidth?: number;
-	height?: number;
-}) {
+}: SkeletonLineProps) {
 	const low = Math.min(minWidth, maxWidth);
 	const high = Math.max(minWidth, maxWidth);
 	const width = (low + high) / 2;

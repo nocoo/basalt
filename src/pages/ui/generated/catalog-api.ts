@@ -2,6 +2,7 @@
 
 import { API as areaApi } from "./catalog-api/area";
 import { API as autocompleteApi } from "./catalog-api/autocomplete";
+import { API as badgeApi } from "./catalog-api/badge";
 import { API as barApi } from "./catalog-api/bar";
 import { API as basaltMarkApi } from "./catalog-api/basalt-mark";
 import { API as bulletApi } from "./catalog-api/bullet";
@@ -24,6 +25,7 @@ import { API as descriptionListApi } from "./catalog-api/description-list";
 import { API as dockApi } from "./catalog-api/dock";
 import { API as donutApi } from "./catalog-api/donut";
 import { API as dropdownMenuApi } from "./catalog-api/dropdown-menu";
+import { API as emptyApi } from "./catalog-api/empty";
 import { API as fabApi } from "./catalog-api/fab";
 import { API as fieldApi } from "./catalog-api/field";
 import { API as flowApi } from "./catalog-api/flow";
@@ -41,6 +43,7 @@ import { API as layerCardApi } from "./catalog-api/layer-card";
 import { API as lineApi } from "./catalog-api/line";
 import { API as linkApi } from "./catalog-api/link";
 import { API as linkButtonApi } from "./catalog-api/link-button";
+import { API as loaderApi } from "./catalog-api/loader";
 import { API as pageHeaderApi } from "./catalog-api/page-header";
 import { API as paginationApi } from "./catalog-api/pagination";
 import { API as paletteApi } from "./catalog-api/palette";
@@ -56,6 +59,7 @@ import { API as selectApi } from "./catalog-api/select";
 import { API as sensitiveInputApi } from "./catalog-api/sensitive-input";
 import { API as separatorApi } from "./catalog-api/separator";
 import { API as sidebarApi } from "./catalog-api/sidebar";
+import { API as skeletonLineApi } from "./catalog-api/skeleton-line";
 import { API as sliderApi } from "./catalog-api/slider";
 import { API as slotBarApi } from "./catalog-api/slot-bar";
 import { API as sparklineApi } from "./catalog-api/sparkline";
@@ -79,6 +83,7 @@ import { API as tooltipApi } from "./catalog-api/tooltip";
 export const CATALOG_API = {
 	area: areaApi,
 	autocomplete: autocompleteApi,
+	badge: badgeApi,
 	bar: barApi,
 	"basalt-mark": basaltMarkApi,
 	bullet: bulletApi,
@@ -101,6 +106,7 @@ export const CATALOG_API = {
 	dock: dockApi,
 	donut: donutApi,
 	"dropdown-menu": dropdownMenuApi,
+	empty: emptyApi,
 	fab: fabApi,
 	field: fieldApi,
 	flow: flowApi,
@@ -118,6 +124,7 @@ export const CATALOG_API = {
 	line: lineApi,
 	link: linkApi,
 	"link-button": linkButtonApi,
+	loader: loaderApi,
 	"page-header": pageHeaderApi,
 	pagination: paginationApi,
 	palette: paletteApi,
@@ -133,6 +140,7 @@ export const CATALOG_API = {
 	"sensitive-input": sensitiveInputApi,
 	separator: separatorApi,
 	sidebar: sidebarApi,
+	"skeleton-line": skeletonLineApi,
 	slider: sliderApi,
 	"slot-bar": slotBarApi,
 	sparkline: sparklineApi,
