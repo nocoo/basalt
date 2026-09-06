@@ -11,8 +11,10 @@ import {
 	writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import path, { join } from "node:path";
+import { createServer } from "vite";
 import { CATALOG, catalogBarrelImport, catalogGranularImport } from "../src/pages/ui/catalog";
+import type { CatalogPageContent } from "../src/pages/ui/catalog-content";
 import { CATALOG_PAGE_STATUS } from "../src/pages/ui/generated/catalog-page-status";
 
 export type CodeFenceKind = "compile" | "excerpt";
@@ -181,7 +183,71 @@ export function computeDocModuleFilename(index: number, id: string): string {
 	return `doc_${String(index).padStart(3, "0")}_${sanitizedSlug}.tsx`;
 }
 
-export function runDocsGate(repoRoot = process.cwd()) {
+export function computeUsageModuleFilename(index: number, slug: string): string {
+	const sanitizedSlug = slug.replace(/[^a-zA-Z0-9_-]/g, "_");
+	return `usage_${String(index).padStart(3, "0")}_${sanitizedSlug}.tsx`;
+}
+
+export async function loadCatalogUsageModules(
+	repoRoot = process.cwd(),
+): Promise<Array<{ slug: string; code: string }>> {
+	const server = await createServer({
+		root: repoRoot,
+		configFile: path.join(repoRoot, "vite.config.ts"),
+		server: { middlewareMode: true },
+		appType: "custom",
+		logLevel: "silent",
+	});
+	try {
+		const catalogMod = (await server.ssrLoadModule("/src/pages/ui/catalog.ts")) as {
+			CATALOG: typeof CATALOG;
+		};
+		const statusMod = (await server.ssrLoadModule(
+			"/src/pages/ui/generated/catalog-page-status.ts",
+		)) as {
+			CATALOG_PAGE_STATUS: typeof CATALOG_PAGE_STATUS;
+		};
+		const readySlugs = new Set(
+			catalogMod.CATALOG.filter((e) => statusMod.CATALOG_PAGE_STATUS[e.slug] === "ready").map(
+				(e) => e.slug,
+			),
+		);
+
+		const registryMod = (await server.ssrLoadModule(
+			"/src/pages/ui/catalog-content-registry.ts",
+		)) as {
+			loadCatalogContentRecord: () => Promise<Readonly<Record<string, CatalogPageContent>>>;
+		};
+		const record = await registryMod.loadCatalogContentRecord();
+
+		for (const slug of readySlugs) {
+			if (!record[slug]) {
+				throw new Error(`ready catalog entry "${slug}" did not load in catalog record`);
+			}
+		}
+
+		const modules: Array<{ slug: string; code: string }> = [];
+		for (const slug of Object.keys(record).sort()) {
+			if (!readySlugs.has(slug)) {
+				continue;
+			}
+			const content = record[slug];
+			const rawUsage = content?.docs?.usage;
+			if (!rawUsage || rawUsage.trim().length === 0) {
+				throw new Error(`ready catalog entry "${slug}" is missing docs.usage`);
+			}
+			modules.push({ slug, code: rawUsage });
+		}
+		if (modules.length !== readySlugs.size) {
+			throw new Error(`expected ${readySlugs.size} ready usage modules, loaded ${modules.length}`);
+		}
+		return modules;
+	} finally {
+		await server.close();
+	}
+}
+
+export async function runDocsGate(repoRoot = process.cwd()) {
 	const packageRoot = join(repoRoot, "packages/basalt");
 	const tempRoot = realpathSync(mkdtempSync(join(tmpdir(), "basalt-docs-gate-")));
 
@@ -258,7 +324,27 @@ export function runDocsGate(repoRoot = process.cwd()) {
 			writeFileSync(docFilePath, mod.code);
 		}
 
-		// 7. Strict tsc typecheck of consumer
+		// 7. Write out exact verbatim library usage modules loaded via SSR catalog content registry
+		const usageModules = await loadCatalogUsageModules(repoRoot);
+		const usageDir = join(consumerDir, "src/__generated_usages__");
+		mkdirSync(usageDir, { recursive: true });
+		const writtenUsagePaths = new Set<string>();
+
+		for (let idx = 0; idx < usageModules.length; idx++) {
+			const mod = usageModules[idx];
+			const usageFilename = computeUsageModuleFilename(idx, mod.slug);
+			const usageFilePath = join(usageDir, usageFilename);
+
+			if (writtenUsagePaths.has(usageFilePath) || existsSync(usageFilePath)) {
+				throw new Error(
+					`fatal destination file collision for usage module '${mod.slug}': ${usageFilename}`,
+				);
+			}
+			writtenUsagePaths.add(usageFilePath);
+			writeFileSync(usageFilePath, mod.code);
+		}
+
+		// 8. Strict tsc typecheck of consumer
 		const tsc = spawnSync("npx", ["tsc", "-p", "tsconfig.json", "--noEmit"], {
 			cwd: consumerDir,
 			stdio: "pipe",
@@ -276,6 +362,8 @@ export function runDocsGate(repoRoot = process.cwd()) {
 			barrelCount: catalogData.barrelCount,
 			compilableCount: compilableModules.length,
 			compilableIds: compilableModules.map((m) => m.id),
+			usageCount: usageModules.length,
+			usageSlugs: usageModules.map((m) => m.slug),
 		};
 	} finally {
 		rmSync(tempRoot, { recursive: true, force: true });
@@ -283,6 +371,6 @@ export function runDocsGate(repoRoot = process.cwd()) {
 }
 
 if (import.meta.main) {
-	const result = runDocsGate();
+	const result = await runDocsGate();
 	console.log(`consumer docs ok ${JSON.stringify(result, null, 2)}`);
 }

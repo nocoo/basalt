@@ -4,8 +4,10 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
 	computeDocModuleFilename,
+	computeUsageModuleFilename,
 	extractCompilableDocModules,
 	generateCatalogInstallationSnippets,
+	loadCatalogUsageModules,
 	scanDocFences,
 } from "./docs-gate";
 
@@ -135,5 +137,39 @@ describe("documentation tarball compilation gate", () => {
 		} finally {
 			rmSync(tempFixtureDir, { recursive: true, force: true });
 		}
+	});
+
+	it("loads verbatim usage modules for all ready catalog items", async () => {
+		const usageModules = await loadCatalogUsageModules();
+		expect(usageModules).toHaveLength(99);
+
+		for (const [index, mod] of usageModules.entries()) {
+			expect(mod.slug.length).toBeGreaterThan(0);
+			expect(mod.code.trim().length).toBeGreaterThan(0);
+			expect(mod.code).toContain("import");
+			expect(mod.code).toMatch(/export (default )?function/);
+
+			const filename = computeUsageModuleFilename(index, mod.slug);
+			expect(filename).toMatch(/^usage_\d{3}_[a-zA-Z0-9_-]+\.tsx$/);
+		}
+
+		const confirmDialogUsage = usageModules.find((m) => m.slug === "confirm-dialog");
+		expect(confirmDialogUsage).toBeDefined();
+		expect(confirmDialogUsage?.code).toContain(
+			'import { ConfirmDialog } from "@nocoo/basalt/components/confirm-dialog";',
+		);
+		expect(confirmDialogUsage?.code).toContain("const [open, setOpen] = useState(false);");
+
+		const segmentControlUsage = usageModules.find((m) => m.slug === "segment-control");
+		expect(segmentControlUsage).toBeDefined();
+		expect(segmentControlUsage?.code).toContain("statusOptions");
+
+		const slotBarUsage = usageModules.find((m) => m.slug === "slot-bar");
+		expect(slotBarUsage).toBeDefined();
+		expect(slotBarUsage?.code).toContain("items");
+
+		const tablePagerUsage = usageModules.find((m) => m.slug === "table-pager");
+		expect(tablePagerUsage).toBeDefined();
+		expect(tablePagerUsage?.code).toContain("const [page, setPage] = useState(1);");
 	});
 });
