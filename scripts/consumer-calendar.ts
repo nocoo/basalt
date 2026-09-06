@@ -351,6 +351,144 @@ export async function assertConsumerCalendar(page: Page) {
 	// Focus must be directed to visible trigger button
 	await page.waitForFunction(() => document.activeElement?.id === "localized-booking-picker");
 
+	// 11. Native Date Upper Bound Regressions (275760-09-13 boundary & 275760-08-13 step forward)
+	// 11a. Positive control: 275760-08-13 PageDown steps into final valid month 275760-09-13
+	const lastValidTrigger = page.locator(
+		"#last-valid-month-container button#last-valid-month-picker",
+	);
+	await lastValidTrigger.click();
+	const lastValidGrid = page.locator('table[role="grid"]');
+	await lastValidGrid.waitFor({ state: "visible" });
+
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "275760-08-13",
+	);
+
+	// PageDown steps to 275760-09-13
+	await page.keyboard.press("PageDown");
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "275760-09-13",
+	);
+
+	// Verify month live region displays September 275760
+	const lastValidLive = page.locator("#last-valid-month-picker-month-live");
+	assert.ok((await lastValidLive.textContent())?.includes("September 275760"));
+
+	// onMonthChange called exactly once with "275760-09"
+	const lastReq = await page.evaluate(() => {
+		const audit = window.calendarAudit;
+		if (!audit?.getLastRequestedMonths) {
+			throw new Error("getLastRequestedMonths must exist");
+		}
+		return audit.getLastRequestedMonths();
+	});
+	assert.deepEqual(
+		lastReq,
+		["275760-09"],
+		"onMonthChange must be requested exactly once with 275760-09",
+	);
+
+	// onChange must NOT be called (uncommitted navigation)
+	const lastDateChanges = await page.evaluate(() => {
+		const audit = window.calendarAudit;
+		if (!audit?.getLastValidDateChanges) {
+			throw new Error("getLastValidDateChanges must exist");
+		}
+		return audit.getLastValidDateChanges();
+	});
+	assert.deepEqual(lastDateChanges, [], "onChange must not be called prior to commit");
+
+	// Not yet committed: FormData accurately retains original defaultValue 275760-08-13
+	const lastFormDataValue = await page.evaluate(() => {
+		const form = document.getElementById("last-valid-month-form") as HTMLFormElement | null;
+		if (!form) {
+			throw new Error("last-valid-month-form must exist");
+		}
+		return new FormData(form).get("last-valid-month-field");
+	});
+	assert.equal(lastFormDataValue, "275760-08-13");
+
+	// Escape closes popover and returns focus to trigger
+	await page.keyboard.press("Escape");
+	await lastValidGrid.waitFor({ state: "detached" });
+	await page.waitForFunction(() => document.activeElement?.id === "last-valid-month-picker");
+
+	// 11b. Negative counter-example: 275760-09-13 PageDown, Shift+PageDown, and ArrowRight past native limit
+	const maxTrigger = page.locator("#max-date-boundary-container button#max-date-boundary-picker");
+	await maxTrigger.click();
+	const maxGrid = page.locator('table[role="grid"]');
+	await maxGrid.waitFor({ state: "visible" });
+
+	await page.waitForFunction(
+		() => document.activeElement?.getAttribute("data-date") === "275760-09-13",
+	);
+
+	const maxLive = page.locator("#max-date-boundary-picker-month-live");
+	assert.ok((await maxLive.textContent())?.includes("September 275760"));
+
+	// PageDown past max limit: focus and month retained as September 275760
+	await page.keyboard.press("PageDown");
+	assert.equal(
+		await page.evaluate(() => document.activeElement?.getAttribute("data-date")),
+		"275760-09-13",
+	);
+	assert.ok((await maxLive.textContent())?.includes("September 275760"));
+
+	// Shift+PageDown past max limit: focus and month retained as September 275760
+	await page.keyboard.press("Shift+PageDown");
+	assert.equal(
+		await page.evaluate(() => document.activeElement?.getAttribute("data-date")),
+		"275760-09-13",
+	);
+	assert.ok((await maxLive.textContent())?.includes("September 275760"));
+
+	// ArrowRight past max limit: focus and month retained as September 275760
+	await page.keyboard.press("ArrowRight");
+	assert.equal(
+		await page.evaluate(() => document.activeElement?.getAttribute("data-date")),
+		"275760-09-13",
+	);
+	assert.ok((await maxLive.textContent())?.includes("September 275760"));
+
+	// onMonthChange must NOT be invoked past limit
+	const maxReq = await page.evaluate(() => {
+		const audit = window.calendarAudit;
+		if (!audit?.getMaxRequestedMonths) {
+			throw new Error("getMaxRequestedMonths must exist");
+		}
+		return audit.getMaxRequestedMonths();
+	});
+	assert.deepEqual(maxReq, [], "onMonthChange must not trigger past maximum native date boundary");
+
+	// onChange must NOT be invoked past limit
+	const maxDateChanges = await page.evaluate(() => {
+		const audit = window.calendarAudit;
+		if (!audit?.getMaxDateChanges) {
+			throw new Error("getMaxDateChanges must exist");
+		}
+		return audit.getMaxDateChanges();
+	});
+	assert.deepEqual(
+		maxDateChanges,
+		[],
+		"onChange must not trigger past maximum native date boundary",
+	);
+
+	// FormData retains original defaultValue 275760-09-13 via actual new FormData(form)
+	const maxFormDataValue = await page.evaluate(() => {
+		const form = document.getElementById("max-date-form") as HTMLFormElement | null;
+		if (!form) {
+			throw new Error("max-date-form must exist");
+		}
+		return new FormData(form).get("max-date-field");
+	});
+	assert.equal(maxFormDataValue, "275760-09-13");
+
+	// Escape closes popover and returns focus to trigger
+	await page.keyboard.press("Escape");
+	await maxGrid.waitFor({ state: "detached" });
+	await page.waitForFunction(() => document.activeElement?.id === "max-date-boundary-picker");
+
 	return {
 		gridSemantics: { columnHeaders: 7, multiselectable: true },
 		keyboardNavigation: { arrowRight: "2026-09-10", home: "2026-09-07", end: "2026-09-13" },
@@ -368,6 +506,10 @@ export async function assertConsumerCalendar(page: Page) {
 		localizedLabels: {
 			placeholder: "请选择服务日期",
 			customValidation: "请先选择有效的预约日期再提交",
+		},
+		maxDateBoundary: {
+			positiveStep: "275760-09-13",
+			limitRetained: "275760-09-13",
 		},
 	};
 }

@@ -17,6 +17,11 @@ declare global {
 			// Empty controlled month test controls
 			setEmptyControlledMonth?: (month: string) => void;
 			getEmptyRequestedMonths?: () => string[];
+			// Native boundary regression test controls
+			getMaxRequestedMonths: () => string[];
+			getLastRequestedMonths: () => string[];
+			getMaxDateChanges: () => string[];
+			getLastValidDateChanges: () => string[];
 		};
 	}
 }
@@ -39,6 +44,12 @@ export function CalendarApp() {
 	// Empty controlled month regression state
 	const [emptyControlledMonth, setEmptyControlledMonth] = useState("2026-11");
 	const [emptyRequestedMonths, setEmptyRequestedMonths] = useState<string[]>([]);
+
+	// Native limit testing state
+	const [maxRequestedMonths, setMaxRequestedMonths] = useState<string[]>([]);
+	const [lastRequestedMonths, setLastRequestedMonths] = useState<string[]>([]);
+	const [maxDateChanges, setMaxDateChanges] = useState<string[]>([]);
+	const [lastValidDateChanges, setLastValidDateChanges] = useState<string[]>([]);
 
 	// Chinese localized form state
 	const [formStatus, setFormStatus] = useState("");
@@ -66,8 +77,19 @@ export function CalendarApp() {
 			changeDefaultMonthProp: (month: string) => setDefaultMonthPropVal(month),
 			setEmptyControlledMonth: (month: string) => setEmptyControlledMonth(month),
 			getEmptyRequestedMonths: () => emptyRequestedMonths,
+			getMaxRequestedMonths: () => maxRequestedMonths,
+			getLastRequestedMonths: () => lastRequestedMonths,
+			getMaxDateChanges: () => maxDateChanges,
+			getLastValidDateChanges: () => lastValidDateChanges,
 		};
-	}, [requestedMonths, emptyRequestedMonths]);
+	}, [
+		requestedMonths,
+		emptyRequestedMonths,
+		maxRequestedMonths,
+		lastRequestedMonths,
+		maxDateChanges,
+		lastValidDateChanges,
+	]);
 
 	const handleBookingSubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -154,6 +176,32 @@ export function CalendarApp() {
 					</div>
 				</form>
 				{formStatus ? <div id="booking-status">{formStatus}</div> : null}
+			</div>
+			{/* Native boundary regression fixtures */}
+			<div id="max-date-boundary-container" style={{ width: 320 }}>
+				<form id="max-date-form">
+					<DatePicker
+						id="max-date-boundary-picker"
+						name="max-date-field"
+						defaultValue="275760-09-13"
+						aria-label="MaxDateBoundary"
+						onChange={(val) => setMaxDateChanges((prev) => [...prev, val])}
+						onMonthChange={(m) => setMaxRequestedMonths((prev) => [...prev, m])}
+					/>
+				</form>
+			</div>
+
+			<div id="last-valid-month-container" style={{ width: 320 }}>
+				<form id="last-valid-month-form">
+					<DatePicker
+						id="last-valid-month-picker"
+						name="last-valid-month-field"
+						defaultValue="275760-08-13"
+						aria-label="LastValidMonth"
+						onChange={(val) => setLastValidDateChanges((prev) => [...prev, val])}
+						onMonthChange={(m) => setLastRequestedMonths((prev) => [...prev, m])}
+					/>
+				</form>
 			</div>
 		</div>
 	);

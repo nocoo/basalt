@@ -1599,4 +1599,407 @@ describe("DatePicker", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Submit" }));
 		expect(screen.getByRole("alert")).toHaveTextContent("必须填写预约日期");
 	});
+
+	it("supports Home/End with weekStartsOn=1 (Monday) and moves to first/last selectable day when edges are disabled", async () => {
+		const onChange = vi.fn();
+		render(
+			<form id="test-form">
+				<DatePicker
+					name="schedule"
+					defaultValue="2026-09-09"
+					weekStartsOn={1}
+					min="2026-09-08"
+					max="2026-09-10"
+					onChange={onChange}
+					aria-label="BoundaryWeek"
+				/>
+			</form>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /BoundaryWeek/ }));
+
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-09-09");
+		});
+
+		// Press Home: start of week (Monday Sep 7) is < min (Sep 8), so steps forward to Sep 8
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "Home" });
+		expect(document.activeElement).toHaveAttribute("aria-label", "2026-09-08");
+		expect(onChange).not.toHaveBeenCalled();
+
+		// Press End: end of week (Sunday Sep 13) is > max (Sep 10), so steps backward to Sep 10
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "End" });
+		expect(document.activeElement).toHaveAttribute("aria-label", "2026-09-10");
+		expect(onChange).not.toHaveBeenCalled();
+
+		// Form value remains defaultValue until selected
+		const input = document.querySelector('input[name="schedule"]') as HTMLInputElement;
+		expect(input.value).toBe("2026-09-09");
+	});
+
+	it("navigates Home/End across months with Sunday weekStartsOn=0 and supports month rejection/acceptance", async () => {
+		const onMonthChange = vi.fn();
+		let controlledMonth = "2026-09";
+		const { rerender } = render(
+			<DatePicker
+				defaultValue="2026-09-01"
+				month={controlledMonth}
+				weekStartsOn={0}
+				onMonthChange={onMonthChange}
+				aria-label="CrossMonthHomeEnd"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /CrossMonthHomeEnd/ }));
+
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-09-01");
+		});
+
+		// 2026-09-01 is Tuesday. With weekStartsOn=0, start of week is Sunday 2026-08-30.
+		// Press Home -> requests previous month (2026-08)
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "Home" });
+		expect(onMonthChange).toHaveBeenCalledWith("2026-08");
+
+		// Parent rejects: month prop stays 2026-09. Target remains pending.
+		rerender(
+			<DatePicker
+				defaultValue="2026-09-01"
+				month="2026-09"
+				weekStartsOn={0}
+				onMonthChange={onMonthChange}
+				aria-label="CrossMonthHomeEnd"
+			/>,
+		);
+		expect(screen.getByText("September 2026")).toBeInTheDocument();
+
+		// Parent later accepts: month prop updates to 2026-08
+		controlledMonth = "2026-08";
+		rerender(
+			<DatePicker
+				defaultValue="2026-09-01"
+				month={controlledMonth}
+				weekStartsOn={0}
+				onMonthChange={onMonthChange}
+				aria-label="CrossMonthHomeEnd"
+			/>,
+		);
+		expect(screen.getByText("August 2026")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-08-30");
+		});
+
+		// In August, focus 2026-08-30 (Sunday). End of week with weekStartsOn=0 is Saturday 2026-09-05.
+		// Press End -> requests 2026-09
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "End" });
+		expect(onMonthChange).toHaveBeenCalledWith("2026-09");
+		rerender(
+			<DatePicker
+				defaultValue="2026-09-01"
+				month="2026-09"
+				weekStartsOn={0}
+				onMonthChange={onMonthChange}
+				aria-label="CrossMonthHomeEnd"
+			/>,
+		);
+		expect(screen.getByText("September 2026")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-09-05");
+		});
+	});
+
+	it("handles PageUp leap year clamping and Shift+PageUp negative year jumps without committing until Enter", async () => {
+		const onChange = vi.fn();
+		const { container } = render(
+			<DatePicker defaultValue="2024-03-31" onChange={onChange} aria-label="LeapPageUp" />,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /LeapPageUp/ }));
+
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2024-03-31");
+		});
+
+		// PageUp from 2024-03-31 (leap year) -> clamps to 2024-02-29
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageUp" });
+		expect(screen.getByText("February 2024")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2024-02-29");
+		});
+		expect(onChange).not.toHaveBeenCalled();
+
+		// Shift+PageUp from 2024-02-29 -> jumps 1 year back to non-leap 2023-02-28
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageUp", shiftKey: true });
+		expect(screen.getByText("February 2023")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2023-02-28");
+		});
+		expect(onChange).not.toHaveBeenCalled();
+
+		// Enter commits selection
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "Enter" });
+		expect(onChange).toHaveBeenCalledWith("2023-02-28");
+		expect(container.querySelector('input[type="date"]')).toHaveValue("2023-02-28");
+	});
+
+	it("handles PageDown stepping when target day is unselectable and falls back backward when constrained by max", async () => {
+		const onChange = vi.fn();
+		const { unmount: unmountUnselectable } = render(
+			<DatePicker
+				defaultValue="2026-08-15"
+				max="2026-09-20"
+				isDisabledDate={(d) => d === "2026-09-15" || d === "2026-09-16"}
+				onChange={onChange}
+				aria-label="PageDownUnselectable"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /PageDownUnselectable/ }));
+
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-08-15");
+		});
+
+		// PageDown target 2026-09-15 is disabled, steps forward past disabled 2026-09-16 to 2026-09-17
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageDown" });
+		expect(screen.getByText("September 2026")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-09-17");
+		});
+		unmountUnselectable();
+
+		// Another setup: target day + all future days in month disabled/above max -> searches forward, fails, then searches backward
+		const { unmount: unmountMax } = render(
+			<DatePicker
+				defaultValue="2026-08-25"
+				max="2026-09-20"
+				onChange={onChange}
+				aria-label="PageDownMaxBackward"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /PageDownMaxBackward/ }));
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-08-25");
+		});
+
+		// Target 2026-09-25 exceeds max 2026-09-20. Forward search hits limit; backward search finds 2026-09-20.
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageDown" });
+		expect(screen.getByText("September 2026")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-09-20");
+		});
+		unmountMax();
+
+		// If target has no selectable dates forward or backward (all dates disabled in target), stays on current
+		const { unmount: unmountAllDisabled } = render(
+			<DatePicker
+				defaultValue="2026-08-10"
+				isDisabledDate={(d) => d.startsWith("2027-")}
+				onChange={onChange}
+				aria-label="PageDownAllDisabled"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /PageDownAllDisabled/ }));
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-08-10");
+		});
+
+		// Shift+PageDown -> target 2027-08-10. All 2027 dates disabled, so does not change month or lose focus
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageDown", shiftKey: true });
+		expect(screen.getByText("August 2026")).toBeInTheDocument();
+		expect(document.activeElement).toHaveAttribute("aria-label", "2026-08-10");
+		expect(onChange).not.toHaveBeenCalled();
+		unmountAllDisabled();
+	});
+
+	it("rejects PageUp/Shift+PageUp when reaching year 1 boundary without error, allowing Escape without onChange", async () => {
+		const onChange = vi.fn();
+		render(
+			<DatePicker defaultValue="0001-01-15" onChange={onChange} aria-label="YearOneBoundary" />,
+		);
+		const trigger = screen.getByRole("button", { name: /YearOneBoundary/ });
+		fireEvent.click(trigger);
+
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "0001-01-15");
+		});
+
+		// PageUp at year 1 Jan cannot go negative -> ignored
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageUp" });
+		expect(screen.getByText(/January (000)?1/)).toBeInTheDocument();
+		expect(document.activeElement).toHaveAttribute("aria-label", "0001-01-15");
+
+		// Shift+PageUp at year 1 Jan -> ignored
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageUp", shiftKey: true });
+		expect(screen.getByText(/January (000)?1/)).toBeInTheDocument();
+		expect(document.activeElement).toHaveAttribute("aria-label", "0001-01-15");
+
+		// Escape closes popover with no onChange and returns focus to trigger
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "Escape" });
+		await waitFor(() => {
+			expect(screen.queryByRole("dialog")).toBeNull();
+			expect(trigger).toHaveFocus();
+		});
+		expect(onChange).not.toHaveBeenCalled();
+	});
+
+	it("preserves target focus when controlled month is rejected and weekStartsOn changes, then lands on target day upon acceptance", async () => {
+		const onMonthChange = vi.fn();
+		const onChange = vi.fn();
+		const { rerender } = render(
+			<DatePicker
+				defaultValue="2026-09-10"
+				month="2026-09"
+				weekStartsOn={1}
+				onMonthChange={onMonthChange}
+				onChange={onChange}
+				aria-label="PendingWeekStartsOn"
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: /PendingWeekStartsOn/ }));
+
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-09-10");
+		});
+
+		// Request Next month via PageDown navigating out of month
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageDown" });
+		expect(onMonthChange).toHaveBeenCalledWith("2026-10");
+
+		// Parent rejects month: month remains 2026-09, but weekStartsOn prop changes
+		rerender(
+			<DatePicker
+				defaultValue="2026-09-10"
+				month="2026-09"
+				weekStartsOn={0}
+				onMonthChange={onMonthChange}
+				onChange={onChange}
+				aria-label="PendingWeekStartsOn"
+			/>,
+		);
+		expect(screen.getByText("September 2026")).toBeInTheDocument();
+		// Focus remains on 2026-09-10 in current month and onChange was not called
+		expect(document.activeElement).toHaveAttribute("aria-label", "2026-09-10");
+		expect(onChange).not.toHaveBeenCalled();
+
+		// Parent accepts delayed month: lands on target day 2026-10-10, NOT 2026-10-01
+		rerender(
+			<DatePicker
+				defaultValue="2026-09-10"
+				month="2026-10"
+				weekStartsOn={0}
+				onMonthChange={onMonthChange}
+				onChange={onChange}
+				aria-label="PendingWeekStartsOn"
+			/>,
+		);
+		expect(screen.getByText("October 2026")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "2026-10-10");
+		});
+		expect(onChange).not.toHaveBeenCalled();
+	});
+
+	it("rejects PageDown, Shift+PageDown, and ArrowRight past the maximum date boundary 275760-09-13", async () => {
+		const onChange = vi.fn();
+		render(
+			<DatePicker defaultValue="275760-09-13" onChange={onChange} aria-label="MaxDateBoundary" />,
+		);
+		const trigger = screen.getByRole("button", { name: /MaxDateBoundary/ });
+		fireEvent.click(trigger);
+
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "275760-09-13");
+		});
+
+		// PageDown past max -> ignored, focus remains on 275760-09-13
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageDown" });
+		expect(document.activeElement).toHaveAttribute("aria-label", "275760-09-13");
+
+		// Shift+PageDown past max -> ignored, focus remains on 275760-09-13
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageDown", shiftKey: true });
+		expect(document.activeElement).toHaveAttribute("aria-label", "275760-09-13");
+
+		// ArrowRight past max -> ignored, focus remains on 275760-09-13
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "ArrowRight" });
+		expect(document.activeElement).toHaveAttribute("aria-label", "275760-09-13");
+		expect(onChange).not.toHaveBeenCalled();
+
+		// Escape closes popover and returns focus to trigger
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "Escape" });
+		await waitFor(() => {
+			expect(screen.queryByRole("dialog")).toBeNull();
+			expect(trigger).toHaveFocus();
+		});
+		expect(onChange).not.toHaveBeenCalled();
+	});
+
+	it("steps PageDown into the final valid month 275760-09 without rejecting the entire month", async () => {
+		const onChange = vi.fn();
+		render(
+			<DatePicker defaultValue="275760-08-13" onChange={onChange} aria-label="LastValidMonth" />,
+		);
+		const trigger = screen.getByRole("button", { name: /LastValidMonth/ });
+		fireEvent.click(trigger);
+
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "275760-08-13");
+		});
+
+		// PageDown from 275760-08-13 steps into the final valid month 275760-09-13
+		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "PageDown" });
+		expect(screen.getByText("September 275760")).toBeInTheDocument();
+		await waitFor(() => {
+			expect(document.activeElement).toHaveAttribute("aria-label", "275760-09-13");
+		});
+		expect(onChange).not.toHaveBeenCalled();
+	});
+
+	it("restores trigger focus when all dates are unavailable and preserves the default form value", async () => {
+		const onChange = vi.fn();
+		const onSubmit = vi.fn((e) => e.preventDefault());
+		render(
+			<form onSubmit={onSubmit}>
+				<DatePicker
+					name="blocked"
+					defaultValue="2026-09-15"
+					isDisabledDate={() => true}
+					onChange={onChange}
+					aria-label="AllDisabledMonth"
+				/>
+				<button type="submit">Submit</button>
+			</form>,
+		);
+		const trigger = screen.getByRole("button", { name: /AllDisabledMonth/ });
+		fireEvent.click(trigger);
+
+		// When all dates are disabled, all day buttons are disabled and no enabled day button has tabIndex 0
+		const dayButtons = screen
+			.getAllByRole("button")
+			.filter(
+				(b) =>
+					b.hasAttribute("aria-label") &&
+					/^\d{4}-\d{2}-\d{2}$/.test(b.getAttribute("aria-label") || ""),
+			);
+		expect(dayButtons.length).toBeGreaterThan(0);
+		for (const btn of dayButtons) {
+			expect(btn).toBeDisabled();
+		}
+		const enabledFocusableDay = dayButtons.find(
+			(btn) => (btn as HTMLButtonElement).disabled === false && btn.tabIndex === 0,
+		);
+		expect(enabledFocusableDay).toBeUndefined();
+
+		// Escape closes popover and focus returns to trigger
+		fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
+		await waitFor(() => {
+			expect(screen.queryByRole("dialog")).toBeNull();
+			expect(trigger).toHaveFocus();
+		});
+
+		// Disabled dates cannot be selected: onChange is never invoked
+		expect(onChange).not.toHaveBeenCalled();
+
+		// Form submission preserves caller-provided defaultValue without clearing it
+		fireEvent.click(screen.getByRole("button", { name: "Submit" }));
+		expect(onSubmit).toHaveBeenCalled();
+		const input = document.querySelector('input[name="blocked"]') as HTMLInputElement;
+		expect(input.value).toBe("2026-09-15");
+	});
 });

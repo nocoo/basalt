@@ -93,12 +93,30 @@ function formatCivil(date: Civil, locale: string, options: Intl.DateTimeFormatOp
 	}).format(utcDate(date));
 }
 
-function shiftCivilMonthClamped(current: Civil, deltaMonths: number): Civil {
+function isLeapYear(y: number): boolean {
+	return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+}
+
+function daysInCivilMonth(y: number, m: number): number {
+	if (m === 2) {
+		return isLeapYear(y) ? 29 : 28;
+	}
+	if (m === 4 || m === 6 || m === 9 || m === 11) {
+		return 30;
+	}
+	return 31;
+}
+
+function shiftCivilMonthClamped(current: Civil, deltaMonths: number): Civil | null {
 	const total = current.y * 12 + (current.m - 1) + deltaMonths;
 	const targetY = Math.floor(total / 12);
+	if (targetY < 1) {
+		return null;
+	}
 	const targetM = (((total % 12) + 12) % 12) + 1;
-	const maxD = new Date(Date.UTC(targetY, targetM, 0)).getUTCDate();
-	return { y: targetY, m: targetM, d: Math.min(current.d, maxD) };
+	const maxD = daysInCivilMonth(targetY, targetM);
+	const target = { y: targetY, m: targetM, d: Math.min(current.d, maxD) };
+	return isValidCivil(target) ? target : null;
 }
 
 function formatTriggerLabel({
@@ -1067,6 +1085,9 @@ export function DatePicker({
 									? 1
 									: -1;
 							const target = shiftCivilMonthClamped(current, deltaMonths);
+							if (!target) {
+								return;
+							}
 							let next: Civil | null = target;
 							for (
 								let step = 0;
