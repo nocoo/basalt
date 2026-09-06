@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 649,
+	"totalSymbols": 656,
 	"totalValues": 375,
-	"totalTypes": 274,
+	"totalTypes": 281,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2921,6 +2921,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/collapsible"
 				},
 				{
+					"name": "CollapsibleTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/collapsible",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/collapsible"
+				},
+				{
 					"name": "CollapsibleTrigger",
 					"isValue": true,
 					"isType": false,
@@ -3639,9 +3647,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/dropdown-menu"
 				},
 				{
+					"name": "DropdownMenuTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
 					"name": "DropdownMenuTrigger",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuGroupProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/dropdown-menu",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/dropdown-menu"
@@ -3655,9 +3679,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/dropdown-menu"
 				},
 				{
+					"name": "DropdownMenuPortalProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
 					"name": "DropdownMenuPortal",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuSubProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/dropdown-menu",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/dropdown-menu"
@@ -3671,9 +3711,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/dropdown-menu"
 				},
 				{
+					"name": "DropdownMenuRadioGroupProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
 					"name": "DropdownMenuRadioGroup",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/dropdown-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/dropdown-menu"
+				},
+				{
+					"name": "DropdownMenuContentProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/dropdown-menu",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/dropdown-menu"

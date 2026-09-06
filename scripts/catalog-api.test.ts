@@ -660,6 +660,42 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "dropdown-menu",
 				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuTriggerProps",
+				surface: "DropdownMenuTrigger",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuGroupProps",
+				surface: "DropdownMenuGroup",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuPortalProps",
+				surface: "DropdownMenuPortal",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuSubProps",
+				surface: "DropdownMenuSub",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuRadioGroupProps",
+				surface: "DropdownMenuRadioGroup",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+				propsType: "DropdownMenuContentProps",
+				surface: "DropdownMenuContent",
+			},
+			{
+				slug: "dropdown-menu",
+				sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
 				propsType: "DropdownMenuItemProps",
 				surface: "DropdownMenuItem",
 			},
@@ -668,6 +704,12 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/collapsible.tsx",
 				propsType: "CollapsibleProps",
 				surface: "Collapsible",
+			},
+			{
+				slug: "collapsible",
+				sourceFile: "packages/basalt/src/components/collapsible.tsx",
+				propsType: "CollapsibleTriggerProps",
+				surface: "CollapsibleTrigger",
 			},
 			{
 				slug: "collapsible",
@@ -1360,7 +1402,7 @@ describe("catalog API generator contract", () => {
 				surface: "LinkProvider",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(203);
+		expect(CATALOG_API_TARGETS).toHaveLength(210);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -2557,8 +2599,17 @@ export interface WidgetProps {
 				"PopoverTitle",
 				"PopoverDescription",
 			],
-			"dropdown-menu": ["DropdownMenu", "DropdownMenuItem"],
-			collapsible: ["Collapsible", "CollapsibleContent"],
+			"dropdown-menu": [
+				"DropdownMenu",
+				"DropdownMenuTrigger",
+				"DropdownMenuGroup",
+				"DropdownMenuPortal",
+				"DropdownMenuSub",
+				"DropdownMenuRadioGroup",
+				"DropdownMenuContent",
+				"DropdownMenuItem",
+			],
+			collapsible: ["Collapsible", "CollapsibleTrigger", "CollapsibleContent"],
 			table: ["Table", "TableRow", "TableCaption", "TableHead", "TableCell"],
 			"data-table": ["DataTable"],
 			pagination: ["Pagination"],
@@ -4480,7 +4531,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"ae00b76be24598220969a9476891f168b88894abdcd83736911fcdef65989169",
+			"87643ac621f852d69f12709d43a39d1a74c3800bb85d101669d1b6eb235a5b4c",
 		);
 	}, 60_000);
 

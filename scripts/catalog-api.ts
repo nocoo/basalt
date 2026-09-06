@@ -567,6 +567,42 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "dropdown-menu",
 		sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+		propsType: "DropdownMenuTriggerProps",
+		surface: "DropdownMenuTrigger",
+	},
+	{
+		slug: "dropdown-menu",
+		sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+		propsType: "DropdownMenuGroupProps",
+		surface: "DropdownMenuGroup",
+	},
+	{
+		slug: "dropdown-menu",
+		sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+		propsType: "DropdownMenuPortalProps",
+		surface: "DropdownMenuPortal",
+	},
+	{
+		slug: "dropdown-menu",
+		sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+		propsType: "DropdownMenuSubProps",
+		surface: "DropdownMenuSub",
+	},
+	{
+		slug: "dropdown-menu",
+		sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+		propsType: "DropdownMenuRadioGroupProps",
+		surface: "DropdownMenuRadioGroup",
+	},
+	{
+		slug: "dropdown-menu",
+		sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
+		propsType: "DropdownMenuContentProps",
+		surface: "DropdownMenuContent",
+	},
+	{
+		slug: "dropdown-menu",
+		sourceFile: "packages/basalt/src/components/dropdown-menu.tsx",
 		propsType: "DropdownMenuItemProps",
 		surface: "DropdownMenuItem",
 	},
@@ -575,6 +611,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/collapsible.tsx",
 		propsType: "CollapsibleProps",
 		surface: "Collapsible",
+	},
+	{
+		slug: "collapsible",
+		sourceFile: "packages/basalt/src/components/collapsible.tsx",
+		propsType: "CollapsibleTriggerProps",
+		surface: "CollapsibleTrigger",
 	},
 	{
 		slug: "collapsible",
