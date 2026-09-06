@@ -99,6 +99,38 @@ describe("HeatmapMatrix", () => {
 		expect(defaultBtn).toHaveStyle({ width: "25px", height: "25px" });
 	});
 
+	it("supports showLegend=false to hide scale legend and supports custom less/more labels", () => {
+		const { rerender } = render(
+			<HeatmapMatrix
+				rowLabels={["Tier 1"]}
+				columnLabels={["Col0"]}
+				values={[[10]]}
+				showLegend={false}
+			/>,
+		);
+
+		// Cell and reading must still render correctly
+		const btn = screen.getByRole("button");
+		expect(btn).toBeInTheDocument();
+		expect(btn).toHaveAttribute("aria-label", "Tier 1, Col0: 10 (Heatmap matrix)");
+		expect(screen.queryByText("Less")).not.toBeInTheDocument();
+		expect(screen.queryByText("More")).not.toBeInTheDocument();
+
+		// Rerender with custom less/more labels
+		rerender(
+			<HeatmapMatrix
+				rowLabels={["Tier 1"]}
+				columnLabels={["Col0"]}
+				values={[[10]]}
+				showLegend
+				lessLabel="Min Activity"
+				moreLabel="Max Activity"
+			/>,
+		);
+		expect(screen.getByText("Min Activity")).toBeInTheDocument();
+		expect(screen.getByText("Max Activity")).toBeInTheDocument();
+	});
+
 	it("clamps domain correctly, handles reversed/equal domain, and supports custom color scale", () => {
 		const { rerender } = render(
 			<HeatmapMatrix
@@ -278,45 +310,153 @@ describe("HeatmapMatrix", () => {
 			</div>,
 		);
 		expect(document.activeElement).toBe(outsideBtn);
+
+		// Non-empty rowLabels but empty columnLabels: renders empty region without hijacking outside focus
+		rerender(
+			<div>
+				<button id="outside-button" type="button">
+					Outside Focus
+				</button>
+				<HeatmapMatrix
+					rowLabels={["RowOnly"]}
+					columnLabels={[]}
+					values={[]}
+					ariaLabel="Empty Cols Matrix"
+				/>
+			</div>,
+		);
+		expect(document.activeElement).toBe(outsideBtn);
+
+		// Restore columns while outside focus is active: must not steal focus
+		rerender(
+			<div>
+				<button id="outside-button" type="button">
+					Outside Focus
+				</button>
+				<HeatmapMatrix
+					rowLabels={["RowOnly"]}
+					columnLabels={["Col0"]}
+					values={[[123]]}
+					ariaLabel="Empty Cols Matrix"
+				/>
+			</div>,
+		);
+		expect(document.activeElement).toBe(outsideBtn);
 	});
 
-	it("supports keyboard Home, End, PageUp, PageDown and closes tooltip on Escape", async () => {
+	it("supports keyboard Home, End, PageUp, PageDown, Escape, and bounds navigation with precise tooltips", () => {
+		const onFocus = vi.fn((e: React.FocusEvent<HTMLDivElement>) => ({
+			currentTarget: e.currentTarget,
+			target: e.target,
+		}));
+		const onBlur = vi.fn((e: React.FocusEvent<HTMLDivElement>) => ({
+			currentTarget: e.currentTarget,
+			target: e.target,
+			relatedTarget: e.relatedTarget,
+		}));
+
 		render(
-			<HeatmapMatrix rowLabels={sampleRows} columnLabels={sampleCols} values={sampleValues} />,
+			<div>
+				<button id="outside-matrix-test" type="button">
+					Outside Matrix Test
+				</button>
+				<HeatmapMatrix
+					rowLabels={sampleRows}
+					columnLabels={sampleCols}
+					values={sampleValues}
+					onFocus={onFocus}
+					onBlur={onBlur}
+				/>
+			</div>,
 		);
 
 		const buttons = screen.getAllByRole("button");
-		const btn0 = buttons[0];
-		const btn3 = buttons[3];
-		const btn8 = buttons[8];
-		const btn11 = buttons[11];
+		// buttons[0] is outside-matrix-test, 1..12 are matrix cells
+		const btn0 = buttons[1]; // row 0, col 0 ("Mon, 00:00: 0")
+		const btn3 = buttons[4]; // row 0, col 3 ("Mon, 18:00: 30")
+		const btn8 = buttons[9]; // row 2, col 0 ("Wed, 00:00: 25")
+		const btn11 = buttons[12]; // row 2, col 3 ("Wed, 18:00: 45")
 		if (!btn0 || !btn3 || !btn8 || !btn11) throw new Error("buttons missing");
 
-		fireEvent.focus(btn0);
+		// Actual focus using act
+		act(() => {
+			btn0.focus();
+		});
+		expect(document.activeElement).toBe(btn0);
+		expect(onFocus).toHaveBeenCalled();
+		expect(onFocus.mock.results[0]?.value.currentTarget).toBe(screen.getByTestId("heatmap-matrix"));
+		expect(onFocus.mock.results[0]?.value.target).toBe(btn0);
 
-		// Tooltip opens on focus
-		expect(screen.getByRole("tooltip")).toBeInTheDocument();
+		// Tooltip opens on focus with exact visible reading (metric prefix + value, distinct from col label)
+		const tooltipEl = screen.getByRole("tooltip");
+		expect(tooltipEl).toBeInTheDocument();
+		expect(tooltipEl).toHaveTextContent("Mon · 00:00");
+		expect(tooltipEl).toHaveTextContent("Heatmap matrix: 0");
 
 		// Escape closes tooltip while maintaining cell focus
 		fireEvent.keyDown(btn0, { key: "Escape" });
 		expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
 		expect(btn0).toHaveAttribute("tabindex", "0");
+		expect(document.activeElement).toBe(btn0);
 
-		// Navigation re-opens tooltip at new cell
+		// End -> last col in current row (col 3: index 3)
 		fireEvent.keyDown(btn0, { key: "End" });
 		expect(btn3).toHaveAttribute("tabindex", "0");
+		expect(document.activeElement).toBe(btn3);
+		expect(screen.getByRole("tooltip")).toHaveTextContent("Mon · 18:00");
+		expect(screen.getByRole("tooltip")).toHaveTextContent("Heatmap matrix: 30");
 
 		// PageDown -> last row in current col (row 2, col 3: index 11)
 		fireEvent.keyDown(btn3, { key: "PageDown" });
 		expect(btn11).toHaveAttribute("tabindex", "0");
+		expect(document.activeElement).toBe(btn11);
+		expect(screen.getByRole("tooltip")).toHaveTextContent("Wed · 18:00");
+		expect(screen.getByRole("tooltip")).toHaveTextContent("Heatmap matrix: 45");
 
 		// Home -> first col in current row (row 2, col 0: index 8)
 		fireEvent.keyDown(btn11, { key: "Home" });
 		expect(btn8).toHaveAttribute("tabindex", "0");
+		expect(document.activeElement).toBe(btn8);
+		expect(screen.getByRole("tooltip")).toHaveTextContent("Wed · 00:00");
+		expect(screen.getByRole("tooltip")).toHaveTextContent("Heatmap matrix: 25");
 
 		// PageUp -> first row in current col (row 0, col 0: index 0)
 		fireEvent.keyDown(btn8, { key: "PageUp" });
 		expect(btn0).toHaveAttribute("tabindex", "0");
+		expect(document.activeElement).toBe(btn0);
+
+		// ArrowLeft at col 0 stays at col 0
+		fireEvent.keyDown(btn0, { key: "ArrowLeft" });
+		expect(btn0).toHaveAttribute("tabindex", "0");
+		expect(document.activeElement).toBe(btn0);
+
+		// ArrowUp at row 0 stays at row 0
+		fireEvent.keyDown(btn0, { key: "ArrowUp" });
+		expect(btn0).toHaveAttribute("tabindex", "0");
+		expect(document.activeElement).toBe(btn0);
+
+		// Unknown key does not trigger preventDefault
+		const unhandledEvt = new KeyboardEvent("keydown", {
+			key: "a",
+			bubbles: true,
+			cancelable: true,
+		});
+		btn0.dispatchEvent(unhandledEvt);
+		expect(unhandledEvt.defaultPrevented).toBe(false);
+		expect(btn0).toHaveAttribute("tabindex", "0");
+		expect(document.activeElement).toBe(btn0);
+
+		// Focus moves to outside button -> caller onBlur called with event
+		const outsideBtn = screen.getByRole("button", { name: "Outside Matrix Test" });
+		act(() => {
+			outsideBtn.focus();
+		});
+		expect(document.activeElement).toBe(outsideBtn);
+		expect(onBlur).toHaveBeenCalled();
+		const lastBlur = onBlur.mock.results[onBlur.mock.results.length - 1]?.value;
+		expect(lastBlur.currentTarget).toBe(screen.getByTestId("heatmap-matrix"));
+		expect(lastBlur.relatedTarget).toBe(outsideBtn);
+		expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
 	});
 
 	it("calls caller onKeyDown on the root container and respects preventDefault", () => {
@@ -346,6 +486,45 @@ describe("HeatmapMatrix", () => {
 		// Because caller prevented default, navigation must not occur: buttons[0] remains active
 		expect(buttons[0]).toHaveAttribute("tabindex", "0");
 		expect(buttons[1]).toHaveAttribute("tabindex", "-1");
+	});
+
+	it("handles completely empty rows in ragged values matrix and preserves focus and labels", () => {
+		// Valid typed inputs where rowLabels have 2 rows but values only provide row 1 (row 0 omitted),
+		// or where all visible values are missing/null, ensuring clean domain derivation fallback to [0, 0]
+		const raggedValues: readonly (readonly (number | null | undefined)[])[] = [
+			[], // row 0 empty
+			[null, 42], // row 1 partial
+		];
+		const { rerender } = render(
+			<HeatmapMatrix
+				rowLabels={["EmptyRow", "ActiveRow"]}
+				columnLabels={["Col0", "Col1"]}
+				values={raggedValues}
+				metricLabel="Ragged metric"
+			/>,
+		);
+
+		const buttons = screen.getAllByRole("button");
+		expect(buttons).toHaveLength(4);
+		// Empty row cells render as missing
+		expect(buttons[0]).toHaveAttribute("aria-label", "EmptyRow, Col0: — (Ragged metric)");
+		expect(buttons[1]).toHaveAttribute("aria-label", "EmptyRow, Col1: — (Ragged metric)");
+		expect(buttons[2]).toHaveAttribute("aria-label", "ActiveRow, Col0: — (Ragged metric)");
+		expect(buttons[3]).toHaveAttribute("aria-label", "ActiveRow, Col1: 42 (Ragged metric)");
+
+		// When rowLabels are provided but values is completely empty [] (all rows missing)
+		rerender(
+			<HeatmapMatrix
+				rowLabels={["R0", "R1"]}
+				columnLabels={["C0", "C1"]}
+				values={[]}
+				metricLabel="All Missing"
+			/>,
+		);
+		const allMissingButtons = screen.getAllByRole("button");
+		expect(allMissingButtons).toHaveLength(4);
+		expect(allMissingButtons[0]).toHaveAttribute("aria-label", "R0, C0: — (All Missing)");
+		expect(allMissingButtons[3]).toHaveAttribute("aria-label", "R1, C1: — (All Missing)");
 	});
 
 	it("supports object ref and callback ref with React 19 cleanup and stability across renders", () => {
@@ -398,5 +577,144 @@ describe("HeatmapMatrix", () => {
 		// Unmount invokes cleanup exactly once without redundant ref(null)
 		unmountCb();
 		expect(cleanupFn).toHaveBeenCalledTimes(1);
+
+		// 3. Legacy callback ref returning null / undefined
+		const legacyCallback = vi.fn();
+		const { unmount: unmountLegacy } = render(
+			<HeatmapMatrix
+				ref={legacyCallback}
+				rowLabels={sampleRows}
+				columnLabels={sampleCols}
+				values={sampleValues}
+			/>,
+		);
+		expect(legacyCallback).toHaveBeenCalledWith(expect.any(HTMLDivElement));
+		unmountLegacy();
+		expect(legacyCallback).toHaveBeenCalledWith(null);
+
+		// 4. Ref replacement invokes previous cleanup and attaches to new ref
+		const firstCleanup = vi.fn();
+		const firstRef = vi.fn(() => firstCleanup);
+		const secondCleanup = vi.fn();
+		const secondRef = vi.fn(() => secondCleanup);
+
+		const { rerender: rerenderSwitch, unmount: unmountSwitch } = render(
+			<HeatmapMatrix
+				ref={firstRef}
+				rowLabels={sampleRows}
+				columnLabels={sampleCols}
+				values={sampleValues}
+			/>,
+		);
+		expect(firstRef).toHaveBeenCalledTimes(1);
+		expect(firstCleanup).toHaveBeenCalledTimes(0);
+
+		rerenderSwitch(
+			<HeatmapMatrix
+				ref={secondRef}
+				rowLabels={sampleRows}
+				columnLabels={sampleCols}
+				values={sampleValues}
+			/>,
+		);
+		expect(firstCleanup).toHaveBeenCalledTimes(1);
+		expect(secondRef).toHaveBeenCalledTimes(1);
+
+		unmountSwitch();
+		expect(secondCleanup).toHaveBeenCalledTimes(1);
+	});
+
+	it("adjusts scrollContainer.scrollLeft when navigating left and right to prevent sticky header occlusion", () => {
+		const longCols = ["C0", "C1", "C2", "C3", "C4", "C5", "C6", "C7"] as const;
+		const rowData = [["RowA"], longCols, [[1, 2, 3, 4, 5, 6, 7, 8]]] as const;
+
+		const { container } = render(
+			<HeatmapMatrix
+				rowLabels={rowData[0]}
+				columnLabels={rowData[1]}
+				values={rowData[2]}
+				cellSize={20}
+				columnWidth={60}
+			/>,
+		);
+
+		const scrollContainer = container.querySelector<HTMLElement>(
+			'[role="region"][aria-label$="scrollable table"]',
+		);
+		if (!scrollContainer) throw new Error("scrollContainer missing");
+
+		// Mock bounding rects for container and rowHeader
+		vi.spyOn(scrollContainer, "getBoundingClientRect").mockReturnValue({
+			left: 0,
+			right: 200,
+			top: 0,
+			bottom: 100,
+			width: 200,
+			height: 100,
+			x: 0,
+			y: 0,
+			toJSON: () => ({}),
+		});
+
+		const rowHeader = container.querySelector<HTMLElement>('th[scope="row"]');
+		if (!rowHeader) throw new Error("rowHeader missing");
+		vi.spyOn(rowHeader, "getBoundingClientRect").mockReturnValue({
+			left: 0,
+			right: 64, // sticky header width = 64
+			top: 0,
+			bottom: 20,
+			width: 64,
+			height: 20,
+			x: 0,
+			y: 0,
+			toJSON: () => ({}),
+		});
+
+		const buttons = screen.getAllByRole("button");
+		const firstCell = buttons[0];
+		const lastCell = buttons[7];
+		if (!firstCell || !lastCell) throw new Error("cells missing");
+
+		// 1. Rightward scroll: button rect right is beyond container right (250 > 200)
+		vi.spyOn(lastCell, "getBoundingClientRect").mockReturnValue({
+			left: 190,
+			right: 250,
+			top: 0,
+			bottom: 20,
+			width: 60,
+			height: 20,
+			x: 190,
+			y: 0,
+			toJSON: () => ({}),
+		});
+
+		scrollContainer.scrollLeft = 0;
+		act(() => {
+			firstCell.focus();
+		});
+
+		fireEvent.keyDown(firstCell, { key: "End" });
+		// scrollContainer.scrollLeft must have increased by exactly 250 - 200 + cellGap(2) = 52
+		expect(scrollContainer.scrollLeft).toBe(52);
+		expect(document.activeElement).toBe(lastCell);
+
+		// 2. Leftward scroll: button rect left is behind sticky header (40 < 64)
+		// scrollLeft must decrease by 64 - 40 + cellGap(2) = 26
+		const currentScroll = scrollContainer.scrollLeft;
+		vi.spyOn(firstCell, "getBoundingClientRect").mockReturnValue({
+			left: 40,
+			right: 100,
+			top: 0,
+			bottom: 20,
+			width: 60,
+			height: 20,
+			x: 40,
+			y: 0,
+			toJSON: () => ({}),
+		});
+
+		fireEvent.keyDown(lastCell, { key: "Home" });
+		expect(scrollContainer.scrollLeft).toBe(currentScroll - 26);
+		expect(document.activeElement).toBe(firstCell);
 	});
 });

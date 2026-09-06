@@ -229,7 +229,7 @@ function ValuesHeatmap({
 	const cellRefs = useRef<(HTMLButtonElement | null)[]>([]);
 	const isFocusedInsideRef = useRef(false);
 
-	// When values array shrinks or empties: if an item currently held focus,
+	// When values array shrinks, empties, or restores: if an item or container currently held focus,
 	// restore focus to the new valid index or empty container without stealing focus from outside.
 	useEffect(() => {
 		const hadFocus = isFocusedInsideRef.current;
@@ -245,6 +245,8 @@ function ValuesHeatmap({
 			if (hadFocus) {
 				cellRefs.current[next]?.focus();
 			}
+		} else if (hadFocus) {
+			cellRefs.current[activeIdx]?.focus();
 		}
 	}, [values.length, activeIdx]);
 

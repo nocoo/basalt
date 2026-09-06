@@ -551,6 +551,65 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				"Focus must be restored to empty region when values empty",
 			);
 
+			// C23 regression verification: while empty region holds focus, restore values
+			// Wait for all 10 cells to mount and check that focus naturally returns to first cell ("Position 1: 0"), NOT falling to BODY
+			await page.evaluate(() => {
+				const btn = document.getElementById("values-restore-btn");
+				btn?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+			});
+			await page.waitForFunction(
+				() =>
+					document.querySelectorAll('[data-testid="case-heatmap-values"] [role="region"] button')
+						.length === 10,
+			);
+			const activeAfterRestoreFromEmpty = await page.evaluate(() => ({
+				tag: document.activeElement?.tagName ?? "",
+				label: document.activeElement?.getAttribute("aria-label") ?? "",
+			}));
+			assert.equal(
+				activeAfterRestoreFromEmpty.tag,
+				"BUTTON",
+				"Restoring from empty while region was focused must land on a button, not BODY",
+			);
+			assert.equal(
+				activeAfterRestoreFromEmpty.label,
+				"Position 1: 0",
+				"Restoring from empty while region was focused must focus Position 1: 0",
+			);
+			const restoredTooltipText = ((await page.locator('[role="tooltip"]').textContent()) ?? "")
+				.replace(/\s+/g, " ")
+				.trim();
+			assert.equal(
+				restoredTooltipText,
+				"Position 1: 0",
+				`Restored cell tooltip must display exact 'Position 1: 0' (got: '${restoredTooltipText}')`,
+			);
+
+			// Re-empty values so we can verify zero-cell condition and Tab exit
+			await page.evaluate(() => {
+				const btn = document.getElementById("values-empty-btn");
+				btn?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+			});
+			await page.waitForFunction(
+				() =>
+					document.querySelectorAll('[data-testid="case-heatmap-values"] [role="region"] button')
+						.length === 0,
+			);
+			const activeAfterSecondEmpty = await page.evaluate(() => ({
+				role: document.activeElement?.getAttribute("role") ?? "",
+				ariaLabel: document.activeElement?.getAttribute("aria-label") ?? "",
+			}));
+			assert.equal(
+				activeAfterSecondEmpty.role,
+				"region",
+				"Second empty must restore focus to empty region",
+			);
+			assert.equal(
+				activeAfterSecondEmpty.ariaLabel,
+				"Matrix activity",
+				"Active element must be the empty activity matrix region",
+			);
+
 			// Tab to exit empty values matrix -> lands on focus-after-values
 			await page.keyboard.press("Tab");
 			assert.equal(

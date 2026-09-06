@@ -524,7 +524,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"heatmap-calendar": {
 		"file": "packages/basalt/src/charts/heatmap-calendar.tsx",
-		"hash": "e36b03c874c08dc5",
+		"hash": "2efb30074c63a3eb",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/heatmap-calendar.js.map (sourcesContent[0])"
 	},
