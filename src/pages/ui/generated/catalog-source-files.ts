@@ -152,7 +152,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"slider": {
 		"file": "packages/basalt/src/components/slider.tsx",
-		"hash": "a472462668a44b46",
+		"hash": "08bad45735a6c369",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/slider.js.map (sourcesContent[0])"
 	},

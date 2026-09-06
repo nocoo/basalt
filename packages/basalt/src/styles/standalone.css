@@ -778,6 +778,9 @@
   .w-\[var\(--radix-select-trigger-width\)\] {
     width: var(--radix-select-trigger-width);
   }
+  .w-auto {
+    width: auto;
+  }
   .w-auto\! {
     width: auto !important;
   }

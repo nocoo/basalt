@@ -296,7 +296,11 @@ export default function Example() {
 	slider: {
 		docs: {
 			description: "Range slider.",
-			usage: usage("Slider", "@nocoo/basalt/components/slider", "<Slider />"),
+			usage: usage(
+				"Slider",
+				"@nocoo/basalt/components/slider",
+				'<Slider defaultValue={[40]} aria-label="Volume" />',
+			),
 			variants: [],
 			api: sliderApi,
 			provenance: EXTRA_PROVENANCE,
@@ -309,6 +313,34 @@ export default function Example() {
 					'import { Slider } from "@nocoo/basalt/components/slider";',
 				]),
 				render: () => <Slider defaultValue={[40]} aria-label="Volume" />,
+			},
+			{
+				id: catalogScenarioId("slider", "range"),
+				title: "Range",
+				code: scenarioModule(
+					'<Slider defaultValue={[20, 80]} labels={["Minimum price", "Maximum price"]} className="w-64" />',
+					['import { Slider } from "@nocoo/basalt/components/slider";'],
+				),
+				render: () => (
+					<Slider
+						defaultValue={[20, 80]}
+						labels={["Minimum price", "Maximum price"]}
+						className="w-64"
+					/>
+				),
+			},
+			{
+				id: catalogScenarioId("slider", "vertical"),
+				title: "Vertical",
+				code: scenarioModule(
+					'<div className="h-48 flex items-center justify-center">\n\t<Slider orientation="vertical" defaultValue={[50]} aria-label="Vertical volume" />\n</div>',
+					['import { Slider } from "@nocoo/basalt/components/slider";'],
+				),
+				render: () => (
+					<div className="h-48 flex items-center justify-center">
+						<Slider orientation="vertical" defaultValue={[50]} aria-label="Vertical volume" />
+					</div>
+				),
 			},
 			{
 				id: catalogScenarioId("slider", "disabled"),

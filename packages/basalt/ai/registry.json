@@ -18564,7 +18564,7 @@
 			"importPath": "@nocoo/basalt/components/slider",
 			"subpath": "./components/slider",
 			"sourceFile": "packages/basalt/src/components/slider.tsx",
-			"sourceHash": "a472462668a44b46",
+			"sourceHash": "08bad45735a6c369",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -18607,13 +18607,14 @@
 									"name": "value",
 									"type": "number[]",
 									"required": false,
-									"description": "Controlled value array for the slider. Forwards ref to root span element.\nCurrently renders a single thumb; root aria-label does not label an independent thumb."
+									"description": "Controlled value array for the slider. Forwards ref to root span element.\nWhen multiple values are provided, renders a thumb for each value."
 								},
 								{
 									"name": "defaultValue",
 									"type": "number[]",
 									"required": false,
-									"description": "Uncontrolled default value array for the slider. Currently renders a single thumb."
+									"default": "[min ?? 0]",
+									"description": "Uncontrolled default value array for the slider.\nWhen multiple values are provided, renders a thumb for each value."
 								},
 								{
 									"name": "onValueChange",
@@ -18666,7 +18667,13 @@
 									"type": "\"horizontal\" | \"vertical\"",
 									"required": false,
 									"default": "\"horizontal\"",
-									"description": "Layout orientation of the slider track."
+									"description": "Layout orientation of the slider track.\nWhen set to `\"vertical\"`, the slider track and range align vertically. A container with an explicit height is required."
+								},
+								{
+									"name": "labels",
+									"type": "string[]",
+									"required": false,
+									"description": "Accessible labels for thumbs when rendering single or multiple values.\nWhen provided, thumb at index `i` receives `labels[i]`. For a single thumb, `labels[0]` takes precedence over `aria-label`.\nWhen omitted on a multi-value slider, the root `aria-label` provides a contextual fallback (e.g. `ariaLabel + \" minimum\"`),\nor falls back to Radix default names (`\"Minimum\"`, `\"Maximum\"`, or `\"Value N of Total\"`)."
 								}
 							]
 						}
@@ -18681,13 +18688,14 @@
 							"name": "value",
 							"type": "number[]",
 							"required": false,
-							"description": "Controlled value array for the slider. Forwards ref to root span element.\nCurrently renders a single thumb; root aria-label does not label an independent thumb."
+							"description": "Controlled value array for the slider. Forwards ref to root span element.\nWhen multiple values are provided, renders a thumb for each value."
 						},
 						{
 							"name": "defaultValue",
 							"type": "number[]",
 							"required": false,
-							"description": "Uncontrolled default value array for the slider. Currently renders a single thumb."
+							"default": "[min ?? 0]",
+							"description": "Uncontrolled default value array for the slider.\nWhen multiple values are provided, renders a thumb for each value."
 						},
 						{
 							"name": "onValueChange",
@@ -18740,7 +18748,13 @@
 							"type": "\"horizontal\" | \"vertical\"",
 							"required": false,
 							"default": "\"horizontal\"",
-							"description": "Layout orientation of the slider track."
+							"description": "Layout orientation of the slider track.\nWhen set to `\"vertical\"`, the slider track and range align vertically. A container with an explicit height is required."
+						},
+						{
+							"name": "labels",
+							"type": "string[]",
+							"required": false,
+							"description": "Accessible labels for thumbs when rendering single or multiple values.\nWhen provided, thumb at index `i` receives `labels[i]`. For a single thumb, `labels[0]` takes precedence over `aria-label`.\nWhen omitted on a multi-value slider, the root `aria-label` provides a contextual fallback (e.g. `ariaLabel + \" minimum\"`),\nor falls back to Radix default names (`\"Minimum\"`, `\"Maximum\"`, or `\"Value N of Total\"`)."
 						}
 					]
 				}
@@ -24317,7 +24331,7 @@
 			"exportName": "Slider",
 			"importPath": "@nocoo/basalt/components/slider",
 			"sourceFile": "packages/basalt/src/components/slider.tsx",
-			"sourceHash": "a472462668a44b46",
+			"sourceHash": "08bad45735a6c369",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#slider",
@@ -24329,13 +24343,14 @@
 							"name": "value",
 							"type": "number[]",
 							"required": false,
-							"description": "Controlled value array for the slider. Forwards ref to root span element.\nCurrently renders a single thumb; root aria-label does not label an independent thumb."
+							"description": "Controlled value array for the slider. Forwards ref to root span element.\nWhen multiple values are provided, renders a thumb for each value."
 						},
 						{
 							"name": "defaultValue",
 							"type": "number[]",
 							"required": false,
-							"description": "Uncontrolled default value array for the slider. Currently renders a single thumb."
+							"default": "[min ?? 0]",
+							"description": "Uncontrolled default value array for the slider.\nWhen multiple values are provided, renders a thumb for each value."
 						},
 						{
 							"name": "onValueChange",
@@ -24388,7 +24403,13 @@
 							"type": "\"horizontal\" | \"vertical\"",
 							"required": false,
 							"default": "\"horizontal\"",
-							"description": "Layout orientation of the slider track."
+							"description": "Layout orientation of the slider track.\nWhen set to `\"vertical\"`, the slider track and range align vertically. A container with an explicit height is required."
+						},
+						{
+							"name": "labels",
+							"type": "string[]",
+							"required": false,
+							"description": "Accessible labels for thumbs when rendering single or multiple values.\nWhen provided, thumb at index `i` receives `labels[i]`. For a single thumb, `labels[0]` takes precedence over `aria-label`.\nWhen omitted on a multi-value slider, the root `aria-label` provides a contextual fallback (e.g. `ariaLabel + \" minimum\"`),\nor falls back to Radix default names (`\"Minimum\"`, `\"Maximum\"`, or `\"Value N of Total\"`)."
 						}
 					]
 				}

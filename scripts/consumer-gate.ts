@@ -36,6 +36,7 @@ import {
 	stopChild,
 } from "./consumer-http";
 import { assertConsumerPortal } from "./consumer-portal";
+import { assertConsumerSlider } from "./consumer-slider";
 import { assertConsumerToast } from "./consumer-toast";
 
 export const HEAVY_PEERS = [
@@ -1314,6 +1315,15 @@ console.log(JSON.stringify({
 						const faults = attachPageFaults(page);
 						await page.goto(toastUrl, { waitUntil: "domcontentloaded" });
 						const res = await assertConsumerToast(page);
+						assertNoPageFaults(faults);
+						return res;
+					});
+
+					const sliderUrl = `http://127.0.0.1:${port}/slider.html`;
+					evidence.slider = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(sliderUrl, { waitUntil: "domcontentloaded" });
+						const res = await assertConsumerSlider(page);
 						assertNoPageFaults(faults);
 						return res;
 					});

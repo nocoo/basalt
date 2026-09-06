@@ -267,6 +267,8 @@ describe("forms catalog content family", () => {
 		]);
 		expect(forms.slider?.examples.map((example) => example.id)).toEqual([
 			"slider-default",
+			"slider-range",
+			"slider-vertical",
 			"slider-disabled",
 		]);
 		expect(forms.toggle?.examples.map((example) => example.id)).toEqual([
