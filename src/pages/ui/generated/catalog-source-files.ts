@@ -266,7 +266,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"popover": {
 		"file": "packages/basalt/src/components/popover.tsx",
-		"hash": "e38b4cd62fa8c520",
+		"hash": "bce6eb7bf2cb05b6",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/popover.js.map (sourcesContent[0])"
 	},

@@ -47,4 +47,52 @@ describe("Popover", () => {
 		);
 		expect(screen.getByText(side).closest("[data-side]")).toHaveAttribute("data-side", side);
 	});
+
+	it("supports asChild composition with and without arrow while forwarding ref", () => {
+		let refTarget: HTMLElement | null = null;
+		const { rerender } = render(
+			<Popover defaultOpen>
+				<PopoverTrigger>Open</PopoverTrigger>
+				<PopoverContent
+					asChild
+					ref={(node) => {
+						refTarget = node;
+					}}
+					data-testid="popover-panel"
+				>
+					<section data-testid="custom-section">
+						<span>Custom Content</span>
+					</section>
+				</PopoverContent>
+			</Popover>,
+		);
+
+		const section = screen.getByTestId("custom-section");
+		expect(section.tagName).toBe("SECTION");
+		expect(refTarget).toBe(section);
+		expect(section.querySelector("svg")).toBeTruthy();
+
+		rerender(
+			<Popover defaultOpen>
+				<PopoverTrigger>Open</PopoverTrigger>
+				<PopoverContent
+					asChild
+					arrow={false}
+					ref={(node) => {
+						refTarget = node;
+					}}
+					data-testid="popover-panel"
+				>
+					<section data-testid="custom-section">
+						<span>Custom Content Without Arrow</span>
+					</section>
+				</PopoverContent>
+			</Popover>,
+		);
+
+		const sectionNoArrow = screen.getByTestId("custom-section");
+		expect(sectionNoArrow.tagName).toBe("SECTION");
+		expect(refTarget).toBe(sectionNoArrow);
+		expect(sectionNoArrow.querySelector("svg")).toBeNull();
+	});
 });

@@ -7,6 +7,8 @@ const SLUGS = [
 	"alert-dialog",
 	"sheet",
 	"popover",
+	"popover-aschild",
+	"popover-aschild-noarrow",
 	"tooltip",
 	"dropdown-menu",
 	"context-menu-panel",
@@ -48,6 +50,41 @@ export async function assertConsumerPortal(page: Page) {
 					entry.expected,
 					`${slug} open=${entry.open} forceMount=${entry.forceMount} expected ${entry.expected} but got ${actual}`,
 				);
+
+				if (entry.open && slug.startsWith("popover-aschild")) {
+					const child = page.locator('[data-audit-child="target"]');
+					assert.equal(await child.count(), 1, `${slug} child must be rendered`);
+					await page.evaluate(() => {
+						window.auditEvents = [];
+					});
+					await child.click({ position: { x: 4, y: 4 } });
+					const evaluation = await page.evaluate(() => {
+						const node = document.querySelector('[data-audit-content^="popover-aschild"]');
+						const target = document.querySelector('[data-audit-child="target"]');
+						return {
+							nodeTag: node?.tagName ?? null,
+							refTag: window.auditRefTag ?? null,
+							sameElement: node === target && !!node,
+							arrowCount: node?.querySelectorAll('svg[width="20"][height="10"]').length ?? 0,
+							events: window.auditEvents ?? [],
+						};
+					});
+					assert.equal(evaluation.nodeTag, "SECTION", `${slug} DOM tag must be SECTION`);
+					assert.equal(evaluation.refTag, "SECTION", `${slug} forwarded ref must point to SECTION`);
+					assert.equal(
+						evaluation.sameElement,
+						true,
+						`${slug} content and child must be same element`,
+					);
+					const expectedArrows = slug === "popover-aschild-noarrow" ? 0 : 1;
+					assert.equal(evaluation.arrowCount, expectedArrows, `${slug} arrow count mismatch`);
+					assert.deepEqual(
+						evaluation.events,
+						["child", "content"],
+						`${slug} event bubbling order must be child -> content`,
+					);
+				}
+
 				cases.push({ slug, ...entry, pass: true });
 			} catch (e) {
 				cases.push({ slug, ...entry, pass: false, error: String(e) });

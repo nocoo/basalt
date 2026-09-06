@@ -1,4 +1,5 @@
 import * as PopoverPrimitive from "@radix-ui/react-popover";
+import { Slottable } from "@radix-ui/react-slot";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { MENU_GAP, OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
@@ -149,7 +150,6 @@ export interface PopoverContentProps
 	/**
 	 * Change the default rendered div element to the child element, merging props and behavior.
 	 * PopoverContent forwards ref to HTMLDivElement and inherits native div attributes.
-	 * Note: Currently using asChild throws a Radix Primitive.div single-child slot error due to internal child/arrow wrapping (even with arrow=false). Prefer standard className/native div props.
 	 * @default false
 	 */
 	asChild?: RadixPopoverContentProps["asChild"];
@@ -214,7 +214,7 @@ export const PopoverContent = React.forwardRef<
 				)}
 				{...props}
 			>
-				{children}
+				<Slottable>{children}</Slottable>
 				{arrow ? (
 					<PopoverPrimitive.Arrow asChild width={20} height={10}>
 						<ArrowSvg />

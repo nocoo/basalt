@@ -154,7 +154,7 @@ export const API = [
 				type: "boolean",
 				required: false,
 				default: "false",
-				description: "Change the default rendered div element to the child element, merging props and behavior.\nPopoverContent forwards ref to HTMLDivElement and inherits native div attributes.\nNote: Currently using asChild throws a Radix Primitive.div single-child slot error due to internal child/arrow wrapping (even with arrow=false). Prefer standard className/native div props.",
+				description: "Change the default rendered div element to the child element, merging props and behavior.\nPopoverContent forwards ref to HTMLDivElement and inherits native div attributes.",
 			},
 			{
 				name: "onOpenAutoFocus",

@@ -62,6 +62,8 @@ export type ModuleStem =
 	| "alert-dialog"
 	| "sheet"
 	| "popover"
+	| "popover-aschild"
+	| "popover-aschild-noarrow"
 	| "tooltip"
 	| "dropdown-menu"
 	| "context-menu-panel"
@@ -78,6 +80,8 @@ export interface AuditConfig {
 declare global {
 	interface Window {
 		auditOutsideClicks?: number;
+		auditRefTag?: string | null;
+		auditEvents?: string[];
 		auditMount?: (slug: ModuleStem, open: boolean, forceMount?: true) => void;
 		auditUnmount?: () => void;
 		auditReady?: boolean;
@@ -141,6 +145,69 @@ const RENDERERS: Record<ModuleStem, (config: AuditConfig) => React.ReactNode> = 
 				<PopoverTitle>Audit title</PopoverTitle>
 				<PopoverDescription>Audit description</PopoverDescription>
 				<button type="button">Inside action</button>
+			</PopoverContent>
+		</Popover>
+	),
+	"popover-aschild": ({ open, forceMount }) => (
+		<Popover open={open}>
+			<PopoverTrigger data-audit-trigger={true} type="button">
+				Trigger
+			</PopoverTrigger>
+			<PopoverContent
+				data-audit-content="popover-aschild"
+				forceMount={forceMount}
+				asChild
+				ref={(node) => {
+					window.auditRefTag = node?.tagName ?? null;
+				}}
+				onClick={() => {
+					window.auditEvents = window.auditEvents ?? [];
+					window.auditEvents.push("content");
+				}}
+			>
+				<section
+					data-audit-child="target"
+					onClick={() => {
+						window.auditEvents = window.auditEvents ?? [];
+						window.auditEvents.push("child");
+					}}
+				>
+					<PopoverTitle>Audit title</PopoverTitle>
+					<PopoverDescription>Audit description</PopoverDescription>
+					<button type="button">Inside action</button>
+				</section>
+			</PopoverContent>
+		</Popover>
+	),
+	"popover-aschild-noarrow": ({ open, forceMount }) => (
+		<Popover open={open}>
+			<PopoverTrigger data-audit-trigger={true} type="button">
+				Trigger
+			</PopoverTrigger>
+			<PopoverContent
+				data-audit-content="popover-aschild-noarrow"
+				forceMount={forceMount}
+				asChild
+				arrow={false}
+				ref={(node) => {
+					window.auditRefTag = node?.tagName ?? null;
+				}}
+				onClick={() => {
+					window.auditEvents = window.auditEvents ?? [];
+					window.auditEvents.push("content");
+				}}
+			>
+				<section
+					data-audit-child="target"
+					onClick={() => {
+						window.auditEvents = window.auditEvents ?? [];
+						window.auditEvents.push("child");
+					}}
+				>
+					<PopoverTitle>Audit title</PopoverTitle>
+					<PopoverDescription>Audit description</PopoverDescription>
+					<button type="button">Inside action</button>
+				</section>
 			</PopoverContent>
 		</Popover>
 	),

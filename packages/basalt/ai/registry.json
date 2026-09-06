@@ -15456,7 +15456,7 @@
 			"importPath": "@nocoo/basalt/components/popover",
 			"subpath": "./components/popover",
 			"sourceFile": "packages/basalt/src/components/popover.tsx",
-			"sourceHash": "e38b4cd62fa8c520",
+			"sourceHash": "bce6eb7bf2cb05b6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -15740,7 +15740,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Change the default rendered div element to the child element, merging props and behavior.\nPopoverContent forwards ref to HTMLDivElement and inherits native div attributes.\nNote: Currently using asChild throws a Radix Primitive.div single-child slot error due to internal child/arrow wrapping (even with arrow=false). Prefer standard className/native div props."
+									"description": "Change the default rendered div element to the child element, merging props and behavior.\nPopoverContent forwards ref to HTMLDivElement and inherits native div attributes."
 								},
 								{
 									"name": "onOpenAutoFocus",
@@ -15951,7 +15951,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nPopoverContent forwards ref to HTMLDivElement and inherits native div attributes.\nNote: Currently using asChild throws a Radix Primitive.div single-child slot error due to internal child/arrow wrapping (even with arrow=false). Prefer standard className/native div props."
+							"description": "Change the default rendered div element to the child element, merging props and behavior.\nPopoverContent forwards ref to HTMLDivElement and inherits native div attributes."
 						},
 						{
 							"name": "onOpenAutoFocus",
@@ -26311,7 +26311,7 @@
 			"exportName": "Popover",
 			"importPath": "@nocoo/basalt/components/popover",
 			"sourceFile": "packages/basalt/src/components/popover.tsx",
-			"sourceHash": "e38b4cd62fa8c520",
+			"sourceHash": "bce6eb7bf2cb05b6",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#popover",
@@ -26468,7 +26468,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Change the default rendered div element to the child element, merging props and behavior.\nPopoverContent forwards ref to HTMLDivElement and inherits native div attributes.\nNote: Currently using asChild throws a Radix Primitive.div single-child slot error due to internal child/arrow wrapping (even with arrow=false). Prefer standard className/native div props."
+							"description": "Change the default rendered div element to the child element, merging props and behavior.\nPopoverContent forwards ref to HTMLDivElement and inherits native div attributes."
 						},
 						{
 							"name": "onOpenAutoFocus",
