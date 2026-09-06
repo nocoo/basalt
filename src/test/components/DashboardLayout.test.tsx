@@ -1,13 +1,14 @@
 import { AccentProvider } from "@nocoo/basalt/providers/accent";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { DashboardLayout } from "@/components/DashboardLayout";
 
-// Force `useIsMobile` to return true so the mobile drawer paths render.
+// Mock `useIsMobile` with switchable mobile state.
+let mockIsMobile = true;
 vi.mock("@/hooks/use-mobile", () => ({
-	useIsMobile: () => true,
+	useIsMobile: () => mockIsMobile,
 }));
 
 function renderLayout(initialPath = "/") {
@@ -31,6 +32,7 @@ function renderLayout(initialPath = "/") {
 
 describe("DashboardLayout", () => {
 	beforeEach(() => {
+		mockIsMobile = true;
 		vi.useFakeTimers({ shouldAdvanceTime: true });
 	});
 
@@ -83,5 +85,89 @@ describe("DashboardLayout", () => {
 
 		// Route change must reset the drawer state — body scroll unlocks.
 		expect(document.body.style.overflow).toBe("");
+	});
+
+	it("restores focus to the open navigation menu button on close when triggered by Escape or dismiss", async () => {
+		renderLayout("/");
+		const openButton = screen.getByLabelText("Open navigation menu");
+		openButton.focus();
+		expect(document.activeElement).toBe(openButton);
+
+		// Open drawer
+		fireEvent.click(openButton);
+		expect(document.body.style.overflow).toBe("hidden");
+
+		// Press Escape on the open sheet
+		const sheet = screen.getByRole("dialog");
+		fireEvent.keyDown(sheet, { key: "Escape" });
+
+		// Focus must return to the open button, and body scroll must unlock
+		await waitFor(() => {
+			expect(openButton).toHaveFocus();
+		});
+		expect(document.body.style.overflow).toBe("");
+	});
+
+	it("restores focus to the trigger button when dismissed via the collapse sidebar button inside drawer", async () => {
+		renderLayout("/");
+		const openButton = screen.getByLabelText("Open navigation menu");
+		fireEvent.click(openButton);
+
+		// Inside the drawer, click the collapse/toggle button
+		const collapseButton = screen.getByRole("button", { name: "Collapse sidebar" });
+		fireEvent.click(collapseButton);
+
+		await waitFor(() => {
+			expect(openButton).toHaveFocus();
+		});
+		expect(document.body.style.overflow).toBe("");
+	});
+
+	it("resets mobile drawer and restores body scroll on resize to desktop, and does not reopen on return to mobile", async () => {
+		const { rerender } = renderLayout("/");
+		const openButton = screen.getByLabelText("Open navigation menu");
+		fireEvent.click(openButton);
+		expect(document.body.style.overflow).toBe("hidden");
+		expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+		// Resize to desktop (isMobile: false)
+		mockIsMobile = false;
+		rerender(
+			<ThemeProvider>
+				<AccentProvider>
+					<MemoryRouter initialEntries={["/"]}>
+						<Routes>
+							<Route element={<DashboardLayout />}>
+								<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
+							</Route>
+						</Routes>
+					</MemoryRouter>
+				</AccentProvider>
+			</ThemeProvider>,
+		);
+
+		// Body overflow must be cleaned up and sheet unmounted
+		expect(document.body.style.overflow).toBe("");
+		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+
+		// Resize back to mobile (isMobile: true)
+		mockIsMobile = true;
+		rerender(
+			<ThemeProvider>
+				<AccentProvider>
+					<MemoryRouter initialEntries={["/"]}>
+						<Routes>
+							<Route element={<DashboardLayout />}>
+								<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
+							</Route>
+						</Routes>
+					</MemoryRouter>
+				</AccentProvider>
+			</ThemeProvider>,
+		);
+
+		// Must NOT automatically reopen
+		expect(document.body.style.overflow).toBe("");
+		expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
 	});
 });

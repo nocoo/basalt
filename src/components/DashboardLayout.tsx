@@ -7,7 +7,7 @@ import { ContentIsland } from "@nocoo/basalt/components/sidebar";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
 import { useTheme } from "@nocoo/basalt/providers/theme";
 import { Menu } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Outlet, useLocation } from "react-router";
 import { AccentPicker } from "@/components/AccentPicker";
@@ -48,6 +48,18 @@ const PAGE_TITLE_KEYS: Record<string, string> = {
 	"/ui": "nav.kitIndex",
 };
 
+function isTriggerVisible(el: HTMLElement | null): el is HTMLElement {
+	if (!el?.isConnected) return false;
+	const style = window.getComputedStyle(el);
+	if (style.display === "none" || style.visibility === "hidden") return false;
+	if (typeof el.checkVisibility === "function") {
+		return el.checkVisibility();
+	}
+	// In browser environments with layout, getClientRects() > 0 when rendered.
+	// In jsdom without layout engine, getClientRects().length is always 0.
+	return true;
+}
+
 export function DashboardLayout() {
 	const [collapsed, setCollapsed] = useState(false);
 	const isMobile = useIsMobile();
@@ -56,6 +68,7 @@ export function DashboardLayout() {
 	const { t } = useTranslation();
 	const { theme } = useTheme();
 
+	const mobileTriggerRef = useRef<HTMLButtonElement | null>(null);
 	const catalogSlug = location.pathname.startsWith("/ui/")
 		? location.pathname.slice("/ui/".length)
 		: undefined;
@@ -73,8 +86,15 @@ export function DashboardLayout() {
 		setMobileOpen(false);
 	}, [location.pathname]);
 
+	// Close mobile sidebar and clean up if viewport resizes to desktop.
 	useEffect(() => {
-		if (mobileOpen) {
+		if (!isMobile) {
+			setMobileOpen(false);
+		}
+	}, [isMobile]);
+
+	useEffect(() => {
+		if (mobileOpen && isMobile) {
 			document.body.style.overflow = "hidden";
 		} else {
 			document.body.style.overflow = "";
@@ -82,7 +102,7 @@ export function DashboardLayout() {
 		return () => {
 			document.body.style.overflow = "";
 		};
-	}, [mobileOpen]);
+	}, [mobileOpen, isMobile]);
 
 	return (
 		<AppShell>
@@ -94,6 +114,13 @@ export function DashboardLayout() {
 					<SheetContent
 						side="left"
 						className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0"
+						onCloseAutoFocus={(event) => {
+							const trigger = mobileTriggerRef.current;
+							if (isTriggerVisible(trigger)) {
+								event.preventDefault();
+								trigger.focus();
+							}
+						}}
 					>
 						<SheetTitle className="sr-only">{t("common.openNav")}</SheetTitle>
 						<AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} />
@@ -105,6 +132,7 @@ export function DashboardLayout() {
 					leading={
 						isMobile ? (
 							<Button
+								ref={mobileTriggerRef}
 								variant="ghost"
 								size="icon"
 								className="h-8 w-8"
