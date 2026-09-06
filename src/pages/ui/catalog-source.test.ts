@@ -230,7 +230,14 @@ describe("catalog source contract", () => {
 			"packages/basalt/src/components/tooltip.tsx",
 		);
 		expect(overlay.tooltip?.docs.api).toEqual(CATALOG_API.tooltip);
-		expect(CATALOG_API.tooltip?.[0]?.props.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(CATALOG_API.tooltip?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"children",
+			"open",
+			"defaultOpen",
+			"onOpenChange",
+			"delayDuration",
+			"disableHoverableContent",
+		]);
 		expect(implementationFileFor(entry("theme-toggle"))).toBe(
 			"packages/basalt/src/components/theme-toggle.tsx",
 		);

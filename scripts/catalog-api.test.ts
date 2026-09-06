@@ -174,6 +174,24 @@ describe("catalog API generator contract", () => {
 				surface: "Tooltip",
 			},
 			{
+				slug: "tooltip",
+				sourceFile: "packages/basalt/src/components/tooltip.tsx",
+				propsType: "TooltipProviderProps",
+				surface: "TooltipProvider",
+			},
+			{
+				slug: "tooltip",
+				sourceFile: "packages/basalt/src/components/tooltip.tsx",
+				propsType: "TooltipTriggerProps",
+				surface: "TooltipTrigger",
+			},
+			{
+				slug: "tooltip",
+				sourceFile: "packages/basalt/src/components/tooltip.tsx",
+				propsType: "TooltipContentProps",
+				surface: "TooltipContent",
+			},
+			{
 				slug: "theme-toggle",
 				sourceFile: "packages/basalt/src/components/theme-toggle.tsx",
 				propsType: "ThemeToggleProps",
@@ -604,8 +622,34 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "popover",
 				sourceFile: "packages/basalt/src/components/popover.tsx",
+				propsType: "PopoverTriggerProps",
+				surface: "PopoverTrigger",
+			},
+			{
+				slug: "popover",
+				sourceFile: "packages/basalt/src/components/popover.tsx",
+				propsType: "PopoverCloseProps",
+				surface: "PopoverClose",
+			},
+			{
+				slug: "popover",
+				sourceFile: "packages/basalt/src/components/popover.tsx",
 				propsType: "PopoverContentProps",
 				surface: "PopoverContent",
+			},
+			{
+				slug: "popover",
+				sourceFile: "packages/basalt/src/components/popover.tsx",
+				propsType: "PopoverTitleProps",
+				surface: "PopoverTitle",
+				allowEmpty: true,
+			},
+			{
+				slug: "popover",
+				sourceFile: "packages/basalt/src/components/popover.tsx",
+				propsType: "PopoverDescriptionProps",
+				surface: "PopoverDescription",
+				allowEmpty: true,
 			},
 			{
 				slug: "dropdown-menu",
@@ -1316,7 +1360,7 @@ describe("catalog API generator contract", () => {
 				surface: "LinkProvider",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(196);
+		expect(CATALOG_API_TARGETS).toHaveLength(203);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1330,6 +1374,8 @@ describe("catalog API generator contract", () => {
 			"Checkbox.Legend",
 			"Radio.Legend",
 			"Switch.Legend",
+			"PopoverTitle",
+			"PopoverDescription",
 			"DialogHeader",
 			"DialogFooter",
 			"SheetHeader",
@@ -1742,28 +1788,16 @@ describe("catalog API generator contract", () => {
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 	}, 60_000);
 
-	it("extracts Tooltip props from TooltipProps as a single optional delayDuration", () => {
+	it("extracts Tooltip props from TooltipProps with open and duration controls", () => {
 		const generated = generateProductionProps();
-		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
-		expect(generated.tooltip).toEqual([
-			{
-				name: "delayDuration",
-				type: "number",
-				required: false,
-				default: "700",
-				description: "Delay before the tooltip opens, in milliseconds.",
-			},
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual([
+			"children",
+			"open",
+			"defaultOpen",
+			"onOpenChange",
+			"delayDuration",
+			"disableHoverableContent",
 		]);
-		expect(generated.tooltip?.some((prop) => prop.name === "children")).toBe(false);
-		expect(generated.tooltip?.some((prop) => prop.name === "open")).toBe(false);
-		expect(generated.tooltip?.some((prop) => prop.name === "defaultOpen")).toBe(false);
-		expect(generated.tooltip?.some((prop) => prop.name === "onOpenChange")).toBe(false);
-		expect(generated.tooltip?.some((prop) => prop.name === "disableHoverableContent")).toBe(false);
-		expect(generated.tooltip?.some((prop) => prop.name === "skipDelayDuration")).toBe(false);
-		expect(generated.tooltip?.some((prop) => prop.name === "side")).toBe(false);
-		expect(generated.tooltip?.some((prop) => prop.name === "align")).toBe(false);
-		expect(generated.tooltip?.some((prop) => prop.name === "sideOffset")).toBe(false);
-		expect(generated.tooltip?.some((prop) => prop.name === "className")).toBe(false);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
 			"size",
@@ -1826,7 +1860,14 @@ describe("catalog API generator contract", () => {
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
-		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual([
+			"children",
+			"open",
+			"defaultOpen",
+			"onOpenChange",
+			"delayDuration",
+			"disableHoverableContent",
+		]);
 	}, 60_000);
 
 	it("extracts LayerCard root props from LayerCardProps", () => {
@@ -1886,7 +1927,14 @@ describe("catalog API generator contract", () => {
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
-		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual([
+			"children",
+			"open",
+			"defaultOpen",
+			"onOpenChange",
+			"delayDuration",
+			"disableHoverableContent",
+		]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
 	}, 60_000);
 
@@ -1932,7 +1980,14 @@ describe("catalog API generator contract", () => {
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
-		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual([
+			"children",
+			"open",
+			"defaultOpen",
+			"onOpenChange",
+			"delayDuration",
+			"disableHoverableContent",
+		]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
 			"className",
@@ -2028,7 +2083,14 @@ describe("catalog API generator contract", () => {
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
-		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual([
+			"children",
+			"open",
+			"defaultOpen",
+			"onOpenChange",
+			"delayDuration",
+			"disableHoverableContent",
+		]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
 			"className",
@@ -2100,7 +2162,14 @@ describe("catalog API generator contract", () => {
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
-		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual([
+			"children",
+			"open",
+			"defaultOpen",
+			"onOpenChange",
+			"delayDuration",
+			"disableHoverableContent",
+		]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
 			"className",
@@ -2182,7 +2251,14 @@ describe("catalog API generator contract", () => {
 		expect(generated.label?.map((prop) => prop.name)).toEqual(["showOptional", "tooltip"]);
 		expect(generated.separator?.map((prop) => prop.name)).toEqual(["orientation", "decorative"]);
 		expect(generated.link?.map((prop) => prop.name)).toEqual(["href"]);
-		expect(generated.tooltip?.map((prop) => prop.name)).toEqual(["delayDuration"]);
+		expect(generated.tooltip?.map((prop) => prop.name)).toEqual([
+			"children",
+			"open",
+			"defaultOpen",
+			"onOpenChange",
+			"delayDuration",
+			"disableHoverableContent",
+		]);
 		expect(generated["theme-toggle"]?.map((prop) => prop.name)).toEqual(["aria-label"]);
 		expect(generated["layer-card"]?.map((prop) => prop.name)).toEqual([
 			"className",
@@ -2410,7 +2486,7 @@ export interface WidgetProps {
 			separator: ["Separator"],
 			"scroll-area": ["ScrollArea"],
 			link: ["Link"],
-			tooltip: ["Tooltip"],
+			tooltip: ["Tooltip", "TooltipProvider", "TooltipTrigger", "TooltipContent"],
 			"theme-toggle": ["ThemeToggle"],
 			"layer-card": [
 				"LayerCard",
@@ -2473,7 +2549,14 @@ export interface WidgetProps {
 			tabs: ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
 			"command-palette": ["CommandPalette"],
 			sidebar: ["SidebarProvider", "Sidebar", "SidebarItem"],
-			popover: ["Popover", "PopoverContent"],
+			popover: [
+				"Popover",
+				"PopoverTrigger",
+				"PopoverClose",
+				"PopoverContent",
+				"PopoverTitle",
+				"PopoverDescription",
+			],
 			"dropdown-menu": ["DropdownMenu", "DropdownMenuItem"],
 			collapsible: ["Collapsible", "CollapsibleContent"],
 			table: ["Table", "TableRow", "TableCaption", "TableHead", "TableCell"],
@@ -4397,7 +4480,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"60797e4670d2ec1bf0c10a5422061947695cef9fc8aeeb10ee02d2a0aa69750e",
+			"ae00b76be24598220969a9476891f168b88894abdcd83736911fcdef65989169",
 		);
 	}, 60_000);
 

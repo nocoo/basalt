@@ -6,37 +6,182 @@ import { MENU_GAP, OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 export const POPOVER_SIDES = ["top", "bottom", "left", "right"] as const;
 export type PopoverSide = (typeof POPOVER_SIDES)[number];
 
-export type PopoverProps = Omit<
-	React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Root>,
-	"open" | "defaultOpen" | "onOpenChange"
-> & {
+type RadixPopoverProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Root>;
+type RadixPopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger>;
+type RadixPopoverCloseProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Close>;
+type RadixPopoverContentProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>;
+
+export interface PopoverProps
+	extends Omit<RadixPopoverProps, "children" | "open" | "defaultOpen" | "onOpenChange" | "modal"> {
 	/**
-	 * The controlled open state.
+	 * Popover structure elements, typically PopoverTrigger and PopoverContent.
 	 */
-	open?: boolean;
+	children?: React.ReactNode;
 	/**
-	 * The uncontrolled initial open state.
+	 * Controlled open state of the popover.
+	 */
+	open?: RadixPopoverProps["open"];
+	/**
+	 * Uncontrolled initial open state of the popover.
 	 * @default false
 	 */
-	defaultOpen?: boolean;
+	defaultOpen?: RadixPopoverProps["defaultOpen"];
 	/**
-	 * Called when the open state changes.
+	 * Callback called when the open state changes.
 	 */
-	onOpenChange?: (open: boolean) => void;
-};
+	onOpenChange?: RadixPopoverProps["onOpenChange"];
+	/**
+	 * Whether the popover renders modally, preventing outside interaction and hiding background content from screen readers.
+	 * @default false
+	 */
+	modal?: RadixPopoverProps["modal"];
+}
+
 export const Popover: React.FC<PopoverProps> = PopoverPrimitive.Root;
+
+export interface PopoverTriggerProps extends Omit<RadixPopoverTriggerProps, "asChild"> {
+	/**
+	 * Change the default rendered button element to the child element, merging props and behavior.
+	 * PopoverTrigger forwards ref to HTMLButtonElement and inherits native button attributes.
+	 * @default false
+	 */
+	asChild?: RadixPopoverTriggerProps["asChild"];
+}
+
 export const PopoverTrigger = PopoverPrimitive.Trigger;
+
+export interface PopoverCloseProps extends Omit<RadixPopoverCloseProps, "asChild"> {
+	/**
+	 * Change the default rendered button element to the child element, merging props and behavior.
+	 * PopoverClose forwards ref to HTMLButtonElement and inherits native button attributes.
+	 * @default false
+	 */
+	asChild?: RadixPopoverCloseProps["asChild"];
+}
+
 export const PopoverClose = PopoverPrimitive.Close;
 
-export type PopoverContentProps = React.ComponentPropsWithoutRef<
-	typeof PopoverPrimitive.Content
-> & {
+export interface PopoverContentProps
+	extends Omit<
+		RadixPopoverContentProps,
+		| "side"
+		| "sideOffset"
+		| "align"
+		| "alignOffset"
+		| "avoidCollisions"
+		| "collisionBoundary"
+		| "collisionPadding"
+		| "arrowPadding"
+		| "sticky"
+		| "hideWhenDetached"
+		| "updatePositionStrategy"
+		| "forceMount"
+		| "asChild"
+		| "onOpenAutoFocus"
+		| "onCloseAutoFocus"
+		| "onEscapeKeyDown"
+		| "onPointerDownOutside"
+		| "onFocusOutside"
+		| "onInteractOutside"
+	> {
+	/**
+	 * Preferred placement side relative to trigger.
+	 * @default "bottom"
+	 */
+	side?: RadixPopoverContentProps["side"];
+	/**
+	 * Distance in pixels between trigger and floating content panel.
+	 * @default 8
+	 */
+	sideOffset?: RadixPopoverContentProps["sideOffset"];
+	/**
+	 * Preferred alignment along the side axis.
+	 * @default "center"
+	 */
+	align?: RadixPopoverContentProps["align"];
+	/**
+	 * Offset in pixels from the start or end alignment position.
+	 * @default 0
+	 */
+	alignOffset?: RadixPopoverContentProps["alignOffset"];
+	/**
+	 * Whether to reposition content to avoid viewport boundary collisions.
+	 * @default true
+	 */
+	avoidCollisions?: RadixPopoverContentProps["avoidCollisions"];
+	/**
+	 * Element or elements bounding boundary collision calculations.
+	 * @default []
+	 */
+	collisionBoundary?: RadixPopoverContentProps["collisionBoundary"];
+	/**
+	 * Virtual padding from collision boundaries in pixels.
+	 * @default 0
+	 */
+	collisionPadding?: RadixPopoverContentProps["collisionPadding"];
+	/**
+	 * Padding in pixels between popper arrow and floating panel edge.
+	 * @default 0
+	 */
+	arrowPadding?: RadixPopoverContentProps["arrowPadding"];
+	/**
+	 * Sticky positioning behavior along the align axis when overflowing.
+	 * @default "partial"
+	 */
+	sticky?: RadixPopoverContentProps["sticky"];
+	/**
+	 * Whether to hide content completely when trigger is fully occluded.
+	 * @default false
+	 */
+	hideWhenDetached?: RadixPopoverContentProps["hideWhenDetached"];
+	/**
+	 * Strategy used to calculate and update popper position.
+	 * @default "optimized"
+	 */
+	updatePositionStrategy?: RadixPopoverContentProps["updatePositionStrategy"];
+	/**
+	 * Force mounting content in DOM for external animation controls.
+	 * Note: In Basalt, PopoverContent wraps a built-in Portal without passing forceMount;
+	 * closed content is unmounted by the outer portal.
+	 */
+	forceMount?: true;
+	/**
+	 * Change the default rendered div element to the child element, merging props and behavior.
+	 * PopoverContent forwards ref to HTMLDivElement and inherits native div attributes.
+	 * Note: Currently using asChild throws a Radix Primitive.div single-child slot error due to internal child/arrow wrapping (even with arrow=false). Prefer standard className/native div props.
+	 * @default false
+	 */
+	asChild?: RadixPopoverContentProps["asChild"];
+	/**
+	 * Callback fired when auto-focusing on open. Can be prevented.
+	 */
+	onOpenAutoFocus?: RadixPopoverContentProps["onOpenAutoFocus"];
+	/**
+	 * Callback fired when auto-focusing on close. Can be prevented.
+	 */
+	onCloseAutoFocus?: RadixPopoverContentProps["onCloseAutoFocus"];
+	/**
+	 * Callback fired when the Escape key is down on the dismissable layer. Can be prevented.
+	 */
+	onEscapeKeyDown?: RadixPopoverContentProps["onEscapeKeyDown"];
+	/**
+	 * Callback fired when a pointerdown event happens outside the bounds of the dismissable layer. Can be prevented.
+	 */
+	onPointerDownOutside?: RadixPopoverContentProps["onPointerDownOutside"];
+	/**
+	 * Callback fired when focus moves outside the bounds of the dismissable layer. Can be prevented.
+	 */
+	onFocusOutside?: RadixPopoverContentProps["onFocusOutside"];
+	/**
+	 * Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented.
+	 */
+	onInteractOutside?: RadixPopoverContentProps["onInteractOutside"];
 	/**
 	 * Show the pointing arrow.
 	 * @default true
 	 */
 	arrow?: boolean;
-};
+}
 
 export const PopoverContent = React.forwardRef<
 	React.ElementRef<typeof PopoverPrimitive.Content>,
@@ -80,28 +225,30 @@ export const PopoverContent = React.forwardRef<
 );
 PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
-export const PopoverTitle = React.forwardRef<
-	HTMLHeadingElement,
-	React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
-	<h2
-		ref={ref}
-		className={cn("m-0 text-base font-medium leading-6 text-basalt-foreground", className)}
-		{...props}
-	/>
-));
+export interface PopoverTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {}
+
+export const PopoverTitle = React.forwardRef<HTMLHeadingElement, PopoverTitleProps>(
+	({ className, ...props }, ref) => (
+		<h2
+			ref={ref}
+			className={cn("m-0 text-base font-medium leading-6 text-basalt-foreground", className)}
+			{...props}
+		/>
+	),
+);
 PopoverTitle.displayName = "PopoverTitle";
 
-export const PopoverDescription = React.forwardRef<
-	HTMLParagraphElement,
-	React.HTMLAttributes<HTMLParagraphElement>
->(({ className, ...props }, ref) => (
-	<p
-		ref={ref}
-		className={cn("m-0 text-base leading-6 text-basalt-muted-foreground", className)}
-		{...props}
-	/>
-));
+export interface PopoverDescriptionProps extends React.HTMLAttributes<HTMLParagraphElement> {}
+
+export const PopoverDescription = React.forwardRef<HTMLParagraphElement, PopoverDescriptionProps>(
+	({ className, ...props }, ref) => (
+		<p
+			ref={ref}
+			className={cn("m-0 text-base leading-6 text-basalt-muted-foreground", className)}
+			{...props}
+		/>
+	),
+);
 PopoverDescription.displayName = "PopoverDescription";
 
 function ArrowSvg(props: React.ComponentProps<"svg">) {

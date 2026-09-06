@@ -161,6 +161,20 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		forwardsRef: false,
 		forwardsRestProps: true,
 	},
+	PopoverTitle: {
+		justification:
+			"Semantic heading level 2 element wrapper for popover titles; forwards HTMLHeadingElement ref and inherits native h2 attributes.",
+		inheritedElement: "HTMLHeadingElement",
+		forwardsRef: true,
+		forwardsRestProps: true,
+	},
+	PopoverDescription: {
+		justification:
+			"Semantic paragraph element wrapper for popover descriptions; forwards HTMLParagraphElement ref and inherits native p attributes.",
+		inheritedElement: "HTMLParagraphElement",
+		forwardsRef: true,
+		forwardsRestProps: true,
+	},
 };
 
 export function formatNativeSurfaceStrategy(doc: NativeOnlySurfaceDocumentation): string {

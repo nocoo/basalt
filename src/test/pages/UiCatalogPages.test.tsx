@@ -1303,34 +1303,27 @@ describe("ui catalog", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		expect(CATALOG_DOCS.tooltip?.api).toEqual(CATALOG_API.tooltip);
-		expect(CATALOG_API.tooltip?.[0]?.props.map((prop) => prop.name)).toEqual(["delayDuration"]);
-		expect(CATALOG_API.tooltip).toEqual([
-			{
-				name: "Tooltip",
-				props: [
-					{
-						name: "delayDuration",
-						type: "number",
-						required: false,
-						default: "700",
-						description: "Delay before the tooltip opens, in milliseconds.",
-					},
-				],
-			},
+		expect(CATALOG_API.tooltip?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"children",
+			"open",
+			"defaultOpen",
+			"onOpenChange",
+			"delayDuration",
+			"disableHoverableContent",
+		]);
+		expect(CATALOG_API.tooltip?.map((surface) => surface.name)).toEqual([
+			"Tooltip",
+			"TooltipProvider",
+			"TooltipTrigger",
+			"TooltipContent",
 		]);
 		renderCatalog("/ui/tooltip");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(1);
 		expect(api).toHaveTextContent("delayDuration?");
-		expect(api).toHaveTextContent("number");
-		expect(api).toHaveTextContent("700");
-		expect(api).toHaveTextContent("Delay before the tooltip opens, in milliseconds.");
-		expect(api).not.toHaveTextContent("children");
-		expect(api).not.toHaveTextContent("defaultOpen");
-		expect(api).not.toHaveTextContent("onOpenChange");
-		expect(api).not.toHaveTextContent("skipDelayDuration");
-		expect(api).not.toHaveTextContent("sideOffset");
+		expect(api).toHaveTextContent("TooltipProvider");
+		expect(api).toHaveTextContent("TooltipTrigger");
+		expect(api).toHaveTextContent("TooltipContent");
 		expect(document.body.textContent).toContain(
 			"<TooltipProvider><Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip></TooltipProvider>",
 		);
@@ -1340,17 +1333,16 @@ describe("ui catalog", () => {
 			fireEvent.click(screen.getByRole("button", { name: "Copy page" }));
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
+		expect(markdown).toContain("### Tooltip");
+		expect(markdown).toContain("### TooltipProvider");
+		expect(markdown).toContain("### TooltipTrigger");
+		expect(markdown).toContain("### TooltipContent");
 		expect(markdown).toContain(
-			"- delayDuration (number, optional, default 700): Delay before the tooltip opens, in milliseconds.",
+			"- delayDuration (number, optional, default 700): Default delay before tooltips open when pointer enters a trigger, in milliseconds.\nCan be overridden per tooltip instance via Tooltip.",
 		);
 		expect(markdown).toContain(
 			"<TooltipProvider><Tooltip><TooltipTrigger asChild><Button>Hover</Button></TooltipTrigger><TooltipContent>Hint</TooltipContent></Tooltip></TooltipProvider>",
 		);
-		expect(markdown).not.toContain("- children (");
-		expect(markdown).not.toContain("- open (");
-		expect(markdown).not.toContain("- defaultOpen (");
-		expect(markdown).not.toContain("- onOpenChange (");
-		expect(markdown).not.toContain("- skipDelayDuration (");
 	});
 
 	it("does not keep a handwritten tooltip prop inventory", () => {

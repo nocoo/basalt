@@ -81,6 +81,24 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "Tooltip",
 	},
 	{
+		slug: "tooltip",
+		sourceFile: "packages/basalt/src/components/tooltip.tsx",
+		propsType: "TooltipProviderProps",
+		surface: "TooltipProvider",
+	},
+	{
+		slug: "tooltip",
+		sourceFile: "packages/basalt/src/components/tooltip.tsx",
+		propsType: "TooltipTriggerProps",
+		surface: "TooltipTrigger",
+	},
+	{
+		slug: "tooltip",
+		sourceFile: "packages/basalt/src/components/tooltip.tsx",
+		propsType: "TooltipContentProps",
+		surface: "TooltipContent",
+	},
+	{
 		slug: "theme-toggle",
 		sourceFile: "packages/basalt/src/components/theme-toggle.tsx",
 		propsType: "ThemeToggleProps",
@@ -511,8 +529,34 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "popover",
 		sourceFile: "packages/basalt/src/components/popover.tsx",
+		propsType: "PopoverTriggerProps",
+		surface: "PopoverTrigger",
+	},
+	{
+		slug: "popover",
+		sourceFile: "packages/basalt/src/components/popover.tsx",
+		propsType: "PopoverCloseProps",
+		surface: "PopoverClose",
+	},
+	{
+		slug: "popover",
+		sourceFile: "packages/basalt/src/components/popover.tsx",
 		propsType: "PopoverContentProps",
 		surface: "PopoverContent",
+	},
+	{
+		slug: "popover",
+		sourceFile: "packages/basalt/src/components/popover.tsx",
+		propsType: "PopoverTitleProps",
+		surface: "PopoverTitle",
+		allowEmpty: true,
+	},
+	{
+		slug: "popover",
+		sourceFile: "packages/basalt/src/components/popover.tsx",
+		propsType: "PopoverDescriptionProps",
+		surface: "PopoverDescription",
+		allowEmpty: true,
 	},
 	{
 		slug: "dropdown-menu",

@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 642,
+	"totalSymbols": 649,
 	"totalValues": 375,
-	"totalTypes": 267,
+	"totalTypes": 274,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -4609,9 +4609,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/popover"
 				},
 				{
+					"name": "PopoverTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/popover",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/popover"
+				},
+				{
 					"name": "PopoverTrigger",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/popover",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/popover"
+				},
+				{
+					"name": "PopoverCloseProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/popover",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/popover"
@@ -4641,9 +4657,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/popover"
 				},
 				{
+					"name": "PopoverTitleProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/popover",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/popover"
+				},
+				{
 					"name": "PopoverTitle",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/popover",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/popover"
+				},
+				{
+					"name": "PopoverDescriptionProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/popover",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/popover"
@@ -6019,7 +6051,7 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Tooltip component documentation and catalog playground",
 			"symbols": [
 				{
-					"name": "TooltipProps",
+					"name": "TooltipProviderProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/tooltip",
@@ -6035,6 +6067,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/tooltip"
 				},
 				{
+					"name": "TooltipProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tooltip",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tooltip"
+				},
+				{
 					"name": "Tooltip",
 					"isValue": true,
 					"isType": false,
@@ -6043,9 +6083,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/tooltip"
 				},
 				{
+					"name": "TooltipTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tooltip",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tooltip"
+				},
+				{
 					"name": "TooltipTrigger",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/tooltip",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tooltip"
+				},
+				{
+					"name": "TooltipContentProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/tooltip",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/tooltip"
