@@ -1320,6 +1320,45 @@ Basalt charts are composed of responsive frame, legend, and tooltip subsystem pr
   - **Behavior**: Hides row label text for internal/synthetic keys (`"y"`, `"y2"`, `"y3"`, `"value"`, `"target"`), but still displays their numeric values. Uses `--basalt-popover` background tokens with tabular numeric formatting.
 - **`formatChartNumber(value: number): string`**: Formats numbers via `Intl.NumberFormat` with max 0 decimals for integers and 1 decimal for fractions. Non-finite values return `"—"`.
 
+<a id="heatmap-calendar"></a>
+
+### HeatmapCalendar (`@nocoo/basalt/charts/heatmap-calendar`)
+
+- **`HeatmapCalendar`**: Accessible calendar heatmap component supporting both year-long date/value grids and compact 7-column numeric sequences.
+  - **Props (`HeatmapCalendarYearProps`)**:
+    - `data: HeatmapDataPoint[]` (required): Daily entries `{ date: string, value: number }[]` with ISO date strings (`"YYYY-MM-DD"`).
+    - `year: number` (required): Target calendar year to render.
+    - `colorScale?: readonly string[]` (optional): Array of colors forming intensity gradient. Defaults to `heatmapColorScales.green`.
+    - `valueFormatter?: (value: number, date: string) => string` (optional): Formatting function for tooltip and accessible name.
+    - `metricLabel?: string` (optional, default: `"Value"`): Label for the measured metric.
+    - `cellSize?: number` (optional, default: `12`): Width and height of day cells in pixels.
+    - `cellGap?: number` (optional, default: `2`): Gap between cells in pixels.
+    - `locale?: string` (optional, default: `"en-US"`): BCP 47 locale for month/weekday labels.
+    - `weekdayLabels?: string[]` / `monthLabels?: string[]` (optional): Explicit label overrides.
+    - `lessLabel?: string` / `moreLabel?: string` (optional, default: `"Less"` / `"More"`): Legend bounds text.
+    - `ariaLabel?: string` (optional, default: `"Heatmap calendar"`): Accessible name for the calendar view.
+    - `className?: string` (optional): Additional styles applied to the scrollable wrapper.
+  - **Props (`HeatmapCalendarValuesProps`)**:
+    - `values: number[]` (required): Sequence of values rendered in a compact 7-column matrix with zero-value contrast preservation.
+    - `ariaLabel?: string` (optional, default: `"Heatmap calendar"`): Accessible name for the matrix.
+    - `className?: string` (optional): Additional styles.
+  - **Keyboard Navigation & Single Tab Stop**:
+    - Focus enters the heatmap via a single <kbd>Tab</kbd> stop onto the active day/value cell button.
+    - **Year Grid Navigation**:
+      - <kbd>↑</kbd> / <kbd>↓</kbd>: Navigate vertically between days (previous/next day, ±1 day).
+      - <kbd>←</kbd> / <kbd>→</kbd>: Navigate horizontally between weeks (previous/next week, ±7 days).
+      - <kbd>Home</kbd> / <kbd>End</kbd>: Jump directly to the first/last valid day of the year.
+      - <kbd>Escape</kbd>: Dismisses the day tooltip while preserving focus on the cell button.
+      - <kbd>Tab</kbd>: Leaves the calendar directly to the next external focusable control (no 365-stop tab trap).
+    - **Values Matrix Navigation**:
+      - <kbd>←</kbd> / <kbd>→</kbd>: Step ±1 item in sequence.
+      - <kbd>↑</kbd> / <kbd>↓</kbd>: Step ±7 items (previous/next row in the same column in 7-column layout).
+      - <kbd>Home</kbd> / <kbd>End</kbd>: Jump to first/last value.
+      - <kbd>Escape</kbd>: Dismisses value tooltip while preserving focus on the cell button.
+      - <kbd>Tab</kbd>: Leaves the matrix directly to the next external focusable control.
+      - Zero values render with clear `:focus-visible` outlines without being faded by parent opacity.
+    - **Dynamic Data Updates**: Shrinking or emptying arrays, or switching years, clamps active index safely, restores focus if the element was active, and never steals focus from external controls.
+
 ---
 
 ## 19. Complete Framework Recipes & Compilable Guides

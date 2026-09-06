@@ -1,8 +1,10 @@
 import { BarChart } from "@nocoo/basalt/charts/bar";
 import { ChartFrame, ChartShell } from "@nocoo/basalt/charts/frame";
 import { Gauge } from "@nocoo/basalt/charts/gauge";
+import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatmap-calendar";
 import { LineChart } from "@nocoo/basalt/charts/line";
 import { type BasaltTheme, ThemeProvider, useTheme } from "@nocoo/basalt/providers/theme";
+import { useState } from "react";
 import { Bar, BarChart as RechartsBar } from "recharts";
 
 const BAR_DATA = [
@@ -21,6 +23,7 @@ const LINE_DATA = [
 
 function ChartsPanel() {
 	const { theme, setTheme } = useTheme();
+	const [valuesData, setValuesData] = useState<number[]>([0, 1, 2, 3, 4, 1, 0, 2, 3, 4]);
 
 	return (
 		<div id="charts-container" style={{ padding: 16 }}>
@@ -191,6 +194,59 @@ function ChartsPanel() {
 						summary="Current system load is at 72% within normal bounds."
 						dataAlternative={<p id="gauge-alt">Load is 72 out of 100 maximum capacity.</p>}
 					/>
+				</div>
+
+				{/* 7. HeatmapCalendar: Year grid with keyboard traversal */}
+				<div data-testid="case-heatmap-year">
+					<h2>Repository Commits (Heatmap Calendar)</h2>
+					<button id="focus-before-heatmap" type="button">
+						Focus Before Heatmap
+					</button>
+					<HeatmapCalendar
+						data={[
+							{ date: "2026-01-01", value: 5 },
+							{ date: "2026-01-02", value: 12 },
+							{ date: "2026-12-31", value: 9 },
+						]}
+						year={2026}
+						colorScale={heatmapColorScales.blue}
+						metricLabel="Commits"
+						ariaLabel="Repository commits"
+						valueFormatter={(value) => `${value} commits`}
+					/>
+					<button id="focus-after-heatmap" type="button">
+						Focus After Heatmap
+					</button>
+				</div>
+
+				{/* 8. HeatmapCalendar: Values matrix with dynamic shrink & empty */}
+				<div data-testid="case-heatmap-values">
+					<h2>Values Matrix</h2>
+					<div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
+						<button id="values-shrink-btn" type="button" onClick={() => setValuesData([0, 3])}>
+							Shrink to 2
+						</button>
+						<button id="values-empty-btn" type="button" onClick={() => setValuesData([])}>
+							Empty Values
+						</button>
+						<button
+							id="values-restore-btn"
+							type="button"
+							onClick={() => setValuesData([0, 1, 2, 3, 4, 1, 0, 2, 3, 4])}
+						>
+							Restore Values
+						</button>
+						<button id="outside-focus-btn" type="button">
+							Outside Button
+						</button>
+					</div>
+					<button id="focus-before-values" type="button">
+						Focus Before Values
+					</button>
+					<HeatmapCalendar values={valuesData} ariaLabel="Matrix activity" />
+					<button id="focus-after-values" type="button">
+						Focus After Values
+					</button>
 				</div>
 			</section>
 		</div>

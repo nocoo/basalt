@@ -116,8 +116,8 @@ describe("charts", () => {
 		expect(screen.getByRole("group", { name: "Custom" })).toBeInTheDocument();
 		render(<Colors />);
 		render(<HeatmapCalendar values={[1, 2, 3]} ariaLabel="Heat" />);
-		expect(screen.getByRole("img", { name: "Heat" })).toBeInTheDocument();
-		render(
+		expect(screen.getByRole("region", { name: "Heat" })).toBeInTheDocument();
+		const { unmount: unmountHeatmap } = render(
 			<HeatmapCalendar
 				data={[{ date: "2026-01-01", value: 4 }]}
 				year={2026}
@@ -125,8 +125,9 @@ describe("charts", () => {
 				metricLabel="Sessions"
 			/>,
 		);
-		expect(screen.getByRole("img", { name: "Year heat" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Year heat" })).toBeInTheDocument();
 		expect(screen.getByText("Less")).toBeInTheDocument();
+		unmountHeatmap();
 		render(<ItemList items={[{ label: "A", value: "1" }]} ariaLabel="Items" />);
 		expect(screen.getByRole("list", { name: "Items" })).toHaveTextContent("A 1");
 		render(

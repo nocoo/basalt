@@ -10,6 +10,8 @@ export type ChartsGateResult = {
 	frameChildFalseChecked: number;
 	shellLegendChecked: number;
 	gaugeValidationsChecked: number;
+	heatmapNavigationsChecked: number;
+	valuesValidationsChecked: number;
 };
 
 const VIEWPORTS = [
@@ -30,6 +32,8 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 	let frameChildFalseChecked = 0;
 	let shellLegendChecked = 0;
 	let gaugeValidationsChecked = 0;
+	let heatmapNavigationsChecked = 0;
+	let valuesValidationsChecked = 0;
 
 	for (const vp of VIEWPORTS) {
 		await page.setViewportSize({ width: vp.width, height: vp.height });
@@ -343,6 +347,233 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				"Gauge SVG must have positive dimensions",
 			);
 			gaugeValidationsChecked++;
+
+			// -------------------------------------------------------------
+			// 7. HeatmapCalendar: Year grid with keyboard traversal, single Tab, Escape
+			// -------------------------------------------------------------
+			const heatmapCase = page.locator('[data-testid="case-heatmap-year"]');
+			const beforeHeatmap = heatmapCase.locator("#focus-before-heatmap");
+			await beforeHeatmap.focus();
+
+			const jan1Cell = heatmapCase.locator('button[tabindex="0"]');
+
+			// Tab from before button -> enters the single roving tab stop on the active cell
+			await page.keyboard.press("Tab");
+			const isJan1Active = await jan1Cell.evaluate((el) => document.activeElement === el);
+			assert.equal(isJan1Active, true, "Active element after Tab must be the Jan 1 cell button");
+
+			// Initial Tab should open and keep visible the Jan 1 tooltip even if scroll occurs
+			await page.waitForSelector('[role="tooltip"]', { state: "visible" });
+			const jan1TooltipText = (await page.locator('[role="tooltip"]').textContent()) ?? "";
+			assert.ok(
+				jan1TooltipText.includes("2026-01-01") && jan1TooltipText.includes("5 commits"),
+				`Tooltip on initial Tab must display Jan 1 data (received: "${jan1TooltipText}")`,
+			);
+
+			const jan1Label = (await jan1Cell.getAttribute("aria-label")) ?? "";
+			assert.ok(
+				jan1Label.includes("2026-01-01") && jan1Label.includes("5 commits"),
+				`Initial cell must have Jan 1 date and 5 commits reading (received: "${jan1Label}")`,
+			);
+
+			// Focus outline on gridcell
+			const cellOutline = await jan1Cell.evaluate((el) => {
+				const style = window.getComputedStyle(el);
+				return {
+					matchesFocusVisible: el.matches(":focus-visible"),
+					outlineStyle: style.outlineStyle,
+					outlineWidth: Number.parseFloat(style.outlineWidth) || 0,
+				};
+			});
+			assert.equal(cellOutline.matchesFocusVisible, true, "Cell must match :focus-visible");
+			assert.notEqual(cellOutline.outlineStyle, "none", "Cell must have visible outline");
+			assert.ok(cellOutline.outlineWidth > 0, "Cell outline width must be > 0");
+
+			// ArrowDown visually moves down in column to next day (Jan 2)
+			await page.keyboard.press("ArrowDown");
+			const activeDay2Label = await page.evaluate(
+				() => document.activeElement?.getAttribute("aria-label") ?? "",
+			);
+			assert.ok(
+				activeDay2Label.includes("2026-01-02") && activeDay2Label.includes("12 commits"),
+				`ArrowDown must move to Jan 2 (received: "${activeDay2Label}")`,
+			);
+
+			// Tooltip should be visible for Jan 2
+			await page.waitForSelector('[role="tooltip"]', { state: "visible" });
+			const tooltipText = (await page.locator('[role="tooltip"]').textContent()) ?? "";
+			assert.ok(
+				tooltipText.includes("2026-01-02") && tooltipText.includes("12 commits"),
+				`Tooltip must display Jan 2 data (received: "${tooltipText}")`,
+			);
+
+			// Escape closes tooltip while maintaining active focus on the exact same cell
+			await page.keyboard.press("Escape");
+			await page.waitForSelector('[role="tooltip"]', { state: "hidden" });
+			const activeAfterEscape = await page.evaluate(
+				() => document.activeElement?.getAttribute("aria-label") ?? "",
+			);
+			assert.equal(
+				activeAfterEscape,
+				activeDay2Label,
+				"Active element after Escape must remain on the exact same Jan 2 cell",
+			);
+
+			// End key jumps to last date of year (Dec 31) - causes horizontal scroll
+			await page.keyboard.press("End");
+			const dec31Label = await page.evaluate(
+				() => document.activeElement?.getAttribute("aria-label") ?? "",
+			);
+			assert.ok(
+				dec31Label.includes("2026-12-31") && dec31Label.includes("9 commits"),
+				`End key must jump to Dec 31 (received: "${dec31Label}")`,
+			);
+
+			// After End key and automatic scroll, tooltip for Dec 31 must remain visible and readable
+			await page.waitForSelector('[role="tooltip"]', { state: "visible" });
+			const dec31TooltipText = (await page.locator('[role="tooltip"]').textContent()) ?? "";
+			assert.ok(
+				dec31TooltipText.includes("2026-12-31") && dec31TooltipText.includes("9 commits"),
+				`Tooltip after End horizontal scroll must remain visible with Dec 31 data (received: "${dec31TooltipText}")`,
+			);
+
+			// Escape closes tooltip for Dec 31
+			await page.keyboard.press("Escape");
+			await page.waitForSelector('[role="tooltip"]', { state: "hidden" });
+			const activeAfterDecEscape = await page.evaluate(
+				() => document.activeElement?.getAttribute("aria-label") ?? "",
+			);
+			assert.equal(
+				activeAfterDecEscape,
+				dec31Label,
+				"Active element after Escape on Dec 31 must remain on Dec 31 cell",
+			);
+
+			// Tab to leave the entire heatmap -> must land on focus-after-heatmap (single tab stop principle)
+			await page.keyboard.press("Tab");
+			assert.equal(
+				await page.evaluate(() => document.activeElement?.id),
+				"focus-after-heatmap",
+				"Single Tab from gridcell must exit to the next interactive element outside heatmap",
+			);
+			heatmapNavigationsChecked++;
+
+			// -------------------------------------------------------------
+			// 8. HeatmapCalendar: Values matrix (zero-value tab/focus, tooltip, shrink 10->2->empty, tab exit, no steal)
+			// -------------------------------------------------------------
+			const valuesCase = page.locator('[data-testid="case-heatmap-values"]');
+			const beforeValues = valuesCase.locator("#focus-before-values");
+			await beforeValues.focus();
+
+			// Tab from beforeValues button into the values matrix -> lands on first cell (Position 1: 0)
+			await page.keyboard.press("Tab");
+			const firstCell = valuesCase.locator('button[tabindex="0"]');
+			const isFirstCellFocused = await firstCell.evaluate((el) => document.activeElement === el);
+			assert.equal(isFirstCellFocused, true, "First Tab must focus the initial values button");
+
+			const zeroCellLabel = await firstCell.getAttribute("aria-label");
+			assert.equal(
+				zeroCellLabel,
+				"Position 1: 0",
+				"Zero-value cell must have accessible label 'Position 1: 0'",
+			);
+
+			// Verify zero-value cell outline is visible and not faded
+			const zeroOutline = await firstCell.evaluate((el) => {
+				const style = window.getComputedStyle(el);
+				return {
+					matchesFocusVisible: el.matches(":focus-visible"),
+					outlineStyle: style.outlineStyle,
+					outlineWidth: Number.parseFloat(style.outlineWidth) || 0,
+				};
+			});
+			assert.equal(
+				zeroOutline.matchesFocusVisible,
+				true,
+				"Zero-value cell must match :focus-visible",
+			);
+			assert.notEqual(
+				zeroOutline.outlineStyle,
+				"none",
+				"Zero-value cell must have visible outline",
+			);
+			assert.ok(zeroOutline.outlineWidth > 0, "Zero-value cell outline width must be > 0");
+
+			// Visible tooltip check on focus
+			await page.waitForSelector('[role="tooltip"]', { state: "visible" });
+			const valuesTooltip = await page.locator('[role="tooltip"]').textContent();
+			assert.ok(
+				valuesTooltip?.includes("Position 1: 0"),
+				`Tooltip must show zero value (got: "${valuesTooltip}")`,
+			);
+
+			// Navigate to last item (index 9) with End key
+			await page.keyboard.press("End");
+			const lastCellLabel = await page.evaluate(
+				() => document.activeElement?.getAttribute("aria-label") ?? "",
+			);
+			assert.equal(lastCellLabel, "Position 10: 4", "End key must navigate to Position 10");
+
+			// Trigger shrink 10 -> 2
+			await page.evaluate(() => {
+				const btn = document.getElementById("values-shrink-btn");
+				btn?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+			});
+			// Focus was in matrix, so after shrink it restores to index 1 (Position 2: 3)
+			const activeAfterShrink = await page.evaluate(
+				() => document.activeElement?.getAttribute("aria-label") ?? "",
+			);
+			assert.equal(
+				activeAfterShrink,
+				"Position 2: 3",
+				"Focus must be restored to clamped active item on shrink",
+			);
+
+			// Trigger empty while activeElement is in the matrix
+			await page.evaluate(() => {
+				const btn = document.getElementById("values-empty-btn");
+				btn?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+			});
+			const activeAfterEmpty = await page.evaluate(
+				() => document.activeElement?.getAttribute("role") ?? "",
+			);
+			assert.equal(
+				activeAfterEmpty,
+				"region",
+				"Focus must be restored to empty region when values empty",
+			);
+
+			// Tab to exit empty values matrix -> lands on focus-after-values
+			await page.keyboard.press("Tab");
+			assert.equal(
+				await page.evaluate(() => document.activeElement?.id),
+				"focus-after-values",
+				"Single Tab from empty region must exit to focus-after-values button",
+			);
+
+			// Test that outside focus is NOT stolen when values change
+			const outsideBtn = valuesCase.locator("#outside-focus-btn");
+			await outsideBtn.focus();
+			assert.equal(
+				await page.evaluate(() => document.activeElement?.id),
+				"outside-focus-btn",
+				"Outside button must be focused",
+			);
+
+			// Restore values while focus is outside
+			await valuesCase.locator("#values-restore-btn").click();
+			await outsideBtn.focus();
+			// Trigger another shrink while focus is outside
+			await valuesCase.locator("#values-shrink-btn").click();
+			assert.equal(
+				await page.evaluate(() => document.activeElement?.id),
+				"values-shrink-btn",
+				"Focus must not be stolen back to the heatmap when focus was outside",
+			);
+
+			// Restore back to original 10 values for next loop iteration
+			await valuesCase.locator("#values-restore-btn").click();
+			valuesValidationsChecked++;
 		}
 	}
 
@@ -355,5 +586,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 		frameChildFalseChecked,
 		shellLegendChecked,
 		gaugeValidationsChecked,
+		heatmapNavigationsChecked,
+		valuesValidationsChecked,
 	};
 }

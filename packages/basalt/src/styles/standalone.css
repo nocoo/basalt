@@ -581,6 +581,9 @@
   .ml-auto {
     margin-left: auto;
   }
+  .box-border {
+    box-sizing: border-box;
+  }
   .block {
     display: block;
   }
@@ -1705,6 +1708,10 @@
     --tw-ease: var(--ease-out);
     transition-timing-function: var(--ease-out);
   }
+  .outline-none {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
   .select-none {
     -webkit-user-select: none;
     user-select: none;
@@ -1880,6 +1887,16 @@
   }
   .focus-visible\:ring-offset-basalt-background:focus-visible {
     --tw-ring-offset-color: hsl(var(--basalt-background));
+  }
+  .focus-visible\:outline-2:focus-visible {
+    outline-style: var(--tw-outline-style);
+    outline-width: 2px;
+  }
+  .focus-visible\:outline-offset-1:focus-visible {
+    outline-offset: 1px;
+  }
+  .focus-visible\:outline-basalt-ring:focus-visible {
+    outline-color: hsl(var(--basalt-ring));
   }
   .focus-visible\:ring-inset:focus-visible {
     --tw-ring-inset: inset;

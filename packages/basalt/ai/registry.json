@@ -2742,7 +2742,7 @@
 			"importPath": "@nocoo/basalt/charts/heatmap-calendar",
 			"subpath": "./charts/heatmap-calendar",
 			"sourceFile": "packages/basalt/src/charts/heatmap-calendar.tsx",
-			"sourceHash": "d5834923a9b15a84",
+			"sourceHash": "e36b03c874c08dc5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2816,17 +2816,21 @@
 								{
 									"name": "values",
 									"type": "number[]",
-									"required": true
+									"required": true,
+									"description": "Numeric values sequence to display in a compact 7-column grid."
 								},
 								{
 									"name": "ariaLabel",
 									"type": "string",
-									"required": false
+									"required": false,
+									"default": "\"Heatmap calendar\"",
+									"description": "Accessible name describing the heatmap purpose or data."
 								},
 								{
 									"name": "className",
 									"type": "string",
-									"required": false
+									"required": false,
+									"description": "Additional CSS class names for the outer container."
 								}
 							]
 						},
@@ -2836,72 +2840,95 @@
 								{
 									"name": "data",
 									"type": "HeatmapDataPoint[]",
-									"required": true
+									"required": true,
+									"description": "Dataset of daily metrics with ISO date strings (\"YYYY-MM-DD\") and numeric values."
 								},
 								{
 									"name": "year",
 									"type": "number",
-									"required": true
+									"required": true,
+									"description": "Calendar year to render."
 								},
 								{
 									"name": "colorScale",
 									"type": "string[]",
-									"required": false
+									"required": false,
+									"default": "heatmapColorScales.green",
+									"description": "Array of color values forming the intensity gradient from lowest to highest."
 								},
 								{
 									"name": "valueFormatter",
 									"type": "(value: number, date: string) => string",
-									"required": false
+									"required": false,
+									"default": "(value) => value.toLocaleString()",
+									"description": "Formatter for tooltip value display and accessible label."
 								},
 								{
 									"name": "metricLabel",
 									"type": "string",
-									"required": false
+									"required": false,
+									"default": "\"Value\"",
+									"description": "Name of the metric for accessible labeling and tooltips."
 								},
 								{
 									"name": "cellSize",
 									"type": "number",
-									"required": false
+									"required": false,
+									"default": "12",
+									"description": "Pixel width and height of each day cell."
 								},
 								{
 									"name": "cellGap",
 									"type": "number",
-									"required": false
+									"required": false,
+									"default": "2",
+									"description": "Pixel gap between adjacent cells."
 								},
 								{
 									"name": "locale",
 									"type": "string",
-									"required": false
+									"required": false,
+									"default": "\"en-US\"",
+									"description": "BCP 47 locale tag used for weekday and month label formatting."
 								},
 								{
 									"name": "weekdayLabels",
 									"type": "string[]",
-									"required": false
+									"required": false,
+									"description": "Explicit custom weekday labels override."
 								},
 								{
 									"name": "monthLabels",
 									"type": "string[]",
-									"required": false
+									"required": false,
+									"description": "Explicit custom month labels override."
 								},
 								{
 									"name": "lessLabel",
 									"type": "string",
-									"required": false
+									"required": false,
+									"default": "\"Less\"",
+									"description": "Label text for the lower end of the color scale legend."
 								},
 								{
 									"name": "moreLabel",
 									"type": "string",
-									"required": false
+									"required": false,
+									"default": "\"More\"",
+									"description": "Label text for the upper end of the color scale legend."
 								},
 								{
 									"name": "ariaLabel",
 									"type": "string",
-									"required": false
+									"required": false,
+									"default": "\"Heatmap calendar\"",
+									"description": "Accessible name describing the yearly heatmap dataset."
 								},
 								{
 									"name": "className",
 									"type": "string",
-									"required": false
+									"required": false,
+									"description": "Additional CSS class names for the outer scrollable container."
 								}
 							]
 						}
@@ -2915,17 +2942,21 @@
 						{
 							"name": "values",
 							"type": "number[]",
-							"required": true
+							"required": true,
+							"description": "Numeric values sequence to display in a compact 7-column grid."
 						},
 						{
 							"name": "ariaLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"Heatmap calendar\"",
+							"description": "Accessible name describing the heatmap purpose or data."
 						},
 						{
 							"name": "className",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Additional CSS class names for the outer container."
 						}
 					]
 				},
@@ -2935,72 +2966,95 @@
 						{
 							"name": "data",
 							"type": "HeatmapDataPoint[]",
-							"required": true
+							"required": true,
+							"description": "Dataset of daily metrics with ISO date strings (\"YYYY-MM-DD\") and numeric values."
 						},
 						{
 							"name": "year",
 							"type": "number",
-							"required": true
+							"required": true,
+							"description": "Calendar year to render."
 						},
 						{
 							"name": "colorScale",
 							"type": "string[]",
-							"required": false
+							"required": false,
+							"default": "heatmapColorScales.green",
+							"description": "Array of color values forming the intensity gradient from lowest to highest."
 						},
 						{
 							"name": "valueFormatter",
 							"type": "(value: number, date: string) => string",
-							"required": false
+							"required": false,
+							"default": "(value) => value.toLocaleString()",
+							"description": "Formatter for tooltip value display and accessible label."
 						},
 						{
 							"name": "metricLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"Value\"",
+							"description": "Name of the metric for accessible labeling and tooltips."
 						},
 						{
 							"name": "cellSize",
 							"type": "number",
-							"required": false
+							"required": false,
+							"default": "12",
+							"description": "Pixel width and height of each day cell."
 						},
 						{
 							"name": "cellGap",
 							"type": "number",
-							"required": false
+							"required": false,
+							"default": "2",
+							"description": "Pixel gap between adjacent cells."
 						},
 						{
 							"name": "locale",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"en-US\"",
+							"description": "BCP 47 locale tag used for weekday and month label formatting."
 						},
 						{
 							"name": "weekdayLabels",
 							"type": "string[]",
-							"required": false
+							"required": false,
+							"description": "Explicit custom weekday labels override."
 						},
 						{
 							"name": "monthLabels",
 							"type": "string[]",
-							"required": false
+							"required": false,
+							"description": "Explicit custom month labels override."
 						},
 						{
 							"name": "lessLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"Less\"",
+							"description": "Label text for the lower end of the color scale legend."
 						},
 						{
 							"name": "moreLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"More\"",
+							"description": "Label text for the upper end of the color scale legend."
 						},
 						{
 							"name": "ariaLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"Heatmap calendar\"",
+							"description": "Accessible name describing the yearly heatmap dataset."
 						},
 						{
 							"name": "className",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Additional CSS class names for the outer scrollable container."
 						}
 					]
 				}
@@ -31411,7 +31465,7 @@
 			"exportName": "HeatmapCalendar",
 			"importPath": "@nocoo/basalt/charts/heatmap-calendar",
 			"sourceFile": "packages/basalt/src/charts/heatmap-calendar.tsx",
-			"sourceHash": "d5834923a9b15a84",
+			"sourceHash": "e36b03c874c08dc5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#heatmap-calendar",
@@ -31422,17 +31476,21 @@
 						{
 							"name": "values",
 							"type": "number[]",
-							"required": true
+							"required": true,
+							"description": "Numeric values sequence to display in a compact 7-column grid."
 						},
 						{
 							"name": "ariaLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"Heatmap calendar\"",
+							"description": "Accessible name describing the heatmap purpose or data."
 						},
 						{
 							"name": "className",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Additional CSS class names for the outer container."
 						}
 					]
 				},
@@ -31442,72 +31500,95 @@
 						{
 							"name": "data",
 							"type": "HeatmapDataPoint[]",
-							"required": true
+							"required": true,
+							"description": "Dataset of daily metrics with ISO date strings (\"YYYY-MM-DD\") and numeric values."
 						},
 						{
 							"name": "year",
 							"type": "number",
-							"required": true
+							"required": true,
+							"description": "Calendar year to render."
 						},
 						{
 							"name": "colorScale",
 							"type": "string[]",
-							"required": false
+							"required": false,
+							"default": "heatmapColorScales.green",
+							"description": "Array of color values forming the intensity gradient from lowest to highest."
 						},
 						{
 							"name": "valueFormatter",
 							"type": "(value: number, date: string) => string",
-							"required": false
+							"required": false,
+							"default": "(value) => value.toLocaleString()",
+							"description": "Formatter for tooltip value display and accessible label."
 						},
 						{
 							"name": "metricLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"Value\"",
+							"description": "Name of the metric for accessible labeling and tooltips."
 						},
 						{
 							"name": "cellSize",
 							"type": "number",
-							"required": false
+							"required": false,
+							"default": "12",
+							"description": "Pixel width and height of each day cell."
 						},
 						{
 							"name": "cellGap",
 							"type": "number",
-							"required": false
+							"required": false,
+							"default": "2",
+							"description": "Pixel gap between adjacent cells."
 						},
 						{
 							"name": "locale",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"en-US\"",
+							"description": "BCP 47 locale tag used for weekday and month label formatting."
 						},
 						{
 							"name": "weekdayLabels",
 							"type": "string[]",
-							"required": false
+							"required": false,
+							"description": "Explicit custom weekday labels override."
 						},
 						{
 							"name": "monthLabels",
 							"type": "string[]",
-							"required": false
+							"required": false,
+							"description": "Explicit custom month labels override."
 						},
 						{
 							"name": "lessLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"Less\"",
+							"description": "Label text for the lower end of the color scale legend."
 						},
 						{
 							"name": "moreLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"More\"",
+							"description": "Label text for the upper end of the color scale legend."
 						},
 						{
 							"name": "ariaLabel",
 							"type": "string",
-							"required": false
+							"required": false,
+							"default": "\"Heatmap calendar\"",
+							"description": "Accessible name describing the yearly heatmap dataset."
 						},
 						{
 							"name": "className",
 							"type": "string",
-							"required": false
+							"required": false,
+							"description": "Additional CSS class names for the outer scrollable container."
 						}
 					]
 				}

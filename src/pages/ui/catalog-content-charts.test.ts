@@ -53,6 +53,15 @@ describe("charts catalog content family", () => {
 					{ id: `${slug}-default`, title: "Default" },
 					{ id: `${slug}-accessible-data`, title: "Accessible Data & Summary" },
 				]);
+			} else if (slug === "heatmap-calendar") {
+				expect(
+					examples.map(({ id, title }) => ({ id, title })),
+					slug,
+				).toEqual([
+					{ id: `${slug}-default`, title: "Default" },
+					{ id: `${slug}-accessible-year`, title: "Accessible Year Grid" },
+					{ id: `${slug}-accessible-values`, title: "Accessible Values Matrix" },
+				]);
 			} else {
 				expect(
 					examples.map(({ id, title }) => ({ id, title })),
