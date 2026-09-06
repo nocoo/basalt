@@ -48,7 +48,18 @@ function declaresPageState(source: string) {
 
 function hasSingleJsxRoot(source: string) {
 	const trimmed = source.trim();
-	return trimmed.startsWith("<>") && trimmed.endsWith("</>");
+	if (trimmed.startsWith("<>") && trimmed.endsWith("</>")) {
+		return true;
+	}
+	const returnMatches = Array.from(source.matchAll(/return\s*\(\s*([\s\S]*?)\s*\);/g));
+	if (returnMatches.length === 0) {
+		return false;
+	}
+	const lastReturnedJsx = returnMatches[returnMatches.length - 1][1].trim();
+	return (
+		(lastReturnedJsx.startsWith("<>") && lastReturnedJsx.endsWith("</>")) ||
+		(lastReturnedJsx.startsWith("<div") && lastReturnedJsx.endsWith("</div>"))
+	);
 }
 
 describe("overlay data scenario truth", () => {
@@ -231,8 +242,8 @@ describe("overlay data scenario truth", () => {
 		expect(scenario("dialog", "dialog-basic-dialog").code).toContain("DialogTrigger");
 		expect(scenario("dialog", "dialog-basic-dialog").code).toContain("DialogClose");
 		expect(hasSingleJsxRoot(scenario("dialog", "dialog-sizes").code)).toBe(true);
-		expect(scenario("dialog", "dialog-sizes").code).toContain('size="sm"');
-		expect(scenario("dialog", "dialog-sizes").code).toContain('size="xl"');
+		expect(scenario("dialog", "dialog-sizes").code).toContain('size: "sm"');
+		expect(scenario("dialog", "dialog-sizes").code).toContain('size: "xl"');
 		expect(scenario("dialog", "dialog-sizes").code).toContain("DialogTrigger");
 		expect(scenario("dialog", "dialog-sizes").code).not.toContain("…");
 		expect(scenario("dialog", "dialog-confirmation-dialog").code).toContain("DialogClose");

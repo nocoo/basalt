@@ -20,6 +20,11 @@ function usage(name: string, from: string, sample: string, extraImports = ""): s
 	return `${extras}import { ${name} } from "${from}";\n\nexport default function Example() {\n\treturn ${sample};\n}`;
 }
 
+function scenarioModule(code: string, imports: string[]): string {
+	const importLines = imports.join("\n");
+	return `${importLines}\n\nexport default function Example() {\n\treturn (\n\t\t${code.split("\n").join("\n\t\t")}\n\t);\n}`;
+}
+
 export default catalogContentFamily({
 	fab: {
 		docs: {
@@ -64,9 +69,14 @@ export default function Example() {
 			{
 				id: catalogScenarioId("chat-bubble", "roles"),
 				title: "Roles",
-				code: `<ChatBubble variant="system">Today</ChatBubble>
-<ChatBubble variant="user">What is the error rate?</ChatBubble>
-<ChatBubble>The 7-day error rate is 0.4%.</ChatBubble>`,
+				code: scenarioModule(
+					`<div className="flex w-full max-w-md flex-col gap-3">
+	<ChatBubble variant="system">Today</ChatBubble>
+	<ChatBubble variant="user">What is the error rate?</ChatBubble>
+	<ChatBubble>The 7-day error rate is 0.4%.</ChatBubble>
+</div>`,
+					['import { ChatBubble } from "@nocoo/basalt/components/chat-bubble";'],
+				),
 				render: () => (
 					<div className="flex w-full max-w-md flex-col gap-3">
 						<ChatBubble variant="system">Today</ChatBubble>
@@ -92,7 +102,12 @@ export default function Example() {
 			{
 				id: catalogScenarioId("chat-composer", "idle"),
 				title: "Idle",
-				code: '<ChatComposer placeholder="Ask about this page…" onSend={() => undefined} />',
+				code: scenarioModule(
+					`<div className="w-full max-w-md">
+	<ChatComposer placeholder="Ask about this page…" onSend={() => undefined} />
+</div>`,
+					['import { ChatComposer } from "@nocoo/basalt/components/chat-composer";'],
+				),
 				render: () => (
 					<div className="w-full max-w-md">
 						<ChatComposer placeholder="Ask about this page…" onSend={() => undefined} />
@@ -116,9 +131,24 @@ export default function Example() {
 			{
 				id: catalogScenarioId("chat-header", "with-actions"),
 				title: "With actions",
-				code: `<ChatHeader title="Assistant" subtitle="Home" leading={<Sparkles className="h-5 w-5" />}>
-  <Button size="icon" variant="ghost" aria-label="Close"><X /></Button>
-</ChatHeader>`,
+				code: scenarioModule(
+					`<div className="w-full max-w-md ring-1 ring-basalt-border">
+	<ChatHeader
+		title="Assistant"
+		subtitle="Home"
+		leading={<Sparkles className="h-5 w-5" />}
+	>
+		<Button size="icon" variant="ghost" aria-label="Close">
+			<X />
+		</Button>
+	</ChatHeader>
+</div>`,
+					[
+						'import { Button } from "@nocoo/basalt/components/button";',
+						'import { ChatHeader } from "@nocoo/basalt/components/chat-header";',
+						'import { Sparkles, X } from "lucide-react";',
+					],
+				),
 				render: () => (
 					<div className="w-full max-w-md ring-1 ring-basalt-border">
 						<ChatHeader
@@ -156,14 +186,35 @@ export default function Example() {
 			{
 				id: catalogScenarioId("chat-inbox", "threads"),
 				title: "Threads",
-				code: `<ChatInbox
-  activeId="a"
-  onSelect={() => undefined}
-  items={[
-    { id: "a", title: "Analytics", preview: "Ask about usage", time: "2m" },
-    { id: "b", title: "Quality", preview: "Error rate", time: "1h" },
-  ]}
-/>`,
+				code: scenarioModule(
+					`<div className="h-48 w-full max-w-xs ring-1 ring-basalt-border">
+	<ChatInbox
+		aria-label="Inbox"
+		activeId="a"
+		onSelect={() => undefined}
+		items={[
+			{
+				id: "a",
+				title: "Analytics",
+				preview: "Ask about usage",
+				time: "2m",
+				leading: <MessageCircle className="h-4 w-4" />,
+			},
+			{
+				id: "b",
+				title: "Quality",
+				preview: "Error rate",
+				time: "1h",
+				leading: <MessageCircle className="h-4 w-4" />,
+			},
+		]}
+	/>
+</div>`,
+					[
+						'import { ChatInbox } from "@nocoo/basalt/components/chat-inbox";',
+						'import { MessageCircle } from "lucide-react";',
+					],
+				),
 				render: () => (
 					<div className="h-48 w-full max-w-xs ring-1 ring-basalt-border">
 						<ChatInbox
