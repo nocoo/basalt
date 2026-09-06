@@ -30,6 +30,7 @@ describe("Button", () => {
 			</Button>,
 		);
 		expect(screen.getByRole("link", { name: "Docs" })).toHaveAttribute("href", "/docs");
+		expect(screen.getByRole("link", { name: "Docs" })).toHaveClass("basalt-ui");
 	});
 
 	it("exposes an accessible name when icon-only", () => {

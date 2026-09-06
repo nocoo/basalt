@@ -24,6 +24,15 @@ className="border-separate border-spacing-0 caption-bottom"`),
 		);
 		expect(dialog).toContain("space-y-1.5");
 
+		const commandPalette = classCandidates(
+			readFileSync(
+				path.join(process.cwd(), "packages/basalt/src/components/command-palette.tsx"),
+				"utf8",
+			),
+		);
+		expect(commandPalette).toContain("ml-auto");
+		expect(commandPalette).toContain("tracking-widest");
+
 		const inputGroup = classCandidates(
 			readFileSync(
 				path.join(process.cwd(), "packages/basalt/src/components/input-group.tsx"),

@@ -81,7 +81,7 @@ for (const file of componentJs) {
 	fail(`${relative(distRoot, file)} must start with "use client"`);
 }
 
-const expectedCss = ["standalone.css", "tailwind.css", "tokens.css"];
+const expectedCss = ["base.css", "standalone.css", "tailwind.css", "tokens.css"];
 const stylesDir = join(distRoot, "styles");
 const actualCss = existsSync(stylesDir)
 	? readdirSync(stylesDir)

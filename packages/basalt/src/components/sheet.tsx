@@ -1,6 +1,7 @@
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
 type RadixDialogProps = React.ComponentPropsWithoutRef<typeof DialogPrimitive.Root>;
@@ -101,12 +102,10 @@ export const SheetDescription = React.forwardRef<
 SheetDescription.displayName = DialogPrimitive.Description.displayName;
 
 const SIDE = {
-	right:
-		"fixed inset-y-0 right-0 box-border flex h-full w-80 flex-col gap-3 border-l border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg",
-	left: "fixed inset-y-0 left-0 box-border flex h-full w-80 flex-col gap-3 border-r border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg",
-	top: "fixed inset-x-0 top-0 box-border flex h-80 w-full flex-col gap-3 border-b border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg",
-	bottom:
-		"fixed inset-x-0 bottom-0 box-border flex h-80 w-full flex-col gap-3 border-t border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg",
+	right: `fixed inset-y-0 right-0 ${BASALT_UI_CLASS} flex h-full w-80 flex-col gap-3 border-l border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg`,
+	left: `fixed inset-y-0 left-0 ${BASALT_UI_CLASS} flex h-full w-80 flex-col gap-3 border-r border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg`,
+	top: `fixed inset-x-0 top-0 ${BASALT_UI_CLASS} flex h-80 w-full flex-col gap-3 border-b border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg`,
+	bottom: `fixed inset-x-0 bottom-0 ${BASALT_UI_CLASS} flex h-80 w-full flex-col gap-3 border-t border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg`,
 } as const;
 
 export type SheetSide = keyof typeof SIDE;

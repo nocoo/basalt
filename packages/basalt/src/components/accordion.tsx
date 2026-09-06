@@ -1,6 +1,7 @@
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 type RadixAccordionSingleProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root> & {
 	type: "single";
@@ -102,7 +103,13 @@ export interface AccordionMultipleProps
 
 export type AccordionProps = AccordionSingleProps | AccordionMultipleProps;
 
-export const Accordion = AccordionPrimitive.Root;
+export const Accordion = React.forwardRef<
+	React.ElementRef<typeof AccordionPrimitive.Root>,
+	AccordionProps
+>(({ className, ...props }, ref) => (
+	<AccordionPrimitive.Root ref={ref} className={cn(BASALT_UI_CLASS, className)} {...props} />
+));
+Accordion.displayName = AccordionPrimitive.Root.displayName;
 
 type RadixAccordionTriggerProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>;
 type RadixAccordionContentProps = React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>;
@@ -134,10 +141,14 @@ export const AccordionTrigger = React.forwardRef<
 	React.ElementRef<typeof AccordionPrimitive.Trigger>,
 	AccordionTriggerProps
 >(({ className, children, ...props }, ref) => (
-	<AccordionPrimitive.Header className="flex">
+	<AccordionPrimitive.Header className={cn(BASALT_UI_CLASS, "flex")}>
 		<AccordionPrimitive.Trigger
 			ref={ref}
-			className={cn("flex flex-1 items-center justify-between py-3 text-sm font-medium", className)}
+			className={cn(
+				BASALT_UI_CLASS,
+				"flex flex-1 items-center justify-between py-3 text-sm font-medium",
+				className,
+			)}
 			{...props}
 		>
 			{children}

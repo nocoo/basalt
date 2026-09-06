@@ -1,6 +1,7 @@
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { useSelectionIndicator } from "../utils/selection-indicator";
 import { FOCUS_RING } from "./overlay";
 
@@ -112,6 +113,7 @@ export const ToggleGroup = React.forwardRef<
 			<ToggleGroupPrimitive.Root
 				ref={rootRef}
 				className={cn(
+					BASALT_UI_CLASS,
 					"relative inline-flex h-8 shrink-0 items-center gap-0.5 rounded-full bg-basalt-muted p-0.5 ring-1 ring-basalt-border/70",
 					className,
 				)}

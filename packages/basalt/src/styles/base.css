@@ -1,0 +1,74 @@
+@layer base {
+	/* Scoped Basalt base reset for standalone and Tailwind environments.
+	   Does NOT leak globally to host elements. */
+	:where(
+		.basalt-ui,
+		.basalt-ui *,
+		.basalt-ui *::before,
+		.basalt-ui *::after,
+		.basalt-ui::before,
+		.basalt-ui::after
+	) {
+		box-sizing: border-box;
+		border-width: 0;
+		border-style: solid;
+		border-color: currentColor;
+	}
+
+	:where(
+		.basalt-ui:is(button, input, optgroup, select, textarea),
+		.basalt-ui :is(button, input, optgroup, select, textarea)
+	) {
+		font-family: inherit;
+		font-feature-settings: inherit;
+		font-variation-settings: inherit;
+		font-size: 100%;
+		font-weight: inherit;
+		line-height: inherit;
+		letter-spacing: inherit;
+		color: inherit;
+		margin: 0;
+		padding: 0;
+	}
+
+	:where(
+		.basalt-ui:is(button, select, [role="button"]),
+		.basalt-ui :is(button, select, [role="button"])
+	) {
+		text-transform: none;
+	}
+
+	:where(
+		.basalt-ui:is(button, input:is([type="button"], [type="reset"], [type="submit"])),
+		.basalt-ui :is(button, input:is([type="button"], [type="reset"], [type="submit"]))
+	) {
+		appearance: button;
+		-webkit-appearance: button;
+		background-color: transparent;
+		background-image: none;
+	}
+
+	:where(.basalt-ui:is(a), .basalt-ui :is(a)) {
+		color: inherit;
+		text-decoration: inherit;
+	}
+
+	:where(
+		.basalt-ui:is(h1, h2, h3, h4, h5, h6, p, blockquote, figure),
+		.basalt-ui :is(h1, h2, h3, h4, h5, h6, p, blockquote, figure)
+	) {
+		margin: 0;
+	}
+
+	:where(.basalt-ui:is(ol, ul), .basalt-ui :is(ol, ul)) {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	:where(.basalt-ui:is(table), .basalt-ui :is(table)) {
+		text-indent: 0;
+		border-color: inherit;
+		border-collapse: collapse;
+	}
+}

@@ -9,10 +9,11 @@ import {
 	type ReactNode,
 } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Empty } from "./empty";
 import { SkeletonLine } from "./skeleton-line";
 
-const ROOT_CLASSES = "overflow-hidden rounded-basalt-lg text-basalt-foreground";
+const ROOT_CLASSES = `${BASALT_UI_CLASS} overflow-hidden rounded-basalt-lg text-basalt-foreground`;
 const PADDING_CLASSES = {
 	none: "",
 	sm: "p-3",

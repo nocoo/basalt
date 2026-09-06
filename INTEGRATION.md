@@ -110,7 +110,7 @@ Without Tailwind, import `@nocoo/basalt/styles/standalone` in your application e
 import "@nocoo/basalt/styles/standalone";
 ```
 
-Standalone packages design tokens, control surface utilities, and animations without injecting global resets or preflight; still set `html, body, #root { height: 100% }`.
+Standalone packages design tokens, control surface utilities, animations, and scoped base resets (`.basalt-ui`) for controls (`box-sizing: border-box`, font inheritance, native button appearance, list resets, and table borders) without injecting global resets or full Tailwind preflight onto host elements; still set `html, body, #root { height: 100% }`.
 
 ### Theme Pre-Hydration
 

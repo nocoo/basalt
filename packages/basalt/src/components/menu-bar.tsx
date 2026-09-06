@@ -1,6 +1,7 @@
 import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { MENU_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
 type RadixMenubarProps = React.ComponentProps<typeof MenubarPrimitive.Root>;
@@ -82,6 +83,7 @@ export const MenuBarTrigger = React.forwardRef<
 	<MenubarPrimitive.Trigger
 		ref={ref}
 		className={cn(
+			BASALT_UI_CLASS,
 			"inline-flex h-8 items-center rounded-basalt-sm px-3 text-sm font-medium outline-hidden hover:bg-basalt-accent data-[state=open]:bg-basalt-accent",
 			className,
 		)}
@@ -257,6 +259,7 @@ export function MenuBarRoot({ className, ...props }: MenuBarRootProps) {
 	return (
 		<MenubarPrimitive.Root
 			className={cn(
+				BASALT_UI_CLASS,
 				"flex h-9 items-center gap-0.5 rounded-basalt-md border border-basalt-border bg-basalt-popover px-1",
 				className,
 			)}

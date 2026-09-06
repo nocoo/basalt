@@ -1,6 +1,7 @@
 import * as SliderPrimitive from "@radix-ui/react-slider";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { FOCUS_RING } from "./overlay";
 
 type RadixSliderRootProps = React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root>;
@@ -71,7 +72,11 @@ export const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.R
 	({ className, ...props }, ref) => (
 		<SliderPrimitive.Root
 			ref={ref}
-			className={cn("relative flex w-full touch-none select-none items-center", className)}
+			className={cn(
+				BASALT_UI_CLASS,
+				"relative flex w-full touch-none select-none items-center",
+				className,
+			)}
 			{...props}
 		>
 			<SliderPrimitive.Track className="relative h-2 w-full grow overflow-hidden rounded-full bg-basalt-muted">

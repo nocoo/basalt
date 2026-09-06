@@ -1,4 +1,5 @@
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 /** Gap between a field trigger and its list. Matches Kumo Select/Combobox. */
 export const OVERLAY_GAP = 4;
@@ -20,6 +21,7 @@ export const FOCUS_RING =
 
 export function overlayPanelClass(className?: string) {
 	return cn(
+		BASALT_UI_CLASS,
 		OVERLAY_LAYER,
 		"overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover py-1.5 text-sm text-basalt-popover-foreground shadow-md",
 		OVERLAY_MOTION,

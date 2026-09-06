@@ -6,7 +6,7 @@ import { defineConfig, type Plugin } from "vite";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const src = path.resolve(root, "src");
-const publishCss = ["tailwind.css", "tokens.css", "standalone.css"] as const;
+const publishCss = ["tailwind.css", "tokens.css", "standalone.css", "base.css"] as const;
 
 const entry = Object.fromEntries(
 	globSync("**/*.{ts,tsx}", { cwd: src })

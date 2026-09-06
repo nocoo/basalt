@@ -1,7 +1,7 @@
 /* Generated from standalone.source.css. Do not edit. */
 /*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
 @layer properties;
-@layer theme, utilities;
+@layer theme, base, utilities;
 @layer theme {
   :root, :host {
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
@@ -356,6 +356,52 @@
     transform: translateY(0);
   }
 }
+@layer base {
+  :where(	.basalt-ui,	.basalt-ui *,	.basalt-ui *::before,	.basalt-ui *::after,	.basalt-ui::before,	.basalt-ui::after	) {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: currentColor;
+  }
+  :where(	.basalt-ui:is(button, input, optgroup, select, textarea),	.basalt-ui :is(button, input, optgroup, select, textarea)	) {
+    font-family: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    font-size: 100%;
+    font-weight: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    margin: 0;
+    padding: 0;
+  }
+  :where(	.basalt-ui:is(button, select, [role="button"]),	.basalt-ui :is(button, select, [role="button"])	) {
+    text-transform: none;
+  }
+  :where(	.basalt-ui:is(button, input:is([type="button"], [type="reset"], [type="submit"])),	.basalt-ui :is(button, input:is([type="button"], [type="reset"], [type="submit"]))	) {
+    appearance: button;
+    -webkit-appearance: button;
+    background-color: transparent;
+    background-image: none;
+  }
+  :where(.basalt-ui:is(a), .basalt-ui :is(a)) {
+    color: inherit;
+    text-decoration: inherit;
+  }
+  :where(	.basalt-ui:is(h1, h2, h3, h4, h5, h6, p, blockquote, figure),	.basalt-ui :is(h1, h2, h3, h4, h5, h6, p, blockquote, figure)	) {
+    margin: 0;
+  }
+  :where(.basalt-ui:is(ol, ul), .basalt-ui :is(ol, ul)) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  :where(.basalt-ui:is(table), .basalt-ui :is(table)) {
+    text-indent: 0;
+    border-color: inherit;
+    border-collapse: collapse;
+  }
+}
 .basalt-chart .recharts-wrapper :focus, .basalt-chart .recharts-wrapper :focus-visible, .basalt-chart .recharts-surface :focus, .basalt-chart .recharts-surface :focus-visible, .basalt-chart .recharts-sector:focus, .basalt-chart .recharts-rectangle:focus, .basalt-chart .recharts-layer:focus {
   outline: none;
 }
@@ -449,6 +495,24 @@
   .order-last {
     order: 9999;
   }
+  .container {
+    width: 100%;
+    @media (width >= 40rem) {
+      max-width: 40rem;
+    }
+    @media (width >= 48rem) {
+      max-width: 48rem;
+    }
+    @media (width >= 64rem) {
+      max-width: 64rem;
+    }
+    @media (width >= 80rem) {
+      max-width: 80rem;
+    }
+    @media (width >= 96rem) {
+      max-width: 96rem;
+    }
+  }
   .m-0 {
     margin: 0px;
   }
@@ -497,9 +561,6 @@
   .ml-auto {
     margin-left: auto;
   }
-  .box-border {
-    box-sizing: border-box;
-  }
   .block {
     display: block;
   }
@@ -511,9 +572,6 @@
   }
   .hidden {
     display: none;
-  }
-  .inline {
-    display: inline;
   }
   .inline-block {
     display: inline-block;
@@ -1340,6 +1398,9 @@
   .text-\[11px\] {
     font-size: 11px;
   }
+  .text-\[13px\] {
+    font-size: 13px;
+  }
   .leading-5 {
     --tw-leading: calc(var(--spacing) * 5);
     line-height: calc(var(--spacing) * 5);
@@ -1389,6 +1450,12 @@
   }
   .text-basalt-card-foreground {
     color: hsl(var(--basalt-card-foreground));
+  }
+  .text-basalt-chart-4 {
+    color: hsl(var(--basalt-chart-4));
+  }
+  .text-basalt-chart-5 {
+    color: hsl(var(--basalt-chart-5));
   }
   .text-basalt-danger {
     color: hsl(var(--basalt-danger));
@@ -1521,6 +1588,10 @@
   .outline {
     outline-style: var(--tw-outline-style);
     outline-width: 1px;
+  }
+  .invert {
+    --tw-invert: invert(100%);
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
   .backdrop-blur-md {
     --tw-backdrop-blur: blur(var(--blur-md));
@@ -2400,6 +2471,59 @@
   inherits: false;
   initial-value: solid;
 }
+@property --tw-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-sepia {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-drop-shadow-size {
+  syntax: "*";
+  inherits: false;
+}
 @property --tw-backdrop-blur {
   syntax: "*";
   inherits: false;
@@ -2489,6 +2613,19 @@
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
       --tw-outline-style: solid;
+      --tw-blur: initial;
+      --tw-brightness: initial;
+      --tw-contrast: initial;
+      --tw-grayscale: initial;
+      --tw-hue-rotate: initial;
+      --tw-invert: initial;
+      --tw-opacity: initial;
+      --tw-saturate: initial;
+      --tw-sepia: initial;
+      --tw-drop-shadow: initial;
+      --tw-drop-shadow-color: initial;
+      --tw-drop-shadow-alpha: 100%;
+      --tw-drop-shadow-size: initial;
       --tw-backdrop-blur: initial;
       --tw-backdrop-brightness: initial;
       --tw-backdrop-contrast: initial;

@@ -1,6 +1,7 @@
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { useSelectionIndicator } from "../utils/selection-indicator";
 import { OVERLAY_MOTION } from "./overlay";
 
@@ -35,7 +36,13 @@ export type TabsProps = Omit<
 	 */
 	onValueChange?: (value: string) => void;
 };
-export const Tabs: React.FC<TabsProps> = TabsPrimitive.Root;
+export const Tabs: React.FC<TabsProps> = React.forwardRef<
+	React.ElementRef<typeof TabsPrimitive.Root>,
+	TabsProps
+>(({ className, ...props }, ref) => (
+	<TabsPrimitive.Root ref={ref} className={cn(BASALT_UI_CLASS, className)} {...props} />
+));
+Tabs.displayName = TabsPrimitive.Root.displayName;
 
 export type TabsListProps = React.ComponentPropsWithoutRef<typeof TabsPrimitive.List> & {
 	/**

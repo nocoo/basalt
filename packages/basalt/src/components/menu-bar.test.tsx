@@ -35,4 +35,16 @@ describe("MenuBar", () => {
 		expect(screen.getByRole("menubar")).toBeInTheDocument();
 		expect(screen.getByText("File")).toBeInTheDocument();
 	});
+
+	it("applies basalt-ui scope class to root and trigger", () => {
+		render(
+			<MenuBar>
+				<MenuBarMenu>
+					<MenuBarTrigger>File</MenuBarTrigger>
+				</MenuBarMenu>
+			</MenuBar>,
+		);
+		expect(screen.getByRole("menubar")).toHaveClass("basalt-ui");
+		expect(screen.getByRole("menuitem", { name: "File" })).toHaveClass("basalt-ui");
+	});
 });

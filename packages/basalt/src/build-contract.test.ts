@@ -285,6 +285,7 @@ describe("package build contract", () => {
 			);
 			expect(existsSync(path.join(dist, "index.d.ts"))).toBe(true);
 			expect(readdirSync(path.join(dist, "styles")).sort()).toEqual([
+				"base.css",
 				"standalone.css",
 				"tailwind.css",
 				"tokens.css",

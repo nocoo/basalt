@@ -27,4 +27,18 @@ describe("Accordion", () => {
 		fireEvent.click(screen.getByText("Item"));
 		expect(screen.getByText("Body")).toBeInTheDocument();
 	});
+
+	it("applies basalt-ui scope class to root, header, and trigger", () => {
+		const { container } = render(
+			<Accordion type="single" collapsible>
+				<AccordionItem value="a">
+					<AccordionTrigger>Item</AccordionTrigger>
+					<AccordionContent>Body</AccordionContent>
+				</AccordionItem>
+			</Accordion>,
+		);
+		expect(container.querySelector('[data-orientation="vertical"]')).toHaveClass("basalt-ui");
+		expect(container.querySelector("h3")).toHaveClass("basalt-ui");
+		expect(screen.getByRole("button", { name: "Item" })).toHaveClass("basalt-ui");
+	});
 });

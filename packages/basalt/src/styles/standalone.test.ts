@@ -35,7 +35,17 @@ describe("standalone css", () => {
 		expect(css).toContain(".overflow-y-hidden {");
 		expect(css).toContain(".overflow-x-hidden {");
 		expect(css).toContain("data-\\[selected\\=true\\]\\:bg-basalt-accent");
+		expect(css).toContain(".ml-auto");
+		expect(css).toContain(".tracking-widest");
 		expect(css).toContain("backdrop-filter");
 		expect(css).not.toMatch(/@keyframes pulse\s*\{/);
+	});
+
+	it("includes scoped base styles under basalt-ui without global leakage", () => {
+		expect(css).toContain("@layer theme, base, utilities;");
+		expect(css).toContain(".basalt-ui");
+		expect(css).toContain("box-sizing: border-box;");
+		expect(css).not.toMatch(/(?:^|\})\s*\*\s*\{[^}]*box-sizing:\s*border-box/);
+		expect(css).not.toMatch(/(?:^|\})\s*button\s*\{[^}]*appearance:\s*button/);
 	});
 });

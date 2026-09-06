@@ -1,6 +1,7 @@
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { FOCUS_RING } from "./overlay";
 
 type SwitchGroupContextValue = {
@@ -77,6 +78,7 @@ const SwitchRoot = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Roo
 	({ className, size = "default", ...props }, ref) => (
 		<SwitchPrimitives.Root
 			className={cn(
+				BASALT_UI_CLASS,
 				"peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-basalt-primary data-[state=unchecked]:bg-basalt-input disabled:cursor-not-allowed disabled:opacity-50",
 				FOCUS_RING,
 				size === "sm" ? "h-4 w-7" : "h-6 w-11",

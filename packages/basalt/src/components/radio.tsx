@@ -2,6 +2,7 @@ import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { Circle } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { FOCUS_RING } from "./overlay";
 
 export type RadioSize = "sm" | "default";
@@ -143,6 +144,7 @@ const RadioRoot = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.I
 		<RadioGroupPrimitive.Item
 			ref={ref}
 			className={cn(
+				BASALT_UI_CLASS,
 				"aspect-square shrink-0 rounded-full border border-basalt-primary text-basalt-primary disabled:cursor-not-allowed disabled:opacity-50",
 				RADIO_SIZE_CLASS[size],
 				FOCUS_RING,

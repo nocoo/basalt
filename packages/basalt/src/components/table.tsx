@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 export type TableProps = {
 	/**
@@ -16,6 +17,7 @@ export const Table = React.forwardRef<
 		ref={ref}
 		data-basalt-table=""
 		className={cn(
+			BASALT_UI_CLASS,
 			"w-full border-separate border-spacing-0 caption-bottom text-left text-sm text-basalt-foreground",
 			className,
 		)}
