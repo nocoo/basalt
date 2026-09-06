@@ -5,6 +5,11 @@ import { Gauge } from "@nocoo/basalt/charts/gauge";
 import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatmap-calendar";
 import { LineChart } from "@nocoo/basalt/charts/line";
 import { StatCard } from "@nocoo/basalt/charts/stat-card";
+import {
+	ChartTooltipDivider,
+	ChartTooltipRow,
+	ChartTooltipSummary,
+} from "@nocoo/basalt/charts/tooltip";
 import { Button } from "@nocoo/basalt/components/button";
 import { ChatBubble } from "@nocoo/basalt/components/chat-bubble";
 import {
@@ -456,15 +461,26 @@ function ChartsPanel() {
 						)}
 						customTooltip={({ active, payload, label }) => {
 							if (!active || !payload?.length) return null;
+							const total = payload.reduce((sum, item) => {
+								const v = typeof item.value === "number" ? item.value : 0;
+								return sum + (Number.isFinite(v) ? v : 0);
+							}, 0);
 							return (
 								<div id="dynamic-custom-tooltip" data-testid="dynamic-custom-tooltip">
 									<p id="dynamic-tooltip-title">{String(label)}</p>
 									<div id="dynamic-tooltip-items">
 										{payload.map((entry) => (
-											<span key={entry.dataKey} data-key={entry.dataKey} data-value={entry.value}>
-												{entry.name}: {entry.value}ms
-											</span>
+											<ChartTooltipRow
+												key={entry.dataKey}
+												data-key={entry.dataKey}
+												label={entry.name}
+												value={entry.value}
+												unit="ms"
+												color={entry.color}
+											/>
 										))}
+										<ChartTooltipDivider />
+										<ChartTooltipSummary label="Aggregated Latency" value={total} unit="ms" />
 									</div>
 								</div>
 							);

@@ -899,13 +899,15 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				"11:00",
 				"First ArrowRight must navigate to the 11:00 coordinate",
 			);
-			const usMetricFirst = await dynamicCase
-				.locator("#dynamic-tooltip-items [data-key='p95US']")
-				.innerText();
+			const usMetricFirst = (
+				await dynamicCase.locator("#dynamic-tooltip-items [data-key='p95US']").innerText()
+			)
+				.replace(/\s+/g, " ")
+				.trim();
 			assert.equal(
 				usMetricFirst,
-				"US Region: 48ms",
-				"First ArrowRight must render exact formatted text 'US Region: 48ms'",
+				"US Region 48ms",
+				"First ArrowRight must render exact formatted text 'US Region 48ms'",
 			);
 			assert.ok(
 				tooltipTextFirst?.includes("ms"),
@@ -925,13 +927,15 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				"12:00",
 				"Second ArrowRight must navigate to the 12:00 coordinate",
 			);
-			const usMetricSecond = await dynamicCase
-				.locator("#dynamic-tooltip-items [data-key='p95US']")
-				.innerText();
+			const usMetricSecond = (
+				await dynamicCase.locator("#dynamic-tooltip-items [data-key='p95US']").innerText()
+			)
+				.replace(/\s+/g, " ")
+				.trim();
 			assert.equal(
 				usMetricSecond,
-				"US Region: 52ms",
-				"Second ArrowRight must render exact updated text 'US Region: 52ms'",
+				"US Region 52ms",
+				"Second ArrowRight must render exact updated text 'US Region 52ms'",
 			);
 			assert.notEqual(
 				tooltipTitleFirst,
@@ -946,6 +950,32 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			assert.ok(
 				tooltipTextSecond?.includes("ms"),
 				"Custom dynamic tooltip must include ms unit on second step",
+			);
+
+			// Verify composable tooltip items: exactly 5 rows, divider, and exact summary total (52+64+142+32+100 = 390ms)
+			const tooltipRows = dynamicCase.locator('[data-testid="chart-tooltip-row"]');
+			assert.equal(
+				await tooltipRows.count(),
+				5,
+				"Dynamic tooltip must render exactly 5 ChartTooltipRow elements",
+			);
+			const tooltipDivider = dynamicCase.locator('[data-testid="chart-tooltip-divider"]');
+			assert.equal(
+				await tooltipDivider.count(),
+				1,
+				"Dynamic tooltip must render ChartTooltipDivider",
+			);
+			const tooltipSummary = dynamicCase.locator('[data-testid="chart-tooltip-summary"]');
+			assert.equal(
+				await tooltipSummary.count(),
+				1,
+				"Dynamic tooltip must render ChartTooltipSummary",
+			);
+			const summaryText = (await tooltipSummary.innerText()).replace(/\s+/g, " ").trim();
+			assert.equal(
+				summaryText,
+				"Aggregated Latency 390ms",
+				`Tooltip summary must display exact aggregated total and unit: '${summaryText}'`,
 			);
 
 			// Stack area geometry verification with ratio dataset (Start: 10/20, End: 100/200)

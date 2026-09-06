@@ -1,4 +1,9 @@
 import { LineChart } from "@nocoo/basalt/charts/line";
+import {
+	ChartTooltipDivider,
+	ChartTooltipRow,
+	ChartTooltipSummary,
+} from "@nocoo/basalt/charts/tooltip";
 import { useState } from "react";
 
 interface RegionalLatencyPoint {
@@ -154,6 +159,8 @@ export default function LineDynamicSeries() {
 				yDomain={[-20, 160]}
 				customTooltip={({ active, payload, label }) => {
 					if (!active || !payload?.length) return null;
+					const slaItem = payload.find((item) => item.dataKey === "targetSLA");
+					const regionItems = payload.filter((item) => item.dataKey !== "targetSLA");
 					return (
 						<div
 							data-testid="chart-custom-tooltip"
@@ -161,20 +168,25 @@ export default function LineDynamicSeries() {
 						>
 							<p className="font-semibold text-basalt-popover-foreground mb-1.5">{label} CST</p>
 							<div className="space-y-1">
-								{payload.map((entry) => (
-									<div key={entry.dataKey} className="flex items-center justify-between gap-4">
-										<span className="flex items-center gap-1.5 text-basalt-muted-foreground">
-											<span
-												className="h-2 w-2 rounded-full"
-												style={{ backgroundColor: entry.color }}
-											/>
-											{entry.name}
-										</span>
-										<span className="font-mono font-medium text-basalt-foreground tabular-nums">
-											{entry.value}ms
-										</span>
-									</div>
+								{regionItems.map((entry) => (
+									<ChartTooltipRow
+										key={entry.dataKey}
+										label={entry.name}
+										value={entry.value}
+										unit="ms"
+										color={entry.color}
+									/>
 								))}
+								{slaItem ? (
+									<>
+										<ChartTooltipDivider />
+										<ChartTooltipSummary
+											label={slaItem.name ?? "SLA Ceiling"}
+											value={slaItem.value}
+											unit="ms"
+										/>
+									</>
+								) : null}
 							</div>
 						</div>
 					);

@@ -1,3 +1,5 @@
+import type { ComponentProps, ReactNode } from "react";
+
 const HIDDEN_SERIES_KEYS = new Set(["y", "y2", "y3", "value", "target"]);
 const TITLE_SIZE = 12;
 const BODY_SIZE = 12;
@@ -19,6 +21,61 @@ export type ChartTooltipContentProps = {
 	formatter?: (value: number) => string;
 };
 
+export interface ChartTooltipRowProps extends Omit<ComponentProps<"div">, "children"> {
+	/**
+	 * Series or metric name displayed beside the color dot.
+	 * Preserves numeric `0` and React nodes; nullish values omit the label element.
+	 */
+	label?: ReactNode;
+	/**
+	 * Display value of the point or metric.
+	 * Finite numbers are automatically formatted via `formatter` or `formatChartNumber`.
+	 * `null` or `undefined` renders placeholder "—". ReactNode values are passed through.
+	 */
+	value?: ReactNode;
+	/**
+	 * Dot swatch indicator color. Defaults to `--basalt-chart-1`.
+	 */
+	color?: string;
+	/**
+	 * Optional unit suffix (e.g., "ms", "req/s", "%") rendered adjacent to valid values.
+	 * Omitted when `value` evaluates to placeholder "—".
+	 */
+	unit?: ReactNode;
+	/**
+	 * Custom numeric value formatter overriding `formatChartNumber`.
+	 */
+	formatter?: (value: number) => string;
+	/**
+	 * When true, suppresses rendering of the decorative color dot.
+	 * @default false
+	 */
+	hideIndicator?: boolean;
+}
+
+export interface ChartTooltipSummaryProps extends Omit<ComponentProps<"div">, "children"> {
+	/**
+	 * Summary row heading label.
+	 * Preserves numeric `0` and custom nodes.
+	 * @default "Total"
+	 */
+	label?: ReactNode;
+	/**
+	 * Aggregated metric value. Finite numbers are formatted; nullish renders "—".
+	 */
+	value?: ReactNode;
+	/**
+	 * Optional unit suffix appended to the summary value.
+	 */
+	unit?: ReactNode;
+	/**
+	 * Custom numeric formatter for the summary value.
+	 */
+	formatter?: (value: number) => string;
+}
+
+export interface ChartTooltipDividerProps extends Omit<ComponentProps<"hr">, "children"> {}
+
 export function formatChartNumber(value: number): string {
 	if (!Number.isFinite(value)) {
 		return "—";
@@ -39,6 +96,165 @@ function seriesLabel(item: ChartTooltipItem): string | undefined {
 
 function seriesSwatch(item: ChartTooltipItem): string {
 	return item.color ?? item.fill ?? item.stroke ?? "hsl(var(--basalt-chart-1))";
+}
+
+function formatTooltipValue(val: ReactNode, formatter?: (value: number) => string): ReactNode {
+	if (val == null) {
+		return "—";
+	}
+	if (typeof val === "number") {
+		return formatter ? formatter(val) : formatChartNumber(val);
+	}
+	return val;
+}
+
+export function ChartTooltipRow({
+	label,
+	value,
+	color,
+	unit,
+	formatter,
+	hideIndicator = false,
+	style,
+	...rest
+}: ChartTooltipRowProps) {
+	const formattedValue = formatTooltipValue(value, formatter);
+	const hasLabel = label != null;
+	const swatchColor = color ?? "hsl(var(--basalt-chart-1))";
+
+	return (
+		<div
+			data-testid="chart-tooltip-row"
+			style={{
+				alignItems: "center",
+				display: "flex",
+				fontSize: BODY_SIZE,
+				gap: 8,
+				lineHeight: "20px",
+				minWidth: 0,
+				...style,
+			}}
+			{...rest}
+		>
+			{!hideIndicator ? (
+				<span
+					aria-hidden="true"
+					style={{
+						background: swatchColor,
+						borderRadius: 999,
+						boxShadow: "0 0 0 1px hsl(var(--basalt-popover-foreground) / 0.12)",
+						flexShrink: 0,
+						height: DOT_SIZE,
+						width: DOT_SIZE,
+					}}
+				/>
+			) : null}
+			{hasLabel ? (
+				<span
+					style={{
+						color: "hsl(var(--basalt-muted-foreground))",
+						flex: 1,
+						minWidth: 0,
+						overflow: "hidden",
+						textOverflow: "ellipsis",
+						whiteSpace: "nowrap",
+					}}
+				>
+					{label}
+				</span>
+			) : null}
+			<span
+				style={{
+					color: "hsl(var(--basalt-popover-foreground))",
+					flexShrink: 0,
+					fontVariantNumeric: "tabular-nums",
+					fontWeight: 600,
+					marginLeft: hasLabel ? 0 : "auto",
+				}}
+			>
+				{formattedValue}
+				{unit != null && formattedValue !== "—" ? (
+					<span style={{ fontWeight: 400, marginLeft: 2 }}>{unit}</span>
+				) : null}
+			</span>
+		</div>
+	);
+}
+
+export function ChartTooltipDivider({ style, ...rest }: ChartTooltipDividerProps) {
+	return (
+		<hr
+			aria-orientation="horizontal"
+			data-testid="chart-tooltip-divider"
+			style={{
+				backgroundColor: "hsl(var(--basalt-border) / 0.55)",
+				border: 0,
+				height: 1,
+				margin: "4px 0",
+				width: "100%",
+				...style,
+			}}
+			{...rest}
+		/>
+	);
+}
+
+export function ChartTooltipSummary({
+	label = "Total",
+	value,
+	unit,
+	formatter,
+	style,
+	...rest
+}: ChartTooltipSummaryProps) {
+	const formattedValue = formatTooltipValue(value, formatter);
+	const hasLabel = label != null;
+
+	return (
+		<div
+			data-testid="chart-tooltip-summary"
+			style={{
+				alignItems: "center",
+				display: "flex",
+				fontSize: BODY_SIZE,
+				gap: 8,
+				lineHeight: "20px",
+				minWidth: 0,
+				...style,
+			}}
+			{...rest}
+		>
+			{hasLabel ? (
+				<span
+					style={{
+						color: "hsl(var(--basalt-muted-foreground))",
+						flex: 1,
+						fontWeight: 600,
+						minWidth: 0,
+						overflow: "hidden",
+						textOverflow: "ellipsis",
+						whiteSpace: "nowrap",
+					}}
+				>
+					{label}
+				</span>
+			) : null}
+			<span
+				style={{
+					color: "hsl(var(--basalt-popover-foreground))",
+					flexShrink: 0,
+					fontVariantNumeric: "tabular-nums",
+					fontWeight: 700,
+					marginLeft: hasLabel ? 0 : "auto",
+				}}
+			>
+				{formattedValue}
+				{unit != null && formattedValue !== "—" ? (
+					<span style={{ fontWeight: 500, marginLeft: 2 }}>{unit}</span>
+				) : null}
+			</span>
+		</div>
+	);
 }
 
 export function ChartTooltipContent({

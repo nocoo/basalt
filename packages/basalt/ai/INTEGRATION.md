@@ -1318,6 +1318,23 @@ Basalt charts are composed of responsive frame, legend, and tooltip subsystem pr
     - `stroke?: string`: SVG stroke color indicator.
     - `dataKey?: string | number`: Recharts series key binding.
   - **Behavior**: Hides row label text for internal/synthetic keys (`"y"`, `"y2"`, `"y3"`, `"value"`, `"target"`), but still displays their numeric values. Uses `--basalt-popover` background tokens with tabular numeric formatting.
+- **Composable Tooltip Elements**: Lightweight, zero-Recharts presentation primitives for building custom tooltip layouts. All three components forward native host element props (such as `id`, `aria-*`, `data-*`, style, and event listeners) and preserve custom caller style overrides while omitting `children` to avoid silent element drops:
+  - **`ChartTooltipRow`**: Renders an individual metric row with color dot indicator, series label, and formatted tabular numeric value with optional unit.
+    - `label?: ReactNode`: Metric or series title (preserves numeric `0` and custom nodes; nullish values omit the label element).
+    - `value?: ReactNode`: Metric value. Finite numbers are automatically formatted via `formatter` or `formatChartNumber`. `null` or `undefined` renders placeholder `"—"`.
+    - `unit?: ReactNode`: Optional unit string or node (e.g., `"ms"`, `"req/s"`, `"%"`) appended to the value. Omitted when `value` evaluates to placeholder `"—"`.
+    - `color?: string`: Swatch dot fill color (defaults to `hsl(var(--basalt-chart-1))`).
+    - `formatter?: (value: number) => string`: Optional custom numeric formatter overriding `formatChartNumber`.
+    - `hideIndicator?: boolean`: When true, suppresses rendering of the decorative color dot (default: `false`).
+    - Forwarded native props: Accepts `Omit<ComponentProps<"div">, "children">`.
+  - **`ChartTooltipDivider`**: Renders a horizontal divider rule as a native `<hr>` element (`role="separator"`, `aria-orientation="horizontal"`) with zero borders and explicit 1px height for grouping metric categories.
+    - Forwarded native props: Accepts `Omit<ComponentProps<"hr">, "children">`.
+  - **`ChartTooltipSummary`**: Renders an aggregated metric row (e.g. Total or SLA Ceiling) with bold font weights and optional unit suffix.
+    - `label?: ReactNode`: Summary title (defaults to `"Total"`, preserves numeric `0`).
+    - `value?: ReactNode`: Aggregated value node. Finite numbers are formatted; nullish renders placeholder `"—"`.
+    - `unit?: ReactNode`: Optional unit suffix appended to valid summary values (omitted for `"—"`).
+    - `formatter?: (value: number) => string`: Optional custom numeric formatter.
+    - Forwarded native props: Accepts `Omit<ComponentProps<"div">, "children">`.
 - **`formatChartNumber(value: number): string`**: Formats numbers via `Intl.NumberFormat` with max 0 decimals for integers and 1 decimal for fractions. Non-finite values return `"—"`.
 
 <a id="heatmap-calendar"></a>

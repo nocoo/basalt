@@ -1,7 +1,13 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { chartTooltipProps } from "./config";
-import { ChartTooltipContent, formatChartNumber } from "./tooltip";
+import {
+	ChartTooltipContent,
+	ChartTooltipDivider,
+	ChartTooltipRow,
+	ChartTooltipSummary,
+	formatChartNumber,
+} from "./tooltip";
 
 describe("ChartTooltipContent", () => {
 	it("renders a titled panel with a swatch and formatted value", () => {
@@ -171,5 +177,110 @@ describe("formatChartNumber", () => {
 			new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(12.34),
 		);
 		expect(formatChartNumber(Number.NaN)).toBe("—");
+	});
+});
+
+describe("Composable ChartTooltip primitives", () => {
+	it("renders ChartTooltipRow with label, formatted value, color dot, and unit", () => {
+		render(<ChartTooltipRow label="Latency" value={42} unit="ms" color="rgb(255, 0, 0)" />);
+		const row = screen.getByTestId("chart-tooltip-row");
+		expect(row).toHaveTextContent("Latency");
+		expect(row).toHaveTextContent("42ms");
+		expect(row.querySelector("span[aria-hidden='true']")).toHaveStyle({
+			background: "rgb(255, 0, 0)",
+		});
+	});
+
+	it("preserves numeric 0 for label and value independently in ChartTooltipRow", () => {
+		const { rerender } = render(<ChartTooltipRow label={0} value="Ready" />);
+		const row = screen.getByTestId("chart-tooltip-row");
+		expect(row).toHaveTextContent("0Ready");
+
+		rerender(<ChartTooltipRow label="Power" value={0} unit="%" />);
+		expect(screen.getByTestId("chart-tooltip-row")).toHaveTextContent("Power0%");
+	});
+
+	it("renders placeholder — when value is null or undefined without unit", () => {
+		const { rerender } = render(<ChartTooltipRow label="Missing" value={null} unit="ms" />);
+		const row = screen.getByTestId("chart-tooltip-row");
+		expect(row).toHaveTextContent("Missing");
+		expect(row).toHaveTextContent("—");
+		expect(row).not.toHaveTextContent("—ms");
+
+		rerender(<ChartTooltipRow label="Undefined" value={undefined} unit="ms" />);
+		expect(screen.getByTestId("chart-tooltip-row")).toHaveTextContent("—");
+		expect(screen.getByTestId("chart-tooltip-row")).not.toHaveTextContent("—ms");
+	});
+
+	it("supports custom formatter and hideIndicator in ChartTooltipRow", () => {
+		render(
+			<ChartTooltipRow label="Custom" value={1200} formatter={(v) => `$${v}`} hideIndicator />,
+		);
+		const row = screen.getByTestId("chart-tooltip-row");
+		expect(row).toHaveTextContent("Custom");
+		expect(row).toHaveTextContent("$1200");
+		expect(row.querySelector("span[aria-hidden='true']")).toBeNull();
+	});
+
+	it("forwards native div props including aria, data, id, and style to ChartTooltipRow", () => {
+		render(
+			<ChartTooltipRow
+				id="custom-row-id"
+				data-key="metric-key"
+				aria-label="custom row"
+				label="Row"
+				value={10}
+				style={{ opacity: 0.8 }}
+			/>,
+		);
+		const row = screen.getByTestId("chart-tooltip-row");
+		expect(row).toHaveAttribute("id", "custom-row-id");
+		expect(row).toHaveAttribute("data-key", "metric-key");
+		expect(row).toHaveAttribute("aria-label", "custom row");
+		expect(row).toHaveStyle({ opacity: 0.8 });
+	});
+
+	it("renders ChartTooltipDivider as horizontal separator hr and forwards native props", () => {
+		render(
+			<ChartTooltipDivider id="custom-divider" data-section="totals" style={{ marginTop: 8 }} />,
+		);
+		const divider = screen.getByRole("separator");
+		expect(divider.tagName).toBe("HR");
+		expect(divider).toHaveAttribute("id", "custom-divider");
+		expect(divider).toHaveAttribute("data-section", "totals");
+		expect(divider).toHaveAttribute("aria-orientation", "horizontal");
+		expect(divider).toHaveStyle({ marginTop: "8px" });
+	});
+
+	it("renders ChartTooltipSummary with default and custom label, unit, and preserves 0", () => {
+		const { rerender } = render(<ChartTooltipSummary value={150} unit="req/s" />);
+		const summary = screen.getByTestId("chart-tooltip-summary");
+		expect(summary).toHaveTextContent("Total");
+		expect(summary).toHaveTextContent("150req/s");
+
+		rerender(<ChartTooltipSummary label="Grand Total" value={0} unit="req/s" />);
+		expect(screen.getByTestId("chart-tooltip-summary")).toHaveTextContent("Grand Total");
+		expect(screen.getByTestId("chart-tooltip-summary")).toHaveTextContent("0req/s");
+
+		rerender(<ChartTooltipSummary label={0} value={null} unit="req/s" />);
+		expect(screen.getByTestId("chart-tooltip-summary")).toHaveTextContent("0");
+		expect(screen.getByTestId("chart-tooltip-summary")).toHaveTextContent("—");
+	});
+
+	it("forwards native div props to ChartTooltipSummary", () => {
+		render(
+			<ChartTooltipSummary
+				id="summary-id"
+				data-metric="total"
+				aria-live="polite"
+				value={100}
+				style={{ padding: 4 }}
+			/>,
+		);
+		const summary = screen.getByTestId("chart-tooltip-summary");
+		expect(summary).toHaveAttribute("id", "summary-id");
+		expect(summary).toHaveAttribute("data-metric", "total");
+		expect(summary).toHaveAttribute("aria-live", "polite");
+		expect(summary).toHaveStyle({ padding: "4px" });
 	});
 });

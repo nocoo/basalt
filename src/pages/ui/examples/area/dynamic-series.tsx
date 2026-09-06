@@ -1,4 +1,9 @@
 import { AreaChart } from "@nocoo/basalt/charts/area";
+import {
+	ChartTooltipDivider,
+	ChartTooltipRow,
+	ChartTooltipSummary,
+} from "@nocoo/basalt/charts/tooltip";
 import { useMemo, useState } from "react";
 
 interface TelemetryPoint {
@@ -183,21 +188,23 @@ export default function AreaDynamicSeries() {
 								{payload.map((entry) => {
 									const raw = typeof entry.value === "number" ? entry.value : 0;
 									const pct = total > 0 ? ((raw / total) * 100).toFixed(1) : "0.0";
+									const formattedValue = isPercent ? `${raw} req/s (${pct}%)` : raw;
 									return (
-										<div key={entry.dataKey} className="flex items-center justify-between gap-4">
-											<span className="flex items-center gap-1.5 text-basalt-muted-foreground">
-												<span
-													className="h-2 w-2 rounded-full"
-													style={{ backgroundColor: entry.color }}
-												/>
-												{entry.name}
-											</span>
-											<span className="font-mono font-medium text-basalt-foreground tabular-nums">
-												{raw} req/s {isPercent && `(${pct}%)`}
-											</span>
-										</div>
+										<ChartTooltipRow
+											key={entry.dataKey}
+											label={entry.name}
+											value={formattedValue}
+											unit={isPercent ? undefined : "req/s"}
+											color={entry.color}
+										/>
 									);
 								})}
+								<ChartTooltipDivider />
+								<ChartTooltipSummary
+									label="Total Throughput"
+									value={total}
+									unit={isPercent ? "req/s (100%)" : "req/s"}
+								/>
 							</div>
 						</div>
 					);

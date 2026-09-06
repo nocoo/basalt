@@ -143,7 +143,13 @@ export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
 		knownSymbols: [
 			"ChartTooltipContent",
 			"ChartTooltipContentProps",
+			"ChartTooltipDivider",
+			"ChartTooltipDividerProps",
 			"ChartTooltipItem",
+			"ChartTooltipRow",
+			"ChartTooltipRowProps",
+			"ChartTooltipSummary",
+			"ChartTooltipSummaryProps",
 			"formatChartNumber",
 		],
 	},

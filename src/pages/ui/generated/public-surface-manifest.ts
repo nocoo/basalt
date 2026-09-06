@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 693,
-	"totalValues": 375,
-	"totalTypes": 318,
+	"totalSymbols": 699,
+	"totalValues": 378,
+	"totalTypes": 321,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2067,6 +2067,30 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/charts/tooltip"
 				},
 				{
+					"name": "ChartTooltipRow",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#chart-tooltip",
+					"ownerKind": "chart-subsystem",
+					"originModule": "@nocoo/basalt/charts/tooltip"
+				},
+				{
+					"name": "ChartTooltipDivider",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#chart-tooltip",
+					"ownerKind": "chart-subsystem",
+					"originModule": "@nocoo/basalt/charts/tooltip"
+				},
+				{
+					"name": "ChartTooltipSummary",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "INTEGRATION.md#chart-tooltip",
+					"ownerKind": "chart-subsystem",
+					"originModule": "@nocoo/basalt/charts/tooltip"
+				},
+				{
 					"name": "ChartTooltipContent",
 					"isValue": true,
 					"isType": false,
@@ -2084,6 +2108,30 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "ChartTooltipContentProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#chart-tooltip",
+					"ownerKind": "chart-subsystem",
+					"originModule": "@nocoo/basalt/charts/tooltip"
+				},
+				{
+					"name": "ChartTooltipRowProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#chart-tooltip",
+					"ownerKind": "chart-subsystem",
+					"originModule": "@nocoo/basalt/charts/tooltip"
+				},
+				{
+					"name": "ChartTooltipSummaryProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#chart-tooltip",
+					"ownerKind": "chart-subsystem",
+					"originModule": "@nocoo/basalt/charts/tooltip"
+				},
+				{
+					"name": "ChartTooltipDividerProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "INTEGRATION.md#chart-tooltip",
