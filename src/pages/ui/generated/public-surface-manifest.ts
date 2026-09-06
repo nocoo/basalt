@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 689,
+	"totalSymbols": 693,
 	"totalValues": 375,
-	"totalTypes": 314,
+	"totalTypes": 318,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -1446,6 +1446,38 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "LineChart",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/line",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/charts/line"
+				},
+				{
+					"name": "LineChartAxisDomain",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/line",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/charts/line"
+				},
+				{
+					"name": "LineChartNumericKeys",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/line",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/charts/line"
+				},
+				{
+					"name": "LineChartLegendRenderer",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/line",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/charts/line"
+				},
+				{
+					"name": "LineChartTooltipRenderer",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/line",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/charts/line"

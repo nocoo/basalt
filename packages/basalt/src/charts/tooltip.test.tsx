@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
+import { chartTooltipProps } from "./config";
 import { ChartTooltipContent, formatChartNumber } from "./tooltip";
 
 describe("ChartTooltipContent", () => {
@@ -18,6 +19,35 @@ describe("ChartTooltipContent", () => {
 		expect(root.querySelector("span[aria-hidden='true']")).toHaveStyle({
 			background: "rgb(1, 2, 3)",
 		});
+	});
+
+	it("delegates to customTooltip renderer when provided", () => {
+		const custom = vi.fn(({ active, payload, label }) => {
+			return active ? (
+				<div data-testid="my-custom-tooltip">
+					{label}: {payload?.[0]?.value}
+				</div>
+			) : null;
+		});
+		const props = chartTooltipProps({ customTooltip: custom });
+		expect(typeof props.content).toBe("function");
+		const ContentFn = props.content as (p: unknown) => React.ReactElement;
+		const contentElement = ContentFn({
+			active: true,
+			payload: [{ dataKey: "requests", value: 42 }],
+			label: "Wednesday",
+		});
+		render(contentElement);
+		expect(custom).toHaveBeenCalledWith(
+			expect.objectContaining({
+				active: true,
+				label: "Wednesday",
+				payload: expect.arrayContaining([
+					expect.objectContaining({ dataKey: "requests", value: 42 }),
+				]),
+			}),
+		);
+		expect(screen.getByTestId("my-custom-tooltip")).toHaveTextContent("Wednesday: 42");
 	});
 
 	it("hides internal series keys and trims long floats", () => {

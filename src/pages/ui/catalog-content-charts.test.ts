@@ -45,13 +45,30 @@ describe("charts catalog content family", () => {
 	it("keeps one audited Default scenario for every chart", () => {
 		for (const slug of Object.keys(CHART_DESCRIPTIONS)) {
 			const examples = charts[slug]?.examples ?? [];
-			if (slug === "bar" || slug === "line") {
+			if (slug === "bar") {
 				expect(
 					examples.map(({ id, title }) => ({ id, title })),
 					slug,
 				).toEqual([
 					{ id: `${slug}-default`, title: "Default" },
 					{ id: `${slug}-accessible-data`, title: "Accessible Data & Summary" },
+				]);
+			} else if (slug === "line") {
+				expect(
+					examples.map(({ id, title }) => ({ id, title })),
+					slug,
+				).toEqual([
+					{ id: `${slug}-default`, title: "Default" },
+					{ id: `${slug}-accessible-data`, title: "Accessible Data & Summary" },
+					{ id: `${slug}-dynamic-series`, title: "Dynamic Multi-Series & Custom Tooltip" },
+				]);
+			} else if (slug === "area") {
+				expect(
+					examples.map(({ id, title }) => ({ id, title })),
+					slug,
+				).toEqual([
+					{ id: `${slug}-default`, title: "Default" },
+					{ id: `${slug}-dynamic-series`, title: "Dynamic Multi-Series & Stack Offset" },
 				]);
 			} else if (slug === "heatmap-calendar") {
 				expect(

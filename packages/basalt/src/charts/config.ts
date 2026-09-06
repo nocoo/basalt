@@ -1,4 +1,4 @@
-import { createElement } from "react";
+import { createElement, type ReactNode } from "react";
 import { CHART_COLORS, chartAxis, withAlpha } from "./palette";
 import type { ChartSeriesDescriptor } from "./series";
 import { ChartTooltipContent, type ChartTooltipItem } from "./tooltip";
@@ -109,6 +109,11 @@ export function chartTooltipContentStyle(): {
 export function chartTooltipProps(options?: {
 	formatter?: (value: number) => string;
 	cursor?: "bar" | "line" | false;
+	customTooltip?: (props: {
+		active?: boolean;
+		payload?: readonly ChartTooltipItem[];
+		label?: string | number;
+	}) => ReactNode;
 }) {
 	const cursor =
 		options?.cursor === false
@@ -134,13 +139,21 @@ export function chartTooltipProps(options?: {
 			active?: boolean;
 			payload?: readonly ChartTooltipItem[];
 			label?: unknown;
-		}) =>
-			createElement(ChartTooltipContent, {
+		}) => {
+			if (options?.customTooltip) {
+				return options.customTooltip({
+					active: props.active,
+					payload: props.payload,
+					label: props.label as string | number | undefined,
+				});
+			}
+			return createElement(ChartTooltipContent, {
 				active: props.active,
 				payload: props.payload,
 				label: props.label as string | number | undefined,
 				formatter: options?.formatter,
-			})) as never,
+			});
+		}) as never,
 	};
 }
 

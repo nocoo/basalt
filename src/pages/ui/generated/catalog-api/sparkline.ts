@@ -7,13 +7,15 @@ export const API = [
 		props: [
 			{
 				name: "data",
-				type: "XYPoint[]",
+				type: "unknown[]",
 				required: true,
+				description: "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys.",
 			},
 			{
 				name: "series",
-				type: "XYSeriesDescriptor[]",
+				type: "Array<ChartSeriesDescriptor<NoInfer<K>>>",
 				required: false,
+				description: "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos).",
 			},
 			{
 				name: "ariaLabel",

@@ -1,3 +1,4 @@
+import { AreaChart } from "@nocoo/basalt/charts/area";
 import { BarChart } from "@nocoo/basalt/charts/bar";
 import { ChartFrame, ChartShell } from "@nocoo/basalt/charts/frame";
 import { Gauge } from "@nocoo/basalt/charts/gauge";
@@ -31,10 +32,49 @@ const LINE_DATA = [
 	{ x: "Apr", y: 65 },
 ];
 
+interface MultiLatencyPoint {
+	x: string;
+	p95US: number;
+	p95EU: number;
+	p95APAC: number;
+	deltaAnomaly: number;
+	targetSLA: number;
+}
+
+const DYNAMIC_MULTI_DATA: MultiLatencyPoint[] = [
+	{ x: "10:00", p95US: 45, p95EU: 52, p95APAC: 110, deltaAnomaly: -12, targetSLA: 100 },
+	{ x: "11:00", p95US: 48, p95EU: 58, p95APAC: 135, deltaAnomaly: 25, targetSLA: 100 },
+	{ x: "12:00", p95US: 52, p95EU: 64, p95APAC: 142, deltaAnomaly: 32, targetSLA: 100 },
+	{ x: "13:00", p95US: 46, p95EU: 50, p95APAC: 98, deltaAnomaly: -8, targetSLA: 100 },
+	{ x: "14:00", p95US: 44, p95EU: 49, p95APAC: 92, deltaAnomaly: -15, targetSLA: 100 },
+];
+
+const RATIO_STACK_DATA = [
+	{ x: "Start", p95US: 10, p95EU: 20 },
+	{ x: "End", p95US: 100, p95EU: 200 },
+];
+
+const RATIO_SERIES = [
+	{ key: "p95US" as const, label: "US Region", color: "hsl(var(--basalt-chart-1))" },
+	{ key: "p95EU" as const, label: "EU Region", color: "hsl(var(--basalt-chart-2))" },
+];
+
+const MULTI_SERIES = [
+	{ key: "p95US" as const, label: "US Region", color: "hsl(var(--basalt-chart-1))" },
+	{ key: "p95EU" as const, label: "EU Region", color: "hsl(var(--basalt-chart-2))" },
+	{ key: "p95APAC" as const, label: "APAC Region", color: "hsl(var(--basalt-chart-3))" },
+	{ key: "deltaAnomaly" as const, label: "SLA Variance", color: "hsl(var(--basalt-chart-4))" },
+	{ key: "targetSLA" as const, label: "SLA Target", color: "hsl(var(--basalt-chart-5))" },
+];
+
 function ChartsPanel() {
 	const { theme, setTheme } = useTheme();
 	const [valuesData, setValuesData] = useState<number[]>([0, 1, 2, 3, 4, 1, 0, 2, 3, 4]);
 	const [statState, setStatState] = useState<"ready" | "error">("error");
+	const [activeMultiKeys, setActiveMultiKeys] = useState<Set<string>>(
+		new Set(["p95US", "p95EU", "p95APAC", "deltaAnomaly", "targetSLA"]),
+	);
+	const [dynamicStackOffset, setDynamicStackOffset] = useState<"none" | "expand">("none");
 
 	return (
 		<div id="charts-container" style={{ padding: 16 }}>
@@ -340,6 +380,111 @@ function ChartsPanel() {
 								Processing query results
 							</ChatBubble>
 						</div>
+					</div>
+				</div>
+
+				{/* 11. Dynamic Multi-Series (>3 keys) LineChart & AreaChart verification */}
+				<div data-testid="case-dynamic-series">
+					<h2>Dynamic Multi-Series Telemetry</h2>
+					<div style={{ display: "flex", gap: 8, marginBottom: 8, flexWrap: "wrap" }}>
+						<button
+							id="btn-toggle-sla-variance"
+							type="button"
+							onClick={() => {
+								setActiveMultiKeys((prev) => {
+									const next = new Set(prev);
+									if (next.has("deltaAnomaly")) next.delete("deltaAnomaly");
+									else next.add("deltaAnomaly");
+									return next;
+								});
+							}}
+						>
+							Toggle SLA Variance
+						</button>
+						<button
+							id="btn-toggle-stack-expand"
+							type="button"
+							onClick={() => {
+								setDynamicStackOffset((prev) => (prev === "expand" ? "none" : "expand"));
+							}}
+						>
+							Toggle Stack Expand
+						</button>
+					</div>
+
+					<button id="focus-before-dynamic-line" type="button">
+						Focus Before Dynamic Line
+					</button>
+					<LineChart
+						data={DYNAMIC_MULTI_DATA}
+						series={MULTI_SERIES.filter((s) => activeMultiKeys.has(s.key))}
+						showAxes
+						ariaLabel="Multi-region latency dynamic line"
+						className="consumer-chart-plot"
+						xValueFormatter={(x) => `${String(x)} CST`}
+						valueFormatter={(v) => `${v}ms`}
+						yDomain={[-20, 160]}
+						legend={() => (
+							<div
+								id="dynamic-legend-slot"
+								role="group"
+								aria-label="Multi-region latency series controls"
+								style={{ display: "flex", gap: 12, marginTop: 8 }}
+							>
+								{MULTI_SERIES.map((item) => {
+									const isActive = activeMultiKeys.has(item.key);
+									return (
+										<button
+											key={item.key}
+											id={`dynamic-legend-btn-${item.key}`}
+											type="button"
+											aria-pressed={isActive}
+											onClick={() => {
+												setActiveMultiKeys((prev) => {
+													const next = new Set(prev);
+													if (next.has(item.key)) next.delete(item.key);
+													else next.add(item.key);
+													return next;
+												});
+											}}
+										>
+											{item.label}
+										</button>
+									);
+								})}
+							</div>
+						)}
+						customTooltip={({ active, payload, label }) => {
+							if (!active || !payload?.length) return null;
+							return (
+								<div id="dynamic-custom-tooltip" data-testid="dynamic-custom-tooltip">
+									<p id="dynamic-tooltip-title">{String(label)}</p>
+									<div id="dynamic-tooltip-items">
+										{payload.map((entry) => (
+											<span key={entry.dataKey} data-key={entry.dataKey} data-value={entry.value}>
+												{entry.name}: {entry.value}ms
+											</span>
+										))}
+									</div>
+								</div>
+							);
+						}}
+					/>
+
+					<div id="dynamic-stack-area">
+						<AreaChart
+							data={RATIO_STACK_DATA}
+							series={RATIO_SERIES}
+							stacked
+							stackOffset={dynamicStackOffset === "expand" ? "expand" : undefined}
+							yDomain={dynamicStackOffset === "expand" ? [0, 1] : undefined}
+							showAxes
+							ariaLabel="Multi-region latency dynamic area"
+							className="consumer-chart-plot"
+							valueFormatter={(v) =>
+								dynamicStackOffset === "expand" ? `${(v * 100).toFixed(0)}%` : `${v}ms`
+							}
+						/>
 					</div>
 				</div>
 			</section>

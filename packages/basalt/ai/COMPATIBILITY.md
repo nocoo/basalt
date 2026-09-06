@@ -103,7 +103,7 @@ Defines shared tokens, styles, and props for cartesian charts:
   - `getChartColor(index: number): string`: Modular color retrieval from `CHART_COLORS` palette (`CHART_COLORS[index % length]`).
   - `seriesColor(series: ChartSeriesDescriptor | undefined, index: number): string | undefined`: Resolves color by returning explicit `series.color` or palette fallback `CHART_COLORS[index % length]`. Note: returns `string | undefined` (does not guarantee chart-1 fallback; callers such as `ChartLegend` apply `--basalt-chart-1` fallback).
   - `chartTooltipContentStyle()`: Returns `{ background: "transparent", border: "none", borderRadius: "0", boxShadow: "none", fontSize: 12, color: string, padding: "0" }`.
-  - `chartTooltipProps(options?: { formatter?: (value: number) => string; cursor?: "bar" | "line" | false })`: Assembles complete Recharts tooltip props with custom `ChartTooltipContent` element renderer.
+  - `chartTooltipProps(options?: { formatter?: (value: number) => string; cursor?: "bar" | "line" | false; customTooltip?: (props: { active?: boolean; payload?: readonly ChartTooltipItem[]; label?: string | number }) => ReactNode })`: Assembles complete Recharts tooltip props with custom `ChartTooltipContent` element renderer or caller-provided `customTooltip` callback.
 
 <a id="chart-series"></a>
 ### Chart Series Utilities (`@nocoo/basalt/charts/series`)
@@ -119,7 +119,7 @@ Manages series descriptor shapes, point definitions, and data key fallbacks:
     - `BulletPoint`: `{ name: string; value: number; target: number }`.
     - `SankeyData`: `{ nodes: { name: string }[]; links: { source: number; target: number; value: number }[] }`.
 - **Functions**:
-  - `resolveChartSeries(series: ChartSeriesDescriptor[] | undefined, fallbackKeys: string[]): ChartSeriesDescriptor[]`: Normalizes user-supplied series or maps `fallbackKeys` to descriptors `{ key }`. Current chart APIs use fixed XY/value keys; dynamic series expansion is scheduled for P5.
+  - `resolveChartSeries(series: ChartSeriesDescriptor[] | undefined, fallbackKeys: string[]): ChartSeriesDescriptor[]`: Normalizes user-supplied series or maps `fallbackKeys` to descriptors `{ key }`. Supports generic type-safe series descriptors with dynamic numeric data keys. Arbitrary keys require explicit series; omitted or empty series retain each chart's legacy `y`, `y2`, and `y3` series fallback. Note that TypeScript type inference does not automatically enumerate object keys at runtime.
   - `applyLeadColor(items: ChartSeriesDescriptor[], color?: string): ChartSeriesDescriptor[]`: If `color` is provided and the first item does not specify a `color` (`item.color ?? color`), sets the first item's color. Preserves an explicit first-item color.
-  - `xyFallbackKeys(data: Array<{ y2?: number; y3?: number }>): string[]`: Scans data array and dynamically includes `"y2"` and `"y3"` if present, returning `["y", ...]` keys.
+  - `xyFallbackKeys(data: Array<{ y2?: number; y3?: number }>): string[]`: Scans data array and dynamically includes `"y2"` and `"y3"` if present, returning `["y", ...]` keys. Compatible with legacy XY series fallback.
 

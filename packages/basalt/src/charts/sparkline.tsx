@@ -2,11 +2,23 @@ import type { ReactNode } from "react";
 import { Line, LineChart as RechartsLine } from "recharts";
 import { ANIMATION_PROPS, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { resolveChartSeries, type XYPoint, type XYSeriesDescriptor } from "./series";
+import type { LineChartNumericKeys } from "./line";
+import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
 
-export type SparklineProps = {
-	data: XYPoint[];
-	series?: XYSeriesDescriptor[];
+export type SparklineProps<
+	TData extends { x: string | number } = XYPoint,
+	K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string,
+> = {
+	/**
+	 * Dataset array where each record requires an `x` category or time coordinate.
+	 * Any remaining fields with numeric, nullable, or optional number values are inferred as valid series keys.
+	 */
+	data: TData[];
+	/**
+	 * Series descriptors identifying which numeric keys to plot.
+	 * Inferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos).
+	 */
+	series?: Array<ChartSeriesDescriptor<NoInfer<K>>>;
 	ariaLabel?: string;
 	className?: string;
 	/**
@@ -27,7 +39,10 @@ export type SparklineProps = {
 	accessibilityLayer?: boolean;
 };
 
-export function Sparkline({
+export function Sparkline<
+	TData extends { x: string | number } = XYPoint,
+	K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string,
+>({
 	data,
 	series,
 	ariaLabel = "Sparkline",
@@ -35,8 +50,8 @@ export function Sparkline({
 	summary,
 	dataAlternative,
 	accessibilityLayer,
-}: SparklineProps) {
-	const lines = resolveChartSeries(series, ["y"]);
+}: SparklineProps<TData, K>) {
+	const lines = resolveChartSeries(series, ["y" as K]);
 	return (
 		<ChartFrame
 			ariaLabel={ariaLabel}

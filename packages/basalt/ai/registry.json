@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 689,
+	"totalSymbols": 693,
 	"totalValues": 375,
-	"totalTypes": 314,
+	"totalTypes": 318,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 99,
 	"modules": [
@@ -800,7 +800,7 @@
 			"importPath": "@nocoo/basalt/charts/area",
 			"subpath": "./charts/area",
 			"sourceFile": "packages/basalt/src/charts/area.tsx",
-			"sourceHash": "a2d24e89cfff4876",
+			"sourceHash": "15a519210b5222cb",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -841,13 +841,15 @@
 							"props": [
 								{
 									"name": "data",
-									"type": "XYPoint[]",
-									"required": true
+									"type": "unknown[]",
+									"required": true,
+									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
 								{
 									"name": "series",
-									"type": "XYSeriesDescriptor[]",
-									"required": false
+									"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+									"required": false,
+									"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 								},
 								{
 									"name": "ariaLabel",
@@ -875,9 +877,40 @@
 									"required": false
 								},
 								{
+									"name": "stackOffset",
+									"type": "\"expand\" | \"none\" | \"silhouette\" | \"wiggle\"",
+									"required": false,
+									"description": "Stacking offset algorithm (e.g. \"expand\" for 100% normalized percentage area stacks)."
+								},
+								{
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
-									"required": false
+									"required": false,
+									"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+								},
+								{
+									"name": "xValueFormatter",
+									"type": "(value: string | number) => string",
+									"required": false,
+									"description": "Formatter for X-axis category or time tick labels."
+								},
+								{
+									"name": "yDomain",
+									"type": "LineChartAxisDomain",
+									"required": false,
+									"description": "Custom numerical or keyword bounds for the Y-axis."
+								},
+								{
+									"name": "legend",
+									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"required": false,
+									"description": "Custom legend slot or render function receiving resolved series descriptors."
+								},
+								{
+									"name": "customTooltip",
+									"type": "LineChartTooltipRenderer",
+									"required": false,
+									"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 								},
 								{
 									"name": "summary",
@@ -909,13 +942,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -943,9 +978,40 @@
 							"required": false
 						},
 						{
+							"name": "stackOffset",
+							"type": "\"expand\" | \"none\" | \"silhouette\" | \"wiggle\"",
+							"required": false,
+							"description": "Stacking offset algorithm (e.g. \"expand\" for 100% normalized percentage area stacks)."
+						},
+						{
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
-							"required": false
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -976,7 +1042,7 @@
 			"importPath": "@nocoo/basalt/charts/bar",
 			"subpath": "./charts/bar",
 			"sourceFile": "packages/basalt/src/charts/bar.tsx",
-			"sourceHash": "7406edb0a87996b8",
+			"sourceHash": "9c9c059c6448e65d",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -1017,13 +1083,15 @@
 							"props": [
 								{
 									"name": "data",
-									"type": "XYPoint[]",
-									"required": true
+									"type": "unknown[]",
+									"required": true,
+									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
 								{
 									"name": "series",
-									"type": "XYSeriesDescriptor[]",
-									"required": false
+									"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+									"required": false,
+									"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 								},
 								{
 									"name": "ariaLabel",
@@ -1053,7 +1121,32 @@
 								{
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
-									"required": false
+									"required": false,
+									"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+								},
+								{
+									"name": "xValueFormatter",
+									"type": "(value: string | number) => string",
+									"required": false,
+									"description": "Formatter for X-axis category or time tick labels."
+								},
+								{
+									"name": "yDomain",
+									"type": "LineChartAxisDomain",
+									"required": false,
+									"description": "Custom numerical or keyword bounds for the Y-axis."
+								},
+								{
+									"name": "legend",
+									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"required": false,
+									"description": "Custom legend slot or render function receiving resolved series descriptors."
+								},
+								{
+									"name": "customTooltip",
+									"type": "LineChartTooltipRenderer",
+									"required": false,
+									"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 								},
 								{
 									"name": "summary",
@@ -1085,13 +1178,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -1121,7 +1216,32 @@
 						{
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
-							"required": false
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -1384,7 +1504,7 @@
 			"importPath": "@nocoo/basalt/charts/charts",
 			"subpath": "./charts/charts",
 			"sourceFile": "packages/basalt/src/charts/charts.tsx",
-			"sourceHash": "378e0edc4457f493",
+			"sourceHash": "3d7d8692e046b102",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -1425,13 +1545,15 @@
 							"props": [
 								{
 									"name": "data",
-									"type": "XYPoint[]",
-									"required": true
+									"type": "unknown[]",
+									"required": true,
+									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
 								{
 									"name": "series",
-									"type": "XYSeriesDescriptor[]",
-									"required": false
+									"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+									"required": false,
+									"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 								},
 								{
 									"name": "ariaLabel",
@@ -1442,6 +1564,51 @@
 									"name": "className",
 									"type": "string",
 									"required": false
+								},
+								{
+									"name": "showAxes",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "showLegend",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "color",
+									"type": "string",
+									"required": false
+								},
+								{
+									"name": "valueFormatter",
+									"type": "(value: number) => string",
+									"required": false,
+									"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+								},
+								{
+									"name": "xValueFormatter",
+									"type": "(value: string | number) => string",
+									"required": false,
+									"description": "Formatter for X-axis category or time tick labels."
+								},
+								{
+									"name": "yDomain",
+									"type": "LineChartAxisDomain",
+									"required": false,
+									"description": "Custom numerical or keyword bounds for the Y-axis."
+								},
+								{
+									"name": "legend",
+									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"required": false,
+									"description": "Custom legend slot or render function receiving resolved series descriptors."
+								},
+								{
+									"name": "customTooltip",
+									"type": "LineChartTooltipRenderer",
+									"required": false,
+									"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 								},
 								{
 									"name": "summary",
@@ -1473,13 +1640,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -1490,6 +1659,51 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "showAxes",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "showLegend",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "color",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "valueFormatter",
+							"type": "(value: number) => string",
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -1520,7 +1734,7 @@
 			"importPath": "@nocoo/basalt/charts/config",
 			"subpath": "./charts/config",
 			"sourceFile": "packages/basalt/src/charts/config.ts",
-			"sourceHash": "6d032be164ca36e1",
+			"sourceHash": "2849a1e30a073758",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "chart-subsystem",
@@ -1698,7 +1912,7 @@
 			"importPath": "@nocoo/basalt/charts/custom-chart",
 			"subpath": "./charts/custom-chart",
 			"sourceFile": "packages/basalt/src/charts/custom-chart.tsx",
-			"sourceHash": "30fcb056629bdabc",
+			"sourceHash": "bc51aa3285733211",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -1739,13 +1953,15 @@
 							"props": [
 								{
 									"name": "data",
-									"type": "XYPoint[]",
-									"required": true
+									"type": "unknown[]",
+									"required": true,
+									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
 								{
 									"name": "series",
-									"type": "XYSeriesDescriptor[]",
-									"required": false
+									"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+									"required": false,
+									"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 								},
 								{
 									"name": "ariaLabel",
@@ -1756,6 +1972,51 @@
 									"name": "className",
 									"type": "string",
 									"required": false
+								},
+								{
+									"name": "showAxes",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "showLegend",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "color",
+									"type": "string",
+									"required": false
+								},
+								{
+									"name": "valueFormatter",
+									"type": "(value: number) => string",
+									"required": false,
+									"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+								},
+								{
+									"name": "xValueFormatter",
+									"type": "(value: string | number) => string",
+									"required": false,
+									"description": "Formatter for X-axis category or time tick labels."
+								},
+								{
+									"name": "yDomain",
+									"type": "LineChartAxisDomain",
+									"required": false,
+									"description": "Custom numerical or keyword bounds for the Y-axis."
+								},
+								{
+									"name": "legend",
+									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"required": false,
+									"description": "Custom legend slot or render function receiving resolved series descriptors."
+								},
+								{
+									"name": "customTooltip",
+									"type": "LineChartTooltipRenderer",
+									"required": false,
+									"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 								},
 								{
 									"name": "summary",
@@ -1787,13 +2048,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -1804,6 +2067,51 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "showAxes",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "showLegend",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "color",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "valueFormatter",
+							"type": "(value: number) => string",
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -2206,7 +2514,7 @@
 			"importPath": "@nocoo/basalt/charts/frame",
 			"subpath": "./charts/frame",
 			"sourceFile": "packages/basalt/src/charts/frame.tsx",
-			"sourceHash": "9db385e79877e19a",
+			"sourceHash": "ec8fdc878a4871fe",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "chart-subsystem",
@@ -2576,7 +2884,7 @@
 			"importPath": "@nocoo/basalt/charts/grouped-bar",
 			"subpath": "./charts/grouped-bar",
 			"sourceFile": "packages/basalt/src/charts/grouped-bar.tsx",
-			"sourceHash": "2b27622986164d8b",
+			"sourceHash": "03f6f4dbe234e0e7",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2617,13 +2925,15 @@
 							"props": [
 								{
 									"name": "data",
-									"type": "XYPoint[]",
-									"required": true
+									"type": "unknown[]",
+									"required": true,
+									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
 								{
 									"name": "series",
-									"type": "XYSeriesDescriptor[]",
-									"required": false
+									"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+									"required": false,
+									"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 								},
 								{
 									"name": "ariaLabel",
@@ -2648,7 +2958,32 @@
 								{
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
-									"required": false
+									"required": false,
+									"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+								},
+								{
+									"name": "xValueFormatter",
+									"type": "(value: string | number) => string",
+									"required": false,
+									"description": "Formatter for X-axis category or time tick labels."
+								},
+								{
+									"name": "yDomain",
+									"type": "LineChartAxisDomain",
+									"required": false,
+									"description": "Custom numerical or keyword bounds for the Y-axis."
+								},
+								{
+									"name": "legend",
+									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"required": false,
+									"description": "Custom legend slot or render function receiving resolved series descriptors."
+								},
+								{
+									"name": "customTooltip",
+									"type": "LineChartTooltipRenderer",
+									"required": false,
+									"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 								},
 								{
 									"name": "summary",
@@ -2680,13 +3015,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -2711,7 +3048,32 @@
 						{
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
-							"required": false
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -3204,7 +3566,7 @@
 			"importPath": "@nocoo/basalt/charts/line",
 			"subpath": "./charts/line",
 			"sourceFile": "packages/basalt/src/charts/line.tsx",
-			"sourceHash": "a7a5c9de731dcc7b",
+			"sourceHash": "f5298340c2f5e6f0",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3218,6 +3580,38 @@
 					"name": "LineChart",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/line",
+					"packageDoc": "ai/registry.json#line",
+					"originModule": "@nocoo/basalt/charts/line"
+				},
+				{
+					"name": "LineChartAxisDomain",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/line",
+					"packageDoc": "ai/registry.json#line",
+					"originModule": "@nocoo/basalt/charts/line"
+				},
+				{
+					"name": "LineChartNumericKeys",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/line",
+					"packageDoc": "ai/registry.json#line",
+					"originModule": "@nocoo/basalt/charts/line"
+				},
+				{
+					"name": "LineChartLegendRenderer",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/line",
+					"packageDoc": "ai/registry.json#line",
+					"originModule": "@nocoo/basalt/charts/line"
+				},
+				{
+					"name": "LineChartTooltipRenderer",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/line",
 					"packageDoc": "ai/registry.json#line",
 					"originModule": "@nocoo/basalt/charts/line"
@@ -3245,13 +3639,15 @@
 							"props": [
 								{
 									"name": "data",
-									"type": "XYPoint[]",
-									"required": true
+									"type": "unknown[]",
+									"required": true,
+									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
 								{
 									"name": "series",
-									"type": "XYSeriesDescriptor[]",
-									"required": false
+									"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+									"required": false,
+									"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 								},
 								{
 									"name": "ariaLabel",
@@ -3281,7 +3677,32 @@
 								{
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
-									"required": false
+									"required": false,
+									"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+								},
+								{
+									"name": "xValueFormatter",
+									"type": "(value: string | number) => string",
+									"required": false,
+									"description": "Formatter for X-axis category or time tick labels."
+								},
+								{
+									"name": "yDomain",
+									"type": "LineChartAxisDomain",
+									"required": false,
+									"description": "Custom numerical or keyword bounds for the Y-axis."
+								},
+								{
+									"name": "legend",
+									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"required": false,
+									"description": "Custom legend slot or render function receiving resolved series descriptors."
+								},
+								{
+									"name": "customTooltip",
+									"type": "LineChartTooltipRenderer",
+									"required": false,
+									"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 								},
 								{
 									"name": "summary",
@@ -3313,13 +3734,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -3349,7 +3772,32 @@
 						{
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
-							"required": false
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -3856,7 +4304,7 @@
 			"importPath": "@nocoo/basalt/charts/series",
 			"subpath": "./charts/series",
 			"sourceFile": "packages/basalt/src/charts/series.ts",
-			"sourceHash": "9af132fbebecc22e",
+			"sourceHash": "342aef9528f9a6d6",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "chart-subsystem",
@@ -3978,7 +4426,7 @@
 			"importPath": "@nocoo/basalt/charts/slot-bar",
 			"subpath": "./charts/slot-bar",
 			"sourceFile": "packages/basalt/src/charts/slot-bar.tsx",
-			"sourceHash": "db44634f5bb7a481",
+			"sourceHash": "b1ecbf906c67ffc3",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4043,13 +4491,15 @@
 							"props": [
 								{
 									"name": "data",
-									"type": "XYPoint[]",
-									"required": true
+									"type": "unknown[]",
+									"required": true,
+									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
 								{
 									"name": "series",
-									"type": "XYSeriesDescriptor[]",
-									"required": false
+									"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+									"required": false,
+									"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 								},
 								{
 									"name": "ariaLabel",
@@ -4126,13 +4576,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -4208,7 +4660,7 @@
 			"importPath": "@nocoo/basalt/charts/sparkline",
 			"subpath": "./charts/sparkline",
 			"sourceFile": "packages/basalt/src/charts/sparkline.tsx",
-			"sourceHash": "414df34842e1a206",
+			"sourceHash": "12149a352bf9b192",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4249,13 +4701,15 @@
 							"props": [
 								{
 									"name": "data",
-									"type": "XYPoint[]",
-									"required": true
+									"type": "unknown[]",
+									"required": true,
+									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
 								{
 									"name": "series",
-									"type": "XYSeriesDescriptor[]",
-									"required": false
+									"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+									"required": false,
+									"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 								},
 								{
 									"name": "ariaLabel",
@@ -4297,13 +4751,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -4344,7 +4800,7 @@
 			"importPath": "@nocoo/basalt/charts/stacked-bar",
 			"subpath": "./charts/stacked-bar",
 			"sourceFile": "packages/basalt/src/charts/stacked-bar.tsx",
-			"sourceHash": "6120c4f3559a1ea6",
+			"sourceHash": "dada2f206be089bb",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4385,13 +4841,15 @@
 							"props": [
 								{
 									"name": "data",
-									"type": "XYPoint[]",
-									"required": true
+									"type": "unknown[]",
+									"required": true,
+									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
 								{
 									"name": "series",
-									"type": "XYSeriesDescriptor[]",
-									"required": false
+									"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+									"required": false,
+									"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 								},
 								{
 									"name": "ariaLabel",
@@ -4414,9 +4872,40 @@
 									"required": false
 								},
 								{
+									"name": "stackOffset",
+									"type": "\"expand\" | \"none\" | \"silhouette\" | \"wiggle\"",
+									"required": false,
+									"description": "Stacking offset algorithm (e.g. \"expand\" for 100% normalized percentage bar stacks)."
+								},
+								{
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
-									"required": false
+									"required": false,
+									"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+								},
+								{
+									"name": "xValueFormatter",
+									"type": "(value: string | number) => string",
+									"required": false,
+									"description": "Formatter for X-axis category or time tick labels."
+								},
+								{
+									"name": "yDomain",
+									"type": "LineChartAxisDomain",
+									"required": false,
+									"description": "Custom numerical or keyword bounds for the Y-axis."
+								},
+								{
+									"name": "legend",
+									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"required": false,
+									"description": "Custom legend slot or render function receiving resolved series descriptors."
+								},
+								{
+									"name": "customTooltip",
+									"type": "LineChartTooltipRenderer",
+									"required": false,
+									"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 								},
 								{
 									"name": "summary",
@@ -4448,13 +4937,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -4477,9 +4968,40 @@
 							"required": false
 						},
 						{
+							"name": "stackOffset",
+							"type": "\"expand\" | \"none\" | \"silhouette\" | \"wiggle\"",
+							"required": false,
+							"description": "Stacking offset algorithm (e.g. \"expand\" for 100% normalized percentage bar stacks)."
+						},
+						{
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
-							"required": false
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -4942,7 +5464,7 @@
 			"importPath": "@nocoo/basalt/charts/timeseries",
 			"subpath": "./charts/timeseries",
 			"sourceFile": "packages/basalt/src/charts/timeseries.tsx",
-			"sourceHash": "af1e619047529924",
+			"sourceHash": "ce5b0a5d042cad91",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4983,13 +5505,15 @@
 							"props": [
 								{
 									"name": "data",
-									"type": "XYPoint[]",
-									"required": true
+									"type": "unknown[]",
+									"required": true,
+									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
 								{
 									"name": "series",
-									"type": "XYSeriesDescriptor[]",
-									"required": false
+									"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+									"required": false,
+									"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 								},
 								{
 									"name": "ariaLabel",
@@ -5000,6 +5524,51 @@
 									"name": "className",
 									"type": "string",
 									"required": false
+								},
+								{
+									"name": "showAxes",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "showLegend",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "color",
+									"type": "string",
+									"required": false
+								},
+								{
+									"name": "valueFormatter",
+									"type": "(value: number) => string",
+									"required": false,
+									"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+								},
+								{
+									"name": "xValueFormatter",
+									"type": "(value: string | number) => string",
+									"required": false,
+									"description": "Formatter for X-axis category or time tick labels."
+								},
+								{
+									"name": "yDomain",
+									"type": "LineChartAxisDomain",
+									"required": false,
+									"description": "Custom numerical or keyword bounds for the Y-axis."
+								},
+								{
+									"name": "legend",
+									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"required": false,
+									"description": "Custom legend slot or render function receiving resolved series descriptors."
+								},
+								{
+									"name": "customTooltip",
+									"type": "LineChartTooltipRenderer",
+									"required": false,
+									"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 								},
 								{
 									"name": "summary",
@@ -5031,13 +5600,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -5048,6 +5619,51 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "showAxes",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "showLegend",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "color",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "valueFormatter",
+							"type": "(value: number) => string",
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -30665,7 +31281,7 @@
 			"exportName": "Charts",
 			"importPath": "@nocoo/basalt/charts/charts",
 			"sourceFile": "packages/basalt/src/charts/charts.tsx",
-			"sourceHash": "378e0edc4457f493",
+			"sourceHash": "3d7d8692e046b102",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#charts",
@@ -30675,13 +31291,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -30692,6 +31310,51 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "showAxes",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "showLegend",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "color",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "valueFormatter",
+							"type": "(value: number) => string",
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -30745,7 +31408,7 @@
 			"exportName": "Timeseries",
 			"importPath": "@nocoo/basalt/charts/timeseries",
 			"sourceFile": "packages/basalt/src/charts/timeseries.tsx",
-			"sourceHash": "af1e619047529924",
+			"sourceHash": "ce5b0a5d042cad91",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#timeseries",
@@ -30755,13 +31418,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -30772,6 +31437,51 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "showAxes",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "showLegend",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "color",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "valueFormatter",
+							"type": "(value: number) => string",
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -30802,7 +31512,7 @@
 			"exportName": "CustomChart",
 			"importPath": "@nocoo/basalt/charts/custom-chart",
 			"sourceFile": "packages/basalt/src/charts/custom-chart.tsx",
-			"sourceHash": "30fcb056629bdabc",
+			"sourceHash": "bc51aa3285733211",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#custom-chart",
@@ -30812,13 +31522,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -30829,6 +31541,51 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "showAxes",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "showLegend",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "color",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "valueFormatter",
+							"type": "(value: number) => string",
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -30976,7 +31733,7 @@
 			"exportName": "SlotBarChart",
 			"importPath": "@nocoo/basalt/charts/slot-bar",
 			"sourceFile": "packages/basalt/src/charts/slot-bar.tsx",
-			"sourceHash": "db44634f5bb7a481",
+			"sourceHash": "b1ecbf906c67ffc3",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#slot-bar",
@@ -30986,13 +31743,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -31068,7 +31827,7 @@
 			"exportName": "BarChart",
 			"importPath": "@nocoo/basalt/charts/bar",
 			"sourceFile": "packages/basalt/src/charts/bar.tsx",
-			"sourceHash": "7406edb0a87996b8",
+			"sourceHash": "9c9c059c6448e65d",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#bar",
@@ -31078,13 +31837,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -31114,7 +31875,32 @@
 						{
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
-							"required": false
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -31145,7 +31931,7 @@
 			"exportName": "LineChart",
 			"importPath": "@nocoo/basalt/charts/line",
 			"sourceFile": "packages/basalt/src/charts/line.tsx",
-			"sourceHash": "a7a5c9de731dcc7b",
+			"sourceHash": "f5298340c2f5e6f0",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#line",
@@ -31155,13 +31941,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -31191,7 +31979,32 @@
 						{
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
-							"required": false
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -31222,7 +32035,7 @@
 			"exportName": "AreaChart",
 			"importPath": "@nocoo/basalt/charts/area",
 			"sourceFile": "packages/basalt/src/charts/area.tsx",
-			"sourceHash": "a2d24e89cfff4876",
+			"sourceHash": "15a519210b5222cb",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#area",
@@ -31232,13 +32045,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -31266,9 +32081,40 @@
 							"required": false
 						},
 						{
+							"name": "stackOffset",
+							"type": "\"expand\" | \"none\" | \"silhouette\" | \"wiggle\"",
+							"required": false,
+							"description": "Stacking offset algorithm (e.g. \"expand\" for 100% normalized percentage area stacks)."
+						},
+						{
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
-							"required": false
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -31366,7 +32212,7 @@
 			"exportName": "GroupedBarChart",
 			"importPath": "@nocoo/basalt/charts/grouped-bar",
 			"sourceFile": "packages/basalt/src/charts/grouped-bar.tsx",
-			"sourceHash": "2b27622986164d8b",
+			"sourceHash": "03f6f4dbe234e0e7",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#grouped-bar",
@@ -31376,13 +32222,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -31407,7 +32255,32 @@
 						{
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
-							"required": false
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -31438,7 +32311,7 @@
 			"exportName": "StackedBarChart",
 			"importPath": "@nocoo/basalt/charts/stacked-bar",
 			"sourceFile": "packages/basalt/src/charts/stacked-bar.tsx",
-			"sourceHash": "6120c4f3559a1ea6",
+			"sourceHash": "dada2f206be089bb",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#stacked-bar",
@@ -31448,13 +32321,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",
@@ -31477,9 +32352,40 @@
 							"required": false
 						},
 						{
+							"name": "stackOffset",
+							"type": "\"expand\" | \"none\" | \"silhouette\" | \"wiggle\"",
+							"required": false,
+							"description": "Stacking offset algorithm (e.g. \"expand\" for 100% normalized percentage bar stacks)."
+						},
+						{
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
-							"required": false
+							"required": false,
+							"description": "Value formatter for Y-axis tick values and fallback tooltip values."
+						},
+						{
+							"name": "xValueFormatter",
+							"type": "(value: string | number) => string",
+							"required": false,
+							"description": "Formatter for X-axis category or time tick labels."
+						},
+						{
+							"name": "yDomain",
+							"type": "LineChartAxisDomain",
+							"required": false,
+							"description": "Custom numerical or keyword bounds for the Y-axis."
+						},
+						{
+							"name": "legend",
+							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"required": false,
+							"description": "Custom legend slot or render function receiving resolved series descriptors."
+						},
+						{
+							"name": "customTooltip",
+							"type": "LineChartTooltipRenderer",
+							"required": false,
+							"description": "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label."
 						},
 						{
 							"name": "summary",
@@ -31510,7 +32416,7 @@
 			"exportName": "Sparkline",
 			"importPath": "@nocoo/basalt/charts/sparkline",
 			"sourceFile": "packages/basalt/src/charts/sparkline.tsx",
-			"sourceHash": "414df34842e1a206",
+			"sourceHash": "12149a352bf9b192",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sparkline",
@@ -31520,13 +32426,15 @@
 					"props": [
 						{
 							"name": "data",
-							"type": "XYPoint[]",
-							"required": true
+							"type": "unknown[]",
+							"required": true,
+							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
 						{
 							"name": "series",
-							"type": "XYSeriesDescriptor[]",
-							"required": false
+							"type": "Array<ChartSeriesDescriptor<NoInfer<K>>>",
+							"required": false,
+							"description": "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos)."
 						},
 						{
 							"name": "ariaLabel",

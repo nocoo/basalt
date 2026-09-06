@@ -7,13 +7,15 @@ export const API = [
 		props: [
 			{
 				name: "data",
-				type: "XYPoint[]",
+				type: "unknown[]",
 				required: true,
+				description: "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys.",
 			},
 			{
 				name: "series",
-				type: "XYSeriesDescriptor[]",
+				type: "Array<ChartSeriesDescriptor<NoInfer<K>>>",
 				required: false,
+				description: "Series descriptors identifying which numeric keys to plot.\nInferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos).",
 			},
 			{
 				name: "ariaLabel",
@@ -41,9 +43,40 @@ export const API = [
 				required: false,
 			},
 			{
+				name: "stackOffset",
+				type: "\"expand\" | \"none\" | \"silhouette\" | \"wiggle\"",
+				required: false,
+				description: "Stacking offset algorithm (e.g. \"expand\" for 100% normalized percentage area stacks).",
+			},
+			{
 				name: "valueFormatter",
 				type: "(value: number) => string",
 				required: false,
+				description: "Value formatter for Y-axis tick values and fallback tooltip values.",
+			},
+			{
+				name: "xValueFormatter",
+				type: "(value: string | number) => string",
+				required: false,
+				description: "Formatter for X-axis category or time tick labels.",
+			},
+			{
+				name: "yDomain",
+				type: "LineChartAxisDomain",
+				required: false,
+				description: "Custom numerical or keyword bounds for the Y-axis.",
+			},
+			{
+				name: "legend",
+				type: "LineChartLegendRenderer<unknown> | React.ReactNode",
+				required: false,
+				description: "Custom legend slot or render function receiving resolved series descriptors.",
+			},
+			{
+				name: "customTooltip",
+				type: "LineChartTooltipRenderer",
+				required: false,
+				description: "Custom tooltip content renderer receiving Recharts payload, active status, and coordinate label.",
 			},
 			{
 				name: "summary",

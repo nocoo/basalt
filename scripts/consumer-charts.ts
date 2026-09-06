@@ -14,6 +14,7 @@ export type ChartsGateResult = {
 	valuesValidationsChecked: number;
 	statCardValidationsChecked: number;
 	reducedMotionChecked: number;
+	dynamicSeriesChecked: number;
 };
 
 const VIEWPORTS = [
@@ -38,6 +39,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 	let valuesValidationsChecked = 0;
 	let statCardValidationsChecked = 0;
 	let reducedMotionChecked = 0;
+	let dynamicSeriesChecked = 0;
 
 	for (const vp of VIEWPORTS) {
 		await page.setViewportSize({ width: vp.width, height: vp.height });
@@ -797,6 +799,215 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			);
 
 			reducedMotionChecked++;
+
+			// -------------------------------------------------------------
+			// 11. Dynamic Series (>3 keys, legend interactive buttons, customTooltip, stack expand)
+			// -------------------------------------------------------------
+			const dynamicCase = page.locator('[data-testid="case-dynamic-series"]');
+			const dynamicLineSvg = dynamicCase.locator(
+				'svg.recharts-surface[aria-label="Multi-region latency dynamic line"]',
+			);
+			await dynamicLineSvg.waitFor({ state: "visible" });
+
+			// Verify actual SVG visible ticks for formatter and yDomain
+			const lineAxisLabels = await dynamicLineSvg.locator("text").evaluateAll((nodes) =>
+				nodes.map((node) => {
+					const spans = Array.from(node.querySelectorAll("tspan"));
+					return spans.length ? spans.map((span) => span.textContent).join(" ") : node.textContent;
+				}),
+			);
+			const xTicks = lineAxisLabels.filter((text) => text?.endsWith(" CST"));
+			const yTicks = lineAxisLabels.filter((text) => text?.endsWith("ms"));
+			assert.ok(
+				xTicks.length >= 2 && xTicks.every((text) => text.endsWith(" CST")),
+				`X-axis must format ticks with CST: ${JSON.stringify(xTicks)}`,
+			);
+			assert.ok(
+				yTicks.includes("-20ms") && yTicks.includes("160ms"),
+				`Y-axis must render explicit domain [-20, 160] with ms units: ${JSON.stringify(yTicks)}`,
+			);
+
+			// Check custom interactive legend slot has all 5 series buttons initially
+			const legendSlot = dynamicCase.locator("#dynamic-legend-slot");
+			await legendSlot.waitFor({ state: "visible" });
+			const legendBtns = legendSlot.locator("button");
+			assert.equal(
+				await legendBtns.count(),
+				5,
+				"Dynamic legend slot must render 5 series controls",
+			);
+
+			// Initial line count: exactly 5 .recharts-line elements
+			const lineElements = dynamicCase.locator(".recharts-line");
+			assert.equal(await lineElements.count(), 5, "Must render exactly 5 .recharts-line initially");
+
+			// Keyboard activation on legend button via Space: 5 -> 4
+			const usBtn = legendSlot.locator("#dynamic-legend-btn-p95US");
+			await usBtn.focus();
+			assert.equal(
+				await page.evaluate(() => document.activeElement?.id),
+				"dynamic-legend-btn-p95US",
+				"Dynamic legend button must be keyboard focusable",
+			);
+			await page.keyboard.press("Space");
+			await page.waitForFunction(
+				() =>
+					document.querySelectorAll(
+						'[data-testid="case-dynamic-series"] svg.recharts-surface[aria-label="Multi-region latency dynamic line"] .recharts-line',
+					).length === 4,
+			);
+			assert.equal(await usBtn.getAttribute("aria-pressed"), "false");
+			assert.equal(
+				await lineElements.count(),
+				4,
+				"Deactivating series via Space must reduce .recharts-line to 4",
+			);
+
+			// Keyboard activation on legend button via Enter: 4 -> 5
+			await page.keyboard.press("Enter");
+			await page.waitForFunction(
+				() =>
+					document.querySelectorAll(
+						'[data-testid="case-dynamic-series"] svg.recharts-surface[aria-label="Multi-region latency dynamic line"] .recharts-line',
+					).length === 5,
+			);
+			assert.equal(await usBtn.getAttribute("aria-pressed"), "true");
+			assert.equal(
+				await lineElements.count(),
+				5,
+				"Reactivating series via Enter must restore .recharts-line to 5",
+			);
+
+			// Keyboard exploration: two ArrowRight presses verify distinct label and value changes with units
+			const focusBeforeDynamic = dynamicCase.locator("#focus-before-dynamic-line");
+			await focusBeforeDynamic.focus();
+			await page.keyboard.press("Tab");
+			assert.equal(
+				await page.evaluate(() => document.activeElement?.getAttribute("aria-label")),
+				"Multi-region latency dynamic line",
+				"Tab must focus dynamic line chart graphic",
+			);
+
+			// First ArrowRight
+			await page.keyboard.press("ArrowRight");
+			const customTooltipEl = dynamicCase.locator('[data-testid="dynamic-custom-tooltip"]');
+			await customTooltipEl.waitFor({ state: "visible" });
+			const tooltipTitleFirst = await dynamicCase.locator("#dynamic-tooltip-title").textContent();
+			const tooltipTextFirst = await customTooltipEl.textContent();
+			assert.equal(
+				tooltipTitleFirst,
+				"11:00",
+				"First ArrowRight must navigate to the 11:00 coordinate",
+			);
+			const usMetricFirst = await dynamicCase
+				.locator("#dynamic-tooltip-items [data-key='p95US']")
+				.innerText();
+			assert.equal(
+				usMetricFirst,
+				"US Region: 48ms",
+				"First ArrowRight must render exact formatted text 'US Region: 48ms'",
+			);
+			assert.ok(
+				tooltipTextFirst?.includes("ms"),
+				"Custom dynamic tooltip must include ms unit on first step",
+			);
+
+			// Second ArrowRight
+			await page.keyboard.press("ArrowRight");
+			await page.waitForFunction(
+				(prev) => document.querySelector("#dynamic-tooltip-title")?.textContent !== prev,
+				tooltipTitleFirst,
+			);
+			const tooltipTitleSecond = await dynamicCase.locator("#dynamic-tooltip-title").textContent();
+			const tooltipTextSecond = await customTooltipEl.textContent();
+			assert.equal(
+				tooltipTitleSecond,
+				"12:00",
+				"Second ArrowRight must navigate to the 12:00 coordinate",
+			);
+			const usMetricSecond = await dynamicCase
+				.locator("#dynamic-tooltip-items [data-key='p95US']")
+				.innerText();
+			assert.equal(
+				usMetricSecond,
+				"US Region: 52ms",
+				"Second ArrowRight must render exact updated text 'US Region: 52ms'",
+			);
+			assert.notEqual(
+				tooltipTitleFirst,
+				tooltipTitleSecond,
+				"Second ArrowRight must navigate to a different coordinate label",
+			);
+			assert.notEqual(
+				tooltipTextFirst,
+				tooltipTextSecond,
+				"Second ArrowRight must update tooltip content and values",
+			);
+			assert.ok(
+				tooltipTextSecond?.includes("ms"),
+				"Custom dynamic tooltip must include ms unit on second step",
+			);
+
+			// Stack area geometry verification with ratio dataset (Start: 10/20, End: 100/200)
+			const areaSvg = dynamicCase.locator(
+				'svg.recharts-surface[aria-label="Multi-region latency dynamic area"]',
+			);
+			await areaSvg.waitFor({ state: "visible" });
+
+			async function getAreaTopCurveYDiff() {
+				return areaSvg
+					.locator(".recharts-area-curve")
+					.last()
+					.evaluate((node: SVGPathElement) => {
+						const length = node.getTotalLength();
+						const startPoint = node.getPointAtLength(0);
+						const endPoint = node.getPointAtLength(length);
+						return Math.abs(startPoint.y - endPoint.y);
+					});
+			}
+
+			// In default non-expand (absolute) mode: End total (300) >> Start total (30), top curve has large slope
+			const absoluteSlope = await getAreaTopCurveYDiff();
+			assert.ok(
+				absoluteSlope > 40,
+				`Absolute stack area must show significant vertical height difference between Start and End (got ${absoluteSlope})`,
+			);
+
+			// Toggle stack expand mode on area chart -> 100% normalized
+			const toggleExpandBtn = dynamicCase.locator("#btn-toggle-stack-expand");
+			await toggleExpandBtn.click();
+			await page.waitForFunction(() =>
+				Array.from(
+					document.querySelectorAll(
+						'[data-testid="case-dynamic-series"] svg.recharts-surface[aria-label="Multi-region latency dynamic area"] text',
+					),
+				).some((node) => node.textContent?.endsWith("%")),
+			);
+
+			// In expand mode: both Start (10/(10+20) = 33%) and End (100/(100+200) = 33%) total 100%, top curve is horizontal
+			const expandSlope = await getAreaTopCurveYDiff();
+			assert.ok(
+				expandSlope < 2,
+				`Normalized (expand) stack area top curve must be near-horizontal (y-diff < 2, got ${expandSlope})`,
+			);
+
+			// Toggle back to absolute to ensure restoration
+			await toggleExpandBtn.click();
+			await page.waitForFunction(
+				() =>
+					!Array.from(
+						document.querySelectorAll(
+							'[data-testid="case-dynamic-series"] svg.recharts-surface[aria-label="Multi-region latency dynamic area"] text',
+						),
+					).some((node) => node.textContent?.endsWith("%")),
+			);
+			const restoredAbsoluteSlope = await getAreaTopCurveYDiff();
+			assert.ok(
+				restoredAbsoluteSlope > 40,
+				`Restored absolute stack area must show significant vertical slope again (got ${restoredAbsoluteSlope})`,
+			);
+
+			dynamicSeriesChecked++;
 		}
 	}
 
@@ -813,5 +1024,6 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 		valuesValidationsChecked,
 		statCardValidationsChecked,
 		reducedMotionChecked,
+		dynamicSeriesChecked,
 	};
 }

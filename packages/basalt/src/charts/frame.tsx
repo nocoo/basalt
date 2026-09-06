@@ -89,7 +89,7 @@ function ChartContainer({
 	});
 
 	let plotContainer: ReactNode;
-	if (legend) {
+	if (hasSlotContent(legend)) {
 		plotContainer = (
 			<div
 				data-testid="chart-shell"

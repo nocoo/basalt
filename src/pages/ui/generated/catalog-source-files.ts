@@ -446,7 +446,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"charts": {
 		"file": "packages/basalt/src/charts/charts.tsx",
-		"hash": "378e0edc4457f493",
+		"hash": "3d7d8692e046b102",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/charts.js.map (sourcesContent[0])"
 	},
@@ -458,13 +458,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"timeseries": {
 		"file": "packages/basalt/src/charts/timeseries.tsx",
-		"hash": "af1e619047529924",
+		"hash": "ce5b0a5d042cad91",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/timeseries.js.map (sourcesContent[0])"
 	},
 	"custom-chart": {
 		"file": "packages/basalt/src/charts/custom-chart.tsx",
-		"hash": "30fcb056629bdabc",
+		"hash": "bc51aa3285733211",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/custom-chart.js.map (sourcesContent[0])"
 	},
@@ -476,25 +476,25 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"slot-bar": {
 		"file": "packages/basalt/src/charts/slot-bar.tsx",
-		"hash": "db44634f5bb7a481",
+		"hash": "b1ecbf906c67ffc3",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/slot-bar.js.map (sourcesContent[0])"
 	},
 	"bar": {
 		"file": "packages/basalt/src/charts/bar.tsx",
-		"hash": "7406edb0a87996b8",
+		"hash": "9c9c059c6448e65d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/bar.js.map (sourcesContent[0])"
 	},
 	"line": {
 		"file": "packages/basalt/src/charts/line.tsx",
-		"hash": "a7a5c9de731dcc7b",
+		"hash": "f5298340c2f5e6f0",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/line.js.map (sourcesContent[0])"
 	},
 	"area": {
 		"file": "packages/basalt/src/charts/area.tsx",
-		"hash": "a2d24e89cfff4876",
+		"hash": "15a519210b5222cb",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/area.js.map (sourcesContent[0])"
 	},
@@ -506,19 +506,19 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"grouped-bar": {
 		"file": "packages/basalt/src/charts/grouped-bar.tsx",
-		"hash": "2b27622986164d8b",
+		"hash": "03f6f4dbe234e0e7",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/grouped-bar.js.map (sourcesContent[0])"
 	},
 	"stacked-bar": {
 		"file": "packages/basalt/src/charts/stacked-bar.tsx",
-		"hash": "6120c4f3559a1ea6",
+		"hash": "dada2f206be089bb",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/stacked-bar.js.map (sourcesContent[0])"
 	},
 	"sparkline": {
 		"file": "packages/basalt/src/charts/sparkline.tsx",
-		"hash": "414df34842e1a206",
+		"hash": "12149a352bf9b192",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/sparkline.js.map (sourcesContent[0])"
 	},

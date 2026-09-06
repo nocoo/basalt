@@ -1384,6 +1384,25 @@ Basalt charts are composed of responsive frame, legend, and tooltip subsystem pr
 - **`StatGrid`**: Responsive grid container organizing multiple `StatCard` items into 2, 3, or 4 column layouts.
   - **Props (`StatGridProps`)**: `columns?: 2 | 3 | 4` (default: `4`), `className?: string`, `children: ReactNode`.
 
+<a id="dynamic-chart-series"></a>
+
+### Dynamic Chart Series & Multi-Key Datasets (`@nocoo/basalt/charts/*`)
+
+Basalt cartesian charts (`LineChart`, `AreaChart`, `BarChart`, `StackedBarChart`, `GroupedBarChart`, `Charts`, `Timeseries`, `CustomChart`, `Sparkline`, and `SlotBarChart`) support arbitrary, type-safe data keys beyond the legacy `y`, `y2`, and `y3` series convention:
+
+- **Generic Data Binding**:
+  - `data: TData[]`: Generic record where `TData extends { x: string | number }`. Caller datasets can contain any number of arbitrary metric keys (e.g., `edgeCache`, `p95US`, `workersCPU`), nullable numbers (`number | null`), and optional numeric properties (`number | undefined`).
+  - `series?: Array<ChartSeriesDescriptor<K>>`: Strongly-typed array of series descriptors. Series keys `K` are automatically constrained to `LineChartNumericKeys<TData>` (excluding coordinate `x` and rejecting non-numeric fields such as strings, booleans, or typos). Arbitrary keys require explicit series; omitted or empty series retain each chart's legacy `y`, `y2`, and `y3` series fallback. Note that TypeScript type inference does not automatically enumerate object keys at runtime.
+  - Backward compatibility: Defaults to `XYPoint` (`{ x, y, y2?, y3? }`) with `XYSeriesDescriptor` when generic parameters are omitted.
+- **Enhanced Axis & Formatting Props** (available on full plot charts: `LineChart`, `AreaChart`, `BarChart`, `StackedBarChart`, `GroupedBarChart`, `Charts`, `Timeseries`, `CustomChart`):
+  - `xValueFormatter?: (value: string | number) => string`: Formats category or time tick labels along the X-axis.
+  - `valueFormatter?: (value: number) => string`: Formats numeric Y-axis tick values and fallback tooltip values.
+  - `yDomain?: LineChartAxisDomain`: Custom numerical bounds or keywords (`"auto"`, `"dataMin"`, `"dataMax"`) for the Y-axis.
+- **Stacking & Composition** (compact charts `Sparkline` and `SlotBarChart` intentionally retain compact geometry without axis, legend, or tooltip layers):
+  - `stackOffset?: "none" | "expand" | "wiggle" | "silhouette"`: Stacking algorithm for `AreaChart` and `StackedBarChart`. Setting `"expand"` normalizes values to 100% proportional areas/bars.
+  - `legend?: ReactNode | ((props: { items: Array<ChartSeriesDescriptor<K>> }) => ReactNode)`: Replaces default legend with custom JSX or an interactive render function receiving resolved series descriptors. Falsy values `null`, `undefined`, and `false` are omitted while `0` is preserved as valid content.
+  - `customTooltip?: (props: { active?: boolean; payload?: readonly ChartTooltipItem[]; label?: string | number }) => ReactNode`: Custom popover tooltip renderer receiving Recharts payload, hover state, and coordinate label for custom unit and percentage calculations.
+
 ---
 
 ## 19. Complete Framework Recipes & Compilable Guides

@@ -96,15 +96,15 @@ describe("ChartFrame behavior", () => {
 		expect(screen.getByTestId("alt-table")).toBeInTheDocument();
 	});
 
-	it("does not drop slot value 0 for summary and dataAlternative", () => {
+	it("does not drop slot value 0 for summary, dataAlternative, and legend", () => {
 		render(
-			<ChartShell ariaLabel="Zero slots" summary={0} dataAlternative={0}>
+			<ChartShell ariaLabel="Zero slots" summary={0} dataAlternative={0} legend={0}>
 				<RechartsBar data={points}>
 					<Bar dataKey="y" />
 				</RechartsBar>
 			</ChartShell>,
 		);
 		const zeroes = screen.getAllByText("0");
-		expect(zeroes.length).toBeGreaterThanOrEqual(2);
+		expect(zeroes.length).toBeGreaterThanOrEqual(3);
 	});
 });

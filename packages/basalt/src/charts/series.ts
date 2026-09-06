@@ -1,11 +1,11 @@
-export type ChartSeriesDescriptor = {
-	key: string;
+export type ChartSeriesDescriptor<K extends string = string> = {
+	key: K;
 	label?: string;
 	color?: string;
 };
 
 export type XYSeriesKey = "y" | "y2" | "y3";
-export type XYSeriesDescriptor = ChartSeriesDescriptor & { key: XYSeriesKey };
+export type XYSeriesDescriptor<K extends string = XYSeriesKey> = ChartSeriesDescriptor<K>;
 export type BulletSeriesKey = "value" | "target";
 export type BulletSeriesDescriptor = ChartSeriesDescriptor & { key: BulletSeriesKey };
 
@@ -18,20 +18,20 @@ export type SankeyData = {
 	links: { source: number; target: number; value: number }[];
 };
 
-export function resolveChartSeries(
-	series: ChartSeriesDescriptor[] | undefined,
-	fallbackKeys: string[],
-): ChartSeriesDescriptor[] {
+export function resolveChartSeries<K extends string = string>(
+	series: Array<ChartSeriesDescriptor<K>> | undefined,
+	fallbackKeys: K[],
+): Array<ChartSeriesDescriptor<K>> {
 	if (series && series.length > 0) {
 		return series;
 	}
 	return fallbackKeys.map((key) => ({ key }));
 }
 
-export function applyLeadColor(
-	items: ChartSeriesDescriptor[],
+export function applyLeadColor<K extends string = string>(
+	items: Array<ChartSeriesDescriptor<K>>,
 	color?: string,
-): ChartSeriesDescriptor[] {
+): Array<ChartSeriesDescriptor<K>> {
 	if (!color) {
 		return items;
 	}

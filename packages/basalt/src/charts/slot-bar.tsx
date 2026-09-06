@@ -4,7 +4,8 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "../com
 import { cn } from "../utils/cn";
 import { ANIMATION_PROPS, BAR_RADIUS, cartesianAxisProps, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { resolveChartSeries, type XYPoint, type XYSeriesDescriptor } from "./series";
+import type { LineChartNumericKeys } from "./line";
+import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
 
 export type SlotBarItem = {
 	color: string;
@@ -21,9 +22,20 @@ export type SlotBarItemsProps = {
 	className?: string;
 };
 
-export type SlotBarDataProps = {
-	data: XYPoint[];
-	series?: XYSeriesDescriptor[];
+export type SlotBarDataProps<
+	TData extends { x: string | number } = XYPoint,
+	K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string,
+> = {
+	/**
+	 * Dataset array where each record requires an `x` category or time coordinate.
+	 * Any remaining fields with numeric, nullable, or optional number values are inferred as valid series keys.
+	 */
+	data: TData[];
+	/**
+	 * Series descriptors identifying which numeric keys to plot.
+	 * Inferred strictly from numeric keys of `TData` (rejects non-numeric fields, `x`, and typos).
+	 */
+	series?: Array<ChartSeriesDescriptor<NoInfer<K>>>;
 	ariaLabel?: string;
 	className?: string;
 	/**
@@ -44,9 +56,15 @@ export type SlotBarDataProps = {
 	accessibilityLayer?: boolean;
 };
 
-export type SlotBarChartProps = SlotBarItemsProps | SlotBarDataProps;
+export type SlotBarChartProps<
+	TData extends { x: string | number } = XYPoint,
+	K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string,
+> = SlotBarItemsProps | SlotBarDataProps<TData, K>;
 
-export function SlotBarChart(props: SlotBarChartProps) {
+export function SlotBarChart<
+	TData extends { x: string | number } = XYPoint,
+	K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string,
+>(props: SlotBarChartProps<TData, K>) {
 	if ("items" in props) {
 		const {
 			ariaLabel = "Slot bar chart",
@@ -74,7 +92,7 @@ export function SlotBarChart(props: SlotBarChartProps) {
 		dataAlternative,
 		accessibilityLayer,
 	} = props;
-	const bars = resolveChartSeries(series, ["y"]);
+	const bars = resolveChartSeries(series, ["y" as K]);
 	return (
 		<ChartFrame
 			ariaLabel={ariaLabel}
