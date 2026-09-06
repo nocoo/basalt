@@ -72,9 +72,11 @@ import { catalogScenarioId } from "../../catalog-scenario";
 import { provenanceFromLegacy } from "../../catalog-source";
 import { CONFIRM_DIALOG_EXAMPLES } from "../../examples/confirm-dialog";
 import { TOOLTIP_EXAMPLES } from "../../examples/tooltip";
+import { API as accordionApi } from "../../generated/catalog-api/accordion";
 import { API as collapsibleApi } from "../../generated/catalog-api/collapsible";
 import { API as confirmDialogApi } from "../../generated/catalog-api/confirm-dialog";
 import { API as dropdownMenuApi } from "../../generated/catalog-api/dropdown-menu";
+import { API as hoverCardApi } from "../../generated/catalog-api/hover-card";
 import { API as popoverApi } from "../../generated/catalog-api/popover";
 import { API as tooltipApi } from "../../generated/catalog-api/tooltip";
 
@@ -211,26 +213,39 @@ export default catalogContentFamily({
 	},
 	accordion: {
 		docs: {
-			description: "Expandable sections.",
-			usage: usage("Accordion", "@nocoo/basalt/components/accordion", "<Accordion />"),
+			description:
+				"Expandable sections. Supports single or multiple expansion modes, roving focus navigation, and full ref forwarding to native HTML elements (div for root/item/content, button for trigger).",
+			usage: `import {
+	Accordion,
+	AccordionContent,
+	AccordionItem,
+	AccordionTrigger,
+} from "@nocoo/basalt/components/accordion";
+
+export default function Example() {
+	return (
+		<Accordion type="single" collapsible>
+			<AccordionItem value="item-1">
+				<AccordionTrigger>Is it accessible?</AccordionTrigger>
+				<AccordionContent>Yes. It adheres to WAI-ARIA design patterns.</AccordionContent>
+			</AccordionItem>
+		</Accordion>
+	);
+}`,
 			variants: [],
-			api: [
-				{
-					name: "Accordion",
-					props: [{ name: "className", type: "string", description: "className" }],
-				},
-			],
+			api: accordionApi,
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: [
 			{
 				id: catalogScenarioId("accordion", "default"),
 				title: "Default",
-				code: `import { Accordion } from "@nocoo/basalt/components/accordion";
-
-export default function Example() {
-	return <Accordion />;
-}`,
+				code: `<Accordion type="single" collapsible>
+  <AccordionItem value="a">
+    <AccordionTrigger>Item</AccordionTrigger>
+    <AccordionContent>Body</AccordionContent>
+  </AccordionItem>
+</Accordion>`,
 				render: () => (
 					<Accordion type="single" collapsible>
 						<AccordionItem value="a">
@@ -932,15 +947,27 @@ export default function Example() {
 	},
 	"hover-card": {
 		docs: {
-			description: "Preview on hover.",
-			usage: usage("HoverCard", "@nocoo/basalt/components/hover-card", "<HoverCard />"),
+			description:
+				"Preview on hover. Floating content card on trigger hover; wraps a built-in Portal and forwards refs with popper collision boundaries to native anchor and div elements.",
+			usage: `import { Button } from "@nocoo/basalt/components/button";
+import {
+	HoverCard,
+	HoverCardContent,
+	HoverCardTrigger,
+} from "@nocoo/basalt/components/hover-card";
+
+export default function Example() {
+	return (
+		<HoverCard>
+			<HoverCardTrigger asChild>
+				<Button variant="outline">Hover</Button>
+			</HoverCardTrigger>
+			<HoverCardContent>Preview</HoverCardContent>
+		</HoverCard>
+	);
+}`,
 			variants: [],
-			api: [
-				{
-					name: "HoverCard",
-					props: [{ name: "className", type: "string", description: "className" }],
-				},
-			],
+			api: hoverCardApi,
 			provenance: EXTRA_PROVENANCE,
 		},
 		examples: [

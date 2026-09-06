@@ -958,8 +958,56 @@ describe("catalog API generator contract", () => {
 				propsType: "AvatarFallbackProps",
 				surface: "AvatarFallback",
 			},
+			{
+				slug: "accordion",
+				sourceFile: "packages/basalt/src/components/accordion.tsx",
+				propsType: "AccordionSingleProps",
+				surface: "Accordion (Single)",
+			},
+			{
+				slug: "accordion",
+				sourceFile: "packages/basalt/src/components/accordion.tsx",
+				propsType: "AccordionMultipleProps",
+				surface: "Accordion (Multiple)",
+			},
+			{
+				slug: "accordion",
+				sourceFile: "packages/basalt/src/components/accordion.tsx",
+				propsType: "AccordionItemProps",
+				surface: "AccordionItem",
+			},
+			{
+				slug: "accordion",
+				sourceFile: "packages/basalt/src/components/accordion.tsx",
+				propsType: "AccordionTriggerProps",
+				surface: "AccordionTrigger",
+			},
+			{
+				slug: "accordion",
+				sourceFile: "packages/basalt/src/components/accordion.tsx",
+				propsType: "AccordionContentProps",
+				surface: "AccordionContent",
+			},
+			{
+				slug: "hover-card",
+				sourceFile: "packages/basalt/src/components/hover-card.tsx",
+				propsType: "HoverCardProps",
+				surface: "HoverCard",
+			},
+			{
+				slug: "hover-card",
+				sourceFile: "packages/basalt/src/components/hover-card.tsx",
+				propsType: "HoverCardTriggerProps",
+				surface: "HoverCardTrigger",
+			},
+			{
+				slug: "hover-card",
+				sourceFile: "packages/basalt/src/components/hover-card.tsx",
+				propsType: "HoverCardContentProps",
+				surface: "HoverCardContent",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(137);
+		expect(CATALOG_API_TARGETS).toHaveLength(145);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1077,6 +1125,8 @@ describe("catalog API generator contract", () => {
 			"meter",
 			"clipboard-text",
 			"avatar",
+			"accordion",
+			"hover-card",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -2134,6 +2184,14 @@ export interface WidgetProps {
 			meter: ["Meter"],
 			"clipboard-text": ["ClipboardText"],
 			avatar: ["Avatar", "AvatarImage", "AvatarFallback"],
+			accordion: [
+				"Accordion (Single)",
+				"Accordion (Multiple)",
+				"AccordionItem",
+				"AccordionTrigger",
+				"AccordionContent",
+			],
+			"hover-card": ["HoverCard", "HoverCardTrigger", "HoverCardContent"],
 		});
 	}, 60_000);
 
@@ -2143,7 +2201,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(84);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -2244,7 +2302,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(84);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -2366,7 +2424,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(84);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -2437,7 +2495,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(84);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2480,7 +2538,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(84);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2532,7 +2590,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(82);
+		expect(Object.keys(generated)).toHaveLength(84);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -3813,8 +3871,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(82);
-		expect(Object.keys(first)).toHaveLength(83);
+		expect(slugs).toHaveLength(84);
+		expect(Object.keys(first)).toHaveLength(85);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -3894,7 +3952,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"8b97d4facb68673b4e23844faae957b016abfa0a3ea87bffa80c63539d5a14fb",
+			"d9173cb47afa22d0642d7e717dadbdda8415d6020a023d0c1e90b75d16dd601a",
 		);
 	}, 60_000);
 

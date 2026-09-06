@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 586,
+	"totalSymbols": 595,
 	"totalValues": 375,
-	"totalTypes": 211,
+	"totalTypes": 220,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2053,9 +2053,41 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Accordion component documentation and catalog playground",
 			"symbols": [
 				{
+					"name": "AccordionSingleProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/accordion",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/accordion"
+				},
+				{
+					"name": "AccordionMultipleProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/accordion",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/accordion"
+				},
+				{
+					"name": "AccordionProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/accordion",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/accordion"
+				},
+				{
 					"name": "Accordion",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/accordion",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/accordion"
+				},
+				{
+					"name": "AccordionItemProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/accordion",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/accordion"
@@ -2069,9 +2101,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/accordion"
 				},
 				{
+					"name": "AccordionTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/accordion",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/accordion"
+				},
+				{
 					"name": "AccordionTrigger",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/accordion",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/accordion"
+				},
+				{
+					"name": "AccordionContentProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/accordion",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/accordion"
@@ -3627,6 +3675,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "HoverCard component documentation and catalog playground",
 			"symbols": [
 				{
+					"name": "HoverCardProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/hover-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/hover-card"
+				},
+				{
 					"name": "HoverCard",
 					"isValue": true,
 					"isType": false,
@@ -3635,9 +3691,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/hover-card"
 				},
 				{
+					"name": "HoverCardTriggerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/hover-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/hover-card"
+				},
+				{
 					"name": "HoverCardTrigger",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/hover-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/hover-card"
+				},
+				{
+					"name": "HoverCardContentProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/hover-card",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/hover-card"

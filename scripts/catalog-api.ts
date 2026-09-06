@@ -865,6 +865,54 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "AvatarFallbackProps",
 		surface: "AvatarFallback",
 	},
+	{
+		slug: "accordion",
+		sourceFile: "packages/basalt/src/components/accordion.tsx",
+		propsType: "AccordionSingleProps",
+		surface: "Accordion (Single)",
+	},
+	{
+		slug: "accordion",
+		sourceFile: "packages/basalt/src/components/accordion.tsx",
+		propsType: "AccordionMultipleProps",
+		surface: "Accordion (Multiple)",
+	},
+	{
+		slug: "accordion",
+		sourceFile: "packages/basalt/src/components/accordion.tsx",
+		propsType: "AccordionItemProps",
+		surface: "AccordionItem",
+	},
+	{
+		slug: "accordion",
+		sourceFile: "packages/basalt/src/components/accordion.tsx",
+		propsType: "AccordionTriggerProps",
+		surface: "AccordionTrigger",
+	},
+	{
+		slug: "accordion",
+		sourceFile: "packages/basalt/src/components/accordion.tsx",
+		propsType: "AccordionContentProps",
+		surface: "AccordionContent",
+	},
+	{
+		slug: "hover-card",
+		sourceFile: "packages/basalt/src/components/hover-card.tsx",
+		propsType: "HoverCardProps",
+		surface: "HoverCard",
+	},
+	{
+		slug: "hover-card",
+		sourceFile: "packages/basalt/src/components/hover-card.tsx",
+		propsType: "HoverCardTriggerProps",
+		surface: "HoverCardTrigger",
+	},
+	{
+		slug: "hover-card",
+		sourceFile: "packages/basalt/src/components/hover-card.tsx",
+		propsType: "HoverCardContentProps",
+		surface: "HoverCardContent",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";
