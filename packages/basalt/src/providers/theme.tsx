@@ -41,7 +41,18 @@ function applyTheme(theme: BasaltTheme) {
 	root.dataset.mode = dark ? "dark" : "light";
 }
 
-export function ThemeProvider({ children }: { children: ReactNode }) {
+export interface ThemeProviderProps {
+	/**
+	 * Application components wrapped by the theme context.
+	 * Provider manages theme state ("light" | "dark" | "system", default "system") with localStorage (key: "theme") and matches prefers-color-scheme.
+	 * useTheme() returns { theme: BasaltTheme, setTheme: (theme: BasaltTheme) => void } and throws if called outside ThemeProvider.
+	 * Component renders a React context provider without native HTML rest attribute forwarding or forwarded ref.
+	 * Sandboxed or restricted storage environments can throw on read/write (slated for graceful fallback hardening in P4).
+	 */
+	children: ReactNode;
+}
+
+export function ThemeProvider({ children }: ThemeProviderProps) {
 	const theme = useSyncExternalStore(subscribe, readTheme, () => "system" as const);
 	useEffect(() => {
 		applyTheme(theme);

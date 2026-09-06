@@ -55,6 +55,7 @@ import { API as layerCardApi } from "./catalog-api/layer-card";
 import { API as lineApi } from "./catalog-api/line";
 import { API as linkApi } from "./catalog-api/link";
 import { API as linkButtonApi } from "./catalog-api/link-button";
+import { API as linkProviderApi } from "./catalog-api/link-provider";
 import { API as loaderApi } from "./catalog-api/loader";
 import { API as menuBarApi } from "./catalog-api/menu-bar";
 import { API as meterApi } from "./catalog-api/meter";
@@ -88,6 +89,7 @@ import { API as tableOfContentsApi } from "./catalog-api/table-of-contents";
 import { API as tablePagerApi } from "./catalog-api/table-pager";
 import { API as tabsApi } from "./catalog-api/tabs";
 import { API as textApi } from "./catalog-api/text";
+import { API as themeProviderApi } from "./catalog-api/theme-provider";
 import { API as themeToggleApi } from "./catalog-api/theme-toggle";
 import { API as timelineApi } from "./catalog-api/timeline";
 import { API as timeseriesApi } from "./catalog-api/timeseries";
@@ -152,6 +154,7 @@ export const CATALOG_API = {
 	line: lineApi,
 	link: linkApi,
 	"link-button": linkButtonApi,
+	"link-provider": linkProviderApi,
 	loader: loaderApi,
 	"menu-bar": menuBarApi,
 	meter: meterApi,
@@ -185,6 +188,7 @@ export const CATALOG_API = {
 	"table-pager": tablePagerApi,
 	tabs: tabsApi,
 	text: textApi,
+	"theme-provider": themeProviderApi,
 	"theme-toggle": themeToggleApi,
 	timeline: timelineApi,
 	timeseries: timeseriesApi,

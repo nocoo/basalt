@@ -261,7 +261,7 @@ export const REGISTERED_CATALOG_HELPERS: Record<string, string[]> = {
 	"@nocoo/basalt/components/popover": ["POPOVER_SIDES"],
 	"@nocoo/basalt/components/sidebar": ["ContentIsland", "useSidebar"],
 	"@nocoo/basalt/components/toast": ["toast"],
-	"@nocoo/basalt/providers/link": ["useLinkComponent"],
+	"@nocoo/basalt/providers/link": ["LinkComponent", "useLinkComponent"],
 	"@nocoo/basalt/providers/theme": ["BasaltTheme", "useTheme"],
 };
 
@@ -720,7 +720,9 @@ export function checkSurfaceManifestFreshness(repoRoot = process.cwd()): void {
 			`missing public surface manifest at ${GENERATED_SURFACE_MANIFEST_RELATIVE}; run ${SURFACE_MANIFEST_COMMAND}`,
 		);
 	}
-	const expected = renderPublicSurfaceManifest(derivePublicSurfaceManifest(repoRoot));
+	const manifest = derivePublicSurfaceManifest(repoRoot);
+	validateSurfaceManifestDocs(manifest, repoRoot);
+	const expected = renderPublicSurfaceManifest(manifest);
 	const actual = readFileSync(targetPath, "utf8");
 	if (actual !== expected) {
 		throw new Error(
@@ -730,8 +732,59 @@ export function checkSurfaceManifestFreshness(repoRoot = process.cwd()): void {
 }
 
 export function writeSurfaceManifest(repoRoot = process.cwd()): void {
+	const manifest = derivePublicSurfaceManifest(repoRoot);
+	validateSurfaceManifestDocs(manifest, repoRoot);
 	const targetPath = path.join(repoRoot, GENERATED_SURFACE_MANIFEST_RELATIVE);
 	mkdirSync(path.dirname(targetPath), { recursive: true });
-	const content = renderPublicSurfaceManifest(derivePublicSurfaceManifest(repoRoot));
+	const content = renderPublicSurfaceManifest(manifest);
 	writeFileSync(targetPath, content);
+}
+
+export function validateSurfaceManifestDocs(
+	manifest: PublicSurfaceManifest,
+	repoRoot = process.cwd(),
+): void {
+	const owners = new Set<string>();
+	for (const mod of manifest.modules) {
+		owners.add(mod.ownerDoc);
+		for (const sym of mod.symbols) {
+			owners.add(sym.ownerDoc);
+		}
+	}
+	for (const css of manifest.cssExports) {
+		owners.add(css.ownerDoc);
+	}
+
+	for (const owner of owners) {
+		if (owner.startsWith("src/pages/ui/")) {
+			continue;
+		}
+		const [file, anchor] = owner.split("#");
+		const filePath = path.join(repoRoot, file);
+		if (!existsSync(filePath)) {
+			throw new Error(
+				`public surface doc validation: missing doc file '${file}' for owner '${owner}'`,
+			);
+		}
+		const text = readFileSync(filePath, "utf8");
+		if (anchor) {
+			const anchors = new Set<string>(
+				[...text.matchAll(/(?:id|name)=["']([^"']+)["']/g)].map((m) => m[1]),
+			);
+			for (const match of text.matchAll(/^#{1,6} +(.+)$/gm)) {
+				anchors.add(
+					match[1]
+						.toLowerCase()
+						.replace(/[`*_]/g, "")
+						.replace(/[^\p{L}\p{N} _-]/gu, "")
+						.replace(/ /g, "-"),
+				);
+			}
+			if (!anchors.has(anchor)) {
+				throw new Error(
+					`public surface doc validation: missing anchor '#${anchor}' in '${file}' for owner '${owner}'`,
+				);
+			}
+		}
+	}
 }

@@ -19,6 +19,7 @@ import { API as linkButtonApi } from "./generated/catalog-api/link-button";
 import { API as scrollAreaApi } from "./generated/catalog-api/scroll-area";
 import { API as separatorApi } from "./generated/catalog-api/separator";
 import { API as textApi } from "./generated/catalog-api/text";
+import { API as themeProviderApi } from "./generated/catalog-api/theme-provider";
 import { API as themeToggleApi } from "./generated/catalog-api/theme-toggle";
 import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 
@@ -165,9 +166,7 @@ describe("foundation catalog content family", () => {
 			title: "Default",
 			code: "<ThemeProvider>{children}</ThemeProvider>",
 		});
-		expect(foundation["theme-provider"]?.docs.api).toEqual([
-			{ name: "ThemeProvider", props: [{ name: "children", type: "ReactNode" }] },
-		]);
+		expect(foundation["theme-provider"]?.docs.api).toEqual(themeProviderApi);
 		expect(foundation["link-provider"]?.examples).toHaveLength(1);
 		expect(foundation["link-provider"]?.examples[0]).toMatchObject({
 			id: "link-provider-default",

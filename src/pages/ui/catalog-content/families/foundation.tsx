@@ -21,9 +21,11 @@ import { API as labelApi } from "../../generated/catalog-api/label";
 import { API as layerCardApi } from "../../generated/catalog-api/layer-card";
 import { API as linkApi } from "../../generated/catalog-api/link";
 import { API as linkButtonApi } from "../../generated/catalog-api/link-button";
+import { API as linkProviderApi } from "../../generated/catalog-api/link-provider";
 import { API as scrollAreaApi } from "../../generated/catalog-api/scroll-area";
 import { API as separatorApi } from "../../generated/catalog-api/separator";
 import { API as textApi } from "../../generated/catalog-api/text";
+import { API as themeProviderApi } from "../../generated/catalog-api/theme-provider";
 import { API as themeToggleApi } from "../../generated/catalog-api/theme-toggle";
 
 function usage(name: string, from: string, sample: string, extraImports = ""): string {
@@ -232,7 +234,7 @@ export default catalogContentFamily({
 				"<ThemeProvider><span>Content</span></ThemeProvider>",
 			),
 			variants: ["system", "light", "dark"],
-			api: [{ name: "ThemeProvider", props: [{ name: "children", type: "ReactNode" }] }],
+			api: themeProviderApi,
 			provenance: provenanceFromLegacy({
 				repo: "pew",
 				sha: "97a890fabe6e",
@@ -255,26 +257,18 @@ export default catalogContentFamily({
 	"link-provider": {
 		docs: {
 			description: "Injects the app Link renderer into Basalt Link.",
-			usage: usage(
-				"LinkProvider",
-				"@nocoo/basalt/providers/link",
-				"<LinkProvider>{children}</LinkProvider>",
-			),
+			usage: `import { LinkProvider } from "@nocoo/basalt/providers/link";
+import { Link } from "@nocoo/basalt/components/link";
+
+export default function Example() {
+	return (
+		<LinkProvider>
+			<Link href="#section">Link</Link>
+		</LinkProvider>
+	);
+}`,
 			variants: [],
-			api: [
-				{
-					name: "LinkProvider",
-					props: [
-						{
-							name: "render",
-							type: 'ComponentType<{ href: string }> | "a"',
-							default: '"a"',
-							description: "Link renderer injected into Basalt Link.",
-						},
-						{ name: "children", type: "ReactNode" },
-					],
-				},
-			],
+			api: linkProviderApi,
 			provenance: provenanceFromLegacy({
 				repo: "kumo",
 				sha: "1159868dfe32",

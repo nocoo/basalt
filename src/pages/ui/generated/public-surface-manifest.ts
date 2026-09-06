@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 639,
+	"totalSymbols": 642,
 	"totalValues": 375,
-	"totalTypes": 264,
+	"totalTypes": 267,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -6183,6 +6183,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/link-provider",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/providers/link"
+				},
+				{
+					"name": "LinkComponent",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/link-provider",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/providers/link"
+				},
+				{
+					"name": "LinkProviderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/link-provider",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/providers/link"
 				}
 			]
 		},
@@ -6212,6 +6228,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "BasaltTheme",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/theme-provider",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/providers/theme"
+				},
+				{
+					"name": "ThemeProviderProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/theme-provider",

@@ -5,6 +5,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import {
 	checkSurfaceManifestFreshness,
 	derivePublicSurfaceManifest,
+	validateSurfaceManifestDocs,
 	writeSurfaceManifest,
 } from "./catalog-surface-owners";
 
@@ -55,6 +56,7 @@ function createIsolatedRepoFixture(
 		"packages/basalt/src/index.ts": 'export { Button } from "./components/button";\n',
 		"packages/basalt/src/components/button.tsx":
 			"export function Button() { return null; }\nexport type ButtonProps = { label?: string };\n",
+		"README.md": "# Basalt\n\n## Component usage\n\n## CSS setup\n",
 		...files,
 	};
 
@@ -73,9 +75,9 @@ describe("public surface documentation ownership and freshness", () => {
 
 		expect(manifest.packageVersion).toBe("2.0.3");
 		expect(manifest.totalModules).toBe(110);
-		expect(manifest.totalSymbols).toBe(639);
+		expect(manifest.totalSymbols).toBe(642);
 		expect(manifest.totalValues).toBe(375);
-		expect(manifest.totalTypes).toBe(264);
+		expect(manifest.totalTypes).toBe(267);
 		expect(manifest.totalCssExports).toBe(3);
 
 		// Every module must have valid documentation ownership
@@ -350,5 +352,65 @@ describe("public surface documentation ownership and freshness", () => {
 			const strategy = formatNativeSurfaceStrategy(entry);
 			expect(strategy).toContain(entry.inheritedElement);
 		}
+	});
+
+	it("validates doc files and anchors for non-catalog surface owners", () => {
+		const fixtureRoot = createIsolatedRepoFixture({
+			"doc.md": '# Guide\n\n<a id="custom-anchor"></a>\n',
+		});
+		const testManifest = {
+			packageVersion: "2.0.3",
+			totalModules: 1,
+			totalSymbols: 1,
+			totalValues: 1,
+			totalTypes: 0,
+			totalCssExports: 0,
+			modules: [
+				{
+					subpath: "./components/button",
+					importPath: "@nocoo/basalt/components/button",
+					sourceFile: "packages/basalt/src/components/button.tsx",
+					ownerDoc: "doc.md#custom-anchor",
+					ownerKind: "framework-chrome" as const,
+					summary: "Button test module",
+					symbols: [],
+				},
+			],
+			cssExports: [],
+		};
+
+		const sampleModule = testManifest.modules[0];
+		if (!sampleModule) {
+			throw new Error("missing sample module in fixture manifest");
+		}
+
+		// 1. Valid doc file and anchor pass cleanly
+		expect(() => validateSurfaceManifestDocs(testManifest, fixtureRoot)).not.toThrow();
+
+		// 2. Missing doc file fails fast
+		const missingFileManifest = {
+			...testManifest,
+			modules: [{ ...sampleModule, ownerDoc: "nonexistent.md#custom-anchor" }],
+		};
+		expect(() => validateSurfaceManifestDocs(missingFileManifest, fixtureRoot)).toThrow(
+			/missing doc file 'nonexistent.md'/,
+		);
+
+		// 3. Missing anchor in existing doc file fails fast
+		const missingAnchorManifest = {
+			...testManifest,
+			modules: [{ ...sampleModule, ownerDoc: "doc.md#nonexistent-anchor" }],
+		};
+		expect(() => validateSurfaceManifestDocs(missingAnchorManifest, fixtureRoot)).toThrow(
+			/missing anchor '#nonexistent-anchor' in 'doc.md'/,
+		);
+
+		// 4. Stale doc anchor causes checkSurfaceManifestFreshness to fail
+		writeSurfaceManifest(fixtureRoot);
+		// Overwrite README.md in fixtureRoot to drop ## Component usage
+		writeFileSync(path.join(fixtureRoot, "README.md"), "# Basalt\n\n## CSS setup\n");
+		expect(() => checkSurfaceManifestFreshness(fixtureRoot)).toThrow(
+			/missing anchor '#component-usage' in 'README.md'/,
+		);
 	});
 });

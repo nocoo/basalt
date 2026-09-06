@@ -1303,8 +1303,20 @@ describe("catalog API generator contract", () => {
 				propsType: "ChatInboxProps",
 				surface: "ChatInbox",
 			},
+			{
+				slug: "theme-provider",
+				sourceFile: "packages/basalt/src/providers/theme.tsx",
+				propsType: "ThemeProviderProps",
+				surface: "ThemeProvider",
+			},
+			{
+				slug: "link-provider",
+				sourceFile: "packages/basalt/src/providers/link.tsx",
+				propsType: "LinkProviderProps",
+				surface: "LinkProvider",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(194);
+		expect(CATALOG_API_TARGETS).toHaveLength(196);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1438,6 +1450,8 @@ describe("catalog API generator contract", () => {
 			"chat-composer",
 			"chat-header",
 			"chat-inbox",
+			"theme-provider",
+			"link-provider",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -2564,6 +2578,8 @@ export interface WidgetProps {
 			"chat-composer": ["ChatComposer"],
 			"chat-header": ["ChatHeader"],
 			"chat-inbox": ["ChatInbox"],
+			"theme-provider": ["ThemeProvider"],
+			"link-provider": ["LinkProvider"],
 		});
 	}, 60_000);
 
@@ -2573,7 +2589,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(95);
+		expect(Object.keys(generated)).toHaveLength(97);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -2674,7 +2690,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(95);
+		expect(Object.keys(generated)).toHaveLength(97);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -2796,7 +2812,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(95);
+		expect(Object.keys(generated)).toHaveLength(97);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -2867,7 +2883,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(95);
+		expect(Object.keys(generated)).toHaveLength(97);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2910,7 +2926,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(95);
+		expect(Object.keys(generated)).toHaveLength(97);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2962,7 +2978,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(95);
+		expect(Object.keys(generated)).toHaveLength(97);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -4300,8 +4316,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(95);
-		expect(Object.keys(first)).toHaveLength(96);
+		expect(slugs).toHaveLength(97);
+		expect(Object.keys(first)).toHaveLength(98);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -4381,7 +4397,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"4dd53eeefbb314afe80a193bf8bbcfc3a68e88b6f48d7acc73d5a002a93b88b2",
+			"60797e4670d2ec1bf0c10a5422061947695cef9fc8aeeb10ee02d2a0aa69750e",
 		);
 	}, 60_000);
 

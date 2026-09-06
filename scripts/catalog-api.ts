@@ -1210,6 +1210,18 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "ChatInboxProps",
 		surface: "ChatInbox",
 	},
+	{
+		slug: "theme-provider",
+		sourceFile: "packages/basalt/src/providers/theme.tsx",
+		propsType: "ThemeProviderProps",
+		surface: "ThemeProvider",
+	},
+	{
+		slug: "link-provider",
+		sourceFile: "packages/basalt/src/providers/link.tsx",
+		propsType: "LinkProviderProps",
+		surface: "LinkProvider",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

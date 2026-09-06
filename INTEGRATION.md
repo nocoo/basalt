@@ -145,7 +145,30 @@ One tree for the whole app. Login and the shell both sit under it.
 
 `TooltipProvider` is required for collapsed-rail tooltips.
 
-`AccentProvider` is optional.
+<a id="accent-provider"></a>
+
+### AccentProvider and useAccent
+
+`AccentProvider` manages dynamic primary accent color overrides (`--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent`) using `localStorage` (key: `"basalt-accent"`, default `"primary"`). It does not alter chart palette tokens (`--basalt-chart-*`).
+
+- **Props**: `{ children: ReactNode }`.
+- **Hook `useAccent()`**: Returns `{ accent: string, setAccent: (id: string) => void, swatches: readonly AccentSwatch[] }`. Throws an error when invoked outside an `AccentProvider`.
+- **`AccentSwatch` Type**:
+  - `id: string`: Unique swatch identifier (e.g., `"primary"`, `"teal"`, `"rose"`).
+  - `label: string`: Human-readable swatch name.
+  - `token: string`: CSS variable token binding (e.g., `"--basalt-chart-1"`).
+  - `light: string`: HSL values applied in light mode (e.g., `"217 91% 60%"`).
+  - `dark: string`: HSL values applied in dark mode (e.g., `"217 91% 65%"`).
+- **Utilities**:
+  - `ACCENT_SWATCHES`: Readonly array of 24 predefined `AccentSwatch` objects.
+  - `DEFAULT_ACCENT_ID`: Default accent ID (`"primary"`).
+  - `accentSwatchById(id: string | null | undefined): AccentSwatch`: Finds matching swatch by `id`, defaulting to `ACCENT_SWATCHES[0]` if not found.
+  - `accentForeground(hsl: string): string`: Computes relative luminance from HSL channels and selects dark foreground (`"0 0% 10%"`) when luminance > 0.35, otherwise light (`"0 0% 100%"`). Note: currently relies on a fixed 0.35 luminance threshold rather than comparing WCAG contrast ratios directly (slated for full contrast verification in P5).
+  - `applyAccent(id: string, dark = false): void`: Sets CSS variables `--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent` on the document root element. Accepts optional `dark` flag (defaults to `false`).
+- **Known Limitations**: Storage access uses browser `localStorage`. Disallowed or sandboxed storage environments can throw on read or write (slated for graceful fallback hardening in P4). SSR hydration serves server snapshot defaults (`DEFAULT_ACCENT_ID = "primary"`).
+
+
+
 
 ---
 
@@ -162,6 +185,7 @@ Icons: `lucide-react`, `strokeWidth={1.5}`, nav size `h-4 w-4 shrink-0`.
 
 ---
 
+<a id="root-geometry"></a>
 ## 6. Root geometry
 
 `AppShell` is a full-viewport flex row: `h-screen w-full overflow-hidden bg-basalt-background`.
@@ -176,7 +200,11 @@ AppShell                         ← flex row, h-screen, overflow hidden
         └── ContentIsland        ← page outlet
 ```
 
-`AppMain` always sets `id="main-content"`. `AppSkipLink` defaults to `href="#main-content"`. Do not change either id.
+### AppShell, AppMain, AppSkipLink API & Contracts
+
+- **`AppShell`**: Viewport root container. Inherits standard `HTMLAttributes<HTMLDivElement>`. Renders a full-viewport flex row (`h-screen w-full overflow-hidden bg-basalt-background`). Does not forward ref.
+- **`AppMain`**: Primary content container. Inherits standard `HTMLAttributes<HTMLElement>`. Defaults `id="main-content"` as the skip-link landmark target, which can be overridden by props via `{...props}`. Recommended to keep `"main-content"` matching `AppSkipLink`. Renders a vertical column with `h-full min-w-0 flex-1 flex-col overflow-hidden`. Does not forward ref.
+- **`AppSkipLink`**: Accessibility skip target. Inherits standard `AnchorHTMLAttributes<HTMLAnchorElement>`. Defaults `href="#main-content"`. Renders screen-reader-only element that transitions into absolute focus overlay on keyboard navigation (`sr-only focus:not-sr-only focus:absolute ...`). Does not forward ref.
 
 The island wrap is the only extra layout div in the main column. Pages render **inside** `ContentIsland`. Pages do not set `h-screen`, side padding, or a second card around the island.
 
@@ -467,11 +495,19 @@ export function AppFrame() {
 }
 ```
 
+<a id="appheader-and-breadcrumbs"></a>
+
 `AppHeader` is `h-14`, matching `SidebarHeader`.
 
-- `breadcrumbs` — ancestors only. Each item is `{ href?, label }`.
-- `title` — current page name in the bar. Do not also put that page in `breadcrumbs`.
-- `actions` — top-right framework controls (`ThemeToggle`, account, …). **Not** the page create button.
+### AppHeader API & Contracts
+
+`AppHeader` inherits root `header` attributes (`HTMLAttributes<HTMLElement>`).
+
+- **`title?: string`**: Current page title rendered inside an `h1` (`truncate text-sm font-normal text-basalt-foreground`). (Source type intersection is `HTMLAttributes<HTMLElement> & { title?: ReactNode }`, which narrows valid `title` values to `string | undefined`). Do not also put the current page title in `breadcrumbs`.
+- **`breadcrumbs?: { href?: string; label: ReactNode }[]`**: Ancestor breadcrumb hierarchy displayed before the current page title (ancestors only). Separated by ChevronRight.
+- **`leading?: ReactNode`**: Optional slot before breadcrumbs, typically the mobile hamburger drawer trigger.
+- **`actions?: ReactNode`**: Top-right framework controls (`ThemeToggle`, account dropdown, etc.). This slot is reserved for framework controls, **not** the page-level create button.
+- **Native & Ref Boundary**: Inherits native `HTMLAttributes<HTMLElement>`, but does not forward ref.
 
 Product title and version live in `SidebarHeader`, not in `AppHeader`. Read the version from the app `package.json` at build time. Do not hardcode it.
 
@@ -542,9 +578,17 @@ Swap the primary action for the real identity provider. Keep the badge proportio
 
 ---
 
+<a id="loading"></a>
+
 ## 12. Loading
 
 Boot and route gates use `LoadingScreen` — a centered mark and a 6rem shimmer bar on `bg-basalt-background`. It is a full-viewport status, not a child of the island.
+
+### LoadingScreen API & Contracts
+
+- **`label?: string`**: Accessible status name on `aria-label` (default: `"Loading"`). Root element carries `role="status"`.
+- **`mark?: ReactNode`**: Centered brand mark slot. Defaults to `<BasaltMark className="h-8 w-8 text-basalt-foreground" />`. Note: passing children to `LoadingScreen` does not override this mark slot; custom brand icons must be provided via the `mark` prop.
+- **Native & Ref Boundary**: Inherits standard `HTMLAttributes<HTMLDivElement>`. Overlays full viewport (`fixed inset-0 z-50 flex items-center justify-center bg-basalt-background`). Does not forward ref.
 
 ```tsx excerpt:loading-screen-snippet
 <LoadingScreen label="Loading" />
@@ -901,3 +945,53 @@ export function ControlledDatePickerField() {
    - Import chart components from `@nocoo/basalt/charts/*`.
 5. **Step 5: Verify Contrast & Surface Tokens**
    - Verify all content cards use `LayerCard` or surface classes rather than manual border/background combinations.
+---
+
+## 18. Chart Subsystem Primitives
+
+Basalt charts are composed of responsive frame, legend, and tooltip subsystem primitives. Consuming applications import these granularly from `@nocoo/basalt/charts/*`.
+
+<a id="chart-frame"></a>
+
+### ChartFrame & ChartShell (`@nocoo/basalt/charts/frame`)
+
+- **`ChartFrame`**: Responsive container wrapper around Recharts `ResponsiveContainer`.
+  - **Props**:
+    - `ariaLabel: string` (required): Accessible name for chart graphic. Container element receives `role="img"` and `aria-label={ariaLabel}`.
+    - `children: ReactElement<{ accessibilityLayer?: boolean }>` (required): Single child Recharts graphic element. `ChartFrame` explicitly clones this element with `accessibilityLayer: false`. Note: `role="img"` provides an image accessible name, but does not provide complete interactive chart accessibility (slated for P5).
+    - `size?: string` (optional, default: `"h-36 w-56"`): Tailwind sizing utility classes.
+    - `className?: string` (optional): Additional styles applied to the outer chart wrapper.
+  - **Native & Ref Boundary**: Pure React functional wrapper. Does not forward ref or forward arbitrary div rest props.
+- **`ChartShell`**: Composite container pairing a `ChartFrame` graphic area above a flexible `legend` slot.
+  - **Props**: Extends `ChartFrameProps` with optional `legend?: ReactNode`.
+
+<a id="chart-legend"></a>
+
+### ChartLegend (`@nocoo/basalt/charts/legend`)
+
+- **`ChartLegend`**: Custom chart legend layout supporting multiple series shapes.
+  - **Props**:
+    - `items: ChartSeriesDescriptor[]` (required): Mutable series descriptors array `{ key: string, label?: string, color?: string }[]`. Note: type requires mutable array (not `readonly`). If empty, returns `null`.
+    - `shape?: "bar" | "line" | "area"` (optional, default: `"line"`): Indicator swatch shape.
+  - **Behavior**: Uses `seriesColor(item, index)` to compute indicator fills, falling back to `hsl(var(--basalt-chart-1))` if undefined. Does not forward ref.
+
+<a id="chart-tooltip"></a>
+
+### ChartTooltipContent & formatChartNumber (`@nocoo/basalt/charts/tooltip`)
+
+- **`ChartTooltipContent`**: Popover tooltip body rendered inside Recharts `<Tooltip content={...} />`. Returns `null` (no output) when `active` is not true or when `payload` is empty/undefined.
+  - **Props**:
+    - `active?: boolean`: Active hover state supplied by Recharts.
+    - `payload?: readonly ChartTooltipItem[]`: Hovered item collection.
+    - `label?: string | number`: Tooltip title or category label.
+    - `formatter?: (value: number) => string`: Custom numeric formatter for data values. Defaults to `formatChartNumber`.
+  - **`ChartTooltipItem` Shape**:
+    - `name?: string`: Series name or identifier.
+    - `value?: number | string`: Numerical or string value of the hovered point.
+    - `color?: string`: Item color indicator.
+    - `fill?: string`: SVG fill color indicator.
+    - `stroke?: string`: SVG stroke color indicator.
+    - `dataKey?: string | number`: Recharts series key binding.
+  - **Behavior**: Hides row label text for internal/synthetic keys (`"y"`, `"y2"`, `"y3"`, `"value"`, `"target"`), but still displays their numeric values. Uses `--basalt-popover` background tokens with tabular numeric formatting.
+- **`formatChartNumber(value: number): string`**: Formats numbers via `Intl.NumberFormat` with max 0 decimals for integers and 1 decimal for fractions. Non-finite values return `"—"`.
+
