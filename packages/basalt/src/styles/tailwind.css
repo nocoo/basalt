@@ -100,12 +100,14 @@
 	--animate-basalt-tab-in: basalt-tab-in 180ms ease-out;
 }
 
-.basalt-chart .recharts-wrapper :focus,
-.basalt-chart .recharts-wrapper :focus-visible,
-.basalt-chart .recharts-surface :focus,
-.basalt-chart .recharts-surface :focus-visible,
-.basalt-chart .recharts-sector:focus,
-.basalt-chart .recharts-rectangle:focus,
-.basalt-chart .recharts-layer:focus {
+.basalt-chart .recharts-sector:focus:not(:focus-visible),
+.basalt-chart .recharts-rectangle:focus:not(:focus-visible),
+.basalt-chart .recharts-layer:focus:not(:focus-visible),
+.basalt-chart .recharts-surface:focus:not(:focus-visible) {
 	outline: none;
+}
+
+.basalt-chart :focus-visible {
+	outline: 2px solid hsl(var(--basalt-ring));
+	outline-offset: 2px;
 }

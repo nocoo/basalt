@@ -15,7 +15,7 @@ describe("S8 caller data", () => {
 		const line = [{ x: "Alpha", y: 9 }];
 		const share = [{ name: "Atlas", value: 3 }];
 		render(<LineChart data={line} ariaLabel={`Line ${line[0]?.x}`} />);
-		expect(screen.getByRole("img", { name: "Line Alpha" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Line Alpha" })).toBeInTheDocument();
 		render(
 			<LineChart
 				data={[{ x: "Alpha", y: 9, y2: 3 }]}
@@ -26,9 +26,9 @@ describe("S8 caller data", () => {
 				ariaLabel="Named series"
 			/>,
 		);
-		expect(screen.getByRole("img", { name: "Named series" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Named series" })).toBeInTheDocument();
 		render(<BarChart data={[{ x: "Beta", y: 4 }]} ariaLabel="Caller bars" />);
-		expect(screen.getByRole("img", { name: "Caller bars" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Caller bars" })).toBeInTheDocument();
 		render(
 			<DonutChart
 				data={share}
@@ -37,13 +37,13 @@ describe("S8 caller data", () => {
 				showLegend
 			/>,
 		);
-		expect(screen.getByRole("img", { name: "Share Atlas" })).toBeInTheDocument();
-		expect(screen.queryByRole("img", { name: "Line Mon" })).toBeNull();
+		expect(screen.getByRole("group", { name: "Share Atlas" })).toBeInTheDocument();
+		expect(screen.queryByRole("group", { name: "Line Mon" })).toBeNull();
 	});
 
 	it("renders gauge and list summaries from caller values", () => {
 		render(<Gauge value={41} ariaLabel="Caller load" />);
-		expect(screen.getByRole("img", { name: "Caller load" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Caller load" })).toBeInTheDocument();
 		expect(screen.getByText("41")).toBeInTheDocument();
 		render(<StatCard label="CPU" value="8%" />);
 		expect(screen.getByRole("img", { name: "CPU 8%" })).toBeInTheDocument();

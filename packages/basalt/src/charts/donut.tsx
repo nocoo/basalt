@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Cell, Pie, PieChart, Tooltip } from "recharts";
 import { ANIMATION_PROPS, chartTooltipProps, seriesColor } from "./config";
 import { ChartShell } from "./frame";
@@ -11,6 +12,22 @@ export type DonutChartProps = {
 	className?: string;
 	showLegend?: boolean;
 	valueFormatter?: (value: number) => string;
+	/**
+	 * Textual summary describing key insights, highs, lows, and keyboard exploration instructions.
+	 * Associated with the chart via useId and aria-describedby.
+	 */
+	summary?: ReactNode;
+	/**
+	 * Accessible tabular or structured data alternative rendered outside the plot area.
+	 */
+	dataAlternative?: ReactNode;
+	/**
+	 * Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.
+	 * Enables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.
+	 * Non-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative.
+	 * @default true
+	 */
+	accessibilityLayer?: boolean;
 };
 
 export function DonutChart({
@@ -20,6 +37,9 @@ export function DonutChart({
 	className,
 	showLegend = false,
 	valueFormatter,
+	summary,
+	dataAlternative,
+	accessibilityLayer,
 }: DonutChartProps) {
 	const legendItems = data.map((entry, index) => {
 		const item = series?.find((candidate) => candidate.key === entry.name);
@@ -35,6 +55,9 @@ export function DonutChart({
 			className={className}
 			size="h-36 w-36"
 			legend={showLegend ? <ChartLegend items={legendItems} shape="bar" /> : undefined}
+			summary={summary}
+			dataAlternative={dataAlternative}
+			accessibilityLayer={accessibilityLayer}
 		>
 			<PieChart>
 				<Pie

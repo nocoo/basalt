@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 687,
+	"totalSymbols": 689,
 	"totalValues": 375,
-	"totalTypes": 312,
+	"totalTypes": 314,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -1206,6 +1206,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "ChartFrameProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#chart-frame",
+					"ownerKind": "chart-subsystem",
+					"originModule": "@nocoo/basalt/charts/frame"
+				},
+				{
+					"name": "ChartShellProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#chart-frame",
+					"ownerKind": "chart-subsystem",
+					"originModule": "@nocoo/basalt/charts/frame"
+				},
+				{
+					"name": "ChartAccessibilityProps",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "INTEGRATION.md#chart-frame",

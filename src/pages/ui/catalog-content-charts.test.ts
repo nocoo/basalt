@@ -45,10 +45,20 @@ describe("charts catalog content family", () => {
 	it("keeps one audited Default scenario for every chart", () => {
 		for (const slug of Object.keys(CHART_DESCRIPTIONS)) {
 			const examples = charts[slug]?.examples ?? [];
-			expect(
-				examples.map(({ id, title }) => ({ id, title })),
-				slug,
-			).toEqual([{ id: `${slug}-default`, title: "Default" }]);
+			if (slug === "bar" || slug === "line") {
+				expect(
+					examples.map(({ id, title }) => ({ id, title })),
+					slug,
+				).toEqual([
+					{ id: `${slug}-default`, title: "Default" },
+					{ id: `${slug}-accessible-data`, title: "Accessible Data & Summary" },
+				]);
+			} else {
+				expect(
+					examples.map(({ id, title }) => ({ id, title })),
+					slug,
+				).toEqual([{ id: `${slug}-default`, title: "Default" }]);
+			}
 			expect(examples[0]?.code.length, slug).toBeGreaterThan(0);
 			expect(typeof examples[0]?.render, slug).toBe("function");
 		}
@@ -80,6 +90,9 @@ describe("charts catalog content family", () => {
 			"series",
 			"ariaLabel",
 			"className",
+			"summary",
+			"dataAlternative",
+			"accessibilityLayer",
 		]);
 		expect(charts.timeline?.docs.usage).toContain("events=");
 		expect(charts["heatmap-calendar"]?.docs.usage).toContain("year={2026}");

@@ -1277,14 +1277,18 @@ Basalt charts are composed of responsive frame, legend, and tooltip subsystem pr
 ### ChartFrame & ChartShell (`@nocoo/basalt/charts/frame`)
 
 - **`ChartFrame`**: Responsive container wrapper around Recharts `ResponsiveContainer`.
-  - **Props**:
-    - `ariaLabel: string` (required): Accessible name for chart graphic. Container element receives `role="img"` and `aria-label={ariaLabel}`.
-    - `children: ReactElement<{ accessibilityLayer?: boolean }>` (required): Single child Recharts graphic element. `ChartFrame` explicitly clones this element with `accessibilityLayer: false`. Note: `role="img"` provides an image accessible name, but does not provide complete interactive chart accessibility (slated for P5).
-    - `size?: string` (optional, default: `"h-36 w-56"`): Tailwind sizing utility classes.
-    - `className?: string` (optional): Additional styles applied to the outer chart wrapper.
+  - **Props (`ChartFrameProps`)**:
+    - `ariaLabel: string` (required): Accessible name for chart graphic. Container element receives `role="group"` and `aria-label={ariaLabel}`.
+    - `children: ReactElement<{ accessibilityLayer?: boolean; "aria-label"?: string; "aria-describedby"?: string }>` (required): Single child Recharts graphic element. Precedence: explicit child `accessibilityLayer` prop takes priority, followed by the wrapper prop, falling back to `true`.
+    - `size?: string` (optional, default: `"h-36 w-56"`): Tailwind sizing utility classes for the plot surface container.
+    - `className?: string` (optional): Additional styles applied to the chart container.
+    - `summary?: ReactNode` (optional): Descriptive text summarizing key data points and keyboard navigation instructions. Automatically associated with the chart and outer group via `useId` and `aria-describedby`.
+    - `dataAlternative?: ReactNode` (optional): Accessible tabular or structured data alternative rendered outside the fixed-size plot area.
+    - `accessibilityLayer?: boolean` (optional, default: `true`): Explicit toggle for keyboard accessibility on the underlying Recharts graphic where supported by the specific chart type. Callers that explicitly disable `accessibilityLayer`, or render non-interactive compact/decorative charts without tooltip exploration (such as Sparkline or SlotBar), must provide a `summary` or `dataAlternative` textual replacement.
   - **Native & Ref Boundary**: Pure React functional wrapper. Does not forward ref or forward arbitrary div rest props.
 - **`ChartShell`**: Composite container pairing a `ChartFrame` graphic area above a flexible `legend` slot.
-  - **Props**: Extends `ChartFrameProps` with optional `legend?: ReactNode`.
+  - **Props (`ChartShellProps`)**: Extends `ChartFrameProps` with optional `legend?: ReactNode`.
+- **`ChartAccessibilityProps`**: Utility type `Pick<ChartFrameProps, "summary" | "dataAlternative" | "accessibilityLayer">` exported for chart wrappers providing accessible summaries and data alternatives.
 
 <a id="chart-legend"></a>
 

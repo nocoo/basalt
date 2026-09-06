@@ -860,10 +860,13 @@ import "@nocoo/basalt/styles/standalone";
 		const files = [
 			"fixtures/vite-heavy/package.json",
 			"fixtures/vite-heavy/src/main.tsx",
+			"fixtures/vite-heavy/src/charts.tsx",
+			"fixtures/vite-heavy/src/charts-app.tsx",
 			"fixtures/vite-heavy/src/css.d.ts",
 			"fixtures/vite-heavy/tsconfig.json",
 			"fixtures/vite-heavy/vite.config.ts",
 			"fixtures/vite-heavy/index.html",
+			"fixtures/vite-heavy/charts.html",
 			"packages/basalt/package.json",
 			"packages/basalt/README.md",
 		];

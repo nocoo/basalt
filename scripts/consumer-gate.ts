@@ -24,6 +24,7 @@ import {
 	withChromiumPage,
 } from "./consumer-browser";
 import { assertConsumerCalendar } from "./consumer-calendar";
+import { assertConsumerCharts } from "./consumer-charts";
 import { assertConsumerConfirm } from "./consumer-confirm";
 import { assertConsumerContrast } from "./consumer-contrast";
 import { assertConsumerDock } from "./consumer-dock";
@@ -1364,6 +1365,37 @@ console.log(JSON.stringify({
 						const faults = attachPageFaults(page);
 						await page.goto(contrastUrl, { waitUntil: "domcontentloaded" });
 						const res = await assertConsumerContrast(page);
+						assertNoPageFaults(faults);
+						return res;
+					});
+				} else if (config.mode === "heavy") {
+					const port = await allocatePort();
+					const url = `http://127.0.0.1:${port}/`;
+					nextUrl = url;
+					const viteCli = join(consumerRoot, "node_modules", "vite", "bin", "vite.js");
+					const started = await startHttpServer({
+						cwd: consumerRoot,
+						command: "node",
+						args: [
+							viteCli,
+							"preview",
+							"--port",
+							String(port),
+							"--host",
+							"127.0.0.1",
+							"--strictPort",
+						],
+						url,
+						needles: [tempRoot, basename(tempRoot)],
+					});
+					child = started.child;
+					profileDir = createBrowserProfileDir();
+
+					const chartsUrl = `http://127.0.0.1:${port}/charts.html`;
+					evidence.charts = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(chartsUrl, { waitUntil: "domcontentloaded" });
+						const res = await assertConsumerCharts(page);
 						assertNoPageFaults(faults);
 						return res;
 					});

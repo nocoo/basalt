@@ -36,7 +36,7 @@ describe("charts", () => {
 
 	it("accepts caller data and accessible names", () => {
 		render(<LineChart data={points} ariaLabel="Requests" />);
-		expect(screen.getByRole("img", { name: "Requests" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Requests" })).toBeInTheDocument();
 		render(
 			<LineChart
 				data={points}
@@ -61,18 +61,18 @@ describe("charts", () => {
 			"rgb(9, 8, 7)",
 		);
 		render(<BarChart data={points} ariaLabel="Bars" />);
-		expect(screen.getByRole("img", { name: "Bars" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Bars" })).toBeInTheDocument();
 		render(<AreaChart data={points} ariaLabel="Area" />);
-		expect(screen.getByRole("img", { name: "Area" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Area" })).toBeInTheDocument();
 		render(
 			<AreaChart data={[{ x: "Mon", y: 4, y2: 2, y3: 1 }]} ariaLabel="Stacked area" stacked />,
 		);
-		expect(screen.getByRole("img", { name: "Stacked area" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Stacked area" })).toBeInTheDocument();
 		render(<DonutChart data={[{ name: "A", value: 1 }]} ariaLabel="Share" />);
-		expect(screen.getByRole("img", { name: "Share" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Share" })).toBeInTheDocument();
 		render(<DonutChart data={[{ name: "A", value: 1 }]} ariaLabel="Legend donut" showLegend />);
-		expect(screen.getByRole("img", { name: "Legend donut" })).toBeInTheDocument();
-		const { container: donutDup } = render(
+		expect(screen.getByRole("group", { name: "Legend donut" })).toBeInTheDocument();
+		render(
 			<DonutChart
 				data={[
 					{ name: "A", value: 1 },
@@ -81,24 +81,23 @@ describe("charts", () => {
 				ariaLabel="Dup"
 			/>,
 		);
-		expect(screen.getByRole("img", { name: "Dup" })).toBeInTheDocument();
-		expect(donutDup.querySelector('[role="application"]')).toBeNull();
+		expect(screen.getByRole("group", { name: "Dup" })).toBeInTheDocument();
 		render(<RadarChart data={[{ subject: "Speed", value: 10 }]} ariaLabel="Radar" />);
-		expect(screen.getByRole("img", { name: "Radar" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Radar" })).toBeInTheDocument();
 		render(<FunnelChart data={[{ name: "In", value: 10 }]} ariaLabel="Funnel" />);
-		expect(screen.getByRole("img", { name: "Funnel" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Funnel" })).toBeInTheDocument();
 		render(<BulletChart data={[{ name: "KPI", value: 4, target: 8 }]} ariaLabel="Bullet" />);
-		expect(screen.getByRole("img", { name: "Bullet" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Bullet" })).toBeInTheDocument();
 		render(<GroupedBarChart data={points} ariaLabel="Grouped" />);
-		expect(screen.getByRole("img", { name: "Grouped" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Grouped" })).toBeInTheDocument();
 		render(<StackedBarChart data={points} ariaLabel="Stacked" />);
-		expect(screen.getByRole("img", { name: "Stacked" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Stacked" })).toBeInTheDocument();
 		render(<StackedBarChart data={points} ariaLabel="Axes stacked" showAxes />);
-		expect(screen.getByRole("img", { name: "Axes stacked" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Axes stacked" })).toBeInTheDocument();
 		render(<Sparkline data={points} ariaLabel="Spark" />);
-		expect(screen.getByRole("img", { name: "Spark" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Spark" })).toBeInTheDocument();
 		render(<SlotBarChart data={points} ariaLabel="Slots" />);
-		expect(screen.getByRole("img", { name: "Slots" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Slots" })).toBeInTheDocument();
 		render(
 			<SankeyChart
 				data={{
@@ -108,13 +107,13 @@ describe("charts", () => {
 				ariaLabel="Flow"
 			/>,
 		);
-		expect(screen.getByRole("img", { name: "Flow" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Flow" })).toBeInTheDocument();
 		render(<Charts data={points} ariaLabel="Overview" />);
-		expect(screen.getByRole("img", { name: "Overview" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Overview" })).toBeInTheDocument();
 		render(<Timeseries data={points} ariaLabel="Series" />);
-		expect(screen.getByRole("img", { name: "Series" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Series" })).toBeInTheDocument();
 		render(<CustomChart data={points} ariaLabel="Custom" />);
-		expect(screen.getByRole("img", { name: "Custom" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Custom" })).toBeInTheDocument();
 		render(<Colors />);
 		render(<HeatmapCalendar values={[1, 2, 3]} ariaLabel="Heat" />);
 		expect(screen.getByRole("img", { name: "Heat" })).toBeInTheDocument();
@@ -154,17 +153,17 @@ describe("charts", () => {
 		render(<StatCard label="CPU" value="8%" />);
 		expect(screen.getByRole("img", { name: "CPU 8%" })).toBeInTheDocument();
 		render(<Gauge value={20} ariaLabel="Load" />);
-		expect(screen.getByRole("img", { name: "Load" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Load" })).toBeInTheDocument();
 		expect(screen.getByText("20")).toBeInTheDocument();
 		render(<Gauge value={742} max={850} ariaLabel="Score" />);
 		expect(screen.getByText("742")).toBeInTheDocument();
 		render(<Gauge value={68} valueFormatter={(next) => `${next}%`} ariaLabel="Saved" />);
 		expect(screen.getByText("68%")).toBeInTheDocument();
 		render(<Gauge value={40} ariaLabel="Quiet" hideValue />);
-		expect(screen.getByRole("img", { name: "Quiet" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Quiet" })).toBeInTheDocument();
 		expect(screen.queryByText("40")).toBeNull();
 		render(<Gauge value={20} max={0} ariaLabel="Zero max" />);
-		expect(screen.getByRole("img", { name: "Zero max" })).toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Zero max" })).toBeInTheDocument();
 		render(<DateNavigation ariaLabel="When" />);
 		expect(screen.getByRole("button", { name: "When" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Previous day" })).toBeInTheDocument();

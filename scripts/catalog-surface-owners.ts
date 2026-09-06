@@ -122,7 +122,13 @@ export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
 		ownerDoc: "INTEGRATION.md#chart-frame",
 		kind: "chart-subsystem",
 		summary: "Chart container framing and responsive sizing primitives (ChartFrame, ChartShell)",
-		knownSymbols: ["ChartFrame", "ChartFrameProps", "ChartShell"],
+		knownSymbols: [
+			"ChartFrame",
+			"ChartFrameProps",
+			"ChartShell",
+			"ChartShellProps",
+			"ChartAccessibilityProps",
+		],
 	},
 	"@nocoo/basalt/charts/legend": {
 		ownerDoc: "INTEGRATION.md#chart-legend",

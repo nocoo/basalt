@@ -421,8 +421,12 @@
     border-collapse: collapse;
   }
 }
-.basalt-chart .recharts-wrapper :focus, .basalt-chart .recharts-wrapper :focus-visible, .basalt-chart .recharts-surface :focus, .basalt-chart .recharts-surface :focus-visible, .basalt-chart .recharts-sector:focus, .basalt-chart .recharts-rectangle:focus, .basalt-chart .recharts-layer:focus {
+.basalt-chart .recharts-sector:focus:not(:focus-visible), .basalt-chart .recharts-rectangle:focus:not(:focus-visible), .basalt-chart .recharts-layer:focus:not(:focus-visible), .basalt-chart .recharts-surface:focus:not(:focus-visible) {
   outline: none;
+}
+.basalt-chart :focus-visible {
+  outline: 2px solid hsl(var(--basalt-ring));
+  outline-offset: 2px;
 }
 @layer utilities {
   .pointer-events-none {
@@ -579,6 +583,9 @@
   }
   .block {
     display: block;
+  }
+  .contents {
+    display: contents;
   }
   .flex {
     display: flex;
@@ -1698,10 +1705,6 @@
     --tw-ease: var(--ease-out);
     transition-timing-function: var(--ease-out);
   }
-  .outline-none {
-    --tw-outline-style: none;
-    outline-style: none;
-  }
   .select-none {
     -webkit-user-select: none;
     user-select: none;
@@ -2101,25 +2104,15 @@
       grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
-  .\[\&_\.recharts-layer\]\:outline-none .recharts-layer {
-    --tw-outline-style: none;
-    outline-style: none;
+  .\[\&_\.recharts-surface\:focus-visible\]\:outline-2 .recharts-surface:focus-visible {
+    outline-style: var(--tw-outline-style);
+    outline-width: 2px;
   }
-  .\[\&_\.recharts-rectangle\]\:outline-none .recharts-rectangle {
-    --tw-outline-style: none;
-    outline-style: none;
+  .\[\&_\.recharts-surface\:focus-visible\]\:outline-offset-2 .recharts-surface:focus-visible {
+    outline-offset: 2px;
   }
-  .\[\&_\.recharts-sector\]\:outline-none .recharts-sector {
-    --tw-outline-style: none;
-    outline-style: none;
-  }
-  .\[\&_\.recharts-surface\]\:outline-none .recharts-surface {
-    --tw-outline-style: none;
-    outline-style: none;
-  }
-  .\[\&_\.recharts-wrapper\]\:outline-none .recharts-wrapper {
-    --tw-outline-style: none;
-    outline-style: none;
+  .\[\&_\.recharts-surface\:focus-visible\]\:outline-basalt-ring .recharts-surface:focus-visible {
+    outline-color: hsl(var(--basalt-ring));
   }
   .\[\&_\[cmdk-group-heading\]\]\:px-2 [cmdk-group-heading] {
     padding-inline: calc(var(--spacing) * 2);

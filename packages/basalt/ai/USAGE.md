@@ -14,7 +14,7 @@ Document anchors formatted as `ai/registry.json#<slug>` reference specific catal
 It contains:
 - **110 Exported Modules** (1 root barrel, components, charts, providers)
 - **99 Ready Catalog Entries** with full API definitions
-- **687 Public Symbols** (375 runtime values, 312 TypeScript types)
+- **689 Public Symbols** (375 runtime values, 314 TypeScript types)
 - **Detailed Component API**: Props, types, defaults, descriptions, and function callable signatures (including all `toast()` variants)
 - **Exact Peer Dependency Closures**: Identifies optional peers required per subpath (e.g., Recharts)
 

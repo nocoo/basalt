@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 687,
+	"totalSymbols": 689,
 	"totalValues": 375,
-	"totalTypes": 312,
+	"totalTypes": 314,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 99,
 	"modules": [
@@ -800,7 +800,7 @@
 			"importPath": "@nocoo/basalt/charts/area",
 			"subpath": "./charts/area",
 			"sourceFile": "packages/basalt/src/charts/area.tsx",
-			"sourceHash": "0c083e541e2aae0e",
+			"sourceHash": "a2d24e89cfff4876",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -878,6 +878,25 @@
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -927,6 +946,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -938,7 +976,7 @@
 			"importPath": "@nocoo/basalt/charts/bar",
 			"subpath": "./charts/bar",
 			"sourceFile": "packages/basalt/src/charts/bar.tsx",
-			"sourceHash": "d3cea02b545107a0",
+			"sourceHash": "7406edb0a87996b8",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -1016,6 +1054,25 @@
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -1065,6 +1122,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -1076,7 +1152,7 @@
 			"importPath": "@nocoo/basalt/charts/bullet",
 			"subpath": "./charts/bullet",
 			"sourceFile": "packages/basalt/src/charts/bullet.tsx",
-			"sourceHash": "3d47eaa6bf2fe18c",
+			"sourceHash": "b89317488bb05fd8",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -1144,6 +1220,25 @@
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -1183,6 +1278,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -1270,7 +1384,7 @@
 			"importPath": "@nocoo/basalt/charts/charts",
 			"subpath": "./charts/charts",
 			"sourceFile": "packages/basalt/src/charts/charts.tsx",
-			"sourceHash": "5726ab10833abf1e",
+			"sourceHash": "378e0edc4457f493",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -1328,6 +1442,25 @@
 									"name": "className",
 									"type": "string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -1357,6 +1490,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -1546,7 +1698,7 @@
 			"importPath": "@nocoo/basalt/charts/custom-chart",
 			"subpath": "./charts/custom-chart",
 			"sourceFile": "packages/basalt/src/charts/custom-chart.tsx",
-			"sourceHash": "2523f472aec6441d",
+			"sourceHash": "30fcb056629bdabc",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -1604,6 +1756,25 @@
 									"name": "className",
 									"type": "string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -1633,6 +1804,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -1860,7 +2050,7 @@
 			"importPath": "@nocoo/basalt/charts/donut",
 			"subpath": "./charts/donut",
 			"sourceFile": "packages/basalt/src/charts/donut.tsx",
-			"sourceHash": "14c0ab009d026541",
+			"sourceHash": "335e88d4544bc01b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -1928,6 +2118,25 @@
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -1967,6 +2176,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -1978,7 +2206,7 @@
 			"importPath": "@nocoo/basalt/charts/frame",
 			"subpath": "./charts/frame",
 			"sourceFile": "packages/basalt/src/charts/frame.tsx",
-			"sourceHash": "570629d798827c8f",
+			"sourceHash": "9db385e79877e19a",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "chart-subsystem",
@@ -2011,6 +2239,22 @@
 					"ownerDoc": "INTEGRATION.md#chart-frame",
 					"packageDoc": "ai/INTEGRATION.md#chart-frame",
 					"originModule": "@nocoo/basalt/charts/frame"
+				},
+				{
+					"name": "ChartShellProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#chart-frame",
+					"packageDoc": "ai/INTEGRATION.md#chart-frame",
+					"originModule": "@nocoo/basalt/charts/frame"
+				},
+				{
+					"name": "ChartAccessibilityProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "INTEGRATION.md#chart-frame",
+					"packageDoc": "ai/INTEGRATION.md#chart-frame",
+					"originModule": "@nocoo/basalt/charts/frame"
 				}
 			]
 		},
@@ -2020,7 +2264,7 @@
 			"importPath": "@nocoo/basalt/charts/funnel",
 			"subpath": "./charts/funnel",
 			"sourceFile": "packages/basalt/src/charts/funnel.tsx",
-			"sourceHash": "82b0b45610423eb7",
+			"sourceHash": "d71b0ba3476cb607",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2083,6 +2327,25 @@
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -2117,6 +2380,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -2128,7 +2410,7 @@
 			"importPath": "@nocoo/basalt/charts/gauge",
 			"subpath": "./charts/gauge",
 			"sourceFile": "packages/basalt/src/charts/gauge.tsx",
-			"sourceHash": "03aaf5782d0f2993",
+			"sourceHash": "68b117bf632e140c",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2201,6 +2483,25 @@
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -2245,6 +2546,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -2256,7 +2576,7 @@
 			"importPath": "@nocoo/basalt/charts/grouped-bar",
 			"subpath": "./charts/grouped-bar",
 			"sourceFile": "packages/basalt/src/charts/grouped-bar.tsx",
-			"sourceHash": "6adeb6bc0d74b445",
+			"sourceHash": "2b27622986164d8b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2329,6 +2649,25 @@
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -2373,6 +2712,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -2792,7 +3150,7 @@
 			"importPath": "@nocoo/basalt/charts/line",
 			"subpath": "./charts/line",
 			"sourceFile": "packages/basalt/src/charts/line.tsx",
-			"sourceHash": "a2d5c389f8949536",
+			"sourceHash": "a7a5c9de731dcc7b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2870,6 +3228,25 @@
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -2919,6 +3296,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -3038,7 +3434,7 @@
 			"importPath": "@nocoo/basalt/charts/radar",
 			"subpath": "./charts/radar",
 			"sourceFile": "packages/basalt/src/charts/radar.tsx",
-			"sourceHash": "b0b5055244366c7c",
+			"sourceHash": "7f17554d1b604126",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3096,6 +3492,25 @@
 									"name": "className",
 									"type": "string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -3125,6 +3540,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -3242,7 +3676,7 @@
 			"importPath": "@nocoo/basalt/charts/sankey",
 			"subpath": "./charts/sankey",
 			"sourceFile": "packages/basalt/src/charts/sankey.tsx",
-			"sourceHash": "bd3e0d54058235cd",
+			"sourceHash": "b5e93ee11aeebc44",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3295,6 +3729,25 @@
 									"name": "className",
 									"type": "string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -3319,6 +3772,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -3452,7 +3924,7 @@
 			"importPath": "@nocoo/basalt/charts/slot-bar",
 			"subpath": "./charts/slot-bar",
 			"sourceFile": "packages/basalt/src/charts/slot-bar.tsx",
-			"sourceHash": "9ff773050b561e9a",
+			"sourceHash": "db44634f5bb7a481",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3534,6 +4006,25 @@
 									"name": "className",
 									"type": "string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						},
@@ -3598,6 +4089,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				},
@@ -3644,7 +4154,7 @@
 			"importPath": "@nocoo/basalt/charts/sparkline",
 			"subpath": "./charts/sparkline",
 			"sourceFile": "packages/basalt/src/charts/sparkline.tsx",
-			"sourceHash": "dce5d9329ca33633",
+			"sourceHash": "414df34842e1a206",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3702,6 +4212,25 @@
 									"name": "className",
 									"type": "string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -3731,6 +4260,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -3742,7 +4290,7 @@
 			"importPath": "@nocoo/basalt/charts/stacked-bar",
 			"subpath": "./charts/stacked-bar",
 			"sourceFile": "packages/basalt/src/charts/stacked-bar.tsx",
-			"sourceHash": "bfd75ab9fb968c7f",
+			"sourceHash": "6120c4f3559a1ea6",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3815,6 +4363,25 @@
 									"name": "valueFormatter",
 									"type": "(value: number) => string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -3859,6 +4426,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -4234,7 +4820,7 @@
 			"importPath": "@nocoo/basalt/charts/timeseries",
 			"subpath": "./charts/timeseries",
 			"sourceFile": "packages/basalt/src/charts/timeseries.tsx",
-			"sourceHash": "da1d933853e06f34",
+			"sourceHash": "af1e619047529924",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4292,6 +4878,25 @@
 									"name": "className",
 									"type": "string",
 									"required": false
+								},
+								{
+									"name": "summary",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+								},
+								{
+									"name": "dataAlternative",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+								},
+								{
+									"name": "accessibilityLayer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 								}
 							]
 						}
@@ -4321,6 +4926,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -29919,7 +30543,7 @@
 			"exportName": "Charts",
 			"importPath": "@nocoo/basalt/charts/charts",
 			"sourceFile": "packages/basalt/src/charts/charts.tsx",
-			"sourceHash": "5726ab10833abf1e",
+			"sourceHash": "378e0edc4457f493",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#charts",
@@ -29946,6 +30570,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -29980,7 +30623,7 @@
 			"exportName": "Timeseries",
 			"importPath": "@nocoo/basalt/charts/timeseries",
 			"sourceFile": "packages/basalt/src/charts/timeseries.tsx",
-			"sourceHash": "da1d933853e06f34",
+			"sourceHash": "af1e619047529924",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#timeseries",
@@ -30007,6 +30650,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30018,7 +30680,7 @@
 			"exportName": "CustomChart",
 			"importPath": "@nocoo/basalt/charts/custom-chart",
 			"sourceFile": "packages/basalt/src/charts/custom-chart.tsx",
-			"sourceHash": "2523f472aec6441d",
+			"sourceHash": "30fcb056629bdabc",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#custom-chart",
@@ -30045,6 +30707,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30139,7 +30820,7 @@
 			"exportName": "SlotBarChart",
 			"importPath": "@nocoo/basalt/charts/slot-bar",
 			"sourceFile": "packages/basalt/src/charts/slot-bar.tsx",
-			"sourceHash": "9ff773050b561e9a",
+			"sourceHash": "db44634f5bb7a481",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#slot-bar",
@@ -30166,6 +30847,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				},
@@ -30212,7 +30912,7 @@
 			"exportName": "BarChart",
 			"importPath": "@nocoo/basalt/charts/bar",
 			"sourceFile": "packages/basalt/src/charts/bar.tsx",
-			"sourceHash": "d3cea02b545107a0",
+			"sourceHash": "7406edb0a87996b8",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#bar",
@@ -30259,6 +30959,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30270,7 +30989,7 @@
 			"exportName": "LineChart",
 			"importPath": "@nocoo/basalt/charts/line",
 			"sourceFile": "packages/basalt/src/charts/line.tsx",
-			"sourceHash": "a2d5c389f8949536",
+			"sourceHash": "a7a5c9de731dcc7b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#line",
@@ -30317,6 +31036,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30328,7 +31066,7 @@
 			"exportName": "AreaChart",
 			"importPath": "@nocoo/basalt/charts/area",
 			"sourceFile": "packages/basalt/src/charts/area.tsx",
-			"sourceHash": "0c083e541e2aae0e",
+			"sourceHash": "a2d24e89cfff4876",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#area",
@@ -30375,6 +31113,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30386,7 +31143,7 @@
 			"exportName": "DonutChart",
 			"importPath": "@nocoo/basalt/charts/donut",
 			"sourceFile": "packages/basalt/src/charts/donut.tsx",
-			"sourceHash": "14c0ab009d026541",
+			"sourceHash": "335e88d4544bc01b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#donut",
@@ -30423,6 +31180,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30434,7 +31210,7 @@
 			"exportName": "GroupedBarChart",
 			"importPath": "@nocoo/basalt/charts/grouped-bar",
 			"sourceFile": "packages/basalt/src/charts/grouped-bar.tsx",
-			"sourceHash": "6adeb6bc0d74b445",
+			"sourceHash": "2b27622986164d8b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#grouped-bar",
@@ -30476,6 +31252,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30487,7 +31282,7 @@
 			"exportName": "StackedBarChart",
 			"importPath": "@nocoo/basalt/charts/stacked-bar",
 			"sourceFile": "packages/basalt/src/charts/stacked-bar.tsx",
-			"sourceHash": "bfd75ab9fb968c7f",
+			"sourceHash": "6120c4f3559a1ea6",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#stacked-bar",
@@ -30529,6 +31324,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30540,7 +31354,7 @@
 			"exportName": "Sparkline",
 			"importPath": "@nocoo/basalt/charts/sparkline",
 			"sourceFile": "packages/basalt/src/charts/sparkline.tsx",
-			"sourceHash": "dce5d9329ca33633",
+			"sourceHash": "414df34842e1a206",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sparkline",
@@ -30567,6 +31381,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30686,7 +31519,7 @@
 			"exportName": "Gauge",
 			"importPath": "@nocoo/basalt/charts/gauge",
 			"sourceFile": "packages/basalt/src/charts/gauge.tsx",
-			"sourceHash": "03aaf5782d0f2993",
+			"sourceHash": "68b117bf632e140c",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#gauge",
@@ -30728,6 +31561,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30739,7 +31591,7 @@
 			"exportName": "RadarChart",
 			"importPath": "@nocoo/basalt/charts/radar",
 			"sourceFile": "packages/basalt/src/charts/radar.tsx",
-			"sourceHash": "b0b5055244366c7c",
+			"sourceHash": "7f17554d1b604126",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#radar",
@@ -30766,6 +31618,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30777,7 +31648,7 @@
 			"exportName": "FunnelChart",
 			"importPath": "@nocoo/basalt/charts/funnel",
 			"sourceFile": "packages/basalt/src/charts/funnel.tsx",
-			"sourceHash": "82b0b45610423eb7",
+			"sourceHash": "d71b0ba3476cb607",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#funnel",
@@ -30809,6 +31680,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30820,7 +31710,7 @@
 			"exportName": "BulletChart",
 			"importPath": "@nocoo/basalt/charts/bullet",
 			"sourceFile": "packages/basalt/src/charts/bullet.tsx",
-			"sourceHash": "3d47eaa6bf2fe18c",
+			"sourceHash": "b89317488bb05fd8",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#bullet",
@@ -30857,6 +31747,25 @@
 							"name": "valueFormatter",
 							"type": "(value: number) => string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}
@@ -30921,7 +31830,7 @@
 			"exportName": "SankeyChart",
 			"importPath": "@nocoo/basalt/charts/sankey",
 			"sourceFile": "packages/basalt/src/charts/sankey.tsx",
-			"sourceHash": "bd3e0d54058235cd",
+			"sourceHash": "b5e93ee11aeebc44",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sankey",
@@ -30943,6 +31852,25 @@
 							"name": "className",
 							"type": "string",
 							"required": false
+						},
+						{
+							"name": "summary",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby."
+						},
+						{
+							"name": "dataAlternative",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Accessible tabular or structured data alternative rendered outside the plot area."
+						},
+						{
+							"name": "accessibilityLayer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative."
 						}
 					]
 				}

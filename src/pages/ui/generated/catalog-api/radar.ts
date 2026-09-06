@@ -25,6 +25,25 @@ export const API = [
 				type: "string",
 				required: false,
 			},
+			{
+				name: "summary",
+				type: "React.ReactNode",
+				required: false,
+				description: "Textual summary describing key insights, highs, lows, and keyboard exploration instructions.\nAssociated with the chart via useId and aria-describedby.",
+			},
+			{
+				name: "dataAlternative",
+				type: "React.ReactNode",
+				required: false,
+				description: "Accessible tabular or structured data alternative rendered outside the plot area.",
+			},
+			{
+				name: "accessibilityLayer",
+				type: "boolean",
+				required: false,
+				default: "true",
+				description: "Whether the interactive accessibility layer is enabled on the underlying Recharts graphic.\nEnables keyboard exploration with Tab and arrow keys where supported by the underlying chart type.\nNon-interactive compact or decorative charts without tooltip navigation should provide summary or dataAlternative.",
+			},
 		],
 	},
 ];
