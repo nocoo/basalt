@@ -16,6 +16,7 @@ const CHART_DESCRIPTIONS = {
 	"grouped-bar": "Grouped bars.",
 	"stacked-bar": "Stacked bars.",
 	"heatmap-calendar": "Calendar heatmap.",
+	"heatmap-matrix": "Generic two-dimensional intensity matrix.",
 	radar: "Radar series.",
 	funnel: "Funnel series.",
 	bullet: "Bullet chart.",
@@ -30,16 +31,16 @@ const CHART_DESCRIPTIONS = {
 } as const;
 
 describe("charts catalog content family", () => {
-	it("owns exactly twenty-three slugs and all eighty-six ready owners", () => {
+	it("owns exactly twenty-four slugs and all eighty-six ready owners", () => {
 		expect(Object.keys(charts)).toEqual(Object.keys(CHART_DESCRIPTIONS));
-		expect(Object.keys(charts)).toHaveLength(23);
+		expect(Object.keys(charts)).toHaveLength(24);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "charts")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(CHART_DESCRIPTIONS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(99);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(100);
 	});
 
 	it("keeps one audited Default scenario for every chart", () => {
@@ -78,6 +79,14 @@ describe("charts catalog content family", () => {
 					{ id: `${slug}-default`, title: "Default" },
 					{ id: `${slug}-accessible-year`, title: "Accessible Year Grid" },
 					{ id: `${slug}-accessible-values`, title: "Accessible Values Matrix" },
+				]);
+			} else if (slug === "heatmap-matrix") {
+				expect(
+					examples.map(({ id, title }) => ({ id, title })),
+					slug,
+				).toEqual([
+					{ id: `${slug}-hour-schedule`, title: "Weekly Hour Schedule Matrix" },
+					{ id: `${slug}-service-grid`, title: "Cross-Service Latency Matrix" },
 				]);
 			} else if (slug === "stat-card") {
 				expect(

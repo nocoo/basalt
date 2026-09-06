@@ -3,6 +3,7 @@ import { BarChart } from "@nocoo/basalt/charts/bar";
 import { ChartFrame, ChartShell } from "@nocoo/basalt/charts/frame";
 import { Gauge } from "@nocoo/basalt/charts/gauge";
 import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatmap-calendar";
+import { HeatmapMatrix } from "@nocoo/basalt/charts/heatmap-matrix";
 import { LineChart } from "@nocoo/basalt/charts/line";
 import { StatCard } from "@nocoo/basalt/charts/stat-card";
 import {
@@ -62,6 +63,14 @@ const RATIO_STACK_DATA = [
 const RATIO_SERIES = [
 	{ key: "p95US" as const, label: "US Region", color: "hsl(var(--basalt-chart-1))" },
 	{ key: "p95EU" as const, label: "EU Region", color: "hsl(var(--basalt-chart-2))" },
+];
+
+const MATRIX_ROWS = ["US-East", "US-West", "EU-Central"] as const;
+const MATRIX_COLS = ["00:00", "06:00", "12:00", "18:00", "21:00", "23:00"] as const;
+const MATRIX_VALUES: (number | null)[][] = [
+	[12, 45, 18, 0, 55, 60],
+	[48, 14, null, 28, 70, 75],
+	[85, 92, 16, 74, 90, 95],
 ];
 
 const MULTI_SERIES = [
@@ -502,6 +511,47 @@ function ChartsPanel() {
 							}
 						/>
 					</div>
+				</div>
+
+				{/* 12. HeatmapMatrix: 2D Grid with keyboard traversal, Tooltip Row/Summary/Divider, Escape, 0 vs missing */}
+				<div data-testid="case-heatmap-matrix">
+					<h2>Cross-Region Service Latency Matrix</h2>
+					<button id="focus-before-matrix" type="button">
+						Focus Before Matrix
+					</button>
+					<HeatmapMatrix
+						id="heavy-heatmap-matrix"
+						rowLabels={MATRIX_ROWS}
+						columnLabels={MATRIX_COLS}
+						values={MATRIX_VALUES}
+						metricLabel="Service Latency"
+						ariaLabel="Cross-region latency matrix"
+						cellSize={20}
+						columnWidth={64}
+						cellGap={3}
+						valueFormatter={(v) => `${v}ms`}
+						renderTooltip={(cell) => (
+							<div data-testid="matrix-custom-tooltip">
+								<p id="matrix-tooltip-title">
+									{cell.rowLabel} at {cell.columnLabel}
+								</p>
+								<ChartTooltipRow
+									label="Latency"
+									value={cell.value}
+									unit="ms"
+									color={cell.isMissing ? undefined : "hsl(var(--basalt-chart-1))"}
+								/>
+								<ChartTooltipDivider />
+								<ChartTooltipSummary
+									label="Status"
+									value={cell.isMissing ? "Node offline" : "Operational"}
+								/>
+							</div>
+						)}
+					/>
+					<button id="focus-after-matrix" type="button">
+						Focus After Matrix
+					</button>
 				</div>
 			</section>
 		</div>

@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
-	"totalModules": 110,
-	"totalSymbols": 699,
-	"totalValues": 378,
-	"totalTypes": 321,
+	"totalModules": 111,
+	"totalSymbols": 703,
+	"totalValues": 379,
+	"totalTypes": 324,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -1363,6 +1363,48 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/heatmap-calendar",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/charts/heatmap-calendar"
+				}
+			]
+		},
+		{
+			"subpath": "./charts/heatmap-matrix",
+			"importPath": "@nocoo/basalt/charts/heatmap-matrix",
+			"sourceFile": "packages/basalt/src/charts/heatmap-matrix.tsx",
+			"ownerDoc": "src/pages/ui/heatmap-matrix",
+			"ownerKind": "catalog-component",
+			"summary": "HeatmapMatrix component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "HeatmapMatrixValue",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/heatmap-matrix",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
+				},
+				{
+					"name": "HeatmapMatrixCellContext",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/heatmap-matrix",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
+				},
+				{
+					"name": "HeatmapMatrixProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/heatmap-matrix",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
+				},
+				{
+					"name": "HeatmapMatrix",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/heatmap-matrix",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
 				}
 			]
 		},

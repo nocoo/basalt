@@ -970,6 +970,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "HeatmapCalendar.Year",
 	},
 	{
+		slug: "heatmap-matrix",
+		sourceFile: "packages/basalt/src/charts/heatmap-matrix.tsx",
+		propsType: "HeatmapMatrixProps",
+		surface: "HeatmapMatrix",
+	},
+	{
 		slug: "radar",
 		sourceFile: "packages/basalt/src/charts/radar.tsx",
 		propsType: "RadarChartProps",

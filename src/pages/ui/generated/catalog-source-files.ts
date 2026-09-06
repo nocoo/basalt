@@ -528,6 +528,12 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/heatmap-calendar.js.map (sourcesContent[0])"
 	},
+	"heatmap-matrix": {
+		"file": "packages/basalt/src/charts/heatmap-matrix.tsx",
+		"hash": "5c85d0115fedffa1",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/heatmap-matrix.js.map (sourcesContent[0])"
+	},
 	"gauge": {
 		"file": "packages/basalt/src/charts/gauge.tsx",
 		"hash": "68b117bf632e140c",

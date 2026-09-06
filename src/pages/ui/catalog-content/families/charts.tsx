@@ -12,6 +12,7 @@ import { FUNNEL_EXAMPLES } from "../../examples/funnel";
 import { GAUGE_EXAMPLES } from "../../examples/gauge";
 import { GROUPED_BAR_EXAMPLES } from "../../examples/grouped-bar";
 import { HEATMAP_CALENDAR_EXAMPLES } from "../../examples/heatmap-calendar";
+import { HEATMAP_MATRIX_EXAMPLES } from "../../examples/heatmap-matrix";
 import { ITEM_LIST_EXAMPLES } from "../../examples/item-list";
 import { LINE_EXAMPLES } from "../../examples/line";
 import { PALETTE_EXAMPLES } from "../../examples/palette";
@@ -35,6 +36,7 @@ import { API as funnelApi } from "../../generated/catalog-api/funnel";
 import { API as gaugeApi } from "../../generated/catalog-api/gauge";
 import { API as groupedBarApi } from "../../generated/catalog-api/grouped-bar";
 import { API as heatmapCalendarApi } from "../../generated/catalog-api/heatmap-calendar";
+import { API as heatmapMatrixApi } from "../../generated/catalog-api/heatmap-matrix";
 import { API as itemListApi } from "../../generated/catalog-api/item-list";
 import { API as lineApi } from "../../generated/catalog-api/line";
 import { API as paletteApi } from "../../generated/catalog-api/palette";
@@ -222,6 +224,18 @@ export default function Example() {
 			api: heatmapCalendarApi,
 		},
 		examples: HEATMAP_CALENDAR_EXAMPLES,
+	},
+	"heatmap-matrix": {
+		docs: {
+			...extraDocs(
+				"HeatmapMatrix",
+				"heatmap-matrix",
+				"Generic two-dimensional intensity matrix.",
+				'<HeatmapMatrix rowLabels={["Mon", "Tue"]} columnLabels={["00:00", "12:00"]} values={[[10, 20], [30, 40]]} />',
+			),
+			api: heatmapMatrixApi,
+		},
+		examples: HEATMAP_MATRIX_EXAMPLES,
 	},
 	radar: {
 		docs: {

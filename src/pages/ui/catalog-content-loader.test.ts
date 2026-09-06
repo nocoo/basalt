@@ -35,8 +35,8 @@ describe("catalog page content loader", () => {
 
 	it("uses the generated 93 ready / 1 planned status truth", () => {
 		const statuses = CATALOG.map((entry) => catalogPageStatus(entry.slug));
-		expect(statuses).toHaveLength(100);
-		expect(statuses.filter((status) => status === "ready")).toHaveLength(99);
+		expect(statuses).toHaveLength(101);
+		expect(statuses.filter((status) => status === "ready")).toHaveLength(100);
 		expect(statuses.filter((status) => status === "planned")).toHaveLength(1);
 	});
 

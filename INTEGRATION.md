@@ -1376,6 +1376,37 @@ Basalt charts are composed of responsive frame, legend, and tooltip subsystem pr
       - Zero values render with clear `:focus-visible` outlines without being faded by parent opacity.
     - **Dynamic Data Updates**: Shrinking or emptying arrays, or switching years, clamps active index safely, restores focus if the element was active, and never steals focus from external controls.
 
+<a id="heatmap-matrix"></a>
+
+### HeatmapMatrix (`@nocoo/basalt/charts/heatmap-matrix`)
+
+- **`HeatmapMatrix`**: Generic two-dimensional intensity matrix for tabular categorical, operational, and schedule telemetry (e.g. days vs hours, regions vs services).
+  - **Props (`HeatmapMatrixProps`)**:
+    - `rowLabels: readonly string[]` (required): Ordered row headers.
+    - `columnLabels: readonly string[]` (required): Ordered column headers.
+    - `values: readonly (readonly (number | null | undefined)[])[]` (required): 2D matrix of values. Supports ragged rows, null, undefined, and non-finite values (treated as missing). Numeric `0` is a valid reading and distinct from missing data.
+    - `domain?: readonly [min: number, max: number]` (optional): Explicit [min, max] domain for color intensity scaling. If reversed [max, min], bounds are automatically normalized to [min, max]; if equal [v, v], values <= v receive level 0 while values > v receive highest level. If non-finite or omitted, dynamically derived solely from visible finite numeric cells in the dataset (or [0, 0] if no finite values exist). Values at or below min receive level 0; values >= max clamp to the highest level.
+    - `colorScale?: readonly string[]` (optional, default: `heatmapColorScales.green`): Color intensity levels array. If empty or single-color, gracefully resolves to base level.
+    - `valueFormatter?: (value: number) => string` (optional, default: `(v) => v.toLocaleString()`): Formatter for numeric values.
+    - `missingLabel?: string` (optional, default: `"—"`): Text representation for missing, null, undefined, or non-finite readings.
+    - `metricLabel?: string` (optional, default: `"Heatmap matrix"`): Metric label for accessible descriptions.
+    - `ariaLabel?: string` (optional, default: `"Heatmap matrix"`): Accessible name for the grid region.
+    - `cellSize?: number` (optional, default: `16`): Cell height (and default width) in pixels.
+    - `columnWidth?: number` (optional): Cell and column width in pixels. When omitted, falls back to `cellSize` for square cells. Allows wider rectangular cells to fit readable column headers (e.g. timestamps or service names).
+    - `cellGap?: number` (optional, default: `2`): Gap between adjacent cells in pixels.
+    - `lessLabel?: string` / `moreLabel?: string` (optional, default: `"Less"` / `"More"`): Legend bounds text.
+    - `showLegend?: boolean` (optional, default: `true`): Whether to display the bottom color intensity scale legend.
+    - `renderTooltip?: (cell: HeatmapMatrixCellContext) => ReactNode` (optional): Custom cell popover tooltip renderer. Replaces default tooltip contents while integrating composable parts (`ChartTooltipRow`, `ChartTooltipDivider`, `ChartTooltipSummary`).
+    - Native props: Forwards `Omit<ComponentProps<"div">, "children">` and React 19 callback ref with cleanup to the root container.
+  - **Keyboard Navigation & ARIA Semantics**:
+    - Complete `role="grid"` structure with table headers (`columnheader`, `rowheader`) and cells (`gridcell`).
+    - Single roving <kbd>Tab</kbd> stop onto the active cell.
+    - Directional keys <kbd>←</kbd> / <kbd>→</kbd> navigate columns; <kbd>↑</kbd> / <kbd>↓</kbd> navigate rows.
+    - <kbd>Home</kbd> / <kbd>End</kbd> jump to the first/last column of the current row; <kbd>PageUp</kbd> / <kbd>PageDown</kbd> jump to the first/last row of the current column.
+    - <kbd>Escape</kbd> dismisses open cell tooltips while preserving cell focus.
+    - Mobile horizontal scrolling: wide grids scroll horizontally without document overflow, keeping active cells visible during keyboard navigation.
+    - Focus stability: shrinking or emptying matrix dimensions clamps active indices without stealing focus from external elements.
+
 <a id="stat-card"></a>
 
 ### StatCard & StatGrid (`@nocoo/basalt/charts/stat-card`)

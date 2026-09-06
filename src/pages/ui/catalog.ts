@@ -834,6 +834,15 @@ export const CATALOG: CatalogEntry[] = [
 		category: "chart",
 	},
 	{
+		slug: "heatmap-matrix",
+		name: "HeatmapMatrix",
+		exportName: "HeatmapMatrix",
+		importPath: "@nocoo/basalt/charts/heatmap-matrix",
+		hasRootBarrel: false,
+		kind: "chart",
+		category: "chart",
+	},
+	{
 		slug: "gauge",
 		name: "Gauge",
 		exportName: "Gauge",

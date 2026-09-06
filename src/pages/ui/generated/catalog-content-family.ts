@@ -47,6 +47,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	grid: "data-layout",
 	"grouped-bar": "charts",
 	"heatmap-calendar": "charts",
+	"heatmap-matrix": "charts",
 	"hover-card": "overlay",
 	input: "forms",
 	"input-area": "forms",

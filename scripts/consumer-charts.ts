@@ -15,6 +15,7 @@ export type ChartsGateResult = {
 	statCardValidationsChecked: number;
 	reducedMotionChecked: number;
 	dynamicSeriesChecked: number;
+	heatmapMatrixChecked: number;
 };
 
 const VIEWPORTS = [
@@ -40,6 +41,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 	let statCardValidationsChecked = 0;
 	let reducedMotionChecked = 0;
 	let dynamicSeriesChecked = 0;
+	let heatmapMatrixChecked = 0;
 
 	for (const vp of VIEWPORTS) {
 		await page.setViewportSize({ width: vp.width, height: vp.height });
@@ -1038,6 +1040,179 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			);
 
 			dynamicSeriesChecked++;
+
+			// -------------------------------------------------------------
+			// 12. HeatmapMatrix (2D Grid, Roving Tab, 0 vs Missing, Tooltip Row/Summary/Divider, Escape)
+			// -------------------------------------------------------------
+			const matrixCase = page.locator('[data-testid="case-heatmap-matrix"]');
+			const beforeMatrix = matrixCase.locator("#focus-before-matrix");
+			await beforeMatrix.focus();
+
+			// Tab from beforeMatrix -> lands on first cell [0, 0] (US-East at 00:00: 12ms)
+			await page.keyboard.press("Tab");
+			const firstMatrixBtn = matrixCase.locator('button[tabindex="0"]');
+			assert.equal(
+				await firstMatrixBtn.evaluate((el) => document.activeElement === el),
+				true,
+				"First Tab must focus the initial matrix cell",
+			);
+
+			// Tooltip should open on focus showing exact 12ms and Operational
+			const matrixTooltip = page.locator('[data-testid="matrix-custom-tooltip"]');
+			await matrixTooltip.waitFor({ state: "visible" });
+			const firstTitle = (await page.locator("#matrix-tooltip-title").textContent())?.trim();
+			assert.equal(firstTitle, "US-East at 00:00", "First cell title must be 'US-East at 00:00'");
+			const firstRowText = (
+				await matrixTooltip.locator('[data-testid="chart-tooltip-row"]').innerText()
+			)
+				.replace(/\s+/g, " ")
+				.trim();
+			assert.equal(firstRowText, "Latency 12ms", "First cell row must render exact 'Latency 12ms'");
+			const firstSummaryText = (
+				await matrixTooltip.locator('[data-testid="chart-tooltip-summary"]').innerText()
+			)
+				.replace(/\s+/g, " ")
+				.trim();
+			assert.equal(
+				firstSummaryText,
+				"Status Operational",
+				"First cell summary must render exact 'Status Operational'",
+			);
+
+			// Press Escape: tooltip must close while cell focus is strictly preserved
+			await page.keyboard.press("Escape");
+			await page.waitForFunction(
+				() => document.querySelector('[data-testid="matrix-custom-tooltip"]') == null,
+			);
+			assert.equal(
+				await firstMatrixBtn.evaluate((el) => document.activeElement === el),
+				true,
+				"Active element after Escape must remain on the focused matrix cell",
+			);
+
+			// Navigate with ArrowRight 3 times to col 3 (which is numeric 0: local co-located ping)
+			await page.keyboard.press("ArrowRight");
+			await page.keyboard.press("ArrowRight");
+			await page.keyboard.press("ArrowRight");
+			await matrixTooltip.waitFor({ state: "visible" });
+			const zeroTitle = (await page.locator("#matrix-tooltip-title").textContent())?.trim();
+			assert.equal(zeroTitle, "US-East at 18:00", "Zero cell title must be 'US-East at 18:00'");
+			const zeroRowText = (
+				await matrixTooltip.locator('[data-testid="chart-tooltip-row"]').innerText()
+			)
+				.replace(/\s+/g, " ")
+				.trim();
+			assert.equal(
+				zeroRowText,
+				"Latency 0ms",
+				"Numeric 0 cell must render exact 'Latency 0ms' (distinct from missing)",
+			);
+			const zeroSummaryText = (
+				await matrixTooltip.locator('[data-testid="chart-tooltip-summary"]').innerText()
+			)
+				.replace(/\s+/g, " ")
+				.trim();
+			assert.equal(zeroSummaryText, "Status Operational", "Zero cell status must be 'Operational'");
+
+			// ArrowDown to row 1, col 3 -> then ArrowLeft to col 2 (which is null / disconnected node)
+			await page.keyboard.press("ArrowDown");
+			await page.keyboard.press("ArrowLeft");
+			await matrixTooltip.waitFor({ state: "visible" });
+			const missingTitle = (await page.locator("#matrix-tooltip-title").textContent())?.trim();
+			assert.equal(
+				missingTitle,
+				"US-West at 12:00",
+				"Missing cell title must be 'US-West at 12:00'",
+			);
+			const missingRowText = (
+				await matrixTooltip.locator('[data-testid="chart-tooltip-row"]').innerText()
+			)
+				.replace(/\s+/g, " ")
+				.trim();
+			assert.equal(
+				missingRowText,
+				"Latency —",
+				"Missing/null cell must render exact 'Latency —' without any ms unit",
+			);
+			const missingSummaryText = (
+				await matrixTooltip.locator('[data-testid="chart-tooltip-summary"]').innerText()
+			)
+				.replace(/\s+/g, " ")
+				.trim();
+			assert.equal(
+				missingSummaryText,
+				"Status Node offline",
+				"Missing cell summary must render exact 'Status Node offline'",
+			);
+
+			// Navigate to End (last col 5: 23:00) then navigate back step by step to Home (col 0)
+			// Verifying that every cell is completely visible and NOT occluded by sticky row header, and within right boundary
+			await page.keyboard.press("End");
+			const expectedCols = ["00:00", "06:00", "12:00", "18:00", "21:00", "23:00"] as const;
+			for (let step = 5; step >= 0; step--) {
+				const checkResult = await page.evaluate((expectedCol) => {
+					const activeBtn = document.activeElement as HTMLButtonElement | null;
+					if (activeBtn?.tagName !== "BUTTON") {
+						return { ok: false, error: "Active element is not a button" };
+					}
+					const label = activeBtn.getAttribute("aria-label") ?? "";
+					if (!label.includes(expectedCol)) {
+						return {
+							ok: false,
+							error: `Button aria-label does not match expected col ${expectedCol} (got: '${label}')`,
+						};
+					}
+					const tr = activeBtn.closest("tr");
+					const rowHeader = tr?.querySelector("th");
+					if (!rowHeader) {
+						return { ok: false, error: "Row header th element missing in tr" };
+					}
+					const scrollContainer = activeBtn.closest<HTMLElement>(
+						'[role="region"][aria-label$="scrollable table"]',
+					);
+					if (!scrollContainer) {
+						return { ok: false, error: "Scroll container missing" };
+					}
+					const containerRect = scrollContainer.getBoundingClientRect();
+					const btnRect = activeBtn.getBoundingClientRect();
+					const headerRect = rowHeader.getBoundingClientRect();
+
+					// 1. Must not be occluded by sticky header (left >= header right)
+					if (btnRect.left < headerRect.right) {
+						return {
+							ok: false,
+							error: `Occluded: btnRect.left (${btnRect.left}) < headerRect.right (${headerRect.right})`,
+						};
+					}
+					// 2. Must be within container right boundary
+					if (btnRect.right > containerRect.right + 1) {
+						return {
+							ok: false,
+							error: `Out of viewport: btnRect.right (${btnRect.right}) > containerRect.right (${containerRect.right})`,
+						};
+					}
+					return { ok: true };
+				}, expectedCols[step]);
+
+				assert.equal(
+					checkResult.ok,
+					true,
+					`Step ${step} (${expectedCols[step]}): ${checkResult.error ?? "ok"}`,
+				);
+				if (step > 0) {
+					await page.keyboard.press("ArrowLeft");
+				}
+			}
+
+			// Tab to exit the matrix -> lands on focus-after-matrix (single tab stop principle)
+			await page.keyboard.press("Tab");
+			assert.equal(
+				await page.evaluate(() => document.activeElement?.id),
+				"focus-after-matrix",
+				"Single Tab from matrix gridcell must exit directly to focus-after-matrix button",
+			);
+
+			heatmapMatrixChecked++;
 		}
 	}
 
@@ -1055,5 +1230,6 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 		statCardValidationsChecked,
 		reducedMotionChecked,
 		dynamicSeriesChecked,
+		heatmapMatrixChecked,
 	};
 }

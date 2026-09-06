@@ -89,6 +89,7 @@ export const CATALOG_PAGE_STATUS = {
 	"stacked-bar": "ready",
 	sparkline: "ready",
 	"heatmap-calendar": "ready",
+	"heatmap-matrix": "ready",
 	gauge: "ready",
 	radar: "ready",
 	funnel: "ready",

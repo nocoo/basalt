@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.0.3",
-	"totalModules": 110,
-	"totalSymbols": 699,
-	"totalValues": 378,
-	"totalTypes": 321,
+	"totalModules": 111,
+	"totalSymbols": 703,
+	"totalValues": 379,
+	"totalTypes": 324,
 	"totalCssExports": 3,
-	"totalCatalogEntries": 99,
+	"totalCatalogEntries": 100,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -3417,6 +3417,290 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional CSS class names for the outer scrollable container."
+						}
+					]
+				}
+			]
+		},
+		{
+			"displayName": "HeatmapMatrix",
+			"exportName": "HeatmapMatrix",
+			"importPath": "@nocoo/basalt/charts/heatmap-matrix",
+			"subpath": "./charts/heatmap-matrix",
+			"sourceFile": "packages/basalt/src/charts/heatmap-matrix.tsx",
+			"sourceHash": "5c85d0115fedffa1",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/heatmap-matrix",
+			"packageDoc": "ai/registry.json#heatmap-matrix",
+			"summary": "HeatmapMatrix component documentation and catalog playground",
+			"peers": ["react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "HeatmapMatrixValue",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/heatmap-matrix",
+					"packageDoc": "ai/registry.json#heatmap-matrix",
+					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
+				},
+				{
+					"name": "HeatmapMatrixCellContext",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/heatmap-matrix",
+					"packageDoc": "ai/registry.json#heatmap-matrix",
+					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
+				},
+				{
+					"name": "HeatmapMatrixProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/heatmap-matrix",
+					"packageDoc": "ai/registry.json#heatmap-matrix",
+					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
+				},
+				{
+					"name": "HeatmapMatrix",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/heatmap-matrix",
+					"packageDoc": "ai/registry.json#heatmap-matrix",
+					"originModule": "@nocoo/basalt/charts/heatmap-matrix"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "heatmap-matrix",
+					"name": "HeatmapMatrix",
+					"exportName": "HeatmapMatrix",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#heatmap-matrix",
+					"api": [
+						{
+							"name": "HeatmapMatrix",
+							"props": [
+								{
+									"name": "rowLabels",
+									"type": "string[]",
+									"required": true,
+									"description": "Ordered row labels (e.g. weekdays [\"Mon\", \"Tue\", ...], service tiers, or regions)."
+								},
+								{
+									"name": "columnLabels",
+									"type": "string[]",
+									"required": true,
+									"description": "Ordered column labels (e.g. 24 hours [\"00:00\", ...], days, or status buckets)."
+								},
+								{
+									"name": "values",
+									"type": "HeatmapMatrixValue[][]",
+									"required": true,
+									"description": "2D matrix of values indexed by [rowIndex][colIndex].\nSupports ragged rows, null, undefined, and non-finite values (treated as missing).\nNumeric `0` is a valid reading and distinct from missing data."
+								},
+								{
+									"name": "domain",
+									"type": "readonly [min: number, max: number]",
+									"required": false,
+									"description": "Explicit [min, max] domain for color intensity scaling.\nIf reversed [max, min], bounds are automatically normalized to [min, max].\nIf equal [v, v], values <= v receive level 0 while values > v clamp to the highest level.\nIf non-finite or omitted, dynamically derived solely from visible finite numeric cells in the dataset (or [0, 0] if no finite values exist).\nValues at or below min receive level 0; values >= max clamp to the highest level."
+								},
+								{
+									"name": "colorScale",
+									"type": "string[]",
+									"required": false,
+									"default": "heatmapColorScales.green",
+									"description": "Sequential color palette array from lowest to highest intensity.\nIf empty or single-color, gracefully resolves to base level."
+								},
+								{
+									"name": "valueFormatter",
+									"type": "(value: number) => string",
+									"required": false,
+									"description": "Formatter for numeric values displayed in tooltips and accessible labels.\nDefaults to `value.toLocaleString()`."
+								},
+								{
+									"name": "missingLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"—\"",
+									"description": "Placeholder string used for missing/null/undefined readings."
+								},
+								{
+									"name": "metricLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Heatmap matrix\"",
+									"description": "Accessible label describing the matrix purpose or metric name."
+								},
+								{
+									"name": "ariaLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Heatmap matrix\"",
+									"description": "Accessible name for the entire grid region."
+								},
+								{
+									"name": "cellSize",
+									"type": "number",
+									"required": false,
+									"default": "16",
+									"description": "Pixel height (and default width) of each matrix data cell."
+								},
+								{
+									"name": "columnWidth",
+									"type": "number",
+									"required": false,
+									"description": "Pixel width of each matrix column / data cell.\nWhen omitted, falls back to `cellSize` for square cells.\nAllows wider rectangular cells to fit readable column headers (e.g. timestamps or service names)."
+								},
+								{
+									"name": "cellGap",
+									"type": "number",
+									"required": false,
+									"default": "2",
+									"description": "Pixel gap between adjacent cells."
+								},
+								{
+									"name": "lessLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Less\"",
+									"description": "Text for lowest bound legend."
+								},
+								{
+									"name": "moreLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"More\"",
+									"description": "Text for highest bound legend."
+								},
+								{
+									"name": "showLegend",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Whether to show the bottom intensity scale legend."
+								},
+								{
+									"name": "renderTooltip",
+									"type": "(cell: HeatmapMatrixCellContext) => ReactNode",
+									"required": false,
+									"description": "Custom cell tooltip content renderer.\nIf provided, replaces the default tooltip contents."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "HeatmapMatrix",
+					"props": [
+						{
+							"name": "rowLabels",
+							"type": "string[]",
+							"required": true,
+							"description": "Ordered row labels (e.g. weekdays [\"Mon\", \"Tue\", ...], service tiers, or regions)."
+						},
+						{
+							"name": "columnLabels",
+							"type": "string[]",
+							"required": true,
+							"description": "Ordered column labels (e.g. 24 hours [\"00:00\", ...], days, or status buckets)."
+						},
+						{
+							"name": "values",
+							"type": "HeatmapMatrixValue[][]",
+							"required": true,
+							"description": "2D matrix of values indexed by [rowIndex][colIndex].\nSupports ragged rows, null, undefined, and non-finite values (treated as missing).\nNumeric `0` is a valid reading and distinct from missing data."
+						},
+						{
+							"name": "domain",
+							"type": "readonly [min: number, max: number]",
+							"required": false,
+							"description": "Explicit [min, max] domain for color intensity scaling.\nIf reversed [max, min], bounds are automatically normalized to [min, max].\nIf equal [v, v], values <= v receive level 0 while values > v clamp to the highest level.\nIf non-finite or omitted, dynamically derived solely from visible finite numeric cells in the dataset (or [0, 0] if no finite values exist).\nValues at or below min receive level 0; values >= max clamp to the highest level."
+						},
+						{
+							"name": "colorScale",
+							"type": "string[]",
+							"required": false,
+							"default": "heatmapColorScales.green",
+							"description": "Sequential color palette array from lowest to highest intensity.\nIf empty or single-color, gracefully resolves to base level."
+						},
+						{
+							"name": "valueFormatter",
+							"type": "(value: number) => string",
+							"required": false,
+							"description": "Formatter for numeric values displayed in tooltips and accessible labels.\nDefaults to `value.toLocaleString()`."
+						},
+						{
+							"name": "missingLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"—\"",
+							"description": "Placeholder string used for missing/null/undefined readings."
+						},
+						{
+							"name": "metricLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Heatmap matrix\"",
+							"description": "Accessible label describing the matrix purpose or metric name."
+						},
+						{
+							"name": "ariaLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Heatmap matrix\"",
+							"description": "Accessible name for the entire grid region."
+						},
+						{
+							"name": "cellSize",
+							"type": "number",
+							"required": false,
+							"default": "16",
+							"description": "Pixel height (and default width) of each matrix data cell."
+						},
+						{
+							"name": "columnWidth",
+							"type": "number",
+							"required": false,
+							"description": "Pixel width of each matrix column / data cell.\nWhen omitted, falls back to `cellSize` for square cells.\nAllows wider rectangular cells to fit readable column headers (e.g. timestamps or service names)."
+						},
+						{
+							"name": "cellGap",
+							"type": "number",
+							"required": false,
+							"default": "2",
+							"description": "Pixel gap between adjacent cells."
+						},
+						{
+							"name": "lessLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Less\"",
+							"description": "Text for lowest bound legend."
+						},
+						{
+							"name": "moreLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"More\"",
+							"description": "Text for highest bound legend."
+						},
+						{
+							"name": "showLegend",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether to show the bottom intensity scale legend."
+						},
+						{
+							"name": "renderTooltip",
+							"type": "(cell: HeatmapMatrixCellContext) => ReactNode",
+							"required": false,
+							"description": "Custom cell tooltip content renderer.\nIf provided, replaces the default tooltip contents."
 						}
 					]
 				}
@@ -32647,6 +32931,129 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional CSS class names for the outer scrollable container."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "heatmap-matrix",
+			"name": "HeatmapMatrix",
+			"exportName": "HeatmapMatrix",
+			"importPath": "@nocoo/basalt/charts/heatmap-matrix",
+			"sourceFile": "packages/basalt/src/charts/heatmap-matrix.tsx",
+			"sourceHash": "5c85d0115fedffa1",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#heatmap-matrix",
+			"api": [
+				{
+					"name": "HeatmapMatrix",
+					"props": [
+						{
+							"name": "rowLabels",
+							"type": "string[]",
+							"required": true,
+							"description": "Ordered row labels (e.g. weekdays [\"Mon\", \"Tue\", ...], service tiers, or regions)."
+						},
+						{
+							"name": "columnLabels",
+							"type": "string[]",
+							"required": true,
+							"description": "Ordered column labels (e.g. 24 hours [\"00:00\", ...], days, or status buckets)."
+						},
+						{
+							"name": "values",
+							"type": "HeatmapMatrixValue[][]",
+							"required": true,
+							"description": "2D matrix of values indexed by [rowIndex][colIndex].\nSupports ragged rows, null, undefined, and non-finite values (treated as missing).\nNumeric `0` is a valid reading and distinct from missing data."
+						},
+						{
+							"name": "domain",
+							"type": "readonly [min: number, max: number]",
+							"required": false,
+							"description": "Explicit [min, max] domain for color intensity scaling.\nIf reversed [max, min], bounds are automatically normalized to [min, max].\nIf equal [v, v], values <= v receive level 0 while values > v clamp to the highest level.\nIf non-finite or omitted, dynamically derived solely from visible finite numeric cells in the dataset (or [0, 0] if no finite values exist).\nValues at or below min receive level 0; values >= max clamp to the highest level."
+						},
+						{
+							"name": "colorScale",
+							"type": "string[]",
+							"required": false,
+							"default": "heatmapColorScales.green",
+							"description": "Sequential color palette array from lowest to highest intensity.\nIf empty or single-color, gracefully resolves to base level."
+						},
+						{
+							"name": "valueFormatter",
+							"type": "(value: number) => string",
+							"required": false,
+							"description": "Formatter for numeric values displayed in tooltips and accessible labels.\nDefaults to `value.toLocaleString()`."
+						},
+						{
+							"name": "missingLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"—\"",
+							"description": "Placeholder string used for missing/null/undefined readings."
+						},
+						{
+							"name": "metricLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Heatmap matrix\"",
+							"description": "Accessible label describing the matrix purpose or metric name."
+						},
+						{
+							"name": "ariaLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Heatmap matrix\"",
+							"description": "Accessible name for the entire grid region."
+						},
+						{
+							"name": "cellSize",
+							"type": "number",
+							"required": false,
+							"default": "16",
+							"description": "Pixel height (and default width) of each matrix data cell."
+						},
+						{
+							"name": "columnWidth",
+							"type": "number",
+							"required": false,
+							"description": "Pixel width of each matrix column / data cell.\nWhen omitted, falls back to `cellSize` for square cells.\nAllows wider rectangular cells to fit readable column headers (e.g. timestamps or service names)."
+						},
+						{
+							"name": "cellGap",
+							"type": "number",
+							"required": false,
+							"default": "2",
+							"description": "Pixel gap between adjacent cells."
+						},
+						{
+							"name": "lessLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Less\"",
+							"description": "Text for lowest bound legend."
+						},
+						{
+							"name": "moreLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"More\"",
+							"description": "Text for highest bound legend."
+						},
+						{
+							"name": "showLegend",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Whether to show the bottom intensity scale legend."
+						},
+						{
+							"name": "renderTooltip",
+							"type": "(cell: HeatmapMatrixCellContext) => ReactNode",
+							"required": false,
+							"description": "Custom cell tooltip content renderer.\nIf provided, replaces the default tooltip contents."
 						}
 					]
 				}

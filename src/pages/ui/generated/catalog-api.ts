@@ -46,6 +46,7 @@ import { API as gaugeApi } from "./catalog-api/gauge";
 import { API as gridApi } from "./catalog-api/grid";
 import { API as groupedBarApi } from "./catalog-api/grouped-bar";
 import { API as heatmapCalendarApi } from "./catalog-api/heatmap-calendar";
+import { API as heatmapMatrixApi } from "./catalog-api/heatmap-matrix";
 import { API as hoverCardApi } from "./catalog-api/hover-card";
 import { API as inputApi } from "./catalog-api/input";
 import { API as inputAreaApi } from "./catalog-api/input-area";
@@ -147,6 +148,7 @@ export const CATALOG_API = {
 	grid: gridApi,
 	"grouped-bar": groupedBarApi,
 	"heatmap-calendar": heatmapCalendarApi,
+	"heatmap-matrix": heatmapMatrixApi,
 	"hover-card": hoverCardApi,
 	input: inputApi,
 	"input-area": inputAreaApi,
