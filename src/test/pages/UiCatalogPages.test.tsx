@@ -1126,7 +1126,7 @@ describe("ui catalog", () => {
 		expect(docs?.api).toBe(CATALOG_API["confirm-dialog"]);
 		expect(docs).toMatchObject({
 			description:
-				"A controlled confirmation dialog with explicit loading, focus restoration to opener, and a Promise-based hook.",
+				"A controlled confirmation dialog with explicit loading, focus restoration to opener, and a Promise-based hook. The caller controls open/loading and is responsible for handling asynchronous action errors.",
 			variants: ["default", "destructive"],
 		});
 		expect(CATALOG_API["confirm-dialog"]?.map((surface) => surface.name)).toEqual([

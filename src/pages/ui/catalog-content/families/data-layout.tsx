@@ -282,7 +282,7 @@ export default function Example() {
 			...extraDocs(
 				"DeleteResource",
 				"delete-resource",
-				"A confirmation dialog that deletes a named resource with error alert and retry feedback.",
+				"A confirmation dialog that deletes a named resource with error alert and retry feedback. When onDelete throws or rejects, the dialog remains open displaying an accessible role=alert message, which defaults to the error message or can be customized via ReactNode or an (error: unknown) => ReactNode formatter.",
 				'<DeleteResource name="Atlas" onDelete={() => undefined} />',
 			),
 			api: deleteResourceApi,

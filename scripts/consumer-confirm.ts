@@ -29,7 +29,23 @@ export async function assertConsumerConfirm(page: Page) {
 	);
 	await page.waitForFunction(() => document.activeElement?.id === "opener");
 
-	// Case 2: unmounted pending confirmation resolves false and restores connected opener
+	// Case 2: independent Cancel resolves false and restores opener focus
+	await page.locator("#opener").click();
+	await page.getByRole("alertdialog").waitFor({ state: "visible" });
+	await page.getByRole("button", { name: "Cancel", exact: true }).click();
+	await page.getByRole("alertdialog").waitFor({ state: "hidden" });
+	assert.deepEqual(
+		await page.evaluate(() => window.confirmProof?.results),
+		[
+			{ name: "first", value: false },
+			{ name: "second", value: true },
+			{ name: "first", value: false },
+		],
+		"cancelled confirmation must settle promise as false",
+	);
+	await page.waitForFunction(() => document.activeElement?.id === "opener");
+
+	// Case 3: unmounted pending confirmation resolves false and restores connected opener
 	await page.evaluate(() => {
 		window.renderConfirm?.("confirm");
 	});
@@ -46,7 +62,7 @@ export async function assertConsumerConfirm(page: Page) {
 	);
 	await page.waitForFunction(() => document.activeElement?.id === "opener");
 
-	// Case 3: DeleteResource displays error alert upon reject and succeeds on retry
+	// Case 4: DeleteResource displays error alert upon reject and succeeds on retry
 	await page.evaluate(() => {
 		window.renderConfirm?.("delete");
 	});
@@ -78,6 +94,7 @@ export async function assertConsumerConfirm(page: Page) {
 	return {
 		passed: true,
 		replacementSettled: true,
+		cancelSettled: true,
 		unmountSettled: true,
 		retrySucceeded: true,
 	};
