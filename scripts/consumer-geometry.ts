@@ -283,16 +283,81 @@ export async function assertConsumerGeometry(
 	}
 
 	// 6. Test Combobox nested inside Dialog
+	// Record close attempts before pressing Escape to ensure Escape on listbox does NOT bubble close request to Dialog
+	const initialDialogCloseAttempts = await page.evaluate(
+		() =>
+			(window as unknown as { getDialogCloseAttempts?: () => number }).getDialogCloseAttempts?.() ??
+			0,
+	);
 	const dialogComboboxInput = page.locator("#dialog-combobox-input");
 	await dialogComboboxInput.focus();
 	const dialogList = page.getByRole("listbox");
 	await dialogList.waitFor({ state: "visible", timeout: 5000 });
-	// First Escape closes nested listbox, Dialog remains open
+	// First Escape closes nested listbox, Dialog remains open and receives 0 close attempts
 	await page.keyboard.press("Escape");
 	await dialogList.waitFor({ state: "hidden", timeout: 5000 });
 	const isDialogStillOpen = await page.getByRole("dialog").count();
 	if (isDialogStillOpen === 0) {
 		throw new Error("Escape closed Dialog instead of closing nested listbox first");
+	}
+	const afterEscapeDialogCloseAttempts = await page.evaluate(
+		() =>
+			(window as unknown as { getDialogCloseAttempts?: () => number }).getDialogCloseAttempts?.() ??
+			0,
+	);
+	if (afterEscapeDialogCloseAttempts !== initialDialogCloseAttempts) {
+		throw new Error(
+			`expected 0 dialog close attempts from listbox Escape, got ${afterEscapeDialogCloseAttempts - initialDialogCloseAttempts}`,
+		);
+	}
+
+	// 7. Test Autocomplete blur and Tab/Shift+Tab commit behavior without focus stealing
+	const autoInput = page.locator("#test-autocomplete-input");
+
+	// A: Type freeform text, Tab to #autocomplete-after-btn: commits once and focus lands on after button
+	await autoInput.fill("custom freeform");
+	await page.keyboard.press("Tab");
+	await page.waitForTimeout(60);
+	const activeAfterTab = await page.evaluate(() => document.activeElement?.id);
+	if (activeAfterTab !== "autocomplete-after-btn") {
+		throw new Error(
+			`expected focus to advance to autocomplete-after-btn on Tab, got ${activeAfterTab}`,
+		);
+	}
+	let commits = await page.evaluate(
+		() =>
+			(
+				window as unknown as { getAutocompleteCommits?: () => string[] }
+			).getAutocompleteCommits?.() ?? [],
+	);
+	if (commits.length !== 1 || commits[0] !== "custom freeform") {
+		throw new Error(
+			`expected ['custom freeform'] commit on Tab blur, got ${JSON.stringify(commits)}`,
+		);
+	}
+
+	// B: Focus again, type exact label "Banana", Shift+Tab to #autocomplete-before-btn:
+	// commits matching value "val-banana" once, and focus lands on before button
+	await autoInput.focus();
+	await autoInput.fill("Banana");
+	await page.keyboard.press("Shift+Tab");
+	await page.waitForTimeout(60);
+	const activeAfterShiftTab = await page.evaluate(() => document.activeElement?.id);
+	if (activeAfterShiftTab !== "autocomplete-before-btn") {
+		throw new Error(
+			`expected focus to retreat to autocomplete-before-btn on Shift+Tab, got ${activeAfterShiftTab}`,
+		);
+	}
+	commits = await page.evaluate(
+		() =>
+			(
+				window as unknown as { getAutocompleteCommits?: () => string[] }
+			).getAutocompleteCommits?.() ?? [],
+	);
+	if (commits.length !== 2 || commits[1] !== "val-banana") {
+		throw new Error(
+			`expected ['custom freeform', 'val-banana'] commits after Shift+Tab, got ${JSON.stringify(commits)}`,
+		);
 	}
 
 	const data = await page.evaluate(() => {

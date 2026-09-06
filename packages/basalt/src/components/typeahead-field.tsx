@@ -55,7 +55,6 @@ export function TypeaheadField({
 	const inputRef = useRef<HTMLInputElement>(null);
 	const skipFocusOpen = useRef(false);
 	const lastPointerPos = useRef<{ x: number; y: number } | null>(null);
-	const isKeyboardNavRef = useRef(false);
 	if (value !== prevValue) {
 		setPrevValue(value);
 		if (value !== undefined) {
@@ -127,7 +126,7 @@ export function TypeaheadField({
 		});
 	}, [allowFreeform, items, open, query]);
 
-	function commitValue(next: string, display: string) {
+	function commitValue(next: string, display: string, restoreFocus = true) {
 		if (value === undefined) {
 			setUncontrolled(next);
 			setQuery(display);
@@ -137,20 +136,20 @@ export function TypeaheadField({
 		setOpen(false);
 		setActive(null);
 		onValueChange?.(next);
-		if (inputRef.current && document.activeElement !== inputRef.current) {
+		if (restoreFocus && inputRef.current && document.activeElement !== inputRef.current) {
 			skipFocusOpen.current = true;
 			inputRef.current.focus();
 		}
 	}
 
-	function commitItem(item: TypeaheadItem) {
+	function commitItem(item: TypeaheadItem, restoreFocus = true) {
 		if (item.disabled) {
 			return;
 		}
-		commitValue(item.value, item.label);
+		commitValue(item.value, item.label, restoreFocus);
 	}
 
-	function commitFreeform(text: string) {
+	function commitFreeform(text: string, restoreFocus = true) {
 		const trimmed = text.trim();
 		const match = items.find(
 			(item) =>
@@ -158,10 +157,10 @@ export function TypeaheadField({
 				(item.label.toLowerCase() === trimmed.toLowerCase() || item.value === trimmed),
 		);
 		if (match) {
-			commitItem(match);
+			commitItem(match, restoreFocus);
 			return;
 		}
-		commitValue(trimmed, trimmed);
+		commitValue(trimmed, trimmed, restoreFocus);
 	}
 
 	useEffect(() => {
@@ -210,7 +209,7 @@ export function TypeaheadField({
 					if (!event.currentTarget.contains(related) && !listbox?.contains(related)) {
 						if (allowFreeform) {
 							if (query.trim() !== displayOf(items, selected)) {
-								commitFreeform(query);
+								commitFreeform(query, false);
 								return;
 							}
 						} else {
@@ -263,7 +262,6 @@ export function TypeaheadField({
 							}
 							if (event.key === "ArrowDown") {
 								event.preventDefault();
-								isKeyboardNavRef.current = true;
 								setOpen(true);
 								if (filtered.length === 0) {
 									setActive(null);
@@ -274,7 +272,6 @@ export function TypeaheadField({
 							}
 							if (event.key === "ArrowUp") {
 								event.preventDefault();
-								isKeyboardNavRef.current = true;
 								setOpen(true);
 								if (filtered.length === 0) {
 									setActive(null);
@@ -329,7 +326,6 @@ export function TypeaheadField({
 									return;
 								}
 								lastPointerPos.current = { x: event.clientX, y: event.clientY };
-								isKeyboardNavRef.current = false;
 							}}
 							onEscapeKeyDown={(e) => {
 								const evt = e as unknown as {
@@ -382,7 +378,6 @@ export function TypeaheadField({
 											return;
 										}
 										lastPointerPos.current = { x: clientX, y: clientY };
-										isKeyboardNavRef.current = false;
 										setActive(index);
 									}}
 									onMouseDown={(event) => event.preventDefault()}

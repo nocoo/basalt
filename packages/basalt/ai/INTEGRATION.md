@@ -1053,7 +1053,7 @@ export function ProjectSettingsForm() {
 ### Known Form Limitations
 1. `DatePicker` external ref merging & focus target: forwarding a custom `ref` (or RHF's `field.ref`) currently targets the internal hidden input rather than the interactive trigger button, and forwarding overrides internal hidden input ref bindings which impairs form reset behavior. Therefore, form libraries should manage `DatePicker` using controlled `value` / `onChange` / `onBlur` handlers without binding `field.ref` until native ref merging is delivered in P3.
 2. `Field` composition with Form Library Controllers: `Field` clones its immediate child element to inject accessibility IDs (`id`, `aria-describedby`). When wrapping controls with an abstraction like `react-hook-form`'s `<Controller>`, render `<Field>` **inside** the `Controller`'s `render` prop (wrapping the actual input control) rather than nesting `Controller` inside `Field`.
-3. `Autocomplete` free-text commit on blur: committing unselected free text triggers an unconditional focus call, preventing natural Tab navigation.
+3. `Autocomplete` free-text commit on blur: unselected free text and matching suggestions commit on blur without reclaiming focus, preserving natural Tab / Shift+Tab navigation and pointer departures.
 4. Native `required` validation on composite controls: empty required `DatePicker` inputs focus a 1×1px hidden element rather than the visible trigger button (remediation slated for P3).
 
 ---

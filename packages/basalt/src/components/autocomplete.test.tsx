@@ -34,14 +34,44 @@ describe("Autocomplete", () => {
 		expect(input).toHaveValue("Kiwi");
 	});
 
-	it("commits freeform text on blur", () => {
+	it("commits freeform text on blur without restoring focus to input", () => {
 		const onValueChange = vi.fn();
-		render(<Autocomplete items={[APPLE]} placeholder="Fruit" onValueChange={onValueChange} />);
+		render(
+			<div>
+				<Autocomplete items={[APPLE]} placeholder="Fruit" onValueChange={onValueChange} />
+				<button type="button" id="next-btn">
+					Next
+				</button>
+			</div>,
+		);
 		const input = screen.getByLabelText("Fruit");
+		const nextBtn = screen.getByRole("button", { name: "Next" });
 		fireEvent.change(input, { target: { value: "Mango" } });
-		fireEvent.focusOut(input, { relatedTarget: document.body });
+		fireEvent.blur(input, { relatedTarget: nextBtn });
+		expect(onValueChange).toHaveBeenCalledTimes(1);
 		expect(onValueChange).toHaveBeenCalledWith("Mango");
 		expect(input).toHaveValue("Mango");
+		expect(document.activeElement).not.toBe(input);
+	});
+
+	it("commits exact matching label on blur without restoring focus to input", () => {
+		const onValueChange = vi.fn();
+		render(
+			<div>
+				<Autocomplete items={[APPLE, BANANA]} placeholder="Fruit" onValueChange={onValueChange} />
+				<button type="button" id="next-btn">
+					Next
+				</button>
+			</div>,
+		);
+		const input = screen.getByLabelText("Fruit");
+		const nextBtn = screen.getByRole("button", { name: "Next" });
+		fireEvent.change(input, { target: { value: "Apple" } });
+		fireEvent.blur(input, { relatedTarget: nextBtn });
+		expect(onValueChange).toHaveBeenCalledTimes(1);
+		expect(onValueChange).toHaveBeenCalledWith("apple");
+		expect(input).toHaveValue("Apple");
+		expect(document.activeElement).not.toBe(input);
 	});
 
 	it("commits a matching suggestion by value", () => {

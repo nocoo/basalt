@@ -9,7 +9,7 @@ export const API = [
 				name: "items",
 				type: "AutocompleteItem[]",
 				required: true,
-				description: "Suggestions shown as the query matches. Values outside the list are allowed.",
+				description: "Suggestions shown as the query matches. Values outside the list are allowed.\n\nNote: When focus leaves the field (via pointer click or Tab/Shift+Tab navigation),\nany uncommitted text or matching suggestion is committed once without stealing focus\nback to the input, allowing natural focus traversal.",
 			},
 			{
 				name: "value",

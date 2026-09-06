@@ -5424,7 +5424,7 @@
 			"importPath": "@nocoo/basalt/components/autocomplete",
 			"subpath": "./components/autocomplete",
 			"sourceFile": "packages/basalt/src/components/autocomplete.tsx",
-			"sourceHash": "a9b874dc9e3dd0a7",
+			"sourceHash": "01224173a3d55313",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -5475,7 +5475,7 @@
 									"name": "items",
 									"type": "AutocompleteItem[]",
 									"required": true,
-									"description": "Suggestions shown as the query matches. Values outside the list are allowed."
+									"description": "Suggestions shown as the query matches. Values outside the list are allowed.\n\nNote: When focus leaves the field (via pointer click or Tab/Shift+Tab navigation),\nany uncommitted text or matching suggestion is committed once without stealing focus\nback to the input, allowing natural focus traversal."
 								},
 								{
 									"name": "value",
@@ -5542,7 +5542,7 @@
 							"name": "items",
 							"type": "AutocompleteItem[]",
 							"required": true,
-							"description": "Suggestions shown as the query matches. Values outside the list are allowed."
+							"description": "Suggestions shown as the query matches. Values outside the list are allowed.\n\nNote: When focus leaves the field (via pointer click or Tab/Shift+Tab navigation),\nany uncommitted text or matching suggestion is committed once without stealing focus\nback to the input, allowing natural focus traversal."
 						},
 						{
 							"name": "value",
@@ -22368,7 +22368,7 @@
 			"importPath": "@nocoo/basalt/components/typeahead-field",
 			"subpath": "./components/typeahead-field",
 			"sourceFile": "packages/basalt/src/components/typeahead-field.tsx",
-			"sourceHash": "c9ec6a76c5f2a60e",
+			"sourceHash": "a9e82a779e71c6da",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "legacy-internal",
@@ -24088,7 +24088,7 @@
 			"exportName": "Autocomplete",
 			"importPath": "@nocoo/basalt/components/autocomplete",
 			"sourceFile": "packages/basalt/src/components/autocomplete.tsx",
-			"sourceHash": "a9b874dc9e3dd0a7",
+			"sourceHash": "01224173a3d55313",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#autocomplete",
@@ -24100,7 +24100,7 @@
 							"name": "items",
 							"type": "AutocompleteItem[]",
 							"required": true,
-							"description": "Suggestions shown as the query matches. Values outside the list are allowed."
+							"description": "Suggestions shown as the query matches. Values outside the list are allowed.\n\nNote: When focus leaves the field (via pointer click or Tab/Shift+Tab navigation),\nany uncommitted text or matching suggestion is committed once without stealing focus\nback to the input, allowing natural focus traversal."
 						},
 						{
 							"name": "value",

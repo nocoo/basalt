@@ -10,6 +10,10 @@ export type AutocompleteProps = Omit<
 > & {
 	/**
 	 * Suggestions shown as the query matches. Values outside the list are allowed.
+	 *
+	 * Note: When focus leaves the field (via pointer click or Tab/Shift+Tab navigation),
+	 * any uncommitted text or matching suggestion is committed once without stealing focus
+	 * back to the input, allowing natural focus traversal.
 	 */
 	items: AutocompleteItem[];
 	/**

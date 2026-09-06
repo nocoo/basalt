@@ -4,6 +4,7 @@ import {
 	AccordionItem,
 	AccordionTrigger,
 } from "@nocoo/basalt/components/accordion";
+import { Autocomplete } from "@nocoo/basalt/components/autocomplete";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
@@ -38,6 +39,9 @@ export function GeometryApp() {
 	const [childClickCount, setChildClickCount] = React.useState(0);
 	const [parentCaptureCount, setParentCaptureCount] = React.useState(0);
 	const [childCaptureCount, setChildCaptureCount] = React.useState(0);
+	const [dialogCloseAttempts, setDialogCloseAttempts] = React.useState(0);
+	const [autocompleteValue, setAutocompleteValue] = React.useState("");
+	const [autocompleteCommits, setAutocompleteCommits] = React.useState<string[]>([]);
 
 	React.useEffect(() => {
 		(
@@ -49,6 +53,8 @@ export function GeometryApp() {
 					parentCapture: number;
 					childCapture: number;
 				};
+				getDialogCloseAttempts?: () => number;
+				getAutocompleteCommits?: () => string[];
 			}
 		).setSwitchLoading = setSwitchLoading;
 		(
@@ -59,6 +65,8 @@ export function GeometryApp() {
 					parentCapture: number;
 					childCapture: number;
 				};
+				getDialogCloseAttempts?: () => number;
+				getAutocompleteCommits?: () => string[];
 			}
 		).getDynamicCounts = () => ({
 			parentClick: parentClickCount,
@@ -66,7 +74,24 @@ export function GeometryApp() {
 			parentCapture: parentCaptureCount,
 			childCapture: childCaptureCount,
 		});
-	}, [parentClickCount, childClickCount, parentCaptureCount, childCaptureCount]);
+		(
+			window as unknown as {
+				getDialogCloseAttempts?: () => number;
+			}
+		).getDialogCloseAttempts = () => dialogCloseAttempts;
+		(
+			window as unknown as {
+				getAutocompleteCommits?: () => string[];
+			}
+		).getAutocompleteCommits = () => autocompleteCommits;
+	}, [
+		parentClickCount,
+		childClickCount,
+		parentCaptureCount,
+		childCaptureCount,
+		dialogCloseAttempts,
+		autocompleteCommits,
+	]);
 	return (
 		<div>
 			{/* Host native elements (un-styled, un-marked) for isolation / leak check */}
@@ -262,9 +287,41 @@ export function GeometryApp() {
 					<Breadcrumbs items={[{ label: "Home", href: "/home" }, { label: "Settings" }]} />
 				</div>
 
+				{/* Autocomplete Tab/Shift+Tab and pointer blur regression harness */}
+				<div id="autocomplete-test-harness" style={{ marginTop: 8, marginBottom: 8 }}>
+					<button id="autocomplete-before-btn" type="button">
+						Before Autocomplete
+					</button>
+					<Autocomplete
+						id="test-autocomplete-input"
+						items={[
+							{ value: "val-apple", label: "Apple" },
+							{ value: "val-banana", label: "Banana" },
+							{ value: "val-cherry", label: "Cherry" },
+						]}
+						value={autocompleteValue}
+						onValueChange={(val) => {
+							setAutocompleteValue(val);
+							setAutocompleteCommits((prev) => [...prev, val]);
+						}}
+						placeholder="Search fruits"
+					/>
+					<button id="autocomplete-after-btn" type="button">
+						After Autocomplete
+					</button>
+				</div>
+
 				<Badge id="basalt-badge">Active</Badge>
 
-				<Dialog open modal={false}>
+				<Dialog
+					open
+					modal={false}
+					onOpenChange={(next) => {
+						if (!next) {
+							setDialogCloseAttempts((c) => c + 1);
+						}
+					}}
+				>
 					<DialogTrigger id="basalt-dialog-trigger">Open Dialog</DialogTrigger>
 					<DialogContent id="basalt-dialog-content">
 						<DialogTitle id="basalt-dialog-title">Dialog Heading</DialogTitle>

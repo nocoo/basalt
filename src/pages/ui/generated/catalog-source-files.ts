@@ -140,7 +140,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"autocomplete": {
 		"file": "packages/basalt/src/components/autocomplete.tsx",
-		"hash": "a9b874dc9e3dd0a7",
+		"hash": "01224173a3d55313",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/autocomplete.js.map (sourcesContent[0])"
 	},
