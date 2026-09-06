@@ -1,6 +1,12 @@
 import { act, render, screen } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ACCENT_SWATCHES, AccentProvider, applyAccent, useAccent } from "./accent";
+import {
+	ACCENT_SWATCHES,
+	AccentProvider,
+	accentSwatchById,
+	applyAccent,
+	useAccent,
+} from "./accent";
 
 function Probe() {
 	const { accent, setAccent, swatches } = useAccent();
@@ -895,6 +901,143 @@ describe("accent", () => {
 		document.documentElement.className = "";
 		delete document.documentElement.dataset.accent;
 		document.documentElement.style.removeProperty("--basalt-primary");
+	});
+
+	it("falls back to in-memory mode when window.localStorage is undefined and isolates from foreign sessionStorage events", () => {
+		const originalDesc = Object.getOwnPropertyDescriptor(window, "localStorage");
+		const onAccentChange = vi.fn();
+		let unmountInstance: (() => void) | null = null;
+
+		try {
+			Object.defineProperty(window, "localStorage", {
+				configurable: true,
+				enumerable: true,
+				value: undefined,
+			});
+
+			const { unmount } = render(
+				<AccentProvider defaultAccent="sky" onAccentChange={onAccentChange}>
+					<Probe />
+				</AccentProvider>,
+			);
+			unmountInstance = unmount;
+
+			// Starts at configured defaultAccent
+			expect(screen.getByTestId("accent")).toHaveTextContent("sky");
+			expect(document.documentElement.dataset.accent).toBe("sky");
+
+			// User selection changes visible context and document attributes
+			act(() => {
+				screen.getByRole("button", { name: "pick-rose" }).click();
+			});
+			expect(onAccentChange).toHaveBeenCalledTimes(1);
+			expect(onAccentChange).toHaveBeenCalledWith("rose");
+			expect(screen.getByTestId("accent")).toHaveTextContent("rose");
+			expect(document.documentElement.dataset.accent).toBe("rose");
+
+			// StorageEvent with real sessionStorage must not revert in-memory selection
+			act(() => {
+				const event = new Event("storage") as StorageEvent;
+				Object.defineProperties(event, {
+					key: { value: "basalt-accent" },
+					newValue: { value: "sky" },
+					storageArea: { value: window.sessionStorage },
+				});
+				window.dispatchEvent(event);
+			});
+			expect(screen.getByTestId("accent")).toHaveTextContent("rose");
+			expect(document.documentElement.dataset.accent).toBe("rose");
+			expect(onAccentChange).toHaveBeenCalledTimes(1);
+
+			// Bare storage event must not revert in-memory selection when storage is missing
+			act(() => {
+				window.dispatchEvent(new Event("storage"));
+			});
+			expect(screen.getByTestId("accent")).toHaveTextContent("rose");
+			expect(document.documentElement.dataset.accent).toBe("rose");
+			expect(onAccentChange).toHaveBeenCalledTimes(1);
+		} finally {
+			try {
+				unmountInstance?.();
+			} finally {
+				if (originalDesc) {
+					Object.defineProperty(window, "localStorage", originalDesc);
+				}
+			}
+		}
+	});
+
+	it("ignores same-page basalt:accent-change events with empty detail or non-matching storageKey", () => {
+		window.localStorage.setItem("scoped-accent", "sky");
+		window.localStorage.setItem("other-accent", "primary");
+		const onAccentChange = vi.fn();
+		render(
+			<AccentProvider
+				storageKey="scoped-accent"
+				defaultAccent="sky"
+				onAccentChange={onAccentChange}
+			>
+				<Probe />
+			</AccentProvider>,
+		);
+		expect(screen.getByTestId("accent")).toHaveTextContent("sky");
+		expect(document.documentElement.dataset.accent).toBe("sky");
+
+		// Event without detail
+		act(() => {
+			window.dispatchEvent(new Event("basalt:accent-change"));
+		});
+		expect(screen.getByTestId("accent")).toHaveTextContent("sky");
+		expect(onAccentChange).not.toHaveBeenCalled();
+		expect(window.localStorage.getItem("scoped-accent")).toBe("sky");
+		expect(window.localStorage.getItem("other-accent")).toBe("primary");
+
+		// CustomEvent with non-matching key
+		act(() => {
+			window.dispatchEvent(
+				new CustomEvent("basalt:accent-change", {
+					detail: { key: "other-accent", value: "rose", writeSucceeded: true },
+				}),
+			);
+		});
+		expect(screen.getByTestId("accent")).toHaveTextContent("sky");
+		expect(onAccentChange).not.toHaveBeenCalled();
+		expect(document.documentElement.dataset.accent).toBe("sky");
+		expect(window.localStorage.getItem("scoped-accent")).toBe("sky");
+		expect(window.localStorage.getItem("other-accent")).toBe("primary");
+	});
+
+	it("normalizes unknown, null, or undefined accent ids to default primary in provider and utility", () => {
+		// 1. Verify accentSwatchById fallback contract
+		expect(accentSwatchById(null).id).toBe("primary");
+		expect(accentSwatchById(undefined).id).toBe("primary");
+		expect(accentSwatchById("non-existent-swatch-id").id).toBe("primary");
+
+		// 2. defaultAccent prop with unknown id normalizes to primary
+		const { rerender } = render(
+			<AccentProvider defaultAccent="unknown-accent">
+				<Probe />
+			</AccentProvider>,
+		);
+		expect(screen.getByTestId("accent")).toHaveTextContent("primary");
+		expect(document.documentElement.dataset.accent).toBe("primary");
+
+		// 3. controlled accent prop transition: rerender to valid teal first, then invalid unknown id
+		rerender(
+			<AccentProvider accent="teal">
+				<Probe />
+			</AccentProvider>,
+		);
+		expect(screen.getByTestId("accent")).toHaveTextContent("teal");
+		expect(document.documentElement.dataset.accent).toBe("teal");
+
+		rerender(
+			<AccentProvider accent="invalid-swatch-stop">
+				<Probe />
+			</AccentProvider>,
+		);
+		expect(screen.getByTestId("accent")).toHaveTextContent("primary");
+		expect(document.documentElement.dataset.accent).toBe("primary");
 	});
 
 	it("throws outside the provider", () => {

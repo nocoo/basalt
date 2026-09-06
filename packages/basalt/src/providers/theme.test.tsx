@@ -914,4 +914,155 @@ describe("ThemeProvider", () => {
 		});
 		expect(document.documentElement.classList.contains("light")).toBe(true);
 	});
+
+	it("falls back to in-memory mode when window.localStorage is undefined and isolates from foreign sessionStorage events", () => {
+		const originalDesc = Object.getOwnPropertyDescriptor(window, "localStorage");
+		const onThemeChange = vi.fn();
+		let unmountInstance: (() => void) | null = null;
+
+		try {
+			Object.defineProperty(window, "localStorage", {
+				configurable: true,
+				enumerable: true,
+				value: undefined,
+			});
+
+			const { unmount } = render(
+				<ThemeProvider defaultTheme="light" onThemeChange={onThemeChange}>
+					<Probe />
+				</ThemeProvider>,
+			);
+			unmountInstance = unmount;
+
+			// Starts at configured defaultTheme
+			expect(screen.getByTestId("theme-val")).toHaveTextContent("light");
+			expect(document.documentElement.classList.contains("light")).toBe(true);
+
+			// User selection changes visible context and document attributes
+			act(() => {
+				screen.getByRole("button", { name: "set-dark" }).click();
+			});
+			expect(onThemeChange).toHaveBeenCalledTimes(1);
+			expect(onThemeChange).toHaveBeenCalledWith("dark");
+			expect(screen.getByTestId("theme-val")).toHaveTextContent("dark");
+			expect(document.documentElement.classList.contains("dark")).toBe(true);
+
+			// StorageEvent with real sessionStorage must not revert in-memory selection
+			act(() => {
+				const event = new Event("storage") as StorageEvent;
+				Object.defineProperties(event, {
+					key: { value: "theme" },
+					newValue: { value: "light" },
+					storageArea: { value: window.sessionStorage },
+				});
+				window.dispatchEvent(event);
+			});
+			expect(screen.getByTestId("theme-val")).toHaveTextContent("dark");
+			expect(document.documentElement.classList.contains("dark")).toBe(true);
+			expect(onThemeChange).toHaveBeenCalledTimes(1);
+
+			// Bare storage event must not revert in-memory selection when storage is missing
+			act(() => {
+				window.dispatchEvent(new Event("storage"));
+			});
+			expect(screen.getByTestId("theme-val")).toHaveTextContent("dark");
+			expect(document.documentElement.classList.contains("dark")).toBe(true);
+			expect(onThemeChange).toHaveBeenCalledTimes(1);
+		} finally {
+			try {
+				unmountInstance?.();
+			} finally {
+				if (originalDesc) {
+					Object.defineProperty(window, "localStorage", originalDesc);
+				}
+			}
+		}
+	});
+
+	it("ignores same-page basalt:theme-change events with empty detail or non-matching storageKey", () => {
+		window.localStorage.setItem("scoped-theme", "light");
+		window.localStorage.setItem("other-theme", "system");
+		const onThemeChange = vi.fn();
+		render(
+			<ThemeProvider storageKey="scoped-theme" defaultTheme="light" onThemeChange={onThemeChange}>
+				<Probe />
+			</ThemeProvider>,
+		);
+		expect(screen.getByTestId("theme-val")).toHaveTextContent("light");
+		expect(document.documentElement.classList.contains("light")).toBe(true);
+
+		// Event without detail
+		act(() => {
+			window.dispatchEvent(new Event("basalt:theme-change"));
+		});
+		expect(screen.getByTestId("theme-val")).toHaveTextContent("light");
+		expect(onThemeChange).not.toHaveBeenCalled();
+		expect(window.localStorage.getItem("scoped-theme")).toBe("light");
+		expect(window.localStorage.getItem("other-theme")).toBe("system");
+
+		// CustomEvent with non-matching key
+		act(() => {
+			window.dispatchEvent(
+				new CustomEvent("basalt:theme-change", {
+					detail: { key: "other-theme", value: "dark", writeSucceeded: true },
+				}),
+			);
+		});
+		expect(screen.getByTestId("theme-val")).toHaveTextContent("light");
+		expect(onThemeChange).not.toHaveBeenCalled();
+		expect(document.documentElement.classList.contains("light")).toBe(true);
+		expect(window.localStorage.getItem("scoped-theme")).toBe("light");
+		expect(window.localStorage.getItem("other-theme")).toBe("system");
+	});
+
+	it("safely falls back to light when window.matchMedia is undefined, updating visible context and callbacks", () => {
+		const originalDesc = Object.getOwnPropertyDescriptor(window, "matchMedia");
+		const onThemeChange = vi.fn();
+		let unmountInstance: (() => void) | null = null;
+
+		try {
+			// @ts-expect-error simulate environment where matchMedia is not implemented
+			delete window.matchMedia;
+
+			const { unmount } = render(
+				<ThemeProvider defaultTheme="system" onThemeChange={onThemeChange}>
+					<Probe />
+				</ThemeProvider>,
+			);
+			unmountInstance = unmount;
+
+			// In system mode without matchMedia, systemDark falls back to false -> light mode
+			expect(screen.getByTestId("theme-val")).toHaveTextContent("system");
+			expect(document.documentElement.classList.contains("light")).toBe(true);
+			expect(document.documentElement.dataset.mode).toBe("light");
+
+			// Switch to dark
+			act(() => {
+				screen.getByRole("button", { name: "set-dark" }).click();
+			});
+			expect(onThemeChange).toHaveBeenCalledTimes(1);
+			expect(onThemeChange).toHaveBeenCalledWith("dark");
+			expect(screen.getByTestId("theme-val")).toHaveTextContent("dark");
+			expect(document.documentElement.classList.contains("dark")).toBe(true);
+			expect(document.documentElement.dataset.mode).toBe("dark");
+
+			// Switch back to system -> safely re-evaluates as light without throwing
+			act(() => {
+				screen.getByRole("button", { name: "set-system" }).click();
+			});
+			expect(onThemeChange).toHaveBeenCalledTimes(2);
+			expect(onThemeChange).toHaveBeenCalledWith("system");
+			expect(screen.getByTestId("theme-val")).toHaveTextContent("system");
+			expect(document.documentElement.classList.contains("light")).toBe(true);
+			expect(document.documentElement.dataset.mode).toBe("light");
+		} finally {
+			try {
+				unmountInstance?.();
+			} finally {
+				if (originalDesc) {
+					Object.defineProperty(window, "matchMedia", originalDesc);
+				}
+			}
+		}
+	});
 });
