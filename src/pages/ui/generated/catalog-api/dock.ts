@@ -16,7 +16,7 @@ export const API = [
 				type: "DockMode",
 				required: false,
 				default: "\"push\"",
-				description: "`push` shrinks the main column. `overlay` covers it with a Dialog scrim.",
+				description: "`push` shrinks the main column. `overlay` covers the local region with a non-modal scrim.",
 			},
 			{
 				name: "width",

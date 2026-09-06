@@ -10872,7 +10872,7 @@
 			"importPath": "@nocoo/basalt/components/dock",
 			"subpath": "./components/dock",
 			"sourceFile": "packages/basalt/src/components/dock.tsx",
-			"sourceHash": "e56b7bda4f086955",
+			"sourceHash": "ff397ce8fed490b6",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -10946,7 +10946,7 @@
 									"type": "DockMode",
 									"required": false,
 									"default": "\"push\"",
-									"description": "`push` shrinks the main column. `overlay` covers it with a Dialog scrim."
+									"description": "`push` shrinks the main column. `overlay` covers the local region with a non-modal scrim."
 								},
 								{
 									"name": "width",
@@ -11019,7 +11019,7 @@
 							"type": "DockMode",
 							"required": false,
 							"default": "\"push\"",
-							"description": "`push` shrinks the main column. `overlay` covers it with a Dialog scrim."
+							"description": "`push` shrinks the main column. `overlay` covers the local region with a non-modal scrim."
 						},
 						{
 							"name": "width",
@@ -29247,7 +29247,7 @@
 			"exportName": "Dock",
 			"importPath": "@nocoo/basalt/components/dock",
 			"sourceFile": "packages/basalt/src/components/dock.tsx",
-			"sourceHash": "e56b7bda4f086955",
+			"sourceHash": "ff397ce8fed490b6",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#dock",
@@ -29266,7 +29266,7 @@
 							"type": "DockMode",
 							"required": false,
 							"default": "\"push\"",
-							"description": "`push` shrinks the main column. `overlay` covers it with a Dialog scrim."
+							"description": "`push` shrinks the main column. `overlay` covers the local region with a non-modal scrim."
 						},
 						{
 							"name": "width",

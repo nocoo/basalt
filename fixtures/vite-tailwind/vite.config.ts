@@ -10,6 +10,7 @@ export default defineConfig({
 			input: {
 				main: resolve(__dirname, "index.html"),
 				geometry: resolve(__dirname, "geometry.html"),
+				dock: resolve(__dirname, "dock.html"),
 			},
 		},
 	},

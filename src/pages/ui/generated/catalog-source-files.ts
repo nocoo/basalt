@@ -404,7 +404,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"dock": {
 		"file": "packages/basalt/src/components/dock.tsx",
-		"hash": "e56b7bda4f086955",
+		"hash": "ff397ce8fed490b6",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dock.js.map (sourcesContent[0])"
 	},

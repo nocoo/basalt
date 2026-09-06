@@ -23,6 +23,7 @@ import {
 	settleWithCleanup,
 	withChromiumPage,
 } from "./consumer-browser";
+import { assertConsumerDock } from "./consumer-dock";
 import { assertConsumerGeometry } from "./consumer-geometry";
 import {
 	allocatePort,
@@ -1274,6 +1275,15 @@ console.log(JSON.stringify({
 						const faults = attachPageFaults(page);
 						await page.goto(geometryUrl, { waitUntil: "domcontentloaded" });
 						const res = await assertConsumerGeometry(page, config.mode);
+						assertNoPageFaults(faults);
+						return res;
+					});
+
+					const dockUrl = `http://127.0.0.1:${port}/dock.html`;
+					evidence.dock = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(dockUrl, { waitUntil: "domcontentloaded" });
+						const res = await assertConsumerDock(page);
 						assertNoPageFaults(faults);
 						return res;
 					});

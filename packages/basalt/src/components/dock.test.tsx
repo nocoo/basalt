@@ -38,7 +38,7 @@ describe("Dock", () => {
 		expect(screen.queryByRole("button", { name: "Dismiss" })).not.toBeInTheDocument();
 	});
 
-	it("covers the frame with a dialog scrim in overlay mode", () => {
+	it("covers the frame with a non-modal scrim in overlay mode", () => {
 		const onDismiss = vi.fn();
 		render(
 			<div className="relative">
@@ -48,8 +48,8 @@ describe("Dock", () => {
 				</Dock>
 			</div>,
 		);
-		const dock = screen.getByRole("dialog", { name: "Assistant" });
-		expect(dock).toHaveAttribute("aria-modal", "true");
+		const dock = screen.getByRole("region", { name: "Assistant" });
+		expect(dock).not.toHaveAttribute("aria-modal");
 		expect(dock).toHaveClass("absolute");
 		expect(dock).toHaveStyle({ width: "384px" });
 		const scrim = screen.getByRole("button", { name: "Dismiss" });
@@ -129,34 +129,49 @@ describe("Dock", () => {
 		expect(onDismiss).toHaveBeenCalledTimes(1);
 	});
 
-	it("traps Tab inside an open overlay and wraps the ends", async () => {
+	it("permits standard focus flow beyond panel without whole-document trap", async () => {
 		const onDismiss = vi.fn();
 		render(
 			<div className="relative">
+				<button type="button">Before</button>
 				<Dock mode="overlay" open aria-label="Assistant" onDismiss={onDismiss}>
 					<button type="button">First</button>
 					<button type="button">Last</button>
 				</Dock>
+				<button type="button">After</button>
 			</div>,
 		);
-		const dismiss = screen.getByRole("button", { name: "Dismiss" });
 		const first = screen.getByRole("button", { name: "First" });
 		const last = screen.getByRole("button", { name: "Last" });
 		await waitFor(() => {
 			expect(first).toHaveFocus();
 		});
+
+		// Tab on last element should not be prevented and should not force wrap to first
 		last.focus();
-		fireEvent.keyDown(window, { key: "Tab" });
-		expect(dismiss).toHaveFocus();
-		dismiss.focus();
-		fireEvent.keyDown(window, { key: "Tab", shiftKey: true });
-		expect(last).toHaveFocus();
+		const tabEvent = new KeyboardEvent("keydown", {
+			key: "Tab",
+			bubbles: true,
+			cancelable: true,
+		});
+		window.dispatchEvent(tabEvent);
+		expect(tabEvent.defaultPrevented).toBe(false);
+		expect(first).not.toHaveFocus();
+
+		// Shift+Tab on first element should not be prevented and should not force wrap to last
 		first.focus();
-		fireEvent.keyDown(window, { key: "Tab" });
+		const shiftTabEvent = new KeyboardEvent("keydown", {
+			key: "Tab",
+			shiftKey: true,
+			bubbles: true,
+			cancelable: true,
+		});
+		window.dispatchEvent(shiftTabEvent);
+		expect(shiftTabEvent.defaultPrevented).toBe(false);
 		expect(last).not.toHaveFocus();
 	});
 
-	it("focuses the panel when overlay has no tabbables", () => {
+	it("autofocuses the panel when open and contains no tabbables", async () => {
 		render(
 			<div className="relative">
 				<Dock mode="overlay" open aria-label="Assistant">
@@ -164,16 +179,16 @@ describe("Dock", () => {
 				</Dock>
 			</div>,
 		);
-		const panel = screen.getByRole("dialog", { name: "Assistant" });
-		fireEvent.keyDown(window, { key: "Tab" });
-		expect(panel).toHaveFocus();
+		const panel = screen.getByRole("region", { name: "Assistant" });
+		await waitFor(() => {
+			expect(panel).toHaveFocus();
+		});
 	});
 
-	it("skips hidden, inert, and nested modal focus targets", () => {
+	it("skips hidden, inert, and disabled elements when assigning initial focus", async () => {
 		render(
 			<div className="relative">
 				<Dock mode="overlay" open aria-label="Assistant" onDismiss={vi.fn()}>
-					<button type="button">Keep</button>
 					<button type="button" style={{ visibility: "hidden" }}>
 						Invisible
 					</button>
@@ -189,36 +204,17 @@ describe("Dock", () => {
 					<div inert>
 						<button type="button">Inert</button>
 					</div>
-					<div style={{ visibility: "hidden" }}>
-						<button type="button" style={{ visibility: "visible" }}>
-							Override
-						</button>
-					</div>
-					<input type="hidden" defaultValue="secret" />
+					<button type="button" disabled>
+						Disabled
+					</button>
+					<button type="button">First Valid</button>
+					<button type="button">Second</button>
 				</Dock>
-				<div role="dialog">
-					<button type="button">Nested</button>
-				</div>
-				<div data-radix-popper-content-wrapper="">
-					<button type="button">Portal</button>
-				</div>
 			</div>,
 		);
-		const keep = screen.getByRole("button", { name: "Keep" });
-		const dismiss = screen.getByRole("button", { name: "Dismiss" });
-		const override = screen.getByRole("button", { name: "Override" });
-		screen.getByRole("button", { name: "Nested" }).focus();
-		fireEvent.keyDown(window, { key: "Tab" });
-		expect(keep).not.toHaveFocus();
-		screen.getByRole("button", { name: "Portal" }).focus();
-		fireEvent.keyDown(window, { key: "Tab" });
-		expect(keep).not.toHaveFocus();
-		override.focus();
-		fireEvent.keyDown(window, { key: "Tab" });
-		expect(dismiss).toHaveFocus();
-		dismiss.focus();
-		fireEvent.keyDown(window, { key: "Tab", shiftKey: true });
-		expect(override).toHaveFocus();
+		await waitFor(() => {
+			expect(screen.getByRole("button", { name: "First Valid" })).toHaveFocus();
+		});
 	});
 
 	it("does not trap keys while overlay is closed", () => {

@@ -6,7 +6,6 @@ import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
 const FOCUSABLE =
 	'button:not([disabled]), [href], input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-const PORTAL_FOCUS = "[data-radix-popper-content-wrapper], [data-radix-select-viewport]";
 
 function tabbables(root: HTMLElement | null) {
 	if (!root) {
@@ -39,7 +38,7 @@ export interface DockProps {
 	 */
 	open: boolean;
 	/**
-	 * `push` shrinks the main column. `overlay` covers it with a Dialog scrim.
+	 * `push` shrinks the main column. `overlay` covers the local region with a non-modal scrim.
 	 * @default "push"
 	 */
 	mode?: DockMode;
@@ -130,45 +129,6 @@ export function Dock({
 				}
 				event.preventDefault();
 				onDismiss();
-				return;
-			}
-			if (event.key !== "Tab") {
-				return;
-			}
-			const root = overlayRootRef.current;
-			if (!root) {
-				return;
-			}
-			const nodes = tabbables(root);
-			if (nodes.length === 0) {
-				event.preventDefault();
-				panelRef.current?.focus();
-				return;
-			}
-			const first = nodes[0];
-			const last = nodes[nodes.length - 1];
-			const active = document.activeElement;
-			if (active instanceof Element) {
-				const nestedModal = active.closest("[role='dialog'], [role='alertdialog']");
-				if (nestedModal && nestedModal !== panelRef.current && !root.contains(nestedModal)) {
-					return;
-				}
-				if (active.closest(PORTAL_FOCUS)) {
-					return;
-				}
-			}
-			if (
-				!(active instanceof Node) ||
-				!root.contains(active) ||
-				(!event.shiftKey && active === last)
-			) {
-				event.preventDefault();
-				first?.focus();
-				return;
-			}
-			if (event.shiftKey && active === first) {
-				event.preventDefault();
-				last?.focus();
 			}
 		};
 		window.addEventListener("keydown", onKeyDown);
@@ -230,8 +190,7 @@ export function Dock({
 			)}
 			<div
 				ref={setPanel}
-				role="dialog"
-				aria-modal={open ? true : undefined}
+				role="region"
 				aria-label={ariaLabel}
 				className={cn(BASALT_UI_CLASS, panelClass)}
 				style={panelStyle}

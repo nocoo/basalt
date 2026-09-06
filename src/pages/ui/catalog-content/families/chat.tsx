@@ -43,7 +43,7 @@ export default catalogContentFamily({
 	dock: {
 		docs: {
 			description:
-				"A right rail. Push shrinks the main column. Overlay covers it with a Dialog scrim.",
+				"A right rail. Push shrinks the main column. Overlay covers the local region with a non-modal scrim.",
 			usage: usage(
 				"Dock, DockBody",
 				"@nocoo/basalt/components/dock",
