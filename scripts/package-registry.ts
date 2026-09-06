@@ -1,6 +1,7 @@
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import path from "node:path";
 import * as ts from "typescript-api";
 import { CATALOG } from "../src/pages/ui/catalog";
@@ -608,10 +609,13 @@ export function generateSourcesBundle(
 	return sourcesBundle;
 }
 
+const require = createRequire(import.meta.url);
+const BIOME_BIN = require.resolve("@biomejs/biome/bin/biome");
+
 export function formatJsonDeterministic(rawJson: string, filePath = "registry.json"): string {
 	const formatted = execFileSync(
-		"bunx",
-		["--no-install", "biome", "format", `--stdin-file-path=${filePath}`],
+		process.execPath,
+		[BIOME_BIN, "format", `--stdin-file-path=${filePath}`],
 		{
 			input: rawJson,
 			encoding: "utf8",

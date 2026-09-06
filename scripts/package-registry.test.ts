@@ -5,6 +5,7 @@ import { describe, expect, it } from "vitest";
 import { CATALOG } from "../src/pages/ui/catalog";
 import {
 	checkAiPackageAssetsFreshness,
+	formatJsonDeterministic,
 	generatePackageRegistry,
 	mapToPackageDoc,
 	syncAiPackageAssets,
@@ -153,6 +154,34 @@ describe("package registry generator and AI package assets", () => {
 			"ai/COMPATIBILITY.md#chart-config",
 		);
 		expect(mapToPackageDoc("src/pages/ui/button")).toBe("ai/registry.json#button");
+	});
+
+	it("formats valid JSON deterministically using the pinned local formatter and rejects malformed input", () => {
+		const raw = '{\n"z": 1,\n "a":  [2,3]\n}\n';
+		const formatted = formatJsonDeterministic(raw, "test.json");
+		expect(formatted).toBe('{\n\t"z": 1,\n\t"a": [2, 3]\n}\n');
+
+		// Malformed JSON must throw
+		expect(() => formatJsonDeterministic('{\n"unclosed": \n', "bad.json")).toThrow();
+	});
+
+	it("invokes the pinned local formatter independently of external bunx binaries in PATH", () => {
+		const fakeBinDir = mkdtempSync(path.join(tmpdir(), "basalt-fake-bunx-"));
+		const fakeBunx = path.join(fakeBinDir, "bunx");
+		// Create a fake bunx executable in PATH that exits with 86
+		writeFileSync(fakeBunx, "#!/bin/sh\nexit 86\n", { mode: 0o755 });
+
+		const oldPath = process.env.PATH;
+		try {
+			process.env.PATH = `${fakeBinDir}:${oldPath}`;
+			const raw = '{\n"test": 123\n}\n';
+			// Must succeed and not invoke fake bunx
+			const formatted = formatJsonDeterministic(raw, "probe.json");
+			expect(formatted).toBe('{\n\t"test": 123\n}\n');
+		} finally {
+			process.env.PATH = oldPath;
+			rmSync(fakeBinDir, { recursive: true, force: true });
+		}
 	});
 
 	it("passes asset freshness check on sync", () => {
