@@ -1249,8 +1249,38 @@ describe("catalog API generator contract", () => {
 				propsType: "MenuBarItemProps",
 				surface: "MenuBarItem",
 			},
+			{
+				slug: "navigation-menu",
+				sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
+				propsType: "NavigationMenuProps",
+				surface: "NavigationMenu",
+			},
+			{
+				slug: "navigation-menu",
+				sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
+				propsType: "NavigationMenuListProps",
+				surface: "NavigationMenuList",
+			},
+			{
+				slug: "navigation-menu",
+				sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
+				propsType: "NavigationMenuItemProps",
+				surface: "NavigationMenuItem",
+			},
+			{
+				slug: "navigation-menu",
+				sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
+				propsType: "NavigationMenuLinkProps",
+				surface: "NavigationMenuLink",
+			},
+			{
+				slug: "breadcrumbs",
+				sourceFile: "packages/basalt/src/components/breadcrumbs.tsx",
+				propsType: "BreadcrumbsProps",
+				surface: "Breadcrumbs",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(185);
+		expect(CATALOG_API_TARGETS).toHaveLength(190);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1378,6 +1408,8 @@ describe("catalog API generator contract", () => {
 			"alert-dialog",
 			"context-menu",
 			"menu-bar",
+			"navigation-menu",
+			"breadcrumbs",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -2493,6 +2525,13 @@ export interface WidgetProps {
 				"AlertDialogHeader",
 				"AlertDialogFooter",
 			],
+			"navigation-menu": [
+				"NavigationMenu",
+				"NavigationMenuList",
+				"NavigationMenuItem",
+				"NavigationMenuLink",
+			],
+			breadcrumbs: ["Breadcrumbs"],
 		});
 	}, 60_000);
 
@@ -2502,7 +2541,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(89);
+		expect(Object.keys(generated)).toHaveLength(91);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -2603,7 +2642,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(89);
+		expect(Object.keys(generated)).toHaveLength(91);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -2725,7 +2764,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(89);
+		expect(Object.keys(generated)).toHaveLength(91);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -2796,7 +2835,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(89);
+		expect(Object.keys(generated)).toHaveLength(91);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -2839,7 +2878,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(89);
+		expect(Object.keys(generated)).toHaveLength(91);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -2891,7 +2930,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(89);
+		expect(Object.keys(generated)).toHaveLength(91);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -4229,8 +4268,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(89);
-		expect(Object.keys(first)).toHaveLength(90);
+		expect(slugs).toHaveLength(91);
+		expect(Object.keys(first)).toHaveLength(92);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -4310,7 +4349,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"3531bb879ec16623b812b00c0cc603d91ebd39168c621dc8a0251cd280c29238",
+			"706560a92061be0c266dd6d1fbdd3dddc53abe57d2f19f9a9fb6c6aa5c41dc23",
 		);
 	}, 60_000);
 

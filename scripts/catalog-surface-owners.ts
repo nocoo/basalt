@@ -257,6 +257,7 @@ export const REGISTERED_CATALOG_HELPERS: Record<string, string[]> = {
 		"UseConfirmResult",
 	],
 	"@nocoo/basalt/components/dialog": ["DIALOG_SIZES", "dialogOverlayClass", "dialogPanelClass"],
+	"@nocoo/basalt/components/breadcrumbs": ["BreadcrumbItem"],
 	"@nocoo/basalt/components/popover": ["POPOVER_SIDES"],
 	"@nocoo/basalt/components/sidebar": ["ContentIsland", "useSidebar"],
 	"@nocoo/basalt/components/toast": ["toast"],

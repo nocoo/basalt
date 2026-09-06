@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 633,
+	"totalSymbols": 639,
 	"totalValues": 375,
-	"totalTypes": 258,
+	"totalTypes": 264,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2565,6 +2565,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/breadcrumbs",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/breadcrumbs"
+				},
+				{
+					"name": "BreadcrumbItem",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/breadcrumbs",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/breadcrumbs"
+				},
+				{
+					"name": "BreadcrumbsProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/breadcrumbs",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/breadcrumbs"
 				}
 			]
 		},
@@ -4353,9 +4369,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/navigation-menu"
 				},
 				{
+					"name": "NavigationMenuProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/navigation-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/navigation-menu"
+				},
+				{
 					"name": "NavigationMenu",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/navigation-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/navigation-menu"
+				},
+				{
+					"name": "NavigationMenuListProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/navigation-menu",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/navigation-menu"
@@ -4369,9 +4401,25 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/navigation-menu"
 				},
 				{
+					"name": "NavigationMenuItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/navigation-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/navigation-menu"
+				},
+				{
 					"name": "NavigationMenuItem",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/navigation-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/navigation-menu"
+				},
+				{
+					"name": "NavigationMenuLinkProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/navigation-menu",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/navigation-menu"

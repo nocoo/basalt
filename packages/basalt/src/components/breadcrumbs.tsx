@@ -5,13 +5,36 @@ import { Link } from "./link";
 
 const crumbTypeClass = "text-sm font-normal";
 
-export function Breadcrumbs({
-	items,
-	className,
-}: {
-	items: { href?: string; label: ReactNode; icon?: ReactNode }[];
+export interface BreadcrumbItem {
+	/**
+	 * Navigation target URL. When omitted, item renders as unlinked text (and only receives aria-current="page" if it is the final item).
+	 */
+	href?: string;
+	/**
+	 * Content label rendered inside the breadcrumb segment.
+	 */
+	label: ReactNode;
+	/**
+	 * Optional leading icon rendered before the label.
+	 */
+	icon?: ReactNode;
+}
+
+export interface BreadcrumbsProps {
+	/**
+	 * List of breadcrumb segments ({ label: ReactNode, href?: string, icon?: ReactNode }[]) in hierarchical order from root to current page.
+	 * Only the final item in the array without an href receives aria-current="page".
+	 * Interactive items render via Link, delegating routing to LinkProvider when configured.
+	 * Component only accepts items and className without native HTML rest attribute forwarding or forwarded ref.
+	 */
+	items: BreadcrumbItem[];
+	/**
+	 * Optional class name applied to the outer nav element.
+	 */
 	className?: string;
-}) {
+}
+
+export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
 	return (
 		<nav
 			aria-label="Breadcrumb"

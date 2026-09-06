@@ -8,6 +8,7 @@ import { API as avatarApi } from "./catalog-api/avatar";
 import { API as badgeApi } from "./catalog-api/badge";
 import { API as barApi } from "./catalog-api/bar";
 import { API as basaltMarkApi } from "./catalog-api/basalt-mark";
+import { API as breadcrumbsApi } from "./catalog-api/breadcrumbs";
 import { API as bulletApi } from "./catalog-api/bullet";
 import { API as buttonApi } from "./catalog-api/button";
 import { API as chartColorsApi } from "./catalog-api/chart-colors";
@@ -53,6 +54,7 @@ import { API as linkButtonApi } from "./catalog-api/link-button";
 import { API as loaderApi } from "./catalog-api/loader";
 import { API as menuBarApi } from "./catalog-api/menu-bar";
 import { API as meterApi } from "./catalog-api/meter";
+import { API as navigationMenuApi } from "./catalog-api/navigation-menu";
 import { API as pageHeaderApi } from "./catalog-api/page-header";
 import { API as paginationApi } from "./catalog-api/pagination";
 import { API as paletteApi } from "./catalog-api/palette";
@@ -99,6 +101,7 @@ export const CATALOG_API = {
 	badge: badgeApi,
 	bar: barApi,
 	"basalt-mark": basaltMarkApi,
+	breadcrumbs: breadcrumbsApi,
 	bullet: bulletApi,
 	button: buttonApi,
 	"chart-colors": chartColorsApi,
@@ -144,6 +147,7 @@ export const CATALOG_API = {
 	loader: loaderApi,
 	"menu-bar": menuBarApi,
 	meter: meterApi,
+	"navigation-menu": navigationMenuApi,
 	"page-header": pageHeaderApi,
 	pagination: paginationApi,
 	palette: paletteApi,

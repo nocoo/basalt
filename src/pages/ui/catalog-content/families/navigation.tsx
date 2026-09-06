@@ -36,8 +36,10 @@ import {
 import { PAGINATION_EXAMPLES } from "../../examples/pagination";
 import { SIDEBAR_EXAMPLES } from "../../examples/sidebar";
 import { TABLE_OF_CONTENTS_EXAMPLES } from "../../examples/table-of-contents";
+import { API as breadcrumbsApi } from "../../generated/catalog-api/breadcrumbs";
 import { API as commandPaletteApi } from "../../generated/catalog-api/command-palette";
 import { API as menuBarApi } from "../../generated/catalog-api/menu-bar";
+import { API as navigationMenuApi } from "../../generated/catalog-api/navigation-menu";
 import { API as paginationApi } from "../../generated/catalog-api/pagination";
 import { API as sidebarApi } from "../../generated/catalog-api/sidebar";
 import { API as tableOfContentsApi } from "../../generated/catalog-api/table-of-contents";
@@ -193,25 +195,42 @@ export default function Example() {
 }`,
 );
 
-const breadcrumbsDocs = extraDocs(
-	"Breadcrumbs",
-	"breadcrumbs",
-	"Hierarchical location.",
-	'<Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />',
-	undefined,
-	`import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
+const breadcrumbsDocs: CatalogDocsDraft = {
+	description: "Hierarchical location.",
+	usage: `import { Breadcrumbs } from "@nocoo/basalt/components/breadcrumbs";
 
 export default function Example() {
 	return <Breadcrumbs items={[{ href: "#", label: "Home" }, { label: "Settings" }]} />;
 }`,
-);
+	variants: [],
+	api: breadcrumbsApi,
+	provenance: EXTRA_PROVENANCE,
+};
 
-const navigationMenuDocs = extraDocs(
-	"NavigationMenu",
-	"navigation-menu",
-	"Site navigation.",
-	"<NavigationMenu />",
-);
+const navigationMenuDocs: CatalogDocsDraft = {
+	description: "Site navigation.",
+	usage: `import {
+	NavigationMenu,
+	NavigationMenuItem,
+	NavigationMenuLink,
+	NavigationMenuList,
+} from "@nocoo/basalt/components/navigation-menu";
+
+export default function Example() {
+	return (
+		<NavigationMenu>
+			<NavigationMenuList>
+				<NavigationMenuItem>
+					<NavigationMenuLink href="#docs">Docs</NavigationMenuLink>
+				</NavigationMenuItem>
+			</NavigationMenuList>
+		</NavigationMenu>
+	);
+}`,
+	variants: [],
+	api: navigationMenuApi,
+	provenance: EXTRA_PROVENANCE,
+};
 
 const menuBarDocs: CatalogDocsDraft = {
 	description: "Desktop menu bar.",

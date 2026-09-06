@@ -1156,6 +1156,36 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "MenuBarItemProps",
 		surface: "MenuBarItem",
 	},
+	{
+		slug: "navigation-menu",
+		sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
+		propsType: "NavigationMenuProps",
+		surface: "NavigationMenu",
+	},
+	{
+		slug: "navigation-menu",
+		sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
+		propsType: "NavigationMenuListProps",
+		surface: "NavigationMenuList",
+	},
+	{
+		slug: "navigation-menu",
+		sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
+		propsType: "NavigationMenuItemProps",
+		surface: "NavigationMenuItem",
+	},
+	{
+		slug: "navigation-menu",
+		sourceFile: "packages/basalt/src/components/navigation-menu.tsx",
+		propsType: "NavigationMenuLinkProps",
+		surface: "NavigationMenuLink",
+	},
+	{
+		slug: "breadcrumbs",
+		sourceFile: "packages/basalt/src/components/breadcrumbs.tsx",
+		propsType: "BreadcrumbsProps",
+		surface: "Breadcrumbs",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";
