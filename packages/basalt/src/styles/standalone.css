@@ -388,6 +388,10 @@
     color: inherit;
     text-decoration: inherit;
   }
+  :where(.basalt-ui:is(h1, h2, h3, h4, h5, h6), .basalt-ui :is(h1, h2, h3, h4, h5, h6)) {
+    font-size: inherit;
+    font-weight: inherit;
+  }
   :where(	.basalt-ui:is(h1, h2, h3, h4, h5, h6, p, blockquote, figure, pre, dl, dd),	.basalt-ui :is(h1, h2, h3, h4, h5, h6, p, blockquote, figure, pre, dl, dd)	) {
     margin: 0;
   }

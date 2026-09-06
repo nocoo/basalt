@@ -95,6 +95,7 @@ export async function assertConsumerGeometry(
 		const basaltCodeBlock = getEl("basalt-code-block");
 		const basaltTextH2 = getEl("basalt-text-h2");
 		const basaltTextP = getEl("basalt-text-p");
+		const basaltTextHeading = getEl("basalt-text-heading");
 		const breadcrumbsWrap = getEl("basalt-breadcrumbs-wrap");
 		const basaltBreadcrumbs = breadcrumbsWrap.querySelector("nav") ?? breadcrumbsWrap;
 		const breadcrumbAnchor = basaltBreadcrumbs.querySelector("a");
@@ -134,6 +135,7 @@ export async function assertConsumerGeometry(
 		const codeBlockStyle = window.getComputedStyle(basaltCodeBlock);
 		const textH2Style = window.getComputedStyle(basaltTextH2);
 		const textPStyle = window.getComputedStyle(basaltTextP);
+		const textHeadingStyle = window.getComputedStyle(basaltTextHeading);
 		const breadcrumbsStyle = window.getComputedStyle(basaltBreadcrumbs);
 		const breadcrumbAnchorStyle = breadcrumbAnchor
 			? window.getComputedStyle(breadcrumbAnchor)
@@ -229,8 +231,11 @@ export async function assertConsumerGeometry(
 
 				textH2MarginTop: textH2Style.marginTop,
 				textH2MarginBottom: textH2Style.marginBottom,
+				textH2FontWeight: textH2Style.fontWeight,
 				textPMarginTop: textPStyle.marginTop,
 				textPMarginBottom: textPStyle.marginBottom,
+				textPFontWeight: textPStyle.fontWeight,
+				textHeadingFontWeight: textHeadingStyle.fontWeight,
 
 				breadcrumbsBoxSizing: breadcrumbsStyle.boxSizing,
 				breadcrumbAnchorTextDecoration: breadcrumbAnchorStyle?.textDecorationLine ?? "",
@@ -442,7 +447,7 @@ export async function assertConsumerGeometry(
 		);
 	}
 
-	// Text: h2 & p margin reset to 0px
+	// Text: h2 & p margin reset to 0px, Text as="h2" with default body variant inherits body font-weight (400), while variant="heading" applies font-semibold (600)
 	if (data.basalt.textH2MarginTop !== "0px" || data.basalt.textH2MarginBottom !== "0px") {
 		throw new Error(
 			`expected Text h2 margin 0px, got ${data.basalt.textH2MarginTop}/${data.basalt.textH2MarginBottom}`,
@@ -451,6 +456,16 @@ export async function assertConsumerGeometry(
 	if (data.basalt.textPMarginTop !== "0px" || data.basalt.textPMarginBottom !== "0px") {
 		throw new Error(
 			`expected Text p margin 0px, got ${data.basalt.textPMarginTop}/${data.basalt.textPMarginBottom}`,
+		);
+	}
+	if (data.basalt.textH2FontWeight !== data.basalt.textPFontWeight) {
+		throw new Error(
+			`expected Text as="h2" font-weight to match body p (${data.basalt.textPFontWeight}), got ${data.basalt.textH2FontWeight}`,
+		);
+	}
+	if (data.basalt.textHeadingFontWeight !== "600" && data.basalt.textHeadingFontWeight !== "bold") {
+		throw new Error(
+			`expected Text variant="heading" font-weight 600, got ${data.basalt.textHeadingFontWeight}`,
 		);
 	}
 

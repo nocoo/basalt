@@ -149,6 +149,9 @@ export function GeometryApp() {
 						Heading Text
 					</Text>
 					<Text id="basalt-text-p">Paragraph Text</Text>
+					<Text id="basalt-text-heading" variant="heading" as="h2">
+						Semibold Heading
+					</Text>
 				</div>
 
 				<div id="basalt-breadcrumbs-wrap">
