@@ -389,11 +389,27 @@ export default function Example() {
 		docs: {
 			description:
 				"A controlled, labelled segmented filter with an optional All choice and horizontal overflow.",
-			usage: usage(
-				"SegmentControl",
-				"@nocoo/basalt/components/segment-control",
-				'<SegmentControl legend="Status" value="all" onValueChange={setStatus} allOption={{ value: "all" }} options={[{ value: "ready", label: "Ready" }]} />',
-			),
+			usage: `import { SegmentControl } from "@nocoo/basalt/components/segment-control";
+import { useState } from "react";
+
+const statusOptions = [
+	{ value: "ready", label: "Ready" },
+	{ value: "planned", label: "Planned" },
+] as const;
+
+export default function Example() {
+	const [status, setStatus] = useState("all");
+
+	return (
+		<SegmentControl
+			legend="Status"
+			value={status}
+			onValueChange={setStatus}
+			allOption={{ value: "all" }}
+			options={statusOptions}
+		/>
+	);
+}`,
 			variants: ["all", "overflow", "disabled"],
 			api: segmentControlApi,
 			provenance: provenanceFromLegacy({

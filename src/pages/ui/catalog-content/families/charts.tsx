@@ -155,7 +155,22 @@ export default catalogContentFamily({
 	},
 	"slot-bar": {
 		docs: {
-			...extraDocs("SlotBarChart", "slot-bar", "Slot bar.", "<SlotBarChart items={hourSlots} />"),
+			...extraDocs(
+				"SlotBarChart",
+				"slot-bar",
+				"Slot bar.",
+				"<SlotBarChart items={items} />",
+				`import { SlotBarChart } from "@nocoo/basalt/charts/slot-bar";
+
+const items = Array.from({ length: 24 }, (_, hour) => ({
+	color: hour < 12 ? "bg-indigo-500" : "bg-emerald-600",
+	label: \`\${String(hour).padStart(2, "0")}:00\`,
+}));
+
+export default function Example() {
+	return <SlotBarChart items={items} />;
+}`,
+			),
 			api: slotBarApi,
 		},
 		examples: SLOT_BAR_EXAMPLES,

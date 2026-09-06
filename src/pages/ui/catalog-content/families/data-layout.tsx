@@ -248,8 +248,11 @@ export default function Example() {
 		docs: {
 			description: "A table footer that pairs a result range with page controls.",
 			usage: `import { TablePager } from "@nocoo/basalt/components/table-pager";
+import { useState } from "react";
 
 export default function Example() {
+	const [page, setPage] = useState(1);
+
 	return <TablePager page={page} pageSize={10} totalCount={47} onPageChange={setPage} />;
 }`,
 			variants: [],

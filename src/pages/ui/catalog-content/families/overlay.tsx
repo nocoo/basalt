@@ -1159,11 +1159,30 @@ export default function Example() {
 		docs: {
 			description:
 				"A controlled confirmation dialog with explicit loading and a Promise-based hook.",
-			usage: usage(
-				"ConfirmDialog",
-				"@nocoo/basalt/components/confirm-dialog",
-				'<ConfirmDialog open={open} title="Delete project?" description="This cannot be undone." onOpenChange={setOpen} onConfirm={onConfirm} />',
-			),
+			usage: `import { Button } from "@nocoo/basalt/components/button";
+import { ConfirmDialog } from "@nocoo/basalt/components/confirm-dialog";
+import { useState } from "react";
+
+export default function Example() {
+	const [open, setOpen] = useState(false);
+
+	return (
+		<>
+			<Button variant="destructive" onClick={() => setOpen(true)}>
+				Delete project
+			</Button>
+			<ConfirmDialog
+				open={open}
+				variant="destructive"
+				title="Delete project?"
+				description="This cannot be undone."
+				confirmLabel="Delete"
+				onOpenChange={setOpen}
+				onConfirm={() => setOpen(false)}
+			/>
+		</>
+	);
+}`,
 			variants: ["default", "destructive"],
 			api: confirmDialogApi,
 			provenance: provenanceFromLegacy({
