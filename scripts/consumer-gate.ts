@@ -23,6 +23,7 @@ import {
 	settleWithCleanup,
 	withChromiumPage,
 } from "./consumer-browser";
+import { assertConsumerConfirm } from "./consumer-confirm";
 import { assertConsumerDock } from "./consumer-dock";
 import { assertConsumerGeometry } from "./consumer-geometry";
 import {
@@ -1284,6 +1285,15 @@ console.log(JSON.stringify({
 						const faults = attachPageFaults(page);
 						await page.goto(dockUrl, { waitUntil: "domcontentloaded" });
 						const res = await assertConsumerDock(page);
+						assertNoPageFaults(faults);
+						return res;
+					});
+
+					const confirmUrl = `http://127.0.0.1:${port}/confirm.html`;
+					evidence.confirm = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(confirmUrl, { waitUntil: "domcontentloaded" });
+						const res = await assertConsumerConfirm(page);
 						assertNoPageFaults(faults);
 						return res;
 					});

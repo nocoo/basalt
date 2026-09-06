@@ -21,7 +21,7 @@ export const API = [
 				name: "onConfirm",
 				type: "() => void | Promise<void>",
 				required: true,
-				description: "Called once when the user confirms. The dialog does not close itself.",
+				description: "Called once when the user confirms. The dialog does not close itself; caller manages loading and asynchronous errors.",
 			},
 			{
 				name: "title",

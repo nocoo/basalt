@@ -282,7 +282,7 @@ export default function Example() {
 			...extraDocs(
 				"DeleteResource",
 				"delete-resource",
-				"A confirmation dialog that deletes a named resource.",
+				"A confirmation dialog that deletes a named resource with error alert and retry feedback.",
 				'<DeleteResource name="Atlas" onDelete={() => undefined} />',
 			),
 			api: deleteResourceApi,

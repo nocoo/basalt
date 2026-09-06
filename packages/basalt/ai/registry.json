@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 684,
+	"totalSymbols": 685,
 	"totalValues": 375,
-	"totalTypes": 309,
+	"totalTypes": 310,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 99,
 	"modules": [
@@ -8550,7 +8550,7 @@
 			"importPath": "@nocoo/basalt/components/confirm-dialog",
 			"subpath": "./components/confirm-dialog",
 			"sourceFile": "packages/basalt/src/components/confirm-dialog.tsx",
-			"sourceHash": "8ac3b18f43a45b95",
+			"sourceHash": "b184b69c8d5ee916",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -8637,7 +8637,7 @@
 									"name": "onConfirm",
 									"type": "() => void | Promise<void>",
 									"required": true,
-									"description": "Called once when the user confirms. The dialog does not close itself."
+									"description": "Called once when the user confirms. The dialog does not close itself; caller manages loading and asynchronous errors."
 								},
 								{
 									"name": "title",
@@ -8745,7 +8745,7 @@
 							"name": "onConfirm",
 							"type": "() => void | Promise<void>",
 							"required": true,
-							"description": "Called once when the user confirms. The dialog does not close itself."
+							"description": "Called once when the user confirms. The dialog does not close itself; caller manages loading and asynchronous errors."
 						},
 						{
 							"name": "title",
@@ -10080,7 +10080,7 @@
 			"importPath": "@nocoo/basalt/components/delete-resource",
 			"subpath": "./components/delete-resource",
 			"sourceFile": "packages/basalt/src/components/delete-resource.tsx",
-			"sourceHash": "79e23c89a1546604",
+			"sourceHash": "c351fb96c51b4a3d",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -10094,6 +10094,14 @@
 					"name": "DeleteResource",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/delete-resource",
+					"packageDoc": "ai/registry.json#delete-resource",
+					"originModule": "@nocoo/basalt/components/delete-resource"
+				},
+				{
+					"name": "DeleteResourceErrorFormatter",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/delete-resource",
 					"packageDoc": "ai/registry.json#delete-resource",
 					"originModule": "@nocoo/basalt/components/delete-resource"
@@ -10122,12 +10130,20 @@
 								{
 									"name": "name",
 									"type": "string",
-									"required": true
+									"required": true,
+									"description": "Name of the resource being deleted, interpolated into dialog title and trigger label."
 								},
 								{
 									"name": "onDelete",
 									"type": "() => void | Promise<void>",
-									"required": true
+									"required": true,
+									"description": "Called when deletion is confirmed. When this throws or rejects, an error alert is shown and the dialog remains open for retry."
+								},
+								{
+									"name": "errorMessage",
+									"type": "DeleteResourceErrorFormatter | React.ReactNode",
+									"required": false,
+									"description": "Custom error message or renderer when onDelete fails. Accepts a ReactNode or an (error: unknown) => ReactNode formatter. Defaults to the caught Error message or 'Failed to delete resource. Please try again.'"
 								}
 							]
 						}
@@ -10141,12 +10157,20 @@
 						{
 							"name": "name",
 							"type": "string",
-							"required": true
+							"required": true,
+							"description": "Name of the resource being deleted, interpolated into dialog title and trigger label."
 						},
 						{
 							"name": "onDelete",
 							"type": "() => void | Promise<void>",
-							"required": true
+							"required": true,
+							"description": "Called when deletion is confirmed. When this throws or rejects, an error alert is shown and the dialog remains open for retry."
+						},
+						{
+							"name": "errorMessage",
+							"type": "DeleteResourceErrorFormatter | React.ReactNode",
+							"required": false,
+							"description": "Custom error message or renderer when onDelete fails. Accepts a ReactNode or an (error: unknown) => ReactNode formatter. Defaults to the caught Error message or 'Failed to delete resource. Please try again.'"
 						}
 					]
 				}
@@ -26170,7 +26194,7 @@
 			"exportName": "ConfirmDialog",
 			"importPath": "@nocoo/basalt/components/confirm-dialog",
 			"sourceFile": "packages/basalt/src/components/confirm-dialog.tsx",
-			"sourceHash": "8ac3b18f43a45b95",
+			"sourceHash": "b184b69c8d5ee916",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#confirm-dialog",
@@ -26194,7 +26218,7 @@
 							"name": "onConfirm",
 							"type": "() => void | Promise<void>",
 							"required": true,
-							"description": "Called once when the user confirms. The dialog does not close itself."
+							"description": "Called once when the user confirms. The dialog does not close itself; caller manages loading and asynchronous errors."
 						},
 						{
 							"name": "title",
@@ -30859,7 +30883,7 @@
 			"exportName": "DeleteResource",
 			"importPath": "@nocoo/basalt/components/delete-resource",
 			"sourceFile": "packages/basalt/src/components/delete-resource.tsx",
-			"sourceHash": "79e23c89a1546604",
+			"sourceHash": "c351fb96c51b4a3d",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#delete-resource",
@@ -30870,12 +30894,20 @@
 						{
 							"name": "name",
 							"type": "string",
-							"required": true
+							"required": true,
+							"description": "Name of the resource being deleted, interpolated into dialog title and trigger label."
 						},
 						{
 							"name": "onDelete",
 							"type": "() => void | Promise<void>",
-							"required": true
+							"required": true,
+							"description": "Called when deletion is confirmed. When this throws or rejects, an error alert is shown and the dialog remains open for retry."
+						},
+						{
+							"name": "errorMessage",
+							"type": "DeleteResourceErrorFormatter | React.ReactNode",
+							"required": false,
+							"description": "Custom error message or renderer when onDelete fails. Accepts a ReactNode or an (error: unknown) => ReactNode formatter. Defaults to the caught Error message or 'Failed to delete resource. Please try again.'"
 						}
 					]
 				}

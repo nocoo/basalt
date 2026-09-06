@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useState } from "react";
 import { describe, expect, it, vi } from "vitest";
 import { ConfirmDialog, useConfirm } from "./confirm-dialog";
@@ -231,5 +231,43 @@ describe("useConfirm", () => {
 		await expect(closed).resolves.toBe(false);
 		expect(closedSeen).toEqual([false]);
 		expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+	});
+
+	it("restores focus to connected opener without explicit trigger prop on confirm or cancel", async () => {
+		function OpenerHarness() {
+			const api = useConfirm();
+			return (
+				<div>
+					<button
+						id="custom-opener"
+						type="button"
+						onClick={() => api.confirm({ title: "Prompt", description: "Details" })}
+					>
+						Custom Opener
+					</button>
+					<ConfirmDialog {...api.dialogProps} />
+				</div>
+			);
+		}
+		render(<OpenerHarness />);
+		const opener = screen.getByRole("button", { name: "Custom Opener" });
+		opener.focus();
+		expect(document.activeElement).toBe(opener);
+
+		fireEvent.click(opener);
+		expect(await screen.findByRole("alertdialog")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+		expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+		await waitFor(() => {
+			expect(opener).toHaveFocus();
+		});
+
+		fireEvent.click(opener);
+		expect(await screen.findByRole("alertdialog")).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Confirm" }));
+		expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+		await waitFor(() => {
+			expect(opener).toHaveFocus();
+		});
 	});
 });

@@ -53,8 +53,8 @@ describe("DeleteResource", () => {
 		expect(screen.queryByRole("heading", { name: "Delete Atlas?" })).toBeNull();
 	});
 
-	it("keeps the dialog open when delete work rejects", async () => {
-		const onDelete = vi.fn(() => Promise.reject(new Error("busy")));
+	it("keeps the dialog open and displays accessible error alert when delete work rejects", async () => {
+		const onDelete = vi.fn(() => Promise.reject(new Error("Local retryable deletion failure")));
 		render(<DeleteResource name="Atlas" onDelete={onDelete} />);
 		fireEvent.click(screen.getByRole("button", { name: "Delete Atlas" }));
 		await act(async () => {
@@ -62,6 +62,32 @@ describe("DeleteResource", () => {
 		});
 		expect(onDelete).toHaveBeenCalledTimes(1);
 		expect(screen.getByRole("heading", { name: "Delete Atlas?" })).toBeInTheDocument();
+		const alert = screen.getByRole("alert");
+		expect(alert).toHaveTextContent("Local retryable deletion failure");
 		expect(screen.getByRole("button", { name: "Delete" })).toBeEnabled();
+	});
+
+	it("supports custom error message strings and function formatters", async () => {
+		const onDelete = vi.fn(() => Promise.reject(new Error("network error")));
+		const { rerender } = render(
+			<DeleteResource
+				name="Atlas"
+				onDelete={onDelete}
+				errorMessage={(err) => `Custom error: ${(err as Error).message}`}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Delete Atlas" }));
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+		});
+		expect(screen.getByRole("alert")).toHaveTextContent("Custom error: network error");
+
+		rerender(
+			<DeleteResource name="Atlas" onDelete={onDelete} errorMessage="Fixed custom error message" />,
+		);
+		await act(async () => {
+			fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+		});
+		expect(screen.getByRole("alert")).toHaveTextContent("Fixed custom error message");
 	});
 });

@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
 	"totalModules": 110,
-	"totalSymbols": 684,
+	"totalSymbols": 685,
 	"totalValues": 375,
-	"totalTypes": 309,
+	"totalTypes": 310,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -3386,6 +3386,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "DeleteResource",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/delete-resource",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/delete-resource"
+				},
+				{
+					"name": "DeleteResourceErrorFormatter",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/delete-resource",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/delete-resource"

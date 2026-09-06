@@ -260,7 +260,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"confirm-dialog": {
 		"file": "packages/basalt/src/components/confirm-dialog.tsx",
-		"hash": "8ac3b18f43a45b95",
+		"hash": "b184b69c8d5ee916",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/confirm-dialog.js.map (sourcesContent[0])"
 	},
@@ -596,7 +596,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"delete-resource": {
 		"file": "packages/basalt/src/components/delete-resource.tsx",
-		"hash": "79e23c89a1546604",
+		"hash": "c351fb96c51b4a3d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/delete-resource.js.map (sourcesContent[0])"
 	}

@@ -1395,7 +1395,7 @@ export default function Example() {
 	"confirm-dialog": {
 		docs: {
 			description:
-				"A controlled confirmation dialog with explicit loading and a Promise-based hook.",
+				"A controlled confirmation dialog with explicit loading, focus restoration to opener, and a Promise-based hook.",
 			usage: `import { Button } from "@nocoo/basalt/components/button";
 import { ConfirmDialog } from "@nocoo/basalt/components/confirm-dialog";
 import { useState } from "react";
