@@ -677,7 +677,7 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 |---|---|---|---|---|
 | P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
-| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`936f0db`：公开路径基线、严格 import、8 个文档模块与 133 条安装导入的 tarball 编译及负例已验收；继续 API 归属/默认值和版本化指南 |
+| P2 | 公共接口与文档：04、05、06a/b；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 实施中 | `ef2bd65`–`414c794`：公开路径基线、严格 import、文档 tarball 编译和公开 surface 归属检查已验收；继续实际 API 参数表、默认值和版本化指南 |
 | P3 | 基础样式与输入：07、08a/b/c、09；C01–C05 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required 浏览器证明 | 待调度 | — |
 | P4 | 浮层与语义：10a/b、11a/b、12a/b；C06–C11/R05 | Dock 模态、Confirm 焦点/异常责任、Slider、日历键盘、本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 待调度 | — |
 | P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
@@ -725,4 +725,8 @@ P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功�
 
 主 agent 独立验收：8 段均为文档原文，包含两个 ProjectsPage；给其中一个 PageHeader 注入不存在的 prop，消费端以 TS2322 失败；删除 README 明确失败。另用文档 ID `catalog-snippets` 与不存在的 Slider 导出复现了原生成文件覆盖导致的假通过，`936f0db` 后同一真实 tarball 用例以 TS2305 正确失败。普通路径的 99 / 34 / 8 编译通过；该组正常 hooks 为 175 个测试文件、1,457 个测试通过，lint 778 文件无警告，gitleaks 无命中。
 
-继续完成 API 元数据、默认值与版本化指南，P2 尚未整体验收。pi 服务错误均在监控检查中发现，备份并压缩原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
+`414c794` 建立从实际 package exports 及 TypeScript 源码推导的 public surface 归属与 freshness 检查，接入既有 `catalog-api:check`，随 typecheck/build 执行。当前 110 个公开模块、572 个路径内符号（375 个 value / 197 个 type）及 3 个 CSS 入口均有明确归属；12 个非 catalog 模块单独登记，legacy/internal 模块的现有成员采用显式清单。共享源文件中的 LinkButton、CodeBlock 分别归入自己的页面，允许新增组件通过明确登记扩展，未改写 2.0.3 兼容基线。
+
+主 agent 在该提交上复跑 **12/12** 个 source-only 隔离用例：未知 helper、根出口 helper、显式与通配新路径、实际 target 重定向、重命名通配路径、legacy 模块新增成员均按预期拒绝；`export *`、命名纯类型导出、null 覆盖和缺失/过期生成文件均得到正确结果。另逐项比对原始基线的路径、名称及 type/value 身份，零差异。该组正常 hooks 为 **176 个测试文件、1,471 个测试**，lint 781 文件无警告，typecheck/gitleaks 通过。证据为 `p2-surface-independent-root-final.log`、`p2-surface-current.json`。
+
+上述接受的是归属与新鲜度机制。非 catalog 文档的部分锚点正文、实际 props/默认值和版本化指南继续在 D03b/D04 补齐，P2 尚未整体验收。pi 服务错误均在监控检查中发现，保留工作区并恢复原会话后按较小原子组续跑；模型和 pane 保持原配置，P3 未派发。
