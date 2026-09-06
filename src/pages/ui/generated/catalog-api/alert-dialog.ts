@@ -43,7 +43,7 @@ export const API = [
 		props: [
 			{
 				name: "container",
-				type: "React.DocumentFragment | React.Element | null",
+				type: "DocumentFragment | Element | null",
 				required: false,
 				description: "Target container element where the alert dialog overlay and content portal should mount.",
 			},

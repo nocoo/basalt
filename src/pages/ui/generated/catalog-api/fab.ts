@@ -27,7 +27,7 @@ export const API = [
 			},
 			{
 				name: "onClick",
-				type: "React.MouseEventHandler<React.HTMLButtonElement>",
+				type: "React.MouseEventHandler<HTMLButtonElement>",
 				required: false,
 			},
 			{

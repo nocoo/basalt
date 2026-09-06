@@ -1377,11 +1377,22 @@ function isReactPackageFile(fileName: string): boolean {
 	return file.includes("/node_modules/@types/react/") || file.includes("/node_modules/react/");
 }
 
+function isDeclaredInReactNamespace(decl: ts.Declaration): boolean {
+	let node: ts.Node | undefined = decl.parent;
+	while (node) {
+		if (ts.isModuleDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === "React") {
+			return true;
+		}
+		node = node.parent;
+	}
+	return false;
+}
+
 function isReactAlias(alias: ts.Symbol, checker: ts.TypeChecker): boolean {
 	const resolved = skipAlias(alias, checker);
 	for (const symbol of [alias, resolved]) {
 		for (const decl of symbol.getDeclarations() ?? []) {
-			if (isReactPackageFile(decl.getSourceFile().fileName)) {
+			if (isReactPackageFile(decl.getSourceFile().fileName) && isDeclaredInReactNamespace(decl)) {
 				return true;
 			}
 		}

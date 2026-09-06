@@ -3904,6 +3904,45 @@ export interface WidgetProps {
 		]);
 	});
 
+	it("preserves global DOM types without React qualification while qualifying React types", () => {
+		const root = fixture(
+			{
+				"widget.ts": `import type * as React from "react";
+export interface WidgetProps {
+	node?: React.ReactNode;
+	handler?: React.MouseEventHandler<HTMLButtonElement>;
+	container?: DocumentFragment | Element | null;
+}
+`,
+			},
+			{
+				compilerOptions: {
+					baseUrl: ".",
+					paths: {
+						react: [path.join(repoRoot, "node_modules/@types/react")],
+					},
+				},
+			},
+		);
+		expect(fixtureProps(root)).toEqual([
+			{
+				name: "node",
+				type: "React.ReactNode",
+				required: false,
+			},
+			{
+				name: "handler",
+				type: "React.MouseEventHandler<HTMLButtonElement>",
+				required: false,
+			},
+			{
+				name: "container",
+				type: "DocumentFragment | Element | null",
+				required: false,
+			},
+		]);
+	});
+
 	it("rejects impersonation through an external generic mapped type", () => {
 		const root = fixture({
 			"other.ts": `export type Other<T> = { [K in "value"]?: T };\n`,
@@ -4188,7 +4227,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"cc6c8ba1da5770ff8e75cb01c6943339e30bfc881729d9b40368d4aa3ee01fcf",
+			"832bf2404ddfbee0e0ecf3082d4e5317e6cf37458229c1e6ed21c57eb6ca2abe",
 		);
 	}, 60_000);
 

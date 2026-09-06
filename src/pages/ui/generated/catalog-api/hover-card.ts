@@ -92,7 +92,7 @@ export const API = [
 			},
 			{
 				name: "collisionBoundary",
-				type: "Boundary[] | React.Element | null",
+				type: "Boundary[] | Element | null",
 				required: false,
 				default: "[]",
 				description: "Element or elements bounding boundary collision calculations.",
