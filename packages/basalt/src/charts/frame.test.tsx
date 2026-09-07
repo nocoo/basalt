@@ -107,4 +107,35 @@ describe("ChartFrame behavior", () => {
 		const zeroes = screen.getAllByText("0");
 		expect(zeroes.length).toBeGreaterThanOrEqual(3);
 	});
+
+	it("preserves child pre-existing aria-label and aria-describedby when provided on child element", () => {
+		const { container } = render(
+			<ChartShell ariaLabel="Parent Label" summary="Parent summary">
+				<RechartsBar
+					data={points}
+					aria-label="Child Specific Label"
+					aria-describedby="pre-existing-desc-id"
+				>
+					<Bar dataKey="y" />
+				</RechartsBar>
+			</ChartShell>,
+		);
+		const svg = container.querySelector("svg.recharts-surface");
+		expect(svg).toHaveAttribute("aria-label", "Child Specific Label");
+		expect(svg).toHaveAttribute("aria-describedby", "pre-existing-desc-id");
+	});
+
+	it("supports only dataAlternative without summary, omitting aria-describedby from figure", () => {
+		render(
+			<ChartShell ariaLabel="Alt Only" dataAlternative={<div data-testid="alt-div">Table Alt</div>}>
+				<RechartsBar data={points}>
+					<Bar dataKey="y" />
+				</RechartsBar>
+			</ChartShell>,
+		);
+		const figure = screen.getByRole("group", { name: "Alt Only" });
+		expect(figure).toBeInTheDocument();
+		expect(figure).not.toHaveAttribute("aria-describedby");
+		expect(screen.getByTestId("alt-div")).toHaveTextContent("Table Alt");
+	});
 });

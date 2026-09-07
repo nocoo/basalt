@@ -283,4 +283,26 @@ describe("Composable ChartTooltip primitives", () => {
 		expect(summary).toHaveAttribute("aria-live", "polite");
 		expect(summary).toHaveStyle({ padding: "4px" });
 	});
+
+	it("omits label element when label is null or undefined in ChartTooltipRow and ChartTooltipSummary", () => {
+		// Row without label
+		const { rerender } = render(
+			<ChartTooltipRow value={55} unit="ms" data-testid="row-no-label" />,
+		);
+		const row = screen.getByTestId("row-no-label");
+		expect(row.textContent?.trim()).toBe("55ms");
+
+		// Summary without label: must omit default "Total" and render exact "99ms"
+		rerender(<ChartTooltipSummary label={null} value={99} unit="ms" data-testid="sum-no-label" />);
+		const sum = screen.getByTestId("sum-no-label");
+		expect(sum.textContent?.trim()).toBe("99ms");
+		expect(sum).not.toHaveTextContent("Total");
+	});
+
+	it("formats numeric value with custom formatter in ChartTooltipSummary and handles null unit", () => {
+		render(<ChartTooltipSummary value={5000} formatter={(v) => `$${v}`} unit={null} />);
+		const sum = screen.getByTestId("chart-tooltip-summary");
+		expect(sum).toHaveTextContent("Total");
+		expect(sum).toHaveTextContent("$5000");
+	});
 });

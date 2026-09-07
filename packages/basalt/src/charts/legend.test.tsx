@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { ChartLegend } from "./legend";
 
 describe("ChartLegend", () => {
-	it("renders series labels with the shared type size", () => {
+	it("renders series labels with the shared type size and supports bar shape", () => {
 		render(
 			<ChartLegend
 				items={[
@@ -18,6 +18,31 @@ describe("ChartLegend", () => {
 		expect(screen.getByText("Income")).toBeInTheDocument();
 		expect(screen.getByText("Expense")).toBeInTheDocument();
 		expect(legend.querySelector("rect")).toHaveAttribute("fill", "rgb(1, 2, 3)");
+	});
+
+	it("renders area shape with polygon element and line shape with line element", () => {
+		const { rerender } = render(
+			<ChartLegend
+				items={[{ key: "areaKey", label: "AreaLabel", color: "rgb(10, 20, 30)" }]}
+				shape="area"
+			/>,
+		);
+		const polygon = screen.getByTestId("chart-legend").querySelector("polygon");
+		expect(polygon).toBeInTheDocument();
+		expect(polygon).toHaveAttribute("fill", "rgb(10, 20, 30)");
+
+		// Default shape: line
+		rerender(
+			<ChartLegend items={[{ key: "lineKey", label: "LineLabel", color: "rgb(40, 50, 60)" }]} />,
+		);
+		const line = screen.getByTestId("chart-legend").querySelector("line");
+		expect(line).toBeInTheDocument();
+		expect(line).toHaveAttribute("stroke", "rgb(40, 50, 60)");
+	});
+
+	it("falls back to item.key when label is omitted", () => {
+		render(<ChartLegend items={[{ key: "rawKeyOnly" }]} />);
+		expect(screen.getByText("rawKeyOnly")).toBeInTheDocument();
 	});
 
 	it("renders nothing without items", () => {

@@ -70,4 +70,9 @@ describe("Timeline", () => {
 		expect(bare?.querySelectorAll("span")).toHaveLength(2);
 		expect(list).toBeInTheDocument();
 	});
+
+	it("renders items with default ariaLabel='Timeline' when ariaLabel is omitted", () => {
+		render(<Timeline items={[{ title: "Event 1" }]} />);
+		expect(screen.getByRole("list", { name: "Timeline" })).toBeInTheDocument();
+	});
 });
