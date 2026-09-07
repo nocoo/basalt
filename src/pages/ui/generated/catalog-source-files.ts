@@ -176,7 +176,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"badge": {
 		"file": "packages/basalt/src/components/badge.tsx",
-		"hash": "8a4239be5430e3c7",
+		"hash": "573d454791dc8623",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/badge.js.map (sourcesContent[0])"
 	},

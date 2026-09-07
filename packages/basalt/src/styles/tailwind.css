@@ -60,6 +60,8 @@
 	--color-basalt-chart-23: hsl(var(--basalt-chart-23));
 	--color-basalt-chart-24: hsl(var(--basalt-chart-24));
 	--color-basalt-badge-green-foreground: hsl(var(--basalt-badge-green-foreground));
+	--color-basalt-badge-teal: hsl(var(--basalt-badge-teal));
+	--color-basalt-badge-purple: hsl(var(--basalt-badge-purple));
 	--color-basalt-badge-teal-foreground: hsl(var(--basalt-badge-teal-foreground));
 	--color-basalt-badge-purple-foreground: hsl(var(--basalt-badge-purple-foreground));
 	--color-basalt-chart-axis: hsl(var(--basalt-chart-axis));

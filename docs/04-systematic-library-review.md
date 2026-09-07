@@ -1254,6 +1254,14 @@ Next 16.3.3 / Turbopack 生产消费页在挂载 TagColorPicker 时触发 React 
 
 桌面图表组合与手机 bar/line/ring 的实际截图已复核，手机截图等待图表完成响应尺寸更新后采样。公开基线、初审第 1–8 节、2.0.3 版本及 INTEGRATION 镜像核对通过。生产 TypeScript 仅为 Funnel 增加无描边属性，没有新的业务逻辑或覆盖范围变更；本次提交沿用 typecheck、lint、全量单测与 staged gitleaks 正常 hooks。
 
+### 12.9 v2.1.0 发布门追补（2026-09-07）
+
+用户授权 `/su-release Y+1` 并要求一并发布 npm，P1–P10、图表纯色调整及随后合并的品牌角楼图标统一收录于 v2.1.0。根包、库包、锁文件、前端版本和生成的包索引同步升级；旧公共基线及第 1–8 节继续保留。品牌提交中的分享图片地址同步改为 `basaltui.com`。
+
+发布自动化补齐两项实际缺口：将已整理的 Unreleased 功能与迁移说明提升为正式 changelog / GitHub release notes；修复 Bun 忽略仅 workspace 版本变化时的锁文件同步，并在提交前复核实际版本。回归包含真实 Bun 冻结安装，以及“命令成功但版本仍旧”的发布阻断场景。
+
+首次远端 Tailwind 消费者门与本地 npm 发布门均检出浅色 Teal Badge 白字对比度仅 **1.82:1**：装饰 Badge 仍复用了已改为糖果色的图表别名。Teal / Purple 现改用 Bondi / Grape 控件色及可读前景色，两个 CSS 模式共用成对 token。修正后的 Tailwind 门已通过 **2,288/2,288 对文字对比度及 52/52 个键盘焦点场景**，没有降低预算或跳过失败样本。完整消费者与生产部署结果以 [CI](https://github.com/nocoo/basalt/actions/workflows/ci.yml)、[Release](https://github.com/nocoo/basalt/releases/tag/v2.1.0) 和 [npm v2.1.0](https://www.npmjs.com/package/@nocoo/basalt/v/2.1.0) 为准。
+
 证据：`chart-candy-generate`、`chart-candy-package-build`、`chart-candy-heavy`、`chart-candy-docs`、`chart-candy-typecheck`、`chart-candy-lint`、`chart-candy-showcase`、`chart-candy-visual-settled`、`chart-candy-invariants`、`chart-candy-candidate.json` 与 `chart-candy-commit`。本节与实现同批提交，验证均为本地结果。
 
 所有示例仍使用本地模拟数据；查询、认证、权限、路由和上传 transport 属于应用。公共源码/元数据/随包指南保持同步，颜色数量和值的迁移属于明确记录的行为变化，发布版本仍须另行按兼容政策决定。

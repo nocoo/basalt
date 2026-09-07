@@ -173,8 +173,10 @@
   --basalt-accent-11: 237 66% 69%;
   --basalt-accent-12: 210 20% 87%;
   --basalt-badge-green-foreground: 0 0% 10%;
-  --basalt-badge-teal-foreground: 0 0% 100%;
-  --basalt-badge-purple-foreground: 0 0% 100%;
+  --basalt-badge-teal: var(--basalt-accent-3);
+  --basalt-badge-purple: var(--basalt-accent-10);
+  --basalt-badge-teal-foreground: 0 0% 10%;
+  --basalt-badge-purple-foreground: 0 0% 10%;
   --basalt-chart-axis: 0 0% 40%;
   --basalt-chart-muted: 220 12% 86%;
   --basalt-heatmap-green-1: 113 50% 85%;
@@ -222,6 +224,8 @@
   --basalt-info-foreground: 0 0% 10%;
   --basalt-warning-foreground: 0 0% 10%;
   --basalt-badge-green-foreground: 0 0% 10%;
+  --basalt-badge-teal: var(--basalt-accent-3);
+  --basalt-badge-purple: var(--basalt-accent-10);
   --basalt-badge-teal-foreground: 0 0% 10%;
   --basalt-badge-purple-foreground: 0 0% 10%;
   --basalt-border: 0 0% 16%;
@@ -1367,6 +1371,12 @@
   .bg-basalt-background {
     background-color: hsl(var(--basalt-background));
   }
+  .bg-basalt-badge-purple {
+    background-color: hsl(var(--basalt-badge-purple));
+  }
+  .bg-basalt-badge-teal {
+    background-color: hsl(var(--basalt-badge-teal));
+  }
   .bg-basalt-border {
     background-color: hsl(var(--basalt-border));
   }
@@ -1375,12 +1385,6 @@
   }
   .bg-basalt-chart-1 {
     background-color: hsl(var(--basalt-chart-1));
-  }
-  .bg-basalt-chart-3 {
-    background-color: hsl(var(--basalt-chart-3));
-  }
-  .bg-basalt-chart-14 {
-    background-color: hsl(var(--basalt-chart-14));
   }
   .bg-basalt-control {
     background-color: var(--basalt-control-fill);

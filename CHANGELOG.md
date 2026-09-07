@@ -25,6 +25,7 @@
 ### Fixed
 - Native forms/reset and forwarded refs, portal clipping/forceMount/asChild, keyboard/focus restoration, Dock semantics and Slider contracts.
 - Standalone CSS scope and class extraction, semantic contrast and reduced-motion behavior.
+- Named Teal and Purple badges use the candy control swatches with readable text in both themes.
 - Mobile documentation overflow/duplicate IDs, example chart sizing and Network SVG geometry.
 - Gauge remainder uses a neutral theme track and the shared static animation setting.
 - Generated API text retains generic context, readonly types and correct function/constructor union parentheses.

@@ -144,6 +144,8 @@ These notes cover the components, documentation, examples and palette changes in
 
 Chart gray retains its prior light/dark values. Marks use solid candy colors without contrasting outlines or shadows; their fills are not darkened. Raw candy fills can fall below 3:1 on light surfaces; use descriptive labels and `summary` / `dataAlternative` alongside them. Custom control palettes remain independent.
 
+Named Teal and Purple `Badge` variants use the Bondi and Grape control swatches with readable dark foregrounds in both themes. Their backgrounds use `--basalt-badge-teal` and `--basalt-badge-purple`, keeping named badge hues independent of the numbered chart aliases.
+
 v2.1.0 includes the palette count and value changes above as an explicit exception to the usual minor-release compatibility policy. Consumers that index colors or persist palette choices must follow these migration notes. The unchanged export baseline alone does not prove runtime-value compatibility.
 
 Persisted accent IDs are normalized on reads and selections:

@@ -18,7 +18,7 @@ describe("Badge", () => {
 		render(<Badge variant="info">Info</Badge>);
 		expect(screen.getByText("Info").className).toContain("bg-basalt-info-tint");
 		render(<Badge variant="purple">Purple</Badge>);
-		expect(screen.getByText("Purple").className).toContain("bg-basalt-chart-14");
+		expect(screen.getByText("Purple").className).toContain("bg-basalt-badge-purple");
 	});
 
 	it("renders a status dot", () => {
