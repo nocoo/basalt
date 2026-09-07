@@ -117,6 +117,7 @@ import {
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
+import { BasaltLogo } from "@/components/BasaltLogo";
 import { APP_VERSION } from "@/lib/version";
 import {
 	CATALOG,
@@ -485,7 +486,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 			{collapsed ? (
 				<div className="flex h-screen w-[68px] flex-col items-center">
 					<SidebarHeader className="justify-center px-0">
-						<Mountain className="h-5 w-5 text-basalt-primary" strokeWidth={1.5} />
+						<BasaltLogo className="h-7 w-7 shrink-0 object-contain" />
 					</SidebarHeader>
 					<Button
 						variant="ghost"
@@ -534,7 +535,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 					<SidebarHeader>
 						<div className="flex w-full items-center justify-between px-3">
 							<div className="flex items-center gap-3">
-								<Mountain className="h-5 w-5 text-basalt-primary" strokeWidth={1.5} />
+								<BasaltLogo className="h-7 w-7 shrink-0 object-contain" />
 								<span className="text-lg font-semibold text-basalt-foreground md:text-xl">
 									basalt.
 								</span>

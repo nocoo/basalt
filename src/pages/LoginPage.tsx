@@ -1,6 +1,7 @@
 import { Button } from "@nocoo/basalt/components/button";
-import { Mountain, Wallet } from "lucide-react";
+import { Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { BasaltLogo } from "@/components/BasaltLogo";
 
 function Barcode() {
 	const bars = [2, 1, 3, 1, 2, 1, 1, 3, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1];
@@ -84,9 +85,7 @@ export default function LoginPage() {
 					</div>
 
 					<div className="flex flex-1 flex-col items-center px-6 pt-6 pb-14">
-						<div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-secondary p-2.5 ring-1 ring-border dark:bg-[#171717]">
-							<Mountain className="h-10 w-10 text-muted-foreground" strokeWidth={1.5} />
-						</div>
+						<BasaltLogo className="h-24 w-24 object-contain" />
 
 						<p className="mt-5 text-lg font-semibold text-foreground">
 							{t("pages.badgeLogin.welcome")}

@@ -1,6 +1,12 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/nocoo/basalt/main/assets/brand/icon-rounded.png" alt="Basalt" width="128" height="128" />
+</p>
+
 # @nocoo/basalt
 
 Basalt component library. ESM, granular exports, Tailwind v4 or standalone CSS.
+
+`BasaltMark` and the default `LoadingScreen` mark embed the transparent corner-tower identity, so consuming applications need no public asset path. The README uses the separate large presentation. [Logo comparison](https://hexly.ai/logos/basalt) · [Brand usage](https://github.com/nocoo/basalt/blob/main/assets/brand/README.md).
 
 ## Tailwind
 

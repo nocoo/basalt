@@ -3160,7 +3160,7 @@ describe("ui catalog", () => {
 		}
 	});
 
-	it("keeps basalt-mark hero, mountain mark, and copyable module", async () => {
+	it("keeps basalt-mark hero, embedded identity, and copyable module", async () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		renderCatalog("/ui/basalt-mark");
@@ -3177,12 +3177,14 @@ describe("ui catalog", () => {
 		expect(heroMark).toBeTruthy();
 		expect(exampleMark).toBeTruthy();
 		expect(heroMark?.tagName).toBe("svg");
-		expect(heroMark).toHaveClass("h-5", "w-5", "text-basalt-primary");
-		expect(heroMark).toHaveAttribute("stroke-width", "1.5");
+		expect(heroMark).toHaveClass("h-5", "w-5");
+		expect(heroMark).toHaveAttribute("viewBox", "0 0 128 128");
 		expect(heroMark).toHaveAttribute("aria-label", "Basalt");
-		expect(heroMark?.getAttribute("class") ?? "").toContain("lucide-mountain");
-		expect(exampleMark).toHaveClass("h-5", "w-5", "text-basalt-primary");
-		expect(exampleMark).toHaveAttribute("stroke-width", "1.5");
+		expect(heroMark?.querySelector("image")?.getAttribute("href")).toMatch(
+			/^data:image\/png;base64,/,
+		);
+		expect(exampleMark).toHaveClass("h-5", "w-5");
+		expect(exampleMark).toHaveAttribute("viewBox", "0 0 128 128");
 		expect(exampleMark).toHaveAccessibleName("Basalt");
 		for (const scenario of UI_EXAMPLES["basalt-mark"] ?? []) {
 			expect(scenario.code).toContain("export default function Example");
