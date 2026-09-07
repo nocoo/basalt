@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.1.0] - 2026-09-07
+
 ### Added
 - Source-backed package registry, installed source recovery, compilable documentation and AppFrame / Login / Resources recipes.
 - Complex loading dashboard, resource-list and detail compositions; interactive device and subscription tables with formatted cells, inline charts and BatteryMeter.
