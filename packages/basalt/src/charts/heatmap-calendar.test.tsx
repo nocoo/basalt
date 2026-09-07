@@ -248,6 +248,60 @@ describe("HeatmapCalendar", () => {
 			</div>,
 		);
 		expect(document.activeElement).toBe(outsideBtn);
+
+		// Path 1: 10 values, last cell focused, user moves focus outside, shrinks non-empty to 2 values:
+		// outside focus is preserved, active index is adjusted to index 1 (item 2), and tab stop/tooltip reading correct
+		const tenNumbers = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+		rerender(
+			<div>
+				<button id="outside" type="button">
+					Outside
+				</button>
+				<HeatmapCalendar values={tenNumbers} ariaLabel="Shrink Heat" />
+			</div>,
+		);
+
+		const cellsTen = screen.getAllByRole("button").slice(1); // skip outside button
+		expect(cellsTen).toHaveLength(10);
+		// Focus last cell (index 9)
+		act(() => {
+			cellsTen[9]?.focus();
+		});
+		expect(document.activeElement).toBe(cellsTen[9]);
+		expect(cellsTen[9]).toHaveAttribute("tabindex", "0");
+
+		// User moves focus to outside button
+		act(() => {
+			outsideBtn.focus();
+		});
+		expect(document.activeElement).toBe(outsideBtn);
+
+		// Non-empty shrink to 2 values [10, 20]
+		rerender(
+			<div>
+				<button id="outside" type="button">
+					Outside
+				</button>
+				<HeatmapCalendar values={[10, 20]} ariaLabel="Shrink Heat" />
+			</div>,
+		);
+
+		// Focus must remain on outside button (not stolen)
+		expect(document.activeElement).toBe(outsideBtn);
+
+		// Active tabstop is clamped to 2nd cell (index 1)
+		const cellsTwo = screen.getAllByRole("button").slice(1);
+		expect(cellsTwo).toHaveLength(2);
+		expect(cellsTwo[0]).toHaveAttribute("tabindex", "-1");
+		expect(cellsTwo[1]).toHaveAttribute("tabindex", "0");
+		expect(cellsTwo[1]).toHaveAttribute("aria-label", "Position 2: 20");
+
+		// When user focuses back on the clamped active tabstop, reading is accurate
+		act(() => {
+			cellsTwo[1]?.focus();
+		});
+		expect(document.activeElement).toBe(cellsTwo[1]);
+		expect(screen.getByRole("tooltip").textContent).toBe("Position 2: 20");
 	});
 
 	it("restores active document.activeElement when year changes while focused on a date", () => {
@@ -472,5 +526,53 @@ describe("HeatmapCalendar", () => {
 			</div>,
 		);
 		expect(document.activeElement).toBe(outsideBtn);
+	});
+
+	it("renders year ending Saturday dates and bounds, and returns to Dec 31 on End", () => {
+		// 2022-12-31 is Saturday, ending exactly on the last day of the week
+		const data2022 = [
+			{ date: "2022-01-01", value: 10 },
+			{ date: "2022-12-31", value: 99 },
+		];
+		render(<HeatmapCalendar data={data2022} year={2022} ariaLabel="Year 2022 Heat" />);
+
+		const buttons = screen.getAllByRole("button");
+		// Exactly 365 days in 2022
+		expect(buttons).toHaveLength(365);
+
+		const jan1 = screen.getByRole("button", { name: /2022-01-01/ });
+		const dec31 = screen.getByRole("button", { name: /2022-12-31/ });
+		expect(jan1).toBeInTheDocument();
+		expect(dec31).toBeInTheDocument();
+
+		// Week columns check before focus: jan1's week column parent container has exactly 53 week columns,
+		// and dec31 is located within the 53rd (last) week column.
+		const jan1WeekCol = jan1.closest(".flex.flex-col");
+		const weeksContainer = jan1WeekCol?.parentElement;
+		expect(weeksContainer).toBeDefined();
+		const weekElements = Array.from(weeksContainer?.children ?? []);
+		expect(weekElements).toHaveLength(53);
+		expect(weekElements[52]?.contains(dec31)).toBe(true);
+
+		act(() => {
+			dec31.focus();
+		});
+		expect(document.activeElement).toBe(dec31);
+
+		// ArrowRight and ArrowDown on year boundary Saturday stay clamped without error
+		fireEvent.keyDown(dec31, { key: "ArrowRight" });
+		expect(document.activeElement).toBe(dec31);
+		fireEvent.keyDown(dec31, { key: "ArrowDown" });
+		expect(document.activeElement).toBe(dec31);
+
+		// Home jumps to Jan 1
+		fireEvent.keyDown(dec31, { key: "Home" });
+		expect(document.activeElement).toBe(jan1);
+		expect(jan1).toHaveAttribute("tabindex", "0");
+
+		// End returns to Dec 31
+		fireEvent.keyDown(jan1, { key: "End" });
+		expect(document.activeElement).toBe(dec31);
+		expect(dec31).toHaveAttribute("tabindex", "0");
 	});
 });

@@ -342,6 +342,139 @@ describe("HeatmapMatrix", () => {
 			</div>,
 		);
 		expect(document.activeElement).toBe(outsideBtn);
+
+		// Path 2: Matrix active cell emptied directly from non-zero row/col (e.g. 3x4 last cell [2, 3]), without shrinking to 1x1 first.
+		// Focus enters named empty region; on restore, focus returns to cell [0, 0]; when user moves focus outside, subsequent restore does NOT steal focus.
+		rerender(
+			<div>
+				<button id="outside-button" type="button">
+					Outside Focus
+				</button>
+				<HeatmapMatrix
+					rowLabels={sampleRows}
+					columnLabels={sampleCols}
+					values={sampleValues}
+					ariaLabel="Direct Empty Matrix"
+				/>
+			</div>,
+		);
+
+		const matrixCells = screen.getAllByRole("button").slice(1);
+		expect(matrixCells).toHaveLength(12);
+		const lastCell = matrixCells[11]; // row 2, col 3 ("Wed, 18:00: 45")
+		act(() => {
+			lastCell?.focus();
+		});
+		expect(document.activeElement).toBe(lastCell);
+		expect(lastCell).toHaveAttribute("tabindex", "0");
+
+		// Directly empty matrix from 3x4 to 0x0
+		rerender(
+			<div>
+				<button id="outside-button" type="button">
+					Outside Focus
+				</button>
+				<HeatmapMatrix
+					rowLabels={[]}
+					columnLabels={[]}
+					values={[]}
+					ariaLabel="Direct Empty Matrix"
+				/>
+			</div>,
+		);
+
+		const directEmptyRegion = screen.getByRole("region", { name: "Direct Empty Matrix" });
+		expect(document.activeElement).toBe(directEmptyRegion);
+		expect(directEmptyRegion).toHaveAttribute("tabindex", "-1");
+
+		// Keyboard event on empty region does not throw, does not synthesize phantom buttons, and forwards to caller onKeyDown
+		const onKeyDownCaller = vi.fn();
+		rerender(
+			<div>
+				<button id="outside-button" type="button">
+					Outside Focus
+				</button>
+				<HeatmapMatrix
+					rowLabels={[]}
+					columnLabels={[]}
+					values={[]}
+					ariaLabel="Direct Empty Matrix"
+					onKeyDown={onKeyDownCaller}
+				/>
+			</div>,
+		);
+		fireEvent.keyDown(directEmptyRegion, { key: "ArrowRight" });
+		fireEvent.keyDown(directEmptyRegion, { key: "Home" });
+		fireEvent.keyDown(directEmptyRegion, { key: "End" });
+		fireEvent.keyDown(directEmptyRegion, { key: "a" });
+		expect(onKeyDownCaller).toHaveBeenCalledTimes(4);
+		expect(onKeyDownCaller.mock.calls.map(([e]) => e.key)).toEqual([
+			"ArrowRight",
+			"Home",
+			"End",
+			"a",
+		]);
+		expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
+		expect(screen.queryAllByRole("button")).toHaveLength(1); // only outside-button
+
+		// Restore matrix while empty region held focus -> returns to first cell [0, 0]
+		rerender(
+			<div>
+				<button id="outside-button" type="button">
+					Outside Focus
+				</button>
+				<HeatmapMatrix
+					rowLabels={sampleRows}
+					columnLabels={sampleCols}
+					values={sampleValues}
+					ariaLabel="Direct Empty Matrix"
+				/>
+			</div>,
+		);
+		const restoredCells = screen.getAllByRole("button").slice(1);
+		expect(document.activeElement).toBe(restoredCells[0]);
+		expect(restoredCells[0]).toHaveAttribute("tabindex", "0");
+		expect(restoredCells[0]).toHaveAttribute("aria-label", "Mon, 00:00: 0 (Heatmap matrix)");
+
+		// Directly empty again
+		rerender(
+			<div>
+				<button id="outside-button" type="button">
+					Outside Focus
+				</button>
+				<HeatmapMatrix
+					rowLabels={[]}
+					columnLabels={[]}
+					values={[]}
+					ariaLabel="Direct Empty Matrix"
+				/>
+			</div>,
+		);
+		expect(document.activeElement).toBe(
+			screen.getByRole("region", { name: "Direct Empty Matrix" }),
+		);
+
+		// User now moves focus out of empty region to outside button
+		act(() => {
+			outsideBtn.focus();
+		});
+		expect(document.activeElement).toBe(outsideBtn);
+
+		// Restore matrix now -> outside button retains focus without stealing
+		rerender(
+			<div>
+				<button id="outside-button" type="button">
+					Outside Focus
+				</button>
+				<HeatmapMatrix
+					rowLabels={sampleRows}
+					columnLabels={sampleCols}
+					values={sampleValues}
+					ariaLabel="Direct Empty Matrix"
+				/>
+			</div>,
+		);
+		expect(document.activeElement).toBe(outsideBtn);
 	});
 
 	it("supports keyboard Home, End, PageUp, PageDown, Escape, and bounds navigation with precise tooltips", () => {
