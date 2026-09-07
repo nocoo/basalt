@@ -595,8 +595,11 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | 12a | `fix: render empty state actions` | C09；明确 slot 并验证所有允许的 children |
 | 12b | `fix: tolerate unavailable theme storage` | C11；回退与持久化行为 |
 | 13a | `fix: improve semantic text contrast` | C12；主题与表面配对验证 |
-| 13b | `feat: expose accessible chart alternatives` | C13；摘要、数据替代与键盘路径 |
+| 13b1 | `feat: expose accessible chart alternatives` | C13；图表框架及公开包装的摘要、数据替代与键盘路径 |
+| 13b2 | `fix: make heatmap values keyboard accessible` | C13；日期/数值名称、单一 Tab 入口、方向键及局部横滚 |
+| 13b3 | `feat: compose metric card states and explanations` | R05；现有 StatCard/LayerCard/ChartShell 的说明、趋势与状态插槽 |
 | 13c | `fix: respect reduced motion across feedback states` | E07；spinner、caret、局部 pulse 与系统偏好 |
+| 13d | `fix: restore mobile navigation focus` | E08；移动 Sheet 关闭回焦与滚动锁清理 |
 | 14a | `fix: make catalog tables and headers responsive` | E01；移动端信息完整、可键盘滚动 |
 | 14b | `fix: isolate catalog example IDs` | E02；重复实例的 label/description 正确归属 |
 | 14c | `fix: adapt chat panes to narrow viewports` | E04；移动 master/detail 与输入区可达 |
@@ -610,6 +613,13 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | 16b | `feat: compose reusable filter controls` | R01；FilterBar/Chip/日期预设组合，URL 状态在外部 |
 | 16c | `feat: add file drop and upload state primitives` | R02；文件交互与受控上传状态，应用负责 transport |
 | 17a | `feat: support dynamic chart series` | C15/R04；旧 props 兼容、任意系列和真实消费图表 |
+| 17a-tooltip | `feat: add composable chart tooltip parts` | R04；行、分组分隔与总计，两个实际组合示例 |
+| 17a-matrix | `feat: add reusable heatmap matrix` | R04；caller 行列标签、颜色域、空值与键盘导航 |
+| 17a-heatmap-tests | `fix: preserve heatmap focus across data transitions` | C23 与 P5 热力日历/矩阵分支缺口；清空后加载回焦、键盘、读数及清理回归 |
+| 17a-chart-tests | `test: cover chart rendering options` | P5 图表框架与包装选项的公共行为回归；不改四维 95% 门槛 |
+| 17a-registry-perf | `perf: avoid redundant registry parsing` | Q08；减少单次 registry 校验中的重复解析，保留生成内容、跨调用 freshness 与既有时间预算 |
+| 17a-generator-fixtures | `test: reuse compiler fixtures without weakening checks` | Q08 复核；减少只读清单与独立 callable 场景重复编译，保留所有断言与原时间预算 |
+| 17a-transition-tests | `test: cover heatmap focus transition boundaries` | 数据缩短、矩阵直接清空与恢复的键盘焦点回归；保持既有公共实现和门槛 |
 | 17b | `feat: expose controlled data table state` | C14；按实际服务端列表需求设计 adapter |
 | 17c | `feat: compose resource page regions` | C14/R05；页面 slots、状态与操作区 |
 | 17d | `feat: showcase composed loading skeletons` | S01；Library 可发现的仪表盘、列表、详情组合，加载/内容切换与稳定几何 |
@@ -647,10 +657,10 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 ### 12.1 调度与提交约束
 
 - 当前分支：`main`，审查起点 `e61efc1`。按用户在 pi pane 中补充的「直接 main 做即可 / 或者合并」，主 agent 已把本地 main 快进至已完成的实现提交；后续继续在 main 原子提交。现有 Herdr pi pane：`w1R:p2`；主 agent 使用同一仓库，负责验收和本节状态，pi 不并行修改本文或索引。
-- 同一时间只派发一个阶段。pi 完成该阶段的代码、必要文档、检查及原子提交后停下；主 agent 独立查看 diff 和实际行为，未通过则留在本阶段修正。
+- 同一时间只派发一个阶段中的一个原子组。pi 完成代码、必要文档和相关检查后先停下，不暂存或提交；主 agent 独立验收 diff、安装包与实际行为，保存文件哈希快照后才授权普通提交。提交通过正常 hooks 后再核对文件与快照；未通过则留在本组修正并重新验收。
 - 每个提交描述一个可独立审阅的变化，使用正常 hooks；不得跳过 hooks、降低覆盖率或放宽质量门来通过验收。只提交本阶段明确的文件。
 - 监控每 45 秒采集 pi 状态、会话进展和 Git 状态。进入 blocked/unknown、进程退出或连续 5 分钟无会话进展时检查终端和子进程；长时间构建需要核对实际进度，不能仅凭时间强杀。即使 Herdr 显示 done，也检查最后一次 assistant stopReason；服务端错误结束单独报警，避免误判为完成。监控不自动接受审批、不替用户回答问题。
-- 阶段状态采用「待调度 / 实施中 / 验收中 / 需修正 / 已验收」。完成记录绑定提交与本阶段新证据，不能沿用第 2 节的历史通过结果。
+- 阶段状态采用「待调度 / 实施中 / 验收中 / 需修正 / 已验收 / 暂停」。完成记录绑定提交与本阶段新证据，不能沿用第 2 节的历史通过结果。
 
 ### 12.2 新增 Library 需求
 
@@ -687,15 +697,17 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
 | P2 | 公共接口与文档：04、05、06a/b1/b2；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 已验收 | `ef2bd65`–`2b8f088`：99 页 API、99 Usage、246 场景、随包 registry/指南及正式 tarball 编译门；120 项旧接口契约与 5 项真实 recipe 浏览器检查通过，详见 12.4 |
 | P3 | 基础样式与输入：07、08a/b/c、09/q/b/c/d；C01–C05/C19–C21 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required、Group 原生事件与 ref 清理 | 已验收 | 运行时至 `b85649d`、行为回归 `026a958`；C01–C05/C19–C21 已关闭，177 文件 / 1,544 测试，四维覆盖率均 ≥95%；120 项旧接口与真实安装包验收通过 |
-| P4 | 浮层与语义：10a/b/c/d/e、11a/b/b2/b3、12a/b/c/d；C06–C11/C16–C18/C22/Q07/R05 | Dock 模态、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘/受控月份/本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 已验收 | 实现至 `781aadf`，C06–C11/C16–C18/C22/Q07 已关闭；177 文件 / 1,628 测试，四维覆盖率 97.45 / 95.26 / 98.22 / 97.53；最终包、Next 与文档消费通过，详见 12.4 |
-| P5 | 视觉/图表/动效：13a/b/c、17a；C12/C13/C15/E07/R04 | 主题对比、图表可访问替代、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、统一 reduced motion | 待调度 | — |
-| P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 待调度 | — |
+| P4 | 浮层与语义：10a/b/c/d/e、11a/b/b2/b3、12a/b/c/d；C06–C11/C16–C18/C22/Q07/R05 | Dock 非模态语义、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘/受控月份/本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 已验收 | 实现至 `781aadf`，C06–C11/C16–C18/C22/Q07 已关闭；177 文件 / 1,628 测试，四维覆盖率 97.45 / 95.26 / 98.22 / 97.53；最终包、Next 与文档消费通过，详见 12.4 |
+| P5 | 视觉/图表/动效：13a/b1/b2/b3/c/d、17a 及 tooltip/matrix/回归/registry 子组；C12/C13/C15/C23/E07/E08/Q08/R04/R05 | 主题对比、导航回焦、图表替代、StatCard 状态、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、reduced motion | 已验收 | 实施至 `236ac18`；183 文件 / 1,703 测试全部通过，四维覆盖率 97.24 / 95.05 / 98.50 / 97.43；C12/C13/C15/C23/E07/E08/Q08/R04 已关闭，详见 12.4 |
+| P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 暂停（未调度） | 按用户要求停在 P5 验收后，先汇报 P1–P5 成果 |
 | P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 待调度 | — |
 | P8 | 筛选与上传：16a/b/c；R01/R02 | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费 | 待调度 | — |
 | P9 | 小型复用控件与应用模板：18a/b/c/d；R03/R06/R07/R08 | EditableNav、Tag 色板/选择、InlineEditable/master-detail、可编译 AppFrame/Login/Resource recipes | 待调度 | — |
 | P10 | 整体验收、兼容/迁移说明与台账收口；Q05 与全部问题追踪 | 新 HEAD 全套 6DQ、tarball/文档 freshness、关键浏览器组合、无未记录 API 破坏、干净工作区 | 待调度 | — |
 
 P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功能提交。P9 的 InlineEditable 按实际受控需求单独提交。任何新增公开 surface 同阶段补元数据、出口和文档，不能拖到收尾才补。
+
+**当前暂停点（2026-09-07）：P1–P5 已验收；P6 尚未派发，P7–P10 也未开始。** pi 保持空闲，实施监督定时器停止，本地 dev 服务保留。P6 的任务包和改前基线仅为准备材料，不代表已经实施；恢复调度需用户新的继续指示。
 
 ### 12.4 验收记录
 
@@ -960,7 +972,87 @@ P3 的 **120 项旧公开 props/ref/key/文档类型契约**保持兼容；最�
 
 最终运行时是 11b3 的新包，包 build/types/pack/publint 与正式 A/B 已通过；12d/Q07 未改组件运行时或声明，保留 **230 份产物 / 111 份源码**绑定。**113 份声明产物**与已验收的 120 项旧接口检查完全一致，DatePicker 和 Provider 的专项旧契约另有验证。原始 `public-api-baseline.json` 仍为 `ef2bd65` 原文，版本保持 **2.0.3**。P4 已整体验收，下一阶段为 P5；后续不沿用本阶段数值冒充新实现的覆盖率。证据：`p4-stage-coverage-final.json`、`p4-stage-coverage-final.lcov`、`p4-stage-final-validation-evidence.json`、`p4-phase-final-types-binding.json`、`p4-q07-runtime-artifact-source-binding.json`、`p4-phase-acceptance.json`。
 
+#### P5 验收记录（已验收，2026-09-07）
+
+本阶段从 `90a4ebe` 开始。以下各组分别独立验收并正常提交；完整覆盖率与全部消费者在矩阵组完成后统一收口，不以单组 hooks 代替阶段验收。
+
+**13a / 主题文字与强调色对比度。** `764a822` 共 **21 个已审文件**。实际安装包在双主题、24 accent、语义表面和 hover/focus 组合下 **7,032/7,032** 通过；正式 standalone/Tailwind A/B 各验证 **704 个文字配对、16 个焦点配对**。24 个 swatch 与 84 个图表 token 未变，3 个旧公开函数契约保持。Library 首次桌面 **6/6**，移动端发现 E08，另组修正；不能把首次运行记成全尺寸通过。
+
+包与源码 **230/111** 绑定一致，正常 hooks **177 文件、1,629 测试**通过。**C12 已关闭。** 证据：`p5-13a-fixed-browser-batch.json`、`p5-13a-final-artifact-source-binding.json`、`p5-13a-final-validation-evidence.json`、`p5-13a-root-commit-final.json`。
+
+**13d / 移动导航关闭回焦。** `2f7b20d` 只改 DashboardLayout 和相关测试两文件，关闭 Sheet 后回到仍存在的触发器并清理滚动锁。实际移动组合 **10/10**、Library 双主题双尺寸 **12/12**、相关 L1 **8 项**通过；正常 hooks **177 文件、1,632 测试**。包源码未变，沿用上组已验收的 **230 份产物 / 111 份源码**。**E08 已关闭。** 首版脚本误寻不存在的 Close 控件，改用真实 Collapse sidebar；原始结果保留。证据：`p5-13d-acceptance.json`、`p5-13d-mobile-final.json`、`p5-13d-library-final.json`。
+
+**13b1 / 图表可访问替代。** `b84cc22` 共 **61 文件**，为图表框架和公开包装补摘要、数据替代、键盘读数等能力；48 个新 API 参数进入 16 页。真实安装包 **32/32**、Library **8/8**、旧契约 **18/18**；公开面为 **110 modules / 689 symbols（375 value、314 type）**，230 产物和 111 源码一致。正式 heavy/docs 通过，文档门 **99 Usage / 254 场景**，正常 hooks **178 文件、1,637 测试**。此时 C13 仍待日历部分，不提前关闭。证据：`p5-13b1-acceptance.json`。
+
+**13b2 / 热力日历键盘读数。** `e6af539` 共 **17 文件**，补日期/数值名称、单一 Tab 入口、方向键、读数和移动横滚。实际包 **32/32**、Library **8/8**、旧契约 **1/1**；正式文档门 **99 Usage / 256 场景**，正常 hooks **178 文件、1,639 测试**。独立验收发现祖先滚动后焦点 tooltip 消失，已在提交前修正。焦点对比度首次采样早于有限 CSS 过渡结束，等待真实过渡后通过，保留原阈值。**C13 已关闭。** 证据：`p5-13b2-acceptance.json`。
+
+**13b3 / 指标卡状态与说明组合。** `8d6b51f` 共 **16 文件**，StatCard 增加可选 action/status/trendContent/children，正确保留数值 0，保持既有默认布局。实际包 **24/24**、Library **8/8**、旧契约 **2/2**；验证异步重试、焦点和手机标题几何稳定。文档门 **99 Usage / 258 场景**，正常 hooks **178 文件、1,640 测试**。R05 的其他组合需求继续由 P6 承接。证据：`p5-13b3-acceptance.json`。
+
+**13c / 减弱动效。** `32a7247` 共 **15 文件**，修正 Button loading 与 ChatBubble caret。实际包 **16/16**、Tailwind **8/8**、Library/Examples **16/16**；113 份声明和 CSS 原文不变，运行 JS 仅 Button/ChatBubble 改变。Gauge 在实际 Recharts **3.10.1** 的旧包验证 **8/8**，无需改源码；该证据不外推到所有兼容版本。
+
+首次正常 hooks 因三份精确 scenario 清单漏同步而失败，修正后 **47 项**针对性回归通过；最终 hooks **178 文件、1,640 测试**及 gitleaks 通过，文档门 **99 Usage / 260 场景**。provider 错误妨碍提交调用后，由现有 pi pane 原生 shell 执行已审、锁定文件的 helper，仍经过正常 hooks。tarball SHA-256 为 `212d2170260e88c06b2d5d6cf64f703fcafb31c9afc01da5e99a201dc66986da`。**E07 已关闭。** 证据：`p5-13c-acceptance.json`、`p5-13c-approved-pi-commit.json`、`p5-13c-approved-commit-tree.json`。
+
+**17a / 动态系列。** `4ebc863` 共 **47 个已审文件**，真实安装包类型 **20 正向 + 60 负向 + 32 旧契约 = 112 项**全部通过；十种图表的任意系列、空数据与尺寸 **56/56**，八种完整图表的 formatter/domain/tooltip/legend 与真实 stack 几何 **48/48**。保留旧 XYPoint 必填 y、各图表默认 y 系列及 Sparkline **112×40**、SlotBar **24px**；Sparkline/SlotBar 只扩展数据和 series。四个新公开类型使公共面达到 **110 modules / 693 symbols（375 value、318 type）**，轻量 root 仍不引入 Recharts。
+
+Area 场景改用通用服务名称后，两个 Library 场景双主题双尺寸再次 **8/8**，系列筛选、配色、键盘读数、百分比合计、null 窗口、容器 resize 与无横溢出通过，已查看手机深色截图。指南明确任意命名字段须显式 series，省略或空 series 仍用各图表旧 y/y2/y3 fallback。两次早期独立探针分别因 Recharts 轴标签位置与 SVG tspan 分词修正，精确数值断言保持不变，原结果保留。
+
+正式 heavy 的 **4/4** 组合真实验证曲线 **5→4→5**、图例 Space/Enter、tooltip **11:00 / 48ms → 12:00 / 52ms**、formatter/domain 实际刻度，以及不等总量的 absolute→expand→absolute 几何；未采用仅数按钮、只查 SVG 存在或只比 tooltip 标题的弱断言。正式文档门 **32 个文档模块 / 99 Usage / 262 场景**通过；137 项相关 L1、typecheck/lint 与正常 hooks **178 文件、1,641 测试**、gitleaks 通过，47 个提交文件哈希一致。
+
+前序安装包的 **230 份产物 / 111 份源码**与最终运行时和声明全部一致，复用已通过的包 types/pack/publint；最终指南由新 tarball 的正式 docs gate 验证。安装包使用 Recharts **3.10.1**，SHA-256 为 `c16733fe5f8f6c41bc0202a7a267a5a4acfd49312a8b485188a78851032a734c`。**C15 已关闭；R04 的 tooltip 组合与热力矩阵继续两个独立原子组。** D07 泛型/readonly/递归打印器问题留 P10。
+
+pi 曾提前运行完整 coverage，结果为 **178 文件中 175 通过 / 3 失败、1,641 测试中 1,638 通过 / 3 失败**：两项 5 秒超时和一项场景污染文案，没有有效覆盖率结果。文案已修正，两项测试在原预算的针对性检查及最终 hooks 均通过；完整四维覆盖率仍待矩阵组末统一验证。证据：`p5-17a-acceptance.json`、`p5-17a-types.json`、`p5-17a-dynamic.json`、`p5-17a-options-corrected.json`、`p5-17a-library-final-labels.json`、`p5-17a-final-artifact-source-binding.json`、`p5-17a-final-consumers-validation-evidence.json`、`p5-17a-final-commit-validation-evidence.json`、`p5-17a-final-commit-tree.json`。
+
+**17a-tooltip / 可组合 tooltip。** `7af79f7` 共 **14 个已审文件**，新增 ChartTooltipRow、ChartTooltipSummary、ChartTooltipDivider 及三种 Props；分别以 div/div/hr 为宿主，透传原生属性、事件和 React 19 ref，明确使用命名插槽并排除 children。数值、单位、分组与合计在 Line/Area 的两个现有动态场景中实际使用，原场景 ID 和标题保留。公共面为 **110 modules / 699 symbols（378 value、321 type）**。
+
+新真实安装包的组合、零值、空值、原生属性、ref 清理和窄屏长标签 **4/4**；旧 tooltip 的可见文字、几何与计算样式对照 **4/4**；**4 项旧类型契约、3 个新组件用法、5 项负向类型检查**通过。Library 双主题双尺寸 **8/8**，实际显示 SLA 上限、百分比行及吞吐合计，tooltip 保持在视口内；已查看手机深色截图。早期一次独立 resize 探针遇到临时缺失 DOM，补等待空值防护后复核，保持原尺寸阈值与错误检查，原结果保留。
+
+正式 heavy **4/4** 验证 5 行数据、精确 **48ms→52ms** 和 **390ms** 合计，并保留前组全部曲线/堆叠检查。文档门 **32 模块 / 99 Usage / 262 场景**及 build/types/pack/publint、typecheck/lint 通过；新增 **8 项**行为回归，最终 tooltip L1 **21/21**，正常 hooks **178 文件、1,649 测试**和 gitleaks 通过。**230 产物 / 111 源码**与实际安装包一致；相对前包仅 tooltip.js 与 tooltip.d.ts 改变，CSS 和轻量 root 未变。tarball SHA-256 为 `e8d1d60551c335587372aec1695c85a7b5c77f5bc61dcdf021df6b8ef92ed56c`。证据：`p5-tooltip-acceptance.json`、`p5-tooltip-types.json`、`p5-tooltip-parts.json`、`p5-tooltip-legacy-final.json`、`p5-tooltip-library-final.json`、`p5-tooltip-final-artifact-source-binding.json`、`p5-tooltip-commit-validation-evidence.json`、`p5-tooltip-final-commit-tree.json`。R04 的热力矩阵与阶段全门继续。
+
+**17a-matrix / 通用热力矩阵。** `43a4659` 共 **37 个已审文件**，新增独立 `@nocoo/basalt/charts/heatmap-matrix` 入口及 `/ui/heatmap-matrix` 页面，原 Calendar 三个场景保持不变。输入接受 readonly 行列标签与二维数值，区分零、缺失与非有限值；颜色域仅由可见有限数据推导，处理逆序、等界、空域与稀疏行。默认格子仍为 **16×16**，可选 `columnWidth` 让时间与服务标题完整可读。公开面为 **111 modules / 703 symbols（379 value、324 type）**。
+
+真实安装包 **40/40**、两种 Library 场景在移动/桌面和浅深主题下 **8/8** 通过；类型验证包括 **4 项数据契约、3 个可编译用法、7 项负向检查**。独立验证覆盖 ARIA grid/行列头、单一 Tab 入口、方向键/Home/End/PageUp/PageDown、精确零值与缺失读数、Escape、缩小/清空后的焦点、原生事件取消及 React 19 ref 清理。提交前修复了空矩阵渲染循环、ref/事件合成、Escape 提示关闭及向左导航被固定行头遮挡的问题；固定行头后的 **23 个逐列返回位置**全部可见。已查看最终桌面深色与手机浅色截图。
+
+正式 heavy **4/4** 保留前组强断言，并验证精确 **12ms / 0ms / —**、状态、提示关闭、每个目标列的焦点与左右可见边界。最终文档门 **32 模块 / 100 Usage / 264 场景**通过。**232 份产物 / 112 份源码**与安装包一致，相对 tooltip 组仅新增 Matrix JS/声明和所需 standalone 样式，旧 JS/声明无变化；tarball SHA-256 为 `69271107b29c86b28301111e67fc3aaa4537e6724d7d070373d89ceefd8780e4`。
+
+第一次正常 hooks 拦下 **7 项失败**：遗漏的目录静态清单、计数/摘要及示例中性文案。补齐后 **179 项**相关回归通过，Library 再次 **8/8**，重新保存快照后普通提交，最终 hooks **179 文件 / 1,659 测试**及 gitleaks 通过。服务端错误在提交调用前被监控发现，改由原 pi pane 的原生 shell 执行已批准、锁定文件的 helper，正常 hooks 未跳过。另一次独立浏览器探针以单步鼠标跳跃触发 Radix pointer-grace 监听时序；诊断确认下一次 pointermove 即关闭，改为连续移动后 **40/40**，组件与安装包未改变，原始 **36/40** 记录保留。**R04 已关闭；P5 全阶段门继续。** 证据：`p5-matrix-acceptance.json`、`p5-matrix-runtime-final.json`、`p5-matrix-runtime-probe-correction.json`、`p5-matrix-library-hooks-final.json`、`p5-matrix-hooks-final-artifact-source-binding.json`、`p5-matrix-hooks-final-validation-evidence.json`、`p5-matrix-hooks-pi-commit.json`、`p5-matrix-hooks-final-commit-tree.json`。
+
+**P5 首次完整覆盖率（未通过，待补回归）。** `43a4659` 上 **179 文件 / 1,659 测试**全部通过，语句 **95.71%**、分支 **91.99%（2,768/3,009）**、函数 **97.88%**、行 **95.96%**。覆盖率命令真实返回 **1**，未把单测全绿计为阶段通过。主要新缺口位于 HeatmapCalendar、HeatmapMatrix 与图表选项；浏览器验收不计入 L1 覆盖率，继续补可观察的公共行为测试。补充分为热力导航/状态和图表配置两个原子组，原分母、95% 阈值、测试预算与既有断言保持不变。证据：`p5-stage-coverage-final.json`、`p5-stage-coverage-final.lcov`、`p5-stage-coverage-gaps.json`；这些文件保留本次失败，不会覆盖为后续成功结果。
+
+**热力回归 / C23 修复。** `f4182a9` 共 **6 文件**，仅 ValuesHeatmap 增加空态重新加载时的回焦处理；Matrix 仅补测试。真实安装包恢复焦点 **4/4**、外部焦点与滚动/Tab 所有权 **4/4**、原日历 **32/32**、矩阵 **40/40** 均通过。**232 份产物 / 112 份源码**绑定，**114 份声明与全部 CSS 不变**。补足真实键盘焦点、空态切换、读数、图例、横向滚动和 ref 清理；相关 L1 **19/19**，正常 hooks **179 文件 / 1,665 测试**及 gitleaks 通过，提交与 root 预审快照完全一致。正式 heavy 与 docs（**32 模块 / 100 Usage / 264 场景**）通过。最初 heavy 的空 region 名称断言与既有 fixture 不一致，修正预期后重跑通过，原失败保留。局部覆盖诊断为热力两文件 **269/300 分支**，只用于定位，**不是完整仓库 95% 门通过证据**；下一原子组继续补图表选项。证据：`p5-heatmaps-acceptance.json`、`p5-heatmaps-package-delta.json`、`p5-heatmaps-docs-final.json`、`p5-heatmaps-reviewed-commit-tree.json`。
+
+**图表选项回归。** `c563508` 共 **10 个测试文件**，补充图例、轴格式化/显式值域、键盘 Tooltip、Gauge 量程/颜色/插槽与描述关联、ChartFrame 属性优先级、Tooltip 省略标签、图例形状及系列颜色归属。相关 L1 **11 文件 / 76 测试**，root 独立复跑 **24/24**；Gauge 真实安装包在 390/1280px、深浅主题下 **4/4**。**232 份产物 / 112 份源码**保持一致，公开 API 与原有断言保留。预审要求恢复被误替换的旧 Tooltip 属性透传测试，并保留 Gauge 前景弧形/颜色强断言；最终类型检查、lint、正常 hooks **183 文件 / 1,700 测试**及 gitleaks 均通过，提交与 root 快照一致。服务端错误发生在提交调用前，改由原 pi pane 执行已经批准的锁定 helper，未跳过 hooks。非法索引/非法 children 才能触达的防御分支未用伪造输入填充，P5 是否通过仍以完整覆盖率结果为准。证据：`p5-chart-options-acceptance.json`、`p5-chart-options-final-validation-evidence.json`、`p5-chart-options-independent-l1.json`、`p5-gauge-range-with-recharts.json`、`p5-chart-options-final-commit-tree.json`。
+
+**完整覆盖率复验中的 Q08（待修正）。** `c563508` 两次完整运行均为 **1,699 通过 / 1 失败**；失败项是 registry 的 `passes asset freshness check on sync`，分别用时 **5,243ms / 5,181ms**，超过既有 **5,000ms** 预算。两次命令均返回 **1**，没有生成新覆盖率报告；不能沿用旧 lcov 或把测试组通过计为四维 95% 通过。单项诊断通过，完整命令约 **1.97 秒**；修正方向为减少同次生成/校验的重复解析，不延长超时。证据：`p5-stage-coverage-repaired.json`、`p5-stage-coverage-repaired-retry.json`、`p5-coverage-registry-timeout-diagnosis.json`、`p5-registry-before.json`。
+
+**Q08 优化实施。** `6408548` 共 **2 文件**，源文件直接依赖解析和文档锚点解析改为一次调用内复用，freshness 检查共用本次推导的 manifest。root 独立 **9/9** 隔离与修改/恢复检查通过，相关 L1 **18/18**，生成文件、公开基线和 Vitest 配置哈希不变。三次基准中位数：文档校验 **162.57ms → 3.55ms**，完整 freshness **1,088.96ms → 555.33ms（下降约 49%）**；单独 registry 生成中位数 **472.96ms → 477.96ms**，未宣称该部分提速。正常 hooks **183 文件 / 1,702 测试**与 gitleaks 通过，提交与 root 快照一致。仓库回归覆盖 Markdown/JSON 多锚点的修改与恢复、同路径依赖修改、共享循环依赖和入口隔离；原预算及全部旧断言保留。Q08 在完整覆盖环境下的复核仍待结果。证据：`p5-registry-acceptance.json`、`p5-registry-performance-comparison.json`、`p5-registry-root-validation-binding.json`、`p5-registry-final-commit-tree.json`。
+
+**Q08 完整复核与夹具后续。** `6408548` 的完整运行中，原 freshness 用例通过，但公共清单根导出追踪、新增依赖隔离回归和 callable 文档测试分别耗时 **5,645ms / 5,025ms / 5,751ms**，超出各自既有的 5 秒预算。结果为 **180 文件通过 / 3 文件失败、1,699 测试通过 / 3 测试失败**，命令返回 **1**，没有新的 lcov。后续原子组只整理测试夹具：真实只读清单复用、保持相同导出结构的依赖扫描复用真实 manifest、多个独立 callable 模块合并编译；保留全部断言、真实负例和各自预算，不改变生成器或通过拆分测试重置预算。证据：`p5-stage-coverage-after-registry.json`、`p5-stage-coverage-after-registry-run.log`。
+
+**Q08 测试夹具修正。** `a74b8fa` 仅改 **3 个测试文件**：只读仓库清单由 3 次推导减为 1 次；callable 的四个独立正例合入一个真实 fixture，单个测试内的 TypeScript program 从 5 次减为 2 次，缺失导出仍走真实抛错路径；依赖回归在导出结构不变时复用真实 manifest，源码依赖仍逐次重新扫描。AST 比对确认 **693 条原断言完整保留**，增加源码恢复和第二个目录隔离的 2 条断言。相关检查 **35 项**、root 独立选定 **3/3**、类型检查和 lint 通过，正常 hooks **183 文件 / 1,702 测试**及 gitleaks 通过，提交与快照一致。**232 份产物 / 112 份源码**保持不变，没有放宽时间预算或拆分测试重置预算。服务端超时与连接中断后压缩原 pi 会话并续做，模型与 pane 保持不变。完整覆盖率复核仍待结果，本次仅开启失败时也输出报告的选项，测试范围、四维 95% 门槛、workers 与超时均未改变。证据：`p5-generator-acceptance.json`、`p5-generator-assertions-final.json`、`p5-generator-final-commit-tree.json`、`p5-generator-fixtures-provider-errors.json`。
+
+**Q08 关闭与最新完整覆盖率。** `a74b8fa` 的完整运行 **183 文件 / 1,702 测试全部通过**，前述超时未再发生；**Q08 已关闭**。语句 **97.18%**、分支 **94.91%（2,858/3,011）**、函数 **98.50%**、行 **97.40%**。命令仍因分支不足 95% 返回 **1**，新 lcov 已保存；还需至少 3 个分支，继续单独补非空数据缩短、矩阵直接清空与焦点所有权等正常边界回归，P5 暂不关闭。证据：`p5-stage-coverage-after-fixtures.json`、`p5-stage-coverage-after-fixtures.lcov`。
+
+**热力边界回归。** `236ac18` 仅改 **2 个测试文件**，保留全部旧代码和断言，补充非空数组缩短后的外部焦点所有权、矩阵从非零行列直接清空及恢复、空态键盘事件精确透传、2022 年的 365 个日期/53 个周列与 Home/End 年界导航。相关 L1 和 root 独立复跑均为 **20/20**，真实安装包在手机/桌面及浅深主题下 **8/8**。预审将 Tooltip 改为完整文本相等检查、键盘回调改为精确 key 列表、周列数改为精确 53，未放宽原断言。正常 hooks **183 文件 / 1,703 测试**与 gitleaks 通过，提交与快照一致；**232 份产物 / 112 份源码**不变。P5 最终完整覆盖率复核仍待结果。证据：`p5-transitions-acceptance.json`、`p5-transitions-independent-browser.json`、`p5-transitions-independent-l1.json`、`p5-transitions-final-commit-tree.json`。
+
+**P5 阶段最终验收。** 在 `236ac18` 上完成完整覆盖率检查，**183 文件 / 1,703 测试全部通过**，语句 **97.24%（3,314/3,408）**、分支 **95.05%（2,862/3,011）**、函数 **98.50%（790/802）**、行 **97.43%（3,193/3,277）**，命令返回 **0**。四维 95% 阈值及覆盖范围保持不变，新 lcov 与命令日志均保存哈希；此前失败记录仍保留。
+
+最终运行时的展示站 build、standalone/Tailwind、heavy、Next 及文档消费均已通过；文档门编译 **32 个文档模块、100 个 Usage、264 个场景**。这些门对应已验收的实际安装包，最终 **232 份产物 / 112 份源码**重新与 `236ac18` 绑定；后续测试与生成器优化没有改变组件运行时。**114 份声明**与矩阵阶段的已验收包逐字节相同，P4 以来变化的声明有逐项旧契约证明。原公共基线保持 `ef2bd65` 原文，第 1–8 节保持 `40e831b` 原文，根包、库包和实际导入的 APP_VERSION 均为 **2.0.3**。
+
+P5 关闭 **C12、C13、C15、C23、E07、E08、Q08、R04**；R05 的剩余组合需求由 P6 承接，D07 通用类型打印器问题仍留 P10。按用户最新要求在 P6 前暂停，不继续派发后续阶段。本轮没有 push、publish 或 deploy；上述均为本地检查和安装包消费证据。证据：`p5-stage-coverage-final-transitions.json`、`p5-stage-coverage-final-transitions.lcov`、`p5-stage-postfocus-gates.json`、`p5-heatmaps-heavy-final-validation-evidence.json`、`p5-heatmaps-docs-final.json`、`p5-phase-final-runtime-artifact-source-binding.json`、`p5-phase-final-invariants.json`、`p5-phase-final-types-binding.json`、`p5-phase-acceptance.json`。
+
 ### 12.5 实施中追加的问题
+
+#### Q08 · P2 · registry 与生成器测试重复解析导致完整覆盖运行超时【已于 P5 修正】
+
+在 `c563508` 的完整覆盖率运行中，`scripts/package-registry.test.ts` 的现有 freshness 检查连续两次超过 5 秒预算。生成器为不同公共入口重复解析共享依赖，文档校验则为同一份 registry 的各个锚点重复读入和解析 JSON；库增大后，这些重复工作侵占了校验预算。
+
+修正限定为一次调用内部共享解析结果，输出和校验规则不变；不同仓库、后续文件编辑、循环/共享依赖、缺失文件或锚点仍需正确识别。保留 5 秒用例预算、完整覆盖范围、四维 95% 和所有旧断言。先保存生成内容哈希及前后性能数据，再独立验收并正常提交；不得通过持续重试、全局缓存或放宽门槛关闭此项。
+
+#### C23 · P2 · 热力日历清空后重新加载丢失键盘焦点【已于 P5 修正】
+
+`HeatmapCalendar values` 模式在单元格持有焦点时清空数组，能把焦点转到空态区域；随后重新加载非空数组，焦点却落到 `BODY`。实际安装包在 390px/1280px 与浅深主题 **4/4 复现**。`ValuesHeatmap` 的空态和非空态渲染树不同，恢复逻辑仅处理空数组及索引越界，遗漏空态恢复到有效索引的路径。
+
+修正应在组件原本持有焦点时回到新的有效单元格；如果用户已经移到外部控件，重新加载必须保留外部焦点。公开接口、色板与默认读数保持兼容。证据：`p5-calendar-restore-before.json`、`p5-calendar-restore-before-acceptance-binding.json`。已在 `f4182a9` 修正：真实安装包恢复焦点 **4/4**，空态移出焦点、滚动与 Tab 离开后的所有权检查 **4/4**，原日历 **32/32**、矩阵 **40/40**；正式 heavy 纳入有数据 → 清空 → 重新加载的精确焦点/读数回归。**C23 已关闭**，阶段完整覆盖率另行验收。
 
 #### C16 · P2 · 内置 Portal 截断 Content 的 forceMount 契约【已于 P4 修正】
 
@@ -1014,6 +1106,10 @@ P4/10b 新增的错误文案参数暴露出 [catalog-api.ts](../scripts/catalog-
 
 10b 使用明确的 `DeleteResourceErrorFormatter` 回调别名，使本组公开文档准确且参数兼容。通用打印器的优先级修正在 P10 单独提交：保留联合中的函数/构造函数等必要括号，用实际可赋值性对照验证生成文本，并确认其他已生成 API 没有意外变化；不把当前别名方案计为通用缺陷已关闭。
 
+P5 补充：HeatmapCalendarYear 的实际 `colorScale: readonly string[]` 被印为 `string[]`。安装包接受 const palette，文档类型以 **TS4104** 拒绝；证据：`p5-d07-readonly-corrected.json`。P10 同时保留 readonly 数组/元组语义。
+
+17a 又发现泛型上下文丢失：真实包 `LineChartProps<Row>["legend"]` 接受字符串，生成的 `LineChartLegendRenderer<unknown> | React.ReactNode` 因 unknown 不满足 string 约束报 **TS2344**；data 印为 unknown[]，series 却残留自由 K，需统一泛型参数、约束与上下文。证据：`p5-d07-generic.json`。将 ReactNode 与 callback 整体包进泛型联合别名还会导致打印器递归溢出，证据：`p5-17a-catalog-api-probe-run.log`；本组以内联 ReactNode 联合和独立 callback alias 避开，通用递归边界仍在 P10 修正，不放宽实际 API。
+
 #### C22 · P2 · 日历超出原生日期上限时跳回一月【已于 P4 修正】
 
 P4 阶段补键盘回归时发现，日期为 `275760-09-13` 时 PageDown 错误聚焦 `275760-01-02`。月末超出 JavaScript Date 范围导致天数 NaN，随后 `utcDate` 的 `setUTCFullYear` 将 Invalid Date 恢复为当年一月。正常按钮已禁用 Next，键盘路径仍可能越界。修复纳入 11b3：拒绝无效月份目标，同时保留最后月份内仍合法日期的导航及原有扩展年份范围；重新执行真实包、类型与消费者验收。证据：`p4-calendar-regression-p4-11b3-native-before.json`、`p4-11b3-native-before-unit.log`。
@@ -1021,3 +1117,7 @@ P4 阶段补键盘回归时发现，日期为 `275760-09-13` 时 PageDown 错误
 #### Q07 · P2 · registry 格式化子进程偶发超时【已于 P4 修正调用并复核】
 
 [package-registry.ts](../scripts/package-registry.ts) 通过 `bunx --no-install biome format` 格式化 registry/source JSON，子进程预算为 10 秒。P4 的组合子集验证曾两次遇到 `spawnSync bunx ETIMEDOUT`；11b3 正常提交及阶段首轮 coverage 再次被同类错误拦下，实际均为 **176 文件 / 1,619 测试通过，1 个 registry 版本同步测试超时**。未改文件重试通过不代表问题已关闭。将固定版本 formatter 调用和失败诊断前移至 P4 独立原子组，保持 10 秒预算和全部质量门。root 对真实 registry/sources 的两组调用对照文本一致，支持直接调用已安装的固定 CLI；该有限对照未复现超时，不能据此声称超时根因已确认。证据：`p4-12b-docs-batch-before.log`、`p4-11b3-commit-before-formatter-timeout.log`、`p4-stage-coverage-attempt-1.log`、`p4-q07-formatter-diagnostic.json`。
+
+#### E08 · P2 · 移动导航关闭后焦点丢失【已于 P5 修正】
+
+DashboardLayout 的移动 Sheet 关闭后焦点落到 BODY；390px 双主题 **2/2** 复现。由 `2f7b20d` 修复为回到原来仍存在的触发器，并清理背景滚动锁。独立移动路径 **10/10**、Library **12/12** 通过，详见 12.4 的 13d 记录。证据：`p5-13d-acceptance.json`。
