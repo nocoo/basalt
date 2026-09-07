@@ -11,10 +11,12 @@ import { SlotBarChart, type SlotBarChartProps } from "@nocoo/basalt/charts/slot-
 import { Sparkline, type SparklineProps } from "@nocoo/basalt/charts/sparkline";
 import { StackedBarChart, type StackedBarChartProps } from "@nocoo/basalt/charts/stacked-bar";
 import { Timeseries, type TimeseriesProps } from "@nocoo/basalt/charts/timeseries";
+import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";
 import { Button as GranularButton } from "@nocoo/basalt/components/button";
-import { DataTable } from "@nocoo/basalt/components/data-table";
+import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-table";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { Field as GranularField } from "@nocoo/basalt/components/field";
+import { ResourceList } from "@nocoo/basalt/components/resource-list";
 import { Text as GranularText } from "@nocoo/basalt/components/text";
 import { ThemeProvider as GranularThemeProvider } from "@nocoo/basalt/providers/theme";
 
@@ -304,3 +306,45 @@ export const jsxInvalidTypo = (
 		]}
 	/>
 );
+
+// Resource composition retains readable legacy columns and infers row callbacks.
+const resourceColumns: DataTableColumn<{ id: string; count: bigint }>[] = [
+	{
+		id: "count",
+		header: "Count",
+		accessor: (row) => row.count,
+		sortValue: (row) => row.count,
+		headerContent: <strong>Count</strong>,
+		width: 180,
+		cellClassName: "numeric",
+	},
+];
+export const readableHeader: string = resourceColumns[0].header.toUpperCase();
+export const serverResourceTable = (
+	<ResourceList title="Resources" data={[]} toolbar={<BatteryMeter value={42} label="Gateway" />}>
+		<DataTable
+			data={[{ id: "a", count: 12n }]}
+			columns={resourceColumns}
+			sort={null}
+			manualPagination
+			manualSorting
+			total={20}
+			page={2}
+			pageSize={5}
+			onSortChange={(sort) => sort?.dir.toUpperCase()}
+			onPageChange={(page) => page.toFixed()}
+			error={<span>Unavailable</span>}
+			onRetry={() => undefined}
+		/>
+	</ResourceList>
+);
+export const badResourceColumn: DataTableColumn<{ count: number }> = {
+	id: "count",
+	// @ts-expect-error Rich header content uses headerContent; header remains string-readable.
+	header: <strong>Count</strong>,
+	accessor: (row) => row.count,
+};
+// @ts-expect-error ResourceList preserves required data for existing callers reading the props type.
+export const badResourceList = <ResourceList title="Missing rows" />;
+// @ts-expect-error Battery meters always need an accessible name.
+export const unnamedBattery = <BatteryMeter value={42} />;

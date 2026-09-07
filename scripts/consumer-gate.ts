@@ -41,6 +41,7 @@ import {
 } from "./consumer-http";
 import { assertConsumerPortal } from "./consumer-portal";
 import { assertConsumerProviders } from "./consumer-providers";
+import { assertConsumerResources } from "./consumer-resources";
 import { assertConsumerSlider } from "./consumer-slider";
 import { assertConsumerToast } from "./consumer-toast";
 
@@ -1349,6 +1350,16 @@ console.log(JSON.stringify({
 						const res = await assertConsumerEmpty(page);
 						assertNoPageFaults(faults);
 						return res;
+					});
+
+					evidence.resources = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(`http://127.0.0.1:${port}/resources.html`, {
+							waitUntil: "domcontentloaded",
+						});
+						const result = await assertConsumerResources(page);
+						assertNoPageFaults(faults);
+						return result;
 					});
 
 					const providersUrl = `http://127.0.0.1:${port}/providers.html`;

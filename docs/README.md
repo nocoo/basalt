@@ -17,7 +17,7 @@
 | 01 | [01-plan-2-0.md](./01-plan-2-0.md) | **2.0 架构**：包、CSS、6.2 出口、发布门、观感冻结 |
 | 02 | [02-implementation.md](./02-implementation.md) | **2.0 实现**：placeholder 先行、逐控件确认、先小后大、图表 kit、原子化提交 |
 | 03 | [03-maturity-program.md](./03-maturity-program.md) | **生产成熟度执行台账**：Herdr 分段调度、差距闭环、验收状态、发布就绪 |
-| 04 | [04-systematic-library-review.md](./04-systematic-library-review.md) | **系统审查与实施台账**：P1–P5 已验收；P5 至 `236ac18`，1,703 项测试及四维 95% 覆盖率门通过；按用户要求在 P6 前暂停，复杂 Skeleton/Table Library、Example 与下游复用尚待后续阶段 |
+| 04 | [04-systematic-library-review.md](./04-systematic-library-review.md) | **系统审查与实施台账**：P1–P6 已验收；复杂 Skeleton/Table 与受控资源列表完成，1,719 项测试及四维 95% 门通过；主 agent 直接实施 P7–P10，按大阶段提交 |
 
 ## 历史
 

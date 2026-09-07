@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.0.3",
-	"totalModules": 111,
-	"totalSymbols": 703,
-	"totalValues": 379,
-	"totalTypes": 324,
+	"totalModules": 112,
+	"totalSymbols": 706,
+	"totalValues": 380,
+	"totalTypes": 326,
 	"totalCssExports": 3,
-	"totalCatalogEntries": 100,
+	"totalCatalogEntries": 101,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -7915,6 +7915,102 @@
 			]
 		},
 		{
+			"displayName": "BatteryMeter",
+			"exportName": "BatteryMeter",
+			"importPath": "@nocoo/basalt/components/battery-meter",
+			"subpath": "./components/battery-meter",
+			"sourceFile": "packages/basalt/src/components/battery-meter.tsx",
+			"sourceHash": "14346d08ec737dfe",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/battery-meter",
+			"packageDoc": "ai/registry.json#battery-meter",
+			"summary": "BatteryMeter component documentation and catalog playground",
+			"peers": ["react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "BatteryMeter",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/battery-meter",
+					"packageDoc": "ai/registry.json#battery-meter",
+					"originModule": "@nocoo/basalt/components/battery-meter"
+				},
+				{
+					"name": "BatteryMeterProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/battery-meter",
+					"packageDoc": "ai/registry.json#battery-meter",
+					"originModule": "@nocoo/basalt/components/battery-meter"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "battery-meter",
+					"name": "BatteryMeter",
+					"exportName": "BatteryMeter",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#battery-meter",
+					"api": [
+						{
+							"name": "BatteryMeter",
+							"props": [
+								{
+									"name": "value",
+									"type": "number",
+									"required": true,
+									"description": "Battery charge in percent, clamped to 0–100. Non-finite readings are unavailable."
+								},
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Accessible name of the battery."
+								},
+								{
+									"name": "status",
+									"type": "\"charging\" | \"discharging\" | \"offline\"",
+									"required": false,
+									"default": "\"discharging\"",
+									"description": "Device state, also announced with the value."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "BatteryMeter",
+					"props": [
+						{
+							"name": "value",
+							"type": "number",
+							"required": true,
+							"description": "Battery charge in percent, clamped to 0–100. Non-finite readings are unavailable."
+						},
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible name of the battery."
+						},
+						{
+							"name": "status",
+							"type": "\"charging\" | \"discharging\" | \"offline\"",
+							"required": false,
+							"default": "\"discharging\"",
+							"description": "Device state, also announced with the value."
+						}
+					]
+				}
+			]
+		},
+		{
 			"displayName": "Breadcrumbs",
 			"exportName": "Breadcrumbs",
 			"importPath": "@nocoo/basalt/components/breadcrumbs",
@@ -11222,7 +11318,7 @@
 			"importPath": "@nocoo/basalt/components/data-table",
 			"subpath": "./components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "4a8cdb7ab6721fb2",
+			"sourceHash": "ea5a733853688934",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11242,6 +11338,14 @@
 				},
 				{
 					"name": "DataTableColumn",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/data-table",
+					"packageDoc": "ai/registry.json#data-table",
+					"originModule": "@nocoo/basalt/components/data-table"
+				},
+				{
+					"name": "DataTableSort",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/data-table",
@@ -11363,6 +11467,84 @@
 									"type": "string",
 									"required": false,
 									"description": "Additional classes for the table."
+								},
+								{
+									"name": "sort",
+									"type": "DataTableSort | null",
+									"required": false,
+									"description": "Controlled sorting. null explicitly disables sorting."
+								},
+								{
+									"name": "defaultSort",
+									"type": "DataTableSort | null",
+									"required": false,
+									"default": "null",
+									"description": "Initial sorting for uncontrolled usage."
+								},
+								{
+									"name": "onSortChange",
+									"type": "(sort: DataTableSort | null) => void",
+									"required": false,
+									"description": "Reports header sorting requests. Controlled values change only when the caller accepts."
+								},
+								{
+									"name": "manualSorting",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Caller supplies sorted rows; headers only report requests."
+								},
+								{
+									"name": "manualPagination",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Caller supplies the current page; rows are never sliced again. Use stable row IDs across pages."
+								},
+								{
+									"name": "manualFiltering",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Caller supplies filtered rows; filter is not applied locally."
+								},
+								{
+									"name": "total",
+									"type": "number",
+									"required": false,
+									"description": "Total matching row count in manualPagination mode; defaults to data.length."
+								},
+								{
+									"name": "error",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Error content replacing rows after loading finishes."
+								},
+								{
+									"name": "onRetry",
+									"type": "() => void",
+									"required": false,
+									"description": "Optional retry action for an error. The caller owns the request."
+								},
+								{
+									"name": "retryLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Try again\"",
+									"description": "Retry button text."
+								},
+								{
+									"name": "aria-label",
+									"type": "string",
+									"required": false,
+									"default": "\"Data table\"",
+									"description": "Accessible table name."
+								},
+								{
+									"name": "aria-describedby",
+									"type": "string",
+									"required": false,
+									"description": "ID of additional table instructions or summary."
 								}
 							]
 						}
@@ -11467,6 +11649,84 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional classes for the table."
+						},
+						{
+							"name": "sort",
+							"type": "DataTableSort | null",
+							"required": false,
+							"description": "Controlled sorting. null explicitly disables sorting."
+						},
+						{
+							"name": "defaultSort",
+							"type": "DataTableSort | null",
+							"required": false,
+							"default": "null",
+							"description": "Initial sorting for uncontrolled usage."
+						},
+						{
+							"name": "onSortChange",
+							"type": "(sort: DataTableSort | null) => void",
+							"required": false,
+							"description": "Reports header sorting requests. Controlled values change only when the caller accepts."
+						},
+						{
+							"name": "manualSorting",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Caller supplies sorted rows; headers only report requests."
+						},
+						{
+							"name": "manualPagination",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Caller supplies the current page; rows are never sliced again. Use stable row IDs across pages."
+						},
+						{
+							"name": "manualFiltering",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Caller supplies filtered rows; filter is not applied locally."
+						},
+						{
+							"name": "total",
+							"type": "number",
+							"required": false,
+							"description": "Total matching row count in manualPagination mode; defaults to data.length."
+						},
+						{
+							"name": "error",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Error content replacing rows after loading finishes."
+						},
+						{
+							"name": "onRetry",
+							"type": "() => void",
+							"required": false,
+							"description": "Optional retry action for an error. The caller owns the request."
+						},
+						{
+							"name": "retryLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Try again\"",
+							"description": "Retry button text."
+						},
+						{
+							"name": "aria-label",
+							"type": "string",
+							"required": false,
+							"default": "\"Data table\"",
+							"description": "Accessible table name."
+						},
+						{
+							"name": "aria-describedby",
+							"type": "string",
+							"required": false,
+							"description": "ID of additional table instructions or summary."
 						}
 					]
 				}
@@ -18008,7 +18268,7 @@
 			"importPath": "@nocoo/basalt/components/resource-list",
 			"subpath": "./components/resource-list",
 			"sourceFile": "packages/basalt/src/components/resource-list.tsx",
-			"sourceHash": "7aa6fc33b4edfe77",
+			"sourceHash": "566e5ee25323dac5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -18069,6 +18329,79 @@
 									"name": "data",
 									"type": "ResourceListRow[]",
 									"required": true
+								},
+								{
+									"name": "header",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Custom heading; falls back to PageHeader."
+								},
+								{
+									"name": "toolbar",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Search and primary actions below the heading."
+								},
+								{
+									"name": "filters",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Active filters and their controls."
+								},
+								{
+									"name": "bulkActions",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Selection-dependent actions."
+								},
+								{
+									"name": "state",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "State content replacing the results; undefined falls through to children/data."
+								},
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Custom results such as a typed DataTable."
+								},
+								{
+									"name": "footer",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Pagination or result summary after the results."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Classes for the root region."
+								},
+								{
+									"name": "loading",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Show the default table loading state."
+								},
+								{
+									"name": "empty",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Content shown when default data is empty."
+								},
+								{
+									"name": "error",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Default table error content."
+								},
+								{
+									"name": "onRetry",
+									"type": "() => void",
+									"required": false,
+									"description": "Retry callback for the default table."
 								}
 							]
 						}
@@ -18093,6 +18426,79 @@
 							"name": "data",
 							"type": "ResourceListRow[]",
 							"required": true
+						},
+						{
+							"name": "header",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Custom heading; falls back to PageHeader."
+						},
+						{
+							"name": "toolbar",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Search and primary actions below the heading."
+						},
+						{
+							"name": "filters",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Active filters and their controls."
+						},
+						{
+							"name": "bulkActions",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Selection-dependent actions."
+						},
+						{
+							"name": "state",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "State content replacing the results; undefined falls through to children/data."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Custom results such as a typed DataTable."
+						},
+						{
+							"name": "footer",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Pagination or result summary after the results."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Classes for the root region."
+						},
+						{
+							"name": "loading",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Show the default table loading state."
+						},
+						{
+							"name": "empty",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Content shown when default data is empty."
+						},
+						{
+							"name": "error",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Default table error content."
+						},
+						{
+							"name": "onRetry",
+							"type": "() => void",
+							"required": false,
+							"description": "Retry callback for the default table."
 						}
 					]
 				}
@@ -26839,6 +27245,43 @@
 			]
 		},
 		{
+			"slug": "battery-meter",
+			"name": "BatteryMeter",
+			"exportName": "BatteryMeter",
+			"importPath": "@nocoo/basalt/components/battery-meter",
+			"sourceFile": "packages/basalt/src/components/battery-meter.tsx",
+			"sourceHash": "14346d08ec737dfe",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#battery-meter",
+			"api": [
+				{
+					"name": "BatteryMeter",
+					"props": [
+						{
+							"name": "value",
+							"type": "number",
+							"required": true,
+							"description": "Battery charge in percent, clamped to 0–100. Non-finite readings are unavailable."
+						},
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible name of the battery."
+						},
+						{
+							"name": "status",
+							"type": "\"charging\" | \"discharging\" | \"offline\"",
+							"required": false,
+							"default": "\"discharging\"",
+							"description": "Device state, also announced with the value."
+						}
+					]
+				}
+			]
+		},
+		{
 			"slug": "meter",
 			"name": "Meter",
 			"exportName": "Meter",
@@ -29839,7 +30282,7 @@
 			"exportName": "DataTable",
 			"importPath": "@nocoo/basalt/components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "4a8cdb7ab6721fb2",
+			"sourceHash": "ea5a733853688934",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#data-table",
@@ -29941,6 +30384,84 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional classes for the table."
+						},
+						{
+							"name": "sort",
+							"type": "DataTableSort | null",
+							"required": false,
+							"description": "Controlled sorting. null explicitly disables sorting."
+						},
+						{
+							"name": "defaultSort",
+							"type": "DataTableSort | null",
+							"required": false,
+							"default": "null",
+							"description": "Initial sorting for uncontrolled usage."
+						},
+						{
+							"name": "onSortChange",
+							"type": "(sort: DataTableSort | null) => void",
+							"required": false,
+							"description": "Reports header sorting requests. Controlled values change only when the caller accepts."
+						},
+						{
+							"name": "manualSorting",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Caller supplies sorted rows; headers only report requests."
+						},
+						{
+							"name": "manualPagination",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Caller supplies the current page; rows are never sliced again. Use stable row IDs across pages."
+						},
+						{
+							"name": "manualFiltering",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Caller supplies filtered rows; filter is not applied locally."
+						},
+						{
+							"name": "total",
+							"type": "number",
+							"required": false,
+							"description": "Total matching row count in manualPagination mode; defaults to data.length."
+						},
+						{
+							"name": "error",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Error content replacing rows after loading finishes."
+						},
+						{
+							"name": "onRetry",
+							"type": "() => void",
+							"required": false,
+							"description": "Optional retry action for an error. The caller owns the request."
+						},
+						{
+							"name": "retryLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Try again\"",
+							"description": "Retry button text."
+						},
+						{
+							"name": "aria-label",
+							"type": "string",
+							"required": false,
+							"default": "\"Data table\"",
+							"description": "Accessible table name."
+						},
+						{
+							"name": "aria-describedby",
+							"type": "string",
+							"required": false,
+							"description": "ID of additional table instructions or summary."
 						}
 					]
 				}
@@ -33625,7 +34146,7 @@
 			"exportName": "ResourceList",
 			"importPath": "@nocoo/basalt/components/resource-list",
 			"sourceFile": "packages/basalt/src/components/resource-list.tsx",
-			"sourceHash": "7aa6fc33b4edfe77",
+			"sourceHash": "566e5ee25323dac5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#resource-list",
@@ -33647,6 +34168,79 @@
 							"name": "data",
 							"type": "ResourceListRow[]",
 							"required": true
+						},
+						{
+							"name": "header",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Custom heading; falls back to PageHeader."
+						},
+						{
+							"name": "toolbar",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Search and primary actions below the heading."
+						},
+						{
+							"name": "filters",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Active filters and their controls."
+						},
+						{
+							"name": "bulkActions",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Selection-dependent actions."
+						},
+						{
+							"name": "state",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "State content replacing the results; undefined falls through to children/data."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Custom results such as a typed DataTable."
+						},
+						{
+							"name": "footer",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Pagination or result summary after the results."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Classes for the root region."
+						},
+						{
+							"name": "loading",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Show the default table loading state."
+						},
+						{
+							"name": "empty",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Content shown when default data is empty."
+						},
+						{
+							"name": "error",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Default table error content."
+						},
+						{
+							"name": "onRetry",
+							"type": "() => void",
+							"required": false,
+							"description": "Retry callback for the default table."
 						}
 					]
 				}

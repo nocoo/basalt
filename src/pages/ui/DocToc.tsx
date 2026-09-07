@@ -57,7 +57,13 @@ function TocLink({
 	);
 }
 
-export function DocToc({ headings }: { headings: DocHeading[] }) {
+export function DocToc({
+	headings,
+	compact = false,
+}: {
+	headings: DocHeading[];
+	compact?: boolean;
+}) {
 	const groups = useMemo(() => groupHeadings(headings), [headings]);
 	const ids = useMemo(() => headings.map((heading) => heading.id), [headings]);
 	const { activeId, selectSection } = useDocTocActiveId(ids);
@@ -80,10 +86,19 @@ export function DocToc({ headings }: { headings: DocHeading[] }) {
 
 	return (
 		<nav aria-label="On this page" className="text-sm">
-			<label className="block xl:hidden">
-				<span className="mb-1 block text-muted-foreground">On this page</span>
+			<label className={compact ? "flex flex-wrap items-center gap-3" : "block xl:hidden"}>
+				<span
+					className={
+						compact ? "shrink-0 text-muted-foreground" : "mb-1 block text-muted-foreground"
+					}
+				>
+					On this page
+				</span>
 				<select
-					className="w-full rounded-md border border-border bg-secondary px-2 py-1 text-foreground"
+					className={cn(
+						"min-w-0 rounded-md border border-border bg-secondary px-2 py-1 text-foreground",
+						compact ? "max-w-full flex-1 sm:flex-none sm:w-80" : "w-full",
+					)}
 					aria-label="Jump to section"
 					value={activeId}
 					onChange={(event) => {
@@ -99,7 +114,7 @@ export function DocToc({ headings }: { headings: DocHeading[] }) {
 					))}
 				</select>
 			</label>
-			<div className="hidden xl:block">
+			<div className={compact ? "hidden" : "hidden xl:block"}>
 				<p className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
 					On this page
 				</p>

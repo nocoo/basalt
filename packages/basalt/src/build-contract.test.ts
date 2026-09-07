@@ -24,6 +24,7 @@ const REQUIRED_PREPUBLISH_STEPS = [
 	"gate-c",
 	"gate-d",
 	"gate-docs",
+	"gate-showcase",
 ] as const;
 
 function classifyPrepublishSegment(segment: string) {
@@ -52,6 +53,8 @@ function classifyPrepublishSegment(segment: string) {
 			return "gate-d";
 		case "bun run consumer:docs":
 			return "gate-docs";
+		case "bun run test:showcase":
+			return "gate-showcase";
 		default:
 			return undefined;
 	}

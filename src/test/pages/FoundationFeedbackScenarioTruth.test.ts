@@ -136,6 +136,9 @@ describe("foundation feedback scenario truth", () => {
 			"meter-low-value",
 		]);
 		expect(UI_EXAMPLES["skeleton-line"]?.map((item) => item.id)).toEqual([
+			"skeleton-line-dashboard",
+			"skeleton-line-resource-list",
+			"skeleton-line-resource-detail",
 			"skeleton-line-default",
 			"skeleton-line-width",
 			"skeleton-line-height",

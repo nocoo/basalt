@@ -94,6 +94,7 @@ describe("overlay data scenario truth", () => {
 			"popover-sides",
 		]);
 		expect(UI_EXAMPLES.table?.map((item) => item.id)).toEqual([
+			"table-subscriptions",
 			"table-basic",
 			"table-selected-row",
 		]);

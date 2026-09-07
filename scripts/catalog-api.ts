@@ -1109,6 +1109,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "SkeletonLine",
 	},
 	{
+		slug: "battery-meter",
+		sourceFile: "packages/basalt/src/components/battery-meter.tsx",
+		propsType: "BatteryMeterProps",
+		surface: "BatteryMeter",
+	},
+	{
 		slug: "meter",
 		sourceFile: "packages/basalt/src/components/meter.tsx",
 		propsType: "MeterProps",

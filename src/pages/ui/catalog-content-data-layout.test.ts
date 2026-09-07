@@ -24,9 +24,10 @@ import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const DATA_LAYOUT_SCENARIOS = {
-	table: ["table-basic", "table-selected-row"],
+	table: ["table-subscriptions", "table-basic", "table-selected-row"],
 	"description-list": ["description-list-default"],
 	"data-table": [
+		"data-table-operations",
 		"data-table-default",
 		"data-table-loading",
 		"data-table-empty",
@@ -52,7 +53,8 @@ const DATA_LAYOUT_SCENARIOS = {
 
 const DATA_LAYOUT_DESCRIPTIONS = {
 	table: "Tabular data with a header bar and striped rows.",
-	"data-table": "Sortable data table.",
+	"data-table":
+		"Sortable and selectable data table with controlled state, manual server pagination, accessible headers, error recovery and formatted cells. Keep stable row IDs across server pages; manual mode never slices a returned page twice.",
 	grid: "Simple grid.",
 	flow: "Step flow.",
 	"section-rule": "Title and dashed rule between page regions.",
@@ -70,7 +72,7 @@ describe("data-layout catalog content family", () => {
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(100);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(101);
 	});
 
 	it("keeps the twenty-four final winner scenarios in their audited order", () => {
@@ -92,7 +94,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(24);
+		expect(count).toBe(26);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {
@@ -132,6 +134,18 @@ describe("data-layout catalog content family", () => {
 			"onPageChange",
 			"getRowId",
 			"className",
+			"sort",
+			"defaultSort",
+			"onSortChange",
+			"manualSorting",
+			"manualPagination",
+			"manualFiltering",
+			"total",
+			"error",
+			"onRetry",
+			"retryLabel",
+			"aria-label",
+			"aria-describedby",
 		]);
 		expect(dataLayout.table?.examples).toBe(TABLE_EXAMPLES);
 		expect(dataLayout.table?.docs.api).toBe(tableApi);

@@ -471,11 +471,17 @@
   .top-0 {
     top: 0px;
   }
+  .top-1 {
+    top: var(--spacing);
+  }
   .top-1\/2 {
     top: calc(1 / 2 * 100%);
   }
   .top-2 {
     top: calc(var(--spacing) * 2);
+  }
+  .-right-1 {
+    right: calc(var(--spacing) * -1);
   }
   .right-0 {
     right: 0px;
@@ -737,6 +743,9 @@
   }
   .min-h-\[96px\] {
     min-height: 96px;
+  }
+  .w-0\.5 {
+    width: calc(var(--spacing) * 0.5);
   }
   .w-1 {
     width: var(--spacing);
@@ -1066,6 +1075,9 @@
   .rounded-2xl {
     border-radius: var(--radius-2xl);
   }
+  .rounded-\[1px\] {
+    border-radius: 1px;
+  }
   .rounded-\[4px\] {
     border-radius: 4px;
   }
@@ -1109,6 +1121,10 @@
   .rounded-r-basalt-md {
     border-top-right-radius: calc(var(--basalt-radius) - 2px);
     border-bottom-right-radius: calc(var(--basalt-radius) - 2px);
+  }
+  .rounded-r-sm {
+    border-top-right-radius: var(--radius-sm);
+    border-bottom-right-radius: var(--radius-sm);
   }
   .rounded-br-md {
     border-bottom-right-radius: var(--radius-md);
@@ -1174,6 +1190,12 @@
   .border-basalt-destructive {
     border-color: hsl(var(--basalt-destructive));
   }
+  .border-basalt-muted-foreground\/60 {
+    border-color: hsl(var(--basalt-muted-foreground));
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, hsl(var(--basalt-muted-foreground)) 60%, transparent);
+    }
+  }
   .border-basalt-primary {
     border-color: hsl(var(--basalt-primary));
   }
@@ -1230,6 +1252,12 @@
   }
   .bg-basalt-muted {
     background-color: hsl(var(--basalt-muted));
+  }
+  .bg-basalt-muted-foreground\/60 {
+    background-color: hsl(var(--basalt-muted-foreground));
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, hsl(var(--basalt-muted-foreground)) 60%, transparent);
+    }
   }
   .bg-basalt-popover {
     background-color: hsl(var(--basalt-popover));
@@ -1916,6 +1944,15 @@
   }
   .focus-visible\:outline-offset-1:focus-visible {
     outline-offset: 1px;
+  }
+  .focus-visible\:outline-offset-2:focus-visible {
+    outline-offset: 2px;
+  }
+  .focus-visible\:outline-offset-4:focus-visible {
+    outline-offset: 4px;
+  }
+  .focus-visible\:outline-basalt-primary:focus-visible {
+    outline-color: hsl(var(--basalt-primary));
   }
   .focus-visible\:outline-basalt-ring:focus-visible {
     outline-color: hsl(var(--basalt-ring));

@@ -1,6 +1,7 @@
 import { loadModuleScenarios } from "../../catalog-scenario";
 
 const DATA_TABLE_SCENARIO_META = [
+	{ key: "operations", title: "Device Operations & Server Pagination" },
 	{ key: "default", title: "Default" },
 	{ key: "loading", title: "Loading" },
 	{ key: "empty", title: "Empty" },

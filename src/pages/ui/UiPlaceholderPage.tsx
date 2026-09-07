@@ -290,6 +290,7 @@ function ReadyDoc({
 	examples: readonly CatalogScenario[];
 }) {
 	const hero = examples[0];
+	const widePreview = ["skeleton-line", "table", "data-table"].includes(entry.slug);
 	if (!hero) {
 		throw new Error(`Ready catalog page "${entry.slug}" is missing examples[0].`);
 	}
@@ -347,15 +348,19 @@ function ReadyDoc({
 				</div>
 				<p className="max-w-3xl text-lg leading-normal text-muted-foreground">{docs.description}</p>
 			</header>
-			<div className="sticky top-0 z-10 border-b border-border bg-secondary py-2 xl:hidden">
+			<div
+				className={`sticky top-0 z-10 border-b border-border bg-secondary py-2 ${widePreview ? "" : "xl:hidden"}`}
+			>
 				<div className="px-6">
-					<DocToc headings={headings} />
+					<DocToc headings={headings} compact={widePreview} />
 				</div>
 			</div>
-			<div className="px-6 py-8 md:px-8 md:py-10 xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-16">
+			<div
+				className={`px-6 py-8 md:px-8 md:py-10 ${widePreview ? "" : "xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-16"}`}
+			>
 				<article data-status="ready" data-slug={entry.slug} className="min-w-0 space-y-12">
 					<div data-hero-scenario={hero.id}>
-						<DocExample code={hero.code}>
+						<DocExample code={hero.code} wide={widePreview}>
 							<hero.render />
 						</DocExample>
 					</div>
@@ -390,7 +395,7 @@ function ReadyDoc({
 								className="scroll-mt-6 space-y-3"
 							>
 								<h3 className="text-sm font-medium">{example.title}</h3>
-								<DocExample code={example.code}>
+								<DocExample code={example.code} wide={widePreview}>
 									<example.render />
 								</DocExample>
 							</div>
@@ -425,7 +430,7 @@ function ReadyDoc({
 						) : null}
 					</div>
 				</article>
-				<aside className="hidden min-w-0 xl:block">
+				<aside className={widePreview ? "hidden" : "hidden min-w-0 xl:block"}>
 					<div className="sticky top-4">
 						<DocToc headings={headings} />
 					</div>

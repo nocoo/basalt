@@ -161,7 +161,7 @@ export default function Example() {
 			...extraDocs(
 				"DataTable",
 				"data-table",
-				"Sortable data table.",
+				"Sortable and selectable data table with controlled state, manual server pagination, accessible headers, error recovery and formatted cells. Keep stable row IDs across server pages; manual mode never slices a returned page twice.",
 				'<DataTable data={[{ name: "Atlas" }]} columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]} />',
 				undefined,
 				DATA_TABLE_USAGE,
@@ -270,7 +270,7 @@ export default function Example() {
 			...extraDocs(
 				"ResourceList",
 				"resource-list",
-				"A page heading and table of named resources.",
+				"A resource page with a heading, toolbar, filters, bulk actions, state and result regions. The original named-resource data array remains supported; custom children can render a typed table.",
 				'<ResourceList title="Projects" data={[{ name: "Atlas", status: "Active" }]} />',
 			),
 			api: resourceListApi,

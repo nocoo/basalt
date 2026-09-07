@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
+import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";
 import { Button } from "@nocoo/basalt/components/button";
 import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";
 import { Empty } from "@nocoo/basalt/components/empty";
@@ -22,9 +23,11 @@ import {
 import { CODE_EXAMPLES } from "../../examples/code";
 import { CODE_BLOCK_EXAMPLES } from "../../examples/code-block";
 import { EMPTY_ACTION_EXAMPLES } from "../../examples/empty";
+import { SKELETON_COMPOSITION_EXAMPLES } from "../../examples/skeleton-line";
 import { API as avatarApi } from "../../generated/catalog-api/avatar";
 import { API as badgeApi } from "../../generated/catalog-api/badge";
 import { API as bannerApi } from "../../generated/catalog-api/banner";
+import { API as batteryMeterApi } from "../../generated/catalog-api/battery-meter";
 import { API as clipboardTextApi } from "../../generated/catalog-api/clipboard-text";
 import { API as codeApi } from "../../generated/catalog-api/code";
 import { API as codeBlockApi } from "../../generated/catalog-api/code-block";
@@ -650,6 +653,7 @@ export default function Example() {
 			api: skeletonLineApi,
 		},
 		examples: [
+			...SKELETON_COMPOSITION_EXAMPLES,
 			{
 				id: catalogScenarioId("skeleton-line", "default"),
 				title: "Default",
@@ -706,6 +710,35 @@ export default function Example() {
 						<SkeletonLine className="h-4" minWidth={90} maxWidth={100} />
 						<SkeletonLine className="h-6" minWidth={90} maxWidth={100} />
 						<SkeletonLine className="h-8" minWidth={90} maxWidth={100} />
+					</div>
+				),
+			},
+		],
+	},
+	"battery-meter": {
+		docs: {
+			...extraDocs(
+				"BatteryMeter",
+				"battery-meter",
+				"A compact segmented battery reading with an accessible native meter, charge state and unavailable fallback.",
+				'<BatteryMeter value={72} label="Device battery" />',
+			),
+			api: batteryMeterApi,
+		},
+		examples: [
+			{
+				id: catalogScenarioId("battery-meter", "charge-states"),
+				title: "Charge Levels & Offline State",
+				code: scenarioModule(
+					'<div className="flex flex-wrap gap-6"><BatteryMeter value={94} label="Gateway battery" /><BatteryMeter value={42} label="Sensor battery" status="charging" /><BatteryMeter value={14} label="Beacon battery" /><BatteryMeter value={0} label="Offline device battery" status="offline" /></div>',
+					['import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";'],
+				),
+				render: () => (
+					<div className="flex flex-wrap gap-6">
+						<BatteryMeter value={94} label="Gateway battery" />
+						<BatteryMeter value={42} label="Sensor battery" status="charging" />
+						<BatteryMeter value={14} label="Beacon battery" />
+						<BatteryMeter value={0} label="Offline device battery" status="offline" />
 					</div>
 				),
 			},

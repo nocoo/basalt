@@ -10,6 +10,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	banner: "feedback",
 	bar: "charts",
 	"basalt-mark": "foundation",
+	"battery-meter": "feedback",
 	breadcrumbs: "navigation",
 	bullet: "charts",
 	button: "foundation",

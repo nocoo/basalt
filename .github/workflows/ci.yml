@@ -67,3 +67,6 @@ jobs:
 
       - name: Run consumer gate docs
         run: bun run consumer:docs
+
+      - name: Validate Library and Example interactions
+        run: bun run test:showcase

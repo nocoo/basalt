@@ -326,6 +326,15 @@ export const CATALOG: CatalogEntry[] = [
 		navName: "Skeleton Line",
 	},
 	{
+		slug: "battery-meter",
+		name: "BatteryMeter",
+		exportName: "BatteryMeter",
+		importPath: "@nocoo/basalt/components/battery-meter",
+		hasRootBarrel: false,
+		kind: "catalog",
+		category: "component",
+	},
+	{
 		slug: "meter",
 		name: "Meter",
 		exportName: "Meter",

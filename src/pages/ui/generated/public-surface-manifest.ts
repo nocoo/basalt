@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
-	"totalModules": 111,
-	"totalSymbols": 703,
-	"totalValues": 379,
-	"totalTypes": 324,
+	"totalModules": 112,
+	"totalSymbols": 706,
+	"totalValues": 380,
+	"totalTypes": 326,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2697,6 +2697,32 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
+			"subpath": "./components/battery-meter",
+			"importPath": "@nocoo/basalt/components/battery-meter",
+			"sourceFile": "packages/basalt/src/components/battery-meter.tsx",
+			"ownerDoc": "src/pages/ui/battery-meter",
+			"ownerKind": "catalog-component",
+			"summary": "BatteryMeter component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "BatteryMeter",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/battery-meter",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/battery-meter"
+				},
+				{
+					"name": "BatteryMeterProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/battery-meter",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/battery-meter"
+				}
+			]
+		},
+		{
 			"subpath": "./components/breadcrumbs",
 			"importPath": "@nocoo/basalt/components/breadcrumbs",
 			"sourceFile": "packages/basalt/src/components/breadcrumbs.tsx",
@@ -3454,6 +3480,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "DataTableColumn",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/data-table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/data-table"
+				},
+				{
+					"name": "DataTableSort",
 					"isValue": false,
 					"isType": true,
 					"ownerDoc": "src/pages/ui/data-table",

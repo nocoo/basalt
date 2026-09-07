@@ -34,6 +34,7 @@ export const CATALOG_PAGE_STATUS = {
 	empty: "ready",
 	loader: "ready",
 	"skeleton-line": "ready",
+	"battery-meter": "ready",
 	meter: "ready",
 	toast: "ready",
 	"clipboard-text": "ready",

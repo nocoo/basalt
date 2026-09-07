@@ -26,7 +26,15 @@ const FEEDBACK_SCENARIOS = {
 	],
 	empty: ["empty-basic", "empty-with-icon", "empty-action-states"],
 	loader: ["loader-default-size", "loader-custom-size"],
-	"skeleton-line": ["skeleton-line-default", "skeleton-line-width", "skeleton-line-height"],
+	"skeleton-line": [
+		"skeleton-line-dashboard",
+		"skeleton-line-resource-list",
+		"skeleton-line-resource-detail",
+		"skeleton-line-default",
+		"skeleton-line-width",
+		"skeleton-line-height",
+	],
+	"battery-meter": ["battery-meter-charge-states"],
 	meter: [
 		"meter-basic-meter",
 		"meter-custom-value-display",
@@ -83,7 +91,7 @@ const FEEDBACK_DESCRIPTIONS = {
 describe("feedback catalog content family", () => {
 	it("owns exactly eleven migrated slugs and eighty-six generated owners", () => {
 		expect(Object.keys(feedback)).toEqual(Object.keys(FEEDBACK_SCENARIOS));
-		expect(Object.keys(feedback)).toHaveLength(11);
+		expect(Object.keys(feedback)).toHaveLength(12);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "feedback")
@@ -99,7 +107,7 @@ describe("feedback catalog content family", () => {
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "overlay"),
 		).toHaveLength(11);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(100);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(101);
 	});
 
 	it("keeps the forty-five final winner scenarios in their audited order", () => {
@@ -120,7 +128,7 @@ describe("feedback catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(45);
+		expect(count).toBe(49);
 	});
 
 	it("keeps the BASE banner winner without reviving the EXTRA default", () => {

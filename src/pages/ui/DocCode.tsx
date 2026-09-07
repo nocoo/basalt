@@ -62,13 +62,35 @@ export function DocCode({ code, attached = false }: { code: string; attached?: b
 	);
 }
 
-export function DocExample({ children, code }: { children: ReactNode; code: string }) {
+export function DocExample({
+	children,
+	code,
+	wide = false,
+}: {
+	children: ReactNode;
+	code: string;
+	wide?: boolean;
+}) {
 	return (
 		<div className="overflow-hidden rounded-lg border border-border">
-			<div className="flex min-h-[140px] items-center justify-center bg-bright p-6 md:p-8">
+			<div
+				className={cn(
+					"flex min-h-[140px] items-center justify-center bg-bright",
+					wide ? "p-3 sm:p-6 [&>div]:w-full [&>div]:min-w-0" : "p-6 md:p-8",
+				)}
+			>
 				{children}
 			</div>
-			<DocCode code={code} attached />
+			{wide ? (
+				<details className="border-t border-border">
+					<summary className="cursor-pointer px-4 py-3 text-sm text-muted-foreground focus-visible:outline-2 focus-visible:outline-primary">
+						View example code
+					</summary>
+					<DocCode code={code} attached />
+				</details>
+			) : (
+				<DocCode code={code} attached />
+			)}
 		</div>
 	);
 }

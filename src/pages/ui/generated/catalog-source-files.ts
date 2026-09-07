@@ -204,6 +204,12 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/skeleton-line.js.map (sourcesContent[0])"
 	},
+	"battery-meter": {
+		"file": "packages/basalt/src/components/battery-meter.tsx",
+		"hash": "14346d08ec737dfe",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/battery-meter.js.map (sourcesContent[0])"
+	},
 	"meter": {
 		"file": "packages/basalt/src/components/meter.tsx",
 		"hash": "9e57a2243bf82967",
@@ -314,7 +320,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"data-table": {
 		"file": "packages/basalt/src/components/data-table.tsx",
-		"hash": "4a8cdb7ab6721fb2",
+		"hash": "ea5a733853688934",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/data-table.js.map (sourcesContent[0])"
 	},
@@ -596,7 +602,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"resource-list": {
 		"file": "packages/basalt/src/components/resource-list.tsx",
-		"hash": "7aa6fc33b4edfe77",
+		"hash": "566e5ee25323dac5",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/resource-list.js.map (sourcesContent[0])"
 	},

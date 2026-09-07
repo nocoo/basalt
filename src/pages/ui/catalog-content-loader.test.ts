@@ -35,8 +35,8 @@ describe("catalog page content loader", () => {
 
 	it("uses the generated 93 ready / 1 planned status truth", () => {
 		const statuses = CATALOG.map((entry) => catalogPageStatus(entry.slug));
-		expect(statuses).toHaveLength(101);
-		expect(statuses.filter((status) => status === "ready")).toHaveLength(100);
+		expect(statuses).toHaveLength(102);
+		expect(statuses.filter((status) => status === "ready")).toHaveLength(101);
 		expect(statuses.filter((status) => status === "planned")).toHaveLength(1);
 	});
 
@@ -171,7 +171,7 @@ describe("catalog page content loader", () => {
 		expect(loadCatalogPageContent("table")).toBe(first);
 		const content = await first;
 		expect(content?.docs.description).toBe("Tabular data with a header bar and striped rows.");
-		expect(content?.examples[0]?.id).toBe("table-basic");
+		expect(content?.examples[0]?.id).toBe("table-subscriptions");
 		expect(loadFamily).toHaveBeenCalledWith("data-layout");
 	});
 

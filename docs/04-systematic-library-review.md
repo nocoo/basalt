@@ -561,9 +561,9 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 
 不以一次性删除所有本地包装作为迁移成功标准。包装可能承载业务权限和状态，应该只移走重复视觉/交互实现。对于已公开内部路径的收窄以及默认尺寸改变，先遵守 D05/D06 的兼容政策，再实施重构。
 
-## 9. 原子化提交计划
+## 9. 实施拆分与阶段提交计划
 
-以下拆分已进入实施授权范围，按第 12 节阶段调度，不按表格顺序同时展开。每行表示一个独立提交；同组后缀表示相邻、可分别审阅的提交。每个功能提交携带对应的必要测试和文档。新 API 优先兼容扩展现有组件；Tree adapter 与可拖拽 SplitPane 仍按第 7 节后置，不纳入本轮稳定接口。验收修正单独提交，不改写已经审阅的历史。
+以下拆分已进入实施授权范围，按第 12 节阶段推进。P1–P5 按原子组提交；自 P6 起遵照用户新指示，由主 agent 直接实施并按大阶段提交。下表保留原始功能拆分用于追踪，后续同阶段的多行可合并为一次提交。每个功能提交携带对应的必要测试和文档。新 API 优先兼容扩展现有组件；Tree adapter 与可拖拽 SplitPane 仍按第 7 节后置，不纳入本轮稳定接口。验收修正单独提交，不改写已经审阅的历史。
 
 | 顺序 | 建议提交 | 对应问题与验收 |
 |---|---|---|
@@ -656,6 +656,8 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 
 ### 12.1 调度与提交约束
 
+**2026-09-07 执行方式变更：**用户要求主 agent 直接完成 P6–P10，不再调度 pi，改为按大阶段正常提交。以下 pi 原子组流程保留为 P1–P5 的历史记录；后续由主 agent 实现、验证并维护台账，保持公共基线、四维 95% 门和正常 hooks。P6 前暂停已由本次继续指示解除。
+
 - 当前分支：`main`，审查起点 `e61efc1`。按用户在 pi pane 中补充的「直接 main 做即可 / 或者合并」，主 agent 已把本地 main 快进至已完成的实现提交；后续继续在 main 原子提交。现有 Herdr pi pane：`w1R:p2`；主 agent 使用同一仓库，负责验收和本节状态，pi 不并行修改本文或索引。
 - 同一时间只派发一个阶段中的一个原子组。pi 完成代码、必要文档和相关检查后先停下，不暂存或提交；主 agent 独立验收 diff、安装包与实际行为，保存文件哈希快照后才授权普通提交。提交通过正常 hooks 后再核对文件与快照；未通过则留在本组修正并重新验收。
 - 每个提交描述一个可独立审阅的变化，使用正常 hooks；不得跳过 hooks、降低覆盖率或放宽质量门来通过验收。只提交本阶段明确的文件。
@@ -699,15 +701,15 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | P3 | 基础样式与输入：07、08a/b/c、09/q/b/c/d；C01–C05/C19–C21 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required、Group 原生事件与 ref 清理 | 已验收 | 运行时至 `b85649d`、行为回归 `026a958`；C01–C05/C19–C21 已关闭，177 文件 / 1,544 测试，四维覆盖率均 ≥95%；120 项旧接口与真实安装包验收通过 |
 | P4 | 浮层与语义：10a/b/c/d/e、11a/b/b2/b3、12a/b/c/d；C06–C11/C16–C18/C22/Q07/R05 | Dock 非模态语义、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘/受控月份/本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 已验收 | 实现至 `781aadf`，C06–C11/C16–C18/C22/Q07 已关闭；177 文件 / 1,628 测试，四维覆盖率 97.45 / 95.26 / 98.22 / 97.53；最终包、Next 与文档消费通过，详见 12.4 |
 | P5 | 视觉/图表/动效：13a/b1/b2/b3/c/d、17a 及 tooltip/matrix/回归/registry 子组；C12/C13/C15/C23/E07/E08/Q08/R04/R05 | 主题对比、导航回焦、图表替代、StatCard 状态、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、reduced motion | 已验收 | 实施至 `236ac18`；183 文件 / 1,703 测试全部通过，四维覆盖率 97.24 / 95.05 / 98.50 / 97.43；C12/C13/C15/C23/E07/E08/Q08/R04 已关闭，详见 12.4 |
-| P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 暂停（未调度） | 按用户要求停在 P5 验收后，先汇报 P1–P5 成果 |
-| P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 待调度 | — |
+| P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 已验收 | 三种骨架屏、两种丰富表格、BatteryMeter 与受控列表；1,719 项测试及四维 95% 门、真实包和浏览器检查通过 |
+| P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 实施中 | 主 agent 直接实施 |
 | P8 | 筛选与上传：16a/b/c；R01/R02 | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费 | 待调度 | — |
 | P9 | 小型复用控件与应用模板：18a/b/c/d；R03/R06/R07/R08 | EditableNav、Tag 色板/选择、InlineEditable/master-detail、可编译 AppFrame/Login/Resource recipes | 待调度 | — |
 | P10 | 整体验收、兼容/迁移说明与台账收口；Q05 与全部问题追踪 | 新 HEAD 全套 6DQ、tarball/文档 freshness、关键浏览器组合、无未记录 API 破坏、干净工作区 | 待调度 | — |
 
 P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功能提交。P9 的 InlineEditable 按实际受控需求单独提交。任何新增公开 surface 同阶段补元数据、出口和文档，不能拖到收尾才补。
 
-**当前暂停点（2026-09-07）：P1–P5 已验收；P6 尚未派发，P7–P10 也未开始。** pi 保持空闲，实施监督定时器停止，本地 dev 服务保留。P6 的任务包和改前基线仅为准备材料，不代表已经实施；恢复调度需用户新的继续指示。
+**当前执行点（2026-09-07）：P1–P6 已验收；主 agent 直接实施 P7，随后完成 P8–P10，按阶段提交。** pi 保持空闲，其监督定时器停止，本地 dev 服务保留。后续阶段沿用原任务范围及兼容验收基线。
 
 ### 12.4 验收记录
 
@@ -1039,6 +1041,18 @@ pi 曾提前运行完整 coverage，结果为 **178 文件中 175 通过 / 3 失
 最终运行时的展示站 build、standalone/Tailwind、heavy、Next 及文档消费均已通过；文档门编译 **32 个文档模块、100 个 Usage、264 个场景**。这些门对应已验收的实际安装包，最终 **232 份产物 / 112 份源码**重新与 `236ac18` 绑定；后续测试与生成器优化没有改变组件运行时。**114 份声明**与矩阵阶段的已验收包逐字节相同，P4 以来变化的声明有逐项旧契约证明。原公共基线保持 `ef2bd65` 原文，第 1–8 节保持 `40e831b` 原文，根包、库包和实际导入的 APP_VERSION 均为 **2.0.3**。
 
 P5 关闭 **C12、C13、C15、C23、E07、E08、Q08、R04**；R05 的剩余组合需求由 P6 承接，D07 通用类型打印器问题仍留 P10。按用户最新要求在 P6 前暂停，不继续派发后续阶段。本轮没有 push、publish 或 deploy；上述均为本地检查和安装包消费证据。证据：`p5-stage-coverage-final-transitions.json`、`p5-stage-coverage-final-transitions.lcov`、`p5-stage-postfocus-gates.json`、`p5-heatmaps-heavy-final-validation-evidence.json`、`p5-heatmaps-docs-final.json`、`p5-phase-final-runtime-artifact-source-binding.json`、`p5-phase-final-invariants.json`、`p5-phase-final-types-binding.json`、`p5-phase-acceptance.json`。
+
+#### P6 验收记录（已验收，2026-09-07）
+
+**资源列表与复杂展示。** DataTable 兼容扩展受控排序、手动过滤/排序/分页、总量、失败重试、列宽和表头内容；保留旧字符串 header、行身份与默认本地处理。ResourceList 增加工具栏、筛选、批量操作、四态与 footer 插槽，保留必需 data 和原 title/description 类型。新增轻量 BatteryMeter，具备数值语义、状态和不可用说明；不进入根入口、不引入图表依赖。
+
+Library `/ui/skeleton-line` 提供 Dashboard、资源列表和详情三类加载/内容组合，保留原有简单示例；`/ui/data-table` 提供设备运维表，`/ui/table` 提供订阅表。两表包含可操作表头、头像/状态/格式化字段、行内趋势、分页筛选、跨页选择、批量与行操作、加载/空/失败/重试。宽展示与折叠源码减少横向挤压。复杂图表按需加载，原有 family 静态依赖边界保持不变。
+
+**验证。** 最终完整覆盖率为 **186 文件 / 1,719 测试全部通过**：语句 **97.25%（3,334/3,428）**、分支 **95.16%（2,933/3,082）**、函数 **98.50%（793/805）**、行 **97.45%（3,212/3,296）**。原四维 95% 门和覆盖范围未变。package build、Bundler/NodeNext 类型、pack、strict publint、standalone/Tailwind 真实 tarball 消费和全部文档场景编译通过。旧 DataTable **9 正例 / 3 反例**、ResourceList **10 正例 / 3 反例**的实际新包类型对照全部符合预期，原始公共基线未修改。
+
+新增 `test:showcase` 接入 CI 与 prepublish：使用 fresh 生产构建，在 390/1280px、浅深主题与 reduced motion 下验证三类骨架屏高度切换（差值 ≤ 1px）、实际 shimmer 停止、两表排序/筛选/四态/选择闭环及正尺寸图表；正式 A/B 同时验证资源组件与键盘横滚。已查看桌面表格、Dashboard 与手机详情截图。页面整体窄屏文档布局与 Example 行为由 P7 继续完成。
+
+当前登记为 **102 catalog 项（101 ready，maps 仍 planned）、112 公开模块 / 706 符号、237 API targets、270 场景**，版本保持 **2.0.3**。**C14、S01、S02、R05 已关闭。** 证据：`p6-direct-coverage-final.json`、`p6-direct-package-types.json`、`p6-direct-pack.json`、`p6-direct-publint.json`、`p6-direct-standalone-corrected.json`、`p6-direct-tailwind-final.json`、`p6-direct-docs-final.json`、`p6-direct-showcase-complete.json`、`p6-datatable-after-types.json`、`p6-resource-list-after-types.json`。
 
 ### 12.5 实施中追加的问题
 

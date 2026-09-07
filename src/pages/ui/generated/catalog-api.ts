@@ -9,6 +9,7 @@ import { API as badgeApi } from "./catalog-api/badge";
 import { API as bannerApi } from "./catalog-api/banner";
 import { API as barApi } from "./catalog-api/bar";
 import { API as basaltMarkApi } from "./catalog-api/basalt-mark";
+import { API as batteryMeterApi } from "./catalog-api/battery-meter";
 import { API as breadcrumbsApi } from "./catalog-api/breadcrumbs";
 import { API as bulletApi } from "./catalog-api/bullet";
 import { API as buttonApi } from "./catalog-api/button";
@@ -111,6 +112,7 @@ export const CATALOG_API = {
 	banner: bannerApi,
 	bar: barApi,
 	"basalt-mark": basaltMarkApi,
+	"battery-meter": batteryMeterApi,
 	breadcrumbs: breadcrumbsApi,
 	bullet: bulletApi,
 	button: buttonApi,

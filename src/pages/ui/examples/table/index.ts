@@ -1,6 +1,7 @@
 import { loadModuleScenarios } from "../../catalog-scenario";
 
 const TABLE_SCENARIO_META = [
+	{ key: "subscriptions", title: "Subscription Ledger & Inline Charts" },
 	{ key: "basic", title: "Basic" },
 	{ key: "selected-row", title: "Selected Row" },
 ] as const;
