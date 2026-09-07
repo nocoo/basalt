@@ -77,19 +77,19 @@ export interface PackageRegistry {
 	}>;
 }
 
-/**
- * Statically collects imports from source file without requiring a pre-built dist.
- */
-function collectStaticImports(
-	filePath: string,
-	repoRoot: string,
-	visited = new Set<string>(),
-	external = new Set<string>(),
-): Set<string> {
-	if (visited.has(filePath)) return external;
-	visited.add(filePath);
-	if (!existsSync(filePath)) return external;
+type FileDependencyFacts = {
+	relativeFiles: string[];
+	externalPackages: string[];
+	hasJsx: boolean;
+};
 
+/**
+ * Parses direct dependencies of a single source file into relative files and external packages.
+ */
+function parseDirectDependencies(filePath: string): FileDependencyFacts {
+	if (!existsSync(filePath)) {
+		return { relativeFiles: [], externalPackages: [], hasJsx: false };
+	}
 	const content = readFileSync(filePath, "utf8");
 	const source = ts.createSourceFile(
 		filePath,
@@ -106,6 +106,9 @@ function collectStaticImports(
 	}
 
 	let hasJsx = false;
+	const relativeFiles: string[] = [];
+	const externalPackages: string[] = [];
+
 	function visit(node: ts.Node) {
 		if (ts.isJsxElement(node) || ts.isJsxSelfClosingElement(node) || ts.isJsxFragment(node)) {
 			hasJsx = true;
@@ -148,21 +151,61 @@ function collectStaticImports(
 				];
 				for (const cand of candidates) {
 					if (existsSync(cand)) {
-						collectStaticImports(cand, repoRoot, visited, external);
+						relativeFiles.push(cand);
 						break;
 					}
 				}
 			} else {
-				external.add(packageName(specifier));
+				externalPackages.push(packageName(specifier));
 			}
 		}
 		ts.forEachChild(node, visit);
 	}
 
 	visit(source);
-	if (hasJsx) {
+	return { relativeFiles, externalPackages, hasJsx };
+}
+
+/**
+ * Statically collects imports from source file without requiring a pre-built dist.
+ * Uses an optional per-call direct-dependency cache to avoid re-parsing the same file multiple times
+ * during a single registry generation or validation run while preserving independent per-entry visited sets.
+ */
+function collectStaticImports(
+	filePath: string,
+	repoRoot: string,
+	visited = new Set<string>(),
+	external = new Set<string>(),
+	fileFactsCache?: Map<string, FileDependencyFacts>,
+): Set<string> {
+	if (visited.has(filePath)) return external;
+	visited.add(filePath);
+	if (!existsSync(filePath)) return external;
+
+	let facts: FileDependencyFacts;
+	if (fileFactsCache) {
+		const cached = fileFactsCache.get(filePath);
+		if (cached) {
+			facts = cached;
+		} else {
+			facts = parseDirectDependencies(filePath);
+			fileFactsCache.set(filePath, facts);
+		}
+	} else {
+		facts = parseDirectDependencies(filePath);
+	}
+
+	for (const pkg of facts.externalPackages) {
+		external.add(pkg);
+	}
+	if (facts.hasJsx) {
 		external.add("react");
 	}
+
+	for (const rel of facts.relativeFiles) {
+		collectStaticImports(rel, repoRoot, visited, external, fileFactsCache);
+	}
+
 	return external;
 }
 
@@ -250,7 +293,10 @@ export function mapToPackageDoc(repoDoc: string): string {
 	return `${file}${hash}`;
 }
 
-export function generatePackageRegistry(repoRoot = process.cwd()): PackageRegistry {
+export function generatePackageRegistry(
+	repoRoot = process.cwd(),
+	surfaceManifestInput?: ReturnType<typeof derivePublicSurfaceManifest>,
+): PackageRegistry {
 	const rootPkgPath = path.join(repoRoot, "package.json");
 	const rootPkg = JSON.parse(readFileSync(rootPkgPath, "utf8")) as {
 		version: string;
@@ -270,7 +316,7 @@ export function generatePackageRegistry(repoRoot = process.cwd()): PackageRegist
 		);
 	}
 
-	const surfaceManifest = derivePublicSurfaceManifest(repoRoot);
+	const surfaceManifest = surfaceManifestInput ?? derivePublicSurfaceManifest(repoRoot);
 	const declaredPeers = new Set(Object.keys(pkg.peerDependencies ?? {}));
 	const declaredOptional = new Set(
 		Object.entries(pkg.peerDependenciesMeta ?? {})
@@ -332,6 +378,7 @@ export function generatePackageRegistry(repoRoot = process.cwd()): PackageRegist
 	}
 
 	const modules: PackageRegistryEntry[] = [];
+	const fileFactsCache = new Map<string, FileDependencyFacts>();
 
 	for (const mod of surfaceManifest.modules) {
 		const fullSource = path.resolve(repoRoot, mod.sourceFile);
@@ -340,7 +387,13 @@ export function generatePackageRegistry(repoRoot = process.cwd()): PackageRegist
 			? createHash("sha256").update(sourceContent).digest("hex").slice(0, 16)
 			: "";
 
-		const ext = collectStaticImports(fullSource, repoRoot);
+		const ext = collectStaticImports(
+			fullSource,
+			repoRoot,
+			new Set<string>(),
+			new Set<string>(),
+			fileFactsCache,
+		);
 		const peers = [...ext].filter((p) => declaredPeers.has(p)).sort();
 		const optionalPeers = [...ext].filter((p) => declaredOptional.has(p)).sort();
 
@@ -557,10 +610,13 @@ export function generateCatalogSourceFilesModule(
 	)};\n`;
 }
 
-export function findPureReExportSourceFiles(repoRoot = process.cwd()): string[] {
-	const surfaceManifest = derivePublicSurfaceManifest(repoRoot);
+export function findPureReExportSourceFiles(
+	repoRoot = process.cwd(),
+	surfaceManifest?: ReturnType<typeof derivePublicSurfaceManifest>,
+): string[] {
+	const manifest = surfaceManifest ?? derivePublicSurfaceManifest(repoRoot);
 	const pureFiles: string[] = [];
-	for (const m of surfaceManifest.modules) {
+	for (const m of manifest.modules) {
 		const filePath = path.resolve(repoRoot, m.sourceFile);
 		if (!existsSync(filePath)) continue;
 		const content = readFileSync(filePath, "utf8");
@@ -595,8 +651,9 @@ export function findPureReExportSourceFiles(repoRoot = process.cwd()): string[] 
 
 export function generateSourcesBundle(
 	repoRoot = process.cwd(),
+	surfaceManifest?: ReturnType<typeof derivePublicSurfaceManifest>,
 ): Record<string, { content: string; hash: string }> {
-	const fallbackFiles = findPureReExportSourceFiles(repoRoot);
+	const fallbackFiles = findPureReExportSourceFiles(repoRoot, surfaceManifest);
 	const sourcesBundle: Record<string, { content: string; hash: string }> = {};
 	for (const rel of fallbackFiles) {
 		const abs = path.join(repoRoot, rel);
@@ -680,6 +737,11 @@ export function validatePackageDocReferences(
 		allDocs.add(cat.packageDoc);
 	}
 
+	// Per-call document parse cache to avoid re-reading and re-parsing
+	// the exact same file (e.g. registry.json or INTEGRATION.md) for hundreds of anchors
+	const jsonEntriesCache = new Map<string, Set<string>>();
+	const mdAnchorsCache = new Map<string, Set<string>>();
+
 	for (const docRef of allDocs) {
 		const [relFile, anchor] = docRef.split("#");
 		const absPath = path.resolve(packageRoot, relFile);
@@ -691,28 +753,36 @@ export function validatePackageDocReferences(
 		if (!anchor) continue;
 
 		if (relFile.endsWith(".json")) {
-			const json = JSON.parse(readFileSync(absPath, "utf8")) as {
-				catalogEntries?: Array<{ slug: string }>;
-			};
-			const found = json.catalogEntries?.some((c) => c.slug === anchor);
-			if (!found) {
+			let validSlugs = jsonEntriesCache.get(absPath);
+			if (!validSlugs) {
+				const json = JSON.parse(readFileSync(absPath, "utf8")) as {
+					catalogEntries?: Array<{ slug: string }>;
+				};
+				validSlugs = new Set((json.catalogEntries ?? []).map((c) => c.slug));
+				jsonEntriesCache.set(absPath, validSlugs);
+			}
+			if (!validSlugs.has(anchor)) {
 				throw new Error(
 					`Package doc validation error: anchor #${anchor} not found in '${relFile}'`,
 				);
 			}
 		} else if (relFile.endsWith(".md")) {
-			const text = readFileSync(absPath, "utf8");
-			const anchors = new Set<string>(
-				[...text.matchAll(/(?:id|name)=["']([^"']+)["']/g)].map((m) => m[1]),
-			);
-			for (const match of text.matchAll(/^#{1,6} +(.+)$/gm)) {
-				anchors.add(
-					match[1]
-						.toLowerCase()
-						.replace(/[`*_]/g, "")
-						.replace(/[^\p{L}\p{N} _-]/gu, "")
-						.replace(/ /g, "-"),
+			let anchors = mdAnchorsCache.get(absPath);
+			if (!anchors) {
+				const text = readFileSync(absPath, "utf8");
+				anchors = new Set<string>(
+					[...text.matchAll(/(?:id|name)=["']([^"']+)["']/g)].map((m) => m[1]),
 				);
+				for (const match of text.matchAll(/^#{1,6} +(.+)$/gm)) {
+					anchors.add(
+						match[1]
+							.toLowerCase()
+							.replace(/[`*_]/g, "")
+							.replace(/[^\p{L}\p{N} _-]/gu, "")
+							.replace(/ /g, "-"),
+					);
+				}
+				mdAnchorsCache.set(absPath, anchors);
 			}
 			if (!anchors.has(anchor)) {
 				throw new Error(
@@ -724,7 +794,8 @@ export function validatePackageDocReferences(
 }
 
 export function checkAiPackageAssetsFreshness(repoRoot = process.cwd()): void {
-	const expectedRegistry = generatePackageRegistry(repoRoot);
+	const surfaceManifest = derivePublicSurfaceManifest(repoRoot);
+	const expectedRegistry = generatePackageRegistry(repoRoot, surfaceManifest);
 	validatePackageDocReferences(expectedRegistry, repoRoot);
 	const aiDir = path.join(repoRoot, "packages/basalt/ai");
 	const registryPath = path.join(aiDir, "registry.json");
@@ -766,7 +837,7 @@ export function checkAiPackageAssetsFreshness(repoRoot = process.cwd()): void {
 	if (!existsSync(sourcesPath)) {
 		throw new Error("Missing packages/basalt/ai/sources.json. Run sync or build.");
 	}
-	const expectedSourcesBundle = generateSourcesBundle(repoRoot);
+	const expectedSourcesBundle = generateSourcesBundle(repoRoot, surfaceManifest);
 	const expectedSourcesStr = formatJsonDeterministic(
 		`${JSON.stringify(expectedSourcesBundle, null, "\t")}\n`,
 		sourcesPath,

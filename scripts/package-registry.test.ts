@@ -311,6 +311,144 @@ describe("package registry generator and AI package assets", () => {
 			);
 		});
 
+		it("preserves isolation and detects file modifications across distinct validation calls without persistent cache leakage", () => {
+			const registry = generatePackageRegistry();
+			// Baseline passes
+			expect(() => validatePackageDocReferences(registry)).not.toThrow();
+
+			const tempDocRoot = mkdtempSync(path.join(tmpdir(), "basalt-doc-freshness-"));
+			try {
+				const tempPkgDir = path.join(tempDocRoot, "packages/basalt");
+				mkdirSync(path.join(tempPkgDir, "ai"), { recursive: true });
+
+				// 1. Markdown documents: multiple anchors, dynamic edit and recovery
+				const mockRegistry = {
+					...registry,
+					modules: [
+						{
+							...registry.modules[0],
+							packageDoc: "ai/test-doc.md#valid-anchor-1",
+							symbols: [
+								{
+									...registry.modules[0].symbols[0],
+									packageDoc: "ai/test-doc.md#valid-anchor-2",
+								},
+							],
+						},
+					],
+					cssExports: [],
+					catalogEntries: [],
+				};
+
+				const testDocPath = path.join(tempPkgDir, "ai/test-doc.md");
+				writeFileSync(
+					testDocPath,
+					"# Guide\n\n<a id='valid-anchor-1'></a>\n<a id='valid-anchor-2'></a>\n",
+				);
+
+				// First call with all valid anchors passes
+				expect(() => validatePackageDocReferences(mockRegistry, tempDocRoot)).not.toThrow();
+
+				// Subsequent call with modified content removing one anchor throws immediately
+				writeFileSync(
+					testDocPath,
+					"# Guide\n\n<a id='valid-anchor-1'></a>\n<a id='different-anchor'></a>\n",
+				);
+				expect(() => validatePackageDocReferences(mockRegistry, tempDocRoot)).toThrow(
+					/Package doc validation error: missing anchor '#valid-anchor-2'/,
+				);
+
+				// Restoring file content allows next call to pass
+				writeFileSync(
+					testDocPath,
+					"# Guide\n\n<a id='valid-anchor-1'></a>\n<a id='valid-anchor-2'></a>\n",
+				);
+				expect(() => validatePackageDocReferences(mockRegistry, tempDocRoot)).not.toThrow();
+
+				// 2. JSON documents: multiple catalog entry slug anchors, dynamic edit and recovery
+				const testJsonPath = path.join(tempPkgDir, "ai/registry.json");
+				const jsonContent = {
+					catalogEntries: [{ slug: "button" }, { slug: "input" }],
+				};
+				writeFileSync(testJsonPath, JSON.stringify(jsonContent));
+
+				const jsonMockRegistry = {
+					...registry,
+					modules: [
+						{
+							...registry.modules[0],
+							packageDoc: "ai/registry.json#button",
+							symbols: [
+								{
+									...registry.modules[0].symbols[0],
+									packageDoc: "ai/registry.json#input",
+								},
+							],
+						},
+					],
+					cssExports: [],
+					catalogEntries: [],
+				};
+
+				// Initial check with both anchors passes
+				expect(() => validatePackageDocReferences(jsonMockRegistry, tempDocRoot)).not.toThrow();
+
+				// Removing 'input' slug in next call throws missing anchor
+				writeFileSync(testJsonPath, JSON.stringify({ catalogEntries: [{ slug: "button" }] }));
+				expect(() => validatePackageDocReferences(jsonMockRegistry, tempDocRoot)).toThrow(
+					/Package doc validation error: anchor #input not found/,
+				);
+
+				// Restoring JSON passes on next call
+				writeFileSync(testJsonPath, JSON.stringify(jsonContent));
+				expect(() => validatePackageDocReferences(jsonMockRegistry, tempDocRoot)).not.toThrow();
+			} finally {
+				rmSync(tempDocRoot, { recursive: true, force: true });
+			}
+		});
+
+		it("detects source modifications in subsequent generation calls, terminates cycles, and keeps entry visited sets independent", () => {
+			const fixture = createIsolatedFixture();
+			try {
+				const baseline = generatePackageRegistry(fixture);
+				const buttonBefore = baseline.modules.find(
+					(m) => m.importPath === "@nocoo/basalt/components/button",
+				);
+				const paletteBefore = baseline.modules.find(
+					(m) => m.importPath === "@nocoo/basalt/charts/palette",
+				);
+				expect(buttonBefore?.optionalPeers).not.toContain("recharts");
+
+				const cnPath = path.join(fixture, "packages/basalt/src/utils/cn.ts");
+				const controlPath = path.join(fixture, "packages/basalt/src/utils/control-surface.ts");
+				const originalCn = readFileSync(cnPath, "utf8");
+				const originalControl = readFileSync(controlPath, "utf8");
+
+				// Create mutual circular import between cn and control-surface, and introduce recharts into control-surface
+				writeFileSync(cnPath, `${originalCn}\nimport "./control-surface";\n`);
+				writeFileSync(controlPath, `${originalControl}\nimport "./cn";\nimport "recharts";\n`);
+
+				// Subsequent generatePackageRegistry on the exact same repoRoot fixture
+				const updated = generatePackageRegistry(fixture);
+				const buttonAfter = updated.modules.find(
+					(m) => m.importPath === "@nocoo/basalt/components/button",
+				);
+				const rootAfter = updated.modules.find((m) => m.importPath === "@nocoo/basalt");
+				const paletteAfter = updated.modules.find(
+					(m) => m.importPath === "@nocoo/basalt/charts/palette",
+				);
+
+				// Button and root transitively depend on cn/control-surface, so they receive recharts
+				expect(buttonAfter?.optionalPeers).toContain("recharts");
+				expect(rootAfter?.optionalPeers).toContain("recharts");
+
+				// Unrelated palette does not depend on cn/control-surface and must NOT be polluted
+				expect(paletteAfter?.optionalPeers).toEqual(paletteBefore?.optionalPeers);
+			} finally {
+				rmSync(fixture, { recursive: true, force: true });
+			}
+		});
+
 		// Full isolated tree copy, registry generation, freshness check and baseline comparison
 		// takes ~5.6s - 6.7s under coverage instrumentation, exceeding default 5s budget.
 		it("syncAiPackageAssets correctly synchronizes bumped version while keeping public-api-baseline byte-identical", () => {
