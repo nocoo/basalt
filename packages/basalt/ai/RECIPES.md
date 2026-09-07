@@ -1,6 +1,6 @@
 # Application recipes
 
-These complete modules use only public Basalt imports and React. The catalog and package version remain 2.0.3; these additions belong to Unreleased.
+These complete modules, included in v2.1.0, use only public Basalt imports and React.
 
 Load exactly one CSS mode at the application entry: import `@nocoo/basalt/styles/standalone` for a build without Tailwind, or configure the Tailwind source scan and import `@nocoo/basalt/styles/tailwind` as described in INTEGRATION.md. In Next, import CSS in the root layout and import these modules through a `use client` boundary. Mount ThemeProvider once per application; the standalone recipes include their own root provider. Root pages should set body margin to zero.
 
@@ -159,4 +159,3 @@ export default function ResourcesRecipe() {
   </main></ThemeProvider>;
 }
 ```
-

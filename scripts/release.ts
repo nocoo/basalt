@@ -8,7 +8,7 @@
  *   bun run release -- --dry-run — preview
  *
  * Root package.json is the north star. The script copies that version to
- * packages/basalt/package.json, prepends CHANGELOG.md, commits, tags,
+ * packages/basalt/package.json, syncs bun.lock, updates CHANGELOG.md, commits, tags,
  * pushes, and opens a GitHub Release. npm publish stays a separate step.
  */
 import { spawn } from "node:child_process";
@@ -227,15 +227,27 @@ export function formatChangelogSection(version: string, sections: ChangelogSecti
 	return lines.join("\n");
 }
 
-function updateChangelog(newSection: string): void {
-	const content = readFileSync(CHANGELOG_MD, "utf-8");
-	const marker = "## [";
-	const idx = content.indexOf(marker);
-	const updated =
-		idx === -1
-			? `${content.trimEnd()}\n\n${newSection}\n`
-			: `${content.slice(0, idx)}${newSection}\n\n${content.slice(idx)}`;
-	writeFileSync(CHANGELOG_MD, updated);
+/** Promote curated notes while retaining an empty Unreleased section for future work. */
+export function prepareChangelog(content: string, generatedSection: string) {
+	const unreleased = /^## \[Unreleased\][^\r\n]*\r?\n/m.exec(content);
+	if (unreleased) {
+		const remaining = content.slice(unreleased.index + unreleased[0].length);
+		const nextSection = /^## \[/m.exec(remaining)?.index ?? remaining.length;
+		const curated = remaining.slice(0, nextSection).trim();
+		const notes = curated ? `${generatedSection.split("\n")[0]}\n\n${curated}` : generatedSection;
+		return {
+			notes,
+			content: `${content.slice(0, unreleased.index)}## [Unreleased]\n\n${notes}\n\n${remaining.slice(nextSection)}`,
+		};
+	}
+	const index = /^## \[/m.exec(content)?.index;
+	return {
+		notes: generatedSection,
+		content:
+			index === undefined
+				? `${content.trimEnd()}\n\n${generatedSection}\n`
+				: `${content.slice(0, index)}${generatedSection}\n\n${content.slice(index)}`,
+	};
 }
 
 export interface RunnerContext {
@@ -247,7 +259,7 @@ export interface RunnerContext {
 	readJsonVersion: (relPath: string) => string;
 	updateJsonVersion: (relPath: string, oldVer: string, newVer: string) => void;
 	readChangelog: () => string;
-	updateChangelog: (newSection: string) => void;
+	updateChangelog: (content: string) => void;
 	writeNotesFile: (path: string, content: string) => void;
 	sleep: (ms: number) => Promise<void>;
 	log: (msg: string) => void;
@@ -264,7 +276,7 @@ export function defaultRunnerContext(): RunnerContext {
 		},
 		updateJsonVersion,
 		readChangelog: () => readFileSync(CHANGELOG_MD, "utf-8"),
-		updateChangelog,
+		updateChangelog: (content: string) => writeFileSync(CHANGELOG_MD, content),
 		writeNotesFile: (path: string, content: string) => writeFileSync(path, content),
 		sleep: (ms: number) => new Promise((resolve) => setTimeout(resolve, ms)),
 		log: (msg: string) => console.log(msg),
@@ -408,7 +420,10 @@ export async function executeRelease(
 	ctx.log(`${currentVersion} → ${newVersion} (${tag})`);
 
 	const commits = await getCommitsSinceTag(lastTag, ctx);
-	const changelogSection = formatChangelogSection(newVersion, classifyCommits(commits));
+	const { notes: changelogSection, content: changelog } = prepareChangelog(
+		ctx.readChangelog(),
+		formatChangelogSection(newVersion, classifyCommits(commits)),
+	);
 	ctx.log(changelogSection);
 
 	if (isDryRun) {
@@ -421,7 +436,13 @@ export async function executeRelease(
 		ctx.log(`updated ${target}`);
 	}
 
-	ctx.updateChangelog(changelogSection);
+	const lockResult = await ctx.run("bun", ["install", "--lockfile-only", "--ignore-scripts"]);
+	if (lockResult.code !== 0) {
+		throw new Error(`Failed to synchronize bun.lock: ${lockResult.stderr.trim()}`);
+	}
+	ctx.log("synchronized bun.lock");
+
+	ctx.updateChangelog(changelog);
 
 	// Regenerate public surface manifest and package registry with new version
 	const genResult = await ctx.run("bun", ["scripts/catalog-api-cli.ts", "generate"]);
@@ -431,6 +452,7 @@ export async function executeRelease(
 
 	const filesToStage = [
 		...VERSION_TARGETS,
+		"bun.lock",
 		"CHANGELOG.md",
 		"src/pages/ui/generated/public-surface-manifest.ts",
 		"src/pages/ui/generated/catalog-source-files.ts",

@@ -126,9 +126,10 @@ Manages series descriptor shapes, point definitions, and data key fallbacks:
 
 ---
 
-## 6. Unreleased migration notes (P1–P10)
+<a id="6-unreleased-migration-notes-p1p10"></a>
+## 6. v2.1.0 migration notes (P1–P10)
 
-The workspace version remains **2.0.3** until a separately authorized release. The changes below are implemented for the next release; their presence here does not mean an npm version has been published. The original 110-entrypoint / 572-symbol baseline remains byte-for-byte frozen. New entries are recorded in the current registry rather than rewriting that historical baseline.
+These notes cover the components, documentation, examples and palette changes included in **v2.1.0**. The original v2.0.3 110-entrypoint / 572-symbol baseline remains byte-for-byte frozen. New entries are recorded in the current registry rather than rewriting that historical baseline.
 
 ### Palettes and production URL
 
@@ -143,7 +144,7 @@ The workspace version remains **2.0.3** until a separately authorized release. T
 
 Chart gray retains its prior light/dark values. Marks use solid candy colors without contrasting outlines or shadows; their fills are not darkened. Raw candy fills can fall below 3:1 on light surfaces; use descriptive labels and `summary` / `dataAlternative` alongside them. Custom control palettes remain independent.
 
-The color-count and color-value changes need this migration notice and explicit release review under the policy above; the unchanged export baseline alone does not prove runtime-value compatibility. This work does not choose or publish a release version.
+v2.1.0 includes the palette count and value changes above as an explicit exception to the usual minor-release compatibility policy. Consumers that index colors or persist palette choices must follow these migration notes. The unchanged export baseline alone does not prove runtime-value compatibility.
 
 Persisted accent IDs are normalized on reads and selections:
 

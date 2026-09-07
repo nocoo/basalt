@@ -711,7 +711,7 @@ P7 包含原拆分表未单列的 Data 页面搜索/筛选闭环；P9 包含实�
 
 **P10 追加设计与验收：**控件主色参考经典 Apple iMac 与 iPhone 5C 糖果色，演绎为 12 色，替换现有色板的视觉值；保留已发布入口与类型契约，对旧持久化选择明确迁移。Palette 页面支持编辑、自定义、应用与恢复色板，缓存于 localStorage，验证刷新、无存储权限、无效颜色与浅深主题。图表使用独立的固定 5C 风格色板，明确固定数量及对比度处理；主色切换和自定义不得改写图表系列颜色。逐类核对 chart 的文字、legend、tooltip、图形配色及 ring 未占用区域，改用适配主题的衬底并检查真实浏览器画面。生产链接统一为 `https://basaltui.com`，同步 GitHub homepage；保留 `basalt.dev.hexly.ai` 本地地址，Cloudflare 配置由用户完成，本轮不部署。上述与 D07、迁移文档及最终 6DQ 一并验收。
 
-**当前执行点（2026-09-07）：P1–P10 已按本轮范围全部验收，P6–P10 由主 agent 直接实施并按大阶段提交。** pi 保持空闲，其监督定时器停止，本地 dev 服务保留。分类结果和后置边界见 12.6，页面导览见 12.7。版本仍为 2.0.3，本轮未 push、tag、publish 或 deploy。
+**当前执行点（2026-09-07）：P1–P10 已按本轮范围全部验收，P6–P10 由主 agent 直接实施并按大阶段提交。** pi 保持空闲，其监督定时器停止，本地 dev 服务保留。分类结果和后置边界见 12.6，页面导览见 12.7。以下阶段记录保留验收时的 2.0.3 版本；用户随后授权按 Y+1 发布 v2.1.0，并一并发布 npm。版本说明以 [CHANGELOG.md](../CHANGELOG.md) 与 [v2.1.0 Release](https://github.com/nocoo/basalt/releases/tag/v2.1.0) 为准。
 
 ### 12.4 验收记录
 
@@ -1230,7 +1230,7 @@ Next 16.3.3 / Turbopack 生产消费页在挂载 TagColorPicker 时触发 React 
 
 ### 12.7 P6–P10 交付导览
 
-以下路径均可在本地 `http://localhost:7003` 或 `https://basalt.dev.hexly.ai` 查看。生产代码尚未部署，因此不能用新生产域名判断这些本地变化是否已上线。
+以下路径均可在本地 `http://localhost:7003` 或 `https://basalt.dev.hexly.ai` 查看。v2.1.0 的生产入口为 https://basaltui.com，上线状态以 [Release workflow](https://github.com/nocoo/basalt/actions/workflows/release.yml) 的部署结果为准。
 
 | 阶段 | 能直接看到的页面 | 实施前 → 当前实现 | 不做的影响 |
 |---|---|---|---|

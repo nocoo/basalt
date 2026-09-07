@@ -6,6 +6,7 @@ import {
 	executeRelease,
 	formatChangelogSection,
 	parseSemver,
+	prepareChangelog,
 	type RunnerContext,
 	VERSION_TARGETS,
 } from "./release";
@@ -74,6 +75,49 @@ describe("formatChangelogSection", () => {
 describe("VERSION_TARGETS", () => {
 	it("keeps the package copies next to the root north star", () => {
 		expect(VERSION_TARGETS).toEqual(["package.json", "packages/basalt/package.json"]);
+	});
+});
+
+describe("prepareChangelog", () => {
+	const generated = "## [2.1.0] - 2026-09-07\n\n### Added\n- Generated commit summary";
+	const historical = "## [2.0.3] - 2026-09-04\n\n### Fixed\n- Previous fix\n";
+
+	it("promotes curated notes and migration links while preserving older releases", () => {
+		const curated = "### Changed\n- Palette migration: [guide](guide.md#palette)";
+		const result = prepareChangelog(
+			`# Changelog\n\n## [Unreleased]\n\n${curated}\n\n${historical}`,
+			generated,
+		);
+		expect(result.notes).toBe(`## [2.1.0] - 2026-09-07\n\n${curated}`);
+		expect(result.content).toBe(
+			`# Changelog\n\n## [Unreleased]\n\n${result.notes}\n\n${historical}`,
+		);
+		expect(result.notes).not.toContain("Generated commit summary");
+	});
+
+	it("uses commits for an empty Unreleased section", () => {
+		const result = prepareChangelog(`# Changelog\n\n## [Unreleased]\n\n${historical}`, generated);
+		expect(result.notes).toBe(generated);
+		expect(result.content).toBe(`# Changelog\n\n## [Unreleased]\n\n${generated}\n\n${historical}`);
+	});
+
+	it("keeps automatic notes for changelogs without an Unreleased section", () => {
+		expect(prepareChangelog(`# Changelog\n\n${historical}`, generated)).toEqual({
+			notes: generated,
+			content: `# Changelog\n\n${generated}\n\n${historical}`,
+		});
+		expect(prepareChangelog("# Changelog\n", generated).content).toBe(
+			`# Changelog\n\n${generated}\n`,
+		);
+	});
+
+	it("handles first-release curated notes with CRLF input", () => {
+		const result = prepareChangelog(
+			"# Changelog\r\n\r\n## [Unreleased]\r\n\r\nFirst release.\r\n",
+			generated,
+		);
+		expect(result.notes).toBe("## [2.1.0] - 2026-09-07\n\nFirst release.");
+		expect(result.content).toContain(`## [Unreleased]\n\n${result.notes}\n\n`);
 	});
 });
 
@@ -171,6 +215,21 @@ function createMockRunnerContext(overrides: Partial<RunnerContext> = {}): {
 }
 
 describe("executeRelease gates and failure paths", () => {
+	it("uses the same curated notes for the changelog, dry-run, and GitHub release", async () => {
+		const curated = "### Changed\n- Read the palette migration guide before upgrading.";
+		const readChangelog = () => `# Changelog\n\n## [Unreleased]\n\n${curated}\n\n## [2.0.3]\n`;
+		const dry = createMockRunnerContext({ readChangelog });
+		await executeRelease({ bumpArg: "minor", isDryRun: true }, dry.ctx);
+		expect(dry.filesWritten).toEqual({});
+		expect(dry.logs.some((line) => line.includes(curated))).toBe(true);
+		const release = createMockRunnerContext({ readChangelog });
+		await executeRelease({ bumpArg: "minor", isDryRun: false }, release.ctx);
+		const notes = release.filesWritten["/tmp/basalt-release-2.1.0.md"];
+		expect(notes).toContain(curated);
+		expect(notes).not.toContain("Unreleased");
+		expect(release.filesWritten["CHANGELOG.md"]).toContain(notes);
+	});
+
 	it("dry-run does not write files, commit, tag, push, or deploy", async () => {
 		const { ctx, commands, filesWritten } = createMockRunnerContext();
 		await executeRelease({ bumpArg: "patch", isDryRun: true }, ctx);
@@ -178,10 +237,54 @@ describe("executeRelease gates and failure paths", () => {
 		expect(Object.keys(filesWritten)).toHaveLength(0);
 		const writes = commands.filter(
 			(c) =>
+				c.cmd === "bun" ||
 				(c.cmd === "git" && ["add", "commit", "push", "tag"].includes(c.args[0])) ||
 				(c.cmd === "gh" && c.args[0] === "release"),
 		);
 		expect(writes).toHaveLength(0);
+	});
+
+	it("synchronizes the bumped workspace versions before committing the lockfile", async () => {
+		const { ctx, commands, filesWritten } = createMockRunnerContext();
+		const run = ctx.run;
+		ctx.run = async (cmd, args, opts) => {
+			if (cmd === "bun" && args[0] === "install") {
+				for (const target of VERSION_TARGETS) {
+					expect(filesWritten[target]).toBe("2.1.0");
+				}
+			}
+			return run(cmd, args, opts);
+		};
+		await executeRelease({ bumpArg: "minor", isDryRun: false }, ctx);
+
+		const lockIndex = commands.findIndex((c) => c.cmd === "bun" && c.args[0] === "install");
+		const stageIndex = commands.findIndex((c) => c.cmd === "git" && c.args[0] === "add");
+		const commitIndex = commands.findIndex((c) => c.cmd === "git" && c.args[0] === "commit");
+		expect(lockIndex).toBeGreaterThan(-1);
+		expect(commands[lockIndex].args).toEqual(["install", "--lockfile-only", "--ignore-scripts"]);
+		expect(stageIndex).toBeGreaterThan(lockIndex);
+		expect(commands[stageIndex].args).toContain("bun.lock");
+		expect(commitIndex).toBeGreaterThan(stageIndex);
+	});
+
+	it("blocks commit and publication when lockfile synchronization fails", async () => {
+		const { ctx, commands, filesWritten } = createMockRunnerContext();
+		const run = ctx.run;
+		ctx.run = async (cmd, args, opts) => {
+			if (cmd === "bun" && args[0] === "install") {
+				commands.push({ cmd, args });
+				return { code: 1, stdout: "", stderr: "registry unavailable" };
+			}
+			return run(cmd, args, opts);
+		};
+		await expect(executeRelease({ bumpArg: "minor", isDryRun: false }, ctx)).rejects.toThrow(
+			"Failed to synchronize bun.lock: registry unavailable",
+		);
+		expect(filesWritten["CHANGELOG.md"]).toBeUndefined();
+		expect(
+			commands.some((c) => c.cmd === "git" && ["add", "commit", "push", "tag"].includes(c.args[0])),
+		).toBe(false);
+		expect(commands.some((c) => c.cmd === "gh" && c.args[0] === "release")).toBe(false);
 	});
 
 	it("fails fast if git working tree is dirty", async () => {

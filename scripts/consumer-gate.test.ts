@@ -144,7 +144,7 @@ import "@nocoo/basalt/styles/tailwind";`),
 		assertTemplateManifest(manifest);
 		expect(manifest).toContain('"react": "19.2.8"');
 		expect(manifest).toContain('"react-dom": "19.2.8"');
-		expect(manifest).toContain('"lucide-react": "1.40.0"');
+		expect(manifest).toContain('"lucide-react": "1.41.0"');
 		expect(manifest).toContain('"vite": "8.2.2"');
 		assertRootConsumerSource(readFileSync("fixtures/vite-standalone/src/main.tsx", "utf8"));
 		assertStandaloneTypecheckGate(
@@ -406,7 +406,7 @@ describe("next consumer gate helpers", () => {
 	it("keeps the committed next fixture inside the gate contract", () => {
 		const manifest = readFileSync("fixtures/next19/package.json", "utf8");
 		assertTemplateManifest(manifest);
-		expect(manifest).toContain('"next": "16.3.3"');
+		expect(manifest).toContain('"next": "16.3.4"');
 		expect(manifest).toContain('"react": "19.2.8"');
 		expect(manifest).toContain('"react-dom": "19.2.8"');
 		expect(manifest).not.toContain("@nocoo/basalt");
@@ -427,7 +427,7 @@ describe("next consumer gate helpers", () => {
 		expect(app.lastIndexOf("<Toast")).toBeGreaterThan(app.indexOf("data-basalt-toast-host"));
 		expect(manifest).not.toContain("playwright");
 		const rootManifest = readFileSync("package.json", "utf8");
-		expect(rootManifest).toContain('"playwright": "1.62.1"');
+		expect(rootManifest).toContain('"playwright": "1.63.0"');
 		expect(rootManifest).toContain("playwright:install");
 		const rootScripts = (JSON.parse(rootManifest) as { scripts: Record<string, string> }).scripts;
 		for (const scriptName of ["test", "test:coverage", "test:watch"] as const) {
@@ -572,7 +572,7 @@ describe("heavy consumer gate helpers", () => {
 		assertTemplateManifest(manifest);
 		expect(manifest).toContain('"recharts": "3.10.1"');
 		expect(manifest).toContain('"react-day-picker": "10.0.1"');
-		expect(manifest).toContain('"@tanstack/react-table": "9.1.2"');
+		expect(manifest).toContain('"@tanstack/react-table": "9.2.4"');
 		expect(manifest).not.toContain("@nocoo/basalt");
 		const entry = readFileSync("fixtures/vite-heavy/src/main.tsx", "utf8");
 		assertRootConsumerSource(entry, "heavy");
@@ -688,7 +688,7 @@ export const n = <><DonutChart /><DatePicker /><DataTable /></>;
 		const pkg = JSON.parse(readFileSync("package.json", "utf8")) as {
 			devDependencies?: Record<string, string>;
 		};
-		expect(pkg.devDependencies?.["@swc/core"]).toBe("1.15.46");
+		expect(pkg.devDependencies?.["@swc/core"]).toBe("1.16.2");
 		const gate = readFileSync("scripts/consumer-gate.ts", "utf8");
 		expect(gate).toContain('from "@swc/core"');
 		expect(gate).not.toContain("@vitejs/plugin-react-swc");

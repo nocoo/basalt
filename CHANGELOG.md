@@ -2,8 +2,6 @@
 
 ## [Unreleased]
 
-The workspace remains at 2.0.3. These changes have not been published or deployed.
-
 ### Added
 - Source-backed package registry, installed source recovery, compilable documentation and AppFrame / Login / Resources recipes.
 - Complex loading dashboard, resource-list and detail compositions; interactive device and subscription tables with formatted cells, inline charts and BatteryMeter.
@@ -15,10 +13,11 @@ The workspace remains at 2.0.3. These changes have not been published or deploye
 
 ### Changed
 - Replace the 24-color control palette with twelve candy colors inspired by classic Apple iMac and iPhone 5C finishes; raw swatches and contrast-safe primary tokens are distinct.
-- Charts now use a fixed five-color cycle. Blue, pink, green and yellow match the classic control swatches exactly; the existing gray is retained, and chart marks use solid colors without contrasting outlines or shadows. `CHART_COLORS.length` changes from 24 to 5; use `getChartColor(index)` or modulo indexing. Old `chart` keys and numbered CSS tokens remain aliases. [Migration details](packages/basalt/ai/COMPATIBILITY.md#6-unreleased-migration-notes-p1p10) list stored-ID mappings and runtime-value changes.
+- Charts now use a fixed five-color cycle. Blue, pink, green and yellow match the classic control swatches exactly; the existing gray is retained, and chart marks use solid colors without contrasting outlines or shadows. `CHART_COLORS.length` changes from 24 to 5; use `getChartColor(index)` or modulo indexing. Old `chart` keys and numbered CSS tokens remain aliases. [Migration details](https://github.com/nocoo/basalt/blob/v2.1.0/packages/basalt/ai/COMPATIBILITY.md#6-unreleased-migration-notes-p1p10) list stored-ID mappings and runtime-value changes.
 - Add optional `AccentProvider.paletteOverrides`; consumer applications own persistence.
 - Set the production URL and GitHub homepage to https://basaltui.com. Browser preferences on the previous origin do not migrate automatically.
 - Complete example forms, settings, data filtering and chat workflows, including failure/retry and responsive navigation.
+- Update Playwright, Lucide, SWC, Node types and consumer fixtures, including Next.js 16.3.4 and React Table 9.2.4.
 
 ### Fixed
 - Native forms/reset and forwarded refs, portal clipping/forceMount/asChild, keyboard/focus restoration, Dock semantics and Slider contracts.
@@ -27,6 +26,7 @@ The workspace remains at 2.0.3. These changes have not been published or deploye
 - Gauge remainder uses a neutral theme track and the shared static animation setting.
 - Generated API text retains generic context, readonly types and correct function/constructor union parentheses.
 - Selection indicator default callbacks remain stable after Next.js production minification.
+- Release automation synchronizes the lockfile and promotes curated Unreleased notes into the versioned changelog and GitHub release.
 
 ## [2.0.3] - 2026-09-04
 

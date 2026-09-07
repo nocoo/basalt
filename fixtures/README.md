@@ -36,9 +36,9 @@ Guarantees:
 
 Command: `bun run consumer:next`
 
-Browser prerequisite (root workspace only, never the temp consumer): pinned `playwright@1.62.1`. Install the matching Chromium with `bun run playwright:install`. The gate refuses `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` and does not fall back to a machine Chrome. If the pinned browser is missing, the failure names that install command.
+Browser prerequisite (root workspace only, never the temp consumer): pinned `playwright@1.63.0`. Install the matching Chromium with `bun run playwright:install`. The gate refuses `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` and does not fall back to a machine Chrome. If the pinned browser is missing, the failure names that install command.
 
-`next19` is a React 19 consumer on Next 16.3.3. The shared kernel still does clean package build, OS-temp `npm pack`, fixture copy, `file:` tarball inject, real `npm install`, root/CSS resolve, and cleanup. This command additionally runs the consumer `typecheck`, `next build`, and one `next start` on a free `127.0.0.1` port. After HTTP GET `/` returns 200 and `basalt-next19-ok`, the same server is driven with Playwright Chromium: first screen, client hydration, Button state, ThemeToggle on `html`, exactly one visible `[data-sonner-toast]` inside the fixture-owned `[data-basalt-toast-host]` (mounted outside `[data-basalt-root]`, in-place rather than a React portal) whose `[data-title]` equals `basalt-toast-ok`, proof that toast node is in `document.body` and not contained by the app root, and an empty `console.error` / `pageerror` set. Ordinary host text, partial titles, hidden toasts, script text, and missing Sonner markers are not toast evidence.
+`next19` is a React 19 consumer on Next 16.3.4. The shared kernel still does clean package build, OS-temp `npm pack`, fixture copy, `file:` tarball inject, real `npm install`, root/CSS resolve, and cleanup. This command additionally runs the consumer `typecheck`, `next build`, and one `next start` on a free `127.0.0.1` port. After HTTP GET `/` returns 200 and `basalt-next19-ok`, the same server is driven with Playwright Chromium: first screen, client hydration, Button state, ThemeToggle on `html`, exactly one visible `[data-sonner-toast]` inside the fixture-owned `[data-basalt-toast-host]` (mounted outside `[data-basalt-root]`, in-place rather than a React portal) whose `[data-title]` equals `basalt-toast-ok`, proof that toast node is in `document.body` and not contained by the app root, and an empty `console.error` / `pageerror` set. Ordinary host text, partial titles, hidden toasts, script text, and missing Sonner markers are not toast evidence.
 
 Guarantees:
 
@@ -60,7 +60,7 @@ Guarantees:
 
 - The in-repo template does not declare `@nocoo/basalt`, `workspace:`, `link:`, or this repository's path.
 - Source granular-imports `DonutChart`, `DatePicker`, and `DataTable` only, plus `@nocoo/basalt/styles/standalone`. It does not import the package root or Tailwind.
-- After install, `recharts` is `3.10.1`, `react-day-picker` is `10.0.1`, and `@tanstack/react-table` is `9.1.2`. `tailwindcss` is not installed.
+- After install, `recharts` is `3.10.1`, `react-day-picker` is `10.0.1`, and `@tanstack/react-table` is `9.2.4`. `tailwindcss` is not installed.
 - `import.meta.resolve` and dynamic `import()` of `@nocoo/basalt/charts/donut`, `components/date-picker`, and `components/data-table` land inside that consumer's tarball copy and expose the named exports.
 - The published package declares those three libraries as optional peers (`^3` / `^10` / `^9`). DatePicker and DataTable are still self-contained; Gate D does not claim they call react-day-picker or TanStack Table.
 - Production output includes HTML, JS, and standalone CSS with `--basalt-background`.
