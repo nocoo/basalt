@@ -24,6 +24,10 @@ import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const DATA_LAYOUT_SCENARIOS = {
+	"responsive-master-detail": [
+		"responsive-master-detail-resources",
+		"responsive-master-detail-drafts",
+	],
 	table: ["table-subscriptions", "table-basic", "table-selected-row"],
 	"description-list": ["description-list-default"],
 	"data-table": [
@@ -63,19 +67,19 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 } as const;
 
 describe("data-layout catalog content family", () => {
-	it("owns exactly eleven slugs and generated owners", () => {
+	it("owns exactly twelve slugs and generated owners", () => {
 		expect(Object.keys(dataLayout)).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS));
-		expect(Object.keys(dataLayout)).toHaveLength(11);
+		expect(Object.keys(dataLayout)).toHaveLength(12);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "data-layout")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(105);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(111);
 	});
 
-	it("keeps the twenty-four final winner scenarios in their audited order", () => {
+	it("keeps the twenty-eight scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(DATA_LAYOUT_SCENARIOS)) {
 			const examples = dataLayout[slug]?.examples ?? [];
@@ -94,7 +98,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(26);
+		expect(count).toBe(28);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {

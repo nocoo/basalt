@@ -25,6 +25,7 @@ import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const FOUNDATION_SLUGS = [
+	"tag-badge",
 	"button",
 	"link-button",
 	"text",
@@ -40,9 +41,9 @@ const FOUNDATION_SLUGS = [
 ] as const;
 
 describe("foundation catalog content family", () => {
-	it("owns exactly twelve foundation slugs", () => {
+	it("owns exactly thirteen foundation slugs", () => {
 		expect(Object.keys(foundation)).toEqual([...FOUNDATION_SLUGS]);
-		expect(Object.keys(foundation)).toHaveLength(12);
+		expect(Object.keys(foundation)).toHaveLength(13);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "foundation")
@@ -210,7 +211,7 @@ describe("foundation catalog content family", () => {
 		expect(foundation.text?.docs.usage).toContain('as="h1"');
 		expect(
 			FOUNDATION_SLUGS.reduce((count, slug) => count + (foundation[slug]?.examples.length ?? 0), 0),
-		).toBe(38);
+		).toBe(40);
 		for (const slug of FOUNDATION_SLUGS) {
 			const content = foundation[slug];
 			expect(content?.docs.description.length, slug).toBeGreaterThan(0);

@@ -100,14 +100,14 @@ describe("feedback catalog content family", () => {
 		).toEqual(Object.keys(FEEDBACK_SCENARIOS).sort());
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "foundation"),
-		).toHaveLength(12);
+		).toHaveLength(13);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "forms"),
-		).toHaveLength(20);
+		).toHaveLength(23);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "overlay"),
 		).toHaveLength(11);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(105);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(111);
 	});
 
 	it("keeps the forty-five final winner scenarios in their audited order", () => {

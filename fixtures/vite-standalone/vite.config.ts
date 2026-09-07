@@ -18,6 +18,8 @@ export default defineConfig({
 				empty: resolve(__dirname, "empty.html"),
 				resources: resolve(__dirname, "resources.html"),
 				filters: resolve(__dirname, "filters.html"),
+				editing: resolve(__dirname, "editing.html"),
+				recipes: resolve(__dirname, "recipes.html"),
 				providers: resolve(__dirname, "providers.html"),
 				contrast: resolve(__dirname, "contrast.html"),
 			},

@@ -4,6 +4,7 @@ import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const NAVIGATION_SCENARIOS = {
+	"editable-nav-item": ["editable-nav-item-folders", "editable-nav-item-saved-views"],
 	"command-palette": ["command-palette-with-grouped-items", "command-palette-simple-flat-list"],
 	tabs: ["tabs-variants", "tabs-many-tabs"],
 	pagination: [
@@ -40,19 +41,19 @@ const NAVIGATION_DESCRIPTIONS = {
 } as const;
 
 describe("navigation catalog content family", () => {
-	it("owns exactly nine migrated slugs and eighty-six generated owners", () => {
+	it("owns exactly ten slugs with generated owners", () => {
 		expect(Object.keys(navigation)).toEqual(Object.keys(NAVIGATION_SCENARIOS));
-		expect(Object.keys(navigation)).toHaveLength(9);
+		expect(Object.keys(navigation)).toHaveLength(10);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "navigation")
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(NAVIGATION_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(105);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(111);
 	});
 
-	it("keeps the twenty final winner scenarios in their audited order", () => {
+	it("keeps the twenty-two scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(NAVIGATION_SCENARIOS)) {
 			const examples = navigation[slug]?.examples ?? [];
@@ -71,7 +72,7 @@ describe("navigation catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(20);
+		expect(count).toBe(22);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {

@@ -17,6 +17,7 @@ import { createServer } from "vite";
 import { CATALOG, catalogBarrelImport, catalogGranularImport } from "../src/pages/ui/catalog";
 import type { CatalogPageContent } from "../src/pages/ui/catalog-content";
 import { CATALOG_PAGE_STATUS } from "../src/pages/ui/generated/catalog-page-status";
+import { materializeApplicationRecipes } from "./consumer-recipes";
 
 export type CodeFenceKind = "compile" | "excerpt";
 
@@ -483,6 +484,7 @@ export async function runDocsGate(repoRoot = process.cwd()) {
 		if (install.status !== 0) {
 			throw new Error(`consumer npm install failed:\n${install.stderr}`);
 		}
+		const applicationRecipes = materializeApplicationRecipes(consumerDir, "src/recipe-modules");
 
 		// 5. Generate catalog snippets file in dedicated harness location
 		const catalogData = generateCatalogInstallationSnippets();
@@ -561,6 +563,7 @@ export async function runDocsGate(repoRoot = process.cwd()) {
 		}
 
 		return {
+			applicationRecipes,
 			tarball: tarballs[0],
 			consumerDir,
 			readyCount: catalogData.readyCount,

@@ -28,6 +28,7 @@ import { assertConsumerCharts } from "./consumer-charts";
 import { assertConsumerConfirm } from "./consumer-confirm";
 import { assertConsumerContrast } from "./consumer-contrast";
 import { assertConsumerDock } from "./consumer-dock";
+import { assertConsumerEditing } from "./consumer-editing";
 import { assertConsumerEmpty } from "./consumer-empty";
 import { assertConsumerFilters } from "./consumer-filters";
 import { assertConsumerGeometry } from "./consumer-geometry";
@@ -42,6 +43,7 @@ import {
 } from "./consumer-http";
 import { assertConsumerPortal } from "./consumer-portal";
 import { assertConsumerProviders } from "./consumer-providers";
+import { assertConsumerRecipes, materializeApplicationRecipes } from "./consumer-recipes";
 import { assertConsumerResources } from "./consumer-resources";
 import { assertConsumerSlider } from "./consumer-slider";
 import { assertConsumerToast } from "./consumer-toast";
@@ -1076,6 +1078,13 @@ export async function runConsumerGate(repoRoot: string, config: ConsumerGateConf
 			}
 
 			run("npm", ["install", "--no-fund", "--no-audit"], consumerRoot);
+			const recipeSources =
+				config.mode === "heavy"
+					? []
+					: materializeApplicationRecipes(
+							consumerRoot,
+							config.mode === "next" ? "app/recipes/recipe-modules" : "src/recipe-modules",
+						);
 
 			const lockPath = join(consumerRoot, "package-lock.json");
 			if (!existsSync(lockPath)) {
@@ -1196,6 +1205,7 @@ console.log(JSON.stringify({
 
 			const evidence: Record<string, unknown> = {
 				mode: config.mode,
+				recipeSources,
 				tempRoot,
 				tarball: tarballs[0],
 				resolved: resolution.resolved,
@@ -1235,6 +1245,30 @@ console.log(JSON.stringify({
 					const faults = attachPageFaults(page);
 					await page.goto(`http://127.0.0.1:${port}/filters`, { waitUntil: "domcontentloaded" });
 					const result = await assertConsumerFilters(page);
+					assertNoPageFaults(faults);
+					return result;
+				});
+				evidence.editing = await withChromiumPage(profileDir, async (page) => {
+					const faults = attachPageFaults(page);
+					const response = await page.goto(`http://127.0.0.1:${port}/editing`, {
+						waitUntil: "domcontentloaded",
+					});
+					try {
+						const result = await assertConsumerEditing(page);
+						assertNoPageFaults(faults);
+						return result;
+					} catch (error) {
+						throw combineErrors(
+							error,
+							new Error(
+								`Editing route ${response?.status()} ${page.url()}\n${await page.locator("body").innerText()}\n${JSON.stringify(faults)}`,
+							),
+						);
+					}
+				});
+				evidence.recipes = await withChromiumPage(profileDir, async (page) => {
+					const faults = attachPageFaults(page);
+					const result = await assertConsumerRecipes(page, `http://127.0.0.1:${port}/recipes`);
 					assertNoPageFaults(faults);
 					return result;
 				});
@@ -1376,6 +1410,25 @@ console.log(JSON.stringify({
 							waitUntil: "domcontentloaded",
 						});
 						const result = await assertConsumerFilters(page);
+						assertNoPageFaults(faults);
+						return result;
+					});
+
+					evidence.editing = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(`http://127.0.0.1:${port}/editing.html`, {
+							waitUntil: "domcontentloaded",
+						});
+						const result = await assertConsumerEditing(page);
+						assertNoPageFaults(faults);
+						return result;
+					});
+					evidence.recipes = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						const result = await assertConsumerRecipes(
+							page,
+							`http://127.0.0.1:${port}/recipes.html`,
+						);
 						assertNoPageFaults(faults);
 						return result;
 					});

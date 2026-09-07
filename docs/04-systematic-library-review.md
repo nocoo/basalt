@@ -704,12 +704,14 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 已验收 | `462b43e`；三种骨架屏、两种丰富表格、BatteryMeter 与受控列表；1,719 项测试及四维 95% 门、真实包和浏览器检查通过 |
 | P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 已验收 | 1,729 项测试、四维 95% 门及 fresh 生产构建浏览器检查通过 |
 | P8 | 筛选与上传：16a/b/c；R01/R02 | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费 | 已验收 | 主 agent 阶段实现，见下方记录 |
-| P9 | 小型复用控件与应用模板：18a/b/c/d；R03/R06/R07/R08 | EditableNav、Tag 色板/选择、InlineEditable/master-detail、可编译 AppFrame/Login/Resource recipes | 实施中 | 主 agent 直接实施 |
-| P10 | 整体验收、兼容/迁移说明与台账收口；Q05 与全部问题追踪 | 新 HEAD 全套 6DQ、tarball/文档 freshness、关键浏览器组合、无未记录 API 破坏、干净工作区 | 待调度 | — |
+| P9 | 小型复用控件与应用模板：18a/b/c/d；R03/R06/R07/R08 | EditableNav、Tag 色板/选择、InlineEditable/master-detail、可编译 AppFrame/Login/Resource recipes | 已验收 | 1,787 项测试、四维 95% 门、真实 tarball A/B/Next 与文档/生产展示通过 |
+| P10 | D07 类型打印器；主色/图表双色板；生产域名；整体验收、兼容/迁移说明与台账收口 | 泛型/readonly/回调类型可编译；12 糖果主色及本地自定义色板；固定图表色板与 ring 衬底；basaltui.com / GitHub metadata；新 HEAD 全套 6DQ、tarball/文档 freshness、无未记录 API 破坏 | 待调度 | 按用户 2026-09-07 追加要求扩充，最终一起交付 |
 
 P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功能提交。P9 的 InlineEditable 按实际受控需求单独提交。任何新增公开 surface 同阶段补元数据、出口和文档，不能拖到收尾才补。
 
-**当前执行点（2026-09-07）：P1–P8 已验收；主 agent 直接实施 P9，随后完成 P10，按阶段提交。** pi 保持空闲，其监督定时器停止，本地 dev 服务保留。后续阶段沿用原任务范围及兼容验收基线。
+**P10 追加设计与验收：**控件主色参考经典 Apple iMac 与 iPhone 5C 糖果色，演绎为 12 色，替换现有色板的视觉值；保留已发布入口与类型契约，对旧持久化选择明确迁移。Palette 页面支持编辑、自定义、应用与恢复色板，缓存于 localStorage，验证刷新、无存储权限、无效颜色与浅深主题。图表使用独立的固定 5C 风格色板，明确固定数量及对比度处理；主色切换和自定义不得改写图表系列颜色。逐类核对 chart 的文字、legend、tooltip、图形配色及 ring 未占用区域，改用适配主题的衬底并检查真实浏览器画面。生产链接统一为 `https://basaltui.com`，同步 GitHub homepage；保留 `basalt.dev.hexly.ai` 本地地址，Cloudflare 配置由用户完成，本轮不部署。上述与 D07、迁移文档及最终 6DQ 一并验收。
+
+**当前执行点（2026-09-07）：P1–P9 已验收；主 agent 进入 P10，按阶段提交。** pi 保持空闲，其监督定时器停止，本地 dev 服务保留。后续阶段沿用原任务范围及兼容验收基线。
 
 ### 12.4 验收记录
 
@@ -1074,6 +1076,16 @@ Library 新增八个可复制场景：文件夹组织、远程模型搜索、资
 
 当前 **106 catalog 项（105 ready，maps 仍 planned）、116 模块 / 722 符号、243 API targets、278 场景**；四个模块均不进入根 barrel。原公开基线、版本 2.0.3 与 docs/04 第 1–8 节保持原文。**R01/R02 已关闭，P8 已验收**。证据：`p8-direct-coverage-final.json`、`p8-direct-typecheck-final.json`、`p8-direct-standalone-complete.json`、`p8-direct-tailwind-complete.json`、`p8-direct-next-final.json`、`p8-direct-docs-complete.json`、`p8-direct-types-complete.json`、`p8-direct-pack-complete.json`、`p8-direct-publint-complete.json`、`p8-direct-showcase-complete.json`。
 
+#### P9 验收记录（已验收，2026-09-07）
+
+新增六个 granular 模块：InlineEditable 的异步保存、校验、失败重试与取消；EditableNavItem/FolderNavItem 的导航、计数、独立行操作与重命名；由调用方提供小图标集合的 IconPicker；稳定标签配色 TagBadge 与 TagColorPicker；ResponsiveMasterDetail 的桌面两栏、手机单活动 pane、返回回焦与草稿保留。Library 六页共 12 个可复制真实场景；标签十种颜色在浅深主题的文字对比度均 ≥4.5，实际最低约 7.05，且应用主题与操作系统相反时仍正确。
+
+随包 `ai/RECIPES.md` 提供 AppFrame、Login、Resources 三个完整应用模块：手机导航与 skip link、原生登录验证/重复提交保护/AbortSignal 清理、资源搜索/错误重试/删除失败重试。A/B/Next 从实际安装 tarball 的 Markdown 原文生成模块，记录内容 hash 后编译并验证真实交互；docs gate 同时验证完整文档、111 个 ready 页 Usage 和 290 个场景。数据、路由、权限、认证及请求由应用负责。
+
+完整 **199 文件 / 1,787 测试通过**；语句 **97.55%（3,830/3,926）**、分支 **95.71%（3,420/3,573）**、函数 **98.72%（932/944）**、行 **97.77%（3,640/3,723）**。类型、lint、包 build/types/pack/publint、正式 standalone/Tailwind/Next/docs 全通过。fresh showcase 覆盖原 P6–P8 门及新增六页四种宽度/主题组合。验收中发现并修正 C24 的 Next 生产压缩重复更新、picker 多行高度及 Tag 主题选择；不放宽任何门槛或预算。
+
+当前 **112 catalog 项（111 ready，maps 仍 planned）、122 模块 / 741 符号、250 API targets、290 场景、125 包入口**。旧公共基线、2.0.3 版本与初审第 1–8 节保留。**R03 的小型控件、R06/R07/R08、C24 已关闭，P9 已验收**；Tree adapter、可拖拽 SplitPane 继续按原范围后置。证据：`p9-direct-coverage-accepted.json`、`p9-direct-typecheck-accepted.json`、`p9-direct-lint-accepted.json`、`p9-direct-next-fixed.json`、`p9-direct-docs-fixed.json`、`p9-direct-standalone-final.json`、`p9-direct-tailwind-final.json`、`p9-direct-types-final.json`、`p9-direct-pack-final.json`、`p9-direct-publint-final.json`、`p9-direct-showcase-complete.json`。
+
 ### 12.5 实施中追加的问题
 
 #### Q08 · P2 · registry 与生成器测试重复解析导致完整覆盖运行超时【已于 P5 修正】
@@ -1155,3 +1167,8 @@ P4 阶段补键盘回归时发现，日期为 `275760-09-13` 时 PageDown 错误
 #### E08 · P2 · 移动导航关闭后焦点丢失【已于 P5 修正】
 
 DashboardLayout 的移动 Sheet 关闭后焦点落到 BODY；390px 双主题 **2/2** 复现。由 `2f7b20d` 修复为回到原来仍存在的触发器，并清理背景滚动锁。独立移动路径 **10/10**、Library **12/12** 通过，详见 12.4 的 13d 记录。证据：`p5-13d-acceptance.json`。
+
+
+#### C24 · P2 · 生产压缩内联默认函数导致选择指示器重复更新【已于 P9 修正】
+
+Next 16.3.3 / Turbopack 生产消费页在挂载 TagColorPicker 时触发 React #185，Vite 与 Next webpack 开发模式不能复现。实际产物把 selection-indicator 的函数默认参数内联，导致每次 render 创建新的 mapGeometry，继而重跑 layout effect 和 setState。修正把默认函数选择移到稳定回调内部，依赖保留调用方的可选参数；不更改控件接口或禁用生产压缩。正式 Next gate 覆盖两个 picker、编辑、标签、导航及 master/detail 的手机/桌面与主题组合，作为持续回归。另补显式 hydration 就绪标记，避免将 SSR 可见但尚未绑定的按钮当成可交互。证据：p9-direct-next-diagnosis、p9-next-production-component-stack；最终通过记录见 P9 验收。

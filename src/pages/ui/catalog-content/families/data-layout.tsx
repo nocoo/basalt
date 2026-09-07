@@ -11,6 +11,7 @@ import { FLOW_EXAMPLES } from "../../examples/flow";
 import { GRID_EXAMPLES } from "../../examples/grid";
 import { PAGE_HEADER_EXAMPLES } from "../../examples/page-header";
 import { RESOURCE_LIST_EXAMPLES } from "../../examples/resource-list";
+import { RESPONSIVE_MASTER_DETAIL_EXAMPLES } from "../../examples/responsive-master-detail";
 import { SECTION_RULE_EXAMPLES } from "../../examples/section-rule";
 import { STAT_STRIP_EXAMPLES } from "../../examples/stat-strip";
 import { TABLE_EXAMPLES } from "../../examples/table";
@@ -22,6 +23,7 @@ import { API as flowApi } from "../../generated/catalog-api/flow";
 import { API as gridApi } from "../../generated/catalog-api/grid";
 import { API as pageHeaderApi } from "../../generated/catalog-api/page-header";
 import { API as resourceListApi } from "../../generated/catalog-api/resource-list";
+import { API as responsiveMasterDetailApi } from "../../generated/catalog-api/responsive-master-detail";
 import { API as sectionRuleApi } from "../../generated/catalog-api/section-rule";
 import { API as statStripApi } from "../../generated/catalog-api/stat-strip";
 import { API as tableApi } from "../../generated/catalog-api/table";
@@ -119,6 +121,17 @@ export default function Example() {
 }`;
 
 export default catalogContentFamily({
+	"responsive-master-detail": {
+		docs: {
+			description:
+				"A controlled list/detail composition: two columns from 768 CSS pixels, one active pane on mobile. Hidden panes are inert; opening a mobile detail focuses its region and Back restores the list opener. Selection, routing and draft persistence remain outside.",
+			usage: RESPONSIVE_MASTER_DETAIL_EXAMPLES[0].code,
+			variants: [],
+			api: responsiveMasterDetailApi,
+			provenance: provenanceFromLegacy({ repo: "zhe", sha: "075c875936e9", file: "components" }),
+		},
+		examples: RESPONSIVE_MASTER_DETAIL_EXAMPLES,
+	},
 	table: {
 		docs: {
 			...extraDocs(

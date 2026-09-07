@@ -19,6 +19,7 @@ import { Field as GranularField } from "@nocoo/basalt/components/field";
 import { ResourceList } from "@nocoo/basalt/components/resource-list";
 import { Text as GranularText } from "@nocoo/basalt/components/text";
 import { ThemeProvider as GranularThemeProvider } from "@nocoo/basalt/providers/theme";
+import { createRef } from "react";
 
 export const consumer = {
 	Button,
@@ -398,3 +399,95 @@ const _invalidSelection = <MultiSelect label="Folders" options={selectableFolder
 const _invalidUpload = <UploadItem file={{ id: "a", name: "a.pdf", status: "processing" }} />;
 // @ts-expect-error Accessible labeling is required for the file chooser.
 const _unlabelledDropzone = <FileDropzone onFilesAccepted={() => {}} />;
+
+import { EditableNavItem, FolderNavItem } from "@nocoo/basalt/components/editable-nav-item";
+import { IconPicker, type IconPickerOption } from "@nocoo/basalt/components/icon-picker";
+import {
+	InlineEditable,
+	type InlineEditableChangeReason,
+} from "@nocoo/basalt/components/inline-editable";
+import { ResponsiveMasterDetail } from "@nocoo/basalt/components/responsive-master-detail";
+import {
+	TAG_COLORS,
+	TagBadge,
+	type TagColor,
+	tagColorFor,
+} from "@nocoo/basalt/components/tag-badge";
+import { TagColorPicker } from "@nocoo/basalt/components/tag-color-picker";
+
+const compactIconOptions = [
+	{ value: "folder", label: "Folder", icon: <span /> },
+] as const satisfies readonly IconPickerOption[];
+const _iconPicker = (
+	<IconPicker
+		label="Folder icon"
+		options={compactIconOptions}
+		value="folder"
+		onValueChange={(value: string) => value.toUpperCase()}
+	/>
+);
+const _inlineEditable = (
+	<InlineEditable
+		label="Title"
+		value="Atlas"
+		editing
+		onSave={async (value: string) => {
+			value.trim();
+		}}
+		onEditingChange={(_open: boolean, reason: InlineEditableChangeReason) => reason.toUpperCase()}
+	/>
+);
+const _editableNav = (
+	<EditableNavItem
+		label="Atlas"
+		href="/atlas"
+		onRename={async (name: string) => {
+			name.trim();
+		}}
+		actions={<button type="button">Pin</button>}
+	/>
+);
+const _folderNav = <FolderNavItem label="Research" onSelect={() => {}} count={3} />;
+const semanticColor: TagColor = tagColorFor("resource-id");
+const _tag = (
+	<TagBadge
+		name={TAG_COLORS[semanticColor].label}
+		colorKey="resource-id"
+		color={semanticColor}
+		title="Status"
+		ref={createRef<HTMLSpanElement>()}
+	/>
+);
+const _tagPicker = (
+	<TagColorPicker
+		label="Color"
+		colors={["slate", "success"] as const}
+		labels={{ success: "Healthy" }}
+		onValueChange={(color: TagColor) => color.toUpperCase()}
+	/>
+);
+const _masterDetail = (
+	<ResponsiveMasterDetail
+		label="Resources"
+		list={<button type="button">Open</button>}
+		detailOpen={false}
+		onDetailOpenChange={(open: boolean) => {
+			Boolean(open);
+		}}
+		selectedId={null}
+	>
+		<span>Details</span>
+	</ResponsiveMasterDetail>
+);
+// @ts-expect-error The save adapter must resolve without a replacement value.
+const _invalidSave = <InlineEditable label="Title" value="Atlas" onSave={async () => 1} />;
+// @ts-expect-error Named colors are deliberate identifiers, not arbitrary unreviewed CSS values.
+const _invalidTag = <TagBadge name="Tag" color="#777" />;
+const _uncontrolledDetail = (
+	// @ts-expect-error List/detail visibility is controlled by the application.
+	<ResponsiveMasterDetail label="Resources" list={<span />}>
+		Details
+	</ResponsiveMasterDetail>
+);
+// @ts-expect-error Icon selection values use stable string identifiers.
+const _invalidIconValue = <IconPicker label="Icon" options={compactIconOptions} value={42} />;

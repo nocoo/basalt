@@ -56,6 +56,49 @@ export interface CatalogApiSurface {
 
 export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
+		slug: "inline-editable",
+		sourceFile: "packages/basalt/src/components/inline-editable.tsx",
+		propsType: "InlineEditableProps",
+		surface: "InlineEditable",
+	},
+	{
+		slug: "editable-nav-item",
+		sourceFile: "packages/basalt/src/components/editable-nav-item.tsx",
+		propsType: "EditableNavItemProps",
+		surface: "EditableNavItem",
+	},
+	{
+		slug: "editable-nav-item",
+		sourceFile: "packages/basalt/src/components/editable-nav-item.tsx",
+		propsType: "FolderNavItemProps",
+		surface: "FolderNavItem",
+	},
+	{
+		slug: "icon-picker",
+		sourceFile: "packages/basalt/src/components/icon-picker.tsx",
+		propsType: "IconPickerProps",
+		surface: "IconPicker",
+	},
+	{
+		slug: "tag-badge",
+		sourceFile: "packages/basalt/src/components/tag-badge.tsx",
+		propsType: "TagBadgeProps",
+		surface: "TagBadge",
+		callableExport: "tagColorFor",
+	},
+	{
+		slug: "tag-color-picker",
+		sourceFile: "packages/basalt/src/components/tag-color-picker.tsx",
+		propsType: "TagColorPickerProps",
+		surface: "TagColorPicker",
+	},
+	{
+		slug: "responsive-master-detail",
+		sourceFile: "packages/basalt/src/components/responsive-master-detail.tsx",
+		propsType: "ResponsiveMasterDetailProps",
+		surface: "ResponsiveMasterDetail",
+	},
+	{
 		slug: "multi-select",
 		sourceFile: "packages/basalt/src/components/multi-select.tsx",
 		propsType: "MultiSelectProps",

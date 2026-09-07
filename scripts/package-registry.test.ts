@@ -14,7 +14,7 @@ import {
 } from "./package-registry";
 
 describe("package registry generator and AI package assets", () => {
-	it("derives complete package registry with all 116 modules and 105 ready catalog entries", () => {
+	it("derives complete package registry with all 122 modules and 111 ready catalog entries", () => {
 		const registry = generatePackageRegistry();
 
 		const rootPkg = JSON.parse(readFileSync("package.json", "utf8")) as {
@@ -22,15 +22,15 @@ describe("package registry generator and AI package assets", () => {
 		};
 		expect(registry.packageName).toBe("@nocoo/basalt");
 		expect(registry.packageVersion).toBe(rootPkg.version);
-		expect(registry.totalModules).toBe(116);
-		expect(registry.totalSymbols).toBe(722);
-		expect(registry.totalValues).toBe(386);
-		expect(registry.totalTypes).toBe(336);
+		expect(registry.totalModules).toBe(122);
+		expect(registry.totalSymbols).toBe(741);
+		expect(registry.totalValues).toBe(395);
+		expect(registry.totalTypes).toBe(346);
 		expect(registry.totalCssExports).toBe(3);
-		expect(registry.totalCatalogEntries).toBe(105);
+		expect(registry.totalCatalogEntries).toBe(111);
 
 		// Catalog entries completeness
-		expect(registry.catalogEntries).toHaveLength(105);
+		expect(registry.catalogEntries).toHaveLength(111);
 		for (const cat of registry.catalogEntries) {
 			expect(cat.slug.length).toBeGreaterThan(0);
 			expect(cat.name.length).toBeGreaterThan(0);

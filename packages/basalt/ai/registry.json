@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.0.3",
-	"totalModules": 116,
-	"totalSymbols": 722,
-	"totalValues": 386,
-	"totalTypes": 336,
+	"totalModules": 122,
+	"totalSymbols": 741,
+	"totalValues": 395,
+	"totalTypes": 346,
 	"totalCssExports": 3,
-	"totalCatalogEntries": 105,
+	"totalCatalogEntries": 111,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -13923,6 +13923,422 @@
 			]
 		},
 		{
+			"displayName": "EditableNavItem",
+			"exportName": "EditableNavItem",
+			"importPath": "@nocoo/basalt/components/editable-nav-item",
+			"subpath": "./components/editable-nav-item",
+			"sourceFile": "packages/basalt/src/components/editable-nav-item.tsx",
+			"sourceHash": "31def942dc7032a9",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/editable-nav-item",
+			"packageDoc": "ai/registry.json#editable-nav-item",
+			"summary": "EditableNavItem component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "EditableNavItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/editable-nav-item",
+					"packageDoc": "ai/registry.json#editable-nav-item",
+					"originModule": "@nocoo/basalt/components/editable-nav-item"
+				},
+				{
+					"name": "FolderNavItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/editable-nav-item",
+					"packageDoc": "ai/registry.json#editable-nav-item",
+					"originModule": "@nocoo/basalt/components/editable-nav-item"
+				},
+				{
+					"name": "EditableNavItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/editable-nav-item",
+					"packageDoc": "ai/registry.json#editable-nav-item",
+					"originModule": "@nocoo/basalt/components/editable-nav-item"
+				},
+				{
+					"name": "FolderNavItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/editable-nav-item",
+					"packageDoc": "ai/registry.json#editable-nav-item",
+					"originModule": "@nocoo/basalt/components/editable-nav-item"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "editable-nav-item",
+					"name": "EditableNavItem",
+					"exportName": "EditableNavItem",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#editable-nav-item",
+					"api": [
+						{
+							"name": "EditableNavItem",
+							"props": [
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Current display name."
+								},
+								{
+									"name": "href",
+									"type": "string",
+									"required": false,
+									"description": "Application route, interpreted by LinkProvider."
+								},
+								{
+									"name": "onSelect",
+									"type": "() => void",
+									"required": false,
+									"description": "Navigation/selection request."
+								},
+								{
+									"name": "selected",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Selected location."
+								},
+								{
+									"name": "icon",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Caller-owned leading icon."
+								},
+								{
+									"name": "count",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Caller-formatted count or status."
+								},
+								{
+									"name": "actions",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Separate row actions, never nested inside the navigation button/link."
+								},
+								{
+									"name": "onRename",
+									"type": "(name: string) => void | Promise<void>",
+									"required": false,
+									"description": "Enable renaming; rejected promises keep the editor and draft available."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable navigation and renaming. Application action slots retain their own permissions."
+								},
+								{
+									"name": "renameLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Rename\"",
+									"description": "Rename action prefix."
+								},
+								{
+									"name": "saveLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Save\"",
+									"description": "Accessible save action."
+								},
+								{
+									"name": "cancelLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Cancel\"",
+									"description": "Accessible cancel action."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes."
+								}
+							]
+						},
+						{
+							"name": "FolderNavItem",
+							"props": [
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Current display name."
+								},
+								{
+									"name": "href",
+									"type": "string",
+									"required": false,
+									"description": "Application route, interpreted by LinkProvider."
+								},
+								{
+									"name": "onSelect",
+									"type": "() => void",
+									"required": false,
+									"description": "Navigation/selection request."
+								},
+								{
+									"name": "selected",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Selected location."
+								},
+								{
+									"name": "icon",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Caller-owned leading icon."
+								},
+								{
+									"name": "count",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Caller-formatted count or status."
+								},
+								{
+									"name": "actions",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Separate row actions, never nested inside the navigation button/link."
+								},
+								{
+									"name": "onRename",
+									"type": "(name: string) => void | Promise<void>",
+									"required": false,
+									"description": "Enable renaming; rejected promises keep the editor and draft available."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable navigation and renaming. Application action slots retain their own permissions."
+								},
+								{
+									"name": "renameLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Rename\"",
+									"description": "Rename action prefix."
+								},
+								{
+									"name": "saveLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Save\"",
+									"description": "Accessible save action."
+								},
+								{
+									"name": "cancelLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Cancel\"",
+									"description": "Accessible cancel action."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "EditableNavItem",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Current display name."
+						},
+						{
+							"name": "href",
+							"type": "string",
+							"required": false,
+							"description": "Application route, interpreted by LinkProvider."
+						},
+						{
+							"name": "onSelect",
+							"type": "() => void",
+							"required": false,
+							"description": "Navigation/selection request."
+						},
+						{
+							"name": "selected",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Selected location."
+						},
+						{
+							"name": "icon",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Caller-owned leading icon."
+						},
+						{
+							"name": "count",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Caller-formatted count or status."
+						},
+						{
+							"name": "actions",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Separate row actions, never nested inside the navigation button/link."
+						},
+						{
+							"name": "onRename",
+							"type": "(name: string) => void | Promise<void>",
+							"required": false,
+							"description": "Enable renaming; rejected promises keep the editor and draft available."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable navigation and renaming. Application action slots retain their own permissions."
+						},
+						{
+							"name": "renameLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Rename\"",
+							"description": "Rename action prefix."
+						},
+						{
+							"name": "saveLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Save\"",
+							"description": "Accessible save action."
+						},
+						{
+							"name": "cancelLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Cancel\"",
+							"description": "Accessible cancel action."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				},
+				{
+					"name": "FolderNavItem",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Current display name."
+						},
+						{
+							"name": "href",
+							"type": "string",
+							"required": false,
+							"description": "Application route, interpreted by LinkProvider."
+						},
+						{
+							"name": "onSelect",
+							"type": "() => void",
+							"required": false,
+							"description": "Navigation/selection request."
+						},
+						{
+							"name": "selected",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Selected location."
+						},
+						{
+							"name": "icon",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Caller-owned leading icon."
+						},
+						{
+							"name": "count",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Caller-formatted count or status."
+						},
+						{
+							"name": "actions",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Separate row actions, never nested inside the navigation button/link."
+						},
+						{
+							"name": "onRename",
+							"type": "(name: string) => void | Promise<void>",
+							"required": false,
+							"description": "Enable renaming; rejected promises keep the editor and draft available."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable navigation and renaming. Application action slots retain their own permissions."
+						},
+						{
+							"name": "renameLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Rename\"",
+							"description": "Rename action prefix."
+						},
+						{
+							"name": "saveLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Save\"",
+							"description": "Accessible save action."
+						},
+						{
+							"name": "cancelLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Cancel\"",
+							"description": "Accessible cancel action."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
 			"displayName": "Empty",
 			"exportName": "Empty",
 			"importPath": "@nocoo/basalt/components/empty",
@@ -15481,6 +15897,544 @@
 							"type": "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 							"required": false,
 							"description": "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented."
+						}
+					]
+				}
+			]
+		},
+		{
+			"displayName": "IconPicker",
+			"exportName": "IconPicker",
+			"importPath": "@nocoo/basalt/components/icon-picker",
+			"subpath": "./components/icon-picker",
+			"sourceFile": "packages/basalt/src/components/icon-picker.tsx",
+			"sourceHash": "422b5b2e0043807c",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/icon-picker",
+			"packageDoc": "ai/registry.json#icon-picker",
+			"summary": "IconPicker component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "IconPicker",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/icon-picker",
+					"packageDoc": "ai/registry.json#icon-picker",
+					"originModule": "@nocoo/basalt/components/icon-picker"
+				},
+				{
+					"name": "IconPickerOption",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/icon-picker",
+					"packageDoc": "ai/registry.json#icon-picker",
+					"originModule": "@nocoo/basalt/components/icon-picker"
+				},
+				{
+					"name": "IconPickerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/icon-picker",
+					"packageDoc": "ai/registry.json#icon-picker",
+					"originModule": "@nocoo/basalt/components/icon-picker"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "icon-picker",
+					"name": "IconPicker",
+					"exportName": "IconPicker",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#icon-picker",
+					"api": [
+						{
+							"name": "IconPicker",
+							"props": [
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Accessible picker name."
+								},
+								{
+									"name": "options",
+									"type": "IconPickerOption[]",
+									"required": true,
+									"description": "Caller-supplied icon subset; the library never imports an icon catalog."
+								},
+								{
+									"name": "value",
+									"type": "string",
+									"required": false,
+									"description": "Controlled icon identifier."
+								},
+								{
+									"name": "defaultValue",
+									"type": "string",
+									"required": false,
+									"description": "Initial uncontrolled icon identifier."
+								},
+								{
+									"name": "onValueChange",
+									"type": "(value: string) => void",
+									"required": false,
+									"description": "Selection request."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable selection."
+								},
+								{
+									"name": "placeholder",
+									"type": "string",
+									"required": false,
+									"default": "\"Choose icon\"",
+									"description": "Empty selection prompt."
+								},
+								{
+									"name": "searchPlaceholder",
+									"type": "string",
+									"required": false,
+									"default": "\"Search icons…\"",
+									"description": "Search placeholder."
+								},
+								{
+									"name": "emptyLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"No icons found.\"",
+									"description": "Empty-search text."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "IconPicker",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible picker name."
+						},
+						{
+							"name": "options",
+							"type": "IconPickerOption[]",
+							"required": true,
+							"description": "Caller-supplied icon subset; the library never imports an icon catalog."
+						},
+						{
+							"name": "value",
+							"type": "string",
+							"required": false,
+							"description": "Controlled icon identifier."
+						},
+						{
+							"name": "defaultValue",
+							"type": "string",
+							"required": false,
+							"description": "Initial uncontrolled icon identifier."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: string) => void",
+							"required": false,
+							"description": "Selection request."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable selection."
+						},
+						{
+							"name": "placeholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Choose icon\"",
+							"description": "Empty selection prompt."
+						},
+						{
+							"name": "searchPlaceholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Search icons…\"",
+							"description": "Search placeholder."
+						},
+						{
+							"name": "emptyLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"No icons found.\"",
+							"description": "Empty-search text."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
+			"displayName": "InlineEditable",
+			"exportName": "InlineEditable",
+			"importPath": "@nocoo/basalt/components/inline-editable",
+			"subpath": "./components/inline-editable",
+			"sourceFile": "packages/basalt/src/components/inline-editable.tsx",
+			"sourceHash": "0f4e911d55510168",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/inline-editable",
+			"packageDoc": "ai/registry.json#inline-editable",
+			"summary": "InlineEditable component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "InlineEditable",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/inline-editable",
+					"packageDoc": "ai/registry.json#inline-editable",
+					"originModule": "@nocoo/basalt/components/inline-editable"
+				},
+				{
+					"name": "InlineEditableChangeReason",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/inline-editable",
+					"packageDoc": "ai/registry.json#inline-editable",
+					"originModule": "@nocoo/basalt/components/inline-editable"
+				},
+				{
+					"name": "InlineEditableProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/inline-editable",
+					"packageDoc": "ai/registry.json#inline-editable",
+					"originModule": "@nocoo/basalt/components/inline-editable"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "inline-editable",
+					"name": "InlineEditable",
+					"exportName": "InlineEditable",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#inline-editable",
+					"api": [
+						{
+							"name": "InlineEditable",
+							"props": [
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Accessible name of the edited field."
+								},
+								{
+									"name": "value",
+									"type": "string",
+									"required": true,
+									"description": "Committed value, owned by the application."
+								},
+								{
+									"name": "onSave",
+									"type": "(value: string) => void | Promise<void>",
+									"required": true,
+									"description": "Persist the draft. Return a promise to keep the editor pending; rejection preserves the draft."
+								},
+								{
+									"name": "editing",
+									"type": "boolean",
+									"required": false,
+									"description": "Controlled edit mode."
+								},
+								{
+									"name": "defaultEditing",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Initial uncontrolled edit mode."
+								},
+								{
+									"name": "onEditingChange",
+									"type": "(editing: boolean, reason: InlineEditableChangeReason) => void",
+									"required": false,
+									"description": "Edit-mode requests with their cause, including blur that must not steal focus."
+								},
+								{
+									"name": "pending",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "External pending state."
+								},
+								{
+									"name": "error",
+									"type": "string",
+									"required": false,
+									"description": "Application-owned error message."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable editing and saving."
+								},
+								{
+									"name": "required",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Reject an empty draft."
+								},
+								{
+									"name": "trim",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Trim whitespace before validation and save."
+								},
+								{
+									"name": "saveOnBlur",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Commit when focus leaves the whole editor, including its actions."
+								},
+								{
+									"name": "validate",
+									"type": "(value: string) => string | undefined",
+									"required": false,
+									"description": "Return a validation message to retain the draft without invoking onSave."
+								},
+								{
+									"name": "placeholder",
+									"type": "string",
+									"required": false,
+									"default": "\"Untitled\"",
+									"description": "Empty committed-value prompt."
+								},
+								{
+									"name": "editLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Edit\"",
+									"description": "Edit action label prefix."
+								},
+								{
+									"name": "saveLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Save\"",
+									"description": "Save action text."
+								},
+								{
+									"name": "cancelLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Cancel\"",
+									"description": "Cancel action text."
+								},
+								{
+									"name": "pendingLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Saving…\"",
+									"description": "Pending announcement."
+								},
+								{
+									"name": "requiredLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Enter a value.\"",
+									"description": "Empty-value validation message."
+								},
+								{
+									"name": "errorLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Could not save changes.\"",
+									"description": "Fallback for non-Error rejections."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "InlineEditable",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible name of the edited field."
+						},
+						{
+							"name": "value",
+							"type": "string",
+							"required": true,
+							"description": "Committed value, owned by the application."
+						},
+						{
+							"name": "onSave",
+							"type": "(value: string) => void | Promise<void>",
+							"required": true,
+							"description": "Persist the draft. Return a promise to keep the editor pending; rejection preserves the draft."
+						},
+						{
+							"name": "editing",
+							"type": "boolean",
+							"required": false,
+							"description": "Controlled edit mode."
+						},
+						{
+							"name": "defaultEditing",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Initial uncontrolled edit mode."
+						},
+						{
+							"name": "onEditingChange",
+							"type": "(editing: boolean, reason: InlineEditableChangeReason) => void",
+							"required": false,
+							"description": "Edit-mode requests with their cause, including blur that must not steal focus."
+						},
+						{
+							"name": "pending",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "External pending state."
+						},
+						{
+							"name": "error",
+							"type": "string",
+							"required": false,
+							"description": "Application-owned error message."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable editing and saving."
+						},
+						{
+							"name": "required",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Reject an empty draft."
+						},
+						{
+							"name": "trim",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Trim whitespace before validation and save."
+						},
+						{
+							"name": "saveOnBlur",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Commit when focus leaves the whole editor, including its actions."
+						},
+						{
+							"name": "validate",
+							"type": "(value: string) => string | undefined",
+							"required": false,
+							"description": "Return a validation message to retain the draft without invoking onSave."
+						},
+						{
+							"name": "placeholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Untitled\"",
+							"description": "Empty committed-value prompt."
+						},
+						{
+							"name": "editLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Edit\"",
+							"description": "Edit action label prefix."
+						},
+						{
+							"name": "saveLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Save\"",
+							"description": "Save action text."
+						},
+						{
+							"name": "cancelLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Cancel\"",
+							"description": "Cancel action text."
+						},
+						{
+							"name": "pendingLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Saving…\"",
+							"description": "Pending announcement."
+						},
+						{
+							"name": "requiredLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Enter a value.\"",
+							"description": "Empty-value validation message."
+						},
+						{
+							"name": "errorLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Could not save changes.\"",
+							"description": "Fallback for non-Error rejections."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
 						}
 					]
 				}
@@ -19377,6 +20331,202 @@
 			]
 		},
 		{
+			"displayName": "ResponsiveMasterDetail",
+			"exportName": "ResponsiveMasterDetail",
+			"importPath": "@nocoo/basalt/components/responsive-master-detail",
+			"subpath": "./components/responsive-master-detail",
+			"sourceFile": "packages/basalt/src/components/responsive-master-detail.tsx",
+			"sourceHash": "c7e06934d2c2e706",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/responsive-master-detail",
+			"packageDoc": "ai/registry.json#responsive-master-detail",
+			"summary": "ResponsiveMasterDetail component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "ResponsiveMasterDetail",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/responsive-master-detail",
+					"packageDoc": "ai/registry.json#responsive-master-detail",
+					"originModule": "@nocoo/basalt/components/responsive-master-detail"
+				},
+				{
+					"name": "ResponsiveMasterDetailProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/responsive-master-detail",
+					"packageDoc": "ai/registry.json#responsive-master-detail",
+					"originModule": "@nocoo/basalt/components/responsive-master-detail"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "responsive-master-detail",
+					"name": "ResponsiveMasterDetail",
+					"exportName": "ResponsiveMasterDetail",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#responsive-master-detail",
+					"api": [
+						{
+							"name": "ResponsiveMasterDetail",
+							"props": [
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Accessible name of the composition."
+								},
+								{
+									"name": "list",
+									"type": "React.ReactNode",
+									"required": true,
+									"description": "Application-rendered list; selection, routing and data remain outside."
+								},
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": true,
+									"description": "Application-rendered detail content."
+								},
+								{
+									"name": "detailOpen",
+									"type": "boolean",
+									"required": true,
+									"description": "Controlled detail visibility."
+								},
+								{
+									"name": "onDetailOpenChange",
+									"type": "(open: boolean) => void",
+									"required": true,
+									"description": "Requests opening/closing the detail; the caller accepts the change."
+								},
+								{
+									"name": "selectedId",
+									"type": "string | null",
+									"required": false,
+									"description": "Current selection identity, used to focus newly selected mobile details."
+								},
+								{
+									"name": "listLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Items\"",
+									"description": "List region name."
+								},
+								{
+									"name": "detailLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Details\"",
+									"description": "Detail region name."
+								},
+								{
+									"name": "backLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Back to items\"",
+									"description": "Mobile return action text."
+								},
+								{
+									"name": "empty",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Desktop detail placeholder while no item is open."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes; provide application-specific height/scrolling here."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "ResponsiveMasterDetail",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible name of the composition."
+						},
+						{
+							"name": "list",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Application-rendered list; selection, routing and data remain outside."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Application-rendered detail content."
+						},
+						{
+							"name": "detailOpen",
+							"type": "boolean",
+							"required": true,
+							"description": "Controlled detail visibility."
+						},
+						{
+							"name": "onDetailOpenChange",
+							"type": "(open: boolean) => void",
+							"required": true,
+							"description": "Requests opening/closing the detail; the caller accepts the change."
+						},
+						{
+							"name": "selectedId",
+							"type": "string | null",
+							"required": false,
+							"description": "Current selection identity, used to focus newly selected mobile details."
+						},
+						{
+							"name": "listLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Items\"",
+							"description": "List region name."
+						},
+						{
+							"name": "detailLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Details\"",
+							"description": "Detail region name."
+						},
+						{
+							"name": "backLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Back to items\"",
+							"description": "Mobile return action text."
+						},
+						{
+							"name": "empty",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Desktop detail placeholder while no item is open."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes; provide application-specific height/scrolling here."
+						}
+					]
+				}
+			]
+		},
+		{
 			"displayName": "ScrollArea",
 			"exportName": "ScrollArea",
 			"importPath": "@nocoo/basalt/components/scroll-area",
@@ -23011,6 +24161,328 @@
 							"type": "string",
 							"required": true,
 							"description": "The tab value this panel belongs to."
+						}
+					]
+				}
+			]
+		},
+		{
+			"displayName": "TagBadge",
+			"exportName": "TagBadge",
+			"importPath": "@nocoo/basalt/components/tag-badge",
+			"subpath": "./components/tag-badge",
+			"sourceFile": "packages/basalt/src/components/tag-badge.tsx",
+			"sourceHash": "d434149c8c4358fe",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/tag-badge",
+			"packageDoc": "ai/registry.json#tag-badge",
+			"summary": "TagBadge component documentation and catalog playground",
+			"peers": ["react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "tagColorFor",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/tag-badge",
+					"packageDoc": "ai/registry.json#tag-badge",
+					"originModule": "@nocoo/basalt/components/tag-badge"
+				},
+				{
+					"name": "TagBadge",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/tag-badge",
+					"packageDoc": "ai/registry.json#tag-badge",
+					"originModule": "@nocoo/basalt/components/tag-badge"
+				},
+				{
+					"name": "TAG_COLORS",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/tag-badge",
+					"packageDoc": "ai/registry.json#tag-badge",
+					"originModule": "@nocoo/basalt/components/tag-badge"
+				},
+				{
+					"name": "TagColor",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tag-badge",
+					"packageDoc": "ai/registry.json#tag-badge",
+					"originModule": "@nocoo/basalt/components/tag-badge"
+				},
+				{
+					"name": "TagBadgeProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tag-badge",
+					"packageDoc": "ai/registry.json#tag-badge",
+					"originModule": "@nocoo/basalt/components/tag-badge"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "tag-badge",
+					"name": "TagBadge",
+					"exportName": "TagBadge",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#tag-badge",
+					"api": [
+						{
+							"name": "TagBadge",
+							"props": [
+								{
+									"name": "name",
+									"type": "string",
+									"required": true,
+									"description": "Visible tag name; color is always accompanied by text."
+								},
+								{
+									"name": "colorKey",
+									"type": "string",
+									"required": false,
+									"description": "Stable hash input, defaults to name. Use an entity ID to retain color after renaming."
+								},
+								{
+									"name": "color",
+									"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+									"required": false,
+									"description": "Explicit hue or semantic color, overriding the deterministic assignment."
+								},
+								{
+									"name": "size",
+									"type": "\"md\" | \"sm\"",
+									"required": false,
+									"default": "\"md\"",
+									"description": "Badge size."
+								}
+							]
+						},
+						{
+							"name": "tagColorFor",
+							"callSignature": "tagColorFor(key: string): \"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+							"description": "Stable FNV-1a assignment to six non-semantic colors; does not infer business meaning.",
+							"parameters": [
+								{
+									"name": "key",
+									"type": "string",
+									"required": true
+								}
+							],
+							"returns": {
+								"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\""
+							},
+							"props": []
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "TagBadge",
+					"props": [
+						{
+							"name": "name",
+							"type": "string",
+							"required": true,
+							"description": "Visible tag name; color is always accompanied by text."
+						},
+						{
+							"name": "colorKey",
+							"type": "string",
+							"required": false,
+							"description": "Stable hash input, defaults to name. Use an entity ID to retain color after renaming."
+						},
+						{
+							"name": "color",
+							"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+							"required": false,
+							"description": "Explicit hue or semantic color, overriding the deterministic assignment."
+						},
+						{
+							"name": "size",
+							"type": "\"md\" | \"sm\"",
+							"required": false,
+							"default": "\"md\"",
+							"description": "Badge size."
+						}
+					]
+				},
+				{
+					"name": "tagColorFor",
+					"callSignature": "tagColorFor(key: string): \"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+					"description": "Stable FNV-1a assignment to six non-semantic colors; does not infer business meaning.",
+					"parameters": [
+						{
+							"name": "key",
+							"type": "string",
+							"required": true
+						}
+					],
+					"returns": {
+						"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\""
+					},
+					"props": []
+				}
+			]
+		},
+		{
+			"displayName": "TagColorPicker",
+			"exportName": "TagColorPicker",
+			"importPath": "@nocoo/basalt/components/tag-color-picker",
+			"subpath": "./components/tag-color-picker",
+			"sourceFile": "packages/basalt/src/components/tag-color-picker.tsx",
+			"sourceHash": "e7d491974796665c",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/tag-color-picker",
+			"packageDoc": "ai/registry.json#tag-color-picker",
+			"summary": "TagColorPicker component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "TagColorPicker",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/tag-color-picker",
+					"packageDoc": "ai/registry.json#tag-color-picker",
+					"originModule": "@nocoo/basalt/components/tag-color-picker"
+				},
+				{
+					"name": "TagColorPickerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tag-color-picker",
+					"packageDoc": "ai/registry.json#tag-color-picker",
+					"originModule": "@nocoo/basalt/components/tag-color-picker"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "tag-color-picker",
+					"name": "TagColorPicker",
+					"exportName": "TagColorPicker",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#tag-color-picker",
+					"api": [
+						{
+							"name": "TagColorPicker",
+							"props": [
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Accessible group name."
+								},
+								{
+									"name": "value",
+									"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+									"required": false,
+									"description": "Controlled named color."
+								},
+								{
+									"name": "defaultValue",
+									"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+									"required": false,
+									"default": "\"slate\"",
+									"description": "Initial uncontrolled color."
+								},
+								{
+									"name": "onValueChange",
+									"type": "(value: TagColor) => void",
+									"required": false,
+									"description": "Color selection request."
+								},
+								{
+									"name": "colors",
+									"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"[]",
+									"required": false,
+									"description": "Allowed color subset, in caller-defined order."
+								},
+								{
+									"name": "labels",
+									"type": "Partial<Record<\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\", string>>",
+									"required": false,
+									"description": "Localized visible and accessible color names."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable the picker."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "TagColorPicker",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible group name."
+						},
+						{
+							"name": "value",
+							"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+							"required": false,
+							"description": "Controlled named color."
+						},
+						{
+							"name": "defaultValue",
+							"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+							"required": false,
+							"default": "\"slate\"",
+							"description": "Initial uncontrolled color."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: TagColor) => void",
+							"required": false,
+							"description": "Color selection request."
+						},
+						{
+							"name": "colors",
+							"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"[]",
+							"required": false,
+							"description": "Allowed color subset, in caller-defined order."
+						},
+						{
+							"name": "labels",
+							"type": "Partial<Record<\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\", string>>",
+							"required": false,
+							"description": "Localized visible and accessible color names."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable the picker."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
 						}
 					]
 				}
@@ -33760,6 +35232,648 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "inline-editable",
+			"name": "InlineEditable",
+			"exportName": "InlineEditable",
+			"importPath": "@nocoo/basalt/components/inline-editable",
+			"sourceFile": "packages/basalt/src/components/inline-editable.tsx",
+			"sourceHash": "0f4e911d55510168",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#inline-editable",
+			"api": [
+				{
+					"name": "InlineEditable",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible name of the edited field."
+						},
+						{
+							"name": "value",
+							"type": "string",
+							"required": true,
+							"description": "Committed value, owned by the application."
+						},
+						{
+							"name": "onSave",
+							"type": "(value: string) => void | Promise<void>",
+							"required": true,
+							"description": "Persist the draft. Return a promise to keep the editor pending; rejection preserves the draft."
+						},
+						{
+							"name": "editing",
+							"type": "boolean",
+							"required": false,
+							"description": "Controlled edit mode."
+						},
+						{
+							"name": "defaultEditing",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Initial uncontrolled edit mode."
+						},
+						{
+							"name": "onEditingChange",
+							"type": "(editing: boolean, reason: InlineEditableChangeReason) => void",
+							"required": false,
+							"description": "Edit-mode requests with their cause, including blur that must not steal focus."
+						},
+						{
+							"name": "pending",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "External pending state."
+						},
+						{
+							"name": "error",
+							"type": "string",
+							"required": false,
+							"description": "Application-owned error message."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable editing and saving."
+						},
+						{
+							"name": "required",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Reject an empty draft."
+						},
+						{
+							"name": "trim",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Trim whitespace before validation and save."
+						},
+						{
+							"name": "saveOnBlur",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Commit when focus leaves the whole editor, including its actions."
+						},
+						{
+							"name": "validate",
+							"type": "(value: string) => string | undefined",
+							"required": false,
+							"description": "Return a validation message to retain the draft without invoking onSave."
+						},
+						{
+							"name": "placeholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Untitled\"",
+							"description": "Empty committed-value prompt."
+						},
+						{
+							"name": "editLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Edit\"",
+							"description": "Edit action label prefix."
+						},
+						{
+							"name": "saveLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Save\"",
+							"description": "Save action text."
+						},
+						{
+							"name": "cancelLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Cancel\"",
+							"description": "Cancel action text."
+						},
+						{
+							"name": "pendingLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Saving…\"",
+							"description": "Pending announcement."
+						},
+						{
+							"name": "requiredLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Enter a value.\"",
+							"description": "Empty-value validation message."
+						},
+						{
+							"name": "errorLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Could not save changes.\"",
+							"description": "Fallback for non-Error rejections."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "editable-nav-item",
+			"name": "EditableNavItem",
+			"exportName": "EditableNavItem",
+			"importPath": "@nocoo/basalt/components/editable-nav-item",
+			"sourceFile": "packages/basalt/src/components/editable-nav-item.tsx",
+			"sourceHash": "31def942dc7032a9",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#editable-nav-item",
+			"api": [
+				{
+					"name": "EditableNavItem",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Current display name."
+						},
+						{
+							"name": "href",
+							"type": "string",
+							"required": false,
+							"description": "Application route, interpreted by LinkProvider."
+						},
+						{
+							"name": "onSelect",
+							"type": "() => void",
+							"required": false,
+							"description": "Navigation/selection request."
+						},
+						{
+							"name": "selected",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Selected location."
+						},
+						{
+							"name": "icon",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Caller-owned leading icon."
+						},
+						{
+							"name": "count",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Caller-formatted count or status."
+						},
+						{
+							"name": "actions",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Separate row actions, never nested inside the navigation button/link."
+						},
+						{
+							"name": "onRename",
+							"type": "(name: string) => void | Promise<void>",
+							"required": false,
+							"description": "Enable renaming; rejected promises keep the editor and draft available."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable navigation and renaming. Application action slots retain their own permissions."
+						},
+						{
+							"name": "renameLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Rename\"",
+							"description": "Rename action prefix."
+						},
+						{
+							"name": "saveLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Save\"",
+							"description": "Accessible save action."
+						},
+						{
+							"name": "cancelLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Cancel\"",
+							"description": "Accessible cancel action."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				},
+				{
+					"name": "FolderNavItem",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Current display name."
+						},
+						{
+							"name": "href",
+							"type": "string",
+							"required": false,
+							"description": "Application route, interpreted by LinkProvider."
+						},
+						{
+							"name": "onSelect",
+							"type": "() => void",
+							"required": false,
+							"description": "Navigation/selection request."
+						},
+						{
+							"name": "selected",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Selected location."
+						},
+						{
+							"name": "icon",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Caller-owned leading icon."
+						},
+						{
+							"name": "count",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Caller-formatted count or status."
+						},
+						{
+							"name": "actions",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Separate row actions, never nested inside the navigation button/link."
+						},
+						{
+							"name": "onRename",
+							"type": "(name: string) => void | Promise<void>",
+							"required": false,
+							"description": "Enable renaming; rejected promises keep the editor and draft available."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable navigation and renaming. Application action slots retain their own permissions."
+						},
+						{
+							"name": "renameLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Rename\"",
+							"description": "Rename action prefix."
+						},
+						{
+							"name": "saveLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Save\"",
+							"description": "Accessible save action."
+						},
+						{
+							"name": "cancelLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Cancel\"",
+							"description": "Accessible cancel action."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "icon-picker",
+			"name": "IconPicker",
+			"exportName": "IconPicker",
+			"importPath": "@nocoo/basalt/components/icon-picker",
+			"sourceFile": "packages/basalt/src/components/icon-picker.tsx",
+			"sourceHash": "422b5b2e0043807c",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#icon-picker",
+			"api": [
+				{
+					"name": "IconPicker",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible picker name."
+						},
+						{
+							"name": "options",
+							"type": "IconPickerOption[]",
+							"required": true,
+							"description": "Caller-supplied icon subset; the library never imports an icon catalog."
+						},
+						{
+							"name": "value",
+							"type": "string",
+							"required": false,
+							"description": "Controlled icon identifier."
+						},
+						{
+							"name": "defaultValue",
+							"type": "string",
+							"required": false,
+							"description": "Initial uncontrolled icon identifier."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: string) => void",
+							"required": false,
+							"description": "Selection request."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable selection."
+						},
+						{
+							"name": "placeholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Choose icon\"",
+							"description": "Empty selection prompt."
+						},
+						{
+							"name": "searchPlaceholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Search icons…\"",
+							"description": "Search placeholder."
+						},
+						{
+							"name": "emptyLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"No icons found.\"",
+							"description": "Empty-search text."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "tag-badge",
+			"name": "TagBadge",
+			"exportName": "TagBadge",
+			"importPath": "@nocoo/basalt/components/tag-badge",
+			"sourceFile": "packages/basalt/src/components/tag-badge.tsx",
+			"sourceHash": "d434149c8c4358fe",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#tag-badge",
+			"api": [
+				{
+					"name": "TagBadge",
+					"props": [
+						{
+							"name": "name",
+							"type": "string",
+							"required": true,
+							"description": "Visible tag name; color is always accompanied by text."
+						},
+						{
+							"name": "colorKey",
+							"type": "string",
+							"required": false,
+							"description": "Stable hash input, defaults to name. Use an entity ID to retain color after renaming."
+						},
+						{
+							"name": "color",
+							"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+							"required": false,
+							"description": "Explicit hue or semantic color, overriding the deterministic assignment."
+						},
+						{
+							"name": "size",
+							"type": "\"md\" | \"sm\"",
+							"required": false,
+							"default": "\"md\"",
+							"description": "Badge size."
+						}
+					]
+				},
+				{
+					"name": "tagColorFor",
+					"callSignature": "tagColorFor(key: string): \"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+					"description": "Stable FNV-1a assignment to six non-semantic colors; does not infer business meaning.",
+					"parameters": [
+						{
+							"name": "key",
+							"type": "string",
+							"required": true
+						}
+					],
+					"returns": {
+						"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\""
+					},
+					"props": []
+				}
+			]
+		},
+		{
+			"slug": "tag-color-picker",
+			"name": "TagColorPicker",
+			"exportName": "TagColorPicker",
+			"importPath": "@nocoo/basalt/components/tag-color-picker",
+			"sourceFile": "packages/basalt/src/components/tag-color-picker.tsx",
+			"sourceHash": "e7d491974796665c",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#tag-color-picker",
+			"api": [
+				{
+					"name": "TagColorPicker",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible group name."
+						},
+						{
+							"name": "value",
+							"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+							"required": false,
+							"description": "Controlled named color."
+						},
+						{
+							"name": "defaultValue",
+							"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"",
+							"required": false,
+							"default": "\"slate\"",
+							"description": "Initial uncontrolled color."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: TagColor) => void",
+							"required": false,
+							"description": "Color selection request."
+						},
+						{
+							"name": "colors",
+							"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"[]",
+							"required": false,
+							"description": "Allowed color subset, in caller-defined order."
+						},
+						{
+							"name": "labels",
+							"type": "Partial<Record<\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\", string>>",
+							"required": false,
+							"description": "Localized visible and accessible color names."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable the picker."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "responsive-master-detail",
+			"name": "ResponsiveMasterDetail",
+			"exportName": "ResponsiveMasterDetail",
+			"importPath": "@nocoo/basalt/components/responsive-master-detail",
+			"sourceFile": "packages/basalt/src/components/responsive-master-detail.tsx",
+			"sourceHash": "c7e06934d2c2e706",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#responsive-master-detail",
+			"api": [
+				{
+					"name": "ResponsiveMasterDetail",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible name of the composition."
+						},
+						{
+							"name": "list",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Application-rendered list; selection, routing and data remain outside."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Application-rendered detail content."
+						},
+						{
+							"name": "detailOpen",
+							"type": "boolean",
+							"required": true,
+							"description": "Controlled detail visibility."
+						},
+						{
+							"name": "onDetailOpenChange",
+							"type": "(open: boolean) => void",
+							"required": true,
+							"description": "Requests opening/closing the detail; the caller accepts the change."
+						},
+						{
+							"name": "selectedId",
+							"type": "string | null",
+							"required": false,
+							"description": "Current selection identity, used to focus newly selected mobile details."
+						},
+						{
+							"name": "listLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Items\"",
+							"description": "List region name."
+						},
+						{
+							"name": "detailLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Details\"",
+							"description": "Detail region name."
+						},
+						{
+							"name": "backLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Back to items\"",
+							"description": "Mobile return action text."
+						},
+						{
+							"name": "empty",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Desktop detail placeholder while no item is open."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes; provide application-specific height/scrolling here."
 						}
 					]
 				}

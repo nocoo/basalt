@@ -126,6 +126,50 @@ describe("catalog API generator contract", () => {
 	it("declares catalog targets without a per-component prop allowlist", () => {
 		expect(CATALOG_API_TARGETS).toEqual([
 			{
+				slug: "inline-editable",
+				sourceFile: "packages/basalt/src/components/inline-editable.tsx",
+				propsType: "InlineEditableProps",
+				surface: "InlineEditable",
+			},
+			{
+				slug: "editable-nav-item",
+				sourceFile: "packages/basalt/src/components/editable-nav-item.tsx",
+				propsType: "EditableNavItemProps",
+				surface: "EditableNavItem",
+			},
+			{
+				slug: "editable-nav-item",
+				sourceFile: "packages/basalt/src/components/editable-nav-item.tsx",
+				propsType: "FolderNavItemProps",
+				surface: "FolderNavItem",
+			},
+			{
+				slug: "icon-picker",
+				sourceFile: "packages/basalt/src/components/icon-picker.tsx",
+				propsType: "IconPickerProps",
+				surface: "IconPicker",
+			},
+			{
+				slug: "tag-badge",
+				sourceFile: "packages/basalt/src/components/tag-badge.tsx",
+				propsType: "TagBadgeProps",
+				surface: "TagBadge",
+				callableExport: "tagColorFor",
+			},
+			{
+				slug: "tag-color-picker",
+				sourceFile: "packages/basalt/src/components/tag-color-picker.tsx",
+				propsType: "TagColorPickerProps",
+				surface: "TagColorPicker",
+			},
+			{
+				slug: "responsive-master-detail",
+				sourceFile: "packages/basalt/src/components/responsive-master-detail.tsx",
+				propsType: "ResponsiveMasterDetailProps",
+				surface: "ResponsiveMasterDetail",
+			},
+
+			{
 				slug: "multi-select",
 				sourceFile: "packages/basalt/src/components/multi-select.tsx",
 				propsType: "MultiSelectProps",
@@ -1612,7 +1656,7 @@ describe("catalog API generator contract", () => {
 				surface: "LinkProvider",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(243);
+		expect(CATALOG_API_TARGETS).toHaveLength(250);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1665,6 +1709,12 @@ describe("catalog API generator contract", () => {
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
 		const generated = generateProductionProps();
 		expect(Object.keys(generated)).toEqual([
+			"inline-editable",
+			"editable-nav-item",
+			"icon-picker",
+			"tag-badge",
+			"tag-color-picker",
+			"responsive-master-detail",
 			"multi-select",
 			"filter-bar",
 			"file-dropzone",
@@ -2750,6 +2800,12 @@ export interface WidgetProps {
 				]),
 			),
 		).toEqual({
+			"inline-editable": ["InlineEditable"],
+			"editable-nav-item": ["EditableNavItem", "FolderNavItem"],
+			"icon-picker": ["IconPicker"],
+			"tag-badge": ["TagBadge", "tagColorFor"],
+			"tag-color-picker": ["TagColorPicker"],
+			"responsive-master-detail": ["ResponsiveMasterDetail"],
 			"multi-select": ["MultiSelect"],
 			"filter-bar": ["FilterBar", "FilterChip"],
 			"file-dropzone": ["FileDropzone"],
@@ -3001,7 +3057,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(105);
+		expect(Object.keys(generated)).toHaveLength(111);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -3102,7 +3158,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(105);
+		expect(Object.keys(generated)).toHaveLength(111);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -3224,7 +3280,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(105);
+		expect(Object.keys(generated)).toHaveLength(111);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -3295,7 +3351,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(105);
+		expect(Object.keys(generated)).toHaveLength(111);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -3338,7 +3394,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(105);
+		expect(Object.keys(generated)).toHaveLength(111);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -3390,7 +3446,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(105);
+		expect(Object.keys(generated)).toHaveLength(111);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -4728,8 +4784,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(105);
-		expect(Object.keys(first)).toHaveLength(106);
+		expect(slugs).toHaveLength(111);
+		expect(Object.keys(first)).toHaveLength(112);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -4809,7 +4865,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"86d8c4992e3ed683fa40a52455971615705b0d61fc23c9068a946828b19cb420",
+			"ee8713de3b0c29d7a29aec8ddc8114c49c97ca3efe9c815435e3c4a30b56c851",
 		);
 	}, 60_000);
 

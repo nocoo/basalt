@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
-	"totalModules": 116,
-	"totalSymbols": 722,
-	"totalValues": 386,
-	"totalTypes": 336,
+	"totalModules": 122,
+	"totalSymbols": 741,
+	"totalValues": 395,
+	"totalTypes": 346,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -4021,6 +4021,48 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
+			"subpath": "./components/editable-nav-item",
+			"importPath": "@nocoo/basalt/components/editable-nav-item",
+			"sourceFile": "packages/basalt/src/components/editable-nav-item.tsx",
+			"ownerDoc": "src/pages/ui/editable-nav-item",
+			"ownerKind": "catalog-component",
+			"summary": "EditableNavItem component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "EditableNavItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/editable-nav-item",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/editable-nav-item"
+				},
+				{
+					"name": "FolderNavItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/editable-nav-item",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/editable-nav-item"
+				},
+				{
+					"name": "EditableNavItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/editable-nav-item",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/editable-nav-item"
+				},
+				{
+					"name": "FolderNavItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/editable-nav-item",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/editable-nav-item"
+				}
+			]
+		},
+		{
 			"subpath": "./components/empty",
 			"importPath": "@nocoo/basalt/components/empty",
 			"sourceFile": "packages/basalt/src/components/empty.tsx",
@@ -4329,6 +4371,74 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/hover-card",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/hover-card"
+				}
+			]
+		},
+		{
+			"subpath": "./components/icon-picker",
+			"importPath": "@nocoo/basalt/components/icon-picker",
+			"sourceFile": "packages/basalt/src/components/icon-picker.tsx",
+			"ownerDoc": "src/pages/ui/icon-picker",
+			"ownerKind": "catalog-component",
+			"summary": "IconPicker component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "IconPicker",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/icon-picker",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/icon-picker"
+				},
+				{
+					"name": "IconPickerOption",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/icon-picker",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/icon-picker"
+				},
+				{
+					"name": "IconPickerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/icon-picker",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/icon-picker"
+				}
+			]
+		},
+		{
+			"subpath": "./components/inline-editable",
+			"importPath": "@nocoo/basalt/components/inline-editable",
+			"sourceFile": "packages/basalt/src/components/inline-editable.tsx",
+			"ownerDoc": "src/pages/ui/inline-editable",
+			"ownerKind": "catalog-component",
+			"summary": "InlineEditable component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "InlineEditable",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/inline-editable",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/inline-editable"
+				},
+				{
+					"name": "InlineEditableChangeReason",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/inline-editable",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/inline-editable"
+				},
+				{
+					"name": "InlineEditableProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/inline-editable",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/inline-editable"
 				}
 			]
 		},
@@ -5213,6 +5323,32 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/resource-list",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/resource-list"
+				}
+			]
+		},
+		{
+			"subpath": "./components/responsive-master-detail",
+			"importPath": "@nocoo/basalt/components/responsive-master-detail",
+			"sourceFile": "packages/basalt/src/components/responsive-master-detail.tsx",
+			"ownerDoc": "src/pages/ui/responsive-master-detail",
+			"ownerKind": "catalog-component",
+			"summary": "ResponsiveMasterDetail component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "ResponsiveMasterDetail",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/responsive-master-detail",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/responsive-master-detail"
+				},
+				{
+					"name": "ResponsiveMasterDetailProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/responsive-master-detail",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/responsive-master-detail"
 				}
 			]
 		},
@@ -6301,6 +6437,82 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/tabs",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/tabs"
+				}
+			]
+		},
+		{
+			"subpath": "./components/tag-badge",
+			"importPath": "@nocoo/basalt/components/tag-badge",
+			"sourceFile": "packages/basalt/src/components/tag-badge.tsx",
+			"ownerDoc": "src/pages/ui/tag-badge",
+			"ownerKind": "catalog-component",
+			"summary": "TagBadge component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "tagColorFor",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/tag-badge",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tag-badge"
+				},
+				{
+					"name": "TagBadge",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/tag-badge",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tag-badge"
+				},
+				{
+					"name": "TAG_COLORS",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/tag-badge",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tag-badge"
+				},
+				{
+					"name": "TagColor",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tag-badge",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tag-badge"
+				},
+				{
+					"name": "TagBadgeProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tag-badge",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tag-badge"
+				}
+			]
+		},
+		{
+			"subpath": "./components/tag-color-picker",
+			"importPath": "@nocoo/basalt/components/tag-color-picker",
+			"sourceFile": "packages/basalt/src/components/tag-color-picker.tsx",
+			"ownerDoc": "src/pages/ui/tag-color-picker",
+			"ownerKind": "catalog-component",
+			"summary": "TagColorPicker component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "TagColorPicker",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/tag-color-picker",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tag-color-picker"
+				},
+				{
+					"name": "TagColorPickerProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tag-color-picker",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tag-color-picker"
 				}
 			]
 		},

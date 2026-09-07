@@ -306,6 +306,13 @@ function ReadyDoc({
 }) {
 	const hero = examples[0];
 	const widePreview = [
+		"inline-editable",
+		"editable-nav-item",
+		"icon-picker",
+		"tag-badge",
+		"tag-color-picker",
+		"responsive-master-detail",
+
 		"skeleton-line",
 		"table",
 		"data-table",

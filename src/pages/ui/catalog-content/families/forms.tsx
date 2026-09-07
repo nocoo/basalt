@@ -12,6 +12,8 @@ import { DATE_PICKER_EXAMPLES } from "../../examples/date-picker";
 import { FIELD_EXAMPLES } from "../../examples/field";
 import { FILE_DROPZONE_EXAMPLES } from "../../examples/file-dropzone";
 import { FILTER_BAR_EXAMPLES } from "../../examples/filter-bar";
+import { ICON_PICKER_EXAMPLES } from "../../examples/icon-picker";
+import { INLINE_EDITABLE_EXAMPLES } from "../../examples/inline-editable";
 import { INPUT_EXAMPLES } from "../../examples/input";
 import { INPUT_AREA_EXAMPLES } from "../../examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "../../examples/input-group";
@@ -21,6 +23,7 @@ import { SEGMENT_CONTROL_EXAMPLES } from "../../examples/segment-control";
 import { SELECT_EXAMPLES } from "../../examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "../../examples/sensitive-input";
 import { SWITCH_EXAMPLES } from "../../examples/switch";
+import { TAG_COLOR_PICKER_EXAMPLES } from "../../examples/tag-color-picker";
 import { UPLOAD_QUEUE_EXAMPLES } from "../../examples/upload-queue";
 import { API as autocompleteApi } from "../../generated/catalog-api/autocomplete";
 import { API as checkboxApi } from "../../generated/catalog-api/checkbox";
@@ -29,6 +32,8 @@ import { API as datePickerApi } from "../../generated/catalog-api/date-picker";
 import { API as fieldApi } from "../../generated/catalog-api/field";
 import { API as fileDropzoneApi } from "../../generated/catalog-api/file-dropzone";
 import { API as filterBarApi } from "../../generated/catalog-api/filter-bar";
+import { API as iconPickerApi } from "../../generated/catalog-api/icon-picker";
+import { API as inlineEditableApi } from "../../generated/catalog-api/inline-editable";
 import { API as inputApi } from "../../generated/catalog-api/input";
 import { API as inputAreaApi } from "../../generated/catalog-api/input-area";
 import { API as inputGroupApi } from "../../generated/catalog-api/input-group";
@@ -39,6 +44,7 @@ import { API as selectApi } from "../../generated/catalog-api/select";
 import { API as sensitiveInputApi } from "../../generated/catalog-api/sensitive-input";
 import { API as sliderApi } from "../../generated/catalog-api/slider";
 import { API as switchApi } from "../../generated/catalog-api/switch";
+import { API as tagColorPickerApi } from "../../generated/catalog-api/tag-color-picker";
 import { API as toggleApi } from "../../generated/catalog-api/toggle";
 import { API as toggleGroupApi } from "../../generated/catalog-api/toggle-group";
 import { API as uploadQueueApi } from "../../generated/catalog-api/upload-queue";
@@ -64,6 +70,39 @@ const EXTRA_PROVENANCE = provenanceFromLegacy({
 });
 
 export default catalogContentFamily({
+	"tag-color-picker": {
+		docs: {
+			description:
+				"An accessible named color picker with selected indicators, keyboard navigation, localized names and caller-defined subsets. The caller stores the chosen color; both themes use readable foreground and background pairs.",
+			usage: TAG_COLOR_PICKER_EXAMPLES[0].code,
+			variants: [],
+			api: tagColorPickerApi,
+			provenance: provenanceFromLegacy({ repo: "zhe", sha: "075c875936e9", file: "components" }),
+		},
+		examples: TAG_COLOR_PICKER_EXAMPLES,
+	},
+	"icon-picker": {
+		docs: {
+			description:
+				"A searchable single-icon picker with caller-supplied named icons, disabled options and keyboard selection. Import only the icon subset your application uses.",
+			usage: ICON_PICKER_EXAMPLES[0].code,
+			variants: [],
+			api: iconPickerApi,
+			provenance: provenanceFromLegacy({ repo: "zhe", sha: "075c875936e9", file: "components" }),
+		},
+		examples: ICON_PICKER_EXAMPLES,
+	},
+	"inline-editable": {
+		docs: {
+			description:
+				"A caller-owned committed value with a local draft, Enter/blur save, Escape cancel, validation, pending and retryable errors. Return a promise from onSave to await persistence. Blur never steals focus from the next field.",
+			usage: INLINE_EDITABLE_EXAMPLES[0].code,
+			variants: [],
+			api: inlineEditableApi,
+			provenance: provenanceFromLegacy({ repo: "zhe", sha: "075c875936e9", file: "components" }),
+		},
+		examples: INLINE_EDITABLE_EXAMPLES,
+	},
 	"multi-select": {
 		docs: {
 			description:

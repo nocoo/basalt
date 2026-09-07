@@ -32,11 +32,11 @@ describe("overlay catalog content family", () => {
 		).toEqual([...OVERLAY_SLUGS].sort());
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "foundation"),
-		).toHaveLength(12);
+		).toHaveLength(13);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "forms"),
-		).toHaveLength(20);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(105);
+		).toHaveLength(23);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(111);
 	});
 
 	it("keeps tooltip examples and generated API shard by reference", () => {

@@ -8,6 +8,7 @@ import {
 	withChromiumPage,
 } from "./consumer-browser";
 import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from "./consumer-http";
+import { assertEditingShowcases } from "./showcase-editing";
 import { assertExamplePages } from "./showcase-examples";
 import { assertLibraryShowcases } from "./showcase-library";
 import { assertReusableShowcases } from "./showcase-reuse";
@@ -38,8 +39,9 @@ export async function runShowcaseGate() {
 			const library = await assertLibraryShowcases(page, url);
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
+			const editing = await assertEditingShowcases(page, url);
 			assertNoPageFaults(faults);
-			return { library, examples, reusable };
+			return { library, examples, reusable, editing };
 		});
 		console.log(`Showcase gate passed ${JSON.stringify(evidence)}`);
 	} finally {

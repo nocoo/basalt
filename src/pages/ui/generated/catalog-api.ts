@@ -38,6 +38,7 @@ import { API as dialogApi } from "./catalog-api/dialog";
 import { API as dockApi } from "./catalog-api/dock";
 import { API as donutApi } from "./catalog-api/donut";
 import { API as dropdownMenuApi } from "./catalog-api/dropdown-menu";
+import { API as editableNavItemApi } from "./catalog-api/editable-nav-item";
 import { API as emptyApi } from "./catalog-api/empty";
 import { API as fabApi } from "./catalog-api/fab";
 import { API as fieldApi } from "./catalog-api/field";
@@ -51,6 +52,8 @@ import { API as groupedBarApi } from "./catalog-api/grouped-bar";
 import { API as heatmapCalendarApi } from "./catalog-api/heatmap-calendar";
 import { API as heatmapMatrixApi } from "./catalog-api/heatmap-matrix";
 import { API as hoverCardApi } from "./catalog-api/hover-card";
+import { API as iconPickerApi } from "./catalog-api/icon-picker";
+import { API as inlineEditableApi } from "./catalog-api/inline-editable";
 import { API as inputApi } from "./catalog-api/input";
 import { API as inputAreaApi } from "./catalog-api/input-area";
 import { API as inputGroupApi } from "./catalog-api/input-group";
@@ -73,6 +76,7 @@ import { API as popoverApi } from "./catalog-api/popover";
 import { API as radarApi } from "./catalog-api/radar";
 import { API as radioApi } from "./catalog-api/radio";
 import { API as resourceListApi } from "./catalog-api/resource-list";
+import { API as responsiveMasterDetailApi } from "./catalog-api/responsive-master-detail";
 import { API as sankeyApi } from "./catalog-api/sankey";
 import { API as scrollAreaApi } from "./catalog-api/scroll-area";
 import { API as sectionRuleApi } from "./catalog-api/section-rule";
@@ -94,6 +98,8 @@ import { API as tableApi } from "./catalog-api/table";
 import { API as tableOfContentsApi } from "./catalog-api/table-of-contents";
 import { API as tablePagerApi } from "./catalog-api/table-pager";
 import { API as tabsApi } from "./catalog-api/tabs";
+import { API as tagBadgeApi } from "./catalog-api/tag-badge";
+import { API as tagColorPickerApi } from "./catalog-api/tag-color-picker";
 import { API as textApi } from "./catalog-api/text";
 import { API as themeProviderApi } from "./catalog-api/theme-provider";
 import { API as themeToggleApi } from "./catalog-api/theme-toggle";
@@ -145,6 +151,7 @@ export const CATALOG_API = {
 	dock: dockApi,
 	donut: donutApi,
 	"dropdown-menu": dropdownMenuApi,
+	"editable-nav-item": editableNavItemApi,
 	empty: emptyApi,
 	fab: fabApi,
 	field: fieldApi,
@@ -158,6 +165,8 @@ export const CATALOG_API = {
 	"heatmap-calendar": heatmapCalendarApi,
 	"heatmap-matrix": heatmapMatrixApi,
 	"hover-card": hoverCardApi,
+	"icon-picker": iconPickerApi,
+	"inline-editable": inlineEditableApi,
 	input: inputApi,
 	"input-area": inputAreaApi,
 	"input-group": inputGroupApi,
@@ -180,6 +189,7 @@ export const CATALOG_API = {
 	radar: radarApi,
 	radio: radioApi,
 	"resource-list": resourceListApi,
+	"responsive-master-detail": responsiveMasterDetailApi,
 	sankey: sankeyApi,
 	"scroll-area": scrollAreaApi,
 	"section-rule": sectionRuleApi,
@@ -201,6 +211,8 @@ export const CATALOG_API = {
 	"table-of-contents": tableOfContentsApi,
 	"table-pager": tablePagerApi,
 	tabs: tabsApi,
+	"tag-badge": tagBadgeApi,
+	"tag-color-picker": tagColorPickerApi,
 	text: textApi,
 	"theme-provider": themeProviderApi,
 	"theme-toggle": themeToggleApi,

@@ -65,3 +65,5 @@ Guarantees:
 - The published package declares those three libraries as optional peers (`^3` / `^10` / `^9`). DatePicker and DataTable are still self-contained; Gate D does not claim they call react-day-picker or TanStack Table.
 - Production output includes HTML, JS, and standalone CSS with `--basalt-background`.
 - Temp directories and tarballs are deleted on success and failure.
+
+A/B `editing.html` and Next `/editing` exercise P9 controls across themes and breakpoints. `recipes.html` and `/recipes` render modules materialized by the gate from the installed tarball's `ai/RECIPES.md`. Recipe modules intentionally do not live in the fixtures: edits to the shipped Markdown must reach the executable consumers. The Next wrapper supplies the client boundary; each application entry supplies its CSS mode.

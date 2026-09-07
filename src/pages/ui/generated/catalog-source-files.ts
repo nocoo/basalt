@@ -474,6 +474,42 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/upload-queue.js.map (sourcesContent[0])"
 	},
+	"inline-editable": {
+		"file": "packages/basalt/src/components/inline-editable.tsx",
+		"hash": "0f4e911d55510168",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/inline-editable.js.map (sourcesContent[0])"
+	},
+	"editable-nav-item": {
+		"file": "packages/basalt/src/components/editable-nav-item.tsx",
+		"hash": "31def942dc7032a9",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/editable-nav-item.js.map (sourcesContent[0])"
+	},
+	"icon-picker": {
+		"file": "packages/basalt/src/components/icon-picker.tsx",
+		"hash": "422b5b2e0043807c",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/icon-picker.js.map (sourcesContent[0])"
+	},
+	"tag-badge": {
+		"file": "packages/basalt/src/components/tag-badge.tsx",
+		"hash": "d434149c8c4358fe",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tag-badge.js.map (sourcesContent[0])"
+	},
+	"tag-color-picker": {
+		"file": "packages/basalt/src/components/tag-color-picker.tsx",
+		"hash": "e7d491974796665c",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tag-color-picker.js.map (sourcesContent[0])"
+	},
+	"responsive-master-detail": {
+		"file": "packages/basalt/src/components/responsive-master-detail.tsx",
+		"hash": "c7e06934d2c2e706",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/responsive-master-detail.js.map (sourcesContent[0])"
+	},
 	"charts": {
 		"file": "packages/basalt/src/charts/charts.tsx",
 		"hash": "3d7d8692e046b102",

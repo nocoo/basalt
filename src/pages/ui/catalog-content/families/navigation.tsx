@@ -33,11 +33,13 @@ import {
 	type CatalogDocsDraft,
 	provenanceFromLegacy,
 } from "../../catalog-source";
+import { EDITABLE_NAV_ITEM_EXAMPLES } from "../../examples/editable-nav-item";
 import { PAGINATION_EXAMPLES } from "../../examples/pagination";
 import { SIDEBAR_EXAMPLES } from "../../examples/sidebar";
 import { TABLE_OF_CONTENTS_EXAMPLES } from "../../examples/table-of-contents";
 import { API as breadcrumbsApi } from "../../generated/catalog-api/breadcrumbs";
 import { API as commandPaletteApi } from "../../generated/catalog-api/command-palette";
+import { API as editableNavItemApi } from "../../generated/catalog-api/editable-nav-item";
 import { API as menuBarApi } from "../../generated/catalog-api/menu-bar";
 import { API as navigationMenuApi } from "../../generated/catalog-api/navigation-menu";
 import { API as paginationApi } from "../../generated/catalog-api/pagination";
@@ -333,6 +335,17 @@ export default function Example() {
 );
 
 export default catalogContentFamily({
+	"editable-nav-item": {
+		docs: {
+			description:
+				"EditableNavItem and FolderNavItem compose navigation, inline rename, caller icons and independent trailing actions. Links use LinkProvider; selection, folder entities, permissions and persistence belong to the application.",
+			usage: EDITABLE_NAV_ITEM_EXAMPLES[0].code,
+			variants: [],
+			api: editableNavItemApi,
+			provenance: provenanceFromLegacy({ repo: "zhe", sha: "075c875936e9", file: "components" }),
+		},
+		examples: EDITABLE_NAV_ITEM_EXAMPLES,
+	},
 	"command-palette": {
 		docs: { ...commandPaletteDocs, api: commandPaletteApi },
 		examples: [

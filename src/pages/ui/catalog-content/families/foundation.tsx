@@ -13,6 +13,7 @@ import { LINK_EXAMPLES } from "../../examples/link";
 import { LINK_BUTTON_EXAMPLES } from "../../examples/link-button";
 import { SCROLL_AREA_EXAMPLES } from "../../examples/scroll-area";
 import { SEPARATOR_EXAMPLES } from "../../examples/separator";
+import { TAG_BADGE_EXAMPLES } from "../../examples/tag-badge";
 import { TEXT_EXAMPLES } from "../../examples/text";
 import { HostPreferences, IndependentPreferences } from "../../examples/theme-provider/preferences";
 import preferencesRaw from "../../examples/theme-provider/preferences.tsx?raw";
@@ -26,6 +27,7 @@ import { API as linkButtonApi } from "../../generated/catalog-api/link-button";
 import { API as linkProviderApi } from "../../generated/catalog-api/link-provider";
 import { API as scrollAreaApi } from "../../generated/catalog-api/scroll-area";
 import { API as separatorApi } from "../../generated/catalog-api/separator";
+import { API as tagBadgeApi } from "../../generated/catalog-api/tag-badge";
 import { API as textApi } from "../../generated/catalog-api/text";
 import { API as themeProviderApi } from "../../generated/catalog-api/theme-provider";
 import { API as themeToggleApi } from "../../generated/catalog-api/theme-toggle";
@@ -55,6 +57,17 @@ export default function Example() {
 }`;
 
 export default catalogContentFamily({
+	"tag-badge": {
+		docs: {
+			description:
+				"Named tags with deterministic non-semantic hues or explicit status colors. colorKey preserves assignment after renaming; tagColorFor returns the stable color identifier and TAG_COLORS contains theme-aware classes and default names. Text accompanies every color.",
+			usage: TAG_BADGE_EXAMPLES[0].code,
+			variants: [],
+			api: tagBadgeApi,
+			provenance: provenanceFromLegacy({ repo: "zhe", sha: "075c875936e9", file: "components" }),
+		},
+		examples: TAG_BADGE_EXAMPLES,
+	},
 	button: {
 		docs: {
 			description: "Primary actions, including loading and icon slots.",

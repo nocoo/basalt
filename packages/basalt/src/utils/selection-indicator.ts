@@ -53,7 +53,7 @@ function selectionTargets(root: HTMLElement) {
 export function useSelectionIndicator({
 	itemSelector,
 	enabled = true,
-	mapGeometry = measureSelectionItem,
+	mapGeometry,
 	ref,
 }: {
 	itemSelector: string;
@@ -94,7 +94,9 @@ export function useSelectionIndicator({
 			setState((current) => ({ ...current, width: 0, height: 0, visible: false, animated: false }));
 			return;
 		}
-		const geometry = mapGeometry(item, root);
+		// Keep the optional dependency undefined. Production optimizers may inline a
+		// function-valued parameter default, creating a new effect dependency every render.
+		const geometry = (mapGeometry ?? measureSelectionItem)(item, root);
 		setState((current) => ({
 			...geometry,
 			visible: true,

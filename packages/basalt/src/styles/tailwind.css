@@ -1,6 +1,9 @@
 @import "./tokens.css";
 @import "./base.css";
 
+/* Library variants follow ThemeProvider without changing the application's dark variant. */
+@custom-variant basalt-dark (&:where(.dark, .dark *, [data-mode="dark"], [data-mode="dark"] *));
+
 @theme inline {
 	--color-basalt-background: hsl(var(--basalt-background));
 	--color-basalt-foreground: hsl(var(--basalt-foreground));
