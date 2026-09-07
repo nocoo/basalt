@@ -8,6 +8,7 @@ import {
 	withChromiumPage,
 } from "./consumer-browser";
 import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from "./consumer-http";
+import { assertExamplePages } from "./showcase-examples";
 import { assertLibraryShowcases } from "./showcase-library";
 
 /** Build and test the current source; never silently consume yesterday's dist. */
@@ -34,8 +35,9 @@ export async function runShowcaseGate() {
 			const faults = attachPageFaults(page);
 			page.setDefaultTimeout(12_000);
 			const library = await assertLibraryShowcases(page, url);
+			const examples = await assertExamplePages(page, url);
 			assertNoPageFaults(faults);
-			return { library };
+			return { library, examples };
 		});
 		console.log(`Showcase gate passed ${JSON.stringify(evidence)}`);
 	} finally {

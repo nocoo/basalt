@@ -1,10 +1,12 @@
 import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
+import { useId } from "react";
 
 export default function FieldError() {
+	const id = useId();
 	return (
-		<Field label="Email" htmlFor="field-error-email" error="Required">
-			<Input id="field-error-email" />
+		<Field label="Email" htmlFor={id} error="Required">
+			<Input id={id} />
 		</Field>
 	);
 }

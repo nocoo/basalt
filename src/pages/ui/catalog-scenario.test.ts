@@ -1049,14 +1049,16 @@ describe("source-backed field scenarios", () => {
 			expect(scenario.code).toContain("import { Field }");
 			expect(scenario.code).toContain("import { Input }");
 		}
-		expect(FIELD_EXAMPLES[0]?.code).toContain('htmlFor="field-hint-email"');
-		expect(FIELD_EXAMPLES[0]?.code).toContain('id="field-hint-email"');
+		expect(FIELD_EXAMPLES[0]?.code).toContain("htmlFor={id}");
+		expect(FIELD_EXAMPLES[0]?.code).toContain("id={id}");
+		expect(FIELD_EXAMPLES[0]?.code).toContain("const id = useId()");
 		expect(FIELD_EXAMPLES[0]?.code).toContain('label="Email"');
 		expect(FIELD_EXAMPLES[0]?.code).toContain('hint="Never shared"');
 		expect(FIELD_EXAMPLES[0]?.code).not.toContain("ex-email");
 		expect(FIELD_EXAMPLES[0]?.code).not.toContain("kumo-ex-email");
-		expect(FIELD_EXAMPLES[1]?.code).toContain('htmlFor="field-error-email"');
-		expect(FIELD_EXAMPLES[1]?.code).toContain('id="field-error-email"');
+		expect(FIELD_EXAMPLES[1]?.code).toContain("htmlFor={id}");
+		expect(FIELD_EXAMPLES[1]?.code).toContain("id={id}");
+		expect(FIELD_EXAMPLES[1]?.code).toContain("const id = useId()");
 		expect(FIELD_EXAMPLES[1]?.code).toContain('error="Required"');
 		expect(FIELD_EXAMPLES[1]?.code).not.toContain("ex-email-err");
 		expect(FIELD_EXAMPLES[1]?.code).not.toContain("kumo-ex-email-err");
@@ -1138,15 +1140,17 @@ describe("source-backed input scenarios", () => {
 		}
 		expect(INPUT_EXAMPLES[0]?.code).toContain("@nocoo/basalt/components/field");
 		expect(INPUT_EXAMPLES[0]?.code).toContain("import { Field }");
-		expect(INPUT_EXAMPLES[0]?.code).toContain('htmlFor="ex-input-email"');
-		expect(INPUT_EXAMPLES[0]?.code).toContain('id="ex-input-email"');
+		expect(INPUT_EXAMPLES[0]?.code).toContain("htmlFor={id}");
+		expect(INPUT_EXAMPLES[0]?.code).toContain("id={id}");
+		expect(INPUT_EXAMPLES[0]?.code).toContain("const id = useId()");
 		expect(INPUT_EXAMPLES[0]?.code).toContain('label="Email"');
 		expect(INPUT_EXAMPLES[0]?.code).toContain('hint="Never shared"');
 		expect(INPUT_EXAMPLES[0]?.code).toContain('placeholder="you@example.com"');
 		expect(INPUT_EXAMPLES[1]?.code).toContain("@nocoo/basalt/components/field");
 		expect(INPUT_EXAMPLES[1]?.code).toContain("import { Field }");
-		expect(INPUT_EXAMPLES[1]?.code).toContain('htmlFor="ex-input-err"');
-		expect(INPUT_EXAMPLES[1]?.code).toContain('id="ex-input-err"');
+		expect(INPUT_EXAMPLES[1]?.code).toContain("htmlFor={id}");
+		expect(INPUT_EXAMPLES[1]?.code).toContain("id={id}");
+		expect(INPUT_EXAMPLES[1]?.code).toContain("const id = useId()");
 		expect(INPUT_EXAMPLES[1]?.code).toContain('error="Required"');
 		expect(INPUT_EXAMPLES[2]?.code).toContain("disabled");
 		expect(INPUT_EXAMPLES[2]?.code).toContain('value="Read only"');
@@ -1249,15 +1253,17 @@ describe("source-backed input-area scenarios", () => {
 		}
 		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain("@nocoo/basalt/components/field");
 		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain("import { Field }");
-		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain('htmlFor="ex-notes"');
-		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain('id="ex-notes"');
+		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain("htmlFor={id}");
+		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain("id={id}");
+		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain("const id = useId()");
 		expect(INPUT_AREA_EXAMPLES[0]?.code).toContain('label="Notes"');
 		expect(INPUT_AREA_EXAMPLES[1]?.code).toContain("rows={6}");
 		expect(INPUT_AREA_EXAMPLES[1]?.code).toContain('aria-label="Tall notes"');
 		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain("@nocoo/basalt/components/field");
 		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain("import { Field }");
-		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain('htmlFor="ex-bio"');
-		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain('id="ex-bio"');
+		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain("htmlFor={id}");
+		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain("id={id}");
+		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain("const id = useId()");
 		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain('label="Bio"');
 		expect(INPUT_AREA_EXAMPLES[2]?.code).toContain('error="Too short"');
 		expect(INPUT_AREA_EXAMPLES[3]?.code).toContain("disabled");
@@ -1558,9 +1564,10 @@ describe("source-backed checkbox scenarios", () => {
 		expect(CHECKBOX_EXAMPLES[4]?.code).toContain("@nocoo/basalt/components/field");
 		expect(CHECKBOX_EXAMPLES[4]?.code).toContain("import { Field }");
 		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('label="Terms"');
-		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('htmlFor="ex-terms"');
+		expect(CHECKBOX_EXAMPLES[4]?.code).toContain("htmlFor={id}");
 		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('error="Required"');
-		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('id="ex-terms"');
+		expect(CHECKBOX_EXAMPLES[4]?.code).toContain("id={id}");
+		expect(CHECKBOX_EXAMPLES[4]?.code).toContain("const id = useId()");
 		expect(CHECKBOX_EXAMPLES[4]?.code).toContain('aria-label="Terms"');
 		expect(CHECKBOX_EXAMPLES[5]?.code).toContain("Checkbox.Group");
 		expect(CHECKBOX_EXAMPLES[5]?.code).toContain("Checkbox.Legend");

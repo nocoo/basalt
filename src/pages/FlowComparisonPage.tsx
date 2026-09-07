@@ -1,5 +1,6 @@
 import { AreaChart } from "@nocoo/basalt/charts/area";
 import { BarChart } from "@nocoo/basalt/charts/bar";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { Activity, BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatUsd } from "@/lib/format";
@@ -10,7 +11,11 @@ export default function FlowComparisonPage() {
 	const { summary, flowData, netFlowData } = useFlowComparisonViewModel();
 
 	return (
-		<>
+		<div className="space-y-4">
+			<PageHeader
+				title={t("pages.flowComparison.title")}
+				description={t("pages.flowComparison.description")}
+			/>
 			<div className="grid grid-cols-1 gap-3 md:gap-4 sm:grid-cols-3">
 				<div className="rounded-card bg-secondary p-4 md:p-5">
 					<p className="text-xs md:text-sm text-muted-foreground mb-1">
@@ -75,6 +80,6 @@ export default function FlowComparisonPage() {
 					valueFormatter={formatUsd}
 				/>
 			</div>
-		</>
+		</div>
 	);
 }

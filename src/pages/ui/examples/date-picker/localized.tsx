@@ -1,8 +1,9 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
-import { type FormEvent, useState } from "react";
+import { type FormEvent, useId, useState } from "react";
 
 export default function DatePickerLocalized() {
+	const id = useId();
 	const [month, setMonth] = useState("2026-09");
 	const [status, setStatus] = useState<string>("");
 
@@ -21,14 +22,11 @@ export default function DatePickerLocalized() {
 		<div className="space-y-4 max-w-sm">
 			<form onSubmit={handleSubmit} onReset={handleReset} className="space-y-3">
 				<div>
-					<label
-						htmlFor="appointment-picker"
-						className="block text-sm font-medium mb-1 text-basalt-foreground"
-					>
+					<label htmlFor={id} className="block text-sm font-medium mb-1 text-basalt-foreground">
 						服务预约时间
 					</label>
 					<DatePicker
-						id="appointment-picker"
+						id={id}
 						name="appointment"
 						required
 						month={month}

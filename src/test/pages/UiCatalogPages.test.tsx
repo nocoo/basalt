@@ -1840,7 +1840,7 @@ describe("ui catalog", () => {
 		expect(markdown).toContain(UI_EXAMPLES["input-area"]?.[0]?.code ?? "");
 		expect(markdown).toContain(UI_EXAMPLES["input-area"]?.[1]?.code ?? "");
 		expect(markdown).toContain("rows={6}");
-		expect(markdown).toContain('htmlFor="ex-notes"');
+		expect(markdown).toContain("htmlFor={id}");
 		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
 		expect(markdown).not.toContain("github.com/nocoo/kumo");
 	});
@@ -3268,29 +3268,30 @@ describe("ui catalog", () => {
 		if (!hero || !hint || !error || !rich || !structured) {
 			throw new Error("missing field scenario surfaces");
 		}
-		const heroLabel = hero.querySelector('label[for="field-hint-email"]');
-		const heroInput = hero.querySelector("#field-hint-email");
+		const heroLabel = hero.querySelector("label");
+		const heroInput = hero.querySelector("input");
 		expect(heroLabel).toHaveTextContent("Email");
-		expect(heroInput).toHaveAttribute("aria-describedby", "field-hint-email-hint");
+		expect(heroInput).toHaveAttribute("aria-describedby", `${heroInput?.id}-hint`);
 		expect(heroInput).not.toHaveAttribute("aria-invalid");
-		expect(hero.querySelector("#field-hint-email-hint")).toHaveTextContent("Never shared");
-		const hintLabel = hint.querySelector('label[for="field-hint-email"]');
-		const hintInput = hint.querySelector("#field-hint-email");
+		expect(hero.querySelector("[id$='-hint']")).toHaveTextContent("Never shared");
+		const hintLabel = hint.querySelector("label");
+		const hintInput = hint.querySelector("input");
 		expect(hintLabel).toHaveTextContent("Email");
-		expect(hintInput).toHaveAttribute("id", "field-hint-email");
-		expect(hintInput).toHaveAttribute("aria-describedby", "field-hint-email-hint");
-		expect(hint.querySelector("#field-hint-email-hint")).toHaveClass(
+		expect(hintInput).toHaveAttribute("id", hintLabel?.getAttribute("for"));
+		expect(hintInput?.id).not.toBe(heroInput?.id);
+		expect(hintInput).toHaveAttribute("aria-describedby", `${hintInput?.id}-hint`);
+		expect(hint.querySelector("[id$='-hint']")).toHaveClass(
 			"text-xs",
 			"text-basalt-muted-foreground",
 		);
-		const errorLabel = error.querySelector('label[for="field-error-email"]');
-		const errorInput = error.querySelector("#field-error-email");
+		const errorLabel = error.querySelector("label");
+		const errorInput = error.querySelector("input");
 		expect(errorLabel).toHaveTextContent("Email");
-		expect(errorInput).toHaveAttribute("aria-describedby", "field-error-email-error");
+		expect(errorInput).toHaveAttribute("aria-describedby", `${errorInput?.id}-error`);
 		expect(errorInput).toHaveAttribute("aria-invalid", "true");
 		const alert = within(error as HTMLElement).getByRole("alert");
 		expect(alert).toHaveTextContent("Required");
-		expect(alert).toHaveAttribute("id", "field-error-email-error");
+		expect(alert).toHaveAttribute("id", `${errorInput?.id}-error`);
 		expect(alert).toHaveClass("text-xs", "text-basalt-destructive");
 		expect(rich).toHaveTextContent("Workspace name");
 		expect(rich).toHaveTextContent("(optional)");
@@ -3326,8 +3327,8 @@ describe("ui catalog", () => {
 		for (const scenario of UI_EXAMPLES.field ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).toContain('htmlFor="field-hint-email"');
-		expect(markdown).toContain('htmlFor="field-error-email"');
+		expect(markdown).toContain("htmlFor={id}");
+		expect(markdown).toContain("htmlFor={id}");
 	});
 
 	it("keeps input hero, field associations, types wrapper, and copy modules", async () => {
@@ -3360,23 +3361,25 @@ describe("ui catalog", () => {
 		if (!hero || !labeled || !error || !disabled || !types || !bare || !sizes || !controlled) {
 			throw new Error("missing input scenario surfaces");
 		}
-		const heroLabel = hero.querySelector('label[for="ex-input-email"]');
-		const heroInput = hero.querySelector("#ex-input-email");
+		const heroLabel = hero.querySelector("label");
+		const heroInput = hero.querySelector("input");
 		expect(heroLabel).toHaveTextContent("Email");
-		expect(heroInput).toHaveAttribute("aria-describedby", "ex-input-email-hint");
+		expect(heroInput).toHaveAttribute("aria-describedby", `${heroInput?.id}-hint`);
 		expect(heroInput).not.toHaveAttribute("aria-invalid");
-		expect(hero.querySelector("#ex-input-email-hint")).toHaveTextContent("Never shared");
-		const labeledInput = labeled.querySelector("#ex-input-email");
-		expect(labeled.querySelector('label[for="ex-input-email"]')).toHaveTextContent("Email");
+		expect(hero.querySelector("[id$='-hint']")).toHaveTextContent("Never shared");
+		const labeledInput = labeled.querySelector("input");
+		expect(labeled.querySelector("label")).toHaveTextContent("Email");
 		expect(labeledInput).toHaveAttribute("placeholder", "you@example.com");
-		expect(labeledInput).toHaveAttribute("aria-describedby", "ex-input-email-hint");
-		const errorInput = error.querySelector("#ex-input-err");
-		expect(error.querySelector('label[for="ex-input-err"]')).toHaveTextContent("Email");
-		expect(errorInput).toHaveAttribute("aria-describedby", "ex-input-err-error");
+		expect(labeledInput).toHaveAttribute("id", labeled.querySelector("label")?.getAttribute("for"));
+		expect(labeledInput?.id).not.toBe(heroInput?.id);
+		expect(labeledInput).toHaveAttribute("aria-describedby", `${labeledInput?.id}-hint`);
+		const errorInput = error.querySelector("input");
+		expect(error.querySelector("label")).toHaveTextContent("Email");
+		expect(errorInput).toHaveAttribute("aria-describedby", `${errorInput?.id}-error`);
 		expect(errorInput).toHaveAttribute("aria-invalid", "true");
 		const alert = within(error as HTMLElement).getByRole("alert");
 		expect(alert).toHaveTextContent("Required");
-		expect(alert).toHaveAttribute("id", "ex-input-err-error");
+		expect(alert).toHaveAttribute("id", `${errorInput?.id}-error`);
 		const disabledInput = within(disabled as HTMLElement).getByRole("textbox", {
 			name: "Disabled input",
 		});
@@ -3429,8 +3432,8 @@ describe("ui catalog", () => {
 			expect(markdown).toContain(scenario.code);
 		}
 		expect(markdown).toContain('<div className="flex w-full flex-col gap-3">');
-		expect(markdown).toContain('htmlFor="ex-input-email"');
-		expect(markdown).toContain('htmlFor="ex-input-err"');
+		expect(markdown).toContain("htmlFor={id}");
+		expect(markdown).toContain("htmlFor={id}");
 	});
 
 	it("keeps input-area hero, field associations, rows, and copy modules", async () => {
@@ -3460,22 +3463,26 @@ describe("ui catalog", () => {
 		if (!hero || !labeled || !rows || !error || !disabled || !sizes || !controlled) {
 			throw new Error("missing input-area scenario surfaces");
 		}
-		const heroLabel = hero.querySelector('label[for="ex-notes"]');
-		const heroArea = hero.querySelector("#ex-notes");
+		const heroLabel = hero.querySelector("label");
+		const heroArea = hero.querySelector("textarea");
 		expect(heroLabel).toHaveTextContent("Notes");
 		expect(heroArea).not.toHaveAttribute("aria-invalid");
-		expect(labeled.querySelector('label[for="ex-notes"]')).toHaveTextContent("Notes");
-		expect(labeled.querySelector("#ex-notes")).toHaveAttribute("id", "ex-notes");
+		expect(labeled.querySelector("label")).toHaveTextContent("Notes");
+		expect(labeled.querySelector("textarea")).toHaveAttribute(
+			"id",
+			labeled.querySelector("label")?.getAttribute("for"),
+		);
+		expect(labeled.querySelector("textarea")?.id).not.toBe(heroArea?.id);
 		expect(
 			within(rows as HTMLElement).getByRole("textbox", { name: "Tall notes" }),
 		).toHaveAttribute("rows", "6");
-		const errorArea = error.querySelector("#ex-bio");
-		expect(error.querySelector('label[for="ex-bio"]')).toHaveTextContent("Bio");
-		expect(errorArea).toHaveAttribute("aria-describedby", "ex-bio-error");
+		const errorArea = error.querySelector("textarea");
+		expect(error.querySelector("label")).toHaveTextContent("Bio");
+		expect(errorArea).toHaveAttribute("aria-describedby", `${errorArea?.id}-error`);
 		expect(errorArea).toHaveAttribute("aria-invalid", "true");
 		const alert = within(error as HTMLElement).getByRole("alert");
 		expect(alert).toHaveTextContent("Too short");
-		expect(alert).toHaveAttribute("id", "ex-bio-error");
+		expect(alert).toHaveAttribute("id", `${errorArea?.id}-error`);
 		const disabledArea = within(disabled as HTMLElement).getByRole("textbox", {
 			name: "Disabled notes",
 		});
@@ -3510,8 +3517,8 @@ describe("ui catalog", () => {
 		for (const scenario of UI_EXAMPLES["input-area"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).toContain('htmlFor="ex-notes"');
-		expect(markdown).toContain('htmlFor="ex-bio"');
+		expect(markdown).toContain("htmlFor={id}");
+		expect(markdown).toContain("htmlFor={id}");
 		expect(markdown).toContain("rows={6}");
 		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
 		expect(markdown).not.toContain("github.com/nocoo/kumo");
@@ -3796,11 +3803,12 @@ describe("ui catalog", () => {
 		expect(disabledOff).not.toBeChecked();
 		expect(disabledOn).toBeChecked();
 		const terms = within(error as HTMLElement).getByRole("checkbox", { name: "Terms" });
-		expect(terms).toHaveAttribute("id", "ex-terms");
+		expect(terms).toHaveAttribute("id");
+		expect(document.querySelector(`label[for="${terms.id}"]`)).toHaveTextContent("Terms");
 		expect(terms).toHaveAttribute("aria-invalid", "true");
-		expect(terms).toHaveAttribute("aria-describedby", "ex-terms-error");
+		expect(terms).toHaveAttribute("aria-describedby", `${terms?.id}-error`);
 		const alert = within(error as HTMLElement).getByRole("alert");
-		expect(alert).toHaveAttribute("id", "ex-terms-error");
+		expect(alert).toHaveAttribute("id", `${terms?.id}-error`);
 		expect(alert).toHaveTextContent("Required");
 		expect(within(grouped as HTMLElement).getByRole("checkbox", { name: "Alpha" })).toBeChecked();
 		expect(

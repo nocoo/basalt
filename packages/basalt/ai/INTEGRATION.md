@@ -726,7 +726,11 @@ Boot and route gates use `LoadingScreen` — a centered mark and a 6rem shimmer 
 
 ## 13. First page
 
-When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place, add routes as `Outlet` pages. Every page starts with `PageHeader`. The shell file does not grow with page UI.
+When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place, add routes as `Outlet` pages. Application pages inside the island start with `PageHeader`. The shell file does not grow with page UI.
+
+Standalone login, loading, error, and landing pages use their own first-screen structure: `/login` preserves the visitor-badge composition, `/loading` is a named loading status, and `/404` and `/static-page` have independent headings. Library reference pages use their document heading and section navigation. These are deliberate layout exceptions, not alternate application-page templates.
+
+The `/forms`, `/settings`, `/data`, and `/chat` examples demonstrate local state and simulated requests, including failure/retry and cancellation. Their viewmodels own data and timers; Views own native FormData, focus, and responsive layout. Replace the local service adapter when integrating a backend. Theme selection uses the shared provider; local profile, uploads, and chat changes do not update a real account.
 
 `PageHeader` is flush on `ContentIsland`. Do not wrap it in another card. Do not put an icon row above the heading.
 
@@ -1719,5 +1723,4 @@ export function UserPreferencesForm() {
   );
 }
 ```
-
 

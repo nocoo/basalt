@@ -1,4 +1,6 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
+import { useTranslation } from "react-i18next";
 import { ActionGridCard } from "@/components/dashboard/ActionGridCard";
 import { AreaChartCard } from "@/components/dashboard/AreaChartCard";
 import { BarChartCard } from "@/components/dashboard/BarChartCard";
@@ -14,10 +16,15 @@ import { TrendLineCard } from "@/components/dashboard/TrendLineCard";
 import { useStatsOverviewViewModel } from "@/viewmodels/useStatsOverviewViewModel";
 
 export default function DashboardPage() {
+	const { t } = useTranslation();
 	const { stats } = useStatsOverviewViewModel();
 
 	return (
-		<>
+		<div className="space-y-4">
+			<PageHeader
+				title={t("pages.dashboard.title")}
+				description={t("pages.dashboard.description")}
+			/>
 			{/* Row 0: analytics stat cards */}
 			<div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
 				{stats.map((s) => (
@@ -73,6 +80,6 @@ export default function DashboardPage() {
 				<ActionGridCard />
 				<ItemListCard />
 			</div>
-		</>
+		</div>
 	);
 }

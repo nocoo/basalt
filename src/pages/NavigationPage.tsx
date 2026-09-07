@@ -36,7 +36,9 @@ function Stepper({ steps, current }: { steps: string[]; current: number }) {
 						</div>
 					</div>
 					{i < steps.length - 1 && (
-						<div className={`mx-3 h-px w-8 sm:w-12 ${i < current ? "bg-primary" : "bg-border"}`} />
+						<div
+							className={`mx-1 h-px w-2 sm:mx-3 sm:w-12 ${i < current ? "bg-primary" : "bg-border"}`}
+						/>
 					)}
 				</div>
 			))}
@@ -86,6 +88,7 @@ export default function NavigationPage() {
 							{t("pages.navigation.simple")}
 						</p>
 						<Breadcrumbs
+							className="flex-wrap gap-y-2"
 							items={[
 								{ label: t("pages.navigation.home") },
 								{ label: t("pages.navigation.products") },
@@ -99,6 +102,7 @@ export default function NavigationPage() {
 							{t("pages.navigation.withIcons")}
 						</p>
 						<Breadcrumbs
+							className="flex-wrap gap-y-2"
 							items={[
 								{
 									label: t("pages.navigation.home"),
@@ -125,6 +129,7 @@ export default function NavigationPage() {
 						</p>
 						<div className="rounded-widget border border-border bg-card p-4">
 							<Breadcrumbs
+								className="flex-wrap gap-y-2"
 								items={[
 									{ label: t("pages.navigation.dashboard") },
 									{ label: t("pages.navigation.settings") },

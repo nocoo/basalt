@@ -701,15 +701,15 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | P3 | 基础样式与输入：07、08a/b/c、09/q/b/c/d；C01–C05/C19–C21 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required、Group 原生事件与 ref 清理 | 已验收 | 运行时至 `b85649d`、行为回归 `026a958`；C01–C05/C19–C21 已关闭，177 文件 / 1,544 测试，四维覆盖率均 ≥95%；120 项旧接口与真实安装包验收通过 |
 | P4 | 浮层与语义：10a/b/c/d/e、11a/b/b2/b3、12a/b/c/d；C06–C11/C16–C18/C22/Q07/R05 | Dock 非模态语义、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘/受控月份/本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 已验收 | 实现至 `781aadf`，C06–C11/C16–C18/C22/Q07 已关闭；177 文件 / 1,628 测试，四维覆盖率 97.45 / 95.26 / 98.22 / 97.53；最终包、Next 与文档消费通过，详见 12.4 |
 | P5 | 视觉/图表/动效：13a/b1/b2/b3/c/d、17a 及 tooltip/matrix/回归/registry 子组；C12/C13/C15/C23/E07/E08/Q08/R04/R05 | 主题对比、导航回焦、图表替代、StatCard 状态、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、reduced motion | 已验收 | 实施至 `236ac18`；183 文件 / 1,703 测试全部通过，四维覆盖率 97.24 / 95.05 / 98.50 / 97.43；C12/C13/C15/C23/E07/E08/Q08/R04 已关闭，详见 12.4 |
-| P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 已验收 | 三种骨架屏、两种丰富表格、BatteryMeter 与受控列表；1,719 项测试及四维 95% 门、真实包和浏览器检查通过 |
-| P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 实施中 | 主 agent 直接实施 |
-| P8 | 筛选与上传：16a/b/c；R01/R02 | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费 | 待调度 | — |
+| P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 已验收 | `462b43e`；三种骨架屏、两种丰富表格、BatteryMeter 与受控列表；1,719 项测试及四维 95% 门、真实包和浏览器检查通过 |
+| P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 已验收 | 1,729 项测试、四维 95% 门及 fresh 生产构建浏览器检查通过 |
+| P8 | 筛选与上传：16a/b/c；R01/R02 | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费 | 实施中 | 主 agent 直接实施 |
 | P9 | 小型复用控件与应用模板：18a/b/c/d；R03/R06/R07/R08 | EditableNav、Tag 色板/选择、InlineEditable/master-detail、可编译 AppFrame/Login/Resource recipes | 待调度 | — |
 | P10 | 整体验收、兼容/迁移说明与台账收口；Q05 与全部问题追踪 | 新 HEAD 全套 6DQ、tarball/文档 freshness、关键浏览器组合、无未记录 API 破坏、干净工作区 | 待调度 | — |
 
 P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功能提交。P9 的 InlineEditable 按实际受控需求单独提交。任何新增公开 surface 同阶段补元数据、出口和文档，不能拖到收尾才补。
 
-**当前执行点（2026-09-07）：P1–P6 已验收；主 agent 直接实施 P7，随后完成 P8–P10，按阶段提交。** pi 保持空闲，其监督定时器停止，本地 dev 服务保留。后续阶段沿用原任务范围及兼容验收基线。
+**当前执行点（2026-09-07）：P1–P7 已验收；主 agent 直接实施 P8，随后完成 P9–P10，按阶段提交。** pi 保持空闲，其监督定时器停止，本地 dev 服务保留。后续阶段沿用原任务范围及兼容验收基线。
 
 ### 12.4 验收记录
 
@@ -1053,6 +1053,16 @@ Library `/ui/skeleton-line` 提供 Dashboard、资源列表和详情三类加载
 新增 `test:showcase` 接入 CI 与 prepublish：使用 fresh 生产构建，在 390/1280px、浅深主题与 reduced motion 下验证三类骨架屏高度切换（差值 ≤ 1px）、实际 shimmer 停止、两表排序/筛选/四态/选择闭环及正尺寸图表；正式 A/B 同时验证资源组件与键盘横滚。已查看桌面表格、Dashboard 与手机详情截图。页面整体窄屏文档布局与 Example 行为由 P7 继续完成。
 
 当前登记为 **102 catalog 项（101 ready，maps 仍 planned）、112 公开模块 / 706 符号、237 API targets、270 场景**，版本保持 **2.0.3**。**C14、S01、S02、R05 已关闭。** 证据：`p6-direct-coverage-final.json`、`p6-direct-package-types.json`、`p6-direct-pack.json`、`p6-direct-publint.json`、`p6-direct-standalone-corrected.json`、`p6-direct-tailwind-final.json`、`p6-direct-docs-final.json`、`p6-direct-showcase-complete.json`、`p6-datatable-after-types.json`、`p6-resource-list-after-types.json`。
+
+#### P7 验收记录（已验收，2026-09-07）
+
+Library 标题与 Copy/Source 操作在窄屏重排；API 表格和代码提供具名、可聚焦的局部横滚。Field/Input/InputArea/Checkbox/DatePicker 示例使用每实例 ID，保留 hero 与全部原场景，并验证 label、description、error 的实际归属。早期金融概览与 Settings 补齐 PageHeader；Interactive 八个缺失文案补齐英中，INTEGRATION 明确独立登录、加载、错误、落地页与 Library 文档布局例外。
+
+Forms 使用原生提交、验证与 FormData，文件浏览显示选择结果；Settings 支持资料保存/取消/失败重试、真实主题与语言切换、改密反馈、偏好与会话撤销；Data 的搜索、状态、原始金额排序、分页、计数、空态与重置关联真实演示数据。Chat 发送立即追加消息，支持分段回复、停止、失败重试与清空；切换会话停止旧计时器，卸载清理；手机采用全宽 Dock 和可回焦的会话列表/详情切换。状态与定时器放在无 DOM 的 viewmodels，页面保留原生表单和焦点适配。
+
+Network 为 StackedBar、Sankey、Radar 及同源问题的 StackedArea 提供明确 plot 高度。完整浏览器检查另外发现并修正 Navigation 面包屑/步骤条及 Data 标题工具栏的手机溢出。`test:showcase` 扩展为 24 路由桌面/手机冒烟、四个交互页与 Network 深浅主题/键盘/reduced-motion 回归、320/390/640 CSS px 文档重排、重复 ID 与键盘横滚。640 CSS px 对应 1280px 桌面在 200% 缩放后的布局宽度；不是用截图缩放代替重排。
+
+最终 **187 文件 / 1,729 测试全部通过**，语句 **97.40%（3,490/3,583）**、分支 **95.30%（3,003/3,151）**、函数 **98.59%（841/853）**、行 **97.58%（3,348/3,431）**；四维 95% 门与覆盖范围保持不变。类型、lint、真实 tarball 文档编译及 fresh 生产构建 `test:showcase` 全部通过，浏览器无控制台或页面错误。已查看手机 Settings/Chat/Library 及修正后的 Network 桌面截图。组件运行时与原始公共基线未改变，**E01–E06 已关闭，P7 已验收**。证据：`p7-direct-workflow-unit.json`、`p7-direct-updated-scenarios.json`、`p7-direct-docs.json`、`p7-direct-coverage-final.json`、`p7-direct-showcase-final.json`。
 
 ### 12.5 实施中追加的问题
 

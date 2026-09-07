@@ -1,4 +1,5 @@
 import { Button } from "@nocoo/basalt/components/button";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { Switch } from "@nocoo/basalt/components/switch";
 import {
 	Table,
@@ -74,6 +75,7 @@ export default function AccountsPage() {
 
 	return (
 		<div className="space-y-4">
+			<PageHeader title={t("pages.accounts.title")} description={t("pages.accounts.description")} />
 			{/* Account balances */}
 			<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
 				{accountList.map((acc) => (

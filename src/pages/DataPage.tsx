@@ -5,6 +5,7 @@ import { DescriptionList } from "@nocoo/basalt/components/description-list";
 import { Input } from "@nocoo/basalt/components/input";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
+import { Pagination } from "@nocoo/basalt/components/pagination";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import {
 	Table,
@@ -18,7 +19,6 @@ import {
 	AlertTriangle,
 	BadgeCheck,
 	CheckCircle2,
-	Filter,
 	GitCommit,
 	MessageSquare,
 	Minus,
@@ -29,6 +29,7 @@ import {
 	TrendingUp,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useDataShowcaseViewModel } from "@/viewmodels/useDataShowcaseViewModel";
 
 const PEOPLE = [
 	{ name: "Alice Chen", email: "alice@example.com", initials: "AC", seed: "alice" },
@@ -69,13 +70,6 @@ const TIMELINE = [
 	},
 ];
 
-const TABLE_ROWS = [
-	{ id: "INV-2041", customer: "Nova Labs", status: "Paid", amount: "$12,400", date: "Feb 01" },
-	{ id: "INV-2042", customer: "Violet Corp", status: "Pending", amount: "$5,950", date: "Feb 03" },
-	{ id: "INV-2043", customer: "Atlas Works", status: "Paid", amount: "$8,100", date: "Feb 05" },
-	{ id: "INV-2044", customer: "Echo Systems", status: "Overdue", amount: "$3,250", date: "Feb 07" },
-];
-
 const SOLID_PILLS = [
 	{ label: "Primary", className: "bg-primary text-primary-foreground" },
 	{ label: "Success", className: "bg-success text-success-foreground" },
@@ -110,6 +104,7 @@ const DOT_PILLS = [
 
 export default function DataPage() {
 	const { t } = useTranslation();
+	const vm = useDataShowcaseViewModel();
 
 	const KPI_DATA = [
 		{ label: t("pages.data.revenue"), value: "$48.2k", change: "+12.5%", trend: "up" as const },
@@ -151,39 +146,72 @@ export default function DataPage() {
 				</div>
 			</SectionRule>
 
-			<SectionRule
-				title={t("pages.data.dataTable")}
-				actions={
-					<>
-						<div className="relative min-w-[180px]">
-							<Search
-								className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-								strokeWidth={1.5}
-							/>
-							<Input
-								placeholder={t("pages.data.searchPlaceholder")}
-								className="rounded-widget pl-10 text-sm h-8"
-							/>
-						</div>
-						<Button variant="secondary" size="sm" icon={<Filter strokeWidth={1.5} />}>
-							{t("common.filter")}
-						</Button>
-					</>
-				}
-			>
+			<SectionRule title={t("pages.data.dataTable")}>
+				<div className="flex flex-wrap items-center gap-2">
+					<div className="relative min-w-0 flex-1 basis-48">
+						<Search
+							className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+							strokeWidth={1.5}
+						/>
+						<Input
+							aria-label={t("pages.data.searchPlaceholder")}
+							value={vm.query}
+							onChange={(event) => vm.setQuery(event.target.value)}
+							placeholder={t("pages.data.searchPlaceholder")}
+							className="rounded-widget pl-10 text-sm h-8"
+						/>
+					</div>
+					<select
+						aria-label={t("common.filter")}
+						value={vm.status}
+						onChange={(event) => vm.setStatus(event.target.value)}
+						className="h-8 rounded-widget border border-border bg-basalt-control px-2 text-sm"
+					>
+						<option value="all">{t("demo.allStatuses")}</option>
+						<option value="Paid">{t("demo.paid")}</option>
+						<option value="Pending">{t("demo.pendingStatus")}</option>
+						<option value="Overdue">{t("demo.overdue")}</option>
+					</select>
+				</div>
 				<LayerCard padding="none">
 					<Table aria-label={t("pages.data.dataTable")}>
 						<TableHeader>
 							<TableRow>
-								<TableHead>{t("pages.data.invoice")}</TableHead>
-								<TableHead>{t("pages.data.customer")}</TableHead>
-								<TableHead>{t("common.status")}</TableHead>
-								<TableHead>{t("common.amount")}</TableHead>
-								<TableHead>{t("common.date")}</TableHead>
+								{(
+									[
+										["id", t("pages.data.invoice")],
+										["customer", t("pages.data.customer")],
+										["status", t("common.status")],
+										["amount", t("common.amount")],
+										["date", t("common.date")],
+									] as const
+								).map(([key, label]) => (
+									<TableHead
+										key={key}
+										aria-sort={
+											vm.sort.key === key
+												? vm.sort.direction === 1
+													? "ascending"
+													: "descending"
+												: "none"
+										}
+									>
+										<button
+											type="button"
+											onClick={() => vm.sortBy(key)}
+											className="inline-flex min-h-8 items-center gap-1 rounded px-1 focus-visible:outline-2 focus-visible:outline-primary"
+										>
+											{label}
+											{vm.sort.key === key && (
+												<span aria-hidden="true">{vm.sort.direction === 1 ? "↑" : "↓"}</span>
+											)}
+										</button>
+									</TableHead>
+								))}
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							{TABLE_ROWS.map((row) => (
+							{vm.rows.map((row) => (
 								<TableRow key={row.id}>
 									<TableCell>{row.id}</TableCell>
 									<TableCell>{row.customer}</TableCell>
@@ -200,12 +228,36 @@ export default function DataPage() {
 											{row.status}
 										</span>
 									</TableCell>
-									<TableCell>{row.amount}</TableCell>
+									<TableCell>
+										{new Intl.NumberFormat("en-US", {
+											style: "currency",
+											currency: "USD",
+											maximumFractionDigits: 0,
+										}).format(row.amount)}
+									</TableCell>
 									<TableCell className="text-basalt-muted-foreground">{row.date}</TableCell>
 								</TableRow>
 							))}
+							{vm.rows.length === 0 && (
+								<TableRow>
+									<TableCell colSpan={5}>
+										<div className="py-6 text-center" role="status">
+											{t("demo.noResults")}{" "}
+											<Button variant="ghost" size="sm" onClick={vm.reset}>
+												{t("demo.resetFilters")}
+											</Button>
+										</div>
+									</TableCell>
+								</TableRow>
+							)}
 						</TableBody>
 					</Table>
+					<div className="flex flex-wrap items-center justify-between gap-3 border-t border-border p-3">
+						<p className="text-xs text-muted-foreground" role="status">
+							{t("demo.results", { count: vm.total })}
+						</p>
+						<Pagination page={vm.page} pageCount={vm.pageCount} onPageChange={vm.setPage} />
+					</div>
 				</LayerCard>
 			</SectionRule>
 

@@ -166,7 +166,9 @@
 			"french": "French",
 			"german": "German",
 			"compactMode": "Compact mode",
-			"compactModeDesc": "Reduce spacing and card sizes"
+			"compactModeDesc": "Use tighter spacing in this preferences preview.",
+			"title": "Settings",
+			"description": "Manage your profile, security, and appearance preferences."
 		},
 		"components": {
 			"title": "Composable blocks and visual modules",
@@ -208,7 +210,9 @@
 			"category": "Category",
 			"date": "Date",
 			"amount": "Amount",
-			"status": "Status"
+			"status": "Status",
+			"title": "Accounts",
+			"description": "Balances, payment cards, and recent account activity."
 		},
 		"banking": {
 			"title": "Banking & wealth management dashboard",
@@ -513,7 +517,15 @@
 			"debugMode": "Debug mode",
 			"dangerZone": "Danger zone",
 			"deleteWorkspace": "Delete workspace",
-			"permanentlyRemoveData": "Permanently remove all data."
+			"permanentlyRemoveData": "Permanently remove all data.",
+			"alertInfoTitle": "New update available",
+			"alertInfoMessage": "Version 2.4.0 includes performance improvements.",
+			"alertSuccessTitle": "Payment confirmed",
+			"alertSuccessMessage": "Your invoice #1042 has been paid.",
+			"alertWarningTitle": "Storage almost full",
+			"alertWarningMessage": "You have used 92% of your storage quota.",
+			"alertErrorTitle": "Connection lost",
+			"alertErrorMessage": "Unable to reach the server."
 		},
 		"data": {
 			"title": "Data display components",
@@ -586,7 +598,9 @@
 			"budgetVsActual": "Budget vs Actual",
 			"budgetVsActualAria": "Budget vs actual spending grouped bar chart by month",
 			"budget": "Budget",
-			"actual": "Actual"
+			"actual": "Actual",
+			"title": "Progress tracking",
+			"description": "Compare budgets with spending and track category progress."
 		},
 		"portfolio": {
 			"portfolioValue": "Portfolio Value",
@@ -600,7 +614,9 @@
 			"holdings": "Holdings",
 			"asset": "Asset",
 			"value": "Value",
-			"change": "Change"
+			"change": "Change",
+			"title": "Portfolio",
+			"description": "Allocation, performance, and individual holdings."
 		},
 		"flowComparison": {
 			"totalInflow": "Total Inflow",
@@ -612,7 +628,9 @@
 			"netCashFlowByMonthAria": "Net cash flow by month bar chart",
 			"inflow": "Inflow",
 			"outflow": "Outflow",
-			"net": "Net"
+			"net": "Net",
+			"title": "Flow comparison",
+			"description": "Explore inflows, outflows, and monthly net changes."
 		},
 		"chat": {
 			"title": "Chat framework",
@@ -848,6 +866,10 @@
 			"continueWithGoogle": "Continue with Google",
 			"termsText": "By signing in you agree to our Terms of Service and Privacy Policy",
 			"secureAuth": "Secure authentication"
+		},
+		"dashboard": {
+			"title": "Dashboard",
+			"description": "A live composition of financial metrics, activity, and trends."
 		}
 	},
 	"dashboard": {
@@ -933,5 +955,36 @@
 			"nov": "Nov",
 			"dec": "Dec"
 		}
+	},
+	"demo": {
+		"localOnly": "Local demo. Changes stay in this page; no account or service is updated.",
+		"failNext": "Simulate a failed submission",
+		"pending": "Saving…",
+		"success": "Saved locally.",
+		"error": "The demo request failed. Your input is preserved.",
+		"retry": "Retry",
+		"passwordMismatch": "Use at least 8 characters and matching passwords.",
+		"selectFiles": "Choose documents from your device",
+		"noSubmissions": "No submissions yet",
+		"allStatuses": "All statuses",
+		"paid": "Paid",
+		"pendingStatus": "Pending",
+		"overdue": "Overdue",
+		"noResults": "No invoices match these filters.",
+		"resetFilters": "Reset filters",
+		"results": "{{count}} results",
+		"profilePhoto": "Choose a profile photo",
+		"preferences": "Preferences updated for this demo.",
+		"revoked": "Session removed from this demo.",
+		"messages": "Conversation messages",
+		"emptyChat": "Start a new conversation.",
+		"thinking": "Thinking…",
+		"failNextReply": "Simulate a failed reply",
+		"chat_streaming": "Generating a local reply…",
+		"chat_complete": "Reply complete.",
+		"chat_stopped": "Reply stopped. The partial response is kept.",
+		"chat_error": "The simulated response failed. Retry to continue.",
+		"localChat": "Local assistant demo",
+		"backToInbox": "Back to inbox"
 	}
 }

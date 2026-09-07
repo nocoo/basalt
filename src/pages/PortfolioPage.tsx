@@ -1,5 +1,6 @@
 import { DonutChart } from "@nocoo/basalt/charts/donut";
 import { LineChart } from "@nocoo/basalt/charts/line";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
 import {
 	Table,
 	TableBody,
@@ -19,7 +20,11 @@ export default function PortfolioPage() {
 	const { totalValue, holdings, performanceData } = usePortfolioViewModel();
 
 	return (
-		<>
+		<div className="space-y-4">
+			<PageHeader
+				title={t("pages.portfolio.title")}
+				description={t("pages.portfolio.description")}
+			/>
 			<div className="grid grid-cols-1 gap-3 md:gap-4 sm:grid-cols-3">
 				<div className="rounded-card bg-secondary p-4 md:p-5">
 					<p className="text-xs md:text-sm text-muted-foreground mb-1">
@@ -155,6 +160,6 @@ export default function PortfolioPage() {
 					</TableBody>
 				</Table>
 			</div>
-		</>
+		</div>
 	);
 }

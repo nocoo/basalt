@@ -40,7 +40,7 @@ export function DocCode({ code, attached = false }: { code: string; attached?: b
 	return (
 		<div
 			className={cn(
-				"relative bg-secondary",
+				"relative min-w-0 max-w-full bg-secondary",
 				attached ? "border-t border-border" : "overflow-hidden rounded-lg border border-border",
 			)}
 		>
@@ -55,7 +55,13 @@ export function DocCode({ code, attached = false }: { code: string; attached?: b
 			>
 				{copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
 			</button>
-			<pre className="overflow-x-auto p-4 pr-12 text-[13px] leading-6 text-foreground">
+			<pre
+				// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
+				tabIndex={0}
+				role="region"
+				aria-label="Code example"
+				className="max-w-full overflow-x-auto p-4 pr-12 text-[13px] leading-6 text-foreground focus-visible:outline-2 focus-visible:outline-primary"
+			>
 				<code>{highlight(code)}</code>
 			</pre>
 		</div>
@@ -76,7 +82,9 @@ export function DocExample({
 			<div
 				className={cn(
 					"flex min-h-[140px] items-center justify-center bg-bright",
-					wide ? "p-3 sm:p-6 [&>div]:w-full [&>div]:min-w-0" : "p-6 md:p-8",
+					wide
+						? "p-3 sm:p-6 [&>div]:w-full [&>div]:min-w-0"
+						: "min-w-0 p-4 sm:p-6 md:p-8 [&>*]:max-w-full",
 				)}
 			>
 				{children}

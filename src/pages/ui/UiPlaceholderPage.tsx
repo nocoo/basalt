@@ -149,7 +149,7 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 							>
 								{surface.name}
 							</h3>
-							<div className="overflow-hidden rounded-lg border border-border bg-card p-4 space-y-3 text-sm">
+							<div className="min-w-0 rounded-lg border border-border bg-card p-4 space-y-3 text-sm [overflow-wrap:anywhere]">
 								<div>
 									<code className="text-xs font-mono text-primary font-semibold">
 										{surface.callSignature}
@@ -184,10 +184,16 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 										<p className="text-xs font-medium text-foreground">
 											Options (<code>{surface.options.name}</code>)
 										</p>
-										<div className="overflow-hidden rounded-md border border-border">
+										<div
+											role="region"
+											// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
+											tabIndex={0}
+											aria-label={`${surface.options.name} API scrolling table`}
+											className="max-w-full overflow-x-auto rounded-md border border-border focus-visible:outline-2 focus-visible:outline-primary"
+										>
 											<table
 												aria-label={`${surface.options.name} props`}
-												className="w-full text-xs"
+												className="w-full min-w-[36rem] text-xs"
 											>
 												<thead>
 													<tr className="border-b border-border bg-background text-left text-muted-foreground">
@@ -243,8 +249,17 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 						{surface.props.length === 0 ? (
 							<p className="text-sm text-muted-foreground">No component-specific props.</p>
 						) : (
-							<div className="overflow-hidden rounded-lg border border-border">
-								<table aria-label={`${surface.name} props`} className="w-full text-sm">
+							<div
+								role="region"
+								// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
+								tabIndex={0}
+								aria-label={`${surface.name} API scrolling table`}
+								className="max-w-full overflow-x-auto rounded-lg border border-border focus-visible:outline-2 focus-visible:outline-primary"
+							>
+								<table
+									aria-label={`${surface.name} props`}
+									className="w-full min-w-[36rem] text-sm [&_code]:break-words [&_code]:[overflow-wrap:anywhere]"
+								>
 									<thead>
 										<tr className="border-b border-border bg-background text-left text-muted-foreground">
 											<th className="px-4 py-2.5 font-medium">Prop</th>
@@ -330,9 +345,9 @@ function ReadyDoc({
 	return (
 		<div>
 			<header className="border-b border-border px-6 py-8 md:px-8 md:py-10">
-				<div className="mb-3 flex items-start justify-between gap-4">
-					<div className="flex min-w-0 items-center gap-3">
-						<h1 className="text-4xl font-semibold tracking-tight text-foreground">
+				<div className="mb-3 flex flex-col items-start justify-between gap-4 sm:flex-row sm:flex-wrap">
+					<div className="flex min-w-0 max-w-full flex-wrap items-center gap-3">
+						<h1 className="min-w-0 max-w-full text-3xl sm:text-4xl font-semibold tracking-tight text-foreground [overflow-wrap:anywhere]">
 							{catalogNavName(entry)}
 						</h1>
 						<a
@@ -402,7 +417,7 @@ function ReadyDoc({
 						))}
 					</section>
 					<CatalogApiReference api={docs.api} />
-					<div className="space-y-1 text-sm text-muted-foreground">
+					<div className="space-y-1 text-sm text-muted-foreground [overflow-wrap:anywhere]">
 						<p>
 							Implementation{" "}
 							<a
@@ -451,7 +466,9 @@ function ReadyCatalogPage({ entry }: { entry: CatalogEntry }) {
 function CatalogHero({ title, description }: { title: string; description: string }) {
 	return (
 		<header className="border-b border-border px-6 py-8 md:px-8 md:py-10">
-			<h1 className="text-4xl font-semibold tracking-tight text-foreground">{title}</h1>
+			<h1 className="min-w-0 max-w-full text-3xl sm:text-4xl font-semibold tracking-tight text-foreground [overflow-wrap:anywhere]">
+				{title}
+			</h1>
 			<p className="mt-3 text-lg leading-normal text-muted-foreground">{description}</p>
 		</header>
 	);

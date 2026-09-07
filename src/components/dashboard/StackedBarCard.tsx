@@ -17,7 +17,7 @@ export function StackedBarCard() {
 			<div className="flex flex-col space-y-2.5 p-4 pb-2">
 				<h3 className="text-sm text-muted-foreground">{t("dashboard.stackedEngagement")}</h3>
 			</div>
-			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 h-56">
+			<div className="h-64 min-w-0 shrink-0 px-4 pt-0 pb-4">
 				<StackedBarChart
 					data={stackedData.map((row) => ({ x: row.name, y: row.a, y2: row.b, y3: row.c }))}
 					series={[

@@ -166,7 +166,9 @@
 			"french": "Français",
 			"german": "Deutsch",
 			"compactMode": "紧凑模式",
-			"compactModeDesc": "缩小间距和卡片尺寸"
+			"compactModeDesc": "在当前偏好预览中使用更紧凑的间距。",
+			"title": "设置",
+			"description": "管理个人资料、安全与外观偏好。"
 		},
 		"components": {
 			"title": "可组合的区块与视觉模块",
@@ -208,7 +210,9 @@
 			"category": "类别",
 			"date": "日期",
 			"amount": "金额",
-			"status": "状态"
+			"status": "状态",
+			"title": "账户",
+			"description": "账户余额、支付卡片与近期活动。"
 		},
 		"banking": {
 			"title": "银行与财富管理仪表盘",
@@ -513,7 +517,15 @@
 			"debugMode": "调试模式",
 			"dangerZone": "危险区域",
 			"deleteWorkspace": "删除工作区",
-			"permanentlyRemoveData": "永久删除所有数据。"
+			"permanentlyRemoveData": "永久删除所有数据。",
+			"alertInfoTitle": "有新版本可用",
+			"alertInfoMessage": "2.4.0 版本包含性能优化。",
+			"alertSuccessTitle": "付款已确认",
+			"alertSuccessMessage": "账单 #1042 已支付。",
+			"alertWarningTitle": "存储空间即将用尽",
+			"alertWarningMessage": "已使用 92% 的存储配额。",
+			"alertErrorTitle": "连接已断开",
+			"alertErrorMessage": "无法连接到服务器。"
 		},
 		"data": {
 			"title": "数据展示组件",
@@ -586,7 +598,9 @@
 			"budgetVsActual": "预算 vs 实际",
 			"budgetVsActualAria": "按月份分组的预算与实际支出柱状图",
 			"budget": "预算",
-			"actual": "实际"
+			"actual": "实际",
+			"title": "进度追踪",
+			"description": "比较预算与支出，查看分类进度。"
 		},
 		"portfolio": {
 			"portfolioValue": "投资组合价值",
@@ -600,7 +614,9 @@
 			"holdings": "持仓",
 			"asset": "资产",
 			"value": "价值",
-			"change": "变动"
+			"change": "变动",
+			"title": "投资组合",
+			"description": "资产配置、收益表现与持仓明细。"
 		},
 		"flowComparison": {
 			"totalInflow": "总流入",
@@ -612,7 +628,9 @@
 			"netCashFlowByMonthAria": "月度净现金流柱状图",
 			"inflow": "流入",
 			"outflow": "流出",
-			"net": "净额"
+			"net": "净额",
+			"title": "收支对比",
+			"description": "查看收入、支出与月度净变化。"
 		},
 		"chat": {
 			"title": "对话框架",
@@ -848,6 +866,10 @@
 			"continueWithGoogle": "使用 Google 继续",
 			"termsText": "登录即表示您同意我们的服务条款和隐私政策",
 			"secureAuth": "安全认证"
+		},
+		"dashboard": {
+			"title": "概览",
+			"description": "财务指标、近期活动与趋势的组合展示。"
 		}
 	},
 	"dashboard": {
@@ -933,5 +955,36 @@
 			"nov": "11月",
 			"dec": "12月"
 		}
+	},
+	"demo": {
+		"localOnly": "本地演示。修改仅保留在当前页面，不会更新实际账户或服务。",
+		"failNext": "模拟下一次提交失败",
+		"pending": "正在保存…",
+		"success": "已在本地保存。",
+		"error": "模拟请求失败，输入内容已保留。",
+		"retry": "重试",
+		"passwordMismatch": "密码至少需要 8 个字符，两次输入须一致。",
+		"selectFiles": "选择设备上的文件",
+		"noSubmissions": "还没有提交记录",
+		"allStatuses": "全部状态",
+		"paid": "已支付",
+		"pendingStatus": "待处理",
+		"overdue": "逾期",
+		"noResults": "没有匹配这些条件的账单。",
+		"resetFilters": "重置筛选",
+		"results": "{{count}} 条结果",
+		"profilePhoto": "选择头像文件",
+		"preferences": "已更新当前演示的偏好。",
+		"revoked": "已从当前演示移除会话。",
+		"messages": "会话消息",
+		"emptyChat": "开始新会话。",
+		"thinking": "正在思考…",
+		"failNextReply": "模拟下一次回复失败",
+		"chat_streaming": "正在生成本地回复…",
+		"chat_complete": "回复完成。",
+		"chat_stopped": "回复已停止，已生成的内容会保留。",
+		"chat_error": "模拟回复失败，可以重试。",
+		"localChat": "本地助手演示",
+		"backToInbox": "返回会话列表"
 	}
 }

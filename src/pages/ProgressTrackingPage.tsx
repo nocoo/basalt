@@ -1,4 +1,5 @@
 import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
+import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { BarChart3, LayoutGrid } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { formatUsd } from "@/lib/format";
@@ -9,7 +10,11 @@ export default function ProgressTrackingPage() {
 	const { summary, categories, comparisonData } = useProgressTrackingViewModel();
 
 	return (
-		<>
+		<div className="space-y-4">
+			<PageHeader
+				title={t("pages.progressTracking.title")}
+				description={t("pages.progressTracking.description")}
+			/>
 			<div className="grid grid-cols-1 gap-3 md:gap-4 sm:grid-cols-3">
 				<div className="rounded-card bg-secondary p-4 md:p-5">
 					<p className="text-xs md:text-sm text-muted-foreground mb-1">
@@ -92,6 +97,6 @@ export default function ProgressTrackingPage() {
 					valueFormatter={formatUsd}
 				/>
 			</div>
-		</>
+		</div>
 	);
 }
