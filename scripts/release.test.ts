@@ -1,3 +1,7 @@
+import { spawnSync } from "node:child_process";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
 	bumpVersion,
@@ -8,6 +12,7 @@ import {
 	parseSemver,
 	prepareChangelog,
 	type RunnerContext,
+	updateWorkspaceLockVersion,
 	VERSION_TARGETS,
 } from "./release";
 
@@ -121,6 +126,72 @@ describe("prepareChangelog", () => {
 	});
 });
 
+const initialLockfile = `{
+  "workspaces": {
+    "packages/basalt": { "name": "@nocoo/basalt", "version": "2.0.3", },
+    "packages/other": { "name": "other", "version": "2.0.3" },
+  },
+  "packages": { "dep": ["dep@2.0.3", "", {}, "sha512-unchanged"] },
+}`;
+
+describe("updateWorkspaceLockVersion", () => {
+	it("changes only the Basalt workspace version, retaining resolutions and formatting", () => {
+		const updated = updateWorkspaceLockVersion(initialLockfile, "2.0.3", "2.1.0");
+		expect(updated).toBe(
+			initialLockfile.replace(
+				'"@nocoo/basalt", "version": "2.0.3"',
+				'"@nocoo/basalt", "version": "2.1.0"',
+			),
+		);
+		expect(updateWorkspaceLockVersion(updated, "2.0.3", "2.1.0")).toBe(updated);
+		expect(updateWorkspaceLockVersion(updated, "2.1.0", "2.1.0")).toBe(updated);
+	});
+
+	it("refuses malformed, missing, wrong-package or mismatched-version metadata", () => {
+		for (const lock of [
+			"{ invalid",
+			"{}",
+			initialLockfile.replace('"packages/basalt"', '"packages/other-basalt"'),
+			initialLockfile.replace('"@nocoo/basalt"', '"another-package"'),
+			initialLockfile.replace('"version": "2.0.3"', '"version": "9.0.0"'),
+		])
+			expect(() => updateWorkspaceLockVersion(lock, "2.0.3", "2.1.0")).toThrow();
+	});
+
+	it("keeps a real Bun workspace version synchronized through a frozen install", () => {
+		const cwd = mkdtempSync(join(tmpdir(), "basalt-release-lock-"));
+		try {
+			mkdirSync(join(cwd, "packages/basalt"), { recursive: true });
+			writeFileSync(
+				join(cwd, "package.json"),
+				JSON.stringify({ name: "release-fixture", private: true, workspaces: ["packages/*"] }),
+			);
+			const pkg = join(cwd, "packages/basalt/package.json");
+			writeFileSync(pkg, JSON.stringify({ name: "@nocoo/basalt", version: "2.0.3" }));
+			const install = (flag: string) =>
+				spawnSync("bun", ["install", flag, "--ignore-scripts"], {
+					cwd,
+					encoding: "utf-8",
+					timeout: 15_000,
+				});
+			expect(install("--lockfile-only").status).toBe(0);
+			const lock = join(cwd, "bun.lock");
+			writeFileSync(pkg, JSON.stringify({ name: "@nocoo/basalt", version: "2.1.0" }));
+			writeFileSync(
+				lock,
+				updateWorkspaceLockVersion(readFileSync(lock, "utf-8"), "2.0.3", "2.1.0"),
+			);
+			const synchronized = readFileSync(lock, "utf-8");
+			expect(install("--lockfile-only").status).toBe(0);
+			expect(readFileSync(lock, "utf-8")).toBe(synchronized);
+			expect(install("--frozen-lockfile").status).toBe(0);
+			expect(readFileSync(lock, "utf-8")).toBe(synchronized);
+		} finally {
+			rmSync(cwd, { recursive: true, force: true });
+		}
+	});
+});
+
 function createMockRunnerContext(overrides: Partial<RunnerContext> = {}): {
 	ctx: RunnerContext;
 	commands: Array<{ cmd: string; args: string[] }>;
@@ -197,6 +268,10 @@ function createMockRunnerContext(overrides: Partial<RunnerContext> = {}): {
 		readJsonVersion: (rel: string) => defaultVersions[rel] ?? "2.0.3",
 		updateJsonVersion: (rel: string, _old: string, newV: string) => {
 			filesWritten[rel] = newV;
+		},
+		readLockfile: () => filesWritten["bun.lock"] ?? initialLockfile,
+		writeLockfile: (content: string) => {
+			filesWritten["bun.lock"] = content;
 		},
 		readChangelog: () => "## [2.0.3] - 2026-09-01\n",
 		updateChangelog: (newSection: string) => {
@@ -285,6 +360,21 @@ describe("executeRelease gates and failure paths", () => {
 			commands.some((c) => c.cmd === "git" && ["add", "commit", "push", "tag"].includes(c.args[0])),
 		).toBe(false);
 		expect(commands.some((c) => c.cmd === "gh" && c.args[0] === "release")).toBe(false);
+	});
+
+	it("blocks publication when Bun exits successfully but leaves stale workspace metadata", async () => {
+		const { ctx, commands, filesWritten } = createMockRunnerContext();
+		const run = ctx.run;
+		ctx.run = async (cmd, args, opts) => {
+			if (cmd === "bun" && args[0] === "install") filesWritten["bun.lock"] = initialLockfile;
+			return run(cmd, args, opts);
+		};
+		await expect(executeRelease({ bumpArg: "minor", isDryRun: false }, ctx)).rejects.toThrow(
+			"bun.lock workspace version must be 2.1.0",
+		);
+		expect(
+			commands.some((c) => c.cmd === "git" && ["add", "commit", "push", "tag"].includes(c.args[0])),
+		).toBe(false);
 	});
 
 	it("fails fast if git working tree is dirty", async () => {

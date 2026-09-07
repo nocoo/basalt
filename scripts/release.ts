@@ -14,9 +14,11 @@
 import { spawn } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve as pathResolve } from "node:path";
+import * as ts from "typescript-api";
 
 const PROJECT_ROOT = pathResolve(import.meta.dirname as string, "..");
 const CHANGELOG_MD = pathResolve(PROJECT_ROOT, "CHANGELOG.md");
+const BUN_LOCK = pathResolve(PROJECT_ROOT, "bun.lock");
 const SEMVER_RE = /^\d+\.\d+\.\d+$/;
 const CONVENTIONAL_RE = /^(\w+)(?:\(.+?\))?(!)?:\s*(.+)$/;
 const REMOVED_KEYWORDS = /\b(remove|delete|drop)\b/i;
@@ -140,6 +142,44 @@ function updateJsonVersion(relative: string, oldVersion: string, newVersion: str
 	writeFileSync(abs, content.replace(pattern, `"version": "${newVersion}"`));
 }
 
+/** Bun does not refresh workspace metadata for version-only manifest changes. */
+export function updateWorkspaceLockVersion(
+	content: string,
+	oldVersion: string,
+	newVersion: string,
+) {
+	if (ts.parseConfigFileTextToJson("bun.lock", content).error) {
+		throw new Error("Invalid bun.lock JSON");
+	}
+	const source = ts.parseJsonText("bun.lock", content);
+	function property(node: ts.Expression | undefined, name: string): ts.Expression {
+		if (!node || !ts.isObjectLiteralExpression(node)) {
+			throw new Error(`Missing bun.lock object for ${name}`);
+		}
+		const matches = node.properties.filter(
+			(member): member is ts.PropertyAssignment =>
+				ts.isPropertyAssignment(member) &&
+				ts.isStringLiteral(member.name) &&
+				member.name.text === name,
+		);
+		if (matches.length !== 1) throw new Error(`Expected one bun.lock property: ${name}`);
+		return matches[0].initializer;
+	}
+	const workspace = property(
+		property(source.statements[0]?.expression, "workspaces"),
+		"packages/basalt",
+	);
+	const name = property(workspace, "name");
+	if (!ts.isStringLiteral(name) || name.text !== "@nocoo/basalt") {
+		throw new Error("Unexpected bun.lock workspace package name");
+	}
+	const version = property(workspace, "version");
+	if (!ts.isStringLiteral(version) || ![oldVersion, newVersion].includes(version.text)) {
+		throw new Error(`bun.lock workspace version must be ${oldVersion} or ${newVersion}`);
+	}
+	return `${content.slice(0, version.getStart(source))}${JSON.stringify(newVersion)}${content.slice(version.end)}`;
+}
+
 export async function getLastTag(ctx: RunnerContext): Promise<string | undefined> {
 	const result = await ctx.run("git", ["describe", "--tags", "--abbrev=0"]);
 	if (result.code !== 0) {
@@ -258,6 +298,8 @@ export interface RunnerContext {
 	) => Promise<RunResult>;
 	readJsonVersion: (relPath: string) => string;
 	updateJsonVersion: (relPath: string, oldVer: string, newVer: string) => void;
+	readLockfile: () => string;
+	writeLockfile: (content: string) => void;
 	readChangelog: () => string;
 	updateChangelog: (content: string) => void;
 	writeNotesFile: (path: string, content: string) => void;
@@ -275,6 +317,8 @@ export function defaultRunnerContext(): RunnerContext {
 			return pkg.version;
 		},
 		updateJsonVersion,
+		readLockfile: () => readFileSync(BUN_LOCK, "utf-8"),
+		writeLockfile: (content: string) => writeFileSync(BUN_LOCK, content),
 		readChangelog: () => readFileSync(CHANGELOG_MD, "utf-8"),
 		updateChangelog: (content: string) => writeFileSync(CHANGELOG_MD, content),
 		writeNotesFile: (path: string, content: string) => writeFileSync(path, content),
@@ -436,10 +480,12 @@ export async function executeRelease(
 		ctx.log(`updated ${target}`);
 	}
 
+	ctx.writeLockfile(updateWorkspaceLockVersion(ctx.readLockfile(), currentVersion, newVersion));
 	const lockResult = await ctx.run("bun", ["install", "--lockfile-only", "--ignore-scripts"]);
 	if (lockResult.code !== 0) {
 		throw new Error(`Failed to synchronize bun.lock: ${lockResult.stderr.trim()}`);
 	}
+	updateWorkspaceLockVersion(ctx.readLockfile(), newVersion, newVersion);
 	ctx.log("synchronized bun.lock");
 
 	ctx.updateChangelog(changelog);
