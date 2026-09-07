@@ -4941,6 +4941,28 @@ export interface WidgetProps {
 				}
 				notify.dismiss = (id?: string): void => {};
 			`,
+			"callable-undefined-return.ts": `
+				export type SimpleOptions = { count?: number };
+				export function notify(message: string): string | undefined { return message; }
+			`,
+			"callable-undefined-param.ts": `
+				export type SimpleOptions = { count?: number };
+				export function notify(message: string, options: SimpleOptions | undefined): string { return message; }
+			`,
+			"callable-param-tag.ts": `
+				export type SimpleOptions = { count?: number };
+				function rawDismiss(id?: string): string { return id ?? ""; }
+				/**
+				 * Dismiss function
+				 */
+				export const notify = Object.assign(() => {}, {
+					/**
+					 * Dismiss function
+					 * @param id Unique target identifier.
+					 */
+					dismiss: rawDismiss,
+				});
+			`,
 		});
 
 		const result = generateCatalogApi({
@@ -4950,6 +4972,27 @@ export interface WidgetProps {
 				{
 					slug: "notify",
 					sourceFile: "callable-widget.ts",
+					propsType: "SimpleOptions",
+					surface: "Widget",
+					callableExport: "notify",
+				},
+				{
+					slug: "notify-undefined-return",
+					sourceFile: "callable-undefined-return.ts",
+					propsType: "SimpleOptions",
+					surface: "Widget",
+					callableExport: "notify",
+				},
+				{
+					slug: "notify-undefined-param",
+					sourceFile: "callable-undefined-param.ts",
+					propsType: "SimpleOptions",
+					surface: "Widget",
+					callableExport: "notify",
+				},
+				{
+					slug: "notify-param-tag",
+					sourceFile: "callable-param-tag.ts",
 					propsType: "SimpleOptions",
 					surface: "Widget",
 					callableExport: "notify",
@@ -4986,83 +5029,16 @@ export interface WidgetProps {
 
 		// Freshness & fidelity regressions:
 		// 1. Preserves declared undefined in return types without stripping it
-		const rootWithUndefinedReturn = fixture({
-			"callable-widget.ts": `
-				export type SimpleOptions = { count?: number };
-				export function notify(message: string): string | undefined { return message; }
-			`,
-		});
-		const resultWithUndefinedReturn = generateCatalogApi({
-			repoRoot: rootWithUndefinedReturn,
-			tsconfigPath: "tsconfig.json",
-			targets: [
-				{
-					slug: "notify",
-					sourceFile: "callable-widget.ts",
-					propsType: "SimpleOptions",
-					surface: "Widget",
-					callableExport: "notify",
-				},
-			],
-		});
-		const undefinedReturnCall = resultWithUndefinedReturn.notify?.find((s) => s.name === "notify");
+		const undefinedReturnCall = result["notify-undefined-return"]?.find((s) => s.name === "notify");
 		expect(undefinedReturnCall?.returns?.type).toBe("string | undefined");
 
 		// 2. Preserves parameter type unions with undefined on required parameters
-		const rootWithUndefinedParam = fixture({
-			"callable-widget.ts": `
-				export type SimpleOptions = { count?: number };
-				export function notify(message: string, options: SimpleOptions | undefined): string { return message; }
-			`,
-		});
-		const resultWithUndefinedParam = generateCatalogApi({
-			repoRoot: rootWithUndefinedParam,
-			tsconfigPath: "tsconfig.json",
-			targets: [
-				{
-					slug: "notify",
-					sourceFile: "callable-widget.ts",
-					propsType: "SimpleOptions",
-					surface: "Widget",
-					callableExport: "notify",
-				},
-			],
-		});
-		const undefinedParamCall = resultWithUndefinedParam.notify?.find((s) => s.name === "notify");
+		const undefinedParamCall = result["notify-undefined-param"]?.find((s) => s.name === "notify");
 		expect(undefinedParamCall?.parameters?.[1]?.type).toBe("SimpleOptions | undefined");
 		expect(undefinedParamCall?.parameters?.[1]?.required).toBe(true);
 
 		// 3. Fallback to @param tag documentation on member methods
-		const rootWithParamTag = fixture({
-			"callable-widget.ts": `
-				export type SimpleOptions = { count?: number };
-				function rawDismiss(id?: string): string { return id ?? ""; }
-				/**
-				 * Dismiss function
-				 */
-				export const notify = Object.assign(() => {}, {
-					/**
-					 * Dismiss function
-					 * @param id Unique target identifier.
-					 */
-					dismiss: rawDismiss,
-				});
-			`,
-		});
-		const resultWithParamTag = generateCatalogApi({
-			repoRoot: rootWithParamTag,
-			tsconfigPath: "tsconfig.json",
-			targets: [
-				{
-					slug: "notify",
-					sourceFile: "callable-widget.ts",
-					propsType: "SimpleOptions",
-					surface: "Widget",
-					callableExport: "notify",
-				},
-			],
-		});
-		const taggedDismissCall = resultWithParamTag.notify?.find((s) => s.name === "notify.dismiss");
+		const taggedDismissCall = result["notify-param-tag"]?.find((s) => s.name === "notify.dismiss");
 		expect(taggedDismissCall?.parameters?.[0]?.description).toBe("Unique target identifier.");
 
 		// Negative check: missing callable export fails fast

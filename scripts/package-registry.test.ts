@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { CATALOG } from "../src/pages/ui/catalog";
+import { derivePublicSurfaceManifest } from "./catalog-surface-owners";
 import {
 	checkAiPackageAssetsFreshness,
 	formatJsonDeterministic,
@@ -410,7 +411,9 @@ describe("package registry generator and AI package assets", () => {
 		it("detects source modifications in subsequent generation calls, terminates cycles, and keeps entry visited sets independent", () => {
 			const fixture = createIsolatedFixture();
 			try {
-				const baseline = generatePackageRegistry(fixture);
+				// Derive manifest once on the isolated fixture (manifest only depends on package.json exports and source declarations, which are not modified)
+				const surfaceManifest = derivePublicSurfaceManifest(fixture);
+				const baseline = generatePackageRegistry(fixture, surfaceManifest);
 				const buttonBefore = baseline.modules.find(
 					(m) => m.importPath === "@nocoo/basalt/components/button",
 				);
@@ -428,8 +431,8 @@ describe("package registry generator and AI package assets", () => {
 				writeFileSync(cnPath, `${originalCn}\nimport "./control-surface";\n`);
 				writeFileSync(controlPath, `${originalControl}\nimport "./cn";\nimport "recharts";\n`);
 
-				// Subsequent generatePackageRegistry on the exact same repoRoot fixture
-				const updated = generatePackageRegistry(fixture);
+				// Subsequent generatePackageRegistry on the exact same repoRoot fixture reusing surfaceManifest
+				const updated = generatePackageRegistry(fixture, surfaceManifest);
 				const buttonAfter = updated.modules.find(
 					(m) => m.importPath === "@nocoo/basalt/components/button",
 				);
@@ -444,6 +447,22 @@ describe("package registry generator and AI package assets", () => {
 
 				// Unrelated palette does not depend on cn/control-surface and must NOT be polluted
 				expect(paletteAfter?.optionalPeers).toEqual(paletteBefore?.optionalPeers);
+
+				// Restore sources
+				writeFileSync(cnPath, originalCn);
+				writeFileSync(controlPath, originalControl);
+
+				// Restoring sources returns exact baseline output on subsequent call
+				const restored = generatePackageRegistry(fixture, surfaceManifest);
+				expect(restored).toEqual(baseline);
+
+				// Second repoRoot remains fresh and equal to baseline
+				const secondFixture = createIsolatedFixture();
+				try {
+					expect(generatePackageRegistry(secondFixture, surfaceManifest)).toEqual(baseline);
+				} finally {
+					rmSync(secondFixture, { recursive: true, force: true });
+				}
 			} finally {
 				rmSync(fixture, { recursive: true, force: true });
 			}

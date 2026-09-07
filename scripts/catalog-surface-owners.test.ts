@@ -70,11 +70,22 @@ function createIsolatedRepoFixture(
 }
 
 describe("public surface documentation ownership and freshness", () => {
+	// Reusable test fixture for actual repo inspection across read-only inspection cases
+	const getActualRepoManifest = (() => {
+		let cached: ReturnType<typeof derivePublicSurfaceManifest> | null = null;
+		return () => {
+			if (!cached) {
+				cached = derivePublicSurfaceManifest();
+			}
+			return cached;
+		};
+	})();
+
 	it("derives complete public surface manifest for the actual repo", () => {
 		const rootPkg = JSON.parse(readFileSync(path.join(process.cwd(), "package.json"), "utf8")) as {
 			version: string;
 		};
-		const manifest = derivePublicSurfaceManifest();
+		const manifest = getActualRepoManifest();
 
 		expect(manifest.packageVersion).toBe(rootPkg.version);
 		expect(manifest.totalModules).toBe(111);
@@ -106,7 +117,7 @@ describe("public surface documentation ownership and freshness", () => {
 	});
 
 	it("traces root re-exports to origin component modules and documentation owners", () => {
-		const manifest = derivePublicSurfaceManifest();
+		const manifest = getActualRepoManifest();
 		const rootMod = manifest.modules.find((m) => m.subpath === ".");
 		expect(rootMod).toBeDefined();
 
@@ -124,7 +135,7 @@ describe("public surface documentation ownership and freshness", () => {
 	});
 
 	it("resolves specific catalog slug by longest exportName prefix for shared source modules", () => {
-		const manifest = derivePublicSurfaceManifest();
+		const manifest = getActualRepoManifest();
 
 		// button.tsx hosts both Button and LinkButton
 		const buttonMod = manifest.modules.find((m) => m.subpath === "./components/button");
