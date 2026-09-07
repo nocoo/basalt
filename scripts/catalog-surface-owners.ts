@@ -249,6 +249,14 @@ export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
  * will fail derivation fast.
  */
 export const REGISTERED_CATALOG_HELPERS: Record<string, string[]> = {
+	"@nocoo/basalt/components/file-dropzone": ["FileRejection"],
+	"@nocoo/basalt/components/filter-bar": ["FilterChip", "FilterChipProps"],
+	"@nocoo/basalt/components/upload-queue": [
+		"UploadItem",
+		"UploadItemProps",
+		"UploadFile",
+		"UploadLabels",
+	],
 	"@nocoo/basalt/charts/chart-colors": ["CHART_COLORS"],
 	"@nocoo/basalt/charts/heatmap-calendar": ["heatmapColorScales", "HeatmapDataPoint"],
 	"@nocoo/basalt/charts/palette": ["chart", "CHART_COLORS", "chartAxis", "chartMuted", "withAlpha"],

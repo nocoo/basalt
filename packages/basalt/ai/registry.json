@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.0.3",
-	"totalModules": 112,
-	"totalSymbols": 706,
-	"totalValues": 380,
-	"totalTypes": 326,
+	"totalModules": 116,
+	"totalSymbols": 722,
+	"totalValues": 386,
+	"totalTypes": 336,
 	"totalCssExports": 3,
-	"totalCatalogEntries": 101,
+	"totalCatalogEntries": 105,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -14351,6 +14351,500 @@
 			]
 		},
 		{
+			"displayName": "FileDropzone",
+			"exportName": "FileDropzone",
+			"importPath": "@nocoo/basalt/components/file-dropzone",
+			"subpath": "./components/file-dropzone",
+			"sourceFile": "packages/basalt/src/components/file-dropzone.tsx",
+			"sourceHash": "d0def116612e09e2",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/file-dropzone",
+			"packageDoc": "ai/registry.json#file-dropzone",
+			"summary": "FileDropzone component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "FileDropzone",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/file-dropzone",
+					"packageDoc": "ai/registry.json#file-dropzone",
+					"originModule": "@nocoo/basalt/components/file-dropzone"
+				},
+				{
+					"name": "FileRejection",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/file-dropzone",
+					"packageDoc": "ai/registry.json#file-dropzone",
+					"originModule": "@nocoo/basalt/components/file-dropzone"
+				},
+				{
+					"name": "FileDropzoneProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/file-dropzone",
+					"packageDoc": "ai/registry.json#file-dropzone",
+					"originModule": "@nocoo/basalt/components/file-dropzone"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "file-dropzone",
+					"name": "FileDropzone",
+					"exportName": "FileDropzone",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#file-dropzone",
+					"api": [
+						{
+							"name": "FileDropzone",
+							"props": [
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Visible and accessible upload field name."
+								},
+								{
+									"name": "description",
+									"type": "string",
+									"required": false,
+									"description": "Optional file requirements shown under the label."
+								},
+								{
+									"name": "accept",
+									"type": "string",
+									"required": false,
+									"description": "Accepted extensions/MIME types using native accept syntax, e.g. .pdf,image/*."
+								},
+								{
+									"name": "multiple",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Allow multiple files."
+								},
+								{
+									"name": "maxFiles",
+									"type": "number",
+									"required": false,
+									"default": "Infinity",
+									"description": "Maximum accepted file count including fileCount."
+								},
+								{
+									"name": "fileCount",
+									"type": "number",
+									"required": false,
+									"default": "0",
+									"description": "Number already held by the application."
+								},
+								{
+									"name": "maxSize",
+									"type": "number",
+									"required": false,
+									"default": "Infinity",
+									"description": "Maximum size of an individual file in bytes."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Prevent both file browsing and drops."
+								},
+								{
+									"name": "onFilesAccepted",
+									"type": "(files: File[]) => void",
+									"required": true,
+									"description": "Accepted files from this gesture; transport and queue ownership belong to the caller."
+								},
+								{
+									"name": "onFilesRejected",
+									"type": "(rejections: FileRejection[]) => void",
+									"required": false,
+									"description": "Rejected files from this gesture, with one primary reason per file."
+								},
+								{
+									"name": "browseLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Browse files\"",
+									"description": "Browse action text."
+								},
+								{
+									"name": "dropLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Drop files here\"",
+									"description": "Text while a file is dragged over the field."
+								},
+								{
+									"name": "formatRejection",
+									"type": "(rejection: FileRejection) => string",
+									"required": false,
+									"description": "Localized rejection message; defaults to a name and reason."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "FileDropzone",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Visible and accessible upload field name."
+						},
+						{
+							"name": "description",
+							"type": "string",
+							"required": false,
+							"description": "Optional file requirements shown under the label."
+						},
+						{
+							"name": "accept",
+							"type": "string",
+							"required": false,
+							"description": "Accepted extensions/MIME types using native accept syntax, e.g. .pdf,image/*."
+						},
+						{
+							"name": "multiple",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Allow multiple files."
+						},
+						{
+							"name": "maxFiles",
+							"type": "number",
+							"required": false,
+							"default": "Infinity",
+							"description": "Maximum accepted file count including fileCount."
+						},
+						{
+							"name": "fileCount",
+							"type": "number",
+							"required": false,
+							"default": "0",
+							"description": "Number already held by the application."
+						},
+						{
+							"name": "maxSize",
+							"type": "number",
+							"required": false,
+							"default": "Infinity",
+							"description": "Maximum size of an individual file in bytes."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Prevent both file browsing and drops."
+						},
+						{
+							"name": "onFilesAccepted",
+							"type": "(files: File[]) => void",
+							"required": true,
+							"description": "Accepted files from this gesture; transport and queue ownership belong to the caller."
+						},
+						{
+							"name": "onFilesRejected",
+							"type": "(rejections: FileRejection[]) => void",
+							"required": false,
+							"description": "Rejected files from this gesture, with one primary reason per file."
+						},
+						{
+							"name": "browseLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Browse files\"",
+							"description": "Browse action text."
+						},
+						{
+							"name": "dropLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Drop files here\"",
+							"description": "Text while a file is dragged over the field."
+						},
+						{
+							"name": "formatRejection",
+							"type": "(rejection: FileRejection) => string",
+							"required": false,
+							"description": "Localized rejection message; defaults to a name and reason."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
+			"displayName": "FilterBar",
+			"exportName": "FilterBar",
+			"importPath": "@nocoo/basalt/components/filter-bar",
+			"subpath": "./components/filter-bar",
+			"sourceFile": "packages/basalt/src/components/filter-bar.tsx",
+			"sourceHash": "a1095f97f1214832",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/filter-bar",
+			"packageDoc": "ai/registry.json#filter-bar",
+			"summary": "FilterBar component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "FilterBar",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/filter-bar",
+					"packageDoc": "ai/registry.json#filter-bar",
+					"originModule": "@nocoo/basalt/components/filter-bar"
+				},
+				{
+					"name": "FilterChip",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/filter-bar",
+					"packageDoc": "ai/registry.json#filter-bar",
+					"originModule": "@nocoo/basalt/components/filter-bar"
+				},
+				{
+					"name": "FilterBarProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/filter-bar",
+					"packageDoc": "ai/registry.json#filter-bar",
+					"originModule": "@nocoo/basalt/components/filter-bar"
+				},
+				{
+					"name": "FilterChipProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/filter-bar",
+					"packageDoc": "ai/registry.json#filter-bar",
+					"originModule": "@nocoo/basalt/components/filter-bar"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "filter-bar",
+					"name": "FilterBar",
+					"exportName": "FilterBar",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#filter-bar",
+					"api": [
+						{
+							"name": "FilterBar",
+							"props": [
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Accessible group name."
+								},
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": true,
+									"description": "Application-owned search, select, and date controls."
+								},
+								{
+									"name": "chips",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Active chips, shown on their own wrapping row."
+								},
+								{
+									"name": "active",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Whether the clear action is available."
+								},
+								{
+									"name": "onClear",
+									"type": "() => void",
+									"required": false,
+									"description": "Requests clearing application-owned filters."
+								},
+								{
+									"name": "clearLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Clear filters\"",
+									"description": "Clear action text."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes."
+								}
+							]
+						},
+						{
+							"name": "FilterChip",
+							"props": [
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Filter dimension, e.g. Status."
+								},
+								{
+									"name": "value",
+									"type": "React.ReactNode",
+									"required": true,
+									"description": "Display value."
+								},
+								{
+									"name": "onRemove",
+									"type": "() => void",
+									"required": true,
+									"description": "Requests removal from the application's filter state."
+								},
+								{
+									"name": "removeLabel",
+									"type": "string",
+									"required": false,
+									"description": "Full accessible removal label; defaults to Remove plus the dimension label."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disable removal."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "FilterBar",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible group name."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Application-owned search, select, and date controls."
+						},
+						{
+							"name": "chips",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Active chips, shown on their own wrapping row."
+						},
+						{
+							"name": "active",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Whether the clear action is available."
+						},
+						{
+							"name": "onClear",
+							"type": "() => void",
+							"required": false,
+							"description": "Requests clearing application-owned filters."
+						},
+						{
+							"name": "clearLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Clear filters\"",
+							"description": "Clear action text."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				},
+				{
+					"name": "FilterChip",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Filter dimension, e.g. Status."
+						},
+						{
+							"name": "value",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Display value."
+						},
+						{
+							"name": "onRemove",
+							"type": "() => void",
+							"required": true,
+							"description": "Requests removal from the application's filter state."
+						},
+						{
+							"name": "removeLabel",
+							"type": "string",
+							"required": false,
+							"description": "Full accessible removal label; defaults to Remove plus the dimension label."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable removal."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
 			"displayName": "Flow",
 			"exportName": "Flow",
 			"importPath": "@nocoo/basalt/components/flow",
@@ -16815,6 +17309,384 @@
 							"type": "string",
 							"required": false,
 							"description": "Accessible label announced for assistive technologies. Takes precedence over `label`."
+						}
+					]
+				}
+			]
+		},
+		{
+			"displayName": "MultiSelect",
+			"exportName": "MultiSelect",
+			"importPath": "@nocoo/basalt/components/multi-select",
+			"subpath": "./components/multi-select",
+			"sourceFile": "packages/basalt/src/components/multi-select.tsx",
+			"sourceHash": "f3480f0c834ac7ae",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/multi-select",
+			"packageDoc": "ai/registry.json#multi-select",
+			"summary": "MultiSelect component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "MultiSelect",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/multi-select",
+					"packageDoc": "ai/registry.json#multi-select",
+					"originModule": "@nocoo/basalt/components/multi-select"
+				},
+				{
+					"name": "MultiSelectOption",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/multi-select",
+					"packageDoc": "ai/registry.json#multi-select",
+					"originModule": "@nocoo/basalt/components/multi-select"
+				},
+				{
+					"name": "MultiSelectProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/multi-select",
+					"packageDoc": "ai/registry.json#multi-select",
+					"originModule": "@nocoo/basalt/components/multi-select"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "multi-select",
+					"name": "MultiSelect",
+					"exportName": "MultiSelect",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#multi-select",
+					"api": [
+						{
+							"name": "MultiSelect",
+							"props": [
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Accessible field and popup name."
+								},
+								{
+									"name": "options",
+									"type": "MultiSelectOption[]",
+									"required": true,
+									"description": "Available options; retain selected options to preserve their display labels."
+								},
+								{
+									"name": "value",
+									"type": "string[]",
+									"required": false,
+									"description": "Controlled selected identifiers."
+								},
+								{
+									"name": "defaultValue",
+									"type": "string[]",
+									"required": false,
+									"default": "[]",
+									"description": "Initial uncontrolled selection."
+								},
+								{
+									"name": "onValueChange",
+									"type": "(value: string[]) => void",
+									"required": false,
+									"description": "Selection requests; controlled values change only when accepted by the caller."
+								},
+								{
+									"name": "query",
+									"type": "string",
+									"required": false,
+									"description": "Controlled search text; asynchronous requests belong to the caller."
+								},
+								{
+									"name": "defaultQuery",
+									"type": "string",
+									"required": false,
+									"default": "\"\"",
+									"description": "Initial uncontrolled search text."
+								},
+								{
+									"name": "onQueryChange",
+									"type": "(query: string) => void",
+									"required": false,
+									"description": "Search text requests."
+								},
+								{
+									"name": "open",
+									"type": "boolean",
+									"required": false,
+									"description": "Controlled popup visibility."
+								},
+								{
+									"name": "defaultOpen",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Initial uncontrolled popup visibility."
+								},
+								{
+									"name": "onOpenChange",
+									"type": "(open: boolean) => void",
+									"required": false,
+									"description": "Popup visibility requests."
+								},
+								{
+									"name": "filterOptions",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Use local label/description filtering; disable for server-filtered options."
+								},
+								{
+									"name": "loading",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Loading content replaces the option list."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Disables the trigger, chips, and native form entries."
+								},
+								{
+									"name": "name",
+									"type": "string",
+									"required": false,
+									"description": "Repeated native form entry name, one entry per selected identifier."
+								},
+								{
+									"name": "form",
+									"type": "string",
+									"required": false,
+									"description": "Optional external native form owner. Uncontrolled state respects uncancelled form resets."
+								},
+								{
+									"name": "placeholder",
+									"type": "string",
+									"required": false,
+									"default": "\"Select options\"",
+									"description": "Empty selection prompt."
+								},
+								{
+									"name": "searchPlaceholder",
+									"type": "string",
+									"required": false,
+									"default": "\"Search options…\"",
+									"description": "Search input prompt."
+								},
+								{
+									"name": "emptyLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"No options found.\"",
+									"description": "Empty search result text."
+								},
+								{
+									"name": "loadingLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Loading options…\"",
+									"description": "Loading announcement."
+								},
+								{
+									"name": "removeLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"Remove\"",
+									"description": "Chip removal label prefix."
+								},
+								{
+									"name": "showChips",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Show removable selection chips; disable when a FilterBar renders its own chips."
+								},
+								{
+									"name": "formatSelectionCount",
+									"type": "(count: number) => string",
+									"required": false,
+									"description": "Selection count formatter, including localization."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "MultiSelect",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible field and popup name."
+						},
+						{
+							"name": "options",
+							"type": "MultiSelectOption[]",
+							"required": true,
+							"description": "Available options; retain selected options to preserve their display labels."
+						},
+						{
+							"name": "value",
+							"type": "string[]",
+							"required": false,
+							"description": "Controlled selected identifiers."
+						},
+						{
+							"name": "defaultValue",
+							"type": "string[]",
+							"required": false,
+							"default": "[]",
+							"description": "Initial uncontrolled selection."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: string[]) => void",
+							"required": false,
+							"description": "Selection requests; controlled values change only when accepted by the caller."
+						},
+						{
+							"name": "query",
+							"type": "string",
+							"required": false,
+							"description": "Controlled search text; asynchronous requests belong to the caller."
+						},
+						{
+							"name": "defaultQuery",
+							"type": "string",
+							"required": false,
+							"default": "\"\"",
+							"description": "Initial uncontrolled search text."
+						},
+						{
+							"name": "onQueryChange",
+							"type": "(query: string) => void",
+							"required": false,
+							"description": "Search text requests."
+						},
+						{
+							"name": "open",
+							"type": "boolean",
+							"required": false,
+							"description": "Controlled popup visibility."
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Initial uncontrolled popup visibility."
+						},
+						{
+							"name": "onOpenChange",
+							"type": "(open: boolean) => void",
+							"required": false,
+							"description": "Popup visibility requests."
+						},
+						{
+							"name": "filterOptions",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Use local label/description filtering; disable for server-filtered options."
+						},
+						{
+							"name": "loading",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Loading content replaces the option list."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disables the trigger, chips, and native form entries."
+						},
+						{
+							"name": "name",
+							"type": "string",
+							"required": false,
+							"description": "Repeated native form entry name, one entry per selected identifier."
+						},
+						{
+							"name": "form",
+							"type": "string",
+							"required": false,
+							"description": "Optional external native form owner. Uncontrolled state respects uncancelled form resets."
+						},
+						{
+							"name": "placeholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Select options\"",
+							"description": "Empty selection prompt."
+						},
+						{
+							"name": "searchPlaceholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Search options…\"",
+							"description": "Search input prompt."
+						},
+						{
+							"name": "emptyLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"No options found.\"",
+							"description": "Empty search result text."
+						},
+						{
+							"name": "loadingLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Loading options…\"",
+							"description": "Loading announcement."
+						},
+						{
+							"name": "removeLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Remove\"",
+							"description": "Chip removal label prefix."
+						},
+						{
+							"name": "showChips",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show removable selection chips; disable when a FilterBar renders its own chips."
+						},
+						{
+							"name": "formatSelectionCount",
+							"type": "(count: number) => string",
+							"required": false,
+							"description": "Selection count formatter, including localization."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
 						}
 					]
 				}
@@ -24639,6 +25511,276 @@
 			]
 		},
 		{
+			"displayName": "UploadQueue",
+			"exportName": "UploadQueue",
+			"importPath": "@nocoo/basalt/components/upload-queue",
+			"subpath": "./components/upload-queue",
+			"sourceFile": "packages/basalt/src/components/upload-queue.tsx",
+			"sourceHash": "12e5c236b6aa7093",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/upload-queue",
+			"packageDoc": "ai/registry.json#upload-queue",
+			"summary": "UploadQueue component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "UploadItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"packageDoc": "ai/registry.json#upload-queue",
+					"originModule": "@nocoo/basalt/components/upload-queue"
+				},
+				{
+					"name": "UploadQueue",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"packageDoc": "ai/registry.json#upload-queue",
+					"originModule": "@nocoo/basalt/components/upload-queue"
+				},
+				{
+					"name": "UploadFile",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"packageDoc": "ai/registry.json#upload-queue",
+					"originModule": "@nocoo/basalt/components/upload-queue"
+				},
+				{
+					"name": "UploadLabels",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"packageDoc": "ai/registry.json#upload-queue",
+					"originModule": "@nocoo/basalt/components/upload-queue"
+				},
+				{
+					"name": "UploadItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"packageDoc": "ai/registry.json#upload-queue",
+					"originModule": "@nocoo/basalt/components/upload-queue"
+				},
+				{
+					"name": "UploadQueueProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"packageDoc": "ai/registry.json#upload-queue",
+					"originModule": "@nocoo/basalt/components/upload-queue"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "upload-queue",
+					"name": "UploadQueue",
+					"exportName": "UploadQueue",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#upload-queue",
+					"api": [
+						{
+							"name": "UploadQueue",
+							"props": [
+								{
+									"name": "onCancel",
+									"type": "(id: string) => void",
+									"required": false,
+									"description": "Cancel a queued or uploading entry."
+								},
+								{
+									"name": "onRetry",
+									"type": "(id: string) => void",
+									"required": false,
+									"description": "Retry a failed or cancelled entry."
+								},
+								{
+									"name": "onRemove",
+									"type": "(id: string) => void",
+									"required": false,
+									"description": "Remove an entry that is not currently uploading."
+								},
+								{
+									"name": "labels",
+									"type": "UploadLabels",
+									"required": false,
+									"description": "Localized statuses and action labels."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes."
+								},
+								{
+									"name": "label",
+									"type": "string",
+									"required": true,
+									"description": "Accessible queue name."
+								},
+								{
+									"name": "files",
+									"type": "UploadFile[]",
+									"required": true,
+									"description": "Application-owned queue entries."
+								},
+								{
+									"name": "emptyLabel",
+									"type": "string",
+									"required": false,
+									"default": "\"No files selected.\"",
+									"description": "Empty queue text."
+								}
+							]
+						},
+						{
+							"name": "UploadItem",
+							"props": [
+								{
+									"name": "file",
+									"type": "UploadFile",
+									"required": true,
+									"description": "Current queue entry. The component does not start a network request."
+								},
+								{
+									"name": "onCancel",
+									"type": "(id: string) => void",
+									"required": false,
+									"description": "Cancel a queued or uploading entry."
+								},
+								{
+									"name": "onRetry",
+									"type": "(id: string) => void",
+									"required": false,
+									"description": "Retry a failed or cancelled entry."
+								},
+								{
+									"name": "onRemove",
+									"type": "(id: string) => void",
+									"required": false,
+									"description": "Remove an entry that is not currently uploading."
+								},
+								{
+									"name": "labels",
+									"type": "UploadLabels",
+									"required": false,
+									"description": "Localized statuses and action labels."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false,
+									"description": "Additional root classes."
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "UploadQueue",
+					"props": [
+						{
+							"name": "onCancel",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Cancel a queued or uploading entry."
+						},
+						{
+							"name": "onRetry",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Retry a failed or cancelled entry."
+						},
+						{
+							"name": "onRemove",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Remove an entry that is not currently uploading."
+						},
+						{
+							"name": "labels",
+							"type": "UploadLabels",
+							"required": false,
+							"description": "Localized statuses and action labels."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						},
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible queue name."
+						},
+						{
+							"name": "files",
+							"type": "UploadFile[]",
+							"required": true,
+							"description": "Application-owned queue entries."
+						},
+						{
+							"name": "emptyLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"No files selected.\"",
+							"description": "Empty queue text."
+						}
+					]
+				},
+				{
+					"name": "UploadItem",
+					"props": [
+						{
+							"name": "file",
+							"type": "UploadFile",
+							"required": true,
+							"description": "Current queue entry. The component does not start a network request."
+						},
+						{
+							"name": "onCancel",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Cancel a queued or uploading entry."
+						},
+						{
+							"name": "onRetry",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Retry a failed or cancelled entry."
+						},
+						{
+							"name": "onRemove",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Remove an entry that is not currently uploading."
+						},
+						{
+							"name": "labels",
+							"type": "UploadLabels",
+							"required": false,
+							"description": "Localized statuses and action labels."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
 			"displayName": "accentSwatchById",
 			"exportName": "accentSwatchById",
 			"importPath": "@nocoo/basalt/providers/accent",
@@ -32123,6 +33265,501 @@
 							"type": "React.ReactNode",
 							"required": true,
 							"description": "Application components wrapped by the link routing context."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "multi-select",
+			"name": "MultiSelect",
+			"exportName": "MultiSelect",
+			"importPath": "@nocoo/basalt/components/multi-select",
+			"sourceFile": "packages/basalt/src/components/multi-select.tsx",
+			"sourceHash": "f3480f0c834ac7ae",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#multi-select",
+			"api": [
+				{
+					"name": "MultiSelect",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible field and popup name."
+						},
+						{
+							"name": "options",
+							"type": "MultiSelectOption[]",
+							"required": true,
+							"description": "Available options; retain selected options to preserve their display labels."
+						},
+						{
+							"name": "value",
+							"type": "string[]",
+							"required": false,
+							"description": "Controlled selected identifiers."
+						},
+						{
+							"name": "defaultValue",
+							"type": "string[]",
+							"required": false,
+							"default": "[]",
+							"description": "Initial uncontrolled selection."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: string[]) => void",
+							"required": false,
+							"description": "Selection requests; controlled values change only when accepted by the caller."
+						},
+						{
+							"name": "query",
+							"type": "string",
+							"required": false,
+							"description": "Controlled search text; asynchronous requests belong to the caller."
+						},
+						{
+							"name": "defaultQuery",
+							"type": "string",
+							"required": false,
+							"default": "\"\"",
+							"description": "Initial uncontrolled search text."
+						},
+						{
+							"name": "onQueryChange",
+							"type": "(query: string) => void",
+							"required": false,
+							"description": "Search text requests."
+						},
+						{
+							"name": "open",
+							"type": "boolean",
+							"required": false,
+							"description": "Controlled popup visibility."
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Initial uncontrolled popup visibility."
+						},
+						{
+							"name": "onOpenChange",
+							"type": "(open: boolean) => void",
+							"required": false,
+							"description": "Popup visibility requests."
+						},
+						{
+							"name": "filterOptions",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Use local label/description filtering; disable for server-filtered options."
+						},
+						{
+							"name": "loading",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Loading content replaces the option list."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disables the trigger, chips, and native form entries."
+						},
+						{
+							"name": "name",
+							"type": "string",
+							"required": false,
+							"description": "Repeated native form entry name, one entry per selected identifier."
+						},
+						{
+							"name": "form",
+							"type": "string",
+							"required": false,
+							"description": "Optional external native form owner. Uncontrolled state respects uncancelled form resets."
+						},
+						{
+							"name": "placeholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Select options\"",
+							"description": "Empty selection prompt."
+						},
+						{
+							"name": "searchPlaceholder",
+							"type": "string",
+							"required": false,
+							"default": "\"Search options…\"",
+							"description": "Search input prompt."
+						},
+						{
+							"name": "emptyLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"No options found.\"",
+							"description": "Empty search result text."
+						},
+						{
+							"name": "loadingLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Loading options…\"",
+							"description": "Loading announcement."
+						},
+						{
+							"name": "removeLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Remove\"",
+							"description": "Chip removal label prefix."
+						},
+						{
+							"name": "showChips",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show removable selection chips; disable when a FilterBar renders its own chips."
+						},
+						{
+							"name": "formatSelectionCount",
+							"type": "(count: number) => string",
+							"required": false,
+							"description": "Selection count formatter, including localization."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "filter-bar",
+			"name": "FilterBar",
+			"exportName": "FilterBar",
+			"importPath": "@nocoo/basalt/components/filter-bar",
+			"sourceFile": "packages/basalt/src/components/filter-bar.tsx",
+			"sourceHash": "a1095f97f1214832",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#filter-bar",
+			"api": [
+				{
+					"name": "FilterBar",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible group name."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Application-owned search, select, and date controls."
+						},
+						{
+							"name": "chips",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Active chips, shown on their own wrapping row."
+						},
+						{
+							"name": "active",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Whether the clear action is available."
+						},
+						{
+							"name": "onClear",
+							"type": "() => void",
+							"required": false,
+							"description": "Requests clearing application-owned filters."
+						},
+						{
+							"name": "clearLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Clear filters\"",
+							"description": "Clear action text."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				},
+				{
+					"name": "FilterChip",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Filter dimension, e.g. Status."
+						},
+						{
+							"name": "value",
+							"type": "React.ReactNode",
+							"required": true,
+							"description": "Display value."
+						},
+						{
+							"name": "onRemove",
+							"type": "() => void",
+							"required": true,
+							"description": "Requests removal from the application's filter state."
+						},
+						{
+							"name": "removeLabel",
+							"type": "string",
+							"required": false,
+							"description": "Full accessible removal label; defaults to Remove plus the dimension label."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Disable removal."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "file-dropzone",
+			"name": "FileDropzone",
+			"exportName": "FileDropzone",
+			"importPath": "@nocoo/basalt/components/file-dropzone",
+			"sourceFile": "packages/basalt/src/components/file-dropzone.tsx",
+			"sourceHash": "d0def116612e09e2",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#file-dropzone",
+			"api": [
+				{
+					"name": "FileDropzone",
+					"props": [
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Visible and accessible upload field name."
+						},
+						{
+							"name": "description",
+							"type": "string",
+							"required": false,
+							"description": "Optional file requirements shown under the label."
+						},
+						{
+							"name": "accept",
+							"type": "string",
+							"required": false,
+							"description": "Accepted extensions/MIME types using native accept syntax, e.g. .pdf,image/*."
+						},
+						{
+							"name": "multiple",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Allow multiple files."
+						},
+						{
+							"name": "maxFiles",
+							"type": "number",
+							"required": false,
+							"default": "Infinity",
+							"description": "Maximum accepted file count including fileCount."
+						},
+						{
+							"name": "fileCount",
+							"type": "number",
+							"required": false,
+							"default": "0",
+							"description": "Number already held by the application."
+						},
+						{
+							"name": "maxSize",
+							"type": "number",
+							"required": false,
+							"default": "Infinity",
+							"description": "Maximum size of an individual file in bytes."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Prevent both file browsing and drops."
+						},
+						{
+							"name": "onFilesAccepted",
+							"type": "(files: File[]) => void",
+							"required": true,
+							"description": "Accepted files from this gesture; transport and queue ownership belong to the caller."
+						},
+						{
+							"name": "onFilesRejected",
+							"type": "(rejections: FileRejection[]) => void",
+							"required": false,
+							"description": "Rejected files from this gesture, with one primary reason per file."
+						},
+						{
+							"name": "browseLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Browse files\"",
+							"description": "Browse action text."
+						},
+						{
+							"name": "dropLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"Drop files here\"",
+							"description": "Text while a file is dragged over the field."
+						},
+						{
+							"name": "formatRejection",
+							"type": "(rejection: FileRejection) => string",
+							"required": false,
+							"description": "Localized rejection message; defaults to a name and reason."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "upload-queue",
+			"name": "UploadQueue",
+			"exportName": "UploadQueue",
+			"importPath": "@nocoo/basalt/components/upload-queue",
+			"sourceFile": "packages/basalt/src/components/upload-queue.tsx",
+			"sourceHash": "12e5c236b6aa7093",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#upload-queue",
+			"api": [
+				{
+					"name": "UploadQueue",
+					"props": [
+						{
+							"name": "onCancel",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Cancel a queued or uploading entry."
+						},
+						{
+							"name": "onRetry",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Retry a failed or cancelled entry."
+						},
+						{
+							"name": "onRemove",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Remove an entry that is not currently uploading."
+						},
+						{
+							"name": "labels",
+							"type": "UploadLabels",
+							"required": false,
+							"description": "Localized statuses and action labels."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
+						},
+						{
+							"name": "label",
+							"type": "string",
+							"required": true,
+							"description": "Accessible queue name."
+						},
+						{
+							"name": "files",
+							"type": "UploadFile[]",
+							"required": true,
+							"description": "Application-owned queue entries."
+						},
+						{
+							"name": "emptyLabel",
+							"type": "string",
+							"required": false,
+							"default": "\"No files selected.\"",
+							"description": "Empty queue text."
+						}
+					]
+				},
+				{
+					"name": "UploadItem",
+					"props": [
+						{
+							"name": "file",
+							"type": "UploadFile",
+							"required": true,
+							"description": "Current queue entry. The component does not start a network request."
+						},
+						{
+							"name": "onCancel",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Cancel a queued or uploading entry."
+						},
+						{
+							"name": "onRetry",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Retry a failed or cancelled entry."
+						},
+						{
+							"name": "onRemove",
+							"type": "(id: string) => void",
+							"required": false,
+							"description": "Remove an entry that is not currently uploading."
+						},
+						{
+							"name": "labels",
+							"type": "UploadLabels",
+							"required": false,
+							"description": "Localized statuses and action labels."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false,
+							"description": "Additional root classes."
 						}
 					]
 				}

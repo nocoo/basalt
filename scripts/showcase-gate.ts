@@ -10,6 +10,7 @@ import {
 import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from "./consumer-http";
 import { assertExamplePages } from "./showcase-examples";
 import { assertLibraryShowcases } from "./showcase-library";
+import { assertReusableShowcases } from "./showcase-reuse";
 
 /** Build and test the current source; never silently consume yesterday's dist. */
 export async function runShowcaseGate() {
@@ -36,8 +37,9 @@ export async function runShowcaseGate() {
 			page.setDefaultTimeout(12_000);
 			const library = await assertLibraryShowcases(page, url);
 			const examples = await assertExamplePages(page, url);
+			const reusable = await assertReusableShowcases(page, url);
 			assertNoPageFaults(faults);
-			return { library, examples };
+			return { library, examples, reusable };
 		});
 		console.log(`Showcase gate passed ${JSON.stringify(evidence)}`);
 	} finally {

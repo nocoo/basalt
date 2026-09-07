@@ -29,6 +29,7 @@ import { assertConsumerConfirm } from "./consumer-confirm";
 import { assertConsumerContrast } from "./consumer-contrast";
 import { assertConsumerDock } from "./consumer-dock";
 import { assertConsumerEmpty } from "./consumer-empty";
+import { assertConsumerFilters } from "./consumer-filters";
 import { assertConsumerGeometry } from "./consumer-geometry";
 import {
 	allocatePort,
@@ -1230,6 +1231,13 @@ console.log(JSON.stringify({
 				evidence.marker = true;
 				evidence.launch = `${launch.command} ${launch.args[0]}`;
 				evidence.hydration = hydration;
+				evidence.filters = await withChromiumPage(profileDir, async (page) => {
+					const faults = attachPageFaults(page);
+					await page.goto(`http://127.0.0.1:${port}/filters`, { waitUntil: "domcontentloaded" });
+					const result = await assertConsumerFilters(page);
+					assertNoPageFaults(faults);
+					return result;
+				});
 			} else {
 				const distRoot = join(consumerRoot, "dist");
 				const distFiles = walkFiles(distRoot);
@@ -1358,6 +1366,16 @@ console.log(JSON.stringify({
 							waitUntil: "domcontentloaded",
 						});
 						const result = await assertConsumerResources(page);
+						assertNoPageFaults(faults);
+						return result;
+					});
+
+					evidence.filters = await withChromiumPage(profileDir, async (page) => {
+						const faults = attachPageFaults(page);
+						await page.goto(`http://127.0.0.1:${port}/filters.html`, {
+							waitUntil: "domcontentloaded",
+						});
+						const result = await assertConsumerFilters(page);
 						assertNoPageFaults(faults);
 						return result;
 					});

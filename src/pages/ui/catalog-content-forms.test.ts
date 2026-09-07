@@ -30,6 +30,10 @@ import { CATALOG_CONTENT_FAMILY } from "./generated/catalog-content-family";
 import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
 const FORMS_SLUGS = [
+	"multi-select",
+	"filter-bar",
+	"file-dropzone",
+	"upload-queue",
 	"field",
 	"input",
 	"input-area",
@@ -64,9 +68,9 @@ const SOURCE_BACKED = {
 } as const;
 
 describe("forms catalog content family", () => {
-	it("owns exactly sixteen slugs and eighty-six generated owners", () => {
+	it("owns exactly twenty slugs and the complete generated inventory", () => {
 		expect(Object.keys(forms)).toEqual([...FORMS_SLUGS]);
-		expect(Object.keys(forms)).toHaveLength(16);
+		expect(Object.keys(forms)).toHaveLength(20);
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY)
 				.filter(([, family]) => family === "forms")
@@ -76,7 +80,7 @@ describe("forms catalog content family", () => {
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "foundation"),
 		).toHaveLength(12);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(101);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(105);
 	});
 
 	it("keeps source-backed example owners and generated API shards by reference", () => {

@@ -42,6 +42,8 @@ export const CATALOG_CONTENT_FAMILY = {
 	empty: "feedback",
 	fab: "chat",
 	field: "forms",
+	"file-dropzone": "forms",
+	"filter-bar": "forms",
 	flow: "data-layout",
 	funnel: "charts",
 	gauge: "charts",
@@ -63,6 +65,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	loader: "feedback",
 	"menu-bar": "navigation",
 	meter: "feedback",
+	"multi-select": "forms",
 	"navigation-menu": "navigation",
 	"page-header": "data-layout",
 	pagination: "navigation",
@@ -102,4 +105,5 @@ export const CATALOG_CONTENT_FAMILY = {
 	"toggle-group": "forms",
 	toolbar: "navigation",
 	tooltip: "overlay",
+	"upload-queue": "forms",
 } as const;

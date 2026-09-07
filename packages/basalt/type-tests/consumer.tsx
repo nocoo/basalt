@@ -348,3 +348,53 @@ export const badResourceColumn: DataTableColumn<{ count: number }> = {
 export const badResourceList = <ResourceList title="Missing rows" />;
 // @ts-expect-error Battery meters always need an accessible name.
 export const unnamedBattery = <BatteryMeter value={42} />;
+
+import { FileDropzone, type FileRejection } from "@nocoo/basalt/components/file-dropzone";
+import { FilterBar, FilterChip } from "@nocoo/basalt/components/filter-bar";
+import { MultiSelect, type MultiSelectOption } from "@nocoo/basalt/components/multi-select";
+import { type UploadFile, UploadItem, UploadQueue } from "@nocoo/basalt/components/upload-queue";
+
+const selectableFolders = [
+	{ value: "research", label: "Research" },
+] as const satisfies readonly MultiSelectOption[];
+const selectedFolders = ["research"] as const;
+const _multiSelect = (
+	<MultiSelect
+		label="Folders"
+		options={selectableFolders}
+		value={selectedFolders}
+		form="external-form"
+		name="folders"
+		query="research"
+		onQueryChange={(query: string) => query.toLowerCase()}
+		onValueChange={(value: string[]) => value.join(",")}
+	/>
+);
+const _filterBar = (
+	<FilterBar
+		label="Filters"
+		chips={<FilterChip label="Folder" value="Research" onRemove={() => {}} />}
+	>
+		<span>Search</span>
+	</FilterBar>
+);
+const _dropzone = (
+	<FileDropzone
+		label="Files"
+		onFilesAccepted={(files: File[]) => files.map((file) => file.name)}
+		onFilesRejected={(rejections: FileRejection[]) => rejections.map((item) => item.code)}
+	/>
+);
+const queuedFiles = [
+	{ id: "a", name: "a.pdf", status: "uploading", progress: 50 },
+] as const satisfies readonly UploadFile[];
+const _uploadQueue = (
+	<UploadQueue label="Uploads" files={queuedFiles} onCancel={(id: string) => id.toUpperCase()} />
+);
+const _uploadItem = <UploadItem file={queuedFiles[0]} onRetry={(id: string) => id.toUpperCase()} />;
+// @ts-expect-error Selection is a list of stable string identifiers.
+const _invalidSelection = <MultiSelect label="Folders" options={selectableFolders} value={[1]} />;
+// @ts-expect-error Upload transport states are explicit; backend-specific states need an adapter.
+const _invalidUpload = <UploadItem file={{ id: "a", name: "a.pdf", status: "processing" }} />;
+// @ts-expect-error Accessible labeling is required for the file chooser.
+const _unlabelledDropzone = <FileDropzone onFilesAccepted={() => {}} />;

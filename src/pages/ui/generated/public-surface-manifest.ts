@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.0.3",
-	"totalModules": 112,
-	"totalSymbols": 706,
-	"totalValues": 380,
-	"totalTypes": 326,
+	"totalModules": 116,
+	"totalSymbols": 722,
+	"totalValues": 386,
+	"totalTypes": 336,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -4115,6 +4115,82 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
+			"subpath": "./components/file-dropzone",
+			"importPath": "@nocoo/basalt/components/file-dropzone",
+			"sourceFile": "packages/basalt/src/components/file-dropzone.tsx",
+			"ownerDoc": "src/pages/ui/file-dropzone",
+			"ownerKind": "catalog-component",
+			"summary": "FileDropzone component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "FileDropzone",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/file-dropzone",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/file-dropzone"
+				},
+				{
+					"name": "FileRejection",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/file-dropzone",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/file-dropzone"
+				},
+				{
+					"name": "FileDropzoneProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/file-dropzone",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/file-dropzone"
+				}
+			]
+		},
+		{
+			"subpath": "./components/filter-bar",
+			"importPath": "@nocoo/basalt/components/filter-bar",
+			"sourceFile": "packages/basalt/src/components/filter-bar.tsx",
+			"ownerDoc": "src/pages/ui/filter-bar",
+			"ownerKind": "catalog-component",
+			"summary": "FilterBar component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "FilterBar",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/filter-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/filter-bar"
+				},
+				{
+					"name": "FilterChip",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/filter-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/filter-bar"
+				},
+				{
+					"name": "FilterBarProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/filter-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/filter-bar"
+				},
+				{
+					"name": "FilterChipProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/filter-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/filter-bar"
+				}
+			]
+		},
+		{
 			"subpath": "./components/flow",
 			"importPath": "@nocoo/basalt/components/flow",
 			"sourceFile": "packages/basalt/src/components/flow.tsx",
@@ -4673,6 +4749,40 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/meter",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/meter"
+				}
+			]
+		},
+		{
+			"subpath": "./components/multi-select",
+			"importPath": "@nocoo/basalt/components/multi-select",
+			"sourceFile": "packages/basalt/src/components/multi-select.tsx",
+			"ownerDoc": "src/pages/ui/multi-select",
+			"ownerKind": "catalog-component",
+			"summary": "MultiSelect component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "MultiSelect",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/multi-select",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/multi-select"
+				},
+				{
+					"name": "MultiSelectOption",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/multi-select",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/multi-select"
+				},
+				{
+					"name": "MultiSelectProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/multi-select",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/multi-select"
 				}
 			]
 		},
@@ -6607,6 +6717,64 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
 					"ownerKind": "legacy-internal",
 					"originModule": "@nocoo/basalt/components/typeahead-field"
+				}
+			]
+		},
+		{
+			"subpath": "./components/upload-queue",
+			"importPath": "@nocoo/basalt/components/upload-queue",
+			"sourceFile": "packages/basalt/src/components/upload-queue.tsx",
+			"ownerDoc": "src/pages/ui/upload-queue",
+			"ownerKind": "catalog-component",
+			"summary": "UploadQueue component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "UploadItem",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/upload-queue"
+				},
+				{
+					"name": "UploadQueue",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/upload-queue"
+				},
+				{
+					"name": "UploadFile",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/upload-queue"
+				},
+				{
+					"name": "UploadLabels",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/upload-queue"
+				},
+				{
+					"name": "UploadItemProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/upload-queue"
+				},
+				{
+					"name": "UploadQueueProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/upload-queue",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/upload-queue"
 				}
 			]
 		},

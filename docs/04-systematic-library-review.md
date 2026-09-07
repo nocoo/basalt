@@ -703,13 +703,13 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | P5 | 视觉/图表/动效：13a/b1/b2/b3/c/d、17a 及 tooltip/matrix/回归/registry 子组；C12/C13/C15/C23/E07/E08/Q08/R04/R05 | 主题对比、导航回焦、图表替代、StatCard 状态、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、reduced motion | 已验收 | 实施至 `236ac18`；183 文件 / 1,703 测试全部通过，四维覆盖率 97.24 / 95.05 / 98.50 / 97.43；C12/C13/C15/C23/E07/E08/Q08/R04 已关闭，详见 12.4 |
 | P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 已验收 | `462b43e`；三种骨架屏、两种丰富表格、BatteryMeter 与受控列表；1,719 项测试及四维 95% 门、真实包和浏览器检查通过 |
 | P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 已验收 | 1,729 项测试、四维 95% 门及 fresh 生产构建浏览器检查通过 |
-| P8 | 筛选与上传：16a/b/c；R01/R02 | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费 | 实施中 | 主 agent 直接实施 |
-| P9 | 小型复用控件与应用模板：18a/b/c/d；R03/R06/R07/R08 | EditableNav、Tag 色板/选择、InlineEditable/master-detail、可编译 AppFrame/Login/Resource recipes | 待调度 | — |
+| P8 | 筛选与上传：16a/b/c；R01/R02 | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费 | 已验收 | 主 agent 阶段实现，见下方记录 |
+| P9 | 小型复用控件与应用模板：18a/b/c/d；R03/R06/R07/R08 | EditableNav、Tag 色板/选择、InlineEditable/master-detail、可编译 AppFrame/Login/Resource recipes | 实施中 | 主 agent 直接实施 |
 | P10 | 整体验收、兼容/迁移说明与台账收口；Q05 与全部问题追踪 | 新 HEAD 全套 6DQ、tarball/文档 freshness、关键浏览器组合、无未记录 API 破坏、干净工作区 | 待调度 | — |
 
 P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功能提交。P9 的 InlineEditable 按实际受控需求单独提交。任何新增公开 surface 同阶段补元数据、出口和文档，不能拖到收尾才补。
 
-**当前执行点（2026-09-07）：P1–P7 已验收；主 agent 直接实施 P8，随后完成 P9–P10，按阶段提交。** pi 保持空闲，其监督定时器停止，本地 dev 服务保留。后续阶段沿用原任务范围及兼容验收基线。
+**当前执行点（2026-09-07）：P1–P8 已验收；主 agent 直接实施 P9，随后完成 P10，按阶段提交。** pi 保持空闲，其监督定时器停止，本地 dev 服务保留。后续阶段沿用原任务范围及兼容验收基线。
 
 ### 12.4 验收记录
 
@@ -1063,6 +1063,16 @@ Forms 使用原生提交、验证与 FormData，文件浏览显示选择结果�
 Network 为 StackedBar、Sankey、Radar 及同源问题的 StackedArea 提供明确 plot 高度。完整浏览器检查另外发现并修正 Navigation 面包屑/步骤条及 Data 标题工具栏的手机溢出。`test:showcase` 扩展为 24 路由桌面/手机冒烟、四个交互页与 Network 深浅主题/键盘/reduced-motion 回归、320/390/640 CSS px 文档重排、重复 ID 与键盘横滚。640 CSS px 对应 1280px 桌面在 200% 缩放后的布局宽度；不是用截图缩放代替重排。
 
 最终 **187 文件 / 1,729 测试全部通过**，语句 **97.40%（3,490/3,583）**、分支 **95.30%（3,003/3,151）**、函数 **98.59%（841/853）**、行 **97.58%（3,348/3,431）**；四维 95% 门与覆盖范围保持不变。类型、lint、真实 tarball 文档编译及 fresh 生产构建 `test:showcase` 全部通过，浏览器无控制台或页面错误。已查看手机 Settings/Chat/Library 及修正后的 Network 桌面截图。组件运行时与原始公共基线未改变，**E01–E06 已关闭，P7 已验收**。证据：`p7-direct-workflow-unit.json`、`p7-direct-updated-scenarios.json`、`p7-direct-docs.json`、`p7-direct-coverage-final.json`、`p7-direct-showcase-final.json`。
+
+#### P8 验收记录（已验收，2026-09-07）
+
+新增四个 granular 模块、六个公开组件：MultiSelect；FilterBar/FilterChip；FileDropzone；UploadQueue/UploadItem。MultiSelect 支持受控与非受控 value/query/open、服务端搜索适配、禁用选项、键盘选择、chip 删除和原生重复表单字段，尊重正常/取消重置与外部 form 归属。FilterBar 只负责布局与清除请求；MultiSelect 可把 chip 展示交给 FilterBar，避免重复。FileDropzone 验证扩展名/MIME、大小和数量，给出逐文件拒绝原因；队列状态、transport、取消/重试和预览 URL 由调用方持有。
+
+Library 新增八个可复制场景：文件夹组织、远程模型搜索、资源搜索/标签、统计日期范围/预设、文档接收、封面图片、可取消/失败/重试的本地上传、录音导入复核。展示使用宽布局和默认折叠源码；移动端重排，上传取消与移除图标区分。图片替换/移除/卸载释放 object URL，搜索和模拟传输在卸载时清理计时器，取消后不会继续推进。
+
+完整 **192 文件 / 1,755 测试通过**；语句 **97.42%（3,664/3,761）**、分支 **95.46%（3,220/3,373）**、函数 **98.67%（894/906）**、行 **97.64%（3,490/3,574）**。类型、lint、包 build/types/pack/publint、真实 tarball A/B/Next 和 docs gate 全通过；新消费 fixture 验证键盘、焦点、重置、文件校验、真实 drop 与队列动作。fresh 生产构建的 showcase gate 包含原 P6/P7 全部检查及 P8 四页的手机/桌面、深浅主题交互，控制台/页面错误为零。浏览器探针修正了等待异步结果与 Radix 回焦的时机，并按组件作用域定位错误区域，保留 Next 自带的 route announcer。
+
+当前 **106 catalog 项（105 ready，maps 仍 planned）、116 模块 / 722 符号、243 API targets、278 场景**；四个模块均不进入根 barrel。原公开基线、版本 2.0.3 与 docs/04 第 1–8 节保持原文。**R01/R02 已关闭，P8 已验收**。证据：`p8-direct-coverage-final.json`、`p8-direct-typecheck-final.json`、`p8-direct-standalone-complete.json`、`p8-direct-tailwind-complete.json`、`p8-direct-next-final.json`、`p8-direct-docs-complete.json`、`p8-direct-types-complete.json`、`p8-direct-pack-complete.json`、`p8-direct-publint-complete.json`、`p8-direct-showcase-complete.json`。
 
 ### 12.5 实施中追加的问题
 

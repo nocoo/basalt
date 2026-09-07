@@ -10,22 +10,29 @@ import { CHECKBOX_EXAMPLES } from "../../examples/checkbox";
 import { COMBOBOX_EXAMPLES } from "../../examples/combobox";
 import { DATE_PICKER_EXAMPLES } from "../../examples/date-picker";
 import { FIELD_EXAMPLES } from "../../examples/field";
+import { FILE_DROPZONE_EXAMPLES } from "../../examples/file-dropzone";
+import { FILTER_BAR_EXAMPLES } from "../../examples/filter-bar";
 import { INPUT_EXAMPLES } from "../../examples/input";
 import { INPUT_AREA_EXAMPLES } from "../../examples/input-area";
 import { INPUT_GROUP_EXAMPLES } from "../../examples/input-group";
+import { MULTI_SELECT_EXAMPLES } from "../../examples/multi-select";
 import { RADIO_EXAMPLES } from "../../examples/radio";
 import { SEGMENT_CONTROL_EXAMPLES } from "../../examples/segment-control";
 import { SELECT_EXAMPLES } from "../../examples/select";
 import { SENSITIVE_INPUT_EXAMPLES } from "../../examples/sensitive-input";
 import { SWITCH_EXAMPLES } from "../../examples/switch";
+import { UPLOAD_QUEUE_EXAMPLES } from "../../examples/upload-queue";
 import { API as autocompleteApi } from "../../generated/catalog-api/autocomplete";
 import { API as checkboxApi } from "../../generated/catalog-api/checkbox";
 import { API as comboboxApi } from "../../generated/catalog-api/combobox";
 import { API as datePickerApi } from "../../generated/catalog-api/date-picker";
 import { API as fieldApi } from "../../generated/catalog-api/field";
+import { API as fileDropzoneApi } from "../../generated/catalog-api/file-dropzone";
+import { API as filterBarApi } from "../../generated/catalog-api/filter-bar";
 import { API as inputApi } from "../../generated/catalog-api/input";
 import { API as inputAreaApi } from "../../generated/catalog-api/input-area";
 import { API as inputGroupApi } from "../../generated/catalog-api/input-group";
+import { API as multiSelectApi } from "../../generated/catalog-api/multi-select";
 import { API as radioApi } from "../../generated/catalog-api/radio";
 import { API as segmentControlApi } from "../../generated/catalog-api/segment-control";
 import { API as selectApi } from "../../generated/catalog-api/select";
@@ -34,6 +41,7 @@ import { API as sliderApi } from "../../generated/catalog-api/slider";
 import { API as switchApi } from "../../generated/catalog-api/switch";
 import { API as toggleApi } from "../../generated/catalog-api/toggle";
 import { API as toggleGroupApi } from "../../generated/catalog-api/toggle-group";
+import { API as uploadQueueApi } from "../../generated/catalog-api/upload-queue";
 
 function usage(name: string, from: string, sample: string, extraImports = ""): string {
 	const extras = extraImports ? `${extraImports}\n` : "";
@@ -56,6 +64,66 @@ const EXTRA_PROVENANCE = provenanceFromLegacy({
 });
 
 export default catalogContentFamily({
+	"multi-select": {
+		docs: {
+			description:
+				"Searchable multi-selection with removable chips, controlled value/query/open, local or remote filtering, keyboard navigation and repeated native form entries. Disabled options cannot be added or removed. Uncontrolled form reset respects cancellation; controlled state belongs to the caller. Keep selected options in the collection to retain labels.",
+			usage: MULTI_SELECT_EXAMPLES[0].code,
+			variants: [],
+			api: multiSelectApi,
+			provenance: provenanceFromLegacy({
+				repo: "zhe",
+				sha: "075c875936e9",
+				file: "components/dashboard",
+			}),
+		},
+		examples: MULTI_SELECT_EXAMPLES,
+	},
+	"filter-bar": {
+		docs: {
+			description:
+				"A wrapping layout for search, multi-selection, date ranges, presets and removable filter chips. FilterBar and FilterChip only request changes; the page owns filtering, results, URL serialization and query execution.",
+			usage: FILTER_BAR_EXAMPLES[0].code,
+			variants: [],
+			api: filterBarApi,
+			provenance: provenanceFromLegacy({
+				repo: "zhe",
+				sha: "075c875936e9",
+				file: "components/dashboard",
+			}),
+		},
+		examples: FILTER_BAR_EXAMPLES,
+	},
+	"file-dropzone": {
+		docs: {
+			description:
+				"Keyboard file browsing and drag-and-drop with extension/MIME, byte-size and count validation. Rejections include the original file and one primary reason. The application owns File objects, upload transport, preview creation and URL revocation.",
+			usage: FILE_DROPZONE_EXAMPLES[0].code,
+			variants: [],
+			api: fileDropzoneApi,
+			provenance: provenanceFromLegacy({
+				repo: "zhe",
+				sha: "075c875936e9",
+				file: "components/dashboard",
+			}),
+		},
+		examples: FILE_DROPZONE_EXAMPLES,
+	},
+	"upload-queue": {
+		docs: {
+			description:
+				"Application-owned queued, uploading, success, error and cancelled states. UploadQueue composes UploadItem with accessible progress and per-file cancel, retry and remove actions. No network, authentication or scheduling is hidden inside the component.",
+			usage: UPLOAD_QUEUE_EXAMPLES[0].code,
+			variants: [],
+			api: uploadQueueApi,
+			provenance: provenanceFromLegacy({
+				repo: "zhe",
+				sha: "075c875936e9",
+				file: "components/dashboard",
+			}),
+		},
+		examples: UPLOAD_QUEUE_EXAMPLES,
+	},
 	field: {
 		docs: {
 			description: "Accessible association and metadata for a labeled control.",

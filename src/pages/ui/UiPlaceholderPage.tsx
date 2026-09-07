@@ -305,7 +305,15 @@ function ReadyDoc({
 	examples: readonly CatalogScenario[];
 }) {
 	const hero = examples[0];
-	const widePreview = ["skeleton-line", "table", "data-table"].includes(entry.slug);
+	const widePreview = [
+		"skeleton-line",
+		"table",
+		"data-table",
+		"multi-select",
+		"filter-bar",
+		"file-dropzone",
+		"upload-queue",
+	].includes(entry.slug);
 	if (!hero) {
 		throw new Error(`Ready catalog page "${entry.slug}" is missing examples[0].`);
 	}

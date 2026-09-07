@@ -56,6 +56,42 @@ export interface CatalogApiSurface {
 
 export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
+		slug: "multi-select",
+		sourceFile: "packages/basalt/src/components/multi-select.tsx",
+		propsType: "MultiSelectProps",
+		surface: "MultiSelect",
+	},
+	{
+		slug: "filter-bar",
+		sourceFile: "packages/basalt/src/components/filter-bar.tsx",
+		propsType: "FilterBarProps",
+		surface: "FilterBar",
+	},
+	{
+		slug: "filter-bar",
+		sourceFile: "packages/basalt/src/components/filter-bar.tsx",
+		propsType: "FilterChipProps",
+		surface: "FilterChip",
+	},
+	{
+		slug: "file-dropzone",
+		sourceFile: "packages/basalt/src/components/file-dropzone.tsx",
+		propsType: "FileDropzoneProps",
+		surface: "FileDropzone",
+	},
+	{
+		slug: "upload-queue",
+		sourceFile: "packages/basalt/src/components/upload-queue.tsx",
+		propsType: "UploadQueueProps",
+		surface: "UploadQueue",
+	},
+	{
+		slug: "upload-queue",
+		sourceFile: "packages/basalt/src/components/upload-queue.tsx",
+		propsType: "UploadItemProps",
+		surface: "UploadItem",
+	},
+	{
 		slug: "button",
 		sourceFile: "packages/basalt/src/components/button.tsx",
 		propsType: "ButtonProps",

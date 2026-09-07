@@ -41,6 +41,8 @@ import { API as dropdownMenuApi } from "./catalog-api/dropdown-menu";
 import { API as emptyApi } from "./catalog-api/empty";
 import { API as fabApi } from "./catalog-api/fab";
 import { API as fieldApi } from "./catalog-api/field";
+import { API as fileDropzoneApi } from "./catalog-api/file-dropzone";
+import { API as filterBarApi } from "./catalog-api/filter-bar";
 import { API as flowApi } from "./catalog-api/flow";
 import { API as funnelApi } from "./catalog-api/funnel";
 import { API as gaugeApi } from "./catalog-api/gauge";
@@ -62,6 +64,7 @@ import { API as linkProviderApi } from "./catalog-api/link-provider";
 import { API as loaderApi } from "./catalog-api/loader";
 import { API as menuBarApi } from "./catalog-api/menu-bar";
 import { API as meterApi } from "./catalog-api/meter";
+import { API as multiSelectApi } from "./catalog-api/multi-select";
 import { API as navigationMenuApi } from "./catalog-api/navigation-menu";
 import { API as pageHeaderApi } from "./catalog-api/page-header";
 import { API as paginationApi } from "./catalog-api/pagination";
@@ -101,6 +104,7 @@ import { API as toggleApi } from "./catalog-api/toggle";
 import { API as toggleGroupApi } from "./catalog-api/toggle-group";
 import { API as toolbarApi } from "./catalog-api/toolbar";
 import { API as tooltipApi } from "./catalog-api/tooltip";
+import { API as uploadQueueApi } from "./catalog-api/upload-queue";
 
 export const CATALOG_API = {
 	accordion: accordionApi,
@@ -144,6 +148,8 @@ export const CATALOG_API = {
 	empty: emptyApi,
 	fab: fabApi,
 	field: fieldApi,
+	"file-dropzone": fileDropzoneApi,
+	"filter-bar": filterBarApi,
 	flow: flowApi,
 	funnel: funnelApi,
 	gauge: gaugeApi,
@@ -165,6 +171,7 @@ export const CATALOG_API = {
 	loader: loaderApi,
 	"menu-bar": menuBarApi,
 	meter: meterApi,
+	"multi-select": multiSelectApi,
 	"navigation-menu": navigationMenuApi,
 	"page-header": pageHeaderApi,
 	pagination: paginationApi,
@@ -204,4 +211,5 @@ export const CATALOG_API = {
 	"toggle-group": toggleGroupApi,
 	toolbar: toolbarApi,
 	tooltip: tooltipApi,
+	"upload-queue": uploadQueueApi,
 };

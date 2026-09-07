@@ -126,6 +126,43 @@ describe("catalog API generator contract", () => {
 	it("declares catalog targets without a per-component prop allowlist", () => {
 		expect(CATALOG_API_TARGETS).toEqual([
 			{
+				slug: "multi-select",
+				sourceFile: "packages/basalt/src/components/multi-select.tsx",
+				propsType: "MultiSelectProps",
+				surface: "MultiSelect",
+			},
+			{
+				slug: "filter-bar",
+				sourceFile: "packages/basalt/src/components/filter-bar.tsx",
+				propsType: "FilterBarProps",
+				surface: "FilterBar",
+			},
+			{
+				slug: "filter-bar",
+				sourceFile: "packages/basalt/src/components/filter-bar.tsx",
+				propsType: "FilterChipProps",
+				surface: "FilterChip",
+			},
+			{
+				slug: "file-dropzone",
+				sourceFile: "packages/basalt/src/components/file-dropzone.tsx",
+				propsType: "FileDropzoneProps",
+				surface: "FileDropzone",
+			},
+			{
+				slug: "upload-queue",
+				sourceFile: "packages/basalt/src/components/upload-queue.tsx",
+				propsType: "UploadQueueProps",
+				surface: "UploadQueue",
+			},
+			{
+				slug: "upload-queue",
+				sourceFile: "packages/basalt/src/components/upload-queue.tsx",
+				propsType: "UploadItemProps",
+				surface: "UploadItem",
+			},
+
+			{
 				slug: "button",
 				sourceFile: "packages/basalt/src/components/button.tsx",
 				propsType: "ButtonProps",
@@ -1575,7 +1612,7 @@ describe("catalog API generator contract", () => {
 				surface: "LinkProvider",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(237);
+		expect(CATALOG_API_TARGETS).toHaveLength(243);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1628,6 +1665,10 @@ describe("catalog API generator contract", () => {
 	it("extracts Button props from ButtonProps in source order with CVA literals and null", () => {
 		const generated = generateProductionProps();
 		expect(Object.keys(generated)).toEqual([
+			"multi-select",
+			"filter-bar",
+			"file-dropzone",
+			"upload-queue",
 			"button",
 			"link-button",
 			"text",
@@ -2709,6 +2750,10 @@ export interface WidgetProps {
 				]),
 			),
 		).toEqual({
+			"multi-select": ["MultiSelect"],
+			"filter-bar": ["FilterBar", "FilterChip"],
+			"file-dropzone": ["FileDropzone"],
+			"upload-queue": ["UploadQueue", "UploadItem"],
 			button: ["Button"],
 			"link-button": ["LinkButton"],
 			text: ["Text"],
@@ -2956,7 +3001,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(101);
+		expect(Object.keys(generated)).toHaveLength(105);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -3057,7 +3102,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(101);
+		expect(Object.keys(generated)).toHaveLength(105);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -3179,7 +3224,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(101);
+		expect(Object.keys(generated)).toHaveLength(105);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -3250,7 +3295,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(101);
+		expect(Object.keys(generated)).toHaveLength(105);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -3293,7 +3338,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(101);
+		expect(Object.keys(generated)).toHaveLength(105);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -3345,7 +3390,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(101);
+		expect(Object.keys(generated)).toHaveLength(105);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -4683,8 +4728,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(101);
-		expect(Object.keys(first)).toHaveLength(102);
+		expect(slugs).toHaveLength(105);
+		expect(Object.keys(first)).toHaveLength(106);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -4764,7 +4809,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"69c076b86da1a13e4e676c5f33329306bf4fb9b0b5a8d2828928b2aaabdc50a2",
+			"86d8c4992e3ed683fa40a52455971615705b0d61fc23c9068a946828b19cb420",
 		);
 	}, 60_000);
 

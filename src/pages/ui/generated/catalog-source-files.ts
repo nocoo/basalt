@@ -450,6 +450,30 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/providers/link.js.map (sourcesContent[0])"
 	},
+	"multi-select": {
+		"file": "packages/basalt/src/components/multi-select.tsx",
+		"hash": "f3480f0c834ac7ae",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/multi-select.js.map (sourcesContent[0])"
+	},
+	"filter-bar": {
+		"file": "packages/basalt/src/components/filter-bar.tsx",
+		"hash": "a1095f97f1214832",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/filter-bar.js.map (sourcesContent[0])"
+	},
+	"file-dropzone": {
+		"file": "packages/basalt/src/components/file-dropzone.tsx",
+		"hash": "d0def116612e09e2",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/file-dropzone.js.map (sourcesContent[0])"
+	},
+	"upload-queue": {
+		"file": "packages/basalt/src/components/upload-queue.tsx",
+		"hash": "12e5c236b6aa7093",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/upload-queue.js.map (sourcesContent[0])"
+	},
 	"charts": {
 		"file": "packages/basalt/src/charts/charts.tsx",
 		"hash": "3d7d8692e046b102",
