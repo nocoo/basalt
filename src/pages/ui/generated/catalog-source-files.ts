@@ -74,7 +74,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"basalt-mark": {
 		"file": "packages/basalt/src/components/basalt-mark.tsx",
-		"hash": "cc695b7c802dbf9f",
+		"hash": "1f6fe0b5b77f3dd7",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/basalt-mark.js.map (sourcesContent[0])"
 	},

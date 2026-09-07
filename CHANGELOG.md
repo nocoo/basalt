@@ -18,6 +18,7 @@
 - Charts now use a fixed five-color cycle. Blue, pink, green and yellow match the classic control swatches exactly; the existing gray is retained, and chart marks use solid colors without contrasting outlines or shadows. `CHART_COLORS.length` changes from 24 to 5; use `getChartColor(index)` or modulo indexing. Old `chart` keys and numbered CSS tokens remain aliases. [Migration details](https://github.com/nocoo/basalt/blob/v2.1.0/packages/basalt/ai/COMPATIBILITY.md#6-unreleased-migration-notes-p1p10) list stored-ID mappings and runtime-value changes.
 - Add optional `AccentProvider.paletteOverrides`; consumer applications own persistence.
 - Set the production URL and GitHub homepage to https://basaltui.com. Browser preferences on the previous origin do not migrate automatically.
+- Adopt the corner-tower brand across navigation, login, loading marks, browser icons and social previews; the package embeds its mark without requiring a public asset path.
 - Complete example forms, settings, data filtering and chat workflows, including failure/retry and responsive navigation.
 - Update Playwright, Lucide, SWC, Node types and consumer fixtures, including Next.js 16.3.4 and React Table 9.2.4.
 

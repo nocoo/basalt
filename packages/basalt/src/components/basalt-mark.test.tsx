@@ -27,14 +27,14 @@ describe("BasaltMark", () => {
 	it("merges class, forwards SVG attributes, and keeps override order", () => {
 		const { rerender } = render(<BasaltMark />);
 		const defaults = screen.getByLabelText("Basalt");
-		expect(defaults).toHaveClass("h-5", "w-5", "text-basalt-primary");
-		expect(defaults).toHaveAttribute("stroke-width", "1.5");
+		expect(defaults).toHaveClass("h-5", "w-5");
+		expect(defaults).toHaveAttribute("viewBox", "0 0 128 128");
 		expect(defaults).toHaveAttribute("aria-label", "Basalt");
 		rerender(
 			<BasaltMark className="extra" id="mark" data-kind="mark" aria-label="Logo" strokeWidth={2} />,
 		);
 		const mark = screen.getByLabelText("Logo");
-		expect(mark).toHaveClass("h-5", "w-5", "text-basalt-primary", "extra");
+		expect(mark).toHaveClass("h-5", "w-5", "extra");
 		expect(mark).toHaveAttribute("id", "mark");
 		expect(mark).toHaveAttribute("data-kind", "mark");
 		expect(mark).toHaveAttribute("aria-label", "Logo");

@@ -1,5 +1,5 @@
-import { Mountain } from "lucide-react";
 import type { SVGAttributes } from "react";
+import { basaltMarkPng } from "../assets/brand-mark";
 import { cn } from "../utils/cn";
 
 export type BasaltMarkProps = Omit<SVGAttributes<SVGSVGElement>, "className"> & {
@@ -11,11 +11,15 @@ export type BasaltMarkProps = Omit<SVGAttributes<SVGSVGElement>, "className"> & 
 
 export function BasaltMark({ className, ...props }: BasaltMarkProps) {
 	return (
-		<Mountain
-			className={cn("h-5 w-5 text-basalt-primary", className)}
-			strokeWidth={1.5}
+		<svg
+			className={cn("h-5 w-5", className)}
+			viewBox="0 0 128 128"
+			role="img"
 			aria-label="Basalt"
 			{...props}
-		/>
+		>
+			<title>Basalt</title>
+			<image href={basaltMarkPng} width="128" height="128" />
+		</svg>
 	);
 }

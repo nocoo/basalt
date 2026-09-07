@@ -1,0 +1,121 @@
+{
+	"generator": "scripts/generate-brand.py",
+	"pillow": "12.3.0",
+	"study": "basalt/2026-09-07-02",
+	"finishing": "01",
+	"icoSizes": [16, 24, 32, 48, 64],
+	"files": [
+		{
+			"path": "public/logo-24.png",
+			"role": "transparent application mark",
+			"sha256": "d763fd7c3081018f1964e312a3bf7cb5f96f4d27a0b68e51ea22fa0b184c8922",
+			"width": 24,
+			"height": 24
+		},
+		{
+			"path": "public/logo-32.png",
+			"role": "transparent application mark",
+			"sha256": "6ce31bbd1e6fb8021585135d63b1293be87f499cd7828bb2956d9ccd51d02e09",
+			"width": 32,
+			"height": 32
+		},
+		{
+			"path": "public/logo-48.png",
+			"role": "transparent application mark",
+			"sha256": "71c9f0e7f133d32ea55ddcf7a93c6eeb517a7e84a80d02cd928acb9cfb104551",
+			"width": 48,
+			"height": 48
+		},
+		{
+			"path": "public/logo-64.png",
+			"role": "transparent application mark",
+			"sha256": "b029916957f53dac41ece3a53b177335271dba64e399e9103759b46e47a0450f",
+			"width": 64,
+			"height": 64
+		},
+		{
+			"path": "public/logo-80.png",
+			"role": "transparent application mark",
+			"sha256": "85944459689d6b172a6159c4e38583bb83471ab1063b259ff884beafbdc69bd8",
+			"width": 80,
+			"height": 80
+		},
+		{
+			"path": "public/logo-128.png",
+			"role": "transparent application mark",
+			"sha256": "d42b3f9915ed85dac05bc10160adca27e79bab26bd2c58a30e5755bb3c351b27",
+			"width": 128,
+			"height": 128
+		},
+		{
+			"path": "public/logo-256.png",
+			"role": "transparent application mark",
+			"sha256": "043640dfe1896950662f30d4f7d261dc78381954ee095b8c287cc3f280a85473",
+			"width": 256,
+			"height": 256
+		},
+		{
+			"path": "public/favicon.png",
+			"role": "transparent browser mark",
+			"sha256": "6ce31bbd1e6fb8021585135d63b1293be87f499cd7828bb2956d9ccd51d02e09",
+			"width": 32,
+			"height": 32
+		},
+		{
+			"path": "public/favicon.ico",
+			"role": "transparent browser mark",
+			"sha256": "095379d7910373580cec90a8b127257b6d656224eea413ddf41a85597976e606",
+			"width": 64,
+			"height": 64,
+			"entries": [
+				{
+					"width": 16,
+					"height": 16,
+					"alphaExtrema": [0, 255]
+				},
+				{
+					"width": 24,
+					"height": 24,
+					"alphaExtrema": [0, 255]
+				},
+				{
+					"width": 32,
+					"height": 32,
+					"alphaExtrema": [0, 255]
+				},
+				{
+					"width": 48,
+					"height": 48,
+					"alphaExtrema": [0, 255]
+				},
+				{
+					"width": 64,
+					"height": 64,
+					"alphaExtrema": [0, 255]
+				}
+			]
+		},
+		{
+			"path": "public/apple-touch-icon.png",
+			"role": "opaque square platform presentation",
+			"sha256": "2a20a7f764c05c6489f8e3968c45e74eb61629733636995b3ebc78900d99b8db",
+			"width": 180,
+			"height": 180
+		},
+		{
+			"path": "public/opengraph-image.png",
+			"role": "large rounded presentation on its own field",
+			"sha256": "18a73a972bcad64f2a470f4fa698909b293083136903fc021d3e83224610804f",
+			"width": 1200,
+			"height": 630
+		},
+		{
+			"path": "packages/basalt/src/assets/brand-mark.ts",
+			"role": "embedded transparent package mark; no host asset URL required",
+			"sha256": "504768d5fed9a3eb110557d5e16a16779bbaf3de6ea9fcb62c83d2276decc4ff",
+			"pngSha256": "d42b3f9915ed85dac05bc10160adca27e79bab26bd2c58a30e5755bb3c351b27",
+			"width": 128,
+			"height": 128
+		}
+	]
+}

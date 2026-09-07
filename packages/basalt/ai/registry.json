@@ -7870,14 +7870,14 @@
 			"importPath": "@nocoo/basalt/components/basalt-mark",
 			"subpath": "./components/basalt-mark",
 			"sourceFile": "packages/basalt/src/components/basalt-mark.tsx",
-			"sourceHash": "cc695b7c802dbf9f",
+			"sourceHash": "1f6fe0b5b77f3dd7",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
 			"ownerDoc": "src/pages/ui/basalt-mark",
 			"packageDoc": "ai/registry.json#basalt-mark",
 			"summary": "BasaltMark component documentation and catalog playground",
-			"peers": ["lucide-react", "react"],
+			"peers": ["react"],
 			"optionalPeers": [],
 			"symbols": [
 				{
@@ -17463,7 +17463,7 @@
 			"ownerDoc": "INTEGRATION.md#loading",
 			"packageDoc": "ai/INTEGRATION.md#loading",
 			"summary": "Full-viewport initial boot and route gate loading indicator",
-			"peers": ["lucide-react", "react"],
+			"peers": ["react"],
 			"optionalPeers": [],
 			"symbols": [
 				{
@@ -28313,7 +28313,7 @@
 			"exportName": "BasaltMark",
 			"importPath": "@nocoo/basalt/components/basalt-mark",
 			"sourceFile": "packages/basalt/src/components/basalt-mark.tsx",
-			"sourceHash": "cc695b7c802dbf9f",
+			"sourceHash": "1f6fe0b5b77f3dd7",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#basalt-mark",
