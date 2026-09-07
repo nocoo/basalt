@@ -26,7 +26,10 @@ export function AppSkipLink({
 export function AppShell({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
-			className={cn("flex h-screen w-full overflow-hidden bg-basalt-background", className)}
+			className={cn(
+				"flex h-screen w-full overflow-hidden overscroll-none bg-basalt-background",
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -36,7 +39,7 @@ export function AppMain({ className, ...props }: HTMLAttributes<HTMLElement>) {
 	return (
 		<main
 			id="main-content"
-			className={cn("flex h-full min-w-0 flex-1 flex-col overflow-hidden", className)}
+			className={cn("flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden", className)}
 			{...props}
 		/>
 	);

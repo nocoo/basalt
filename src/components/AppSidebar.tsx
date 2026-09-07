@@ -487,7 +487,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 	return (
 		<Sidebar collapsed={collapsed}>
 			{collapsed ? (
-				<div className="flex h-screen w-[68px] flex-col items-center">
+				<>
 					<SidebarHeader className="justify-center px-0">
 						<BasaltLogo className="h-7 w-7 shrink-0 object-contain" />
 					</SidebarHeader>
@@ -496,7 +496,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 						size="icon"
 						onClick={onToggle}
 						aria-label={t("common.expandSidebar")}
-						className="mb-1"
+						className="mb-1 self-center"
 					>
 						<PanelLeft aria-hidden="true" />
 					</Button>
@@ -532,9 +532,9 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 							</TooltipContent>
 						</Tooltip>
 					</SidebarFooter>
-				</div>
+				</>
 			) : (
-				<div className="flex h-screen w-[260px] flex-col">
+				<>
 					<SidebarHeader>
 						<div className="flex w-full items-center justify-between px-3">
 							<div className="flex items-center gap-3">
@@ -591,7 +591,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 							}
 						/>
 					</SidebarFooter>
-				</div>
+				</>
 			)}
 			<CommandPalette open={searchOpen} onOpenChange={handleSearchOpenChange} shouldFilter={false}>
 				<CommandInput

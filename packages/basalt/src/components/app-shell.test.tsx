@@ -22,6 +22,8 @@ describe("AppShell", () => {
 		expect(screen.getByRole("heading", { name: "Dashboard" })).toBeInTheDocument();
 		expect(screen.getByRole("main")).toHaveTextContent("Body");
 		expect(screen.getByRole("button", { name: "Theme" })).toBeInTheDocument();
+		expect(screen.getByRole("main")).toHaveClass("min-h-0");
+		expect(screen.getByText("Dashboard").closest(".h-screen")).toHaveClass("overscroll-none");
 	});
 });
 

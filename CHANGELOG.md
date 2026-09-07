@@ -5,6 +5,9 @@
 ### Added
 - Library showcase pages for loading skeletons (`/loading-states`), motion (`/animation`) and dense tables (`/tables`).
 
+### Fixed
+- Stop nested full-viewport sidebar columns from leaking wheel scroll into the document and opening blank space below the shell.
+
 ## [2.1.0] - 2026-09-07
 
 ### Added

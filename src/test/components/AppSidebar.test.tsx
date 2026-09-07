@@ -238,4 +238,15 @@ describe("AppSidebar", () => {
 			expect(button.querySelectorAll('[data-maturity-status="pending"]')).toHaveLength(0);
 		}
 	});
+
+	it("does not nest a second full-viewport column inside the rail", () => {
+		const { unmount } = renderSidebar();
+		const expanded = document.querySelector("aside");
+		expect(expanded).toBeTruthy();
+		expect(expanded?.querySelector(".h-screen")).toBeNull();
+		unmount();
+		renderSidebar("/ui/button", true);
+		const collapsed = document.querySelector("aside");
+		expect(collapsed?.querySelector(".h-screen")).toBeNull();
+	});
 });

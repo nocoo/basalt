@@ -421,7 +421,10 @@ export interface SidebarNavProps extends HTMLAttributes<HTMLElement> {}
 
 export function SidebarNav({ className, ...props }: SidebarNavProps) {
 	return (
-		<nav className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto", className)} {...props} />
+		<nav
+			className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain", className)}
+			{...props}
+		/>
 	);
 }
 
@@ -542,7 +545,7 @@ export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGro
 export interface SidebarFooterProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function SidebarFooter({ className, ...props }: SidebarFooterProps) {
-	return <div className={cn("px-4 py-3", className)} {...props} />;
+	return <div className={cn("shrink-0 px-4 py-3", className)} {...props} />;
 }
 
 export interface SidebarUserProps {
@@ -588,7 +591,7 @@ export function ContentIsland({ className, ...props }: ContentIslandProps) {
 		<div
 			data-basalt-surface-root=""
 			className={cn(
-				"min-h-0 flex-1 overflow-y-auto rounded-[16px] bg-basalt-card p-3 text-basalt-card-foreground shadow-sm ring-1 ring-basalt-border/40 md:rounded-basalt-island md:p-5",
+				"min-h-0 flex-1 overflow-y-auto overscroll-y-contain rounded-[16px] bg-basalt-card p-3 text-basalt-card-foreground shadow-sm ring-1 ring-basalt-border/40 md:rounded-basalt-island md:p-5",
 				className,
 			)}
 			{...props}

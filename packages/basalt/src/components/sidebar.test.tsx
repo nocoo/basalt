@@ -4,9 +4,11 @@ import { describe, expect, it, vi } from "vitest";
 import {
 	ContentIsland,
 	Sidebar,
+	SidebarFooter,
 	SidebarGroup,
 	SidebarIconItem,
 	SidebarItem,
+	SidebarNav,
 	SidebarProvider,
 	SidebarSearch,
 	SidebarUser,
@@ -346,6 +348,17 @@ describe("Sidebar", () => {
 		expect(screen.getByText("AV")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Menu" })).toBeInTheDocument();
 	});
+
+	it("keeps the footer pinned and contains nav overscroll", () => {
+		render(
+			<Sidebar>
+				<SidebarNav>Items</SidebarNav>
+				<SidebarFooter>User</SidebarFooter>
+			</Sidebar>,
+		);
+		expect(screen.getByText("Items").className).toContain("overscroll-y-contain");
+		expect(screen.getByText("User").className).toContain("shrink-0");
+	});
 });
 
 describe("ContentIsland", () => {
@@ -357,5 +370,6 @@ describe("ContentIsland", () => {
 		expect(island.className).toContain("ring-basalt-border/40");
 		expect(island.className).toContain("rounded-[16px]");
 		expect(island.className).toContain("md:rounded-basalt-island");
+		expect(island.className).toContain("overscroll-y-contain");
 	});
 });
