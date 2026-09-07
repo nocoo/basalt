@@ -170,7 +170,7 @@ export default function PalettePage() {
 									data-chart-swatch={index}
 								/>
 								<p className="text-xs text-muted-foreground">
-									{["Blue", "Pink", "Green", "Yellow", "Pearl"][index]}
+									{["Blue", "Pink", "Green", "Yellow", "Gray"][index]}
 								</p>
 							</div>
 						))}

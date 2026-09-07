@@ -54,6 +54,7 @@ export function FunnelChart({
 					dataKey="value"
 					nameKey="name"
 					fill={seriesColor(series?.[0], 1)}
+					stroke="none"
 					{...ANIMATION_PROPS}
 				>
 					<LabelList

@@ -258,7 +258,9 @@ export function CustomBrand() {
 
 The catalog's `/palette` editor saves twelve light/dark hex pairs in `localStorage` under `basalt-palette-v1`, separately from the selected ID in `basalt-accent`. Preferences survive reloads and navigation and synchronize across tabs on the same origin. Invalid data falls back to the classic palette; denied reads or writes keep the page usable, and failed saves explicitly report that the change lasts for the current session. Restore classic retains the custom draft for later reuse. This editor and storage format belong to the catalog application; consumers pass their own validated preferences through `paletteOverrides`.
 
-Charts use a fixed **five-color** cycle: Blue, Pink, Green, Yellow, Pearl, with light/dark variants. `CHART_COLORS` and `getChartColor(index)` are independent of control accent selection and custom palettes. Use modulo indexing or `getChartColor` when a chart has more than five series, and use labels or an explicit `series.color` for distinctions beyond color. Existing `chart` keys and numbered chart CSS tokens remain aliases, but the former 24-color values and array length are intentionally replaced. Values heatmaps and Timeline rails also use fixed chart tokens. For tinted Timeline event rows, pass `textColor: "hsl(var(--basalt-foreground))"` with a translucent background utility; both title and subtitle inherit it. Gauge remainder uses `chartMuted`, a neutral track for the active theme; chart labels and tooltip text use semantic foreground tokens. See `ai/COMPATIBILITY.md` before migrating color-indexed code.
+Charts use a fixed **five-color** cycle: Blue, Pink, Green, Yellow, Gray. The first four colors use the exact classic control swatch values in each theme; gray retains its existing light/dark values. Marks use solid candy colors without contrasting outlines or shadows. Text continues to use semantic foreground tokens. `CHART_COLORS` and `getChartColor(index)` are independent of control accent selection and custom palettes. Use modulo indexing or `getChartColor` when a chart has more than five series, and use labels or an explicit `series.color` for distinctions beyond color. Existing `chart` keys and numbered chart CSS tokens remain aliases, but the former 24-color values and array length are intentionally replaced. Values heatmaps and Timeline rails also use fixed chart tokens. For tinted Timeline event rows, pass `textColor: "hsl(var(--basalt-foreground))"` with a translucent background utility; both title and subtitle inherit it. Gauge remainder uses `chartMuted`, a neutral track for the active theme; chart labels and tooltip text use semantic foreground tokens. See `ai/COMPATIBILITY.md` before migrating color-indexed code.
+
+Raw candy fills can fall below 3:1 against light surfaces. Provide descriptive labels and `summary` / `dataAlternative` so values and relationships do not depend on color alone.
 
 ### Host-Controlled Preferences Recipe
 
@@ -1756,4 +1758,3 @@ export function UserPreferencesForm() {
   );
 }
 ```
-

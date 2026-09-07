@@ -783,7 +783,7 @@
 			"outflow": "Outflow",
 			"candyDescription": "Inspired by the translucent iMac and the playful iPhone 5C. Choose an accent for buttons, links and focus rings.",
 			"chartPalette": "Chart palette · 5 colors",
-			"chartDescription": "Blue, pink, green, yellow and pearl, inspired by the iPhone 5C. This sequence stays the same when you change your accent. Light and dark variants keep marks and text readable.",
+			"chartDescription": "Blue, pink, green and yellow match the classic control palette, with the existing gray alongside them. Chart colors stay fixed when you choose or customize an accent.",
 			"customTitle": "Your own palette",
 			"customDescription": "Edit the light and dark colors, then save to apply them. Your palette stays in this browser across pages and visits. Chart colors stay fixed.",
 			"mode": {

@@ -135,11 +135,13 @@ The workspace version remains **2.0.3** until a separately authorized release. T
 | Before | Current behavior | Consumer action |
 |---|---|---|
 | 24 control accents sharing chart tokens | 12 iMac / iPhone 5C-inspired accents on `--basalt-accent-1…12` | Build pickers from `useAccent().swatches`; do not assume the former count, order, labels, or token values. |
-| 24 distinct `CHART_COLORS` entries | Fixed five-color Blue / Pink / Green / Yellow / Pearl cycle | Replace direct indexing beyond 4 with `getChartColor(index)` or `index % CHART_COLORS.length`. This is an intentional visual and runtime-value change, not a claim that all prior palette behavior is unchanged. |
+| 24 distinct `CHART_COLORS` entries | Fixed five-color Blue / Pink / Green / Yellow / Gray cycle; the first four match classic control swatches exactly | Replace direct indexing beyond 4 with `getChartColor(index)` or `index % CHART_COLORS.length`. This is an intentional visual and runtime-value change, not a claim that all prior palette behavior is unchanged. |
 | Numbered chart tokens and 24 `chart` keys | Existing names retained as aliases of five chart colors | Keep imports; expect repeated colors. Use explicit per-series colors and descriptive legends where five categories are insufficient. |
 | Presets only | Optional `AccentProvider.paletteOverrides` with light/dark HSL pairs | Application owns validation and persistence. Overrides affect control swatches and semantic primary, never chart tokens. |
 | Ring remainder tied to a series color | Theme-aware neutral `chartMuted` track | No prop migration. Gauge is static under reduced motion and displays 0, partial, and full values without a black remainder. |
 | `https://basalt.hexly.ai` | `https://basaltui.com` | Update bookmarks and production links. Browser storage is origin-scoped, so old-domain theme/palette preferences cannot transfer automatically. Local `basalt.dev.hexly.ai` is unchanged. |
+
+Chart gray retains its prior light/dark values. Marks use solid candy colors without contrasting outlines or shadows; their fills are not darkened. Raw candy fills can fall below 3:1 on light surfaces; use descriptive labels and `summary` / `dataAlternative` alongside them. Custom control palettes remain independent.
 
 The color-count and color-value changes need this migration notice and explicit release review under the policy above; the unchanged export baseline alone does not prove runtime-value compatibility. This work does not choose or publish a release version.
 

@@ -1240,4 +1240,20 @@ Next 16.3.3 / Turbopack 生产消费页在挂载 TagColorPicker 时触发 React 
 | P9 | `/ui/inline-editable`、`/ui/editable-nav-item`、`/ui/icon-picker`、`/ui/tag-badge`、`/ui/tag-color-picker`、`/ui/responsive-master-detail`；随包 `ai/RECIPES.md` | 零散编辑/导航/标签与应用壳 → 可复用的小控件、手机主从视图及三份可编译 AppFrame/Login/Resources 模块 | 应用迁移仍依赖复制局部代码，容易遗漏回焦、草稿保留、请求取消和 SSR 生产差异 |
 | P10 | `/palette`、`/ui/gauge`、`/ui/line`、`/ui/radar`、`/ui/timeline`，泛型控件 API/Copy page | 主色与 chart 共用旧色板、黑色 ring 剩余区、文档类型失真 → 12 糖果主色及本地自定义、独立固定五色图表、中性轨道、清晰文字/网格与正确泛型文档；生产链接切换为 basaltui.com | 主色更换会扰动图表系列，ring 观感与文字配色问题保留，按文档写类型仍可能无法编译，旧生产链接继续失效 |
 
+### 12.8 P10 后续配色调整（已验收，2026-09-07）
+
+用户追加要求：“图表也取一样的色板吧，只是灰色保留”“各种 chart，例如 bar、line，纯色填充，不带黑边框”。当前视觉规范以本节为准；12.4 的 P10 数值与截图保留为该阶段提交时的历史证据。
+
+图表继续使用固定五色循环。Blue、Pink、Green、Yellow 在浅深主题中均与经典控件色板的原始色值完全一致；Gray 保留原有浅深值，控件自定义仍不改变图表颜色。旧公开入口、编号别名与五色数组长度保持。Palette 中英文说明、接入指南、随包迁移资料与 changelog 同步更新。
+
+柱形、扇区、ring 使用纯色填充，折线使用单一系列颜色，面积图和雷达保留同色透明填充；不添加异色描边、黑边或阴影。Funnel 同时取消 Recharts 默认的白色描边，使填色规则一致。ring 的剩余区域继续使用明暗主题对应的中性灰色轨道。
+
+这是对原图形对比度策略的明确调整：原始浅色糖果填色在浅底上可能低于 3:1，不再通过压暗色值或附加黑边补偿，也不沿用前次最低 3.51:1 的结论。浏览器门如实记录原始填色对比度，继续保留文字 ≥4.5:1、所检深色主题主线/扇区 ≥3:1、图表数据替代与交互检查，新增实际图形的纯色、无异色描边、无 filter/阴影验收。全局覆盖率阈值、覆盖范围和其他质量预算不变。
+
+**已通过验证。** 正式包 build、heavy 实际安装包消费、docs 文档消费、typecheck 与零警告 lint 全部通过。fresh 生产构建的完整 showcase 保留 Library、Examples、筛选/上传、编辑与布局检查，并覆盖 24 个 ready chart 页及 Palette 在 390/1280px、浅深主题中的 100 组页面组合。684 个实际图形样本通过纯色、无异色描边及无 filter/阴影检查；48 次真实 tooltip、1,164 个文字对照通过，文字最低 5.58:1。所测主线/扇区的原始颜色最低为 1.26:1，深色主题样本最低 7.56:1；前者按本节明确记录，不宣称浅色图形均达到 3:1。ring 的 0/64/100% 路径和两主题轨道、全部色板缓存异常与同步检查继续通过，浏览器无页面或控制台错误。
+
+桌面图表组合与手机 bar/line/ring 的实际截图已复核，手机截图等待图表完成响应尺寸更新后采样。公开基线、初审第 1–8 节、2.0.3 版本及 INTEGRATION 镜像核对通过。生产 TypeScript 仅为 Funnel 增加无描边属性，没有新的业务逻辑或覆盖范围变更；本次提交沿用 typecheck、lint、全量单测与 staged gitleaks 正常 hooks。
+
+证据：`chart-candy-generate`、`chart-candy-package-build`、`chart-candy-heavy`、`chart-candy-docs`、`chart-candy-typecheck`、`chart-candy-lint`、`chart-candy-showcase`、`chart-candy-visual-settled`、`chart-candy-invariants`、`chart-candy-candidate.json` 与 `chart-candy-commit`。本节与实现同批提交，验证均为本地结果。
+
 所有示例仍使用本地模拟数据；查询、认证、权限、路由和上传 transport 属于应用。公共源码/元数据/随包指南保持同步，颜色数量和值的迁移属于明确记录的行为变化，发布版本仍须另行按兼容政策决定。

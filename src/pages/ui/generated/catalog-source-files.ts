@@ -614,7 +614,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"funnel": {
 		"file": "packages/basalt/src/charts/funnel.tsx",
-		"hash": "d71b0ba3476cb607",
+		"hash": "2831e8d32c7755fe",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/funnel.js.map (sourcesContent[0])"
 	},

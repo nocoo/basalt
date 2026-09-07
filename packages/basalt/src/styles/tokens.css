@@ -38,11 +38,11 @@
 	--basalt-radius-widget: 10px;
 	--basalt-font-sans: "Inter", system-ui, -apple-system, sans-serif;
 	--basalt-font-display: "DM Sans", system-ui, sans-serif;
-	/* Fixed 5C chart colors. Legacy numbered tokens remain color aliases. */
-	--basalt-chart-blue: 204 76% 42%;
-	--basalt-chart-pink: 345 67% 48%;
-	--basalt-chart-green: 125 42% 37%;
-	--basalt-chart-yellow: 43 89% 36%;
+	/* Match the classic candy swatches; gray and preference ownership stay independent. */
+	--basalt-chart-blue: 204 88% 62%;
+	--basalt-chart-pink: 345 88% 72%;
+	--basalt-chart-green: 113 58% 62%;
+	--basalt-chart-yellow: 49 100% 69%;
 	--basalt-chart-pearl: 215 12% 48%;
 	--basalt-chart-1: var(--basalt-chart-blue);
 	--basalt-chart-2: var(--basalt-chart-blue);
@@ -140,11 +140,11 @@
 	--basalt-ring: var(--basalt-primary);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
 	--basalt-zebra-fill: hsl(var(--basalt-bright));
-	/* Fixed 5C chart colors. Legacy numbered tokens remain color aliases. */
+	/* Match the classic candy swatches; gray and preference ownership stay independent. */
 	--basalt-chart-blue: 204 90% 70%;
-	--basalt-chart-pink: 345 88% 74%;
-	--basalt-chart-green: 113 58% 68%;
-	--basalt-chart-yellow: 49 100% 70%;
+	--basalt-chart-pink: 345 88% 77%;
+	--basalt-chart-green: 113 58% 70%;
+	--basalt-chart-yellow: 49 100% 73%;
 	--basalt-chart-pearl: 210 20% 86%;
 	--basalt-chart-1: var(--basalt-chart-blue);
 	--basalt-chart-2: var(--basalt-chart-blue);

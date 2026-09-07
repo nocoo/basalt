@@ -15,7 +15,7 @@ The workspace remains at 2.0.3. These changes have not been published or deploye
 
 ### Changed
 - Replace the 24-color control palette with twelve candy colors inspired by classic Apple iMac and iPhone 5C finishes; raw swatches and contrast-safe primary tokens are distinct.
-- Charts now use a separate fixed five-color cycle. `CHART_COLORS.length` changes from 24 to 5; use `getChartColor(index)` or modulo indexing. Old `chart` keys and numbered CSS tokens remain aliases. [Migration details](packages/basalt/ai/COMPATIBILITY.md#6-unreleased-migration-notes-p1p10) list stored-ID mappings and runtime-value changes.
+- Charts now use a fixed five-color cycle. Blue, pink, green and yellow match the classic control swatches exactly; the existing gray is retained, and chart marks use solid colors without contrasting outlines or shadows. `CHART_COLORS.length` changes from 24 to 5; use `getChartColor(index)` or modulo indexing. Old `chart` keys and numbered CSS tokens remain aliases. [Migration details](packages/basalt/ai/COMPATIBILITY.md#6-unreleased-migration-notes-p1p10) list stored-ID mappings and runtime-value changes.
 - Add optional `AccentProvider.paletteOverrides`; consumer applications own persistence.
 - Set the production URL and GitHub homepage to https://basaltui.com. Browser preferences on the previous origin do not migrate automatically.
 - Complete example forms, settings, data filtering and chat workflows, including failure/retry and responsive navigation.

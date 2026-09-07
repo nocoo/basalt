@@ -46,6 +46,52 @@ const HOVER_TOOLTIPS: Record<string, string> = {
 	funnel: ".recharts-funnel-trapezoid",
 	sankey: "svg.recharts-surface g rect",
 };
+const MARK_SELECTOR = [
+	".recharts-line-curve",
+	".recharts-area-curve",
+	".recharts-area-area",
+	".recharts-bar-rectangle .recharts-rectangle",
+	".recharts-pie-sector .recharts-sector",
+	".recharts-radial-bar-sector",
+	".recharts-radar-polygon .recharts-polygon",
+	".recharts-funnel-trapezoid .recharts-trapezoid",
+	".recharts-sankey-link",
+	".recharts-sankey-node rect",
+].join(",");
+
+async function assertSolidMarks(page: Page, label: string) {
+	const marks = await page.locator(MARK_SELECTOR).evaluateAll((nodes) =>
+		nodes.flatMap((node) => {
+			const box = node.getBoundingClientRect();
+			const style = getComputedStyle(node);
+			if (!box.width || !box.height || style.visibility !== "visible" || style.display === "none")
+				return [];
+			const effects: string[] = [];
+			for (let parent: Element | null = node; parent; parent = parent.parentElement) {
+				const paint = getComputedStyle(parent);
+				if (paint.filter !== "none" || paint.boxShadow !== "none")
+					effects.push(`${parent.tagName}: ${paint.filter} / ${paint.boxShadow}`);
+				if (parent.classList.contains("basalt-chart")) break;
+			}
+			return [
+				{ shape: node.getAttribute("class"), fill: style.fill, stroke: style.stroke, effects },
+			];
+		}),
+	);
+	for (const mark of marks) {
+		assert.deepEqual(mark.effects, [], `${label}: chart marks must have no filters or shadows`);
+		assert.ok(
+			!mark.fill.startsWith("url(") && !mark.stroke.startsWith("url("),
+			`${label}: chart marks must use solid colors: ${JSON.stringify(mark)}`,
+		);
+		assert.ok(
+			mark.fill === "none" || mark.stroke === "none" || mark.fill === mark.stroke,
+			`${label}: chart marks must have no contrasting outlines: ${JSON.stringify(mark)}`,
+		);
+		assert.ok(mark.fill !== "none" || mark.stroke !== "none", `${label}: invisible chart mark`);
+	}
+	return marks.length;
+}
 
 async function chartColors(page: Page) {
 	return page
@@ -89,6 +135,8 @@ export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 	let textPairs = 0;
 	let minimumTextContrast = Number.POSITIVE_INFINITY;
 	let minimumMarkContrast = Number.POSITIVE_INFINITY;
+	let minimumDarkMarkContrast = Number.POSITIVE_INFINITY;
+	let solidMarks = 0;
 	let tooltipCases = 0;
 	const trackColors: Record<string, string> = {};
 	await page.goto(`${baseUrl}/palette`);
@@ -110,6 +158,32 @@ export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 			assert.equal(await page.locator("[data-chart-swatch]").count(), 5);
 			const baseline = await chartColors(page);
 			assert.equal(new Set(baseline).size, 5, "Chart palette must contain five distinct colors");
+			const candyColors = await page
+				.locator(
+					'[data-accent-swatch="primary"], [data-accent-swatch="rose"], [data-accent-swatch="green"], [data-accent-swatch="amber"]',
+				)
+				.evaluateAll((nodes) =>
+					Object.fromEntries(
+						nodes.map((node) => [
+							node.getAttribute("data-accent-swatch"),
+							getComputedStyle(node).backgroundColor,
+						]),
+					),
+				);
+			assert.deepEqual(
+				baseline.slice(0, 4),
+				[candyColors.primary, candyColors.rose, candyColors.green, candyColors.amber],
+				"Charts must use the exact classic candy swatch values",
+			);
+			const expectedGray = await page.evaluate((dark) => {
+				const probe = document.createElement("span");
+				probe.style.color = dark ? "hsl(210 20% 86%)" : "hsl(215 12% 48%)";
+				document.body.appendChild(probe);
+				const color = getComputedStyle(probe).color;
+				probe.remove();
+				return color;
+			}, dark);
+			assert.equal(baseline[4], expectedGray, "Preserve the existing chart gray");
 			const classic = await accentColor(page);
 			for (const choice of await page.locator("[data-accent-choice]").all()) {
 				await choice.click();
@@ -222,9 +296,15 @@ export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 					baseline.includes(mark.color),
 					`Chart mark escaped the fixed palette: ${mark.color}`,
 				);
-				assert.ok(mark.ratio >= 3, `Chart mark contrast below 3:1: ${JSON.stringify(mark)}`);
+				// The requested raw candy fills can be below 3:1 on light surfaces.
+				// Measure them honestly; do not darken them or add contrasting outlines.
 				minimumMarkContrast = Math.min(minimumMarkContrast, mark.ratio);
+				if (dark) {
+					assert.ok(mark.ratio >= 3, `Dark chart mark contrast below 3:1: ${JSON.stringify(mark)}`);
+					minimumDarkMarkContrast = Math.min(minimumDarkMarkContrast, mark.ratio);
+				}
 			}
+			solidMarks += await assertSolidMarks(page, `palette/${width}/${theme}`);
 			cases.push(`${width}/${theme}:palette/invalid/save/reload/navigation/restore/rings`);
 			for (const entry of chartPages) {
 				console.log(`Chart appearance ${width}/${theme} ${entry.slug}`);
@@ -248,6 +328,10 @@ export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 				);
 				for (const plot of plots)
 					assert.ok(plot.width > 0 && plot.height > 0, `${entry.slug}: collapsed chart`);
+				const markCount = await assertSolidMarks(page, `${entry.slug}/${width}/${theme}`);
+				if (SVG_CHARTS.has(entry.slug))
+					assert.ok(markCount > 0, `${entry.slug}: chart marks must actually be checked`);
+				solidMarks += markCount;
 				const measurements = await assertTextContrast(
 					page,
 					TEXT_SELECTOR,
@@ -344,6 +428,8 @@ export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 		textPairs,
 		minimumTextContrast,
 		minimumMarkContrast,
+		minimumDarkMarkContrast,
+		solidMarks,
 		tooltipCases,
 		trackColors,
 		storage: "cross-tab, malformed data, denied read/write",
