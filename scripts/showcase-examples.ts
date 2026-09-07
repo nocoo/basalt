@@ -16,6 +16,7 @@ const ROUTES = [
 	"/layout",
 	"/loading-states",
 	"/animation",
+	"/tables",
 	"/dialogs",
 	"/chat",
 	"/settings",

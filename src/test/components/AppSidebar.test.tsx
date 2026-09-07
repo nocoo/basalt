@@ -72,6 +72,11 @@ describe("AppSidebar", () => {
 		expect(
 			screen
 				.getByRole("button", { name: "Animation" })
+				.compareDocumentPosition(screen.getByRole("button", { name: "Tables" })) & following,
+		).toBeTruthy();
+		expect(
+			screen
+				.getByRole("button", { name: "Tables" })
 				.compareDocumentPosition(screen.getByRole("button", { name: "Interactive" })) & following,
 		).toBeTruthy();
 		expect(

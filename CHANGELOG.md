@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 ### Added
-- Library showcase pages for loading skeletons (`/loading-states`) and motion (`/animation`).
+- Library showcase pages for loading skeletons (`/loading-states`), motion (`/animation`) and dense tables (`/tables`).
 
 ## [2.1.0] - 2026-09-07
 

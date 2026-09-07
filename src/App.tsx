@@ -23,6 +23,7 @@ const InteractivePage = lazy(() => import("./pages/InteractivePage"));
 const LayoutPage = lazy(() => import("./pages/LayoutPage"));
 const LoadingPage = lazy(() => import("./pages/LoadingPage"));
 const LoadingStatesPage = lazy(() => import("./pages/LoadingStatesPage"));
+const TablesPage = lazy(() => import("./pages/TablesPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const NavigationPage = lazy(() => import("./pages/NavigationPage"));
 const NetworkOpsDashboardPage = lazy(() => import("./pages/NetworkOpsDashboardPage"));
@@ -104,6 +105,7 @@ const App = () => (
 								<Route path="/layout" element={routeElement(LayoutPage)} />
 								<Route path="/loading-states" element={routeElement(LoadingStatesPage)} />
 								<Route path="/animation" element={routeElement(AnimationPage)} />
+								<Route path="/tables" element={routeElement(TablesPage)} />
 								<Route path="/dialogs" element={routeElement(DialogsPage)} />
 								<Route path="/chat" element={routeElement(ChatPage)} />
 								<Route path="/settings" element={routeElement(SettingsPage)} />

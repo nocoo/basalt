@@ -191,6 +191,7 @@ const LIBRARY_LEAD: NavItem[] = [
 	{ titleKey: "nav.layout", icon: LayoutGrid, path: "/layout" },
 	{ titleKey: "nav.loadingStates", icon: Loader, path: "/loading-states" },
 	{ titleKey: "nav.animation", icon: Sparkles, path: "/animation" },
+	{ titleKey: "nav.tables", icon: Table2, path: "/tables" },
 	{ titleKey: "nav.interactive", icon: MousePointerClick, path: "/interactive" },
 	{ titleKey: "nav.data", icon: Eye, path: "/data" },
 	{ titleKey: "nav.forms", icon: FormInput, path: "/forms" },
