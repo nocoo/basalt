@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { PolarAngleAxis, PolarGrid, Radar, RadarChart as RechartsRadar } from "recharts";
-import { ANIMATION_PROPS, chartTickStyle, seriesColor } from "./config";
+import { ANIMATION_PROPS, CHART_TYPE, chartTickStyle, GRID_PROPS, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
 import type { ChartSeriesDescriptor, RadarPoint } from "./series";
 
@@ -46,7 +46,7 @@ export function RadarChart({
 			accessibilityLayer={accessibilityLayer}
 		>
 			<RechartsRadar data={data} outerRadius={60}>
-				<PolarGrid />
+				<PolarGrid stroke={GRID_PROPS.stroke} strokeOpacity={GRID_PROPS.strokeOpacity} />
 				<PolarAngleAxis dataKey="subject" tick={chartTickStyle()} tickLine={false} />
 				<Radar
 					dataKey="value"
@@ -54,6 +54,7 @@ export function RadarChart({
 					fill={fill}
 					fillOpacity={0.3}
 					stroke={fill}
+					strokeWidth={CHART_TYPE.strokeWidth}
 					{...ANIMATION_PROPS}
 				/>
 			</RechartsRadar>

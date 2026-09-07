@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import type { Page } from "playwright";
+import { setShowcaseTheme } from "./showcase-theme";
 
 /** Reusable workflows must be visible, interactive and safe to unmount in the catalog. */
 export async function assertReusableShowcases(page: Page, baseUrl: string) {
@@ -11,10 +12,7 @@ export async function assertReusableShowcases(page: Page, baseUrl: string) {
 			async function visit(slug: string) {
 				await page.goto(`${baseUrl}/ui/${slug}`);
 				await page.locator('[data-status="ready"]').waitFor();
-				await page.evaluate(
-					(dark) => document.documentElement.classList.toggle("dark", dark),
-					dark,
-				);
+				await setShowcaseTheme(page, dark);
 				assert.equal(
 					await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
 					false,

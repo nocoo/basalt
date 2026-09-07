@@ -7,19 +7,19 @@ export const API = [
 		props: [
 			{
 				name: "rowLabels",
-				type: "string[]",
+				type: "readonly string[]",
 				required: true,
 				description: "Ordered row labels (e.g. weekdays [\"Mon\", \"Tue\", ...], service tiers, or regions).",
 			},
 			{
 				name: "columnLabels",
-				type: "string[]",
+				type: "readonly string[]",
 				required: true,
 				description: "Ordered column labels (e.g. 24 hours [\"00:00\", ...], days, or status buckets).",
 			},
 			{
 				name: "values",
-				type: "HeatmapMatrixValue[][]",
+				type: "readonly (readonly HeatmapMatrixValue[])[]",
 				required: true,
 				description: "2D matrix of values indexed by [rowIndex][colIndex].\nSupports ragged rows, null, undefined, and non-finite values (treated as missing).\nNumeric `0` is a valid reading and distinct from missing data.",
 			},
@@ -31,7 +31,7 @@ export const API = [
 			},
 			{
 				name: "colorScale",
-				type: "string[]",
+				type: "readonly string[]",
 				required: false,
 				default: "heatmapColorScales.green",
 				description: "Sequential color palette array from lowest to highest intensity.\nIf empty or single-color, gracefully resolves to base level.",

@@ -17,152 +17,108 @@ export type AccentSwatch = {
 	dark: string;
 };
 
+/** Twelve candy accents inspired by the translucent iMac and iPhone 5C finishes. */
 export const ACCENT_SWATCHES: readonly AccentSwatch[] = [
 	{
 		id: "primary",
-		label: "Primary",
-		token: "--basalt-chart-1",
-		light: "217 91% 60%",
-		dark: "217 91% 65%",
+		label: "Blue",
+		token: "--basalt-accent-1",
+		light: "204 88% 62%",
+		dark: "204 90% 70%",
 	},
-	{ id: "sky", label: "Sky", token: "--basalt-chart-2", light: "200 90% 55%", dark: "200 90% 60%" },
+	{
+		id: "sky",
+		label: "Ice",
+		token: "--basalt-accent-2",
+		light: "191 79% 70%",
+		dark: "191 79% 74%",
+	},
 	{
 		id: "teal",
-		label: "Teal",
-		token: "--basalt-chart-3",
-		light: "186 80% 45%",
-		dark: "186 80% 50%",
-	},
-	{
-		id: "jade",
-		label: "Jade",
-		token: "--basalt-chart-4",
-		light: "166 72% 44%",
-		dark: "166 72% 50%",
+		label: "Bondi",
+		token: "--basalt-accent-3",
+		light: "182 62% 47%",
+		dark: "182 62% 63%",
 	},
 	{
 		id: "green",
 		label: "Green",
-		token: "--basalt-chart-5",
-		light: "142 71% 45%",
-		dark: "142 71% 50%",
+		token: "--basalt-accent-4",
+		light: "113 58% 62%",
+		dark: "113 58% 70%",
 	},
-	{ id: "lime", label: "Lime", token: "--basalt-chart-6", light: "84 65% 46%", dark: "84 65% 52%" },
+	{
+		id: "lime",
+		label: "Lime",
+		token: "--basalt-accent-5",
+		light: "79 70% 64%",
+		dark: "79 70% 70%",
+	},
 	{
 		id: "amber",
-		label: "Amber",
-		token: "--basalt-chart-7",
-		light: "45 93% 47%",
-		dark: "45 93% 52%",
+		label: "Yellow",
+		token: "--basalt-accent-6",
+		light: "49 100% 69%",
+		dark: "49 100% 73%",
 	},
 	{
 		id: "orange",
-		label: "Orange",
-		token: "--basalt-chart-8",
-		light: "30 90% 55%",
-		dark: "30 90% 60%",
+		label: "Tangerine",
+		token: "--basalt-accent-7",
+		light: "27 95% 65%",
+		dark: "27 95% 72%",
 	},
 	{
-		id: "vermilion",
-		label: "Vermilion",
-		token: "--basalt-chart-9",
-		light: "15 85% 52%",
-		dark: "15 85% 57%",
+		id: "red",
+		label: "Strawberry",
+		token: "--basalt-accent-8",
+		light: "5 85% 66%",
+		dark: "5 85% 73%",
 	},
-	{ id: "red", label: "Red", token: "--basalt-chart-10", light: "0 72% 51%", dark: "0 72% 56%" },
 	{
 		id: "rose",
-		label: "Rose",
-		token: "--basalt-chart-11",
-		light: "340 82% 55%",
-		dark: "340 82% 60%",
-	},
-	{
-		id: "magenta",
-		label: "Magenta",
-		token: "--basalt-chart-12",
-		light: "320 70% 55%",
-		dark: "320 70% 60%",
-	},
-	{
-		id: "orchid",
-		label: "Orchid",
-		token: "--basalt-chart-13",
-		light: "290 65% 55%",
-		dark: "290 65% 60%",
+		label: "Pink",
+		token: "--basalt-accent-9",
+		light: "345 88% 72%",
+		dark: "345 88% 77%",
 	},
 	{
 		id: "purple",
-		label: "Purple",
-		token: "--basalt-chart-14",
-		light: "270 70% 60%",
-		dark: "270 70% 65%",
+		label: "Grape",
+		token: "--basalt-accent-10",
+		light: "280 53% 71%",
+		dark: "280 53% 77%",
 	},
 	{
 		id: "indigo",
-		label: "Indigo",
-		token: "--basalt-chart-15",
-		light: "250 65% 58%",
-		dark: "250 65% 63%",
+		label: "Blueberry",
+		token: "--basalt-accent-11",
+		light: "237 66% 69%",
+		dark: "237 66% 77%",
 	},
 	{
-		id: "cobalt",
-		label: "Cobalt",
-		token: "--basalt-chart-16",
-		light: "230 70% 56%",
-		dark: "230 70% 61%",
+		id: "gray",
+		label: "Pearl",
+		token: "--basalt-accent-12",
+		light: "210 20% 87%",
+		dark: "210 20% 88%",
 	},
-	{
-		id: "steel",
-		label: "Steel",
-		token: "--basalt-chart-17",
-		light: "210 55% 50%",
-		dark: "210 55% 56%",
-	},
-	{
-		id: "cadet",
-		label: "Cadet",
-		token: "--basalt-chart-18",
-		light: "195 45% 55%",
-		dark: "195 45% 60%",
-	},
-	{
-		id: "seafoam",
-		label: "Seafoam",
-		token: "--basalt-chart-19",
-		light: "160 50% 50%",
-		dark: "160 50% 55%",
-	},
-	{
-		id: "olive",
-		label: "Olive",
-		token: "--basalt-chart-20",
-		light: "100 50% 48%",
-		dark: "100 50% 53%",
-	},
-	{
-		id: "gold",
-		label: "Gold",
-		token: "--basalt-chart-21",
-		light: "60 65% 45%",
-		dark: "60 65% 50%",
-	},
-	{
-		id: "tangerine",
-		label: "Tangerine",
-		token: "--basalt-chart-22",
-		light: "22 80% 50%",
-		dark: "22 80% 55%",
-	},
-	{
-		id: "crimson",
-		label: "Crimson",
-		token: "--basalt-chart-23",
-		light: "350 65% 50%",
-		dark: "350 65% 55%",
-	},
-	{ id: "gray", label: "Gray", token: "--basalt-chart-24", light: "0 0% 25%", dark: "0 0% 65%" },
-] as const;
+];
+
+const LEGACY_ACCENT_IDS = new Map<string, string>([
+	["jade", "teal"],
+	["vermilion", "red"],
+	["magenta", "rose"],
+	["orchid", "purple"],
+	["cobalt", "indigo"],
+	["steel", "primary"],
+	["cadet", "sky"],
+	["seafoam", "teal"],
+	["olive", "lime"],
+	["gold", "amber"],
+	["tangerine", "orange"],
+	["crimson", "red"],
+]);
 
 export const DEFAULT_ACCENT_ID = "primary";
 const STORAGE_KEY = "basalt-accent";
@@ -176,7 +132,8 @@ type AccentContextValue = {
 const AccentContext = createContext<AccentContextValue | null>(null);
 
 export function accentSwatchById(id: string | null | undefined): AccentSwatch {
-	return ACCENT_SWATCHES.find((swatch) => swatch.id === id) ?? ACCENT_SWATCHES[0];
+	const normalized = LEGACY_ACCENT_IDS.get(id ?? "") ?? id;
+	return ACCENT_SWATCHES.find((swatch) => swatch.id === normalized) ?? ACCENT_SWATCHES[0];
 }
 
 function channel(c: number) {
@@ -304,7 +261,10 @@ export function applyAccent(id: string, dark = false) {
 	if (typeof document === "undefined") {
 		return;
 	}
-	const swatch = accentSwatchById(id);
+	applySwatch(accentSwatchById(id), dark);
+}
+
+function applySwatch(swatch: AccentSwatch, dark: boolean) {
 	const semanticPrimary = deriveSemanticPrimary(swatch, dark);
 	const root = document.documentElement;
 	root.style.setProperty("--basalt-primary", semanticPrimary);
@@ -314,6 +274,10 @@ export function applyAccent(id: string, dark = false) {
 }
 
 export interface AccentProviderProps {
+	/** Color overrides for the twelve preset IDs, using HSL channels (for example `204 88% 62%`).
+	 * Invalid pairs and unknown IDs are ignored. Persistence belongs to the application.
+	 * Chart colors remain fixed. */
+	paletteOverrides?: Readonly<Record<string, { light: string; dark: string }>>;
 	/**
 	 * Application components wrapped by the accent context.
 	 */
@@ -360,7 +324,10 @@ interface AccentStore {
 }
 
 function isValidAccentId(value: unknown): value is string {
-	return typeof value === "string" && ACCENT_SWATCHES.some((s) => s.id === value);
+	return (
+		typeof value === "string" &&
+		(ACCENT_SWATCHES.some((s) => s.id === value) || LEGACY_ACCENT_IDS.has(value))
+	);
 }
 
 type StorageReadResult = { status: "success"; value: string | null } | { status: "error" };
@@ -427,7 +394,7 @@ function createAccentStore(
 	if (persist) {
 		const res = safeGetStorageItem(storageKey);
 		if (res.status === "success" && isValidAccentId(res.value)) {
-			memoryAccent = res.value;
+			memoryAccent = accentSwatchById(res.value).id;
 			hasExplicitSelection = true;
 		}
 	}
@@ -479,7 +446,7 @@ function createAccentStore(
 				notify();
 				return;
 			}
-			memoryAccent = rawVal;
+			memoryAccent = accentSwatchById(rawVal).id;
 			hasExplicitSelection = true;
 			notify();
 			return;
@@ -493,7 +460,7 @@ function createAccentStore(
 			return;
 		}
 		if (isValidAccentId(res.value)) {
-			memoryAccent = res.value;
+			memoryAccent = accentSwatchById(res.value).id;
 			hasExplicitSelection = true;
 			notify();
 		} else {
@@ -576,7 +543,7 @@ function createAccentStore(
 					if (res.status === "success") {
 						lastSetFailed = false;
 						if (isValidAccentId(res.value)) {
-							memoryAccent = res.value;
+							memoryAccent = accentSwatchById(res.value).id;
 							hasExplicitSelection = true;
 						} else {
 							memoryAccent = defaultAccent;
@@ -591,7 +558,7 @@ function createAccentStore(
 					if (res.status === "success") {
 						lastSetFailed = false;
 						if (isValidAccentId(res.value)) {
-							memoryAccent = res.value;
+							memoryAccent = accentSwatchById(res.value).id;
 							hasExplicitSelection = true;
 							notify();
 						}
@@ -615,6 +582,13 @@ function createAccentStore(
 	};
 }
 
+function validHsl(value: unknown): value is string {
+	if (typeof value !== "string" || !/^\d+(?:\.\d+)?\s+\d+(?:\.\d+)?%\s+\d+(?:\.\d+)?%$/.test(value))
+		return false;
+	const [h, s, l] = parseHslChannels(value);
+	return h <= 360 && s <= 1 && l <= 1;
+}
+
 function isDarkMode(): boolean {
 	if (typeof document === "undefined") {
 		return false;
@@ -624,6 +598,7 @@ function isDarkMode(): boolean {
 
 export function AccentProvider({
 	children,
+	paletteOverrides,
 	storageKey = STORAGE_KEY,
 	defaultAccent = DEFAULT_ACCENT_ID,
 	persist = true,
@@ -632,6 +607,16 @@ export function AccentProvider({
 	applyToDocument = true,
 }: AccentProviderProps) {
 	const isControlled = controlledAccent !== undefined;
+	const swatches = useMemo(
+		() =>
+			ACCENT_SWATCHES.map((swatch) => {
+				const override = paletteOverrides?.[swatch.id];
+				return override && validHsl(override.light) && validHsl(override.dark)
+					? { ...swatch, light: override.light, dark: override.dark }
+					: swatch;
+			}),
+		[paletteOverrides],
+	);
 
 	const [store] = useState(() => createAccentStore(storageKey, defaultAccent, persist));
 
@@ -649,11 +634,17 @@ export function AccentProvider({
 		if (!applyToDocument || typeof document === "undefined") {
 			return;
 		}
-		applyAccent(currentAccent, isDarkMode());
-		const observer = new MutationObserver(() => applyAccent(currentAccent, isDarkMode()));
+		const apply = () => {
+			const dark = isDarkMode();
+			for (const swatch of swatches)
+				document.documentElement.style.setProperty(swatch.token, dark ? swatch.dark : swatch.light);
+			applySwatch(swatches.find((swatch) => swatch.id === currentAccent) ?? swatches[0], dark);
+		};
+		apply();
+		const observer = new MutationObserver(apply);
 		observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
 		return () => observer.disconnect();
-	}, [currentAccent, applyToDocument]);
+	}, [currentAccent, applyToDocument, swatches]);
 
 	const setAccent = useCallback(
 		(next: string) => {
@@ -669,8 +660,8 @@ export function AccentProvider({
 	);
 
 	const value = useMemo(
-		() => ({ accent: currentAccent, setAccent, swatches: ACCENT_SWATCHES }),
-		[currentAccent, setAccent],
+		() => ({ accent: currentAccent, setAccent, swatches }),
+		[currentAccent, setAccent, swatches],
 	);
 	return <AccentContext.Provider value={value}>{children}</AccentContext.Provider>;
 }

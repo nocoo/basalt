@@ -37,6 +37,7 @@ export interface CatalogApiCallableOptions {
 export interface CatalogApiSurface {
 	name: string;
 	props: CatalogApiProp[];
+	typeParameters?: string;
 	callSignature?: string;
 	description?: string;
 	parameters?: CatalogApiCallableParameter[];

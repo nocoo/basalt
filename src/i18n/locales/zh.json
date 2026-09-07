@@ -634,7 +634,7 @@
 		},
 		"chat": {
 			"title": "对话框架",
-			"description": "Fab 打开 Dock。默认把主栏往左挤。Overlay 盖在上面，背后是和 Dialog 一样的磨砂遮罩。第二种拼法加上 inbox 列表。",
+			"description": "响应式非模态 Dock，展示推挤与覆盖布局、会话切换和本地流式回复。",
 			"dock": "Fab 与 Dock",
 			"dockHint": "默认：栏占宽度，主栏变窄。栏打开时启动钮隐藏。",
 			"pageBody": "主栏。打开 Dock 会挤这一列。",
@@ -762,9 +762,9 @@
 		},
 		"palette": {
 			"title": "调色板",
-			"description": "表面色、强调色，以及图表上的同一套颜色。点选强调色会应用到整个壳层。",
-			"baseColors": "基础颜色",
-			"themePalette": "主题色板",
+			"description": "控件使用 12 种糖果主色，图表使用 5 种固定配色。按你的喜好调整界面，同时保持图表含义稳定。",
+			"baseColors": "表面与辅助色彩令牌",
+			"themePalette": "控件主色 · 12 色",
 			"utilityTokens": "工具令牌",
 			"lineChart": "折线图",
 			"lineChartAria": "多系列折线图示例",
@@ -780,7 +780,34 @@
 			"income": "收入",
 			"expense": "支出",
 			"inflow": "流入",
-			"outflow": "流出"
+			"outflow": "流出",
+			"candyDescription": "灵感来自经典半透明 iMac 和 iPhone 5C 的糖果配色。选择一种主色，用于按钮、链接和焦点环。",
+			"chartPalette": "图表色板 · 5 色",
+			"chartDescription": "蓝、粉、绿、黄、珍珠灰，参考 iPhone 5C。切换控件主色不会改变图表的配色顺序；浅深主题分别调整明度，让图形与文字清晰可读。",
+			"customTitle": "自定义色板",
+			"customDescription": "编辑浅色与深色主题下的颜色，保存后应用。色板缓存在当前浏览器，跨页面、刷新后继续使用。图表色板保持固定。",
+			"mode": {
+				"classic": "经典色板",
+				"custom": "自定义色板"
+			},
+			"editColors": "自定义全部 12 色",
+			"light": "浅色",
+			"dark": "深色",
+			"colorPicker": "取色器",
+			"invalidColor": "每种颜色均需使用六位十六进制值，例如 #73c2fb。",
+			"saveCustom": "保存自定义色板",
+			"resetDraft": "重置草稿颜色",
+			"useClassic": "恢复经典色板",
+			"saved": "自定义色板已保存到当前浏览器。",
+			"sessionOnly": "已在当前会话应用，浏览器暂不允许存储。",
+			"restored": "已恢复经典色板，自定义颜色仍保留在编辑器中。",
+			"previewAction": "主色预览",
+			"previewActive": "已选择",
+			"previewCheckbox": "勾选项",
+			"previewSwitch": "启用项",
+			"contrastNote": "文字与按钮明度会自动调整，确保对比度。",
+			"ringChart": "环形图轨道",
+			"ringDescription": "空值、部分完成、全部完成。未占用部分使用柔和的表面衬底，数值保持清晰的文字颜色。"
 		},
 		"layout": {
 			"title": "嵌套表面",
@@ -957,7 +984,7 @@
 		}
 	},
 	"demo": {
-		"localOnly": "本地演示。修改仅保留在当前页面，不会更新实际账户或服务。",
+		"localOnly": "本地演示，这些操作不会更新真实账号或服务。",
 		"failNext": "模拟下一次提交失败",
 		"pending": "正在保存…",
 		"success": "已在本地保存。",

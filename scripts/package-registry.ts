@@ -572,6 +572,12 @@ export function App() {
   );
 }
 \`\`\`
+
+## 6. Application recipes and palette preferences
+
+Read [RECIPES.md](RECIPES.md) for complete AppFrame, Login, and Resources modules. Each module is compiled and exercised from the installed tarball in standalone, Tailwind, and Next.js consumers. These recipes keep authentication, routing, data and network requests in the application.
+
+Read [INTEGRATION.md#accent-provider](INTEGRATION.md#accent-provider) for the twelve control accents, optional \`paletteOverrides\`, and the separate fixed five-color chart cycle. Check [COMPATIBILITY.md](COMPATIBILITY.md) before migrating old color indices or stored IDs. The catalog at https://basaltui.com/palette provides an application-owned editor with localStorage persistence.
 `;
 }
 

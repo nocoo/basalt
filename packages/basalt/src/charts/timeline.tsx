@@ -5,7 +5,10 @@ export type TimelineEvent = {
 	time: string;
 	title: string;
 	subtitle?: string;
+	/** Background utility classes for the event row. */
 	color?: string;
+	/** Optional CSS text color for a custom background; subtitles inherit it without dimming. */
+	textColor?: string;
 };
 
 const hours = Array.from({ length: 24 }, (_, index) => index);
@@ -70,7 +73,7 @@ function HourTimeline({
 						key={hour}
 						className={cn(
 							"relative flex items-start border-l-2 py-2 pl-4",
-							hasEvents ? "border-basalt-primary" : "border-basalt-border",
+							hasEvents ? "border-basalt-chart-1" : "border-basalt-border",
 						)}
 					>
 						<div className="absolute left-0 w-12 -translate-x-full pr-2 text-right text-xs text-basalt-muted-foreground">
@@ -79,13 +82,14 @@ function HourTimeline({
 						<div
 							className={cn(
 								"absolute -left-[5px] top-2 h-2 w-2 rounded-full",
-								hasEvents ? "bg-basalt-primary" : "bg-basalt-border",
+								hasEvents ? "bg-basalt-chart-1" : "bg-basalt-border",
 							)}
 						/>
 						<div className="flex min-h-[24px] w-full flex-col gap-1">
 							{hourEvents.map((event) => (
 								<div
 									key={event.id}
+									style={event.textColor ? { color: event.textColor } : undefined}
 									className={cn(
 										"flex items-center gap-2 rounded-md px-2 py-1 text-xs",
 										event.color
@@ -99,7 +103,11 @@ function HourTimeline({
 										<span
 											className={cn(
 												"truncate",
-												event.color ? "text-white/80" : "text-basalt-muted-foreground",
+												event.textColor
+													? "text-current"
+													: event.color
+														? "text-white/80"
+														: "text-basalt-muted-foreground",
 											)}
 										>
 											{event.subtitle}

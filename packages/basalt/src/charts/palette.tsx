@@ -32,7 +32,8 @@ export const chart = {
 	gray: v("chart-24"),
 } as const;
 
-export const CHART_COLORS = Object.values(chart);
+/** Fixed five-color series cycle; independent of the application accent. */
+export const CHART_COLORS = [chart.primary, chart.rose, chart.green, chart.amber, chart.gray];
 
 export type ChartPaletteProps = {
 	ariaLabel?: string;

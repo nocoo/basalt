@@ -143,7 +143,7 @@ export function DashboardLayout() {
 							</Button>
 						) : null
 					}
-					breadcrumbs={crumbs}
+					breadcrumbs={isMobile ? undefined : crumbs}
 					title={title}
 					actions={
 						<>

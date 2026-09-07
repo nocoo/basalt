@@ -358,7 +358,7 @@ function ValuesHeatmap({
 									aria-label={`Position ${index + 1}: ${value}`}
 									className="box-border m-0 h-3 w-3 cursor-pointer rounded-sm border-0 p-0 transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
 									style={{
-										backgroundColor: `hsl(var(--basalt-primary) / ${0.2 + Math.min(4, Math.max(0, value)) * 0.15})`,
+										backgroundColor: `hsl(var(--basalt-chart-5) / ${0.2 + Math.min(4, Math.max(0, value)) * 0.15})`,
 									}}
 								/>
 							</TooltipTrigger>

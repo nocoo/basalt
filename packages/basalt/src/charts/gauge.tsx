@@ -2,9 +2,9 @@ import type { ReactNode } from "react";
 import { useId } from "react";
 import { PolarAngleAxis, RadialBar, RadialBarChart } from "recharts";
 import { cn } from "../utils/cn";
-import { seriesColor } from "./config";
+import { ANIMATION_PROPS, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { CHART_COLORS } from "./palette";
+import { chartMuted } from "./palette";
 import type { ChartSeriesDescriptor } from "./series";
 
 export type GaugeProps = {
@@ -75,8 +75,9 @@ export function Gauge({
 					<RadialBar
 						dataKey="value"
 						cornerRadius={6}
-						fill={seriesColor(series?.[0], 4)}
-						background={{ fill: CHART_COLORS[23] }}
+						fill={seriesColor(series?.[0], 2)}
+						background={{ fill: chartMuted }}
+						{...ANIMATION_PROPS}
 					/>
 				</RadialBarChart>
 			</ChartFrame>

@@ -43,7 +43,7 @@ export const API = [
 			},
 			{
 				name: "files",
-				type: "UploadFile[]",
+				type: "readonly UploadFile[]",
 				required: true,
 				description: "Application-owned queue entries.",
 			},

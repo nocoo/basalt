@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import type { Locator, Page } from "playwright";
+import { setShowcaseTheme } from "./showcase-theme";
 
 const ROUTES = [
 	"/",
@@ -261,6 +262,7 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 	await page.emulateMedia({ reducedMotion: "reduce", colorScheme: "light" });
 	for (const width of [390, 1280]) {
 		await page.setViewportSize({ width, height: 900 });
+		await setShowcaseTheme(page, false);
 		for (const route of ROUTES) {
 			console.log(`Example smoke ${width} ${route}`);
 			await page.goto(`${baseUrl}${route}`);
@@ -281,14 +283,14 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 		await assertData(page, baseUrl);
 		await assertChat(page, baseUrl, width < 768);
 		cases.push(`${width}:light:network/forms/settings/data/chat`);
-		await page.evaluate(() => sessionStorage.setItem("showcase-theme", "dark"));
+		await setShowcaseTheme(page, true);
 		await assertNetwork(page, baseUrl, width);
 		await assertForms(page, baseUrl);
 		await assertSettings(page, baseUrl);
 		await assertData(page, baseUrl);
 		await assertChat(page, baseUrl, width < 768);
 		cases.push(`${width}:dark:network/forms/settings/data/chat`);
-		await page.evaluate(() => sessionStorage.setItem("showcase-theme", "light"));
+		await setShowcaseTheme(page, false);
 	}
 	for (const width of [320, 390, 640]) {
 		await page.setViewportSize({ width, height: 900 });
@@ -302,10 +304,7 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 		]) {
 			await page.goto(`${baseUrl}/ui/${slug}`);
 			await page.locator('[data-status="ready"]').waitFor();
-			await page.evaluate(
-				(dark) => document.documentElement.classList.toggle("dark", dark),
-				width === 390,
-			);
+			await setShowcaseTheme(page, width === 390);
 			await settle(page);
 			await assertNoDuplicateIds(page, `${width}:ui/${slug}`);
 			await assertPageWidth(page, `${width}:ui/${slug}`);

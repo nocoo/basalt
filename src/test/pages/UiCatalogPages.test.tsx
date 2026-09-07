@@ -983,7 +983,9 @@ describe("ui catalog", () => {
 		const markdown = String(writeText.mock.calls[0]?.[0]);
 		expect(markdown).toContain("### PageHeader");
 		expect(markdown).toContain("- title (React.ReactNode, required, default —)");
-		expect(markdown).toContain("- breadcrumbs (PageHeaderBreadcrumb[], optional, default —)");
+		expect(markdown).toContain(
+			"- breadcrumbs (readonly PageHeaderBreadcrumb[], optional, default —)",
+		);
 		for (const scenario of UI_EXAMPLES["page-header"] ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
@@ -1111,7 +1113,7 @@ describe("ui catalog", () => {
 		});
 		const markdown = String(writeText.mock.calls[0]?.[0]);
 		expect(markdown).toContain("### StatStrip");
-		expect(markdown).toContain("- items (StatStripItem[], required, default —)");
+		expect(markdown).toContain("- items (readonly StatStripItem[], required, default —)");
 		expect(markdown).toContain("- loading (boolean, optional, default false)");
 		for (const scenario of UI_EXAMPLES["stat-strip"] ?? []) {
 			expect(markdown).toContain(scenario.code);

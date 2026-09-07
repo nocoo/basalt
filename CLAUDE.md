@@ -1,6 +1,6 @@
 # Basalt
 
-Matte design system + catalog site. npm `@nocoo/basalt`. Live: `https://basalt.hexly.ai`.
+Matte design system + catalog site. npm `@nocoo/basalt`. Live: `https://basaltui.com`.
 Profile: ts-worker-web
 Direction: [INTEGRATION.md](INTEGRATION.md). Numbered `docs/01`–`03` are the 2.0 plan archive, not current SoT. Frameworks must not rewrite this file.
 
@@ -88,13 +88,13 @@ Today: pre-commit typecheck/lint/`test` (no coverage)/gitleaks `--staged` on the
 | Purpose | Port / resource | Isolation |
 |---|---|---|
 | Dev | 7003 `https://basalt.dev.hexly.ai` | catalog mock; no prod stores |
-| Prod | `https://basalt.hexly.ai` (`theme-basalt`) | static assets |
+| Prod | `https://basaltui.com` (`theme-basalt`) | static assets |
 
 ## Operations / Release
 
 - Site: bump root + `packages/basalt` `package.json` + CHANGELOG.md, commit, push `main`, wait CI, then push tag `vX.Y.Z` only (enforced by `bun run release` and `release.yml`). Who: GitHub write + `production` Environment + `gh`.
 - Tag CD deploys after validating semver, root/package matching version, existence on main, and successful CI on that exact commit. `main` CD waits CI-green. Do not laptop-`wrangler deploy`.
-- npm: `bun run package:prepublish`, then `cd packages/basalt && npm publish --access public --ignore-scripts --registry https://registry.npmjs.org/ --otp=<code>`. Who: `@nocoo/basalt` npm owner with 2FA. Live-check: `https://basalt.hexly.ai` and `npm view @nocoo/basalt`.
+- npm: `bun run package:prepublish`, then `cd packages/basalt && npm publish --access public --ignore-scripts --registry https://registry.npmjs.org/ --otp=<code>`. Who: `@nocoo/basalt` npm owner with 2FA. Live-check: `https://basaltui.com` and `npm view @nocoo/basalt`.
 
 ## Retrospective
 

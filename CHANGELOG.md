@@ -1,5 +1,33 @@
 # Changelog
 
+## [Unreleased]
+
+The workspace remains at 2.0.3. These changes have not been published or deployed.
+
+### Added
+- Source-backed package registry, installed source recovery, compilable documentation and AppFrame / Login / Resources recipes.
+- Complex loading dashboard, resource-list and detail compositions; interactive device and subscription tables with formatted cells, inline charts and BatteryMeter.
+- MultiSelect, FilterBar/FilterChip, FileDropzone and UploadQueue/UploadItem.
+- InlineEditable, EditableNavItem/FolderNavItem, IconPicker, TagBadge/TagColorPicker and ResponsiveMasterDetail.
+- Dynamic typed chart series, accessible summaries/data alternatives, tooltip compositions and HeatmapMatrix.
+- Palette editor with twelve light/dark custom pairs, localStorage persistence, cross-tab sync, validation and restoration.
+- CI package/consumer/showcase gates, failure propagation checks and release validation tied to the exact commit.
+
+### Changed
+- Replace the 24-color control palette with twelve candy colors inspired by classic Apple iMac and iPhone 5C finishes; raw swatches and contrast-safe primary tokens are distinct.
+- Charts now use a separate fixed five-color cycle. `CHART_COLORS.length` changes from 24 to 5; use `getChartColor(index)` or modulo indexing. Old `chart` keys and numbered CSS tokens remain aliases. [Migration details](packages/basalt/ai/COMPATIBILITY.md#6-unreleased-migration-notes-p1p10) list stored-ID mappings and runtime-value changes.
+- Add optional `AccentProvider.paletteOverrides`; consumer applications own persistence.
+- Set the production URL and GitHub homepage to https://basaltui.com. Browser preferences on the previous origin do not migrate automatically.
+- Complete example forms, settings, data filtering and chat workflows, including failure/retry and responsive navigation.
+
+### Fixed
+- Native forms/reset and forwarded refs, portal clipping/forceMount/asChild, keyboard/focus restoration, Dock semantics and Slider contracts.
+- Standalone CSS scope and class extraction, semantic contrast and reduced-motion behavior.
+- Mobile documentation overflow/duplicate IDs, example chart sizing and Network SVG geometry.
+- Gauge remainder uses a neutral theme track and the shared static animation setting.
+- Generated API text retains generic context, readonly types and correct function/constructor union parentheses.
+- Selection indicator default callbacks remain stable after Next.js production minification.
+
 ## [2.0.3] - 2026-09-04
 
 ### Added

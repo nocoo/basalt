@@ -73,7 +73,7 @@ Changes to default geometry (such as outer padding, default margins, or intrinsi
 2. **State & Controlled Contract:** Components supporting controlled usage (`value`, `checked`, `open`) must reliably notify callers via corresponding callbacks (`onValueChange`, `onCheckedChange`, `onOpenChange`). Uncontrolled usage with default props (`defaultValue`, `defaultOpen`) must manage internal state seamlessly.
 3. **Form Contract & Known Limitations:** Standard inputs (`Input`, `InputArea`, `Checkbox`, `Radio`, `Switch`) participate in `FormData` extraction. Native reset, external form association, readOnly validation suppression, and required validation boundaries are fully integrated for `DatePicker`, with forwarded refs properly targeting the underlying native input and errors surfaced on the visible trigger. `Autocomplete` unselected free-text and label matching blur commit preserves natural focus traversal without reclaiming focus.
 4. **Accessibility Contract:** Components follow WAI-ARIA authoring practices. Semantic roles and `aria-*` attributes are maintained. Focus traps and keyboard navigations are incrementally hardened across component milestones.
-5. **Reduced Motion:** Components with motion support respect `@media (prefers-reduced-motion: reduce)`. Streaming caret, loading spinners, and pulse states have known coverage gaps scheduled for uniform alignment.
+5. **Reduced Motion:** Components with motion support respect `@media (prefers-reduced-motion: reduce)`. Streaming carets, loaders, skeleton shimmer, badges, meters, selection indicators, and chart marks are covered by the motion regression gates. Static charts use the shared zero-animation configuration, including Gauge.
 
 ---
 
@@ -123,3 +123,53 @@ Manages series descriptor shapes, point definitions, and data key fallbacks:
   - `applyLeadColor(items: ChartSeriesDescriptor[], color?: string): ChartSeriesDescriptor[]`: If `color` is provided and the first item does not specify a `color` (`item.color ?? color`), sets the first item's color. Preserves an explicit first-item color.
   - `xyFallbackKeys(data: Array<{ y2?: number; y3?: number }>): string[]`: Scans data array and dynamically includes `"y2"` and `"y3"` if present, returning `["y", ...]` keys. Compatible with legacy XY series fallback.
 
+
+---
+
+## 6. Unreleased migration notes (P1–P10)
+
+The workspace version remains **2.0.3** until a separately authorized release. The changes below are implemented for the next release; their presence here does not mean an npm version has been published. The original 110-entrypoint / 572-symbol baseline remains byte-for-byte frozen. New entries are recorded in the current registry rather than rewriting that historical baseline.
+
+### Palettes and production URL
+
+| Before | Current behavior | Consumer action |
+|---|---|---|
+| 24 control accents sharing chart tokens | 12 iMac / iPhone 5C-inspired accents on `--basalt-accent-1…12` | Build pickers from `useAccent().swatches`; do not assume the former count, order, labels, or token values. |
+| 24 distinct `CHART_COLORS` entries | Fixed five-color Blue / Pink / Green / Yellow / Pearl cycle | Replace direct indexing beyond 4 with `getChartColor(index)` or `index % CHART_COLORS.length`. This is an intentional visual and runtime-value change, not a claim that all prior palette behavior is unchanged. |
+| Numbered chart tokens and 24 `chart` keys | Existing names retained as aliases of five chart colors | Keep imports; expect repeated colors. Use explicit per-series colors and descriptive legends where five categories are insufficient. |
+| Presets only | Optional `AccentProvider.paletteOverrides` with light/dark HSL pairs | Application owns validation and persistence. Overrides affect control swatches and semantic primary, never chart tokens. |
+| Ring remainder tied to a series color | Theme-aware neutral `chartMuted` track | No prop migration. Gauge is static under reduced motion and displays 0, partial, and full values without a black remainder. |
+| `https://basalt.hexly.ai` | `https://basaltui.com` | Update bookmarks and production links. Browser storage is origin-scoped, so old-domain theme/palette preferences cannot transfer automatically. Local `basalt.dev.hexly.ai` is unchanged. |
+
+The color-count and color-value changes need this migration notice and explicit release review under the policy above; the unchanged export baseline alone does not prove runtime-value compatibility. This work does not choose or publish a release version.
+
+Persisted accent IDs are normalized on reads and selections:
+
+| Old ID | Retained ID |
+|---|---|
+| `jade`, `seafoam` | `teal` |
+| `vermilion`, `crimson` | `red` |
+| `magenta` | `rose` |
+| `orchid` | `purple` |
+| `cobalt` | `indigo` |
+| `steel` | `primary` |
+| `cadet` | `sky` |
+| `olive` | `lime` |
+| `gold` | `amber` |
+| `tangerine` | `orange` |
+
+Other retained IDs keep their identity with the new palette values. Unknown IDs fall back to `primary`. Use IDs rather than array positions for saved selections.
+
+### Components and application recipes
+
+| Area | Additions and compatibility | Application responsibility |
+|---|---|---|
+| Resource screens | Additive DataTable sorting, manual processing/pagination, header and retry options; ResourceList state/toolbar/bulk/footer slots; granular BatteryMeter | Queries, authorization, selection policy, total counts and backend requests |
+| Filtering | MultiSelect, FilterBar and FilterChip, including controlled search and native form/reset support | Search results and business filter state |
+| Uploads | FileDropzone plus UploadQueue/UploadItem, validation, progress and action callbacks | Transport, retry/cancel, object URL lifetime and server validation |
+| Editing and navigation | InlineEditable, EditableNavItem/FolderNavItem, IconPicker, TagBadge/TagColorPicker, ResponsiveMasterDetail | Persistence, routing, allowed icons, stable item IDs and tree policy |
+| App templates | Complete AppFrame, Login and Resources modules in `ai/RECIPES.md`, compiled from the installed package | Router adapters, authentication, permissions, API calls and real data |
+| Chart details | Values heatmap and Timeline rails use fixed chart tokens; optional `TimelineEvent.textColor` pairs custom event backgrounds with readable titles and subtitles | Choose text color for custom backgrounds; omitted `textColor` keeps the legacy white treatment for explicit event colors |
+| Documentation | Generated props retain generics, callback/constructor union precedence, readonly arrays and tuples | Use the declared type parameters; generated text no longer substitutes `unknown` for caller data types |
+
+New workflow modules stay on granular subpaths. Existing string table headers, legacy chart `y`/`y2`/`y3` inputs, required ResourceList data, and explicit series colors remain supported. No automatic downstream migration is performed. A full tree adapter, draggable SplitPane, and maps remain outside this release scope.

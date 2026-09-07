@@ -32,7 +32,7 @@ export const API = [
 			},
 			{
 				name: "colors",
-				type: "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"[]",
+				type: "readonly (\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\")[]",
 				required: false,
 				description: "Allowed color subset, in caller-defined order.",
 			},

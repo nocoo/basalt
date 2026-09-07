@@ -25,7 +25,7 @@ export const API = [
 			},
 			{
 				name: "options",
-				type: "SegmentControlOption[]",
+				type: "readonly SegmentControlOption[]",
 				required: true,
 				description: "The selectable segments shown after the optional All segment.",
 			},

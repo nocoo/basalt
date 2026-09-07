@@ -96,7 +96,15 @@ export async function assertConsumerContrast(page: Page): Promise<ContrastGateRe
 	});
 
 	const themes: Array<"light" | "dark"> = ["light", "dark"];
-	const accents = ["primary", "teal", "red", "steel"];
+	const accents = await page
+		.locator("#select-accent option")
+		.evaluateAll((options) => options.map((option) => (option as HTMLOptionElement).value));
+	assert.equal(
+		accents.length,
+		13,
+		"All twelve accents plus the legacy steel migration must be exercised",
+	);
+	assert.equal(new Set(accents).size, 13);
 
 	let totalPairs = 0;
 	let passedPairs = 0;
@@ -118,12 +126,14 @@ export async function assertConsumerContrast(page: Page): Promise<ContrastGateRe
 				({ t, a }) => {
 					const root = document.documentElement;
 					return (
-						(root.classList.contains(t) || root.dataset.mode === t) &&
+						root.classList.contains(t) &&
+						root.dataset.mode === t &&
+						!root.classList.contains(t === "light" ? "dark" : "light") &&
 						root.dataset.accent === a &&
 						document.getElementById("contrast-status")?.textContent?.includes(`${t}/${a}`)
 					);
 				},
-				{ t: theme, a: accent },
+				{ t: theme, a: accent === "steel" ? "primary" : accent },
 			);
 
 			await page.mouse.move(0, 0);
@@ -215,10 +225,18 @@ export async function assertConsumerContrast(page: Page): Promise<ContrastGateRe
 		}
 	}
 
-	assert.equal(totalPairs, 704, "Must measure exactly 704 total contrast text pairs (88 * 8)");
-	assert.equal(passedPairs, 704, "All 704 contrast pairs must meet WCAG 4.5:1");
-	assert.equal(focusCases, 16, "Must test exactly 16 keyboard focus visibility cases");
-	assert.equal(passedFocus, 16, "All 16 focus tests must pass");
+	assert.equal(
+		totalPairs,
+		2288,
+		"Must measure exactly 2,288 contrast pairs (88 × 2 themes × 13 accents)",
+	);
+	assert.equal(passedPairs, 2288, "All 2,288 contrast pairs must meet WCAG 4.5:1");
+	assert.equal(
+		focusCases,
+		52,
+		"Must test exactly 52 keyboard focus cases (2 surfaces × 2 themes × 13 accents)",
+	);
+	assert.equal(passedFocus, 52, "All 52 focus tests must pass");
 
 	return {
 		totalPairs,

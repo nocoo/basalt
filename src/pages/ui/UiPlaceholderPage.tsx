@@ -122,6 +122,7 @@ function catalogApiCopyLines(api: CatalogApiSurface[]): string[] {
 			const strategyLine = isNative && nativeDoc ? [formatNativeSurfaceStrategy(nativeDoc)] : [];
 			return [
 				`### ${surface.name}`,
+				...(surface.typeParameters ? [`Type parameters: \`${surface.typeParameters}\``] : []),
 				...strategyLine,
 				...(surface.props.length === 0
 					? ["No component-specific props."]
@@ -241,6 +242,11 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 						<h3 id={catalogApiSurfaceId(surface.name)} className="scroll-mt-6 text-sm font-medium">
 							{surface.name}
 						</h3>
+						{surface.typeParameters && (
+							<p className="text-xs text-muted-foreground break-words [overflow-wrap:anywhere]">
+								Type parameters: <code>{surface.typeParameters}</code>
+							</p>
+						)}
 						{isNative && nativeDoc ? (
 							<p className="text-xs text-muted-foreground">
 								{formatNativeSurfaceStrategy(nativeDoc)}

@@ -11,10 +11,10 @@ const v = (token: string) => `hsl(var(--${token}))`;
  */
 export const withAlpha = (token: string, alpha: number) => `hsl(var(--${token}) / ${alpha})`;
 
-// ── 24 sequential chart colors ──
+// Legacy named aliases use the fixed five-color library palette.
 
 export const chart = {
-	primary: v("chart-1"), // Brand blue (= --primary)
+	primary: v("chart-1"), // Fixed chart blue, independent of the control primary.
 	sky: v("chart-2"),
 	teal: v("chart-3"),
 	jade: v("chart-4"),
@@ -41,13 +41,16 @@ export const chart = {
 } as const;
 
 /** Ordered array — use for pie / donut / bar where you need N colors by index. */
-export const CHART_COLORS = Object.values(chart);
+export const CHART_COLORS = [chart.primary, chart.rose, chart.green, chart.amber, chart.gray];
 
 /** CSS variable names (without --) matching CHART_COLORS order — for withAlpha(). */
-export const CHART_TOKENS = Array.from(
-	{ length: 24 },
-	(_, i) => `chart-${i + 1}`,
-) as readonly string[];
+export const CHART_TOKENS = [
+	"chart-1",
+	"chart-11",
+	"chart-5",
+	"chart-7",
+	"chart-24",
+] as readonly string[];
 
 // ── Semantic aliases ──
 
@@ -56,8 +59,8 @@ export const chartAxis = v("chart-axis");
 /** Positive / income / inflow */
 export const chartPositive = chart.green;
 
-/** Negative / expense / outflow — reuses the destructive token */
-export const chartNegative = v("destructive");
+/** Negative / expense / outflow uses the fixed chart pink. */
+export const chartNegative = chart.rose;
 
 /** Primary chart accent (most-used single color) */
 export const chartPrimary = chart.primary;

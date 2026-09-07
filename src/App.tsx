@@ -1,11 +1,11 @@
 import { Toaster } from "@nocoo/basalt/components/toast";
 import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
-import { AccentProvider } from "@nocoo/basalt/providers/accent";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { type ComponentType, lazy, type ReactNode, Suspense } from "react";
 import { BrowserRouter, Route, Link as RouterLink, Routes } from "react-router";
 import { DashboardLayout } from "@/components/DashboardLayout";
+import { SitePaletteProvider } from "@/components/SitePaletteProvider";
 
 const AccountsPage = lazy(() => import("./pages/AccountsPage"));
 const BankingDashboardPage = lazy(() => import("./pages/BankingDashboardPage"));
@@ -81,7 +81,7 @@ function routeElement(Page: ComponentType) {
 
 const App = () => (
 	<ThemeProvider>
-		<AccentProvider>
+		<SitePaletteProvider>
 			<BrowserRouter>
 				<LinkProvider render={AppLink}>
 					<TooltipProvider>
@@ -123,7 +123,7 @@ const App = () => (
 					</TooltipProvider>
 				</LinkProvider>
 			</BrowserRouter>
-		</AccentProvider>
+		</SitePaletteProvider>
 	</ThemeProvider>
 );
 

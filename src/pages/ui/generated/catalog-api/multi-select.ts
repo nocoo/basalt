@@ -13,19 +13,19 @@ export const API = [
 			},
 			{
 				name: "options",
-				type: "MultiSelectOption[]",
+				type: "readonly MultiSelectOption[]",
 				required: true,
 				description: "Available options; retain selected options to preserve their display labels.",
 			},
 			{
 				name: "value",
-				type: "string[]",
+				type: "readonly string[]",
 				required: false,
 				description: "Controlled selected identifiers.",
 			},
 			{
 				name: "defaultValue",
-				type: "string[]",
+				type: "readonly string[]",
 				required: false,
 				default: "[]",
 				description: "Initial uncontrolled selection.",

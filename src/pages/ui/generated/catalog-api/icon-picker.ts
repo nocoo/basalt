@@ -13,7 +13,7 @@ export const API = [
 			},
 			{
 				name: "options",
-				type: "IconPickerOption[]",
+				type: "readonly IconPickerOption[]",
 				required: true,
 				description: "Caller-supplied icon subset; the library never imports an icon catalog.",
 			},

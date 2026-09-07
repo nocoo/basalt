@@ -702,16 +702,16 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 | P4 | 浮层与语义：10a/b/c/d/e、11a/b/b2/b3、12a/b/c/d；C06–C11/C16–C18/C22/Q07/R05 | Dock 非模态语义、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘/受控月份/本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 已验收 | 实现至 `781aadf`，C06–C11/C16–C18/C22/Q07 已关闭；177 文件 / 1,628 测试，四维覆盖率 97.45 / 95.26 / 98.22 / 97.53；最终包、Next 与文档消费通过，详见 12.4 |
 | P5 | 视觉/图表/动效：13a/b1/b2/b3/c/d、17a 及 tooltip/matrix/回归/registry 子组；C12/C13/C15/C23/E07/E08/Q08/R04/R05 | 主题对比、导航回焦、图表替代、StatCard 状态、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、reduced motion | 已验收 | 实施至 `236ac18`；183 文件 / 1,703 测试全部通过，四维覆盖率 97.24 / 95.05 / 98.50 / 97.43；C12/C13/C15/C23/E07/E08/Q08/R04 已关闭，详见 12.4 |
 | P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 已验收 | `462b43e`；三种骨架屏、两种丰富表格、BatteryMeter 与受控列表；1,719 项测试及四维 95% 门、真实包和浏览器检查通过 |
-| P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 已验收 | 1,729 项测试、四维 95% 门及 fresh 生产构建浏览器检查通过 |
-| P8 | 筛选与上传：16a/b/c；R01/R02 | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费 | 已验收 | 主 agent 阶段实现，见下方记录 |
-| P9 | 小型复用控件与应用模板：18a/b/c/d；R03/R06/R07/R08 | EditableNav、Tag 色板/选择、InlineEditable/master-detail、可编译 AppFrame/Login/Resource recipes | 已验收 | 1,787 项测试、四维 95% 门、真实 tarball A/B/Next 与文档/生产展示通过 |
-| P10 | D07 类型打印器；主色/图表双色板；生产域名；整体验收、兼容/迁移说明与台账收口 | 泛型/readonly/回调类型可编译；12 糖果主色及本地自定义色板；固定图表色板与 ring 衬底；basaltui.com / GitHub metadata；新 HEAD 全套 6DQ、tarball/文档 freshness、无未记录 API 破坏 | 待调度 | 按用户 2026-09-07 追加要求扩充，最终一起交付 |
+| P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 已验收 | `e5cb6de`；1,729 项测试、四维 95% 门及 fresh 生产构建浏览器检查通过 |
+| P8 | 筛选与上传：16a/b/c；R01/R02 | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费 | 已验收 | `55b9dba`；1,755 项测试、四维 95% 门、真实 tarball A/B/Next、文档与生产展示通过 |
+| P9 | 小型复用控件与应用模板：18a/b/c/d；R03/R06/R07/R08 | EditableNav、Tag 色板/选择、InlineEditable/master-detail、可编译 AppFrame/Login/Resource recipes | 已验收 | `9d63226`；1,787 项测试、四维 95% 门、真实 tarball A/B/Next 与文档/生产展示通过 |
+| P10 | D07 类型打印器；主色/图表双色板；生产域名；整体验收、兼容/迁移说明与台账收口 | 泛型/readonly/回调类型可编译；12 糖果主色及本地自定义色板；固定图表色板与 ring 衬底；basaltui.com / GitHub metadata；最终候选全套 6DQ、tarball/文档 freshness、无未记录 API 破坏 | 已验收 | 与本节同阶段提交；1,795 项测试、四维 95% 门、包质量、A/B/Next/heavy/docs 与 fresh showcase 全通过，详见 12.4 |
 
-P7 包含原提交表未单列的 Data 页面搜索/筛选闭环，按独立功能提交。P9 的 InlineEditable 按实际受控需求单独提交。任何新增公开 surface 同阶段补元数据、出口和文档，不能拖到收尾才补。
+P7 包含原拆分表未单列的 Data 页面搜索/筛选闭环；P9 包含实际受控需求所需的 InlineEditable。两者均已按用户修订后的大阶段提交方式交付。新增公开 surface 同阶段补齐元数据、出口和文档。
 
 **P10 追加设计与验收：**控件主色参考经典 Apple iMac 与 iPhone 5C 糖果色，演绎为 12 色，替换现有色板的视觉值；保留已发布入口与类型契约，对旧持久化选择明确迁移。Palette 页面支持编辑、自定义、应用与恢复色板，缓存于 localStorage，验证刷新、无存储权限、无效颜色与浅深主题。图表使用独立的固定 5C 风格色板，明确固定数量及对比度处理；主色切换和自定义不得改写图表系列颜色。逐类核对 chart 的文字、legend、tooltip、图形配色及 ring 未占用区域，改用适配主题的衬底并检查真实浏览器画面。生产链接统一为 `https://basaltui.com`，同步 GitHub homepage；保留 `basalt.dev.hexly.ai` 本地地址，Cloudflare 配置由用户完成，本轮不部署。上述与 D07、迁移文档及最终 6DQ 一并验收。
 
-**当前执行点（2026-09-07）：P1–P9 已验收；主 agent 进入 P10，按阶段提交。** pi 保持空闲，其监督定时器停止，本地 dev 服务保留。后续阶段沿用原任务范围及兼容验收基线。
+**当前执行点（2026-09-07）：P1–P10 已按本轮范围全部验收，P6–P10 由主 agent 直接实施并按大阶段提交。** pi 保持空闲，其监督定时器停止，本地 dev 服务保留。分类结果和后置边界见 12.6，页面导览见 12.7。版本仍为 2.0.3，本轮未 push、tag、publish 或 deploy。
 
 ### 12.4 验收记录
 
@@ -1086,6 +1086,28 @@ Library 新增八个可复制场景：文件夹组织、远程模型搜索、资
 
 当前 **112 catalog 项（111 ready，maps 仍 planned）、122 模块 / 741 符号、250 API targets、290 场景、125 包入口**。旧公共基线、2.0.3 版本与初审第 1–8 节保留。**R03 的小型控件、R06/R07/R08、C24 已关闭，P9 已验收**；Tree adapter、可拖拽 SplitPane 继续按原范围后置。证据：`p9-direct-coverage-accepted.json`、`p9-direct-typecheck-accepted.json`、`p9-direct-lint-accepted.json`、`p9-direct-next-fixed.json`、`p9-direct-docs-fixed.json`、`p9-direct-standalone-final.json`、`p9-direct-tailwind-final.json`、`p9-direct-types-final.json`、`p9-direct-pack-final.json`、`p9-direct-publint-final.json`、`p9-direct-showcase-complete.json`。
 
+#### P10 验收记录（已验收，2026-09-07）
+
+**类型文档。** D07 打印器使用 TypeScript 语法节点保留函数/构造函数/条件类型组合所需括号、readonly 数组与元组、泛型参数及约束/默认值；递归泛型 alias 保持引用，不展开 ReactNode。Library API 和 Copy page 同时显示泛型上下文。用实际 TypeScript 7 对生成文本与原始类型做双向赋值和负例验证，包含泛型继承的具体实例、真实 LineChart 与 HeatmapCalendar；原有 97 项生成器回归继续保留。旧文档丢失 readonly 的三个准确预期与 Copy page 两项预期同步纠正，没有放宽断言。
+
+**双色板与自定义。** 控件主色替换为 Blue、Ice、Bondi、Green、Lime、Yellow、Tangerine、Strawberry、Pink、Grape、Blueberry、Pearl 共 12 个糖果色。原始 swatch 与符合文字/按钮对比度的 semantic primary 分离；AccentProvider 增加可选 paletteOverrides，老 ID 明确归一迁移。Palette 页可编辑每色的浅/深 hex 值、保存、重置草稿及恢复经典方案，以 basalt-palette-v1 缓存并跨标签页同步。无效数据回退；写入失败仍当次应用并提示；启动阶段也容忍 localStorage 被拒绝，避免初始化白屏。
+
+Chart 固定为 Blue/Pink/Green/Yellow/Pearl 五色，与主色及自定义独立。旧 chart 属性和 24 个编号 token 保留别名；**CHART_COLORS 长度 24→5 与旧主色数量/值是明确记录的行为变更**，不能用冻结的导出符号基线宣称这些值没有变化。Gauge 使用浅灰/深灰中性轨道并采用共享静态动画设置；Values heatmap 与 Timeline 解除对 primary 的耦合，Timeline 可选 textColor 支持彩色事件背景的可读文字。折线、sparkline、面积及雷达轮廓接入既有 2px 线宽，雷达网格适配主题；SlotBar/Timeline 展示与负向图表语义使用固定色板。控件数值、显式 series.color、业务状态与原有入口保留。
+
+**域名与接入说明。** 生产链接、两个 package.json homepage、页面 og:url 和 GitHub homepage 均为 https://basaltui.com；新域名 HTTP 200。CLAUDE.md 仅执行用户授权的生产域名替换。保留本地 basalt.dev.hexly.ai；未改 Cloudflare 配置。INTEGRATION、随包 USAGE/COMPATIBILITY/README 与 Unreleased changelog 说明 recipes、双色板、自定义责任、旧 ID 迁移及旧域名浏览器缓存不能自动跨 origin 转移。版本仍为 2.0.3，尚未发布。
+
+**已通过验证。** 201 文件 / 1,795 项测试全部通过；语句 97.54%（3,889/3,987）、分支 95.70%（3,474/3,630）、函数 98.75%（950/962）、行 97.75%（3,696/3,781）。四维 95% 阈值及原覆盖范围未改变。类型、零警告 lint、包 build/types/pack/strict publint 与 OSV（390 包无命中）通过。
+
+新增正式 showcase 配色门在 390/1280px 与明暗主题中覆盖 24 个 ready chart 页及 Palette，共 100 组页面组合；实际主题与模拟操作系统相反，并核对 class/data-mode 一致。检查 48 次真实 tooltip、1,164 个文字对照，最低 5.58:1；所检主线/扇区标记最低 3.51:1。Gauge 的 0/64/100% 读数、路径比例及两主题轨道通过，轨道分别为 rgb(215,218,224) / rgb(58,60,65)。刷新、跨页、自定义不改变图表、跨标签页、无效/损坏数据、拒绝读/写全部通过，浏览器无控制台或页面错误。已查看两主题 48 张 chart 预览及手机/桌面 Palette；原展示门的主题设置也改走真实 provider storage 契约，避免仅修改 .dark 造成混合主题。
+
+**最终消费与展示。** standalone、Tailwind、Next 生产、heavy 和 docs 五条正式真实安装包消费门全部通过。A/B 分别覆盖 12 个主色及 legacy steel 迁移选择、双主题与相反操作系统偏好，**2,288/2,288 文字配对、52/52 键盘焦点状态**通过；原 84 个常规样本与 hover/focus 断言完整保留。heavy 加入 Gauge 72% 轨道与 ValuesHeatmap 对宿主 primary 改色的不变性。文档门编译 **37 个 Markdown 模块、111 页主 Usage、290 个场景**，并从安装包原文生成三个应用 recipes。
+
+fresh 生产构建的完整 showcase 再次通过：保留 P6 三种骨架屏/两表、P7 共 72 项页面与工作流检查、P8 筛选/上传和 P9 六页/12 场景，再覆盖上述 P10 配色矩阵。复核中修正了验收脚本的旧样本总数，以及 Examples 首轮继承上一组主题的问题；最终主题切换遵循 provider 契约，未降低阈值或缩小矩阵。最终产物核对另纠正 README 的统计口径为 **122 个 JavaScript 入口 + 3 个 CSS 出口**；当前 **112 catalog 项、111 ready、250 API targets、741 个公开符号**，maps 仍 planned。
+
+旧公共基线与初审第 1–8 节逐字核对通过；CLAUDE.md 除生产域名外无改动；INTEGRATION 随包镜像一致。源码和生成资料随本阶段正常提交，并保存候选文件哈希及提交绑定记录；不跳过 typecheck、lint、全量单测或 staged gitleaks。**D07 与 P10 已关闭；本轮 P1–P10 验收完成，组织治理及 Tree/SplitPane/maps 后置范围见 12.6。**
+
+证据：`p10-catalog-printer-acceptance`、`p10-printer-copy-regression`、`p10-coverage-final-candidate`（含 lcov）、`p10-lint-accepted`、`p10-typecheck-final-candidate`、`p10-package-build-final`、`p10-package-types-final`、`p10-pack-final`、`p10-publint-final`、`p10-osv-final`、`p10-site-build-final`、`p10-standalone-accepted`、`p10-tailwind-accepted`、`p10-next-accepted`、`p10-heavy-accepted`、`p10-docs-accepted`、`p10-showcase-accepted`、`p10-visual-screenshots-final`、`p10-github-domain-metadata`、`p10-invariants-final`。以上均为本地命令与真实浏览器证据，不代表远端 CI 或生产发布已经执行。
+
 ### 12.5 实施中追加的问题
 
 #### Q08 · P2 · registry 与生成器测试重复解析导致完整覆盖运行超时【已于 P5 修正】
@@ -1146,11 +1168,11 @@ Checkbox.Group 与 Switch.Group 的内部 `setRefs` 调用外部 callback，却�
 
 证据：`p3-group-refs-group-refs-before.json`。09c 独立修正这两处合并逻辑，保留 FIELDSET 目标、普通 callback/object 行为及内部表单 ref；不新增公开 API。
 
-#### D07 · P2 · 回调与 ReactNode 联合类型的文档丢失括号【生成结果＋类型复现；待 P10 修正】
+#### D07 · P2 · 回调与 ReactNode 联合类型的文档丢失括号【已于 P10 修正】
 
 P4/10b 新增的错误文案参数暴露出 [catalog-api.ts](../scripts/catalog-api.ts) 的类型打印边界：实际类型为 `React.ReactNode | ((error: unknown) => React.ReactNode)`，生成结果却是 `(error: unknown) => React.ReactNode | React.ReactNode`，变成了仅接受函数的类型。主 agent 从真实安装包取出原文，用 TypeScript 验证同一个字符串：公开参数接受，生成的文档类型以 **TS2322** 拒绝。证据：`p4-d07-union-docs-before.json`。
 
-10b 使用明确的 `DeleteResourceErrorFormatter` 回调别名，使本组公开文档准确且参数兼容。通用打印器的优先级修正在 P10 单独提交：保留联合中的函数/构造函数等必要括号，用实际可赋值性对照验证生成文本，并确认其他已生成 API 没有意外变化；不把当前别名方案计为通用缺陷已关闭。
+10b 使用明确的 `DeleteResourceErrorFormatter` 回调别名，使本组公开文档准确且参数兼容。通用打印器的优先级修正纳入 P10 阶段提交：保留联合中的函数/构造函数等必要括号，用实际可赋值性对照验证生成文本，并确认其他已生成 API 没有意外变化；不把当前别名方案计为通用缺陷已关闭。
 
 P5 补充：HeatmapCalendarYear 的实际 `colorScale: readonly string[]` 被印为 `string[]`。安装包接受 const palette，文档类型以 **TS4104** 拒绝；证据：`p5-d07-readonly-corrected.json`。P10 同时保留 readonly 数组/元组语义。
 
@@ -1172,3 +1194,50 @@ DashboardLayout 的移动 Sheet 关闭后焦点落到 BODY；390px 双主题 **2
 #### C24 · P2 · 生产压缩内联默认函数导致选择指示器重复更新【已于 P9 修正】
 
 Next 16.3.3 / Turbopack 生产消费页在挂载 TagColorPicker 时触发 React #185，Vite 与 Next webpack 开发模式不能复现。实际产物把 selection-indicator 的函数默认参数内联，导致每次 render 创建新的 mapGeometry，继而重跑 layout effect 和 setState。修正把默认函数选择移到稳定回调内部，依赖保留调用方的可选参数；不更改控件接口或禁用生产压缩。正式 Next gate 覆盖两个 picker、编辑、标签、导航及 master/detail 的手机/桌面与主题组合，作为持续回归。另补显式 hydration 就绪标记，避免将 SSR 可见但尚未绑定的按钮当成可交互。证据：p9-direct-next-diagnosis、p9-next-production-component-stack；最终通过记录见 P9 验收。
+
+
+### 12.6 最终分类台账
+
+第 1–8 节保留初审原文。下表反映 P1–P10 最终实施结果，不能把历史缺陷描述当作当前状态，也不能用阶段完成代替后置项的独立验收。对应的新证据见 12.4。
+
+| 分类 / 编号 | 当前结果 | 阶段与核验位置 |
+|---|---|---|
+| 文档 D01–D06 | 已关闭：接入入口、可编译代码、完整 API 归属、随包 agent 知识、公开出口基线与兼容政策 | P2；INTEGRATION、ai/registry、USAGE、COMPATIBILITY、真实 tarball docs gate |
+| 文档 D07 | 已关闭：类型打印器的泛型、readonly、回调优先级与递归别名修正；TypeScript 正反对照及完整文档门通过 | P10；catalog-type-printer.test.ts、Copy page 回归与生成 API |
+| 控件 C01–C05 | 已关闭：禁用/loading、standalone 尺寸、输入弹层、Tab、DatePicker ref/表单 | P3；真实 A/B 包消费及原生 FormData、reset、焦点对照 |
+| 控件 C06–C11 | 已关闭：Dock、Confirm、Slider、Empty、日历、主题存储 | P4；键盘、受控状态、异常、几何与 storage 拒绝 |
+| 控件 C12–C13 | 已关闭：语义对比度、图表摘要/数据替代与热力图键盘路径；新增色板通过 P10 全矩阵验收 | P5/P10；文字及 hover/focus 对照、图表和日历消费门 |
+| 控件 C14 | 已关闭：DataTable 手动/受控数据处理及 ResourceList 页面组合 | P6；设备运维表、订阅台账、旧 props 类型正反例 |
+| 控件 C15 | 已关闭：动态图表 series、formatter/domain/stack 等配置 | P5；真实包图表与旧 y/y2/y3 输入兼容 |
+| 控件 C16–C18、C22 | 已关闭：Portal forceMount、Popover asChild、Toast 隐藏图标、日历极端日期 | P4；默认/显式路径、卸载清理及原生日期上限 |
+| 控件 C19–C21 | 已关闭：类名提取、取消 reset、Group callback ref cleanup | P3；编译 CSS、父级重渲染与 React 19 清理 |
+| 控件 C23 | 已关闭：热力日历清空后重新加载的焦点恢复 | P5；空态恢复与外部焦点所有权，正式 heavy 持续回归 |
+| 控件 C24 | 已关闭：Next 生产压缩下选择指示器重复更新 | P9；真实 Next 生产产物，稳定默认回调及 hydration 就绪 |
+| 质量 Q01–Q04、Q06 | 已关闭：失败传播、真实 tsc、包/消费门接入、发布 SHA/main/tag 约束及工具/豁免归一 | P1；失败注入、工作流及 release 正反例；未触发远端发布 |
+| 质量 Q05 | 本轮缺陷的契约、浏览器、几何与配色门已接入；组织级 skip 治理、既有 lint a11y 豁免复查仍后置，未宣称全面关闭 | P3–P10；保持原覆盖分母和四维 95%，ready 仅表示文档/示例可展示 |
+| 质量 Q07–Q08 | 已关闭：formatter 固定调用与重复 registry/生成解析 | P4/P5；原时间预算、跨调用 freshness、完整生成内容与断言保留 |
+| Example E01–E06 | 已关闭：移动文档、重复 ID、交互闭环、Chat 窄屏、Network 几何、文案/页头 | P7；24 个路由、320/390/640px 文档重排、手机/桌面与两主题工作流 |
+| Example E07–E08 | 已关闭：reduced motion 覆盖与移动导航回焦 | P5；P6–P10 新场景继续使用正式 motion、键盘与清理检查 |
+| 展示 S01–S02 | 已关闭：三种复杂骨架屏及两种丰富可交互表格 | P6；Library 主展示、复制代码、四态与 loading/loaded 几何 |
+| 复用 R01–R02 | 已关闭：MultiSelect、FilterBar、FileDropzone、UploadQueue | P8；每项两个独立场景，纯包消费及取消/重试/清理 |
+| 复用 R03 | 本轮小控件已验收：EditableNavItem/FolderNavItem、IconPicker、InlineEditable；Tree adapter 后置 | P9；保留调用方路由、树模型与持久化责任 |
+| 复用 R04 | 已关闭：图表动态系列、tooltip 组合、HeatmapMatrix | P5；通用图形与业务数据分离 |
+| 复用 R05 | 已关闭：指标卡说明/状态及资源页面 slots/四态 | P4–P6；StatCard、LayerCard、ChartShell、ResourceList |
+| 复用 R06–R08 | 本轮已验收：标签颜色/选择、响应式 master/detail、三份应用 recipes；可拖拽 SplitPane 后置 | P9；小图标集合、手机返回回焦、安装包 Markdown 原文编译与交互 |
+| P10 追加需求 | 已验收：12 糖果主色、自定义缓存、独立固定五色图表、中性 ring 轨道、新域名/GitHub homepage | 12.4 P10 记录及 COMPATIBILITY 迁移表 |
+
+后置范围保持明确：Tree adapter 与可拖拽 SplitPane 需要独立的数据/拖动/键盘契约设计；maps 仍为唯一 planned catalog 页面。组织级 index-snapshot pre-commit、stdin-range pre-push、skip 检测及既有可访问性规则豁免复查未在本轮替换。当前提交仍执行正常 typecheck、lint、全量单测与 staged gitleaks；pre-push/CI 配置中的覆盖率与消费门继续保留。远端 CI 尚未为这些本地提交运行。
+
+### 12.7 P6–P10 交付导览
+
+以下路径均可在本地 `http://localhost:7003` 或 `https://basalt.dev.hexly.ai` 查看。生产代码尚未部署，因此不能用新生产域名判断这些本地变化是否已上线。
+
+| 阶段 | 能直接看到的页面 | 实施前 → 当前实现 | 不做的影响 |
+|---|---|---|---|
+| P6 | `/ui/skeleton-line`、`/ui/data-table`、`/ui/table`、`/ui/battery-meter` | 几条占位线与简单表格 → 仪表盘/列表/详情加载组合；可排序、筛选、分页、选择的丰富表格，行内格式化金额/状态/电量/趋势及失败重试 | 大型项目仍需各自补骨架屏和列表状态，迁移时难以共享一致的数据契约 |
+| P7 | `/forms`、`/settings`、`/data`、`/chat`、`/network`，手机 Library | 外观为主、窄屏挤压/截断 → 保存/取消/错误/重试可操作，Chat 流式/停止与返回列表可用，图表尺寸稳定、文档可键盘横滚 | 示例无法作为可工作的迁移起点，移动布局和焦点问题继续进入下游 |
+| P8 | `/ui/multi-select`、`/ui/filter-bar`、`/ui/file-dropzone`、`/ui/upload-queue` | 下游重复实现筛选和文件流程 → 公共多选/筛选/拖放/队列，展示搜索、校验、进度、取消、失败重试 | 文件生命周期、原生表单和异步取消等边界需每个应用重复维护 |
+| P9 | `/ui/inline-editable`、`/ui/editable-nav-item`、`/ui/icon-picker`、`/ui/tag-badge`、`/ui/tag-color-picker`、`/ui/responsive-master-detail`；随包 `ai/RECIPES.md` | 零散编辑/导航/标签与应用壳 → 可复用的小控件、手机主从视图及三份可编译 AppFrame/Login/Resources 模块 | 应用迁移仍依赖复制局部代码，容易遗漏回焦、草稿保留、请求取消和 SSR 生产差异 |
+| P10 | `/palette`、`/ui/gauge`、`/ui/line`、`/ui/radar`、`/ui/timeline`，泛型控件 API/Copy page | 主色与 chart 共用旧色板、黑色 ring 剩余区、文档类型失真 → 12 糖果主色及本地自定义、独立固定五色图表、中性轨道、清晰文字/网格与正确泛型文档；生产链接切换为 basaltui.com | 主色更换会扰动图表系列，ring 观感与文字配色问题保留，按文档写类型仍可能无法编译，旧生产链接继续失效 |
+
+所有示例仍使用本地模拟数据；查询、认证、权限、路由和上传 transport 属于应用。公共源码/元数据/随包指南保持同步，颜色数量和值的迁移属于明确记录的行为变化，发布版本仍须另行按兼容政策决定。

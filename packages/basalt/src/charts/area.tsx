@@ -160,6 +160,7 @@ export function AreaChart<
 							name={item.label ?? item.key}
 							stackId={stackId}
 							stroke={fill}
+							strokeWidth={CHART_TYPE.strokeWidth}
 							fill={fill}
 							fillOpacity={CHART_TYPE.areaFillAlpha}
 							{...ANIMATION_PROPS}

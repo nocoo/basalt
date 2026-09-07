@@ -9,7 +9,7 @@ import {
 	TableHeader,
 	TableRow,
 } from "@nocoo/basalt/components/table";
-import { AccentProvider, useAccent } from "@nocoo/basalt/providers/accent";
+import { ACCENT_SWATCHES, AccentProvider, useAccent } from "@nocoo/basalt/providers/accent";
 import { type BasaltTheme, ThemeProvider, useTheme } from "@nocoo/basalt/providers/theme";
 import { useState } from "react";
 
@@ -56,10 +56,12 @@ function ContrastControls() {
 					value={accent}
 					onChange={(e) => setAccent(e.target.value)}
 				>
-					<option value="primary">primary</option>
-					<option value="teal">teal</option>
-					<option value="red">red</option>
-					<option value="steel">steel</option>
+					{ACCENT_SWATCHES.map((swatch) => (
+						<option key={swatch.id} value={swatch.id}>
+							{swatch.id}
+						</option>
+					))}
+					<option value="steel">legacy steel</option>
 				</select>
 			</label>
 			<span id="contrast-status" data-ready="true">

@@ -47,6 +47,7 @@ export interface CatalogApiCallableOptions {
 export interface CatalogApiSurface {
 	name: string;
 	props: CatalogApiProp[];
+	typeParameters?: string;
 	callSignature?: string;
 	description?: string;
 	parameters?: CatalogApiCallableParameter[];
@@ -1987,6 +1988,32 @@ function unwrapTypeNode(typeNode: ts.TypeNode): ts.TypeNode {
 	return node;
 }
 
+/** Let the compiler's syntax model decide precedence; never guess from an arrow in a string. */
+function compoundMember(text: string, position: "union" | "intersection" | "array"): string {
+	const file = ts.createSourceFile(
+		"printed-type.ts",
+		`type Printed = ${text};`,
+		ts.ScriptTarget.Latest,
+		true,
+	);
+	const declaration = file.statements[0];
+	if (!declaration || !ts.isTypeAliasDeclaration(declaration))
+		failCatalogApi(`invalid printed type: ${text}`);
+	const node = declaration.type;
+	const callable =
+		ts.isFunctionTypeNode(node) || ts.isConstructorTypeNode(node) || ts.isConditionalTypeNode(node);
+	const needsParens =
+		callable ||
+		(position !== "union" && ts.isUnionTypeNode(node)) ||
+		(position === "array" && (ts.isIntersectionTypeNode(node) || ts.isTypeOperatorNode(node)));
+	return needsParens ? `(${text})` : text;
+}
+
+function printArray(type: ts.Type, element: string): string {
+	const readonly = type.getSymbol()?.getName() === "ReadonlyArray" ? "readonly " : "";
+	return `${readonly}${compoundMember(element, "array")}[]`;
+}
+
 function entityNameText(name: ts.EntityName): string {
 	if (ts.isIdentifier(name)) {
 		return name.text;
@@ -2106,71 +2133,6 @@ function isBooleanParts(parts: readonly ts.Type[]): boolean {
 	);
 }
 
-function mentionsTypeParameter(
-	type: ts.Type,
-	checker: ts.TypeChecker,
-	enclosing: ts.Node,
-	seen = new Set<ts.Type>(),
-): boolean {
-	if (seen.has(type)) {
-		return false;
-	}
-	seen.add(type);
-	if (type.flags & ts.TypeFlags.TypeParameter) {
-		return true;
-	}
-	if (type.isUnion() || type.isIntersection()) {
-		return type.types.some((part) => mentionsTypeParameter(part, checker, enclosing, seen));
-	}
-	const args = namedTypeArguments(type, checker);
-	if (args?.some((argument) => mentionsTypeParameter(argument, checker, enclosing, seen))) {
-		return true;
-	}
-	for (const signature of type.getCallSignatures()) {
-		if (mentionsTypeParameter(signature.getReturnType(), checker, enclosing, seen)) {
-			return true;
-		}
-		for (const symbol of signature.getParameters()) {
-			const location = symbol.valueDeclaration ?? enclosing;
-			if (
-				mentionsTypeParameter(
-					checker.getTypeOfSymbolAtLocation(symbol, location),
-					checker,
-					location,
-					seen,
-				)
-			) {
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-function printCallType(
-	type: ts.Type,
-	checker: ts.TypeChecker,
-	enclosing: ts.Node,
-): string | undefined {
-	const signatures = type.getCallSignatures();
-	if (signatures.length !== 1) {
-		return undefined;
-	}
-	const signature = signatures[0];
-	if (!signature) {
-		return undefined;
-	}
-	const params = signature.getParameters().map((symbol) => {
-		const declaration = symbol.valueDeclaration;
-		const location = declaration ?? enclosing;
-		const paramType = checker.getTypeOfSymbolAtLocation(symbol, location);
-		const typeNode = declaration && ts.isParameter(declaration) ? declaration.type : undefined;
-		const optional = (symbol.flags & ts.SymbolFlags.Optional) !== 0 ? "?" : "";
-		return `${symbol.getName()}${optional}: ${printType(paramType, checker, location, false, typeNode)}`;
-	});
-	return `(${params.join(", ")}) => ${printType(signature.getReturnType(), checker, enclosing, false)}`;
-}
-
 function printAtomicType(
 	type: ts.Type,
 	checker: ts.TypeChecker,
@@ -2179,7 +2141,7 @@ function printAtomicType(
 ): string {
 	const element = arrayElementType(type, checker);
 	if (element) {
-		return `${printType(element, checker, enclosing, false)}[]`;
+		return printArray(type, printType(element, checker, enclosing, false));
 	}
 	const alias = printAlias(type, checker, enclosing, typeNode);
 	if (alias) {
@@ -2187,10 +2149,6 @@ function printAtomicType(
 	}
 	if (type.flags & ts.TypeFlags.Boolean) {
 		return "boolean";
-	}
-	const callType = printCallType(type, checker, enclosing);
-	if (callType && mentionsTypeParameter(type, checker, enclosing)) {
-		return callType;
 	}
 	const text = checker.typeToString(type, enclosing, TYPE_FORMAT);
 	if (isTruncatedType(text)) {
@@ -2224,7 +2182,7 @@ function printUnionParts(
 		}
 		return left.text.localeCompare(right.text);
 	});
-	return printed.map((part) => part.text).join(" | ");
+	return printed.map((part) => compoundMember(part.text, "union")).join(" | ");
 }
 
 function arrayElementType(type: ts.Type, checker: ts.TypeChecker): ts.Type | undefined {
@@ -2260,7 +2218,7 @@ function printType(
 	typeNode?: ts.TypeNode,
 ): string {
 	if (type.flags & ts.TypeFlags.TypeParameter) {
-		return "unknown";
+		return checker.typeToString(type, enclosing, TYPE_FORMAT);
 	}
 	const node = typeNode ? unwrapTypeNode(typeNode) : undefined;
 	if (node && ts.isUnionTypeNode(node)) {
@@ -2304,11 +2262,31 @@ function printType(
 			}
 			return left.text.localeCompare(right.text);
 		});
-		return visible.map((part) => part.text).join(" | ");
+		return visible.map((part) => compoundMember(part.text, "union")).join(" | ");
+	}
+	if (node && ts.isIntersectionTypeNode(node)) {
+		return node.types
+			.map((part) =>
+				compoundMember(
+					printType(checker.getTypeFromTypeNode(part), checker, enclosing, false, part),
+					"intersection",
+				),
+			)
+			.join(" & ");
 	}
 	let referencedType: ts.Type | undefined;
 	if (node && (ts.isTypeReferenceNode(node) || ts.isExpressionWithTypeArguments(node))) {
 		referencedType = checker.getTypeFromTypeNode(node);
+		// Preserve recursive generic aliases instead of recursively expanding ReactNode.
+		// The required column records presence; an optional prop's displayed value omits undefined.
+		if (
+			stripTopLevelUndefined &&
+			writtenAliasHidesTopLevelUndefined(referencedType, checker) &&
+			referencedType.aliasTypeArguments?.length
+		) {
+			const reference = printAlias(referencedType, checker, enclosing, node);
+			if (reference) return `Exclude<${reference}, undefined>`;
+		}
 		if (!containsTopLevelUndefined(referencedType)) {
 			const alias = printAlias(referencedType, checker, enclosing, node);
 			if (alias) {
@@ -2317,11 +2295,20 @@ function printType(
 		}
 	}
 	if (node && ts.isArrayTypeNode(node)) {
-		return `${printType(checker.getTypeFromTypeNode(node.elementType), checker, enclosing, false, node.elementType)}[]`;
+		return printArray(
+			type,
+			printType(
+				checker.getTypeFromTypeNode(node.elementType),
+				checker,
+				enclosing,
+				false,
+				node.elementType,
+			),
+		);
 	}
 	const element = arrayElementType(type, checker);
 	if (element) {
-		return `${printType(element, checker, enclosing, false)}[]`;
+		return printArray(type, printType(element, checker, enclosing, false));
 	}
 	const alias = printAlias(type, checker, enclosing, typeNode);
 	if (
@@ -2810,7 +2797,18 @@ export function generateCatalogApi(input: {
 			failCatalogApi(`allowEmpty expired for ${target.slug} surface ${target.surface}`);
 		}
 		const surfaces = result[target.slug] ?? [];
-		surfaces.push({ name: target.surface, props });
+		const sourceFile = resolveSourceFile(program, input.repoRoot, target.sourceFile);
+		const declaration = findExportedPropsDeclaration(
+			sourceFile,
+			target.propsType,
+			program.getTypeChecker(),
+		);
+		const parameters = declaration.typeParameters;
+		const printer = ts.createPrinter({ removeComments: true });
+		const typeParameters = parameters?.length
+			? `<${parameters.map((parameter) => printer.printNode(ts.EmitHint.Unspecified, parameter, sourceFile)).join(", ")}>`
+			: undefined;
+		surfaces.push({ name: target.surface, ...(typeParameters ? { typeParameters } : {}), props });
 		if (target.callableExport) {
 			const callables = extractCallablesForExport(program, input.repoRoot, target);
 			surfaces.push(...callables);
@@ -2861,6 +2859,9 @@ function renderCallableParameter(param: CatalogApiCallableParameter): string {
 
 function renderSurface(surface: CatalogApiSurface): string {
 	const lines: string[] = ["\t{", `\t\tname: ${emitString(surface.name)},`];
+	if (surface.typeParameters !== undefined) {
+		lines.push(`\t\ttypeParameters: ${emitString(surface.typeParameters)},`);
+	}
 	if (surface.callSignature !== undefined) {
 		lines.push(`\t\tcallSignature: ${emitString(surface.callSignature)},`);
 	}

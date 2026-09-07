@@ -4,6 +4,7 @@ import {
 	ANIMATION_PROPS,
 	CHART_PLOT_MARGIN,
 	CHART_PLOT_MARGIN_BARE,
+	CHART_TYPE,
 	cartesianAxisProps,
 	chartTooltipProps,
 	GRID_PROPS,
@@ -172,6 +173,7 @@ export function LineChart<
 						dataKey={item.key}
 						name={item.label ?? item.key}
 						stroke={seriesColor(item, index)}
+						strokeWidth={CHART_TYPE.strokeWidth}
 						dot={false}
 						{...ANIMATION_PROPS}
 					/>

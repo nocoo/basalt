@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Line, LineChart as RechartsLine } from "recharts";
-import { ANIMATION_PROPS, seriesColor } from "./config";
+import { ANIMATION_PROPS, CHART_TYPE, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
 import type { LineChartNumericKeys } from "./line";
 import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
@@ -69,6 +69,7 @@ export function Sparkline<
 						dataKey={item.key}
 						name={item.label ?? item.key}
 						stroke={seriesColor(item, index)}
+						strokeWidth={CHART_TYPE.strokeWidth}
 						dot={false}
 						{...ANIMATION_PROPS}
 					/>

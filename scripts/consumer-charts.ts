@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import type { Page } from "playwright";
+import { assertGaugeAppearance } from "./chart-appearance";
 
 export type ChartsGateResult = {
 	viewportsTested: number;
@@ -341,6 +342,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			// 6. Gauge: Center text reading, alternative, positive size
 			// -------------------------------------------------------------
 			const gaugeCase = page.locator('[data-testid="case-gauge-accessible"]');
+			await assertGaugeAppearance(gaugeCase, 72);
 			const gaugeSpan = gaugeCase.locator("span");
 			const gaugeText = (await gaugeSpan.textContent())?.trim();
 			assert.equal(gaugeText, "72", "Gauge must display center text reading 72");
@@ -470,6 +472,29 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			// 8. HeatmapCalendar: Values matrix (zero-value tab/focus, tooltip, shrink 10->2->empty, tab exit, no steal)
 			// -------------------------------------------------------------
 			const valuesCase = page.locator('[data-testid="case-heatmap-values"]');
+			const independence = await valuesCase.evaluate(async (node) => {
+				const cells = [...node.querySelectorAll('button[aria-label^="Position "]')];
+				const colors = () => cells.map((cell) => getComputedStyle(cell).backgroundColor);
+				const before = colors();
+				const root = document.documentElement;
+				const previous = root.style.getPropertyValue("--basalt-primary");
+				try {
+					root.style.setProperty("--basalt-primary", "300 100% 50%");
+					await new Promise<void>((resolve) =>
+						requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+					);
+					return { before, after: colors() };
+				} finally {
+					if (previous) root.style.setProperty("--basalt-primary", previous);
+					else root.style.removeProperty("--basalt-primary");
+				}
+			});
+			assert.equal(independence.before.length, 10);
+			assert.deepEqual(
+				independence.after,
+				independence.before,
+				"Values heatmap must be independent of host accent tokens",
+			);
 			const beforeValues = valuesCase.locator("#focus-before-values");
 			await beforeValues.focus();
 

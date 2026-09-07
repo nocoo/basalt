@@ -7,7 +7,7 @@ export const API = [
 		props: [
 			{
 				name: "items",
-				type: "ChatInboxItem[]",
+				type: "readonly ChatInboxItem[]",
 				required: true,
 				description: "Threads to list ({ id: string, title: string, preview?: string, time?: string, leading?: ReactNode }[]).",
 			},

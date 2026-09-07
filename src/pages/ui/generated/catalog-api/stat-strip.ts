@@ -13,7 +13,7 @@ export const API = [
 			},
 			{
 				name: "items",
-				type: "StatStripItem[]",
+				type: "readonly StatStripItem[]",
 				required: true,
 				description: "The labelled values shown in the strip.",
 			},

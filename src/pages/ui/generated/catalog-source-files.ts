@@ -554,13 +554,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"line": {
 		"file": "packages/basalt/src/charts/line.tsx",
-		"hash": "f5298340c2f5e6f0",
+		"hash": "787ac542cff81ec5",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/line.js.map (sourcesContent[0])"
 	},
 	"area": {
 		"file": "packages/basalt/src/charts/area.tsx",
-		"hash": "15a519210b5222cb",
+		"hash": "4cce396f51cfac6e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/area.js.map (sourcesContent[0])"
 	},
@@ -584,13 +584,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sparkline": {
 		"file": "packages/basalt/src/charts/sparkline.tsx",
-		"hash": "12149a352bf9b192",
+		"hash": "d95885d046f4ee88",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/sparkline.js.map (sourcesContent[0])"
 	},
 	"heatmap-calendar": {
 		"file": "packages/basalt/src/charts/heatmap-calendar.tsx",
-		"hash": "2efb30074c63a3eb",
+		"hash": "96d55e86cbe596fd",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/heatmap-calendar.js.map (sourcesContent[0])"
 	},
@@ -602,13 +602,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"gauge": {
 		"file": "packages/basalt/src/charts/gauge.tsx",
-		"hash": "68b117bf632e140c",
+		"hash": "730d637a11b7da2e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/gauge.js.map (sourcesContent[0])"
 	},
 	"radar": {
 		"file": "packages/basalt/src/charts/radar.tsx",
-		"hash": "7f17554d1b604126",
+		"hash": "a05fef35570c6c66",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/radar.js.map (sourcesContent[0])"
 	},
@@ -626,7 +626,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"timeline": {
 		"file": "packages/basalt/src/charts/timeline.tsx",
-		"hash": "f1e44cbd6f2a7033",
+		"hash": "c9ecf766e8eca5e0",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/timeline.js.map (sourcesContent[0])"
 	},
@@ -650,7 +650,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"palette": {
 		"file": "packages/basalt/src/charts/palette.tsx",
-		"hash": "55350b6815fe19e3",
+		"hash": "0d8006a6cc14766d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/palette.js.map (sourcesContent[0])"
 	},

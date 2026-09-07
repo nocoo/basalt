@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import type { Page } from "playwright";
 import { measureTagPalette } from "./consumer-editing";
+import { setShowcaseTheme } from "./showcase-theme";
 
 export async function assertEditingShowcases(page: Page, baseUrl: string) {
 	const cases: string[] = [];
@@ -11,10 +12,7 @@ export async function assertEditingShowcases(page: Page, baseUrl: string) {
 			async function visit(slug: string) {
 				await page.goto(`${baseUrl}/ui/${slug}`);
 				await page.locator('[data-status="ready"]').waitFor();
-				await page.evaluate(
-					(dark) => document.documentElement.classList.toggle("dark", dark),
-					dark,
-				);
+				await setShowcaseTheme(page, dark);
 				assert.equal(
 					await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
 					false,

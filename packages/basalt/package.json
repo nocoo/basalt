@@ -106,5 +106,6 @@
 		"@tanstack/react-table": {
 			"optional": true
 		}
-	}
+	},
+	"homepage": "https://basaltui.com"
 }

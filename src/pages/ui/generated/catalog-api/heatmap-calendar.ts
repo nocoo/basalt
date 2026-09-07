@@ -43,7 +43,7 @@ export const API = [
 			},
 			{
 				name: "colorScale",
-				type: "string[]",
+				type: "readonly string[]",
 				required: false,
 				default: "heatmapColorScales.green",
 				description: "Array of color values forming the intensity gradient from lowest to highest.",

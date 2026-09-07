@@ -1,7 +1,7 @@
 # Basalt
 
 > Matte design system, UI component library, and documentation catalog.  
-> npm: [`@nocoo/basalt`](https://www.npmjs.com/package/@nocoo/basalt) · Live showcase: [`https://basalt.hexly.ai`](https://basalt.hexly.ai)
+> npm: [`@nocoo/basalt`](https://www.npmjs.com/package/@nocoo/basalt) · Live showcase: [`https://basaltui.com`](https://basaltui.com)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-white.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Framework: Vite](https://img.shields.io/badge/Framework-Vite-646cff.svg?style=flat-square&logo=vite)](https://vite.dev)
@@ -10,8 +10,8 @@
 ## Overview
 
 **Basalt** is a dual-purpose repository:
-1. **`@nocoo/basalt`** (`packages/basalt`): An ESM design system library with 110 entrypoints, subpath exports, calculated luminance hierarchy, and support for both Tailwind CSS v4 and zero-dependency standalone CSS.
-2. **Catalog Showcase Site** (repo root): A complete documentation, catalog browser (`/ui`), and scenario library with 24 example dashboard pages and over 240 interactive component scenarios.
+1. **`@nocoo/basalt`** (`packages/basalt`): An ESM design system library with 122 JavaScript entrypoints and 3 CSS exports, granular subpaths, calculated luminance hierarchy, and support for both Tailwind CSS v4 and zero-dependency standalone CSS.
+2. **Catalog Showcase Site** (repo root): A complete documentation, catalog browser (`/ui`), and scenario library with 24 example dashboard pages and 290 interactive component scenarios.
 
 ## Design Philosophy
 
@@ -85,7 +85,7 @@ export function App() {
 
 Optional peer dependencies are only required when importing granular features that depend on them (e.g. `recharts` for `@nocoo/basalt/charts/*`).
 
-See [INTEGRATION.md](INTEGRATION.md) for full application frame recipes, Next.js client boundaries, SSR theme initialization, and form handling.
+See [INTEGRATION.md](INTEGRATION.md) for setup, theme and custom palette preferences, Next.js client boundaries, SSR initialization, and forms. [Application recipes](packages/basalt/ai/RECIPES.md) supply complete AppFrame, Login, and Resources modules, also included in the installed package.
 
 ## Example Pages in Showcase
 
@@ -107,7 +107,7 @@ The showcase site demonstrates Basalt across 24 realistic domain dashboards and 
 | `/dialogs` | Confirm dialogs, forms in dialogs, and nested overlays |
 | `/chat` | Chat inbox, streaming bubbles, composers, and dock |
 | `/settings` | Profile, notifications, security, and appearance tabs |
-| `/palette` | Accent color picker and visual chart palette system |
+| `/palette` | Twelve candy accents, saved custom palettes, and five fixed chart colors |
 | `/interactions` | Native forms, toasts, and confirmation flow demo |
 | `/health` | Health dashboard with slot bars and timelines |
 | `/wearable` | Wearable device vitals, metrics, and activity charts |

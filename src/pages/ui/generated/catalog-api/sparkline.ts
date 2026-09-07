@@ -4,10 +4,11 @@
 export const API = [
 	{
 		name: "Sparkline",
+		typeParameters: "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 		props: [
 			{
 				name: "data",
-				type: "unknown[]",
+				type: "TData[]",
 				required: true,
 				description: "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys.",
 			},

@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import type { Locator, Page } from "playwright";
+import { setShowcaseTheme } from "./showcase-theme";
 
 async function assertPlots(container: Locator) {
 	await container.locator("svg.recharts-surface").first().waitFor({ state: "attached" });
@@ -22,7 +23,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 			await page.emulateMedia({ reducedMotion: "reduce", colorScheme: dark ? "dark" : "light" });
 			await page.goto(`${baseUrl}/ui/skeleton-line`);
 			await page.locator('[data-status="ready"]').waitFor();
-			await page.evaluate((dark) => document.documentElement.classList.toggle("dark", dark), dark);
+			await setShowcaseTheme(page, dark);
 			for (const [key, button] of [
 				["dashboard", "Show loaded dashboard"],
 				["resource-list", "Show loaded list"],
@@ -59,10 +60,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 				await page.goto(`${baseUrl}/ui/${slug}`);
 				const demo = page.locator("[data-hero-scenario] [data-demo]");
 				await demo.waitFor();
-				await page.evaluate(
-					(dark) => document.documentElement.classList.toggle("dark", dark),
-					dark,
-				);
+				await setShowcaseTheme(page, dark);
 				const devices = slug === "data-table";
 				const table = demo.getByRole("table");
 				await page.waitForFunction(

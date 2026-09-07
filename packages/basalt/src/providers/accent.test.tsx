@@ -31,12 +31,98 @@ describe("accent", () => {
 		document.documentElement.style.removeProperty("--basalt-primary-foreground");
 		document.documentElement.style.removeProperty("--basalt-ring");
 		delete document.documentElement.dataset.accent;
+		for (const swatch of ACCENT_SWATCHES)
+			document.documentElement.style.removeProperty(swatch.token);
+	});
+
+	it("migrates removed preset IDs in helpers and stored preferences", () => {
+		expect(accentSwatchById("tangerine").id).toBe("orange");
+		expect(accentSwatchById("constructor").id).toBe("primary");
+		localStorage.setItem("basalt-accent", "jade");
+		render(
+			<AccentProvider>
+				<Probe />
+			</AccentProvider>,
+		);
+		expect(screen.getByTestId("accent")).toHaveTextContent("teal");
+		act(() =>
+			window.dispatchEvent(
+				new StorageEvent("storage", { key: "basalt-accent", newValue: "crimson" }),
+			),
+		);
+		expect(screen.getByTestId("accent")).toHaveTextContent("red");
+	});
+
+	it("applies caller color pairs independently of charts and updates with the selected theme", async () => {
+		const overrides = { primary: { light: "18 70% 55%", dark: "18 70% 70%" } };
+		const { rerender } = render(
+			<AccentProvider persist={false} paletteOverrides={overrides}>
+				<Probe />
+			</AccentProvider>,
+		);
+		expect(document.documentElement.style.getPropertyValue("--basalt-accent-1")).toBe(
+			overrides.primary.light,
+		);
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toMatch(/^18 70%/);
+		expect(document.documentElement.style.getPropertyValue("--basalt-chart-1")).toBe("");
+		await act(async () => {
+			document.documentElement.classList.add("dark");
+		});
+		expect(document.documentElement.style.getPropertyValue("--basalt-accent-1")).toBe(
+			overrides.primary.dark,
+		);
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe(
+			overrides.primary.dark,
+		);
+		rerender(
+			<AccentProvider persist={false}>
+				<Probe />
+			</AccentProvider>,
+		);
+		expect(document.documentElement.style.getPropertyValue("--basalt-accent-1")).toBe(
+			ACCENT_SWATCHES[0].dark,
+		);
+		await act(async () => {
+			document.documentElement.classList.remove("dark");
+		});
+	});
+
+	it("ignores malformed custom pairs and unknown slots without injecting CSS", () => {
+		const { rerender } = render(
+			<AccentProvider persist={false}>
+				<Probe />
+			</AccentProvider>,
+		);
+		const primary = document.documentElement.style.getPropertyValue("--basalt-primary");
+		for (const light of ["red", "400 20% 30%", "20 101% 30%", "20 20% 101%", undefined]) {
+			rerender(
+				<AccentProvider
+					persist={false}
+					paletteOverrides={{ primary: { light: light as string, dark: "10 40% 60%" } }}
+				>
+					<Probe />
+				</AccentProvider>,
+			);
+			expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe(primary);
+		}
+		rerender(
+			<AccentProvider
+				persist={false}
+				paletteOverrides={{
+					primary: { light: "20 60% 40%", dark: "invalid" },
+					unknown: { light: "20 60% 40%", dark: "20 60% 70%" },
+				}}
+			>
+				<Probe />
+			</AccentProvider>,
+		);
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe(primary);
 	});
 
 	it("applies primary and ring from the theme palette swatch", () => {
 		applyAccent("teal", false);
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("186 80% 27%");
-		expect(document.documentElement.style.getPropertyValue("--basalt-ring")).toBe("186 80% 27%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("182 62% 28%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-ring")).toBe("182 62% 28%");
 		expect(document.documentElement.style.getPropertyValue("--basalt-chart-1")).toBe("");
 		expect(document.documentElement.style.getPropertyValue("--basalt-primary-foreground")).toBe(
 			"0 0% 100%",
@@ -46,7 +132,7 @@ describe("accent", () => {
 
 	it("pairs light amber with white foreground for derived dark primary contrast", () => {
 		applyAccent("amber", false);
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("45 93% 26%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("49 100% 24%");
 		expect(document.documentElement.style.getPropertyValue("--basalt-primary-foreground")).toBe(
 			"0 0% 100%",
 		);
@@ -54,17 +140,17 @@ describe("accent", () => {
 
 	it("uses the dark stop when the page is dark", () => {
 		applyAccent("green", true);
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("142 71% 50%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("113 58% 70%");
 	});
 
-	it("exposes every visualization color as a theme swatch", () => {
-		expect(ACCENT_SWATCHES).toHaveLength(24);
+	it("exposes twelve control swatches independently of chart tokens", () => {
+		expect(ACCENT_SWATCHES).toHaveLength(12);
 		expect(ACCENT_SWATCHES.map((swatch) => swatch.token)).toEqual(
-			Array.from({ length: 24 }, (_, index) => `--basalt-chart-${index + 1}`),
+			Array.from({ length: 12 }, (_, index) => `--basalt-accent-${index + 1}`),
 		);
 	});
 
-	it("ensures applyAccent produces >=4.5:1 contrast for all 24 swatches in both themes without mutating swatches", () => {
+	it("ensures applyAccent produces >=4.5:1 contrast for all twelve swatches in both themes without mutating swatches", () => {
 		function channel(c: number) {
 			return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
 		}
@@ -145,10 +231,10 @@ describe("accent", () => {
 			}
 		}
 
-		// Ensure chart swatch raw definitions were not mutated
-		expect(ACCENT_SWATCHES[0].light).toBe("217 91% 60%");
-		expect(ACCENT_SWATCHES[0].dark).toBe("217 91% 65%");
-		expect(ACCENT_SWATCHES[1].light).toBe("200 90% 55%");
+		// Ensure control swatch raw definitions were not mutated
+		expect(ACCENT_SWATCHES[0].light).toBe("204 88% 62%");
+		expect(ACCENT_SWATCHES[0].dark).toBe("204 90% 70%");
+		expect(ACCENT_SWATCHES[1].light).toBe("191 79% 70%");
 	});
 
 	it("persists the chosen swatch", () => {
@@ -448,7 +534,7 @@ describe("accent", () => {
 			</AccentProvider>,
 		);
 		expect(document.documentElement.dataset.accent).toBe("rose");
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("340 82% 45%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("345 88% 44%");
 	});
 
 	it("supports custom storageKey and cross-tab storage sync", () => {
@@ -953,7 +1039,7 @@ describe("accent", () => {
 
 		expect(capturedStorageListener).not.toBeNull();
 		expect(document.documentElement.dataset.accent).toBe("green");
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("142 71% 27%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("113 58% 29%");
 
 		// Toggle dark class on documentElement
 		act(() => {
@@ -965,7 +1051,7 @@ describe("accent", () => {
 			await new Promise((resolve) => setTimeout(resolve, 0));
 		});
 
-		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("142 71% 50%");
+		expect(document.documentElement.style.getPropertyValue("--basalt-primary")).toBe("113 58% 70%");
 
 		// Unmount provider
 		unmount();

@@ -800,7 +800,7 @@
 			"importPath": "@nocoo/basalt/charts/area",
 			"subpath": "./charts/area",
 			"sourceFile": "packages/basalt/src/charts/area.tsx",
-			"sourceHash": "15a519210b5222cb",
+			"sourceHash": "4cce396f51cfac6e",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -838,10 +838,11 @@
 					"api": [
 						{
 							"name": "AreaChart",
+							"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 							"props": [
 								{
 									"name": "data",
-									"type": "unknown[]",
+									"type": "TData[]",
 									"required": true,
 									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
@@ -902,7 +903,7 @@
 								},
 								{
 									"name": "legend",
-									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"type": "LineChartLegendRenderer<K> | React.ReactNode",
 									"required": false,
 									"description": "Custom legend slot or render function receiving resolved series descriptors."
 								},
@@ -939,10 +940,11 @@
 			"api": [
 				{
 					"name": "AreaChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -1003,7 +1005,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -1080,10 +1082,11 @@
 					"api": [
 						{
 							"name": "BarChart",
+							"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 							"props": [
 								{
 									"name": "data",
-									"type": "unknown[]",
+									"type": "TData[]",
 									"required": true,
 									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
@@ -1138,7 +1141,7 @@
 								},
 								{
 									"name": "legend",
-									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"type": "LineChartLegendRenderer<K> | React.ReactNode",
 									"required": false,
 									"description": "Custom legend slot or render function receiving resolved series descriptors."
 								},
@@ -1175,10 +1178,11 @@
 			"api": [
 				{
 					"name": "BarChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -1233,7 +1237,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -1542,10 +1546,11 @@
 					"api": [
 						{
 							"name": "Charts",
+							"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 							"props": [
 								{
 									"name": "data",
-									"type": "unknown[]",
+									"type": "TData[]",
 									"required": true,
 									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
@@ -1600,7 +1605,7 @@
 								},
 								{
 									"name": "legend",
-									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"type": "LineChartLegendRenderer<K> | React.ReactNode",
 									"required": false,
 									"description": "Custom legend slot or render function receiving resolved series descriptors."
 								},
@@ -1637,10 +1642,11 @@
 			"api": [
 				{
 					"name": "Charts",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -1695,7 +1701,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -1950,10 +1956,11 @@
 					"api": [
 						{
 							"name": "CustomChart",
+							"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 							"props": [
 								{
 									"name": "data",
-									"type": "unknown[]",
+									"type": "TData[]",
 									"required": true,
 									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
@@ -2008,7 +2015,7 @@
 								},
 								{
 									"name": "legend",
-									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"type": "LineChartLegendRenderer<K> | React.ReactNode",
 									"required": false,
 									"description": "Custom legend slot or render function receiving resolved series descriptors."
 								},
@@ -2045,10 +2052,11 @@
 			"api": [
 				{
 					"name": "CustomChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -2103,7 +2111,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -2718,7 +2726,7 @@
 			"importPath": "@nocoo/basalt/charts/gauge",
 			"subpath": "./charts/gauge",
 			"sourceFile": "packages/basalt/src/charts/gauge.tsx",
-			"sourceHash": "68b117bf632e140c",
+			"sourceHash": "730d637a11b7da2e",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -2922,10 +2930,11 @@
 					"api": [
 						{
 							"name": "GroupedBarChart",
+							"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 							"props": [
 								{
 									"name": "data",
-									"type": "unknown[]",
+									"type": "TData[]",
 									"required": true,
 									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
@@ -2975,7 +2984,7 @@
 								},
 								{
 									"name": "legend",
-									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"type": "LineChartLegendRenderer<K> | React.ReactNode",
 									"required": false,
 									"description": "Custom legend slot or render function receiving resolved series descriptors."
 								},
@@ -3012,10 +3021,11 @@
 			"api": [
 				{
 					"name": "GroupedBarChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -3065,7 +3075,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -3104,7 +3114,7 @@
 			"importPath": "@nocoo/basalt/charts/heatmap-calendar",
 			"subpath": "./charts/heatmap-calendar",
 			"sourceFile": "packages/basalt/src/charts/heatmap-calendar.tsx",
-			"sourceHash": "2efb30074c63a3eb",
+			"sourceHash": "96d55e86cbe596fd",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3213,7 +3223,7 @@
 								},
 								{
 									"name": "colorScale",
-									"type": "string[]",
+									"type": "readonly string[]",
 									"required": false,
 									"default": "heatmapColorScales.green",
 									"description": "Array of color values forming the intensity gradient from lowest to highest."
@@ -3339,7 +3349,7 @@
 						},
 						{
 							"name": "colorScale",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": false,
 							"default": "heatmapColorScales.green",
 							"description": "Array of color values forming the intensity gradient from lowest to highest."
@@ -3485,19 +3495,19 @@
 							"props": [
 								{
 									"name": "rowLabels",
-									"type": "string[]",
+									"type": "readonly string[]",
 									"required": true,
 									"description": "Ordered row labels (e.g. weekdays [\"Mon\", \"Tue\", ...], service tiers, or regions)."
 								},
 								{
 									"name": "columnLabels",
-									"type": "string[]",
+									"type": "readonly string[]",
 									"required": true,
 									"description": "Ordered column labels (e.g. 24 hours [\"00:00\", ...], days, or status buckets)."
 								},
 								{
 									"name": "values",
-									"type": "HeatmapMatrixValue[][]",
+									"type": "readonly (readonly HeatmapMatrixValue[])[]",
 									"required": true,
 									"description": "2D matrix of values indexed by [rowIndex][colIndex].\nSupports ragged rows, null, undefined, and non-finite values (treated as missing).\nNumeric `0` is a valid reading and distinct from missing data."
 								},
@@ -3509,7 +3519,7 @@
 								},
 								{
 									"name": "colorScale",
-									"type": "string[]",
+									"type": "readonly string[]",
 									"required": false,
 									"default": "heatmapColorScales.green",
 									"description": "Sequential color palette array from lowest to highest intensity.\nIf empty or single-color, gracefully resolves to base level."
@@ -3599,19 +3609,19 @@
 					"props": [
 						{
 							"name": "rowLabels",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": true,
 							"description": "Ordered row labels (e.g. weekdays [\"Mon\", \"Tue\", ...], service tiers, or regions)."
 						},
 						{
 							"name": "columnLabels",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": true,
 							"description": "Ordered column labels (e.g. 24 hours [\"00:00\", ...], days, or status buckets)."
 						},
 						{
 							"name": "values",
-							"type": "HeatmapMatrixValue[][]",
+							"type": "readonly (readonly HeatmapMatrixValue[])[]",
 							"required": true,
 							"description": "2D matrix of values indexed by [rowIndex][colIndex].\nSupports ragged rows, null, undefined, and non-finite values (treated as missing).\nNumeric `0` is a valid reading and distinct from missing data."
 						},
@@ -3623,7 +3633,7 @@
 						},
 						{
 							"name": "colorScale",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": false,
 							"default": "heatmapColorScales.green",
 							"description": "Sequential color palette array from lowest to highest intensity.\nIf empty or single-color, gracefully resolves to base level."
@@ -3850,7 +3860,7 @@
 			"importPath": "@nocoo/basalt/charts/line",
 			"subpath": "./charts/line",
 			"sourceFile": "packages/basalt/src/charts/line.tsx",
-			"sourceHash": "f5298340c2f5e6f0",
+			"sourceHash": "787ac542cff81ec5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -3920,10 +3930,11 @@
 					"api": [
 						{
 							"name": "LineChart",
+							"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 							"props": [
 								{
 									"name": "data",
-									"type": "unknown[]",
+									"type": "TData[]",
 									"required": true,
 									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
@@ -3978,7 +3989,7 @@
 								},
 								{
 									"name": "legend",
-									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"type": "LineChartLegendRenderer<K> | React.ReactNode",
 									"required": false,
 									"description": "Custom legend slot or render function receiving resolved series descriptors."
 								},
@@ -4015,10 +4026,11 @@
 			"api": [
 				{
 					"name": "LineChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -4073,7 +4085,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -4112,7 +4124,7 @@
 			"importPath": "@nocoo/basalt/charts/palette",
 			"subpath": "./charts/palette",
 			"sourceFile": "packages/basalt/src/charts/palette.tsx",
-			"sourceHash": "55350b6815fe19e3",
+			"sourceHash": "0d8006a6cc14766d",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4220,7 +4232,7 @@
 			"importPath": "@nocoo/basalt/charts/radar",
 			"subpath": "./charts/radar",
 			"sourceFile": "packages/basalt/src/charts/radar.tsx",
-			"sourceHash": "7f17554d1b604126",
+			"sourceHash": "a05fef35570c6c66",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4772,10 +4784,11 @@
 					"api": [
 						{
 							"name": "SlotBarChart",
+							"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 							"props": [
 								{
 									"name": "data",
-									"type": "unknown[]",
+									"type": "TData[]",
 									"required": true,
 									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
@@ -4857,10 +4870,11 @@
 			"api": [
 				{
 					"name": "SlotBarChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -4944,7 +4958,7 @@
 			"importPath": "@nocoo/basalt/charts/sparkline",
 			"subpath": "./charts/sparkline",
 			"sourceFile": "packages/basalt/src/charts/sparkline.tsx",
-			"sourceHash": "12149a352bf9b192",
+			"sourceHash": "d95885d046f4ee88",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -4982,10 +4996,11 @@
 					"api": [
 						{
 							"name": "Sparkline",
+							"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 							"props": [
 								{
 									"name": "data",
-									"type": "unknown[]",
+									"type": "TData[]",
 									"required": true,
 									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
@@ -5032,10 +5047,11 @@
 			"api": [
 				{
 					"name": "Sparkline",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -5122,10 +5138,11 @@
 					"api": [
 						{
 							"name": "StackedBarChart",
+							"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 							"props": [
 								{
 									"name": "data",
-									"type": "unknown[]",
+									"type": "TData[]",
 									"required": true,
 									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
@@ -5181,7 +5198,7 @@
 								},
 								{
 									"name": "legend",
-									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"type": "LineChartLegendRenderer<K> | React.ReactNode",
 									"required": false,
 									"description": "Custom legend slot or render function receiving resolved series descriptors."
 								},
@@ -5218,10 +5235,11 @@
 			"api": [
 				{
 					"name": "StackedBarChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -5277,7 +5295,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -5588,7 +5606,7 @@
 			"importPath": "@nocoo/basalt/charts/timeline",
 			"subpath": "./charts/timeline",
 			"sourceFile": "packages/basalt/src/charts/timeline.tsx",
-			"sourceHash": "f1e44cbd6f2a7033",
+			"sourceHash": "c9ecf766e8eca5e0",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -5786,10 +5804,11 @@
 					"api": [
 						{
 							"name": "Timeseries",
+							"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 							"props": [
 								{
 									"name": "data",
-									"type": "unknown[]",
+									"type": "TData[]",
 									"required": true,
 									"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 								},
@@ -5844,7 +5863,7 @@
 								},
 								{
 									"name": "legend",
-									"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+									"type": "LineChartLegendRenderer<K> | React.ReactNode",
 									"required": false,
 									"description": "Custom legend slot or render function receiving resolved series descriptors."
 								},
@@ -5881,10 +5900,11 @@
 			"api": [
 				{
 					"name": "Timeseries",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -5939,7 +5959,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -8766,7 +8786,7 @@
 							"props": [
 								{
 									"name": "items",
-									"type": "ChatInboxItem[]",
+									"type": "readonly ChatInboxItem[]",
 									"required": true,
 									"description": "Threads to list ({ id: string, title: string, preview?: string, time?: string, leading?: ReactNode }[])."
 								},
@@ -8799,7 +8819,7 @@
 					"props": [
 						{
 							"name": "items",
-							"type": "ChatInboxItem[]",
+							"type": "readonly ChatInboxItem[]",
 							"required": true,
 							"description": "Threads to list ({ id: string, title: string, preview?: string, time?: string, leading?: ReactNode }[])."
 						},
@@ -11372,16 +11392,17 @@
 					"api": [
 						{
 							"name": "DataTable",
+							"typeParameters": "<T = unknown>",
 							"props": [
 								{
 									"name": "data",
-									"type": "unknown[]",
+									"type": "T[]",
 									"required": true,
 									"description": "Rows to render."
 								},
 								{
 									"name": "columns",
-									"type": "DataTableColumn<unknown>[]",
+									"type": "DataTableColumn<T>[]",
 									"required": true,
 									"description": "Column descriptors."
 								},
@@ -11458,7 +11479,7 @@
 								},
 								{
 									"name": "getRowId",
-									"type": "(row: unknown, index: number) => string",
+									"type": "(row: T, index: number) => string",
 									"required": false,
 									"description": "Stable id for a row."
 								},
@@ -11554,16 +11575,17 @@
 			"api": [
 				{
 					"name": "DataTable",
+					"typeParameters": "<T = unknown>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "T[]",
 							"required": true,
 							"description": "Rows to render."
 						},
 						{
 							"name": "columns",
-							"type": "DataTableColumn<unknown>[]",
+							"type": "DataTableColumn<T>[]",
 							"required": true,
 							"description": "Column descriptors."
 						},
@@ -11640,7 +11662,7 @@
 						},
 						{
 							"name": "getRowId",
-							"type": "(row: unknown, index: number) => string",
+							"type": "(row: T, index: number) => string",
 							"required": false,
 							"description": "Stable id for a row."
 						},
@@ -15963,7 +15985,7 @@
 								},
 								{
 									"name": "options",
-									"type": "IconPickerOption[]",
+									"type": "readonly IconPickerOption[]",
 									"required": true,
 									"description": "Caller-supplied icon subset; the library never imports an icon catalog."
 								},
@@ -16036,7 +16058,7 @@
 						},
 						{
 							"name": "options",
-							"type": "IconPickerOption[]",
+							"type": "readonly IconPickerOption[]",
 							"required": true,
 							"description": "Caller-supplied icon subset; the library never imports an icon catalog."
 						},
@@ -18329,19 +18351,19 @@
 								},
 								{
 									"name": "options",
-									"type": "MultiSelectOption[]",
+									"type": "readonly MultiSelectOption[]",
 									"required": true,
 									"description": "Available options; retain selected options to preserve their display labels."
 								},
 								{
 									"name": "value",
-									"type": "string[]",
+									"type": "readonly string[]",
 									"required": false,
 									"description": "Controlled selected identifiers."
 								},
 								{
 									"name": "defaultValue",
-									"type": "string[]",
+									"type": "readonly string[]",
 									"required": false,
 									"default": "[]",
 									"description": "Initial uncontrolled selection."
@@ -18494,19 +18516,19 @@
 						},
 						{
 							"name": "options",
-							"type": "MultiSelectOption[]",
+							"type": "readonly MultiSelectOption[]",
 							"required": true,
 							"description": "Available options; retain selected options to preserve their display labels."
 						},
 						{
 							"name": "value",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": false,
 							"description": "Controlled selected identifiers."
 						},
 						{
 							"name": "defaultValue",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": false,
 							"default": "[]",
 							"description": "Initial uncontrolled selection."
@@ -19125,7 +19147,7 @@
 								},
 								{
 									"name": "breadcrumbs",
-									"type": "PageHeaderBreadcrumb[]",
+									"type": "readonly PageHeaderBreadcrumb[]",
 									"required": false,
 									"description": "Trail of parent pages."
 								},
@@ -19164,7 +19186,7 @@
 						},
 						{
 							"name": "breadcrumbs",
-							"type": "PageHeaderBreadcrumb[]",
+							"type": "readonly PageHeaderBreadcrumb[]",
 							"required": false,
 							"description": "Trail of parent pages."
 						},
@@ -20805,7 +20827,7 @@
 								},
 								{
 									"name": "options",
-									"type": "SegmentControlOption[]",
+									"type": "readonly SegmentControlOption[]",
 									"required": true,
 									"description": "The selectable segments shown after the optional All segment."
 								},
@@ -20851,7 +20873,7 @@
 						},
 						{
 							"name": "options",
-							"type": "SegmentControlOption[]",
+							"type": "readonly SegmentControlOption[]",
 							"required": true,
 							"description": "The selectable segments shown after the optional All segment."
 						},
@@ -23047,7 +23069,7 @@
 								},
 								{
 									"name": "items",
-									"type": "StatStripItem[]",
+									"type": "readonly StatStripItem[]",
 									"required": true,
 									"description": "The labelled values shown in the strip."
 								},
@@ -23075,7 +23097,7 @@
 						},
 						{
 							"name": "items",
-							"type": "StatStripItem[]",
+							"type": "readonly StatStripItem[]",
 							"required": true,
 							"description": "The labelled values shown in the strip."
 						},
@@ -24402,7 +24424,7 @@
 								},
 								{
 									"name": "colors",
-									"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"[]",
+									"type": "readonly (\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\")[]",
 									"required": false,
 									"description": "Allowed color subset, in caller-defined order."
 								},
@@ -24461,7 +24483,7 @@
 						},
 						{
 							"name": "colors",
-							"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"[]",
+							"type": "readonly (\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\")[]",
 							"required": false,
 							"description": "Allowed color subset, in caller-defined order."
 						},
@@ -27097,7 +27119,7 @@
 								},
 								{
 									"name": "files",
-									"type": "UploadFile[]",
+									"type": "readonly UploadFile[]",
 									"required": true,
 									"description": "Application-owned queue entries."
 								},
@@ -27196,7 +27218,7 @@
 						},
 						{
 							"name": "files",
-							"type": "UploadFile[]",
+							"type": "readonly UploadFile[]",
 							"required": true,
 							"description": "Application-owned queue entries."
 						},
@@ -27258,7 +27280,7 @@
 			"importPath": "@nocoo/basalt/providers/accent",
 			"subpath": "./providers/accent",
 			"sourceFile": "packages/basalt/src/providers/accent.tsx",
-			"sourceHash": "6b228f2420a06756",
+			"sourceHash": "447958abe60285dc",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "provider",
@@ -29580,7 +29602,7 @@
 						},
 						{
 							"name": "options",
-							"type": "SegmentControlOption[]",
+							"type": "readonly SegmentControlOption[]",
 							"required": true,
 							"description": "The selectable segments shown after the optional All segment."
 						},
@@ -32903,16 +32925,17 @@
 			"api": [
 				{
 					"name": "DataTable",
+					"typeParameters": "<T = unknown>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "T[]",
 							"required": true,
 							"description": "Rows to render."
 						},
 						{
 							"name": "columns",
-							"type": "DataTableColumn<unknown>[]",
+							"type": "DataTableColumn<T>[]",
 							"required": true,
 							"description": "Column descriptors."
 						},
@@ -32989,7 +33012,7 @@
 						},
 						{
 							"name": "getRowId",
-							"type": "(row: unknown, index: number) => string",
+							"type": "(row: T, index: number) => string",
 							"required": false,
 							"description": "Stable id for a row."
 						},
@@ -34221,7 +34244,7 @@
 						},
 						{
 							"name": "items",
-							"type": "StatStripItem[]",
+							"type": "readonly StatStripItem[]",
 							"required": true,
 							"description": "The labelled values shown in the strip."
 						},
@@ -34622,7 +34645,7 @@
 					"props": [
 						{
 							"name": "items",
-							"type": "ChatInboxItem[]",
+							"type": "readonly ChatInboxItem[]",
 							"required": true,
 							"description": "Threads to list ({ id: string, title: string, preview?: string, time?: string, leading?: ReactNode }[])."
 						},
@@ -34764,19 +34787,19 @@
 						},
 						{
 							"name": "options",
-							"type": "MultiSelectOption[]",
+							"type": "readonly MultiSelectOption[]",
 							"required": true,
 							"description": "Available options; retain selected options to preserve their display labels."
 						},
 						{
 							"name": "value",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": false,
 							"description": "Controlled selected identifiers."
 						},
 						{
 							"name": "defaultValue",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": false,
 							"default": "[]",
 							"description": "Initial uncontrolled selection."
@@ -35181,7 +35204,7 @@
 						},
 						{
 							"name": "files",
-							"type": "UploadFile[]",
+							"type": "readonly UploadFile[]",
 							"required": true,
 							"description": "Application-owned queue entries."
 						},
@@ -35605,7 +35628,7 @@
 						},
 						{
 							"name": "options",
-							"type": "IconPickerOption[]",
+							"type": "readonly IconPickerOption[]",
 							"required": true,
 							"description": "Caller-supplied icon subset; the library never imports an icon catalog."
 						},
@@ -35765,7 +35788,7 @@
 						},
 						{
 							"name": "colors",
-							"type": "\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\"[]",
+							"type": "readonly (\"amber\" | \"blue\" | \"danger\" | \"info\" | \"rose\" | \"slate\" | \"success\" | \"teal\" | \"violet\" | \"warning\")[]",
 							"required": false,
 							"description": "Allowed color subset, in caller-defined order."
 						},
@@ -35892,10 +35915,11 @@
 			"api": [
 				{
 					"name": "Charts",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -35950,7 +35974,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -36019,10 +36043,11 @@
 			"api": [
 				{
 					"name": "Timeseries",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -36077,7 +36102,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -36123,10 +36148,11 @@
 			"api": [
 				{
 					"name": "CustomChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -36181,7 +36207,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -36344,10 +36370,11 @@
 			"api": [
 				{
 					"name": "SlotBarChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -36438,10 +36465,11 @@
 			"api": [
 				{
 					"name": "BarChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -36496,7 +36524,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -36535,17 +36563,18 @@
 			"exportName": "LineChart",
 			"importPath": "@nocoo/basalt/charts/line",
 			"sourceFile": "packages/basalt/src/charts/line.tsx",
-			"sourceHash": "f5298340c2f5e6f0",
+			"sourceHash": "787ac542cff81ec5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#line",
 			"api": [
 				{
 					"name": "LineChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -36600,7 +36629,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -36639,17 +36668,18 @@
 			"exportName": "AreaChart",
 			"importPath": "@nocoo/basalt/charts/area",
 			"sourceFile": "packages/basalt/src/charts/area.tsx",
-			"sourceHash": "15a519210b5222cb",
+			"sourceHash": "4cce396f51cfac6e",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#area",
 			"api": [
 				{
 					"name": "AreaChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -36710,7 +36740,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -36823,10 +36853,11 @@
 			"api": [
 				{
 					"name": "GroupedBarChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -36876,7 +36907,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -36922,10 +36953,11 @@
 			"api": [
 				{
 					"name": "StackedBarChart",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -36981,7 +37013,7 @@
 						},
 						{
 							"name": "legend",
-							"type": "LineChartLegendRenderer<unknown> | React.ReactNode",
+							"type": "LineChartLegendRenderer<K> | React.ReactNode",
 							"required": false,
 							"description": "Custom legend slot or render function receiving resolved series descriptors."
 						},
@@ -37020,17 +37052,18 @@
 			"exportName": "Sparkline",
 			"importPath": "@nocoo/basalt/charts/sparkline",
 			"sourceFile": "packages/basalt/src/charts/sparkline.tsx",
-			"sourceHash": "12149a352bf9b192",
+			"sourceHash": "d95885d046f4ee88",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sparkline",
 			"api": [
 				{
 					"name": "Sparkline",
+					"typeParameters": "<TData extends {\n    x: string | number;\n} = XYPoint, K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string>",
 					"props": [
 						{
 							"name": "data",
-							"type": "unknown[]",
+							"type": "TData[]",
 							"required": true,
 							"description": "Dataset array where each record requires an `x` category or time coordinate.\nAny remaining fields with numeric, nullable, or optional number values are inferred as valid series keys."
 						},
@@ -37079,7 +37112,7 @@
 			"exportName": "HeatmapCalendar",
 			"importPath": "@nocoo/basalt/charts/heatmap-calendar",
 			"sourceFile": "packages/basalt/src/charts/heatmap-calendar.tsx",
-			"sourceHash": "2efb30074c63a3eb",
+			"sourceHash": "96d55e86cbe596fd",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#heatmap-calendar",
@@ -37125,7 +37158,7 @@
 						},
 						{
 							"name": "colorScale",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": false,
 							"default": "heatmapColorScales.green",
 							"description": "Array of color values forming the intensity gradient from lowest to highest."
@@ -37224,19 +37257,19 @@
 					"props": [
 						{
 							"name": "rowLabels",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": true,
 							"description": "Ordered row labels (e.g. weekdays [\"Mon\", \"Tue\", ...], service tiers, or regions)."
 						},
 						{
 							"name": "columnLabels",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": true,
 							"description": "Ordered column labels (e.g. 24 hours [\"00:00\", ...], days, or status buckets)."
 						},
 						{
 							"name": "values",
-							"type": "HeatmapMatrixValue[][]",
+							"type": "readonly (readonly HeatmapMatrixValue[])[]",
 							"required": true,
 							"description": "2D matrix of values indexed by [rowIndex][colIndex].\nSupports ragged rows, null, undefined, and non-finite values (treated as missing).\nNumeric `0` is a valid reading and distinct from missing data."
 						},
@@ -37248,7 +37281,7 @@
 						},
 						{
 							"name": "colorScale",
-							"type": "string[]",
+							"type": "readonly string[]",
 							"required": false,
 							"default": "heatmapColorScales.green",
 							"description": "Sequential color palette array from lowest to highest intensity.\nIf empty or single-color, gracefully resolves to base level."
@@ -37337,7 +37370,7 @@
 			"exportName": "Gauge",
 			"importPath": "@nocoo/basalt/charts/gauge",
 			"sourceFile": "packages/basalt/src/charts/gauge.tsx",
-			"sourceHash": "68b117bf632e140c",
+			"sourceHash": "730d637a11b7da2e",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#gauge",
@@ -37409,7 +37442,7 @@
 			"exportName": "RadarChart",
 			"importPath": "@nocoo/basalt/charts/radar",
 			"sourceFile": "packages/basalt/src/charts/radar.tsx",
-			"sourceHash": "7f17554d1b604126",
+			"sourceHash": "a05fef35570c6c66",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#radar",
@@ -37595,7 +37628,7 @@
 			"exportName": "Timeline",
 			"importPath": "@nocoo/basalt/charts/timeline",
 			"sourceFile": "packages/basalt/src/charts/timeline.tsx",
-			"sourceHash": "f1e44cbd6f2a7033",
+			"sourceHash": "c9ecf766e8eca5e0",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#timeline",
@@ -37826,7 +37859,7 @@
 			"exportName": "ChartPalette",
 			"importPath": "@nocoo/basalt/charts/palette",
 			"sourceFile": "packages/basalt/src/charts/palette.tsx",
-			"sourceHash": "55350b6815fe19e3",
+			"sourceHash": "0d8006a6cc14766d",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#palette",
@@ -37871,7 +37904,7 @@
 						},
 						{
 							"name": "breadcrumbs",
-							"type": "PageHeaderBreadcrumb[]",
+							"type": "readonly PageHeaderBreadcrumb[]",
 							"required": false,
 							"description": "Trail of parent pages."
 						},

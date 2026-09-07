@@ -11,6 +11,7 @@ import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from ".
 import { assertEditingShowcases } from "./showcase-editing";
 import { assertExamplePages } from "./showcase-examples";
 import { assertLibraryShowcases } from "./showcase-library";
+import { assertPaletteShowcases } from "./showcase-palette";
 import { assertReusableShowcases } from "./showcase-reuse";
 
 /** Build and test the current source; never silently consume yesterday's dist. */
@@ -40,8 +41,9 @@ export async function runShowcaseGate() {
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
 			const editing = await assertEditingShowcases(page, url);
+			const palette = await assertPaletteShowcases(page, url);
 			assertNoPageFaults(faults);
-			return { library, examples, reusable, editing };
+			return { library, examples, reusable, editing, palette };
 		});
 		console.log(`Showcase gate passed ${JSON.stringify(evidence)}`);
 	} finally {

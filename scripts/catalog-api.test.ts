@@ -3691,7 +3691,7 @@ export interface WidgetProps {
 					},
 					{
 						name: "options",
-						type: "SegmentControlOption[]",
+						type: "readonly SegmentControlOption[]",
 						required: true,
 						description: "The selectable segments shown after the optional All segment.",
 					},
@@ -3743,7 +3743,7 @@ export interface WidgetProps {
 					},
 					{
 						name: "breadcrumbs",
-						type: "PageHeaderBreadcrumb[]",
+						type: "readonly PageHeaderBreadcrumb[]",
 						required: false,
 						description: "Trail of parent pages.",
 					},
@@ -3825,7 +3825,7 @@ export interface WidgetProps {
 					},
 					{
 						name: "items",
-						type: "StatStripItem[]",
+						type: "readonly StatStripItem[]",
 						required: true,
 						description: "The labelled values shown in the strip.",
 					},
@@ -4841,7 +4841,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "TableOfContents"');
 		expect(joined).toContain('name: "CodeHighlighted"');
 		expect(joined).toContain('name: "CodeBlock"');
-		expect(joined).toContain('type: "(row: unknown, index: number) => string"');
+		expect(joined).toContain('type: "(row: T, index: number) => string"');
 		expect(joined).toContain('name: "Flow"');
 		expect(joined).toContain('name: "Grid"');
 		expect(joined).toContain('name: "LineChart"');
@@ -4865,7 +4865,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"ee8713de3b0c29d7a29aec8ddc8114c49c97ca3efe9c815435e3c4a30b56c851",
+			"56336b2d747f049747351c52d897efc629770a0fba245028cf68b3c338ba71af",
 		);
 	}, 60_000);
 

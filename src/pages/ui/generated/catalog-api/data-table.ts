@@ -4,16 +4,17 @@
 export const API = [
 	{
 		name: "DataTable",
+		typeParameters: "<T = unknown>",
 		props: [
 			{
 				name: "data",
-				type: "unknown[]",
+				type: "T[]",
 				required: true,
 				description: "Rows to render.",
 			},
 			{
 				name: "columns",
-				type: "DataTableColumn<unknown>[]",
+				type: "DataTableColumn<T>[]",
 				required: true,
 				description: "Column descriptors.",
 			},
@@ -90,7 +91,7 @@ export const API = [
 			},
 			{
 				name: "getRowId",
-				type: "(row: unknown, index: number) => string",
+				type: "(row: T, index: number) => string",
 				required: false,
 				description: "Stable id for a row.",
 			},

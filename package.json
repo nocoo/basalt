@@ -112,5 +112,6 @@
 	},
 	"trustedDependencies": [
 		"@biomejs/biome"
-	]
+	],
+	"homepage": "https://basaltui.com"
 }

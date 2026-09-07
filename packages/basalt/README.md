@@ -3,9 +3,10 @@
 Matte design system component library. ESM, granular exports, Tailwind CSS v4 or standalone CSS.
 
 - **Package:** `@nocoo/basalt`
-- **Documentation & Showcase:** [https://basalt.hexly.ai](https://basalt.hexly.ai)
+- **Documentation & Showcase:** [https://basaltui.com](https://basaltui.com)
 - **Repository:** [https://github.com/nocoo/basalt](https://github.com/nocoo/basalt)
 - **Complete Application Guide:** [ai/INTEGRATION.md](ai/INTEGRATION.md)
+- **Compilable AppFrame / Login / Resources:** [ai/RECIPES.md](ai/RECIPES.md)
 - **Compatibility & Version Policy:** [ai/COMPATIBILITY.md](ai/COMPATIBILITY.md)
 
 ---

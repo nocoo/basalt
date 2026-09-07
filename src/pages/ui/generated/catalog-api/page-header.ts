@@ -19,7 +19,7 @@ export const API = [
 			},
 			{
 				name: "breadcrumbs",
-				type: "PageHeaderBreadcrumb[]",
+				type: "readonly PageHeaderBreadcrumb[]",
 				required: false,
 				description: "Trail of parent pages.",
 			},

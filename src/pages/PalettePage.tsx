@@ -1,13 +1,19 @@
 import { AreaChart } from "@nocoo/basalt/charts/area";
 import { DonutChart } from "@nocoo/basalt/charts/donut";
+import { Gauge } from "@nocoo/basalt/charts/gauge";
 import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { LineChart } from "@nocoo/basalt/charts/line";
 import { Button } from "@nocoo/basalt/components/button";
+import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
+import { Switch } from "@nocoo/basalt/components/switch";
 import { useAccent } from "@nocoo/basalt/providers/accent";
+import { Check } from "lucide-react";
+import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { PaletteEditor } from "@/components/PaletteEditor";
 import { formatPercent, formatUsd } from "@/lib/format";
 import { CHART_COLORS } from "@/lib/palette";
 
@@ -63,13 +69,6 @@ const baseColors = [
 	{ token: "--badge-red", label: "Badge Red", tier: "" },
 ];
 
-const THEME_SEMANTICS: Record<string, string> = {
-	primary: "Primary",
-	green: "Positive",
-	red: "Destructive",
-	gray: "Muted",
-};
-
 const utilityColors = [
 	{ token: "--chart-axis", label: "Axis Text" },
 	{ token: "--chart-muted", label: "Muted Fill" },
@@ -77,48 +76,15 @@ const utilityColors = [
 
 // ── Components ──
 
-function Swatch({
-	token,
-	label,
-	subtitle,
-	selected,
-	onSelect,
-}: {
-	token: string;
-	label: string;
-	subtitle?: string;
-	selected?: boolean;
-	onSelect?: () => void;
-}) {
-	const swatch = (
-		<div
-			className={`h-14 w-14 rounded-widget border border-border shadow-xs ${
-				selected ? "ring-2 ring-basalt-foreground ring-offset-2 ring-offset-basalt-background" : ""
-			}`}
-			style={{ background: `hsl(var(${token}))` }}
-		/>
-	);
+function Swatch({ token, label }: { token: string; label: string }) {
 	return (
-		<div className="flex flex-col items-center gap-2">
-			{onSelect ? (
-				<Button
-					type="button"
-					variant="ghost"
-					className="h-auto rounded-widget p-0"
-					aria-label={label}
-					aria-pressed={selected}
-					onClick={onSelect}
-				>
-					{swatch}
-				</Button>
-			) : (
-				swatch
-			)}
-			<div className="text-center">
-				<p className="text-xs font-medium text-foreground">{label}</p>
-				{subtitle && <p className="text-[10px] text-muted-foreground">{subtitle}</p>}
-				<p className="text-[10px] text-muted-foreground font-mono">{token}</p>
-			</div>
+		<div className="flex w-24 flex-col items-center gap-2">
+			<div
+				className="size-12 rounded-lg border border-border"
+				style={{ background: `hsl(var(${token}))` }}
+			/>
+			<p className="text-center text-xs font-medium text-foreground">{label}</p>
+			<code className="break-all text-center text-[10px] text-muted-foreground">{token}</code>
 		</div>
 	);
 }
@@ -126,47 +92,88 @@ function Swatch({
 export default function PalettePage() {
 	const { t } = useTranslation();
 	const { accent, setAccent, swatches } = useAccent();
+	const [preview, setPreview] = useState(false);
+	const previewId = useId();
 
 	return (
 		<div className="space-y-8">
 			<PageHeader title={t("pages.palette.title")} description={t("pages.palette.description")} />
 
-			<SectionRule title={t("pages.palette.baseColors")}>
-				<LayerCard>
-					<div className="flex flex-wrap gap-5">
-						{baseColors.map((c) => (
-							<Swatch
-								key={c.token}
-								token={c.token}
-								label={c.label}
-								subtitle={c.tier || undefined}
-							/>
+			<SectionRule title={t("pages.palette.themePalette")}>
+				<div className="space-y-4">
+					<p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+						{t("pages.palette.candyDescription")}
+					</p>
+					<div
+						className="grid grid-cols-3 gap-3 sm:grid-cols-4 xl:grid-cols-6"
+						role="group"
+						aria-label={t("pages.palette.themePalette")}
+					>
+						{swatches.map((color) => (
+							<button
+								key={color.id}
+								type="button"
+								aria-label={color.label}
+								aria-pressed={color.id === accent}
+								data-accent-choice={color.id}
+								onClick={() => setAccent(color.id)}
+								className={`group min-w-0 rounded-xl border p-2 text-left transition-colors focus-visible:outline-2 focus-visible:outline-primary ${color.id === accent ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}
+							>
+								<span
+									data-accent-swatch={color.id}
+									className="relative block h-16 overflow-hidden rounded-lg border border-black/5 sm:h-20"
+									style={{ background: `hsl(var(${color.token}))` }}
+								>
+									<span
+										className="absolute inset-0 bg-linear-to-br from-white/30 to-transparent"
+										aria-hidden="true"
+									/>
+								</span>
+								<span className="mt-2 flex items-center justify-between gap-1 px-0.5 text-xs font-medium text-foreground">
+									{color.label}
+									{color.id === accent && (
+										<Check className="size-3.5 shrink-0 text-primary" aria-hidden="true" />
+									)}
+								</span>
+							</button>
 						))}
 					</div>
-				</LayerCard>
+					<LayerCard data-palette-preview className="flex flex-wrap items-center gap-x-6 gap-y-4">
+						<Button aria-pressed={preview} onClick={() => setPreview(!preview)}>
+							{t(preview ? "pages.palette.previewActive" : "pages.palette.previewAction")}
+						</Button>
+						<label htmlFor={`${previewId}-check`} className="flex items-center gap-2 text-xs">
+							<Checkbox id={`${previewId}-check`} defaultChecked />
+							{t("pages.palette.previewCheckbox")}
+						</label>
+						<label htmlFor={`${previewId}-switch`} className="flex items-center gap-2 text-xs">
+							<Switch id={`${previewId}-switch`} defaultChecked />
+							{t("pages.palette.previewSwitch")}
+						</label>
+						<span className="text-xs text-muted-foreground">{t("pages.palette.contrastNote")}</span>
+					</LayerCard>
+					<PaletteEditor />
+				</div>
 			</SectionRule>
 
-			<SectionRule title={t("pages.palette.themePalette")}>
+			<SectionRule title={t("pages.palette.chartPalette")}>
 				<LayerCard>
-					<div className="grid grid-cols-6 gap-4 sm:grid-cols-8 lg:grid-cols-12">
-						{swatches.map((c) => (
-							<Swatch
-								key={c.id}
-								token={c.token}
-								label={c.label}
-								subtitle={THEME_SEMANTICS[c.id]}
-								selected={c.id === accent}
-								onSelect={() => setAccent(c.id)}
-							/>
+					<p className="mb-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+						{t("pages.palette.chartDescription")}
+					</p>
+					<div className="grid grid-cols-5 gap-3" data-chart-palette>
+						{CHART_COLORS.map((color, index) => (
+							<div key={color} className="min-w-0 space-y-2">
+								<div
+									className="h-12 rounded-lg"
+									style={{ background: color }}
+									data-chart-swatch={index}
+								/>
+								<p className="text-xs text-muted-foreground">
+									{["Blue", "Pink", "Green", "Yellow", "Pearl"][index]}
+								</p>
+							</div>
 						))}
-					</div>
-					<div className="mt-5 border-t border-border pt-4">
-						<p className="mb-3 text-xs text-muted-foreground">{t("pages.palette.utilityTokens")}</p>
-						<div className="flex flex-wrap gap-5">
-							{utilityColors.map((c) => (
-								<Swatch key={c.token} token={c.token} label={c.label} />
-							))}
-						</div>
 					</div>
 				</LayerCard>
 			</SectionRule>
@@ -252,7 +259,36 @@ export default function PalettePage() {
 						/>
 					</LayerCard>
 				</SectionRule>
+
+				<SectionRule title={t("pages.palette.ringChart")}>
+					<LayerCard>
+						<div data-palette-rings className="flex flex-wrap items-center justify-center gap-4">
+							{[0, 64, 100].map((value) => (
+								<Gauge
+									key={value}
+									value={value}
+									valueFormatter={(number) => `${number}%`}
+									ariaLabel={`${t("pages.palette.ringChart")} ${value}%`}
+									className="h-28 w-28"
+								/>
+							))}
+						</div>
+						<p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+							{t("pages.palette.ringDescription")}
+						</p>
+					</LayerCard>
+				</SectionRule>
 			</div>
+			<details className="rounded-xl border border-border p-4">
+				<summary className="cursor-pointer text-sm font-medium">
+					{t("pages.palette.baseColors")}
+				</summary>
+				<div className="mt-4 flex flex-wrap gap-5">
+					{[...baseColors, ...utilityColors].map((color) => (
+						<Swatch key={color.token} token={color.token} label={color.label} />
+					))}
+				</div>
+			</details>
 		</div>
 	);
 }

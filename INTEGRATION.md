@@ -4,7 +4,9 @@ This is the one-pass setup for a Basalt app. An MVP is **login + shell + one pag
 
 The library owns the rail, the main column, collapse motion, the island, the page heading, and region rules. The app owns navigation data, brand, version, identity, and page bodies.
 
-Package: `@nocoo/basalt`. React 19. Tailwind v4.
+Package: `@nocoo/basalt`. React 19. Tailwind v4. Catalog: https://basaltui.com.
+
+For complete, compilable AppFrame, Login, and Resources modules, read `node_modules/@nocoo/basalt/ai/RECIPES.md`. These application-owned recipes are built and exercised from the installed package in standalone, Tailwind, and Next.js consumers. Route, authentication, permissions, and transport remain application responsibilities.
 
 ---
 
@@ -117,7 +119,12 @@ Standalone packages design tokens, control surface utilities, animations, and sc
 Apply theme on the document **before** React paints:
 
 ```ts
-const stored = localStorage.getItem("theme");
+let stored: string | null = null;
+try {
+  stored = window.localStorage.getItem("theme");
+} catch {
+  // Continue with the system theme when browser storage is denied.
+}
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 const isDark = stored === "dark" || (stored !== "light" && prefersDark);
 document.documentElement.classList.toggle("dark", isDark);
@@ -198,7 +205,7 @@ One tree for the whole app. Login and the shell both sit under it.
 
 ### AccentProvider and useAccent
 
-`AccentProvider` manages dynamic primary accent color overrides (`--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent`). It does not alter chart palette tokens (`--basalt-chart-*`).
+`AccentProvider` manages dynamic primary accent color overrides (`--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent`). It also supplies twelve raw candy swatches (`--basalt-accent-1` through `--basalt-accent-12`). It does not alter chart palette tokens (`--basalt-chart-*`).
 
 #### AccentProvider Configuration
 
@@ -211,21 +218,47 @@ One tree for the whole app. Login and the shell both sit under it.
 | `accent` | `string` | `undefined` | Controlled accent value. When supplied, internal state is driven by this prop. |
 | `onAccentChange` | `(accent: string) => void` | `undefined` | Callback fired when an accent change is requested. |
 | `applyToDocument` | `boolean` | `true` | When `false`, disables writing CSS custom properties and `data-accent` to `document.documentElement`. |
+| `paletteOverrides` | `Readonly<Record<string, { light: string; dark: string }>>` | `undefined` | Optional HSL-channel pairs for the twelve preset IDs. Invalid pairs and unknown IDs are ignored. The application owns persistence. |
 
 - **Hook `useAccent()`**: Returns `{ accent: string, setAccent: (id: string) => void, swatches: readonly AccentSwatch[] }`. Throws an error when invoked outside an `AccentProvider`.
 - **`AccentSwatch` Type**:
   - `id: string`: Unique swatch identifier (e.g., `"primary"`, `"teal"`, `"rose"`).
   - `label: string`: Human-readable swatch name.
-  - `token: string`: CSS variable token binding (e.g., `"--basalt-chart-1"`).
-  - `light: string`: HSL values applied in light mode (e.g., `"217 91% 60%"`).
-  - `dark: string`: HSL values applied in dark mode (e.g., `"217 91% 65%"`).
+  - `token: string`: CSS variable token binding (e.g., `"--basalt-accent-1"`).
+  - `light: string`: HSL values applied in light mode (e.g., `"204 88% 62%"`).
+  - `dark: string`: HSL values applied in dark mode (e.g., `"204 90% 70%"`).
 - **Utilities**:
-  - `ACCENT_SWATCHES`: Readonly array of 24 predefined `AccentSwatch` objects.
+  - `ACCENT_SWATCHES`: Readonly array of 12 candy-inspired `AccentSwatch` objects: Blue, Ice, Bondi, Green, Lime, Yellow, Tangerine, Strawberry, Pink, Grape, Blueberry, and Pearl. The stable IDs are `primary`, `sky`, `teal`, `green`, `lime`, `amber`, `orange`, `red`, `rose`, `purple`, `indigo`, and `gray`. Use the provider hook for swatches with custom overrides applied.
   - `DEFAULT_ACCENT_ID`: Default accent ID (`"primary"`).
-  - `accentSwatchById(id: string | null | undefined): AccentSwatch`: Finds matching swatch by `id`, defaulting to `ACCENT_SWATCHES[0]` if not found.
+  - `accentSwatchById(id: string | null | undefined): AccentSwatch`: Finds a preset by `id`, mapping legacy IDs to their closest retained hue and defaulting to `ACCENT_SWATCHES[0]` if not found. For example, `jade` becomes `teal`, `magenta` becomes `rose`, and `gold` becomes `amber`; the full mapping is in `ai/COMPATIBILITY.md`.
   - `accentForeground(hsl: string)`: Compares WCAG contrast against white and dark text and returns the higher-contrast pairing (`"0 0% 10%"` or `"0 0% 100%"`). Note: selecting higher contrast does not guarantee arbitrary custom colors reach 4.5:1.
-  - `applyAccent(id: string, dark = false): void`: Sets CSS variables `--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent` on the document root element. For built-in palette swatches, semantic `--basalt-primary` is derived to guarantee WCAG 4.5:1 text/button contrast across L0–L3 surfaces and 90% hover states without mutating chart swatch definitions (`ACCENT_SWATCHES`) or chart palette tokens. Badge variants pair corresponding semantic foreground tokens (`text-basalt-badge-*-foreground` / `text-basalt-*-foreground`). Accepts optional `dark` flag (defaults to `false`).
+  - `applyAccent(id: string, dark = false): void`: Sets CSS variables `--basalt-primary`, `--basalt-primary-foreground`, `--basalt-ring`, and `dataset.accent` on the document root element. For built-in palette swatches, semantic `--basalt-primary` is derived to guarantee WCAG 4.5:1 text/button contrast across L0–L3 surfaces and 90% hover states without mutating the raw control swatches (`ACCENT_SWATCHES`) or chart palette tokens. This helper applies presets; use `paletteOverrides` on the provider for custom colors. Badge variants pair corresponding semantic foreground tokens (`text-basalt-badge-*-foreground` / `text-basalt-*-foreground`). Accepts optional `dark` flag (defaults to `false`).
 - **Known Limitations & Resilience**: Storage access gracefully degrades in sandboxed or quota-exceeded environments by preserving in-memory choices without throwing. SSR hydration serves controlled `accent` (if provided) or server snapshot defaults (`DEFAULT_ACCENT_ID = "primary"`). Built-in palette accents satisfy WCAG 4.5:1 across surfaces in both themes.
+
+### Control and chart palettes
+
+Control swatches use candy finishes inspired by classic iMac and iPhone 5C colors. The raw swatch stays bright; semantic primary text and buttons derive a contrast-safe lightness for the current theme. A yellow swatch therefore produces darker primary text in light mode. Custom colors receive the same semantic treatment.
+
+```tsx compile:integration-custom-palette
+import { Button } from "@nocoo/basalt/components/button";
+import { AccentProvider } from "@nocoo/basalt/providers/accent";
+
+export function CustomBrand() {
+  return (
+    <AccentProvider
+      defaultAccent="primary"
+      persist={false}
+      paletteOverrides={{ primary: { light: "204 88% 62%", dark: "204 90% 70%" } }}
+    >
+      <Button>Save changes</Button>
+    </AccentProvider>
+  );
+}
+```
+
+The catalog's `/palette` editor saves twelve light/dark hex pairs in `localStorage` under `basalt-palette-v1`, separately from the selected ID in `basalt-accent`. Preferences survive reloads and navigation and synchronize across tabs on the same origin. Invalid data falls back to the classic palette; denied reads or writes keep the page usable, and failed saves explicitly report that the change lasts for the current session. Restore classic retains the custom draft for later reuse. This editor and storage format belong to the catalog application; consumers pass their own validated preferences through `paletteOverrides`.
+
+Charts use a fixed **five-color** cycle: Blue, Pink, Green, Yellow, Pearl, with light/dark variants. `CHART_COLORS` and `getChartColor(index)` are independent of control accent selection and custom palettes. Use modulo indexing or `getChartColor` when a chart has more than five series, and use labels or an explicit `series.color` for distinctions beyond color. Existing `chart` keys and numbered chart CSS tokens remain aliases, but the former 24-color values and array length are intentionally replaced. Values heatmaps and Timeline rails also use fixed chart tokens. For tinted Timeline event rows, pass `textColor: "hsl(var(--basalt-foreground))"` with a translucent background utility; both title and subtitle inherit it. Gauge remainder uses `chartMuted`, a neutral track for the active theme; chart labels and tooltip text use semantic foreground tokens. See `ai/COMPATIBILITY.md` before migrating color-indexed code.
 
 ### Host-Controlled Preferences Recipe
 
