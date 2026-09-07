@@ -1262,6 +1262,8 @@ Next 16.3.3 / Turbopack 生产消费页在挂载 TagColorPicker 时触发 React 
 
 首次远端 Tailwind 消费者门与本地 npm 发布门均检出浅色 Teal Badge 白字对比度仅 **1.82:1**：装饰 Badge 仍复用了已改为糖果色的图表别名。Teal / Purple 现改用 Bondi / Grape 控件色及可读前景色，两个 CSS 模式共用成对 token。修正后的 Tailwind 门已通过 **2,288/2,288 对文字对比度及 52/52 个键盘焦点场景**，没有降低预算或跳过失败样本。完整消费者与生产部署结果以 [CI](https://github.com/nocoo/basalt/actions/workflows/ci.yml)、[Release](https://github.com/nocoo/basalt/releases/tag/v2.1.0) 和 [npm v2.1.0](https://www.npmjs.com/package/@nocoo/basalt/v/2.1.0) 为准。
 
+Linux CI 另外检出文档/registry 全图扫描与大型页面查询共 19 项超时，以及 Health 示例在 390px 下的 13px 内容溢出。测试改为在 `beforeAll` 中解析一次只读导出图，各断言取得独立副本；源文件变更、循环引用、版本同步和 freshness 负面检查仍重新读取隔离目录。全图集成扫描单独设置 30 秒、双扫描同步设置 60 秒上限，普通交互仍为 5 秒，四维 95% 覆盖率和全部断言保留。页面查询限定在对应文档/过滤区域，相关 **5 文件 / 404 测试**通过。`SectionRule` 允许操作区换行并约束最大宽度，320/390/1280px 与三种字体配置的 **9 组**实际几何检查通过，桌面仍同行显示。HTML 标题按最终要求恢复为 **`basalt.`**。证据：`ci-timeout-focused`、`health-width-fixed`；最终发布继续受精确提交的远端 CI 约束。
+
 证据：`chart-candy-generate`、`chart-candy-package-build`、`chart-candy-heavy`、`chart-candy-docs`、`chart-candy-typecheck`、`chart-candy-lint`、`chart-candy-showcase`、`chart-candy-visual-settled`、`chart-candy-invariants`、`chart-candy-candidate.json` 与 `chart-candy-commit`。本节与实现同批提交，验证均为本地结果。
 
 所有示例仍使用本地模拟数据；查询、认证、权限、路由和上传 transport 属于应用。公共源码/元数据/随包指南保持同步，颜色数量和值的迁移属于明确记录的行为变化，发布版本仍须另行按兼容政策决定。

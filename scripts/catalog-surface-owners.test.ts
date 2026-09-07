@@ -1,7 +1,7 @@
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeAll, describe, expect, it } from "vitest";
 import {
 	checkSurfaceManifestFreshness,
 	derivePublicSurfaceManifest,
@@ -80,6 +80,10 @@ describe("public surface documentation ownership and freshness", () => {
 			return cached;
 		};
 	})();
+
+	beforeAll(() => {
+		getActualRepoManifest();
+	}, 30_000);
 
 	it("derives complete public surface manifest for the actual repo", () => {
 		const rootPkg = JSON.parse(readFileSync(path.join(process.cwd(), "package.json"), "utf8")) as {

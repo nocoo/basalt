@@ -19,6 +19,7 @@
 - Add optional `AccentProvider.paletteOverrides`; consumer applications own persistence.
 - Set the production URL and GitHub homepage to https://basaltui.com. Browser preferences on the previous origin do not migrate automatically.
 - Adopt the corner-tower brand across navigation, login, loading marks, browser icons and social previews; the package embeds its mark without requiring a public asset path.
+- Restore the browser title to `basalt.`.
 - Complete example forms, settings, data filtering and chat workflows, including failure/retry and responsive navigation.
 - Update Playwright, Lucide, SWC, Node types and consumer fixtures, including Next.js 16.3.4 and React Table 9.2.4.
 
@@ -27,10 +28,12 @@
 - Standalone CSS scope and class extraction, semantic contrast and reduced-motion behavior.
 - Named Teal and Purple badges use the candy control swatches with readable text in both themes.
 - Mobile documentation overflow/duplicate IDs, example chart sizing and Network SVG geometry.
+- SectionRule wraps wide action groups on narrow screens, including the Health dashboard date controls.
 - Gauge remainder uses a neutral theme track and the shared static animation setting.
 - Generated API text retains generic context, readonly types and correct function/constructor union parentheses.
 - Selection indicator default callbacks remain stable after Next.js production minification.
 - Release automation synchronizes the lockfile and promotes curated Unreleased notes into the versioned changelog and GitHub release.
+- Catalog tests reuse isolated copies of read-only registry results and scope DOM queries; full repository scans have explicit bounded timeouts on CI.
 
 ## [2.0.3] - 2026-09-04
 

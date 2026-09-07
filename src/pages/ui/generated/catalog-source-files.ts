@@ -374,7 +374,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"section-rule": {
 		"file": "packages/basalt/src/components/section-rule.tsx",
-		"hash": "3e6cead466008b62",
+		"hash": "c3e445b93350aa70",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/section-rule.js.map (sourcesContent[0])"
 	},

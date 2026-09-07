@@ -248,7 +248,7 @@ describe("documentation tarball compilation gate", () => {
 		const tablePagerUsage = usageModules.find((m) => m.slug === "table-pager");
 		expect(tablePagerUsage).toBeDefined();
 		expect(tablePagerUsage?.code).toContain("const [page, setPage] = useState(1);");
-	});
+	}, 30_000);
 
 	it("handles fixture repoRoot, whitespace fidelity, dynamic ready inclusion, and rejects missing or empty usage", async () => {
 		const tempFixture = mkdtempSync(join(tmpdir(), "basalt-usage-fixture-"));
@@ -406,7 +406,7 @@ describe("documentation tarball compilation gate", () => {
 		const popoverSides = scenarioModules.find((m) => m.id === "popover-sides");
 		expect(popoverSides).toBeDefined();
 		expect(popoverSides?.code).toContain("flex flex-wrap items-center justify-center gap-4 py-16");
-	});
+	}, 30_000);
 
 	it("rejects regressions from complete module to bare JSX fragments, empty exports, or unexported code", () => {
 		// 1. Bare native JSX fragment without exports

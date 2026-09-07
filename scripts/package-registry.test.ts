@@ -1,7 +1,7 @@
 import { cpSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 import { CATALOG } from "../src/pages/ui/catalog";
 import { derivePublicSurfaceManifest } from "./catalog-surface-owners";
 import {
@@ -14,8 +14,18 @@ import {
 } from "./package-registry";
 
 describe("package registry generator and AI package assets", () => {
+	let referenceManifest: ReturnType<typeof derivePublicSurfaceManifest>;
+	let referenceRegistry: ReturnType<typeof generatePackageRegistry>;
+
+	// Parse the real export graph once for read-only assertions. Mutating cases receive
+	// their own clone; freshness fixtures still perform independent filesystem scans.
+	beforeAll(() => {
+		referenceManifest = derivePublicSurfaceManifest();
+		referenceRegistry = generatePackageRegistry(process.cwd(), referenceManifest);
+	}, 30_000);
+
 	it("derives complete package registry with all 122 modules and 111 ready catalog entries", () => {
-		const registry = generatePackageRegistry();
+		const registry = structuredClone(referenceRegistry);
 
 		const rootPkg = JSON.parse(readFileSync("package.json", "utf8")) as {
 			version: string;
@@ -53,7 +63,7 @@ describe("package registry generator and AI package assets", () => {
 	});
 
 	it("preserves full Toast callable API and Toaster props in registry", () => {
-		const registry = generatePackageRegistry();
+		const registry = structuredClone(referenceRegistry);
 		const toastCat = registry.catalogEntries.find((c) => c.slug === "toast");
 		expect(toastCat).toBeDefined();
 		expect(toastCat?.api).toHaveLength(7);
@@ -80,7 +90,7 @@ describe("package registry generator and AI package assets", () => {
 	});
 
 	it("accurately derives rootAvailable per catalog entry from hasRootBarrel and symbols", () => {
-		const registry = generatePackageRegistry();
+		const registry = structuredClone(referenceRegistry);
 
 		const buttonCat = registry.catalogEntries.find((c) => c.slug === "button");
 		expect(buttonCat?.rootAvailable).toBe(true);
@@ -104,7 +114,7 @@ describe("package registry generator and AI package assets", () => {
 	});
 
 	it("accurately identifies modules with co-located catalog entries (e.g. Button/LinkButton, Code/CodeBlock)", () => {
-		const registry = generatePackageRegistry();
+		const registry = structuredClone(referenceRegistry);
 
 		const buttonMod = registry.modules.find(
 			(m) => m.importPath === "@nocoo/basalt/components/button",
@@ -124,7 +134,7 @@ describe("package registry generator and AI package assets", () => {
 	});
 
 	it("accurately reports optional peers without false positives", () => {
-		const registry = generatePackageRegistry();
+		const registry = structuredClone(referenceRegistry);
 
 		const rootMod = registry.modules.find((m) => m.subpath === ".");
 		expect(rootMod?.optionalPeers).toEqual([]);
@@ -187,7 +197,7 @@ describe("package registry generator and AI package assets", () => {
 
 	it("passes asset freshness check on sync", () => {
 		expect(() => checkAiPackageAssetsFreshness()).not.toThrow();
-	});
+	}, 30_000);
 
 	describe("isolated negative regression fixtures for registry freshness & validation", () => {
 		function createIsolatedFixture(modifier?: (fixtureDir: string) => void): string {
@@ -262,7 +272,7 @@ describe("package registry generator and AI package assets", () => {
 			} finally {
 				rmSync(fixture, { recursive: true, force: true });
 			}
-		});
+		}, 30_000);
 
 		it("rejects stale content in packages/basalt/ai/sources.json in freshness check", () => {
 			const fixture = createIsolatedFixture((dir) => {
@@ -276,7 +286,7 @@ describe("package registry generator and AI package assets", () => {
 			} finally {
 				rmSync(fixture, { recursive: true, force: true });
 			}
-		});
+		}, 30_000);
 
 		it("rejects stale packages/basalt/ai/registry.json in freshness check", () => {
 			const fixture = createIsolatedFixture((dir) => {
@@ -292,10 +302,10 @@ describe("package registry generator and AI package assets", () => {
 			} finally {
 				rmSync(fixture, { recursive: true, force: true });
 			}
-		});
+		}, 30_000);
 
 		it("rejects invalid or missing packageDoc markdown anchors", () => {
-			const registry = generatePackageRegistry();
+			const registry = structuredClone(referenceRegistry);
 			// Add a fictitious invalid markdown anchor reference
 			registry.modules[0].packageDoc = "README.md#non-existent-anchor-for-test";
 			expect(() => validatePackageDocReferences(registry)).toThrow(
@@ -304,7 +314,7 @@ describe("package registry generator and AI package assets", () => {
 		});
 
 		it("rejects invalid or missing packageDoc json anchors", () => {
-			const registry = generatePackageRegistry();
+			const registry = structuredClone(referenceRegistry);
 			// Add a fictitious invalid catalog entry json anchor reference
 			registry.modules[0].packageDoc = "ai/registry.json#non-existent-slug-xyz";
 			expect(() => validatePackageDocReferences(registry)).toThrow(
@@ -313,7 +323,7 @@ describe("package registry generator and AI package assets", () => {
 		});
 
 		it("preserves isolation and detects file modifications across distinct validation calls without persistent cache leakage", () => {
-			const registry = generatePackageRegistry();
+			const registry = structuredClone(referenceRegistry);
 			// Baseline passes
 			expect(() => validatePackageDocReferences(registry)).not.toThrow();
 
@@ -411,8 +421,9 @@ describe("package registry generator and AI package assets", () => {
 		it("detects source modifications in subsequent generation calls, terminates cycles, and keeps entry visited sets independent", () => {
 			const fixture = createIsolatedFixture();
 			try {
-				// Derive manifest once on the isolated fixture (manifest only depends on package.json exports and source declarations, which are not modified)
-				const surfaceManifest = derivePublicSurfaceManifest(fixture);
+				// The copied exports and declarations match the real repo. Reuse their
+				// relative-path manifest, but rescan modified source imports on every call.
+				const surfaceManifest = structuredClone(referenceManifest);
 				const baseline = generatePackageRegistry(fixture, surfaceManifest);
 				const buttonBefore = baseline.modules.find(
 					(m) => m.importPath === "@nocoo/basalt/components/button",
@@ -466,10 +477,10 @@ describe("package registry generator and AI package assets", () => {
 			} finally {
 				rmSync(fixture, { recursive: true, force: true });
 			}
-		});
+		}, 30_000);
 
-		// Full isolated tree copy, registry generation, freshness check and baseline comparison
-		// takes ~5.6s - 6.7s under coverage instrumentation, exceeding default 5s budget.
+		// Two full AST scans plus an isolated tree copy exceed the interaction-test
+		// budget on CI runners under coverage instrumentation.
 		it("syncAiPackageAssets correctly synchronizes bumped version while keeping public-api-baseline byte-identical", () => {
 			// Copy public-api-baseline into isolated fixture to verify byte-invariance
 			const fixture = createIsolatedFixture((dir) => {
@@ -511,6 +522,6 @@ describe("package registry generator and AI package assets", () => {
 			} finally {
 				rmSync(fixture, { recursive: true, force: true });
 			}
-		}, 15000);
+		}, 60_000);
 	});
 });

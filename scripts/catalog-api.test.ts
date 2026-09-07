@@ -5166,5 +5166,5 @@ export interface WidgetProps {
 				],
 			}),
 		).toThrow(/callable export nonExistentCallable not found/);
-	});
+	}, 30_000);
 });

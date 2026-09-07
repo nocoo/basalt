@@ -227,17 +227,18 @@ describe("ui catalog", () => {
 
 	it("renders one empty state and resets owned filters while preserving foreign values", () => {
 		renderCatalog("/ui?foreign=kept&q=does-not-exist&category=block");
+		const filters = within(document.getElementById("catalog-filters") as HTMLElement);
 		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("0 results");
 		expect(document.querySelector("[data-empty-status]")).toBeInTheDocument();
 		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(0);
 		expect(screen.queryByRole("region")).not.toBeInTheDocument();
-		expect(screen.getAllByRole("button", { name: "Reset filters" })).toHaveLength(1);
+		expect(filters.getAllByRole("button", { name: "Reset filters" })).toHaveLength(1);
 
-		fireEvent.click(screen.getByRole("button", { name: "Reset filters" }));
-		expect(screen.getByRole("searchbox", { name: "Search" })).toHaveFocus();
+		fireEvent.click(filters.getByRole("button", { name: "Reset filters" }));
+		expect(filters.getByRole("searchbox", { name: "Search" })).toHaveFocus();
 		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("112 results");
 		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(112);
-		expect(screen.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
+		expect(filters.queryByRole("button", { name: "Reset filters" })).not.toBeInTheDocument();
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
 			"/ui?foreign=kept",
@@ -284,20 +285,25 @@ describe("ui catalog", () => {
 			return;
 		}
 		cleanup();
-		renderCatalog(`/ui/${slug}`);
+		const { container } = renderCatalog(`/ui/${slug}`);
+		const header = within(container.querySelector("header") as HTMLElement);
+		const installation = within(document.getElementById("installation") as HTMLElement);
+		const usage = within(document.getElementById("usage") as HTMLElement);
+		const api = within(document.getElementById("api-reference") as HTMLElement);
+		const toc = within(container.querySelector("header + div") as HTMLElement);
 		expect(document.querySelector(`[data-status='ready'][data-slug='${slug}']`)).toBeTruthy();
 		expect(document.querySelector(`[data-hero-scenario="${hero.id}"]`)).toBeTruthy();
-		expect(screen.getByRole("heading", { name: "Installation" })).toBeInTheDocument();
-		expect(screen.getByRole("heading", { name: "Usage" })).toBeInTheDocument();
-		expect(screen.getByRole("heading", { name: "API Reference" })).toBeInTheDocument();
-		expect(screen.getAllByRole("columnheader", { name: "Default" }).length).toBeGreaterThan(0);
-		expect(screen.getByRole("button", { name: "Copy page" })).toBeInTheDocument();
-		expect(screen.getAllByRole("button", { name: "Copy" }).length).toBeGreaterThan(0);
-		expect(screen.getAllByRole("navigation", { name: "On this page" }).length).toBeGreaterThan(0);
+		expect(installation.getByRole("heading", { name: "Installation" })).toBeInTheDocument();
+		expect(usage.getByRole("heading", { name: "Usage" })).toBeInTheDocument();
+		expect(api.getByRole("heading", { name: "API Reference" })).toBeInTheDocument();
+		expect(api.getAllByRole("columnheader", { name: "Default" }).length).toBeGreaterThan(0);
+		expect(header.getByRole("button", { name: "Copy page" })).toBeInTheDocument();
+		expect(usage.getAllByRole("button", { name: "Copy" }).length).toBeGreaterThan(0);
+		expect(toc.getAllByRole("navigation", { name: "On this page" }).length).toBeGreaterThan(0);
 		expect(document.querySelector("aside .sticky")).toBeTruthy();
-		expect(screen.getAllByRole("combobox", { name: "Jump to section" }).length).toBeGreaterThan(0);
+		expect(toc.getAllByRole("combobox", { name: "Jump to section" }).length).toBeGreaterThan(0);
 		const viewerHref = catalogSourceViewerHref(slug, docs.implementationSource.hash);
-		const implementationLink = screen.getByRole("link", {
+		const implementationLink = header.getByRole("link", {
 			name: "View Basalt component source",
 		});
 		expect(implementationLink).toHaveAttribute("href", viewerHref);
