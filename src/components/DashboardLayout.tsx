@@ -38,6 +38,8 @@ const PAGE_TITLE_KEYS: Record<string, string> = {
 	"/flow-comparison": "nav.flowComparison",
 	"/portfolio": "nav.portfolio",
 	"/layout": "nav.layout",
+	"/loading-states": "nav.loadingStates",
+	"/animation": "nav.animation",
 	"/dialogs": "nav.dialogs",
 	"/chat": "nav.chat",
 	"/settings": "nav.settings",

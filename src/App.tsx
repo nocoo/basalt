@@ -8,6 +8,7 @@ import { DashboardLayout } from "@/components/DashboardLayout";
 import { SitePaletteProvider } from "@/components/SitePaletteProvider";
 
 const AccountsPage = lazy(() => import("./pages/AccountsPage"));
+const AnimationPage = lazy(() => import("./pages/AnimationPage"));
 const BankingDashboardPage = lazy(() => import("./pages/BankingDashboardPage"));
 const ChatPage = lazy(() => import("./pages/ChatPage"));
 const ComponentsPage = lazy(() => import("./pages/ComponentsPage"));
@@ -21,6 +22,7 @@ const InteractionShowcasePage = lazy(() => import("./pages/InteractionShowcasePa
 const InteractivePage = lazy(() => import("./pages/InteractivePage"));
 const LayoutPage = lazy(() => import("./pages/LayoutPage"));
 const LoadingPage = lazy(() => import("./pages/LoadingPage"));
+const LoadingStatesPage = lazy(() => import("./pages/LoadingStatesPage"));
 const LoginPage = lazy(() => import("./pages/LoginPage"));
 const NavigationPage = lazy(() => import("./pages/NavigationPage"));
 const NetworkOpsDashboardPage = lazy(() => import("./pages/NetworkOpsDashboardPage"));
@@ -100,6 +102,8 @@ const App = () => (
 								<Route path="/flow-comparison" element={routeElement(FlowComparisonPage)} />
 								<Route path="/portfolio" element={routeElement(PortfolioPage)} />
 								<Route path="/layout" element={routeElement(LayoutPage)} />
+								<Route path="/loading-states" element={routeElement(LoadingStatesPage)} />
+								<Route path="/animation" element={routeElement(AnimationPage)} />
 								<Route path="/dialogs" element={routeElement(DialogsPage)} />
 								<Route path="/chat" element={routeElement(ChatPage)} />
 								<Route path="/settings" element={routeElement(SettingsPage)} />

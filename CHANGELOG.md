@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- Library showcase pages for loading skeletons (`/loading-states`) and motion (`/animation`).
+
 ## [2.1.0] - 2026-09-07
 
 ### Added

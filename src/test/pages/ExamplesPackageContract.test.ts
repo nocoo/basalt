@@ -17,6 +17,8 @@ const EXAMPLE_PAGES = [
 	"InteractivePage.tsx",
 	"LayoutPage.tsx",
 	"LoadingPage.tsx",
+	"LoadingStatesPage.tsx",
+	"AnimationPage.tsx",
 	"LoginPage.tsx",
 	"NavigationPage.tsx",
 	"NetworkOpsDashboardPage.tsx",

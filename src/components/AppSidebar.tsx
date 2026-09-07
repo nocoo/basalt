@@ -189,6 +189,8 @@ const LIBRARY_LEAD: NavItem[] = [
 	{ titleKey: "nav.kitIndex", icon: BookOpen, path: "/ui" },
 	{ titleKey: "nav.colorPalette", icon: Palette, path: "/palette" },
 	{ titleKey: "nav.layout", icon: LayoutGrid, path: "/layout" },
+	{ titleKey: "nav.loadingStates", icon: Loader, path: "/loading-states" },
+	{ titleKey: "nav.animation", icon: Sparkles, path: "/animation" },
 	{ titleKey: "nav.interactive", icon: MousePointerClick, path: "/interactive" },
 	{ titleKey: "nav.data", icon: Eye, path: "/data" },
 	{ titleKey: "nav.forms", icon: FormInput, path: "/forms" },
@@ -618,7 +620,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 							{commandLibraryLead.map((item) => (
 								<CommandItem
 									key={item.path}
-									value={itemTitle(item, t)}
+									value={`${itemTitle(item, t)} ${item.path}`}
 									onSelect={() => handleSelect(item.path)}
 									className="cursor-pointer gap-3"
 								>
