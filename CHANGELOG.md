@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- Load Open Graph and Twitter card metadata from the Hexly share API.
+
 ### Fixed
 - Solid color Badge variants keep white label text in both themes, including Home Ready status chips.
 
