@@ -172,11 +172,11 @@
   --basalt-accent-10: 280 53% 71%;
   --basalt-accent-11: 237 66% 69%;
   --basalt-accent-12: 210 20% 87%;
-  --basalt-badge-green-foreground: 0 0% 10%;
+  --basalt-badge-green-foreground: 0 0% 100%;
   --basalt-badge-teal: var(--basalt-accent-3);
   --basalt-badge-purple: var(--basalt-accent-10);
-  --basalt-badge-teal-foreground: 0 0% 10%;
-  --basalt-badge-purple-foreground: 0 0% 10%;
+  --basalt-badge-teal-foreground: 0 0% 100%;
+  --basalt-badge-purple-foreground: 0 0% 100%;
   --basalt-chart-axis: 0 0% 40%;
   --basalt-chart-muted: 220 12% 86%;
   --basalt-heatmap-green-1: 113 50% 85%;
@@ -223,11 +223,11 @@
   --basalt-danger-tint: 0 40% 16%;
   --basalt-info-foreground: 0 0% 10%;
   --basalt-warning-foreground: 0 0% 10%;
-  --basalt-badge-green-foreground: 0 0% 10%;
+  --basalt-badge-green-foreground: 0 0% 100%;
   --basalt-badge-teal: var(--basalt-accent-3);
   --basalt-badge-purple: var(--basalt-accent-10);
-  --basalt-badge-teal-foreground: 0 0% 10%;
-  --basalt-badge-purple-foreground: 0 0% 10%;
+  --basalt-badge-teal-foreground: 0 0% 100%;
+  --basalt-badge-purple-foreground: 0 0% 100%;
   --basalt-border: 0 0% 16%;
   --basalt-input: 0 0% 18%;
   --basalt-ring: var(--basalt-primary);
@@ -1193,6 +1193,12 @@
   .overflow-y-hidden\! {
     overflow-y: hidden !important;
   }
+  .overscroll-none {
+    overscroll-behavior: none;
+  }
+  .overscroll-y-contain {
+    overscroll-behavior-y: contain;
+  }
   .rounded {
     border-radius: 0.25rem;
   }
@@ -1735,15 +1741,6 @@
   .text-amber-900 {
     color: var(--color-amber-900);
   }
-  .text-basalt-badge-green-foreground {
-    color: hsl(var(--basalt-badge-green-foreground));
-  }
-  .text-basalt-badge-purple-foreground {
-    color: hsl(var(--basalt-badge-purple-foreground));
-  }
-  .text-basalt-badge-teal-foreground {
-    color: hsl(var(--basalt-badge-teal-foreground));
-  }
   .text-basalt-card-foreground {
     color: hsl(var(--basalt-card-foreground));
   }
@@ -1755,9 +1752,6 @@
   }
   .text-basalt-danger {
     color: hsl(var(--basalt-danger));
-  }
-  .text-basalt-danger-foreground {
-    color: hsl(var(--basalt-danger-foreground));
   }
   .text-basalt-destructive {
     color: hsl(var(--basalt-destructive));
@@ -1774,9 +1768,6 @@
   .text-basalt-info {
     color: hsl(var(--basalt-info));
   }
-  .text-basalt-info-foreground {
-    color: hsl(var(--basalt-info-foreground));
-  }
   .text-basalt-muted-foreground {
     color: hsl(var(--basalt-muted-foreground));
   }
@@ -1791,9 +1782,6 @@
   }
   .text-basalt-warning {
     color: hsl(var(--basalt-warning));
-  }
-  .text-basalt-warning-foreground {
-    color: hsl(var(--basalt-warning-foreground));
   }
   .text-blue-800 {
     color: var(--color-blue-800);

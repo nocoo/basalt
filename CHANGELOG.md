@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- Solid color Badge variants keep white label text in both themes, including Home Ready status chips.
+
 ## [2.1.1] - 2026-09-08
 
 ### Added

@@ -21,6 +21,20 @@ describe("Badge", () => {
 		expect(screen.getByText("Purple").className).toContain("bg-basalt-badge-purple");
 	});
 
+	it("keeps solid color badge labels white", () => {
+		for (const [variant, label] of [
+			["success", "Ready"],
+			["red", "Red"],
+			["orange", "Orange"],
+			["teal", "Teal"],
+			["blue", "Blue"],
+			["purple", "Purple"],
+		] as const) {
+			render(<Badge variant={variant}>{label}</Badge>);
+			expect(screen.getByText(label).className).toContain("text-white");
+		}
+	});
+
 	it("renders a status dot", () => {
 		render(<Badge dot>Live</Badge>);
 		expect(screen.getByText("Live").querySelector("span")).toBeTruthy();

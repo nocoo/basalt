@@ -29,4 +29,11 @@ describe("nested surface CSS", () => {
 	it("exposes the control fill to Tailwind", () => {
 		expect(tailwind).toContain("--color-basalt-control: var(--basalt-control-fill);");
 	});
+
+	it("keeps solid color badge foreground tokens white", () => {
+		expect(tokens.match(/--basalt-badge-green-foreground: 0 0% 100%;/g)).toHaveLength(2);
+		expect(tokens.match(/--basalt-badge-teal-foreground: 0 0% 100%;/g)).toHaveLength(2);
+		expect(tokens.match(/--basalt-badge-purple-foreground: 0 0% 100%;/g)).toHaveLength(2);
+		expect(tokens).not.toContain("--basalt-badge-green-foreground: 0 0% 10%");
+	});
 });
