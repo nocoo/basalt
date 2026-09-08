@@ -20,6 +20,7 @@ const FormsPage = lazy(() => import("./pages/FormsPage"));
 const HealthPage = lazy(() => import("./pages/HealthPage"));
 const InteractionShowcasePage = lazy(() => import("./pages/InteractionShowcasePage"));
 const InteractivePage = lazy(() => import("./pages/InteractivePage"));
+const LandingPage = lazy(() => import("./pages/LandingPage"));
 const LayoutPage = lazy(() => import("./pages/LayoutPage"));
 const LoadingPage = lazy(() => import("./pages/LoadingPage"));
 const LoadingStatesPage = lazy(() => import("./pages/LoadingStatesPage"));
@@ -90,6 +91,7 @@ const App = () => (
 					<TooltipProvider>
 						<Toaster />
 						<Routes>
+							<Route path="/" element={routeElement(LandingPage)} />
 							{/* Layout route: sidebar + header wraps all dashboard pages */}
 							<Route element={<DashboardLayout />}>
 								<Route path="/components" element={routeElement(ComponentsPage)} />
@@ -97,7 +99,7 @@ const App = () => (
 								<Route path="/navigation" element={routeElement(NavigationPage)} />
 								<Route path="/interactive" element={routeElement(InteractivePage)} />
 								<Route path="/data" element={routeElement(DataPage)} />
-								<Route path="/" element={routeElement(DashboardPage)} />
+								<Route path="/dashboard" element={routeElement(DashboardPage)} />
 								<Route path="/accounts" element={routeElement(AccountsPage)} />
 								<Route path="/progress-tracking" element={routeElement(ProgressTrackingPage)} />
 								<Route path="/flow-comparison" element={routeElement(FlowComparisonPage)} />

@@ -112,6 +112,7 @@ describe("site metadata", () => {
 		expect(llms).toContain(SITE.npm);
 		expect(llms).toContain(SITE.github);
 		expect(llms).toContain(SITE.portfolio);
+		expect(llms).toContain("https://lizheng.me/");
 		expect(llms).toContain("/llms-full.txt");
 		expect(llms).toContain(SITE.usageGuide);
 	});

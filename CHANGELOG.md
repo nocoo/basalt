@@ -5,6 +5,8 @@
 ### Added
 - Self-hosted Open Graph, Twitter, JSON-LD, sitemap, robots and `llms.txt` so search and AI crawlers can read the catalog without JavaScript.
 - Preview responses send `X-Robots-Tag: noindex`; production stays indexable and advertises `/llms.txt`.
+- Crawler-visible landing page at `/` with H1, skip link, catalog/npm/GitHub/hexly/Play/Journal links, and prerendered HTML for `/ui` and each catalog slug.
+- Edge worker: HTTP and www 301 to the HTTPS apex, HSTS, nosniff, frame and referrer headers.
 
 ### Changed
 - Social metadata no longer loads from the Hexly share API; Open Graph now self-hosts on https://basaltui.com.

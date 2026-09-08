@@ -27,6 +27,7 @@ const PAGE_MODULES = [
 	"HealthPage.tsx",
 	"InteractionShowcasePage.tsx",
 	"InteractivePage.tsx",
+	"LandingPage.tsx",
 	"LayoutPage.tsx",
 	"LoadingPage.tsx",
 	"LoginPage.tsx",

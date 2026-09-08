@@ -25,6 +25,9 @@ and the catalog list do not require JavaScript.
 ## Related
 
 - [Portfolio](https://hexly.ai/): Other software projects
+- [Play](https://lizheng.me/): Personal site
+- [Journal](https://lizheng.blog/): Essays
+- [Résumé](https://lizheng.dev/): Professional identity
 
 ## Discovery
 

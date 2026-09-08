@@ -154,7 +154,7 @@ const NAV_GROUPS: NavGroup[] = [
 		labelKey: "nav.blocks",
 		defaultOpen: true,
 		items: [
-			{ titleKey: "nav.dashboard", icon: LayoutDashboard, path: "/" },
+			{ titleKey: "nav.dashboard", icon: LayoutDashboard, path: "/dashboard" },
 			{ titleKey: "nav.components", icon: RectangleEllipsis, path: "/components" },
 			{ titleKey: "nav.health", icon: HeartPulse, path: "/health" },
 			{ titleKey: "nav.accounts", icon: Wallet, path: "/accounts" },

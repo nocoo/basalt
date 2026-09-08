@@ -1,5 +1,6 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+import { applyLandingToIndexHtml, requiredLandingSnippets } from "../src/lib/landing";
 import {
 	type CatalogLink,
 	renderHeaders,
@@ -54,6 +55,8 @@ export function writeSeoFiles(repoRoot: string): void {
 		mkdirSync(path.dirname(filePath), { recursive: true });
 		writeFileSync(filePath, content);
 	}
+	const indexPath = path.join(repoRoot, "index.html");
+	writeFileSync(indexPath, applyLandingToIndexHtml(readFileSync(indexPath, "utf8")));
 }
 
 export function checkSeoFiles(repoRoot: string): void {
@@ -67,7 +70,7 @@ export function checkSeoFiles(repoRoot: string): void {
 		}
 	}
 	const html = readFileSync(path.join(repoRoot, "index.html"), "utf8");
-	for (const snippet of requiredIndexHtmlSnippets()) {
+	for (const snippet of [...requiredIndexHtmlSnippets(), ...requiredLandingSnippets()]) {
 		if (!html.includes(snippet)) {
 			mismatches.push(`index.html missing ${snippet.slice(0, 48)}`);
 		}

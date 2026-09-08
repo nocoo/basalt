@@ -1,5 +1,7 @@
+import { readFileSync } from "node:fs";
 import path from "node:path";
 import { build, type InlineConfig, type PluginOption } from "vite";
+import { prerenderHtml } from "./prerender";
 
 export function shellRuntimeChunk(id: string): string | undefined {
 	if (
@@ -35,4 +37,6 @@ export function showcaseBuildConfig({
 
 if (import.meta.main) {
 	await build(showcaseBuildConfig());
+	const distDir = path.resolve("dist");
+	prerenderHtml(distDir, readFileSync(path.join(distDir, "index.html"), "utf8"));
 }

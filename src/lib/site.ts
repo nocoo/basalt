@@ -40,7 +40,8 @@ export interface CatalogLink {
 }
 
 export const SHOWCASE_PAGES: readonly ShowcasePage[] = [
-	{ path: "/", titleKey: "nav.dashboard", inSitemap: true },
+	{ path: "/", titleKey: "nav.home", inSitemap: true },
+	{ path: "/dashboard", titleKey: "nav.dashboard", inSitemap: true },
 	{ path: "/ui", titleKey: "nav.kitIndex", inSitemap: true },
 	{ path: "/login", titleKey: "nav.login", inSitemap: true },
 	{ path: "/layout", titleKey: "nav.layout", inSitemap: true },
@@ -128,6 +129,13 @@ export function jsonLd(): Record<string, unknown> {
 				publisher: { "@id": `${SITE_ORIGIN}/#software` },
 			},
 			{
+				"@type": "Organization",
+				"@id": `${SITE_ORIGIN}/#org`,
+				name: SITE.name,
+				url: `${SITE_ORIGIN}/`,
+				sameAs: [SITE.github, SITE.npm, SITE.portfolio],
+			},
+			{
 				"@type": "SoftwareApplication",
 				"@id": `${SITE_ORIGIN}/#software`,
 				name: SITE.name,
@@ -138,6 +146,7 @@ export function jsonLd(): Record<string, unknown> {
 				downloadUrl: SITE.npm,
 				codeRepository: SITE.github,
 				image: imageUrl(),
+				publisher: { "@id": `${SITE_ORIGIN}/#org` },
 				offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
 				isAccessibleForFree: true,
 			},
@@ -218,6 +227,9 @@ export function renderLlms(): string {
 		"## Related",
 		"",
 		`- [Portfolio](${SITE.portfolio}): Other software projects`,
+		"- [Play](https://lizheng.me/): Personal site",
+		"- [Journal](https://lizheng.blog/): Essays",
+		"- [Résumé](https://lizheng.dev/): Professional identity",
 		"",
 		"## Discovery",
 		"",
@@ -280,6 +292,10 @@ export function renderHeaders(): string {
 		"",
 		"/*",
 		`  Link: <${llms}>; rel="service-doc"; type="text/plain"`,
+		"  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload",
+		"  X-Content-Type-Options: nosniff",
+		"  X-Frame-Options: SAMEORIGIN",
+		"  Referrer-Policy: strict-origin-when-cross-origin",
 		"",
 	].join("\n");
 }
@@ -299,6 +315,7 @@ export function requiredIndexHtmlSnippets(): string[] {
 		'<meta name="robots" content="index, follow, max-image-preview:large" />',
 		`<meta name="theme-color" media="(prefers-color-scheme: light)" content="${SITE.themeColorLight}" />`,
 		`<meta name="theme-color" media="(prefers-color-scheme: dark)" content="${SITE.themeColorDark}" />`,
+		`<link rel="canonical" href="${absoluteUrl("/")}" />`,
 		`<link rel="alternate" type="text/plain" title="llms.txt" href="${absoluteUrl("/llms.txt")}" />`,
 		`<meta property="og:title" content="${SITE.ogTitle}" />`,
 		`<meta property="og:description" content="${SITE.description}" />`,
