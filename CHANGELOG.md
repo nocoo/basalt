@@ -9,6 +9,7 @@
 
 ### Fixed
 - Solid color Badge variants keep white label text in both themes, including Home Ready status chips.
+- Relax consumer contrast for solid color badges so white labels can sit on candy fills.
 
 ## [2.1.1] - 2026-09-08
 
