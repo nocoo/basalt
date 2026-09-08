@@ -500,21 +500,20 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 					>
 						<PanelLeft aria-hidden="true" />
 					</Button>
-					<Tooltip delayDuration={0}>
-						<TooltipTrigger asChild>
-							<SidebarIconItem
-								className="mb-2"
-								onClick={() => setSearchOpen(true)}
-								aria-label={`${t("common.search")} (⌘K)`}
-							>
-								<Search aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
-							</SidebarIconItem>
-						</TooltipTrigger>
-						<TooltipContent side="right" sideOffset={8}>
-							{t("common.search")} (⌘K)
-						</TooltipContent>
-					</Tooltip>
 					<SidebarNav className="w-full items-center gap-1 pt-1">
+						<Tooltip delayDuration={0}>
+							<TooltipTrigger asChild>
+								<SidebarIconItem
+									onClick={() => setSearchOpen(true)}
+									aria-label={`${t("common.search")} (⌘K)`}
+								>
+									<Search aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
+								</SidebarIconItem>
+							</TooltipTrigger>
+							<TooltipContent side="right" sideOffset={8}>
+								{t("common.search")} (⌘K)
+							</TooltipContent>
+						</Tooltip>
 						{ALL_NAV_ITEMS.map((item) => (
 							<CollapsedNavItem key={item.path} item={item} currentPath={pathname} />
 						))}

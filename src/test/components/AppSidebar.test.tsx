@@ -239,6 +239,19 @@ describe("AppSidebar", () => {
 		}
 	});
 
+	it("aligns collapsed search with the icon rail", () => {
+		renderSidebar("/ui/button", true);
+		const search = screen.getByRole("button", { name: "Search (⌘K)" });
+		const nav = document.querySelector("aside nav");
+		const icons = Array.from(nav?.querySelectorAll(":scope > button") ?? []);
+		expect(nav).toHaveClass("items-center", "gap-1");
+		expect(icons[0]).toBe(search);
+		expect(icons.length).toBeGreaterThan(1);
+		for (const icon of icons) {
+			expect(icon).toHaveClass("h-10", "w-10");
+		}
+	});
+
 	it("does not nest a second full-viewport column inside the rail", () => {
 		const { unmount } = renderSidebar();
 		const expanded = document.querySelector("aside");
