@@ -8,6 +8,7 @@
 
 ### Changed
 - Social metadata no longer loads from the Hexly share API; Open Graph now self-hosts on https://basaltui.com.
+- Social card places the `basalt.` wordmark beside the corner tower on the pale engineering field.
 
 ## [2.1.2] - 2026-09-08
 

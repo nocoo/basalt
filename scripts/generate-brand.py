@@ -3,7 +3,7 @@ from pathlib import Path
 from base64 import b64encode
 import json
 
-from PIL import Image, ImageOps, __version__ as pillow_version
+from PIL import Image, ImageDraw, ImageFont, ImageOps, __version__ as pillow_version
 
 
 root = Path(__file__).resolve().parents[1]
@@ -54,8 +54,27 @@ save(foreground, "favicon.ico", "transparent browser mark",
 save(square.resize((180, 180), Image.Resampling.LANCZOS).convert("RGB"),
      "apple-touch-icon.png", "opaque square platform presentation")
 social = ImageOps.fit(background, (1200, 630), Image.Resampling.LANCZOS)
-social.alpha_composite(rounded.resize((560, 560), Image.Resampling.LANCZOS), (320, 35))
-save(social.convert("RGB"), "opengraph-image.png", "large rounded presentation on its own field")
+social.alpha_composite(rounded.resize((520, 520), Image.Resampling.LANCZOS), (640, 55))
+draw = ImageDraw.Draw(social)
+font_candidates = [
+    "/System/Library/Fonts/Geneva.ttf",
+    "/Library/Fonts/Arial Unicode.ttf",
+    "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+]
+font_path = next((candidate for candidate in font_candidates if Path(candidate).exists()), None)
+if font_path is None:
+    raise FileNotFoundError("No sans-serif TTF available for the social card")
+title_font = ImageFont.truetype(font_path, 72)
+tag_font = ImageFont.truetype(font_path, 30)
+body_font = ImageFont.truetype(font_path, 22)
+ink = (42, 38, 32, 255)
+muted = (168, 152, 126, 255)
+draw.text((72, 168), "basalt.", font=title_font, fill=ink)
+draw.text((72, 268), "Dense, dark, durable.", font=tag_font, fill=ink)
+draw.text((72, 322), "A matte design system", font=body_font, fill=ink)
+draw.text((72, 356), "for information-rich software.", font=body_font, fill=ink)
+draw.text((72, 500), "basaltui.com", font=body_font, fill=muted)
+save(social.convert("RGB"), "opengraph-image.png", "wordmark and corner tower on the pale engineering field")
 
 package_mark = root / "packages/basalt/src/assets/brand-mark.ts"
 package_mark.parent.mkdir(parents=True, exist_ok=True)

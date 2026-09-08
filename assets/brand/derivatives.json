@@ -104,8 +104,8 @@
 		},
 		{
 			"path": "public/opengraph-image.png",
-			"role": "large rounded presentation on its own field",
-			"sha256": "96824e161da6fc9e0c3e9118d4b7e11970f9447ca3658738d3adbd4e8509c6dc",
+			"role": "wordmark and corner tower on the pale engineering field",
+			"sha256": "fe72acce84eb4f2f1f486348d3e1ba750066679b229e828b28b3e87845e868e1",
 			"width": 1200,
 			"height": 630
 		},

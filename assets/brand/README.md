@@ -12,7 +12,7 @@ Hanbaiyu marble Forbidden City corner tower with candy-colored roofs. Native 204
 | Library `BasaltMark` and default `LoadingScreen` | Embedded 128 px transparent PNG in `packages/basalt/src/assets/brand-mark.ts` | Preserve the SVG component interface; the embedded image needs no consuming-app asset path |
 | Browser favicon | `public/favicon.png`, `public/favicon.ico` | Transparent 32 px PNG; ICO includes 16/24/32/48/64 px |
 | Apple touch | `public/apple-touch-icon.png` | Opaque square 180 px presentation |
-| Social / Open Graph | `public/opengraph-image.png` | 1200 × 630 presentation |
+| Social / Open Graph | `public/opengraph-image.png` | 1200 × 630 wordmark, tagline, domain and corner tower on the pale field |
 
 Root `logo.png` is the exact selected transparent master. The square and rounded presentations remain separate. Reflections, material texture and internal lighting belong to the solid artwork; the engineering paper, projected shadows and external emission remain outside small app/browser marks. All sizes preserve the whole subject's proportions and placement.
 
