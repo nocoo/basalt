@@ -1,70 +1,70 @@
 {
 	"generator": "scripts/generate-brand.py",
 	"pillow": "12.3.0",
-	"study": "basalt/2026-09-07-02",
+	"study": "basalt/2026-09-08-01",
 	"finishing": "01",
 	"icoSizes": [16, 24, 32, 48, 64],
 	"files": [
 		{
 			"path": "public/logo-24.png",
 			"role": "transparent application mark",
-			"sha256": "d763fd7c3081018f1964e312a3bf7cb5f96f4d27a0b68e51ea22fa0b184c8922",
+			"sha256": "935c1578970cd527f5618ec9b94984aa76c882c4f13320fddf61552fef95f26b",
 			"width": 24,
 			"height": 24
 		},
 		{
 			"path": "public/logo-32.png",
 			"role": "transparent application mark",
-			"sha256": "6ce31bbd1e6fb8021585135d63b1293be87f499cd7828bb2956d9ccd51d02e09",
+			"sha256": "82c623e67a06827ec23fd6e8d2117b78d0c12882cf9513de2f3e004ad9d4a51a",
 			"width": 32,
 			"height": 32
 		},
 		{
 			"path": "public/logo-48.png",
 			"role": "transparent application mark",
-			"sha256": "71c9f0e7f133d32ea55ddcf7a93c6eeb517a7e84a80d02cd928acb9cfb104551",
+			"sha256": "6c69a7f3f50f45685d2d13680f346be249541c6db996d2ae98205bad845d95b2",
 			"width": 48,
 			"height": 48
 		},
 		{
 			"path": "public/logo-64.png",
 			"role": "transparent application mark",
-			"sha256": "b029916957f53dac41ece3a53b177335271dba64e399e9103759b46e47a0450f",
+			"sha256": "299f708d3def0a1836904f5d7a248c14f553f719853b4f76cc58658907cc0c10",
 			"width": 64,
 			"height": 64
 		},
 		{
 			"path": "public/logo-80.png",
 			"role": "transparent application mark",
-			"sha256": "85944459689d6b172a6159c4e38583bb83471ab1063b259ff884beafbdc69bd8",
+			"sha256": "db4eb1f604dc996b92c497c78b961ce5f76958e207db0bcbbb8b5a6f8a157b01",
 			"width": 80,
 			"height": 80
 		},
 		{
 			"path": "public/logo-128.png",
 			"role": "transparent application mark",
-			"sha256": "d42b3f9915ed85dac05bc10160adca27e79bab26bd2c58a30e5755bb3c351b27",
+			"sha256": "106b537e9bcaacff77f953cdac14f79d279160d6fc8ae0521875d8df21d05661",
 			"width": 128,
 			"height": 128
 		},
 		{
 			"path": "public/logo-256.png",
 			"role": "transparent application mark",
-			"sha256": "043640dfe1896950662f30d4f7d261dc78381954ee095b8c287cc3f280a85473",
+			"sha256": "2346d9c6cc9633ee8b5c5af914f5b31053c3f090dac80e1cfdfcfdfef6f12acc",
 			"width": 256,
 			"height": 256
 		},
 		{
 			"path": "public/favicon.png",
 			"role": "transparent browser mark",
-			"sha256": "6ce31bbd1e6fb8021585135d63b1293be87f499cd7828bb2956d9ccd51d02e09",
+			"sha256": "82c623e67a06827ec23fd6e8d2117b78d0c12882cf9513de2f3e004ad9d4a51a",
 			"width": 32,
 			"height": 32
 		},
 		{
 			"path": "public/favicon.ico",
 			"role": "transparent browser mark",
-			"sha256": "095379d7910373580cec90a8b127257b6d656224eea413ddf41a85597976e606",
+			"sha256": "21ee57383311ab5bbda1913022503590d8d7703bd74db0497270aea6dbf36b42",
 			"width": 64,
 			"height": 64,
 			"entries": [
@@ -98,22 +98,22 @@
 		{
 			"path": "public/apple-touch-icon.png",
 			"role": "opaque square platform presentation",
-			"sha256": "2a20a7f764c05c6489f8e3968c45e74eb61629733636995b3ebc78900d99b8db",
+			"sha256": "354e4598c922837a0dd2fbf36a80d2e72356c2688c9e68d6c4280498ad60514e",
 			"width": 180,
 			"height": 180
 		},
 		{
 			"path": "public/opengraph-image.png",
 			"role": "large rounded presentation on its own field",
-			"sha256": "18a73a972bcad64f2a470f4fa698909b293083136903fc021d3e83224610804f",
+			"sha256": "96824e161da6fc9e0c3e9118d4b7e11970f9447ca3658738d3adbd4e8509c6dc",
 			"width": 1200,
 			"height": 630
 		},
 		{
 			"path": "packages/basalt/src/assets/brand-mark.ts",
 			"role": "embedded transparent package mark; no host asset URL required",
-			"sha256": "504768d5fed9a3eb110557d5e16a16779bbaf3de6ea9fcb62c83d2276decc4ff",
-			"pngSha256": "d42b3f9915ed85dac05bc10160adca27e79bab26bd2c58a30e5755bb3c351b27",
+			"sha256": "5a6c19d87ec3abd35f65ffd12f42564088297772e9efd98c92fe353dd75beb8c",
+			"pngSha256": "106b537e9bcaacff77f953cdac14f79d279160d6fc8ae0521875d8df21d05661",
 			"width": 128,
 			"height": 128
 		}

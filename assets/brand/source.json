@@ -1,38 +1,38 @@
 {
-	"study": "basalt/2026-09-07-02",
+	"study": "basalt/2026-09-08-01",
 	"finishing": "01",
 	"series": "material",
 	"method": "generated",
 	"model": "gpt-image-2",
-	"generationCalls": 2,
+	"generationCalls": 1,
 	"nativeDimensions": [2048, 2048],
-	"sourceRevisionBefore": "4f97ac4aa246dc25adebf4df177b2189e96c561d",
+	"sourceRevisionBefore": "af9cbc9637991e88247edac1356d8f85851a8894",
 	"previous": {
-		"kind": "original",
-		"original": "/logos/originals/basalt.svg",
-		"sourcePath": "public/favicon.svg",
-		"sourceUrl": "https://github.com/nocoo/basalt/blob/68a3b545d8dbcfb1968a3be8031d4710bfe3c10c/public/favicon.svg",
+		"kind": "adopted",
+		"study": "basalt/2026-09-07-02",
+		"sourcePath": "logo.png",
+		"sourceUrl": "https://github.com/nocoo/basalt/blob/9e226aa5c1376351ec76a659b1a33a8139892b4b/logo.png",
 		"modified": false,
-		"width": 32,
-		"height": 32,
-		"bytes": 364,
-		"sha256": "652ee2a1a62d12e0e9ae89b0a29381b5a03a91a80f75d3a07251fdef89bdb14a",
+		"width": 2048,
+		"height": 2048,
+		"bytes": 3445051,
+		"sha256": "d093add49fd51eaa926db0fe260f6afa6d10c2619d141cbc35e518ad5a1cef94",
 		"thumbnail": "/logos/display/basalt-160.webp",
 		"display": "/logos/display/basalt-1024.webp"
 	},
 	"masters": {
 		"logo.png": {
-			"sha256": "d093add49fd51eaa926db0fe260f6afa6d10c2619d141cbc35e518ad5a1cef94",
+			"sha256": "97144a6615113b5981454492776755d486183c219e5f1d8155f17572d21564e7",
 			"width": 2048,
 			"height": 2048
 		},
 		"assets/brand/icon.png": {
-			"sha256": "f6516abde3895efedbc598b1033863fa2c6bcc82f839f429bb931233dfc049a1",
+			"sha256": "6435729ff1f21dc099080253cfc4e01f9704fd940f7d97075878fa563e39897f",
 			"width": 2048,
 			"height": 2048
 		},
 		"assets/brand/icon-rounded.png": {
-			"sha256": "e0e2e63b3e0718272a699c87ecffdb18a8c37878ef7c498b68fe0fc31fcbe4d9",
+			"sha256": "ee9b539b32c47aa6f51cd57f7329d945313ebd5adfb94eb38ad837f6929ee24e",
 			"width": 2048,
 			"height": 2048
 		},
@@ -42,16 +42,16 @@
 			"height": 2048
 		}
 	},
-	"roundedClearancePx": 207.50000000000006,
+	"roundedClearancePx": 219.50000000000006,
 	"acceptance": {
 		"decisionSource": "owner-delegated batch acceptance",
 		"ownerReviewedExactBytes": false,
-		"scope": "Dotty, Matrix and Basalt material batch; Basalt follows the owner-directed architectural revision."
+		"scope": "Basalt Hanbaiyu and candy-color correction of the adopted corner tower."
 	},
 	"review": "https://hexly.ai/logos/basalt",
-	"archive": "https://github.com/nocoo/hexly.ai/tree/main/artwork/logo-family/basalt/2026-09-07-02",
+	"archive": "https://github.com/nocoo/hexly.ai/tree/main/artwork/logo-family/basalt/2026-09-08-01",
 	"generation": {
 		"path": "raw/generated.png",
-		"sha256": "3b270748ea023171243256cd655de0ff134d4430cd092dc3a86ba20fe9509af8"
+		"sha256": "0acb99561768ec6689e45e3689eb44c46abb5e063a8033e928b4bfd699a164b4"
 	}
 }

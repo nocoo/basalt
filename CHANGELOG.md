@@ -5,6 +5,9 @@
 ### Added
 - Library showcase pages for loading skeletons (`/loading-states`), motion (`/animation`) and dense tables (`/tables`).
 
+### Changed
+- Replace the obsidian corner-tower mark with the Hanbaiyu marble and candy-color presentation; navigation, favicons and the embedded library mark stay transparent, while README and social images keep the pale engineering field.
+
 ### Fixed
 - Stop nested full-viewport sidebar columns from leaking wheel scroll into the document and opening blank space below the shell.
 

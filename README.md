@@ -7,7 +7,7 @@
 > Matte design system, UI component library, and documentation catalog.  
 > npm: [`@nocoo/basalt`](https://www.npmjs.com/package/@nocoo/basalt) · Live showcase: [`https://basaltui.com`](https://basaltui.com)
 
-The identity is an obsidian-and-gemstone interpretation of a Forbidden City corner tower, seen from a shallow elevated angle. The README uses its pale architectural presentation; navigation, login, loading and browser marks use the transparent foreground. [Logo comparison](https://hexly.ai/logos/basalt) · [Brand usage](assets/brand/README.md).
+The identity is a Hanbaiyu marble Forbidden City corner tower with blue-and-green roofs, pink columns and yellow-gold detail, seen from a shallow elevated angle. The README uses its pale architectural presentation; navigation, login, loading and browser marks use the transparent foreground. [Logo comparison](https://hexly.ai/logos/basalt) · [Brand usage](assets/brand/README.md).
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-white.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 [![Framework: Vite](https://img.shields.io/badge/Framework-Vite-646cff.svg?style=flat-square&logo=vite)](https://vite.dev)
