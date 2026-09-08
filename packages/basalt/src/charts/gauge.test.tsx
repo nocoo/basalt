@@ -1,4 +1,4 @@
-import { act, render, screen } from "@testing-library/react";
+import { act, cleanup, render, screen } from "@testing-library/react";
 import type React from "react";
 import { cloneElement } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -27,6 +27,7 @@ vi.mock("recharts", async (importOriginal) => {
 
 describe("Gauge options", () => {
 	afterEach(() => {
+		cleanup();
 		vi.useRealTimers();
 	});
 
