@@ -118,6 +118,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate } from "react-router";
 import { BasaltLogo } from "@/components/BasaltLogo";
+import { cn } from "@/lib/utils";
 import { APP_VERSION } from "@/lib/version";
 import {
 	CATALOG,
@@ -486,11 +487,36 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 
 	return (
 		<Sidebar collapsed={collapsed}>
+			<SidebarHeader className={collapsed ? "justify-start px-0 pl-6 pr-3" : undefined}>
+				<div className={cn("flex w-full items-center", !collapsed && "justify-between px-3")}>
+					<div className="flex items-center gap-3">
+						<BasaltLogo className="h-7 w-7 shrink-0 object-contain" />
+						{collapsed ? null : (
+							<>
+								<span className="text-lg font-semibold text-basalt-foreground md:text-xl">
+									basalt.
+								</span>
+								<span className="rounded-md bg-basalt-secondary px-1.5 py-0.5 text-[10px] leading-none font-medium text-basalt-muted-foreground">
+									v{APP_VERSION}
+								</span>
+							</>
+						)}
+					</div>
+					{collapsed ? null : (
+						<Button
+							variant="ghost"
+							size="icon"
+							className="h-7 w-7"
+							onClick={onToggle}
+							aria-label={t("common.collapseSidebar")}
+						>
+							<PanelLeft aria-hidden="true" />
+						</Button>
+					)}
+				</div>
+			</SidebarHeader>
 			{collapsed ? (
 				<>
-					<SidebarHeader className="justify-center px-0">
-						<BasaltLogo className="h-7 w-7 shrink-0 object-contain" />
-					</SidebarHeader>
 					<Button
 						variant="ghost"
 						size="icon"
@@ -534,28 +560,6 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 				</>
 			) : (
 				<>
-					<SidebarHeader>
-						<div className="flex w-full items-center justify-between px-3">
-							<div className="flex items-center gap-3">
-								<BasaltLogo className="h-7 w-7 shrink-0 object-contain" />
-								<span className="text-lg font-semibold text-basalt-foreground md:text-xl">
-									basalt.
-								</span>
-								<span className="rounded-md bg-basalt-secondary px-1.5 py-0.5 text-[10px] leading-none font-medium text-basalt-muted-foreground">
-									v{APP_VERSION}
-								</span>
-							</div>
-							<Button
-								variant="ghost"
-								size="icon"
-								className="h-7 w-7"
-								onClick={onToggle}
-								aria-label={t("common.collapseSidebar")}
-							>
-								<PanelLeft aria-hidden="true" />
-							</Button>
-						</div>
-					</SidebarHeader>
 					<div className="px-3 pb-1">
 						<SidebarSearch onClick={() => setSearchOpen(true)}>{t("common.search")}</SidebarSearch>
 					</div>

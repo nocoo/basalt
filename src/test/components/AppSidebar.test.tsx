@@ -239,6 +239,19 @@ describe("AppSidebar", () => {
 		}
 	});
 
+	it("pins the sidebar logo to the expanded left edge when collapsed", () => {
+		const { unmount } = renderSidebar();
+		const expanded = screen.getByRole("img", { name: "Basalt" });
+		expect(expanded).toHaveClass("h-7", "w-7");
+		expect(expanded.closest(".flex.h-14")).not.toHaveClass("pl-6");
+		unmount();
+		renderSidebar("/ui/button", true);
+		const collapsed = screen.getByRole("img", { name: "Basalt" });
+		expect(collapsed).toHaveClass("h-7", "w-7");
+		expect(collapsed.closest(".flex.h-14")).toHaveClass("pl-6", "justify-start");
+		expect(collapsed.closest(".flex.h-14")).not.toHaveClass("justify-center");
+	});
+
 	it("aligns collapsed search with the icon rail", () => {
 		renderSidebar("/ui/button", true);
 		const search = screen.getByRole("button", { name: "Search (⌘K)" });

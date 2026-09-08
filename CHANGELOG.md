@@ -9,6 +9,7 @@
 - Replace the obsidian corner-tower mark with the Hanbaiyu marble and candy-color presentation; navigation, favicons and the embedded library mark stay transparent, while README and social images keep the pale engineering field.
 
 ### Fixed
+- Keep the sidebar logo on a shared left edge while the rail width animates.
 - Align the collapsed sidebar search control with the icon rail size, centering and spacing.
 - Stop nested full-viewport sidebar columns from leaking wheel scroll into the document and opening blank space below the shell.
 
