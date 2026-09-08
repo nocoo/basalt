@@ -2,6 +2,8 @@
 
 编号文档目录。架构决策与长任务规划在这里落地，代码跟文档走。
 
+[English README](README.en.md) · [应用集成](../INTEGRATION.md)
+
 ## 规范
 
 - 文件命名：`NN-kebab-name.md`（两位编号 + 小写英文 + 横杠）
