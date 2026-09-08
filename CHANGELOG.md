@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.1.2] - 2026-09-08
+
 ### Added
 - Load Open Graph and Twitter card metadata from the Hexly share API.
 
