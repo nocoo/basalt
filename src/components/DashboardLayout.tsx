@@ -15,40 +15,9 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { Github } from "@/components/icons/github";
 import { LanguageToggle } from "@/components/LanguageToggle";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useSiteTitle } from "@/hooks/use-site-title";
+import { SHOWCASE_TITLE_KEYS } from "@/lib/site";
 import { CATALOG_BY_SLUG, catalogNavName } from "@/pages/ui/catalog";
-
-// Map route paths to i18n keys
-const PAGE_TITLE_KEYS: Record<string, string> = {
-	"/components": "nav.components",
-	"/forms": "nav.forms",
-	"/tables": "nav.tables",
-	"/buttons": "nav.buttons",
-	"/feedback": "nav.feedback",
-	"/overlays": "nav.overlays",
-	"/data-display": "nav.dataDisplay",
-	"/navigation": "nav.navigation",
-	"/wearable": "nav.wearableHealth",
-	"/banking": "nav.bankingWealth",
-	"/network": "nav.networkOps",
-	"/health": "nav.health",
-	"/pills": "nav.pills",
-	"/": "nav.dashboard",
-	"/accounts": "nav.accounts",
-	"/progress-tracking": "nav.progressTracking",
-	"/flow-comparison": "nav.flowComparison",
-	"/portfolio": "nav.portfolio",
-	"/layout": "nav.layout",
-	"/loading-states": "nav.loadingStates",
-	"/animation": "nav.animation",
-	"/dialogs": "nav.dialogs",
-	"/chat": "nav.chat",
-	"/settings": "nav.settings",
-	"/palette": "nav.colorPalette",
-	"/interactions": "nav.interactions",
-	"/interactive": "nav.interactive",
-	"/data": "nav.data",
-	"/ui": "nav.kitIndex",
-};
 
 function isTriggerVisible(el: HTMLElement | null): el is HTMLElement {
 	if (!el?.isConnected) return false;
@@ -76,8 +45,9 @@ export function DashboardLayout() {
 		: undefined;
 	const catalogEntry = catalogSlug ? CATALOG_BY_SLUG.get(catalogSlug) : undefined;
 	const catalogTitle = catalogEntry ? catalogNavName(catalogEntry) : undefined;
-	const titleKey = PAGE_TITLE_KEYS[location.pathname] ?? "nav.dashboard";
+	const titleKey = SHOWCASE_TITLE_KEYS[location.pathname] ?? "nav.dashboard";
 	const title = catalogTitle ?? t(titleKey);
+	useSiteTitle(title);
 	const crumbs = location.pathname.startsWith("/ui")
 		? [{ href: "/ui", label: t("nav.kit") }]
 		: [{ href: "/", label: t("nav.examples") }];

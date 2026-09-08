@@ -1,14 +1,7 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
+# Public catalog. Search engines and AI crawlers are welcome.
+# Machine-readable orientation: /llms.txt
 
 User-agent: *
 Allow: /
+
+Sitemap: https://basaltui.com/sitemap.xml

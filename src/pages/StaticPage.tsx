@@ -1,9 +1,11 @@
 import { Link } from "@nocoo/basalt/components/link";
 import { ArrowLeft } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { useSiteTitle } from "@/hooks/use-site-title";
 
 export default function StaticPage() {
 	const { t } = useTranslation();
+	useSiteTitle(t("nav.staticPage"));
 
 	return (
 		<div className="min-h-screen bg-background p-2 md:p-4 flex items-center justify-center">

@@ -2,6 +2,7 @@ import { Button } from "@nocoo/basalt/components/button";
 import { Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { BasaltLogo } from "@/components/BasaltLogo";
+import { useSiteTitle } from "@/hooks/use-site-title";
 
 function Barcode() {
 	const bars = [2, 1, 3, 1, 2, 1, 1, 3, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 1];
@@ -20,6 +21,7 @@ function Barcode() {
 
 export default function LoginPage() {
 	const { t } = useTranslation();
+	useSiteTitle(t("nav.login"));
 	const year = new Date().getFullYear();
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
 

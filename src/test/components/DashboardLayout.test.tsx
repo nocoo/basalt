@@ -44,6 +44,7 @@ describe("DashboardLayout", () => {
 	it("uses spaced catalog names in the header", () => {
 		renderLayout("/ui/command-palette");
 		expect(screen.getByRole("heading", { name: "Command Palette" })).toBeInTheDocument();
+		expect(document.title).toBe("Command Palette · basalt.");
 	});
 
 	it("floats the content island with a corner shadow", () => {

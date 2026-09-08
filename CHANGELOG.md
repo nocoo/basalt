@@ -2,6 +2,13 @@
 
 ## [Unreleased]
 
+### Added
+- Self-hosted Open Graph, Twitter, JSON-LD, sitemap, robots and `llms.txt` so search and AI crawlers can read the catalog without JavaScript.
+- Preview responses send `X-Robots-Tag: noindex`; production stays indexable and advertises `/llms.txt`.
+
+### Changed
+- Social metadata no longer loads from the Hexly share API; Open Graph now self-hosts on https://basaltui.com.
+
 ## [2.1.2] - 2026-09-08
 
 ### Added

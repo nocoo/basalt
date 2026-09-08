@@ -1,8 +1,10 @@
 import { Link } from "@nocoo/basalt/components/link";
 import { useTranslation } from "react-i18next";
+import { useSiteTitle } from "@/hooks/use-site-title";
 
 export default function NotFound() {
 	const { t } = useTranslation();
+	useSiteTitle(t("nav.notFoundPage"));
 
 	return (
 		<div className="flex min-h-screen flex-col items-center justify-center bg-background">

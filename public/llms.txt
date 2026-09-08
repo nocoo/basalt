@@ -1,0 +1,32 @@
+# Basalt
+
+> Dense, dark, durable. A matte design system for information-rich software.
+
+Basalt is the matte React design system `@nocoo/basalt` and its public catalog.
+Public pages welcome search engines and AI crawlers. This file, the sitemap,
+and the catalog list do not require JavaScript.
+
+## Catalog
+
+- [Design system catalog](https://basaltui.com/ui): Components, charts and blocks
+- [Full catalog list](https://basaltui.com/llms-full.txt): One entry per published surface
+- [App frame](https://basaltui.com/layout): Shell, island and page heading recipe
+- [Login](https://basaltui.com/login): Full-viewport identity badge
+
+## Package
+
+- npm: [@nocoo/basalt](https://www.npmjs.com/package/@nocoo/basalt)
+- Repository: [github.com/nocoo/basalt](https://github.com/nocoo/basalt)
+- Agent usage guide (installed package): `ai/USAGE.md`
+- Application chrome: `ai/INTEGRATION.md`
+- Compilable recipes: `ai/RECIPES.md`
+- Machine registry: `ai/registry.json`
+
+## Related
+
+- [Portfolio](https://hexly.ai/): Other software projects
+
+## Discovery
+
+- [Sitemap](https://basaltui.com/sitemap.xml)
+- [Crawler policy](https://basaltui.com/robots.txt)
