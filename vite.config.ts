@@ -9,6 +9,64 @@ function getVersion(): string {
 	return pkg.version as string;
 }
 
+type HexlyShare = {
+	name: string;
+	description: { en: string };
+	image: { url: string; type: string; width: number; height: number; alt: string };
+};
+
+function escapeAttr(value: string): string {
+	return value.replaceAll("&", "&amp;").replaceAll('"', "&quot;");
+}
+
+function applyShare(html: string, share: HexlyShare): string {
+	return html
+		.replace(
+			/<meta property="og:title" content="[^"]*" \/>/,
+			`<meta property="og:title" content="${escapeAttr(share.name)}" />`,
+		)
+		.replace(
+			/<meta property="og:description" content="[^"]*" \/>/,
+			`<meta property="og:description" content="${escapeAttr(share.description.en)}" />`,
+		)
+		.replaceAll("https://hexly.ai/og/basalt.jpg", share.image.url)
+		.replace(
+			/<meta property="og:image:type" content="[^"]*" \/>/,
+			`<meta property="og:image:type" content="${escapeAttr(share.image.type)}" />`,
+		)
+		.replace(
+			/<meta property="og:image:alt" content="[^"]*" \/>/,
+			`<meta property="og:image:alt" content="${escapeAttr(share.image.alt)}" />`,
+		)
+		.replace(
+			/<meta name="twitter:title" content="[^"]*" \/>/,
+			`<meta name="twitter:title" content="${escapeAttr(share.name)}" />`,
+		)
+		.replace(
+			/<meta name="twitter:description" content="[^"]*" \/>/,
+			`<meta name="twitter:description" content="${escapeAttr(share.description.en)}" />`,
+		)
+		.replace(
+			/<meta name="twitter:image:alt" content="[^"]*" \/>/,
+			`<meta name="twitter:image:alt" content="${escapeAttr(share.image.alt)}" />`,
+		);
+}
+
+function hexlySharePlugin(): PluginOption {
+	return {
+		name: "hexly-share",
+		async transformIndexHtml(html) {
+			try {
+				const response = await fetch("https://hexly.ai/api/share/basalt.json");
+				if (!response.ok) return html;
+				return applyShare(html, (await response.json()) as HexlyShare);
+			} catch {
+				return html;
+			}
+		},
+	};
+}
+
 /** Dev-server middleware that serves GET /api/live */
 function apiLivePlugin(): PluginOption {
 	return {
@@ -32,7 +90,7 @@ export default defineConfig(() => ({
 			overlay: false,
 		},
 	},
-	plugins: [tailwindcss(), react(), apiLivePlugin()],
+	plugins: [tailwindcss(), react(), apiLivePlugin(), hexlySharePlugin()],
 	resolve: {
 		alias: [
 			{
