@@ -1,10 +1,10 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SegmentControl } from "@nocoo/basalt/components/segment-control";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
+import { ShowcaseHeader } from "@/components/ShowcaseHeader";
 import {
 	type CatalogIndexCategory,
 	type CatalogIndexQuery,
@@ -87,7 +87,8 @@ export default function UiIndexPage() {
 
 	return (
 		<div data-status="index" className="space-y-8">
-			<PageHeader
+			<ShowcaseHeader
+				variant="library"
 				title="Component library"
 				description={
 					<>

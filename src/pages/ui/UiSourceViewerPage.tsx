@@ -110,7 +110,7 @@ export function UiSourceViewerPage() {
 		<div className="min-h-screen bg-background text-foreground">
 			<header className="border-b border-border px-6 py-6 md:px-8">
 				<div className="flex flex-wrap items-center justify-between gap-4">
-					<div>
+					<div className="min-w-0 max-w-full">
 						<div className="flex items-center gap-2 text-sm text-muted-foreground">
 							<Link to={`/ui/${slug}`} className="hover:text-foreground">
 								{entry.name}
@@ -118,7 +118,9 @@ export function UiSourceViewerPage() {
 							<span>/</span>
 							<span>Source</span>
 						</div>
-						<h1 className="mt-1 font-mono text-xl font-semibold">{sourceInfo.file}</h1>
+						<h1 className="mt-1 font-mono text-xl font-semibold [overflow-wrap:anywhere]">
+							{sourceInfo.file}
+						</h1>
 						<p className="text-xs text-muted-foreground font-mono mt-0.5">
 							sha256: {sourceInfo.hash}
 						</p>

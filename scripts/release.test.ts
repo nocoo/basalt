@@ -362,6 +362,60 @@ describe("executeRelease gates and failure paths", () => {
 		expect(commands.some((c) => c.cmd === "gh" && c.args[0] === "release")).toBe(false);
 	});
 
+	it("regenerates and stages the landing page metadata after bumping the version", async () => {
+		const { ctx, commands, filesWritten } = createMockRunnerContext();
+		const run = ctx.run;
+		ctx.run = async (cmd, args, opts) => {
+			if (cmd === "bun" && args[0] === "scripts/seo-cli.ts") {
+				expect(filesWritten["package.json"]).toBe("2.0.4");
+			}
+			return run(cmd, args, opts);
+		};
+		await executeRelease({ bumpArg: "patch", isDryRun: false }, ctx);
+		const generateIndex = commands.findIndex(
+			(command) => command.cmd === "bun" && command.args[0] === "scripts/seo-cli.ts",
+		);
+		const stageIndex = commands.findIndex(
+			(command) => command.cmd === "git" && command.args[0] === "add",
+		);
+		expect(generateIndex).toBeGreaterThan(-1);
+		expect(commands[generateIndex].args).toEqual(["scripts/seo-cli.ts", "generate"]);
+		expect(stageIndex).toBeGreaterThan(generateIndex);
+		expect(commands[stageIndex].args).toEqual(
+			expect.arrayContaining([
+				"index.html",
+				"public/robots.txt",
+				"public/sitemap.xml",
+				"public/llms.txt",
+				"public/llms-full.txt",
+				"public/_headers",
+			]),
+		);
+	});
+
+	it("blocks commit and publication if site metadata cannot be regenerated", async () => {
+		const { ctx, commands } = createMockRunnerContext();
+		const run = ctx.run;
+		ctx.run = async (cmd, args, opts) => {
+			if (cmd === "bun" && args[0] === "scripts/seo-cli.ts") {
+				return { code: 1, stdout: "", stderr: "landing render failed" };
+			}
+			return run(cmd, args, opts);
+		};
+		await expect(executeRelease({ bumpArg: "patch", isDryRun: false }, ctx)).rejects.toThrow(
+			"Failed to regenerate site metadata: landing render failed",
+		);
+		expect(
+			commands.some(
+				(command) =>
+					command.cmd === "git" && ["add", "commit", "push", "tag"].includes(command.args[0]),
+			),
+		).toBe(false);
+		expect(commands.some((command) => command.cmd === "gh" && command.args[0] === "release")).toBe(
+			false,
+		);
+	});
+
 	it("blocks publication when Bun exits successfully but leaves stale workspace metadata", async () => {
 		const { ctx, commands, filesWritten } = createMockRunnerContext();
 		const run = ctx.run;

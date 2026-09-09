@@ -1,6 +1,5 @@
 import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { Timeline } from "@nocoo/basalt/charts/timeline";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { AlertTriangle, Clock, Router, Server, Wifi } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { HeatmapCard } from "@/components/dashboard/HeatmapCard";
@@ -9,6 +8,7 @@ import { RadarChartCard } from "@/components/dashboard/RadarChartCard";
 import { SankeyCard } from "@/components/dashboard/SankeyCard";
 import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
 import { StackedBarCard } from "@/components/dashboard/StackedBarCard";
+import { ShowcaseHeader } from "@/components/ShowcaseHeader";
 import { chart } from "@/lib/palette";
 
 const latencyTrend = [
@@ -80,7 +80,7 @@ export default function NetworkOpsDashboardPage() {
 
 	return (
 		<div className="space-y-8">
-			<PageHeader
+			<ShowcaseHeader
 				title={t("pages.networkOps.title")}
 				description={t("pages.networkOps.description")}
 			/>

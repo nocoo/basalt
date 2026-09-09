@@ -27,7 +27,6 @@ const PAGE_MODULES = [
 	"HealthPage.tsx",
 	"InteractionShowcasePage.tsx",
 	"InteractivePage.tsx",
-	"LandingPage.tsx",
 	"LayoutPage.tsx",
 	"LoadingPage.tsx",
 	"LoginPage.tsx",
@@ -45,8 +44,9 @@ const PAGE_MODULES = [
 ] as const;
 
 describe("application route build boundary", () => {
-	it("declares every page module as a genuine lazy import behind one fallback", () => {
+	it("loads the landing immediately and defers application pages behind one fallback", () => {
 		const source = readFileSync("src/App.tsx", "utf8");
+		expect(source).toContain('import LandingPage from "./pages/LandingPage"');
 		for (const page of PAGE_MODULES) {
 			const specifier = `./pages/${page.replace(/\.tsx$/, "")}`;
 			expect(source).toContain(`lazy(() => import(${JSON.stringify(specifier)}))`);
@@ -62,7 +62,7 @@ describe("application route build boundary", () => {
 		expect(source).toContain('aria-live="polite"');
 	});
 
-	it("keeps heavy catalog data and every page outside the production entry static closure", async () => {
+	it("keeps the dashboard, heavy catalog data, and server renderer outside the landing entry", async () => {
 		let chunks: BuiltChunk[] = [];
 		const evidencePlugin: PluginOption = {
 			name: "catalog-route-boundary-evidence",
@@ -118,6 +118,8 @@ describe("application route build boundary", () => {
 			.filter((chunk) => staticFiles.has(chunk.fileName))
 			.flatMap((chunk) => chunk.modules);
 		const forbidden = [
+			"/src/components/DashboardLayout.tsx",
+			"/src/lib/landing-document.tsx",
 			"/src/pages/ui/catalog-ready.tsx",
 			"/src/pages/ui/kumo-examples.tsx",
 			"/src/pages/ui/docs.ts",
@@ -130,6 +132,7 @@ describe("application route build boundary", () => {
 				suffix,
 			).toBe(false);
 		}
+		expect(staticModules.some((id) => id.endsWith("/src/pages/LandingPage.tsx"))).toBe(true);
 
 		for (const page of PAGE_MODULES) {
 			const suffix = `/src/pages/${page}`;

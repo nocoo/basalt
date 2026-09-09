@@ -1,6 +1,6 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { applyLandingToIndexHtml, requiredLandingSnippets } from "../src/lib/landing";
+import { applyLandingToIndexHtml, requiredLandingSnippets } from "../src/lib/landing-document";
 import {
 	type CatalogLink,
 	renderHeaders,
@@ -74,6 +74,9 @@ export function checkSeoFiles(repoRoot: string): void {
 		if (!html.includes(snippet)) {
 			mismatches.push(`index.html missing ${snippet.slice(0, 48)}`);
 		}
+	}
+	if (html !== applyLandingToIndexHtml(html)) {
+		mismatches.push("index.html generated content or metadata");
 	}
 	if (mismatches.length > 0) {
 		throw new Error(`SEO files are stale (${mismatches.join(", ")}). Run ${GENERATE_COMMAND}.`);

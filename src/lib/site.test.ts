@@ -42,10 +42,10 @@ describe("site metadata", () => {
 		expect(() => absoluteUrl("ui")).toThrow(/absolute/);
 	});
 
-	it("keeps the bare wordmark as the document title", () => {
-		expect(documentTitle()).toBe(SITE.title);
-		expect(documentTitle("   ")).toBe(SITE.title);
-		expect(documentTitle(SITE.title)).toBe(SITE.title);
+	it("uses a descriptive homepage title while keeping page names distinct", () => {
+		expect(documentTitle()).toBe(SITE.homeTitle);
+		expect(documentTitle("   ")).toBe(SITE.homeTitle);
+		expect(documentTitle(SITE.title)).toBe(SITE.homeTitle);
 		expect(documentTitle("Button")).toBe(`Button · ${SITE.title}`);
 	});
 

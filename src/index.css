@@ -3,6 +3,7 @@
 @import "../packages/basalt/src/styles/tailwind.css";
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "./styles/landing.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -318,7 +319,8 @@
 	body,
 	#root {
 		height: 100%;
-		overflow: hidden;
+		width: 100%;
+		min-width: 0;
 	}
 	body {
 		@apply bg-background text-foreground;

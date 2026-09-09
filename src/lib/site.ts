@@ -3,8 +3,10 @@ export const SITE_ORIGIN = "https://basaltui.com";
 export const SITE = {
 	name: "Basalt",
 	title: "basalt.",
-	ogTitle: "basalt. — A matte design system",
-	description: "Dense, dark, durable. A matte design system for information-rich software.",
+	homeTitle: "Basalt — React UI components & dashboard templates",
+	ogTitle: "Basalt — React UI components & dashboard templates",
+	description:
+		"Build with Basalt: an open-source React UI library with matte components, charts, and dashboard templates. TypeScript, light and dark themes, MIT licensed.",
 	image: {
 		path: "/opengraph-image.png",
 		type: "image/png",
@@ -105,7 +107,7 @@ export function canonicalUrl(pathname: string): string {
 export function documentTitle(pageName?: string): string {
 	const name = pageName?.trim();
 	if (!name || name === SITE.title) {
-		return SITE.title;
+		return SITE.homeTitle;
 	}
 	return `${name} · ${SITE.title}`;
 }
@@ -114,7 +116,15 @@ export function imageUrl(): string {
 	return absoluteUrl(SITE.image.path);
 }
 
-export function jsonLd(): Record<string, unknown> {
+export interface PageMetadata {
+	path: string;
+	title: string;
+	description: string;
+}
+
+export function jsonLd(
+	page: PageMetadata = { path: "/", title: SITE.homeTitle, description: SITE.description },
+): Record<string, unknown> {
 	return {
 		"@context": "https://schema.org",
 		"@graph": [
@@ -126,7 +136,7 @@ export function jsonLd(): Record<string, unknown> {
 				alternateName: SITE.title,
 				description: SITE.description,
 				inLanguage: "en",
-				publisher: { "@id": `${SITE_ORIGIN}/#software` },
+				publisher: { "@id": `${SITE_ORIGIN}/#org` },
 			},
 			{
 				"@type": "Organization",
@@ -149,13 +159,25 @@ export function jsonLd(): Record<string, unknown> {
 				publisher: { "@id": `${SITE_ORIGIN}/#org` },
 				offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
 				isAccessibleForFree: true,
+				description: SITE.description,
+				license: `${SITE.github}/blob/main/LICENSE`,
+			},
+			{
+				"@type": "WebPage",
+				"@id": `${canonicalUrl(page.path)}#webpage`,
+				url: canonicalUrl(page.path),
+				name: page.title,
+				description: page.description,
+				isPartOf: { "@id": `${SITE_ORIGIN}/#website` },
+				about: { "@id": `${SITE_ORIGIN}/#software` },
+				inLanguage: "en",
 			},
 		],
 	};
 }
 
-export function jsonLdScript(): string {
-	return JSON.stringify(jsonLd()).replace(/</g, "\\u003c");
+export function jsonLdScript(page?: PageMetadata): string {
+	return JSON.stringify(jsonLd(page)).replace(/</g, "\\u003c");
 }
 
 export function sitemapPaths(
@@ -310,20 +332,20 @@ export function serviceDocLink(origin = SITE_ORIGIN): string {
 
 export function requiredIndexHtmlSnippets(): string[] {
 	return [
-		`<title>${SITE.title}</title>`,
+		`<title>${escapeXml(SITE.homeTitle)}</title>`,
 		`<meta name="description" content="${SITE.description}" />`,
 		'<meta name="robots" content="index, follow, max-image-preview:large" />',
 		`<meta name="theme-color" media="(prefers-color-scheme: light)" content="${SITE.themeColorLight}" />`,
 		`<meta name="theme-color" media="(prefers-color-scheme: dark)" content="${SITE.themeColorDark}" />`,
 		`<link rel="canonical" href="${absoluteUrl("/")}" />`,
 		`<link rel="alternate" type="text/plain" title="llms.txt" href="${absoluteUrl("/llms.txt")}" />`,
-		`<meta property="og:title" content="${SITE.ogTitle}" />`,
+		`<meta property="og:title" content="${escapeXml(SITE.ogTitle)}" />`,
 		`<meta property="og:description" content="${SITE.description}" />`,
 		`<meta property="og:site_name" content="${SITE.name}" />`,
 		`<meta property="og:locale" content="${SITE.locale}" />`,
 		`<meta property="og:image" content="${imageUrl()}" />`,
 		`<meta property="og:image:alt" content="${SITE.image.alt}" />`,
-		`<meta name="twitter:title" content="${SITE.ogTitle}" />`,
+		`<meta name="twitter:title" content="${escapeXml(SITE.ogTitle)}" />`,
 		`<meta name="twitter:image" content="${imageUrl()}" />`,
 		jsonLdScript(),
 	];

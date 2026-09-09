@@ -41,7 +41,7 @@ describe("AppSidebar", () => {
 		renderSidebar();
 		expect(screen.getByText("Examples")).toBeInTheDocument();
 		expect(screen.getByText("Library")).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Home" })).toBeInTheDocument();
+		expect(screen.getByRole("button", { name: "Component library" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Layout" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Color Palette" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Settings" })).toBeInTheDocument();
@@ -51,7 +51,7 @@ describe("AppSidebar", () => {
 		const following = Node.DOCUMENT_POSITION_FOLLOWING;
 		expect(
 			screen
-				.getByRole("button", { name: "Home" })
+				.getByRole("button", { name: "Component library" })
 				.compareDocumentPosition(screen.getByRole("button", { name: "Color Palette" })) & following,
 		).toBeTruthy();
 		expect(
@@ -241,15 +241,19 @@ describe("AppSidebar", () => {
 
 	it("pins the sidebar logo to the expanded left edge when collapsed", () => {
 		const { unmount } = renderSidebar();
-		const expanded = screen.getByRole("img", { name: "Basalt" });
+		const expandedHome = screen.getByRole("link", { name: "Home" });
+		expect(expandedHome).toHaveAttribute("href", "/");
+		const expanded = expandedHome.querySelector("img");
 		expect(expanded).toHaveClass("h-7", "w-7");
-		expect(expanded.closest(".flex.h-14")).not.toHaveClass("pl-6");
+		expect(expanded?.closest(".flex.h-14")).not.toHaveClass("pl-6");
 		unmount();
 		renderSidebar("/ui/button", true);
-		const collapsed = screen.getByRole("img", { name: "Basalt" });
+		const collapsedHome = screen.getByRole("link", { name: "Home" });
+		expect(collapsedHome).toHaveAttribute("href", "/");
+		const collapsed = collapsedHome.querySelector("img");
 		expect(collapsed).toHaveClass("h-7", "w-7");
-		expect(collapsed.closest(".flex.h-14")).toHaveClass("pl-6", "justify-start");
-		expect(collapsed.closest(".flex.h-14")).not.toHaveClass("justify-center");
+		expect(collapsed?.closest(".flex.h-14")).toHaveClass("pl-6", "justify-start");
+		expect(collapsed?.closest(".flex.h-14")).not.toHaveClass("justify-center");
 	});
 
 	it("aligns collapsed search with the icon rail", () => {

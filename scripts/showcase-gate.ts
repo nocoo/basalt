@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { build } from "vite";
 import { showcaseBuildConfig } from "./catalog-page-status-build";
@@ -8,8 +9,10 @@ import {
 	withChromiumPage,
 } from "./consumer-browser";
 import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from "./consumer-http";
+import { prerenderHtml } from "./prerender";
 import { assertEditingShowcases } from "./showcase-editing";
 import { assertExamplePages } from "./showcase-examples";
+import { assertLandingShowcase } from "./showcase-landing";
 import { assertLibraryShowcases } from "./showcase-library";
 import { assertPaletteShowcases } from "./showcase-palette";
 import { assertReusableShowcases } from "./showcase-reuse";
@@ -17,6 +20,7 @@ import { assertReusableShowcases } from "./showcase-reuse";
 /** Build and test the current source; never silently consume yesterday's dist. */
 export async function runShowcaseGate() {
 	await build({ ...showcaseBuildConfig(), logLevel: "warn" });
+	prerenderHtml(resolve("dist"), readFileSync(resolve("dist/index.html"), "utf8"));
 	const port = await allocatePort();
 	const url = `http://127.0.0.1:${port}`;
 	const { child } = await startHttpServer({
@@ -37,13 +41,14 @@ export async function runShowcaseGate() {
 		const evidence = await withChromiumPage(createBrowserProfileDir(), async (page) => {
 			const faults = attachPageFaults(page);
 			page.setDefaultTimeout(12_000);
+			const landing = await assertLandingShowcase(page, url);
 			const library = await assertLibraryShowcases(page, url);
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
 			const editing = await assertEditingShowcases(page, url);
 			const palette = await assertPaletteShowcases(page, url);
 			assertNoPageFaults(faults);
-			return { library, examples, reusable, editing, palette };
+			return { landing, library, examples, reusable, editing, palette };
 		});
 		console.log(`Showcase gate passed ${JSON.stringify(evidence)}`);
 	} finally {

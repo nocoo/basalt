@@ -23,6 +23,7 @@ Ship in this order. Each step has a section below. Do not skip ahead to cards.
 
 | Layer | Component | Owns | Does not own |
 |---|---|---|---|
+| Landing | public marketing route | full-width sections and document scrolling | dashboard width or scroll rules |
 | Login | app page, not `AppShell` | identity badge | rail, header, island |
 | Rail | `Sidebar` | product title, version pill, nav, user | page body |
 | Framework bar | `AppHeader` | ancestor breadcrumbs, current page name, top-right actions (`ThemeToggle`, …) | create, filters, cards |
@@ -34,9 +35,10 @@ Ship in this order. Each step has a section below. Do not skip ahead to cards.
 ### Tree
 
 ```
+LandingPage                       ← / only. Document scroll, no AppShell.
 LoginPage                         ← /login only. No AppShell.
 
-AppShell                          ← everything else
+AppShell                          ← dashboard and catalog routes
 ├── AppSkipLink
 ├── Sidebar                       ← product title + version + nav
 └── AppMain                       ← id="main-content"
@@ -50,6 +52,18 @@ AppShell                          ← everything else
 ```
 
 `AppHeader.title` is the current page in the top bar (`h1`, `text-sm`). `PageHeader.title` is the content heading (`h1`, `text-2xl`). They may use the same words. They are different roles. Do not put an icon + page name above `PageHeader` — that duplicates the bar.
+
+The landing page and its prerendered HTML share `LandingContent`. Load the site stylesheet from `index.html` so it also works without JavaScript. Scope marketing CSS to `.landing` and crawl summaries to `[data-crawl-page]`; do not set global `header`, `main`, or `footer` dimensions. Keep document scrolling available on `html`, `body`, and `#root`. `AppShell` contains the dashboard viewport, and `ContentIsland` owns its independent scroll. Give both a positioning context (`relative`) so absolutely positioned content, including screen-reader labels, stays inside the correct scroll boundary.
+
+Resolve the mobile breakpoint on the first client render. Do not briefly reserve a desktop sidebar on small screens; responsive charts would measure that narrow intermediate layout.
+
+Prerender non-root routes as `route.html` (for example, `ui/button.html`). Cloudflare's `auto-trailing-slash` handling and Vite preview serve these at the extensionless canonical URL `/ui/button`; directory index files would imply a different trailing-slash URL.
+
+Landing previews are real captures at a 1600 × 1000 viewport and 2× device scale, with 1200px variants selected through `srcset`. The large corner-tower artwork derives from the original `logo.png`; its subtle perspective motion pauses outside the viewport and honors reduced motion.
+
+The hero and elevated Forbidden City backgrounds each use a matched daylight/twilight pair. Generate each pair together on one 2880 × 2880 canvas, then crop at the exact horizontal midpoint into two 2880 × 1440 images. Preserve the same camera and scenery between themes. Native masters, references, prompts, and sanitized generation records live under `assets/landing/generated/`; `assets/landing/backgrounds.json` records the crop coordinates and export hashes. Keep the ambient light in a flat stacking context behind the artwork so perspective motion cannot bring it in front of the mark.
+
+The floating glass header uses an icon-only GitHub link and one light/dark theme button. Resolve the system preference until the visitor chooses a theme, then persist that explicit choice through the shared provider. The landing button switches from the currently resolved mode directly to its opposite.
 
 When `AppHeader` already has breadcrumbs, **omit** `PageHeader.breadcrumbs`.
 
@@ -764,6 +778,8 @@ Boot and route gates use `LoadingScreen` — a centered mark and a 6rem shimmer 
 When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place, add routes as `Outlet` pages. Application pages inside the island start with `PageHeader`. The shell file does not grow with page UI.
 
 Standalone login, loading, error, and landing pages use their own first-screen structure: `/login` preserves the visitor-badge composition, `/loading` is a named loading status, and `/404` and `/static-page` have independent headings. Library reference pages use their document heading and section navigation. These are deliberate layout exceptions, not alternate application-page templates.
+
+The showcase site's library index and dashboard examples use the app-local `ShowcaseHeader` with the landing page's paired day/night mountain imagery fading into the content island. Headings and actions align with the page's content grid; the landscape reaches the island's top edge and scrolls with it. The library has a more spacious opening, dashboards use the compact variant, and reference headings carry a quieter version. The original logo remains in the navigation. This site-specific treatment does not change the package's `PageHeader` or application layout recipe.
 
 The `/forms`, `/settings`, `/data`, and `/chat` examples demonstrate local state and simulated requests, including failure/retry and cancellation. Their viewmodels own data and timers; Views own native FormData, focus, and responsive layout. Replace the local service adapter when integrating a backend. Theme selection uses the shared provider; local profile, uploads, and chat changes do not update a real account.
 

@@ -1,0 +1,125 @@
+/* Site-only scenery. Page headings share the content grid and its surface colors. */
+.showcase-header,
+.showcase-reference-header {
+	/* Match ContentIsland's p-3 / md:p-5 so the landscape reaches its outer edge. */
+	--showcase-inset: 12px;
+	--showcase-image: url("/landing/ridge-light.webp");
+	--showcase-fade: 76px;
+	position: relative;
+	isolation: isolate;
+	min-width: 0;
+}
+
+.dark :where(.showcase-header, .showcase-reference-header) {
+	--showcase-image: url("/landing/ridge.webp");
+}
+
+.showcase-reference-header::before {
+	content: "";
+}
+.showcase-header-landscape,
+.showcase-reference-header::before {
+	position: absolute;
+	z-index: -1;
+	inset: 0;
+	background-image:
+		linear-gradient(
+			100deg,
+			hsl(var(--basalt-card)) 4%,
+			hsl(var(--basalt-card) / 0.94) 24%,
+			hsl(var(--basalt-card) / 0.3) 64%,
+			hsl(var(--basalt-card) / 0.08)
+		),
+		var(--showcase-image);
+	background-position: center 18%;
+	background-size: cover;
+	/* A fixed fade keeps longer descriptions below the scenery when they wrap. */
+	mask-image: linear-gradient(#000, rgb(0 0 0 / 0.65) 24px, transparent var(--showcase-fade));
+	pointer-events: none;
+}
+
+.showcase-header {
+	container-type: inline-size;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	min-height: 128px;
+	margin-top: calc(-1 * var(--showcase-inset));
+	margin-inline: calc(-1 * var(--showcase-inset));
+	padding: 36px var(--showcase-inset) 8px;
+}
+.showcase-header-content {
+	min-width: 0;
+}
+.showcase-header :where(h1) {
+	font-family: var(--basalt-font-display);
+	font-size: 28px;
+	line-height: 1.2;
+	letter-spacing: -0.035em;
+}
+.showcase-header :where(header p) {
+	max-width: 64ch;
+	line-height: 1.6;
+}
+.showcase-header :where(header > div) {
+	align-items: flex-end;
+}
+
+.showcase-header[data-variant="library"] {
+	--showcase-fade: 136px;
+	min-height: 212px;
+	padding-top: 68px;
+	padding-bottom: 16px;
+}
+.showcase-header[data-variant="library"] :where(h1) {
+	font-size: clamp(30px, 3vw, 40px);
+}
+.showcase-header :where([data-ready-summary]) {
+	display: flex;
+	align-items: center;
+	gap: 7px;
+	margin-top: 14px;
+	font-size: 12px;
+	font-variant-numeric: tabular-nums;
+}
+.showcase-header :where([data-ready-summary])::before {
+	content: "";
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: #599883;
+}
+.dark .showcase-header :where([data-ready-summary])::before {
+	background: #a5ddbe;
+}
+
+/* Reference headings retain their existing content alignment, actions, and TOC. */
+.showcase-reference-header::before {
+	inset: calc(-1 * var(--showcase-inset)) calc(-1 * var(--showcase-inset)) 0;
+	opacity: 0.55;
+}
+
+@media (min-width: 768px) {
+	.showcase-header,
+	.showcase-reference-header {
+		--showcase-inset: 20px;
+	}
+}
+
+@container (max-width: 640px) {
+	/* Let the scene fade above copy that wraps across a narrow content island. */
+	.showcase-header[data-variant="library"] :where(.showcase-header-landscape) {
+		--showcase-fade: 96px;
+	}
+	.showcase-header :where(h1),
+	.showcase-header[data-variant="library"] :where(h1) {
+		font-size: 28px;
+	}
+	.showcase-header :where(header > div) {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	.showcase-header :where(header > div > div:last-child:not(:first-child)) {
+		justify-content: flex-start;
+	}
+}

@@ -37,6 +37,16 @@ describe("seo file generation", () => {
 		writeFileSync(path.join(root, "public/robots.txt"), "User-agent: *\nDisallow: /\n");
 		expect(() => checkSeoFiles(root)).toThrow(/SEO files are stale/);
 		writeSeoFiles(root);
+		const fresh = readFileSync(path.join(root, "index.html"), "utf8");
+		writeFileSync(
+			path.join(root, "index.html"),
+			fresh.replace(
+				"</head>",
+				'<style id="basalt-landing-css">main{max-width:720px}</style></head>',
+			),
+		);
+		expect(() => checkSeoFiles(root)).toThrow(/generated content or metadata/);
+		writeSeoFiles(root);
 		writeFileSync(path.join(root, "index.html"), "<html></html>\n");
 		expect(() => checkSeoFiles(root)).toThrow(/index.html missing/);
 	});

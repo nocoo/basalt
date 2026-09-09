@@ -495,6 +495,10 @@ export async function executeRelease(
 	if (genResult.code !== 0) {
 		throw new Error(`Failed to regenerate public API metadata: ${genResult.stderr.trim()}`);
 	}
+	const seoResult = await ctx.run("bun", ["scripts/seo-cli.ts", "generate"]);
+	if (seoResult.code !== 0) {
+		throw new Error(`Failed to regenerate site metadata: ${seoResult.stderr.trim()}`);
+	}
 
 	const filesToStage = [
 		...VERSION_TARGETS,
@@ -506,6 +510,12 @@ export async function executeRelease(
 		"packages/basalt/ai/USAGE.md",
 		"packages/basalt/ai/INTEGRATION.md",
 		"packages/basalt/ai/sources.json",
+		"index.html",
+		"public/robots.txt",
+		"public/sitemap.xml",
+		"public/llms.txt",
+		"public/llms-full.txt",
+		"public/_headers",
 	];
 	const addResult = await ctx.run("git", ["add", ...filesToStage]);
 	if (addResult.code !== 0) {

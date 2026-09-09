@@ -18,6 +18,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useSiteTitle } from "@/hooks/use-site-title";
 import { SHOWCASE_TITLE_KEYS } from "@/lib/site";
 import { CATALOG_BY_SLUG, catalogNavName } from "@/pages/ui/catalog";
+import "@/styles/showcase.css";
 
 function isTriggerVisible(el: HTMLElement | null): el is HTMLElement {
 	if (!el?.isConnected) return false;
@@ -41,16 +42,18 @@ export function DashboardLayout() {
 
 	const mobileTriggerRef = useRef<HTMLButtonElement | null>(null);
 	const catalogSlug = location.pathname.startsWith("/ui/")
-		? location.pathname.slice("/ui/".length)
+		? location.pathname.slice("/ui/".length).split("/")[0]
 		: undefined;
 	const catalogEntry = catalogSlug ? CATALOG_BY_SLUG.get(catalogSlug) : undefined;
 	const catalogTitle = catalogEntry ? catalogNavName(catalogEntry) : undefined;
 	const titleKey = SHOWCASE_TITLE_KEYS[location.pathname] ?? "nav.dashboard";
-	const title = catalogTitle ?? t(titleKey);
+	const title = catalogTitle
+		? `${catalogTitle}${location.pathname.endsWith("/source") ? " source" : ""}`
+		: t(titleKey);
 	useSiteTitle(title);
 	const crumbs = location.pathname.startsWith("/ui")
 		? [{ href: "/ui", label: t("nav.kit") }]
-		: [{ href: "/", label: t("nav.examples") }];
+		: [{ href: "/dashboard", label: t("nav.examples") }];
 
 	// Close mobile sidebar on route change: pathname is the intentional trigger.
 	// biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, not a value used inside
@@ -77,7 +80,7 @@ export function DashboardLayout() {
 	}, [mobileOpen, isMobile]);
 
 	return (
-		<AppShell>
+		<AppShell className="relative h-dvh" data-dashboard-shell>
 			<AppSkipLink>{t("common.skipToMain")}</AppSkipLink>
 			{!isMobile ? (
 				<AppSidebar collapsed={collapsed} onToggle={() => setCollapsed(!collapsed)} />
@@ -134,8 +137,8 @@ export function DashboardLayout() {
 						</>
 					}
 				/>
-				<div className="flex min-h-0 flex-1 flex-col px-2 pb-2 md:px-3 md:pb-3">
-					<ContentIsland data-doc-scroll>
+				<div className="flex min-h-0 min-w-0 flex-1 flex-col px-2 pb-2 md:px-3 md:pb-3">
+					<ContentIsland className="relative min-w-0" data-doc-scroll>
 						<Outlet />
 					</ContentIsland>
 				</div>

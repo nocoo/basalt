@@ -4,8 +4,12 @@ import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { type ComponentType, lazy, type ReactNode, Suspense } from "react";
 import { BrowserRouter, Route, Link as RouterLink, Routes } from "react-router";
-import { DashboardLayout } from "@/components/DashboardLayout";
 import { SitePaletteProvider } from "@/components/SitePaletteProvider";
+import LandingPage from "./pages/LandingPage";
+
+const DashboardLayout = lazy(() =>
+	import("./components/DashboardLayout").then((module) => ({ default: module.DashboardLayout })),
+);
 
 const AccountsPage = lazy(() => import("./pages/AccountsPage"));
 const AnimationPage = lazy(() => import("./pages/AnimationPage"));
@@ -20,7 +24,6 @@ const FormsPage = lazy(() => import("./pages/FormsPage"));
 const HealthPage = lazy(() => import("./pages/HealthPage"));
 const InteractionShowcasePage = lazy(() => import("./pages/InteractionShowcasePage"));
 const InteractivePage = lazy(() => import("./pages/InteractivePage"));
-const LandingPage = lazy(() => import("./pages/LandingPage"));
 const LayoutPage = lazy(() => import("./pages/LayoutPage"));
 const LoadingPage = lazy(() => import("./pages/LoadingPage"));
 const LoadingStatesPage = lazy(() => import("./pages/LoadingStatesPage"));
@@ -93,7 +96,7 @@ const App = () => (
 						<Routes>
 							<Route path="/" element={routeElement(LandingPage)} />
 							{/* Layout route: sidebar + header wraps all dashboard pages */}
-							<Route element={<DashboardLayout />}>
+							<Route element={routeElement(DashboardLayout)}>
 								<Route path="/components" element={routeElement(ComponentsPage)} />
 								<Route path="/forms" element={routeElement(FormsPage)} />
 								<Route path="/navigation" element={routeElement(NavigationPage)} />

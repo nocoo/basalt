@@ -1,0 +1,20 @@
+{
+	"purpose": "Paired light/dark landing backgrounds, requested by the owner on 2026-09-09.",
+	"authorization": "The owner requested generation in one vertically stacked image followed by exact top/bottom cropping and integration in the existing landing page. This is background production, not a logo identity study or catalogue adoption.",
+	"model": "gpt-image-2",
+	"quality": "high",
+	"size": [2880, 2880],
+	"pixels": 8294400,
+	"documentation": "https://developers.openai.com/api/docs/guides/image-generation",
+	"crops": {
+		"light": [0, 0, 2880, 1440],
+		"dark": [0, 1440, 2880, 2880]
+	},
+	"reference": {
+		"source": "public/landing/ridge.jpg",
+		"sha256": "61537d0221ec71ba099682f173daedf148c1466e2f894d31f062c67801ecad30",
+		"sourceCrop": [0, 128, 1536, 896],
+		"guideSize": [1536, 1536],
+		"guidePanels": "Identical unaltered 1536x768 crops, repeated vertically. Reference preparation is not a claimed native model output."
+	}
+}

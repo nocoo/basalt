@@ -1,6 +1,6 @@
 # Basalt catalog
 
-> Dense, dark, durable. A matte design system for information-rich software.
+> Build with Basalt: an open-source React UI library with matte components, charts, and dashboard templates. TypeScript, light and dark themes, MIT licensed.
 
 Install `@nocoo/basalt`. Browse the live catalog at https://basaltui.com/ui.
 Each URL below is a public documentation surface.

@@ -1,0 +1,14 @@
+{
+	"status": "inspected-for-background-integration",
+	"reviewer": "Codex",
+	"ownerReviewedExactBytes": false,
+	"imageSha256": "969010a76e0399ecc8b4af5605c0d3e6f298e78a83045e631ffc1be8ea3a3c79",
+	"reviewedAt": "2026-09-09T00:04:22.773301+00:00",
+	"scope": "Owner-requested landing background generation and exact top/bottom cropping; no logo identity adoption.",
+	"findings": [
+		"Native size matches the 2880x2880 request.",
+		"Equal edge-to-edge panels with no gutter.",
+		"The distinctive main ridge and distant peaks are visually aligned between panels.",
+		"The daylight foreground retains dark volcanic rock; page-level lighting needs a contrast check."
+	]
+}

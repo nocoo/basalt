@@ -3,13 +3,13 @@ import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatma
 import { SlotBarChart } from "@nocoo/basalt/charts/slot-bar";
 import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { Timeline } from "@nocoo/basalt/charts/timeline";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Activity, Clock, Flame, Footprints, Heart, Moon, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { BarChartWidget } from "@/components/dashboard/BarChartWidget";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
+import { ShowcaseHeader } from "@/components/ShowcaseHeader";
 import { formatPercent } from "@/lib/format";
 import { chart } from "@/lib/palette";
 
@@ -131,7 +131,10 @@ export default function WearableDashboardPage() {
 
 	return (
 		<div className="space-y-8">
-			<PageHeader title={t("pages.wearable.title")} description={t("pages.wearable.description")} />
+			<ShowcaseHeader
+				title={t("pages.wearable.title")}
+				description={t("pages.wearable.description")}
+			/>
 
 			<SectionRule
 				title={t("pages.wearable.todaySummary")}

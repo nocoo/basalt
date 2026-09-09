@@ -1,0 +1,17 @@
+{
+	"purpose": "Paired light/dark landing backgrounds, requested by the owner on 2026-09-09.",
+	"authorization": "The owner requested generation in one vertically stacked image followed by exact top/bottom cropping and integration in the existing landing page. This is background production, not a logo identity study or catalogue adoption.",
+	"model": "gpt-image-2",
+	"quality": "high",
+	"size": [2880, 2880],
+	"pixels": 8294400,
+	"documentation": "https://developers.openai.com/api/docs/guides/image-generation",
+	"crops": {
+		"light": [0, 0, 2880, 1440],
+		"dark": [0, 1440, 2880, 2880]
+	},
+	"reference": {
+		"role": "Color and atmospheric softness only. Replace the previous flat waterfront camera with an elevated view from Jingshan; do not preserve the old composition.",
+		"sources": ["public/landing/palace-light.webp", "public/landing/palace-dark.webp"]
+	}
+}

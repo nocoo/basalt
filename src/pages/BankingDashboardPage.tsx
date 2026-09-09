@@ -1,5 +1,4 @@
 import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import {
 	ArrowDownLeft,
 	ArrowUpRight,
@@ -17,6 +16,7 @@ import { RadialProgressCard } from "@/components/dashboard/RadialProgressCard";
 import { RecentListCard } from "@/components/dashboard/RecentListCard";
 import { SankeyCard } from "@/components/dashboard/SankeyCard";
 import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
+import { ShowcaseHeader } from "@/components/ShowcaseHeader";
 
 const transfers = [
 	{ name: "Wire transfer", amount: "$120k", direction: "in" },
@@ -60,7 +60,10 @@ export default function BankingDashboardPage() {
 
 	return (
 		<div className="space-y-8">
-			<PageHeader title={t("pages.banking.title")} description={t("pages.banking.description")} />
+			<ShowcaseHeader
+				title={t("pages.banking.title")}
+				description={t("pages.banking.description")}
+			/>
 
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (

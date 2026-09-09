@@ -1,0 +1,15 @@
+{
+	"status": "inspected-for-background-integration",
+	"reviewer": "Codex",
+	"ownerReviewedExactBytes": false,
+	"imageSha256": "0c797ab2cc90a5512145dce878fad4fae603fcd08480c23d80b641ece00c834e",
+	"reviewedAt": "2026-09-09T00:08:12.690891+00:00",
+	"scope": "Owner-requested landing background generation and exact top/bottom cropping; no logo identity adoption.",
+	"findings": [
+		"Native size matches the 2880x2880 request.",
+		"Equal edge-to-edge panels with no gutter.",
+		"The palace central axis, near gate and roof layers remain in corresponding positions across both panels.",
+		"Elevated perspective replaces the old waterfront horizon.",
+		"More roof detail and sky than requested in the prompt; use a restrained CSS diffusion layer to keep the background subordinate to the original mark."
+	]
+}

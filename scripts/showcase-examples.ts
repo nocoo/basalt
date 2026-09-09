@@ -3,7 +3,7 @@ import type { Locator, Page } from "playwright";
 import { setShowcaseTheme } from "./showcase-theme";
 
 const ROUTES = [
-	"/",
+	"/dashboard",
 	"/accounts",
 	"/portfolio",
 	"/progress-tracking",
@@ -266,6 +266,16 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 	for (const width of [390, 1280]) {
 		await page.setViewportSize({ width, height: 900 });
 		await setShowcaseTheme(page, false);
+		await page.goto(`${baseUrl}/ui`);
+		await page.locator('[data-status="index"]').waitFor();
+		await settle(page);
+		await assertPageWidth(page, `${width} library index`);
+		cases.push(`${width}:library-index`);
+		await page.goto(`${baseUrl}/ui/button/source`);
+		await page.locator("[data-doc-scroll] pre code").waitFor();
+		await settle(page);
+		await assertPageWidth(page, `${width} component source`);
+		cases.push(`${width}:component-source`);
 		for (const route of ROUTES) {
 			console.log(`Example smoke ${width} ${route}`);
 			await page.goto(`${baseUrl}${route}`);

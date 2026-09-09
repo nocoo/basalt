@@ -281,6 +281,9 @@ export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 				trackColors[theme] = evidence.fill;
 				assert.ok((await container.textContent())?.includes(`${value}%`));
 			}
+			// ResponsiveContainer debounces resize by 150ms; its SVG can precede the curves.
+			await page.locator(".recharts-line-curve").nth(2).waitFor();
+			await page.locator(".recharts-pie-sector .recharts-sector").nth(4).waitFor();
 			await assertTextContrast(
 				page,
 				'[data-testid="chart-legend"] span, .recharts-cartesian-axis-tick-value, [data-palette-rings] .absolute',
@@ -312,8 +315,15 @@ export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 				await page.locator('[data-status="ready"]').waitFor();
 				await setShowcaseTheme(page, dark);
 				await page.locator("[data-hero-scenario]").waitFor();
-				if (SVG_CHARTS.has(entry.slug))
+				if (SVG_CHARTS.has(entry.slug)) {
 					await page.locator("[data-hero-scenario] svg.recharts-surface").first().waitFor();
+					await page
+						.locator("[data-hero-scenario]")
+						.locator(MARK_SELECTOR)
+						.filter({ visible: true })
+						.first()
+						.waitFor();
+				}
 				await page.evaluate(
 					() =>
 						new Promise<void>((resolve) =>

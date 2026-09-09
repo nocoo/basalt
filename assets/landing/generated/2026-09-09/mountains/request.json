@@ -1,0 +1,28 @@
+{
+	"startedAt": "2026-09-09T00:00:29.550047+00:00",
+	"provider": "Azure OpenAI / Foundry",
+	"endpoint": "https://bingviz-data-analysis-api.openai.azure.com/openai/v1/images/edits",
+	"method": "POST",
+	"contentType": "multipart/form-data",
+	"parameters": {
+		"model": "gpt-image-2",
+		"size": "2880x2880",
+		"quality": "high",
+		"n": "1",
+		"background": "opaque",
+		"output_format": "png"
+	},
+	"promptFile": "prompt.txt",
+	"promptSha256": "34d3d1ce14c0a053c4588ddba21d4930e2431a378ae6af2e7ef1c5716a7f2608",
+	"images": [
+		{
+			"index": 1,
+			"path": "references/identical-mountain-panels.png",
+			"sha256": "d7742c90433a9a1faaccef98d4bbdd0d5ce4c16365c7b9f9c35a55ff6dd99a05",
+			"bytes": 1691465,
+			"mime": "image/png"
+		}
+	],
+	"transportReference": "workflow/agents/skills/azure-gpt-image-cover/scripts/generate.py",
+	"documentation": "https://developers.openai.com/api/docs/guides/image-generation"
+}

@@ -365,7 +365,7 @@ function ReadyDoc({
 	];
 	return (
 		<div>
-			<header className="border-b border-border px-6 py-8 md:px-8 md:py-10">
+			<header className="showcase-reference-header border-b border-border px-6 py-8 md:px-8 md:py-10">
 				<div className="mb-3 flex flex-col items-start justify-between gap-4 sm:flex-row sm:flex-wrap">
 					<div className="flex min-w-0 max-w-full flex-wrap items-center gap-3">
 						<h1 className="min-w-0 max-w-full text-3xl sm:text-4xl font-semibold tracking-tight text-foreground [overflow-wrap:anywhere]">
@@ -486,7 +486,7 @@ function ReadyCatalogPage({ entry }: { entry: CatalogEntry }) {
 
 function CatalogHero({ title, description }: { title: string; description: string }) {
 	return (
-		<header className="border-b border-border px-6 py-8 md:px-8 md:py-10">
+		<header className="showcase-reference-header border-b border-border px-6 py-8 md:px-8 md:py-10">
 			<h1 className="min-w-0 max-w-full text-3xl sm:text-4xl font-semibold tracking-tight text-foreground [overflow-wrap:anywhere]">
 				{title}
 			</h1>

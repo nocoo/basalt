@@ -9,6 +9,7 @@ import {
 	CommandList,
 	CommandPalette,
 } from "@nocoo/basalt/components/command-palette";
+import { Link } from "@nocoo/basalt/components/link";
 import { Separator } from "@nocoo/basalt/components/separator";
 import {
 	Sidebar,
@@ -489,8 +490,12 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 		<Sidebar collapsed={collapsed}>
 			<SidebarHeader className={collapsed ? "justify-start px-0 pl-6 pr-3" : undefined}>
 				<div className={cn("flex w-full items-center", !collapsed && "justify-between px-3")}>
-					<div className="flex items-center gap-3">
-						<BasaltLogo className="h-7 w-7 shrink-0 object-contain" />
+					<Link
+						href="/"
+						aria-label={t("nav.home")}
+						className="flex items-center gap-3 text-basalt-foreground no-underline hover:no-underline"
+					>
+						<BasaltLogo alt="" className="h-7 w-7 shrink-0 object-contain" />
 						{collapsed ? null : (
 							<>
 								<span className="text-lg font-semibold text-basalt-foreground md:text-xl">
@@ -501,7 +506,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 								</span>
 							</>
 						)}
-					</div>
+					</Link>
 					{collapsed ? null : (
 						<Button
 							variant="ghost"

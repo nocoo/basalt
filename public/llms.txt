@@ -1,6 +1,6 @@
 # Basalt
 
-> Dense, dark, durable. A matte design system for information-rich software.
+> Build with Basalt: an open-source React UI library with matte components, charts, and dashboard templates. TypeScript, light and dark themes, MIT licensed.
 
 Basalt is the matte React design system `@nocoo/basalt` and its public catalog.
 Public pages welcome search engines and AI crawlers. This file, the sitemap,

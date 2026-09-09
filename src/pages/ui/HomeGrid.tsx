@@ -247,7 +247,7 @@ export function HomeGrid({ groups }: HomeGridProps) {
 								<li
 									key={item.entry.slug}
 									data-catalog-card={item.entry.slug}
-									className="flex min-h-48 flex-col overflow-hidden rounded-xl border border-border bg-bright"
+									className="relative flex min-h-48 flex-col overflow-hidden rounded-xl border border-border bg-bright"
 								>
 									<div className="flex flex-wrap items-start justify-between gap-3 border-b border-border px-4 py-3">
 										{item.pageStatus === "ready" ? (

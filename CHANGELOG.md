@@ -7,10 +7,26 @@
 - Preview responses send `X-Robots-Tag: noindex`; production stays indexable and advertises `/llms.txt`.
 - Crawler-visible landing page at `/` with H1, skip link, catalog/npm/GitHub/hexly/Play/Journal links, and prerendered HTML for `/ui` and each catalog slug.
 - Edge worker: HTTP and www 301 to the HTTPS apex, HSTS, nosniff, frame and referrer headers.
+- Uncached `/api/live` response reports the deployed version from the root package manifest.
 
 ### Changed
+- Rebuilt the landing page with shared prerendered content, theme-aware dashboard previews, template links, installation guidance, and accessible FAQs.
+- Pair daylight and twilight landscapes from the same 2880px master composition beneath a floating glass header; retain responsive 3200px dashboard captures.
+- Simplify the landing header to an icon-only GitHub link and a light/dark switch that initially follows the system and remembers explicit choices.
+- Spotlight the original corner-tower mark against elevated Forbidden City scenes, with pastel ambient light, pausable motion, and reduced-motion support.
+- Carry the landing scenery into library and dashboard headings with an edge-to-edge landscape that fades into the content surface; keep the original logo in navigation.
+- Add smooth landing anchor navigation and a keyboard-accessible return-to-top link; credit the site as part of the hexly.ai family.
+- Keep titles, descriptions, canonical URLs, Open Graph, Twitter cards, and structured data consistent across direct loads and client navigation. Prerender summaries for every sitemap showcase route.
 - Social metadata no longer loads from the Hexly share API; Open Graph now self-hosts on https://basaltui.com.
 - Social card places the `basalt.` wordmark beside the corner tower on the pale engineering field.
+
+### Fixed
+- Remove the global 720px crawler styles that constrained the landing page, dashboard, and component library; restore document scrolling for standalone pages.
+- Separate landing and dashboard navigation, and retain the full available dashboard width when entering the catalog or collapsing the sidebar.
+- Keep screen-reader labels inside the dashboard scroll boundary, and serve prerendered HTML at the same extensionless URLs used by the sitemap and canonical tags.
+- Initialize the mobile layout at the current viewport width so dashboards do not briefly reserve desktop sidebar space on first render.
+- Contain positioned component previews within their cards and wrap source filenames to prevent horizontal overflow in the catalog.
+- Regenerate and stage prerendered landing and SEO content during release so version information stays synchronized.
 
 ## [2.1.2] - 2026-09-08
 

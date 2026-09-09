@@ -1,0 +1,83 @@
+{
+	"generatedAt": "2026-09-09",
+	"model": "gpt-image-2",
+	"quality": "high",
+	"provider": "Azure OpenAI / Foundry",
+	"endpoint": "images/edits",
+	"skill": "workflow/agents/skills/azure-gpt-image-cover/SKILL.md",
+	"generator": "hexly.ai/artwork/logo-family/tools/generate_azure.py",
+	"sizeDocumentation": "https://developers.openai.com/api/docs/guides/image-generation",
+	"nativeSize": [2880, 2880],
+	"nativePixelCount": 8294400,
+	"processing": "Each scene is generated once as a vertically stacked daylight/twilight pair, then split at y=1440 into two 2880x1440 panels. Crops retain native resolution and geometry. Apply 1px Gaussian diffusion to mountains and 4px to palace backgrounds for the requested soft-focus treatment, then encode WebP at quality 90, method 6. No resizing, pixel warping or recoloring. CSS supplies responsive text-area light veils and subtle palace diffusion. Untouched model PNG masters are preserved in full.",
+	"scenes": [
+		{
+			"id": "mountains",
+			"master": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
+			"sha256": "969010a76e0399ecc8b4af5605c0d3e6f298e78a83045e631ffc1be8ea3a3c79",
+			"prompt": "assets/landing/generated/2026-09-09/mountains/prompt.txt",
+			"request": "assets/landing/generated/2026-09-09/mountains/request.json",
+			"response": "assets/landing/generated/2026-09-09/mountains/response.json",
+			"review": "assets/landing/generated/2026-09-09/mountains/review.json"
+		},
+		{
+			"id": "palace",
+			"master": "assets/landing/generated/2026-09-09/palace/raw/generated.png",
+			"sha256": "0c797ab2cc90a5512145dce878fad4fae603fcd08480c23d80b641ece00c834e",
+			"prompt": "assets/landing/generated/2026-09-09/palace/prompt.txt",
+			"request": "assets/landing/generated/2026-09-09/palace/request.json",
+			"response": "assets/landing/generated/2026-09-09/palace/response.json",
+			"review": "assets/landing/generated/2026-09-09/palace/review.json"
+		}
+	],
+	"assets": [
+		{
+			"path": "public/landing/ridge-light.webp",
+			"scene": "mountains",
+			"theme": "light",
+			"width": 2880,
+			"height": 1440,
+			"bytes": 244588,
+			"sha256": "4be3645226e3f3258a30b99b8e7027032dacb91188f401584b1db24c641f1f87",
+			"sourceSha256": "969010a76e0399ecc8b4af5605c0d3e6f298e78a83045e631ffc1be8ea3a3c79",
+			"sourceCrop": [0, 0, 2880, 1440],
+			"gaussianBlurRadius": 1.0
+		},
+		{
+			"path": "public/landing/ridge.webp",
+			"scene": "mountains",
+			"theme": "dark",
+			"width": 2880,
+			"height": 1440,
+			"bytes": 141300,
+			"sha256": "cfe59022d028253c7edfa850f9b4029c26a332c69ac1c5acb42ad668be33b4ff",
+			"sourceSha256": "969010a76e0399ecc8b4af5605c0d3e6f298e78a83045e631ffc1be8ea3a3c79",
+			"sourceCrop": [0, 1440, 2880, 2880],
+			"gaussianBlurRadius": 1.0
+		},
+		{
+			"path": "public/landing/palace-light.webp",
+			"scene": "palace",
+			"theme": "light",
+			"width": 2880,
+			"height": 1440,
+			"bytes": 139632,
+			"sha256": "1eed43da71cf5bbe100f8b953465e8aeba10cc6c51fda42d9740addbccde77fe",
+			"sourceSha256": "0c797ab2cc90a5512145dce878fad4fae603fcd08480c23d80b641ece00c834e",
+			"sourceCrop": [0, 0, 2880, 1440],
+			"gaussianBlurRadius": 4.0
+		},
+		{
+			"path": "public/landing/palace-dark.webp",
+			"scene": "palace",
+			"theme": "dark",
+			"width": 2880,
+			"height": 1440,
+			"bytes": 130458,
+			"sha256": "0fac114a9600e441eae00ebaf53e0f93c566ea496d0b153a95223a3814787eb9",
+			"sourceSha256": "0c797ab2cc90a5512145dce878fad4fae603fcd08480c23d80b641ece00c834e",
+			"sourceCrop": [0, 1440, 2880, 2880],
+			"gaussianBlurRadius": 4.0
+		}
+	]
+}

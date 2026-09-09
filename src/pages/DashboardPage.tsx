@@ -1,5 +1,4 @@
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { useTranslation } from "react-i18next";
 import { ActionGridCard } from "@/components/dashboard/ActionGridCard";
 import { AreaChartCard } from "@/components/dashboard/AreaChartCard";
@@ -13,6 +12,7 @@ import { RecentListCard } from "@/components/dashboard/RecentListCard";
 import { SecondaryMetricCard } from "@/components/dashboard/SecondaryMetricCard";
 import { SummaryMetricCard } from "@/components/dashboard/SummaryMetricCard";
 import { TrendLineCard } from "@/components/dashboard/TrendLineCard";
+import { ShowcaseHeader } from "@/components/ShowcaseHeader";
 import { useStatsOverviewViewModel } from "@/viewmodels/useStatsOverviewViewModel";
 
 export default function DashboardPage() {
@@ -21,7 +21,7 @@ export default function DashboardPage() {
 
 	return (
 		<div className="space-y-4">
-			<PageHeader
+			<ShowcaseHeader
 				title={t("pages.dashboard.title")}
 				description={t("pages.dashboard.description")}
 			/>
