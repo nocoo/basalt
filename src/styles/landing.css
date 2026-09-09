@@ -556,9 +556,6 @@
 	gap: 5px;
 	color: hsl(var(--basalt-foreground));
 }
-.landing-foundation {
-	border-top: 1px solid hsl(var(--basalt-border));
-}
 .landing-feature-grid {
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -887,6 +884,15 @@
 	--landing-brand-radius: 22px;
 	--landing-brand-ink: #2d454f;
 	--landing-brand-muted: #48616b;
+	--landing-brand-surface: #e4eeed;
+	--landing-brand-image: url("/landing/palace-light.webp");
+	--landing-brand-wash: linear-gradient(
+		90deg,
+		rgb(240 247 246 / 0.8) 26%,
+		rgb(240 247 246 / 0.08) 40%,
+		rgb(240 247 246 / 0.06) 60%,
+		rgb(240 247 246 / 0.84) 72%
+	);
 	position: relative;
 	isolation: isolate;
 	display: grid;
@@ -896,49 +902,28 @@
 	min-height: 560px;
 	margin-top: 100px;
 	padding: 44px 44px 68px;
-	overflow: hidden;
-	border: 1px solid rgb(122 156 164 / 0.2);
-	border-radius: var(--landing-brand-radius);
-	/* Clip filtered backgrounds and 3D layers together on mobile Safari. */
+	/* One rounded cut for the full composition, without a separate rim or inner radius. */
 	clip-path: inset(0 round var(--landing-brand-radius));
-	background: #e4eeed;
 	color: var(--landing-brand-ink);
 }
 .landing-brand-story::before {
 	content: "";
 	position: absolute;
-	z-index: -2;
-	inset: -8px;
-	background: url("/landing/palace-light.webp") center / cover;
-	filter: blur(2px) saturate(0.8);
-	pointer-events: none;
-}
-.landing-brand-story::after {
-	content: "";
-	position: absolute;
 	z-index: -1;
-	inset: 0;
-	border-radius: inherit;
-	background: linear-gradient(
-		90deg,
-		rgb(240 247 246 / 0.8) 26%,
-		rgb(240 247 246 / 0.08) 40%,
-		rgb(240 247 246 / 0.06) 60%,
-		rgb(240 247 246 / 0.84) 72%
-	);
+	inset: -8px;
+	background-color: var(--landing-brand-surface);
+	background-image: var(--landing-brand-wash), var(--landing-brand-image);
+	background-position: center;
+	background-size: cover;
+	filter: blur(2px) saturate(0.8);
 	pointer-events: none;
 }
 .dark :where(.landing-brand-story) {
 	--landing-brand-ink: #f4f7fb;
 	--landing-brand-muted: #e0e9f2;
-	border-color: rgb(195 217 237 / 0.24);
-	background: #677e91;
-}
-.dark :where(.landing-brand-story)::before {
-	background-image: url("/landing/palace-dark.webp");
-}
-.dark :where(.landing-brand-story)::after {
-	background: linear-gradient(
+	--landing-brand-surface: #677e91;
+	--landing-brand-image: url("/landing/palace-dark.webp");
+	--landing-brand-wash: linear-gradient(
 		90deg,
 		rgb(41 62 88 / 0.84) 26%,
 		rgb(41 62 88 / 0.08) 43%,
@@ -1004,6 +989,7 @@
 	width: 100%;
 	aspect-ratio: 1;
 	perspective: 1000px;
+	touch-action: pan-y pinch-zoom;
 }
 .landing-brand-float {
 	position: relative;
@@ -1063,15 +1049,25 @@
 	border: 1px solid rgb(238 187 212 / 0.32);
 	border-radius: 50%;
 }
-.landing-brand-motion {
+.landing-brand-controls {
 	position: absolute;
 	z-index: 2;
-	bottom: -40px;
+	bottom: -48px;
 	left: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+	width: max-content;
+	max-width: 100%;
+	transform: translateX(-50%);
+}
+.landing-brand-motion {
 	display: inline-flex;
 	align-items: center;
+	justify-content: center;
 	gap: 7px;
-	min-height: 32px;
+	min-height: 44px;
 	padding: 6px 12px;
 	border: 1px solid rgb(255 255 255 / 0.64);
 	border-radius: 20px;
@@ -1083,10 +1079,24 @@
 	font-size: 10px;
 	white-space: nowrap;
 	cursor: pointer;
-	transform: translateX(-50%);
 }
 .landing-brand-motion:hover {
 	background: rgb(255 255 255 / 0.86);
+}
+.landing-brand-motion:focus-visible {
+	outline: 2px solid var(--landing-brand-ink);
+	outline-offset: 3px;
+}
+.landing-brand-motion:disabled {
+	cursor: wait;
+	opacity: 0.7;
+}
+.landing-brand-motion[aria-pressed="true"] {
+	background: #e5f3f3;
+}
+.landing-brand-motion-hint {
+	font-size: 10px;
+	color: var(--landing-brand-ink);
 }
 .dark :where(.landing-brand-motion) {
 	border-color: rgb(235 246 255 / 0.64);
@@ -1096,6 +1106,9 @@
 }
 .dark :where(.landing-brand-motion:hover) {
 	background: rgb(235 246 255 / 0.94);
+}
+.dark :where(.landing-brand-motion[aria-pressed="true"]) {
+	background: #d8edf3;
 }
 @keyframes landing-tower-float {
 	from {
@@ -1296,23 +1309,21 @@
 		padding-inline: 16px;
 	}
 	.landing-brand-story {
-		grid-template-columns: minmax(0, 1fr);
-		gap: 0;
-		margin-top: 72px;
-		padding: 40px 28px;
-		text-align: center;
-	}
-	.landing-brand-story::after {
-		background: linear-gradient(
+		--landing-brand-wash: linear-gradient(
 			180deg,
 			rgb(240 247 246 / 0.54) 24%,
 			rgb(240 247 246 / 0.06) 38%,
 			rgb(240 247 246 / 0.1) 53%,
 			rgb(240 247 246 / 0.9) 68%
 		);
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0;
+		margin-top: 72px;
+		padding: 40px 28px;
+		text-align: center;
 	}
-	.dark :where(.landing-brand-story)::after {
-		background: linear-gradient(
+	.dark :where(.landing-brand-story) {
+		--landing-brand-wash: linear-gradient(
 			180deg,
 			rgb(41 62 88 / 0.84) 24%,
 			rgb(41 62 88 / 0.1) 38%,
@@ -1325,7 +1336,7 @@
 	}
 	.landing-brand-artwork {
 		max-width: 440px;
-		margin: 24px auto 46px;
+		margin: 24px auto 58px;
 	}
 	.landing-brand-details {
 		max-width: 400px;
@@ -1593,7 +1604,7 @@
 	.landing-brand-glow {
 		transform: none;
 	}
-	.landing-brand-motion {
+	.landing-brand-controls {
 		display: none;
 	}
 	.landing :where(*),
