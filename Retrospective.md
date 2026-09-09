@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `CLAUDE.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-09: Release generation used stale installed dependencies
+
+- **What:** v2.1.3 passed local hooks but failed the clean CI SEO check before tagging or deployment.
+- **Why:** Release synchronized `bun.lock` with `--lockfile-only`, leaving the installed Lucide version at 1.41.0 while the manifest and lockfile required 1.42.0. The versions emitted different SVG classes in prerendered HTML.
+- **Follow-up:** Install with `--frozen-lockfile` before generating release artifacts. Regression tests require installation before generation and stop publication on installation failure; regenerate the homepage against the locked dependencies.
+
 ## 2026-04: npm override for a direct dependency
 
 - **What:** `overrides` for a package that is also a direct dependency failed at Cloudflare deploy (`EOVERRIDE`) unless both specs matched verbatim. `bun install` / `vite build` did not catch it.

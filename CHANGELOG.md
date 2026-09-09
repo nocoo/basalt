@@ -28,7 +28,7 @@
 - Keep screen-reader labels inside the dashboard scroll boundary, and serve prerendered HTML at the same extensionless URLs used by the sitemap and canonical tags.
 - Initialize the mobile layout at the current viewport width so dashboards do not briefly reserve desktop sidebar space on first render.
 - Contain positioned component previews within their cards and wrap source filenames to prevent horizontal overflow in the catalog.
-- Regenerate and stage prerendered landing and SEO content during release so version information stays synchronized.
+- Install locked dependencies before regenerating and staging release artifacts so prerendered content matches clean CI builds and version information stays synchronized.
 
 ## [2.1.2] - 2026-09-08
 

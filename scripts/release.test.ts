@@ -362,10 +362,17 @@ describe("executeRelease gates and failure paths", () => {
 		expect(commands.some((c) => c.cmd === "gh" && c.args[0] === "release")).toBe(false);
 	});
 
-	it("regenerates and stages the landing page metadata after bumping the version", async () => {
+	it("installs locked dependencies before regenerating release artifacts", async () => {
 		const { ctx, commands, filesWritten } = createMockRunnerContext();
 		const run = ctx.run;
+		let dependenciesInstalled = false;
 		ctx.run = async (cmd, args, opts) => {
+			if (cmd === "bun" && args[0] === "install" && args.includes("--frozen-lockfile")) {
+				dependenciesInstalled = true;
+			}
+			if (cmd === "bun" && ["scripts/catalog-api-cli.ts", "scripts/seo-cli.ts"].includes(args[0])) {
+				expect(dependenciesInstalled).toBe(true);
+			}
 			if (cmd === "bun" && args[0] === "scripts/seo-cli.ts") {
 				expect(filesWritten["package.json"]).toBe("2.0.4");
 			}
@@ -391,6 +398,28 @@ describe("executeRelease gates and failure paths", () => {
 				"public/_headers",
 			]),
 		);
+	});
+
+	it("blocks generation and publication if locked dependencies cannot be installed", async () => {
+		const { ctx, commands } = createMockRunnerContext();
+		const run = ctx.run;
+		ctx.run = async (cmd, args, opts) => {
+			if (cmd === "bun" && args[0] === "install" && args.includes("--frozen-lockfile")) {
+				return { code: 1, stdout: "", stderr: "dependency download failed" };
+			}
+			return run(cmd, args, opts);
+		};
+		await expect(executeRelease({ bumpArg: "patch", isDryRun: false }, ctx)).rejects.toThrow(
+			"Failed to install locked dependencies: dependency download failed",
+		);
+		expect(
+			commands.some(
+				(command) =>
+					(command.cmd === "bun" && command.args[0].startsWith("scripts/")) ||
+					(command.cmd === "git" && ["add", "commit", "push", "tag"].includes(command.args[0])) ||
+					(command.cmd === "gh" && command.args[0] === "release"),
+			),
+		).toBe(false);
 	});
 
 	it("blocks commit and publication if site metadata cannot be regenerated", async () => {

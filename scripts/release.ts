@@ -488,6 +488,12 @@ export async function executeRelease(
 	updateWorkspaceLockVersion(ctx.readLockfile(), newVersion, newVersion);
 	ctx.log("synchronized bun.lock");
 
+	// Lockfile-only leaves installed renderers stale after dependency updates.
+	const installResult = await ctx.run("bun", ["install", "--frozen-lockfile", "--ignore-scripts"]);
+	if (installResult.code !== 0) {
+		throw new Error(`Failed to install locked dependencies: ${installResult.stderr.trim()}`);
+	}
+
 	ctx.updateChangelog(changelog);
 
 	// Regenerate public surface manifest and package registry with new version
