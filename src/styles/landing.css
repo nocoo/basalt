@@ -884,6 +884,7 @@
 	line-height: 1.85;
 }
 .landing-brand-story {
+	--landing-brand-radius: 22px;
 	--landing-brand-ink: #2d454f;
 	--landing-brand-muted: #48616b;
 	position: relative;
@@ -897,7 +898,9 @@
 	padding: 44px 44px 68px;
 	overflow: hidden;
 	border: 1px solid rgb(122 156 164 / 0.2);
-	border-radius: 22px;
+	border-radius: var(--landing-brand-radius);
+	/* Clip filtered backgrounds and 3D layers together on mobile Safari. */
+	clip-path: inset(0 round var(--landing-brand-radius));
 	background: #e4eeed;
 	color: var(--landing-brand-ink);
 }
@@ -915,6 +918,7 @@
 	position: absolute;
 	z-index: -1;
 	inset: 0;
+	border-radius: inherit;
 	background: linear-gradient(
 		90deg,
 		rgb(240 247 246 / 0.8) 26%,

@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Fixed
+- Keep the palace backdrop and animated tower layers inside the brand card's rounded boundary on mobile browsers.
+
 ## [2.1.3] - 2026-09-09
 
 ### Added
