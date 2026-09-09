@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.1.3] - 2026-09-09
+
 ### Added
 - Self-hosted Open Graph, Twitter, JSON-LD, sitemap, robots and `llms.txt` so search and AI crawlers can read the catalog without JavaScript.
 - Preview responses send `X-Robots-Tag: noindex`; production stays indexable and advertises `/llms.txt`.
