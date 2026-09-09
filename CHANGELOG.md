@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [2.1.6] - 2026-09-09
+
+### Changed
+- Keep mobile tower tilt off by default. Request motion permission only after an explicit click on Enable tilt, so ordinary touches never open a permission prompt.
+
 ## [2.1.5] - 2026-09-09
 
 ### Added
