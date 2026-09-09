@@ -1,6 +1,6 @@
 # Basalt AI & Machine Usage Guide
 
-This document describes how AI code assistants, automated agents, and developers can consume `@nocoo/basalt` (v2.1.3).
+This document describes how AI code assistants, automated agents, and developers can consume `@nocoo/basalt` (v2.1.4).
 
 ---
 

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.1.4] - 2026-09-09
+
 ### Fixed
 - Keep the palace backdrop and animated tower layers inside the brand card's rounded boundary on mobile browsers.
 - Deploy with Wrangler 4 so static pages honor Worker-first routing, including www redirects and security headers. Verify production redirects, the live version, and prerendered HTML after every deployment.
