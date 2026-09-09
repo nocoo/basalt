@@ -1,8 +1,7 @@
-import { Pause, Play, Smartphone } from "lucide-react";
+import { Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { BrandArtwork } from "./BrandArtwork";
 
-type TiltState = "unavailable" | "ready" | "requesting" | "enabled" | "denied";
 type PermissionedOrientation = typeof DeviceOrientationEvent & {
 	requestPermission?: () => Promise<"granted" | "denied">;
 };
@@ -25,11 +24,13 @@ function resetArtwork(node: HTMLDivElement) {
 export function InteractiveBrandArtwork() {
 	const artwork = useRef<HTMLDivElement>(null);
 	const touchPointer = useRef<number | null>(null);
+	const motionReceived = useRef(false);
+	const permissionRequested = useRef(false);
 	const [visible, setVisible] = useState(false);
 	const [playing, setPlaying] = useState(true);
 	const [motionAllowed, setMotionAllowed] = useState(false);
 	const [touchDevice, setTouchDevice] = useState(false);
-	const [tilt, setTilt] = useState<TiltState>("unavailable");
+	const [tiltPermission, setTiltPermission] = useState<"default" | "granted" | "denied">("default");
 	const active = playing && visible && motionAllowed;
 
 	useEffect(() => {
@@ -53,9 +54,6 @@ export function InteractiveBrandArtwork() {
 		const updatePointer = () => setTouchDevice(coarsePointer.matches);
 		updateMotion();
 		updatePointer();
-		if (window.isSecureContext && typeof window.DeviceOrientationEvent !== "undefined") {
-			setTilt("ready");
-		}
 		reducedMotion.addEventListener("change", updateMotion);
 		coarsePointer.addEventListener("change", updatePointer);
 		document.addEventListener("visibilitychange", updateMotion);
@@ -74,7 +72,14 @@ export function InteractiveBrandArtwork() {
 			resetArtwork(node);
 			return;
 		}
-		if (tilt !== "enabled" || !touchDevice) return;
+		if (
+			!touchDevice ||
+			!window.isSecureContext ||
+			typeof window.DeviceOrientationEvent === "undefined" ||
+			tiltPermission === "denied"
+		) {
+			return;
+		}
 
 		let neutral: { beta: number; gamma: number; angle: number } | null = null;
 		let frame = 0;
@@ -85,6 +90,7 @@ export function InteractiveBrandArtwork() {
 			if (beta === null || gamma === null || !Number.isFinite(beta) || !Number.isFinite(gamma)) {
 				return;
 			}
+			motionReceived.current = true;
 			if (touchPointer.current !== null) {
 				neutral = null;
 				return;
@@ -116,24 +122,19 @@ export function InteractiveBrandArtwork() {
 			window.cancelAnimationFrame(frame);
 			resetArtwork(node);
 		};
-	}, [active, tilt, touchDevice]);
+	}, [active, tiltPermission, touchDevice]);
 
-	async function toggleTilt() {
-		if (tilt === "enabled") {
-			setTilt("ready");
-			return;
-		}
-		setTilt("requesting");
+	async function requestTiltAccess() {
+		if (motionReceived.current || permissionRequested.current || !window.isSecureContext) return;
+		const orientation = window.DeviceOrientationEvent as PermissionedOrientation | undefined;
+		if (!orientation?.requestPermission) return;
+		permissionRequested.current = true;
 		try {
-			const orientation = window.DeviceOrientationEvent as PermissionedOrientation;
-			// Safari requires this call directly inside the button's click handler.
-			const permission = orientation.requestPermission
-				? await orientation.requestPermission()
-				: "granted";
-			setTilt(permission === "granted" ? "enabled" : "denied");
-			if (permission === "granted") setPlaying(true);
+			// Listen by default; Safari may still require access from a trusted touch gesture.
+			const permission = await orientation.requestPermission();
+			setTiltPermission(permission === "granted" ? "granted" : "denied");
 		} catch {
-			setTilt("denied");
+			setTiltPermission("denied");
 		}
 	}
 
@@ -168,7 +169,11 @@ export function InteractiveBrandArtwork() {
 					(event.clientY - bounds.top) / bounds.height - 0.5,
 				);
 			}}
-			onPointerUp={releasePointer}
+			onPointerUp={(event) => {
+				const touchedArtwork = touchPointer.current === event.pointerId;
+				releasePointer();
+				if (active && touchedArtwork) void requestTiltAccess();
+			}}
 			onPointerCancel={releasePointer}
 			onLostPointerCapture={releasePointer}
 			onPointerLeave={() => {
@@ -189,29 +194,6 @@ export function InteractiveBrandArtwork() {
 						)}
 						<span>{playing ? "Pause motion" : "Resume motion"}</span>
 					</button>
-					{touchDevice &&
-						(tilt === "unavailable" || tilt === "denied" ? (
-							<span className="landing-brand-motion-hint" role="status">
-								Drag to explore
-							</span>
-						) : (
-							<button
-								type="button"
-								className="landing-brand-motion"
-								aria-pressed={tilt === "enabled"}
-								disabled={tilt === "requesting"}
-								onClick={toggleTilt}
-							>
-								<Smartphone size={13} aria-hidden="true" />
-								<span>
-									{tilt === "enabled"
-										? "Tilt on"
-										: tilt === "requesting"
-											? "Enabling…"
-											: "Enable tilt"}
-								</span>
-							</button>
-						))}
 				</div>
 			}
 		/>

@@ -5,7 +5,7 @@
 ## [2.1.5] - 2026-09-09
 
 ### Added
-- Let mobile visitors tilt the corner tower with their phone after enabling motion access, with touch dragging as a fallback and normal vertical scrolling preserved.
+- Enable corner-tower tilt by default on mobile, without an activation button. Request native motion permission on the first touch of the artwork only when required, and preserve touch dragging and vertical page scrolling.
 
 ### Fixed
 - Remove the brand card's lower-edge seams by painting the backdrop as one layer, clipping it once, and removing the adjacent divider and card outline.
