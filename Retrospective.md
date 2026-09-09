@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `CLAUDE.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-09: Deployment ignored Worker-first asset routing
+
+- **What:** The v2.1.3 main deployment succeeded, but existing static pages on www returned 200 instead of redirecting to the apex, and lacked the Worker's security headers. `/api/live` redirected correctly.
+- **Why:** `wrangler-action@v3` installed Wrangler 3.90.0, which warned about and ignored `assets.run_worker_first`. Unit tests exercised the handler directly and could not detect the deployment tool ignoring its routing configuration.
+- **Follow-up:** Pin Wrangler 4.130.0 and Node 24 in both CD paths. After deployment, check real static and API redirects, security headers, prerendered HTML, and the version from the root manifest. Verify the checks fail against the old deployment and pass against the Wrangler 4 local asset runtime.
+
 ## 2026-09: Release generation used stale installed dependencies
 
 - **What:** v2.1.3 passed local hooks but failed the clean CI SEO check before tagging or deployment.

@@ -20,7 +20,7 @@ This file is the **contract**. Hooks, CI, and config are **enforcement**. If the
 ## Project Invariants
 
 - Root `package.json` is private (the site). Never `npm publish` the repo root. Publish only `packages/basalt` (`@nocoo/basalt`).
-- Worker name is `theme-basalt`; `[assets]` is `./dist`. `/api/live` is Vite middleware only. No D1. Do not laptop-`wrangler deploy` — site CD is `release.yml`.
+- Worker name is `theme-basalt`; `[assets]` is `./dist`. `/api/live` reports the root version in Vite and the Worker. No D1. Do not laptop-`wrangler deploy` — site CD is `release.yml`.
 - Coverage is models/viewmodels/lib + `packages/basalt/src` (`vitest.config.ts` include). Pages are not in the 95% denominator.
 - MVVM: viewmodels have no View/DOM imports; pages stay thin.
 - CSS tokens ship in the package. No secrets in the tarball.
@@ -73,7 +73,7 @@ Today: pre-commit typecheck/lint/`test` (no coverage)/gitleaks `--staged` on the
 | G2 deps | osv `bun.lock` | enforced | pre-push; CI bun-quality |
 | Bundler | `vite build` → `dist/` | enforced | pre-push `build`; CI pre-command; CD `release.yml` |
 | Docs | numbered doc / INTEGRATION.md if chrome or API changes | manual | human review |
-| Site CD | tag `vX.Y.Z` == root package.json, on main, CI validated | enforced | `.github/workflows/release.yml` |
+| Site CD | tag `vX.Y.Z` == root package.json, on main, CI validated; production redirects, headers and version verified | enforced | `.github/workflows/release.yml`, `scripts/deploy-smoke.ts` |
 | npm `@nocoo/basalt` | `package:prepublish` then publish package dir | manual | `packages/basalt/scripts/verify-pack.ts` |
 
 | Hook | Org bar | Status | Evidence |
