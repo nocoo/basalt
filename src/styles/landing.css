@@ -1363,9 +1363,6 @@
 	.landing-nav :where(a) {
 		font-size: 12px;
 	}
-	.landing-nav :where(a:last-child) {
-		display: none;
-	}
 	.landing-preview {
 		margin-top: 44px;
 	}
@@ -1462,6 +1459,23 @@
 		gap: 12px;
 	}
 }
+@media (max-width: 600px) {
+	.landing-header-inner {
+		flex-wrap: wrap;
+		gap: 4px 12px;
+		padding-block: 8px 6px;
+	}
+	.landing-header-actions {
+		margin-left: auto;
+	}
+	.landing-nav {
+		order: 3;
+		flex: 1 0 100%;
+		justify-content: center;
+		margin-inline: 0;
+		gap: 8px 24px;
+	}
+}
 @media (max-width: 480px) {
 	.landing-header {
 		top: 12px;
@@ -1474,12 +1488,7 @@
 		display: none;
 	}
 	.landing-nav {
-		margin-left: auto;
-		margin-right: 8px;
-		gap: 14px;
-	}
-	.landing-nav :where(a:first-child) {
-		display: none;
+		gap: 8px 18px;
 	}
 	.landing-header-actions {
 		gap: 4px;

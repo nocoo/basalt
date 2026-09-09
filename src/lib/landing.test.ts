@@ -1,7 +1,12 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { applyCrawlPage, catalogCrawlPage, homeCrawlPage, uiIndexCrawlPage } from "./crawl";
-import { LANDING_HEADING, LANDING_RELATED_LINKS, LANDING_TEMPLATES } from "./landing";
+import {
+	LANDING_HEADING,
+	LANDING_PRIMARY_LINKS,
+	LANDING_RELATED_LINKS,
+	LANDING_TEMPLATES,
+} from "./landing";
 import {
 	applyLandingToIndexHtml,
 	renderLandingBody,
@@ -24,6 +29,11 @@ describe("landing document", () => {
 		expect(document.querySelector('[href="#main-content"]')?.textContent).toBe(
 			"Skip to main content",
 		);
+		const nav = document.querySelector(".landing-nav");
+		expect(nav).not.toBeNull();
+		for (const link of LANDING_PRIMARY_LINKS) {
+			expect(nav?.querySelector(`[href="${link.href}"]`)?.textContent).toBe(link.label);
+		}
 		for (const template of LANDING_TEMPLATES) {
 			expect(
 				document.querySelector(`.landing-template-link[href="${template.href}"]`),
@@ -37,6 +47,13 @@ describe("landing document", () => {
 		]) {
 			expect(body).toContain(url);
 		}
+	});
+
+	it("keeps every header navigation link visible on small screens", () => {
+		const css = readFileSync("src/styles/landing.css", "utf8");
+		expect(css).not.toContain(".landing-nav :where(a:first-child)");
+		expect(css).not.toContain(".landing-nav :where(a:last-child)");
+		expect(css).toContain("flex: 1 0 100%");
 	});
 
 	it("keeps index.html synchronized with the shared page and canonical metadata", () => {
