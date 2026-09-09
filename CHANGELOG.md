@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.1.5] - 2026-09-09
+
 ### Added
 - Let mobile visitors tilt the corner tower with their phone after enabling motion access, with touch dragging as a fallback and normal vertical scrolling preserved.
 
