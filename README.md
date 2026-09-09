@@ -1,46 +1,44 @@
 <p align="center">
-  <img src="assets/brand/icon-rounded.png" alt="Basalt" width="128" height="128" />
+  <img src="assets/brand/icon-rounded.png" width="128" height="128" alt="Basalt" />
 </p>
 
-# Basalt
+<h1 align="center">Basalt</h1>
 
-> Matte design system, UI component library, and documentation catalog.  
-> npm: [`@nocoo/basalt`](https://www.npmjs.com/package/@nocoo/basalt) · Live showcase: [`https://basaltui.com`](https://basaltui.com)
+<p align="center">为 React 应用提供统一的控件、卡片、图表和页面布局。</p>
 
-The identity is a Hanbaiyu marble Forbidden City corner tower with blue-and-green roofs, pink columns and yellow-gold detail, seen from a shallow elevated angle. The README uses its pale architectural presentation; navigation, login, loading and browser marks use the transparent foreground. [Logo comparison](https://hexly.ai/logos/basalt) · [Brand usage](assets/brand/README.md).
+<p align="center">
+  <a href="https://basaltui.com">站点</a> ·
+  <a href="docs/README.en.md">English</a>
+</p>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-white.svg?style=flat-square)](https://opensource.org/licenses/MIT)
-[![Framework: Vite](https://img.shields.io/badge/Framework-Vite-646cff.svg?style=flat-square&logo=vite)](https://vite.dev)
-[![Style: Tailwind](https://img.shields.io/badge/Style-Tailwind_CSS-38bdf8.svg?style=flat-square&logo=tailwindcss)](https://tailwindcss.com)
+## 这是什么
 
-## Overview
+Basalt 包含发布到 npm 的 [@nocoo/basalt](https://www.npmjs.com/package/@nocoo/basalt) 组件库，以及展示组件、API 和使用场景的网站。适合在 React 应用中统一表单、导航、数据展示与页面布局。
 
-**Basalt** is a dual-purpose repository:
-1. **`@nocoo/basalt`** (`packages/basalt`): An ESM design system library with 122 JavaScript entrypoints and 3 CSS exports, granular subpaths, calculated luminance hierarchy, and support for both Tailwind CSS v4 and zero-dependency standalone CSS.
-2. **Catalog Showcase Site** (repo root): A complete documentation, catalog browser (`/ui`), and scenario library with 24 example dashboard pages and 290 interactive component scenarios.
+视觉上使用哑光表面和分层明度，将页面底色、内容区域和卡片区分开。示例站中的健康、财务、聊天和网络页面使用演示数据；组件库不提供业务后端或身份认证服务。
 
-## Design Philosophy
+## 功能
 
-* **3-Tier Luminance Hierarchy:** Base body (L0) → Content island (L1) → Inner cards and surfaces (L2), establishing tactile depth through matte luminance rather than borders.
-* **Subdued, not dim:** Measured contrast ratios across light and dark modes with dedicated semantic color roles.
-* **Precision engineered:** Inter typography, DM Sans display headings, consistent 1.5px stroke Lucide icons.
-* **Granular ESM Architecture:** Lightweight core barrel for common controls + granular subpaths for complex charts and heavy widgets to keep bundles lean.
+- 提供按钮、输入、表单、弹层、表格、日期选择、侧栏、通知和复合卡片等 React 组件。
+- 提供图表、统计区块与页面布局示例，并通过独立导入路径使用较大的控件或图表。
+- 支持明暗主题、强调色和自定义色板；在同一套 tokens 下组织多层表面。
+- 同时提供 Tailwind CSS v4 与预编译 standalone CSS 两种样式入口。
+- 在 `/ui` 浏览组件目录、交互示例、属性说明和源代码；参考应用布局、登录页和资源管理的完整示例。
+- 提供 Next.js 客户端边界、主题初始化和 SSR 集成说明。
 
-## Library Quickstart
+## 使用
 
-### Installation
+在已有的 React 19 / React DOM 19 应用中安装组件库与图标依赖：
 
 ```bash
-# Install package and icon peer
 bun add @nocoo/basalt lucide-react
-# or npm install @nocoo/basalt lucide-react
 ```
 
-### CSS Setup
+<a id="css-setup"></a>
 
-#### Option A: With Tailwind CSS v4 (Recommended)
+### 配置样式
 
-In your main CSS file, import Basalt tokens before Tailwind:
+使用 Tailwind CSS v4 时，在主样式文件中引入 tokens 和 Tailwind。下面的 `@source` 路径以样式文件位于 `src/` 为例，需按实际位置调整：
 
 ```css
 @source "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
@@ -57,15 +55,17 @@ In your main CSS file, import Basalt tokens before Tailwind:
 }
 ```
 
-#### Option B: Standalone CSS (No Tailwind)
+未使用 Tailwind 的应用可在入口导入预编译样式：
 
 ```ts
 import "@nocoo/basalt/styles/standalone";
 ```
 
-Standalone CSS packages design tokens, control surface utilities, and keyframes without injecting global resets or preflight.
+Standalone CSS 包含 tokens、控件样式和动画，不注入全局 reset；应用负责页面容器的高度与基础布局。
 
-### Component Usage
+<a id="component-usage"></a>
+
+### 使用组件
 
 ```tsx compile:readme-quickstart
 import { Button, Input, LayerCard, ThemeProvider } from "@nocoo/basalt";
@@ -89,93 +89,70 @@ export function App() {
 }
 ```
 
-Optional peer dependencies are only required when importing granular features that depend on them (e.g. `recharts` for `@nocoo/basalt/charts/*`).
+图表路径 `@nocoo/basalt/charts/*` 需要 Recharts 3。当前内置 DatePicker 和 DataTable 自行实现交互，不要求安装声明为可选 peer 的 react-day-picker 或 TanStack Table；直接集成这些库时再安装它们。Next.js 中应将交互组件放在 `"use client"` 模块内。
 
-See [INTEGRATION.md](INTEGRATION.md) for setup, theme and custom palette preferences, Next.js client boundaries, SSR initialization, and forms. [Application recipes](packages/basalt/ai/RECIPES.md) supply complete AppFrame, Login, and Resources modules, also included in the installed package.
+主题、路由适配、表单与 SSR 的完整示例见 [INTEGRATION.md](INTEGRATION.md)；应用布局示例见 [RECIPES.md](packages/basalt/ai/RECIPES.md)。
 
-## Example Pages in Showcase
+## 开发
 
-The showcase site demonstrates Basalt across 24 realistic domain dashboards and layout scenarios:
-
-| Route | Focus / Template |
-|---|---|
-| `/` | Analytics Dashboard with card grids and KPI stat strips |
-| `/accounts` | Multi-account wallet balances, cards, and recent activity |
-| `/progress-tracking` | Budget category tracking and progress meters |
-| `/flow-comparison` | Inflow/outflow comparison and financial flow charts |
-| `/portfolio` | Asset allocation donut, portfolio performance, holdings |
-| `/components` | Showcase wall of reusable card blocks and widgets |
-| `/forms` | Form layouts, inputs, switches, radios, and validation patterns |
-| `/navigation` | Pagers, breadcrumbs, command palette, and step flows |
-| `/interactive` | Dialogs, sheets, context menus, tooltips, and toasts |
-| `/data` | Tables, filters, search, and tabular records |
-| `/layout` | 3-tier surface hierarchy (L0 / L1 / L2 / Wells) |
-| `/dialogs` | Confirm dialogs, forms in dialogs, and nested overlays |
-| `/chat` | Chat inbox, streaming bubbles, composers, and dock |
-| `/settings` | Profile, notifications, security, and appearance tabs |
-| `/palette` | Twelve candy accents, saved custom palettes, and five fixed chart colors |
-| `/interactions` | Native forms, toasts, and confirmation flow demo |
-| `/health` | Health dashboard with slot bars and timelines |
-| `/wearable` | Wearable device vitals, metrics, and activity charts |
-| `/banking` | Financial analytics, cash flow, and banking metrics |
-| `/network` | Network telemetry and operations monitoring |
-| `/login` | Standalone badge-style authentication screen |
-| `/static-page` | Clean reading layout for legal or markdown content |
-| `/loading` | Full-screen and card skeleton loading states |
-| `/ui` | Interactive component catalog with live props, source, and docs |
-
-## Repository Architecture
-
-```
-src/
-  pages/          Catalog, UI documentation, and 24 dashboard example pages
-  components/     Site chrome and showcase-specific layout components
-  viewmodels/     Showcase viewmodels (MVVM; no direct View/DOM imports)
-  models/         Mock catalog data and types
-  lib/            Client utilities, version constants, and i18n
-packages/
-  basalt/         Public npm package (@nocoo/basalt)
-    src/
-      components/ UI components and compound surfaces
-      charts/     Visualization primitives and charts
-      providers/  Theme, Accent, and Link providers
-      utils/      Styling and focus/indicator helpers
-docs/             Architecture guides, reviews, and maturity programs
-fixtures/         External consumer test fixtures (Tailwind, Standalone, Next.js, Heavy)
-scripts/          Catalog generators, consumer gates, and release automation
-```
-
-## Developer Commands
+仓库使用 Bun workspaces，`packageManager` 指定 Bun 1.4.0。Node.js 建议使用 24 或更新版本。
 
 ```bash
-# Start local development server (port 7003)
-bun dev
-
-# Run full type checking across app, scripts, and package
-bun run typecheck
-
-# Lint with Biome
-bun run lint
-
-# Build showcase site for production
-bun run build
-
-# Run unit and behavior tests with 95% coverage requirement
-bun run test:coverage
-
-# Run complete package prepublish verification gate (10 steps)
-bun run package:prepublish
-
-# Release workflow (main branch and CI success gated)
-bun run release
+git clone https://github.com/nocoo/basalt.git
+cd basalt
+bun install --frozen-lockfile
+bun run dev
 ```
 
-## Documentation & Policies
+示例站位于 `http://localhost:7003`，无需后端账号。站点代码在 `src/`，公开组件源码在 `packages/basalt/src/`；开发服务器直接引用工作区源码。
 
-- [INTEGRATION.md](INTEGRATION.md) — Complete application chrome, SSR, forms, and migration guide.
-- [Public API & Compatibility Policy](packages/basalt/ai/COMPATIBILITY.md) — SemVer contracts, exports manifest, and lifecycle policies.
-- [CLAUDE.md](CLAUDE.md) — Contributor and agent handbook.
+```bash
+bun run typecheck
+bun run lint
+bun run build
+bun run preview
+bun run --cwd packages/basalt build
+```
 
-## License
+站点产物为根目录 `dist/`，组件库产物为 `packages/basalt/dist/`。站点使用 Cloudflare Workers 静态资源托管；`/api/live` 只存在于 Vite 开发服务器。根 package 是私有示例站，npm 包位于 `packages/basalt/`。
 
-[MIT](https://opensource.org/licenses/MIT)
+## 测试
+
+| 测试层 / 场景 | 从仓库根目录执行 |
+| --- | --- |
+| 单元与组件测试 | `bun run test` |
+| Tailwind / standalone 外部应用集成 | `bun run consumer:tailwind`、`bun run consumer:standalone` |
+| Next.js SSR 与浏览器交互 | `bun run consumer:next` |
+| 图表与可选依赖集成 | `bun run consumer:heavy` |
+| 文档代码示例 | `bun run consumer:docs` |
+| 示例站浏览器测试 | `bun run test:showcase` |
+
+浏览器测试前执行 `bun run playwright:install`。外部应用测试会在临时目录打包、安装依赖和构建，需要 npm 与网络，并自行管理测试端口。执行 `consumer:docs` 前先运行 `bun run --cwd packages/basalt build`。可用 `bun run test:coverage` 生成单元测试报告；各类夹具说明见 [fixtures/README.md](fixtures/README.md)。
+
+## 技术栈
+
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
+![React](https://img.shields.io/badge/React-149ECA?logo=react&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white)
+![Radix UI](https://img.shields.io/badge/Radix_UI-161618?logo=radixui&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
+
+| 部分 | 实现 |
+| --- | --- |
+| 组件库 | React、TypeScript、Radix UI、ESM 分路径导出 |
+| 样式与图表 | CSS tokens、Tailwind CSS / standalone CSS、Recharts、Lucide |
+| 示例站 | Vite、React Router、i18next、Cloudflare Workers 静态资源 |
+| 开发与测试 | Bun、Biome、Vitest、Testing Library、Playwright、TypeScript 消费者夹具 |
+
+## 文档
+
+- [应用集成](INTEGRATION.md)
+- [应用布局、登录与资源管理示例](packages/basalt/ai/RECIPES.md)
+- [包使用说明](packages/basalt/README.md)
+- [公开 API 与兼容性](packages/basalt/ai/COMPATIBILITY.md)
+- [组件目录](https://basaltui.com/ui)
+- [品牌资源](assets/brand/README.md)
+
+## 许可证
+
+[MIT](LICENSE) © 2026 Zheng Li
