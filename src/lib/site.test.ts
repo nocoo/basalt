@@ -8,7 +8,6 @@ import {
 	imageUrl,
 	jsonLd,
 	jsonLdScript,
-	previewRobotTag,
 	renderHeaders,
 	renderLlms,
 	renderLlmsFull,
@@ -19,7 +18,6 @@ import {
 	SHOWCASE_TITLE_KEYS,
 	SITE,
 	SITE_ORIGIN,
-	serviceDocLink,
 	sitemapPaths,
 } from "./site";
 
@@ -142,11 +140,6 @@ describe("site metadata", () => {
 	});
 
 	it("publishes service-doc headers without preview noindex", () => {
-		expect(previewRobotTag()).toBe("noindex");
-		expect(serviceDocLink()).toBe(
-			`<${SITE_ORIGIN}/llms.txt>; rel="service-doc"; type="text/plain"`,
-		);
-		expect(serviceDocLink("https://basalt.dev.hexly.ai")).toContain("basalt.dev.hexly.ai/llms.txt");
 		const headers = renderHeaders();
 		expect(headers).toContain('rel="service-doc"');
 		expect(headers).not.toContain("X-Robots-Tag");

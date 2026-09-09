@@ -322,14 +322,6 @@ export function renderHeaders(): string {
 	].join("\n");
 }
 
-export function previewRobotTag(): string {
-	return "noindex";
-}
-
-export function serviceDocLink(origin = SITE_ORIGIN): string {
-	return `<${origin}/llms.txt>; rel="service-doc"; type="text/plain"`;
-}
-
 export function requiredIndexHtmlSnippets(): string[] {
 	return [
 		`<title>${escapeXml(SITE.homeTitle)}</title>`,
