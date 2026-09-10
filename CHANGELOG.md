@@ -2,6 +2,23 @@
 
 ## [Unreleased]
 
+## [2.1.7] - 2026-09-10
+
+### Changed
+- Simplify component library internals
+- Align lucide-react with root
+- Sync mobile motion guidance
+- Upgrade lucide-react to 1.43.0
+
+### Fixed
+- Show landing header links on mobile
+- Make mobile tilt opt in
+- Enable mobile tilt by default
+- Refine tower card and mobile motion
+
+### Removed
+- [CO][20260910-0204] Remove unused previewRobotTag and serviceDocLink
+
 ## [2.1.6] - 2026-09-09
 
 ### Changed
