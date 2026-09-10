@@ -113,16 +113,10 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 				const handleKeyEvent = (event: React.KeyboardEvent) => {
 					if (event.key === "Enter" || event.key === " " || event.key === "Spacebar") {
 						event.preventDefault();
-						event.stopPropagation();
-						if (typeof event.nativeEvent?.stopImmediatePropagation === "function") {
-							event.nativeEvent.stopImmediatePropagation();
-						}
-					} else {
-						// For non-activation keys like Tab, suppress user handlers from running while preserving browser default navigation
-						event.stopPropagation();
-						if (typeof event.nativeEvent?.stopImmediatePropagation === "function") {
-							event.nativeEvent.stopImmediatePropagation();
-						}
+					}
+					event.stopPropagation();
+					if (typeof event.nativeEvent?.stopImmediatePropagation === "function") {
+						event.nativeEvent.stopImmediatePropagation();
 					}
 				};
 
@@ -147,10 +141,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 					onAuxClickCapture: blockActivationEvent,
 				};
 
-				const { disabled: _ignoredChildDisabled, ...sanitizedProps } = childElement.props;
-
 				const sanitizedChild = React.cloneElement(childElement, {
-					...sanitizedProps,
 					...blockedHandlers,
 					...(isNativeButton ? { disabled: true } : {}),
 					"aria-disabled": true,

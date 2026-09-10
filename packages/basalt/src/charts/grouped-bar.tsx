@@ -1,17 +1,5 @@
 import type { ReactNode } from "react";
-import { Bar, CartesianGrid, BarChart as RechartsBar, Tooltip, XAxis, YAxis } from "recharts";
-import {
-	ANIMATION_PROPS,
-	BAR_RADIUS,
-	CHART_PLOT_MARGIN,
-	CHART_PLOT_MARGIN_BARE,
-	cartesianAxisProps,
-	chartTooltipProps,
-	GRID_PROPS,
-	seriesColor,
-} from "./config";
-import { ChartShell } from "./frame";
-import { ChartLegend } from "./legend";
+import { BarChart } from "./bar";
 import type {
 	LineChartAxisDomain,
 	LineChartLegendRenderer,
@@ -79,70 +67,14 @@ export type GroupedBarChartProps<
 export function GroupedBarChart<
 	TData extends { x: string | number } = XYPoint,
 	K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string,
->({
-	data,
-	series,
-	ariaLabel = "Grouped bar chart",
-	className,
-	showAxes = false,
-	showLegend = false,
-	valueFormatter,
-	xValueFormatter,
-	yDomain,
-	legend,
-	customTooltip,
-	summary,
-	dataAlternative,
-	accessibilityLayer,
-}: GroupedBarChartProps<TData, K>) {
-	const defaultKeys = ["y", "y2"] as K[];
-	const bars = resolveChartSeries(series, defaultKeys);
-	const resolvedLegend =
-		legend !== undefined ? (
-			typeof legend === "function" ? (
-				legend({ items: bars })
-			) : (
-				legend
-			)
-		) : showLegend ? (
-			<ChartLegend items={bars} shape="bar" />
-		) : undefined;
-
+>({ series, ariaLabel = "Grouped bar chart", ...props }: GroupedBarChartProps<TData, K>) {
+	const resolvedSeries = resolveChartSeries(series, ["y", "y2"] as K[]);
 	return (
-		<ChartShell
+		<BarChart<TData, K>
+			series={resolvedSeries}
 			ariaLabel={ariaLabel}
-			className={className}
-			legend={resolvedLegend}
-			summary={summary}
-			dataAlternative={dataAlternative}
-			accessibilityLayer={accessibilityLayer}
-		>
-			<RechartsBar data={data} margin={showAxes ? CHART_PLOT_MARGIN : CHART_PLOT_MARGIN_BARE}>
-				{showAxes ? <CartesianGrid {...GRID_PROPS} /> : null}
-				<XAxis dataKey="x" {...cartesianAxisProps(!showAxes)} tickFormatter={xValueFormatter} />
-				<YAxis
-					{...cartesianAxisProps(!showAxes)}
-					tickFormatter={valueFormatter}
-					{...(yDomain ? { domain: yDomain as [number, number] } : {})}
-				/>
-				<Tooltip
-					{...chartTooltipProps({
-						formatter: valueFormatter,
-						cursor: "bar",
-						customTooltip,
-					})}
-				/>
-				{bars.map((item, index) => (
-					<Bar
-						key={item.key}
-						dataKey={item.key}
-						name={item.label ?? item.key}
-						fill={seriesColor(item, index)}
-						radius={BAR_RADIUS.vertical}
-						{...ANIMATION_PROPS}
-					/>
-				))}
-			</RechartsBar>
-		</ChartShell>
+			{...props}
+			color={undefined}
+		/>
 	);
 }

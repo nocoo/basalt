@@ -18,11 +18,9 @@ function highlight(code: string): ReactNode[] {
 			? "text-basalt-muted-foreground"
 			: match[2]
 				? "text-basalt-chart-5"
-				: match[3]
-					? "text-basalt-primary"
-					: match[4]
-						? "text-basalt-chart-4"
-						: "text-basalt-primary";
+				: match[4]
+					? "text-basalt-chart-4"
+					: "text-basalt-primary";
 		nodes.push(
 			<span key={key} className={className}>
 				{match[0]}

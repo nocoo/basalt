@@ -68,40 +68,6 @@ export type TimeseriesProps<
 export function Timeseries<
 	TData extends { x: string | number } = XYPoint,
 	K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string,
->({
-	data,
-	series,
-	ariaLabel = "Timeseries",
-	className,
-	showAxes = false,
-	showLegend = false,
-	color,
-	valueFormatter,
-	xValueFormatter,
-	yDomain,
-	legend,
-	customTooltip,
-	summary,
-	dataAlternative,
-	accessibilityLayer,
-}: TimeseriesProps<TData, K>) {
-	return (
-		<LineChart
-			data={data}
-			series={series}
-			ariaLabel={ariaLabel}
-			className={className}
-			showAxes={showAxes}
-			showLegend={showLegend}
-			color={color}
-			valueFormatter={valueFormatter}
-			xValueFormatter={xValueFormatter}
-			yDomain={yDomain}
-			legend={legend}
-			customTooltip={customTooltip}
-			summary={summary}
-			dataAlternative={dataAlternative}
-			accessibilityLayer={accessibilityLayer}
-		/>
-	);
+>({ ariaLabel = "Timeseries", ...props }: TimeseriesProps<TData, K>) {
+	return <LineChart<TData, K> ariaLabel={ariaLabel} {...props} />;
 }

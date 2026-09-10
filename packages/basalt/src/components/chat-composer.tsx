@@ -81,12 +81,8 @@ export function ChatComposer({
 		onSend(text);
 		setValue("");
 		requestAnimationFrame(() => {
-			const el = ref.current;
-			if (el) {
-				el.style.height = "0px";
-				el.style.height = `${Math.min(el.scrollHeight, 160)}px`;
-				el.focus();
-			}
+			resize();
+			ref.current?.focus();
 		});
 	};
 

@@ -89,7 +89,6 @@ export function Dock({
 }: DockProps) {
 	const overlay = mode === "overlay";
 	const panelRef = useRef<HTMLElement | null>(null);
-	const overlayRootRef = useRef<HTMLDivElement>(null);
 	const setPanel = (node: HTMLElement | null) => {
 		panelRef.current = node;
 	};
@@ -167,10 +166,7 @@ export function Dock({
 	}
 
 	return (
-		<div
-			ref={overlayRootRef}
-			className={cn("absolute inset-0", OVERLAY_LAYER, !open && "pointer-events-none")}
-		>
+		<div className={cn("absolute inset-0", OVERLAY_LAYER, !open && "pointer-events-none")}>
 			{onDismiss ? (
 				<button
 					type="button"

@@ -3,6 +3,7 @@ import { Check, Minus } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { useCheckableGroup } from "../utils/use-checkable-group";
 import { FOCUS_RING } from "./overlay";
 
 export type CheckboxSize = "sm" | "default";
@@ -131,112 +132,31 @@ const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(
 		},
 		ref,
 	) => {
-		const generatedId = React.useId();
-		const nodeRef = React.useRef<HTMLFieldSetElement | null>(null);
-		const [uncontrolled, setUncontrolled] = React.useState(defaultValue ?? []);
-		const current = value ?? uncontrolled;
-		const invalid = Boolean(error);
-		const errorId = `${generatedId}-error`;
-		const mergedDescribedBy =
-			[invalid ? errorId : null, describedBy].filter(Boolean).join(" ") || undefined;
-		const resetEventRef = React.useRef<Event | null>(null);
-		const setValue = React.useCallback(
-			(next: string[]) => {
-				const activeReset = resetEventRef.current;
-				if (activeReset && activeReset.eventPhase !== Event.NONE) {
-					return;
-				}
-				if (value === undefined) {
-					setUncontrolled(next);
-				}
-				onValueChange?.(next);
-			},
-			[onValueChange, value],
-		);
-		const setRefs = React.useCallback(
-			(node: HTMLFieldSetElement | null) => {
-				nodeRef.current = node;
-				if (!ref) {
-					return;
-				}
-				if (typeof ref === "function") {
-					const cleanup = (ref as React.RefCallback<HTMLFieldSetElement>)(node);
-					if (typeof cleanup === "function") {
-						return () => {
-							nodeRef.current = null;
-							cleanup();
-						};
-					}
-					return () => {
-						nodeRef.current = null;
-						ref(null);
-					};
-				}
-				(ref as React.RefObject<HTMLFieldSetElement | null>).current = node;
-				return () => {
-					nodeRef.current = null;
-					(ref as React.RefObject<HTMLFieldSetElement | null>).current = null;
-				};
-			},
-			[ref],
-		);
-		const formAttr = props.form;
-		const latestConfigRef = React.useRef({
-			defaultValue,
+		const group = useCheckableGroup({
 			value,
+			defaultValue,
+			onValueChange,
+			error,
+			describedBy,
+			ariaInvalid,
+			form: props.form,
+			ref,
 		});
-		React.useEffect(() => {
-			latestConfigRef.current = {
-				defaultValue,
-				value,
-			};
-		});
-
-		React.useEffect(() => {
-			const form = nodeRef.current?.form;
-			if (!form || (formAttr && form.id !== formAttr)) {
-				return;
-			}
-			let disposed = false;
-			const timers = new Set<ReturnType<typeof setTimeout>>();
-			const onReset = (event: Event) => {
-				resetEventRef.current = event;
-				const timer = setTimeout(() => {
-					timers.delete(timer);
-					if (disposed || event.defaultPrevented) {
-						return;
-					}
-					const cfg = latestConfigRef.current;
-					if (cfg.value === undefined) {
-						setUncontrolled(cfg.defaultValue ?? []);
-					}
-				}, 0);
-				timers.add(timer);
-			};
-			form.addEventListener("reset", onReset, true);
-			return () => {
-				disposed = true;
-				resetEventRef.current = null;
-				for (const timer of timers) {
-					clearTimeout(timer);
-				}
-				timers.clear();
-				form.removeEventListener("reset", onReset, true);
-			};
-		}, [formAttr]);
 		return (
-			<CheckboxGroupContext.Provider value={{ value: current, setValue, disabled, invalid }}>
+			<CheckboxGroupContext.Provider
+				value={{ value: group.current, setValue: group.setValue, disabled, invalid: group.invalid }}
+			>
 				<fieldset
-					ref={setRefs}
+					ref={group.setRefs}
 					{...props}
 					disabled={disabled}
-					aria-invalid={invalid ? true : ariaInvalid}
-					aria-describedby={mergedDescribedBy}
+					aria-invalid={group.ariaInvalid}
+					aria-describedby={group.mergedDescribedBy}
 					className={cn("flex flex-col gap-2", className)}
 				>
 					{children}
-					{invalid ? (
-						<p id={errorId} className="text-xs text-basalt-destructive" role="alert">
+					{group.invalid ? (
+						<p id={group.errorId} className="text-xs text-basalt-destructive" role="alert">
 							{error}
 						</p>
 					) : null}

@@ -5,7 +5,7 @@ export interface SkeletonLineProps extends HTMLAttributes<HTMLDivElement> {
 	/**
 	 * Minimum width percentage used for deterministic width computation.
 	 *
-	 * Note: Sorted with maxWidth to compute the midpoint width percentage.
+	 * Note: Averaged with maxWidth to compute the midpoint width percentage.
 	 *
 	 * @default 30
 	 */
@@ -14,7 +14,7 @@ export interface SkeletonLineProps extends HTMLAttributes<HTMLDivElement> {
 	/**
 	 * Maximum width percentage used for deterministic width computation.
 	 *
-	 * Note: Sorted with minWidth to compute the midpoint width percentage.
+	 * Note: Averaged with minWidth to compute the midpoint width percentage.
 	 *
 	 * @default 100
 	 */
@@ -36,9 +36,7 @@ export function SkeletonLine({
 	style,
 	...props
 }: SkeletonLineProps) {
-	const low = Math.min(minWidth, maxWidth);
-	const high = Math.max(minWidth, maxWidth);
-	const width = (low + high) / 2;
+	const width = (minWidth + maxWidth) / 2;
 	const lineStyle: CSSProperties = {
 		width: `${width}%`,
 		...(height !== undefined ? { height } : {}),

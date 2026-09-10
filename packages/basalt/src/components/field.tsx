@@ -64,10 +64,6 @@ function fieldErrorMessage(error: FieldError | undefined): React.ReactNode | und
 	return isStructuredError(error) ? error.message : error;
 }
 
-function hasFieldError(message: React.ReactNode | undefined): boolean {
-	return Boolean(message);
-}
-
 export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 	({ label, htmlFor, hint, error, required, labelTooltip, className, children, ...props }, ref) => {
 		const generatedId = React.useId();
@@ -78,7 +74,7 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 		const hintId = controlId ? `${controlId}-hint` : undefined;
 		const errorId = controlId ? `${controlId}-error` : undefined;
 		const errorMessage = fieldErrorMessage(error);
-		const hasError = hasFieldError(errorMessage);
+		const hasError = Boolean(errorMessage);
 		const describedBy = [hasError ? errorId : null, !hasError && hint ? hintId : null]
 			.filter(Boolean)
 			.join(" ");

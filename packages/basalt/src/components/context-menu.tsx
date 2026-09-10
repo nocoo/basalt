@@ -189,64 +189,8 @@ export const ContextMenuItem = React.forwardRef<
 ContextMenuItem.displayName = ContextMenuPrimitive.Item.displayName;
 
 export interface ContextMenuPanelProps
-	extends Omit<
-		React.ComponentProps<typeof ContextMenuPrimitive.Content>,
-		| "loop"
-		| "alignOffset"
-		| "avoidCollisions"
-		| "collisionBoundary"
-		| "collisionPadding"
-		| "arrowPadding"
-		| "sticky"
-		| "hideWhenDetached"
-		| "forceMount"
-		| "asChild"
-		| "onCloseAutoFocus"
-		| "onEscapeKeyDown"
-		| "onPointerDownOutside"
-		| "onFocusOutside"
-		| "onInteractOutside"
-	> {
-	/**
-	 * Whether keyboard navigation should loop around item boundaries.
-	 * @default false
-	 */
-	loop?: RadixContextMenuContentProps["loop"];
-	/**
-	 * Offset in pixels from the start or end alignment position.
-	 * @default 0
-	 */
-	alignOffset?: RadixContextMenuContentProps["alignOffset"];
-	/**
-	 * Whether to reposition content to avoid viewport boundary collisions.
-	 * @default true
-	 */
-	avoidCollisions?: RadixContextMenuContentProps["avoidCollisions"];
-	/**
-	 * Element or elements bounding boundary collision calculations.
-	 * @default []
-	 */
-	collisionBoundary?: RadixContextMenuContentProps["collisionBoundary"];
-	/**
-	 * Virtual padding from collision boundaries in pixels.
-	 * @default 0
-	 */
-	collisionPadding?: RadixContextMenuContentProps["collisionPadding"];
-	/**
-	 * Padding in pixels between popper arrow and floating panel edge.
-	 * @default 0
-	 */
-	arrowPadding?: RadixContextMenuContentProps["arrowPadding"];
-	/**
-	 * Sticky positioning behavior along the align axis when overflowing.
-	 * @default "partial"
-	 */
-	sticky?: RadixContextMenuContentProps["sticky"];
-	/**
-	 * Whether to hide content completely when trigger is fully occluded.
-	 * @default false
-	 */
-	hideWhenDetached?: RadixContextMenuContentProps["hideWhenDetached"];
+	extends Omit<ContextMenuContentProps, "forceMount">,
+		Pick<React.ComponentProps<typeof ContextMenuPrimitive.Content>, "ref"> {
 	/**
 	 * Force mounting content in DOM for external animation controls.
 	 * When forceMount is true, the content remains mounted even when closed.
@@ -254,32 +198,6 @@ export interface ContextMenuPanelProps
 	 * Note: Keeping modal content forceMounted may isolate background interactions until unmounted.
 	 */
 	forceMount?: true;
-	/**
-	 * Change the default rendered div element to the child element, merging props and behavior.
-	 * Content forwards ref to HTMLDivElement and inherits native div attributes.
-	 * @default false
-	 */
-	asChild?: RadixContextMenuContentProps["asChild"];
-	/**
-	 * Callback fired when auto-focusing on close. Can be prevented.
-	 */
-	onCloseAutoFocus?: RadixContextMenuContentProps["onCloseAutoFocus"];
-	/**
-	 * Callback fired when the Escape key is down on the dismissable layer. Can be prevented.
-	 */
-	onEscapeKeyDown?: RadixContextMenuContentProps["onEscapeKeyDown"];
-	/**
-	 * Callback fired when a pointerdown event happens outside the bounds of the dismissable layer. Can be prevented.
-	 */
-	onPointerDownOutside?: RadixContextMenuContentProps["onPointerDownOutside"];
-	/**
-	 * Callback fired when focus moves outside the bounds of the dismissable layer. Can be prevented.
-	 */
-	onFocusOutside?: RadixContextMenuContentProps["onFocusOutside"];
-	/**
-	 * Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented.
-	 */
-	onInteractOutside?: RadixContextMenuContentProps["onInteractOutside"];
 }
 
 export function ContextMenuPanel({ className, ...props }: ContextMenuPanelProps) {

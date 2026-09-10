@@ -159,28 +159,14 @@ export function StatCard({
 		</>
 	);
 
-	if (isInteractive) {
-		return (
-			<div
-				className={cn(
-					"rounded-basalt-md border border-basalt-border bg-basalt-secondary p-4",
-					className,
-				)}
-				role="group"
-				aria-label={named}
-			>
-				{cardContent}
-			</div>
-		);
-	}
-
 	return (
+		// biome-ignore lint/a11y/useAriaPropsSupportedByRole: dynamic role is "group" | "img", both support aria-label
 		<div
 			className={cn(
 				"rounded-basalt-md border border-basalt-border bg-basalt-secondary p-4",
 				className,
 			)}
-			role="img"
+			role={isInteractive ? "group" : "img"}
 			aria-label={named}
 		>
 			{cardContent}

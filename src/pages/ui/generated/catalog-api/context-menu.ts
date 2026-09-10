@@ -247,12 +247,6 @@ export const API = [
 				description: "Whether to hide content completely when trigger is fully occluded.",
 			},
 			{
-				name: "forceMount",
-				type: "true",
-				required: false,
-				description: "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted.",
-			},
-			{
 				name: "asChild",
 				type: "boolean",
 				required: false,
@@ -288,6 +282,12 @@ export const API = [
 				type: "(event: PointerDownOutsideEvent | FocusOutsideEvent) => void",
 				required: false,
 				description: "Callback fired when an interaction (pointerdown or focus) happens outside the bounds of the dismissable layer. Can be prevented.",
+			},
+			{
+				name: "forceMount",
+				type: "true",
+				required: false,
+				description: "Force mounting content in DOM for external animation controls.\nWhen forceMount is true, the content remains mounted even when closed.\nThe caller is responsible for visibility transitions and unmounting after animation completes.\nNote: Keeping modal content forceMounted may isolate background interactions until unmounted.",
 			},
 		],
 	},

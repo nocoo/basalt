@@ -68,40 +68,6 @@ export type ChartsProps<
 export function Charts<
 	TData extends { x: string | number } = XYPoint,
 	K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string,
->({
-	data,
-	series,
-	ariaLabel = "Charts",
-	className,
-	showAxes = false,
-	showLegend = false,
-	color,
-	valueFormatter,
-	xValueFormatter,
-	yDomain,
-	legend,
-	customTooltip,
-	summary,
-	dataAlternative,
-	accessibilityLayer,
-}: ChartsProps<TData, K>) {
-	return (
-		<LineChart
-			data={data}
-			series={series}
-			ariaLabel={ariaLabel}
-			className={className}
-			showAxes={showAxes}
-			showLegend={showLegend}
-			color={color}
-			valueFormatter={valueFormatter}
-			xValueFormatter={xValueFormatter}
-			yDomain={yDomain}
-			legend={legend}
-			customTooltip={customTooltip}
-			summary={summary}
-			dataAlternative={dataAlternative}
-			accessibilityLayer={accessibilityLayer}
-		/>
-	);
+>({ ariaLabel = "Charts", ...props }: ChartsProps<TData, K>) {
+	return <LineChart<TData, K> ariaLabel={ariaLabel} {...props} />;
 }

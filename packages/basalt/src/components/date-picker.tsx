@@ -704,6 +704,22 @@ export function DatePicker({
 		return dateSelectable(iso, min, max, isDisabledDate);
 	}
 
+	function focusCalendarDay(next: Civil) {
+		if (next.y !== activeMonth.y || next.m !== activeMonth.m) {
+			pendingFocus.current = {
+				targetMonthKey: formatIsoMonth(next),
+				iso: formatIso(next),
+			};
+			requestMonth({ y: next.y, m: next.m, d: 1 });
+			return;
+		}
+		const index = days.findIndex((date) => isoOf(date) === formatIso(next));
+		if (index >= 0) {
+			setFocusIndex(index);
+			dayRefs.current[index]?.focus();
+		}
+	}
+
 	function commit(next: string) {
 		if (disabled || readOnly || !selectable(next)) {
 			return;
@@ -1028,19 +1044,7 @@ export function DatePicker({
 							if (!next || next.y < 1 || !selectable(formatIso(next))) {
 								return;
 							}
-							if (next.y !== activeMonth.y || next.m !== activeMonth.m) {
-								pendingFocus.current = {
-									targetMonthKey: formatIsoMonth(next),
-									iso: formatIso(next),
-								};
-								requestMonth({ y: next.y, m: next.m, d: 1 });
-								return;
-							}
-							const index = days.findIndex((date) => isoOf(date) === formatIso(next));
-							if (index >= 0) {
-								setFocusIndex(index);
-								dayRefs.current[index]?.focus();
-							}
+							focusCalendarDay(next);
 							return;
 						}
 						if (event.key === "Home" || event.key === "End") {
@@ -1060,19 +1064,7 @@ export function DatePicker({
 							if (!next || next.y < 1 || !selectable(formatIso(next))) {
 								return;
 							}
-							if (next.y !== activeMonth.y || next.m !== activeMonth.m) {
-								pendingFocus.current = {
-									targetMonthKey: formatIsoMonth(next),
-									iso: formatIso(next),
-								};
-								requestMonth({ y: next.y, m: next.m, d: 1 });
-								return;
-							}
-							const index = days.findIndex((date) => isoOf(date) === formatIso(next));
-							if (index >= 0) {
-								setFocusIndex(index);
-								dayRefs.current[index]?.focus();
-							}
+							focusCalendarDay(next);
 							return;
 						}
 						if (event.key === "PageDown" || event.key === "PageUp") {

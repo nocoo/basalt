@@ -1,5 +1,12 @@
 import { cva, type VariantProps } from "class-variance-authority";
-import { Children, createContext, type HTMLAttributes, type ReactNode, useContext } from "react";
+import {
+	Children,
+	createContext,
+	type HTMLAttributes,
+	isValidElement,
+	type ReactNode,
+	useContext,
+} from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Button, type ButtonProps } from "./button";
@@ -141,12 +148,7 @@ export interface BannerActionProps
 }
 
 function isBannerAction(node: ReactNode): boolean {
-	return (
-		typeof node === "object" &&
-		node !== null &&
-		"type" in node &&
-		(node as { type: unknown }).type === BannerAction
-	);
+	return isValidElement(node) && node.type === BannerAction;
 }
 
 function BannerRoot({

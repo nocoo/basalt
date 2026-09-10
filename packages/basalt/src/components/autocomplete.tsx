@@ -54,41 +54,6 @@ export type AutocompleteProps = Omit<
 	size?: InputSize;
 };
 
-export function Autocomplete({
-	items,
-	value,
-	defaultValue,
-	onValueChange,
-	name,
-	placeholder = "Search…",
-	disabled,
-	loading,
-	size,
-	className,
-	id,
-	"aria-label": ariaLabel,
-	"aria-describedby": ariaDescribedBy,
-	"aria-invalid": ariaInvalid,
-	...rest
-}: AutocompleteProps) {
-	return (
-		<TypeaheadField
-			items={items}
-			value={value}
-			defaultValue={defaultValue}
-			onValueChange={onValueChange}
-			name={name}
-			placeholder={placeholder}
-			disabled={disabled}
-			loading={loading}
-			size={size}
-			className={className}
-			id={id}
-			allowFreeform
-			aria-label={ariaLabel}
-			aria-describedby={ariaDescribedBy}
-			aria-invalid={ariaInvalid}
-			{...rest}
-		/>
-	);
+export function Autocomplete({ placeholder = "Search…", ...rest }: AutocompleteProps) {
+	return <TypeaheadField placeholder={placeholder} allowFreeform {...rest} />;
 }

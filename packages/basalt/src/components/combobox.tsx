@@ -50,41 +50,6 @@ export type ComboboxProps = Omit<
 	size?: InputSize;
 };
 
-export function Combobox({
-	items,
-	value,
-	defaultValue,
-	onValueChange,
-	name,
-	placeholder = "Select…",
-	disabled,
-	loading,
-	size,
-	className,
-	id,
-	"aria-label": ariaLabel,
-	"aria-describedby": ariaDescribedBy,
-	"aria-invalid": ariaInvalid,
-	...rest
-}: ComboboxProps) {
-	return (
-		<TypeaheadField
-			items={items}
-			value={value}
-			defaultValue={defaultValue}
-			onValueChange={onValueChange}
-			name={name}
-			placeholder={placeholder}
-			disabled={disabled}
-			loading={loading}
-			size={size}
-			className={className}
-			id={id}
-			allowFreeform={false}
-			aria-label={ariaLabel}
-			aria-describedby={ariaDescribedBy}
-			aria-invalid={ariaInvalid}
-			{...rest}
-		/>
-	);
+export function Combobox({ placeholder = "Select…", ...rest }: ComboboxProps) {
+	return <TypeaheadField placeholder={placeholder} allowFreeform={false} {...rest} />;
 }

@@ -82,19 +82,15 @@ function isElement(child: ReactNode): child is ReactElement<{ children?: ReactNo
 	return isValidElement(child);
 }
 
-function childType(child: ReactElement): unknown {
-	return child.type;
-}
-
 function hasSlot(children: ReactNode, match: (type: unknown) => boolean): boolean {
 	return Children.toArray(children).some((child) => {
 		if (!isElement(child)) {
 			return false;
 		}
-		if (match(childType(child))) {
+		if (match(child.type)) {
 			return true;
 		}
-		if (childType(child) === Fragment) {
+		if (child.type === Fragment) {
 			return hasSlot(child.props.children, match);
 		}
 		return false;
@@ -109,12 +105,12 @@ function decorateHeaders(children: ReactNode, divided: boolean): ReactNode {
 		if (!isElement(child)) {
 			return child;
 		}
-		if (childType(child) === Fragment) {
+		if (child.type === Fragment) {
 			return cloneElement(child, {
 				children: decorateHeaders(child.props.children, divided),
 			});
 		}
-		if (childType(child) === LayerCardHeader || childType(child) === LayerCardSecondary) {
+		if (child.type === LayerCardHeader || child.type === LayerCardSecondary) {
 			const typed = child as ReactElement<{ className?: string }>;
 			return cloneElement(typed, {
 				className: cn(typed.props.className, "border-b border-basalt-border"),
@@ -215,27 +211,8 @@ function LayerCardLoading({ label = "Loading", className, ...props }: LayerCardL
 }
 LayerCardLoading.displayName = "LayerCard.Loading";
 
-function LayerCardEmpty({
-	title = "No content",
-	description,
-	icon,
-	action,
-	children,
-	className,
-	...props
-}: LayerCardEmptyProps) {
-	return (
-		<Empty
-			title={title}
-			description={description}
-			icon={icon}
-			action={action}
-			className={cn("p-8", className)}
-			{...props}
-		>
-			{children}
-		</Empty>
-	);
+function LayerCardEmpty({ title = "No content", className, ...props }: LayerCardEmptyProps) {
+	return <Empty title={title} className={cn("p-8", className)} {...props} />;
 }
 LayerCardEmpty.displayName = "LayerCard.Empty";
 

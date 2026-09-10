@@ -177,52 +177,16 @@ export type HeatmapCalendarProps = HeatmapCalendarValuesProps | HeatmapCalendarY
 
 export function HeatmapCalendar(props: HeatmapCalendarProps) {
 	if ("data" in props) {
-		const {
-			colorScale = heatmapColorScales.green,
-			valueFormatter = (value) => value.toLocaleString(),
-			metricLabel = "Value",
-			cellSize = 12,
-			cellGap = 2,
-			locale = "en-US",
-			weekdayLabels,
-			monthLabels,
-			lessLabel = "Less",
-			moreLabel = "More",
-			ariaLabel = "Heatmap calendar",
-			className,
-		} = props;
-		return (
-			<YearHeatmap
-				data={props.data}
-				year={props.year}
-				colorScale={colorScale}
-				valueFormatter={valueFormatter}
-				metricLabel={metricLabel}
-				cellSize={cellSize}
-				cellGap={cellGap}
-				locale={locale}
-				weekdayLabels={weekdayLabels}
-				monthLabels={monthLabels}
-				lessLabel={lessLabel}
-				moreLabel={moreLabel}
-				ariaLabel={ariaLabel}
-				className={className}
-			/>
-		);
+		return <YearHeatmap {...props} />;
 	}
-	const { ariaLabel = "Heatmap calendar", className } = props;
-	return <ValuesHeatmap values={props.values} ariaLabel={ariaLabel} className={className} />;
+	return <ValuesHeatmap {...props} />;
 }
 
 function ValuesHeatmap({
 	values,
-	ariaLabel,
+	ariaLabel = "Heatmap calendar",
 	className,
-}: {
-	values: number[];
-	ariaLabel: string;
-	className?: string;
-}) {
+}: HeatmapCalendarValuesProps) {
 	const [activeIdx, setActiveIdx] = useState(0);
 	const [openTooltipIdx, setOpenTooltipIdx] = useState<number | null>(null);
 	const containerRef = useRef<HTMLDivElement | null>(null);
@@ -281,139 +245,100 @@ function ValuesHeatmap({
 		cellRefs.current[nextIdx]?.focus();
 	};
 
+	const container = (
+		<div
+			ref={containerRef}
+			tabIndex={-1}
+			role="region"
+			aria-label={ariaLabel}
+			onFocus={() => {
+				isFocusedInsideRef.current = true;
+			}}
+			onBlur={(e) => {
+				if (!e.currentTarget.contains(e.relatedTarget)) {
+					isFocusedInsideRef.current = false;
+				}
+			}}
+			className={cn("grid grid-cols-7 gap-1 p-0.5 outline-none", className)}
+		>
+			{values.map((value, index) => {
+				const isCurrent = index === activeIdx;
+				const isOpen = openTooltipIdx === index;
+				return (
+					<Tooltip
+						key={index}
+						open={isOpen}
+						onOpenChange={(next) => {
+							if (next) {
+								setOpenTooltipIdx(index);
+							} else {
+								setOpenTooltipIdx((curr) => {
+									if (curr !== index) return curr;
+									// If this cell currently holds document focus, ignore scroll dismiss
+									const isCellFocused =
+										cellRefs.current[index] !== null &&
+										document.activeElement === cellRefs.current[index];
+									return isCellFocused ? curr : null;
+								});
+							}
+						}}
+					>
+						<TooltipTrigger asChild>
+							<button
+								ref={(el) => {
+									cellRefs.current[index] = el;
+								}}
+								type="button"
+								tabIndex={isCurrent ? 0 : -1}
+								onFocus={() => {
+									setActiveIdx(index);
+									setOpenTooltipIdx(index);
+								}}
+								onBlur={() => {
+									setOpenTooltipIdx((curr) => (curr === index ? null : curr));
+								}}
+								onKeyDown={(e) => handleKeyDown(e, index)}
+								aria-label={`Position ${index + 1}: ${value}`}
+								className="box-border m-0 h-3 w-3 cursor-pointer rounded-sm border-0 p-0 transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
+								style={{
+									backgroundColor: `hsl(var(--basalt-chart-5) / ${0.2 + Math.min(4, Math.max(0, value)) * 0.15})`,
+								}}
+							/>
+						</TooltipTrigger>
+						<TooltipContent>
+							<div className="text-xs">
+								Position {index + 1}: {value}
+							</div>
+						</TooltipContent>
+					</Tooltip>
+				);
+			})}
+		</div>
+	);
+
 	if (values.length === 0) {
-		return (
-			<div
-				ref={containerRef}
-				tabIndex={-1}
-				role="region"
-				aria-label={ariaLabel}
-				onFocus={() => {
-					isFocusedInsideRef.current = true;
-				}}
-				onBlur={(e) => {
-					if (!e.currentTarget.contains(e.relatedTarget)) {
-						isFocusedInsideRef.current = false;
-					}
-				}}
-				className={cn("grid grid-cols-7 gap-1 p-0.5 outline-none", className)}
-			/>
-		);
+		return container;
 	}
 
-	return (
-		<TooltipProvider>
-			<div
-				ref={containerRef}
-				tabIndex={-1}
-				role="region"
-				aria-label={ariaLabel}
-				onFocus={() => {
-					isFocusedInsideRef.current = true;
-				}}
-				onBlur={(e) => {
-					if (!e.currentTarget.contains(e.relatedTarget)) {
-						isFocusedInsideRef.current = false;
-					}
-				}}
-				className={cn("grid grid-cols-7 gap-1 p-0.5 outline-none", className)}
-			>
-				{values.map((value, index) => {
-					const isCurrent = index === activeIdx;
-					const isOpen = openTooltipIdx === index;
-					return (
-						<Tooltip
-							key={index}
-							open={isOpen}
-							onOpenChange={(next) => {
-								if (next) {
-									setOpenTooltipIdx(index);
-								} else {
-									setOpenTooltipIdx((curr) => {
-										if (curr !== index) return curr;
-										// If this cell currently holds document focus, ignore scroll dismiss
-										const isCellFocused =
-											cellRefs.current[index] !== null &&
-											document.activeElement === cellRefs.current[index];
-										return isCellFocused ? curr : null;
-									});
-								}
-							}}
-						>
-							<TooltipTrigger asChild>
-								<button
-									ref={(el) => {
-										cellRefs.current[index] = el;
-									}}
-									type="button"
-									tabIndex={isCurrent ? 0 : -1}
-									onFocus={() => {
-										setActiveIdx(index);
-										setOpenTooltipIdx(index);
-									}}
-									onBlur={() => {
-										setOpenTooltipIdx((curr) => (curr === index ? null : curr));
-									}}
-									onKeyDown={(e) => handleKeyDown(e, index)}
-									aria-label={`Position ${index + 1}: ${value}`}
-									className="box-border m-0 h-3 w-3 cursor-pointer rounded-sm border-0 p-0 transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
-									style={{
-										backgroundColor: `hsl(var(--basalt-chart-5) / ${0.2 + Math.min(4, Math.max(0, value)) * 0.15})`,
-									}}
-								/>
-							</TooltipTrigger>
-							<TooltipContent>
-								<div className="text-xs">
-									Position {index + 1}: {value}
-								</div>
-							</TooltipContent>
-						</Tooltip>
-					);
-				})}
-			</div>
-		</TooltipProvider>
-	);
-}
-
-interface YearDayCell {
-	dateStr: string;
-	value: number;
-	weekIndex: number;
-	dayIndex: number;
-	colorIndex: number;
+	return <TooltipProvider>{container}</TooltipProvider>;
 }
 
 function YearHeatmap({
 	data,
 	year,
-	colorScale,
-	valueFormatter,
-	metricLabel,
-	cellSize,
-	cellGap,
-	locale,
+	colorScale = heatmapColorScales.green,
+	valueFormatter = (value) => value.toLocaleString(),
+	metricLabel = "Value",
+	cellSize = 12,
+	cellGap = 2,
+	locale = "en-US",
 	weekdayLabels,
 	monthLabels,
-	lessLabel,
-	moreLabel,
-	ariaLabel,
+	lessLabel = "Less",
+	moreLabel = "More",
+	ariaLabel = "Heatmap calendar",
 	className,
-}: {
-	data: HeatmapDataPoint[];
-	year: number;
-	colorScale: readonly string[];
-	valueFormatter: (value: number, date: string) => string;
-	metricLabel: string;
-	cellSize: number;
-	cellGap: number;
-	locale: string;
-	weekdayLabels?: string[];
-	monthLabels?: string[];
-	lessLabel: string;
-	moreLabel: string;
-	ariaLabel: string;
-	className?: string;
-}) {
+}: HeatmapCalendarYearProps) {
 	const weekdays = weekdayLabels ?? weekdayNames(locale);
 	const months = monthLabels ?? monthNames(locale);
 	const calendarId = useId();
@@ -443,32 +368,24 @@ function YearHeatmap({
 			}
 		});
 
-		const validDays: YearDayCell[] = [];
+		const validDays: string[] = [];
 		const dateToValidIndex = new Map<string, number>();
 
-		weeks.forEach((week, weekIndex) => {
-			week.forEach((date, dayIndex) => {
+		weeks.forEach((week) => {
+			week.forEach((date) => {
 				if (date.getFullYear() === year) {
 					const dateStr = formatDate(date);
-					const value = dataMap.get(dateStr) ?? 0;
-					const colorIndex = getColorIndex(value, maxValue, colorScale);
 					dateToValidIndex.set(dateStr, validDays.length);
-					validDays.push({
-						dateStr,
-						value,
-						weekIndex,
-						dayIndex,
-						colorIndex,
-					});
+					validDays.push(dateStr);
 				}
 			});
 		});
 
 		return { weeks, dataMap, maxValue, labels, validDays, dateToValidIndex };
-	}, [data, months, year, colorScale]);
+	}, [data, months, year]);
 
 	const [activeDate, setActiveDate] = useState<string>(() => {
-		return validDays[0]?.dateStr ?? `${year}-01-01`;
+		return validDays[0] ?? `${year}-01-01`;
 	});
 	const [openTooltipDate, setOpenTooltipDate] = useState<string | null>(null);
 
@@ -486,7 +403,7 @@ function YearHeatmap({
 				scrollRegionRef.current?.focus();
 			}
 		} else if (!dateToValidIndex.has(activeDate)) {
-			const nextDate = validDays[0]?.dateStr ?? "";
+			const nextDate = validDays[0] ?? "";
 			setActiveDate(nextDate);
 			if (hadFocus) {
 				cellRefs.current.get(nextDate)?.focus();
@@ -494,23 +411,20 @@ function YearHeatmap({
 		}
 	}, [validDays, dateToValidIndex, activeDate]);
 
-	const activeDay = useMemo(() => {
-		const idx = dateToValidIndex.get(activeDate);
-		return idx !== undefined ? validDays[idx] : validDays[0];
-	}, [activeDate, dateToValidIndex, validDays]);
+	const selectedDate = dateToValidIndex.has(activeDate) ? activeDate : validDays[0];
 
-	const navigateToDay = (targetDay: YearDayCell | undefined) => {
-		if (!targetDay) return;
-		setActiveDate(targetDay.dateStr);
-		setOpenTooltipDate(targetDay.dateStr);
-		const btn = cellRefs.current.get(targetDay.dateStr);
+	const navigateToDay = (targetDate: string | undefined) => {
+		if (!targetDate) return;
+		setActiveDate(targetDate);
+		setOpenTooltipDate(targetDate);
+		const btn = cellRefs.current.get(targetDate);
 		btn?.focus();
 	};
 
-	const handleCellKeyDown = (e: KeyboardEvent<HTMLButtonElement>, cell: YearDayCell) => {
+	const handleCellKeyDown = (e: KeyboardEvent<HTMLButtonElement>, dateStr: string) => {
 		if (validDays.length === 0) return;
 
-		const currentIdx = dateToValidIndex.get(cell.dateStr) ?? 0;
+		const currentIdx = dateToValidIndex.get(dateStr) ?? 0;
 
 		if (e.key === "Escape") {
 			setOpenTooltipDate(null);
@@ -636,17 +550,10 @@ function YearHeatmap({
 
 										const value = dataMap.get(dateStr) ?? 0;
 										const colorIndex = getColorIndex(value, maxValue, colorScale);
-										const isSelected = activeDay?.dateStr === dateStr;
+										const isSelected = selectedDate === dateStr;
 										const formattedValue = valueFormatter(value, dateStr);
 										const labelText = `${dateStr}, ${metricLabel}: ${formattedValue}`;
 										const isOpen = openTooltipDate === dateStr;
-										const currentCell: YearDayCell = {
-											dateStr,
-											value,
-											weekIndex,
-											dayIndex,
-											colorIndex,
-										};
 
 										return (
 											<Tooltip
@@ -685,7 +592,7 @@ function YearHeatmap({
 														onBlur={() => {
 															setOpenTooltipDate((curr) => (curr === dateStr ? null : curr));
 														}}
-														onKeyDown={(e) => handleCellKeyDown(e, currentCell)}
+														onKeyDown={(e) => handleCellKeyDown(e, dateStr)}
 														className="box-border m-0 cursor-pointer rounded-sm border-0 p-0 transition-colors hover:ring-1 hover:ring-basalt-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
 														style={{
 															width: cellSize,

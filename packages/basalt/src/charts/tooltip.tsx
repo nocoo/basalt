@@ -304,54 +304,13 @@ export function ChartTooltipContent({
 					const labelText = seriesLabel(item);
 					const key = `${String(item.dataKey ?? item.name ?? index)}-${String(index)}`;
 					return (
-						<div
+						<ChartTooltipRow
 							key={key}
-							style={{
-								alignItems: "center",
-								display: "flex",
-								fontSize: BODY_SIZE,
-								gap: 8,
-								lineHeight: "20px",
-								minWidth: 0,
-							}}
-						>
-							<span
-								aria-hidden="true"
-								style={{
-									background: seriesSwatch(item),
-									borderRadius: 999,
-									boxShadow: "0 0 0 1px hsl(var(--basalt-popover-foreground) / 0.12)",
-									flexShrink: 0,
-									height: DOT_SIZE,
-									width: DOT_SIZE,
-								}}
-							/>
-							{labelText ? (
-								<span
-									style={{
-										color: "hsl(var(--basalt-muted-foreground))",
-										flex: 1,
-										minWidth: 0,
-										overflow: "hidden",
-										textOverflow: "ellipsis",
-										whiteSpace: "nowrap",
-									}}
-								>
-									{labelText}
-								</span>
-							) : null}
-							<span
-								style={{
-									color: "hsl(var(--basalt-popover-foreground))",
-									flexShrink: 0,
-									fontVariantNumeric: "tabular-nums",
-									fontWeight: 600,
-									marginLeft: labelText ? 0 : "auto",
-								}}
-							>
-								{Number.isFinite(numeric) ? format(numeric) : String(raw ?? "—")}
-							</span>
-						</div>
+							label={labelText}
+							color={seriesSwatch(item)}
+							value={Number.isFinite(numeric) ? format(numeric) : String(raw ?? "—")}
+							data-testid={undefined}
+						/>
 					);
 				})}
 			</div>

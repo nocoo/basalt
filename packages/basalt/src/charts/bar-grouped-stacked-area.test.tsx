@@ -66,6 +66,31 @@ describe("GroupedBarChart, StackedBarChart, and AreaChart options", () => {
 			expect(screen.getByTestId("grouped-node-legend")).toHaveTextContent("Grouped Legend");
 		});
 
+		it("falls back to default series and ignores spread color prop", () => {
+			render(
+				<GroupedBarChart
+					data={points}
+					series={[]}
+					{...({ color: "#ff0000" } as Record<string, unknown>)}
+					legend={({ items }) => (
+						<div data-testid="grouped-fallback-legend">
+							{items.map((it) => (
+								<span key={it.key} data-color={it.color ?? "none"}>
+									{it.key}
+								</span>
+							))}
+						</div>
+					)}
+				/>,
+			);
+			const legend = screen.getByTestId("grouped-fallback-legend");
+			expect(legend).toHaveTextContent("yy2");
+			// Neither series descriptor should have acquired the spread lead color
+			const spans = legend.querySelectorAll("span");
+			expect(spans[0]?.getAttribute("data-color")).toBe("none");
+			expect(spans[1]?.getAttribute("data-color")).toBe("none");
+		});
+
 		it("renders formatted axes ticks, explicit yDomain bounds, and activates customTooltip", () => {
 			const { container } = render(
 				<GroupedBarChart

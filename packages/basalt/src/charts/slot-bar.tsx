@@ -66,23 +66,7 @@ export function SlotBarChart<
 	K extends LineChartNumericKeys<TData> & string = LineChartNumericKeys<TData> & string,
 >(props: SlotBarChartProps<TData, K>) {
 	if ("items" in props) {
-		const {
-			ariaLabel = "Slot bar chart",
-			heightClass = "h-6",
-			gapClass = "gap-px",
-			emptyClass = "bg-basalt-muted",
-			className,
-		} = props;
-		return (
-			<SlotItemBars
-				items={props.items}
-				ariaLabel={ariaLabel}
-				heightClass={heightClass}
-				gapClass={gapClass}
-				emptyClass={emptyClass}
-				className={className}
-			/>
-		);
+		return <SlotItemBars {...props} />;
 	}
 	const {
 		series,
@@ -121,19 +105,12 @@ export function SlotBarChart<
 
 function SlotItemBars({
 	items,
-	ariaLabel,
-	heightClass,
-	gapClass,
-	emptyClass,
+	ariaLabel = "Slot bar chart",
+	heightClass = "h-6",
+	gapClass = "gap-px",
+	emptyClass = "bg-basalt-muted",
 	className,
-}: {
-	items: SlotBarItem[];
-	ariaLabel: string;
-	heightClass: string;
-	gapClass: string;
-	emptyClass: string;
-	className?: string;
-}) {
+}: SlotBarItemsProps) {
 	if (items.length === 0) {
 		return null;
 	}

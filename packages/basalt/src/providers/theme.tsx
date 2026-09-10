@@ -8,6 +8,7 @@ import {
 	useState,
 	useSyncExternalStore,
 } from "react";
+import { createPreferenceStore } from "../utils/preference-store";
 
 export type BasaltTheme = "light" | "dark" | "system";
 
@@ -78,278 +79,8 @@ export interface ThemeProviderProps {
 	applyToDocument?: boolean;
 }
 
-interface ThemeStore {
-	getSnapshot: () => BasaltTheme;
-	subscribe: (listener: () => void) => () => void;
-	setTheme: (next: BasaltTheme) => void;
-	updateConfig: (config: {
-		storageKey: string;
-		defaultTheme: BasaltTheme;
-		persist: boolean;
-	}) => void;
-}
-
 function isValidTheme(value: unknown): value is BasaltTheme {
 	return value === "light" || value === "dark" || value === "system";
-}
-
-type StorageReadResult = { status: "success"; value: string | null } | { status: "error" };
-
-function safeGetStorageItem(key: string): StorageReadResult {
-	try {
-		if (typeof window === "undefined" || !window.localStorage) {
-			return { status: "error" };
-		}
-		const value = window.localStorage.getItem(key);
-		return { status: "success", value };
-	} catch {
-		return { status: "error" };
-	}
-}
-
-function safeSetStorageItem(key: string, value: string): boolean {
-	try {
-		if (typeof window === "undefined" || !window.localStorage) {
-			return false;
-		}
-		window.localStorage.setItem(key, value);
-		return true;
-	} catch {
-		return false;
-	}
-}
-
-function isLocalStorageArea(area: Storage | null | undefined): boolean {
-	if (!area) {
-		return true;
-	}
-	try {
-		if (typeof window !== "undefined" && window.localStorage) {
-			return area === window.localStorage;
-		}
-	} catch {
-		// localStorage getter threw
-		return false;
-	}
-	return false;
-}
-
-const THEME_CHANGE_EVENT = "basalt:theme-change";
-
-interface ThemeChangeEventDetail {
-	key: string;
-	value: BasaltTheme;
-	writeSucceeded: boolean;
-}
-
-function createThemeStore(
-	initialStorageKey: string,
-	initialDefaultTheme: BasaltTheme,
-	initialPersist: boolean,
-): ThemeStore {
-	let storageKey = initialStorageKey;
-	let defaultTheme = initialDefaultTheme;
-	let persist = initialPersist;
-
-	// In-memory fallback / cache value
-	let memoryTheme: BasaltTheme = defaultTheme;
-	let hasExplicitSelection = false;
-	let lastSetFailed = false;
-
-	if (persist) {
-		const res = safeGetStorageItem(storageKey);
-		if (res.status === "success" && isValidTheme(res.value)) {
-			memoryTheme = res.value;
-			hasExplicitSelection = true;
-		}
-	}
-
-	const listeners = new Set<() => void>();
-
-	const notify = () => {
-		for (const listener of listeners) {
-			listener();
-		}
-	};
-
-	const onInternalChange = (event: Event) => {
-		if (!persist) {
-			return;
-		}
-		const customEv = event as CustomEvent<ThemeChangeEventDetail>;
-		if (!customEv.detail || customEv.detail.key !== storageKey) {
-			return;
-		}
-		const { value, writeSucceeded } = customEv.detail;
-		if (writeSucceeded) {
-			lastSetFailed = false;
-		} else {
-			lastSetFailed = true;
-		}
-		memoryTheme = value;
-		hasExplicitSelection = true;
-		notify();
-	};
-
-	const onStorage = (event: StorageEvent | Event) => {
-		if (!persist) {
-			return;
-		}
-		const storageEv = event as Partial<StorageEvent>;
-		if ("key" in storageEv && storageEv.key !== undefined) {
-			if (!isLocalStorageArea(storageEv.storageArea)) {
-				return;
-			}
-			if (storageEv.key !== null && storageEv.key !== storageKey) {
-				return;
-			}
-			lastSetFailed = false;
-			const rawVal = storageEv.newValue;
-			if (rawVal === null || rawVal === undefined || !isValidTheme(rawVal)) {
-				// Key removed or invalid value: revert to configured default
-				memoryTheme = defaultTheme;
-				hasExplicitSelection = false;
-				notify();
-				return;
-			}
-			memoryTheme = rawVal;
-			hasExplicitSelection = true;
-			notify();
-			return;
-		}
-		// Untyped/bare storage event: e.g. dispatchEvent(new Event("storage"))
-		// If last set failed, ignore so stale storage cannot overwrite in-memory switch
-		if (lastSetFailed) {
-			return;
-		}
-		const res = safeGetStorageItem(storageKey);
-		if (res.status === "error") {
-			// Read failed: preserve current cached memory theme, do not revert to default
-			return;
-		}
-		if (isValidTheme(res.value)) {
-			memoryTheme = res.value;
-			hasExplicitSelection = true;
-			notify();
-		} else {
-			// Key removed or invalid value stored: revert to default
-			memoryTheme = defaultTheme;
-			hasExplicitSelection = false;
-			notify();
-		}
-	};
-
-	let cleanupStorageListener: (() => void) | null = null;
-	const attachStorageListener = () => {
-		if (typeof window === "undefined") {
-			return;
-		}
-		if (listeners.size === 1 && !cleanupStorageListener) {
-			window.addEventListener("storage", onStorage);
-			window.addEventListener(THEME_CHANGE_EVENT, onInternalChange);
-			cleanupStorageListener = () => {
-				window.removeEventListener("storage", onStorage);
-				window.removeEventListener(THEME_CHANGE_EVENT, onInternalChange);
-				cleanupStorageListener = null;
-			};
-		}
-	};
-
-	const detachStorageListener = () => {
-		if (listeners.size === 0 && cleanupStorageListener) {
-			cleanupStorageListener();
-		}
-	};
-
-	return {
-		getSnapshot: () => memoryTheme,
-		subscribe: (listener: () => void) => {
-			listeners.add(listener);
-			attachStorageListener();
-			return () => {
-				listeners.delete(listener);
-				detachStorageListener();
-			};
-		},
-		setTheme: (next: BasaltTheme) => {
-			memoryTheme = next;
-			hasExplicitSelection = true;
-			let writeSucceeded = true;
-			if (persist) {
-				const success = safeSetStorageItem(storageKey, next);
-				lastSetFailed = !success;
-				writeSucceeded = success;
-				if (typeof window !== "undefined") {
-					try {
-						window.dispatchEvent(
-							new CustomEvent<ThemeChangeEventDetail>(THEME_CHANGE_EVENT, {
-								detail: { key: storageKey, value: next, writeSucceeded },
-							}),
-						);
-					} catch {
-						// ignore
-					}
-				}
-			}
-			notify();
-		},
-		updateConfig: (config) => {
-			const keyChanged = storageKey !== config.storageKey;
-			const persistChanged = persist !== config.persist;
-			const defaultChanged = defaultTheme !== config.defaultTheme;
-
-			const oldPersist = persist;
-			storageKey = config.storageKey;
-			defaultTheme = config.defaultTheme;
-			persist = config.persist;
-
-			if (keyChanged) {
-				if (persist) {
-					const res = safeGetStorageItem(storageKey);
-					if (res.status === "success") {
-						lastSetFailed = false;
-						if (isValidTheme(res.value)) {
-							memoryTheme = res.value;
-							hasExplicitSelection = true;
-						} else {
-							memoryTheme = defaultTheme;
-							hasExplicitSelection = false;
-						}
-					}
-					notify();
-				}
-				// persist=false: changing storageKey does not reset current memoryTheme
-			} else if (persistChanged) {
-				if (!oldPersist && persist) {
-					// persist flipped false -> true: read from storage or keep current
-					const res = safeGetStorageItem(storageKey);
-					if (res.status === "success") {
-						lastSetFailed = false;
-						if (isValidTheme(res.value)) {
-							memoryTheme = res.value;
-							hasExplicitSelection = true;
-							notify();
-						}
-					}
-				}
-				// persist flipped true -> false: only disable persistence, keep current memoryTheme, no storage read/write
-			} else if (defaultChanged) {
-				// defaultTheme changed: only update if no explicit selection was made
-				if (!hasExplicitSelection) {
-					if (persist) {
-						const res = safeGetStorageItem(storageKey);
-						if (res.status === "success" && !isValidTheme(res.value)) {
-							memoryTheme = defaultTheme;
-							notify();
-						}
-					} else {
-						memoryTheme = defaultTheme;
-						notify();
-					}
-				}
-			}
-		},
-	};
 }
 
 export function ThemeProvider({
@@ -363,10 +94,19 @@ export function ThemeProvider({
 }: ThemeProviderProps) {
 	const isControlled = controlledTheme !== undefined;
 
-	const [store] = useState(() => createThemeStore(storageKey, defaultTheme, persist));
+	const [store] = useState(() =>
+		createPreferenceStore({
+			storageKey,
+			defaultValue: defaultTheme,
+			persist,
+			isValid: isValidTheme,
+			normalize: (value) => value,
+			eventName: "basalt:theme-change",
+		}),
+	);
 
 	useEffect(() => {
-		store.updateConfig({ storageKey, defaultTheme, persist });
+		store.updateConfig({ storageKey, defaultValue: defaultTheme, persist });
 	}, [store, storageKey, defaultTheme, persist]);
 
 	const getServerSnapshot = useCallback(() => defaultTheme, [defaultTheme]);
@@ -400,7 +140,7 @@ export function ThemeProvider({
 				onThemeChange?.(next);
 				return;
 			}
-			store.setTheme(next);
+			store.setValue(next);
 			onThemeChange?.(next);
 		},
 		[isControlled, onThemeChange, store],

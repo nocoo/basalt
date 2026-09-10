@@ -34,27 +34,6 @@ export type DataTableColumn<T> = {
 
 export type DataTableSort = { id: string; dir: "asc" | "desc" };
 
-function asBigint(value: unknown): bigint | null {
-	if (typeof value === "bigint") {
-		return value;
-	}
-	if (typeof value === "number" && Number.isFinite(value) && Number.isInteger(value)) {
-		return BigInt(value);
-	}
-	return null;
-}
-
-function compareNumberAndBigint(num: number, big: bigint): number {
-	const truncated = BigInt(Math.trunc(num));
-	if (truncated < big) {
-		return -1;
-	}
-	if (truncated > big) {
-		return 1;
-	}
-	return num > Number(truncated) ? 1 : -1;
-}
-
 function rank(value: unknown): number {
 	if (value === Number.NEGATIVE_INFINITY) {
 		return 0;
@@ -81,21 +60,9 @@ function compareUnknown(left: unknown, right: unknown): number {
 		return leftRank - rightRank;
 	}
 	if (leftRank === 1) {
-		if (typeof left === "bigint" && typeof right === "bigint") {
-			return left < right ? -1 : left > right ? 1 : 0;
-		}
-		const leftInt = asBigint(left);
-		const rightInt = asBigint(right);
-		if (leftInt !== null && rightInt !== null) {
-			return leftInt < rightInt ? -1 : leftInt > rightInt ? 1 : 0;
-		}
-		if (typeof left === "number" && typeof right === "bigint") {
-			return compareNumberAndBigint(left, right);
-		}
-		if (typeof left === "bigint" && typeof right === "number") {
-			return -compareNumberAndBigint(right, left);
-		}
-		return (left as number) - (right as number);
+		const a = left as number | bigint;
+		const b = right as number | bigint;
+		return a < b ? -1 : a > b ? 1 : 0;
 	}
 	const leftStr = String(left);
 	const rightStr = String(right);
@@ -137,10 +104,6 @@ function primitiveKey(
 
 function isInstanceKey(key: string) {
 	return key.startsWith("dup:") || key.startsWith("gen:");
-}
-
-function isCanonicalKey(key: string) {
-	return key.startsWith("id:") || key.startsWith("get:");
 }
 
 function isRefRow(row: unknown): row is object {
@@ -313,7 +276,6 @@ export function DataTable<T>({
 	const rowIds = useRef(new WeakMap<object, string>());
 	const rowSeq = useRef(0);
 	const assignedKeys = useRef(new WeakMap<object, string[]>());
-	const lastCanonical = useRef(new Map<string, object>());
 	const lastOwner = useRef(new Map<string, object>());
 	const lastKeyByCanonical = useRef(new Map<string, string>());
 	const lastDupsByCanonical = useRef(new Map<string, string[]>());
@@ -346,7 +308,6 @@ export function DataTable<T>({
 		const nextDups = new Map<string, string[]>();
 		const nextAssigned = new Map<object, string[]>();
 		const nextOwner = new Map<string, object>();
-		const nextCanonical = new Map<string, object>();
 		const rememberKey = (row: T, index: number, key: string, objectRow: object | null) => {
 			if (!objectRow) {
 				return;
@@ -355,9 +316,6 @@ export function DataTable<T>({
 			list.push(key);
 			nextAssigned.set(objectRow, list);
 			nextOwner.set(key, objectRow);
-			if (isCanonicalKey(key)) {
-				nextCanonical.set(key, objectRow);
-			}
 			const canonical = canonicalOf(row, index);
 			if (!canonical) {
 				return;
@@ -468,7 +426,6 @@ export function DataTable<T>({
 			rows: sorted,
 			assigned: nextAssigned,
 			owner: nextOwner,
-			canonical: nextCanonical,
 			lastKey: nextLastKey,
 			dups: nextDups,
 		};
@@ -479,7 +436,6 @@ export function DataTable<T>({
 			assignedKeys.current.set(objectRow, keys);
 		}
 		lastOwner.current = rows.owner;
-		lastCanonical.current = rows.canonical;
 		lastKeyByCanonical.current = rows.lastKey;
 		lastDupsByCanonical.current = rows.dups;
 	}, [rows]);

@@ -10,14 +10,14 @@ export const API = [
 				type: "number",
 				required: false,
 				default: "30",
-				description: "Minimum width percentage used for deterministic width computation.\n\nNote: Sorted with maxWidth to compute the midpoint width percentage.",
+				description: "Minimum width percentage used for deterministic width computation.\n\nNote: Averaged with maxWidth to compute the midpoint width percentage.",
 			},
 			{
 				name: "maxWidth",
 				type: "number",
 				required: false,
 				default: "100",
-				description: "Maximum width percentage used for deterministic width computation.\n\nNote: Sorted with minWidth to compute the midpoint width percentage.",
+				description: "Maximum width percentage used for deterministic width computation.\n\nNote: Averaged with minWidth to compute the midpoint width percentage.",
 			},
 			{
 				name: "height",
