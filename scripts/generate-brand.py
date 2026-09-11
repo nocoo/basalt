@@ -44,7 +44,7 @@ def save(image, name, role, **options):
     outputs.append(record)
 
 
-for size in [24, 32, 48, 64, 80, 128, 256]:
+for size in [128, 256]:
     save(foreground.resize((size, size), Image.Resampling.LANCZOS),
          f"logo-{size}.png", "transparent application mark")
 save(foreground.resize((32, 32), Image.Resampling.LANCZOS),

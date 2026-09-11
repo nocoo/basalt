@@ -6,41 +6,6 @@
 	"icoSizes": [16, 24, 32, 48, 64],
 	"files": [
 		{
-			"path": "public/logo-24.png",
-			"role": "transparent application mark",
-			"sha256": "935c1578970cd527f5618ec9b94984aa76c882c4f13320fddf61552fef95f26b",
-			"width": 24,
-			"height": 24
-		},
-		{
-			"path": "public/logo-32.png",
-			"role": "transparent application mark",
-			"sha256": "82c623e67a06827ec23fd6e8d2117b78d0c12882cf9513de2f3e004ad9d4a51a",
-			"width": 32,
-			"height": 32
-		},
-		{
-			"path": "public/logo-48.png",
-			"role": "transparent application mark",
-			"sha256": "6c69a7f3f50f45685d2d13680f346be249541c6db996d2ae98205bad845d95b2",
-			"width": 48,
-			"height": 48
-		},
-		{
-			"path": "public/logo-64.png",
-			"role": "transparent application mark",
-			"sha256": "299f708d3def0a1836904f5d7a248c14f553f719853b4f76cc58658907cc0c10",
-			"width": 64,
-			"height": 64
-		},
-		{
-			"path": "public/logo-80.png",
-			"role": "transparent application mark",
-			"sha256": "db4eb1f604dc996b92c497c78b961ce5f76958e207db0bcbbb8b5a6f8a157b01",
-			"width": 80,
-			"height": 80
-		},
-		{
 			"path": "public/logo-128.png",
 			"role": "transparent application mark",
 			"sha256": "106b537e9bcaacff77f953cdac14f79d279160d6fc8ae0521875d8df21d05661",
