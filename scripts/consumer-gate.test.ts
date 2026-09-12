@@ -236,6 +236,7 @@ describe("tailwind consumer gate helpers", () => {
 		const manifest = readFileSync("fixtures/vite-tailwind/package.json", "utf8");
 		assertTemplateManifest(manifest);
 		expect(manifest).toContain('"react": "19.3.0"');
+		expect(manifest).toContain('"react-dom": "19.3.0"');
 		expect(manifest).toContain('"tailwindcss": "4.3.3"');
 		expect(manifest).toContain('"@tailwindcss/vite": "4.3.3"');
 		expect(manifest).not.toContain("standalone");
@@ -570,6 +571,8 @@ describe("heavy consumer gate helpers", () => {
 	it("keeps the committed heavy fixture inside the gate contract", () => {
 		const manifest = readFileSync("fixtures/vite-heavy/package.json", "utf8");
 		assertTemplateManifest(manifest);
+		expect(manifest).toContain('"react": "19.3.0"');
+		expect(manifest).toContain('"react-dom": "19.3.0"');
 		expect(manifest).toContain('"recharts": "3.10.1"');
 		expect(manifest).toContain('"react-day-picker": "10.0.1"');
 		expect(manifest).toContain('"@tanstack/react-table": "9.2.4"');
