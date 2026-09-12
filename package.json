@@ -99,7 +99,8 @@
 		"typescript": "7.0.2",
 		"typescript-api": "npm:typescript@5.9.3",
 		"vite": "8.2.2",
-		"vitest": "5.0.0"
+		"vitest": "5.0.0",
+		"wrangler": "4.130.0"
 	},
 	"overrides": {
 		"nanoid": "3.3.18",

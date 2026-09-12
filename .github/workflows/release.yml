@@ -21,57 +21,26 @@ jobs:
     if: >-
       github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
-      (github.event_name == 'workflow_run' &&
-       github.event.workflow_run.event == 'push' &&
+      (github.event.workflow_run.event == 'push' &&
        github.event.workflow_run.head_branch == 'main' &&
        github.event.workflow_run.head_repository.full_name == github.repository &&
        github.event.workflow_run.conclusion == 'success')
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    environment: production
-    concurrency:
-      group: deploy-worker-production
-      cancel-in-progress: false
-    permissions:
-      contents: read
-      actions: read
-    steps:
-      - name: Resolve release source
-        id: source
-        uses: nocoo/base-ci/.github/actions/release-source@8cbdb970c3a38240289c1e152c40dd550ac62dba
-        with:
-          github-token: ${{ github.token }}
-          expected-workflow-path: ".github/workflows/ci.yml"
-          expected-workflow-name: "CI"
-          source-run-id: ${{ github.event_name == 'workflow_run' && format('{0}', github.event.workflow_run.id) || '' }}
-          tag: ${{ github.event_name == 'push' && github.ref_name || inputs.tag || '' }}
-          package-version-match: ${{ github.event_name != 'workflow_run' }}
-          require-fresh-main: true
-
-      - name: Checkout proven SHA
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          ref: ${{ steps.source.outputs.target-sha }}
-          persist-credentials: false
-
-      - name: Setup JS and frozen install
-        uses: nocoo/base-ci/.github/actions/setup-js@081cdf665b9c67f233abfcc9242ce0be76ce2bb4
-        with:
-          package-manager: bun
-          runtime-version: "1.4.0"
-          node-version: "24.14.0"
-          install-policy: "blocked"
-
-      - name: Build site
-        run: bun run build
-
-      - name: Deploy Worker
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          wranglerVersion: "4.130.0"
-          command: deploy
-
-      - name: Verify production routing and version
-        run: bun scripts/deploy-smoke.ts
+    uses: nocoo/base-ci/.github/workflows/deploy-worker.yml@2857469cc5206e7a4988171a1282209617996a67
+    with:
+      expected-workflow-path: ".github/workflows/ci.yml"
+      expected-workflow-name: "CI"
+      source-run-id: ${{ github.event_name == 'workflow_run' && format('{0}', github.event.workflow_run.id) || '' }}
+      tag: ${{ github.event_name == 'push' && github.ref_name || inputs.tag || '' }}
+      package-version-match: ${{ github.event_name != 'workflow_run' }}
+      runtime-version: "1.4.0"
+      node-version: "24.20.0"
+      install-policy: "blocked"
+      build-command: bun run build
+      wrangler-version: "4.130.0"
+      environment: production
+      concurrency-group: deploy-worker-production
+      timeout-minutes: 15
+      verify-command: bun scripts/deploy-smoke.ts
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
