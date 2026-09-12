@@ -142,8 +142,8 @@ import "@nocoo/basalt/styles/tailwind";`),
 	it("keeps the committed standalone fixture inside the gate contract", () => {
 		const manifest = readFileSync("fixtures/vite-standalone/package.json", "utf8");
 		assertTemplateManifest(manifest);
-		expect(manifest).toContain('"react": "19.2.8"');
-		expect(manifest).toContain('"react-dom": "19.2.8"');
+		expect(manifest).toContain('"react": "19.3.0"');
+		expect(manifest).toContain('"react-dom": "19.3.0"');
 		expect(manifest).toContain('"lucide-react": "1.44.0"');
 		expect(manifest).toContain('"vite": "8.2.2"');
 		assertRootConsumerSource(readFileSync("fixtures/vite-standalone/src/main.tsx", "utf8"));
@@ -235,7 +235,7 @@ describe("tailwind consumer gate helpers", () => {
 	it("keeps the committed tailwind fixture inside the gate contract", () => {
 		const manifest = readFileSync("fixtures/vite-tailwind/package.json", "utf8");
 		assertTemplateManifest(manifest);
-		expect(manifest).toContain('"react": "19.2.8"');
+		expect(manifest).toContain('"react": "19.3.0"');
 		expect(manifest).toContain('"tailwindcss": "4.3.3"');
 		expect(manifest).toContain('"@tailwindcss/vite": "4.3.3"');
 		expect(manifest).not.toContain("standalone");
@@ -407,8 +407,8 @@ describe("next consumer gate helpers", () => {
 		const manifest = readFileSync("fixtures/next19/package.json", "utf8");
 		assertTemplateManifest(manifest);
 		expect(manifest).toContain('"next": "16.3.5"');
-		expect(manifest).toContain('"react": "19.2.8"');
-		expect(manifest).toContain('"react-dom": "19.2.8"');
+		expect(manifest).toContain('"react": "19.3.0"');
+		expect(manifest).toContain('"react-dom": "19.3.0"');
 		expect(manifest).not.toContain("@nocoo/basalt");
 		assertRootConsumerSource(readFileSync("fixtures/next19/app/basalt-app.tsx", "utf8"), "next");
 		assertNextLayout(readFileSync("fixtures/next19/app/layout.tsx", "utf8"));
