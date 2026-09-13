@@ -817,7 +817,17 @@ export async function assertConsumerGeometry(
 			(window as unknown as { cancelGroupRefReset?: boolean }).cancelGroupRefReset = false;
 		});
 		await page.locator(`#ref-reset-btn-${kind}`).click();
-		await page.waitForTimeout(60);
+		await page.waitForFunction((k) => {
+			const form = document.getElementById(`ref-reset-form-${k}`) as HTMLFormElement;
+			const values = new FormData(form).getAll(`choice_${k}`);
+			const states = [...form.querySelectorAll(`[role="${k}"]`)].map((el) =>
+				el.getAttribute("aria-checked"),
+			);
+			return (
+				JSON.stringify(values) === JSON.stringify(["a"]) &&
+				JSON.stringify(states) === JSON.stringify(["true", "false"])
+			);
+		}, kind);
 
 		const normalResetState = await readState();
 		if (
