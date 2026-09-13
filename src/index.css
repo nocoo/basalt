@@ -2,7 +2,6 @@
 @source "../packages/basalt/src/**/*.{ts,tsx}";
 @import "../packages/basalt/src/styles/tailwind.css";
 @import "tailwindcss";
-@import "tw-animate-css";
 @import "./styles/landing.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
