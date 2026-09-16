@@ -3054,7 +3054,3 @@ export function writeCatalogApiFiles(repoRoot: string, files: Record<string, str
 		}
 	}
 }
-
-export function generateCatalogApiModule(repoRoot: string): string {
-	return generateCatalogApiFiles(repoRoot)[GENERATED_RELATIVE_PATH] ?? "";
-}

@@ -51,16 +51,3 @@ export const CHART_TOKENS = [
 	"chart-7",
 	"chart-24",
 ] as readonly string[];
-
-// ── Semantic aliases ──
-
-export const chartAxis = v("chart-axis");
-
-/** Positive / income / inflow */
-export const chartPositive = chart.green;
-
-/** Negative / expense / outflow uses the fixed chart pink. */
-export const chartNegative = chart.rose;
-
-/** Primary chart accent (most-used single color) */
-export const chartPrimary = chart.primary;

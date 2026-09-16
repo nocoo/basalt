@@ -23,10 +23,6 @@ function familyIdFromPath(modulePath: string): string {
 	return match[1];
 }
 
-export function catalogContentFamilyNames(): readonly string[] {
-	return familyNames;
-}
-
 export function loadCatalogContentFamily(family: string): Promise<CatalogContentFamilyRecord> {
 	const cached = familyPromises.get(family);
 	if (cached) {

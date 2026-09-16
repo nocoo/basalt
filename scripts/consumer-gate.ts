@@ -1493,10 +1493,6 @@ console.log(JSON.stringify({
 	);
 }
 
-export function runStandaloneConsumerGate(repoRoot: string) {
-	return runConsumerGate(repoRoot, STANDALONE_GATE);
-}
-
 export function gateConfigFromArgv(argv: string[]) {
 	if (argv.includes("next")) {
 		return NEXT_GATE;

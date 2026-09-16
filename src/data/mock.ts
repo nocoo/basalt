@@ -6,7 +6,6 @@ import type {
 	ActivityItem,
 	Budget,
 	CreditCard,
-	FAQ,
 	Goal,
 	MonthlyBudget,
 	PortfolioItem,
@@ -215,20 +214,6 @@ export const performanceData = [
 	{ month: "Oct", value: 98700 },
 	{ month: "Nov", value: 101200 },
 	{ month: "Dec", value: 104800 },
-];
-
-// ── Help ──
-export const faqs: FAQ[] = [
-	{ q: "How do I add a new bank account?", a: "Go to Wallet > Add Money > Link Bank Account." },
-	{
-		q: "How are budget limits calculated?",
-		a: "Budget limits are set monthly and reset on the 1st.",
-	},
-	{ q: "Can I export my transactions?", a: "Yes, go to Transactions > Filter > Export CSV." },
-	{
-		q: "How do I change my notification settings?",
-		a: "Settings > Notifications > Toggle preferences.",
-	},
 ];
 
 // ── Interaction Showcase ──

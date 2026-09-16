@@ -17,13 +17,7 @@ export async function computeSha256Hex16(text: string): Promise<string> {
 		.slice(0, 16);
 }
 
-export function getSourceViewerPath(slug: string): string {
-	const info = CATALOG_SOURCE_FILES[slug];
-	const hash = info?.hash ? `?hash=${info.hash}` : "";
-	return `/ui/${slug}/source${hash}`;
-}
-
-export function loadSourceContent(sourceFile: string): Promise<string> {
+function loadSourceContent(sourceFile: string): Promise<string> {
 	// sourceFile is e.g. "packages/basalt/src/components/button.tsx"
 	const relativeKey = `../../../${sourceFile}`;
 	const loader = rawModules[relativeKey];
