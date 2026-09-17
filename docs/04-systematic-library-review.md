@@ -364,7 +364,7 @@ A/B/D 主要证明 import、类型、构建和 CSS 包含 token/class；C 验证
 
 ### Q04 · P1 · release 的文档限制没有成为程序限制【源码】
 
-**位置：**[scripts/release.ts](../scripts/release.ts#L250)、[release.yml](../.github/workflows/release.yml)、[CLAUDE 发布规则](../CLAUDE.md#L95)。
+**位置：**[scripts/release.ts](../scripts/release.ts#L250)、[release.yml](../.github/workflows/release.yml)、[CLAUDE 发布规则](../CLAUDE.md#operations--release)。
 
 CLAUDE 已明确提示生产不要使用当前 `bun run release`，直到它限制 main、等待 CI、只推指定 tag。脚本仍没有这些门，并使用 `git push --tags`。tag/手动部署路径只校验版本匹配和 site build，不等待该提交的 CI/包门。
 
