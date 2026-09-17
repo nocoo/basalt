@@ -43,6 +43,9 @@ export default defineConfig(() => ({
 		host: "::",
 		port: 7003,
 		allowedHosts: ["basalt.dev.hexly.ai"],
+		watch: {
+			ignored: ["**/coverage/**"],
+		},
 		hmr: {
 			overlay: false,
 		},

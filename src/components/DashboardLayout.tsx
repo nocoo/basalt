@@ -1,7 +1,6 @@
 import { AppHeader } from "@nocoo/basalt/components/app-header";
 import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
-import { Button } from "@nocoo/basalt/components/button";
-import { Link } from "@nocoo/basalt/components/link";
+import { Button, LinkButton } from "@nocoo/basalt/components/button";
 import { Sheet, SheetContent, SheetTitle } from "@nocoo/basalt/components/sheet";
 import { ContentIsland } from "@nocoo/basalt/components/sidebar";
 import { useTheme } from "@nocoo/basalt/providers/theme";
@@ -128,15 +127,17 @@ export function DashboardLayout() {
 							<LanguageToggle />
 							<AccentPicker />
 							<HeaderTooltip label={t("common.github")}>
-								<Link
+								<LinkButton
+									variant="ghost"
+									size="icon"
 									href="https://github.com/nocoo/basalt"
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label={t("common.github")}
-									className="relative flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg text-basalt-muted-foreground no-underline transition-colors before:absolute before:inset-0 hover:bg-basalt-accent hover:text-basalt-foreground [&_svg]:pointer-events-none"
+									className="h-8 w-8 rounded-lg text-basalt-muted-foreground hover:text-basalt-foreground [&_svg]:size-[18px]"
 								>
 									<Github className="h-[18px] w-[18px]" aria-hidden="true" strokeWidth={1.5} />
-								</Link>
+								</LinkButton>
 							</HeaderTooltip>
 							<HexlyLink />
 							<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />

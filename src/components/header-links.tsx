@@ -1,5 +1,6 @@
 "use client";
 
+import { LinkButton } from "@nocoo/basalt/components/button";
 import {
 	Tooltip,
 	TooltipContent,
@@ -24,19 +25,17 @@ export function HeaderTooltip({ label, children }: { label: string; children: Re
 export function HexlyLink({ className }: { className?: string } = {}) {
 	return (
 		<HeaderTooltip label="Basalt on hexly.ai">
-			<a
+			<LinkButton
+				variant="ghost"
+				size="icon"
 				href="https://hexly.ai/projects/basalt"
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Basalt on hexly.ai (opens in a new tab)"
-				className={
-					className ??
-					"relative flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg text-basalt-muted-foreground transition-colors before:absolute before:inset-0 hover:bg-basalt-accent hover:text-basalt-foreground"
-				}
+				className={`${className ?? "h-8 w-8 rounded-lg text-basalt-muted-foreground hover:text-basalt-foreground"} [&_svg]:size-[18px]`}
 			>
 				<span className="sr-only">Basalt on hexly.ai</span>
 				<svg
-					className="pointer-events-none size-[18px]"
 					width="18"
 					height="18"
 					viewBox="0 0 24 24"
@@ -50,7 +49,7 @@ export function HexlyLink({ className }: { className?: string } = {}) {
 					<path d="m12 2 8.66 5v10L12 22l-8.66-5V7Z" />
 					<path d="M12 2v20M3.34 7l17.32 10m0-10L3.34 17" />
 				</svg>
-			</a>
+			</LinkButton>
 		</HeaderTooltip>
 	);
 }

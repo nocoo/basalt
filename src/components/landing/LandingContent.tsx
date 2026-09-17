@@ -1,3 +1,4 @@
+import { LinkButton } from "@nocoo/basalt/components/button";
 import { ArrowRight, ArrowUp, ArrowUpRight, Check, CheckCheck, Code2, Plus } from "lucide-react";
 import type { AnchorHTMLAttributes, ElementType, ReactNode } from "react";
 import { BasaltLogo } from "@/components/BasaltLogo";
@@ -171,16 +172,18 @@ export function LandingContent({
 					</nav>
 					<div className="landing-header-actions">
 						<HeaderTooltip label="GitHub repository">
-							<a
+							<LinkButton
+								variant="ghost"
+								size="icon"
 								href={SITE.github}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="landing-github"
+								className="landing-github [&_svg]:size-[18px]"
 								aria-label="GitHub repository"
 							>
 								<span className="sr-only">GitHub repository</span>
 								<Github aria-hidden="true" size={18} strokeWidth={1.5} />
-							</a>
+							</LinkButton>
 						</HeaderTooltip>
 						<HexlyLink className="landing-github" />
 						{themeToggle}

@@ -193,23 +193,6 @@
 .landing-header-actions :where(button:hover, .landing-github:hover) {
 	background: rgb(255 255 255 / 0.18);
 }
-.landing-github {
-	position: relative;
-	display: inline-flex;
-	cursor: pointer;
-	align-items: center;
-	justify-content: center;
-	min-height: 36px;
-	min-width: 36px;
-}
-.landing-github::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-}
-.landing-github svg {
-	pointer-events: none;
-}
 .landing-hero {
 	position: relative;
 	isolation: isolate;
