@@ -1,3 +1,4 @@
+import { HeaderTooltip } from "./header-links";
 import { ToggleGroup, ToggleGroupItem } from "@nocoo/basalt/components/toggle-group";
 import { useTranslation } from "react-i18next";
 
@@ -26,9 +27,11 @@ export function LanguageToggle() {
 			aria-label={t("language.label")}
 		>
 			{LANGUAGES.map((lang) => (
-				<ToggleGroupItem key={lang.value} value={lang.value}>
-					{lang.label}
-				</ToggleGroupItem>
+				<HeaderTooltip key={lang.value} label={t(`language.${lang.value}`)}>
+					<ToggleGroupItem value={lang.value}>
+						{lang.label}
+					</ToggleGroupItem>
+				</HeaderTooltip>
 			))}
 		</ToggleGroup>
 	);

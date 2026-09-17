@@ -1,3 +1,4 @@
+import { HeaderTooltip } from "./header-links";
 import { Button } from "@nocoo/basalt/components/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@nocoo/basalt/components/popover";
 import { useAccent } from "@nocoo/basalt/providers/accent";
@@ -9,20 +10,22 @@ export function AccentPicker() {
 
 	return (
 		<Popover>
-			<PopoverTrigger asChild>
-				<Button
-					variant="ghost"
-					size="icon"
-					className="h-8 w-8"
-					aria-label={t("common.themePalette")}
-				>
-					<span
-						className="h-3.5 w-3.5 rounded-full ring-1 ring-basalt-border"
-						style={{ background: "hsl(var(--basalt-primary))" }}
-						aria-hidden="true"
-					/>
-				</Button>
-			</PopoverTrigger>
+			<HeaderTooltip label={t("common.themePalette")}>
+				<PopoverTrigger asChild>
+					<Button
+						variant="ghost"
+						size="icon"
+						className="h-8 w-8"
+						aria-label={t("common.themePalette")}
+					>
+						<span
+							className="h-3.5 w-3.5 rounded-full ring-1 ring-basalt-border"
+							style={{ background: "hsl(var(--basalt-primary))" }}
+							aria-hidden="true"
+						/>
+					</Button>
+				</PopoverTrigger>
+			</HeaderTooltip>
 			<PopoverContent align="end" className="w-56 p-2">
 				<p className="mb-2 px-1 text-xs text-basalt-muted-foreground">{t("common.themePalette")}</p>
 				<div className="grid grid-cols-6 gap-1.5">

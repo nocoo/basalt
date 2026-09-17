@@ -1,3 +1,4 @@
+import { HeaderTooltip } from "../components/header-links";
 import { Button } from "@nocoo/basalt/components/button";
 import { Link } from "@nocoo/basalt/components/link";
 import { useTheme } from "@nocoo/basalt/providers/theme";
@@ -59,20 +60,21 @@ export default function LandingPage() {
 			linkComponent={Link}
 			imageMode={resolvedTheme}
 			themeToggle={
-				<Button
-					type="button"
-					variant="ghost"
-					size="icon"
-					aria-label={`Toggle theme (current: ${resolvedTheme})`}
-					title={`Switch to ${nextTheme} mode`}
-					onClick={() => setTheme(nextTheme)}
-				>
-					{resolvedTheme === "dark" ? (
-						<Moon aria-hidden="true" size={16} strokeWidth={1.5} />
-					) : (
-						<Sun aria-hidden="true" size={16} strokeWidth={1.5} />
-					)}
-				</Button>
+				<HeaderTooltip label={`Switch to ${nextTheme} mode`}>
+					<Button
+						type="button"
+						variant="ghost"
+						size="icon"
+						aria-label={`Toggle theme (current: ${resolvedTheme})`}
+						onClick={() => setTheme(nextTheme)}
+					>
+						{resolvedTheme === "dark" ? (
+							<Moon aria-hidden="true" size={16} strokeWidth={1.5} />
+						) : (
+							<Sun aria-hidden="true" size={16} strokeWidth={1.5} />
+						)}
+					</Button>
+				</HeaderTooltip>
 			}
 			installAction={<CopyInstallCommand />}
 			brandArtwork={<InteractiveBrandArtwork />}

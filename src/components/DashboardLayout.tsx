@@ -1,10 +1,11 @@
+import { HeaderTooltip, HexlyLink } from "./header-links";
 import { AppHeader } from "@nocoo/basalt/components/app-header";
 import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
 import { Button } from "@nocoo/basalt/components/button";
 import { Link } from "@nocoo/basalt/components/link";
 import { Sheet, SheetContent, SheetTitle } from "@nocoo/basalt/components/sheet";
 import { ContentIsland } from "@nocoo/basalt/components/sidebar";
-import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
+import { ThemeToggle } from "./theme-toggle";
 import { useTheme } from "@nocoo/basalt/providers/theme";
 import { Menu } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -106,16 +107,18 @@ export function DashboardLayout() {
 				<AppHeader
 					leading={
 						isMobile ? (
-							<Button
-								ref={mobileTriggerRef}
-								variant="ghost"
-								size="icon"
-								className="h-8 w-8"
-								onClick={() => setMobileOpen(true)}
-								aria-label={t("common.openNav")}
-							>
-								<Menu aria-hidden="true" />
-							</Button>
+							<HeaderTooltip label={t("common.openNav")}>
+								<Button
+									ref={mobileTriggerRef}
+									variant="ghost"
+									size="icon"
+									className="h-8 w-8"
+									onClick={() => setMobileOpen(true)}
+									aria-label={t("common.openNav")}
+								>
+									<Menu aria-hidden="true" />
+								</Button>
+							</HeaderTooltip>
 						) : null
 					}
 					breadcrumbs={isMobile ? undefined : crumbs}
@@ -124,15 +127,18 @@ export function DashboardLayout() {
 						<>
 							<LanguageToggle />
 							<AccentPicker />
-							<Link
-								href="https://github.com/nocoo/basalt"
-								target="_blank"
-								rel="noopener noreferrer"
-								aria-label={t("common.github")}
-								className="flex h-8 w-8 items-center justify-center rounded-lg text-basalt-muted-foreground no-underline transition-colors hover:bg-basalt-accent hover:text-basalt-foreground"
-							>
-								<Github className="h-[18px] w-[18px]" aria-hidden="true" strokeWidth={1.5} />
-							</Link>
+							<HeaderTooltip label={t("common.github")}>
+								<Link
+									href="https://github.com/nocoo/basalt"
+									target="_blank"
+									rel="noopener noreferrer"
+									aria-label={t("common.github")}
+									className="flex h-8 w-8 items-center justify-center rounded-lg text-basalt-muted-foreground no-underline transition-colors hover:bg-basalt-accent hover:text-basalt-foreground"
+								>
+									<Github className="h-[18px] w-[18px]" aria-hidden="true" strokeWidth={1.5} />
+								</Link>
+							</HeaderTooltip>
+							<HexlyLink />
 							<ThemeToggle aria-label={t("common.toggleTheme", { theme })} />
 						</>
 					}
