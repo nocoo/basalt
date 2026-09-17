@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [2.1.8] - 2026-09-17
+
 ### Fixed
 - Keep the hand cursor across the entire button, including rounded corners, with compact 12px tooltips.
 - Preserve toggle selection colors and sliding indicators when composed with tooltips.
