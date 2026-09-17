@@ -1,108 +1,92 @@
 # Basalt
 
-Matte design system + catalog site. npm `@nocoo/basalt`. Live: `https://basaltui.com`.
-Profile: ts-worker-web
-Direction: [INTEGRATION.md](INTEGRATION.md). Numbered `docs/01`–`03` are the 2.0 plan archive, not current SoT. Frameworks must not rewrite this file.
+Matte React design system and catalog at `https://basaltui.com`; npm package `@nocoo/basalt`.
+Profile: ts-worker-web with a published component-library lane.
+Direction: [INTEGRATION.md](INTEGRATION.md); numbered `docs/01`–`03` describe the 2.0 plan rather than current API truth. Frameworks must not rewrite this file.
 
 ## Sources of Truth
 
-This file is the **contract**. Hooks, CI, and config are **enforcement**. If they disagree, raise enforcement; never lower this file.
+This file is the contract; hooks, CI and configuration enforce it. Raise weaker enforcement instead of lowering this contract.
 
 | Fact | Where |
 |---|---|
-| Agent handbook | this file |
-| Human docs | README.md, INTEGRATION.md, CHANGELOG.md, `docs/01`–`03` |
-| Version | root `package.json` `"version"`; `packages/basalt/package.json` must match; site `src/lib/version.ts` `APP_VERSION` |
-| Enforcement | `.husky/*`, `.github/workflows/{ci,release}.yml`, `vitest.config.ts`, `packages/basalt/scripts/verify-pack.ts` |
-| Machine rules | global `AGENTS.md`, `rules/git-commit.md` |
-| Accidents | [Retrospective.md](Retrospective.md) |
+| Human/API docs | [README.md](README.md), [INTEGRATION.md](INTEGRATION.md), [package README](packages/basalt/README.md) |
+| Version | Root and `packages/basalt/package.json` must match; site uses `src/lib/version.ts` |
+| Enforcement | `.husky/`, CI/release workflows, `vitest.config.ts`, package verification and consumer scripts |
+| Package contract | `packages/basalt/ai/`, `packages/basalt/scripts/verify-pack.ts` |
+| Machine rules / accidents | Global `AGENTS.md` and `rules/`; [Retrospective.md](Retrospective.md) |
 
 ## Project Invariants
 
-- Root `package.json` is private (the site). Never `npm publish` the repo root. Publish only `packages/basalt` (`@nocoo/basalt`).
-- Worker name is `theme-basalt`; `[assets]` is `./dist`. `/api/live` reports the root version in Vite and the Worker. No D1. Do not laptop-`wrangler deploy` — site CD is `release.yml`.
-- Coverage is models/viewmodels/lib + `packages/basalt/src` (`vitest.config.ts` include). Pages are not in the 95% denominator.
-- MVVM: viewmodels have no View/DOM imports; pages stay thin.
-- CSS tokens ship in the package. No secrets in the tarball.
-- Never `rm bun.lock`. After a mirror install, strip registry URLs before commit (`rg -c --include-zero '", "https' bun.lock` prints 0).
+- Root package is a private catalog; publish only `packages/basalt`. Keep CSS tokens and both Tailwind/standalone entrypoints in the verified tarball; never include secrets.
+- Preserve matte surface hierarchy, theme/contrast/accessibility behavior, public API and React client/SSR boundaries described in the integration guide.
+- Viewmodels have no View/DOM imports; pages remain thin. Catalog examples use mock data, with no business database or auth service.
+- Worker `theme-basalt` serves `dist/`; site CD belongs to `release.yml`, never a parallel laptop deployment. Vite and `worker/index.ts` expose `/api/live`; preserve status/version and production no-store caching.
+- Keep the Bun lockfile; never delete it for installation. Temporary registry mirrors must not leak into the committed lock. Direct-dependency overrides use the existing `$name` convention.
+- Root and published package versions, catalog metadata and changelog must remain aligned for an authorized release.
 
 ## Stack / Layout
 
 | Component | Choice |
 |---|---|
-| Language | TypeScript 7 strict |
-| Package manager | Bun (`packageManager` bun@1.4.0; CI/CD pinned `1.4.0`) |
-| Runtime | Vite 8 SPA; CF Workers assets (`theme-basalt`); npm `@nocoo/basalt` |
-| Lint | Biome `check --error-on-warnings .`. No `noSkippedTests` |
-| Tests | Vitest L1 95% all four on models/viewmodels/lib + package src |
-| Data | mock catalog; no backend |
-
-```
-src/pages/  src/viewmodels/  src/models/  src/lib/
-packages/basalt/   npm library
-docs/              01–03
-```
+| Runtime / install | TypeScript 7, Bun 1.4.0, Node 24+ for consumer fixtures |
+| Catalog | Vite 8/React, CSS tokens, Cloudflare Worker assets |
+| Package | React 19 components with optional chart peers and separate import paths |
+| Static / tests | TypeScript, Biome, Vitest/V8, Playwright and built external consumers |
+| `src/` | Pages, models, viewmodels, catalog/lib |
+| `packages/basalt/`, `fixtures/`, `scripts/` | Publishable library, consumer examples and verification runners |
 
 ## Commands
 
+Run from the root. Consumer gates create temporary external projects and need npm/network access; browser tests need Chromium. No production secrets or data are required.
+
 ```bash
-bun dev
+bun install --frozen-lockfile
+bun run dev
 bun run typecheck
 bun run lint
 bun run build
 bun run test:coverage
+bun run --cwd packages/basalt build
+bun run playwright:install
+bun run consumer:next
+bun run test:showcase
 bun run package:prepublish
-bun run release
 ```
+
+`build` performs catalog/API/content/SEO checks and builds the site into `dist/`; the package build separately emits `packages/basalt/dist/`. `package:prepublish` runs types, lint, coverage, package build/types/pack/publint, Tailwind/standalone/Next/heavy/docs consumers and showcase tests. Run `consumer:docs` only after building the package.
 
 ## Verification
 
-Status: `enforced` | `planned` | `manual` | `N/A`. `enforced` Evidence = hook/CI/config/script.
+6DQ = L1/L2/L3 + G1/G2 + D1. Status: `enforced`, `planned`, `manual`, `N/A`.
 
-Org gaps: index-snapshot pre-commit; stdin-range pre-push; `.skip` detection. Vitest 5 already rejects `.only` when `CI` is set.
-
-Today: pre-commit typecheck/lint/`test` (no coverage)/gitleaks `--staged` on the working tree. pre-push `build` + `test:coverage` + `lint` + osv. CI: bun-quality `@aec4adc1a817c56790d1698329ef9398a15a754a` (v2026.5) with build, `test:coverage`, `typecheck`, gitleaks, osv; package-gates with package build, types:check, pack:check, publint, and consumer gates A/B/C/D.
-
-| Change | Proof | Status | Evidence |
+| Dimension | Required proof | Status | Current enforcement / gap |
 |---|---|---|---|
-| Logic | L1 vitest ≥95% all four on models/viewmodels/lib + package | enforced | pre-push + CI `test:coverage`; `vitest.config.ts`. pre-commit `test` has no thresholds |
-| API L2 | — | N/A | — |
-| UI L3 | Playwright `consumer:next` | enforced | CI `package-gates`; `package:prepublish` |
-| Types / lint | tsc + Biome 0 warning + catalog checks | enforced | pre-commit typecheck + lint. CI typecheck + lint |
-| G2 secrets | gitleaks | enforced | pre-commit `--staged`; CI bun-quality |
-| G2 deps | osv `bun.lock` | enforced | pre-push; CI bun-quality |
-| Bundler | `vite build` → `dist/` | enforced | pre-push `build`; CI pre-command; CD `release.yml` |
-| Docs | numbered doc / INTEGRATION.md if chrome or API changes | manual | human review |
-| Site CD | tag `vX.Y.Z` == root package.json, on main, CI validated; production redirects, headers and version verified | enforced | `.github/workflows/release.yml`, `scripts/deploy-smoke.ts` |
-| npm `@nocoo/basalt` | `package:prepublish` then publish package dir | manual | `packages/basalt/scripts/verify-pack.ts` |
+| L1 logic | Statements, branches, functions and lines each ≥95%; no `.skip` / `.only` | planned | Pre-push/CI enforce all four metrics on models/viewmodels/lib and package source. Pages and executable tooling are outside that denominator; skipped-test detection remains incomplete |
+| L2 HTTP/package | Real HTTP consumer/SSR and build artifact contracts | enforced | CI package gates build real external consumers and validate HTTP responses; no business CRUD API or database exists |
+| L3 UI | Real component integration and catalog journeys | enforced | CI `consumer:next`, other browser consumers and `test:showcase` run Chromium |
+| G1 static | Strict types and check-only lint, zero errors/warnings | enforced | Commit/CI typecheck and Biome, generated catalog/API/content/SEO checks, package declaration/pack/publint checks |
+| G2 security | Dependency and secret scans; missing scanner fails | enforced | Staged Gitleaks at commit, OSV at push, shared CI scans; push-ref secret selection is still incomplete locally |
+| D1 isolation | Per-run local consumers/browser state, guarded cleanup, no daily-dev/prod | planned | Consumer scripts allocate checked external temp roots, ephemeral ports and browser profiles; showcase rebuilds shared `dist/`, so complete per-run build isolation remains missing |
+| Build | Site and published package built separately | enforced | Pre-push/CI site build; CI package-gates build library |
+| Docs / npm | Public API, version and verified tarball review | manual | Integration/compatibility docs and authorized npm publication |
 
-| Hook | Org bar | Status | Evidence |
-|---|---|---|---|
-| pre-commit | index snapshot | planned | — |
-| pre-push | stdin ref range | planned | — |
+| Hook | Current behavior | Required follow-up |
+|---|---|---|
+| pre-commit | Working-tree typecheck/lint/tests without coverage; staged Gitleaks | G1+L1 coverage on index snapshot, <30s |
+| pre-push | Working-tree build/coverage/lint, OSV | Applicable integration+G2 on stdin push refs, <3min |
 
-`--no-verify` forbidden on commits and branch pushes. Tag-only may skip.
+Install restores Husky. Hooks are check-only; never use `--no-verify` on commits or branch pushes. CI uses pinned `base-ci/quality.yml` and `test-job.yml` at `ad43150de3a2be2fa464b5cd2f921dc4fa9f8f0f`.
 
 ## Resources / Isolation
 
-| Purpose | Port / resource | Isolation |
-|---|---|---|
-| Dev | 7003 `https://basalt.dev.hexly.ai` | catalog mock; no prod stores |
-| Prod | `https://basaltui.com` (`theme-basalt`) | static assets |
+Dev uses 7003 (`https://basalt.dev.hexly.ai`); browser consumers allocate loopback ports and fresh local profiles. Keep runs separate from daily browser storage and catalog development builds. No D1 database, R2 fixture bucket or remote `-test` Worker is needed.
 
 ## Operations / Release
 
-- Site: bump root + `packages/basalt` `package.json` + CHANGELOG.md, commit, push `main`, wait CI, then push tag `vX.Y.Z` only (enforced by `bun run release` and `release.yml`). Who: GitHub write + `production` Environment + `gh`.
-- Tag CD deploys after validating semver, root/package matching version, existence on main, and successful CI on that exact commit. `main` CD waits CI-green. Do not laptop-`wrangler deploy`.
-- npm: `bun run package:prepublish`, then `cd packages/basalt && npm publish --access public --ignore-scripts --registry https://registry.npmjs.org/ --otp=<code>`. Who: `@nocoo/basalt` npm owner with 2FA. Live-check: `https://basaltui.com` and `npm view @nocoo/basalt`.
+Authorized maintainers use `bun run release` to align root/package versions and changelog, push `main`, verify CI, then publish the matching `vX.Y.Z` tag. `release.yml` proves source/run/version before Worker deployment and runs `scripts/deploy-smoke.ts` for production redirects, headers and version.
+For npm, pass `bun run package:prepublish`, then publish from `packages/basalt` with the owner's 2FA and the approved registry path. Never publish the repository root. Verify site behavior and `npm view @nocoo/basalt version`; npm and site deployment are distinct results.
 
 ## Retrospective
 
-| Kind | Where |
-|---|---|
-| Accident narrative | [Retrospective.md](Retrospective.md) |
-| Recurring project rule | one line here (cap ~10) |
-| Checkable rule | hook or test |
-
-- Override a direct dep with `"$name"`.
-- Never `rm bun.lock`; strip mirror URLs before commit.
+Narratives remain in [Retrospective.md](Retrospective.md); keep recurring project lessons here, cross-project lessons in global rules/nmem, and deterministic checks in hooks/tests.

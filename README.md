@@ -114,7 +114,7 @@ bun run preview
 bun run --cwd packages/basalt build
 ```
 
-站点产物为根目录 `dist/`，组件库产物为 `packages/basalt/dist/`。站点使用 Cloudflare Workers 静态资源托管；`/api/live` 只存在于 Vite 开发服务器。根 package 是私有示例站，npm 包位于 `packages/basalt/`。
+站点产物为根目录 `dist/`，组件库产物为 `packages/basalt/dist/`。站点使用 Cloudflare Workers 静态资源托管；`/api/live` 由 Vite 开发服务器和生产 Worker 提供，返回状态与版本。根 package 是私有示例站，npm 包位于 `packages/basalt/`。
 
 ## 测试
 
