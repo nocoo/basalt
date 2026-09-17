@@ -6,7 +6,7 @@ import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { FOCUS_RING } from "./overlay";
 
 const toggleVariants = cva(
-	`${BASALT_UI_CLASS} inline-flex items-center justify-center rounded-basalt-md text-sm font-medium transition-colors hover:bg-basalt-accent data-[state=on]:bg-basalt-accent ${FOCUS_RING}`,
+	`${BASALT_UI_CLASS} relative inline-flex cursor-pointer items-center justify-center rounded-basalt-md text-sm font-medium transition-colors before:absolute before:inset-0 hover:bg-basalt-accent aria-pressed:bg-basalt-accent ${FOCUS_RING}`,
 	{
 		variants: {
 			variant: {

@@ -6,8 +6,9 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { FOCUS_RING } from "./overlay";
 
+// Keep rounded corners inside the button's rectangular pointer target.
 const buttonVariants = cva(
-	`${BASALT_UI_CLASS} inline-flex items-center justify-center gap-2 rounded-basalt-md text-sm font-medium transition-colors ${FOCUS_RING} disabled:pointer-events-none disabled:opacity-50 aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0`,
+	`${BASALT_UI_CLASS} relative inline-flex cursor-pointer items-center justify-center gap-2 rounded-basalt-md text-sm font-medium transition-colors before:absolute before:inset-0 ${FOCUS_RING} disabled:pointer-events-none disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0`,
 	{
 		variants: {
 			variant: {
@@ -24,7 +25,7 @@ const buttonVariants = cva(
 				default: "h-9 px-4 py-2",
 				sm: "h-8 rounded-basalt-md px-3 text-xs",
 				lg: "h-10 rounded-basalt-md px-6",
-				icon: "h-9 w-9",
+				icon: "h-9 w-9 shrink-0",
 			},
 		},
 		defaultVariants: {

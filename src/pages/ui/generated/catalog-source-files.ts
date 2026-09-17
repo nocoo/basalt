@@ -8,13 +8,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 }> = {
 	"button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "1b6293380c63e14c",
+		"hash": "fd3e84a54d2f6f61",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
 	"link-button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "1b6293380c63e14c",
+		"hash": "fd3e84a54d2f6f61",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
@@ -50,7 +50,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"tooltip": {
 		"file": "packages/basalt/src/components/tooltip.tsx",
-		"hash": "62accdd15ce33330",
+		"hash": "ad4e479b428769f8",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tooltip.js.map (sourcesContent[0])"
 	},
@@ -158,13 +158,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"toggle": {
 		"file": "packages/basalt/src/components/toggle.tsx",
-		"hash": "632d36c606c7d7e0",
+		"hash": "c507d31badda1b2d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/toggle.js.map (sourcesContent[0])"
 	},
 	"toggle-group": {
 		"file": "packages/basalt/src/components/toggle-group.tsx",
-		"hash": "c25d112b708484f6",
+		"hash": "d213fc765fff2b03",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/toggle-group.js.map (sourcesContent[0])"
 	},

@@ -583,6 +583,8 @@ Breakpoint: `768px`. Below that, the in-flow rail is omitted. The same sidebar c
 
 `AppHeader` `leading` is the menu button on mobile only (`Button variant="ghost" size="icon" className="h-8 w-8"`).
 
+Header actions use a stable hand cursor and compact 12px `TooltipContent`. `Button`, `LinkButton`, `Toggle`, and `ToggleGroupItem` keep their full rectangular pointer target with a transparent `::before`, including rounded corners. Wrap the actual button or link in `TooltipTrigger asChild` so the trigger retains one focusable hit target. `Toggle` and `ToggleGroupItem` selection styling follows `aria-pressed` / `aria-checked`, independently of the tooltip's `data-state`. Icon-only links must include a screen-reader label inside the link as well as an accessible name.
+
 Local hook (not in the package):
 
 ```tsx excerpt:use-is-mobile-hook

@@ -2,6 +2,7 @@ import { act, fireEvent, render, screen } from "@testing-library/react";
 import { createRef } from "react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
+import { Tooltip, TooltipProvider, TooltipTrigger } from "./tooltip";
 
 function mockItemBoxes(
 	boxes: Record<string, { left: number; width: number; top?: number; height?: number }>,
@@ -58,9 +59,9 @@ describe("ToggleGroup", () => {
 		expect(group.className).toContain("rounded-full");
 		expect(group.className).toContain("bg-basalt-muted");
 		expect(screen.getByText("Live").className).toContain(
-			"data-[state=on]:text-basalt-primary-foreground",
+			"aria-checked:text-basalt-primary-foreground",
 		);
-		expect(screen.getByText("Live").className).not.toContain("data-[state=on]:bg-basalt-primary");
+		expect(screen.getByText("Live").className).not.toContain("aria-pressed:bg-basalt-primary");
 	});
 
 	it("puts a sliding indicator behind the selected single item", () => {
@@ -102,6 +103,39 @@ describe("ToggleGroup", () => {
 		expect(indicator.className).toContain("duration-200");
 		expect(indicator.className).toContain("ease-out");
 		restore();
+	});
+
+	it("keeps selection stable as a composed tooltip opens and closes", async () => {
+		mockItemBoxes({
+			Live: { left: 4, width: 42 },
+			Mock: { left: 50, width: 48 },
+		});
+		const group = (open: boolean) => (
+			<TooltipProvider>
+				<ToggleGroup type="single" defaultValue="live">
+					{["Live", "Mock"].map((label) => (
+						<Tooltip key={label} open={open}>
+							<TooltipTrigger asChild>
+								<ToggleGroupItem value={label.toLowerCase()}>{label}</ToggleGroupItem>
+							</TooltipTrigger>
+						</Tooltip>
+					))}
+				</ToggleGroup>
+			</TooltipProvider>
+		);
+		const { container, rerender } = render(group(false));
+		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
+		for (const open of [false, true, false]) {
+			rerender(group(open));
+			await flushFrame();
+			expect(screen.getByRole("radio", { name: "Live" })).toHaveAttribute("aria-checked", "true");
+			expect(indicator.style.left).toBe("4px");
+			expect(indicator.style.width).toBe("42px");
+		}
+		fireEvent.click(screen.getByRole("radio", { name: "Mock" }));
+		await flushFrame();
+		expect(indicator.style.left).toBe("50px");
+		expect(indicator.style.width).toBe("48px");
 	});
 
 	it("resyncs after a ResizeObserver callback", async () => {
@@ -174,8 +208,8 @@ describe("ToggleGroup", () => {
 		expect(container.querySelector('[data-slot="selection-indicator"]')).toBeNull();
 		expect(screen.getByText("Live")).toHaveAttribute("data-state", "on");
 		expect(screen.getByText("Mock")).toHaveAttribute("data-state", "on");
-		expect(screen.getByText("Live").className).toContain("data-[state=on]:bg-basalt-primary");
-		expect(screen.getByText("Live").className).toContain("data-[state=on]:shadow-sm");
+		expect(screen.getByText("Live").className).toContain("aria-pressed:bg-basalt-primary");
+		expect(screen.getByText("Live").className).toContain("aria-pressed:shadow-sm");
 	});
 
 	it("forwards the root ref", () => {

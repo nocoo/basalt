@@ -41,6 +41,41 @@ async function assertDashboardBounds(page: Page, width: number) {
 	if (scroll.max > 0) assert.ok(scroll.top > 0, "dashboard content must scroll within its island");
 }
 
+async function assertHeaderActions(page: Page, selector: string) {
+	const actions = page.locator(selector);
+	assert.equal(await actions.locator('a[href="https://hexly.ai/projects/basalt"]').count(), 1);
+	for (const control of await actions.locator("button, a[href]").all()) {
+		const before = await control.boundingBox();
+		assert.ok(before);
+		await control.hover();
+		await page.getByRole("tooltip").waitFor();
+		assert.equal(
+			await page
+				.getByRole("tooltip")
+				.evaluate((node) => getComputedStyle(node.closest(".basalt-ui") as HTMLElement).fontSize),
+			"12px",
+		);
+		for (const dx of [0.5, before.width / 2, before.width - 0.5]) {
+			for (const dy of [0.5, before.height / 2, before.height - 0.5]) {
+				const x = before.x + dx;
+				const y = before.y + dy;
+				await page.mouse.move(x, y);
+				const hit = await control.evaluate(
+					(node, [x, y]) => {
+						const target = document.elementFromPoint(x, y) as Element;
+						return { cursor: getComputedStyle(target).cursor, inside: node.contains(target) };
+					},
+					[x, y],
+				);
+				assert.deepEqual(hit, { cursor: "pointer", inside: true }, "corners must remain clickable");
+				assert.deepEqual(await control.boundingBox(), before, "hover must preserve the hit target");
+				assert.ok(await page.getByRole("tooltip").isVisible());
+			}
+		}
+	}
+	await page.mouse.move(0, 0);
+}
+
 /** Covers the original global-CSS regression, route transitions, and crawler-visible output. */
 export async function assertLandingShowcase(page: Page, baseUrl: string) {
 	const cases: string[] = [];
@@ -70,6 +105,8 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 		}
 	}
 	await page.setViewportSize({ width: 1440, height: 900 });
+	await page.goto(baseUrl);
+	await assertHeaderActions(page, ".landing-header-actions");
 	await page.emulateMedia({ reducedMotion: "no-preference" });
 	await page.locator(".landing-brand-artwork").scrollIntoViewIfNeeded();
 	await page.waitForFunction(
@@ -103,6 +140,9 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 		});
 		await page.getByRole("link", { name: "Browse components", exact: true }).click();
 		await assertDashboardBounds(page, width);
+		if (width === 1440) {
+			await assertHeaderActions(page, "[data-dashboard-shell] main > header > div:last-child");
+		}
 		assert.equal(new URL(page.url()).pathname, "/ui");
 		assert.equal(
 			await page.locator('meta[name="twitter:title"]').getAttribute("content"),

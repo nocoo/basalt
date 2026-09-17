@@ -103,7 +103,8 @@ export const ToggleGroup = React.forwardRef<
 		state,
 		motionClassName,
 	} = useSelectionIndicator({
-		itemSelector: '[data-state="on"]',
+		// TooltipTrigger can also own data-state on a composed toggle.
+		itemSelector: '[aria-checked="true"]',
 		enabled: sliding,
 		ref,
 	});
@@ -164,11 +165,11 @@ export const ToggleGroupItem = React.forwardRef<
 		<ToggleGroupPrimitive.Item
 			ref={ref}
 			className={cn(
-				"relative inline-flex h-7 items-center rounded-full px-2.5 text-[11px] font-semibold tracking-wide text-basalt-muted-foreground transition-colors",
+				"relative inline-flex h-7 cursor-pointer items-center rounded-full px-2.5 text-[11px] font-semibold tracking-wide text-basalt-muted-foreground transition-colors before:absolute before:inset-0",
 				"hover:text-basalt-foreground",
 				FOCUS_RING,
-				"data-[state=on]:text-basalt-primary-foreground",
-				mode === "multiple" && "data-[state=on]:bg-basalt-primary data-[state=on]:shadow-sm",
+				"aria-checked:text-basalt-primary-foreground aria-pressed:text-basalt-primary-foreground",
+				mode === "multiple" && "aria-pressed:bg-basalt-primary aria-pressed:shadow-sm",
 				"disabled:pointer-events-none disabled:opacity-50",
 				className,
 			)}

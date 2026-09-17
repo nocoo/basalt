@@ -1688,6 +1688,10 @@
   .text-\[13px\] {
     font-size: 13px;
   }
+  .leading-4 {
+    --tw-leading: calc(var(--spacing) * 4);
+    line-height: calc(var(--spacing) * 4);
+  }
   .leading-5 {
     --tw-leading: calc(var(--spacing) * 5);
     line-height: calc(var(--spacing) * 5);
@@ -2014,6 +2018,14 @@
   .placeholder\:text-basalt-muted-foreground::placeholder {
     color: hsl(var(--basalt-muted-foreground));
   }
+  .before\:absolute::before {
+    content: var(--tw-content);
+    position: absolute;
+  }
+  .before\:inset-0::before {
+    content: var(--tw-content);
+    inset: 0px;
+  }
   .first\:rounded-l-basalt-md:first-child {
     border-top-left-radius: calc(var(--basalt-radius) - 2px);
     border-bottom-left-radius: calc(var(--basalt-radius) - 2px);
@@ -2214,6 +2226,12 @@
   .disabled\:opacity-100:disabled {
     opacity: 100%;
   }
+  .aria-checked\:text-basalt-primary-foreground[aria-checked="true"] {
+    color: hsl(var(--basalt-primary-foreground));
+  }
+  .aria-disabled\:cursor-not-allowed[aria-disabled="true"] {
+    cursor: not-allowed;
+  }
   .aria-disabled\:opacity-50[aria-disabled="true"] {
     opacity: 50%;
   }
@@ -2222,6 +2240,19 @@
   }
   .aria-invalid\:focus-visible\:border-basalt-destructive[aria-invalid="true"]:focus-visible {
     border-color: hsl(var(--basalt-destructive));
+  }
+  .aria-pressed\:bg-basalt-accent[aria-pressed="true"] {
+    background-color: hsl(var(--basalt-accent));
+  }
+  .aria-pressed\:bg-basalt-primary[aria-pressed="true"] {
+    background-color: hsl(var(--basalt-primary));
+  }
+  .aria-pressed\:text-basalt-primary-foreground[aria-pressed="true"] {
+    color: hsl(var(--basalt-primary-foreground));
+  }
+  .aria-pressed\:shadow-sm[aria-pressed="true"] {
+    --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .data-disabled\:pointer-events-none[data-disabled] {
     pointer-events: none;
@@ -2286,19 +2317,6 @@
   }
   .data-\[state\=indeterminate\]\:text-basalt-primary-foreground[data-state="indeterminate"] {
     color: hsl(var(--basalt-primary-foreground));
-  }
-  .data-\[state\=on\]\:bg-basalt-accent[data-state="on"] {
-    background-color: hsl(var(--basalt-accent));
-  }
-  .data-\[state\=on\]\:bg-basalt-primary[data-state="on"] {
-    background-color: hsl(var(--basalt-primary));
-  }
-  .data-\[state\=on\]\:text-basalt-primary-foreground[data-state="on"] {
-    color: hsl(var(--basalt-primary-foreground));
-  }
-  .data-\[state\=on\]\:shadow-sm[data-state="on"] {
-    --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
   }
   .data-\[state\=open\]\:animate-basalt-collapsible-down[data-state="open"] {
     animation: basalt-collapsible-down 150ms ease-out;
@@ -3010,6 +3028,11 @@
   syntax: "*";
   inherits: false;
 }
+@property --tw-content {
+  syntax: "*";
+  initial-value: "";
+  inherits: false;
+}
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
     *, ::before, ::after, ::backdrop {
@@ -3079,6 +3102,7 @@
       --tw-backdrop-sepia: initial;
       --tw-duration: initial;
       --tw-ease: initial;
+      --tw-content: "";
     }
   }
 }

@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Fixed
+- Keep the hand cursor across the entire button, including rounded corners, with compact 12px tooltips.
+- Preserve toggle selection colors and sliding indicators when composed with tooltips.
+- Restore clean-checkout site builds and align the release workflow with the installed Wrangler version.
+
+### Added
+- Link the homepage and dashboard header to the Basalt project on hexly.ai, with matching tooltips on header actions.
+
 ## [2.1.7] - 2026-09-10
 
 ### Changed

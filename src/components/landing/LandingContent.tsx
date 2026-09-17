@@ -1,4 +1,3 @@
-import { HeaderTooltip, HexlyLink } from "../header-links";
 import { ArrowRight, ArrowUp, ArrowUpRight, Check, CheckCheck, Code2, Plus } from "lucide-react";
 import type { AnchorHTMLAttributes, ElementType, ReactNode } from "react";
 import { BasaltLogo } from "@/components/BasaltLogo";
@@ -19,6 +18,7 @@ import {
 } from "@/lib/landing";
 import { SITE } from "@/lib/site";
 import { APP_VERSION } from "@/lib/version";
+import { HeaderTooltip, HexlyLink } from "../header-links";
 
 interface LandingContentProps {
 	linkComponent?: ElementType<
@@ -170,8 +170,6 @@ export function LandingContent({
 						)}
 					</nav>
 					<div className="landing-header-actions">
-						{themeToggle}
-						<HexlyLink className="landing-github" />
 						<HeaderTooltip label="GitHub repository">
 							<a
 								href={SITE.github}
@@ -180,9 +178,12 @@ export function LandingContent({
 								className="landing-github"
 								aria-label="GitHub repository"
 							>
-								<Github aria-hidden="true" size={18} />
+								<span className="sr-only">GitHub repository</span>
+								<Github aria-hidden="true" size={18} strokeWidth={1.5} />
 							</a>
 						</HeaderTooltip>
+						<HexlyLink className="landing-github" />
+						{themeToggle}
 					</div>
 				</div>
 			</header>

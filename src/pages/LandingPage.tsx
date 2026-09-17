@@ -1,4 +1,3 @@
-import { HeaderTooltip } from "../components/header-links";
 import { Button } from "@nocoo/basalt/components/button";
 import { Link } from "@nocoo/basalt/components/link";
 import { useTheme } from "@nocoo/basalt/providers/theme";
@@ -8,6 +7,7 @@ import { InteractiveBrandArtwork } from "@/components/landing/InteractiveBrandAr
 import { LandingContent } from "@/components/landing/LandingContent";
 import { useSiteTitle } from "@/hooks/use-site-title";
 import { LANDING_INSTALL } from "@/lib/landing";
+import { HeaderTooltip } from "../components/header-links";
 
 function subscribeToColorScheme(onChange: () => void) {
 	const media = window.matchMedia("(prefers-color-scheme: dark)");

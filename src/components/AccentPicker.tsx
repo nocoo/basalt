@@ -1,8 +1,8 @@
-import { HeaderTooltip } from "./header-links";
 import { Button } from "@nocoo/basalt/components/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@nocoo/basalt/components/popover";
 import { useAccent } from "@nocoo/basalt/providers/accent";
 import { useTranslation } from "react-i18next";
+import { HeaderTooltip } from "./header-links";
 
 export function AccentPicker() {
 	const { t } = useTranslation();

@@ -55,11 +55,14 @@ describe("DashboardLayout", () => {
 		expect(island).toHaveClass("ring-basalt-border/40");
 	});
 
-	it("keeps the github icon second to last in the header", () => {
+	it("places the project links before the final theme button", () => {
 		renderLayout("/");
 		const github = screen.getByRole("link", { name: "GitHub repository" });
+		const hexly = screen.getByRole("link", { name: "Basalt on hexly.ai (opens in a new tab)" });
 		const theme = screen.getByRole("button", { name: /Toggle theme/ });
-		expect(github.nextElementSibling).toBe(theme);
+		expect(github.nextElementSibling).toBe(hexly);
+		expect(hexly).toHaveAttribute("href", "https://hexly.ai/projects/basalt");
+		expect(hexly.nextElementSibling).toBe(theme);
 		expect(screen.getByRole("button", { name: "Theme Palette" })).toBeInTheDocument();
 	});
 

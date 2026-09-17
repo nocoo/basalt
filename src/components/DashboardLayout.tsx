@@ -1,11 +1,9 @@
-import { HeaderTooltip, HexlyLink } from "./header-links";
 import { AppHeader } from "@nocoo/basalt/components/app-header";
 import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
 import { Button } from "@nocoo/basalt/components/button";
 import { Link } from "@nocoo/basalt/components/link";
 import { Sheet, SheetContent, SheetTitle } from "@nocoo/basalt/components/sheet";
 import { ContentIsland } from "@nocoo/basalt/components/sidebar";
-import { ThemeToggle } from "./theme-toggle";
 import { useTheme } from "@nocoo/basalt/providers/theme";
 import { Menu } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -19,6 +17,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useSiteTitle } from "@/hooks/use-site-title";
 import { SHOWCASE_TITLE_KEYS } from "@/lib/site";
 import { CATALOG_BY_SLUG, catalogNavName } from "@/pages/ui/catalog";
+import { HeaderTooltip, HexlyLink } from "./header-links";
+import { ThemeToggle } from "./theme-toggle";
 import "@/styles/showcase.css";
 
 function isTriggerVisible(el: HTMLElement | null): el is HTMLElement {
@@ -133,7 +133,7 @@ export function DashboardLayout() {
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label={t("common.github")}
-									className="flex h-8 w-8 items-center justify-center rounded-lg text-basalt-muted-foreground no-underline transition-colors hover:bg-basalt-accent hover:text-basalt-foreground"
+									className="relative flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-lg text-basalt-muted-foreground no-underline transition-colors before:absolute before:inset-0 hover:bg-basalt-accent hover:text-basalt-foreground [&_svg]:pointer-events-none"
 								>
 									<Github className="h-[18px] w-[18px]" aria-hidden="true" strokeWidth={1.5} />
 								</Link>

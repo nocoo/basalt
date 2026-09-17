@@ -1,6 +1,7 @@
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
 type RadixTooltipProviderProps = React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Provider>;
@@ -199,9 +200,10 @@ export const TooltipContent = React.forwardRef<
 			ref={ref}
 			sideOffset={sideOffset}
 			className={cn(
+				BASALT_UI_CLASS,
 				OVERLAY_LAYER,
 				OVERLAY_MOTION,
-				"overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover px-3 py-1.5 text-sm text-basalt-popover-foreground shadow-md",
+				"overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover px-2 py-1 text-xs font-normal leading-4 text-basalt-popover-foreground shadow-md",
 				className,
 			)}
 			{...props}
