@@ -1,7 +1,7 @@
 import { act, cleanup, render, screen } from "@testing-library/react";
 import type React from "react";
 import { cloneElement } from "react";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Gauge } from "./gauge";
 
 vi.mock("recharts", async (importOriginal) => {
@@ -26,9 +26,30 @@ vi.mock("recharts", async (importOriginal) => {
 });
 
 describe("Gauge options", () => {
-	afterEach(() => {
-		cleanup();
-		vi.useRealTimers();
+	beforeEach(() => {
+		vi.useFakeTimers({
+			toFake: [
+				"setTimeout",
+				"clearTimeout",
+				"requestAnimationFrame",
+				"cancelAnimationFrame",
+				"performance",
+			],
+		});
+	});
+
+	afterEach(async () => {
+		try {
+			cleanup();
+			// Recharts/Redux queue RAF fallback callbacks during unmount. Execute
+			// them while the fake clock and jsdom globals still belong to this test.
+			await act(async () => {
+				await vi.runAllTimersAsync();
+			});
+			expect(vi.getTimerCount()).toBe(0);
+		} finally {
+			vi.useRealTimers();
+		}
 	});
 
 	it("renders value and default ariaLabel='Gauge' when ariaLabel is omitted", () => {
@@ -141,91 +162,63 @@ describe("Gauge options", () => {
 	});
 
 	it("clamps percent to 0 when max=0 or negative, caps at 100, and verifies completed animation arc path", async () => {
-		vi.useFakeTimers({
-			toFake: [
-				"setTimeout",
-				"clearTimeout",
-				"requestAnimationFrame",
-				"cancelAnimationFrame",
-				"performance",
-			],
+		// Zero max: percent is 0
+		const { container, rerender } = render(<Gauge value={50} max={0} ariaLabel="Zero max" />);
+		await act(async () => {
+			await vi.advanceTimersByTimeAsync(2000);
 		});
+		const zeroSector = container.querySelector("path.recharts-radial-bar-sector");
+		const zeroPath = zeroSector?.getAttribute("d") ?? "";
+		expect(screen.getByText("50")).toBeInTheDocument();
 
-		try {
-			// Zero max: percent is 0
-			const { container, rerender } = render(<Gauge value={50} max={0} ariaLabel="Zero max" />);
-			await act(async () => {
-				await vi.advanceTimersByTimeAsync(2000);
-			});
-			const zeroSector = container.querySelector("path.recharts-radial-bar-sector");
-			const zeroPath = zeroSector?.getAttribute("d") ?? "";
-			expect(screen.getByText("50")).toBeInTheDocument();
+		// Negative value: clamped to 0 -> same arc path d
+		rerender(<Gauge value={-50} max={100} ariaLabel="Negative" />);
+		await act(async () => {
+			await vi.advanceTimersByTimeAsync(2000);
+		});
+		const negativeSector = container.querySelector("path.recharts-radial-bar-sector");
+		const negativePath = negativeSector?.getAttribute("d") ?? "";
+		expect(negativePath).toBe(zeroPath);
+		expect(screen.getByText("-50")).toBeInTheDocument();
 
-			// Negative value: clamped to 0 -> same arc path d
-			rerender(<Gauge value={-50} max={100} ariaLabel="Negative" />);
-			await act(async () => {
-				await vi.advanceTimersByTimeAsync(2000);
-			});
-			const negativeSector = container.querySelector("path.recharts-radial-bar-sector");
-			const negativePath = negativeSector?.getAttribute("d") ?? "";
-			expect(negativePath).toBe(zeroPath);
-			expect(screen.getByText("-50")).toBeInTheDocument();
+		// Max 100%
+		rerender(<Gauge value={100} max={100} ariaLabel="Full max" />);
+		await act(async () => {
+			await vi.advanceTimersByTimeAsync(2000);
+		});
+		const fullSector = container.querySelector("path.recharts-radial-bar-sector");
+		expect(fullSector).toBeInTheDocument();
+		const fullPath = fullSector?.getAttribute("d") ?? "";
+		expect(fullPath).toBeTruthy();
+		expect(fullPath).not.toBe(zeroPath);
+		expect(screen.getByText("100")).toBeInTheDocument();
 
-			// Max 100%
-			rerender(<Gauge value={100} max={100} ariaLabel="Full max" />);
-			await act(async () => {
-				await vi.advanceTimersByTimeAsync(2000);
-			});
-			const fullSector = container.querySelector("path.recharts-radial-bar-sector");
-			expect(fullSector).toBeInTheDocument();
-			const fullPath = fullSector?.getAttribute("d") ?? "";
-			expect(fullPath).toBeTruthy();
-			expect(fullPath).not.toBe(zeroPath);
-			expect(screen.getByText("100")).toBeInTheDocument();
-
-			// Over max 150%: clamped to 100% -> arc path d matches fullPath
-			rerender(<Gauge value={150} max={100} ariaLabel="Over max" />);
-			await act(async () => {
-				await vi.advanceTimersByTimeAsync(2000);
-			});
-			const overSector = container.querySelector("path.recharts-radial-bar-sector");
-			expect(overSector).toBeInTheDocument();
-			const overPath = overSector?.getAttribute("d") ?? "";
-			expect(overPath).toBe(fullPath);
-			expect(screen.getByText("150")).toBeInTheDocument();
-		} finally {
-			vi.useRealTimers();
-		}
+		// Over max 150%: clamped to 100% -> arc path d matches fullPath
+		rerender(<Gauge value={150} max={100} ariaLabel="Over max" />);
+		await act(async () => {
+			await vi.advanceTimersByTimeAsync(2000);
+		});
+		const overSector = container.querySelector("path.recharts-radial-bar-sector");
+		expect(overSector).toBeInTheDocument();
+		const overPath = overSector?.getAttribute("d") ?? "";
+		expect(overPath).toBe(fullPath);
+		expect(screen.getByText("150")).toBeInTheDocument();
 	});
 
 	it("renders background sector and accepts custom series lead color override on completed animation sector", async () => {
-		vi.useFakeTimers({
-			toFake: [
-				"setTimeout",
-				"clearTimeout",
-				"requestAnimationFrame",
-				"cancelAnimationFrame",
-				"performance",
-			],
+		const { container } = render(
+			<Gauge value={60} max={100} series={[{ key: "val", color: "rgb(255, 0, 128)" }]} />,
+		);
+		const bgSector = container.querySelector(".recharts-radial-bar-background-sector");
+		expect(bgSector).toBeInTheDocument();
+		expect(bgSector?.getAttribute("d")).toBeTruthy();
+
+		await act(async () => {
+			await vi.advanceTimersByTimeAsync(2000);
 		});
 
-		try {
-			const { container } = render(
-				<Gauge value={60} max={100} series={[{ key: "val", color: "rgb(255, 0, 128)" }]} />,
-			);
-			const bgSector = container.querySelector(".recharts-radial-bar-background-sector");
-			expect(bgSector).toBeInTheDocument();
-			expect(bgSector?.getAttribute("d")).toBeTruthy();
-
-			await act(async () => {
-				await vi.advanceTimersByTimeAsync(2000);
-			});
-
-			const sector = container.querySelector("path.recharts-radial-bar-sector");
-			expect(sector).toBeInTheDocument();
-			expect(sector).toHaveAttribute("fill", "rgb(255, 0, 128)");
-		} finally {
-			vi.useRealTimers();
-		}
+		const sector = container.querySelector("path.recharts-radial-bar-sector");
+		expect(sector).toBeInTheDocument();
+		expect(sector).toHaveAttribute("fill", "rgb(255, 0, 128)");
 	});
 });
