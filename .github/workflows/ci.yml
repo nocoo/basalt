@@ -14,7 +14,7 @@ jobs:
       runtime-version: "1.4.0"
       install-policy: "trusted"
       coverage-path: "coverage"
-      prepare-command: "bun run build"
+      prepare-command: "bun run --cwd packages/basalt build && bun run build"
       test-command: "bun run test:coverage"
       typecheck-command: "bun run typecheck"
 
