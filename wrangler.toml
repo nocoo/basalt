@@ -1,4 +1,10 @@
 name = "theme-basalt"
+routes = [
+  { pattern = "basaltui.com", custom_domain = true },
+  { pattern = "www.basaltui.com", custom_domain = true }
+]
+workers_dev = false
+preview_urls = false
 main = "worker/index.ts"
 compatibility_date = "2026-03-08"
 
