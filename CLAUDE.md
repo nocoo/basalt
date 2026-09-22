@@ -62,7 +62,7 @@ bun run package:prepublish
 
 | Dimension | Required proof | Status | Current enforcement / gap |
 |---|---|---|---|
-| L1 logic | Statements, branches, functions and lines each ≥95%; no `.skip` / `.only` | planned | Pre-push/CI enforce all four metrics on models/viewmodels/lib and package source. Pages and executable tooling are outside that denominator; skipped-test detection remains incomplete |
+| L1 logic | Statements, branches, functions and lines each ≥95%; no `.skip` / `.only` | enforced | Pre-commit runs on a staged index snapshot (checkout-index export, per-entry node_modules links, staged-source package build) and enforces all four Vitest thresholds by exit status; Biome `noFocusedTests`/`noSkippedTests`, `allowOnly: false`, `passWithNoTests: false` and a selected-run reporter reject focused/skipped/empty runs; CI reproduces the same floors after package prepare |
 | L2 HTTP/package | Real HTTP consumer/SSR and build artifact contracts | enforced | CI package gates build real external consumers and validate HTTP responses; no business CRUD API or database exists |
 | L3 UI | Real component integration and catalog journeys | enforced | CI `consumer:next`, other browser consumers and `test:showcase` run Chromium |
 | G1 static | Strict types and check-only lint, zero errors/warnings | enforced | Commit/CI typecheck and Biome, generated catalog/API/content/SEO checks, package declaration/pack/publint checks |
@@ -73,7 +73,7 @@ bun run package:prepublish
 
 | Hook | Current behavior | Required follow-up |
 |---|---|---|
-| pre-commit | Working-tree typecheck/lint/tests without coverage; staged Gitleaks | G1+L1 coverage on index snapshot, <30s |
+| pre-commit | Staged index snapshot: staged-source package build, typecheck, lint, UT with all four coverage floors, skip/only/empty rejection, staged Gitleaks | Reduce full-gate wall time (~8 min on a loaded host) toward the <30s target |
 | pre-push | Working-tree build/coverage/lint, OSV | Applicable integration+G2 on stdin push refs, <3min |
 
 Install restores Husky. Hooks are check-only; never use `--no-verify` on commits or branch pushes. CI uses pinned `base-ci/quality.yml` and `test-job.yml` at `ad43150de3a2be2fa464b5cd2f921dc4fa9f8f0f`.

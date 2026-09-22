@@ -9,6 +9,8 @@ export default defineConfig({
 		globals: true,
 		maxWorkers: 2,
 		testTimeout: 30_000,
+		allowOnly: false,
+		passWithNoTests: false,
 		reporters: ["default", "./src/test/selected-run.ts"],
 		setupFiles: ["./src/test/setup.ts"],
 		include: [
