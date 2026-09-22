@@ -1,6 +1,78 @@
-# === Quality Gate: pre-commit ===
-# L1 + G1 + G2a (6DQ standard)
+# === Quality Gate: pre-commit (L1 + G1 + G2a, staged index snapshot) ===
+set -e
+
+command -v git >/dev/null 2>&1 || { echo "pre-commit: git is required" >&2; exit 1; }
+command -v bun >/dev/null 2>&1 || { echo "pre-commit: bun is required" >&2; exit 1; }
+command -v node >/dev/null 2>&1 || { echo "pre-commit: node is required" >&2; exit 1; }
+command -v gitleaks >/dev/null 2>&1 || { echo "pre-commit: gitleaks is required" >&2; exit 1; }
+
+snapshot=
+cleanup() {
+	status=$?
+	trap - EXIT INT TERM HUP
+	if [ -n "$snapshot" ]; then
+		rm -rf "$snapshot" || :
+		snapshot=
+	fi
+	exit "$status"
+}
+trap cleanup EXIT
+trap "exit 130" INT
+trap "exit 143" TERM
+trap "exit 129" HUP
+
+snapshot=$(mktemp -d "${TMPDIR:-/tmp}/basalt-index-XXXXXX")
+
+# G2a: gitleaks reads the real commit index; keep Git's hook env until after it.
+gitleaks protect --staged --no-banner
+
+# L1/G1 check the staged index snapshot, not the working tree.
+git checkout-index --all --prefix="$snapshot/"
+repo=$(git rev-parse --show-toplevel)
+
+for manifest in package.json bun.lock packages/basalt/package.json; do
+	if [ ! -f "$snapshot/$manifest" ] || ! cmp -s "$snapshot/$manifest" "$repo/$manifest"; then
+		echo "pre-commit: staged $manifest is required and must match the installed worktree copy" >&2
+		exit 1
+	fi
+done
+
+link_modules() {
+	src=$1
+	dst=$2
+	mkdir -p "$dst"
+	for entry in "$src"/* "$src"/.[!.]*; do
+		[ -e "$entry" ] || continue
+		name=${entry##*/}
+		case $name in
+		.vite | .vitest | .vite-temp | .cache | .tmp | .mf)
+			mkdir -p "$dst/$name"
+			;;
+		.old_modules-*)
+			;;
+		*)
+			ln -s "$entry" "$dst/$name"
+			;;
+		esac
+	done
+}
+
+if [ ! -d "$repo/node_modules" ] || [ ! -d "$repo/packages/basalt/node_modules" ]; then
+	echo "pre-commit: installed node_modules (root and packages/basalt) are required" >&2
+	exit 1
+fi
+link_modules "$repo/node_modules" "$snapshot/node_modules"
+link_modules "$repo/packages/basalt/node_modules" "$snapshot/packages/basalt/node_modules"
+
+unset GIT_DIR GIT_WORK_TREE GIT_INDEX_FILE GIT_PREFIX
+unset GIT_OBJECT_DIRECTORY GIT_ALTERNATE_OBJECT_DIRECTORIES
+export XDG_CACHE_HOME="$snapshot/.cache"
+export XDG_STATE_HOME="$snapshot/.cache"
+PATH="$snapshot/node_modules/.bin:$PATH"
+cd "$snapshot"
+
+# Build the publishable package from staged sources so dist-guard tests execute.
+bun run --cwd packages/basalt build
 bun run typecheck
 bun run lint
-bun run test
-gitleaks protect --staged --no-banner
+bun run test:coverage
