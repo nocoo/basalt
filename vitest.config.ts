@@ -7,7 +7,9 @@ export default defineConfig({
 	test: {
 		environment: "jsdom",
 		globals: true,
-		maxWorkers: process.env.CI ? 2 : 4,
+		maxWorkers: 2,
+		testTimeout: 30_000,
+		reporters: ["default", "./src/test/selected-run.ts"],
 		setupFiles: ["./src/test/setup.ts"],
 		include: [
 			"src/**/*.{test,spec}.{ts,tsx}",

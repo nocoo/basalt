@@ -27,6 +27,7 @@
 				"noExcessiveCognitiveComplexity": "off"
 			},
 			"suspicious": {
+				"noSkippedTests": "error",
 				"noConsole": "off",
 				"noReactSpecificProps": "off",
 				"useAwait": "off",

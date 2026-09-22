@@ -150,9 +150,10 @@ describe("Autocomplete", () => {
 		expect(document.querySelector('input[name="fruit"]')).toHaveValue("banana");
 		expect(screen.getByLabelText("Fruit")).toHaveValue("Banana");
 		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
-		await new Promise((r) => setTimeout(r, 20));
-		expect(document.querySelector('input[name="fruit"]')).toHaveValue("banana");
-		expect(screen.getByLabelText("Fruit")).toHaveValue("Banana");
+		await waitFor(() => {
+			expect(document.querySelector('input[name="fruit"]')).toHaveValue("banana");
+			expect(screen.getByLabelText("Fruit")).toHaveValue("Banana");
+		});
 	});
 
 	it("accepts item objects and rejects string items", () => {
@@ -186,8 +187,7 @@ describe("Autocomplete", () => {
 
 		// Reset form: input restores to controlled display "Apple", hidden input stays "apple", onValueChange not called
 		fireEvent.click(screen.getByRole("button", { name: "Reset" }));
-		await new Promise((r) => setTimeout(r, 20));
-		expect(input).toHaveValue("Apple");
+		await waitFor(() => expect(input).toHaveValue("Apple"));
 		expect(document.querySelector('input[name="fruit"]')).toHaveValue("apple");
 		expect(onValueChange).not.toHaveBeenCalled();
 	});
