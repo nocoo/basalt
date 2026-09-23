@@ -40,7 +40,7 @@ jobs:
       node-version: "24.20.0"
       install-policy: "blocked"
       build-command: bun run build
-      wrangler-version: "4.136.1"
+      wrangler-version: "4.136.3"
       environment: production
       concurrency-group: deploy-worker-production
       timeout-minutes: 15
