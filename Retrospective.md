@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `CLAUDE.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-09: Type-equivalence fixture compiled unrelated ambient types
+
+- **What:** The first full coverage run after the 2026-09-23 dependency repairs timed out one `scripts/catalog-type-printer.test.ts` test (default 5s) under suite load; no assertion failed.
+- **Why:** The fixture tsconfig set no `types`, so both compiler passes (typescript-api generator program and the spawned `tsc.js` proof compile) parsed and bound `@types/node` and `@types/react-dom` that no fixture or transitively imported source uses. No profile tied the ~88ms overrun to that work specifically; it is avoidable compiler work inside the timed window and a likely contention contributor, not a proven sole cause of the timeout.
+- **Follow-up:** The fixture pins `compilerOptions.types: []`; React, recharts, and peer types still resolve as explicit module imports. Diagnose timeouts from the failing window's actual cost graph, not from a rerun outcome.
+
 ## 2026-09: Deployment ignored Worker-first asset routing
 
 - **What:** The v2.1.3 main deployment succeeded, but existing static pages on www returned 200 instead of redirecting to the apex, and lacked the Worker's security headers. `/api/live` redirected correctly.
