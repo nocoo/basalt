@@ -25,6 +25,7 @@ function fixture() {
 				moduleResolution: "Bundler",
 				jsx: "react-jsx",
 				skipLibCheck: true,
+				types: [],
 				noEmit: true,
 				allowImportingTsExtensions: true,
 			},

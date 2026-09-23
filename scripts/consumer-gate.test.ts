@@ -407,7 +407,7 @@ describe("next consumer gate helpers", () => {
 	it("keeps the committed next fixture inside the gate contract", () => {
 		const manifest = readFileSync("fixtures/next19/package.json", "utf8");
 		assertTemplateManifest(manifest);
-		expect(manifest).toContain('"next": "16.3.5"');
+		expect(manifest).toContain('"next": "16.3.6"');
 		expect(manifest).toContain('"react": "19.3.0"');
 		expect(manifest).toContain('"react-dom": "19.3.0"');
 		expect(manifest).not.toContain("@nocoo/basalt");
