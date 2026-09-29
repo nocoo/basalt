@@ -39,3 +39,9 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **What:** Cloudflare Workers Builds `started_at` and `completed_at` are the same instant.
 - **Why:** GitHub check-run timestamps are when the result is written back, not the build window.
 - **Follow-up:** none (read the build log).
+
+## 2026-09-29: Misidentified a loading animation reference
+
+- **What:** Interpreted the requested earlier wave animation as expanding circles. The user meant the pulsing waveform below the logo in the first study's Current variant.
+- **Why:** Matched the word "ripple" to a new visual instead of checking the existing study and its position relative to the logo.
+- **Follow-up:** Resolve references to earlier designs against their actual markup and motion before implementing. The revised preview uses Current's staggered waveform beneath a stationary 48px HD logo.
