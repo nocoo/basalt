@@ -53,3 +53,9 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **Follow-up:** Search dependency-version contracts before upgrades. Keep native-loader path validation and exact dependency assertions enabled.
 
 - **Permanent correction:** The hook now canonicalizes its newly created snapshot directory and creates the owned XDG cache before native tools run. All existing staged-source, static, coverage and secret checks remain unchanged; the next commit validates the default macOS temporary environment without the run-local SWC cache override.
+
+## 2026-10-02: npm pack JSON package container
+
+- **What:** The package gate reported every file missing although the real npm12 dry-run listed the complete artifact.
+- **Why:** The parser sliced braces and assumed the artifact itself was the JSON root; npm now groups artifacts by package name.
+- **Fix:** Parse the complete JSON container, require exactly one artifact with the expected name/version, then retain every existing file/export/hash check. The real local package check passed after the correction.
