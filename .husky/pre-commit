@@ -22,6 +22,9 @@ trap "exit 143" TERM
 trap "exit 129" HUP
 
 snapshot=$(mktemp -d "${TMPDIR:-/tmp}/basalt-index-XXXXXX")
+physical_snapshot=$(cd "$snapshot" && pwd -P)
+snapshot=$physical_snapshot
+mkdir -p "$snapshot/.cache"
 
 # G2a: gitleaks reads the real commit index; keep Git's hook env until after it.
 gitleaks protect --staged --no-banner

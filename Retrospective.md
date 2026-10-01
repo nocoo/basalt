@@ -51,3 +51,5 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **What:** The SWC patch upgrade initially failed its normal staged-index hook because the native loader rejected the macOS temporary cache path through `/var`. After using an owned canonical cache, the full suite exposed a test still asserting the old SWC pin.
 - **Fix:** Use a per-run canonical native cache and temporary directory without weakening the hook, and update the exact version assertion to the requested pin.
 - **Follow-up:** Search dependency-version contracts before upgrades. Keep native-loader path validation and exact dependency assertions enabled.
+
+- **Permanent correction:** The hook now canonicalizes its newly created snapshot directory and creates the owned XDG cache before native tools run. All existing staged-source, static, coverage and secret checks remain unchanged; the next commit validates the default macOS temporary environment without the run-local SWC cache override.
