@@ -79,7 +79,7 @@
 		"tailwind-merge": "3.7.0"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.14",
+		"@biomejs/biome": "2.5.15",
 		"@swc/core": "1.16.13",
 		"@tailwindcss/vite": "4.3.3",
 		"@testing-library/dom": "10.4.2",
