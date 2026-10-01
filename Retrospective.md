@@ -45,3 +45,9 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **What:** Cloudflare Workers Builds `started_at` and `completed_at` are the same instant.
 - **Why:** GitHub check-run timestamps are when the result is written back, not the build window.
 - **Follow-up:** none (read the build log).
+
+## 2026-10-02: SWC native cache and dependency pin proof
+
+- **What:** The SWC patch upgrade initially failed its normal staged-index hook because the native loader rejected the macOS temporary cache path through `/var`. After using an owned canonical cache, the full suite exposed a test still asserting the old SWC pin.
+- **Fix:** Use a per-run canonical native cache and temporary directory without weakening the hook, and update the exact version assertion to the requested pin.
+- **Follow-up:** Search dependency-version contracts before upgrades. Keep native-loader path validation and exact dependency assertions enabled.
