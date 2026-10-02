@@ -2,6 +2,24 @@
 
 ## [Unreleased]
 
+## [2.2.0] - 2026-10-02
+
+### Added
+- Add responsive and document AppShell layouts with coordinated main, island, sidebar and safe-area ownership; keep bounded workspace mode as the default.
+- Add mobile edge-to-edge ContentIsland and compact sticky AppHeader with safe notch painting and touch-sized action slots.
+- Add full-page reader, list/detail and form examples, a copyable installed-package recipe, and Chromium/WebKit layout regression gates.
+- Add fullscreen loading motion studies and an HD logo pulse preview.
+
+### Fixed
+- Preserve the pointer opener when WebKit focuses a list region, restoring focus after mobile detail navigation.
+- Generate Next fixture types on demand, canonicalize native pre-commit cache roots and parse grouped npm pack metadata.
+- Keep staged-source coverage/static/security gates and reject skipped or focused test runs.
+
+### Changed
+- Refresh development and consumer dependencies; align deployment tooling with the lockfile.
+- Move the repository handbook to AGENTS.md and remove unused FAQ mock data.
+
+
 ## [2.1.8] - 2026-09-17
 
 ### Fixed

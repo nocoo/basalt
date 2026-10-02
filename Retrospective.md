@@ -73,3 +73,5 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **Fix:** Update both exact API assertions, and only capture descendant focus as a new opener. Keep the pointer target when the region itself receives focus. A targeted regression and Chromium/WebKit layout checks cover the behavior; actual iPhone toolbar/keyboard behavior remains a manual device check.
 
 - **Gate follow-up:** The repository's selected-run reporter intentionally rejects `-t` name filters as skipped tests. Run complete selected test files when investigating a gate failure; never suppress the reporter. New release pipeline steps also require updating the pinned positive and negative pipeline contract tests.
+
+- **Release preparation:** The release script deliberately keeps the manifest mutation helper private. Reuse only its actual exported lockfile/changelog helpers after inspecting exports; a failed import caused no file writes. The normal release entrypoint also pushes/tags, so staged npm readiness uses explicit local version preparation rather than starting external publication early.

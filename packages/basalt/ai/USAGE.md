@@ -1,6 +1,6 @@
 # Basalt AI & Machine Usage Guide
 
-This document describes how AI code assistants, automated agents, and developers can consume `@nocoo/basalt` (v2.1.8).
+This document describes how AI code assistants, automated agents, and developers can consume `@nocoo/basalt` (v2.2.0).
 
 ---
 
@@ -94,6 +94,6 @@ export function App() {
 
 ## 6. Application recipes and palette preferences
 
-Read [RECIPES.md](RECIPES.md) for complete AppFrame, Login, and Resources modules. Each module is compiled and exercised from the installed tarball in standalone, Tailwind, and Next.js consumers. These recipes keep authentication, routing, data and network requests in the application.
+Read [RECIPES.md](RECIPES.md) for complete AppFrame, Login, Resources, and MobileLayout modules. Each module is compiled and exercised from the installed tarball in standalone, Tailwind, and Next.js consumers. These recipes keep authentication, routing, data and network requests in the application.
 
 Read [INTEGRATION.md#accent-provider](INTEGRATION.md#accent-provider) for the twelve control accents, optional `paletteOverrides`, and the fixed five-color chart cycle matching the classic candy swatches with its existing gray retained. Check [COMPATIBILITY.md](COMPATIBILITY.md) before migrating old color indices or stored IDs. The catalog at https://basaltui.com/palette provides an application-owned editor with localStorage persistence.
