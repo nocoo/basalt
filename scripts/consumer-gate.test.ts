@@ -407,7 +407,7 @@ describe("next consumer gate helpers", () => {
 	it("keeps the committed next fixture inside the gate contract", () => {
 		const manifest = readFileSync("fixtures/next19/package.json", "utf8");
 		assertTemplateManifest(manifest);
-		expect(manifest).toContain('"next": "16.3.5"');
+		expect(manifest).toContain('"next": "16.3.6"');
 		expect(manifest).toContain('"react": "19.3.0"');
 		expect(manifest).toContain('"react-dom": "19.3.0"');
 		expect(manifest).not.toContain("@nocoo/basalt");
@@ -691,7 +691,7 @@ export const n = <><DonutChart /><DatePicker /><DataTable /></>;
 		const pkg = JSON.parse(readFileSync("package.json", "utf8")) as {
 			devDependencies?: Record<string, string>;
 		};
-		expect(pkg.devDependencies?.["@swc/core"]).toBe("1.16.2");
+		expect(pkg.devDependencies?.["@swc/core"]).toBe("1.16.13");
 		const gate = readFileSync("scripts/consumer-gate.ts", "utf8");
 		expect(gate).toContain('from "@swc/core"');
 		expect(gate).not.toContain("@vitejs/plugin-react-swc");

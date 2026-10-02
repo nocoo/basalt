@@ -2,7 +2,13 @@
 
 Accident narratives for this repo.
 
-Routing: narrative stays here. A project-specific rule that will recur may become one line in `CLAUDE.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
+Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
+
+## 2026-09: Type-equivalence fixture compiled unrelated ambient types
+
+- **What:** The first full coverage run after the 2026-09-23 dependency repairs timed out one `scripts/catalog-type-printer.test.ts` test (default 5s) under suite load; no assertion failed.
+- **Why:** The fixture tsconfig set no `types`, so both compiler passes (typescript-api generator program and the spawned `tsc.js` proof compile) parsed and bound `@types/node` and `@types/react-dom` that no fixture or transitively imported source uses. No profile tied the ~88ms overrun to that work specifically; it is avoidable compiler work inside the timed window and a likely contention contributor, not a proven sole cause of the timeout.
+- **Follow-up:** The fixture pins `compilerOptions.types: []`; React, recharts, and peer types still resolve as explicit module imports. Diagnose timeouts from the failing window's actual cost graph, not from a rerun outcome.
 
 ## 2026-09: Deployment ignored Worker-first asset routing
 
@@ -20,13 +26,13 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 
 - **What:** `overrides` for a package that is also a direct dependency failed at Cloudflare deploy (`EOVERRIDE`) unless both specs matched verbatim. `bun install` / `vite build` did not catch it.
 - **Why:** `npx wrangler versions upload` resolves through npm. CI green is not "deps are fine".
-- **Follow-up:** CLAUDE.md rule: override a direct dep with `"$name"`.
+- **Follow-up:** AGENTS.md rule: override a direct dep with `"$name"`.
 
 ## 2026-04: Regenerating bun.lock through a mirror
 
 - **What:** A mirror install rewrote every lockfile URL to `https://mirrors.../*.tgz`, pinning CI to that mirror. `rm bun.lock` first also drifted versions.
 - **Why:** bun records the registry URL it used. Frozen CI then hits the mirror forever.
-- **Follow-up:** CLAUDE.md rule: never `rm bun.lock`; strip mirror URLs before commit.
+- **Follow-up:** AGENTS.md rule: never `rm bun.lock`; strip mirror URLs before commit.
 
 ## 2026-04: ~/.npmrc silently redirects bun
 
@@ -45,3 +51,17 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **What:** Interpreted the requested earlier wave animation as expanding circles. The user meant the pulsing waveform below the logo in the first study's Current variant.
 - **Why:** Matched the word "ripple" to a new visual instead of checking the existing study and its position relative to the logo.
 - **Follow-up:** Resolve references to earlier designs against their actual markup and motion before implementing. The revised preview uses Current's staggered waveform beneath a stationary 48px HD logo.
+
+## 2026-10-02: SWC native cache and dependency pin proof
+
+- **What:** The SWC patch upgrade initially failed its normal staged-index hook because the native loader rejected the macOS temporary cache path through `/var`. After using an owned canonical cache, the full suite exposed a test still asserting the old SWC pin.
+- **Fix:** Use a per-run canonical native cache and temporary directory without weakening the hook, and update the exact version assertion to the requested pin.
+- **Follow-up:** Search dependency-version contracts before upgrades. Keep native-loader path validation and exact dependency assertions enabled.
+
+- **Permanent correction:** The hook now canonicalizes its newly created snapshot directory and creates the owned XDG cache before native tools run. All existing staged-source, static, coverage and secret checks remain unchanged; the next commit validates the default macOS temporary environment without the run-local SWC cache override.
+
+## 2026-10-02: npm pack JSON package container
+
+- **What:** The package gate reported every file missing although the real npm12 dry-run listed the complete artifact.
+- **Why:** The parser sliced braces and assumed the artifact itself was the JSON root; npm now groups artifacts by package name.
+- **Fix:** Parse the complete JSON container, require exactly one artifact with the expected name/version, then retain every existing file/export/hash check. The real local package check passed after the correction.
