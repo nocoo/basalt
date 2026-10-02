@@ -38,3 +38,5 @@ jobs:
         bun run consumer:heavy
         bun run consumer:docs
         bun run test:showcase
+        bunx --no-install playwright install --with-deps webkit
+        bun run test:layouts

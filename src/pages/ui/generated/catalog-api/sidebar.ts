@@ -192,7 +192,15 @@ export const API = [
 	},
 	{
 		name: "ContentIsland",
-		props: [],
+		props: [
+			{
+				name: "mobileSurface",
+				type: "\"edge-to-edge\" | \"inset\"",
+				required: false,
+				default: "\"inset\"",
+				description: "Mobile surface treatment; desktop remains an inset L1 island.",
+			},
+		],
 	},
 	{
 		name: "useSidebar()",

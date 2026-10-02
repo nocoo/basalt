@@ -51,7 +51,7 @@ AppShell                          ← dashboard and catalog routes
             └── LayerCard…        ← all later product UI
 ```
 
-`AppHeader.title` is the current page in the top bar (`h1`, `text-sm`). `PageHeader.title` is the content heading (`h1`, `text-2xl`). They may use the same words. They are different roles. Do not put an icon + page name above `PageHeader` — that duplicates the bar.
+`AppHeader.title` is the current page in the top bar (`h1`, `text-sm`). `PageHeader.title` is the content heading (`h1`, `text-2xl`). They may use the same words in regular workspaces. Mobile immersive layouts instead use one compact AppHeader and a desktop-only PageHeader wrapper; see §6. They are different roles. Do not put an icon + page name above `PageHeader` — that duplicates the bar.
 
 The landing page and its prerendered HTML share `LandingContent`. Load the site stylesheet from `index.html` so it also works without JavaScript. Scope marketing CSS to `.landing` and crawl summaries to `[data-crawl-page]`; do not set global `header`, `main`, or `footer` dimensions. Keep document scrolling available on `html`, `body`, and `#root`. `AppShell` contains the dashboard viewport, and `ContentIsland` owns its independent scroll. Give both a positioning context (`relative`) so absolutely positioned content, including screen-reader labels, stays inside the correct scroll boundary.
 
@@ -365,25 +365,49 @@ Icons: `lucide-react`, `strokeWidth={1.5}`, nav size `h-4 w-4 shrink-0`.
 <a id="root-geometry"></a>
 ## 6. Root geometry
 
-`AppShell` is a full-viewport flex row: `h-screen w-full overflow-hidden bg-basalt-background`.
+`AppShell` owns the viewport and safe area; `AppMain` and `ContentIsland` derive their scroll behavior from it. Choose deliberately:
 
-```
-AppShell                         ← flex row, h-screen, overflow hidden
-├── AppSkipLink                  ← first child
-├── Sidebar                      ← the rail (in-flow, not fixed)
-└── AppMain                      ← flex-1 min-w-0 column, overflow hidden
-    ├── AppHeader                ← h-14
-    └── island wrap              ← flex-1 min-h-0, px-2 pb-2 md:px-3 md:pb-3
-        └── ContentIsland        ← page outlet
-```
+| `layout` | Below 768px | 768px and above |
+| --- | --- | --- |
+| `workspace` (default) | Bounded panes | Bounded panes |
+| `responsive` | Natural document scrolling | Bounded panes |
+| `document` | Natural document scrolling | Natural document scrolling |
+
+Bounded shells use border-box `height/max-height: 100dvh`. Document shells use `min-height: 100dvh`, automatic height, visible overflow and ordinary root scrolling. Main and island release their height/overflow constraints together; no UA detection, innerHeight workaround, fixed reader viewport or nested mobile scroller is needed. Desktop workspaces keep the island as the vertical scroll owner.
 
 ### AppShell, AppMain, AppSkipLink API & Contracts
 
-- **`AppShell`**: Viewport root container. Inherits standard `HTMLAttributes<HTMLDivElement>`. Renders a full-viewport flex row (`h-screen w-full overflow-hidden bg-basalt-background`). Does not forward ref.
-- **`AppMain`**: Primary content container. Inherits standard `HTMLAttributes<HTMLElement>`. Defaults `id="main-content"` as the skip-link landmark target, which can be overridden by props via `{...props}`. Recommended to keep `"main-content"` matching `AppSkipLink`. Renders a vertical column with `h-full min-w-0 flex-1 flex-col overflow-hidden`. Does not forward ref.
-- **`AppSkipLink`**: Accessibility skip target. Inherits standard `AnchorHTMLAttributes<HTMLAnchorElement>`. Defaults `href="#main-content"`. Renders screen-reader-only element that transitions into absolute focus overlay on keyboard navigation (`sr-only focus:not-sr-only focus:absolute ...`). Does not forward ref.
+- **`AppShell`** accepts `layout?: "workspace" | "responsive" | "document"` and native div attributes. It is the sole safe-area owner of the normal document tree: CSS `env(safe-area-inset-*)` padding is included in its border-box. In document mode bottom padding is trailing content, never a fixed reserved strip. Do not subtract these insets again from main/island height.
+- **`AppMain`** renders the main landmark with `id="main-content"` and `tabIndex={-1}` by default. Native main attributes may override these. It has `min-width: 0` and a flexible column layout; its height and overflow follow the shell.
+- **`AppSkipLink`** points to `#main-content` unless `href` is supplied. Provide visible link text; keep it first in the shell.
+- **`ContentIsland`** (from `components/sidebar`) accepts `mobileSurface?: "inset" | "edge-to-edge"` (default `inset`). Both are L1 surface roots. Edge-to-edge removes mobile padding, radius, ring and shadow; desktop padding/radius remain. The application supplies readable inner content padding, not another painted card.
+- All four accept native attributes and `className`; they do not forward refs. Avoid overriding their height/overflow contract. Put specialized bounded desktop panes inside the island with `md:` constraints only.
 
-The island wrap is the only extra layout div in the main column. Pages render **inside** `ContentIsland`. Pages do not set `h-screen`, side padding, or a second card around the island.
+```tsx excerpt:responsive-shell
+<AppShell layout="responsive">
+  <AppSkipLink>Skip to content</AppSkipLink>
+  <AppMain>
+    <AppHeader title="Field notes" actions={actions} />
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-3 md:pb-3">
+      <ContentIsland mobileSurface="edge-to-edge">
+        <div className="mx-auto max-w-prose px-4 py-3 md:p-0">{content}</div>
+      </ContentIsland>
+    </div>
+  </AppMain>
+</AppShell>
+```
+
+The wrapper intentionally has **no mobile `px-2` / `pb-2`**. ContentIsland cannot remove spacing owned by its parent. Remove consumer `h-screen`, `h-full`, `overflow-hidden`, fixed heights and body scroll locks from the document path; all intermediate wrappers must be natural-height columns. Do not target private descendants to undo the library.
+
+The consumer owns `viewport` metadata: `width=device-width, initial-scale=1, viewport-fit=cover`. Do not disable zoom. The library never edits document metadata or body styles for layout. Floating modal navigation has a separate portal tree: `Sheet` or overlay `Sidebar` owns modal scroll locking/focus; the Sidebar within it remains bounded and applies that portal's safe-area padding once. Do not add a manual body overflow effect.
+
+A desktop Sidebar stays bounded even beside a document: its own navigation may scroll, but the long main content belongs to the document. Hide the desktop rail on mobile and use the same navigation inside an expanded Sidebar in a Sheet. Do not mount duplicate focusable navigation. Single-column reading needs no Sidebar at all.
+
+`AppHeader` adds `sticky?: boolean` (default false) and `density?: "comfortable" | "compact"` (default comfortable). Compact is 52px, with at least 44px controls inside the leading/actions slots (not breadcrumb/title links); comfortable remains 56px. `sticky` uses the current scroll owner and an opaque L1 background. Place it directly inside AppMain or as the first child of ContentIsland; do not put it in a short wrapper that limits its sticky travel. The shell exposes `--basalt-safe-top` and resolves `--basalt-sticky-top` to that inset for document scrolling, or zero for bounded panes. The sticky row offsets below the notch and paints the gap with a pseudo-element. Initial inset is still paid only once by the shell, not added again to header height. Do not add safe-area padding to the header. A bounded header outside the island is already stationary and does not need `sticky`.
+
+**Single-header immersion is an explicit application layout.** On mobile, use one compact `AppHeader` with title, back/navigation and essential actions; omit the duplicated `PageHeader` (or put it in a `hidden md:block` wrapper). Keep the normal desktop PageHeader hierarchy for workspaces. Content section headings still belong in the document. Use existing DropdownMenu/Popover for secondary actions and 44px minimum touch targets; never invent reader-specific routing or actions in the library.
+
+Copyable complete recipes: [mobile layouts](packages/basalt/ai/RECIPES.md#mobile-layouts). Live full-page examples: `/examples/reader`, `/examples/list-detail`, `/examples/workspace`. Desktop bounded panes, mobile root scrolling, form focus and modal restoration are separate checks. Automated WebKit checks CSS, scrolling and focus, **not physical iPhone Safari toolbar collapse or the software keyboard**; verify those manually on device.
 
 ---
 
@@ -391,7 +415,7 @@ The island wrap is the only extra layout div in the main column. Pages render **
 
 `Sidebar` **is** the column. It already has:
 
-- `h-screen`, `flex-col`, `shrink-0`, `sticky top-0`
+- shell-derived bounded height (standalone `100dvh`), `flex-col`, `shrink-0`, `sticky top-0`
 - expanded width **260px** (inline `width`)
 - collapsed width **68px**
 - collapse animation `transition-all duration-300 ease-in-out`
@@ -403,7 +427,7 @@ Do not wrap those regions in another full-viewport column. Do not set `h-screen`
 ### Expanded tree
 
 ```
-Sidebar                          ← collapsed={false}; owns 260px and h-screen
+Sidebar                          ← collapsed={false}; owns 260px and bounded height
 ├── SidebarHeader                ← h-14 px-3 already
 │   └── brand row                ← flex, items-center, justify-between, w-full
 │                                 (no extra horizontal padding)
@@ -579,9 +603,9 @@ Breakpoint: `768px`. Below that, the in-flow rail is omitted. The same sidebar c
 </Sheet>
 ```
 
-`SheetContent` is already `h-full`. `Sidebar` still owns the 260px column inside it. Close the sheet on pathname change. While open, set `document.body.style.overflow = "hidden"` and clear it on close.
+`SheetContent` bounds its Sidebar to the available height. Sidebar owns the 260px column and the portal safe area. Close the sheet on pathname change. Radix Sheet owns modal scroll locking and focus restoration; do not set body overflow separately.
 
-`AppHeader` `leading` is the menu button on mobile only (`Button variant="ghost" size="icon" className="h-8 w-8"`).
+`AppHeader` `leading` is the menu button on mobile only. Use `density="compact"` with `Button variant="ghost" size="icon"`; compact header controls have a 44px minimum target.
 
 Header actions use a stable hand cursor and compact 12px `TooltipContent`. `Button`, `LinkButton`, `Toggle`, and `ToggleGroupItem` keep their full rectangular pointer target with a transparent `::before`, including rounded corners. Wrap the actual button or link in `TooltipTrigger asChild` so the trigger retains one focusable hit target. `Toggle` and `ToggleGroupItem` selection styling follows `aria-pressed` / `aria-checked`, independently of the tooltip's `data-state`. Icon-only links must include a screen-reader label inside the link as well as an accessible name.
 
@@ -621,12 +645,6 @@ export function AppFrame() {
     setMobileOpen(false);
   }, [location.pathname]);
 
-  useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [mobileOpen]);
 
   return (
     <AppShell>
@@ -676,7 +694,7 @@ export function AppFrame() {
 
 <a id="appheader-and-breadcrumbs"></a>
 
-`AppHeader` is `h-14`, matching `SidebarHeader`.
+`AppHeader` defaults to `h-14`, matching `SidebarHeader`; `density="compact"` uses a 52px row with 44px minimum targets. `sticky` keeps it visible within the current scroll owner; see §6 for safe-area positioning.
 
 ### AppHeader API & Contracts
 
@@ -777,7 +795,7 @@ Boot and route gates use `LoadingScreen` — a centered mark and a 6rem shimmer 
 
 ## 13. First page
 
-When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place, add routes as `Outlet` pages. Application pages inside the island start with `PageHeader`. The shell file does not grow with page UI.
+When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place, add routes as `Outlet` pages. Regular application pages inside the island start with `PageHeader`. Mobile immersive layouts may use a single `AppHeader` instead, with `PageHeader` shown only on desktop; see the root geometry contract. The shell file does not grow with page UI.
 
 Standalone login, loading, error, and landing pages use their own first-screen structure: `/login` preserves the visitor-badge composition, `/loading` is a named loading status, and `/404` and `/static-page` have independent headings. Library reference pages use their document heading and section navigation. These are deliberate layout exceptions, not alternate application-page templates.
 
@@ -984,7 +1002,7 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 
 ## 15. PageHeader and SectionRule
 
-`PageHeader` and `SectionRule` are the only page-level chrome inside the island. Import them from granular paths. They are not on the root barrel. Do not wrap the title in an island.
+`PageHeader` and `SectionRule` provide regular page-level chrome inside the island. A mobile immersive composition may use a single sticky AppHeader inside the island instead (§6). Import them from granular paths. They are not on the root barrel. Do not wrap the title in an island.
 
 ### PageHeader
 

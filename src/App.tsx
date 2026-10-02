@@ -7,6 +7,10 @@ import { BrowserRouter, Route, Link as RouterLink, Routes } from "react-router";
 import { SitePaletteProvider } from "@/components/SitePaletteProvider";
 import LandingPage from "./pages/LandingPage";
 
+const ReaderPage = lazy(() => import("./pages/layout-examples/ReaderPage"));
+const ListDetailPage = lazy(() => import("./pages/layout-examples/ListDetailPage"));
+const WorkspacePage = lazy(() => import("./pages/layout-examples/WorkspacePage"));
+
 const DashboardLayout = lazy(() =>
 	import("./components/DashboardLayout").then((module) => ({ default: module.DashboardLayout })),
 );
@@ -125,6 +129,9 @@ const App = () => (
 								<Route path="/ui/:slug/source" element={routeElement(UiSourceViewerPage)} />
 							</Route>
 							{/* Standalone pages (no sidebar) */}
+							<Route path="/examples/reader" element={routeElement(ReaderPage)} />
+							<Route path="/examples/list-detail" element={routeElement(ListDetailPage)} />
+							<Route path="/examples/workspace" element={routeElement(WorkspacePage)} />
 							<Route path="/login" element={routeElement(LoginPage)} />
 							<Route path="/static-page" element={routeElement(StaticPage)} />
 							<Route path="/loading" element={routeElement(LoadingPage)} />

@@ -58,6 +58,16 @@ function Example() {
 	);
 }
 describe("ResponsiveMasterDetail", () => {
+	it("retains the pointer opener when Safari focuses the region instead of its button", () => {
+		mediaQuery(true);
+		render(<Example />);
+		const opener = screen.getByRole("button", { name: "Item A" });
+		fireEvent.pointerDown(opener);
+		act(() => screen.getByRole("region", { name: "Items" }).focus());
+		fireEvent.click(opener);
+		fireEvent.click(screen.getByRole("button", { name: "Back to items" }));
+		expect(opener).toHaveFocus();
+	});
 	it("shows two regions on desktop and makes only the active mobile pane interactive", () => {
 		const { change, media } = mediaQuery(false);
 		const { unmount } = render(<Example />);

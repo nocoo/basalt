@@ -292,7 +292,7 @@ export function Sidebar({
 		) : null;
 	const frameClass = cn(
 		BASALT_UI_CLASS,
-		"relative flex h-screen shrink-0 flex-col bg-basalt-background text-sm text-basalt-foreground",
+		"relative flex shrink-0 flex-col bg-basalt-background text-sm text-basalt-foreground",
 		OVERLAY_MOTION,
 		className,
 	);
@@ -302,6 +302,7 @@ export function Sidebar({
 				<DialogPortal>
 					<DialogOverlay />
 					<DialogPrimitive.Content
+						data-basalt-sidebar=""
 						aria-label="Sidebar"
 						data-overlay=""
 						data-side={side}
@@ -345,6 +346,7 @@ export function Sidebar({
 	}
 	return (
 		<aside
+			data-basalt-sidebar=""
 			data-collapsed={collapsed ? "" : undefined}
 			data-side={side}
 			aria-busy={context?.loading || undefined}
@@ -584,14 +586,25 @@ export function SidebarUser({ name, email, avatar, action, className }: SidebarU
 	);
 }
 
-export interface ContentIslandProps extends HTMLAttributes<HTMLDivElement> {}
+export interface ContentIslandProps extends HTMLAttributes<HTMLDivElement> {
+	/** Mobile surface treatment; desktop remains an inset L1 island. @default "inset" */
+	mobileSurface?: "inset" | "edge-to-edge";
+}
 
-export function ContentIsland({ className, ...props }: ContentIslandProps) {
+export function ContentIsland({
+	mobileSurface = "inset",
+	className,
+	...props
+}: ContentIslandProps) {
 	return (
 		<div
 			data-basalt-surface-root=""
+			data-basalt-island={mobileSurface}
 			className={cn(
-				"min-h-0 flex-1 overflow-y-auto overscroll-y-contain rounded-[16px] bg-basalt-card p-3 text-basalt-card-foreground shadow-sm ring-1 ring-basalt-border/40 md:rounded-basalt-island md:p-5",
+				"min-h-0 min-w-0 flex-1 bg-basalt-card text-basalt-card-foreground md:rounded-basalt-island md:p-5",
+				mobileSurface === "inset"
+					? "rounded-[16px] p-3 shadow-sm ring-1 ring-basalt-border/40"
+					: "md:shadow-sm md:ring-1 md:ring-basalt-border/40",
 				className,
 			)}
 			{...props}

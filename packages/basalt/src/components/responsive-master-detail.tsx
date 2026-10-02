@@ -77,7 +77,7 @@ export function ResponsiveMasterDetail({
 			aria-label={label}
 			className={cn(
 				BASALT_UI_CLASS,
-				"grid min-w-0 grid-cols-1 overflow-hidden rounded-basalt-lg border border-basalt-border md:grid-cols-[minmax(12rem,20rem)_minmax(0,1fr)]",
+				"grid min-h-0 min-w-0 grid-cols-1 rounded-basalt-lg border border-basalt-border md:grid-cols-[minmax(12rem,20rem)_minmax(0,1fr)] md:overflow-hidden",
 				className,
 			)}
 		>
@@ -88,11 +88,11 @@ export function ResponsiveMasterDetail({
 				hidden={compact && detailOpen}
 				inert={compact && detailOpen}
 				className={cn(
-					"min-w-0 bg-basalt-card focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-basalt-ring md:border-r md:border-basalt-border",
+					"min-h-0 min-w-0 bg-basalt-card focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-basalt-ring md:overflow-y-auto md:overscroll-y-contain md:border-r md:border-basalt-border",
 					detailOpen && "hidden md:block",
 				)}
 				onFocusCapture={(event) => {
-					opener.current = event.target;
+					if (event.target !== event.currentTarget) opener.current = event.target;
 				}}
 				onPointerDownCapture={(event) => {
 					const target = (event.target as Element).closest<HTMLElement>(
@@ -110,13 +110,13 @@ export function ResponsiveMasterDetail({
 				hidden={compact && !detailOpen}
 				inert={compact && !detailOpen}
 				className={cn(
-					"min-w-0 bg-basalt-background focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-basalt-ring",
+					"min-h-0 min-w-0 bg-basalt-background focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-basalt-ring md:overflow-y-auto md:overscroll-y-contain",
 					!detailOpen && "hidden md:block",
 				)}
 			>
 				{compact && detailOpen && (
 					<div className="border-b border-basalt-border p-2">
-						<Button size="sm" variant="ghost" onClick={() => onDetailOpenChange(false)}>
+						<Button className="min-h-11" variant="ghost" onClick={() => onDetailOpenChange(false)}>
 							<ArrowLeft />
 							{backLabel}
 						</Button>

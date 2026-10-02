@@ -1,4 +1,4 @@
-import { Button } from "@nocoo/basalt/components/button";
+import { Button, LinkButton } from "@nocoo/basalt/components/button";
 import { DescriptionList } from "@nocoo/basalt/components/description-list";
 import { Grid } from "@nocoo/basalt/components/grid";
 import { Input } from "@nocoo/basalt/components/input";
@@ -27,6 +27,18 @@ export default function LayoutPage() {
 	return (
 		<div className="space-y-8">
 			<PageHeader title={t("pages.layout.title")} description={t("pages.layout.description")} />
+
+			<section aria-label="Full-page layout examples" className="flex flex-wrap gap-2">
+				<LinkButton href="/examples/reader" variant="outline">
+					Immersive reader
+				</LinkButton>
+				<LinkButton href="/examples/list-detail" variant="outline">
+					Mobile list / desktop panes
+				</LinkButton>
+				<LinkButton href="/examples/workspace" variant="outline">
+					Workspace and form
+				</LinkButton>
+			</section>
 
 			<SectionRule title={t("pages.layout.stack")} hint={t("pages.layout.stackDesc")}>
 				<LayerCard padding="none">

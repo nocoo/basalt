@@ -23,11 +23,61 @@ describe("AppShell", () => {
 		expect(screen.getByRole("main")).toHaveTextContent("Body");
 		expect(screen.getByRole("button", { name: "Theme" })).toBeInTheDocument();
 		expect(screen.getByRole("main")).toHaveClass("min-h-0");
-		expect(screen.getByText("Dashboard").closest(".h-screen")).toHaveClass("overscroll-none");
+		expect(screen.getByText("Dashboard").closest("[data-basalt-shell]")).toHaveAttribute(
+			"data-basalt-shell",
+			"workspace",
+		);
+		expect(screen.getByRole("main")).toHaveAttribute("tabindex", "-1");
 	});
+
+	it.each(["responsive", "document"] as const)(
+		"declares %s scroll ownership without viewport JS",
+		(layout) => {
+			render(
+				<AppShell layout={layout}>
+					<AppMain>Content</AppMain>
+				</AppShell>,
+			);
+			const main = screen.getByRole("main");
+			expect(main).toHaveAttribute("data-basalt-main");
+			expect(main.parentElement).toHaveAttribute("data-basalt-shell", layout);
+			expect(main.parentElement).not.toHaveAttribute("layout");
+		},
+	);
 });
 
 describe("AppHeader", () => {
+	it("keeps compact breadcrumb links outside the touch-action slots", () => {
+		render(
+			<AppHeader
+				density="compact"
+				breadcrumbs={[{ href: "/", label: "Home" }]}
+				title="Notes"
+				leading={<button type="button">Back</button>}
+				actions={<button type="button">Options</button>}
+			/>,
+		);
+		expect(
+			screen.getByRole("button", { name: "Back" }).closest("[data-basalt-header-leading]"),
+		).not.toBeNull();
+		expect(
+			screen.getByRole("button", { name: "Options" }).closest("[data-basalt-header-actions]"),
+		).not.toBeNull();
+		expect(
+			screen
+				.getByRole("link", { name: "Home" })
+				.closest("[data-basalt-header-leading], [data-basalt-header-actions]"),
+		).toBeNull();
+	});
+	it("declares a compact safe sticky row with no DOM-only props", () => {
+		render(<AppHeader sticky density="compact" title="Read" />);
+		const header = screen.getByRole("banner");
+		expect(header).toHaveAttribute("data-sticky", "true");
+		expect(header).toHaveAttribute("data-density", "compact");
+		expect(header).toHaveClass("h-[52px]");
+		expect(header).not.toHaveAttribute("sticky");
+		expect(header).not.toHaveAttribute("density");
+	});
 	it("keeps a named banner with leading and omits breadcrumbs, title, and actions", () => {
 		render(
 			<AppHeader aria-label="Workspace chrome" leading={<button type="button">Menu</button>} />,

@@ -800,7 +800,6 @@ describe("catalog API generator contract", () => {
 				sourceFile: "packages/basalt/src/components/sidebar.tsx",
 				propsType: "ContentIslandProps",
 				surface: "ContentIsland",
-				allowEmpty: true,
 			},
 			{
 				slug: "sidebar",
@@ -1675,7 +1674,6 @@ describe("catalog API generator contract", () => {
 			"SidebarNav",
 			"SidebarPartition",
 			"SidebarFooter",
-			"ContentIsland",
 			"PopoverTitle",
 			"PopoverDescription",
 			"TableHeader",
@@ -4865,7 +4863,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"3c2c080d1835567826ada7ca4e288c6231dc92f9bd13c30187822228b676612e",
+			"adeb705fecc16637fef513fe50f205929989eae8c445586b525c6d4e4278bdc4",
 		);
 	}, 60_000);
 

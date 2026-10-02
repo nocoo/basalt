@@ -511,6 +511,96 @@
     border-color: inherit;
     border-collapse: collapse;
   }
+  [data-basalt-shell] {
+    --basalt-safe-top: env(safe-area-inset-top, 0px);
+    --basalt-sticky-top: 0px;
+    --basalt-main-height: 100%;
+    --basalt-main-overflow: hidden;
+    --basalt-island-overflow: auto;
+    --basalt-island-overscroll: contain;
+    --basalt-sidebar-height: 100%;
+    box-sizing: border-box;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    overscroll-behavior: none;
+    padding: var(--basalt-safe-top) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px)	env(safe-area-inset-left, 0px);
+  }
+  [data-basalt-shell="document"] {
+    --basalt-sticky-top: var(--basalt-safe-top);
+    --basalt-main-height: auto;
+    --basalt-main-overflow: visible;
+    --basalt-island-overflow: visible;
+    --basalt-island-overscroll: auto;
+    --basalt-sidebar-height: calc(
+			100dvh -
+			env(safe-area-inset-top, 0px) -
+			env(safe-area-inset-bottom, 0px)
+		);
+    height: auto;
+    min-height: 100dvh;
+    max-height: none;
+    overflow: visible;
+    overscroll-behavior: auto;
+  }
+  @media (width < 768px) {
+    [data-basalt-shell="responsive"] {
+      --basalt-sticky-top: var(--basalt-safe-top);
+      --basalt-main-height: auto;
+      --basalt-main-overflow: visible;
+      --basalt-island-overflow: visible;
+      --basalt-island-overscroll: auto;
+      --basalt-sidebar-height: calc(
+				100dvh -
+				env(safe-area-inset-top, 0px) -
+				env(safe-area-inset-bottom, 0px)
+			);
+      height: auto;
+      min-height: 100dvh;
+      max-height: none;
+      overflow: visible;
+      overscroll-behavior: auto;
+    }
+  }
+  [data-basalt-main] {
+    height: var(--basalt-main-height, 100%);
+    overflow: var(--basalt-main-overflow, hidden);
+  }
+  [data-basalt-island] {
+    overflow-y: var(--basalt-island-overflow, auto);
+    overscroll-behavior-y: var(--basalt-island-overscroll, contain);
+  }
+  [data-basalt-sidebar] {
+    height: var(--basalt-sidebar-height, 100dvh);
+    max-height: 100dvh;
+  }
+  [data-basalt-sheet] {
+    --basalt-sidebar-height: 100%;
+    max-height: 100dvh;
+  }
+  [data-basalt-sheet] [data-basalt-sidebar],	[data-basalt-sidebar][data-overlay] {
+    box-sizing: border-box;
+    padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px)	env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
+  }
+  [data-basalt-header][data-sticky] {
+    position: sticky;
+    top: var(--basalt-sticky-top, 0px);
+    z-index: 20;
+    background-color: hsl(var(--basalt-card));
+  }
+  [data-basalt-header][data-sticky]::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: 100%;
+    height: var(--basalt-sticky-top, 0px);
+    background: inherit;
+    pointer-events: none;
+  }
+  [data-basalt-header][data-density="compact"]	:where([data-basalt-header-leading], [data-basalt-header-actions])	:where(button, a, [role="button"]) {
+    min-height: 44px;
+    min-width: 44px;
+  }
 }
 .basalt-chart .recharts-sector:focus:not(:focus-visible), .basalt-chart .recharts-rectangle:focus:not(:focus-visible), .basalt-chart .recharts-layer:focus:not(:focus-visible), .basalt-chart .recharts-surface:focus:not(:focus-visible) {
   outline: none;
@@ -805,6 +895,9 @@
   .h-80 {
     height: calc(var(--spacing) * 80);
   }
+  .h-\[52px\] {
+    height: 52px;
+  }
   .h-auto {
     height: auto;
   }
@@ -837,6 +930,9 @@
   }
   .min-h-9 {
     min-height: calc(var(--spacing) * 9);
+  }
+  .min-h-11 {
+    min-height: calc(var(--spacing) * 11);
   }
   .min-h-\[24px\] {
     min-height: 24px;
@@ -1192,9 +1288,6 @@
   }
   .overflow-y-hidden\! {
     overflow-y: hidden !important;
-  }
-  .overscroll-none {
-    overscroll-behavior: none;
   }
   .overscroll-y-contain {
     overscroll-behavior-y: contain;
@@ -2402,6 +2495,15 @@
     .md\:gap-4 {
       gap: calc(var(--spacing) * 4);
     }
+    .md\:overflow-hidden {
+      overflow: hidden;
+    }
+    .md\:overflow-y-auto {
+      overflow-y: auto;
+    }
+    .md\:overscroll-y-contain {
+      overscroll-behavior-y: contain;
+    }
     .md\:rounded-basalt-island {
       border-radius: var(--basalt-radius-island);
     }
@@ -2425,6 +2527,22 @@
     .md\:text-sm {
       font-size: var(--text-sm);
       line-height: var(--tw-leading, var(--text-sm--line-height));
+    }
+    .md\:shadow-sm {
+      --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+    .md\:ring-1 {
+      --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+    .md\:ring-basalt-border\/40 {
+      --tw-ring-color: hsl(var(--basalt-border));
+    }
+    @supports (color: color-mix(in lab, red, red)) {
+      .md\:ring-basalt-border\/40 {
+        --tw-ring-color: color-mix(in oklab, hsl(var(--basalt-border)) 40%, transparent);
+      }
     }
   }
   @media (width >= 64rem) {

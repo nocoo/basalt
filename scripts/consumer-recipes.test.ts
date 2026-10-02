@@ -20,6 +20,7 @@ describe("installed application recipes", () => {
 				"recipe-app-frame",
 				"recipe-login",
 				"recipe-resources",
+				"recipe-mobile-layout",
 			]);
 			for (const { id, sha256 } of evidence) {
 				const original = installed

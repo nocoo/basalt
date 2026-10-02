@@ -370,6 +370,15 @@ describe("ContentIsland", () => {
 		expect(island.className).toContain("ring-basalt-border/40");
 		expect(island.className).toContain("rounded-[16px]");
 		expect(island.className).toContain("md:rounded-basalt-island");
-		expect(island.className).toContain("overscroll-y-contain");
+		expect(island).toHaveAttribute("data-basalt-island", "inset");
+	});
+	it("keeps the surface root without mobile inset chrome", () => {
+		render(<ContentIsland mobileSurface="edge-to-edge">Read</ContentIsland>);
+		const island = screen.getByText("Read");
+		expect(island).toHaveAttribute("data-basalt-surface-root");
+		expect(island).toHaveAttribute("data-basalt-island", "edge-to-edge");
+		expect(island).not.toHaveAttribute("mobileSurface");
+		expect(island).not.toHaveClass("p-3", "rounded-[16px]", "ring-1");
+		expect(island).toHaveClass("md:p-5", "md:rounded-basalt-island");
 	});
 });

@@ -296,7 +296,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sheet": {
 		"file": "packages/basalt/src/components/sheet.tsx",
-		"hash": "1fd48fe8aa7559fa",
+		"hash": "49cf6f015335f773",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sheet.js.map (sourcesContent[0])"
 	},
@@ -380,7 +380,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "5ee61278f01f173c",
+		"hash": "f762c056901f5db7",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},
@@ -506,7 +506,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"responsive-master-detail": {
 		"file": "packages/basalt/src/components/responsive-master-detail.tsx",
-		"hash": "c7e06934d2c2e706",
+		"hash": "43d5629efcdfbbbf",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/responsive-master-detail.js.map (sourcesContent[0])"
 	},

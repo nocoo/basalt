@@ -4,6 +4,23 @@ import { describe, expect, it } from "vitest";
 const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
 
 describe("standalone css", () => {
+	it("ships responsive scroll ownership and safe sticky geometry", () => {
+		for (const selector of [
+			"[data-basalt-shell]",
+			"[data-basalt-main]",
+			"[data-basalt-island]",
+			"[data-basalt-sidebar]",
+			"[data-basalt-sheet]",
+		]) {
+			expect(css).toContain(selector);
+		}
+		expect(css).toContain("min-height: 100dvh");
+		expect(css).toContain("--basalt-main-overflow: visible");
+		expect(css).toContain("--basalt-island-overflow: visible");
+		expect(css).toContain("top: var(--basalt-sticky-top, 0px)");
+		expect(css).toContain("height: var(--basalt-sticky-top, 0px)");
+		expect(css).toContain("min-height: 44px");
+	});
 	it("includes control utilities without preflight", () => {
 		expect(css).toContain(".h-9");
 		expect(css).toContain(".h-16");

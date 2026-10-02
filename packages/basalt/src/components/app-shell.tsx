@@ -23,13 +23,18 @@ export function AppSkipLink({
 	);
 }
 
-export function AppShell({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
+export function AppShell({
+	layout = "workspace",
+	className,
+	...props
+}: HTMLAttributes<HTMLDivElement> & {
+	/** Scroll owner: bounded panes, document, or document below 768px. */
+	layout?: "workspace" | "document" | "responsive";
+}) {
 	return (
 		<div
-			className={cn(
-				"flex h-screen w-full overflow-hidden overscroll-none bg-basalt-background",
-				className,
-			)}
+			data-basalt-shell={layout}
+			className={cn("flex w-full bg-basalt-background", className)}
 			{...props}
 		/>
 	);
@@ -39,7 +44,9 @@ export function AppMain({ className, ...props }: HTMLAttributes<HTMLElement>) {
 	return (
 		<main
 			id="main-content"
-			className={cn("flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden", className)}
+			tabIndex={-1}
+			data-basalt-main=""
+			className={cn("flex min-h-0 min-w-0 flex-1 flex-col", className)}
 			{...props}
 		/>
 	);

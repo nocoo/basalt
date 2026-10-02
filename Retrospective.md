@@ -65,3 +65,11 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **What:** The package gate reported every file missing although the real npm12 dry-run listed the complete artifact.
 - **Why:** The parser sliced braces and assumed the artifact itself was the JSON root; npm now groups artifacts by package name.
 - **Fix:** Parse the complete JSON container, require exactly one artifact with the expected name/version, then retain every existing file/export/hash check. The real local package check passed after the correction.
+
+## 2026-10-02: Responsive shell contract and Safari opener tracking
+
+- **What:** The first shell commit was correctly blocked because the catalog target fixture still allowed an empty ContentIsland API and its generated digest still described the old props. Browser validation also found that WebKit returned list/detail focus to the region instead of the clicked item.
+- **Why:** Adding a prop changes both the generated API and the pinned generator contract. Safari can focus a region rather than a clicked button; focus capture then overwrote the pointer-captured opener.
+- **Fix:** Update both exact API assertions, and only capture descendant focus as a new opener. Keep the pointer target when the region itself receives focus. A targeted regression and Chromium/WebKit layout checks cover the behavior; actual iPhone toolbar/keyboard behavior remains a manual device check.
+
+- **Gate follow-up:** The repository's selected-run reporter intentionally rejects `-t` name filters as skipped tests. Run complete selected test files when investigating a gate failure; never suppress the reporter. New release pipeline steps also require updating the pinned positive and negative pipeline contract tests.

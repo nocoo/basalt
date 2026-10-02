@@ -7070,7 +7070,7 @@
 			"importPath": "@nocoo/basalt/components/app-header",
 			"subpath": "./components/app-header",
 			"sourceFile": "packages/basalt/src/components/app-header.tsx",
-			"sourceHash": "80acd367d8bdc9bf",
+			"sourceHash": "e03e115cf4b8f4a1",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "framework-chrome",
@@ -7096,7 +7096,7 @@
 			"importPath": "@nocoo/basalt/components/app-shell",
 			"subpath": "./components/app-shell",
 			"sourceFile": "packages/basalt/src/components/app-shell.tsx",
-			"sourceHash": "f581b2af0175670b",
+			"sourceHash": "360ded256b2b5947",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "framework-chrome",
@@ -20358,7 +20358,7 @@
 			"importPath": "@nocoo/basalt/components/responsive-master-detail",
 			"subpath": "./components/responsive-master-detail",
 			"sourceFile": "packages/basalt/src/components/responsive-master-detail.tsx",
-			"sourceHash": "c7e06934d2c2e706",
+			"sourceHash": "43d5629efcdfbbbf",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -21476,7 +21476,7 @@
 			"importPath": "@nocoo/basalt/components/sheet",
 			"subpath": "./components/sheet",
 			"sourceFile": "packages/basalt/src/components/sheet.tsx",
-			"sourceHash": "1fd48fe8aa7559fa",
+			"sourceHash": "49cf6f015335f773",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -21940,7 +21940,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "5ee61278f01f173c",
+			"sourceHash": "f762c056901f5db7",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -22366,7 +22366,15 @@
 						},
 						{
 							"name": "ContentIsland",
-							"props": []
+							"props": [
+								{
+									"name": "mobileSurface",
+									"type": "\"edge-to-edge\" | \"inset\"",
+									"required": false,
+									"default": "\"inset\"",
+									"description": "Mobile surface treatment; desktop remains an inset L1 island."
+								}
+							]
 						},
 						{
 							"name": "useSidebar()",
@@ -22633,7 +22641,15 @@
 				},
 				{
 					"name": "ContentIsland",
-					"props": []
+					"props": [
+						{
+							"name": "mobileSurface",
+							"type": "\"edge-to-edge\" | \"inset\"",
+							"required": false,
+							"default": "\"inset\"",
+							"description": "Mobile surface treatment; desktop remains an inset L1 island."
+						}
+					]
 				},
 				{
 					"name": "useSidebar()",
@@ -32374,7 +32390,7 @@
 			"exportName": "Sheet",
 			"importPath": "@nocoo/basalt/components/sheet",
 			"sourceFile": "packages/basalt/src/components/sheet.tsx",
-			"sourceHash": "1fd48fe8aa7559fa",
+			"sourceHash": "49cf6f015335f773",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sheet",
@@ -33904,7 +33920,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "5ee61278f01f173c",
+			"sourceHash": "f762c056901f5db7",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -34099,7 +34115,15 @@
 				},
 				{
 					"name": "ContentIsland",
-					"props": []
+					"props": [
+						{
+							"name": "mobileSurface",
+							"type": "\"edge-to-edge\" | \"inset\"",
+							"required": false,
+							"default": "\"inset\"",
+							"description": "Mobile surface treatment; desktop remains an inset L1 island."
+						}
+					]
 				},
 				{
 					"name": "useSidebar()",
@@ -35821,7 +35845,7 @@
 			"exportName": "ResponsiveMasterDetail",
 			"importPath": "@nocoo/basalt/components/responsive-master-detail",
 			"sourceFile": "packages/basalt/src/components/responsive-master-detail.tsx",
-			"sourceHash": "c7e06934d2c2e706",
+			"sourceHash": "43d5629efcdfbbbf",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#responsive-master-detail",

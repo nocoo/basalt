@@ -729,7 +729,6 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		sourceFile: "packages/basalt/src/components/sidebar.tsx",
 		propsType: "ContentIslandProps",
 		surface: "ContentIsland",
-		allowEmpty: true,
 	},
 	{
 		slug: "sidebar",

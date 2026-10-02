@@ -23,7 +23,7 @@ Direction: [INTEGRATION.md](INTEGRATION.md); numbered `docs/01`–`03` describe 
 
 TypeScript 7, Bun 1.4.0, Node 24+ for consumer fixtures. Catalog: Vite 8/React, CSS tokens, Cloudflare Worker assets. Package: React 19 components with optional chart peers and separate import paths. Static/tests: TypeScript, Biome, Vitest/V8, Playwright and built external consumers. `src/` holds pages, models, viewmodels and catalog/lib; `packages/basalt/`, `fixtures/` and `scripts/` hold the publishable library, consumer examples and verification runners.
 
-Run from the root. Consumer gates create temporary external projects and need npm/network access; browser tests need Chromium. No production secrets or data are required.
+Run from the root. Consumer gates create temporary external projects and need npm/network access; browser tests need Chromium; the mobile layout gate also needs WebKit. No production secrets or data are required.
 
 ```bash
 bun install --frozen-lockfile
@@ -36,10 +36,11 @@ bun run --cwd packages/basalt build
 bun run playwright:install
 bun run consumer:next
 bun run test:showcase
+bun run test:layouts
 bun run package:prepublish
 ```
 
-`build` performs catalog/API/content/SEO checks and builds the site into `dist/`; the package build separately emits `packages/basalt/dist/`. `package:prepublish` runs types, lint, coverage, package build/types/pack/publint, Tailwind/standalone/Next/heavy/docs consumers and showcase tests. Run `consumer:docs` only after building the package.
+`build` performs catalog/API/content/SEO checks and builds the site into `dist/`; the package build separately emits `packages/basalt/dist/`. `package:prepublish` runs types, lint, coverage, package build/types/pack/publint, Tailwind/standalone/Next/heavy/docs consumers, showcase tests and Chromium/WebKit mobile layout tests. Run `consumer:docs` only after building the package.
 
 ## Testing and quality contract
 

@@ -179,6 +179,7 @@ export const SheetContent = React.forwardRef<
 		/>
 		<DialogPrimitive.Content
 			ref={ref}
+			data-basalt-sheet=""
 			data-basalt-surface-root=""
 			className={cn(OVERLAY_LAYER, OVERLAY_MOTION, SIDE[side], className)}
 			{...props}

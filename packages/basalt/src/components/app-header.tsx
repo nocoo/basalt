@@ -9,6 +9,8 @@ export function AppHeader({
 	breadcrumbs,
 	title,
 	actions,
+	sticky = false,
+	density = "comfortable",
 	className,
 	...props
 }: HTMLAttributes<HTMLElement> & {
@@ -16,18 +18,30 @@ export function AppHeader({
 	breadcrumbs?: { href?: string; label: ReactNode }[];
 	title?: ReactNode;
 	actions?: ReactNode;
+	/** Keep this row visible in its current scroll owner, including the shell safe area. */
+	sticky?: boolean;
+	/** Compact is a 52px row; comfortable is 56px. */
+	density?: "comfortable" | "compact";
 }) {
 	return (
 		<header
+			data-basalt-header=""
+			data-sticky={sticky || undefined}
+			data-density={density}
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex h-14 shrink-0 items-center justify-between gap-3 px-4 md:px-6",
+				"flex shrink-0 items-center justify-between gap-3 px-4 md:px-6",
+				density === "compact" ? "h-[52px]" : "h-14",
 				className,
 			)}
 			{...props}
 		>
 			<div className="flex min-w-0 items-center gap-3">
-				{leading}
+				{leading ? (
+					<div data-basalt-header-leading="" className="flex shrink-0 items-center">
+						{leading}
+					</div>
+				) : null}
 				<div className="flex min-w-0 items-center gap-1">
 					{breadcrumbs && breadcrumbs.length > 0 ? (
 						<>
@@ -43,7 +57,11 @@ export function AppHeader({
 					) : null}
 				</div>
 			</div>
-			{actions ? <div className="flex shrink-0 items-center gap-1">{actions}</div> : null}
+			{actions ? (
+				<div data-basalt-header-actions="" className="flex shrink-0 items-center gap-1">
+					{actions}
+				</div>
+			) : null}
 		</header>
 	);
 }

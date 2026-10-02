@@ -4,7 +4,12 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Page } from "playwright";
 
-const RECIPE_IDS = ["recipe-app-frame", "recipe-login", "recipe-resources"] as const;
+const RECIPE_IDS = [
+	"recipe-app-frame",
+	"recipe-login",
+	"recipe-resources",
+	"recipe-mobile-layout",
+] as const;
 
 /** Extract the shipped Markdown bytes, without repairing imports or rewriting JSX. */
 export function parseApplicationRecipes(markdown: string) {
@@ -119,6 +124,31 @@ export async function assertConsumerRecipes(page: Page, url: string) {
 		await confirm.waitFor({ state: "hidden" });
 		await page.getByRole("status").filter({ hasText: "Deleted Atlas" }).waitFor();
 		assert.equal(await page.getByRole("cell", { name: "Atlas", exact: true }).count(), 0);
+		assert.equal(
+			await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
+			false,
+		);
+		await page.goto(`${url}?recipe=mobile-layout`);
+		await page.getByRole("heading", { name: "Field notes", exact: true }).waitFor();
+		assert.equal(
+			await page.locator("[data-basalt-shell]").getAttribute("data-basalt-shell"),
+			"responsive",
+		);
+		assert.equal(
+			await page.locator("[data-basalt-main]").evaluate((node) => getComputedStyle(node).overflowY),
+			width < 768 ? "visible" : "hidden",
+		);
+		assert.equal(
+			await page
+				.locator("[data-basalt-island]")
+				.evaluate((node) => getComputedStyle(node).overflowY),
+			width < 768 ? "visible" : "auto",
+		);
+		await page.getByRole("button", { name: "Options", exact: true }).click();
+		await page.getByText("Application-owned reading preferences.").waitFor();
+		await page.keyboard.press("Escape");
+		await page.waitForFunction(() => document.activeElement?.textContent === "Options");
+		await page.getByText("End of notes.", { exact: true }).scrollIntoViewIfNeeded();
 		assert.equal(
 			await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
 			false,

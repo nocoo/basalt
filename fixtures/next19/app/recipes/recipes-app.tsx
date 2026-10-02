@@ -4,6 +4,7 @@ import { Button } from "@nocoo/basalt/components/button";
 import { useEffect, useState } from "react";
 import AppFrame from "./recipe-modules/recipe-app-frame";
 import Login, { LoginForm } from "./recipe-modules/recipe-login";
+import MobileLayout from "./recipe-modules/recipe-mobile-layout";
 import Resources from "./recipe-modules/recipe-resources";
 
 function LoginAbortProbe() {
@@ -46,7 +47,9 @@ export default function RecipesApp() {
 	if (!recipe) return null;
 	return (
 		<div data-recipe-mounted={recipe}>
-			{recipe === "app-frame" ? (
+			{recipe === "mobile-layout" ? (
+				<MobileLayout />
+			) : recipe === "app-frame" ? (
 				<AppFrame />
 			) : recipe === "login" ? (
 				<Login />

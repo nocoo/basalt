@@ -159,3 +159,48 @@ export default function ResourcesRecipe() {
   </main></ThemeProvider>;
 }
 ```
+
+## Mobile layouts
+
+Use `responsive` for mobile root scrolling and desktop island scrolling; `document` keeps root scrolling at every width, while `workspace` remains bounded everywhere. Select this per layout, not by user-agent. Place the compact sticky header inside the edge-to-edge island for a single immersive row. Keep a normal PageHeader in a desktop-only wrapper when it adds context. The outer wrapper must not retain mobile `px-2 pb-2`; the island cannot remove its parent's spacing.
+
+This complete recipe compiles from the installed package. Supply content and actions from the application; there are no routing, article, account or network assumptions. The consumer owns a zero-margin body and viewport metadata (`width=device-width, initial-scale=1, viewport-fit=cover`). Do not lock body scrolling or add height/overflow constraints to intermediate wrappers. The shell handles safe areas; the sticky header paints the notch gap without charging the initial top inset twice. Bottom safe area follows the last content, not a fixed footer strip.
+
+```tsx compile:recipe-mobile-layout
+import { AppHeader } from "@nocoo/basalt/components/app-header";
+import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
+import { Button } from "@nocoo/basalt/components/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@nocoo/basalt/components/popover";
+import { ContentIsland } from "@nocoo/basalt/components/sidebar";
+import { ThemeProvider } from "@nocoo/basalt/providers/theme";
+
+export default function MobileLayoutRecipe() {
+  return <ThemeProvider><AppShell layout="responsive">
+    <AppSkipLink>Skip to content</AppSkipLink>
+    <AppMain>
+      <ContentIsland mobileSurface="edge-to-edge">
+        <AppHeader sticky density="compact" title="Field notes" actions={
+          <Popover><PopoverTrigger asChild><Button variant="ghost">Options</Button></PopoverTrigger>
+            <PopoverContent><p>Application-owned reading preferences.</p></PopoverContent>
+          </Popover>
+        } />
+        <article style={{ maxWidth: "65ch", marginInline: "auto", padding: "1rem", lineHeight: 1.7 }}>
+          {Array.from({ length: 24 }, (_, index) => <section key={index}>
+            <h2>Observation {index + 1}</h2>
+            <p>The shell leaves the document in charge on a narrow screen. Content grows naturally, the header stays reachable, and the final paragraph remains above the trailing safe area.</p>
+          </section>)}
+          <p>End of notes.</p>
+        </article>
+      </ContentIsland>
+    </AppMain>
+  </AppShell></ThemeProvider>;
+}
+```
+
+### List/detail and form boundaries
+
+- Full-page examples: [reader](https://basaltui.com/examples/reader), [list/detail](https://basaltui.com/examples/list-detail), [workspace/form](https://basaltui.com/examples/workspace). Open them outside another AppShell; do not nest viewport shells.
+- Use `ResponsiveMasterDetail` inside a `ContentIsland` with `className="md:overflow-hidden"`, and give the composition `className="md:h-full"`. Its desktop panes scroll independently; below 768px only the visible pane participates in document layout. The application owns selection. Built-in back navigation restores focus to the opening item, with a region fallback if it no longer exists.
+- Keep `mobileSurface="inset"` for regular forms. Use native labels, appropriate input types and at least 44px controls; 16px input text avoids the common small-text zoom problem without disabling user zoom. Browser scrolling brings focused fields into view; never reposition the viewport with innerHeight.
+- Modal `Sheet`/overlay `Sidebar` owns focus trapping, Escape, focus restoration and background scroll locking. Do not add a second manual body lock. An expanded Sidebar inside a Sheet stays bounded and owns the portal's safe-area padding once.
+- Automated Chromium/WebKit evidence covers geometry, document/pane scroll owners, resize, focus and overlays. Real iPhone Safari toolbar collapse, notch behavior during toolbar transitions, and software keyboard reachability require a physical-device check; desktop WebKit is not that proof.
