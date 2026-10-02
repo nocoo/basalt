@@ -31,16 +31,17 @@ function normalizePackPath(value: string) {
 }
 
 function parsePackJson(stdout: string) {
-	const trimmed = stdout.trim();
-	const start = trimmed.indexOf("{");
-	const end = trimmed.lastIndexOf("}");
-	if (start < 0 || end <= start) {
-		throw new Error("npm pack did not print JSON");
-	}
-	return JSON.parse(trimmed.slice(start, end + 1)) as {
+	const artifacts = Object.values(JSON.parse(stdout.trim())) as Array<{
+		name?: string;
+		version?: string;
 		filename?: string;
 		files?: Array<{ path?: string }>;
-	};
+	}>;
+	const artifact = artifacts[0];
+	if (artifacts.length !== 1 || artifact?.name !== pkg.name || artifact.version !== pkg.version) {
+		throw new Error("npm pack must describe exactly the expected package and version");
+	}
+	return artifact;
 }
 
 function walk(dir: string): string[] {

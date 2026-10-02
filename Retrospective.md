@@ -45,3 +45,17 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **What:** Cloudflare Workers Builds `started_at` and `completed_at` are the same instant.
 - **Why:** GitHub check-run timestamps are when the result is written back, not the build window.
 - **Follow-up:** none (read the build log).
+
+## 2026-10-02: SWC native cache and dependency pin proof
+
+- **What:** The SWC patch upgrade initially failed its normal staged-index hook because the native loader rejected the macOS temporary cache path through `/var`. After using an owned canonical cache, the full suite exposed a test still asserting the old SWC pin.
+- **Fix:** Use a per-run canonical native cache and temporary directory without weakening the hook, and update the exact version assertion to the requested pin.
+- **Follow-up:** Search dependency-version contracts before upgrades. Keep native-loader path validation and exact dependency assertions enabled.
+
+- **Permanent correction:** The hook now canonicalizes its newly created snapshot directory and creates the owned XDG cache before native tools run. All existing staged-source, static, coverage and secret checks remain unchanged; the next commit validates the default macOS temporary environment without the run-local SWC cache override.
+
+## 2026-10-02: npm pack JSON package container
+
+- **What:** The package gate reported every file missing although the real npm12 dry-run listed the complete artifact.
+- **Why:** The parser sliced braces and assumed the artifact itself was the JSON root; npm now groups artifacts by package name.
+- **Fix:** Parse the complete JSON container, require exactly one artifact with the expected name/version, then retain every existing file/export/hash check. The real local package check passed after the correction.
