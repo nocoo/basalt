@@ -3,6 +3,7 @@ import * as React from "react";
 import {
 	AlertDialog,
 	AlertDialogContent,
+	type AlertDialogContentProps,
 	AlertDialogDescription,
 	AlertDialogFooter,
 	AlertDialogHeader,
@@ -18,6 +19,8 @@ export interface ConfirmDialogProps {
 	open: boolean;
 	/** Called when the dialog requests to open or close. */
 	onOpenChange: (open: boolean) => void;
+	/** Runs after the close focus trap releases. Prevent default to focus a replacement control. */
+	onCloseAutoFocus?: AlertDialogContentProps["onCloseAutoFocus"];
 	/** Called once when the user confirms. The dialog does not close itself; caller manages loading and asynchronous errors. */
 	onConfirm: () => void | Promise<void>;
 	/** The dialog title. */
@@ -74,6 +77,7 @@ export function ConfirmDialog({
 	description,
 	loading = false,
 	onConfirm,
+	onCloseAutoFocus,
 	onOpenChange,
 	open,
 	title,
@@ -83,7 +87,6 @@ export function ConfirmDialog({
 	const triggerRef = React.useRef<HTMLButtonElement>(null);
 	const panelRef = React.useRef<HTMLDivElement>(null);
 	const cancelRef = React.useRef<HTMLButtonElement>(null);
-	const wasOpenRef = React.useRef(open);
 	const openerRef = React.useRef<HTMLElement | null>(null);
 
 	const restoreFocus = React.useCallback(() => {
@@ -94,15 +97,6 @@ export function ConfirmDialog({
 		}
 		openerRef.current = null;
 	}, []);
-
-	React.useEffect(() => {
-		if (wasOpenRef.current && !open) {
-			if (triggerRef.current?.isConnected) {
-				triggerRef.current.focus();
-			}
-		}
-		wasOpenRef.current = open;
-	}, [open]);
 
 	return (
 		<AlertDialog
@@ -137,6 +131,11 @@ export function ConfirmDialog({
 					panelRef.current?.focus();
 				}}
 				onCloseAutoFocus={(event) => {
+					onCloseAutoFocus?.(event);
+					if (event.defaultPrevented) {
+						openerRef.current = null;
+						return;
+					}
 					event.preventDefault();
 					restoreFocus();
 				}}

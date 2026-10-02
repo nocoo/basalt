@@ -18,6 +18,12 @@ export const API = [
 				description: "Called when the dialog requests to open or close.",
 			},
 			{
+				name: "onCloseAutoFocus",
+				type: "(event: Event) => void",
+				required: false,
+				description: "Runs after the close focus trap releases. Prevent default to focus a replacement control.",
+			},
+			{
 				name: "onConfirm",
 				type: "() => void | Promise<void>",
 				required: true,

@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { DeleteResource } from "./delete-resource";
 
@@ -25,14 +25,14 @@ describe("DeleteResource", () => {
 		expect(document.activeElement).not.toBe(trigger);
 	});
 
-	it("restores focus to the trigger when the confirmation closes", () => {
+	it("restores focus after the confirmation close lifecycle releases its trap", async () => {
 		render(<DeleteResource name="Atlas" onDelete={() => undefined} />);
 		const trigger = screen.getByRole("button", { name: "Delete Atlas" });
 		trigger.focus();
 		fireEvent.click(trigger);
 		fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
 		expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
-		expect(document.activeElement).toBe(trigger);
+		await waitFor(() => expect(document.activeElement).toBe(trigger));
 	});
 
 	it("ignores close while delete work is pending", async () => {

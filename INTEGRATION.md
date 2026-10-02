@@ -1794,3 +1794,21 @@ export function UserPreferencesForm() {
   );
 }
 ```
+
+### Confirmation focus after responsive replacement
+
+`ConfirmDialog.onCloseAutoFocus` receives the same cancelable event as `AlertDialogContent.onCloseAutoFocus`. It runs after the close focus trap releases. Call `event.preventDefault()` and focus the currently mounted action when a responsive layout replaced the original opener. Without prevention, ConfirmDialog restores the connected explicit trigger or captured opener as usual. Do not race that lifecycle with a close-state effect or timeout.
+
+```tsx excerpt:confirmation-focus-replacement
+<ConfirmDialog
+  open={confirmOpen}
+  onOpenChange={setConfirmOpen}
+  title="Remove item?"
+  description="This action cannot be undone."
+  onConfirm={removeItem}
+  onCloseAutoFocus={(event) => {
+    event.preventDefault();
+    currentActionRef.current?.focus();
+  }}
+/>
+```

@@ -266,7 +266,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"confirm-dialog": {
 		"file": "packages/basalt/src/components/confirm-dialog.tsx",
-		"hash": "b184b69c8d5ee916",
+		"hash": "cafdd27c6800d3cd",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/confirm-dialog.js.map (sourcesContent[0])"
 	},

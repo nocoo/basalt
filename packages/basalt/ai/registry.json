@@ -10360,7 +10360,7 @@
 			"importPath": "@nocoo/basalt/components/confirm-dialog",
 			"subpath": "./components/confirm-dialog",
 			"sourceFile": "packages/basalt/src/components/confirm-dialog.tsx",
-			"sourceHash": "b184b69c8d5ee916",
+			"sourceHash": "cafdd27c6800d3cd",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -10442,6 +10442,12 @@
 									"type": "(open: boolean) => void",
 									"required": true,
 									"description": "Called when the dialog requests to open or close."
+								},
+								{
+									"name": "onCloseAutoFocus",
+									"type": "(event: Event) => void",
+									"required": false,
+									"description": "Runs after the close focus trap releases. Prevent default to focus a replacement control."
 								},
 								{
 									"name": "onConfirm",
@@ -10550,6 +10556,12 @@
 							"type": "(open: boolean) => void",
 							"required": true,
 							"description": "Called when the dialog requests to open or close."
+						},
+						{
+							"name": "onCloseAutoFocus",
+							"type": "(event: Event) => void",
+							"required": false,
+							"description": "Runs after the close focus trap releases. Prevent default to focus a replacement control."
 						},
 						{
 							"name": "onConfirm",
@@ -31244,7 +31256,7 @@
 			"exportName": "ConfirmDialog",
 			"importPath": "@nocoo/basalt/components/confirm-dialog",
 			"sourceFile": "packages/basalt/src/components/confirm-dialog.tsx",
-			"sourceHash": "b184b69c8d5ee916",
+			"sourceHash": "cafdd27c6800d3cd",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#confirm-dialog",
@@ -31263,6 +31275,12 @@
 							"type": "(open: boolean) => void",
 							"required": true,
 							"description": "Called when the dialog requests to open or close."
+						},
+						{
+							"name": "onCloseAutoFocus",
+							"type": "(event: Event) => void",
+							"required": false,
+							"description": "Runs after the close focus trap releases. Prevent default to focus a replacement control."
 						},
 						{
 							"name": "onConfirm",

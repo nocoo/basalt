@@ -48,6 +48,73 @@ function requireApi(apiRef: { current: ReturnType<typeof useConfirm> | null }) {
 }
 
 describe("ConfirmDialog", () => {
+	it.each([false, true])(
+		"forwards close autofocus and honors preventDefault=%s",
+		async (preventDefault) => {
+			const closeFocus = vi.fn((event: Event) => {
+				if (preventDefault) {
+					event.preventDefault();
+					screen.getByRole("button", { name: "Replacement" }).focus();
+				}
+			});
+			function Example() {
+				const [open, setOpen] = useState(false);
+				return (
+					<>
+						<button type="button">Replacement</button>
+						<ConfirmDialog
+							open={open}
+							onOpenChange={setOpen}
+							onConfirm={() => setOpen(false)}
+							title="Confirm"
+							description="Details"
+							trigger={<button type="button">Original</button>}
+							onCloseAutoFocus={closeFocus}
+						/>
+					</>
+				);
+			}
+			render(<Example />);
+			fireEvent.click(screen.getByRole("button", { name: "Original" }));
+			fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+			await waitFor(() => expect(closeFocus).toHaveBeenCalledTimes(1));
+			expect(
+				screen.getByRole("button", { name: preventDefault ? "Replacement" : "Original" }),
+			).toHaveFocus();
+		},
+	);
+	it("lets a replacement control receive focus after its original opener disconnects", async () => {
+		function Example() {
+			const [open, setOpen] = useState(false);
+			return (
+				<>
+					<button key={open ? "new" : "old"} type="button" onClick={() => setOpen(true)}>
+						Current action
+					</button>
+					<ConfirmDialog
+						open={open}
+						onOpenChange={setOpen}
+						onConfirm={() => setOpen(false)}
+						title="Confirm"
+						description="Details"
+						onCloseAutoFocus={(event) => {
+							event.preventDefault();
+							screen.getByRole("button", { name: "Current action" }).focus();
+						}}
+					/>
+				</>
+			);
+		}
+		render(<Example />);
+		const old = screen.getByRole("button", { name: "Current action" });
+		old.focus();
+		fireEvent.click(old);
+		expect(old.isConnected).toBe(false);
+		fireEvent.click(screen.getByRole("button", { name: "Cancel" }));
+		await waitFor(() =>
+			expect(screen.getByRole("button", { name: "Current action" })).toHaveFocus(),
+		);
+	});
 	it("renders an accessible alertdialog with ReactNode copy and default confirm styling", () => {
 		render(<ControlledExample />);
 

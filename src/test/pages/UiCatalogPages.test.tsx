@@ -1149,7 +1149,8 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/confirm-dialog");
 		const api = document.getElementById("api-reference");
 		expect(api?.querySelectorAll("h3").length).toBe(2);
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(15);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(16);
+		expect(api).toHaveTextContent("onCloseAutoFocus");
 		const hero = document.querySelector(
 			'[data-hero-scenario="confirm-dialog-controlled-async-loading"]',
 		);

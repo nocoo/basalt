@@ -3854,6 +3854,7 @@ export interface WidgetProps {
 		expect(generated["confirm-dialog"]?.[0]?.props.map((prop) => prop.name)).toEqual([
 			"open",
 			"onOpenChange",
+			"onCloseAutoFocus",
 			"onConfirm",
 			"title",
 			"description",
@@ -4863,7 +4864,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"adeb705fecc16637fef513fe50f205929989eae8c445586b525c6d4e4278bdc4",
+			"7586857ba3ce9d02cce8b6476b4576b6ead9fc22d505de46a18ea07ab9b49582",
 		);
 	}, 60_000);
 
