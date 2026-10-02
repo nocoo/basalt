@@ -28,6 +28,15 @@ export default function WorkspacePage() {
 	return (
 		<AppShell layout={layout}>
 			<AppSkipLink>Skip to content</AppSkipLink>
+			<Sidebar aria-label="Desktop workspace" className="hidden md:flex">
+				<SidebarHeader>Basalt workspace</SidebarHeader>
+				<SidebarNav className="p-3">
+					<LinkButton href="/examples/reader" variant="ghost">
+						Field journal
+					</LinkButton>
+				</SidebarNav>
+				<SidebarFooter>Document or bounded layout</SidebarFooter>
+			</Sidebar>
 			<AppMain>
 				<AppHeader
 					density="compact"

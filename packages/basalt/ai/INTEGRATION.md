@@ -415,7 +415,7 @@ Copyable complete recipes: [mobile layouts](packages/basalt/ai/RECIPES.md#mobile
 
 `Sidebar` **is** the column. It already has:
 
-- shell-derived bounded height (standalone `100dvh`), `flex-col`, `shrink-0`, `sticky top-0`
+- shell-derived bounded height (standalone `100dvh`), `flex-col`, `shrink-0`, sticky positioning at the shell-owned safe top
 - expanded width **260px** (inline `width`)
 - collapsed width **68px**
 - collapse animation `transition-all duration-300 ease-in-out`

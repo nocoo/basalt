@@ -1,6 +1,6 @@
 # Application recipes
 
-These complete modules, included in v2.1.0, use only public Basalt imports and React.
+These complete modules use only public Basalt imports and React. AppFrame, Login and Resources are available since v2.1.0; MobileLayout requires v2.2.0.
 
 Load exactly one CSS mode at the application entry: import `@nocoo/basalt/styles/standalone` for a build without Tailwind, or configure the Tailwind source scan and import `@nocoo/basalt/styles/tailwind` as described in INTEGRATION.md. In Next, import CSS in the root layout and import these modules through a `use client` boundary. Mount ThemeProvider once per application; the standalone recipes include their own root provider. Root pages should set body margin to zero.
 
@@ -181,7 +181,7 @@ export default function MobileLayoutRecipe() {
       <ContentIsland mobileSurface="edge-to-edge">
         <AppHeader sticky density="compact" title="Field notes" actions={
           <Popover><PopoverTrigger asChild><Button variant="ghost">Options</Button></PopoverTrigger>
-            <PopoverContent><p>Application-owned reading preferences.</p></PopoverContent>
+            <PopoverContent aria-label="Options"><p>Application-owned reading preferences.</p></PopoverContent>
           </Popover>
         } />
         <article style={{ maxWidth: "65ch", marginInline: "auto", padding: "1rem", lineHeight: 1.7 }}>

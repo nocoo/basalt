@@ -364,7 +364,7 @@ export function Sidebar({
 			}}
 			className={cn(
 				frameClass,
-				"sticky top-0 transition-all duration-300 ease-in-out",
+				"sticky transition-all duration-300 ease-in-out",
 				side === "right" ? "order-last" : undefined,
 				collapsed ? "w-[68px] overflow-y-hidden" : "overflow-hidden",
 			)}

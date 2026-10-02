@@ -167,6 +167,23 @@ export async function assertMobileLayouts(page: Page, url: string) {
 			await page.locator("[data-basalt-main]").evaluate((node) => getComputedStyle(node).overflowY),
 			"visible",
 		);
+		if (width >= 768) {
+			await page.locator("[data-basalt-shell]").evaluate((node) => {
+				(node as HTMLElement).style.setProperty("--basalt-safe-top", "24px");
+				window.scrollTo(0, 400);
+			});
+			await page.waitForFunction(
+				() =>
+					Math.abs(
+						(document.querySelector('[aria-label="Desktop workspace"]')?.getBoundingClientRect()
+							.top ?? -999) - 24,
+					) < 1,
+			);
+			const rail = await page
+				.getByRole("complementary", { name: "Desktop workspace" })
+				.boundingBox();
+			assert.ok(rail && rail.y === 24 && rail.height === 756);
+		}
 		await page.setViewportSize({ width, height: 460 });
 		await page.getByLabel("Final note", { exact: true }).focus();
 		await page.getByLabel("Final note", { exact: true }).scrollIntoViewIfNeeded();

@@ -108,7 +108,7 @@
 		--basalt-island-overscroll: auto;
 		--basalt-sidebar-height: calc(
 			100dvh -
-			env(safe-area-inset-top, 0px) -
+			var(--basalt-safe-top) -
 			env(safe-area-inset-bottom, 0px)
 		);
 		height: auto;
@@ -127,7 +127,7 @@
 			--basalt-island-overscroll: auto;
 			--basalt-sidebar-height: calc(
 				100dvh -
-				env(safe-area-inset-top, 0px) -
+				var(--basalt-safe-top) -
 				env(safe-area-inset-bottom, 0px)
 			);
 			height: auto;
@@ -151,6 +151,10 @@
 	[data-basalt-sidebar] {
 		height: var(--basalt-sidebar-height, 100dvh);
 		max-height: 100dvh;
+	}
+
+	[data-basalt-sidebar]:not([data-overlay]) {
+		top: var(--basalt-sticky-top, 0px);
 	}
 }
 
