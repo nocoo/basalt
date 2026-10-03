@@ -59,3 +59,7 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **What:** The package gate reported every file missing although the real npm12 dry-run listed the complete artifact.
 - **Why:** The parser sliced braces and assumed the artifact itself was the JSON root; npm now groups artifacts by package name.
 - **Fix:** Parse the complete JSON container, require exactly one artifact with the expected name/version, then retain every existing file/export/hash check. The real local package check passed after the correction.
+
+## 2026-10-04: Fixture declarations are independent dependency targets
+
+The dependency-duty draft initially compared issues #517–#519 with the root Bun lock. Independent review identified that their current bodies explicitly target uninstalled consumer fixtures. Reading those manifests confirmed stale Node types, Lucide and Vite declarations; the root lock did not describe those installations. The draft was corrected before any disposition comment or PR was published. Future triage must resolve every issue workspace and declared-only occurrence before assigning already-satisfied. Verify the copied external consumers with their own package manager, typecheck, build and dependency scan, while retaining all normal CI consumer gates.
