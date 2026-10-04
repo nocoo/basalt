@@ -90,7 +90,7 @@ export const SelectTrigger = React.forwardRef<
 		aria-busy={loading || undefined}
 		className={controlSurfaceClass(
 			cn(
-				"flex w-full items-center justify-between",
+				"group/select flex w-full items-center justify-between",
 				SELECT_SIZE_CLASS[size],
 				FOCUS_BORDER,
 				"aria-invalid:border-basalt-destructive aria-invalid:focus-visible:border-basalt-destructive",
@@ -99,7 +99,10 @@ export const SelectTrigger = React.forwardRef<
 		)}
 	>
 		{children}
-		<ChevronDown className="h-4 w-4 opacity-50" />
+		<ChevronDown
+			aria-hidden="true"
+			className="h-4 w-4 opacity-50 transition-transform duration-200 group-data-[state=open]/select:rotate-180 motion-reduce:transition-none"
+		/>
 	</SelectPrimitive.Trigger>
 ));
 SelectTrigger.displayName = SelectPrimitive.Trigger.displayName;

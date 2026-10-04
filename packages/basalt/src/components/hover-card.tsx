@@ -153,7 +153,7 @@ export const HoverCardContent = React.forwardRef<
 			className={cn(
 				OVERLAY_LAYER,
 				OVERLAY_MOTION,
-				"w-64 rounded-basalt-md border border-basalt-border bg-basalt-popover p-4 text-basalt-popover-foreground shadow-md",
+				"basalt-floating w-64 rounded-basalt-md border border-basalt-border bg-basalt-popover p-4 text-basalt-popover-foreground shadow-md",
 				className,
 			)}
 			{...props}

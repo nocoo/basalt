@@ -14,6 +14,7 @@ import { assertEditingShowcases } from "./showcase-editing";
 import { assertExamplePages } from "./showcase-examples";
 import { assertLandingShowcase } from "./showcase-landing";
 import { assertLibraryShowcases } from "./showcase-library";
+import { assertOverlayMotion } from "./showcase-motion";
 import { assertPaletteShowcases } from "./showcase-palette";
 import { assertReusableShowcases } from "./showcase-reuse";
 
@@ -43,12 +44,13 @@ export async function runShowcaseGate() {
 			page.setDefaultTimeout(12_000);
 			const landing = await assertLandingShowcase(page, url);
 			const library = await assertLibraryShowcases(page, url);
+			const motion = await assertOverlayMotion(page, url);
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
 			const editing = await assertEditingShowcases(page, url);
 			const palette = await assertPaletteShowcases(page, url);
 			assertNoPageFaults(faults);
-			return { landing, library, examples, reusable, editing, palette };
+			return { landing, library, motion, examples, reusable, editing, palette };
 		});
 		console.log(`Showcase gate passed ${JSON.stringify(evidence)}`);
 	} finally {

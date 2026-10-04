@@ -23,6 +23,7 @@ describe("overlay", () => {
 		expect(overlayItemClass()).toContain("py-1.5");
 		expect(overlayPanelClass()).toContain(OVERLAY_LAYER);
 		expect(overlayPanelClass()).toContain(OVERLAY_MOTION);
+		expect(overlayPanelClass()).toContain("basalt-floating");
 	});
 
 	it("shares a stacking layer and reduced-motion kill switch", () => {

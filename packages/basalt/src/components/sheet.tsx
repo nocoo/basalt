@@ -175,13 +175,18 @@ export const SheetContent = React.forwardRef<
 	<DialogPrimitive.Portal forceMount={props.forceMount}>
 		<DialogPrimitive.Overlay
 			forceMount={props.forceMount}
-			className={cn("fixed inset-0 bg-black/50 backdrop-blur-xs", OVERLAY_LAYER, OVERLAY_MOTION)}
+			className={cn(
+				"basalt-sheet-overlay fixed inset-0 bg-black/50",
+				OVERLAY_LAYER,
+				OVERLAY_MOTION,
+			)}
 		/>
 		<DialogPrimitive.Content
 			ref={ref}
 			data-basalt-sheet=""
+			data-side={side}
 			data-basalt-surface-root=""
-			className={cn(OVERLAY_LAYER, OVERLAY_MOTION, SIDE[side], className)}
+			className={cn(OVERLAY_LAYER, OVERLAY_MOTION, "max-h-dvh max-w-full", SIDE[side], className)}
 			{...props}
 			style={{ boxSizing: "border-box", ...props.style }}
 		>

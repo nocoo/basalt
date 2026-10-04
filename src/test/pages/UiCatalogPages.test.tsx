@@ -429,7 +429,7 @@ describe("ui catalog", () => {
 			dialog: "Click me",
 			popover: "Open Popover",
 			"dropdown-menu": "Open",
-			sheet: "Open",
+			sheet: "Open right panel",
 		};
 		for (const [slug, name] of Object.entries(triggers)) {
 			cleanup();

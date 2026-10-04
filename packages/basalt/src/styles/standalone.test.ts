@@ -42,6 +42,13 @@ describe("standalone css", () => {
 		expect(css).toContain("@keyframes basalt-shimmer");
 		expect(css).toContain("@keyframes basalt-loader-spin");
 		expect(css).toContain("@keyframes basalt-tab-in");
+		for (const motion of ["floating", "sheet", "sheet-backdrop"]) {
+			expect(css).toContain(`@keyframes basalt-${motion}-in`);
+			expect(css).toContain(`@keyframes basalt-${motion}-out`);
+		}
+		expect(css).toContain("--basalt-sheet-backdrop-blur: 6px");
+		expect(css).toContain("--radix-popper-transform-origin");
+		expect(css).toContain("prefers-reduced-motion: reduce");
 		expect(css).toContain("transition-property: left,width,top,height");
 		expect(css).toContain(".shadow-sm");
 		expect(css).toContain(".sticky");

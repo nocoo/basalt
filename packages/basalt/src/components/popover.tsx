@@ -209,7 +209,7 @@ export const PopoverContent = React.forwardRef<
 				className={cn(
 					OVERLAY_LAYER,
 					OVERLAY_MOTION,
-					"rounded-basalt-md border border-basalt-border bg-basalt-popover px-4 py-3 text-sm text-basalt-popover-foreground shadow-md outline-hidden",
+					"basalt-floating rounded-basalt-md border border-basalt-border bg-basalt-popover px-4 py-3 text-sm text-basalt-popover-foreground shadow-md outline-hidden",
 					className,
 				)}
 				{...props}

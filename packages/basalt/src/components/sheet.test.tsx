@@ -23,6 +23,7 @@ describe("Sheet", () => {
 		);
 		const panel = screen.getByRole("dialog");
 		expect(panel.className).toContain("left-0");
+		expect(panel).toHaveAttribute("data-side", "left");
 		expect(panel.className).not.toContain("left-1/2");
 		expect(panel.className).toContain("motion-reduce:animate-none");
 		expect(panel.className).toContain("z-50");
@@ -55,5 +56,18 @@ describe("Sheet", () => {
 		);
 		fireEvent.click(screen.getByText("Open"));
 		expect(screen.getByRole("dialog").className).toContain("right-0");
+		expect(screen.getByRole("dialog")).toHaveAttribute("data-side", "right");
+	});
+
+	it.each(["top", "bottom"] as const)("exposes the %s animation direction", (side) => {
+		render(
+			<Sheet defaultOpen>
+				<SheetContent side={side}>
+					<SheetTitle>Panel</SheetTitle>
+				</SheetContent>
+			</Sheet>,
+		);
+		expect(screen.getByRole("dialog")).toHaveAttribute("data-side", side);
+		expect(document.querySelector(".basalt-sheet-overlay")).toHaveAttribute("data-state", "open");
 	});
 });

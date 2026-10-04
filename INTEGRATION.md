@@ -605,6 +605,8 @@ Breakpoint: `768px`. Below that, the in-flow rail is omitted. The same sidebar c
 
 `SheetContent` bounds its Sidebar to the available height. Sidebar owns the 260px column and the portal safe area. Close the sheet on pathname change. Radix Sheet owns modal scroll locking and focus restoration; do not set body overflow separately.
 
+Sheets slide from their declared edge in 350ms and return in 250ms, while the backdrop fades and blurs to 6px. DropdownMenu, Select, ContextMenu, MenuBar, Popover, HoverCard and Tooltip scale from their trigger origin and fade in/out in 200/150ms. Shared motion tokens live in the package stylesheet; both CSS entrypoints include them. Reduced motion disables these animations. Keep content mounted through Radix's closing state; do not conditionally remove the root before its exit completes.
+
 `AppHeader` `leading` is the menu button on mobile only. Use `density="compact"` with `Button variant="ghost" size="icon"`; compact header controls have a 44px minimum target.
 
 Header actions use a stable hand cursor and compact 12px `TooltipContent`. `Button`, `LinkButton`, `Toggle`, and `ToggleGroupItem` keep their full rectangular pointer target with a transparent `::before`, including rounded corners. Wrap the actual button or link in `TooltipTrigger asChild` so the trigger retains one focusable hit target. `Toggle` and `ToggleGroupItem` selection styling follows `aria-pressed` / `aria-checked`, independently of the tooltip's `data-state`. Icon-only links must include a screen-reader label inside the link as well as an accessible name.

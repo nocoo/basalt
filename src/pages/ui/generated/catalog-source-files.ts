@@ -50,7 +50,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"tooltip": {
 		"file": "packages/basalt/src/components/tooltip.tsx",
-		"hash": "ad4e479b428769f8",
+		"hash": "2a9a9b8f3a52212d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tooltip.js.map (sourcesContent[0])"
 	},
@@ -128,7 +128,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"select": {
 		"file": "packages/basalt/src/components/select.tsx",
-		"hash": "d6336bd9edf293dc",
+		"hash": "0b09275ad14ac6fa",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/select.js.map (sourcesContent[0])"
 	},
@@ -272,7 +272,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"popover": {
 		"file": "packages/basalt/src/components/popover.tsx",
-		"hash": "bce6eb7bf2cb05b6",
+		"hash": "1bd38703e0951b78",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/popover.js.map (sourcesContent[0])"
 	},
@@ -290,13 +290,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"hover-card": {
 		"file": "packages/basalt/src/components/hover-card.tsx",
-		"hash": "e2819959d6a1d2cd",
+		"hash": "3e9174b4ba2fddf0",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/hover-card.js.map (sourcesContent[0])"
 	},
 	"sheet": {
 		"file": "packages/basalt/src/components/sheet.tsx",
-		"hash": "49cf6f015335f773",
+		"hash": "b421d8c86a982331",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sheet.js.map (sourcesContent[0])"
 	},

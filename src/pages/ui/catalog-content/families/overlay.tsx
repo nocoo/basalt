@@ -56,7 +56,6 @@ import {
 	SelectTrigger,
 	SelectValue,
 } from "@nocoo/basalt/components/select";
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@nocoo/basalt/components/sheet";
 import {
 	Table,
 	TableBody,
@@ -71,6 +70,8 @@ import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
 import { provenanceFromLegacy } from "../../catalog-source";
 import { CONFIRM_DIALOG_EXAMPLES } from "../../examples/confirm-dialog";
+import SheetPanels from "../../examples/sheet/panels";
+import sheetPanelsSource from "../../examples/sheet/panels?raw";
 import { TOOLTIP_EXAMPLES } from "../../examples/tooltip";
 import { API as accordionApi } from "../../generated/catalog-api/accordion";
 import { API as alertDialogApi } from "../../generated/catalog-api/alert-dialog";
@@ -1248,7 +1249,7 @@ export default function Example() {
 	sheet: {
 		docs: {
 			description:
-				"Side drawer panel anchored to a viewport edge. Content wraps a built-in Portal and Overlay and forwards refs to native div and button elements.",
+				"Side drawer with directional entry and exit motion and a softly blurred backdrop. Respects reduced motion and preserves modal focus handling.",
 			usage: `import { Button } from "@nocoo/basalt/components/button";
 import {
 	Sheet,
@@ -1287,37 +1288,9 @@ export default function Example() {
 		examples: [
 			{
 				id: catalogScenarioId("sheet", "default"),
-				title: "Default",
-				code: `import { Button } from "@nocoo/basalt/components/button";
-import {
-	Sheet,
-	SheetContent,
-	SheetTitle,
-	SheetTrigger,
-} from "@nocoo/basalt/components/sheet";
-
-export default function Example() {
-	return (
-		<Sheet>
-			<SheetTrigger asChild>
-				<Button variant="outline">Open</Button>
-			</SheetTrigger>
-			<SheetContent side="right">
-				<SheetTitle>Panel</SheetTitle>
-			</SheetContent>
-		</Sheet>
-	);
-}`,
-				render: () => (
-					<Sheet>
-						<SheetTrigger asChild>
-							<Button variant="outline">Open</Button>
-						</SheetTrigger>
-						<SheetContent side="right">
-							<SheetTitle>Panel</SheetTitle>
-						</SheetContent>
-					</Sheet>
-				),
+				title: "Directional panels",
+				code: sheetPanelsSource,
+				render: () => <SheetPanels />,
 			},
 		],
 	},
