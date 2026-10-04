@@ -194,7 +194,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"loader": {
 		"file": "packages/basalt/src/components/loader.tsx",
-		"hash": "6988243f9a83e895",
+		"hash": "01f28212fa26318c",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/loader.js.map (sourcesContent[0])"
 	},

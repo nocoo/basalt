@@ -520,7 +520,9 @@ describe("form selection scenario truth", () => {
 		expect(scenario("input-group", "input-group-loading").code).toContain(
 			"@nocoo/basalt/components/loader",
 		);
-		expect(scenario("input-group", "input-group-loading").code).toContain("<Loader size={16} />");
+		expect(scenario("input-group", "input-group-loading").code).toContain(
+			"<Loader size={16} showLabel={false} showElapsed={false} />",
+		);
 		expect(scenario("input-group", "input-group-loading").code).toContain(
 			'aria-label="Loading query"',
 		);

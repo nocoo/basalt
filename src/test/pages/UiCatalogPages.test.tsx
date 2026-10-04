@@ -3591,10 +3591,7 @@ describe("ui catalog", () => {
 		expect(
 			within(loading as HTMLElement).getByRole("textbox", { name: "Loading query" }),
 		).toHaveValue("atlas");
-		expect(within(loading as HTMLElement).getByRole("status", { name: "Loading" })).toHaveAttribute(
-			"width",
-			"16",
-		);
+		expect(loading?.querySelector("[data-basalt-loader]")).toHaveStyle({ width: "16px" });
 		for (const scenario of UI_EXAMPLES["input-group"] ?? []) {
 			expect(scenario.code).toContain("export default");
 			expect(scenario.code).toContain("@nocoo/basalt/components/input-group");
@@ -3613,7 +3610,7 @@ describe("ui catalog", () => {
 			expect(markdown).toContain(scenario.code);
 		}
 		expect(markdown).toContain('className="text-basalt-heatmap-green-3"');
-		expect(markdown).toContain("<Loader size={16} />");
+		expect(markdown).toContain("<Loader size={16} showLabel={false} showElapsed={false} />");
 		expect(markdown).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 		expect(CATALOG_DOCS["input-group"]?.api).toEqual(CATALOG_API["input-group"]);
 		expect(CATALOG_API["input-group"]?.map((surface) => surface.name)).toEqual([

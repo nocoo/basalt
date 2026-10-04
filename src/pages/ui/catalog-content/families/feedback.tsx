@@ -23,6 +23,8 @@ import {
 import { CODE_EXAMPLES } from "../../examples/code";
 import { CODE_BLOCK_EXAMPLES } from "../../examples/code-block";
 import { EMPTY_ACTION_EXAMPLES } from "../../examples/empty";
+import LoaderOptions from "../../examples/loader/options";
+import loaderOptionsSource from "../../examples/loader/options?raw";
 import { SKELETON_COMPOSITION_EXAMPLES } from "../../examples/skeleton-line";
 import { API as avatarApi } from "../../generated/catalog-api/avatar";
 import { API as badgeApi } from "../../generated/catalog-api/badge";
@@ -601,12 +603,18 @@ export default function Example() {
 			...extraDocs(
 				"Loader",
 				"loader",
-				"Indicates a pending state. Forwards standard SVG attributes with size controlling width and height, defaults role='status' and aria-label='Loading' (overridable via props), and does not expose a public ref.",
+				"Nine-cell snake loader with optional shimmering label and elapsed time, shown after 5000ms by default. Forwards span attributes and respects reduced motion.",
 				"<Loader />",
 			),
 			api: loaderApi,
 		},
 		examples: [
+			{
+				id: catalogScenarioId("loader", "options"),
+				title: "Snake, shimmer and timer",
+				code: loaderOptionsSource,
+				render: () => <LoaderOptions />,
+			},
 			{
 				id: catalogScenarioId("loader", "default-size"),
 				title: "Default Size",

@@ -92,14 +92,14 @@ export default function LoadingStatesPage() {
 				hint={t("pages.loadingStates.spinnersHint")}
 			>
 				<div className="flex flex-wrap items-center gap-6">
-					<Loader size={16} />
+					<Loader size={16} showLabel={false} showElapsed={false} />
 					<Loader size={24} />
 					<Loader size={36} />
 					<Button loading>{t("pages.loadingStates.buttonBusy")}</Button>
 					<InputGroup className="max-w-56">
 						<InputGroup.Input defaultValue="atlas" aria-label={t("pages.loadingStates.query")} />
 						<InputGroup.Addon align="end">
-							<Loader size={16} />
+							<Loader size={16} showLabel={false} showElapsed={false} />
 						</InputGroup.Addon>
 					</InputGroup>
 				</div>

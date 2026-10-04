@@ -281,6 +281,34 @@
 }
 
 @layer components {
+	[data-basalt-loader] > span {
+		opacity: 0.18;
+	}
+	[data-basalt-loader][data-animated="true"] > span {
+		animation: basalt-pixel-snake 900ms linear var(--basalt-pixel-delay) infinite;
+	}
+	.basalt-shimmer-label {
+		color: transparent;
+		background: linear-gradient(
+			90deg,
+			hsl(var(--basalt-muted-foreground)) 35%,
+			hsl(var(--basalt-foreground)) 50%,
+			hsl(var(--basalt-muted-foreground)) 65%
+		);
+		background-size: 200% 100%;
+		background-clip: text;
+		animation: basalt-label-shimmer 1.4s linear infinite;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		[data-basalt-loader][data-animated] > span,
+		.basalt-shimmer-label {
+			animation: none;
+		}
+		.basalt-shimmer-label {
+			color: hsl(var(--basalt-muted-foreground));
+			background: none;
+		}
+	}
 	.basalt-command-list::before {
 		content: "";
 		position: absolute;
@@ -462,18 +490,26 @@
 	}
 }
 
-@keyframes basalt-loader-spin {
-	0% {
-		transform: rotate(0deg);
-	}
-	12% {
-		transform: rotate(18deg);
-	}
-	55% {
-		transform: rotate(300deg);
-	}
+@keyframes basalt-pixel-snake {
+	0%,
 	100% {
-		transform: rotate(360deg);
+		opacity: 1;
+	}
+	33% {
+		opacity: 0.35;
+	}
+	66%,
+	99% {
+		opacity: 0.18;
+	}
+}
+
+@keyframes basalt-label-shimmer {
+	from {
+		background-position: 200% 0;
+	}
+	to {
+		background-position: -200% 0;
 	}
 }
 

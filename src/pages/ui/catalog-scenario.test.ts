@@ -1383,7 +1383,9 @@ describe("source-backed input-group scenarios", () => {
 		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain("import { Loader }");
 		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain('defaultValue="atlas"');
 		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain('aria-label="Loading query"');
-		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain("<Loader size={16} />");
+		expect(INPUT_GROUP_EXAMPLES[4]?.code).toContain(
+			"<Loader size={16} showLabel={false} showElapsed={false} />",
+		);
 	});
 });
 

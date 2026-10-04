@@ -17396,7 +17396,7 @@
 			"importPath": "@nocoo/basalt/components/loader",
 			"subpath": "./components/loader",
 			"sourceFile": "packages/basalt/src/components/loader.tsx",
-			"sourceHash": "6988243f9a83e895",
+			"sourceHash": "01f28212fa26318c",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17439,8 +17439,50 @@
 									"name": "size",
 									"type": "number",
 									"required": false,
-									"default": "24",
-									"description": "Width and height of the loader spinner in pixels.\n\nNote: Controls both the SVG width and height dimensions."
+									"default": "16",
+									"description": "Width and height of the pixel grid in CSS pixels."
+								},
+								{
+									"name": "label",
+									"type": "string",
+									"required": false,
+									"default": "\"Loading\"",
+									"description": "Visible loading text and default accessible name."
+								},
+								{
+									"name": "showLabel",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Display the text next to the grid."
+								},
+								{
+									"name": "showElapsed",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Display elapsed time after the delay. Time starts on mount."
+								},
+								{
+									"name": "elapsedDelayMs",
+									"type": "number",
+									"required": false,
+									"default": "5000",
+									"description": "Milliseconds before elapsed time is shown."
+								},
+								{
+									"name": "animate",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Animate the clockwise snake trail into the center cell."
+								},
+								{
+									"name": "shimmer",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Apply a sweeping highlight to the label."
 								}
 							]
 						}
@@ -17455,8 +17497,50 @@
 							"name": "size",
 							"type": "number",
 							"required": false,
-							"default": "24",
-							"description": "Width and height of the loader spinner in pixels.\n\nNote: Controls both the SVG width and height dimensions."
+							"default": "16",
+							"description": "Width and height of the pixel grid in CSS pixels."
+						},
+						{
+							"name": "label",
+							"type": "string",
+							"required": false,
+							"default": "\"Loading\"",
+							"description": "Visible loading text and default accessible name."
+						},
+						{
+							"name": "showLabel",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Display the text next to the grid."
+						},
+						{
+							"name": "showElapsed",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Display elapsed time after the delay. Time starts on mount."
+						},
+						{
+							"name": "elapsedDelayMs",
+							"type": "number",
+							"required": false,
+							"default": "5000",
+							"description": "Milliseconds before elapsed time is shown."
+						},
+						{
+							"name": "animate",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Animate the clockwise snake trail into the center cell."
+						},
+						{
+							"name": "shimmer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Apply a sweeping highlight to the label."
 						}
 					]
 				}
@@ -29851,7 +29935,7 @@
 			"exportName": "Loader",
 			"importPath": "@nocoo/basalt/components/loader",
 			"sourceFile": "packages/basalt/src/components/loader.tsx",
-			"sourceHash": "6988243f9a83e895",
+			"sourceHash": "01f28212fa26318c",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#loader",
@@ -29863,8 +29947,50 @@
 							"name": "size",
 							"type": "number",
 							"required": false,
-							"default": "24",
-							"description": "Width and height of the loader spinner in pixels.\n\nNote: Controls both the SVG width and height dimensions."
+							"default": "16",
+							"description": "Width and height of the pixel grid in CSS pixels."
+						},
+						{
+							"name": "label",
+							"type": "string",
+							"required": false,
+							"default": "\"Loading\"",
+							"description": "Visible loading text and default accessible name."
+						},
+						{
+							"name": "showLabel",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Display the text next to the grid."
+						},
+						{
+							"name": "showElapsed",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Display elapsed time after the delay. Time starts on mount."
+						},
+						{
+							"name": "elapsedDelayMs",
+							"type": "number",
+							"required": false,
+							"default": "5000",
+							"description": "Milliseconds before elapsed time is shown."
+						},
+						{
+							"name": "animate",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Animate the clockwise snake trail into the center cell."
+						},
+						{
+							"name": "shimmer",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Apply a sweeping highlight to the label."
 						}
 					]
 				}

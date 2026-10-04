@@ -25,7 +25,7 @@ const FEEDBACK_SCENARIOS = {
 		"banner-custom-content",
 	],
 	empty: ["empty-basic", "empty-with-icon", "empty-action-states"],
-	loader: ["loader-default-size", "loader-custom-size"],
+	loader: ["loader-options", "loader-default-size", "loader-custom-size"],
 	"skeleton-line": [
 		"skeleton-line-dashboard",
 		"skeleton-line-resource-list",
@@ -73,7 +73,7 @@ const FEEDBACK_DESCRIPTIONS = {
 	empty:
 		"Empty-state copy. Inherits standard div element attributes without exposing a public ref; supports structured icon, title, description, custom children content, and interactive action controls.",
 	loader:
-		"Indicates a pending state. Forwards standard SVG attributes with size controlling width and height, defaults role='status' and aria-label='Loading' (overridable via props), and does not expose a public ref.",
+		"Nine-cell snake loader with optional shimmering label and elapsed time, shown after 5000ms by default. Forwards span attributes and respects reduced motion.",
 	"skeleton-line":
 		"Placeholder lines while content loads. Forwards standard div element attributes with aria-hidden='true' by default, merges style overrides over computed width geometry, and does not expose a public ref.",
 	meter:
@@ -128,7 +128,7 @@ describe("feedback catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(49);
+		expect(count).toBe(50);
 	});
 
 	it("keeps the BASE banner winner without reviving the EXTRA default", () => {

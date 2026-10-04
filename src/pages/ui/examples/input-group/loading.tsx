@@ -6,7 +6,7 @@ export default function InputGroupLoading() {
 		<InputGroup className="max-w-sm">
 			<InputGroup.Input defaultValue="atlas" aria-label="Loading query" />
 			<InputGroup.Addon align="end">
-				<Loader size={16} />
+				<Loader size={16} showLabel={false} showElapsed={false} />
 			</InputGroup.Addon>
 		</InputGroup>
 	);

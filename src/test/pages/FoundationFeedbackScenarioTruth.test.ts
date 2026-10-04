@@ -125,6 +125,7 @@ describe("foundation feedback scenario truth", () => {
 			"link-external-links",
 		]);
 		expect(UI_EXAMPLES.loader?.map((item) => item.id)).toEqual([
+			"loader-options",
 			"loader-default-size",
 			"loader-custom-size",
 		]);

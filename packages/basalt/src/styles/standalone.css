@@ -352,6 +352,28 @@
   background: var(--basalt-zebra-fill);
 }
 @layer components {
+  [data-basalt-loader] > span {
+    opacity: 0.18;
+  }
+  [data-basalt-loader][data-animated="true"] > span {
+    animation: basalt-pixel-snake 900ms linear var(--basalt-pixel-delay) infinite;
+  }
+  .basalt-shimmer-label {
+    color: transparent;
+    background: linear-gradient(	90deg,	hsl(var(--basalt-muted-foreground)) 35%,	hsl(var(--basalt-foreground)) 50%,	hsl(var(--basalt-muted-foreground)) 65%	);
+    background-size: 200% 100%;
+    background-clip: text;
+    animation: basalt-label-shimmer 1.4s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-basalt-loader][data-animated] > span,	.basalt-shimmer-label {
+      animation: none;
+    }
+    .basalt-shimmer-label {
+      color: hsl(var(--basalt-muted-foreground));
+      background: none;
+    }
+  }
   .basalt-command-list::before {
     content: "";
     position: absolute;
@@ -494,18 +516,23 @@
     transform: rotate(360deg);
   }
 }
-@keyframes basalt-loader-spin {
-  0% {
-    transform: rotate(0deg);
+@keyframes basalt-pixel-snake {
+  0%,	100% {
+    opacity: 1;
   }
-  12% {
-    transform: rotate(18deg);
+  33% {
+    opacity: 0.35;
   }
-  55% {
-    transform: rotate(300deg);
+  66%,	99% {
+    opacity: 0.18;
   }
-  100% {
-    transform: rotate(360deg);
+}
+@keyframes basalt-label-shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
   }
 }
 @keyframes basalt-pulse {
@@ -1256,9 +1283,6 @@
   .rotate-180 {
     rotate: 180deg;
   }
-  .animate-basalt-loader {
-    animation: basalt-loader-spin 1.4s linear infinite;
-  }
   .animate-basalt-shimmer {
     animation: basalt-shimmer 1.5s ease-in-out infinite;
   }
@@ -1297,6 +1321,9 @@
   }
   .grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .grid-cols-7 {
     grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -1349,11 +1376,17 @@
   .gap-2 {
     gap: calc(var(--spacing) * 2);
   }
+  .gap-2\.5 {
+    gap: calc(var(--spacing) * 2.5);
+  }
   .gap-3 {
     gap: calc(var(--spacing) * 3);
   }
   .gap-4 {
     gap: calc(var(--spacing) * 4);
+  }
+  .gap-\[1\.5px\] {
+    gap: 1.5px;
   }
   .gap-px {
     gap: 1px;

@@ -1,58 +1,82 @@
-import { type SVGAttributes, useId } from "react";
+import type { CSSProperties, HTMLAttributes } from "react";
 import { cn } from "../utils/cn";
+import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { useLoaderViewModel } from "../viewmodels/use-loader";
 
-export interface LoaderProps extends SVGAttributes<SVGSVGElement> {
-	/**
-	 * Width and height of the loader spinner in pixels.
-	 *
-	 * Note: Controls both the SVG width and height dimensions.
-	 *
-	 * @default 24
-	 */
+export interface LoaderProps extends Omit<HTMLAttributes<HTMLSpanElement>, "children"> {
+	/** Width and height of the pixel grid in CSS pixels. @default 16 */
 	size?: number;
+	/** Visible loading text and default accessible name. @default "Loading" */
+	label?: string;
+	/** Display the text next to the grid. @default true */
+	showLabel?: boolean;
+	/** Display elapsed time after the delay. Time starts on mount. @default true */
+	showElapsed?: boolean;
+	/** Milliseconds before elapsed time is shown. @default 5000 */
+	elapsedDelayMs?: number;
+	/** Animate the clockwise snake trail into the center cell. @default true */
+	animate?: boolean;
+	/** Apply a sweeping highlight to the label. @default true */
+	shimmer?: boolean;
 }
 
-export function Loader({ className, size = 24, ...props }: LoaderProps) {
-	const gradientId = `basalt-loader-${useId().replace(/:/g, "")}`;
+const SNAKE_ORDER = [0, 1, 2, 5, 8, 7, 6, 3, 4];
+
+export function Loader({
+	className,
+	size = 16,
+	label = "Loading",
+	showLabel = true,
+	showElapsed = true,
+	elapsedDelayMs = 5000,
+	animate = true,
+	shimmer = true,
+	...props
+}: LoaderProps) {
+	const vm = useLoaderViewModel(showElapsed, elapsedDelayMs);
 	return (
-		<svg
-			viewBox="0 0 24 24"
+		<span
 			role="status"
-			aria-label="Loading"
-			{...props}
-			width={size}
-			height={size}
+			aria-label={label}
 			className={cn(
-				"origin-center animate-basalt-loader text-basalt-primary motion-reduce:animate-none",
+				BASALT_UI_CLASS,
+				"inline-flex items-center gap-2.5 text-sm text-basalt-muted-foreground",
 				className,
 			)}
+			{...props}
 		>
-			<defs>
-				<linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
-					<stop offset="0%" stopColor="currentColor" stopOpacity="0" />
-					<stop offset="55%" stopColor="currentColor" stopOpacity="0.35" />
-					<stop offset="100%" stopColor="currentColor" stopOpacity="1" />
-				</linearGradient>
-			</defs>
-			<circle
-				cx="12"
-				cy="12"
-				r="9.5"
-				fill="none"
-				opacity="0.12"
-				stroke="currentColor"
-				strokeWidth="2.25"
-			/>
-			<circle
-				cx="12"
-				cy="12"
-				r="9.5"
-				fill="none"
-				stroke={`url(#${gradientId})`}
-				strokeWidth="2.25"
-				strokeLinecap="round"
-				strokeDasharray="36 60"
-			/>
-		</svg>
+			<span
+				aria-hidden="true"
+				data-basalt-loader=""
+				data-animated={animate}
+				className="grid shrink-0 grid-cols-3 gap-[1.5px]"
+				style={{ width: size, height: size }}
+			>
+				{Array.from({ length: 9 }, (_, cell) => (
+					<span
+						key={`pixel-${cell}`}
+						data-step={SNAKE_ORDER.indexOf(cell)}
+						className="rounded-[1px] bg-current"
+						style={
+							{
+								"--basalt-pixel-delay": `${SNAKE_ORDER.indexOf(cell) * 100 - 900}ms`,
+							} as CSSProperties
+						}
+					/>
+				))}
+			</span>
+			{showLabel && (
+				<span
+					className={cn("text-[13px] font-medium", shimmer && animate && "basalt-shimmer-label")}
+				>
+					{label}
+				</span>
+			)}
+			{vm.visible && (
+				<span aria-hidden="true" data-basalt-elapsed="" className="font-mono text-xs tabular-nums">
+					{vm.text}
+				</span>
+			)}
+		</span>
 	);
 }
