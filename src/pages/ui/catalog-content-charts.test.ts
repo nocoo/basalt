@@ -8,7 +8,7 @@ const CHART_DESCRIPTIONS = {
 	bar: "Bar series.",
 	area: "Area series.",
 	donut: "Donut series.",
-	sparkline: "Compact line.",
+	sparkline: "Compact two-tone bar trend.",
 	gauge: "Radial-style meter.",
 	"stat-card": "KPI card.",
 	palette: "Chart colors.",

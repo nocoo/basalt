@@ -56,6 +56,43 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 				const code = scenario.locator("details");
 				assert.equal(await code.getAttribute("open"), null, "complex source starts collapsed");
 			}
+			await page.goto(`${baseUrl}/ui/sparkline`);
+			await page.locator('[data-status="ready"]').waitFor();
+			await setShowcaseTheme(page, dark);
+			const compact = page.locator("[data-hero-scenario]");
+			await assertPlots(compact);
+			const meters = compact.getByRole("progressbar");
+			for (const [index, value] of [82, 24, 44, 38].entries()) {
+				const meter = meters.nth(index);
+				assert.equal(await meter.getAttribute("aria-valuenow"), String(value));
+				assert.equal(await meter.locator("[data-filled]").count(), 17);
+				assert.equal(
+					await meter.locator('[data-filled="true"]').count(),
+					Math.round((value / 100) * 17),
+				);
+			}
+			const marks = compact.locator(".recharts-rectangle");
+			assert.equal(await marks.count(), 56);
+			const chartStyles = await marks.evaluateAll((nodes) =>
+				nodes.map((node) => {
+					const style = getComputedStyle(node);
+					return {
+						opacity: style.fillOpacity,
+						animation: style.animationName,
+						path: node.getAttribute("d"),
+					};
+				}),
+			);
+			assert.deepEqual([...new Set(chartStyles.map((style) => style.opacity))].sort(), [
+				"0.4",
+				"1",
+			]);
+			assert.ok(
+				chartStyles.every(
+					(style) => style.animation === "none" && !/NaN|Infinity/.test(style.path ?? ""),
+				),
+			);
+			assert.equal(await compact.locator(".recharts-line").count(), 0);
 			for (const slug of ["data-table", "table"]) {
 				await page.goto(`${baseUrl}/ui/${slug}`);
 				const demo = page.locator("[data-hero-scenario] [data-demo]");
@@ -133,6 +170,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 		cases,
 		skeletonCompositions: 3,
 		richTables: 2,
+		compactCharts: true,
 		transitions: true,
 		keyboardSort: true,
 		reducedMotion: true,

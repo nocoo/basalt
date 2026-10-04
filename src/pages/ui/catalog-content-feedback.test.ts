@@ -77,7 +77,7 @@ const FEEDBACK_DESCRIPTIONS = {
 	"skeleton-line":
 		"Placeholder lines while content loads. Forwards standard div element attributes with aria-hidden='true' by default, merges style overrides over computed width geometry, and does not expose a public ref.",
 	meter:
-		"Numeric meter. Renders a percentage progress bar clamped to 0..100% without exposing public ref, arbitrary HTML attributes, or change events.",
+		"Seventeen-slot meter with red, yellow and green segments and an inline value. Clamps to 0..100%; non-finite readings are unavailable. BatteryMeter retains device-specific battery semantics.",
 	toast:
 		"Transient notification stack. Toast is an alias for Toaster, which mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. When icon: false is specified, status and default toast icons are suppressed.",
 	"clipboard-text":

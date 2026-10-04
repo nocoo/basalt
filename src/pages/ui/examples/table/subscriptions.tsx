@@ -348,17 +348,12 @@ export default function SubscriptionTable() {
 									</TableCell>
 									<TableCell>
 										<div className="flex items-center gap-3">
-											<div className="w-20">
-												<Meter
-													value={row.used}
-													label={`${row.used}% used`}
-													aria-label={`${row.name} quota used`}
-													hideValue
-												/>
+											<div className="w-32">
+												<Meter value={row.used} aria-label={`${row.name} quota used`} />
 											</div>
 											<Suspense fallback={<div className="h-10 w-20" />}>
 												<Sparkline
-													className="h-8 w-20"
+													className="h-4 w-20"
 													data={row.history.map((y, x) => ({ x, y }))}
 													ariaLabel={`${row.name} usage trend`}
 													summary={

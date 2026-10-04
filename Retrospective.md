@@ -80,3 +80,5 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 
 - **What:** Initial motion probes selected duplicated hero/example triggers, then assumed every hero contained a table-specific `data-demo` marker. An immediate focus assertion also ran before Radix's close-focus cleanup.
 - **Fix:** Scope interaction checks to the existing `data-hero-scenario` boundary, sample real CSS animations, and wait for focus restoration after exit unmount. Do not infer selectors from a different component's showcase. Shell wrappers must also avoid zsh's read-only `status` variable when preserving exit codes.
+
+- **Gate follow-up:** The staged-index hook caught a catalog test still looking for the old Sheet trigger text. When an example label or description changes, update its existing contract assertion in the same commit; targeted component tests alone cannot prove catalog consistency.

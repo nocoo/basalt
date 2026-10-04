@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
-import { Line, LineChart as RechartsLine } from "recharts";
-import { ANIMATION_PROPS, CHART_TYPE, seriesColor } from "./config";
+import { Bar, Cell, BarChart as RechartsBar, XAxis, YAxis } from "recharts";
+import { ANIMATION_PROPS, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
 import type { LineChartNumericKeys } from "./line";
+import { chart } from "./palette";
 import { type ChartSeriesDescriptor, resolveChartSeries, type XYPoint } from "./series";
 
 export type SparklineProps<
@@ -51,30 +52,39 @@ export function Sparkline<
 	dataAlternative,
 	accessibilityLayer,
 }: SparklineProps<TData, K>) {
-	const lines = resolveChartSeries(series, ["y" as K]);
+	const bars = resolveChartSeries(series, ["y" as K]);
 	return (
 		<ChartFrame
 			ariaLabel={ariaLabel}
 			className={className}
-			size="h-10 w-28"
+			size="h-5 w-28"
 			summary={summary}
 			dataAlternative={dataAlternative}
 			accessibilityLayer={accessibilityLayer}
 		>
-			<RechartsLine data={data}>
-				{lines.map((item, index) => (
-					<Line
+			<RechartsBar
+				data={data}
+				margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+				barCategoryGap="12%"
+				barGap={1}
+			>
+				<XAxis dataKey="x" hide />
+				<YAxis hide />
+				{bars.map((item, index) => (
+					<Bar
 						key={item.key}
-						type="monotone"
 						dataKey={item.key}
 						name={item.label ?? item.key}
-						stroke={seriesColor(item, index)}
-						strokeWidth={CHART_TYPE.strokeWidth}
-						dot={false}
+						fill={item.color ?? (bars.length === 1 ? chart.green : seriesColor(item, index))}
+						radius={1}
 						{...ANIMATION_PROPS}
-					/>
+					>
+						{data.map((point, pointIndex) => (
+							<Cell key={`${point.x}-${pointIndex}`} fillOpacity={pointIndex % 3 === 0 ? 0.4 : 1} />
+						))}
+					</Bar>
 				))}
-			</RechartsLine>
+			</RechartsBar>
 		</ChartFrame>
 	);
 }

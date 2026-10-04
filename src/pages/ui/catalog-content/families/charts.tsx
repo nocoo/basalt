@@ -122,7 +122,7 @@ export default catalogContentFamily({
 			...extraDocs(
 				"Sparkline",
 				"sparkline",
-				"Compact line.",
+				"Compact two-tone bar trend.",
 				"<Sparkline data={[{ x: 'Mon', y: 12 }]} />",
 			),
 			api: sparklineApi,

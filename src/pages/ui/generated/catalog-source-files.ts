@@ -212,7 +212,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"meter": {
 		"file": "packages/basalt/src/components/meter.tsx",
-		"hash": "9e57a2243bf82967",
+		"hash": "9978434c7091779e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/meter.js.map (sourcesContent[0])"
 	},
@@ -584,7 +584,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sparkline": {
 		"file": "packages/basalt/src/charts/sparkline.tsx",
-		"hash": "d95885d046f4ee88",
+		"hash": "a6b18bd81fcebcae",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/sparkline.js.map (sourcesContent[0])"
 	},

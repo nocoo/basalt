@@ -4958,7 +4958,7 @@
 			"importPath": "@nocoo/basalt/charts/sparkline",
 			"subpath": "./charts/sparkline",
 			"sourceFile": "packages/basalt/src/charts/sparkline.tsx",
-			"sourceHash": "d95885d046f4ee88",
+			"sourceHash": "a6b18bd81fcebcae",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -18174,7 +18174,7 @@
 			"importPath": "@nocoo/basalt/components/meter",
 			"subpath": "./components/meter",
 			"sourceFile": "packages/basalt/src/components/meter.tsx",
-			"sourceHash": "9e57a2243bf82967",
+			"sourceHash": "9978434c7091779e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -18218,26 +18218,26 @@
 									"type": "number",
 									"required": false,
 									"default": "0",
-									"description": "Percentage value representing current meter progress (0..100).\n\nNote: Rendered bar width is clamped to [0, 100]%; callers should provide 0..100,\nwhile underlying Radix validates and manages accessible value attributes.\nDoes not support arbitrary native HTML props, ref forwarding, min/max, or change callbacks."
+									"description": "Percentage value representing current meter progress (0..100).\n\nValues are clamped to [0, 100] for both segments and accessibility.\nNon-finite readings are displayed as unavailable.\nDoes not support arbitrary native HTML props, ref forwarding, min/max, or change callbacks."
 								},
 								{
 									"name": "label",
 									"type": "string",
 									"required": false,
-									"description": "Text label displayed above the meter bar and used as accessible name fallback."
+									"description": "Text label displayed above the segmented meter and used as accessible name fallback."
 								},
 								{
 									"name": "customValue",
 									"type": "string",
 									"required": false,
-									"description": "Custom text overriding the displayed percentage value text next to the label."
+									"description": "Custom text overriding the value displayed beside the segments."
 								},
 								{
 									"name": "hideValue",
 									"type": "boolean",
 									"required": false,
 									"default": "false",
-									"description": "Whether to hide the displayed value text next to the label."
+									"description": "Whether to hide the value displayed beside the segments."
 								},
 								{
 									"name": "className",
@@ -18265,26 +18265,26 @@
 							"type": "number",
 							"required": false,
 							"default": "0",
-							"description": "Percentage value representing current meter progress (0..100).\n\nNote: Rendered bar width is clamped to [0, 100]%; callers should provide 0..100,\nwhile underlying Radix validates and manages accessible value attributes.\nDoes not support arbitrary native HTML props, ref forwarding, min/max, or change callbacks."
+							"description": "Percentage value representing current meter progress (0..100).\n\nValues are clamped to [0, 100] for both segments and accessibility.\nNon-finite readings are displayed as unavailable.\nDoes not support arbitrary native HTML props, ref forwarding, min/max, or change callbacks."
 						},
 						{
 							"name": "label",
 							"type": "string",
 							"required": false,
-							"description": "Text label displayed above the meter bar and used as accessible name fallback."
+							"description": "Text label displayed above the segmented meter and used as accessible name fallback."
 						},
 						{
 							"name": "customValue",
 							"type": "string",
 							"required": false,
-							"description": "Custom text overriding the displayed percentage value text next to the label."
+							"description": "Custom text overriding the value displayed beside the segments."
 						},
 						{
 							"name": "hideValue",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Whether to hide the displayed value text next to the label."
+							"description": "Whether to hide the value displayed beside the segments."
 						},
 						{
 							"name": "className",
@@ -29951,7 +29951,7 @@
 			"exportName": "Meter",
 			"importPath": "@nocoo/basalt/components/meter",
 			"sourceFile": "packages/basalt/src/components/meter.tsx",
-			"sourceHash": "9e57a2243bf82967",
+			"sourceHash": "9978434c7091779e",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#meter",
@@ -29964,26 +29964,26 @@
 							"type": "number",
 							"required": false,
 							"default": "0",
-							"description": "Percentage value representing current meter progress (0..100).\n\nNote: Rendered bar width is clamped to [0, 100]%; callers should provide 0..100,\nwhile underlying Radix validates and manages accessible value attributes.\nDoes not support arbitrary native HTML props, ref forwarding, min/max, or change callbacks."
+							"description": "Percentage value representing current meter progress (0..100).\n\nValues are clamped to [0, 100] for both segments and accessibility.\nNon-finite readings are displayed as unavailable.\nDoes not support arbitrary native HTML props, ref forwarding, min/max, or change callbacks."
 						},
 						{
 							"name": "label",
 							"type": "string",
 							"required": false,
-							"description": "Text label displayed above the meter bar and used as accessible name fallback."
+							"description": "Text label displayed above the segmented meter and used as accessible name fallback."
 						},
 						{
 							"name": "customValue",
 							"type": "string",
 							"required": false,
-							"description": "Custom text overriding the displayed percentage value text next to the label."
+							"description": "Custom text overriding the value displayed beside the segments."
 						},
 						{
 							"name": "hideValue",
 							"type": "boolean",
 							"required": false,
 							"default": "false",
-							"description": "Whether to hide the displayed value text next to the label."
+							"description": "Whether to hide the value displayed beside the segments."
 						},
 						{
 							"name": "className",
@@ -37094,7 +37094,7 @@
 			"exportName": "Sparkline",
 			"importPath": "@nocoo/basalt/charts/sparkline",
 			"sourceFile": "packages/basalt/src/charts/sparkline.tsx",
-			"sourceHash": "d95885d046f4ee88",
+			"sourceHash": "a6b18bd81fcebcae",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sparkline",

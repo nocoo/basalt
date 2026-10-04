@@ -1416,6 +1416,9 @@
   .rounded-\[1px\] {
     border-radius: 1px;
   }
+  .rounded-\[2px\] {
+    border-radius: 2px;
+  }
   .rounded-\[4px\] {
     border-radius: 4px;
   }
@@ -1576,6 +1579,12 @@
   .border-l-transparent {
     border-left-color: transparent;
   }
+  .bg-\[hsl\(var\(--basalt-chart-green\)\)\] {
+    background-color: hsl(var(--basalt-chart-green));
+  }
+  .bg-\[hsl\(var\(--basalt-chart-yellow\)\)\] {
+    background-color: hsl(var(--basalt-chart-yellow));
+  }
   .bg-amber-50 {
     background-color: var(--color-amber-50);
   }
@@ -1611,6 +1620,12 @@
   }
   .bg-basalt-destructive {
     background-color: hsl(var(--basalt-destructive));
+  }
+  .bg-basalt-foreground\/10 {
+    background-color: hsl(var(--basalt-foreground));
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, hsl(var(--basalt-foreground)) 10%, transparent);
+    }
   }
   .bg-basalt-heatmap-green-1 {
     background-color: hsl(var(--basalt-heatmap-green-1));

@@ -749,7 +749,7 @@ export default function Example() {
 			...extraDocs(
 				"Meter",
 				"meter",
-				"Numeric meter. Renders a percentage progress bar clamped to 0..100% without exposing public ref, arbitrary HTML attributes, or change events.",
+				"Seventeen-slot meter with red, yellow and green segments and an inline value. Clamps to 0..100%; non-finite readings are unavailable. BatteryMeter retains device-specific battery semantics.",
 				'<Meter value={60} label="Usage" />',
 				undefined,
 				`import { Meter } from "@nocoo/basalt/components/meter";
