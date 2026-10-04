@@ -71,7 +71,7 @@ export const TabsList = React.forwardRef<
 		<TabsPrimitive.List
 			ref={listRef}
 			className={cn(
-				"relative flex flex-wrap items-center gap-1 border-b border-basalt-border",
+				"relative flex flex-wrap items-center gap-basalt-1 border-b border-basalt-border",
 				className,
 			)}
 			{...props}
@@ -81,7 +81,10 @@ export const TabsList = React.forwardRef<
 				<span
 					aria-hidden="true"
 					data-slot="selection-indicator"
-					className={cn("pointer-events-none absolute h-0.5 bg-basalt-primary", motionClassName)}
+					className={cn(
+						"pointer-events-none absolute h-basalt-0_5 bg-basalt-primary",
+						motionClassName,
+					)}
 					style={{
 						left: state.left,
 						width: state.visible ? state.width : 0,
@@ -116,7 +119,7 @@ export const TabsTrigger = React.forwardRef<
 	<TabsPrimitive.Trigger
 		ref={ref}
 		className={cn(
-			"inline-flex items-center justify-center px-3 py-2 text-sm font-medium text-basalt-muted-foreground transition-colors hover:text-basalt-foreground data-[state=active]:text-basalt-primary",
+			"inline-flex items-center justify-center px-basalt-3 py-basalt-2 text-sm font-medium text-basalt-muted-foreground transition-colors hover:text-basalt-foreground data-[state=active]:text-basalt-primary",
 			OVERLAY_MOTION,
 			className,
 		)}
@@ -142,7 +145,7 @@ export const TabsContent = React.forwardRef<
 	<TabsPrimitive.Content
 		ref={ref}
 		className={cn(
-			"mt-3 text-sm text-basalt-foreground data-[state=active]:animate-basalt-tab-in",
+			"mt-basalt-3 text-sm text-basalt-foreground data-[state=active]:animate-basalt-tab-in",
 			OVERLAY_MOTION,
 			className,
 		)}

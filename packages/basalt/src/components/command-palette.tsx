@@ -90,7 +90,7 @@ export function CommandPalette({ children, shouldFilter, ...props }: CommandPale
 				<Command
 					label="Command Palette"
 					{...(shouldFilter !== undefined && { shouldFilter })}
-					className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-9 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-1.5 [&_[cmdk-item]_svg]:h-4 [&_[cmdk-item]_svg]:w-4"
+					className="[&_[cmdk-group-heading]]:px-basalt-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-basalt-5 [&_[cmdk-input-wrapper]_svg]:w-basalt-5 [&_[cmdk-input]]:h-basalt-control [&_[cmdk-item]]:px-basalt-2 [&_[cmdk-item]]:py-basalt-1_5 [&_[cmdk-item]_svg]:h-basalt-4 [&_[cmdk-item]_svg]:w-basalt-4"
 				>
 					{content}
 				</Command>
@@ -126,14 +126,14 @@ export const CommandInput = React.forwardRef<
 	CommandInputProps
 >(({ className, ...props }, ref) => (
 	<div
-		className="flex shrink-0 items-center border-b border-basalt-border px-3"
+		className="flex shrink-0 items-center border-b border-basalt-border px-basalt-3"
 		cmdk-input-wrapper=""
 	>
-		<Search className="mr-2 size-4 shrink-0 opacity-50" aria-hidden="true" />
+		<Search className="mr-basalt-2 size-basalt-icon-lg shrink-0 opacity-50" aria-hidden="true" />
 		<CommandPrimitive.Input
 			ref={ref}
 			className={cn(
-				"flex h-11 w-full rounded-basalt-md bg-transparent py-3 text-sm outline-hidden ring-0 shadow-none placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+				"flex h-basalt-control w-full rounded-basalt-md bg-transparent py-basalt-3 text-sm outline-hidden ring-0 shadow-none placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
 				className,
 			)}
 			{...props}
@@ -189,7 +189,7 @@ export const CommandList = React.forwardRef<
 		<CommandPrimitive.List
 			ref={listRef}
 			className={cn(
-				"basalt-command-list relative isolate min-h-0 max-h-[300px] overflow-y-auto overflow-x-hidden p-1.5",
+				"basalt-command-list relative isolate min-h-0 max-h-[300px] overflow-y-auto overflow-x-hidden p-basalt-menu-inset",
 				className,
 			)}
 			{...props}
@@ -226,7 +226,7 @@ export const CommandEmpty = React.forwardRef<
 >((props, ref) => (
 	<CommandPrimitive.Empty
 		ref={ref}
-		className="py-6 text-center text-sm text-basalt-muted-foreground"
+		className="py-basalt-6 text-center text-sm text-basalt-muted-foreground"
 		{...props}
 	/>
 ));
@@ -263,7 +263,7 @@ export const CommandGroup = React.forwardRef<
 	<CommandPrimitive.Group
 		ref={ref}
 		className={cn(
-			"overflow-hidden py-1 text-basalt-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground",
+			"overflow-hidden py-basalt-1 text-basalt-foreground [&_[cmdk-group-heading]]:px-basalt-2 [&_[cmdk-group-heading]]:py-basalt-1_5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground",
 			className,
 		)}
 		{...props}
@@ -294,7 +294,7 @@ export const CommandSeparator = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<CommandPrimitive.Separator
 		ref={ref}
-		className={cn("-mx-1 h-px bg-basalt-border", className)}
+		className={cn("-mx-basalt-1 h-px bg-basalt-border", className)}
 		{...props}
 	/>
 ));
@@ -347,7 +347,7 @@ export const CommandItem = React.forwardRef<
 	<CommandPrimitive.Item
 		ref={ref}
 		className={cn(
-			"relative z-10 flex cursor-default items-center rounded-basalt-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[selected=true]:text-basalt-accent-foreground data-[disabled=true]:opacity-50",
+			"relative z-10 flex cursor-default items-center rounded-basalt-sm px-basalt-menu-x py-basalt-menu-y text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[selected=true]:text-basalt-accent-foreground data-[disabled=true]:opacity-50",
 			className,
 		)}
 		{...props}

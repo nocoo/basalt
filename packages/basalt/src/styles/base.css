@@ -193,7 +193,7 @@
 	[data-basalt-header][data-density="compact"]
 		:where([data-basalt-header-leading], [data-basalt-header-actions])
 		:where(button, a, [role="button"]) {
-		min-height: 44px;
-		min-width: 44px;
+		min-height: var(--basalt-size-touch);
+		min-width: var(--basalt-size-touch);
 	}
 }

@@ -5,8 +5,8 @@ import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 
 export const DIALOG_SIZES = {
-	sm: "sm:w-72",
-	base: "sm:w-96",
+	sm: "sm:w-basalt-72",
+	base: "sm:w-basalt-96",
 	lg: "sm:w-[32rem]",
 	xl: "sm:w-[48rem]",
 } as const;
@@ -32,7 +32,7 @@ export function dialogPanelClass({
 } = {}) {
 	return cn(
 		BASALT_UI_CLASS,
-		"fixed top-1/2 left-1/2 w-full max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] origin-center -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-basalt-lg p-6 text-basalt-foreground shadow-lg ring-1 ring-basalt-border",
+		"fixed top-1/2 left-1/2 w-full max-h-[calc(100vh-2rem)] max-w-[calc(100vw-2rem)] origin-center -translate-x-1/2 -translate-y-1/2 overflow-y-auto rounded-basalt-lg p-basalt-overlay text-basalt-foreground shadow-lg ring-1 ring-basalt-border",
 		OVERLAY_LAYER,
 		"data-[state=open]:animate-basalt-dialog-in data-[state=closed]:animate-basalt-dialog-out",
 		OVERLAY_MOTION,
@@ -286,7 +286,7 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 export interface DialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const DialogHeader = ({ className, ...props }: DialogHeaderProps) => (
-	<div className={cn("flex flex-col space-y-1.5 text-left", className)} {...props} />
+	<div className={cn("flex flex-col space-y-basalt-1_5 text-left", className)} {...props} />
 );
 DialogHeader.displayName = "DialogHeader";
 
@@ -294,7 +294,10 @@ export interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> 
 
 export const DialogFooter = ({ className, ...props }: DialogFooterProps) => (
 	<div
-		className={cn("mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}
+		className={cn(
+			"mt-basalt-6 flex flex-col-reverse gap-basalt-2 sm:flex-row sm:justify-end",
+			className,
+		)}
 		{...props}
 	/>
 );

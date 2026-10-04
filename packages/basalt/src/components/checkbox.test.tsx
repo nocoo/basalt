@@ -56,15 +56,15 @@ describe("Checkbox", () => {
 	it("applies named sizes and keeps the default class", () => {
 		const { rerender } = render(<Checkbox aria-label="Accept" />);
 		expect(screen.getByRole("checkbox", { name: "Accept" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-4", "w-4"]),
+			expect.arrayContaining(["h-basalt-4", "w-basalt-4"]),
 		);
 		rerender(<Checkbox aria-label="Accept" size="default" />);
 		expect(screen.getByRole("checkbox", { name: "Accept" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-4", "w-4"]),
+			expect.arrayContaining(["h-basalt-4", "w-basalt-4"]),
 		);
 		rerender(<Checkbox aria-label="Accept" size="sm" />);
 		expect(screen.getByRole("checkbox", { name: "Accept" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-3", "w-3"]),
+			expect.arrayContaining(["h-basalt-3", "w-basalt-3"]),
 		);
 	});
 

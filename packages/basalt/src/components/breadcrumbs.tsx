@@ -41,14 +41,14 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
 			aria-label="Breadcrumb"
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex items-center gap-1 text-sm font-normal text-basalt-muted-foreground",
+				"flex items-center gap-basalt-1 text-sm font-normal text-basalt-muted-foreground",
 				className,
 			)}
 		>
 			{items.map((item, index) => {
 				const current = index === items.length - 1 && !item.href;
 				const label = item.icon ? (
-					<span className="inline-flex items-center gap-1">
+					<span className="inline-flex items-center gap-basalt-1">
 						{item.icon}
 						{item.label}
 					</span>
@@ -56,8 +56,8 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
 					item.label
 				);
 				return (
-					<span key={`${String(item.label)}-${index}`} className="flex items-center gap-1">
-						{index > 0 ? <ChevronRight className="size-3" aria-hidden="true" /> : null}
+					<span key={`${String(item.label)}-${index}`} className="flex items-center gap-basalt-1">
+						{index > 0 ? <ChevronRight className="size-basalt-icon-sm" aria-hidden="true" /> : null}
 						{item.href ? (
 							<Link
 								href={item.href}

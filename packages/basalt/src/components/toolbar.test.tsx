@@ -25,8 +25,8 @@ describe("Toolbar", () => {
 		expect(screen.getByPlaceholderText("Search...").className).toContain(
 			"first:rounded-l-basalt-md",
 		);
-		expect(screen.getByRole("button", { name: "Search" }).className).toContain("w-9");
-		expect(screen.getByRole("button", { name: "Add" }).className).not.toContain("w-9");
+		expect(screen.getByRole("button", { name: "Search" }).className).toContain("w-basalt-control");
+		expect(screen.getByRole("button", { name: "Add" }).className).not.toContain("w-basalt-control");
 	});
 
 	it("keeps toolbar buttons quiet and clickable", () => {

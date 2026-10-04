@@ -115,7 +115,7 @@ export const ToggleGroup = React.forwardRef<
 				ref={rootRef}
 				className={cn(
 					BASALT_UI_CLASS,
-					"relative inline-flex h-8 shrink-0 items-center gap-0.5 rounded-full bg-basalt-muted p-0.5 ring-1 ring-basalt-border/70",
+					"relative inline-flex h-basalt-control shrink-0 items-center gap-basalt-0_5 rounded-full bg-basalt-muted p-basalt-0_5 ring-1 ring-basalt-border/70",
 					className,
 				)}
 				{...props}
@@ -165,7 +165,7 @@ export const ToggleGroupItem = React.forwardRef<
 		<ToggleGroupPrimitive.Item
 			ref={ref}
 			className={cn(
-				"relative inline-flex h-7 cursor-pointer items-center rounded-full px-2.5 text-[11px] font-semibold tracking-wide text-basalt-muted-foreground transition-colors before:absolute before:inset-0",
+				"relative inline-flex h-basalt-control-inset cursor-pointer items-center rounded-full px-basalt-2_5 text-[11px] font-semibold tracking-wide text-basalt-muted-foreground transition-colors before:absolute before:inset-0",
 				"hover:text-basalt-foreground",
 				FOCUS_RING,
 				"aria-checked:text-basalt-primary-foreground aria-pressed:text-basalt-primary-foreground",

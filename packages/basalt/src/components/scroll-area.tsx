@@ -48,8 +48,8 @@ function ScrollBar({ orientation }: { orientation: "horizontal" | "vertical" }) 
 			className={cn(
 				SCROLLBAR_CLASSES,
 				orientation === "vertical"
-					? "h-full w-2.5 border-l border-l-transparent"
-					: "h-2.5 flex-col border-t border-t-transparent",
+					? "h-full w-basalt-2_5 border-l border-l-transparent"
+					: "h-basalt-2_5 flex-col border-t border-t-transparent",
 			)}
 		>
 			<ScrollAreaPrimitive.Thumb

@@ -13,7 +13,11 @@ const toggleVariants = cva(
 				default: "bg-basalt-muted text-basalt-foreground",
 				outline: "border border-basalt-border bg-basalt-secondary",
 			},
-			size: { default: "h-8 px-3", sm: "h-8 px-2 text-xs", lg: "h-10 px-4" },
+			size: {
+				default: "h-basalt-control px-basalt-control-x",
+				sm: "h-basalt-control-sm px-basalt-2 text-xs",
+				lg: "h-basalt-control-lg px-basalt-4",
+			},
 		},
 		defaultVariants: { variant: "default", size: "default" },
 	},

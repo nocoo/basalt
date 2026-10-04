@@ -19,16 +19,16 @@ describe("standalone css", () => {
 		expect(css).toContain("--basalt-island-overflow: visible");
 		expect(css).toContain("top: var(--basalt-sticky-top, 0px)");
 		expect(css).toContain("height: var(--basalt-sticky-top, 0px)");
-		expect(css).toContain("min-height: 44px");
+		expect(css).toContain("min-height: var(--basalt-size-touch)");
 	});
 	it("includes control utilities without preflight", () => {
-		expect(css).toContain(".h-9");
-		expect(css).toContain(".h-16");
-		expect(css).toContain(".w-16");
+		expect(css).toContain(".h-basalt-control");
+		expect(css).toContain(".h-basalt-16");
+		expect(css).toContain(".w-basalt-16");
 		expect(css).toContain(".scale-75");
-		expect(css).toContain(".min-h-\\[64px\\]");
-		expect(css).toContain(".min-h-\\[96px\\]");
-		expect(css).toContain(".h-1\\.5");
+		expect(css).toContain(".min-h-basalt-textarea-sm");
+		expect(css).toContain(".min-h-basalt-textarea-lg");
+		expect(css).toContain(".h-basalt-1_5");
 		expect(css).toContain("aria-invalid\\:border-basalt-destructive");
 		expect(css).toContain(".bg-basalt-primary");
 		expect(css).toContain("--basalt-primary");

@@ -180,26 +180,30 @@ export function MultiSelect({
 	}
 
 	return (
-		<div className={cn(BASALT_UI_CLASS, "min-w-0 space-y-2", className)}>
+		<div className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-2", className)}>
 			{showChips && selected.length > 0 && (
-				<div role="group" className="flex flex-wrap gap-1.5" aria-label={`${label}: ${countText}`}>
+				<div
+					role="group"
+					className="flex flex-wrap gap-basalt-1_5"
+					aria-label={`${label}: ${countText}`}
+				>
 					{selected.map((item) => {
 						const option = options.find((option) => option.value === item);
 						const text = option?.label ?? item;
 						return (
 							<span
 								key={item}
-								className="inline-flex max-w-full items-center gap-1 rounded-basalt-md border border-basalt-border bg-basalt-accent py-0.5 pl-2 text-xs"
+								className="inline-flex max-w-full items-center gap-basalt-1 rounded-basalt-md border border-basalt-border bg-basalt-accent py-basalt-0_5 pl-basalt-2 text-xs"
 							>
 								<span className="min-w-0 break-words">{text}</span>
 								<button
 									type="button"
 									disabled={disabled || option?.disabled}
 									aria-label={`${removeLabel} ${text}`}
-									className="rounded p-1 focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
+									className="rounded p-basalt-1 focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
 									onClick={() => changeValue(selected.filter((value) => value !== item))}
 								>
-									<X className="size-3" aria-hidden="true" />
+									<X className="size-basalt-icon-sm" aria-hidden="true" />
 								</button>
 							</span>
 						);
@@ -239,7 +243,7 @@ export function MultiSelect({
 				</PopoverTrigger>
 				<PopoverContent
 					align="start"
-					className="w-72 max-w-[calc(100vw-2rem)] p-2"
+					className="w-basalt-72 max-w-[calc(100vw-2rem)] p-basalt-2"
 					aria-label={label}
 					onOpenAutoFocus={(event) => {
 						event.preventDefault();
@@ -296,7 +300,7 @@ export function MultiSelect({
 						aria-label={label}
 						aria-multiselectable="true"
 						aria-busy={loading}
-						className="basalt-hover-list mt-2 max-h-60 overflow-y-auto"
+						className="basalt-hover-list mt-basalt-2 max-h-basalt-60 overflow-y-auto"
 					>
 						{!loading &&
 							visible.map((option, index) => (
@@ -313,7 +317,7 @@ export function MultiSelect({
 									aria-disabled={option.disabled || undefined}
 									disabled={option.disabled}
 									className={cn(
-										"flex w-full items-center gap-2 rounded-basalt-md px-2 py-2 text-left text-sm disabled:opacity-40",
+										"flex w-full items-center gap-basalt-2 rounded-basalt-md px-basalt-2 py-basalt-2 text-left text-sm disabled:opacity-40",
 									)}
 									onPointerMove={(event) => {
 										const previous = pointer.current;
@@ -337,13 +341,16 @@ export function MultiSelect({
 										)}
 									</span>
 									{selected.includes(option.value) && (
-										<Check className="size-4 shrink-0" aria-hidden="true" />
+										<Check className="size-basalt-icon-lg shrink-0" aria-hidden="true" />
 									)}
 								</button>
 							))}
 					</div>
 					{(loading || visible.length === 0) && (
-						<p role="status" className="px-2 py-4 text-sm text-basalt-muted-foreground">
+						<p
+							role="status"
+							className="px-basalt-2 py-basalt-4 text-sm text-basalt-muted-foreground"
+						>
 							{loading ? loadingLabel : emptyLabel}
 						</p>
 					)}

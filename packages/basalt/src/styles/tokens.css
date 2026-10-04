@@ -1,3 +1,66 @@
+:root {
+	--basalt-space-unit: 0.25rem;
+	--basalt-space-0_5: calc(var(--basalt-space-unit) * 0.5);
+	--basalt-space-1: calc(var(--basalt-space-unit) * 1);
+	--basalt-space-1_5: calc(var(--basalt-space-unit) * 1.5);
+	--basalt-space-2: calc(var(--basalt-space-unit) * 2);
+	--basalt-space-2_5: calc(var(--basalt-space-unit) * 2.5);
+	--basalt-space-3: calc(var(--basalt-space-unit) * 3);
+	--basalt-space-3_5: calc(var(--basalt-space-unit) * 3.5);
+	--basalt-space-4: calc(var(--basalt-space-unit) * 4);
+	--basalt-space-5: calc(var(--basalt-space-unit) * 5);
+	--basalt-space-6: calc(var(--basalt-space-unit) * 6);
+	--basalt-space-7: calc(var(--basalt-space-unit) * 7);
+	--basalt-space-8: calc(var(--basalt-space-unit) * 8);
+	--basalt-space-9: calc(var(--basalt-space-unit) * 9);
+	--basalt-space-10: calc(var(--basalt-space-unit) * 10);
+	--basalt-space-11: calc(var(--basalt-space-unit) * 11);
+	--basalt-space-12: calc(var(--basalt-space-unit) * 12);
+	--basalt-space-14: calc(var(--basalt-space-unit) * 14);
+	--basalt-space-16: calc(var(--basalt-space-unit) * 16);
+	--basalt-space-28: calc(var(--basalt-space-unit) * 28);
+	--basalt-space-36: calc(var(--basalt-space-unit) * 36);
+	--basalt-space-40: calc(var(--basalt-space-unit) * 40);
+	--basalt-space-56: calc(var(--basalt-space-unit) * 56);
+	--basalt-space-60: calc(var(--basalt-space-unit) * 60);
+	--basalt-space-64: calc(var(--basalt-space-unit) * 64);
+	--basalt-space-72: calc(var(--basalt-space-unit) * 72);
+	--basalt-space-80: calc(var(--basalt-space-unit) * 80);
+	--basalt-space-96: calc(var(--basalt-space-unit) * 96);
+	--basalt-size-control: 2rem;
+	--basalt-size-control-sm: 1.75rem;
+	--basalt-size-control-lg: 2.5rem;
+	--basalt-size-control-inset: 1.75rem;
+	--basalt-size-icon: 0.875rem;
+	--basalt-size-icon-sm: 0.75rem;
+	--basalt-size-icon-lg: 1rem;
+	--basalt-size-icon-display: 1.5rem;
+	--basalt-size-touch: 2.75rem;
+	--basalt-size-menu-row: 2rem;
+	--basalt-size-table-row: 2.25rem;
+	--basalt-size-check: 1rem;
+	--basalt-size-check-sm: 0.75rem;
+	--basalt-size-textarea: 5rem;
+	--basalt-size-textarea-sm: 4rem;
+	--basalt-size-textarea-lg: 6rem;
+	--basalt-space-control-x: var(--basalt-space-3);
+	--basalt-space-control-x-sm: var(--basalt-space-2_5);
+	--basalt-space-control-x-lg: var(--basalt-space-4);
+	--basalt-space-control-y: var(--basalt-space-1);
+	--basalt-space-control-gap: var(--basalt-space-1_5);
+	--basalt-space-menu-inset: var(--basalt-space-1_5);
+	--basalt-space-menu-x: var(--basalt-space-2);
+	--basalt-space-menu-y: var(--basalt-space-1_5);
+	--basalt-space-card: var(--basalt-space-4);
+	--basalt-space-card-sm: var(--basalt-space-3);
+	--basalt-space-card-lg: var(--basalt-space-6);
+	--basalt-space-section: var(--basalt-space-6);
+	--basalt-space-field-gap: var(--basalt-space-1_5);
+	--basalt-space-table-x: var(--basalt-space-3);
+	--basalt-space-table-y: var(--basalt-space-1_5);
+	--basalt-space-overlay: var(--basalt-space-6);
+}
+
 :root,
 .light,
 [data-mode="light"] {

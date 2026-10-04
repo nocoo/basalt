@@ -82,7 +82,11 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 			.filter(Boolean)
 			.join(" ");
 		return (
-			<div ref={ref} {...props} className={cn(BASALT_UI_CLASS, "flex flex-col gap-1.5", className)}>
+			<div
+				ref={ref}
+				{...props}
+				className={cn(BASALT_UI_CLASS, "flex flex-col gap-basalt-field-gap", className)}
+			>
 				<Label htmlFor={controlId} showOptional={required === false} tooltip={labelTooltip}>
 					{label}
 				</Label>

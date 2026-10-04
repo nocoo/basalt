@@ -10,7 +10,7 @@ export type ItemListProps = {
 
 export function ItemList({ items, ariaLabel = "Item list", className }: ItemListProps) {
 	return (
-		<ul className={cn("space-y-1 text-sm", className)} aria-label={ariaLabel}>
+		<ul className={cn("space-y-basalt-1 text-sm", className)} aria-label={ariaLabel}>
 			{items.map((item, index) => (
 				<li key={item.id ?? `${item.label}-${item.value ?? ""}-${index}`}>
 					{item.label}

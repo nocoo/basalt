@@ -86,6 +86,6 @@ describe("Slider", () => {
 		expect(root.className).toContain("flex-col");
 		const track = root.querySelector('[data-orientation="vertical"]');
 		expect(track?.className).toContain("h-full");
-		expect(track?.className).toContain("w-2");
+		expect(track?.className).toContain("w-basalt-2");
 	});
 });

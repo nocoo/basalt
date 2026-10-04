@@ -5,10 +5,13 @@ import { BASALT_UI_CLASS } from "../utils/control-surface";
 function FlowArrow() {
 	const id = `flow-arrow-${useId().replace(/:/g, "")}`;
 	return (
-		<li aria-hidden="true" className="flex w-10 shrink-0 items-center text-basalt-muted-foreground">
+		<li
+			aria-hidden="true"
+			className="flex w-basalt-10 shrink-0 items-center text-basalt-muted-foreground"
+		>
 			<svg
 				viewBox="0 0 40 16"
-				className="h-4 w-10 overflow-visible"
+				className="h-basalt-4 w-basalt-10 overflow-visible"
 				overflow="visible"
 				aria-hidden="true"
 			>
@@ -80,7 +83,7 @@ export type FlowNodeProps = {
 
 export function FlowNode({ children }: FlowNodeProps) {
 	return (
-		<li className="rounded-basalt-md border border-basalt-border bg-basalt-secondary px-3 py-2 text-sm">
+		<li className="rounded-basalt-md border border-basalt-border bg-basalt-secondary px-basalt-3 py-basalt-2 text-sm">
 			{children}
 		</li>
 	);

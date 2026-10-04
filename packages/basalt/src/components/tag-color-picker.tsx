@@ -44,7 +44,7 @@ export function TagColorPicker({
 			disabled={disabled}
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex h-auto flex-wrap justify-start gap-2 rounded-basalt-lg p-1",
+				"flex h-auto flex-wrap justify-start gap-basalt-2 rounded-basalt-lg p-basalt-1",
 				className,
 			)}
 			onValueChange={(next) => {
@@ -59,16 +59,16 @@ export function TagColorPicker({
 					key={color}
 					value={color}
 					aria-label={labels?.[color] ?? TAG_COLORS[color].label}
-					className="h-auto min-w-16 flex-col gap-1.5 rounded-basalt-md px-2 py-2"
+					className="h-auto min-w-basalt-16 flex-col gap-basalt-1_5 rounded-basalt-md px-basalt-2 py-basalt-2"
 				>
 					<span
 						aria-hidden="true"
 						className={cn(
-							"flex size-7 items-center justify-center rounded-full border",
+							"flex size-basalt-7 items-center justify-center rounded-full border",
 							TAG_COLORS[color].className,
 						)}
 					>
-						{selected === color && <Check className="size-4" />}
+						{selected === color && <Check className="size-basalt-icon-lg" />}
 					</span>
 					<span className="text-xs">{labels?.[color] ?? TAG_COLORS[color].label}</span>
 				</ToggleGroupItem>

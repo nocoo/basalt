@@ -11,7 +11,7 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Button, type ButtonProps } from "./button";
 
-const bannerVariants = cva("flex w-full items-start gap-3 rounded-basalt-md text-sm", {
+const bannerVariants = cva("flex w-full items-start gap-basalt-3 rounded-basalt-md text-sm", {
 	variants: {
 		variant: {
 			default: "bg-basalt-info-tint text-basalt-info",
@@ -20,8 +20,8 @@ const bannerVariants = cva("flex w-full items-start gap-3 rounded-basalt-md text
 			secondary: "bg-basalt-muted text-basalt-foreground",
 		},
 		size: {
-			base: "px-4 py-3",
-			sm: "px-3 py-2",
+			base: "px-basalt-4 py-basalt-3",
+			sm: "px-basalt-3 py-basalt-2",
 		},
 	},
 	defaultVariants: { variant: "default", size: "base" },
@@ -111,7 +111,7 @@ export interface BannerActionProps
 	/**
 	 * Sizing preset. When unspecified or null, resolves to "icon" if children are omitted,
 	 * null, or an empty string, "sm" when parent Banner is compact ("sm"), or "default" otherwise.
-	 * When iconOnly mode is resolved, an additional "size-8" class is attached.
+	 * When iconOnly mode is resolved, an additional "size-basalt-8" class is attached.
 	 */
 	size?: ButtonProps["size"];
 
@@ -181,8 +181,10 @@ function BannerRoot({
 				)}
 				{...props}
 			>
-				{icon ? <span className="mt-0.5 inline-flex shrink-0 [&_svg]:size-5">{icon}</span> : null}
-				<div className="min-w-0 flex-1 space-y-0.5">
+				{icon ? (
+					<span className="mt-basalt-0_5 inline-flex shrink-0 [&_svg]:size-basalt-5">{icon}</span>
+				) : null}
+				<div className="min-w-0 flex-1 space-y-basalt-0_5">
 					{title ? <p className="font-medium">{title}</p> : null}
 					{description ? (
 						<div
@@ -199,7 +201,7 @@ function BannerRoot({
 					{structured ? null : children}
 				</div>
 				{trailing.length > 0 ? (
-					<div className="flex shrink-0 items-center gap-2">{trailing}</div>
+					<div className="flex shrink-0 items-center gap-basalt-2">{trailing}</div>
 				) : null}
 			</div>
 		</BannerContext.Provider>
@@ -229,7 +231,7 @@ export function BannerAction({
 			variant={mapped}
 			size={size ?? (iconOnly ? "icon" : banner.size === "sm" ? "sm" : "default")}
 			icon={icon}
-			className={cn(iconOnly && "size-8", className)}
+			className={cn(iconOnly && "size-basalt-8", className)}
 			{...props}
 		>
 			{children}

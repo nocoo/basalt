@@ -71,7 +71,12 @@ export interface DockBodyProps {
 
 export function DockBody({ className, children }: DockBodyProps) {
 	return (
-		<div className={cn("flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto px-3 py-3", className)}>
+		<div
+			className={cn(
+				"flex min-h-0 flex-1 flex-col gap-basalt-3 overflow-y-auto px-basalt-3 py-basalt-3",
+				className,
+			)}
+		>
 			{children}
 		</div>
 	);

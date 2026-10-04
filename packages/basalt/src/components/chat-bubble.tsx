@@ -37,7 +37,7 @@ export function ChatBubble({
 			<p
 				className={cn(
 					BASALT_UI_CLASS,
-					"px-1 text-center text-[11px] text-basalt-muted-foreground",
+					"px-basalt-1 text-center text-[11px] text-basalt-muted-foreground",
 					className,
 				)}
 			>
@@ -50,7 +50,7 @@ export function ChatBubble({
 		<div className={cn(BASALT_UI_CLASS, "flex w-full", user ? "justify-end" : "justify-start")}>
 			<div
 				className={cn(
-					"max-w-[92%] px-3.5 py-2 text-sm leading-5 shadow-sm",
+					"max-w-[92%] px-basalt-3_5 py-basalt-2 text-sm leading-5 shadow-sm",
 					user
 						? "rounded-2xl rounded-br-md bg-basalt-primary text-basalt-primary-foreground"
 						: "rounded-2xl rounded-bl-md bg-basalt-secondary text-basalt-foreground ring-1 ring-basalt-border/50",
@@ -60,7 +60,7 @@ export function ChatBubble({
 				{children}
 				{streaming ? (
 					<span
-						className="mt-1 inline-block h-3 w-1.5 animate-pulse rounded-sm bg-basalt-primary/70 align-middle motion-reduce:animate-none"
+						className="mt-basalt-1 inline-block h-basalt-3 w-basalt-1_5 animate-pulse rounded-sm bg-basalt-primary/70 align-middle motion-reduce:animate-none"
 						aria-hidden
 					/>
 				) : null}

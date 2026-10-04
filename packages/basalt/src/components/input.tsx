@@ -6,9 +6,9 @@ import { FOCUS_BORDER } from "./overlay";
 export type InputSize = "sm" | "default" | "lg";
 
 const INPUT_SIZE_CLASS: Record<InputSize, string> = {
-	sm: "h-8 px-2.5 py-1.5 text-xs",
-	default: "h-8 px-3 py-1 text-sm",
-	lg: "h-10 px-4 py-2 text-base",
+	sm: "h-basalt-control-sm px-basalt-control-x-sm py-basalt-control-y text-xs",
+	default: "h-basalt-control px-basalt-control-x py-basalt-control-y text-sm",
+	lg: "h-basalt-control-lg px-basalt-4 py-basalt-2 text-base",
 };
 
 const PASSWORD_MANAGER_MARKERS = {

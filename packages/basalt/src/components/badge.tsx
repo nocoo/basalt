@@ -4,7 +4,7 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 const badgeVariants = cva(
-	"inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium",
+	"inline-flex items-center gap-basalt-1_5 rounded-full border px-basalt-2_5 py-basalt-0_5 text-xs font-medium",
 	{
 		variants: {
 			variant: {
@@ -51,7 +51,7 @@ export interface BadgeProps
 export function Badge({ className, variant, dot, children, ...props }: BadgeProps) {
 	return (
 		<span className={cn(BASALT_UI_CLASS, badgeVariants({ variant }), className)} {...props}>
-			{dot ? <span className="size-1.5 rounded-full bg-current" aria-hidden="true" /> : null}
+			{dot ? <span className="size-basalt-1_5 rounded-full bg-current" aria-hidden="true" /> : null}
 			{children}
 		</span>
 	);

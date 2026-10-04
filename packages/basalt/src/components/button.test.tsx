@@ -8,9 +8,9 @@ describe("Button", () => {
 		(size) => {
 			render(<Button size={size}>Action</Button>);
 			expect(screen.getByRole("button")).toHaveClass(
-				size === "lg" ? "[&_svg]:size-4" : "[&_svg]:size-3.5",
+				size === "lg" ? "[&_svg]:size-basalt-icon-lg" : "[&_svg]:size-basalt-icon",
 			);
-			expect(screen.getByRole("button")).toHaveClass("gap-1.5");
+			expect(screen.getByRole("button")).toHaveClass("gap-basalt-control-gap");
 		},
 	);
 
@@ -21,7 +21,7 @@ describe("Button", () => {
 			</LinkButton>,
 		);
 		expect(screen.getByRole("link")).toHaveClass("[&_svg]:size-5");
-		expect(screen.getByRole("link")).not.toHaveClass("[&_svg]:size-3.5");
+		expect(screen.getByRole("link")).not.toHaveClass("[&_svg]:size-basalt-icon");
 	});
 	it("renders the default action", () => {
 		render(<Button>Save</Button>);

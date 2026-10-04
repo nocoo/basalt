@@ -21,8 +21,8 @@ export function LoadingScreen({
 			)}
 			{...props}
 		>
-			<div className="flex flex-col items-center gap-4">
-				{mark ?? <BasaltMark className="h-8 w-8 text-basalt-foreground" />}
+			<div className="flex flex-col items-center gap-basalt-4">
+				{mark ?? <BasaltMark className="h-basalt-8 w-basalt-8 text-basalt-foreground" />}
 				<div
 					className="relative h-px overflow-hidden rounded-full bg-basalt-border"
 					style={{ width: "6rem" }}

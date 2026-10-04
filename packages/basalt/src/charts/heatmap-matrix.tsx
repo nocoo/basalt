@@ -375,7 +375,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 				aria-label={ariaLabel}
 				data-testid="heatmap-matrix"
 				className={cn(
-					"flex flex-col gap-2 rounded-lg border border-basalt-border/60 bg-basalt-card p-3 text-xs outline-none",
+					"flex flex-col gap-basalt-2 rounded-lg border border-basalt-border/60 bg-basalt-card p-basalt-3 text-xs outline-none",
 					isEmpty ? "text-basalt-muted-foreground" : "text-basalt-foreground",
 					className,
 				)}
@@ -437,7 +437,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 										<tr key={`${matrixId}-row-${rowIdx}`}>
 											<th
 												scope="row"
-												className="sticky left-0 z-10 bg-basalt-card pr-2 text-left font-medium text-basalt-foreground select-none"
+												className="sticky left-0 z-10 bg-basalt-card pr-basalt-2 text-left font-medium text-basalt-foreground select-none"
 												style={{
 													lineHeight: `${cellSize}px`,
 													minWidth: 64,
@@ -565,7 +565,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 						{/* Legend footer */}
 						{showLegend ? (
 							<div
-								className="mt-1 flex items-center justify-end gap-1 text-[11px] text-basalt-muted-foreground select-none"
+								className="mt-basalt-1 flex items-center justify-end gap-basalt-1 text-[11px] text-basalt-muted-foreground select-none"
 								aria-hidden="true"
 							>
 								<span>{lessLabel}</span>

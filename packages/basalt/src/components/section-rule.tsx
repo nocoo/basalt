@@ -22,9 +22,9 @@ export function SectionRule({
 	...props
 }: SectionRuleProps) {
 	return (
-		<section className={cn(BASALT_UI_CLASS, "space-y-3", className)} {...props}>
-			<div className="flex flex-wrap items-center gap-3">
-				<div className="flex min-w-0 items-center gap-1.5">
+		<section className={cn(BASALT_UI_CLASS, "space-y-basalt-3", className)} {...props}>
+			<div className="flex flex-wrap items-center gap-basalt-3">
+				<div className="flex min-w-0 items-center gap-basalt-1_5">
 					<h2 className="text-xs font-medium tracking-wider text-basalt-muted-foreground uppercase">
 						{title}
 					</h2>
@@ -35,9 +35,9 @@ export function SectionRule({
 									<button
 										type="button"
 										aria-label="More information"
-										className="inline-flex size-4 shrink-0 items-center justify-center text-basalt-muted-foreground hover:text-basalt-foreground"
+										className="inline-flex size-basalt-icon-lg shrink-0 items-center justify-center text-basalt-muted-foreground hover:text-basalt-foreground"
 									>
-										<Info className="size-3.5" />
+										<Info className="size-basalt-icon" />
 									</button>
 								</TooltipTrigger>
 								<TooltipContent>{hint}</TooltipContent>
@@ -46,11 +46,11 @@ export function SectionRule({
 					) : null}
 				</div>
 				<div
-					className="h-px min-w-4 flex-1 border-t border-dashed border-basalt-border"
+					className="h-px min-w-basalt-4 flex-1 border-t border-dashed border-basalt-border"
 					aria-hidden="true"
 				/>
 				{actions ? (
-					<div className="flex min-w-0 max-w-full shrink-0 flex-wrap items-center justify-end gap-2">
+					<div className="flex min-w-0 max-w-full shrink-0 flex-wrap items-center justify-end gap-basalt-2">
 						{actions}
 					</div>
 				) : null}

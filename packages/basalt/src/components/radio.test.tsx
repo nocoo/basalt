@@ -87,10 +87,10 @@ describe("Radio", () => {
 			</RadioGroup>,
 		);
 		expect(screen.getByRole("radio", { name: "Default size" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-4", "w-4"]),
+			expect.arrayContaining(["h-basalt-4", "w-basalt-4"]),
 		);
 		expect(screen.getByRole("radio", { name: "Small" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-3", "w-3"]),
+			expect.arrayContaining(["h-basalt-3", "w-basalt-3"]),
 		);
 	});
 

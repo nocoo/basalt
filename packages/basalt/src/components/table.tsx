@@ -77,7 +77,7 @@ export const TableHead = ({
 }: TableHeadProps & React.ThHTMLAttributes<HTMLTableCellElement>) => (
 	<th
 		className={cn(
-			"border-b border-basalt-border p-3 text-left text-xs font-medium text-basalt-muted-foreground",
+			"border-b border-basalt-border p-basalt-3 text-left text-xs font-medium text-basalt-muted-foreground",
 			className,
 		)}
 		{...props}
@@ -95,7 +95,7 @@ export const TableCell = ({
 	className,
 	...props
 }: TableCellProps & React.TdHTMLAttributes<HTMLTableCellElement>) => (
-	<td className={cn("p-3", className)} {...props} />
+	<td className={cn("p-basalt-3", className)} {...props} />
 );
 
 export type TableCaptionProps = {
@@ -110,6 +110,9 @@ export function TableCaption({
 	...props
 }: TableCaptionProps & React.HTMLAttributes<HTMLTableCaptionElement>) {
 	return (
-		<caption className={cn("mt-2 text-sm text-basalt-muted-foreground", className)} {...props} />
+		<caption
+			className={cn("mt-basalt-2 text-sm text-basalt-muted-foreground", className)}
+			{...props}
+		/>
 	);
 }

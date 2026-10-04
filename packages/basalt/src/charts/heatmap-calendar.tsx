@@ -259,7 +259,7 @@ function ValuesHeatmap({
 					isFocusedInsideRef.current = false;
 				}
 			}}
-			className={cn("grid grid-cols-7 gap-1 p-0.5 outline-none", className)}
+			className={cn("grid grid-cols-7 gap-basalt-1 p-basalt-0_5 outline-none", className)}
 		>
 			{values.map((value, index) => {
 				const isCurrent = index === activeIdx;
@@ -299,7 +299,7 @@ function ValuesHeatmap({
 								}}
 								onKeyDown={(e) => handleKeyDown(e, index)}
 								aria-label={`Position ${index + 1}: ${value}`}
-								className="box-border m-0 h-3 w-3 cursor-pointer rounded-sm border-0 p-0 transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
+								className="box-border m-0 h-basalt-3 w-basalt-3 cursor-pointer rounded-sm border-0 p-0 transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
 								style={{
 									backgroundColor: `hsl(var(--basalt-chart-5) / ${0.2 + Math.min(4, Math.max(0, value)) * 0.15})`,
 								}}
@@ -494,9 +494,9 @@ function YearHeatmap({
 			)}
 		>
 			<TooltipProvider>
-				<div className="inline-block p-1" role="group" aria-label={ariaLabel}>
+				<div className="inline-block p-basalt-1" role="group" aria-label={ariaLabel}>
 					<div
-						className="relative mb-1 h-4 text-xs text-basalt-muted-foreground"
+						className="relative mb-basalt-1 h-basalt-4 text-xs text-basalt-muted-foreground"
 						style={{ marginLeft: labelWidth }}
 					>
 						{labels.map((label) => (
@@ -511,7 +511,7 @@ function YearHeatmap({
 					</div>
 					<div className="flex">
 						<div
-							className="mr-1 flex flex-col text-xs text-basalt-muted-foreground select-none"
+							className="mr-basalt-1 flex flex-col text-xs text-basalt-muted-foreground select-none"
 							style={{ width: labelWidth }}
 							aria-hidden="true"
 						>
@@ -617,7 +617,7 @@ function YearHeatmap({
 						</div>
 					</div>
 					<div
-						className="mt-2 flex items-center justify-end gap-1 text-xs text-basalt-muted-foreground select-none"
+						className="mt-basalt-2 flex items-center justify-end gap-basalt-1 text-xs text-basalt-muted-foreground select-none"
 						aria-hidden="true"
 					>
 						<span>{lessLabel}</span>

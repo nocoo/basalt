@@ -493,7 +493,7 @@ export function DataTable<T>({
 	};
 
 	return (
-		<div className="flex min-w-0 flex-col gap-3">
+		<div className="flex min-w-0 flex-col gap-basalt-3">
 			<div
 				role="region"
 				aria-label={`${ariaLabel} scroll area`}
@@ -557,7 +557,7 @@ export function DataTable<T>({
 						{loading ? (
 							<TableRow>
 								<TableCell colSpan={colCount}>
-									<div role="status" className="flex flex-col gap-2 py-2">
+									<div role="status" className="flex flex-col gap-basalt-2 py-basalt-2">
 										<span className="sr-only">Loading</span>
 										<SkeletonLine />
 										<SkeletonLine />
@@ -570,7 +570,7 @@ export function DataTable<T>({
 								<TableCell colSpan={colCount}>
 									<div
 										role="alert"
-										className="flex flex-wrap items-center justify-between gap-3 py-6"
+										className="flex flex-wrap items-center justify-between gap-basalt-3 py-basalt-6"
 									>
 										<div>{error}</div>
 										{onRetry ? (

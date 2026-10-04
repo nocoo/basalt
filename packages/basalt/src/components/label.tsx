@@ -21,7 +21,7 @@ export const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Roo
 			ref={ref}
 			className={cn(
 				BASALT_UI_CLASS,
-				"inline-flex items-center gap-1 text-sm font-medium leading-none text-basalt-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+				"inline-flex items-center gap-basalt-1 text-sm font-medium leading-none text-basalt-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
 				className,
 			)}
 			{...props}
@@ -37,9 +37,9 @@ export const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Roo
 							<button
 								type="button"
 								aria-label="More information"
-								className="inline-flex size-4 shrink-0 items-center justify-center text-basalt-muted-foreground hover:text-basalt-foreground"
+								className="inline-flex size-basalt-icon-lg shrink-0 items-center justify-center text-basalt-muted-foreground hover:text-basalt-foreground"
 							>
-								<Info className="size-3.5" />
+								<Info className="size-basalt-icon" />
 							</button>
 						</TooltipTrigger>
 						<TooltipContent>{tooltip}</TooltipContent>

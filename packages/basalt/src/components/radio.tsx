@@ -8,13 +8,13 @@ import { FOCUS_RING } from "./overlay";
 export type RadioSize = "sm" | "default";
 
 const RADIO_SIZE_CLASS: Record<RadioSize, string> = {
-	sm: "h-3 w-3",
-	default: "h-4 w-4",
+	sm: "h-basalt-3 w-basalt-3",
+	default: "h-basalt-4 w-basalt-4",
 };
 
 const RADIO_INDICATOR_CLASS: Record<RadioSize, string> = {
-	sm: "h-1.5 w-1.5 fill-current text-current",
-	default: "h-2.5 w-2.5 fill-current text-current",
+	sm: "h-basalt-1_5 w-basalt-1_5 fill-current text-current",
+	default: "h-basalt-2_5 w-basalt-2_5 fill-current text-current",
 };
 
 export type RadioGroupProps = Omit<
@@ -115,12 +115,12 @@ export const RadioGroup = React.forwardRef<
 		const mergedDescribedBy =
 			[invalid ? errorId : null, describedBy].filter(Boolean).join(" ") || undefined;
 		return (
-			<fieldset disabled={disabled} className="flex flex-col gap-2">
+			<fieldset disabled={disabled} className="flex flex-col gap-basalt-2">
 				{labeledLegends}
 				<RadioGroupPrimitive.Root
 					ref={ref}
 					disabled={disabled}
-					className={cn("grid gap-2", className)}
+					className={cn("grid gap-basalt-2", className)}
 					{...props}
 					aria-labelledby={mergedLabelledBy}
 					aria-describedby={mergedDescribedBy}

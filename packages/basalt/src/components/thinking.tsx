@@ -38,8 +38,8 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 			onOpenChange={vm.setOpen}
 			className={cn("w-full text-sm text-basalt-foreground", className)}
 		>
-			<CollapsibleTrigger className="rounded-basalt-sm px-1.5 py-1">
-				<span className="inline-flex items-center gap-2">
+			<CollapsibleTrigger className="rounded-basalt-sm px-basalt-1_5 py-basalt-1">
+				<span className="inline-flex items-center gap-basalt-2">
 					<Icon aria-hidden="true" />
 					<span role="status" className={cn(vm.status === "running" && "basalt-shimmer-label")}>
 						{heading}
@@ -52,16 +52,16 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 			<CollapsibleContent unstyled>
 				<ol
 					aria-label="Thinking steps"
-					className="ml-3 space-y-3 border-l border-basalt-border py-3 pl-4"
+					className="ml-basalt-3 space-y-basalt-3 border-l border-basalt-border py-basalt-3 pl-basalt-4"
 				>
 					{steps.map((step) => (
 						<li
 							key={step.id}
 							data-step-status={step.status}
-							className="basalt-agent-reveal flex items-start gap-2"
+							className="basalt-agent-reveal flex items-start gap-basalt-2"
 						>
 							<span
-								className="mt-0.5 shrink-0 text-basalt-muted-foreground"
+								className="mt-basalt-0_5 shrink-0 text-basalt-muted-foreground"
 								role="img"
 								aria-label={step.status}
 							>
@@ -80,7 +80,7 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 									{step.label}
 								</p>
 								{step.detail && (
-									<p className="mt-1 whitespace-pre-wrap break-words text-xs leading-relaxed text-basalt-muted-foreground">
+									<p className="mt-basalt-1 whitespace-pre-wrap break-words text-xs leading-relaxed text-basalt-muted-foreground">
 										{step.detail}
 									</p>
 								)}

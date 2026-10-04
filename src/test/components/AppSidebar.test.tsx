@@ -245,15 +245,15 @@ describe("AppSidebar", () => {
 		expect(expandedHome).toHaveAttribute("href", "/");
 		const expanded = expandedHome.querySelector("img");
 		expect(expanded).toHaveClass("h-7", "w-7");
-		expect(expanded?.closest(".flex.h-14")).not.toHaveClass("pl-6");
+		expect(expanded?.closest(".flex.h-basalt-14")).not.toHaveClass("pl-6");
 		unmount();
 		renderSidebar("/ui/button", true);
 		const collapsedHome = screen.getByRole("link", { name: "Home" });
 		expect(collapsedHome).toHaveAttribute("href", "/");
 		const collapsed = collapsedHome.querySelector("img");
 		expect(collapsed).toHaveClass("h-7", "w-7");
-		expect(collapsed?.closest(".flex.h-14")).toHaveClass("pl-6", "justify-start");
-		expect(collapsed?.closest(".flex.h-14")).not.toHaveClass("justify-center");
+		expect(collapsed?.closest(".flex.h-basalt-14")).toHaveClass("pl-6", "justify-start");
+		expect(collapsed?.closest(".flex.h-basalt-14")).not.toHaveClass("justify-center");
 	});
 
 	it("aligns collapsed search with the icon rail", () => {
@@ -265,7 +265,7 @@ describe("AppSidebar", () => {
 		expect(icons[0]).toBe(search);
 		expect(icons.length).toBeGreaterThan(1);
 		for (const icon of icons) {
-			expect(icon).toHaveClass("h-10", "w-10");
+			expect(icon).toHaveClass("h-basalt-10", "w-basalt-10");
 		}
 	});
 

@@ -74,16 +74,16 @@ export function UploadItem({
 		<div
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex min-w-0 items-start gap-3 rounded-basalt-lg border border-basalt-border bg-basalt-card p-3",
+				"flex min-w-0 items-start gap-basalt-3 rounded-basalt-lg border border-basalt-border bg-basalt-card p-basalt-3",
 				className,
 			)}
 		>
-			<span className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-basalt-md bg-basalt-accent">
+			<span className="flex size-basalt-10 shrink-0 items-center justify-center overflow-hidden rounded-basalt-md bg-basalt-accent">
 				{file.preview ?? (
-					<FileText className="size-5 text-basalt-muted-foreground" aria-hidden="true" />
+					<FileText className="size-basalt-5 text-basalt-muted-foreground" aria-hidden="true" />
 				)}
 			</span>
-			<div className="min-w-0 flex-1 space-y-1">
+			<div className="min-w-0 flex-1 space-y-basalt-1">
 				<p className="break-words text-sm font-medium">{file.name}</p>
 				<p className="text-xs text-basalt-muted-foreground">
 					{file.size !== undefined && `${Math.ceil(file.size / 1024).toLocaleString()} KB · `}
@@ -96,7 +96,7 @@ export function UploadItem({
 						aria-valuemin={0}
 						aria-valuemax={100}
 						aria-valuenow={progress}
-						className="h-1.5 overflow-hidden rounded-full bg-basalt-accent"
+						className="h-basalt-1_5 overflow-hidden rounded-full bg-basalt-accent"
 					>
 						<div
 							style={{ width: progress === undefined ? "40%" : `${progress}%` }}
@@ -113,9 +113,9 @@ export function UploadItem({
 					</p>
 				)}
 			</div>
-			<div className="flex shrink-0 items-center gap-1">
+			<div className="flex shrink-0 items-center gap-basalt-1">
 				{file.status === "success" && (
-					<Check className="size-4 text-basalt-success" aria-hidden="true" />
+					<Check className="size-basalt-icon-lg text-basalt-success" aria-hidden="true" />
 				)}
 				{active && onCancel && (
 					<Button
@@ -169,13 +169,13 @@ export function UploadQueue({
 	...actions
 }: UploadQueueProps) {
 	return (
-		<div className={cn(BASALT_UI_CLASS, "min-w-0 space-y-2", className)}>
+		<div className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-2", className)}>
 			{files.length === 0 ? (
 				<p role="status" className="text-sm text-basalt-muted-foreground">
 					{emptyLabel}
 				</p>
 			) : (
-				<ul aria-label={label} className="m-0 list-none space-y-2 p-0">
+				<ul aria-label={label} className="m-0 list-none space-y-basalt-2 p-0">
 					{files.map((file) => (
 						<li key={file.id}>
 							<UploadItem file={file} {...actions} />

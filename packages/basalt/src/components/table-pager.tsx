@@ -60,7 +60,7 @@ export function TablePager({
 		<div
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex flex-col gap-3 md:flex-row md:items-center md:justify-between",
+				"flex flex-col gap-basalt-3 md:flex-row md:items-center md:justify-between",
 				className,
 			)}
 		>

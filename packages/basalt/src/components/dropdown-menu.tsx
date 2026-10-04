@@ -297,7 +297,7 @@ export const DropdownMenuContent = React.forwardRef<
 			<DropdownMenuPrimitive.Content
 				ref={highlightRef}
 				sideOffset={sideOffset}
-				className={overlayPanelClass(cn("basalt-hover-list min-w-40", className))}
+				className={overlayPanelClass(cn("basalt-hover-list min-w-basalt-40", className))}
 				{...props}
 			/>
 		</DropdownMenuPrimitive.Portal>

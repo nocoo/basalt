@@ -57,7 +57,7 @@ export function Sparkline<
 		<ChartFrame
 			ariaLabel={ariaLabel}
 			className={className}
-			size="h-5 w-28"
+			size="h-basalt-5 w-basalt-28"
 			summary={summary}
 			dataAlternative={dataAlternative}
 			accessibilityLayer={accessibilityLayer}

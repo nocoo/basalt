@@ -28,17 +28,17 @@ export const StatStrip = React.forwardRef<HTMLDListElement, StatStripProps>(
 		return (
 			<dl
 				ref={ref}
-				className={cn(BASALT_UI_CLASS, "grid grid-cols-2 gap-3 md:grid-cols-4", className)}
+				className={cn(BASALT_UI_CLASS, "grid grid-cols-2 gap-basalt-3 md:grid-cols-4", className)}
 				{...props}
 				aria-busy={loading ? true : ariaBusy}
 			>
 				{items.map((item, index) => (
 					<div
 						key={index}
-						className="rounded-basalt-lg bg-basalt-muted p-4 ring-1 ring-basalt-border"
+						className="rounded-basalt-lg bg-basalt-muted p-basalt-4 ring-1 ring-basalt-border"
 					>
 						<dt className="text-sm font-medium text-basalt-muted-foreground">{item.label}</dt>
-						<dd className="mt-1 text-lg font-medium tabular-nums text-basalt-foreground">
+						<dd className="mt-basalt-1 text-lg font-medium tabular-nums text-basalt-foreground">
 							{loading ? <SkeletonLine /> : item.value}
 						</dd>
 					</div>

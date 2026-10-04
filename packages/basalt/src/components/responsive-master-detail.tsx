@@ -40,7 +40,9 @@ export function ResponsiveMasterDetail({
 	detailLabel = "Details",
 	backLabel = "Back to items",
 	empty = (
-		<p className="p-6 text-sm text-basalt-muted-foreground">Choose an item to see its details.</p>
+		<p className="p-basalt-6 text-sm text-basalt-muted-foreground">
+			Choose an item to see its details.
+		</p>
 	),
 	className,
 }: ResponsiveMasterDetailProps) {
@@ -115,8 +117,12 @@ export function ResponsiveMasterDetail({
 				)}
 			>
 				{compact && detailOpen && (
-					<div className="border-b border-basalt-border p-2">
-						<Button className="min-h-11" variant="ghost" onClick={() => onDetailOpenChange(false)}>
+					<div className="border-b border-basalt-border p-basalt-2">
+						<Button
+							className="min-h-basalt-touch"
+							variant="ghost"
+							onClick={() => onDetailOpenChange(false)}
+						>
 							<ArrowLeft />
 							{backLabel}
 						</Button>

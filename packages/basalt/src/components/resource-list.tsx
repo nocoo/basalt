@@ -61,7 +61,7 @@ export function ResourceList({
 	onRetry,
 }: ResourceListProps) {
 	return (
-		<div className={cn("min-w-0 space-y-4", className)}>
+		<div className={cn("min-w-0 space-y-basalt-4", className)}>
 			{header ?? <PageHeader title={title} description={description} />}
 			{toolbar != null ? <div>{toolbar}</div> : null}
 			{filters != null ? <div>{filters}</div> : null}

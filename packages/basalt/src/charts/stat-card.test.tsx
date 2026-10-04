@@ -169,7 +169,13 @@ describe("StatGrid", () => {
 			</StatGrid>,
 		);
 		const grid = container.firstElementChild;
-		expect(grid).toHaveClass("grid", "gap-3", "grid-cols-1", "sm:grid-cols-2", "lg:grid-cols-4");
+		expect(grid).toHaveClass(
+			"grid",
+			"gap-basalt-3",
+			"grid-cols-1",
+			"sm:grid-cols-2",
+			"lg:grid-cols-4",
+		);
 		expect(grid).toHaveClass("grid-shell");
 		expect(grid).toHaveTextContent("child-a");
 		rerender(

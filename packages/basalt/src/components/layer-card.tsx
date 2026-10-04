@@ -16,9 +16,9 @@ import { SkeletonLine } from "./skeleton-line";
 const ROOT_CLASSES = `${BASALT_UI_CLASS} overflow-hidden rounded-basalt-lg text-basalt-foreground`;
 const PADDING_CLASSES = {
 	none: "",
-	sm: "p-3",
-	md: "p-4",
-	lg: "p-6",
+	sm: "p-basalt-card-sm",
+	md: "p-basalt-card",
+	lg: "p-basalt-card-lg",
 } as const;
 
 export type LayerCardPadding = keyof typeof PADDING_CLASSES;
@@ -152,7 +152,7 @@ function LayerCardHeader({ className, ...props }: LayerCardSectionProps) {
 	return (
 		<div
 			className={cn(
-				"flex min-w-0 items-start justify-between gap-4 px-4 py-3 text-basalt-muted-foreground",
+				"flex min-w-0 items-start justify-between gap-basalt-4 px-basalt-card py-basalt-card-sm text-basalt-muted-foreground",
 				className,
 			)}
 			{...props}
@@ -162,7 +162,7 @@ function LayerCardHeader({ className, ...props }: LayerCardSectionProps) {
 LayerCardHeader.displayName = "LayerCard.Header";
 
 function LayerCardBody({ className, ...props }: LayerCardSectionProps) {
-	return <div className={cn("min-w-0 p-4", className)} {...props} />;
+	return <div className={cn("min-w-0 p-basalt-card", className)} {...props} />;
 }
 LayerCardBody.displayName = "LayerCard.Body";
 
@@ -170,7 +170,7 @@ function LayerCardWell({ className, outlined = false, ...props }: LayerCardWellP
 	return (
 		<div
 			data-basalt-surface=""
-			className={cn("min-w-0 p-4", outlined && "ring-1 ring-basalt-border/40", className)}
+			className={cn("min-w-0 p-basalt-card", outlined && "ring-1 ring-basalt-border/40", className)}
 			{...props}
 		/>
 	);
@@ -191,7 +191,7 @@ function LayerCardFooter({ className, ...props }: LayerCardSectionProps) {
 	return (
 		<div
 			className={cn(
-				"flex flex-wrap items-center justify-end gap-2 border-t border-basalt-border px-4 py-3",
+				"flex flex-wrap items-center justify-end gap-basalt-2 border-t border-basalt-border px-basalt-card py-basalt-card-sm",
 				className,
 			)}
 			{...props}
@@ -202,7 +202,12 @@ LayerCardFooter.displayName = "LayerCard.Footer";
 
 function LayerCardLoading({ label = "Loading", className, ...props }: LayerCardLoadingProps) {
 	return (
-		<div role="status" aria-label={label} className={cn("space-y-3 p-4", className)} {...props}>
+		<div
+			role="status"
+			aria-label={label}
+			className={cn("space-y-basalt-3 p-basalt-card", className)}
+			{...props}
+		>
 			<SkeletonLine minWidth={100} maxWidth={100} />
 			<SkeletonLine minWidth={72} maxWidth={72} />
 			<SkeletonLine minWidth={88} maxWidth={88} />
@@ -212,7 +217,7 @@ function LayerCardLoading({ label = "Loading", className, ...props }: LayerCardL
 LayerCardLoading.displayName = "LayerCard.Loading";
 
 function LayerCardEmpty({ title = "No content", className, ...props }: LayerCardEmptyProps) {
-	return <Empty title={title} className={cn("p-8", className)} {...props} />;
+	return <Empty title={title} className={cn("p-basalt-8", className)} {...props} />;
 }
 LayerCardEmpty.displayName = "LayerCard.Empty";
 

@@ -18,9 +18,9 @@ describe("overlay", () => {
 	});
 
 	it("insets the highlight from the panel edge", () => {
-		expect(overlayPanelClass()).toContain("py-1.5");
-		expect(overlayItemClass()).toContain("mx-1.5");
-		expect(overlayItemClass()).toContain("py-1.5");
+		expect(overlayPanelClass()).toContain("py-basalt-menu-inset");
+		expect(overlayItemClass()).toContain("mx-basalt-menu-inset");
+		expect(overlayItemClass()).toContain("py-basalt-menu-y");
 		expect(overlayPanelClass()).toContain(OVERLAY_LAYER);
 		expect(overlayPanelClass()).toContain(OVERLAY_MOTION);
 		expect(overlayPanelClass()).toContain("basalt-floating");

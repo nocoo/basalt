@@ -104,7 +104,7 @@ describe("Field", () => {
 		expect(screen.getByText("Email").parentElement).toHaveClass(
 			"flex",
 			"flex-col",
-			"gap-1.5",
+			"gap-basalt-field-gap",
 			"extra",
 		);
 		const input = screen.getByLabelText("Email");
@@ -262,7 +262,7 @@ describe("Field", () => {
 		);
 		expect(ref.current).toHaveAttribute("id", "field-root");
 		expect(ref.current).toHaveAttribute("data-test", "root");
-		expect(ref.current).toHaveClass("flex", "flex-col", "gap-1.5", "extra");
+		expect(ref.current).toHaveClass("flex", "flex-col", "gap-basalt-field-gap", "extra");
 		expect(ref.current).toHaveStyle({ marginTop: "8px" });
 		fireEvent.click(ref.current as HTMLDivElement);
 		expect(onClick).toHaveBeenCalledTimes(1);

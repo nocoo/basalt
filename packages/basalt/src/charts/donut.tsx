@@ -53,7 +53,7 @@ export function DonutChart({
 		<ChartShell
 			ariaLabel={ariaLabel}
 			className={className}
-			size="h-36 w-36"
+			size="h-basalt-36 w-basalt-36"
 			legend={showLegend ? <ChartLegend items={legendItems} shape="bar" /> : undefined}
 			summary={summary}
 			dataAlternative={dataAlternative}

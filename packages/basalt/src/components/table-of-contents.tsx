@@ -26,11 +26,11 @@ export function TableOfContents({
 	return (
 		<nav aria-label={title || "On this page"} className={cn(BASALT_UI_CLASS, "text-sm", className)}>
 			{title ? (
-				<p className="mb-3 text-xs font-semibold tracking-wide text-basalt-muted-foreground uppercase">
+				<p className="mb-basalt-3 text-xs font-semibold tracking-wide text-basalt-muted-foreground uppercase">
 					{title}
 				</p>
 			) : null}
-			<ul className="flex flex-col gap-2 border-l-2 border-basalt-border">{children}</ul>
+			<ul className="flex flex-col gap-basalt-2 border-l-2 border-basalt-border">{children}</ul>
 		</nav>
 	);
 }
@@ -53,13 +53,13 @@ export type TableOfContentsItemProps = {
 
 export function TableOfContentsItem({ active, href, children }: TableOfContentsItemProps) {
 	const className = cn(
-		"block border-l-2 py-0.5 pl-4",
+		"block border-l-2 py-basalt-0_5 pl-basalt-4",
 		active
 			? "border-basalt-primary font-medium text-basalt-foreground"
 			: "border-transparent text-basalt-muted-foreground",
 	);
 	return (
-		<li className="-ml-0.5">
+		<li className="-ml-basalt-0_5">
 			{href ? (
 				<a href={href} aria-current={active ? "location" : undefined} className={className}>
 					{children}

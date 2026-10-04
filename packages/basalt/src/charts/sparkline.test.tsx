@@ -32,7 +32,7 @@ describe("Sparkline", () => {
 		expect(bars[1]).toHaveAttribute("fill-opacity", "1");
 		expect(bars[0]).toHaveAttribute("fill", "hsl(var(--basalt-chart-5))");
 		expect(container.querySelector(".recharts-line")).toBeNull();
-		expect(container.querySelector(".basalt-chart")).toHaveClass("h-5", "w-28");
+		expect(container.querySelector(".basalt-chart")).toHaveClass("h-basalt-5", "w-basalt-28");
 	});
 
 	it("preserves custom series, colors, summaries and data alternatives", () => {

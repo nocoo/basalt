@@ -2,7 +2,11 @@ import { Monitor, Moon, Sun } from "lucide-react";
 import { useTheme } from "../providers/theme";
 import { Button } from "./button";
 
-const ICON_PROPS = { className: "h-4 w-4", "aria-hidden": true as const, strokeWidth: 1.5 };
+const ICON_PROPS = {
+	className: "h-basalt-4 w-basalt-4",
+	"aria-hidden": true as const,
+	strokeWidth: 1.5,
+};
 
 export interface ThemeToggleProps {
 	/**

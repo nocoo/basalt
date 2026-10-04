@@ -3091,7 +3091,11 @@ describe("ui catalog", () => {
 		const exampleButton = within(example as HTMLElement).getByRole("button", {
 			name: "Toggle theme",
 		});
-		expect(heroButton).toHaveClass("h-8", "w-8", "hover:bg-basalt-accent");
+		expect(heroButton).toHaveClass(
+			"h-basalt-control",
+			"w-basalt-control",
+			"hover:bg-basalt-accent",
+		);
 		const iconClass = (button: HTMLElement) =>
 			button.querySelector("svg")?.getAttribute("class") ?? "";
 		expect(iconClass(heroButton)).toContain("lucide-monitor");
@@ -3230,13 +3234,13 @@ describe("ui catalog", () => {
 		expect(heroMark).toBeTruthy();
 		expect(exampleMark).toBeTruthy();
 		expect(heroMark?.tagName).toBe("svg");
-		expect(heroMark).toHaveClass("h-5", "w-5");
+		expect(heroMark).toHaveClass("h-basalt-5", "w-basalt-5");
 		expect(heroMark).toHaveAttribute("viewBox", "0 0 128 128");
 		expect(heroMark).toHaveAttribute("aria-label", "Basalt");
 		expect(heroMark?.querySelector("image")?.getAttribute("href")).toMatch(
 			/^data:image\/png;base64,/,
 		);
-		expect(exampleMark).toHaveClass("h-5", "w-5");
+		expect(exampleMark).toHaveClass("h-basalt-5", "w-basalt-5");
 		expect(exampleMark).toHaveAttribute("viewBox", "0 0 128 128");
 		expect(exampleMark).toHaveAccessibleName("Basalt");
 		for (const scenario of UI_EXAMPLES["basalt-mark"] ?? []) {
@@ -3415,13 +3419,13 @@ describe("ui catalog", () => {
 		);
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Small" }).className,
-		).toContain("h-8");
+		).toContain("h-basalt-control-sm");
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Default" }).className,
-		).toContain("h-8");
+		).toContain("h-basalt-control");
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Large" }).className,
-		).toContain("h-10");
+		).toContain("h-basalt-control-lg");
 		expect(within(controlled as HTMLElement).getByRole("textbox", { name: "Name" })).toHaveValue(
 			"Ada",
 		);
@@ -3501,13 +3505,13 @@ describe("ui catalog", () => {
 		expect(disabledArea).toHaveValue("Unavailable");
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Small notes" }).className,
-		).toContain("min-h-[64px]");
+		).toContain("min-h-basalt-textarea-sm");
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Default notes" }).className,
-		).toContain("min-h-[80px]");
+		).toContain("min-h-basalt-textarea");
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Large notes" }).className,
-		).toContain("min-h-[96px]");
+		).toContain("min-h-basalt-textarea-lg");
 		expect(within(controlled as HTMLElement).getByRole("textbox", { name: "Notes" })).toHaveValue(
 			"Ada",
 		);
@@ -3975,10 +3979,10 @@ describe("ui catalog", () => {
 		expect(defaultSize).toBeChecked();
 		expect(small).toBeEnabled();
 		expect(defaultSize).toBeEnabled();
-		expect(small.className).toContain("h-4");
-		expect(small.className).toContain("w-7");
-		expect(defaultSize.className).toContain("h-6");
-		expect(defaultSize.className).toContain("w-11");
+		expect(small.className).toContain("h-basalt-4");
+		expect(small.className).toContain("w-basalt-7");
+		expect(defaultSize.className).toContain("h-basalt-6");
+		expect(defaultSize.className).toContain("w-basalt-11");
 		for (const scenario of UI_EXAMPLES.switch ?? []) {
 			expect(scenario.code).toContain("export default");
 			expect(scenario.code).toContain("@nocoo/basalt/components/switch");

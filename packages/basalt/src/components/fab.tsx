@@ -51,7 +51,7 @@ export const Fab = React.forwardRef<HTMLButtonElement, FabProps>(
 			onClick={open ? undefined : onClick}
 			className={cn(
 				placement === "absolute" ? "absolute" : "fixed",
-				"right-4 bottom-4 h-16 w-16 rounded-full shadow-lg",
+				"right-basalt-4 bottom-basalt-4 h-basalt-16 w-basalt-16 rounded-full shadow-lg",
 				OVERLAY_LAYER,
 				"transition-[transform,opacity] duration-300 ease-in-out",
 				OVERLAY_MOTION,

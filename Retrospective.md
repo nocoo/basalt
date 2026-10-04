@@ -102,3 +102,7 @@ The comparison iframe is only 300px tall. CommandPalette's dialog respected its 
 ## 2026-10-05: List-level motion and dense defaults
 
 Expanded moving highlights beyond CommandPalette using one private, mounted-list DOM adapter. No React state is updated on pointer movement; callbacks ignore same-row movement and schedule at most one geometry read per animation frame. Scrolling and disabled/hidden rows need explicit handling, including input-driven active descendants outside a portaled list. Legacy CSS-class tests must assert the new shared-layer contract rather than require per-row hover fills. Loader no longer includes a center cell. Form heights changed without reducing multiline text areas or the existing compact-header touch targets.
+
+## 2026-10-05: Dimension token migration boundaries
+
+The token migration initially treated fractional positioning (`top-1/2`) as numeric spacing and left string-based tests asserting obsolete utility names. Fractional/viewport geometry is not a spacing step; keep it unchanged. Role-aware class merging is required so caller overrides still win over named Basalt utilities. Migration scripts must avoid ambiguous token replacements (for example small/default sharing an old height) and unbounded regexes; validate semantic presets and real browser geometry, not only renamed strings. Regenerate landing HTML whenever shared button defaults alter prerendered markup.

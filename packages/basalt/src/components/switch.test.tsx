@@ -27,7 +27,7 @@ describe("Switch", () => {
 
 	it("supports a compact size", () => {
 		render(<Switch aria-label="Alerts" size="sm" />);
-		expect(screen.getByRole("switch", { name: "Alerts" }).className).toContain("h-4");
+		expect(screen.getByRole("switch", { name: "Alerts" }).className).toContain("h-basalt-4");
 	});
 
 	it("uses a bright white thumb", () => {
@@ -79,8 +79,8 @@ describe("Switch", () => {
 		expect(root).toHaveAttribute("id", "alerts");
 		expect(root).toHaveAttribute("data-example", "yes");
 		expect(root.className).toContain("extra");
-		expect(root.className).toContain("h-6");
-		expect(root.className).toContain("w-11");
+		expect(root.className).toContain("h-basalt-6");
+		expect(root.className).toContain("w-basalt-11");
 		expect(root).not.toHaveAttribute("form");
 	});
 
@@ -275,16 +275,16 @@ describe("Switch", () => {
 	it("keeps default and compact root and thumb sizes", () => {
 		const { rerender } = render(<Switch aria-label="Alerts" />);
 		const root = screen.getByRole("switch", { name: "Alerts" });
-		expect(root.className).toContain("h-6");
-		expect(root.className).toContain("w-11");
-		expect(root.querySelector("span")?.className).toContain("h-5");
-		expect(root.querySelector("span")?.className).toContain("w-5");
+		expect(root.className).toContain("h-basalt-6");
+		expect(root.className).toContain("w-basalt-11");
+		expect(root.querySelector("span")?.className).toContain("h-basalt-5");
+		expect(root.querySelector("span")?.className).toContain("w-basalt-5");
 		rerender(<Switch aria-label="Alerts" size="sm" />);
 		const compact = screen.getByRole("switch", { name: "Alerts" });
-		expect(compact.className).toContain("h-4");
-		expect(compact.className).toContain("w-7");
-		expect(compact.querySelector("span")?.className).toContain("h-3");
-		expect(compact.querySelector("span")?.className).toContain("w-3");
+		expect(compact.className).toContain("h-basalt-4");
+		expect(compact.className).toContain("w-basalt-7");
+		expect(compact.querySelector("span")?.className).toContain("h-basalt-3");
+		expect(compact.querySelector("span")?.className).toContain("w-basalt-3");
 	});
 
 	it("forwards and cleans up external refs (object, callback, React 19 cleanup) on group", () => {

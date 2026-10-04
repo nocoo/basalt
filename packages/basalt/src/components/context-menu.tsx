@@ -208,7 +208,7 @@ export function ContextMenuPanel({ className, ref, ...props }: ContextMenuPanelP
 		<ContextMenuPrimitive.Portal forceMount={props.forceMount}>
 			<ContextMenuPrimitive.Content
 				ref={highlightRef}
-				className={overlayPanelClass(cn("basalt-hover-list min-w-40", className))}
+				className={overlayPanelClass(cn("basalt-hover-list min-w-basalt-40", className))}
 				{...props}
 			/>
 		</ContextMenuPrimitive.Portal>

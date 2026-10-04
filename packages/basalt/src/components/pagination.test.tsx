@@ -18,7 +18,7 @@ describe("Pagination", () => {
 		expect(group?.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
-		expect(group?.className.split(/\s+/)).toContain("h-8");
+		expect(group?.className.split(/\s+/)).toContain("h-basalt-control");
 		expect(group?.className).not.toContain("bg-basalt-background");
 		expect(group?.className).not.toContain("rounded-basalt-lg");
 		expect(group?.className).not.toContain("ring-1");

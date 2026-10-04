@@ -37,9 +37,12 @@ export function Timeline(props: TimelineProps) {
 		return <HourTimeline events={props.events} ariaLabel={ariaLabel} className={className} />;
 	}
 	return (
-		<ol className={cn("space-y-2 text-sm", className)} aria-label={ariaLabel}>
+		<ol className={cn("space-y-basalt-2 text-sm", className)} aria-label={ariaLabel}>
 			{props.items.map((item, index) => (
-				<li key={item.id ?? `${item.at ?? ""}-${item.title}-${index}`} className="flex gap-2">
+				<li
+					key={item.id ?? `${item.at ?? ""}-${item.title}-${index}`}
+					className="flex gap-basalt-2"
+				>
 					<span className="text-basalt-muted-foreground">{item.at}</span>
 					<span>{item.title}</span>
 				</li>
@@ -64,7 +67,7 @@ function HourTimeline({
 		eventsByHour.set(hour, [...existing, event]);
 	}
 	return (
-		<ol className={cn("flex flex-col pl-14", className)} aria-label={ariaLabel}>
+		<ol className={cn("flex flex-col pl-basalt-14", className)} aria-label={ariaLabel}>
 			{hours.map((hour) => {
 				const hourEvents = eventsByHour.get(hour) ?? [];
 				const hasEvents = hourEvents.length > 0;
@@ -72,26 +75,26 @@ function HourTimeline({
 					<li
 						key={hour}
 						className={cn(
-							"relative flex items-start border-l-2 py-2 pl-4",
+							"relative flex items-start border-l-2 py-basalt-2 pl-basalt-4",
 							hasEvents ? "border-basalt-chart-1" : "border-basalt-border",
 						)}
 					>
-						<div className="absolute left-0 w-12 -translate-x-full pr-2 text-right text-xs text-basalt-muted-foreground">
+						<div className="absolute left-0 w-basalt-12 -translate-x-full pr-basalt-2 text-right text-xs text-basalt-muted-foreground">
 							{hour.toString().padStart(2, "0")}:00
 						</div>
 						<div
 							className={cn(
-								"absolute -left-[5px] top-2 h-2 w-2 rounded-full",
+								"absolute -left-[5px] top-basalt-2 h-basalt-2 w-basalt-2 rounded-full",
 								hasEvents ? "bg-basalt-chart-1" : "bg-basalt-border",
 							)}
 						/>
-						<div className="flex min-h-[24px] w-full flex-col gap-1">
+						<div className="flex min-h-[24px] w-full flex-col gap-basalt-1">
 							{hourEvents.map((event) => (
 								<div
 									key={event.id}
 									style={event.textColor ? { color: event.textColor } : undefined}
 									className={cn(
-										"flex items-center gap-2 rounded-md px-2 py-1 text-xs",
+										"flex items-center gap-basalt-2 rounded-md px-basalt-2 py-basalt-1 text-xs",
 										event.color
 											? `${event.color} text-white`
 											: "bg-basalt-muted text-basalt-foreground",

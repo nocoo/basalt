@@ -64,10 +64,10 @@ describe("Banner", () => {
 		expect(screen.getByText("Restored")).toBeInTheDocument();
 		expect(root).toHaveClass("bg-basalt-info-tint");
 		expect(root).toHaveClass("text-basalt-info");
-		expect(root).toHaveClass("px-4");
-		expect(root).toHaveClass("py-3");
-		expect(root).not.toHaveClass("px-3");
-		expect(root).not.toHaveClass("py-2");
+		expect(root).toHaveClass("px-basalt-4");
+		expect(root).toHaveClass("py-basalt-3");
+		expect(root).not.toHaveClass("px-basalt-3");
+		expect(root).not.toHaveClass("py-basalt-2");
 	});
 
 	it("keeps a compact plain action inline when description is omitted", () => {
@@ -84,9 +84,9 @@ describe("Banner", () => {
 		const action = screen.getByRole("button", { name: "Fix" });
 		expect(screen.getByText("Compact")).toBeInTheDocument();
 		expect(action).toBeInTheDocument();
-		expect(root).toHaveClass("px-3");
-		expect(root).toHaveClass("py-2");
-		expect(root).not.toHaveClass("px-4");
+		expect(root).toHaveClass("px-basalt-3");
+		expect(root).toHaveClass("py-basalt-2");
+		expect(root).not.toHaveClass("px-basalt-4");
 		expect(root.children).toHaveLength(1);
 		const content = root.children[0];
 		expect(content).toHaveClass("min-w-0");

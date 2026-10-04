@@ -40,7 +40,7 @@ export function Loader({
 			aria-label={label}
 			className={cn(
 				BASALT_UI_CLASS,
-				"inline-flex items-center gap-2.5 text-sm text-basalt-muted-foreground",
+				"inline-flex items-center gap-basalt-2_5 text-sm text-basalt-muted-foreground",
 				className,
 			)}
 			{...props}

@@ -34,12 +34,16 @@ export function ToolChips({
 		<Collapsible
 			open={vm.open}
 			onOpenChange={vm.setOpen}
-			className={cn("w-full space-y-2", className)}
+			className={cn("w-full space-y-basalt-2", className)}
 		>
-			<CollapsibleTrigger className="rounded-basalt-sm px-1.5 py-1">
+			<CollapsibleTrigger className="rounded-basalt-sm px-basalt-1_5 py-basalt-1">
 				<span role="status">{title ?? `${vm.total} tool calls · ${vm.completed} complete`}</span>
 			</CollapsibleTrigger>
-			<CollapsibleContent ref={highlightRef} unstyled className="basalt-hover-list space-y-1">
+			<CollapsibleContent
+				ref={highlightRef}
+				unstyled
+				className="basalt-hover-list space-y-basalt-1"
+			>
 				{steps.map((step) => {
 					const Icon = ICONS[step.kind];
 					return (
@@ -52,13 +56,13 @@ export function ToolChips({
 							<CollapsibleTrigger
 								data-basalt-hover-item=""
 								aria-label={[step.label, step.target, step.status].filter(Boolean).join(" ")}
-								className="w-full min-h-8 justify-between rounded-basalt-sm px-2 py-1.5 [&_svg]:size-4"
+								className="w-full min-h-basalt-control justify-between rounded-basalt-sm px-basalt-2 py-basalt-1_5 [&_svg]:size-basalt-icon-lg"
 							>
-								<span className="flex min-w-0 flex-wrap items-center gap-2 text-sm">
+								<span className="flex min-w-0 flex-wrap items-center gap-basalt-2 text-sm">
 									<Icon aria-hidden="true" />
 									<span>{step.label}</span>
 									{step.target && (
-										<span className="truncate rounded-basalt-sm bg-basalt-control px-2 py-0.5 font-mono text-[13px] text-basalt-muted-foreground">
+										<span className="truncate rounded-basalt-sm bg-basalt-control px-basalt-2 py-basalt-0_5 font-mono text-[13px] text-basalt-muted-foreground">
 											{step.target}
 										</span>
 									)}
@@ -82,9 +86,11 @@ export function ToolChips({
 					);
 				})}
 				{steps.length === 0 && (
-					<p className="px-2 py-3 text-xs text-basalt-muted-foreground">No tool calls yet</p>
+					<p className="px-basalt-2 py-basalt-3 text-xs text-basalt-muted-foreground">
+						No tool calls yet
+					</p>
 				)}
-				<div className="flex flex-wrap gap-2">
+				<div className="flex flex-wrap gap-basalt-2">
 					{diffs.map((diff) => (
 						<Popover key={diff.file}>
 							<PopoverTrigger asChild>
@@ -100,7 +106,7 @@ export function ToolChips({
 							</PopoverTrigger>
 							<PopoverContent arrow={false} className="max-w-[calc(100vw-2rem)]">
 								<PopoverTitle>{diff.file}</PopoverTitle>
-								<CodeBlock className="mt-2 max-h-64 text-xs">
+								<CodeBlock className="mt-basalt-2 max-h-basalt-64 text-xs">
 									{diff.content || "No diff preview available"}
 								</CodeBlock>
 							</PopoverContent>

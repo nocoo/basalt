@@ -109,7 +109,7 @@ export function FileDropzone({
 		<div
 			role="group"
 			aria-label={label}
-			className={cn(BASALT_UI_CLASS, "min-w-0 space-y-2", className)}
+			className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-2", className)}
 		>
 			<input
 				ref={input}
@@ -154,25 +154,25 @@ export function FileDropzone({
 					receive(Array.from(event.dataTransfer.files));
 				}}
 				className={cn(
-					"flex w-full min-w-0 flex-col items-center gap-2 rounded-basalt-lg border-2 border-dashed px-4 py-7 text-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-ring disabled:cursor-not-allowed disabled:opacity-50",
+					"flex w-full min-w-0 flex-col items-center gap-basalt-2 rounded-basalt-lg border-2 border-dashed px-basalt-4 py-basalt-7 text-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-ring disabled:cursor-not-allowed disabled:opacity-50",
 					dragging && !disabled
 						? "border-basalt-primary bg-basalt-accent"
 						: "border-basalt-border bg-basalt-card hover:bg-basalt-accent",
 				)}
 			>
-				<Upload className="size-6 text-basalt-muted-foreground" aria-hidden="true" />
+				<Upload className="size-basalt-6 text-basalt-muted-foreground" aria-hidden="true" />
 				<span className="text-sm font-medium">{dragging && !disabled ? dropLabel : label}</span>
 				{description && (
 					<span id={`${id}-description`} className="text-xs text-basalt-muted-foreground">
 						{description}
 					</span>
 				)}
-				<span className="rounded-basalt-md border border-basalt-border px-3 py-1 text-xs">
+				<span className="rounded-basalt-md border border-basalt-border px-basalt-3 py-basalt-1 text-xs">
 					{browseLabel}
 				</span>
 			</button>
 			{rejections.length > 0 && (
-				<ul role="alert" className="space-y-1 text-xs text-basalt-destructive">
+				<ul role="alert" className="space-y-basalt-1 text-xs text-basalt-destructive">
 					{rejections.map((item, index) => (
 						<li key={`${item.file.name}-${index}`} className="break-words">
 							{formatRejection ? formatRejection(item) : `${item.file.name}: ${REASONS[item.code]}`}

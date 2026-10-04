@@ -85,7 +85,7 @@ export const MenuBarTrigger = React.forwardRef<
 		ref={ref}
 		className={cn(
 			BASALT_UI_CLASS,
-			"inline-flex h-8 items-center rounded-basalt-sm px-3 text-sm font-medium outline-hidden hover:bg-basalt-accent data-[state=open]:bg-basalt-accent",
+			"inline-flex h-basalt-control items-center rounded-basalt-sm px-basalt-3 text-sm font-medium outline-hidden hover:bg-basalt-accent data-[state=open]:bg-basalt-accent",
 			className,
 		)}
 		{...props}
@@ -214,7 +214,7 @@ export const MenuBarContent = React.forwardRef<
 			<MenubarPrimitive.Content
 				ref={highlightRef}
 				sideOffset={sideOffset}
-				className={overlayPanelClass(cn("basalt-hover-list min-w-40", className))}
+				className={overlayPanelClass(cn("basalt-hover-list min-w-basalt-40", className))}
 				{...props}
 			/>
 		</MenubarPrimitive.Portal>
@@ -265,7 +265,7 @@ export function MenuBarRoot({ className, ...props }: MenuBarRootProps) {
 		<MenubarPrimitive.Root
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex h-9 items-center gap-0.5 rounded-basalt-md border border-basalt-border bg-basalt-popover px-1",
+				"flex min-h-basalt-control items-center gap-basalt-0_5 rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-1",
 				className,
 			)}
 			{...props}

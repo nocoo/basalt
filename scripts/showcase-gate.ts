@@ -12,6 +12,7 @@ import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from ".
 import { prerenderHtml } from "./prerender";
 import { assertAgentFeedback } from "./showcase-agent";
 import { assertCommandSelection } from "./showcase-command";
+import { assertDimensionTokens } from "./showcase-dimensions";
 import { assertEditingShowcases } from "./showcase-editing";
 import { assertExamplePages } from "./showcase-examples";
 import { assertHoverAndDensity } from "./showcase-hover";
@@ -53,6 +54,7 @@ export async function runShowcaseGate() {
 			const loader = await assertLoaderShowcase(page, url);
 			const agent = await assertAgentFeedback(page, url);
 			const hover = await assertHoverAndDensity(page, url);
+			const dimensions = await assertDimensionTokens(page, url);
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
 			const editing = await assertEditingShowcases(page, url);
@@ -66,6 +68,7 @@ export async function runShowcaseGate() {
 				loader,
 				agent,
 				hover,
+				dimensions,
 				examples,
 				reusable,
 				editing,

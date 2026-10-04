@@ -30,24 +30,24 @@ export function AppHeader({
 			data-density={density}
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex shrink-0 items-center justify-between gap-3 px-4 md:px-6",
-				density === "compact" ? "h-[52px]" : "h-14",
+				"flex shrink-0 items-center justify-between gap-basalt-3 px-basalt-4 md:px-basalt-6",
+				density === "compact" ? "h-[52px]" : "h-basalt-14",
 				className,
 			)}
 			{...props}
 		>
-			<div className="flex min-w-0 items-center gap-3">
+			<div className="flex min-w-0 items-center gap-basalt-3">
 				{leading ? (
 					<div data-basalt-header-leading="" className="flex shrink-0 items-center">
 						{leading}
 					</div>
 				) : null}
-				<div className="flex min-w-0 items-center gap-1">
+				<div className="flex min-w-0 items-center gap-basalt-1">
 					{breadcrumbs && breadcrumbs.length > 0 ? (
 						<>
 							<Breadcrumbs items={breadcrumbs} className="min-w-0" />
 							<ChevronRight
-								className="size-3 shrink-0 text-basalt-muted-foreground"
+								className="size-basalt-icon-sm shrink-0 text-basalt-muted-foreground"
 								aria-hidden="true"
 							/>
 						</>
@@ -58,7 +58,7 @@ export function AppHeader({
 				</div>
 			</div>
 			{actions ? (
-				<div data-basalt-header-actions="" className="flex shrink-0 items-center gap-1">
+				<div data-basalt-header-actions="" className="flex shrink-0 items-center gap-basalt-1">
 					{actions}
 				</div>
 			) : null}

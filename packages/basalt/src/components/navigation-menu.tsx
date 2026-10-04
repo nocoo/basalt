@@ -111,7 +111,10 @@ export interface NavigationMenuLinkProps
 export function NavigationMenuLink({ className, ...props }: NavigationMenuLinkProps) {
 	return (
 		<NavigationMenuPrimitive.Link
-			className={cn("rounded-basalt-md px-3 py-2 text-sm hover:bg-basalt-accent", className)}
+			className={cn(
+				"rounded-basalt-md px-basalt-3 py-basalt-2 text-sm hover:bg-basalt-accent",
+				className,
+			)}
 			{...props}
 		/>
 	);

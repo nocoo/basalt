@@ -1833,3 +1833,21 @@ Button (including icon buttons), Input, SelectTrigger, InputGroup and their comp
 Select, DropdownMenu, ContextMenuPanel, MenuBarContent, Combobox/Autocomplete, MultiSelect, ApprovalCard and ToolChips use one list-local hover layer. Its private DOM adapter batches reads in requestAnimationFrame, measures only when row/focus/selection/size changes, and updates CSS variables without a React state render. Position animates with transform, not top/left layout; reduced motion removes transitions. Disabled/hidden rows are excluded, keyboard focus takes priority, and observers/listeners are released with the mounted list. CommandPalette's list shrinks with its viewport so all rows remain reachable even inside short frames.
 
 Loader uses eight perimeter cells with an empty center, moving clockwise continuously. Label, shimmer and delayed elapsed-time controls are unchanged.
+
+## Dimension tokens
+
+Basalt geometry no longer depends on a host's Tailwind `--spacing`. Both CSS entrypoints expose the same `--basalt-space-*` and `--basalt-size-*` variables. Override semantic roles on a shared ancestor; portaled overlays inherit from their portal ancestor, so application-wide settings belong on `:root`. Theme switches do not reset dimensions.
+
+| Role | Token | Default |
+| --- | --- | --- |
+| Small / default / large control | `--basalt-size-control-sm`, `--basalt-size-control`, `--basalt-size-control-lg` | 28 / 32 / 40px |
+| Compact / standard / display icon | `--basalt-size-icon-sm`, `--basalt-size-icon`, `--basalt-size-icon-lg` | 12 / 14 / 16px |
+| Nested action | `--basalt-size-control-inset` | 28px |
+| Minimum touch target | `--basalt-size-touch` | 44px |
+| Menu option | `--basalt-size-menu-row`, `--basalt-space-menu-inset`, `--basalt-space-menu-x`, `--basalt-space-menu-y` | 32px / 6px / 8px / 6px |
+| Card padding | `--basalt-space-card-sm`, `--basalt-space-card`, `--basalt-space-card-lg` | 12 / 16 / 24px |
+| Field label gap | `--basalt-space-field-gap` | 6px |
+| Textarea minimum height | `--basalt-size-textarea-sm`, `--basalt-size-textarea`, `--basalt-size-textarea-lg` | 64 / 80 / 96px |
+| Table row / horizontal / vertical inset | `--basalt-size-table-row`, `--basalt-space-table-x`, `--basalt-space-table-y` | 36 / 12 / 6px |
+
+Defaults use rem, preserving browser font-size preferences. The base grid is `--basalt-space-unit: 0.25rem` with named steps for smaller details and larger layout gaps. Use role tokens for control/card/menu geometry, base steps for composition, and explicit ratios/content-dependent dimensions for layouts, chart marks and media. The library does not turn textareas, avatars or panels into 32px controls. Native `className` overrides such as `h-12`, `p-0` and `[&_svg]:size-5` still override Basalt token utilities through its configured class merger. Small variants are now truly smaller than defaults, rather than a second 32px preset.

@@ -130,8 +130,8 @@ export const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonPr
 				icon={icon}
 				className={cn(
 					toolbarControlClass,
-					"h-auto min-h-8 shrink-0",
-					resolvedSize === "icon" && "w-9",
+					"h-auto min-h-basalt-control shrink-0",
+					resolvedSize === "icon" && "w-basalt-control",
 					className,
 				)}
 				{...props}
@@ -157,7 +157,7 @@ export const ToolbarInput = React.forwardRef<HTMLInputElement, ToolbarInputProps
 	({ className, ...props }, ref) => (
 		<Input
 			ref={ref}
-			className={cn(toolbarControlClass, FOCUS_INSET, "h-auto min-h-8", className)}
+			className={cn(toolbarControlClass, FOCUS_INSET, "h-auto min-h-basalt-control", className)}
 			{...props}
 		/>
 	),

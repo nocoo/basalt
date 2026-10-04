@@ -89,9 +89,9 @@ describe("AppHeader", () => {
 		expect(screen.queryByRole("heading")).toBeNull();
 		expect(banner.children).toHaveLength(1);
 		expect(banner.children[0]).toHaveClass("min-w-0");
-		expect(banner.children[0]).toHaveClass("gap-3");
+		expect(banner.children[0]).toHaveClass("gap-basalt-3");
 		expect(banner.children[0]).not.toHaveClass("shrink-0");
-		expect(banner.children[0]).not.toHaveClass("gap-1");
+		expect(banner.children[0]).not.toHaveClass("gap-basalt-1");
 		expect(banner.children[0].contains(screen.getByRole("button", { name: "Menu" }))).toBe(true);
 	});
 
@@ -104,7 +104,7 @@ describe("AppHeader", () => {
 			/>,
 		);
 		const banner = screen.getByRole("banner", { name: "Workspace chrome" });
-		expect(banner.className.split(/\s+/)).toContain("h-14");
+		expect(banner.className.split(/\s+/)).toContain("h-basalt-14");
 		const ancestor = screen.getByRole("link", { name: "Examples" });
 		const title = screen.getByRole("heading", { level: 1, name: "Dashboard" });
 		expect(title.tagName).toBe("H1");

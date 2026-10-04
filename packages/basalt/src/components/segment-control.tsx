@@ -58,11 +58,14 @@ export const SegmentControl = React.forwardRef<HTMLFieldSetElement, SegmentContr
 			>
 				<legend
 					id={legendId}
-					className="mb-2 block text-xs font-medium text-basalt-muted-foreground"
+					className="mb-basalt-2 block text-xs font-medium text-basalt-muted-foreground"
 				>
 					{legend}
 				</legend>
-				<div data-slot="segment-control-viewport" className="max-w-full overflow-x-auto pb-1">
+				<div
+					data-slot="segment-control-viewport"
+					className="max-w-full overflow-x-auto pb-basalt-1"
+				>
 					<ToggleGroup
 						type="single"
 						value={value}

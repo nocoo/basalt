@@ -84,7 +84,7 @@ export function EditableNavItem({
 		>
 			{editing && onRename ? (
 				<InlineEditable
-					className="p-2"
+					className="p-basalt-2"
 					label={`${renameLabel} ${label}`}
 					value={label}
 					editing
@@ -98,12 +98,12 @@ export function EditableNavItem({
 					}}
 				/>
 			) : (
-				<div className="flex min-w-0 items-center gap-1">
+				<div className="flex min-w-0 items-center gap-basalt-1">
 					<Button
 						asChild={!!href}
 						variant="ghost"
 						disabled={disabled}
-						className="min-w-0 flex-1 justify-start gap-2"
+						className="min-w-0 flex-1 justify-start gap-basalt-2"
 						aria-current={selected ? "page" : undefined}
 						aria-label={label}
 						aria-describedby={count != null ? countId : undefined}
@@ -129,7 +129,7 @@ export function EditableNavItem({
 							<Pencil />
 						</Button>
 					)}
-					{actions && <div className="flex shrink-0 items-center gap-1">{actions}</div>}
+					{actions && <div className="flex shrink-0 items-center gap-basalt-1">{actions}</div>}
 				</div>
 			)}
 		</div>
@@ -139,7 +139,7 @@ export function EditableNavItem({
 export type FolderNavItemProps = EditableNavItemProps;
 /** Folder presentation with an overridable icon; no tree, router or permission model. */
 export function FolderNavItem({
-	icon = <Folder className="size-4" />,
+	icon = <Folder className="size-basalt-icon-lg" />,
 	...props
 }: FolderNavItemProps) {
 	return <EditableNavItem icon={icon} {...props} />;

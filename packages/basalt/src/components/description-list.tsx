@@ -23,7 +23,7 @@ function DescriptionListRoot({ className, columns = 2, ...props }: DescriptionLi
 		<dl
 			className={cn(
 				BASALT_UI_CLASS,
-				"grid gap-x-8 gap-y-3 text-sm",
+				"grid gap-x-basalt-8 gap-y-basalt-3 text-sm",
 				COLUMN_CLASS[columns],
 				className,
 			)}
@@ -44,7 +44,7 @@ function DescriptionListItem({ term, className, children, ...props }: Descriptio
 	return (
 		<div className={cn("min-w-0", className)} {...props}>
 			<dt className="text-xs text-basalt-muted-foreground">{term}</dt>
-			<dd className="mt-0.5 wrap-break-word text-basalt-foreground">{children}</dd>
+			<dd className="mt-basalt-0_5 wrap-break-word text-basalt-foreground">{children}</dd>
 		</div>
 	);
 }

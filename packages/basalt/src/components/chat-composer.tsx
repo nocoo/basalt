@@ -104,10 +104,10 @@ export function ChatComposer({
 
 	return (
 		<form
-			className={cn("border-t border-basalt-border/50 bg-basalt-card p-3", className)}
+			className={cn("border-t border-basalt-border/50 bg-basalt-card p-basalt-3", className)}
 			onSubmit={onSubmit}
 		>
-			<div className="flex items-end gap-2 rounded-2xl bg-basalt-secondary p-2 ring-1 ring-basalt-border/50">
+			<div className="flex items-end gap-basalt-2 rounded-2xl bg-basalt-secondary p-basalt-2 ring-1 ring-basalt-border/50">
 				<InputArea
 					ref={ref}
 					value={value}
@@ -126,7 +126,7 @@ export function ChatComposer({
 					placeholder={placeholder}
 					disabled={disabled}
 					aria-label={label}
-					className="max-h-40 min-h-[40px] flex-1 resize-none border-0 bg-transparent p-2 shadow-none ring-0"
+					className="max-h-basalt-40 min-h-basalt-control-lg flex-1 resize-none border-0 bg-transparent p-basalt-2 shadow-none ring-0"
 				/>
 				{streaming ? (
 					<Button
@@ -137,7 +137,7 @@ export function ChatComposer({
 						disabled={!onCancel}
 						aria-label={cancelLabel}
 					>
-						<Square className="h-3.5 w-3.5 fill-current" strokeWidth={0} />
+						<Square className="h-basalt-3_5 w-basalt-3_5 fill-current" strokeWidth={0} />
 					</Button>
 				) : (
 					<Button
@@ -146,7 +146,7 @@ export function ChatComposer({
 						disabled={disabled || !value.trim()}
 						aria-label={sendLabel}
 					>
-						<ArrowUp className="h-4 w-4" strokeWidth={2.25} />
+						<ArrowUp className="h-basalt-4 w-basalt-4" strokeWidth={2.25} />
 					</Button>
 				)}
 			</div>

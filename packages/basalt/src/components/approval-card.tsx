@@ -43,8 +43,8 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 		);
 	const busy = vm.status === "submitting";
 	return (
-		<LayerCard padding="sm" className={cn("w-full space-y-2", className)}>
-			<div className="flex items-start justify-between gap-3">
+		<LayerCard padding="sm" className={cn("w-full space-y-basalt-2", className)}>
+			<div className="flex items-start justify-between gap-basalt-3">
 				<h3 id={id} className="text-sm font-medium" aria-live="polite">
 					{question.label}
 				</h3>
@@ -63,7 +63,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 			<div
 				key={question.id}
 				ref={highlightRef}
-				className="basalt-agent-reveal basalt-hover-list space-y-2"
+				className="basalt-agent-reveal basalt-hover-list space-y-basalt-2"
 			>
 				{question.type === "single" ? (
 					<Radio.Group
@@ -71,7 +71,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 						onValueChange={vm.choose}
 						disabled={busy}
 						aria-labelledby={id}
-						className="gap-0.5"
+						className="gap-basalt-0_5"
 					>
 						{question.options.map((option) => (
 							<label
@@ -80,7 +80,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 								data-hover-selected={vm.answer?.selected.includes(option.id)}
 								data-disabled={option.disabled || busy ? "" : undefined}
 								htmlFor={`${id}-${option.id}`}
-								className="flex cursor-pointer items-center gap-2 rounded-basalt-sm px-2 py-1.5 text-[13px]"
+								className="flex cursor-pointer items-center gap-basalt-2 rounded-basalt-sm px-basalt-2 py-basalt-1_5 text-[13px]"
 							>
 								<Radio.Item
 									id={`${id}-${option.id}`}
@@ -92,7 +92,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 						))}
 					</Radio.Group>
 				) : (
-					<fieldset disabled={busy} aria-labelledby={id} className="space-y-0.5">
+					<fieldset disabled={busy} aria-labelledby={id} className="space-y-basalt-0_5">
 						{question.options.map((option) => (
 							<label
 								key={option.id}
@@ -100,7 +100,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 								data-hover-selected={vm.answer?.selected.includes(option.id)}
 								data-disabled={option.disabled || busy ? "" : undefined}
 								htmlFor={`${id}-${option.id}`}
-								className="flex cursor-pointer items-center gap-2 rounded-basalt-sm px-2 py-1.5 text-[13px]"
+								className="flex cursor-pointer items-center gap-basalt-2 rounded-basalt-sm px-basalt-2 py-basalt-1_5 text-[13px]"
 							>
 								<Checkbox
 									id={`${id}-${option.id}`}
@@ -128,8 +128,8 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 					{vm.error}
 				</p>
 			)}
-			<div className="flex items-center justify-between gap-2 border-t border-basalt-border pt-2">
-				<div className="flex items-center gap-2">
+			<div className="flex items-center justify-between gap-basalt-2 border-t border-basalt-border pt-basalt-2">
+				<div className="flex items-center gap-basalt-2">
 					<Button
 						variant="ghost"
 						size="icon"
@@ -143,7 +143,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 						{vm.position + 1} / {props.questions.length}
 					</span>
 				</div>
-				<div className="flex gap-2">
+				<div className="flex gap-basalt-2">
 					{question.required === false && (
 						<Button variant="ghost" size="sm" disabled={busy} onClick={vm.skip}>
 							Skip

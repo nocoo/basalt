@@ -53,7 +53,7 @@ export function Gauge({
 		dataAlternative !== undefined && dataAlternative !== null && dataAlternative !== false;
 
 	const plot = (
-		<div className={cn("relative h-36 w-36", className)}>
+		<div className={cn("relative h-basalt-36 w-basalt-36", className)}>
 			<ChartFrame
 				ariaLabel={ariaLabel}
 				className="h-full w-full"
@@ -94,7 +94,7 @@ export function Gauge({
 	}
 
 	return (
-		<div className="flex flex-col gap-2 min-h-0 min-w-0">
+		<div className="flex flex-col gap-basalt-2 min-h-0 min-w-0">
 			{hasSummary ? (
 				<div id={summaryId} className="text-xs text-basalt-muted-foreground">
 					{summary}

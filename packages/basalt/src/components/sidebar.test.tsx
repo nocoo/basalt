@@ -378,7 +378,7 @@ describe("ContentIsland", () => {
 		expect(island).toHaveAttribute("data-basalt-surface-root");
 		expect(island).toHaveAttribute("data-basalt-island", "edge-to-edge");
 		expect(island).not.toHaveAttribute("mobileSurface");
-		expect(island).not.toHaveClass("p-3", "rounded-[16px]", "ring-1");
-		expect(island).toHaveClass("md:p-5", "md:rounded-basalt-island");
+		expect(island).not.toHaveClass("p-basalt-3", "rounded-[16px]", "ring-1");
+		expect(island).toHaveClass("md:p-basalt-5", "md:rounded-basalt-island");
 	});
 });

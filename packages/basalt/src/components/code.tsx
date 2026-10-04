@@ -46,7 +46,7 @@ export function Code({ className, ...props }: CodeProps & HTMLAttributes<HTMLEle
 	return (
 		<code
 			className={cn(
-				"rounded-basalt-sm bg-basalt-secondary px-1.5 py-0.5 font-mono text-[13px] text-basalt-foreground",
+				"rounded-basalt-sm bg-basalt-secondary px-basalt-1_5 py-basalt-0_5 font-mono text-[13px] text-basalt-foreground",
 				className,
 			)}
 			{...props}
@@ -68,7 +68,7 @@ export function CodeBlock({
 	return (
 		<pre
 			className={controlSurfaceClass(
-				cn("overflow-x-auto p-4 font-mono text-basalt-foreground", className),
+				cn("overflow-x-auto p-basalt-4 font-mono text-basalt-foreground", className),
 			)}
 			{...props}
 		/>
@@ -93,7 +93,9 @@ export function CodeHighlighted({
 }: CodeHighlightedProps & HTMLAttributes<HTMLPreElement>) {
 	return (
 		<pre
-			className={controlSurfaceClass(cn("overflow-x-auto p-4 text-basalt-foreground", className))}
+			className={controlSurfaceClass(
+				cn("overflow-x-auto p-basalt-4 text-basalt-foreground", className),
+			)}
 			{...props}
 		>
 			<code className="font-mono leading-6">{highlight(code)}</code>

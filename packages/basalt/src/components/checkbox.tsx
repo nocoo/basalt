@@ -9,18 +9,18 @@ import { FOCUS_RING } from "./overlay";
 export type CheckboxSize = "sm" | "default";
 
 const CHECKBOX_SIZE_CLASS: Record<CheckboxSize, string> = {
-	sm: "h-3 w-3",
-	default: "h-4 w-4",
+	sm: "h-basalt-3 w-basalt-3",
+	default: "h-basalt-4 w-basalt-4",
 };
 
 const CHECK_ICON_CLASS: Record<CheckboxSize, string> = {
-	sm: "hidden h-3 w-3 group-data-[state=checked]:block",
-	default: "hidden h-4 w-4 group-data-[state=checked]:block",
+	sm: "hidden h-basalt-3 w-basalt-3 group-data-[state=checked]:block",
+	default: "hidden h-basalt-4 w-basalt-4 group-data-[state=checked]:block",
 };
 
 const MINUS_ICON_CLASS: Record<CheckboxSize, string> = {
-	sm: "hidden h-2.5 w-2.5 group-data-[state=indeterminate]:block",
-	default: "hidden h-3 w-3 group-data-[state=indeterminate]:block",
+	sm: "hidden h-basalt-2_5 w-basalt-2_5 group-data-[state=indeterminate]:block",
+	default: "hidden h-basalt-3 w-basalt-3 group-data-[state=indeterminate]:block",
 };
 
 type CheckboxGroupContextValue = {
@@ -152,7 +152,7 @@ const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(
 					disabled={disabled}
 					aria-invalid={group.ariaInvalid}
 					aria-describedby={group.mergedDescribedBy}
-					className={cn("flex flex-col gap-2", className)}
+					className={cn("flex flex-col gap-basalt-2", className)}
 				>
 					{children}
 					{group.invalid ? (
@@ -210,7 +210,10 @@ const CheckboxItem = React.forwardRef<
 		return box;
 	}
 	return (
-		<label htmlFor={controlId} className="flex items-center gap-2 text-sm text-basalt-foreground">
+		<label
+			htmlFor={controlId}
+			className="flex items-center gap-basalt-2 text-sm text-basalt-foreground"
+		>
 			{box}
 			{children}
 		</label>

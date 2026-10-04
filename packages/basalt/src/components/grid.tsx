@@ -22,7 +22,7 @@ export function Grid({
 }: GridProps & HTMLAttributes<HTMLDivElement>) {
 	return (
 		<div
-			className={cn("grid gap-3", className)}
+			className={cn("grid gap-basalt-3", className)}
 			{...props}
 			style={{
 				gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`,
@@ -38,7 +38,7 @@ export function GridItem({ className, ...props }: GridItemProps) {
 	return (
 		<div
 			className={cn(
-				"flex items-center justify-center rounded-basalt-lg bg-basalt-secondary px-6 py-8 text-sm",
+				"flex items-center justify-center rounded-basalt-lg bg-basalt-secondary px-basalt-6 py-basalt-8 text-sm",
 				className,
 			)}
 			{...props}

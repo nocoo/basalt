@@ -23,7 +23,7 @@ export const API = [
 				name: "height",
 				type: "number",
 				required: false,
-				description: "Explicit height of the skeleton line in pixels.\n\nNote: When omitted, default height is governed by CSS class tokens (h-2).",
+				description: "Explicit height of the skeleton line in pixels.\n\nNote: When omitted, default height is governed by CSS class tokens (h-basalt-2).",
 			},
 		],
 	},

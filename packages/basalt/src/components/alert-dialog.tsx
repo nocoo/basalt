@@ -241,7 +241,7 @@ AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
 export interface AlertDialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const AlertDialogHeader = ({ className, ...props }: AlertDialogHeaderProps) => (
-	<div className={cn("flex flex-col space-y-2 text-left", className)} {...props} />
+	<div className={cn("flex flex-col space-y-basalt-2 text-left", className)} {...props} />
 );
 AlertDialogHeader.displayName = "AlertDialogHeader";
 
@@ -249,7 +249,10 @@ export interface AlertDialogFooterProps extends React.HTMLAttributes<HTMLDivElem
 
 export const AlertDialogFooter = ({ className, ...props }: AlertDialogFooterProps) => (
 	<div
-		className={cn("mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}
+		className={cn(
+			"mt-basalt-6 flex flex-col-reverse gap-basalt-2 sm:flex-row sm:justify-end",
+			className,
+		)}
 		{...props}
 	/>
 );

@@ -12,7 +12,7 @@ export type BasaltMarkProps = Omit<SVGAttributes<SVGSVGElement>, "className"> & 
 export function BasaltMark({ className, ...props }: BasaltMarkProps) {
 	return (
 		<svg
-			className={cn("h-5 w-5", className)}
+			className={cn("h-basalt-5 w-basalt-5", className)}
 			viewBox="0 0 128 128"
 			role="img"
 			aria-label="Basalt"

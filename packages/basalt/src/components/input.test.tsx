@@ -7,9 +7,9 @@ import { Input, type InputProps } from "./input";
 function acceptInputProps(_props: InputProps) {}
 
 const SIZE_CLASS = {
-	sm: ["h-8", "px-2.5", "py-1.5", "text-xs"],
-	default: ["h-8", "px-3", "py-1", "text-sm"],
-	lg: ["h-10", "px-4", "py-2", "text-base"],
+	sm: ["h-basalt-control-sm", "px-basalt-control-x-sm", "py-basalt-control-y", "text-xs"],
+	default: ["h-basalt-control", "px-basalt-control-x", "py-basalt-control-y", "text-sm"],
+	lg: ["h-basalt-control-lg", "px-basalt-4", "py-basalt-2", "text-base"],
 } as const;
 
 describe("Input", () => {
@@ -20,7 +20,9 @@ describe("Input", () => {
 		expect(input.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
-		expect(input.className.split(/\s+/)).toEqual(expect.arrayContaining(["h-8", "px-3", "py-1"]));
+		expect(input.className.split(/\s+/)).toEqual(
+			expect.arrayContaining(["h-basalt-control", "px-basalt-control-x", "py-basalt-control-y"]),
+		);
 		expect(input.className).toContain("bg-basalt-control");
 		expect(input.className).not.toContain("bg-basalt-background");
 	});

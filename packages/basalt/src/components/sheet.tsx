@@ -102,10 +102,10 @@ export const SheetDescription = React.forwardRef<
 SheetDescription.displayName = DialogPrimitive.Description.displayName;
 
 const SIDE = {
-	right: `fixed inset-y-0 right-0 ${BASALT_UI_CLASS} flex h-full w-80 flex-col gap-3 border-l border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg`,
-	left: `fixed inset-y-0 left-0 ${BASALT_UI_CLASS} flex h-full w-80 flex-col gap-3 border-r border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg`,
-	top: `fixed inset-x-0 top-0 ${BASALT_UI_CLASS} flex h-80 w-full flex-col gap-3 border-b border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg`,
-	bottom: `fixed inset-x-0 bottom-0 ${BASALT_UI_CLASS} flex h-80 w-full flex-col gap-3 border-t border-basalt-border p-6 text-sm text-basalt-foreground shadow-lg`,
+	right: `fixed inset-y-0 right-0 ${BASALT_UI_CLASS} flex h-full w-basalt-80 flex-col gap-basalt-3 border-l border-basalt-border p-basalt-overlay text-sm text-basalt-foreground shadow-lg`,
+	left: `fixed inset-y-0 left-0 ${BASALT_UI_CLASS} flex h-full w-basalt-80 flex-col gap-basalt-3 border-r border-basalt-border p-basalt-overlay text-sm text-basalt-foreground shadow-lg`,
+	top: `fixed inset-x-0 top-0 ${BASALT_UI_CLASS} flex h-basalt-80 w-full flex-col gap-basalt-3 border-b border-basalt-border p-basalt-overlay text-sm text-basalt-foreground shadow-lg`,
+	bottom: `fixed inset-x-0 bottom-0 ${BASALT_UI_CLASS} flex h-basalt-80 w-full flex-col gap-basalt-3 border-t border-basalt-border p-basalt-overlay text-sm text-basalt-foreground shadow-lg`,
 } as const;
 
 export type SheetSide = keyof typeof SIDE;
@@ -199,7 +199,7 @@ SheetContent.displayName = "SheetContent";
 export interface SheetHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const SheetHeader = ({ className, ...props }: SheetHeaderProps) => (
-	<div className={cn("flex flex-col space-y-2 text-left", className)} {...props} />
+	<div className={cn("flex flex-col space-y-basalt-2 text-left", className)} {...props} />
 );
 SheetHeader.displayName = "SheetHeader";
 
@@ -207,7 +207,7 @@ export interface SheetFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const SheetFooter = ({ className, ...props }: SheetFooterProps) => (
 	<div
-		className={cn("flex flex-col-reverse gap-2 sm:flex-row sm:justify-end", className)}
+		className={cn("flex flex-col-reverse gap-basalt-2 sm:flex-row sm:justify-end", className)}
 		{...props}
 	/>
 );

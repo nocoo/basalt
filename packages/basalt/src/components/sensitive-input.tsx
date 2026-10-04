@@ -5,9 +5,9 @@ import { Button } from "./button";
 import { Input, type InputSize } from "./input";
 
 const TOGGLE_SIZE_CLASS: Record<InputSize, string> = {
-	sm: "h-8 w-8",
-	default: "h-8 w-8",
-	lg: "h-10 w-10",
+	sm: "h-basalt-control-sm w-basalt-control-sm",
+	default: "h-basalt-control w-basalt-control",
+	lg: "h-basalt-control-lg w-basalt-control-lg",
 };
 
 export type SensitiveInputProps = Omit<React.ComponentProps<"input">, "type" | "size"> & {
@@ -52,7 +52,7 @@ export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputP
 					type={revealed ? "text" : "password"}
 					size={size}
 					passwordManagerIgnore={passwordManagerIgnore}
-					className={cn("pr-10", className)}
+					className={cn("pr-basalt-10", className)}
 					disabled={disabled}
 					{...props}
 				/>
@@ -65,9 +65,9 @@ export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputP
 					onClick={() => setRevealed((value) => !value)}
 				>
 					{revealed ? (
-						<EyeOff className="h-4 w-4" aria-hidden="true" />
+						<EyeOff className="h-basalt-4 w-basalt-4" aria-hidden="true" />
 					) : (
-						<Eye className="h-4 w-4" aria-hidden="true" />
+						<Eye className="h-basalt-4 w-basalt-4" aria-hidden="true" />
 					)}
 				</Button>
 			</div>

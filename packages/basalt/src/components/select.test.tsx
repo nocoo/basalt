@@ -32,9 +32,9 @@ function acceptItemProps(_props: SelectItemProps) {}
 function acceptLabelProps(_props: SelectLabelProps) {}
 
 const SIZE_CLASS = {
-	sm: ["h-8", "px-2.5", "text-xs"],
-	default: ["h-8", "px-3", "text-sm"],
-	lg: ["h-10", "px-4", "text-base"],
+	sm: ["h-basalt-control-sm", "px-basalt-control-x-sm", "text-xs"],
+	default: ["h-basalt-control", "px-basalt-control-x", "text-sm"],
+	lg: ["h-basalt-control-lg", "px-basalt-4", "text-base"],
 } as const;
 
 describe("Select", () => {
@@ -51,7 +51,9 @@ describe("Select", () => {
 		expect(trigger.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
-		expect(trigger.className.split(/\s+/)).toEqual(expect.arrayContaining(["h-8", "px-3"]));
+		expect(trigger.className.split(/\s+/)).toEqual(
+			expect.arrayContaining(["h-basalt-control", "px-basalt-control-x"]),
+		);
 	});
 
 	it("opens the list below the trigger", () => {
@@ -68,9 +70,9 @@ describe("Select", () => {
 		);
 		const list = screen.getByRole("listbox");
 		expect(list).toHaveAttribute("data-side", "bottom");
-		expect(list.className).toContain("py-1.5");
+		expect(list.className).toContain("py-basalt-menu-inset");
 		const first = screen.getByRole("option", { name: "All deployed versions" });
-		expect(first.className).toContain("mx-1.5");
+		expect(first.className).toContain("mx-basalt-menu-inset");
 		expect(first).toHaveAttribute("data-basalt-hover-item");
 		expect(first.closest(".basalt-hover-list")).toBeTruthy();
 		expect(first.className).not.toContain("focus:bg-basalt-accent");
@@ -209,7 +211,7 @@ describe("Select", () => {
 		expect(trigger.tagName).toBe("BUTTON");
 		expect(ref.current).toBe(trigger);
 		expect(trigger.className).toContain("extra");
-		expect(trigger.className).toContain("h-8");
+		expect(trigger.className).toContain("h-basalt-control");
 	});
 
 	it("selects an uncontrolled value and reports a controlled next value", () => {

@@ -854,7 +854,7 @@ export function DatePicker({
 				readOnly={readOnly}
 				min={mode === "range" ? undefined : min}
 				max={mode === "range" ? undefined : max}
-				className="sr-only mb-2 h-7"
+				className="sr-only mb-basalt-2 h-basalt-control-inset"
 				style={{
 					position: "absolute",
 					width: 1,
@@ -909,13 +909,17 @@ export function DatePicker({
 				</Button>
 			</PopoverTrigger>
 			{isInvalid && validationMessage ? (
-				<span id={errorId} role="alert" className="mt-1 block text-xs text-basalt-destructive">
+				<span
+					id={errorId}
+					role="alert"
+					className="mt-basalt-1 block text-xs text-basalt-destructive"
+				>
 					{validationMessage}
 				</span>
 			) : null}
 			<PopoverContent
 				arrow={false}
-				className="w-64 p-3"
+				className="w-basalt-64 p-basalt-3"
 				aria-label={calendarLabel}
 				aria-describedby={keyboardInstructionsId}
 				onOpenAutoFocus={(event) => {
@@ -944,13 +948,13 @@ export function DatePicker({
 				}}
 			>
 				{presets && presets.length > 0 ? (
-					<div className="mb-2 flex flex-wrap gap-1">
+					<div className="mb-basalt-2 flex flex-wrap gap-basalt-1">
 						{presets.map((preset) => (
 							<Button
 								key={preset.label}
 								type="button"
 								variant="ghost"
-								className="h-7 px-2 text-xs"
+								className="h-basalt-control-inset px-basalt-2 text-xs"
 								disabled={disabled || readOnly}
 								onClick={() => applyPreset(preset)}
 							>
@@ -959,14 +963,14 @@ export function DatePicker({
 						))}
 					</div>
 				) : null}
-				<div className="mb-2 flex items-center justify-between gap-2">
+				<div className="mb-basalt-2 flex items-center justify-between gap-basalt-2">
 					<Button
 						type="button"
 						variant="ghost"
 						size="icon"
 						icon={<ChevronLeft />}
 						aria-label={prevMonthLabel}
-						className="size-8"
+						className="size-basalt-8"
 						disabled={disabled || !previousMonth || previousMonth.y < 1}
 						onClick={() => {
 							if (!previousMonth || previousMonth.y < 1) {
@@ -991,7 +995,7 @@ export function DatePicker({
 						size="icon"
 						icon={<ChevronRight />}
 						aria-label={nextMonthLabel}
-						className="size-8"
+						className="size-basalt-8"
 						disabled={disabled || !followingMonth}
 						onClick={() => {
 							if (!followingMonth) {
@@ -1123,7 +1127,7 @@ export function DatePicker({
 								<th
 									key={`${day}-${index}`}
 									scope="col"
-									className="h-8 text-center text-xs font-medium text-basalt-muted-foreground"
+									className="h-basalt-control text-center text-xs font-medium text-basalt-muted-foreground"
 								>
 									{day}
 								</th>
@@ -1140,7 +1144,7 @@ export function DatePicker({
 											<td
 												key={`empty-${index}`}
 												role="gridcell"
-												className="h-8 p-0 text-center"
+												className="h-basalt-control p-0 text-center"
 												ref={() => {
 													dayRefs.current[index] = null;
 												}}
@@ -1171,7 +1175,7 @@ export function DatePicker({
 											key={iso}
 											role="gridcell"
 											aria-selected={isSelected ? "true" : undefined}
-											className="h-8 p-0 text-center"
+											className="h-basalt-control p-0 text-center"
 										>
 											<button
 												type="button"
@@ -1185,7 +1189,7 @@ export function DatePicker({
 												disabled={disabled || readOnly || !inRange}
 												className={cn(
 													CALENDAR_BUTTON,
-													"mx-auto flex h-8 w-8 items-center justify-center rounded-basalt-md text-sm",
+													"mx-auto flex h-basalt-control w-basalt-control items-center justify-center rounded-basalt-md text-sm",
 													inMonth ? "text-basalt-foreground" : "text-basalt-muted-foreground",
 													inRange && "hover:bg-basalt-accent",
 													inSelectedRange && !isRangeEdge && "bg-basalt-accent",

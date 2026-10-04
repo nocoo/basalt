@@ -8,7 +8,7 @@ import { FOCUS_RING } from "./overlay";
 
 // Keep rounded corners inside the button's rectangular pointer target.
 const buttonVariants = cva(
-	`${BASALT_UI_CLASS} relative inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-basalt-md text-sm font-medium transition-colors before:absolute before:inset-0 ${FOCUS_RING} disabled:pointer-events-none disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0`,
+	`${BASALT_UI_CLASS} relative inline-flex cursor-pointer items-center justify-center gap-basalt-control-gap rounded-basalt-md text-sm font-medium transition-colors before:absolute before:inset-0 ${FOCUS_RING} disabled:pointer-events-none disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0`,
 	{
 		variants: {
 			variant: {
@@ -22,10 +22,11 @@ const buttonVariants = cva(
 				link: "text-basalt-primary underline-offset-4 hover:underline",
 			},
 			size: {
-				default: "h-8 px-3 py-1.5 [&_svg]:size-3.5",
-				sm: "h-8 rounded-basalt-md px-3 text-xs [&_svg]:size-3.5",
-				lg: "h-10 rounded-basalt-md px-6 [&_svg]:size-4",
-				icon: "h-8 w-8 shrink-0 [&_svg]:size-3.5",
+				default:
+					"h-basalt-control px-basalt-control-x py-basalt-control-y [&_svg]:size-basalt-icon",
+				sm: "h-basalt-control-sm rounded-basalt-md px-basalt-control-x text-xs [&_svg]:size-basalt-icon",
+				lg: "h-basalt-control-lg rounded-basalt-md px-basalt-control-x-lg [&_svg]:size-basalt-icon-lg",
+				icon: "h-basalt-control w-basalt-control shrink-0 [&_svg]:size-basalt-icon",
 			},
 		},
 		defaultVariants: {

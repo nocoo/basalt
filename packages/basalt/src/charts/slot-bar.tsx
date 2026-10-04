@@ -106,7 +106,7 @@ export function SlotBarChart<
 function SlotItemBars({
 	items,
 	ariaLabel = "Slot bar chart",
-	heightClass = "h-6",
+	heightClass = "h-basalt-6",
 	gapClass = "gap-px",
 	emptyClass = "bg-basalt-muted",
 	className,

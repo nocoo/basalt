@@ -82,7 +82,7 @@ const SwitchRoot = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Roo
 				BASALT_UI_CLASS,
 				"peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-basalt-primary data-[state=unchecked]:bg-basalt-input disabled:cursor-not-allowed disabled:opacity-50",
 				FOCUS_RING,
-				size === "sm" ? "h-4 w-7" : "h-6 w-11",
+				size === "sm" ? "h-basalt-4 w-basalt-7" : "h-basalt-6 w-basalt-11",
 				className,
 			)}
 			{...props}
@@ -92,8 +92,8 @@ const SwitchRoot = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Roo
 				className={cn(
 					"pointer-events-none block rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=unchecked]:translate-x-0",
 					size === "sm"
-						? "h-3 w-3 data-[state=checked]:translate-x-3"
-						: "h-5 w-5 data-[state=checked]:translate-x-5",
+						? "h-basalt-3 w-basalt-3 data-[state=checked]:translate-x-3"
+						: "h-basalt-5 w-basalt-5 data-[state=checked]:translate-x-5",
 				)}
 			/>
 		</SwitchPrimitives.Root>
@@ -137,7 +137,7 @@ const SwitchGroup = React.forwardRef<HTMLFieldSetElement, SwitchGroupProps>(
 					disabled={disabled}
 					aria-invalid={group.ariaInvalid}
 					aria-describedby={group.mergedDescribedBy}
-					className={cn("flex flex-col gap-2", className)}
+					className={cn("flex flex-col gap-basalt-2", className)}
 				>
 					{children}
 					{group.invalid ? (
@@ -195,7 +195,10 @@ const SwitchItem = React.forwardRef<
 		return box;
 	}
 	return (
-		<label htmlFor={controlId} className="flex items-center gap-2 text-sm text-basalt-foreground">
+		<label
+			htmlFor={controlId}
+			className="flex items-center gap-basalt-2 text-sm text-basalt-foreground"
+		>
 			{box}
 			{children}
 		</label>

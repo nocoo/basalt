@@ -26,7 +26,7 @@ export function BatteryMeter({
 		<div
 			className={cn(
 				BASALT_UI_CLASS,
-				"inline-flex items-center gap-2 text-xs tabular-nums",
+				"inline-flex items-center gap-basalt-2 text-xs tabular-nums",
 				className,
 			)}
 			{...props}
@@ -47,7 +47,7 @@ export function BatteryMeter({
 			)}
 			<span
 				aria-hidden="true"
-				className="relative inline-flex h-4 w-9 gap-0.5 rounded-sm border border-basalt-muted-foreground/60 p-0.5"
+				className="relative inline-flex h-basalt-4 w-basalt-9 gap-basalt-0_5 rounded-sm border border-basalt-muted-foreground/60 p-basalt-0_5"
 			>
 				{[0, 1, 2, 3].map((segment) => (
 					<span
@@ -60,9 +60,9 @@ export function BatteryMeter({
 						/>
 					</span>
 				))}
-				<span className="absolute -right-1 top-1 h-1.5 w-0.5 rounded-r-sm bg-basalt-muted-foreground/60" />
+				<span className="absolute -right-basalt-1 top-basalt-1 h-basalt-1_5 w-basalt-0_5 rounded-r-sm bg-basalt-muted-foreground/60" />
 			</span>
-			<span aria-hidden="true" className="min-w-9 text-basalt-foreground">
+			<span aria-hidden="true" className="min-w-basalt-9 text-basalt-foreground">
 				{available ? `${Math.round(charge)}%` : "Offline"}
 			</span>
 			{status === "charging" && available ? (

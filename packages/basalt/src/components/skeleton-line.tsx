@@ -23,7 +23,7 @@ export interface SkeletonLineProps extends HTMLAttributes<HTMLDivElement> {
 	/**
 	 * Explicit height of the skeleton line in pixels.
 	 *
-	 * Note: When omitted, default height is governed by CSS class tokens (h-2).
+	 * Note: When omitted, default height is governed by CSS class tokens (h-basalt-2).
 	 */
 	height?: number;
 }
@@ -44,7 +44,7 @@ export function SkeletonLine({
 	};
 	return (
 		<div
-			className={cn("relative h-2 overflow-hidden rounded-sm bg-basalt-muted", className)}
+			className={cn("relative h-basalt-2 overflow-hidden rounded-sm bg-basalt-muted", className)}
 			style={lineStyle}
 			aria-hidden="true"
 			{...props}

@@ -155,13 +155,13 @@ export function InlineEditable({
 			role="group"
 			aria-label={label}
 			aria-busy={busy}
-			className={cn(BASALT_UI_CLASS, "min-w-0 space-y-2", className)}
+			className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-2", className)}
 			onBlur={(event) => {
 				if (saveOnBlur && !event.currentTarget.contains(event.relatedTarget)) void save("blur");
 			}}
 		>
 			{isEditing ? (
-				<div className="flex flex-wrap items-center gap-2">
+				<div className="flex flex-wrap items-center gap-basalt-2">
 					<Input
 						ref={input}
 						aria-label={label}
@@ -212,7 +212,7 @@ export function InlineEditable({
 					type="button"
 					disabled={disabled || pending}
 					aria-label={`${editLabel} ${label}`}
-					className="group flex max-w-full items-center gap-2 rounded-basalt-md px-1 py-1 text-left text-sm hover:bg-basalt-accent focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
+					className="group flex max-w-full items-center gap-basalt-2 rounded-basalt-md px-basalt-1 py-basalt-1 text-left text-sm hover:bg-basalt-accent focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
 					onClick={() => {
 						setDraft(value);
 						setFailure(undefined);
@@ -222,7 +222,10 @@ export function InlineEditable({
 					<span className={cn("min-w-0 break-words", !value && "text-basalt-muted-foreground")}>
 						{value || placeholder}
 					</span>
-					<Pencil className="size-3.5 shrink-0 text-basalt-muted-foreground" aria-hidden="true" />
+					<Pencil
+						className="size-basalt-icon shrink-0 text-basalt-muted-foreground"
+						aria-hidden="true"
+					/>
 				</button>
 			)}
 			{busy && (

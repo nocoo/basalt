@@ -60,10 +60,10 @@ const VARIANT_CLASS: Record<ToastVariant, string> = {
 
 const VARIANT_ICON: Record<ToastVariant, ReactNode> = {
 	default: null,
-	success: <Check className="size-4" />,
-	error: <CircleAlert className="size-4" />,
-	warning: <TriangleAlert className="size-4" />,
-	info: <Info className="size-4" />,
+	success: <Check className="size-basalt-icon-lg" />,
+	error: <CircleAlert className="size-basalt-icon-lg" />,
+	warning: <TriangleAlert className="size-basalt-icon-lg" />,
+	info: <Info className="size-basalt-icon-lg" />,
 };
 
 function resolveIcon(variant: ToastVariant, icon: ToastOptions["icon"]) {
@@ -285,11 +285,11 @@ export function Toaster({ closeButton = true, ...props }: ToasterProps) {
 		<Sonner
 			closeButton={closeButton}
 			icons={{
-				success: <Check className="size-4" />,
-				error: <CircleAlert className="size-4" />,
-				warning: <TriangleAlert className="size-4" />,
-				info: <Info className="size-4" />,
-				close: <X className="size-3.5" />,
+				success: <Check className="size-basalt-icon-lg" />,
+				error: <CircleAlert className="size-basalt-icon-lg" />,
+				warning: <TriangleAlert className="size-basalt-icon-lg" />,
+				info: <Info className="size-basalt-icon-lg" />,
+				close: <X className="size-basalt-icon" />,
 			}}
 			toastOptions={{
 				classNames: {
@@ -298,7 +298,7 @@ export function Toaster({ closeButton = true, ...props }: ToasterProps) {
 					description: "text-sm text-basalt-muted-foreground",
 					closeButton:
 						"border-basalt-border bg-basalt-popover text-basalt-muted-foreground hover:text-basalt-foreground",
-					icon: "size-4",
+					icon: "size-basalt-icon-lg",
 					success: VARIANT_CLASS.success,
 					error: VARIANT_CLASS.error,
 					warning: VARIANT_CLASS.warning,

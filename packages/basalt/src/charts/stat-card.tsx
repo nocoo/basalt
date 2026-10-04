@@ -113,11 +113,11 @@ export function StatCard({
 
 	const cardContent = (
 		<>
-			<div className="flex items-start justify-between gap-3">
-				<div className="min-w-0 flex-1 space-y-1">
+			<div className="flex items-start justify-between gap-basalt-3">
+				<div className="min-w-0 flex-1 space-y-basalt-1">
 					<p className="text-xs text-basalt-muted-foreground md:text-sm">{heading}</p>
 					{hasStatus ? (
-						<div className="pt-0.5">{status}</div>
+						<div className="pt-basalt-0_5">{status}</div>
 					) : (
 						<p className="font-display text-xl font-semibold tracking-tight text-basalt-foreground md:text-2xl">
 							{display}
@@ -126,23 +126,23 @@ export function StatCard({
 					{subtitle ? <p className="text-xs text-basalt-muted-foreground">{subtitle}</p> : null}
 				</div>
 				{hasHeaderEnd ? (
-					<div className="flex items-center gap-2 shrink-0">
+					<div className="flex items-center gap-basalt-2 shrink-0">
 						{hasAction ? <div className="flex items-center">{action}</div> : null}
 						{Icon ? (
-							<div className={cn("rounded-md bg-basalt-card p-2", iconColor)}>
-								<Icon className="h-5 w-5" strokeWidth={1.5} />
+							<div className={cn("rounded-md bg-basalt-card p-basalt-2", iconColor)}>
+								<Icon className="h-basalt-5 w-basalt-5" strokeWidth={1.5} />
 							</div>
 						) : null}
 					</div>
 				) : null}
 			</div>
 
-			{hasChildren ? <div className="mt-2">{children}</div> : null}
+			{hasChildren ? <div className="mt-basalt-2">{children}</div> : null}
 
 			{hasTrendContent ? (
-				<div className="mt-3 flex items-center gap-1 text-xs">{trendContent}</div>
+				<div className="mt-basalt-3 flex items-center gap-basalt-1 text-xs">{trendContent}</div>
 			) : trend ? (
-				<div className="mt-3 flex items-center gap-1 text-xs">
+				<div className="mt-basalt-3 flex items-center gap-basalt-1 text-xs">
 					<span
 						className={cn(
 							"font-medium",
@@ -163,7 +163,7 @@ export function StatCard({
 		// biome-ignore lint/a11y/useAriaPropsSupportedByRole: dynamic role is "group" | "img", both support aria-label
 		<div
 			className={cn(
-				"rounded-basalt-md border border-basalt-border bg-basalt-secondary p-4",
+				"rounded-basalt-md border border-basalt-border bg-basalt-secondary p-basalt-4",
 				className,
 			)}
 			role={isInteractive ? "group" : "img"}
@@ -186,5 +186,9 @@ export function StatGrid({ children, columns = 4, className }: StatGridProps) {
 		3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
 		4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
 	};
-	return <div className={cn("grid gap-3 md:gap-4", gridCols[columns], className)}>{children}</div>;
+	return (
+		<div className={cn("grid gap-basalt-3 md:gap-basalt-4", gridCols[columns], className)}>
+			{children}
+		</div>
+	);
 }

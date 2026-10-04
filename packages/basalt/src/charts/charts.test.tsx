@@ -46,7 +46,7 @@ describe("charts", () => {
 			/>,
 		);
 		expect(screen.getByText("Requests")).toBeInTheDocument();
-		expect(screen.getByTestId("chart-shell")).toHaveClass("h-36", "w-56");
+		expect(screen.getByTestId("chart-shell")).toHaveClass("h-basalt-36", "w-basalt-56");
 		const colored = render(
 			<LineChart
 				data={points}

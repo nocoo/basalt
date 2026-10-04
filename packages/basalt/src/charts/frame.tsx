@@ -23,7 +23,7 @@ export type ChartFrameProps = {
 	}>;
 	/**
 	 * Tailwind size classes for the chart container.
-	 * @default "h-36 w-56"
+	 * @default "h-basalt-36 w-basalt-56"
 	 */
 	size?: string;
 	/**
@@ -64,7 +64,7 @@ function ChartContainer({
 	ariaLabel,
 	className,
 	children,
-	size = "h-36 w-56",
+	size = "h-basalt-36 w-basalt-56",
 	legend,
 	summary,
 	dataAlternative,
@@ -129,7 +129,7 @@ function ChartContainer({
 			role="group"
 			aria-label={ariaLabel}
 			aria-describedby={hasSummary ? summaryId : undefined}
-			className="relative m-0 flex flex-col gap-2 p-0 min-h-0 min-w-0"
+			className="relative m-0 flex flex-col gap-basalt-2 p-0 min-h-0 min-w-0"
 		>
 			{hasSummary ? (
 				<div id={summaryId} className="text-xs text-basalt-muted-foreground">

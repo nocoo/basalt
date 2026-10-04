@@ -25,7 +25,7 @@ describe("DialogsPage", () => {
 	it("opens a sized dialog at the documented width", () => {
 		render(<DialogsPage />);
 		fireEvent.click(screen.getByRole("button", { name: "Base (384px)" }));
-		expect(screen.getByRole("dialog")).toHaveClass("sm:w-96");
+		expect(screen.getByRole("dialog")).toHaveClass("sm:w-basalt-96");
 	});
 
 	it("opens a form dialog with Field and Input", () => {
@@ -53,7 +53,7 @@ describe("DialogsPage", () => {
 	it("opens money-flow dialogs from small send to wide review", () => {
 		render(<DialogsPage />);
 		fireEvent.click(screen.getByRole("button", { name: "Open send" }));
-		expect(screen.getByRole("dialog").className).toContain("sm:w-72");
+		expect(screen.getByRole("dialog").className).toContain("sm:w-basalt-72");
 		expect(screen.getByRole("heading", { name: "Send $1,200?" })).toBeInTheDocument();
 		expect(screen.queryByRole("button", { name: "Close" })).not.toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Cancel" }));

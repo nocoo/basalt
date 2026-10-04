@@ -121,7 +121,7 @@ export const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.R
 				<SliderPrimitive.Track
 					className={cn(
 						"relative grow overflow-hidden rounded-full bg-basalt-muted",
-						isVertical ? "h-full w-2" : "h-2 w-full",
+						isVertical ? "h-full w-basalt-2" : "h-basalt-2 w-full",
 					)}
 				>
 					<SliderPrimitive.Range
@@ -150,7 +150,7 @@ export const Slider = React.forwardRef<React.ElementRef<typeof SliderPrimitive.R
 
 					const thumbProps: React.ComponentPropsWithoutRef<typeof SliderPrimitive.Thumb> = {
 						className: cn(
-							"block h-4 w-4 rounded-full border border-basalt-primary bg-basalt-background shadow",
+							"block h-basalt-4 w-basalt-4 rounded-full border border-basalt-primary bg-basalt-background shadow",
 							FOCUS_RING,
 						),
 					};

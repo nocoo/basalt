@@ -39,14 +39,14 @@ export function ChatHeader({
 		<header
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex items-center justify-between gap-2 border-b border-basalt-border/50 px-3 py-2.5",
+				"flex items-center justify-between gap-basalt-2 border-b border-basalt-border/50 px-basalt-3 py-basalt-2_5",
 				className,
 			)}
 			{...props}
 		>
-			<div className="flex min-w-0 items-center gap-2">
+			<div className="flex min-w-0 items-center gap-basalt-2">
 				{leading ? (
-					<span className="flex h-8 w-8 items-center justify-center">{leading}</span>
+					<span className="flex h-basalt-8 w-basalt-8 items-center justify-center">{leading}</span>
 				) : null}
 				<div className="min-w-0">
 					<p className="truncate text-sm font-semibold tracking-tight">{title}</p>
@@ -55,7 +55,7 @@ export function ChatHeader({
 					) : null}
 				</div>
 			</div>
-			{children ? <div className="flex items-center gap-1">{children}</div> : null}
+			{children ? <div className="flex items-center gap-basalt-1">{children}</div> : null}
 		</header>
 	);
 }

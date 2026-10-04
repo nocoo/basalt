@@ -37,8 +37,10 @@ describe("Combobox", () => {
 		render(<Combobox items={FRUITS} placeholder="Fruit" />);
 		typeQuery("Fruit", "a");
 		const list = screen.getByRole("listbox");
-		expect(list.className).toContain("py-1.5");
-		expect(screen.getByRole("option", { name: "Apple" }).className).toContain("mx-1.5");
+		expect(list.className).toContain("py-basalt-menu-inset");
+		expect(screen.getByRole("option", { name: "Apple" }).className).toContain(
+			"mx-basalt-menu-inset",
+		);
 	});
 
 	it("does not highlight an option until hover or arrow keys", () => {
@@ -327,11 +329,11 @@ describe("Combobox", () => {
 	it("applies named sizes and loading", () => {
 		const { rerender } = render(<Combobox items={FRUITS} placeholder="Fruit" />);
 		expect(screen.getByLabelText("Fruit").className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-8", "px-3"]),
+			expect.arrayContaining(["h-basalt-control", "px-basalt-control-x"]),
 		);
 		rerender(<Combobox items={FRUITS} placeholder="Fruit" size="sm" />);
 		expect(screen.getByLabelText("Fruit").className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-8", "px-2.5"]),
+			expect.arrayContaining(["h-basalt-control-sm", "px-basalt-control-x-sm"]),
 		);
 		rerender(<Combobox items={FRUITS} placeholder="Fruit" loading />);
 		expect(screen.getByLabelText("Fruit")).toBeDisabled();

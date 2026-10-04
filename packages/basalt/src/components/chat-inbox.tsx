@@ -38,7 +38,10 @@ export interface ChatInboxProps
 
 export function ChatInbox({ items, activeId, onSelect, className, ...props }: ChatInboxProps) {
 	return (
-		<nav className={cn("flex min-h-0 flex-col gap-0.5 overflow-y-auto p-2", className)} {...props}>
+		<nav
+			className={cn("flex min-h-0 flex-col gap-basalt-0_5 overflow-y-auto p-basalt-2", className)}
+			{...props}
+		>
 			{items.map((item) => {
 				const active = item.id === activeId;
 				return (
@@ -49,17 +52,17 @@ export function ChatInbox({ items, activeId, onSelect, className, ...props }: Ch
 						aria-current={active ? "true" : undefined}
 						onClick={() => onSelect(item.id)}
 						className={cn(
-							"h-auto w-full justify-start gap-2 rounded-basalt-md px-2 py-2 text-left",
+							"h-auto w-full justify-start gap-basalt-2 rounded-basalt-md px-basalt-2 py-basalt-2 text-left",
 							active ? "bg-basalt-accent" : "",
 						)}
 					>
 						{item.leading ? (
-							<span className="flex h-8 w-8 shrink-0 items-center justify-center">
+							<span className="flex h-basalt-8 w-basalt-8 shrink-0 items-center justify-center">
 								{item.leading}
 							</span>
 						) : null}
 						<span className="min-w-0 flex-1">
-							<span className="flex items-baseline justify-between gap-2">
+							<span className="flex items-baseline justify-between gap-basalt-2">
 								<span className="truncate text-sm font-medium text-basalt-foreground">
 									{item.title}
 								</span>
@@ -70,7 +73,7 @@ export function ChatInbox({ items, activeId, onSelect, className, ...props }: Ch
 								) : null}
 							</span>
 							{item.preview ? (
-								<span className="mt-0.5 block truncate text-xs text-basalt-muted-foreground">
+								<span className="mt-basalt-0_5 block truncate text-xs text-basalt-muted-foreground">
 									{item.preview}
 								</span>
 							) : null}

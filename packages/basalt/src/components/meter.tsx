@@ -47,17 +47,17 @@ export function Meter({
 	const redEnd = Math.floor(filled / 3);
 	const yellowEnd = redEnd + Math.ceil(filled / 3);
 	return (
-		<div className={cn("w-full space-y-1", className)}>
+		<div className={cn("w-full space-y-basalt-1", className)}>
 			{label ? <div className="text-xs text-basalt-muted-foreground">{label}</div> : null}
-			<div className="flex items-center gap-3">
+			<div className="flex items-center gap-basalt-3">
 				<Progress.Root
 					data-basalt-meter=""
 					value={reading}
 					aria-label={ariaLabel ?? label}
 					aria-valuetext={reading === null ? "Unavailable" : customValue}
-					className="h-3.5 min-w-0 flex-1 overflow-hidden rounded-[2px] bg-basalt-muted p-0.5"
+					className="h-basalt-3_5 min-w-0 flex-1 overflow-hidden rounded-[2px] bg-basalt-muted p-basalt-0_5"
 				>
-					<Progress.Indicator className="flex h-full gap-0.5" aria-hidden="true">
+					<Progress.Indicator className="flex h-full gap-basalt-0_5" aria-hidden="true">
 						{Array.from({ length: 17 }, (_, index) => (
 							<span
 								key={`segment-${index}`}

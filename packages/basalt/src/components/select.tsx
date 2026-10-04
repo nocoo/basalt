@@ -54,9 +54,9 @@ export const SelectGroup: React.ForwardRefExoticComponent<
 export type SelectSize = "sm" | "default" | "lg";
 
 const SELECT_SIZE_CLASS: Record<SelectSize, string> = {
-	sm: "h-8 px-2.5 text-xs",
-	default: "h-8 px-3 text-sm",
-	lg: "h-10 px-4 text-base",
+	sm: "h-basalt-control-sm px-basalt-control-x-sm text-xs",
+	default: "h-basalt-control px-basalt-control-x text-sm",
+	lg: "h-basalt-control-lg px-basalt-4 text-base",
 };
 
 export type SelectTriggerProps = Omit<
@@ -102,7 +102,7 @@ export const SelectTrigger = React.forwardRef<
 		{children}
 		<ChevronDown
 			aria-hidden="true"
-			className="h-4 w-4 opacity-50 transition-transform duration-200 group-data-[state=open]/select:rotate-180 motion-reduce:transition-none"
+			className="h-basalt-4 w-basalt-4 opacity-50 transition-transform duration-200 group-data-[state=open]/select:rotate-180 motion-reduce:transition-none"
 		/>
 	</SelectPrimitive.Trigger>
 ));
@@ -124,7 +124,7 @@ export const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<SelectPrimitive.Label
 		ref={ref}
-		className={cn("px-2 py-1.5 text-xs text-basalt-muted-foreground", className)}
+		className={cn("px-basalt-2 py-basalt-1_5 text-xs text-basalt-muted-foreground", className)}
 		{...props}
 	/>
 ));
@@ -190,15 +190,15 @@ export const SelectItem = React.forwardRef<
 		ref={ref}
 		className={overlayItemClass(
 			cn(
-				"relative pr-8 outline-hidden data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[disabled]:hover:bg-transparent",
+				"relative pr-basalt-8 outline-hidden data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[disabled]:hover:bg-transparent",
 				className,
 			),
 		)}
 		{...props}
 	>
 		<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-		<SelectPrimitive.ItemIndicator className="absolute right-2">
-			<Check className="h-3.5 w-3.5" />
+		<SelectPrimitive.ItemIndicator className="absolute right-basalt-2">
+			<Check className="h-basalt-3_5 w-basalt-3_5" />
 		</SelectPrimitive.ItemIndicator>
 	</SelectPrimitive.Item>
 ));
