@@ -3,6 +3,26 @@ import { describe, expect, it } from "vitest";
 import { Button, LinkButton } from "./button";
 
 describe("Button", () => {
+	it.each(["default", "sm", "icon", "lg"] as const)(
+		"sizes icons proportionally for %s buttons",
+		(size) => {
+			render(<Button size={size}>Action</Button>);
+			expect(screen.getByRole("button")).toHaveClass(
+				size === "lg" ? "[&_svg]:size-4" : "[&_svg]:size-3.5",
+			);
+			expect(screen.getByRole("button")).toHaveClass("gap-1.5");
+		},
+	);
+
+	it("allows an explicit consumer icon size override", () => {
+		render(
+			<LinkButton href="/" className="[&_svg]:size-5">
+				Home
+			</LinkButton>,
+		);
+		expect(screen.getByRole("link")).toHaveClass("[&_svg]:size-5");
+		expect(screen.getByRole("link")).not.toHaveClass("[&_svg]:size-3.5");
+	});
 	it("renders the default action", () => {
 		render(<Button>Save</Button>);
 		expect(screen.getByRole("button", { name: "Save" })).toBeEnabled();

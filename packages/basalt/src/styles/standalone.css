@@ -2971,6 +2971,10 @@
     width: calc(var(--spacing) * 3);
     height: calc(var(--spacing) * 3);
   }
+  .\[\&_svg\]\:size-3\.5 svg {
+    width: calc(var(--spacing) * 3.5);
+    height: calc(var(--spacing) * 3.5);
+  }
   .\[\&_svg\]\:size-4 svg {
     width: calc(var(--spacing) * 4);
     height: calc(var(--spacing) * 4);
