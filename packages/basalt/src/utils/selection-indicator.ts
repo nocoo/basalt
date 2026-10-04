@@ -134,7 +134,7 @@ export function useSelectionIndicator({
 			subtree: true,
 			childList: true,
 			characterData: true,
-			attributeFilter: ["data-state", "aria-checked"],
+			attributeFilter: ["data-state", "aria-checked", "data-selected", "data-disabled", "hidden"],
 		});
 		return () => {
 			cancelAnimationFrame(frame);

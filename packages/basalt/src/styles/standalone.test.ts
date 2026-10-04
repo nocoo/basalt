@@ -48,6 +48,9 @@ describe("standalone css", () => {
 		}
 		expect(css).toContain("--basalt-sheet-backdrop-blur: 6px");
 		expect(css).toContain("--radix-popper-transform-origin");
+		expect(css).toContain(".basalt-command-list::before");
+		expect(css).toContain("--basalt-command-top");
+		expect(css).toContain("data-basalt-command-animated");
 		expect(css).toContain("prefers-reduced-motion: reduce");
 		expect(css).toContain("transition-property: left,width,top,height");
 		expect(css).toContain(".shadow-sm");

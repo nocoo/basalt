@@ -86,3 +86,7 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **Exit-presence follow-up:** Closing tooltips now intentionally coexist with the next open tooltip until their exit ends; browser checks must select the active state instead of assuming a single mounted tooltip. The shared typeahead field also removed its conditional portal wrapper so Radix, rather than immediate React unmount, can complete its exit animation.
 
 - **Table integration follow-up:** The actual Tables page retained its own mini-chart implementations after the library replacement. Replacing them exposed screen-reader summaries escaping the table's horizontal scroll boundary because ChartFrame had no positioning context. Delete the page-local chart implementations, position the shared accessible figure relatively, and assert mobile scroll ownership with real charts. Check symbol equivalents as well as direct component references during replacements.
+
+## 2026-10-05: Command highlight geometry and motion probes
+
+The palette styled grouped and ungrouped options with different horizontal insets. One list-owned inset and a single measured background now handle both. Reuse the existing selection observer, include cmdk's selection attributes, and measure offset geometry rather than transformed dialog client rectangles. CSS pseudo-element transitions require `getAnimations({ subtree: true })` in browser probes; direct-element animation enumeration misses the highlight.

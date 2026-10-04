@@ -4,6 +4,7 @@ import { Command as CommandPrimitive } from "cmdk";
 import { Search } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { useSelectionIndicator } from "../utils/selection-indicator";
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "./dialog";
 
 const Command = React.forwardRef<
@@ -89,7 +90,7 @@ export function CommandPalette({ children, shouldFilter, ...props }: CommandPale
 				<Command
 					label="Command Palette"
 					{...(shouldFilter !== undefined && { shouldFilter })}
-					className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5"
+					className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5"
 				>
 					{content}
 				</Command>
@@ -158,16 +159,50 @@ export interface CommandListProps extends Omit<RadixCommandListProps, "label" | 
 	asChild?: RadixCommandListProps["asChild"];
 }
 
+function measureCommandItem(item: HTMLElement, root: HTMLElement) {
+	let left = 0;
+	let top = 0;
+	for (
+		let node: HTMLElement | null = item;
+		node && node !== root;
+		node = node.offsetParent as HTMLElement | null
+	) {
+		left += node.offsetLeft;
+		top += node.offsetTop;
+	}
+	return { left, top, width: item.offsetWidth, height: item.offsetHeight };
+}
+
 export const CommandList = React.forwardRef<
 	React.ElementRef<typeof CommandPrimitive.List>,
 	CommandListProps
->(({ className, ...props }, ref) => (
-	<CommandPrimitive.List
-		ref={ref}
-		className={cn("max-h-[300px] overflow-y-auto overflow-x-hidden", className)}
-		{...props}
-	/>
-));
+>(({ className, style, ...props }, ref) => {
+	const { ref: listRef, state } = useSelectionIndicator({
+		itemSelector: '[cmdk-item][data-selected="true"]:not([data-disabled="true"])',
+		mapGeometry: measureCommandItem,
+		ref,
+	});
+	return (
+		<CommandPrimitive.List
+			ref={listRef}
+			className={cn(
+				"basalt-command-list relative isolate max-h-[300px] overflow-y-auto overflow-x-hidden p-1.5",
+				className,
+			)}
+			{...props}
+			data-basalt-command-animated={state.animated}
+			style={
+				{
+					"--basalt-command-left": `${state.left}px`,
+					"--basalt-command-top": `${state.top}px`,
+					"--basalt-command-width": `${state.visible ? state.width : 0}px`,
+					"--basalt-command-height": `${state.visible ? state.height : 0}px`,
+					...style,
+				} as React.CSSProperties
+			}
+		/>
+	);
+});
 CommandList.displayName = CommandPrimitive.List.displayName;
 
 type RadixCommandEmptyProps = React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>;
@@ -225,7 +260,7 @@ export const CommandGroup = React.forwardRef<
 	<CommandPrimitive.Group
 		ref={ref}
 		className={cn(
-			"overflow-hidden p-1 text-basalt-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground",
+			"overflow-hidden py-1 text-basalt-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:text-xs [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-basalt-muted-foreground",
 			className,
 		)}
 		{...props}
@@ -309,7 +344,7 @@ export const CommandItem = React.forwardRef<
 	<CommandPrimitive.Item
 		ref={ref}
 		className={cn(
-			"relative flex cursor-default items-center rounded-basalt-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[selected=true]:bg-basalt-accent data-[selected=true]:text-basalt-accent-foreground data-[disabled=true]:opacity-50",
+			"relative z-10 flex cursor-default items-center rounded-basalt-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled=true]:pointer-events-none data-[selected=true]:text-basalt-accent-foreground data-[disabled=true]:opacity-50",
 			className,
 		)}
 		{...props}

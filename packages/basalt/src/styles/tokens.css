@@ -281,6 +281,32 @@
 }
 
 @layer components {
+	.basalt-command-list::before {
+		content: "";
+		position: absolute;
+		pointer-events: none;
+		left: var(--basalt-command-left);
+		top: var(--basalt-command-top);
+		width: var(--basalt-command-width);
+		height: var(--basalt-command-height);
+		border-radius: calc(var(--basalt-radius) - 4px);
+		background: hsl(var(--basalt-accent));
+	}
+
+	.basalt-command-list[data-basalt-command-animated="true"]::before {
+		transition:
+			left 220ms var(--basalt-motion-ease-enter),
+			top 220ms var(--basalt-motion-ease-enter),
+			width 220ms var(--basalt-motion-ease-enter),
+			height 220ms var(--basalt-motion-ease-enter);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.basalt-command-list[data-basalt-command-animated]::before {
+			transition: none;
+		}
+	}
+
 	.basalt-floating {
 		transform-origin: var(--radix-popper-transform-origin, center);
 	}
