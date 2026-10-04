@@ -27004,7 +27004,7 @@
 			"importPath": "@nocoo/basalt/components/typeahead-field",
 			"subpath": "./components/typeahead-field",
 			"sourceFile": "packages/basalt/src/components/typeahead-field.tsx",
-			"sourceHash": "20f2b34c28748095",
+			"sourceHash": "ad46f81f716a1395",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "legacy-internal",

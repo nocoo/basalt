@@ -48,11 +48,12 @@ async function assertHeaderActions(page: Page, selector: string) {
 		const before = await control.boundingBox();
 		assert.ok(before);
 		await control.hover();
-		await page.getByRole("tooltip").waitFor();
+		const tooltip = page.locator('[role="tooltip"]:not([data-state="closed"])');
+		await tooltip.waitFor();
 		assert.equal(
-			await page
-				.getByRole("tooltip")
-				.evaluate((node) => getComputedStyle(node.closest(".basalt-ui") as HTMLElement).fontSize),
+			await tooltip.evaluate(
+				(node) => getComputedStyle(node.closest(".basalt-ui") as HTMLElement).fontSize,
+			),
 			"12px",
 		);
 		for (const dx of [0.5, before.width / 2, before.width - 0.5]) {
@@ -69,7 +70,7 @@ async function assertHeaderActions(page: Page, selector: string) {
 				);
 				assert.deepEqual(hit, { cursor: "pointer", inside: true }, "corners must remain clickable");
 				assert.deepEqual(await control.boundingBox(), before, "hover must preserve the hit target");
-				assert.ok(await page.getByRole("tooltip").isVisible());
+				assert.ok(await tooltip.isVisible());
 			}
 		}
 	}

@@ -82,3 +82,5 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **Fix:** Scope interaction checks to the existing `data-hero-scenario` boundary, sample real CSS animations, and wait for focus restoration after exit unmount. Do not infer selectors from a different component's showcase. Shell wrappers must also avoid zsh's read-only `status` variable when preserving exit codes.
 
 - **Gate follow-up:** The staged-index hook caught a catalog test still looking for the old Sheet trigger text. When an example label or description changes, update its existing contract assertion in the same commit; targeted component tests alone cannot prove catalog consistency.
+
+- **Exit-presence follow-up:** Closing tooltips now intentionally coexist with the next open tooltip until their exit ends; browser checks must select the active state instead of assuming a single mounted tooltip. The shared typeahead field also removed its conditional portal wrapper so Radix, rather than immediate React unmount, can complete its exit animation.

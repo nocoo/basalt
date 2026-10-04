@@ -66,16 +66,18 @@ export async function assertOverlayMotion(page: Page, baseUrl: string) {
 			await page.getByRole("button", { name: "Close panel", exact: true }).click();
 			await page.locator("[data-basalt-sheet]").waitFor({ state: "detached" });
 
-			for (const slug of ["dropdown-menu", "popover", "select"]) {
+			for (const slug of ["dropdown-menu", "popover", "select", "combobox", "autocomplete"]) {
 				await page.goto(`${baseUrl}/ui/${slug}`);
 				await page.locator('[data-status="ready"]').waitFor();
 				const demo = page.locator("[data-hero-scenario]");
-				const trigger =
-					slug === "select" ? demo.getByRole("combobox").first() : demo.getByRole("button").first();
+				const trigger = ["select", "combobox", "autocomplete"].includes(slug)
+					? demo.getByRole("combobox").first()
+					: demo.getByRole("button").first();
 				const panel = page.locator('.basalt-floating[data-state="open"]');
 				for (const reduce of [false, true]) {
 					await page.emulateMedia({ reducedMotion: reduce ? "reduce" : "no-preference" });
 					await trigger.click();
+					if (slug === "autocomplete") await trigger.fill("ap");
 					if (reduce) {
 						assert.equal(
 							await panel.evaluate((node) => getComputedStyle(node).animationName),
@@ -99,5 +101,5 @@ export async function assertOverlayMotion(page: Page, baseUrl: string) {
 			cases.push(`${width}/${dark ? "dark" : "light"}`);
 		}
 	}
-	return { cases, directions: 4, floatingControls: 3, exitPresence: true, reducedMotion: true };
+	return { cases, directions: 4, floatingControls: 5, exitPresence: true, reducedMotion: true };
 }

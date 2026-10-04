@@ -148,6 +148,9 @@ export async function assertConsumerGeometry(
 	await cardComboboxInput.focus();
 	const comboboxList = page.getByRole("listbox");
 	await comboboxList.waitFor({ state: "visible", timeout: 5000 });
+	await comboboxList.evaluate(async (node) => {
+		await Promise.all(node.getAnimations().map((animation) => animation.finished));
+	});
 	const cardBox = await page.locator("#basalt-card-overflow").boundingBox();
 	const listBox = await comboboxList.boundingBox();
 	const cardInputBox = await cardComboboxInput.boundingBox();

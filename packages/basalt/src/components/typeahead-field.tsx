@@ -334,86 +334,84 @@ export function TypeaheadField({
 						}
 					/>
 				</PopoverPrimitive.Anchor>
-				{listOpen ? (
-					<PopoverPrimitive.Portal>
-						<PopoverPrimitive.Content
-							side="bottom"
-							sideOffset={OVERLAY_GAP}
-							align="start"
-							avoidCollisions
-							collisionPadding={8}
-							onPointerMove={(event) => {
-								if (
-									lastPointerPos.current &&
-									lastPointerPos.current.x === event.clientX &&
-									lastPointerPos.current.y === event.clientY
-								) {
-									return;
-								}
-								lastPointerPos.current = { x: event.clientX, y: event.clientY };
-							}}
-							onEscapeKeyDown={(e) => {
-								const evt = e as unknown as {
-									isComposing?: boolean;
-									nativeEvent?: { isComposing?: boolean };
-								};
-								if (evt.isComposing || evt.nativeEvent?.isComposing) {
-									e.preventDefault();
-								}
-							}}
-							onOpenAutoFocus={(e) => e.preventDefault()}
-							onCloseAutoFocus={(e) => e.preventDefault()}
-							onInteractOutside={(e) => {
-								const target = e.target as Node | null;
-								if (inputRef.current?.contains(target)) {
-									e.preventDefault();
-								}
-							}}
-							id={listId}
-							role="listbox"
-							className={overlayPanelClass(
-								"w-[var(--radix-popover-trigger-width)] max-h-[var(--radix-popover-content-available-height)] overflow-y-auto",
-							)}
-						>
-							{filtered.map((item, index) => (
-								<button
-									type="button"
-									key={`${listId}-opt-${index}`}
-									id={`${listId}-opt-${index}`}
-									role="option"
-									tabIndex={-1}
-									disabled={item.disabled}
-									aria-disabled={item.disabled || undefined}
-									aria-selected={index === activeIndex}
-									className={cn(
-										overlayItemClass("hover:bg-basalt-accent"),
-										index === activeIndex && "bg-basalt-accent",
-										item.disabled && "opacity-50",
-									)}
-									onPointerMove={(event) => {
-										if (item.disabled) {
-											return;
-										}
-										const { clientX, clientY } = event;
-										if (
-											lastPointerPos.current &&
-											lastPointerPos.current.x === clientX &&
-											lastPointerPos.current.y === clientY
-										) {
-											return;
-										}
-										lastPointerPos.current = { x: clientX, y: clientY };
-										setActive(index);
-									}}
-									onMouseDown={(event) => event.preventDefault()}
-									onClick={() => commitItem(item)}
-								>
-									{item.label}
-								</button>
-							))}
-						</PopoverPrimitive.Content>
-					</PopoverPrimitive.Portal>
-				) : null}
+				<PopoverPrimitive.Portal>
+					<PopoverPrimitive.Content
+						side="bottom"
+						sideOffset={OVERLAY_GAP}
+						align="start"
+						avoidCollisions
+						collisionPadding={8}
+						onPointerMove={(event) => {
+							if (
+								lastPointerPos.current &&
+								lastPointerPos.current.x === event.clientX &&
+								lastPointerPos.current.y === event.clientY
+							) {
+								return;
+							}
+							lastPointerPos.current = { x: event.clientX, y: event.clientY };
+						}}
+						onEscapeKeyDown={(e) => {
+							const evt = e as unknown as {
+								isComposing?: boolean;
+								nativeEvent?: { isComposing?: boolean };
+							};
+							if (evt.isComposing || evt.nativeEvent?.isComposing) {
+								e.preventDefault();
+							}
+						}}
+						onOpenAutoFocus={(e) => e.preventDefault()}
+						onCloseAutoFocus={(e) => e.preventDefault()}
+						onInteractOutside={(e) => {
+							const target = e.target as Node | null;
+							if (inputRef.current?.contains(target)) {
+								e.preventDefault();
+							}
+						}}
+						id={listId}
+						role="listbox"
+						className={overlayPanelClass(
+							"w-[var(--radix-popover-trigger-width)] max-h-[var(--radix-popover-content-available-height)] overflow-y-auto",
+						)}
+					>
+						{filtered.map((item, index) => (
+							<button
+								type="button"
+								key={`${listId}-opt-${index}`}
+								id={`${listId}-opt-${index}`}
+								role="option"
+								tabIndex={-1}
+								disabled={item.disabled}
+								aria-disabled={item.disabled || undefined}
+								aria-selected={index === activeIndex}
+								className={cn(
+									overlayItemClass("hover:bg-basalt-accent"),
+									index === activeIndex && "bg-basalt-accent",
+									item.disabled && "opacity-50",
+								)}
+								onPointerMove={(event) => {
+									if (item.disabled) {
+										return;
+									}
+									const { clientX, clientY } = event;
+									if (
+										lastPointerPos.current &&
+										lastPointerPos.current.x === clientX &&
+										lastPointerPos.current.y === clientY
+									) {
+										return;
+									}
+									lastPointerPos.current = { x: clientX, y: clientY };
+									setActive(index);
+								}}
+								onMouseDown={(event) => event.preventDefault()}
+								onClick={() => commitItem(item)}
+							>
+								{item.label}
+							</button>
+						))}
+					</PopoverPrimitive.Content>
+				</PopoverPrimitive.Portal>
 			</div>
 		</PopoverPrimitive.Root>
 	);
