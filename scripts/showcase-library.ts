@@ -93,6 +93,14 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 				),
 			);
 			assert.equal(await compact.locator(".recharts-line").count(), 0);
+			await page.goto(`${baseUrl}/tables`);
+			const pipeline = page.locator('[data-table-showcase="pipeline"]');
+			await assertPlots(pipeline);
+			assert.equal(await pipeline.locator("[data-basalt-meter]").count(), 12);
+			const overflow = await page
+				.locator("[data-doc-scroll]")
+				.evaluate((node) => node.scrollWidth - node.clientWidth);
+			assert.ok(overflow <= 1, "chart summaries must stay inside the table scroll boundary");
 			for (const slug of ["data-table", "table"]) {
 				await page.goto(`${baseUrl}/ui/${slug}`);
 				const demo = page.locator("[data-hero-scenario] [data-demo]");

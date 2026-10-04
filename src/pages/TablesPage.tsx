@@ -1,3 +1,4 @@
+import { Sparkline } from "@nocoo/basalt/charts/sparkline";
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";
@@ -6,6 +7,7 @@ import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-t
 import { FilterBar } from "@nocoo/basalt/components/filter-bar";
 import { Input } from "@nocoo/basalt/components/input";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { Meter } from "@nocoo/basalt/components/meter";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import {
@@ -65,42 +67,6 @@ function OwnerCell({ name, initials }: { name: string; initials: string }) {
 				<AvatarFallback className="text-[10px]">{initials}</AvatarFallback>
 			</Avatar>
 			<span>{name}</span>
-		</div>
-	);
-}
-
-function WinMeter({ value }: { value: number }) {
-	const filled = Math.round(value / 10);
-	const tone =
-		value >= 70 ? "bg-basalt-chart-2" : value >= 40 ? "bg-basalt-chart-3" : "bg-basalt-chart-1";
-	return (
-		<div className="flex items-center gap-2">
-			<div className="flex gap-px" aria-hidden="true">
-				{Array.from({ length: 10 }, (_, index) => (
-					<span
-						key={index}
-						className={`h-3 w-1.5 rounded-sm ${index < filled ? tone : "bg-basalt-muted"}`}
-					/>
-				))}
-			</div>
-			<span className="tabular-nums text-xs text-basalt-muted-foreground">
-				{formatPercent(value)}
-			</span>
-		</div>
-	);
-}
-
-function TrendBars({ values, label }: { values: readonly number[]; label: string }) {
-	const max = Math.max(...values, 1);
-	return (
-		<div className="flex h-6 items-end gap-px" role="img" aria-label={label}>
-			{values.map((value, index) => (
-				<span
-					key={`${index}-${value}`}
-					className="w-1 rounded-sm bg-basalt-chart-2"
-					style={{ height: `${Math.max(12, (value / max) * 100)}%` }}
-				/>
-			))}
 		</div>
 	);
 }
@@ -165,7 +131,13 @@ export default function TablesPage() {
 		{
 			id: "win",
 			header: t("pages.tables.colWin"),
-			accessor: (row) => <WinMeter value={row.win} />,
+			accessor: (row) => (
+				<Meter
+					value={row.win}
+					aria-label={`${row.name} ${t("pages.tables.colWin")}`}
+					className="w-32"
+				/>
+			),
 			sortValue: (row) => row.win,
 			cellClassName: DENSE,
 			headerClassName: DENSE,
@@ -174,7 +146,13 @@ export default function TablesPage() {
 			id: "trend",
 			header: t("pages.tables.colTrend"),
 			accessor: (row) => (
-				<TrendBars values={row.trend} label={`${row.name} ${t("pages.tables.colTrend")}`} />
+				<Sparkline
+					className="h-4 w-16"
+					data={row.trend.map((y, x) => ({ x, y }))}
+					ariaLabel={`${row.name} ${t("pages.tables.colTrend")}`}
+					summary={<span className="sr-only">{row.trend.join(", ")}</span>}
+					accessibilityLayer={false}
+				/>
 			),
 			sortable: false,
 			cellClassName: DENSE,
@@ -270,7 +248,13 @@ export default function TablesPage() {
 		{
 			id: "win",
 			header: t("pages.tables.colWin"),
-			accessor: (row) => <WinMeter value={row.win} />,
+			accessor: (row) => (
+				<Meter
+					value={row.win}
+					aria-label={`${row.stage} ${t("pages.tables.colWin")}`}
+					className="w-32"
+				/>
+			),
 			sortValue: (row) => row.win,
 			cellClassName: DENSE,
 			headerClassName: DENSE,

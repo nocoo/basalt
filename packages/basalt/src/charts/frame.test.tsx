@@ -85,6 +85,7 @@ describe("ChartFrame behavior", () => {
 		);
 		const group = screen.getByRole("group", { name: "Trend Line" });
 		expect(group).toBeInTheDocument();
+		expect(group).toHaveClass("relative");
 
 		const summaryNode = screen.getByText("Requests rose by 25% this week.");
 		const generatedId = summaryNode.getAttribute("id");

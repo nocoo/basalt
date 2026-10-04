@@ -13,6 +13,11 @@ describe("TablesPage", () => {
 		expect(within(table).getByText("Sarah Nguyen")).toBeInTheDocument();
 		expect(within(table).getAllByText("Enterprise").length).toBeGreaterThan(0);
 		expect(within(table).getByText("70%")).toBeInTheDocument();
+		expect(table.querySelectorAll("[data-basalt-meter]")).toHaveLength(12);
+		expect(
+			table.querySelector("[data-basalt-meter]")?.querySelectorAll("[data-filled]"),
+		).toHaveLength(17);
+		expect(table.querySelectorAll(".basalt-chart")).toHaveLength(12);
 		expect(within(pipeline as HTMLElement).getByText("12 companies in view")).toBeInTheDocument();
 		expect(screen.getByRole("checkbox", { name: "Select summit" })).toBeChecked();
 	});

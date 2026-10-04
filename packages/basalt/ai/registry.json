@@ -2522,7 +2522,7 @@
 			"importPath": "@nocoo/basalt/charts/frame",
 			"subpath": "./charts/frame",
 			"sourceFile": "packages/basalt/src/charts/frame.tsx",
-			"sourceHash": "ec8fdc878a4871fe",
+			"sourceHash": "db377c7ee21f2017",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "chart-subsystem",

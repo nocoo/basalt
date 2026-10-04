@@ -129,7 +129,7 @@ function ChartContainer({
 			role="group"
 			aria-label={ariaLabel}
 			aria-describedby={hasSummary ? summaryId : undefined}
-			className="m-0 flex flex-col gap-2 p-0 min-h-0 min-w-0"
+			className="relative m-0 flex flex-col gap-2 p-0 min-h-0 min-w-0"
 		>
 			{hasSummary ? (
 				<div id={summaryId} className="text-xs text-basalt-muted-foreground">
