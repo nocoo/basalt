@@ -34,7 +34,7 @@ function acceptLabelProps(_props: SelectLabelProps) {}
 const SIZE_CLASS = {
 	sm: ["h-basalt-control-sm", "px-basalt-control-x-sm", "text-xs"],
 	default: ["h-basalt-control", "px-basalt-control-x", "text-sm"],
-	lg: ["h-basalt-control-lg", "px-basalt-4", "text-base"],
+	lg: ["h-basalt-control-lg", "px-basalt-control-x-lg", "text-base"],
 } as const;
 
 describe("Select", () => {

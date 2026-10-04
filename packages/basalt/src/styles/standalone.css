@@ -149,7 +149,6 @@
   --basalt-space-card: var(--basalt-space-4);
   --basalt-space-card-sm: var(--basalt-space-3);
   --basalt-space-card-lg: var(--basalt-space-6);
-  --basalt-space-section: var(--basalt-space-6);
   --basalt-space-field-gap: var(--basalt-space-1_5);
   --basalt-space-table-x: var(--basalt-space-3);
   --basalt-space-table-y: var(--basalt-space-1_5);
@@ -1073,10 +1072,6 @@
     width: var(--basalt-space-5);
     height: var(--basalt-space-5);
   }
-  .size-basalt-6 {
-    width: var(--basalt-space-6);
-    height: var(--basalt-space-6);
-  }
   .size-basalt-7 {
     width: var(--basalt-space-7);
     height: var(--basalt-space-7);
@@ -1092,6 +1087,10 @@
   .size-basalt-icon {
     width: var(--basalt-size-icon);
     height: var(--basalt-size-icon);
+  }
+  .size-basalt-icon-display {
+    width: var(--basalt-size-icon-display);
+    height: var(--basalt-size-icon-display);
   }
   .size-basalt-icon-lg {
     width: var(--basalt-size-icon-lg);
@@ -1159,6 +1158,12 @@
   .h-basalt-80 {
     height: var(--basalt-space-80);
   }
+  .h-basalt-check {
+    height: var(--basalt-size-check);
+  }
+  .h-basalt-check-sm {
+    height: var(--basalt-size-check-sm);
+  }
   .h-basalt-control {
     height: var(--basalt-size-control);
   }
@@ -1215,6 +1220,9 @@
   }
   .min-h-basalt-control-lg {
     min-height: var(--basalt-size-control-lg);
+  }
+  .min-h-basalt-menu-row {
+    min-height: var(--basalt-size-menu-row);
   }
   .min-h-basalt-textarea {
     min-height: var(--basalt-size-textarea);
@@ -1311,6 +1319,12 @@
   }
   .w-basalt-80 {
     width: var(--basalt-space-80);
+  }
+  .w-basalt-check {
+    width: var(--basalt-size-check);
+  }
+  .w-basalt-check-sm {
+    width: var(--basalt-size-check-sm);
   }
   .w-basalt-control {
     width: var(--basalt-size-control);
@@ -2778,12 +2792,12 @@
   .data-\[state\=active\]\:text-basalt-primary[data-state="active"] {
     color: hsl(var(--basalt-primary));
   }
-  .data-\[state\=checked\]\:translate-x-3[data-state="checked"] {
-    --tw-translate-x: calc(var(--spacing) * 3);
+  .data-\[state\=checked\]\:translate-x-basalt-3[data-state="checked"] {
+    --tw-translate-x: var(--basalt-space-3);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
-  .data-\[state\=checked\]\:translate-x-5[data-state="checked"] {
-    --tw-translate-x: calc(var(--spacing) * 5);
+  .data-\[state\=checked\]\:translate-x-basalt-5[data-state="checked"] {
+    --tw-translate-x: var(--basalt-space-5);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .data-\[state\=checked\]\:bg-basalt-primary[data-state="checked"] {

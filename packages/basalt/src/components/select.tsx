@@ -56,7 +56,7 @@ export type SelectSize = "sm" | "default" | "lg";
 const SELECT_SIZE_CLASS: Record<SelectSize, string> = {
 	sm: "h-basalt-control-sm px-basalt-control-x-sm text-xs",
 	default: "h-basalt-control px-basalt-control-x text-sm",
-	lg: "h-basalt-control-lg px-basalt-4 text-base",
+	lg: "h-basalt-control-lg px-basalt-control-x-lg text-base",
 };
 
 export type SelectTriggerProps = Omit<

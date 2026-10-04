@@ -9,7 +9,7 @@ function acceptInputAreaProps(_props: InputAreaProps) {}
 const SIZE_CLASS = {
 	sm: ["min-h-basalt-textarea-sm", "px-basalt-2_5", "py-basalt-1_5", "text-xs"],
 	default: ["min-h-basalt-textarea", "px-basalt-control-x", "py-basalt-2", "text-sm"],
-	lg: ["min-h-basalt-textarea-lg", "px-basalt-4", "py-basalt-2", "text-base"],
+	lg: ["min-h-basalt-textarea-lg", "px-basalt-control-x-lg", "py-basalt-2", "text-base"],
 } as const;
 
 describe("InputArea", () => {

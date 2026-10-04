@@ -86,13 +86,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"input": {
 		"file": "packages/basalt/src/components/input.tsx",
-		"hash": "259291044239bfa1",
+		"hash": "a799ab443f3a8d44",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/input.js.map (sourcesContent[0])"
 	},
 	"input-area": {
 		"file": "packages/basalt/src/components/input-area.tsx",
-		"hash": "586ca6c1cfac14c9",
+		"hash": "659ee34293ef23b0",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/input-area.js.map (sourcesContent[0])"
 	},
@@ -110,25 +110,25 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"checkbox": {
 		"file": "packages/basalt/src/components/checkbox.tsx",
-		"hash": "b0c0b1fb73fb0c44",
+		"hash": "0e81b8862108f723",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/checkbox.js.map (sourcesContent[0])"
 	},
 	"radio": {
 		"file": "packages/basalt/src/components/radio.tsx",
-		"hash": "a6227edd4663d8b8",
+		"hash": "5178ce18084006a1",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/radio.js.map (sourcesContent[0])"
 	},
 	"switch": {
 		"file": "packages/basalt/src/components/switch.tsx",
-		"hash": "53c00e8dd62af311",
+		"hash": "14283cd357cd6cc7",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/switch.js.map (sourcesContent[0])"
 	},
 	"select": {
 		"file": "packages/basalt/src/components/select.tsx",
-		"hash": "bfff44a965ffeb0e",
+		"hash": "0a4555d50bdc8f60",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/select.js.map (sourcesContent[0])"
 	},
@@ -464,7 +464,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"file-dropzone": {
 		"file": "packages/basalt/src/components/file-dropzone.tsx",
-		"hash": "09338953881b365f",
+		"hash": "7ab4c66a9d7b68e8",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/file-dropzone.js.map (sourcesContent[0])"
 	},

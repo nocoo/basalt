@@ -8,7 +8,7 @@ export type InputSize = "sm" | "default" | "lg";
 const INPUT_SIZE_CLASS: Record<InputSize, string> = {
 	sm: "h-basalt-control-sm px-basalt-control-x-sm py-basalt-control-y text-xs",
 	default: "h-basalt-control px-basalt-control-x py-basalt-control-y text-sm",
-	lg: "h-basalt-control-lg px-basalt-4 py-basalt-2 text-base",
+	lg: "h-basalt-control-lg px-basalt-control-x-lg py-basalt-2 text-base",
 };
 
 const PASSWORD_MANAGER_MARKERS = {

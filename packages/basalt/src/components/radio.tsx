@@ -8,8 +8,8 @@ import { FOCUS_RING } from "./overlay";
 export type RadioSize = "sm" | "default";
 
 const RADIO_SIZE_CLASS: Record<RadioSize, string> = {
-	sm: "h-basalt-3 w-basalt-3",
-	default: "h-basalt-4 w-basalt-4",
+	sm: "h-basalt-check-sm w-basalt-check-sm",
+	default: "h-basalt-check w-basalt-check",
 };
 
 const RADIO_INDICATOR_CLASS: Record<RadioSize, string> = {

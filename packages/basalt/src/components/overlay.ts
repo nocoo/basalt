@@ -31,7 +31,7 @@ export function overlayPanelClass(className?: string) {
 
 export function overlayItemClass(className?: string) {
 	return cn(
-		"mx-basalt-menu-inset flex w-[calc(100%-var(--basalt-space-menu-inset)*2)] cursor-default items-center rounded-basalt-sm px-basalt-menu-x py-basalt-menu-y text-left text-sm outline-hidden select-none",
+		"mx-basalt-menu-inset flex min-h-basalt-menu-row w-[calc(100%-var(--basalt-space-menu-inset)*2)] cursor-default items-center rounded-basalt-sm px-basalt-menu-x py-basalt-menu-y text-left text-sm outline-hidden select-none",
 		className,
 	);
 }

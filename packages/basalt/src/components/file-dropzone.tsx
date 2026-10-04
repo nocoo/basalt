@@ -160,7 +160,10 @@ export function FileDropzone({
 						: "border-basalt-border bg-basalt-card hover:bg-basalt-accent",
 				)}
 			>
-				<Upload className="size-basalt-6 text-basalt-muted-foreground" aria-hidden="true" />
+				<Upload
+					className="size-basalt-icon-display text-basalt-muted-foreground"
+					aria-hidden="true"
+				/>
 				<span className="text-sm font-medium">{dragging && !disabled ? dropLabel : label}</span>
 				{description && (
 					<span id={`${id}-description`} className="text-xs text-basalt-muted-foreground">

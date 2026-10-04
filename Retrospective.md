@@ -106,3 +106,7 @@ Expanded moving highlights beyond CommandPalette using one private, mounted-list
 ## 2026-10-05: Dimension token migration boundaries
 
 The token migration initially treated fractional positioning (`top-1/2`) as numeric spacing and left string-based tests asserting obsolete utility names. Fractional/viewport geometry is not a spacing step; keep it unchanged. Role-aware class merging is required so caller overrides still win over named Basalt utilities. Migration scripts must avoid ambiguous token replacements (for example small/default sharing an old height) and unbounded regexes; validate semantic presets and real browser geometry, not only renamed strings. Regenerate landing HTML whenever shared button defaults alter prerendered markup.
+
+## 2026-10-05: Semantic roles must have consumers
+
+After the broad base-scale migration, a final token audit found check-size and menu-row roles declared but not consumed, and Switch thumb travel still used the host scale. Wire roles at their actual leaves and use private steps for travel as well. A semantic token that is merely documented but does not change any component is not an implemented contract. Keep browser tests for host-scale isolation, semantic overrides and scroll containment alongside the structural scan.

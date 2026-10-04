@@ -120,7 +120,12 @@ describe("SensitiveInput", () => {
 			<SensitiveInput aria-label="Password" size="lg" revealLabel="Show" hideLabel="Hide" />,
 		);
 		expect(screen.getByLabelText("Password").className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-basalt-control-lg", "px-basalt-4", "py-basalt-2", "text-base"]),
+			expect.arrayContaining([
+				"h-basalt-control-lg",
+				"px-basalt-control-x-lg",
+				"py-basalt-2",
+				"text-base",
+			]),
 		);
 	});
 

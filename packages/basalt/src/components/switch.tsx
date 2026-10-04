@@ -92,8 +92,8 @@ const SwitchRoot = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Roo
 				className={cn(
 					"pointer-events-none block rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=unchecked]:translate-x-0",
 					size === "sm"
-						? "h-basalt-3 w-basalt-3 data-[state=checked]:translate-x-3"
-						: "h-basalt-5 w-basalt-5 data-[state=checked]:translate-x-5",
+						? "h-basalt-3 w-basalt-3 data-[state=checked]:translate-x-basalt-3"
+						: "h-basalt-5 w-basalt-5 data-[state=checked]:translate-x-basalt-5",
 				)}
 			/>
 		</SwitchPrimitives.Root>
