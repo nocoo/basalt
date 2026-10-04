@@ -205,6 +205,7 @@ describe("application route build boundary", () => {
 				.flatMap((id) => id.match(/catalog-content\/families\/([^/]+)\.tsx$/)?.[1] ?? []),
 		);
 		expect([...indexFamilies].sort()).toEqual([
+			"agent",
 			"charts",
 			"chat",
 			"data-layout",

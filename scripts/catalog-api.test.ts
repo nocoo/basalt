@@ -1654,8 +1654,26 @@ describe("catalog API generator contract", () => {
 				propsType: "LinkProviderProps",
 				surface: "LinkProvider",
 			},
+			{
+				slug: "thinking",
+				sourceFile: "packages/basalt/src/components/thinking.tsx",
+				propsType: "ThinkingProps",
+				surface: "Thinking",
+			},
+			{
+				slug: "approval-card",
+				sourceFile: "packages/basalt/src/components/approval-card.tsx",
+				propsType: "ApprovalCardProps",
+				surface: "ApprovalCard",
+			},
+			{
+				slug: "tool-chips",
+				sourceFile: "packages/basalt/src/components/tool-chips.tsx",
+				propsType: "ToolChipsProps",
+				surface: "ToolChips",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(250);
+		expect(CATALOG_API_TARGETS).toHaveLength(253);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1816,6 +1834,9 @@ describe("catalog API generator contract", () => {
 			"chat-inbox",
 			"theme-provider",
 			"link-provider",
+			"thinking",
+			"approval-card",
+			"tool-chips",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -2977,6 +2998,9 @@ export interface WidgetProps {
 			badge: ["Badge"],
 			empty: ["Empty"],
 			loader: ["Loader"],
+			thinking: ["Thinking"],
+			"approval-card": ["ApprovalCard"],
+			"tool-chips": ["ToolChips"],
 			"menu-bar": [
 				"MenuBar",
 				"MenuBarRoot",
@@ -3055,7 +3079,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(111);
+		expect(Object.keys(generated)).toHaveLength(114);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -3156,7 +3180,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(111);
+		expect(Object.keys(generated)).toHaveLength(114);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -3278,7 +3302,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(111);
+		expect(Object.keys(generated)).toHaveLength(114);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -3349,7 +3373,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(111);
+		expect(Object.keys(generated)).toHaveLength(114);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -3392,7 +3416,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(111);
+		expect(Object.keys(generated)).toHaveLength(114);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -3444,7 +3468,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(111);
+		expect(Object.keys(generated)).toHaveLength(114);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -4783,8 +4807,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(111);
-		expect(Object.keys(first)).toHaveLength(112);
+		expect(slugs).toHaveLength(114);
+		expect(Object.keys(first)).toHaveLength(115);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -4864,7 +4888,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"ead7f621cc7991ee1bf6aa34c2137901b38df059ae1c98f434334568e0f708c3",
+			"6bb6fd6cf52282d0d6072b718469f3a3015bc757ae8caceddb47b39b40e2db1a",
 		);
 	}, 60_000);
 

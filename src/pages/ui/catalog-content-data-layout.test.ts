@@ -76,7 +76,7 @@ describe("data-layout catalog content family", () => {
 				.map(([slug]) => slug)
 				.sort(),
 		).toEqual(Object.keys(DATA_LAYOUT_SCENARIOS).sort());
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(111);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(114);
 	});
 
 	it("keeps the twenty-eight scenarios in their audited order", () => {

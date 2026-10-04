@@ -281,6 +281,14 @@
 }
 
 @layer components {
+	.basalt-agent-reveal {
+		animation: basalt-tab-in 220ms var(--basalt-motion-ease-enter);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.basalt-agent-reveal {
+			animation: none;
+		}
+	}
 	[data-basalt-loader] > span {
 		opacity: 0.18;
 	}

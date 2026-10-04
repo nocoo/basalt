@@ -10,6 +10,7 @@ import {
 } from "./consumer-browser";
 import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from "./consumer-http";
 import { prerenderHtml } from "./prerender";
+import { assertAgentFeedback } from "./showcase-agent";
 import { assertCommandSelection } from "./showcase-command";
 import { assertEditingShowcases } from "./showcase-editing";
 import { assertExamplePages } from "./showcase-examples";
@@ -49,12 +50,24 @@ export async function runShowcaseGate() {
 			const motion = await assertOverlayMotion(page, url);
 			const command = await assertCommandSelection(page, url);
 			const loader = await assertLoaderShowcase(page, url);
+			const agent = await assertAgentFeedback(page, url);
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
 			const editing = await assertEditingShowcases(page, url);
 			const palette = await assertPaletteShowcases(page, url);
 			assertNoPageFaults(faults);
-			return { landing, library, motion, command, loader, examples, reusable, editing, palette };
+			return {
+				landing,
+				library,
+				motion,
+				command,
+				loader,
+				agent,
+				examples,
+				reusable,
+				editing,
+				palette,
+			};
 		});
 		console.log(`Showcase gate passed ${JSON.stringify(evidence)}`);
 	} finally {

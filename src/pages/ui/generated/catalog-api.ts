@@ -2,6 +2,7 @@
 
 import { API as accordionApi } from "./catalog-api/accordion";
 import { API as alertDialogApi } from "./catalog-api/alert-dialog";
+import { API as approvalCardApi } from "./catalog-api/approval-card";
 import { API as areaApi } from "./catalog-api/area";
 import { API as autocompleteApi } from "./catalog-api/autocomplete";
 import { API as avatarApi } from "./catalog-api/avatar";
@@ -103,11 +104,13 @@ import { API as tagColorPickerApi } from "./catalog-api/tag-color-picker";
 import { API as textApi } from "./catalog-api/text";
 import { API as themeProviderApi } from "./catalog-api/theme-provider";
 import { API as themeToggleApi } from "./catalog-api/theme-toggle";
+import { API as thinkingApi } from "./catalog-api/thinking";
 import { API as timelineApi } from "./catalog-api/timeline";
 import { API as timeseriesApi } from "./catalog-api/timeseries";
 import { API as toastApi } from "./catalog-api/toast";
 import { API as toggleApi } from "./catalog-api/toggle";
 import { API as toggleGroupApi } from "./catalog-api/toggle-group";
+import { API as toolChipsApi } from "./catalog-api/tool-chips";
 import { API as toolbarApi } from "./catalog-api/toolbar";
 import { API as tooltipApi } from "./catalog-api/tooltip";
 import { API as uploadQueueApi } from "./catalog-api/upload-queue";
@@ -115,6 +118,7 @@ import { API as uploadQueueApi } from "./catalog-api/upload-queue";
 export const CATALOG_API = {
 	accordion: accordionApi,
 	"alert-dialog": alertDialogApi,
+	"approval-card": approvalCardApi,
 	area: areaApi,
 	autocomplete: autocompleteApi,
 	avatar: avatarApi,
@@ -216,11 +220,13 @@ export const CATALOG_API = {
 	text: textApi,
 	"theme-provider": themeProviderApi,
 	"theme-toggle": themeToggleApi,
+	thinking: thinkingApi,
 	timeline: timelineApi,
 	timeseries: timeseriesApi,
 	toast: toastApi,
 	toggle: toggleApi,
 	"toggle-group": toggleGroupApi,
+	"tool-chips": toolChipsApi,
 	toolbar: toolbarApi,
 	tooltip: tooltipApi,
 	"upload-queue": uploadQueueApi,

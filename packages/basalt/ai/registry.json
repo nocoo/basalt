@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.2.0",
-	"totalModules": 122,
-	"totalSymbols": 741,
-	"totalValues": 395,
-	"totalTypes": 346,
+	"totalModules": 125,
+	"totalSymbols": 754,
+	"totalValues": 398,
+	"totalTypes": 356,
 	"totalCssExports": 3,
-	"totalCatalogEntries": 111,
+	"totalCatalogEntries": 114,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -7129,6 +7129,146 @@
 					"ownerDoc": "INTEGRATION.md#root-geometry",
 					"packageDoc": "ai/INTEGRATION.md#root-geometry",
 					"originModule": "@nocoo/basalt/components/app-shell"
+				}
+			]
+		},
+		{
+			"displayName": "ApprovalCard",
+			"exportName": "ApprovalCard",
+			"importPath": "@nocoo/basalt/components/approval-card",
+			"subpath": "./components/approval-card",
+			"sourceFile": "packages/basalt/src/components/approval-card.tsx",
+			"sourceHash": "078490b292be5412",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/approval-card",
+			"packageDoc": "ai/registry.json#approval-card",
+			"summary": "ApprovalCard component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "ApprovalCard",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/approval-card",
+					"packageDoc": "ai/registry.json#approval-card",
+					"originModule": "@nocoo/basalt/components/approval-card"
+				},
+				{
+					"name": "ApprovalAnswer",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/approval-card",
+					"packageDoc": "ai/registry.json#approval-card",
+					"originModule": "@nocoo/basalt/components/approval-card"
+				},
+				{
+					"name": "ApprovalAnswers",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/approval-card",
+					"packageDoc": "ai/registry.json#approval-card",
+					"originModule": "@nocoo/basalt/components/approval-card"
+				},
+				{
+					"name": "ApprovalQuestion",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/approval-card",
+					"packageDoc": "ai/registry.json#approval-card",
+					"originModule": "@nocoo/basalt/components/approval-card"
+				},
+				{
+					"name": "ApprovalCardProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/approval-card",
+					"packageDoc": "ai/registry.json#approval-card",
+					"originModule": "@nocoo/basalt/components/approval-card"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "approval-card",
+					"name": "ApprovalCard",
+					"exportName": "ApprovalCard",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#approval-card",
+					"api": [
+						{
+							"name": "ApprovalCard",
+							"props": [
+								{
+									"name": "questions",
+									"type": "readonly ApprovalQuestion[]",
+									"required": true,
+									"description": "Stable question and option IDs. Remount with a new key for a new request."
+								},
+								{
+									"name": "onSubmit",
+									"type": "(answers: ApprovalAnswers) => void | Promise<void>",
+									"required": true,
+									"description": "Submit answers; a rejected promise keeps answers and shows retry feedback."
+								},
+								{
+									"name": "autoAdvance",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Enable automatic progression after a single selection. Never auto-submits."
+								},
+								{
+									"name": "onDismiss",
+									"type": "() => void",
+									"required": false
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "ApprovalCard",
+					"props": [
+						{
+							"name": "questions",
+							"type": "readonly ApprovalQuestion[]",
+							"required": true,
+							"description": "Stable question and option IDs. Remount with a new key for a new request."
+						},
+						{
+							"name": "onSubmit",
+							"type": "(answers: ApprovalAnswers) => void | Promise<void>",
+							"required": true,
+							"description": "Submit answers; a rejected promise keeps answers and shows retry feedback."
+						},
+						{
+							"name": "autoAdvance",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Enable automatic progression after a single selection. Never auto-submits."
+						},
+						{
+							"name": "onDismiss",
+							"type": "() => void",
+							"required": false
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
 				}
 			]
 		},
@@ -24863,6 +25003,162 @@
 			]
 		},
 		{
+			"displayName": "Thinking",
+			"exportName": "Thinking",
+			"importPath": "@nocoo/basalt/components/thinking",
+			"subpath": "./components/thinking",
+			"sourceFile": "packages/basalt/src/components/thinking.tsx",
+			"sourceHash": "f45ac5830a8d3296",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/thinking",
+			"packageDoc": "ai/registry.json#thinking",
+			"summary": "Thinking component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "Thinking",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/thinking",
+					"packageDoc": "ai/registry.json#thinking",
+					"originModule": "@nocoo/basalt/components/thinking"
+				},
+				{
+					"name": "ThinkingStep",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/thinking",
+					"packageDoc": "ai/registry.json#thinking",
+					"originModule": "@nocoo/basalt/components/thinking"
+				},
+				{
+					"name": "ThinkingVariant",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/thinking",
+					"packageDoc": "ai/registry.json#thinking",
+					"originModule": "@nocoo/basalt/components/thinking"
+				},
+				{
+					"name": "ThinkingProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/thinking",
+					"packageDoc": "ai/registry.json#thinking",
+					"originModule": "@nocoo/basalt/components/thinking"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "thinking",
+					"name": "Thinking",
+					"exportName": "Thinking",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#thinking",
+					"api": [
+						{
+							"name": "Thinking",
+							"props": [
+								{
+									"name": "steps",
+									"type": "readonly ThinkingStep[]",
+									"required": true,
+									"description": "Caller-owned trace steps; the component never executes work."
+								},
+								{
+									"name": "variant",
+									"type": "ThinkingVariant",
+									"required": false,
+									"default": "\"steps\"",
+									"description": "Trace presentation."
+								},
+								{
+									"name": "title",
+									"type": "string",
+									"required": false,
+									"description": "Override the derived status title."
+								},
+								{
+									"name": "open",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "defaultOpen",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Initially expand the trace."
+								},
+								{
+									"name": "onOpenChange",
+									"type": "(open: boolean) => void",
+									"required": false
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "Thinking",
+					"props": [
+						{
+							"name": "steps",
+							"type": "readonly ThinkingStep[]",
+							"required": true,
+							"description": "Caller-owned trace steps; the component never executes work."
+						},
+						{
+							"name": "variant",
+							"type": "ThinkingVariant",
+							"required": false,
+							"default": "\"steps\"",
+							"description": "Trace presentation."
+						},
+						{
+							"name": "title",
+							"type": "string",
+							"required": false,
+							"description": "Override the derived status title."
+						},
+						{
+							"name": "open",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Initially expand the trace."
+						},
+						{
+							"name": "onOpenChange",
+							"type": "(open: boolean) => void",
+							"required": false
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
+				}
+			]
+		},
+		{
 			"displayName": "Toast",
 			"exportName": "Toast",
 			"importPath": "@nocoo/basalt/components/toast",
@@ -26433,6 +26729,136 @@
 							"required": false,
 							"default": "false",
 							"description": "Whether this toggle item is disabled."
+						}
+					]
+				}
+			]
+		},
+		{
+			"displayName": "ToolChips",
+			"exportName": "ToolChips",
+			"importPath": "@nocoo/basalt/components/tool-chips",
+			"subpath": "./components/tool-chips",
+			"sourceFile": "packages/basalt/src/components/tool-chips.tsx",
+			"sourceHash": "51bc4b119a9ba8aa",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/tool-chips",
+			"packageDoc": "ai/registry.json#tool-chips",
+			"summary": "ToolChips component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "ToolChips",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/tool-chips",
+					"packageDoc": "ai/registry.json#tool-chips",
+					"originModule": "@nocoo/basalt/components/tool-chips"
+				},
+				{
+					"name": "ToolDiff",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tool-chips",
+					"packageDoc": "ai/registry.json#tool-chips",
+					"originModule": "@nocoo/basalt/components/tool-chips"
+				},
+				{
+					"name": "ToolStep",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tool-chips",
+					"packageDoc": "ai/registry.json#tool-chips",
+					"originModule": "@nocoo/basalt/components/tool-chips"
+				},
+				{
+					"name": "ToolChipsProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tool-chips",
+					"packageDoc": "ai/registry.json#tool-chips",
+					"originModule": "@nocoo/basalt/components/tool-chips"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "tool-chips",
+					"name": "ToolChips",
+					"exportName": "ToolChips",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#tool-chips",
+					"api": [
+						{
+							"name": "ToolChips",
+							"props": [
+								{
+									"name": "steps",
+									"type": "readonly ToolStep[]",
+									"required": true,
+									"description": "Caller-owned tool activity; statuses never advance automatically."
+								},
+								{
+									"name": "diffs",
+									"type": "readonly ToolDiff[]",
+									"required": false
+								},
+								{
+									"name": "title",
+									"type": "string",
+									"required": false
+								},
+								{
+									"name": "defaultOpen",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Start with the tool list expanded."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "ToolChips",
+					"props": [
+						{
+							"name": "steps",
+							"type": "readonly ToolStep[]",
+							"required": true,
+							"description": "Caller-owned tool activity; statuses never advance automatically."
+						},
+						{
+							"name": "diffs",
+							"type": "readonly ToolDiff[]",
+							"required": false
+						},
+						{
+							"name": "title",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Start with the tool list expanded."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
 						}
 					]
 				}
@@ -36065,6 +36491,158 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional root classes; provide application-specific height/scrolling here."
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "thinking",
+			"name": "Thinking",
+			"exportName": "Thinking",
+			"importPath": "@nocoo/basalt/components/thinking",
+			"sourceFile": "packages/basalt/src/components/thinking.tsx",
+			"sourceHash": "f45ac5830a8d3296",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#thinking",
+			"api": [
+				{
+					"name": "Thinking",
+					"props": [
+						{
+							"name": "steps",
+							"type": "readonly ThinkingStep[]",
+							"required": true,
+							"description": "Caller-owned trace steps; the component never executes work."
+						},
+						{
+							"name": "variant",
+							"type": "ThinkingVariant",
+							"required": false,
+							"default": "\"steps\"",
+							"description": "Trace presentation."
+						},
+						{
+							"name": "title",
+							"type": "string",
+							"required": false,
+							"description": "Override the derived status title."
+						},
+						{
+							"name": "open",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Initially expand the trace."
+						},
+						{
+							"name": "onOpenChange",
+							"type": "(open: boolean) => void",
+							"required": false
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "approval-card",
+			"name": "ApprovalCard",
+			"exportName": "ApprovalCard",
+			"importPath": "@nocoo/basalt/components/approval-card",
+			"sourceFile": "packages/basalt/src/components/approval-card.tsx",
+			"sourceHash": "078490b292be5412",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#approval-card",
+			"api": [
+				{
+					"name": "ApprovalCard",
+					"props": [
+						{
+							"name": "questions",
+							"type": "readonly ApprovalQuestion[]",
+							"required": true,
+							"description": "Stable question and option IDs. Remount with a new key for a new request."
+						},
+						{
+							"name": "onSubmit",
+							"type": "(answers: ApprovalAnswers) => void | Promise<void>",
+							"required": true,
+							"description": "Submit answers; a rejected promise keeps answers and shows retry feedback."
+						},
+						{
+							"name": "autoAdvance",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Enable automatic progression after a single selection. Never auto-submits."
+						},
+						{
+							"name": "onDismiss",
+							"type": "() => void",
+							"required": false
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "tool-chips",
+			"name": "ToolChips",
+			"exportName": "ToolChips",
+			"importPath": "@nocoo/basalt/components/tool-chips",
+			"sourceFile": "packages/basalt/src/components/tool-chips.tsx",
+			"sourceHash": "51bc4b119a9ba8aa",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#tool-chips",
+			"api": [
+				{
+					"name": "ToolChips",
+					"props": [
+						{
+							"name": "steps",
+							"type": "readonly ToolStep[]",
+							"required": true,
+							"description": "Caller-owned tool activity; statuses never advance automatically."
+						},
+						{
+							"name": "diffs",
+							"type": "readonly ToolDiff[]",
+							"required": false
+						},
+						{
+							"name": "title",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "defaultOpen",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Start with the tool list expanded."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
 						}
 					]
 				}

@@ -90,3 +90,7 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 ## 2026-10-05: Command highlight geometry and motion probes
 
 The palette styled grouped and ungrouped options with different horizontal insets. One list-owned inset and a single measured background now handle both. Reuse the existing selection observer, include cmdk's selection attributes, and measure offset geometry rather than transformed dialog client rectangles. CSS pseudo-element transitions require `getAnimations({ subtree: true })` in browser probes; direct-element animation enumeration misses the highlight.
+
+## 2026-10-05: Loader and agent catalog integration
+
+Replacing Loader's SVG with a labelled pixel grid required migrating icon-only callers and their exact source/DOM assertions, not keeping an obsolete SVG branch. Catalog scenario counts and API digests also changed. New agent components must update module/symbol ownership and inventory fixtures together with generated documentation. Browser checks must scope to rendered content rather than matching the same text in visible source-code examples; explicit tool button labels keep file names and statuses readable to assistive technology.

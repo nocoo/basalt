@@ -9,6 +9,7 @@ Each URL below is a public documentation surface.
 
 - [Accordion](https://basaltui.com/ui/accordion)
 - [AlertDialog](https://basaltui.com/ui/alert-dialog)
+- [ApprovalCard](https://basaltui.com/ui/approval-card)
 - [Autocomplete](https://basaltui.com/ui/autocomplete)
 - [Avatar](https://basaltui.com/ui/avatar)
 - [Badge](https://basaltui.com/ui/badge)
@@ -85,10 +86,12 @@ Each URL below is a public documentation surface.
 - [Text](https://basaltui.com/ui/text)
 - [ThemeProvider](https://basaltui.com/ui/theme-provider)
 - [ThemeToggle](https://basaltui.com/ui/theme-toggle)
+- [Thinking](https://basaltui.com/ui/thinking)
 - [Toast](https://basaltui.com/ui/toast)
 - [Toggle](https://basaltui.com/ui/toggle)
 - [ToggleGroup](https://basaltui.com/ui/toggle-group)
 - [Toolbar](https://basaltui.com/ui/toolbar)
+- [ToolChips](https://basaltui.com/ui/tool-chips)
 - [Tooltip](https://basaltui.com/ui/tooltip)
 - [Upload Queue](https://basaltui.com/ui/upload-queue)
 ## Charts

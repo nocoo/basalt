@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.2.0",
-	"totalModules": 122,
-	"totalSymbols": 741,
-	"totalValues": 395,
-	"totalTypes": 346,
+	"totalModules": 125,
+	"totalSymbols": 754,
+	"totalValues": 398,
+	"totalTypes": 356,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2507,6 +2507,56 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "INTEGRATION.md#root-geometry",
 					"ownerKind": "framework-chrome",
 					"originModule": "@nocoo/basalt/components/app-shell"
+				}
+			]
+		},
+		{
+			"subpath": "./components/approval-card",
+			"importPath": "@nocoo/basalt/components/approval-card",
+			"sourceFile": "packages/basalt/src/components/approval-card.tsx",
+			"ownerDoc": "src/pages/ui/approval-card",
+			"ownerKind": "catalog-component",
+			"summary": "ApprovalCard component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "ApprovalCard",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/approval-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/approval-card"
+				},
+				{
+					"name": "ApprovalAnswer",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/approval-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/approval-card"
+				},
+				{
+					"name": "ApprovalAnswers",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/approval-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/approval-card"
+				},
+				{
+					"name": "ApprovalQuestion",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/approval-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/approval-card"
+				},
+				{
+					"name": "ApprovalCardProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/approval-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/approval-card"
 				}
 			]
 		},
@@ -6601,6 +6651,48 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			]
 		},
 		{
+			"subpath": "./components/thinking",
+			"importPath": "@nocoo/basalt/components/thinking",
+			"sourceFile": "packages/basalt/src/components/thinking.tsx",
+			"ownerDoc": "src/pages/ui/thinking",
+			"ownerKind": "catalog-component",
+			"summary": "Thinking component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "Thinking",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/thinking",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/thinking"
+				},
+				{
+					"name": "ThinkingStep",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/thinking",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/thinking"
+				},
+				{
+					"name": "ThinkingVariant",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/thinking",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/thinking"
+				},
+				{
+					"name": "ThinkingProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/thinking",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/thinking"
+				}
+			]
+		},
+		{
 			"subpath": "./components/toast",
 			"importPath": "@nocoo/basalt/components/toast",
 			"sourceFile": "packages/basalt/src/components/toast.tsx",
@@ -6771,6 +6863,48 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/toggle-group",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/toggle-group"
+				}
+			]
+		},
+		{
+			"subpath": "./components/tool-chips",
+			"importPath": "@nocoo/basalt/components/tool-chips",
+			"sourceFile": "packages/basalt/src/components/tool-chips.tsx",
+			"ownerDoc": "src/pages/ui/tool-chips",
+			"ownerKind": "catalog-component",
+			"summary": "ToolChips component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "ToolChips",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/tool-chips",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tool-chips"
+				},
+				{
+					"name": "ToolDiff",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tool-chips",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tool-chips"
+				},
+				{
+					"name": "ToolStep",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tool-chips",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tool-chips"
+				},
+				{
+					"name": "ToolChipsProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/tool-chips",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/tool-chips"
 				}
 			]
 		},

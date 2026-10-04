@@ -1583,6 +1583,24 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "LinkProviderProps",
 		surface: "LinkProvider",
 	},
+	{
+		slug: "thinking",
+		sourceFile: "packages/basalt/src/components/thinking.tsx",
+		propsType: "ThinkingProps",
+		surface: "Thinking",
+	},
+	{
+		slug: "approval-card",
+		sourceFile: "packages/basalt/src/components/approval-card.tsx",
+		propsType: "ApprovalCardProps",
+		surface: "ApprovalCard",
+	},
+	{
+		slug: "tool-chips",
+		sourceFile: "packages/basalt/src/components/tool-chips.tsx",
+		propsType: "ToolChipsProps",
+		surface: "ToolChips",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

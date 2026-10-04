@@ -85,6 +85,9 @@
     <loc>https://basaltui.com/ui/alert-dialog</loc>
   </url>
   <url>
+    <loc>https://basaltui.com/ui/approval-card</loc>
+  </url>
+  <url>
     <loc>https://basaltui.com/ui/area</loc>
   </url>
   <url>
@@ -391,6 +394,9 @@
     <loc>https://basaltui.com/ui/theme-toggle</loc>
   </url>
   <url>
+    <loc>https://basaltui.com/ui/thinking</loc>
+  </url>
+  <url>
     <loc>https://basaltui.com/ui/timeline</loc>
   </url>
   <url>
@@ -404,6 +410,9 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/toggle-group</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/tool-chips</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/toolbar</loc>

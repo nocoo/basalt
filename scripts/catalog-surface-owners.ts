@@ -249,6 +249,12 @@ export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
  * will fail derivation fast.
  */
 export const REGISTERED_CATALOG_HELPERS: Record<string, string[]> = {
+	"@nocoo/basalt/components/approval-card": [
+		"ApprovalAnswer",
+		"ApprovalAnswers",
+		"ApprovalQuestion",
+	],
+	"@nocoo/basalt/components/tool-chips": ["ToolStep", "ToolDiff"],
 	"@nocoo/basalt/components/editable-nav-item": ["FolderNavItem", "FolderNavItemProps"],
 	"@nocoo/basalt/components/tag-badge": ["TagColor", "tagColorFor", "TAG_COLORS"],
 	"@nocoo/basalt/components/file-dropzone": ["FileRejection"],

@@ -510,6 +510,24 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/responsive-master-detail.js.map (sourcesContent[0])"
 	},
+	"thinking": {
+		"file": "packages/basalt/src/components/thinking.tsx",
+		"hash": "f45ac5830a8d3296",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/thinking.js.map (sourcesContent[0])"
+	},
+	"approval-card": {
+		"file": "packages/basalt/src/components/approval-card.tsx",
+		"hash": "078490b292be5412",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/approval-card.js.map (sourcesContent[0])"
+	},
+	"tool-chips": {
+		"file": "packages/basalt/src/components/tool-chips.tsx",
+		"hash": "51bc4b119a9ba8aa",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tool-chips.js.map (sourcesContent[0])"
+	},
 	"charts": {
 		"file": "packages/basalt/src/charts/charts.tsx",
 		"hash": "70b173545c1ef361",

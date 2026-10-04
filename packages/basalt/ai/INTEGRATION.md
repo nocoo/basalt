@@ -1816,3 +1816,12 @@ export function UserPreferencesForm() {
   }}
 />
 ```
+
+## Agent feedback
+
+`Thinking`, `ApprovalCard`, and `ToolChips` are granular component imports under `@nocoo/basalt/components/`. They use Basalt tokens, existing disclosures and controls, and reduced-motion-safe entrance/expand animations. The package's `models/agent-feedback.ts` defines data semantics; private `viewmodels/` own UI state, timers, answer validation and submission locking. Views import the ViewModels; ViewModels never import Views or DOM modules. Private model/ViewModel paths are not public package exports.
+
+- `Thinking` takes stable step IDs, caller-owned statuses (`pending`, `running`, `complete`, `error`), labels and optional plain-text details. `variant` is `steps`, `reasoning`, `search` or `coding`. Disclosure can be controlled or use `defaultOpen`. It never fabricates progress or exposes hidden model reasoning; display only trace data that the application intentionally supplies.
+- `ApprovalCard` takes questions with stable question/option IDs, `single`/`multiple` choice, optional custom text and `required` (true by default). Single choice may move forward after 240ms; the last question always requires explicit Submit. Optional questions may be skipped. `onSubmit` receives a sanitized answer snapshot and may return a promise; pending submission locks controls, failure keeps answers for retry, and no work is executed by the library. Remount with a new React key when replacing an approval request. Backend authorization and validation remain mandatory.
+- `ToolChips` takes caller-owned tool steps and optional file diffs. It summarizes completion, expands individual plain-text outputs, and opens file previews in accessible popovers. It does not execute commands or parse arbitrary HTML.
+- Catalog examples simulate progress in application ViewModels. Their copyable snippets include those demo ViewModels, rather than importing private catalog paths.
