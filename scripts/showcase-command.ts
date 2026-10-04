@@ -3,6 +3,32 @@ import type { Page } from "playwright";
 import { setShowcaseTheme } from "./showcase-theme";
 
 export async function assertCommandSelection(page: Page, baseUrl: string) {
+	await page.setViewportSize({ width: 640, height: 900 });
+	await page.goto(`${baseUrl}/ui/command-palette`);
+	await page.locator('[data-status="ready"]').waitFor();
+	await page
+		.locator('[data-scenario="command-palette-simple-flat-list"]')
+		.getByRole("button", { name: "Search pages..." })
+		.click();
+	await page.setViewportSize({ width: 640, height: 160 });
+	await page.getByRole("dialog").evaluate(async (node) => {
+		await Promise.all(node.getAnimations().map((animation) => animation.finished));
+	});
+	await page.getByRole("combobox").press("End");
+	const bounds = await page.getByRole("listbox").evaluate((node) => {
+		node.scrollTop = node.scrollHeight;
+		const item = node.querySelector("[cmdk-item]:last-child");
+		return {
+			listBottom: node.getBoundingClientRect().bottom,
+			itemBottom: item?.getBoundingClientRect().bottom ?? Infinity,
+			viewport: innerHeight,
+		};
+	});
+	assert.ok(
+		bounds.itemBottom <= bounds.listBottom + 1 && bounds.listBottom <= bounds.viewport,
+		JSON.stringify(bounds),
+	);
+	await page.keyboard.press("Escape");
 	for (const width of [390, 1280]) {
 		await page.setViewportSize({ width, height: 900 });
 		await page.goto(`${baseUrl}/ui/command-palette`);

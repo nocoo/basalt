@@ -302,7 +302,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"command-palette": {
 		"file": "packages/basalt/src/components/command-palette.tsx",
-		"hash": "9e60c20019630bab",
+		"hash": "7556b957cb05b549",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/command-palette.js.map (sourcesContent[0])"
 	},

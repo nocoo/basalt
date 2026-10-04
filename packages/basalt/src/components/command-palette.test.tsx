@@ -122,6 +122,8 @@ describe("CommandPalette", () => {
 			</CommandPalette>,
 		);
 		expect(screen.getByRole("dialog")).toBeInTheDocument();
+		expect(screen.getByRole("dialog")).toHaveClass("flex", "flex-col");
+		expect(screen.getByRole("listbox")).toHaveClass("min-h-0");
 		expect(screen.getByRole("dialog", { name: "Command Palette" })).toBeInTheDocument();
 		expect(screen.getByPlaceholderText("Search pages...")).toBeInTheDocument();
 		expect(screen.getByText("Button")).toBeInTheDocument();

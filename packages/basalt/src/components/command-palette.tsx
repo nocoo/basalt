@@ -14,7 +14,7 @@ const Command = React.forwardRef<
 	<CommandPrimitive
 		ref={ref}
 		className={cn(
-			"flex h-full w-full flex-col overflow-hidden rounded-basalt-md bg-basalt-popover text-basalt-popover-foreground",
+			"flex min-h-0 w-full flex-col overflow-hidden rounded-basalt-md bg-basalt-popover text-basalt-popover-foreground",
 			className,
 		)}
 		{...props}
@@ -84,7 +84,7 @@ export function CommandPalette({ children, shouldFilter, ...props }: CommandPale
 			<DialogContent
 				size="lg"
 				aria-describedby={undefined}
-				className="overflow-hidden bg-basalt-popover p-0 shadow-lg"
+				className="flex flex-col overflow-hidden bg-basalt-popover p-0 shadow-lg"
 			>
 				<DialogTitle className="sr-only">Command Palette</DialogTitle>
 				<Command
@@ -125,7 +125,10 @@ export const CommandInput = React.forwardRef<
 	React.ElementRef<typeof CommandPrimitive.Input>,
 	CommandInputProps
 >(({ className, ...props }, ref) => (
-	<div className="flex items-center border-b border-basalt-border px-3" cmdk-input-wrapper="">
+	<div
+		className="flex shrink-0 items-center border-b border-basalt-border px-3"
+		cmdk-input-wrapper=""
+	>
 		<Search className="mr-2 size-4 shrink-0 opacity-50" aria-hidden="true" />
 		<CommandPrimitive.Input
 			ref={ref}
@@ -186,7 +189,7 @@ export const CommandList = React.forwardRef<
 		<CommandPrimitive.List
 			ref={listRef}
 			className={cn(
-				"basalt-command-list relative isolate max-h-[300px] overflow-y-auto overflow-x-hidden p-1.5",
+				"basalt-command-list relative isolate min-h-0 max-h-[300px] overflow-y-auto overflow-x-hidden p-1.5",
 				className,
 			)}
 			{...props}

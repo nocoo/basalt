@@ -94,3 +94,7 @@ The palette styled grouped and ungrouped options with different horizontal inset
 ## 2026-10-05: Loader and agent catalog integration
 
 Replacing Loader's SVG with a labelled pixel grid required migrating icon-only callers and their exact source/DOM assertions, not keeping an obsolete SVG branch. Catalog scenario counts and API digests also changed. New agent components must update module/symbol ownership and inventory fixtures together with generated documentation. Browser checks must scope to rendered content rather than matching the same text in visible source-code examples; explicit tool button labels keep file names and statuses readable to assistive technology.
+
+## 2026-10-05: Command palette height ownership
+
+The comparison iframe is only 300px tall. CommandPalette's dialog respected its viewport max-height while its fixed-height command content and non-shrinking list overflowed behind the dialog clip, so scrolling could never reveal the last rows. Use a bounded flex column, a fixed search header and a shrinkable list. Browser regression opens the palette before reducing viewport height, then verifies the last row stays inside the visible scrollport; the catalog's sticky navigation otherwise covers the opener at a 160px viewport.
