@@ -11490,7 +11490,7 @@
 			"importPath": "@nocoo/basalt/components/data-table",
 			"subpath": "./components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "38a49790ac1c147e",
+			"sourceHash": "4ccaf50b88f149f5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11640,6 +11640,12 @@
 									"type": "string",
 									"required": false,
 									"description": "Additional classes for the table."
+								},
+								{
+									"name": "maxHeight",
+									"type": "number | string | string & {}",
+									"required": false,
+									"description": "Bound the local scroll region; column headers stay visible while scrolling."
 								},
 								{
 									"name": "sort",
@@ -11823,6 +11829,12 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional classes for the table."
+						},
+						{
+							"name": "maxHeight",
+							"type": "number | string | string & {}",
+							"required": false,
+							"description": "Bound the local scroll region; column headers stay visible while scrolling."
 						},
 						{
 							"name": "sort",
@@ -23594,7 +23606,7 @@
 			"importPath": "@nocoo/basalt/components/table",
 			"subpath": "./components/table",
 			"sourceFile": "packages/basalt/src/components/table.tsx",
-			"sourceHash": "bb8cd2dfe29d3e87",
+			"sourceHash": "1b41a9058e5239c5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -33417,7 +33429,7 @@
 			"exportName": "Table",
 			"importPath": "@nocoo/basalt/components/table",
 			"sourceFile": "packages/basalt/src/components/table.tsx",
-			"sourceHash": "bb8cd2dfe29d3e87",
+			"sourceHash": "1b41a9058e5239c5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#table",
@@ -33504,7 +33516,7 @@
 			"exportName": "DataTable",
 			"importPath": "@nocoo/basalt/components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "38a49790ac1c147e",
+			"sourceHash": "4ccaf50b88f149f5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#data-table",
@@ -33607,6 +33619,12 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional classes for the table."
+						},
+						{
+							"name": "maxHeight",
+							"type": "number | string | string & {}",
+							"required": false,
+							"description": "Bound the local scroll region; column headers stay visible while scrolling."
 						},
 						{
 							"name": "sort",

@@ -314,13 +314,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"table": {
 		"file": "packages/basalt/src/components/table.tsx",
-		"hash": "bb8cd2dfe29d3e87",
+		"hash": "1b41a9058e5239c5",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/table.js.map (sourcesContent[0])"
 	},
 	"data-table": {
 		"file": "packages/basalt/src/components/data-table.tsx",
-		"hash": "38a49790ac1c147e",
+		"hash": "4ccaf50b88f149f5",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/data-table.js.map (sourcesContent[0])"
 	},

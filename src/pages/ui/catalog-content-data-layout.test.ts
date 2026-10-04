@@ -32,6 +32,7 @@ const DATA_LAYOUT_SCENARIOS = {
 	"description-list": ["description-list-default"],
 	"data-table": [
 		"data-table-operations",
+		"data-table-records",
 		"data-table-default",
 		"data-table-loading",
 		"data-table-empty",
@@ -79,7 +80,7 @@ describe("data-layout catalog content family", () => {
 		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(114);
 	});
 
-	it("keeps the twenty-eight scenarios in their audited order", () => {
+	it("keeps the twenty-nine scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(DATA_LAYOUT_SCENARIOS)) {
 			const examples = dataLayout[slug]?.examples ?? [];
@@ -98,7 +99,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(28);
+		expect(count).toBe(29);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {
@@ -138,6 +139,7 @@ describe("data-layout catalog content family", () => {
 			"onPageChange",
 			"getRowId",
 			"className",
+			"maxHeight",
 			"sort",
 			"defaultSort",
 			"onSortChange",

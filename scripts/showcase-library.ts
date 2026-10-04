@@ -150,7 +150,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 						document.querySelector("[data-hero-scenario] table")?.getAttribute("aria-busy") !==
 						"true",
 				);
-				await table.locator('input[type="checkbox"]').first().check();
+				await table.getByRole("checkbox").first().check();
 				await demo.getByRole("button", { name: "Next page", exact: true }).click();
 				await page.waitForFunction(
 					() =>

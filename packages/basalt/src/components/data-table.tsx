@@ -1,3 +1,4 @@
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import {
 	type CSSProperties,
 	type ReactNode,
@@ -10,6 +11,7 @@ import {
 } from "react";
 import { cn } from "../utils/cn";
 import { Button } from "./button";
+import { Checkbox } from "./checkbox";
 import { Pagination } from "./pagination";
 import { SkeletonLine } from "./skeleton-line";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
@@ -24,8 +26,10 @@ export type DataTableColumn<T> = {
 	headerContent?: ReactNode;
 	/** Whether the header changes sorting. @default true */
 	sortable?: boolean;
-	/** Width of the header and its column. */
+	/** Preferred and minimum column width; narrow viewports scroll instead of squeezing it. */
 	width?: CSSProperties["width"];
+	/** Allow multiline cell content. Default false keeps dense records on one line. */
+	wrap?: boolean;
 	/** Classes applied to the header cell. */
 	headerClassName?: string;
 	/** Classes applied to each data cell. */
@@ -210,6 +214,8 @@ export type DataTableProps<T = unknown> = {
 	 * Additional classes for the table.
 	 */
 	className?: string;
+	/** Bound the local scroll region; column headers stay visible while scrolling. */
+	maxHeight?: CSSProperties["maxHeight"];
 	/** Controlled sorting. null explicitly disables sorting. */
 	sort?: DataTableSort | null;
 	/** Initial sorting for uncontrolled usage. @default null */
@@ -252,6 +258,7 @@ export function DataTable<T>({
 	onPageChange,
 	getRowId,
 	className,
+	maxHeight,
 	sort: controlledSort,
 	defaultSort = null,
 	onSortChange,
@@ -499,26 +506,31 @@ export function DataTable<T>({
 				aria-label={`${ariaLabel} scroll area`}
 				// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
 				tabIndex={0}
-				className="min-w-0 overflow-x-auto rounded-basalt-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary"
+				className="relative min-w-0 overflow-auto rounded-basalt-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary"
+				style={{ maxHeight }}
 			>
 				<Table
 					className={cn("w-full", className)}
 					aria-label={ariaLabel}
 					aria-describedby={ariaDescribedBy}
 					aria-busy={loading || undefined}
+					data-basalt-data-table=""
 				>
 					<TableHeader>
 						<TableRow>
 							{selectable ? (
-								<TableHead>
+								<TableHead
+									scope="col"
+									className="sticky top-0 z-10 w-basalt-10 min-w-basalt-10 bg-basalt-control text-center"
+								>
 									<span className="sr-only">Select</span>
 								</TableHead>
 							) : null}
 							{columns.map((column) => (
 								<TableHead
 									key={column.id}
-									className={column.headerClassName}
-									style={{ width: column.width }}
+									className={cn("sticky top-0 z-10 bg-basalt-control", column.headerClassName)}
+									style={{ width: column.width, minWidth: column.width }}
 									scope="col"
 									aria-sort={
 										column.sortable === false
@@ -531,12 +543,14 @@ export function DataTable<T>({
 									}
 								>
 									{column.sortable === false ? (
-										(column.headerContent ?? column.header)
+										<span className="flex items-center gap-basalt-control-gap">
+											{column.headerContent ?? column.header}
+										</span>
 									) : (
 										<button
 											type="button"
 											aria-label={column.header}
-											className="appearance-none border-0 bg-transparent p-0 font-inherit text-inherit font-medium cursor-pointer rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-basalt-primary"
+											className="group flex w-full cursor-pointer items-center gap-basalt-control-gap rounded-sm border-0 bg-transparent p-0 text-left font-inherit text-inherit font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary"
 											onClick={() =>
 												requestSort(
 													sort?.id === column.id && sort.dir === "asc"
@@ -545,8 +559,30 @@ export function DataTable<T>({
 												)
 											}
 										>
-											{column.headerContent ?? column.header}
-											{sort?.id === column.id ? (sort.dir === "asc" ? " ↑" : " ↓") : ""}
+											<span className="flex min-w-0 items-center gap-basalt-control-gap truncate">
+												{column.headerContent ?? column.header}
+											</span>
+											{sort?.id === column.id ? (
+												sort.dir === "asc" ? (
+													<ArrowUp
+														aria-hidden="true"
+														className="ml-auto size-basalt-icon-sm shrink-0"
+														strokeWidth={1.5}
+													/>
+												) : (
+													<ArrowDown
+														aria-hidden="true"
+														className="ml-auto size-basalt-icon-sm shrink-0"
+														strokeWidth={1.5}
+													/>
+												)
+											) : (
+												<ArrowUpDown
+													aria-hidden="true"
+													className="ml-auto size-basalt-icon-sm shrink-0 opacity-0 transition-opacity group-hover:opacity-60 group-focus-visible:opacity-60 motion-reduce:transition-none"
+													strokeWidth={1.5}
+												/>
+											)}
 										</button>
 									)}
 								</TableHead>
@@ -597,19 +633,26 @@ export function DataTable<T>({
 										aria-selected={selectable ? isSelected : undefined}
 									>
 										{selectable ? (
-											<TableCell>
-												<input
-													type="checkbox"
+											<TableCell className="text-center">
+												<Checkbox
 													checked={isSelected}
 													aria-label={`Select ${selectId}`}
-													onChange={() => toggleSelected(selectId)}
+													onCheckedChange={() => toggleSelected(selectId)}
+													className="align-middle"
 												/>
 											</TableCell>
 										) : null}
 										{columns.map((column) => {
 											const cell = column.accessor(row);
 											return (
-												<TableCell key={column.id} className={column.cellClassName}>
+												<TableCell
+													key={column.id}
+													className={cn(
+														column.wrap ? "whitespace-normal break-words" : "whitespace-nowrap",
+														column.cellClassName,
+													)}
+													style={{ minWidth: column.width }}
+												>
 													{typeof cell === "bigint" ? String(cell) : cell}
 												</TableCell>
 											);

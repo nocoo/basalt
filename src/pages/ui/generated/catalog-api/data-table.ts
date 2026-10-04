@@ -102,6 +102,12 @@ export const API = [
 				description: "Additional classes for the table.",
 			},
 			{
+				name: "maxHeight",
+				type: "number | string | string & {}",
+				required: false,
+				description: "Bound the local scroll region; column headers stay visible while scrolling.",
+			},
+			{
 				name: "sort",
 				type: "DataTableSort | null",
 				required: false,

@@ -1171,6 +1171,9 @@
   .h-basalt-control-sm {
     height: var(--basalt-size-control-sm);
   }
+  .h-basalt-table-row {
+    height: var(--basalt-size-table-row);
+  }
   .h-full {
     height: 100%;
   }
@@ -1350,6 +1353,9 @@
   }
   .min-w-basalt-9 {
     min-width: var(--basalt-space-9);
+  }
+  .min-w-basalt-10 {
+    min-width: var(--basalt-space-10);
   }
   .min-w-basalt-16 {
     min-width: var(--basalt-space-16);
@@ -1567,6 +1573,9 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+  .overflow-auto {
+    overflow: auto;
   }
   .overflow-hidden {
     overflow: hidden;
@@ -2012,6 +2021,9 @@
   .px-basalt-menu-x {
     padding-inline: var(--basalt-space-menu-x);
   }
+  .px-basalt-table-x {
+    padding-inline: var(--basalt-space-table-x);
+  }
   .py-0 {
     padding-block: 0px;
   }
@@ -2056,6 +2068,9 @@
   }
   .py-basalt-menu-y {
     padding-block: var(--basalt-space-menu-y);
+  }
+  .py-basalt-table-y {
+    padding-block: var(--basalt-space-table-y);
   }
   .pt-basalt-0_5 {
     padding-top: var(--basalt-space-0_5);
@@ -2201,6 +2216,12 @@
   }
   .wrap-break-word {
     overflow-wrap: break-word;
+  }
+  .whitespace-normal {
+    white-space: normal;
+  }
+  .whitespace-nowrap {
+    white-space: nowrap;
   }
   .whitespace-pre-wrap {
     white-space: pre-wrap;
@@ -2414,6 +2435,11 @@
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
   }
+  .transition-opacity {
+    transition-property: opacity;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
   .transition-transform {
     transition-property: transform, translate, scale, rotate;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
@@ -2445,6 +2471,14 @@
   }
   :is(.\*\:pointer-events-auto > *) {
     pointer-events: auto;
+  }
+  @media (hover: hover) {
+    .group-hover\:opacity-60:is(:where(.group):hover *) {
+      opacity: 60%;
+    }
+  }
+  .group-focus-visible\:opacity-60:is(:where(.group):focus-visible *) {
+    opacity: 60%;
   }
   .group-data-\[state\=checked\]\:block:is(:where(.group)[data-state="checked"] *) {
     display: block;
@@ -2641,9 +2675,6 @@
   }
   .focus-visible\:outline-offset-2:focus-visible {
     outline-offset: 2px;
-  }
-  .focus-visible\:outline-offset-4:focus-visible {
-    outline-offset: 4px;
   }
   .focus-visible\:outline-basalt-primary:focus-visible {
     outline-color: hsl(var(--basalt-primary));

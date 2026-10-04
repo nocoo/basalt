@@ -175,6 +175,7 @@ describe("DataTable controlled and server state", () => {
 		expect(screen.queryByRole("button", { name: "Actions" })).not.toBeInTheDocument();
 		expect(screen.getByRole("columnheader", { name: "Workspace name" })).toHaveStyle({
 			width: "200px",
+			minWidth: "200px",
 		});
 		expect(screen.getByText("Atlas").closest("td")).toHaveClass("numeric");
 		expect(screen.getByRole("table", { name: "Workspaces" })).toHaveAttribute(
@@ -197,5 +198,49 @@ describe("DataTable controlled and server state", () => {
 		expect(screen.getByRole("alert")).toHaveTextContent("0");
 		rerender(<DataTable data={rows} columns={columns} error={false} />);
 		expect(screen.getByText("Atlas")).toBeVisible();
+	});
+});
+
+describe("record geometry", () => {
+	it("keeps column widths, wrapping choices and scroll height under caller control", () => {
+		render(
+			<DataTable
+				data={[{ id: "a", name: "A long company name", note: "Multiple words" }]}
+				maxHeight={320}
+				aria-label="Records"
+				columns={[
+					{ id: "name", header: "Company", width: 240, accessor: (row) => row.name },
+					{ id: "note", header: "Note", wrap: true, accessor: (row) => row.note },
+				]}
+				defaultSelected={[]}
+			/>,
+		);
+		expect(screen.getByRole("region", { name: "Records scroll area" })).toHaveStyle({
+			maxHeight: "320px",
+		});
+		expect(screen.getByRole("columnheader", { name: "Company" })).toHaveStyle({
+			minWidth: "240px",
+		});
+		expect(screen.getByRole("cell", { name: "A long company name" })).toHaveClass(
+			"whitespace-nowrap",
+		);
+		expect(screen.getByRole("cell", { name: "Multiple words" })).toHaveClass("whitespace-normal");
+		expect(screen.getByRole("checkbox", { name: "Select a" }).tagName).toBe("BUTTON");
+	});
+	it("uses one fixed-size, hidden-from-AT sort icon without changing header names", () => {
+		render(
+			<DataTable
+				data={[{ name: "Zed" }, { name: "Amy" }]}
+				columns={[{ id: "name", header: "Company", accessor: (row) => row.name }]}
+			/>,
+		);
+		const button = screen.getByRole("button", { name: "Company" });
+		expect(button.querySelectorAll("svg")).toHaveLength(1);
+		expect(button.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+		fireEvent.click(button);
+		expect(button.closest("th")).toHaveAttribute("aria-sort", "ascending");
+		expect(button.textContent).toBe("Company");
+		fireEvent.click(button);
+		expect(button.closest("th")).toHaveAttribute("aria-sort", "descending");
 	});
 });
