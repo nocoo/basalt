@@ -1,6 +1,7 @@
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { overlayItemClass, overlayPanelClass } from "./overlay";
 
 type RadixContextMenuProps = React.ComponentPropsWithoutRef<typeof ContextMenuPrimitive.Root>;
@@ -176,10 +177,11 @@ export const ContextMenuItem = React.forwardRef<
 	ContextMenuItemProps
 >(({ className, ...props }, ref) => (
 	<ContextMenuPrimitive.Item
+		data-basalt-hover-item=""
 		ref={ref}
 		className={overlayItemClass(
 			cn(
-				"relative outline-hidden focus:bg-basalt-accent data-disabled:pointer-events-none data-disabled:opacity-50",
+				"relative outline-hidden focus:bg-basalt-accent [.basalt-hover-list_&]:focus:bg-transparent data-disabled:pointer-events-none data-disabled:opacity-50",
 				className,
 			),
 		)}
@@ -200,11 +202,13 @@ export interface ContextMenuPanelProps
 	forceMount?: true;
 }
 
-export function ContextMenuPanel({ className, ...props }: ContextMenuPanelProps) {
+export function ContextMenuPanel({ className, ref, ...props }: ContextMenuPanelProps) {
+	const highlightRef = useHoverHighlight(ref);
 	return (
 		<ContextMenuPrimitive.Portal forceMount={props.forceMount}>
 			<ContextMenuPrimitive.Content
-				className={overlayPanelClass(cn("min-w-40", className))}
+				ref={highlightRef}
+				className={overlayPanelClass(cn("basalt-hover-list min-w-40", className))}
 				{...props}
 			/>
 		</ContextMenuPrimitive.Portal>

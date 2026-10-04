@@ -32,7 +32,7 @@ describe("InputGroup", () => {
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
 		expect(root?.className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-9", "[&>:first-child]:rounded-l-basalt-md"]),
+			expect.arrayContaining(["h-8", "[&>:first-child]:rounded-l-basalt-md"]),
 		);
 		expect(root?.className).not.toContain("bg-basalt-background");
 		expect(root?.className).not.toContain("rounded-basalt-lg");
@@ -123,8 +123,8 @@ describe("InputGroup", () => {
 		render(<Button aria-label="Plain">Plain</Button>);
 		const plain = screen.getByRole("button", { name: "Plain" });
 		expect(plain.className).toContain("bg-basalt-primary");
-		expect(plain.className).toContain("h-9");
-		expect(plain.className).toContain("px-4");
+		expect(plain.className).toContain("h-8");
+		expect(plain.className).toContain("px-3");
 	});
 
 	it("lets explicit variant and size override the nested button", () => {

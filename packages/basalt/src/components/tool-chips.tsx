@@ -1,6 +1,7 @@
 import { Check, CircleAlert, FileText, Pencil, Sparkles, Terminal } from "lucide-react";
 import type { ToolDiff, ToolStep } from "../models/agent-feedback";
 import { cn } from "../utils/cn";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { useToolChipsViewModel } from "../viewmodels/use-tool-chips";
 import { Button } from "./button";
 import { CodeBlock } from "./code";
@@ -28,6 +29,7 @@ export function ToolChips({
 	className,
 }: ToolChipsProps) {
 	const vm = useToolChipsViewModel(steps, defaultOpen);
+	const highlightRef = useHoverHighlight();
 	return (
 		<Collapsible
 			open={vm.open}
@@ -37,7 +39,7 @@ export function ToolChips({
 			<CollapsibleTrigger className="rounded-basalt-sm px-1.5 py-1">
 				<span role="status">{title ?? `${vm.total} tool calls · ${vm.completed} complete`}</span>
 			</CollapsibleTrigger>
-			<CollapsibleContent unstyled className="space-y-2">
+			<CollapsibleContent ref={highlightRef} unstyled className="basalt-hover-list space-y-1">
 				{steps.map((step) => {
 					const Icon = ICONS[step.kind];
 					return (
@@ -48,14 +50,15 @@ export function ToolChips({
 							className="basalt-agent-reveal"
 						>
 							<CollapsibleTrigger
+								data-basalt-hover-item=""
 								aria-label={[step.label, step.target, step.status].filter(Boolean).join(" ")}
-								className="w-full justify-between rounded-basalt-sm px-2 py-2 hover:bg-basalt-accent"
+								className="w-full min-h-8 justify-between rounded-basalt-sm px-2 py-1.5 [&_svg]:size-4"
 							>
-								<span className="flex min-w-0 items-center gap-2 text-xs">
+								<span className="flex min-w-0 flex-wrap items-center gap-2 text-sm">
 									<Icon aria-hidden="true" />
 									<span>{step.label}</span>
 									{step.target && (
-										<span className="truncate rounded-basalt-sm bg-basalt-control px-1.5 py-1 font-mono text-basalt-muted-foreground">
+										<span className="truncate rounded-basalt-sm bg-basalt-control px-2 py-0.5 font-mono text-[13px] text-basalt-muted-foreground">
 											{step.target}
 										</span>
 									)}
@@ -71,7 +74,7 @@ export function ToolChips({
 								</span>
 							</CollapsibleTrigger>
 							<CollapsibleContent>
-								<p className="whitespace-pre-wrap break-words text-xs text-basalt-muted-foreground">
+								<p className="whitespace-pre-wrap break-words text-[13px] text-basalt-muted-foreground">
 									{step.detail || "No output yet"}
 								</p>
 							</CollapsibleContent>

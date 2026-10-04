@@ -26,7 +26,7 @@ export function ClipboardText({ text, copyText, className }: ClipboardTextProps)
 		<div
 			data-slot="clipboard-text"
 			className={controlSurfaceClass(
-				cn("inline-flex h-9 max-w-full items-stretch shadow-xs", className),
+				cn("inline-flex h-8 max-w-full items-stretch shadow-xs", className),
 			)}
 		>
 			<code className="flex h-full min-w-0 items-center truncate rounded-l-basalt-md bg-transparent px-4 font-mono text-sm text-basalt-foreground">
@@ -37,7 +37,7 @@ export function ClipboardText({ text, copyText, className }: ClipboardTextProps)
 				size="icon"
 				variant="ghost"
 				aria-label="Copy"
-				className="h-full min-h-0 w-9 shrink-0 rounded-none rounded-r-basalt-md border-0 border-l border-basalt-border shadow-none"
+				className="h-full min-h-0 w-8 shrink-0 rounded-none rounded-r-basalt-md border-0 border-l border-basalt-border shadow-none"
 				onClick={async () => {
 					await navigator.clipboard.writeText(copyText ?? text);
 					setCopied(true);

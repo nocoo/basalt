@@ -33,7 +33,7 @@ function acceptLabelProps(_props: SelectLabelProps) {}
 
 const SIZE_CLASS = {
 	sm: ["h-8", "px-2.5", "text-xs"],
-	default: ["h-9", "px-3", "text-sm"],
+	default: ["h-8", "px-3", "text-sm"],
 	lg: ["h-10", "px-4", "text-base"],
 } as const;
 
@@ -51,7 +51,7 @@ describe("Select", () => {
 		expect(trigger.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
-		expect(trigger.className.split(/\s+/)).toEqual(expect.arrayContaining(["h-9", "px-3"]));
+		expect(trigger.className.split(/\s+/)).toEqual(expect.arrayContaining(["h-8", "px-3"]));
 	});
 
 	it("opens the list below the trigger", () => {
@@ -71,8 +71,8 @@ describe("Select", () => {
 		expect(list.className).toContain("py-1.5");
 		const first = screen.getByRole("option", { name: "All deployed versions" });
 		expect(first.className).toContain("mx-1.5");
-		expect(first.className).toContain("hover:bg-basalt-accent");
-		expect(first.className).toContain("focus-visible:bg-basalt-accent");
+		expect(first).toHaveAttribute("data-basalt-hover-item");
+		expect(first.closest(".basalt-hover-list")).toBeTruthy();
 		expect(first.className).not.toContain("focus:bg-basalt-accent");
 	});
 
@@ -209,7 +209,7 @@ describe("Select", () => {
 		expect(trigger.tagName).toBe("BUTTON");
 		expect(ref.current).toBe(trigger);
 		expect(trigger.className).toContain("extra");
-		expect(trigger.className).toContain("h-9");
+		expect(trigger.className).toContain("h-8");
 	});
 
 	it("selects an uncontrolled value and reports a controlled next value", () => {

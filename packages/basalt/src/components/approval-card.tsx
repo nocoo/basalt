@@ -2,6 +2,7 @@ import { ChevronLeft, X } from "lucide-react";
 import { useId } from "react";
 import type { ApprovalAnswers, ApprovalQuestion } from "../models/agent-feedback";
 import { cn } from "../utils/cn";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { useApprovalCardViewModel } from "../viewmodels/use-approval-card";
 import { Button } from "./button";
 import { Checkbox } from "./checkbox";
@@ -24,16 +25,17 @@ export interface ApprovalCardProps {
 export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardProps) {
 	const vm = useApprovalCardViewModel(props);
 	const id = useId();
+	const highlightRef = useHoverHighlight();
 	const question = vm.question;
 	if (!question)
 		return (
-			<LayerCard className={className}>
+			<LayerCard padding="sm" className={className}>
 				<p className="text-sm text-basalt-muted-foreground">No approval questions</p>
 			</LayerCard>
 		);
 	if (vm.status === "submitted")
 		return (
-			<LayerCard className={className}>
+			<LayerCard padding="sm" className={className}>
 				<p role="status" className="text-sm">
 					Answers submitted
 				</p>
@@ -41,7 +43,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 		);
 	const busy = vm.status === "submitting";
 	return (
-		<LayerCard className={cn("w-full space-y-4", className)}>
+		<LayerCard padding="sm" className={cn("w-full space-y-2", className)}>
 			<div className="flex items-start justify-between gap-3">
 				<h3 id={id} className="text-sm font-medium" aria-live="polite">
 					{question.label}
@@ -58,19 +60,27 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 					</Button>
 				)}
 			</div>
-			<div key={question.id} className="basalt-agent-reveal space-y-3">
+			<div
+				key={question.id}
+				ref={highlightRef}
+				className="basalt-agent-reveal basalt-hover-list space-y-2"
+			>
 				{question.type === "single" ? (
 					<Radio.Group
 						value={vm.answer?.selected[0] ?? ""}
 						onValueChange={vm.choose}
 						disabled={busy}
 						aria-labelledby={id}
+						className="gap-0.5"
 					>
 						{question.options.map((option) => (
 							<label
 								key={option.id}
+								data-basalt-hover-item=""
+								data-hover-selected={vm.answer?.selected.includes(option.id)}
+								data-disabled={option.disabled || busy ? "" : undefined}
 								htmlFor={`${id}-${option.id}`}
-								className="flex cursor-pointer items-center gap-2 rounded-basalt-sm px-2 py-2 text-sm hover:bg-basalt-accent"
+								className="flex cursor-pointer items-center gap-2 rounded-basalt-sm px-2 py-1.5 text-[13px]"
 							>
 								<Radio.Item
 									id={`${id}-${option.id}`}
@@ -82,12 +92,15 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 						))}
 					</Radio.Group>
 				) : (
-					<fieldset disabled={busy} aria-labelledby={id} className="space-y-1">
+					<fieldset disabled={busy} aria-labelledby={id} className="space-y-0.5">
 						{question.options.map((option) => (
 							<label
 								key={option.id}
+								data-basalt-hover-item=""
+								data-hover-selected={vm.answer?.selected.includes(option.id)}
+								data-disabled={option.disabled || busy ? "" : undefined}
 								htmlFor={`${id}-${option.id}`}
-								className="flex cursor-pointer items-center gap-2 rounded-basalt-sm px-2 py-2 text-sm hover:bg-basalt-accent"
+								className="flex cursor-pointer items-center gap-2 rounded-basalt-sm px-2 py-1.5 text-[13px]"
 							>
 								<Checkbox
 									id={`${id}-${option.id}`}
@@ -115,7 +128,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 					{vm.error}
 				</p>
 			)}
-			<div className="flex items-center justify-between gap-2 border-t border-basalt-border pt-3">
+			<div className="flex items-center justify-between gap-2 border-t border-basalt-border pt-2">
 				<div className="flex items-center gap-2">
 					<Button
 						variant="ghost"

@@ -1,6 +1,7 @@
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { MENU_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
 type RadixDropdownMenuProps = React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Root>;
@@ -289,16 +290,19 @@ export interface DropdownMenuContentProps
 export const DropdownMenuContent = React.forwardRef<
 	React.ElementRef<typeof DropdownMenuPrimitive.Content>,
 	DropdownMenuContentProps
->(({ className, sideOffset = MENU_GAP, ...props }, ref) => (
-	<DropdownMenuPrimitive.Portal forceMount={props.forceMount}>
-		<DropdownMenuPrimitive.Content
-			ref={ref}
-			sideOffset={sideOffset}
-			className={overlayPanelClass(cn("min-w-40", className))}
-			{...props}
-		/>
-	</DropdownMenuPrimitive.Portal>
-));
+>(({ className, sideOffset = MENU_GAP, ...props }, ref) => {
+	const highlightRef = useHoverHighlight(ref);
+	return (
+		<DropdownMenuPrimitive.Portal forceMount={props.forceMount}>
+			<DropdownMenuPrimitive.Content
+				ref={highlightRef}
+				sideOffset={sideOffset}
+				className={overlayPanelClass(cn("basalt-hover-list min-w-40", className))}
+				{...props}
+			/>
+		</DropdownMenuPrimitive.Portal>
+	);
+});
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName;
 
 export interface DropdownMenuItemProps
@@ -330,10 +334,11 @@ export const DropdownMenuItem = React.forwardRef<
 	DropdownMenuItemProps
 >(({ className, ...props }, ref) => (
 	<DropdownMenuPrimitive.Item
+		data-basalt-hover-item=""
 		ref={ref}
 		className={overlayItemClass(
 			cn(
-				"relative outline-hidden focus:bg-basalt-accent data-disabled:pointer-events-none data-disabled:opacity-50",
+				"relative outline-hidden data-disabled:pointer-events-none data-disabled:opacity-50",
 				className,
 			),
 		)}

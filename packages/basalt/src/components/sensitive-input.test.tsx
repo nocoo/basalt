@@ -95,10 +95,10 @@ describe("SensitiveInput", () => {
 			<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />,
 		);
 		expect(screen.getByLabelText("Password").className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-9", "px-3", "py-2", "text-sm"]),
+			expect.arrayContaining(["h-8", "px-3", "py-1", "text-sm"]),
 		);
 		expect(screen.getByRole("button", { name: "Show" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-9", "w-9"]),
+			expect.arrayContaining(["h-8", "w-8"]),
 		);
 		rerender(
 			<SensitiveInput aria-label="Password" size="sm" revealLabel="Show" hideLabel="Hide" />,

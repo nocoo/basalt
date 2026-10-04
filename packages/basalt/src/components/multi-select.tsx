@@ -2,6 +2,7 @@ import { Check, ChevronDown, X } from "lucide-react";
 import { type ReactNode, useEffect, useId, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { Button } from "./button";
 import { Input } from "./input";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
@@ -103,6 +104,7 @@ export function MultiSelect({
 	const input = useRef<HTMLInputElement>(null);
 	const trigger = useRef<HTMLButtonElement>(null);
 	const list = useRef<HTMLDivElement>(null);
+	const highlightRef = useHoverHighlight(list);
 	const pointer = useRef<{ x: number; y: number } | null>(null);
 	const resetConfig = useRef({ value, defaultValue, query, defaultQuery, open });
 	useEffect(() => {
@@ -288,19 +290,21 @@ export function MultiSelect({
 						}}
 					/>
 					<div
-						ref={list}
+						ref={highlightRef}
 						id={`${id}-list`}
 						role="listbox"
 						aria-label={label}
 						aria-multiselectable="true"
 						aria-busy={loading}
-						className="mt-2 max-h-60 overflow-y-auto"
+						className="basalt-hover-list mt-2 max-h-60 overflow-y-auto"
 					>
 						{!loading &&
 							visible.map((option, index) => (
 								<button
 									type="button"
 									role="option"
+									data-basalt-hover-item=""
+									data-hover-active={activeValue === option.value}
 									id={`${id}-option-${index}`}
 									data-option-index={index}
 									key={option.value}
@@ -310,7 +314,6 @@ export function MultiSelect({
 									disabled={option.disabled}
 									className={cn(
 										"flex w-full items-center gap-2 rounded-basalt-md px-2 py-2 text-left text-sm disabled:opacity-40",
-										activeValue === option.value && "bg-basalt-accent",
 									)}
 									onPointerMove={(event) => {
 										const previous = pointer.current;

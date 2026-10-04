@@ -25,7 +25,7 @@ const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
 				inert={disabled || undefined}
 				className={controlSurfaceClass(
 					cn(
-						"flex h-9 w-full items-center shadow-xs",
+						"flex h-8 w-full items-center shadow-xs",
 						"[&>:first-child]:rounded-l-basalt-md [&>:last-child]:rounded-r-basalt-md",
 						"outline-hidden focus-within:border-basalt-ring",
 						"has-[[data-slot=input-group-addon-start]]:[&_input]:pl-2",

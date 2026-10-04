@@ -327,7 +327,7 @@ describe("Combobox", () => {
 	it("applies named sizes and loading", () => {
 		const { rerender } = render(<Combobox items={FRUITS} placeholder="Fruit" />);
 		expect(screen.getByLabelText("Fruit").className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-9", "px-3"]),
+			expect.arrayContaining(["h-8", "px-3"]),
 		);
 		rerender(<Combobox items={FRUITS} placeholder="Fruit" size="sm" />);
 		expect(screen.getByLabelText("Fruit").className.split(/\s+/)).toEqual(

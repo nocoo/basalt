@@ -1,6 +1,7 @@
 import * as PopoverPrimitive from "@radix-ui/react-popover";
 import { type ComponentPropsWithoutRef, useEffect, useId, useRef, useState } from "react";
 import { cn } from "../utils/cn";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { Input, type InputSize } from "./input";
 import { OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
@@ -53,6 +54,7 @@ export function TypeaheadField({
 	const [active, setActive] = useState<number | null>(null);
 	const listId = useId();
 	const inputRef = useRef<HTMLInputElement>(null);
+	const highlightRef = useHoverHighlight();
 	const skipFocusOpen = useRef(false);
 	const lastPointerPos = useRef<{ x: number; y: number } | null>(null);
 	if (value !== prevValue) {
@@ -336,6 +338,7 @@ export function TypeaheadField({
 				</PopoverPrimitive.Anchor>
 				<PopoverPrimitive.Portal>
 					<PopoverPrimitive.Content
+						ref={highlightRef}
 						side="bottom"
 						sideOffset={OVERLAY_GAP}
 						align="start"
@@ -371,7 +374,7 @@ export function TypeaheadField({
 						id={listId}
 						role="listbox"
 						className={overlayPanelClass(
-							"w-[var(--radix-popover-trigger-width)] max-h-[var(--radix-popover-content-available-height)] overflow-y-auto",
+							"basalt-hover-list w-[var(--radix-popover-trigger-width)] max-h-[var(--radix-popover-content-available-height)] overflow-y-auto",
 						)}
 					>
 						{filtered.map((item, index) => (
@@ -380,15 +383,12 @@ export function TypeaheadField({
 								key={`${listId}-opt-${index}`}
 								id={`${listId}-opt-${index}`}
 								role="option"
+								data-basalt-hover-item=""
 								tabIndex={-1}
 								disabled={item.disabled}
 								aria-disabled={item.disabled || undefined}
 								aria-selected={index === activeIndex}
-								className={cn(
-									overlayItemClass("hover:bg-basalt-accent"),
-									index === activeIndex && "bg-basalt-accent",
-									item.disabled && "opacity-50",
-								)}
+								className={cn(overlayItemClass(), item.disabled && "opacity-50")}
 								onPointerMove={(event) => {
 									if (item.disabled) {
 										return;

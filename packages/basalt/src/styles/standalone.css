@@ -353,6 +353,35 @@
   background: var(--basalt-zebra-fill);
 }
 @layer components {
+  .basalt-hover-list {
+    position: relative;
+    isolation: isolate;
+  }
+  .basalt-hover-list::before {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    width: var(--basalt-hover-width, 0px);
+    height: var(--basalt-hover-height, 0px);
+    transform: translate(var(--basalt-hover-x, 0px), var(--basalt-hover-y, 0px));
+    border-radius: calc(var(--basalt-radius) - 4px);
+    background: hsl(var(--basalt-accent));
+    opacity: 0;
+  }
+  .basalt-hover-list[data-hover-visible="true"]::before {
+    opacity: 1;
+  }
+  .basalt-hover-list[data-hover-animated="true"]::before {
+    transition: transform 180ms var(--basalt-motion-ease-enter),	opacity 120ms ease-out;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .basalt-hover-list[data-hover-animated]::before {
+      transition: none;
+    }
+  }
   .basalt-agent-reveal {
     animation: basalt-tab-in 220ms var(--basalt-motion-ease-enter);
   }
@@ -1107,8 +1136,8 @@
   .min-h-0 {
     min-height: 0px;
   }
-  .min-h-9 {
-    min-height: calc(var(--spacing) * 9);
+  .min-h-8 {
+    min-height: calc(var(--spacing) * 8);
   }
   .min-h-11 {
     min-height: calc(var(--spacing) * 11);
@@ -1238,6 +1267,9 @@
   }
   .min-w-4 {
     min-width: calc(var(--spacing) * 4);
+  }
+  .min-w-8 {
+    min-width: calc(var(--spacing) * 8);
   }
   .min-w-9 {
     min-width: calc(var(--spacing) * 9);
@@ -1902,6 +1934,9 @@
   }
   .pt-0\.5 {
     padding-top: calc(var(--spacing) * 0.5);
+  }
+  .pt-2 {
+    padding-top: calc(var(--spacing) * 2);
   }
   .pt-3 {
     padding-top: calc(var(--spacing) * 3);
@@ -2875,20 +2910,20 @@
   .\[\&_\[cmdk-input-wrapper\]_svg\]\:w-5 [cmdk-input-wrapper] svg {
     width: calc(var(--spacing) * 5);
   }
-  .\[\&_\[cmdk-input\]\]\:h-12 [cmdk-input] {
-    height: calc(var(--spacing) * 12);
+  .\[\&_\[cmdk-input\]\]\:h-9 [cmdk-input] {
+    height: calc(var(--spacing) * 9);
   }
   .\[\&_\[cmdk-item\]\]\:px-2 [cmdk-item] {
     padding-inline: calc(var(--spacing) * 2);
   }
-  .\[\&_\[cmdk-item\]\]\:py-3 [cmdk-item] {
-    padding-block: calc(var(--spacing) * 3);
+  .\[\&_\[cmdk-item\]\]\:py-1\.5 [cmdk-item] {
+    padding-block: calc(var(--spacing) * 1.5);
   }
-  .\[\&_\[cmdk-item\]_svg\]\:h-5 [cmdk-item] svg {
-    height: calc(var(--spacing) * 5);
+  .\[\&_\[cmdk-item\]_svg\]\:h-4 [cmdk-item] svg {
+    height: calc(var(--spacing) * 4);
   }
-  .\[\&_\[cmdk-item\]_svg\]\:w-5 [cmdk-item] svg {
-    width: calc(var(--spacing) * 5);
+  .\[\&_\[cmdk-item\]_svg\]\:w-4 [cmdk-item] svg {
+    width: calc(var(--spacing) * 4);
   }
   .\[\&_\[data-icon\]\]\:text-basalt-danger [data-icon] {
     color: hsl(var(--basalt-danger));
@@ -2987,6 +3022,9 @@
   .\[\&\>\:last-child\]\:rounded-r-basalt-md > :last-child {
     border-top-right-radius: calc(var(--basalt-radius) - 2px);
     border-bottom-right-radius: calc(var(--basalt-radius) - 2px);
+  }
+  .basalt-hover-list .\[\.basalt-hover-list_\&\]\:focus\:bg-transparent:focus {
+    background-color: transparent;
   }
   .sr-only {
     position: absolute;

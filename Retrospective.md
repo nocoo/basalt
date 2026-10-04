@@ -98,3 +98,7 @@ Replacing Loader's SVG with a labelled pixel grid required migrating icon-only c
 ## 2026-10-05: Command palette height ownership
 
 The comparison iframe is only 300px tall. CommandPalette's dialog respected its viewport max-height while its fixed-height command content and non-shrinking list overflowed behind the dialog clip, so scrolling could never reveal the last rows. Use a bounded flex column, a fixed search header and a shrinkable list. Browser regression opens the palette before reducing viewport height, then verifies the last row stays inside the visible scrollport; the catalog's sticky navigation otherwise covers the opener at a 160px viewport.
+
+## 2026-10-05: List-level motion and dense defaults
+
+Expanded moving highlights beyond CommandPalette using one private, mounted-list DOM adapter. No React state is updated on pointer movement; callbacks ignore same-row movement and schedule at most one geometry read per animation frame. Scrolling and disabled/hidden rows need explicit handling, including input-driven active descendants outside a portaled list. Legacy CSS-class tests must assert the new shared-layer contract rather than require per-row hover fills. Loader no longer includes a center cell. Form heights changed without reducing multiline text areas or the existing compact-header touch targets.

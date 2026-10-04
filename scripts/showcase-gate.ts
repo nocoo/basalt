@@ -14,6 +14,7 @@ import { assertAgentFeedback } from "./showcase-agent";
 import { assertCommandSelection } from "./showcase-command";
 import { assertEditingShowcases } from "./showcase-editing";
 import { assertExamplePages } from "./showcase-examples";
+import { assertHoverAndDensity } from "./showcase-hover";
 import { assertLandingShowcase } from "./showcase-landing";
 import { assertLibraryShowcases } from "./showcase-library";
 import { assertLoaderShowcase } from "./showcase-loader";
@@ -51,6 +52,7 @@ export async function runShowcaseGate() {
 			const command = await assertCommandSelection(page, url);
 			const loader = await assertLoaderShowcase(page, url);
 			const agent = await assertAgentFeedback(page, url);
+			const hover = await assertHoverAndDensity(page, url);
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
 			const editing = await assertEditingShowcases(page, url);
@@ -63,6 +65,7 @@ export async function runShowcaseGate() {
 				command,
 				loader,
 				agent,
+				hover,
 				examples,
 				reusable,
 				editing,

@@ -6,7 +6,7 @@ import { Input, type InputSize } from "./input";
 
 const TOGGLE_SIZE_CLASS: Record<InputSize, string> = {
 	sm: "h-8 w-8",
-	default: "h-9 w-9",
+	default: "h-8 w-8",
 	lg: "h-10 w-10",
 };
 

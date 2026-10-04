@@ -281,6 +281,37 @@
 }
 
 @layer components {
+	.basalt-hover-list {
+		position: relative;
+		isolation: isolate;
+	}
+	.basalt-hover-list::before {
+		content: "";
+		position: absolute;
+		pointer-events: none;
+		left: 0;
+		top: 0;
+		z-index: -1;
+		width: var(--basalt-hover-width, 0px);
+		height: var(--basalt-hover-height, 0px);
+		transform: translate(var(--basalt-hover-x, 0px), var(--basalt-hover-y, 0px));
+		border-radius: calc(var(--basalt-radius) - 4px);
+		background: hsl(var(--basalt-accent));
+		opacity: 0;
+	}
+	.basalt-hover-list[data-hover-visible="true"]::before {
+		opacity: 1;
+	}
+	.basalt-hover-list[data-hover-animated="true"]::before {
+		transition:
+			transform 180ms var(--basalt-motion-ease-enter),
+			opacity 120ms ease-out;
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.basalt-hover-list[data-hover-animated]::before {
+			transition: none;
+		}
+	}
 	.basalt-agent-reveal {
 		animation: basalt-tab-in 220ms var(--basalt-motion-ease-enter);
 	}

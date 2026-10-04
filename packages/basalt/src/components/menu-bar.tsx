@@ -2,6 +2,7 @@ import * as MenubarPrimitive from "@radix-ui/react-menubar";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { MENU_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
 type RadixMenubarProps = React.ComponentProps<typeof MenubarPrimitive.Root>;
@@ -206,16 +207,19 @@ export interface MenuBarContentProps
 export const MenuBarContent = React.forwardRef<
 	React.ElementRef<typeof MenubarPrimitive.Content>,
 	MenuBarContentProps
->(({ className, sideOffset = MENU_GAP, ...props }, ref) => (
-	<MenubarPrimitive.Portal forceMount={props.forceMount}>
-		<MenubarPrimitive.Content
-			ref={ref}
-			sideOffset={sideOffset}
-			className={overlayPanelClass(cn("min-w-40", className))}
-			{...props}
-		/>
-	</MenubarPrimitive.Portal>
-));
+>(({ className, sideOffset = MENU_GAP, ...props }, ref) => {
+	const highlightRef = useHoverHighlight(ref);
+	return (
+		<MenubarPrimitive.Portal forceMount={props.forceMount}>
+			<MenubarPrimitive.Content
+				ref={highlightRef}
+				sideOffset={sideOffset}
+				className={overlayPanelClass(cn("basalt-hover-list min-w-40", className))}
+				{...props}
+			/>
+		</MenubarPrimitive.Portal>
+	);
+});
 MenuBarContent.displayName = MenubarPrimitive.Content.displayName;
 
 export interface MenuBarItemProps
@@ -246,8 +250,9 @@ export const MenuBarItem = React.forwardRef<
 	MenuBarItemProps
 >(({ className, ...props }, ref) => (
 	<MenubarPrimitive.Item
+		data-basalt-hover-item=""
 		ref={ref}
-		className={overlayItemClass(cn("relative outline-hidden focus:bg-basalt-accent", className))}
+		className={overlayItemClass(cn("relative outline-hidden", className))}
 		{...props}
 	/>
 ));

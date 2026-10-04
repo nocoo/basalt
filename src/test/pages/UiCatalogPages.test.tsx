@@ -3091,7 +3091,7 @@ describe("ui catalog", () => {
 		const exampleButton = within(example as HTMLElement).getByRole("button", {
 			name: "Toggle theme",
 		});
-		expect(heroButton).toHaveClass("h-9", "w-9", "hover:bg-basalt-accent");
+		expect(heroButton).toHaveClass("h-8", "w-8", "hover:bg-basalt-accent");
 		const iconClass = (button: HTMLElement) =>
 			button.querySelector("svg")?.getAttribute("class") ?? "";
 		expect(iconClass(heroButton)).toContain("lucide-monitor");
@@ -3418,7 +3418,7 @@ describe("ui catalog", () => {
 		).toContain("h-8");
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Default" }).className,
-		).toContain("h-9");
+		).toContain("h-8");
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Large" }).className,
 		).toContain("h-10");

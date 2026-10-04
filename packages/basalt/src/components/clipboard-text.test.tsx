@@ -13,7 +13,7 @@ describe("ClipboardText", () => {
 		expect(root?.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
-		expect(root?.className.split(/\s+/)).toContain("h-9");
+		expect(root?.className.split(/\s+/)).toContain("h-8");
 		expect(root?.className).toContain("border-basalt-border");
 		expect(root?.className).not.toContain("overflow-hidden");
 		expect(root?.className).not.toContain("bg-basalt-background");

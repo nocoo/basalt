@@ -5,7 +5,7 @@ import { controlSurfaceClass } from "../utils/control-surface";
 import { Button } from "./button";
 
 const itemClass = cn(
-	"relative h-full w-9 shrink-0 rounded-none border-0 bg-transparent shadow-none first:rounded-l-basalt-md last:rounded-r-basalt-md",
+	"relative h-full w-8 shrink-0 rounded-none border-0 bg-transparent shadow-none first:rounded-l-basalt-md last:rounded-r-basalt-md",
 	"hover:bg-basalt-accent focus-visible:bg-basalt-accent active:bg-basalt-accent",
 	"disabled:pointer-events-none disabled:opacity-100 disabled:text-basalt-muted-foreground",
 );
@@ -73,7 +73,7 @@ export function Pagination({
 			<div
 				className={controlSurfaceClass(
 					cn(
-						"inline-flex h-9 items-stretch",
+						"inline-flex h-8 items-stretch",
 						"[&>*:not(:first-child)]:border-l [&>*:not(:first-child)]:border-basalt-border",
 						"[&>:first-child]:rounded-l-basalt-md [&>:last-child]:rounded-r-basalt-md",
 					),
@@ -102,7 +102,7 @@ export function Pagination({
 				{simple ? null : (
 					<span
 						aria-current="page"
-						className="flex h-full min-w-9 items-center justify-center px-3 text-sm font-medium tabular-nums text-basalt-foreground"
+						className="flex h-full min-w-8 items-center justify-center px-3 text-sm font-medium tabular-nums text-basalt-foreground"
 					>
 						{current}
 					</span>

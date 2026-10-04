@@ -1825,3 +1825,11 @@ export function UserPreferencesForm() {
 - `ApprovalCard` takes questions with stable question/option IDs, `single`/`multiple` choice, optional custom text and `required` (true by default). Single choice may move forward after 240ms; the last question always requires explicit Submit. Optional questions may be skipped. `onSubmit` receives a sanitized answer snapshot and may return a promise; pending submission locks controls, failure keeps answers for retry, and no work is executed by the library. Remount with a new React key when replacing an approval request. Backend authorization and validation remain mandatory.
 - `ToolChips` takes caller-owned tool steps and optional file diffs. It summarizes completion, expands individual plain-text outputs, and opens file previews in accessible popovers. It does not execute commands or parse arbitrary HTML.
 - Catalog examples simulate progress in application ViewModels. Their copyable snippets include those demo ViewModels, rather than importing private catalog paths.
+
+### Dense controls and moving list highlights
+
+Button (including icon buttons), Input, SelectTrigger, InputGroup and their composing controls default to 32px high. Explicit `sm`/`lg` sizes remain available; InputArea remains multiline. Compact application headers retain their 44px minimum touch targets. ApprovalCard uses 12px outer padding and compact option spacing; ToolChips uses 14px row text and 16px glyphs with 32px minimum rows.
+
+Select, DropdownMenu, ContextMenuPanel, MenuBarContent, Combobox/Autocomplete, MultiSelect, ApprovalCard and ToolChips use one list-local hover layer. Its private DOM adapter batches reads in requestAnimationFrame, measures only when row/focus/selection/size changes, and updates CSS variables without a React state render. Position animates with transform, not top/left layout; reduced motion removes transitions. Disabled/hidden rows are excluded, keyboard focus takes priority, and observers/listeners are released with the mounted list. CommandPalette's list shrinks with its viewport so all rows remain reachable even inside short frames.
+
+Loader uses eight perimeter cells with an empty center, moving clockwise continuously. Label, shimmer and delayed elapsed-time controls are unchanged.

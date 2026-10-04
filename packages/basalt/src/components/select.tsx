@@ -3,6 +3,7 @@ import { Check, ChevronDown } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { FOCUS_BORDER, OVERLAY_GAP, overlayItemClass, overlayPanelClass } from "./overlay";
 
 export type SelectProps = Omit<
@@ -54,7 +55,7 @@ export type SelectSize = "sm" | "default" | "lg";
 
 const SELECT_SIZE_CLASS: Record<SelectSize, string> = {
 	sm: "h-8 px-2.5 text-xs",
-	default: "h-9 px-3 text-sm",
+	default: "h-8 px-3 text-sm",
 	lg: "h-10 px-4 text-base",
 };
 
@@ -148,21 +149,26 @@ export type SelectContentProps = Omit<
 export const SelectContent = React.forwardRef<
 	React.ElementRef<typeof SelectPrimitive.Content>,
 	SelectContentProps
->(({ className, children, position = "popper", sideOffset = OVERLAY_GAP, ...props }, ref) => (
-	<SelectPrimitive.Portal>
-		<SelectPrimitive.Content
-			ref={ref}
-			position={position}
-			sideOffset={sideOffset}
-			className={overlayPanelClass(
-				cn(position === "popper" && "w-[var(--radix-select-trigger-width)]", className),
-			)}
-			{...props}
-		>
-			<SelectPrimitive.Viewport>{children}</SelectPrimitive.Viewport>
-		</SelectPrimitive.Content>
-	</SelectPrimitive.Portal>
-));
+>(({ className, children, position = "popper", sideOffset = OVERLAY_GAP, ...props }, ref) => {
+	const highlightRef = useHoverHighlight();
+	return (
+		<SelectPrimitive.Portal>
+			<SelectPrimitive.Content
+				ref={ref}
+				position={position}
+				sideOffset={sideOffset}
+				className={overlayPanelClass(
+					cn(position === "popper" && "w-[var(--radix-select-trigger-width)]", className),
+				)}
+				{...props}
+			>
+				<SelectPrimitive.Viewport ref={highlightRef} className="basalt-hover-list">
+					{children}
+				</SelectPrimitive.Viewport>
+			</SelectPrimitive.Content>
+		</SelectPrimitive.Portal>
+	);
+});
 SelectContent.displayName = SelectPrimitive.Content.displayName;
 
 export type SelectItemProps = Omit<
@@ -180,10 +186,11 @@ export const SelectItem = React.forwardRef<
 	SelectItemProps
 >(({ className, children, ...props }, ref) => (
 	<SelectPrimitive.Item
+		data-basalt-hover-item=""
 		ref={ref}
 		className={overlayItemClass(
 			cn(
-				"relative pr-8 outline-hidden hover:bg-basalt-accent focus-visible:bg-basalt-accent data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[disabled]:hover:bg-transparent",
+				"relative pr-8 outline-hidden data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[disabled]:hover:bg-transparent",
 				className,
 			),
 		)}
