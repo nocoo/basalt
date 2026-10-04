@@ -2,7 +2,7 @@
 
 ## Local 2.2 development: Loader
 
-Loader now renders an inline span with a nine-cell snake grid, an optional shimmering label, and an elapsed timer shown after 5000ms. Use `showLabel={false} showElapsed={false}` for icon-only slots. `size` controls grid dimensions, not the entire row. SVG-specific attributes no longer apply; span attributes do. `animate`, `shimmer`, `showElapsed`, and `elapsedDelayMs` control presentation. Reduced motion stops both animations. The timer measures real elapsed time from mount, including time before it becomes visible, and is hidden from live announcements.
+Loader now renders an inline span with a eight-cell perimeter grid, an optional shimmering label, and an elapsed timer shown after 5000ms. Use `showLabel={false} showElapsed={false}` for icon-only slots. `size` controls grid dimensions, not the entire row. SVG-specific attributes no longer apply; span attributes do. `animate`, `shimmer`, `showElapsed`, and `elapsedDelayMs` control presentation. Reduced motion stops both animations. The timer measures real elapsed time from mount, including time before it becomes visible, and is hidden from live announcements.
 
 This document defines the stability contracts, export architecture, and semantic versioning guarantees for `@nocoo/basalt`.
 

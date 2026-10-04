@@ -45,7 +45,7 @@ export const API = [
 				type: "boolean",
 				required: false,
 				default: "true",
-				description: "Animate the clockwise snake trail into the center cell.",
+				description: "Animate the clockwise trail around the eight perimeter cells.",
 			},
 			{
 				name: "shimmer",

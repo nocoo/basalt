@@ -40,7 +40,7 @@ describe("standalone css", () => {
 		expect(css).toContain("@keyframes basalt-overlay-in");
 		expect(css).toContain("@keyframes basalt-collapsible-down");
 		expect(css).toContain("@keyframes basalt-shimmer");
-		expect(css).toContain("@keyframes basalt-pixel-snake");
+		expect(css).toContain("@keyframes basalt-pixel-orbit");
 		expect(css).toContain("@keyframes basalt-label-shimmer");
 		expect(css).toContain("@keyframes basalt-tab-in");
 		for (const motion of ["floating", "sheet", "sheet-backdrop"]) {

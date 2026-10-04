@@ -14,13 +14,13 @@ export interface LoaderProps extends Omit<HTMLAttributes<HTMLSpanElement>, "chil
 	showElapsed?: boolean;
 	/** Milliseconds before elapsed time is shown. @default 5000 */
 	elapsedDelayMs?: number;
-	/** Animate the clockwise snake trail into the center cell. @default true */
+	/** Animate the clockwise trail around the eight perimeter cells. @default true */
 	animate?: boolean;
 	/** Apply a sweeping highlight to the label. @default true */
 	shimmer?: boolean;
 }
 
-const SNAKE_ORDER = [0, 1, 2, 5, 8, 7, 6, 3, 4];
+const ORBIT_ORDER = [0, 1, 2, 5, 8, 7, 6, 3];
 
 export function Loader({
 	className,
@@ -52,14 +52,15 @@ export function Loader({
 				className="grid shrink-0 grid-cols-3 gap-[1.5px]"
 				style={{ width: size, height: size }}
 			>
-				{Array.from({ length: 9 }, (_, cell) => (
+				{ORBIT_ORDER.map((cell, step) => (
 					<span
 						key={`pixel-${cell}`}
-						data-step={SNAKE_ORDER.indexOf(cell)}
+						data-step={step}
 						className="rounded-[1px] bg-current"
 						style={
 							{
-								"--basalt-pixel-delay": `${SNAKE_ORDER.indexOf(cell) * 100 - 900}ms`,
+								"--basalt-pixel-delay": `${step * 100 - 800}ms`,
+								gridArea: `${Math.floor(cell / 3) + 1} / ${(cell % 3) + 1}`,
 							} as CSSProperties
 						}
 					/>

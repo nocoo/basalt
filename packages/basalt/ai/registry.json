@@ -17536,7 +17536,7 @@
 			"importPath": "@nocoo/basalt/components/loader",
 			"subpath": "./components/loader",
 			"sourceFile": "packages/basalt/src/components/loader.tsx",
-			"sourceHash": "01f28212fa26318c",
+			"sourceHash": "59ba925dd758e1b3",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17615,7 +17615,7 @@
 									"type": "boolean",
 									"required": false,
 									"default": "true",
-									"description": "Animate the clockwise snake trail into the center cell."
+									"description": "Animate the clockwise trail around the eight perimeter cells."
 								},
 								{
 									"name": "shimmer",
@@ -17673,7 +17673,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "true",
-							"description": "Animate the clockwise snake trail into the center cell."
+							"description": "Animate the clockwise trail around the eight perimeter cells."
 						},
 						{
 							"name": "shimmer",
@@ -30361,7 +30361,7 @@
 			"exportName": "Loader",
 			"importPath": "@nocoo/basalt/components/loader",
 			"sourceFile": "packages/basalt/src/components/loader.tsx",
-			"sourceHash": "01f28212fa26318c",
+			"sourceHash": "59ba925dd758e1b3",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#loader",
@@ -30409,7 +30409,7 @@
 							"type": "boolean",
 							"required": false,
 							"default": "true",
-							"description": "Animate the clockwise snake trail into the center cell."
+							"description": "Animate the clockwise trail around the eight perimeter cells."
 						},
 						{
 							"name": "shimmer",

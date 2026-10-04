@@ -4,7 +4,7 @@ import { Loader } from "./loader";
 
 describe("Loader", () => {
 	afterEach(() => vi.useRealTimers());
-	it("uses a clockwise snake path ending at the center", () => {
+	it("uses a clockwise eight-cell perimeter with an empty center", () => {
 		const { container } = render(<Loader />);
 		expect(screen.getByRole("status", { name: "Loading" })).toBeInTheDocument();
 		const grid = container.querySelector("[data-basalt-loader]");
@@ -13,13 +13,17 @@ describe("Loader", () => {
 			"0",
 			"1",
 			"2",
-			"7",
-			"8",
 			"3",
-			"6",
-			"5",
 			"4",
+			"5",
+			"6",
+			"7",
 		]);
+		expect(
+			Array.from(grid?.children ?? []).some(
+				(node) => (node as HTMLElement).style.gridArea === "2 / 2",
+			),
+		).toBe(false);
 		expect(container.querySelector("svg")).toBeNull();
 	});
 	it("shows elapsed time at five seconds, measured from mount", () => {

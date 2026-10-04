@@ -11,7 +11,7 @@ export async function assertLoaderShowcase(page: Page, baseUrl: string) {
 	const steps = await demo
 		.locator("[data-basalt-loader] > span")
 		.evaluateAll((nodes) => nodes.map((node) => node.getAttribute("data-step")));
-	assert.deepEqual(steps, ["0", "1", "2", "7", "8", "3", "6", "5", "4"]);
+	assert.deepEqual(steps, ["0", "1", "2", "3", "4", "5", "6", "7"]);
 	await demo.locator("[data-basalt-elapsed]").waitFor({ timeout: 6500 });
 	assert.match(await demo.locator("[data-basalt-elapsed]").innerText(), /^5\./);
 	await page.emulateMedia({ reducedMotion: "reduce" });

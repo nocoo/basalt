@@ -73,7 +73,7 @@ const FEEDBACK_DESCRIPTIONS = {
 	empty:
 		"Empty-state copy. Inherits standard div element attributes without exposing a public ref; supports structured icon, title, description, custom children content, and interactive action controls.",
 	loader:
-		"Nine-cell snake loader with optional shimmering label and elapsed time, shown after 5000ms by default. Forwards span attributes and respects reduced motion.",
+		"Eight-cell perimeter loader with optional shimmering label and elapsed time, shown after 5000ms by default. Forwards span attributes and respects reduced motion.",
 	"skeleton-line":
 		"Placeholder lines while content loads. Forwards standard div element attributes with aria-hidden='true' by default, merges style overrides over computed width geometry, and does not expose a public ref.",
 	meter:

@@ -603,7 +603,7 @@ export default function Example() {
 			...extraDocs(
 				"Loader",
 				"loader",
-				"Nine-cell snake loader with optional shimmering label and elapsed time, shown after 5000ms by default. Forwards span attributes and respects reduced motion.",
+				"Eight-cell perimeter loader with optional shimmering label and elapsed time, shown after 5000ms by default. Forwards span attributes and respects reduced motion.",
 				"<Loader />",
 			),
 			api: loaderApi,
@@ -611,7 +611,7 @@ export default function Example() {
 		examples: [
 			{
 				id: catalogScenarioId("loader", "options"),
-				title: "Snake, shimmer and timer",
+				title: "Orbit, shimmer and timer",
 				code: loaderOptionsSource,
 				render: () => <LoaderOptions />,
 			},

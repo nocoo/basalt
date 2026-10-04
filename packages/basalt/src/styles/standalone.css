@@ -365,7 +365,7 @@
     opacity: 0.18;
   }
   [data-basalt-loader][data-animated="true"] > span {
-    animation: basalt-pixel-snake 900ms linear var(--basalt-pixel-delay) infinite;
+    animation: basalt-pixel-orbit 800ms linear var(--basalt-pixel-delay) infinite;
   }
   .basalt-shimmer-label {
     color: transparent;
@@ -525,7 +525,7 @@
     transform: rotate(360deg);
   }
 }
-@keyframes basalt-pixel-snake {
+@keyframes basalt-pixel-orbit {
   0%,	100% {
     opacity: 1;
   }
