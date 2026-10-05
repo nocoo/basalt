@@ -1625,6 +1625,24 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "AvatarInitialsProps",
 		surface: "AvatarInitials",
 	},
+	{
+		slug: "chat-markdown",
+		sourceFile: "packages/basalt/src/components/chat-markdown.tsx",
+		propsType: "ChatMarkdownProps",
+		surface: "ChatMarkdown",
+	},
+	{
+		slug: "chat-message",
+		sourceFile: "packages/basalt/src/components/chat-message.tsx",
+		propsType: "ChatMessageProps",
+		surface: "ChatMessage",
+	},
+	{
+		slug: "prompt-bar",
+		sourceFile: "packages/basalt/src/components/prompt-bar.tsx",
+		propsType: "PromptBarProps",
+		surface: "PromptBar",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

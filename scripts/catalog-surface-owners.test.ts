@@ -92,10 +92,10 @@ describe("public surface documentation ownership and freshness", () => {
 		const manifest = getActualRepoManifest();
 
 		expect(manifest.packageVersion).toBe(rootPkg.version);
-		expect(manifest.totalModules).toBe(128);
-		expect(manifest.totalSymbols).toBe(767);
-		expect(manifest.totalValues).toBe(402);
-		expect(manifest.totalTypes).toBe(365);
+		expect(manifest.totalModules).toBe(131);
+		expect(manifest.totalSymbols).toBe(775);
+		expect(manifest.totalValues).toBe(405);
+		expect(manifest.totalTypes).toBe(370);
 		expect(manifest.totalCssExports).toBe(3);
 
 		// Every module must have valid documentation ownership

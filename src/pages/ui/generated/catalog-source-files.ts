@@ -422,7 +422,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"chat-composer": {
 		"file": "packages/basalt/src/components/chat-composer.tsx",
-		"hash": "816c4d3e9aaa2358",
+		"hash": "5d1bd093c911d376",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-composer.js.map (sourcesContent[0])"
 	},
@@ -545,6 +545,24 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"hash": "7702f3106dcf0979",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/diff-table.js.map (sourcesContent[0])"
+	},
+	"chat-markdown": {
+		"file": "packages/basalt/src/components/chat-markdown.tsx",
+		"hash": "112cf86bfaf21900",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-markdown.js.map (sourcesContent[0])"
+	},
+	"chat-message": {
+		"file": "packages/basalt/src/components/chat-message.tsx",
+		"hash": "c82f2768424c092e",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-message.js.map (sourcesContent[0])"
+	},
+	"prompt-bar": {
+		"file": "packages/basalt/src/components/prompt-bar.tsx",
+		"hash": "d0e952a4cbd91573",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/prompt-bar.js.map (sourcesContent[0])"
 	},
 	"charts": {
 		"file": "packages/basalt/src/charts/charts.tsx",

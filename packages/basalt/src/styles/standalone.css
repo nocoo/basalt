@@ -425,6 +425,12 @@
   color: hsl(var(--basalt-info));
 }
 @layer components {
+  .basalt-chat-input {
+    field-sizing: content;
+    min-height: calc(1lh + var(--basalt-space-2));
+    max-height: calc(5lh + var(--basalt-space-2));
+    overscroll-behavior: contain;
+  }
   .basalt-hover-list {
     position: relative;
     isolation: isolate;
@@ -1079,6 +1085,10 @@
     width: var(--basalt-space-1_5);
     height: var(--basalt-space-1_5);
   }
+  .size-basalt-2 {
+    width: var(--basalt-space-2);
+    height: var(--basalt-space-2);
+  }
   .size-basalt-5 {
     width: var(--basalt-space-5);
     height: var(--basalt-space-5);
@@ -1212,9 +1222,6 @@
   .max-h-\[var\(--radix-popover-content-available-height\)\] {
     max-height: var(--radix-popover-content-available-height);
   }
-  .max-h-basalt-40 {
-    max-height: var(--basalt-space-40);
-  }
   .max-h-basalt-60 {
     max-height: var(--basalt-space-60);
   }
@@ -1230,14 +1237,14 @@
   .min-h-\[24px\] {
     min-height: 24px;
   }
+  .min-h-\[calc\(1lh\+var\(--basalt-space-2\)\)\] {
+    min-height: calc(1lh + var(--basalt-space-2));
+  }
   .min-h-basalt-12 {
     min-height: var(--basalt-space-12);
   }
   .min-h-basalt-control {
     min-height: var(--basalt-size-control);
-  }
-  .min-h-basalt-control-lg {
-    min-height: var(--basalt-size-control-lg);
   }
   .min-h-basalt-menu-row {
     min-height: var(--basalt-size-menu-row);
@@ -1368,6 +1375,9 @@
   .w-px {
     width: 1px;
   }
+  .max-w-\[90\%\] {
+    max-width: 90%;
+  }
   .max-w-\[92\%\] {
     max-width: 92%;
   }
@@ -1474,6 +1484,12 @@
   }
   .resize-none {
     resize: none;
+  }
+  .list-decimal {
+    list-style-type: decimal;
+  }
+  .list-disc {
+    list-style-type: disc;
   }
   .list-none {
     list-style-type: none;
@@ -2149,6 +2165,9 @@
   .pl-basalt-4 {
     padding-left: var(--basalt-space-4);
   }
+  .pl-basalt-5 {
+    padding-left: var(--basalt-space-5);
+  }
   .pl-basalt-14 {
     padding-left: var(--basalt-space-14);
   }
@@ -2190,6 +2209,9 @@
   .text-xs {
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
+  }
+  .text-\[0\.9em\] {
+    font-size: 0.9em;
   }
   .text-\[10px\] {
     font-size: 10px;
@@ -2366,6 +2388,9 @@
   }
   .no-underline {
     text-decoration-line: none;
+  }
+  .underline {
+    text-decoration-line: underline;
   }
   .underline-offset-4 {
     text-underline-offset: 4px;
@@ -2578,6 +2603,9 @@
   }
   .focus-within\:border-basalt-ring:focus-within {
     border-color: hsl(var(--basalt-ring));
+  }
+  .focus-within\:ring-basalt-ring:focus-within {
+    --tw-ring-color: hsl(var(--basalt-ring));
   }
   @media (hover: hover) {
     .hover\:scale-\[1\.03\]:hover {
@@ -3166,6 +3194,9 @@
   }
   .has-\[\[data-slot\=input-group-suffix\]\]\:\[\&_input\]\:pr-0:has(:is([data-slot=input-group-suffix])) input {
     padding-right: 0px;
+  }
+  .\[\&_p\]\:whitespace-pre-wrap p {
+    white-space: pre-wrap;
   }
   .\[\&_svg\]\:pointer-events-none svg {
     pointer-events: none;

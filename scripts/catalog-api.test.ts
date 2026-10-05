@@ -1696,8 +1696,26 @@ describe("catalog API generator contract", () => {
 				propsType: "AvatarInitialsProps",
 				surface: "AvatarInitials",
 			},
+			{
+				slug: "chat-markdown",
+				sourceFile: "packages/basalt/src/components/chat-markdown.tsx",
+				propsType: "ChatMarkdownProps",
+				surface: "ChatMarkdown",
+			},
+			{
+				slug: "chat-message",
+				sourceFile: "packages/basalt/src/components/chat-message.tsx",
+				propsType: "ChatMessageProps",
+				surface: "ChatMessage",
+			},
+			{
+				slug: "prompt-bar",
+				sourceFile: "packages/basalt/src/components/prompt-bar.tsx",
+				propsType: "PromptBarProps",
+				surface: "PromptBar",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(257);
+		expect(CATALOG_API_TARGETS).toHaveLength(260);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1864,6 +1882,9 @@ describe("catalog API generator contract", () => {
 			"recommendation-card",
 			"context-cards",
 			"diff-table",
+			"chat-markdown",
+			"chat-message",
+			"prompt-bar",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -3025,6 +3046,9 @@ export interface WidgetProps {
 			badge: ["Badge"],
 			empty: ["Empty"],
 			loader: ["Loader"],
+			"prompt-bar": ["PromptBar"],
+			"chat-message": ["ChatMessage"],
+			"chat-markdown": ["ChatMarkdown"],
 			"diff-table": ["DiffTable"],
 			"context-cards": ["ContextCards"],
 			"recommendation-card": ["RecommendationCard"],
@@ -3109,7 +3133,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(117);
+		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -3210,7 +3234,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(117);
+		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -3332,7 +3356,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(117);
+		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -3403,7 +3427,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(117);
+		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -3446,7 +3470,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(117);
+		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -3498,7 +3522,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(117);
+		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -4837,8 +4861,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(117);
-		expect(Object.keys(first)).toHaveLength(118);
+		expect(slugs).toHaveLength(120);
+		expect(Object.keys(first)).toHaveLength(121);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -4918,7 +4942,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"63f241ed3f60a6afd5b588ed2784d635d362364cb2880b9be50d0d31b876ed2b",
+			"9a7015ac3fbf332dc6ee25065100486ceec345bfa284b235392955422ad05ceb",
 		);
 	}, 60_000);
 

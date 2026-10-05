@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.2.0",
-	"totalModules": 128,
-	"totalSymbols": 767,
-	"totalValues": 402,
-	"totalTypes": 365,
+	"totalModules": 131,
+	"totalSymbols": 775,
+	"totalValues": 405,
+	"totalTypes": 370,
 	"totalCssExports": 3,
-	"totalCatalogEntries": 117,
+	"totalCatalogEntries": 120,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -8669,7 +8669,7 @@
 			"importPath": "@nocoo/basalt/components/chat-composer",
 			"subpath": "./components/chat-composer",
 			"sourceFile": "packages/basalt/src/components/chat-composer.tsx",
-			"sourceHash": "816c4d3e9aaa2358",
+			"sourceHash": "5d1bd093c911d376",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -8694,6 +8694,14 @@
 					"ownerDoc": "src/pages/ui/chat-composer",
 					"packageDoc": "ai/registry.json#chat-composer",
 					"originModule": "@nocoo/basalt/components/chat-composer"
+				},
+				{
+					"name": "ChatComposerAttachment",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chat-composer",
+					"packageDoc": "ai/registry.json#chat-composer",
+					"originModule": "@nocoo/basalt/components/chat-composer"
 				}
 			],
 			"catalogEntries": [
@@ -8708,6 +8716,51 @@
 						{
 							"name": "ChatComposer",
 							"props": [
+								{
+									"name": "value",
+									"type": "string",
+									"required": false,
+									"description": "Controlled draft; keep one draft per conversation in the application."
+								},
+								{
+									"name": "defaultValue",
+									"type": "string",
+									"required": false,
+									"description": "Initial draft when uncontrolled."
+								},
+								{
+									"name": "onValueChange",
+									"type": "(value: string) => void",
+									"required": false
+								},
+								{
+									"name": "toolbar",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Model, tool and context controls arranged before Send."
+								},
+								{
+									"name": "attachments",
+									"type": "readonly ChatComposerAttachment[]",
+									"required": false,
+									"description": "Caller-owned attachments; this component never uploads files."
+								},
+								{
+									"name": "onRemoveAttachment",
+									"type": "(id: string) => void",
+									"required": false
+								},
+								{
+									"name": "onFilesSelect",
+									"type": "(files: File[]) => void",
+									"required": false,
+									"description": "Local file selection callback. File validation/upload belong to the application."
+								},
+								{
+									"name": "accept",
+									"type": "string",
+									"required": false
+								},
 								{
 									"name": "disabled",
 									"type": "boolean",
@@ -8737,9 +8790,9 @@
 								},
 								{
 									"name": "onSend",
-									"type": "(text: string) => void",
+									"type": "(text: string) => void | Promise<void>",
 									"required": true,
-									"description": "Called with trimmed text on send. Operates on internal draft state and does not wait for a Promise (caller manages asynchronous errors)."
+									"description": "Called with trimmed text. Async failure preserves draft and attachments for retry."
 								},
 								{
 									"name": "onCancel",
@@ -8777,6 +8830,51 @@
 					"name": "ChatComposer",
 					"props": [
 						{
+							"name": "value",
+							"type": "string",
+							"required": false,
+							"description": "Controlled draft; keep one draft per conversation in the application."
+						},
+						{
+							"name": "defaultValue",
+							"type": "string",
+							"required": false,
+							"description": "Initial draft when uncontrolled."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: string) => void",
+							"required": false
+						},
+						{
+							"name": "toolbar",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Model, tool and context controls arranged before Send."
+						},
+						{
+							"name": "attachments",
+							"type": "readonly ChatComposerAttachment[]",
+							"required": false,
+							"description": "Caller-owned attachments; this component never uploads files."
+						},
+						{
+							"name": "onRemoveAttachment",
+							"type": "(id: string) => void",
+							"required": false
+						},
+						{
+							"name": "onFilesSelect",
+							"type": "(files: File[]) => void",
+							"required": false,
+							"description": "Local file selection callback. File validation/upload belong to the application."
+						},
+						{
+							"name": "accept",
+							"type": "string",
+							"required": false
+						},
+						{
 							"name": "disabled",
 							"type": "boolean",
 							"required": false,
@@ -8805,9 +8903,9 @@
 						},
 						{
 							"name": "onSend",
-							"type": "(text: string) => void",
+							"type": "(text: string) => void | Promise<void>",
 							"required": true,
-							"description": "Called with trimmed text on send. Operates on internal draft state and does not wait for a Promise (caller manages asynchronous errors)."
+							"description": "Called with trimmed text. Async failure preserves draft and attachments for retry."
 						},
 						{
 							"name": "onCancel",
@@ -9066,6 +9164,258 @@
 							"type": "string",
 							"required": false,
 							"description": "Optional class name applied to the navigation element.\nComponent inherits native nav HTMLAttributes on the root element but does not forward ref."
+						}
+					]
+				}
+			]
+		},
+		{
+			"displayName": "ChatMarkdown",
+			"exportName": "ChatMarkdown",
+			"importPath": "@nocoo/basalt/components/chat-markdown",
+			"subpath": "./components/chat-markdown",
+			"sourceFile": "packages/basalt/src/components/chat-markdown.tsx",
+			"sourceHash": "112cf86bfaf21900",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/chat-markdown",
+			"packageDoc": "ai/registry.json#chat-markdown",
+			"summary": "ChatMarkdown component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "ChatMarkdown",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chat-markdown",
+					"packageDoc": "ai/registry.json#chat-markdown",
+					"originModule": "@nocoo/basalt/components/chat-markdown"
+				},
+				{
+					"name": "ChatMarkdownProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chat-markdown",
+					"packageDoc": "ai/registry.json#chat-markdown",
+					"originModule": "@nocoo/basalt/components/chat-markdown"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "chat-markdown",
+					"name": "ChatMarkdown",
+					"exportName": "ChatMarkdown",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#chat-markdown",
+					"api": [
+						{
+							"name": "ChatMarkdown",
+							"props": [
+								{
+									"name": "content",
+									"type": "string",
+									"required": true,
+									"description": "Untrusted Markdown. Raw HTML is rendered as text, never injected."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "ChatMarkdown",
+					"props": [
+						{
+							"name": "content",
+							"type": "string",
+							"required": true,
+							"description": "Untrusted Markdown. Raw HTML is rendered as text, never injected."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"displayName": "ChatMessage",
+			"exportName": "ChatMessage",
+			"importPath": "@nocoo/basalt/components/chat-message",
+			"subpath": "./components/chat-message",
+			"sourceFile": "packages/basalt/src/components/chat-message.tsx",
+			"sourceHash": "c82f2768424c092e",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/chat-message",
+			"packageDoc": "ai/registry.json#chat-message",
+			"summary": "ChatMessage component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "ChatMessage",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chat-message",
+					"packageDoc": "ai/registry.json#chat-message",
+					"originModule": "@nocoo/basalt/components/chat-message"
+				},
+				{
+					"name": "ChatMessageProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chat-message",
+					"packageDoc": "ai/registry.json#chat-message",
+					"originModule": "@nocoo/basalt/components/chat-message"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "chat-message",
+					"name": "ChatMessage",
+					"exportName": "ChatMessage",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#chat-message",
+					"api": [
+						{
+							"name": "ChatMessage",
+							"props": [
+								{
+									"name": "variant",
+									"type": "\"assistant\" | \"user\"",
+									"required": true
+								},
+								{
+									"name": "content",
+									"type": "string",
+									"required": true
+								},
+								{
+									"name": "streaming",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "trace",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Thinking, tool calls and other trace content before the response."
+								},
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Approval, sources or result cards after the response."
+								},
+								{
+									"name": "author",
+									"type": "string",
+									"required": false
+								},
+								{
+									"name": "onEdit",
+									"type": "() => void",
+									"required": false
+								},
+								{
+									"name": "onRegenerate",
+									"type": "() => void",
+									"required": false
+								},
+								{
+									"name": "feedback",
+									"type": "\"down\" | \"up\"",
+									"required": false
+								},
+								{
+									"name": "onFeedback",
+									"type": "(value: \"up\" | \"down\") => void",
+									"required": false
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "ChatMessage",
+					"props": [
+						{
+							"name": "variant",
+							"type": "\"assistant\" | \"user\"",
+							"required": true
+						},
+						{
+							"name": "content",
+							"type": "string",
+							"required": true
+						},
+						{
+							"name": "streaming",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "trace",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Thinking, tool calls and other trace content before the response."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Approval, sources or result cards after the response."
+						},
+						{
+							"name": "author",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "onEdit",
+							"type": "() => void",
+							"required": false
+						},
+						{
+							"name": "onRegenerate",
+							"type": "() => void",
+							"required": false
+						},
+						{
+							"name": "feedback",
+							"type": "\"down\" | \"up\"",
+							"required": false
+						},
+						{
+							"name": "onFeedback",
+							"type": "(value: \"up\" | \"down\") => void",
+							"required": false
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
 						}
 					]
 				}
@@ -20547,6 +20897,142 @@
 				{
 					"name": "PopoverDescription",
 					"props": []
+				}
+			]
+		},
+		{
+			"displayName": "PromptBar",
+			"exportName": "PromptBar",
+			"importPath": "@nocoo/basalt/components/prompt-bar",
+			"subpath": "./components/prompt-bar",
+			"sourceFile": "packages/basalt/src/components/prompt-bar.tsx",
+			"sourceHash": "d0e952a4cbd91573",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/prompt-bar",
+			"packageDoc": "ai/registry.json#prompt-bar",
+			"summary": "PromptBar component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "PromptBar",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/prompt-bar",
+					"packageDoc": "ai/registry.json#prompt-bar",
+					"originModule": "@nocoo/basalt/components/prompt-bar"
+				},
+				{
+					"name": "PromptModel",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/prompt-bar",
+					"packageDoc": "ai/registry.json#prompt-bar",
+					"originModule": "@nocoo/basalt/components/prompt-bar"
+				},
+				{
+					"name": "PromptBarProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/prompt-bar",
+					"packageDoc": "ai/registry.json#prompt-bar",
+					"originModule": "@nocoo/basalt/components/prompt-bar"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "prompt-bar",
+					"name": "PromptBar",
+					"exportName": "PromptBar",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#prompt-bar",
+					"api": [
+						{
+							"name": "PromptBar",
+							"props": [
+								{
+									"name": "models",
+									"type": "readonly PromptModel[]",
+									"required": true
+								},
+								{
+									"name": "model",
+									"type": "string",
+									"required": true
+								},
+								{
+									"name": "onModelChange",
+									"type": "(model: string) => void",
+									"required": true
+								},
+								{
+									"name": "reasoning",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "onReasoningChange",
+									"type": "(value: boolean) => void",
+									"required": false
+								},
+								{
+									"name": "webSearch",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "onWebSearchChange",
+									"type": "(value: boolean) => void",
+									"required": false
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "PromptBar",
+					"props": [
+						{
+							"name": "models",
+							"type": "readonly PromptModel[]",
+							"required": true
+						},
+						{
+							"name": "model",
+							"type": "string",
+							"required": true
+						},
+						{
+							"name": "onModelChange",
+							"type": "(model: string) => void",
+							"required": true
+						},
+						{
+							"name": "reasoning",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "onReasoningChange",
+							"type": "(value: boolean) => void",
+							"required": false
+						},
+						{
+							"name": "webSearch",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "onWebSearchChange",
+							"type": "(value: boolean) => void",
+							"required": false
+						}
+					]
 				}
 			]
 		},
@@ -35684,7 +36170,7 @@
 			"exportName": "ChatComposer",
 			"importPath": "@nocoo/basalt/components/chat-composer",
 			"sourceFile": "packages/basalt/src/components/chat-composer.tsx",
-			"sourceHash": "816c4d3e9aaa2358",
+			"sourceHash": "5d1bd093c911d376",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#chat-composer",
@@ -35692,6 +36178,51 @@
 				{
 					"name": "ChatComposer",
 					"props": [
+						{
+							"name": "value",
+							"type": "string",
+							"required": false,
+							"description": "Controlled draft; keep one draft per conversation in the application."
+						},
+						{
+							"name": "defaultValue",
+							"type": "string",
+							"required": false,
+							"description": "Initial draft when uncontrolled."
+						},
+						{
+							"name": "onValueChange",
+							"type": "(value: string) => void",
+							"required": false
+						},
+						{
+							"name": "toolbar",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Model, tool and context controls arranged before Send."
+						},
+						{
+							"name": "attachments",
+							"type": "readonly ChatComposerAttachment[]",
+							"required": false,
+							"description": "Caller-owned attachments; this component never uploads files."
+						},
+						{
+							"name": "onRemoveAttachment",
+							"type": "(id: string) => void",
+							"required": false
+						},
+						{
+							"name": "onFilesSelect",
+							"type": "(files: File[]) => void",
+							"required": false,
+							"description": "Local file selection callback. File validation/upload belong to the application."
+						},
+						{
+							"name": "accept",
+							"type": "string",
+							"required": false
+						},
 						{
 							"name": "disabled",
 							"type": "boolean",
@@ -35721,9 +36252,9 @@
 						},
 						{
 							"name": "onSend",
-							"type": "(text: string) => void",
+							"type": "(text: string) => void | Promise<void>",
 							"required": true,
-							"description": "Called with trimmed text on send. Operates on internal draft state and does not wait for a Promise (caller manages asynchronous errors)."
+							"description": "Called with trimmed text. Async failure preserves draft and attachments for retry."
 						},
 						{
 							"name": "onCancel",
@@ -37379,6 +37910,163 @@
 						{
 							"name": "className",
 							"type": "string",
+							"required": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "chat-markdown",
+			"name": "ChatMarkdown",
+			"exportName": "ChatMarkdown",
+			"importPath": "@nocoo/basalt/components/chat-markdown",
+			"sourceFile": "packages/basalt/src/components/chat-markdown.tsx",
+			"sourceHash": "112cf86bfaf21900",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#chat-markdown",
+			"api": [
+				{
+					"name": "ChatMarkdown",
+					"props": [
+						{
+							"name": "content",
+							"type": "string",
+							"required": true,
+							"description": "Untrusted Markdown. Raw HTML is rendered as text, never injected."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "chat-message",
+			"name": "ChatMessage",
+			"exportName": "ChatMessage",
+			"importPath": "@nocoo/basalt/components/chat-message",
+			"sourceFile": "packages/basalt/src/components/chat-message.tsx",
+			"sourceHash": "c82f2768424c092e",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#chat-message",
+			"api": [
+				{
+					"name": "ChatMessage",
+					"props": [
+						{
+							"name": "variant",
+							"type": "\"assistant\" | \"user\"",
+							"required": true
+						},
+						{
+							"name": "content",
+							"type": "string",
+							"required": true
+						},
+						{
+							"name": "streaming",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "trace",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Thinking, tool calls and other trace content before the response."
+						},
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Approval, sources or result cards after the response."
+						},
+						{
+							"name": "author",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "onEdit",
+							"type": "() => void",
+							"required": false
+						},
+						{
+							"name": "onRegenerate",
+							"type": "() => void",
+							"required": false
+						},
+						{
+							"name": "feedback",
+							"type": "\"down\" | \"up\"",
+							"required": false
+						},
+						{
+							"name": "onFeedback",
+							"type": "(value: \"up\" | \"down\") => void",
+							"required": false
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "prompt-bar",
+			"name": "PromptBar",
+			"exportName": "PromptBar",
+			"importPath": "@nocoo/basalt/components/prompt-bar",
+			"sourceFile": "packages/basalt/src/components/prompt-bar.tsx",
+			"sourceHash": "d0e952a4cbd91573",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#prompt-bar",
+			"api": [
+				{
+					"name": "PromptBar",
+					"props": [
+						{
+							"name": "models",
+							"type": "readonly PromptModel[]",
+							"required": true
+						},
+						{
+							"name": "model",
+							"type": "string",
+							"required": true
+						},
+						{
+							"name": "onModelChange",
+							"type": "(model: string) => void",
+							"required": true
+						},
+						{
+							"name": "reasoning",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "onReasoningChange",
+							"type": "(value: boolean) => void",
+							"required": false
+						},
+						{
+							"name": "webSearch",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "onWebSearchChange",
+							"type": "(value: boolean) => void",
 							"required": false
 						}
 					]

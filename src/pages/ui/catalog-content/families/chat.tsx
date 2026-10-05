@@ -6,14 +6,23 @@ import { ChatInbox } from "@nocoo/basalt/components/chat-inbox";
 import { MessageCircle, Sparkles, X } from "lucide-react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
+import MarkdownDemo from "../../examples/chat-markdown/default";
+import chatmarkdownSource from "../../examples/chat-markdown/default?raw";
+import MessageDemo from "../../examples/chat-message/default";
+import chatmessageSource from "../../examples/chat-message/default?raw";
 import { DOCK_EXAMPLES } from "../../examples/dock";
 import { FAB_EXAMPLES } from "../../examples/fab";
+import PromptDemo from "../../examples/prompt-bar/default";
+import promptbarSource from "../../examples/prompt-bar/default?raw";
 import { API as chatBubbleApi } from "../../generated/catalog-api/chat-bubble";
 import { API as chatComposerApi } from "../../generated/catalog-api/chat-composer";
 import { API as chatHeaderApi } from "../../generated/catalog-api/chat-header";
 import { API as chatInboxApi } from "../../generated/catalog-api/chat-inbox";
+import { API as chatmarkdownApi } from "../../generated/catalog-api/chat-markdown";
+import { API as chatmessageApi } from "../../generated/catalog-api/chat-message";
 import { API as dockApi } from "../../generated/catalog-api/dock";
 import { API as fabApi } from "../../generated/catalog-api/fab";
+import { API as promptbarApi } from "../../generated/catalog-api/prompt-bar";
 
 function usage(name: string, from: string, sample: string, extraImports = ""): string {
 	const extras = extraImports ? `${extraImports}\n` : "";
@@ -26,6 +35,56 @@ function scenarioModule(code: string, imports: string[]): string {
 }
 
 export default catalogContentFamily({
+	"prompt-bar": {
+		docs: {
+			description:
+				"Five-line prompt composer with model, reasoning, search and attachment controls.",
+			usage: promptbarSource,
+			variants: [],
+			api: promptbarApi,
+		},
+		examples: [
+			{
+				id: "prompt-bar-default",
+				title: "Default",
+				code: promptbarSource,
+				render: () => <PromptDemo />,
+			},
+		],
+	},
+	"chat-message": {
+		docs: {
+			description: "AI message with trace/result slots, copy, feedback and regeneration actions.",
+			usage: chatmessageSource,
+			variants: [],
+			api: chatmessageApi,
+		},
+		examples: [
+			{
+				id: "chat-message-default",
+				title: "Default",
+				code: chatmessageSource,
+				render: () => <MessageDemo />,
+			},
+		],
+	},
+	"chat-markdown": {
+		docs: {
+			description:
+				"Safe Markdown with code blocks, tables and links. Raw HTML is displayed as text.",
+			usage: chatmarkdownSource,
+			variants: [],
+			api: chatmarkdownApi,
+		},
+		examples: [
+			{
+				id: "chat-markdown-default",
+				title: "Default",
+				code: chatmarkdownSource,
+				render: () => <MarkdownDemo />,
+			},
+		],
+	},
 	fab: {
 		docs: {
 			description: "A corner launcher that hides while a dock is open.",

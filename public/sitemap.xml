@@ -139,6 +139,12 @@
     <loc>https://basaltui.com/ui/chat-inbox</loc>
   </url>
   <url>
+    <loc>https://basaltui.com/ui/chat-markdown</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/chat-message</loc>
+  </url>
+  <url>
     <loc>https://basaltui.com/ui/checkbox</loc>
   </url>
   <url>
@@ -308,6 +314,9 @@
   </url>
   <url>
     <loc>https://basaltui.com/ui/popover</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/prompt-bar</loc>
   </url>
   <url>
     <loc>https://basaltui.com/ui/radar</loc>

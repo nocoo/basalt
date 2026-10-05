@@ -1,0 +1,74 @@
+import { fireEvent, render, screen } from "@testing-library/react";
+import { describe, expect, it, vi } from "vitest";
+import { ChatMarkdown } from "./chat-markdown";
+import { ChatMessage } from "./chat-message";
+
+describe("safe chat content", () => {
+	it("renders markdown blocks, GFM tables and inline styles without interpreting HTML", () => {
+		const { container } = render(
+			<ChatMarkdown
+				content={
+					"# Heading\n\n**Strong** *emphasis* ~~deleted~~ `inline`  \nnext\n\n> Quote\n\n1. First\n2. Second\n\n- [x] Done\n- [ ] Later\n\n---\n\n| A | B |\n| --- | --- |\n| 1 | 2 |\n\n<script>alert(1)</script>\n\n[bad](javascript:alert(1)) [ok](https://example.com) ![Image](https://example.com/p.png)"
+				}
+			/>,
+		);
+		expect(screen.getByRole("heading", { name: "Heading" })).toBeInTheDocument();
+		expect(container.querySelector("strong")).toHaveTextContent("Strong");
+		expect(container.querySelector("em")).toHaveTextContent("emphasis");
+		expect(container.querySelector("del")).toHaveTextContent("deleted");
+		expect(screen.getByRole("table")).toBeInTheDocument();
+		expect(container.querySelector("script")).toBeNull();
+		expect(container.querySelector("img")).toBeNull();
+		expect(screen.queryByRole("link", { name: "bad" })).toBeNull();
+		expect(screen.getByRole("link", { name: "ok" })).toHaveAttribute("rel", "noopener noreferrer");
+	});
+	it("copies fenced code and reports clipboard failure", async () => {
+		const writeText = vi
+			.fn()
+			.mockRejectedValueOnce(new Error("Denied"))
+			.mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		render(<ChatMarkdown content={"```ts\nconst x = 1;\n```\n\n```\nplain\n```"} />);
+		fireEvent.click(screen.getAllByRole("button", { name: "Copy code" })[0]);
+		await screen.findByRole("button", { name: "Copy failed" });
+		fireEvent.click(screen.getByRole("button", { name: "Copy failed" }));
+		await screen.findByRole("button", { name: "Copied" });
+		expect(writeText).toHaveBeenLastCalledWith("const x = 1;");
+	});
+	it("exposes message actions and hides them while streaming", async () => {
+		const writeText = vi
+			.fn()
+			.mockRejectedValueOnce(new Error("Denied"))
+			.mockResolvedValue(undefined);
+		Object.assign(navigator, { clipboard: { writeText } });
+		const edit = vi.fn(),
+			retry = vi.fn(),
+			feedback = vi.fn();
+		const { rerender } = render(
+			<ChatMessage
+				variant="assistant"
+				content="Answer"
+				trace={<span>Trace</span>}
+				onEdit={edit}
+				onRegenerate={retry}
+				onFeedback={feedback}
+			/>,
+		);
+		fireEvent.click(screen.getByRole("button", { name: "Copy message" }));
+		await screen.findByRole("alert");
+		fireEvent.click(screen.getByRole("button", { name: "Copy message" }));
+		await screen.findByRole("button", { name: "Copied" });
+		fireEvent.click(screen.getByRole("button", { name: "Edit message" }));
+		fireEvent.click(screen.getByRole("button", { name: "Regenerate response" }));
+		fireEvent.click(screen.getByRole("button", { name: "Helpful" }));
+		fireEvent.click(screen.getByRole("button", { name: "Not helpful" }));
+		expect(edit).toHaveBeenCalledOnce();
+		expect(retry).toHaveBeenCalledOnce();
+		expect(feedback).toHaveBeenCalledWith("down");
+		rerender(<ChatMessage variant="user" content="Literal **text**" streaming author="Owner" />);
+		expect(screen.getByRole("article", { name: "Owner message" })).toHaveTextContent(
+			"Literal **text**",
+		);
+		expect(screen.queryByRole("button")).toBeNull();
+	});
+});

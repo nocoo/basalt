@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.2.0",
-	"totalModules": 128,
-	"totalSymbols": 767,
-	"totalValues": 402,
-	"totalTypes": 365,
+	"totalModules": 131,
+	"totalSymbols": 775,
+	"totalValues": 405,
+	"totalTypes": 370,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2929,6 +2929,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/chat-composer",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/chat-composer"
+				},
+				{
+					"name": "ChatComposerAttachment",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chat-composer",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chat-composer"
 				}
 			]
 		},
@@ -2989,6 +2997,58 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/chat-inbox",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/chat-inbox"
+				}
+			]
+		},
+		{
+			"subpath": "./components/chat-markdown",
+			"importPath": "@nocoo/basalt/components/chat-markdown",
+			"sourceFile": "packages/basalt/src/components/chat-markdown.tsx",
+			"ownerDoc": "src/pages/ui/chat-markdown",
+			"ownerKind": "catalog-component",
+			"summary": "ChatMarkdown component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "ChatMarkdown",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chat-markdown",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chat-markdown"
+				},
+				{
+					"name": "ChatMarkdownProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chat-markdown",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chat-markdown"
+				}
+			]
+		},
+		{
+			"subpath": "./components/chat-message",
+			"importPath": "@nocoo/basalt/components/chat-message",
+			"sourceFile": "packages/basalt/src/components/chat-message.tsx",
+			"ownerDoc": "src/pages/ui/chat-message",
+			"ownerKind": "catalog-component",
+			"summary": "ChatMessage component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "ChatMessage",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/chat-message",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chat-message"
+				},
+				{
+					"name": "ChatMessageProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/chat-message",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/chat-message"
 				}
 			]
 		},
@@ -5373,6 +5433,40 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/popover",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/popover"
+				}
+			]
+		},
+		{
+			"subpath": "./components/prompt-bar",
+			"importPath": "@nocoo/basalt/components/prompt-bar",
+			"sourceFile": "packages/basalt/src/components/prompt-bar.tsx",
+			"ownerDoc": "src/pages/ui/prompt-bar",
+			"ownerKind": "catalog-component",
+			"summary": "PromptBar component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "PromptBar",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/prompt-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/prompt-bar"
+				},
+				{
+					"name": "PromptModel",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/prompt-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/prompt-bar"
+				},
+				{
+					"name": "PromptBarProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/prompt-bar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/prompt-bar"
 				}
 			]
 		},

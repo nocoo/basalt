@@ -6,6 +6,51 @@ export const API = [
 		name: "ChatComposer",
 		props: [
 			{
+				name: "value",
+				type: "string",
+				required: false,
+				description: "Controlled draft; keep one draft per conversation in the application.",
+			},
+			{
+				name: "defaultValue",
+				type: "string",
+				required: false,
+				description: "Initial draft when uncontrolled.",
+			},
+			{
+				name: "onValueChange",
+				type: "(value: string) => void",
+				required: false,
+			},
+			{
+				name: "toolbar",
+				type: "React.ReactNode",
+				required: false,
+				description: "Model, tool and context controls arranged before Send.",
+			},
+			{
+				name: "attachments",
+				type: "readonly ChatComposerAttachment[]",
+				required: false,
+				description: "Caller-owned attachments; this component never uploads files.",
+			},
+			{
+				name: "onRemoveAttachment",
+				type: "(id: string) => void",
+				required: false,
+			},
+			{
+				name: "onFilesSelect",
+				type: "(files: File[]) => void",
+				required: false,
+				description: "Local file selection callback. File validation/upload belong to the application.",
+			},
+			{
+				name: "accept",
+				type: "string",
+				required: false,
+			},
+			{
 				name: "disabled",
 				type: "boolean",
 				required: false,
@@ -34,9 +79,9 @@ export const API = [
 			},
 			{
 				name: "onSend",
-				type: "(text: string) => void",
+				type: "(text: string) => void | Promise<void>",
 				required: true,
-				description: "Called with trimmed text on send. Operates on internal draft state and does not wait for a Promise (caller manages asynchronous errors).",
+				description: "Called with trimmed text. Async failure preserves draft and attachments for retry.",
 			},
 			{
 				name: "onCancel",

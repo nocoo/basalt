@@ -362,6 +362,12 @@
 }
 
 @layer components {
+	.basalt-chat-input {
+		field-sizing: content;
+		min-height: calc(1lh + var(--basalt-space-2));
+		max-height: calc(5lh + var(--basalt-space-2));
+		overscroll-behavior: contain;
+	}
 	.basalt-hover-list {
 		position: relative;
 		isolation: isolate;

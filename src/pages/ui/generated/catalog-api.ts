@@ -20,6 +20,8 @@ import { API as chatBubbleApi } from "./catalog-api/chat-bubble";
 import { API as chatComposerApi } from "./catalog-api/chat-composer";
 import { API as chatHeaderApi } from "./catalog-api/chat-header";
 import { API as chatInboxApi } from "./catalog-api/chat-inbox";
+import { API as chatMarkdownApi } from "./catalog-api/chat-markdown";
+import { API as chatMessageApi } from "./catalog-api/chat-message";
 import { API as checkboxApi } from "./catalog-api/checkbox";
 import { API as clipboardTextApi } from "./catalog-api/clipboard-text";
 import { API as codeApi } from "./catalog-api/code";
@@ -76,6 +78,7 @@ import { API as pageHeaderApi } from "./catalog-api/page-header";
 import { API as paginationApi } from "./catalog-api/pagination";
 import { API as paletteApi } from "./catalog-api/palette";
 import { API as popoverApi } from "./catalog-api/popover";
+import { API as promptBarApi } from "./catalog-api/prompt-bar";
 import { API as radarApi } from "./catalog-api/radar";
 import { API as radioApi } from "./catalog-api/radio";
 import { API as recommendationCardApi } from "./catalog-api/recommendation-card";
@@ -139,6 +142,8 @@ export const CATALOG_API = {
 	"chat-composer": chatComposerApi,
 	"chat-header": chatHeaderApi,
 	"chat-inbox": chatInboxApi,
+	"chat-markdown": chatMarkdownApi,
+	"chat-message": chatMessageApi,
 	checkbox: checkboxApi,
 	"clipboard-text": clipboardTextApi,
 	code: codeApi,
@@ -195,6 +200,7 @@ export const CATALOG_API = {
 	pagination: paginationApi,
 	palette: paletteApi,
 	popover: popoverApi,
+	"prompt-bar": promptBarApi,
 	radar: radarApi,
 	radio: radioApi,
 	"recommendation-card": recommendationCardApi,

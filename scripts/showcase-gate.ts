@@ -11,6 +11,7 @@ import {
 import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from "./consumer-http";
 import { prerenderHtml } from "./prerender";
 import { assertAgentFeedback } from "./showcase-agent";
+import { assertChatComposerSizing } from "./showcase-chat-composer";
 import { assertCommandSelection } from "./showcase-command";
 import { assertContextCards } from "./showcase-context";
 import { assertDiffReview } from "./showcase-diff";
@@ -63,6 +64,7 @@ export async function runShowcaseGate() {
 			const recommendation = await assertRecommendation(page, url);
 			const context = await assertContextCards(page, url);
 			const diffReview = await assertDiffReview(page, url);
+			const chatComposer = await assertChatComposerSizing(page, url);
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
 			const editing = await assertEditingShowcases(page, url);
@@ -81,6 +83,7 @@ export async function runShowcaseGate() {
 				recommendation,
 				context,
 				diffReview,
+				chatComposer,
 				examples,
 				reusable,
 				editing,

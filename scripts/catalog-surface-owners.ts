@@ -249,6 +249,7 @@ export const NON_CATALOG_SURFACE_OWNERS: Record<string, DocOwnerInfo> = {
  * will fail derivation fast.
  */
 export const REGISTERED_CATALOG_HELPERS: Record<string, string[]> = {
+	"@nocoo/basalt/components/prompt-bar": ["PromptModel"],
 	"@nocoo/basalt/components/context-cards": ["ContextChunk"],
 	"@nocoo/basalt/components/recommendation-card": [
 		"RecommendationOption",
