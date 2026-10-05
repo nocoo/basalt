@@ -245,6 +245,19 @@ export async function assertChat(page: Page, baseUrl: string, mobile: boolean) {
 	await workspace
 		.getByRole("table", { name: "Local change preview - no files written", exact: true })
 		.waitFor();
+	await page.waitForFunction(() => {
+		const log = document.querySelector('[data-chat-workspace] [role="log"]');
+		return log && log.scrollHeight - log.clientHeight - log.scrollTop < 2;
+	});
+	const transcript = workspace.getByRole("log");
+	await transcript.hover();
+	await page.mouse.wheel(0, -10000);
+	await workspace.getByRole("button", { name: "Jump to latest", exact: true }).waitFor();
+	await page.waitForFunction(() => {
+		const log = document.querySelector('[data-chat-workspace] [role="log"]');
+		return log && log.scrollTop < 2;
+	});
+	await workspace.getByRole("button", { name: "Jump to latest", exact: true }).click();
 	await input.fill("Thread draft");
 	if (mobile) await workspace.getByRole("button", { name: "Conversations", exact: true }).click();
 	await page.getByRole("button", { name: "New conversation", exact: true }).click();

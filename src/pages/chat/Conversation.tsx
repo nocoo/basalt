@@ -172,11 +172,32 @@ export function Conversation({ vm }: { vm: VM }) {
 	const follow = useRef(true);
 	const [away, setAway] = useState(false);
 	useEffect(() => {
+		const node = log.current;
+		const takeOwnership = () => {
+			follow.current = false;
+		};
+		const keyboardScroll = (event: KeyboardEvent) => {
+			if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(event.key))
+				takeOwnership();
+		};
+		const scrollbar = (event: PointerEvent) => {
+			if (event.target === node) takeOwnership();
+		};
+		node?.addEventListener("wheel", takeOwnership, { passive: true });
+		node?.addEventListener("touchmove", takeOwnership, { passive: true });
+		node?.addEventListener("keydown", keyboardScroll);
+		node?.addEventListener("pointerdown", scrollbar);
 		const observer = new ResizeObserver(() => {
 			if (follow.current && log.current) log.current.scrollTop = log.current.scrollHeight;
 		});
 		if (content.current) observer.observe(content.current);
-		return () => observer.disconnect();
+		return () => {
+			observer.disconnect();
+			node?.removeEventListener("wheel", takeOwnership);
+			node?.removeEventListener("touchmove", takeOwnership);
+			node?.removeEventListener("keydown", keyboardScroll);
+			node?.removeEventListener("pointerdown", scrollbar);
+		};
 	}, []);
 	const latest = () => {
 		follow.current = true;
@@ -190,11 +211,11 @@ export function Conversation({ vm }: { vm: VM }) {
 				role="log"
 				aria-label={t("demo.messages")}
 				aria-live="off"
-				className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-basalt-3 md:px-basalt-6"
+				className="min-h-0 flex-1 overflow-y-auto overscroll-contain [overflow-anchor:none] px-basalt-3 md:px-basalt-6"
 				onScroll={(event) => {
 					const node = event.currentTarget;
 					const next = node.scrollHeight - node.scrollTop - node.clientHeight > 64;
-					follow.current = !next;
+					if (!next) follow.current = true;
 					setAway(next);
 				}}
 			>

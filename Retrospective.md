@@ -124,3 +124,7 @@ Recommendation and DiffTable references simulated success with local flags. Basa
 ## 2026-10-05: Chat rendering and draft ownership
 
 The first chat renderer treated Marked lexer text as already decoded. A probe with `&amp;` and an entity-encoded URL showed that React rendering must decode Markdown text and validate the decoded URL separately, while keeping code and raw HTML literal. Reuse `entities` rather than a partial replacement table. Copy feedback must be tied to the exact copied content, not a permanent boolean. Regeneration and edit/resend must also preserve the independent next-message draft and a manually renamed thread. Regression tests now cover these boundaries. Browser duplicate-message assertions count user articles, not matching words echoed inside an assistant response.
+
+## 2026-10-05: Approval layout changes are not user scrolling
+
+A short mobile-viewport probe found that collapsing the approval card produced a scroll event before new response content settled. Treating every off-bottom scroll event as user intent disabled follow-scroll and left the final answer below the viewport. Disable browser scroll anchoring for the transcript and transfer scroll ownership only on wheel, touch, keyboard or scrollbar input; ResizeObserver remains responsible for following content growth. Returning to the bottom or explicitly sending restores following. The browser journey now asserts the final bottom position and actual wheel-driven history navigation.
