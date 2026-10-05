@@ -35,9 +35,9 @@ export function DiffTable({
 		<LayerCard
 			padding="none"
 			aria-labelledby={id}
-			className={cn("min-w-0 overflow-hidden", className)}
+			className={cn("min-w-0 overflow-hidden leading-[var(--basalt-line-body)]", className)}
 		>
-			<header className="flex flex-wrap items-center justify-between gap-basalt-2 border-b border-basalt-border px-basalt-card-sm py-basalt-2">
+			<header className="flex flex-wrap items-center justify-between gap-basalt-content-gap border-b border-basalt-border px-basalt-panel-x py-basalt-panel-y">
 				<h3 id={id} className="text-[13px] font-medium">
 					{title}
 				</h3>
@@ -84,7 +84,7 @@ export function DiffTable({
 									}}
 								>
 									<TableCell className="whitespace-nowrap text-xs">
-										<span className="inline-flex items-center gap-basalt-1">
+										<span className="inline-flex items-center gap-basalt-control-gap leading-[var(--basalt-line-body)]">
 											{row.change === "add" ? (
 												<Plus aria-hidden="true" className="size-basalt-icon-sm" />
 											) : row.change === "remove" ? (
@@ -135,11 +135,11 @@ export function DiffTable({
 				</Table>
 			</div>
 			{vm.error && (
-				<p role="alert" className="px-basalt-card-sm py-basalt-2 text-xs text-basalt-danger">
+				<p role="alert" className="px-basalt-panel-x py-basalt-panel-y text-xs text-basalt-danger">
 					{vm.error}
 				</p>
 			)}
-			<footer className="flex flex-wrap items-center justify-between gap-basalt-2 border-t border-basalt-border p-basalt-card-sm">
+			<footer className="flex flex-wrap items-center justify-between gap-basalt-content-gap border-t border-basalt-border px-basalt-panel-x py-basalt-panel-y">
 				{vm.status === "applied" ? (
 					<p role="status" className="inline-flex items-center gap-basalt-1_5 text-sm">
 						<Check aria-hidden="true" className="size-basalt-icon" />

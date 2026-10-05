@@ -42,6 +42,7 @@ describe("ChatPage", () => {
 		expect(
 			screen.getByRole("table", { name: "Local change preview - no files written" }),
 		).toBeInTheDocument();
+		fireEvent.click(screen.getByRole("button", { name: "Reference sources 1" }));
 		expect(screen.getByRole("link", { name: /INTEGRATION.md/ })).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Edit message" }));
 		fireEvent.change(screen.getByRole("textbox", { name: "Edit message text" }), {

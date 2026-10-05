@@ -81,17 +81,22 @@ export const CollapsibleTrigger = React.forwardRef<
 		<CollapsiblePrimitive.CollapsibleTrigger
 			ref={ref}
 			className={cn(
-				"m-0 inline-flex cursor-pointer items-center gap-basalt-1 border-none bg-transparent p-0 text-sm font-medium text-basalt-foreground shadow-none select-none",
+				"basalt-ui group/collapsible m-0 inline-flex min-w-0 cursor-pointer items-center gap-basalt-control-gap border-none bg-transparent p-0 text-left text-sm font-medium leading-[var(--basalt-line-body)] text-basalt-foreground shadow-none select-none",
 				FOCUS_INSET,
-				"[&_svg]:size-basalt-icon-sm [&_svg]:shrink-0 [&_svg]:origin-center [&_svg]:transition-transform [&_svg]:duration-100 [&_svg]:ease-out",
-				"data-[state=open]:[&_svg]:rotate-180",
 				OVERLAY_MOTION,
 				className,
 			)}
 			{...props}
 		>
-			<span>{children}</span>
-			<ChevronDown aria-hidden="true" className={OVERLAY_MOTION} />
+			<span className="flex min-w-0 items-center gap-basalt-control-gap">{children}</span>
+			<ChevronDown
+				aria-hidden="true"
+				data-slot="collapsible-chevron"
+				className={cn(
+					"size-basalt-icon-sm shrink-0 transition-transform duration-100 ease-out group-data-[state=open]/collapsible:rotate-180",
+					OVERLAY_MOTION,
+				)}
+			/>
 		</CollapsiblePrimitive.CollapsibleTrigger>
 	);
 });

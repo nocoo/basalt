@@ -63,6 +63,14 @@
 	--spacing-basalt-table-x: var(--basalt-space-table-x);
 	--spacing-basalt-table-y: var(--basalt-space-table-y);
 	--spacing-basalt-overlay: var(--basalt-space-overlay);
+	--spacing-basalt-panel-x: var(--basalt-space-panel-x);
+	--spacing-basalt-panel-y: var(--basalt-space-panel-y);
+	--spacing-basalt-content-gap: var(--basalt-space-content-gap);
+	--spacing-basalt-row-x: var(--basalt-space-row-x);
+	--spacing-basalt-row-y: var(--basalt-space-row-y);
+	--spacing-basalt-row-gap: var(--basalt-space-row-gap);
+	--spacing-basalt-row-content: var(--basalt-space-row-content);
+	--spacing-basalt-action: var(--basalt-size-action);
 	--color-basalt-background: hsl(var(--basalt-background));
 	--color-basalt-foreground: hsl(var(--basalt-foreground));
 	--color-basalt-card: hsl(var(--basalt-card));

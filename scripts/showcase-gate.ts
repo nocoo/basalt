@@ -11,6 +11,7 @@ import {
 import { allocatePort, assertServerCleaned, startHttpServer, stopChild } from "./consumer-http";
 import { prerenderHtml } from "./prerender";
 import { assertAgentFeedback } from "./showcase-agent";
+import { assertCompositeAlignment } from "./showcase-alignment";
 import { assertChatComposerSizing } from "./showcase-chat-composer";
 import { assertCommandSelection } from "./showcase-command";
 import { assertContextCards } from "./showcase-context";
@@ -58,6 +59,7 @@ export async function runShowcaseGate() {
 			const command = await assertCommandSelection(page, url);
 			const loader = await assertLoaderShowcase(page, url);
 			const agent = await assertAgentFeedback(page, url);
+			const alignment = await assertCompositeAlignment(page, url);
 			const hover = await assertHoverAndDensity(page, url);
 			const dimensions = await assertDimensionTokens(page, url);
 			const records = await assertRecordGeometry(page, url);
@@ -77,6 +79,7 @@ export async function runShowcaseGate() {
 				command,
 				loader,
 				agent,
+				alignment,
 				hover,
 				dimensions,
 				records,

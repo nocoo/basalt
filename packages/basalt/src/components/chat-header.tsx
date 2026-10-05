@@ -39,12 +39,12 @@ export function ChatHeader({
 		<header
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex items-center justify-between gap-basalt-2 border-b border-basalt-border/50 px-basalt-3 py-basalt-2_5",
+				"flex items-center justify-between gap-basalt-content-gap border-b border-basalt-border/50 px-basalt-panel-x py-basalt-panel-y leading-[var(--basalt-line-body)]",
 				className,
 			)}
 			{...props}
 		>
-			<div className="flex min-w-0 items-center gap-basalt-2">
+			<div className="flex min-w-0 items-center gap-basalt-content-gap">
 				{leading ? (
 					<span className="flex h-basalt-8 w-basalt-8 items-center justify-center">{leading}</span>
 				) : null}

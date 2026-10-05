@@ -30,7 +30,10 @@ describe("Collapsible", () => {
 		fireEvent.click(screen.getByRole("button", { name: "How does this project work?" }));
 		const trigger = screen.getByRole("button", { name: "How does this project work?" });
 		expect(trigger).toHaveAttribute("data-state", "open");
-		expect(trigger.className).toContain("data-[state=open]:[&_svg]:rotate-180");
+		expect(trigger.querySelector('[data-slot="collapsible-chevron"]')).toHaveClass(
+			"group-data-[state=open]/collapsible:rotate-180",
+		);
+		expect(trigger.className).not.toContain("[&_svg]");
 		const panel = screen.getByText("This project is a React component library.");
 		expect(panel.className).toContain("border-l-2");
 		expect(panel.className.split(/\s+/)).toContain("text-sm");

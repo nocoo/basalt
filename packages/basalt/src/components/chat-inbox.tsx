@@ -39,7 +39,10 @@ export interface ChatInboxProps
 export function ChatInbox({ items, activeId, onSelect, className, ...props }: ChatInboxProps) {
 	return (
 		<nav
-			className={cn("flex min-h-0 flex-col gap-basalt-0_5 overflow-y-auto p-basalt-2", className)}
+			className={cn(
+				"flex min-h-0 flex-col gap-basalt-0_5 overflow-y-auto p-basalt-menu-inset",
+				className,
+			)}
 			{...props}
 		>
 			{items.map((item) => {
@@ -52,7 +55,7 @@ export function ChatInbox({ items, activeId, onSelect, className, ...props }: Ch
 						aria-current={active ? "true" : undefined}
 						onClick={() => onSelect(item.id)}
 						className={cn(
-							"h-auto w-full justify-start gap-basalt-2 rounded-basalt-md px-basalt-2 py-basalt-2 text-left",
+							"h-auto w-full justify-start gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-row-y leading-[var(--basalt-line-body)] text-left",
 							active ? "bg-basalt-accent" : "",
 						)}
 					>
@@ -62,7 +65,7 @@ export function ChatInbox({ items, activeId, onSelect, className, ...props }: Ch
 							</span>
 						) : null}
 						<span className="min-w-0 flex-1">
-							<span className="flex items-baseline justify-between gap-basalt-2">
+							<span className="flex items-baseline justify-between gap-basalt-row-gap">
 								<span className="truncate text-sm font-medium text-basalt-foreground">
 									{item.title}
 								</span>

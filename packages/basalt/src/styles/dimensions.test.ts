@@ -6,6 +6,10 @@ const tailwind = readFileSync("packages/basalt/src/styles/tailwind.css", "utf8")
 const standalone = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
 
 describe("dimension token contract", () => {
+	it("emits zero padding once, before axis overrides", () => {
+		expect(standalone.match(/\.p-0 \{/g)).toHaveLength(1);
+		expect(standalone.indexOf(".p-0 {")).toBeLessThan(standalone.indexOf(".px-basalt-2 {"));
+	});
 	it("owns the control, icon, surface and touch scales independently of the host", () => {
 		for (const [role, value] of Object.entries({
 			control: "2rem",
@@ -30,6 +34,31 @@ describe("dimension token contract", () => {
 			expect(source, file).not.toMatch(
 				/\b(?:p[xytrblse]?|m[xytrblse]?|gap(?:-[xy])?|space-[xy])-(?:[1-9]\d*(?:\.\d+)?|0\.\d+)(?![\w./])/,
 			);
+		}
+	});
+	it("defines shared panel and row roles for composite controls", () => {
+		for (const role of [
+			"panel-x",
+			"panel-y",
+			"content-gap",
+			"row-x",
+			"row-y",
+			"row-gap",
+			"row-content",
+		]) {
+			expect(tokens).toContain(`--basalt-space-${role}:`);
+			expect(tailwind).toContain(`--spacing-basalt-${role}: var(--basalt-space-${role})`);
+			expect(standalone).toContain(`--basalt-space-${role}:`);
+		}
+		for (const file of ["approval-card", "context-cards", "recommendation-card", "diff-table"]) {
+			const source = readFileSync(`packages/basalt/src/components/${file}.tsx`, "utf8");
+			expect(source, file).toContain("px-basalt-panel-x");
+			expect(source, file).toContain("py-basalt-panel-y");
+		}
+		for (const file of ["thinking", "tool-chips", "approval-card", "chat-message"]) {
+			const source = readFileSync(`packages/basalt/src/components/${file}.tsx`, "utf8");
+			expect(source, file).toContain("gap-basalt-row-gap");
+			expect(source, file).toContain("var(--basalt-line-body)");
 		}
 	});
 	it("ships every dimension variable referenced by a class", () => {

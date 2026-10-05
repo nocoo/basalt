@@ -103,3 +103,29 @@ it("resets copy confirmation when message or code content changes", async () => 
 	expect(screen.getByRole("button", { name: "Copy message" })).toBeInTheDocument();
 	expect(screen.getByRole("button", { name: "Copy code" })).toBeInTheDocument();
 });
+
+it("keeps sources in a compact disclosure beside actions without nested cards", () => {
+	const sources = [
+		{ id: "safe", name: "Sales report", type: "CSV", href: "https://example.com/sales" },
+		{ id: "bad", name: "Private notes", href: "javascript:alert(1)" },
+	];
+	const { container, rerender } = render(
+		<ChatMessage variant="assistant" content="Answer" sources={sources} />,
+	);
+	expect(screen.queryByRole("list", { name: "Sources" })).toBeNull();
+	const toggle = screen.getByRole("button", { name: "Sources 2" });
+	expect(toggle.parentElement).toBe(
+		screen.getByRole("button", { name: "Copy message" }).parentElement,
+	);
+	fireEvent.click(toggle);
+	expect(screen.getByRole("link", { name: /Sales report/ })).toHaveAttribute(
+		"rel",
+		"noopener noreferrer",
+	);
+	expect(screen.queryByRole("link", { name: /Private notes/ })).toBeNull();
+	expect(screen.getByText("Private notes")).toBeInTheDocument();
+	expect(container.querySelector("[data-basalt-surface]")).toBeNull();
+	rerender(<ChatMessage variant="assistant" content="More" sources={sources} streaming />);
+	expect(screen.queryByRole("button")).toBeNull();
+	expect(screen.queryByRole("list")).toBeNull();
+});

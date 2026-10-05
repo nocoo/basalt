@@ -30,7 +30,7 @@ export const API = [
 				name: "children",
 				type: "React.ReactNode",
 				required: false,
-				description: "Approval, sources or result cards after the response.",
+				description: "Approval or result content after the response; use sources for citations.",
 			},
 			{
 				name: "author",
@@ -56,6 +56,19 @@ export const API = [
 				name: "onFeedback",
 				type: "(value: \"up\" | \"down\") => void",
 				required: false,
+			},
+			{
+				name: "sources",
+				type: "readonly { id: string; name: string; type?: string; href?: string; }[]",
+				required: false,
+				description: "Compact source disclosure beside message actions. No card wrapper is added.",
+			},
+			{
+				name: "sourcesLabel",
+				type: "string",
+				required: false,
+				default: "\"Sources\"",
+				description: "Source disclosure label.",
 			},
 			{
 				name: "className",

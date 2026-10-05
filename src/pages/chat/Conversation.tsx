@@ -2,7 +2,6 @@ import { ApprovalCard } from "@nocoo/basalt/components/approval-card";
 import { Button } from "@nocoo/basalt/components/button";
 import { ChatComposer } from "@nocoo/basalt/components/chat-composer";
 import { ChatMessage } from "@nocoo/basalt/components/chat-message";
-import { ContextCards } from "@nocoo/basalt/components/context-cards";
 import { DiffTable } from "@nocoo/basalt/components/diff-table";
 import { PromptBar } from "@nocoo/basalt/components/prompt-bar";
 import { RecommendationCard } from "@nocoo/basalt/components/recommendation-card";
@@ -25,6 +24,19 @@ function Response({ message, vm }: { message: Message; vm: VM }) {
 			content={message.text}
 			streaming={active}
 			feedback={message.feedback}
+			sourcesLabel={t("pages.chat.sources")}
+			sources={
+				message.phase === "complete" && message.search
+					? [
+							{
+								id: "guide",
+								name: "INTEGRATION.md",
+								type: "DOC",
+								href: "https://github.com/nocoo/basalt/blob/main/INTEGRATION.md",
+							},
+						]
+					: []
+			}
 			onRegenerate={
 				!vm.running ? () => vm.dispatch({ type: "regenerate", id: message.id }) : undefined
 			}
@@ -86,81 +98,59 @@ function Response({ message, vm }: { message: Message; vm: VM }) {
 					</Button>
 				</div>
 			)}
-			{message.phase === "complete" && (
-				<>
-					{message.proposal ? (
-						<DiffTable
-							title={t("pages.chat.preview")}
-							columns={[{ id: "value", label: "CSS" }]}
-							rows={[
-								{
-									id: "old",
-									label: "Remove",
-									change: "remove",
-									values: { value: "height: 160px" },
-								},
-								{
-									id: "new",
-									label: "Add",
-									change: "add",
-									values: { value: "max-height: calc(5lh + var(--basalt-space-2))" },
-								},
-							]}
-							disabled={message.decision === "skip"}
-							onApply={() => vm.dispatch({ type: "draft", text: t("pages.chat.reviewPrompt") })}
-						/>
-					) : (
-						<RecommendationCard
-							title={t("pages.chat.nextStep")}
-							disabled={vm.running}
-							options={[
-								{
-									id: "review",
-									label: "Review the composer",
-									description:
-										"Walk through the five-line composer, interrupted streams and approval flow.",
-									confidence: "high",
-									actionLabel: t("pages.chat.tryPrompt"),
-								},
-								{
-									id: "test",
-									label: "Plan the tests",
-									description:
-										"Check IME, failed sends, mobile overflow and thread isolation before shipping.",
-									confidence: "review",
-									actionLabel: t("pages.chat.tryPrompt"),
-								},
-							]}
-							onAccept={(option) =>
-								vm.dispatch({
-									type: "draft",
-									text:
-										option.id === "review"
-											? t("pages.chat.codePrompt")
-											: t("pages.chat.testPrompt"),
-								})
-							}
-						/>
-					)}
-					{message.search && (
-						<ContextCards
-							title={t("pages.chat.sources")}
-							chunks={[
-								{
-									id: "guide",
-									title: "Basalt integration guide",
-									body: "Source linked by the local fixture; not a live search result. Shared tokens, controlled state and accessible interactions.",
-									source: {
-										name: "INTEGRATION.md",
-										type: "DOC",
-										href: "https://github.com/nocoo/basalt/blob/main/INTEGRATION.md",
-									},
-								},
-							]}
-						/>
-					)}
-				</>
-			)}
+			{message.phase === "complete" &&
+				(message.proposal ? (
+					<DiffTable
+						title={t("pages.chat.preview")}
+						columns={[{ id: "value", label: "CSS" }]}
+						rows={[
+							{
+								id: "old",
+								label: "Remove",
+								change: "remove",
+								values: { value: "height: 160px" },
+							},
+							{
+								id: "new",
+								label: "Add",
+								change: "add",
+								values: { value: "max-height: calc(5lh + var(--basalt-space-2))" },
+							},
+						]}
+						disabled={message.decision === "skip"}
+						onApply={() => vm.dispatch({ type: "draft", text: t("pages.chat.reviewPrompt") })}
+					/>
+				) : (
+					<RecommendationCard
+						title={t("pages.chat.nextStep")}
+						disabled={vm.running}
+						options={[
+							{
+								id: "review",
+								label: "Review the composer",
+								description:
+									"Walk through the five-line composer, interrupted streams and approval flow.",
+								confidence: "high",
+								actionLabel: t("pages.chat.tryPrompt"),
+							},
+							{
+								id: "test",
+								label: "Plan the tests",
+								description:
+									"Check IME, failed sends, mobile overflow and thread isolation before shipping.",
+								confidence: "review",
+								actionLabel: t("pages.chat.tryPrompt"),
+							},
+						]}
+						onAccept={(option) =>
+							vm.dispatch({
+								type: "draft",
+								text:
+									option.id === "review" ? t("pages.chat.codePrompt") : t("pages.chat.testPrompt"),
+							})
+						}
+					/>
+				))}
 		</ChatMessage>
 	);
 }
@@ -302,7 +292,7 @@ export function Conversation({ vm }: { vm: VM }) {
 					</Button>
 				</div>
 			)}
-			<div className="mx-auto w-full max-w-[50rem] shrink-0 px-basalt-1 pb-basalt-2 md:px-basalt-3">
+			<div className="mx-auto w-full max-w-[51rem] shrink-0 px-basalt-3 pb-basalt-2 md:px-basalt-6">
 				{vm.error && (
 					<p role="alert" className="px-basalt-3 text-xs text-basalt-danger">
 						{vm.error}

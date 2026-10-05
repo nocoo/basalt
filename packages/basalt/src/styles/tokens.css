@@ -61,6 +61,18 @@
 	--basalt-space-table-x: var(--basalt-space-3);
 	--basalt-space-table-y: var(--basalt-space-1_5);
 	--basalt-space-overlay: var(--basalt-space-6);
+	--basalt-space-panel-x: var(--basalt-space-card-sm);
+	--basalt-space-panel-y: var(--basalt-space-2);
+	--basalt-space-content-gap: var(--basalt-space-2);
+	--basalt-space-row-x: var(--basalt-space-2);
+	--basalt-space-row-y: var(--basalt-space-1_5);
+	--basalt-space-row-gap: var(--basalt-space-2);
+	--basalt-space-row-content: calc(
+		var(--basalt-space-row-x) +
+		var(--basalt-size-icon-lg) +
+		var(--basalt-space-row-gap)
+	);
+	--basalt-size-action: 1.5rem;
 }
 
 :root,

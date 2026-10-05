@@ -118,11 +118,8 @@ export function ChatComposer({
 	};
 
 	return (
-		<form
-			className={cn("basalt-ui shrink-0 bg-basalt-card p-basalt-card-sm", className)}
-			onSubmit={onSubmit}
-		>
-			<div className="rounded-basalt-lg bg-basalt-control p-basalt-2 ring-1 ring-basalt-border focus-within:ring-basalt-ring">
+		<form className={cn("basalt-ui shrink-0", className)} onSubmit={onSubmit}>
+			<div className="rounded-basalt-lg bg-basalt-control p-basalt-panel-y ring-1 ring-basalt-border focus-within:ring-basalt-ring">
 				{attachments.length > 0 && (
 					<ul aria-label="Attachments" className="mb-basalt-2 flex flex-wrap gap-basalt-1_5">
 						{attachments.map((file) => (
@@ -168,7 +165,7 @@ export function ChatComposer({
 					aria-description="Enter to send, Shift+Enter for a new line"
 					className="basalt-chat-input min-h-[calc(1lh+var(--basalt-space-2))] resize-none overflow-y-auto border-0 bg-transparent px-basalt-1 py-basalt-1 text-sm leading-[var(--basalt-line-body)] shadow-none ring-0 outline-none"
 				/>
-				<div className="mt-basalt-2 flex items-center justify-between gap-basalt-2">
+				<div className="mt-basalt-content-gap flex items-center justify-between gap-basalt-content-gap">
 					<div className="flex min-w-0 flex-1 flex-wrap items-center gap-basalt-1">
 						{onFilesSelect && (
 							<>
@@ -224,7 +221,7 @@ export function ChatComposer({
 				</div>
 			</div>
 			{vm.error && (
-				<p id={errorId} role="alert" className="mt-basalt-2 text-xs text-basalt-danger">
+				<p id={errorId} role="alert" className="mt-basalt-content-gap text-xs text-basalt-danger">
 					{vm.error}
 				</p>
 			)}

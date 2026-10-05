@@ -43,8 +43,14 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 		);
 	const busy = vm.status === "submitting";
 	return (
-		<LayerCard padding="sm" className={cn("w-full space-y-basalt-2", className)}>
-			<div className="flex items-start justify-between gap-basalt-3">
+		<LayerCard
+			padding="sm"
+			className={cn(
+				"w-full space-y-basalt-content-gap px-basalt-panel-x py-basalt-panel-y leading-[var(--basalt-line-body)]",
+				className,
+			)}
+		>
+			<div className="flex items-center justify-between gap-basalt-content-gap">
 				<h3 id={id} className="text-sm font-medium" aria-live="polite">
 					{question.label}
 				</h3>
@@ -52,6 +58,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 					<Button
 						variant="ghost"
 						size="icon"
+						className="size-basalt-action"
 						aria-label="Dismiss approval"
 						disabled={busy}
 						onClick={onDismiss}
@@ -63,7 +70,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 			<div
 				key={question.id}
 				ref={highlightRef}
-				className="basalt-agent-reveal basalt-hover-list space-y-basalt-2"
+				className="basalt-agent-reveal basalt-hover-list -mx-basalt-row-x space-y-basalt-content-gap"
 			>
 				{question.type === "single" ? (
 					<Radio.Group
@@ -80,7 +87,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 								data-hover-selected={vm.answer?.selected.includes(option.id)}
 								data-disabled={option.disabled || busy ? "" : undefined}
 								htmlFor={`${id}-${option.id}`}
-								className="flex cursor-pointer items-center gap-basalt-2 rounded-basalt-sm px-basalt-2 py-basalt-1_5 text-[13px]"
+								className="flex cursor-pointer items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-row-y text-[13px] leading-[var(--basalt-line-body)]"
 							>
 								<Radio.Item
 									id={`${id}-${option.id}`}
@@ -100,7 +107,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 								data-hover-selected={vm.answer?.selected.includes(option.id)}
 								data-disabled={option.disabled || busy ? "" : undefined}
 								htmlFor={`${id}-${option.id}`}
-								className="flex cursor-pointer items-center gap-basalt-2 rounded-basalt-sm px-basalt-2 py-basalt-1_5 text-[13px]"
+								className="flex cursor-pointer items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-row-y text-[13px] leading-[var(--basalt-line-body)]"
 							>
 								<Checkbox
 									id={`${id}-${option.id}`}
@@ -117,6 +124,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 					<Input
 						aria-label="Custom answer"
 						placeholder="Something else..."
+						className="ml-basalt-row-x w-[calc(100%-2*var(--basalt-space-row-x))]"
 						value={vm.answer?.custom ?? ""}
 						disabled={busy}
 						onChange={(event) => vm.setCustom(event.target.value)}
@@ -128,11 +136,12 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 					{vm.error}
 				</p>
 			)}
-			<div className="flex items-center justify-between gap-basalt-2 border-t border-basalt-border pt-basalt-2">
-				<div className="flex items-center gap-basalt-2">
+			<div className="flex items-center justify-between gap-basalt-content-gap border-t border-basalt-border pt-basalt-2">
+				<div className="flex items-center gap-basalt-content-gap">
 					<Button
 						variant="ghost"
 						size="icon"
+						className="size-basalt-action -ml-[calc((var(--basalt-size-action)-var(--basalt-size-icon))/2)]"
 						aria-label="Previous question"
 						disabled={busy || vm.position === 0}
 						onClick={() => vm.move(vm.position - 1)}
@@ -143,7 +152,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 						{vm.position + 1} / {props.questions.length}
 					</span>
 				</div>
-				<div className="flex gap-basalt-2">
+				<div className="flex gap-basalt-content-gap">
 					{question.required === false && (
 						<Button variant="ghost" size="sm" disabled={busy} onClick={vm.skip}>
 							Skip

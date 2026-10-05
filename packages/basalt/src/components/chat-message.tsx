@@ -1,8 +1,19 @@
-import { Check, Copy, Pencil, RotateCcw, ThumbsDown, ThumbsUp } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import {
+	Check,
+	Copy,
+	ExternalLink,
+	FileText,
+	Pencil,
+	RotateCcw,
+	ThumbsDown,
+	ThumbsUp,
+} from "lucide-react";
+import type { ReactNode } from "react";
 import { cn } from "../utils/cn";
+import { useChatMessage } from "../viewmodels/use-chat-message";
 import { Button } from "./button";
 import { ChatMarkdown } from "./chat-markdown";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 
 export interface ChatMessageProps {
 	variant: "user" | "assistant";
@@ -10,13 +21,17 @@ export interface ChatMessageProps {
 	streaming?: boolean;
 	/** Thinking, tool calls and other trace content before the response. */
 	trace?: ReactNode;
-	/** Approval, sources or result cards after the response. */
+	/** Approval or result content after the response; use sources for citations. */
 	children?: ReactNode;
 	author?: string;
 	onEdit?: () => void;
 	onRegenerate?: () => void;
 	feedback?: "up" | "down";
 	onFeedback?: (value: "up" | "down") => void;
+	/** Compact source disclosure beside message actions. No card wrapper is added. */
+	sources?: readonly { id: string; name: string; type?: string; href?: string }[];
+	/** Source disclosure label. @default "Sources" */
+	sourcesLabel?: string;
 	className?: string;
 }
 
@@ -32,20 +47,21 @@ export function ChatMessage({
 	feedback,
 	onFeedback,
 	className,
+	sources = [],
+	sourcesLabel = "Sources",
 }: ChatMessageProps) {
-	const [copied, setCopied] = useState<string | null>(null);
-	const [copyError, setCopyError] = useState<string | null>(null);
+	const vm = useChatMessage(content, sources);
 	return (
 		<article
 			aria-label={`${author || (variant === "user" ? "You" : "Assistant")} message`}
-			className={cn("basalt-ui group min-w-0 space-y-basalt-2", className)}
+			className={cn("basalt-ui group min-w-0 space-y-basalt-content-gap", className)}
 		>
 			<div className={cn("flex", variant === "user" ? "justify-end" : "justify-start")}>
 				<div
 					className={cn(
-						"min-w-0 space-y-basalt-3",
+						"min-w-0 space-y-basalt-content-gap",
 						variant === "user"
-							? "max-w-[90%] rounded-basalt-lg bg-basalt-accent px-basalt-3 py-basalt-2"
+							? "max-w-[90%] rounded-basalt-lg bg-basalt-accent px-basalt-panel-x py-basalt-panel-y"
 							: "w-full",
 					)}
 				>
@@ -68,68 +84,126 @@ export function ChatMessage({
 				</div>
 			</div>
 			{!streaming && content && (
-				<div
-					className={cn("flex items-center gap-basalt-0_5", variant === "user" && "justify-end")}
-				>
-					<Button
-						size="icon"
-						variant="ghost"
-						aria-label={copied === content ? "Copied" : "Copy message"}
-						onClick={async () => {
-							try {
-								await navigator.clipboard.writeText(content);
-								setCopied(content);
-								setCopyError(null);
-							} catch {
-								setCopyError(content);
-							}
-						}}
+				<Collapsible className="space-y-basalt-content-gap">
+					<div
+						data-slot="chat-actions"
+						className={cn(
+							"flex flex-wrap items-center gap-basalt-0_5 text-basalt-muted-foreground",
+							variant === "user"
+								? "justify-end -mr-[calc((var(--basalt-size-action)-var(--basalt-size-icon))/2)]"
+								: "-ml-[calc((var(--basalt-size-action)-var(--basalt-size-icon))/2)]",
+						)}
 					>
-						{copied === content ? <Check /> : <Copy />}
-					</Button>
-					{onEdit && (
-						<Button size="icon" variant="ghost" aria-label="Edit message" onClick={onEdit}>
-							<Pencil />
-						</Button>
-					)}
-					{onRegenerate && (
 						<Button
 							size="icon"
+							className="size-basalt-action"
 							variant="ghost"
-							aria-label="Regenerate response"
-							onClick={onRegenerate}
+							aria-label={vm.copied ? "Copied" : "Copy message"}
+							onClick={() => void vm.copy((text) => navigator.clipboard.writeText(text))}
 						>
-							<RotateCcw />
+							{vm.copied ? <Check strokeWidth={1.5} /> : <Copy strokeWidth={1.5} />}
 						</Button>
-					)}
-					{onFeedback && (
-						<>
+						{onEdit && (
 							<Button
 								size="icon"
+								className="size-basalt-action"
 								variant="ghost"
-								aria-label="Helpful"
-								aria-pressed={feedback === "up"}
-								onClick={() => onFeedback("up")}
+								aria-label="Edit message"
+								onClick={onEdit}
 							>
-								<ThumbsUp />
+								<Pencil strokeWidth={1.5} />
 							</Button>
+						)}
+						{onRegenerate && (
 							<Button
 								size="icon"
+								className="size-basalt-action"
 								variant="ghost"
-								aria-label="Not helpful"
-								aria-pressed={feedback === "down"}
-								onClick={() => onFeedback("down")}
+								aria-label="Regenerate response"
+								onClick={onRegenerate}
 							>
-								<ThumbsDown />
+								<RotateCcw strokeWidth={1.5} />
 							</Button>
-						</>
+						)}
+						{onFeedback && (
+							<>
+								<Button
+									size="icon"
+									className="size-basalt-action"
+									variant="ghost"
+									aria-label="Helpful"
+									aria-pressed={feedback === "up"}
+									onClick={() => onFeedback("up")}
+								>
+									<ThumbsUp strokeWidth={1.5} />
+								</Button>
+								<Button
+									size="icon"
+									className="size-basalt-action"
+									variant="ghost"
+									aria-label="Not helpful"
+									aria-pressed={feedback === "down"}
+									onClick={() => onFeedback("down")}
+								>
+									<ThumbsDown strokeWidth={1.5} />
+								</Button>
+							</>
+						)}
+						{vm.sources.length > 0 && (
+							<CollapsibleTrigger
+								aria-label={`${sourcesLabel} ${vm.sources.length}`}
+								className="ml-basalt-control-gap min-h-basalt-action gap-basalt-control-gap rounded-basalt-sm px-basalt-1 text-xs font-normal text-basalt-muted-foreground hover:bg-basalt-accent"
+							>
+								<span className="flex items-center gap-basalt-control-gap">
+									<FileText aria-hidden="true" className="size-basalt-icon" strokeWidth={1.5} />
+									<span>{sourcesLabel}</span>
+									<span className="tabular-nums">{vm.sources.length}</span>
+								</span>
+							</CollapsibleTrigger>
+						)}
+						{vm.copyError && (
+							<span role="alert" className="text-xs text-basalt-danger">
+								Could not copy
+							</span>
+						)}
+					</div>
+					{vm.sources.length > 0 && (
+						<CollapsibleContent unstyled>
+							<ul aria-label={sourcesLabel} className="space-y-basalt-0_5">
+								{vm.sources.map((source) => {
+									const Source = source.href ? "a" : "span";
+									return (
+										<li key={source.id}>
+											<Source
+												href={source.href}
+												target={source.href ? "_blank" : undefined}
+												rel={source.href ? "noopener noreferrer" : undefined}
+												className="flex min-w-0 items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-control-y text-xs leading-[var(--basalt-line-body)] text-basalt-muted-foreground outline-hidden hover:bg-basalt-accent focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-basalt-ring"
+											>
+												<FileText
+													aria-hidden="true"
+													className="size-basalt-icon shrink-0"
+													strokeWidth={1.5}
+												/>
+												<span className="min-w-0 flex-1 break-words">{source.name}</span>
+												{source.type && (
+													<span className="shrink-0 font-mono text-[11px]">{source.type}</span>
+												)}
+												{source.href && (
+													<ExternalLink
+														aria-hidden="true"
+														className="size-basalt-icon-sm shrink-0"
+														strokeWidth={1.5}
+													/>
+												)}
+											</Source>
+										</li>
+									);
+								})}
+							</ul>
+						</CollapsibleContent>
 					)}
-					{copyError === content && (
-						<span role="alert" className="text-xs text-basalt-danger">
-							Could not copy
-						</span>
-					)}
-				</div>
+				</Collapsible>
 			)}
 		</article>
 	);

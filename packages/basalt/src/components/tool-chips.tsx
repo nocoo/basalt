@@ -34,9 +34,12 @@ export function ToolChips({
 		<Collapsible
 			open={vm.open}
 			onOpenChange={vm.setOpen}
-			className={cn("w-full space-y-basalt-2", className)}
+			className={cn(
+				"basalt-ui w-full space-y-basalt-content-gap leading-[var(--basalt-line-body)]",
+				className,
+			)}
 		>
-			<CollapsibleTrigger className="rounded-basalt-sm px-basalt-1_5 py-basalt-1">
+			<CollapsibleTrigger className="rounded-basalt-sm px-basalt-row-x py-basalt-control-y text-basalt-muted-foreground">
 				<span role="status">{title ?? `${vm.total} tool calls · ${vm.completed} complete`}</span>
 			</CollapsibleTrigger>
 			<CollapsibleContent
@@ -56,17 +59,25 @@ export function ToolChips({
 							<CollapsibleTrigger
 								data-basalt-hover-item=""
 								aria-label={[step.label, step.target, step.status].filter(Boolean).join(" ")}
-								className="w-full min-h-basalt-control justify-between rounded-basalt-sm px-basalt-2 py-basalt-1_5 [&_svg]:size-basalt-icon-lg"
+								className="w-full min-h-basalt-control items-start justify-between rounded-basalt-sm px-basalt-row-x py-basalt-row-y [&>svg]:mt-basalt-1"
 							>
-								<span className="flex min-w-0 flex-wrap items-center gap-basalt-2 text-sm">
-									<Icon aria-hidden="true" />
-									<span>{step.label}</span>
-									{step.target && (
-										<span className="truncate rounded-basalt-sm bg-basalt-control px-basalt-2 py-basalt-0_5 font-mono text-[13px] text-basalt-muted-foreground">
-											{step.target}
-										</span>
-									)}
-									<span role="img" aria-label={step.status}>
+								<span className="flex min-w-0 items-start gap-basalt-row-gap text-sm leading-[var(--basalt-line-body)]">
+									<span className="flex h-[var(--basalt-line-body)] w-basalt-icon-lg shrink-0 items-center justify-center">
+										<Icon aria-hidden="true" className="size-basalt-icon-lg" strokeWidth={1.5} />
+									</span>
+									<span className="flex min-w-0 flex-wrap items-center gap-x-basalt-row-gap">
+										<span>{step.label}</span>
+										{step.target && (
+											<span className="max-w-full truncate font-mono text-[13px] text-basalt-muted-foreground">
+												{step.target}
+											</span>
+										)}
+									</span>
+									<span
+										role="img"
+										aria-label={step.status}
+										className="flex h-[var(--basalt-line-body)] w-basalt-icon-sm shrink-0 items-center justify-center"
+									>
 										{step.status === "running" ? (
 											<Loader size={12} showLabel={false} showElapsed={false} aria-hidden="true" />
 										) : step.status === "complete" ? (
@@ -77,7 +88,10 @@ export function ToolChips({
 									</span>
 								</span>
 							</CollapsibleTrigger>
-							<CollapsibleContent>
+							<CollapsibleContent
+								unstyled
+								className="pl-basalt-row-content pr-basalt-row-x pb-basalt-row-y"
+							>
 								<p className="whitespace-pre-wrap break-words text-[13px] text-basalt-muted-foreground">
 									{step.detail || "No output yet"}
 								</p>
@@ -86,11 +100,11 @@ export function ToolChips({
 					);
 				})}
 				{steps.length === 0 && (
-					<p className="px-basalt-2 py-basalt-3 text-xs text-basalt-muted-foreground">
+					<p className="px-basalt-row-x py-basalt-panel-y text-xs text-basalt-muted-foreground">
 						No tool calls yet
 					</p>
 				)}
-				<div className="flex flex-wrap gap-basalt-2">
+				<div className="flex flex-wrap gap-basalt-content-gap px-basalt-row-x">
 					{diffs.map((diff) => (
 						<Popover key={diff.file}>
 							<PopoverTrigger asChild>

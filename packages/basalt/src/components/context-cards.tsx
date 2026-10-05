@@ -38,13 +38,16 @@ export function ContextCards({
 		<section
 			aria-labelledby={id}
 			aria-busy={loading || undefined}
-			className={cn("min-w-0 space-y-basalt-2", className)}
+			className={cn(
+				"basalt-ui min-w-0 space-y-basalt-content-gap leading-[var(--basalt-line-body)]",
+				className,
+			)}
 		>
-			<header className="flex items-center gap-basalt-2">
-				<h3 id={id} className="text-[13px] font-semibold">
+			<header className="flex items-center gap-basalt-content-gap">
+				<h3 id={id} className="text-[13px] font-medium">
 					{title}
 				</h3>
-				<Badge variant="secondary" className="tabular-nums">
+				<Badge variant="secondary" className="tabular-nums leading-[var(--basalt-line-compact)]">
 					{vm.count}
 				</Badge>
 			</header>
@@ -72,7 +75,7 @@ export function ContextCards({
 					No context retrieved
 				</p>
 			) : (
-				<ul className="space-y-basalt-2">
+				<ul className="space-y-basalt-content-gap">
 					{vm.chunks.map((chunk) => (
 						<li
 							key={chunk.id}
@@ -80,38 +83,54 @@ export function ContextCards({
 							style={{ animationDelay: `${chunk.delay}ms`, animationFillMode: "both" }}
 						>
 							<LayerCard padding="none" className="min-w-0 overflow-hidden">
-								<div className="flex flex-wrap items-center justify-between gap-basalt-1_5 border-b border-basalt-border px-basalt-card-sm py-basalt-2">
-									<h4 className="inline-flex min-w-0 items-center gap-basalt-1_5 text-[13px] font-medium">
-										<TextAlignStart aria-hidden="true" className="size-basalt-icon-sm shrink-0" />
+								<div className="flex flex-wrap items-center justify-between gap-basalt-control-gap border-b border-basalt-border px-basalt-panel-x py-basalt-panel-y">
+									<h4 className="inline-flex min-w-0 items-center gap-basalt-row-gap text-[13px] leading-[var(--basalt-line-body)] font-medium">
+										<TextAlignStart
+											aria-hidden="true"
+											className="size-basalt-icon shrink-0"
+											strokeWidth={1.5}
+										/>
 										<span className="break-words">{chunk.title}</span>
 									</h4>
 									<span className="shrink-0 text-xs tabular-nums text-basalt-muted-foreground">
 										{chunk.characters.toLocaleString("en-US")} characters
 									</span>
 								</div>
-								<p className="whitespace-pre-wrap break-words px-basalt-card-sm py-basalt-2 text-[13px] leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground">
+								<p className="whitespace-pre-wrap break-words px-basalt-panel-x py-basalt-panel-y text-[13px] leading-[var(--basalt-line-body)] text-basalt-muted-foreground">
 									{chunk.body}
 								</p>
-								<div className="px-basalt-card-sm pb-basalt-card-sm">
+								<div className="flex min-w-0 px-basalt-panel-x pb-basalt-panel-y">
 									{chunk.href ? (
 										<a
 											href={chunk.href}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="inline-flex max-w-full items-center gap-basalt-1_5 rounded-full bg-basalt-control px-basalt-2 py-basalt-1 text-xs text-basalt-foreground outline-hidden hover:bg-basalt-accent focus-visible:ring-2 focus-visible:ring-basalt-ring"
+											className="inline-flex max-w-full items-center gap-basalt-control-gap py-basalt-0_5 text-xs text-basalt-foreground outline-hidden hover:bg-basalt-accent focus-visible:ring-2 focus-visible:ring-basalt-ring"
 										>
-											<FileText aria-hidden="true" className="size-basalt-icon shrink-0" />
+											<FileText
+												aria-hidden="true"
+												className="size-basalt-icon shrink-0"
+												strokeWidth={1.5}
+											/>
 											<span className="shrink-0 font-mono text-[11px] text-basalt-muted-foreground">
 												{chunk.source.type}
 											</span>
 											<span className="truncate" title={chunk.source.name}>
 												{chunk.source.name}
 											</span>
-											<ExternalLink aria-hidden="true" className="size-basalt-icon-sm shrink-0" />
+											<ExternalLink
+												aria-hidden="true"
+												className="size-basalt-icon shrink-0"
+												strokeWidth={1.5}
+											/>
 										</a>
 									) : (
-										<span className="inline-flex max-w-full items-center gap-basalt-1_5 rounded-full bg-basalt-control px-basalt-2 py-basalt-1 text-xs">
-											<FileText aria-hidden="true" className="size-basalt-icon shrink-0" />
+										<span className="inline-flex max-w-full items-center gap-basalt-control-gap py-basalt-0_5 text-xs">
+											<FileText
+												aria-hidden="true"
+												className="size-basalt-icon shrink-0"
+												strokeWidth={1.5}
+											/>
 											<span className="shrink-0 font-mono text-[11px] text-basalt-muted-foreground">
 												{chunk.source.type}
 											</span>

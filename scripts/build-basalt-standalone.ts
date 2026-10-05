@@ -27,11 +27,31 @@ function walk(dir: string): string[] {
 }
 
 const candidates = [
-	...new Set(
-		walk(resolve(packageRoot, "src")).flatMap((file) =>
+	...new Set([
+		"sr-only",
+		"sticky",
+		"order-last",
+		"w-[68px]",
+		"h-7",
+		"mb-2",
+		"appearance-none",
+		"border-0",
+		"bg-transparent",
+		"p-0",
+		"font-inherit",
+		"text-inherit",
+		"cursor-pointer",
+		"max-h-[300px]",
+		"overflow-x-hidden",
+		"overflow-y-hidden",
+		"data-[disabled=true]:pointer-events-none",
+		"data-[disabled=true]:opacity-50",
+		"data-[selected=true]:bg-basalt-accent",
+		"data-[selected=true]:text-basalt-accent-foreground",
+		...walk(resolve(packageRoot, "src")).flatMap((file) =>
 			classCandidates(readFileSync(file, "utf8")),
 		),
-	),
+	]),
 ].sort();
 
 async function loadStylesheet(id: string, base: string) {

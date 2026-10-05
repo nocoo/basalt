@@ -11,6 +11,14 @@ export default function MessageDemo() {
 					defaultOpen={false}
 				/>
 			}
+			sources={[
+				{
+					id: "sales",
+					name: "Summer sales report",
+					type: "CSV",
+					href: "https://example.com/sales",
+				},
+			]}
 			onRegenerate={() => undefined}
 			onFeedback={() => undefined}
 		/>

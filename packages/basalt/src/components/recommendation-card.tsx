@@ -63,16 +63,16 @@ export function RecommendationCard({
 		<LayerCard
 			padding="none"
 			aria-labelledby={id}
-			className={cn("w-full min-w-0 overflow-hidden", className)}
+			className={cn("w-full min-w-0 overflow-hidden leading-[var(--basalt-line-body)]", className)}
 		>
-			<div className="space-y-basalt-1_5 p-basalt-card-sm">
+			<div className="space-y-basalt-1_5 px-basalt-panel-x py-basalt-panel-y">
 				<h3 id={id} className="text-sm font-medium">
 					{title}
 				</h3>
 				{vm.active ? (
 					<p
 						key={vm.active.id}
-						className="basalt-agent-reveal min-h-basalt-12 whitespace-pre-wrap break-words text-[13px] leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground"
+						className="basalt-agent-reveal whitespace-pre-wrap break-words text-[13px] leading-[var(--basalt-line-body)] text-basalt-muted-foreground"
 					>
 						{vm.active.description}
 					</p>
@@ -85,8 +85,8 @@ export function RecommendationCard({
 			{vm.active && (
 				<Collapsible open={vm.open} onOpenChange={vm.setOpen}>
 					<CollapsibleContent unstyled>
-						<div className="border-t border-basalt-border p-basalt-menu-inset">
-							<p className="px-basalt-menu-x py-basalt-1 text-xs text-basalt-muted-foreground">
+						<div className="border-t border-basalt-border px-[calc(var(--basalt-space-panel-x)-var(--basalt-space-row-x))] py-basalt-panel-y">
+							<p className="px-basalt-row-x py-basalt-1 text-xs text-basalt-muted-foreground">
 								Other options
 							</p>
 							<div
@@ -106,7 +106,7 @@ export function RecommendationCard({
 											vm.select(option.id);
 											alternativesRef.current?.focus();
 										}}
-										className="h-auto min-h-basalt-menu-row w-full justify-start whitespace-normal px-basalt-menu-x py-basalt-menu-y text-left hover:bg-transparent"
+										className="h-auto min-h-basalt-menu-row w-full justify-start whitespace-normal px-basalt-row-x py-basalt-row-y text-left hover:bg-transparent"
 									>
 										<span className="min-w-0 flex-1 break-words text-[13px]">{option.label}</span>
 										<Confidence value={option.confidence} />
@@ -116,13 +116,13 @@ export function RecommendationCard({
 						</div>
 					</CollapsibleContent>
 					{vm.error && (
-						<p role="alert" className="px-basalt-card-sm pb-basalt-2 text-xs text-basalt-danger">
+						<p role="alert" className="px-basalt-panel-x pb-basalt-2 text-xs text-basalt-danger">
 							{vm.error}
 						</p>
 					)}
-					<div className="flex flex-wrap items-center justify-between gap-basalt-2 border-t border-basalt-border p-basalt-card-sm">
+					<div className="flex flex-wrap items-center justify-between gap-basalt-content-gap border-t border-basalt-border px-basalt-panel-x py-basalt-panel-y">
 						<Confidence value={vm.active.confidence} />
-						<div className="flex items-center gap-basalt-2">
+						<div className="flex items-center gap-basalt-content-gap">
 							{vm.others.length > 0 && (
 								<CollapsibleTrigger asChild>
 									<Button ref={alternativesRef} size="sm" variant="secondary" disabled={vm.blocked}>

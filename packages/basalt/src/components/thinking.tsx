@@ -36,11 +36,14 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 		<Collapsible
 			open={vm.open}
 			onOpenChange={vm.setOpen}
-			className={cn("w-full text-sm text-basalt-foreground", className)}
+			className={cn(
+				"basalt-ui w-full text-sm leading-[var(--basalt-line-body)] text-basalt-foreground",
+				className,
+			)}
 		>
-			<CollapsibleTrigger className="rounded-basalt-sm px-basalt-1_5 py-basalt-1">
-				<span className="inline-flex items-center gap-basalt-2">
-					<Icon aria-hidden="true" />
+			<CollapsibleTrigger className="rounded-basalt-sm px-basalt-row-x py-basalt-control-y text-basalt-muted-foreground">
+				<span className="inline-flex min-w-0 flex-wrap items-center gap-basalt-row-gap">
+					<Icon aria-hidden="true" className="size-basalt-icon-lg shrink-0" strokeWidth={1.5} />
 					<span role="status" className={cn(vm.status === "running" && "basalt-shimmer-label")}>
 						{heading}
 					</span>
@@ -52,16 +55,16 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 			<CollapsibleContent unstyled>
 				<ol
 					aria-label="Thinking steps"
-					className="ml-basalt-3 space-y-basalt-3 border-l border-basalt-border py-basalt-3 pl-basalt-4"
+					className="ml-[calc(var(--basalt-space-row-x)+var(--basalt-size-icon-lg)/2)] space-y-basalt-content-gap border-l border-basalt-border py-basalt-panel-y pl-[calc(var(--basalt-size-icon-lg)/2+var(--basalt-space-row-gap))] pr-basalt-row-x"
 				>
 					{steps.map((step) => (
 						<li
 							key={step.id}
 							data-step-status={step.status}
-							className="basalt-agent-reveal flex items-start gap-basalt-2"
+							className="basalt-agent-reveal flex items-start gap-basalt-row-gap"
 						>
 							<span
-								className="mt-basalt-0_5 shrink-0 text-basalt-muted-foreground"
+								className="flex h-[var(--basalt-line-body)] w-basalt-icon-lg shrink-0 items-center justify-center text-basalt-muted-foreground"
 								role="img"
 								aria-label={step.status}
 							>
@@ -80,7 +83,7 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 									{step.label}
 								</p>
 								{step.detail && (
-									<p className="mt-basalt-1 whitespace-pre-wrap break-words text-xs leading-relaxed text-basalt-muted-foreground">
+									<p className="mt-basalt-1 whitespace-pre-wrap break-words text-xs leading-[var(--basalt-line-body)] text-basalt-muted-foreground">
 										{step.detail}
 									</p>
 								)}
