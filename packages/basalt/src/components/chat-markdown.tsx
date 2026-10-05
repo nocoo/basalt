@@ -1,3 +1,4 @@
+import { decodeHTML } from "entities";
 import { type MarkedToken, marked, type Token } from "marked";
 import { Fragment, type ReactNode, useMemo, useState } from "react";
 import { contextSourceHref } from "../models/context-cards";
@@ -8,11 +9,13 @@ import { CodeHighlighted } from "./code";
 export interface ChatMarkdownProps {
 	/** Untrusted Markdown. Raw HTML is rendered as text, never injected. */
 	content: string;
+	/** Animate newly appended prose words; disable for static output. */
+	streaming?: boolean;
 	className?: string;
 }
 
 function CodeFence({ text, language }: { text: string; language?: string }) {
-	const [copy, setCopy] = useState("Copy code");
+	const [copy, setCopy] = useState<{ text: string; label: string } | null>(null);
 	return (
 		<div className="overflow-hidden rounded-basalt-md border border-basalt-border">
 			<div className="flex items-center justify-between gap-basalt-2 bg-basalt-secondary px-basalt-3 py-basalt-1">
@@ -23,13 +26,13 @@ function CodeFence({ text, language }: { text: string; language?: string }) {
 					onClick={async () => {
 						try {
 							await navigator.clipboard.writeText(text);
-							setCopy("Copied");
+							setCopy({ text, label: "Copied" });
 						} catch {
-							setCopy("Copy failed");
+							setCopy({ text, label: "Copy failed" });
 						}
 					}}
 				>
-					{copy}
+					{copy?.text === text ? copy.label : "Copy code"}
 				</Button>
 			</div>
 			<CodeHighlighted code={text} className="max-w-full border-0 rounded-none text-xs" />
@@ -37,7 +40,7 @@ function CodeFence({ text, language }: { text: string; language?: string }) {
 	);
 }
 
-function nodes(tokens: readonly Token[]): ReactNode {
+function nodes(tokens: readonly Token[], streaming = false): ReactNode {
 	return tokens.map((raw, index) => {
 		const token = raw as MarkedToken;
 		let node: ReactNode;
@@ -47,23 +50,39 @@ function nodes(tokens: readonly Token[]): ReactNode {
 				return null;
 			case "heading": {
 				const Heading = `h${Math.min(6, token.depth + 1)}` as "h2";
-				node = <Heading className="font-semibold text-base">{nodes(token.tokens)}</Heading>;
+				node = (
+					<Heading className="font-semibold text-base">{nodes(token.tokens, streaming)}</Heading>
+				);
 				break;
 			}
 			case "paragraph":
-				node = <p>{nodes(token.tokens)}</p>;
+				node = <p>{nodes(token.tokens, streaming)}</p>;
 				break;
 			case "text":
-				node = token.tokens ? nodes(token.tokens) : token.text;
+				node = token.tokens
+					? nodes(token.tokens, streaming)
+					: streaming
+						? decodeHTML(token.text)
+								.split(/(\s+)/)
+								.map((word, i) =>
+									/\S/.test(word) ? (
+										<span key={i} className="basalt-chat-word">
+											{word}
+										</span>
+									) : (
+										word
+									),
+								)
+						: decodeHTML(token.text);
 				break;
 			case "strong":
-				node = <strong>{nodes(token.tokens)}</strong>;
+				node = <strong>{nodes(token.tokens, streaming)}</strong>;
 				break;
 			case "em":
-				node = <em>{nodes(token.tokens)}</em>;
+				node = <em>{nodes(token.tokens, streaming)}</em>;
 				break;
 			case "del":
-				node = <del>{nodes(token.tokens)}</del>;
+				node = <del>{nodes(token.tokens, streaming)}</del>;
 				break;
 			case "codespan":
 				node = (
@@ -78,7 +97,7 @@ function nodes(tokens: readonly Token[]): ReactNode {
 			case "blockquote":
 				node = (
 					<blockquote className="border-l-2 border-basalt-border pl-basalt-3 text-basalt-muted-foreground">
-						{nodes(token.tokens)}
+						{nodes(token.tokens, streaming)}
 					</blockquote>
 				);
 				break;
@@ -99,7 +118,7 @@ function nodes(tokens: readonly Token[]): ReactNode {
 										{item.checked ? "☑ " : "☐ "}
 									</span>
 								)}
-								{nodes(item.tokens)}
+								{nodes(item.tokens, streaming)}
 							</li>
 						))}
 					</List>
@@ -108,8 +127,9 @@ function nodes(tokens: readonly Token[]): ReactNode {
 			}
 			case "link":
 			case "image": {
-				const href = contextSourceHref(token.href);
-				const text = token.type === "link" ? nodes(token.tokens) : token.text;
+				const href = contextSourceHref(decodeHTML(token.href));
+				const text =
+					token.type === "link" ? nodes(token.tokens, streaming) : decodeHTML(token.text);
 				node = href ? (
 					<a
 						href={href}
@@ -135,7 +155,7 @@ function nodes(tokens: readonly Token[]): ReactNode {
 											key={i}
 											className="whitespace-nowrap border-b border-basalt-border px-basalt-2 py-basalt-1_5"
 										>
-											{nodes(cell.tokens)}
+											{nodes(cell.tokens, streaming)}
 										</th>
 									))}
 								</tr>
@@ -148,7 +168,7 @@ function nodes(tokens: readonly Token[]): ReactNode {
 												key={j}
 												className="border-b border-basalt-border px-basalt-2 py-basalt-1_5"
 											>
-												{nodes(cell.tokens)}
+												{nodes(cell.tokens, streaming)}
 											</td>
 										))}
 									</tr>
@@ -171,16 +191,19 @@ function nodes(tokens: readonly Token[]): ReactNode {
 	});
 }
 
-export function ChatMarkdown({ content, className }: ChatMarkdownProps) {
-	const tokens = useMemo(() => marked.lexer(content, { gfm: true }), [content]);
+export function ChatMarkdown({ content, streaming = false, className }: ChatMarkdownProps) {
+	const rendered = useMemo(
+		() => nodes(marked.lexer(content, { gfm: true }), streaming),
+		[content, streaming],
+	);
 	return (
 		<div
 			className={cn(
-				"min-w-0 space-y-basalt-3 break-words text-sm leading-[var(--basalt-line-relaxed)] [&_p]:whitespace-pre-wrap",
+				"basalt-ui min-w-0 space-y-basalt-3 break-words text-sm leading-[var(--basalt-line-relaxed)] [&_p]:whitespace-pre-wrap",
 				className,
 			)}
 		>
-			{nodes(tokens)}
+			{rendered}
 		</div>
 	);
 }

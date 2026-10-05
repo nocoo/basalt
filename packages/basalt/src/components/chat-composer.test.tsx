@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ChatComposer } from "./chat-composer";
 
@@ -9,6 +9,7 @@ describe("ChatComposer", () => {
 		fireEvent.change(screen.getByLabelText("Message"), { target: { value: "  hello  " } });
 		fireEvent.click(screen.getByRole("button", { name: "Send message" }));
 		expect(onSend).toHaveBeenCalledWith("hello");
+		await act(async () => {});
 		await waitFor(() => expect(screen.getByLabelText("Message")).toHaveValue(""));
 	});
 
@@ -33,7 +34,7 @@ describe("ChatComposer", () => {
 		expect(field.style.height).toBe("");
 	});
 
-	it("sends on Enter and ignores Shift+Enter", () => {
+	it("sends on Enter and ignores Shift+Enter", async () => {
 		const onSend = vi.fn();
 		render(<ChatComposer onSend={onSend} />);
 		const field = screen.getByLabelText("Message");
@@ -42,9 +43,10 @@ describe("ChatComposer", () => {
 		expect(onSend).not.toHaveBeenCalled();
 		fireEvent.keyDown(field, { key: "Enter" });
 		expect(onSend).toHaveBeenCalledWith("hello");
+		await act(async () => {});
 	});
 
-	it("ignores Enter while composing", () => {
+	it("ignores Enter while composing", async () => {
 		const onSend = vi.fn();
 		render(<ChatComposer onSend={onSend} />);
 		const field = screen.getByLabelText("Message");
@@ -57,6 +59,7 @@ describe("ChatComposer", () => {
 		expect(onSend).not.toHaveBeenCalled();
 		fireEvent.keyDown(field, { key: "Enter" });
 		expect(onSend).toHaveBeenCalledWith("你好");
+		await act(async () => {});
 	});
 
 	it("does not send empty, disabled, or streaming drafts", () => {
@@ -137,4 +140,5 @@ it("keeps controlled drafts host-owned and supports attachment-only sends", asyn
 	rerender(<ChatComposer value="" attachments={[{ id: "a", name: "a.txt" }]} onSend={send} />);
 	fireEvent.click(screen.getByRole("button", { name: "Send message" }));
 	expect(send).toHaveBeenCalledWith("");
+	await act(async () => {});
 });

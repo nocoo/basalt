@@ -12,6 +12,12 @@ export const API = [
 				description: "Untrusted Markdown. Raw HTML is rendered as text, never injected.",
 			},
 			{
+				name: "streaming",
+				type: "boolean",
+				required: false,
+				description: "Animate newly appended prose words; disable for static output.",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,

@@ -33,12 +33,12 @@ export function ChatMessage({
 	onFeedback,
 	className,
 }: ChatMessageProps) {
-	const [copied, setCopied] = useState(false);
-	const [copyError, setCopyError] = useState(false);
+	const [copied, setCopied] = useState<string | null>(null);
+	const [copyError, setCopyError] = useState<string | null>(null);
 	return (
 		<article
 			aria-label={`${author || (variant === "user" ? "You" : "Assistant")} message`}
-			className={cn("group min-w-0 space-y-basalt-2", className)}
+			className={cn("basalt-ui group min-w-0 space-y-basalt-2", className)}
 		>
 			<div className={cn("flex", variant === "user" ? "justify-end" : "justify-start")}>
 				<div
@@ -56,7 +56,7 @@ export function ChatMessage({
 								{content}
 							</p>
 						) : (
-							<ChatMarkdown content={content} />
+							<ChatMarkdown content={content} streaming={streaming} />
 						))}
 					{streaming && (
 						<span
@@ -74,18 +74,18 @@ export function ChatMessage({
 					<Button
 						size="icon"
 						variant="ghost"
-						aria-label={copied ? "Copied" : "Copy message"}
+						aria-label={copied === content ? "Copied" : "Copy message"}
 						onClick={async () => {
 							try {
 								await navigator.clipboard.writeText(content);
-								setCopied(true);
-								setCopyError(false);
+								setCopied(content);
+								setCopyError(null);
 							} catch {
-								setCopyError(true);
+								setCopyError(content);
 							}
 						}}
 					>
-						{copied ? <Check /> : <Copy />}
+						{copied === content ? <Check /> : <Copy />}
 					</Button>
 					{onEdit && (
 						<Button size="icon" variant="ghost" aria-label="Edit message" onClick={onEdit}>
@@ -124,7 +124,7 @@ export function ChatMessage({
 							</Button>
 						</>
 					)}
-					{copyError && (
+					{copyError === content && (
 						<span role="alert" className="text-xs text-basalt-danger">
 							Could not copy
 						</span>

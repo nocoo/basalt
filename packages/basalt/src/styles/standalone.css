@@ -730,6 +730,24 @@
     transform: translateY(0);
   }
 }
+.basalt-chat-word {
+  animation: basalt-chat-word-in 240ms ease-out both;
+}
+@keyframes basalt-chat-word-in {
+  from {
+    opacity: 0;
+    filter: blur(3px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .basalt-chat-word {
+    animation: none;
+  }
+}
 @layer base {
   :where(	.basalt-ui,	.basalt-ui *,	.basalt-ui *::before,	.basalt-ui *::after,	.basalt-ui::before,	.basalt-ui::after	) {
     box-sizing: border-box;

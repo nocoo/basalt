@@ -9175,7 +9175,7 @@
 			"importPath": "@nocoo/basalt/components/chat-markdown",
 			"subpath": "./components/chat-markdown",
 			"sourceFile": "packages/basalt/src/components/chat-markdown.tsx",
-			"sourceHash": "112cf86bfaf21900",
+			"sourceHash": "7bb858989ece09e1",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -9221,6 +9221,12 @@
 									"description": "Untrusted Markdown. Raw HTML is rendered as text, never injected."
 								},
 								{
+									"name": "streaming",
+									"type": "boolean",
+									"required": false,
+									"description": "Animate newly appended prose words; disable for static output."
+								},
+								{
 									"name": "className",
 									"type": "string",
 									"required": false
@@ -9241,6 +9247,12 @@
 							"description": "Untrusted Markdown. Raw HTML is rendered as text, never injected."
 						},
 						{
+							"name": "streaming",
+							"type": "boolean",
+							"required": false,
+							"description": "Animate newly appended prose words; disable for static output."
+						},
+						{
 							"name": "className",
 							"type": "string",
 							"required": false
@@ -9255,7 +9267,7 @@
 			"importPath": "@nocoo/basalt/components/chat-message",
 			"subpath": "./components/chat-message",
 			"sourceFile": "packages/basalt/src/components/chat-message.tsx",
-			"sourceHash": "c82f2768424c092e",
+			"sourceHash": "fdc3d6c6a051d39a",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -37922,7 +37934,7 @@
 			"exportName": "ChatMarkdown",
 			"importPath": "@nocoo/basalt/components/chat-markdown",
 			"sourceFile": "packages/basalt/src/components/chat-markdown.tsx",
-			"sourceHash": "112cf86bfaf21900",
+			"sourceHash": "7bb858989ece09e1",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#chat-markdown",
@@ -37935,6 +37947,12 @@
 							"type": "string",
 							"required": true,
 							"description": "Untrusted Markdown. Raw HTML is rendered as text, never injected."
+						},
+						{
+							"name": "streaming",
+							"type": "boolean",
+							"required": false,
+							"description": "Animate newly appended prose words; disable for static output."
 						},
 						{
 							"name": "className",
@@ -37951,7 +37969,7 @@
 			"exportName": "ChatMessage",
 			"importPath": "@nocoo/basalt/components/chat-message",
 			"sourceFile": "packages/basalt/src/components/chat-message.tsx",
-			"sourceHash": "c82f2768424c092e",
+			"sourceHash": "fdc3d6c6a051d39a",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#chat-message",

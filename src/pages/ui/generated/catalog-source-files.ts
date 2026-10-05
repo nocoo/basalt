@@ -548,13 +548,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"chat-markdown": {
 		"file": "packages/basalt/src/components/chat-markdown.tsx",
-		"hash": "112cf86bfaf21900",
+		"hash": "7bb858989ece09e1",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-markdown.js.map (sourcesContent[0])"
 	},
 	"chat-message": {
 		"file": "packages/basalt/src/components/chat-message.tsx",
-		"hash": "c82f2768424c092e",
+		"hash": "fdc3d6c6a051d39a",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-message.js.map (sourcesContent[0])"
 	},

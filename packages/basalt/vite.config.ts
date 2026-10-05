@@ -46,6 +46,7 @@ export default defineConfig({
 				"lucide-react",
 				"cmdk",
 				"marked",
+				"entities",
 				"sonner",
 				/^recharts($|\/)/,
 			],

@@ -72,3 +72,34 @@ describe("safe chat content", () => {
 		expect(screen.queryByRole("button")).toBeNull();
 	});
 });
+
+it("decodes Markdown entities before URL validation but never decodes code or raw HTML", () => {
+	const { container } = render(
+		<ChatMarkdown
+			streaming
+			content={
+				"A &amp; B &lt;safe&gt; &#65;\n\n[jump](jav&#x61;script:alert(1)) [query](https://example.com?a=1&amp;b=2)\n\n`&amp;`\n\n<img src=x onerror=alert(1)>"
+			}
+		/>,
+	);
+	expect(container.textContent).toContain("A & B <safe> A");
+	expect(container.querySelectorAll(".basalt-chat-word").length).toBeGreaterThan(3);
+	expect(screen.queryByRole("link", { name: "jump" })).toBeNull();
+	expect(screen.getByRole("link", { name: "query" })).toHaveAttribute(
+		"href",
+		"https://example.com/?a=1&b=2",
+	);
+	expect(container.querySelector("code")).toHaveTextContent("&amp;");
+	expect(container.querySelector("img")).toBeNull();
+});
+
+it("resets copy confirmation when message or code content changes", async () => {
+	Object.assign(navigator, { clipboard: { writeText: vi.fn().mockResolvedValue(undefined) } });
+	const { rerender } = render(<ChatMessage variant="assistant" content={"```\nfirst\n```"} />);
+	fireEvent.click(screen.getByRole("button", { name: "Copy message" }));
+	fireEvent.click(screen.getByRole("button", { name: "Copy code" }));
+	await screen.findAllByRole("button", { name: "Copied" });
+	rerender(<ChatMessage variant="assistant" content={"```\nsecond\n```"} />);
+	expect(screen.getByRole("button", { name: "Copy message" })).toBeInTheDocument();
+	expect(screen.getByRole("button", { name: "Copy code" })).toBeInTheDocument();
+});
