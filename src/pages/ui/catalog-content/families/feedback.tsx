@@ -1002,7 +1002,7 @@ export default function Example() {
 			...extraDocs(
 				"Code",
 				"code",
-				"Syntax-highlighted code.",
+				"Syntax-highlighted source with a file header, icon, copy feedback and optional line numbers.",
 				'<CodeHighlighted code={\'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/users/" + id); if (!response.ok) { throw new Error("User not found"); } return response.json(); }\'} />',
 				undefined,
 				`import { CodeHighlighted } from "@nocoo/basalt/components/code";
@@ -1022,8 +1022,8 @@ export default function Example() {
 			...extraDocs(
 				"CodeBlock",
 				"code-block",
-				"A fenced code block.",
-				"<CodeBlock>const n = 1;</CodeBlock>",
+				"A compact code panel with optional title, icon, exact-source copy and line numbers.",
+				'<CodeBlock title="example.ts" lineNumbers>{"const n = 1;"}</CodeBlock>',
 			),
 			api: codeBlockApi,
 		},

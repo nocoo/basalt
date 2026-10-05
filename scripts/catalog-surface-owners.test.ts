@@ -340,7 +340,6 @@ describe("public surface documentation ownership and freshness", () => {
 		expect(keys).toEqual([
 			"BasaltMark",
 			"Code",
-			"CodeBlock",
 			"Table",
 			"TableCaption",
 			"TableHead",

@@ -6,10 +6,42 @@ export const API = [
 		name: "CodeBlock",
 		props: [
 			{
+				name: "children",
+				type: "string",
+				required: true,
+				description: "Exact source text. Copy preserves whitespace and original line endings.",
+			},
+			{
+				name: "title",
+				type: "string",
+				required: false,
+				description: "Filename or label shown in the header. Defaults to \"Code\" when copyable.",
+			},
+			{
+				name: "icon",
+				type: "React.ReactNode",
+				required: false,
+				description: "Decorative header icon. Defaults to a file-code glyph; pass null to hide.",
+			},
+			{
+				name: "copyable",
+				type: "boolean",
+				required: false,
+				default: "true",
+				description: "Show the copy control and its success/error feedback.",
+			},
+			{
+				name: "lineNumbers",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Show a non-selectable, screen-reader-hidden line-number gutter.",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,
-				description: "Additional classes for the block.",
+				description: "Additional classes for the panel root, not the inner pre element.",
 			},
 		],
 	},

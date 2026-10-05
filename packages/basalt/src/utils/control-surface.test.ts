@@ -57,9 +57,10 @@ describe("control surface", () => {
 		const highlighted = source.slice(source.indexOf("export function CodeHighlighted"));
 		expect(inline).not.toContain("controlSurfaceClass");
 		expect(inline).toContain("text-[13px]");
-		expect(block).toContain("controlSurfaceClass(");
+		expect(block).toContain("<CodePanel");
+		expect(highlighted).toContain("<CodePanel");
 		expect(highlighted).toContain("controlSurfaceClass(");
-		expect(highlighted).not.toContain("text-[13px]");
+		expect(highlighted).toContain("text-[13px]");
 	});
 
 	it("does not apply the shared surface to Collapsible", () => {

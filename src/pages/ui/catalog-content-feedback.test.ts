@@ -82,8 +82,9 @@ const FEEDBACK_DESCRIPTIONS = {
 		"Transient notification stack. Toast is an alias for Toaster, which mounts the Sonner notification viewport on a section element forwarding refs. Mount a single global Toaster at the application root without an id so standard toast notifications display properly; catalog previews already have a global Toaster mounted so previews do not remount it. Dispatches are handled via the toast(message, options) imperative API, where message is a ReactNode. When icon: false is specified, status and default toast icons are suppressed.",
 	"clipboard-text":
 		"Copyable text. Inline code snippet paired with an icon copy button; does not forward native HTML attributes or expose a public ref.",
-	code: "Syntax-highlighted code.",
-	"code-block": "A fenced code block.",
+	code: "Syntax-highlighted source with a file header, icon, copy feedback and optional line numbers.",
+	"code-block":
+		"A compact code panel with optional title, icon, exact-source copy and line numbers.",
 	avatar:
 		"User avatar. Composes Avatar, AvatarImage, and AvatarFallback with full ref forwarding and native HTML span/img inheritance.",
 } as const;

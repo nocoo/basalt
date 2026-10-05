@@ -3,6 +3,8 @@ import { CodeHighlighted } from "@nocoo/basalt/components/code";
 export default function CodeReact() {
 	return (
 		<CodeHighlighted
+			title="Counter.tsx"
+			lineNumbers
 			code={`import { useState } from "react";
 
 export function Counter() {

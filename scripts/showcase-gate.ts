@@ -13,6 +13,7 @@ import { prerenderHtml } from "./prerender";
 import { assertAgentFeedback } from "./showcase-agent";
 import { assertCompositeAlignment } from "./showcase-alignment";
 import { assertChatComposerSizing } from "./showcase-chat-composer";
+import { assertCodePanels } from "./showcase-code";
 import { assertCommandSelection } from "./showcase-command";
 import { assertContextCards } from "./showcase-context";
 import { assertDiffReview } from "./showcase-diff";
@@ -62,6 +63,7 @@ export async function runShowcaseGate() {
 			const agent = await assertAgentFeedback(page, url);
 			const alignment = await assertCompositeAlignment(page, url);
 			const formGroups = await assertFormGroupSpacing(page, url);
+			const codePanels = await assertCodePanels(page, url);
 			const hover = await assertHoverAndDensity(page, url);
 			const dimensions = await assertDimensionTokens(page, url);
 			const records = await assertRecordGeometry(page, url);
@@ -83,6 +85,7 @@ export async function runShowcaseGate() {
 				agent,
 				alignment,
 				formGroups,
+				codePanels,
 				hover,
 				dimensions,
 				records,

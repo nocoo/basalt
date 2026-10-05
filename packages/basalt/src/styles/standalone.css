@@ -1254,6 +1254,9 @@
   .h-basalt-80 {
     height: var(--basalt-space-80);
   }
+  .h-basalt-action {
+    height: var(--basalt-size-action);
+  }
   .h-basalt-check {
     height: var(--basalt-size-check);
   }
@@ -1487,6 +1490,9 @@
   }
   .min-w-basalt-control {
     min-width: var(--basalt-size-control);
+  }
+  .min-w-max {
+    min-width: max-content;
   }
   .flex-1 {
     flex: 1;
@@ -1742,6 +1748,9 @@
   }
   .overflow-y-hidden\! {
     overflow-y: hidden !important;
+  }
+  .overscroll-contain {
+    overscroll-behavior: contain;
   }
   .overscroll-y-contain {
     overscroll-behavior-y: contain;
@@ -2403,6 +2412,9 @@
   .whitespace-nowrap {
     white-space: nowrap;
   }
+  .whitespace-pre {
+    white-space: pre;
+  }
   .whitespace-pre-wrap {
     white-space: pre-wrap;
   }
@@ -2716,6 +2728,10 @@
   .before\:inset-0::before {
     content: var(--tw-content);
     inset: 0px;
+  }
+  .before\:content-\[attr\(data-line-number\)\]::before {
+    --tw-content: attr(data-line-number);
+    content: var(--tw-content);
   }
   .first\:rounded-l-basalt-md:first-child {
     border-top-left-radius: calc(var(--basalt-radius) - 2px);
@@ -3346,6 +3362,10 @@
   .\[\&_svg\]\:size-basalt-icon-lg svg {
     width: var(--basalt-size-icon-lg);
     height: var(--basalt-size-icon-lg);
+  }
+  .\[\&_svg\]\:size-basalt-icon-sm svg {
+    width: var(--basalt-size-icon-sm);
+    height: var(--basalt-size-icon-sm);
   }
   .\[\&_svg\]\:shrink-0 svg {
     flex-shrink: 0;

@@ -999,7 +999,9 @@ export async function assertConsumerGeometry(
 		const pageHeaderPStyle = pageHeaderP ? window.getComputedStyle(pageHeaderP) : null;
 		const dlStyle = window.getComputedStyle(basaltDl);
 		const ddStyle = basaltDd ? window.getComputedStyle(basaltDd) : null;
-		const codeBlockStyle = window.getComputedStyle(basaltCodeBlock);
+		const codeBlockStyle = window.getComputedStyle(
+			basaltCodeBlock.querySelector("pre") as HTMLElement,
+		);
 		const textH2Style = window.getComputedStyle(basaltTextH2);
 		const textPStyle = window.getComputedStyle(basaltTextP);
 		const textHeadingStyle = window.getComputedStyle(basaltTextHeading);

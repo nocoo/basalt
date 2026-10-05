@@ -1,44 +1,12 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import { Check, Copy, FileCode2 } from "lucide-react";
+import { type HTMLAttributes, type ReactNode, useId } from "react";
 import { cn } from "../utils/cn";
 import { controlSurfaceClass } from "../utils/control-surface";
-
-const TOKEN =
-	/(\/\/[^\n]*)|("[^"]*"|'[^']*'|`[^`]*`)|\b(import|from|export|default|async|await|function|return|const|let|var|type|interface|as|if|else|throw|new|typeof)\b|(\b\d+\b)|(<\/?[A-Za-z][\w.-]*)/g;
-
-function highlight(code: string): ReactNode[] {
-	const nodes: ReactNode[] = [];
-	let last = 0;
-	let key = 0;
-	for (const match of code.matchAll(TOKEN)) {
-		const index = match.index ?? 0;
-		if (index > last) {
-			nodes.push(code.slice(last, index));
-		}
-		const className = match[1]
-			? "text-basalt-muted-foreground"
-			: match[2]
-				? "text-basalt-chart-5"
-				: match[4]
-					? "text-basalt-chart-4"
-					: "text-basalt-primary";
-		nodes.push(
-			<span key={key} className={className}>
-				{match[0]}
-			</span>,
-		);
-		key += 1;
-		last = index + match[0].length;
-	}
-	if (last < code.length) {
-		nodes.push(code.slice(last));
-	}
-	return nodes;
-}
+import { useCodeBlock } from "../viewmodels/use-code-block";
+import { Button } from "./button";
 
 export type CodeProps = {
-	/**
-	 * Additional classes for the inline code.
-	 */
+	/** Additional classes for the inline code. */
 	className?: string;
 };
 
@@ -54,51 +22,170 @@ export function Code({ className, ...props }: CodeProps & HTMLAttributes<HTMLEle
 	);
 }
 
-export type CodeBlockProps = {
-	/**
-	 * Additional classes for the block.
-	 */
+export interface CodeBlockProps
+	extends Omit<HTMLAttributes<HTMLDivElement>, "children" | "title" | "className"> {
+	/** Exact source text. Copy preserves whitespace and original line endings. */
+	children: string;
+	/** Filename or label shown in the header. Defaults to "Code" when copyable. */
+	title?: string;
+	/** Decorative header icon. Defaults to a file-code glyph; pass null to hide. */
+	icon?: ReactNode;
+	/** Show the copy control and its success/error feedback. @default true */
+	copyable?: boolean;
+	/** Show a non-selectable, screen-reader-hidden line-number gutter. @default false */
+	lineNumbers?: boolean;
+	/** Additional classes for the panel root, not the inner pre element. */
 	className?: string;
-};
+}
 
-export function CodeBlock({
-	className,
-	...props
-}: CodeBlockProps & HTMLAttributes<HTMLPreElement>) {
+export function CodeBlock(props: CodeBlockProps) {
+	return <CodePanel {...props} />;
+}
+
+export interface CodeHighlightedProps extends Omit<CodeBlockProps, "children"> {
+	/** Source text to highlight with the built-in lightweight tokenizer. */
+	code: string;
+}
+
+export function CodeHighlighted({ code, ...props }: CodeHighlightedProps) {
 	return (
-		<pre
-			className={controlSurfaceClass(
-				cn("overflow-x-auto p-basalt-4 font-mono text-basalt-foreground", className),
-			)}
-			{...props}
-		/>
+		<CodePanel {...props} highlighted>
+			{code}
+		</CodePanel>
 	);
 }
 
-export type CodeHighlightedProps = {
-	/**
-	 * Source text to highlight.
-	 */
-	code: string;
-	/**
-	 * Additional classes for the block.
-	 */
-	className?: string;
-};
-
-export function CodeHighlighted({
-	code,
+function CodePanel({
+	children: code,
+	title,
+	icon = <FileCode2 strokeWidth={1.5} />,
+	copyable = true,
+	lineNumbers = false,
 	className,
+	highlighted = false,
 	...props
-}: CodeHighlightedProps & HTMLAttributes<HTMLPreElement>) {
+}: CodeBlockProps & { highlighted?: boolean }) {
+	const vm = useCodeBlock(code, highlighted);
+	const id = useId();
+	const heading = title || "Code";
+	const header = Boolean(title) || copyable;
+	const copyLabel =
+		vm.status === "copied" ? "Copied" : vm.status === "error" ? "Copy failed" : "Copy code";
 	return (
-		<pre
+		<div
+			data-basalt-code=""
 			className={controlSurfaceClass(
-				cn("overflow-x-auto p-basalt-4 text-basalt-foreground", className),
+				cn(
+					"flex min-h-0 min-w-0 max-w-full flex-col overflow-hidden text-basalt-foreground",
+					className,
+				),
 			)}
 			{...props}
 		>
-			<code className="font-mono leading-[var(--basalt-line-relaxed)]">{highlight(code)}</code>
-		</pre>
+			{header && (
+				<div
+					data-slot="code-header"
+					className="flex shrink-0 items-center justify-between gap-basalt-content-gap border-b border-basalt-border px-basalt-panel-x py-basalt-panel-y"
+				>
+					<div className="flex min-w-0 items-center gap-basalt-row-gap">
+						{icon && (
+							<span
+								aria-hidden="true"
+								className="flex size-basalt-icon shrink-0 items-center justify-center text-basalt-muted-foreground [&_svg]:size-basalt-icon"
+							>
+								{icon}
+							</span>
+						)}
+						<span
+							id={id}
+							title={heading}
+							className="truncate font-mono text-[13px] leading-[var(--basalt-line-body)]"
+						>
+							{heading}
+						</span>
+					</div>
+					{copyable && (
+						<Button
+							variant="ghost"
+							size="sm"
+							className="h-basalt-action shrink-0 px-basalt-1_5 font-normal text-basalt-muted-foreground [&_svg]:size-basalt-icon-sm"
+							aria-label={copyLabel}
+							disabled={vm.status === "pending"}
+							onClick={() => void vm.copy((text) => navigator.clipboard.writeText(text))}
+						>
+							{vm.status === "copied" ? (
+								<Check aria-hidden="true" strokeWidth={1.5} />
+							) : (
+								<Copy aria-hidden="true" strokeWidth={1.5} />
+							)}
+							<span>{copyLabel}</span>
+						</Button>
+					)}
+				</div>
+			)}
+			<pre
+				role="region"
+				aria-labelledby={header ? id : undefined}
+				aria-label={header ? undefined : "Code"}
+				// biome-ignore lint/a11y/noNoninteractiveTabindex: Named code overflow region must support keyboard scrolling.
+				tabIndex={0}
+				onKeyDown={(event) => {
+					if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+					if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+					event.preventDefault();
+					event.currentTarget.scrollLeft +=
+						((event.key === "ArrowRight" ? 1 : -1) * event.currentTarget.clientWidth) / 4;
+				}}
+				className="min-h-0 min-w-0 overflow-auto overscroll-contain py-basalt-panel-y font-mono text-[13px] leading-[var(--basalt-line-body)] outline-hidden focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-basalt-ring"
+			>
+				<span className="flex min-w-max">
+					{lineNumbers && (
+						<span
+							aria-hidden="true"
+							className="shrink-0 select-none border-r border-basalt-border text-right text-[11px] tabular-nums text-basalt-muted-foreground"
+							style={{
+								width: `calc(${String(vm.lines.length).length}ch + 2 * var(--basalt-space-row-x))`,
+							}}
+						>
+							{vm.lines.map((_, index) => (
+								<span
+									key={index}
+									data-line-number={index + 1}
+									className="block h-[var(--basalt-line-body)] px-basalt-row-x before:content-[attr(data-line-number)]"
+								/>
+							))}
+						</span>
+					)}
+					<code
+						className="block flex-1 whitespace-pre px-basalt-panel-x font-mono"
+						style={{ minHeight: `calc(${vm.lines.length} * var(--basalt-line-body))` }}
+					>
+						{vm.lines.map((line, index) => (
+							<span key={index} data-code-line="">
+								{line.map((token, tokenIndex) =>
+									token.className ? (
+										<span key={tokenIndex} className={token.className}>
+											{token.text}
+										</span>
+									) : (
+										token.text
+									),
+								)}
+								{index < vm.lines.length - 1 ? "\n" : ""}
+							</span>
+						))}
+					</code>
+				</span>
+			</pre>
+			{copyable && (
+				<span role={vm.status === "error" ? "alert" : "status"} className="sr-only">
+					{vm.status === "copied"
+						? "Code copied"
+						: vm.status === "error"
+							? "Could not copy code. Try again."
+							: ""}
+				</span>
+			)}
+		</div>
 	);
 }

@@ -230,13 +230,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"code": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "97c8690331a73333",
+		"hash": "e2b5f7bf9dd82669",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
 	"code-block": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "97c8690331a73333",
+		"hash": "e2b5f7bf9dd82669",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
@@ -548,7 +548,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"chat-markdown": {
 		"file": "packages/basalt/src/components/chat-markdown.tsx",
-		"hash": "7bb858989ece09e1",
+		"hash": "0a82ad17e8afabdf",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-markdown.js.map (sourcesContent[0])"
 	},

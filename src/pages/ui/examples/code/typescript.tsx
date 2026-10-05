@@ -3,6 +3,8 @@ import { CodeHighlighted } from "@nocoo/basalt/components/code";
 export default function CodeTypescript() {
 	return (
 		<CodeHighlighted
+			title="fetch-user.ts"
+			lineNumbers
 			code={`export async function fetchUser(id: string, retries = 3) {
   const response = await fetch("/api/users/" + id);
   if (!response.ok) {

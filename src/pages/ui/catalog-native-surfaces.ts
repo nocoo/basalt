@@ -28,13 +28,6 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		forwardsRef: false,
 		forwardsRestProps: true,
 	},
-	CodeBlock: {
-		justification:
-			"Preformatted code block container with scroll styling; inherits HTMLPreElement attributes.",
-		inheritedElement: "HTMLPreElement",
-		forwardsRef: false,
-		forwardsRestProps: true,
-	},
 	Table: {
 		justification:
 			"Semantic tabular root container with standard data attributes; inherits HTMLTableElement attributes.",

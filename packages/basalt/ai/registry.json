@@ -9175,7 +9175,7 @@
 			"importPath": "@nocoo/basalt/components/chat-markdown",
 			"subpath": "./components/chat-markdown",
 			"sourceFile": "packages/basalt/src/components/chat-markdown.tsx",
-			"sourceHash": "7bb858989ece09e1",
+			"sourceHash": "0a82ad17e8afabdf",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -9793,14 +9793,14 @@
 			"importPath": "@nocoo/basalt/components/code",
 			"subpath": "./components/code",
 			"sourceFile": "packages/basalt/src/components/code.tsx",
-			"sourceHash": "97c8690331a73333",
+			"sourceHash": "e2b5f7bf9dd82669",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
 			"ownerDoc": "src/pages/ui/code",
 			"packageDoc": "ai/registry.json#code",
 			"summary": "Code component documentation and catalog playground",
-			"peers": ["react"],
+			"peers": ["lucide-react", "react"],
 			"optionalPeers": [],
 			"symbols": [
 				{
@@ -9876,16 +9876,42 @@
 							"name": "CodeHighlighted",
 							"props": [
 								{
-									"name": "code",
+									"name": "title",
 									"type": "string",
-									"required": true,
-									"description": "Source text to highlight."
+									"required": false,
+									"description": "Filename or label shown in the header. Defaults to \"Code\" when copyable."
+								},
+								{
+									"name": "icon",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Decorative header icon. Defaults to a file-code glyph; pass null to hide."
+								},
+								{
+									"name": "copyable",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Show the copy control and its success/error feedback."
+								},
+								{
+									"name": "lineNumbers",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Show a non-selectable, screen-reader-hidden line-number gutter."
 								},
 								{
 									"name": "className",
 									"type": "string",
 									"required": false,
-									"description": "Additional classes for the block."
+									"description": "Additional classes for the panel root, not the inner pre element."
+								},
+								{
+									"name": "code",
+									"type": "string",
+									"required": true,
+									"description": "Source text to highlight with the built-in lightweight tokenizer."
 								}
 							]
 						}
@@ -9903,10 +9929,42 @@
 							"name": "CodeBlock",
 							"props": [
 								{
+									"name": "children",
+									"type": "string",
+									"required": true,
+									"description": "Exact source text. Copy preserves whitespace and original line endings."
+								},
+								{
+									"name": "title",
+									"type": "string",
+									"required": false,
+									"description": "Filename or label shown in the header. Defaults to \"Code\" when copyable."
+								},
+								{
+									"name": "icon",
+									"type": "React.ReactNode",
+									"required": false,
+									"description": "Decorative header icon. Defaults to a file-code glyph; pass null to hide."
+								},
+								{
+									"name": "copyable",
+									"type": "boolean",
+									"required": false,
+									"default": "true",
+									"description": "Show the copy control and its success/error feedback."
+								},
+								{
+									"name": "lineNumbers",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Show a non-selectable, screen-reader-hidden line-number gutter."
+								},
+								{
 									"name": "className",
 									"type": "string",
 									"required": false,
-									"description": "Additional classes for the block."
+									"description": "Additional classes for the panel root, not the inner pre element."
 								}
 							]
 						}
@@ -9929,16 +9987,42 @@
 					"name": "CodeHighlighted",
 					"props": [
 						{
-							"name": "code",
+							"name": "title",
 							"type": "string",
-							"required": true,
-							"description": "Source text to highlight."
+							"required": false,
+							"description": "Filename or label shown in the header. Defaults to \"Code\" when copyable."
+						},
+						{
+							"name": "icon",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Decorative header icon. Defaults to a file-code glyph; pass null to hide."
+						},
+						{
+							"name": "copyable",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show the copy control and its success/error feedback."
+						},
+						{
+							"name": "lineNumbers",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Show a non-selectable, screen-reader-hidden line-number gutter."
 						},
 						{
 							"name": "className",
 							"type": "string",
 							"required": false,
-							"description": "Additional classes for the block."
+							"description": "Additional classes for the panel root, not the inner pre element."
+						},
+						{
+							"name": "code",
+							"type": "string",
+							"required": true,
+							"description": "Source text to highlight with the built-in lightweight tokenizer."
 						}
 					]
 				}
@@ -32170,7 +32254,7 @@
 			"exportName": "Code",
 			"importPath": "@nocoo/basalt/components/code",
 			"sourceFile": "packages/basalt/src/components/code.tsx",
-			"sourceHash": "97c8690331a73333",
+			"sourceHash": "e2b5f7bf9dd82669",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#code",
@@ -32190,16 +32274,42 @@
 					"name": "CodeHighlighted",
 					"props": [
 						{
-							"name": "code",
+							"name": "title",
 							"type": "string",
-							"required": true,
-							"description": "Source text to highlight."
+							"required": false,
+							"description": "Filename or label shown in the header. Defaults to \"Code\" when copyable."
+						},
+						{
+							"name": "icon",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Decorative header icon. Defaults to a file-code glyph; pass null to hide."
+						},
+						{
+							"name": "copyable",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show the copy control and its success/error feedback."
+						},
+						{
+							"name": "lineNumbers",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Show a non-selectable, screen-reader-hidden line-number gutter."
 						},
 						{
 							"name": "className",
 							"type": "string",
 							"required": false,
-							"description": "Additional classes for the block."
+							"description": "Additional classes for the panel root, not the inner pre element."
+						},
+						{
+							"name": "code",
+							"type": "string",
+							"required": true,
+							"description": "Source text to highlight with the built-in lightweight tokenizer."
 						}
 					]
 				}
@@ -32211,7 +32321,7 @@
 			"exportName": "CodeBlock",
 			"importPath": "@nocoo/basalt/components/code",
 			"sourceFile": "packages/basalt/src/components/code.tsx",
-			"sourceHash": "97c8690331a73333",
+			"sourceHash": "e2b5f7bf9dd82669",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#code-block",
@@ -32220,10 +32330,42 @@
 					"name": "CodeBlock",
 					"props": [
 						{
+							"name": "children",
+							"type": "string",
+							"required": true,
+							"description": "Exact source text. Copy preserves whitespace and original line endings."
+						},
+						{
+							"name": "title",
+							"type": "string",
+							"required": false,
+							"description": "Filename or label shown in the header. Defaults to \"Code\" when copyable."
+						},
+						{
+							"name": "icon",
+							"type": "React.ReactNode",
+							"required": false,
+							"description": "Decorative header icon. Defaults to a file-code glyph; pass null to hide."
+						},
+						{
+							"name": "copyable",
+							"type": "boolean",
+							"required": false,
+							"default": "true",
+							"description": "Show the copy control and its success/error feedback."
+						},
+						{
+							"name": "lineNumbers",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Show a non-selectable, screen-reader-hidden line-number gutter."
+						},
+						{
 							"name": "className",
 							"type": "string",
 							"required": false,
-							"description": "Additional classes for the block."
+							"description": "Additional classes for the panel root, not the inner pre element."
 						}
 					]
 				}
@@ -37960,7 +38102,7 @@
 			"exportName": "ChatMarkdown",
 			"importPath": "@nocoo/basalt/components/chat-markdown",
 			"sourceFile": "packages/basalt/src/components/chat-markdown.tsx",
-			"sourceHash": "7bb858989ece09e1",
+			"sourceHash": "0a82ad17e8afabdf",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#chat-markdown",

@@ -1,9 +1,8 @@
 import { decodeHTML } from "entities";
 import { type MarkedToken, marked, type Token } from "marked";
-import { Fragment, type ReactNode, useMemo, useState } from "react";
+import { Fragment, type ReactNode, useMemo } from "react";
 import { contextSourceHref } from "../models/context-cards";
 import { cn } from "../utils/cn";
-import { Button } from "./button";
 import { CodeHighlighted } from "./code";
 
 export interface ChatMarkdownProps {
@@ -12,32 +11,6 @@ export interface ChatMarkdownProps {
 	/** Animate newly appended prose words; disable for static output. */
 	streaming?: boolean;
 	className?: string;
-}
-
-function CodeFence({ text, language }: { text: string; language?: string }) {
-	const [copy, setCopy] = useState<{ text: string; label: string } | null>(null);
-	return (
-		<div className="overflow-hidden rounded-basalt-md border border-basalt-border">
-			<div className="flex items-center justify-between gap-basalt-2 bg-basalt-secondary px-basalt-3 py-basalt-1">
-				<span className="font-mono text-xs text-basalt-muted-foreground">{language || "text"}</span>
-				<Button
-					size="sm"
-					variant="ghost"
-					onClick={async () => {
-						try {
-							await navigator.clipboard.writeText(text);
-							setCopy({ text, label: "Copied" });
-						} catch {
-							setCopy({ text, label: "Copy failed" });
-						}
-					}}
-				>
-					{copy?.text === text ? copy.label : "Copy code"}
-				</Button>
-			</div>
-			<CodeHighlighted code={text} className="max-w-full border-0 rounded-none text-xs" />
-		</div>
-	);
 }
 
 function nodes(tokens: readonly Token[], streaming = false): ReactNode {
@@ -92,7 +65,7 @@ function nodes(tokens: readonly Token[], streaming = false): ReactNode {
 				);
 				break;
 			case "code":
-				node = <CodeFence text={token.text} language={token.lang} />;
+				node = <CodeHighlighted code={token.text} title={token.lang || "text"} lineNumbers />;
 				break;
 			case "blockquote":
 				node = (

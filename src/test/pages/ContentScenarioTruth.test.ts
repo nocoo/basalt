@@ -138,13 +138,17 @@ describe("content scenario truth", () => {
 		expect(example.code).toContain('tone="muted"');
 	});
 
-	it("describes code-block-basic without line numbers", () => {
+	it("documents the code panel header, line numbers and headerless option", () => {
 		const example = scenario("code-block", "code-block-basic");
 		expect(example.title).toBe("Basic");
 		expect(example.title).not.toMatch(/line number/i);
-		expect(example.code).toContain("<CodeBlock>");
-		expect(example.code).not.toMatch(/lineNumber|showLineNumbers/i);
-		expect(CATALOG_DOCS["code-block"]?.usage).toContain("<CodeBlock>const n = 1;</CodeBlock>");
+		expect(example.code).toContain("<CodeBlock");
+		expect(example.code).toContain("lineNumbers");
+		expect(example.code).toContain("copyable={false}");
+		expect(example.code).toContain("icon={<Terminal />}");
+		expect(CATALOG_DOCS["code-block"]?.usage).toContain(
+			'<CodeBlock title="example.ts" lineNumbers>{"const n = 1;"}</CodeBlock>',
+		);
 		expect(CATALOG_DOCS["code-block"]?.usage).not.toContain("<CodeBlock>code</CodeBlock>");
 	});
 
