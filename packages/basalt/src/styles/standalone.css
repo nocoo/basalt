@@ -801,6 +801,14 @@
   :where(.basalt-ui:is(dd), .basalt-ui :is(dd)) {
     margin-left: 0;
   }
+  :where(.basalt-ui:is(fieldset), .basalt-ui fieldset) {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+  }
+  :where(.basalt-ui:is(legend), .basalt-ui legend) {
+    padding: 0;
+  }
   :where(.basalt-ui:is(ol, ul, menu), .basalt-ui :is(ol, ul, menu)) {
     list-style: none;
     margin: 0;

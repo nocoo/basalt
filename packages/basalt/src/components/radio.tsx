@@ -115,7 +115,7 @@ export const RadioGroup = React.forwardRef<
 		const mergedDescribedBy =
 			[invalid ? errorId : null, describedBy].filter(Boolean).join(" ") || undefined;
 		return (
-			<fieldset disabled={disabled} className="flex flex-col gap-basalt-2">
+			<fieldset disabled={disabled} className="basalt-ui flex flex-col gap-basalt-field-gap">
 				{labeledLegends}
 				<RadioGroupPrimitive.Root
 					ref={ref}

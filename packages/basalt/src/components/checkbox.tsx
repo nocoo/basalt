@@ -152,7 +152,7 @@ const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(
 					disabled={disabled}
 					aria-invalid={group.ariaInvalid}
 					aria-describedby={group.mergedDescribedBy}
-					className={cn("flex flex-col gap-basalt-2", className)}
+					className={cn("basalt-ui flex flex-col gap-basalt-field-gap", className)}
 				>
 					{children}
 					{group.invalid ? (

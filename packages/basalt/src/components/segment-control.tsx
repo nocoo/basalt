@@ -53,7 +53,7 @@ export const SegmentControl = React.forwardRef<HTMLFieldSetElement, SegmentContr
 			<fieldset
 				ref={ref}
 				disabled={disabled}
-				className={cn("min-w-0 border-0 p-0", className)}
+				className={cn("basalt-ui min-w-0 border-0 p-0", className)}
 				{...props}
 			>
 				<legend

@@ -69,6 +69,23 @@ export async function assertCompositeAlignment(page: Page, baseUrl: string) {
 			return [header, body, footer].map((part) => getComputedStyle(part).paddingLeft);
 		});
 		assert.deepEqual(insets, ["12px", "12px", "12px"]);
+		await page.goto(`${baseUrl}/ui/approval-card`);
+		await demo.getByRole("radio").first().waitFor();
+		const group = demo.getByRole("radio").first().locator("xpath=ancestor::fieldset");
+		assert.deepEqual(
+			await group.evaluate((node) => ({
+				padding: getComputedStyle(node).padding,
+				margin: getComputedStyle(node).margin,
+			})),
+			{ padding: "0px", margin: "0px" },
+		);
+		const titleX = await demo
+			.locator("h3")
+			.first()
+			.evaluate((node) => node.getBoundingClientRect().x);
+		assert.ok(
+			Math.abs(((await demo.getByRole("radio").first().boundingBox())?.x ?? 0) - titleX) < 1,
+		);
 		assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
 	}
 	return {

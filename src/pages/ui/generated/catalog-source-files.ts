@@ -110,19 +110,19 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"checkbox": {
 		"file": "packages/basalt/src/components/checkbox.tsx",
-		"hash": "0e81b8862108f723",
+		"hash": "63d4d8f662c0168b",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/checkbox.js.map (sourcesContent[0])"
 	},
 	"radio": {
 		"file": "packages/basalt/src/components/radio.tsx",
-		"hash": "5178ce18084006a1",
+		"hash": "a25b9bbcb7153c42",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/radio.js.map (sourcesContent[0])"
 	},
 	"switch": {
 		"file": "packages/basalt/src/components/switch.tsx",
-		"hash": "14283cd357cd6cc7",
+		"hash": "6535f00f1646918c",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/switch.js.map (sourcesContent[0])"
 	},
@@ -170,7 +170,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"segment-control": {
 		"file": "packages/basalt/src/components/segment-control.tsx",
-		"hash": "0cabbf5e7d7ba0f0",
+		"hash": "8f1a2d40bd249280",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/segment-control.js.map (sourcesContent[0])"
 	},

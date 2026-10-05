@@ -61,6 +61,14 @@ describe("dimension token contract", () => {
 			expect(source, file).toContain("var(--basalt-line-body)");
 		}
 	});
+	it("resets native group insets at every public form-group boundary", () => {
+		for (const file of ["radio", "checkbox", "switch", "segment-control"]) {
+			const source = readFileSync(`packages/basalt/src/components/${file}.tsx`, "utf8");
+			expect(source, file).toMatch(/<fieldset[\s\S]*?className=[^>]*basalt-ui/);
+		}
+		expect(standalone).toContain(":where(.basalt-ui:is(fieldset), .basalt-ui fieldset)");
+		expect(standalone).toContain(":where(.basalt-ui:is(legend), .basalt-ui legend)");
+	});
 	it("ships every dimension variable referenced by a class", () => {
 		const known = new Set(
 			Array.from(
