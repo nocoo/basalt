@@ -1607,6 +1607,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "RecommendationCardProps",
 		surface: "RecommendationCard",
 	},
+	{
+		slug: "context-cards",
+		sourceFile: "packages/basalt/src/components/context-cards.tsx",
+		propsType: "ContextCardsProps",
+		surface: "ContextCards",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

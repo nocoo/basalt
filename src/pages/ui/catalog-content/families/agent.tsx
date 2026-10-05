@@ -2,6 +2,8 @@ import viewModelSource from "@/viewmodels/useAgentFeedbackDemo?raw";
 import { catalogContentFamily } from "../../catalog-content";
 import ApprovalDemo from "../../examples/approval-card/default";
 import approvalSource from "../../examples/approval-card/default?raw";
+import ContextCardsDemo from "../../examples/context-cards/default";
+import contextCardsSource from "../../examples/context-cards/default?raw";
 import RecommendationDemo from "../../examples/recommendation-card/default";
 import recommendationSource from "../../examples/recommendation-card/default?raw";
 import ThinkingDemo from "../../examples/thinking/default";
@@ -9,6 +11,7 @@ import thinkingSource from "../../examples/thinking/default?raw";
 import ToolChipsDemo from "../../examples/tool-chips/default";
 import toolsSource from "../../examples/tool-chips/default?raw";
 import { API as approvalApi } from "../../generated/catalog-api/approval-card";
+import { API as contextCardsApi } from "../../generated/catalog-api/context-cards";
 import { API as recommendationApi } from "../../generated/catalog-api/recommendation-card";
 import { API as thinkingApi } from "../../generated/catalog-api/thinking";
 import { API as toolsApi } from "../../generated/catalog-api/tool-chips";
@@ -25,6 +28,24 @@ function standaloneDemo(source: string, tool: boolean) {
 }
 
 export default catalogContentFamily({
+	"context-cards": {
+		docs: {
+			description:
+				"Retrieved context snippets with source badges, character counts, safe optional links and loading, empty, error states. CSS-only staggered entry respects reduced motion.",
+			usage:
+				'import { ContextCards } from "@nocoo/basalt/components/context-cards";\nexport default function Example() { return <ContextCards chunks={[{ id: "sop", title: "Onboarding", body: "Verify cold-chain certification.", source: { name: "Onboarding.pdf", type: "PDF" } }]} />; }',
+			variants: [],
+			api: contextCardsApi,
+		},
+		examples: [
+			{
+				id: "context-cards-default",
+				title: "Retrieved context and states",
+				code: contextCardsSource,
+				render: () => <ContextCardsDemo />,
+			},
+		],
+	},
 	"recommendation-card": {
 		docs: {
 			description:

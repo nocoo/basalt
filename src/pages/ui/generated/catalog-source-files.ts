@@ -534,6 +534,12 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/recommendation-card.js.map (sourcesContent[0])"
 	},
+	"context-cards": {
+		"file": "packages/basalt/src/components/context-cards.tsx",
+		"hash": "ac5b0deee19e1e77",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/context-cards.js.map (sourcesContent[0])"
+	},
 	"charts": {
 		"file": "packages/basalt/src/charts/charts.tsx",
 		"hash": "70b173545c1ef361",

@@ -30,6 +30,7 @@ Each URL below is a public documentation surface.
 - [Combobox](https://basaltui.com/ui/combobox)
 - [Command Palette](https://basaltui.com/ui/command-palette)
 - [Confirm Dialog](https://basaltui.com/ui/confirm-dialog)
+- [ContextCards](https://basaltui.com/ui/context-cards)
 - [ContextMenu](https://basaltui.com/ui/context-menu)
 - [DataTable](https://basaltui.com/ui/data-table)
 - [Date Picker](https://basaltui.com/ui/date-picker)

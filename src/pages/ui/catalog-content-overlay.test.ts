@@ -36,7 +36,7 @@ describe("overlay catalog content family", () => {
 		expect(
 			Object.entries(CATALOG_CONTENT_FAMILY).filter(([, family]) => family === "forms"),
 		).toHaveLength(23);
-		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(115);
+		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(116);
 	});
 
 	it("keeps tooltip examples and generated API shard by reference", () => {

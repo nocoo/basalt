@@ -28,6 +28,7 @@ import { API as collapsibleApi } from "./catalog-api/collapsible";
 import { API as comboboxApi } from "./catalog-api/combobox";
 import { API as commandPaletteApi } from "./catalog-api/command-palette";
 import { API as confirmDialogApi } from "./catalog-api/confirm-dialog";
+import { API as contextCardsApi } from "./catalog-api/context-cards";
 import { API as contextMenuApi } from "./catalog-api/context-menu";
 import { API as customChartApi } from "./catalog-api/custom-chart";
 import { API as dataTableApi } from "./catalog-api/data-table";
@@ -145,6 +146,7 @@ export const CATALOG_API = {
 	combobox: comboboxApi,
 	"command-palette": commandPaletteApi,
 	"confirm-dialog": confirmDialogApi,
+	"context-cards": contextCardsApi,
 	"context-menu": contextMenuApi,
 	"custom-chart": customChartApi,
 	"data-table": dataTableApi,

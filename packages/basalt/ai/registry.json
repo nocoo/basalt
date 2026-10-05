@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.2.0",
-	"totalModules": 126,
-	"totalSymbols": 758,
-	"totalValues": 399,
-	"totalTypes": 359,
+	"totalModules": 127,
+	"totalSymbols": 761,
+	"totalValues": 400,
+	"totalTypes": 361,
 	"totalCssExports": 3,
-	"totalCatalogEntries": 115,
+	"totalCatalogEntries": 116,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -10789,6 +10789,150 @@
 							"type": "ConfirmDialogVariant",
 							"required": false,
 							"description": "Appearance of the confirm button."
+						}
+					]
+				}
+			]
+		},
+		{
+			"displayName": "ContextCards",
+			"exportName": "ContextCards",
+			"importPath": "@nocoo/basalt/components/context-cards",
+			"subpath": "./components/context-cards",
+			"sourceFile": "packages/basalt/src/components/context-cards.tsx",
+			"sourceHash": "ac5b0deee19e1e77",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/context-cards",
+			"packageDoc": "ai/registry.json#context-cards",
+			"summary": "ContextCards component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "ContextCards",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-cards",
+					"packageDoc": "ai/registry.json#context-cards",
+					"originModule": "@nocoo/basalt/components/context-cards"
+				},
+				{
+					"name": "ContextChunk",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-cards",
+					"packageDoc": "ai/registry.json#context-cards",
+					"originModule": "@nocoo/basalt/components/context-cards"
+				},
+				{
+					"name": "ContextCardsProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-cards",
+					"packageDoc": "ai/registry.json#context-cards",
+					"originModule": "@nocoo/basalt/components/context-cards"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "context-cards",
+					"name": "ContextCards",
+					"exportName": "ContextCards",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#context-cards",
+					"api": [
+						{
+							"name": "ContextCards",
+							"props": [
+								{
+									"name": "chunks",
+									"type": "readonly ContextChunk[]",
+									"required": true,
+									"description": "Retrieved chunks with stable IDs and caller-owned source metadata."
+								},
+								{
+									"name": "title",
+									"type": "string",
+									"required": false,
+									"default": "\"All chunks\"",
+									"description": "Heading for the chunk list."
+								},
+								{
+									"name": "totalCount",
+									"type": "number",
+									"required": false,
+									"description": "Total available chunks, when displaying a subset. Never smaller than the visible count."
+								},
+								{
+									"name": "loading",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "error",
+									"type": "string",
+									"required": false
+								},
+								{
+									"name": "onRetry",
+									"type": "() => void",
+									"required": false
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "ContextCards",
+					"props": [
+						{
+							"name": "chunks",
+							"type": "readonly ContextChunk[]",
+							"required": true,
+							"description": "Retrieved chunks with stable IDs and caller-owned source metadata."
+						},
+						{
+							"name": "title",
+							"type": "string",
+							"required": false,
+							"default": "\"All chunks\"",
+							"description": "Heading for the chunk list."
+						},
+						{
+							"name": "totalCount",
+							"type": "number",
+							"required": false,
+							"description": "Total available chunks, when displaying a subset. Never smaller than the visible count."
+						},
+						{
+							"name": "loading",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "error",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "onRetry",
+							"type": "() => void",
+							"required": false
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
 						}
 					]
 				}
@@ -36834,6 +36978,63 @@
 						{
 							"name": "disabled",
 							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "context-cards",
+			"name": "ContextCards",
+			"exportName": "ContextCards",
+			"importPath": "@nocoo/basalt/components/context-cards",
+			"sourceFile": "packages/basalt/src/components/context-cards.tsx",
+			"sourceHash": "ac5b0deee19e1e77",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#context-cards",
+			"api": [
+				{
+					"name": "ContextCards",
+					"props": [
+						{
+							"name": "chunks",
+							"type": "readonly ContextChunk[]",
+							"required": true,
+							"description": "Retrieved chunks with stable IDs and caller-owned source metadata."
+						},
+						{
+							"name": "title",
+							"type": "string",
+							"required": false,
+							"default": "\"All chunks\"",
+							"description": "Heading for the chunk list."
+						},
+						{
+							"name": "totalCount",
+							"type": "number",
+							"required": false,
+							"description": "Total available chunks, when displaying a subset. Never smaller than the visible count."
+						},
+						{
+							"name": "loading",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "error",
+							"type": "string",
+							"required": false
+						},
+						{
+							"name": "onRetry",
+							"type": "() => void",
 							"required": false
 						},
 						{

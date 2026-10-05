@@ -89,6 +89,7 @@ export const CATALOG_PAGE_STATUS = {
 	"approval-card": "ready",
 	"tool-chips": "ready",
 	"recommendation-card": "ready",
+	"context-cards": "ready",
 	charts: "ready",
 	"chart-colors": "ready",
 	timeseries: "ready",

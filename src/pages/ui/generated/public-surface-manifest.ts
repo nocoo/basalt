@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.2.0",
-	"totalModules": 126,
-	"totalSymbols": 758,
-	"totalValues": 399,
-	"totalTypes": 359,
+	"totalModules": 127,
+	"totalSymbols": 761,
+	"totalValues": 400,
+	"totalTypes": 361,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -3419,6 +3419,40 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/confirm-dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/confirm-dialog"
+				}
+			]
+		},
+		{
+			"subpath": "./components/context-cards",
+			"importPath": "@nocoo/basalt/components/context-cards",
+			"sourceFile": "packages/basalt/src/components/context-cards.tsx",
+			"ownerDoc": "src/pages/ui/context-cards",
+			"ownerKind": "catalog-component",
+			"summary": "ContextCards component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "ContextCards",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/context-cards",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-cards"
+				},
+				{
+					"name": "ContextChunk",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-cards",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-cards"
+				},
+				{
+					"name": "ContextCardsProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/context-cards",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/context-cards"
 				}
 			]
 		},
