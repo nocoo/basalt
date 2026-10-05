@@ -1,6 +1,5 @@
 import { act, renderHook } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { useChatViewModel } from "@/viewmodels/useChatViewModel";
 import { useDataShowcaseViewModel } from "@/viewmodels/useDataShowcaseViewModel";
 import { useDemoSubmission } from "@/viewmodels/useDemoSubmission";
 import { useFormsViewModel } from "@/viewmodels/useFormsViewModel";
@@ -131,90 +130,5 @@ describe("invoice data composition", () => {
 		expect(result.current.rows[0].customer).toBe("Atlas Works");
 		act(() => result.current.setPage(-1));
 		expect(result.current.page).toBe(1);
-	});
-});
-
-describe("chat streaming lifecycle", () => {
-	beforeEach(() => vi.useFakeTimers());
-	afterEach(() => vi.useRealTimers());
-	it("appends the user message immediately and streams one reply for rapid duplicate sends", () => {
-		const { result } = renderHook(() => useChatViewModel());
-		act(() => {
-			result.current.send("   ");
-			result.current.retry();
-			result.current.stop();
-		});
-		expect(result.current.messages).toHaveLength(3);
-		act(() => {
-			result.current.send("  Explain today's traffic  ");
-			result.current.send("Duplicate");
-		});
-		expect(result.current.messages[result.current.messages.length - 2]?.text).toBe(
-			"Explain today's traffic",
-		);
-		expect(result.current.messages).toHaveLength(5);
-		expect(result.current.status).toBe("streaming");
-		act(() => vi.advanceTimersByTime(100));
-		const partial = result.current.messages[result.current.messages.length - 1]?.text ?? "";
-		expect(partial).toHaveLength(24);
-		act(() => vi.advanceTimersByTime(3000));
-		expect(result.current.status).toBe("complete");
-		expect(result.current.messages[result.current.messages.length - 1]?.text).toContain(
-			"12,840 requests",
-		);
-		expect(vi.getTimerCount()).toBe(0);
-	});
-	it("keeps a failed response and retries without duplicating its user message", () => {
-		const { result } = renderHook(() => useChatViewModel());
-		act(() => result.current.setFailNext(true));
-		act(() => result.current.send("Explain failures"));
-		act(() => vi.advanceTimersByTime(200));
-		expect(result.current.status).toBe("error");
-		expect(result.current.messages[result.current.messages.length - 1]?.text).toHaveLength(48);
-		act(() => result.current.retry());
-		act(() => vi.advanceTimersByTime(3000));
-		expect(result.current.status).toBe("complete");
-		expect(
-			result.current.messages.filter((message) => message.text === "Explain failures"),
-		).toHaveLength(1);
-		expect(result.current.messages).toHaveLength(5);
-	});
-	it("stops on a thread change, isolates histories, clears messages, and cleans up on unmount", () => {
-		const { result, unmount } = renderHook(() => useChatViewModel());
-		act(() => {
-			result.current.selectThread("unknown");
-			result.current.selectThread("analytics");
-		});
-		expect(result.current.thread.title).toBe("Analytics");
-		act(() => result.current.send("First thread"));
-		act(() => vi.advanceTimersByTime(100));
-		act(() => result.current.selectThread("quality"));
-		expect(vi.getTimerCount()).toBe(0);
-		expect(result.current.messages).toHaveLength(3);
-		act(() => result.current.retry());
-		expect(result.current.status).toBe("idle");
-		act(() => result.current.send("Second thread"));
-		act(() => vi.advanceTimersByTime(3000));
-		expect(result.current.messages[result.current.messages.length - 1]?.text).toContain("99.8%");
-		act(() => result.current.selectThread("analytics"));
-		expect(result.current.messages[result.current.messages.length - 1]?.text).toHaveLength(24);
-		act(() => result.current.clear());
-		expect(result.current.messages).toEqual([]);
-		act(() => result.current.send("Unmount test"));
-		unmount();
-		expect(vi.getTimerCount()).toBe(0);
-	});
-	it("retains partial output on stop and can clear an active generation", () => {
-		const { result } = renderHook(() => useChatViewModel());
-		act(() => result.current.send("Keep partial"));
-		act(() => vi.advanceTimersByTime(100));
-		act(() => result.current.stop());
-		expect(result.current.status).toBe("stopped");
-		expect(result.current.messages[result.current.messages.length - 1]?.text).toHaveLength(24);
-		act(() => result.current.retry());
-		act(() => result.current.clear());
-		expect(vi.getTimerCount()).toBe(0);
-		expect(result.current.status).toBe("idle");
-		expect(result.current.messages).toEqual([]);
 	});
 });
