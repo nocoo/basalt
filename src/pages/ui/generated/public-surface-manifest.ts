@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.2.0",
-	"totalModules": 125,
-	"totalSymbols": 754,
-	"totalValues": 398,
-	"totalTypes": 356,
+	"totalModules": 126,
+	"totalSymbols": 758,
+	"totalValues": 399,
+	"totalTypes": 359,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -5339,6 +5339,48 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/radio",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/radio"
+				}
+			]
+		},
+		{
+			"subpath": "./components/recommendation-card",
+			"importPath": "@nocoo/basalt/components/recommendation-card",
+			"sourceFile": "packages/basalt/src/components/recommendation-card.tsx",
+			"ownerDoc": "src/pages/ui/recommendation-card",
+			"ownerKind": "catalog-component",
+			"summary": "RecommendationCard component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "RecommendationCard",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/recommendation-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/recommendation-card"
+				},
+				{
+					"name": "RecommendationConfidence",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/recommendation-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/recommendation-card"
+				},
+				{
+					"name": "RecommendationOption",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/recommendation-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/recommendation-card"
+				},
+				{
+					"name": "RecommendationCardProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/recommendation-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/recommendation-card"
 				}
 			]
 		},

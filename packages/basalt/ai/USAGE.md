@@ -12,9 +12,9 @@ The complete, machine-readable component registry and API surface is published w
 Document anchors formatted as `ai/registry.json#<slug>` reference specific catalog entries within the `catalogEntries` array by matching the `slug` property (e.g. `ai/registry.json#button` matches the entry where `slug === "button"`).
 
 It contains:
-- **125 Exported Modules** (1 root barrel, components, charts, providers)
-- **114 Ready Catalog Entries** with full API definitions
-- **754 Public Symbols** (398 runtime values, 356 TypeScript types)
+- **126 Exported Modules** (1 root barrel, components, charts, providers)
+- **115 Ready Catalog Entries** with full API definitions
+- **758 Public Symbols** (399 runtime values, 359 TypeScript types)
 - **Detailed Component API**: Props, types, defaults, descriptions, and function callable signatures (including all `toast()` variants)
 - **Exact Peer Dependency Closures**: Identifies optional peers required per subpath (e.g., Recharts)
 

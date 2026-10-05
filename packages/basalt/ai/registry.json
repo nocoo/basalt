@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.2.0",
-	"totalModules": 125,
-	"totalSymbols": 754,
-	"totalValues": 398,
-	"totalTypes": 356,
+	"totalModules": 126,
+	"totalSymbols": 758,
+	"totalValues": 399,
+	"totalTypes": 359,
 	"totalCssExports": 3,
-	"totalCatalogEntries": 114,
+	"totalCatalogEntries": 115,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -20359,6 +20359,138 @@
 			]
 		},
 		{
+			"displayName": "RecommendationCard",
+			"exportName": "RecommendationCard",
+			"importPath": "@nocoo/basalt/components/recommendation-card",
+			"subpath": "./components/recommendation-card",
+			"sourceFile": "packages/basalt/src/components/recommendation-card.tsx",
+			"sourceHash": "31f55b91c306e978",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/recommendation-card",
+			"packageDoc": "ai/registry.json#recommendation-card",
+			"summary": "RecommendationCard component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "RecommendationCard",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/recommendation-card",
+					"packageDoc": "ai/registry.json#recommendation-card",
+					"originModule": "@nocoo/basalt/components/recommendation-card"
+				},
+				{
+					"name": "RecommendationConfidence",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/recommendation-card",
+					"packageDoc": "ai/registry.json#recommendation-card",
+					"originModule": "@nocoo/basalt/components/recommendation-card"
+				},
+				{
+					"name": "RecommendationOption",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/recommendation-card",
+					"packageDoc": "ai/registry.json#recommendation-card",
+					"originModule": "@nocoo/basalt/components/recommendation-card"
+				},
+				{
+					"name": "RecommendationCardProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/recommendation-card",
+					"packageDoc": "ai/registry.json#recommendation-card",
+					"originModule": "@nocoo/basalt/components/recommendation-card"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "recommendation-card",
+					"name": "RecommendationCard",
+					"exportName": "RecommendationCard",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#recommendation-card",
+					"api": [
+						{
+							"name": "RecommendationCard",
+							"props": [
+								{
+									"name": "options",
+									"type": "readonly RecommendationOption[]",
+									"required": true,
+									"description": "Caller-owned options with stable IDs. Remount with a new key for a new request."
+								},
+								{
+									"name": "title",
+									"type": "string",
+									"required": false,
+									"default": "\"Recommended action\"",
+									"description": "Card heading."
+								},
+								{
+									"name": "onAccept",
+									"type": "(option: RecommendationOption) => void | Promise<void>",
+									"required": true,
+									"description": "Explicit acceptance; rejected promises keep the choice and allow retry."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "RecommendationCard",
+					"props": [
+						{
+							"name": "options",
+							"type": "readonly RecommendationOption[]",
+							"required": true,
+							"description": "Caller-owned options with stable IDs. Remount with a new key for a new request."
+						},
+						{
+							"name": "title",
+							"type": "string",
+							"required": false,
+							"default": "\"Recommended action\"",
+							"description": "Card heading."
+						},
+						{
+							"name": "onAccept",
+							"type": "(option: RecommendationOption) => void | Promise<void>",
+							"required": true,
+							"description": "Explicit acceptance; rejected promises keep the choice and allow retry."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
+				}
+			]
+		},
+		{
 			"displayName": "Resource List",
 			"exportName": "ResourceList",
 			"importPath": "@nocoo/basalt/components/resource-list",
@@ -36656,6 +36788,53 @@
 							"required": false,
 							"default": "true",
 							"description": "Start with the tool list expanded."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "recommendation-card",
+			"name": "RecommendationCard",
+			"exportName": "RecommendationCard",
+			"importPath": "@nocoo/basalt/components/recommendation-card",
+			"sourceFile": "packages/basalt/src/components/recommendation-card.tsx",
+			"sourceHash": "31f55b91c306e978",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#recommendation-card",
+			"api": [
+				{
+					"name": "RecommendationCard",
+					"props": [
+						{
+							"name": "options",
+							"type": "readonly RecommendationOption[]",
+							"required": true,
+							"description": "Caller-owned options with stable IDs. Remount with a new key for a new request."
+						},
+						{
+							"name": "title",
+							"type": "string",
+							"required": false,
+							"default": "\"Recommended action\"",
+							"description": "Card heading."
+						},
+						{
+							"name": "onAccept",
+							"type": "(option: RecommendationOption) => void | Promise<void>",
+							"required": true,
+							"description": "Explicit acceptance; rejected promises keep the choice and allow retry."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false
 						},
 						{
 							"name": "className",

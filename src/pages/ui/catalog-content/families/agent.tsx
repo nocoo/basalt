@@ -2,11 +2,14 @@ import viewModelSource from "@/viewmodels/useAgentFeedbackDemo?raw";
 import { catalogContentFamily } from "../../catalog-content";
 import ApprovalDemo from "../../examples/approval-card/default";
 import approvalSource from "../../examples/approval-card/default?raw";
+import RecommendationDemo from "../../examples/recommendation-card/default";
+import recommendationSource from "../../examples/recommendation-card/default?raw";
 import ThinkingDemo from "../../examples/thinking/default";
 import thinkingSource from "../../examples/thinking/default?raw";
 import ToolChipsDemo from "../../examples/tool-chips/default";
 import toolsSource from "../../examples/tool-chips/default?raw";
 import { API as approvalApi } from "../../generated/catalog-api/approval-card";
+import { API as recommendationApi } from "../../generated/catalog-api/recommendation-card";
 import { API as thinkingApi } from "../../generated/catalog-api/thinking";
 import { API as toolsApi } from "../../generated/catalog-api/tool-chips";
 
@@ -22,6 +25,24 @@ function standaloneDemo(source: string, tool: boolean) {
 }
 
 export default catalogContentFamily({
+	"recommendation-card": {
+		docs: {
+			description:
+				"Confidence-labelled recommendation with animated alternatives, explicit asynchronous acceptance and retry. The application owns the recommended action.",
+			usage:
+				'import { RecommendationCard } from "@nocoo/basalt/components/recommendation-card";\nexport default function Example() { return <RecommendationCard options={[{ id: "restock", label: "Restock", description: "Reorder waffle cones.", confidence: "high" }]} onAccept={console.log} />; }',
+			variants: [],
+			api: recommendationApi,
+		},
+		examples: [
+			{
+				id: "recommendation-card-default",
+				title: "Recommendation and alternatives",
+				code: recommendationSource,
+				render: () => <RecommendationDemo />,
+			},
+		],
+	},
 	thinking: {
 		docs: {
 			description:

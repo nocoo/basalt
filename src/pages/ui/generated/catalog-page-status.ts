@@ -88,6 +88,7 @@ export const CATALOG_PAGE_STATUS = {
 	thinking: "ready",
 	"approval-card": "ready",
 	"tool-chips": "ready",
+	"recommendation-card": "ready",
 	charts: "ready",
 	"chart-colors": "ready",
 	timeseries: "ready",

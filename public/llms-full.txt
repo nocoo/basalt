@@ -63,6 +63,7 @@ Each URL below is a public documentation surface.
 - [Pagination](https://basaltui.com/ui/pagination)
 - [Popover](https://basaltui.com/ui/popover)
 - [Radio](https://basaltui.com/ui/radio)
+- [RecommendationCard](https://basaltui.com/ui/recommendation-card)
 - [Responsive Master Detail](https://basaltui.com/ui/responsive-master-detail)
 - [Scroll Area](https://basaltui.com/ui/scroll-area)
 - [Searchable Multi Select](https://basaltui.com/ui/multi-select)

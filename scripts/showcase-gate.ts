@@ -21,6 +21,7 @@ import { assertLibraryShowcases } from "./showcase-library";
 import { assertLoaderShowcase } from "./showcase-loader";
 import { assertOverlayMotion } from "./showcase-motion";
 import { assertPaletteShowcases } from "./showcase-palette";
+import { assertRecommendation } from "./showcase-recommendation";
 import { assertRecordGeometry } from "./showcase-records";
 import { assertReusableShowcases } from "./showcase-reuse";
 
@@ -57,6 +58,7 @@ export async function runShowcaseGate() {
 			const hover = await assertHoverAndDensity(page, url);
 			const dimensions = await assertDimensionTokens(page, url);
 			const records = await assertRecordGeometry(page, url);
+			const recommendation = await assertRecommendation(page, url);
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
 			const editing = await assertEditingShowcases(page, url);
@@ -72,6 +74,7 @@ export async function runShowcaseGate() {
 				hover,
 				dimensions,
 				records,
+				recommendation,
 				examples,
 				reusable,
 				editing,

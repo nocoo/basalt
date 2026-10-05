@@ -77,6 +77,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	popover: "overlay",
 	radar: "charts",
 	radio: "forms",
+	"recommendation-card": "agent",
 	"resource-list": "data-layout",
 	"responsive-master-detail": "data-layout",
 	sankey: "charts",

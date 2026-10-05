@@ -76,6 +76,7 @@ import { API as paletteApi } from "./catalog-api/palette";
 import { API as popoverApi } from "./catalog-api/popover";
 import { API as radarApi } from "./catalog-api/radar";
 import { API as radioApi } from "./catalog-api/radio";
+import { API as recommendationCardApi } from "./catalog-api/recommendation-card";
 import { API as resourceListApi } from "./catalog-api/resource-list";
 import { API as responsiveMasterDetailApi } from "./catalog-api/responsive-master-detail";
 import { API as sankeyApi } from "./catalog-api/sankey";
@@ -192,6 +193,7 @@ export const CATALOG_API = {
 	popover: popoverApi,
 	radar: radarApi,
 	radio: radioApi,
+	"recommendation-card": recommendationCardApi,
 	"resource-list": resourceListApi,
 	"responsive-master-detail": responsiveMasterDetailApi,
 	sankey: sankeyApi,

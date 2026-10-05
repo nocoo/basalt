@@ -1218,6 +1218,9 @@
   .min-h-\[24px\] {
     min-height: 24px;
   }
+  .min-h-basalt-12 {
+    min-height: var(--basalt-space-12);
+  }
   .min-h-basalt-control {
     min-height: var(--basalt-size-control);
   }
@@ -2026,6 +2029,9 @@
   .px-basalt-card {
     padding-inline: var(--basalt-space-card);
   }
+  .px-basalt-card-sm {
+    padding-inline: var(--basalt-space-card-sm);
+  }
   .px-basalt-control-x {
     padding-inline: var(--basalt-space-control-x);
   }
@@ -2115,6 +2121,9 @@
   }
   .pb-basalt-1 {
     padding-bottom: var(--basalt-space-1);
+  }
+  .pb-basalt-2 {
+    padding-bottom: var(--basalt-space-2);
   }
   .pl-basalt-2 {
     padding-left: var(--basalt-space-2);
@@ -2574,6 +2583,9 @@
       .hover\:bg-basalt-primary\/90:hover {
         background-color: color-mix(in oklab, hsl(var(--basalt-primary)) 90%, transparent);
       }
+    }
+    .hover\:bg-transparent:hover {
+      background-color: transparent;
     }
     .hover\:text-basalt-accent-foreground:hover {
       color: hsl(var(--basalt-accent-foreground));

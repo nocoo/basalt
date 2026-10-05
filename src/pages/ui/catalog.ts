@@ -835,6 +835,15 @@ export const CATALOG: CatalogEntry[] = [
 		category: "component",
 	},
 	{
+		slug: "recommendation-card",
+		name: "RecommendationCard",
+		exportName: "RecommendationCard",
+		importPath: "@nocoo/basalt/components/recommendation-card",
+		hasRootBarrel: false,
+		kind: "catalog",
+		category: "component",
+	},
+	{
 		slug: "charts",
 		name: "Charts",
 		exportName: "Charts",
