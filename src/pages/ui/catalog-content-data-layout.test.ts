@@ -140,6 +140,7 @@ describe("data-layout catalog content family", () => {
 			"getRowId",
 			"className",
 			"maxHeight",
+			"rowNumbers",
 			"sort",
 			"defaultSort",
 			"onSortChange",

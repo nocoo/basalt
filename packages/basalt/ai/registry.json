@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.2.0",
 	"totalModules": 128,
-	"totalSymbols": 765,
-	"totalValues": 401,
-	"totalTypes": 364,
+	"totalSymbols": 767,
+	"totalValues": 402,
+	"totalTypes": 365,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 117,
 	"modules": [
@@ -7460,7 +7460,7 @@
 			"importPath": "@nocoo/basalt/components/avatar",
 			"subpath": "./components/avatar",
 			"sourceFile": "packages/basalt/src/components/avatar.tsx",
-			"sourceHash": "966dddbc65a2737b",
+			"sourceHash": "968f928510892784",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -7470,6 +7470,14 @@
 			"peers": ["react"],
 			"optionalPeers": [],
 			"symbols": [
+				{
+					"name": "AvatarInitials",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/avatar",
+					"packageDoc": "ai/registry.json#avatar",
+					"originModule": "@nocoo/basalt/components/avatar"
+				},
 				{
 					"name": "AvatarProps",
 					"isValue": false,
@@ -7514,6 +7522,14 @@
 					"name": "AvatarFallback",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/avatar",
+					"packageDoc": "ai/registry.json#avatar",
+					"originModule": "@nocoo/basalt/components/avatar"
+				},
+				{
+					"name": "AvatarInitialsProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/avatar",
 					"packageDoc": "ai/registry.json#avatar",
 					"originModule": "@nocoo/basalt/components/avatar"
@@ -7587,6 +7603,41 @@
 									"description": "Useful for delaying rendering so it only appears for those with slower connections.\nUnset by default, rendering immediately without delay."
 								}
 							]
+						},
+						{
+							"name": "AvatarInitials",
+							"props": [
+								{
+									"name": "name",
+									"type": "string",
+									"required": true,
+									"description": "Person or organization name; initials are derived from its first two words."
+								},
+								{
+									"name": "colorKey",
+									"type": "string",
+									"required": false,
+									"description": "Stable color identity, independent of display name changes."
+								},
+								{
+									"name": "initials",
+									"type": "string",
+									"required": false,
+									"description": "Two-letter override for application-specific abbreviations."
+								},
+								{
+									"name": "size",
+									"type": "\"default\" | \"sm\"",
+									"required": false,
+									"default": "\"default\"",
+									"description": "Avatar diameter."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false
+								}
+							]
 						}
 					]
 				}
@@ -7649,6 +7700,41 @@
 							"type": "number",
 							"required": false,
 							"description": "Useful for delaying rendering so it only appears for those with slower connections.\nUnset by default, rendering immediately without delay."
+						}
+					]
+				},
+				{
+					"name": "AvatarInitials",
+					"props": [
+						{
+							"name": "name",
+							"type": "string",
+							"required": true,
+							"description": "Person or organization name; initials are derived from its first two words."
+						},
+						{
+							"name": "colorKey",
+							"type": "string",
+							"required": false,
+							"description": "Stable color identity, independent of display name changes."
+						},
+						{
+							"name": "initials",
+							"type": "string",
+							"required": false,
+							"description": "Two-letter override for application-specific abbreviations."
+						},
+						{
+							"name": "size",
+							"type": "\"default\" | \"sm\"",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Avatar diameter."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
 						}
 					]
 				}
@@ -11634,7 +11720,7 @@
 			"importPath": "@nocoo/basalt/components/data-table",
 			"subpath": "./components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "4ccaf50b88f149f5",
+			"sourceHash": "a141afb8988ad132",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -11790,6 +11876,13 @@
 									"type": "number | string | string & {}",
 									"required": false,
 									"description": "Bound the local scroll region; column headers stay visible while scrolling."
+								},
+								{
+									"name": "rowNumbers",
+									"type": "boolean",
+									"required": false,
+									"default": "false",
+									"description": "Show display-order row numbers, continuous across pages."
 								},
 								{
 									"name": "sort",
@@ -11979,6 +12072,13 @@
 							"type": "number | string | string & {}",
 							"required": false,
 							"description": "Bound the local scroll region; column headers stay visible while scrolling."
+						},
+						{
+							"name": "rowNumbers",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Show display-order row numbers, continuous across pages."
 						},
 						{
 							"name": "sort",
@@ -31611,7 +31711,7 @@
 			"exportName": "Avatar",
 			"importPath": "@nocoo/basalt/components/avatar",
 			"sourceFile": "packages/basalt/src/components/avatar.tsx",
-			"sourceHash": "966dddbc65a2737b",
+			"sourceHash": "968f928510892784",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#avatar",
@@ -31673,6 +31773,41 @@
 							"type": "number",
 							"required": false,
 							"description": "Useful for delaying rendering so it only appears for those with slower connections.\nUnset by default, rendering immediately without delay."
+						}
+					]
+				},
+				{
+					"name": "AvatarInitials",
+					"props": [
+						{
+							"name": "name",
+							"type": "string",
+							"required": true,
+							"description": "Person or organization name; initials are derived from its first two words."
+						},
+						{
+							"name": "colorKey",
+							"type": "string",
+							"required": false,
+							"description": "Stable color identity, independent of display name changes."
+						},
+						{
+							"name": "initials",
+							"type": "string",
+							"required": false,
+							"description": "Two-letter override for application-specific abbreviations."
+						},
+						{
+							"name": "size",
+							"type": "\"default\" | \"sm\"",
+							"required": false,
+							"default": "\"default\"",
+							"description": "Avatar diameter."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
 						}
 					]
 				}
@@ -33936,7 +34071,7 @@
 			"exportName": "DataTable",
 			"importPath": "@nocoo/basalt/components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "4ccaf50b88f149f5",
+			"sourceHash": "a141afb8988ad132",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#data-table",
@@ -34045,6 +34180,13 @@
 							"type": "number | string | string & {}",
 							"required": false,
 							"description": "Bound the local scroll region; column headers stay visible while scrolling."
+						},
+						{
+							"name": "rowNumbers",
+							"type": "boolean",
+							"required": false,
+							"default": "false",
+							"description": "Show display-order row numbers, continuous across pages."
 						},
 						{
 							"name": "sort",

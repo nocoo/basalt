@@ -1619,6 +1619,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "DiffTableProps",
 		surface: "DiffTable",
 	},
+	{
+		slug: "avatar",
+		sourceFile: "packages/basalt/src/components/avatar.tsx",
+		propsType: "AvatarInitialsProps",
+		surface: "AvatarInitials",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

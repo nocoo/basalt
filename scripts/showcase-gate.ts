@@ -61,8 +61,8 @@ export async function runShowcaseGate() {
 			const dimensions = await assertDimensionTokens(page, url);
 			const records = await assertRecordGeometry(page, url);
 			const recommendation = await assertRecommendation(page, url);
-			const diffReview = await assertDiffReview(page, url);
 			const context = await assertContextCards(page, url);
+			const diffReview = await assertDiffReview(page, url);
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
 			const editing = await assertEditingShowcases(page, url);
@@ -79,8 +79,8 @@ export async function runShowcaseGate() {
 				dimensions,
 				records,
 				recommendation,
-				diffReview,
 				context,
+				diffReview,
 				examples,
 				reusable,
 				editing,

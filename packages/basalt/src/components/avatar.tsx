@@ -1,6 +1,8 @@
 import * as AvatarPrimitive from "@radix-ui/react-avatar";
 import * as React from "react";
+import { avatarColorIndex, avatarInitials } from "../models/avatar";
 import { cn } from "../utils/cn";
+import { TAG_COLORS } from "./tag-badge";
 
 export type AvatarProps = Omit<
 	React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root>,
@@ -94,3 +96,52 @@ export const AvatarFallback = React.forwardRef<
 	/>
 ));
 AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName;
+
+const AVATAR_TONES = [
+	TAG_COLORS.blue.className,
+	TAG_COLORS.amber.className,
+	TAG_COLORS.rose.className,
+	TAG_COLORS.teal.className,
+	TAG_COLORS.violet.className,
+	TAG_COLORS.success.className,
+] as const;
+
+export interface AvatarInitialsProps {
+	/** Person or organization name; initials are derived from its first two words. */
+	name: string;
+	/** Stable color identity, independent of display name changes. */
+	colorKey?: string;
+	/** Two-letter override for application-specific abbreviations. */
+	initials?: string;
+	/** Avatar diameter. @default "default" */
+	size?: "sm" | "default";
+	className?: string;
+}
+
+export function AvatarInitials({
+	name,
+	colorKey,
+	initials,
+	size = "default",
+	className,
+}: AvatarInitialsProps) {
+	return (
+		<Avatar
+			role="img"
+			aria-label={name}
+			className={cn(size === "sm" && "size-basalt-6", className)}
+		>
+			<AvatarFallback
+				className={cn(
+					"font-medium",
+					size === "sm" ? "text-[11px]" : "text-xs",
+					AVATAR_TONES[avatarColorIndex(colorKey ?? name)],
+				)}
+			>
+				{initials?.trim()
+					? Array.from(initials.trim().toLocaleUpperCase("en-US")).slice(0, 2).join("")
+					: avatarInitials(name)}
+			</AvatarFallback>
+		</Avatar>
+	);
+}

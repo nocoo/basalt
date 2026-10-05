@@ -242,7 +242,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"avatar": {
 		"file": "packages/basalt/src/components/avatar.tsx",
-		"hash": "966dddbc65a2737b",
+		"hash": "968f928510892784",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/avatar.js.map (sourcesContent[0])"
 	},
@@ -320,7 +320,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"data-table": {
 		"file": "packages/basalt/src/components/data-table.tsx",
-		"hash": "4ccaf50b88f149f5",
+		"hash": "a141afb8988ad132",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/data-table.js.map (sourcesContent[0])"
 	},

@@ -1690,8 +1690,14 @@ describe("catalog API generator contract", () => {
 				propsType: "DiffTableProps",
 				surface: "DiffTable",
 			},
+			{
+				slug: "avatar",
+				sourceFile: "packages/basalt/src/components/avatar.tsx",
+				propsType: "AvatarInitialsProps",
+				surface: "AvatarInitials",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(256);
+		expect(CATALOG_API_TARGETS).toHaveLength(257);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -3037,7 +3043,7 @@ export interface WidgetProps {
 			"battery-meter": ["BatteryMeter"],
 			meter: ["Meter"],
 			"clipboard-text": ["ClipboardText"],
-			avatar: ["Avatar", "AvatarImage", "AvatarFallback"],
+			avatar: ["Avatar", "AvatarImage", "AvatarFallback", "AvatarInitials"],
 			accordion: [
 				"Accordion (Single)",
 				"Accordion (Multiple)",
@@ -4912,7 +4918,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"60791e1624554e5da4c58f1cf8474d7b7c1f2ddab2f84d38c6c6bb338a34d630",
+			"63f241ed3f60a6afd5b588ed2784d635d362364cb2880b9be50d0d31b876ed2b",
 		);
 	}, 60_000);
 

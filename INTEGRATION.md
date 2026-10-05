@@ -1867,3 +1867,7 @@ DataTable uses 13px single-line content, 36px minimum rows, tokenized horizontal
 ### Proposed tabular changes
 
 `DiffTable` (`components/diff-table`) renders caller-owned text/number rows marked `add`, `remove` or `unchanged`. Changed rows start included and can be toggled by clicking the row or its keyboard-operable Checkbox. Add/remove labels and glyphs carry the meaning independently of tint. `onApply` receives a detached snapshot of only selected changed rows; no data is mutated internally. Pending actions lock selection and duplicate submission; rejection preserves selection with retry feedback. Remount with a new key for a new proposal. Real writes, access checks and validation stay in the application.
+
+### Record numbering and identity
+
+Set `DataTable.rowNumbers` to show an additional `#` column. Numbers follow current sorted/filtered display order and continue from the resolved page offset, including server pagination. They never replace stable row IDs or selection keys. `AvatarInitials` on `components/avatar` reuses the circular Avatar surface with deterministic semantic colors and the first two word initials; `colorKey` keeps color stable across renames and `initials` supports application abbreviations. `size="sm"` is 24px for compact records. Keep the full name as its accessible label.

@@ -62,7 +62,7 @@ const FEEDBACK_SCENARIOS = {
 	],
 	code: ["code-typescript", "code-react", "code-inline"],
 	"code-block": ["code-block-basic"],
-	avatar: ["avatar-fallback"],
+	avatar: ["avatar-colored-initials", "avatar-fallback"],
 } as const;
 
 const FEEDBACK_DESCRIPTIONS = {
@@ -128,7 +128,7 @@ describe("feedback catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(50);
+		expect(count).toBe(51);
 	});
 
 	it("keeps the BASE banner winner without reviving the EXTRA default", () => {

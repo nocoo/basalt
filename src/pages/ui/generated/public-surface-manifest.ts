@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.2.0",
 	"totalModules": 128,
-	"totalSymbols": 765,
-	"totalValues": 401,
-	"totalTypes": 364,
+	"totalSymbols": 767,
+	"totalValues": 402,
+	"totalTypes": 365,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -2603,6 +2603,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "Avatar component documentation and catalog playground",
 			"symbols": [
 				{
+					"name": "AvatarInitials",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/avatar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/avatar"
+				},
+				{
 					"name": "AvatarProps",
 					"isValue": false,
 					"isType": true,
@@ -2646,6 +2654,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "AvatarFallback",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/avatar",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/avatar"
+				},
+				{
+					"name": "AvatarInitialsProps",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/avatar",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/avatar"

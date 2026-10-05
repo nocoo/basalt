@@ -108,6 +108,13 @@ export const API = [
 				description: "Bound the local scroll region; column headers stay visible while scrolling.",
 			},
 			{
+				name: "rowNumbers",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Show display-order row numbers, continuous across pages.",
+			},
+			{
 				name: "sort",
 				type: "DataTableSort | null",
 				required: false,

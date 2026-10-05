@@ -244,3 +244,58 @@ describe("record geometry", () => {
 		expect(button.closest("th")).toHaveAttribute("aria-sort", "descending");
 	});
 });
+
+describe("row numbers", () => {
+	it("numbers display order and continues through pagination without changing IDs", () => {
+		render(
+			<DataTable
+				data={[
+					{ id: "z", name: "Zed" },
+					{ id: "a", name: "Amy" },
+					{ id: "m", name: "Max" },
+				]}
+				columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]}
+				rowNumbers
+				pageSize={2}
+				multiple
+				defaultSelected={[]}
+			/>,
+		);
+		expect(
+			Array.from(document.querySelectorAll("[data-row-number]")).map((n) => n.textContent),
+		).toEqual(["1", "2"]);
+		fireEvent.click(screen.getByRole("button", { name: "Name" }));
+		expect(
+			screen.getByText("Amy").closest("tr")?.querySelector("[data-row-number]"),
+		).toHaveTextContent("1");
+		fireEvent.click(screen.getByRole("button", { name: "Next page" }));
+		expect(
+			screen.getByText("Zed").closest("tr")?.querySelector("[data-row-number]"),
+		).toHaveTextContent("3");
+		fireEvent.click(screen.getByRole("checkbox", { name: "Select z" }));
+		expect(screen.getByText("Zed").closest("tr")).toHaveAttribute("aria-selected", "true");
+	});
+	it("numbers server pages and accounts for empty colspan", () => {
+		const { rerender } = render(
+			<DataTable
+				data={[{ name: "Six" }]}
+				columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]}
+				rowNumbers
+				manualPagination
+				page={2}
+				pageSize={5}
+				total={9}
+			/>,
+		);
+		expect(document.querySelector("[data-row-number]")).toHaveTextContent("6");
+		rerender(
+			<DataTable
+				data={[]}
+				columns={[{ id: "name", header: "Name", accessor: () => "" }]}
+				rowNumbers
+				defaultSelected={[]}
+			/>,
+		);
+		expect(screen.getByText("No results").closest("td")).toHaveAttribute("colspan", "3");
+	});
+});

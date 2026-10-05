@@ -12,6 +12,19 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 			const demo = page.locator('[data-scenario="data-table-records"]');
 			await demo.scrollIntoViewIfNeeded();
 			const table = demo.getByRole("table");
+			assert.deepEqual(await demo.locator("[data-row-number]").allTextContents(), [
+				"1",
+				"2",
+				"3",
+				"4",
+				"5",
+				"6",
+			]);
+			assert.equal(
+				await demo.getByRole("img", { name: "Alpine Churn — Zurich" }).innerText(),
+				"AC",
+			);
+
 			const region = demo.getByRole("region", { name: "Supplier records scroll area" });
 			const geometry = await table.evaluate((node) => ({
 				rows: Array.from(node.querySelectorAll("tbody tr")).map(
@@ -38,7 +51,7 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 				JSON.stringify(geometry),
 			);
 			assert.ok(geometry.heads.every((head) => head.whiteSpace === "nowrap"));
-			assert.ok(geometry.heads[1].width >= 240 && geometry.heads[2].width >= 240);
+			assert.ok(geometry.heads[2].width >= 240 && geometry.heads[3].width >= 240);
 			assert.ok(geometry.scroll > geometry.client);
 			await region.evaluate((node) => {
 				node.style.maxHeight = "140px";

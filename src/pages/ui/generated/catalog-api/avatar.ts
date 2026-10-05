@@ -62,4 +62,39 @@ export const API = [
 			},
 		],
 	},
+	{
+		name: "AvatarInitials",
+		props: [
+			{
+				name: "name",
+				type: "string",
+				required: true,
+				description: "Person or organization name; initials are derived from its first two words.",
+			},
+			{
+				name: "colorKey",
+				type: "string",
+				required: false,
+				description: "Stable color identity, independent of display name changes.",
+			},
+			{
+				name: "initials",
+				type: "string",
+				required: false,
+				description: "Two-letter override for application-specific abbreviations.",
+			},
+			{
+				name: "size",
+				type: "\"default\" | \"sm\"",
+				required: false,
+				default: "\"default\"",
+				description: "Avatar diameter.",
+			},
+			{
+				name: "className",
+				type: "string",
+				required: false,
+			},
+		],
+	},
 ];

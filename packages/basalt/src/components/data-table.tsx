@@ -216,6 +216,8 @@ export type DataTableProps<T = unknown> = {
 	className?: string;
 	/** Bound the local scroll region; column headers stay visible while scrolling. */
 	maxHeight?: CSSProperties["maxHeight"];
+	/** Show display-order row numbers, continuous across pages. @default false */
+	rowNumbers?: boolean;
 	/** Controlled sorting. null explicitly disables sorting. */
 	sort?: DataTableSort | null;
 	/** Initial sorting for uncontrolled usage. @default null */
@@ -259,6 +261,7 @@ export function DataTable<T>({
 	getRowId,
 	className,
 	maxHeight,
+	rowNumbers = false,
 	sort: controlledSort,
 	defaultSort = null,
 	onSortChange,
@@ -488,7 +491,7 @@ export function DataTable<T>({
 		!manualPagination && pageSize && pageSize > 0
 			? rows.rows.slice((resolvedPage - 1) * pageSize, resolvedPage * pageSize)
 			: rows.rows;
-	const colCount = columns.length + (selectable ? 1 : 0);
+	const colCount = columns.length + (selectable ? 1 : 0) + (rowNumbers ? 1 : 0);
 	const toggleSelected = (id: string) => {
 		if (multiple) {
 			setSelectedIds(
@@ -518,6 +521,15 @@ export function DataTable<T>({
 				>
 					<TableHeader>
 						<TableRow>
+							{rowNumbers && (
+								<TableHead
+									scope="col"
+									className="sticky top-0 z-10 w-basalt-10 min-w-basalt-10 bg-basalt-control text-right"
+								>
+									<span aria-hidden="true">#</span>
+									<span className="sr-only">Row number</span>
+								</TableHead>
+							)}
 							{selectable ? (
 								<TableHead
 									scope="col"
@@ -624,7 +636,7 @@ export function DataTable<T>({
 								</TableCell>
 							</TableRow>
 						) : (
-							paged.map(({ row, key, selectId }) => {
+							paged.map(({ row, key, selectId }, rowIndex) => {
 								const isSelected = selectedIds.includes(selectId);
 								return (
 									<TableRow
@@ -632,6 +644,16 @@ export function DataTable<T>({
 										variant={isSelected ? "selected" : "default"}
 										aria-selected={selectable ? isSelected : undefined}
 									>
+										{rowNumbers && (
+											<TableCell
+												data-row-number=""
+												className="text-right text-xs tabular-nums text-basalt-muted-foreground"
+											>
+												{(pageSize && pageSize > 0 ? (resolvedPage - 1) * pageSize : 0) +
+													rowIndex +
+													1}
+											</TableCell>
+										)}
 										{selectable ? (
 											<TableCell className="text-center">
 												<Checkbox

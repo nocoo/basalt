@@ -1083,6 +1083,10 @@
     width: var(--basalt-space-5);
     height: var(--basalt-space-5);
   }
+  .size-basalt-6 {
+    width: var(--basalt-space-6);
+    height: var(--basalt-space-6);
+  }
   .size-basalt-7 {
     width: var(--basalt-space-7);
     height: var(--basalt-space-7);

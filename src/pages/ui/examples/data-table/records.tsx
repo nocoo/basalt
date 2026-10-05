@@ -1,3 +1,4 @@
+import { AvatarInitials } from "@nocoo/basalt/components/avatar";
 import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-table";
 import { TagBadge, type TagColor } from "@nocoo/basalt/components/tag-badge";
 import { CalendarDays, ExternalLink, Link2, ListFilter, Signal } from "lucide-react";
@@ -71,12 +72,7 @@ const columns: DataTableColumn<(typeof records)[number]>[] = [
 		sortValue: (row) => row.name,
 		accessor: (row) => (
 			<span className="flex items-center gap-basalt-2">
-				<span
-					aria-hidden="true"
-					className="flex size-basalt-5 shrink-0 items-center justify-center rounded-basalt-sm bg-basalt-accent text-[11px] text-basalt-muted-foreground"
-				>
-					{row.name[0]}
-				</span>
+				<AvatarInitials name={row.name} colorKey={row.id} size="sm" />
 				<span className="block max-w-[210px] truncate" title={row.name}>
 					{row.name}
 				</span>
@@ -164,6 +160,7 @@ export default function RecordsTable() {
 			<DataTable
 				data={records}
 				columns={columns}
+				rowNumbers
 				multiple
 				defaultSelected={[]}
 				getRowId={(row) => row.id}

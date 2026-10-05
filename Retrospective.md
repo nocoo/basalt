@@ -114,3 +114,9 @@ After the broad base-scale migration, a final token audit found check-size and m
 ## 2026-10-05: Host spacing also affects numeric line height
 
 The final standalone record-table probe changed host `--spacing` and exposed one remaining dependency: Tailwind `leading-5` grew to 45px, inflating otherwise tokenized 36px rows. Migrate numeric line heights in table, tooltip, popover, code, chat and text controls to explicit Basalt line tokens, and retain a browser assertion that the whole row remains 36px under a foreign host spacing scale.
+
+## 2026-10-05: Reference cards keep application actions explicit
+
+Recommendation and DiffTable references simulated success with local flags. Basalt instead awaits caller-owned actions, prevents duplicate submission and preserves selection on failure. Choosing an alternative removes its row, so focus returns to the surviving Alternatives trigger. Context source metadata is untrusted: only unambiguous HTTP(S) or root-relative links become anchors. Numbered records preserve stable selection IDs independently of display order. Existing exact catalog count fixtures and package source fingerprints must advance with each separately staged component.
+
+- The DiffTable catalog sample initially reused a supplier name containing the legacy library name rejected by the existing copy-pollution gate. Rename only that local catalog fixture, keep the original reference source intact, and rerun the normal hook.

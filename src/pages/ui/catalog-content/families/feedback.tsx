@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
+import { Avatar, AvatarFallback, AvatarInitials } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
 import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";
@@ -1040,6 +1040,22 @@ export default function Example() {
 			api: avatarApi,
 		},
 		examples: [
+			{
+				id: catalogScenarioId("avatar", "colored-initials"),
+				title: "Colored two-letter initials",
+				code: scenarioModule(
+					'<div className="flex items-center gap-basalt-3"><AvatarInitials name="Alpine Churn" colorKey="alpine" size="sm" /><AvatarInitials name="Amber Scoop" colorKey="amber" size="sm" /><AvatarInitials name="Aurora Scoops" colorKey="aurora" /><AvatarInitials name="Zheng Li" initials="ZL" /></div>',
+					['import { AvatarInitials } from "@nocoo/basalt/components/avatar";'],
+				),
+				render: () => (
+					<div className="flex items-center gap-basalt-3">
+						<AvatarInitials name="Alpine Churn" colorKey="alpine" size="sm" />
+						<AvatarInitials name="Amber Scoop" colorKey="amber" size="sm" />
+						<AvatarInitials name="Aurora Scoops" colorKey="aurora" />
+						<AvatarInitials name="Zheng Li" initials="ZL" />
+					</div>
+				),
+			},
 			{
 				id: catalogScenarioId("avatar", "fallback"),
 				title: "Fallback",
