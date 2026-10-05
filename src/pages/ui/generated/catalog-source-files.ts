@@ -110,19 +110,19 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"checkbox": {
 		"file": "packages/basalt/src/components/checkbox.tsx",
-		"hash": "63d4d8f662c0168b",
+		"hash": "6d53ddd738e10a91",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/checkbox.js.map (sourcesContent[0])"
 	},
 	"radio": {
 		"file": "packages/basalt/src/components/radio.tsx",
-		"hash": "a25b9bbcb7153c42",
+		"hash": "501609be91051040",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/radio.js.map (sourcesContent[0])"
 	},
 	"switch": {
 		"file": "packages/basalt/src/components/switch.tsx",
-		"hash": "6535f00f1646918c",
+		"hash": "1faf302eca32d2bb",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/switch.js.map (sourcesContent[0])"
 	},

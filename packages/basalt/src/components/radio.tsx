@@ -65,7 +65,10 @@ const RadioLegend = React.forwardRef<HTMLLegendElement, RadioLegendProps>(
 	({ className, ...props }, ref) => (
 		<legend
 			ref={ref}
-			className={cn("text-sm font-medium text-basalt-foreground", className)}
+			className={cn(
+				"mb-basalt-field-gap text-sm font-medium leading-[var(--basalt-line-body)] text-basalt-foreground",
+				className,
+			)}
 			{...props}
 		/>
 	),

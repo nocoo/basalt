@@ -79,4 +79,13 @@ describe("dimension token contract", () => {
 		for (const match of tailwind.matchAll(/--spacing-basalt-[\w-]+:\s*var\(--(basalt-[\w-]+)\)/g))
 			expect(known.has(match[1]), match[1]).toBe(true);
 	});
+	it("gives native legends their own field gap instead of relying on fieldset flex gap", () => {
+		for (const file of ["radio", "checkbox", "switch"]) {
+			const source = readFileSync(`packages/basalt/src/components/${file}.tsx`, "utf8");
+			expect(source, file).toMatch(/<legend[\s\S]*?className=[^>]*mb-basalt-field-gap/);
+		}
+		expect(standalone).toContain(".mb-basalt-field-gap");
+		const example = readFileSync("src/pages/ui/examples/loader/options.tsx", "utf8");
+		expect(example).not.toMatch(/<Switch.Group[^>]*className/);
+	});
 });

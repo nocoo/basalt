@@ -19,7 +19,7 @@ export default function LoaderOptions() {
 					elapsedDelayMs={options.includes("immediate") ? 0 : 5000}
 				/>
 			</div>
-			<Switch.Group value={options} onValueChange={setOptions} className="flex flex-wrap gap-4">
+			<Switch.Group value={options} onValueChange={setOptions}>
 				<Switch.Legend>Display options</Switch.Legend>
 				<Switch.Item value="label">Label</Switch.Item>
 				<Switch.Item value="elapsed">Elapsed time</Switch.Item>

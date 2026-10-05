@@ -1893,3 +1893,5 @@ Thinking and ToolChips share row padding; disclosures rotate only their own chev
 The standalone build generates every Tailwind utility once in canonical order. Do not append handwritten copies of `.p-0`, `.bg-transparent` or other native utilities after generated axis/state rules: a later shorthand can silently erase semantic padding. Browser acceptance measures actual computed insets in both CSS entrypoints, under foreign host spacing and semantic overrides.
 
 Public Radio, Checkbox, Switch and SegmentControl group roots establish the scoped `.basalt-ui` reset. Fieldsets and legends have no browser-default padding/margin inside that boundary; standalone and Tailwind consumers must have identical group insets. Host form groups outside Basalt remain untouched.
+
+Native form legends do not participate in a fieldset's flex gap. Radio, Checkbox and Switch legends therefore own `margin-bottom: var(--basalt-space-field-gap)` (6px) independently of the group's row layout. Do not replace the semantic legend or add wrapper divs to simulate this spacing. Override the existing field-gap token when a different group density is required.

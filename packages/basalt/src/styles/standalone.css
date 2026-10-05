@@ -1091,6 +1091,9 @@
   .mb-basalt-3 {
     margin-bottom: var(--basalt-space-3);
   }
+  .mb-basalt-field-gap {
+    margin-bottom: var(--basalt-space-field-gap);
+  }
   .-ml-\[calc\(\(var\(--basalt-size-action\)-var\(--basalt-size-icon\)\)\/2\)\] {
     margin-left: calc(calc((var(--basalt-size-action) - var(--basalt-size-icon)) / 2) * -1);
   }

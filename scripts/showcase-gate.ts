@@ -19,6 +19,7 @@ import { assertDiffReview } from "./showcase-diff";
 import { assertDimensionTokens } from "./showcase-dimensions";
 import { assertEditingShowcases } from "./showcase-editing";
 import { assertExamplePages } from "./showcase-examples";
+import { assertFormGroupSpacing } from "./showcase-form-groups";
 import { assertHoverAndDensity } from "./showcase-hover";
 import { assertLandingShowcase } from "./showcase-landing";
 import { assertLibraryShowcases } from "./showcase-library";
@@ -60,6 +61,7 @@ export async function runShowcaseGate() {
 			const loader = await assertLoaderShowcase(page, url);
 			const agent = await assertAgentFeedback(page, url);
 			const alignment = await assertCompositeAlignment(page, url);
+			const formGroups = await assertFormGroupSpacing(page, url);
 			const hover = await assertHoverAndDensity(page, url);
 			const dimensions = await assertDimensionTokens(page, url);
 			const records = await assertRecordGeometry(page, url);
@@ -80,6 +82,7 @@ export async function runShowcaseGate() {
 				loader,
 				agent,
 				alignment,
+				formGroups,
 				hover,
 				dimensions,
 				records,
