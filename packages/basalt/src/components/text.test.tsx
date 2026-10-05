@@ -6,7 +6,7 @@ import { Text } from "./text";
 const SIZE_CLASS = {
 	xs: "text-xs",
 	sm: "text-sm",
-	md: "text-sm leading-6",
+	md: "text-sm leading-[var(--basalt-line-relaxed)]",
 	lg: "text-base",
 	xl: "text-lg",
 } as const;
@@ -18,7 +18,7 @@ describe("Text", () => {
 		const node = screen.getByText("Hello");
 		expect(node.tagName).toBe("P");
 		expect(node.className).toContain("text-sm");
-		expect(node.className).toContain("leading-6");
+		expect(node.className).toContain("leading-[var(--basalt-line-relaxed)]");
 		expect(node.className).not.toContain("font-semibold");
 		expect(node.className).not.toContain("font-mono");
 		expect(ref.current).toBe(node);

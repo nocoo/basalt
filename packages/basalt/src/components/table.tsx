@@ -18,7 +18,7 @@ export const Table = React.forwardRef<
 		data-basalt-table=""
 		className={cn(
 			BASALT_UI_CLASS,
-			"w-full border-separate border-spacing-0 caption-bottom text-left text-[13px] leading-5 text-basalt-foreground",
+			"w-full border-separate border-spacing-0 caption-bottom text-left text-[13px] leading-[var(--basalt-line-body)] text-basalt-foreground",
 			className,
 		)}
 		{...props}

@@ -98,7 +98,7 @@ export function CodeHighlighted({
 			)}
 			{...props}
 		>
-			<code className="font-mono leading-6">{highlight(code)}</code>
+			<code className="font-mono leading-[var(--basalt-line-relaxed)]">{highlight(code)}</code>
 		</pre>
 	);
 }

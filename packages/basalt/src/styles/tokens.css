@@ -1,4 +1,7 @@
 :root {
+	--basalt-line-compact: 1rem;
+	--basalt-line-body: 1.25rem;
+	--basalt-line-relaxed: 1.5rem;
 	--basalt-space-unit: 0.25rem;
 	--basalt-space-0_5: calc(var(--basalt-space-unit) * 0.5);
 	--basalt-space-1: calc(var(--basalt-space-unit) * 1);

@@ -20,7 +20,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"text": {
 		"file": "packages/basalt/src/components/text.tsx",
-		"hash": "953887b4447d41a6",
+		"hash": "bd7f887ac1b77c87",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/text.js.map (sourcesContent[0])"
 	},
@@ -50,7 +50,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"tooltip": {
 		"file": "packages/basalt/src/components/tooltip.tsx",
-		"hash": "ab0e30e115075402",
+		"hash": "fe4346620ce6a70a",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tooltip.js.map (sourcesContent[0])"
 	},
@@ -230,13 +230,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"code": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "15f089447b57c968",
+		"hash": "97c8690331a73333",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
 	"code-block": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "15f089447b57c968",
+		"hash": "97c8690331a73333",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
@@ -272,7 +272,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"popover": {
 		"file": "packages/basalt/src/components/popover.tsx",
-		"hash": "638ec870b79d9e0d",
+		"hash": "47ecdbff2bd3fd85",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/popover.js.map (sourcesContent[0])"
 	},
@@ -314,7 +314,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"table": {
 		"file": "packages/basalt/src/components/table.tsx",
-		"hash": "1b41a9058e5239c5",
+		"hash": "273c04db5bb5a67a",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/table.js.map (sourcesContent[0])"
 	},
@@ -416,7 +416,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"chat-bubble": {
 		"file": "packages/basalt/src/components/chat-bubble.tsx",
-		"hash": "cc360858a79f5e07",
+		"hash": "8f5daeb892f7a76b",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-bubble.js.map (sourcesContent[0])"
 	},

@@ -34,7 +34,7 @@ const textVariants = cva("text-basalt-foreground", {
 		size: {
 			xs: "text-xs",
 			sm: "text-sm",
-			md: "text-sm leading-6",
+			md: "text-sm leading-[var(--basalt-line-relaxed)]",
 			lg: "text-base",
 			xl: "text-lg",
 		},

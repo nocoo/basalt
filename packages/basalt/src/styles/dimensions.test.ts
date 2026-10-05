@@ -26,6 +26,7 @@ describe("dimension token contract", () => {
 		for (const file of readdirSync("packages/basalt/src/components")) {
 			if (!file.endsWith(".tsx") || file.includes(".test.")) continue;
 			const source = readFileSync(`packages/basalt/src/components/${file}`, "utf8");
+			expect(source, file).not.toMatch(/\bleading-[1-9]/);
 			expect(source, file).not.toMatch(
 				/\b(?:p[xytrblse]?|m[xytrblse]?|gap(?:-[xy])?|space-[xy])-(?:[1-9]\d*(?:\.\d+)?|0\.\d+)(?![\w./])/,
 			);

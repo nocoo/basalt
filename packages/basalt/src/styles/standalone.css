@@ -94,6 +94,9 @@
   }
 }
 :root {
+  --basalt-line-compact: 1rem;
+  --basalt-line-body: 1.25rem;
+  --basalt-line-relaxed: 1.5rem;
   --basalt-space-unit: 0.25rem;
   --basalt-space-0_5: calc(var(--basalt-space-unit) * 0.5);
   --basalt-space-1: calc(var(--basalt-space-unit) * 1);
@@ -2173,17 +2176,17 @@
   .text-\[13px\] {
     font-size: 13px;
   }
-  .leading-4 {
-    --tw-leading: calc(var(--spacing) * 4);
-    line-height: calc(var(--spacing) * 4);
+  .leading-\[var\(--basalt-line-body\)\] {
+    --tw-leading: var(--basalt-line-body);
+    line-height: var(--basalt-line-body);
   }
-  .leading-5 {
-    --tw-leading: calc(var(--spacing) * 5);
-    line-height: calc(var(--spacing) * 5);
+  .leading-\[var\(--basalt-line-compact\)\] {
+    --tw-leading: var(--basalt-line-compact);
+    line-height: var(--basalt-line-compact);
   }
-  .leading-6 {
-    --tw-leading: calc(var(--spacing) * 6);
-    line-height: calc(var(--spacing) * 6);
+  .leading-\[var\(--basalt-line-relaxed\)\] {
+    --tw-leading: var(--basalt-line-relaxed);
+    line-height: var(--basalt-line-relaxed);
   }
   .leading-none {
     --tw-leading: 1;

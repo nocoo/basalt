@@ -24,6 +24,15 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 				scroll: node.parentElement?.scrollWidth ?? 0,
 				client: node.parentElement?.clientWidth ?? 0,
 			}));
+			await page.evaluate(() => document.documentElement.style.setProperty("--spacing", "9px"));
+			const foreignRows = await table
+				.locator("tbody tr")
+				.evaluateAll((rows) => rows.map((row) => row.getBoundingClientRect().height));
+			assert.ok(
+				foreignRows.every((height) => height === 36),
+				JSON.stringify(foreignRows),
+			);
+			await page.evaluate(() => document.documentElement.style.removeProperty("--spacing"));
 			assert.ok(
 				geometry.rows.every((height) => height === 36),
 				JSON.stringify(geometry),

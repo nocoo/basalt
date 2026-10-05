@@ -110,3 +110,7 @@ The token migration initially treated fractional positioning (`top-1/2`) as nume
 ## 2026-10-05: Semantic roles must have consumers
 
 After the broad base-scale migration, a final token audit found check-size and menu-row roles declared but not consumed, and Switch thumb travel still used the host scale. Wire roles at their actual leaves and use private steps for travel as well. A semantic token that is merely documented but does not change any component is not an implemented contract. Keep browser tests for host-scale isolation, semantic overrides and scroll containment alongside the structural scan.
+
+## 2026-10-05: Host spacing also affects numeric line height
+
+The final standalone record-table probe changed host `--spacing` and exposed one remaining dependency: Tailwind `leading-5` grew to 45px, inflating otherwise tokenized 36px rows. Migrate numeric line heights in table, tooltip, popover, code, chat and text controls to explicit Basalt line tokens, and retain a browser assertion that the whole row remains 36px under a foreign host spacing scale.

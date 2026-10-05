@@ -50,7 +50,7 @@ export function ChatBubble({
 		<div className={cn(BASALT_UI_CLASS, "flex w-full", user ? "justify-end" : "justify-start")}>
 			<div
 				className={cn(
-					"max-w-[92%] px-basalt-3_5 py-basalt-2 text-sm leading-5 shadow-sm",
+					"max-w-[92%] px-basalt-3_5 py-basalt-2 text-sm leading-[var(--basalt-line-body)] shadow-sm",
 					user
 						? "rounded-2xl rounded-br-md bg-basalt-primary text-basalt-primary-foreground"
 						: "rounded-2xl rounded-bl-md bg-basalt-secondary text-basalt-foreground ring-1 ring-basalt-border/50",

@@ -232,7 +232,10 @@ export const PopoverTitle = React.forwardRef<HTMLHeadingElement, PopoverTitlePro
 	({ className, ...props }, ref) => (
 		<h2
 			ref={ref}
-			className={cn("m-0 text-base font-medium leading-6 text-basalt-foreground", className)}
+			className={cn(
+				"m-0 text-base font-medium leading-[var(--basalt-line-relaxed)] text-basalt-foreground",
+				className,
+			)}
 			{...props}
 		/>
 	),
@@ -245,7 +248,10 @@ export const PopoverDescription = React.forwardRef<HTMLParagraphElement, Popover
 	({ className, ...props }, ref) => (
 		<p
 			ref={ref}
-			className={cn("m-0 text-base leading-6 text-basalt-muted-foreground", className)}
+			className={cn(
+				"m-0 text-base leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground",
+				className,
+			)}
 			{...props}
 		/>
 	),
