@@ -1,12 +1,12 @@
 {
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "2.2.0",
-	"totalModules": 127,
-	"totalSymbols": 761,
-	"totalValues": 400,
-	"totalTypes": 361,
+	"totalModules": 128,
+	"totalSymbols": 765,
+	"totalValues": 401,
+	"totalTypes": 364,
 	"totalCssExports": 3,
-	"totalCatalogEntries": 116,
+	"totalCatalogEntries": 117,
 	"modules": [
 		{
 			"displayName": "AlertDialog",
@@ -13227,6 +13227,150 @@
 				{
 					"name": "DialogFooter",
 					"props": []
+				}
+			]
+		},
+		{
+			"displayName": "DiffTable",
+			"exportName": "DiffTable",
+			"importPath": "@nocoo/basalt/components/diff-table",
+			"subpath": "./components/diff-table",
+			"sourceFile": "packages/basalt/src/components/diff-table.tsx",
+			"sourceHash": "7702f3106dcf0979",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"kind": "catalog-component",
+			"ownerDoc": "src/pages/ui/diff-table",
+			"packageDoc": "ai/registry.json#diff-table",
+			"summary": "DiffTable component documentation and catalog playground",
+			"peers": ["lucide-react", "react"],
+			"optionalPeers": [],
+			"symbols": [
+				{
+					"name": "DiffTable",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/diff-table",
+					"packageDoc": "ai/registry.json#diff-table",
+					"originModule": "@nocoo/basalt/components/diff-table"
+				},
+				{
+					"name": "DiffTableColumn",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/diff-table",
+					"packageDoc": "ai/registry.json#diff-table",
+					"originModule": "@nocoo/basalt/components/diff-table"
+				},
+				{
+					"name": "DiffTableRow",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/diff-table",
+					"packageDoc": "ai/registry.json#diff-table",
+					"originModule": "@nocoo/basalt/components/diff-table"
+				},
+				{
+					"name": "DiffTableProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/diff-table",
+					"packageDoc": "ai/registry.json#diff-table",
+					"originModule": "@nocoo/basalt/components/diff-table"
+				}
+			],
+			"catalogEntries": [
+				{
+					"slug": "diff-table",
+					"name": "DiffTable",
+					"exportName": "DiffTable",
+					"rootAvailable": false,
+					"maturity": "ready",
+					"packageDoc": "ai/registry.json#diff-table",
+					"api": [
+						{
+							"name": "DiffTable",
+							"props": [
+								{
+									"name": "columns",
+									"type": "readonly DiffTableColumn[]",
+									"required": true,
+									"description": "Stable columns and text/number cells."
+								},
+								{
+									"name": "rows",
+									"type": "readonly DiffTableRow[]",
+									"required": true,
+									"description": "Proposed rows; remount with a new key for a different proposal."
+								},
+								{
+									"name": "title",
+									"type": "string",
+									"required": false,
+									"default": "\"Proposed changes\"",
+									"description": "Heading and accessible table name."
+								},
+								{
+									"name": "onApply",
+									"type": "(changes: readonly DiffTableRow[]) => void | Promise<void>",
+									"required": true,
+									"description": "Explicitly apply only selected changes; rejection keeps the selection for retry."
+								},
+								{
+									"name": "disabled",
+									"type": "boolean",
+									"required": false
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false
+								}
+							]
+						}
+					]
+				}
+			],
+			"api": [
+				{
+					"name": "DiffTable",
+					"props": [
+						{
+							"name": "columns",
+							"type": "readonly DiffTableColumn[]",
+							"required": true,
+							"description": "Stable columns and text/number cells."
+						},
+						{
+							"name": "rows",
+							"type": "readonly DiffTableRow[]",
+							"required": true,
+							"description": "Proposed rows; remount with a new key for a different proposal."
+						},
+						{
+							"name": "title",
+							"type": "string",
+							"required": false,
+							"default": "\"Proposed changes\"",
+							"description": "Heading and accessible table name."
+						},
+						{
+							"name": "onApply",
+							"type": "(changes: readonly DiffTableRow[]) => void | Promise<void>",
+							"required": true,
+							"description": "Explicitly apply only selected changes; rejection keeps the selection for retry."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
+							"required": false
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
 				}
 			]
 		},
@@ -37035,6 +37179,59 @@
 						{
 							"name": "onRetry",
 							"type": "() => void",
+							"required": false
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
+						}
+					]
+				}
+			]
+		},
+		{
+			"slug": "diff-table",
+			"name": "DiffTable",
+			"exportName": "DiffTable",
+			"importPath": "@nocoo/basalt/components/diff-table",
+			"sourceFile": "packages/basalt/src/components/diff-table.tsx",
+			"sourceHash": "7702f3106dcf0979",
+			"rootAvailable": false,
+			"maturity": "ready",
+			"packageDoc": "ai/registry.json#diff-table",
+			"api": [
+				{
+					"name": "DiffTable",
+					"props": [
+						{
+							"name": "columns",
+							"type": "readonly DiffTableColumn[]",
+							"required": true,
+							"description": "Stable columns and text/number cells."
+						},
+						{
+							"name": "rows",
+							"type": "readonly DiffTableRow[]",
+							"required": true,
+							"description": "Proposed rows; remount with a new key for a different proposal."
+						},
+						{
+							"name": "title",
+							"type": "string",
+							"required": false,
+							"default": "\"Proposed changes\"",
+							"description": "Heading and accessible table name."
+						},
+						{
+							"name": "onApply",
+							"type": "(changes: readonly DiffTableRow[]) => void | Promise<void>",
+							"required": true,
+							"description": "Explicitly apply only selected changes; rejection keeps the selection for retry."
+						},
+						{
+							"name": "disabled",
+							"type": "boolean",
 							"required": false
 						},
 						{

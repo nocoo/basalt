@@ -540,6 +540,12 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/context-cards.js.map (sourcesContent[0])"
 	},
+	"diff-table": {
+		"file": "packages/basalt/src/components/diff-table.tsx",
+		"hash": "7702f3106dcf0979",
+		"kind": "sourcemap",
+		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/diff-table.js.map (sourcesContent[0])"
+	},
 	"charts": {
 		"file": "packages/basalt/src/charts/charts.tsx",
 		"hash": "70b173545c1ef361",

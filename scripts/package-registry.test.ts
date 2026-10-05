@@ -32,15 +32,15 @@ describe("package registry generator and AI package assets", () => {
 		};
 		expect(registry.packageName).toBe("@nocoo/basalt");
 		expect(registry.packageVersion).toBe(rootPkg.version);
-		expect(registry.totalModules).toBe(127);
-		expect(registry.totalSymbols).toBe(761);
-		expect(registry.totalValues).toBe(400);
-		expect(registry.totalTypes).toBe(361);
+		expect(registry.totalModules).toBe(128);
+		expect(registry.totalSymbols).toBe(765);
+		expect(registry.totalValues).toBe(401);
+		expect(registry.totalTypes).toBe(364);
 		expect(registry.totalCssExports).toBe(3);
-		expect(registry.totalCatalogEntries).toBe(116);
+		expect(registry.totalCatalogEntries).toBe(117);
 
 		// Catalog entries completeness
-		expect(registry.catalogEntries).toHaveLength(116);
+		expect(registry.catalogEntries).toHaveLength(117);
 		for (const cat of registry.catalogEntries) {
 			expect(cat.slug.length).toBeGreaterThan(0);
 			expect(cat.name.length).toBeGreaterThan(0);

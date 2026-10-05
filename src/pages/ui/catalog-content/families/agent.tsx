@@ -4,6 +4,8 @@ import ApprovalDemo from "../../examples/approval-card/default";
 import approvalSource from "../../examples/approval-card/default?raw";
 import ContextCardsDemo from "../../examples/context-cards/default";
 import contextCardsSource from "../../examples/context-cards/default?raw";
+import DiffTableDemo from "../../examples/diff-table/default";
+import diffTableSource from "../../examples/diff-table/default?raw";
 import RecommendationDemo from "../../examples/recommendation-card/default";
 import recommendationSource from "../../examples/recommendation-card/default?raw";
 import ThinkingDemo from "../../examples/thinking/default";
@@ -12,6 +14,7 @@ import ToolChipsDemo from "../../examples/tool-chips/default";
 import toolsSource from "../../examples/tool-chips/default?raw";
 import { API as approvalApi } from "../../generated/catalog-api/approval-card";
 import { API as contextCardsApi } from "../../generated/catalog-api/context-cards";
+import { API as diffTableApi } from "../../generated/catalog-api/diff-table";
 import { API as recommendationApi } from "../../generated/catalog-api/recommendation-card";
 import { API as thinkingApi } from "../../generated/catalog-api/thinking";
 import { API as toolsApi } from "../../generated/catalog-api/tool-chips";
@@ -28,6 +31,24 @@ function standaloneDemo(source: string, tool: boolean) {
 }
 
 export default catalogContentFamily({
+	"diff-table": {
+		docs: {
+			description:
+				"Proposed additions and removals with per-row selection, explicit asynchronous apply and retry. Text labels and checkboxes retain meaning without color; the component never mutates business data.",
+			usage:
+				'import { DiffTable } from "@nocoo/basalt/components/diff-table";\nexport default function Example() { return <DiffTable columns={[{ id: "name", label: "Name" }]} rows={[{ id: "new", label: "Pistachio", change: "add", values: { name: "Pistachio" } }]} onApply={console.log} />; }',
+			variants: [],
+			api: diffTableApi,
+		},
+		examples: [
+			{
+				id: "diff-table-default",
+				title: "Review and apply proposed changes",
+				code: diffTableSource,
+				render: () => <DiffTableDemo />,
+			},
+		],
+	},
 	"context-cards": {
 		docs: {
 			description:

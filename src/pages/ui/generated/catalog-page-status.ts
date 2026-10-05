@@ -90,6 +90,7 @@ export const CATALOG_PAGE_STATUS = {
 	"tool-chips": "ready",
 	"recommendation-card": "ready",
 	"context-cards": "ready",
+	"diff-table": "ready",
 	charts: "ready",
 	"chart-colors": "ready",
 	timeseries: "ready",

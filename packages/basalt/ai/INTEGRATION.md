@@ -1863,3 +1863,7 @@ DataTable uses 13px single-line content, 36px minimum rows, tokenized horizontal
 ### Retrieved context
 
 `ContextCards` (`components/context-cards`) displays caller-owned chunks with stable IDs, title, text, character count and source metadata. The optional total count cannot be smaller than the displayed count; omitted character counts are computed from Unicode code points. Sources without a destination remain non-interactive labels. Only clean root-relative or HTTP(S) URLs without credentials become external links; other schemes and ambiguous URLs are shown as labels, never executed. Loading, empty and retryable error states are explicit. Entrance staggering is CSS-only, capped at 240ms and disabled for reduced motion; no timer delays access to the source links. Source retrieval and authorization belong to the app.
+
+### Proposed tabular changes
+
+`DiffTable` (`components/diff-table`) renders caller-owned text/number rows marked `add`, `remove` or `unchanged`. Changed rows start included and can be toggled by clicking the row or its keyboard-operable Checkbox. Add/remove labels and glyphs carry the meaning independently of tint. `onApply` receives a detached snapshot of only selected changed rows; no data is mutated internally. Pending actions lock selection and duplicate submission; rejection preserves selection with retry feedback. Remount with a new key for a new proposal. Real writes, access checks and validation stay in the application.

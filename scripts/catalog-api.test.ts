@@ -1684,8 +1684,14 @@ describe("catalog API generator contract", () => {
 				propsType: "ContextCardsProps",
 				surface: "ContextCards",
 			},
+			{
+				slug: "diff-table",
+				sourceFile: "packages/basalt/src/components/diff-table.tsx",
+				propsType: "DiffTableProps",
+				surface: "DiffTable",
+			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(255);
+		expect(CATALOG_API_TARGETS).toHaveLength(256);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -1851,6 +1857,7 @@ describe("catalog API generator contract", () => {
 			"tool-chips",
 			"recommendation-card",
 			"context-cards",
+			"diff-table",
 		]);
 		expect(generated.button?.map((prop) => prop.name)).toEqual([
 			"variant",
@@ -3012,6 +3019,7 @@ export interface WidgetProps {
 			badge: ["Badge"],
 			empty: ["Empty"],
 			loader: ["Loader"],
+			"diff-table": ["DiffTable"],
 			"context-cards": ["ContextCards"],
 			"recommendation-card": ["RecommendationCard"],
 			thinking: ["Thinking"],
@@ -3095,7 +3103,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(116);
+		expect(Object.keys(generated)).toHaveLength(117);
 		expect(generated["input-group"]).toEqual([
 			{
 				name: "InputGroup",
@@ -3196,7 +3204,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(116);
+		expect(Object.keys(generated)).toHaveLength(117);
 		expect(generated["sensitive-input"]).toEqual([
 			{
 				name: "SensitiveInput",
@@ -3318,7 +3326,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(116);
+		expect(Object.keys(generated)).toHaveLength(117);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
 			"Checkbox.Group",
@@ -3389,7 +3397,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(116);
+		expect(Object.keys(generated)).toHaveLength(117);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
 			"Radio.Group",
@@ -3432,7 +3440,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(116);
+		expect(Object.keys(generated)).toHaveLength(117);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
 			"Switch.Group",
@@ -3484,7 +3492,7 @@ export interface WidgetProps {
 			tsconfigPath: DEFAULT_TSCONFIG,
 			targets: CATALOG_API_TARGETS,
 		});
-		expect(Object.keys(generated)).toHaveLength(116);
+		expect(Object.keys(generated)).toHaveLength(117);
 		expect(generated.select).toEqual([
 			{
 				name: "Select",
@@ -4823,8 +4831,8 @@ export interface WidgetProps {
 			.filter((relative) => relative.startsWith(`${GENERATED_SHARD_DIR}/`))
 			.map((relative) => path.basename(relative, ".ts"))
 			.sort();
-		expect(slugs).toHaveLength(116);
-		expect(Object.keys(first)).toHaveLength(117);
+		expect(slugs).toHaveLength(117);
+		expect(Object.keys(first)).toHaveLength(118);
 		expect(first[GENERATED_RELATIVE_PATH]).toContain('from "./catalog-api/button"');
 		expect(first[GENERATED_RELATIVE_PATH]).not.toContain('name: "Button"');
 		const joined = slugs.map((slug) => first[catalogApiShardRelativePath(slug)] ?? "").join("\n");
@@ -4904,7 +4912,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"b2207bf7e3107bc61f017da30396b6dddfb18f60a3ab4556018a83d5d29ce67b",
+			"60791e1624554e5da4c58f1cf8474d7b7c1f2ddab2f84d38c6c6bb338a34d630",
 		);
 	}, 60_000);
 

@@ -1613,6 +1613,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		propsType: "ContextCardsProps",
 		surface: "ContextCards",
 	},
+	{
+		slug: "diff-table",
+		sourceFile: "packages/basalt/src/components/diff-table.tsx",
+		propsType: "DiffTableProps",
+		surface: "DiffTable",
+	},
 ];
 
 export const DEFAULT_TSCONFIG = "tsconfig.catalog-api.json";

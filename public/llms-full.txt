@@ -36,6 +36,7 @@ Each URL below is a public documentation surface.
 - [Date Picker](https://basaltui.com/ui/date-picker)
 - [Description List](https://basaltui.com/ui/description-list)
 - [Dialog](https://basaltui.com/ui/dialog)
+- [DiffTable](https://basaltui.com/ui/diff-table)
 - [Dock](https://basaltui.com/ui/dock)
 - [Dropdown](https://basaltui.com/ui/dropdown-menu)
 - [Editable Navigation](https://basaltui.com/ui/editable-nav-item)

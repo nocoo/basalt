@@ -38,6 +38,7 @@ export const CATALOG_CONTENT_FAMILY = {
 	"delete-resource": "data-layout",
 	"description-list": "data-layout",
 	dialog: "overlay",
+	"diff-table": "agent",
 	dock: "chat",
 	donut: "charts",
 	"dropdown-menu": "overlay",

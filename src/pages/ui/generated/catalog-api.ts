@@ -37,6 +37,7 @@ import { API as datePickerApi } from "./catalog-api/date-picker";
 import { API as deleteResourceApi } from "./catalog-api/delete-resource";
 import { API as descriptionListApi } from "./catalog-api/description-list";
 import { API as dialogApi } from "./catalog-api/dialog";
+import { API as diffTableApi } from "./catalog-api/diff-table";
 import { API as dockApi } from "./catalog-api/dock";
 import { API as donutApi } from "./catalog-api/donut";
 import { API as dropdownMenuApi } from "./catalog-api/dropdown-menu";
@@ -155,6 +156,7 @@ export const CATALOG_API = {
 	"delete-resource": deleteResourceApi,
 	"description-list": descriptionListApi,
 	dialog: dialogApi,
+	"diff-table": diffTableApi,
 	dock: dockApi,
 	donut: donutApi,
 	"dropdown-menu": dropdownMenuApi,

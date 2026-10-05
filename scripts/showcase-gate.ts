@@ -13,6 +13,7 @@ import { prerenderHtml } from "./prerender";
 import { assertAgentFeedback } from "./showcase-agent";
 import { assertCommandSelection } from "./showcase-command";
 import { assertContextCards } from "./showcase-context";
+import { assertDiffReview } from "./showcase-diff";
 import { assertDimensionTokens } from "./showcase-dimensions";
 import { assertEditingShowcases } from "./showcase-editing";
 import { assertExamplePages } from "./showcase-examples";
@@ -60,6 +61,7 @@ export async function runShowcaseGate() {
 			const dimensions = await assertDimensionTokens(page, url);
 			const records = await assertRecordGeometry(page, url);
 			const recommendation = await assertRecommendation(page, url);
+			const diffReview = await assertDiffReview(page, url);
 			const context = await assertContextCards(page, url);
 			const examples = await assertExamplePages(page, url);
 			const reusable = await assertReusableShowcases(page, url);
@@ -77,6 +79,7 @@ export async function runShowcaseGate() {
 				dimensions,
 				records,
 				recommendation,
+				diffReview,
 				context,
 				examples,
 				reusable,

@@ -2,10 +2,10 @@
 // biome-ignore format: generated deterministic pure-data manifest
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.2.0",
-	"totalModules": 127,
-	"totalSymbols": 761,
-	"totalValues": 400,
-	"totalTypes": 361,
+	"totalModules": 128,
+	"totalSymbols": 765,
+	"totalValues": 401,
+	"totalTypes": 364,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -3913,6 +3913,48 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"ownerDoc": "src/pages/ui/dialog",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/dialog"
+				}
+			]
+		},
+		{
+			"subpath": "./components/diff-table",
+			"importPath": "@nocoo/basalt/components/diff-table",
+			"sourceFile": "packages/basalt/src/components/diff-table.tsx",
+			"ownerDoc": "src/pages/ui/diff-table",
+			"ownerKind": "catalog-component",
+			"summary": "DiffTable component documentation and catalog playground",
+			"symbols": [
+				{
+					"name": "DiffTable",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/diff-table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/diff-table"
+				},
+				{
+					"name": "DiffTableColumn",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/diff-table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/diff-table"
+				},
+				{
+					"name": "DiffTableRow",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/diff-table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/diff-table"
+				},
+				{
+					"name": "DiffTableProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/diff-table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/diff-table"
 				}
 			]
 		},

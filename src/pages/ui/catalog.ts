@@ -853,6 +853,15 @@ export const CATALOG: CatalogEntry[] = [
 		category: "component",
 	},
 	{
+		slug: "diff-table",
+		name: "DiffTable",
+		exportName: "DiffTable",
+		importPath: "@nocoo/basalt/components/diff-table",
+		hasRootBarrel: false,
+		kind: "catalog",
+		category: "component",
+	},
+	{
 		slug: "charts",
 		name: "Charts",
 		exportName: "Charts",

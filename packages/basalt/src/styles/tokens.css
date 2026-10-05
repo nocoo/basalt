@@ -345,6 +345,22 @@
 	background: var(--basalt-zebra-fill);
 }
 
+[data-basalt-table]
+	tbody
+	tr[data-diff-change="remove"][data-included="true"][aria-selected="true"]
+	td {
+	background: hsl(var(--basalt-danger-tint));
+	color: hsl(var(--basalt-danger));
+}
+
+[data-basalt-table]
+	tbody
+	tr[data-diff-change="add"][data-included="true"][aria-selected="true"]
+	td {
+	background: hsl(var(--basalt-info-tint));
+	color: hsl(var(--basalt-info));
+}
+
 @layer components {
 	.basalt-hover-list {
 		position: relative;
