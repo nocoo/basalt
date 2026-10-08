@@ -255,6 +255,16 @@ writes did not exercise wheel handoff. Contain X only, leave Y automatic, and ke
 native wheel/touch behavior. Test unbounded code plus bounded code at both vertical
 edges in Tailwind and standalone; do not solve this with per-panel wheel handlers.
 
+## 2026-10-06: A persistent layout also persists scroll position
+
+DashboardLayout kept the same ContentIsland while Outlet changed pages, so a newly
+selected page inherited the previous page's vertical position. Reset at the leaf
+route commit inside Suspense, not on a sidebar click or by remounting the shell.
+This also handles programmatic and history navigation and delayed page content.
+Preserve same-page filters, local interactions and sidebar position; valid fragments
+take precedence and use the existing sticky-directory measurement. The policy is
+application-owned, rather than a new library prop or wheel/scroll listener.
+
 ## 2026-10-06: Selection is not a darker surface or a moving hover target
 
 Sharing accent between decoration, hover and selection made selected light-theme
@@ -295,12 +305,38 @@ disclose nonzero line scales and the actual observation window. Do not clip
 interactive chart tooltips with the card surface. Structural tests and builds
 cannot replace browser geometry and visual review; report missing evidence.
 
-## 2026-10-06: A persistent layout also persists scroll position
+## 2026-10-08: Measure effective page insets before normalizing wrappers
 
-DashboardLayout kept the same ContentIsland while Outlet changed pages, so a newly
-selected page inherited the previous page's vertical position. Reset at the leaf
-route commit inside Suspense, not on a sidebar click or by remounting the shell.
-This also handles programmatic and history navigation and delayed page content.
-Preserve same-page filters, local interactions and sidebar position; valid fragments
-take precedence and use the existing sticky-directory measurement. The policy is
-application-owned, rather than a new library prop or wheel/scroll listener.
+The shared page-template refactor removed duplicate documentation padding and
+replaced its document heading with PageHeader in the same change. At 1440px,
+the button documentation title moved from 52px to 16px inside the island's left
+edge and from 60px to 16px below its top; title/description sizes fell from
+36/18px to 24/14px. The island itself became wider. Structural consistency did
+not preserve the previous visual density. Compare composed browser geometry,
+not individual token values, before changing both spacing ownership and type.
+
+Removing the remaining catalog scenery preserved the existing opening geometry
+and landing artwork. The first browser assertion incorrectly treated any ridge
+image request as a remaining header background: development HTML initially
+contains the prerendered landing page. Verify the committed route's DOM and
+computed paint instead. For historical comparisons, link both root and package
+dependencies before starting Vite; failed initial resolution can remain cached
+until the isolated server restarts.
+
+## 2026-10-08: Atomic migrations need matching contract tests
+
+Splitting a large uncommitted design migration exposed source-shape tests that
+belonged with the package changes, not the later catalog migration. Stage API
+inventory counts, native-surface ownership, CSS selectors and consumer assertions
+with the component that changes them; regenerate metadata from each exact staged
+snapshot. The full gate caught stale assertions rather than a reason to bypass it.
+Use complete selected test files: name filtering creates skipped tests and is
+rejected by this repository's reporter. Keep temporary snapshot paths explicit
+when running commands across several directories.
+
+High host load exposed repeated full TypeScript programs and whole-page visibility
+queries in contract tests. Reuse the immutable production API within one suite,
+retain the independent second generation, and scope DOM queries to their region.
+Keep the original timeout and coverage requirements rather than increasing them.
+Chart resize checks must await the actual SVG dimensions after changing root font
+size; measuring before ResizeObserver commits reports a transient overflow.

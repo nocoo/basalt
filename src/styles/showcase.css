@@ -1,11 +1,5 @@
-/* Site-only scenery. Page headings share the content grid and its surface colors. */
 .showcase-header {
-	/* Share the island boundary rather than compensating per page. */
 	--showcase-inset: var(--basalt-space-layout-sm);
-	--showcase-image: url("/landing/ridge-light.webp");
-	--showcase-fade: 4.75rem;
-	position: relative;
-	isolation: isolate;
 	min-width: 0;
 	container-type: inline-size;
 	display: flex;
@@ -15,34 +9,6 @@
 	margin-top: calc(-1 * var(--showcase-inset));
 	margin-inline: calc(-1 * var(--showcase-inset));
 	padding: var(--basalt-space-lg) var(--showcase-inset) var(--basalt-space-lg);
-}
-
-.dark .showcase-header {
-	--showcase-image: url("/landing/ridge.webp");
-}
-
-.showcase-header-landscape {
-	position: absolute;
-	z-index: -1;
-	inset: 0;
-	background-image:
-		linear-gradient(
-			100deg,
-			hsl(var(--basalt-card)) 4%,
-			hsl(var(--basalt-card) / 0.94) 24%,
-			hsl(var(--basalt-card) / 0.3) 64%,
-			hsl(var(--basalt-card) / 0.08)
-		),
-		var(--showcase-image);
-	background-position: center 18%;
-	background-size: cover;
-	/* A fixed fade keeps longer descriptions below the scenery when they wrap. */
-	mask-image: linear-gradient(
-		var(--basalt-scene-mask),
-		var(--basalt-scene-mask-soft) 1.5rem,
-		transparent var(--showcase-fade)
-	);
-	pointer-events: none;
 }
 
 .showcase-header-content {
@@ -63,7 +29,6 @@
 }
 
 .showcase-header[data-variant="library"] {
-	--showcase-fade: 8.5rem;
 	min-height: 13.25rem;
 	padding-top: var(--basalt-space-lg);
 	padding-bottom: var(--basalt-space-lg);
@@ -91,10 +56,6 @@
 }
 
 @container (max-width: 40rem) {
-	/* Let the scene fade above copy that wraps across a narrow content island. */
-	.showcase-header[data-variant="library"] :where(.showcase-header-landscape) {
-		--showcase-fade: 6rem;
-	}
 	.showcase-header :where(h1),
 	.showcase-header[data-variant="library"] :where(h1) {
 		font-size: var(--basalt-text-4xl);
