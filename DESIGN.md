@@ -60,6 +60,10 @@ uses 12px content separation for compact labels and 16px for reading headings. `
 and semantic utilities such as `gap-basalt-layout-xl` select these tiers.
 There is no universal height for either category.
 
+Dialog and AlertDialog panels use 16px outer insets on mobile and 24px from
+640px. Their buttons and fields retain compact control spacing. Sheets and
+small floating menus have separate inset contracts.
+
 Metric cards use the shared `StatCard`, not a hand-built Header/Body split. A single
 16px inset owns the title, value, comparison and supporting chart; 12px separates
 the heading, metric and content groups, and 4px separates value/supporting text.

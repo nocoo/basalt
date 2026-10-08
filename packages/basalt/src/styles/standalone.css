@@ -3460,6 +3460,9 @@
     .sm\:justify-end {
       justify-content: flex-end;
     }
+    .sm\:p-basalt-card-lg {
+      padding: var(--basalt-space-card-lg);
+    }
   }
   @media (width >= 48rem) {
     .md\:block {

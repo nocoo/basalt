@@ -116,5 +116,17 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 		"Long source paths wrap at 200% text size",
 	);
 	await page.evaluate(() => document.documentElement.style.removeProperty("font-size"));
+	for (const width of [390, 1440]) {
+		await page.setViewportSize({ width, height: 1000 });
+		await page.goto(`${baseUrl}/interactions`);
+		await page.getByRole("button", { name: /Send Feedback/ }).click();
+		const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+		assert.equal(
+			await dialog.evaluate((node) => getComputedStyle(node).padding),
+			width < 640 ? "16px" : "24px",
+		);
+		await page.keyboard.press("Escape");
+		await dialog.waitFor({ state: "hidden" });
+	}
 	return { cases, compactActions: 34, standalone: true, collapsedRail: true };
 }

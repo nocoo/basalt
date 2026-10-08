@@ -52,7 +52,8 @@ describe("Dialog", () => {
 		expect(classes).toContain("motion-reduce:animate-none");
 		expect(classes).toContain("z-50");
 		expect(classes).toContain("overflow-y-auto");
-		expect(classes).toContain("p-basalt-overlay");
+		expect(classes).toContain("p-basalt-card");
+		expect(classes).toContain("sm:p-basalt-card-lg");
 		expect(classes).not.toContain("p-basalt-space-lg");
 		expect(classes).not.toContain("overflow-hidden");
 		expect(classes).not.toContain("top-8");

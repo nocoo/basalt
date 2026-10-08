@@ -381,3 +381,11 @@ was 24px. Center alignment exposed the shorter intrinsic line box. Stretch the
 split group's children instead of adding fixed heights. Check equal heights and
 shared split-button edges in both themes and at enlarged text sizes; neighboring
 actions can legitimately wrap onto different rows on narrow screens.
+
+## 2026-10-08: Modal panels are not compact controls
+
+The dialog panel consumed an overlay alias tied to the 8px control scale, leaving
+forms too close to the surface edge. Give modal panels responsive card-scale
+insets, without enlarging the alias shared by sheets or changing control tokens.
+Measure the composed panel rather than accepting a semantic utility name as proof
+of the correct spacing role.
