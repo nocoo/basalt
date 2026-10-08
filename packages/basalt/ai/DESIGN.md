@@ -302,7 +302,10 @@ public prop, not caller border/radius/padding overrides. Sticky placement wrappe
 own only position; their panel owns its background and inset.
 
 Landing, login, loading, error, static documents and full-page layout recipes keep
-their independent root contracts; do not apply dashboard chrome to them. Explicit
+their independent root contracts; do not apply dashboard chrome to them. The landing
+route additionally owns its marketing spacing, radius and display type scale, which
+the compact global tiers cannot express; its CSS is exempt from those token rules and
+keeps motion tokens only. Explicit
 specialist controls remain in the palette demos: color swatches and native color
 pickers display the colors being edited. Hidden file inputs and theme-preview
 radio inputs preserve native form behavior. These exceptions are not permission
@@ -312,7 +315,8 @@ to recreate ordinary actions, selects or inputs.
 
 `bun run design:check` scans library components/helpers and catalog examples,
 including CSS, for raw spacing/type/radius/motion values, fixed action overrides
-and inline design repairs. It derives dashboard page requirements from App routes
+and inline design repairs. The landing route's own CSS is exempt from the spacing,
+radius and type rules and still keeps motion tokens. It derives dashboard page requirements from App routes
 and checks template ownership, duplicate slot spacing, recreated card surfaces,
 ordinary native controls in pages and page-level control padding overrides.
 It rejects compact control padding on content panels, raw application disclosures,

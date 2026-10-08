@@ -67,6 +67,19 @@ describe("design audit rules (without scanning the repository)", () => {
 			),
 		).toEqual([{ file: "DESIGN.md", rule: "component-category", value: "new-control" }]);
 	});
+	it("exempts the landing route CSS from spacing, radius and type tokens only", () => {
+		const source =
+			".landing-hero { padding: clamp(152px, 13vw, 196px); font-size: 94px; border-radius: 1.25rem; transition: all 200ms; }";
+		expect(auditDesignCss("src/styles/landing.css", source).map((issue) => issue.rule)).toEqual([
+			"motion-token",
+		]);
+		expect(auditDesignCss("src/styles/other.css", source).map((issue) => issue.rule)).toEqual([
+			"spacing-token",
+			"type-token",
+			"radius-token",
+			"motion-token",
+		]);
+	});
 	it("allows all card and layout tiers without widening the control scale", () => {
 		expect(
 			auditDesignSource(

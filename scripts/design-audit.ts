@@ -244,18 +244,23 @@ export function dashboardPageFiles(source: string): string[] {
 
 export function auditDesignCss(file: string, source: string): DesignIssue[] {
 	const issues: DesignIssue[] = [];
+	// The landing route owns its marketing scale; the compact global spacing, radius and type
+	// tiers cannot express a display page, so only its motion values stay token-bound.
+	const landingRoute = file === "src/styles/landing.css";
 	postcss.parse(source, { from: file }).walkDecls((declaration) => {
 		const { prop, value } = declaration;
 		if (prop.startsWith("--")) return;
 		const withoutTokens = value.replace(/var\([^)]*\)/g, "token");
 		let rule = "";
 		if (
+			!landingRoute &&
 			/^(?:padding|margin|gap|row-gap|column-gap)(?:-|$)/.test(prop) &&
 			/(?:\d*\.)?[1-9]\d*(?:px|rem|em)\b/.test(withoutTokens)
 		)
 			rule = "spacing-token";
-		if (/^border(?:-\w+)*-radius$/.test(prop) && /\d/.test(withoutTokens)) rule = "radius-token";
-		if (prop === "font-size" && /\d/.test(withoutTokens)) rule = "type-token";
+		if (!landingRoute && /^border(?:-\w+)*-radius$/.test(prop) && /\d/.test(withoutTokens))
+			rule = "radius-token";
+		if (!landingRoute && prop === "font-size" && /\d/.test(withoutTokens)) rule = "type-token";
 		if (
 			/^(?:transition|animation)(?:-|$)/.test(prop) &&
 			/\b\d+(?:\.\d+)?ms\b|\ball\b/.test(withoutTokens)
