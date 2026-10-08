@@ -211,6 +211,7 @@
 	--color-basalt-chart-22: hsl(var(--basalt-chart-22));
 	--color-basalt-chart-23: hsl(var(--basalt-chart-23));
 	--color-basalt-chart-24: hsl(var(--basalt-chart-24));
+	--color-basalt-badge-green: hsl(var(--basalt-badge-green));
 	--color-basalt-badge-green-foreground: hsl(var(--basalt-badge-green-foreground));
 	--color-basalt-badge-teal: hsl(var(--basalt-badge-teal));
 	--color-basalt-badge-purple: hsl(var(--basalt-badge-purple));

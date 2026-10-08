@@ -5,41 +5,50 @@ import { describe, expect, it } from "vitest";
 
 const tokens = readFileSync(path.join("packages/basalt/src/styles/tokens.css"), "utf8");
 const tailwind = readFileSync(path.join("packages/basalt/src/styles/tailwind.css"), "utf8");
+const themeSelectors = ['[data-mode="light"]', '[data-mode="dark"]'];
+
+function tokenValues(selector: string) {
+	const values = new Map<string, string>();
+	postcss.parse(tokens).walkRules((rule) => {
+		if (rule.selectors.includes(selector))
+			rule.walkDecls((declaration) => {
+				values.set(declaration.prop, declaration.value);
+			});
+	});
+	return values;
+}
+
+function luminance(values: Map<string, string>, name: string): number {
+	const value = values.get(`--basalt-${name}`) ?? "";
+	const alias = /^var\(--basalt-(.+)\)$/.exec(value);
+	if (alias) return luminance(values, alias[1]);
+	const [hue, saturation, lightness] = value.match(/[\d.]+/g)?.map(Number) ?? [];
+	const light = lightness / 100;
+	const amplitude = (saturation / 100) * Math.min(light, 1 - light);
+	return [0, 8, 4].reduce((sum, offset, index) => {
+		const step = (offset + hue / 30) % 12;
+		const channel = light - amplitude * Math.max(-1, Math.min(step - 3, 9 - step, 1));
+		const linear = channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+		return sum + linear * [0.2126, 0.7152, 0.0722][index];
+	}, 0);
+}
+
+function contrast(values: Map<string, string>, fill: string, foreground: string) {
+	const a = luminance(values, fill);
+	const b = luminance(values, foreground);
+	return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+}
 
 describe("nested surface CSS", () => {
 	it("raises neutral selection above every surface without sacrificing text contrast", () => {
-		const css = postcss.parse(tokens);
-		for (const selector of ['[data-mode="light"]', '[data-mode="dark"]']) {
-			const values = new Map<string, string>();
-			css.walkRules((rule) => {
-				if (rule.selectors.includes(selector))
-					rule.walkDecls((declaration) => {
-						values.set(declaration.prop, declaration.value);
-					});
-			});
-			const luminance = (name: string): number => {
-				const value = values.get(`--basalt-${name}`) ?? "";
-				const alias = /^var\(--basalt-(.+)\)$/.exec(value);
-				if (alias) return luminance(alias[1]);
-				const [hue, saturation, lightness] = value.match(/[\d.]+/g)?.map(Number) ?? [];
-				const light = lightness / 100;
-				const amplitude = (saturation / 100) * Math.min(light, 1 - light);
-				return [0, 8, 4].reduce((sum, offset, index) => {
-					const step = (offset + hue / 30) % 12;
-					const channel = light - amplitude * Math.max(-1, Math.min(step - 3, 9 - step, 1));
-					const linear = channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
-					return sum + linear * [0.2126, 0.7152, 0.0722][index];
-				}, 0);
-			};
-			const selected = luminance("selected");
+		for (const selector of themeSelectors) {
+			const values = tokenValues(selector);
+			const selected = luminance(values, "selected");
 			for (const surface of ["background", "card", "secondary", "bright", "popover"]) {
-				expect(selected).toBeGreaterThanOrEqual(luminance(surface));
+				expect(selected).toBeGreaterThanOrEqual(luminance(values, surface));
 			}
 			for (const foreground of ["selected-foreground", "muted-foreground"]) {
-				const text = luminance(foreground);
-				expect(
-					(Math.max(text, selected) + 0.05) / (Math.min(text, selected) + 0.05),
-				).toBeGreaterThanOrEqual(4.5);
+				expect(contrast(values, "selected", foreground)).toBeGreaterThanOrEqual(4.5);
 			}
 		}
 	});
@@ -118,10 +127,23 @@ describe("nested surface CSS", () => {
 		expect(tailwind).toContain("--color-basalt-control: var(--basalt-control-fill);");
 	});
 
-	it("keeps solid color badge foreground tokens white", () => {
-		expect(tokens.match(/--basalt-badge-green-foreground: 0 0% 100%;/g)).toHaveLength(2);
-		expect(tokens.match(/--basalt-badge-teal-foreground: 0 0% 100%;/g)).toHaveLength(2);
-		expect(tokens.match(/--basalt-badge-purple-foreground: 0 0% 100%;/g)).toHaveLength(2);
-		expect(tokens).not.toContain("--basalt-badge-green-foreground: 0 0% 10%");
+	it("pairs every solid badge fill with a foreground above the 4.5:1 text threshold", () => {
+		for (const selector of themeSelectors) {
+			const values = tokenValues(selector);
+			for (const [fill, foreground] of [
+				["primary", "primary-foreground"],
+				["destructive", "destructive-foreground"],
+				["info", "info-foreground"],
+				["warning", "warning-foreground"],
+				["danger", "danger-foreground"],
+				["badge-green", "badge-green-foreground"],
+				["badge-teal", "badge-teal-foreground"],
+				["badge-purple", "badge-purple-foreground"],
+			] as const) {
+				expect(contrast(values, fill, foreground), `${selector} ${fill}`).toBeGreaterThanOrEqual(
+					4.5,
+				);
+			}
+		}
 	});
 });

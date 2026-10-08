@@ -233,9 +233,10 @@
 	--basalt-accent-10: 280 53% 71%;
 	--basalt-accent-11: 237 66% 69%;
 	--basalt-accent-12: 210 20% 87%;
+	--basalt-badge-green: 113 60% 30%;
 	--basalt-badge-green-foreground: 0 0% 100%;
-	--basalt-badge-teal: var(--basalt-accent-3);
-	--basalt-badge-purple: var(--basalt-accent-10);
+	--basalt-badge-teal: 182 62% 30%;
+	--basalt-badge-purple: 280 53% 40%;
 	--basalt-badge-teal-foreground: 0 0% 100%;
 	--basalt-badge-purple-foreground: 0 0% 100%;
 	--basalt-chart-axis: 0 0% 40%;
@@ -286,11 +287,12 @@
 	--basalt-danger-tint: 0 40% 16%;
 	--basalt-info-foreground: 0 0% 10%;
 	--basalt-warning-foreground: 0 0% 10%;
-	--basalt-badge-green-foreground: 0 0% 100%;
+	--basalt-badge-green: 113 55% 62%;
+	--basalt-badge-green-foreground: 0 0% 10%;
 	--basalt-badge-teal: var(--basalt-accent-3);
 	--basalt-badge-purple: var(--basalt-accent-10);
-	--basalt-badge-teal-foreground: 0 0% 100%;
-	--basalt-badge-purple-foreground: 0 0% 100%;
+	--basalt-badge-teal-foreground: 0 0% 10%;
+	--basalt-badge-purple-foreground: 0 0% 10%;
 	--basalt-border: 0 0% 16%;
 	--basalt-input: 0 0% 18%;
 	--basalt-ring: var(--basalt-primary);

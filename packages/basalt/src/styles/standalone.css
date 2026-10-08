@@ -262,9 +262,10 @@
   --basalt-accent-10: 280 53% 71%;
   --basalt-accent-11: 237 66% 69%;
   --basalt-accent-12: 210 20% 87%;
+  --basalt-badge-green: 113 60% 30%;
   --basalt-badge-green-foreground: 0 0% 100%;
-  --basalt-badge-teal: var(--basalt-accent-3);
-  --basalt-badge-purple: var(--basalt-accent-10);
+  --basalt-badge-teal: 182 62% 30%;
+  --basalt-badge-purple: 280 53% 40%;
   --basalt-badge-teal-foreground: 0 0% 100%;
   --basalt-badge-purple-foreground: 0 0% 100%;
   --basalt-chart-axis: 0 0% 40%;
@@ -313,11 +314,12 @@
   --basalt-danger-tint: 0 40% 16%;
   --basalt-info-foreground: 0 0% 10%;
   --basalt-warning-foreground: 0 0% 10%;
-  --basalt-badge-green-foreground: 0 0% 100%;
+  --basalt-badge-green: 113 55% 62%;
+  --basalt-badge-green-foreground: 0 0% 10%;
   --basalt-badge-teal: var(--basalt-accent-3);
   --basalt-badge-purple: var(--basalt-accent-10);
-  --basalt-badge-teal-foreground: 0 0% 100%;
-  --basalt-badge-purple-foreground: 0 0% 100%;
+  --basalt-badge-teal-foreground: 0 0% 10%;
+  --basalt-badge-purple-foreground: 0 0% 10%;
   --basalt-border: 0 0% 16%;
   --basalt-input: 0 0% 18%;
   --basalt-ring: var(--basalt-primary);
@@ -2352,6 +2354,9 @@
   .bg-basalt-background {
     background-color: hsl(var(--basalt-background));
   }
+  .bg-basalt-badge-green {
+    background-color: hsl(var(--basalt-badge-green));
+  }
   .bg-basalt-badge-purple {
     background-color: hsl(var(--basalt-badge-purple));
   }
@@ -2387,9 +2392,6 @@
   }
   .bg-basalt-heatmap-green-1 {
     background-color: hsl(var(--basalt-heatmap-green-1));
-  }
-  .bg-basalt-heatmap-green-3 {
-    background-color: hsl(var(--basalt-heatmap-green-3));
   }
   .bg-basalt-info {
     background-color: hsl(var(--basalt-info));
@@ -2844,6 +2846,15 @@
   .whitespace-pre-wrap {
     white-space: pre-wrap;
   }
+  .text-basalt-badge-green-foreground {
+    color: hsl(var(--basalt-badge-green-foreground));
+  }
+  .text-basalt-badge-purple-foreground {
+    color: hsl(var(--basalt-badge-purple-foreground));
+  }
+  .text-basalt-badge-teal-foreground {
+    color: hsl(var(--basalt-badge-teal-foreground));
+  }
   .text-basalt-card-foreground {
     color: hsl(var(--basalt-card-foreground));
   }
@@ -2856,6 +2867,9 @@
   .text-basalt-danger {
     color: hsl(var(--basalt-danger));
   }
+  .text-basalt-danger-foreground {
+    color: hsl(var(--basalt-danger-foreground));
+  }
   .text-basalt-destructive {
     color: hsl(var(--basalt-destructive));
   }
@@ -2867,6 +2881,9 @@
   }
   .text-basalt-info {
     color: hsl(var(--basalt-info));
+  }
+  .text-basalt-info-foreground {
+    color: hsl(var(--basalt-info-foreground));
   }
   .text-basalt-muted-foreground {
     color: hsl(var(--basalt-muted-foreground));
@@ -2921,6 +2938,9 @@
   }
   .text-basalt-warning {
     color: hsl(var(--basalt-warning));
+  }
+  .text-basalt-warning-foreground {
+    color: hsl(var(--basalt-warning-foreground));
   }
   .text-current {
     color: currentcolor;

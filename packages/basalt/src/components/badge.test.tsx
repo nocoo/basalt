@@ -21,17 +21,18 @@ describe("Badge", () => {
 		expect(screen.getByText("Purple").className).toContain("bg-basalt-badge-purple");
 	});
 
-	it("keeps solid color badge labels white", () => {
-		for (const [variant, label] of [
-			["success", "Ready"],
-			["red", "Red"],
-			["orange", "Orange"],
-			["teal", "Teal"],
-			["blue", "Blue"],
-			["purple", "Purple"],
+	it("uses the paired foreground tokens for solid color badges", () => {
+		for (const [variant, label, foreground] of [
+			["success", "Ready", "badge-green-foreground"],
+			["red", "Red", "danger-foreground"],
+			["orange", "Orange", "warning-foreground"],
+			["teal", "Teal", "badge-teal-foreground"],
+			["blue", "Blue", "info-foreground"],
+			["purple", "Purple", "badge-purple-foreground"],
 		] as const) {
 			render(<Badge variant={variant}>{label}</Badge>);
-			expect(screen.getByText(label).className).toContain("text-basalt-on-solid");
+			expect(screen.getByText(label).className).toContain(`text-basalt-${foreground}`);
+			expect(screen.getByText(label).className).not.toContain("text-basalt-on-solid");
 		}
 	});
 
