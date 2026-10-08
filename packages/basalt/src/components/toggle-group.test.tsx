@@ -60,9 +60,9 @@ describe("ToggleGroup", () => {
 		expect(group.className).toContain("bg-basalt-muted");
 		expect(screen.getByText("Live")).toHaveClass("leading-[var(--basalt-line-body)]");
 		expect(screen.getByText("Live").className).toContain(
-			"aria-checked:text-basalt-selected-foreground",
+			"aria-checked:text-basalt-primary-foreground",
 		);
-		expect(screen.getByText("Live").className).not.toContain("aria-pressed:bg-basalt-selected");
+		expect(screen.getByText("Live").className).not.toContain("aria-pressed:bg-basalt-primary");
 	});
 
 	it("puts a sliding indicator behind the selected single item", () => {
@@ -76,7 +76,7 @@ describe("ToggleGroup", () => {
 		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
 		expect(indicator).toBeTruthy();
 		expect(container.firstChild?.firstChild).toBe(indicator);
-		expect(indicator.className).toContain("bg-basalt-selected");
+		expect(indicator.className).toContain("bg-basalt-primary");
 		expect(indicator.className).not.toContain("border");
 		expect(indicator.style.transform).toBe("translate(4px, 2px)");
 		expect(indicator.style.width).toBe("42px");
@@ -208,7 +208,7 @@ describe("ToggleGroup", () => {
 		expect(container.querySelector('[data-slot="selection-indicator"]')).toBeNull();
 		expect(screen.getByText("Live")).toHaveAttribute("data-state", "on");
 		expect(screen.getByText("Mock")).toHaveAttribute("data-state", "on");
-		expect(screen.getByText("Live").className).toContain("aria-pressed:bg-basalt-selected");
+		expect(screen.getByText("Live").className).toContain("aria-pressed:bg-basalt-primary");
 		expect(screen.getByText("Live").className).not.toContain("aria-pressed:border");
 	});
 

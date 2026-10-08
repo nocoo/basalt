@@ -164,7 +164,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"toggle-group": {
 		"file": "packages/basalt/src/components/toggle-group.tsx",
-		"hash": "aefa655b7a6a214c",
+		"hash": "ebee4aed2f6ef325",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/toggle-group.js.map (sourcesContent[0])"
 	},

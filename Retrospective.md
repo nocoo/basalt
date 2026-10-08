@@ -415,3 +415,12 @@ caught the invalid syntax, schema drift and dollar-valued patient metrics before
 commit. Restore technical keys and edit complete user-facing strings; compare
 translation key sets, review units and labels together, and test source/render
 parity. A content generator check alone does not prove realistic example copy.
+
+## 2026-10-08: Accent interaction states must not inherit neutral selection
+
+Neutral white selection was applied to ToggleGroup, and the light hover layer
+was also white on a white popover. Segments lost the configured accent and menus
+lost their visible pointer/keyboard highlight. Accent controls now use the
+provider's contrast-corrected primary and foreground. Hover colors mix primary
+with the theme's popover surface; moving lists use two theme-specific tint stops.
+Keep neutral row selection separate, and verify all palette colors in both modes.

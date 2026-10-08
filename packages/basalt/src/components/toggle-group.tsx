@@ -125,7 +125,7 @@ export const ToggleGroup = React.forwardRef<
 						aria-hidden="true"
 						data-slot="selection-indicator"
 						className={cn(
-							"pointer-events-none absolute rounded-basalt-full bg-basalt-selected",
+							"pointer-events-none absolute rounded-basalt-full bg-basalt-primary",
 							motionClassName,
 						)}
 						style={{
@@ -169,8 +169,8 @@ export const ToggleGroupItem = React.forwardRef<
 				"relative basalt-action basalt-action-sm inline-flex cursor-pointer items-center rounded-basalt-full font-semibold leading-[var(--basalt-line-body)] tracking-wide text-basalt-muted-foreground transition-colors basalt-motion before:absolute before:inset-0",
 				"hover:text-basalt-foreground",
 				FOCUS_RING,
-				"aria-checked:text-basalt-selected-foreground aria-pressed:text-basalt-selected-foreground",
-				mode === "multiple" && "aria-pressed:bg-basalt-selected",
+				"aria-checked:text-basalt-primary-foreground aria-pressed:text-basalt-primary-foreground",
+				mode === "multiple" && "aria-pressed:bg-basalt-primary",
 				"disabled:pointer-events-none disabled:opacity-50",
 				className,
 			)}

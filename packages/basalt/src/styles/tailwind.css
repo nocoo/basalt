@@ -80,7 +80,7 @@
 	--ease-basalt: var(--basalt-motion-ease);
 	--color-basalt-selected: hsl(var(--basalt-selected));
 	--color-basalt-selected-foreground: hsl(var(--basalt-selected-foreground));
-	--color-basalt-hover: hsl(var(--basalt-hover));
+	--color-basalt-hover: var(--basalt-hover);
 	--color-basalt-primary-hover: var(--basalt-primary-hover);
 	--color-basalt-destructive-hover: var(--basalt-destructive-hover);
 	--spacing-basalt-96: var(--basalt-space-96);

@@ -173,7 +173,13 @@ interaction contracts; do not change their containment as a global workaround.
   frames. Navigation uses foreground contrast and medium weight alongside fill;
   existing semantic checkmarks and tab underlines remain. Both primary and
   secondary text retain at least 4.5:1 contrast.
-- Hover is transient: `--basalt-hover` (white / 18%), without a decorative border.
+- Hover is transient and follows the configured primary. `--basalt-hover` and
+  `--basalt-hover-end` are complete CSS colors, mixed against the theme popover
+  surface at 12%/6% in light mode and 20%/12% in dark mode. Moving menu and command
+  highlights use a subtle gradient between them, without decorative borders.
+  SegmentControl and ToggleGroup selected items use `--basalt-primary` and its
+  contrast-corrected foreground; they are accent controls, not neutral navigation.
+  Neutral row selection retains its independent selected tokens.
   Selection remains painted on its own row when the shared hover layer moves
   elsewhere. The layer animates transforms, not a second React state per item.
   Multi-selection paints every selected row, not only the current hover target.

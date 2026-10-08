@@ -158,7 +158,8 @@
 	--basalt-input: 220 13% 88%;
 	--basalt-ring: var(--basalt-primary);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
-	--basalt-hover: 0 0% 100%;
+	--basalt-hover: color-mix(in srgb, hsl(var(--basalt-primary)) 12%, hsl(var(--basalt-popover)));
+	--basalt-hover-end: color-mix(in srgb, hsl(var(--basalt-primary)) 6%, hsl(var(--basalt-popover)));
 	--basalt-selected: 0 0% 100%;
 	--basalt-selected-foreground: var(--basalt-foreground);
 	--basalt-primary-hover: color-mix(
@@ -290,7 +291,12 @@
 	--basalt-input: 0 0% 18%;
 	--basalt-ring: var(--basalt-primary);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
-	--basalt-hover: 0 0% 18%;
+	--basalt-hover: color-mix(in srgb, hsl(var(--basalt-primary)) 20%, hsl(var(--basalt-popover)));
+	--basalt-hover-end: color-mix(
+		in srgb,
+		hsl(var(--basalt-primary)) 12%,
+		hsl(var(--basalt-popover))
+	);
 	--basalt-selected: 0 0% 22%;
 	--basalt-selected-foreground: var(--basalt-foreground);
 	--basalt-primary-hover: color-mix(
@@ -447,7 +453,7 @@
 }
 
 [data-basalt-table] tbody tr:hover:not([aria-selected="true"]) td {
-	background: hsl(var(--basalt-hover));
+	background: var(--basalt-hover);
 }
 
 [data-basalt-table] tbody tr:nth-child(even):not([aria-selected="true"]):not(:hover) td {
@@ -556,7 +562,7 @@
 			background-color var(--basalt-motion-normal) var(--basalt-motion-ease);
 	}
 	.basalt-nav-item:is(:hover, :focus-visible) {
-		background-color: hsl(var(--basalt-hover));
+		background-color: var(--basalt-hover);
 		color: hsl(var(--basalt-foreground));
 	}
 	.basalt-hover-list[data-hover-visible="true"] .basalt-nav-item:not([data-hover-selected="true"]) {
@@ -602,7 +608,7 @@
 		height: var(--basalt-hover-height, 0px);
 		transform: translate(var(--basalt-hover-x, 0px), var(--basalt-hover-y, 0px));
 		border-radius: var(--basalt-radius-md);
-		background: hsl(var(--basalt-hover));
+		background: linear-gradient(90deg, var(--basalt-hover), var(--basalt-hover-end));
 		opacity: 0;
 	}
 	.basalt-hover-list[data-hover-visible="true"]::before {
@@ -665,7 +671,7 @@
 		width: var(--basalt-command-width);
 		height: var(--basalt-command-height);
 		border-radius: var(--basalt-radius-md);
-		background: hsl(var(--basalt-hover));
+		background: linear-gradient(90deg, var(--basalt-hover), var(--basalt-hover-end));
 	}
 
 	.basalt-command-list[data-basalt-command-animated="true"]::before {

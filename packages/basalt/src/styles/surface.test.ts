@@ -34,7 +34,6 @@ describe("nested surface CSS", () => {
 			const selected = luminance("selected");
 			for (const surface of ["background", "card", "secondary", "bright", "popover"]) {
 				expect(selected).toBeGreaterThanOrEqual(luminance(surface));
-				expect(luminance("hover")).toBeGreaterThanOrEqual(luminance(surface));
 			}
 			for (const foreground of ["selected-foreground", "muted-foreground"]) {
 				const text = luminance(foreground);
@@ -43,6 +42,34 @@ describe("nested surface CSS", () => {
 				).toBeGreaterThanOrEqual(4.5);
 			}
 		}
+	});
+
+	it("derives visible hover gradients from the configured primary in both themes", () => {
+		const css = postcss.parse(tokens);
+		for (const [selector, weights] of [
+			['[data-mode="light"]', [12, 6]],
+			['[data-mode="dark"]', [20, 12]],
+		] as const) {
+			const values = new Map<string, string>();
+			css.walkRules((rule) => {
+				if (rule.selectors.includes(selector)) {
+					rule.walkDecls((decl) => {
+						values.set(decl.prop, decl.value);
+					});
+				}
+			});
+			for (const [index, token] of ["--basalt-hover", "--basalt-hover-end"].entries()) {
+				expect(values.get(token)?.replace(/\s+/g, "")).toBe(
+					`color-mix(insrgb,hsl(var(--basalt-primary))${weights[index]}%,hsl(var(--basalt-popover)))`,
+				);
+			}
+		}
+		expect(
+			tokens.match(
+				/background: linear-gradient\(90deg, var\(--basalt-hover\), var\(--basalt-hover-end\)\);/g,
+			),
+		).toHaveLength(2);
+		expect(tailwind).toContain("--color-basalt-hover: var(--basalt-hover);");
 	});
 
 	it("retains selected paint independently of moving hover and keeps semantic diffs", () => {

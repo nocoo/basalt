@@ -176,7 +176,14 @@
   --basalt-input: 220 13% 88%;
   --basalt-ring: var(--basalt-primary);
   --basalt-control-fill: hsl(var(--basalt-secondary));
-  --basalt-hover: 0 0% 100%;
+  --basalt-hover: hsl(var(--basalt-primary));
+  @supports (color: color-mix(in lab, red, red)) {
+    --basalt-hover: color-mix(in srgb, hsl(var(--basalt-primary)) 12%, hsl(var(--basalt-popover)));
+  }
+  --basalt-hover-end: hsl(var(--basalt-primary));
+  @supports (color: color-mix(in lab, red, red)) {
+    --basalt-hover-end: color-mix(in srgb, hsl(var(--basalt-primary)) 6%, hsl(var(--basalt-popover)));
+  }
   --basalt-selected: 0 0% 100%;
   --basalt-selected-foreground: var(--basalt-foreground);
   --basalt-primary-hover: hsl(var(--basalt-primary));
@@ -310,7 +317,18 @@
   --basalt-input: 0 0% 18%;
   --basalt-ring: var(--basalt-primary);
   --basalt-control-fill: hsl(var(--basalt-secondary));
-  --basalt-hover: 0 0% 18%;
+  --basalt-hover: hsl(var(--basalt-primary));
+  @supports (color: color-mix(in lab, red, red)) {
+    --basalt-hover: color-mix(in srgb, hsl(var(--basalt-primary)) 20%, hsl(var(--basalt-popover)));
+  }
+  --basalt-hover-end: hsl(var(--basalt-primary));
+  @supports (color: color-mix(in lab, red, red)) {
+    --basalt-hover-end: color-mix(
+		in srgb,
+		hsl(var(--basalt-primary)) 12%,
+		hsl(var(--basalt-popover))
+	);
+  }
   --basalt-selected: 0 0% 22%;
   --basalt-selected-foreground: var(--basalt-foreground);
   --basalt-primary-hover: hsl(var(--basalt-primary));
@@ -467,7 +485,7 @@
   color: hsl(var(--basalt-selected-foreground));
 }
 [data-basalt-table] tbody tr:hover:not([aria-selected="true"]) td {
-  background: hsl(var(--basalt-hover));
+  background: var(--basalt-hover);
 }
 [data-basalt-table] tbody tr:nth-child(even):not([aria-selected="true"]):not(:hover) td {
   background: var(--basalt-zebra-fill);
@@ -551,7 +569,7 @@
     transition: color var(--basalt-motion-normal) var(--basalt-motion-ease),	background-color var(--basalt-motion-normal) var(--basalt-motion-ease);
   }
   .basalt-nav-item:is(:hover, :focus-visible) {
-    background-color: hsl(var(--basalt-hover));
+    background-color: var(--basalt-hover);
     color: hsl(var(--basalt-foreground));
   }
   .basalt-hover-list[data-hover-visible="true"] .basalt-nav-item:not([data-hover-selected="true"]) {
@@ -596,7 +614,7 @@
     height: var(--basalt-hover-height, 0px);
     transform: translate(var(--basalt-hover-x, 0px), var(--basalt-hover-y, 0px));
     border-radius: var(--basalt-radius-md);
-    background: hsl(var(--basalt-hover));
+    background: linear-gradient(90deg, var(--basalt-hover), var(--basalt-hover-end));
     opacity: 0;
   }
   .basalt-hover-list[data-hover-visible="true"]::before {
@@ -650,7 +668,7 @@
     width: var(--basalt-command-width);
     height: var(--basalt-command-height);
     border-radius: var(--basalt-radius-md);
-    background: hsl(var(--basalt-hover));
+    background: linear-gradient(90deg, var(--basalt-hover), var(--basalt-hover-end));
   }
   .basalt-command-list[data-basalt-command-animated="true"]::before {
     transition: transform var(--basalt-motion-normal) var(--basalt-motion-ease);
@@ -3125,7 +3143,7 @@
       background-color: var(--basalt-destructive-hover);
     }
     .hover\:bg-basalt-hover:hover {
-      background-color: hsl(var(--basalt-hover));
+      background-color: var(--basalt-hover);
     }
     .hover\:bg-basalt-primary-hover:hover {
       background-color: var(--basalt-primary-hover);
@@ -3182,7 +3200,7 @@
     border-radius: var(--basalt-radius-md);
   }
   .focus\:bg-basalt-hover:focus {
-    background-color: hsl(var(--basalt-hover));
+    background-color: var(--basalt-hover);
   }
   .focus\:bg-basalt-primary:focus {
     background-color: hsl(var(--basalt-primary));
@@ -3214,7 +3232,7 @@
     border-color: transparent;
   }
   .focus-visible\:bg-basalt-hover:focus-visible {
-    background-color: hsl(var(--basalt-hover));
+    background-color: var(--basalt-hover);
   }
   .focus-visible\:ring-0:focus-visible {
     --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
@@ -3268,7 +3286,7 @@
     scale: 0.98;
   }
   .active\:bg-basalt-hover:active {
-    background-color: hsl(var(--basalt-hover));
+    background-color: var(--basalt-hover);
   }
   .disabled\:pointer-events-none:disabled {
     pointer-events: none;
@@ -3300,8 +3318,8 @@
   .has-\[input\[aria-invalid\=true\]\]\:border-basalt-destructive:has(:is(input[aria-invalid=true])) {
     border-color: hsl(var(--basalt-destructive));
   }
-  .aria-checked\:text-basalt-selected-foreground[aria-checked="true"] {
-    color: hsl(var(--basalt-selected-foreground));
+  .aria-checked\:text-basalt-primary-foreground[aria-checked="true"] {
+    color: hsl(var(--basalt-primary-foreground));
   }
   .aria-disabled\:cursor-not-allowed[aria-disabled="true"] {
     cursor: not-allowed;
@@ -3315,11 +3333,11 @@
   .aria-invalid\:focus-visible\:border-basalt-destructive[aria-invalid="true"]:focus-visible {
     border-color: hsl(var(--basalt-destructive));
   }
-  .aria-pressed\:bg-basalt-selected[aria-pressed="true"] {
-    background-color: hsl(var(--basalt-selected));
+  .aria-pressed\:bg-basalt-primary[aria-pressed="true"] {
+    background-color: hsl(var(--basalt-primary));
   }
-  .aria-pressed\:text-basalt-selected-foreground[aria-pressed="true"] {
-    color: hsl(var(--basalt-selected-foreground));
+  .aria-pressed\:text-basalt-primary-foreground[aria-pressed="true"] {
+    color: hsl(var(--basalt-primary-foreground));
   }
   .data-disabled\:pointer-events-none[data-disabled] {
     pointer-events: none;
