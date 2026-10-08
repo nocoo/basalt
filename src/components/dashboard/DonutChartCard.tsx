@@ -6,10 +6,10 @@ import { formatPercent } from "@/lib/format";
 import { CHART_COLORS } from "@/lib/palette";
 
 const data = [
-	{ name: "Food", value: 35 },
-	{ name: "Transport", value: 20 },
-	{ name: "Shopping", value: 25 },
-	{ name: "Bills", value: 20 },
+	{ name: "Nutrition", value: 35 },
+	{ name: "Mobility", value: 20 },
+	{ name: "Medical supplies", value: 25 },
+	{ name: "Lab services", value: 20 },
 ].map((d, i) => ({ ...d, fill: CHART_COLORS[i] }));
 
 export function DonutChartCard() {

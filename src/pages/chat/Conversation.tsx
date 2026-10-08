@@ -31,9 +31,9 @@ function Response({ message, vm }: { message: Message; vm: VM }) {
 					? [
 							{
 								id: "guide",
-								name: "INTEGRATION.md",
+								name: "Care-team preparation guide",
 								type: "DOC",
-								href: "https://github.com/nocoo/basalt/blob/main/INTEGRATION.md",
+								href: "https://example.com/care-team-guide",
 							},
 						]
 					: []
@@ -103,19 +103,19 @@ function Response({ message, vm }: { message: Message; vm: VM }) {
 				(message.proposal ? (
 					<DiffTable
 						title={t("pages.chat.preview")}
-						columns={[{ id: "value", label: "CSS" }]}
+						columns={[{ id: "value", label: "Follow-up plan" }]}
 						rows={[
 							{
 								id: "old",
 								label: "Remove",
 								change: "remove",
-								values: { value: "height: 160px" },
+								values: { value: "No follow-up questions prepared" },
 							},
 							{
 								id: "new",
 								label: "Add",
 								change: "add",
-								values: { value: "max-height: calc(5lh + var(--basalt-space-2))" },
+								values: { value: "Prepare questions and bring weekly wellness reports" },
 							},
 						]}
 						disabled={message.decision === "skip"}
@@ -128,17 +128,15 @@ function Response({ message, vm }: { message: Message; vm: VM }) {
 						options={[
 							{
 								id: "review",
-								label: "Review the composer",
-								description:
-									"Walk through the five-line composer, interrupted streams and approval flow.",
+								label: "Review the follow-up plan",
+								description: "Review your appointment questions and the reports you plan to share.",
 								confidence: "high",
 								actionLabel: t("pages.chat.tryPrompt"),
 							},
 							{
 								id: "test",
-								label: "Plan the tests",
-								description:
-									"Check IME, failed sends, mobile overflow and thread isolation before shipping.",
+								label: "Prepare appointment questions",
+								description: "Collect questions for your care team before the next appointment.",
 								confidence: "review",
 								actionLabel: t("pages.chat.tryPrompt"),
 							},

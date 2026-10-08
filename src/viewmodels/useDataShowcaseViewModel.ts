@@ -1,10 +1,22 @@
 import { useMemo, useState } from "react";
 
 const INVOICES = [
-	{ id: "INV-2041", customer: "Nova Labs", status: "Paid", amount: 12400, date: "2026-02-01" },
-	{ id: "INV-2042", customer: "Violet Corp", status: "Pending", amount: 5950, date: "2026-02-03" },
-	{ id: "INV-2043", customer: "Atlas Works", status: "Paid", amount: 8100, date: "2026-02-05" },
-	{ id: "INV-2044", customer: "Echo Systems", status: "Overdue", amount: 3250, date: "2026-02-07" },
+	{ id: "INV-2041", customer: "North Clinic", status: "Paid", amount: 12400, date: "2026-02-01" },
+	{ id: "INV-2042", customer: "South Clinic", status: "Pending", amount: 5950, date: "2026-02-03" },
+	{
+		id: "INV-2043",
+		customer: "Atlas Care Center",
+		status: "Paid",
+		amount: 8100,
+		date: "2026-02-05",
+	},
+	{
+		id: "INV-2044",
+		customer: "Harbor Recovery",
+		status: "Overdue",
+		amount: 3250,
+		date: "2026-02-07",
+	},
 ];
 type InvoiceKey = keyof (typeof INVOICES)[number];
 

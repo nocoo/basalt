@@ -107,8 +107,8 @@ function answerFor(prompt: string, proposal: boolean, files: ChatFile[]): string
 		? `\n\n**Attachments:** ${files.map((file) => file.name).join(", ")}. This demo stores names only; file contents were not read or uploaded.`
 		: "";
 	return proposal
-		? `## Proposed composer update\n\nUse native CSS to grow the input to **five lines**, then scroll internally. No per-keystroke layout measurement is needed.\n\n\`\`\`css\n.composer textarea {\n  field-sizing: content;\n  max-height: calc(5lh + var(--basalt-space-2));\n  overflow-y: auto;\n  resize: none;\n}\n\`\`\`\n\n- Preserve Enter to send and Shift+Enter for a new line.\n- Do not submit during IME composition.\n- Keep the draft if sending fails.\n\n> Preview only. No source files have been changed.${note}`
-		: `## A focused plan\n\nFor **${prompt.replace(/[[\]*_<>\n\r]/g, "").slice(0, 140)}**, start with the conversation lifecycle, then layer in tools and sources.\n\n| Area | Recommendation |\n| --- | --- |\n| Composer | Five lines maximum; scroll for longer drafts |\n| Feedback | Thinking steps, stop, retry and clear errors |\n| Tools | Show inputs and outputs; ask before changes |\n| Context | Link evidence without fetching remote images |\n\n### Implementation checklist\n\n1. Keep conversation state in the ViewModel.\n2. Render Markdown safely and expose copy / edit actions.\n3. Test interrupted streams, thread switching and mobile scrolling.\n\n**Next step:** review the recommendation below. This is a deterministic local example, not a live model response.${note}`;
+		? `## Proposed follow-up update\n\nKeep your appointment questions and weekly wellness notes together.\n\n| Care item | Preview |\n| --- | --- |\n| Follow-up | Prepare questions for the care team |\n| Activity | Bring the weekly activity summary |\n| Sleep | Bring the sleep report |\n\n> Preview only. No appointments or patient records have been changed. This simulated assistant does not provide medical advice.${note}`
+		: `## A focused plan\n\nFor **${prompt.replace(/[[\]*_<>\n\r]/g, "").slice(0, 140)}**, organize the information you want to discuss with your care team.\n\n| Area | Preparation |\n| --- | --- |\n| Activity | Review your weekly activity report |\n| Sleep | Collect your sleep notes |\n| Appointment | Write down questions for your clinician |\n| Records | Confirm which reports you want to share |\n\n### Check-in checklist\n\n1. Review the dates and sources of your wellness records.\n2. Note questions and preferences for your next appointment.\n3. Confirm any proposed changes with your care team.\n\n**Next step:** review the recommendation below. This is a deterministic local example, not medical advice or a live model response.${note}`;
 }
 function begin(
 	state: ChatState,
@@ -370,9 +370,9 @@ export function chatTrace(message: ChatMessage) {
 				id: "context",
 				kind: "read",
 				label: message.search ? "Search reference context" : "Read conversation",
-				target: message.search ? "Basalt integration guide" : "Current thread",
+				target: message.search ? "Care-team preparation guide" : "Current thread",
 				detail:
-					"Simulated tool output: use shared tokens, five-line input and explicit approval. No network request was made.",
+					"Simulated tool output: organize wellness records and appointment questions; request explicit approval before updating the preview. No network request was made.",
 				status: failed
 					? "error"
 					: interrupted || thinking

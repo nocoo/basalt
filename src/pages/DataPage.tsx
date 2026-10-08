@@ -50,8 +50,8 @@ const TIMELINE = [
 	{
 		icon: CheckCircle2,
 		color: "text-emerald-500",
-		title: "Deployment succeeded",
-		desc: "v2.4.1 deployed to production",
+		title: "Wellness report ready",
+		desc: "Your weekly activity and sleep report is available",
 		time: "2 min ago",
 	},
 	{

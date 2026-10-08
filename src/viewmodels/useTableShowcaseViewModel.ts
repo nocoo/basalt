@@ -5,7 +5,7 @@ export type TableShowcaseTab = "companies" | "deals" | "forecast";
 export const COMPANY_ROWS = [
 	{
 		id: "atlas",
-		name: "Atlas",
+		name: "Atlas Health",
 		tags: ["Enterprise", "Upsell"],
 		owner: "Sarah Nguyen",
 		initials: "SN",
@@ -19,7 +19,7 @@ export const COMPANY_ROWS = [
 	},
 	{
 		id: "northstar",
-		name: "Northstar",
+		name: "Northstar Clinic",
 		tags: ["Enterprise", "New Logo"],
 		owner: "James Taylor",
 		initials: "JT",
@@ -33,7 +33,7 @@ export const COMPANY_ROWS = [
 	},
 	{
 		id: "harbor",
-		name: "Harbor",
+		name: "Harbor Pediatrics",
 		tags: ["Enterprise"],
 		owner: "Maria Keller",
 		initials: "MK",
@@ -47,7 +47,7 @@ export const COMPANY_ROWS = [
 	},
 	{
 		id: "meridian",
-		name: "Meridian",
+		name: "Meridian Care",
 		tags: ["Renewal"],
 		owner: "Nia Jameson",
 		initials: "NJ",
@@ -61,7 +61,7 @@ export const COMPANY_ROWS = [
 	},
 	{
 		id: "orbit",
-		name: "Orbit",
+		name: "Orbit Wellness",
 		tags: ["Pilot"],
 		owner: "Alex Santos",
 		initials: "AS",
@@ -75,7 +75,7 @@ export const COMPANY_ROWS = [
 	},
 	{
 		id: "summit",
-		name: "Summit",
+		name: "Summit Health",
 		tags: ["Strategic", "Expansion"],
 		owner: "Mark Darnalds",
 		initials: "MD",
@@ -89,7 +89,7 @@ export const COMPANY_ROWS = [
 	},
 	{
 		id: "cedar",
-		name: "Cedar",
+		name: "Cedar Family Care",
 		tags: ["Upsell", "Expansion"],
 		owner: "Drew Nash",
 		initials: "DN",
@@ -103,7 +103,7 @@ export const COMPANY_ROWS = [
 	},
 	{
 		id: "lumen",
-		name: "Lumen",
+		name: "Lumen Diagnostics",
 		tags: ["Enterprise", "Mid-Market"],
 		owner: "Lina Wong",
 		initials: "LW",
@@ -117,7 +117,7 @@ export const COMPANY_ROWS = [
 	},
 	{
 		id: "ridge",
-		name: "Ridge",
+		name: "Ridge Medical",
 		tags: ["Mid-Market", "Upsell"],
 		owner: "Jamie Fox",
 		initials: "JF",
@@ -131,7 +131,7 @@ export const COMPANY_ROWS = [
 	},
 	{
 		id: "vale",
-		name: "Vale",
+		name: "Vale Recovery",
 		tags: ["SMB", "Enterprise"],
 		owner: "Kate Chen",
 		initials: "KC",
@@ -145,7 +145,7 @@ export const COMPANY_ROWS = [
 	},
 	{
 		id: "forge",
-		name: "Forge",
+		name: "Forge Therapy",
 		tags: ["Mid-Market"],
 		owner: "Ricky Brown",
 		initials: "RB",
@@ -159,7 +159,7 @@ export const COMPANY_ROWS = [
 	},
 	{
 		id: "beacon",
-		name: "Beacon",
+		name: "Beacon Health",
 		tags: ["Land & Expand"],
 		owner: "Hannah Mills",
 		initials: "HM",
@@ -178,8 +178,8 @@ export type CompanyRow = (typeof COMPANY_ROWS)[number];
 export const DEAL_ROWS = [
 	{
 		id: "d-atlas-1",
-		name: "Atlas platform",
-		company: "Atlas",
+		name: "Atlas Health care network",
+		company: "Atlas Health",
 		stage: "Upsell",
 		value: 180000,
 		close: "Mar 4",
@@ -187,8 +187,8 @@ export const DEAL_ROWS = [
 	},
 	{
 		id: "d-orbit-1",
-		name: "Orbit seat expansion",
-		company: "Orbit",
+		name: "Orbit Wellness care team expansion",
+		company: "Orbit Wellness",
 		stage: "Pilot",
 		value: 240000,
 		close: "Mar 18",
@@ -196,8 +196,8 @@ export const DEAL_ROWS = [
 	},
 	{
 		id: "d-summit-1",
-		name: "Summit enterprise",
-		company: "Summit",
+		name: "Summit Health care program",
+		company: "Summit Health",
 		stage: "Expansion",
 		value: 210000,
 		close: "Apr 2",
@@ -205,8 +205,8 @@ export const DEAL_ROWS = [
 	},
 	{
 		id: "d-meridian-1",
-		name: "Meridian renewal",
-		company: "Meridian",
+		name: "Meridian Care follow-up plan",
+		company: "Meridian Care",
 		stage: "Renewal",
 		value: 96000,
 		close: "Apr 11",
@@ -214,8 +214,8 @@ export const DEAL_ROWS = [
 	},
 	{
 		id: "d-ridge-1",
-		name: "Ridge mid-market",
-		company: "Ridge",
+		name: "Ridge Medical community care",
+		company: "Ridge Medical",
 		stage: "Upsell",
 		value: 132000,
 		close: "May 9",
@@ -223,8 +223,8 @@ export const DEAL_ROWS = [
 	},
 	{
 		id: "d-forge-1",
-		name: "Forge analytics",
-		company: "Forge",
+		name: "Forge Therapy outcomes review",
+		company: "Forge Therapy",
 		stage: "Mid-Market",
 		value: 88000,
 		close: "May 22",
@@ -237,16 +237,34 @@ export type DealRow = (typeof DEAL_ROWS)[number];
 export const INVOICE_ROWS = [
 	{ id: "INV-2041", customer: "Nova Labs", status: "Paid", amount: 12400, date: "2026-02-01" },
 	{ id: "INV-2042", customer: "Violet Corp", status: "Pending", amount: 5950, date: "2026-02-03" },
-	{ id: "INV-2043", customer: "Atlas Works", status: "Paid", amount: 8100, date: "2026-02-05" },
+	{
+		id: "INV-2043",
+		customer: "Atlas Health Works",
+		status: "Paid",
+		amount: 8100,
+		date: "2026-02-05",
+	},
 	{ id: "INV-2044", customer: "Echo Systems", status: "Overdue", amount: 3250, date: "2026-02-07" },
-	{ id: "INV-2045", customer: "Harbor Line", status: "Paid", amount: 16400, date: "2026-02-12" },
-	{ id: "INV-2046", customer: "Cedar North", status: "Pending", amount: 4420, date: "2026-02-18" },
+	{
+		id: "INV-2045",
+		customer: "Harbor Pediatrics Line",
+		status: "Paid",
+		amount: 16400,
+		date: "2026-02-12",
+	},
+	{
+		id: "INV-2046",
+		customer: "Cedar Family Care North",
+		status: "Pending",
+		amount: 4420,
+		date: "2026-02-18",
+	},
 ] as const;
 
 export const DEVICE_ROWS = [
 	{
 		id: "edge-01",
-		name: "Atlas gateway",
+		name: "Atlas Health vitals hub",
 		region: "US East",
 		status: "Online",
 		battery: 94,
@@ -254,7 +272,7 @@ export const DEVICE_ROWS = [
 	},
 	{
 		id: "edge-02",
-		name: "Northstar relay",
+		name: "Northstar Clinic sleep monitor",
 		region: "EU West",
 		status: "Online",
 		battery: 67,
@@ -262,7 +280,7 @@ export const DEVICE_ROWS = [
 	},
 	{
 		id: "edge-03",
-		name: "Meridian sensor",
+		name: "Meridian Care glucose sensor",
 		region: "AP South",
 		status: "Warning",
 		battery: 14,
@@ -270,7 +288,7 @@ export const DEVICE_ROWS = [
 	},
 	{
 		id: "edge-04",
-		name: "Orbit bridge",
+		name: "Orbit Wellness activity tracker",
 		region: "US West",
 		status: "Offline",
 		battery: 0,
@@ -278,7 +296,7 @@ export const DEVICE_ROWS = [
 	},
 	{
 		id: "edge-05",
-		name: "Summit beacon",
+		name: "Summit Health recovery monitor",
 		region: "EU Central",
 		status: "Online",
 		battery: 42,

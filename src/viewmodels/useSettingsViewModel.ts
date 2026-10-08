@@ -6,7 +6,7 @@ const INITIAL_PROFILE = {
 	lastName: "Johnson",
 	email: "alex@basalt.app",
 	phone: "+1 (555) 123-4567",
-	bio: "Product designer and financial enthusiast.",
+	bio: "Care coordinator focused on patient wellness.",
 };
 const INITIAL_SESSIONS = [
 	{ device: "MacBook Pro — Chrome", location: "San Francisco, US", current: true },

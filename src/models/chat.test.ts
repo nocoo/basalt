@@ -46,7 +46,7 @@ describe("local conversation state", () => {
 			expect(last(done)?.text).toContain(
 				decision === "apply" ? "Preview approved" : "Execution declined",
 			);
-			expect(last(done)?.text).toContain("field-sizing: content");
+			expect(last(done)?.text).toContain("Proposed follow-up update");
 			expect(last(done)?.phase).toBe("complete");
 		}
 		state = reduce(state, { type: "stop" });

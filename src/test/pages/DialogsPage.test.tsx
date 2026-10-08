@@ -15,7 +15,7 @@ describe("DialogsPage", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Open standard" }));
 		const dialog = screen.getByRole("dialog");
 		expect(dialog).toBeInTheDocument();
-		expect(screen.getByRole("heading", { name: "Rename workspace" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Rename care team" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Apply" })).toBeInTheDocument();
@@ -31,8 +31,8 @@ describe("DialogsPage", () => {
 	it("opens a form dialog with Field and Input", () => {
 		render(<DialogsPage />);
 		fireEvent.click(screen.getByRole("button", { name: "Open form" }));
-		expect(screen.getByRole("heading", { name: "Create workspace" })).toBeInTheDocument();
-		expect(screen.getByLabelText("Workspace name")).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Create care team" })).toBeInTheDocument();
+		expect(screen.getByLabelText("Care team name")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Save changes" })).toBeInTheDocument();
 	});
 
@@ -47,7 +47,7 @@ describe("DialogsPage", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: "Open alert" }));
 		expect(screen.getByRole("alertdialog")).toBeInTheDocument();
-		expect(screen.getByRole("heading", { name: "Delete workspace?" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Delete care team?" })).toBeInTheDocument();
 	});
 
 	it("opens money-flow dialogs from small send to wide review", () => {
@@ -66,20 +66,22 @@ describe("DialogsPage", () => {
 
 		fireEvent.click(screen.getByRole("button", { name: "Open holding" }));
 		expect(screen.getByRole("dialog").className).toContain("sm:w-[32rem]");
-		expect(screen.getByRole("heading", { name: "Edit holding" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Edit treatment fund" })).toBeInTheDocument();
 		expect(screen.getByLabelText(/Note/)).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Close" }));
 
 		fireEvent.click(screen.getByRole("button", { name: "Open review" }));
 		expect(screen.getByRole("dialog").className).toContain("sm:w-[48rem]");
 		expect(screen.getByRole("heading", { name: "Review transfer" })).toBeInTheDocument();
-		expect(screen.getByText("Operating cash")).toBeInTheDocument();
+		expect(screen.getByText("Care reserve")).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Close" }));
 
 		fireEvent.click(screen.getByRole("button", { name: "Open unit editor" }));
 		const unit = screen.getByRole("dialog");
 		expect(unit.className).toContain("sm:w-[min(72rem,calc(100vw-2rem))]");
-		expect(screen.getByRole("heading", { name: "Edit capital unit · U-2044" })).toBeInTheDocument();
+		expect(
+			screen.getByRole("heading", { name: "Edit care funding record · U-2044" }),
+		).toBeInTheDocument();
 		expect(screen.getByText("Basics")).toBeInTheDocument();
 		expect(screen.getByText("Product and operations")).toBeInTheDocument();
 		expect(screen.getByText("History")).toBeInTheDocument();

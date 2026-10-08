@@ -79,9 +79,9 @@ function DialogColumnTitle({ children }: { children: string }) {
 }
 
 const UNIT_LOGS = [
-	{ date: "2026-03-01", action: "invest", amount: "$12,400.00" },
-	{ date: "2026-04-12", action: "adjust", amount: "$800.00" },
-	{ date: "2026-06-20", action: "invest", amount: "$4,200.00" },
+	{ date: "2026-03-01", action: "care plan", amount: "$12,400.00" },
+	{ date: "2026-04-12", action: "care adjustment", amount: "$800.00" },
+	{ date: "2026-06-20", action: "care plan", amount: "$4,200.00" },
 ] as const;
 
 export default function DialogsPage() {

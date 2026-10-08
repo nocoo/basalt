@@ -22,15 +22,15 @@ const METRICS = [
 ] as const;
 
 const WORKSPACES = [
-	{ name: "Atlas", status: "Active", requests: "42,810" },
-	{ name: "Northstar", status: "Active", requests: "28,604" },
-	{ name: "Meridian", status: "Review", requests: "16,209" },
+	{ name: "Atlas Health", status: "Active", requests: "42,810" },
+	{ name: "Northstar Clinic", status: "Active", requests: "28,604" },
+	{ name: "Meridian Care", status: "Review", requests: "16,209" },
 ] as const;
 
 const TABLE_ROWS = [
-	{ name: "Atlas", region: "US East", status: "Healthy" },
-	{ name: "Northstar", region: "EU West", status: "Healthy" },
-	{ name: "Meridian", region: "APAC", status: "Review" },
+	{ name: "Atlas Health", region: "US East", status: "Healthy" },
+	{ name: "Northstar Clinic", region: "EU West", status: "Healthy" },
+	{ name: "Meridian Care", region: "APAC", status: "Review" },
 ];
 
 function BoneAvatar() {

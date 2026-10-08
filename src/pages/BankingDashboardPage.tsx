@@ -20,9 +20,9 @@ import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
 import { ShowcasePage } from "@/components/ShowcasePage";
 
 const transfers = [
-	{ name: "Wire transfer", amount: "$120k", direction: "in" },
-	{ name: "Mortgage payment", amount: "$4.8k", direction: "out" },
-	{ name: "Treasury coupon", amount: "$3.6k", direction: "in" },
+	{ name: "Care fund transfer", amount: "$120k", direction: "in" },
+	{ name: "Treatment payment", amount: "$4.8k", direction: "out" },
+	{ name: "Insurance reimbursement", amount: "$3.6k", direction: "in" },
 ];
 
 export default function BankingDashboardPage() {

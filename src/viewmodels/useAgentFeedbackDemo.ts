@@ -4,21 +4,21 @@ import { useEffect, useState } from "react";
 
 const TRACES: Record<ThinkingVariant, readonly string[]> = {
 	steps: [
-		"Reading flavor briefs",
-		"Scanning supplier lists",
-		"Comparing tasting notes",
-		"Writing the scoop report",
+		"Reading care reports",
+		"Reviewing appointment records",
+		"Comparing wellness summaries",
+		"Writing the care summary",
 	],
 	reasoning: [
-		"Summer demand favors stone-fruit flavors.",
-		"Check cone inventory before promoting a waffle-bowl special.",
+		"Recent activity patterns are summarized for the care team.",
+		"Review appointment availability before preparing the care report.",
 	],
 	search: [
-		"Joy Cone · joycone.com",
-		"WebstaurantStore · webstaurantstore.com",
-		"The Konery · thekonery.com",
+		"Care Admin · care-admin.example",
+		"Wellness Records · wellness.example",
+		"Appointment Desk · appointments.example",
 	],
-	coding: ["Read flavors.ts", "Edit ChurnSchedule.tsx", "Run npm run freeze"],
+	coding: ["Read care-reports.ts", "Edit AppointmentReview.tsx", "Run bun run verify"],
 };
 
 export function useAgentFeedbackDemo(variant: ThinkingVariant = "steps") {
@@ -44,16 +44,16 @@ export function useAgentFeedbackDemo(variant: ThinkingVariant = "steps") {
 			id: "plan",
 			kind: "think",
 			label: "Thinking",
-			target: "Churn schedule",
-			detail: "Weekend demand carries pistachio, so it churns first.",
+			target: "Care report",
+			detail: "The simulated care summary is ready for review.",
 			status: status(0),
 		},
 		{
 			id: "write",
 			kind: "write",
 			label: "Write 204 lines",
-			target: "ChurnSchedule.tsx",
-			detail: '+ return schedule(windows, { hero: "pistachio" })',
+			target: "AppointmentReview.tsx",
+			detail: '+ return schedule(windows, { hero: "wellness-summary" })',
 			status: status(1),
 		},
 		{
@@ -61,15 +61,15 @@ export function useAgentFeedbackDemo(variant: ThinkingVariant = "steps") {
 			kind: "run",
 			label: "Rebuild and verify",
 			target: "npm run freeze",
-			detail: "Built in 1.2s\n34 checks passed",
+			detail: "Prepared in 1.2s\n34 checks passed",
 			status: status(2),
 		},
 		{
 			id: "read",
 			kind: "read",
-			label: "Read image",
-			target: "flavor-chart.png",
-			detail: "Mint chip trends up 12% through July.",
+			label: "Read report",
+			target: "wellness-report.png",
+			detail: "Wellness activity trends upward through July.",
 			status: status(3),
 		},
 	];

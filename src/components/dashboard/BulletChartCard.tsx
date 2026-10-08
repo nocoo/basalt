@@ -3,9 +3,9 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
 
 const data = [
-	{ name: "Revenue", value: 68, target: 80 },
-	{ name: "Retention", value: 72, target: 85 },
-	{ name: "Adoption", value: 58, target: 70 },
+	{ name: "Care adherence", value: 68, target: 80 },
+	{ name: "Follow-up completion", value: 72, target: 85 },
+	{ name: "Plan participation", value: 58, target: 70 },
 ];
 
 export function BulletChartCard() {

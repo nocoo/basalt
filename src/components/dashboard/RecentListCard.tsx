@@ -4,11 +4,11 @@ import { ArrowDownLeft, ArrowLeftRight, ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const transactions = [
-	{ name: "Netflix Subscription", amount: -15.99, date: "Today", type: "expense" },
-	{ name: "Salary Deposit", amount: 5200.0, date: "Yesterday", type: "income" },
-	{ name: "Grocery Store", amount: -82.4, date: "Yesterday", type: "expense" },
-	{ name: "Freelance Payment", amount: 1200.0, date: "Feb 8", type: "income" },
-	{ name: "Electric Bill", amount: -145.0, date: "Feb 7", type: "expense" },
+	{ name: "Sleep coaching", amount: -15.99, date: "Today", type: "expense" },
+	{ name: "Employer wellness benefit", amount: 5200.0, date: "Yesterday", type: "income" },
+	{ name: "Nutrition consult", amount: -82.4, date: "Yesterday", type: "expense" },
+	{ name: "Therapy reimbursement", amount: 1200.0, date: "Feb 8", type: "income" },
+	{ name: "Lab testing", amount: -145.0, date: "Feb 7", type: "expense" },
 ];
 
 export function RecentListCard() {

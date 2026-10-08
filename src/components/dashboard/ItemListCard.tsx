@@ -3,9 +3,9 @@ import { Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const accountItems = [
-	{ name: "Checking", balance: 12450.8, change: "+2.4%" },
-	{ name: "Savings", balance: 8200.0, change: "+5.1%" },
-	{ name: "Investment", balance: 23100.5, change: "+8.7%" },
+	{ name: "Primary Care", balance: 12450.8, change: "+2.4%" },
+	{ name: "Care Plan", balance: 8200.0, change: "+5.1%" },
+	{ name: "Wellness Reserve", balance: 23100.5, change: "+8.7%" },
 ];
 
 export function ItemListCard() {

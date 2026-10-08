@@ -6,7 +6,7 @@ afterEach(() => vi.useRealTimers());
 describe("ChatPage", () => {
 	it("keeps thread drafts, supports rename and confirmed deletion", () => {
 		render(<ChatPage />);
-		expect(screen.getByRole("heading", { name: "AI conversation" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Care assistant" })).toBeInTheDocument();
 		fireEvent.change(screen.getByRole("textbox", { name: "Message" }), {
 			target: { value: "Draft one" },
 		});
@@ -26,9 +26,7 @@ describe("ChatPage", () => {
 	it("renders thinking, paused approval, result preview and editable messages", async () => {
 		vi.useFakeTimers();
 		render(<ChatPage />);
-		fireEvent.click(
-			screen.getByRole("button", { name: "Update the composer CSS to a five-line maximum" }),
-		);
+		fireEvent.click(screen.getByRole("button", { name: "Update my follow-up plan for next week" }));
 		fireEvent.keyDown(screen.getByRole("textbox", { name: "Message" }), { key: "Enter" });
 		await act(async () => {});
 		act(() => vi.advanceTimersByTime(1500));
@@ -43,7 +41,7 @@ describe("ChatPage", () => {
 			screen.getByRole("table", { name: "Local change preview - no files written" }),
 		).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Reference sources 1" }));
-		expect(screen.getByRole("link", { name: /INTEGRATION.md/ })).toBeInTheDocument();
+		expect(screen.getByRole("link", { name: /Care-team preparation guide/ })).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Edit message" }));
 		fireEvent.change(screen.getByRole("textbox", { name: "Edit message text" }), {
 			target: { value: "Edited prompt" },

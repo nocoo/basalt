@@ -13,7 +13,7 @@ describe("DataPage", () => {
 				.map((cell) => cell.textContent),
 		).toEqual(["Invoice↑", "Customer", "Status", "Amount", "Date"]);
 		expect(within(table).getByRole("cell", { name: "INV-2041" })).toBeInTheDocument();
-		expect(within(table).getByRole("cell", { name: "Nova Labs" })).toBeInTheDocument();
+		expect(within(table).getByRole("cell", { name: "North Clinic" })).toBeInTheDocument();
 	});
 
 	it("filters the library table through a named status selector", () => {
@@ -23,8 +23,8 @@ describe("DataPage", () => {
 		fireEvent.keyDown(filter, { key: "ArrowDown" });
 		fireEvent.click(screen.getByRole("option", { name: "Overdue" }));
 		const table = screen.getByRole("table", { name: "Data Table" });
-		expect(within(table).getByRole("cell", { name: "Echo Systems" })).toBeInTheDocument();
-		expect(within(table).queryByRole("cell", { name: "Nova Labs" })).not.toBeInTheDocument();
+		expect(within(table).getByRole("cell", { name: "Harbor Recovery" })).toBeInTheDocument();
+		expect(within(table).queryByRole("cell", { name: "North Clinic" })).not.toBeInTheDocument();
 	});
 
 	it("does not paint inner wells with bg-card", () => {

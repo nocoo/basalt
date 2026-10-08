@@ -115,7 +115,7 @@ describe("invoice data composition", () => {
 		expect(result.current.page).toBe(2);
 		act(() => result.current.setQuery("  ATLAS "));
 		expect(result.current.page).toBe(1);
-		expect(result.current.rows.map((row) => row.customer)).toEqual(["Atlas Works"]);
+		expect(result.current.rows.map((row) => row.customer)).toEqual(["Atlas Care Center"]);
 		act(() => result.current.setStatus("Pending"));
 		expect(result.current.total).toBe(0);
 		expect(result.current.rows).toEqual([]);
@@ -127,7 +127,7 @@ describe("invoice data composition", () => {
 		act(() => result.current.setStatus("Paid"));
 		expect(result.current.total).toBe(2);
 		act(() => result.current.sortBy("customer"));
-		expect(result.current.rows[0].customer).toBe("Atlas Works");
+		expect(result.current.rows[0].customer).toBe("Atlas Care Center");
 		act(() => result.current.setPage(-1));
 		expect(result.current.page).toBe(1);
 	});

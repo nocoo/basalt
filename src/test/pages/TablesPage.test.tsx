@@ -9,7 +9,7 @@ describe("TablesPage", () => {
 		const pipeline = document.querySelector('[data-table-showcase="pipeline"]');
 		expect(pipeline).toBeTruthy();
 		const table = within(pipeline as HTMLElement).getByRole("table", { name: "Companies" });
-		expect(within(table).getByText("Atlas")).toBeInTheDocument();
+		expect(within(table).getByText("Atlas Health")).toBeInTheDocument();
 		expect(within(table).getByText("Sarah Nguyen")).toBeInTheDocument();
 		expect(within(table).getAllByText("Enterprise").length).toBeGreaterThan(0);
 		expect(within(table).getByText("70%")).toBeInTheDocument();
@@ -26,7 +26,7 @@ describe("TablesPage", () => {
 		render(<TablesPage />);
 		fireEvent.mouseDown(screen.getByRole("tab", { name: "Deals" }));
 		expect(screen.getByRole("table", { name: "Deals" })).toBeInTheDocument();
-		expect(screen.getByText("Atlas platform")).toBeInTheDocument();
+		expect(screen.getByText("Atlas Health care network")).toBeInTheDocument();
 		expect(screen.getByText("6 deals in view")).toBeInTheDocument();
 		fireEvent.mouseDown(screen.getByRole("tab", { name: "Forecast" }));
 		expect(screen.getByRole("table", { name: "Forecast" })).toBeInTheDocument();
@@ -41,7 +41,7 @@ describe("TablesPage", () => {
 		const ledger = document.querySelector('[data-table-showcase="ledger"]');
 		expect(within(ledger as HTMLElement).getByText("INV-2044")).toBeInTheDocument();
 		expect(within(ledger as HTMLElement).queryByText("INV-2041")).not.toBeInTheDocument();
-		expect(screen.getByText("Atlas gateway")).toBeInTheDocument();
+		expect(screen.getByText("Atlas Health vitals hub")).toBeInTheDocument();
 	});
 
 	it("does not paint inner wells with bg-card", () => {
