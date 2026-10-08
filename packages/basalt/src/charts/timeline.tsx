@@ -71,7 +71,7 @@ function HourTimeline({
 	}
 	return (
 		<ol
-			className={cn("grid", className)}
+			className={cn("grid gap-x-basalt-space-lg", className)}
 			style={{ gridTemplateColumns: "max-content 2px minmax(0, 1fr)" }}
 			aria-label={ariaLabel}
 		>
@@ -81,7 +81,7 @@ function HourTimeline({
 				return (
 					<li
 						key={hour}
-						className="relative grid items-stretch gap-basalt-space-lg py-basalt-space-lg"
+						className="relative grid items-stretch py-basalt-space-lg"
 						style={{
 							gridColumn: "1 / -1",
 							gridTemplateColumns: "subgrid",
@@ -89,19 +89,19 @@ function HourTimeline({
 					>
 						<div
 							data-timeline-time
-							className="pr-basalt-space-lg text-right text-basalt-sm text-basalt-muted-foreground"
+							className="py-basalt-space-sm text-right text-basalt-sm leading-[var(--basalt-line-compact)] text-basalt-muted-foreground"
 						>
 							{hour.toString().padStart(2, "0")}:00
 						</div>
 						<div
 							className={cn(
-								"relative -my-basalt-space-lg flex justify-center border-l-2",
-								hasEvents ? "border-basalt-chart-1" : "border-basalt-border",
+								"relative -my-basalt-space-lg",
+								hasEvents ? "bg-basalt-chart-1" : "bg-basalt-border",
 							)}
 						>
 							<div
 								className={cn(
-									"absolute top-basalt-2 h-basalt-2 w-basalt-2 -translate-x-1/2 rounded-basalt-full",
+									"absolute left-1/2 top-[calc(var(--basalt-space-lg)+var(--basalt-space-sm)+var(--basalt-line-compact)/2)] h-basalt-2 w-basalt-2 -translate-x-1/2 -translate-y-1/2 rounded-basalt-full",
 									hasEvents ? "bg-basalt-chart-1" : "bg-basalt-border",
 								)}
 							/>
@@ -112,7 +112,7 @@ function HourTimeline({
 									key={event.id}
 									style={event.textColor ? { color: event.textColor } : undefined}
 									className={cn(
-										"flex items-center gap-basalt-space-lg rounded-basalt-md px-basalt-space-lg py-basalt-space-sm text-basalt-sm",
+										"flex items-center gap-basalt-space-lg rounded-basalt-md px-basalt-space-lg py-basalt-space-sm text-basalt-sm leading-[var(--basalt-line-compact)]",
 										event.color
 											? `${event.color} text-basalt-on-solid`
 											: "bg-basalt-muted text-basalt-foreground",

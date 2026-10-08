@@ -680,7 +680,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"timeline": {
 		"file": "packages/basalt/src/charts/timeline.tsx",
-		"hash": "8ac70a2086d76aac",
+		"hash": "792cfb070b64c52e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/timeline.js.map (sourcesContent[0])"
 	},

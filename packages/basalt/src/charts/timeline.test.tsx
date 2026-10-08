@@ -80,10 +80,13 @@ describe("Timeline", () => {
 		const list = row?.parentElement;
 		const timeColumn = row?.querySelector("[data-timeline-time]");
 		expect(list).toHaveStyle({ gridTemplateColumns: "max-content 2px minmax(0, 1fr)" });
+		expect(list).toHaveClass("gap-x-basalt-space-lg");
 		expect(row).toHaveStyle({ gridColumn: "1 / -1", gridTemplateColumns: "subgrid" });
 		expect(timeColumn).toHaveClass("text-right");
 		expect(timeColumn).not.toHaveClass("absolute");
-		expect(row?.querySelector(".border-l-2")).toHaveClass("relative", "-my-basalt-space-lg");
+		const axis = row?.children[1];
+		expect(axis).toHaveClass("relative", "-my-basalt-space-lg");
+		expect(axis?.firstElementChild).toHaveClass("left-1/2", "-translate-y-1/2");
 		expect(row?.lastElementChild).toHaveClass("min-w-0");
 	});
 

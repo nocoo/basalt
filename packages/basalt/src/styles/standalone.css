@@ -1204,11 +1204,11 @@
   .top-1\/2 {
     top: calc(1 / 2 * 100%);
   }
+  .top-\[calc\(var\(--basalt-space-lg\)\+var\(--basalt-space-sm\)\+var\(--basalt-line-compact\)\/2\)\] {
+    top: calc(var(--basalt-space-lg) + var(--basalt-space-sm) + var(--basalt-line-compact) / 2);
+  }
   .top-basalt-1 {
     top: var(--basalt-space-1);
-  }
-  .top-basalt-2 {
-    top: var(--basalt-space-2);
   }
   .top-basalt-space-sm {
     top: var(--basalt-space-sm);
@@ -2065,6 +2065,9 @@
   .gap-x-basalt-row-gap {
     column-gap: var(--basalt-space-row-gap);
   }
+  .gap-x-basalt-space-lg {
+    column-gap: var(--basalt-space-lg);
+  }
   .gap-x-basalt-space-md {
     column-gap: var(--basalt-space-md);
   }
@@ -2273,9 +2276,6 @@
     @supports (color: color-mix(in lab, red, red)) {
       border-color: color-mix(in oklab, hsl(var(--basalt-border)) 60%, transparent);
     }
-  }
-  .border-basalt-chart-1 {
-    border-color: hsl(var(--basalt-chart-1));
   }
   .border-basalt-destructive {
     border-color: hsl(var(--basalt-destructive));
