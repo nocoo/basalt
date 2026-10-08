@@ -13,7 +13,7 @@ export default function FolderSelection() {
 				</p>
 			</div>
 			<MultiSelect
-				label="Folders"
+				label="Care plans"
 				name="folders"
 				value={selected}
 				onValueChange={setSelected}
@@ -26,7 +26,7 @@ export default function FolderSelection() {
 					},
 					{
 						value: "design",
-						label: "Design",
+						label: "Wellness",
 						description: "Interfaces and inspiration",
 						leading: <Folder className="size-4" />,
 					},
@@ -39,14 +39,14 @@ export default function FolderSelection() {
 					{
 						value: "shared",
 						label: "Team archive",
-						description: "Required by your workspace",
+						description: "Required by your care team",
 						leading: <Lock className="size-4" />,
 						disabled: true,
 					},
 				]}
 			/>
 			<p role="status" className="text-basalt-base text-basalt-muted-foreground">
-				Saved in {selected.length} folders. The team archive is required.
+				Saved in {selected.length} folders. The care archive is required.
 			</p>
 		</div>
 	);

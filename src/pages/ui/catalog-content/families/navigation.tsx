@@ -165,7 +165,7 @@ export default function Example() {
 				<TabsTrigger value="b">About</TabsTrigger>
 			</TabsList>
 			<TabsContent value="a">Home overview and getting started.</TabsContent>
-			<TabsContent value="b">About this project and its goals.</TabsContent>
+			<TabsContent value="b">About this care plan and its goals.</TabsContent>
 		</Tabs>
 	);
 }`,
@@ -330,7 +330,7 @@ export default catalogContentFamily({
 	"editable-nav-item": {
 		docs: {
 			description:
-				"EditableNavItem and FolderNavItem compose navigation, inline rename, caller icons and independent trailing actions. Links use LinkProvider; selection, folder entities, permissions and persistence belong to the application.",
+				"EditableNavItem and EditableNavItem compose navigation, inline rename, caller icons and independent trailing actions. Links use LinkProvider; selection, care plan entities, permissions and persistence belong to the application.",
 			usage: EDITABLE_NAV_ITEM_EXAMPLES[0].code,
 			variants: [],
 			api: editableNavItemApi,
@@ -423,7 +423,7 @@ export default function Example() {
 		<TabsTrigger value="b">About</TabsTrigger>
 	</TabsList>
 	<TabsContent value="a">Home overview and getting started.</TabsContent>
-	<TabsContent value="b">About this project and its goals.</TabsContent>
+	<TabsContent value="b">About this care plan and its goals.</TabsContent>
 </Tabs>`,
 					[
 						'import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";',
@@ -436,7 +436,7 @@ export default function Example() {
 							<TabsTrigger value="b">About</TabsTrigger>
 						</TabsList>
 						<TabsContent value="a">Home overview and getting started.</TabsContent>
-						<TabsContent value="b">About this project and its goals.</TabsContent>
+						<TabsContent value="b">About this care plan and its goals.</TabsContent>
 					</Tabs>
 				),
 			},

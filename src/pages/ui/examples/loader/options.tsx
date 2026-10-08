@@ -11,7 +11,7 @@ export default function LoaderOptions() {
 			<div className="flex min-h-16 items-center justify-center">
 				<Loader
 					key={run}
-					label="Churning"
+					label="Preparing care report"
 					showLabel={options.includes("label")}
 					showElapsed={options.includes("elapsed")}
 					animate={options.includes("animation")}

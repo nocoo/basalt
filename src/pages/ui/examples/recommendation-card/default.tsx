@@ -8,23 +8,23 @@ import { useState } from "react";
 const options: RecommendationOption[] = [
 	{
 		id: "cones",
-		label: "Reorder from Cone King",
-		description: "Reorder waffle cones from Cone King with lead time 7 days.",
+		label: "Follow-up for Jordan Lee",
+		description: "Schedule a follow-up for Jordan Lee within 7 days.",
 		confidence: "high",
 	},
 	{
 		id: "vanilla",
-		label: "Switch to Vanilla Madagascar",
-		description: "Switch vanilla to Vanilla Madagascar for peak season.",
+		label: "Review sleep routine",
+		description: "Review the sleep routine before the next follow-up.",
 		confidence: "review",
 		actionLabel: "Configure",
 	},
 	{
 		id: "all",
-		label: "Full restock across every SKU",
-		description: "Fall back to a full restock across every SKU.",
+		label: "Review all care plan items",
+		description: "Review every care plan item together.",
 		confidence: "none",
-		actionLabel: "Accept full restock",
+		actionLabel: "Accept full care plan update",
 	},
 ];
 export default function RecommendationDemo() {
@@ -34,7 +34,7 @@ export default function RecommendationDemo() {
 		<div className="w-full space-y-basalt-space-lg">
 			<RecommendationCard
 				key={run}
-				title="Want me to place this restock order?"
+				title="Review these follow-up recommendations?"
 				options={options}
 				onAccept={(option) => setNotice(`Accepted: ${option.label}`)}
 			/>

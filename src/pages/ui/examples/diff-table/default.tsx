@@ -6,27 +6,27 @@ import { useId, useState } from "react";
 const rows: DiffTableRow[] = [
 	{
 		id: "rocky",
-		label: "Rocky Road",
+		label: "Blood pressure",
 		change: "remove",
-		values: { flavor: "Rocky Road", category: "Classic", supplier: "aurora-scoops" },
+		values: { flavor: "Blood pressure", category: "Cardiometabolic", supplier: "harbor-clinic" },
 	},
 	{
 		id: "bubblegum",
-		label: "Bubblegum",
+		label: "Sleep duration",
 		change: "remove",
-		values: { flavor: "Bubblegum", category: "Retro", supplier: "northstar-creamery" },
+		values: { flavor: "Sleep duration", category: "Sleep", supplier: "northstar-clinic" },
 	},
 	{
 		id: "mint",
-		label: "Mint Chip",
+		label: "Daily steps",
 		change: "unchanged",
-		values: { flavor: "Mint Chip", category: "Classic", supplier: "maple-orbit" },
+		values: { flavor: "Daily steps", category: "Cardiometabolic", supplier: "harbor-clinic" },
 	},
 	{
 		id: "pistachio",
-		label: "Pistachio",
+		label: "Activity level",
 		change: "add",
-		values: { flavor: "Pistachio", category: "Seasonal", supplier: "maple-orbit" },
+		values: { flavor: "Activity level", category: "Wellness", supplier: "harbor-clinic" },
 	},
 ];
 export default function DiffTableDemo() {
@@ -37,12 +37,12 @@ export default function DiffTableDemo() {
 		<div className="w-full space-y-basalt-space-lg">
 			<DiffTable
 				key={run}
-				title="Proposed menu cleanup"
+				title="Proposed care record update"
 				rows={rows}
 				columns={[
-					{ id: "flavor", label: "Flavor" },
+					{ id: "flavor", label: "Care metric" },
 					{ id: "category", label: "Category" },
-					{ id: "supplier", label: "Supplier" },
+					{ id: "supplier", label: "Care team" },
 				]}
 				onApply={async () => {
 					if (fail) throw new Error("Could not apply changes. Retry when ready.");

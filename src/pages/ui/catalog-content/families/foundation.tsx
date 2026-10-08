@@ -44,7 +44,7 @@ function scenarioModule(code: string, imports: string[]): string {
 
 const SCROLL_AREA_USAGE = `import { ScrollArea } from "@nocoo/basalt/components/scroll-area";
 
-const activity = ["Created the project", "Published the first release", "Added a domain"];
+const activity = ["Created the care plan", "Reviewed the care plan", "Added a care note"];
 
 export default function Example() {
 	return (

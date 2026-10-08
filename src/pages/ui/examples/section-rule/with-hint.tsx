@@ -2,7 +2,7 @@ import { SectionRule } from "@nocoo/basalt/components/section-rule";
 
 export default function SectionRuleWithHint() {
 	return (
-		<SectionRule title="Catalog" hint="Published items in the current workspace.">
+		<SectionRule title="Catalog" hint="Published items in the current care team.">
 			<p className="text-basalt-base text-basalt-muted-foreground">
 				The info control explains the region without a second heading.
 			</p>

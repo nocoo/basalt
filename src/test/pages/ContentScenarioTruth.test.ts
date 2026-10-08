@@ -155,7 +155,7 @@ describe("content scenario truth", () => {
 	it("includes autocomplete items in usage", () => {
 		const usage = CATALOG_DOCS.autocomplete?.usage ?? "";
 		expect(usage).toContain("items=");
-		expect(usage).toContain("Apple");
+		expect(usage).toContain("Care plan");
 		expect(usage).not.toMatch(/<Autocomplete\s*\/>/);
 		expect(scenario("autocomplete", "autocomplete-default").code).toContain("items=");
 	});
@@ -234,7 +234,7 @@ describe("content scenario truth", () => {
 		expect(usage).toContain("SidebarNav");
 		expect(usage).toContain("SidebarIconItem");
 		expect(usage).toContain("Creamery Ops");
-		expect(usage).toContain("Subway surfing");
+		expect(usage).toContain("Urgent to-dos this morning");
 		expect(usage).toBe(scenario("sidebar", "sidebar-default").code);
 		expect(scenario("sidebar", "sidebar-provider").code).toContain("ContentIsland");
 	});

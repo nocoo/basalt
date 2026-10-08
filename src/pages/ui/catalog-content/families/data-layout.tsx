@@ -230,7 +230,7 @@ export default function Example() {
 			usage: `import { PageHeader } from "@nocoo/basalt/components/page-header";
 
 export default function Example() {
-	return <PageHeader title="Dashboard" description="Overview of recent project activity." />;
+	return <PageHeader title="Dashboard" description="Overview of recent care activity." />;
 }`,
 			variants: [],
 			api: pageHeaderApi,
@@ -245,7 +245,7 @@ export default function Example() {
 			usage: `import { StatStrip } from "@nocoo/basalt/components/stat-strip";
 
 export default function Example() {
-	return <StatStrip items={[{ label: "Projects", value: "24" }]} />;
+	return <StatStrip items={[{ label: "Care plans", value: "24" }]} />;
 }`,
 			variants: [],
 			api: statStripApi,
@@ -284,7 +284,7 @@ export default function Example() {
 				"ResourceList",
 				"resource-list",
 				"A resource page with a heading, toolbar, filters, bulk actions, state and result regions. The original named-resource data array remains supported; custom children can render a typed table.",
-				'<ResourceList title="Projects" data={[{ name: "Atlas", status: "Active" }]} />',
+				'<ResourceList title="Care plans" data={[{ name: "Atlas", status: "Active" }]} />',
 			),
 			api: resourceListApi,
 		},

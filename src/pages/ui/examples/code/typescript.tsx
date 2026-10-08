@@ -6,9 +6,9 @@ export default function CodeTypescript() {
 			title="fetch-user.ts"
 			lineNumbers
 			code={`export async function fetchUser(id: string, retries = 3) {
-  const response = await fetch("/api/users/" + id);
+  const response = await fetch("/api/patients/" + id);
   if (!response.ok) {
-    throw new Error("User not found");
+    throw new Error("Patient not found");
   }
   const user = await response.json();
   return {

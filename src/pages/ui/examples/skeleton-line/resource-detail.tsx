@@ -30,9 +30,9 @@ export default function ResourceDetailSkeleton() {
 							</>
 						) : (
 							<>
-								<h4 className="text-basalt-2xl font-semibold">Atlas production</h4>
+								<h4 className="text-basalt-2xl font-semibold">Atlas care program</h4>
 								<p className="text-basalt-base text-basalt-muted-foreground">
-									A shared home for your production services.
+									A shared home for your active care programs.
 								</p>
 							</>
 						)}
@@ -49,8 +49,8 @@ export default function ResourceDetailSkeleton() {
 								<>
 									<h4 className="font-medium">Overview</h4>
 									<p className="text-basalt-base leading-basalt-relaxed text-basalt-muted-foreground">
-										Atlas handles production traffic across three regions. Deployments are reviewed
-										before release, with health checks on every route.
+										Atlas coordinates appointments across three clinics. Care teams review shared
+										notes before the next patient check-in.
 									</p>
 								</>
 							)}
@@ -73,8 +73,8 @@ export default function ResourceDetailSkeleton() {
 						{[
 							{ name: "Status", value: "Healthy" },
 							{ name: "Region", value: "US East · EU West" },
-							{ name: "Owner", value: "Platform team" },
-							{ name: "Last deployment", value: "Today, 09:42" },
+							{ name: "Care lead", value: "Care coordination team" },
+							{ name: "Last check-in", value: "Today, 09:42" },
 						].map((item) => (
 							<div key={item.name} className="h-12 space-y-basalt-space-lg">
 								<p className="text-basalt-sm text-basalt-muted-foreground">{item.name}</p>

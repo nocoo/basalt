@@ -14,17 +14,17 @@ import { useState } from "react";
 const destinations = [
 	{ label: "New chat", icon: Plus },
 	{ label: "Home", icon: Home },
-	{ label: "Invite users", icon: Users },
+	{ label: "Invite patients", icon: Users },
 ];
 const chats = [
-	"Supplier records",
+	"Patient records",
 	"Urgent to-dos this morning",
-	"Flavor page ticket",
+	"Follow-up appointment",
 	"Workload summary",
-	"Off-board a supplier",
-	"Batch restock function",
-	"Propose flavor edits",
-	"Subway surfing",
+	"Update a care provider",
+	"Care plan summary",
+	"Review care plan changes",
+	"Daily activity notes",
 ];
 
 export default function SidebarDefault() {
@@ -43,7 +43,7 @@ export default function SidebarDefault() {
 					<PanelLeft aria-hidden="true" />
 				</Button>
 			</SidebarHeader>
-			<SidebarNav aria-label="Example workspace">
+			<SidebarNav aria-label="Example care team">
 				{destinations.map(({ label, icon: Icon }) =>
 					collapsed ? (
 						<SidebarIconItem

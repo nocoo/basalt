@@ -14,8 +14,8 @@ export default function GroupedBarDefault() {
 		<GroupedBarChart
 			data={data}
 			series={[
-				{ key: "y", label: "Income" },
-				{ key: "y2", label: "Expense" },
+				{ key: "y", label: "Care reimbursements" },
+				{ key: "y2", label: "Care spending" },
 			]}
 			showAxes
 			showLegend

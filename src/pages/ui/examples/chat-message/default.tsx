@@ -4,19 +4,19 @@ export default function MessageDemo() {
 	return (
 		<ChatMessage
 			variant="assistant"
-			content="**Pistachio** is up 23%. Review the source before reordering."
+			content="**Sleep quality** is up 23%. Review the latest wellness report before the follow-up."
 			trace={
 				<Thinking
-					steps={[{ id: "read", label: "Read sales report", status: "complete" }]}
+					steps={[{ id: "read", label: "Read care report", status: "complete" }]}
 					defaultOpen={false}
 				/>
 			}
 			sources={[
 				{
 					id: "sales",
-					name: "Summer sales report",
+					name: "Summer care report",
 					type: "CSV",
-					href: "https://example.com/sales",
+					href: "https://example.com/care",
 				},
 			]}
 			onRegenerate={() => undefined}

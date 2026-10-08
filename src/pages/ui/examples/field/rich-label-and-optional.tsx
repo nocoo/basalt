@@ -4,10 +4,10 @@ import { Input } from "@nocoo/basalt/components/input";
 export default function FieldRichLabelAndOptional() {
 	return (
 		<Field
-			label={<span>Workspace name</span>}
-			hint={<span>Shown on invoices</span>}
+			label={<span>Care team name</span>}
+			hint={<span>Shown on care summaries</span>}
 			required={false}
-			labelTooltip="Used in billing"
+			labelTooltip="Used in care coordination"
 		>
 			<Input />
 		</Field>

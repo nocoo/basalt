@@ -406,3 +406,12 @@ and documentation. Adjacent routes consequently changed title and subtitle scale
 without a semantic reason. ShowcasePage now owns one 30px/16px heading contract
 and 24px section rhythm; routes cannot override its size. Shell breadcrumbs omit
 self ancestors and include the component parent for source pages.
+
+## 2026-10-08: Example copy is not a global replacement operation
+
+A delegated health-theme copy pass initially replaced substrings inside CSS,
+object keys and identifiers and produced mismatched labels and units. Review
+caught the invalid syntax, schema drift and dollar-valued patient metrics before
+commit. Restore technical keys and edit complete user-facing strings; compare
+translation key sets, review units and labels together, and test source/render
+parity. A content generator check alone does not prove realistic example copy.

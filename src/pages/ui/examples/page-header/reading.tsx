@@ -1,7 +1,7 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 
-export default function ReadingHeader() {
+export default function ResourcesHeader() {
 	return (
 		<PageHeader
 			size="xl"

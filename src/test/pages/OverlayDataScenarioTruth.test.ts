@@ -113,10 +113,10 @@ describe("overlay data scenario truth", () => {
 	it("shows collapsible content instead of ellipsis shells", () => {
 		const usage = CATALOG_DOCS.collapsible?.usage ?? "";
 		expectUsageImportsCover(usage, ["Collapsible", "CollapsibleTrigger", "CollapsibleContent"]);
-		expect(usage).toContain("This project is a React component library.");
+		expect(usage).toContain("This care plan is a React component library.");
 		expect(usage).not.toContain("…");
 		expect(scenario("collapsible", "collapsible-with-default-styling").code).toContain(
-			"This project is a React component library.",
+			"This care plan is a React component library.",
 		);
 		expect(scenario("collapsible", "collapsible-with-default-styling").code).not.toContain("…");
 		expect(scenario("collapsible", "collapsible-custom-trigger").code).toContain("<Collapsible");

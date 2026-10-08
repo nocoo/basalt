@@ -6,68 +6,68 @@ import { CalendarDays, ExternalLink, Link2, ListFilter, Signal } from "lucide-re
 const records = [
 	{
 		id: "alpine",
-		name: "Alpine Churn — Zurich",
-		tags: ["B2B", "Gelato", "Wholesale"],
+		name: "Alpine Clinic — Zurich",
+		tags: ["Primary care", "Outpatient", "Rehabilitation"],
 		last: "4 days ago",
 		strength: "Very strong",
 		website: "alpine-churn.example.com",
 	},
 	{
 		id: "amber",
-		name: "Amber Scoop — Prague",
-		tags: ["Gelato", "B2B"],
+		name: "Amber Care — Prague",
+		tags: ["Outpatient", "Primary care"],
 		last: "over 1 year ago",
 		strength: "No communication",
 		website: "",
 	},
 	{
 		id: "andes",
-		name: "Andes Snow Creamery — Quito",
-		tags: ["Gelato", "Catering"],
+		name: "Andes Medical — Quito",
+		tags: ["Outpatient", "Nutrition"],
 		last: "almost 2 years ago",
 		strength: "Very weak",
 		website: "",
 	},
 	{
 		id: "apricot",
-		name: "Apricot Atlas — Algiers",
-		tags: ["Sorbet", "Imports"],
+		name: "Apricot Wellness — Algiers",
+		tags: ["Pediatrics", "Diagnostics"],
 		last: "11 months ago",
 		strength: "Very weak",
 		website: "apricot-atlas.example.com",
 	},
 	{
 		id: "aurora",
-		name: "Aurora Scoops — Reykjavik",
-		tags: ["Gelato", "Seasonal"],
+		name: "Aurora Clinic — Reykjavik",
+		tags: ["Outpatient", "Follow-up"],
 		last: "9 days ago",
 		strength: "Very strong",
 		website: "aurora-scoops.example.com",
 	},
 	{
 		id: "baltic",
-		name: "Baltic Berry — Tallinn",
-		tags: ["Dairy-free", "Seasonal", "B2C"],
+		name: "Baltic Health — Tallinn",
+		tags: ["Low-sodium", "Follow-up", "Patient"],
 		last: "5 weeks ago",
 		strength: "Weak",
 		website: "baltic-berry.example.com",
 	},
 ];
 const tagColors: Record<string, TagColor> = {
-	B2B: "amber",
-	Gelato: "violet",
-	Wholesale: "amber",
-	Catering: "rose",
-	Sorbet: "rose",
-	Imports: "warning",
-	Seasonal: "success",
-	"Dairy-free": "info",
-	B2C: "teal",
+	"Primary care": "amber",
+	Outpatient: "violet",
+	Rehabilitation: "amber",
+	Nutrition: "rose",
+	Pediatrics: "rose",
+	Diagnostics: "warning",
+	"Follow-up": "success",
+	"Low-sodium": "info",
+	Patient: "teal",
 };
 const columns: DataTableColumn<(typeof records)[number]>[] = [
 	{
 		id: "name",
-		header: "Company",
+		header: "Care provider",
 		width: 240,
 		sortValue: (row) => row.name,
 		accessor: (row) => (
@@ -166,7 +166,7 @@ export default function RecordsTable() {
 				getRowId={(row) => row.id}
 				defaultSort={{ id: "name", dir: "asc" }}
 				maxHeight={300}
-				aria-label="Supplier records"
+				aria-label="Medical provider records"
 			/>
 			<p className="text-basalt-sm text-basalt-muted-foreground">
 				6 records · Scroll horizontally for relationship details

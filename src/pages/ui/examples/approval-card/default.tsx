@@ -5,34 +5,34 @@ import { useState } from "react";
 const questions: ApprovalQuestion[] = [
 	{
 		id: "flavors",
-		label: "How many flavors should we launch?",
+		label: "How many follow-ups should we schedule?",
 		type: "single",
 		options: [
-			{ id: "three", label: "Three (core line)" },
-			{ id: "five", label: "Five (full case)" },
-			{ id: "one", label: "Just one hero" },
+			{ id: "three", label: "Three visits" },
+			{ id: "five", label: "Five visits" },
+			{ id: "one", label: "One visit" },
 		],
 	},
 	{
 		id: "mix",
-		label: "Which mix-ins should we stock?",
+		label: "Which care steps should we review?",
 		type: "multiple",
 		allowCustom: true,
 		options: [
-			{ id: "chips", label: "Chocolate chips" },
-			{ id: "waffle", label: "Waffle bits" },
-			{ id: "sprinkles", label: "Sprinkles" },
+			{ id: "chips", label: "Follow-up appointment" },
+			{ id: "waffle", label: "Medication review" },
+			{ id: "sprinkles", label: "Vitals check" },
 		],
 	},
 	{
 		id: "market",
-		label: "Which market do we enter first?",
+		label: "Which appointment format works best?",
 		type: "single",
 		required: false,
 		options: [
-			{ id: "trucks", label: "Food trucks" },
-			{ id: "grocery", label: "Grocery freezers" },
-			{ id: "shops", label: "Scoop shops" },
+			{ id: "trucks", label: "Video visit" },
+			{ id: "grocery", label: "Clinic visit" },
+			{ id: "shops", label: "Home visit" },
 		],
 	},
 ];

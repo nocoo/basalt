@@ -86,7 +86,7 @@ export default function StatCardStateTransition() {
 
 			{/* StatCard with caller-controlled status: when loading, error, or empty, stale value/trend are withdrawn */}
 			<StatCard
-				title="API Ingestion Rate"
+				title="Vitals sync rate"
 				value="840 req/min"
 				subtitle={
 					state === "error" || state === "empty" ? undefined : "Measured over the last 60 minutes"
@@ -105,7 +105,7 @@ export default function StatCardStateTransition() {
 					) : state === "error" ? (
 						<span className="inline-flex items-center gap-basalt-space-md text-basalt-base font-medium text-basalt-destructive">
 							<AlertCircle className="h-4 w-4" />
-							Telemetry cluster offline
+							Wearable sync offline
 						</span>
 					) : state === "empty" ? (
 						<span className="inline-flex items-center gap-basalt-space-md text-basalt-base font-medium text-basalt-muted-foreground">

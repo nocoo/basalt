@@ -21,15 +21,15 @@ export default function LineAccessibleData() {
 			<LineChart
 				data={data}
 				showAxes
-				ariaLabel="Weekly active request trends"
+				ariaLabel="Weekly patient visit trends"
 				className="h-48 w-full"
-				summary="Active requests peaked on Thursday at 220, with a weekly low of 95 on Wednesday. Keyboard exploration available: use Tab to focus the plot and arrow keys to navigate points."
+				summary="Patient visits peaked on Thursday at 220, with a weekly low of 95 on Wednesday. Keyboard exploration available: use Tab to focus the plot and arrow keys to navigate points."
 				dataAlternative={
 					<Collapsible className="mt-basalt-layout-sm text-basalt-sm">
-						<CollapsibleTrigger>View request data table</CollapsibleTrigger>
+						<CollapsibleTrigger>View patient visit data table</CollapsibleTrigger>
 						<CollapsibleContent unstyled>
 							<table
-								aria-label="Weekly request data"
+								aria-label="Weekly patient visit data"
 								className="mt-basalt-layout-sm w-full border-collapse text-left text-basalt-sm text-basalt-muted-foreground"
 							>
 								<thead>
@@ -44,7 +44,7 @@ export default function LineAccessibleData() {
 											scope="col"
 											className="py-basalt-space-sm text-right font-medium text-basalt-foreground tabular-nums"
 										>
-											Requests
+											Visits
 										</th>
 									</tr>
 								</thead>

@@ -53,11 +53,11 @@ describe("reusable example adapters", () => {
 		for (let tick = 0; tick < 5; tick++) act(() => vi.advanceTimersByTime(200));
 		expect(screen.getByRole("alert")).toHaveTextContent("Connection interrupted");
 		fireEvent.click(screen.getByRole("checkbox", { name: "Simulate failure" }));
-		fireEvent.click(screen.getByRole("button", { name: "Retry Project-notes-1.pdf" }));
-		fireEvent.click(screen.getByRole("button", { name: "Cancel Project-notes-1.pdf" }));
+		fireEvent.click(screen.getByRole("button", { name: "Retry Care-plan-notes-1.pdf" }));
+		fireEvent.click(screen.getByRole("button", { name: "Cancel Care-plan-notes-1.pdf" }));
 		act(() => vi.advanceTimersByTime(5000));
 		expect(screen.getByText("180 KB · Cancelled")).toBeInTheDocument();
-		fireEvent.click(screen.getByRole("button", { name: "Retry Project-notes-1.pdf" }));
+		fireEvent.click(screen.getByRole("button", { name: "Retry Care-plan-notes-1.pdf" }));
 		for (let tick = 0; tick < 10; tick++) act(() => vi.advanceTimersByTime(200));
 		expect(screen.getByText("1 completed · 1 total")).toBeInTheDocument();
 		fireEvent.click(screen.getByRole("button", { name: "Add sample file" }));

@@ -15,7 +15,7 @@ export default function StatCardMetricInfo() {
 			<div className="grid w-full grid-cols-1 gap-basalt-layout sm:grid-cols-2">
 				{/* 1. StatCard with action tooltip trigger and Lucide icon */}
 				<StatCard
-					title="Monthly Recurring Revenue"
+					title="Monthly care reimbursements"
 					value="$48,250"
 					subtitle="vs. $42,100 last month"
 					icon={TrendingUp}
@@ -24,14 +24,17 @@ export default function StatCardMetricInfo() {
 					action={
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Button variant="ghost" size="icon" aria-label="Revenue calculation methodology">
+								<Button
+									variant="ghost"
+									size="icon"
+									aria-label="Care reimbursement calculation methodology"
+								>
 									<HelpCircle className="h-4 w-4" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>
 								<p className="max-w-xs text-basalt-sm">
-									Normalized monthly recurring subscription revenue across active enterprise and
-									team tiers.
+									Total approved care reimbursements across active clinic programs this month.
 								</p>
 							</TooltipContent>
 						</Tooltip>
@@ -40,9 +43,9 @@ export default function StatCardMetricInfo() {
 
 				{/* 2. StatCard with custom trend content badge and action */}
 				<StatCard
-					title="Active Subscriptions"
+					title="Active care plans"
 					value="1,420"
-					subtitle="Total accounts with active licenses"
+					subtitle="Total plans with active follow-up"
 					icon={Users}
 					iconColor="text-basalt-tag-teal-foreground"
 					trendContent={
@@ -54,13 +57,13 @@ export default function StatCardMetricInfo() {
 					action={
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Button variant="ghost" size="icon" aria-label="Subscription count details">
+								<Button variant="ghost" size="icon" aria-label="Care plan count details">
 									<HelpCircle className="h-4 w-4" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>
 								<p className="max-w-xs text-basalt-sm">
-									Accounts with at least one active paid seat renewed in the last 30 days.
+									Care plans with at least one active follow-up recorded in the last 30 days.
 								</p>
 							</TooltipContent>
 						</Tooltip>

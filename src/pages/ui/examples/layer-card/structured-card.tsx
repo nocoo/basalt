@@ -6,8 +6,10 @@ export default function LayerCardStructuredCard() {
 		<LayerCard className="w-full max-w-sm">
 			<LayerCard.Header>
 				<div>
-					<h3 className="text-basalt-base font-semibold text-basalt-foreground">Deployment</h3>
-					<p className="text-basalt-sm text-basalt-muted-foreground">Production environment</p>
+					<h3 className="text-basalt-base font-semibold text-basalt-foreground">
+						Care plan review
+					</h3>
+					<p className="text-basalt-sm text-basalt-muted-foreground">Clinical Ops environment</p>
 				</div>
 				<span className="text-basalt-sm font-medium text-basalt-muted-foreground">Ready</span>
 			</LayerCard.Header>
@@ -18,7 +20,7 @@ export default function LayerCardStructuredCard() {
 				<Button size="sm" variant="secondary">
 					Review
 				</Button>
-				<Button size="sm">Deploy</Button>
+				<Button size="sm">Review</Button>
 			</LayerCard.Footer>
 		</LayerCard>
 	);

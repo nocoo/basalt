@@ -4,12 +4,12 @@ import { MultiSelect } from "@nocoo/basalt/components/multi-select";
 import { useState } from "react";
 
 const resources = [
-	{ name: "Design system handbook", tag: "design", folder: "Library" },
-	{ name: "Accessible charts", tag: "research", folder: "Reading" },
-	{ name: "Interface patterns", tag: "design", folder: "Reading" },
-	{ name: "API migration notes", tag: "engineering", folder: "Library" },
+	{ name: "Wellness system handbook", tag: "design", folder: "Care library" },
+	{ name: "Health trends", tag: "research", folder: "Resources" },
+	{ name: "Care workflows", tag: "design", folder: "Resources" },
+	{ name: "Care integration notes", tag: "care ops", folder: "Care library" },
 ];
-const tags = ["design", "research", "engineering"].map((value) => ({ value, label: value }));
+const tags = ["design", "research", "care ops"].map((value) => ({ value, label: value }));
 
 export default function ResourceFilters() {
 	const [query, setQuery] = useState("");

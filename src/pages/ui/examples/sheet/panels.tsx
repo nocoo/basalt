@@ -22,12 +22,12 @@ export default function SheetPanels() {
 						<SheetHeader>
 							<SheetTitle>Account overview</SheetTitle>
 							<SheetDescription>
-								The panel slides from the {side} as the workspace softly blurs behind it.
+								The panel slides from the {side} as the care team softly blurs behind it.
 							</SheetDescription>
 						</SheetHeader>
 						<dl className="grid grid-cols-2 gap-basalt-space-lg py-basalt-space-lg text-basalt-base">
 							<dt className="text-basalt-muted-foreground">Company</dt>
-							<dd>Acme Studio</dd>
+							<dd>Harbor Health</dd>
 							<dt className="text-basalt-muted-foreground">Account owner</dt>
 							<dd>Alex Morgan</dd>
 							<dt className="text-basalt-muted-foreground">Stage</dt>

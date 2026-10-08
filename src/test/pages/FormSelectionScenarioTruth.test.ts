@@ -172,9 +172,9 @@ describe("form selection scenario truth", () => {
 		expect(error.code).not.toContain("kumo-ex-email");
 		const rich = scenario("field", "field-rich-label-and-optional");
 		expect(rich.title).toBe("Rich label and optional");
-		expect(rich.code).toContain("label={<span>Workspace name</span>}");
+		expect(rich.code).toContain("label={<span>Care team name</span>}");
 		expect(rich.code).toContain("required={false}");
-		expect(rich.code).toContain('labelTooltip="Used in billing"');
+		expect(rich.code).toContain('labelTooltip="Used in care coordination"');
 		const structured = scenario("field", "field-structured-error");
 		expect(structured.title).toBe("Structured error");
 		expect(structured.code).toContain("error={{ message: <span>Enter a valid email</span> }}");

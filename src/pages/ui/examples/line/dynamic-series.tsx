@@ -145,7 +145,7 @@ export default function LineDynamicSeries() {
 				showAxes
 				showLegend
 				className="h-64 w-full"
-				ariaLabel="Regional latency and variance monitor"
+				ariaLabel="Care platform latency and variance monitor"
 				xValueFormatter={(x) => `${String(x)} CST`}
 				valueFormatter={(val) => `${val}ms`}
 				yDomain={[-20, 160]}
@@ -185,7 +185,7 @@ export default function LineDynamicSeries() {
 						</div>
 					);
 				}}
-				summary="Real-time multi-region latency telemetry. Highlights negative variance anomalies against fixed SLA ceiling."
+				summary="Care platform response-time telemetry across clinics. Highlights negative variance anomalies against fixed SLA ceiling."
 			/>
 		</div>
 	);

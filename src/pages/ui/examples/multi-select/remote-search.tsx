@@ -2,9 +2,9 @@ import { MultiSelect } from "@nocoo/basalt/components/multi-select";
 import { useEffect, useState } from "react";
 
 const models = [
-	{ value: "atlas", label: "Atlas", description: "Reasoning · 128k context" },
-	{ value: "cedar", label: "Cedar", description: "Fast responses · 64k context" },
-	{ value: "ember", label: "Ember", description: "Vision · 256k context" },
+	{ value: "atlas", label: "Atlas", description: "Primary care · North clinic" },
+	{ value: "cedar", label: "Cedar", description: "Physical therapy · South clinic" },
+	{ value: "ember", label: "Ember", description: "Nutrition · Central clinic" },
 ];
 
 export default function RemoteModelSelection() {
@@ -29,9 +29,9 @@ export default function RemoteModelSelection() {
 	}, [query, selected]);
 	return (
 		<div className="w-full max-w-md space-y-basalt-space-lg">
-			<h3 className="font-medium">Compare model usage</h3>
+			<h3 className="font-medium">Choose a care provider</h3>
 			<MultiSelect
-				label="Models"
+				label="Care providers"
 				value={selected}
 				onValueChange={setSelected}
 				query={query}
@@ -39,10 +39,12 @@ export default function RemoteModelSelection() {
 				options={options}
 				filterOptions={false}
 				loading={loading}
-				emptyLabel="No models match this search."
+				emptyLabel="No care providers match this search."
 			/>
 			<p role="status" className="text-basalt-base text-basalt-muted-foreground">
-				{selected.length ? `Comparing ${selected.join(", ")}` : "Choose models to compare."}
+				{selected.length
+					? `Comparing care providers ${selected.join(", ")}`
+					: "Choose care providers to compare."}
 			</p>
 		</div>
 	);

@@ -127,7 +127,7 @@ export default function HeatmapMatrixHourSchedule() {
 				rowLabels={visibleRows}
 				columnLabels={HOURS}
 				values={visibleValues}
-				metricLabel="Origin Throughput"
+				metricLabel="Activity volume"
 				ariaLabel="Weekly hourly traffic density"
 				cellSize={18}
 				columnWidth={38}
@@ -139,7 +139,7 @@ export default function HeatmapMatrixHourSchedule() {
 							{cell.rowLabel} at {cell.columnLabel}
 						</div>
 						<ChartTooltipRow
-							label="Throughput"
+							label="Activity volume"
 							value={cell.value}
 							unit="req/s"
 							color={cell.isMissing ? undefined : "hsl(var(--basalt-chart-1))"}

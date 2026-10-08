@@ -362,7 +362,7 @@ export default function Example() {
 	icon={<AlertTriangle />}
 	variant="alert"
 	title="Review required"
-	description="Please review your billing information before proceeding."
+	description="Please review your care coordination details before proceeding."
 />`,
 					[
 						'import { Banner } from "@nocoo/basalt/components/banner";',
@@ -374,7 +374,7 @@ export default function Example() {
 						icon={<AlertTriangle />}
 						variant="alert"
 						title="Review required"
-						description="Please review your billing information before proceeding."
+						description="Please review your care coordination details before proceeding."
 					/>
 				),
 			},
@@ -452,7 +452,7 @@ export default function Example() {
 	action={
 		<>
 			<Banner.Action>Pay now</Banner.Action>
-			<Banner.Action variant="secondary">Go to billing</Banner.Action>
+			<Banner.Action variant="secondary">Open care coordination</Banner.Action>
 		</>
 	}
 />`,
@@ -470,7 +470,7 @@ export default function Example() {
 						action={
 							<>
 								<Banner.Action>Pay now</Banner.Action>
-								<Banner.Action variant="secondary">Go to billing</Banner.Action>
+								<Banner.Action variant="secondary">Open care coordination</Banner.Action>
 							</>
 						}
 					/>
@@ -483,20 +483,20 @@ export default function Example() {
 					`<div className="w-full space-y-basalt-space-lg">
 	<Banner
 		size="sm"
-		description="A project named Atlas already exists."
-		action={<Link href="#">Open project</Link>}
+		description="A patient record named Atlas already exists."
+		action={<Link href="#">Open patient record</Link>}
 	/>
 	<Banner
 		size="sm"
-		description="A project named Atlas already exists."
+		description="A patient record named Atlas already exists."
 		action={
 			<>
-				<Banner.Action>Open project</Banner.Action>
+				<Banner.Action>Open patient record</Banner.Action>
 				<Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss compact" />
 			</>
 		}
 	/>
-	<Banner size="sm" description="A project named Atlas already exists." />
+	<Banner size="sm" description="A patient record named Atlas already exists." />
 </div>`,
 					[
 						'import { Banner } from "@nocoo/basalt/components/banner";',
@@ -508,20 +508,20 @@ export default function Example() {
 					<div className="w-full space-y-basalt-space-lg">
 						<Banner
 							size="sm"
-							description="A project named Atlas already exists."
-							action={<Link href="#">Open project</Link>}
+							description="A patient record named Atlas already exists."
+							action={<Link href="#">Open patient record</Link>}
 						/>
 						<Banner
 							size="sm"
-							description="A project named Atlas already exists."
+							description="A patient record named Atlas already exists."
 							action={
 								<>
-									<Banner.Action>Open project</Banner.Action>
+									<Banner.Action>Open patient record</Banner.Action>
 									<Banner.Action variant="ghost" icon={<X />} aria-label="Dismiss compact" />
 								</>
 							}
 						/>
-						<Banner size="sm" description="A project named Atlas already exists." />
+						<Banner size="sm" description="A patient record named Atlas already exists." />
 					</div>
 				),
 			},
@@ -846,10 +846,10 @@ export function App() {
 				id: catalogScenarioId("toast", "title-and-description"),
 				title: "Title and Description",
 				code: toastScenarioModule(
-					'<Button onClick={() => toast("Saved", { description: "Project updated." })}>\n\tWith description\n</Button>',
+					'<Button onClick={() => toast("Saved", { description: "Care plan updated." })}>\n\tWith description\n</Button>',
 				),
 				render: () => (
-					<Button onClick={() => toast("Saved", { description: "Project updated." })}>
+					<Button onClick={() => toast("Saved", { description: "Care plan updated." })}>
 						With description
 					</Button>
 				),
@@ -858,9 +858,9 @@ export function App() {
 				id: catalogScenarioId("toast", "success-variant"),
 				title: "Success Variant",
 				code: toastScenarioModule(
-					'<Button onClick={() => toast.success("Deployed")}>Success</Button>',
+					'<Button onClick={() => toast.success("Care plan updated")}>Success</Button>',
 				),
-				render: () => <Button onClick={() => toast.success("Deployed")}>Success</Button>,
+				render: () => <Button onClick={() => toast.success("Care plan updated")}>Success</Button>,
 			},
 			{
 				id: catalogScenarioId("toast", "error-variant"),
@@ -939,10 +939,12 @@ export function App() {
 				id: catalogScenarioId("toast", "hidden-icon"),
 				title: "Hidden icon",
 				code: toastScenarioModule(
-					'<Button onClick={() => toast.success("Deployed", { icon: false })}>No icon</Button>',
+					'<Button onClick={() => toast.success("Care plan updated", { icon: false })}>No icon</Button>',
 				),
 				render: () => (
-					<Button onClick={() => toast.success("Deployed", { icon: false })}>No icon</Button>
+					<Button onClick={() => toast.success("Care plan updated", { icon: false })}>
+						No icon
+					</Button>
 				),
 			},
 		],
@@ -975,10 +977,10 @@ export default function Example() {
 			{
 				id: catalogScenarioId("clipboard-text", "api-key"),
 				title: "API Key",
-				code: scenarioModule('<ClipboardText text="project-••••" copyText="project-atlas" />', [
+				code: scenarioModule('<ClipboardText text="care plan-••••" copyText="care plan-atlas" />', [
 					'import { ClipboardText } from "@nocoo/basalt/components/clipboard-text";',
 				]),
-				render: () => <ClipboardText text="project-••••" copyText="project-atlas" />,
+				render: () => <ClipboardText text="care plan-••••" copyText="care plan-atlas" />,
 			},
 			{
 				id: catalogScenarioId("clipboard-text", "copy-alternate-text"),
@@ -1005,13 +1007,13 @@ export default function Example() {
 				"Code",
 				"code",
 				"Syntax-highlighted source with a file header, icon, copy feedback and optional line numbers.",
-				'<CodeHighlighted code={\'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/users/" + id); if (!response.ok) { throw new Error("User not found"); } return response.json(); }\'} />',
+				'<CodeHighlighted code={\'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/patients/" + id); if (!response.ok) { throw new Error("Patient not found"); } return response.json(); }\'} />',
 				undefined,
 				`import { CodeHighlighted } from "@nocoo/basalt/components/code";
 
 export default function Example() {
 	return (
-		<CodeHighlighted code={'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/users/" + id); if (!response.ok) { throw new Error("User not found"); } return response.json(); }'} />
+		<CodeHighlighted code={'export async function fetchUser(id: string, retries = 3) { const response = await fetch("/api/patients/" + id); if (!response.ok) { throw new Error("Patient not found"); } return response.json(); }'} />
 	);
 }`,
 			),

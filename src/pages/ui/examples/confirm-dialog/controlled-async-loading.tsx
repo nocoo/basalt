@@ -21,13 +21,13 @@ export default function ControlledAsyncLoadingExample() {
 	return (
 		<>
 			<Button variant="destructive" onClick={() => setOpen(true)}>
-				Delete project
+				Delete care plan
 			</Button>
 			<ConfirmDialog
 				open={open}
 				loading={loading}
 				variant="destructive"
-				title="Delete project?"
+				title="Delete care plan?"
 				description="This cannot be undone."
 				confirmLabel="Delete"
 				onOpenChange={(next) => {

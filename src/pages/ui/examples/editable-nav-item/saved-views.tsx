@@ -28,7 +28,7 @@ export default function SavedViewNavigation() {
 					selected={selected === "search"}
 					onSelect={() => setSelected("search")}
 				/>
-				<EditableNavItem label="Restricted workspace" disabled />
+				<EditableNavItem label="Restricted care team" disabled />
 			</SidebarNav>
 			<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
 				{selected === "usage" ? name : "Search all records"}

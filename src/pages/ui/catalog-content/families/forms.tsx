@@ -353,8 +353,8 @@ export default function Example() {
 	return (
 		<Combobox
 			items={[
-				{ value: "apple", label: "Apple" },
-				{ value: "banana", label: "Banana" },
+				{ value: "apple", label: "Care plan" },
+				{ value: "banana", label: "Follow-up" },
 			]}
 			placeholder="Select…"
 		/>
@@ -375,10 +375,10 @@ export default function Example() {
 	return (
 		<Autocomplete
 			items={[
-				{ value: "apple", label: "Apple" },
-				{ value: "banana", label: "Banana" },
+				{ value: "apple", label: "Care plan" },
+				{ value: "banana", label: "Follow-up" },
 			]}
-			placeholder="Search fruits"
+			placeholder="Search care topics"
 		/>
 	);
 }`,

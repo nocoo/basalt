@@ -188,7 +188,7 @@ describe("foundation feedback scenario truth", () => {
 			expect(example.code, example.id).not.toMatch(/sk-|secret/i);
 		}
 		expect(scenario("clipboard-text", "clipboard-text-api-key").code).toContain("copyText=");
-		expect(scenario("clipboard-text", "clipboard-text-api-key").code).toContain("project-atlas");
+		expect(scenario("clipboard-text", "clipboard-text-api-key").code).toContain("care plan-atlas");
 	});
 
 	it("requires breadcrumbs items in usage", () => {

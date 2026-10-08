@@ -44,7 +44,7 @@ export default function LocalUploadQueue() {
 	return (
 		<div className="w-full space-y-basalt-space-lg">
 			<FileDropzone
-				label="Upload project files"
+				label="Upload care records"
 				description="Local demonstration · files are never sent"
 				maxFiles={5}
 				fileCount={files.length}
@@ -54,7 +54,7 @@ export default function LocalUploadQueue() {
 				<Button
 					variant="outline"
 					disabled={files.length >= 5}
-					onClick={() => add([{ name: `Project-notes-${files.length + 1}.pdf`, size: 184320 }])}
+					onClick={() => add([{ name: `Care-plan-notes-${files.length + 1}.pdf`, size: 184320 }])}
 				>
 					Add sample file
 				</Button>
@@ -78,7 +78,7 @@ export default function LocalUploadQueue() {
 				</span>
 			</div>
 			<UploadQueue
-				label="Project upload queue"
+				label="Care record upload queue"
 				files={files}
 				onCancel={(id) =>
 					setFiles(files.map((file) => (file.id === id ? { ...file, status: "cancelled" } : file)))

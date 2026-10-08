@@ -141,7 +141,7 @@ export default function OperationsTable() {
 				setResult((current) => ({
 					...current,
 					loading: false,
-					error: "Device inventory is temporarily unavailable.",
+					error: "Wearable inventory is temporarily unavailable.",
 				}));
 				return;
 			}
@@ -228,7 +228,7 @@ export default function OperationsTable() {
 			},
 			{
 				id: "requests",
-				header: "Requests / hour",
+				header: "Activity / hour",
 				width: 150,
 				accessor: (row) => (
 					<div className="flex items-center gap-basalt-space-lg">
@@ -240,7 +240,7 @@ export default function OperationsTable() {
 									ariaLabel={`${row.name} seven-hour trend`}
 									summary={
 										<span className="sr-only">
-											{row.trend[0]} to {row.trend[6]} requests per minute
+											{row.trend[0]} to {row.trend[6]} activity events per minute
 										</span>
 									}
 									accessibilityLayer={false}
@@ -271,7 +271,7 @@ export default function OperationsTable() {
 						aria-label={`Inspect ${row.name}`}
 						onClick={() =>
 							setNotice(
-								`${row.name} · ${row.region} · ${row.status} · ${count.format(row.requests)} requests/hour`,
+								`${row.name} · ${row.region} · ${row.status} · ${count.format(row.requests)} activity events/hour`,
 							)
 						}
 					>
@@ -285,7 +285,7 @@ export default function OperationsTable() {
 	return (
 		<div className="w-full space-y-basalt-space-lg" data-demo="operations-table">
 			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
-				<Badge variant="outline">Fleet operations</Badge>
+				<Badge variant="outline">Wearable operations</Badge>
 				<div className="flex flex-wrap gap-basalt-space-sm">
 					{(["ready", "loading", "empty", "error"] as const).map((value) => (
 						<Button
@@ -305,8 +305,8 @@ export default function OperationsTable() {
 				</div>
 			</div>
 			<ResourceList
-				title="Device inventory"
-				description="Live fleet signals, charge levels and request trends."
+				title="Wearable inventory"
+				description="Live wearable signals, charge levels and activity trends."
 				data={[]}
 				toolbar={
 					<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
@@ -415,7 +415,7 @@ export default function OperationsTable() {
 							</Button>
 						</div>
 					}
-					aria-label="Device inventory"
+					aria-label="Wearable inventory"
 					className="min-w-[53.125rem]"
 				/>
 			</ResourceList>

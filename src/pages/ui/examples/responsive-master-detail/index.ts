@@ -3,7 +3,7 @@ export const RESPONSIVE_MASTER_DETAIL_EXAMPLES = loadModuleScenarios({
 	slug: "responsive-master-detail",
 	metas: [
 		{ key: "resources", title: "Resource browser and detail editor" },
-		{ key: "drafts", title: "Draft workspace with retained state" },
+		{ key: "drafts", title: "Draft care team with retained state" },
 	],
 	renderModules: import.meta.glob("./*.tsx", { eager: true }),
 	sourceModules: import.meta.glob("./*.tsx", { query: "?raw", import: "default", eager: true }),

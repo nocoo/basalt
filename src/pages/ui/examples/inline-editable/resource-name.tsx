@@ -3,7 +3,7 @@ import { InlineEditable } from "@nocoo/basalt/components/inline-editable";
 import { useEffect, useId, useRef, useState } from "react";
 
 export default function EditableResourceName() {
-	const [name, setName] = useState("Design resources");
+	const [name, setName] = useState("Wellness resources");
 	const [fail, setFail] = useState(false);
 	const timer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 	const id = useId();
@@ -25,7 +25,7 @@ export default function EditableResourceName() {
 				onSave={(next) =>
 					new Promise<void>((resolve, reject) => {
 						timer.current = setTimeout(() => {
-							if (fail) reject(new Error("Could not reach the workspace. Try saving again."));
+							if (fail) reject(new Error("Could not reach the care team. Try saving again."));
 							else {
 								setName(next);
 								resolve();

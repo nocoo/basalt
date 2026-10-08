@@ -1,13 +1,13 @@
 import { Button } from "@nocoo/basalt/components/button";
-import { FolderNavItem } from "@nocoo/basalt/components/editable-nav-item";
+import { EditableNavItem } from "@nocoo/basalt/components/editable-nav-item";
 import { SidebarNav } from "@nocoo/basalt/components/sidebar";
 import { Pin } from "lucide-react";
 import { useState } from "react";
 
 export default function FolderNavigation() {
 	const [folders, setFolders] = useState([
-		{ id: "library", name: "Library", count: 24 },
-		{ id: "reading", name: "Reading list", count: 8 },
+		{ id: "library", name: "Care library", count: 24 },
+		{ id: "reading", name: "Resources list", count: 8 },
 		{ id: "archive", name: "Archive", count: 102 },
 	]);
 	const [selected, setSelected] = useState("library");
@@ -15,11 +15,11 @@ export default function FolderNavigation() {
 	return (
 		<div className="w-full max-w-md space-y-basalt-space-lg">
 			<h3 className="text-basalt-sm font-medium uppercase tracking-wider text-basalt-muted-foreground">
-				Workspace folders
+				Care plan folders
 			</h3>
-			<SidebarNav aria-label="Folder navigation">
+			<SidebarNav aria-label="Care plan navigation">
 				{folders.map((folder) => (
-					<FolderNavItem
+					<EditableNavItem
 						key={folder.id}
 						label={folder.name}
 						count={folder.count}

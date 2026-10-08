@@ -6,11 +6,11 @@ export default function DefaultExample() {
 		<PageHeader
 			breadcrumbs={[{ href: "#", label: "Examples" }]}
 			title="Dashboard"
-			description="Overview of recent project activity."
+			description="Overview of recent care activity."
 			actions={
 				<>
 					<Button variant="outline">Filters</Button>
-					<Button>New project</Button>
+					<Button>New appointment</Button>
 				</>
 			}
 		/>

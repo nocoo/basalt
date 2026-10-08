@@ -1064,10 +1064,10 @@ describe("source-backed field scenarios", () => {
 		expect(FIELD_EXAMPLES[1]?.code).toContain('error="Required"');
 		expect(FIELD_EXAMPLES[1]?.code).not.toContain("ex-email-err");
 		expect(FIELD_EXAMPLES[1]?.code).not.toContain("kumo-ex-email-err");
-		expect(FIELD_EXAMPLES[2]?.code).toContain("label={<span>Workspace name</span>}");
-		expect(FIELD_EXAMPLES[2]?.code).toContain("hint={<span>Shown on invoices</span>}");
+		expect(FIELD_EXAMPLES[2]?.code).toContain("label={<span>Care team name</span>}");
+		expect(FIELD_EXAMPLES[2]?.code).toContain("hint={<span>Shown on care summaries</span>}");
 		expect(FIELD_EXAMPLES[2]?.code).toContain("required={false}");
-		expect(FIELD_EXAMPLES[2]?.code).toContain('labelTooltip="Used in billing"');
+		expect(FIELD_EXAMPLES[2]?.code).toContain('labelTooltip="Used in care coordination"');
 		expect(FIELD_EXAMPLES[3]?.code).toContain(
 			"error={{ message: <span>Enter a valid email</span> }}",
 		);

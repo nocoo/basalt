@@ -82,11 +82,11 @@ const RAW_DATA: TelemetryPoint[] = [
 ];
 
 const ALL_SERIES = [
-	{ key: "edgeCache" as const, label: "Edge Cache", color: "hsl(var(--basalt-chart-1))" },
-	{ key: "originCompute" as const, label: "Origin Compute", color: "hsl(var(--basalt-chart-2))" },
-	{ key: "serviceDb" as const, label: "Service DB", color: "hsl(var(--basalt-chart-3))" },
-	{ key: "objectStorage" as const, label: "Object Storage", color: "hsl(var(--basalt-chart-4))" },
-	{ key: "searchIndex" as const, label: "Search Index", color: "hsl(var(--basalt-chart-5))" },
+	{ key: "edgeCache" as const, label: "Activity", color: "hsl(var(--basalt-chart-1))" },
+	{ key: "originCompute" as const, label: "Sleep", color: "hsl(var(--basalt-chart-2))" },
+	{ key: "serviceDb" as const, label: "Recovery", color: "hsl(var(--basalt-chart-3))" },
+	{ key: "objectStorage" as const, label: "Nutrition", color: "hsl(var(--basalt-chart-4))" },
+	{ key: "searchIndex" as const, label: "Hydration", color: "hsl(var(--basalt-chart-5))" },
 ];
 
 export default function AreaDynamicSeries() {
@@ -161,7 +161,7 @@ export default function AreaDynamicSeries() {
 				stackOffset={isPercent ? "expand" : undefined}
 				showAxes
 				className="h-64 w-full"
-				ariaLabel="Dynamic multi-service telemetry chart"
+				ariaLabel="Daily wellness activity by care category"
 				xValueFormatter={(x) => `${String(x)} UTC`}
 				valueFormatter={(val) => (isPercent ? `${(val * 100).toFixed(0)}%` : `${val} req/s`)}
 				customTooltip={({ active, payload, label }) => {
@@ -195,7 +195,7 @@ export default function AreaDynamicSeries() {
 								})}
 								<ChartTooltipDivider />
 								<ChartTooltipSummary
-									label="Total Throughput"
+									label="Total wellness activity"
 									value={total}
 									unit={isPercent ? "req/s (100%)" : "req/s"}
 								/>
@@ -236,7 +236,7 @@ export default function AreaDynamicSeries() {
 						</div>
 					);
 				}}
-				summary="Dynamic multi-service telemetry showing 5 services over 24 hours. Includes nullable compute windows, interactive legend series toggles, and responsive container resizing."
+				summary="Wellness activity across five care categories over 24 hours. Missing values indicate unavailable records; use the legend to compare categories."
 			/>
 		</div>
 	);

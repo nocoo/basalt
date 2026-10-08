@@ -55,7 +55,9 @@ export default function AnalyticsFilters() {
 				</Button>
 			</FilterBar>
 			<LayerCard>
-				<p className="text-basalt-base text-basalt-muted-foreground">Requests in selected period</p>
+				<p className="text-basalt-base text-basalt-muted-foreground">
+					Patient visits in selected period
+				</p>
 				<p role="status" className="mt-basalt-space-lg text-basalt-4xl font-semibold tabular-nums">
 					{rows.reduce((sum, row) => sum + row.requests, 0).toLocaleString()}
 				</p>

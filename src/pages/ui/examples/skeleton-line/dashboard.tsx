@@ -14,8 +14,8 @@ const DonutChart = lazy(() =>
 );
 
 const METRICS = [
-	{ title: "Total requests", value: "148,290", change: "+18.6%", width: 70 },
-	{ title: "Active projects", value: "24", change: "+4 this week", width: 48 },
+	{ title: "Patient visits", value: "148,290", change: "+18.6%", width: 70 },
+	{ title: "Active folders", value: "24", change: "+4 this week", width: 48 },
 	{ title: "Success rate", value: "99.98%", change: "+0.02%", width: 62 },
 	{ title: "Response time", value: "42 ms", change: "−8 ms", width: 55 },
 ];
@@ -27,7 +27,7 @@ export default function DashboardSkeleton() {
 			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
 				<div>
 					<p className="text-basalt-sm uppercase tracking-widest text-basalt-muted-foreground">
-						Workspace overview
+						Care team overview
 					</p>
 					<h3 className="mt-basalt-space-sm text-basalt-2xl font-semibold">
 						A clear view of your activity
@@ -99,10 +99,10 @@ export default function DashboardSkeleton() {
 											{ x: "Sat", y: 42 },
 											{ x: "Sun", y: 48 },
 										]}
-										ariaLabel="Weekly request volume"
+										ariaLabel="Weekly patient visit volume"
 										summary={
 											<span className="sr-only">
-												Requests rose from 12 thousand on Monday to 48 thousand on Sunday.
+												Patient visits rose from 12 thousand on Monday to 48 thousand on Sunday.
 											</span>
 										}
 									/>
@@ -121,7 +121,7 @@ export default function DashboardSkeleton() {
 						outlined
 						className="flex flex-col items-center justify-between gap-basalt-space-lg"
 					>
-						<h4 className="self-start text-basalt-base font-medium">Traffic sources</h4>
+						<h4 className="self-start text-basalt-base font-medium">Appointment formats</h4>
 						<div className="flex h-40 w-40 items-center justify-center">
 							{loading ? (
 								<div aria-hidden="true" className="relative h-32 w-32">
@@ -137,19 +137,19 @@ export default function DashboardSkeleton() {
 								<Suspense fallback={<SkeletonLine height={144} />}>
 									<DonutChart
 										data={[
-											{ name: "Direct", value: 64 },
-											{ name: "API", value: 28 },
-											{ name: "Other", value: 8 },
+											{ name: "Clinic", value: 64 },
+											{ name: "Video", value: 28 },
+											{ name: "Home visits", value: 8 },
 										]}
-										ariaLabel="Traffic sources"
+										ariaLabel="Appointment formats"
 										className="h-36 w-40"
-										summary={<span className="sr-only">Direct 64%, API 28%, other 8%.</span>}
+										summary={<span className="sr-only">Clinic 64%, Video 28%, other 8%.</span>}
 									/>
 								</Suspense>
 							)}
 						</div>
 						<div className="w-full space-y-basalt-space-lg">
-							{["Direct · 64%", "API · 28%", "Other · 8%"].map((label, i) => (
+							{["Clinic · 64%", "Video · 28%", "Home visits · 8%"].map((label, i) => (
 								<div key={label} className="h-4 text-basalt-sm text-basalt-muted-foreground">
 									{loading ? <SkeletonLine minWidth={85 - i * 13} maxWidth={85 - i * 13} /> : label}
 								</div>

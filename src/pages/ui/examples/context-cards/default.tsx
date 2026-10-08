@@ -5,21 +5,21 @@ import { useState } from "react";
 const chunks: ContextChunk[] = [
 	{
 		id: "sop",
-		title: "Vendor onboarding rule",
+		title: "Patient intake rule",
 		characters: 290,
-		body: "Cold-chain certification must be verified before a new dairy can be added to the reorder workflow.",
+		body: "Patient consent must be verified before a new care plan enters the follow-up workflow.",
 		source: {
-			name: "Dairy Onboarding SOP.pdf",
+			name: "Patient Intake Guide.pdf",
 			type: "PDF",
-			href: "https://example.com/dairy-onboarding",
+			href: "https://example.com/patient-intake",
 		},
 	},
 	{
 		id: "velocity",
-		title: "Seasonal demand row",
+		title: "Quarterly care progress",
 		characters: 1250,
-		body: "Q4 velocity table: pistachio +18%, vanilla +6%, rocky road -11%; retire flavors below 40 scoops weekly.",
-		source: { name: "Sales Velocity Export.csv", type: "CSV" },
+		body: "Q4 care progress: sleep +18%, activity +6%, recovery -11%; review trends below the weekly baseline.",
+		source: { name: "Care Progress Export.csv", type: "CSV" },
 	},
 ];
 export default function ContextCardsDemo() {

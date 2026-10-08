@@ -3,7 +3,7 @@ import { loadModuleScenarios } from "../../catalog-scenario";
 export const MULTI_SELECT_EXAMPLES = loadModuleScenarios({
 	slug: "multi-select",
 	metas: [
-		{ key: "folders", title: "Folder organization" },
+		{ key: "folders", title: "Care plan organization" },
 		{ key: "remote-search", title: "Remote model search" },
 	],
 	renderModules: import.meta.glob("./*.tsx", { eager: true }),

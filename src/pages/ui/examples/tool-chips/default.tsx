@@ -10,12 +10,12 @@ export default function ToolChipsDemo() {
 				steps={vm.tools}
 				diffs={[
 					{
-						file: "flavors.css",
+						file: "care-summary.css",
 						added: 13,
 						removed: 0,
-						content: ".scoop-card {\n-  gap: 14px;\n+  gap: 12px;\n}",
+						content: " .care-summary {\n-  gap: 14px;\n+  gap: 12px;\n}",
 					},
-					{ file: "ChurnSchedule.tsx", added: 74, removed: 41 },
+					{ file: "FollowUpSchedule.tsx", added: 74, removed: 41 },
 				]}
 			/>
 			<Button variant="outline" size="sm" onClick={vm.restart}>

@@ -7,7 +7,7 @@ export default function ComboboxControlledAndError() {
 	const [value, setValue] = useState("");
 	return (
 		<div className="flex w-full flex-col gap-basalt-space-lg">
-			<Field label="Fruit" error={value ? undefined : "Pick a fruit"}>
+			<Field label="Care topic" error={value ? undefined : "Pick a care topic"}>
 				<Combobox
 					items={[
 						{ value: "apple", label: "Apple" },

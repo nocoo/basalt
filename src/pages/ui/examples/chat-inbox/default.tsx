@@ -13,15 +13,15 @@ export default function ChatInboxExample() {
 			items={[
 				{
 					id: "a",
-					title: "Analytics",
-					preview: "Ask about usage",
+					title: "Wellness report",
+					preview: "Review activity trends",
 					time: "2m",
 					leading: <MessageCircle className="size-basalt-icon-lg" />,
 				},
 				{
 					id: "b",
-					title: "Quality",
-					preview: "Error rate",
+					title: "Care team",
+					preview: "Next follow-up",
 					time: "1h",
 					leading: <MessageCircle className="size-basalt-icon-lg" />,
 				},

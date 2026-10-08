@@ -4,7 +4,7 @@ import { useState } from "react";
 
 export default function AudioReview() {
 	const [files, setFiles] = useState<UploadFile[]>([
-		{ id: "brief", name: "Product brief.wav", size: 2481000, status: "success" },
+		{ id: "brief", name: "Clinical Ops brief.wav", size: 2481000, status: "success" },
 		{
 			id: "interview",
 			name: "Interview take 02.mp3",

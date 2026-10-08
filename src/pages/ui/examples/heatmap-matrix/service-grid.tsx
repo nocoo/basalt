@@ -10,7 +10,7 @@ import { useState } from "react";
 
 const REGIONS = ["US-East", "US-West", "EU-Central", "APAC-South", "SA-East"] as const;
 const METRICS = [
-	"API Gateway",
+	"Vitals Gateway",
 	"Auth Token",
 	"Service DB",
 	"Cache Cluster",
@@ -18,7 +18,7 @@ const METRICS = [
 	"Queue Service",
 ] as const;
 
-// Realistic service latency matrix (ms). 0 indicates local co-located ping; null indicates disconnected node
+// Care platform service response time matrix (ms). 0 indicates local co-located ping; null indicates disconnected node
 const SERVICE_MATRIX: (number | null)[][] = [
 	[12, 45, 18, 0, 32, 24],
 	[48, 14, 52, 28, 65, 30],
@@ -65,7 +65,7 @@ export default function HeatmapMatrixServiceGrid() {
 				domain={[0, 180]}
 				colorScale={heatmapColorScales[activeScale]}
 				metricLabel="Cross-Region Latency"
-				ariaLabel="Inter-region service latency matrix"
+				ariaLabel="Care platform service response-time matrix"
 				cellSize={24}
 				columnWidth={82}
 				cellGap={3}

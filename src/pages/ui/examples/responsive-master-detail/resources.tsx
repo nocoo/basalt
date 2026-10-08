@@ -13,7 +13,7 @@ export default function ResourceMasterDetail() {
 		},
 		{
 			id: "design",
-			name: "Design collection",
+			name: "Wellness collection",
 			description: "Patterns, components and accessibility notes.",
 		},
 		{

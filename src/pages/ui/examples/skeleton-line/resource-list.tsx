@@ -8,7 +8,7 @@ import { useState } from "react";
 const RESOURCES = [
 	{
 		name: "Atlas",
-		detail: "Production workspace",
+		detail: "Clinical Ops care team",
 		initials: "AT",
 		usage: "42,810",
 		status: "Active",
@@ -37,7 +37,7 @@ export default function ResourceListSkeleton() {
 		<div className="w-full space-y-basalt-space-lg">
 			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
 				<div>
-					<h3 className="text-basalt-xl font-semibold">Workspace leaderboard</h3>
+					<h3 className="text-basalt-xl font-semibold">Care team activity</h3>
 					<p className="text-basalt-base text-basalt-muted-foreground">
 						The same columns and rhythm, before and after loading.
 					</p>
@@ -47,21 +47,21 @@ export default function ResourceListSkeleton() {
 				</Button>
 			</div>
 			<div role="status" aria-live="polite" className="sr-only">
-				{loading ? "Loading workspaces" : "Workspaces loaded"}
+				{loading ? "Loading care teams" : "Care teams loaded"}
 			</div>
 			<LayerCard outlined padding="none" aria-busy={loading}>
 				<div
 					role="region"
-					aria-label="Workspace leaderboard scroll area"
+					aria-label="Care team activity scroll area"
 					// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
 					tabIndex={0}
 					className="overflow-x-auto"
 				>
 					<div className="min-w-[35rem]">
 						<div className="grid grid-cols-[minmax(0,1fr)_5.625rem_5.625rem_4.375rem] gap-basalt-space-lg border-b border-basalt-border px-basalt-space-lg py-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
-							<span>Workspace</span>
+							<span>Care team</span>
 							<span>Status</span>
-							<span className="text-right">Requests</span>
+							<span className="text-right">Care events</span>
 							<span className="sr-only">Actions</span>
 						</div>
 						{RESOURCES.map((row, index) => (
@@ -137,7 +137,7 @@ export default function ResourceListSkeleton() {
 				role={loading ? undefined : "status"}
 				className="min-h-5 text-basalt-sm text-basalt-muted-foreground"
 			>
-				{opened ? `${opened} selected` : "4 workspaces · Updated just now"}
+				{opened ? `${opened} selected` : "4 care teams · Updated just now"}
 			</p>
 		</div>
 	);

@@ -36,7 +36,7 @@ export default catalogContentFamily({
 			description:
 				"Proposed additions and removals with per-row selection, explicit asynchronous apply and retry. Text labels and checkboxes retain meaning without color; the component never mutates business data.",
 			usage:
-				'import { DiffTable } from "@nocoo/basalt/components/diff-table";\nexport default function Example() { return <DiffTable columns={[{ id: "name", label: "Name" }]} rows={[{ id: "new", label: "Pistachio", change: "add", values: { name: "Pistachio" } }]} onApply={console.log} />; }',
+				'import { DiffTable } from "@nocoo/basalt/components/diff-table";\nexport default function Example() { return <DiffTable columns={[{ id: "name", label: "Name" }]} rows={[{ id: "new", label: "Patient summary", change: "add", values: { name: "Patient summary" } }]} onApply={console.log} />; }',
 			variants: [],
 			api: diffTableApi,
 		},
@@ -54,7 +54,7 @@ export default catalogContentFamily({
 			description:
 				"Retrieved context snippets with source badges, character counts, safe optional links and loading, empty, error states. CSS-only staggered entry respects reduced motion.",
 			usage:
-				'import { ContextCards } from "@nocoo/basalt/components/context-cards";\nexport default function Example() { return <ContextCards chunks={[{ id: "sop", title: "Onboarding", body: "Verify cold-chain certification.", source: { name: "Onboarding.pdf", type: "PDF" } }]} />; }',
+				'import { ContextCards } from "@nocoo/basalt/components/context-cards";\nexport default function Example() { return <ContextCards chunks={[{ id: "sop", title: "Onboarding", body: "Verify patient consent and intake details.", source: { name: "Onboarding.pdf", type: "PDF" } }]} />; }',
 			variants: [],
 			api: contextCardsApi,
 		},
@@ -72,7 +72,7 @@ export default catalogContentFamily({
 			description:
 				"Confidence-labelled recommendation with animated alternatives, explicit asynchronous acceptance and retry. The application owns the recommended action.",
 			usage:
-				'import { RecommendationCard } from "@nocoo/basalt/components/recommendation-card";\nexport default function Example() { return <RecommendationCard options={[{ id: "restock", label: "Restock", description: "Reorder waffle cones.", confidence: "high" }]} onAccept={console.log} />; }',
+				'import { RecommendationCard } from "@nocoo/basalt/components/recommendation-card";\nexport default function Example() { return <RecommendationCard options={[{ id: "care plan update", label: "Care plan update", description: "Schedule a patient follow-up.", confidence: "high" }]} onAccept={console.log} />; }',
 			variants: [],
 			api: recommendationApi,
 		},
@@ -90,7 +90,7 @@ export default catalogContentFamily({
 			description:
 				"Expandable agent trace with caller-owned statuses. Steps, reasoning, search and coding share an accessible disclosure and reduced-motion-safe transitions.",
 			usage:
-				'import { Thinking } from "@nocoo/basalt/components/thinking";\nexport default function Example() { return <Thinking steps={[{ id: "read", label: "Reading context", status: "running" }]} />; }',
+				'import { Thinking } from "@nocoo/basalt/components/thinking";\nexport default function Example() { return <Thinking steps={[{ id: "read", label: "Resources context", status: "running" }]} />; }',
 			variants: [],
 			api: thinkingApi,
 		},

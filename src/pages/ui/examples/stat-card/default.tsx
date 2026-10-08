@@ -21,7 +21,7 @@ export default function StatCardDefault() {
 	return (
 		<StatGrid columns={2} className="w-full">
 			<StatCard
-				title="Requests"
+				title="Patient visits"
 				value="12.4k"
 				icon={Activity}
 				trend={{ value: 12, label: "vs previous period" }}
@@ -30,14 +30,14 @@ export default function StatCardDefault() {
 					<LineChart
 						data={requests}
 						className="h-basalt-16 w-full"
-						ariaLabel="Requests over eight periods, from 6.2k to 12.4k"
+						ariaLabel="Patient visits over eight periods, from 6.2k to 12.4k"
 						valueFormatter={(value) => `${value}k`}
 					/>
 					<p className="text-basalt-sm text-basalt-muted-foreground">Last 8 periods</p>
 				</div>
 			</StatCard>
 			<StatCard
-				title="Monthly revenue"
+				title="Monthly care reimbursements"
 				value="$4,500"
 				icon={Wallet}
 				trend={{ value: 2.4, label: "vs last month" }}
@@ -46,7 +46,7 @@ export default function StatCardDefault() {
 					<BarChart
 						data={revenue}
 						className="h-basalt-16 w-full"
-						ariaLabel="Monthly revenue, January to December, from $3,200 to $4,500"
+						ariaLabel="Monthly care reimbursements, January to December, from $3,200 to $4,500"
 						valueFormatter={(value) => currency.format(value)}
 					/>
 					<p className="text-basalt-sm text-basalt-muted-foreground">Jan-Dec / monthly</p>

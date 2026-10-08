@@ -33,9 +33,9 @@ const Sparkline = lazy(() =>
 const SUBSCRIPTIONS = [
 	{
 		id: "atlas",
-		name: "Atlas Cloud",
-		team: "Infrastructure",
-		plan: "Enterprise",
+		name: "Atlas Primary Care",
+		team: "Care Team",
+		plan: "Comprehensive",
 		monthly: 1240,
 		change: 8.2,
 		used: 72,
@@ -45,9 +45,9 @@ const SUBSCRIPTIONS = [
 	},
 	{
 		id: "northstar",
-		name: "Northstar Analytics",
-		team: "Product",
-		plan: "Growth",
+		name: "Northstar Rehabilitation",
+		team: "Clinical Ops",
+		plan: "Recovery",
 		monthly: 289,
 		change: -12.4,
 		used: 46,
@@ -57,9 +57,9 @@ const SUBSCRIPTIONS = [
 	},
 	{
 		id: "meridian",
-		name: "Meridian Design",
-		team: "Design",
-		plan: "Team",
+		name: "Meridian Wellness",
+		team: "Wellness",
+		plan: "Family",
 		monthly: 96,
 		change: 0,
 		used: 88,
@@ -69,9 +69,9 @@ const SUBSCRIPTIONS = [
 	},
 	{
 		id: "orbit",
-		name: "Orbit Storage",
-		team: "Infrastructure",
-		plan: "Usage",
+		name: "Orbit Home Care",
+		team: "Care Team",
+		plan: "Home care",
 		monthly: 52.8,
 		change: 24.1,
 		used: 94,
@@ -81,9 +81,9 @@ const SUBSCRIPTIONS = [
 	},
 	{
 		id: "harbor",
-		name: "Harbor Monitoring",
-		team: "Infrastructure",
-		plan: "Pro",
+		name: "Harbor Follow-up",
+		team: "Care Team",
+		plan: "Follow-up",
 		monthly: 179,
 		change: -3.6,
 		used: 31,
@@ -94,8 +94,8 @@ const SUBSCRIPTIONS = [
 	{
 		id: "lumen",
 		name: "Lumen Support",
-		team: "Product",
-		plan: "Team",
+		team: "Clinical Ops",
+		plan: "Family",
 		monthly: 420,
 		change: 6.8,
 		used: 64,
@@ -110,7 +110,7 @@ const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD
 
 export default function SubscriptionTable() {
 	const [query, setQuery] = useState("");
-	const [team, setTeam] = useState("All teams");
+	const [team, setTeam] = useState("All care teams");
 	const [sort, setSort] = useState<{ key: SortKey; direction: 1 | -1 }>({
 		key: "monthly",
 		direction: -1,
@@ -124,7 +124,7 @@ export default function SubscriptionTable() {
 			SUBSCRIPTIONS.filter(
 				(row) =>
 					row.name.toLowerCase().includes(query.toLowerCase()) &&
-					(team === "All teams" || row.team === team),
+					(team === "All care teams" || row.team === team),
 			).sort((a, b) => {
 				const left = a[sort.key],
 					right = b[sort.key];
@@ -167,14 +167,14 @@ export default function SubscriptionTable() {
 						Spend management
 					</p>
 					<h3 className="mt-basalt-space-sm text-basalt-2xl font-semibold">
-						Subscriptions & commitments
+						Health plans & commitments
 					</h3>
 					<p className="mt-basalt-space-sm text-basalt-base text-basalt-muted-foreground">
-						Renewals, usage and spend across your workspace.
+						Appointments, activity and follow-up across your care team.
 					</p>
 				</div>
 				<div className="text-right">
-					<p className="text-basalt-sm text-basalt-muted-foreground">Matching monthly spend</p>
+					<p className="text-basalt-sm text-basalt-muted-foreground">Matching monthly follow-up</p>
 					<p className="mt-basalt-space-sm text-basalt-3xl font-semibold tabular-nums">
 						{money.format(rows.reduce((sum, row) => sum + row.monthly, 0))}
 					</p>
@@ -183,9 +183,9 @@ export default function SubscriptionTable() {
 			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
 				<div className="flex flex-wrap gap-basalt-space-lg">
 					<Input
-						aria-label="Search subscriptions"
+						aria-label="Search care plans"
 						className="w-60 max-w-full"
-						placeholder="Search subscriptions…"
+						placeholder="Search care plans…"
 						value={query}
 						onChange={(event) => {
 							setQuery(event.target.value);
@@ -199,11 +199,11 @@ export default function SubscriptionTable() {
 							setPage(1);
 						}}
 					>
-						<SelectTrigger aria-label="Subscription team" className="w-auto">
+						<SelectTrigger aria-label="Care team" className="w-auto">
 							<SelectValue />
 						</SelectTrigger>
 						<SelectContent>
-							{["All teams", "Infrastructure", "Product", "Design"].map((item) => (
+							{["All care teams", "Care Team", "Clinical Ops", "Wellness"].map((item) => (
 								<SelectItem key={item} value={item}>
 									{item}
 								</SelectItem>
@@ -228,12 +228,12 @@ export default function SubscriptionTable() {
 			</div>
 			{selected.length > 0 ? (
 				<Banner variant="secondary" className="flex-wrap items-center">
-					<span>{selected.length} subscriptions selected</span>
+					<span>{selected.length} care plans selected</span>
 					<Button
 						size="sm"
 						variant="outline"
 						onClick={() => {
-							setNotice(`Review prepared for ${selected.length} subscriptions`);
+							setNotice(`Review prepared for ${selected.length} folders`);
 							setSelected([]);
 						}}
 					>
@@ -246,13 +246,13 @@ export default function SubscriptionTable() {
 			) : null}
 			<div
 				role="region"
-				aria-label="Subscription ledger scroll area"
+				aria-label="Health plan ledger scroll area"
 				// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
 				tabIndex={0}
 				className="overflow-x-auto rounded-basalt-md border border-basalt-border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary"
 			>
 				<Table
-					aria-label="Subscription ledger"
+					aria-label="Health plan ledger"
 					aria-busy={mode === "loading"}
 					className="min-w-[55rem]"
 				>
@@ -264,10 +264,10 @@ export default function SubscriptionTable() {
 							<TableHead>
 								<span className="sr-only">Select</span>
 							</TableHead>
-							{header("Subscription", "name")}
+							{header("Health plan", "name")}
 							{header("Monthly cost", "monthly")}
 							{header("Change", "change")}
-							{header("Usage", "used")}
+							{header("Plan utilization", "used")}
 							{header("Renewal", "renewal")}
 							<TableHead>Actions</TableHead>
 						</TableRow>
@@ -278,7 +278,7 @@ export default function SubscriptionTable() {
 								<TableCell colSpan={7}>
 									<div
 										role="status"
-										aria-label="Loading subscriptions"
+										aria-label="Loading care plans"
 										className="space-y-basalt-space-lg py-basalt-space-lg"
 									>
 										{[90, 70, 82, 65].map((width) => (
@@ -294,12 +294,12 @@ export default function SubscriptionTable() {
 										role="alert"
 										className="space-y-basalt-space-lg py-basalt-space-lg text-center"
 									>
-										<p>We could not refresh your subscriptions.</p>
+										<p>We could not refresh your care plans.</p>
 										<Button
 											variant="outline"
 											onClick={() => {
 												setMode("ready");
-												setNotice("Subscriptions refreshed");
+												setNotice("Health plans refreshed");
 											}}
 										>
 											Try again
@@ -314,12 +314,12 @@ export default function SubscriptionTable() {
 										role="status"
 										className="space-y-basalt-space-lg py-basalt-space-lg text-center"
 									>
-										<p>No subscriptions match this view.</p>
+										<p>No care plans match this view.</p>
 										<Button
 											variant="outline"
 											onClick={() => {
 												setQuery("");
-												setTeam("All teams");
+												setTeam("All care teams");
 												setMode("ready");
 												setPage(1);
 											}}
@@ -430,7 +430,7 @@ export default function SubscriptionTable() {
 			</div>
 			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
 				<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
-					{notice || `${rows.length} subscriptions · ${selected.length} selected`}
+					{notice || `${rows.length} care plans · ${selected.length} selected`}
 				</p>
 				<Pagination
 					page={page}

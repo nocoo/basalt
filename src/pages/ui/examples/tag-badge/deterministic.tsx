@@ -2,12 +2,12 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { TagBadge, tagColorFor } from "@nocoo/basalt/components/tag-badge";
 
 const tags = [
-	{ id: "design", name: "Design" },
+	{ id: "design", name: "Wellness" },
 	{ id: "research", name: "Research" },
-	{ id: "engineering", name: "Engineering" },
-	{ id: "accessibility", name: "Accessibility" },
-	{ id: "writing", name: "Writing" },
-	{ id: "operations", name: "Operations" },
+	{ id: "engineering", name: "Care coordination" },
+	{ id: "accessibility", name: "Mobility" },
+	{ id: "writing", name: "Care notes" },
+	{ id: "operations", name: "Follow-up" },
 ];
 export default function DeterministicTags() {
 	return (
@@ -26,7 +26,7 @@ export default function DeterministicTags() {
 			<LayerCard className="flex flex-wrap items-center gap-basalt-space-lg">
 				<TagBadge name="Research" colorKey="research" />
 				<span className="text-basalt-sm text-basalt-muted-foreground">renamed to</span>
-				<TagBadge name="Research & reading" color={tagColorFor("research")} />
+				<TagBadge name="Research & wellness" color={tagColorFor("research")} />
 			</LayerCard>
 		</div>
 	);

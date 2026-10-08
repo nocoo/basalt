@@ -219,8 +219,8 @@ function DialogSizesExample() {
 							<Table>
 								<TableHeader>
 									<TableRow>
-										<TableHead>Project</TableHead>
-										<TableHead>Owner</TableHead>
+										<TableHead>Care plan</TableHead>
+										<TableHead>Care lead</TableHead>
 										<TableHead>Status</TableHead>
 										<TableHead>Updated</TableHead>
 									</TableRow>
@@ -469,8 +469,8 @@ export default function Example() {
 							<Table>
 								<TableHeader>
 									<TableRow>
-										<TableHead>Project</TableHead>
-										<TableHead>Owner</TableHead>
+										<TableHead>Care plan</TableHead>
+										<TableHead>Care lead</TableHead>
 										<TableHead>Status</TableHead>
 										<TableHead>Updated</TableHead>
 									</TableRow>
@@ -514,7 +514,7 @@ export default function Example() {
 			<AlertDialogTitle className="text-basalt-2xl">Delete Account?</AlertDialogTitle>
 		</div>
 		<AlertDialogDescription>
-			This action cannot be undone. All your data will be permanently removed from our servers. Are you sure you want to proceed?
+			This action cannot be undone. All your data will be permanently removed from our care systems. Are you sure you want to proceed?
 		</AlertDialogDescription>
 		<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 			<AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -542,7 +542,7 @@ export default function Example() {
 							</div>
 							<AlertDialogDescription>
 								This action cannot be undone. All your data will be permanently removed from our
-								servers. Are you sure you want to proceed?
+								care systems. Are you sure you want to proceed?
 							</AlertDialogDescription>
 							<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -558,17 +558,17 @@ export default function Example() {
 				code: scenarioModule(
 					`<Dialog>
 	<DialogTrigger asChild>
-		<Button variant="destructive">Delete Project</Button>
+		<Button variant="destructive">Delete care plan</Button>
 	</DialogTrigger>
 	<DialogContent disablePointerDismissal>
 		<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
 			<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 				<AlertTriangle className="size-5 text-basalt-destructive" />
 			</div>
-			<DialogTitle className="text-basalt-2xl">Delete Project?</DialogTitle>
+			<DialogTitle className="text-basalt-2xl">Delete care plan?</DialogTitle>
 		</div>
 		<DialogDescription>
-			This action cannot be undone. This will permanently delete the project and all associated data.
+			This action cannot be undone. This will permanently delete the care plan and all associated data.
 		</DialogDescription>
 		<DialogFooter action="Delete" />
 	</DialogContent>
@@ -583,17 +583,17 @@ export default function Example() {
 				render: () => (
 					<Dialog>
 						<DialogTrigger asChild>
-							<Button variant="destructive">Delete Project</Button>
+							<Button variant="destructive">Delete care plan</Button>
 						</DialogTrigger>
 						<DialogContent disablePointerDismissal>
 							<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
 								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 									<AlertTriangle className="size-5 text-basalt-destructive" />
 								</div>
-								<DialogTitle className="text-basalt-2xl">Delete Project?</DialogTitle>
+								<DialogTitle className="text-basalt-2xl">Delete care plan?</DialogTitle>
 							</div>
 							<DialogDescription>
-								This action cannot be undone. This will permanently delete the project and all
+								This action cannot be undone. This will permanently delete the care plan and all
 								associated data.
 							</DialogDescription>
 							<DialogFooter action="Delete" />
@@ -904,7 +904,7 @@ export default function Example() {
 			<AlertDialogContent>
 				<AlertDialogTitle>Delete Account?</AlertDialogTitle>
 				<AlertDialogDescription>
-					This action cannot be undone. All your data will be permanently removed from our servers.
+					This action cannot be undone. All your data will be permanently removed from our care systems.
 				</AlertDialogDescription>
 				<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -941,7 +941,7 @@ export default function Example() {
 							</div>
 							<AlertDialogDescription>
 								This action cannot be undone. All your data will be permanently removed from our
-								servers.
+								care systems.
 							</AlertDialogDescription>
 							<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -1291,7 +1291,7 @@ export default function Example() {
 		examples: [
 			{
 				id: catalogScenarioId("sheet", "default"),
-				title: "Directional panels",
+				title: "Clinicional panels",
 				code: sheetPanelsSource,
 				render: () => <SheetPanels />,
 			},
@@ -1309,8 +1309,8 @@ export default function Example() {
 export default function Example() {
 	return (
 		<Collapsible>
-			<CollapsibleTrigger>How does this project work?</CollapsibleTrigger>
-			<CollapsibleContent>This project is a React component library.</CollapsibleContent>
+			<CollapsibleTrigger>How does this care plan work?</CollapsibleTrigger>
+			<CollapsibleContent>This care plan is a React component library.</CollapsibleContent>
 		</Collapsible>
 	);
 }`,
@@ -1324,8 +1324,8 @@ export default function Example() {
 				title: "With Default Styling",
 				code: scenarioModule(
 					`<Collapsible>
-	<CollapsibleTrigger>How does this project work?</CollapsibleTrigger>
-	<CollapsibleContent>This project is a React component library.</CollapsibleContent>
+	<CollapsibleTrigger>How does this care plan work?</CollapsibleTrigger>
+	<CollapsibleContent>This care plan is a React component library.</CollapsibleContent>
 </Collapsible>`,
 					[
 						'import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@nocoo/basalt/components/collapsible";',
@@ -1333,8 +1333,8 @@ export default function Example() {
 				),
 				render: () => (
 					<Collapsible>
-						<CollapsibleTrigger>How does this project work?</CollapsibleTrigger>
-						<CollapsibleContent>This project is a React component library.</CollapsibleContent>
+						<CollapsibleTrigger>How does this care plan work?</CollapsibleTrigger>
+						<CollapsibleContent>This care plan is a React component library.</CollapsibleContent>
 					</Collapsible>
 				),
 			},
@@ -1382,12 +1382,12 @@ export default function Example() {
 	return (
 		<>
 			<Button variant="destructive" onClick={() => setOpen(true)}>
-				Delete project
+				Delete care plan
 			</Button>
 			<ConfirmDialog
 				open={open}
 				variant="destructive"
-				title="Delete project?"
+				title="Delete care plan?"
 				description="This cannot be undone."
 				confirmLabel="Delete"
 				onOpenChange={setOpen}

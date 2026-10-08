@@ -5,10 +5,10 @@ import { SectionRule } from "@nocoo/basalt/components/section-rule";
 export default function SectionRuleStackedRegions() {
 	return (
 		<div className="space-y-basalt-layout-xl">
-			<SectionRule variant="heading" title="Overview" hint="Live totals for the current workspace.">
+			<SectionRule variant="heading" title="Overview" hint="Live totals for the current care team.">
 				<div className="grid grid-cols-2 gap-basalt-layout">
 					<LayerCard>
-						<p className="text-basalt-sm text-basalt-muted-foreground">Projects</p>
+						<p className="text-basalt-sm text-basalt-muted-foreground">Care plans</p>
 						<p className="text-basalt-3xl font-semibold">24</p>
 					</LayerCard>
 					<LayerCard>
@@ -25,7 +25,7 @@ export default function SectionRuleStackedRegions() {
 						<Button variant="outline" size="sm">
 							Filter
 						</Button>
-						<Button size="sm">New project</Button>
+						<Button size="sm">New appointment</Button>
 					</>
 				}
 			>

@@ -7,7 +7,7 @@ export default function LongResponsiveContentExample() {
 		<PageHeader
 			breadcrumbs={[
 				{ href: "#", label: "Organization" },
-				{ href: "#", label: "Projects" },
+				{ href: "#", label: "Care plans" },
 				{ label: "Quarterly operations review" },
 			]}
 			title="Quarterly operations review for the north-region delivery network"
@@ -21,7 +21,7 @@ export default function LongResponsiveContentExample() {
 			}
 			filters={
 				<>
-					<Input placeholder="Owner" className="max-w-48" />
+					<Input placeholder="Care lead" className="max-w-48" />
 					<Input placeholder="Region" className="max-w-48" />
 					<Input placeholder="Risk" className="max-w-48" />
 				</>

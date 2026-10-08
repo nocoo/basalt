@@ -5,7 +5,7 @@ import { AlertCircle, FolderPlus, Search } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 export default function EmptyActionStates() {
-	// Scenario 1: First-time empty -> Create project feedback
+	// Scenario 1: First-time empty -> Create care plan feedback
 	const [projects, setProjects] = useState<string[]>([]);
 
 	// Scenario 2: Search with no results -> Clear filters to restore results
@@ -24,7 +24,7 @@ export default function EmptyActionStates() {
 	}, []);
 
 	const handleCreateProject = () => {
-		setProjects((prev) => [...prev, `Project ${prev.length + 1}`]);
+		setProjects((prev) => [...prev, `Care plan ${prev.length + 1}`]);
 	};
 
 	const handleResetProjects = () => {
@@ -56,7 +56,7 @@ export default function EmptyActionStates() {
 			<LayerCard>
 				<LayerCard.Header className="flex-wrap items-center">
 					<h3 className="text-basalt-base font-semibold text-basalt-foreground">
-						Project Workspace
+						Care Plan Workspace
 					</h3>
 					{projects.length > 0 ? (
 						<Button
@@ -74,11 +74,11 @@ export default function EmptyActionStates() {
 					{projects.length === 0 ? (
 						<Empty
 							icon={<FolderPlus />}
-							title="No projects yet"
-							description="Create your first workspace project to start tracking deliveries."
+							title="No care plans yet"
+							description="Create your first care plan to start tracking symptoms."
 							action={
 								<Button type="button" variant="default" size="sm" onClick={handleCreateProject}>
-									Create project
+									Create care plan
 								</Button>
 							}
 						>
@@ -87,7 +87,7 @@ export default function EmptyActionStates() {
 					) : (
 						<div className="flex flex-col gap-basalt-space-lg">
 							<p className="text-basalt-sm font-medium text-basalt-foreground">
-								Active Projects ({projects.length}):
+								Active Care Plans ({projects.length}):
 							</p>
 							<ul className="flex flex-col gap-basalt-space-sm">
 								{projects.map((p) => (
@@ -140,7 +140,7 @@ export default function EmptyActionStates() {
 						<div className="flex flex-col gap-basalt-space-lg">
 							<p className="text-basalt-sm font-medium text-basalt-foreground">All Services (3):</p>
 							<ul className="flex flex-col gap-basalt-space-sm">
-								{["Authentication API", "Billing Webhook", "Search Indexer"].map((service) => (
+								{["Patient Portal", "Care Reminder", "Vitals Index"].map((service) => (
 									<li
 										key={service}
 										className="rounded-basalt-sm bg-basalt-muted px-basalt-space-lg py-basalt-space-sm text-basalt-sm text-basalt-foreground"

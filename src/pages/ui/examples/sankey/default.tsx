@@ -2,11 +2,11 @@ import { SankeyChart } from "@nocoo/basalt/charts/sankey";
 
 const data = {
 	nodes: [
-		{ name: "Visits" },
-		{ name: "Signup" },
-		{ name: "Activate" },
-		{ name: "Upgrade" },
-		{ name: "Churn" },
+		{ name: "Check-ins" },
+		{ name: "Intake" },
+		{ name: "Care plan" },
+		{ name: "Follow-up" },
+		{ name: "Paused" },
 	],
 	links: [
 		{ source: 0, target: 1, value: 1200 },

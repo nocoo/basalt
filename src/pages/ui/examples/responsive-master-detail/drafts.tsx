@@ -5,14 +5,14 @@ import { useState } from "react";
 
 export default function DraftMasterDetail() {
 	const [drafts, setDrafts] = useState<Record<string, string>>({
-		Introduction: "Welcome to the project.\n\nKeep notes close to your work.",
+		Introduction: "Welcome to the care plan.\n\nKeep notes close to your work.",
 		Checklist: "Review the interface\nVerify keyboard access\nPublish the release notes",
 	});
 	const [selected, setSelected] = useState("Introduction");
 	const [open, setOpen] = useState(false);
 	return (
 		<ResponsiveMasterDetail
-			label="Draft workspace"
+			label="Draft care team"
 			selectedId={selected}
 			detailOpen={open}
 			onDetailOpenChange={setOpen}

@@ -18,15 +18,15 @@ export default function BarAccessibleData() {
 			<BarChart
 				data={data}
 				showAxes
-				ariaLabel="Quarterly revenue breakdown"
+				ariaLabel="Quarterly patient visits breakdown"
 				className="h-48 w-full"
-				summary="Quarterly revenue grew from 450k in Q1 to a peak of 810k in Q4. Press Tab to focus the chart surface and explore quarters with arrow keys."
+				summary="Quarterly patient visits grew from 450 in Q1 to a peak of 810 in Q4. Press Tab to focus the chart surface and explore quarters with arrow keys."
 				dataAlternative={
 					<Collapsible className="mt-basalt-layout-sm text-basalt-sm">
-						<CollapsibleTrigger>View quarterly revenue table</CollapsibleTrigger>
+						<CollapsibleTrigger>View quarterly patient-visit table</CollapsibleTrigger>
 						<CollapsibleContent unstyled>
 							<table
-								aria-label="Quarterly revenue data"
+								aria-label="Quarterly patient visits data"
 								className="mt-basalt-layout-sm w-full border-collapse text-left text-basalt-sm text-basalt-muted-foreground"
 							>
 								<thead>
@@ -41,7 +41,7 @@ export default function BarAccessibleData() {
 											scope="col"
 											className="py-basalt-space-sm text-right font-medium text-basalt-foreground tabular-nums"
 										>
-											Revenue ($k)
+											Patients served
 										</th>
 									</tr>
 								</thead>

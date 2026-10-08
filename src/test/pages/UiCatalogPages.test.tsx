@@ -84,8 +84,8 @@ describe("ui catalog", () => {
 	it("demonstrates live inbox selection rather than a no-op callback", () => {
 		const Example = UI_EXAMPLES["chat-inbox"][0].render;
 		render(<Example />);
-		const first = screen.getByRole("button", { name: /Analytics/ });
-		const second = screen.getByRole("button", { name: /Quality/ });
+		const first = screen.getByRole("button", { name: /Wellness report/ });
+		const second = screen.getByRole("button", { name: /Care team/ });
 		expect(first).toHaveAttribute("aria-current", "true");
 		fireEvent.click(second);
 		expect(second).toHaveAttribute("aria-current", "true");
@@ -448,7 +448,7 @@ describe("ui catalog", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		const triggers: Record<string, string> = {
-			collapsible: "How does this project work?",
+			collapsible: "How does this care plan work?",
 			dialog: "Click me",
 			popover: "Open Popover",
 			"dropdown-menu": "Open",
@@ -1077,7 +1077,7 @@ describe("ui catalog", () => {
 			throw new Error("missing SectionRule stacked regions");
 		}
 		expect(
-			within(stacked as HTMLElement).getByRole("button", { name: "New project" }),
+			within(stacked as HTMLElement).getByRole("button", { name: "New appointment" }),
 		).toBeInTheDocument();
 		for (const scenario of UI_EXAMPLES["section-rule"] ?? []) {
 			expect(scenario.code).toContain("@nocoo/basalt/components/section-rule");
@@ -1127,7 +1127,7 @@ describe("ui catalog", () => {
 		if (!hero) {
 			throw new Error("missing StatStrip hero");
 		}
-		expect(within(hero as HTMLElement).getByText("Projects")).toBeInTheDocument();
+		expect(within(hero as HTMLElement).getByText("Care plans")).toBeInTheDocument();
 		expect(within(hero as HTMLElement).getByText("24")).toBeInTheDocument();
 		const loading = document.querySelector('[data-scenario="stat-strip-loading-values"]');
 		expect(loading).toBeTruthy();
@@ -1187,7 +1187,7 @@ describe("ui catalog", () => {
 			throw new Error("missing ConfirmDialog hero");
 		}
 		expect(
-			within(hero as HTMLElement).getByRole("button", { name: "Delete project" }),
+			within(hero as HTMLElement).getByRole("button", { name: "Delete care plan" }),
 		).toBeInTheDocument();
 		const promiseResult = document.querySelector('[data-scenario="confirm-dialog-promise-result"]');
 		expect(promiseResult).toBeTruthy();
@@ -3209,10 +3209,10 @@ describe("ui catalog", () => {
 		expect(multiple).toHaveTextContent("Examples");
 		expect(multiple).toHaveTextContent("View code examples");
 		const structured = document.querySelector('[data-scenario="layer-card-structured-card"]');
-		expect(structured).toHaveTextContent("Deployment");
+		expect(structured).toHaveTextContent("Care plan review");
 		expect(structured).toHaveTextContent("All checks have passed.");
 		expect(structured).toHaveTextContent("Review");
-		expect(structured).toHaveTextContent("Deploy");
+		expect(structured).toHaveTextContent("Review");
 		const states = document.querySelector('[data-scenario="layer-card-loading-empty"]');
 		expect(states).toHaveTextContent("No activity");
 		expect(states).toHaveTextContent("New events will appear here.");
@@ -3336,14 +3336,14 @@ describe("ui catalog", () => {
 		expect(alert).toHaveTextContent("Required");
 		expect(alert).toHaveAttribute("id", `${errorInput?.id}-error`);
 		expect(alert).toHaveClass("text-basalt-sm", "text-basalt-destructive");
-		expect(rich).toHaveTextContent("Workspace name");
+		expect(rich).toHaveTextContent("Care team name");
 		expect(rich).toHaveTextContent("(optional)");
-		expect(rich).toHaveTextContent("Shown on invoices");
+		expect(rich).toHaveTextContent("Shown on care summaries");
 		expect(rich.querySelector('button[aria-label="More information"]')).toBeTruthy();
 		const richInput = rich.querySelector("input");
 		expect(richInput).toHaveAttribute("id");
 		expect(rich.querySelector(`label[for="${richInput?.getAttribute("id")}"]`)).toHaveTextContent(
-			"Workspace name",
+			"Care team name",
 		);
 		expect(structured).toHaveTextContent("Enter a valid email");
 		const structuredInput = structured.querySelector("input");

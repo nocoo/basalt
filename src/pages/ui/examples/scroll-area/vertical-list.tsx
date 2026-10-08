@@ -1,12 +1,12 @@
 import { ScrollArea } from "@nocoo/basalt/components/scroll-area";
 
 const activity = [
-	"Created the project",
-	"Invited two teammates",
-	"Connected the repository",
-	"Enabled preview builds",
-	"Published the first release",
-	"Added a custom domain",
+	"Created the care plan",
+	"Invited two care providers",
+	"Added a wellness report",
+	"Enabled appointment reminders",
+	"Reviewed the care plan",
+	"Scheduled the next check-in",
 ];
 
 export default function VerticalListExample() {
