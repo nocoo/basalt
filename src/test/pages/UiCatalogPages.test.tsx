@@ -104,7 +104,7 @@ describe("ui catalog", () => {
 	it("renders the categorized index with orthogonal release and page states", () => {
 		renderCatalog("/ui");
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
-		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("120 / 121 ready");
+		expect(document.querySelector("[data-ready-summary]")).toBeNull();
 		const banner = screen.getByRole("banner", { name: "Component library", hidden: true });
 		expect(banner).toBeVisible();
 		expect(within(banner).getByRole("heading", { name: "Component library" })).toBeInTheDocument();
@@ -144,25 +144,15 @@ describe("ui catalog", () => {
 		expect(buttonCard).toBeTruthy();
 		expect(mapsCard).toBeTruthy();
 		if (buttonCard && mapsCard) {
-			expect(within(buttonCard as HTMLElement).getByText("Stable")).toHaveAttribute(
-				"data-release-status",
-				"stable",
-			);
-			expect(within(buttonCard as HTMLElement).getByText("Ready")).toHaveAttribute(
-				"data-page-status",
-				"ready",
-			);
-			expect(within(mapsCard as HTMLElement).getByText("Catalog")).toHaveAttribute(
-				"data-release-status",
-				"catalog",
-			);
-			expect(within(mapsCard as HTMLElement).getByText("Planned")).toHaveAttribute(
-				"data-page-status",
-				"planned",
-			);
+			expect(buttonCard.querySelector("[data-release-status]")).toBeNull();
+			expect(buttonCard.querySelector("[data-page-status]")).toBeNull();
+			expect(mapsCard.querySelector("[data-release-status]")).toBeNull();
+			expect(mapsCard.querySelector("[data-page-status]")).toBeNull();
 		}
+		expect(document.querySelector("ul.border-t.border-basalt-border")).toBeTruthy();
+		expect(buttonCard?.querySelector(".rounded-lg")).toBeNull();
 		expect(
-			within(buttonCard as HTMLElement).getAllByRole("button", { name: "Create project" }),
+			within(buttonCard as HTMLElement).getAllByRole("button", { name: "Add health record" }),
 		).toHaveLength(3);
 	}, 15_000);
 

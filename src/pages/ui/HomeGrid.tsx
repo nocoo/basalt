@@ -1,4 +1,3 @@
-import { Badge } from "@nocoo/basalt/components/badge";
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
@@ -34,11 +33,11 @@ function HomeButton() {
 	return (
 		<div className="grid gap-basalt-layout">
 			<Button variant="outline" icon={<Plus />}>
-				Create project
+				Add health record
 			</Button>
-			<Button icon={<Plus />}>Create project</Button>
+			<Button icon={<Plus />}>Add health record</Button>
 			<Button variant="outline" loading>
-				Create project
+				Add health record
 			</Button>
 		</div>
 	);
@@ -47,8 +46,8 @@ function HomeButton() {
 function HomeInput() {
 	return (
 		<div className="grid w-[12.5rem] gap-basalt-layout">
-			<Input placeholder="Type something..." />
-			<Input defaultValue="Invalid!" className="border-destructive" />
+			<Input placeholder="Search health records" />
+			<Input defaultValue="Invalid date" className="border-destructive" />
 		</div>
 	);
 }
@@ -92,7 +91,7 @@ function HomeCheckbox() {
 				onCheckedChange={(value) => setChecked(value === true)}
 				aria-label="Max bandwidth"
 			/>
-			<span>Max bandwidth</span>
+			<span>Share with care team</span>
 		</div>
 	);
 }
@@ -101,20 +100,20 @@ function HomeLayerCard() {
 	return (
 		<LayerCard className="w-[12.5rem]">
 			<LayerCard.Secondary>Next Steps</LayerCard.Secondary>
-			<LayerCard.Primary>Hello</LayerCard.Primary>
+			<LayerCard.Primary>Review care plan</LayerCard.Primary>
 		</LayerCard>
 	);
 }
 
 function HomeBanner() {
-	return <Banner className="max-w-[13.75rem]" title="Update available" />;
+	return <Banner className="max-w-[13.75rem]" title="New lab results available" />;
 }
 
 function HomeInputGroup() {
 	return (
 		<InputGroup className="max-w-[13.75rem]">
-			<InputGroup.Input defaultValue="atlas" aria-label="Subdomain" />
-			<InputGroup.Suffix>.example.com</InputGroup.Suffix>
+			<InputGroup.Input defaultValue="primary" aria-label="Care provider" />
+			<InputGroup.Suffix> clinic</InputGroup.Suffix>
 			<InputGroup.Addon align="end">
 				<CircleCheck className="text-basalt-heatmap-green-3" />
 			</InputGroup.Addon>
@@ -126,7 +125,7 @@ function HomeLink() {
 	return (
 		<LinkProvider>
 			<div className="flex flex-col gap-basalt-space-lg text-basalt-base">
-				<BasaltLink href="#default">Default link</BasaltLink>
+				<BasaltLink href="#health-summary">View health summary</BasaltLink>
 			</div>
 		</LinkProvider>
 	);
@@ -135,9 +134,9 @@ function HomeLink() {
 function HomeLabel() {
 	return (
 		<div className="flex flex-col gap-basalt-space-lg">
-			<Label>Default Label</Label>
-			<Label showOptional>Optional Field</Label>
-			<Label tooltip="More information about this field">With Tooltip</Label>
+			<Label>Medication name</Label>
+			<Label showOptional>Care notes</Label>
+			<Label tooltip="Visible only to your care team">Care team notes</Label>
 		</div>
 	);
 }
@@ -151,11 +150,11 @@ function HomeRadio() {
 		>
 			<div className="flex items-center gap-basalt-space-lg text-basalt-base">
 				<Radio value="option1" aria-label="Option 1" />
-				<span>Option 1</span>
+				<span>Today</span>
 			</div>
 			<div className="flex items-center gap-basalt-space-lg text-basalt-base">
 				<Radio value="option2" aria-label="Option 2" />
-				<span>Option 2</span>
+				<span>This week</span>
 			</div>
 		</RadioGroup>
 	);
@@ -164,29 +163,31 @@ function HomeRadio() {
 function HomeText() {
 	return (
 		<div className="flex flex-col gap-basalt-space-sm">
-			<Text size="lg">Large Bold Text</Text>
-			<Text>Regular text content</Text>
+			<Text size="lg">Health at a glance</Text>
+			<Text>Regular check-in notes</Text>
 			<Text size="sm" tone="muted">
-				Small subtle text
+				Updated a few minutes ago
 			</Text>
 		</div>
 	);
 }
 
 function HomeSensitiveInput() {
-	return <SensitiveInput aria-label="API key" revealLabel="Show" hideLabel="Hide" />;
+	return (
+		<SensitiveInput aria-label="Health record access code" revealLabel="Show" hideLabel="Hide" />
+	);
 }
 
 function HomeInputArea() {
-	return <InputArea aria-label="Notes" placeholder="Enter your name" />;
+	return <InputArea aria-label="Health notes" placeholder="Add a note for your care team" />;
 }
 
 function HomeSeparator() {
 	return (
 		<div className="w-[12.5rem] space-y-basalt-space-lg">
-			<Text>Above</Text>
+			<Text>Symptoms</Text>
 			<Separator />
-			<Text>Below</Text>
+			<Text>Care plan</Text>
 		</div>
 	);
 }
@@ -251,41 +252,32 @@ export function HomeGrid({ groups }: HomeGridProps) {
 						</div>
 					}
 				>
-					<ul className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2 2xl:grid-cols-3">
+					<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
 						{group.items.map((item) => {
 							const Demo = itemDemo(item);
 							const title = catalogNavName(item.entry);
 							const titleClass =
-								"text-basalt-base font-medium text-foreground underline-offset-4 hover:underline";
+								"text-basalt-base font-medium text-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 							return (
-								<li key={item.entry.slug} data-catalog-card={item.entry.slug} className="min-w-0">
-									<LayerCard className="h-full min-h-48">
-										<LayerCard.Header className="flex-wrap">
-											{item.pageStatus === "ready" ? (
-												<Link to={`/ui/${item.entry.slug}`} className={titleClass}>
-													{title}
-												</Link>
-											) : (
-												<span className="text-basalt-base font-medium text-muted-foreground">
-													{title}
-												</span>
-											)}
-											<div className="flex items-center gap-basalt-space-md">
-												<Badge variant="outline" data-release-status={item.releaseStatus}>
-													{item.releaseStatus === "stable" ? "Stable" : "Catalog"}
-												</Badge>
-												<Badge
-													variant={item.pageStatus === "ready" ? "success" : "secondary"}
-													data-page-status={item.pageStatus}
-												>
-													{item.pageStatus === "ready" ? "Ready" : "Planned"}
-												</Badge>
-											</div>
-										</LayerCard.Header>
-										<LayerCard.Body className="flex min-h-36 flex-1 items-center justify-center">
+								<li
+									key={item.entry.slug}
+									data-catalog-card={item.entry.slug}
+									className="min-w-0 border-b border-basalt-border md:border-r md:max-lg:nth-[2n]:border-r-0 lg:max-2xl:nth-[3n]:border-r-0 2xl:nth-[4n]:border-r-0"
+								>
+									<div className="flex min-w-0 max-w-full min-h-48 flex-col gap-basalt-layout p-basalt-card">
+										{item.pageStatus === "ready" ? (
+											<Link to={`/ui/${item.entry.slug}`} className={titleClass}>
+												{title}
+											</Link>
+										) : (
+											<span className="text-basalt-base font-medium text-muted-foreground">
+												{title}
+											</span>
+										)}
+										<div className="flex min-w-0 max-w-full min-h-36 flex-1 items-center justify-center pt-basalt-space-lg [&>*]:max-w-full">
 											{Demo ? <Demo /> : null}
-										</LayerCard.Body>
-									</LayerCard>
+										</div>
+									</div>
 								</li>
 							);
 						})}

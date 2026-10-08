@@ -92,17 +92,7 @@ export default function UiIndexPage() {
 			variant="document"
 			data-status="index"
 			title="Component library"
-			description={
-				<>
-					Explore Basalt components, charts, and reusable blocks.
-					<span
-						data-ready-summary
-						className="mt-basalt-space-lg block text-basalt-sm tabular-nums text-basalt-muted-foreground"
-					>
-						{index.readyCount} / {index.items.length} ready
-					</span>
-				</>
-			}
+			description="Explore Basalt components, charts, and reusable blocks."
 			actions={
 				<Button
 					variant={filtersOpen ? "secondary" : "outline"}
