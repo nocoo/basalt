@@ -88,10 +88,16 @@ describe("InteractionShowcasePage", () => {
 	});
 
 	it("renders toast notification cards", () => {
-		render(<InteractionShowcasePage />);
+		const { container } = render(<InteractionShowcasePage />);
 		expect(screen.getByText("Toast Notifications")).toBeInTheDocument();
 		expect(screen.getByText("Changes saved")).toBeInTheDocument();
 		expect(screen.getByText("Payment failed")).toBeInTheDocument();
+		expect(container.querySelectorAll("[data-interaction-card]")).toHaveLength(5);
+		for (const card of container.querySelectorAll("[data-interaction-card]")) {
+			const trigger = card.querySelector("button");
+			expect(trigger).toHaveAttribute("data-slot", "card-header");
+			expect(trigger).toHaveClass("px-basalt-card", "py-basalt-card-sm");
+		}
 	});
 
 	it("renders toast variant labels", () => {

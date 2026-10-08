@@ -389,3 +389,12 @@ forms too close to the surface edge. Give modal panels responsive card-scale
 insets, without enlarging the alias shared by sheets or changing control tokens.
 Measure the composed panel rather than accepting a semantic utility name as proof
 of the correct spacing role.
+
+## 2026-10-08: Clickable content cards still own content insets
+
+The interaction gallery rendered multi-line content as outline buttons, inheriting
+4px vertical and 8px horizontal control padding. Use LayerCard's slotted Header
+for the whole-card action so the container owns 16/12px insets and the real Button
+retains focus, keyboard and hover behavior. The feedback form also lacked a gap
+between its header and fields; keep region separation at 16px and label spacing
+inside Field, rather than enlarging every input or adding per-control padding.

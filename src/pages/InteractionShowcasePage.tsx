@@ -8,9 +8,10 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@nocoo/basalt/components/dialog";
+import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
 import { InputArea } from "@nocoo/basalt/components/input-area";
-import { Label } from "@nocoo/basalt/components/label";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Separator } from "@nocoo/basalt/components/separator";
 import { toast } from "@nocoo/basalt/components/toast";
@@ -68,7 +69,7 @@ function ToastSection() {
 
 	return (
 		<SectionRule title={t("pages.interactionShowcase.toastNotifications")}>
-			<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg">
+			<p className="text-basalt-base text-muted-foreground">
 				{t("pages.interactionShowcase.toastDesc")}
 			</p>
 			<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2 lg:grid-cols-3">
@@ -76,27 +77,30 @@ function ToastSection() {
 					const Icon = VARIANT_ICON[t.variant];
 					const colorClass = VARIANT_STYLE[t.variant];
 					return (
-						<Button
-							variant="outline"
-							type="button"
-							key={t.id}
-							onClick={() => fireToast(t.variant, t.title, t.description)}
-							className="items-start justify-start text-left"
-						>
-							<Icon
-								className={`h-4 w-4 mt-basalt-space-xs shrink-0 ${colorClass}`}
-								strokeWidth={1.5}
-							/>
-							<div className="min-w-0">
-								<p className="text-basalt-base font-medium text-foreground">{t.title}</p>
-								<p className="text-basalt-sm text-muted-foreground mt-basalt-space-xs line-clamp-2">
-									{t.description}
-								</p>
-								<span className="mt-basalt-space-md inline-block rounded-basalt-sm bg-muted px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-muted-foreground">
-									{t.variantLabel}
-								</span>
-							</div>
-						</Button>
+						<LayerCard key={t.id} className="h-full" data-interaction-card>
+							<LayerCard.Header asChild>
+								<Button
+									variant="ghost"
+									type="button"
+									onClick={() => fireToast(t.variant, t.title, t.description)}
+									className="h-full items-start justify-start text-left"
+								>
+									<Icon
+										className={`h-4 w-4 mt-basalt-space-xs shrink-0 ${colorClass}`}
+										strokeWidth={1.5}
+									/>
+									<div className="min-w-0">
+										<p className="text-basalt-base font-medium text-foreground">{t.title}</p>
+										<p className="text-basalt-sm text-muted-foreground mt-basalt-space-xs line-clamp-2">
+											{t.description}
+										</p>
+										<span className="mt-basalt-space-md inline-block rounded-basalt-sm bg-muted px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-muted-foreground">
+											{t.variantLabel}
+										</span>
+									</div>
+								</Button>
+							</LayerCard.Header>
+						</LayerCard>
 					);
 				})}
 			</div>
@@ -115,7 +119,7 @@ function DialogSection() {
 
 	return (
 		<SectionRule title={t("pages.interactionShowcase.dialogs")}>
-			<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg">
+			<p className="text-basalt-base text-muted-foreground">
 				{t("pages.interactionShowcase.dialogDesc")}
 			</p>
 			<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-3">
@@ -127,19 +131,24 @@ function DialogSection() {
 								? t("pages.interactionShowcase.formInput")
 								: t("pages.interactive.destructive");
 					return (
-						<Button
-							variant="outline"
-							type="button"
-							key={d.id}
-							onClick={() => openDialog(d.id)}
-							className="flex-col items-start text-left"
-						>
-							<p className="text-basalt-base font-medium text-foreground">{d.title}</p>
-							<p className="text-basalt-sm text-muted-foreground line-clamp-2">{d.description}</p>
-							<span className="mt-auto rounded-basalt-sm bg-muted px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-muted-foreground">
-								{styleLabel}
-							</span>
-						</Button>
+						<LayerCard key={d.id} className="h-full" data-interaction-card>
+							<LayerCard.Header asChild>
+								<Button
+									variant="ghost"
+									type="button"
+									onClick={() => openDialog(d.id)}
+									className="h-full flex-col items-start text-left"
+								>
+									<p className="text-basalt-base font-medium text-foreground">{d.title}</p>
+									<p className="text-basalt-sm text-muted-foreground line-clamp-2">
+										{d.description}
+									</p>
+									<span className="mt-auto rounded-basalt-sm bg-muted px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-muted-foreground">
+										{styleLabel}
+									</span>
+								</Button>
+							</LayerCard.Header>
+						</LayerCard>
 					);
 				})}
 			</div>
@@ -147,7 +156,7 @@ function DialogSection() {
 			{/* Render active dialog */}
 			<Dialog open={!!current} onOpenChange={(open) => !open && closeDialog()}>
 				{current?.style === "info" && (
-					<DialogContent>
+					<DialogContent className="space-y-basalt-layout">
 						<DialogHeader>
 							<DialogTitle>{current.title}</DialogTitle>
 							<DialogDescription>{current.description}</DialogDescription>
@@ -171,13 +180,13 @@ function DialogSection() {
 				)}
 
 				{current?.style === "confirm" && (
-					<DialogContent>
+					<DialogContent className="space-y-basalt-layout">
 						<DialogHeader>
 							<DialogTitle>{current.title}</DialogTitle>
 							<DialogDescription>{current.description}</DialogDescription>
 						</DialogHeader>
 						<Separator className="bg-border" />
-						<DialogFooter className="gap-basalt-space-lg sm:gap-0">
+						<DialogFooter>
 							<DialogClose asChild>
 								<Button variant="secondary" type="button">
 									{t("common.cancel")}
@@ -225,33 +234,27 @@ function FormDialogContent({
 	};
 
 	return (
-		<DialogContent>
+		<DialogContent className="space-y-basalt-layout">
 			<DialogHeader>
 				<DialogTitle>{title}</DialogTitle>
 				<DialogDescription>{description}</DialogDescription>
 			</DialogHeader>
 			{!submitted && (
-				<form onSubmit={handleSubmit} className="space-y-basalt-space-lg">
-					<div className="space-y-basalt-space-lg">
-						<Label htmlFor="feedback-name" className="text-foreground">
-							{t("pages.interactionShowcase.yourName")}
-						</Label>
+				<form onSubmit={handleSubmit} className="space-y-basalt-layout">
+					<Field label={t("pages.interactionShowcase.yourName")} htmlFor="feedback-name">
 						<Input
 							id="feedback-name"
 							placeholder={t("pages.interactionShowcase.yourNamePlaceholder")}
 						/>
-					</div>
-					<div className="space-y-basalt-space-lg">
-						<Label htmlFor="feedback-message" className="text-foreground">
-							{t("pages.interactionShowcase.message")}
-						</Label>
+					</Field>
+					<Field label={t("pages.interactionShowcase.message")} htmlFor="feedback-message">
 						<InputArea
 							id="feedback-message"
 							rows={3}
 							placeholder={t("pages.interactionShowcase.messagePlaceholder")}
 						/>
-					</div>
-					<DialogFooter className="gap-basalt-space-lg sm:gap-0">
+					</Field>
+					<DialogFooter>
 						<DialogClose asChild>
 							<Button variant="secondary" type="button">
 								{t("common.cancel")}

@@ -117,14 +117,42 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 	);
 	await page.evaluate(() => document.documentElement.style.removeProperty("font-size"));
 	for (const width of [390, 1440]) {
+		await page.emulateMedia({ reducedMotion: "reduce" });
 		await page.setViewportSize({ width, height: 1000 });
 		await page.goto(`${baseUrl}/interactions`);
-		await page.getByRole("button", { name: /Send Feedback/ }).click();
+		await page.locator("[data-interaction-card]").first().waitFor();
+		for (const trigger of await page.locator("[data-interaction-card] > button").all()) {
+			assert.equal(await trigger.evaluate((node) => getComputedStyle(node).padding), "12px 16px");
+		}
+		const feedback = page.getByRole("button", { name: /Send Feedback/ });
+		await feedback.focus();
+		await page.keyboard.press("Enter");
 		const dialog = page.getByRole("dialog", { name: "Send Feedback" });
+		await dialog.waitFor();
+		await dialog.evaluate(async (node) => {
+			await Promise.all(node.getAnimations().map((animation) => animation.finished));
+		});
 		assert.equal(
 			await dialog.evaluate((node) => getComputedStyle(node).padding),
 			width < 640 ? "16px" : "24px",
 		);
+		const spacing = await dialog.evaluate((node) => {
+			const header = node.firstElementChild as HTMLElement;
+			const form = node.querySelector("form") as HTMLElement;
+			const fields = [
+				form.querySelector("#feedback-name")?.parentElement,
+				form.querySelector("#feedback-message")?.parentElement,
+			];
+			return {
+				headerGap: form.getBoundingClientRect().top - header.getBoundingClientRect().bottom,
+				fieldGap:
+					fields[0] && fields[1]
+						? fields[1].getBoundingClientRect().top - fields[0].getBoundingClientRect().bottom
+						: -1,
+			};
+		});
+		assert.equal(spacing.headerGap, 16);
+		assert.equal(spacing.fieldGap, 16);
 		await page.keyboard.press("Escape");
 		await dialog.waitFor({ state: "hidden" });
 	}
