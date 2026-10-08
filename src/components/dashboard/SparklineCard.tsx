@@ -1,5 +1,5 @@
 import { Sparkline } from "@nocoo/basalt/charts/sparkline";
-import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { StatCard } from "@nocoo/basalt/charts/stat-card";
 import { useTranslation } from "react-i18next";
 
 const sparkData = [
@@ -15,19 +15,24 @@ const sparkData = [
 export function SparklineCard() {
 	const { t } = useTranslation();
 	return (
-		<LayerCard className="flex flex-col ring-0 h-full rounded-card border-0 bg-secondary shadow-none">
-			<div className="flex flex-col space-y-2.5 p-4 pb-2">
-				<h3 className="text-sm text-muted-foreground">{t("dashboard.weeklyActive")}</h3>
-			</div>
-			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 space-y-3">
-				<div className="text-2xl font-semibold text-foreground">24.8k</div>
-				<Sparkline
-					data={sparkData.map((row) => ({ x: row.day, y: row.value }))}
-					ariaLabel={t("dashboard.weeklyActive")}
-					className="h-14 w-full"
-				/>
-				<p className="text-xs text-muted-foreground">{t("dashboard.weeklyActiveChange")}</p>
-			</div>
-		</LayerCard>
+		<StatCard
+			title={t("dashboard.weeklyActive")}
+			value="24.8k"
+			trendContent={
+				<span className="text-basalt-muted-foreground">{t("dashboard.weeklyActiveChange")}</span>
+			}
+		>
+			<Sparkline
+				data={sparkData.map((row) => ({ x: row.day, y: row.value }))}
+				ariaLabel={t("dashboard.weeklyActive")}
+				className="h-basalt-16 w-full"
+				dataAlternative={
+					<>
+						{t("dashboard.weeklyActivePeriod")}
+						<span className="sr-only">{t("dashboard.weeklyActiveSummary")}</span>
+					</>
+				}
+			/>
+		</StatCard>
 	);
 }

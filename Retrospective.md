@@ -281,3 +281,16 @@ preserve only existing semantic checkmarks, tab underlines and keyboard focus.
 Delete the extra tokens and pseudo-elements rather than hiding them in one page.
 The revised default action is 34px: change shared action/row line boxes and derived
 reference dimensions, not global body typography or fixed component heights.
+
+## 2026-10-06: A metric and its trend are one information unit
+
+Applying the generic Header/Body recipe to dashboard metrics introduced a divider
+between the number and its evidence. Stretching the plot into remaining space
+then made an almost-flat balance series look like a wall of bars. Locate the
+actual screenshot composition before changing the library: these cards were
+page-owned copies, not existing StatCard consumers. Consolidate them through
+StatCard, keep value and comparison together, and bound only chart geometry.
+Use a line for balance movement and retain a zero baseline for income bars;
+disclose nonzero line scales and the actual observation window. Do not clip
+interactive chart tooltips with the card surface. Structural tests and builds
+cannot replace browser geometry and visual review; report missing evidence.
