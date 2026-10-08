@@ -252,6 +252,11 @@ headings without the compact dashed rule. Component previews retain their own
 scope; document typography must not cascade into copied controls. Headers have
 natural height, no scenic wrappers, negative insets or fixed empty openings.
 
+Scrollable gallery previews reserve 8px of internal space on every edge for
+control rings, focus outlines and shadows. Padding outside the scroll viewport
+does not protect that paint. Center previews safely so oversized content keeps
+its leading edge reachable.
+
 Cards with headings use `LayerCard.Header` and `LayerCard.Body`; use one Body for
 related content with a shared internal gap, not a padded Body for every line.
 Structured roots and slots must not receive extra outer padding or margins.

@@ -275,7 +275,10 @@ export function HomeGrid({ groups }: HomeGridProps) {
 												{title}
 											</span>
 										)}
-										<div className="flex min-h-36 min-w-0 max-w-full flex-1 items-center justify-start overflow-x-auto pt-basalt-space-lg [&>*]:min-w-0 [&>*]:max-w-full sm:justify-center">
+										<div
+											data-gallery-preview=""
+											className="flex min-h-36 min-w-0 max-w-full flex-1 items-center justify-start overflow-x-auto p-basalt-space-lg [&>*]:min-w-0 [&>*]:max-w-full sm:justify-center-safe"
+										>
 											{Demo ? <Demo /> : null}
 										</div>
 									</div>

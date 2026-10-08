@@ -2862,6 +2862,9 @@ describe("ui catalog", () => {
 		expect(source).not.toMatch(/\bHomeInputValidation\b/);
 		expect(source).not.toContain("aspect-square");
 		expect(source).toContain("HOME_DEMOS[item.entry.slug] ?? item.hero.render");
+		expect(source).toContain('data-gallery-preview=""');
+		expect(source).toContain("overflow-x-auto p-basalt-space-lg");
+		expect(source).toContain("sm:justify-center-safe");
 	});
 
 	it("keeps link-button default hero and disabled link contracts", () => {
