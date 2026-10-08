@@ -56,16 +56,35 @@ export function DashboardLayout() {
 			: t(titleKey);
 	useSiteTitle(title);
 	const rootPath = location.pathname.startsWith("/ui") ? "/ui" : "/dashboard";
-	const crumbs =
-		location.pathname === rootPath
-			? []
-			: [{ href: rootPath, label: t(rootPath === "/ui" ? "nav.kit" : "nav.examples") }];
+	const crumbs = [
+		location.pathname === "/dashboard"
+			? { label: t("nav.dashboard") }
+			: { href: "/dashboard", label: t("nav.dashboard") },
+	];
+	if (rootPath === "/ui") {
+		crumbs.push(
+			location.pathname === "/ui"
+				? { label: t("nav.kitIndex") }
+				: { href: "/ui", label: t("nav.kitIndex") },
+		);
+	}
 	const entryCategory = catalogCategory(catalogEntry?.category);
-	if (entryCategory) {
+	if (catalogEntry && entryCategory) {
 		crumbs.push({ href: catalogCategoryPath(entryCategory.id), label: entryCategory.label });
 	}
-	if (catalogEntry && location.pathname.endsWith("/source")) {
-		crumbs.push({ href: `/ui/${catalogEntry.slug}`, label: catalogTitle ?? title });
+	if (overviewCategory) {
+		crumbs.push({ label: overviewCategory.label });
+	} else if (catalogEntry) {
+		crumbs.push(
+			location.pathname.endsWith("/source")
+				? { href: `/ui/${catalogEntry.slug}`, label: catalogTitle ?? title }
+				: { label: catalogTitle ?? title },
+		);
+		if (location.pathname.endsWith("/source")) {
+			crumbs.push({ label: title });
+		}
+	} else if (location.pathname !== "/dashboard" && location.pathname !== "/ui") {
+		crumbs.push({ label: title });
 	}
 
 	// Close mobile sidebar on route change: pathname is the intentional trigger.
@@ -117,6 +136,7 @@ export function DashboardLayout() {
 			)}
 			<AppMain>
 				<AppHeader
+					className="max-sm:[&_nav]:max-w-[42vw] max-sm:[&_nav]:overflow-x-auto max-sm:[&_nav]:whitespace-nowrap max-sm:[&_nav>span]:shrink-0"
 					leading={
 						isMobile ? (
 							<HeaderTooltip label={t("common.openNav")}>
@@ -133,8 +153,8 @@ export function DashboardLayout() {
 							</HeaderTooltip>
 						) : null
 					}
-					breadcrumbs={isMobile ? undefined : crumbs}
-					title={title}
+					breadcrumbs={crumbs}
+					title={undefined}
 					actions={
 						<>
 							<LanguageToggle />

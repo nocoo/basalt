@@ -682,7 +682,7 @@ export function AppFrame() {
 `AppHeader` inherits root `header` attributes (`HTMLAttributes<HTMLElement>`).
 
 - **`title?: string`**: Current page title rendered inside an `h1` (`truncate text-sm font-normal text-basalt-foreground`). (Source type intersection is `HTMLAttributes<HTMLElement> & { title?: ReactNode }`, which narrows valid `title` values to `string | undefined`). Do not also put the current page title in `breadcrumbs`.
-- **`breadcrumbs?: { href?: string; label: ReactNode }[]`**: Ancestor breadcrumb hierarchy displayed before the current page title (ancestors only). Separated by ChevronRight.
+- **`breadcrumbs?: { href?: string; label: ReactNode }[]`**: Breadcrumb hierarchy separated by ChevronRight. Supply ancestors with `title`, or a complete path ending in a nonlinked current item and omit `title`. No trailing separator is rendered without a title.
 - **`leading?: ReactNode`**: Optional slot before breadcrumbs, typically the mobile hamburger drawer trigger.
 - **`actions?: ReactNode`**: Top-right framework controls (`ThemeToggle`, account dropdown, etc.). This slot is reserved for framework controls, **not** the page-level create button.
 - **Native & Ref Boundary**: Inherits native `HTMLAttributes<HTMLElement>`, but does not forward ref.

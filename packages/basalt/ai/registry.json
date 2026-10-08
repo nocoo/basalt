@@ -7070,7 +7070,7 @@
 			"importPath": "@nocoo/basalt/components/app-header",
 			"subpath": "./components/app-header",
 			"sourceFile": "packages/basalt/src/components/app-header.tsx",
-			"sourceHash": "7d6c7c8980c77ac6",
+			"sourceHash": "2304277727c4dd6a",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "framework-chrome",

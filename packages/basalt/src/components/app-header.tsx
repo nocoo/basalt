@@ -46,10 +46,12 @@ export function AppHeader({
 					{breadcrumbs && breadcrumbs.length > 0 ? (
 						<>
 							<Breadcrumbs items={breadcrumbs} className="min-w-0" />
-							<ChevronRight
-								className="size-basalt-icon-sm shrink-0 text-basalt-muted-foreground"
-								aria-hidden="true"
-							/>
+							{title ? (
+								<ChevronRight
+									className="size-basalt-icon-sm shrink-0 text-basalt-muted-foreground"
+									aria-hidden="true"
+								/>
+							) : null}
 						</>
 					) : null}
 					{title ? (

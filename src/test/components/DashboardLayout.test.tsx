@@ -45,32 +45,92 @@ describe("DashboardLayout", () => {
 		document.body.style.overflow = "";
 	});
 
-	it("keeps root routes out of their own breadcrumb ancestors", () => {
+	it("shows the dashboard root as the current breadcrumb", () => {
 		mockIsMobile = false;
-		for (const path of ["/ui", "/dashboard"]) {
-			const { container, unmount } = renderLayout(path);
-			expect(container.querySelector("[data-basalt-header] nav")).toBeNull();
-			unmount();
-		}
+		const { container } = renderLayout("/dashboard");
+		expect(container.querySelector('[data-basalt-header] [aria-current="page"]')).toHaveTextContent(
+			"Dashboard",
+		);
 	});
 
-	it("includes the component parent in source breadcrumbs", () => {
+	it("marks the component library root as current", () => {
 		mockIsMobile = false;
-		const { container } = renderLayout("/ui/button/source");
-		expect(container.querySelector('[data-basalt-header] a[href="/ui/button"]')).toHaveTextContent(
+		const { container } = renderLayout("/ui");
+		expect(container.querySelector('[data-basalt-header] a[href="/dashboard"]')).toHaveTextContent(
+			"Dashboard",
+		);
+		expect(container.querySelector('[data-basalt-header] [aria-current="page"]')).toHaveTextContent(
+			"Component library",
+		);
+		expect(container.querySelector('[data-basalt-header] a[href="/ui"]')).toBeNull();
+	});
+
+	it("shows full catalog paths and a non-link current page", () => {
+		mockIsMobile = false;
+		const { container } = renderLayout("/ui/button");
+		expect(container.querySelector('[data-basalt-header] a[href="/dashboard"]')).toHaveTextContent(
+			"Dashboard",
+		);
+		expect(container.querySelector('[data-basalt-header] a[href="/ui"]')).toHaveTextContent(
+			"Component library",
+		);
+		expect(
+			container.querySelector('[data-basalt-header] a[href="/ui/overview/action"]'),
+		).toHaveTextContent("Actions");
+		expect(container.querySelector('[data-basalt-header] [aria-current="page"]')).toHaveTextContent(
 			"Button",
 		);
 	});
 
+	it("includes all source ancestors", () => {
+		mockIsMobile = false;
+		const { container } = renderLayout("/ui/button/source");
+		expect(container.querySelector('[data-basalt-header] a[href="/dashboard"]')).toHaveTextContent(
+			"Dashboard",
+		);
+		expect(container.querySelector('[data-basalt-header] a[href="/ui"]')).toHaveTextContent(
+			"Component library",
+		);
+		expect(
+			container.querySelector('[data-basalt-header] a[href="/ui/overview/action"]'),
+		).toHaveTextContent("Actions");
+		expect(container.querySelector('[data-basalt-header] a[href="/ui/button"]')).toHaveTextContent(
+			"Button",
+		);
+		expect(container.querySelector('[data-basalt-header] [aria-current="page"]')).toHaveTextContent(
+			"Button source",
+		);
+	});
+
+	it("shows the full breadcrumb path on mobile", () => {
+		const { container } = renderLayout("/ui/overview/action");
+		expect(container.querySelector('[data-basalt-header] a[href="/dashboard"]')).toHaveTextContent(
+			"Dashboard",
+		);
+		expect(container.querySelector('[data-basalt-header] a[href="/ui"]')).toHaveTextContent(
+			"Component library",
+		);
+		expect(container.querySelector('[data-basalt-header] [aria-current="page"]')).toHaveTextContent(
+			"Actions",
+		);
+		expect(container.querySelector("[data-basalt-header]")).toHaveClass(
+			"max-sm:[&_nav]:max-w-[42vw]",
+		);
+		expect(container.querySelector("[data-basalt-header] h1")).toBeNull();
+	});
+
 	it("uses spaced catalog names in the header", () => {
 		renderLayout("/ui/command-palette");
-		expect(screen.getByRole("heading", { name: "Command Palette" })).toBeInTheDocument();
+		expect(
+			screen.getByText("Command Palette", { selector: '[aria-current="page"]' }),
+		).toBeInTheDocument();
+		expect(screen.queryByRole("heading", { name: "Command Palette" })).not.toBeInTheDocument();
 		expect(document.title).toBe("Command Palette · basalt.");
 	});
 
 	it("names overview routes and links component breadcrumbs to the right group", () => {
 		const { unmount } = renderLayout("/ui/overview/action");
-		expect(screen.getByRole("heading", { name: "Actions overview" })).toBeInTheDocument();
+		expect(screen.getByText("Actions", { selector: '[aria-current="page"]' })).toBeInTheDocument();
 		expect(document.title).toBe("Actions overview · basalt.");
 		unmount();
 		mockIsMobile = false;

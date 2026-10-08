@@ -245,8 +245,11 @@ reading width. Page sections use 24px separation regardless of route category.
 The standalone PageHeader API retains its size choices for consumers, but catalog
 pages do not override the shared scale. ShowcasePage marks `variant="document"`
 for the library index, category guides, component documentation and source viewers.
-The shell owns the breadcrumb trail: ancestors are links, the current route is
-not its own ancestor, and source views include their component parent.
+The shell owns the complete breadcrumb trail from Dashboard through the library,
+category and component to the current route. Ancestors are links; the current
+route appears once as nonlinked text with aria-current. Source views include their
+component parent. Narrow headers keep every segment reachable by scrolling the
+breadcrumb region without overflowing the page.
 Document sections use `SectionRule variant="heading"`: 20px sentence-case
 headings without the compact dashed rule. Component previews retain their own
 scope; document typography must not cascade into copied controls. Headers have
@@ -256,6 +259,9 @@ Scrollable gallery previews reserve 8px of internal space on every edge for
 control rings, focus outlines and shadows. Padding outside the scroll viewport
 does not protect that paint. Center previews safely so oversized content keeps
 its leading edge reachable.
+The component library uses one shared LayerCard behind all category grids, not
+individual cards per component. Its light surface is white-toned; dark mode uses
+the same surface hierarchy rather than a fixed white fill.
 
 Cards with headings use `LayerCard.Header` and `LayerCard.Body`; use one Body for
 related content with a shared internal gap, not a padded Body for every line.

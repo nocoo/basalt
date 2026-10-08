@@ -233,61 +233,63 @@ export interface HomeGridProps {
 export function HomeGrid({ groups }: HomeGridProps) {
 	return (
 		<div className="space-y-basalt-layout-xl">
-			{groups.map((group) => (
-				<SectionRule
-					variant="heading"
-					key={group.id}
-					className="min-w-0 max-w-full"
-					aria-label={group.label}
-					title={group.label}
-					actions={
-						<div className="flex min-w-0 max-w-full flex-wrap items-center gap-basalt-space-lg text-basalt-base">
-							<Link
-								to={catalogCategoryPath(group.id)}
-								aria-label={`${group.label} overview`}
-								className="text-basalt-primary hover:underline underline-offset-4"
-							>
-								Overview
-							</Link>
-							<span className="text-muted-foreground">{group.items.length} items</span>
-						</div>
-					}
-				>
-					<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-						{group.items.map((item) => {
-							const Demo = itemDemo(item);
-							const title = catalogNavName(item.entry);
-							const titleClass =
-								"min-w-0 max-w-full text-basalt-base font-medium text-foreground [overflow-wrap:anywhere] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
-							return (
-								<li
-									key={item.entry.slug}
-									data-catalog-card={item.entry.slug}
-									className="min-w-0 border-b border-basalt-border md:border-r md:max-lg:nth-[2n]:border-r-0 lg:max-2xl:nth-[3n]:border-r-0 2xl:nth-[4n]:border-r-0"
+			<LayerCard padding="none">
+				{groups.map((group) => (
+					<SectionRule
+						variant="heading"
+						key={group.id}
+						className="min-w-0 max-w-full"
+						aria-label={group.label}
+						title={group.label}
+						actions={
+							<div className="flex min-w-0 max-w-full flex-wrap items-center gap-basalt-space-lg text-basalt-base">
+								<Link
+									to={catalogCategoryPath(group.id)}
+									aria-label={`${group.label} overview`}
+									className="text-basalt-primary hover:underline underline-offset-4"
 								>
-									<div className="flex min-w-0 max-w-full min-h-48 flex-col gap-basalt-layout p-basalt-card">
-										{item.pageStatus === "ready" ? (
-											<Link to={`/ui/${item.entry.slug}`} className={titleClass}>
-												{title}
-											</Link>
-										) : (
-											<span className="text-basalt-base font-medium text-muted-foreground">
-												{title}
-											</span>
-										)}
-										<div
-											data-gallery-preview=""
-											className="flex min-h-36 min-w-0 max-w-full flex-1 items-center justify-start overflow-x-auto p-basalt-space-lg [&>*]:min-w-0 [&>*]:max-w-full sm:justify-center-safe"
-										>
-											{Demo ? <Demo /> : null}
+									Overview
+								</Link>
+								<span className="text-muted-foreground">{group.items.length} items</span>
+							</div>
+						}
+					>
+						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+							{group.items.map((item) => {
+								const Demo = itemDemo(item);
+								const title = catalogNavName(item.entry);
+								const titleClass =
+									"min-w-0 max-w-full text-basalt-base font-medium text-foreground [overflow-wrap:anywhere] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+								return (
+									<li
+										key={item.entry.slug}
+										data-catalog-card={item.entry.slug}
+										className="min-w-0 border-b border-basalt-border md:border-r md:max-lg:nth-[2n]:border-r-0 lg:max-2xl:nth-[3n]:border-r-0 2xl:nth-[4n]:border-r-0"
+									>
+										<div className="flex min-w-0 max-w-full min-h-48 flex-col gap-basalt-layout p-basalt-card">
+											{item.pageStatus === "ready" ? (
+												<Link to={`/ui/${item.entry.slug}`} className={titleClass}>
+													{title}
+												</Link>
+											) : (
+												<span className="text-basalt-base font-medium text-muted-foreground">
+													{title}
+												</span>
+											)}
+											<div
+												data-gallery-preview=""
+												className="flex min-h-36 min-w-0 max-w-full flex-1 items-center justify-start overflow-x-auto p-basalt-space-lg [&>*]:min-w-0 [&>*]:max-w-full sm:justify-center-safe"
+											>
+												{Demo ? <Demo /> : null}
+											</div>
 										</div>
-									</div>
-								</li>
-							);
-						})}
-					</ul>
-				</SectionRule>
-			))}
+									</li>
+								);
+							})}
+						</ul>
+					</SectionRule>
+				))}
+			</LayerCard>
 		</div>
 	);
 }

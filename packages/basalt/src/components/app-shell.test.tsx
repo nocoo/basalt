@@ -47,6 +47,12 @@ describe("AppShell", () => {
 });
 
 describe("AppHeader", () => {
+	it("does not append a separator after a complete breadcrumb trail", () => {
+		render(<AppHeader breadcrumbs={[{ href: "/", label: "Home" }, { label: "Notes" }]} />);
+		const header = screen.getByRole("banner");
+		expect(header.querySelectorAll("svg")).toHaveLength(1);
+		expect(screen.getByText("Notes")).toHaveAttribute("aria-current", "page");
+	});
 	it("keeps compact breadcrumb links outside the touch-action slots", () => {
 		render(
 			<AppHeader

@@ -424,3 +424,14 @@ lost their visible pointer/keyboard highlight. Accent controls now use the
 provider's contrast-corrected primary and foreground. Hover colors mix primary
 with the theme's popover surface; moving lists use two theme-specific tint stops.
 Keep neutral row selection separate, and verify all palette colors in both modes.
+
+## 2026-10-08: Shared UI fixes require computed geometry review
+
+The first delegated layout pass passed component tests but used an undefined
+Toast line-height token, left a separator after complete breadcrumbs, and gave
+the Timeline axis zero height. Browser review caught these before acceptance.
+The Popover arrow also inherited Radix's default viewBox over its custom path.
+Validate resolved tokens and every positioned element in the browser, including
+all arrow sides, connected axes, narrow screens and enlarged text. Generate
+metadata from the staged snapshot for atomic commits; temporary snapshots must
+link both root and package dependencies, not only root node_modules.
