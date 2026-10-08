@@ -8,7 +8,6 @@ import { Label } from "@nocoo/basalt/components/label";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Link as BasaltLink } from "@nocoo/basalt/components/link";
 import { Radio, RadioGroup } from "@nocoo/basalt/components/radio";
-import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { SensitiveInput } from "@nocoo/basalt/components/sensitive-input";
 import { Separator } from "@nocoo/basalt/components/separator";
 import { Switch } from "@nocoo/basalt/components/switch";
@@ -235,13 +234,9 @@ export function HomeGrid({ groups }: HomeGridProps) {
 		<div className="space-y-basalt-layout-xl">
 			<LayerCard padding="none">
 				{groups.map((group) => (
-					<SectionRule
-						variant="heading"
-						key={group.id}
-						className="min-w-0 max-w-full"
-						aria-label={group.label}
-						title={group.label}
-						actions={
+					<section key={group.id} className="min-w-0 max-w-full" aria-label={group.label}>
+						<LayerCard.Header className="flex-wrap items-center">
+							<h2 className="text-basalt-lg font-medium text-basalt-foreground">{group.label}</h2>
 							<div className="flex min-w-0 max-w-full flex-wrap items-center gap-basalt-space-lg text-basalt-base">
 								<Link
 									to={catalogCategoryPath(group.id)}
@@ -252,8 +247,7 @@ export function HomeGrid({ groups }: HomeGridProps) {
 								</Link>
 								<span className="text-muted-foreground">{group.items.length} items</span>
 							</div>
-						}
-					>
+						</LayerCard.Header>
 						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
 							{group.items.map((item) => {
 								const Demo = itemDemo(item);
@@ -287,7 +281,7 @@ export function HomeGrid({ groups }: HomeGridProps) {
 								);
 							})}
 						</ul>
-					</SectionRule>
+					</section>
 				))}
 			</LayerCard>
 		</div>

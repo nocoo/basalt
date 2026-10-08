@@ -2865,6 +2865,8 @@ describe("ui catalog", () => {
 		expect(source).toContain('data-gallery-preview=""');
 		expect(source).toContain("overflow-x-auto p-basalt-space-lg");
 		expect(source).toContain("sm:justify-center-safe");
+		expect(source).toContain("<LayerCard.Header");
+		expect(source).not.toContain("<SectionRule");
 	});
 
 	it("keeps link-button default hero and disabled link contracts", () => {
