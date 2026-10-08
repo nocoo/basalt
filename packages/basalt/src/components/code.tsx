@@ -90,9 +90,9 @@ function CodePanel({
 			{header && (
 				<div
 					data-slot="code-header"
-					className="flex shrink-0 items-center justify-between gap-basalt-content-gap border-b border-basalt-border px-basalt-panel-x py-basalt-panel-y"
+					className="basalt-banner flex shrink-0 flex-wrap items-center justify-between gap-basalt-space-lg border-b border-basalt-border"
 				>
-					<div className="flex min-w-0 items-center gap-basalt-row-gap">
+					<div className="flex min-w-0 flex-1 items-center gap-basalt-row-gap">
 						{icon && (
 							<span
 								aria-hidden="true"
@@ -104,7 +104,7 @@ function CodePanel({
 						<span
 							id={id}
 							title={heading}
-							className="truncate font-mono text-basalt-code leading-[var(--basalt-line-body)]"
+							className="min-w-0 break-words font-mono text-basalt-code leading-[var(--basalt-line-row)] [overflow-wrap:anywhere]"
 						>
 							{heading}
 						</span>
@@ -112,7 +112,7 @@ function CodePanel({
 					{copyable && (
 						<Button
 							variant="ghost"
-							className="shrink-0 px-basalt-space-md font-normal text-basalt-muted-foreground [&_svg]:size-basalt-icon-sm"
+							className="shrink-0 border-0 px-basalt-space-md py-0 font-normal leading-[var(--basalt-leading-banner)] text-basalt-muted-foreground [&_svg]:size-basalt-icon-sm"
 							aria-label={copyLabel}
 							disabled={vm.status === "pending"}
 							onClick={() => void vm.copy((text) => navigator.clipboard.writeText(text))}

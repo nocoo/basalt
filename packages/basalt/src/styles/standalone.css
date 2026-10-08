@@ -2600,6 +2600,9 @@
   .px-basalt-table-x {
     padding-inline: var(--basalt-space-table-x);
   }
+  .py-0 {
+    padding-block: 0px;
+  }
   .py-basalt-card {
     padding-block: var(--basalt-space-card);
   }
@@ -2775,6 +2778,10 @@
   .leading-\[var\(--basalt-line-relaxed\)\] {
     --tw-leading: var(--basalt-line-relaxed);
     line-height: var(--basalt-line-relaxed);
+  }
+  .leading-\[var\(--basalt-line-row\)\] {
+    --tw-leading: var(--basalt-line-row);
+    line-height: var(--basalt-line-row);
   }
   .leading-basalt-relaxed {
     --tw-leading: var(--basalt-leading-relaxed);
