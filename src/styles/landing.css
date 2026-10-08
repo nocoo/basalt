@@ -140,18 +140,6 @@
 	height: 2rem;
 	object-fit: contain;
 }
-.landing-version {
-	display: inline-flex;
-	align-items: center;
-	min-height: 1.5rem;
-	border: 0.0625rem solid currentColor;
-	border-color: color-mix(in srgb, currentColor 20%, transparent);
-	border-radius: var(--basalt-radius-md);
-	padding: var(--basalt-space-sm) var(--basalt-space-lg);
-	color: var(--landing-hero-ink);
-	font-size: var(--basalt-text-xs);
-	font-variant-numeric: tabular-nums;
-}
 .landing-nav {
 	display: flex;
 	align-items: center;
@@ -1496,9 +1484,6 @@
 	}
 	.landing-header-inner {
 		padding-inline: var(--basalt-space-lg);
-	}
-	.landing-version {
-		display: none;
 	}
 	.landing-nav {
 		gap: var(--basalt-space-lg) var(--basalt-space-lg);

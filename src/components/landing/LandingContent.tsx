@@ -18,7 +18,6 @@ import {
 	LANDING_TEMPLATES,
 } from "@/lib/landing";
 import { SITE } from "@/lib/site";
-import { APP_VERSION } from "@/lib/version";
 import { HeaderTooltip, HexlyLink } from "../header-links";
 
 interface LandingContentProps {
@@ -149,14 +148,6 @@ export function LandingContent({
 						<BasaltLogo alt="" className="landing-logo" />
 						<span>{SITE.title}</span>
 					</Link>
-					<a
-						className="landing-version"
-						href={`${SITE.github}/releases`}
-						target="_blank"
-						rel="noopener noreferrer"
-					>
-						v{APP_VERSION}
-					</a>
 					<nav aria-label="Main navigation" className="landing-nav">
 						{LANDING_PRIMARY_LINKS.map((link) =>
 							link.href.startsWith("#") ? (
