@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function InputControlledAndReset() {
 	const [value, setValue] = useState("Ada");
 	return (
-		<div className="flex w-full flex-col gap-3">
+		<div className="flex w-full flex-col gap-basalt-space-lg">
 			<Field label="Name">
 				<Input value={value} onChange={(event) => setValue(event.target.value)} />
 			</Field>

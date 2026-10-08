@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function DocumentIntake() {
 	const [files, setFiles] = useState<UploadFile[]>([]);
 	return (
-		<div className="w-full space-y-4">
+		<div className="w-full space-y-basalt-space-lg">
 			<FileDropzone
 				label="Add reference documents"
 				description="PDF or text · up to 3 files · 2 MB each"
@@ -31,7 +31,7 @@ export default function DocumentIntake() {
 				emptyLabel="Your selected documents will appear here."
 				onRemove={(id) => setFiles(files.filter((file) => file.id !== id))}
 			/>
-			<p className="text-xs text-basalt-muted-foreground">
+			<p className="text-basalt-sm text-basalt-muted-foreground">
 				Files stay on your device in this demonstration.
 			</p>
 		</div>

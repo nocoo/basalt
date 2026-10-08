@@ -1,10 +1,18 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { SegmentControl } from "@nocoo/basalt/components/segment-control";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@nocoo/basalt/components/select";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router";
-import { ShowcaseHeader } from "@/components/ShowcaseHeader";
+import { ShowcasePage } from "@/components/ShowcasePage";
+import { CATALOG_CATEGORIES } from "./catalog-categories";
 import {
 	type CatalogIndexCategory,
 	type CatalogIndexQuery,
@@ -17,12 +25,6 @@ import {
 } from "./catalog-index";
 import { readCatalogIndex } from "./catalog-index-loader";
 import { HomeGrid } from "./HomeGrid";
-
-const CATEGORY_OPTIONS: ReadonlyArray<{ value: CatalogIndexCategory; label: string }> = [
-	{ value: "component", label: "Components" },
-	{ value: "chart", label: "Charts" },
-	{ value: "block", label: "Blocks" },
-];
 
 const RELEASE_OPTIONS: ReadonlyArray<{ value: CatalogIndexRelease; label: string }> = [
 	{ value: "stable", label: "Stable" },
@@ -86,47 +88,49 @@ export default function UiIndexPage() {
 	}
 
 	return (
-		<div data-status="index" className="space-y-8">
-			<ShowcaseHeader
-				variant="library"
-				title="Component library"
-				description={
-					<>
-						Explore Basalt components, charts, and reusable blocks.
-						<span data-ready-summary className="mt-1 block font-medium text-basalt-foreground">
-							{index.readyCount} / {index.items.length} ready
-						</span>
-					</>
-				}
-				actions={
-					<Button
-						variant={filtersOpen ? "secondary" : "outline"}
-						size="sm"
-						icon={<SlidersHorizontal />}
-						aria-expanded={filtersOpen}
-						aria-controls="catalog-filters"
-						onClick={() => setFiltersOpen((open) => !open)}
+		<ShowcasePage
+			data-status="index"
+			headerVariant="library"
+			title="Component library"
+			description={
+				<>
+					Explore Basalt components, charts, and reusable blocks.
+					<span
+						data-ready-summary
+						className="mt-basalt-space-sm block font-medium text-basalt-foreground"
 					>
-						Filters
-						{filterCount > 0 ? (
-							<span
-								aria-hidden="true"
-								className="flex h-4 min-w-4 items-center justify-center rounded-full bg-basalt-primary px-1 text-[10px] leading-none text-basalt-primary-foreground"
-							>
-								{filterCount}
-							</span>
-						) : null}
-					</Button>
-				}
-			/>
-
+						{index.readyCount} / {index.items.length} ready
+					</span>
+				</>
+			}
+			actions={
+				<Button
+					variant={filtersOpen ? "secondary" : "outline"}
+					size="sm"
+					icon={<SlidersHorizontal />}
+					aria-expanded={filtersOpen}
+					aria-controls="catalog-filters"
+					onClick={() => setFiltersOpen((open) => !open)}
+				>
+					Filters
+					{filterCount > 0 ? (
+						<span
+							aria-hidden="true"
+							className="flex h-4 min-w-4 items-center justify-center rounded-basalt-full bg-basalt-primary px-basalt-space-sm text-basalt-xs leading-basalt-tight text-basalt-primary-foreground"
+						>
+							{filterCount}
+						</span>
+					) : null}
+				</Button>
+			}
+		>
 			{filtersOpen ? (
-				<div id="catalog-filters" className="space-y-4">
-					<div className="flex flex-col gap-4 xl:flex-row xl:flex-wrap xl:items-end">
-						<div className="min-w-0 flex-1 space-y-2 xl:max-w-sm">
+				<div id="catalog-filters" className="space-y-basalt-space-lg">
+					<div className="flex flex-col gap-basalt-space-lg xl:flex-row xl:flex-wrap xl:items-end">
+						<div className="min-w-0 flex-1 space-y-basalt-space-lg xl:max-w-sm">
 							<label
 								htmlFor="catalog-search"
-								className="block text-xs font-medium text-basalt-muted-foreground"
+								className="block text-basalt-sm font-medium text-basalt-muted-foreground"
 							>
 								Search
 							</label>
@@ -149,15 +153,32 @@ export default function UiIndexPage() {
 								/>
 							</InputGroup>
 						</div>
-						<SegmentControl
-							legend="Category"
-							value={query.category}
-							options={CATEGORY_OPTIONS}
-							allOption={{ value: "all" }}
-							onValueChange={(category) =>
-								updateQuery({ category: category as CatalogIndexCategory })
-							}
-						/>
+						<div className="space-y-basalt-space-lg">
+							<label
+								htmlFor="catalog-category"
+								className="block text-basalt-sm font-medium text-basalt-muted-foreground"
+							>
+								Category
+							</label>
+							<Select
+								value={query.category}
+								onValueChange={(category) =>
+									updateQuery({ category: category as CatalogIndexCategory })
+								}
+							>
+								<SelectTrigger id="catalog-category">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									<SelectItem value="all">All</SelectItem>
+									{CATALOG_CATEGORIES.map((category) => (
+										<SelectItem key={category.id} value={category.id}>
+											{category.label}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+						</div>
 						<SegmentControl
 							legend="Release"
 							value={query.release}
@@ -173,13 +194,13 @@ export default function UiIndexPage() {
 							onValueChange={(status) => updateQuery({ status: status as CatalogIndexStatus })}
 						/>
 					</div>
-					<div className="flex min-h-8 flex-wrap items-center justify-between gap-3">
+					<div className="flex min-h-8 flex-wrap items-center justify-between gap-basalt-space-lg">
 						<p
 							role="status"
 							aria-live="polite"
 							aria-atomic="true"
 							data-result-summary
-							className="text-sm text-basalt-muted-foreground"
+							className="text-basalt-base text-basalt-muted-foreground"
 						>
 							{resultCount} {resultCount === 1 ? "result" : "results"}
 						</p>
@@ -195,10 +216,12 @@ export default function UiIndexPage() {
 			{resultCount > 0 ? (
 				<HomeGrid groups={groups} />
 			) : (
-				<div className="py-16 text-center" data-empty-status>
-					<p className="text-sm font-medium text-basalt-foreground">No matching catalog items</p>
+				<div className="py-basalt-space-lg text-center" data-empty-status>
+					<p className="text-basalt-base font-medium text-basalt-foreground">
+						No matching catalog items
+					</p>
 				</div>
 			)}
-		</div>
+		</ShowcasePage>
 	);
 }

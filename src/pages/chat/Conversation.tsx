@@ -3,6 +3,7 @@ import { Button } from "@nocoo/basalt/components/button";
 import { ChatComposer } from "@nocoo/basalt/components/chat-composer";
 import { ChatMessage } from "@nocoo/basalt/components/chat-message";
 import { DiffTable } from "@nocoo/basalt/components/diff-table";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { PromptBar } from "@nocoo/basalt/components/prompt-bar";
 import { RecommendationCard } from "@nocoo/basalt/components/recommendation-card";
 import { Thinking } from "@nocoo/basalt/components/thinking";
@@ -42,7 +43,7 @@ function Response({ message, vm }: { message: Message; vm: VM }) {
 			}
 			onFeedback={(value) => vm.dispatch({ type: "feedback", id: message.id, value })}
 			trace={
-				<div className="space-y-basalt-2">
+				<div className="space-y-basalt-space-lg">
 					{message.reasoning && (
 						<Thinking
 							title={
@@ -85,7 +86,7 @@ function Response({ message, vm }: { message: Message; vm: VM }) {
 			{(message.phase === "stopped" || message.phase === "error") && (
 				<div
 					role={message.phase === "error" ? "alert" : "status"}
-					className="flex items-center gap-basalt-2 text-sm text-basalt-muted-foreground"
+					className="flex items-center gap-basalt-space-lg text-basalt-base text-basalt-muted-foreground"
 				>
 					{t(`demo.chat_${message.phase}`)}
 					<Button
@@ -201,7 +202,7 @@ export function Conversation({ vm }: { vm: VM }) {
 				role="log"
 				aria-label={t("demo.messages")}
 				aria-live="off"
-				className="min-h-0 flex-1 overflow-y-auto overscroll-contain [overflow-anchor:none] px-basalt-3 md:px-basalt-6"
+				className="min-h-0 flex-1 overflow-y-auto overscroll-contain [overflow-anchor:none] px-basalt-space-lg md:px-basalt-space-lg"
 				onScroll={(event) => {
 					const node = event.currentTarget;
 					const next = node.scrollHeight - node.scrollTop - node.clientHeight > 64;
@@ -209,22 +210,27 @@ export function Conversation({ vm }: { vm: VM }) {
 					setAway(next);
 				}}
 			>
-				<div ref={content} className="mx-auto w-full max-w-[48rem] space-y-basalt-6 py-basalt-5">
+				<div
+					ref={content}
+					className="mx-auto w-full max-w-[48rem] space-y-basalt-space-lg py-basalt-space-lg"
+				>
 					{vm.thread.messages.length === 0 && (
-						<div className="space-y-basalt-5 py-basalt-8">
+						<div className="space-y-basalt-space-lg py-basalt-space-lg">
 							<Sparkles className="size-basalt-8 text-basalt-primary" aria-hidden="true" />
-							<div className="space-y-basalt-2">
-								<h2 className="text-2xl font-semibold tracking-tight">{t("pages.chat.welcome")}</h2>
-								<p className="text-sm text-basalt-muted-foreground">
+							<div className="space-y-basalt-space-lg">
+								<h2 className="text-basalt-3xl font-semibold tracking-tight">
+									{t("pages.chat.welcome")}
+								</h2>
+								<p className="text-basalt-base text-basalt-muted-foreground">
 									{t("pages.chat.welcomeHint")}
 								</p>
 							</div>
-							<div className="grid gap-basalt-2 sm:grid-cols-2">
+							<div className="grid gap-basalt-space-lg sm:grid-cols-2">
 								{["planPrompt", "codePrompt", "testPrompt", "contextPrompt"].map((key) => (
 									<Button
 										key={key}
 										variant="secondary"
-										className="h-auto min-h-basalt-12 justify-start whitespace-normal p-basalt-3 text-left"
+										className="justify-start whitespace-normal text-left"
 										onClick={() => vm.dispatch({ type: "draft", text: t(`pages.chat.${key}`) })}
 									>
 										{t(`pages.chat.${key}`)}
@@ -237,8 +243,8 @@ export function Conversation({ vm }: { vm: VM }) {
 						message.variant === "assistant" ? (
 							<Response key={message.id} message={message} vm={vm} />
 						) : vm.editing?.id === message.id ? (
-							<div key={message.id} className="rounded-basalt-lg bg-basalt-secondary p-basalt-2">
-								<p className="px-basalt-3 text-xs text-basalt-muted-foreground">
+							<LayerCard key={message.id}>
+								<p className="px-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
 									{t("pages.chat.editHint")}
 								</p>
 								<ChatComposer
@@ -260,7 +266,7 @@ export function Conversation({ vm }: { vm: VM }) {
 										</Button>
 									}
 								/>
-							</div>
+							</LayerCard>
 						) : (
 							<ChatMessage
 								key={message.id}
@@ -271,7 +277,7 @@ export function Conversation({ vm }: { vm: VM }) {
 								}
 							>
 								{message.files?.length ? (
-									<ul className="flex flex-wrap gap-basalt-2 text-xs text-basalt-muted-foreground">
+									<ul className="flex flex-wrap gap-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
 										{message.files.map((file) => (
 											<li key={file.id} className="break-all">
 												{file.name}
@@ -292,9 +298,9 @@ export function Conversation({ vm }: { vm: VM }) {
 					</Button>
 				</div>
 			)}
-			<div className="mx-auto w-full max-w-[51rem] shrink-0 px-basalt-3 pb-basalt-2 md:px-basalt-6">
+			<div className="mx-auto w-full max-w-[51rem] shrink-0 px-basalt-space-lg pb-basalt-space-lg md:px-basalt-space-lg">
 				{vm.error && (
-					<p role="alert" className="px-basalt-3 text-xs text-basalt-danger">
+					<p role="alert" className="px-basalt-space-lg text-basalt-sm text-basalt-danger">
 						{vm.error}
 					</p>
 				)}
@@ -326,7 +332,7 @@ export function Conversation({ vm }: { vm: VM }) {
 				/>
 				<p
 					role="status"
-					className="px-basalt-3 text-center text-[11px] text-basalt-muted-foreground"
+					className="px-basalt-space-lg text-center text-basalt-xs text-basalt-muted-foreground"
 				>
 					{vm.running
 						? vm.waiting

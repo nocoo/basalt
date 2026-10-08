@@ -1,6 +1,18 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { applyCrawlPage, catalogCrawlPage, homeCrawlPage, uiIndexCrawlPage } from "./crawl";
+import {
+	CATALOG_CATEGORIES,
+	type CatalogCategory,
+	catalogCategoryPath,
+} from "../pages/ui/catalog-categories";
+import { CATEGORY_GUIDES } from "../pages/ui/catalog-category-guides";
+import {
+	applyCrawlPage,
+	catalogCrawlPage,
+	categoryCrawlPage,
+	homeCrawlPage,
+	uiIndexCrawlPage,
+} from "./crawl";
 import {
 	LANDING_HEADING,
 	LANDING_PRIMARY_LINKS,
@@ -19,6 +31,21 @@ function parse(html: string) {
 }
 
 describe("landing document", () => {
+	it("prerenders every category's design thinking and practices from the shared guide", () => {
+		for (const category of CATALOG_CATEGORIES) {
+			const page = categoryCrawlPage(category.id);
+			const document = parse(page.html);
+			expect(page.path).toBe(catalogCategoryPath(category.id));
+			expect(document.querySelector("h1")?.textContent).toBe(`${category.label} overview`);
+			expect(document.body.textContent).toContain(CATEGORY_GUIDES[category.id].rationale);
+			for (const practice of CATEGORY_GUIDES[category.id].practices)
+				expect(document.body.textContent).toContain(practice);
+			expect(uiIndexCrawlPage([]).html).toContain(catalogCategoryPath(category.id));
+		}
+		expect(() => categoryCrawlPage("unknown" as CatalogCategory)).toThrow(
+			"Unknown catalog category",
+		);
+	});
 	it("exposes the complete landing content and template destinations without JavaScript", () => {
 		const body = renderLandingBody();
 		const document = parse(body);

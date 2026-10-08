@@ -1,5 +1,6 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { FileDropzone } from "@nocoo/basalt/components/file-dropzone";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useEffect, useState } from "react";
 
 export default function CoverImageIntake() {
@@ -15,7 +16,7 @@ export default function CoverImageIntake() {
 		return () => URL.revokeObjectURL(url);
 	}, [file]);
 	return (
-		<div className="w-full space-y-4">
+		<div className="w-full space-y-basalt-space-lg">
 			<FileDropzone
 				label="Choose a cover image"
 				description="One PNG, JPEG or WebP · up to 4 MB"
@@ -25,7 +26,7 @@ export default function CoverImageIntake() {
 				onFilesAccepted={([image]) => setFile(image)}
 			/>
 			{file && (
-				<div className="flex items-center gap-4 rounded-basalt-lg border border-basalt-border p-3">
+				<LayerCard className="flex items-center gap-basalt-space-lg">
 					{preview && (
 						<img
 							src={preview}
@@ -34,14 +35,14 @@ export default function CoverImageIntake() {
 						/>
 					)}
 					<div className="min-w-0 flex-1">
-						<p className="break-words text-sm">{file.name}</p>
+						<p className="break-words text-basalt-base">{file.name}</p>
 						<Button size="sm" variant="ghost" onClick={() => setFile(null)}>
 							Remove cover
 						</Button>
 					</div>
-				</div>
+				</LayerCard>
 			)}
-			<p className="text-xs text-basalt-muted-foreground">
+			<p className="text-basalt-sm text-basalt-muted-foreground">
 				The page releases each preview when replaced, removed, or unmounted.
 			</p>
 		</div>

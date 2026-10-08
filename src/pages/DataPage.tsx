@@ -2,11 +2,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "@nocoo/basalt/components/av
 import { Badge } from "@nocoo/basalt/components/badge";
 import { Button } from "@nocoo/basalt/components/button";
 import { DescriptionList } from "@nocoo/basalt/components/description-list";
-import { Input } from "@nocoo/basalt/components/input";
+import { InputGroup } from "@nocoo/basalt/components/input-group";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { Pagination } from "@nocoo/basalt/components/pagination";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@nocoo/basalt/components/select";
 import {
 	Table,
 	TableBody,
@@ -29,6 +35,7 @@ import {
 	TrendingUp,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { useDataShowcaseViewModel } from "@/viewmodels/useDataShowcaseViewModel";
 
 const PEOPLE = [
@@ -121,25 +128,25 @@ export default function DataPage() {
 	];
 
 	return (
-		<div className="space-y-8">
-			<PageHeader title={t("pages.data.title")} description={t("pages.data.description")} />
-
+		<ShowcasePage title={t("pages.data.title")} description={t("pages.data.description")}>
 			<SectionRule title={t("pages.data.statTiles")}>
-				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2 lg:grid-cols-4">
 					{KPI_DATA.map((kpi) => (
 						<LayerCard key={kpi.label}>
-							<p className="text-xs text-muted-foreground mb-1">{kpi.label}</p>
-							<p className="text-2xl font-semibold text-foreground">{kpi.value}</p>
-							<div className="flex items-center gap-1 mt-2">
+							<p className="text-basalt-sm text-muted-foreground mb-basalt-space-sm">{kpi.label}</p>
+							<p className="text-basalt-3xl font-semibold text-foreground">{kpi.value}</p>
+							<div className="flex items-center gap-basalt-space-sm mt-basalt-space-lg">
 								{kpi.trend === "up" && <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />}
 								{kpi.trend === "down" && <TrendingDown className="h-3.5 w-3.5 text-red-500" />}
 								{kpi.trend === "flat" && <Minus className="h-3.5 w-3.5 text-muted-foreground" />}
 								<span
-									className={`text-xs font-medium ${kpi.trend === "up" ? "text-emerald-500" : kpi.trend === "down" ? "text-red-500" : "text-muted-foreground"}`}
+									className={`text-basalt-sm font-medium ${kpi.trend === "up" ? "text-emerald-500" : kpi.trend === "down" ? "text-red-500" : "text-muted-foreground"}`}
 								>
 									{kpi.change}
 								</span>
-								<span className="text-xs text-muted-foreground">{t("common.vsLastMonth")}</span>
+								<span className="text-basalt-sm text-muted-foreground">
+									{t("common.vsLastMonth")}
+								</span>
 							</div>
 						</LayerCard>
 					))}
@@ -147,31 +154,29 @@ export default function DataPage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.data.dataTable")}>
-				<div className="flex flex-wrap items-center gap-2">
-					<div className="relative min-w-0 flex-1 basis-48">
-						<Search
-							className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
-							strokeWidth={1.5}
-						/>
-						<Input
+				<div className="flex flex-wrap items-center gap-basalt-space-lg">
+					<InputGroup className="min-w-0 flex-1 basis-48">
+						<InputGroup.Addon>
+							<Search strokeWidth={1.5} />
+						</InputGroup.Addon>
+						<InputGroup.Input
 							aria-label={t("pages.data.searchPlaceholder")}
 							value={vm.query}
 							onChange={(event) => vm.setQuery(event.target.value)}
 							placeholder={t("pages.data.searchPlaceholder")}
-							className="rounded-widget pl-10 text-sm h-8"
 						/>
-					</div>
-					<select
-						aria-label={t("common.filter")}
-						value={vm.status}
-						onChange={(event) => vm.setStatus(event.target.value)}
-						className="h-8 rounded-widget border border-border bg-basalt-control px-2 text-sm"
-					>
-						<option value="all">{t("demo.allStatuses")}</option>
-						<option value="Paid">{t("demo.paid")}</option>
-						<option value="Pending">{t("demo.pendingStatus")}</option>
-						<option value="Overdue">{t("demo.overdue")}</option>
-					</select>
+					</InputGroup>
+					<Select value={vm.status} onValueChange={(value) => vm.setStatus(value)}>
+						<SelectTrigger aria-label={t("common.filter")} className="w-auto">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							<SelectItem value="all">{t("demo.allStatuses")}</SelectItem>
+							<SelectItem value="Paid">{t("demo.paid")}</SelectItem>
+							<SelectItem value="Pending">{t("demo.pendingStatus")}</SelectItem>
+							<SelectItem value="Overdue">{t("demo.overdue")}</SelectItem>
+						</SelectContent>
+					</Select>
 				</div>
 				<LayerCard padding="none">
 					<Table aria-label={t("pages.data.dataTable")}>
@@ -196,16 +201,17 @@ export default function DataPage() {
 												: "none"
 										}
 									>
-										<button
+										<Button
+											variant="ghost"
 											type="button"
 											onClick={() => vm.sortBy(key)}
-											className="inline-flex min-h-8 items-center gap-1 rounded px-1 focus-visible:outline-2 focus-visible:outline-primary"
+											className="inline-flex items-center gap-basalt-space-sm focus-visible:outline-2 focus-visible:outline-primary"
 										>
 											{label}
 											{vm.sort.key === key && (
 												<span aria-hidden="true">{vm.sort.direction === 1 ? "↑" : "↓"}</span>
 											)}
-										</button>
+										</Button>
 									</TableHead>
 								))}
 							</TableRow>
@@ -217,7 +223,7 @@ export default function DataPage() {
 									<TableCell>{row.customer}</TableCell>
 									<TableCell>
 										<span
-											className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${
+											className={`rounded-basalt-full px-basalt-space-lg py-basalt-space-xs text-basalt-xs font-medium ${
 												row.status === "Paid"
 													? "bg-success/10 text-success"
 													: row.status === "Pending"
@@ -241,7 +247,7 @@ export default function DataPage() {
 							{vm.rows.length === 0 && (
 								<TableRow>
 									<TableCell colSpan={5}>
-										<div className="py-6 text-center" role="status">
+										<div className="py-basalt-space-lg text-center" role="status">
 											{t("demo.noResults")}{" "}
 											<Button variant="ghost" size="sm" onClick={vm.reset}>
 												{t("demo.resetFilters")}
@@ -252,29 +258,29 @@ export default function DataPage() {
 							)}
 						</TableBody>
 					</Table>
-					<div className="flex flex-wrap items-center justify-between gap-3 border-t border-border p-3">
-						<p className="text-xs text-muted-foreground" role="status">
+					<LayerCard.Footer className="justify-between">
+						<p className="text-basalt-sm text-muted-foreground" role="status">
 							{t("demo.results", { count: vm.total })}
 						</p>
 						<Pagination page={vm.page} pageCount={vm.pageCount} onPageChange={vm.setPage} />
-					</div>
+					</LayerCard.Footer>
 				</LayerCard>
 			</SectionRule>
 
 			<SectionRule title={t("pages.data.avatars")}>
 				<LayerCard>
 					<LayerCard.Body>
-						<div className="space-y-4">
+						<div className="space-y-basalt-space-lg">
 							<div>
-								<p className="text-xs text-muted-foreground mb-2 font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
 									{t("pages.data.sizes")}
 								</p>
-								<div className="flex items-end gap-3">
+								<div className="flex items-end gap-basalt-space-lg">
 									{[
-										{ size: "h-6 w-6", text: "text-[9px]" },
-										{ size: "h-8 w-8", text: "text-[10px]" },
-										{ size: "h-10 w-10", text: "text-xs" },
-										{ size: "h-12 w-12", text: "text-sm" },
+										{ size: "h-6 w-6", text: "text-basalt-xs" },
+										{ size: "h-8 w-8", text: "text-basalt-xs" },
+										{ size: "h-10 w-10", text: "text-basalt-sm" },
+										{ size: "h-12 w-12", text: "text-basalt-base" },
 									].map(({ size, text }, i) => (
 										<Avatar key={i} className={size}>
 											<AvatarImage
@@ -287,17 +293,17 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-xs text-muted-foreground mb-2 font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
 									{t("pages.data.stackedGroup")}
 								</p>
-								<div className="flex -space-x-2">
+								<div className="flex -space-x-basalt-space-lg">
 									{PEOPLE.map((p) => (
 										<Avatar key={p.seed} className="h-9 w-9 border-2 border-background">
 											<AvatarImage src={`https://avatar.vercel.sh/${p.seed}`} alt={p.name} />
-											<AvatarFallback className="text-[10px]">{p.initials}</AvatarFallback>
+											<AvatarFallback className="text-basalt-xs">{p.initials}</AvatarFallback>
 										</Avatar>
 									))}
-									<div className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-background bg-muted text-[10px] font-medium text-muted-foreground">
+									<div className="flex h-9 w-9 items-center justify-center rounded-basalt-full border-2 border-background bg-muted text-basalt-xs font-medium text-muted-foreground">
 										+3
 									</div>
 								</div>
@@ -310,12 +316,12 @@ export default function DataPage() {
 			<SectionRule title={t("pages.data.badges")}>
 				<LayerCard>
 					<LayerCard.Body>
-						<div className="space-y-4">
+						<div className="space-y-basalt-space-lg">
 							<div>
-								<p className="text-xs text-muted-foreground mb-2 font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
 									{t("pages.data.variants")}
 								</p>
-								<div className="flex flex-wrap items-center gap-2">
+								<div className="flex flex-wrap items-center gap-basalt-space-lg">
 									<Badge>Default</Badge>
 									<Badge variant="secondary">Secondary</Badge>
 									<Badge variant="destructive">Destructive</Badge>
@@ -323,10 +329,10 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-xs text-muted-foreground mb-2 font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
 									{t("pages.data.semantic")}
 								</p>
-								<div className="flex flex-wrap items-center gap-2">
+								<div className="flex flex-wrap items-center gap-basalt-space-lg">
 									<Badge className="border-transparent bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
 										Active
 									</Badge>
@@ -349,16 +355,16 @@ export default function DataPage() {
 			<SectionRule title={t("pages.data.pills")}>
 				<LayerCard>
 					<LayerCard.Body>
-						<div className="space-y-4">
+						<div className="space-y-basalt-space-lg">
 							<div>
-								<p className="text-xs text-muted-foreground mb-2 font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
 									{t("pages.data.solid")}
 								</p>
-								<div className="flex flex-wrap gap-2">
+								<div className="flex flex-wrap gap-basalt-space-lg">
 									{SOLID_PILLS.map((pill) => (
 										<span
 											key={pill.label}
-											className={`rounded-full px-3 py-1 text-xs font-medium ${pill.className}`}
+											className={`rounded-basalt-full px-basalt-space-lg py-basalt-space-sm text-basalt-sm font-medium ${pill.className}`}
 										>
 											{pill.label}
 										</span>
@@ -366,14 +372,14 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-xs text-muted-foreground mb-2 font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
 									{t("pages.data.soft")}
 								</p>
-								<div className="flex flex-wrap gap-2">
+								<div className="flex flex-wrap gap-basalt-space-lg">
 									{SOFT_PILLS.map((pill) => (
 										<span
 											key={pill.label}
-											className={`rounded-full px-3 py-1 text-xs font-medium ${pill.className}`}
+											className={`rounded-basalt-full px-basalt-space-lg py-basalt-space-sm text-basalt-sm font-medium ${pill.className}`}
 										>
 											{pill.label}
 										</span>
@@ -381,14 +387,14 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-xs text-muted-foreground mb-2 font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
 									{t("pages.data.outline")}
 								</p>
-								<div className="flex flex-wrap gap-2">
+								<div className="flex flex-wrap gap-basalt-space-lg">
 									{OUTLINE_PILLS.map((pill) => (
 										<span
 											key={pill.label}
-											className={`rounded-full px-3 py-1 text-xs font-medium ${pill.className}`}
+											className={`rounded-basalt-full px-basalt-space-lg py-basalt-space-sm text-basalt-sm font-medium ${pill.className}`}
 										>
 											{pill.label}
 										</span>
@@ -396,14 +402,14 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-xs text-muted-foreground mb-2 font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
 									{t("pages.data.withIcons")}
 								</p>
-								<div className="flex flex-wrap gap-2">
+								<div className="flex flex-wrap gap-basalt-space-lg">
 									{ICON_PILLS.map((pill) => (
 										<span
 											key={pill.label}
-											className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ${pill.className}`}
+											className={`inline-flex items-center gap-basalt-space-lg rounded-basalt-full px-basalt-space-lg py-basalt-space-sm text-basalt-sm font-medium ${pill.className}`}
 										>
 											<pill.icon className="h-3.5 w-3.5" strokeWidth={1.5} />
 											{pill.label}
@@ -412,16 +418,16 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-xs text-muted-foreground mb-2 font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
 									{t("pages.data.withDotIndicators")}
 								</p>
-								<div className="flex flex-wrap gap-2">
+								<div className="flex flex-wrap gap-basalt-space-lg">
 									{DOT_PILLS.map((pill) => (
 										<span
 											key={pill.label}
-											className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-medium ${pill.className}`}
+											className={`inline-flex items-center gap-basalt-space-lg rounded-basalt-full px-basalt-space-lg py-basalt-space-sm text-basalt-sm font-medium ${pill.className}`}
 										>
-											<span className={`h-2 w-2 rounded-full ${pill.dot}`} />
+											<span className={`h-2 w-2 rounded-basalt-full ${pill.dot}`} />
 											{pill.label}
 										</span>
 									))}
@@ -437,19 +443,21 @@ export default function DataPage() {
 					<LayerCard.Well>
 						<div className="space-y-0">
 							{TIMELINE.map((item, i) => (
-								<div key={i} className="flex gap-3">
+								<div key={i} className="flex gap-basalt-space-lg">
 									<div className="flex flex-col items-center">
 										<div
-											className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-border ${item.color}`}
+											className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-basalt-full border border-border ${item.color}`}
 										>
 											<item.icon className="h-4 w-4" strokeWidth={1.5} />
 										</div>
 										{i < TIMELINE.length - 1 && <div className="w-px flex-1 bg-border" />}
 									</div>
-									<div className={`pb-6 ${i === TIMELINE.length - 1 ? "pb-0" : ""}`}>
-										<p className="text-sm font-medium text-foreground">{item.title}</p>
-										<p className="text-xs text-muted-foreground">{item.desc}</p>
-										<p className="text-[11px] text-muted-foreground/70 mt-1">{item.time}</p>
+									<div className={`pb-basalt-space-lg ${i === TIMELINE.length - 1 ? "pb-0" : ""}`}>
+										<p className="text-basalt-base font-medium text-foreground">{item.title}</p>
+										<p className="text-basalt-sm text-muted-foreground">{item.desc}</p>
+										<p className="text-basalt-xs text-muted-foreground/70 mt-basalt-space-sm">
+											{item.time}
+										</p>
 									</div>
 								</div>
 							))}
@@ -459,29 +467,29 @@ export default function DataPage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.data.listItems")}>
-				<LayerCard>
-					<LayerCard.Well className="p-0">
-						<div className="divide-y divide-border">
-							{PEOPLE.slice(0, 4).map((person) => (
-								<div key={person.seed} className="flex items-center gap-3 px-4 py-3">
-									<Avatar className="h-9 w-9">
-										<AvatarImage
-											src={`https://avatar.vercel.sh/${person.seed}`}
-											alt={person.name}
-										/>
-										<AvatarFallback className="text-[10px]">{person.initials}</AvatarFallback>
-									</Avatar>
-									<div className="flex-1 min-w-0">
-										<p className="text-sm font-medium text-foreground truncate">{person.name}</p>
-										<p className="text-xs text-muted-foreground truncate">{person.email}</p>
-									</div>
-									<Badge variant="outline" className="gap-1.5 shrink-0">
-										<span className="h-1.5 w-1.5 rounded-full bg-emerald-500" /> Active
-									</Badge>
+				<LayerCard padding="none">
+					<div className="divide-y divide-border">
+						{PEOPLE.slice(0, 4).map((person) => (
+							<div
+								key={person.seed}
+								className="flex items-center gap-basalt-space-lg px-basalt-space-lg py-basalt-space-lg"
+							>
+								<Avatar className="h-9 w-9">
+									<AvatarImage src={`https://avatar.vercel.sh/${person.seed}`} alt={person.name} />
+									<AvatarFallback className="text-basalt-xs">{person.initials}</AvatarFallback>
+								</Avatar>
+								<div className="flex-1 min-w-0">
+									<p className="text-basalt-base font-medium text-foreground truncate">
+										{person.name}
+									</p>
+									<p className="text-basalt-sm text-muted-foreground truncate">{person.email}</p>
 								</div>
-							))}
-						</div>
-					</LayerCard.Well>
+								<Badge variant="outline" className="gap-basalt-space-md shrink-0">
+									<span className="h-1.5 w-1.5 rounded-basalt-full bg-emerald-500" /> Active
+								</Badge>
+							</div>
+						))}
+					</div>
 				</LayerCard>
 			</SectionRule>
 
@@ -498,6 +506,6 @@ export default function DataPage() {
 					</LayerCard.Body>
 				</LayerCard>
 			</SectionRule>
-		</div>
+		</ShowcasePage>
 	);
 }

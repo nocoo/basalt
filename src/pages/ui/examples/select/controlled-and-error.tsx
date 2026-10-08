@@ -12,7 +12,7 @@ import { useState } from "react";
 export default function SelectControlledAndError() {
 	const [value, setValue] = useState("");
 	return (
-		<div className="flex w-full flex-col gap-3">
+		<div className="flex w-full flex-col gap-basalt-space-lg">
 			<Select value={value} onValueChange={setValue}>
 				<Field label="Version" error={value ? undefined : "Pick a version"}>
 					<SelectTrigger className="w-48">

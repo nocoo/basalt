@@ -4,17 +4,20 @@ import english from "../src/i18n/locales/en.json";
 import {
 	applyCrawlPage,
 	catalogCrawlPage,
+	categoryCrawlPage,
 	homeCrawlPage,
 	showcaseCrawlPage,
 	uiIndexCrawlPage,
 } from "../src/lib/crawl";
 import { SHOWCASE_PAGES } from "../src/lib/site";
 import { CATALOG, catalogNavName } from "../src/pages/ui/catalog";
+import { CATALOG_CATEGORIES } from "../src/pages/ui/catalog-categories";
 
 export function crawlPages() {
 	return [
 		homeCrawlPage(),
 		uiIndexCrawlPage(CATALOG.map((entry) => ({ slug: entry.slug, name: catalogNavName(entry) }))),
+		...CATALOG_CATEGORIES.map((category) => categoryCrawlPage(category.id)),
 		...SHOWCASE_PAGES.filter(
 			(page) => page.inSitemap && page.path !== "/" && page.path !== "/ui",
 		).map((page) =>

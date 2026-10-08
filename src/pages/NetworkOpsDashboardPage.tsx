@@ -1,5 +1,6 @@
 import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { Timeline } from "@nocoo/basalt/charts/timeline";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { AlertTriangle, Clock, Router, Server, Wifi } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { HeatmapCard } from "@/components/dashboard/HeatmapCard";
@@ -8,7 +9,7 @@ import { RadarChartCard } from "@/components/dashboard/RadarChartCard";
 import { SankeyCard } from "@/components/dashboard/SankeyCard";
 import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
 import { StackedBarCard } from "@/components/dashboard/StackedBarCard";
-import { ShowcaseHeader } from "@/components/ShowcaseHeader";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { chart } from "@/lib/palette";
 
 const latencyTrend = [
@@ -79,56 +80,57 @@ export default function NetworkOpsDashboardPage() {
 	];
 
 	return (
-		<div className="space-y-8">
-			<ShowcaseHeader
-				title={t("pages.networkOps.title")}
-				description={t("pages.networkOps.description")}
-			/>
-
+		<ShowcasePage
+			title={t("pages.networkOps.title")}
+			description={t("pages.networkOps.description")}
+			headerVariant="compact"
+		>
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (
-					<StatCard
-						key={stat.title}
-						{...stat}
-						className="rounded-card border-0 bg-secondary p-4 md:p-5"
-					/>
+					<StatCard key={stat.title} {...stat} />
 				))}
 			</StatGrid>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<Wifi className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.networkOps.latencyTrend")}</p>
-					</div>
-					<LineChartWidget
-						data={latencyTrend}
-						height={220}
-						color={chart.teal}
-						valueFormatter={(v) => `${v}ms`}
-					/>
-				</div>
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.networkOps.latencyTrend")}
+						</h2>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<LineChartWidget
+							data={latencyTrend}
+							height={220}
+							color={chart.teal}
+							valueFormatter={(v) => `${v}ms`}
+						/>
+					</LayerCard.Body>
+				</LayerCard>
 				<StackedAreaCard />
 			</div>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<StackedBarCard />
 				<SankeyCard />
 				<RadarChartCard />
 			</div>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<HeatmapCard />
-				<div className="rounded-card bg-secondary p-4 md:p-5 lg:col-span-2 max-h-[420px] overflow-y-auto">
-					<div className="mb-4 flex items-center gap-2">
+				<LayerCard className="lg:col-span-2 max-h-[26.25rem] overflow-y-auto">
+					<LayerCard.Header className="items-center justify-start">
 						<Clock className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">
+						<h2 className="text-basalt-base text-muted-foreground">
 							{t("pages.networkOps.incidentTimeline")}
-						</p>
-					</div>
-					<Timeline events={incidents} />
-				</div>
+						</h2>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<Timeline events={incidents} />
+					</LayerCard.Body>
+				</LayerCard>
 			</div>
-		</div>
+		</ShowcasePage>
 	);
 }

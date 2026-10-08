@@ -34,7 +34,7 @@ export default function DiffTableDemo() {
 	const id = useId();
 	const [fail, setFail] = useState(false);
 	return (
-		<div className="w-full space-y-basalt-3">
+		<div className="w-full space-y-basalt-space-lg">
 			<DiffTable
 				key={run}
 				title="Proposed menu cleanup"
@@ -48,11 +48,11 @@ export default function DiffTableDemo() {
 					if (fail) throw new Error("Could not apply changes. Retry when ready.");
 				}}
 			/>
-			<div className="flex flex-wrap items-center gap-basalt-3">
+			<div className="flex flex-wrap items-center gap-basalt-space-lg">
 				<Button variant="outline" size="sm" onClick={() => setRun(run + 1)}>
 					Reset changes
 				</Button>
-				<label htmlFor={id} className="inline-flex items-center gap-basalt-2 text-xs">
+				<label htmlFor={id} className="inline-flex items-center gap-basalt-space-lg text-basalt-sm">
 					<Switch id={id} size="sm" checked={fail} onCheckedChange={setFail} />
 					Simulate failure
 				</label>

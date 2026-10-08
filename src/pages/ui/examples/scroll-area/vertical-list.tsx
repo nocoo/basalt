@@ -15,9 +15,12 @@ export default function VerticalListExample() {
 			aria-label="Recent activity"
 			className="h-44 w-72 rounded-basalt-md ring-1 ring-basalt-border"
 		>
-			<ol className="space-y-1 p-3 pr-5">
+			<ol className="space-y-basalt-space-sm p-basalt-space-lg pr-basalt-space-lg">
 				{activity.map((item, index) => (
-					<li key={item} className="rounded-basalt-sm bg-basalt-secondary px-3 py-2 text-sm">
+					<li
+						key={item}
+						className="rounded-basalt-sm bg-basalt-secondary px-basalt-space-lg py-basalt-space-lg text-basalt-base"
+					>
 						{index + 1}. {item}
 					</li>
 				))}

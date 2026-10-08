@@ -16,7 +16,7 @@ export function ThemeToggle({ "aria-label": ariaLabel = "Toggle theme" }: ThemeT
 			<Button
 				variant="ghost"
 				size="icon"
-				className="h-8 w-8"
+				className="w-8"
 				onClick={() => setTheme(nextTheme)}
 				aria-label={ariaLabel}
 			>

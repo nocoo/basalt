@@ -141,7 +141,7 @@ export default catalogContentFamily({
 			...extraDocs(
 				"StatCard",
 				"stat-card",
-				"KPI card.",
+				"Unified metric surface with tabular values, comparison text and compact supporting trends. No split header or decorative icon well.",
 				'<StatCard label="Requests" value="12.4k" />',
 			),
 			api: statCardApi,

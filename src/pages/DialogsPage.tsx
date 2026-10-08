@@ -26,7 +26,6 @@ import { Field } from "@nocoo/basalt/components/field";
 import { Input } from "@nocoo/basalt/components/input";
 import { InputArea } from "@nocoo/basalt/components/input-area";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import {
 	Select,
@@ -39,6 +38,7 @@ import { Separator } from "@nocoo/basalt/components/separator";
 import { X } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ShowcasePage } from "@/components/ShowcasePage";
 
 const DIALOG_SIZES: { size: DialogSize; width: string }[] = [
 	{ size: "sm", width: "288px" },
@@ -65,15 +65,17 @@ function DialogDismiss() {
 
 function DialogHeading({ title, description }: { title: string; description?: string }) {
 	return (
-		<div className="pr-10">
+		<div className="pr-basalt-space-lg">
 			<DialogTitle>{title}</DialogTitle>
-			{description ? <DialogDescription className="mt-1.5">{description}</DialogDescription> : null}
+			{description ? (
+				<DialogDescription className="mt-basalt-space-md">{description}</DialogDescription>
+			) : null}
 		</div>
 	);
 }
 
 function DialogColumnTitle({ children }: { children: string }) {
-	return <p className="text-xs font-medium text-muted-foreground">{children}</p>;
+	return <p className="text-basalt-sm font-medium text-muted-foreground">{children}</p>;
 }
 
 const UNIT_LOGS = [
@@ -88,9 +90,7 @@ export default function DialogsPage() {
 	const [destroyOpen, setDestroyOpen] = useState(false);
 
 	return (
-		<div className="space-y-8">
-			<PageHeader title={t("pages.dialogs.title")} description={t("pages.dialogs.description")} />
-
+		<ShowcasePage title={t("pages.dialogs.title")} description={t("pages.dialogs.description")}>
 			<SectionRule title={t("pages.dialogs.anatomy")} hint={t("pages.dialogs.anatomyHint")}>
 				<LayerCard>
 					<DescriptionList columns={1}>
@@ -137,7 +137,7 @@ export default function DialogsPage() {
 
 			<SectionRule title={t("pages.dialogs.sizes")} hint={t("pages.dialogs.sizesHint")}>
 				<LayerCard>
-					<div className="flex flex-wrap gap-3">
+					<div className="flex flex-wrap gap-basalt-space-lg">
 						{DIALOG_SIZES.map(({ size, width }) => (
 							<Dialog key={size}>
 								<DialogTrigger asChild>
@@ -165,7 +165,7 @@ export default function DialogsPage() {
 
 			<SectionRule title={t("pages.dialogs.money")} hint={t("pages.dialogs.moneyHint")}>
 				<LayerCard>
-					<div className="flex flex-wrap gap-3">
+					<div className="flex flex-wrap gap-basalt-space-lg">
 						<Dialog>
 							<DialogTrigger asChild>
 								<Button variant="outline">{t("pages.dialogs.openSend")}</Button>
@@ -196,7 +196,7 @@ export default function DialogsPage() {
 									title={t("pages.dialogs.logTitle")}
 									description={t("pages.dialogs.logBody")}
 								/>
-								<div className="mt-4 space-y-4">
+								<div className="mt-basalt-space-lg space-y-basalt-space-lg">
 									<Field label={t("pages.dialogs.operation")}>
 										<Input defaultValue={t("pages.dialogs.invest")} />
 									</Field>
@@ -225,7 +225,7 @@ export default function DialogsPage() {
 									title={t("pages.dialogs.holdingTitle")}
 									description={t("pages.dialogs.holdingBody")}
 								/>
-								<div className="mt-4 space-y-4">
+								<div className="mt-basalt-space-lg space-y-basalt-space-lg">
 									<Field label={t("pages.dialogs.holdingName")}>
 										<Input defaultValue={t("pages.dialogs.holdingNameValue")} />
 									</Field>
@@ -260,7 +260,7 @@ export default function DialogsPage() {
 									title={t("pages.dialogs.reviewTitle")}
 									description={t("pages.dialogs.reviewBody")}
 								/>
-								<div className="mt-4">
+								<div className="mt-basalt-space-lg">
 									<DescriptionList columns={2}>
 										<DescriptionList.Item term={t("pages.dialogs.from")}>
 											{t("pages.dialogs.fromValue")}
@@ -295,8 +295,8 @@ export default function DialogsPage() {
 									title={t("pages.dialogs.unitTitle")}
 									description={t("pages.dialogs.unitBody")}
 								/>
-								<div className="mt-4 grid items-start gap-6 lg:grid-cols-3">
-									<div className="space-y-4">
+								<div className="mt-basalt-space-lg grid items-start gap-basalt-layout lg:grid-cols-3">
+									<div className="space-y-basalt-space-lg">
 										<DialogColumnTitle>{t("pages.dialogs.unitBasics")}</DialogColumnTitle>
 										<Field label={t("pages.dialogs.unitCode")}>
 											<Input defaultValue="U-2044" />
@@ -304,7 +304,7 @@ export default function DialogsPage() {
 										<Field label={t("pages.dialogs.amount")}>
 											<Input defaultValue="80,000.00" inputMode="decimal" />
 										</Field>
-										<div className="grid grid-cols-2 gap-3">
+										<div className="grid grid-cols-2 gap-basalt-layout">
 											<Select defaultValue="USD">
 												<Field label={t("pages.dialogs.currency")}>
 													<SelectTrigger aria-label={t("pages.dialogs.currency")}>
@@ -353,7 +353,7 @@ export default function DialogsPage() {
 											<InputArea defaultValue={t("pages.dialogs.unitNoteValue")} />
 										</Field>
 									</div>
-									<div className="space-y-4">
+									<div className="space-y-basalt-space-lg">
 										<DialogColumnTitle>{t("pages.dialogs.unitProduct")}</DialogColumnTitle>
 										<Field label={t("pages.dialogs.product")}>
 											<Input defaultValue={t("pages.dialogs.holdingNameValue")} />
@@ -361,11 +361,11 @@ export default function DialogsPage() {
 										<Field label={t("pages.dialogs.channel")}>
 											<Input defaultValue={t("pages.dialogs.channelValue")} />
 										</Field>
-										<div className="space-y-2">
-											<p className="text-xs text-muted-foreground">
+										<div className="space-y-basalt-space-lg">
+											<p className="text-basalt-sm text-muted-foreground">
 												{t("pages.dialogs.stagedOps")}
 											</p>
-											<div className="flex flex-wrap gap-2">
+											<div className="flex flex-wrap gap-basalt-space-lg">
 												<Button type="button" variant="outline" size="sm">
 													{t("pages.dialogs.invest")}
 												</Button>
@@ -386,25 +386,28 @@ export default function DialogsPage() {
 											</DescriptionList.Item>
 										</DescriptionList>
 									</div>
-									<div className="space-y-4">
+									<div className="space-y-basalt-space-lg">
 										<DialogColumnTitle>{t("pages.dialogs.unitHistory")}</DialogColumnTitle>
-										<div className="space-y-3">
+										<div className="space-y-basalt-space-lg">
 											{UNIT_LOGS.map((log) => (
-												<div key={log.date} className="flex items-baseline justify-between gap-3">
+												<div
+													key={log.date}
+													className="flex items-baseline justify-between gap-basalt-space-lg"
+												>
 													<div>
-														<p className="text-sm text-foreground">
+														<p className="text-basalt-base text-foreground">
 															{t(`pages.dialogs.${log.action}`)}
 														</p>
-														<p className="text-xs text-muted-foreground">{log.date}</p>
+														<p className="text-basalt-sm text-muted-foreground">{log.date}</p>
 													</div>
-													<p className="text-sm tabular-nums">{log.amount}</p>
+													<p className="text-basalt-base tabular-nums">{log.amount}</p>
 												</div>
 											))}
 										</div>
 									</div>
 								</div>
-								<Separator className="mt-6" />
-								<div className="mt-4 grid gap-3 sm:grid-cols-[minmax(0,1fr)_11rem]">
+								<Separator className="mt-basalt-space-lg" />
+								<div className="mt-basalt-space-lg grid gap-basalt-layout sm:grid-cols-[minmax(0,1fr)_11rem]">
 									<Field label={t("pages.dialogs.commitNote")} required={false}>
 										<Input placeholder={t("pages.dialogs.commitNotePlaceholder")} />
 									</Field>
@@ -438,7 +441,7 @@ export default function DialogsPage() {
 								title={t("pages.dialogs.formTitle")}
 								description={t("pages.dialogs.formBody")}
 							/>
-							<div className="mt-4">
+							<div className="mt-basalt-space-lg">
 								<Field label={t("pages.dialogs.workspaceName")}>
 									<Input placeholder={t("pages.dialogs.workspacePlaceholder")} />
 								</Field>
@@ -458,7 +461,7 @@ export default function DialogsPage() {
 
 			<SectionRule title={t("pages.dialogs.confirm")} hint={t("pages.dialogs.confirmHint")}>
 				<LayerCard>
-					<div className="flex flex-wrap gap-3">
+					<div className="flex flex-wrap gap-basalt-space-lg">
 						<ConfirmDialog
 							open={confirmOpen}
 							onOpenChange={setConfirmOpen}
@@ -498,6 +501,6 @@ export default function DialogsPage() {
 					</div>
 				</LayerCard>
 			</SectionRule>
-		</div>
+		</ShowcasePage>
 	);
 }

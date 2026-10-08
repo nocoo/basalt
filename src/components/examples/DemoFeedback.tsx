@@ -17,8 +17,8 @@ export function DemoFeedback({
 	const { t } = useTranslation();
 	const id = useId();
 	return (
-		<div className="space-y-2 text-xs" data-demo-feedback>
-			<div className="flex items-center gap-2">
+		<div className="space-y-basalt-space-lg text-basalt-sm" data-demo-feedback>
+			<div className="flex items-center gap-basalt-space-lg">
 				<Checkbox
 					id={id}
 					checked={failNext}

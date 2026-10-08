@@ -5,8 +5,12 @@ import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
 import { LineChart } from "@nocoo/basalt/charts/line";
 import { Button } from "@nocoo/basalt/components/button";
 import { Checkbox } from "@nocoo/basalt/components/checkbox";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@nocoo/basalt/components/collapsible";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { useAccent } from "@nocoo/basalt/providers/accent";
@@ -14,6 +18,7 @@ import { Check } from "lucide-react";
 import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PaletteEditor } from "@/components/PaletteEditor";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatPercent, formatUsd } from "@/lib/format";
 import { CHART_COLORS } from "@/lib/palette";
 
@@ -78,13 +83,13 @@ const utilityColors = [
 
 function Swatch({ token, label }: { token: string; label: string }) {
 	return (
-		<div className="flex w-24 flex-col items-center gap-2">
+		<div className="flex w-24 flex-col items-center gap-basalt-space-lg">
 			<div
-				className="size-12 rounded-lg border border-border"
+				className="size-12 rounded-basalt-md border border-border"
 				style={{ background: `hsl(var(${token}))` }}
 			/>
-			<p className="text-center text-xs font-medium text-foreground">{label}</p>
-			<code className="break-all text-center text-[10px] text-muted-foreground">{token}</code>
+			<p className="text-center text-basalt-sm font-medium text-foreground">{label}</p>
+			<code className="break-all text-center text-basalt-xs text-muted-foreground">{token}</code>
 		</div>
 	);
 }
@@ -96,16 +101,14 @@ export default function PalettePage() {
 	const previewId = useId();
 
 	return (
-		<div className="space-y-8">
-			<PageHeader title={t("pages.palette.title")} description={t("pages.palette.description")} />
-
+		<ShowcasePage title={t("pages.palette.title")} description={t("pages.palette.description")}>
 			<SectionRule title={t("pages.palette.themePalette")}>
-				<div className="space-y-4">
-					<p className="max-w-3xl text-sm leading-relaxed text-muted-foreground">
+				<div className="space-y-basalt-space-lg">
+					<p className="max-w-3xl text-basalt-base leading-basalt-relaxed text-muted-foreground">
 						{t("pages.palette.candyDescription")}
 					</p>
 					<div
-						className="grid grid-cols-3 gap-3 sm:grid-cols-4 xl:grid-cols-6"
+						className="grid grid-cols-3 gap-basalt-layout sm:grid-cols-4 xl:grid-cols-6"
 						role="group"
 						aria-label={t("pages.palette.themePalette")}
 					>
@@ -117,11 +120,11 @@ export default function PalettePage() {
 								aria-pressed={color.id === accent}
 								data-accent-choice={color.id}
 								onClick={() => setAccent(color.id)}
-								className={`group min-w-0 rounded-xl border p-2 text-left transition-colors focus-visible:outline-2 focus-visible:outline-primary ${color.id === accent ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}`}
+								className={`group min-w-0 rounded-basalt-lg border p-basalt-space-lg text-left transition-colors basalt-motion focus-visible:outline-2 focus-visible:outline-primary ${color.id === accent ? "border-basalt-primary bg-basalt-selected" : "border-border hover:border-primary/50"}`}
 							>
 								<span
 									data-accent-swatch={color.id}
-									className="relative block h-16 overflow-hidden rounded-lg border border-black/5 sm:h-20"
+									className="relative block h-16 overflow-hidden rounded-basalt-md border border-black/5 sm:h-20"
 									style={{ background: `hsl(var(${color.token}))` }}
 								>
 									<span
@@ -129,7 +132,7 @@ export default function PalettePage() {
 										aria-hidden="true"
 									/>
 								</span>
-								<span className="mt-2 flex items-center justify-between gap-1 px-0.5 text-xs font-medium text-foreground">
+								<span className="mt-basalt-space-lg flex items-center justify-between gap-basalt-space-sm px-basalt-space-xs text-basalt-sm font-medium text-foreground">
 									{color.label}
 									{color.id === accent && (
 										<Check className="size-3.5 shrink-0 text-primary" aria-hidden="true" />
@@ -138,19 +141,30 @@ export default function PalettePage() {
 							</button>
 						))}
 					</div>
-					<LayerCard data-palette-preview className="flex flex-wrap items-center gap-x-6 gap-y-4">
+					<LayerCard
+						data-palette-preview
+						className="flex flex-wrap items-center gap-x-basalt-space-lg gap-y-basalt-space-lg"
+					>
 						<Button aria-pressed={preview} onClick={() => setPreview(!preview)}>
 							{t(preview ? "pages.palette.previewActive" : "pages.palette.previewAction")}
 						</Button>
-						<label htmlFor={`${previewId}-check`} className="flex items-center gap-2 text-xs">
+						<label
+							htmlFor={`${previewId}-check`}
+							className="flex items-center gap-basalt-space-lg text-basalt-sm"
+						>
 							<Checkbox id={`${previewId}-check`} defaultChecked />
 							{t("pages.palette.previewCheckbox")}
 						</label>
-						<label htmlFor={`${previewId}-switch`} className="flex items-center gap-2 text-xs">
+						<label
+							htmlFor={`${previewId}-switch`}
+							className="flex items-center gap-basalt-space-lg text-basalt-sm"
+						>
 							<Switch id={`${previewId}-switch`} defaultChecked />
 							{t("pages.palette.previewSwitch")}
 						</label>
-						<span className="text-xs text-muted-foreground">{t("pages.palette.contrastNote")}</span>
+						<span className="text-basalt-sm text-muted-foreground">
+							{t("pages.palette.contrastNote")}
+						</span>
 					</LayerCard>
 					<PaletteEditor />
 				</div>
@@ -158,18 +172,18 @@ export default function PalettePage() {
 
 			<SectionRule title={t("pages.palette.chartPalette")}>
 				<LayerCard>
-					<p className="mb-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+					<p className="mb-basalt-space-lg max-w-3xl text-basalt-base leading-basalt-relaxed text-muted-foreground">
 						{t("pages.palette.chartDescription")}
 					</p>
-					<div className="grid grid-cols-5 gap-3" data-chart-palette>
+					<div className="grid grid-cols-5 gap-basalt-layout" data-chart-palette>
 						{CHART_COLORS.map((color, index) => (
-							<div key={color} className="min-w-0 space-y-2">
+							<div key={color} className="min-w-0 space-y-basalt-space-lg">
 								<div
-									className="h-12 rounded-lg"
+									className="h-12 rounded-basalt-md"
 									style={{ background: color }}
 									data-chart-swatch={index}
 								/>
-								<p className="text-xs text-muted-foreground">
+								<p className="text-basalt-sm text-muted-foreground">
 									{["Blue", "Pink", "Green", "Yellow", "Gray"][index]}
 								</p>
 							</div>
@@ -178,7 +192,7 @@ export default function PalettePage() {
 				</LayerCard>
 			</SectionRule>
 
-			<div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 				{/* Line Chart */}
 				<SectionRule title={t("pages.palette.lineChart")}>
 					<LayerCard>
@@ -190,7 +204,7 @@ export default function PalettePage() {
 								{ key: "y3", label: t("pages.palette.seriesC") },
 							]}
 							ariaLabel={t("pages.palette.lineChartAria")}
-							className="h-[200px] w-full"
+							className="h-[12.5rem] w-full"
 							showAxes
 							showLegend
 						/>
@@ -203,21 +217,21 @@ export default function PalettePage() {
 							<DonutChart
 								data={pieData}
 								ariaLabel={t("pages.palette.donutChartAria")}
-								className="h-[180px] w-[180px]"
+								className="h-[11.25rem] w-[11.25rem]"
 								valueFormatter={formatPercent}
 							/>
-							<div className="mt-4 grid w-full grid-cols-3 gap-x-4 gap-y-3">
+							<div className="mt-basalt-space-lg grid w-full grid-cols-3 gap-x-basalt-space-lg gap-y-basalt-space-lg">
 								{pieData.map((item, i) => (
-									<div key={item.name} className="flex flex-col items-center gap-0.5">
-										<span className="font-display text-sm font-medium text-foreground">
+									<div key={item.name} className="flex flex-col items-center gap-basalt-space-xs">
+										<span className="font-display text-basalt-base font-medium text-foreground">
 											{item.value}%
 										</span>
-										<div className="flex items-center gap-1.5">
+										<div className="flex items-center gap-basalt-space-md">
 											<div
-												className="h-2 w-2 rounded-full"
+												className="h-2 w-2 rounded-basalt-full"
 												style={{ background: CHART_COLORS[i] }}
 											/>
-											<span className="text-xs text-muted-foreground">{item.name}</span>
+											<span className="text-basalt-sm text-muted-foreground">{item.name}</span>
 										</div>
 									</div>
 								))}
@@ -235,7 +249,7 @@ export default function PalettePage() {
 								{ key: "y2", label: t("pages.palette.expense") },
 							]}
 							ariaLabel={t("pages.palette.groupedBarChartAria")}
-							className="h-[200px] w-full"
+							className="h-[12.5rem] w-full"
 							showAxes
 							showLegend
 							valueFormatter={formatUsd}
@@ -252,7 +266,7 @@ export default function PalettePage() {
 								{ key: "y2", label: t("pages.palette.outflow") },
 							]}
 							ariaLabel={t("pages.palette.areaChartAria")}
-							className="h-[200px] w-full"
+							className="h-[12.5rem] w-full"
 							showAxes
 							showLegend
 							valueFormatter={formatUsd}
@@ -262,7 +276,10 @@ export default function PalettePage() {
 
 				<SectionRule title={t("pages.palette.ringChart")}>
 					<LayerCard>
-						<div data-palette-rings className="flex flex-wrap items-center justify-center gap-4">
+						<LayerCard.Header
+							data-palette-rings
+							className="flex flex-wrap items-center justify-center gap-basalt-space-lg"
+						>
 							{[0, 64, 100].map((value) => (
 								<Gauge
 									key={value}
@@ -272,23 +289,31 @@ export default function PalettePage() {
 									className="h-28 w-28"
 								/>
 							))}
-						</div>
-						<p className="mt-3 text-xs leading-relaxed text-muted-foreground">
-							{t("pages.palette.ringDescription")}
-						</p>
+						</LayerCard.Header>
+						<LayerCard.Body>
+							<p className="mt-basalt-space-lg text-basalt-sm leading-basalt-relaxed text-muted-foreground">
+								{t("pages.palette.ringDescription")}
+							</p>
+						</LayerCard.Body>
 					</LayerCard>
 				</SectionRule>
 			</div>
-			<details className="rounded-xl border border-border p-4">
-				<summary className="cursor-pointer text-sm font-medium">
-					{t("pages.palette.baseColors")}
-				</summary>
-				<div className="mt-4 flex flex-wrap gap-5">
-					{[...baseColors, ...utilityColors].map((color) => (
-						<Swatch key={color.token} token={color.token} label={color.label} />
-					))}
-				</div>
-			</details>
-		</div>
+			<Collapsible asChild>
+				<LayerCard>
+					<LayerCard.Header asChild>
+						<CollapsibleTrigger className="w-full hover:bg-basalt-hover">
+							{t("pages.palette.baseColors")}
+						</CollapsibleTrigger>
+					</LayerCard.Header>
+					<CollapsibleContent unstyled>
+						<LayerCard.Body className="flex flex-wrap gap-basalt-space-lg border-t border-basalt-border">
+							{[...baseColors, ...utilityColors].map((color) => (
+								<Swatch key={color.token} token={color.token} label={color.label} />
+							))}
+						</LayerCard.Body>
+					</CollapsibleContent>
+				</LayerCard>
+			</Collapsible>
+		</ShowcasePage>
 	);
 }

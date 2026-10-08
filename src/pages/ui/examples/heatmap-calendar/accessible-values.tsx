@@ -8,8 +8,8 @@ export default function HeatmapCalendarAccessibleValues() {
 	const [values, setValues] = useState<number[]>(INITIAL_VALUES);
 
 	return (
-		<div className="w-full max-w-sm space-y-3">
-			<div className="flex flex-wrap items-center gap-2">
+		<div className="w-full max-w-sm space-y-basalt-space-lg">
+			<div className="flex flex-wrap items-center gap-basalt-space-lg">
 				<Button size="sm" variant="outline" onClick={() => setValues([0, 1])}>
 					Shrink to 2
 				</Button>
@@ -21,17 +21,20 @@ export default function HeatmapCalendarAccessibleValues() {
 				</Button>
 			</div>
 
-			<p className="text-xs text-basalt-muted-foreground">
-				Keyboard navigation: Press <kbd className="rounded border px-1">Tab</kbd> to focus the
-				matrix. Use <kbd className="rounded border px-1">←</kbd>/
-				<kbd className="rounded border px-1">→</kbd> to step ±1 item, and{" "}
-				<kbd className="rounded border px-1">↑</kbd>/<kbd className="rounded border px-1">↓</kbd> to
-				step ±7 items (previous/next row in the same column). Use{" "}
-				<kbd className="rounded border px-1">Home</kbd>/
-				<kbd className="rounded border px-1">End</kbd> to jump to first/last value, and{" "}
-				<kbd className="rounded border px-1">Escape</kbd> to dismiss tooltips. Press{" "}
-				<kbd className="rounded border px-1">Tab</kbd> once to exit the matrix. Full 0–4 scale with
-				visible focus ring on zero values.
+			<p className="text-basalt-sm text-basalt-muted-foreground">
+				Keyboard navigation: Press{" "}
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">Tab</kbd> to focus the matrix.
+				Use <kbd className="rounded-basalt-sm border px-basalt-space-sm">←</kbd>/
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">→</kbd> to step ±1 item, and{" "}
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">↑</kbd>/
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">↓</kbd> to step ±7 items
+				(previous/next row in the same column). Use{" "}
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">Home</kbd>/
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">End</kbd> to jump to first/last
+				value, and <kbd className="rounded-basalt-sm border px-basalt-space-sm">Escape</kbd> to
+				dismiss tooltips. Press{" "}
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">Tab</kbd> once to exit the
+				matrix. Full 0–4 scale with visible focus ring on zero values.
 			</p>
 
 			<HeatmapCalendar values={values} ariaLabel="Activity matrix across intensity levels" />

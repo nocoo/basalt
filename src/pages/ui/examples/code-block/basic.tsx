@@ -3,7 +3,7 @@ import { Terminal } from "lucide-react";
 
 export default function CodeBlockBasic() {
 	return (
-		<div className="w-full space-y-basalt-3">
+		<div className="w-full space-y-basalt-space-lg">
 			<CodeBlock title="install.sh" icon={<Terminal />} lineNumbers>
 				{"bun add @nocoo/basalt\n\n# Start the catalog\nbun run dev"}
 			</CodeBlock>

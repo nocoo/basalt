@@ -19,10 +19,13 @@ export default function DatePickerLocalized() {
 	};
 
 	return (
-		<div className="space-y-4 max-w-sm">
-			<form onSubmit={handleSubmit} onReset={handleReset} className="space-y-3">
+		<div className="space-y-basalt-space-lg max-w-sm">
+			<form onSubmit={handleSubmit} onReset={handleReset} className="space-y-basalt-space-lg">
 				<div>
-					<label htmlFor={id} className="block text-sm font-medium mb-1 text-basalt-foreground">
+					<label
+						htmlFor={id}
+						className="block text-basalt-base font-medium mb-basalt-space-sm text-basalt-foreground"
+					>
 						服务预约时间
 					</label>
 					<DatePicker
@@ -44,10 +47,10 @@ export default function DatePickerLocalized() {
 						}}
 					/>
 				</div>
-				<div className="text-xs text-basalt-muted-foreground">
+				<div className="text-basalt-sm text-basalt-muted-foreground">
 					当前显示月份：<span className="font-mono">{month}</span>
 				</div>
-				<div className="flex gap-2">
+				<div className="flex gap-basalt-space-lg">
 					<Button type="submit" variant="default" size="sm">
 						确认预约
 					</Button>
@@ -57,7 +60,7 @@ export default function DatePickerLocalized() {
 				</div>
 			</form>
 			{status ? (
-				<p role="status" className="text-xs text-basalt-foreground font-medium">
+				<p role="status" className="text-basalt-sm text-basalt-foreground font-medium">
 					{status}
 				</p>
 			) : null}

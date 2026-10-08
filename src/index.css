@@ -2,6 +2,7 @@
 @source "../packages/basalt/src/**/*.{ts,tsx}";
 @import "../packages/basalt/src/styles/tailwind.css";
 @import "tailwindcss";
+@import "./styles/site-tokens.css";
 @import "./styles/landing.css";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -90,8 +91,8 @@
 	--radius-card: var(--basalt-radius-card);
 	--radius-widget: var(--basalt-radius-widget);
 	--radius-lg: var(--radius);
-	--radius-md: calc(var(--radius) - 2px);
-	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: var(--basalt-radius-md);
+	--radius-sm: var(--basalt-radius-sm);
 
 	--animate-accordion-down: accordion-down 0.2s ease-out;
 	--animate-accordion-up: accordion-up 0.2s ease-out;

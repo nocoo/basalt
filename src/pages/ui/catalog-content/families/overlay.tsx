@@ -42,6 +42,7 @@ import {
 	DropdownMenuTrigger,
 } from "@nocoo/basalt/components/dropdown-menu";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@nocoo/basalt/components/hover-card";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import {
 	Popover,
 	PopoverContent,
@@ -91,7 +92,9 @@ function usage(name: string, from: string, sample: string, extraImports = ""): s
 }
 
 function Preview({ children, className }: { children: ReactNode; className?: string }) {
-	return <div className={className ?? "flex flex-wrap items-center gap-3"}>{children}</div>;
+	return (
+		<div className={className ?? "flex flex-wrap items-center gap-basalt-space-lg"}>{children}</div>
+	);
 }
 
 function scenarioModule(code: string, imports: string[], helpers?: string): string {
@@ -121,7 +124,7 @@ const DIALOG_HEADER_HELPERS = `function DialogCloseButton() {
 
 function DialogHeaderRow({ title }: { title: string }) {
 	return (
-		<div className="mb-4 flex items-start justify-between gap-4">
+		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
 			<DialogTitle>{title}</DialogTitle>
 			<DialogCloseButton />
 		</div>
@@ -138,7 +141,7 @@ const DIALOG_FOOTER_HELPER = `function DialogFooter({
 	actionVariant?: "default" | "destructive";
 }) {
 	return (
-		<div className="mt-8 flex justify-end gap-2">
+		<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 			<DialogClose asChild>
 				<Button variant="outline">{cancel}</Button>
 			</DialogClose>
@@ -163,7 +166,7 @@ function DialogCloseButton() {
 
 function DialogHeaderRow({ title }: { title: string }) {
 	return (
-		<div className="mb-4 flex items-start justify-between gap-4">
+		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
 			<DialogTitle>{title}</DialogTitle>
 			<DialogCloseButton />
 		</div>
@@ -180,7 +183,7 @@ function DialogFooter({
 	actionVariant?: "default" | "destructive";
 }) {
 	return (
-		<div className="mt-8 flex justify-end gap-2">
+		<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 			<DialogClose asChild>
 				<Button variant="outline">{cancel}</Button>
 			</DialogClose>
@@ -212,7 +215,7 @@ function DialogSizesExample() {
 						<DialogDescription>
 							This size="{size}" dialog stays {width} wide on desktop.
 						</DialogDescription>
-						<div className="mt-4 overflow-auto rounded-basalt-md ring-1 ring-basalt-border">
+						<div className="mt-basalt-space-lg overflow-auto rounded-basalt-md ring-1 ring-basalt-border">
 							<Table>
 								<TableHeader>
 									<TableRow>
@@ -232,7 +235,7 @@ function DialogSizesExample() {
 								</TableBody>
 							</Table>
 						</div>
-						<div className="mt-6 flex justify-end">
+						<div className="mt-basalt-space-lg flex justify-end">
 							<DialogClose asChild>
 								<Button variant="outline">Close</Button>
 							</DialogClose>
@@ -340,7 +343,7 @@ export default function Example() {
 				<DialogDescription>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 				</DialogDescription>
-				<div className="mt-8 flex justify-end gap-2">
+				<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 					<DialogClose asChild>
 						<Button variant="outline">Cancel</Button>
 					</DialogClose>
@@ -370,7 +373,7 @@ export default function Example() {
 		<Button variant="outline">Click me</Button>
 	</DialogTrigger>
 	<DialogContent>
-		<div className="mb-4 flex items-start justify-between gap-4">
+		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
 			<DialogTitle>Modal Title</DialogTitle>
 			<DialogClose asChild>
 				<Button variant="outline" size="icon" aria-label="Close">
@@ -434,7 +437,7 @@ function DialogCloseButton() {
 
 function DialogHeaderRow({ title }: { title: string }) {
 	return (
-		<div className="mb-4 flex items-start justify-between gap-4">
+		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
 			<DialogTitle>{title}</DialogTitle>
 			<DialogCloseButton />
 		</div>
@@ -449,7 +452,7 @@ export default function Example() {
 		{ size: "xl", label: "Extra Large", width: "768px" },
 	];
 	return (
-		<div className="flex flex-wrap items-center gap-3">
+		<div className="flex flex-wrap items-center gap-basalt-space-lg">
 			{sizes.map(({ size, label, width }) => (
 				<Dialog key={size}>
 					<DialogTrigger asChild>
@@ -462,7 +465,7 @@ export default function Example() {
 						<DialogDescription>
 							This size="{size}" dialog stays {width} wide on desktop.
 						</DialogDescription>
-						<div className="mt-4 overflow-auto rounded-basalt-md ring-1 ring-basalt-border">
+						<div className="mt-basalt-space-lg overflow-auto rounded-basalt-md ring-1 ring-basalt-border">
 							<Table>
 								<TableHeader>
 									<TableRow>
@@ -482,7 +485,7 @@ export default function Example() {
 								</TableBody>
 							</Table>
 						</div>
-						<div className="mt-6 flex justify-end">
+						<div className="mt-basalt-space-lg flex justify-end">
 							<DialogClose asChild>
 								<Button variant="outline">Close</Button>
 							</DialogClose>
@@ -504,16 +507,16 @@ export default function Example() {
 		<Button variant="destructive">Delete Account</Button>
 	</AlertDialogTrigger>
 	<AlertDialogContent>
-		<div className="mb-4 flex items-center gap-3">
-			<div className="flex h-10 w-10 items-center justify-center rounded-full bg-basalt-destructive/20">
+		<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
+			<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 				<AlertTriangle className="size-5 text-basalt-destructive" />
 			</div>
-			<AlertDialogTitle className="text-xl">Delete Account?</AlertDialogTitle>
+			<AlertDialogTitle className="text-basalt-2xl">Delete Account?</AlertDialogTitle>
 		</div>
 		<AlertDialogDescription>
 			This action cannot be undone. All your data will be permanently removed from our servers. Are you sure you want to proceed?
 		</AlertDialogDescription>
-		<div className="mt-8 flex justify-end gap-2">
+		<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 			<AlertDialogCancel>Cancel</AlertDialogCancel>
 			<AlertDialogAction>Delete Account</AlertDialogAction>
 		</div>
@@ -531,17 +534,17 @@ export default function Example() {
 							<Button variant="destructive">Delete Account</Button>
 						</AlertDialogTrigger>
 						<AlertDialogContent>
-							<div className="mb-4 flex items-center gap-3">
-								<div className="flex h-10 w-10 items-center justify-center rounded-full bg-basalt-destructive/20">
+							<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
+								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 									<AlertTriangle className="size-5 text-basalt-destructive" />
 								</div>
-								<AlertDialogTitle className="text-xl">Delete Account?</AlertDialogTitle>
+								<AlertDialogTitle className="text-basalt-2xl">Delete Account?</AlertDialogTitle>
 							</div>
 							<AlertDialogDescription>
 								This action cannot be undone. All your data will be permanently removed from our
 								servers. Are you sure you want to proceed?
 							</AlertDialogDescription>
-							<div className="mt-8 flex justify-end gap-2">
+							<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction>Delete Account</AlertDialogAction>
 							</div>
@@ -558,11 +561,11 @@ export default function Example() {
 		<Button variant="destructive">Delete Project</Button>
 	</DialogTrigger>
 	<DialogContent disablePointerDismissal>
-		<div className="mb-4 flex items-center gap-3">
-			<div className="flex h-10 w-10 items-center justify-center rounded-full bg-basalt-destructive/20">
+		<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
+			<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 				<AlertTriangle className="size-5 text-basalt-destructive" />
 			</div>
-			<DialogTitle className="text-xl">Delete Project?</DialogTitle>
+			<DialogTitle className="text-basalt-2xl">Delete Project?</DialogTitle>
 		</div>
 		<DialogDescription>
 			This action cannot be undone. This will permanently delete the project and all associated data.
@@ -583,11 +586,11 @@ export default function Example() {
 							<Button variant="destructive">Delete Project</Button>
 						</DialogTrigger>
 						<DialogContent disablePointerDismissal>
-							<div className="mb-4 flex items-center gap-3">
-								<div className="flex h-10 w-10 items-center justify-center rounded-full bg-basalt-destructive/20">
+							<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
+								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 									<AlertTriangle className="size-5 text-basalt-destructive" />
 								</div>
-								<DialogTitle className="text-xl">Delete Project?</DialogTitle>
+								<DialogTitle className="text-basalt-2xl">Delete Project?</DialogTitle>
 							</div>
 							<DialogDescription>
 								This action cannot be undone. This will permanently delete the project and all
@@ -645,9 +648,9 @@ export default function Example() {
 		<DialogDescription>
 			This dialog uses className="max-w-lg" and stays capped around 512px on desktop.
 		</DialogDescription>
-		<div className="mt-4 truncate rounded-basalt-md bg-basalt-secondary p-3 font-mono text-sm ring-1 ring-basalt-border">
+		<LayerCard className="mt-basalt-space-lg truncate font-mono text-basalt-base">
 			abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
-		</div>
+		</LayerCard>
 	</DialogContent>
 </Dialog>`,
 					[
@@ -667,9 +670,9 @@ export default function Example() {
 							<DialogDescription>
 								This dialog uses className="max-w-lg" and stays capped around 512px on desktop.
 							</DialogDescription>
-							<div className="mt-4 truncate rounded-basalt-md bg-basalt-secondary p-3 font-mono text-sm ring-1 ring-basalt-border">
+							<LayerCard className="mt-basalt-space-lg truncate font-mono text-basalt-base">
 								abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789
-							</div>
+							</LayerCard>
 						</DialogContent>
 					</Dialog>
 				),
@@ -684,7 +687,7 @@ export default function Example() {
 	</DialogTrigger>
 	<DialogContent>
 		<DialogHeaderRow title="Create Resource" />
-		<DialogDescription className="mb-4">
+		<DialogDescription className="mb-basalt-space-lg">
 			Select a region for your new resource.
 		</DialogDescription>
 		<Select>
@@ -697,7 +700,7 @@ export default function Example() {
 				<SelectItem value="eu-west">EU West</SelectItem>
 			</SelectContent>
 		</Select>
-		<div className="mt-8 flex justify-end gap-2">
+		<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 			<DialogClose asChild>
 				<Button variant="outline">Cancel</Button>
 			</DialogClose>
@@ -720,7 +723,7 @@ export default function Example() {
 						</DialogTrigger>
 						<DialogContent>
 							<DialogHeaderRow title="Create Resource" />
-							<DialogDescription className="mb-4">
+							<DialogDescription className="mb-basalt-space-lg">
 								Select a region for your new resource.
 							</DialogDescription>
 							<Select>
@@ -733,7 +736,7 @@ export default function Example() {
 									<SelectItem value="eu-west">EU West</SelectItem>
 								</SelectContent>
 							</Select>
-							<div className="mt-8 flex justify-end gap-2">
+							<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 								<DialogClose asChild>
 									<Button variant="outline">Cancel</Button>
 								</DialogClose>
@@ -753,7 +756,7 @@ export default function Example() {
 	</DialogTrigger>
 	<DialogContent>
 		<DialogHeaderRow title="Create Resource" />
-		<DialogDescription className="mb-4">
+		<DialogDescription className="mb-basalt-space-lg">
 			Search and select a region for your new resource.
 		</DialogDescription>
 		<Combobox
@@ -764,7 +767,7 @@ export default function Example() {
 			]}
 			placeholder="Search regions..."
 		/>
-		<div className="mt-8 flex justify-end gap-2">
+		<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 			<DialogClose asChild>
 				<Button variant="outline">Cancel</Button>
 			</DialogClose>
@@ -787,7 +790,7 @@ export default function Example() {
 						</DialogTrigger>
 						<DialogContent>
 							<DialogHeaderRow title="Create Resource" />
-							<DialogDescription className="mb-4">
+							<DialogDescription className="mb-basalt-space-lg">
 								Search and select a region for your new resource.
 							</DialogDescription>
 							<Combobox
@@ -798,7 +801,7 @@ export default function Example() {
 								]}
 								placeholder="Search regions..."
 							/>
-							<div className="mt-8 flex justify-end gap-2">
+							<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 								<DialogClose asChild>
 									<Button variant="outline">Cancel</Button>
 								</DialogClose>
@@ -818,7 +821,7 @@ export default function Example() {
 	</DialogTrigger>
 	<DialogContent>
 		<DialogHeaderRow title="Resource Actions" />
-		<DialogDescription className="mb-4">
+		<DialogDescription className="mb-basalt-space-lg">
 			Choose an action for the selected resource.
 		</DialogDescription>
 		<DropdownMenu>
@@ -831,7 +834,7 @@ export default function Example() {
 				<DropdownMenuItem>Delete</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
-		<div className="mt-8 flex justify-end">
+		<div className="mt-basalt-space-lg flex justify-end">
 			<DialogClose asChild>
 				<Button variant="outline">Close</Button>
 			</DialogClose>
@@ -853,7 +856,7 @@ export default function Example() {
 						</DialogTrigger>
 						<DialogContent>
 							<DialogHeaderRow title="Resource Actions" />
-							<DialogDescription className="mb-4">
+							<DialogDescription className="mb-basalt-space-lg">
 								Choose an action for the selected resource.
 							</DialogDescription>
 							<DropdownMenu>
@@ -866,7 +869,7 @@ export default function Example() {
 									<DropdownMenuItem>Delete</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
-							<div className="mt-8 flex justify-end">
+							<div className="mt-basalt-space-lg flex justify-end">
 								<DialogClose asChild>
 									<Button variant="outline">Close</Button>
 								</DialogClose>
@@ -903,7 +906,7 @@ export default function Example() {
 				<AlertDialogDescription>
 					This action cannot be undone. All your data will be permanently removed from our servers.
 				</AlertDialogDescription>
-				<div className="mt-8 flex justify-end gap-2">
+				<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
 					<AlertDialogAction>Delete Account</AlertDialogAction>
 				</div>
@@ -930,17 +933,17 @@ export default function Example() {
 							<Button variant="destructive">Delete Account</Button>
 						</AlertDialogTrigger>
 						<AlertDialogContent>
-							<div className="mb-4 flex items-center gap-3">
-								<div className="flex h-10 w-10 items-center justify-center rounded-full bg-basalt-destructive/20">
+							<div className="mb-basalt-space-lg flex items-center gap-basalt-space-lg">
+								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 									<AlertTriangle className="size-5 text-basalt-destructive" />
 								</div>
-								<AlertDialogTitle className="text-xl">Delete Account?</AlertDialogTitle>
+								<AlertDialogTitle className="text-basalt-2xl">Delete Account?</AlertDialogTitle>
 							</div>
 							<AlertDialogDescription>
 								This action cannot be undone. All your data will be permanently removed from our
 								servers.
 							</AlertDialogDescription>
-							<div className="mt-8 flex justify-end gap-2">
+							<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction>Delete Account</AlertDialogAction>
 							</div>
@@ -1014,7 +1017,7 @@ export default function Example() {
 				id: catalogScenarioId("popover", "sides"),
 				title: "Sides",
 				code: scenarioModule(
-					`<div className="flex flex-wrap items-center justify-center gap-4 py-16">
+					`<div className="flex flex-wrap items-center justify-center gap-basalt-space-lg py-basalt-space-lg">
 	<Popover>
 		<PopoverTrigger asChild>
 			<Button variant="outline">Bottom</Button>
@@ -1058,7 +1061,7 @@ export default function Example() {
 					],
 				),
 				render: () => (
-					<div className="flex flex-wrap items-center justify-center gap-4 py-16">
+					<div className="flex flex-wrap items-center justify-center gap-basalt-space-lg py-basalt-space-lg">
 						{(["bottom", "top", "left", "right"] as const).map((side) => (
 							<Popover key={side}>
 								<PopoverTrigger asChild>
@@ -1272,7 +1275,7 @@ export default function Example() {
 					<SheetTitle>Sheet Panel</SheetTitle>
 					<SheetDescription>Drawer content anchored to viewport edge.</SheetDescription>
 				</SheetHeader>
-				<div className="mt-8 flex justify-end">
+				<div className="mt-basalt-space-lg flex justify-end">
 					<SheetClose asChild>
 						<Button variant="outline">Close</Button>
 					</SheetClose>

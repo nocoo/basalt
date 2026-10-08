@@ -97,20 +97,22 @@ export default function HeatmapMatrixHourSchedule() {
 	const visibleValues = INITIAL_VALUES.slice(0, activeDays);
 
 	return (
-		<div className="w-full space-y-3">
-			<div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-				<div className="flex flex-wrap items-center gap-1.5">
+		<div className="w-full space-y-basalt-space-lg">
+			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg text-basalt-sm">
+				<div className="flex flex-wrap items-center gap-basalt-space-md">
 					<span className="font-medium text-basalt-foreground">Scope:</span>
 					<Button
 						size="sm"
-						variant={activeDays === 7 ? "default" : "outline"}
+						variant="outline"
+						aria-pressed={activeDays === 7}
 						onClick={() => setActiveDays(7)}
 					>
 						Full Week (7d)
 					</Button>
 					<Button
 						size="sm"
-						variant={activeDays === 5 ? "default" : "outline"}
+						variant="outline"
+						aria-pressed={activeDays === 5}
 						onClick={() => setActiveDays(5)}
 					>
 						Workdays Only (5d)
@@ -132,8 +134,8 @@ export default function HeatmapMatrixHourSchedule() {
 				cellGap={3}
 				valueFormatter={(v) => `${v} req/s`}
 				renderTooltip={(cell) => (
-					<div data-testid="chart-custom-tooltip" className="p-1">
-						<div className="font-semibold text-basalt-popover-foreground mb-1">
+					<div data-testid="chart-custom-tooltip" className="p-basalt-space-sm">
+						<div className="font-semibold text-basalt-popover-foreground mb-basalt-space-sm">
 							{cell.rowLabel} at {cell.columnLabel}
 						</div>
 						<ChartTooltipRow

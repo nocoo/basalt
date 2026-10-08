@@ -10,7 +10,7 @@ export default function LayerCardLoadingEmpty() {
 	};
 
 	return (
-		<div className="grid w-full gap-4 md:grid-cols-2">
+		<div className="grid w-full gap-basalt-space-lg md:grid-cols-2">
 			<LayerCard>
 				<LayerCard.Loading label="Loading account activity" />
 			</LayerCard>
@@ -28,15 +28,15 @@ export default function LayerCardLoadingEmpty() {
 						Trigger your first system event.
 					</LayerCard.Empty>
 				) : (
-					<LayerCard.Body className="space-y-2">
-						<p className="text-xs font-medium text-basalt-foreground">
+					<LayerCard.Body className="space-y-basalt-space-lg">
+						<p className="text-basalt-sm font-medium text-basalt-foreground">
 							Account Events ({events.length}):
 						</p>
-						<ul className="flex flex-col gap-1">
+						<ul className="flex flex-col gap-basalt-space-sm">
 							{events.map((ev) => (
 								<li
 									key={ev}
-									className="rounded-basalt-sm bg-basalt-muted px-2 py-1 text-xs text-basalt-foreground"
+									className="rounded-basalt-sm bg-basalt-muted px-basalt-space-lg py-basalt-space-sm text-basalt-sm text-basalt-foreground"
 								>
 									{ev}
 								</li>

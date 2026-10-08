@@ -12,8 +12,8 @@ export default function DeleteResourceDefault() {
 	};
 
 	return (
-		<div className="flex flex-col items-start gap-3">
-			<div className="flex items-center gap-3">
+		<div className="flex flex-col items-start gap-basalt-space-lg">
+			<div className="flex items-center gap-basalt-space-lg">
 				<DeleteResource
 					name="Atlas"
 					errorMessage={(error) =>
@@ -34,7 +34,7 @@ export default function DeleteResourceDefault() {
 					Reset demo
 				</Button>
 			</div>
-			<p className="text-xs text-basalt-muted">{status}</p>
+			<p className="text-basalt-sm text-basalt-muted">{status}</p>
 		</div>
 	);
 }

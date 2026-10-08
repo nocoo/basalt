@@ -128,6 +128,7 @@ import {
 	catalogNavName,
 	libraryNavEntries,
 } from "@/pages/ui/catalog";
+import { catalogCategoryPath } from "@/pages/ui/catalog-categories";
 import { type CatalogPageStatus, catalogPageStatus } from "@/pages/ui/catalog-page-status";
 
 // ── Navigation data model ──
@@ -135,6 +136,7 @@ import { type CatalogPageStatus, catalogPageStatus } from "@/pages/ui/catalog-pa
 interface NavItem {
 	titleKey?: string;
 	title?: string;
+	accessibleTitle?: string;
 	icon: React.ElementType;
 	path: string;
 	badge?: number;
@@ -313,10 +315,20 @@ function catalogNavItem(entry: CatalogEntry, fallbackIcon: React.ElementType): N
 	};
 }
 
-const LIBRARY_GROUPS: NavGroup[] = CATALOG_CATEGORIES.map((category) => ({
+const CATEGORY_OVERVIEWS: NavItem[] = CATALOG_CATEGORIES.map((category) => ({
+	title: "Overview",
+	accessibleTitle: `${category.label} overview`,
+	path: catalogCategoryPath(category.id),
+	icon: BookOpen,
+}));
+
+const LIBRARY_GROUPS: NavGroup[] = CATALOG_CATEGORIES.map((category, index) => ({
 	label: category.label,
 	defaultOpen: true,
-	items: libraryNavEntries(category.id).map((entry) => catalogNavItem(entry, RectangleEllipsis)),
+	items: [
+		CATEGORY_OVERVIEWS[index],
+		...libraryNavEntries(category.id).map((entry) => catalogNavItem(entry, RectangleEllipsis)),
+	],
 }));
 
 const ALL_NAV_ITEMS = [...NAV_GROUPS.flatMap((g) => g.items), ...LIBRARY_LEAD];
@@ -345,6 +357,7 @@ function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: stri
 	const isPlanned = item.pageStatus === "planned";
 	return (
 		<SidebarItem
+			aria-label={item.accessibleTitle}
 			active={!isPlanned && !item.external && currentPath === item.path}
 			disabled={isPlanned}
 			data-catalog-slug={item.catalogSlug}
@@ -360,13 +373,13 @@ function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: stri
 			<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
 			<span className="flex-1 truncate text-left">{itemTitle(item, t)}</span>
 			{item.external ? (
-				<span className="flex h-7 w-7 shrink-0 items-center justify-center">
+				<span className="flex size-basalt-icon-lg shrink-0 items-center justify-center">
 					<ExternalLink className="h-3 w-3 text-basalt-muted-foreground" strokeWidth={1.5} />
 				</span>
 			) : null}
 			{item.badge ? (
-				<span className="flex h-7 w-7 shrink-0 items-center justify-center">
-					<span className="flex h-5 min-w-[20px] items-center justify-center rounded-full bg-badge-red px-1.5 text-[11px] font-medium text-badge-red-foreground">
+				<span className="flex h-[var(--basalt-line-body)] shrink-0 items-center justify-center">
+					<span className="flex h-5 min-w-[1.25rem] items-center justify-center rounded-basalt-full bg-badge-red px-basalt-space-md text-basalt-xs font-medium text-badge-red-foreground">
 						{item.badge}
 					</span>
 				</span>
@@ -393,8 +406,8 @@ function NavGroupSection({ group, currentPath }: { group: NavGroup; currentPath:
 
 function LibraryNav({ currentPath }: { currentPath: string }) {
 	return (
-		<div className="pb-3">
-			<div className="mt-2 flex flex-col gap-0.5 px-3">
+		<div>
+			<div className="flex flex-col gap-basalt-nav-gap">
 				{LIBRARY_LEAD.map((item) => (
 					<NavItemButton key={item.path} item={item} currentPath={currentPath} />
 				))}
@@ -414,6 +427,7 @@ function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: s
 			<TooltipTrigger asChild>
 				<SidebarIconItem
 					active={!item.external && currentPath === item.path}
+					aria-label={itemTitle(item, t)}
 					onClick={() =>
 						item.external
 							? window.open(item.path, "_blank", "noopener,noreferrer")
@@ -422,7 +436,7 @@ function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: s
 				>
 					<item.icon className="h-4 w-4" strokeWidth={1.5} />
 					{item.badge ? (
-						<span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[16px] items-center justify-center rounded-full bg-badge-red px-1 text-[10px] font-medium text-badge-red-foreground">
+						<span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-basalt-full bg-badge-red px-basalt-space-sm text-basalt-xs font-medium text-badge-red-foreground">
 							{item.badge}
 						</span>
 					) : null}
@@ -479,8 +493,8 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 		...group,
 		items: group.items.filter((item) => commandSearchMatches(itemTitle(item, t), searchQuery)),
 	})).filter((group) => group.items.length > 0);
-	const commandLibraryLead = LIBRARY_LEAD.filter((item) =>
-		commandSearchMatches(itemTitle(item, t), searchQuery),
+	const commandLibraryLead = [...LIBRARY_LEAD, ...CATEGORY_OVERVIEWS].filter((item) =>
+		commandSearchMatches(item.accessibleTitle ?? itemTitle(item, t), searchQuery),
 	);
 	const commandCatalogEntries = CATALOG.filter((entry) =>
 		commandSearchMatches(catalogCommandValue(entry), searchQuery),
@@ -488,20 +502,25 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 
 	return (
 		<Sidebar collapsed={collapsed}>
-			<SidebarHeader className={collapsed ? "justify-start px-0 pl-6 pr-3" : undefined}>
-				<div className={cn("flex w-full items-center", !collapsed && "justify-between px-3")}>
+			<SidebarHeader>
+				<div
+					className={cn(
+						"flex w-full items-center",
+						collapsed ? "justify-center" : "justify-between px-basalt-row-x",
+					)}
+				>
 					<Link
 						href="/"
 						aria-label={t("nav.home")}
-						className="flex items-center gap-3 text-basalt-foreground no-underline hover:no-underline"
+						className="flex items-center gap-basalt-space-lg text-basalt-foreground no-underline hover:no-underline"
 					>
 						<BasaltLogo alt="" className="h-7 w-7 shrink-0 object-contain" />
 						{collapsed ? null : (
 							<>
-								<span className="text-lg font-semibold text-basalt-foreground md:text-xl">
+								<span className="text-basalt-xl font-semibold text-basalt-foreground md:text-basalt-2xl">
 									basalt.
 								</span>
-								<span className="rounded-md bg-basalt-secondary px-1.5 py-0.5 text-[10px] leading-none font-medium text-basalt-muted-foreground">
+								<span className="rounded-basalt-md bg-basalt-secondary px-basalt-space-md py-basalt-space-xs text-basalt-xs leading-basalt-tight font-medium text-basalt-muted-foreground">
 									v{APP_VERSION}
 								</span>
 							</>
@@ -511,7 +530,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 						<Button
 							variant="ghost"
 							size="icon"
-							className="h-7 w-7"
+							className="w-7"
 							onClick={onToggle}
 							aria-label={t("common.collapseSidebar")}
 						>
@@ -527,11 +546,11 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 						size="icon"
 						onClick={onToggle}
 						aria-label={t("common.expandSidebar")}
-						className="mb-1 self-center"
+						className="mb-basalt-space-sm self-center"
 					>
 						<PanelLeft aria-hidden="true" />
 					</Button>
-					<SidebarNav className="w-full items-center gap-1 pt-1">
+					<SidebarNav>
 						<Tooltip delayDuration={0}>
 							<TooltipTrigger asChild>
 								<SidebarIconItem
@@ -549,12 +568,12 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 							<CollapsedNavItem key={item.path} item={item} currentPath={pathname} />
 						))}
 					</SidebarNav>
-					<SidebarFooter className="flex w-full justify-center px-0">
+					<SidebarFooter>
 						<Tooltip delayDuration={0}>
 							<TooltipTrigger asChild>
 								<Avatar className="h-9 w-9 cursor-pointer">
 									<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-									<AvatarFallback className="text-xs">ZL</AvatarFallback>
+									<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
 								</Avatar>
 							</TooltipTrigger>
 							<TooltipContent side="right" sideOffset={8}>
@@ -565,15 +584,15 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 				</>
 			) : (
 				<>
-					<div className="px-3 pb-1">
+					<div className="px-basalt-nav-inset">
 						<SidebarSearch onClick={() => setSearchOpen(true)}>{t("common.search")}</SidebarSearch>
 					</div>
-					<SidebarNav className="pt-1">
+					<SidebarNav>
 						<SidebarPartition>{t("nav.examples")}</SidebarPartition>
 						{NAV_GROUPS.map((group) => (
 							<NavGroupSection key={group.labelKey} group={group} currentPath={pathname} />
 						))}
-						<Separator className="mx-6 my-3 w-auto" />
+						<Separator className="mx-basalt-row-x my-basalt-content-gap w-auto" />
 						<SidebarPartition>{t("nav.kit")}</SidebarPartition>
 						<LibraryNav currentPath={pathname} />
 					</SidebarNav>
@@ -584,14 +603,14 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 							avatar={
 								<Avatar className="h-9 w-9 shrink-0">
 									<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-									<AvatarFallback className="text-xs">ZL</AvatarFallback>
+									<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
 								</Avatar>
 							}
 							action={
 								<Button
 									variant="ghost"
 									size="icon"
-									className="h-8 w-8 shrink-0"
+									className="w-8 shrink-0"
 									aria-label={t("common.logOut")}
 								>
 									<LogOut aria-hidden="true" />
@@ -616,7 +635,7 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 									key={item.path}
 									value={itemTitle(item, t)}
 									onSelect={() => handleSelect(item.path)}
-									className="cursor-pointer gap-3"
+									className="cursor-pointer gap-basalt-space-lg"
 								>
 									<item.icon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
 									<span>{itemTitle(item, t)}</span>
@@ -629,12 +648,12 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 							{commandLibraryLead.map((item) => (
 								<CommandItem
 									key={item.path}
-									value={`${itemTitle(item, t)} ${item.path}`}
+									value={`${item.accessibleTitle ?? itemTitle(item, t)} ${item.path}`}
 									onSelect={() => handleSelect(item.path)}
-									className="cursor-pointer gap-3"
+									className="cursor-pointer gap-basalt-space-lg"
 								>
 									<item.icon className="h-4 w-4 text-basalt-muted-foreground" strokeWidth={1.5} />
-									<span>{itemTitle(item, t)}</span>
+									<span>{item.accessibleTitle ?? itemTitle(item, t)}</span>
 								</CommandItem>
 							))}
 							{commandCatalogEntries.map((entry) => {
@@ -646,7 +665,9 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 										disabled={isPlanned}
 										data-catalog-slug={entry.slug}
 										onSelect={isPlanned ? undefined : () => handleSelect(`/ui/${entry.slug}`)}
-										className={isPlanned ? "gap-3" : "cursor-pointer gap-3"}
+										className={
+											isPlanned ? "gap-basalt-space-lg" : "cursor-pointer gap-basalt-space-lg"
+										}
 									>
 										<span>{catalogNavName(entry)}</span>
 										{isPlanned ? (

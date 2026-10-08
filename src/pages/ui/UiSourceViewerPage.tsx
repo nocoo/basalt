@@ -1,5 +1,9 @@
+import { Banner } from "@nocoo/basalt/components/banner";
+import { LinkButton } from "@nocoo/basalt/components/button";
+import { CodeBlock } from "@nocoo/basalt/components/code";
 import { useEffect, useState } from "react";
-import { Link, useParams, useSearchParams } from "react-router";
+import { useParams, useSearchParams } from "react-router";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { CATALOG_BY_SLUG } from "./catalog";
 import { CATALOG_SOURCE_FILES } from "./generated/catalog-source-files";
 
@@ -96,60 +100,39 @@ export function UiSourceViewerPage() {
 
 	if (!entry || !sourceInfo) {
 		return (
-			<div className="p-8">
-				<h1 className="text-2xl font-bold">Source Not Found</h1>
-				<p className="mt-2 text-muted-foreground">{error ?? `Unknown catalog slug "${slug}".`}</p>
-				<Link to="/ui" className="mt-4 inline-block text-primary underline">
+			<ShowcasePage
+				title="Source Not Found"
+				description={error ?? `Unknown catalog slug "${slug}".`}
+			>
+				<LinkButton href="/ui" variant="outline">
 					Back to Catalog
-				</Link>
-			</div>
+				</LinkButton>
+			</ShowcasePage>
 		);
 	}
 
 	return (
-		<div className="min-h-screen bg-background text-foreground">
-			<header className="border-b border-border px-6 py-6 md:px-8">
-				<div className="flex flex-wrap items-center justify-between gap-4">
-					<div className="min-w-0 max-w-full">
-						<div className="flex items-center gap-2 text-sm text-muted-foreground">
-							<Link to={`/ui/${slug}`} className="hover:text-foreground">
-								{entry.name}
-							</Link>
-							<span>/</span>
-							<span>Source</span>
-						</div>
-						<h1 className="mt-1 font-mono text-xl font-semibold [overflow-wrap:anywhere]">
-							{sourceInfo.file}
-						</h1>
-						<p className="text-xs text-muted-foreground font-mono mt-0.5">
-							sha256: {sourceInfo.hash}
-						</p>
-					</div>
-					<div className="flex items-center gap-3">
-						<Link
-							to={`/ui/${slug}`}
-							className="rounded-basalt-md border border-border px-3 py-1.5 text-sm font-medium hover:bg-secondary"
-						>
-							Back to Component
-						</Link>
-					</div>
-				</div>
-			</header>
-
-			<main className="p-6 md:p-8">
-				{error ? (
-					<div className="rounded-basalt-md border border-destructive/20 bg-destructive/10 p-4 text-destructive">
-						{error}
-					</div>
-				) : content === null ? (
-					<div className="p-8 text-center text-muted-foreground">Loading source...</div>
-				) : (
-					<pre className="overflow-x-auto rounded-basalt-md border border-border bg-secondary p-4 font-mono text-xs leading-relaxed text-foreground">
-						<code>{content}</code>
-					</pre>
-				)}
-			</main>
-		</div>
+		<ShowcasePage
+			title={sourceInfo.file}
+			description={`sha256: ${sourceInfo.hash}`}
+			actions={
+				<LinkButton href={`/ui/${slug}`} variant="outline">
+					Back to Component
+				</LinkButton>
+			}
+		>
+			{error ? (
+				<Banner variant="error" title="Source unavailable" description={error} />
+			) : content === null ? (
+				<p role="status" className="text-basalt-base text-basalt-muted-foreground">
+					Loading source...
+				</p>
+			) : (
+				<CodeBlock title={sourceInfo.file} lineNumbers>
+					{content}
+				</CodeBlock>
+			)}
+		</ShowcasePage>
 	);
 }
 export default UiSourceViewerPage;

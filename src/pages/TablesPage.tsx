@@ -8,7 +8,6 @@ import { FilterBar } from "@nocoo/basalt/components/filter-bar";
 import { Input } from "@nocoo/basalt/components/input";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Meter } from "@nocoo/basalt/components/meter";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import {
 	Select,
@@ -20,6 +19,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { TagBadge, type TagColor } from "@nocoo/basalt/components/tag-badge";
 import { useTranslation } from "react-i18next";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatPercent, formatUsd } from "@/lib/format";
 import {
 	type CompanyRow,
@@ -29,7 +29,7 @@ import {
 	useTableShowcaseViewModel,
 } from "@/viewmodels/useTableShowcaseViewModel";
 
-const DENSE = "px-3 py-2 whitespace-nowrap";
+const DENSE = "px-basalt-space-lg py-basalt-space-lg whitespace-nowrap";
 const TAG_COLOR: Record<string, TagColor> = {
 	Enterprise: "blue",
 	Upsell: "violet",
@@ -47,12 +47,12 @@ function TagStack({ tags }: { tags: readonly string[] }) {
 	const visible = tags.slice(0, 2);
 	const extra = tags.length - visible.length;
 	return (
-		<div className="flex flex-wrap items-center gap-1">
+		<div className="flex flex-wrap items-center gap-basalt-space-sm">
 			{visible.map((tag) => (
 				<TagBadge key={tag} name={tag} color={TAG_COLOR[tag]} size="sm" />
 			))}
 			{extra > 0 ? (
-				<Badge variant="outline" className="px-1.5 py-0 text-[11px]">
+				<Badge variant="outline" className="px-basalt-space-md py-0 text-basalt-xs">
 					+{extra}
 				</Badge>
 			) : null}
@@ -62,9 +62,9 @@ function TagStack({ tags }: { tags: readonly string[] }) {
 
 function OwnerCell({ name, initials }: { name: string; initials: string }) {
 	return (
-		<div className="flex items-center gap-2">
+		<div className="flex items-center gap-basalt-space-lg">
 			<Avatar className="h-6 w-6">
-				<AvatarFallback className="text-[10px]">{initials}</AvatarFallback>
+				<AvatarFallback className="text-basalt-xs">{initials}</AvatarFallback>
 			</Avatar>
 			<span>{name}</span>
 		</div>
@@ -350,26 +350,24 @@ export default function TablesPage() {
 	];
 
 	return (
-		<div className="space-y-8">
-			<PageHeader title={t("pages.tables.title")} description={t("pages.tables.description")} />
-
+		<ShowcasePage title={t("pages.tables.title")} description={t("pages.tables.description")}>
 			<SectionRule title={t("pages.tables.pipeline")} hint={t("pages.tables.pipelineHint")}>
 				<LayerCard padding="none" data-table-showcase="pipeline">
 					<Tabs value={vm.tab} onValueChange={(value) => vm.setTab(value as TableShowcaseTab)}>
-						<div className="flex flex-wrap items-center justify-between gap-3 px-4 pt-4">
+						<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg px-basalt-space-lg pt-basalt-space-lg">
 							<TabsList>
 								<TabsTrigger value="companies">{t("pages.tables.tabCompanies")}</TabsTrigger>
 								<TabsTrigger value="deals">{t("pages.tables.tabDeals")}</TabsTrigger>
 								<TabsTrigger value="forecast">{t("pages.tables.tabForecast")}</TabsTrigger>
 							</TabsList>
-							<div className="flex flex-wrap gap-2">
+							<div className="flex flex-wrap gap-basalt-space-lg">
 								<Button size="sm" variant="outline">
 									{t("pages.tables.export")}
 								</Button>
 								<Button size="sm">{t("pages.tables.newCompany")}</Button>
 							</div>
 						</div>
-						<div className="px-4 py-3">
+						<div className="px-basalt-space-lg py-basalt-space-lg">
 							<FilterBar
 								label={t("pages.tables.filters")}
 								active={vm.owner !== "all" || vm.stage !== "all"}
@@ -406,7 +404,7 @@ export default function TablesPage() {
 								</Select>
 							</FilterBar>
 						</div>
-						<div className="px-2 pb-2">
+						<div className="px-basalt-space-lg pb-basalt-space-lg">
 							<TabsContent value="companies" className="mt-0">
 								<DataTable
 									aria-label={t("pages.tables.tabCompanies")}
@@ -436,25 +434,27 @@ export default function TablesPage() {
 							</TabsContent>
 						</div>
 					</Tabs>
-					<div className="grid grid-cols-2 gap-px border-t border-basalt-border bg-basalt-border text-xs text-basalt-muted-foreground md:grid-cols-4">
-						<div className="bg-basalt-background px-4 py-2">
+					<div className="grid grid-cols-2 gap-px border-t border-basalt-border bg-basalt-border text-basalt-sm text-basalt-muted-foreground md:grid-cols-4">
+						<div className="bg-basalt-background px-basalt-space-lg py-basalt-space-lg">
 							{vm.tab === "deals"
 								? t("pages.tables.dealsInView", { count: vm.dealCount })
 								: t("pages.tables.companiesInView", { count: vm.companyCount })}
 						</div>
-						<div className="bg-basalt-background px-4 py-2 tabular-nums">
+						<div className="bg-basalt-background px-basalt-space-lg py-basalt-space-lg tabular-nums">
 							{t("pages.tables.pipelineSum", { value: formatUsd(vm.pipelineSum) })}
 						</div>
-						<div className="bg-basalt-background px-4 py-2 tabular-nums">
+						<div className="bg-basalt-background px-basalt-space-lg py-basalt-space-lg tabular-nums">
 							{t("pages.tables.winAvg", { value: formatPercent(vm.winAvg) })}
 						</div>
-						<div className="bg-basalt-background px-4 py-2">{t("pages.tables.addCalculation")}</div>
+						<div className="bg-basalt-background px-basalt-space-lg py-basalt-space-lg">
+							{t("pages.tables.addCalculation")}
+						</div>
 					</div>
 				</LayerCard>
 			</SectionRule>
 
 			<SectionRule title={t("pages.tables.ledger")} hint={t("pages.tables.ledgerHint")}>
-				<LayerCard className="space-y-4" data-table-showcase="ledger">
+				<LayerCard className="space-y-basalt-space-lg" data-table-showcase="ledger">
 					<Input
 						className="max-w-64"
 						aria-label={t("pages.tables.searchInvoices")}
@@ -474,7 +474,7 @@ export default function TablesPage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.tables.fleet")} hint={t("pages.tables.fleetHint")}>
-				<LayerCard className="space-y-4" data-table-showcase="fleet">
+				<LayerCard className="space-y-basalt-space-lg" data-table-showcase="fleet">
 					<FilterBar
 						label={t("pages.tables.deviceFilters")}
 						active={vm.deviceStatus !== "all"}
@@ -502,6 +502,6 @@ export default function TablesPage() {
 					/>
 				</LayerCard>
 			</SectionRule>
-		</div>
+		</ShowcasePage>
 	);
 }

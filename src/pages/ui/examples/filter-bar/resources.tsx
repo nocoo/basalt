@@ -20,7 +20,7 @@ export default function ResourceFilters() {
 			(!selected.length || selected.includes(row.tag)),
 	);
 	return (
-		<div className="w-full space-y-5">
+		<div className="w-full space-y-basalt-space-lg">
 			<FilterBar
 				label="Resource filters"
 				active={!!query || selected.length > 0}
@@ -55,21 +55,24 @@ export default function ResourceFilters() {
 					/>
 				</div>
 			</FilterBar>
-			<p role="status" className="text-xs text-basalt-muted-foreground">
+			<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
 				{matches.length} resources
 			</p>
 			<ul className="divide-y divide-basalt-border rounded-basalt-lg border border-basalt-border">
 				{matches.map((row) => (
-					<li key={row.name} className="flex flex-wrap items-center justify-between gap-2 p-3">
-						<span className="text-sm">{row.name}</span>
-						<span className="text-xs text-basalt-muted-foreground">
+					<li
+						key={row.name}
+						className="flex flex-wrap items-center justify-between gap-basalt-space-lg p-basalt-space-lg"
+					>
+						<span className="text-basalt-base">{row.name}</span>
+						<span className="text-basalt-sm text-basalt-muted-foreground">
 							{row.folder} · {row.tag}
 						</span>
 					</li>
 				))}
 			</ul>
 			{!matches.length && (
-				<p className="py-4 text-sm text-basalt-muted-foreground">
+				<p className="py-basalt-space-lg text-basalt-base text-basalt-muted-foreground">
 					No matching resources. Clear filters to start again.
 				</p>
 			)}

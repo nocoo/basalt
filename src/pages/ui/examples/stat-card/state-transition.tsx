@@ -45,8 +45,8 @@ export default function StatCardStateTransition() {
 	};
 
 	return (
-		<div className="w-full max-w-xl space-y-4">
-			<div className="flex flex-wrap items-center gap-2">
+		<div className="w-full max-w-xl space-y-basalt-space-lg">
+			<div className="flex flex-wrap items-center gap-basalt-space-lg">
 				<Button
 					size="sm"
 					variant="outline"
@@ -99,16 +99,16 @@ export default function StatCardStateTransition() {
 				}
 				status={
 					state === "loading" ? (
-						<span className="inline-flex items-center text-sm font-medium text-basalt-muted-foreground">
+						<span className="inline-flex items-center text-basalt-base font-medium text-basalt-muted-foreground">
 							Refreshing ingestion telemetry...
 						</span>
 					) : state === "error" ? (
-						<span className="inline-flex items-center gap-1.5 text-sm font-medium text-basalt-destructive">
+						<span className="inline-flex items-center gap-basalt-space-md text-basalt-base font-medium text-basalt-destructive">
 							<AlertCircle className="h-4 w-4" />
 							Telemetry cluster offline
 						</span>
 					) : state === "empty" ? (
-						<span className="inline-flex items-center gap-1.5 text-sm font-medium text-basalt-muted-foreground">
+						<span className="inline-flex items-center gap-basalt-space-md text-basalt-base font-medium text-basalt-muted-foreground">
 							<Inbox className="h-4 w-4" />
 							No active ingestion events
 						</span>
@@ -118,7 +118,7 @@ export default function StatCardStateTransition() {
 					<Button
 						size="sm"
 						variant="outline"
-						className="h-7 gap-1.5 text-xs"
+						className="gap-basalt-space-md text-basalt-sm"
 						aria-disabled={state === "loading"}
 						aria-label={state === "empty" ? "Configure ingestion" : "Refresh ingestion telemetry"}
 						onClick={() => {
@@ -144,21 +144,25 @@ export default function StatCardStateTransition() {
 
 			{/* Composite LayerCard container pairing metrics and chart with fixed height */}
 			<LayerCard outlined className="overflow-hidden">
-				<LayerCard.Header className="flex flex-col gap-2 border-b border-basalt-border p-4 sm:flex-row sm:items-center sm:justify-between">
+				<LayerCard.Header className="flex-col sm:flex-row sm:items-center">
 					<div>
-						<h3 className="text-sm font-semibold text-basalt-foreground">Telemetry Timeline</h3>
-						<p className="text-xs text-basalt-muted-foreground">Hourly request distribution</p>
+						<h3 className="text-basalt-base font-semibold text-basalt-foreground">
+							Telemetry Timeline
+						</h3>
+						<p className="text-basalt-sm text-basalt-muted-foreground">
+							Hourly request distribution
+						</p>
 					</div>
 					<div className="flex shrink-0 items-center">
-						<span className="text-xs font-medium text-basalt-muted-foreground">
+						<span className="text-basalt-sm font-medium text-basalt-muted-foreground">
 							Status: <strong className="text-basalt-foreground uppercase">{state}</strong>
 						</span>
 					</div>
 				</LayerCard.Header>
 
-				<LayerCard.Body className="p-4">
-					{/* Fixed height container (min-h-[280px]) ensures states never collapse the layout across viewports */}
-					<div className="relative flex min-h-[280px] w-full flex-col justify-center">
+				<LayerCard.Body>
+					{/* Fixed height container (min-h-[17.5rem]) ensures states never collapse the layout across viewports */}
+					<div className="relative flex min-h-[17.5rem] w-full flex-col justify-center">
 						{state === "loading" && (
 							<LayerCard.Loading label="Fetching latest ingestion telemetry..." />
 						)}
@@ -166,23 +170,23 @@ export default function StatCardStateTransition() {
 						{state === "error" && (
 							<div
 								role="alert"
-								className="flex flex-col items-center justify-center space-y-3 text-center"
+								className="flex flex-col items-center justify-center space-y-basalt-space-lg text-center"
 							>
-								<div className="rounded-full bg-basalt-destructive/10 p-3 text-basalt-destructive">
+								<div className="rounded-basalt-full bg-basalt-destructive/10 p-basalt-space-lg text-basalt-destructive">
 									<AlertCircle className="h-6 w-6" />
 								</div>
 								<div>
-									<p className="text-sm font-medium text-basalt-foreground">
+									<p className="text-basalt-base font-medium text-basalt-foreground">
 										Telemetry Unavailable
 									</p>
-									<p className="text-xs text-basalt-muted-foreground">
+									<p className="text-basalt-sm text-basalt-muted-foreground">
 										Unable to connect to ingestion cluster.
 									</p>
 								</div>
 								<Button
 									size="sm"
 									variant="outline"
-									className="gap-2"
+									className="gap-basalt-space-lg"
 									onClick={() => simulateFetch("success")}
 								>
 									<RefreshCw className="h-3.5 w-3.5" />
@@ -200,7 +204,7 @@ export default function StatCardStateTransition() {
 									<Button
 										size="sm"
 										variant="outline"
-										className="gap-2"
+										className="gap-basalt-space-lg"
 										onClick={() => simulateFetch("success")}
 									>
 										<RefreshCw className="h-3.5 w-3.5" />
@@ -219,7 +223,7 @@ export default function StatCardStateTransition() {
 									className="h-44 w-full"
 									summary="Peak ingestion reached 950 req/min at 12:00. Exploration available via keyboard."
 									dataAlternative={
-										<p className="text-xs text-basalt-muted-foreground">
+										<p className="text-basalt-sm text-basalt-muted-foreground">
 											Telemetry active: average 618 req/min over the last 24 hours.
 										</p>
 									}

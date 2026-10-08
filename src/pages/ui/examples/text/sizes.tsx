@@ -2,7 +2,7 @@ import { Text } from "@nocoo/basalt/components/text";
 
 export default function TextSizes() {
 	return (
-		<div className="flex w-full flex-col gap-3">
+		<div className="flex w-full flex-col gap-basalt-space-lg">
 			<Text size="xl">Extra large</Text>
 			<Text size="lg">Large</Text>
 			<Text>Body copy</Text>

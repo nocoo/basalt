@@ -13,6 +13,7 @@ import {
 	sitemapPaths,
 } from "../src/lib/site";
 import { CATALOG, catalogNavName } from "../src/pages/ui/catalog";
+import { CATALOG_CATEGORIES, catalogCategoryPath } from "../src/pages/ui/catalog-categories";
 
 export const GENERATE_COMMAND = "bun run seo:generate";
 
@@ -38,7 +39,10 @@ export function renderSeoFiles(): Record<(typeof SEO_FILES)[number], string> {
 		"public/robots.txt": renderRobots(),
 		"public/sitemap.xml": renderSitemap(
 			sitemapPaths(
-				SHOWCASE_PATHS,
+				[
+					...SHOWCASE_PATHS,
+					...CATALOG_CATEGORIES.map((category) => catalogCategoryPath(category.id)),
+				],
 				links.map((entry) => entry.slug),
 			),
 		),

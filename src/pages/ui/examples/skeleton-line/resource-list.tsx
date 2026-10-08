@@ -34,11 +34,11 @@ export default function ResourceListSkeleton() {
 	const [loading, setLoading] = useState(true);
 	const [opened, setOpened] = useState<string | null>(null);
 	return (
-		<div className="w-full space-y-4">
-			<div className="flex flex-wrap items-center justify-between gap-3">
+		<div className="w-full space-y-basalt-space-lg">
+			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
 				<div>
-					<h3 className="text-lg font-semibold">Workspace leaderboard</h3>
-					<p className="text-sm text-basalt-muted-foreground">
+					<h3 className="text-basalt-xl font-semibold">Workspace leaderboard</h3>
+					<p className="text-basalt-base text-basalt-muted-foreground">
 						The same columns and rhythm, before and after loading.
 					</p>
 				</div>
@@ -57,8 +57,8 @@ export default function ResourceListSkeleton() {
 					tabIndex={0}
 					className="overflow-x-auto"
 				>
-					<div className="min-w-[560px]">
-						<div className="grid grid-cols-[minmax(0,1fr)_90px_90px_70px] gap-4 border-b border-basalt-border px-4 py-3 text-xs text-basalt-muted-foreground">
+					<div className="min-w-[35rem]">
+						<div className="grid grid-cols-[minmax(0,1fr)_5.625rem_5.625rem_4.375rem] gap-basalt-space-lg border-b border-basalt-border px-basalt-space-lg py-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
 							<span>Workspace</span>
 							<span>Status</span>
 							<span className="text-right">Requests</span>
@@ -67,23 +67,23 @@ export default function ResourceListSkeleton() {
 						{RESOURCES.map((row, index) => (
 							<div
 								key={row.name}
-								className="grid h-20 grid-cols-[minmax(0,1fr)_90px_90px_70px] items-center gap-4 border-b border-basalt-border/60 px-4 last:border-0"
+								className="grid h-20 grid-cols-[minmax(0,1fr)_5.625rem_5.625rem_4.375rem] items-center gap-basalt-space-lg border-b border-basalt-border/60 px-basalt-space-lg last:border-0"
 							>
-								<div className="flex items-center gap-3">
+								<div className="flex items-center gap-basalt-space-lg">
 									{loading ? (
 										<SkeletonLine
 											minWidth={100}
 											maxWidth={100}
 											height={36}
 											style={{ width: 36, flexShrink: 0 }}
-											className="rounded-full"
+											className="rounded-basalt-full"
 										/>
 									) : (
 										<Avatar className="h-9 w-9">
 											<AvatarFallback>{row.initials}</AvatarFallback>
 										</Avatar>
 									)}
-									<div className="min-w-0 flex-1 space-y-2">
+									<div className="min-w-0 flex-1 space-y-basalt-space-lg">
 										{loading ? (
 											<>
 												<SkeletonLine
@@ -95,20 +95,25 @@ export default function ResourceListSkeleton() {
 											</>
 										) : (
 											<>
-												<p className="text-sm font-medium">{row.name}</p>
-												<p className="text-xs text-basalt-muted-foreground">{row.detail}</p>
+												<p className="text-basalt-base font-medium">{row.name}</p>
+												<p className="text-basalt-sm text-basalt-muted-foreground">{row.detail}</p>
 											</>
 										)}
 									</div>
 								</div>
 								{loading ? (
-									<SkeletonLine minWidth={80} maxWidth={80} height={22} className="rounded-full" />
+									<SkeletonLine
+										minWidth={80}
+										maxWidth={80}
+										height={22}
+										className="rounded-basalt-full"
+									/>
 								) : (
 									<Badge variant={row.status === "Active" ? "success" : "warning"}>
 										{row.status}
 									</Badge>
 								)}
-								<div className="flex justify-end text-sm tabular-nums">
+								<div className="flex justify-end text-basalt-base tabular-nums">
 									{loading ? <SkeletonLine minWidth={75} maxWidth={75} height={12} /> : row.usage}
 								</div>
 								{loading ? (
@@ -130,7 +135,7 @@ export default function ResourceListSkeleton() {
 			</LayerCard>
 			<p
 				role={loading ? undefined : "status"}
-				className="min-h-5 text-xs text-basalt-muted-foreground"
+				className="min-h-5 text-basalt-sm text-basalt-muted-foreground"
 			>
 				{opened ? `${opened} selected` : "4 workspaces · Updated just now"}
 			</p>

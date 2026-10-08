@@ -8,7 +8,7 @@ export default function ThinkingDemo() {
 	const [variant, setVariant] = useState<ThinkingVariant>("steps");
 	const vm = useAgentFeedbackDemo(variant);
 	return (
-		<div className="w-full space-y-4">
+		<div className="w-full space-y-basalt-space-lg">
 			<Thinking steps={vm.steps} variant={variant} />
 			<SegmentControl
 				legend="Trace style"

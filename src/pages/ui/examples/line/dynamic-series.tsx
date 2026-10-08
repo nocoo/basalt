@@ -4,6 +4,7 @@ import {
 	ChartTooltipRow,
 	ChartTooltipSummary,
 } from "@nocoo/basalt/charts/tooltip";
+import { Button } from "@nocoo/basalt/components/button";
 import { useState } from "react";
 
 interface RegionalLatencyPoint {
@@ -89,61 +90,52 @@ export default function LineDynamicSeries() {
 
 	return (
 		<div
-			className={`space-y-4 transition-all duration-200 motion-reduce:transition-none min-w-0 ${
+			className={`space-y-basalt-space-lg transition-[width,opacity] basalt-motion duration-basalt-normal motion-reduce:transition-none min-w-0 ${
 				containerWidth === "narrow" ? "w-full max-w-sm" : "w-full max-w-2xl"
 			}`}
 		>
-			<div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-				<div className="flex flex-wrap items-center gap-1.5">
+			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg text-basalt-sm">
+				<div className="flex flex-wrap items-center gap-basalt-space-md">
 					<span className="font-medium text-basalt-foreground">Scope:</span>
 					{["all", "p95US", "p95EU", "p95APAC", "deltaAnomaly"].map((key) => {
 						const isSelected = activeRegion === key;
 						return (
-							<button
+							<Button
+								size="sm"
 								key={key}
 								type="button"
 								aria-pressed={isSelected}
 								onClick={() => setActiveRegion(key)}
-								className={`rounded px-2 py-0.5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-basalt-ring ${
-									isSelected
-										? "bg-basalt-primary text-basalt-primary-foreground"
-										: "bg-basalt-muted text-basalt-muted-foreground hover:text-basalt-foreground"
-								}`}
+								variant={isSelected ? "secondary" : "outline"}
 							>
 								{key === "all"
 									? "All Regions"
 									: (INITIAL_SERIES.find((s) => s.key === key)?.label ?? key)}
-							</button>
+							</Button>
 						);
 					})}
 				</div>
 
-				<div className="flex flex-wrap items-center gap-1.5">
+				<div className="flex flex-wrap items-center gap-basalt-space-md">
 					<span className="font-medium text-basalt-foreground">Resize:</span>
-					<button
+					<Button
+						size="sm"
 						type="button"
 						aria-pressed={containerWidth === "full"}
 						onClick={() => setContainerWidth("full")}
-						className={`rounded px-2 py-0.5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-basalt-ring ${
-							containerWidth === "full"
-								? "bg-basalt-primary text-basalt-primary-foreground"
-								: "bg-basalt-muted text-basalt-muted-foreground hover:text-basalt-foreground"
-						}`}
+						variant={containerWidth === "full" ? "secondary" : "outline"}
 					>
 						Full
-					</button>
-					<button
+					</Button>
+					<Button
+						size="sm"
 						type="button"
 						aria-pressed={containerWidth === "narrow"}
 						onClick={() => setContainerWidth("narrow")}
-						className={`rounded px-2 py-0.5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-basalt-ring ${
-							containerWidth === "narrow"
-								? "bg-basalt-primary text-basalt-primary-foreground"
-								: "bg-basalt-muted text-basalt-muted-foreground hover:text-basalt-foreground"
-						}`}
+						variant={containerWidth === "narrow" ? "secondary" : "outline"}
 					>
 						Narrow
-					</button>
+					</Button>
 				</div>
 			</div>
 
@@ -164,10 +156,12 @@ export default function LineDynamicSeries() {
 					return (
 						<div
 							data-testid="chart-custom-tooltip"
-							className="rounded-lg border border-basalt-border/60 bg-basalt-popover p-3 text-xs shadow-md"
+							className="rounded-basalt-md border border-basalt-border/60 bg-basalt-popover p-basalt-overlay text-basalt-sm shadow-md"
 						>
-							<p className="font-semibold text-basalt-popover-foreground mb-1.5">{label} CST</p>
-							<div className="space-y-1">
+							<p className="font-semibold text-basalt-popover-foreground mb-basalt-space-md">
+								{label} CST
+							</p>
+							<div className="space-y-basalt-space-sm">
 								{regionItems.map((entry) => (
 									<ChartTooltipRow
 										key={entry.dataKey}

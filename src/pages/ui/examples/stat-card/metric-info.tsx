@@ -12,7 +12,7 @@ import { ArrowUpRight, HelpCircle, TrendingUp, Users } from "lucide-react";
 export default function StatCardMetricInfo() {
 	return (
 		<TooltipProvider>
-			<div className="grid w-full max-w-2xl grid-cols-1 gap-4 sm:grid-cols-2">
+			<div className="grid w-full grid-cols-1 gap-basalt-layout sm:grid-cols-2">
 				{/* 1. StatCard with action tooltip trigger and Lucide icon */}
 				<StatCard
 					title="Monthly Recurring Revenue"
@@ -24,17 +24,12 @@ export default function StatCardMetricInfo() {
 					action={
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Button
-									variant="ghost"
-									size="icon"
-									className="h-6 w-6 text-basalt-muted-foreground hover:text-basalt-foreground"
-									aria-label="Revenue calculation methodology"
-								>
+								<Button variant="ghost" size="icon" aria-label="Revenue calculation methodology">
 									<HelpCircle className="h-4 w-4" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>
-								<p className="max-w-xs text-xs">
+								<p className="max-w-xs text-basalt-sm">
 									Normalized monthly recurring subscription revenue across active enterprise and
 									team tiers.
 								</p>
@@ -49,9 +44,9 @@ export default function StatCardMetricInfo() {
 					value="1,420"
 					subtitle="Total accounts with active licenses"
 					icon={Users}
-					iconColor="text-teal-500"
+					iconColor="text-basalt-tag-teal-foreground"
 					trendContent={
-						<Badge variant="teal" className="gap-1 py-0 px-1.5 text-[11px]">
+						<Badge variant="teal">
 							<ArrowUpRight className="h-3 w-3" />
 							+8.2% this quarter
 						</Badge>
@@ -59,17 +54,12 @@ export default function StatCardMetricInfo() {
 					action={
 						<Tooltip>
 							<TooltipTrigger asChild>
-								<Button
-									variant="ghost"
-									size="icon"
-									className="h-6 w-6 text-basalt-muted-foreground hover:text-basalt-foreground"
-									aria-label="Subscription count details"
-								>
+								<Button variant="ghost" size="icon" aria-label="Subscription count details">
 									<HelpCircle className="h-4 w-4" />
 								</Button>
 							</TooltipTrigger>
 							<TooltipContent>
-								<p className="max-w-xs text-xs">
+								<p className="max-w-xs text-basalt-sm">
 									Accounts with at least one active paid seat renewed in the last 30 days.
 								</p>
 							</TooltipContent>

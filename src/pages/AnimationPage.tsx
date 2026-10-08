@@ -20,7 +20,6 @@ import {
 } from "@nocoo/basalt/components/dialog";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Loader } from "@nocoo/basalt/components/loader";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import {
 	Popover,
 	PopoverContent,
@@ -41,6 +40,7 @@ import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@nocoo/basalt/components/tabs";
 import { toast } from "@nocoo/basalt/components/toast";
 import { useTranslation } from "react-i18next";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { useAnimationShowcaseViewModel } from "@/viewmodels/useAnimationShowcaseViewModel";
 
 export default function AnimationPage() {
@@ -48,43 +48,43 @@ export default function AnimationPage() {
 	const { paused, togglePaused } = useAnimationShowcaseViewModel();
 
 	return (
-		<div className="space-y-8">
-			<PageHeader
-				title={t("pages.animation.title")}
-				description={t("pages.animation.description")}
-				actions={
-					<Button size="sm" variant="outline" onClick={togglePaused}>
-						{paused ? t("pages.animation.play") : t("pages.animation.pause")}
-					</Button>
-				}
-			/>
-
+		<ShowcasePage
+			title={t("pages.animation.title")}
+			description={t("pages.animation.description")}
+			actions={
+				<Button size="sm" variant="outline" onClick={togglePaused}>
+					{paused ? t("pages.animation.play") : t("pages.animation.pause")}
+				</Button>
+			}
+		>
 			<div
 				data-motion={paused ? "paused" : "running"}
-				className={paused ? "space-y-8 [&_*]:![animation:none]" : "space-y-8"}
+				className={
+					paused ? "space-y-basalt-space-lg [&_*]:![animation:none]" : "space-y-basalt-space-lg"
+				}
 			>
 				<SectionRule
 					title={t("pages.animation.continuous")}
 					hint={t("pages.animation.continuousHint")}
 				>
-					<div className="grid gap-4 md:grid-cols-3">
-						<LayerCard className="flex flex-col items-center gap-3">
+					<div className="grid gap-basalt-layout md:grid-cols-3">
+						<LayerCard className="flex flex-col items-center gap-basalt-space-lg">
 							<Loader size={32} />
-							<p className="text-xs text-basalt-muted-foreground">
+							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.animation.loaderLabel")}
 							</p>
 						</LayerCard>
-						<LayerCard className="space-y-3">
+						<LayerCard className="space-y-basalt-space-lg">
 							<SkeletonLine minWidth={88} maxWidth={88} />
 							<SkeletonLine minWidth={64} maxWidth={64} />
 							<SkeletonLine minWidth={72} maxWidth={72} />
-							<p className="text-xs text-basalt-muted-foreground">
+							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.animation.shimmerLabel")}
 							</p>
 						</LayerCard>
-						<LayerCard className="flex flex-col items-center justify-center gap-3">
+						<LayerCard className="flex flex-col items-center justify-center gap-basalt-space-lg">
 							<Button loading>{t("pages.animation.buttonBusy")}</Button>
-							<p className="text-xs text-basalt-muted-foreground">
+							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.animation.buttonHint")}
 							</p>
 						</LayerCard>
@@ -92,7 +92,7 @@ export default function AnimationPage() {
 				</SectionRule>
 
 				<SectionRule title={t("pages.animation.overlays")} hint={t("pages.animation.overlaysHint")}>
-					<div className="flex flex-wrap gap-3">
+					<div className="flex flex-wrap gap-basalt-space-lg">
 						<Dialog>
 							<DialogTrigger asChild>
 								<Button variant="outline" size="sm">
@@ -102,7 +102,7 @@ export default function AnimationPage() {
 							<DialogContent>
 								<DialogTitle>{t("pages.animation.dialogTitle")}</DialogTitle>
 								<DialogDescription>{t("pages.animation.dialogBody")}</DialogDescription>
-								<div className="mt-6 flex justify-end">
+								<div className="mt-basalt-space-lg flex justify-end">
 									<DialogClose asChild>
 										<Button size="sm">{t("common.close")}</Button>
 									</DialogClose>
@@ -118,7 +118,7 @@ export default function AnimationPage() {
 							<SheetContent>
 								<SheetTitle>{t("pages.animation.sheetTitle")}</SheetTitle>
 								<SheetDescription>{t("pages.animation.sheetBody")}</SheetDescription>
-								<div className="mt-6 flex justify-end">
+								<div className="mt-basalt-space-lg flex justify-end">
 									<SheetClose asChild>
 										<Button size="sm" variant="outline">
 											{t("common.close")}
@@ -149,7 +149,7 @@ export default function AnimationPage() {
 				</SectionRule>
 
 				<SectionRule title={t("pages.animation.collapse")} hint={t("pages.animation.collapseHint")}>
-					<div className="grid gap-4 lg:grid-cols-2">
+					<div className="grid gap-basalt-layout lg:grid-cols-2">
 						<LayerCard>
 							<Accordion type="single" collapsible defaultValue="one">
 								<AccordionItem value="one">
@@ -162,11 +162,11 @@ export default function AnimationPage() {
 								</AccordionItem>
 							</Accordion>
 						</LayerCard>
-						<LayerCard className="space-y-4">
+						<LayerCard className="space-y-basalt-space-lg">
 							<Collapsible defaultOpen>
 								<CollapsibleTrigger>{t("pages.animation.collapsible")}</CollapsibleTrigger>
 								<CollapsibleContent>
-									<p className="text-sm text-basalt-muted-foreground">
+									<p className="text-basalt-base text-basalt-muted-foreground">
 										{t("pages.animation.collapsibleBody")}
 									</p>
 								</CollapsibleContent>
@@ -177,12 +177,12 @@ export default function AnimationPage() {
 									<TabsTrigger value="activity">{t("pages.animation.tabActivity")}</TabsTrigger>
 								</TabsList>
 								<TabsContent value="overview">
-									<p className="pt-3 text-sm text-basalt-muted-foreground">
+									<p className="pt-basalt-space-lg text-basalt-base text-basalt-muted-foreground">
 										{t("pages.animation.tabOverviewBody")}
 									</p>
 								</TabsContent>
 								<TabsContent value="activity">
-									<p className="pt-3 text-sm text-basalt-muted-foreground">
+									<p className="pt-basalt-space-lg text-basalt-base text-basalt-muted-foreground">
 										{t("pages.animation.tabActivityBody")}
 									</p>
 								</TabsContent>
@@ -194,9 +194,11 @@ export default function AnimationPage() {
 
 			<SectionRule title={t("pages.animation.reduced")} hint={t("pages.animation.reducedHint")}>
 				<LayerCard>
-					<p className="text-sm text-basalt-muted-foreground">{t("pages.animation.reducedCopy")}</p>
+					<p className="text-basalt-base text-basalt-muted-foreground">
+						{t("pages.animation.reducedCopy")}
+					</p>
 				</LayerCard>
 			</SectionRule>
-		</div>
+		</ShowcasePage>
 	);
 }

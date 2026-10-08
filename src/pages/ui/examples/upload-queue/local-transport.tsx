@@ -42,7 +42,7 @@ export default function LocalUploadQueue() {
 		]);
 	}
 	return (
-		<div className="w-full space-y-4">
+		<div className="w-full space-y-basalt-space-lg">
 			<FileDropzone
 				label="Upload project files"
 				description="Local demonstration · files are never sent"
@@ -50,7 +50,7 @@ export default function LocalUploadQueue() {
 				fileCount={files.length}
 				onFilesAccepted={add}
 			/>
-			<div className="flex flex-wrap items-center gap-3">
+			<div className="flex flex-wrap items-center gap-basalt-space-lg">
 				<Button
 					variant="outline"
 					disabled={files.length >= 5}
@@ -70,9 +70,9 @@ export default function LocalUploadQueue() {
 				>
 					Start uploads
 				</Button>
-				<span className="flex items-center gap-2">
+				<span className="flex items-center gap-basalt-space-lg">
 					<Checkbox id={id} checked={fail} onCheckedChange={(value) => setFail(value === true)} />
-					<label htmlFor={id} className="text-xs">
+					<label htmlFor={id} className="text-basalt-sm">
 						Simulate failure
 					</label>
 				</span>
@@ -94,7 +94,7 @@ export default function LocalUploadQueue() {
 				}
 				onRemove={(id) => setFiles(files.filter((file) => file.id !== id))}
 			/>
-			<p role="status" className="text-xs text-basalt-muted-foreground">
+			<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
 				{files.filter((file) => file.status === "success").length} completed · {files.length} total
 			</p>
 		</div>

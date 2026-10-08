@@ -74,7 +74,9 @@ function extraDocs(
 }
 
 function Preview({ children, className }: { children: ReactNode; className?: string }) {
-	return <div className={className ?? "flex flex-wrap items-center gap-3"}>{children}</div>;
+	return (
+		<div className={className ?? "flex flex-wrap items-center gap-basalt-space-lg"}>{children}</div>
+	);
 }
 
 function scenarioModule(code: string, imports: string[]): string {
@@ -115,7 +117,7 @@ export default catalogContentFamily({
 				id: catalogScenarioId("badge", "other-color-variants"),
 				title: "Other color variants",
 				code: scenarioModule(
-					`<div className="flex flex-wrap items-center gap-3">
+					`<div className="flex flex-wrap items-center gap-basalt-space-lg">
 	<Badge variant="secondary">Secondary</Badge>
 	<Badge variant="info">Info</Badge>
 	<Badge variant="success">Success</Badge>
@@ -142,7 +144,7 @@ export default catalogContentFamily({
 				id: catalogScenarioId("badge", "color-tokens"),
 				title: "Color tokens",
 				code: scenarioModule(
-					`<div className="flex flex-wrap items-center gap-3">
+					`<div className="flex flex-wrap items-center gap-basalt-space-lg">
 	<Badge variant="red">Red</Badge>
 	<Badge variant="orange">Orange</Badge>
 	<Badge variant="teal">Teal</Badge>
@@ -165,7 +167,7 @@ export default catalogContentFamily({
 				id: catalogScenarioId("badge", "dot-badges"),
 				title: "Dot badges",
 				code: scenarioModule(
-					`<div className="flex flex-wrap items-center gap-3">
+					`<div className="flex flex-wrap items-center gap-basalt-space-lg">
 	<Badge dot>Live</Badge>
 	<Badge dot variant="success">
 		Healthy
@@ -204,7 +206,7 @@ export default catalogContentFamily({
 				id: catalogScenarioId("badge", "with-an-icon"),
 				title: "With an icon",
 				code: scenarioModule(
-					`<div className="flex flex-wrap items-center gap-3">
+					`<div className="flex flex-wrap items-center gap-basalt-space-lg">
 	<Badge>
 		<Check className="size-3" /> Verified
 	</Badge>
@@ -294,7 +296,7 @@ export default function Example() {
 				id: catalogScenarioId("banner", "variants"),
 				title: "Variants",
 				code: scenarioModule(
-					`<div className="w-full space-y-3">
+					`<div className="w-full space-y-basalt-space-lg">
 	<Banner
 		icon={<Info />}
 		title="Update available"
@@ -325,7 +327,7 @@ export default function Example() {
 					],
 				),
 				render: () => (
-					<div className="w-full space-y-3">
+					<div className="w-full space-y-basalt-space-lg">
 						<Banner
 							icon={<Info />}
 							title="Update available"
@@ -380,7 +382,7 @@ export default function Example() {
 				id: catalogScenarioId("banner", "with-action"),
 				title: "With action",
 				code: scenarioModule(
-					`<div className="w-full space-y-3">
+					`<div className="w-full space-y-basalt-space-lg">
 	<Banner
 		icon={<Info />}
 		title="Update available"
@@ -411,7 +413,7 @@ export default function Example() {
 					],
 				),
 				render: () => (
-					<div className="w-full space-y-3">
+					<div className="w-full space-y-basalt-space-lg">
 						<Banner
 							icon={<Info />}
 							title="Update available"
@@ -478,7 +480,7 @@ export default function Example() {
 				id: catalogScenarioId("banner", "compact-size"),
 				title: "Compact size",
 				code: scenarioModule(
-					`<div className="w-full space-y-3">
+					`<div className="w-full space-y-basalt-space-lg">
 	<Banner
 		size="sm"
 		description="A project named Atlas already exists."
@@ -503,7 +505,7 @@ export default function Example() {
 					],
 				),
 				render: () => (
-					<div className="w-full space-y-3">
+					<div className="w-full space-y-basalt-space-lg">
 						<Banner
 							size="sm"
 							description="A project named Atlas already exists."
@@ -627,7 +629,7 @@ export default function Example() {
 				id: catalogScenarioId("loader", "custom-size"),
 				title: "Custom Size",
 				code: scenarioModule(
-					`<div className="flex flex-wrap items-center gap-3">
+					`<div className="flex flex-wrap items-center gap-basalt-space-lg">
 	<Loader size={16} />
 	<Loader size={24} />
 	<Loader size={32} />
@@ -666,7 +668,7 @@ export default function Example() {
 				id: catalogScenarioId("skeleton-line", "default"),
 				title: "Default",
 				code: scenarioModule(
-					`<div className="flex w-64 flex-col gap-3">
+					`<div className="flex w-64 flex-col gap-basalt-space-lg">
 	<SkeletonLine minWidth={40} maxWidth={55} />
 	<SkeletonLine minWidth={75} maxWidth={90} />
 	<SkeletonLine minWidth={90} maxWidth={100} />
@@ -674,7 +676,7 @@ export default function Example() {
 					['import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";'],
 				),
 				render: () => (
-					<div className="flex w-64 flex-col gap-3">
+					<div className="flex w-64 flex-col gap-basalt-space-lg">
 						<SkeletonLine minWidth={40} maxWidth={55} />
 						<SkeletonLine minWidth={75} maxWidth={90} />
 						<SkeletonLine minWidth={90} maxWidth={100} />
@@ -685,7 +687,7 @@ export default function Example() {
 				id: catalogScenarioId("skeleton-line", "width"),
 				title: "Width",
 				code: scenarioModule(
-					`<div className="flex w-64 flex-col gap-3">
+					`<div className="flex w-64 flex-col gap-basalt-space-lg">
 	<SkeletonLine minWidth={80} maxWidth={100} />
 	<SkeletonLine minWidth={60} maxWidth={80} />
 	<SkeletonLine minWidth={40} maxWidth={60} />
@@ -693,7 +695,7 @@ export default function Example() {
 					['import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";'],
 				),
 				render: () => (
-					<div className="flex w-64 flex-col gap-3">
+					<div className="flex w-64 flex-col gap-basalt-space-lg">
 						<SkeletonLine minWidth={80} maxWidth={100} />
 						<SkeletonLine minWidth={60} maxWidth={80} />
 						<SkeletonLine minWidth={40} maxWidth={60} />
@@ -704,7 +706,7 @@ export default function Example() {
 				id: catalogScenarioId("skeleton-line", "height"),
 				title: "Height",
 				code: scenarioModule(
-					`<div className="flex w-64 flex-col gap-3">
+					`<div className="flex w-64 flex-col gap-basalt-space-lg">
 	<SkeletonLine className="h-2" minWidth={90} maxWidth={100} />
 	<SkeletonLine className="h-4" minWidth={90} maxWidth={100} />
 	<SkeletonLine className="h-6" minWidth={90} maxWidth={100} />
@@ -713,7 +715,7 @@ export default function Example() {
 					['import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";'],
 				),
 				render: () => (
-					<div className="flex w-64 flex-col gap-3">
+					<div className="flex w-64 flex-col gap-basalt-space-lg">
 						<SkeletonLine className="h-2" minWidth={90} maxWidth={100} />
 						<SkeletonLine className="h-4" minWidth={90} maxWidth={100} />
 						<SkeletonLine className="h-6" minWidth={90} maxWidth={100} />
@@ -738,11 +740,11 @@ export default function Example() {
 				id: catalogScenarioId("battery-meter", "charge-states"),
 				title: "Charge Levels & Offline State",
 				code: scenarioModule(
-					'<div className="flex flex-wrap gap-6"><BatteryMeter value={94} label="Gateway battery" /><BatteryMeter value={42} label="Sensor battery" status="charging" /><BatteryMeter value={14} label="Beacon battery" /><BatteryMeter value={0} label="Offline device battery" status="offline" /></div>',
+					'<div className="flex flex-wrap gap-basalt-space-lg"><BatteryMeter value={94} label="Gateway battery" /><BatteryMeter value={42} label="Sensor battery" status="charging" /><BatteryMeter value={14} label="Beacon battery" /><BatteryMeter value={0} label="Offline device battery" status="offline" /></div>',
 					['import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";'],
 				),
 				render: () => (
-					<div className="flex flex-wrap gap-6">
+					<div className="flex flex-wrap gap-basalt-space-lg">
 						<BatteryMeter value={94} label="Gateway battery" />
 						<BatteryMeter value={42} label="Sensor battery" status="charging" />
 						<BatteryMeter value={14} label="Beacon battery" />
@@ -1044,11 +1046,11 @@ export default function Example() {
 				id: catalogScenarioId("avatar", "colored-initials"),
 				title: "Colored two-letter initials",
 				code: scenarioModule(
-					'<div className="flex items-center gap-basalt-3"><AvatarInitials name="Alpine Churn" colorKey="alpine" size="sm" /><AvatarInitials name="Amber Scoop" colorKey="amber" size="sm" /><AvatarInitials name="Aurora Scoops" colorKey="aurora" /><AvatarInitials name="Zheng Li" initials="ZL" /></div>',
+					'<div className="flex items-center gap-basalt-space-lg"><AvatarInitials name="Alpine Churn" colorKey="alpine" size="sm" /><AvatarInitials name="Amber Scoop" colorKey="amber" size="sm" /><AvatarInitials name="Aurora Scoops" colorKey="aurora" /><AvatarInitials name="Zheng Li" initials="ZL" /></div>',
 					['import { AvatarInitials } from "@nocoo/basalt/components/avatar";'],
 				),
 				render: () => (
-					<div className="flex items-center gap-basalt-3">
+					<div className="flex items-center gap-basalt-space-lg">
 						<AvatarInitials name="Alpine Churn" colorKey="alpine" size="sm" />
 						<AvatarInitials name="Amber Scoop" colorKey="amber" size="sm" />
 						<AvatarInitials name="Aurora Scoops" colorKey="aurora" />

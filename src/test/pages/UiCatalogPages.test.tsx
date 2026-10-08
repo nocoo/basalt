@@ -81,6 +81,16 @@ function renderCatalog(path: string) {
 }
 
 describe("ui catalog", () => {
+	it("demonstrates live inbox selection rather than a no-op callback", () => {
+		const Example = UI_EXAMPLES["chat-inbox"][0].render;
+		render(<Example />);
+		const first = screen.getByRole("button", { name: /Analytics/ });
+		const second = screen.getByRole("button", { name: /Quality/ });
+		expect(first).toHaveAttribute("aria-current", "true");
+		fireEvent.click(second);
+		expect(second).toHaveAttribute("aria-current", "true");
+		expect(first).not.toHaveAttribute("aria-current");
+	});
 	it("covers every in-scope catalog slug", () => {
 		expect(inScopeCatalogSlugs().length).toBeGreaterThan(40);
 	});
@@ -94,9 +104,10 @@ describe("ui catalog", () => {
 	it("renders the categorized index with orthogonal release and page states", () => {
 		renderCatalog("/ui");
 		expect(document.querySelector("[data-status='index']")).toBeTruthy();
-		expect(screen.getByRole("heading", { name: "Component library" })).toBeInTheDocument();
 		expect(document.querySelector("[data-ready-summary]")).toHaveTextContent("120 / 121 ready");
-		const banner = screen.getByRole("banner", { name: "Component library" });
+		const banner = screen.getByRole("banner", { name: "Component library", hidden: true });
+		expect(banner).toBeVisible();
+		expect(within(banner).getByRole("heading", { name: "Component library" })).toBeInTheDocument();
 		const filtersToggle = within(banner).getByRole("button", { name: "Filters" });
 		expect(filtersToggle).toHaveAttribute("aria-expanded", "false");
 		expect(screen.queryByRole("searchbox", { name: "Search" })).not.toBeInTheDocument();
@@ -104,10 +115,11 @@ describe("ui catalog", () => {
 		expect(filtersToggle).toHaveAttribute("aria-expanded", "true");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toBeInTheDocument();
 
-		for (const [index, group] of CATALOG_INDEX_GROUPS.entries()) {
-			const section = screen.getByRole("region", { name: group.label });
+		for (const group of CATALOG_INDEX_GROUPS) {
+			const section = screen.getByRole("region", { name: group.label, hidden: true });
+			expect(section).toBeVisible();
 			expect(within(section).getByText(`${group.items.length} items`)).toBeInTheDocument();
-			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength([93, 25, 3][index]);
+			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength(group.items.length);
 		}
 		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(121);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
@@ -149,14 +161,16 @@ describe("ui catalog", () => {
 				"planned",
 			);
 		}
-		expect(screen.getAllByRole("button", { name: "Create project" })).toHaveLength(3);
+		expect(
+			within(buttonCard as HTMLElement).getAllByRole("button", { name: "Create project" }),
+		).toHaveLength(3);
 	}, 15_000);
 
 	it("filters the catalog from URL-backed search and toggle controls", () => {
 		renderCatalog("/ui?q=input&release=catalog&status=ready");
 		const searchInput = screen.getByRole("searchbox", { name: "Search" });
 		expect(searchInput).toHaveValue("input");
-		expect(screen.getByRole("radiogroup", { name: "Category" })).toBeInTheDocument();
+		expect(screen.getByRole("combobox", { name: "Category" })).toBeInTheDocument();
 		expect(screen.getByRole("radiogroup", { name: "Release" })).toBeInTheDocument();
 		expect(screen.getByRole("radiogroup", { name: "Page status" })).toBeInTheDocument();
 		expect(screen.getByRole("radio", { name: "Catalog" })).toHaveAttribute("aria-checked", "true");
@@ -196,17 +210,33 @@ describe("ui catalog", () => {
 		expect(mapsCard?.querySelector('a[href="/ui/maps"]')).toBeNull();
 		expect(screen.queryByRole("region", { name: "Components" })).not.toBeInTheDocument();
 
-		const categoryGroup = screen.getByRole("radiogroup", { name: "Category" });
-		fireEvent.click(within(categoryGroup).getByRole("radio", { name: "All" }));
-		expect(within(categoryGroup).getByRole("radio", { name: "All" })).toHaveAttribute(
-			"aria-checked",
-			"true",
-		);
+		const categoryGroup = screen.getByRole("combobox", { name: "Category" });
+		fireEvent.keyDown(categoryGroup, { key: "ArrowDown" });
+		fireEvent.click(screen.getByRole("option", { name: "All" }));
+		expect(categoryGroup).toHaveTextContent("All");
 		expect(document.querySelector("[data-result-summary]")).toHaveTextContent(/^1 result$/);
 		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
 			"data-router-location",
 			"/ui?status=planned",
 		);
+	});
+
+	it("selects a design category and links its overview without changing component URLs", () => {
+		renderCatalog("/ui?category=action");
+		const category = screen.getByRole("combobox", { name: "Category" });
+		expect(category).toHaveTextContent("Actions");
+		fireEvent.keyDown(category, { key: "ArrowDown" });
+		fireEvent.click(screen.getByRole("option", { name: "Inline" }));
+		expect(document.querySelector("[data-router-location]")).toHaveAttribute(
+			"data-router-location",
+			"/ui?category=inline",
+		);
+		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(2);
+		expect(screen.getByRole("link", { name: "Inline overview" })).toHaveAttribute(
+			"href",
+			"/ui/overview/inline",
+		);
+		expect(screen.getByRole("link", { name: "Badge" })).toHaveAttribute("href", "/ui/badge");
 	});
 
 	it("canonicalizes invalid and repeated owned URL values without removing foreign values", async () => {
@@ -298,7 +328,7 @@ describe("ui catalog", () => {
 		expect(api.getByRole("heading", { name: "API Reference" })).toBeInTheDocument();
 		expect(api.getAllByRole("columnheader", { name: "Default" }).length).toBeGreaterThan(0);
 		expect(header.getByRole("button", { name: "Copy page" })).toBeInTheDocument();
-		expect(usage.getAllByRole("button", { name: "Copy" }).length).toBeGreaterThan(0);
+		expect(usage.getAllByRole("button", { name: "Copy code" }).length).toBeGreaterThan(0);
 		expect(toc.getAllByRole("navigation", { name: "On this page" }).length).toBeGreaterThan(0);
 		expect(document.querySelector("aside .sticky")).toBeTruthy();
 		expect(toc.getAllByRole("combobox", { name: "Jump to section" }).length).toBeGreaterThan(0);
@@ -317,8 +347,8 @@ describe("ui catalog", () => {
 		}
 	});
 
-	it("orders library nav like kumo", () => {
-		const components = libraryNavEntries("component");
+	it("sorts components within their design category and preserves chart and block leads", () => {
+		const components = libraryNavEntries("layout");
 		expect(catalogNavName(components[0])).toBe("Accordion");
 		expect(components.map(catalogNavName)).toEqual(
 			[...components.map(catalogNavName)].sort((a, b) => a.localeCompare(b, "en")),
@@ -450,13 +480,15 @@ describe("ui catalog", () => {
 		expect(screen.getByText("Button")).toBeInTheDocument();
 	});
 
-	it("renders example previews on a themed bordered surface", () => {
+	it("lets LayerCard own example preview surfaces and padding", () => {
 		const writeText = vi.fn().mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		renderCatalog("/ui/button");
-		const preview = document.querySelector(".min-h-\\[140px\\]");
-		expect(preview).toHaveClass("bg-bright");
-		expect(preview?.parentElement).toHaveClass("border", "border-border");
+		const preview = document.querySelector("[data-example-preview]");
+		expect(preview).toHaveClass("p-basalt-card");
+		expect(preview).not.toHaveClass("bg-bright");
+		expect(preview?.parentElement).toHaveAttribute("data-basalt-surface");
+		expect(preview?.parentElement).not.toHaveClass("p-basalt-card");
 	});
 
 	it("sources the button hero from the first catalog scenario", () => {
@@ -471,7 +503,7 @@ describe("ui catalog", () => {
 		const block = document.querySelector("[data-hero-scenario]");
 		expect(block).toHaveAttribute("data-hero-scenario", hero.id);
 		expect(block?.querySelector("code")?.textContent).toBe(hero.code);
-		const preview = block?.querySelector(".min-h-\\[140px\\]");
+		const preview = block?.querySelector("[data-example-preview]");
 		expect(preview).toBeTruthy();
 		if (!preview) {
 			return;
@@ -562,7 +594,7 @@ describe("ui catalog", () => {
 		expect(beta?.parentElement).toHaveTextContent("No component-specific props.");
 		const empty = beta.parentElement?.querySelector("p");
 		expect(empty).toHaveTextContent("No component-specific props.");
-		expect(empty).toHaveClass("text-sm");
+		expect(empty).toHaveClass("text-basalt-base");
 		expect(empty).toHaveClass("text-muted-foreground");
 	});
 
@@ -1756,7 +1788,7 @@ describe("ui catalog", () => {
 		expect(markdown).toContain(UI_EXAMPLES.input?.[3]?.code ?? "");
 		expect(markdown).toContain(UI_EXAMPLES.input?.[5]?.code ?? "");
 		expect(markdown).toContain(UI_EXAMPLES.input?.[6]?.code ?? "");
-		expect(markdown).toContain('<div className="flex w-full flex-col gap-3">');
+		expect(markdown).toContain('<div className="flex w-full flex-col gap-basalt-space-lg">');
 		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
 		expect(markdown).not.toContain("github.com/nocoo/kumo");
 	});
@@ -2631,7 +2663,7 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/button");
 		const section = document.getElementById("usage");
 		expect(section).toBeTruthy();
-		expect(section?.querySelector(".min-h-\\[140px\\]")).toBeNull();
+		expect(section?.querySelector("[data-example-preview]")).toBeNull();
 		expect(section?.querySelector("code")?.textContent).toBe(usage);
 	});
 
@@ -2875,7 +2907,7 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("heading", { name: "Muted tone" })).toBeInTheDocument();
 		const hero = document.querySelector('[data-hero-scenario="text-sizes"]');
 		expect(hero).toBeTruthy();
-		const stack = hero?.querySelector(".flex.w-full.flex-col.gap-3");
+		const stack = hero?.querySelector(".flex.w-full.flex-col.gap-basalt-space-lg");
 		expect(stack).toBeTruthy();
 		expect(
 			[...((stack?.querySelectorAll("p") ?? []) as NodeListOf<HTMLElement>)].map(
@@ -2908,7 +2940,7 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("heading", { name: "With Tooltip" })).toBeInTheDocument();
 		const hero = document.querySelector('[data-hero-scenario="label-default-label"]');
 		expect(hero).toBeTruthy();
-		expect(hero?.querySelector(".flex.w-full.flex-col.gap-3")).toBeTruthy();
+		expect(hero?.querySelector(".flex.w-full.flex-col.gap-basalt-space-lg")).toBeTruthy();
 		expect(hero).toHaveTextContent("Default Label");
 		expect(screen.getAllByText("(optional)").length).toBeGreaterThan(0);
 		const triggers = screen.getAllByRole("button", { name: "More information" });
@@ -2936,7 +2968,7 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("heading", { name: "Horizontal" })).toBeInTheDocument();
 		const hero = document.querySelector('[data-hero-scenario="separator-horizontal"]');
 		expect(hero).toBeTruthy();
-		expect(hero?.querySelector(".w-full.max-w-sm.space-y-3")).toBeTruthy();
+		expect(hero?.querySelector(".w-full.max-w-sm.space-y-basalt-space-lg")).toBeTruthy();
 		expect(hero).toHaveTextContent("Above");
 		expect(hero).toHaveTextContent("Below");
 		const heroRule = hero?.querySelector('[data-orientation="horizontal"]');
@@ -2944,14 +2976,14 @@ describe("ui catalog", () => {
 		expect(heroRule).toHaveClass("h-px", "w-full");
 		const example = document.querySelector('[data-scenario="separator-horizontal"]');
 		expect(example).toBeTruthy();
-		expect(example?.querySelector(".w-full.max-w-sm.space-y-3")).toBeTruthy();
+		expect(example?.querySelector(".w-full.max-w-sm.space-y-basalt-space-lg")).toBeTruthy();
 		expect(example).toHaveTextContent("Above");
 		expect(example).toHaveTextContent("Below");
 		expect(example?.querySelector('[data-orientation="horizontal"]')).toBeTruthy();
 		for (const scenario of UI_EXAMPLES.separator ?? []) {
 			expect(scenario.code).toContain("export default");
 			expect(scenario.code).toContain("@nocoo/basalt/components/separator");
-			expect(scenario.code).toContain("w-full max-w-sm space-y-3");
+			expect(scenario.code).toContain("w-full max-w-sm space-y-basalt-space-lg");
 			expect(scenario.code).toContain("<Text>Above</Text>");
 			expect(scenario.code).toContain("<Separator />");
 			expect(scenario.code).toContain("<Text>Below</Text>");
@@ -3029,7 +3061,7 @@ describe("ui catalog", () => {
 		if (!multiple) {
 			throw new Error("missing multiple tooltips scenario");
 		}
-		expect(multiple.querySelector(".flex.flex-wrap.items-center.gap-3")).toBeTruthy();
+		expect(multiple.querySelector(".flex.flex-wrap.items-center.gap-basalt-space-lg")).toBeTruthy();
 		const one = within(multiple as HTMLElement).getByRole("button", { name: "One" });
 		const two = within(multiple as HTMLElement).getByRole("button", { name: "Two" });
 		expect(one.tagName).toBe("BUTTON");
@@ -3159,21 +3191,23 @@ describe("ui catalog", () => {
 		if (!hero) {
 			throw new Error("missing layer-card hero");
 		}
-		const heroCard = hero.querySelector(".w-\\[250px\\]");
+		const heroCard = hero.querySelector("[data-basalt-surface]");
 		expect(heroCard).toBeTruthy();
 		expect(hero).toHaveTextContent("Next Steps");
 		expect(hero).toHaveTextContent("Hello");
 		const surface = document.querySelector('[data-scenario="layer-card-surface-style-card"]');
 		expect(surface).toBeTruthy();
-		expect(surface?.querySelector(".w-\\[250px\\].p-4")).toBeTruthy();
+		expect(surface?.querySelector("[data-basalt-surface].p-basalt-card")).toBeTruthy();
 		expect(surface).toHaveTextContent("Quick start guide");
 		const multiple = document.querySelector('[data-scenario="layer-card-multiple-cards"]');
 		expect(multiple).toBeTruthy();
 		if (!multiple) {
 			throw new Error("missing multiple cards scenario");
 		}
-		expect(multiple.querySelector(".flex.w-full.gap-4")).toBeTruthy();
-		expect(multiple.querySelectorAll(".w-\\[200px\\]")).toHaveLength(2);
+		expect(multiple.querySelector(".flex.w-full.gap-basalt-space-lg")).toBeTruthy();
+		expect(
+			multiple.querySelectorAll("[data-example-preview] > div > [data-basalt-surface]"),
+		).toHaveLength(2);
 		expect(multiple).toHaveTextContent("Components");
 		expect(multiple).toHaveTextContent("Browse all components");
 		expect(multiple).toHaveTextContent("Examples");
@@ -3197,9 +3231,11 @@ describe("ui catalog", () => {
 			expect(node).toBeTruthy();
 			expect(node).toHaveTextContent(scenario.code.split("\n")[0] ?? "");
 		}
-		expect(UI_EXAMPLES["layer-card"]?.[0]?.code).toContain('className="w-[250px]"');
-		expect(UI_EXAMPLES["layer-card"]?.[1]?.code).toContain('className="w-[250px] p-4"');
-		expect(UI_EXAMPLES["layer-card"]?.[2]?.code).toContain('className="flex w-full gap-4"');
+		expect(UI_EXAMPLES["layer-card"]?.[0]?.code).toContain('className="w-[15.625rem]"');
+		expect(UI_EXAMPLES["layer-card"]?.[1]?.code).toContain('className="w-[15.625rem]"');
+		expect(UI_EXAMPLES["layer-card"]?.[2]?.code).toContain(
+			'className="flex w-full gap-basalt-space-lg"',
+		);
 		expect(UI_EXAMPLES["layer-card"]?.[3]?.code).toContain("<LayerCard.Header>");
 		expect(UI_EXAMPLES["layer-card"]?.[4]?.code).toContain(
 			'<LayerCard.Loading label="Loading account activity" />',
@@ -3396,7 +3432,7 @@ describe("ui catalog", () => {
 		});
 		expect(disabledInput).toBeDisabled();
 		expect(disabledInput).toHaveValue("Read only");
-		const typeRoot = types.querySelector("div.flex.w-full.flex-col.gap-3");
+		const typeRoot = types.querySelector("div.flex.w-full.flex-col.gap-basalt-space-lg");
 		expect(typeRoot).toBeTruthy();
 		const typeInputs = typeRoot?.querySelectorAll("input") ?? [];
 		expect(typeInputs).toHaveLength(3);
@@ -3442,7 +3478,7 @@ describe("ui catalog", () => {
 		for (const scenario of UI_EXAMPLES.input ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).toContain('<div className="flex w-full flex-col gap-3">');
+		expect(markdown).toContain('<div className="flex w-full flex-col gap-basalt-space-lg">');
 		expect(markdown).toContain("htmlFor={id}");
 		expect(markdown).toContain("htmlFor={id}");
 	});
@@ -3643,11 +3679,11 @@ describe("ui catalog", () => {
 		expect(strategy).toHaveTextContent(
 			"Native element wrapper: inherits and forwards all standard HTMLDivElement attributes (including children); does not expose ref.",
 		);
-		expect(strategy).toHaveClass("text-xs");
+		expect(strategy).toHaveClass("text-basalt-sm");
 		expect(strategy).toHaveClass("text-muted-foreground");
 		const empty = suffixHeading?.parentElement?.querySelectorAll("p")[1];
 		expect(empty).toHaveTextContent("No component-specific props.");
-		expect(empty).toHaveClass("text-sm");
+		expect(empty).toHaveClass("text-basalt-base");
 		expect(empty).toHaveClass("text-muted-foreground");
 		expect(markdown).toContain("### InputGroup");
 		expect(markdown).toContain("### InputGroup.Input");
@@ -3801,7 +3837,7 @@ describe("ui catalog", () => {
 		const disabledOn = within(disabled as HTMLElement).getByRole("checkbox", {
 			name: "Disabled on",
 		});
-		expect(disabled.querySelector(".flex.flex-wrap.items-center.gap-3")).toBeTruthy();
+		expect(disabled.querySelector(".flex.flex-wrap.items-center.gap-basalt-space-lg")).toBeTruthy();
 		expect(disabledOff).toBeDisabled();
 		expect(disabledOn).toBeDisabled();
 		expect(disabledOff).not.toBeChecked();
@@ -3841,7 +3877,7 @@ describe("ui catalog", () => {
 		for (const scenario of UI_EXAMPLES.checkbox ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(markdown).toContain('className="flex flex-wrap items-center gap-basalt-space-lg"');
 		expect(markdown).toContain("github.com/cloudflare/kumo/blob/1159868dfe32/");
 		expect(markdown).not.toContain("github.com/nocoo/kumo");
 		expect(CATALOG_DOCS["sensitive-input"]?.api).toEqual(CATALOG_API["sensitive-input"]);
@@ -3882,10 +3918,10 @@ describe("ui catalog", () => {
 		fireEvent.click(horizontalBeta);
 		expect(horizontalBeta).toBeChecked();
 		expect(horizontalAlpha).not.toBeChecked();
-		expect(horizontal.querySelector(".flex.gap-4")).toBeTruthy();
+		expect(horizontal.querySelector(".flex.gap-basalt-space-lg")).toBeTruthy();
 		const disabledA = within(disabled as HTMLElement).getByRole("radio", { name: "Disabled A" });
 		const disabledB = within(disabled as HTMLElement).getByRole("radio", { name: "Disabled B" });
-		expect(disabled.querySelector(".flex.gap-4")).toBeTruthy();
+		expect(disabled.querySelector(".flex.gap-basalt-space-lg")).toBeTruthy();
 		expect(disabledA).toBeDisabled();
 		expect(disabledB).toBeDisabled();
 		expect(disabledA).toBeChecked();
@@ -3909,8 +3945,8 @@ describe("ui catalog", () => {
 		for (const scenario of UI_EXAMPLES.radio ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).toContain('className="flex flex-col gap-2"');
-		expect(markdown).toContain('className="flex gap-4"');
+		expect(markdown).toContain('className="flex flex-col gap-basalt-space-lg"');
+		expect(markdown).toContain('className="flex gap-basalt-space-lg"');
 		expect(markdown).toContain(
 			"- value (string, required, default —): The value associated with the radio item.",
 		);
@@ -3953,7 +3989,7 @@ describe("ui catalog", () => {
 		fireEvent.click(onSwitch);
 		expect(onSwitch).not.toBeChecked();
 		expect(within(hero as HTMLElement).getByRole("switch", { name: "Off" })).toBeChecked();
-		expect(disabled.querySelector(".flex.flex-wrap.items-center.gap-3")).toBeTruthy();
+		expect(disabled.querySelector(".flex.flex-wrap.items-center.gap-basalt-space-lg")).toBeTruthy();
 		const disabledOff = within(disabled as HTMLElement).getByRole("switch", {
 			name: "Disabled off",
 		});
@@ -3968,7 +4004,7 @@ describe("ui catalog", () => {
 		fireEvent.click(disabledOn);
 		expect(disabledOff).not.toBeChecked();
 		expect(disabledOn).toBeChecked();
-		expect(sizes.querySelector(".flex.flex-wrap.items-center.gap-3")).toBeTruthy();
+		expect(sizes.querySelector(".flex.flex-wrap.items-center.gap-basalt-space-lg")).toBeTruthy();
 		const small = within(sizes as HTMLElement).getByRole("switch", { name: "Small" });
 		const defaultSize = within(sizes as HTMLElement).getByRole("switch", { name: "Default size" });
 		expect(small).toBeChecked();
@@ -3995,7 +4031,7 @@ describe("ui catalog", () => {
 		for (const scenario of UI_EXAMPLES.switch ?? []) {
 			expect(markdown).toContain(scenario.code);
 		}
-		expect(markdown).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(markdown).toContain('className="flex flex-wrap items-center gap-basalt-space-lg"');
 		expect(markdown).toContain(
 			"- checked (boolean, optional, default —): The controlled checked state of the switch.",
 		);
@@ -4130,6 +4166,10 @@ describe("ui catalog", () => {
 			const view = renderCatalog(`/ui/button/source?hash=${buttonHash}`);
 			expect(screen.getByText("Loading source...")).toBeInTheDocument();
 			await screen.findByText(/export const Button/);
+			expect(view.container.querySelector("[data-showcase-page]")).not.toBeNull();
+			expect(view.container.querySelector("main, .min-h-screen")).toBeNull();
+			expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+			expect(screen.getByRole("button", { name: /copy code/i })).toBeInTheDocument();
 			expect(screen.queryByText(/Source fingerprint mismatch/)).not.toBeInTheDocument();
 			view.unmount();
 		});

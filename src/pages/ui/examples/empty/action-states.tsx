@@ -51,24 +51,26 @@ export default function EmptyActionStates() {
 	};
 
 	return (
-		<div className="flex w-full flex-col gap-6">
+		<div className="flex w-full flex-col gap-basalt-space-lg">
 			{/* Section 1: First-time empty state with create action */}
-			<section className="flex flex-col gap-3 rounded-basalt-md border border-basalt-border p-4">
-				<div className="flex flex-wrap items-center justify-between gap-2">
-					<h3 className="text-sm font-semibold text-basalt-foreground">Project Workspace</h3>
+			<LayerCard>
+				<LayerCard.Header className="flex-wrap items-center">
+					<h3 className="text-basalt-base font-semibold text-basalt-foreground">
+						Project Workspace
+					</h3>
 					{projects.length > 0 ? (
 						<Button
 							type="button"
 							variant="ghost"
 							size="sm"
 							onClick={handleResetProjects}
-							className="text-xs"
+							className="text-basalt-sm"
 						>
 							Reset demo
 						</Button>
 					) : null}
-				</div>
-				<div aria-live="polite">
+				</LayerCard.Header>
+				<LayerCard.Body aria-live="polite">
 					{projects.length === 0 ? (
 						<Empty
 							icon={<FolderPlus />}
@@ -83,15 +85,15 @@ export default function EmptyActionStates() {
 							Get started with zero configuration.
 						</Empty>
 					) : (
-						<div className="flex flex-col gap-2">
-							<p className="text-xs font-medium text-basalt-foreground">
+						<div className="flex flex-col gap-basalt-space-lg">
+							<p className="text-basalt-sm font-medium text-basalt-foreground">
 								Active Projects ({projects.length}):
 							</p>
-							<ul className="flex flex-col gap-1">
+							<ul className="flex flex-col gap-basalt-space-sm">
 								{projects.map((p) => (
 									<li
 										key={p}
-										className="rounded-basalt-sm bg-basalt-muted px-2 py-1 text-xs text-basalt-foreground"
+										className="rounded-basalt-sm bg-basalt-muted px-basalt-space-lg py-basalt-space-sm text-basalt-sm text-basalt-foreground"
 									>
 										{p}
 									</li>
@@ -99,26 +101,28 @@ export default function EmptyActionStates() {
 							</ul>
 						</div>
 					)}
-				</div>
-			</section>
+				</LayerCard.Body>
+			</LayerCard>
 
 			{/* Section 2: Filter/Search empty state with clear action */}
-			<section className="flex flex-col gap-3 rounded-basalt-md border border-basalt-border p-4">
-				<div className="flex flex-wrap items-center justify-between gap-2">
-					<h3 className="text-sm font-semibold text-basalt-foreground">Service Catalog Search</h3>
+			<LayerCard>
+				<LayerCard.Header className="flex-wrap items-center">
+					<h3 className="text-basalt-base font-semibold text-basalt-foreground">
+						Service Catalog Search
+					</h3>
 					{!searchQuery ? (
 						<Button
 							type="button"
 							variant="ghost"
 							size="sm"
 							onClick={handleSimulateSearch}
-							className="text-xs"
+							className="text-basalt-sm"
 						>
 							Filter &quot;nonexistent&quot;
 						</Button>
 					) : null}
-				</div>
-				<div aria-live="polite">
+				</LayerCard.Header>
+				<LayerCard.Body aria-live="polite">
 					{searchQuery ? (
 						<Empty
 							icon={<Search />}
@@ -133,13 +137,13 @@ export default function EmptyActionStates() {
 							Try adjusting keywords or removing search constraints.
 						</Empty>
 					) : (
-						<div className="flex flex-col gap-2">
-							<p className="text-xs font-medium text-basalt-foreground">All Services (3):</p>
-							<ul className="flex flex-col gap-1">
+						<div className="flex flex-col gap-basalt-space-lg">
+							<p className="text-basalt-sm font-medium text-basalt-foreground">All Services (3):</p>
+							<ul className="flex flex-col gap-basalt-space-sm">
 								{["Authentication API", "Billing Webhook", "Search Indexer"].map((service) => (
 									<li
 										key={service}
-										className="rounded-basalt-sm bg-basalt-muted px-2 py-1 text-xs text-basalt-foreground"
+										className="rounded-basalt-sm bg-basalt-muted px-basalt-space-lg py-basalt-space-sm text-basalt-sm text-basalt-foreground"
 									>
 										{service}
 									</li>
@@ -147,20 +151,20 @@ export default function EmptyActionStates() {
 							</ul>
 						</div>
 					)}
-				</div>
-			</section>
+				</LayerCard.Body>
+			</LayerCard>
 
 			{/* Section 3: LayerCard.Empty error recovery state with retry action */}
-			<section className="flex flex-col gap-3">
-				<div className="flex flex-wrap items-center justify-between gap-2">
-					<h3 className="text-sm font-semibold text-basalt-foreground">Activity stream</h3>
+			<section className="flex flex-col gap-basalt-space-lg">
+				<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
+					<h3 className="text-basalt-base font-semibold text-basalt-foreground">Activity stream</h3>
 					{loadStatus === "success" ? (
 						<Button
 							type="button"
 							variant="ghost"
 							size="sm"
 							onClick={handleSimulateError}
-							className="text-xs"
+							className="text-basalt-sm"
 						>
 							Simulate error
 						</Button>
@@ -183,12 +187,12 @@ export default function EmptyActionStates() {
 					) : loadStatus === "pending" ? (
 						<LayerCard.Loading label="Retrying remote stream..." />
 					) : (
-						<LayerCard.Body className="space-y-2">
-							<div className="flex items-center justify-between text-xs font-medium text-basalt-foreground">
+						<LayerCard.Body className="space-y-basalt-space-lg">
+							<div className="flex items-center justify-between text-basalt-sm font-medium text-basalt-foreground">
 								<span>Connected to live stream</span>
 								<span className="text-basalt-muted-foreground">3 events</span>
 							</div>
-							<p className="text-xs text-basalt-muted-foreground">
+							<p className="text-basalt-sm text-basalt-muted-foreground">
 								All remote records synchronized successfully.
 							</p>
 						</LayerCard.Body>

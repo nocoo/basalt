@@ -14,6 +14,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@nocoo/basalt/com
 import { Eraser, MessageCircle, PanelLeft, Pencil, Plus, Trash2 } from "lucide-react";
 import { useId, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Conversation } from "@/pages/chat/Conversation";
 import { useChatViewModel } from "@/viewmodels/useChatViewModel";
@@ -29,7 +30,7 @@ export default function ChatPage() {
 	const failId = useId();
 	const threads = (
 		<div className="flex h-full min-h-0 flex-col">
-			<div className="p-basalt-2">
+			<div className="p-basalt-space-lg">
 				<Button
 					variant="secondary"
 					className="w-full justify-start"
@@ -57,21 +58,18 @@ export default function ChatPage() {
 					setThreadsOpen(false);
 				}}
 			/>
-			<p className="p-basalt-3 text-xs text-basalt-muted-foreground">
+			<p className="p-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
 				{t("pages.chat.sessionHint")}
 			</p>
 		</div>
 	);
 	return (
-		<div data-chat-workspace className="flex h-full min-h-0 flex-col gap-basalt-3">
-			<header className="flex shrink-0 items-center justify-between gap-basalt-3">
-				<div>
-					<h1 className="text-xl font-semibold tracking-tight">{t("pages.chat.title")}</h1>
-					<p className="mt-basalt-1 text-xs text-basalt-muted-foreground">
-						{t("pages.chat.description")}
-					</p>
-				</div>
-			</header>
+		<ShowcasePage
+			data-chat-workspace
+			className="flex h-full min-h-0 flex-col"
+			title={t("pages.chat.title")}
+			description={t("pages.chat.description")}
+		>
 			<div className="flex min-h-0 flex-1 overflow-hidden rounded-basalt-lg border border-basalt-border">
 				{!mobile && (
 					<aside className="w-basalt-56 shrink-0 border-r border-basalt-border bg-basalt-secondary">
@@ -82,7 +80,7 @@ export default function ChatPage() {
 					className="flex min-h-0 min-w-0 flex-1 flex-col"
 					aria-label={t("pages.chat.assistant")}
 				>
-					<header className="flex shrink-0 flex-wrap items-center gap-basalt-2 border-b border-basalt-border px-basalt-3 py-basalt-2">
+					<header className="flex shrink-0 flex-wrap items-center gap-basalt-space-lg border-b border-basalt-border px-basalt-space-lg py-basalt-space-lg">
 						{mobile && (
 							<Sheet open={threadsOpen} onOpenChange={setThreadsOpen}>
 								<SheetTrigger asChild>
@@ -96,7 +94,9 @@ export default function ChatPage() {
 								</SheetContent>
 							</Sheet>
 						)}
-						<h2 className="min-w-0 flex-1 truncate text-sm font-medium">{vm.thread.title}</h2>
+						<h2 className="min-w-0 flex-1 truncate text-basalt-base font-medium">
+							{vm.thread.title}
+						</h2>
 						<Dialog
 							open={renameOpen}
 							onOpenChange={(open) => {
@@ -113,7 +113,7 @@ export default function ChatPage() {
 								<DialogTitle>{t("pages.chat.rename")}</DialogTitle>
 								<DialogDescription>{t("pages.chat.renameHint")}</DialogDescription>
 								<form
-									className="mt-basalt-3 space-y-basalt-3"
+									className="mt-basalt-space-lg space-y-basalt-space-lg"
 									onSubmit={(event) => {
 										event.preventDefault();
 										vm.dispatch({ type: "rename", title: name });
@@ -152,7 +152,7 @@ export default function ChatPage() {
 					<Conversation key={vm.activeId} vm={vm} />
 				</section>
 			</div>
-			<div className="flex shrink-0 items-center gap-basalt-2 text-xs text-basalt-muted-foreground">
+			<div className="flex shrink-0 items-center gap-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
 				<Checkbox
 					id={failId}
 					checked={vm.failNext}
@@ -176,6 +176,6 @@ export default function ChatPage() {
 					setConfirm(null);
 				}}
 			/>
-		</div>
+		</ShowcasePage>
 	);
 }

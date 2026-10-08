@@ -9,11 +9,11 @@ export default function HorizontalRowExample() {
 			orientation="horizontal"
 			className="w-80 rounded-basalt-md ring-1 ring-basalt-border"
 		>
-			<div className="flex w-max gap-3 p-3 pb-5">
+			<div className="flex w-max gap-basalt-space-lg p-basalt-space-lg pb-basalt-space-lg">
 				{stages.map((stage) => (
 					<div
 						key={stage}
-						className="flex h-24 w-36 shrink-0 items-center justify-center rounded-basalt-md bg-basalt-secondary text-sm font-medium"
+						className="flex h-24 w-36 shrink-0 items-center justify-center rounded-basalt-md bg-basalt-secondary text-basalt-base font-medium"
 					>
 						{stage}
 					</div>

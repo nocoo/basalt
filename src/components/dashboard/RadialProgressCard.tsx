@@ -10,16 +10,16 @@ const pct = Math.round((saved / goal) * 100);
 export function RadialProgressCard() {
 	const { t } = useTranslation();
 	return (
-		<LayerCard className="flex flex-col ring-0 h-full rounded-card border-0 bg-secondary shadow-none">
-			<div className="flex flex-col space-y-2.5 p-4">
-				<div className="flex items-center gap-2">
+		<LayerCard className="flex flex-col h-full">
+			<LayerCard.Header className="flex-col">
+				<div className="flex items-center gap-basalt-space-lg">
 					<Goal className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h3 className="text-sm font-normal text-muted-foreground">
+					<h2 className="text-basalt-base font-normal text-muted-foreground">
 						{t("dashboard.savingsGoal")}
-					</h3>
+					</h2>
 				</div>
-			</div>
-			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 flex flex-col">
+			</LayerCard.Header>
+			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
 				<div className="flex flex-1 flex-col items-center min-h-0">
 					<Gauge
 						value={pct}
@@ -31,28 +31,30 @@ export function RadialProgressCard() {
 						})}
 						className="w-full"
 					/>
-					<div className="mt-3 grid w-full grid-cols-3 gap-x-4 gap-y-3">
-						<div className="flex flex-col items-center gap-0.5">
-							<span className="text-sm font-medium text-foreground font-display">
+					<div className="mt-basalt-space-lg grid w-full grid-cols-3 gap-x-basalt-space-lg gap-y-basalt-space-lg">
+						<div className="flex flex-col items-center gap-basalt-space-xs">
+							<span className="text-basalt-base font-medium text-foreground font-display">
 								${saved.toLocaleString()}
 							</span>
-							<span className="text-xs text-muted-foreground">{t("dashboard.saved")}</span>
+							<span className="text-basalt-sm text-muted-foreground">{t("dashboard.saved")}</span>
 						</div>
-						<div className="flex flex-col items-center gap-0.5">
-							<span className="text-sm font-medium text-foreground font-display">
+						<div className="flex flex-col items-center gap-basalt-space-xs">
+							<span className="text-basalt-base font-medium text-foreground font-display">
 								${goal.toLocaleString()}
 							</span>
-							<span className="text-xs text-muted-foreground">{t("dashboard.target")}</span>
+							<span className="text-basalt-sm text-muted-foreground">{t("dashboard.target")}</span>
 						</div>
-						<div className="flex flex-col items-center gap-0.5">
-							<span className="text-sm font-medium text-foreground font-display">
+						<div className="flex flex-col items-center gap-basalt-space-xs">
+							<span className="text-basalt-base font-medium text-foreground font-display">
 								${(goal - saved).toLocaleString()}
 							</span>
-							<span className="text-xs text-muted-foreground">{t("dashboard.remaining")}</span>
+							<span className="text-basalt-sm text-muted-foreground">
+								{t("dashboard.remaining")}
+							</span>
 						</div>
 					</div>
 				</div>
-			</div>
+			</LayerCard.Body>
 		</LayerCard>
 	);
 }

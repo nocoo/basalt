@@ -5,10 +5,10 @@ export default function RadioGroupAndLegend() {
 	return (
 		<Radio.Group defaultValue="a">
 			<Radio.Legend>Plan</Radio.Legend>
-			<Label className="flex items-center gap-2">
+			<Label className="flex items-center gap-basalt-space-lg">
 				<Radio.Item value="a" /> Alpha
 			</Label>
-			<Label className="flex items-center gap-2">
+			<Label className="flex items-center gap-basalt-space-lg">
 				<Radio.Item value="b" /> Beta
 			</Label>
 		</Radio.Group>

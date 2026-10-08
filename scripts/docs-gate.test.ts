@@ -405,7 +405,9 @@ describe("documentation tarball compilation gate", () => {
 
 		const popoverSides = scenarioModules.find((m) => m.id === "popover-sides");
 		expect(popoverSides).toBeDefined();
-		expect(popoverSides?.code).toContain("flex flex-wrap items-center justify-center gap-4 py-16");
+		expect(popoverSides?.code).toContain(
+			"flex flex-wrap items-center justify-center gap-basalt-space-lg py-basalt-space-lg",
+		);
 	}, 30_000);
 
 	it("rejects regressions from complete module to bare JSX fragments, empty exports, or unexported code", () => {

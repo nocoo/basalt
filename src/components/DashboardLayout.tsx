@@ -16,6 +16,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useSiteTitle } from "@/hooks/use-site-title";
 import { SHOWCASE_TITLE_KEYS } from "@/lib/site";
 import { CATALOG_BY_SLUG, catalogNavName } from "@/pages/ui/catalog";
+import { catalogCategory, catalogCategoryPath } from "@/pages/ui/catalog-categories";
 import { HeaderTooltip, HexlyLink } from "./header-links";
 import { ThemeToggle } from "./theme-toggle";
 import "@/styles/showcase.css";
@@ -45,15 +46,23 @@ export function DashboardLayout() {
 		? location.pathname.slice("/ui/".length).split("/")[0]
 		: undefined;
 	const catalogEntry = catalogSlug ? CATALOG_BY_SLUG.get(catalogSlug) : undefined;
+	const overviewCategory =
+		catalogSlug === "overview" ? catalogCategory(location.pathname.split("/")[3]) : undefined;
 	const catalogTitle = catalogEntry ? catalogNavName(catalogEntry) : undefined;
 	const titleKey = SHOWCASE_TITLE_KEYS[location.pathname] ?? "nav.dashboard";
-	const title = catalogTitle
-		? `${catalogTitle}${location.pathname.endsWith("/source") ? " source" : ""}`
-		: t(titleKey);
+	const title = overviewCategory
+		? `${overviewCategory.label} overview`
+		: catalogTitle
+			? `${catalogTitle}${location.pathname.endsWith("/source") ? " source" : ""}`
+			: t(titleKey);
 	useSiteTitle(title);
 	const crumbs = location.pathname.startsWith("/ui")
 		? [{ href: "/ui", label: t("nav.kit") }]
 		: [{ href: "/dashboard", label: t("nav.examples") }];
+	const entryCategory = catalogCategory(catalogEntry?.category);
+	if (entryCategory) {
+		crumbs.push({ href: catalogCategoryPath(entryCategory.id), label: entryCategory.label });
+	}
 
 	// Close mobile sidebar on route change: pathname is the intentional trigger.
 	// biome-ignore lint/correctness/useExhaustiveDependencies: pathname is the trigger, not a value used inside
@@ -88,7 +97,7 @@ export function DashboardLayout() {
 				<Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
 					<SheetContent
 						side="left"
-						className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0"
+						className="w-[16.25rem] max-w-[16.25rem] border-0 bg-basalt-background p-0"
 						onCloseAutoFocus={(event) => {
 							const trigger = mobileTriggerRef.current;
 							if (isTriggerVisible(trigger)) {
@@ -111,7 +120,7 @@ export function DashboardLayout() {
 									ref={mobileTriggerRef}
 									variant="ghost"
 									size="icon"
-									className="h-8 w-8"
+									className="w-8"
 									onClick={() => setMobileOpen(true)}
 									aria-label={t("common.openNav")}
 								>
@@ -134,9 +143,13 @@ export function DashboardLayout() {
 									target="_blank"
 									rel="noopener noreferrer"
 									aria-label={t("common.github")}
-									className="h-8 w-8 rounded-lg text-basalt-muted-foreground hover:text-basalt-foreground [&_svg]:size-[18px]"
+									className="w-8 rounded-basalt-md text-basalt-muted-foreground hover:text-basalt-foreground [&_svg]:size-[1.125rem]"
 								>
-									<Github className="h-[18px] w-[18px]" aria-hidden="true" strokeWidth={1.5} />
+									<Github
+										className="h-[1.125rem] w-[1.125rem]"
+										aria-hidden="true"
+										strokeWidth={1.5}
+									/>
 								</LinkButton>
 							</HeaderTooltip>
 							<HexlyLink />
@@ -144,7 +157,7 @@ export function DashboardLayout() {
 						</>
 					}
 				/>
-				<div className="flex min-h-0 min-w-0 flex-1 flex-col px-2 pb-2 md:px-3 md:pb-3">
+				<div className="flex min-h-0 min-w-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-space-lg md:pb-basalt-space-lg">
 					<ContentIsland className="relative min-w-0" data-doc-scroll>
 						<Outlet />
 					</ContentIsland>

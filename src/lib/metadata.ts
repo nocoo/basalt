@@ -1,3 +1,4 @@
+import { catalogCategory } from "../pages/ui/catalog-categories";
 import {
 	canonicalUrl,
 	documentTitle,
@@ -29,8 +30,12 @@ const PAGE_DESCRIPTIONS: Readonly<Record<string, string>> = {
 export function pageMetadata(pathname: string, pageName?: string): PageMetadata {
 	const path = pathname.replace(/\/+$/, "") || "/";
 	const title = path === "/" ? SITE.homeTitle : documentTitle(pageName);
-	const description =
-		path === "/"
+	const category = path.startsWith("/ui/overview/")
+		? catalogCategory(path.slice("/ui/overview/".length))
+		: undefined;
+	const description = category
+		? `${category.description} Design thinking, sizing, interaction and best practices for Basalt ${category.label.toLowerCase()}.`
+		: path === "/"
 			? SITE.description
 			: (PAGE_DESCRIPTIONS[path] ??
 				(path.startsWith("/ui/")

@@ -144,7 +144,7 @@ describe("Examples package contract", () => {
 				continue;
 			}
 			const source = readFileSync(path.join(DASHBOARD_DIR, file), "utf8");
-			expect(source, file).not.toMatch(/rounded-widget border border-border/);
+			expect(source, file).not.toMatch(/rounded-basalt-md border border-border/);
 			expect(source, file).not.toMatch(/border-border bg-card/);
 		}
 	});

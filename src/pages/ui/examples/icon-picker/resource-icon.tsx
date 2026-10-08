@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function ResourceIconSelection() {
 	const [message, setMessage] = useState("Choose a resource icon.");
 	return (
-		<div className="space-y-3">
+		<div className="space-y-basalt-space-lg">
 			<h3 className="font-medium">Resource classification</h3>
 			<IconPicker
 				label="Resource icon"
@@ -18,7 +18,7 @@ export default function ResourceIconSelection() {
 					{ value: "locked", label: "Private vault", icon: <Lock />, disabled: true },
 				]}
 			/>
-			<p role="status" className="text-sm text-basalt-muted-foreground">
+			<p role="status" className="text-basalt-base text-basalt-muted-foreground">
 				{message}
 			</p>
 		</div>

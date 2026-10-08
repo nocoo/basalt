@@ -20,7 +20,8 @@ describe("DataPage", () => {
 		render(<DataPage />);
 
 		const filter = screen.getByRole("combobox", { name: "Filter" });
-		fireEvent.change(filter, { target: { value: "Overdue" } });
+		fireEvent.keyDown(filter, { key: "ArrowDown" });
+		fireEvent.click(screen.getByRole("option", { name: "Overdue" }));
 		const table = screen.getByRole("table", { name: "Data Table" });
 		expect(within(table).getByRole("cell", { name: "Echo Systems" })).toBeInTheDocument();
 		expect(within(table).queryByRole("cell", { name: "Nova Labs" })).not.toBeInTheDocument();

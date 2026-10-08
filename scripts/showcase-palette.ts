@@ -106,9 +106,8 @@ async function accentColor(page: Page) {
 }
 
 async function editPalette(page: Page) {
-	const summary = page.locator("summary").filter({ hasText: "Customize all 12 colors" });
-	if (!(await summary.evaluate((node) => node.parentElement?.hasAttribute("open"))))
-		await summary.click();
+	const summary = page.getByRole("button", { name: "Customize all 12 colors" });
+	if ((await summary.getAttribute("aria-expanded")) !== "true") await summary.click();
 }
 
 async function assertPageWidth(page: Page, label: string) {

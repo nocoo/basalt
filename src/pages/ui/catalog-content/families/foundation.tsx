@@ -49,7 +49,7 @@ const activity = ["Created the project", "Published the first release", "Added a
 export default function Example() {
 	return (
 		<ScrollArea aria-label="Recent activity" className="h-48">
-			<ul className="space-y-2 p-3">
+			<ul className="space-y-basalt-space-lg p-basalt-space-lg">
 				{activity.map((item) => <li key={item}>{item}</li>)}
 			</ul>
 		</ScrollArea>

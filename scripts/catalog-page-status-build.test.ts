@@ -39,6 +39,7 @@ const PAGE_MODULES = [
 	"SettingsPage.tsx",
 	"StaticPage.tsx",
 	"ui/UiIndexPage.tsx",
+	"ui/UiCategoryOverviewPage.tsx",
 	"ui/UiPlaceholderPage.tsx",
 	"WearableDashboardPage.tsx",
 ] as const;

@@ -577,7 +577,7 @@ describe("source-backed label scenarios", () => {
 			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 			expect(scenario.code).toContain("export default");
 		}
-		expect(LABEL_EXAMPLES[0]?.code).toContain("flex w-full flex-col gap-3");
+		expect(LABEL_EXAMPLES[0]?.code).toContain("flex w-full flex-col gap-basalt-space-lg");
 		expect(LABEL_EXAMPLES[2]?.code).toContain("More information about this field");
 		expect(LABEL_EXAMPLES[2]?.code).not.toMatch(/tooltip="More information"/);
 	});
@@ -631,7 +631,7 @@ describe("source-backed separator scenarios", () => {
 			expect(scenario.code).not.toMatch(/Cloudflare|Kumo|Workers?\b/i);
 			expect(scenario.code).toContain("export default");
 		}
-		expect(SEPARATOR_EXAMPLES[0]?.code).toContain("w-full max-w-sm space-y-3");
+		expect(SEPARATOR_EXAMPLES[0]?.code).toContain("w-full max-w-sm space-y-basalt-space-lg");
 		expect(SEPARATOR_EXAMPLES[0]?.code).toContain("<Text>Above</Text>");
 		expect(SEPARATOR_EXAMPLES[0]?.code).toContain("<Separator />");
 		expect(SEPARATOR_EXAMPLES[0]?.code).toContain("<Text>Below</Text>");
@@ -756,7 +756,7 @@ describe("source-backed tooltip scenarios", () => {
 		}
 		expect(TOOLTIP_EXAMPLES[0]?.code).toContain(">Hover</Button>");
 		expect(TOOLTIP_EXAMPLES[0]?.code).toContain(">Hint</TooltipContent>");
-		expect(TOOLTIP_EXAMPLES[1]?.code).toContain("flex flex-wrap items-center gap-3");
+		expect(TOOLTIP_EXAMPLES[1]?.code).toContain("flex flex-wrap items-center gap-basalt-space-lg");
 		expect(TOOLTIP_EXAMPLES[1]?.code).toContain(">One</Button>");
 		expect(TOOLTIP_EXAMPLES[1]?.code).toContain(">First</TooltipContent>");
 		expect(TOOLTIP_EXAMPLES[1]?.code).toContain(">Two</Button>");
@@ -893,19 +893,21 @@ describe("source-backed layer-card scenarios", () => {
 			expect(scenario.code).toContain("@nocoo/basalt/components/layer-card");
 			expect(scenario.code).toContain("import { LayerCard }");
 		}
-		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain('className="w-[250px]"');
+		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain('className="w-[15.625rem]"');
 		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain("Next Steps");
 		expect(LAYER_CARD_EXAMPLES[0]?.code).toContain("Hello");
 		expect(LAYER_CARD_EXAMPLES[0]?.code).not.toBe(
 			"<LayerCard><LayerCard.Secondary>Next Steps</LayerCard.Secondary><LayerCard.Primary>Hello</LayerCard.Primary></LayerCard>",
 		);
-		expect(LAYER_CARD_EXAMPLES[1]?.code).toContain('className="w-[250px] p-4"');
+		expect(LAYER_CARD_EXAMPLES[1]?.code).toContain('className="w-[15.625rem]"');
 		expect(LAYER_CARD_EXAMPLES[1]?.code).toContain("Quick start guide");
-		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain('className="flex w-full gap-4"');
-		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain('className="w-[200px]"');
+		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain('className="flex w-full gap-basalt-space-lg"');
+		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain('className="w-[12.5rem]"');
 		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain("Browse all components");
 		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain("View code examples");
-		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain('<div className="flex w-full gap-4">');
+		expect(LAYER_CARD_EXAMPLES[2]?.code).toContain(
+			'<div className="flex w-full gap-basalt-space-lg">',
+		);
 		expect(LAYER_CARD_EXAMPLES[3]?.code).toContain("<LayerCard.Header>");
 		expect(LAYER_CARD_EXAMPLES[3]?.code).toContain("<LayerCard.Body>");
 		expect(LAYER_CARD_EXAMPLES[3]?.code).toContain("<LayerCard.Footer>");
@@ -1155,7 +1157,9 @@ describe("source-backed input scenarios", () => {
 		expect(INPUT_EXAMPLES[2]?.code).toContain("disabled");
 		expect(INPUT_EXAMPLES[2]?.code).toContain('value="Read only"');
 		expect(INPUT_EXAMPLES[2]?.code).toContain('aria-label="Disabled input"');
-		expect(INPUT_EXAMPLES[3]?.code).toContain('<div className="flex w-full flex-col gap-3">');
+		expect(INPUT_EXAMPLES[3]?.code).toContain(
+			'<div className="flex w-full flex-col gap-basalt-space-lg">',
+		);
 		expect(INPUT_EXAMPLES[3]?.code).toContain('type="email"');
 		expect(INPUT_EXAMPLES[3]?.code).toContain('placeholder="Email"');
 		expect(INPUT_EXAMPLES[3]?.code).toContain('aria-label="Email type"');
@@ -1559,7 +1563,9 @@ describe("source-backed checkbox scenarios", () => {
 		expect(CHECKBOX_EXAMPLES[1]?.code).toContain('aria-label="Checked"');
 		expect(CHECKBOX_EXAMPLES[2]?.code).toContain('checked="indeterminate"');
 		expect(CHECKBOX_EXAMPLES[2]?.code).toContain('aria-label="Partial"');
-		expect(CHECKBOX_EXAMPLES[3]?.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(CHECKBOX_EXAMPLES[3]?.code).toContain(
+			'className="flex flex-wrap items-center gap-basalt-space-lg"',
+		);
 		expect(CHECKBOX_EXAMPLES[3]?.code).toContain('aria-label="Disabled off"');
 		expect(CHECKBOX_EXAMPLES[3]?.code).toContain('aria-label="Disabled on"');
 		expect(CHECKBOX_EXAMPLES[3]?.code).toContain("disabled");
@@ -1663,8 +1669,8 @@ describe("source-backed radio scenarios", () => {
 		}
 		expect(RADIO_EXAMPLES[0]?.code).toContain("@nocoo/basalt/components/label");
 		expect(RADIO_EXAMPLES[0]?.code).toContain("import { Label }");
-		expect(RADIO_EXAMPLES[0]?.code).toContain('className="flex flex-col gap-2"');
-		expect(RADIO_EXAMPLES[0]?.code).toContain('className="flex items-center gap-2"');
+		expect(RADIO_EXAMPLES[0]?.code).toContain('className="flex flex-col gap-basalt-space-lg"');
+		expect(RADIO_EXAMPLES[0]?.code).toContain('className="flex items-center gap-basalt-space-lg"');
 		expect(RADIO_EXAMPLES[0]?.code).toContain('value="a"');
 		expect(RADIO_EXAMPLES[0]?.code).toContain('value="b"');
 		expect(RADIO_EXAMPLES[0]?.code).toContain("Alpha");
@@ -1672,12 +1678,12 @@ describe("source-backed radio scenarios", () => {
 		expect(RADIO_EXAMPLES[0]?.code).not.toContain("disabled");
 		expect(RADIO_EXAMPLES[1]?.code).toContain("@nocoo/basalt/components/label");
 		expect(RADIO_EXAMPLES[1]?.code).toContain("import { Label }");
-		expect(RADIO_EXAMPLES[1]?.code).toContain('className="flex gap-4"');
+		expect(RADIO_EXAMPLES[1]?.code).toContain('className="flex gap-basalt-space-lg"');
 		expect(RADIO_EXAMPLES[1]?.code).toContain("Alpha");
 		expect(RADIO_EXAMPLES[1]?.code).toContain("Beta");
 		expect(RADIO_EXAMPLES[1]?.code).not.toContain("disabled");
 		expect(RADIO_EXAMPLES[2]?.code).not.toContain("@nocoo/basalt/components/label");
-		expect(RADIO_EXAMPLES[2]?.code).toContain('className="flex gap-4"');
+		expect(RADIO_EXAMPLES[2]?.code).toContain('className="flex gap-basalt-space-lg"');
 		expect(RADIO_EXAMPLES[2]?.code).toContain('aria-label="Disabled A"');
 		expect(RADIO_EXAMPLES[2]?.code).toContain('aria-label="Disabled B"');
 		expect(RADIO_EXAMPLES[2]?.code).toContain("disabled");
@@ -1787,11 +1793,15 @@ describe("source-backed switch scenarios", () => {
 		expect(SWITCH_EXAMPLES[1]?.code).toContain("defaultChecked");
 		expect(SWITCH_EXAMPLES[1]?.code).toContain('aria-label="On"');
 		expect(SWITCH_EXAMPLES[1]?.code).not.toContain("disabled");
-		expect(SWITCH_EXAMPLES[2]?.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(SWITCH_EXAMPLES[2]?.code).toContain(
+			'className="flex flex-wrap items-center gap-basalt-space-lg"',
+		);
 		expect(SWITCH_EXAMPLES[2]?.code).toContain('aria-label="Disabled off"');
 		expect(SWITCH_EXAMPLES[2]?.code).toContain('aria-label="Disabled on"');
 		expect(SWITCH_EXAMPLES[2]?.code).toContain("disabled");
-		expect(SWITCH_EXAMPLES[3]?.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(SWITCH_EXAMPLES[3]?.code).toContain(
+			'className="flex flex-wrap items-center gap-basalt-space-lg"',
+		);
 		expect(SWITCH_EXAMPLES[3]?.code).toContain('size="sm"');
 		expect(SWITCH_EXAMPLES[3]?.code).toContain('aria-label="Small"');
 		expect(SWITCH_EXAMPLES[3]?.code).toContain('aria-label="Default size"');

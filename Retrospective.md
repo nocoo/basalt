@@ -142,3 +142,142 @@ The follow-up loader screenshot exposed a missed layout boundary: after resettin
 ## 2026-10-05: Code gutters must not contaminate source selection
 
 The first numbered code renderer used flex rows with explicit newline text. Browser `innerText` revealed doubled newlines even though textContent and copy-button tests passed. Keep source text in one preformatted code flow with inline token spans and place generated line numbers in a separate aria-hidden, non-selectable gutter. Verify real selection and clipboard text, including blank lines and trailing newlines. WebKit does not consistently scroll a focused pre with unmodified horizontal arrow keys, so the View maps those two keys to the existing scroll region without intercepting selection shortcuts. The catalog also rejects inherited native props redeclared without Omit; omit root className/title/children before declaring their new panel semantics.
+
+## 2026-10-06: Navigation needs shared ownership, not spacing repairs
+
+The comparison sidebar exposed a gap in the previous token migration: top-level nav had no inset or moving highlight, groups added their own horizontal gutters, and header/footer/collapsed rows used unrelated geometry. The site masked parts of this with caller padding and still used 40px icon rows. Move inset ownership to navigation lists, share row roles across sidebar/site/editable navigation, and let the rail align collapsed regions. The comparison also retained text-row controls when collapsed; proper examples must switch to named icon items. Add structural and browser geometry regressions rather than treating token declarations as proof of consistent use.
+
+While integrating the shared rules, inspection found standalone CSS declared the components layer after utilities implicitly. Declare the full layer order explicitly so native utility overrides retain the same precedence as Tailwind consumers. Browser execution in this session is blocked by the macOS sandbox's Chromium MachPort permission; do not report the new geometry checks as passed without running them.
+
+
+## 2026-10-06: A token migration must preserve layout meaning
+
+A mechanical spacing migration exposed controls that used oversized right padding
+to reserve room for absolutely positioned buttons. Reducing that padding to the
+shared scale would put the password reveal button and Select check over the text.
+Use real flex slots instead; reserve calculated offsets only for deliberate
+alignment geometry. Marketing headers must remain in document flow when large
+hero padding is removed. Icon-only minimums must derive from a line box, not an
+extra flex pseudo-child that participates in gap calculation.
+
+Observer delivery is not a user selection. Reusing the same measured rectangle
+must not remove an active transition class; otherwise ResizeObserver interrupts
+the animation just after it starts. First valid geometry and layout resizes snap,
+selection changes animate, and list highlights ignore their own transitionend.
+Test initially hidden/non-first selections, redundant delivery and resize rather
+than only checking for transition class names. The design scanner runs at pre-push
+only; normal tests exercise isolated rule inputs without scanning the repository.
+
+Do not overlap full coverage runs with another heavyweight catalog suite on a
+loaded machine: this run introduced unrelated timer and AST-test timeouts. A test
+name filter also violates the selected-run no-skips gate; use complete test files,
+never suppress that reporter. Sandbox-limited process/HTTP and browser checks
+remain missing evidence, not passes, and read-only Git metadata prevents commits.
+
+## 2026-10-06: Catalog groups are shared navigation data
+
+Splitting Components exposed independent category lists in the sidebar, catalog
+query model, filters and crawler output. Replace those copies with shared category
+metadata, keep existing export URLs, and check module aliases against DESIGN.md.
+Overview prose should be shared by the React page and prerendered document without
+loading all interactive demos. A larger taxonomy also needs an appropriate filter:
+use a Select rather than squeezing nine categories into a segmented row.
+
+The first validation command omitted the sandbox's writable SWC binding cache and
+failed before typechecking. Keep SWC_NATIVE_BINDING_CACHE exported for the whole
+validation shell; a prior one-command prefix does not apply to the next command.
+Full-suite subprocess installs also require BUN_INSTALL_CACHE_DIR to point at the
+writable temporary cache. Without it the release fixture fails before exercising
+the lockfile logic; its complete 33-test file passed once that environment was set.
+
+## 2026-10-06: Tokens alone do not enforce page composition
+
+The category overviews initially reused spacing tokens but bypassed the shared
+page composition: an extra page inset and hand-written card headers still violated
+the layout contract. A token-only scanner could not detect this. Audit by owner
+and role, not by replacing numeric utilities: island inset, page header, region
+heading, card slots and controls each have one owner. Apply the same fix to sibling
+routes, including documentation and source loading/error states.
+
+During this repair, a broad JSX conversion also wrapped a progress track in a
+padded LayerCard.Body and split a horizontal transfer row into header/body slots.
+Both were corrected before acceptance. Never infer card structure solely from the
+first child being a div; read the content role and keep related content in one
+Body. Add structural fixtures to the existing pre-push scanner, plus behavior tests
+for replaced selects/uploads and browser geometry assertions for page alignment.
+Keep independent pages and specialist palette controls explicit rather than
+silently exempting whole directories. Browser checks remain pending when the
+sandbox cannot launch a browser or connect to the local server.
+
+## 2026-10-06: Control density is not page density
+
+Applying the 2/4/6/8px control scale to all containers flattened page hierarchy
+and made cards cramped. Git revision 8f9c5dc used card padding 12/16/24px,
+PageHeader separation 16px, SectionRule separation 12px and ContentIsland insets
+12px mobile / 20px desktop. Restore category-owned scales instead of globally
+increasing the 8px control default. Cards and layouts now select 12/16/24/32px,
+with 16px card/grid defaults and 24px page sections. The island deliberately uses
+12/16px to stay on the layout scale. The new 32px tier is opt-in.
+
+Keep navigation/menu rows, buttons, form field labels and composer input padding
+compact. Audit every consumer before changing shared panel aliases; input and
+navigation consumers must not inherit the larger content-surface scale. Verify
+both CSS entrypoints, category previews, first/last grid edges and scenic-header
+alignment; token-only edits do not update consumers that still name control gaps.
+
+## 2026-10-06: A valid spacing token can still have the wrong owner
+
+The Tag Badge documentation exposed gaps left by the container-spacing pass:
+the sticky table of contents painted a strip with vertical padding only, while
+native summary rows used 8px control insets beside 16px preview/code insets.
+Increasing tokens did not solve this because the page still assembled its own
+container boundaries. The previous audit validated token spelling but not roles.
+
+Make ownership explicit: LayerCard slots provide panel insets, Header can slot onto
+a disclosure trigger, and attached code keeps its own internal inset without page
+border/radius patches. Collapsible content is unstyled when a child owns spacing.
+Check analogous palette, settings and example panels, not just the reported page.
+Reject raw dashboard disclosures and compact padding on painted content panels at
+pre-push. Measure actual inset parity in open/closed states, both CSS entrypoints,
+themes and enlarged root fonts; class names alone cannot validate the cascade.
+
+A new test initially expected Tailwind Merge to delete p-0 when px/py overrides
+exist. That is not its contract: axis utilities correctly override the shorthand
+in canonical CSS order. Assert owned axis tokens in unit tests and computed
+padding in browser checks instead of inventing a class-list requirement.
+
+## 2026-10-06: Horizontal code overflow must not trap vertical reading
+
+The shared code panel used overscroll-contain on both axes. This also prevented
+vertical scroll chaining when an example needed only horizontal scrolling, making
+the page feel stuck under the pointer. Header/inset tests and direct scrollTop
+writes did not exercise wheel handoff. Contain X only, leave Y automatic, and keep
+native wheel/touch behavior. Test unbounded code plus bounded code at both vertical
+edges in Tailwind and standalone; do not solve this with per-panel wheel handlers.
+
+## 2026-10-06: Selection is not a darker surface or a moving hover target
+
+Sharing accent between decoration, hover and selection made selected light-theme
+rows darker than their parent. The moving navigation highlight also cleared all
+row backgrounds, so hovering a neighbor erased the current-page fill. Split the
+selected tokens, retain selected paint and a persistent cue on the row, and reserve
+the moving layer for transient feedback. Keyboard focus stays inset and independent.
+Group disclosures need their own uppercase type and spacing rather than the route
+row recipe. Verify luminance, text contrast and selection persistence in both CSS
+entrypoints; stateful examples must actually handle selection.
+
+While replacing the inbox example, a text-script end marker matched an object
+inside its embedded source string and left invalid TSX behind. The parser caught
+it before build; replace the complete anchored section with a patch and run the
+parser before generation or a broad test run. Do not use ambiguous delimiters to
+edit source code that itself embeds source code.
+
+## 2026-10-06: Brighter selection does not require added decoration
+
+The first selected-state pass added a side bar and an accent frame on top of the
+requested brighter fill. That exceeded the matte visual direction and was rejected
+in the screenshot review. Keep neutral selection in fill and readable labels;
+preserve only existing semantic checkmarks, tab underlines and keyboard focus.
+Delete the extra tokens and pseudo-elements rather than hiding them in one page.
+The revised default action is 34px: change shared action/row line boxes and derived
+reference dimensions, not global body typography or fixed component heights.

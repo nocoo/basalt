@@ -213,7 +213,9 @@ describe("form selection scenario truth", () => {
 		expect(partial).toHaveAttribute("aria-checked", "mixed");
 		cleanup();
 		const checkboxDisabled = scenario("checkbox", "checkbox-disabled");
-		expect(checkboxDisabled.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(checkboxDisabled.code).toContain(
+			'className="flex flex-wrap items-center gap-basalt-space-lg"',
+		);
 		expect(checkboxDisabled.code).toContain('aria-label="Disabled off"');
 		expect(checkboxDisabled.code).toContain('aria-label="Disabled on"');
 		render(createElement(checkboxDisabled.render));
@@ -287,7 +289,7 @@ describe("form selection scenario truth", () => {
 		expect(onSwitch).not.toBeChecked();
 		cleanup();
 		const disabled = scenario("switch", "switch-disabled");
-		expect(disabled.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(disabled.code).toContain('className="flex flex-wrap items-center gap-basalt-space-lg"');
 		expect(disabled.code).toContain('aria-label="Disabled off"');
 		expect(disabled.code).toContain('aria-label="Disabled on"');
 		render(createElement(disabled.render));
@@ -303,7 +305,7 @@ describe("form selection scenario truth", () => {
 		expect(disabledOn).toBeChecked();
 		cleanup();
 		const sizes = scenario("switch", "switch-sizes");
-		expect(sizes.code).toContain('className="flex flex-wrap items-center gap-3"');
+		expect(sizes.code).toContain('className="flex flex-wrap items-center gap-basalt-space-lg"');
 		expect(sizes.code).toContain('size="sm"');
 		expect(sizes.code).toContain('aria-label="Small"');
 		expect(sizes.code).toContain('aria-label="Default size"');
@@ -415,7 +417,7 @@ describe("form selection scenario truth", () => {
 		const types = scenario("input", "input-input-types");
 		expect(types.code).toContain('type="search"');
 		expect(types.code).toContain("aria-label=");
-		expect(types.code).toContain('<div className="flex w-full flex-col gap-3">');
+		expect(types.code).toContain('<div className="flex w-full flex-col gap-basalt-space-lg">');
 		expect(types.code).toContain('type="email"');
 		expect(types.code).toContain('type="password"');
 		expect(types.code).toContain('aria-label="Email type"');
@@ -537,7 +539,7 @@ describe("form selection scenario truth", () => {
 		expect(radioDefault.code).toContain("<Label");
 		expect(radioDefault.code).toContain("Alpha");
 		expect(radioDefault.code).toContain("Beta");
-		expect(radioDefault.code).toContain('className="flex flex-col gap-2"');
+		expect(radioDefault.code).toContain('className="flex flex-col gap-basalt-space-lg"');
 		expect(radioDefault.code).not.toMatch(/Cloudflare|Kumo|Workers?\b|@cloudflare\/kumo/i);
 		render(createElement(radioDefault.render));
 		const defaultAlpha = screen.getByRole("radio", { name: "Alpha" });
@@ -551,7 +553,7 @@ describe("form selection scenario truth", () => {
 		const radioHorizontal = scenario("radio", "radio-horizontal");
 		expect(radioHorizontal.code).not.toContain("…");
 		expect(radioHorizontal.code).toContain("<Label");
-		expect(radioHorizontal.code).toContain('className="flex gap-4"');
+		expect(radioHorizontal.code).toContain('className="flex gap-basalt-space-lg"');
 		expect(radioHorizontal.code).toContain("Alpha");
 		expect(radioHorizontal.code).toContain("Beta");
 		render(createElement(radioHorizontal.render));
@@ -566,7 +568,7 @@ describe("form selection scenario truth", () => {
 		const radioDisabled = scenario("radio", "radio-disabled");
 		expect(radioDisabled.code).toContain("RadioGroup");
 		expect(radioDisabled.code).toContain("aria-label=");
-		expect(radioDisabled.code).toContain('className="flex gap-4"');
+		expect(radioDisabled.code).toContain('className="flex gap-basalt-space-lg"');
 		expect(radioDisabled.code).toContain('aria-label="Disabled A"');
 		expect(radioDisabled.code).toContain('aria-label="Disabled B"');
 		render(createElement(radioDisabled.render));

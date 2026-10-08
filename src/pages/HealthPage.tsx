@@ -5,7 +5,7 @@ import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { Timeline } from "@nocoo/basalt/charts/timeline";
 import { Button } from "@nocoo/basalt/components/button";
 import { InputArea } from "@nocoo/basalt/components/input-area";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import {
 	Activity,
@@ -26,6 +26,7 @@ import { useTranslation } from "react-i18next";
 import { BarChartWidget } from "@/components/dashboard/BarChartWidget";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatPercent } from "@/lib/format";
 import { chart } from "@/lib/palette";
 
@@ -229,9 +230,7 @@ export default function HealthPage() {
 	];
 
 	return (
-		<div className="space-y-8">
-			<PageHeader title={t("pages.health.title")} description={t("pages.health.description")} />
-
+		<ShowcasePage title={t("pages.health.title")} description={t("pages.health.description")}>
 			<SectionRule
 				title={t("pages.health.today")}
 				actions={
@@ -257,89 +256,116 @@ export default function HealthPage() {
 						subtitle={stat.subtitle}
 						icon={stat.icon}
 						trend={stat.trend}
-						className="rounded-card border-0 bg-secondary p-4 md:p-5"
 					/>
 				))}
 			</StatGrid>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<Moon className="h-4 w-4 text-indigo-500" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.health.sleepStages")}</p>
-						<span className="ml-auto text-sm font-semibold text-indigo-500">7h 24m</span>
-					</div>
-					<SlotBarChart items={sleepSlots} />
-				</div>
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.health.sleepStages")}
+						</h2>
+						<span className="ml-auto text-basalt-base font-semibold text-indigo-500">7h 24m</span>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<SlotBarChart items={sleepSlots} />
+					</LayerCard.Body>
+				</LayerCard>
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<Heart className="h-4 w-4 text-red-500" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.health.heartRateZones")}</p>
-						<span className="ml-auto text-sm font-semibold text-red-500">72 bpm</span>
-					</div>
-					<SlotBarChart items={heartRateSlots} />
-				</div>
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.health.heartRateZones")}
+						</h2>
+						<span className="ml-auto text-basalt-base font-semibold text-red-500">72 bpm</span>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<SlotBarChart items={heartRateSlots} />
+					</LayerCard.Body>
+				</LayerCard>
 			</div>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<Footprints className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.health.weeklySteps")}</p>
-					</div>
-					<BarChartWidget data={weeklySteps} height={200} color={chart.green} />
-				</div>
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.health.weeklySteps")}
+						</h2>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<BarChartWidget data={weeklySteps} height={200} color={chart.green} />
+					</LayerCard.Body>
+				</LayerCard>
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<Sparkles className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.health.monthlySleepTrend")}</p>
-					</div>
-					<LineChartWidget
-						data={monthlySleep}
-						height={200}
-						color={chart.indigo}
-						valueFormatter={(v) => `${v}h`}
-					/>
-				</div>
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.health.monthlySleepTrend")}
+						</h2>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<LineChartWidget
+							data={monthlySleep}
+							height={200}
+							color={chart.indigo}
+							valueFormatter={(v) => `${v}h`}
+						/>
+					</LayerCard.Body>
+				</LayerCard>
 			</div>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.health.activityBreakdown")}</p>
-					</div>
-					<DonutChartWidget
-						data={activityBreakdown}
-						height={220}
-						showLegend
-						valueFormatter={formatPercent}
-					/>
-				</div>
-				<div className="rounded-card bg-secondary p-4 md:p-5 lg:col-span-2 max-h-[400px] overflow-y-auto">
-					<div className="mb-4 flex items-center gap-2">
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.health.activityBreakdown")}
+						</h2>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<DonutChartWidget
+							data={activityBreakdown}
+							height={220}
+							showLegend
+							valueFormatter={formatPercent}
+						/>
+					</LayerCard.Body>
+				</LayerCard>
+				<LayerCard className="lg:col-span-2 max-h-[25rem] overflow-y-auto">
+					<LayerCard.Header className="items-center justify-start">
 						<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.health.dailyTimeline")}</p>
-					</div>
-					<Timeline events={timelineEvents} />
-				</div>
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.health.dailyTimeline")}
+						</h2>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<Timeline events={timelineEvents} />
+					</LayerCard.Body>
+				</LayerCard>
 			</div>
 
-			<div className="rounded-card bg-secondary p-4 md:p-5">
-				<div className="mb-4 flex items-center gap-2">
+			<LayerCard>
+				<LayerCard.Header className="items-center justify-start">
 					<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<p className="text-sm text-muted-foreground">{t("pages.health.activityHeatmap2026")}</p>
-				</div>
-				<HeatmapCalendar
-					data={heatmapData}
-					year={2026}
-					colorScale={heatmapColorScales.green}
-					metricLabel={t("pages.health.activities")}
-					locale={i18n.language}
-					lessLabel={t("common.less")}
-					moreLabel={t("common.more")}
-				/>
-			</div>
+					<h2 className="text-basalt-base text-muted-foreground">
+						{t("pages.health.activityHeatmap2026")}
+					</h2>
+				</LayerCard.Header>
+				<LayerCard.Body>
+					<HeatmapCalendar
+						data={heatmapData}
+						year={2026}
+						colorScale={heatmapColorScales.green}
+						metricLabel={t("pages.health.activities")}
+						locale={i18n.language}
+						lessLabel={t("common.less")}
+						moreLabel={t("common.more")}
+					/>
+				</LayerCard.Body>
+			</LayerCard>
 
 			<SectionRule title={t("pages.health.lifeAiInsights")}>
 				<StatGrid columns={3}>
@@ -351,91 +377,105 @@ export default function HealthPage() {
 							subtitle={stat.subtitle}
 							icon={stat.icon}
 							trend={stat.trend}
-							className="rounded-card border-0 bg-secondary p-4 md:p-5"
 						/>
 					))}
 				</StatGrid>
 
-				<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-					<div className="rounded-card bg-secondary p-4 md:p-5">
-						<div className="mb-4 flex items-center gap-2">
+				<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
+					<LayerCard>
+						<LayerCard.Header className="items-center justify-start">
 							<ShieldCheck className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-							<p className="text-sm text-muted-foreground">{t("pages.health.aiReadinessTrend")}</p>
-						</div>
-						<LineChartWidget
-							data={readinessTrend}
-							height={200}
-							color={chart.primary}
-							valueFormatter={formatPercent}
-						/>
-					</div>
-					<div className="rounded-card bg-secondary p-4 md:p-5">
-						<div className="mb-4 flex items-center gap-2">
+							<h2 className="text-basalt-base text-muted-foreground">
+								{t("pages.health.aiReadinessTrend")}
+							</h2>
+						</LayerCard.Header>
+						<LayerCard.Body>
+							<LineChartWidget
+								data={readinessTrend}
+								height={200}
+								color={chart.primary}
+								valueFormatter={formatPercent}
+							/>
+						</LayerCard.Body>
+					</LayerCard>
+					<LayerCard>
+						<LayerCard.Header className="items-center justify-start">
 							<Zap className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-							<p className="text-sm text-muted-foreground">
+							<h2 className="text-basalt-base text-muted-foreground">
 								{t("pages.health.recommendationImpact")}
-							</p>
-						</div>
-						<BarChartWidget data={recommendationImpact} height={200} color={chart.teal} />
-					</div>
+							</h2>
+						</LayerCard.Header>
+						<LayerCard.Body>
+							<BarChartWidget data={recommendationImpact} height={200} color={chart.teal} />
+						</LayerCard.Body>
+					</LayerCard>
 				</div>
 
-				<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-					<div className="rounded-card bg-secondary p-4 md:p-5">
-						<div className="mb-4 flex items-center gap-2">
+				<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
+					<LayerCard>
+						<LayerCard.Header className="items-center justify-start">
 							<MessageSquare className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-							<p className="text-sm text-muted-foreground">{t("pages.health.promptStudio")}</p>
-						</div>
-						<InputArea
-							rows={5}
-							placeholder={t("pages.health.promptPlaceholder")}
-							aria-label={t("pages.health.promptStudio")}
-						/>
-						<div className="mt-3 flex flex-wrap gap-2">
-							{[
-								t("pages.health.summarizeWeek"),
-								t("pages.health.improveSleep"),
-								t("pages.health.boostFocus"),
-								t("pages.health.planRecovery"),
-							].map((chip) => (
-								<button
-									type="button"
-									key={chip}
-									className="rounded-full bg-card px-3 py-1 text-xs text-muted-foreground"
-								>
-									{chip}
-								</button>
-							))}
-						</div>
-						<Button className="mt-4 w-full">{t("pages.health.generateInsight")}</Button>
-					</div>
+							<h2 className="text-basalt-base text-muted-foreground">
+								{t("pages.health.promptStudio")}
+							</h2>
+						</LayerCard.Header>
+						<LayerCard.Body className="space-y-basalt-space-lg">
+							<InputArea
+								rows={5}
+								placeholder={t("pages.health.promptPlaceholder")}
+								aria-label={t("pages.health.promptStudio")}
+							/>
+							<div className="flex flex-wrap gap-basalt-space-lg">
+								{[
+									t("pages.health.summarizeWeek"),
+									t("pages.health.improveSleep"),
+									t("pages.health.boostFocus"),
+									t("pages.health.planRecovery"),
+								].map((chip) => (
+									<Button
+										variant="ghost"
+										type="button"
+										key={chip}
+										className="text-muted-foreground"
+									>
+										{chip}
+									</Button>
+								))}
+							</div>
+							<Button className="w-full">{t("pages.health.generateInsight")}</Button>
+						</LayerCard.Body>
+					</LayerCard>
 
-					<div className="rounded-card bg-secondary p-4 md:p-5">
-						<div className="mb-4 flex items-center gap-2">
+					<LayerCard>
+						<LayerCard.Header className="items-center justify-start">
 							<CheckCircle2 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-							<p className="text-sm text-muted-foreground">
+							<h2 className="text-basalt-base text-muted-foreground">
 								{t("pages.health.recommendedActions")}
-							</p>
-						</div>
-						<div className="space-y-3">
+							</h2>
+						</LayerCard.Header>
+						<LayerCard.Body className="space-y-basalt-space-lg">
 							{recommendations.map((item) => (
-								<div key={item.title} className="rounded-widget border border-border bg-card p-3">
-									<p className="text-sm text-foreground">{item.title}</p>
-									<span className="text-xs text-muted-foreground">{item.status}</span>
-								</div>
+								<LayerCard key={item.title}>
+									<p className="text-basalt-base text-foreground">{item.title}</p>
+									<span className="text-basalt-sm text-muted-foreground">{item.status}</span>
+								</LayerCard>
 							))}
-						</div>
-					</div>
+						</LayerCard.Body>
+					</LayerCard>
 
-					<div className="rounded-card bg-secondary p-4 md:p-5">
-						<div className="mb-4 flex items-center gap-2">
+					<LayerCard>
+						<LayerCard.Header className="items-center justify-start">
 							<Brain className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-							<p className="text-sm text-muted-foreground">{t("pages.health.insightTimeline")}</p>
-						</div>
-						<Timeline events={insightTimeline} />
-					</div>
+							<h2 className="text-basalt-base text-muted-foreground">
+								{t("pages.health.insightTimeline")}
+							</h2>
+						</LayerCard.Header>
+						<LayerCard.Body>
+							<Timeline events={insightTimeline} />
+						</LayerCard.Body>
+					</LayerCard>
 				</div>
 			</SectionRule>
-		</div>
+		</ShowcasePage>
 	);
 }

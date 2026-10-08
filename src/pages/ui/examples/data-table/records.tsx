@@ -71,9 +71,9 @@ const columns: DataTableColumn<(typeof records)[number]>[] = [
 		width: 240,
 		sortValue: (row) => row.name,
 		accessor: (row) => (
-			<span className="flex items-center gap-basalt-2">
+			<span className="flex items-center gap-basalt-space-lg">
 				<AvatarInitials name={row.name} colorKey={row.id} size="sm" />
-				<span className="block max-w-[210px] truncate" title={row.name}>
+				<span className="block max-w-[13.125rem] truncate" title={row.name}>
 					{row.name}
 				</span>
 			</span>
@@ -91,7 +91,7 @@ const columns: DataTableColumn<(typeof records)[number]>[] = [
 		width: 240,
 		sortable: false,
 		accessor: (row) => (
-			<span className="flex items-center gap-basalt-1">
+			<span className="flex items-center gap-basalt-space-sm">
 				{row.tags.map((tag) => (
 					<TagBadge key={tag} size="sm" name={tag} color={tagColors[tag]} />
 				))}
@@ -139,7 +139,7 @@ const columns: DataTableColumn<(typeof records)[number]>[] = [
 					target="_blank"
 					rel="noreferrer"
 					title={row.website}
-					className="inline-flex max-w-[170px] items-center gap-basalt-1 text-basalt-muted-foreground hover:text-basalt-foreground"
+					className="inline-flex max-w-[10.625rem] items-center gap-basalt-space-sm text-basalt-muted-foreground hover:text-basalt-foreground"
 				>
 					<span className="truncate">{row.website}</span>
 					<ExternalLink
@@ -156,7 +156,7 @@ const columns: DataTableColumn<(typeof records)[number]>[] = [
 
 export default function RecordsTable() {
 	return (
-		<div className="w-full space-y-basalt-2" data-demo="records-table">
+		<div className="w-full space-y-basalt-space-lg" data-demo="records-table">
 			<DataTable
 				data={records}
 				columns={columns}
@@ -168,7 +168,7 @@ export default function RecordsTable() {
 				maxHeight={300}
 				aria-label="Supplier records"
 			/>
-			<p className="text-xs text-basalt-muted-foreground">
+			<p className="text-basalt-sm text-basalt-muted-foreground">
 				6 records · Scroll horizontally for relationship details
 			</p>
 		</div>

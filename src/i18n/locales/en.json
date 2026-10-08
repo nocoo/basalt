@@ -367,7 +367,7 @@
 			"subscribe": "Subscribe",
 			"fileUpload": "File Upload",
 			"dropFilesHere": "Drop files here",
-			"fileTypes": "PNG, JPG, or SVG up to 4MB",
+			"fileTypes": "PNG, JPG, or PDF up to 4MB",
 			"browseFiles": "Browse files",
 			"successState": "Success State",
 			"formSubmitted": "Form submitted",

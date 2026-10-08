@@ -78,14 +78,21 @@ function fixtureProps(root: string, sourceFile = "widget.ts", slug = "widget") {
 	return generateFixture(root, sourceFile, slug)[slug]?.[0]?.props;
 }
 
-let productionPropsCache: ReturnType<typeof loadProductionProps> | undefined;
+let productionApiCache: ReturnType<typeof generateCatalogApi> | undefined;
 
-function loadProductionProps() {
-	const generated = generateCatalogApi({
+function generateProductionApi() {
+	productionApiCache ??= generateCatalogApi({
 		repoRoot,
 		tsconfigPath: DEFAULT_TSCONFIG,
 		targets: CATALOG_API_TARGETS,
 	});
+	return productionApiCache;
+}
+
+let productionPropsCache: ReturnType<typeof loadProductionProps> | undefined;
+
+function loadProductionProps() {
+	const generated = generateProductionApi();
 	const separatelyAssertedMultiSurfaceSlugs = new Set(["input-group", "select"]);
 	return Object.fromEntries(
 		Object.entries(generated)
@@ -2852,11 +2859,7 @@ export interface WidgetProps {
 	});
 
 	it("keeps one explicit public surface per production target", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(
 			Object.fromEntries(
 				Object.entries(generated).map(([slug, surfaces]) => [
@@ -3126,11 +3129,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts five InputGroup surfaces with wrapper defaults and an empty Suffix", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated["input-group"]).toEqual([
 			{
@@ -3227,11 +3226,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts SensitiveInput props from SensitiveInputProps as required reveal and hide labels", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated["sensitive-input"]).toEqual([
 			{
@@ -3349,11 +3344,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts Checkbox props from CheckboxProps as an optional checked union", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated.checkbox?.map((surface) => surface.name)).toEqual([
 			"Checkbox",
@@ -3420,11 +3411,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts Radio props from RadioProps as a required string value", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated.radio?.map((surface) => surface.name)).toEqual([
 			"Radio",
@@ -3463,11 +3450,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts Switch props from SwitchProps as optional checked and size", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated.switch?.map((surface) => surface.name)).toEqual([
 			"Switch",
@@ -3515,11 +3498,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts Select props from seven named types as twelve local rows", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(Object.keys(generated)).toHaveLength(120);
 		expect(generated.select).toEqual([
 			{
@@ -3736,11 +3715,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts the controlled SegmentControl surface without inherited fieldset props", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(generated["segment-control"]).toEqual([
 			{
 				name: "SegmentControl",
@@ -3794,11 +3769,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts the PageHeader surface without inherited header props", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(generated["page-header"]).toEqual([
 			{
 				name: "PageHeader",
@@ -3843,11 +3814,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts the SectionRule surface without inherited section props", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(generated["section-rule"]).toEqual([
 			{
 				name: "SectionRule",
@@ -3882,11 +3849,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts the StatStrip surface without inherited dl props", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(generated["stat-strip"]).toEqual([
 			{
 				name: "StatStrip",
@@ -3918,11 +3881,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts ConfirmDialog and useConfirm surfaces without Radix or DOM inventory", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(generated["confirm-dialog"]?.map((surface) => surface.name)).toEqual([
 			"ConfirmDialog",
 			"useConfirm",
@@ -3960,11 +3919,7 @@ export interface WidgetProps {
 	}, 60_000);
 
 	it("extracts the TablePager surface without inherited DOM inventory", () => {
-		const generated = generateCatalogApi({
-			repoRoot,
-			tsconfigPath: DEFAULT_TSCONFIG,
-			targets: CATALOG_API_TARGETS,
-		});
+		const generated = generateProductionApi();
 		expect(generated["table-pager"]).toEqual([
 			{
 				name: "TablePager",
@@ -4852,7 +4807,7 @@ export interface WidgetProps {
 	});
 
 	it("produces the same complete API set on a second generation", () => {
-		const first = generateCatalogApiFiles(repoRoot);
+		const first = generateCatalogApiFiles(repoRoot, generateProductionApi());
 		const second = generateCatalogApiFiles(repoRoot);
 		expect(first).toEqual(second);
 		const slugs = Object.keys(first)
@@ -4946,7 +4901,7 @@ export interface WidgetProps {
 
 	it("checks the complete generated API set and rejects extra shards", () => {
 		const root = fixture({});
-		const files = generateCatalogApiFiles(repoRoot);
+		const files = generateCatalogApiFiles(repoRoot, generateProductionApi());
 		expect(() => checkCatalogApiFiles(root, files)).toThrow(/missing catalog API/);
 		writeCatalogApiFiles(root, files);
 		expect(() => checkCatalogApiFiles(root, files)).not.toThrow();

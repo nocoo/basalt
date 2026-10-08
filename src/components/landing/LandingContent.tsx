@@ -178,7 +178,7 @@ export function LandingContent({
 								href={SITE.github}
 								target="_blank"
 								rel="noopener noreferrer"
-								className="landing-github [&_svg]:size-[18px]"
+								className="landing-github [&_svg]:size-[1.125rem]"
 								aria-label="GitHub repository"
 							>
 								<span className="sr-only">GitHub repository</span>

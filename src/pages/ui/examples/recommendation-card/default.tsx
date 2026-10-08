@@ -31,14 +31,14 @@ export default function RecommendationDemo() {
 	const [run, setRun] = useState(0);
 	const [notice, setNotice] = useState("");
 	return (
-		<div className="w-full space-y-basalt-3">
+		<div className="w-full space-y-basalt-space-lg">
 			<RecommendationCard
 				key={run}
 				title="Want me to place this restock order?"
 				options={options}
 				onAccept={(option) => setNotice(`Accepted: ${option.label}`)}
 			/>
-			<div className="flex items-center gap-basalt-3">
+			<div className="flex items-center gap-basalt-space-lg">
 				<Button
 					variant="outline"
 					size="sm"
@@ -49,7 +49,7 @@ export default function RecommendationDemo() {
 				>
 					Reset recommendation
 				</Button>
-				<p role="status" className="text-xs text-basalt-muted-foreground">
+				<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
 					{notice}
 				</p>
 			</div>

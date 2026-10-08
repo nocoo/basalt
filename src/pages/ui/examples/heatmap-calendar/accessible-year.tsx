@@ -24,41 +24,50 @@ export default function HeatmapCalendarAccessibleYear() {
 	const data = generateYearData(year);
 
 	return (
-		<div className="w-full max-w-4xl space-y-3">
-			<div className="flex flex-wrap items-center gap-3">
-				<span className="text-xs font-medium text-basalt-muted-foreground">Select Year:</span>
+		<div className="w-full max-w-4xl space-y-basalt-space-lg">
+			<div className="flex flex-wrap items-center gap-basalt-space-lg">
+				<span className="text-basalt-sm font-medium text-basalt-muted-foreground">
+					Select Year:
+				</span>
 				<Button
 					size="sm"
-					variant={year === 2024 ? "default" : "outline"}
+					variant="outline"
+					aria-pressed={year === 2024}
 					onClick={() => setYear(2024)}
 				>
 					2024 (Leap)
 				</Button>
 				<Button
 					size="sm"
-					variant={year === 2025 ? "default" : "outline"}
+					variant="outline"
+					aria-pressed={year === 2025}
 					onClick={() => setYear(2025)}
 				>
 					2025
 				</Button>
 				<Button
 					size="sm"
-					variant={year === 2026 ? "default" : "outline"}
+					variant="outline"
+					aria-pressed={year === 2026}
 					onClick={() => setYear(2026)}
 				>
 					2026
 				</Button>
 			</div>
 
-			<p className="text-xs text-basalt-muted-foreground">
-				Keyboard navigation: Press <kbd className="rounded border px-1">Tab</kbd> to enter the
-				calendar. Use <kbd className="rounded border px-1">↑</kbd>/
-				<kbd className="rounded border px-1">↓</kbd> to navigate days (±1 day vertically), and{" "}
-				<kbd className="rounded border px-1">←</kbd>/<kbd className="rounded border px-1">→</kbd> to
-				navigate weeks (±7 days horizontally). <kbd className="rounded border px-1">Home</kbd>/
-				<kbd className="rounded border px-1">End</kbd> jump to the first/last day of the year.{" "}
-				<kbd className="rounded border px-1">Escape</kbd> dismisses the tooltip. Press{" "}
-				<kbd className="rounded border px-1">Tab</kbd> once to exit the entire calendar.
+			<p className="text-basalt-sm text-basalt-muted-foreground">
+				Keyboard navigation: Press{" "}
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">Tab</kbd> to enter the
+				calendar. Use <kbd className="rounded-basalt-sm border px-basalt-space-sm">↑</kbd>/
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">↓</kbd> to navigate days (±1
+				day vertically), and <kbd className="rounded-basalt-sm border px-basalt-space-sm">←</kbd>/
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">→</kbd> to navigate weeks (±7
+				days horizontally). <kbd className="rounded-basalt-sm border px-basalt-space-sm">Home</kbd>/
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">End</kbd> jump to the
+				first/last day of the year.{" "}
+				<kbd className="rounded-basalt-sm border px-basalt-space-sm">Escape</kbd> dismisses the
+				tooltip. Press <kbd className="rounded-basalt-sm border px-basalt-space-sm">Tab</kbd> once
+				to exit the entire calendar.
 			</p>
 
 			<HeatmapCalendar

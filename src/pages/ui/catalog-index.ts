@@ -1,4 +1,9 @@
-import type { CatalogCategory, CatalogEntry, CatalogKind } from "./catalog";
+import {
+	CATALOG_CATEGORIES,
+	type CatalogCategory,
+	type CatalogEntry,
+	type CatalogKind,
+} from "./catalog";
 import type { CatalogPageStatus } from "./catalog-page-status";
 import type { CatalogScenario } from "./catalog-scenario";
 import type { CatalogDocs } from "./catalog-source";
@@ -54,15 +59,14 @@ interface CatalogIndexSource {
 	heroForSlug: (slug: string) => CatalogScenario | undefined;
 }
 
-const INDEX_GROUPS: ReadonlyArray<Pick<CatalogIndexGroup, "id" | "label">> = [
-	{ id: "component", label: "Components" },
-	{ id: "chart", label: "Charts" },
-	{ id: "block", label: "Blocks" },
-];
+const INDEX_GROUPS = CATALOG_CATEGORIES;
 
 const KNOWN_CATEGORIES = new Set<CatalogCategory>(INDEX_GROUPS.map((group) => group.id));
 
-const CATEGORY_FILTERS = new Set<CatalogIndexCategory>(["all", "component", "chart", "block"]);
+const CATEGORY_FILTERS = new Set<CatalogIndexCategory>([
+	"all",
+	...CATALOG_CATEGORIES.map((category) => category.id),
+]);
 const RELEASE_FILTERS = new Set<CatalogIndexRelease>(["all", "stable", "catalog"]);
 const STATUS_FILTERS = new Set<CatalogIndexStatus>(["all", "ready", "planned"]);
 const OWNED_QUERY_KEYS = new Set<string>(CATALOG_INDEX_QUERY_KEYS);

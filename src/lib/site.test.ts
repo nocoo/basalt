@@ -118,11 +118,11 @@ describe("site metadata", () => {
 	it("groups the full catalog by family and links each surface", () => {
 		const full = renderLlmsFull([
 			{ slug: "line", name: "Line", category: "chart" },
-			{ slug: "button", name: "Button", category: "component" },
+			{ slug: "button", name: "Button", category: "action" },
 			{ slug: "page-header", name: "Page Header", category: "block" },
-			{ slug: "text", name: "Text", category: "component" },
+			{ slug: "text", name: "Text", category: "action" },
 		]);
-		expect(full).toContain("## Components");
+		expect(full).toContain("## Actions");
 		expect(full.indexOf("- [Button]")).toBeLessThan(full.indexOf("- [Text]"));
 		expect(full).toContain(`${SITE_ORIGIN}/ui/line`);
 		expect(full).toContain("## Charts");
@@ -132,7 +132,7 @@ describe("site metadata", () => {
 
 	it("keeps unknown catalog families out of the grouped sections", () => {
 		const full = renderLlmsFull([
-			{ slug: "ghost", name: "Ghost", category: "component" },
+			{ slug: "ghost", name: "Ghost", category: "action" },
 			{ slug: "stray", name: "Stray", category: "chart" },
 		]);
 		expect(full).toContain("/ui/ghost");
@@ -163,10 +163,8 @@ describe("site metadata", () => {
 	});
 
 	it("ignores catalog rows whose family is not a published heading", () => {
-		const full = renderLlmsFull([
-			{ slug: "ghost", name: "Ghost", category: "other" as "component" },
-		]);
-		expect(full).toContain("## Components");
+		const full = renderLlmsFull([{ slug: "ghost", name: "Ghost", category: "other" as "action" }]);
+		expect(full).toContain("## Actions");
 		expect(full).not.toContain("/ui/ghost");
 	});
 });

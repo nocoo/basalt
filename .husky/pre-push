@@ -1,5 +1,6 @@
 set -e
 
+bun run design:check
 bun run build
 bun run test:coverage
 bun run lint

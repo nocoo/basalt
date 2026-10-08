@@ -7,10 +7,10 @@ export default function RadioControlledAndError() {
 	return (
 		<Radio.Group value={value} onValueChange={setValue} error={value ? undefined : "Pick a plan"}>
 			<Radio.Legend>Plan</Radio.Legend>
-			<Label className="flex items-center gap-2">
+			<Label className="flex items-center gap-basalt-space-lg">
 				<Radio.Item value="a" /> Alpha
 			</Label>
-			<Label className="flex items-center gap-2">
+			<Label className="flex items-center gap-basalt-space-lg">
 				<Radio.Item value="b" size="sm" /> Beta
 			</Label>
 		</Radio.Group>

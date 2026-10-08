@@ -7,9 +7,9 @@ import { useState } from "react";
 export default function ResourceDetailSkeleton() {
 	const [loading, setLoading] = useState(true);
 	return (
-		<div className="w-full space-y-4">
-			<div className="flex flex-wrap items-center justify-between gap-3">
-				<h3 className="text-lg font-semibold">Resource detail</h3>
+		<div className="w-full space-y-basalt-space-lg">
+			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
+				<h3 className="text-basalt-xl font-semibold">Resource detail</h3>
 				<Button variant="outline" size="sm" onClick={() => setLoading(!loading)}>
 					{loading ? "Show loaded detail" : "Replay loading"}
 				</Button>
@@ -17,12 +17,12 @@ export default function ResourceDetailSkeleton() {
 			<div role="status" aria-live="polite" className="sr-only">
 				{loading ? "Loading resource detail" : "Resource detail loaded"}
 			</div>
-			<div aria-busy={loading} className="space-y-4">
-				<LayerCard outlined className="flex h-44 items-center sm:h-28 gap-4">
-					<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-basalt-lg bg-basalt-muted text-xl font-semibold">
+			<div aria-busy={loading} className="space-y-basalt-space-lg">
+				<LayerCard outlined className="flex h-44 items-center sm:h-28 gap-basalt-space-lg">
+					<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-basalt-lg bg-basalt-muted text-basalt-2xl font-semibold">
 						{loading ? <SkeletonLine minWidth={100} maxWidth={100} height={56} /> : "A"}
 					</div>
-					<div className="min-w-0 flex-1 space-y-3">
+					<div className="min-w-0 flex-1 space-y-basalt-space-lg">
 						{loading ? (
 							<>
 								<SkeletonLine minWidth={48} maxWidth={48} height={20} />
@@ -30,17 +30,17 @@ export default function ResourceDetailSkeleton() {
 							</>
 						) : (
 							<>
-								<h4 className="text-xl font-semibold">Atlas production</h4>
-								<p className="text-sm text-basalt-muted-foreground">
+								<h4 className="text-basalt-2xl font-semibold">Atlas production</h4>
+								<p className="text-basalt-base text-basalt-muted-foreground">
 									A shared home for your production services.
 								</p>
 							</>
 						)}
 					</div>
 				</LayerCard>
-				<div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_240px]">
-					<LayerCard outlined className="space-y-6">
-						<div className="h-60 space-y-3 sm:h-28">
+				<div className="grid gap-basalt-space-lg lg:grid-cols-[minmax(0,1fr)_15rem]">
+					<LayerCard outlined className="space-y-basalt-space-lg">
+						<div className="h-60 space-y-basalt-space-lg sm:h-28">
 							{loading ? (
 								[80, 100, 94, 62].map((width) => (
 									<SkeletonLine key={width} minWidth={width} maxWidth={width} height={12} />
@@ -48,7 +48,7 @@ export default function ResourceDetailSkeleton() {
 							) : (
 								<>
 									<h4 className="font-medium">Overview</h4>
-									<p className="text-sm leading-6 text-basalt-muted-foreground">
+									<p className="text-basalt-base leading-basalt-relaxed text-basalt-muted-foreground">
 										Atlas handles production traffic across three regions. Deployments are reviewed
 										before release, with health checks on every route.
 									</p>
@@ -60,24 +60,24 @@ export default function ResourceDetailSkeleton() {
 								<SkeletonLine minWidth={100} maxWidth={100} height={176} />
 							) : (
 								<div className="text-center">
-									<p className="text-4xl font-semibold tabular-nums">99.98%</p>
-									<p className="mt-2 text-sm text-basalt-muted-foreground">
+									<p className="text-basalt-5xl font-semibold tabular-nums">99.98%</p>
+									<p className="mt-basalt-space-lg text-basalt-base text-basalt-muted-foreground">
 										Availability over the last 30 days
 									</p>
 								</div>
 							)}
 						</div>
 					</LayerCard>
-					<LayerCard outlined className="space-y-6">
-						<h4 className="text-sm font-medium">Details</h4>
+					<LayerCard outlined className="space-y-basalt-space-lg">
+						<h4 className="text-basalt-base font-medium">Details</h4>
 						{[
 							{ name: "Status", value: "Healthy" },
 							{ name: "Region", value: "US East · EU West" },
 							{ name: "Owner", value: "Platform team" },
 							{ name: "Last deployment", value: "Today, 09:42" },
 						].map((item) => (
-							<div key={item.name} className="h-12 space-y-2">
-								<p className="text-xs text-basalt-muted-foreground">{item.name}</p>
+							<div key={item.name} className="h-12 space-y-basalt-space-lg">
+								<p className="text-basalt-sm text-basalt-muted-foreground">{item.name}</p>
 								{loading ? (
 									<SkeletonLine minWidth={78} maxWidth={78} height={12} />
 								) : item.name === "Status" ? (
@@ -85,7 +85,7 @@ export default function ResourceDetailSkeleton() {
 										{item.value}
 									</Badge>
 								) : (
-									<p className="text-sm">{item.value}</p>
+									<p className="text-basalt-base">{item.value}</p>
 								)}
 							</div>
 						))}

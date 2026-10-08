@@ -12,38 +12,37 @@ export function AccentPicker() {
 		<Popover>
 			<HeaderTooltip label={t("common.themePalette")}>
 				<PopoverTrigger asChild>
-					<Button
-						variant="ghost"
-						size="icon"
-						className="h-8 w-8"
-						aria-label={t("common.themePalette")}
-					>
+					<Button variant="ghost" size="icon" className="w-8" aria-label={t("common.themePalette")}>
 						<span
-							className="h-3.5 w-3.5 rounded-full ring-1 ring-basalt-border"
+							className="h-3.5 w-3.5 rounded-basalt-full ring-1 ring-basalt-border"
 							style={{ background: "hsl(var(--basalt-primary))" }}
 							aria-hidden="true"
 						/>
 					</Button>
 				</PopoverTrigger>
 			</HeaderTooltip>
-			<PopoverContent align="end" className="w-56 p-2">
-				<p className="mb-2 px-1 text-xs text-basalt-muted-foreground">{t("common.themePalette")}</p>
-				<div className="grid grid-cols-6 gap-1.5">
+			<PopoverContent align="end" className="w-56 p-basalt-space-lg">
+				<p className="mb-basalt-space-lg px-basalt-space-sm text-basalt-sm text-basalt-muted-foreground">
+					{t("common.themePalette")}
+				</p>
+				<div className="grid grid-cols-6 gap-basalt-space-md">
 					{swatches.map((swatch) => {
 						const selected = swatch.id === accent;
 						return (
 							<button
 								key={swatch.id}
 								type="button"
-								className={`flex h-8 w-8 items-center justify-center rounded-md ${
-									selected ? "ring-2 ring-basalt-foreground" : "ring-1 ring-basalt-border"
+								className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${
+									selected
+										? "bg-basalt-selected ring-2 ring-basalt-primary"
+										: "ring-1 ring-basalt-border"
 								}`}
 								aria-label={swatch.label}
 								aria-pressed={selected}
 								onClick={() => setAccent(swatch.id)}
 							>
 								<span
-									className="h-4 w-4 rounded-full"
+									className="h-4 w-4 rounded-basalt-full"
 									style={{ background: `hsl(var(${swatch.token}))` }}
 									aria-hidden="true"
 								/>

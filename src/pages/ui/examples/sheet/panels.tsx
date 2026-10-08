@@ -12,7 +12,7 @@ import {
 
 export default function SheetPanels() {
 	return (
-		<div className="flex flex-wrap gap-3">
+		<div className="flex flex-wrap gap-basalt-space-lg">
 			{(["right", "left", "top", "bottom"] as const).map((side) => (
 				<Sheet key={side}>
 					<SheetTrigger asChild>
@@ -25,7 +25,7 @@ export default function SheetPanels() {
 								The panel slides from the {side} as the workspace softly blurs behind it.
 							</SheetDescription>
 						</SheetHeader>
-						<dl className="grid grid-cols-2 gap-3 py-4 text-sm">
+						<dl className="grid grid-cols-2 gap-basalt-space-lg py-basalt-space-lg text-basalt-base">
 							<dt className="text-basalt-muted-foreground">Company</dt>
 							<dd>Acme Studio</dd>
 							<dt className="text-basalt-muted-foreground">Account owner</dt>

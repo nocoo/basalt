@@ -10,7 +10,16 @@ Direction: [INTEGRATION.md](INTEGRATION.md); numbered `docs/01`–`03` describe 
 - This file is the contract; hooks, CI and configuration enforce it. Raise weaker enforcement instead of lowering this contract.
 - Human/API docs: [README.md](README.md), [INTEGRATION.md](INTEGRATION.md) and the [package README](packages/basalt/README.md). Version: root and `packages/basalt/package.json` must match; the site uses `src/lib/version.ts`. Enforcement: `.husky/`, CI/release workflows, `vitest.config.ts`, package verification and consumer scripts. Package contract: `packages/basalt/ai/` and `packages/basalt/scripts/verify-pack.ts`. Machine rules/accidents: global `AGENTS.md` and `rules/`; [Retrospective.md](Retrospective.md).
 
+## Design contract
+
+[DESIGN.md](DESIGN.md) owns component categories, intrinsic sizes, the four-step spacing scale, typography, colors, radii and motion. Components and catalog examples follow it. `bun run design:check` runs only at pre-push, not in normal build/dev or pre-commit.
+
 ## Project invariants
+
+- Catalog routes inside `DashboardLayout` use app-local `ShowcasePage`, including all category overviews, documentation and source states. `ContentIsland` owns the page inset; card slots own their padding. Follow [DESIGN.md](DESIGN.md#page-composition), not copied wrapper styles. Structural/token checks run at pre-push only; tests exercise isolated rule fixtures.
+- Spacing is role-based: compact controls keep 2/4/6/8px; cards and layouts select 12/16/24/32px (`sm/md/lg/xl`, expressed in rem). Cards/grids default to 16px, page sections to 24px; never enlarge shared control tokens to fix a container.
+- Container boundaries have one owner: full-width disclosures use `LayerCard.Header asChild` on `CollapsibleTrigger`, expanded fields use Body inside unstyled content, attached code owns its inset. No native dashboard disclosures, painted/inset-free bars, `p-0` slot repairs or code-frame CSS patches. See DESIGN.md container boundary ownership.
+- Selection uses brighter selected tokens and readable labels without decorative side bars or frames, separate from hover/focus/disabled. Never use decorative accent/muted fills for selection. Sidebar group labels are uppercase disclosures, not destination rows. See [DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy).
 
 - Root package is a private catalog; publish only `packages/basalt`. Keep CSS tokens and both Tailwind/standalone entrypoints in the verified tarball; never include secrets.
 - Preserve matte surface hierarchy, theme/contrast/accessibility behavior, public API and React client/SSR boundaries described in the integration guide.

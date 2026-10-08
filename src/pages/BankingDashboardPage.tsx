@@ -1,4 +1,5 @@
 import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import {
 	ArrowDownLeft,
 	ArrowUpRight,
@@ -16,7 +17,7 @@ import { RadialProgressCard } from "@/components/dashboard/RadialProgressCard";
 import { RecentListCard } from "@/components/dashboard/RecentListCard";
 import { SankeyCard } from "@/components/dashboard/SankeyCard";
 import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
-import { ShowcaseHeader } from "@/components/ShowcaseHeader";
+import { ShowcasePage } from "@/components/ShowcasePage";
 
 const transfers = [
 	{ name: "Wire transfer", amount: "$120k", direction: "in" },
@@ -59,51 +60,45 @@ export default function BankingDashboardPage() {
 	];
 
 	return (
-		<div className="space-y-8">
-			<ShowcaseHeader
-				title={t("pages.banking.title")}
-				description={t("pages.banking.description")}
-			/>
-
+		<ShowcasePage
+			title={t("pages.banking.title")}
+			description={t("pages.banking.description")}
+			headerVariant="compact"
+		>
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (
-					<StatCard
-						key={stat.title}
-						{...stat}
-						className="rounded-card border-0 bg-secondary p-4 md:p-5"
-					/>
+					<StatCard key={stat.title} {...stat} />
 				))}
 			</StatGrid>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<StackedAreaCard />
 				<MiniDonutCard />
 				<BulletChartCard />
 			</div>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<SankeyCard />
 				<GroupedBarCard />
 				<RadialProgressCard />
 			</div>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<ItemListCard />
 				<RecentListCard />
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<CreditCard className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.banking.recentTransfers")}</p>
-					</div>
-					<div className="space-y-3">
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.banking.recentTransfers")}
+						</h2>
+					</LayerCard.Header>
+					<LayerCard.Body className="space-y-basalt-space-lg">
 						{transfers.map((item) => (
-							<div
-								key={item.name}
-								className="flex items-center justify-between rounded-widget bg-card p-3"
-							>
-								<div className="flex items-center gap-3">
+							<LayerCard key={item.name} className="flex items-center justify-between">
+								<div className="flex min-w-0 items-center gap-basalt-space-lg">
 									<div
-										className={`flex h-8 w-8 items-center justify-center rounded-lg ${item.direction === "in" ? "bg-success/10" : "bg-destructive/10"}`}
+										className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${item.direction === "in" ? "bg-success/10" : "bg-destructive/10"}`}
 									>
 										{item.direction === "in" ? (
 											<ArrowDownLeft className="h-3.5 w-3.5 text-success" strokeWidth={1.5} />
@@ -111,14 +106,14 @@ export default function BankingDashboardPage() {
 											<ArrowUpRight className="h-3.5 w-3.5 text-destructive" strokeWidth={1.5} />
 										)}
 									</div>
-									<span className="text-sm text-foreground">{item.name}</span>
+									<span className="text-basalt-base text-foreground">{item.name}</span>
 								</div>
-								<span className="text-sm font-medium text-foreground">{item.amount}</span>
-							</div>
+								<span className="text-basalt-base font-medium text-foreground">{item.amount}</span>
+							</LayerCard>
 						))}
-					</div>
-				</div>
+					</LayerCard.Body>
+				</LayerCard>
 			</div>
-		</div>
+		</ShowcasePage>
 	);
 }

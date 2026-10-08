@@ -1,6 +1,7 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { DatePicker, type DatePickerRange } from "@nocoo/basalt/components/date-picker";
 import { FilterBar, FilterChip } from "@nocoo/basalt/components/filter-bar";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useState } from "react";
 
 const records = [
@@ -19,7 +20,7 @@ export default function AnalyticsFilters() {
 		(row) => (!range.from || row.date >= range.from) && (!range.to || row.date <= range.to),
 	);
 	return (
-		<div className="w-full space-y-5">
+		<div className="w-full space-y-basalt-space-lg">
 			<FilterBar
 				label="Analytics filters"
 				active={!!range.from || !!range.to}
@@ -53,15 +54,15 @@ export default function AnalyticsFilters() {
 					This week
 				</Button>
 			</FilterBar>
-			<div className="rounded-basalt-lg border border-basalt-border bg-basalt-card p-5">
-				<p className="text-sm text-basalt-muted-foreground">Requests in selected period</p>
-				<p role="status" className="mt-2 text-3xl font-semibold tabular-nums">
+			<LayerCard>
+				<p className="text-basalt-base text-basalt-muted-foreground">Requests in selected period</p>
+				<p role="status" className="mt-basalt-space-lg text-basalt-4xl font-semibold tabular-nums">
 					{rows.reduce((sum, row) => sum + row.requests, 0).toLocaleString()}
 				</p>
-				<p className="mt-2 text-xs text-basalt-muted-foreground">
+				<p className="mt-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
 					September 2026 sample · date filtering belongs to this page.
 				</p>
-			</div>
+			</LayerCard>
 		</div>
 	);
 }

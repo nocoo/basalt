@@ -25,7 +25,7 @@ export default function ListDetailPage() {
 						</LinkButton>
 					}
 				/>
-				<div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-3 md:pb-3">
+				<div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-basalt-space-lg md:pb-basalt-space-lg">
 					<ContentIsland mobileSurface="edge-to-edge" className="md:overflow-hidden">
 						<ResponsiveMasterDetail
 							label="Field notebook"
@@ -39,7 +39,7 @@ export default function ListDetailPage() {
 							detailLabel="Selected note"
 							backLabel="Back to notes"
 							list={
-								<div className="space-y-1 p-3">
+								<div className="space-y-basalt-space-sm p-basalt-space-lg">
 									{notes.map((note) => (
 										<Button
 											key={note.id}
@@ -54,10 +54,13 @@ export default function ListDetailPage() {
 								</div>
 							}
 						>
-							<article className="space-y-5 p-4">
-								<h2 className="font-basalt-display text-2xl">Field note {selected}</h2>
+							<article className="space-y-basalt-space-lg p-basalt-space-lg">
+								<h2 className="font-basalt-display text-basalt-3xl">Field note {selected}</h2>
 								{Array.from({ length: 18 }, (_, index) => (
-									<p key={`paragraph-${index}`} className="max-w-prose text-base leading-relaxed">
+									<p
+										key={`paragraph-${index}`}
+										className="max-w-prose text-basalt-lg leading-basalt-relaxed"
+									>
 										Observation {index + 1}: The list and the selected detail share a bounded
 										workspace on a wide screen. On a narrow screen only one region is visible. The
 										document scrolls naturally, and returning to the list restores focus to the

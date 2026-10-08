@@ -1,3 +1,4 @@
+import { Button } from "@nocoo/basalt/components/button";
 import {
 	Dialog,
 	DialogClose,
@@ -8,14 +9,15 @@ import {
 	DialogTitle,
 } from "@nocoo/basalt/components/dialog";
 import { Input } from "@nocoo/basalt/components/input";
+import { InputArea } from "@nocoo/basalt/components/input-area";
 import { Label } from "@nocoo/basalt/components/label";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Separator } from "@nocoo/basalt/components/separator";
 import { toast } from "@nocoo/basalt/components/toast";
 import { AlertTriangle, Bell, CheckCircle2, Info, XCircle } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import type { ToastVariant } from "@/models/types";
 import { useInteractionShowcaseViewModel } from "@/viewmodels/useInteractionShowcaseViewModel";
 
@@ -66,29 +68,35 @@ function ToastSection() {
 
 	return (
 		<SectionRule title={t("pages.interactionShowcase.toastNotifications")}>
-			<p className="text-xs text-muted-foreground mb-4">
+			<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg">
 				{t("pages.interactionShowcase.toastDesc")}
 			</p>
-			<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2 lg:grid-cols-3">
 				{toasts.map((t) => {
 					const Icon = VARIANT_ICON[t.variant];
 					const colorClass = VARIANT_STYLE[t.variant];
 					return (
-						<button
+						<Button
+							variant="outline"
 							type="button"
 							key={t.id}
 							onClick={() => fireToast(t.variant, t.title, t.description)}
-							className="flex items-start gap-3 rounded-widget border border-border bg-card p-3 text-left transition-colors hover:bg-accent/50"
+							className="items-start justify-start text-left"
 						>
-							<Icon className={`h-4 w-4 mt-0.5 shrink-0 ${colorClass}`} strokeWidth={1.5} />
+							<Icon
+								className={`h-4 w-4 mt-basalt-space-xs shrink-0 ${colorClass}`}
+								strokeWidth={1.5}
+							/>
 							<div className="min-w-0">
-								<p className="text-sm font-medium text-foreground">{t.title}</p>
-								<p className="text-xs text-muted-foreground mt-0.5 line-clamp-2">{t.description}</p>
-								<span className="mt-1.5 inline-block rounded-sm bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+								<p className="text-basalt-base font-medium text-foreground">{t.title}</p>
+								<p className="text-basalt-sm text-muted-foreground mt-basalt-space-xs line-clamp-2">
+									{t.description}
+								</p>
+								<span className="mt-basalt-space-md inline-block rounded-basalt-sm bg-muted px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-muted-foreground">
 									{t.variantLabel}
 								</span>
 							</div>
-						</button>
+						</Button>
 					);
 				})}
 			</div>
@@ -107,10 +115,10 @@ function DialogSection() {
 
 	return (
 		<SectionRule title={t("pages.interactionShowcase.dialogs")}>
-			<p className="text-xs text-muted-foreground mb-4">
+			<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg">
 				{t("pages.interactionShowcase.dialogDesc")}
 			</p>
-			<div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-3">
 				{dialogs.map((d) => {
 					const styleLabel =
 						d.style === "info"
@@ -119,18 +127,19 @@ function DialogSection() {
 								? t("pages.interactionShowcase.formInput")
 								: t("pages.interactive.destructive");
 					return (
-						<button
+						<Button
+							variant="outline"
 							type="button"
 							key={d.id}
 							onClick={() => openDialog(d.id)}
-							className="flex flex-col items-start gap-2 rounded-widget border border-border bg-card p-3 text-left transition-colors hover:bg-accent/50"
+							className="flex-col items-start text-left"
 						>
-							<p className="text-sm font-medium text-foreground">{d.title}</p>
-							<p className="text-xs text-muted-foreground line-clamp-2">{d.description}</p>
-							<span className="mt-auto rounded-sm bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+							<p className="text-basalt-base font-medium text-foreground">{d.title}</p>
+							<p className="text-basalt-sm text-muted-foreground line-clamp-2">{d.description}</p>
+							<span className="mt-auto rounded-basalt-sm bg-muted px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-muted-foreground">
 								{styleLabel}
 							</span>
-						</button>
+						</Button>
 					);
 				})}
 			</div>
@@ -145,12 +154,9 @@ function DialogSection() {
 						</DialogHeader>
 						<DialogFooter>
 							<DialogClose asChild>
-								<button
-									type="button"
-									className="rounded-widget bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-								>
+								<Button variant="default" type="button">
 									{t("pages.interactionShowcase.gotIt")}
-								</button>
+								</Button>
 							</DialogClose>
 						</DialogFooter>
 					</DialogContent>
@@ -171,16 +177,14 @@ function DialogSection() {
 							<DialogDescription>{current.description}</DialogDescription>
 						</DialogHeader>
 						<Separator className="bg-border" />
-						<DialogFooter className="gap-2 sm:gap-0">
+						<DialogFooter className="gap-basalt-space-lg sm:gap-0">
 							<DialogClose asChild>
-								<button
-									type="button"
-									className="rounded-widget bg-card px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-								>
+								<Button variant="secondary" type="button">
 									{t("common.cancel")}
-								</button>
+								</Button>
 							</DialogClose>
-							<button
+							<Button
+								variant="destructive"
 								type="button"
 								onClick={() => {
 									closeDialog();
@@ -188,10 +192,9 @@ function DialogSection() {
 										description: t("pages.interactionShowcase.accountDeletedDesc"),
 									});
 								}}
-								className="rounded-widget bg-destructive px-4 py-2 text-sm font-medium text-destructive-foreground transition-colors hover:bg-destructive/90"
 							>
 								{t("common.delete")}
-							</button>
+							</Button>
 						</DialogFooter>
 					</DialogContent>
 				)}
@@ -228,43 +231,35 @@ function FormDialogContent({
 				<DialogDescription>{description}</DialogDescription>
 			</DialogHeader>
 			{!submitted && (
-				<form onSubmit={handleSubmit} className="space-y-4">
-					<div className="space-y-2">
-						<Label htmlFor="feedback-name" className="text-sm text-foreground">
+				<form onSubmit={handleSubmit} className="space-y-basalt-space-lg">
+					<div className="space-y-basalt-space-lg">
+						<Label htmlFor="feedback-name" className="text-foreground">
 							{t("pages.interactionShowcase.yourName")}
 						</Label>
 						<Input
 							id="feedback-name"
 							placeholder={t("pages.interactionShowcase.yourNamePlaceholder")}
-							className="rounded-widget border-border bg-card text-sm focus-visible:ring-primary"
 						/>
 					</div>
-					<div className="space-y-2">
-						<Label htmlFor="feedback-message" className="text-sm text-foreground">
+					<div className="space-y-basalt-space-lg">
+						<Label htmlFor="feedback-message" className="text-foreground">
 							{t("pages.interactionShowcase.message")}
 						</Label>
-						<textarea
+						<InputArea
 							id="feedback-message"
 							rows={3}
 							placeholder={t("pages.interactionShowcase.messagePlaceholder")}
-							className="w-full rounded-widget border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-primary"
 						/>
 					</div>
-					<DialogFooter className="gap-2 sm:gap-0">
+					<DialogFooter className="gap-basalt-space-lg sm:gap-0">
 						<DialogClose asChild>
-							<button
-								type="button"
-								className="rounded-widget bg-card px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-							>
+							<Button variant="secondary" type="button">
 								{t("common.cancel")}
-							</button>
+							</Button>
 						</DialogClose>
-						<button
-							type="submit"
-							className="rounded-widget bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
-						>
+						<Button variant="default" type="submit">
 							{t("common.submit")}
-						</button>
+						</Button>
 					</DialogFooter>
 				</form>
 			)}
@@ -278,15 +273,13 @@ export default function InteractionShowcasePage() {
 	const { t } = useTranslation();
 
 	return (
-		<div className="space-y-8">
-			<PageHeader
-				title={t("pages.interactionShowcase.overview")}
-				description={t("pages.interactionShowcase.overviewDesc")}
-			/>
-
+		<ShowcasePage
+			title={t("pages.interactionShowcase.overview")}
+			description={t("pages.interactionShowcase.overviewDesc")}
+		>
 			<ToastSection />
 
 			<DialogSection />
-		</div>
+		</ShowcasePage>
 	);
 }

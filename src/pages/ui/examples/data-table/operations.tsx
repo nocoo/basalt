@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Badge } from "@nocoo/basalt/components/badge";
+import { Banner } from "@nocoo/basalt/components/banner";
 import { BatteryMeter } from "@nocoo/basalt/components/battery-meter";
 import { Button } from "@nocoo/basalt/components/button";
 import {
@@ -9,6 +10,13 @@ import {
 } from "@nocoo/basalt/components/data-table";
 import { Input } from "@nocoo/basalt/components/input";
 import { ResourceList } from "@nocoo/basalt/components/resource-list";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@nocoo/basalt/components/select";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 
 const Sparkline = lazy(() =>
@@ -171,13 +179,15 @@ export default function OperationsTable() {
 				header: "Device",
 				width: 215,
 				accessor: (row) => (
-					<div className="flex items-center gap-3">
+					<div className="flex items-center gap-basalt-space-lg">
 						<Avatar className="h-9 w-9">
 							<AvatarFallback>{row.name.slice(0, 2).toUpperCase()}</AvatarFallback>
 						</Avatar>
 						<div>
 							<p className="font-medium">{row.name}</p>
-							<p className="mt-1 text-xs text-basalt-muted-foreground">{row.region}</p>
+							<p className="mt-basalt-space-sm text-basalt-sm text-basalt-muted-foreground">
+								{row.region}
+							</p>
 						</div>
 					</div>
 				),
@@ -221,7 +231,7 @@ export default function OperationsTable() {
 				header: "Requests / hour",
 				width: 150,
 				accessor: (row) => (
-					<div className="flex items-center gap-2">
+					<div className="flex items-center gap-basalt-space-lg">
 						<div className="w-20">
 							<Suspense fallback={<div className="h-10 w-20" />}>
 								<Sparkline
@@ -246,7 +256,7 @@ export default function OperationsTable() {
 				id: "updated",
 				header: "Last seen · UTC",
 				width: 140,
-				cellClassName: "whitespace-nowrap text-xs text-basalt-muted-foreground tabular-nums",
+				cellClassName: "whitespace-nowrap text-basalt-sm text-basalt-muted-foreground tabular-nums",
 				accessor: (row) => updated.format(new Date(row.updated)),
 				sortValue: (row) => row.updated,
 			},
@@ -273,10 +283,10 @@ export default function OperationsTable() {
 		[],
 	);
 	return (
-		<div className="w-full space-y-4" data-demo="operations-table">
-			<div className="flex flex-wrap items-center justify-between gap-3">
+		<div className="w-full space-y-basalt-space-lg" data-demo="operations-table">
+			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
 				<Badge variant="outline">Fleet operations</Badge>
-				<div className="flex flex-wrap gap-1">
+				<div className="flex flex-wrap gap-basalt-space-sm">
 					{(["ready", "loading", "empty", "error"] as const).map((value) => (
 						<Button
 							key={value}
@@ -299,8 +309,8 @@ export default function OperationsTable() {
 				description="Live fleet signals, charge levels and request trends."
 				data={[]}
 				toolbar={
-					<div className="flex flex-wrap items-center justify-between gap-3">
-						<div className="flex flex-wrap gap-2">
+					<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
+						<div className="flex flex-wrap gap-basalt-space-lg">
 							<Input
 								aria-label="Search devices"
 								value={query}
@@ -311,28 +321,33 @@ export default function OperationsTable() {
 								placeholder="Search devices or regions…"
 								className="w-60 max-w-full"
 							/>
-							<select
-								aria-label="Device state"
+							<Select
 								value={status}
-								onChange={(event) => {
-									setStatus(event.target.value);
+								onValueChange={(value) => {
+									setStatus(value);
 									setPage(1);
 								}}
-								className="h-9 rounded-basalt-md border border-basalt-border bg-basalt-background px-3 text-sm"
 							>
-								{["All states", "Online", "Warning", "Offline"].map((value) => (
-									<option key={value}>{value}</option>
-								))}
-							</select>
+								<SelectTrigger aria-label="Device state" className="w-auto">
+									<SelectValue />
+								</SelectTrigger>
+								<SelectContent>
+									{["All states", "Online", "Warning", "Offline"].map((item) => (
+										<SelectItem key={item} value={item}>
+											{item}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
 						</div>
-						<p className="text-xs text-basalt-muted-foreground tabular-nums">
+						<p className="text-basalt-sm text-basalt-muted-foreground tabular-nums">
 							{result.total} devices · {selected.length} selected
 						</p>
 					</div>
 				}
 				bulkActions={
 					selected.length > 0 ? (
-						<div className="flex flex-wrap items-center gap-2 rounded-basalt-md bg-basalt-muted p-2 text-xs">
+						<Banner variant="secondary" className="flex-wrap items-center">
 							<span>{selected.length} devices selected across pages</span>
 							<Button
 								size="sm"
@@ -352,11 +367,11 @@ export default function OperationsTable() {
 							<Button size="sm" variant="ghost" onClick={() => setSelected([])}>
 								Clear selection
 							</Button>
-						</div>
+						</Banner>
 					) : undefined
 				}
 				footer={
-					<p role="status" className="min-h-5 text-xs text-basalt-muted-foreground">
+					<p role="status" className="min-h-5 text-basalt-sm text-basalt-muted-foreground">
 						{notice || "Select a column heading to sort. Inventory updates after a short refresh."}
 					</p>
 				}
@@ -385,7 +400,7 @@ export default function OperationsTable() {
 						setMode("ready");
 					}}
 					empty={
-						<div className="space-y-2 py-6 text-center">
+						<div className="space-y-basalt-space-lg py-basalt-space-lg text-center">
 							<p>No devices match this view.</p>
 							<Button
 								variant="outline"
@@ -401,7 +416,7 @@ export default function OperationsTable() {
 						</div>
 					}
 					aria-label="Device inventory"
-					className="min-w-[850px]"
+					className="min-w-[53.125rem]"
 				/>
 			</ResourceList>
 		</div>

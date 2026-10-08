@@ -1,5 +1,7 @@
 # Basalt application chrome
 
+Design tokens, component categories, intrinsic sizing and motion rules are authoritative in [DESIGN.md](DESIGN.md). Follow that contract for library code and examples.
+
 This is the one-pass setup for a Basalt app. An MVP is **login + shell + one page**. After that, product work is arranging `LayerCard` on the island. Do not invent a second header, a second rail, or a second title above the content heading.
 
 The library owns the rail, the main column, collapse motion, the island, the page heading, and region rules. The app owns navigation data, brand, version, identity, and page bodies.
@@ -43,7 +45,7 @@ AppShell                          ← dashboard and catalog routes
 ├── Sidebar                       ← product title + version + nav
 └── AppMain                       ← id="main-content"
     ├── AppHeader                 ← crumbs + current page | top-right
-    └── island wrap               ← px-2 pb-2 md:px-3 md:pb-3
+    └── island wrap               ← px-basalt-space-lg pb-basalt-space-lg md:px-basalt-space-lg md:pb-basalt-space-lg
         └── ContentIsland
             ├── PageHeader        ← title + subtitle | create / short filters
             │                     ← optional own-row complex filters
@@ -291,7 +293,7 @@ function PreferencesControls() {
   const { accent, setAccent } = useAccent();
 
   return (
-    <div className="flex flex-wrap items-center gap-2">
+    <div className="flex flex-wrap items-center gap-basalt-space-lg">
       <span className="text-sm font-medium">Theme: {theme}</span>
       <Button
         variant="outline"
@@ -300,7 +302,7 @@ function PreferencesControls() {
       >
         Toggle {theme === "dark" ? "Light" : "Dark"}
       </Button>
-      <span className="text-sm font-medium ml-2">Accent: {accent}</span>
+      <span className="text-sm font-medium ml-basalt-space-lg">Accent: {accent}</span>
       <Button
         variant="outline"
         size="sm"
@@ -332,7 +334,7 @@ export function HostPreferencesApp() {
         accent={accent}
         onAccentChange={setAccent}
       >
-        <div className="p-4 border rounded-lg space-y-3">
+        <div className="p-basalt-space-lg border rounded-lg space-y-basalt-space-lg">
           <p className="text-xs text-basalt-muted-foreground">
             Host owns document root DOM and persistence. Basalt contexts operate safely without side-effects.
           </p>
@@ -388,16 +390,16 @@ Bounded shells use border-box `height/max-height: 100dvh`. Document shells use `
   <AppSkipLink>Skip to content</AppSkipLink>
   <AppMain>
     <AppHeader title="Field notes" actions={actions} />
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-3 md:pb-3">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-basalt-space-lg md:pb-basalt-space-lg">
       <ContentIsland mobileSurface="edge-to-edge">
-        <div className="mx-auto max-w-prose px-4 py-3 md:p-0">{content}</div>
+        <div className="mx-auto max-w-prose px-basalt-space-lg py-basalt-space-lg md:p-0">{content}</div>
       </ContentIsland>
     </div>
   </AppMain>
 </AppShell>
 ```
 
-The wrapper intentionally has **no mobile `px-2` / `pb-2`**. ContentIsland cannot remove spacing owned by its parent. Remove consumer `h-screen`, `h-full`, `overflow-hidden`, fixed heights and body scroll locks from the document path; all intermediate wrappers must be natural-height columns. Do not target private descendants to undo the library.
+The wrapper intentionally has **no mobile `px-basalt-space-lg` / `pb-basalt-space-lg`**. ContentIsland cannot remove spacing owned by its parent. Remove consumer `h-screen`, `h-full`, `overflow-hidden`, fixed heights and body scroll locks from the document path; all intermediate wrappers must be natural-height columns. Do not target private descendants to undo the library.
 
 The consumer owns `viewport` metadata: `width=device-width, initial-scale=1, viewport-fit=cover`. Do not disable zoom. The library never edits document metadata or body styles for layout. Floating modal navigation has a separate portal tree: `Sheet` or overlay `Sidebar` owns modal scroll locking/focus; the Sidebar within it remains bounded and applies that portal's safe-area padding once. Do not add a manual body overflow effect.
 
@@ -418,45 +420,30 @@ Copyable complete recipes: [mobile layouts](packages/basalt/ai/RECIPES.md#mobile
 - shell-derived bounded height (standalone `100dvh`), `flex-col`, `shrink-0`, sticky positioning at the shell-owned safe top
 - expanded width **260px** (inline `width`)
 - collapsed width **68px**
-- collapse animation `transition-all duration-300 ease-in-out`
+- collapse animation `transition-[width] duration-basalt-normal ease-basalt` (disabled for reduced motion)
 
 Children of `Sidebar` are **regions only**: header, search, nav, footer. They fill that column. `SidebarNav` is `flex-1 min-h-0 overflow-y-auto`, so the footer stays at the bottom.
 
 Do not wrap those regions in another full-viewport column. Do not set `h-screen`, `w-[260px]`, or `w-[68px]` on an inner element. Width and height stay on `Sidebar`.
 
-### Expanded tree
+### Shared navigation geometry
 
-```
-Sidebar                          ← collapsed={false}; owns 260px and bounded height
-├── SidebarHeader                ← h-14 px-3 already
-│   └── brand row                ← flex, items-center, justify-between, w-full
-│                                 (no extra horizontal padding)
-├── search wrap                  ← px-3 pb-1 only
-│   └── SidebarSearch
-├── SidebarNav                   ← pt-1; flex-1
-│   ├── SidebarPartition         ← label; already px-6
-│   └── item stack               ← flex flex-col gap-0.5 px-3
-│       └── SidebarItem          ← already px-3 py-2.5
-└── SidebarFooter                ← px-4 py-3 already
-    └── SidebarUser
-```
+`SidebarNav` and `NavigationMenuList` own one `--basalt-space-nav-inset` (8px) boundary and `--basalt-space-nav-gap` (2px) between rows. Sidebar groups do not add another horizontal inset. Top-level items, group items, editable/folder rows and horizontal navigation links reuse the existing row roles: 8px horizontal, 6px vertical, 8px icon gap, 22px line box and a 34px reference height. Header, search wrapper and footer share the same navigation inset. Do not add caller-owned `px-basalt-space-lg`, `pt-basalt-space-sm` or item-stack padding to compensate for missing package geometry.
 
-`SidebarHeader` already pads horizontally. Brand, version pill, and collapse control go **directly** in it. The version string is read from the app `package.json` at build time. Never hardcode it.
+Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavItem` / `FolderNavItem`; `NavigationMenuList` owns horizontal/vertical Radix navigation. Both compose the existing list-local hover adapter. One background moves with transform between enabled rows, follows keyboard focus and returns to selection on pointer leave. Nested lists own separate highlights. Hidden, disabled and actively renamed rows are excluded. Geometry reads are batched per animation frame, same-row pointer motion causes no updates, and reduced motion disables transitions. Navigation state, routes and rename operations remain application-owned; the adapter is View-only.
 
-Nav labels use `SidebarPartition`. The item stack is **one** `px-3` column (the same gutter `SidebarGroup` uses). `SidebarItem` already has its own `px-3`. That is the whole horizontal rhythm: partition at 24px, item content at 24px.
-
-Collapsible sections use `SidebarGroup` instead of Partition + stack. `SidebarGroup` already includes the item gutter. Do not add another `px-3` around it.
+`SidebarHeader` and `SidebarFooter` already pad horizontally. Brand, version pill, and collapse control go directly in the header. The version string is read from the app `package.json` at build time. Never hardcode it. `SidebarPartition` aligns with row text. `SidebarGroup` adds only section spacing, never a second item gutter.
 
 ```tsx excerpt:sidebar-expanded-structure
 <Sidebar collapsed={collapsed}>
   <SidebarHeader>
     <div className="flex w-full items-center justify-between">
-      <div className="flex min-w-0 items-center gap-3">
+      <div className="flex min-w-0 items-center gap-basalt-space-lg">
         <BasaltMark className="h-5 w-5 shrink-0" />
         <span className="truncate text-lg font-semibold text-basalt-foreground md:text-xl">
           Acme
         </span>
-        <span className="shrink-0 rounded-md bg-basalt-secondary px-1.5 py-0.5 text-[10px] leading-none font-medium text-basalt-muted-foreground">
+        <span className="shrink-0 rounded-md bg-basalt-secondary px-basalt-space-md py-basalt-space-xs text-[10px] leading-none font-medium text-basalt-muted-foreground">
           v{version}
         </span>
       </div>
@@ -471,14 +458,14 @@ Collapsible sections use `SidebarGroup` instead of Partition + stack. `SidebarGr
       </Button>
     </div>
   </SidebarHeader>
-  <div className="px-3 pb-1">
+  <div className="px-basalt-nav-inset">
     <SidebarSearch onClick={() => setSearchOpen(true)}>Search</SidebarSearch>
   </div>
-  <SidebarNav className="pt-1">
+  <SidebarNav>
     {groups.map((group) => (
       <div key={group.label}>
         <SidebarPartition>{group.label}</SidebarPartition>
-        <div className="flex flex-col gap-0.5 px-3">
+        <div className="flex flex-col gap-basalt-nav-gap">
           {group.items.map((item) => (
             <SidebarItem
               key={item.href}
@@ -499,56 +486,48 @@ Collapsible sections use `SidebarGroup` instead of Partition + stack. `SidebarGr
 </Sidebar>
 ```
 
+SidebarPartition marks a major section; SidebarGroup is a smaller uppercase, semibold disclosure label with additional group spacing. Group labels do not participate in the destination hover layer. Do not restyle them as ordinary SidebarItem rows or add per-page indentation repairs.
+
 ### Collapsed tree
 
 Pass `collapsed` on `Sidebar`. The element becomes 68px. Children are icon-sized and centered. Still no inner width/height wrapper.
 
-```
-Sidebar                          ← collapsed; owns 68px
-├── SidebarHeader                ← justify-center px-0
-├── collapse Button              ← ghost icon, mb-1
-├── search SidebarIconItem       ← mb-2; tooltip
-├── SidebarNav                   ← w-full items-center gap-1 pt-1
-│   └── SidebarIconItem          ← h-10 w-10; tooltip
-└── SidebarFooter                ← flex w-full justify-center px-0
-```
+The 68px rail uses `--basalt-size-rail`. Header and footer center their content automatically; SidebarIconItem uses the shared 34px control size. The navigation region centers its icon rows on that same rail axis without caller margin overrides. Render icon-only content with an accessible name and tooltip when collapsed; the library does not hide arbitrary application text. Keep a brand mark's expanded inset consistent with the collapsed axis instead of adding collapse-only offsets.
 
 ```tsx excerpt:sidebar-collapsed-structure
 <Sidebar collapsed={collapsed}>
-  <SidebarHeader className="justify-center px-0">
+  <SidebarHeader>
     <BasaltMark className="h-5 w-5" />
   </SidebarHeader>
   <Button
     variant="ghost"
     size="icon"
-    className="mb-1 self-center"
+    className="mb-basalt-space-sm self-center"
     onClick={onToggle}
     aria-label="Expand sidebar"
   >
     <PanelLeft aria-hidden="true" />
   </Button>
-  <Tooltip delayDuration={0}>
-    <TooltipTrigger asChild>
-      <SidebarIconItem
-        className="mb-2 self-center"
-        onClick={() => setSearchOpen(true)}
-        aria-label="Search (⌘K)"
-      >
-        <Search className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
-      </SidebarIconItem>
-    </TooltipTrigger>
-    <TooltipContent side="right" sideOffset={8}>
-      Search (⌘K)
-    </TooltipContent>
-  </Tooltip>
-  <SidebarNav className="w-full items-center gap-1 pt-1">
+  <SidebarNav>
+    <Tooltip delayDuration={0}>
+      <TooltipTrigger asChild>
+        <SidebarIconItem
+          onClick={() => setSearchOpen(true)}
+          aria-label="Search (⌘K)"
+        >
+          <Search className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
+        </SidebarIconItem>
+      </TooltipTrigger>
+      <TooltipContent side="right" sideOffset={8}>
+        Search (⌘K)
+      </TooltipContent>
+    </Tooltip>
     {items.map((item) => (
       <Tooltip key={item.href} delayDuration={0}>
         <TooltipTrigger asChild>
           <SidebarIconItem
             active={active(item.href)}
             aria-label={item.label}
-            className="self-center"
             onClick={() => navigate(item.href)}
           >
             <item.icon className="h-4 w-4" strokeWidth={1.5} />
@@ -560,7 +539,7 @@ Sidebar                          ← collapsed; owns 68px
       </Tooltip>
     ))}
   </SidebarNav>
-  <SidebarFooter className="flex w-full justify-center px-0">
+  <SidebarFooter>
     <Tooltip delayDuration={0}>
       <TooltipTrigger asChild>
         <span className="inline-flex">{avatar}</span>
@@ -683,7 +662,7 @@ export function AppFrame() {
           title={title}
           actions={<ThemeToggle aria-label={`Toggle theme (now ${theme})`} />}
         />
-        <div className="flex min-h-0 flex-1 flex-col px-2 pb-2 md:px-3 md:pb-3">
+        <div className="flex min-h-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-space-lg md:pb-basalt-space-lg">
           <ContentIsland>
             <Outlet />
           </ContentIsland>
@@ -721,7 +700,7 @@ Shape: ISO ID card, `aspect-[54/86]`, `w-72`, `rounded-2xl`, `bg-basalt-card`, l
 ```tsx excerpt:login-badge-page
 export function LoginPage() {
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-basalt-background p-4">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-basalt-background p-basalt-space-lg">
       <div className="flex flex-col items-center">
         <div
           data-basalt-surface-root=""
@@ -737,10 +716,10 @@ export function LoginPage() {
             ].join(", "),
           }}
         >
-          <div className="bg-basalt-primary px-5 py-4">
+          <div className="bg-basalt-primary px-basalt-space-lg py-basalt-space-lg">
             <div className="flex items-center justify-between">
               <div className="h-4 w-8 rounded-full bg-basalt-background/80" />
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-basalt-space-lg">
                 <BasaltMark className="h-4 w-4 text-basalt-primary-foreground" />
                 <span className="text-sm font-semibold text-basalt-primary-foreground">
                   Acme
@@ -751,19 +730,19 @@ export function LoginPage() {
               </span>
             </div>
           </div>
-          <div className="flex flex-1 flex-col items-center px-6 pt-6 pb-14">
-            <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-basalt-secondary p-2.5 ring-1 ring-basalt-border">
+          <div className="flex flex-1 flex-col items-center px-basalt-space-lg pt-basalt-space-lg pb-basalt-space-lg">
+            <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-basalt-secondary p-basalt-space-lg ring-1 ring-basalt-border">
               <BasaltMark className="h-10 w-10 text-basalt-muted-foreground" />
             </div>
-            <p className="mt-5 text-lg font-semibold text-basalt-foreground">Welcome</p>
-            <p className="mt-1 text-xs text-basalt-muted-foreground">Sign in to continue</p>
-            <div className="mt-5 h-px w-full bg-basalt-border" />
+            <p className="mt-basalt-space-lg text-lg font-semibold text-basalt-foreground">Welcome</p>
+            <p className="mt-basalt-space-sm text-xs text-basalt-muted-foreground">Sign in to continue</p>
+            <div className="mt-basalt-space-lg h-px w-full bg-basalt-border" />
             <div className="flex-1" />
-            <Button variant="secondary" className="w-full rounded-xl py-3">
+            <Button variant="secondary" className="w-full rounded-xl py-basalt-space-lg">
               Continue
             </Button>
           </div>
-          <div className="absolute right-0 bottom-0 left-0 flex items-center justify-center border-t border-basalt-border bg-basalt-secondary/50 py-2.5">
+          <div className="absolute right-0 bottom-0 left-0 flex items-center justify-center border-t border-basalt-border bg-basalt-secondary/50 py-basalt-space-lg">
             <span className="text-[10px] text-basalt-muted-foreground">Secure sign-in</span>
           </div>
         </div>
@@ -799,9 +778,9 @@ Boot and route gates use `LoadingScreen` — a centered mark and a 6rem shimmer 
 
 When skip link, rail (260 / 68, 300ms), header `h-14`, and island are in place, add routes as `Outlet` pages. Regular application pages inside the island start with `PageHeader`. Mobile immersive layouts may use a single `AppHeader` instead, with `PageHeader` shown only on desktop; see the root geometry contract. The shell file does not grow with page UI.
 
-Standalone login, loading, error, and landing pages use their own first-screen structure: `/login` preserves the visitor-badge composition, `/loading` is a named loading status, and `/404` and `/static-page` have independent headings. Library reference pages use their document heading and section navigation. These are deliberate layout exceptions, not alternate application-page templates.
+Standalone login, loading, error, and landing pages use their own first-screen structure: `/login` preserves the visitor-badge composition, `/loading` is a named loading status, and `/404` and `/static-page` have independent headings. These are deliberate layout exceptions, not alternate application-page templates. Library reference pages, category overviews and source viewers are normal island pages: they use the same heading template, with document sections below it.
 
-The showcase site's library index and dashboard examples use the app-local `ShowcaseHeader` with the landing page's paired day/night mountain imagery fading into the content island. Headings and actions align with the page's content grid; the landscape reaches the island's top edge and scrolls with it. The library has a more spacious opening, dashboards use the compact variant, and reference headings carry a quieter version. The original logo remains in the navigation. This site-specific treatment does not change the package's `PageHeader` or application layout recipe.
+The showcase's routes under `DashboardLayout` use the app-local `ShowcasePage`: one PageHeader and a shared section gap, with no repeated island padding, painted shell or nested main/viewport. Category overviews, component documentation and source viewers use its plain header. The library index and selected dashboard examples retain the scenic `ShowcaseHeader` variant with paired day/night mountain imagery. This is a catalog composition, not a package export. The original logo remains in the navigation. See [DESIGN.md](DESIGN.md#page-composition) for slot ownership and exceptions.
 
 The `/forms`, `/settings`, `/data`, and `/chat` examples demonstrate local state and simulated requests, including failure/retry and cancellation. Their viewmodels own data and timers; Views own native FormData, focus, and responsive layout. Replace the local service adapter when integrating a backend. Theme selection uses the shared provider; local profile, uploads, and chat changes do not update a real account.
 
@@ -826,7 +805,7 @@ import { PageHeader } from "@nocoo/basalt/components/page-header";
 
 export default function ProjectsPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-basalt-layout-lg">
       <PageHeader
         title="Projects"
         description="Active work in this workspace."
@@ -856,7 +835,7 @@ import { SectionRule } from "@nocoo/basalt/components/section-rule";
 
 export default function ProjectsPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-basalt-layout-lg">
       <PageHeader
         title="Projects"
         description="Active work in this workspace."
@@ -875,7 +854,7 @@ export default function ProjectsPage() {
         }
       />
       <SectionRule title="Overview" hint="Live totals for the current workspace.">
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-basalt-layout">
           <LayerCard>
             <p className="text-xs text-basalt-muted-foreground">Projects</p>
             <p className="text-2xl font-semibold">24</p>
@@ -974,7 +953,9 @@ Place cards with Grid or flex. Those classes do not paint. A grid of `LayerCard`
 
 Input, Select, secondary / outline Button use `bg-basalt-control` (`--basalt-control-fill` from the current surface) plus border. Do not override with `bg-card`, `bg-basalt-card`, or `bg-basalt-background`.
 
-`Table` sets `data-basalt-table`. Zebra, hover, and selected paint on `td`, from `--basalt-zebra-fill` / `--basalt-control-fill`.
+`Table` sets `data-basalt-table`. Zebra, hover, and selected paint on `td`, from `--basalt-zebra-fill`, `--basalt-hover` and `--basalt-selected`. Selection adds no decorative side bar or frame; semantic add/remove diff tints are preserved.
+
+Neutral selected states use the brighter `--basalt-selected` surface, readable `--basalt-selected-foreground` and navigation font weight, without decorative side bars or selected borders. Never use `accent` or `muted` to signal selection. Existing semantic checkmarks and tab underlines remain; do not add a decorative frame at the white ceiling. A moving hover layer must not erase the selected row. Sidebar, navigation menus, editable navigation and ChatInbox share this behavior and inset keyboard focus; neutral Button variants also honor `aria-pressed` and `aria-current`. Segments and tabs retain their existing measured indicator motion. Primary/destructive actions, check/radio/switch glyphs and semantic diffs keep their semantic colors. See [DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy).
 
 `DescriptionList` is layout and type only. It is not a surface.
 
@@ -1092,7 +1073,7 @@ export function ProfileForm() {
         <Switch name="notifications" defaultChecked />
       </Field>
 
-      <div className="flex gap-2 mt-4">
+      <div className="flex gap-basalt-space-lg mt-basalt-space-lg">
         <Button type="reset" variant="secondary">Reset</Button>
         <Button type="submit" variant="default">Save Changes</Button>
       </div>
@@ -1181,7 +1162,7 @@ export function EmptyActionExample() {
   const [created, setCreated] = useState(false);
 
   return (
-    <LayerCard className="max-w-md p-6">
+    <LayerCard className="max-w-md">
       {created ? (
         <p className="text-sm text-basalt-foreground">Project created successfully.</p>
       ) : (
@@ -1247,7 +1228,7 @@ export function ProjectSettingsForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-basalt-space-lg">
       <Field
         label="Project Name"
         hint="Unique name for your project workspace"
@@ -1285,12 +1266,12 @@ export function ProjectSettingsForm() {
       />
 
       {submittedData && (
-        <div data-testid="submission-output" className="text-sm font-mono p-2 border rounded">
+        <div data-testid="submission-output" className="text-sm font-mono p-basalt-space-lg border rounded">
           Submitted: {JSON.stringify(submittedData)}
         </div>
       )}
 
-      <div className="flex gap-2">
+      <div className="flex gap-basalt-space-lg">
         <Button
           type="button"
           variant="secondary"
@@ -1489,6 +1470,7 @@ Basalt charts are composed of responsive frame, legend, and tooltip subsystem pr
 ### StatCard & StatGrid (`@nocoo/basalt/charts/stat-card`)
 
 - **`StatCard`**: High-level KPI and telemetry presentation card supporting incremental interactive slots and status state transitions.
+  - **Composition**: One `LayerCard` surface with shared card insets, an unboxed title icon, tabular display value, comparison text and supporting content in that order. It has no header divider or fixed content height. Long labels and values wrap; actions remain accessible. Use a compact `LineChart`/`BarChart` child with `className="h-basalt-16 w-full"` and a visible time-window caption for trend cards. Keep bar baselines at zero and disclose nonzero line scales. Do not stretch plots with `flex-1`, repeat card padding or recreate the header in application CSS.
   - **Props (`StatCardProps`)**:
     - `value: string | number` (required): Core metric value. Formatted via `toLocaleString()` if numeric. Overridden when `status` is provided.
     - `title?: string` / `label?: string` (optional): Heading text (`title` takes precedence over `label`).
@@ -1549,7 +1531,7 @@ export function StandaloneViteApp() {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-basalt-background text-basalt-foreground p-6 space-y-6">
+      <div className="min-h-screen bg-basalt-background text-basalt-foreground p-basalt-space-lg space-y-basalt-space-lg">
         <PageHeader
           title="Standalone Workspace"
           description="Rendered with @nocoo/basalt/styles/standalone without Tailwind preflight"
@@ -1560,7 +1542,7 @@ export function StandaloneViteApp() {
             <span className="font-semibold text-basalt-foreground">Project Search</span>
           </LayerCard.Header>
           <LayerCard.Body>
-            <div className="flex gap-3 max-w-md">
+            <div className="flex gap-basalt-space-lg max-w-md">
               <Input
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
@@ -1637,7 +1619,7 @@ export default function NextClientDashboardPage() {
 
   return (
     <ThemeProvider>
-      <div className="p-6 space-y-4">
+      <div className="p-basalt-space-lg space-y-basalt-space-lg">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-bold text-basalt-foreground">Next.js Client Dashboard</h2>
           <ThemeToggle aria-label="Toggle theme mode" />
@@ -1650,7 +1632,7 @@ export default function NextClientDashboardPage() {
               onChange={(e) => setMetricName(e.target.value)}
               aria-label="Metric Name"
             />
-            <div className="mt-4">
+            <div className="mt-basalt-space-lg">
               <Button variant="outline" onClick={() => setMetricName("Default Metric")}>
                 Reset Metric
               </Button>
@@ -1710,12 +1692,12 @@ export function RoutedNavigationSection() {
   return (
     <MemoryRouter initialEntries={["/dashboard"]}>
       <LinkProvider render={ReactRouterLinkAdapter}>
-        <nav className="flex gap-4 p-4 border-b border-basalt-border">
+        <nav className="flex gap-basalt-space-lg p-basalt-space-lg border-b border-basalt-border">
           <NavigationItem href="/dashboard">Dashboard</NavigationItem>
           <NavigationItem href="/settings">Settings</NavigationItem>
           <NavigationItem href="https://docs.hexly.ai">External Docs</NavigationItem>
         </nav>
-        <div className="p-4">
+        <div className="p-basalt-space-lg">
           <Routes>
             <Route path="/dashboard" element={<DashboardPage />} />
             <Route path="/settings" element={<SettingsPage />} />
@@ -1771,7 +1753,7 @@ export function UserPreferencesForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} onReset={handleReset} className="space-y-4 max-w-sm">
+    <form onSubmit={handleSubmit} onReset={handleReset} className="space-y-basalt-space-lg max-w-sm">
       <Field label="Username" hint="Public profile handle">
         <Input name="username" defaultValue="johndoe" required />
       </Field>
@@ -1786,7 +1768,7 @@ export function UserPreferencesForm() {
         </div>
       )}
 
-      <div className="flex gap-2">
+      <div className="flex gap-basalt-space-lg">
         <Button type="reset" variant="secondary">
           Reset
         </Button>
@@ -1828,7 +1810,7 @@ export function UserPreferencesForm() {
 
 ### Dense controls and moving list highlights
 
-Button (including icon buttons), Input, SelectTrigger, InputGroup and their composing controls default to 32px high. Explicit `sm`/`lg` sizes remain available; InputArea remains multiline. Compact application headers retain their 44px minimum touch targets. ApprovalCard uses 12px outer padding and compact option spacing; ToolChips uses 14px row text and 16px glyphs with 32px minimum rows.
+Button (including icon buttons), Input, SelectTrigger, InputGroup and their composing controls default to 34px high. Explicit `sm`/`lg` sizes remain available; InputArea remains multiline. Compact application headers retain their 44px minimum touch targets. ApprovalCard uses 16px horizontal / 12px vertical panel padding and compact option spacing; ToolChips uses 14px row text and 16px glyphs with 34px reference rows.
 
 Select, DropdownMenu, ContextMenuPanel, MenuBarContent, Combobox/Autocomplete, MultiSelect, ApprovalCard and ToolChips use one list-local hover layer. Its private DOM adapter batches reads in requestAnimationFrame, measures only when row/focus/selection/size changes, and updates CSS variables without a React state render. Position animates with transform, not top/left layout; reduced motion removes transitions. Disabled/hidden rows are excluded, keyboard focus takes priority, and observers/listeners are released with the mounted list. CommandPalette's list shrinks with its viewport so all rows remain reachable even inside short frames.
 
@@ -1840,17 +1822,18 @@ Basalt geometry no longer depends on a host's Tailwind `--spacing`. Both CSS ent
 
 | Role | Token | Default |
 | --- | --- | --- |
-| Small / default / large control | `--basalt-size-control-sm`, `--basalt-size-control`, `--basalt-size-control-lg` | 28 / 32 / 40px |
+| Small / default / large control | `--basalt-size-control-sm`, `--basalt-size-control`, `--basalt-size-control-lg` | 28 / 34 / 40px |
 | Compact / standard / display icon | `--basalt-size-icon-sm`, `--basalt-size-icon`, `--basalt-size-icon-lg` | 12 / 14 / 16px |
 | Nested action | `--basalt-size-control-inset` | 28px |
 | Minimum touch target | `--basalt-size-touch` | 44px |
-| Menu option | `--basalt-size-menu-row`, `--basalt-space-menu-inset`, `--basalt-space-menu-x`, `--basalt-space-menu-y` | 32px / 6px / 8px / 6px |
-| Card padding | `--basalt-space-card-sm`, `--basalt-space-card`, `--basalt-space-card-lg` | 12 / 16 / 24px |
-| Field label gap | `--basalt-space-field-gap` | 6px |
+| Menu option | `--basalt-size-menu-row`, `--basalt-space-menu-inset`, `--basalt-space-menu-x`, `--basalt-space-menu-y` | 34px / 8px / 8px / 6px |
+| Card padding | `--basalt-space-card-sm`, `--basalt-space-card`, `--basalt-space-card-lg`, `--basalt-space-card-xl` | 12 / 16 / 24 / 32px; default 16px |
+| Layout spacing | `--basalt-space-layout-sm`, `--basalt-space-layout`, `--basalt-space-layout-lg`, `--basalt-space-layout-xl` | 12 / 16 / 24 / 32px; grids 16px, page sections 24px |
+| Field label gap | `--basalt-space-field-gap` | 8px |
 | Textarea minimum height | `--basalt-size-textarea-sm`, `--basalt-size-textarea`, `--basalt-size-textarea-lg` | 64 / 80 / 96px |
-| Table row / horizontal / vertical inset | `--basalt-size-table-row`, `--basalt-space-table-x`, `--basalt-space-table-y` | 36 / 12 / 6px |
+| Table row / horizontal / vertical inset | `--basalt-size-table-row`, `--basalt-space-table-x`, `--basalt-space-table-y` | 36 / 8 / 6px |
 
-Defaults use rem, preserving browser font-size preferences. The base grid is `--basalt-space-unit: 0.25rem` with named steps for smaller details and larger layout gaps. Use role tokens for control/card/menu geometry, base steps for composition, and explicit ratios/content-dependent dimensions for layouts, chart marks and media. The library does not turn textareas, avatars or panels into 32px controls. Native `className` overrides such as `h-12`, `p-0` and `[&_svg]:size-5` still override Basalt token utilities through its configured class merger. Small variants are now truly smaller than defaults, rather than a second 32px preset.
+Defaults use rem and unitless line-height, preserving browser font-size preferences. [DESIGN.md](DESIGN.md) defines compact 2/4/6/8px control spacing, separate 12/16/24/32px card and layout spacing, and natural 22/34/38px inline/action/banner categories. The size tokens describe reference geometry, not fixed text-control heights. Use the semantic spacing role for the boundary being laid out; numbered geometry tokens are not padding alternatives. LayerCard accepts `padding="sm|md|lg|xl"` for unstructured content; Grid accepts `gap="sm|md|lg|xl"`. Both default to `md`; 32px `xl` is opt-in. ContentIsland owns a 12px mobile / 16px desktop inset. Examples must use component size props rather than fixed-height overrides. Textareas, avatars and panels retain content-specific geometry.
 
 ### Compact record tables
 
@@ -1886,7 +1869,7 @@ All model names, progress summaries, searches and tool outputs on this route are
 
 ### Composite alignment
 
-Use one padding owner per boundary: `--basalt-space-panel-x/y` (12/8px) for composite card/header/body/footer sections, `--basalt-space-row-x/y/gap` (8/6/8px) for selectable rows, and `--basalt-space-content-gap` (8px) between sections. `--basalt-space-row-content` derives the detail inset from row padding + a 16px icon slot + the row gap. Text rows use the 20px body line-height, producing 32px single-line rows and growing by full lines when content wraps. Status icons occupy a first-line-height slot, not an arbitrary top margin. Ordinary controls remain 32px; inline message actions use the 24px `--basalt-size-action` target and 14px glyphs. Align visible glyphs with prose without removing their pointer target.
+Use one padding owner per boundary: `--basalt-space-panel-x/y` (16/12px) for composite card/header/body/footer sections, `--basalt-space-row-x/y/gap` (8/6/8px) for selectable rows, and `--basalt-space-content-gap` (8px) between related controls inside a composite. Page section gaps instead use `--basalt-space-layout-lg` (24px). `--basalt-space-row-content` derives the detail inset from row padding + a 16px icon slot + the row gap. Selectable action rows use the 22px `--basalt-line-row`, producing 34px single-line rows and growing by full lines when content wraps. Status icons occupy a first-line-height slot, not an arbitrary top margin. Body prose and code keep the 20px body line-height. Ordinary controls use 34px; inline message actions use the 34px `--basalt-size-action` target and 14px glyphs. Align visible glyphs with prose without removing their pointer target.
 
 Thinking and ToolChips share row padding; disclosures rotate only their own chevron, never content icons. Approval, recommendation, retrieved context and diff sections share panel insets rather than adding another padding layer. ChatComposer owns its field inset, not an outer painted/padded card; the application owns placement in the page. ChatMessage `sources` renders a compact disclosure beside actions and a flat source list, with the same validated URL policy as ContextCards. Use ContextCards only for actual retrieved text chunks, not as a citation footer. No additional remote images are loaded.
 
@@ -1894,10 +1877,14 @@ The standalone build generates every Tailwind utility once in canonical order. D
 
 Public Radio, Checkbox, Switch and SegmentControl group roots establish the scoped `.basalt-ui` reset. Fieldsets and legends have no browser-default padding/margin inside that boundary; standalone and Tailwind consumers must have identical group insets. Host form groups outside Basalt remain untouched.
 
-Native form legends do not participate in a fieldset's flex gap. Radio, Checkbox and Switch legends therefore own `margin-bottom: var(--basalt-space-field-gap)` (6px) independently of the group's row layout. Do not replace the semantic legend or add wrapper divs to simulate this spacing. Override the existing field-gap token when a different group density is required.
+Native form legends do not participate in a fieldset's flex gap. Radio, Checkbox and Switch legends therefore own `margin-bottom: var(--basalt-space-field-gap)` (8px) independently of the group's row layout. Do not replace the semantic legend or add wrapper divs to simulate this spacing. Override the existing field-gap token when a different group density is required.
 
 ### Code panels
 
 `CodeBlock` and `CodeHighlighted` share one compact code panel: optional `title`, a decorative `icon` (default file-code glyph, `null` to hide), `copyable` (true by default) and `lineNumbers` (false by default). Plain CodeBlock takes string children; CodeHighlighted takes `code` and reuses the lightweight built-in tokenizer. The root now forwards HTMLDivElement attributes and `className`; its inner named, keyboard-focusable pre owns scrolling. Do not pass rendered React children or assume the root is a pre. Use `copyable={false}` without a title for headerless output. Existing `max-h-*` classes constrain the panel while the source region scrolls; the header remains visible.
 
-Panel insets use the shared 12/8px roles, code is 13px on a 20px line box, and the copy target is 24px. Source lines retain empty and trailing lines, with horizontal scrolling rather than breaking tokens. The hidden, non-selectable line-number gutter uses CSS-generated text, so numbers never enter clipboard output or assistive reading. Copy uses the exact original source (including CRLF), prevents concurrent writes, reports permission/API failure and permits retry; feedback belongs to that source revision. No source text is interpreted as HTML or executed. Private model/ViewModel modules own tokenization and copy state; browser clipboard access remains in the View. Chat Markdown fences compose this same panel rather than maintaining a second toolbar implementation. This is not a language parser or a text-diff viewer.
+For edge-attached content, use `attached` rather than overriding border, radius or padding classes. It removes the outer frame except the top separator and keeps code-owned insets. Do not wrap attached code in LayerCard.Body. The standard full-width disclosure is `Collapsible asChild` around a LayerCard, with `LayerCard.Header asChild` around CollapsibleTrigger and `CollapsibleContent unstyled` around a Body or self-inset code/table. Header owns the full hit target and aligned 16/12px insets; Collapsible owns only interaction and motion. See [container boundary ownership](DESIGN.md#container-boundary-ownership), also used by the catalog's navigation and example panels.
+
+Code panels contain horizontal overscroll only. Vertical wheel/touch scrolling chains to the page: natural-height examples do not trap it, and explicitly height-constrained panels hand it off at their top/bottom edge. No JavaScript wheel interception or axis conversion is used. Horizontal gestures and focused Left/Right arrow keys still scroll long source lines without moving the header.
+
+Panel insets use the shared 16/12px roles. Code content uses the shared small font token (.75rem, 12px reference) on a 20px line box; titles remain 13px and the copy target is 34px. Inline Code and Chat Markdown code spans use the same small font tier. Source lines retain empty and trailing lines, with horizontal scrolling rather than breaking tokens. The hidden, non-selectable line-number gutter uses CSS-generated text, so numbers never enter clipboard output or assistive reading. Copy uses the exact original source (including CRLF), prevents concurrent writes, reports permission/API failure and permits retry; feedback belongs to that source revision. No source text is interpreted as HTML or executed. Private model/ViewModel modules own tokenization and copy state; browser clipboard access remains in the View. Chat Markdown fences compose this same panel rather than maintaining a second toolbar implementation. This is not a language parser or a text-diff viewer.

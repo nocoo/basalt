@@ -16,11 +16,13 @@ const heatmapData = Array.from({ length: 365 }).map((_, i) => {
 export function HeatmapCard() {
 	const { t, i18n } = useTranslation();
 	return (
-		<LayerCard className="flex h-full flex-col rounded-card border-0 bg-secondary shadow-none ring-0">
-			<div className="flex flex-col space-y-2.5 p-4 pb-2">
-				<h3 className="text-sm text-muted-foreground">{t("dashboard.engagementHeatmap")}</h3>
-			</div>
-			<div className="min-h-0 flex-1 px-4 pt-0 pb-4">
+		<LayerCard className="flex h-full flex-col">
+			<LayerCard.Header className="flex-col">
+				<h2 className="text-basalt-base text-muted-foreground">
+					{t("dashboard.engagementHeatmap")}
+				</h2>
+			</LayerCard.Header>
+			<LayerCard.Body className="min-h-0 flex-1">
 				<HeatmapCalendar
 					data={heatmapData}
 					year={2026}
@@ -30,7 +32,7 @@ export function HeatmapCard() {
 					lessLabel={t("common.less")}
 					moreLabel={t("common.more")}
 				/>
-			</div>
+			</LayerCard.Body>
 		</LayerCard>
 	);
 }

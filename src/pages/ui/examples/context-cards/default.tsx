@@ -25,7 +25,7 @@ const chunks: ContextChunk[] = [
 export default function ContextCardsDemo() {
 	const [state, setState] = useState("ready");
 	return (
-		<div className="w-full space-y-basalt-3">
+		<div className="w-full space-y-basalt-space-lg">
 			<ContextCards
 				chunks={state === "empty" ? [] : chunks}
 				totalCount={state === "empty" ? 0 : 32}

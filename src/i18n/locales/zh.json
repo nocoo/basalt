@@ -367,7 +367,7 @@
 			"subscribe": "订阅",
 			"fileUpload": "文件上传",
 			"dropFilesHere": "将文件拖放到此处",
-			"fileTypes": "PNG、JPG 或 SVG，最大 4MB",
+			"fileTypes": "PNG、JPG 或 PDF，最大 4MB",
 			"browseFiles": "浏览文件",
 			"successState": "成功状态",
 			"formSubmitted": "表单已提交",

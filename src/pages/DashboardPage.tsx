@@ -1,4 +1,4 @@
-import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { useTranslation } from "react-i18next";
 import { ActionGridCard } from "@/components/dashboard/ActionGridCard";
 import { AreaChartCard } from "@/components/dashboard/AreaChartCard";
@@ -12,7 +12,7 @@ import { RecentListCard } from "@/components/dashboard/RecentListCard";
 import { SecondaryMetricCard } from "@/components/dashboard/SecondaryMetricCard";
 import { SummaryMetricCard } from "@/components/dashboard/SummaryMetricCard";
 import { TrendLineCard } from "@/components/dashboard/TrendLineCard";
-import { ShowcaseHeader } from "@/components/ShowcaseHeader";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { useStatsOverviewViewModel } from "@/viewmodels/useStatsOverviewViewModel";
 
 export default function DashboardPage() {
@@ -20,36 +20,32 @@ export default function DashboardPage() {
 	const { stats } = useStatsOverviewViewModel();
 
 	return (
-		<div className="space-y-4">
-			<ShowcaseHeader
-				title={t("pages.dashboard.title")}
-				description={t("pages.dashboard.description")}
-			/>
+		<ShowcasePage
+			title={t("pages.dashboard.title")}
+			description={t("pages.dashboard.description")}
+			headerVariant="compact"
+		>
 			{/* Row 0: analytics stat cards */}
-			<div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
+			<StatGrid>
 				{stats.map((s) => (
-					<LayerCard
+					<StatCard
 						key={s.label}
-						className="rounded-card border-0 bg-secondary p-4 md:p-5 shadow-none ring-0"
-					>
-						<p className="text-xs md:text-sm text-muted-foreground mb-1">{s.label}</p>
-						<h3 className="text-xl md:text-2xl font-semibold text-foreground font-display tracking-tight">
-							{s.value}
-						</h3>
-						<span className={`text-xs font-medium ${s.changeColorClass}`}>{s.change}</span>
-					</LayerCard>
+						label={s.label}
+						value={s.value}
+						trendContent={<span className={`font-medium ${s.changeColorClass}`}>{s.change}</span>}
+					/>
 				))}
-			</div>
+			</StatGrid>
 
 			{/* Row 1: 3 summary cards */}
-			<div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2 lg:grid-cols-3">
 				<SummaryMetricCard />
 				<SecondaryMetricCard />
 				<TrendLineCard />
 			</div>
 
 			{/* Row 2: wide bar chart + donut */}
-			<div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<div className="lg:col-span-2">
 					<BarChartCard />
 				</div>
@@ -57,18 +53,18 @@ export default function DashboardPage() {
 			</div>
 
 			{/* Row 3: wide area chart + 2 radial cards */}
-			<div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<div className="lg:col-span-2">
 					<AreaChartCard />
 				</div>
-				<div className="flex flex-col gap-4">
+				<div className="flex flex-col gap-basalt-layout">
 					<RadialProgressCard />
 					<GaugeCard />
 				</div>
 			</div>
 
 			{/* Row 4: wide grouped bar chart + transactions */}
-			<div className="grid grid-cols-1 gap-4 mt-4 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<div className="lg:col-span-2">
 					<GroupedBarCard />
 				</div>
@@ -76,10 +72,10 @@ export default function DashboardPage() {
 			</div>
 
 			{/* Row 5: quick actions + accounts */}
-			<div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
+			<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2 lg:grid-cols-3">
 				<ActionGridCard />
 				<ItemListCard />
 			</div>
-		</div>
+		</ShowcasePage>
 	);
 }

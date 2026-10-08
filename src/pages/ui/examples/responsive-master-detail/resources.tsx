@@ -34,12 +34,15 @@ export default function ResourceMasterDetail() {
 			listLabel="Collections"
 			detailLabel="Collection details"
 			list={
-				<div className="space-y-1 p-3">
-					<h3 className="mb-3 px-2 text-sm font-medium">Collections</h3>
+				<div className="space-y-basalt-space-sm p-basalt-space-lg">
+					<h3 className="mb-basalt-space-lg px-basalt-space-lg text-basalt-base font-medium">
+						Collections
+					</h3>
 					{resources.map((resource) => (
 						<Button
 							key={resource.id}
-							variant={resource.id === selected ? "secondary" : "ghost"}
+							variant="ghost"
+							aria-pressed={resource.id === selected}
 							className="w-full justify-start"
 							onClick={() => {
 								setSelected(resource.id);
@@ -53,7 +56,7 @@ export default function ResourceMasterDetail() {
 			}
 		>
 			{item && (
-				<div className="space-y-4 p-5">
+				<div className="space-y-basalt-space-lg p-basalt-space-lg">
 					<TagBadge name={item.id} colorKey={item.id} />
 					<InlineEditable
 						key={item.id}
@@ -63,8 +66,8 @@ export default function ResourceMasterDetail() {
 							setResources(resources.map((row) => (row.id === item.id ? { ...row, name } : row)))
 						}
 					/>
-					<p className="text-sm text-basalt-muted-foreground">{item.description}</p>
-					<p className="text-xs text-basalt-muted-foreground">
+					<p className="text-basalt-base text-basalt-muted-foreground">{item.description}</p>
+					<p className="text-basalt-sm text-basalt-muted-foreground">
 						On mobile, Back returns focus to the collection you opened.
 					</p>
 				</div>

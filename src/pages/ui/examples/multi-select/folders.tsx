@@ -5,10 +5,10 @@ import { useState } from "react";
 export default function FolderSelection() {
 	const [selected, setSelected] = useState(["research", "shared"]);
 	return (
-		<div className="w-full max-w-md space-y-4">
+		<div className="w-full max-w-md space-y-basalt-space-lg">
 			<div>
 				<h3 className="font-medium">Organize your library</h3>
-				<p className="text-sm text-basalt-muted-foreground">
+				<p className="text-basalt-base text-basalt-muted-foreground">
 					Search folders and choose where this resource belongs.
 				</p>
 			</div>
@@ -45,7 +45,7 @@ export default function FolderSelection() {
 					},
 				]}
 			/>
-			<p role="status" className="text-sm text-basalt-muted-foreground">
+			<p role="status" className="text-basalt-base text-basalt-muted-foreground">
 				Saved in {selected.length} folders. The team archive is required.
 			</p>
 		</div>

@@ -304,6 +304,33 @@
     <loc>https://basaltui.com/ui/navigation-menu</loc>
   </url>
   <url>
+    <loc>https://basaltui.com/ui/overview/action</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/overview/banner</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/overview/block</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/overview/card</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/overview/chart</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/overview/inline</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/overview/layout</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/overview/overlay</loc>
+  </url>
+  <url>
+    <loc>https://basaltui.com/ui/overview/primitive</loc>
+  </url>
+  <url>
     <loc>https://basaltui.com/ui/page-header</loc>
   </url>
   <url>

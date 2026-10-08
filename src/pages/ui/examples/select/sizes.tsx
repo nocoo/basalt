@@ -8,7 +8,7 @@ import {
 
 export default function SelectSizes() {
 	return (
-		<div className="flex w-full flex-col gap-3">
+		<div className="flex w-full flex-col gap-basalt-space-lg">
 			<Select>
 				<SelectTrigger size="sm" aria-label="Small" className="w-48">
 					<SelectValue placeholder="Small" />

@@ -7,7 +7,37 @@ function scrollParent(): HTMLElement | null {
 	return document.querySelector("[data-doc-scroll]");
 }
 
-function pickActiveId(ids: string[], offset: number): string {
+function sectionOffset(scroller: HTMLElement | null): number {
+	if (!scroller) return 0;
+	const bar = scroller.querySelector("[data-doc-toc-bar]");
+	return (
+		(bar?.getBoundingClientRect().height ?? 0) +
+		(Number.parseFloat(getComputedStyle(scroller).paddingTop) || 0)
+	);
+}
+
+export function scrollToDocSection(id: string, behavior?: ScrollBehavior) {
+	const section = document.getElementById(id);
+	if (!section) return;
+	const resolvedBehavior =
+		behavior ??
+		(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth");
+	const scroller = scrollParent();
+	if (scroller) {
+		scroller.scrollTo({
+			top:
+				scroller.scrollTop +
+				section.getBoundingClientRect().top -
+				scroller.getBoundingClientRect().top -
+				sectionOffset(scroller),
+			behavior: resolvedBehavior,
+		});
+	} else {
+		section.scrollIntoView({ behavior: resolvedBehavior, block: "start" });
+	}
+}
+
+function pickActiveId(ids: string[]): string {
 	const ordered = ids
 		.map((id) => document.getElementById(id))
 		.filter((el): el is HTMLElement => el !== null);
@@ -18,7 +48,7 @@ function pickActiveId(ids: string[], offset: number): string {
 	if (scroller && scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight - BOTTOM_PX) {
 		return ordered[ordered.length - 1].id;
 	}
-	const line = (scroller?.getBoundingClientRect().top ?? 0) + offset;
+	const line = (scroller?.getBoundingClientRect().top ?? 0) + sectionOffset(scroller);
 	let current = ordered[0].id;
 	for (const el of ordered) {
 		if (el.getBoundingClientRect().top <= line + 1) {
@@ -30,7 +60,7 @@ function pickActiveId(ids: string[], offset: number): string {
 	return current;
 }
 
-export function useDocTocActiveId(ids: string[], offset = 48) {
+export function useDocTocActiveId(ids: string[]) {
 	const [activeId, setActiveId] = useState(ids[0] ?? "");
 	const pinned = useRef(false);
 	const idsKey = ids.join("\0");
@@ -46,7 +76,7 @@ export function useDocTocActiveId(ids: string[], offset = 48) {
 			if (pinned.current) {
 				return;
 			}
-			const next = pickActiveId(tracked, offset);
+			const next = pickActiveId(tracked);
 			if (next) {
 				setActiveId(next);
 			}
@@ -68,7 +98,7 @@ export function useDocTocActiveId(ids: string[], offset = 48) {
 				window.cancelAnimationFrame(frame);
 			}
 		};
-	}, [idsKey, offset]);
+	}, [idsKey]);
 
 	const settleTimer = useRef<number | undefined>(undefined);
 	const cancelUnpin = useRef<(() => void) | null>(null);

@@ -20,8 +20,8 @@ export default function DraftMasterDetail() {
 			detailLabel="Draft editor"
 			backLabel="Back to drafts"
 			list={
-				<div className="space-y-2 p-3">
-					<h3 className="text-sm font-medium">Drafts</h3>
+				<div className="space-y-basalt-space-lg p-basalt-space-lg">
+					<h3 className="text-basalt-base font-medium">Drafts</h3>
 					{Object.keys(drafts).map((name) => (
 						<Button
 							key={name}
@@ -38,7 +38,7 @@ export default function DraftMasterDetail() {
 				</div>
 			}
 		>
-			<div className="space-y-4 p-4">
+			<div className="space-y-basalt-space-lg p-basalt-space-lg">
 				<h3 className="font-medium">{selected}</h3>
 				<InputArea
 					aria-label="Draft text"
@@ -46,9 +46,9 @@ export default function DraftMasterDetail() {
 					value={drafts[selected]}
 					onChange={(event) => setDrafts({ ...drafts, [selected]: event.target.value })}
 				/>
-				<p className="text-xs text-basalt-muted-foreground">Preview</p>
-				<p className="whitespace-pre-wrap break-words text-sm">{drafts[selected]}</p>
-				<p role="status" className="text-xs text-basalt-muted-foreground">
+				<p className="text-basalt-sm text-basalt-muted-foreground">Preview</p>
+				<p className="whitespace-pre-wrap break-words text-basalt-base">{drafts[selected]}</p>
+				<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
 					{drafts[selected].length} characters · local draft retained when returning to the list
 				</p>
 			</div>

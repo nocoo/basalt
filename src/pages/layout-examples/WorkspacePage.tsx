@@ -17,6 +17,7 @@ import {
 	Sidebar,
 	SidebarFooter,
 	SidebarHeader,
+	SidebarItem,
 	SidebarNav,
 } from "@nocoo/basalt/components/sidebar";
 import { Menu } from "lucide-react";
@@ -30,7 +31,7 @@ export default function WorkspacePage() {
 			<AppSkipLink>Skip to content</AppSkipLink>
 			<Sidebar aria-label="Desktop workspace" className="hidden md:flex">
 				<SidebarHeader>Basalt workspace</SidebarHeader>
-				<SidebarNav className="p-3">
+				<SidebarNav>
 					<LinkButton href="/examples/reader" variant="ghost">
 						Field journal
 					</LinkButton>
@@ -48,17 +49,17 @@ export default function WorkspacePage() {
 									<Menu />
 								</Button>
 							</SheetTrigger>
-							<SheetContent side="left" className="w-[260px] max-w-[260px] border-0 p-0">
+							<SheetContent side="left" className="w-[16.25rem] max-w-[16.25rem] border-0 p-0">
 								<SheetTitle className="sr-only">Workspace navigation</SheetTitle>
 								<SheetDescription className="sr-only">Local layout examples.</SheetDescription>
 								<Sidebar>
 									<SidebarHeader>Basalt layouts</SidebarHeader>
-									<SidebarNav className="space-y-1 p-3">
+									<SidebarNav>
 										{Array.from({ length: 30 }, (_, index) => (
 											<SheetClose asChild key={`section-${index}`}>
-												<Button variant="ghost" className="min-h-11 w-full justify-start">
+												<SidebarItem className="min-h-basalt-touch">
 													Section {index + 1}
-												</Button>
+												</SidebarItem>
 											</SheetClose>
 										))}
 									</SidebarNav>
@@ -77,14 +78,18 @@ export default function WorkspacePage() {
 						</LinkButton>
 					}
 				/>
-				<div className="flex min-h-0 min-w-0 flex-1 flex-col px-2 pb-2 md:px-3 md:pb-3">
+				<div className="flex min-h-0 min-w-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-space-lg md:pb-basalt-space-lg">
 					<ContentIsland>
-						<div className="mx-auto max-w-2xl space-y-6">
+						<div className="mx-auto max-w-2xl space-y-basalt-space-lg">
 							<PageHeader
 								title="Profile and preferences"
 								description="An inset form surface. Resize, tab through fields, then open and dismiss navigation."
 							/>
-							<div role="group" aria-label="Scroll layout" className="flex flex-wrap gap-2">
+							<div
+								role="group"
+								aria-label="Scroll layout"
+								className="flex flex-wrap gap-basalt-space-lg"
+							>
 								{(["responsive", "document", "workspace"] as const).map((mode) => (
 									<Button
 										key={mode}
@@ -99,21 +104,21 @@ export default function WorkspacePage() {
 							</div>
 							<form
 								aria-label="Workspace profile"
-								className="space-y-5"
+								className="space-y-basalt-space-lg"
 								onSubmit={(event) => {
 									event.preventDefault();
 									setSaved(true);
 								}}
 							>
 								{Array.from({ length: 14 }, (_, index) => (
-									<div key={`field-${index}`} className="space-y-2">
+									<div key={`field-${index}`} className="space-y-basalt-space-lg">
 										<Label htmlFor={`field-${index}`}>
 											{index === 13 ? "Final note" : `Preference ${index + 1}`}
 										</Label>
 										<Input
 											id={`field-${index}`}
 											name={`field-${index}`}
-											className="min-h-11 text-base"
+											className="min-h-11 text-basalt-lg"
 											autoComplete="off"
 											required={index === 13}
 										/>

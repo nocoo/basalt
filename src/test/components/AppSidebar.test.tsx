@@ -5,6 +5,7 @@ import { MemoryRouter, useLocation } from "react-router";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { AppSidebar } from "@/components/AppSidebar";
 import { CATALOG, catalogNavName } from "@/pages/ui/catalog";
+import { CATALOG_CATEGORIES, catalogCategoryPath } from "@/pages/ui/catalog-categories";
 
 function catalogButtons() {
 	return Array.from(
@@ -126,7 +127,7 @@ describe("AppSidebar", () => {
 		expect(screen.getByRole("button", { name: "Page Header" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Section Rule" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: /^Maps.*Planned$/ })).toBeDisabled();
-		const components = screen.getByRole("button", { name: "Components", expanded: true });
+		const components = screen.getByRole("button", { name: "Actions", expanded: true });
 		expect(components).toHaveAttribute("aria-expanded", "true");
 		fireEvent.click(components);
 		expect(components).toHaveAttribute("aria-expanded", "false");
@@ -168,6 +169,36 @@ describe("AppSidebar", () => {
 		expect(screen.getByTestId("router-location")).toHaveAttribute(
 			"data-pathname",
 			"/ui/clipboard-text",
+		);
+	});
+
+	it("starts every library group with an accessible overview and navigates to it", () => {
+		renderSidebar();
+		for (const category of CATALOG_CATEGORIES) {
+			const overview = screen.getByRole("button", { name: `${category.label} overview` });
+			expect(overview.textContent).toBe("Overview");
+			expect(overview.parentElement?.firstElementChild).toBe(overview);
+			fireEvent.click(overview);
+			expect(screen.getByTestId("router-location")).toHaveAttribute(
+				"data-pathname",
+				catalogCategoryPath(category.id),
+			);
+			expect(overview).toHaveAttribute("aria-current", "page");
+		}
+		expect(
+			screen.queryByRole("button", { name: "Components", expanded: true }),
+		).not.toBeInTheDocument();
+	});
+
+	it("finds category overviews through search even with the sidebar collapsed", async () => {
+		renderSidebar("/ui/button", true);
+		fireEvent.keyDown(document, { key: "k", ctrlKey: true });
+		const search = screen.getByPlaceholderText("Search pages...");
+		fireEvent.change(search, { target: { value: "actions overview" } });
+		fireEvent.click(await screen.findByRole("option", { name: "Actions overview" }));
+		expect(screen.getByTestId("router-location")).toHaveAttribute(
+			"data-pathname",
+			"/ui/overview/action",
 		);
 	});
 
@@ -245,15 +276,15 @@ describe("AppSidebar", () => {
 		expect(expandedHome).toHaveAttribute("href", "/");
 		const expanded = expandedHome.querySelector("img");
 		expect(expanded).toHaveClass("h-7", "w-7");
-		expect(expanded?.closest(".flex.h-basalt-14")).not.toHaveClass("pl-6");
+		expect(expanded?.closest(".flex.h-basalt-14")).not.toHaveClass("pl-basalt-space-lg");
 		unmount();
 		renderSidebar("/ui/button", true);
 		const collapsedHome = screen.getByRole("link", { name: "Home" });
 		expect(collapsedHome).toHaveAttribute("href", "/");
 		const collapsed = collapsedHome.querySelector("img");
 		expect(collapsed).toHaveClass("h-7", "w-7");
-		expect(collapsed?.closest(".flex.h-basalt-14")).toHaveClass("pl-6", "justify-start");
-		expect(collapsed?.closest(".flex.h-basalt-14")).not.toHaveClass("justify-center");
+		expect(collapsed?.closest("[data-slot=sidebar-header]")).toHaveClass("px-basalt-nav-inset");
+		expect(collapsedHome.parentElement).toHaveClass("justify-center");
 	});
 
 	it("aligns collapsed search with the icon rail", () => {
@@ -261,7 +292,7 @@ describe("AppSidebar", () => {
 		const search = screen.getByRole("button", { name: "Search (⌘K)" });
 		const nav = document.querySelector("aside nav");
 		const icons = Array.from(nav?.querySelectorAll(":scope > button") ?? []);
-		expect(nav).toHaveClass("items-center", "gap-1");
+		expect(nav).toHaveClass("basalt-hover-list", "gap-basalt-nav-gap", "p-basalt-nav-inset");
 		expect(icons[0]).toBe(search);
 		expect(icons.length).toBeGreaterThan(1);
 		for (const icon of icons) {

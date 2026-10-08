@@ -1,3 +1,9 @@
+import {
+	CATALOG_CATEGORIES,
+	type CatalogCategory,
+	catalogCategoryPath,
+} from "../pages/ui/catalog-categories";
+
 export const SITE_ORIGIN = "https://basaltui.com";
 
 export const SITE = {
@@ -27,7 +33,7 @@ export const SITE = {
 	registry: "ai/registry.json",
 } as const;
 
-export type ShowcaseCategory = "component" | "chart" | "block";
+export type ShowcaseCategory = CatalogCategory;
 
 export interface ShowcasePage {
 	path: string;
@@ -80,12 +86,6 @@ export const SHOWCASE_TITLE_KEYS: Readonly<Record<string, string>> = Object.from
 export const SHOWCASE_PATHS: readonly string[] = SHOWCASE_PAGES.filter(
 	(page) => page.inSitemap,
 ).map((page) => page.path);
-
-const CATEGORY_HEADINGS: Record<ShowcaseCategory, string> = {
-	component: "Components",
-	chart: "Charts",
-	block: "Blocks",
-};
 
 export function absoluteUrl(path = "/"): string {
 	if (!path.startsWith("/")) {
@@ -262,20 +262,19 @@ export function renderLlms(): string {
 }
 
 export function renderLlmsFull(entries: readonly CatalogLink[]): string {
-	const grouped = new Map<ShowcaseCategory, CatalogLink[]>([
-		["component", []],
-		["chart", []],
-		["block", []],
-	]);
+	const grouped = new Map<ShowcaseCategory, CatalogLink[]>(
+		CATALOG_CATEGORIES.map((category) => [category.id, []]),
+	);
 	for (const entry of entries) {
 		grouped.get(entry.category)?.push(entry);
 	}
-	const sections = [...grouped.entries()].map(([category, items]) => {
+	const sections = CATALOG_CATEGORIES.map((category) => {
+		const items = grouped.get(category.id) ?? [];
 		const lines = items
 			.slice()
 			.sort((a, b) => a.name.localeCompare(b.name, "en"))
 			.map((entry) => `- [${entry.name}](${absoluteUrl(`/ui/${entry.slug}`)})`);
-		return `## ${CATEGORY_HEADINGS[category]}\n\n${lines.join("\n")}`;
+		return `## ${category.label}\n\n[Overview](${absoluteUrl(catalogCategoryPath(category.id))}): ${category.description}\n\n${lines.join("\n")}`;
 	});
 	return [
 		`# ${SITE.name} catalog`,

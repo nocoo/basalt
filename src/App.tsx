@@ -42,6 +42,7 @@ const ProgressTrackingPage = lazy(() => import("./pages/ProgressTrackingPage"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
 const StaticPage = lazy(() => import("./pages/StaticPage"));
 const UiIndexPage = lazy(() => import("./pages/ui/UiIndexPage"));
+const UiCategoryOverviewPage = lazy(() => import("./pages/ui/UiCategoryOverviewPage"));
 const UiPlaceholderPage = lazy(() => import("./pages/ui/UiPlaceholderPage"));
 const UiSourceViewerPage = lazy(() => import("./pages/ui/UiSourceViewerPage"));
 const WearableDashboardPage = lazy(() => import("./pages/WearableDashboardPage"));
@@ -75,7 +76,7 @@ function RouteLoadingFallback() {
 		<div
 			role="status"
 			aria-live="polite"
-			className="flex min-h-48 w-full max-w-full items-center justify-center overflow-hidden p-6 text-sm text-basalt-muted-foreground"
+			className="flex min-h-48 w-full max-w-full items-center justify-center overflow-hidden p-basalt-space-lg text-basalt-base text-basalt-muted-foreground"
 		>
 			Loading page…
 		</div>
@@ -125,6 +126,10 @@ const App = () => (
 								<Route path="/banking" element={routeElement(BankingDashboardPage)} />
 								<Route path="/network" element={routeElement(NetworkOpsDashboardPage)} />
 								<Route path="/ui" element={routeElement(UiIndexPage)} />
+								<Route
+									path="/ui/overview/:category"
+									element={routeElement(UiCategoryOverviewPage)}
+								/>
 								<Route path="/ui/:slug" element={routeElement(UiPlaceholderPage)} />
 								<Route path="/ui/:slug/source" element={routeElement(UiSourceViewerPage)} />
 							</Route>

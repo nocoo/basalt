@@ -1,5 +1,6 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { FolderNavItem } from "@nocoo/basalt/components/editable-nav-item";
+import { SidebarNav } from "@nocoo/basalt/components/sidebar";
 import { Pin } from "lucide-react";
 import { useState } from "react";
 
@@ -12,11 +13,11 @@ export default function FolderNavigation() {
 	const [selected, setSelected] = useState("library");
 	const [pinned, setPinned] = useState<string[]>([]);
 	return (
-		<div className="w-full max-w-md space-y-3">
-			<h3 className="text-xs font-medium uppercase tracking-wider text-basalt-muted-foreground">
+		<div className="w-full max-w-md space-y-basalt-space-lg">
+			<h3 className="text-basalt-sm font-medium uppercase tracking-wider text-basalt-muted-foreground">
 				Workspace folders
 			</h3>
-			<nav aria-label="Folder navigation" className="space-y-1">
+			<SidebarNav aria-label="Folder navigation">
 				{folders.map((folder) => (
 					<FolderNavItem
 						key={folder.id}
@@ -46,8 +47,8 @@ export default function FolderNavigation() {
 						}
 					/>
 				))}
-			</nav>
-			<p role="status" className="text-xs text-basalt-muted-foreground">
+			</SidebarNav>
+			<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
 				Opened {folders.find((folder) => folder.id === selected)?.name} · {pinned.length} pinned
 			</p>
 		</div>

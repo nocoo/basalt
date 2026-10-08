@@ -24,6 +24,10 @@ describe("page metadata", () => {
 		}
 		expect(pageMetadata("/ui/custom").description).toContain("Component");
 		expect(pageMetadata("/custom").description).toContain("Interface");
+		expect(pageMetadata("/ui/overview/action", "Actions overview").description).toContain(
+			"Design thinking",
+		);
+		expect(pageMetadata("/ui/overview/unknown").description).toContain("Component");
 	});
 
 	it("synchronizes search, social, and structured metadata and safely escapes catalog text", () => {

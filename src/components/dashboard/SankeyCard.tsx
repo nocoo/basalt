@@ -21,17 +21,17 @@ const data = {
 export function SankeyCard() {
 	const { t } = useTranslation();
 	return (
-		<LayerCard className="flex flex-col ring-0 h-full rounded-card border-0 bg-secondary shadow-none">
-			<div className="flex flex-col space-y-2.5 p-4 pb-2">
-				<h3 className="text-sm text-muted-foreground">{t("dashboard.userFlowSankey")}</h3>
-			</div>
-			<div className="h-64 min-w-0 shrink-0 px-4 pt-0 pb-4">
+		<LayerCard className="flex flex-col h-full">
+			<LayerCard.Header className="flex-col">
+				<h2 className="text-basalt-base text-muted-foreground">{t("dashboard.userFlowSankey")}</h2>
+			</LayerCard.Header>
+			<LayerCard.Body className="h-64 min-w-0 shrink-0">
 				<SankeyChart
 					data={data}
 					ariaLabel={t("dashboard.userFlowSankey")}
 					className="h-full w-full"
 				/>
-			</div>
+			</LayerCard.Body>
 		</LayerCard>
 	);
 }

@@ -5,7 +5,7 @@ import { useState } from "react";
 export default function FolderIconSelection() {
 	const [icon, setIcon] = useState("folder");
 	return (
-		<div className="space-y-3">
+		<div className="space-y-basalt-space-lg">
 			<h3 className="font-medium">Folder appearance</h3>
 			<IconPicker
 				label="Folder icon"
@@ -18,7 +18,7 @@ export default function FolderIconSelection() {
 					{ value: "palette", label: "Palette", icon: <Palette /> },
 				]}
 			/>
-			<p role="status" className="text-sm text-basalt-muted-foreground">
+			<p role="status" className="text-basalt-base text-basalt-muted-foreground">
 				Selected icon: {icon}
 			</p>
 		</div>

@@ -11,30 +11,30 @@ const accountItems = [
 export function ItemListCard() {
 	const { t } = useTranslation();
 	return (
-		<LayerCard className="flex flex-col ring-0 h-full rounded-card border-0 bg-secondary shadow-none">
-			<div className="flex flex-col space-y-2.5 p-4">
-				<div className="flex items-center gap-2">
+		<LayerCard className="flex flex-col h-full">
+			<LayerCard.Header className="flex-col">
+				<div className="flex items-center gap-basalt-space-lg">
 					<Wallet className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<h3 className="text-sm font-normal text-muted-foreground">
+					<h2 className="text-basalt-base font-normal text-muted-foreground">
 						{t("dashboard.accountsTitle")}
-					</h3>
+					</h2>
 				</div>
-			</div>
-			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 flex flex-col">
-				<div className="flex flex-1 flex-col gap-3">
+			</LayerCard.Header>
+			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
+				<div className="flex flex-1 flex-col gap-basalt-space-lg">
 					{accountItems.map((acc) => (
 						<div key={acc.name} className="flex items-center justify-between">
-							<span className="text-sm text-foreground">{acc.name}</span>
+							<span className="text-basalt-base text-foreground">{acc.name}</span>
 							<div className="text-right">
-								<span className="text-sm font-medium text-foreground font-display">
+								<span className="text-basalt-base font-medium text-foreground font-display">
 									${acc.balance.toLocaleString()}
 								</span>
-								<span className="text-xs text-success ml-2">{acc.change}</span>
+								<span className="text-basalt-sm text-success ml-basalt-space-lg">{acc.change}</span>
 							</div>
 						</div>
 					))}
 				</div>
-			</div>
+			</LayerCard.Body>
 		</LayerCard>
 	);
 }

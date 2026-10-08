@@ -41,7 +41,7 @@ export default function ApprovalDemo() {
 	const [run, setRun] = useState(0);
 	const [result, setResult] = useState("");
 	return (
-		<div className="w-full space-y-3">
+		<div className="w-full space-y-basalt-space-lg">
 			<ApprovalCard
 				key={run}
 				questions={questions}
@@ -58,7 +58,11 @@ export default function ApprovalDemo() {
 				Reset approval
 			</Button>
 			{result && (
-				<pre role="status" className="overflow-x-auto text-xs" aria-label="Submitted answers">
+				<pre
+					role="status"
+					className="overflow-x-auto text-basalt-sm"
+					aria-label="Submitted answers"
+				>
 					{result}
 				</pre>
 			)}

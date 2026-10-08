@@ -11,29 +11,29 @@ const data = [
 export function MiniDonutCard() {
 	const { t } = useTranslation();
 	return (
-		<LayerCard className="flex flex-col ring-0 h-full rounded-card border-0 bg-secondary shadow-none">
-			<div className="flex flex-col space-y-2.5 p-4 pb-2">
-				<h3 className="text-sm text-muted-foreground">{t("dashboard.miniDonut")}</h3>
-			</div>
-			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 flex items-center gap-4">
+		<LayerCard className="flex flex-col h-full">
+			<LayerCard.Header className="flex-col">
+				<h2 className="text-basalt-base text-muted-foreground">{t("dashboard.miniDonut")}</h2>
+			</LayerCard.Header>
+			<LayerCard.Body className="min-h-0 flex-1 flex items-center gap-basalt-space-lg">
 				<div className="h-24 w-24">
 					<DonutChartWidget data={data} height={96} />
 				</div>
-				<div className="space-y-2 text-xs text-muted-foreground">
-					<div className="flex items-center justify-between gap-6">
+				<div className="space-y-basalt-space-lg text-basalt-sm text-muted-foreground">
+					<div className="flex items-center justify-between gap-basalt-space-lg">
 						<span>{t("dashboard.activeLabel")}</span>
 						<span className="text-foreground">62%</span>
 					</div>
-					<div className="flex items-center justify-between gap-6">
+					<div className="flex items-center justify-between gap-basalt-space-lg">
 						<span>{t("dashboard.idleLabel")}</span>
 						<span className="text-foreground">28%</span>
 					</div>
-					<div className="flex items-center justify-between gap-6">
+					<div className="flex items-center justify-between gap-basalt-space-lg">
 						<span>{t("dashboard.churnLabel")}</span>
 						<span className="text-foreground">10%</span>
 					</div>
 				</div>
-			</div>
+			</LayerCard.Body>
 		</LayerCard>
 	);
 }

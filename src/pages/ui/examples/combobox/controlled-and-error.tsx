@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function ComboboxControlledAndError() {
 	const [value, setValue] = useState("");
 	return (
-		<div className="flex w-full flex-col gap-3">
+		<div className="flex w-full flex-col gap-basalt-space-lg">
 			<Field label="Fruit" error={value ? undefined : "Pick a fruit"}>
 				<Combobox
 					items={[

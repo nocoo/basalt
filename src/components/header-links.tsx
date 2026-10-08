@@ -32,7 +32,7 @@ export function HexlyLink({ className }: { className?: string } = {}) {
 				target="_blank"
 				rel="noopener noreferrer"
 				aria-label="Basalt on hexly.ai (opens in a new tab)"
-				className={`${className ?? "h-8 w-8 rounded-lg text-basalt-muted-foreground hover:text-basalt-foreground"} [&_svg]:size-[18px]`}
+				className={`${className ?? "w-8 rounded-basalt-md text-basalt-muted-foreground hover:text-basalt-foreground"} [&_svg]:size-[1.125rem]`}
 			>
 				<span className="sr-only">Basalt on hexly.ai</span>
 				<svg

@@ -190,13 +190,15 @@ async function assertData(page: Page, baseUrl: string) {
 	const query = page.getByRole("textbox", { name: "Search", exact: true });
 	await query.fill("no-invoice");
 	await page.getByRole("button", { name: "Reset filters", exact: true }).click();
-	await page.getByRole("combobox", { name: "Filter", exact: true }).selectOption("Paid");
+	await page.getByRole("combobox", { name: "Filter", exact: true }).click();
+	await page.getByRole("option", { name: "Paid", exact: true }).click();
 	assert.equal(await table.locator("tbody tr").count(), 2);
 	assert.ok((await table.locator("tbody").textContent())?.includes("Nova Labs"));
 	await table.getByRole("button", { name: "Amount", exact: true }).focus();
 	await page.keyboard.press("Enter");
 	assert.ok((await table.locator("tbody tr").first().textContent())?.includes("Atlas Works"));
-	await page.getByRole("combobox", { name: "Filter", exact: true }).selectOption("all");
+	await page.getByRole("combobox", { name: "Filter", exact: true }).click();
+	await page.getByRole("option", { name: "All statuses", exact: true }).click();
 	await page.getByRole("button", { name: "Next page", exact: true }).click();
 	assert.equal(await table.locator("tbody tr").count(), 2);
 	await query.fill("Violet");
@@ -306,9 +308,12 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 		for (const route of ROUTES) {
 			console.log(`Example smoke ${width} ${route}`);
 			await page.goto(`${baseUrl}${route}`);
-			if (!["/login", "/loading", "/static-page", "/404"].includes(route))
+			if (!["/login", "/loading", "/static-page", "/404"].includes(route)) {
 				await page.locator("[data-doc-scroll] h1").waitFor();
-			else if (route === "/login") await page.getByRole("button", { name: /Google/ }).waitFor();
+				const template = page.locator("[data-doc-scroll] [data-showcase-page]");
+				assert.equal(await template.count(), 1, `${route}: shared page template`);
+				assert.equal(await template.locator("main").count(), 0, `${route}: nested main`);
+			} else if (route === "/login") await page.getByRole("button", { name: /Google/ }).waitFor();
 			else if (route === "/loading") await page.getByRole("status").waitFor();
 			else await page.locator("h1").waitFor();
 			await settle(page);

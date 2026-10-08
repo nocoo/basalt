@@ -1,8 +1,17 @@
 import { Badge } from "@nocoo/basalt/components/badge";
+import { Banner } from "@nocoo/basalt/components/banner";
 import { Button } from "@nocoo/basalt/components/button";
+import { Checkbox } from "@nocoo/basalt/components/checkbox";
 import { Input } from "@nocoo/basalt/components/input";
 import { Meter } from "@nocoo/basalt/components/meter";
 import { Pagination } from "@nocoo/basalt/components/pagination";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@nocoo/basalt/components/select";
 import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import {
 	Table,
@@ -132,9 +141,9 @@ export default function SubscriptionTable() {
 		<TableHead
 			aria-sort={sort.key === key ? (sort.direction === 1 ? "ascending" : "descending") : "none"}
 		>
-			<button
+			<Button
+				variant="ghost"
 				type="button"
-				className="rounded-sm py-1 font-medium focus-visible:outline-2 focus-visible:outline-basalt-primary"
 				onClick={() =>
 					setSort((current) => ({
 						key,
@@ -143,34 +152,36 @@ export default function SubscriptionTable() {
 				}
 			>
 				{label}
-				<span aria-hidden="true" className="ml-1">
+				<span aria-hidden="true" className="ml-basalt-space-sm">
 					{sort.key === key ? (sort.direction === 1 ? "↑" : "↓") : "↕"}
 				</span>
-			</button>
+			</Button>
 		</TableHead>
 	);
 	const changeText = (row: Subscription) => `${row.change > 0 ? "+" : ""}${row.change.toFixed(1)}%`;
 	return (
-		<div className="w-full space-y-4" data-demo="subscription-table">
-			<div className="flex flex-wrap items-start justify-between gap-4">
+		<div className="w-full space-y-basalt-space-lg" data-demo="subscription-table">
+			<div className="flex flex-wrap items-start justify-between gap-basalt-space-lg">
 				<div>
-					<p className="text-xs uppercase tracking-widest text-basalt-muted-foreground">
+					<p className="text-basalt-sm uppercase tracking-widest text-basalt-muted-foreground">
 						Spend management
 					</p>
-					<h3 className="mt-1 text-xl font-semibold">Subscriptions & commitments</h3>
-					<p className="mt-1 text-sm text-basalt-muted-foreground">
+					<h3 className="mt-basalt-space-sm text-basalt-2xl font-semibold">
+						Subscriptions & commitments
+					</h3>
+					<p className="mt-basalt-space-sm text-basalt-base text-basalt-muted-foreground">
 						Renewals, usage and spend across your workspace.
 					</p>
 				</div>
 				<div className="text-right">
-					<p className="text-xs text-basalt-muted-foreground">Matching monthly spend</p>
-					<p className="mt-1 text-2xl font-semibold tabular-nums">
+					<p className="text-basalt-sm text-basalt-muted-foreground">Matching monthly spend</p>
+					<p className="mt-basalt-space-sm text-basalt-3xl font-semibold tabular-nums">
 						{money.format(rows.reduce((sum, row) => sum + row.monthly, 0))}
 					</p>
 				</div>
 			</div>
-			<div className="flex flex-wrap items-center justify-between gap-3">
-				<div className="flex flex-wrap gap-2">
+			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
+				<div className="flex flex-wrap gap-basalt-space-lg">
 					<Input
 						aria-label="Search subscriptions"
 						className="w-60 max-w-full"
@@ -181,21 +192,26 @@ export default function SubscriptionTable() {
 							setPage(1);
 						}}
 					/>
-					<select
-						aria-label="Subscription team"
+					<Select
 						value={team}
-						onChange={(event) => {
-							setTeam(event.target.value);
+						onValueChange={(value) => {
+							setTeam(value);
 							setPage(1);
 						}}
-						className="h-9 rounded-basalt-md border border-basalt-border bg-basalt-background px-3 text-sm"
 					>
-						{["All teams", "Infrastructure", "Product", "Design"].map((item) => (
-							<option key={item}>{item}</option>
-						))}
-					</select>
+						<SelectTrigger aria-label="Subscription team" className="w-auto">
+							<SelectValue />
+						</SelectTrigger>
+						<SelectContent>
+							{["All teams", "Infrastructure", "Product", "Design"].map((item) => (
+								<SelectItem key={item} value={item}>
+									{item}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 				</div>
-				<div className="flex flex-wrap gap-1">
+				<div className="flex flex-wrap gap-basalt-space-sm">
 					{(["ready", "loading", "empty", "error"] as const).map((value) => (
 						<Button
 							key={value}
@@ -211,7 +227,7 @@ export default function SubscriptionTable() {
 				</div>
 			</div>
 			{selected.length > 0 ? (
-				<div className="flex flex-wrap items-center gap-3 rounded-basalt-md bg-basalt-muted p-3 text-xs">
+				<Banner variant="secondary" className="flex-wrap items-center">
 					<span>{selected.length} subscriptions selected</span>
 					<Button
 						size="sm"
@@ -226,7 +242,7 @@ export default function SubscriptionTable() {
 					<Button size="sm" variant="ghost" onClick={() => setSelected([])}>
 						Clear selection
 					</Button>
-				</div>
+				</Banner>
 			) : null}
 			<div
 				role="region"
@@ -238,7 +254,7 @@ export default function SubscriptionTable() {
 				<Table
 					aria-label="Subscription ledger"
 					aria-busy={mode === "loading"}
-					className="min-w-[880px]"
+					className="min-w-[55rem]"
 				>
 					<TableCaption>
 						Monthly commitments in USD. Changes compare with the previous month.
@@ -260,7 +276,11 @@ export default function SubscriptionTable() {
 						{mode === "loading" ? (
 							<TableRow>
 								<TableCell colSpan={7}>
-									<div role="status" aria-label="Loading subscriptions" className="space-y-5 py-6">
+									<div
+										role="status"
+										aria-label="Loading subscriptions"
+										className="space-y-basalt-space-lg py-basalt-space-lg"
+									>
 										{[90, 70, 82, 65].map((width) => (
 											<SkeletonLine key={width} height={22} minWidth={width} maxWidth={width} />
 										))}
@@ -270,7 +290,10 @@ export default function SubscriptionTable() {
 						) : mode === "error" ? (
 							<TableRow>
 								<TableCell colSpan={7}>
-									<div role="alert" className="space-y-3 py-10 text-center">
+									<div
+										role="alert"
+										className="space-y-basalt-space-lg py-basalt-space-lg text-center"
+									>
 										<p>We could not refresh your subscriptions.</p>
 										<Button
 											variant="outline"
@@ -287,7 +310,10 @@ export default function SubscriptionTable() {
 						) : visible.length === 0 ? (
 							<TableRow>
 								<TableCell colSpan={7}>
-									<div role="status" className="space-y-3 py-10 text-center">
+									<div
+										role="status"
+										className="space-y-basalt-space-lg py-basalt-space-lg text-center"
+									>
 										<p>No subscriptions match this view.</p>
 										<Button
 											variant="outline"
@@ -305,17 +331,12 @@ export default function SubscriptionTable() {
 							</TableRow>
 						) : (
 							visible.map((row) => (
-								<TableRow
-									key={row.id}
-									variant={selected.includes(row.id) ? "selected" : "default"}
-									className="hover:bg-basalt-muted/40"
-								>
+								<TableRow key={row.id} variant={selected.includes(row.id) ? "selected" : "default"}>
 									<TableCell>
-										<input
-											type="checkbox"
+										<Checkbox
 											aria-label={`Select ${row.name}`}
 											checked={selected.includes(row.id)}
-											onChange={() =>
+											onCheckedChange={() =>
 												setSelected((current) =>
 													current.includes(row.id)
 														? current.filter((id) => id !== row.id)
@@ -326,14 +347,14 @@ export default function SubscriptionTable() {
 									</TableCell>
 									<TableCell>
 										<p className="whitespace-nowrap font-medium">{row.name}</p>
-										<div className="mt-2 flex items-center gap-1.5">
+										<div className="mt-basalt-space-lg flex items-center gap-basalt-space-md">
 											<Badge variant="outline">{row.team}</Badge>
 											<Badge variant="secondary">{row.plan}</Badge>
 										</div>
 									</TableCell>
 									<TableCell className="text-right font-medium tabular-nums">
 										{money.format(row.monthly)}
-										<p className="mt-1 text-xs font-normal text-basalt-muted-foreground">
+										<p className="mt-basalt-space-sm text-basalt-sm font-normal text-basalt-muted-foreground">
 											per month
 										</p>
 									</TableCell>
@@ -347,7 +368,7 @@ export default function SubscriptionTable() {
 										</Badge>
 									</TableCell>
 									<TableCell>
-										<div className="flex items-center gap-3">
+										<div className="flex items-center gap-basalt-space-lg">
 											<div className="w-32">
 												<Meter value={row.used} aria-label={`${row.name} quota used`} />
 											</div>
@@ -367,7 +388,7 @@ export default function SubscriptionTable() {
 										</div>
 									</TableCell>
 									<TableCell className="whitespace-nowrap">
-										<p className="text-xs tabular-nums">
+										<p className="text-basalt-sm tabular-nums">
 											{new Intl.DateTimeFormat("en-GB", {
 												day: "numeric",
 												month: "short",
@@ -382,7 +403,7 @@ export default function SubscriptionTable() {
 														? "info"
 														: "outline"
 											}
-											className="mt-1.5"
+											className="mt-basalt-space-md"
 										>
 											{row.status}
 										</Badge>
@@ -407,8 +428,8 @@ export default function SubscriptionTable() {
 					</TableBody>
 				</Table>
 			</div>
-			<div className="flex flex-wrap items-center justify-between gap-3">
-				<p role="status" className="text-xs text-basalt-muted-foreground">
+			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
+				<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
 					{notice || `${rows.length} subscriptions · ${selected.length} selected`}
 				</p>
 				<Pagination

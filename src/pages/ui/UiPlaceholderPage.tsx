@@ -1,14 +1,25 @@
-import { Button } from "@nocoo/basalt/components/button";
+import { Button, LinkButton } from "@nocoo/basalt/components/button";
 import {
 	DropdownMenu,
 	DropdownMenuContent,
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@nocoo/basalt/components/dropdown-menu";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { SectionRule } from "@nocoo/basalt/components/section-rule";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@nocoo/basalt/components/table";
 import { Check, ChevronDown, Copy } from "lucide-react";
 import { use, useState } from "react";
 import { Link, useParams } from "react-router";
 import { Github } from "@/components/icons/github";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import {
 	CATALOG_BY_SLUG,
 	type CatalogEntry,
@@ -56,7 +67,7 @@ function CopyPageButton({ markdown }: { markdown: string }) {
 					<Button
 						variant="outline"
 						size="sm"
-						className="rounded-l-none border-l-0 px-2"
+						className="rounded-l-none border-l-0"
 						aria-label="Copy page options"
 					>
 						<ChevronDown />
@@ -138,31 +149,30 @@ function catalogApiCopyLines(api: CatalogApiSurface[]): string[] {
 
 export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 	return (
-		<section id="api-reference" className="scroll-mt-6 space-y-4">
-			<h2 className="text-2xl font-semibold tracking-tight">API Reference</h2>
+		<SectionRule id="api-reference" title="API Reference" className="scroll-mt-6">
 			{api.map((surface) => {
 				if (surface.callSignature) {
 					return (
-						<div key={surface.name} className="space-y-4">
+						<div key={surface.name} className="space-y-basalt-space-lg">
 							<h3
 								id={catalogApiSurfaceId(surface.name)}
-								className="scroll-mt-6 text-sm font-medium"
+								className="scroll-mt-6 text-basalt-base font-medium"
 							>
 								{surface.name}
 							</h3>
-							<div className="min-w-0 rounded-lg border border-border bg-card p-4 space-y-3 text-sm [overflow-wrap:anywhere]">
+							<LayerCard className="min-w-0 space-y-basalt-space-lg text-basalt-base [overflow-wrap:anywhere]">
 								<div>
-									<code className="text-xs font-mono text-primary font-semibold">
+									<code className="text-basalt-sm font-mono text-primary font-semibold">
 										{surface.callSignature}
 									</code>
 								</div>
 								{surface.description ? (
-									<p className="text-sm text-muted-foreground">{surface.description}</p>
+									<p className="text-basalt-base text-muted-foreground">{surface.description}</p>
 								) : null}
 								{surface.parameters && surface.parameters.length > 0 ? (
-									<div className="space-y-1">
-										<p className="text-xs font-medium text-foreground">Parameters</p>
-										<ul className="list-inside list-disc text-xs text-muted-foreground space-y-0.5">
+									<div className="space-y-basalt-space-sm">
+										<p className="text-basalt-sm font-medium text-foreground">Parameters</p>
+										<ul className="list-inside list-disc text-basalt-sm text-muted-foreground space-y-basalt-space-xs">
 											{surface.parameters.map((p) => (
 												<li key={p.name}>
 													<code>{p.name}</code> ({p.type}
@@ -174,15 +184,15 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 									</div>
 								) : null}
 								{surface.returns ? (
-									<div className="text-xs text-muted-foreground">
+									<div className="text-basalt-sm text-muted-foreground">
 										<span className="font-medium text-foreground">Returns: </span>
 										<code>{surface.returns.type}</code>
 										{surface.returns.description ? ` — ${surface.returns.description}` : ""}
 									</div>
 								) : null}
 								{surface.options && surface.options.props.length > 0 ? (
-									<div className="space-y-2 pt-2 border-t border-border">
-										<p className="text-xs font-medium text-foreground">
+									<div className="space-y-basalt-space-lg pt-basalt-space-lg border-t border-border">
+										<p className="text-basalt-sm font-medium text-foreground">
 											Options (<code>{surface.options.name}</code>)
 										</p>
 										<div
@@ -190,44 +200,44 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 											// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
 											tabIndex={0}
 											aria-label={`${surface.options.name} API scrolling table`}
-											className="max-w-full overflow-x-auto rounded-md border border-border focus-visible:outline-2 focus-visible:outline-primary"
+											className="max-w-full overflow-x-auto rounded-basalt-md border border-border focus-visible:outline-2 focus-visible:outline-primary"
 										>
-											<table
+											<Table
 												aria-label={`${surface.options.name} props`}
-												className="w-full min-w-[36rem] text-xs"
+												className="w-full min-w-[36rem] text-basalt-sm"
 											>
-												<thead>
-													<tr className="border-b border-border bg-background text-left text-muted-foreground">
-														<th className="px-3 py-2 font-medium">Option</th>
-														<th className="px-3 py-2 font-medium">Type</th>
-														<th className="px-3 py-2 font-medium">Default</th>
-														<th className="px-3 py-2 font-medium">Description</th>
-													</tr>
-												</thead>
-												<tbody>
+												<TableHeader>
+													<TableRow>
+														<TableHead>Option</TableHead>
+														<TableHead>Type</TableHead>
+														<TableHead>Default</TableHead>
+														<TableHead>Description</TableHead>
+													</TableRow>
+												</TableHeader>
+												<TableBody>
 													{surface.options.props.map((opt) => (
-														<tr key={opt.name} className="border-t border-border">
-															<td className="px-3 py-2 font-medium text-foreground">
+														<TableRow key={opt.name}>
+															<TableCell className="font-medium text-foreground">
 																{opt.name}
 																{opt.required === false ? "?" : ""}
-															</td>
-															<td className="px-3 py-2 text-muted-foreground">
+															</TableCell>
+															<TableCell className="text-muted-foreground">
 																<code>{opt.type}</code>
-															</td>
-															<td className="px-3 py-2 text-muted-foreground">
+															</TableCell>
+															<TableCell className="text-muted-foreground">
 																{opt.default ?? "—"}
-															</td>
-															<td className="px-3 py-2 text-muted-foreground">
+															</TableCell>
+															<TableCell className="text-muted-foreground">
 																{opt.description ?? opt.name}
-															</td>
-														</tr>
+															</TableCell>
+														</TableRow>
 													))}
-												</tbody>
-											</table>
+												</TableBody>
+											</Table>
 										</div>
 									</div>
 								) : null}
-							</div>
+							</LayerCard>
 						</div>
 					);
 				}
@@ -238,66 +248,71 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 					surface.props[0]?.name,
 				);
 				return (
-					<div key={surface.name} className="space-y-4">
-						<h3 id={catalogApiSurfaceId(surface.name)} className="scroll-mt-6 text-sm font-medium">
+					<div key={surface.name} className="space-y-basalt-space-lg">
+						<h3
+							id={catalogApiSurfaceId(surface.name)}
+							className="scroll-mt-6 text-basalt-base font-medium"
+						>
 							{surface.name}
 						</h3>
 						{surface.typeParameters && (
-							<p className="text-xs text-muted-foreground break-words [overflow-wrap:anywhere]">
+							<p className="text-basalt-sm text-muted-foreground break-words [overflow-wrap:anywhere]">
 								Type parameters: <code>{surface.typeParameters}</code>
 							</p>
 						)}
 						{isNative && nativeDoc ? (
-							<p className="text-xs text-muted-foreground">
+							<p className="text-basalt-sm text-muted-foreground">
 								{formatNativeSurfaceStrategy(nativeDoc)}
 							</p>
 						) : null}
 						{surface.props.length === 0 ? (
-							<p className="text-sm text-muted-foreground">No component-specific props.</p>
+							<p className="text-basalt-base text-muted-foreground">No component-specific props.</p>
 						) : (
 							<div
 								role="region"
 								// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
 								tabIndex={0}
 								aria-label={`${surface.name} API scrolling table`}
-								className="max-w-full overflow-x-auto rounded-lg border border-border focus-visible:outline-2 focus-visible:outline-primary"
+								className="max-w-full overflow-x-auto rounded-basalt-md border border-border focus-visible:outline-2 focus-visible:outline-primary"
 							>
-								<table
+								<Table
 									aria-label={`${surface.name} props`}
-									className="w-full min-w-[36rem] text-sm [&_code]:break-words [&_code]:[overflow-wrap:anywhere]"
+									className="w-full min-w-[36rem] text-basalt-base [&_code]:break-words [&_code]:[overflow-wrap:anywhere]"
 								>
-									<thead>
-										<tr className="border-b border-border bg-background text-left text-muted-foreground">
-											<th className="px-4 py-2.5 font-medium">Prop</th>
-											<th className="px-4 py-2.5 font-medium">Type</th>
-											<th className="px-4 py-2.5 font-medium">Default</th>
-											<th className="px-4 py-2.5 font-medium">Description</th>
-										</tr>
-									</thead>
-									<tbody>
+									<TableHeader>
+										<TableRow>
+											<TableHead>Prop</TableHead>
+											<TableHead>Type</TableHead>
+											<TableHead>Default</TableHead>
+											<TableHead>Description</TableHead>
+										</TableRow>
+									</TableHeader>
+									<TableBody>
 										{surface.props.map((prop) => (
-											<tr key={prop.name} className="border-t border-border">
-												<td className="px-4 py-2.5 font-medium text-foreground">
+											<TableRow key={prop.name}>
+												<TableCell className="font-medium text-foreground">
 													{prop.name}
 													{prop.required === false ? "?" : ""}
-												</td>
-												<td className="px-4 py-2.5 text-muted-foreground">
+												</TableCell>
+												<TableCell className="text-muted-foreground">
 													<code>{prop.type}</code>
-												</td>
-												<td className="px-4 py-2.5 text-muted-foreground">{prop.default ?? "—"}</td>
-												<td className="px-4 py-2.5 text-muted-foreground">
+												</TableCell>
+												<TableCell className="text-muted-foreground">
+													{prop.default ?? "—"}
+												</TableCell>
+												<TableCell className="text-muted-foreground">
 													{prop.description ?? prop.name}
-												</td>
-											</tr>
+												</TableCell>
+											</TableRow>
 										))}
-									</tbody>
-								</table>
+									</TableBody>
+								</Table>
 							</div>
 						)}
 					</div>
 				);
 			})}
-		</section>
+		</SectionRule>
 	);
 }
 
@@ -364,81 +379,84 @@ function ReadyDoc({
 		})),
 	];
 	return (
-		<div>
-			<header className="showcase-reference-header border-b border-border px-6 py-8 md:px-8 md:py-10">
-				<div className="mb-3 flex flex-col items-start justify-between gap-4 sm:flex-row sm:flex-wrap">
-					<div className="flex min-w-0 max-w-full flex-wrap items-center gap-3">
-						<h1 className="min-w-0 max-w-full text-3xl sm:text-4xl font-semibold tracking-tight text-foreground [overflow-wrap:anywhere]">
-							{catalogNavName(entry)}
-						</h1>
-						<a
-							href={catalogSourceViewerHref(entry.slug, docs.implementationSource.hash)}
-							className="text-muted-foreground transition-colors hover:text-foreground inline-flex items-center gap-1.5 text-sm font-medium rounded-basalt-md border border-border px-2.5 py-1"
-							aria-label="View Basalt component source"
-						>
-							<Github className="h-4 w-4" />
-							<span>Source</span>
-						</a>
-					</div>
+		<ShowcasePage
+			title={catalogNavName(entry)}
+			description={docs.description}
+			actions={
+				<>
+					<LinkButton
+						href={catalogSourceViewerHref(entry.slug, docs.implementationSource.hash)}
+						variant="outline"
+						size="sm"
+						aria-label="View Basalt component source"
+					>
+						<Github />
+						Source
+					</LinkButton>
 					<CopyPageButton markdown={pageMarkdown} />
-				</div>
-				<p className="max-w-3xl text-lg leading-normal text-muted-foreground">{docs.description}</p>
-			</header>
-			<div
-				className={`sticky top-0 z-10 border-b border-border bg-secondary py-2 ${widePreview ? "" : "xl:hidden"}`}
-			>
-				<div className="px-6">
-					<DocToc headings={headings} compact={widePreview} />
-				</div>
+				</>
+			}
+		>
+			<div data-doc-toc-bar="" className={`sticky top-0 z-10 ${widePreview ? "" : "xl:hidden"}`}>
+				<DocToc headings={headings} compact={widePreview} />
 			</div>
 			<div
-				className={`px-6 py-8 md:px-8 md:py-10 ${widePreview ? "" : "xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-16"}`}
+				className={
+					widePreview ? "" : "xl:grid xl:grid-cols-[minmax(0,1fr)_14rem] xl:gap-basalt-layout-xl"
+				}
 			>
-				<article data-status="ready" data-slug={entry.slug} className="min-w-0 space-y-12">
+				<article
+					data-status="ready"
+					data-slug={entry.slug}
+					className="min-w-0 space-y-basalt-layout-lg"
+				>
 					<div data-hero-scenario={hero.id}>
 						<DocExample code={hero.code} wide={widePreview}>
 							<hero.render />
 						</DocExample>
 					</div>
 					{granular ? (
-						<section id="installation" className="scroll-mt-6 space-y-4">
-							<h2 className="text-2xl font-semibold tracking-tight">Installation</h2>
+						<SectionRule id="installation" title="Installation" className="scroll-mt-6">
 							{barrel ? (
 								<>
-									<h3 id="barrel" className="scroll-mt-6 text-sm font-medium text-muted-foreground">
+									<h3
+										id="barrel"
+										className="scroll-mt-6 text-basalt-base font-medium text-muted-foreground"
+									>
 										Barrel
 									</h3>
 									<DocCode code={barrel} />
 								</>
 							) : null}
-							<h3 id="granular" className="scroll-mt-6 text-sm font-medium text-muted-foreground">
+							<h3
+								id="granular"
+								className="scroll-mt-6 text-basalt-base font-medium text-muted-foreground"
+							>
 								Granular
 							</h3>
 							<DocCode code={granular} />
-						</section>
+						</SectionRule>
 					) : null}
-					<section id="usage" className="scroll-mt-6 space-y-4">
-						<h2 className="text-2xl font-semibold tracking-tight">Usage</h2>
+					<SectionRule id="usage" title="Usage" className="scroll-mt-6">
 						<DocCode code={docs.usage} />
-					</section>
-					<section id="examples" className="scroll-mt-6 space-y-8">
-						<h2 className="text-2xl font-semibold tracking-tight">Examples</h2>
+					</SectionRule>
+					<SectionRule id="examples" title="Examples" className="scroll-mt-6">
 						{examples.map((example) => (
 							<div
 								key={example.id}
 								id={example.id}
 								data-scenario={example.id}
-								className="scroll-mt-6 space-y-3"
+								className="scroll-mt-6 space-y-basalt-layout-sm"
 							>
-								<h3 className="text-sm font-medium">{example.title}</h3>
+								<h3 className="text-basalt-base font-medium">{example.title}</h3>
 								<DocExample code={example.code} wide={widePreview}>
 									<example.render />
 								</DocExample>
 							</div>
 						))}
-					</section>
+					</SectionRule>
 					<CatalogApiReference api={docs.api} />
-					<div className="space-y-1 text-sm text-muted-foreground [overflow-wrap:anywhere]">
+					<div className="space-y-basalt-space-sm text-basalt-base text-muted-foreground [overflow-wrap:anywhere]">
 						<p>
 							Implementation{" "}
 							<a
@@ -472,7 +490,7 @@ function ReadyDoc({
 					</div>
 				</aside>
 			</div>
-		</div>
+		</ShowcasePage>
 	);
 }
 
@@ -484,29 +502,17 @@ function ReadyCatalogPage({ entry }: { entry: CatalogEntry }) {
 	return <ReadyDoc entry={entry} docs={content.docs} examples={content.examples} />;
 }
 
-function CatalogHero({ title, description }: { title: string; description: string }) {
-	return (
-		<header className="showcase-reference-header border-b border-border px-6 py-8 md:px-8 md:py-10">
-			<h1 className="min-w-0 max-w-full text-3xl sm:text-4xl font-semibold tracking-tight text-foreground [overflow-wrap:anywhere]">
-				{title}
-			</h1>
-			<p className="mt-3 text-lg leading-normal text-muted-foreground">{description}</p>
-		</header>
-	);
-}
-
 export default function UiPlaceholderPage() {
 	const { slug } = useParams<{ slug: string }>();
 	const entry = slug ? CATALOG_BY_SLUG.get(slug) : undefined;
 
 	if (!entry) {
 		return (
-			<div data-status="missing">
-				<CatalogHero
-					title={slug ?? "Unknown"}
-					description="This slug is not a 6.2 public export."
-				/>
-			</div>
+			<ShowcasePage
+				data-status="missing"
+				title={slug ?? "Unknown"}
+				description="This slug is not a public catalog export."
+			/>
 		);
 	}
 
@@ -515,16 +521,17 @@ export default function UiPlaceholderPage() {
 	}
 
 	return (
-		<div data-status="placeholder" data-slug={entry.slug}>
-			<CatalogHero
-				title={catalogNavName(entry)}
-				description="未实现. This catalog page is a placeholder until the control ships."
-			/>
-			<div className="px-6 py-8 text-sm text-muted-foreground md:px-8">
+		<ShowcasePage
+			data-status="placeholder"
+			data-slug={entry.slug}
+			title={catalogNavName(entry)}
+			description="未实现. This catalog page is a placeholder until the control ships."
+		>
+			<div className="text-basalt-base text-muted-foreground">
 				<Link className="text-foreground underline underline-offset-4" to="/ui">
 					Library index
 				</Link>
 			</div>
-		</div>
+		</ShowcasePage>
 	);
 }

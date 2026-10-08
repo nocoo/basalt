@@ -1,3 +1,4 @@
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { TagBadge, tagColorFor } from "@nocoo/basalt/components/tag-badge";
 
 const tags = [
@@ -10,23 +11,23 @@ const tags = [
 ];
 export default function DeterministicTags() {
 	return (
-		<div className="w-full space-y-4">
+		<div className="w-full space-y-basalt-space-lg">
 			<div>
 				<h3 className="font-medium">Shared resource tags</h3>
-				<p className="mt-1 text-sm text-basalt-muted-foreground">
+				<p className="mt-basalt-space-sm text-basalt-base text-basalt-muted-foreground">
 					Stable IDs retain their color when a display name changes.
 				</p>
 			</div>
-			<div className="flex flex-wrap gap-2">
+			<div className="flex flex-wrap gap-basalt-space-lg">
 				{tags.map((tag) => (
 					<TagBadge key={tag.id} name={tag.name} colorKey={tag.id} />
 				))}
 			</div>
-			<div className="flex flex-wrap items-center gap-2 rounded-basalt-lg border border-basalt-border p-4">
+			<LayerCard className="flex flex-wrap items-center gap-basalt-space-lg">
 				<TagBadge name="Research" colorKey="research" />
-				<span className="text-xs text-basalt-muted-foreground">renamed to</span>
+				<span className="text-basalt-sm text-basalt-muted-foreground">renamed to</span>
 				<TagBadge name="Research & reading" color={tagColorFor("research")} />
-			</div>
+			</LayerCard>
 		</div>
 	);
 }

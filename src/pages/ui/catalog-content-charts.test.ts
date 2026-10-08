@@ -10,7 +10,8 @@ const CHART_DESCRIPTIONS = {
 	donut: "Donut series.",
 	sparkline: "Compact two-tone bar trend.",
 	gauge: "Radial-style meter.",
-	"stat-card": "KPI card.",
+	"stat-card":
+		"Unified metric surface with tabular values, comparison text and compact supporting trends. No split header or decorative icon well.",
 	palette: "Chart colors.",
 	"slot-bar": "Slot bar.",
 	"grouped-bar": "Grouped bars.",

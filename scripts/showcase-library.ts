@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import type { Locator, Page } from "playwright";
+import { CATALOG_CATEGORIES, catalogCategoryPath } from "../src/pages/ui/catalog-categories";
 import { setShowcaseTheme } from "./showcase-theme";
 
 async function assertPlots(container: Locator) {
@@ -14,6 +16,92 @@ async function assertPlots(container: Locator) {
 	for (const size of sizes) assert.ok(size.width > 0 && size.height > 0, JSON.stringify(size));
 }
 
+async function assertDocumentInsets(page: Page, baseUrl: string, dark: boolean) {
+	const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
+	for (const slug of ["tag-badge", "button"]) {
+		await page.goto(`${baseUrl}/ui/${slug}`);
+		await setShowcaseTheme(page, dark);
+		const hero = page.locator("[data-hero-scenario]");
+		await hero.waitFor();
+		const disclosure = hero.getByRole("button", { name: "View example code" });
+		if (slug === "tag-badge") {
+			assert.equal(await disclosure.getAttribute("aria-expanded"), "false");
+			await disclosure.focus();
+			await page.keyboard.press("Enter");
+			await hero.getByRole("region", { name: "Code example" }).waitFor();
+		}
+		for (const rootSize of [16, 20]) {
+			await page.evaluate(
+				(size) => (document.documentElement.style.fontSize = `${size}px`),
+				rootSize,
+			);
+			const nav = page.locator('nav[aria-label="On this page"]:visible');
+			assert.equal(
+				await nav.evaluate((node) => {
+					if (!node.parentElement) throw new Error("Missing navigation body");
+					return getComputedStyle(node.parentElement).padding;
+				}),
+				`${rootSize}px`,
+			);
+			const measure = (container: Locator) =>
+				container.evaluate((node) => {
+					const preview = node.querySelector("[data-example-preview]");
+					const trigger = node.querySelector('[data-slot="card-header"]');
+					const code = node.querySelector("[data-basalt-code]");
+					const header = code?.querySelector('[data-slot="code-header"]');
+					const text = code?.querySelector("code");
+					if (!preview || !code || !header || !text) throw new Error("Missing example boundaries");
+					return {
+						preview: getComputedStyle(preview).paddingLeft,
+						trigger: trigger ? getComputedStyle(trigger).padding : null,
+						header: getComputedStyle(header).padding,
+						code: getComputedStyle(code).padding,
+						text: getComputedStyle(text).paddingLeft,
+						frame: [getComputedStyle(code).borderLeftWidth, getComputedStyle(code).borderRadius],
+						triggerInset: trigger
+							? trigger.getBoundingClientRect().left +
+								Number.parseFloat(getComputedStyle(trigger).paddingLeft)
+							: null,
+						textInset:
+							text.getBoundingClientRect().left +
+							Number.parseFloat(getComputedStyle(text).paddingLeft),
+					};
+				});
+			const geometry = await measure(hero);
+			assert.equal(geometry.preview, `${rootSize}px`);
+			assert.equal(geometry.text, `${rootSize}px`);
+			assert.equal(geometry.header, `${rootSize * 0.75}px ${rootSize}px`);
+			assert.equal(geometry.code, "0px");
+			assert.deepEqual(geometry.frame, ["0px", "0px"]);
+			if (slug === "tag-badge") {
+				assert.equal(geometry.trigger, geometry.header);
+				assert.ok(Math.abs((geometry.triggerInset ?? 0) - geometry.textInset) < 1);
+			}
+			const markup = await hero.evaluate((node) => node.innerHTML);
+			const standalone = await page.context().newPage();
+			try {
+				await standalone.setContent(
+					`<html class="${dark ? "dark" : ""}" style="font-size:${rootSize}px"><head><style>${css}</style></head><body><div data-test-doc>${markup}</div></body></html>`,
+				);
+				const isolated = await measure(standalone.locator("[data-test-doc]"));
+				assert.deepEqual(
+					{ ...isolated, triggerInset: null, textInset: null },
+					{ ...geometry, triggerInset: null, textInset: null },
+				);
+			} finally {
+				await standalone.close();
+			}
+		}
+		await page.evaluate(() => document.documentElement.style.removeProperty("font-size"));
+		if (slug === "tag-badge") {
+			await disclosure.focus();
+			await page.keyboard.press("Space");
+			await hero.getByRole("region", { name: "Code example" }).waitFor({ state: "hidden" });
+			assert.equal(await disclosure.getAttribute("aria-expanded"), "false");
+		}
+	}
+}
+
 /** Full compositions, including the transitions users copy into applications. */
 export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 	const cases: string[] = [];
@@ -21,6 +109,74 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 		for (const dark of [false, true]) {
 			await page.setViewportSize({ width, height: 1000 });
 			await page.emulateMedia({ reducedMotion: "reduce", colorScheme: dark ? "dark" : "light" });
+			for (const category of CATALOG_CATEGORIES) {
+				await page.goto(`${baseUrl}${catalogCategoryPath(category.id)}`);
+				const overview = page.locator(`[data-category-overview="${category.id}"]`);
+				await overview.waitFor();
+				await setShowcaseTheme(page, dark);
+				const geometry = await overview.evaluate((node) => {
+					const island = node.closest("[data-doc-scroll]");
+					const inset = island ? Number.parseFloat(getComputedStyle(island).paddingLeft) : 0;
+					return {
+						template: node.hasAttribute("data-showcase-page"),
+						padding: getComputedStyle(node).paddingLeft,
+						offset: island
+							? node.getBoundingClientRect().left - island.getBoundingClientRect().left
+							: -1,
+						inset,
+						gap: Number.parseFloat(getComputedStyle(node).rowGap),
+					};
+				});
+				assert.ok(geometry.template, "Overview must use the shared page template");
+				assert.equal(geometry.padding, "0px", "ContentIsland owns the page inset");
+				assert.equal(geometry.inset, width < 768 ? 12 : 16);
+				assert.equal(geometry.gap, 24, "Page sections use the large layout tier");
+				assert.ok(Math.abs(geometry.offset - geometry.inset) <= 1, JSON.stringify(geometry));
+				if (category.id === "card" || category.id === "layout") {
+					const preview = overview.locator(`[data-spacing-preview="${category.id}"]`);
+					for (const [name, pixels] of [
+						["Small - 12px / .75rem", 12],
+						["Medium - 16px / 1rem", 16],
+						["Large - 24px / 1.5rem", 24],
+						["Extra large - 32px / 2rem", 32],
+					] as const) {
+						await overview.getByRole("combobox", { name: "Spacing tier" }).click();
+						await page.getByRole("option", { name, exact: true }).click();
+						const computed = await preview.evaluate(
+							(node, card) =>
+								Number.parseFloat(
+									card ? getComputedStyle(node).paddingLeft : getComputedStyle(node).gap,
+								),
+							category.id === "card",
+						);
+						assert.equal(computed, pixels, `${category.id}: ${name}`);
+					}
+				}
+				assert.equal(
+					await overview.getByRole("heading", { name: "Best practices", exact: true }).count(),
+					1,
+				);
+				assert.equal(
+					await overview.getByRole("link", { name: "Design contract", exact: true }).count(),
+					1,
+				);
+				assert.ok(
+					await page
+						.locator("[data-doc-scroll]")
+						.evaluate((node) => node.scrollWidth <= node.clientWidth + 1),
+					`${width}/${category.id}: overview overflow`,
+				);
+			}
+			if (width === 390)
+				await page.getByRole("button", { name: "Open navigation menu", exact: true }).click();
+			const actionOverview = page.getByRole("button", { name: "Actions overview", exact: true });
+			await actionOverview.focus();
+			await page.keyboard.press("Enter");
+			await page.waitForURL(`**${catalogCategoryPath("action")}`);
+			await page.locator('[data-category-overview="action"]').waitFor();
+			if (width === 390) await page.getByRole("dialog").waitFor({ state: "hidden" });
+			else assert.equal(await actionOverview.getAttribute("aria-current"), "page");
+			await assertDocumentInsets(page, baseUrl, dark);
 			await page.goto(`${baseUrl}/ui/skeleton-line`);
 			await page.locator('[data-status="ready"]').waitFor();
 			await setShowcaseTheme(page, dark);
@@ -53,8 +209,12 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 					`${key} loading/content height shifted: ${before.height} -> ${after?.height}`,
 				);
 				if (key === "dashboard") await assertPlots(scenario);
-				const code = scenario.locator("details");
-				assert.equal(await code.getAttribute("open"), null, "complex source starts collapsed");
+				const code = scenario.getByRole("button", { name: "View example code" });
+				assert.equal(
+					await code.getAttribute("aria-expanded"),
+					"false",
+					"complex source starts collapsed",
+				);
 			}
 			await page.goto(`${baseUrl}/ui/sparkline`);
 			await page.locator('[data-status="ready"]').waitFor();

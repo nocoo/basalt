@@ -15,7 +15,7 @@ export default function AudioReview() {
 		{ id: "notes", name: "Voice notes.m4a", status: "cancelled" },
 	]);
 	return (
-		<div className="w-full space-y-3">
+		<div className="w-full space-y-basalt-space-lg">
 			<h3 className="font-medium">Recording imports</h3>
 			{files.map((file) => (
 				<UploadItem
@@ -35,7 +35,7 @@ export default function AudioReview() {
 					onRemove={(id) => setFiles(files.filter((item) => item.id !== id))}
 				/>
 			))}
-			<p role="status" className="text-xs text-basalt-muted-foreground">
+			<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
 				{files.length} recordings in this local review. Transcription belongs to your application.
 			</p>
 		</div>

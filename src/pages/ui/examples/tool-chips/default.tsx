@@ -5,7 +5,7 @@ import { useAgentFeedbackDemo } from "@/viewmodels/useAgentFeedbackDemo";
 export default function ToolChipsDemo() {
 	const vm = useAgentFeedbackDemo();
 	return (
-		<div className="w-full space-y-4">
+		<div className="w-full space-y-basalt-space-lg">
 			<ToolChips
 				steps={vm.tools}
 				diffs={[

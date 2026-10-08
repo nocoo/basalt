@@ -60,7 +60,9 @@ function scenarioModule(code: string, imports: string[]): string {
 }
 
 function Preview({ children, className }: { children: ReactNode; className?: string }) {
-	return <div className={className ?? "flex flex-wrap items-center gap-3"}>{children}</div>;
+	return (
+		<div className={className ?? "flex flex-wrap items-center gap-basalt-space-lg"}>{children}</div>
+	);
 }
 
 const EXTRA_PROVENANCE = provenanceFromLegacy({
@@ -481,7 +483,7 @@ export default function Example() {
 				id: catalogScenarioId("toggle", "sizes"),
 				title: "Sizes",
 				code: scenarioModule(
-					`<div className="flex flex-wrap items-center gap-3">
+					`<div className="flex flex-wrap items-center gap-basalt-space-lg">
 	<Toggle size="sm" aria-label="Small bold">
 		B
 	</Toggle>

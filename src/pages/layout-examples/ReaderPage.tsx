@@ -20,7 +20,7 @@ export default function ReaderPage() {
 		<AppShell layout="responsive">
 			<AppSkipLink>Skip to content</AppSkipLink>
 			<AppMain>
-				<div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-3 md:py-3">
+				<div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-basalt-space-lg md:py-basalt-space-lg">
 					<ContentIsland mobileSurface="edge-to-edge">
 						<AppHeader
 							sticky
@@ -67,7 +67,7 @@ export default function ReaderPage() {
 						/>
 						<article
 							aria-label="A slower way to see"
-							className={`mx-auto max-w-prose space-y-6 px-4 py-4 leading-relaxed md:px-6 ${large ? "text-xl" : "text-base"}`}
+							className={`mx-auto max-w-prose space-y-basalt-space-lg px-basalt-space-lg py-basalt-space-lg leading-basalt-relaxed md:px-basalt-space-lg ${large ? "text-basalt-2xl" : "text-basalt-lg"}`}
 						>
 							<div className="hidden md:block">
 								<PageHeader
@@ -75,18 +75,20 @@ export default function ReaderPage() {
 									description="Field journal / 8 minute read"
 								/>
 							</div>
-							<p className="text-sm text-basalt-muted-foreground">FIELD JOURNAL / 08 MIN</p>
-							<p className="font-basalt-display text-2xl leading-snug">
+							<p className="text-basalt-base text-basalt-muted-foreground">
+								FIELD JOURNAL / 08 MIN
+							</p>
+							<p className="font-basalt-display text-basalt-3xl leading-basalt-body">
 								When the frame gets out of the way, the ordinary becomes worth noticing.
 							</p>
-							<p role="status" className="text-sm text-basalt-muted-foreground">
+							<p role="status" className="text-basalt-base text-basalt-muted-foreground">
 								{saved
 									? "Bookmarked locally"
 									: "Local demonstration; no account or network writes."}
 							</p>
 							{Array.from({ length: 12 }, (_, index) => (
-								<section key={`note-${index}`} className="space-y-3">
-									<h2 className="font-basalt-display text-xl">
+								<section key={`note-${index}`} className="space-y-basalt-space-lg">
+									<h2 className="font-basalt-display text-basalt-2xl">
 										{index + 1}.{" "}
 										{
 											["Start at the water", "Leave room for a pause", "Notice the small changes"][
@@ -107,7 +109,7 @@ export default function ReaderPage() {
 									</p>
 								</section>
 							))}
-							<p data-reader-end className="border-t border-basalt-border pt-4">
+							<p data-reader-end className="border-t border-basalt-border pt-basalt-space-lg">
 								End of the field journal.
 							</p>
 							<LinkButton href="/examples/list-detail" variant="outline" className="min-h-11">

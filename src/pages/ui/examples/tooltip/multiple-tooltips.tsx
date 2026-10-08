@@ -9,7 +9,7 @@ import {
 export default function TooltipMultipleTooltips() {
 	return (
 		<TooltipProvider>
-			<div className="flex flex-wrap items-center gap-3">
+			<div className="flex flex-wrap items-center gap-basalt-space-lg">
 				<Tooltip>
 					<TooltipTrigger asChild>
 						<Button variant="outline">One</Button>

@@ -7,7 +7,7 @@ const ITEMS = [
 
 export default function ComboboxSizes() {
 	return (
-		<div className="flex w-full flex-col gap-3">
+		<div className="flex w-full flex-col gap-basalt-space-lg">
 			<Combobox size="sm" items={ITEMS} placeholder="Small" />
 			<Combobox items={ITEMS} placeholder="Default" />
 			<Combobox size="lg" items={ITEMS} placeholder="Large" />

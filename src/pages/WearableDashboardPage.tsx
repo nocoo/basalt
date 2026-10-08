@@ -3,13 +3,14 @@ import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatma
 import { SlotBarChart } from "@nocoo/basalt/charts/slot-bar";
 import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { Timeline } from "@nocoo/basalt/charts/timeline";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Activity, Clock, Flame, Footprints, Heart, Moon, Sparkles } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { BarChartWidget } from "@/components/dashboard/BarChartWidget";
 import { LineChartWidget } from "@/components/dashboard/LineChartWidget";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
-import { ShowcaseHeader } from "@/components/ShowcaseHeader";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatPercent } from "@/lib/format";
 import { chart } from "@/lib/palette";
 
@@ -130,12 +131,11 @@ export default function WearableDashboardPage() {
 	];
 
 	return (
-		<div className="space-y-8">
-			<ShowcaseHeader
-				title={t("pages.wearable.title")}
-				description={t("pages.wearable.description")}
-			/>
-
+		<ShowcasePage
+			title={t("pages.wearable.title")}
+			description={t("pages.wearable.description")}
+			headerVariant="compact"
+		>
 			<SectionRule
 				title={t("pages.wearable.todaySummary")}
 				actions={
@@ -154,94 +154,116 @@ export default function WearableDashboardPage() {
 
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (
-					<StatCard
-						key={stat.title}
-						{...stat}
-						className="rounded-card border-0 bg-secondary p-4 md:p-5"
-					/>
+					<StatCard key={stat.title} {...stat} />
 				))}
 			</StatGrid>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<Moon className="h-4 w-4 text-indigo-500" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.wearable.sleepStages")}</p>
-						<span className="ml-auto text-sm font-semibold text-indigo-500">7h 42m</span>
-					</div>
-					<SlotBarChart items={sleepSlots} />
-				</div>
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.wearable.sleepStages")}
+						</h2>
+						<span className="ml-auto text-basalt-base font-semibold text-indigo-500">7h 42m</span>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<SlotBarChart items={sleepSlots} />
+					</LayerCard.Body>
+				</LayerCard>
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<Heart className="h-4 w-4 text-red-500" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.wearable.heartRateZones")}</p>
-						<span className="ml-auto text-sm font-semibold text-red-500">68 bpm</span>
-					</div>
-					<SlotBarChart items={heartRateSlots} />
-				</div>
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.wearable.heartRateZones")}
+						</h2>
+						<span className="ml-auto text-basalt-base font-semibold text-red-500">68 bpm</span>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<SlotBarChart items={heartRateSlots} />
+					</LayerCard.Body>
+				</LayerCard>
 			</div>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<Footprints className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.wearable.weeklySteps")}</p>
-					</div>
-					<BarChartWidget data={weeklySteps} height={200} color={chart.green} />
-				</div>
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.wearable.weeklySteps")}
+						</h2>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<BarChartWidget data={weeklySteps} height={200} color={chart.green} />
+					</LayerCard.Body>
+				</LayerCard>
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<Sparkles className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.wearable.recoveryTrend")}</p>
-					</div>
-					<LineChartWidget
-						data={recoveryTrend}
-						height={200}
-						color={chart.indigo}
-						valueFormatter={(v) => `${v}%`}
-					/>
-				</div>
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.wearable.recoveryTrend")}
+						</h2>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<LineChartWidget
+							data={recoveryTrend}
+							height={200}
+							color={chart.indigo}
+							valueFormatter={(v) => `${v}%`}
+						/>
+					</LayerCard.Body>
+				</LayerCard>
 			</div>
 
-			<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<div className="mb-4 flex items-center gap-2">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
+				<LayerCard>
+					<LayerCard.Header className="items-center justify-start">
 						<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.wearable.activityMix")}</p>
-					</div>
-					<DonutChartWidget
-						data={activityBreakdown}
-						height={220}
-						showLegend
-						valueFormatter={formatPercent}
-					/>
-				</div>
-				<div className="rounded-card bg-secondary p-4 md:p-5 lg:col-span-2 max-h-[420px] overflow-y-auto">
-					<div className="mb-4 flex items-center gap-2">
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.wearable.activityMix")}
+						</h2>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<DonutChartWidget
+							data={activityBreakdown}
+							height={220}
+							showLegend
+							valueFormatter={formatPercent}
+						/>
+					</LayerCard.Body>
+				</LayerCard>
+				<LayerCard className="lg:col-span-2 max-h-[26.25rem] overflow-y-auto">
+					<LayerCard.Header className="items-center justify-start">
 						<Clock className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-						<p className="text-sm text-muted-foreground">{t("pages.wearable.dailyTimeline")}</p>
-					</div>
-					<Timeline events={timeline} />
-				</div>
+						<h2 className="text-basalt-base text-muted-foreground">
+							{t("pages.wearable.dailyTimeline")}
+						</h2>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<Timeline events={timeline} />
+					</LayerCard.Body>
+				</LayerCard>
 			</div>
 
-			<div className="rounded-card bg-secondary p-4 md:p-5">
-				<div className="mb-4 flex items-center gap-2">
+			<LayerCard>
+				<LayerCard.Header className="items-center justify-start">
 					<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<p className="text-sm text-muted-foreground">
+					<h2 className="text-basalt-base text-muted-foreground">
 						{t("pages.wearable.workoutConsistency2026")}
-					</p>
-				</div>
-				<HeatmapCalendar
-					data={heatmapData}
-					year={2026}
-					colorScale={heatmapColorScales.green}
-					metricLabel={t("pages.wearable.workouts")}
-					locale={i18n.language}
-					lessLabel={t("common.less")}
-					moreLabel={t("common.more")}
-				/>
-			</div>
-		</div>
+					</h2>
+				</LayerCard.Header>
+				<LayerCard.Body>
+					<HeatmapCalendar
+						data={heatmapData}
+						year={2026}
+						colorScale={heatmapColorScales.green}
+						metricLabel={t("pages.wearable.workouts")}
+						locale={i18n.language}
+						lessLabel={t("common.less")}
+						moreLabel={t("common.more")}
+					/>
+				</LayerCard.Body>
+			</LayerCard>
+		</ShowcasePage>
 	);
 }

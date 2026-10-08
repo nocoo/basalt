@@ -101,16 +101,16 @@ describe("content scenario truth", () => {
 
 	it("keeps layer-card copyable code aligned with preview wrappers", () => {
 		const basic = scenario("layer-card", "layer-card-basic-card");
-		expect(basic.code).toContain('className="w-[250px]"');
+		expect(basic.code).toContain('className="w-[15.625rem]"');
 		expect(basic.code).toContain("Next Steps");
 		expect(basic.code).toContain("Hello");
 		expect(basic.code).toContain("export default");
 		const surface = scenario("layer-card", "layer-card-surface-style-card");
-		expect(surface.code).toContain('className="w-[250px] p-4"');
+		expect(surface.code).toContain('className="w-[15.625rem]"');
 		expect(surface.code).toContain("Quick start guide");
 		const multiple = scenario("layer-card", "layer-card-multiple-cards");
-		expect(multiple.code).toContain('className="flex w-full gap-4"');
-		expect(multiple.code).toContain('className="w-[200px]"');
+		expect(multiple.code).toContain('className="flex w-full gap-basalt-space-lg"');
+		expect(multiple.code).toContain('className="w-[12.5rem]"');
 		expect(multiple.code).toContain("Browse all components");
 		expect(multiple.code).toContain("View code examples");
 		const structured = scenario("layer-card", "layer-card-structured-card");
@@ -231,12 +231,12 @@ describe("content scenario truth", () => {
 		const usage = CATALOG_DOCS.sidebar?.usage ?? "";
 		expect(usage).toContain("Sidebar");
 		expect(usage).toContain("SidebarItem");
-		expect(usage).toContain("ContentIsland");
-		expect(usage).toContain("Catalog");
-		expect(usage).toContain("Settings");
-		expect(usage).toContain("At a glance");
-		expect(usage).not.toMatch(/<\/Sidebar>\s*<ContentIsland/);
-		expect(scenario("sidebar", "sidebar-default").code).toContain("ContentIsland");
+		expect(usage).toContain("SidebarNav");
+		expect(usage).toContain("SidebarIconItem");
+		expect(usage).toContain("Creamery Ops");
+		expect(usage).toContain("Subway surfing");
+		expect(usage).toBe(scenario("sidebar", "sidebar-default").code);
+		expect(scenario("sidebar", "sidebar-provider").code).toContain("ContentIsland");
 	});
 
 	it("shows command palette usage instead of only a trigger button", () => {
@@ -282,7 +282,8 @@ describe("content scenario truth", () => {
 		expectUsageImportsCover(CATALOG_DOCS.sidebar?.usage ?? "", [
 			"Sidebar",
 			"SidebarItem",
-			"ContentIsland",
+			"SidebarIconItem",
+			"SidebarNav",
 		]);
 	});
 

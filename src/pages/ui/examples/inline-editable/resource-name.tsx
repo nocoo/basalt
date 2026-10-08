@@ -9,13 +9,13 @@ export default function EditableResourceName() {
 	const id = useId();
 	useEffect(() => () => clearTimeout(timer.current), []);
 	return (
-		<div className="w-full max-w-xl space-y-4">
-			<p className="text-xs text-basalt-muted-foreground">
+		<div className="w-full max-w-xl space-y-basalt-space-lg">
+			<p className="text-basalt-sm text-basalt-muted-foreground">
 				Resource name · Enter or blur to save · Escape to cancel
 			</p>
-			<span className="flex items-center gap-2">
+			<span className="flex items-center gap-basalt-space-lg">
 				<Checkbox id={id} checked={fail} onCheckedChange={(checked) => setFail(checked === true)} />
-				<label htmlFor={id} className="text-xs">
+				<label htmlFor={id} className="text-basalt-sm">
 					Fail save request
 				</label>
 			</span>
@@ -35,7 +35,7 @@ export default function EditableResourceName() {
 				}
 			/>
 
-			<p role="status" className="text-sm text-basalt-muted-foreground">
+			<p role="status" className="text-basalt-base text-basalt-muted-foreground">
 				Saved name: {name}
 			</p>
 		</div>

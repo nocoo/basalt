@@ -4,6 +4,7 @@ import {
 	ChartTooltipRow,
 	ChartTooltipSummary,
 } from "@nocoo/basalt/charts/tooltip";
+import { Button } from "@nocoo/basalt/components/button";
 import { useMemo, useState } from "react";
 
 interface TelemetryPoint {
@@ -116,50 +117,41 @@ export default function AreaDynamicSeries() {
 
 	return (
 		<div
-			className={`space-y-4 transition-all duration-200 motion-reduce:transition-none min-w-0 ${
+			className={`space-y-basalt-space-lg transition-[width,opacity] basalt-motion duration-basalt-normal motion-reduce:transition-none min-w-0 ${
 				containerWidth === "narrow" ? "w-full max-w-sm" : "w-full max-w-2xl"
 			}`}
 		>
-			<div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-				<div className="flex flex-wrap items-center gap-1.5">
+			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg text-basalt-sm">
+				<div className="flex flex-wrap items-center gap-basalt-space-md">
 					<span className="font-medium text-basalt-foreground">Container:</span>
-					<button
+					<Button
+						size="sm"
 						type="button"
 						aria-pressed={containerWidth === "full"}
 						onClick={() => setContainerWidth("full")}
-						className={`rounded px-2 py-0.5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-basalt-ring ${
-							containerWidth === "full"
-								? "bg-basalt-primary text-basalt-primary-foreground"
-								: "bg-basalt-muted text-basalt-muted-foreground hover:text-basalt-foreground"
-						}`}
+						variant={containerWidth === "full" ? "secondary" : "outline"}
 					>
 						Full (672px)
-					</button>
-					<button
+					</Button>
+					<Button
+						size="sm"
 						type="button"
 						aria-pressed={containerWidth === "narrow"}
 						onClick={() => setContainerWidth("narrow")}
-						className={`rounded px-2 py-0.5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-basalt-ring ${
-							containerWidth === "narrow"
-								? "bg-basalt-primary text-basalt-primary-foreground"
-								: "bg-basalt-muted text-basalt-muted-foreground hover:text-basalt-foreground"
-						}`}
+						variant={containerWidth === "narrow" ? "secondary" : "outline"}
 					>
 						Narrow (384px)
-					</button>
+					</Button>
 				</div>
-				<button
+				<Button
+					size="sm"
 					type="button"
 					aria-pressed={isPercent}
 					onClick={() => setIsPercent((p) => !p)}
-					className={`rounded border border-basalt-border px-2.5 py-0.5 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-basalt-ring ${
-						isPercent
-							? "bg-basalt-primary text-basalt-primary-foreground"
-							: "bg-basalt-background text-basalt-foreground hover:bg-basalt-muted"
-					}`}
+					variant={isPercent ? "secondary" : "outline"}
 				>
 					Mode: {isPercent ? "100% Normalized" : "Stacked Absolute"}
-				</button>
+				</Button>
 			</div>
 
 			<AreaChart
@@ -181,10 +173,12 @@ export default function AreaDynamicSeries() {
 					return (
 						<div
 							data-testid="chart-custom-tooltip"
-							className="rounded-lg border border-basalt-border/60 bg-basalt-popover p-3 text-xs shadow-md"
+							className="rounded-basalt-md border border-basalt-border/60 bg-basalt-popover p-basalt-overlay text-basalt-sm shadow-md"
 						>
-							<p className="font-semibold text-basalt-popover-foreground mb-1.5">{label} UTC</p>
-							<div className="space-y-1">
+							<p className="font-semibold text-basalt-popover-foreground mb-basalt-space-md">
+								{label} UTC
+							</p>
+							<div className="space-y-basalt-space-sm">
 								{payload.map((entry) => {
 									const raw = typeof entry.value === "number" ? entry.value : 0;
 									const pct = total > 0 ? ((raw / total) * 100).toFixed(1) : "0.0";
@@ -215,31 +209,28 @@ export default function AreaDynamicSeries() {
 					return (
 						<div
 							data-testid="interactive-legend-controls"
-							className="mt-3 flex flex-wrap gap-1.5 text-xs"
+							className="mt-basalt-space-lg flex flex-wrap gap-basalt-space-md text-basalt-sm"
 						>
 							{ALL_SERIES.map((s) => {
 								const isIncluded = activeLabels.has(s.label);
 								return (
-									<button
+									<Button
+										size="sm"
 										key={s.key}
 										type="button"
 										aria-pressed={isIncluded}
 										onClick={() => toggleSeries(s.key)}
-										className={`inline-flex items-center gap-1.5 rounded-md border px-2 py-1 font-medium transition-colors focus-visible:outline-2 focus-visible:outline-basalt-ring ${
-											isIncluded
-												? "border-basalt-border bg-basalt-card text-basalt-foreground shadow-xs"
-												: "border-basalt-border/40 bg-basalt-muted text-basalt-muted-foreground hover:text-basalt-foreground"
-										}`}
+										variant={isIncluded ? "secondary" : "outline"}
 									>
 										<span
-											className={`h-2 w-2 rounded-full transition-opacity ${
+											className={`h-2 w-2 rounded-basalt-full transition-opacity basalt-motion ${
 												isIncluded ? "opacity-100" : "opacity-30"
 											}`}
 											style={{ backgroundColor: s.color }}
 											aria-hidden="true"
 										/>
 										<span>{s.label}</span>
-									</button>
+									</Button>
 								);
 							})}
 						</div>

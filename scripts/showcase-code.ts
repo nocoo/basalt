@@ -2,6 +2,84 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import type { Locator, Page } from "playwright";
 
+async function assertCodeScrollChaining(page: Page, panel: Locator) {
+	await panel.evaluate((node) => {
+		const host = document.createElement("div");
+		host.dataset.codeScrollTest = "";
+		host.style.cssText =
+			"position:fixed;z-index:99999;inset:16px auto auto 16px;width:320px;max-width:90vw;height:420px;overflow:auto;scroll-behavior:auto;";
+		const before = document.createElement("div");
+		before.style.height = "120px";
+		const after = document.createElement("div");
+		after.style.height = "2000px";
+		const clone = node.cloneNode(true) as HTMLElement;
+		clone.style.cssText = "width:260px;max-height:none";
+		host.append(before, clone, after);
+		document.body.append(host);
+	});
+	const host = page.locator("[data-code-scroll-test]");
+	const pre = host.locator("pre");
+	const wheel = async (x: number, y: number) => {
+		await page.mouse.move(0, 0);
+		await pre.hover();
+		await page.mouse.wheel(x, y);
+	};
+	try {
+		assert.deepEqual(
+			await pre.evaluate((node) => ({
+				x: getComputedStyle(node).overscrollBehaviorX,
+				y: getComputedStyle(node).overscrollBehaviorY,
+			})),
+			{ x: "contain", y: "auto" },
+		);
+		assert.ok(await pre.evaluate((node) => node.scrollHeight <= node.clientHeight + 1));
+		await wheel(0, 120);
+		await page.waitForFunction(
+			() => (document.querySelector("[data-code-scroll-test]")?.scrollTop ?? 0) > 0,
+		);
+		await host.evaluate((node) => {
+			node.scrollTop = 0;
+			const panel = node.querySelector<HTMLElement>("[data-basalt-code]");
+			if (panel) panel.style.maxHeight = "160px";
+		});
+		await wheel(0, 40);
+		await page.waitForFunction(
+			() => (document.querySelector("[data-code-scroll-test] pre")?.scrollTop ?? 0) > 0,
+		);
+		assert.equal(await host.evaluate((node) => node.scrollTop), 0);
+		await pre.evaluate((node) => {
+			node.scrollTop = node.scrollHeight;
+		});
+		await wheel(0, 120);
+		await page.waitForFunction(
+			() => (document.querySelector("[data-code-scroll-test]")?.scrollTop ?? 0) > 0,
+		);
+		await host.evaluate((node) => {
+			node.scrollTop = 80;
+		});
+		await pre.evaluate((node) => {
+			node.scrollTop = 0;
+		});
+		await wheel(0, -40);
+		await page.waitForFunction(
+			() => (document.querySelector("[data-code-scroll-test]")?.scrollTop ?? 80) < 80,
+		);
+		await host.evaluate((node) => {
+			node.scrollTop = 0;
+		});
+		await pre.evaluate((node) => {
+			node.scrollLeft = 0;
+		});
+		await wheel(120, 0);
+		await page.waitForFunction(
+			() => (document.querySelector("[data-code-scroll-test] pre")?.scrollLeft ?? 0) > 0,
+		);
+		assert.equal(await host.evaluate((node) => node.scrollTop), 0);
+	} finally {
+		await host.evaluate((node) => node.remove());
+	}
+}
+
 async function assertCodePanel(page: Page, panel: Locator) {
 	const pre = panel.locator("pre");
 	const source = await pre.locator("code").textContent();
@@ -31,14 +109,16 @@ async function assertCodePanel(page: Page, panel: Locator) {
 		return {
 			header: header.getBoundingClientRect().height,
 			inset: getComputedStyle(header).padding,
+			font: getComputedStyle(code).fontSize,
 			line: getComputedStyle(code).lineHeight,
 			scroll: pre.scrollWidth,
 			width: pre.clientWidth,
 			panelWidth: node.getBoundingClientRect().width,
 		};
 	});
-	assert.equal(geometry.header, 41);
-	assert.equal(geometry.inset, "8px 12px");
+	assert.equal(geometry.header, 57);
+	assert.equal(geometry.inset, "12px 16px");
+	assert.equal(geometry.font, "12px");
 	assert.equal(geometry.line, "20px");
 	assert.ok(geometry.scroll > geometry.width, JSON.stringify(geometry));
 	await pre.focus();
@@ -77,7 +157,7 @@ async function assertCodePanel(page: Page, panel: Locator) {
 		await panel
 			.locator('[data-slot="code-header"]')
 			.evaluate((node) => getComputedStyle(node).padding),
-		"8px 12px",
+		"12px 16px",
 	);
 }
 
@@ -102,11 +182,16 @@ export async function assertCodePanels(page: Page, baseUrl: string) {
 			(node as HTMLElement).style.width = "260px";
 		});
 		await assertCodePanel(page, panel);
+		await assertCodeScrollChaining(page, panel);
 		await page.goto(`${baseUrl}/ui/code`);
 		await panel.waitFor();
 		const markup = await panel.evaluate((node) => node.outerHTML);
 		await page.setContent(`<style>${css}</style>${markup}`);
 		const standalone = page.locator("[data-basalt-code]");
+		assert.equal(
+			await standalone.locator("code").evaluate((node) => getComputedStyle(node).fontSize),
+			"12px",
+		);
 		assert.equal(
 			await standalone.locator("code").evaluate((node) => getComputedStyle(node).lineHeight),
 			"20px",
@@ -123,8 +208,9 @@ export async function assertCodePanels(page: Page, baseUrl: string) {
 			await standalone
 				.locator('[data-slot="code-header"]')
 				.evaluate((node) => getComputedStyle(node).padding),
-			"8px 12px",
+			"12px 16px",
 		);
+		await assertCodeScrollChaining(page, standalone);
 	}
 	return {
 		viewports: 2,
@@ -133,6 +219,7 @@ export async function assertCodePanels(page: Page, baseUrl: string) {
 		lineNumbers: true,
 		exactSelection: true,
 		horizontalScroll: true,
+		verticalScrollChaining: true,
 		standalone: true,
 	};
 }

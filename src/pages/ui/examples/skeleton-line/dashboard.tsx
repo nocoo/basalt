@@ -23,13 +23,15 @@ const METRICS = [
 export default function DashboardSkeleton() {
 	const [loading, setLoading] = useState(true);
 	return (
-		<div className="w-full space-y-5">
-			<div className="flex flex-wrap items-center justify-between gap-3">
+		<div className="w-full space-y-basalt-space-lg">
+			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg">
 				<div>
-					<p className="text-xs uppercase tracking-widest text-basalt-muted-foreground">
+					<p className="text-basalt-sm uppercase tracking-widest text-basalt-muted-foreground">
 						Workspace overview
 					</p>
-					<h3 className="mt-1 text-xl font-semibold">A clear view of your activity</h3>
+					<h3 className="mt-basalt-space-sm text-basalt-2xl font-semibold">
+						A clear view of your activity
+					</h3>
 				</div>
 				<Button size="sm" variant="outline" onClick={() => setLoading(!loading)}>
 					{loading ? "Show loaded dashboard" : "Replay loading"}
@@ -38,10 +40,10 @@ export default function DashboardSkeleton() {
 			<div role="status" aria-live="polite" className="sr-only">
 				{loading ? "Loading dashboard" : "Dashboard loaded"}
 			</div>
-			<div aria-busy={loading} className="space-y-4">
-				<div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
+			<div aria-busy={loading} className="space-y-basalt-space-lg">
+				<div className="grid grid-cols-1 gap-basalt-space-lg sm:grid-cols-2 xl:grid-cols-4">
 					{METRICS.map((metric) => (
-						<LayerCard key={metric.title} outlined className="h-32 space-y-4">
+						<LayerCard key={metric.title} outlined className="h-32 space-y-basalt-space-lg">
 							{loading ? (
 								<>
 									<SkeletonLine minWidth={metric.width} maxWidth={metric.width} height={10} />
@@ -50,21 +52,21 @@ export default function DashboardSkeleton() {
 								</>
 							) : (
 								<>
-									<p className="text-xs text-basalt-muted-foreground">{metric.title}</p>
-									<p className="text-2xl font-semibold tabular-nums">{metric.value}</p>
-									<p className="text-xs text-basalt-muted-foreground">{metric.change}</p>
+									<p className="text-basalt-sm text-basalt-muted-foreground">{metric.title}</p>
+									<p className="text-basalt-3xl font-semibold tabular-nums">{metric.value}</p>
+									<p className="text-basalt-sm text-basalt-muted-foreground">{metric.change}</p>
 								</>
 							)}
 						</LayerCard>
 					))}
 				</div>
-				<div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_260px]">
+				<div className="grid gap-basalt-space-lg lg:grid-cols-[minmax(0,1fr)_16.25rem]">
 					<LayerCard outlined className="min-w-0">
-						<div className="mb-5 flex h-6 items-center justify-between gap-3">
+						<div className="mb-basalt-space-lg flex h-6 items-center justify-between gap-basalt-space-lg">
 							{loading ? (
 								<SkeletonLine minWidth={36} maxWidth={36} height={13} />
 							) : (
-								<h4 className="text-sm font-medium">Request volume</h4>
+								<h4 className="text-basalt-base font-medium">Request volume</h4>
 							)}
 							<Badge variant="outline">Last 7 days</Badge>
 						</div>
@@ -72,14 +74,14 @@ export default function DashboardSkeleton() {
 							{loading ? (
 								<div
 									aria-hidden="true"
-									className="flex h-full items-end gap-2 border-b border-basalt-border pb-3"
+									className="flex h-full items-end gap-basalt-space-lg border-b border-basalt-border pb-basalt-space-lg"
 								>
 									{[32, 48, 40, 67, 55, 84, 69, 78, 64, 92, 80, 96].map((height, index) => (
 										<SkeletonLine
 											key={`${index}-${height}`}
 											minWidth={100}
 											maxWidth={100}
-											className="flex-1 rounded-t-md"
+											className="flex-1 rounded-t-basalt-md"
 											style={{ height: `${height}%` }}
 										/>
 									))}
@@ -107,7 +109,7 @@ export default function DashboardSkeleton() {
 								</Suspense>
 							)}
 						</div>
-						<div className="mt-4 flex h-5 items-center gap-2 text-xs text-basalt-muted-foreground">
+						<div className="mt-basalt-space-lg flex h-5 items-center gap-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
 							{loading ? (
 								<SkeletonLine minWidth={55} maxWidth={55} />
 							) : (
@@ -115,8 +117,11 @@ export default function DashboardSkeleton() {
 							)}
 						</div>
 					</LayerCard>
-					<LayerCard outlined className="flex flex-col items-center justify-between gap-4">
-						<h4 className="self-start text-sm font-medium">Traffic sources</h4>
+					<LayerCard
+						outlined
+						className="flex flex-col items-center justify-between gap-basalt-space-lg"
+					>
+						<h4 className="self-start text-basalt-base font-medium">Traffic sources</h4>
 						<div className="flex h-40 w-40 items-center justify-center">
 							{loading ? (
 								<div aria-hidden="true" className="relative h-32 w-32">
@@ -124,9 +129,9 @@ export default function DashboardSkeleton() {
 										minWidth={100}
 										maxWidth={100}
 										height={128}
-										className="rounded-full"
+										className="rounded-basalt-full"
 									/>
-									<div className="absolute inset-7 rounded-full bg-basalt-background" />
+									<div className="absolute inset-7 rounded-basalt-full bg-basalt-background" />
 								</div>
 							) : (
 								<Suspense fallback={<SkeletonLine height={144} />}>
@@ -143,9 +148,9 @@ export default function DashboardSkeleton() {
 								</Suspense>
 							)}
 						</div>
-						<div className="w-full space-y-3">
+						<div className="w-full space-y-basalt-space-lg">
 							{["Direct · 64%", "API · 28%", "Other · 8%"].map((label, i) => (
-								<div key={label} className="h-4 text-xs text-basalt-muted-foreground">
+								<div key={label} className="h-4 text-basalt-sm text-basalt-muted-foreground">
 									{loading ? <SkeletonLine minWidth={85 - i * 13} maxWidth={85 - i * 13} /> : label}
 								</div>
 							))}

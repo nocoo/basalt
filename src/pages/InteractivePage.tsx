@@ -9,6 +9,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@nocoo/basalt/components/alert-dialog";
+import { Banner } from "@nocoo/basalt/components/banner";
 import { Button } from "@nocoo/basalt/components/button";
 import {
 	Collapsible,
@@ -27,8 +28,8 @@ import {
 } from "@nocoo/basalt/components/dialog";
 import { Input } from "@nocoo/basalt/components/input";
 import { Label } from "@nocoo/basalt/components/label";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Meter } from "@nocoo/basalt/components/meter";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { Popover, PopoverContent, PopoverTrigger } from "@nocoo/basalt/components/popover";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Separator } from "@nocoo/basalt/components/separator";
@@ -42,13 +43,13 @@ import {
 	SheetTitle,
 	SheetTrigger,
 } from "@nocoo/basalt/components/sheet";
+import { SkeletonLine } from "@nocoo/basalt/components/skeleton-line";
 import { Switch } from "@nocoo/basalt/components/switch";
 import { toast } from "@nocoo/basalt/components/toast";
 import {
 	AlertTriangle,
 	Check,
 	CheckCircle2,
-	ChevronDown,
 	Copy,
 	Filter,
 	Inbox,
@@ -65,32 +66,13 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { ShowcasePage } from "@/components/ShowcasePage";
 
-const ALERT_STYLES = {
-	info: {
-		icon: Info,
-		border: "border-blue-500/30",
-		bg: "bg-blue-500/10",
-		text: "text-blue-600 dark:text-blue-400",
-	},
-	success: {
-		icon: CheckCircle2,
-		border: "border-emerald-500/30",
-		bg: "bg-emerald-500/10",
-		text: "text-emerald-600 dark:text-emerald-400",
-	},
-	warning: {
-		icon: AlertTriangle,
-		border: "border-amber-500/30",
-		bg: "bg-amber-500/10",
-		text: "text-amber-600 dark:text-amber-400",
-	},
-	error: {
-		icon: XCircle,
-		border: "border-red-500/30",
-		bg: "bg-red-500/10",
-		text: "text-red-600 dark:text-red-400",
-	},
+const ALERT_VARIANTS = {
+	info: "default",
+	success: "secondary",
+	warning: "alert",
+	error: "error",
 } as const;
 
 function InlineAlert({
@@ -98,39 +80,31 @@ function InlineAlert({
 	title,
 	message,
 }: {
-	variant: keyof typeof ALERT_STYLES;
+	variant: keyof typeof ALERT_VARIANTS;
 	title: string;
 	message: string;
 }) {
-	const s = ALERT_STYLES[variant];
 	return (
-		<div className={`flex items-start gap-3 rounded-lg border ${s.border} ${s.bg} p-4`}>
-			<s.icon className={`h-5 w-5 shrink-0 mt-0.5 ${s.text}`} strokeWidth={1.5} />
-			<div className="space-y-1">
-				<p className={`text-sm font-medium ${s.text}`}>{title}</p>
-				<p className="text-xs text-muted-foreground">{message}</p>
-			</div>
-		</div>
-	);
-}
-
-function Skeleton({ className = "" }: { className?: string }) {
-	return (
-		<div className={`animate-pulse motion-reduce:animate-none rounded-md bg-muted ${className}`} />
+		<Banner
+			variant={ALERT_VARIANTS[variant]}
+			title={title}
+			description={message}
+			icon={variant === "success" ? <CheckCircle2 /> : undefined}
+		/>
 	);
 }
 
 function SkeletonCard() {
 	return (
-		<div className="rounded-widget border border-border bg-card p-4 space-y-3">
-			<Skeleton className="h-4 w-2/3" />
-			<Skeleton className="h-3 w-full" />
-			<Skeleton className="h-3 w-4/5" />
-			<div className="flex gap-2 pt-1">
-				<Skeleton className="h-8 w-20 rounded-md" />
-				<Skeleton className="h-8 w-16 rounded-md" />
+		<LayerCard className="space-y-basalt-space-lg">
+			<SkeletonLine minWidth={66} maxWidth={66} />
+			<SkeletonLine minWidth={100} maxWidth={100} />
+			<SkeletonLine minWidth={80} maxWidth={80} />
+			<div className="flex gap-basalt-space-lg pt-basalt-space-sm">
+				<SkeletonLine minWidth={40} maxWidth={40} height={32} />
+				<SkeletonLine minWidth={32} maxWidth={32} height={32} />
 			</div>
-		</div>
+		</LayerCard>
 	);
 }
 
@@ -143,7 +117,9 @@ function LoadingButton() {
 	};
 	return (
 		<Button onClick={handleClick} disabled={loading}>
-			{loading && <Loader2 className="mr-2 h-4 w-4 animate-spin motion-reduce:animate-none" />}
+			{loading && (
+				<Loader2 className="mr-basalt-space-lg h-4 w-4 animate-spin motion-reduce:animate-none" />
+			)}
 			{loading ? t("pages.interactive.processing") : t("common.submit")}
 		</Button>
 	);
@@ -158,7 +134,11 @@ function CopyButton() {
 	};
 	return (
 		<Button variant="outline" size="sm" onClick={handleCopy}>
-			{copied ? <Check className="mr-2 h-3.5 w-3.5" /> : <Copy className="mr-2 h-3.5 w-3.5" />}
+			{copied ? (
+				<Check className="mr-basalt-space-lg h-3.5 w-3.5" />
+			) : (
+				<Copy className="mr-basalt-space-lg h-3.5 w-3.5" />
+			)}
 			{copied ? t("common.copied") : t("common.copy")}
 		</Button>
 	);
@@ -199,14 +179,12 @@ export default function InteractivePage() {
 	];
 
 	return (
-		<div className="space-y-8">
-			<PageHeader
-				title={t("pages.interactive.title")}
-				description={t("pages.interactive.description")}
-			/>
-
+		<ShowcasePage
+			title={t("pages.interactive.title")}
+			description={t("pages.interactive.description")}
+		>
 			<SectionRule title={t("pages.interactive.buttonVariants")}>
-				<div className="flex flex-wrap items-center gap-3">
+				<div className="flex flex-wrap items-center gap-basalt-space-lg">
 					<Button variant="default">{t("pages.interactive.default")}</Button>
 					<Button variant="secondary">{t("pages.interactive.secondary")}</Button>
 					<Button variant="destructive">{t("pages.interactive.destructive")}</Button>
@@ -217,7 +195,7 @@ export default function InteractivePage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.interactive.buttonSizes")}>
-				<div className="flex flex-wrap items-end gap-3">
+				<div className="flex flex-wrap items-end gap-basalt-space-lg">
 					<Button size="sm">{t("pages.interactive.small")}</Button>
 					<Button size="default">{t("pages.interactive.default")}</Button>
 					<Button size="lg">{t("pages.interactive.large")}</Button>
@@ -228,8 +206,8 @@ export default function InteractivePage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.interactive.buttonStates")}>
-				<div className="space-y-4">
-					<div className="flex flex-wrap items-center gap-3">
+				<div className="space-y-basalt-space-lg">
+					<div className="flex flex-wrap items-center gap-basalt-space-lg">
 						<Button disabled>{t("pages.interactive.disabled")}</Button>
 						<LoadingButton />
 						<CopyButton />
@@ -238,36 +216,38 @@ export default function InteractivePage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.interactive.toastNotifications")}>
-				<div className="flex flex-wrap gap-3">
+				<div className="flex flex-wrap gap-basalt-space-lg">
 					<Button size="sm" onClick={() => toast.success(t("pages.interactive.toastSuccess"))}>
-						<CheckCircle2 className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.success")}
+						<CheckCircle2 className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
+						{t("pages.interactive.success")}
 					</Button>
 					<Button
 						size="sm"
 						variant="destructive"
 						onClick={() => toast.error(t("pages.interactive.toastError"))}
 					>
-						<XCircle className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.error")}
+						<XCircle className="mr-basalt-space-lg h-3.5 w-3.5" /> {t("pages.interactive.error")}
 					</Button>
 					<Button
 						size="sm"
 						variant="outline"
 						onClick={() => toast.warning(t("pages.interactive.toastWarning"))}
 					>
-						<AlertTriangle className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.warning")}
+						<AlertTriangle className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
+						{t("pages.interactive.warning")}
 					</Button>
 					<Button
 						size="sm"
 						variant="secondary"
 						onClick={() => toast.info(t("pages.interactive.toastInfo"))}
 					>
-						<Info className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.info")}
+						<Info className="mr-basalt-space-lg h-3.5 w-3.5" /> {t("pages.interactive.info")}
 					</Button>
 				</div>
 			</SectionRule>
 
 			<SectionRule title={t("pages.interactive.inlineAlerts")}>
-				<div className="space-y-3">
+				<div className="space-y-basalt-space-lg">
 					{alertData.map((alert) => (
 						<InlineAlert
 							key={alert.variant}
@@ -280,7 +260,7 @@ export default function InteractivePage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.interactive.skeletonLoaders")}>
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+				<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-3">
 					<SkeletonCard />
 					<SkeletonCard />
 					<SkeletonCard />
@@ -288,24 +268,24 @@ export default function InteractivePage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.interactive.progressIndicators")}>
-				<div className="space-y-4 max-w-md">
-					<div className="space-y-1">
-						<div className="flex justify-between text-xs text-muted-foreground">
+				<div className="space-y-basalt-space-lg max-w-md">
+					<div className="space-y-basalt-space-sm">
+						<div className="flex justify-between text-basalt-sm text-muted-foreground">
 							<span>{t("pages.interactive.uploading")}</span>
 							<span>60%</span>
 						</div>
 						<Meter value={60} hideValue aria-label={t("pages.interactive.uploading")} />
 					</div>
-					<div className="flex items-center gap-6">
-						<div className="flex items-center gap-2">
+					<div className="flex items-center gap-basalt-space-lg">
+						<div className="flex items-center gap-basalt-space-lg">
 							<Loader2 className="h-4 w-4 animate-spin motion-reduce:animate-none text-muted-foreground" />
-							<span className="text-xs text-muted-foreground">
+							<span className="text-basalt-sm text-muted-foreground">
 								{t("pages.interactive.loading")}
 							</span>
 						</div>
-						<div className="flex items-center gap-2">
+						<div className="flex items-center gap-basalt-space-lg">
 							<Loader2 className="h-5 w-5 animate-spin motion-reduce:animate-none text-primary" />
-							<span className="text-sm text-foreground">
+							<span className="text-basalt-base text-foreground">
 								{t("pages.interactive.progressProcessing")}
 							</span>
 						</div>
@@ -314,50 +294,57 @@ export default function InteractivePage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.interactive.emptyStates")}>
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-					<div className="rounded-widget border border-border bg-card p-8 flex flex-col items-center text-center">
-						<Inbox className="h-10 w-10 text-muted-foreground/50 mb-3" strokeWidth={1} />
-						<p className="text-sm font-medium text-foreground mb-1">
+				<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-3">
+					<LayerCard className="flex flex-col items-center text-center">
+						<Inbox
+							className="h-10 w-10 text-muted-foreground/50 mb-basalt-space-lg"
+							strokeWidth={1}
+						/>
+						<p className="text-basalt-base font-medium text-foreground mb-basalt-space-sm">
 							{t("pages.interactive.noDataYet")}
 						</p>
-						<p className="text-xs text-muted-foreground mb-4">
+						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg">
 							{t("pages.interactive.createFirstRecord")}
 						</p>
 						<Button size="sm">{t("pages.interactive.createRecord")}</Button>
-					</div>
-					<div className="rounded-widget border border-border bg-card p-8 flex flex-col items-center text-center">
-						<Search className="h-10 w-10 text-muted-foreground/50 mb-3" strokeWidth={1} />
-						<p className="text-sm font-medium text-foreground mb-1">
+					</LayerCard>
+					<LayerCard className="flex flex-col items-center text-center">
+						<Search
+							className="h-10 w-10 text-muted-foreground/50 mb-basalt-space-lg"
+							strokeWidth={1}
+						/>
+						<p className="text-basalt-base font-medium text-foreground mb-basalt-space-sm">
 							{t("pages.interactive.noResultsFound")}
 						</p>
-						<p className="text-xs text-muted-foreground mb-4">
+						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg">
 							{t("pages.interactive.tryAdjusting")}
 						</p>
 						<Button size="sm" variant="outline">
 							{t("pages.interactive.clearFilters")}
 						</Button>
-					</div>
-					<div className="rounded-widget border border-border bg-card p-8 flex flex-col items-center text-center">
-						<XCircle className="h-10 w-10 text-red-500/50 mb-3" strokeWidth={1} />
-						<p className="text-sm font-medium text-foreground mb-1">
+					</LayerCard>
+					<LayerCard className="flex flex-col items-center text-center">
+						<XCircle className="h-10 w-10 text-red-500/50 mb-basalt-space-lg" strokeWidth={1} />
+						<p className="text-basalt-base font-medium text-foreground mb-basalt-space-sm">
 							{t("pages.interactive.somethingWentWrong")}
 						</p>
-						<p className="text-xs text-muted-foreground mb-4">
+						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg">
 							{t("pages.interactive.pleaseTryAgain")}
 						</p>
 						<Button size="sm" variant="outline">
-							<RefreshCw className="mr-2 h-3.5 w-3.5" /> {t("common.retry")}
+							<RefreshCw className="mr-basalt-space-lg h-3.5 w-3.5" /> {t("common.retry")}
 						</Button>
-					</div>
+					</LayerCard>
 				</div>
 			</SectionRule>
 
 			<SectionRule title={t("pages.interactive.sheetDrawer")}>
-				<div className="flex flex-wrap gap-3">
+				<div className="flex flex-wrap gap-basalt-space-lg">
 					<Sheet>
 						<SheetTrigger asChild>
 							<Button variant="outline" size="sm">
-								<PanelRight className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.sheetRight")}
+								<PanelRight className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
+								{t("pages.interactive.sheetRight")}
 							</Button>
 						</SheetTrigger>
 						<SheetContent side="right">
@@ -365,17 +352,17 @@ export default function InteractivePage() {
 								<SheetTitle>{t("pages.interactive.detailPanel")}</SheetTitle>
 								<SheetDescription>{t("pages.interactive.viewEditDetails")}</SheetDescription>
 							</SheetHeader>
-							<div className="mt-6 space-y-4">
-								<div className="space-y-2">
+							<div className="mt-basalt-space-lg space-y-basalt-space-lg">
+								<div className="space-y-basalt-space-lg">
 									<Label>{t("pages.interactive.nameLabel")}</Label>
 									<Input defaultValue={t("pages.interactive.nameValue")} />
 								</div>
-								<div className="space-y-2">
+								<div className="space-y-basalt-space-lg">
 									<Label>{t("pages.interactive.emailLabel")}</Label>
 									<Input defaultValue={t("pages.interactive.emailValue")} />
 								</div>
 							</div>
-							<SheetFooter className="mt-6">
+							<SheetFooter className="mt-basalt-space-lg">
 								<SheetClose asChild>
 									<Button size="sm">{t("common.save")}</Button>
 								</SheetClose>
@@ -385,7 +372,8 @@ export default function InteractivePage() {
 					<Sheet>
 						<SheetTrigger asChild>
 							<Button variant="outline" size="sm">
-								<PanelLeft className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.sheetLeft")}
+								<PanelLeft className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
+								{t("pages.interactive.sheetLeft")}
 							</Button>
 						</SheetTrigger>
 						<SheetContent side="left">
@@ -393,7 +381,7 @@ export default function InteractivePage() {
 								<SheetTitle>{t("pages.interactive.filters")}</SheetTitle>
 								<SheetDescription>{t("pages.interactive.narrowDownResults")}</SheetDescription>
 							</SheetHeader>
-							<SheetFooter className="mt-6">
+							<SheetFooter className="mt-basalt-space-lg">
 								<SheetClose asChild>
 									<Button variant="outline" size="sm">
 										{t("common.cancel")}
@@ -405,14 +393,15 @@ export default function InteractivePage() {
 					<Sheet>
 						<SheetTrigger asChild>
 							<Button variant="outline" size="sm">
-								<PanelBottom className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.sheetBottom")}
+								<PanelBottom className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
+								{t("pages.interactive.sheetBottom")}
 							</Button>
 						</SheetTrigger>
 						<SheetContent side="bottom">
 							<SheetHeader>
 								<SheetTitle>{t("pages.interactive.quickActions")}</SheetTitle>
 							</SheetHeader>
-							<SheetFooter className="mt-6">
+							<SheetFooter className="mt-basalt-space-lg">
 								<SheetClose asChild>
 									<Button variant="outline" size="sm">
 										{t("common.cancel")}
@@ -425,7 +414,7 @@ export default function InteractivePage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.interactive.dialogs")}>
-				<div className="flex flex-wrap gap-3">
+				<div className="flex flex-wrap gap-basalt-space-lg">
 					<Dialog>
 						<DialogTrigger asChild>
 							<Button variant="outline" size="sm">
@@ -437,8 +426,8 @@ export default function InteractivePage() {
 								<DialogTitle>{t("pages.interactive.editProfile")}</DialogTitle>
 								<DialogDescription>{t("pages.interactive.editProfileDesc")}</DialogDescription>
 							</DialogHeader>
-							<div className="space-y-4 py-4">
-								<div className="space-y-2">
+							<div className="space-y-basalt-space-lg py-basalt-space-lg">
+								<div className="space-y-basalt-space-lg">
 									<Label>{t("pages.interactive.displayName")}</Label>
 									<Input defaultValue={t("pages.interactive.displayNameValue")} />
 								</div>
@@ -465,7 +454,7 @@ export default function InteractivePage() {
 							</AlertDialogHeader>
 							<AlertDialogFooter>
 								<AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
-								<AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+								<AlertDialogAction className="bg-destructive text-destructive-foreground hover:bg-basalt-destructive-hover">
 									{t("common.delete")}
 								</AlertDialogAction>
 							</AlertDialogFooter>
@@ -475,25 +464,25 @@ export default function InteractivePage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.interactive.popovers")}>
-				<div className="flex flex-wrap gap-3">
+				<div className="flex flex-wrap gap-basalt-space-lg">
 					<Popover>
 						<PopoverTrigger asChild>
 							<Button variant="outline" size="sm">
-								<Filter className="mr-2 h-3.5 w-3.5" /> {t("common.filter")}
+								<Filter className="mr-basalt-space-lg h-3.5 w-3.5" /> {t("common.filter")}
 							</Button>
 						</PopoverTrigger>
 						<PopoverContent className="w-64">
-							<div className="space-y-3">
-								<p className="text-sm font-medium">{t("pages.interactive.filterBy")}</p>
-								<div className="space-y-2">
-									<Label className="text-xs">{t("pages.interactive.statusLabel")}</Label>
+							<div className="space-y-basalt-space-lg">
+								<p className="text-basalt-base font-medium">{t("pages.interactive.filterBy")}</p>
+								<div className="space-y-basalt-space-lg">
+									<Label className="text-basalt-sm">{t("pages.interactive.statusLabel")}</Label>
 									<Input
 										placeholder={t("pages.interactive.statusPlaceholder")}
-										className="h-8 text-xs"
+										className="text-basalt-sm"
 									/>
 								</div>
 								<Separator />
-								<div className="flex justify-end gap-2">
+								<div className="flex justify-end gap-basalt-space-lg">
 									<Button size="sm">{t("common.apply")}</Button>
 								</div>
 							</div>
@@ -502,31 +491,35 @@ export default function InteractivePage() {
 					<Popover>
 						<PopoverTrigger asChild>
 							<Button variant="outline" size="sm">
-								<User className="mr-2 h-3.5 w-3.5" /> {t("pages.interactive.profileLabel")}
+								<User className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
+								{t("pages.interactive.profileLabel")}
 							</Button>
 						</PopoverTrigger>
 						<PopoverContent className="w-72">
-							<div className="flex items-center gap-3">
-								<div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center text-xs font-medium">
+							<div className="flex items-center gap-basalt-space-lg">
+								<div className="h-10 w-10 rounded-basalt-full bg-muted flex items-center justify-center text-basalt-sm font-medium">
 									{t("pages.interactive.profileInitials")}
 								</div>
 								<div>
-									<p className="text-sm font-medium">{t("pages.interactive.profileName")}</p>
-									<p className="text-xs text-muted-foreground">
+									<p className="text-basalt-base font-medium">
+										{t("pages.interactive.profileName")}
+									</p>
+									<p className="text-basalt-sm text-muted-foreground">
 										{t("pages.interactive.profileEmail")}
 									</p>
 								</div>
 							</div>
-							<Separator className="my-3" />
-							<div className="space-y-1">
+							<Separator className="my-basalt-space-lg" />
+							<div className="space-y-basalt-space-sm">
 								{profileMenuItems.map((item) => (
-									<button
+									<Button
+										variant="ghost"
 										type="button"
 										key={item.key}
-										className="flex w-full items-center rounded-md px-2 py-1.5 text-sm text-muted-foreground hover:bg-accent hover:text-foreground"
+										className="flex w-full items-center text-muted-foreground"
 									>
 										{item.label}
-									</button>
+									</Button>
 								))}
 							</div>
 						</PopoverContent>
@@ -535,55 +528,43 @@ export default function InteractivePage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.interactive.collapsibleSections")}>
-				<div className="space-y-3">
-					<Collapsible open={collapsible1} onOpenChange={setCollapsible1}>
-						<div className="rounded-widget border border-border bg-card">
-							<CollapsibleTrigger asChild>
-								<button type="button" className="flex w-full items-center justify-between p-4">
-									<span className="text-sm font-medium text-foreground">
-										{t("pages.interactive.advancedOptions")}
-									</span>
-									<ChevronDown
-										className={`h-4 w-4 text-muted-foreground transition-transform ${collapsible1 ? "rotate-180" : ""}`}
-										strokeWidth={1.5}
-									/>
-								</button>
-							</CollapsibleTrigger>
+				<div className="space-y-basalt-layout">
+					<Collapsible open={collapsible1} onOpenChange={setCollapsible1} asChild>
+						<LayerCard>
+							<LayerCard.Header asChild>
+								<CollapsibleTrigger className="w-full hover:bg-basalt-hover">
+									{t("pages.interactive.advancedOptions")}
+								</CollapsibleTrigger>
+							</LayerCard.Header>
 							<CollapsibleContent unstyled>
-								<div className="border-t border-border p-4 space-y-3">
+								<LayerCard.Body className="border-t border-basalt-border space-y-basalt-space-lg">
 									<div className="flex items-center justify-between">
-										<span className="text-sm">{t("pages.interactive.enableCaching")}</span>
+										<span className="text-basalt-base">{t("pages.interactive.enableCaching")}</span>
 										<Switch />
 									</div>
 									<div className="flex items-center justify-between">
-										<span className="text-sm">{t("pages.interactive.debugMode")}</span>
+										<span className="text-basalt-base">{t("pages.interactive.debugMode")}</span>
 										<Switch />
 									</div>
-								</div>
+								</LayerCard.Body>
 							</CollapsibleContent>
-						</div>
+						</LayerCard>
 					</Collapsible>
-					<Collapsible open={collapsible2} onOpenChange={setCollapsible2}>
-						<div className="rounded-widget border border-border bg-card">
-							<CollapsibleTrigger asChild>
-								<button type="button" className="flex w-full items-center justify-between p-4">
-									<span className="text-sm font-medium text-foreground">
-										{t("pages.interactive.dangerZone")}
-									</span>
-									<ChevronDown
-										className={`h-4 w-4 text-muted-foreground transition-transform ${collapsible2 ? "rotate-180" : ""}`}
-										strokeWidth={1.5}
-									/>
-								</button>
-							</CollapsibleTrigger>
+					<Collapsible open={collapsible2} onOpenChange={setCollapsible2} asChild>
+						<LayerCard>
+							<LayerCard.Header asChild>
+								<CollapsibleTrigger className="w-full hover:bg-basalt-hover">
+									{t("pages.interactive.dangerZone")}
+								</CollapsibleTrigger>
+							</LayerCard.Header>
 							<CollapsibleContent unstyled>
-								<div className="border-t border-border p-4">
+								<LayerCard.Body className="border-t border-basalt-border">
 									<div className="flex items-center justify-between">
 										<div>
-											<p className="text-sm font-medium text-foreground">
+											<p className="text-basalt-base font-medium text-foreground">
 												{t("pages.interactive.deleteWorkspace")}
 											</p>
-											<p className="text-xs text-muted-foreground">
+											<p className="text-basalt-sm text-muted-foreground">
 												{t("pages.interactive.permanentlyRemoveData")}
 											</p>
 										</div>
@@ -591,12 +572,12 @@ export default function InteractivePage() {
 											{t("common.delete")}
 										</Button>
 									</div>
-								</div>
+								</LayerCard.Body>
 							</CollapsibleContent>
-						</div>
+						</LayerCard>
 					</Collapsible>
 				</div>
 			</SectionRule>
-		</div>
+		</ShowcasePage>
 	);
 }

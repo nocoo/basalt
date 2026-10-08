@@ -1,7 +1,8 @@
 import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { BarChart3, LayoutGrid } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { formatUsd } from "@/lib/format";
 import { useProgressTrackingViewModel } from "@/viewmodels/useProgressTrackingViewModel";
 
@@ -10,56 +11,55 @@ export default function ProgressTrackingPage() {
 	const { summary, categories, comparisonData } = useProgressTrackingViewModel();
 
 	return (
-		<div className="space-y-4">
-			<PageHeader
-				title={t("pages.progressTracking.title")}
-				description={t("pages.progressTracking.description")}
-			/>
-			<div className="grid grid-cols-1 gap-3 md:gap-4 sm:grid-cols-3">
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<p className="text-xs md:text-sm text-muted-foreground mb-1">
+		<ShowcasePage
+			title={t("pages.progressTracking.title")}
+			description={t("pages.progressTracking.description")}
+		>
+			<div className="grid grid-cols-1 gap-basalt-layout md:gap-basalt-layout sm:grid-cols-3">
+				<LayerCard>
+					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
 						{t("pages.progressTracking.totalBudget")}
 					</p>
-					<h2 className="text-xl md:text-2xl font-semibold text-foreground font-display tracking-tight">
+					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
 						${summary.totalLimit.toLocaleString()}
-					</h2>
-				</div>
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<p className="text-xs md:text-sm text-muted-foreground mb-1">
+					</p>
+				</LayerCard>
+				<LayerCard>
+					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
 						{t("pages.progressTracking.spentSoFar")}
 					</p>
-					<h2 className="text-xl md:text-2xl font-semibold text-foreground font-display tracking-tight">
+					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
 						${summary.totalSpent.toLocaleString()}
-					</h2>
-				</div>
-				<div className="rounded-card bg-secondary p-4 md:p-5">
-					<p className="text-xs md:text-sm text-muted-foreground mb-1">
+					</p>
+				</LayerCard>
+				<LayerCard>
+					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
 						{t("pages.progressTracking.remaining")}
 					</p>
-					<h2 className="text-xl md:text-2xl font-semibold text-success font-display tracking-tight">
+					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-success font-display tracking-tight">
 						${summary.remaining.toLocaleString()}
-					</h2>
-				</div>
+					</p>
+				</LayerCard>
 			</div>
 
-			<div className="mt-4 rounded-card bg-secondary p-4 md:p-5">
-				<div className="flex items-center gap-2 mb-4">
+			<LayerCard>
+				<LayerCard.Header className="items-center justify-start">
 					<LayoutGrid className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<p className="text-sm text-muted-foreground">
+					<h2 className="text-basalt-base text-muted-foreground">
 						{t("pages.progressTracking.categoryBudgets")}
-					</p>
-				</div>
-				<div className="flex flex-col gap-4">
+					</h2>
+				</LayerCard.Header>
+				<LayerCard.Body className="flex flex-col gap-basalt-space-lg">
 					{categories.map((cat) => (
 						<div key={cat.category}>
-							<div className="flex items-center justify-between mb-1.5">
-								<span className="text-sm text-foreground">{cat.category}</span>
-								<span className="text-xs text-muted-foreground">
+							<div className="flex items-center justify-between mb-basalt-space-md">
+								<span className="text-basalt-base text-foreground">{cat.category}</span>
+								<span className="text-basalt-sm text-muted-foreground">
 									${cat.spent} / ${cat.limit}
 								</span>
 							</div>
 							<div
-								className="h-2 rounded-full bg-card"
+								className="h-2 rounded-basalt-full bg-card"
 								role="progressbar"
 								aria-valuenow={cat.progress}
 								aria-valuemin={0}
@@ -67,36 +67,38 @@ export default function ProgressTrackingPage() {
 								aria-label={`${cat.category} budget: ${cat.progress}% spent`}
 							>
 								<div
-									className="h-full rounded-full transition-all"
+									className="h-full rounded-basalt-full transition-[width,opacity] basalt-motion"
 									style={{ width: `${cat.progress}%`, background: cat.color }}
 									aria-hidden="true"
 								/>
 							</div>
 						</div>
 					))}
-				</div>
-			</div>
+				</LayerCard.Body>
+			</LayerCard>
 
-			<div className="mt-4 rounded-card bg-secondary p-4 md:p-5">
-				<div className="flex items-center gap-2 mb-4">
+			<LayerCard>
+				<LayerCard.Header className="items-center justify-start">
 					<BarChart3 className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
-					<p className="text-sm text-muted-foreground">
+					<h2 className="text-basalt-base text-muted-foreground">
 						{t("pages.progressTracking.budgetVsActual")}
-					</p>
-				</div>
-				<GroupedBarChart
-					data={comparisonData.map((row) => ({ x: row.month, y: row.budget, y2: row.actual }))}
-					series={[
-						{ key: "y", label: t("pages.progressTracking.budget") },
-						{ key: "y2", label: t("pages.progressTracking.actual") },
-					]}
-					ariaLabel={t("pages.progressTracking.budgetVsActualAria")}
-					className="h-[180px] w-full md:h-[200px]"
-					showAxes
-					showLegend
-					valueFormatter={formatUsd}
-				/>
-			</div>
-		</div>
+					</h2>
+				</LayerCard.Header>
+				<LayerCard.Body>
+					<GroupedBarChart
+						data={comparisonData.map((row) => ({ x: row.month, y: row.budget, y2: row.actual }))}
+						series={[
+							{ key: "y", label: t("pages.progressTracking.budget") },
+							{ key: "y2", label: t("pages.progressTracking.actual") },
+						]}
+						ariaLabel={t("pages.progressTracking.budgetVsActualAria")}
+						className="h-[11.25rem] w-full md:h-[12.5rem]"
+						showAxes
+						showLegend
+						valueFormatter={formatUsd}
+					/>
+				</LayerCard.Body>
+			</LayerCard>
+		</ShowcasePage>
 	);
 }

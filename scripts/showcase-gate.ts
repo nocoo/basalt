@@ -26,10 +26,12 @@ import { assertLandingShowcase } from "./showcase-landing";
 import { assertLibraryShowcases } from "./showcase-library";
 import { assertLoaderShowcase } from "./showcase-loader";
 import { assertOverlayMotion } from "./showcase-motion";
+import { assertNavigationLists } from "./showcase-navigation";
 import { assertPaletteShowcases } from "./showcase-palette";
 import { assertRecommendation } from "./showcase-recommendation";
 import { assertRecordGeometry } from "./showcase-records";
 import { assertReusableShowcases } from "./showcase-reuse";
+import { assertSelectionHierarchy } from "./showcase-selection";
 
 /** Build and test the current source; never silently consume yesterday's dist. */
 export async function runShowcaseGate() {
@@ -65,6 +67,8 @@ export async function runShowcaseGate() {
 			const formGroups = await assertFormGroupSpacing(page, url);
 			const codePanels = await assertCodePanels(page, url);
 			const hover = await assertHoverAndDensity(page, url);
+			const navigation = await assertNavigationLists(page, url);
+			const selection = await assertSelectionHierarchy(page, url);
 			const dimensions = await assertDimensionTokens(page, url);
 			const records = await assertRecordGeometry(page, url);
 			const recommendation = await assertRecommendation(page, url);
@@ -87,6 +91,8 @@ export async function runShowcaseGate() {
 				formGroups,
 				codePanels,
 				hover,
+				navigation,
+				selection,
 				dimensions,
 				records,
 				recommendation,

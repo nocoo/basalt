@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CATALOG } from "./catalog";
+import { CATALOG, CATALOG_CATEGORIES } from "./catalog";
 import { loadCatalogContentRecord } from "./catalog-content-registry";
 import {
 	catalogReleaseStatus,
@@ -36,17 +36,17 @@ const catalogHero = (slug: string) => catalogContent[slug]?.examples[0];
 describe("catalog index model", () => {
 	it("groups every catalog entry exactly once", () => {
 		expect(loadCatalogIndex()).toBe(loadCatalogIndex());
-		expect(CATALOG_INDEX_GROUPS.map((group) => group.label)).toEqual([
-			"Components",
-			"Charts",
-			"Blocks",
+		expect(CATALOG_INDEX_GROUPS.map((group) => group.label)).toEqual(
+			CATALOG_CATEGORIES.map((category) => category.label),
+		);
+		expect(CATALOG_INDEX_GROUPS.map((group) => group.items.length)).toEqual([
+			2, 21, 2, 10, 32, 12, 14, 25, 3,
 		]);
-		expect(CATALOG_INDEX_GROUPS.map((group) => group.items.length)).toEqual([93, 25, 3]);
 		expect(CATALOG_INDEX_ITEMS).toHaveLength(121);
 
 		const slugs = CATALOG_INDEX_ITEMS.map((item) => item.entry.slug);
 		expect(new Set(slugs).size).toBe(121);
-		expect(slugs).toEqual(CATALOG.map((entry) => entry.slug));
+		expect(new Set(slugs)).toEqual(new Set(CATALOG.map((entry) => entry.slug)));
 	});
 
 	it("models the current page and release states independently", () => {
@@ -69,7 +69,7 @@ describe("catalog index model", () => {
 					importPath: "@nocoo/basalt/components/stable-planned",
 					hasRootBarrel: true,
 					kind: "stable",
-					category: "component",
+					category: "action",
 				},
 				{
 					slug: "catalog-ready",
@@ -78,14 +78,16 @@ describe("catalog index model", () => {
 					importPath: "@nocoo/basalt/components/catalog-ready",
 					hasRootBarrel: false,
 					kind: "catalog",
-					category: "component",
+					category: "action",
 				},
 			],
 			docsBySlug: { "catalog-ready": DOCS },
 			heroForSlug: (slug) => (slug === "catalog-ready" ? HERO : undefined),
 		});
 		expect(
-			groups[0]?.items.map(({ releaseStatus, pageStatus }) => [releaseStatus, pageStatus]),
+			groups
+				.find((group) => group.id === "action")
+				?.items.map(({ releaseStatus, pageStatus }) => [releaseStatus, pageStatus]),
 		).toEqual([
 			["stable", "planned"],
 			["catalog", "ready"],
@@ -154,7 +156,7 @@ describe("catalog index model", () => {
 						importPath: "@nocoo/basalt/components/first",
 						hasRootBarrel: true,
 						kind: "stable",
-						category: "component",
+						category: "action",
 					},
 					{
 						slug: "same",
@@ -209,14 +211,24 @@ describe("catalog index model", () => {
 
 	it("preserves source order and omits empty groups", () => {
 		const result = filterCatalogIndexGroups(CATALOG_INDEX_GROUPS, { release: "stable" });
-		expect(result.map((group) => group.id)).toEqual(["component"]);
-		expect(result[0]?.items.map((item) => item.entry.slug)).toEqual(
-			CATALOG_INDEX_GROUPS[0]?.items
-				.filter((item) => item.releaseStatus === "stable")
-				.map((item) => item.entry.slug),
+		expect(result.map((group) => group.id)).toEqual(
+			CATALOG_INDEX_GROUPS.filter((group) =>
+				group.items.some((item) => item.releaseStatus === "stable"),
+			).map((group) => group.id),
 		);
-		expect(result[0]?.items.some((item) => item.entry.slug === "text")).toBe(true);
-		expect(result[0]?.items.some((item) => item.entry.slug === "field")).toBe(true);
+		for (const group of result) {
+			expect(group.items.map((item) => item.entry.slug)).toEqual(
+				CATALOG.filter(
+					(entry) => entry.category === group.id && catalogReleaseStatus(entry.kind) === "stable",
+				).map((entry) => entry.slug),
+			);
+		}
+		expect(result.flatMap((group) => group.items).some((item) => item.entry.slug === "text")).toBe(
+			true,
+		);
+		expect(result.flatMap((group) => group.items).some((item) => item.entry.slug === "field")).toBe(
+			true,
+		);
 		expect(CATALOG.filter((entry) => catalogReleaseStatus(entry.kind) === "stable")).toHaveLength(
 			32,
 		);
@@ -252,10 +264,10 @@ describe("catalog index model", () => {
 		);
 		expect(
 			serializeCatalogIndexQuery(
-				{ q: "  input   group ", category: "component", release: "catalog", status: "ready" },
+				{ q: "  input   group ", category: "action", release: "catalog", status: "ready" },
 				current,
 			).toString(),
-		).toBe("foreign=one&foreign=two&q=input+group&category=component&release=catalog&status=ready");
+		).toBe("foreign=one&foreign=two&q=input+group&category=action&release=catalog&status=ready");
 		expect(serializeCatalogIndexQuery(DEFAULT_CATALOG_INDEX_QUERY, current).toString()).toBe(
 			"foreign=one&foreign=two",
 		);

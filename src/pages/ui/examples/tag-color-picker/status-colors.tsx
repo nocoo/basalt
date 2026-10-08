@@ -6,7 +6,7 @@ export default function StatusColors() {
 	const [color, setColor] = useState<TagColor>("success");
 	const names = { success: "Healthy", warning: "Needs attention", danger: "Incident" };
 	return (
-		<div className="w-full space-y-4">
+		<div className="w-full space-y-basalt-space-lg">
 			<h3 className="font-medium">Service status palette</h3>
 			<TagColorPicker
 				label="Service status color"
@@ -16,7 +16,7 @@ export default function StatusColors() {
 				labels={names}
 			/>
 			<TagBadge name={names[color as keyof typeof names]} color={color} />
-			<p className="text-xs text-basalt-muted-foreground">
+			<p className="text-basalt-sm text-basalt-muted-foreground">
 				Names and selected indicators make these choices usable without distinguishing hue.
 			</p>
 		</div>

@@ -2,10 +2,11 @@ import { Button } from "@nocoo/basalt/components/button";
 import { ChatBubble } from "@nocoo/basalt/components/chat-bubble";
 import { ChatComposer } from "@nocoo/basalt/components/chat-composer";
 import { ChatHeader } from "@nocoo/basalt/components/chat-header";
-import { ChatInbox } from "@nocoo/basalt/components/chat-inbox";
-import { MessageCircle, Sparkles, X } from "lucide-react";
+import { Sparkles, X } from "lucide-react";
 import { catalogContentFamily } from "../../catalog-content";
 import { catalogScenarioId } from "../../catalog-scenario";
+import InboxDemo from "../../examples/chat-inbox/default";
+import inboxSource from "../../examples/chat-inbox/default?raw";
 import MarkdownDemo from "../../examples/chat-markdown/default";
 import chatmarkdownSource from "../../examples/chat-markdown/default?raw";
 import MessageDemo from "../../examples/chat-message/default";
@@ -129,7 +130,7 @@ export default function Example() {
 				id: catalogScenarioId("chat-bubble", "roles"),
 				title: "Roles",
 				code: scenarioModule(
-					`<div className="flex w-full max-w-md flex-col gap-3">
+					`<div className="flex w-full max-w-md flex-col gap-basalt-space-lg">
 	<ChatBubble variant="system">Today</ChatBubble>
 	<ChatBubble variant="user">What is the error rate?</ChatBubble>
 	<ChatBubble>The 7-day error rate is 0.4%.</ChatBubble>
@@ -137,7 +138,7 @@ export default function Example() {
 					['import { ChatBubble } from "@nocoo/basalt/components/chat-bubble";'],
 				),
 				render: () => (
-					<div className="flex w-full max-w-md flex-col gap-3">
+					<div className="flex w-full max-w-md flex-col gap-basalt-space-lg">
 						<ChatBubble variant="system">Today</ChatBubble>
 						<ChatBubble variant="user">What is the error rate?</ChatBubble>
 						<ChatBubble>The 7-day error rate is 0.4%.</ChatBubble>
@@ -148,7 +149,7 @@ export default function Example() {
 				id: catalogScenarioId("chat-bubble", "streaming"),
 				title: "Streaming & Reduced Motion",
 				code: scenarioModule(
-					`<div className="flex w-full max-w-md flex-col gap-3">
+					`<div className="flex w-full max-w-md flex-col gap-basalt-space-lg">
 	<ChatBubble variant="assistant" streaming>
 		Generating query response
 	</ChatBubble>
@@ -156,7 +157,7 @@ export default function Example() {
 					['import { ChatBubble } from "@nocoo/basalt/components/chat-bubble";'],
 				),
 				render: () => (
-					<div className="flex w-full max-w-md flex-col gap-3">
+					<div className="flex w-full max-w-md flex-col gap-basalt-space-lg">
 						<ChatBubble variant="assistant" streaming>
 							Generating query response
 						</ChatBubble>
@@ -246,17 +247,7 @@ export default function Example() {
 	"chat-inbox": {
 		docs: {
 			description: "A selectable list of conversations.",
-			usage: `import { ChatInbox } from "@nocoo/basalt/components/chat-inbox";
-
-export default function Example() {
-	return (
-		<ChatInbox
-			items={[{ id: "a", title: "Analytics" }]}
-			activeId="a"
-			onSelect={() => undefined}
-		/>
-	);
-}`,
+			usage: inboxSource,
 			variants: [],
 			api: chatInboxApi,
 		},
@@ -264,60 +255,8 @@ export default function Example() {
 			{
 				id: catalogScenarioId("chat-inbox", "threads"),
 				title: "Threads",
-				code: scenarioModule(
-					`<div className="h-48 w-full max-w-xs ring-1 ring-basalt-border">
-	<ChatInbox
-		aria-label="Inbox"
-		activeId="a"
-		onSelect={() => undefined}
-		items={[
-			{
-				id: "a",
-				title: "Analytics",
-				preview: "Ask about usage",
-				time: "2m",
-				leading: <MessageCircle className="h-4 w-4" />,
-			},
-			{
-				id: "b",
-				title: "Quality",
-				preview: "Error rate",
-				time: "1h",
-				leading: <MessageCircle className="h-4 w-4" />,
-			},
-		]}
-	/>
-</div>`,
-					[
-						'import { ChatInbox } from "@nocoo/basalt/components/chat-inbox";',
-						'import { MessageCircle } from "lucide-react";',
-					],
-				),
-				render: () => (
-					<div className="h-48 w-full max-w-xs ring-1 ring-basalt-border">
-						<ChatInbox
-							aria-label="Inbox"
-							activeId="a"
-							onSelect={() => undefined}
-							items={[
-								{
-									id: "a",
-									title: "Analytics",
-									preview: "Ask about usage",
-									time: "2m",
-									leading: <MessageCircle className="h-4 w-4" />,
-								},
-								{
-									id: "b",
-									title: "Quality",
-									preview: "Error rate",
-									time: "1h",
-									leading: <MessageCircle className="h-4 w-4" />,
-								},
-							]}
-						/>
-					</div>
-				),
+				code: inboxSource,
+				render: () => <InboxDemo />,
 			},
 		],
 	},

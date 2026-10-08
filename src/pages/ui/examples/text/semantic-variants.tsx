@@ -2,7 +2,7 @@ import { Text } from "@nocoo/basalt/components/text";
 
 export default function SemanticVariants() {
 	return (
-		<div className="flex w-full flex-col gap-3">
+		<div className="flex w-full flex-col gap-basalt-space-lg">
 			<Text variant="heading" as="h2">
 				Section title
 			</Text>

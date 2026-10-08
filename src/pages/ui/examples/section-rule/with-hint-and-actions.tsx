@@ -15,7 +15,7 @@ export default function SectionRuleWithHintAndActions() {
 				</>
 			}
 		>
-			<p className="text-sm text-basalt-muted-foreground">
+			<p className="text-basalt-base text-basalt-muted-foreground">
 				Hint and actions can share the same rule.
 			</p>
 		</SectionRule>

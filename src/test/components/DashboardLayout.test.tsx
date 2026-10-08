@@ -22,6 +22,7 @@ function renderLayout(initialPath = "/") {
 							<Route path="/accounts" element={<div data-testid="accounts-outlet">Accounts</div>} />
 							<Route path="/settings" element={<div data-testid="settings-outlet">Settings</div>} />
 							<Route path="/ui/:slug" element={<div data-testid="catalog-outlet">Catalog</div>} />
+							<Route path="/ui/overview/:category" element={<div>Overview</div>} />
 						</Route>
 					</Routes>
 				</MemoryRouter>
@@ -45,6 +46,19 @@ describe("DashboardLayout", () => {
 		renderLayout("/ui/command-palette");
 		expect(screen.getByRole("heading", { name: "Command Palette" })).toBeInTheDocument();
 		expect(document.title).toBe("Command Palette · basalt.");
+	});
+
+	it("names overview routes and links component breadcrumbs to the right group", () => {
+		const { unmount } = renderLayout("/ui/overview/action");
+		expect(screen.getByRole("heading", { name: "Actions overview" })).toBeInTheDocument();
+		expect(document.title).toBe("Actions overview · basalt.");
+		unmount();
+		mockIsMobile = false;
+		renderLayout("/ui/button");
+		expect(screen.getByRole("link", { name: "Actions" })).toHaveAttribute(
+			"href",
+			"/ui/overview/action",
+		);
 	});
 
 	it("floats the content island with a corner shadow", () => {

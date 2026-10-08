@@ -1,4 +1,9 @@
 import { LineChart } from "@nocoo/basalt/charts/line";
+import {
+	Collapsible,
+	CollapsibleContent,
+	CollapsibleTrigger,
+} from "@nocoo/basalt/components/collapsible";
 
 const data = [
 	{ x: "Mon", y: 120 },
@@ -20,37 +25,40 @@ export default function LineAccessibleData() {
 				className="h-48 w-full"
 				summary="Active requests peaked on Thursday at 220, with a weekly low of 95 on Wednesday. Keyboard exploration available: use Tab to focus the plot and arrow keys to navigate points."
 				dataAlternative={
-					<details className="mt-2 text-xs">
-						<summary className="cursor-pointer font-medium text-basalt-foreground hover:underline">
-							View request data table
-						</summary>
-						<table
-							aria-label="Weekly request data"
-							className="mt-2 w-full border-collapse text-left text-xs text-basalt-muted-foreground"
-						>
-							<thead>
-								<tr className="border-b border-basalt-border">
-									<th scope="col" className="py-1 font-medium text-basalt-foreground">
-										Day
-									</th>
-									<th
-										scope="col"
-										className="py-1 text-right font-medium text-basalt-foreground tabular-nums"
-									>
-										Requests
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								{data.map((row) => (
-									<tr key={row.x} className="border-b border-basalt-border/50">
-										<td className="py-1">{row.x}</td>
-										<td className="py-1 text-right tabular-nums">{row.y}</td>
+					<Collapsible className="mt-basalt-layout-sm text-basalt-sm">
+						<CollapsibleTrigger>View request data table</CollapsibleTrigger>
+						<CollapsibleContent unstyled>
+							<table
+								aria-label="Weekly request data"
+								className="mt-basalt-layout-sm w-full border-collapse text-left text-basalt-sm text-basalt-muted-foreground"
+							>
+								<thead>
+									<tr className="border-b border-basalt-border">
+										<th
+											scope="col"
+											className="py-basalt-space-sm font-medium text-basalt-foreground"
+										>
+											Day
+										</th>
+										<th
+											scope="col"
+											className="py-basalt-space-sm text-right font-medium text-basalt-foreground tabular-nums"
+										>
+											Requests
+										</th>
 									</tr>
-								))}
-							</tbody>
-						</table>
-					</details>
+								</thead>
+								<tbody>
+									{data.map((row) => (
+										<tr key={row.x} className="border-b border-basalt-border/50">
+											<td className="py-basalt-space-sm">{row.x}</td>
+											<td className="py-basalt-space-sm text-right tabular-nums">{row.y}</td>
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</CollapsibleContent>
+					</Collapsible>
 				}
 			/>
 		</div>

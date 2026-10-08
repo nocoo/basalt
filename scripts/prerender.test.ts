@@ -4,7 +4,8 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { LANDING_HEADING } from "../src/lib/landing";
 import { SHOWCASE_PATHS } from "../src/lib/site";
-import { CATALOG } from "../src/pages/ui/catalog";
+import { CATALOG, CATALOG_CATEGORIES } from "../src/pages/ui/catalog";
+import { catalogCategoryPath } from "../src/pages/ui/catalog-categories";
 import { fileForPath, prerenderHtml } from "./prerender";
 
 const TEMPLATE =
@@ -16,7 +17,11 @@ describe("prerender", () => {
 		const written = prerenderHtml(dist, TEMPLATE);
 		expect(written).toContain(path.join(dist, "ui.html"));
 		expect(written).toContain(path.join(dist, "ui/button.html"));
-		const paths = [...SHOWCASE_PATHS, ...CATALOG.map((entry) => `/ui/${entry.slug}`)];
+		const paths = [
+			...SHOWCASE_PATHS,
+			...CATALOG_CATEGORIES.map((category) => catalogCategoryPath(category.id)),
+			...CATALOG.map((entry) => `/ui/${entry.slug}`),
+		];
 		expect(written).toHaveLength(paths.length);
 		for (const route of paths) {
 			const html = readFileSync(fileForPath(dist, route), "utf8");

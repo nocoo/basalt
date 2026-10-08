@@ -11,13 +11,13 @@ const data = [
 export function BulletChartCard() {
 	const { t } = useTranslation();
 	return (
-		<LayerCard className="flex flex-col ring-0 h-full rounded-card border-0 bg-secondary shadow-none">
-			<div className="flex flex-col space-y-2.5 p-4 pb-2">
-				<h3 className="text-sm text-muted-foreground">{t("dashboard.bulletKpis")}</h3>
-			</div>
-			<div className="min-h-0 flex-1 px-4 pt-0 pb-4 h-56">
+		<LayerCard className="flex flex-col h-full">
+			<LayerCard.Header className="flex-col">
+				<h2 className="text-basalt-base text-muted-foreground">{t("dashboard.bulletKpis")}</h2>
+			</LayerCard.Header>
+			<LayerCard.Body className="min-h-0 flex-1 h-56">
 				<BulletChart data={data} ariaLabel={t("dashboard.bulletKpis")} className="h-full w-full" />
-			</div>
+			</LayerCard.Body>
 		</LayerCard>
 	);
 }

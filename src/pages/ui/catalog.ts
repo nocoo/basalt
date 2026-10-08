@@ -1,6 +1,8 @@
-export type CatalogKind = "stable" | "catalog" | "chart" | "provider";
+import type { CatalogCategory } from "./catalog-categories";
 
-export type CatalogCategory = "component" | "chart" | "block";
+export { CATALOG_CATEGORIES, type CatalogCategory } from "./catalog-categories";
+
+export type CatalogKind = "stable" | "catalog" | "chart" | "provider";
 
 export interface CatalogEntry {
 	slug: string;
@@ -13,12 +15,6 @@ export interface CatalogEntry {
 	navName?: string;
 }
 
-export const CATALOG_CATEGORIES: { id: CatalogCategory; label: string }[] = [
-	{ id: "component", label: "Components" },
-	{ id: "chart", label: "Charts" },
-	{ id: "block", label: "Blocks" },
-];
-
 export const CATALOG: CatalogEntry[] = [
 	{
 		slug: "button",
@@ -27,7 +23,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/button",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "link-button",
@@ -36,7 +32,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/button",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "text",
@@ -45,7 +41,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/text",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "label",
@@ -54,7 +50,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/label",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "separator",
@@ -63,7 +59,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/separator",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "scroll-area",
@@ -72,7 +68,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/scroll-area",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "layout",
 		navName: "Scroll Area",
 	},
 	{
@@ -82,7 +78,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/link",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "tooltip",
@@ -91,7 +87,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/tooltip",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "overlay",
 	},
 	{
 		slug: "theme-toggle",
@@ -100,7 +96,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/theme-toggle",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "layer-card",
@@ -109,7 +105,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/layer-card",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "card",
 		navName: "Layer Card",
 	},
 	{
@@ -119,7 +115,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/description-list",
 		hasRootBarrel: true,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 		navName: "Description List",
 	},
 	{
@@ -129,7 +125,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/basalt-mark",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "primitive",
 		navName: "Basalt Mark",
 	},
 	{
@@ -139,7 +135,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/field",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "input",
@@ -148,7 +144,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/input",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "input-area",
@@ -157,7 +153,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/input-area",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "input-group",
@@ -166,7 +162,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/input-group",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "sensitive-input",
@@ -175,7 +171,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/sensitive-input",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 		navName: "Sensitive Input",
 	},
 	{
@@ -185,7 +181,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/checkbox",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "radio",
@@ -194,7 +190,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/radio",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "switch",
@@ -203,7 +199,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/switch",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "select",
@@ -212,7 +208,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/select",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "combobox",
@@ -221,7 +217,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/combobox",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "autocomplete",
@@ -230,7 +226,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/autocomplete",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "date-picker",
@@ -239,7 +235,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/date-picker",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 		navName: "Date Picker",
 	},
 	{
@@ -249,7 +245,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/slider",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "toggle",
@@ -258,7 +254,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/toggle",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "toggle-group",
@@ -267,7 +263,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/toggle-group",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "segment-control",
@@ -276,7 +272,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/segment-control",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "action",
 		navName: "Segment Control",
 	},
 	{
@@ -286,7 +282,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/badge",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "inline",
 	},
 	{
 		slug: "banner",
@@ -295,7 +291,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/banner",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "banner",
 	},
 	{
 		slug: "empty",
@@ -304,7 +300,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/empty",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "card",
 	},
 	{
 		slug: "loader",
@@ -313,7 +309,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/loader",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "skeleton-line",
@@ -322,7 +318,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/skeleton-line",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "primitive",
 		navName: "Skeleton Line",
 	},
 	{
@@ -332,7 +328,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/battery-meter",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "meter",
@@ -341,7 +337,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/meter",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "toast",
@@ -350,7 +346,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/toast",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "banner",
 	},
 	{
 		slug: "clipboard-text",
@@ -359,7 +355,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/clipboard-text",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 		navName: "Clipboard Text",
 	},
 	{
@@ -369,7 +365,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/code",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "card",
 		navName: "CodeHighlighted",
 	},
 	{
@@ -379,7 +375,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/code",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "card",
 	},
 	{
 		slug: "avatar",
@@ -388,7 +384,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/avatar",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "accordion",
@@ -397,7 +393,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/accordion",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "dialog",
@@ -406,7 +402,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/dialog",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "overlay",
 	},
 	{
 		slug: "alert-dialog",
@@ -415,7 +411,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/alert-dialog",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "overlay",
 	},
 	{
 		slug: "confirm-dialog",
@@ -424,7 +420,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/confirm-dialog",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "overlay",
 		navName: "Confirm Dialog",
 	},
 	{
@@ -434,7 +430,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/popover",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "overlay",
 	},
 	{
 		slug: "dropdown-menu",
@@ -443,7 +439,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/dropdown-menu",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "overlay",
 		navName: "Dropdown",
 	},
 	{
@@ -453,7 +449,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/context-menu",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "overlay",
 	},
 	{
 		slug: "hover-card",
@@ -462,7 +458,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/hover-card",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "overlay",
 	},
 	{
 		slug: "sheet",
@@ -471,7 +467,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/sheet",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "overlay",
 	},
 	{
 		slug: "command-palette",
@@ -480,7 +476,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/command-palette",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "overlay",
 		navName: "Command Palette",
 	},
 	{
@@ -490,7 +486,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/tabs",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "table",
@@ -499,7 +495,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/table",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "data-table",
@@ -508,7 +504,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/data-table",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "pagination",
@@ -517,7 +513,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/pagination",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 	},
 	{
 		slug: "collapsible",
@@ -526,7 +522,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/collapsible",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "breadcrumbs",
@@ -535,7 +531,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/breadcrumbs",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "navigation-menu",
@@ -544,7 +540,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/navigation-menu",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "menu-bar",
@@ -553,7 +549,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/menu-bar",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "overlay",
 	},
 	{
 		slug: "toolbar",
@@ -562,7 +558,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/toolbar",
 		hasRootBarrel: true,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "table-of-contents",
@@ -571,7 +567,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/table-of-contents",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 		navName: "Table of Contents",
 	},
 	{
@@ -581,7 +577,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/grid",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "section-rule",
@@ -590,7 +586,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/section-rule",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 		navName: "Section Rule",
 	},
 	{
@@ -600,7 +596,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/sidebar",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "flow",
@@ -609,7 +605,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/flow",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "stat-strip",
@@ -618,7 +614,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/stat-strip",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "layout",
 		navName: "Stat Strip",
 	},
 	{
@@ -628,7 +624,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/table-pager",
 		hasRootBarrel: true,
 		kind: "stable",
-		category: "component",
+		category: "action",
 		navName: "Table Pager",
 	},
 	{
@@ -638,7 +634,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/fab",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "primitive",
 	},
 	{
 		slug: "dock",
@@ -647,7 +643,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/dock",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "overlay",
 	},
 	{
 		slug: "chat-bubble",
@@ -656,7 +652,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/chat-bubble",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "card",
 		navName: "Chat Bubble",
 	},
 	{
@@ -666,7 +662,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/chat-composer",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 		navName: "Chat Composer",
 	},
 	{
@@ -676,7 +672,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/chat-header",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 		navName: "Chat Header",
 	},
 	{
@@ -686,7 +682,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/chat-inbox",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 		navName: "Chat Inbox",
 	},
 	{
@@ -696,7 +692,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/providers/theme",
 		hasRootBarrel: true,
 		kind: "provider",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "link-provider",
@@ -705,7 +701,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/providers/link",
 		hasRootBarrel: true,
 		kind: "provider",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "multi-select",
@@ -714,7 +710,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/multi-select",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 		navName: "Searchable Multi Select",
 	},
 	{
@@ -724,7 +720,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/filter-bar",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 		navName: "Filter Bar",
 	},
 	{
@@ -734,7 +730,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/file-dropzone",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "card",
 		navName: "File Dropzone",
 	},
 	{
@@ -744,7 +740,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/upload-queue",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "card",
 		navName: "Upload Queue",
 	},
 	{
@@ -754,7 +750,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/inline-editable",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 		navName: "Inline Editable",
 	},
 	{
@@ -764,7 +760,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/editable-nav-item",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 		navName: "Editable Navigation",
 	},
 	{
@@ -774,7 +770,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/icon-picker",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 		navName: "Icon Picker",
 	},
 	{
@@ -784,7 +780,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/tag-badge",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "inline",
 		navName: "Tag Badge",
 	},
 	{
@@ -794,7 +790,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/tag-color-picker",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "action",
 		navName: "Tag Color Picker",
 	},
 	{
@@ -804,7 +800,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/responsive-master-detail",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 		navName: "Responsive Master Detail",
 	},
 	{
@@ -814,7 +810,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/thinking",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "approval-card",
@@ -823,7 +819,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/approval-card",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "card",
 	},
 	{
 		slug: "tool-chips",
@@ -832,7 +828,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/tool-chips",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "recommendation-card",
@@ -841,7 +837,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/recommendation-card",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "card",
 	},
 	{
 		slug: "context-cards",
@@ -850,7 +846,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/context-cards",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "card",
 	},
 	{
 		slug: "diff-table",
@@ -859,7 +855,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/diff-table",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "chat-markdown",
@@ -868,7 +864,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/chat-markdown",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "chat-message",
@@ -877,7 +873,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/chat-message",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "prompt-bar",
@@ -886,7 +882,7 @@ export const CATALOG: CatalogEntry[] = [
 		importPath: "@nocoo/basalt/components/prompt-bar",
 		hasRootBarrel: false,
 		kind: "catalog",
-		category: "component",
+		category: "layout",
 	},
 	{
 		slug: "charts",
@@ -1153,10 +1149,9 @@ export function catalogNavName(entry: CatalogEntry): string {
 }
 
 export function inScopeCatalogSlugs(): string[] {
-	return CATALOG.filter(
-		(entry) =>
-			(entry.category === "component" || entry.category === "chart") && entry.slug !== "maps",
-	).map((entry) => entry.slug);
+	return CATALOG.filter((entry) => entry.category !== "block" && entry.slug !== "maps").map(
+		(entry) => entry.slug,
+	);
 }
 
 function byNavName(a: CatalogEntry, b: CatalogEntry) {
@@ -1164,8 +1159,8 @@ function byNavName(a: CatalogEntry, b: CatalogEntry) {
 }
 
 export function libraryNavEntries(category: CatalogCategory): CatalogEntry[] {
-	if (category === "component") {
-		return CATALOG.filter((entry) => entry.category === "component").sort(byNavName);
+	if (category !== "chart" && category !== "block") {
+		return CATALOG.filter((entry) => entry.category === category).sort(byNavName);
 	}
 	if (category === "chart") {
 		const lead = CHART_LEAD.map((slug) => CATALOG_BY_SLUG.get(slug)).filter(

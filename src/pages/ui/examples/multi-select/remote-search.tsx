@@ -28,7 +28,7 @@ export default function RemoteModelSelection() {
 		return () => clearTimeout(timer);
 	}, [query, selected]);
 	return (
-		<div className="w-full max-w-md space-y-3">
+		<div className="w-full max-w-md space-y-basalt-space-lg">
 			<h3 className="font-medium">Compare model usage</h3>
 			<MultiSelect
 				label="Models"
@@ -41,7 +41,7 @@ export default function RemoteModelSelection() {
 				loading={loading}
 				emptyLabel="No models match this search."
 			/>
-			<p role="status" className="text-sm text-basalt-muted-foreground">
+			<p role="status" className="text-basalt-base text-basalt-muted-foreground">
 				{selected.length ? `Comparing ${selected.join(", ")}` : "Choose models to compare."}
 			</p>
 		</div>

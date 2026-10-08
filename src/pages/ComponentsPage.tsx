@@ -1,5 +1,6 @@
 import { Button } from "@nocoo/basalt/components/button";
-import { PageHeader } from "@nocoo/basalt/components/page-header";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import { Meter } from "@nocoo/basalt/components/meter";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 import { Car, Check, Home, Plane, Shield } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -25,6 +26,7 @@ import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
 import { StackedBarCard } from "@/components/dashboard/StackedBarCard";
 import { SummaryMetricCard } from "@/components/dashboard/SummaryMetricCard";
 import { TrendLineCard } from "@/components/dashboard/TrendLineCard";
+import { ShowcasePage } from "@/components/ShowcasePage";
 import { useTargetCardsViewModel } from "@/viewmodels/useTargetCardsViewModel";
 
 const GOAL_ICONS: Record<string, React.ElementType> = {
@@ -39,30 +41,29 @@ export default function ComponentsPage() {
 	const { t } = useTranslation();
 
 	return (
-		<div className="space-y-8">
-			<PageHeader
-				title={t("pages.components.title")}
-				description={t("pages.components.description")}
-			/>
+		<ShowcasePage
+			title={t("pages.components.title")}
+			description={t("pages.components.description")}
+		>
 			<SectionRule title={t("pages.components.metricCards")}>
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+				<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2 lg:grid-cols-4">
 					<SummaryMetricCard />
 					<SecondaryMetricCard />
-					<GaugeCard />
-					<RadialProgressCard />
+					<TrendLineCard />
+					<SparklineCard />
 				</div>
 			</SectionRule>
 
 			<SectionRule title={t("pages.components.charts")}>
-				<div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+				<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 					<BarChartCard />
 					<AreaChartCard />
 					<GroupedBarCard />
 					<DonutChartCard />
-					<TrendLineCard />
+					<GaugeCard />
 					<StackedBarCard />
 					<RadarChartCard />
-					<SparklineCard />
+					<RadialProgressCard />
 					<StackedAreaCard />
 					<MultiLineCard />
 					<BulletChartCard />
@@ -73,13 +74,13 @@ export default function ComponentsPage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.components.heatmaps")}>
-				<div className="grid grid-cols-1 gap-4">
+				<div className="grid grid-cols-1 gap-basalt-layout">
 					<HeatmapCard />
 				</div>
 			</SectionRule>
 
 			<SectionRule title={t("pages.components.listsActions")}>
-				<div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+				<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 					<ActionGridCard />
 					<ItemListCard />
 					<RecentListCard />
@@ -87,78 +88,76 @@ export default function ComponentsPage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.components.highlights")}>
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-					<div className="rounded-card bg-secondary p-4">
-						<p className="text-sm font-medium text-foreground">
+				<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2">
+					<LayerCard>
+						<p className="text-basalt-base font-medium text-foreground">
 							{t("pages.components.aiReadiness")}
 						</p>
-						<p className="text-xs text-muted-foreground">{t("pages.components.aiReadinessDesc")}</p>
-						<Button variant="secondary" size="sm" className="mt-3">
+						<p className="text-basalt-sm text-muted-foreground">
+							{t("pages.components.aiReadinessDesc")}
+						</p>
+						<Button variant="secondary" size="sm" className="mt-basalt-space-lg">
 							{t("common.viewModule")}
 						</Button>
-					</div>
-					<div className="rounded-card bg-secondary p-4">
-						<p className="text-sm font-medium text-foreground">
+					</LayerCard>
+					<LayerCard>
+						<p className="text-basalt-base font-medium text-foreground">
 							{t("pages.components.retentionModule")}
 						</p>
-						<p className="text-xs text-muted-foreground">
+						<p className="text-basalt-sm text-muted-foreground">
 							{t("pages.components.retentionModuleDesc")}
 						</p>
-						<Button variant="secondary" size="sm" className="mt-3">
+						<Button variant="secondary" size="sm" className="mt-basalt-space-lg">
 							{t("common.viewModule")}
 						</Button>
-					</div>
+					</LayerCard>
 				</div>
 			</SectionRule>
 
 			<SectionRule title={t("pages.components.targets")}>
-				<div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+				<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2">
 					{goals.map((goal) => {
 						const Icon = GOAL_ICONS[goal.icon] ?? Shield;
 						return (
-							<div key={goal.name} className="rounded-card bg-secondary p-5">
-								<div className="flex items-center gap-3 mb-4">
-									<div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
+							<LayerCard key={goal.name}>
+								<LayerCard.Header className="items-center justify-start">
+									<div className="flex h-10 w-10 items-center justify-center rounded-basalt-md bg-primary/10">
 										<Icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
 									</div>
 									<div className="flex-1">
-										<p className="text-sm font-medium text-foreground">{goal.name}</p>
-										<p className="text-xs text-muted-foreground">
+										<p className="text-basalt-base font-medium text-foreground">{goal.name}</p>
+										<p className="text-basalt-sm text-muted-foreground">
 											${goal.saved.toLocaleString()} {t("common.of")} $
 											{goal.target.toLocaleString()}
 										</p>
 									</div>
-									<span className="text-sm font-semibold text-foreground">{goal.percent}%</span>
-								</div>
-								<div
-									className="h-2 rounded-full bg-muted"
-									role="progressbar"
-									aria-valuenow={goal.percent}
-									aria-valuemin={0}
-									aria-valuemax={100}
-									aria-label={`${goal.name}: ${goal.percent}% of $${goal.target.toLocaleString()} saved`}
-								>
-									<div
-										className="h-full rounded-full bg-primary transition-all"
-										style={{ width: `${goal.percent}%` }}
-										aria-hidden="true"
-									/>
-								</div>
-								<div className="mt-3 flex items-center gap-4">
-									<span className="text-xs text-muted-foreground">
-										{t("pages.components.monthlyTarget")} ${goal.monthlyTarget.toLocaleString()}
+									<span className="text-basalt-base font-semibold text-foreground">
+										{goal.percent}%
 									</span>
-									{goal.onTrack && (
-										<span className="flex items-center gap-1 text-xs text-success">
-											<Check className="h-3 w-3" strokeWidth={2} /> {t("pages.components.onTrack")}
+								</LayerCard.Header>
+								<LayerCard.Body className="space-y-basalt-space-lg">
+									<Meter
+										hideValue
+										value={goal.percent}
+										aria-label={`${goal.name}: ${goal.percent}% of $${goal.target.toLocaleString()} saved`}
+									/>
+									<div className="flex flex-wrap items-center gap-basalt-space-lg">
+										<span className="text-basalt-sm text-muted-foreground">
+											{t("pages.components.monthlyTarget")} ${goal.monthlyTarget.toLocaleString()}
 										</span>
-									)}
-								</div>
-							</div>
+										{goal.onTrack && (
+											<span className="flex items-center gap-basalt-space-sm text-basalt-sm text-success">
+												<Check className="h-3 w-3" strokeWidth={2} />{" "}
+												{t("pages.components.onTrack")}
+											</span>
+										)}
+									</div>
+								</LayerCard.Body>
+							</LayerCard>
 						);
 					})}
 				</div>
 			</SectionRule>
-		</div>
+		</ShowcasePage>
 	);
 }

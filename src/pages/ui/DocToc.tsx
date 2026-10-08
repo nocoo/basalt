@@ -1,6 +1,15 @@
-import { useLayoutEffect, useMemo, useRef, useState } from "react";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@nocoo/basalt/components/select";
+import { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { useDocTocActiveId } from "./useDocTocActiveId";
+import { useSelectionIndicator } from "../../../packages/basalt/src/utils/selection-indicator";
+import { scrollToDocSection, useDocTocActiveId } from "./useDocTocActiveId";
 
 export interface DocHeading {
 	id: string;
@@ -25,6 +34,16 @@ function groupHeadings(headings: DocHeading[]): HeadingGroup[] {
 	return groups;
 }
 
+function measureMarker(item: HTMLElement, root: HTMLElement) {
+	const box = item.getBoundingClientRect();
+	return {
+		left: 0,
+		top: box.top - root.getBoundingClientRect().top,
+		width: box.width,
+		height: box.height,
+	};
+}
+
 function TocLink({
 	heading,
 	active,
@@ -42,14 +61,14 @@ function TocLink({
 			aria-current={active ? "true" : undefined}
 			data-toc-id={heading.id}
 			className={cn(
-				"block w-full truncate py-0.5 text-left text-sm leading-5 no-underline transition-colors duration-200",
-				nested ? "pl-7" : "pl-4",
+				"basalt-choice rounded-basalt-sm block w-full truncate py-basalt-space-xs text-left text-basalt-base leading-basalt-body no-underline transition-colors basalt-motion duration-basalt-normal",
+				nested ? "pl-basalt-layout" : "pl-basalt-space-lg",
 				active ? "font-medium text-foreground" : "text-muted-foreground hover:text-foreground",
 			)}
 			onClick={(event) => {
 				event.preventDefault();
 				onSelect(heading.id);
-				document.getElementById(heading.id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+				scrollToDocSection(heading.id);
 			}}
 		>
 			{heading.text}
@@ -67,102 +86,112 @@ export function DocToc({
 	const groups = useMemo(() => groupHeadings(headings), [headings]);
 	const ids = useMemo(() => headings.map((heading) => heading.id), [headings]);
 	const { activeId, selectSection } = useDocTocActiveId(ids);
-	const listRef = useRef<HTMLUListElement>(null);
-	const [marker, setMarker] = useState({ top: 0, height: 0 });
-
-	useLayoutEffect(() => {
-		const list = listRef.current;
-		const active = list?.querySelector(`[data-toc-id="${activeId}"]`);
-		if (!list || !(active instanceof HTMLElement) || !activeId) {
-			return;
-		}
-		const listBox = list.getBoundingClientRect();
-		const itemBox = active.getBoundingClientRect();
-		setMarker({
-			top: itemBox.top - listBox.top,
-			height: itemBox.height,
-		});
-	}, [activeId]);
+	const {
+		ref: listRef,
+		state: marker,
+		motionClassName,
+	} = useSelectionIndicator({
+		itemSelector: '[data-toc-id][aria-current="true"]',
+		mapGeometry: measureMarker,
+	});
 
 	return (
-		<nav aria-label="On this page" className="text-sm">
-			<label className={compact ? "flex flex-wrap items-center gap-3" : "block xl:hidden"}>
-				<span
-					className={
-						compact ? "shrink-0 text-muted-foreground" : "mb-1 block text-muted-foreground"
-					}
-				>
-					On this page
-				</span>
-				<select
-					className={cn(
-						"min-w-0 rounded-md border border-border bg-secondary px-2 py-1 text-foreground",
-						compact ? "max-w-full flex-1 sm:flex-none sm:w-80" : "w-full",
-					)}
-					aria-label="Jump to section"
-					value={activeId}
-					onChange={(event) => {
-						const id = event.target.value;
-						selectSection(id);
-						document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
-					}}
-				>
-					{headings.map((heading) => (
-						<option key={heading.id} value={heading.id}>
-							{heading.text}
-						</option>
-					))}
-				</select>
-			</label>
-			<div className={compact ? "hidden" : "hidden xl:block"}>
-				<p className="mb-3 text-xs font-semibold tracking-wide text-muted-foreground uppercase">
-					On this page
-				</p>
-				<ul ref={listRef} className="relative flex flex-col gap-2 border-l-2 border-border">
-					<span
-						aria-hidden="true"
-						className="absolute top-0 left-[-2px] w-0.5 rounded-full bg-primary transition-[transform,height] duration-200 ease-out"
-						style={{
-							height: marker.height || 20,
-							transform: `translateY(${marker.top}px)`,
-						}}
-					/>
-					{groups.map((group) => {
-						if (group.h3s.length === 0) {
-							return (
-								<li key={group.h2.id}>
-									<TocLink
-										heading={group.h2}
-										active={activeId === group.h2.id}
-										onSelect={selectSection}
-									/>
-								</li>
-							);
+		<LayerCard>
+			<LayerCard.Body>
+				<nav aria-label="On this page" className="text-basalt-base">
+					<div
+						className={
+							compact ? "flex flex-wrap items-center gap-basalt-space-lg" : "block xl:hidden"
 						}
-						return (
-							<li key={group.h2.id} className="flex flex-col gap-2">
-								<TocLink
-									heading={group.h2}
-									active={activeId === group.h2.id}
-									onSelect={selectSection}
-								/>
-								<ul className="flex flex-col gap-2">
-									{group.h3s.map((h3) => (
-										<li key={h3.id}>
+					>
+						<span
+							className={
+								compact
+									? "shrink-0 text-muted-foreground"
+									: "mb-basalt-field-gap block text-muted-foreground"
+							}
+						>
+							On this page
+						</span>
+						<Select
+							value={activeId}
+							onValueChange={(id) => {
+								selectSection(id);
+								scrollToDocSection(id);
+							}}
+						>
+							<SelectTrigger
+								aria-label="Jump to section"
+								className={compact ? "min-w-0 max-w-full flex-1 sm:flex-none sm:w-80" : "w-full"}
+							>
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								{headings.map((heading) => (
+									<SelectItem key={heading.id} value={heading.id}>
+										{heading.text}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</div>
+					<div className={compact ? "hidden" : "hidden xl:block"}>
+						<p className="mb-basalt-space-lg text-basalt-sm font-semibold tracking-wide text-muted-foreground uppercase">
+							On this page
+						</p>
+						<ul
+							ref={listRef}
+							className="relative flex flex-col gap-basalt-space-lg border-l-2 border-border"
+						>
+							<li
+								aria-hidden="true"
+								className={cn(
+									"absolute top-0 left-[-0.125rem] w-0.5 rounded-basalt-full bg-primary",
+									motionClassName,
+								)}
+								style={{
+									height: marker.visible ? marker.height : 0,
+									transform: `translateY(${marker.top}px)`,
+								}}
+							/>
+							{groups.map((group) => {
+								if (group.h3s.length === 0) {
+									return (
+										<li key={group.h2.id}>
 											<TocLink
-												heading={h3}
-												active={activeId === h3.id}
-												nested
+												heading={group.h2}
+												active={activeId === group.h2.id}
 												onSelect={selectSection}
 											/>
 										</li>
-									))}
-								</ul>
-							</li>
-						);
-					})}
-				</ul>
-			</div>
-		</nav>
+									);
+								}
+								return (
+									<li key={group.h2.id} className="flex flex-col gap-basalt-space-lg">
+										<TocLink
+											heading={group.h2}
+											active={activeId === group.h2.id}
+											onSelect={selectSection}
+										/>
+										<ul className="flex flex-col gap-basalt-space-lg">
+											{group.h3s.map((h3) => (
+												<li key={h3.id}>
+													<TocLink
+														heading={h3}
+														active={activeId === h3.id}
+														nested
+														onSelect={selectSection}
+													/>
+												</li>
+											))}
+										</ul>
+									</li>
+								);
+							})}
+						</ul>
+					</div>
+				</nav>
+			</LayerCard.Body>
+		</LayerCard>
 	);
 }

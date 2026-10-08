@@ -37,15 +37,16 @@ export default function HeatmapMatrixServiceGrid() {
 	const displayedCols = showExtreme ? METRICS : METRICS.slice(0, 4);
 
 	return (
-		<div className="w-full space-y-3">
-			<div className="flex flex-wrap items-center justify-between gap-2 text-xs">
-				<div className="flex flex-wrap items-center gap-1.5">
+		<div className="w-full space-y-basalt-space-lg">
+			<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg text-basalt-sm">
+				<div className="flex flex-wrap items-center gap-basalt-space-md">
 					<span className="font-medium text-basalt-foreground">Palette:</span>
 					{(["blue", "green", "red"] as const).map((scale) => (
 						<Button
 							key={scale}
 							size="sm"
-							variant={activeScale === scale ? "default" : "outline"}
+							variant="outline"
+							aria-pressed={activeScale === scale}
 							onClick={() => setActiveScale(scale)}
 						>
 							{scale.charAt(0).toUpperCase() + scale.slice(1)}
@@ -70,8 +71,8 @@ export default function HeatmapMatrixServiceGrid() {
 				cellGap={3}
 				valueFormatter={(v) => `${v}ms`}
 				renderTooltip={(cell) => (
-					<div data-testid="chart-custom-tooltip" className="p-1">
-						<div className="font-semibold text-basalt-popover-foreground mb-1">
+					<div data-testid="chart-custom-tooltip" className="p-basalt-space-sm">
+						<div className="font-semibold text-basalt-popover-foreground mb-basalt-space-sm">
 							{cell.rowLabel} ➔ {cell.columnLabel}
 						</div>
 						<ChartTooltipRow
