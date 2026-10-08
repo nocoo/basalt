@@ -27,12 +27,13 @@ describe("ShowcasePage", () => {
 		expect(root?.lastElementChild).toHaveTextContent("Content");
 		expect(container.querySelector("main, [data-basalt-surface-root]")).toBeNull();
 	});
-	it.each(["compact", "library"] as const)("preserves the %s header variant", (variant) => {
-		const { container } = render(<ShowcasePage title="Showcase" headerVariant={variant} />);
-		expect(container.querySelector("[data-showcase-header]")).toHaveAttribute(
-			"data-variant",
-			variant,
-		);
+	it("uses a reading scale without another padded header wrapper", () => {
+		const { container } = render(<ShowcasePage title="Showcase" variant="document" />);
+		const root = container.querySelector("[data-showcase-page]");
+		expect(root).toHaveAttribute("data-page-variant", "document");
+		expect(root).toHaveClass("gap-basalt-layout-xl");
+		expect(root?.firstElementChild?.tagName).toBe("HEADER");
+		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("md:text-basalt-5xl");
 		expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
 	});
 });

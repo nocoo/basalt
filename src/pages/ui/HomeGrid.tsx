@@ -231,9 +231,10 @@ export interface HomeGridProps {
 
 export function HomeGrid({ groups }: HomeGridProps) {
 	return (
-		<div className="space-y-basalt-layout-lg">
+		<div className="space-y-basalt-layout-xl">
 			{groups.map((group) => (
 				<SectionRule
+					variant="heading"
 					key={group.id}
 					aria-label={group.label}
 					title={group.label}

@@ -6,6 +6,13 @@ export const API = [
 		name: "PageHeader",
 		props: [
 			{
+				name: "size",
+				type: "\"lg\" | \"md\" | \"xl\"",
+				required: false,
+				default: "\"md\"",
+				description: "Heading scale: workspace, dashboard, or reading-focused page.",
+			},
+			{
 				name: "title",
 				type: "React.ReactNode",
 				required: true,

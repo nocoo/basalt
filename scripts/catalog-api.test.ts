@@ -3775,6 +3775,13 @@ export interface WidgetProps {
 				name: "PageHeader",
 				props: [
 					{
+						name: "size",
+						type: '"lg" | "md" | "xl"',
+						required: false,
+						default: '"md"',
+						description: "Heading scale: workspace, dashboard, or reading-focused page.",
+					},
+					{
 						name: "title",
 						type: "React.ReactNode",
 						required: true,
@@ -3820,10 +3827,17 @@ export interface WidgetProps {
 				name: "SectionRule",
 				props: [
 					{
+						name: "variant",
+						type: '"heading" | "label"',
+						required: false,
+						default: '"label"',
+						description: "Compact label with a rule, or a reading-focused section heading.",
+					},
+					{
 						name: "title",
 						type: "React.ReactNode",
 						required: true,
-						description: "Section title shown before the dashed rule.",
+						description: "Section heading; the label variant includes a trailing rule.",
 					},
 					{
 						name: "hint",
@@ -3835,7 +3849,7 @@ export interface WidgetProps {
 						name: "actions",
 						type: "React.ReactNode",
 						required: false,
-						description: "Actions on the right of the dashed rule.",
+						description: "Actions aligned to the end of the heading row.",
 					},
 				],
 			},
@@ -4895,7 +4909,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"3e7de8546117781cd57fc2f64ad2ceac47673c24e2f46729ab136b8529425c2c",
+			"e0ce97a29bdcfc8e1a7f3386caabc42a9fbdc03d187ab505bf692bbbd817c877",
 		);
 	}, 60_000);
 

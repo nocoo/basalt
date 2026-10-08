@@ -23,7 +23,7 @@ export default function DashboardPage() {
 		<ShowcasePage
 			title={t("pages.dashboard.title")}
 			description={t("pages.dashboard.description")}
-			headerVariant="compact"
+			size="lg"
 		>
 			{/* Row 0: analytics stat cards */}
 			<StatGrid>

@@ -374,13 +374,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"section-rule": {
 		"file": "packages/basalt/src/components/section-rule.tsx",
-		"hash": "84d08551767026d4",
+		"hash": "c624778f546cdcb1",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/section-rule.js.map (sourcesContent[0])"
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "1f13fdda6c9bc5fb",
+		"hash": "20f91014bbf5a7e8",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},
@@ -710,7 +710,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"page-header": {
 		"file": "packages/basalt/src/components/page-header.tsx",
-		"hash": "f73c2b7130de2181",
+		"hash": "3a6ce88e8d3c7e1a",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/page-header.js.map (sourcesContent[0])"
 	},

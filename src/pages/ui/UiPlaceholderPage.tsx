@@ -149,7 +149,7 @@ function catalogApiCopyLines(api: CatalogApiSurface[]): string[] {
 
 export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 	return (
-		<SectionRule id="api-reference" title="API Reference" className="scroll-mt-6">
+		<SectionRule variant="heading" id="api-reference" title="API Reference" className="scroll-mt-6">
 			{api.map((surface) => {
 				if (surface.callSignature) {
 					return (
@@ -380,6 +380,7 @@ function ReadyDoc({
 	];
 	return (
 		<ShowcasePage
+			variant="document"
 			title={catalogNavName(entry)}
 			description={docs.description}
 			actions={
@@ -408,7 +409,7 @@ function ReadyDoc({
 				<article
 					data-status="ready"
 					data-slug={entry.slug}
-					className="min-w-0 space-y-basalt-layout-lg"
+					className="min-w-0 space-y-basalt-layout-xl"
 				>
 					<div data-hero-scenario={hero.id}>
 						<DocExample code={hero.code} wide={widePreview}>
@@ -416,7 +417,12 @@ function ReadyDoc({
 						</DocExample>
 					</div>
 					{granular ? (
-						<SectionRule id="installation" title="Installation" className="scroll-mt-6">
+						<SectionRule
+							variant="heading"
+							id="installation"
+							title="Installation"
+							className="scroll-mt-6"
+						>
 							{barrel ? (
 								<>
 									<h3
@@ -437,10 +443,10 @@ function ReadyDoc({
 							<DocCode code={granular} />
 						</SectionRule>
 					) : null}
-					<SectionRule id="usage" title="Usage" className="scroll-mt-6">
+					<SectionRule variant="heading" id="usage" title="Usage" className="scroll-mt-6">
 						<DocCode code={docs.usage} />
 					</SectionRule>
-					<SectionRule id="examples" title="Examples" className="scroll-mt-6">
+					<SectionRule variant="heading" id="examples" title="Examples" className="scroll-mt-6">
 						{examples.map((example) => (
 							<div
 								key={example.id}
@@ -509,6 +515,7 @@ export default function UiPlaceholderPage() {
 	if (!entry) {
 		return (
 			<ShowcasePage
+				variant="document"
 				data-status="missing"
 				title={slug ?? "Unknown"}
 				description="This slug is not a public catalog export."
@@ -522,6 +529,7 @@ export default function UiPlaceholderPage() {
 
 	return (
 		<ShowcasePage
+			variant="document"
 			data-status="placeholder"
 			data-slug={entry.slug}
 			title={catalogNavName(entry)}

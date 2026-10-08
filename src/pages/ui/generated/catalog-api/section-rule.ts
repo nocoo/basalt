@@ -6,10 +6,17 @@ export const API = [
 		name: "SectionRule",
 		props: [
 			{
+				name: "variant",
+				type: "\"heading\" | \"label\"",
+				required: false,
+				default: "\"label\"",
+				description: "Compact label with a rule, or a reading-focused section heading.",
+			},
+			{
 				name: "title",
 				type: "React.ReactNode",
 				required: true,
-				description: "Section title shown before the dashed rule.",
+				description: "Section heading; the label variant includes a trailing rule.",
 			},
 			{
 				name: "hint",
@@ -21,7 +28,7 @@ export const API = [
 				name: "actions",
 				type: "React.ReactNode",
 				required: false,
-				description: "Actions on the right of the dashed rule.",
+				description: "Actions aligned to the end of the heading row.",
 			},
 		],
 	},

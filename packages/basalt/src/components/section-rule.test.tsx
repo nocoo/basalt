@@ -3,6 +3,20 @@ import { describe, expect, it } from "vitest";
 import { SectionRule } from "./section-rule";
 
 describe("SectionRule", () => {
+	it("offers a reading heading without the compact dashed rule", () => {
+		const { container } = render(
+			<SectionRule variant="heading" title="Installation" actions={<span>Actions</span>}>
+				<p>Content</p>
+			</SectionRule>,
+		);
+		const heading = screen.getByRole("heading", { level: 2 });
+		expect(heading).toHaveClass("text-basalt-2xl", "font-basalt-display");
+		expect(heading).not.toHaveClass("uppercase");
+		expect(heading.closest("section")).toHaveClass("space-y-basalt-layout");
+		expect(container.querySelector(".border-dashed")).toBeNull();
+		expect(screen.getByText("Actions").parentElement).toHaveClass("ml-auto");
+		expect(screen.getByText("Content")).toBeInTheDocument();
+	});
 	it("renders a title and a dashed rule", () => {
 		const { container } = render(<SectionRule title="Catalog" />);
 		const heading = screen.getByRole("heading", { level: 2, name: "Catalog" });

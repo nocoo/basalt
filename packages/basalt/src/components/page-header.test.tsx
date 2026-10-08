@@ -3,6 +3,17 @@ import { describe, expect, it } from "vitest";
 import { PageHeader } from "./page-header";
 
 describe("PageHeader", () => {
+	it.each([
+		["md", "text-basalt-3xl", "text-basalt-base"],
+		["lg", "text-basalt-4xl", "text-basalt-lg"],
+		["xl", "md:text-basalt-5xl", "text-basalt-lg"],
+	] as const)("keeps the %s heading content-sized", (size, titleClass, descriptionClass) => {
+		render(<PageHeader size={size} title="Overview" description="Readable summary" />);
+		const title = screen.getByRole("heading", { level: 1 });
+		expect(title).toHaveClass(titleClass, "font-basalt-display", "leading-basalt-tight");
+		expect(title.parentElement).toHaveClass("space-y-basalt-space-lg");
+		expect(screen.getByText("Readable summary")).toHaveClass(descriptionClass, "max-w-[65ch]");
+	});
 	it("renders a labelled header with a single title heading", () => {
 		render(<PageHeader title="Dashboard" />);
 

@@ -54,6 +54,7 @@ export default function UiCategoryOverviewPage() {
 	if (!category) {
 		return (
 			<ShowcasePage
+				variant="document"
 				data-status="missing"
 				title="Category not found"
 				description="Choose a category from the library."
@@ -66,12 +67,15 @@ export default function UiCategoryOverviewPage() {
 	const entries = libraryNavEntries(category.id);
 	return (
 		<ShowcasePage
+			variant="document"
 			data-category-overview={category.id}
 			title={`${category.label} overview`}
 			description={category.description}
 		>
-			<SectionRule title="Design thinking">
-				<p className="max-w-4xl text-basalt-base text-basalt-muted-foreground">{guide.rationale}</p>
+			<SectionRule variant="heading" title="Design thinking">
+				<p className="max-w-[65ch] text-basalt-lg leading-basalt-relaxed text-basalt-muted-foreground">
+					{guide.rationale}
+				</p>
 			</SectionRule>
 			<div className="grid gap-basalt-layout lg:grid-cols-2">
 				<LayerCard>
@@ -95,7 +99,7 @@ export default function UiCategoryOverviewPage() {
 					</LayerCard.Body>
 				</LayerCard>
 			</div>
-			<SectionRule title="Best practices">
+			<SectionRule variant="heading" title="Best practices">
 				<ul className="grid gap-basalt-layout md:grid-cols-2">
 					{guide.practices.map((practice, index) => (
 						<li key={practice} className="flex items-start gap-basalt-space-lg text-basalt-base">
@@ -108,6 +112,7 @@ export default function UiCategoryOverviewPage() {
 				</ul>
 			</SectionRule>
 			<SectionRule
+				variant="heading"
 				title="In this group"
 				actions={<Badge variant="secondary">{entries.length} items</Badge>}
 			>

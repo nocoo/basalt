@@ -1715,6 +1715,9 @@
   .w-px {
     width: 1px;
   }
+  .max-w-\[65ch\] {
+    max-width: 65ch;
+  }
   .max-w-\[90\%\] {
     max-width: 90%;
   }
@@ -2689,6 +2692,10 @@
   .font-mono {
     font-family: var(--font-mono);
   }
+  .text-basalt-2xl {
+    font-size: var(--basalt-text-2xl);
+    line-height: var(--tw-leading, var(--basalt-leading-body));
+  }
   .text-basalt-3xl {
     font-size: var(--basalt-text-3xl);
     line-height: var(--tw-leading, var(--basalt-leading-body));
@@ -2736,6 +2743,10 @@
   .leading-\[var\(--basalt-line-relaxed\)\] {
     --tw-leading: var(--basalt-line-relaxed);
     line-height: var(--basalt-line-relaxed);
+  }
+  .leading-basalt-relaxed {
+    --tw-leading: var(--basalt-leading-relaxed);
+    line-height: var(--basalt-leading-relaxed);
   }
   .leading-basalt-row {
     --tw-leading: var(--basalt-line-row);
@@ -3491,11 +3502,15 @@
     .md\:border-basalt-border {
       border-color: hsl(var(--basalt-border));
     }
-    .md\:p-basalt-layout {
-      padding: var(--basalt-space-layout);
+    .md\:p-basalt-layout-lg {
+      padding: var(--basalt-space-layout-lg);
     }
     .md\:px-basalt-space-lg {
       padding-inline: var(--basalt-space-lg);
+    }
+    .md\:text-basalt-5xl {
+      font-size: var(--basalt-text-5xl);
+      line-height: var(--tw-leading, var(--basalt-leading-body));
     }
     .md\:shadow-sm {
       --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
@@ -3520,6 +3535,9 @@
     }
     .lg\:grid-cols-4 {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+    .lg\:px-basalt-layout-xl {
+      padding-inline: var(--basalt-space-layout-xl);
     }
   }
   .\[\&_\.recharts-surface\:focus-visible\]\:outline-2 .recharts-surface:focus-visible {

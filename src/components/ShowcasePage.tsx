@@ -1,11 +1,10 @@
 import { PageHeader, type PageHeaderProps } from "@nocoo/basalt/components/page-header";
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
-import { ShowcaseHeader } from "./ShowcaseHeader";
 
 type ShowcasePageProps = PageHeaderProps &
 	Omit<HTMLAttributes<HTMLDivElement>, "title"> & {
-		headerVariant?: "compact" | "library";
+		variant?: "application" | "document";
 	};
 
 export function ShowcasePage({
@@ -14,23 +13,24 @@ export function ShowcasePage({
 	actions,
 	filters,
 	breadcrumbs,
-	headerVariant,
+	variant = "application",
+	size = variant === "document" ? "xl" : "md",
 	children,
 	className,
 	...props
 }: ShowcasePageProps) {
-	const header = { title, description, actions, filters, breadcrumbs };
 	return (
 		<div
 			data-showcase-page=""
-			className={cn("min-w-0 flex flex-col gap-basalt-layout-lg", className)}
+			data-page-variant={variant}
+			className={cn(
+				"min-w-0 flex flex-col",
+				variant === "document" ? "gap-basalt-layout-xl" : "gap-basalt-layout-lg",
+				className,
+			)}
 			{...props}
 		>
-			{headerVariant ? (
-				<ShowcaseHeader variant={headerVariant} {...header} />
-			) : (
-				<PageHeader {...header} />
-			)}
+			<PageHeader {...{ title, description, actions, filters, breadcrumbs, size }} />
 			{children}
 		</div>
 	);

@@ -101,6 +101,7 @@ export function UiSourceViewerPage() {
 	if (!entry || !sourceInfo) {
 		return (
 			<ShowcasePage
+				variant="document"
 				title="Source Not Found"
 				description={error ?? `Unknown catalog slug "${slug}".`}
 			>
@@ -113,6 +114,7 @@ export function UiSourceViewerPage() {
 
 	return (
 		<ShowcasePage
+			variant="document"
 			title={sourceInfo.file}
 			description={`sha256: ${sourceInfo.hash}`}
 			actions={

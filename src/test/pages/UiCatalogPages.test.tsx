@@ -968,6 +968,7 @@ describe("ui catalog", () => {
 			variants: [],
 		});
 		expect(CATALOG_API["page-header"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"size",
 			"title",
 			"description",
 			"breadcrumbs",
@@ -976,12 +977,13 @@ describe("ui catalog", () => {
 		]);
 		expect(UI_EXAMPLES["page-header"]?.map(({ id, title }) => ({ id, title }))).toEqual([
 			{ id: "page-header-default", title: "Default" },
+			{ id: "page-header-reading", title: "Reading-focused page" },
 			{ id: "page-header-long-responsive-content", title: "Long responsive content" },
 		]);
 
 		renderCatalog("/ui/page-header");
 		const api = document.getElementById("api-reference");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(5);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(6);
 		const hero = document.querySelector('[data-hero-scenario="page-header-default"]');
 		expect(hero).toBeTruthy();
 		if (!hero) {
@@ -1037,10 +1039,11 @@ describe("ui catalog", () => {
 		const docs = CATALOG_DOCS["section-rule"];
 		expect(docs?.api).toBe(CATALOG_API["section-rule"]);
 		expect(docs).toMatchObject({
-			description: "Title and dashed rule between page regions.",
+			description: "Compact labels or reading-focused headings between page regions.",
 			variants: [],
 		});
 		expect(CATALOG_API["section-rule"]?.[0]?.props.map((prop) => prop.name)).toEqual([
+			"variant",
 			"title",
 			"hint",
 			"actions",
@@ -1055,7 +1058,7 @@ describe("ui catalog", () => {
 
 		renderCatalog("/ui/section-rule");
 		const api = document.getElementById("api-reference");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(3);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(4);
 		const hero = document.querySelector('[data-hero-scenario="section-rule-default"]');
 		expect(hero).toBeTruthy();
 		if (!hero) {

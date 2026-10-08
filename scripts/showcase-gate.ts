@@ -28,6 +28,7 @@ import { assertLoaderShowcase } from "./showcase-loader";
 import { assertMetricCards } from "./showcase-metrics";
 import { assertOverlayMotion } from "./showcase-motion";
 import { assertNavigationLists } from "./showcase-navigation";
+import { assertPageLayout } from "./showcase-page-layout";
 import { assertPaletteShowcases } from "./showcase-palette";
 import { assertRecommendation } from "./showcase-recommendation";
 import { assertRecordGeometry } from "./showcase-records";
@@ -71,6 +72,7 @@ export async function runShowcaseGate() {
 			const navigation = await assertNavigationLists(page, url);
 			const selection = await assertSelectionHierarchy(page, url);
 			const dimensions = await assertDimensionTokens(page, url);
+			const pageLayout = await assertPageLayout(page, url);
 			const metrics = await assertMetricCards(page, url);
 			const records = await assertRecordGeometry(page, url);
 			const recommendation = await assertRecommendation(page, url);
@@ -96,6 +98,7 @@ export async function runShowcaseGate() {
 				navigation,
 				selection,
 				dimensions,
+				pageLayout,
 				metrics,
 				records,
 				recommendation,

@@ -63,7 +63,7 @@ export default function BankingDashboardPage() {
 		<ShowcasePage
 			title={t("pages.banking.title")}
 			description={t("pages.banking.description")}
-			headerVariant="compact"
+			size="lg"
 		>
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (

@@ -49,7 +49,11 @@ const DATA_LAYOUT_SCENARIOS = {
 		"section-rule-with-hint-and-actions",
 		"section-rule-stacked-regions",
 	],
-	"page-header": ["page-header-default", "page-header-long-responsive-content"],
+	"page-header": [
+		"page-header-default",
+		"page-header-reading",
+		"page-header-long-responsive-content",
+	],
 	"stat-strip": ["stat-strip-overview", "stat-strip-loading-values"],
 	"table-pager": ["table-pager-range-navigation", "table-pager-disabled-and-localized"],
 	"resource-list": ["resource-list-default"],
@@ -62,7 +66,7 @@ const DATA_LAYOUT_DESCRIPTIONS = {
 		"Sortable and selectable data table with controlled state, manual server pagination, accessible headers, error recovery and formatted cells. Keep stable row IDs across server pages; manual mode never slices a returned page twice.",
 	grid: "Simple grid.",
 	flow: "Step flow.",
-	"section-rule": "Title and dashed rule between page regions.",
+	"section-rule": "Compact labels or reading-focused headings between page regions.",
 	"page-header":
 		"A flush content page heading with optional description, actions, and a separate filters row.",
 } as const;
@@ -80,7 +84,7 @@ describe("data-layout catalog content family", () => {
 		expect(Object.keys(CATALOG_CONTENT_FAMILY)).toHaveLength(120);
 	});
 
-	it("keeps the twenty-nine scenarios in their audited order", () => {
+	it("keeps the thirty scenarios in their audited order", () => {
 		let count = 0;
 		for (const [slug, ids] of Object.entries(DATA_LAYOUT_SCENARIOS)) {
 			const examples = dataLayout[slug]?.examples ?? [];
@@ -99,7 +103,7 @@ describe("data-layout catalog content family", () => {
 			).toBe(true);
 			count += examples.length;
 		}
-		expect(count).toBe(29);
+		expect(count).toBe(30);
 	});
 
 	it("preserves every EXTRA docs field and implementation source", () => {
@@ -177,6 +181,7 @@ describe("data-layout catalog content family", () => {
 		expect(dataLayout["page-header"]?.docs.usage).toContain("<PageHeader");
 		expect(dataLayout["page-header"]?.examples.map(({ id, title }) => ({ id, title }))).toEqual([
 			{ id: "page-header-default", title: "Default" },
+			{ id: "page-header-reading", title: "Reading-focused page" },
 			{ id: "page-header-long-responsive-content", title: "Long responsive content" },
 		]);
 		expect(dataLayout["stat-strip"]?.examples).toBe(STAT_STRIP_EXAMPLES);

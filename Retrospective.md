@@ -358,3 +358,18 @@ Move the header-owned minimum into the component layer; preserve ordinary compac
 controls and avoid important declarations. Verify both CSS entrypoints and the
 Chromium/WebKit reader flows. The reader's existing outer inset is 8px, so its
 short-surface assertion must use the actual boundary instead of a stale 12px value.
+
+## 2026-10-08: Restore breathing room at the page boundary
+
+The correction separates reading hierarchy from control density: ContentIsland
+owns responsive 16/24/32px insets, documentation has a 30/36px title and 32px
+section rhythm, and ordinary controls retain their existing dimensions. Remove
+the scenic header wrapper and fixed opening heights instead of stacking new
+padding over them. Keep the landing artwork independent.
+
+Tailwind Merge treats the text-size utility as owning line-height; put the explicit
+heading leading after the size selection. A screenshot and computed typography
+caught the missing line-height before acceptance. Regenerate the API contract and
+update every scenario count when adding a documented variant. Use built output for
+multi-route acceptance while generators are running, rather than an HMR session
+whose modules can be invalidated mid-journey.

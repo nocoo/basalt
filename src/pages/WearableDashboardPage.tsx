@@ -134,7 +134,7 @@ export default function WearableDashboardPage() {
 		<ShowcasePage
 			title={t("pages.wearable.title")}
 			description={t("pages.wearable.description")}
-			headerVariant="compact"
+			size="lg"
 		>
 			<SectionRule
 				title={t("pages.wearable.todaySummary")}

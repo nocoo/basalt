@@ -2,6 +2,7 @@ import { loadModuleScenarios } from "../../catalog-scenario";
 
 const PAGE_HEADER_SCENARIO_META = [
 	{ key: "default", title: "Default" },
+	{ key: "reading", title: "Reading-focused page" },
 	{ key: "long-responsive-content", title: "Long responsive content" },
 ] as const;
 

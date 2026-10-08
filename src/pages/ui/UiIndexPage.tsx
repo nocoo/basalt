@@ -89,15 +89,15 @@ export default function UiIndexPage() {
 
 	return (
 		<ShowcasePage
+			variant="document"
 			data-status="index"
-			headerVariant="library"
 			title="Component library"
 			description={
 				<>
 					Explore Basalt components, charts, and reusable blocks.
 					<span
 						data-ready-summary
-						className="mt-basalt-space-sm block font-medium text-basalt-foreground"
+						className="mt-basalt-space-lg block text-basalt-sm tabular-nums text-basalt-muted-foreground"
 					>
 						{index.readyCount} / {index.items.length} ready
 					</span>

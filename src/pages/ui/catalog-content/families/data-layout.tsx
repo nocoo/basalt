@@ -216,7 +216,7 @@ export default function Example() {
 			...extraDocs(
 				"SectionRule",
 				"section-rule",
-				"Title and dashed rule between page regions.",
+				"Compact labels or reading-focused headings between page regions.",
 				'<SectionRule title="Catalog" />',
 			),
 			api: sectionRuleApi,

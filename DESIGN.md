@@ -5,6 +5,13 @@ examples. [INTEGRATION.md](INTEGRATION.md) describes composition and public APIs
 All dimensions below are reference CSS pixels at a 16px root font, not device
 pixels or fixed-height limits. Respect browser font preferences and zoom.
 
+## Visual direction
+
+Simple, generous and worldly. Use precise alignment, confident type hierarchy,
+matte material and readable proportions rather than scenic dashboard backgrounds,
+decorative frames or empty hero heights. Reading pages and task interfaces have
+different density; opening the page layout must not enlarge compact controls.
+
 ## Ownership and units
 
 - Shared design values belong in `packages/basalt/src/styles/tokens.css` and are
@@ -45,10 +52,11 @@ card padding; structured cards keep their slot-owned insets. Compact composite
 card panels use the same 16/12px panel aliases. Their internal buttons and rows
 keep control spacing; do not stretch action rows to the card scale.
 
-Layout grids default to medium (16px), SectionRule content separation to small
-(12px), and page section gaps to large (24px). ContentIsland uses small on mobile
-and medium on desktop. The new extra-large tier (32px) is opt-in for spacious
-surfaces or major layout separation, not a new default. `Grid gap="sm|md|lg|xl"`
+Layout grids default to medium (16px). ContentIsland owns 16px insets on mobile,
+24px on tablets and 24px vertical / 32px horizontal from 1024px. The catalog shell
+keeps 8px outside the island on mobile and 12px from 768px. Ordinary application
+sections use 24px gaps; reading-focused document sections use 32px. SectionRule
+uses 12px content separation for compact labels and 16px for reading headings. `Grid gap="sm|md|lg|xl"`
 and semantic utilities such as `gap-basalt-layout-xl` select these tiers.
 There is no universal height for either category.
 
@@ -220,6 +228,17 @@ section gap. All routes under `DashboardLayout` use it, including missing/planne
 catalog states and source viewers. Do not add a second `main`, viewport height,
 page background, wrapper card or page padding inside the island. A bounded chat
 workspace can use `h-full min-h-0`; it must not create a nested viewport.
+
+PageHeader uses 24px workspace titles by default; `size="lg"` uses 30px for
+dashboards and `size="xl"` uses 30px mobile / 36px desktop for reading pages.
+All titles use the display family and a tight line box. Descriptions use 14px
+for workspaces or 16/24px for larger headings, with 8px title separation and a
+65ch maximum reading width. ShowcasePage selects `variant="document"` for the
+library index, category guides, component documentation and source viewers.
+Document sections use `SectionRule variant="heading"`: 20px sentence-case
+headings without the compact dashed rule. Component previews retain their own
+scope; document typography must not cascade into copied controls. Headers have
+natural height, no scenic wrappers, negative insets or fixed empty openings.
 
 Cards with headings use `LayerCard.Header` and `LayerCard.Body`; use one Body for
 related content with a shared internal gap, not a padded Body for every line.

@@ -402,6 +402,11 @@ describe("ContentIsland", () => {
 		expect(island.className).toContain("rounded-basalt-lg");
 		expect(island.className).toContain("md:rounded-basalt-island");
 		expect(island).toHaveAttribute("data-basalt-island", "inset");
+		expect(island).toHaveClass(
+			"p-basalt-layout",
+			"md:p-basalt-layout-lg",
+			"lg:px-basalt-layout-xl",
+		);
 	});
 	it("keeps the surface root without mobile inset chrome", () => {
 		render(<ContentIsland mobileSurface="edge-to-edge">Read</ContentIsland>);
@@ -409,7 +414,11 @@ describe("ContentIsland", () => {
 		expect(island).toHaveAttribute("data-basalt-surface-root");
 		expect(island).toHaveAttribute("data-basalt-island", "edge-to-edge");
 		expect(island).not.toHaveAttribute("mobileSurface");
-		expect(island).not.toHaveClass("p-basalt-layout-sm", "rounded-basalt-lg", "ring-1");
-		expect(island).toHaveClass("md:p-basalt-layout", "md:rounded-basalt-island");
+		expect(island).not.toHaveClass("p-basalt-layout", "rounded-basalt-lg", "ring-1");
+		expect(island).toHaveClass(
+			"md:p-basalt-layout-lg",
+			"lg:px-basalt-layout-xl",
+			"md:rounded-basalt-island",
+		);
 	});
 });

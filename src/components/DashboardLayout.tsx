@@ -19,7 +19,6 @@ import { CATALOG_BY_SLUG, catalogNavName } from "@/pages/ui/catalog";
 import { catalogCategory, catalogCategoryPath } from "@/pages/ui/catalog-categories";
 import { HeaderTooltip, HexlyLink } from "./header-links";
 import { ThemeToggle } from "./theme-toggle";
-import "@/styles/showcase.css";
 
 function isTriggerVisible(el: HTMLElement | null): el is HTMLElement {
 	if (!el?.isConnected) return false;
@@ -157,7 +156,7 @@ export function DashboardLayout() {
 						</>
 					}
 				/>
-				<div className="flex min-h-0 min-w-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-space-lg md:pb-basalt-space-lg">
+				<div className="flex min-h-0 min-w-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-layout-sm md:pb-basalt-layout-sm">
 					<ContentIsland className="relative min-w-0" data-doc-scroll>
 						<Outlet />
 					</ContentIsland>
