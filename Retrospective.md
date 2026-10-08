@@ -373,3 +373,11 @@ caught the missing line-height before acceptance. Regenerate the API contract an
 update every scenario count when adding a documented variant. Use built output for
 multi-route acceptance while generators are running, rather than an HMR session
 whose modules can be invalidated mid-journey.
+
+## 2026-10-08: Split actions share a cross-axis boundary
+
+The text-bearing copy action was 28px high while its icon-only dropdown trigger
+was 24px. Center alignment exposed the shorter intrinsic line box. Stretch the
+split group's children instead of adding fixed heights. Check equal heights and
+shared split-button edges in both themes and at enlarged text sizes; neighboring
+actions can legitimately wrap onto different rows on narrow screens.

@@ -328,6 +328,9 @@ describe("ui catalog", () => {
 		expect(api.getByRole("heading", { name: "API Reference" })).toBeInTheDocument();
 		expect(api.getAllByRole("columnheader", { name: "Default" }).length).toBeGreaterThan(0);
 		expect(header.getByRole("button", { name: "Copy page" })).toBeInTheDocument();
+		expect(header.getByRole("button", { name: "Copy page" }).parentElement).toHaveClass(
+			"items-stretch",
+		);
 		expect(usage.getAllByRole("button", { name: "Copy code" }).length).toBeGreaterThan(0);
 		expect(toc.getAllByRole("navigation", { name: "On this page" }).length).toBeGreaterThan(0);
 		expect(document.querySelector("aside .sticky")).toBeTruthy();

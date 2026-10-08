@@ -49,7 +49,7 @@ import { type DocHeading, DocToc } from "./DocToc";
 function CopyPageButton({ markdown }: { markdown: string }) {
 	const [copied, setCopied] = useState(false);
 	return (
-		<div className="flex shrink-0 items-center">
+		<div className="flex shrink-0 items-stretch">
 			<Button
 				variant="outline"
 				size="sm"

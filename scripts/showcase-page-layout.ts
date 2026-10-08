@@ -53,6 +53,20 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 				assert.equal(geometry.background, "none");
 				assert.equal(geometry.heading, "HEADER");
 				assert.equal(await page.locator("[data-showcase-header]").count(), 0);
+				const actions = await page
+					.locator("[data-showcase-page] > header")
+					.locator("a, button")
+					.evaluateAll((nodes) =>
+						nodes.map((node) => {
+							const box = node.getBoundingClientRect();
+							return { top: box.top, bottom: box.bottom, height: box.height };
+						}),
+					);
+				assert.equal(actions.length, 3);
+				for (const action of actions) {
+					assert.equal(action.height, actions[0]?.height, "Page actions share their height");
+				}
+				assert.deepEqual(actions[1], actions[2], "Both copy actions share their vertical bounds");
 				cases.push(`${width}/${dark ? "dark" : "light"}/${rootSize}`);
 			}
 			await page.evaluate(() => document.documentElement.style.removeProperty("font-size"));
