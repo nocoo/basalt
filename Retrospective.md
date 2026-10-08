@@ -340,3 +340,12 @@ retain the independent second generation, and scope DOM queries to their region.
 Keep the original timeout and coverage requirements rather than increasing them.
 Chart resize checks must await the actual SVG dimensions after changing root font
 size; measuring before ResizeObserver commits reports a transient overflow.
+
+## 2026-10-08: Hidden labels need a local containing block
+
+A narrow catalog page overflowed even though each visible demo stayed inside its
+card. The DiffTable's absolutely positioned screen-reader label used the content
+island as its containing block, escaping the table's horizontal scroll boundary.
+Keep table cells positioned so their hidden labels remain local. Do not hide page
+overflow or remove the accessible column name. Measure the island as well as the
+document; the document width alone missed this defect.

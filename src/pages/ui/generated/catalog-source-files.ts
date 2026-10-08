@@ -314,7 +314,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"table": {
 		"file": "packages/basalt/src/components/table.tsx",
-		"hash": "55d0ae10c7d340cb",
+		"hash": "118b5f2523670fbc",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/table.js.map (sourcesContent[0])"
 	},

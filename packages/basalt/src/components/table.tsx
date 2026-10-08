@@ -77,7 +77,7 @@ export const TableHead = ({
 }: TableHeadProps & React.ThHTMLAttributes<HTMLTableCellElement>) => (
 	<th
 		className={cn(
-			"h-basalt-table-row whitespace-nowrap border-b border-basalt-border px-basalt-table-x py-basalt-table-y text-left align-middle text-basalt-sm font-medium text-basalt-muted-foreground",
+			"relative h-basalt-table-row whitespace-nowrap border-b border-basalt-border px-basalt-table-x py-basalt-table-y text-left align-middle text-basalt-sm font-medium text-basalt-muted-foreground",
 			className,
 		)}
 		{...props}
@@ -96,7 +96,10 @@ export const TableCell = ({
 	...props
 }: TableCellProps & React.TdHTMLAttributes<HTMLTableCellElement>) => (
 	<td
-		className={cn("h-basalt-table-row px-basalt-table-x py-basalt-table-y align-middle", className)}
+		className={cn(
+			"relative h-basalt-table-row px-basalt-table-x py-basalt-table-y align-middle",
+			className,
+		)}
 		{...props}
 	/>
 );

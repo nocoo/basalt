@@ -9,6 +9,12 @@ export async function assertDiffReview(page: Page, baseUrl: string) {
 			await page.locator('[data-status="ready"]').waitFor();
 			await setShowcaseTheme(page, dark);
 			const demo = page.locator("[data-hero-scenario]");
+			assert.ok(
+				await page
+					.locator("[data-doc-scroll]")
+					.evaluate((node) => node.scrollWidth <= node.clientWidth + 1),
+				"Hidden column labels must stay inside the table scroll boundary",
+			);
 			const change = demo.getByRole("checkbox", { name: "Include removal Rocky Road" });
 			await change.focus();
 			await page.keyboard.press("Space");

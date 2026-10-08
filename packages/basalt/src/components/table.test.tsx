@@ -31,6 +31,8 @@ describe("Table", () => {
 		expect(screen.getByRole("table", { name: "Roster" }).tagName).toBe("TABLE");
 		expect(screen.getByRole("columnheader", { name: "Name" }).tagName).toBe("TH");
 		expect(screen.getByRole("cell", { name: "Atlas" }).tagName).toBe("TD");
+		expect(screen.getByRole("columnheader", { name: "Name" })).toHaveClass("relative");
+		expect(screen.getByRole("cell", { name: "Atlas" })).toHaveClass("relative");
 	});
 
 	it("renders a footer row", () => {
