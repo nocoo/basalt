@@ -92,7 +92,7 @@ export async function assertMobileLayouts(page: Page, url: string) {
 		const shortSurface = await page.locator("[data-basalt-island]").boundingBox();
 		assert.ok(
 			shortSurface &&
-				Math.abs(shortSurface.y + shortSurface.height - (width < 768 ? 780 : 768)) < 2,
+				Math.abs(shortSurface.y + shortSurface.height - (width < 768 ? 780 : 772)) < 2,
 			"Short content fills the remaining viewport",
 		);
 		if (width < 768) {

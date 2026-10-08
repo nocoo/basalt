@@ -349,3 +349,12 @@ island as its containing block, escaping the table's horizontal scroll boundary.
 Keep table cells positioned so their hidden labels remain local. Do not hide page
 overflow or remove the accessible column name. Measure the island as well as the
 document; the document width alone missed this defect.
+
+## 2026-10-08: Touch minima must survive the component cascade
+
+Browser acceptance found compact AppHeader targets at 34px instead of their 44px
+touch minimum. The base-layer rule lost to the new component-layer icon sizing.
+Move the header-owned minimum into the component layer; preserve ordinary compact
+controls and avoid important declarations. Verify both CSS entrypoints and the
+Chromium/WebKit reader flows. The reader's existing outer inset is 8px, so its
+short-surface assertion must use the actual boundary instead of a stale 12px value.

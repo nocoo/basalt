@@ -1122,6 +1122,8 @@
     background: inherit;
     pointer-events: none;
   }
+}
+@layer components {
   [data-basalt-header][data-density="compact"]	:where([data-basalt-header-leading], [data-basalt-header-actions])	:where(button, a, [role="button"]) {
     min-height: var(--basalt-size-touch);
     min-width: var(--basalt-size-touch);
