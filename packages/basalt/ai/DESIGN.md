@@ -55,7 +55,7 @@ keep control spacing; do not stretch action rows to the card scale.
 Layout grids default to medium (16px). ContentIsland owns 16px insets on mobile,
 24px on tablets and 24px vertical / 32px horizontal from 1024px. The catalog shell
 keeps 8px outside the island on mobile and 12px from 768px. Ordinary application
-sections use 24px gaps; reading-focused document sections use 32px. SectionRule
+sections use 24px gaps, including catalog documentation. SectionRule
 uses 12px content separation for compact labels and 16px for reading headings. `Grid gap="sm|md|lg|xl"`
 and semantic utilities such as `gap-basalt-layout-xl` select these tiers.
 There is no universal height for either category.
@@ -233,12 +233,14 @@ catalog states and source viewers. Do not add a second `main`, viewport height,
 page background, wrapper card or page padding inside the island. A bounded chat
 workspace can use `h-full min-h-0`; it must not create a nested viewport.
 
-PageHeader uses 24px workspace titles by default; `size="lg"` uses 30px for
-dashboards and `size="xl"` uses 30px mobile / 36px desktop for reading pages.
-All titles use the display family and a tight line box. Descriptions use 14px
-for workspaces or 16/24px for larger headings, with 8px title separation and a
-65ch maximum reading width. ShowcasePage selects `variant="document"` for the
-library index, category guides, component documentation and source viewers.
+Every catalog route uses the same ShowcasePage header: 30px display titles,
+16px descriptions on a 24px line box, 8px title separation and a 65ch maximum
+reading width. Page sections use 24px separation regardless of route category.
+The standalone PageHeader API retains its size choices for consumers, but catalog
+pages do not override the shared scale. ShowcasePage marks `variant="document"`
+for the library index, category guides, component documentation and source viewers.
+The shell owns the breadcrumb trail: ancestors are links, the current route is
+not its own ancestor, and source views include their component parent.
 Document sections use `SectionRule variant="heading"`: 20px sentence-case
 headings without the compact dashed rule. Component previews retain their own
 scope; document typography must not cascade into copied controls. Headers have

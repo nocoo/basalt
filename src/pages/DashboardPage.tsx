@@ -20,11 +20,7 @@ export default function DashboardPage() {
 	const { stats } = useStatsOverviewViewModel();
 
 	return (
-		<ShowcasePage
-			title={t("pages.dashboard.title")}
-			description={t("pages.dashboard.description")}
-			size="lg"
-		>
+		<ShowcasePage title={t("pages.dashboard.title")} description={t("pages.dashboard.description")}>
 			{/* Row 0: analytics stat cards */}
 			<StatGrid>
 				{stats.map((s) => (

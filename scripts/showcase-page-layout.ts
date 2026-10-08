@@ -44,11 +44,11 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 				assert.equal(geometry.insetY, y);
 				assert.ok(Math.abs(geometry.titleX - x) <= 1, JSON.stringify(geometry));
 				assert.ok(Math.abs(geometry.titleY - y) <= 1, JSON.stringify(geometry));
-				assert.equal(geometry.titleSize, (width < 768 ? 1.875 : 2.25) * rootSize);
+				assert.equal(geometry.titleSize, 1.875 * rootSize);
 				assert.equal(geometry.descriptionSize, rootSize);
 				assert.equal(geometry.descriptionLine, rootSize * 1.5);
 				assert.ok(Math.abs(geometry.textGap - rootSize * 0.5) <= 1);
-				assert.equal(geometry.pageGap, rootSize * 2);
+				assert.equal(geometry.pageGap, rootSize * 1.5);
 				assert.ok(geometry.overflow <= 1, `${width}/${rootSize}: ${JSON.stringify(geometry)}`);
 				assert.equal(geometry.background, "none");
 				assert.equal(geometry.heading, "HEADER");
@@ -94,7 +94,7 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 		await standalone.setContent(`<style>${css}</style>${markup}`);
 		assert.equal(
 			await standalone.locator("h1").evaluate((n) => getComputedStyle(n).fontSize),
-			"36px",
+			"30px",
 		);
 	} finally {
 		await standalone.close();

@@ -55,12 +55,17 @@ export function DashboardLayout() {
 			? `${catalogTitle}${location.pathname.endsWith("/source") ? " source" : ""}`
 			: t(titleKey);
 	useSiteTitle(title);
-	const crumbs = location.pathname.startsWith("/ui")
-		? [{ href: "/ui", label: t("nav.kit") }]
-		: [{ href: "/dashboard", label: t("nav.examples") }];
+	const rootPath = location.pathname.startsWith("/ui") ? "/ui" : "/dashboard";
+	const crumbs =
+		location.pathname === rootPath
+			? []
+			: [{ href: rootPath, label: t(rootPath === "/ui" ? "nav.kit" : "nav.examples") }];
 	const entryCategory = catalogCategory(catalogEntry?.category);
 	if (entryCategory) {
 		crumbs.push({ href: catalogCategoryPath(entryCategory.id), label: entryCategory.label });
+	}
+	if (catalogEntry && location.pathname.endsWith("/source")) {
+		crumbs.push({ href: `/ui/${catalogEntry.slug}`, label: catalogTitle ?? title });
 	}
 
 	// Close mobile sidebar on route change: pathname is the intentional trigger.

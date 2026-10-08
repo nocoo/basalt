@@ -2,7 +2,7 @@ import { PageHeader, type PageHeaderProps } from "@nocoo/basalt/components/page-
 import type { HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-type ShowcasePageProps = PageHeaderProps &
+type ShowcasePageProps = Omit<PageHeaderProps, "size"> &
 	Omit<HTMLAttributes<HTMLDivElement>, "title"> & {
 		variant?: "application" | "document";
 	};
@@ -14,7 +14,6 @@ export function ShowcasePage({
 	filters,
 	breadcrumbs,
 	variant = "application",
-	size = variant === "document" ? "xl" : "md",
 	children,
 	className,
 	...props
@@ -23,14 +22,10 @@ export function ShowcasePage({
 		<div
 			data-showcase-page=""
 			data-page-variant={variant}
-			className={cn(
-				"min-w-0 flex flex-col",
-				variant === "document" ? "gap-basalt-layout-xl" : "gap-basalt-layout-lg",
-				className,
-			)}
+			className={cn("min-w-0 flex flex-col gap-basalt-layout-lg", className)}
 			{...props}
 		>
-			<PageHeader {...{ title, description, actions, filters, breadcrumbs, size }} />
+			<PageHeader {...{ title, description, actions, filters, breadcrumbs }} size="lg" />
 			{children}
 		</div>
 	);

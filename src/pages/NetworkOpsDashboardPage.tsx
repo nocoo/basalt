@@ -83,7 +83,6 @@ export default function NetworkOpsDashboardPage() {
 		<ShowcasePage
 			title={t("pages.networkOps.title")}
 			description={t("pages.networkOps.description")}
-			size="lg"
 		>
 			<StatGrid columns={4}>
 				{statCards.map((stat) => (

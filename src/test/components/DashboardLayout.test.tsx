@@ -18,6 +18,9 @@ function renderLayout(initialPath = "/") {
 				<MemoryRouter initialEntries={[initialPath]}>
 					<Routes>
 						<Route element={<DashboardLayout />}>
+							<Route path="/ui" element={<div>Library</div>} />
+							<Route path="/dashboard" element={<div>Dashboard</div>} />
+							<Route path="/ui/:slug/source" element={<div>Source</div>} />
 							<Route path="/" element={<div data-testid="dashboard-outlet">Dashboard</div>} />
 							<Route path="/accounts" element={<div data-testid="accounts-outlet">Accounts</div>} />
 							<Route path="/settings" element={<div data-testid="settings-outlet">Settings</div>} />
@@ -40,6 +43,23 @@ describe("DashboardLayout", () => {
 	afterEach(() => {
 		vi.useRealTimers();
 		document.body.style.overflow = "";
+	});
+
+	it("keeps root routes out of their own breadcrumb ancestors", () => {
+		mockIsMobile = false;
+		for (const path of ["/ui", "/dashboard"]) {
+			const { container, unmount } = renderLayout(path);
+			expect(container.querySelector("[data-basalt-header] nav")).toBeNull();
+			unmount();
+		}
+	});
+
+	it("includes the component parent in source breadcrumbs", () => {
+		mockIsMobile = false;
+		const { container } = renderLayout("/ui/button/source");
+		expect(container.querySelector('[data-basalt-header] a[href="/ui/button"]')).toHaveTextContent(
+			"Button",
+		);
 	});
 
 	it("uses spaced catalog names in the header", () => {

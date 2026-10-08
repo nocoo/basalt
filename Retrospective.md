@@ -398,3 +398,11 @@ for the whole-card action so the container owns 16/12px insets and the real Butt
 retains focus, keyboard and hover behavior. The feedback form also lacked a gap
 between its header and fields; keep region separation at 16px and label spacing
 inside Field, rather than enlarging every input or adding per-control padding.
+
+## 2026-10-08: Catalog routes share one heading hierarchy
+
+The catalog selected different header sizes for dashboards, application examples
+and documentation. Adjacent routes consequently changed title and subtitle scale
+without a semantic reason. ShowcasePage now owns one 30px/16px heading contract
+and 24px section rhythm; routes cannot override its size. Shell breadcrumbs omit
+self ancestors and include the component parent for source pages.

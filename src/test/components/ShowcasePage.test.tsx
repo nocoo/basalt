@@ -22,18 +22,20 @@ describe("ShowcasePage", () => {
 		expect(root).toHaveClass("h-full", "gap-basalt-layout-lg", "min-w-0");
 		expect(root?.className).not.toMatch(/\b(?:p-|bg-|min-h-screen)/);
 		expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
+		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-basalt-4xl");
+		expect(screen.getByText("Shared layout")).toHaveClass("text-basalt-lg");
 		expect(screen.getByRole("button", { name: "New item" })).toBeInTheDocument();
 		expect(screen.getByText("Filters")).toBeInTheDocument();
 		expect(root?.lastElementChild).toHaveTextContent("Content");
 		expect(container.querySelector("main, [data-basalt-surface-root]")).toBeNull();
 	});
-	it("uses a reading scale without another padded header wrapper", () => {
+	it("uses the same heading scale for documents and applications", () => {
 		const { container } = render(<ShowcasePage title="Showcase" variant="document" />);
 		const root = container.querySelector("[data-showcase-page]");
 		expect(root).toHaveAttribute("data-page-variant", "document");
-		expect(root).toHaveClass("gap-basalt-layout-xl");
+		expect(root).toHaveClass("gap-basalt-layout-lg");
 		expect(root?.firstElementChild?.tagName).toBe("HEADER");
-		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("md:text-basalt-5xl");
+		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-basalt-4xl");
 		expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
 	});
 });
