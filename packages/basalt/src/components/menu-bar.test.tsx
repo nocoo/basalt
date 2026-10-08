@@ -47,4 +47,18 @@ describe("MenuBar", () => {
 		expect(screen.getByRole("menubar")).toHaveClass("basalt-ui");
 		expect(screen.getByRole("menuitem", { name: "File" })).toHaveClass("basalt-ui");
 	});
+
+	it("matches the open trigger radius to the menubar shell", () => {
+		render(
+			<MenuBar defaultValue="file">
+				<MenuBarMenu value="file">
+					<MenuBarTrigger>File</MenuBarTrigger>
+				</MenuBarMenu>
+			</MenuBar>,
+		);
+		expect(screen.getByRole("menubar")).toHaveClass("rounded-basalt-md", "py-basalt-space-xs");
+		const trigger = screen.getByRole("menuitem", { name: "File" });
+		expect(trigger).toHaveAttribute("data-state", "open");
+		expect(trigger).toHaveClass("rounded-basalt-sm", "data-[state=open]:bg-basalt-selected");
+	});
 });

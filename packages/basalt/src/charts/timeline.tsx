@@ -70,28 +70,43 @@ function HourTimeline({
 		eventsByHour.set(hour, [...existing, event]);
 	}
 	return (
-		<ol className={cn("flex flex-col pl-basalt-space-lg", className)} aria-label={ariaLabel}>
+		<ol
+			className={cn("grid", className)}
+			style={{ gridTemplateColumns: "max-content 2px minmax(0, 1fr)" }}
+			aria-label={ariaLabel}
+		>
 			{hours.map((hour) => {
 				const hourEvents = eventsByHour.get(hour) ?? [];
 				const hasEvents = hourEvents.length > 0;
 				return (
 					<li
 						key={hour}
-						className={cn(
-							"relative flex items-start border-l-2 py-basalt-space-lg pl-basalt-space-lg",
-							hasEvents ? "border-basalt-chart-1" : "border-basalt-border",
-						)}
+						className="relative grid items-stretch gap-basalt-space-lg py-basalt-space-lg"
+						style={{
+							gridColumn: "1 / -1",
+							gridTemplateColumns: "subgrid",
+						}}
 					>
-						<div className="absolute left-0 w-basalt-12 -translate-x-full pr-basalt-space-lg text-right text-basalt-sm text-basalt-muted-foreground">
+						<div
+							data-timeline-time
+							className="pr-basalt-space-lg text-right text-basalt-sm text-basalt-muted-foreground"
+						>
 							{hour.toString().padStart(2, "0")}:00
 						</div>
 						<div
 							className={cn(
-								"absolute -left-[0.3125rem] top-basalt-2 h-basalt-2 w-basalt-2 rounded-basalt-full",
-								hasEvents ? "bg-basalt-chart-1" : "bg-basalt-border",
+								"relative -my-basalt-space-lg flex justify-center border-l-2",
+								hasEvents ? "border-basalt-chart-1" : "border-basalt-border",
 							)}
-						/>
-						<div className="flex min-h-[1.5rem] w-full flex-col gap-basalt-space-sm">
+						>
+							<div
+								className={cn(
+									"absolute top-basalt-2 h-basalt-2 w-basalt-2 -translate-x-1/2 rounded-basalt-full",
+									hasEvents ? "bg-basalt-chart-1" : "bg-basalt-border",
+								)}
+							/>
+						</div>
+						<div className="flex min-h-[1.5rem] min-w-0 flex-col gap-basalt-space-sm">
 							{hourEvents.map((event) => (
 								<div
 									key={event.id}

@@ -220,7 +220,8 @@ describe("toast", () => {
 				toastOptions: expect.objectContaining({
 					unstyled: true,
 					classNames: expect.objectContaining({
-						toast: expect.stringContaining("basalt-banner"),
+						toast: expect.stringMatching(/px-basalt-card-lg.*basalt-leading-banner/),
+						description: expect.stringContaining("basalt-line-relaxed"),
 						actionButton: expect.stringContaining("basalt-action"),
 					}),
 				}),

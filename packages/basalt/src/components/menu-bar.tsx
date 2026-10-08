@@ -265,7 +265,7 @@ export function MenuBarRoot({ className, ...props }: MenuBarRootProps) {
 		<MenubarPrimitive.Root
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex min-h-basalt-control items-center gap-basalt-space-xs rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-space-sm",
+				"flex min-h-basalt-control items-center gap-basalt-space-xs rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-space-sm py-basalt-space-xs",
 				className,
 			)}
 			{...props}

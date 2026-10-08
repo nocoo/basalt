@@ -94,7 +94,7 @@ export function IconPicker({
 						className="pointer-events-none absolute left-basalt-space-lg top-1/2 size-basalt-icon -translate-y-1/2 text-basalt-muted-foreground"
 					/>
 					<Input
-						className="pl-basalt-8"
+						className="pl-basalt-card-xl"
 						aria-label={`${label}: search`}
 						value={query}
 						placeholder={searchPlaceholder}

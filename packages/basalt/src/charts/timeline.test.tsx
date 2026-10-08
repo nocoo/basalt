@@ -73,6 +73,20 @@ describe("Timeline", () => {
 		expect(list).toBeInTheDocument();
 	});
 
+	it("keeps hour labels in a content-sized column beside the timeline", () => {
+		render(<Timeline events={[]} />);
+		const label = screen.getByText("00:00");
+		const row = label.closest("li");
+		const list = row?.parentElement;
+		const timeColumn = row?.querySelector("[data-timeline-time]");
+		expect(list).toHaveStyle({ gridTemplateColumns: "max-content 2px minmax(0, 1fr)" });
+		expect(row).toHaveStyle({ gridColumn: "1 / -1", gridTemplateColumns: "subgrid" });
+		expect(timeColumn).toHaveClass("text-right");
+		expect(timeColumn).not.toHaveClass("absolute");
+		expect(row?.querySelector(".border-l-2")).toHaveClass("relative", "-my-basalt-space-lg");
+		expect(row?.lastElementChild).toHaveClass("min-w-0");
+	});
+
 	it("renders items with default ariaLabel='Timeline' when ariaLabel is omitted", () => {
 		render(<Timeline items={[{ title: "Event 1" }]} />);
 		expect(screen.getByRole("list", { name: "Timeline" })).toBeInTheDocument();

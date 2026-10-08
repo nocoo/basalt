@@ -1,6 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "./sheet";
+import {
+	Sheet,
+	SheetContent,
+	SheetDescription,
+	SheetFooter,
+	SheetHeader,
+	SheetTitle,
+	SheetTrigger,
+} from "./sheet";
 
 describe("Sheet", () => {
 	it("renders a trigger", () => {
@@ -43,6 +51,24 @@ describe("Sheet", () => {
 		);
 		expect(screen.getByText("Panel").parentElement?.className).toContain("flex-col");
 		expect(screen.getByText("Done").className).toContain("sm:justify-end");
+	});
+
+	it("uses responsive card inset and coherent title hierarchy by default", () => {
+		render(
+			<Sheet defaultOpen>
+				<SheetContent>
+					<SheetHeader>
+						<SheetTitle>Panel</SheetTitle>
+						<SheetDescription>Panel details</SheetDescription>
+					</SheetHeader>
+				</SheetContent>
+			</Sheet>,
+		);
+		const panel = screen.getByRole("dialog");
+		expect(panel.className).toContain("p-basalt-card sm:p-basalt-card-lg");
+		expect(screen.getByRole("heading", { name: "Panel" }).className).toContain("text-basalt-lg");
+		expect(screen.getByText("Panel details").className).toContain("text-basalt-base");
+		expect(screen.getByText("Panel details").className).toContain("basalt-line-body");
 	});
 
 	it("defaults to the right edge", () => {
