@@ -237,10 +237,11 @@ export function HomeGrid({ groups }: HomeGridProps) {
 				<SectionRule
 					variant="heading"
 					key={group.id}
+					className="min-w-0 max-w-full"
 					aria-label={group.label}
 					title={group.label}
 					actions={
-						<div className="flex flex-wrap items-center gap-basalt-space-lg text-basalt-base">
+						<div className="flex min-w-0 max-w-full flex-wrap items-center gap-basalt-space-lg text-basalt-base">
 							<Link
 								to={catalogCategoryPath(group.id)}
 								aria-label={`${group.label} overview`}
@@ -257,7 +258,7 @@ export function HomeGrid({ groups }: HomeGridProps) {
 							const Demo = itemDemo(item);
 							const title = catalogNavName(item.entry);
 							const titleClass =
-								"text-basalt-base font-medium text-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+								"min-w-0 max-w-full text-basalt-base font-medium text-foreground [overflow-wrap:anywhere] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 							return (
 								<li
 									key={item.entry.slug}
@@ -274,7 +275,7 @@ export function HomeGrid({ groups }: HomeGridProps) {
 												{title}
 											</span>
 										)}
-										<div className="flex min-w-0 max-w-full min-h-36 flex-1 items-center justify-center pt-basalt-space-lg [&>*]:max-w-full">
+										<div className="flex min-h-36 min-w-0 max-w-full flex-1 items-center justify-start overflow-x-auto pt-basalt-space-lg [&>*]:min-w-0 [&>*]:max-w-full sm:justify-center">
 											{Demo ? <Demo /> : null}
 										</div>
 									</div>
