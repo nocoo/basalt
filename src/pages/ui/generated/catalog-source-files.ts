@@ -530,7 +530,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"recommendation-card": {
 		"file": "packages/basalt/src/components/recommendation-card.tsx",
-		"hash": "94ff8ffa71d8eb68",
+		"hash": "b6cbfdfd77a9b23e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/recommendation-card.js.map (sourcesContent[0])"
 	},

@@ -30,7 +30,7 @@ function Confidence({ value }: { value: RecommendationConfidence }) {
 	return (
 		<span
 			className={cn(
-				"inline-flex shrink-0 items-center gap-basalt-space-md text-basalt-sm",
+				"inline-flex min-w-0 items-center gap-basalt-space-md text-basalt-sm",
 				confidence.className,
 			)}
 		>
@@ -66,7 +66,7 @@ export function RecommendationCard({
 			className={cn("w-full min-w-0 overflow-hidden leading-[var(--basalt-line-body)]", className)}
 		>
 			<div className="space-y-basalt-space-md px-basalt-panel-x py-basalt-panel-y">
-				<h3 id={id} className="text-basalt-base font-medium">
+				<h3 id={id} className="break-words text-basalt-base font-medium">
 					{title}
 				</h3>
 				{vm.active ? (
@@ -125,9 +125,9 @@ export function RecommendationCard({
 							{vm.error}
 						</p>
 					)}
-					<div className="flex flex-wrap items-center justify-between gap-basalt-content-gap border-t border-basalt-border px-basalt-panel-x py-basalt-panel-y">
+					<div className="flex min-w-0 flex-wrap items-center justify-between gap-basalt-content-gap border-t border-basalt-border px-basalt-panel-x py-basalt-panel-y">
 						<Confidence value={vm.active.confidence} />
-						<div className="flex items-center gap-basalt-content-gap">
+						<div className="flex min-w-0 flex-wrap items-center justify-end gap-basalt-content-gap">
 							{vm.others.length > 0 && (
 								<CollapsibleTrigger asChild>
 									<Button ref={alternativesRef} size="sm" variant="secondary" disabled={vm.blocked}>

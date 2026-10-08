@@ -12,7 +12,7 @@ export async function assertRecommendation(page: Page, baseUrl: string) {
 			await page.emulateMedia({ reducedMotion: "no-preference" });
 			const demo = page.locator("[data-hero-scenario]");
 			await demo.getByRole("button", { name: "Alternatives", exact: true }).click();
-			const option = demo.getByRole("button", { name: /Switch to Vanilla Madagascar/ });
+			const option = demo.getByRole("button", { name: /Review sleep routine/ });
 			await option.focus();
 			await page.keyboard.press("Enter");
 			await demo.getByRole("button", { name: "Configure", exact: true }).waitFor();
@@ -29,6 +29,37 @@ export async function assertRecommendation(page: Page, baseUrl: string) {
 				true,
 			);
 			await demo.getByRole("button", { name: "Reset recommendation", exact: true }).click();
+			if (width === 390) {
+				// 200% text size on a narrow viewport must not clip content inside the card.
+				await page.evaluate(() => {
+					document.documentElement.style.fontSize = "32px";
+				});
+				await demo.getByRole("button", { name: "Alternatives", exact: true }).click();
+				await demo.getByRole("button", { name: /Review all care plan items/ }).click();
+				const action = demo.getByRole("button", {
+					name: "Accept full care plan update",
+					exact: true,
+				});
+				await action.waitFor();
+				const zoom = await action.evaluate((node) => {
+					const card = node.closest(".overflow-hidden") as HTMLElement;
+					const box = node.getBoundingClientRect();
+					const bounds = card.getBoundingClientRect();
+					return {
+						cardOverflow: card.scrollWidth - card.clientWidth,
+						actionOverflow: node.scrollWidth - node.clientWidth,
+						actionRight: Math.round(box.right - bounds.right),
+						actionLines: box.height / Number.parseFloat(getComputedStyle(node).lineHeight),
+					};
+				});
+				assert.ok(zoom.cardOverflow <= 1, `clipped at 200% text: ${JSON.stringify(zoom)}`);
+				assert.ok(zoom.actionOverflow <= 1, `action label clipped: ${JSON.stringify(zoom)}`);
+				assert.ok(zoom.actionRight <= 1, `action escaped the card: ${JSON.stringify(zoom)}`);
+				assert.ok(zoom.actionLines >= 1, `action height collapsed: ${JSON.stringify(zoom)}`);
+				await page.evaluate(() => {
+					document.documentElement.style.fontSize = "";
+				});
+			}
 			await page.emulateMedia({ reducedMotion: "reduce" });
 			assert.ok(
 				(
@@ -44,6 +75,7 @@ export async function assertRecommendation(page: Page, baseUrl: string) {
 		viewports: 2,
 		alternatives: true,
 		acceptance: true,
+		zoom200: true,
 		keyboard: true,
 		reducedMotion: true,
 	};
