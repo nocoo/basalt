@@ -329,11 +329,11 @@ describe("Combobox", () => {
 	it("applies named sizes and loading", () => {
 		const { rerender } = render(<Combobox items={FRUITS} placeholder="Fruit" />);
 		expect(screen.getByLabelText("Fruit").className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-basalt-control", "px-basalt-control-x"]),
+			expect.arrayContaining(["basalt-action"]),
 		);
 		rerender(<Combobox items={FRUITS} placeholder="Fruit" size="sm" />);
 		expect(screen.getByLabelText("Fruit").className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-basalt-control-sm", "px-basalt-control-x-sm"]),
+			expect.arrayContaining(["basalt-action", "basalt-action-sm"]),
 		);
 		rerender(<Combobox items={FRUITS} placeholder="Fruit" loading />);
 		expect(screen.getByLabelText("Fruit")).toBeDisabled();

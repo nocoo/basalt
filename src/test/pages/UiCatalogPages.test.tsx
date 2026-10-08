@@ -1466,7 +1466,7 @@ describe("ui catalog", () => {
 			["className", "outlined", "padding"],
 			["outlined"],
 			[],
-			[],
+			["asChild"],
 			[],
 			["outlined"],
 			[],
@@ -1476,7 +1476,7 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/layer-card");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(11);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(12);
 		expect(api).toHaveTextContent("className?");
 		expect(api).toHaveTextContent("outlined?");
 		expect(api).toHaveTextContent("padding?");
@@ -1487,7 +1487,7 @@ describe("ui catalog", () => {
 		expect(api).toHaveTextContent("string");
 		expect(api).toHaveTextContent("Additional classes for the card root.");
 		expect(api).toHaveTextContent("—");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(11);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(12);
 		expect(api).not.toHaveTextContent("id");
 		expect(api).not.toHaveTextContent("style");
 		expect(api).not.toHaveTextContent("role");
@@ -1508,7 +1508,7 @@ describe("ui catalog", () => {
 			"- className (string, optional, default —): Additional classes for the card root.",
 		);
 		expect(markdown).toContain(
-			'- padding ("lg" | "md" | "none" | "sm", optional, default "md"): Inner spacing for unstructured card content.',
+			'- padding ("lg" | "md" | "none" | "sm" | "xl", optional, default "md"): Inner spacing for unstructured card content.',
 		);
 		expect(markdown).toContain("### LayerCard.Loading");
 		expect(markdown).toContain("### LayerCard.Empty");
@@ -3091,11 +3091,7 @@ describe("ui catalog", () => {
 		const exampleButton = within(example as HTMLElement).getByRole("button", {
 			name: "Toggle theme",
 		});
-		expect(heroButton).toHaveClass(
-			"h-basalt-control",
-			"w-basalt-control",
-			"hover:bg-basalt-accent",
-		);
+		expect(heroButton).toHaveClass("basalt-action", "basalt-action-icon", "hover:bg-basalt-hover");
 		const iconClass = (button: HTMLElement) =>
 			button.querySelector("svg")?.getAttribute("class") ?? "";
 		expect(iconClass(heroButton)).toContain("lucide-monitor");
@@ -3296,7 +3292,7 @@ describe("ui catalog", () => {
 		expect(hintInput?.id).not.toBe(heroInput?.id);
 		expect(hintInput).toHaveAttribute("aria-describedby", `${hintInput?.id}-hint`);
 		expect(hint.querySelector("[id$='-hint']")).toHaveClass(
-			"text-xs",
+			"text-basalt-sm",
 			"text-basalt-muted-foreground",
 		);
 		const errorLabel = error.querySelector("label");
@@ -3307,7 +3303,7 @@ describe("ui catalog", () => {
 		const alert = within(error as HTMLElement).getByRole("alert");
 		expect(alert).toHaveTextContent("Required");
 		expect(alert).toHaveAttribute("id", `${errorInput?.id}-error`);
-		expect(alert).toHaveClass("text-xs", "text-basalt-destructive");
+		expect(alert).toHaveClass("text-basalt-sm", "text-basalt-destructive");
 		expect(rich).toHaveTextContent("Workspace name");
 		expect(rich).toHaveTextContent("(optional)");
 		expect(rich).toHaveTextContent("Shown on invoices");
@@ -3419,13 +3415,13 @@ describe("ui catalog", () => {
 		);
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Small" }).className,
-		).toContain("h-basalt-control-sm");
+		).toContain("basalt-action-sm");
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Default" }).className,
-		).toContain("h-basalt-control");
+		).toContain("basalt-action");
 		expect(
 			within(sizes as HTMLElement).getByRole("textbox", { name: "Large" }).className,
-		).toContain("h-basalt-control-lg");
+		).toContain("basalt-action-lg");
 		expect(within(controlled as HTMLElement).getByRole("textbox", { name: "Name" })).toHaveValue(
 			"Ada",
 		);

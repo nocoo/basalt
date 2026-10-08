@@ -215,7 +215,16 @@ describe("toast", () => {
 		const SonnerToaster = await mockedSonnerToaster();
 		render(<Toaster />);
 		expect(SonnerToaster).toHaveBeenCalledWith(
-			expect.objectContaining({ closeButton: true }),
+			expect.objectContaining({
+				closeButton: true,
+				toastOptions: expect.objectContaining({
+					unstyled: true,
+					classNames: expect.objectContaining({
+						toast: expect.stringContaining("basalt-banner"),
+						actionButton: expect.stringContaining("basalt-action"),
+					}),
+				}),
+			}),
 			undefined,
 		);
 		SonnerToaster.mockClear();

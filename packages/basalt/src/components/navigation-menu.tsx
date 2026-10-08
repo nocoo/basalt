@@ -1,6 +1,8 @@
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import type * as React from "react";
 import { cn } from "../utils/cn";
+import { NAV_ITEM_CLASS, NAV_LIST_CLASS } from "../utils/navigation";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
 
 type RadixNavigationMenuProps = React.ComponentProps<typeof NavigationMenuPrimitive.Root>;
 type RadixNavigationMenuListProps = React.ComponentProps<typeof NavigationMenuPrimitive.List>;
@@ -70,7 +72,16 @@ export interface NavigationMenuListProps extends Omit<RadixNavigationMenuListPro
 	asChild?: RadixNavigationMenuListProps["asChild"];
 }
 
-export const NavigationMenuList = NavigationMenuPrimitive.List;
+export function NavigationMenuList({ className, ref, ...props }: NavigationMenuListProps) {
+	const highlightRef = useHoverHighlight(ref);
+	return (
+		<NavigationMenuPrimitive.List
+			ref={highlightRef}
+			className={cn(NAV_LIST_CLASS, "data-[orientation=vertical]:flex-col", className)}
+			{...props}
+		/>
+	);
+}
 
 export interface NavigationMenuItemProps
 	extends Omit<RadixNavigationMenuItemProps, "value" | "asChild"> {
@@ -108,13 +119,13 @@ export interface NavigationMenuLinkProps
 	asChild?: RadixNavigationMenuLinkProps["asChild"];
 }
 
-export function NavigationMenuLink({ className, ...props }: NavigationMenuLinkProps) {
+export function NavigationMenuLink({ className, active, ...props }: NavigationMenuLinkProps) {
 	return (
 		<NavigationMenuPrimitive.Link
-			className={cn(
-				"rounded-basalt-md px-basalt-3 py-basalt-2 text-sm hover:bg-basalt-accent",
-				className,
-			)}
+			active={active}
+			data-basalt-hover-item=""
+			data-hover-selected={active}
+			className={cn(NAV_ITEM_CLASS, className)}
 			{...props}
 		/>
 	);

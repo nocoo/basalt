@@ -1,4 +1,4 @@
-import { CHART_TYPE, seriesColor } from "./config";
+import { seriesColor } from "./config";
 import type { ChartSeriesDescriptor } from "./series";
 
 export type ChartLegendShape = "bar" | "line" | "area";
@@ -17,19 +17,22 @@ export function ChartLegend({ items, shape = "line" }: ChartLegendProps) {
 			data-testid="chart-legend"
 			style={{
 				color: "hsl(var(--basalt-muted-foreground))",
-				columnGap: 16,
+				columnGap: "var(--basalt-space-default)",
 				display: "flex",
 				flexWrap: "wrap",
-				fontSize: CHART_TYPE.legendFontSize,
-				marginTop: 12,
-				rowGap: 4,
+				fontSize: "var(--basalt-text-sm)",
+				marginTop: "var(--basalt-space-default)",
+				rowGap: "var(--basalt-space-sm)",
 			}}
 		>
 			{items.map((item, index) => {
 				const color = seriesColor(item, index) ?? "hsl(var(--basalt-chart-1))";
 				const label = item.label ?? item.key;
 				return (
-					<div key={item.key} style={{ alignItems: "center", display: "flex", gap: 6 }}>
+					<div
+						key={item.key}
+						style={{ alignItems: "center", display: "flex", gap: "var(--basalt-space-md)" }}
+					>
 						<svg width="18" height="10" aria-hidden="true">
 							{shape === "bar" ? (
 								<rect x="1" y="2" width="16" height="6" rx="1" fill={color} />

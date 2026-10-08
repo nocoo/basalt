@@ -22,10 +22,10 @@ export function SectionRule({
 	...props
 }: SectionRuleProps) {
 	return (
-		<section className={cn(BASALT_UI_CLASS, "space-y-basalt-3", className)} {...props}>
-			<div className="flex flex-wrap items-center gap-basalt-3">
-				<div className="flex min-w-0 items-center gap-basalt-1_5">
-					<h2 className="text-xs font-medium tracking-wider text-basalt-muted-foreground uppercase">
+		<section className={cn(BASALT_UI_CLASS, "space-y-basalt-layout-sm", className)} {...props}>
+			<div className="flex flex-wrap items-center gap-basalt-layout-sm">
+				<div className="flex min-w-0 items-center gap-basalt-space-md">
+					<h2 className="text-basalt-sm font-medium tracking-wider text-basalt-muted-foreground uppercase">
 						{title}
 					</h2>
 					{hint ? (
@@ -50,7 +50,7 @@ export function SectionRule({
 					aria-hidden="true"
 				/>
 				{actions ? (
-					<div className="flex min-w-0 max-w-full shrink-0 flex-wrap items-center justify-end gap-basalt-2">
+					<div className="flex min-w-0 max-w-full shrink-0 flex-wrap items-center justify-end gap-basalt-space-lg">
 						{actions}
 					</div>
 				) : null}

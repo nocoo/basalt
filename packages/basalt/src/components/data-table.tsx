@@ -503,7 +503,7 @@ export function DataTable<T>({
 	};
 
 	return (
-		<div className="flex min-w-0 flex-col gap-basalt-3">
+		<div className="flex min-w-0 flex-col gap-basalt-space-lg">
 			<div
 				role="region"
 				aria-label={`${ariaLabel} scroll area`}
@@ -562,7 +562,7 @@ export function DataTable<T>({
 										<button
 											type="button"
 											aria-label={column.header}
-											className="group flex w-full cursor-pointer items-center gap-basalt-control-gap rounded-sm border-0 bg-transparent p-0 text-left font-inherit text-inherit font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary"
+											className="group flex w-full cursor-pointer items-center gap-basalt-control-gap rounded-basalt-sm border-0 bg-transparent p-0 text-left font-inherit text-inherit font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary"
 											onClick={() =>
 												requestSort(
 													sort?.id === column.id && sort.dir === "asc"
@@ -591,7 +591,7 @@ export function DataTable<T>({
 											) : (
 												<ArrowUpDown
 													aria-hidden="true"
-													className="ml-auto size-basalt-icon-sm shrink-0 opacity-0 transition-opacity group-hover:opacity-60 group-focus-visible:opacity-60 motion-reduce:transition-none"
+													className="ml-auto size-basalt-icon-sm shrink-0 opacity-0 transition-opacity basalt-motion group-hover:opacity-60 group-focus-visible:opacity-60 motion-reduce:transition-none"
 													strokeWidth={1.5}
 												/>
 											)}
@@ -605,7 +605,10 @@ export function DataTable<T>({
 						{loading ? (
 							<TableRow>
 								<TableCell colSpan={colCount}>
-									<div role="status" className="flex flex-col gap-basalt-2 py-basalt-2">
+									<div
+										role="status"
+										className="flex flex-col gap-basalt-space-lg py-basalt-space-lg"
+									>
 										<span className="sr-only">Loading</span>
 										<SkeletonLine />
 										<SkeletonLine />
@@ -618,7 +621,7 @@ export function DataTable<T>({
 								<TableCell colSpan={colCount}>
 									<div
 										role="alert"
-										className="flex flex-wrap items-center justify-between gap-basalt-3 py-basalt-6"
+										className="flex flex-wrap items-center justify-between gap-basalt-space-lg py-basalt-space-lg"
 									>
 										<div>{error}</div>
 										{onRetry ? (
@@ -647,7 +650,7 @@ export function DataTable<T>({
 										{rowNumbers && (
 											<TableCell
 												data-row-number=""
-												className="text-right text-xs tabular-nums text-basalt-muted-foreground"
+												className="text-right text-basalt-sm tabular-nums text-basalt-muted-foreground"
 											>
 												{(pageSize && pageSize > 0 ? (resolvedPage - 1) * pageSize : 0) +
 													rowIndex +

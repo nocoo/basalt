@@ -7,7 +7,7 @@ export default function LoaderOptions() {
 	const [options, setOptions] = useState(["label", "elapsed", "animation", "shimmer"]);
 	const [run, setRun] = useState(0);
 	return (
-		<div className="w-full space-y-6">
+		<div className="w-full space-y-basalt-space-lg">
 			<div className="flex min-h-16 items-center justify-center">
 				<Loader
 					key={run}

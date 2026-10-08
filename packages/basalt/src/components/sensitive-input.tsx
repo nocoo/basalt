@@ -1,14 +1,9 @@
 import { Eye, EyeOff } from "lucide-react";
 import * as React from "react";
 import { cn } from "../utils/cn";
+import { controlSurfaceClass } from "../utils/control-surface";
 import { Button } from "./button";
 import { Input, type InputSize } from "./input";
-
-const TOGGLE_SIZE_CLASS: Record<InputSize, string> = {
-	sm: "h-basalt-control-sm w-basalt-control-sm",
-	default: "h-basalt-control w-basalt-control",
-	lg: "h-basalt-control-lg w-basalt-control-lg",
-};
 
 export type SensitiveInputProps = Omit<React.ComponentProps<"input">, "type" | "size"> & {
 	/**
@@ -46,20 +41,25 @@ export const SensitiveInput = React.forwardRef<HTMLInputElement, SensitiveInputP
 	) => {
 		const [revealed, setRevealed] = React.useState(false);
 		return (
-			<div className="relative">
+			<div
+				className={controlSurfaceClass(
+					"flex focus-within:border-basalt-ring has-[input[aria-invalid=true]]:border-basalt-destructive",
+				)}
+			>
 				<Input
 					ref={ref}
 					type={revealed ? "text" : "password"}
 					size={size}
 					passwordManagerIgnore={passwordManagerIgnore}
-					className={cn("pr-basalt-10", className)}
+					className={cn("min-w-0 flex-1 border-0 bg-transparent shadow-none", className)}
 					disabled={disabled}
 					{...props}
 				/>
 				<Button
 					type="button"
 					variant="ghost"
-					className={cn("absolute right-0 top-0", TOGGLE_SIZE_CLASS[size])}
+					size={size === "default" ? "icon" : size}
+					className="basalt-action-icon basalt-action-inset shrink-0"
 					aria-label={revealed ? hideLabel : revealLabel}
 					disabled={disabled}
 					onClick={() => setRevealed((value) => !value)}

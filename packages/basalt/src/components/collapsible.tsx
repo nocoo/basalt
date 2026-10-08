@@ -81,7 +81,7 @@ export const CollapsibleTrigger = React.forwardRef<
 		<CollapsiblePrimitive.CollapsibleTrigger
 			ref={ref}
 			className={cn(
-				"basalt-ui group/collapsible m-0 inline-flex min-w-0 cursor-pointer items-center gap-basalt-control-gap border-none bg-transparent p-0 text-left text-sm font-medium leading-[var(--basalt-line-body)] text-basalt-foreground shadow-none select-none",
+				"basalt-ui group/collapsible m-0 inline-flex min-w-0 cursor-pointer items-center gap-basalt-control-gap border-none bg-transparent p-0 text-left text-basalt-base font-medium leading-[var(--basalt-line-body)] text-basalt-foreground shadow-none select-none",
 				FOCUS_INSET,
 				OVERLAY_MOTION,
 				className,
@@ -93,7 +93,7 @@ export const CollapsibleTrigger = React.forwardRef<
 				aria-hidden="true"
 				data-slot="collapsible-chevron"
 				className={cn(
-					"size-basalt-icon-sm shrink-0 transition-transform duration-100 ease-out group-data-[state=open]/collapsible:rotate-180",
+					"size-basalt-icon-sm shrink-0 transition-transform basalt-motion duration-basalt-normal ease-basalt group-data-[state=open]/collapsible:rotate-180",
 					OVERLAY_MOTION,
 				)}
 			/>
@@ -142,7 +142,7 @@ export const CollapsibleContent = React.forwardRef<
 		{unstyled ? (
 			children
 		) : (
-			<div className="my-basalt-2 border-l-2 border-basalt-border py-basalt-1 pr-basalt-1 pl-basalt-4 text-sm text-basalt-foreground">
+			<div className="my-basalt-layout-sm border-l-2 border-basalt-border px-basalt-card py-basalt-card-sm text-basalt-base text-basalt-foreground">
 				{children}
 			</div>
 		)}

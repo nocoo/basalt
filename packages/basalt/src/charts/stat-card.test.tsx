@@ -82,7 +82,7 @@ describe("StatCard", () => {
 	it("styles positive, negative, and zero trends and optional labels", () => {
 		const { rerender } = render(<StatCard value="12.4k" trend={{ value: 12, label: "wow" }} />);
 		const positive = screen.getByText("+12%");
-		expect(positive).toHaveClass("text-basalt-heatmap-green-4");
+		expect(positive).toHaveClass("text-basalt-tag-success-foreground");
 		expect(screen.getByText("wow")).toBeInTheDocument();
 		rerender(<StatCard value="12.4k" trend={{ value: -5 }} />);
 		expect(screen.getByText("-5%")).toHaveClass("text-basalt-destructive");
@@ -157,7 +157,46 @@ describe("StatCard", () => {
 		);
 		expect(screen.getByRole("img", { name: "Pure Metric 100" })).toBeInTheDocument();
 		expect(fallbackContainer.querySelector(".flex.items-center.gap-2.shrink-0")).toBeNull();
-		expect(fallbackContainer.querySelector(".mt-2")).toBeNull();
+		expect(fallbackContainer.querySelector(".mt-basalt-space-lg")).toBeNull();
+	});
+
+	it("keeps the metric and comparison together ahead of supporting content", () => {
+		const { container } = render(
+			<StatCard
+				title="Total balance"
+				value="$8,800"
+				icon={Activity}
+				trend={{ value: 3.1, label: "vs last month" }}
+			>
+				<button type="button">Explore history</button>
+			</StatCard>,
+		);
+		const card = screen.getByRole("group", { name: "Total balance $8,800 +3.1% vs last month" });
+		expect(card).toHaveAttribute("data-basalt-surface", "");
+		expect(card).toHaveClass(
+			"p-basalt-card",
+			"gap-basalt-card-sm",
+			"overflow-visible",
+			"[overflow-wrap:anywhere]",
+		);
+		expect(card).not.toHaveClass("border", "bg-basalt-secondary");
+		expect(container.querySelector('[data-slot="card-header"]')).toBeNull();
+		expect(container.querySelector('[data-slot="stat-card-heading"] svg')).toHaveAttribute(
+			"aria-hidden",
+			"true",
+		);
+		const metric = container.querySelector('[data-slot="stat-card-metric"]');
+		expect(metric).toContainElement(screen.getByText("$8,800"));
+		expect(metric).toContainElement(screen.getByText("+3.1%"));
+		expect(screen.getByText("$8,800")).toHaveClass("tabular-nums", "font-basalt-display");
+		expect(metric?.nextElementSibling).toHaveAttribute("data-slot", "stat-card-content");
+		expect(screen.getByRole("button", { name: "Explore history" })).toBeInTheDocument();
+	});
+
+	it("omits an empty heading when only a value is provided", () => {
+		const { container } = render(<StatCard value={0} />);
+		expect(container.querySelector('[data-slot="stat-card-heading"]')).toBeNull();
+		expect(screen.getByRole("img", { name: "0" })).toBeInTheDocument();
 	});
 });
 
@@ -171,7 +210,7 @@ describe("StatGrid", () => {
 		const grid = container.firstElementChild;
 		expect(grid).toHaveClass(
 			"grid",
-			"gap-basalt-3",
+			"gap-basalt-layout",
 			"grid-cols-1",
 			"sm:grid-cols-2",
 			"lg:grid-cols-4",

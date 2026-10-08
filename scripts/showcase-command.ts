@@ -54,11 +54,11 @@ export async function assertCommandSelection(page: Page, baseUrl: string) {
 					});
 				});
 				assert.ok(
-					insets.every((pair) => pair.every((inset) => Math.abs(inset - 6) < 1)),
+					insets.every((pair) => pair.every((inset) => Math.abs(inset - 8) < 1)),
 					JSON.stringify(insets),
 				);
-				const before = await list.evaluate((node) =>
-					parseFloat(getComputedStyle(node, "::before").top),
+				const before = await list.evaluate(
+					(node) => new DOMMatrix(getComputedStyle(node, "::before").transform).m42,
 				);
 				await page.getByRole("combobox").press("ArrowDown");
 				await page.waitForFunction(
@@ -71,17 +71,19 @@ export async function assertCommandSelection(page: Page, baseUrl: string) {
 						?.getAnimations({ subtree: true })
 						.some(
 							(animation) =>
-								animation instanceof CSSTransition && animation.transitionProperty === "top",
+								animation instanceof CSSTransition && animation.transitionProperty === "transform",
 						),
 				);
 				const movement = await list.evaluate((node) => {
 					const animation = node
 						.getAnimations({ subtree: true })
-						.find((item) => item instanceof CSSTransition && item.transitionProperty === "top");
+						.find(
+							(item) => item instanceof CSSTransition && item.transitionProperty === "transform",
+						);
 					if (!animation?.effect) throw new Error("Missing command highlight transition");
 					animation.pause();
 					animation.currentTime = Number(animation.effect.getTiming().duration) / 2;
-					const middle = parseFloat(getComputedStyle(node, "::before").top);
+					const middle = new DOMMatrix(getComputedStyle(node, "::before").transform).m42;
 					animation.finish();
 					return {
 						middle,
@@ -118,5 +120,5 @@ export async function assertCommandSelection(page: Page, baseUrl: string) {
 			}
 		}
 	}
-	return { insets: 6, variants: 2, keyboard: true, pointer: true, reducedMotion: true };
+	return { insets: 8, variants: 2, keyboard: true, pointer: true, reducedMotion: true };
 }

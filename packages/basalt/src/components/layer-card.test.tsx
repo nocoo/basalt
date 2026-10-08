@@ -1,11 +1,35 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { createRef, Fragment } from "react";
 import { describe, expect, it, vi } from "vitest";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { LayerCard, type LayerCardProps } from "./layer-card";
 
 function acceptLayerCardProps(_props: LayerCardProps) {}
 
 describe("LayerCard", () => {
+	it("gives a disclosure trigger header insets without double padding or another button", () => {
+		render(
+			<Collapsible asChild>
+				<LayerCard>
+					<LayerCard.Header asChild>
+						<CollapsibleTrigger>Details</CollapsibleTrigger>
+					</LayerCard.Header>
+					<CollapsibleContent unstyled>
+						<LayerCard.Body>Expanded content</LayerCard.Body>
+					</CollapsibleContent>
+				</LayerCard>
+			</Collapsible>,
+		);
+		const trigger = screen.getByRole("button", { name: "Details" });
+		expect(trigger).toHaveAttribute("data-slot", "card-header");
+		expect(trigger).toHaveClass("px-basalt-card", "py-basalt-card-sm", "justify-between");
+		expect(trigger.parentElement).toHaveAttribute("data-card-structured", "true");
+		expect(trigger.parentElement).not.toHaveClass("p-basalt-card");
+		fireEvent.click(trigger);
+		expect(trigger).toHaveAttribute("aria-expanded", "true");
+		expect(screen.getByText("Expanded content")).toHaveClass("p-basalt-card");
+		expect(screen.getAllByRole("button")).toHaveLength(1);
+	});
 	it("paints an unstructured surface with default padding", () => {
 		render(<LayerCard>Body</LayerCard>);
 		const root = screen.getByText("Body");
@@ -80,7 +104,7 @@ describe("LayerCard", () => {
 	});
 
 	it("accepts className and native div props and rejects a wrong className type", () => {
-		acceptLayerCardProps({ className: "w-[250px]", padding: "md" });
+		acceptLayerCardProps({ className: "w-[15.625rem]", padding: "md" });
 		acceptLayerCardProps({
 			id: "card",
 			role: "region",
@@ -91,7 +115,7 @@ describe("LayerCard", () => {
 		// @ts-expect-error className must be a string
 		acceptLayerCardProps({ className: 1 });
 		// @ts-expect-error padding must be a supported spacing token
-		acceptLayerCardProps({ padding: "xl" });
+		acceptLayerCardProps({ padding: "xxl" });
 	});
 
 	it("applies optional root padding without changing the default surface", () => {
@@ -110,6 +134,7 @@ describe("LayerCard", () => {
 			["sm", "p-basalt-card-sm"],
 			["md", "p-basalt-card"],
 			["lg", "p-basalt-card-lg"],
+			["xl", "p-basalt-card-xl"],
 		] as const) {
 			rerender(
 				<LayerCard data-testid="card" padding={padding}>
@@ -175,7 +200,7 @@ describe("LayerCard", () => {
 		);
 		const loading = screen.getByRole("status", { name: "Loading metrics" });
 		expect(loading).toBe(screen.getByTestId("loading"));
-		expect(loading).toHaveClass("space-y-basalt-3", "p-basalt-card");
+		expect(loading).toHaveClass("space-y-basalt-space-lg", "p-basalt-card");
 		expect(loading.parentElement?.className).not.toContain("p-basalt-card");
 		const skeletons = loading.querySelectorAll('[aria-hidden="true"]');
 		expect(skeletons).toHaveLength(3);
@@ -205,7 +230,7 @@ describe("LayerCard", () => {
 			</LayerCard>,
 		);
 		const empty = screen.getByTestId("empty");
-		expect(empty).toHaveClass("p-basalt-8", "extra");
+		expect(empty).toHaveClass("p-basalt-card", "extra");
 		expect(empty.parentElement?.className).not.toContain("p-basalt-card");
 		expect(screen.getByText("No activity")).toBeInTheDocument();
 		expect(screen.getByText("New events will appear here.")).toBeInTheDocument();

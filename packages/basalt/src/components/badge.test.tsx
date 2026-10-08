@@ -31,7 +31,7 @@ describe("Badge", () => {
 			["purple", "Purple"],
 		] as const) {
 			render(<Badge variant={variant}>{label}</Badge>);
-			expect(screen.getByText(label).className).toContain("text-white");
+			expect(screen.getByText(label).className).toContain("text-basalt-on-solid");
 		}
 	});
 

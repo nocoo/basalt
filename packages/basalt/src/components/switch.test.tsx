@@ -34,7 +34,7 @@ describe("Switch", () => {
 		render(<Switch aria-label="Alerts" />);
 		expect(
 			screen.getByRole("switch", { name: "Alerts" }).querySelector("span")?.className,
-		).toContain("bg-white");
+		).toContain("bg-basalt-on-solid");
 	});
 
 	it("accepts checked and size states and inherited attributes, and rejects illegal values", () => {

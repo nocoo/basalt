@@ -57,6 +57,70 @@ function geometry() {
 }
 afterEach(() => vi.restoreAllMocks());
 describe("shared hover highlight", () => {
+	it("ignores its own transition and preserves movement through initial resize delivery", async () => {
+		geometry();
+		let resize: ResizeObserverCallback = () => {};
+		const original = globalThis.ResizeObserver;
+		vi.stubGlobal(
+			"ResizeObserver",
+			class {
+				constructor(callback: ResizeObserverCallback) {
+					resize = callback;
+				}
+				observe() {}
+				unobserve() {}
+				disconnect() {}
+			},
+		);
+		const { unmount } = render(<Probe selected />);
+		await frame();
+		const root = screen.getByTestId("list");
+		expect(root).toHaveAttribute("data-hover-animated", "false");
+		fireEvent.pointerOver(screen.getByText("Second"));
+		await frame();
+		expect(root).toHaveAttribute("data-hover-animated", "true");
+		const writes = vi.spyOn(root.style, "setProperty");
+		act(() => resize([], {} as ResizeObserver));
+		fireEvent.transitionEnd(root);
+		await frame();
+		expect(writes).not.toHaveBeenCalled();
+		expect(root).toHaveAttribute("data-hover-animated", "true");
+		fireEvent.pointerLeave(root);
+		act(() => screen.getByText("First").setAttribute("data-disabled", "false"));
+		await frame();
+		expect(root.style.getPropertyValue("--basalt-hover-y")).toBe("0px");
+		unmount();
+		vi.stubGlobal("ResizeObserver", original);
+	});
+	it("keeps nested lists isolated and finds eligible selection after a hidden row", async () => {
+		geometry();
+		function Nested() {
+			const ref = useHoverHighlight();
+			return (
+				<div ref={ref} className="basalt-hover-list" data-testid="outer">
+					<button type="button" hidden data-basalt-hover-item="" data-hover-selected="true">
+						Hidden
+					</button>
+					<Probe selected />
+					<button type="button" data-basalt-hover-item="" data-hover-selected="true">
+						Outer
+					</button>
+				</div>
+			);
+		}
+		render(<Nested />);
+		await frame();
+		const outer = screen.getByTestId("outer");
+		expect(outer).toHaveAttribute("data-hover-visible", "true");
+		const before = outer.style.cssText;
+		fireEvent.pointerOver(screen.getByText("Second"));
+		await frame();
+		expect(outer.style.cssText).toBe(before);
+		expect(screen.getByTestId("list").style.getPropertyValue("--basalt-hover-y")).toBe("40px");
+		act(() => (screen.getByText("Outer").hidden = true));
+		await frame();
+		expect(outer).toHaveAttribute("data-hover-visible", "false");
+	});
 	it("measures once per row, coalesces events and clears on leave without rerenders", async () => {
 		geometry();
 		const ref = createRef<HTMLDivElement>();
@@ -98,6 +162,12 @@ describe("shared hover highlight", () => {
 		act(() => (screen.getByText("First").hidden = true));
 		await frame();
 		expect(root).toHaveAttribute("data-hover-visible", "false");
+		fireEvent.pointerOver(screen.getByText("Second"));
+		await frame();
+		expect(root).toHaveAttribute("data-hover-visible", "true");
+		act(() => screen.getByText("Second").removeAttribute("data-basalt-hover-item"));
+		await frame();
+		expect(root).toHaveAttribute("data-hover-visible", "false");
 	});
 	it("tracks nested layout and scroll offsets and keyboard active descendants", async () => {
 		geometry();
@@ -112,6 +182,14 @@ describe("shared hover highlight", () => {
 		fireEvent.scroll(nested);
 		await frame();
 		expect(root.style.getPropertyValue("--basalt-hover-y")).toBe("50px");
+		nested.scrollTop = 30;
+		fireEvent.animationEnd(nested);
+		await frame();
+		expect(root.style.getPropertyValue("--basalt-hover-y")).toBe("40px");
+		nested.scrollTop = 40;
+		fireEvent.transitionEnd(nested);
+		await frame();
+		expect(root.style.getPropertyValue("--basalt-hover-y")).toBe("30px");
 		act(() => screen.getByText("Second").setAttribute("data-hover-active", "true"));
 		fireEvent.keyDown(screen.getByRole("textbox"), { key: "ArrowDown" });
 		await frame();

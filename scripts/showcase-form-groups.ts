@@ -16,7 +16,7 @@ async function assertGroupSpacing(group: Locator, rowGap: number) {
 			],
 		};
 	});
-	assert.equal(geometry.titleGap, 6);
+	assert.equal(geometry.titleGap, 8);
 	assert.ok(
 		geometry.rowGaps.every((gap) => gap === rowGap),
 		JSON.stringify(geometry),
@@ -45,13 +45,13 @@ export async function assertFormGroupSpacing(page: Page, baseUrl: string) {
 			const standalone = page.getByRole("group", { name: title, exact: true });
 			await assertGroupSpacing(standalone, gap);
 			await standalone.evaluate((node) =>
-				(node as HTMLElement).style.setProperty("--basalt-space-field-gap", "10px"),
+				(node as HTMLElement).style.setProperty("--basalt-space-field-gap", "4px"),
 			);
 			assert.equal(
 				await standalone.locator("legend").evaluate((node) => getComputedStyle(node).marginBottom),
-				"10px",
+				"4px",
 			);
 		}
 	}
-	return { viewports: 2, cssEntrypoints: 2, groups: 4, legendGap: 6, hostIsolation: true };
+	return { viewports: 2, cssEntrypoints: 2, groups: 4, legendGap: 8, hostIsolation: true };
 }

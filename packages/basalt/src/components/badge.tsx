@@ -4,7 +4,7 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 
 const badgeVariants = cva(
-	"inline-flex items-center gap-basalt-1_5 rounded-full border px-basalt-2_5 py-basalt-0_5 text-xs font-medium",
+	"inline-flex items-center gap-basalt-space-md rounded-basalt-full border basalt-inline font-medium",
 	{
 		variants: {
 			variant: {
@@ -13,14 +13,14 @@ const badgeVariants = cva(
 				destructive: "border-transparent bg-basalt-destructive text-basalt-destructive-foreground",
 				outline: "border-basalt-border text-basalt-foreground",
 				info: "border-transparent bg-basalt-info-tint text-basalt-info",
-				success: "border-transparent bg-basalt-heatmap-green-3 text-white",
+				success: "border-transparent bg-basalt-heatmap-green-3 text-basalt-on-solid",
 				warning: "border-transparent bg-basalt-warning-tint text-basalt-warning",
 				error: "border-transparent bg-basalt-danger-tint text-basalt-danger",
-				red: "border-transparent bg-basalt-danger text-white",
-				orange: "border-transparent bg-basalt-warning text-white",
-				teal: "border-transparent bg-basalt-badge-teal text-white",
-				blue: "border-transparent bg-basalt-info text-white",
-				purple: "border-transparent bg-basalt-badge-purple text-white",
+				red: "border-transparent bg-basalt-danger text-basalt-on-solid",
+				orange: "border-transparent bg-basalt-warning text-basalt-on-solid",
+				teal: "border-transparent bg-basalt-badge-teal text-basalt-on-solid",
+				blue: "border-transparent bg-basalt-info text-basalt-on-solid",
+				purple: "border-transparent bg-basalt-badge-purple text-basalt-on-solid",
 			},
 		},
 		defaultVariants: { variant: "default" },
@@ -51,7 +51,9 @@ export interface BadgeProps
 export function Badge({ className, variant, dot, children, ...props }: BadgeProps) {
 	return (
 		<span className={cn(BASALT_UI_CLASS, badgeVariants({ variant }), className)} {...props}>
-			{dot ? <span className="size-basalt-1_5 rounded-full bg-current" aria-hidden="true" /> : null}
+			{dot ? (
+				<span className="size-basalt-1_5 rounded-basalt-full bg-current" aria-hidden="true" />
+			) : null}
 			{children}
 		</span>
 	);

@@ -209,7 +209,7 @@ export const PopoverContent = React.forwardRef<
 				className={cn(
 					OVERLAY_LAYER,
 					OVERLAY_MOTION,
-					"basalt-floating rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-4 py-basalt-3 text-sm text-basalt-popover-foreground shadow-md outline-hidden",
+					"basalt-floating rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-space-lg py-basalt-space-lg text-basalt-base text-basalt-popover-foreground shadow-md outline-hidden",
 					className,
 				)}
 				{...props}
@@ -233,7 +233,7 @@ export const PopoverTitle = React.forwardRef<HTMLHeadingElement, PopoverTitlePro
 		<h2
 			ref={ref}
 			className={cn(
-				"m-0 text-base font-medium leading-[var(--basalt-line-relaxed)] text-basalt-foreground",
+				"m-0 text-basalt-lg font-medium leading-[var(--basalt-line-relaxed)] text-basalt-foreground",
 				className,
 			)}
 			{...props}
@@ -249,7 +249,7 @@ export const PopoverDescription = React.forwardRef<HTMLParagraphElement, Popover
 		<p
 			ref={ref}
 			className={cn(
-				"m-0 text-base leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground",
+				"m-0 text-basalt-lg leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground",
 				className,
 			)}
 			{...props}

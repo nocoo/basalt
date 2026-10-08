@@ -1,3 +1,4 @@
+import { Slot } from "@radix-ui/react-slot";
 import {
 	Children,
 	cloneElement,
@@ -19,6 +20,7 @@ const PADDING_CLASSES = {
 	sm: "p-basalt-card-sm",
 	md: "p-basalt-card",
 	lg: "p-basalt-card-lg",
+	xl: "p-basalt-card-xl",
 } as const;
 
 export type LayerCardPadding = keyof typeof PADDING_CLASSES;
@@ -40,6 +42,10 @@ export type LayerCardProps = Omit<HTMLAttributes<HTMLDivElement>, "className"> &
 	padding?: LayerCardPadding;
 };
 export type LayerCardSectionProps = HTMLAttributes<HTMLDivElement>;
+export type LayerCardHeaderProps = LayerCardSectionProps & {
+	/** Apply header insets to one child, such as a CollapsibleTrigger, without another wrapper. @default false */
+	asChild?: boolean;
+};
 export type LayerCardWellProps = LayerCardSectionProps & {
 	/**
 	 * Draw a hairline ring on a nested well.
@@ -133,6 +139,7 @@ const LayerCardRoot = forwardRef<HTMLDivElement, LayerCardProps>(
 			<div
 				ref={ref}
 				data-basalt-surface=""
+				data-card-structured={structured || undefined}
 				className={cn(
 					ROOT_CLASSES,
 					structured ? "flex w-full flex-col" : PADDING_CLASSES[padding],
@@ -148,11 +155,14 @@ const LayerCardRoot = forwardRef<HTMLDivElement, LayerCardProps>(
 );
 LayerCardRoot.displayName = "LayerCard";
 
-function LayerCardHeader({ className, ...props }: LayerCardSectionProps) {
+function LayerCardHeader({ className, asChild = false, ...props }: LayerCardHeaderProps) {
+	const Component = asChild ? Slot : "div";
 	return (
-		<div
+		<Component
+			data-slot="card-header"
 			className={cn(
-				"flex min-w-0 items-start justify-between gap-basalt-4 px-basalt-card py-basalt-card-sm text-basalt-muted-foreground",
+				"flex min-w-0 justify-between gap-basalt-card px-basalt-card py-basalt-card-sm text-basalt-muted-foreground",
+				asChild ? "w-full items-center" : "items-start",
 				className,
 			)}
 			{...props}
@@ -162,7 +172,9 @@ function LayerCardHeader({ className, ...props }: LayerCardSectionProps) {
 LayerCardHeader.displayName = "LayerCard.Header";
 
 function LayerCardBody({ className, ...props }: LayerCardSectionProps) {
-	return <div className={cn("min-w-0 p-basalt-card", className)} {...props} />;
+	return (
+		<div data-slot="card-body" className={cn("min-w-0 p-basalt-card", className)} {...props} />
+	);
 }
 LayerCardBody.displayName = "LayerCard.Body";
 
@@ -191,7 +203,7 @@ function LayerCardFooter({ className, ...props }: LayerCardSectionProps) {
 	return (
 		<div
 			className={cn(
-				"flex flex-wrap items-center justify-end gap-basalt-2 border-t border-basalt-border px-basalt-card py-basalt-card-sm",
+				"flex flex-wrap items-center justify-end gap-basalt-space-lg border-t border-basalt-border px-basalt-card py-basalt-card-sm",
 				className,
 			)}
 			{...props}
@@ -205,7 +217,7 @@ function LayerCardLoading({ label = "Loading", className, ...props }: LayerCardL
 		<div
 			role="status"
 			aria-label={label}
-			className={cn("space-y-basalt-3 p-basalt-card", className)}
+			className={cn("space-y-basalt-space-lg p-basalt-card", className)}
 			{...props}
 		>
 			<SkeletonLine minWidth={100} maxWidth={100} />
@@ -217,7 +229,7 @@ function LayerCardLoading({ label = "Loading", className, ...props }: LayerCardL
 LayerCardLoading.displayName = "LayerCard.Loading";
 
 function LayerCardEmpty({ title = "No content", className, ...props }: LayerCardEmptyProps) {
-	return <Empty title={title} className={cn("p-basalt-8", className)} {...props} />;
+	return <Empty title={title} className={cn("p-basalt-card", className)} {...props} />;
 }
 LayerCardEmpty.displayName = "LayerCard.Empty";
 

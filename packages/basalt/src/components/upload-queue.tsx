@@ -72,9 +72,10 @@ export function UploadItem({
 	const active = file.status === "queued" || file.status === "uploading";
 	return (
 		<div
+			data-basalt-surface=""
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex min-w-0 items-start gap-basalt-3 rounded-basalt-lg border border-basalt-border bg-basalt-card p-basalt-3",
+				"flex min-w-0 items-start gap-basalt-space-lg rounded-basalt-lg border border-basalt-border p-basalt-card-sm",
 				className,
 			)}
 		>
@@ -83,9 +84,9 @@ export function UploadItem({
 					<FileText className="size-basalt-5 text-basalt-muted-foreground" aria-hidden="true" />
 				)}
 			</span>
-			<div className="min-w-0 flex-1 space-y-basalt-1">
-				<p className="break-words text-sm font-medium">{file.name}</p>
-				<p className="text-xs text-basalt-muted-foreground">
+			<div className="min-w-0 flex-1 space-y-basalt-space-sm">
+				<p className="break-words text-basalt-base font-medium">{file.name}</p>
+				<p className="text-basalt-sm text-basalt-muted-foreground">
 					{file.size !== undefined && `${Math.ceil(file.size / 1024).toLocaleString()} KB · `}
 					{text[file.status]}
 				</p>
@@ -96,24 +97,24 @@ export function UploadItem({
 						aria-valuemin={0}
 						aria-valuemax={100}
 						aria-valuenow={progress}
-						className="h-basalt-1_5 overflow-hidden rounded-full bg-basalt-accent"
+						className="h-basalt-1_5 overflow-hidden rounded-basalt-full bg-basalt-accent"
 					>
 						<div
 							style={{ width: progress === undefined ? "40%" : `${progress}%` }}
 							className={cn(
-								"h-full rounded-full bg-basalt-primary",
+								"h-full rounded-basalt-full bg-basalt-primary",
 								progress === undefined && "animate-pulse motion-reduce:animate-none",
 							)}
 						/>
 					</div>
 				)}
 				{file.status === "error" && file.error && (
-					<p role="alert" className="break-words text-xs text-basalt-destructive">
+					<p role="alert" className="break-words text-basalt-sm text-basalt-destructive">
 						{file.error}
 					</p>
 				)}
 			</div>
-			<div className="flex shrink-0 items-center gap-basalt-1">
+			<div className="flex shrink-0 items-center gap-basalt-space-sm">
 				{file.status === "success" && (
 					<Check className="size-basalt-icon-lg text-basalt-success" aria-hidden="true" />
 				)}
@@ -169,13 +170,13 @@ export function UploadQueue({
 	...actions
 }: UploadQueueProps) {
 	return (
-		<div className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-2", className)}>
+		<div className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-space-lg", className)}>
 			{files.length === 0 ? (
-				<p role="status" className="text-sm text-basalt-muted-foreground">
+				<p role="status" className="text-basalt-base text-basalt-muted-foreground">
 					{emptyLabel}
 				</p>
 			) : (
-				<ul aria-label={label} className="m-0 list-none space-y-basalt-2 p-0">
+				<ul aria-label={label} className="m-0 list-none space-y-basalt-space-lg p-0">
 					{files.map((file) => (
 						<li key={file.id}>
 							<UploadItem file={file} {...actions} />

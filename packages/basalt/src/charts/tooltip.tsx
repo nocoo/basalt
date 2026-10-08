@@ -1,9 +1,9 @@
 import type { ComponentProps, ReactNode } from "react";
 
 const HIDDEN_SERIES_KEYS = new Set(["y", "y2", "y3", "value", "target"]);
-const TITLE_SIZE = 12;
-const BODY_SIZE = 12;
-const DOT_SIZE = 8;
+const TITLE_SIZE = "var(--basalt-text-sm)";
+const BODY_SIZE = "var(--basalt-text-sm)";
+const DOT_SIZE = "var(--basalt-space-lg)";
 
 export type ChartTooltipItem = {
 	name?: string;
@@ -129,8 +129,8 @@ export function ChartTooltipRow({
 				alignItems: "center",
 				display: "flex",
 				fontSize: BODY_SIZE,
-				gap: 8,
-				lineHeight: "20px",
+				gap: "var(--basalt-space-lg)",
+				lineHeight: "var(--basalt-leading-relaxed)",
 				minWidth: 0,
 				...style,
 			}}
@@ -141,7 +141,7 @@ export function ChartTooltipRow({
 					aria-hidden="true"
 					style={{
 						background: swatchColor,
-						borderRadius: 999,
+						borderRadius: "var(--basalt-radius-full)",
 						boxShadow: "0 0 0 1px hsl(var(--basalt-popover-foreground) / 0.12)",
 						flexShrink: 0,
 						height: DOT_SIZE,
@@ -174,7 +174,7 @@ export function ChartTooltipRow({
 			>
 				{formattedValue}
 				{unit != null && formattedValue !== "—" ? (
-					<span style={{ fontWeight: 400, marginLeft: 2 }}>{unit}</span>
+					<span style={{ fontWeight: 400, marginLeft: "var(--basalt-space-xs)" }}>{unit}</span>
 				) : null}
 			</span>
 		</div>
@@ -190,7 +190,7 @@ export function ChartTooltipDivider({ style, ...rest }: ChartTooltipDividerProps
 				backgroundColor: "hsl(var(--basalt-border) / 0.55)",
 				border: 0,
 				height: 1,
-				margin: "4px 0",
+				margin: "var(--basalt-space-sm) 0",
 				width: "100%",
 				...style,
 			}}
@@ -217,8 +217,8 @@ export function ChartTooltipSummary({
 				alignItems: "center",
 				display: "flex",
 				fontSize: BODY_SIZE,
-				gap: 8,
-				lineHeight: "20px",
+				gap: "var(--basalt-space-lg)",
+				lineHeight: "var(--basalt-leading-relaxed)",
 				minWidth: 0,
 				...style,
 			}}
@@ -250,7 +250,7 @@ export function ChartTooltipSummary({
 			>
 				{formattedValue}
 				{unit != null && formattedValue !== "—" ? (
-					<span style={{ fontWeight: 500, marginLeft: 2 }}>{unit}</span>
+					<span style={{ fontWeight: 500, marginLeft: "var(--basalt-space-xs)" }}>{unit}</span>
 				) : null}
 			</span>
 		</div>
@@ -274,12 +274,12 @@ export function ChartTooltipContent({
 			style={{
 				background: "hsl(var(--basalt-popover))",
 				border: "1px solid hsl(var(--basalt-border) / 0.55)",
-				borderRadius: 10,
+				borderRadius: "var(--basalt-radius-md)",
 				boxShadow: "0 12px 28px -8px rgb(0 0 0 / 0.28), 0 4px 10px -4px rgb(0 0 0 / 0.16)",
 				color: "hsl(var(--basalt-popover-foreground))",
-				maxWidth: 220,
-				minWidth: 128,
-				padding: "8px 12px",
+				maxWidth: "13.75rem",
+				minWidth: "8rem",
+				padding: "var(--basalt-space-default)",
 			}}
 		>
 			{title ? (
@@ -289,14 +289,14 @@ export function ChartTooltipContent({
 						fontSize: TITLE_SIZE,
 						fontWeight: 600,
 						letterSpacing: "-0.01em",
-						lineHeight: 1.2,
-						margin: "0 0 8px",
+						lineHeight: "var(--basalt-leading-tight)",
+						margin: "0 0 var(--basalt-space-lg)",
 					}}
 				>
 					{title}
 				</p>
 			) : null}
-			<div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+			<div style={{ display: "flex", flexDirection: "column", gap: "var(--basalt-space-sm)" }}>
 				{payload.map((item, index) => {
 					const raw = item.value;
 					const numeric =

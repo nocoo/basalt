@@ -16,6 +16,7 @@ describe("safe chat content", () => {
 		expect(container.querySelector("strong")).toHaveTextContent("Strong");
 		expect(container.querySelector("em")).toHaveTextContent("emphasis");
 		expect(container.querySelector("del")).toHaveTextContent("deleted");
+		expect(screen.getByText("inline")).toHaveClass("text-basalt-sm");
 		expect(screen.getByRole("table")).toBeInTheDocument();
 		expect(container.querySelector("script")).toBeNull();
 		expect(container.querySelector("img")).toBeNull();
@@ -29,6 +30,7 @@ describe("safe chat content", () => {
 			.mockResolvedValue(undefined);
 		Object.assign(navigator, { clipboard: { writeText } });
 		render(<ChatMarkdown content={"```ts\nconst x = 1;\n```\n\n```\nplain\n```"} />);
+		expect(screen.getByRole("region", { name: "ts" })).toHaveClass("text-basalt-sm");
 		fireEvent.click(screen.getAllByRole("button", { name: "Copy code" })[0]);
 		await screen.findByRole("button", { name: "Copy failed" });
 		fireEvent.click(screen.getByRole("button", { name: "Copy failed" }));

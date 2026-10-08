@@ -1140,12 +1140,12 @@ export async function assertConsumerGeometry(
 		}
 	}
 
-	// 2. Basalt Input in 320px container: exactly 320px wide, 32px tall, border-box
+	// 2. Basalt Input in 320px container: exactly 320px wide, 34px tall, border-box
 	if (Math.round(data.basalt.inputWidth) !== 320) {
 		throw new Error(`expected Input width 320px, got ${data.basalt.inputWidth}`);
 	}
-	if (Math.round(data.basalt.inputHeight) !== 32) {
-		throw new Error(`expected Input height 32px, got ${data.basalt.inputHeight}`);
+	if (Math.round(data.basalt.inputHeight) !== 34) {
+		throw new Error(`expected Input height 34px, got ${data.basalt.inputHeight}`);
 	}
 	if (data.basalt.inputBoxSizing !== "border-box") {
 		throw new Error(`expected Input border-box, got ${data.basalt.inputBoxSizing}`);
@@ -1162,9 +1162,9 @@ export async function assertConsumerGeometry(
 		throw new Error(`expected InputArea border-box, got ${data.basalt.inputAreaBoxSizing}`);
 	}
 
-	// 4. Buttons (Default, Outline, asChild Anchor): height 32px (h-8), border-box, no UA outset border, no native anchor underline
-	if (Math.round(data.basalt.btnDefaultHeight) !== 32) {
-		throw new Error(`expected Button height 32px, got ${data.basalt.btnDefaultHeight}`);
+	// 4. Buttons (Default, Outline, asChild Anchor): height 34px, border-box, no UA outset border, no native anchor underline
+	if (Math.round(data.basalt.btnDefaultHeight) !== 34) {
+		throw new Error(`expected Button height 34px, got ${data.basalt.btnDefaultHeight}`);
 	}
 	if (data.basalt.btnDefaultBorderStyle === "outset") {
 		throw new Error("Button has native UA outset border");
@@ -1174,9 +1174,9 @@ export async function assertConsumerGeometry(
 			`Outline Button should have solid border, got ${data.basalt.btnOutlineBorderStyle}`,
 		);
 	}
-	if (Math.round(data.basalt.btnAnchorHeight) !== 32) {
+	if (Math.round(data.basalt.btnAnchorHeight) !== 34) {
 		throw new Error(
-			`expected asChild Anchor Button height 32px, got ${data.basalt.btnAnchorHeight}`,
+			`expected asChild Anchor Button height 34px, got ${data.basalt.btnAnchorHeight}`,
 		);
 	}
 	if (data.basalt.btnAnchorTextDecoration === "underline") {
@@ -1210,8 +1210,8 @@ export async function assertConsumerGeometry(
 	if (Math.round(data.basalt.selectTriggerWidth) !== 320) {
 		throw new Error(`expected SelectTrigger width 320px, got ${data.basalt.selectTriggerWidth}`);
 	}
-	if (Math.round(data.basalt.selectTriggerHeight) !== 32) {
-		throw new Error(`expected SelectTrigger height 32px, got ${data.basalt.selectTriggerHeight}`);
+	if (Math.round(data.basalt.selectTriggerHeight) !== 34) {
+		throw new Error(`expected SelectTrigger height 34px, got ${data.basalt.selectTriggerHeight}`);
 	}
 
 	// 6. Table & Card: Table preserves separate + 0 spacing; Card nested Input does not overflow Card bounds
@@ -1239,10 +1239,8 @@ export async function assertConsumerGeometry(
 	if (!data.basalt.accordionContentVisible) {
 		throw new Error("AccordionContent did not expand on trigger click");
 	}
-	if (Math.round(data.basalt.menuBarTriggerHeight) !== 32) {
-		throw new Error(
-			`expected MenuBarTrigger height 32px (h-8), got ${data.basalt.menuBarTriggerHeight}`,
-		);
+	if (Math.round(data.basalt.menuBarTriggerHeight) !== 34) {
+		throw new Error(`expected MenuBarTrigger height 34px, got ${data.basalt.menuBarTriggerHeight}`);
 	}
 
 	// 8. CommandShortcut in flex parent: margin-left: auto pushes it to the right boundary, tracking-widest applied
@@ -1266,14 +1264,14 @@ export async function assertConsumerGeometry(
 	}
 
 	// 9. Portal Content (Dialog): Portal Input and Button have proper height and border-box
-	if (Math.round(data.basalt.portalInputHeight) !== 32) {
-		throw new Error(`expected Portal Input height 32px, got ${data.basalt.portalInputHeight}`);
+	if (Math.round(data.basalt.portalInputHeight) !== 34) {
+		throw new Error(`expected Portal Input height 34px, got ${data.basalt.portalInputHeight}`);
 	}
 	if (data.basalt.portalInputBoxSizing !== "border-box") {
 		throw new Error(`expected Portal Input border-box, got ${data.basalt.portalInputBoxSizing}`);
 	}
-	if (Math.round(data.basalt.portalBtnHeight) !== 32) {
-		throw new Error(`expected Portal Button height 32px, got ${data.basalt.portalBtnHeight}`);
+	if (Math.round(data.basalt.portalBtnHeight) !== 34) {
+		throw new Error(`expected Portal Button height 34px, got ${data.basalt.portalBtnHeight}`);
 	}
 	if (data.basalt.portalBtnBorderStyle === "outset") {
 		throw new Error("Portal Button has native UA outset border");
@@ -1291,9 +1289,9 @@ export async function assertConsumerGeometry(
 		throw new Error(`expected Banner p margin-top 0px, got ${data.basalt.bannerPMarginTop}`);
 	}
 
-	// Empty: height 44px (not 96px from 14px UA margins), p margin reset
-	if (Math.round(data.basalt.emptyHeight) !== 44) {
-		throw new Error(`expected Empty height 44px, got ${data.basalt.emptyHeight}`);
+	// Empty grows naturally from two text lines and the shared content gap.
+	if (data.basalt.emptyHeight < 44 || data.basalt.emptyHeight > 48) {
+		throw new Error(`expected natural Empty height 44-48px, got ${data.basalt.emptyHeight}`);
 	}
 	if (data.basalt.emptyP0MarginTop !== "0px" || data.basalt.emptyP0MarginBottom !== "0px") {
 		throw new Error(

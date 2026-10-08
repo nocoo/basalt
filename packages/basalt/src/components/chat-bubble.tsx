@@ -37,7 +37,7 @@ export function ChatBubble({
 			<p
 				className={cn(
 					BASALT_UI_CLASS,
-					"px-basalt-1 text-center text-[11px] text-basalt-muted-foreground",
+					"px-basalt-space-sm text-center text-basalt-xs text-basalt-muted-foreground",
 					className,
 				)}
 			>
@@ -49,18 +49,19 @@ export function ChatBubble({
 	return (
 		<div className={cn(BASALT_UI_CLASS, "flex w-full", user ? "justify-end" : "justify-start")}>
 			<div
+				data-basalt-surface={user ? undefined : ""}
 				className={cn(
-					"max-w-[92%] px-basalt-3_5 py-basalt-2 text-sm leading-[var(--basalt-line-body)] shadow-sm",
+					"max-w-[92%] px-basalt-panel-x py-basalt-panel-y text-basalt-base leading-[var(--basalt-line-body)] shadow-sm",
 					user
-						? "rounded-2xl rounded-br-md bg-basalt-primary text-basalt-primary-foreground"
-						: "rounded-2xl rounded-bl-md bg-basalt-secondary text-basalt-foreground ring-1 ring-basalt-border/50",
+						? "rounded-basalt-lg rounded-br-basalt-md bg-basalt-primary text-basalt-primary-foreground"
+						: "rounded-basalt-lg rounded-bl-basalt-md text-basalt-foreground ring-1 ring-basalt-border/50",
 					className,
 				)}
 			>
 				{children}
 				{streaming ? (
 					<span
-						className="mt-basalt-1 inline-block h-basalt-3 w-basalt-1_5 animate-pulse rounded-sm bg-basalt-primary/70 align-middle motion-reduce:animate-none"
+						className="mt-basalt-space-sm inline-block h-basalt-3 w-basalt-1_5 animate-pulse rounded-basalt-sm bg-basalt-primary/70 align-middle motion-reduce:animate-none"
 						aria-hidden
 					/>
 				) : null}

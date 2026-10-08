@@ -60,12 +60,14 @@ describe("Timeline", () => {
 
 		const colored = within(slot).getByText("Wake").closest("div");
 		expect(colored).toHaveClass("bg-indigo-500");
-		expect(colored).toHaveClass("text-white");
-		expect(within(colored as HTMLElement).getByText("Rested")).toHaveClass("text-white/80");
+		expect(colored).toHaveClass("text-basalt-on-solid");
+		expect(within(colored as HTMLElement).getByText("Rested")).toHaveClass(
+			"text-basalt-on-solid/80",
+		);
 
 		const bare = within(slot).getByText("Hydrate").closest("div");
 		expect(bare).toHaveClass("bg-basalt-muted");
-		expect(bare).not.toHaveClass("text-white");
+		expect(bare).not.toHaveClass("text-basalt-on-solid");
 		expect(within(bare as HTMLElement).queryByText("Rested")).toBeNull();
 		expect(bare?.querySelectorAll("span")).toHaveLength(2);
 		expect(list).toBeInTheDocument();

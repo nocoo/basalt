@@ -77,7 +77,7 @@ export function IconPicker({
 			</PopoverTrigger>
 			<PopoverContent
 				align="start"
-				className="w-basalt-72 max-w-[calc(100vw-2rem)] space-y-basalt-3 p-basalt-3"
+				className="w-basalt-72 max-w-[calc(100vw-2rem)] space-y-basalt-space-lg p-basalt-space-lg"
 				aria-label={label}
 			>
 				<Input
@@ -90,7 +90,7 @@ export function IconPicker({
 					type="single"
 					aria-label={label}
 					value={selected}
-					className="flex h-auto flex-wrap justify-start gap-basalt-1 rounded-basalt-lg p-basalt-1"
+					className="flex h-auto flex-wrap justify-start gap-basalt-space-sm rounded-basalt-lg p-basalt-space-sm"
 					onValueChange={(next) => {
 						if (!next) return;
 						if (value === undefined) setLocalValue(next);
@@ -113,7 +113,7 @@ export function IconPicker({
 					))}
 				</ToggleGroup>
 				{matches.length === 0 && (
-					<p role="status" className="text-sm text-basalt-muted-foreground">
+					<p role="status" className="text-basalt-base text-basalt-muted-foreground">
 						{emptyLabel}
 					</p>
 				)}

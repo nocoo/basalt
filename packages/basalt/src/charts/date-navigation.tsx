@@ -87,7 +87,7 @@ function DateNavigationPicker({
 		onChange?.(next);
 	}
 	return (
-		<div className="inline-flex items-center gap-basalt-1">
+		<div className="inline-flex items-center gap-basalt-space-sm">
 			<Button
 				variant="outline"
 				size="icon"
@@ -147,16 +147,16 @@ function DateNavigationDisplay({
 	);
 	const formatted = resolvedFormatDate(selectedDate);
 	return (
-		<div className={cn("flex items-center justify-center gap-basalt-2", className)}>
+		<div className={cn("flex items-center justify-center gap-basalt-space-lg", className)}>
 			<button
 				type="button"
 				onClick={onToday}
 				disabled={isToday}
 				className={cn(
-					"mr-basalt-2 rounded-lg px-basalt-3 py-basalt-1_5 text-sm font-medium transition-colors",
+					"mr-basalt-space-lg rounded-basalt-md px-basalt-space-lg py-basalt-space-md text-basalt-base font-medium transition-colors basalt-motion",
 					isToday
 						? "cursor-not-allowed text-basalt-muted-foreground opacity-50"
-						: "bg-basalt-secondary text-basalt-foreground hover:bg-basalt-accent",
+						: "bg-basalt-secondary text-basalt-foreground hover:bg-basalt-hover",
 				)}
 			>
 				{todayLabel}
@@ -165,7 +165,7 @@ function DateNavigationDisplay({
 				type="button"
 				onClick={onPrevDay}
 				aria-label={previousDayLabel}
-				className="flex h-basalt-8 w-basalt-8 items-center justify-center rounded-lg text-basalt-muted-foreground transition-colors hover:bg-basalt-accent hover:text-basalt-foreground"
+				className="flex h-basalt-8 w-basalt-8 items-center justify-center rounded-basalt-md text-basalt-muted-foreground transition-colors basalt-motion hover:bg-basalt-hover hover:text-basalt-foreground"
 			>
 				<ChevronLeft className="h-basalt-4 w-basalt-4" strokeWidth={1.5} />
 			</button>
@@ -173,7 +173,7 @@ function DateNavigationDisplay({
 				<button
 					type="button"
 					onClick={onToggleCalendar}
-					className="flex cursor-pointer items-center gap-basalt-2 rounded-lg px-basalt-3 py-basalt-1_5 text-lg font-medium transition-colors hover:bg-basalt-accent"
+					className="flex cursor-pointer items-center gap-basalt-space-lg rounded-basalt-md px-basalt-space-lg py-basalt-space-md text-basalt-xl font-medium transition-colors basalt-motion hover:bg-basalt-hover"
 				>
 					<span>{formatted}</span>
 					<CalendarIcon
@@ -182,7 +182,7 @@ function DateNavigationDisplay({
 					/>
 				</button>
 			) : (
-				<span className="flex items-center gap-basalt-2 rounded-lg px-basalt-3 py-basalt-1_5 text-lg font-medium">
+				<span className="flex items-center gap-basalt-space-lg rounded-basalt-md px-basalt-space-lg py-basalt-space-md text-basalt-xl font-medium">
 					{formatted}
 				</span>
 			)}
@@ -190,7 +190,7 @@ function DateNavigationDisplay({
 				type="button"
 				onClick={onNextDay}
 				aria-label={nextDayLabel}
-				className="flex h-basalt-8 w-basalt-8 items-center justify-center rounded-lg text-basalt-muted-foreground transition-colors hover:bg-basalt-accent hover:text-basalt-foreground"
+				className="flex h-basalt-8 w-basalt-8 items-center justify-center rounded-basalt-md text-basalt-muted-foreground transition-colors basalt-motion hover:bg-basalt-hover hover:text-basalt-foreground"
 			>
 				<ChevronRight className="h-basalt-4 w-basalt-4" strokeWidth={1.5} />
 			</button>

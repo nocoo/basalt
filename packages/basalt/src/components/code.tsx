@@ -14,7 +14,7 @@ export function Code({ className, ...props }: CodeProps & HTMLAttributes<HTMLEle
 	return (
 		<code
 			className={cn(
-				"rounded-basalt-sm bg-basalt-secondary px-basalt-1_5 py-basalt-0_5 font-mono text-[13px] text-basalt-foreground",
+				"rounded-basalt-sm bg-basalt-secondary px-basalt-space-md py-basalt-space-xs font-mono text-basalt-sm text-basalt-foreground",
 				className,
 			)}
 			{...props}
@@ -34,6 +34,8 @@ export interface CodeBlockProps
 	copyable?: boolean;
 	/** Show a non-selectable, screen-reader-hidden line-number gutter. @default false */
 	lineNumbers?: boolean;
+	/** Join a card edge without an outer frame. Code retains its own header and content insets. @default false */
+	attached?: boolean;
 	/** Additional classes for the panel root, not the inner pre element. */
 	className?: string;
 }
@@ -61,6 +63,7 @@ function CodePanel({
 	icon = <FileCode2 strokeWidth={1.5} />,
 	copyable = true,
 	lineNumbers = false,
+	attached = false,
 	className,
 	highlighted = false,
 	...props
@@ -74,9 +77,11 @@ function CodePanel({
 	return (
 		<div
 			data-basalt-code=""
+			data-code-attached={attached || undefined}
 			className={controlSurfaceClass(
 				cn(
 					"flex min-h-0 min-w-0 max-w-full flex-col overflow-hidden text-basalt-foreground",
+					attached && "rounded-none border-0 border-t",
 					className,
 				),
 			)}
@@ -99,7 +104,7 @@ function CodePanel({
 						<span
 							id={id}
 							title={heading}
-							className="truncate font-mono text-[13px] leading-[var(--basalt-line-body)]"
+							className="truncate font-mono text-basalt-code leading-[var(--basalt-line-body)]"
 						>
 							{heading}
 						</span>
@@ -107,8 +112,7 @@ function CodePanel({
 					{copyable && (
 						<Button
 							variant="ghost"
-							size="sm"
-							className="h-basalt-action shrink-0 px-basalt-1_5 font-normal text-basalt-muted-foreground [&_svg]:size-basalt-icon-sm"
+							className="shrink-0 px-basalt-space-md font-normal text-basalt-muted-foreground [&_svg]:size-basalt-icon-sm"
 							aria-label={copyLabel}
 							disabled={vm.status === "pending"}
 							onClick={() => void vm.copy((text) => navigator.clipboard.writeText(text))}
@@ -136,13 +140,13 @@ function CodePanel({
 					event.currentTarget.scrollLeft +=
 						((event.key === "ArrowRight" ? 1 : -1) * event.currentTarget.clientWidth) / 4;
 				}}
-				className="min-h-0 min-w-0 overflow-auto overscroll-contain py-basalt-panel-y font-mono text-[13px] leading-[var(--basalt-line-body)] outline-hidden focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-basalt-ring"
+				className="min-h-0 min-w-0 overflow-auto overscroll-x-contain overscroll-y-auto py-basalt-panel-y font-mono text-basalt-sm leading-[var(--basalt-line-body)] outline-hidden focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-basalt-ring"
 			>
 				<span className="flex min-w-max">
 					{lineNumbers && (
 						<span
 							aria-hidden="true"
-							className="shrink-0 select-none border-r border-basalt-border text-right text-[11px] tabular-nums text-basalt-muted-foreground"
+							className="shrink-0 select-none border-r border-basalt-border text-right text-basalt-xs tabular-nums text-basalt-muted-foreground"
 							style={{
 								width: `calc(${String(vm.lines.length).length}ch + 2 * var(--basalt-space-row-x))`,
 							}}

@@ -74,7 +74,7 @@ describe("AppHeader", () => {
 		const header = screen.getByRole("banner");
 		expect(header).toHaveAttribute("data-sticky", "true");
 		expect(header).toHaveAttribute("data-density", "compact");
-		expect(header).toHaveClass("h-[52px]");
+		expect(header).toHaveClass("h-[3.25rem]");
 		expect(header).not.toHaveAttribute("sticky");
 		expect(header).not.toHaveAttribute("density");
 	});
@@ -89,9 +89,9 @@ describe("AppHeader", () => {
 		expect(screen.queryByRole("heading")).toBeNull();
 		expect(banner.children).toHaveLength(1);
 		expect(banner.children[0]).toHaveClass("min-w-0");
-		expect(banner.children[0]).toHaveClass("gap-basalt-3");
+		expect(banner.children[0]).toHaveClass("gap-basalt-space-lg");
 		expect(banner.children[0]).not.toHaveClass("shrink-0");
-		expect(banner.children[0]).not.toHaveClass("gap-basalt-1");
+		expect(banner.children[0]).not.toHaveClass("gap-basalt-space-sm");
 		expect(banner.children[0].contains(screen.getByRole("button", { name: "Menu" }))).toBe(true);
 	});
 
@@ -108,15 +108,15 @@ describe("AppHeader", () => {
 		const ancestor = screen.getByRole("link", { name: "Examples" });
 		const title = screen.getByRole("heading", { level: 1, name: "Dashboard" });
 		expect(title.tagName).toBe("H1");
-		for (const token of ["text-sm", "font-normal"]) {
+		for (const token of ["text-basalt-base", "font-normal"]) {
 			expect(ancestor.className.split(/\s+/)).toContain(token);
 			expect(title.className.split(/\s+/)).toContain(token);
 		}
 		expect(ancestor.className.split(/\s+/)).toContain("text-basalt-muted-foreground");
 		expect(title.className.split(/\s+/)).toContain("text-basalt-foreground");
 		expect(title.className.split(/\s+/)).not.toContain("font-semibold");
-		expect(title.className.split(/\s+/)).not.toContain("text-lg");
-		expect(title.className.split(/\s+/)).not.toContain("md:text-xl");
+		expect(title.className.split(/\s+/)).not.toContain("text-basalt-xl");
+		expect(title.className.split(/\s+/)).not.toContain("md:text-basalt-2xl");
 		expect(banner.querySelector("svg")).toBeTruthy();
 		expect(screen.getByRole("navigation", { name: "Breadcrumb" })).toBeInTheDocument();
 	});

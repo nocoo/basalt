@@ -23,7 +23,7 @@ export function overlayPanelClass(className?: string) {
 	return cn(
 		BASALT_UI_CLASS,
 		OVERLAY_LAYER,
-		"basalt-floating overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover py-basalt-menu-inset text-sm text-basalt-popover-foreground shadow-md",
+		"basalt-floating overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover py-basalt-menu-inset text-basalt-base text-basalt-popover-foreground shadow-md",
 		OVERLAY_MOTION,
 		className,
 	);
@@ -31,7 +31,7 @@ export function overlayPanelClass(className?: string) {
 
 export function overlayItemClass(className?: string) {
 	return cn(
-		"mx-basalt-menu-inset flex min-h-basalt-menu-row w-[calc(100%-var(--basalt-space-menu-inset)*2)] cursor-default items-center rounded-basalt-sm px-basalt-menu-x py-basalt-menu-y text-left text-sm outline-hidden select-none",
+		"mx-basalt-menu-inset flex min-h-basalt-menu-row w-[calc(100%-var(--basalt-space-menu-inset)*2)] cursor-default items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-menu-x py-basalt-menu-y text-left text-basalt-base leading-basalt-row outline-hidden select-none",
 		className,
 	);
 }

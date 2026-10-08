@@ -12,8 +12,8 @@ describe("Collapsible", () => {
 		);
 		const trigger = screen.getByRole("button", { name: "How does this project work?" });
 		expect(trigger.className).toContain("font-medium");
-		expect(trigger.className.split(/\s+/)).toContain("text-sm");
-		expect(trigger.className.split(/\s+/)).not.toContain("text-base");
+		expect(trigger.className.split(/\s+/)).toContain("text-basalt-base");
+		expect(trigger.className.split(/\s+/)).not.toContain("text-basalt-lg");
 		expect(trigger.querySelector("svg")?.getAttribute("class")).toContain(
 			"motion-reduce:transition-none",
 		);
@@ -36,8 +36,9 @@ describe("Collapsible", () => {
 		expect(trigger.className).not.toContain("[&_svg]");
 		const panel = screen.getByText("This project is a React component library.");
 		expect(panel.className).toContain("border-l-2");
-		expect(panel.className.split(/\s+/)).toContain("text-sm");
-		expect(panel.className.split(/\s+/)).not.toContain("text-base");
+		expect(panel).toHaveClass("px-basalt-card", "py-basalt-card-sm", "my-basalt-layout-sm");
+		expect(panel.className.split(/\s+/)).toContain("text-basalt-base");
+		expect(panel.className.split(/\s+/)).not.toContain("text-basalt-lg");
 		expect(panel.parentElement?.className).toContain(
 			"data-[state=open]:animate-basalt-collapsible-down",
 		);
@@ -53,6 +54,6 @@ describe("Collapsible", () => {
 		);
 		const panel = screen.getByText("Plain");
 		expect(panel.className).not.toContain("border-l-2");
-		expect(panel.className).not.toContain("text-sm");
+		expect(panel.className).not.toContain("text-basalt-base");
 	});
 });

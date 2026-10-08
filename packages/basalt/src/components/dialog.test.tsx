@@ -53,7 +53,7 @@ describe("Dialog", () => {
 		expect(classes).toContain("z-50");
 		expect(classes).toContain("overflow-y-auto");
 		expect(classes).toContain("p-basalt-overlay");
-		expect(classes).not.toContain("p-8");
+		expect(classes).not.toContain("p-basalt-space-lg");
 		expect(classes).not.toContain("overflow-hidden");
 		expect(classes).not.toContain("top-8");
 	});
@@ -61,7 +61,7 @@ describe("Dialog", () => {
 	it("frosts the overlay and fades it with the panel", () => {
 		const classes = dialogOverlayClass().split(" ");
 		expect(classes).toContain("backdrop-blur-md");
-		expect(classes).toContain("bg-black/40");
+		expect(classes).toContain("bg-basalt-backdrop/40");
 		expect(classes).toContain("data-[state=open]:animate-basalt-overlay-in");
 		expect(classes).toContain("data-[state=closed]:animate-basalt-overlay-out");
 		expect(classes).toContain("motion-reduce:animate-none");
@@ -104,7 +104,7 @@ describe("Dialog", () => {
 			</Dialog>,
 		);
 		expect(screen.getByText("Edit").parentElement?.className).toContain("flex-col");
-		expect(screen.getByText("Save").className).toContain("mt-basalt-6");
+		expect(screen.getByText("Save").className).toContain("mt-basalt-space-lg");
 		expect(screen.getByText("Save").className).toContain("sm:justify-end");
 	});
 

@@ -85,7 +85,7 @@ export const MenuBarTrigger = React.forwardRef<
 		ref={ref}
 		className={cn(
 			BASALT_UI_CLASS,
-			"inline-flex h-basalt-control items-center rounded-basalt-sm px-basalt-3 text-sm font-medium outline-hidden hover:bg-basalt-accent data-[state=open]:bg-basalt-accent",
+			"inline-flex min-h-basalt-control items-center rounded-basalt-sm px-basalt-space-lg text-basalt-base font-medium outline-hidden hover:bg-basalt-hover data-[state=open]:bg-basalt-selected",
 			className,
 		)}
 		{...props}
@@ -265,7 +265,7 @@ export function MenuBarRoot({ className, ...props }: MenuBarRootProps) {
 		<MenubarPrimitive.Root
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex min-h-basalt-control items-center gap-basalt-0_5 rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-1",
+				"flex min-h-basalt-control items-center gap-basalt-space-xs rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-space-sm",
 				className,
 			)}
 			{...props}

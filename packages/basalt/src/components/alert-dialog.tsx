@@ -168,7 +168,7 @@ export const AlertDialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<AlertDialogPrimitive.Title
 		ref={ref}
-		className={cn("text-2xl font-semibold tracking-tight", className)}
+		className={cn("text-basalt-3xl font-semibold tracking-tight", className)}
 		{...props}
 	/>
 ));
@@ -190,7 +190,7 @@ export const AlertDialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<AlertDialogPrimitive.Description
 		ref={ref}
-		className={cn("text-base text-basalt-muted-foreground", className)}
+		className={cn("text-basalt-lg text-basalt-muted-foreground", className)}
 		{...props}
 	/>
 ));
@@ -241,7 +241,7 @@ AlertDialogAction.displayName = AlertDialogPrimitive.Action.displayName;
 export interface AlertDialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const AlertDialogHeader = ({ className, ...props }: AlertDialogHeaderProps) => (
-	<div className={cn("flex flex-col space-y-basalt-2 text-left", className)} {...props} />
+	<div className={cn("flex flex-col space-y-basalt-space-lg text-left", className)} {...props} />
 );
 AlertDialogHeader.displayName = "AlertDialogHeader";
 
@@ -250,7 +250,7 @@ export interface AlertDialogFooterProps extends React.HTMLAttributes<HTMLDivElem
 export const AlertDialogFooter = ({ className, ...props }: AlertDialogFooterProps) => (
 	<div
 		className={cn(
-			"mt-basalt-6 flex flex-col-reverse gap-basalt-2 sm:flex-row sm:justify-end",
+			"mt-basalt-space-lg flex flex-col-reverse gap-basalt-space-lg sm:flex-row sm:justify-end",
 			className,
 		)}
 		{...props}

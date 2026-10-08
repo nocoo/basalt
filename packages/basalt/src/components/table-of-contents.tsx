@@ -24,13 +24,18 @@ export function TableOfContents({
 	className,
 }: TableOfContentsProps) {
 	return (
-		<nav aria-label={title || "On this page"} className={cn(BASALT_UI_CLASS, "text-sm", className)}>
+		<nav
+			aria-label={title || "On this page"}
+			className={cn(BASALT_UI_CLASS, "text-basalt-base", className)}
+		>
 			{title ? (
-				<p className="mb-basalt-3 text-xs font-semibold tracking-wide text-basalt-muted-foreground uppercase">
+				<p className="mb-basalt-space-lg text-basalt-sm font-semibold tracking-wide text-basalt-muted-foreground uppercase">
 					{title}
 				</p>
 			) : null}
-			<ul className="flex flex-col gap-basalt-2 border-l-2 border-basalt-border">{children}</ul>
+			<ul className="flex flex-col gap-basalt-space-lg border-l-2 border-basalt-border">
+				{children}
+			</ul>
 		</nav>
 	);
 }
@@ -53,13 +58,13 @@ export type TableOfContentsItemProps = {
 
 export function TableOfContentsItem({ active, href, children }: TableOfContentsItemProps) {
 	const className = cn(
-		"block border-l-2 py-basalt-0_5 pl-basalt-4",
+		"block border-l-2 py-basalt-space-xs pl-basalt-space-lg",
 		active
 			? "border-basalt-primary font-medium text-basalt-foreground"
 			: "border-transparent text-basalt-muted-foreground",
 	);
 	return (
-		<li className="-ml-basalt-0_5">
+		<li className="-ml-basalt-space-xs">
 			{href ? (
 				<a href={href} aria-current={active ? "location" : undefined} className={className}>
 					{children}

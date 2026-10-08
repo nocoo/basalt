@@ -30,13 +30,13 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 	if (!question)
 		return (
 			<LayerCard padding="sm" className={className}>
-				<p className="text-sm text-basalt-muted-foreground">No approval questions</p>
+				<p className="text-basalt-base text-basalt-muted-foreground">No approval questions</p>
 			</LayerCard>
 		);
 	if (vm.status === "submitted")
 		return (
 			<LayerCard padding="sm" className={className}>
-				<p role="status" className="text-sm">
+				<p role="status" className="text-basalt-base">
 					Answers submitted
 				</p>
 			</LayerCard>
@@ -51,14 +51,13 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 			)}
 		>
 			<div className="flex items-center justify-between gap-basalt-content-gap">
-				<h3 id={id} className="text-sm font-medium" aria-live="polite">
+				<h3 id={id} className="text-basalt-base font-medium" aria-live="polite">
 					{question.label}
 				</h3>
 				{onDismiss && (
 					<Button
 						variant="ghost"
 						size="icon"
-						className="size-basalt-action"
 						aria-label="Dismiss approval"
 						disabled={busy}
 						onClick={onDismiss}
@@ -78,7 +77,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 						onValueChange={vm.choose}
 						disabled={busy}
 						aria-labelledby={id}
-						className="gap-basalt-0_5"
+						className="gap-basalt-space-xs"
 					>
 						{question.options.map((option) => (
 							<label
@@ -87,7 +86,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 								data-hover-selected={vm.answer?.selected.includes(option.id)}
 								data-disabled={option.disabled || busy ? "" : undefined}
 								htmlFor={`${id}-${option.id}`}
-								className="flex cursor-pointer items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-row-y text-[13px] leading-[var(--basalt-line-body)]"
+								className="flex cursor-pointer items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-row-y text-basalt-code leading-basalt-row"
 							>
 								<Radio.Item
 									id={`${id}-${option.id}`}
@@ -99,7 +98,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 						))}
 					</Radio.Group>
 				) : (
-					<fieldset disabled={busy} aria-labelledby={id} className="space-y-basalt-0_5">
+					<fieldset disabled={busy} aria-labelledby={id} className="space-y-basalt-space-xs">
 						{question.options.map((option) => (
 							<label
 								key={option.id}
@@ -107,7 +106,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 								data-hover-selected={vm.answer?.selected.includes(option.id)}
 								data-disabled={option.disabled || busy ? "" : undefined}
 								htmlFor={`${id}-${option.id}`}
-								className="flex cursor-pointer items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-row-y text-[13px] leading-[var(--basalt-line-body)]"
+								className="flex cursor-pointer items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-row-y text-basalt-code leading-basalt-row"
 							>
 								<Checkbox
 									id={`${id}-${option.id}`}
@@ -132,23 +131,23 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 				)}
 			</div>
 			{vm.error && (
-				<p role="alert" className="text-xs text-basalt-danger">
+				<p role="alert" className="text-basalt-sm text-basalt-danger">
 					{vm.error}
 				</p>
 			)}
-			<div className="flex items-center justify-between gap-basalt-content-gap border-t border-basalt-border pt-basalt-2">
+			<div className="flex items-center justify-between gap-basalt-content-gap border-t border-basalt-border pt-basalt-space-lg">
 				<div className="flex items-center gap-basalt-content-gap">
 					<Button
 						variant="ghost"
 						size="icon"
-						className="size-basalt-action -ml-[calc((var(--basalt-size-action)-var(--basalt-size-icon))/2)]"
+						className="-ml-[calc((var(--basalt-size-action)-var(--basalt-size-icon))/2)]"
 						aria-label="Previous question"
 						disabled={busy || vm.position === 0}
 						onClick={() => vm.move(vm.position - 1)}
 					>
 						<ChevronLeft />
 					</Button>
-					<span className="text-xs tabular-nums text-basalt-muted-foreground">
+					<span className="text-basalt-sm tabular-nums text-basalt-muted-foreground">
 						{vm.position + 1} / {props.questions.length}
 					</span>
 				</div>

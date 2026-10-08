@@ -553,7 +553,7 @@ describe("DatePicker", () => {
 		expect(screen.getByRole("button", { name: "Prev" })).not.toHaveTextContent("Prev");
 		expect(screen.getByRole("button", { name: "Next" })).not.toHaveTextContent("Next");
 		expect(screen.getByRole("button", { name: "2024-01-16" }).className).toContain(
-			"hover:bg-basalt-accent",
+			"hover:bg-basalt-hover",
 		);
 	});
 
@@ -1371,7 +1371,7 @@ describe("DatePicker", () => {
 		expect(cell11).not.toHaveAttribute("aria-selected");
 		expect(button11).toHaveAttribute("aria-pressed", "false");
 		expect(button11.className.split(/\s+/)).not.toContain("bg-basalt-primary");
-		expect(button11.className.split(/\s+/)).not.toContain("bg-basalt-accent");
+		expect(button11.className.split(/\s+/)).not.toContain("bg-basalt-selected");
 
 		// 2. Complete range: start, middle, end
 		rerender(
@@ -1392,7 +1392,7 @@ describe("DatePicker", () => {
 		const btn11 = screen.getByRole("button", { name: "2026-09-11" });
 		expect(cell11Complete).toHaveAttribute("aria-selected", "true");
 		expect(btn11).toHaveAttribute("aria-pressed", "false");
-		expect(btn11.className.split(/\s+/)).toContain("bg-basalt-accent");
+		expect(btn11.className.split(/\s+/)).toContain("bg-basalt-selected");
 		expect(btn11.className.split(/\s+/)).not.toContain("bg-basalt-primary");
 
 		const cell12Complete = screen.getByRole("button", { name: "2026-09-12" }).closest("td");

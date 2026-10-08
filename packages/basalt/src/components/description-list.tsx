@@ -23,7 +23,7 @@ function DescriptionListRoot({ className, columns = 2, ...props }: DescriptionLi
 		<dl
 			className={cn(
 				BASALT_UI_CLASS,
-				"grid gap-x-basalt-8 gap-y-basalt-3 text-sm",
+				"grid gap-x-basalt-layout gap-y-basalt-layout-sm text-basalt-base",
 				COLUMN_CLASS[columns],
 				className,
 			)}
@@ -43,8 +43,8 @@ export type DescriptionListItemProps = HTMLAttributes<HTMLDivElement> & {
 function DescriptionListItem({ term, className, children, ...props }: DescriptionListItemProps) {
 	return (
 		<div className={cn("min-w-0", className)} {...props}>
-			<dt className="text-xs text-basalt-muted-foreground">{term}</dt>
-			<dd className="mt-basalt-0_5 wrap-break-word text-basalt-foreground">{children}</dd>
+			<dt className="text-basalt-sm text-basalt-muted-foreground">{term}</dt>
+			<dd className="mt-basalt-space-xs wrap-break-word text-basalt-foreground">{children}</dd>
 		</div>
 	);
 }

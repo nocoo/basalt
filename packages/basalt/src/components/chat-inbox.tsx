@@ -1,6 +1,7 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "../utils/cn";
-import { Button } from "./button";
+import { NAV_ITEM_CLASS, NAV_LIST_CLASS } from "../utils/navigation";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
 
 export interface ChatInboxItem {
 	/** Stable id for selection. */
@@ -37,10 +38,13 @@ export interface ChatInboxProps
 }
 
 export function ChatInbox({ items, activeId, onSelect, className, ...props }: ChatInboxProps) {
+	const highlightRef = useHoverHighlight();
 	return (
 		<nav
+			ref={highlightRef}
 			className={cn(
-				"flex min-h-0 flex-col gap-basalt-0_5 overflow-y-auto p-basalt-menu-inset",
+				NAV_LIST_CLASS,
+				"min-h-0 flex-col overflow-y-auto overscroll-y-contain",
 				className,
 			)}
 			{...props}
@@ -48,16 +52,14 @@ export function ChatInbox({ items, activeId, onSelect, className, ...props }: Ch
 			{items.map((item) => {
 				const active = item.id === activeId;
 				return (
-					<Button
+					<button
 						key={item.id}
 						type="button"
-						variant="ghost"
 						aria-current={active ? "true" : undefined}
+						data-basalt-hover-item=""
+						data-hover-selected={active}
 						onClick={() => onSelect(item.id)}
-						className={cn(
-							"h-auto w-full justify-start gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-row-y leading-[var(--basalt-line-body)] text-left",
-							active ? "bg-basalt-accent" : "",
-						)}
+						className={cn(NAV_ITEM_CLASS, "w-full justify-start")}
 					>
 						{item.leading ? (
 							<span className="flex h-basalt-8 w-basalt-8 shrink-0 items-center justify-center">
@@ -66,22 +68,22 @@ export function ChatInbox({ items, activeId, onSelect, className, ...props }: Ch
 						) : null}
 						<span className="min-w-0 flex-1">
 							<span className="flex items-baseline justify-between gap-basalt-row-gap">
-								<span className="truncate text-sm font-medium text-basalt-foreground">
+								<span className="truncate text-basalt-base font-medium text-basalt-foreground">
 									{item.title}
 								</span>
 								{item.time ? (
-									<span className="shrink-0 text-[11px] text-basalt-muted-foreground">
+									<span className="shrink-0 text-basalt-xs text-basalt-muted-foreground">
 										{item.time}
 									</span>
 								) : null}
 							</span>
 							{item.preview ? (
-								<span className="mt-basalt-0_5 block truncate text-xs text-basalt-muted-foreground">
+								<span className="mt-basalt-space-xs block truncate text-basalt-sm text-basalt-muted-foreground">
 									{item.preview}
 								</span>
 							) : null}
 						</span>
-					</Button>
+					</button>
 				);
 			})}
 		</nav>

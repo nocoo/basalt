@@ -109,7 +109,7 @@ export function FileDropzone({
 		<div
 			role="group"
 			aria-label={label}
-			className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-2", className)}
+			className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-space-lg", className)}
 		>
 			<input
 				ref={input}
@@ -154,28 +154,30 @@ export function FileDropzone({
 					receive(Array.from(event.dataTransfer.files));
 				}}
 				className={cn(
-					"flex w-full min-w-0 flex-col items-center gap-basalt-2 rounded-basalt-lg border-2 border-dashed px-basalt-4 py-basalt-7 text-center transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-ring disabled:cursor-not-allowed disabled:opacity-50",
+					"flex w-full min-w-0 flex-col items-center gap-basalt-space-lg rounded-basalt-lg border-2 border-dashed px-basalt-card py-basalt-card text-center transition-colors basalt-motion focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-ring disabled:cursor-not-allowed disabled:opacity-50",
 					dragging && !disabled
-						? "border-basalt-primary bg-basalt-accent"
-						: "border-basalt-border bg-basalt-card hover:bg-basalt-accent",
+						? "border-basalt-primary bg-basalt-selected"
+						: "border-basalt-border bg-basalt-control hover:bg-basalt-hover",
 				)}
 			>
 				<Upload
 					className="size-basalt-icon-display text-basalt-muted-foreground"
 					aria-hidden="true"
 				/>
-				<span className="text-sm font-medium">{dragging && !disabled ? dropLabel : label}</span>
+				<span className="text-basalt-base font-medium">
+					{dragging && !disabled ? dropLabel : label}
+				</span>
 				{description && (
-					<span id={`${id}-description`} className="text-xs text-basalt-muted-foreground">
+					<span id={`${id}-description`} className="text-basalt-sm text-basalt-muted-foreground">
 						{description}
 					</span>
 				)}
-				<span className="rounded-basalt-md border border-basalt-border px-basalt-3 py-basalt-1 text-xs">
+				<span className="rounded-basalt-md border border-basalt-border px-basalt-space-lg py-basalt-space-sm text-basalt-sm">
 					{browseLabel}
 				</span>
 			</button>
 			{rejections.length > 0 && (
-				<ul role="alert" className="space-y-basalt-1 text-xs text-basalt-destructive">
+				<ul role="alert" className="space-y-basalt-space-sm text-basalt-sm text-basalt-destructive">
 					{rejections.map((item, index) => (
 						<li key={`${item.file.name}-${index}`} className="break-words">
 							{formatRejection ? formatRejection(item) : `${item.file.name}: ${REASONS[item.code]}`}

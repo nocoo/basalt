@@ -181,7 +181,7 @@ export const ContextMenuItem = React.forwardRef<
 		ref={ref}
 		className={overlayItemClass(
 			cn(
-				"relative outline-hidden focus:bg-basalt-accent [.basalt-hover-list_&]:focus:bg-transparent data-disabled:pointer-events-none data-disabled:opacity-50",
+				"relative outline-hidden focus:bg-basalt-hover [.basalt-hover-list_&]:focus:bg-transparent data-disabled:pointer-events-none data-disabled:opacity-50",
 				className,
 			),
 		)}

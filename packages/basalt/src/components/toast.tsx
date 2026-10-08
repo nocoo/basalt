@@ -292,13 +292,19 @@ export function Toaster({ closeButton = true, ...props }: ToasterProps) {
 				close: <X className="size-basalt-icon" />,
 			}}
 			toastOptions={{
+				unstyled: true,
 				classNames: {
-					toast: "border border-basalt-border text-basalt-foreground shadow-lg",
-					title: "text-sm font-medium",
-					description: "text-sm text-basalt-muted-foreground",
+					toast:
+						"basalt-ui basalt-banner basalt-toast flex w-full items-center gap-basalt-space-lg rounded-basalt-md bg-basalt-popover text-basalt-foreground shadow-lg [&_[data-content]]:min-w-0 [&_[data-content]]:flex-1",
+					title: "font-medium",
+					description: "text-basalt-sm text-basalt-muted-foreground",
 					closeButton:
-						"border-basalt-border bg-basalt-popover text-basalt-muted-foreground hover:text-basalt-foreground",
-					icon: "size-basalt-icon-lg",
+						"basalt-action basalt-action-icon order-last inline-flex shrink-0 cursor-pointer items-center justify-center rounded-basalt-sm text-basalt-muted-foreground hover:bg-basalt-hover hover:text-basalt-foreground focus-visible:ring-2 focus-visible:ring-basalt-ring",
+					actionButton:
+						"basalt-action shrink-0 cursor-pointer rounded-basalt-sm bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary-hover",
+					cancelButton:
+						"basalt-action shrink-0 cursor-pointer rounded-basalt-sm bg-basalt-control hover:bg-basalt-hover",
+					icon: "flex size-basalt-icon-lg shrink-0 items-center justify-center",
 					success: VARIANT_CLASS.success,
 					error: VARIANT_CLASS.error,
 					warning: VARIANT_CLASS.warning,

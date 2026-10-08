@@ -37,7 +37,7 @@ className="border-separate border-spacing-0 caption-bottom"`),
 		const dialog = classCandidates(
 			readFileSync(path.join(process.cwd(), "packages/basalt/src/components/dialog.tsx"), "utf8"),
 		);
-		expect(dialog).toContain("space-y-basalt-1_5");
+		expect(dialog).toContain("space-y-basalt-space-md");
 
 		const commandPalette = classCandidates(
 			readFileSync(
@@ -54,7 +54,7 @@ className="border-separate border-spacing-0 caption-bottom"`),
 				"utf8",
 			),
 		);
-		expect(inputGroup).toContain("pr-basalt-3");
+		expect(inputGroup).toContain("pr-basalt-space-lg");
 	});
 
 	it("emits those utilities in standalone css", () => {
@@ -65,7 +65,7 @@ className="border-separate border-spacing-0 caption-bottom"`),
 		expect(css).toContain("border-separate");
 		expect(css).toContain("border-spacing-0");
 		expect(css).toContain("caption-bottom");
-		expect(css).toContain("space-y-basalt-1_5");
-		expect(css).toContain(".pr-basalt-3");
+		expect(css).toContain("space-y-basalt-space-md");
+		expect(css).toContain(".pr-basalt-space-lg");
 	});
 });

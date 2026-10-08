@@ -22,7 +22,7 @@ function sourceOf(file: string) {
 describe("control surface", () => {
 	it("is the shared class truth", () => {
 		expect(CONTROL_SURFACE_CLASS).toBe(
-			"basalt-ui rounded-basalt-md border border-basalt-border bg-basalt-control text-sm",
+			"basalt-ui rounded-basalt-md border border-basalt-border bg-basalt-control",
 		);
 		expect(controlSurfaceClass("h-9").split(/\s+/)).toEqual(
 			expect.arrayContaining([...CONTROL_SURFACE_CLASS.split(/\s+/), "h-9"]),
@@ -56,18 +56,18 @@ describe("control surface", () => {
 		);
 		const highlighted = source.slice(source.indexOf("export function CodeHighlighted"));
 		expect(inline).not.toContain("controlSurfaceClass");
-		expect(inline).toContain("text-[13px]");
+		expect(inline).toContain("text-basalt-sm");
 		expect(block).toContain("<CodePanel");
 		expect(highlighted).toContain("<CodePanel");
 		expect(highlighted).toContain("controlSurfaceClass(");
-		expect(highlighted).toContain("text-[13px]");
+		expect(highlighted).toContain("text-basalt-code");
 	});
 
 	it("does not apply the shared surface to Collapsible", () => {
 		const source = sourceOf("collapsible.tsx");
 		expect(source).not.toContain("control-surface");
-		expect(source).toContain("text-sm");
-		expect(source).not.toContain("text-base");
+		expect(source).toContain("text-basalt-base");
+		expect(source).not.toContain("text-basalt-lg");
 	});
 
 	it.skipIf(!existsSync(path.join(pkgRoot, "dist/utils/control-surface.js")))(

@@ -37,11 +37,14 @@ export function Timeline(props: TimelineProps) {
 		return <HourTimeline events={props.events} ariaLabel={ariaLabel} className={className} />;
 	}
 	return (
-		<ol className={cn("space-y-basalt-2 text-sm", className)} aria-label={ariaLabel}>
+		<ol
+			className={cn("space-y-basalt-space-lg text-basalt-base", className)}
+			aria-label={ariaLabel}
+		>
 			{props.items.map((item, index) => (
 				<li
 					key={item.id ?? `${item.at ?? ""}-${item.title}-${index}`}
-					className="flex gap-basalt-2"
+					className="flex gap-basalt-space-lg"
 				>
 					<span className="text-basalt-muted-foreground">{item.at}</span>
 					<span>{item.title}</span>
@@ -67,7 +70,7 @@ function HourTimeline({
 		eventsByHour.set(hour, [...existing, event]);
 	}
 	return (
-		<ol className={cn("flex flex-col pl-basalt-14", className)} aria-label={ariaLabel}>
+		<ol className={cn("flex flex-col pl-basalt-space-lg", className)} aria-label={ariaLabel}>
 			{hours.map((hour) => {
 				const hourEvents = eventsByHour.get(hour) ?? [];
 				const hasEvents = hourEvents.length > 0;
@@ -75,28 +78,28 @@ function HourTimeline({
 					<li
 						key={hour}
 						className={cn(
-							"relative flex items-start border-l-2 py-basalt-2 pl-basalt-4",
+							"relative flex items-start border-l-2 py-basalt-space-lg pl-basalt-space-lg",
 							hasEvents ? "border-basalt-chart-1" : "border-basalt-border",
 						)}
 					>
-						<div className="absolute left-0 w-basalt-12 -translate-x-full pr-basalt-2 text-right text-xs text-basalt-muted-foreground">
+						<div className="absolute left-0 w-basalt-12 -translate-x-full pr-basalt-space-lg text-right text-basalt-sm text-basalt-muted-foreground">
 							{hour.toString().padStart(2, "0")}:00
 						</div>
 						<div
 							className={cn(
-								"absolute -left-[5px] top-basalt-2 h-basalt-2 w-basalt-2 rounded-full",
+								"absolute -left-[0.3125rem] top-basalt-2 h-basalt-2 w-basalt-2 rounded-basalt-full",
 								hasEvents ? "bg-basalt-chart-1" : "bg-basalt-border",
 							)}
 						/>
-						<div className="flex min-h-[24px] w-full flex-col gap-basalt-1">
+						<div className="flex min-h-[1.5rem] w-full flex-col gap-basalt-space-sm">
 							{hourEvents.map((event) => (
 								<div
 									key={event.id}
 									style={event.textColor ? { color: event.textColor } : undefined}
 									className={cn(
-										"flex items-center gap-basalt-2 rounded-md px-basalt-2 py-basalt-1 text-xs",
+										"flex items-center gap-basalt-space-lg rounded-basalt-md px-basalt-space-lg py-basalt-space-sm text-basalt-sm",
 										event.color
-											? `${event.color} text-white`
+											? `${event.color} text-basalt-on-solid`
 											: "bg-basalt-muted text-basalt-foreground",
 									)}
 								>
@@ -109,7 +112,7 @@ function HourTimeline({
 												event.textColor
 													? "text-current"
 													: event.color
-														? "text-white/80"
+														? "text-basalt-on-solid/80"
 														: "text-basalt-muted-foreground",
 											)}
 										>

@@ -17,7 +17,7 @@ describe("ScrollArea", () => {
 				aria-label="Recent activity"
 				onScroll={onScroll}
 				className="h-40"
-				viewportClassName="px-3"
+				viewportClassName="px-basalt-space-lg"
 			>
 				<p>First event</p>
 			</ScrollArea>,
@@ -32,7 +32,7 @@ describe("ScrollArea", () => {
 		expect(viewport).toHaveAttribute("data-slot", "scroll-area-viewport");
 		expect(viewport).toHaveAttribute("data-orientation", "vertical");
 		expect(viewport).toHaveAttribute("tabindex", "0");
-		expect(viewport).toHaveClass("overflow-x-hidden!", "px-3");
+		expect(viewport).toHaveClass("overflow-x-hidden!", "px-basalt-space-lg");
 		expect(ref.current).toBe(viewport);
 
 		fireEvent.scroll(viewport);
@@ -93,7 +93,7 @@ describe("ScrollArea", () => {
 
 	it("keeps the public type to the supported orientation values", () => {
 		acceptScrollAreaProps({ orientation: "vertical" });
-		acceptScrollAreaProps({ orientation: "horizontal", viewportClassName: "pb-2" });
+		acceptScrollAreaProps({ orientation: "horizontal", viewportClassName: "pb-basalt-space-lg" });
 		acceptScrollAreaProps({ orientation: "both", className: "size-40" });
 		// @ts-expect-error unsupported orientation
 		acceptScrollAreaProps({ orientation: "inline" });

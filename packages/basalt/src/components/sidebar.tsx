@@ -15,9 +15,11 @@ import {
 } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { NAV_ITEM_CLASS, NAV_LIST_CLASS, NAV_ROW_CLASS } from "../utils/navigation";
+import { useHoverHighlight } from "../utils/use-hover-highlight";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { Dialog, DialogOverlay, DialogPortal } from "./dialog";
-import { OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
+import { FOCUS_INSET, OVERLAY_LAYER, OVERLAY_MOTION } from "./overlay";
 import { SkeletonLine } from "./skeleton-line";
 
 export type SidebarSide = "left" | "right";
@@ -278,7 +280,11 @@ export function Sidebar({
 	const overlay = context?.overlay ?? false;
 	const width = context?.width ?? 260;
 	const body = context?.loading ? (
-		<div className="flex flex-col gap-basalt-2 p-basalt-3" role="status" aria-live="polite">
+		<div
+			className="flex flex-col gap-basalt-space-lg p-basalt-space-lg"
+			role="status"
+			aria-live="polite"
+		>
 			<SkeletonLine />
 			<SkeletonLine />
 			<SkeletonLine />
@@ -292,7 +298,7 @@ export function Sidebar({
 		) : null;
 	const frameClass = cn(
 		BASALT_UI_CLASS,
-		"relative flex shrink-0 flex-col bg-basalt-background text-sm text-basalt-foreground",
+		"relative flex shrink-0 flex-col bg-basalt-background text-basalt-base text-basalt-foreground",
 		OVERLAY_MOTION,
 		className,
 	);
@@ -364,9 +370,9 @@ export function Sidebar({
 			}}
 			className={cn(
 				frameClass,
-				"sticky transition-all duration-300 ease-in-out",
+				"sticky overflow-hidden transition-[width] basalt-motion duration-basalt-normal ease-basalt",
 				side === "right" ? "order-last" : undefined,
-				collapsed ? "w-[68px] overflow-y-hidden" : "overflow-hidden",
+				collapsed && "w-basalt-rail",
 			)}
 			style={!collapsed ? { width, ...style } : style}
 			{...props}
@@ -382,7 +388,11 @@ export interface SidebarHeaderProps extends HTMLAttributes<HTMLDivElement> {}
 export function SidebarHeader({ className, ...props }: SidebarHeaderProps) {
 	return (
 		<div
-			className={cn("flex h-basalt-14 shrink-0 items-center px-basalt-3", className)}
+			data-slot="sidebar-header"
+			className={cn(
+				"flex h-basalt-14 shrink-0 items-center gap-basalt-row-gap px-basalt-nav-inset",
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -410,14 +420,17 @@ export function SidebarSearch({
 			type="button"
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex w-full cursor-pointer items-center gap-basalt-3 rounded-lg bg-basalt-secondary px-basalt-3 py-basalt-1_5 transition-colors hover:bg-basalt-accent",
+				NAV_ROW_CLASS,
+				"w-full cursor-pointer bg-basalt-secondary transition-colors basalt-motion hover:bg-basalt-hover",
 				className,
 			)}
 			{...props}
 		>
 			<Search className="h-basalt-4 w-basalt-4 text-basalt-muted-foreground" strokeWidth={1.5} />
-			<span className="flex-1 text-left text-sm text-basalt-muted-foreground">{children}</span>
-			<kbd className="pointer-events-none hidden rounded-sm border border-basalt-border bg-basalt-card px-basalt-1_5 py-basalt-0_5 text-[10px] font-medium text-basalt-muted-foreground sm:inline-block">
+			<span className="flex-1 text-left text-basalt-base text-basalt-muted-foreground">
+				{children}
+			</span>
+			<kbd className="pointer-events-none hidden rounded-basalt-sm border border-basalt-border bg-basalt-card px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-basalt-muted-foreground sm:inline-block">
 				{shortcut}
 			</kbd>
 		</button>
@@ -427,9 +440,16 @@ export function SidebarSearch({
 export interface SidebarNavProps extends HTMLAttributes<HTMLElement> {}
 
 export function SidebarNav({ className, ...props }: SidebarNavProps) {
+	const highlightRef = useHoverHighlight();
 	return (
 		<nav
-			className={cn("flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain", className)}
+			ref={highlightRef}
+			data-slot="sidebar-nav"
+			className={cn(
+				NAV_LIST_CLASS,
+				"min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain",
+				className,
+			)}
 			{...props}
 		/>
 	);
@@ -440,8 +460,9 @@ export interface SidebarPartitionProps extends HTMLAttributes<HTMLParagraphEleme
 export function SidebarPartition({ className, ...props }: SidebarPartitionProps) {
 	return (
 		<p
+			data-slot="sidebar-partition"
 			className={cn(
-				"px-basalt-6 pt-basalt-3 pb-basalt-1 text-[11px] font-medium tracking-[0.14em] text-basalt-muted-foreground uppercase",
+				"shrink-0 px-basalt-row-x pt-basalt-layout pb-basalt-space-lg text-basalt-sm font-semibold tracking-wide text-basalt-foreground uppercase",
 				className,
 			)}
 			{...props}
@@ -462,13 +483,9 @@ export function SidebarItem({ active = false, className, ...props }: SidebarItem
 		<button
 			type="button"
 			aria-current={active ? "page" : undefined}
-			className={cn(
-				"flex w-full items-center gap-basalt-3 rounded-lg px-basalt-3 py-basalt-2_5 text-sm font-normal transition-colors",
-				active
-					? "bg-basalt-accent text-basalt-foreground"
-					: "text-basalt-muted-foreground hover:bg-basalt-accent hover:text-basalt-foreground",
-				className,
-			)}
+			data-basalt-hover-item=""
+			data-hover-selected={active}
+			className={cn(NAV_ITEM_CLASS, "w-full", className)}
 			{...props}
 		/>
 	);
@@ -490,11 +507,11 @@ export function SidebarIconItem({ active = false, className, ...props }: Sidebar
 		<button
 			type="button"
 			aria-current={active ? "page" : undefined}
+			data-basalt-hover-item=""
+			data-hover-selected={active}
 			className={cn(
-				"relative flex h-basalt-10 w-basalt-10 items-center justify-center rounded-lg transition-colors",
-				active
-					? "bg-basalt-accent text-basalt-foreground"
-					: "text-basalt-muted-foreground hover:bg-basalt-accent hover:text-basalt-foreground",
+				NAV_ITEM_CLASS,
+				"relative min-h-basalt-control w-basalt-control justify-center",
 				className,
 			)}
 			{...props}
@@ -524,29 +541,34 @@ export interface SidebarGroupProps {
 export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGroupProps) {
 	const [open, setOpen] = useState(defaultOpen);
 	return (
-		<Collapsible open={open} onOpenChange={setOpen}>
-			<div className="mt-basalt-2 px-basalt-3">
-				<CollapsibleTrigger asChild>
-					<button
-						type="button"
-						className="flex w-full items-center justify-between px-basalt-3 py-basalt-2_5"
-					>
-						<span className="text-sm font-normal text-basalt-muted-foreground">{label}</span>
-						<span className="flex h-basalt-control-inset w-basalt-control-inset shrink-0 items-center justify-center">
-							<ChevronUp
-								className={cn(
-									"h-basalt-4 w-basalt-4 text-basalt-muted-foreground transition-transform duration-200",
-									OVERLAY_MOTION,
-									!open && "rotate-180",
-								)}
-								strokeWidth={1.5}
-							/>
-						</span>
-					</button>
-				</CollapsibleTrigger>
-			</div>
+		<Collapsible
+			open={open}
+			onOpenChange={setOpen}
+			data-slot="sidebar-group"
+			className="shrink-0 pt-basalt-layout-sm"
+		>
+			<CollapsibleTrigger asChild>
+				<button
+					type="button"
+					data-slot="sidebar-group-label"
+					className={cn(
+						"flex w-full cursor-pointer items-center justify-between gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-space-lg text-left text-basalt-xs font-semibold leading-[calc(var(--basalt-size-control)-2*var(--basalt-space-lg))] tracking-wide text-basalt-muted-foreground uppercase transition-colors basalt-motion hover:text-basalt-foreground",
+						FOCUS_INSET,
+					)}
+				>
+					<span className="min-w-0 truncate">{label}</span>
+					<ChevronUp
+						className={cn(
+							"h-basalt-4 w-basalt-4 text-basalt-muted-foreground transition-transform basalt-motion duration-basalt-normal",
+							OVERLAY_MOTION,
+							!open && "rotate-180",
+						)}
+						strokeWidth={1.5}
+					/>
+				</button>
+			</CollapsibleTrigger>
 			<CollapsibleContent unstyled>
-				<div className="flex flex-col gap-basalt-0_5 px-basalt-3">{children}</div>
+				<div className="flex flex-col gap-basalt-nav-gap pt-basalt-nav-gap">{children}</div>
 			</CollapsibleContent>
 		</Collapsible>
 	);
@@ -555,7 +577,16 @@ export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGro
 export interface SidebarFooterProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function SidebarFooter({ className, ...props }: SidebarFooterProps) {
-	return <div className={cn("shrink-0 px-basalt-4 py-basalt-3", className)} {...props} />;
+	return (
+		<div
+			data-slot="sidebar-footer"
+			className={cn(
+				"flex shrink-0 flex-col gap-basalt-content-gap px-basalt-nav-inset py-basalt-nav-inset",
+				className,
+			)}
+			{...props}
+		/>
+	);
 }
 
 export interface SidebarUserProps {
@@ -583,11 +614,13 @@ export interface SidebarUserProps {
 
 export function SidebarUser({ name, email, avatar, action, className }: SidebarUserProps) {
 	return (
-		<div className={cn("flex items-center gap-basalt-3", className)}>
+		<div className={cn("flex items-center gap-basalt-space-lg", className)}>
 			{avatar}
 			<div className="min-w-0 flex-1">
-				<p className="truncate text-sm font-medium text-basalt-foreground">{name}</p>
-				{email ? <p className="truncate text-xs text-basalt-muted-foreground">{email}</p> : null}
+				<p className="truncate text-basalt-base font-medium text-basalt-foreground">{name}</p>
+				{email ? (
+					<p className="truncate text-basalt-sm text-basalt-muted-foreground">{email}</p>
+				) : null}
 			</div>
 			{action}
 		</div>
@@ -609,9 +642,9 @@ export function ContentIsland({
 			data-basalt-surface-root=""
 			data-basalt-island={mobileSurface}
 			className={cn(
-				"min-h-0 min-w-0 flex-1 bg-basalt-card text-basalt-card-foreground md:rounded-basalt-island md:p-basalt-5",
+				"min-h-0 min-w-0 flex-1 bg-basalt-card text-basalt-card-foreground md:rounded-basalt-island md:p-basalt-layout",
 				mobileSurface === "inset"
-					? "rounded-[16px] p-basalt-3 shadow-sm ring-1 ring-basalt-border/40"
+					? "rounded-basalt-lg p-basalt-layout-sm shadow-sm ring-1 ring-basalt-border/40"
 					: "md:shadow-sm md:ring-1 md:ring-basalt-border/40",
 				className,
 			)}

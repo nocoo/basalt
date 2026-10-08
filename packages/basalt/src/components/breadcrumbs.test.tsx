@@ -2,13 +2,13 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { Breadcrumbs } from "./breadcrumbs";
 
-const typeTokens = ["text-sm", "font-normal"] as const;
+const typeTokens = ["text-basalt-base", "font-normal"] as const;
 const emphasisTokens = [
 	"font-medium",
 	"font-semibold",
-	"text-lg",
-	"text-xl",
-	"md:text-xl",
+	"text-basalt-xl",
+	"text-basalt-2xl",
+	"md:text-basalt-2xl",
 ] as const;
 
 function classTokens(className: string) {

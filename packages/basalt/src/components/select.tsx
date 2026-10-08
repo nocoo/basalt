@@ -54,9 +54,9 @@ export const SelectGroup: React.ForwardRefExoticComponent<
 export type SelectSize = "sm" | "default" | "lg";
 
 const SELECT_SIZE_CLASS: Record<SelectSize, string> = {
-	sm: "h-basalt-control-sm px-basalt-control-x-sm text-xs",
-	default: "h-basalt-control px-basalt-control-x text-sm",
-	lg: "h-basalt-control-lg px-basalt-control-x-lg text-base",
+	sm: "basalt-action basalt-action-sm",
+	default: "basalt-action",
+	lg: "basalt-action basalt-action-lg",
 };
 
 export type SelectTriggerProps = Omit<
@@ -102,7 +102,7 @@ export const SelectTrigger = React.forwardRef<
 		{children}
 		<ChevronDown
 			aria-hidden="true"
-			className="h-basalt-4 w-basalt-4 opacity-50 transition-transform duration-200 group-data-[state=open]/select:rotate-180 motion-reduce:transition-none"
+			className="h-basalt-4 w-basalt-4 opacity-50 transition-transform basalt-motion duration-basalt-normal group-data-[state=open]/select:rotate-180 motion-reduce:transition-none"
 		/>
 	</SelectPrimitive.Trigger>
 ));
@@ -124,7 +124,10 @@ export const SelectLabel = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<SelectPrimitive.Label
 		ref={ref}
-		className={cn("px-basalt-2 py-basalt-1_5 text-xs text-basalt-muted-foreground", className)}
+		className={cn(
+			"px-basalt-space-lg py-basalt-space-md text-basalt-sm text-basalt-muted-foreground",
+			className,
+		)}
 		{...props}
 	/>
 ));
@@ -190,16 +193,18 @@ export const SelectItem = React.forwardRef<
 		ref={ref}
 		className={overlayItemClass(
 			cn(
-				"relative pr-basalt-8 outline-hidden data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[disabled]:hover:bg-transparent",
+				"relative outline-hidden data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[disabled]:hover:bg-transparent",
 				className,
 			),
 		)}
 		{...props}
 	>
-		<SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
-		<SelectPrimitive.ItemIndicator className="absolute right-basalt-2">
-			<Check className="h-basalt-3_5 w-basalt-3_5" />
-		</SelectPrimitive.ItemIndicator>
+		<SelectPrimitive.ItemText className="min-w-0 flex-1">{children}</SelectPrimitive.ItemText>
+		<span className="inline-flex w-basalt-icon shrink-0 justify-end">
+			<SelectPrimitive.ItemIndicator>
+				<Check className="size-basalt-icon" />
+			</SelectPrimitive.ItemIndicator>
+		</span>
 	</SelectPrimitive.Item>
 ));
 SelectItem.displayName = SelectPrimitive.Item.displayName;

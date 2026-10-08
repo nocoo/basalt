@@ -1,28 +1,14 @@
 import * as React from "react";
 
-export const SELECTION_INDICATOR_MOTION_CLASS =
-	"transition-[left,width,top,height] duration-200 ease-out";
+export const SELECTION_INDICATOR_MOTION_CLASS = "basalt-selection-motion";
 
-export type SelectionGeometry = {
-	left: number;
-	width: number;
-	top: number;
-	height: number;
-};
-
-export type SelectionIndicatorState = SelectionGeometry & {
-	visible: boolean;
-	animated: boolean;
-};
-
+export type SelectionGeometry = { left: number; width: number; top: number; height: number };
+export type SelectionIndicatorState = SelectionGeometry & { visible: boolean; animated: boolean };
 const EMPTY: SelectionGeometry = { left: 0, width: 0, top: 0, height: 0 };
 
 export function assignRef<T>(ref: React.Ref<T> | undefined, value: T | null) {
-	if (typeof ref === "function") {
-		ref(value);
-	} else if (ref) {
-		(ref as React.MutableRefObject<T | null>).current = value;
-	}
+	if (typeof ref === "function") ref(value);
+	else if (ref) (ref as React.MutableRefObject<T | null>).current = value;
 }
 
 export function measureSelectionItem(item: HTMLElement): SelectionGeometry {
@@ -32,22 +18,6 @@ export function measureSelectionItem(item: HTMLElement): SelectionGeometry {
 		top: item.offsetTop,
 		height: item.offsetHeight,
 	};
-}
-
-function prefersReducedMotion() {
-	return (
-		typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
-	);
-}
-
-function selectionTargets(root: HTMLElement) {
-	const targets: HTMLElement[] = [root];
-	for (const node of root.children) {
-		if (node instanceof HTMLElement && node.getAttribute("aria-hidden") !== "true") {
-			targets.push(node);
-		}
-	}
-	return targets;
 }
 
 export function useSelectionIndicator({
@@ -62,90 +32,88 @@ export function useSelectionIndicator({
 	ref?: React.Ref<HTMLElement | null>;
 }) {
 	const rootRef = React.useRef<HTMLElement | null>(null);
-	const composedRef = React.useMemo(() => {
-		return (node: HTMLElement | null) => {
+	const composedRef = React.useCallback(
+		(node: HTMLElement | null) => {
 			rootRef.current = node;
 			assignRef(ref, node);
-		};
-	}, [ref]);
+		},
+		[ref],
+	);
 	const [state, setState] = React.useState<SelectionIndicatorState>({
 		...EMPTY,
 		visible: false,
 		animated: false,
 	});
-	const [reduced, setReduced] = React.useState(prefersReducedMotion);
-
-	React.useEffect(() => {
-		const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-		const onChange = () => setReduced(media.matches);
-		onChange();
-		media.addEventListener("change", onChange);
-		return () => media.removeEventListener("change", onChange);
-	}, []);
-
-	const sync = React.useCallback(() => {
-		const root = rootRef.current;
-		if (!root || !enabled) {
-			setState((current) => ({ ...current, ...EMPTY, visible: false, animated: false }));
-			return;
-		}
-		const item = root.querySelector<HTMLElement>(itemSelector);
-		if (!item) {
-			setState((current) => ({ ...current, width: 0, height: 0, visible: false, animated: false }));
-			return;
-		}
-		// Keep the optional dependency undefined. Production optimizers may inline a
-		// function-valued parameter default, creating a new effect dependency every render.
-		const geometry = (mapGeometry ?? measureSelectionItem)(item, root);
-		setState((current) => ({
-			...geometry,
-			visible: true,
-			animated: current.visible && !reduced,
-		}));
-	}, [enabled, itemSelector, mapGeometry, reduced]);
-
 	React.useLayoutEffect(() => {
 		const root = rootRef.current;
 		if (!root || !enabled) {
+			setState({ ...EMPTY, visible: false, animated: false });
 			return;
 		}
+		let previous: HTMLElement | null = null;
 		let frame = 0;
-		const ro = new ResizeObserver(() => {
-			cancelAnimationFrame(frame);
-			frame = requestAnimationFrame(sync);
-		});
-		const observe = () => {
-			ro.disconnect();
-			for (const node of selectionTargets(root)) {
-				ro.observe(node);
-			}
+		const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+		const sync = () => {
+			frame = 0;
+			const item = root.querySelector<HTMLElement>(itemSelector);
+			const box = item ? (mapGeometry ?? measureSelectionItem)(item, root) : EMPTY;
+			// Hidden panels measure zero. They must never become the animation's origin.
+			const visible = !!item && item.offsetWidth > 0 && item.offsetHeight > 0;
+			const animated = visible && !!previous && previous !== item && !media.matches;
+			previous = visible ? item : null;
+			const next = { ...box, visible, animated };
+			setState((current) => {
+				const unchanged =
+					current.visible === visible &&
+					current.left === box.left &&
+					current.top === box.top &&
+					current.width === box.width &&
+					current.height === box.height;
+				// Initial ResizeObserver delivery must not cancel an in-flight selection.
+				return unchanged && !(media.matches && current.animated) ? current : next;
+			});
 		};
+		const schedule = () => {
+			if (!frame) frame = requestAnimationFrame(sync);
+		};
+		const resize = new ResizeObserver(schedule);
+		const observe = () => {
+			resize.disconnect();
+			resize.observe(root);
+			for (const child of root.children)
+				if (child instanceof HTMLElement && child.getAttribute("aria-hidden") !== "true")
+					resize.observe(child);
+		};
+		const mutations = new MutationObserver((records) => {
+			if (records.some((record) => record.type === "childList")) observe();
+			schedule();
+		});
 		observe();
 		sync();
-		const mo = new MutationObserver(() => {
-			cancelAnimationFrame(frame);
-			frame = requestAnimationFrame(() => {
-				observe();
-				sync();
-			});
-		});
-		mo.observe(root, {
-			attributes: true,
+		mutations.observe(root, {
 			subtree: true,
 			childList: true,
-			characterData: true,
-			attributeFilter: ["data-state", "aria-checked", "data-selected", "data-disabled", "hidden"],
+			attributes: true,
+			attributeFilter: [
+				"data-state",
+				"aria-checked",
+				"aria-current",
+				"data-selected",
+				"data-disabled",
+				"hidden",
+			],
 		});
+		media.addEventListener("change", schedule);
 		return () => {
 			cancelAnimationFrame(frame);
-			mo.disconnect();
-			ro.disconnect();
+			resize.disconnect();
+			mutations.disconnect();
+			media.removeEventListener("change", schedule);
 		};
-	}, [enabled, sync]);
-
+	}, [enabled, itemSelector, mapGeometry]);
 	return {
 		ref: composedRef,
 		state,
-		motionClassName: state.animated && !reduced ? SELECTION_INDICATOR_MOTION_CLASS : undefined,
+		motionClassName: state.animated ? SELECTION_INDICATOR_MOTION_CLASS : undefined,
 	};
 }

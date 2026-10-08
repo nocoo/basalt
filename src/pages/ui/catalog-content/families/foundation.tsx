@@ -221,7 +221,7 @@ export default catalogContentFamily({
 				"@nocoo/basalt/components/layer-card",
 				"<LayerCard><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body>Content</LayerCard.Body><LayerCard.Footer>Actions</LayerCard.Footer></LayerCard>",
 			),
-			variants: ["none", "sm", "md", "lg"],
+			variants: ["none", "sm", "md", "lg", "xl"],
 			api: layerCardApi,
 			provenance: provenanceFromLegacy({
 				repo: "zhe",

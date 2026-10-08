@@ -115,7 +115,7 @@ export const ToggleGroup = React.forwardRef<
 				ref={rootRef}
 				className={cn(
 					BASALT_UI_CLASS,
-					"relative inline-flex h-basalt-control shrink-0 items-center gap-basalt-0_5 rounded-full bg-basalt-muted p-basalt-0_5 ring-1 ring-basalt-border/70",
+					"relative inline-flex shrink-0 items-center gap-basalt-space-xs rounded-basalt-full bg-basalt-muted p-basalt-space-xs ring-1 ring-basalt-border/70",
 					className,
 				)}
 				{...props}
@@ -125,13 +125,14 @@ export const ToggleGroup = React.forwardRef<
 						aria-hidden="true"
 						data-slot="selection-indicator"
 						className={cn(
-							"pointer-events-none absolute rounded-full bg-basalt-primary shadow-sm",
+							"pointer-events-none absolute rounded-basalt-full bg-basalt-selected",
 							motionClassName,
 						)}
 						style={{
-							left: state.left,
+							left: 0,
+							transform: `translate(${state.left}px, ${state.top}px)`,
 							width: state.visible ? state.width : 0,
-							top: state.top,
+							top: 0,
 							height: state.visible ? state.height : 0,
 						}}
 					/>
@@ -165,11 +166,11 @@ export const ToggleGroupItem = React.forwardRef<
 		<ToggleGroupPrimitive.Item
 			ref={ref}
 			className={cn(
-				"relative inline-flex h-basalt-control-inset cursor-pointer items-center rounded-full px-basalt-2_5 text-[11px] font-semibold tracking-wide text-basalt-muted-foreground transition-colors before:absolute before:inset-0",
+				"relative basalt-action basalt-action-sm inline-flex cursor-pointer items-center rounded-basalt-full font-semibold leading-[var(--basalt-line-body)] tracking-wide text-basalt-muted-foreground transition-colors basalt-motion before:absolute before:inset-0",
 				"hover:text-basalt-foreground",
 				FOCUS_RING,
-				"aria-checked:text-basalt-primary-foreground aria-pressed:text-basalt-primary-foreground",
-				mode === "multiple" && "aria-pressed:bg-basalt-primary aria-pressed:shadow-sm",
+				"aria-checked:text-basalt-selected-foreground aria-pressed:text-basalt-selected-foreground",
+				mode === "multiple" && "aria-pressed:bg-basalt-selected",
 				"disabled:pointer-events-none disabled:opacity-50",
 				className,
 			)}

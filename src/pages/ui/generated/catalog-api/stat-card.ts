@@ -40,7 +40,7 @@ export const API = [
 				type: "string",
 				required: false,
 				default: "\"text-basalt-muted-foreground\"",
-				description: "Color class applied to the icon wrapper.",
+				description: "Color class applied to the decorative icon.",
 			},
 			{
 				name: "trend",
@@ -70,7 +70,7 @@ export const API = [
 				name: "children",
 				type: "React.ReactNode",
 				required: false,
-				description: "Optional custom content rendered below the metric value and above or alongside the trend.",
+				description: "Optional supporting content rendered below the value, subtitle, and trend in the same surface.",
 			},
 			{
 				name: "ariaLabel",

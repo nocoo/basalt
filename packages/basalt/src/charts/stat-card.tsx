@@ -1,5 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import type { ReactNode } from "react";
+import { LayerCard } from "../components/layer-card";
 import { cn } from "../utils/cn";
 
 export type StatCardProps = {
@@ -25,7 +26,7 @@ export type StatCardProps = {
 	 */
 	icon?: LucideIcon;
 	/**
-	 * Color class applied to the icon wrapper.
+	 * Color class applied to the decorative icon.
 	 * @default "text-basalt-muted-foreground"
 	 */
 	iconColor?: string;
@@ -51,7 +52,7 @@ export type StatCardProps = {
 	 */
 	trendContent?: ReactNode;
 	/**
-	 * Optional custom content rendered below the metric value and above or alongside the trend.
+	 * Optional supporting content rendered below the value, subtitle, and trend in the same surface.
 	 */
 	children?: ReactNode;
 	/**
@@ -89,7 +90,6 @@ export function StatCard({
 	const hasAction = hasSlotContent(action);
 	const hasChildren = hasSlotContent(children);
 	const isInteractive = hasAction || hasStatus || hasTrendContent || hasChildren;
-	const hasHeaderEnd = hasAction || Boolean(Icon);
 
 	const display = typeof value === "number" ? value.toLocaleString() : value;
 	const isPositiveTrend = trend && trend.value > 0;
@@ -111,66 +111,84 @@ export function StatCard({
 			.join(" ")
 			.trim();
 
-	const cardContent = (
-		<>
-			<div className="flex items-start justify-between gap-basalt-3">
-				<div className="min-w-0 flex-1 space-y-basalt-1">
-					<p className="text-xs text-basalt-muted-foreground md:text-sm">{heading}</p>
-					{hasStatus ? (
-						<div className="pt-basalt-0_5">{status}</div>
-					) : (
-						<p className="font-display text-xl font-semibold tracking-tight text-basalt-foreground md:text-2xl">
-							{display}
-						</p>
-					)}
-					{subtitle ? <p className="text-xs text-basalt-muted-foreground">{subtitle}</p> : null}
-				</div>
-				{hasHeaderEnd ? (
-					<div className="flex items-center gap-basalt-2 shrink-0">
-						{hasAction ? <div className="flex items-center">{action}</div> : null}
-						{Icon ? (
-							<div className={cn("rounded-md bg-basalt-card p-basalt-2", iconColor)}>
-								<Icon className="h-basalt-5 w-basalt-5" strokeWidth={1.5} />
-							</div>
-						) : null}
-					</div>
-				) : null}
-			</div>
-
-			{hasChildren ? <div className="mt-basalt-2">{children}</div> : null}
-
-			{hasTrendContent ? (
-				<div className="mt-basalt-3 flex items-center gap-basalt-1 text-xs">{trendContent}</div>
-			) : trend ? (
-				<div className="mt-basalt-3 flex items-center gap-basalt-1 text-xs">
-					<span
-						className={cn(
-							"font-medium",
-							isPositiveTrend && "text-basalt-heatmap-green-4",
-							isNegativeTrend && "text-basalt-destructive",
-							!isPositiveTrend && !isNegativeTrend && "text-basalt-muted-foreground",
-						)}
-					>
-						{`${isPositiveTrend ? "+" : ""}${trend.value}%`}
-					</span>
-					{trend.label ? <span className="text-basalt-muted-foreground">{trend.label}</span> : null}
-				</div>
-			) : null}
-		</>
-	);
-
 	return (
-		// biome-ignore lint/a11y/useAriaPropsSupportedByRole: dynamic role is "group" | "img", both support aria-label
-		<div
+		<LayerCard
+			data-slot="stat-card"
 			className={cn(
-				"rounded-basalt-md border border-basalt-border bg-basalt-secondary p-basalt-4",
+				"flex min-w-0 flex-col gap-basalt-card-sm overflow-visible [overflow-wrap:anywhere]",
 				className,
 			)}
 			role={isInteractive ? "group" : "img"}
 			aria-label={named}
 		>
-			{cardContent}
-		</div>
+			{heading || Icon || hasAction ? (
+				<div
+					data-slot="stat-card-heading"
+					className="flex items-center justify-between gap-basalt-space-lg"
+				>
+					<div className="flex min-w-0 items-start gap-basalt-space-lg">
+						{Icon ? (
+							<Icon
+								aria-hidden="true"
+								className={cn("mt-basalt-space-xs size-basalt-icon-lg shrink-0", iconColor)}
+								strokeWidth={1.5}
+							/>
+						) : null}
+						<p className="min-w-0 text-basalt-base font-medium text-basalt-muted-foreground">
+							{heading}
+						</p>
+					</div>
+					{hasAction ? <div className="flex shrink-0 items-center">{action}</div> : null}
+				</div>
+			) : null}
+			<div data-slot="stat-card-metric" className="min-w-0 space-y-basalt-space-sm">
+				{hasStatus ? (
+					<div>{status}</div>
+				) : (
+					<p
+						data-slot="stat-card-value"
+						className="font-basalt-display text-basalt-4xl leading-basalt-tight font-semibold tracking-tight tabular-nums text-basalt-foreground"
+					>
+						{display}
+					</p>
+				)}
+				{subtitle ? (
+					<p className="text-basalt-sm text-basalt-muted-foreground">{subtitle}</p>
+				) : null}
+				{hasTrendContent ? (
+					<div
+						data-slot="stat-card-trend"
+						className="flex flex-wrap items-baseline gap-x-basalt-space-md gap-y-basalt-space-xs text-basalt-sm"
+					>
+						{trendContent}
+					</div>
+				) : trend ? (
+					<div
+						data-slot="stat-card-trend"
+						className="flex flex-wrap items-baseline gap-x-basalt-space-md gap-y-basalt-space-xs text-basalt-sm"
+					>
+						<span
+							className={cn(
+								"font-medium tabular-nums",
+								isPositiveTrend && "text-basalt-tag-success-foreground",
+								isNegativeTrend && "text-basalt-destructive",
+								!isPositiveTrend && !isNegativeTrend && "text-basalt-muted-foreground",
+							)}
+						>
+							{`${isPositiveTrend ? "+" : ""}${trend.value}%`}
+						</span>
+						{trend.label ? (
+							<span className="text-basalt-muted-foreground">{trend.label}</span>
+						) : null}
+					</div>
+				) : null}
+			</div>
+			{hasChildren ? (
+				<div data-slot="stat-card-content" className="mt-auto min-w-0">
+					{children}
+				</div>
+			) : null}
+		</LayerCard>
 	);
 }
 
@@ -187,8 +205,6 @@ export function StatGrid({ children, columns = 4, className }: StatGridProps) {
 		4: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4",
 	};
 	return (
-		<div className={cn("grid gap-basalt-3 md:gap-basalt-4", gridCols[columns], className)}>
-			{children}
-		</div>
+		<div className={cn("grid gap-basalt-layout", gridCols[columns], className)}>{children}</div>
 	);
 }

@@ -6,7 +6,7 @@ describe("Avatar", () => {
 	it("renders a colored circular two-letter identity and supports overrides", () => {
 		const { rerender } = render(<AvatarInitials name="Alpine Churn" size="sm" colorKey="stable" />);
 		expect(screen.getByRole("img", { name: "Alpine Churn" })).toHaveClass(
-			"rounded-full",
+			"rounded-basalt-full",
 			"size-basalt-6",
 		);
 		expect(screen.getByText("AC")).toBeInTheDocument();

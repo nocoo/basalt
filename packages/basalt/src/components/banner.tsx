@@ -11,21 +11,24 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Button, type ButtonProps } from "./button";
 
-const bannerVariants = cva("flex w-full items-start gap-basalt-3 rounded-basalt-md text-sm", {
-	variants: {
-		variant: {
-			default: "bg-basalt-info-tint text-basalt-info",
-			alert: "bg-basalt-warning-tint text-basalt-warning",
-			error: "bg-basalt-danger-tint text-basalt-danger",
-			secondary: "bg-basalt-muted text-basalt-foreground",
+const bannerVariants = cva(
+	"basalt-banner flex w-full items-start gap-basalt-space-lg rounded-basalt-md",
+	{
+		variants: {
+			variant: {
+				default: "bg-basalt-info-tint text-basalt-info",
+				alert: "bg-basalt-warning-tint text-basalt-warning",
+				error: "bg-basalt-danger-tint text-basalt-danger",
+				secondary: "text-basalt-foreground",
+			},
+			size: {
+				base: "",
+				sm: "",
+			},
 		},
-		size: {
-			base: "px-basalt-4 py-basalt-3",
-			sm: "px-basalt-3 py-basalt-2",
-		},
+		defaultVariants: { variant: "default", size: "base" },
 	},
-	defaultVariants: { variant: "default", size: "base" },
-});
+);
 
 type BannerVariant = NonNullable<VariantProps<typeof bannerVariants>["variant"]>;
 type BannerSize = NonNullable<VariantProps<typeof bannerVariants>["size"]>;
@@ -48,7 +51,7 @@ export interface BannerProps
 	variant?: VariantProps<typeof bannerVariants>["variant"];
 
 	/**
-	 * Sizing preset controlling padding geometry and action placement.
+	 * Sizing preset controlling action placement; shared banner padding stays consistent.
 	 *
 	 * Note: Defaults to "base". In compact mode ("sm"), only direct `<Banner.Action>` elements
 	 * are placed in the trailing slot, while other action content renders inline next to the description.
@@ -111,7 +114,7 @@ export interface BannerActionProps
 	/**
 	 * Sizing preset. When unspecified or null, resolves to "icon" if children are omitted,
 	 * null, or an empty string, "sm" when parent Banner is compact ("sm"), or "default" otherwise.
-	 * When iconOnly mode is resolved, an additional "size-basalt-8" class is attached.
+	 * Icon-only mode uses the shared intrinsic icon action size.
 	 */
 	size?: ButtonProps["size"];
 
@@ -174,6 +177,7 @@ function BannerRoot({
 	return (
 		<BannerContext.Provider value={{ variant: resolvedVariant, size: resolvedSize }}>
 			<div
+				data-basalt-surface={resolvedVariant === "secondary" ? "" : undefined}
 				className={cn(
 					BASALT_UI_CLASS,
 					bannerVariants({ variant: resolvedVariant, size: resolvedSize }),
@@ -182,9 +186,11 @@ function BannerRoot({
 				{...props}
 			>
 				{icon ? (
-					<span className="mt-basalt-0_5 inline-flex shrink-0 [&_svg]:size-basalt-5">{icon}</span>
+					<span className="inline-flex h-[1lh] shrink-0 items-center [&_svg]:size-basalt-icon-lg">
+						{icon}
+					</span>
 				) : null}
-				<div className="min-w-0 flex-1 space-y-basalt-0_5">
+				<div className="min-w-0 flex-1 space-y-basalt-space-xs">
 					{title ? <p className="font-medium">{title}</p> : null}
 					{description ? (
 						<div
@@ -201,7 +207,7 @@ function BannerRoot({
 					{structured ? null : children}
 				</div>
 				{trailing.length > 0 ? (
-					<div className="flex shrink-0 items-center gap-basalt-2">{trailing}</div>
+					<div className="flex shrink-0 items-center gap-basalt-space-lg">{trailing}</div>
 				) : null}
 			</div>
 		</BannerContext.Provider>
@@ -231,7 +237,7 @@ export function BannerAction({
 			variant={mapped}
 			size={size ?? (iconOnly ? "icon" : banner.size === "sm" ? "sm" : "default")}
 			icon={icon}
-			className={cn(iconOnly && "size-basalt-8", className)}
+			className={cn(iconOnly && "basalt-action-icon", className)}
 			{...props}
 		>
 			{children}

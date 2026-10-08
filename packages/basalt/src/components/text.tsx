@@ -32,11 +32,11 @@ export type TextElement =
 const textVariants = cva("text-basalt-foreground", {
 	variants: {
 		size: {
-			xs: "text-xs",
-			sm: "text-sm",
-			md: "text-sm leading-[var(--basalt-line-relaxed)]",
-			lg: "text-base",
-			xl: "text-lg",
+			xs: "text-basalt-sm",
+			sm: "text-basalt-base",
+			md: "text-basalt-base leading-[var(--basalt-line-relaxed)]",
+			lg: "text-basalt-lg",
+			xl: "text-basalt-xl",
 		},
 		tone: {
 			default: "text-basalt-foreground",

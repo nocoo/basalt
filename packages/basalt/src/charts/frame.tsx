@@ -129,16 +129,16 @@ function ChartContainer({
 			role="group"
 			aria-label={ariaLabel}
 			aria-describedby={hasSummary ? summaryId : undefined}
-			className="relative m-0 flex flex-col gap-basalt-2 p-0 min-h-0 min-w-0"
+			className="relative m-0 flex flex-col gap-basalt-space-lg p-0 min-h-0 min-w-0"
 		>
 			{hasSummary ? (
-				<div id={summaryId} className="text-xs text-basalt-muted-foreground">
+				<div id={summaryId} className="text-basalt-sm text-basalt-muted-foreground">
 					{summary}
 				</div>
 			) : null}
 			{plotContainer}
 			{hasAlternative ? (
-				<div className="text-xs text-basalt-muted-foreground">{dataAlternative}</div>
+				<div className="text-basalt-sm text-basalt-muted-foreground">{dataAlternative}</div>
 			) : null}
 		</figure>
 	);

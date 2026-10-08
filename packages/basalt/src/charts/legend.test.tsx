@@ -14,7 +14,7 @@ describe("ChartLegend", () => {
 			/>,
 		);
 		const legend = screen.getByTestId("chart-legend");
-		expect(legend).toHaveStyle({ fontSize: "12px" });
+		expect(legend).toHaveStyle({ fontSize: "var(--basalt-text-sm)" });
 		expect(screen.getByText("Income")).toBeInTheDocument();
 		expect(screen.getByText("Expense")).toBeInTheDocument();
 		expect(legend.querySelector("rect")).toHaveAttribute("fill", "rgb(1, 2, 3)");

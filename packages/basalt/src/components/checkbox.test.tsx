@@ -23,9 +23,9 @@ describe("Checkbox", () => {
 	it("keeps a square control", () => {
 		render(<Checkbox aria-label="Accept" />);
 		const box = screen.getByRole("checkbox", { name: "Accept" });
-		expect(box.className).toContain("rounded-[4px]");
-		expect(box.className).not.toContain("rounded-full");
-		expect(box.className).not.toContain("rounded-sm");
+		expect(box.className).toContain("rounded-basalt-sm");
+		expect(box.className).not.toContain("rounded-basalt-full");
+		expect(box.className).not.toContain("rounded-basalt-lg");
 	});
 
 	it("keeps keyboard focus visible on the primary fill", () => {
@@ -106,7 +106,7 @@ describe("Checkbox", () => {
 		expect(box).toHaveAttribute("value", "yes");
 		expect(box).toBeRequired();
 		expect(box.className).toContain("extra");
-		expect(box.className).toContain("rounded-[4px]");
+		expect(box.className).toContain("rounded-basalt-sm");
 	});
 
 	it("toggles uncontrolled checked state", () => {

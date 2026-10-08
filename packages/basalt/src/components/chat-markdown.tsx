@@ -24,7 +24,9 @@ function nodes(tokens: readonly Token[], streaming = false): ReactNode {
 			case "heading": {
 				const Heading = `h${Math.min(6, token.depth + 1)}` as "h2";
 				node = (
-					<Heading className="font-semibold text-base">{nodes(token.tokens, streaming)}</Heading>
+					<Heading className="font-semibold text-basalt-lg">
+						{nodes(token.tokens, streaming)}
+					</Heading>
 				);
 				break;
 			}
@@ -59,7 +61,7 @@ function nodes(tokens: readonly Token[], streaming = false): ReactNode {
 				break;
 			case "codespan":
 				node = (
-					<code className="rounded-basalt-sm bg-basalt-accent px-basalt-1 py-basalt-0_5 font-mono text-[0.9em]">
+					<code className="rounded-basalt-sm bg-basalt-accent px-basalt-space-sm py-basalt-space-xs font-mono text-basalt-sm">
 						{token.text}
 					</code>
 				);
@@ -69,7 +71,7 @@ function nodes(tokens: readonly Token[], streaming = false): ReactNode {
 				break;
 			case "blockquote":
 				node = (
-					<blockquote className="border-l-2 border-basalt-border pl-basalt-3 text-basalt-muted-foreground">
+					<blockquote className="border-l-2 border-basalt-border pl-basalt-space-lg text-basalt-muted-foreground">
 						{nodes(token.tokens, streaming)}
 					</blockquote>
 				);
@@ -80,7 +82,7 @@ function nodes(tokens: readonly Token[], streaming = false): ReactNode {
 					<List
 						start={token.ordered ? Number(token.start) || 1 : undefined}
 						className={cn(
-							"space-y-basalt-1 pl-basalt-5",
+							"space-y-basalt-space-sm pl-basalt-space-lg",
 							token.ordered ? "list-decimal" : "list-disc",
 						)}
 					>
@@ -120,13 +122,13 @@ function nodes(tokens: readonly Token[], streaming = false): ReactNode {
 			case "table":
 				node = (
 					<div className="max-w-full overflow-x-auto">
-						<table className="w-full border-collapse text-left text-xs">
+						<table className="w-full border-collapse text-left text-basalt-sm">
 							<thead>
 								<tr>
 									{token.header.map((cell, i) => (
 										<th
 											key={i}
-											className="whitespace-nowrap border-b border-basalt-border px-basalt-2 py-basalt-1_5"
+											className="whitespace-nowrap border-b border-basalt-border px-basalt-space-lg py-basalt-space-md"
 										>
 											{nodes(cell.tokens, streaming)}
 										</th>
@@ -139,7 +141,7 @@ function nodes(tokens: readonly Token[], streaming = false): ReactNode {
 										{row.map((cell, j) => (
 											<td
 												key={j}
-												className="border-b border-basalt-border px-basalt-2 py-basalt-1_5"
+												className="border-b border-basalt-border px-basalt-space-lg py-basalt-space-md"
 											>
 												{nodes(cell.tokens, streaming)}
 											</td>
@@ -172,7 +174,7 @@ export function ChatMarkdown({ content, streaming = false, className }: ChatMark
 	return (
 		<div
 			className={cn(
-				"basalt-ui min-w-0 space-y-basalt-3 break-words text-sm leading-[var(--basalt-line-relaxed)] [&_p]:whitespace-pre-wrap",
+				"basalt-ui min-w-0 space-y-basalt-space-lg break-words text-basalt-base leading-[var(--basalt-line-relaxed)] [&_p]:whitespace-pre-wrap",
 				className,
 			)}
 		>

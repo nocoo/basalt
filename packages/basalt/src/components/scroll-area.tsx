@@ -38,7 +38,7 @@ export interface ScrollAreaProps extends RootProps, ViewportProps {
 }
 
 const SCROLLBAR_CLASSES =
-	"flex touch-none select-none p-px transition-colors motion-reduce:transition-none";
+	"flex touch-none select-none p-px transition-colors basalt-motion motion-reduce:transition-none";
 
 function ScrollBar({ orientation }: { orientation: "horizontal" | "vertical" }) {
 	return (
@@ -54,7 +54,7 @@ function ScrollBar({ orientation }: { orientation: "horizontal" | "vertical" }) 
 		>
 			<ScrollAreaPrimitive.Thumb
 				data-slot="scroll-area-thumb"
-				className="relative flex-1 rounded-full bg-basalt-border"
+				className="relative flex-1 rounded-basalt-full bg-basalt-border"
 			/>
 		</ScrollAreaPrimitive.Scrollbar>
 	);

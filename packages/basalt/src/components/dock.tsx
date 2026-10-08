@@ -73,7 +73,7 @@ export function DockBody({ className, children }: DockBodyProps) {
 	return (
 		<div
 			className={cn(
-				"flex min-h-0 flex-1 flex-col gap-basalt-3 overflow-y-auto px-basalt-3 py-basalt-3",
+				"flex min-h-0 flex-1 flex-col gap-basalt-space-lg overflow-y-auto px-basalt-space-lg py-basalt-space-lg",
 				className,
 			)}
 		>
@@ -139,7 +139,7 @@ export function Dock({
 		return () => window.removeEventListener("keydown", onKeyDown);
 	}, [overlay, open, onDismiss]);
 	const panelClass = cn(
-		"overflow-hidden bg-basalt-background transition-[width] duration-300 ease-in-out",
+		"overflow-hidden bg-basalt-background transition-[width] basalt-motion duration-basalt-normal ease-basalt",
 		overlay ? cn("absolute top-0 right-0 h-full", OVERLAY_LAYER) : "sticky top-0 h-screen shrink-0",
 		OVERLAY_MOTION,
 		className,

@@ -37,7 +37,7 @@ describe("Toolbar", () => {
 			</Toolbar>,
 		);
 		const button = screen.getByRole("button", { name: "Save" });
-		expect(button.className).toContain("hover:bg-basalt-accent");
+		expect(button.className).toContain("hover:bg-basalt-hover");
 		fireEvent.click(button);
 		expect(onClick).toHaveBeenCalledOnce();
 	});

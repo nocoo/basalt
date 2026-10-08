@@ -56,12 +56,13 @@ describe("ToggleGroup", () => {
 			</ToggleGroup>,
 		);
 		const group = screen.getByRole("radiogroup");
-		expect(group.className).toContain("rounded-full");
+		expect(group.className).toContain("rounded-basalt-full");
 		expect(group.className).toContain("bg-basalt-muted");
+		expect(screen.getByText("Live")).toHaveClass("leading-[var(--basalt-line-body)]");
 		expect(screen.getByText("Live").className).toContain(
-			"aria-checked:text-basalt-primary-foreground",
+			"aria-checked:text-basalt-selected-foreground",
 		);
-		expect(screen.getByText("Live").className).not.toContain("aria-pressed:bg-basalt-primary");
+		expect(screen.getByText("Live").className).not.toContain("aria-pressed:bg-basalt-selected");
 	});
 
 	it("puts a sliding indicator behind the selected single item", () => {
@@ -75,12 +76,12 @@ describe("ToggleGroup", () => {
 		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
 		expect(indicator).toBeTruthy();
 		expect(container.firstChild?.firstChild).toBe(indicator);
-		expect(indicator.className).toContain("bg-basalt-primary");
-		expect(indicator.className).toContain("shadow-sm");
-		expect(indicator.style.left).toBe("4px");
+		expect(indicator.className).toContain("bg-basalt-selected");
+		expect(indicator.className).not.toContain("border");
+		expect(indicator.style.transform).toBe("translate(4px, 2px)");
 		expect(indicator.style.width).toBe("42px");
 		expect(indicator.style.height).toBe("28px");
-		expect(indicator.className).not.toContain("duration-200");
+		expect(indicator.className).not.toContain("basalt-selection-motion");
 		restore();
 	});
 
@@ -98,10 +99,9 @@ describe("ToggleGroup", () => {
 		fireEvent.click(screen.getByText("Mock"));
 		await flushFrame();
 		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
-		expect(indicator.style.left).toBe("50px");
+		expect(indicator.style.transform).toBe("translate(50px, 2px)");
 		expect(indicator.style.width).toBe("48px");
-		expect(indicator.className).toContain("duration-200");
-		expect(indicator.className).toContain("ease-out");
+		expect(indicator.className).toContain("basalt-selection-motion");
 		restore();
 	});
 
@@ -129,12 +129,12 @@ describe("ToggleGroup", () => {
 			rerender(group(open));
 			await flushFrame();
 			expect(screen.getByRole("radio", { name: "Live" })).toHaveAttribute("aria-checked", "true");
-			expect(indicator.style.left).toBe("4px");
+			expect(indicator.style.transform).toBe("translate(4px, 2px)");
 			expect(indicator.style.width).toBe("42px");
 		}
 		fireEvent.click(screen.getByRole("radio", { name: "Mock" }));
 		await flushFrame();
-		expect(indicator.style.left).toBe("50px");
+		expect(indicator.style.transform).toBe("translate(50px, 2px)");
 		expect(indicator.style.width).toBe("48px");
 	});
 
@@ -208,8 +208,8 @@ describe("ToggleGroup", () => {
 		expect(container.querySelector('[data-slot="selection-indicator"]')).toBeNull();
 		expect(screen.getByText("Live")).toHaveAttribute("data-state", "on");
 		expect(screen.getByText("Mock")).toHaveAttribute("data-state", "on");
-		expect(screen.getByText("Live").className).toContain("aria-pressed:bg-basalt-primary");
-		expect(screen.getByText("Live").className).toContain("aria-pressed:shadow-sm");
+		expect(screen.getByText("Live").className).toContain("aria-pressed:bg-basalt-selected");
+		expect(screen.getByText("Live").className).not.toContain("aria-pressed:border");
 	});
 
 	it("forwards the root ref", () => {

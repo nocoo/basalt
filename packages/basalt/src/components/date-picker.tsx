@@ -854,7 +854,7 @@ export function DatePicker({
 				readOnly={readOnly}
 				min={mode === "range" ? undefined : min}
 				max={mode === "range" ? undefined : max}
-				className="sr-only mb-basalt-2 h-basalt-control-inset"
+				className="sr-only mb-basalt-space-lg min-h-basalt-control-inset"
 				style={{
 					position: "absolute",
 					width: 1,
@@ -912,14 +912,14 @@ export function DatePicker({
 				<span
 					id={errorId}
 					role="alert"
-					className="mt-basalt-1 block text-xs text-basalt-destructive"
+					className="mt-basalt-space-sm block text-basalt-sm text-basalt-destructive"
 				>
 					{validationMessage}
 				</span>
 			) : null}
 			<PopoverContent
 				arrow={false}
-				className="w-basalt-64 p-basalt-3"
+				className="w-basalt-64 p-basalt-space-lg"
 				aria-label={calendarLabel}
 				aria-describedby={keyboardInstructionsId}
 				onOpenAutoFocus={(event) => {
@@ -948,13 +948,13 @@ export function DatePicker({
 				}}
 			>
 				{presets && presets.length > 0 ? (
-					<div className="mb-basalt-2 flex flex-wrap gap-basalt-1">
+					<div className="mb-basalt-space-lg flex flex-wrap gap-basalt-space-sm">
 						{presets.map((preset) => (
 							<Button
 								key={preset.label}
 								type="button"
 								variant="ghost"
-								className="h-basalt-control-inset px-basalt-2 text-xs"
+								className="min-h-basalt-control-inset px-basalt-space-lg text-basalt-sm"
 								disabled={disabled || readOnly}
 								onClick={() => applyPreset(preset)}
 							>
@@ -963,7 +963,7 @@ export function DatePicker({
 						))}
 					</div>
 				) : null}
-				<div className="mb-basalt-2 flex items-center justify-between gap-basalt-2">
+				<div className="mb-basalt-space-lg flex items-center justify-between gap-basalt-space-lg">
 					<Button
 						type="button"
 						variant="ghost"
@@ -985,7 +985,7 @@ export function DatePicker({
 						id={monthLiveId}
 						aria-live="polite"
 						aria-atomic="true"
-						className="text-sm font-medium"
+						className="text-basalt-base font-medium"
 					>
 						{formatCivil(activeMonth, locale, { month: "long", year: "numeric" })}
 					</span>
@@ -1127,7 +1127,7 @@ export function DatePicker({
 								<th
 									key={`${day}-${index}`}
 									scope="col"
-									className="h-basalt-control text-center text-xs font-medium text-basalt-muted-foreground"
+									className="min-h-basalt-control text-center text-basalt-sm font-medium text-basalt-muted-foreground"
 								>
 									{day}
 								</th>
@@ -1144,7 +1144,7 @@ export function DatePicker({
 											<td
 												key={`empty-${index}`}
 												role="gridcell"
-												className="h-basalt-control p-0 text-center"
+												className="min-h-basalt-control p-0 text-center"
 												ref={() => {
 													dayRefs.current[index] = null;
 												}}
@@ -1175,7 +1175,7 @@ export function DatePicker({
 											key={iso}
 											role="gridcell"
 											aria-selected={isSelected ? "true" : undefined}
-											className="h-basalt-control p-0 text-center"
+											className="min-h-basalt-control p-0 text-center"
 										>
 											<button
 												type="button"
@@ -1189,13 +1189,13 @@ export function DatePicker({
 												disabled={disabled || readOnly || !inRange}
 												className={cn(
 													CALENDAR_BUTTON,
-													"mx-auto flex h-basalt-control w-basalt-control items-center justify-center rounded-basalt-md text-sm",
+													"mx-auto flex min-h-basalt-control w-basalt-control items-center justify-center rounded-basalt-md text-basalt-base",
 													inMonth ? "text-basalt-foreground" : "text-basalt-muted-foreground",
-													inRange && "hover:bg-basalt-accent",
-													inSelectedRange && !isRangeEdge && "bg-basalt-accent",
+													inRange && "hover:bg-basalt-hover",
+													inSelectedRange && !isRangeEdge && "bg-basalt-selected",
 													inRange &&
 														(mode === "range" ? isRangeEdge : isSelected) &&
-														"bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary/90",
+														"bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary-hover",
 												)}
 												onClick={() => inRange && commit(iso)}
 											>

@@ -80,7 +80,7 @@ const SwitchRoot = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Roo
 		<SwitchPrimitives.Root
 			className={cn(
 				BASALT_UI_CLASS,
-				"peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors data-[state=checked]:bg-basalt-primary data-[state=unchecked]:bg-basalt-input disabled:cursor-not-allowed disabled:opacity-50",
+				"peer inline-flex shrink-0 cursor-pointer items-center rounded-basalt-full border-2 border-transparent transition-colors basalt-motion data-[state=checked]:bg-basalt-primary data-[state=unchecked]:bg-basalt-input disabled:cursor-not-allowed disabled:opacity-50",
 				FOCUS_RING,
 				size === "sm" ? "h-basalt-4 w-basalt-7" : "h-basalt-6 w-basalt-11",
 				className,
@@ -90,7 +90,7 @@ const SwitchRoot = React.forwardRef<React.ElementRef<typeof SwitchPrimitives.Roo
 		>
 			<SwitchPrimitives.Thumb
 				className={cn(
-					"pointer-events-none block rounded-full bg-white shadow-lg ring-0 transition-transform data-[state=unchecked]:translate-x-0",
+					"pointer-events-none block rounded-basalt-full bg-basalt-on-solid shadow-lg ring-0 transition-transform basalt-motion data-[state=unchecked]:translate-x-0",
 					size === "sm"
 						? "h-basalt-3 w-basalt-3 data-[state=checked]:translate-x-basalt-3"
 						: "h-basalt-5 w-basalt-5 data-[state=checked]:translate-x-basalt-5",
@@ -141,7 +141,7 @@ const SwitchGroup = React.forwardRef<HTMLFieldSetElement, SwitchGroupProps>(
 				>
 					{children}
 					{group.invalid ? (
-						<p id={group.errorId} className="text-xs text-basalt-destructive" role="alert">
+						<p id={group.errorId} className="text-basalt-sm text-basalt-destructive" role="alert">
 							{error}
 						</p>
 					) : null}
@@ -157,7 +157,7 @@ const SwitchLegend = React.forwardRef<HTMLLegendElement, SwitchLegendProps>(
 		<legend
 			ref={ref}
 			className={cn(
-				"mb-basalt-field-gap text-sm font-medium leading-[var(--basalt-line-body)] text-basalt-foreground",
+				"mb-basalt-field-gap text-basalt-base font-medium leading-[var(--basalt-line-body)] text-basalt-foreground",
 				className,
 			)}
 			{...props}
@@ -200,7 +200,7 @@ const SwitchItem = React.forwardRef<
 	return (
 		<label
 			htmlFor={controlId}
-			className="flex items-center gap-basalt-2 text-sm text-basalt-foreground"
+			className="flex items-center gap-basalt-space-lg text-basalt-base text-basalt-foreground"
 		>
 			{box}
 			{children}

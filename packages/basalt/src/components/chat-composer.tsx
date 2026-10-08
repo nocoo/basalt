@@ -119,13 +119,16 @@ export function ChatComposer({
 
 	return (
 		<form className={cn("basalt-ui shrink-0", className)} onSubmit={onSubmit}>
-			<div className="rounded-basalt-lg bg-basalt-control p-basalt-panel-y ring-1 ring-basalt-border focus-within:ring-basalt-ring">
+			<div className="rounded-basalt-lg bg-basalt-control p-basalt-space-lg ring-1 ring-basalt-border focus-within:ring-basalt-ring">
 				{attachments.length > 0 && (
-					<ul aria-label="Attachments" className="mb-basalt-2 flex flex-wrap gap-basalt-1_5">
+					<ul
+						aria-label="Attachments"
+						className="mb-basalt-space-lg flex flex-wrap gap-basalt-space-md"
+					>
 						{attachments.map((file) => (
 							<li
 								key={file.id}
-								className="flex min-w-0 max-w-full items-center gap-basalt-1 rounded-basalt-md bg-basalt-secondary py-basalt-1 pl-basalt-2 pr-basalt-1 text-xs"
+								className="flex min-w-0 max-w-full items-center gap-basalt-space-sm rounded-basalt-md bg-basalt-secondary py-basalt-space-sm pl-basalt-space-lg pr-basalt-space-sm text-basalt-sm"
 							>
 								<Paperclip aria-hidden="true" className="size-basalt-icon shrink-0" />
 								<span className="truncate">{file.name}</span>
@@ -163,10 +166,10 @@ export function ChatComposer({
 					aria-label={label}
 					aria-describedby={vm.error ? errorId : undefined}
 					aria-description="Enter to send, Shift+Enter for a new line"
-					className="basalt-chat-input min-h-[calc(1lh+var(--basalt-space-2))] resize-none overflow-y-auto border-0 bg-transparent px-basalt-1 py-basalt-1 text-sm leading-[var(--basalt-line-body)] shadow-none ring-0 outline-none"
+					className="basalt-chat-input min-h-[calc(1lh+var(--basalt-space-2))] resize-none overflow-y-auto border-0 bg-transparent px-basalt-space-sm py-basalt-space-sm text-basalt-base leading-[var(--basalt-line-body)] shadow-none ring-0 outline-none"
 				/>
 				<div className="mt-basalt-content-gap flex items-center justify-between gap-basalt-content-gap">
-					<div className="flex min-w-0 flex-1 flex-wrap items-center gap-basalt-1">
+					<div className="flex min-w-0 flex-1 flex-wrap items-center gap-basalt-space-sm">
 						{onFilesSelect && (
 							<>
 								<input
@@ -221,7 +224,11 @@ export function ChatComposer({
 				</div>
 			</div>
 			{vm.error && (
-				<p id={errorId} role="alert" className="mt-basalt-content-gap text-xs text-basalt-danger">
+				<p
+					id={errorId}
+					role="alert"
+					className="mt-basalt-content-gap text-basalt-sm text-basalt-danger"
+				>
 					{vm.error}
 				</p>
 			)}

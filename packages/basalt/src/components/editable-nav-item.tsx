@@ -2,9 +2,11 @@ import { Folder, Pencil } from "lucide-react";
 import { type ReactNode, useId, useLayoutEffect, useRef, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { NAV_ROW_CLASS } from "../utils/navigation";
 import { Button } from "./button";
 import { InlineEditable } from "./inline-editable";
 import { Link } from "./link";
+import { FOCUS_INSET } from "./overlay";
 
 export interface EditableNavItemProps {
 	/** Current display name. */
@@ -61,12 +63,20 @@ export function EditableNavItem({
 	}, [editing]);
 	const content = (
 		<>
-			<span className="shrink-0" aria-hidden="true">
-				{icon}
-			</span>
+			{icon && (
+				<span
+					className="flex size-basalt-icon-lg shrink-0 items-center justify-center [&>svg]:size-basalt-icon-lg"
+					aria-hidden="true"
+				>
+					{icon}
+				</span>
+			)}
 			<span className="min-w-0 flex-1 truncate text-left">{label}</span>
 			{count != null && (
-				<span id={countId} className="shrink-0 text-xs tabular-nums text-basalt-muted-foreground">
+				<span
+					id={countId}
+					className="shrink-0 text-basalt-sm tabular-nums text-basalt-muted-foreground"
+				>
 					{" "}
 					{count}
 				</span>
@@ -75,16 +85,18 @@ export function EditableNavItem({
 	);
 	return (
 		<div
+			data-basalt-hover-item={editing ? undefined : ""}
+			data-hover-selected={selected && !editing}
+			data-disabled={disabled ? "" : undefined}
 			className={cn(
 				BASALT_UI_CLASS,
-				"min-w-0 rounded-basalt-md",
-				selected && "bg-basalt-accent",
+				"basalt-nav-item min-w-0 shrink-0 rounded-basalt-md data-disabled:cursor-default data-disabled:hover:bg-transparent",
 				className,
 			)}
 		>
 			{editing && onRename ? (
 				<InlineEditable
-					className="p-basalt-2"
+					className="p-basalt-space-lg"
 					label={`${renameLabel} ${label}`}
 					value={label}
 					editing
@@ -98,12 +110,16 @@ export function EditableNavItem({
 					}}
 				/>
 			) : (
-				<div className="flex min-w-0 items-center gap-basalt-1">
+				<div className="flex min-w-0 items-center gap-basalt-nav-gap">
 					<Button
 						asChild={!!href}
 						variant="ghost"
 						disabled={disabled}
-						className="min-w-0 flex-1 justify-start gap-basalt-2"
+						className={cn(
+							NAV_ROW_CLASS,
+							FOCUS_INSET,
+							"h-auto flex-1 justify-start hover:bg-transparent hover:border-transparent focus-visible:ring-offset-0",
+						)}
 						aria-current={selected ? "page" : undefined}
 						aria-label={label}
 						aria-describedby={count != null ? countId : undefined}
@@ -129,7 +145,9 @@ export function EditableNavItem({
 							<Pencil />
 						</Button>
 					)}
-					{actions && <div className="flex shrink-0 items-center gap-basalt-1">{actions}</div>}
+					{actions && (
+						<div className="flex shrink-0 items-center gap-basalt-space-sm">{actions}</div>
+					)}
 				</div>
 			)}
 		</div>

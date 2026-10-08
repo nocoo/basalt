@@ -98,12 +98,12 @@ export const Field = React.forwardRef<HTMLDivElement, FieldProps>(
 						})
 					: children}
 				{hint && !hasError ? (
-					<p id={hintId} className="text-xs text-basalt-muted-foreground">
+					<p id={hintId} className="text-basalt-sm text-basalt-muted-foreground">
 						{hint}
 					</p>
 				) : null}
 				{hasError ? (
-					<p id={errorId} className="text-xs text-basalt-destructive" role="alert">
+					<p id={errorId} className="text-basalt-sm text-basalt-destructive" role="alert">
 						{errorMessage}
 					</p>
 				) : null}

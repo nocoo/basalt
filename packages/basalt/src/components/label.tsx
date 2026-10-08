@@ -21,7 +21,7 @@ export const Label = React.forwardRef<React.ElementRef<typeof LabelPrimitive.Roo
 			ref={ref}
 			className={cn(
 				BASALT_UI_CLASS,
-				"inline-flex items-center gap-basalt-1 text-sm font-medium leading-none text-basalt-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
+				"inline-flex items-center gap-basalt-space-sm text-basalt-base font-medium leading-basalt-tight text-basalt-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
 				className,
 			)}
 			{...props}

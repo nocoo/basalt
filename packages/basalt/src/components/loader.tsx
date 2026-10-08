@@ -40,7 +40,7 @@ export function Loader({
 			aria-label={label}
 			className={cn(
 				BASALT_UI_CLASS,
-				"inline-flex items-center gap-basalt-2_5 text-sm text-basalt-muted-foreground",
+				"inline-flex items-center gap-basalt-space-lg text-basalt-base text-basalt-muted-foreground",
 				className,
 			)}
 			{...props}
@@ -49,14 +49,14 @@ export function Loader({
 				aria-hidden="true"
 				data-basalt-loader=""
 				data-animated={animate}
-				className="grid shrink-0 grid-cols-3 gap-[1.5px]"
+				className="grid shrink-0 grid-cols-3 gap-basalt-space-xs"
 				style={{ width: size, height: size }}
 			>
 				{ORBIT_ORDER.map((cell, step) => (
 					<span
 						key={`pixel-${cell}`}
 						data-step={step}
-						className="rounded-[1px] bg-current"
+						className="rounded-basalt-sm bg-current"
 						style={
 							{
 								"--basalt-pixel-delay": `${step * 100 - 800}ms`,
@@ -68,13 +68,20 @@ export function Loader({
 			</span>
 			{showLabel && (
 				<span
-					className={cn("text-[13px] font-medium", shimmer && animate && "basalt-shimmer-label")}
+					className={cn(
+						"text-basalt-code font-medium",
+						shimmer && animate && "basalt-shimmer-label",
+					)}
 				>
 					{label}
 				</span>
 			)}
 			{vm.visible && (
-				<span aria-hidden="true" data-basalt-elapsed="" className="font-mono text-xs tabular-nums">
+				<span
+					aria-hidden="true"
+					data-basalt-elapsed=""
+					className="font-mono text-basalt-sm tabular-nums"
+				>
 					{vm.text}
 				</span>
 			)}

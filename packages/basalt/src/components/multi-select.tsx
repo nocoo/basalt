@@ -180,11 +180,11 @@ export function MultiSelect({
 	}
 
 	return (
-		<div className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-2", className)}>
+		<div className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-space-lg", className)}>
 			{showChips && selected.length > 0 && (
 				<div
 					role="group"
-					className="flex flex-wrap gap-basalt-1_5"
+					className="flex flex-wrap gap-basalt-space-md"
 					aria-label={`${label}: ${countText}`}
 				>
 					{selected.map((item) => {
@@ -193,14 +193,14 @@ export function MultiSelect({
 						return (
 							<span
 								key={item}
-								className="inline-flex max-w-full items-center gap-basalt-1 rounded-basalt-md border border-basalt-border bg-basalt-accent py-basalt-0_5 pl-basalt-2 text-xs"
+								className="inline-flex max-w-full items-center gap-basalt-space-sm rounded-basalt-md border border-basalt-border bg-basalt-selected py-basalt-space-xs pl-basalt-space-lg text-basalt-sm"
 							>
 								<span className="min-w-0 break-words">{text}</span>
 								<button
 									type="button"
 									disabled={disabled || option?.disabled}
 									aria-label={`${removeLabel} ${text}`}
-									className="rounded p-basalt-1 focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
+									className="rounded-basalt-sm p-basalt-space-sm focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
 									onClick={() => changeValue(selected.filter((value) => value !== item))}
 								>
 									<X className="size-basalt-icon-sm" aria-hidden="true" />
@@ -243,7 +243,7 @@ export function MultiSelect({
 				</PopoverTrigger>
 				<PopoverContent
 					align="start"
-					className="w-basalt-72 max-w-[calc(100vw-2rem)] p-basalt-2"
+					className="w-basalt-72 max-w-[calc(100vw-2rem)] p-basalt-space-lg"
 					aria-label={label}
 					onOpenAutoFocus={(event) => {
 						event.preventDefault();
@@ -300,7 +300,7 @@ export function MultiSelect({
 						aria-label={label}
 						aria-multiselectable="true"
 						aria-busy={loading}
-						className="basalt-hover-list mt-basalt-2 max-h-basalt-60 overflow-y-auto"
+						className="basalt-hover-list mt-basalt-space-lg max-h-basalt-60 overflow-y-auto"
 					>
 						{!loading &&
 							visible.map((option, index) => (
@@ -314,10 +314,11 @@ export function MultiSelect({
 									key={option.value}
 									tabIndex={-1}
 									aria-selected={selected.includes(option.value)}
+									data-hover-selected={selected.includes(option.value)}
 									aria-disabled={option.disabled || undefined}
 									disabled={option.disabled}
 									className={cn(
-										"flex w-full items-center gap-basalt-2 rounded-basalt-md px-basalt-2 py-basalt-2 text-left text-sm disabled:opacity-40",
+										"flex w-full items-center gap-basalt-space-lg rounded-basalt-md px-basalt-space-lg py-basalt-space-lg text-left text-basalt-base disabled:opacity-40",
 									)}
 									onPointerMove={(event) => {
 										const previous = pointer.current;
@@ -335,7 +336,7 @@ export function MultiSelect({
 									<span className="min-w-0 flex-1">
 										<span className="block break-words">{option.label}</span>
 										{option.description && (
-											<span className="block text-xs text-basalt-muted-foreground">
+											<span className="block text-basalt-sm text-basalt-muted-foreground">
 												{option.description}
 											</span>
 										)}
@@ -349,7 +350,7 @@ export function MultiSelect({
 					{(loading || visible.length === 0) && (
 						<p
 							role="status"
-							className="px-basalt-2 py-basalt-4 text-sm text-basalt-muted-foreground"
+							className="px-basalt-space-lg py-basalt-space-lg text-basalt-base text-basalt-muted-foreground"
 						>
 							{loading ? loadingLabel : emptyLabel}
 						</p>

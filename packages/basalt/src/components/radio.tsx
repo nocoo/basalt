@@ -66,7 +66,7 @@ const RadioLegend = React.forwardRef<HTMLLegendElement, RadioLegendProps>(
 		<legend
 			ref={ref}
 			className={cn(
-				"mb-basalt-field-gap text-sm font-medium leading-[var(--basalt-line-body)] text-basalt-foreground",
+				"mb-basalt-field-gap text-basalt-base font-medium leading-[var(--basalt-line-body)] text-basalt-foreground",
 				className,
 			)}
 			{...props}
@@ -123,7 +123,7 @@ export const RadioGroup = React.forwardRef<
 				<RadioGroupPrimitive.Root
 					ref={ref}
 					disabled={disabled}
-					className={cn("grid gap-basalt-2", className)}
+					className={cn("grid gap-basalt-space-lg", className)}
 					{...props}
 					aria-labelledby={mergedLabelledBy}
 					aria-describedby={mergedDescribedBy}
@@ -132,7 +132,7 @@ export const RadioGroup = React.forwardRef<
 					{items}
 				</RadioGroupPrimitive.Root>
 				{invalid ? (
-					<p id={errorId} className="text-xs text-basalt-destructive" role="alert">
+					<p id={errorId} className="text-basalt-sm text-basalt-destructive" role="alert">
 						{error}
 					</p>
 				) : null}
@@ -148,7 +148,7 @@ const RadioRoot = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.I
 			ref={ref}
 			className={cn(
 				BASALT_UI_CLASS,
-				"aspect-square shrink-0 rounded-full border border-basalt-primary text-basalt-primary disabled:cursor-not-allowed disabled:opacity-50",
+				"aspect-square shrink-0 rounded-basalt-full border border-basalt-primary text-basalt-primary disabled:cursor-not-allowed disabled:opacity-50",
 				RADIO_SIZE_CLASS[size],
 				FOCUS_RING,
 				className,

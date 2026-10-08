@@ -60,11 +60,11 @@ export function TablePager({
 		<div
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex flex-col gap-basalt-3 md:flex-row md:items-center md:justify-between",
+				"flex flex-col gap-basalt-space-lg md:flex-row md:items-center md:justify-between",
 				className,
 			)}
 		>
-			<p className="text-sm text-basalt-muted-foreground">
+			<p className="text-basalt-base text-basalt-muted-foreground">
 				{formatRange ? formatRange(range) : defaultRangeText(range)}
 			</p>
 			<Pagination

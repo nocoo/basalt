@@ -3,6 +3,29 @@ import { describe, expect, it } from "vitest";
 import { Button, LinkButton } from "./button";
 
 describe("Button", () => {
+	it.each(["secondary", "outline", "ghost"] as const)(
+		"uses persistent selection styling for neutral %s actions",
+		(variant) => {
+			render(
+				<Button variant={variant} aria-pressed>
+					Pin
+				</Button>,
+			);
+			expect(screen.getByRole("button")).toHaveClass("basalt-choice");
+			expect(screen.getByRole("button")).toHaveAttribute("aria-pressed", "true");
+		},
+	);
+	it.each(["default", "destructive"] as const)(
+		"preserves semantic %s fills instead of applying neutral selection",
+		(variant) => {
+			render(
+				<Button variant={variant} aria-pressed>
+					Confirm
+				</Button>,
+			);
+			expect(screen.getByRole("button")).not.toHaveClass("basalt-choice");
+		},
+	);
 	it.each(["default", "sm", "icon", "lg"] as const)(
 		"sizes icons proportionally for %s buttons",
 		(size) => {

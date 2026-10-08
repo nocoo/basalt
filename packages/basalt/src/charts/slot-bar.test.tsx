@@ -99,10 +99,10 @@ describe("SlotBarChart", () => {
 	it("applies custom heightClass and gapClass", () => {
 		const items: SlotBarItem[] = [{ color: "bg-blue-500" }];
 		const { container } = render(
-			<SlotBarChart items={items} heightClass="h-10" gapClass="gap-1" />,
+			<SlotBarChart items={items} heightClass="h-10" gapClass="gap-basalt-space-sm" />,
 		);
 		const wrapper = container.querySelector(".flex.w-full") as HTMLElement;
 		expect(wrapper.classList.contains("h-10")).toBe(true);
-		expect(wrapper.classList.contains("gap-1")).toBe(true);
+		expect(wrapper.classList.contains("gap-basalt-space-sm")).toBe(true);
 	});
 });

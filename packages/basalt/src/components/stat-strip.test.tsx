@@ -48,7 +48,7 @@ describe("StatStrip", () => {
 				id="overview-stats"
 				data-testid="stats"
 				aria-label="Workspace totals"
-				className="mt-4"
+				className="mt-basalt-space-lg"
 				items={[
 					{ label: <span>Active</span>, value: <strong>12</strong> },
 					{ label: "Queued", value: "4" },
@@ -60,7 +60,7 @@ describe("StatStrip", () => {
 		expect(ref.current).toBe(list);
 		expect(list).toHaveAttribute("id", "overview-stats");
 		expect(list).toHaveAccessibleName("Workspace totals");
-		expect(list.className).toContain("mt-4");
+		expect(list.className).toContain("mt-basalt-space-lg");
 		expect(list.className).toContain("grid-cols-2");
 		expect(list.className).toContain("md:grid-cols-4");
 		expect(within(list).getByText("Active").tagName).toBe("SPAN");

@@ -22,7 +22,7 @@ describe("standalone css", () => {
 		expect(css).toContain("min-height: var(--basalt-size-touch)");
 	});
 	it("includes control utilities without preflight", () => {
-		expect(css).toContain(".h-basalt-control");
+		expect(css).toContain(".basalt-action");
 		expect(css).toContain(".h-basalt-16");
 		expect(css).toContain(".w-basalt-16");
 		expect(css).toContain(".scale-75");
@@ -54,18 +54,19 @@ describe("standalone css", () => {
 		expect(css).toContain("data-basalt-command-animated");
 		expect(css).toContain(".basalt-hover-list::before");
 		expect(css).toContain("--basalt-hover-y");
-		expect(css).toContain("transform 180ms var(--basalt-motion-ease-enter)");
+		expect(css).toContain("transform var(--basalt-motion-normal) var(--basalt-motion-ease)");
 		expect(css).toContain("prefers-reduced-motion: reduce");
-		expect(css).toContain("transition-property: left,width,top,height");
+		expect(css).toContain(".basalt-selection-motion");
 		expect(css).toContain(".shadow-sm");
 		expect(css).toContain(".sticky");
-		expect(css).toContain(".w-\\[68px\\]");
+		expect(css).toContain(".w-\\[4\\.25rem\\]");
 		expect(css).toContain(".cursor-col-resize");
 		expect(css).toContain(".order-last");
-		expect(css).toContain(".max-h-\\[300px\\]");
+		expect(css).toContain(".max-h-\\[18\\.75rem\\]");
 		expect(css).toContain(".overflow-y-hidden {");
 		expect(css).toContain(".overflow-x-hidden {");
-		expect(css).toContain("data-\\[selected\\=true\\]\\:bg-basalt-accent");
+		expect(css).toContain(".bg-basalt-selected");
+		expect(css).toContain("data-\\[selected\\=true\\]\\:text-basalt-accent-foreground");
 		expect(css).toContain(".ml-auto");
 		expect(css).toContain(".tracking-widest");
 		expect(css).toContain("backdrop-filter");
@@ -73,7 +74,7 @@ describe("standalone css", () => {
 	});
 
 	it("includes scoped base styles under basalt-ui without global leakage", () => {
-		expect(css).toContain("@layer theme, base, utilities;");
+		expect(css).toContain("@layer theme, base, components, utilities;");
 		expect(css).toContain(".basalt-ui");
 		expect(css).toContain("box-sizing: border-box;");
 		expect(css).not.toMatch(/(?:^|\})\s*\*\s*\{[^}]*box-sizing:\s*border-box/);

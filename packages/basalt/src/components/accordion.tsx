@@ -146,7 +146,7 @@ export const AccordionTrigger = React.forwardRef<
 			ref={ref}
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex flex-1 items-center justify-between py-basalt-3 text-sm font-medium",
+				"flex flex-1 items-center justify-between py-basalt-space-lg text-basalt-base font-medium",
 				className,
 			)}
 			{...props}

@@ -13,13 +13,13 @@ describe("ClipboardText", () => {
 		expect(root?.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
-		expect(root?.className.split(/\s+/)).toContain("h-basalt-control");
+		expect(root?.className.split(/\s+/)).toContain("min-h-basalt-control");
 		expect(root?.className).toContain("border-basalt-border");
 		expect(root?.className).not.toContain("overflow-hidden");
 		expect(root?.className).not.toContain("bg-basalt-background");
 		expect(root?.className).not.toContain("rounded-basalt-lg");
 		expect(screen.getByText("bun add @nocoo/basalt").className).toContain("rounded-l-basalt-md");
-		expect(screen.getByText("bun add @nocoo/basalt").className).not.toContain("py-2");
+		expect(screen.getByText("bun add @nocoo/basalt").className).not.toContain("py-basalt-space-lg");
 		expect(screen.getByRole("button", { name: "Copy" }).className).toContain("rounded-r-basalt-md");
 	});
 

@@ -20,7 +20,7 @@ export const API = [
 			},
 			{
 				name: "padding",
-				type: "\"lg\" | \"md\" | \"none\" | \"sm\"",
+				type: "\"lg\" | \"md\" | \"none\" | \"sm\" | \"xl\"",
 				required: false,
 				default: "\"md\"",
 				description: "Inner spacing for unstructured card content.",
@@ -45,7 +45,15 @@ export const API = [
 	},
 	{
 		name: "LayerCard.Header",
-		props: [],
+		props: [
+			{
+				name: "asChild",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Apply header insets to one child, such as a CollapsibleTrigger, without another wrapper.",
+			},
+		],
 	},
 	{
 		name: "LayerCard.Body",

@@ -229,9 +229,8 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 	{
 		slug: "layer-card",
 		sourceFile: "packages/basalt/src/components/layer-card.tsx",
-		propsType: "LayerCardSectionProps",
+		propsType: "LayerCardHeaderProps",
 		surface: "LayerCard.Header",
-		allowEmpty: true,
 	},
 	{
 		slug: "layer-card",

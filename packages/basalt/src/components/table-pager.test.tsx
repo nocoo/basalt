@@ -65,7 +65,7 @@ describe("TablePager", () => {
 			expect.arrayContaining([
 				"flex",
 				"flex-col",
-				"gap-basalt-3",
+				"gap-basalt-space-lg",
 				"md:flex-row",
 				"md:items-center",
 				"md:justify-between",

@@ -38,10 +38,10 @@ export function DiffTable({
 			className={cn("min-w-0 overflow-hidden leading-[var(--basalt-line-body)]", className)}
 		>
 			<header className="flex flex-wrap items-center justify-between gap-basalt-content-gap border-b border-basalt-border px-basalt-panel-x py-basalt-panel-y">
-				<h3 id={id} className="text-[13px] font-medium">
+				<h3 id={id} className="text-basalt-code font-medium">
 					{title}
 				</h3>
-				<span className="text-xs text-basalt-muted-foreground">Select changes to apply</span>
+				<span className="text-basalt-sm text-basalt-muted-foreground">Select changes to apply</span>
 			</header>
 			<div
 				role="region"
@@ -83,7 +83,7 @@ export function DiffTable({
 										vm.toggle(row.id);
 									}}
 								>
-									<TableCell className="whitespace-nowrap text-xs">
+									<TableCell className="whitespace-nowrap text-basalt-sm">
 										<span className="inline-flex items-center gap-basalt-control-gap leading-[var(--basalt-line-body)]">
 											{row.change === "add" ? (
 												<Plus aria-hidden="true" className="size-basalt-icon-sm" />
@@ -135,19 +135,25 @@ export function DiffTable({
 				</Table>
 			</div>
 			{vm.error && (
-				<p role="alert" className="px-basalt-panel-x py-basalt-panel-y text-xs text-basalt-danger">
+				<p
+					role="alert"
+					className="px-basalt-panel-x py-basalt-panel-y text-basalt-sm text-basalt-danger"
+				>
 					{vm.error}
 				</p>
 			)}
 			<footer className="flex flex-wrap items-center justify-between gap-basalt-content-gap border-t border-basalt-border px-basalt-panel-x py-basalt-panel-y">
 				{vm.status === "applied" ? (
-					<p role="status" className="inline-flex items-center gap-basalt-1_5 text-sm">
+					<p
+						role="status"
+						className="inline-flex items-center gap-basalt-space-md text-basalt-base"
+					>
 						<Check aria-hidden="true" className="size-basalt-icon" />
 						{vm.selected.length} changes applied
 					</p>
 				) : (
 					<>
-						<span className="text-xs tabular-nums text-basalt-muted-foreground">
+						<span className="text-basalt-sm tabular-nums text-basalt-muted-foreground">
 							{vm.removals} removals · {vm.additions} additions
 						</span>
 						<Button

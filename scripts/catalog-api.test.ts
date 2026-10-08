@@ -300,9 +300,8 @@ describe("catalog API generator contract", () => {
 			{
 				slug: "layer-card",
 				sourceFile: "packages/basalt/src/components/layer-card.tsx",
-				propsType: "LayerCardSectionProps",
+				propsType: "LayerCardHeaderProps",
 				surface: "LayerCard.Header",
-				allowEmpty: true,
 			},
 			{
 				slug: "layer-card",
@@ -1722,7 +1721,6 @@ describe("catalog API generator contract", () => {
 			),
 		).toEqual([
 			"LayerCard.Secondary",
-			"LayerCard.Header",
 			"LayerCard.Body",
 			"LayerCard.Footer",
 			"InputGroup.Suffix",
@@ -2281,7 +2279,7 @@ describe("catalog API generator contract", () => {
 			},
 			{
 				name: "padding",
-				type: '"lg" | "md" | "none" | "sm"',
+				type: '"lg" | "md" | "none" | "sm" | "xl"',
 				required: false,
 				default: '"md"',
 				description: "Inner spacing for unstructured card content.",
@@ -4942,7 +4940,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"f4e77f59d60b479e13e996f3f16b0bb72632c647625efd5703eb8580c2555725",
+			"3e7de8546117781cd57fc2f64ad2ceac47673c24e2f46729ab136b8529425c2c",
 		);
 	}, 60_000);
 

@@ -6,9 +6,9 @@ import { FOCUS_BORDER } from "./overlay";
 export type InputSize = "sm" | "default" | "lg";
 
 const INPUT_SIZE_CLASS: Record<InputSize, string> = {
-	sm: "h-basalt-control-sm px-basalt-control-x-sm py-basalt-control-y text-xs",
-	default: "h-basalt-control px-basalt-control-x py-basalt-control-y text-sm",
-	lg: "h-basalt-control-lg px-basalt-control-x-lg py-basalt-2 text-base",
+	sm: "basalt-action basalt-action-sm",
+	default: "basalt-action",
+	lg: "basalt-action basalt-action-lg",
 };
 
 const PASSWORD_MANAGER_MARKERS = {
@@ -41,7 +41,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 			type={type}
 			className={controlSurfaceClass(
 				cn(
-					"flex w-full text-basalt-foreground shadow-xs file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:border-transparent disabled:text-basalt-muted-foreground/40",
+					"flex w-full text-basalt-foreground shadow-xs file:border-0 file:bg-transparent file:text-basalt-base file:font-medium placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:border-transparent disabled:text-basalt-muted-foreground/40",
 					INPUT_SIZE_CLASS[size],
 					FOCUS_BORDER,
 					"aria-invalid:border-basalt-destructive aria-invalid:focus-visible:border-basalt-destructive",

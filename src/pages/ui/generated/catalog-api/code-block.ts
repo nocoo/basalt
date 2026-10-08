@@ -38,6 +38,13 @@ export const API = [
 				description: "Show a non-selectable, screen-reader-hidden line-number gutter.",
 			},
 			{
+				name: "attached",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Join a card edge without an outer frame. Code retains its own header and content insets.",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,

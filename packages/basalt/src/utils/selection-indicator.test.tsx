@@ -130,14 +130,14 @@ for (const spec of specs) {
 			</Tabs>,
 		);
 		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
-		expect(indicator.style.left).toBe("8px");
+		expect(indicator.style.transform).toBe("translate(8px, 32px)");
 		expect(indicator.style.width).toBe("40px");
-		expect(indicator.style.top).toBe("32px");
-		expect(indicator.className).not.toContain("duration-200");
+		expect(indicator.style.top).toBe("0px");
+		expect(indicator.className).not.toContain("basalt-selection-motion");
 		restore();
 	});
 
-	it("enables 200ms ease-out after a later selection change", async () => {
+	it("enables shared nonlinear motion after a later selection change", async () => {
 		const restore = mockItemBoxes({
 			Live: { left: 4, width: 40, height: 28 },
 			Mock: { left: 50, width: 48, height: 28 },
@@ -151,10 +151,9 @@ for (const spec of specs) {
 		fireEvent.click(screen.getByText("Mock"));
 		await flushFrame();
 		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
-		expect(indicator.style.left).toBe("50px");
+		expect(indicator.style.transform).toBe("translate(50px, 0px)");
 		expect(indicator.style.width).toBe("48px");
-		expect(indicator.className).toContain("duration-200");
-		expect(indicator.className).toContain("ease-out");
+		expect(indicator.className).toContain("basalt-selection-motion");
 		expect(
 			SELECTION_INDICATOR_MOTION_CLASS.split(/\s+/).every((token) =>
 				indicator.className.includes(token),
@@ -201,7 +200,7 @@ for (const spec of specs) {
 	});
 
 	it("skips geometry transition when reduced motion is preferred", async () => {
-		window.matchMedia = ((query: string) => ({
+		vi.spyOn(window, "matchMedia").mockImplementation((query: string) => ({
 			matches: query.includes("prefers-reduced-motion: reduce"),
 			media: query,
 			onchange: null,
@@ -210,7 +209,7 @@ for (const spec of specs) {
 			addEventListener: () => {},
 			removeEventListener: () => {},
 			dispatchEvent: () => false,
-		})) as typeof window.matchMedia;
+		}));
 		const restore = mockItemBoxes({
 			Live: { left: 4, width: 40, height: 28 },
 			Mock: { left: 50, width: 48, height: 28 },
@@ -225,7 +224,7 @@ for (const spec of specs) {
 		await flushFrame();
 		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
 		expect(indicator.style.width).toBe("48px");
-		expect(indicator.className).not.toContain("duration-200");
+		expect(indicator.className).not.toContain("basalt-selection-motion");
 		restore();
 	});
 });
@@ -251,6 +250,56 @@ describe("useSelectionIndicator", () => {
 		render(<Probe selector='[data-state="missing"]' />);
 		expect(screen.getByTestId("box").textContent).toBe("false:false:0");
 	});
+	it("snaps a hidden non-first selection, preserves motion on no-op delivery and snaps resize", async () => {
+		let resize: ResizeObserverCallback = () => {};
+		const original = globalThis.ResizeObserver;
+		vi.stubGlobal(
+			"ResizeObserver",
+			class {
+				constructor(callback: ResizeObserverCallback) {
+					resize = callback;
+				}
+				observe() {}
+				unobserve() {}
+				disconnect() {}
+			},
+		);
+		const boxes = {
+			First: { left: 4, width: 0, height: 0 },
+			Second: { left: 64, width: 0, height: 0 },
+		};
+		const restore = mockItemBoxes(boxes);
+		const { container, unmount } = render(
+			<ToggleGroup type="single" defaultValue="second">
+				<ToggleGroupItem value="first">First</ToggleGroupItem>
+				<ToggleGroupItem value="second">Second</ToggleGroupItem>
+			</ToggleGroup>,
+		);
+		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
+		expect(indicator.style.width).toBe("0px");
+		boxes.First.width = 52;
+		boxes.First.height = 28;
+		boxes.Second.width = 72;
+		boxes.Second.height = 28;
+		act(() => resize([], {} as ResizeObserver));
+		await flushFrame();
+		expect(indicator.style.transform).toBe("translate(64px, 0px)");
+		expect(indicator).not.toHaveClass(SELECTION_INDICATOR_MOTION_CLASS);
+		fireEvent.click(screen.getByText("First"));
+		await flushFrame();
+		expect(indicator).toHaveClass(SELECTION_INDICATOR_MOTION_CLASS);
+		act(() => resize([], {} as ResizeObserver));
+		await flushFrame();
+		expect(indicator).toHaveClass(SELECTION_INDICATOR_MOTION_CLASS);
+		boxes.First.width = 80;
+		act(() => resize([], {} as ResizeObserver));
+		await flushFrame();
+		expect(indicator.style.width).toBe("80px");
+		expect(indicator).not.toHaveClass(SELECTION_INDICATOR_MOTION_CLASS);
+		unmount();
+		restore();
+		vi.stubGlobal("ResizeObserver", original);
+	});
 
 	it("follows controlled value updates", async () => {
 		const restore = mockItemBoxes({
@@ -275,7 +324,7 @@ describe("useSelectionIndicator", () => {
 		fireEvent.click(screen.getByText("next"));
 		await flushFrame();
 		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
-		expect(indicator.style.left).toBe("50px");
+		expect(indicator.style.transform).toBe("translate(50px, 0px)");
 		expect(indicator.style.width).toBe("44px");
 		restore();
 	});

@@ -49,13 +49,13 @@ export function ChatHeader({
 					<span className="flex h-basalt-8 w-basalt-8 items-center justify-center">{leading}</span>
 				) : null}
 				<div className="min-w-0">
-					<p className="truncate text-sm font-semibold tracking-tight">{title}</p>
+					<p className="truncate text-basalt-base font-semibold tracking-tight">{title}</p>
 					{subtitle ? (
-						<p className="truncate text-[11px] text-basalt-muted-foreground">{subtitle}</p>
+						<p className="truncate text-basalt-xs text-basalt-muted-foreground">{subtitle}</p>
 					) : null}
 				</div>
 			</div>
-			{children ? <div className="flex items-center gap-basalt-1">{children}</div> : null}
+			{children ? <div className="flex items-center gap-basalt-space-sm">{children}</div> : null}
 		</header>
 	);
 }

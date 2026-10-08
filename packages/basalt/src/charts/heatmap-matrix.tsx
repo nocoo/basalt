@@ -375,7 +375,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 				aria-label={ariaLabel}
 				data-testid="heatmap-matrix"
 				className={cn(
-					"flex flex-col gap-basalt-2 rounded-lg border border-basalt-border/60 bg-basalt-card p-basalt-3 text-xs outline-none",
+					"flex flex-col gap-basalt-space-lg rounded-basalt-md border border-basalt-border/60 bg-basalt-card p-basalt-space-lg text-basalt-sm outline-none",
 					isEmpty ? "text-basalt-muted-foreground" : "text-basalt-foreground",
 					className,
 				)}
@@ -417,7 +417,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 											<th
 												key={`${matrixId}-col-${colIdx}`}
 												scope="col"
-												className="p-0 text-center font-mono text-[10px] text-basalt-muted-foreground select-none"
+												className="p-0 text-center font-mono text-basalt-xs text-basalt-muted-foreground select-none"
 												style={{
 													width: effectiveColWidth,
 													maxWidth: effectiveColWidth,
@@ -437,7 +437,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 										<tr key={`${matrixId}-row-${rowIdx}`}>
 											<th
 												scope="row"
-												className="sticky left-0 z-10 bg-basalt-card pr-basalt-2 text-left font-medium text-basalt-foreground select-none"
+												className="sticky left-0 z-10 bg-basalt-card pr-basalt-space-lg text-left font-medium text-basalt-foreground select-none"
 												style={{
 													lineHeight: `${cellSize}px`,
 													minWidth: 64,
@@ -521,7 +521,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 																	onBlur={() => {
 																		setOpenTooltipPos((curr) => (curr === cellKey ? null : curr));
 																	}}
-																	className="box-border block cursor-pointer rounded-xs border-0 p-0 transition-colors hover:ring-1 hover:ring-basalt-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
+																	className="box-border block cursor-pointer rounded-basalt-sm border-0 p-0 transition-colors basalt-motion hover:ring-1 hover:ring-basalt-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
 																	style={{
 																		width: effectiveColWidth,
 																		height: cellSize,
@@ -539,7 +539,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 																{renderTooltip ? (
 																	renderTooltip(cellContext)
 																) : (
-																	<div className="text-xs">
+																	<div className="text-basalt-sm">
 																		<div className="font-semibold text-basalt-popover-foreground">
 																			{rowName} · {colName}
 																		</div>
@@ -565,12 +565,12 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 						{/* Legend footer */}
 						{showLegend ? (
 							<div
-								className="mt-basalt-1 flex items-center justify-end gap-basalt-1 text-[11px] text-basalt-muted-foreground select-none"
+								className="mt-basalt-space-sm flex items-center justify-end gap-basalt-space-sm text-basalt-xs text-basalt-muted-foreground select-none"
 								aria-hidden="true"
 							>
 								<span>{lessLabel}</span>
 								<div
-									className="rounded-xs"
+									className="rounded-basalt-sm"
 									title="Missing data"
 									style={{
 										width: cellSize,
@@ -581,7 +581,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 								{colorScale.map((color, idx) => (
 									<div
 										key={`${color}-${idx}`}
-										className="rounded-xs"
+										className="rounded-basalt-sm"
 										style={{
 											width: cellSize,
 											height: cellSize,

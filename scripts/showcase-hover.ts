@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import type { Locator, Page } from "playwright";
 import { setShowcaseTheme } from "./showcase-theme";
 
-async function assertMovingHighlight(group: Locator) {
+export async function assertMovingHighlight(group: Locator) {
 	const items = group.locator("[data-basalt-hover-item]:not([disabled]):not([data-disabled])");
 	await items.first().hover();
 	await group.evaluate(async (node) => {
@@ -35,6 +35,8 @@ async function assertMovingHighlight(group: Locator) {
 		const style = getComputedStyle(node, "::before");
 		const transform = new DOMMatrix(style.transform);
 		return {
+			itemX: box.x - root.x + node.scrollLeft - node.clientLeft,
+			highlightX: transform.m41,
 			itemY: box.y - root.y + node.scrollTop - node.clientTop,
 			highlightY: transform.m42,
 			width: box.width,
@@ -42,6 +44,7 @@ async function assertMovingHighlight(group: Locator) {
 			opacity: style.opacity,
 		};
 	});
+	assert.ok(Math.abs(measured.itemX - measured.highlightX) < 1, JSON.stringify(measured));
 	assert.ok(Math.abs(measured.itemY - measured.highlightY) < 1, JSON.stringify(measured));
 	assert.ok(Math.abs(measured.width - measured.highlightWidth) < 1, JSON.stringify(measured));
 	assert.equal(measured.opacity, "1");
@@ -61,7 +64,7 @@ export async function assertHoverAndDensity(page: Page, baseUrl: string) {
 				if (slug === "select" || slug === "dropdown-menu") {
 					const trigger =
 						slug === "select" ? demo.getByRole("combobox") : demo.getByRole("button").first();
-					assert.equal(Math.round((await trigger.boundingBox())?.height ?? 0), 32);
+					assert.equal(Math.round((await trigger.boundingBox())?.height ?? 0), 34);
 					await trigger.click();
 					group = page.locator(".basalt-hover-list");
 				} else group = demo.locator(".basalt-hover-list").first();
@@ -93,8 +96,8 @@ export async function assertHoverAndDensity(page: Page, baseUrl: string) {
 							.boundingBox()
 					)?.height ?? 0,
 				),
-				32,
+				34,
 			);
 		}
-	return { viewports: 2, themes: 2, hoverLists: 4, defaultHeight: 32, transformOnly: true };
+	return { viewports: 2, themes: 2, hoverLists: 4, defaultHeight: 34, transformOnly: true };
 }

@@ -44,12 +44,15 @@ export function SkeletonLine({
 	};
 	return (
 		<div
-			className={cn("relative h-basalt-2 overflow-hidden rounded-sm bg-basalt-muted", className)}
+			className={cn(
+				"relative h-basalt-2 overflow-hidden rounded-basalt-sm bg-basalt-muted",
+				className,
+			)}
 			style={lineStyle}
 			aria-hidden="true"
 			{...props}
 		>
-			<span className="pointer-events-none absolute inset-0 animate-basalt-shimmer bg-gradient-to-r from-transparent via-black/10 to-transparent motion-reduce:animate-none" />
+			<span className="pointer-events-none absolute inset-0 animate-basalt-shimmer bg-gradient-to-r from-transparent via-basalt-backdrop/10 to-transparent motion-reduce:animate-none" />
 		</div>
 	);
 }

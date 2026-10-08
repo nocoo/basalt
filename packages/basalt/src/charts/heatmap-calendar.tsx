@@ -259,7 +259,10 @@ function ValuesHeatmap({
 					isFocusedInsideRef.current = false;
 				}
 			}}
-			className={cn("grid grid-cols-7 gap-basalt-1 p-basalt-0_5 outline-none", className)}
+			className={cn(
+				"grid grid-cols-7 gap-basalt-space-sm p-basalt-space-xs outline-none",
+				className,
+			)}
 		>
 			{values.map((value, index) => {
 				const isCurrent = index === activeIdx;
@@ -299,14 +302,14 @@ function ValuesHeatmap({
 								}}
 								onKeyDown={(e) => handleKeyDown(e, index)}
 								aria-label={`Position ${index + 1}: ${value}`}
-								className="box-border m-0 h-basalt-3 w-basalt-3 cursor-pointer rounded-sm border-0 p-0 transition-colors focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
+								className="box-border m-0 h-basalt-3 w-basalt-3 cursor-pointer rounded-basalt-sm border-0 p-0 transition-colors basalt-motion focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
 								style={{
 									backgroundColor: `hsl(var(--basalt-chart-5) / ${0.2 + Math.min(4, Math.max(0, value)) * 0.15})`,
 								}}
 							/>
 						</TooltipTrigger>
 						<TooltipContent>
-							<div className="text-xs">
+							<div className="text-basalt-sm">
 								Position {index + 1}: {value}
 							</div>
 						</TooltipContent>
@@ -489,14 +492,14 @@ function YearHeatmap({
 				}
 			}}
 			className={cn(
-				"overflow-x-auto rounded-md outline-none focus-visible:ring-1 focus-visible:ring-basalt-ring",
+				"overflow-x-auto rounded-basalt-md outline-none focus-visible:ring-1 focus-visible:ring-basalt-ring",
 				className,
 			)}
 		>
 			<TooltipProvider>
-				<div className="inline-block p-basalt-1" role="group" aria-label={ariaLabel}>
+				<div className="inline-block p-basalt-space-sm" role="group" aria-label={ariaLabel}>
 					<div
-						className="relative mb-basalt-1 h-basalt-4 text-xs text-basalt-muted-foreground"
+						className="relative mb-basalt-space-sm h-basalt-4 text-basalt-sm text-basalt-muted-foreground"
 						style={{ marginLeft: labelWidth }}
 					>
 						{labels.map((label) => (
@@ -511,7 +514,7 @@ function YearHeatmap({
 					</div>
 					<div className="flex">
 						<div
-							className="mr-basalt-1 flex flex-col text-xs text-basalt-muted-foreground select-none"
+							className="mr-basalt-space-sm flex flex-col text-basalt-sm text-basalt-muted-foreground select-none"
 							style={{ width: labelWidth }}
 							aria-hidden="true"
 						>
@@ -593,7 +596,7 @@ function YearHeatmap({
 															setOpenTooltipDate((curr) => (curr === dateStr ? null : curr));
 														}}
 														onKeyDown={(e) => handleCellKeyDown(e, dateStr)}
-														className="box-border m-0 cursor-pointer rounded-sm border-0 p-0 transition-colors hover:ring-1 hover:ring-basalt-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
+														className="box-border m-0 cursor-pointer rounded-basalt-sm border-0 p-0 transition-colors basalt-motion hover:ring-1 hover:ring-basalt-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
 														style={{
 															width: cellSize,
 															height: cellSize,
@@ -602,7 +605,7 @@ function YearHeatmap({
 													/>
 												</TooltipTrigger>
 												<TooltipContent id={`${calendarId}-${dateStr}`}>
-													<div className="text-sm">
+													<div className="text-basalt-base">
 														<div className="font-medium">{dateStr}</div>
 														<div className="text-basalt-muted-foreground">
 															{metricLabel}: {formattedValue}
@@ -617,14 +620,14 @@ function YearHeatmap({
 						</div>
 					</div>
 					<div
-						className="mt-basalt-2 flex items-center justify-end gap-basalt-1 text-xs text-basalt-muted-foreground select-none"
+						className="mt-basalt-space-lg flex items-center justify-end gap-basalt-space-sm text-basalt-sm text-basalt-muted-foreground select-none"
 						aria-hidden="true"
 					>
 						<span>{lessLabel}</span>
 						{colorScale.map((color) => (
 							<div
 								key={color}
-								className="rounded-sm"
+								className="rounded-basalt-sm"
 								style={{
 									width: cellSize,
 									height: cellSize,

@@ -193,18 +193,17 @@ describe("Tabs", () => {
 			</Tabs>,
 		);
 		const indicator = container.querySelector('[data-slot="selection-indicator"]') as HTMLElement;
-		expect(indicator.style.left).toBe("8px");
+		expect(indicator.style.transform).toBe("translate(8px, 36px)");
 		expect(indicator.style.width).toBe("40px");
-		expect(indicator.style.top).toBe("36px");
-		expect(indicator.className).not.toContain("duration-200");
+		expect(indicator.style.top).toBe("0px");
+		expect(indicator.className).not.toContain("basalt-selection-motion");
 		fireEvent.mouseDown(screen.getByRole("tab", { name: "About" }));
 		await flushObservers();
 		expect(screen.getByRole("tab", { name: "About" })).toHaveAttribute("data-state", "active");
-		expect(indicator.style.left).toBe("67px");
+		expect(indicator.style.transform).toBe("translate(67px, 30px)");
 		expect(indicator.style.width).toBe("64px");
-		expect(indicator.style.top).toBe("30px");
-		expect(indicator.className).toContain("duration-200");
-		expect(indicator.className).toContain("ease-out");
+		expect(indicator.style.top).toBe("0px");
+		expect(indicator.className).toContain("basalt-selection-motion");
 		restore();
 	});
 });

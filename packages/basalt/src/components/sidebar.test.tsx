@@ -6,6 +6,7 @@ import {
 	Sidebar,
 	SidebarFooter,
 	SidebarGroup,
+	SidebarHeader,
 	SidebarIconItem,
 	SidebarItem,
 	SidebarNav,
@@ -16,6 +17,35 @@ import {
 } from "./sidebar";
 
 describe("Sidebar", () => {
+	it("owns one inset boundary across top-level rows, groups and collapsed chrome", () => {
+		render(
+			<Sidebar collapsed>
+				<SidebarHeader>Header</SidebarHeader>
+				<SidebarNav aria-label="Workspace">
+					<SidebarItem>Home</SidebarItem>
+					<SidebarGroup label="Recent">
+						<SidebarItem>Report</SidebarItem>
+					</SidebarGroup>
+				</SidebarNav>
+				<SidebarFooter>Footer</SidebarFooter>
+			</Sidebar>,
+		);
+		expect(screen.getByRole("navigation")).toHaveClass("basalt-hover-list", "p-basalt-nav-inset");
+		for (const name of ["Home", "Report"]) {
+			expect(screen.getByRole("button", { name })).toHaveClass(
+				"px-basalt-row-x",
+				"py-basalt-row-y",
+			);
+			expect(screen.getByRole("button", { name })).toHaveAttribute("data-basalt-hover-item");
+		}
+		const group = screen.getByRole("button", { name: "Recent" });
+		expect(group).not.toHaveAttribute("data-basalt-hover-item");
+		expect(group).toHaveClass("uppercase", "font-semibold", "text-basalt-xs", "py-basalt-space-lg");
+		expect(group.closest('[data-slot="sidebar-group"]')).toHaveClass("pt-basalt-layout-sm");
+		expect(screen.getByRole("button", { name: "Home" })).toHaveClass("focus-visible:ring-inset");
+		expect(screen.getByText("Header")).toHaveClass("px-basalt-nav-inset");
+		expect(screen.getByText("Footer")).toHaveClass("px-basalt-nav-inset");
+	});
 	it("renders children on the L0 chrome", () => {
 		render(<Sidebar>Nav</Sidebar>);
 		const nav = screen.getByText("Nav");
@@ -31,7 +61,7 @@ describe("Sidebar", () => {
 			</SidebarProvider>,
 		);
 		const nav = screen.getByText("Nav");
-		expect(nav.className).toContain("w-[68px]");
+		expect(nav.className).toContain("w-basalt-rail");
 		expect(nav).toHaveAttribute("data-side", "right");
 	});
 
@@ -42,7 +72,7 @@ describe("Sidebar", () => {
 			</SidebarProvider>,
 		);
 		const nav = screen.getByText("Nav");
-		expect(nav.className).toContain("w-[68px]");
+		expect(nav.className).toContain("w-basalt-rail");
 		fireEvent.mouseEnter(nav);
 		expect(nav).not.toHaveAttribute("data-collapsed");
 		fireEvent.mouseLeave(nav);
@@ -76,10 +106,10 @@ describe("Sidebar", () => {
 				<Sidebar>Nav</Sidebar>
 			</SidebarProvider>,
 		);
-		expect(screen.getByText("Nav").className).toContain("w-[68px]");
+		expect(screen.getByText("Nav").className).toContain("w-basalt-rail");
 		fireEvent.click(screen.getByRole("button", { name: "Toggle" }));
 		expect(onCollapsedChange).toHaveBeenCalledWith(false);
-		expect(screen.getByText("Nav").className).toContain("w-[68px]");
+		expect(screen.getByText("Nav").className).toContain("w-basalt-rail");
 	});
 
 	it("renders overlay chrome at the overlay layer", () => {
@@ -266,13 +296,14 @@ describe("Sidebar", () => {
 
 	it("collapses to the icon rail", () => {
 		render(<Sidebar collapsed>Nav</Sidebar>);
-		expect(screen.getByText("Nav").className).toContain("w-[68px]");
+		expect(screen.getByText("Nav").className).toContain("w-basalt-rail");
 	});
 
 	it("marks the active item", () => {
 		render(<SidebarItem active>Dashboard</SidebarItem>);
-		expect(screen.getByRole("button", { name: "Dashboard" }).className).toContain(
-			"bg-basalt-accent",
+		expect(screen.getByRole("button", { name: "Dashboard" })).toHaveAttribute(
+			"data-hover-selected",
+			"true",
 		);
 		expect(screen.getByRole("button", { name: "Dashboard" })).toHaveAttribute(
 			"aria-current",
@@ -307,16 +338,16 @@ describe("Sidebar", () => {
 		const button = screen.getByRole("button", { name: "Mail" });
 		expect(button).toHaveAttribute("title", "Open mail");
 		expect(button).toHaveClass("rail-item");
-		expect(button).toHaveClass("text-basalt-muted-foreground");
-		expect(button).not.toHaveClass("text-basalt-foreground");
+		expect(button).toHaveAttribute("data-hover-selected", "false");
+		expect(button).toHaveAttribute("data-basalt-hover-item");
 		rerender(
 			<SidebarIconItem active className="rail-item" title="Open mail">
 				Mail
 			</SidebarIconItem>,
 		);
-		expect(button).toHaveClass("bg-basalt-accent");
-		expect(button).toHaveClass("text-basalt-foreground");
-		expect(button).not.toHaveClass("text-basalt-muted-foreground");
+		expect(button).toHaveAttribute("data-hover-selected", "true");
+		expect(button).toHaveAttribute("aria-current", "page");
+		expect(button).toHaveClass("basalt-nav-item");
 		expect(button).toHaveClass("rail-item");
 	});
 
@@ -368,7 +399,7 @@ describe("ContentIsland", () => {
 		expect(island.className).toContain("shadow-sm");
 		expect(island.className).toContain("ring-1");
 		expect(island.className).toContain("ring-basalt-border/40");
-		expect(island.className).toContain("rounded-[16px]");
+		expect(island.className).toContain("rounded-basalt-lg");
 		expect(island.className).toContain("md:rounded-basalt-island");
 		expect(island).toHaveAttribute("data-basalt-island", "inset");
 	});
@@ -378,7 +409,7 @@ describe("ContentIsland", () => {
 		expect(island).toHaveAttribute("data-basalt-surface-root");
 		expect(island).toHaveAttribute("data-basalt-island", "edge-to-edge");
 		expect(island).not.toHaveAttribute("mobileSurface");
-		expect(island).not.toHaveClass("p-basalt-3", "rounded-[16px]", "ring-1");
-		expect(island).toHaveClass("md:p-basalt-5", "md:rounded-basalt-island");
+		expect(island).not.toHaveClass("p-basalt-layout-sm", "rounded-basalt-lg", "ring-1");
+		expect(island).toHaveClass("md:p-basalt-layout", "md:rounded-basalt-island");
 	});
 });

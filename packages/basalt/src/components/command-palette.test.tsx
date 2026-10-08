@@ -57,7 +57,8 @@ describe("CommandPalette", () => {
 			expect(listRef.current).toBe(list);
 			expect(list).toHaveClass("p-basalt-menu-inset", "relative", "isolate");
 			expect(list).toHaveStyle({ maxHeight: "280px" });
-			if (grouped) expect(document.querySelector("[cmdk-group]")).not.toHaveClass("p-1");
+			if (grouped)
+				expect(document.querySelector("[cmdk-group]")).not.toHaveClass("p-basalt-space-sm");
 			await waitFor(() => expect(list.style.getPropertyValue("--basalt-command-top")).toBe("6px"));
 			expect(list.style.getPropertyValue("--basalt-command-left")).toBe("6px");
 			expect(list.style.getPropertyValue("--basalt-command-width")).toBe("288px");

@@ -37,7 +37,7 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 			open={vm.open}
 			onOpenChange={vm.setOpen}
 			className={cn(
-				"basalt-ui w-full text-sm leading-[var(--basalt-line-body)] text-basalt-foreground",
+				"basalt-ui w-full text-basalt-base leading-[var(--basalt-line-body)] text-basalt-foreground",
 				className,
 			)}
 		>
@@ -47,7 +47,7 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 					<span role="status" className={cn(vm.status === "running" && "basalt-shimmer-label")}>
 						{heading}
 					</span>
-					<span className="text-xs tabular-nums text-basalt-muted-foreground">
+					<span className="text-basalt-sm tabular-nums text-basalt-muted-foreground">
 						{vm.completed}/{vm.total}
 					</span>
 				</span>
@@ -55,7 +55,7 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 			<CollapsibleContent unstyled>
 				<ol
 					aria-label="Thinking steps"
-					className="ml-[calc(var(--basalt-space-row-x)+var(--basalt-size-icon-lg)/2)] space-y-basalt-content-gap border-l border-basalt-border py-basalt-panel-y pl-[calc(var(--basalt-size-icon-lg)/2+var(--basalt-space-row-gap))] pr-basalt-row-x"
+					className="ml-[calc(var(--basalt-space-row-x)+var(--basalt-size-icon-lg)/2)] space-y-basalt-content-gap border-l border-basalt-border py-basalt-space-lg pl-[calc(var(--basalt-size-icon-lg)/2+var(--basalt-space-row-gap))] pr-basalt-row-x"
 				>
 					{steps.map((step) => (
 						<li
@@ -79,11 +79,11 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 								)}
 							</span>
 							<div className="min-w-0">
-								<p className={cn("text-[13px]", variant === "coding" && "font-mono")}>
+								<p className={cn("text-basalt-code", variant === "coding" && "font-mono")}>
 									{step.label}
 								</p>
 								{step.detail && (
-									<p className="mt-basalt-1 whitespace-pre-wrap break-words text-xs leading-[var(--basalt-line-body)] text-basalt-muted-foreground">
+									<p className="mt-basalt-space-sm whitespace-pre-wrap break-words text-basalt-sm leading-[var(--basalt-line-body)] text-basalt-muted-foreground">
 										{step.detail}
 									</p>
 								)}
@@ -91,7 +91,7 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 						</li>
 					))}
 					{steps.length === 0 && (
-						<li className="text-xs text-basalt-muted-foreground">No steps yet</li>
+						<li className="text-basalt-sm text-basalt-muted-foreground">No steps yet</li>
 					)}
 				</ol>
 			</CollapsibleContent>

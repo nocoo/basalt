@@ -13,6 +13,13 @@ export const API = [
 				description: "Number of equal columns.",
 			},
 			{
+				name: "gap",
+				type: "\"lg\" | \"md\" | \"sm\" | \"xl\"",
+				required: false,
+				default: "\"md\"",
+				description: "Space between layout items: 12, 16, 24 or 32px reference.",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,

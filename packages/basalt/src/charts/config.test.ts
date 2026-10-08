@@ -18,18 +18,18 @@ import { CHART_COLORS, chartAxis, withAlpha } from "./palette";
 
 describe("chart type helpers", () => {
 	it("sets axis ticks smaller than legend and tooltip", () => {
-		expect(chartFontSize("axis")).toBe(11);
-		expect(chartFontSize("legend")).toBe(12);
-		expect(chartFontSize("tooltipTitle")).toBe(12);
-		expect(chartFontSize("tooltipBody")).toBe(12);
-		expect(chartTextStyle("axis")).toEqual({ fontSize: 11 });
+		expect(chartFontSize("axis")).toBe("var(--basalt-text-xs)");
+		expect(chartFontSize("legend")).toBe("var(--basalt-text-sm)");
+		expect(chartFontSize("tooltipTitle")).toBe("var(--basalt-text-sm)");
+		expect(chartFontSize("tooltipBody")).toBe("var(--basalt-text-sm)");
+		expect(chartTextStyle("axis")).toEqual({ fontSize: "var(--basalt-text-xs)" });
 	});
 
 	it("paints ticks with the axis token", () => {
-		expect(chartTickStyle()).toEqual({ fontSize: 11, fill: chartAxis });
+		expect(chartTickStyle()).toEqual({ fontSize: "var(--basalt-text-xs)", fill: chartAxis });
 		expect(AXIS_CONFIG.axisLine).toBe(false);
 		expect(AXIS_CONFIG.tickLine).toBe(false);
-		expect(AXIS_CONFIG.tick).toEqual({ fontSize: 11, fill: chartAxis });
+		expect(AXIS_CONFIG.tick).toEqual({ fontSize: "var(--basalt-text-xs)", fill: chartAxis });
 		expect(cartesianAxisProps(true).hide).toBe(true);
 	});
 

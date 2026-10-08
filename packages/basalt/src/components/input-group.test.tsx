@@ -32,7 +32,7 @@ describe("InputGroup", () => {
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
 		expect(root?.className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-basalt-control", "[&>:first-child]:rounded-l-basalt-md"]),
+			expect.arrayContaining(["[&>:first-child]:rounded-l-basalt-md"]),
 		);
 		expect(root?.className).not.toContain("bg-basalt-background");
 		expect(root?.className).not.toContain("rounded-basalt-lg");
@@ -112,19 +112,19 @@ describe("InputGroup", () => {
 			</InputGroup>,
 		);
 		const nested = screen.getByRole("button", { name: "Go" });
-		expect(nested.className).toContain("hover:bg-basalt-accent");
-		expect(nested.className).toContain("h-basalt-control-inset");
-		expect(nested.className).toContain("w-basalt-control-inset");
+		expect(nested.className).toContain("hover:bg-basalt-hover");
+		expect(nested.className).toContain("basalt-action-inset");
+		expect(nested.className).toContain("basalt-action-icon");
 		expect(nested.className).not.toContain("bg-basalt-primary");
-		expect(nested.className).not.toContain("px-4");
+		expect(nested.className).not.toContain("px-basalt-space-lg");
 	});
 
 	it("keeps a plain Button on default variant and size", () => {
 		render(<Button aria-label="Plain">Plain</Button>);
 		const plain = screen.getByRole("button", { name: "Plain" });
 		expect(plain.className).toContain("bg-basalt-primary");
-		expect(plain.className).toContain("h-basalt-control");
-		expect(plain.className).toContain("px-basalt-control-x");
+		expect(plain.className).toContain("basalt-action");
+		expect(plain.className).toContain("basalt-action");
 	});
 
 	it("lets explicit variant and size override the nested button", () => {
@@ -135,7 +135,7 @@ describe("InputGroup", () => {
 		);
 		const overridden = screen.getByRole("button", { name: "Go" });
 		expect(overridden.className).toContain("bg-basalt-control");
-		expect(overridden.className).toContain("text-xs");
+		expect(overridden.className).toContain("basalt-action-sm");
 	});
 
 	it("places addons at the start or end and keeps suffix and input refs", () => {

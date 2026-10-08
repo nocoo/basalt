@@ -4,11 +4,11 @@ import { describe, expect, it, vi } from "vitest";
 import { Text } from "./text";
 
 const SIZE_CLASS = {
-	xs: "text-xs",
-	sm: "text-sm",
-	md: "text-sm leading-[var(--basalt-line-relaxed)]",
-	lg: "text-base",
-	xl: "text-lg",
+	xs: "text-basalt-sm",
+	sm: "text-basalt-base",
+	md: "text-basalt-base leading-[var(--basalt-line-relaxed)]",
+	lg: "text-basalt-lg",
+	xl: "text-basalt-xl",
 } as const;
 
 describe("Text", () => {
@@ -17,7 +17,7 @@ describe("Text", () => {
 		render(<Text ref={ref}>Hello</Text>);
 		const node = screen.getByText("Hello");
 		expect(node.tagName).toBe("P");
-		expect(node.className).toContain("text-sm");
+		expect(node.className).toContain("text-basalt-base");
 		expect(node.className).toContain("leading-[var(--basalt-line-relaxed)]");
 		expect(node.className).not.toContain("font-semibold");
 		expect(node.className).not.toContain("font-mono");
@@ -28,7 +28,7 @@ describe("Text", () => {
 		const { rerender } = render(<Text variant="heading">Title</Text>);
 		const heading = screen.getByText("Title");
 		expect(heading.tagName).toBe("SPAN");
-		expect(heading.className).toContain("text-base");
+		expect(heading.className).toContain("text-basalt-lg");
 		expect(heading.className).toContain("font-semibold");
 
 		for (const as of ["h1", "h2", "h3", "h4", "h5", "h6"] as const) {
@@ -45,7 +45,7 @@ describe("Text", () => {
 		const { rerender } = render(<Text variant="mono">npm</Text>);
 		const mono = screen.getByText("npm");
 		expect(mono.tagName).toBe("SPAN");
-		expect(mono.className).toContain("text-sm");
+		expect(mono.className).toContain("text-basalt-base");
 		expect(mono.className).toContain("font-mono");
 		rerender(
 			<Text variant="mono" as="code">

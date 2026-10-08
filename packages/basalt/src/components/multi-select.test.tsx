@@ -18,6 +18,22 @@ async function open() {
 }
 
 describe("MultiSelect", () => {
+	it("keeps committed selection separate from the moving keyboard highlight", async () => {
+		render(<MultiSelect label="Models" options={options} defaultValue={["a", "c"]} />);
+		const input = await open();
+		fireEvent.keyDown(input, { key: "ArrowDown" });
+		expect(screen.getByRole("option", { name: "Boreal" })).toHaveAttribute(
+			"data-hover-active",
+			"true",
+		);
+		for (const name of [/Atlas/, /Cedar/]) {
+			expect(screen.getByRole("option", { name })).toHaveAttribute("data-hover-selected", "true");
+		}
+		expect(screen.getByRole("option", { name: "Boreal" })).toHaveAttribute(
+			"data-hover-selected",
+			"false",
+		);
+	});
 	it("can delegate chip rendering to a FilterBar while preserving selection count and keyboard removal", () => {
 		render(<MultiSelect label="Models" options={options} defaultValue={["a"]} showChips={false} />);
 		expect(screen.queryByRole("button", { name: "Remove Atlas" })).not.toBeInTheDocument();

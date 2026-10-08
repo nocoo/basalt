@@ -75,7 +75,7 @@ describe("Radio", () => {
 		expect(item).toHaveAttribute("id", "alpha");
 		expect(item).toHaveAttribute("data-example", "yes");
 		expect(item.className).toContain("extra");
-		expect(item.className).toContain("rounded-full");
+		expect(item.className).toContain("rounded-basalt-full");
 		expect(item).not.toHaveAttribute("form");
 	});
 

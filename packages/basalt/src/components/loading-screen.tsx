@@ -21,10 +21,10 @@ export function LoadingScreen({
 			)}
 			{...props}
 		>
-			<div className="flex flex-col items-center gap-basalt-4">
+			<div className="flex flex-col items-center gap-basalt-space-lg">
 				{mark ?? <BasaltMark className="h-basalt-8 w-basalt-8 text-basalt-foreground" />}
 				<div
-					className="relative h-px overflow-hidden rounded-full bg-basalt-border"
+					className="relative h-px overflow-hidden rounded-basalt-full bg-basalt-border"
 					style={{ width: "6rem" }}
 				>
 					<span

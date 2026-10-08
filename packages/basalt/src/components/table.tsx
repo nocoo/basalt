@@ -18,7 +18,7 @@ export const Table = React.forwardRef<
 		data-basalt-table=""
 		className={cn(
 			BASALT_UI_CLASS,
-			"w-full border-separate border-spacing-0 caption-bottom text-left text-[13px] leading-[var(--basalt-line-body)] text-basalt-foreground",
+			"w-full border-separate border-spacing-0 caption-bottom text-left text-basalt-code leading-[var(--basalt-line-body)] text-basalt-foreground",
 			className,
 		)}
 		{...props}
@@ -77,7 +77,7 @@ export const TableHead = ({
 }: TableHeadProps & React.ThHTMLAttributes<HTMLTableCellElement>) => (
 	<th
 		className={cn(
-			"h-basalt-table-row whitespace-nowrap border-b border-basalt-border px-basalt-table-x py-basalt-table-y text-left align-middle text-xs font-medium text-basalt-muted-foreground",
+			"h-basalt-table-row whitespace-nowrap border-b border-basalt-border px-basalt-table-x py-basalt-table-y text-left align-middle text-basalt-sm font-medium text-basalt-muted-foreground",
 			className,
 		)}
 		{...props}
@@ -114,7 +114,7 @@ export function TableCaption({
 }: TableCaptionProps & React.HTMLAttributes<HTMLTableCaptionElement>) {
 	return (
 		<caption
-			className={cn("mt-basalt-2 text-sm text-basalt-muted-foreground", className)}
+			className={cn("mt-basalt-space-lg text-basalt-base text-basalt-muted-foreground", className)}
 			{...props}
 		/>
 	);

@@ -5,6 +5,32 @@ import { CONTROL_SURFACE_CLASS } from "../utils/control-surface";
 import { Code, CodeBlock, CodeHighlighted } from "./code";
 
 describe("Code", () => {
+	it.each(["plain", "highlighted"])(
+		"allows native vertical scroll chaining for %s code",
+		(mode) => {
+			render(
+				mode === "plain" ? (
+					<CodeBlock>{"long line"}</CodeBlock>
+				) : (
+					<CodeHighlighted code="long line" />
+				),
+			);
+			const region = screen.getByRole("region", { name: "Code" });
+			expect(region).toHaveClass("overflow-auto", "overscroll-x-contain", "overscroll-y-auto");
+			expect(region).not.toHaveClass("overscroll-contain");
+			expect(fireEvent.wheel(region, { deltaY: 120, cancelable: true })).toBe(true);
+			expect(fireEvent.keyDown(region, { key: "ArrowDown", cancelable: true })).toBe(true);
+		},
+	);
+	it("attaches a code panel without removing its own content insets", () => {
+		const { container } = render(<CodeBlock attached>{"const n = 1;"}</CodeBlock>);
+		const panel = container.querySelector("[data-basalt-code]");
+		expect(panel).toHaveClass("rounded-none", "border-0", "border-t");
+		expect(panel).not.toHaveClass("border", "rounded-basalt-md");
+		expect(panel).toHaveAttribute("data-code-attached", "true");
+		expect(panel).not.toHaveAttribute("attached");
+		expect(container.querySelector("code")).toHaveClass("px-basalt-panel-x");
+	});
 	it("scrolls source horizontally with unmodified arrow keys", () => {
 		render(<CodeBlock>{"long line"}</CodeBlock>);
 		const region = screen.getByRole("region", { name: "Code" });
@@ -20,9 +46,27 @@ describe("Code", () => {
 	});
 	it("renders inline code without a panel", () => {
 		render(<Code>cn()</Code>);
-		expect(screen.getByText("cn()")).toHaveClass("text-[13px]");
+		expect(screen.getByText("cn()")).toHaveClass("text-basalt-sm");
 		expect(screen.getByText("cn()")).not.toHaveClass("rounded-basalt-md");
 	});
+	it.each(["plain", "highlighted"])(
+		"keeps %s source compact without shrinking its toolbar",
+		(mode) => {
+			render(
+				mode === "plain" ? (
+					<CodeBlock title="example.ts">{"const x = 1;"}</CodeBlock>
+				) : (
+					<CodeHighlighted title="example.ts" code="const x = 1;" />
+				),
+			);
+			expect(screen.getByRole("region", { name: "example.ts" })).toHaveClass(
+				"text-basalt-sm",
+				"leading-[var(--basalt-line-body)]",
+			);
+			expect(screen.getByText("example.ts")).toHaveClass("text-basalt-code");
+			expect(screen.getByRole("button", { name: "Copy code" })).toHaveClass("basalt-action");
+		},
+	);
 	it("renders a titled panel with custom icon and safe, numbered code", () => {
 		const code = "<script>alert(1)</script>\n\n  next\n";
 		const { container } = render(

@@ -101,7 +101,7 @@ const CheckboxRoot = React.forwardRef<
 		ref={ref}
 		className={cn(
 			BASALT_UI_CLASS,
-			"group peer shrink-0 rounded-[4px] border border-basalt-primary data-[state=checked]:bg-basalt-primary data-[state=checked]:text-basalt-primary-foreground data-[state=indeterminate]:bg-basalt-primary data-[state=indeterminate]:text-basalt-primary-foreground disabled:cursor-not-allowed disabled:opacity-50",
+			"group peer shrink-0 rounded-basalt-sm border border-basalt-primary data-[state=checked]:bg-basalt-primary data-[state=checked]:text-basalt-primary-foreground data-[state=indeterminate]:bg-basalt-primary data-[state=indeterminate]:text-basalt-primary-foreground disabled:cursor-not-allowed disabled:opacity-50",
 			CHECKBOX_SIZE_CLASS[size],
 			FOCUS_RING,
 			className,
@@ -156,7 +156,7 @@ const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(
 				>
 					{children}
 					{group.invalid ? (
-						<p id={group.errorId} className="text-xs text-basalt-destructive" role="alert">
+						<p id={group.errorId} className="text-basalt-sm text-basalt-destructive" role="alert">
 							{error}
 						</p>
 					) : null}
@@ -172,7 +172,7 @@ const CheckboxLegend = React.forwardRef<HTMLLegendElement, CheckboxLegendProps>(
 		<legend
 			ref={ref}
 			className={cn(
-				"mb-basalt-field-gap text-sm font-medium leading-[var(--basalt-line-body)] text-basalt-foreground",
+				"mb-basalt-field-gap text-basalt-base font-medium leading-[var(--basalt-line-body)] text-basalt-foreground",
 				className,
 			)}
 			{...props}
@@ -215,7 +215,7 @@ const CheckboxItem = React.forwardRef<
 	return (
 		<label
 			htmlFor={controlId}
-			className="flex items-center gap-basalt-2 text-sm text-basalt-foreground"
+			className="flex items-center gap-basalt-space-lg text-basalt-base text-basalt-foreground"
 		>
 			{box}
 			{children}

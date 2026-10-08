@@ -8,25 +8,24 @@ import { FOCUS_RING } from "./overlay";
 
 // Keep rounded corners inside the button's rectangular pointer target.
 const buttonVariants = cva(
-	`${BASALT_UI_CLASS} relative inline-flex cursor-pointer items-center justify-center gap-basalt-control-gap rounded-basalt-md text-sm font-medium transition-colors before:absolute before:inset-0 ${FOCUS_RING} disabled:pointer-events-none disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0`,
+	`${BASALT_UI_CLASS} relative inline-flex cursor-pointer items-center justify-center gap-basalt-control-gap rounded-basalt-md font-medium transition-colors basalt-motion before:absolute before:inset-0 ${FOCUS_RING} disabled:pointer-events-none disabled:opacity-50 aria-disabled:cursor-not-allowed aria-disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0`,
 	{
 		variants: {
 			variant: {
-				default: "bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary/90",
-				secondary: "bg-basalt-control text-basalt-foreground hover:bg-basalt-accent",
+				default: "bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary-hover",
+				secondary: "basalt-choice bg-basalt-control text-basalt-foreground hover:bg-basalt-hover",
 				destructive:
-					"bg-basalt-destructive text-basalt-destructive-foreground hover:bg-basalt-destructive/90",
+					"bg-basalt-destructive text-basalt-destructive-foreground hover:bg-basalt-destructive-hover",
 				outline:
-					"border border-basalt-border bg-basalt-control hover:bg-basalt-accent hover:text-basalt-accent-foreground",
-				ghost: "hover:bg-basalt-accent hover:text-basalt-accent-foreground",
+					"basalt-choice border border-basalt-border bg-basalt-control hover:bg-basalt-hover hover:text-basalt-accent-foreground",
+				ghost: "basalt-choice hover:bg-basalt-hover hover:text-basalt-accent-foreground",
 				link: "text-basalt-primary underline-offset-4 hover:underline",
 			},
 			size: {
-				default:
-					"h-basalt-control px-basalt-control-x py-basalt-control-y [&_svg]:size-basalt-icon",
-				sm: "h-basalt-control-sm rounded-basalt-md px-basalt-control-x text-xs [&_svg]:size-basalt-icon",
-				lg: "h-basalt-control-lg rounded-basalt-md px-basalt-control-x-lg [&_svg]:size-basalt-icon-lg",
-				icon: "h-basalt-control w-basalt-control shrink-0 [&_svg]:size-basalt-icon",
+				default: "basalt-action [&_svg]:size-basalt-icon",
+				sm: "basalt-action basalt-action-sm [&_svg]:size-basalt-icon",
+				lg: "basalt-action basalt-action-lg [&_svg]:size-basalt-icon-lg",
+				icon: "basalt-action basalt-action-icon shrink-0 [&_svg]:size-basalt-icon",
 			},
 		},
 		defaultVariants: {

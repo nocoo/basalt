@@ -63,13 +63,6 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		forwardsRef: false,
 		forwardsRestProps: true,
 	},
-	"LayerCard.Header": {
-		justification:
-			"Header section for card containers; inherits HTMLDivElement attributes without component-specific props.",
-		inheritedElement: "HTMLDivElement",
-		forwardsRef: false,
-		forwardsRestProps: true,
-	},
 	"LayerCard.Body": {
 		justification:
 			"Main body section for card containers; inherits HTMLDivElement attributes without component-specific props.",

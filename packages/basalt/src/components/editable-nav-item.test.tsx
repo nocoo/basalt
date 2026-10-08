@@ -22,6 +22,7 @@ describe("editable navigation", () => {
 			/>,
 		);
 		const link = screen.getByRole("link", { name: "Library" });
+		expect(link.closest("[data-basalt-hover-item]")).toHaveAttribute("data-hover-selected", "true");
 		expect(link).toHaveAttribute("href", "#library");
 		expect(link).toHaveAccessibleDescription("0");
 		expect(link).toHaveAttribute("aria-current", "page");
@@ -50,6 +51,7 @@ describe("editable navigation", () => {
 		render(<Example />);
 		fireEvent.click(screen.getByRole("button", { name: "Rename Docs" }));
 		const input = screen.getByRole("textbox", { name: "Rename Docs" });
+		expect(input.closest("[data-basalt-hover-item]")).toBeNull();
 		expect(input).toHaveFocus();
 		fireEvent.change(input, { target: { value: "Bad" } });
 		fireEvent.keyDown(input, { key: "Enter" });

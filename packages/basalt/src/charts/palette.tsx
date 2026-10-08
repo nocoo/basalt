@@ -41,7 +41,7 @@ export type ChartPaletteProps = {
 
 export function ChartPalette({ ariaLabel = "Chart colors" }: ChartPaletteProps) {
 	return (
-		<div className="flex flex-wrap gap-basalt-2" role="img" aria-label={ariaLabel}>
+		<div className="flex flex-wrap gap-basalt-space-lg" role="img" aria-label={ariaLabel}>
 			{CHART_COLORS.map((color) => (
 				<span
 					key={color}

@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "2.2.0",
 	"totalModules": 131,
-	"totalSymbols": 775,
+	"totalSymbols": 776,
 	"totalValues": 405,
-	"totalTypes": 370,
+	"totalTypes": 371,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -4829,6 +4829,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/layer-card"
 				},
 				{
+					"name": "LayerCardHeaderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/layer-card",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/layer-card"
+				},
+				{
 					"name": "LayerCardWellProps",
 					"isValue": false,
 					"isType": true,
@@ -5107,6 +5115,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 			"summary": "NavigationMenu component documentation and catalog playground",
 			"symbols": [
 				{
+					"name": "NavigationMenuList",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/navigation-menu",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/navigation-menu"
+				},
+				{
 					"name": "NavigationMenuLink",
 					"isValue": true,
 					"isType": false,
@@ -5134,14 +5150,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "NavigationMenuListProps",
 					"isValue": false,
 					"isType": true,
-					"ownerDoc": "src/pages/ui/navigation-menu",
-					"ownerKind": "catalog-component",
-					"originModule": "@nocoo/basalt/components/navigation-menu"
-				},
-				{
-					"name": "NavigationMenuList",
-					"isValue": true,
-					"isType": false,
 					"ownerDoc": "src/pages/ui/navigation-menu",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/navigation-menu"

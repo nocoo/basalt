@@ -74,7 +74,7 @@ export const SheetTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<DialogPrimitive.Title
 		ref={ref}
-		className={cn("text-lg font-semibold leading-none tracking-tight", className)}
+		className={cn("text-basalt-xl font-semibold leading-basalt-tight tracking-tight", className)}
 		{...props}
 	/>
 ));
@@ -95,17 +95,17 @@ export const SheetDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<DialogPrimitive.Description
 		ref={ref}
-		className={cn("text-sm text-basalt-muted-foreground", className)}
+		className={cn("text-basalt-base text-basalt-muted-foreground", className)}
 		{...props}
 	/>
 ));
 SheetDescription.displayName = DialogPrimitive.Description.displayName;
 
 const SIDE = {
-	right: `fixed inset-y-0 right-0 ${BASALT_UI_CLASS} flex h-full w-basalt-80 flex-col gap-basalt-3 border-l border-basalt-border p-basalt-overlay text-sm text-basalt-foreground shadow-lg`,
-	left: `fixed inset-y-0 left-0 ${BASALT_UI_CLASS} flex h-full w-basalt-80 flex-col gap-basalt-3 border-r border-basalt-border p-basalt-overlay text-sm text-basalt-foreground shadow-lg`,
-	top: `fixed inset-x-0 top-0 ${BASALT_UI_CLASS} flex h-basalt-80 w-full flex-col gap-basalt-3 border-b border-basalt-border p-basalt-overlay text-sm text-basalt-foreground shadow-lg`,
-	bottom: `fixed inset-x-0 bottom-0 ${BASALT_UI_CLASS} flex h-basalt-80 w-full flex-col gap-basalt-3 border-t border-basalt-border p-basalt-overlay text-sm text-basalt-foreground shadow-lg`,
+	right: `fixed inset-y-0 right-0 ${BASALT_UI_CLASS} flex h-full w-basalt-80 flex-col gap-basalt-space-lg border-l border-basalt-border p-basalt-overlay text-basalt-base text-basalt-foreground shadow-lg`,
+	left: `fixed inset-y-0 left-0 ${BASALT_UI_CLASS} flex h-full w-basalt-80 flex-col gap-basalt-space-lg border-r border-basalt-border p-basalt-overlay text-basalt-base text-basalt-foreground shadow-lg`,
+	top: `fixed inset-x-0 top-0 ${BASALT_UI_CLASS} flex h-basalt-80 w-full flex-col gap-basalt-space-lg border-b border-basalt-border p-basalt-overlay text-basalt-base text-basalt-foreground shadow-lg`,
+	bottom: `fixed inset-x-0 bottom-0 ${BASALT_UI_CLASS} flex h-basalt-80 w-full flex-col gap-basalt-space-lg border-t border-basalt-border p-basalt-overlay text-basalt-base text-basalt-foreground shadow-lg`,
 } as const;
 
 export type SheetSide = keyof typeof SIDE;
@@ -176,7 +176,7 @@ export const SheetContent = React.forwardRef<
 		<DialogPrimitive.Overlay
 			forceMount={props.forceMount}
 			className={cn(
-				"basalt-sheet-overlay fixed inset-0 bg-black/50",
+				"basalt-sheet-overlay fixed inset-0 bg-basalt-backdrop/50",
 				OVERLAY_LAYER,
 				OVERLAY_MOTION,
 			)}
@@ -199,7 +199,7 @@ SheetContent.displayName = "SheetContent";
 export interface SheetHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const SheetHeader = ({ className, ...props }: SheetHeaderProps) => (
-	<div className={cn("flex flex-col space-y-basalt-2 text-left", className)} {...props} />
+	<div className={cn("flex flex-col space-y-basalt-space-lg text-left", className)} {...props} />
 );
 SheetHeader.displayName = "SheetHeader";
 
@@ -207,7 +207,10 @@ export interface SheetFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export const SheetFooter = ({ className, ...props }: SheetFooterProps) => (
 	<div
-		className={cn("flex flex-col-reverse gap-basalt-2 sm:flex-row sm:justify-end", className)}
+		className={cn(
+			"flex flex-col-reverse gap-basalt-space-lg sm:flex-row sm:justify-end",
+			className,
+		)}
 		{...props}
 	/>
 );

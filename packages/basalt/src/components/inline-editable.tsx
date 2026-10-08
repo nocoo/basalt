@@ -155,13 +155,13 @@ export function InlineEditable({
 			role="group"
 			aria-label={label}
 			aria-busy={busy}
-			className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-2", className)}
+			className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-space-lg", className)}
 			onBlur={(event) => {
 				if (saveOnBlur && !event.currentTarget.contains(event.relatedTarget)) void save("blur");
 			}}
 		>
 			{isEditing ? (
-				<div className="flex flex-wrap items-center gap-basalt-2">
+				<div className="flex flex-wrap items-center gap-basalt-space-lg">
 					<Input
 						ref={input}
 						aria-label={label}
@@ -212,7 +212,7 @@ export function InlineEditable({
 					type="button"
 					disabled={disabled || pending}
 					aria-label={`${editLabel} ${label}`}
-					className="group flex max-w-full items-center gap-basalt-2 rounded-basalt-md px-basalt-1 py-basalt-1 text-left text-sm hover:bg-basalt-accent focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
+					className="group flex max-w-full items-center gap-basalt-space-lg rounded-basalt-md px-basalt-space-sm py-basalt-space-sm text-left text-basalt-base hover:bg-basalt-hover focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
 					onClick={() => {
 						setDraft(value);
 						setFailure(undefined);
@@ -229,12 +229,12 @@ export function InlineEditable({
 				</button>
 			)}
 			{busy && (
-				<p role="status" className="text-xs text-basalt-muted-foreground">
+				<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
 					{pendingLabel}
 				</p>
 			)}
 			{message && (
-				<p id={`${id}-error`} role="alert" className="text-xs text-basalt-destructive">
+				<p id={`${id}-error`} role="alert" className="text-basalt-sm text-basalt-destructive">
 					{message}
 				</p>
 			)}

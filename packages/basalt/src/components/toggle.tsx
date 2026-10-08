@@ -6,17 +6,17 @@ import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { FOCUS_RING } from "./overlay";
 
 const toggleVariants = cva(
-	`${BASALT_UI_CLASS} relative inline-flex cursor-pointer items-center justify-center rounded-basalt-md text-sm font-medium transition-colors before:absolute before:inset-0 hover:bg-basalt-accent aria-pressed:bg-basalt-accent ${FOCUS_RING}`,
+	`${BASALT_UI_CLASS} basalt-choice relative inline-flex cursor-pointer items-center justify-center rounded-basalt-md font-medium transition-colors basalt-motion before:absolute before:inset-0 hover:bg-basalt-hover ${FOCUS_RING}`,
 	{
 		variants: {
 			variant: {
-				default: "bg-basalt-muted text-basalt-foreground",
-				outline: "border border-basalt-border bg-basalt-secondary",
+				default: "bg-basalt-control text-basalt-foreground",
+				outline: "border border-basalt-border bg-basalt-control",
 			},
 			size: {
-				default: "h-basalt-control px-basalt-control-x",
-				sm: "h-basalt-control-sm px-basalt-2 text-xs",
-				lg: "h-basalt-control-lg px-basalt-4",
+				default: "basalt-action",
+				sm: "basalt-action basalt-action-sm",
+				lg: "basalt-action basalt-action-lg",
 			},
 		},
 		defaultVariants: { variant: "default", size: "default" },

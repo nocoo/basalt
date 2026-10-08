@@ -15,7 +15,7 @@ export type DialogSize = keyof typeof DIALOG_SIZES;
 
 export function dialogOverlayClass(className?: string) {
 	return cn(
-		"fixed inset-0 bg-black/40 backdrop-blur-md",
+		"fixed inset-0 bg-basalt-backdrop/40 backdrop-blur-md",
 		OVERLAY_LAYER,
 		"data-[state=open]:animate-basalt-overlay-in data-[state=closed]:animate-basalt-overlay-out",
 		OVERLAY_MOTION,
@@ -256,7 +256,7 @@ export const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<DialogPrimitive.Title
 		ref={ref}
-		className={cn("text-2xl font-semibold tracking-tight", className)}
+		className={cn("text-basalt-3xl font-semibold tracking-tight", className)}
 		{...props}
 	/>
 ));
@@ -277,7 +277,7 @@ export const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<DialogPrimitive.Description
 		ref={ref}
-		className={cn("text-base text-basalt-muted-foreground", className)}
+		className={cn("text-basalt-lg text-basalt-muted-foreground", className)}
 		{...props}
 	/>
 ));
@@ -286,7 +286,7 @@ DialogDescription.displayName = DialogPrimitive.Description.displayName;
 export interface DialogHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const DialogHeader = ({ className, ...props }: DialogHeaderProps) => (
-	<div className={cn("flex flex-col space-y-basalt-1_5 text-left", className)} {...props} />
+	<div className={cn("flex flex-col space-y-basalt-space-md text-left", className)} {...props} />
 );
 DialogHeader.displayName = "DialogHeader";
 
@@ -295,7 +295,7 @@ export interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> 
 export const DialogFooter = ({ className, ...props }: DialogFooterProps) => (
 	<div
 		className={cn(
-			"mt-basalt-6 flex flex-col-reverse gap-basalt-2 sm:flex-row sm:justify-end",
+			"mt-basalt-space-lg flex flex-col-reverse gap-basalt-space-lg sm:flex-row sm:justify-end",
 			className,
 		)}
 		{...props}

@@ -44,7 +44,7 @@ export function Empty({
 		<div
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex flex-col items-center gap-basalt-2 text-center",
+				"flex flex-col items-center gap-basalt-space-lg text-center",
 				className,
 			)}
 			{...props}
@@ -52,13 +52,17 @@ export function Empty({
 			{icon ? (
 				<div className="text-basalt-muted-foreground [&_svg]:size-basalt-8">{icon}</div>
 			) : null}
-			<p className="text-sm font-medium text-basalt-foreground">{title}</p>
-			{description ? <p className="text-xs text-basalt-muted-foreground">{description}</p> : null}
+			<p className="text-basalt-base font-medium text-basalt-foreground">{title}</p>
+			{description ? (
+				<p className="text-basalt-sm text-basalt-muted-foreground">{description}</p>
+			) : null}
 			{children !== undefined && children !== null ? (
-				<div className="text-xs text-basalt-muted-foreground">{children}</div>
+				<div className="text-basalt-sm text-basalt-muted-foreground">{children}</div>
 			) : null}
 			{action !== undefined && action !== null ? (
-				<div className="mt-basalt-2 flex items-center justify-center gap-basalt-2">{action}</div>
+				<div className="mt-basalt-space-lg flex items-center justify-center gap-basalt-space-lg">
+					{action}
+				</div>
 			) : null}
 		</div>
 	);

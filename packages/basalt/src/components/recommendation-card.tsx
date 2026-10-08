@@ -30,16 +30,16 @@ function Confidence({ value }: { value: RecommendationConfidence }) {
 	return (
 		<span
 			className={cn(
-				"inline-flex shrink-0 items-center gap-basalt-1_5 text-xs",
+				"inline-flex shrink-0 items-center gap-basalt-space-md text-basalt-sm",
 				confidence.className,
 			)}
 		>
-			<span aria-hidden="true" className="inline-flex items-center gap-basalt-0_5">
+			<span aria-hidden="true" className="inline-flex items-center gap-basalt-space-xs">
 				{[0, 1, 2].map((bar) => (
 					<span
 						key={bar}
 						className={cn(
-							"h-basalt-2_5 w-basalt-1 rounded-full",
+							"h-basalt-2_5 w-basalt-1 rounded-basalt-full",
 							bar < confidence.bars ? "bg-current" : "bg-basalt-border",
 						)}
 					/>
@@ -65,19 +65,19 @@ export function RecommendationCard({
 			aria-labelledby={id}
 			className={cn("w-full min-w-0 overflow-hidden leading-[var(--basalt-line-body)]", className)}
 		>
-			<div className="space-y-basalt-1_5 px-basalt-panel-x py-basalt-panel-y">
-				<h3 id={id} className="text-sm font-medium">
+			<div className="space-y-basalt-space-md px-basalt-panel-x py-basalt-panel-y">
+				<h3 id={id} className="text-basalt-base font-medium">
 					{title}
 				</h3>
 				{vm.active ? (
 					<p
 						key={vm.active.id}
-						className="basalt-agent-reveal whitespace-pre-wrap break-words text-[13px] leading-[var(--basalt-line-body)] text-basalt-muted-foreground"
+						className="basalt-agent-reveal whitespace-pre-wrap break-words text-basalt-code leading-[var(--basalt-line-body)] text-basalt-muted-foreground"
 					>
 						{vm.active.description}
 					</p>
 				) : (
-					<p className="text-sm text-basalt-muted-foreground" role="status">
+					<p className="text-basalt-base text-basalt-muted-foreground" role="status">
 						No recommendations yet
 					</p>
 				)}
@@ -86,7 +86,7 @@ export function RecommendationCard({
 				<Collapsible open={vm.open} onOpenChange={vm.setOpen}>
 					<CollapsibleContent unstyled>
 						<div className="border-t border-basalt-border px-[calc(var(--basalt-space-panel-x)-var(--basalt-space-row-x))] py-basalt-panel-y">
-							<p className="px-basalt-row-x py-basalt-1 text-xs text-basalt-muted-foreground">
+							<p className="px-basalt-row-x py-basalt-space-sm text-basalt-sm text-basalt-muted-foreground">
 								Other options
 							</p>
 							<div
@@ -108,7 +108,9 @@ export function RecommendationCard({
 										}}
 										className="h-auto min-h-basalt-menu-row w-full justify-start whitespace-normal px-basalt-row-x py-basalt-row-y text-left hover:bg-transparent"
 									>
-										<span className="min-w-0 flex-1 break-words text-[13px]">{option.label}</span>
+										<span className="min-w-0 flex-1 break-words text-basalt-code">
+											{option.label}
+										</span>
 										<Confidence value={option.confidence} />
 									</Button>
 								))}
@@ -116,7 +118,10 @@ export function RecommendationCard({
 						</div>
 					</CollapsibleContent>
 					{vm.error && (
-						<p role="alert" className="px-basalt-panel-x pb-basalt-2 text-xs text-basalt-danger">
+						<p
+							role="alert"
+							className="px-basalt-panel-x pb-basalt-space-lg text-basalt-sm text-basalt-danger"
+						>
 							{vm.error}
 						</p>
 					)}
@@ -130,7 +135,7 @@ export function RecommendationCard({
 										<ChevronDown
 											aria-hidden="true"
 											className={cn(
-												"transition-transform motion-reduce:transition-none",
+												"transition-transform basalt-motion motion-reduce:transition-none",
 												vm.open && "rotate-180",
 											)}
 										/>

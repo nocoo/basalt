@@ -82,7 +82,7 @@ export function Gauge({
 				</RadialBarChart>
 			</ChartFrame>
 			{hideValue ? null : (
-				<span className="pointer-events-none absolute inset-0 flex items-center justify-center text-sm font-semibold text-basalt-foreground">
+				<span className="pointer-events-none absolute inset-0 flex items-center justify-center text-basalt-base font-semibold text-basalt-foreground">
 					{display}
 				</span>
 			)}
@@ -94,15 +94,15 @@ export function Gauge({
 	}
 
 	return (
-		<div className="flex flex-col gap-basalt-2 min-h-0 min-w-0">
+		<div className="flex flex-col gap-basalt-space-lg min-h-0 min-w-0">
 			{hasSummary ? (
-				<div id={summaryId} className="text-xs text-basalt-muted-foreground">
+				<div id={summaryId} className="text-basalt-sm text-basalt-muted-foreground">
 					{summary}
 				</div>
 			) : null}
 			{plot}
 			{hasAlternative ? (
-				<div className="text-xs text-basalt-muted-foreground">{dataAlternative}</div>
+				<div className="text-basalt-sm text-basalt-muted-foreground">{dataAlternative}</div>
 			) : null}
 		</div>
 	);

@@ -5,8 +5,8 @@ import { controlSurfaceClass } from "../utils/control-surface";
 import { Button } from "./button";
 
 const itemClass = cn(
-	"relative h-full w-basalt-control shrink-0 rounded-none border-0 bg-transparent shadow-none first:rounded-l-basalt-md last:rounded-r-basalt-md",
-	"hover:bg-basalt-accent focus-visible:bg-basalt-accent active:bg-basalt-accent",
+	"relative basalt-action-inset w-basalt-control shrink-0 rounded-none border-0 bg-transparent shadow-none first:rounded-l-basalt-md last:rounded-r-basalt-md",
+	"hover:bg-basalt-hover focus-visible:bg-basalt-hover active:bg-basalt-hover",
 	"disabled:pointer-events-none disabled:opacity-100 disabled:text-basalt-muted-foreground",
 );
 
@@ -73,7 +73,7 @@ export function Pagination({
 			<div
 				className={controlSurfaceClass(
 					cn(
-						"inline-flex h-basalt-control items-stretch",
+						"inline-flex min-h-basalt-control items-stretch",
 						"[&>*:not(:first-child)]:border-l [&>*:not(:first-child)]:border-basalt-border",
 						"[&>:first-child]:rounded-l-basalt-md [&>:last-child]:rounded-r-basalt-md",
 					),
@@ -102,7 +102,7 @@ export function Pagination({
 				{simple ? null : (
 					<span
 						aria-current="page"
-						className="flex h-full min-w-basalt-control items-center justify-center px-basalt-3 text-sm font-medium tabular-nums text-basalt-foreground"
+						className="basalt-choice flex min-w-basalt-control items-center justify-center px-basalt-space-lg text-basalt-base font-medium tabular-nums text-basalt-foreground"
 					>
 						{current}
 					</span>

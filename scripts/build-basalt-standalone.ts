@@ -28,12 +28,19 @@ function walk(dir: string): string[] {
 
 const candidates = [
 	...new Set([
+		...["card", "layout"].flatMap((role) =>
+			["", "-sm", "-lg", "-xl"].flatMap((size) =>
+				["p", "px", "py", "m", "mx", "my", "gap", "gap-x", "gap-y", "space-x", "space-y"].map(
+					(utility) => `${utility}-basalt-${role}${size}`,
+				),
+			),
+		),
 		"sr-only",
 		"sticky",
 		"order-last",
-		"w-[68px]",
+		"w-[4.25rem]",
 		"h-7",
-		"mb-2",
+		"mb-basalt-space-lg",
 		"appearance-none",
 		"border-0",
 		"bg-transparent",
@@ -41,13 +48,11 @@ const candidates = [
 		"font-inherit",
 		"text-inherit",
 		"cursor-pointer",
-		"max-h-[300px]",
+		"max-h-[18.75rem]",
 		"overflow-x-hidden",
 		"overflow-y-hidden",
 		"data-[disabled=true]:pointer-events-none",
 		"data-[disabled=true]:opacity-50",
-		"data-[selected=true]:bg-basalt-accent",
-		"data-[selected=true]:text-basalt-accent-foreground",
 		...walk(resolve(packageRoot, "src")).flatMap((file) =>
 			classCandidates(readFileSync(file, "utf8")),
 		),

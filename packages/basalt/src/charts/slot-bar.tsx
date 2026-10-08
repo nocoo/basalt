@@ -123,7 +123,7 @@ function SlotItemBars({
 		return (
 			<div
 				className={cn(
-					"w-full rounded-sm",
+					"w-full rounded-basalt-sm",
 					isEmpty ? emptyClass : isTailwindColor ? item.color : undefined,
 				)}
 				style={{

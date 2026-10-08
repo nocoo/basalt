@@ -83,7 +83,10 @@ export type FlowNodeProps = {
 
 export function FlowNode({ children }: FlowNodeProps) {
 	return (
-		<li className="rounded-basalt-md border border-basalt-border bg-basalt-secondary px-basalt-3 py-basalt-2 text-sm">
+		<li
+			data-basalt-surface=""
+			className="rounded-basalt-md border border-basalt-border px-basalt-layout py-basalt-layout-sm text-basalt-base"
+		>
 			{children}
 		</li>
 	);

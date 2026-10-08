@@ -40,7 +40,7 @@ export function ResponsiveMasterDetail({
 	detailLabel = "Details",
 	backLabel = "Back to items",
 	empty = (
-		<p className="p-basalt-6 text-sm text-basalt-muted-foreground">
+		<p className="p-basalt-layout text-basalt-base text-basalt-muted-foreground">
 			Choose an item to see its details.
 		</p>
 	),
@@ -90,7 +90,7 @@ export function ResponsiveMasterDetail({
 				hidden={compact && detailOpen}
 				inert={compact && detailOpen}
 				className={cn(
-					"min-h-0 min-w-0 bg-basalt-card focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-basalt-ring md:overflow-y-auto md:overscroll-y-contain md:border-r md:border-basalt-border",
+					"min-h-0 min-w-0 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-basalt-ring md:overflow-y-auto md:overscroll-y-contain md:border-r md:border-basalt-border",
 					detailOpen && "hidden md:block",
 				)}
 				onFocusCapture={(event) => {
@@ -117,7 +117,7 @@ export function ResponsiveMasterDetail({
 				)}
 			>
 				{compact && detailOpen && (
-					<div className="border-b border-basalt-border p-basalt-2">
+					<div className="border-b border-basalt-border p-basalt-space-lg">
 						<Button
 							className="min-h-basalt-touch"
 							variant="ghost"

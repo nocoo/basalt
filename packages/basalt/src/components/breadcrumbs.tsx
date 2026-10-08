@@ -4,7 +4,7 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Link } from "./link";
 
-const crumbTypeClass = "text-sm font-normal";
+const crumbTypeClass = "text-basalt-base font-normal";
 
 export interface BreadcrumbItem {
 	/**
@@ -41,14 +41,14 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
 			aria-label="Breadcrumb"
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex items-center gap-basalt-1 text-sm font-normal text-basalt-muted-foreground",
+				"flex items-center gap-basalt-space-sm text-basalt-base font-normal text-basalt-muted-foreground",
 				className,
 			)}
 		>
 			{items.map((item, index) => {
 				const current = index === items.length - 1 && !item.href;
 				const label = item.icon ? (
-					<span className="inline-flex items-center gap-basalt-1">
+					<span className="inline-flex items-center gap-basalt-space-sm">
 						{item.icon}
 						{item.label}
 					</span>
@@ -56,14 +56,17 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
 					item.label
 				);
 				return (
-					<span key={`${String(item.label)}-${index}`} className="flex items-center gap-basalt-1">
+					<span
+						key={`${String(item.label)}-${index}`}
+						className="flex items-center gap-basalt-space-sm"
+					>
 						{index > 0 ? <ChevronRight className="size-basalt-icon-sm" aria-hidden="true" /> : null}
 						{item.href ? (
 							<Link
 								href={item.href}
 								className={cn(
 									crumbTypeClass,
-									"text-basalt-muted-foreground no-underline transition-colors hover:text-basalt-foreground",
+									"text-basalt-muted-foreground no-underline transition-colors basalt-motion hover:text-basalt-foreground",
 								)}
 							>
 								{label}

@@ -20,6 +20,16 @@ describe("ChatInbox", () => {
 			"aria-current",
 			"true",
 		);
+		expect(screen.getByRole("navigation")).toHaveClass("basalt-hover-list");
+		expect(screen.getByRole("button", { name: /Analytics/ })).toHaveAttribute(
+			"data-hover-selected",
+			"true",
+		);
+		expect(screen.getByRole("button", { name: /Analytics/ })).toHaveClass("basalt-nav-item");
+		expect(screen.getByRole("button", { name: /Quality/ })).toHaveAttribute(
+			"data-hover-selected",
+			"false",
+		);
 		fireEvent.click(screen.getByRole("button", { name: /Quality/ }));
 		expect(onSelect).toHaveBeenCalledWith("b");
 	});

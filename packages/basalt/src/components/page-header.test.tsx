@@ -81,6 +81,8 @@ describe("PageHeader", () => {
 		expect(row?.className).toContain("flex-col");
 		expect(row?.className).toContain("md:flex-row");
 		expect(heading.className).not.toContain("truncate");
+		expect(heading).toHaveClass("[overflow-wrap:anywhere]");
+		expect(banner).toHaveClass("shrink-0", "min-w-0");
 		expect(within(banner).getByText(/long supporting summary/).className).not.toContain("truncate");
 		expect(
 			within(banner).getByRole("button", { name: "Create report" }).parentElement?.className,

@@ -203,7 +203,7 @@ export const TooltipContent = React.forwardRef<
 				BASALT_UI_CLASS,
 				OVERLAY_LAYER,
 				OVERLAY_MOTION,
-				"basalt-floating overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-2 py-basalt-1 text-xs font-normal leading-[var(--basalt-line-compact)] text-basalt-popover-foreground shadow-md",
+				"basalt-floating overflow-hidden rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-space-lg py-basalt-space-sm text-basalt-sm font-normal leading-[var(--basalt-line-compact)] text-basalt-popover-foreground shadow-md",
 				className,
 			)}
 			{...props}

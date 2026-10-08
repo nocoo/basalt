@@ -42,7 +42,10 @@ export function DeleteResource({ name, onDelete, errorMessage }: DeleteResourceP
 				<>
 					<span>This cannot be undone.</span>
 					{error ? (
-						<span role="alert" className="mt-basalt-2 block text-xs text-basalt-destructive">
+						<span
+							role="alert"
+							className="mt-basalt-space-lg block text-basalt-sm text-basalt-destructive"
+						>
 							{error}
 						</span>
 					) : null}

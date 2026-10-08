@@ -8,10 +8,10 @@ export type { ChartSeriesDescriptor } from "./series";
 export type ChartTypeFace = "axis" | "legend" | "tooltipTitle" | "tooltipBody";
 
 export const CHART_TYPE = {
-	axisFontSize: 11,
-	legendFontSize: 12,
-	tooltipTitleSize: 12,
-	tooltipBodySize: 12,
+	axisFontSize: "var(--basalt-text-xs)",
+	legendFontSize: "var(--basalt-text-sm)",
+	tooltipTitleSize: "var(--basalt-text-sm)",
+	tooltipBodySize: "var(--basalt-text-sm)",
 	tooltipDot: 8,
 	strokeWidth: 2,
 	gridDash: "3 3",
@@ -19,7 +19,7 @@ export const CHART_TYPE = {
 	areaFillAlpha: 0.2,
 } as const;
 
-export function chartFontSize(face: ChartTypeFace): number {
+export function chartFontSize(face: ChartTypeFace): string {
 	if (face === "legend") {
 		return CHART_TYPE.legendFontSize;
 	}
@@ -32,12 +32,12 @@ export function chartFontSize(face: ChartTypeFace): number {
 	return CHART_TYPE.axisFontSize;
 }
 
-export function chartTextStyle(face: ChartTypeFace): { fontSize: number } {
+export function chartTextStyle(face: ChartTypeFace): { fontSize: string } {
 	return { fontSize: chartFontSize(face) };
 }
 
 export function chartTickStyle(face: ChartTypeFace = "axis"): {
-	fontSize: number;
+	fontSize: string;
 	fill: string;
 } {
 	return { fontSize: chartFontSize(face), fill: chartAxis };
@@ -91,7 +91,7 @@ export function chartTooltipContentStyle(): {
 	border: string;
 	borderRadius: string;
 	boxShadow: string;
-	fontSize: number;
+	fontSize: string;
 	color: string;
 	padding: string;
 } {

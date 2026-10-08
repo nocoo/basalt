@@ -27,22 +27,34 @@ export function PageHeader({ actions, breadcrumbs, description, filters, title }
 
 	return (
 		// biome-ignore lint/a11y/useAriaPropsSupportedByRole: the title heading names this header
-		<header aria-labelledby={titleId} className={cn(BASALT_UI_CLASS, "space-y-basalt-4")}>
+		<header
+			aria-labelledby={titleId}
+			className={cn(BASALT_UI_CLASS, "min-w-0 shrink-0 space-y-basalt-layout")}
+		>
 			{breadcrumbs && breadcrumbs.length > 0 ? <Breadcrumbs items={[...breadcrumbs]} /> : null}
-			<div className="flex flex-col gap-basalt-4 md:flex-row md:items-start md:justify-between">
-				<div className="min-w-0 flex-1 space-y-basalt-1">
-					<h1 id={titleId} className="text-2xl font-semibold tracking-tight text-basalt-foreground">
+			<div className="flex flex-col gap-basalt-layout md:flex-row md:items-start md:justify-between">
+				<div className="min-w-0 flex-1 space-y-basalt-space-sm">
+					<h1
+						id={titleId}
+						className="text-basalt-3xl font-semibold tracking-tight text-basalt-foreground [overflow-wrap:anywhere]"
+					>
 						{title}
 					</h1>
 					{description ? (
-						<p className="text-sm text-basalt-muted-foreground">{description}</p>
+						<p className="text-basalt-base text-basalt-muted-foreground [overflow-wrap:anywhere]">
+							{description}
+						</p>
 					) : null}
 				</div>
 				{actions ? (
-					<div className="flex flex-wrap items-center justify-end gap-basalt-2">{actions}</div>
+					<div className="flex flex-wrap items-center justify-end gap-basalt-space-lg">
+						{actions}
+					</div>
 				) : null}
 			</div>
-			{filters ? <div className="flex flex-wrap items-center gap-basalt-2">{filters}</div> : null}
+			{filters ? (
+				<div className="flex flex-wrap items-center gap-basalt-space-lg">{filters}</div>
+			) : null}
 		</header>
 	);
 }

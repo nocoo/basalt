@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import type { Page } from "playwright";
 
 export async function assertDimensionTokens(page: Page, baseUrl: string) {
@@ -8,7 +9,7 @@ export async function assertDimensionTokens(page: Page, baseUrl: string) {
 	const sizes = page.locator('[data-scenario="input-sizes"]');
 	for (const [name, expected] of [
 		["Small", 28],
-		["Default", 32],
+		["Default", 34],
 		["Large", 40],
 	] as const) {
 		assert.equal(
@@ -33,10 +34,19 @@ export async function assertDimensionTokens(page: Page, baseUrl: string) {
 	);
 	await page.evaluate(() => {
 		document.documentElement.style.removeProperty("--spacing");
-		document.documentElement.style.setProperty("--basalt-size-control", "36px");
+		document.documentElement.style.setProperty("--basalt-leading-action", "2");
 	});
-	assert.equal(Math.round((await input.boundingBox())?.height ?? 0), 36);
-	await page.evaluate(() => document.documentElement.style.removeProperty("--basalt-size-control"));
+	assert.equal(Math.round((await input.boundingBox())?.height ?? 0), 38);
+	await page.evaluate(() =>
+		document.documentElement.style.removeProperty("--basalt-leading-action"),
+	);
+	await page.evaluate(() => {
+		document.documentElement.style.fontSize = "32px";
+	});
+	assert.ok(((await input.boundingBox())?.height ?? 0) >= 66, "Input must grow with the root font");
+	await page.evaluate(() => {
+		document.documentElement.style.removeProperty("font-size");
+	});
 	await page.goto(`${baseUrl}/ui/button`);
 	await page.locator('[data-status="ready"]').waitFor();
 	const buttons = page.locator("[data-hero-scenario] button");
@@ -45,8 +55,66 @@ export async function assertDimensionTokens(page: Page, baseUrl: string) {
 		nodes.map((node) => node.getBoundingClientRect().height),
 	);
 	assert.ok(
-		heights.every((height) => height === 32 || height === 28),
+		heights.every((height) => height === 34 || height === 28),
 		JSON.stringify(heights),
 	);
-	return { sizes: [28, 32, 40], isolatedHostSpacing: true, semanticOverride: true };
+	const first = buttons.first();
+	await first.evaluate((node) => {
+		node.textContent = "A deliberately long label that wraps without clipping";
+		(node as HTMLElement).style.width = "6rem";
+	});
+	assert.ok(((await first.boundingBox())?.height ?? 0) > 34, "Wrapped labels grow naturally");
+	const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
+	for (const [slug, selector] of [
+		["input-group", '[data-scenario="input-group-button"] [data-slot="input-group"]'],
+		["sensitive-input", "[data-hero-scenario] .basalt-ui:has(> input)"],
+		["clipboard-text", '[data-hero-scenario] [data-slot="clipboard-text"]'],
+		["toggle-group", '[data-hero-scenario] [role="radiogroup"]'],
+	] as const) {
+		await page.goto(`${baseUrl}/ui/${slug}`);
+		await page.locator('[data-status="ready"]').waitFor();
+		const control = page.locator(selector).first();
+		const markup = await control.evaluate((node) => node.outerHTML);
+		const standalone = await page.context().newPage();
+		try {
+			await standalone.setContent(`<style>${css}</style>${markup}`);
+			for (const rootFont of [16, 20]) {
+				for (const target of [page, standalone]) {
+					await target.evaluate((size) => {
+						document.documentElement.style.fontSize = `${size}px`;
+					}, rootFont);
+					const node = target === page ? control : standalone.locator("body > :not(style)").first();
+					assert.ok(
+						Math.abs(((await node.boundingBox())?.height ?? 0) - (34 * rootFont) / 16) <= 1,
+						`${slug} at root ${rootFont}`,
+					);
+				}
+			}
+		} finally {
+			await standalone.close();
+			await page.evaluate(() => document.documentElement.style.removeProperty("font-size"));
+		}
+	}
+	await page.goto(`${baseUrl}/ui/badge`);
+	await page.locator('[data-status="ready"]').waitFor();
+	assert.equal(
+		Math.round((await page.locator(".basalt-inline").first().boundingBox())?.height ?? 0),
+		22,
+	);
+	await page.goto(`${baseUrl}/ui/banner`);
+	await page.locator('[data-status="ready"]').waitFor();
+	const banner = page.locator(".basalt-banner").first();
+	await banner.evaluate((node) => {
+		node.textContent = "Single-line notification";
+	});
+	assert.equal(Math.round((await banner.boundingBox())?.height ?? 0), 38);
+	return {
+		sizes: [22, 28, 34, 38, 40],
+		compoundControls: 4,
+		cssEntrypoints: 2,
+		isolatedHostSpacing: true,
+		semanticOverride: true,
+		textZoom: true,
+		wrapping: true,
+	};
 }

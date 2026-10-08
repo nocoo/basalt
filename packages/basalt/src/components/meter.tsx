@@ -47,23 +47,23 @@ export function Meter({
 	const redEnd = Math.floor(filled / 3);
 	const yellowEnd = redEnd + Math.ceil(filled / 3);
 	return (
-		<div className={cn("w-full space-y-basalt-1", className)}>
-			{label ? <div className="text-xs text-basalt-muted-foreground">{label}</div> : null}
-			<div className="flex items-center gap-basalt-3">
+		<div className={cn("w-full space-y-basalt-space-sm", className)}>
+			{label ? <div className="text-basalt-sm text-basalt-muted-foreground">{label}</div> : null}
+			<div className="flex items-center gap-basalt-space-lg">
 				<Progress.Root
 					data-basalt-meter=""
 					value={reading}
 					aria-label={ariaLabel ?? label}
 					aria-valuetext={reading === null ? "Unavailable" : customValue}
-					className="h-basalt-3_5 min-w-0 flex-1 overflow-hidden rounded-[2px] bg-basalt-muted p-basalt-0_5"
+					className="h-basalt-3_5 min-w-0 flex-1 overflow-hidden rounded-basalt-sm bg-basalt-muted p-basalt-space-xs"
 				>
-					<Progress.Indicator className="flex h-full gap-basalt-0_5" aria-hidden="true">
+					<Progress.Indicator className="flex h-full gap-basalt-space-xs" aria-hidden="true">
 						{Array.from({ length: 17 }, (_, index) => (
 							<span
 								key={`segment-${index}`}
 								data-filled={index < filled}
 								className={cn(
-									"h-full min-w-0 flex-1 rounded-[1px]",
+									"h-full min-w-0 flex-1 rounded-basalt-sm",
 									index >= filled
 										? "bg-basalt-foreground/10"
 										: index < redEnd
@@ -77,7 +77,7 @@ export function Meter({
 					</Progress.Indicator>
 				</Progress.Root>
 				{hideValue ? null : (
-					<span className="shrink-0 text-xs tabular-nums text-basalt-foreground">
+					<span className="shrink-0 text-basalt-sm tabular-nums text-basalt-foreground">
 						{customValue ?? (reading === null ? "Unavailable" : `${reading}%`)}
 					</span>
 				)}

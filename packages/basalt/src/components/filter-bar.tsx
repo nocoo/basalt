@@ -35,9 +35,9 @@ export function FilterBar({
 		<div
 			role="group"
 			aria-label={label}
-			className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-3", className)}
+			className={cn(BASALT_UI_CLASS, "min-w-0 space-y-basalt-space-lg", className)}
 		>
-			<div className="flex flex-wrap items-end gap-basalt-3 [&>*]:min-w-0">
+			<div className="flex flex-wrap items-end gap-basalt-space-lg [&>*]:min-w-0">
 				{children}
 				{active && onClear && (
 					<Button size="sm" variant="ghost" onClick={onClear}>
@@ -45,7 +45,9 @@ export function FilterBar({
 					</Button>
 				)}
 			</div>
-			{chips != null && <div className="flex flex-wrap items-center gap-basalt-2">{chips}</div>}
+			{chips != null && (
+				<div className="flex flex-wrap items-center gap-basalt-space-lg">{chips}</div>
+			)}
 		</div>
 	);
 }
@@ -77,7 +79,7 @@ export function FilterChip({
 		<span
 			className={cn(
 				BASALT_UI_CLASS,
-				"inline-flex max-w-full items-center gap-basalt-1 rounded-full border border-basalt-border bg-basalt-accent py-basalt-1 pl-basalt-3 pr-basalt-1 text-xs",
+				"inline-flex max-w-full items-center gap-basalt-space-sm rounded-basalt-full border border-basalt-border bg-basalt-selected py-basalt-space-sm pl-basalt-space-lg pr-basalt-space-sm text-basalt-sm",
 				className,
 			)}
 		>
@@ -90,7 +92,7 @@ export function FilterChip({
 				disabled={disabled}
 				aria-label={removeLabel ?? `Remove ${label}`}
 				onClick={onRemove}
-				className="shrink-0 rounded-full p-basalt-1 focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
+				className="shrink-0 rounded-basalt-full p-basalt-space-sm focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
 			>
 				<X className="size-basalt-icon-sm" aria-hidden="true" />
 			</button>

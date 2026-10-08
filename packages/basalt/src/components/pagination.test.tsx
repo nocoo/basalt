@@ -18,7 +18,7 @@ describe("Pagination", () => {
 		expect(group?.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
-		expect(group?.className.split(/\s+/)).toContain("h-basalt-control");
+		expect(group?.className.split(/\s+/)).toContain("min-h-basalt-control");
 		expect(group?.className).not.toContain("bg-basalt-background");
 		expect(group?.className).not.toContain("rounded-basalt-lg");
 		expect(group?.className).not.toContain("ring-1");
@@ -26,9 +26,9 @@ describe("Pagination", () => {
 		expect(previous.className.split(/\s+/)).toEqual(
 			expect.arrayContaining([
 				"bg-transparent",
-				"hover:bg-basalt-accent",
-				"focus-visible:bg-basalt-accent",
-				"active:bg-basalt-accent",
+				"hover:bg-basalt-hover",
+				"focus-visible:bg-basalt-hover",
+				"active:bg-basalt-hover",
 			]),
 		);
 	});

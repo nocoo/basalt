@@ -73,7 +73,7 @@ describe("SensitiveInput", () => {
 		expect(input).toBeRequired();
 		expect(input).toHaveValue("hidden");
 		expect(input.className).toContain("extra");
-		expect(input.className).toContain("pr-basalt-10");
+		expect(input.className).toContain("flex-1");
 		expect(ref.current).toBe(input);
 		fireEvent.change(input, { target: { value: "updated" } });
 		expect(onChange).toHaveBeenCalled();
@@ -95,37 +95,22 @@ describe("SensitiveInput", () => {
 			<SensitiveInput aria-label="Password" revealLabel="Show" hideLabel="Hide" />,
 		);
 		expect(screen.getByLabelText("Password").className.split(/\s+/)).toEqual(
-			expect.arrayContaining([
-				"h-basalt-control",
-				"px-basalt-control-x",
-				"py-basalt-control-y",
-				"text-sm",
-			]),
+			expect.arrayContaining(["basalt-action"]),
 		);
 		expect(screen.getByRole("button", { name: "Show" }).className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-basalt-control", "w-basalt-control"]),
+			expect.arrayContaining(["basalt-action-icon", "basalt-action-inset"]),
 		);
 		rerender(
 			<SensitiveInput aria-label="Password" size="sm" revealLabel="Show" hideLabel="Hide" />,
 		);
 		expect(screen.getByLabelText("Password").className.split(/\s+/)).toEqual(
-			expect.arrayContaining([
-				"h-basalt-control-sm",
-				"px-basalt-control-x-sm",
-				"py-basalt-control-y",
-				"text-xs",
-			]),
+			expect.arrayContaining(["basalt-action", "basalt-action-sm"]),
 		);
 		rerender(
 			<SensitiveInput aria-label="Password" size="lg" revealLabel="Show" hideLabel="Hide" />,
 		);
 		expect(screen.getByLabelText("Password").className.split(/\s+/)).toEqual(
-			expect.arrayContaining([
-				"h-basalt-control-lg",
-				"px-basalt-control-x-lg",
-				"py-basalt-2",
-				"text-base",
-			]),
+			expect.arrayContaining(["basalt-action", "basalt-action-lg"]),
 		);
 	});
 

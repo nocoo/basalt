@@ -103,7 +103,7 @@ const ToolbarRoot = React.forwardRef<HTMLDivElement, ToolbarProps>(
 					}
 				}}
 				className={cn(
-					"inline-flex w-fit items-stretch rounded-basalt-md bg-basalt-secondary shadow-xs ring-1 ring-basalt-border",
+					"inline-flex w-fit items-stretch rounded-basalt-md bg-basalt-control shadow-xs ring-1 ring-basalt-border",
 					"[&>*:not(:first-child)]:border-l [&>*:not(:first-child)]:border-basalt-border",
 					className,
 				)}

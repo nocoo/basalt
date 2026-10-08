@@ -17,7 +17,7 @@ export const API = [
 				type: "\"base\" | \"sm\" | null",
 				required: false,
 				default: "\"base\"",
-				description: "Sizing preset controlling padding geometry and action placement.\n\nNote: Defaults to \"base\". In compact mode (\"sm\"), only direct `<Banner.Action>` elements\nare placed in the trailing slot, while other action content renders inline next to the description.\nPassing null falls back to \"base\".",
+				description: "Sizing preset controlling action placement; shared banner padding stays consistent.\n\nNote: Defaults to \"base\". In compact mode (\"sm\"), only direct `<Banner.Action>` elements\nare placed in the trailing slot, while other action content renders inline next to the description.\nPassing null falls back to \"base\".",
 			},
 			{
 				name: "title",
@@ -65,7 +65,7 @@ export const API = [
 				name: "size",
 				type: "\"default\" | \"icon\" | \"lg\" | \"sm\" | null",
 				required: false,
-				description: "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"default\" otherwise.\nWhen iconOnly mode is resolved, an additional \"size-basalt-8\" class is attached.",
+				description: "Sizing preset. When unspecified or null, resolves to \"icon\" if children are omitted,\nnull, or an empty string, \"sm\" when parent Banner is compact (\"sm\"), or \"default\" otherwise.\nIcon-only mode uses the shared intrinsic icon action size.",
 			},
 			{
 				name: "asChild",

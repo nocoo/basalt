@@ -32,9 +32,9 @@ function acceptItemProps(_props: SelectItemProps) {}
 function acceptLabelProps(_props: SelectLabelProps) {}
 
 const SIZE_CLASS = {
-	sm: ["h-basalt-control-sm", "px-basalt-control-x-sm", "text-xs"],
-	default: ["h-basalt-control", "px-basalt-control-x", "text-sm"],
-	lg: ["h-basalt-control-lg", "px-basalt-control-x-lg", "text-base"],
+	sm: ["basalt-action", "basalt-action-sm"],
+	default: ["basalt-action"],
+	lg: ["basalt-action", "basalt-action-lg"],
 } as const;
 
 describe("Select", () => {
@@ -51,9 +51,7 @@ describe("Select", () => {
 		expect(trigger.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);
-		expect(trigger.className.split(/\s+/)).toEqual(
-			expect.arrayContaining(["h-basalt-control", "px-basalt-control-x"]),
-		);
+		expect(trigger.className.split(/\s+/)).toEqual(expect.arrayContaining(["basalt-action"]));
 	});
 
 	it("opens the list below the trigger", () => {
@@ -211,7 +209,7 @@ describe("Select", () => {
 		expect(trigger.tagName).toBe("BUTTON");
 		expect(ref.current).toBe(trigger);
 		expect(trigger.className).toContain("extra");
-		expect(trigger.className).toContain("h-basalt-control");
+		expect(trigger.className).toContain("basalt-action");
 	});
 
 	it("selects an uncontrolled value and reports a controlled next value", () => {

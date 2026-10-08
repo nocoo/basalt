@@ -25,11 +25,11 @@ const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
 				inert={disabled || undefined}
 				className={controlSurfaceClass(
 					cn(
-						"flex h-basalt-control w-full items-center shadow-xs",
+						"flex w-full items-center text-basalt-base shadow-xs",
 						"[&>:first-child]:rounded-l-basalt-md [&>:last-child]:rounded-r-basalt-md",
 						"outline-hidden focus-within:border-basalt-ring",
-						"has-[[data-slot=input-group-addon-start]]:[&_input]:pl-basalt-2",
-						"has-[[data-slot=input-group-addon-end]]:[&_input]:pr-basalt-2",
+						"has-[[data-slot=input-group-addon-start]]:[&_input]:pl-basalt-space-lg",
+						"has-[[data-slot=input-group-addon-end]]:[&_input]:pr-basalt-space-lg",
 						"has-[[data-slot=input-group-suffix]]:[&_input]:flex-none",
 						"has-[[data-slot=input-group-suffix]]:[&_input]:[field-sizing:content]",
 						"has-[[data-slot=input-group-suffix]]:[&_input]:pr-0",
@@ -75,7 +75,7 @@ const InputGroupInput = React.forwardRef<HTMLInputElement, InputGroupInputProps>
 				ref={ref}
 				disabled={disabled || groupDisabled}
 				className={cn(
-					"h-full min-w-0 w-auto! flex-1 rounded-none border-0 bg-transparent px-basalt-3 py-0 shadow-none",
+					"min-w-0 w-auto! flex-1 rounded-none border-0 bg-transparent px-basalt-space-lg shadow-none",
 					"outline-hidden focus-visible:border-transparent focus-visible:ring-0",
 					className,
 				)}
@@ -100,7 +100,7 @@ function InputGroupAddon({ align = "start", className, children, ...props }: Inp
 			data-slot={align === "end" ? "input-group-addon-end" : "input-group-addon-start"}
 			className={cn(
 				"pointer-events-none flex shrink-0 items-center text-basalt-muted-foreground *:pointer-events-auto [&_svg]:size-basalt-icon-lg",
-				align === "start" ? "-order-1 pl-basalt-3" : "order-1 pr-basalt-3",
+				align === "start" ? "-order-1 pl-basalt-space-lg" : "order-1 pr-basalt-space-lg",
 				className,
 			)}
 			{...props}
@@ -118,7 +118,7 @@ function InputGroupSuffix({ className, children, ...props }: InputGroupSuffixPro
 		<div
 			data-slot="input-group-suffix"
 			className={cn(
-				"pointer-events-none flex min-w-0 flex-1 items-center pr-basalt-3 text-basalt-muted-foreground select-none",
+				"pointer-events-none flex min-w-0 flex-1 items-center pr-basalt-space-lg text-basalt-muted-foreground select-none",
 				className,
 			)}
 			{...props}
@@ -166,10 +166,7 @@ const InputGroupButton = React.forwardRef<HTMLButtonElement, InputGroupButtonPro
 				variant={variant}
 				size={size}
 				disabled={disabled || groupDisabled}
-				className={cn(
-					"h-basalt-control-inset w-basalt-control-inset shrink-0 rounded-basalt-sm",
-					className,
-				)}
+				className={cn("basalt-action-inset shrink-0 rounded-basalt-sm", className)}
 				{...props}
 			/>
 		);

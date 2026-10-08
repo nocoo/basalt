@@ -265,7 +265,7 @@ describe("AppSidebar", () => {
 		expect(icons[0]).toBe(search);
 		expect(icons.length).toBeGreaterThan(1);
 		for (const icon of icons) {
-			expect(icon).toHaveClass("h-basalt-10", "w-basalt-10");
+			expect(icon).toHaveClass("min-h-basalt-control", "w-basalt-control", "justify-center");
 		}
 	});
 

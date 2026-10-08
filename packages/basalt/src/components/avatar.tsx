@@ -20,7 +20,7 @@ export const Avatar = React.forwardRef<React.ElementRef<typeof AvatarPrimitive.R
 		<AvatarPrimitive.Root
 			ref={ref}
 			className={cn(
-				"relative flex h-basalt-9 w-basalt-9 shrink-0 overflow-hidden rounded-full",
+				"relative flex h-basalt-9 w-basalt-9 shrink-0 overflow-hidden rounded-basalt-full",
 				className,
 			)}
 			{...props}
@@ -89,7 +89,7 @@ export const AvatarFallback = React.forwardRef<
 	<AvatarPrimitive.Fallback
 		ref={ref}
 		className={cn(
-			"flex h-full w-full items-center justify-center rounded-full bg-basalt-muted text-xs",
+			"flex h-full w-full items-center justify-center rounded-basalt-full bg-basalt-muted text-basalt-sm",
 			className,
 		)}
 		{...props}
@@ -134,7 +134,7 @@ export function AvatarInitials({
 			<AvatarFallback
 				className={cn(
 					"font-medium",
-					size === "sm" ? "text-[11px]" : "text-xs",
+					size === "sm" ? "text-basalt-xs" : "text-basalt-sm",
 					AVATAR_TONES[avatarColorIndex(colorKey ?? name)],
 				)}
 			>
