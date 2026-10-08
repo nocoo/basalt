@@ -272,6 +272,7 @@ const requiredAiAssets = [
 	"ai/USAGE.md",
 	"ai/COMPATIBILITY.md",
 	"ai/INTEGRATION.md",
+	"ai/DESIGN.md",
 	"ai/sources.json",
 ];
 for (const asset of requiredAiAssets) {

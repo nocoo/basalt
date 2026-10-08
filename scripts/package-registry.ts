@@ -710,6 +710,12 @@ export function syncAiPackageAssets(repoRoot = process.cwd()): void {
 		writeFileSync(integrationDst, readFileSync(integrationSrc, "utf8"));
 	}
 
+	if (existsSync(path.join(repoRoot, "DESIGN.md")))
+		writeFileSync(
+			path.join(aiDir, "DESIGN.md"),
+			readFileSync(path.join(repoRoot, "DESIGN.md"), "utf8"),
+		);
+
 	// 4. Write packages/basalt/ai/sources.json for pure re-export files that bundlers do not emit sourcemaps for
 	const sourcesBundle = generateSourcesBundle(repoRoot);
 	const rawSourcesJson = `${JSON.stringify(sourcesBundle, null, "\t")}\n`;
@@ -838,6 +844,15 @@ export function checkAiPackageAssetsFreshness(repoRoot = process.cwd()): void {
 		if (readFileSync(integrationDst, "utf8") !== readFileSync(integrationSrc, "utf8")) {
 			throw new Error("Stale packages/basalt/ai/INTEGRATION.md. Run sync or build.");
 		}
+	}
+
+	const designSrc = path.join(repoRoot, "DESIGN.md");
+	const designDst = path.join(aiDir, "DESIGN.md");
+	if (
+		existsSync(designSrc) &&
+		(!existsSync(designDst) || readFileSync(designSrc, "utf8") !== readFileSync(designDst, "utf8"))
+	) {
+		throw new Error("Missing or stale packages/basalt/ai/DESIGN.md. Run sync or build.");
 	}
 
 	if (!existsSync(sourcesPath)) {

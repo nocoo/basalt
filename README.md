@@ -156,3 +156,5 @@ bun run --cwd packages/basalt build
 ## 许可证
 
 [MIT](LICENSE) © 2026 Zheng Li
+
+Design contract: [DESIGN.md](DESIGN.md) (spacing, component categories, intrinsic sizes and motion).

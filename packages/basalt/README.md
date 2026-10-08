@@ -158,3 +158,5 @@ For comprehensive architectural recipes, form adapters, and framework migration 
 ## License
 
 [MIT](https://opensource.org/licenses/MIT)
+
+Design contract: [ai/DESIGN.md](ai/DESIGN.md) (spacing, component categories, intrinsic sizes and motion).

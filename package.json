@@ -9,6 +9,7 @@
 	],
 	"scripts": {
 		"dev": "vite",
+		"design:check": "bun scripts/design-audit.ts",
 		"build": "bun run catalog-api:check && bun run catalog-page-status:check && bun run catalog-content:check && bun run seo:check && bun scripts/catalog-page-status-build.ts",
 		"build:dev": "vite build --mode development",
 		"lint": "biome check --error-on-warnings .",
