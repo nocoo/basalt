@@ -128,6 +128,42 @@ describe("ApprovalCard", () => {
 		unmount();
 		expect(vi.getTimerCount()).toBe(0);
 	});
+	it("hands focus to the revealed question after automatic and backward transitions", () => {
+		vi.useFakeTimers();
+		render(<ApprovalCard questions={questions} onSubmit={vi.fn()} />);
+		const alpha = screen.getByRole("radio", { name: "Alpha" });
+		act(() => alpha.focus());
+		fireEvent.click(alpha);
+		expect(alpha).toHaveFocus();
+		act(() => vi.advanceTimersByTime(240));
+		expect(screen.getByText("Pick mix-ins")).toBeInTheDocument();
+		expect(screen.getByRole("checkbox", { name: "Chocolate" })).toHaveFocus();
+		fireEvent.click(screen.getByRole("button", { name: "Previous question" }));
+		expect(screen.getByRole("radio", { name: "Alpha" })).toHaveFocus();
+		const next = screen.getByRole("button", { name: "Continue" });
+		act(() => next.focus());
+		fireEvent.click(next);
+		expect(screen.getByText("Pick mix-ins")).toBeInTheDocument();
+		// Continue is disabled for the unanswered question, so focus hands off instead of dropping out.
+		expect(screen.getByRole("checkbox", { name: "Chocolate" })).toHaveFocus();
+		expect(document.activeElement).not.toBe(document.body);
+	});
+	it("keeps focus on the submitted status after skipping the last question", async () => {
+		const submit = vi.fn();
+		render(<ApprovalCard questions={questions} onSubmit={submit} autoAdvance={false} />);
+		fireEvent.click(screen.getByRole("radio", { name: "Alpha" }));
+		fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+		fireEvent.click(screen.getByRole("checkbox", { name: "Chocolate" }));
+		fireEvent.click(screen.getByRole("button", { name: "Continue" }));
+		fireEvent.click(screen.getByRole("button", { name: "Skip" }));
+		await screen.findByText("Answers submitted");
+		expect(screen.getByRole("status")).toHaveFocus();
+		expect(submit).toHaveBeenCalledWith({
+			plan: { selected: ["a"] },
+			mix: { selected: ["x"], custom: "" },
+			market: { selected: [], skipped: true },
+		});
+	});
 });
 describe("ToolChips", () => {
 	it("expands tool output and opens diff previews", async () => {

@@ -1,5 +1,5 @@
 import { ChevronLeft, X } from "lucide-react";
-import { useId } from "react";
+import { useEffect, useId, useRef } from "react";
 import type { ApprovalAnswers, ApprovalQuestion } from "../models/agent-feedback";
 import { cn } from "../utils/cn";
 import { useHoverHighlight } from "../utils/use-hover-highlight";
@@ -25,7 +25,29 @@ export interface ApprovalCardProps {
 export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardProps) {
 	const vm = useApprovalCardViewModel(props);
 	const id = useId();
-	const highlightRef = useHoverHighlight();
+	const options = useRef<HTMLDivElement | null>(null);
+	const submitted = useRef<HTMLParagraphElement | null>(null);
+	const highlightRef = useHoverHighlight(options);
+	useEffect(() => {
+		if (!vm.focusToken) return;
+		const active = document.activeElement;
+		// A control the user is still holding stays put; a removed or disabled one hands off to the question.
+		if (
+			active instanceof HTMLElement &&
+			active !== document.body &&
+			active.isConnected &&
+			!active.matches(":disabled, [aria-disabled='true']")
+		)
+			return;
+		options.current
+			?.querySelector<HTMLElement>(
+				'[role="radio"]:not([disabled]), [role="checkbox"]:not([disabled])',
+			)
+			?.focus();
+	}, [vm.focusToken]);
+	useEffect(() => {
+		if (vm.status === "submitted") submitted.current?.focus();
+	}, [vm.status]);
 	const question = vm.question;
 	if (!question)
 		return (
@@ -36,7 +58,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 	if (vm.status === "submitted")
 		return (
 			<LayerCard padding="sm" className={className}>
-				<p role="status" className="text-basalt-base">
+				<p ref={submitted} tabIndex={-1} role="status" className="text-basalt-base">
 					Answers submitted
 				</p>
 			</LayerCard>

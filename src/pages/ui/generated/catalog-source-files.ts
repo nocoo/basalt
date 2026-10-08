@@ -518,7 +518,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"approval-card": {
 		"file": "packages/basalt/src/components/approval-card.tsx",
-		"hash": "b0b499c2d3514453",
+		"hash": "0a415e6c5a09862d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/approval-card.js.map (sourcesContent[0])"
 	},

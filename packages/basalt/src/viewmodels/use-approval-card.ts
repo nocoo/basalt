@@ -16,6 +16,7 @@ export function useApprovalCardViewModel({
 	autoAdvance?: boolean;
 }) {
 	const [index, setIndex] = useState(0);
+	const [focusToken, setFocusToken] = useState(0);
 	const [answers, setAnswers] = useState<ApprovalAnswers>({});
 	const [status, setStatus] = useState<"editing" | "submitting" | "submitted">("editing");
 	const [error, setError] = useState("");
@@ -38,10 +39,15 @@ export function useApprovalCardViewModel({
 	const answer = question ? answers[question.id] : undefined;
 	const last = position === questions.length - 1;
 	const canContinue = Boolean(question && validApprovalAnswer(question, answer));
+	/** Every programmatic question change asks the view to keep focus inside the card. */
+	const show = (next: number) => {
+		setIndex(next);
+		setFocusToken((token) => token + 1);
+	};
 	const move = (next: number) => {
 		if (locked.current || questions.length === 0) return;
 		cancelAdvance();
-		setIndex(Math.min(Math.max(0, next), questions.length - 1));
+		show(Math.min(Math.max(0, next), questions.length - 1));
 		setError("");
 	};
 	const choose = (id: string) => {
@@ -68,13 +74,13 @@ export function useApprovalCardViewModel({
 		});
 		setError("");
 		if (question.type === "single" && autoAdvance && !last)
-			advanceTimer.current = setTimeout(() => setIndex(position + 1), 240);
+			advanceTimer.current = setTimeout(() => show(position + 1), 240);
 	};
 	const submit = async (nextAnswers: ApprovalAnswers) => {
 		if (locked.current || questions.length === 0) return;
 		const missing = questions.findIndex((item) => !validApprovalAnswer(item, nextAnswers[item.id]));
 		if (missing >= 0) {
-			setIndex(missing);
+			show(missing);
 			return;
 		}
 		locked.current = true;
@@ -95,6 +101,7 @@ export function useApprovalCardViewModel({
 	};
 	return {
 		position,
+		focusToken,
 		question,
 		answer,
 		status,
