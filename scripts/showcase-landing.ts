@@ -41,10 +41,24 @@ async function assertDashboardBounds(page: Page, width: number) {
 	if (scroll.max > 0) assert.ok(scroll.top > 0, "dashboard content must scroll within its island");
 }
 
-async function assertHeaderActions(page: Page, selector: string) {
+async function assertHeaderActions(page: Page, selector: string, { square = false } = {}) {
 	const actions = page.locator(selector);
 	assert.equal(await actions.locator('a[href="https://hexly.ai/projects/basalt"]').count(), 1);
-	for (const control of await actions.locator("button, a[href]").all()) {
+	const controls = await actions.locator("button, a[href]").all();
+	if (square) {
+		const boxes = await Promise.all(controls.map((control) => control.boundingBox()));
+		const [first] = boxes;
+		assert.ok(first, JSON.stringify(boxes));
+		for (const box of boxes)
+			assert.ok(
+				box &&
+					Math.abs(box.width - first.width) <= 1 &&
+					Math.abs(box.height - first.height) <= 1 &&
+					Math.abs(box.width - box.height) <= 1,
+				`icon actions must share one square geometry: ${JSON.stringify(boxes)}`,
+			);
+	}
+	for (const control of controls) {
 		const before = await control.boundingBox();
 		assert.ok(before);
 		await control.hover();
@@ -107,7 +121,7 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 	}
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await page.goto(baseUrl);
-	await assertHeaderActions(page, ".landing-header-actions");
+	await assertHeaderActions(page, ".landing-header-actions", { square: true });
 	await page.emulateMedia({ reducedMotion: "no-preference" });
 	await page.locator(".landing-brand-artwork").scrollIntoViewIfNeeded();
 	await page.waitForFunction(
@@ -214,5 +228,5 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 	} finally {
 		await context.close();
 	}
-	return { cases, navigation: true, scrolling: true, noJavaScript: true };
+	return { cases, navigation: true, scrolling: true, noJavaScript: true, actionGeometry: true };
 }

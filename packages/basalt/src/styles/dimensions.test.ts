@@ -169,7 +169,7 @@ describe("dimension token contract", () => {
 	it("ships every dimension variable referenced by a class", () => {
 		const known = new Set(
 			Array.from(
-				tokens.matchAll(/--(basalt-(?:space|size)-[\w]+(?:-[\w]+)*):/g),
+				tokens.matchAll(/--(basalt-(?:space|size|border-width)[\w-]*):/g),
 				(match) => match[1],
 			),
 		);

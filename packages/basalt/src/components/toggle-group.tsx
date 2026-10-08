@@ -166,7 +166,7 @@ export const ToggleGroupItem = React.forwardRef<
 		<ToggleGroupPrimitive.Item
 			ref={ref}
 			className={cn(
-				"relative basalt-action basalt-action-sm inline-flex cursor-pointer items-center rounded-basalt-full font-semibold leading-[var(--basalt-line-body)] tracking-wide text-basalt-muted-foreground transition-colors basalt-motion before:absolute before:inset-0",
+				"relative basalt-action basalt-action-sm inline-flex cursor-pointer items-center rounded-basalt-full font-semibold leading-[var(--basalt-line-body)] tracking-wide text-basalt-muted-foreground transition-colors basalt-motion before:absolute before:-inset-basalt-border-width",
 				"hover:text-basalt-foreground",
 				FOCUS_RING,
 				"aria-checked:text-basalt-primary-foreground aria-pressed:text-basalt-primary-foreground",

@@ -3154,9 +3154,9 @@
     content: var(--tw-content);
     position: absolute;
   }
-  .before\:inset-0::before {
+  .before\:-inset-basalt-border-width::before {
     content: var(--tw-content);
-    inset: 0px;
+    inset: calc(var(--basalt-border-width) * -1);
   }
   .before\:content-\[attr\(data-line-number\)\]::before {
     --tw-content: attr(data-line-number);

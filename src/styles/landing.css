@@ -148,8 +148,7 @@
 	gap: 1.875rem;
 	margin-inline: auto;
 }
-.landing-nav :where(a),
-.landing-github {
+.landing-nav :where(a) {
 	font-size: var(--basalt-text-code);
 	font-weight: 500;
 	color: var(--landing-hero-ink);

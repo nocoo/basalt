@@ -110,6 +110,7 @@
 	--spacing-basalt-8: var(--basalt-space-8);
 	--spacing-basalt-10: var(--basalt-space-10);
 	--spacing-basalt-14: var(--basalt-space-14);
+	--spacing-basalt-border-width: var(--basalt-border-width);
 	--spacing-basalt-control: var(--basalt-size-control);
 	--spacing-basalt-control-sm: var(--basalt-size-control-sm);
 	--spacing-basalt-control-lg: var(--basalt-size-control-lg);
