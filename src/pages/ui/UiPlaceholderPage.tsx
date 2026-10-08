@@ -409,7 +409,7 @@ function ReadyDoc({
 				<article
 					data-status="ready"
 					data-slug={entry.slug}
-					className="min-w-0 space-y-basalt-layout-xl"
+					className="min-w-0 space-y-basalt-layout-lg"
 				>
 					<div data-hero-scenario={hero.id}>
 						<DocExample code={hero.code} wide={widePreview}>

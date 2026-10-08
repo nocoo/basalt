@@ -49,6 +49,22 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 				assert.equal(geometry.descriptionLine, rootSize * 1.5);
 				assert.ok(Math.abs(geometry.textGap - rootSize * 0.5) <= 1);
 				assert.equal(geometry.pageGap, rootSize * 1.5);
+				const sectionGaps = await page
+					.locator("[data-showcase-page] article > *")
+					.evaluateAll((nodes) =>
+						nodes
+							.slice(1)
+							.map(
+								(node, index) =>
+									node.getBoundingClientRect().top - nodes[index].getBoundingClientRect().bottom,
+							),
+					);
+				assert.ok(sectionGaps.length > 1, "documentation needs real sections to measure");
+				assert.deepEqual(
+					sectionGaps.map((gap) => Math.round(gap)),
+					sectionGaps.map(() => rootSize * 1.5),
+					"Document sections inside the article keep the shared page rhythm",
+				);
 				assert.ok(geometry.overflow <= 1, `${width}/${rootSize}: ${JSON.stringify(geometry)}`);
 				assert.equal(geometry.background, "none");
 				assert.equal(geometry.heading, "HEADER");

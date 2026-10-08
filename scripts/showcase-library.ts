@@ -130,7 +130,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 				assert.ok(geometry.template, "Overview must use the shared page template");
 				assert.equal(geometry.padding, "0px", "ContentIsland owns the page inset");
 				assert.equal(geometry.inset, width < 768 ? 16 : width < 1024 ? 24 : 32);
-				assert.equal(geometry.gap, 32, "Document sections use the extra-large layout tier");
+				assert.equal(geometry.gap, 24, "Page sections use the shared layout tier");
 				assert.ok(Math.abs(geometry.offset - geometry.inset) <= 1, JSON.stringify(geometry));
 				if (category.id === "card" || category.id === "layout") {
 					const preview = overview.locator(`[data-spacing-preview="${category.id}"]`);
