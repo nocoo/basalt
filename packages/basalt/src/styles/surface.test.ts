@@ -47,8 +47,8 @@ describe("nested surface CSS", () => {
 	it("derives visible hover gradients from the configured primary in both themes", () => {
 		const css = postcss.parse(tokens);
 		for (const [selector, weights] of [
-			['[data-mode="light"]', [12, 6]],
-			['[data-mode="dark"]', [20, 12]],
+			['[data-mode="light"]', [9.6, 4.8]],
+			['[data-mode="dark"]', [16, 9.6]],
 		] as const) {
 			const values = new Map<string, string>();
 			css.walkRules((rule) => {

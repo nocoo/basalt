@@ -178,11 +178,15 @@
   --basalt-control-fill: hsl(var(--basalt-secondary));
   --basalt-hover: hsl(var(--basalt-primary));
   @supports (color: color-mix(in lab, red, red)) {
-    --basalt-hover: color-mix(in srgb, hsl(var(--basalt-primary)) 12%, hsl(var(--basalt-popover)));
+    --basalt-hover: color-mix(in srgb, hsl(var(--basalt-primary)) 9.6%, hsl(var(--basalt-popover)));
   }
   --basalt-hover-end: hsl(var(--basalt-primary));
   @supports (color: color-mix(in lab, red, red)) {
-    --basalt-hover-end: color-mix(in srgb, hsl(var(--basalt-primary)) 6%, hsl(var(--basalt-popover)));
+    --basalt-hover-end: color-mix(
+		in srgb,
+		hsl(var(--basalt-primary)) 4.8%,
+		hsl(var(--basalt-popover))
+	);
   }
   --basalt-selected: 0 0% 100%;
   --basalt-selected-foreground: var(--basalt-foreground);
@@ -319,13 +323,13 @@
   --basalt-control-fill: hsl(var(--basalt-secondary));
   --basalt-hover: hsl(var(--basalt-primary));
   @supports (color: color-mix(in lab, red, red)) {
-    --basalt-hover: color-mix(in srgb, hsl(var(--basalt-primary)) 20%, hsl(var(--basalt-popover)));
+    --basalt-hover: color-mix(in srgb, hsl(var(--basalt-primary)) 16%, hsl(var(--basalt-popover)));
   }
   --basalt-hover-end: hsl(var(--basalt-primary));
   @supports (color: color-mix(in lab, red, red)) {
     --basalt-hover-end: color-mix(
 		in srgb,
-		hsl(var(--basalt-primary)) 12%,
+		hsl(var(--basalt-primary)) 9.6%,
 		hsl(var(--basalt-popover))
 	);
   }

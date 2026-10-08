@@ -175,7 +175,7 @@ interaction contracts; do not change their containment as a global workaround.
   secondary text retain at least 4.5:1 contrast.
 - Hover is transient and follows the configured primary. `--basalt-hover` and
   `--basalt-hover-end` are complete CSS colors, mixed against the theme popover
-  surface at 12%/6% in light mode and 20%/12% in dark mode. Moving menu and command
+  surface at 9.6%/4.8% in light mode and 16%/9.6% in dark mode. Moving menu and command
   highlights use a subtle gradient between them, without decorative borders.
   SegmentControl and ToggleGroup selected items use `--basalt-primary` and its
   contrast-corrected foreground; they are accent controls, not neutral navigation.
