@@ -1,11 +1,12 @@
-import { ChevronDown } from "lucide-react";
+import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
+import { Check, ChevronDown, Search } from "lucide-react";
 import { type ReactNode, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Button } from "./button";
 import { Input } from "./input";
+import { FOCUS_INSET } from "./overlay";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
-import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
 
 export interface IconPickerOption {
 	/** Stable application-owned identifier. */
@@ -60,7 +61,13 @@ export function IconPicker({
 		option.label.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()),
 	);
 	return (
-		<Popover open={open && !disabled} onOpenChange={setOpen}>
+		<Popover
+			open={open && !disabled}
+			onOpenChange={(next) => {
+				setOpen(next);
+				if (!next) setQuery("");
+			}}
+		>
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
@@ -77,20 +84,28 @@ export function IconPicker({
 			</PopoverTrigger>
 			<PopoverContent
 				align="start"
-				className="w-basalt-72 max-w-[calc(100vw-2rem)] space-y-basalt-space-lg p-basalt-space-lg"
+				arrow={false}
+				className="w-basalt-72 max-w-[calc(100vw-2rem)] space-y-basalt-layout-sm"
 				aria-label={label}
 			>
-				<Input
-					aria-label={`${label}: search`}
-					value={query}
-					placeholder={searchPlaceholder}
-					onChange={(event) => setQuery(event.target.value)}
-				/>
-				<ToggleGroup
+				<div className="relative">
+					<Search
+						aria-hidden="true"
+						className="pointer-events-none absolute left-basalt-space-lg top-1/2 size-basalt-icon -translate-y-1/2 text-basalt-muted-foreground"
+					/>
+					<Input
+						className="pl-basalt-8"
+						aria-label={`${label}: search`}
+						value={query}
+						placeholder={searchPlaceholder}
+						onChange={(event) => setQuery(event.target.value)}
+					/>
+				</div>
+				<ToggleGroupPrimitive.Root
 					type="single"
 					aria-label={label}
 					value={selected}
-					className="flex h-auto flex-wrap justify-start gap-basalt-space-sm rounded-basalt-lg p-basalt-space-sm"
+					className="grid max-h-basalt-64 grid-cols-2 gap-basalt-space-lg overflow-y-auto"
 					onValueChange={(next) => {
 						if (!next) return;
 						if (value === undefined) setLocalValue(next);
@@ -100,18 +115,33 @@ export function IconPicker({
 					}}
 				>
 					{matches.map((item) => (
-						<ToggleGroupItem
+						<ToggleGroupPrimitive.Item
 							key={item.value}
 							value={item.value}
 							disabled={item.disabled}
 							aria-label={item.label}
 							title={item.label}
-							className="size-basalt-10"
+							className={cn(
+								"group relative flex min-w-0 flex-col items-center justify-center gap-basalt-space-lg rounded-basalt-md border border-transparent p-basalt-layout-sm text-basalt-foreground hover:bg-basalt-hover data-[state=on]:border-basalt-primary/40 data-[state=on]:bg-basalt-control disabled:cursor-not-allowed disabled:opacity-40",
+								FOCUS_INSET,
+							)}
 						>
-							{item.icon}
-						</ToggleGroupItem>
+							<span
+								aria-hidden="true"
+								className="flex size-basalt-6 items-center justify-center [&>svg]:size-basalt-6"
+							>
+								{item.icon}
+							</span>
+							<span className="max-w-full break-words text-basalt-sm font-medium">
+								{item.label}
+							</span>
+							<Check
+								aria-hidden="true"
+								className="absolute right-basalt-space-sm top-basalt-space-sm size-basalt-icon-sm text-basalt-primary opacity-0 group-data-[state=on]:opacity-100"
+							/>
+						</ToggleGroupPrimitive.Item>
 					))}
-				</ToggleGroup>
+				</ToggleGroupPrimitive.Root>
 				{matches.length === 0 && (
 					<p role="status" className="text-basalt-base text-basalt-muted-foreground">
 						{emptyLabel}

@@ -32,6 +32,10 @@ describe("Popover", () => {
 		expect(screen.getByText("This is a popover.")).toBeInTheDocument();
 		const panel = screen.getByText("Popover Title").closest("[data-side]");
 		expect(panel?.querySelector("svg")).toBeTruthy();
+		expect(panel?.querySelector("svg")).toHaveAttribute("viewBox", "0 0 12 6");
+		expect(panel?.querySelector("svg svg")).toBeNull();
+		expect(screen.getByText("Popover Title")).toHaveClass("text-basalt-base");
+		expect(screen.getByText("This is a popover.")).toHaveClass("text-basalt-base");
 		expect(panel?.className).toContain("motion-reduce:animate-none");
 		expect(panel?.className).toContain("z-50");
 	});

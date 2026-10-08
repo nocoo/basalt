@@ -209,14 +209,14 @@ export const PopoverContent = React.forwardRef<
 				className={cn(
 					OVERLAY_LAYER,
 					OVERLAY_MOTION,
-					"basalt-floating rounded-basalt-md border border-basalt-border bg-basalt-popover px-basalt-space-lg py-basalt-space-lg text-basalt-base text-basalt-popover-foreground shadow-md outline-hidden",
+					"basalt-floating rounded-basalt-md border border-basalt-border bg-basalt-popover p-basalt-card text-basalt-base leading-[var(--basalt-line-body)] text-basalt-popover-foreground shadow-md outline-hidden",
 					className,
 				)}
 				{...props}
 			>
 				<Slottable>{children}</Slottable>
 				{arrow ? (
-					<PopoverPrimitive.Arrow asChild width={20} height={10}>
+					<PopoverPrimitive.Arrow asChild width={12} height={6}>
 						<ArrowSvg />
 					</PopoverPrimitive.Arrow>
 				) : null}
@@ -233,7 +233,7 @@ export const PopoverTitle = React.forwardRef<HTMLHeadingElement, PopoverTitlePro
 		<h2
 			ref={ref}
 			className={cn(
-				"m-0 text-basalt-lg font-medium leading-[var(--basalt-line-relaxed)] text-basalt-foreground",
+				"m-0 mb-basalt-space-sm text-basalt-base font-medium leading-[var(--basalt-line-body)] text-basalt-popover-foreground",
 				className,
 			)}
 			{...props}
@@ -249,7 +249,7 @@ export const PopoverDescription = React.forwardRef<HTMLParagraphElement, Popover
 		<p
 			ref={ref}
 			className={cn(
-				"m-0 text-basalt-lg leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground",
+				"m-0 text-basalt-base leading-[var(--basalt-line-body)] text-basalt-muted-foreground",
 				className,
 			)}
 			{...props}
@@ -260,17 +260,9 @@ PopoverDescription.displayName = "PopoverDescription";
 
 function ArrowSvg(props: React.ComponentProps<"svg">) {
 	return (
-		<svg width={20} height={10} aria-hidden {...props}>
-			<svg width="100%" height="100%" viewBox="0 0 20 10" preserveAspectRatio="none" aria-hidden>
-				<path
-					d="M9.66437 2.60207L4.80758 6.97318C4.07308 7.63423 3.11989 8 2.13172 8H0V10H20V8H18.5349C17.5468 8 16.5936 7.63423 15.8591 6.97318L11.0023 2.60207C10.622 2.2598 10.0447 2.25979 9.66437 2.60207Z"
-					className="fill-basalt-popover"
-				/>
-				<path
-					d="M8.99542 1.85876C9.75604 1.17425 10.9106 1.17422 11.6713 1.85878L16.5281 6.22989C17.0789 6.72568 17.7938 7.00001 18.5349 7.00001L15.89 7L11.0023 2.60207C10.622 2.2598 10.0447 2.2598 9.66436 2.60207L4.77734 7L2.13171 7.00001C2.87284 7.00001 3.58774 6.72568 4.13861 6.22989L8.99542 1.85876Z"
-					className="fill-basalt-border"
-				/>
-			</svg>
+		<svg {...props} width={12} height={6} viewBox="0 0 12 6" aria-hidden>
+			<path d="M0 0H12L6 6Z" className="fill-basalt-popover" />
+			<path d="M0 0L6 6L12 0" fill="none" className="stroke-basalt-border" />
 		</svg>
 	);
 }

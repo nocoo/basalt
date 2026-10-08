@@ -1210,6 +1210,9 @@
   .top-basalt-2 {
     top: var(--basalt-space-2);
   }
+  .top-basalt-space-sm {
+    top: var(--basalt-space-sm);
+  }
   .-right-basalt-1 {
     right: calc(var(--basalt-space-1) * -1);
   }
@@ -1218,6 +1221,9 @@
   }
   .right-basalt-4 {
     right: var(--basalt-space-4);
+  }
+  .right-basalt-space-sm {
+    right: var(--basalt-space-sm);
   }
   .bottom-0 {
     bottom: 0px;
@@ -1233,6 +1239,9 @@
   }
   .left-1\/2 {
     left: calc(1 / 2 * 100%);
+  }
+  .left-basalt-space-lg {
+    left: var(--basalt-space-lg);
   }
   .isolate {
     isolation: isolate;
@@ -2487,14 +2496,14 @@
     --tw-gradient-to: transparent;
     --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
   }
-  .fill-basalt-border {
-    fill: hsl(var(--basalt-border));
-  }
   .fill-basalt-popover {
     fill: hsl(var(--basalt-popover));
   }
   .fill-current {
     fill: currentcolor;
+  }
+  .stroke-basalt-border {
+    stroke: hsl(var(--basalt-border));
   }
   .p-0 {
     padding: 0px;
@@ -2693,6 +2702,9 @@
   }
   .pl-\[calc\(var\(--basalt-size-icon-lg\)\/2\+var\(--basalt-space-row-gap\)\)\] {
     padding-left: calc(var(--basalt-size-icon-lg) / 2 + var(--basalt-space-row-gap));
+  }
+  .pl-basalt-8 {
+    padding-left: var(--basalt-space-8);
   }
   .pl-basalt-row-content {
     padding-left: var(--basalt-space-row-content);
@@ -3084,6 +3096,9 @@
   .group-data-\[state\=indeterminate\]\:block:is(:where(.group)[data-state="indeterminate"] *) {
     display: block;
   }
+  .group-data-\[state\=on\]\:opacity-100:is(:where(.group)[data-state="on"] *) {
+    opacity: 100%;
+  }
   .group-data-\[state\=open\]\/collapsible\:rotate-180:is(:where(.group\/collapsible)[data-state="open"] *) {
     rotate: 180deg;
   }
@@ -3437,6 +3452,15 @@
   .data-\[state\=indeterminate\]\:text-basalt-primary-foreground[data-state="indeterminate"] {
     color: hsl(var(--basalt-primary-foreground));
   }
+  .data-\[state\=on\]\:border-basalt-primary\/40[data-state="on"] {
+    border-color: hsl(var(--basalt-primary));
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, hsl(var(--basalt-primary)) 40%, transparent);
+    }
+  }
+  .data-\[state\=on\]\:bg-basalt-control[data-state="on"] {
+    background-color: var(--basalt-control-fill);
+  }
   .data-\[state\=open\]\:animate-basalt-collapsible-down[data-state="open"] {
     animation: basalt-collapsible-down var(--basalt-motion-normal)
 		var(--basalt-motion-ease);
@@ -3722,6 +3746,10 @@
   }
   .\[\&\>svg\]\:mt-\[calc\(\(var\(--basalt-line-row\)-var\(--basalt-size-icon-sm\)\)\/2\)\] > svg {
     margin-top: calc((var(--basalt-line-row) - var(--basalt-size-icon-sm)) / 2);
+  }
+  .\[\&\>svg\]\:size-basalt-6 > svg {
+    width: var(--basalt-space-6);
+    height: var(--basalt-space-6);
   }
   .\[\&\>svg\]\:size-basalt-icon-lg > svg {
     width: var(--basalt-size-icon-lg);

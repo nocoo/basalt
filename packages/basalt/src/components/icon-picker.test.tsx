@@ -14,6 +14,9 @@ describe("IconPicker", () => {
 		expect(screen.getByRole("button", { name: "Icon" })).toHaveTextContent("Choose icon");
 		fireEvent.click(screen.getByRole("button", { name: "Icon" }));
 		const search = await screen.findByRole("textbox", { name: "Icon: search" });
+		expect(document.querySelector('[data-slot="selection-indicator"]')).toBeNull();
+		expect(screen.getByRole("radio", { name: "Folder" })).toHaveTextContent("Folder");
+		expect(screen.getByRole("radio", { name: "Folder" })).toHaveClass("focus-visible:ring-inset");
 		fireEvent.change(search, { target: { value: "not found" } });
 		expect(screen.getByRole("status")).toHaveTextContent("No icons found.");
 		fireEvent.change(search, { target: { value: "  BOO  " } });
