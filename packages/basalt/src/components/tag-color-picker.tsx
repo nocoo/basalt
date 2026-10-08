@@ -1,9 +1,10 @@
+import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { Check } from "lucide-react";
 import { useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
+import { FOCUS_INSET } from "./overlay";
 import { TAG_COLORS, type TagColor } from "./tag-badge";
-import { ToggleGroup, ToggleGroupItem } from "./toggle-group";
 
 export interface TagColorPickerProps {
 	/** Accessible group name. */
@@ -37,42 +38,47 @@ export function TagColorPicker({
 	const [localValue, setLocalValue] = useState(defaultValue);
 	const selected = value ?? localValue;
 	return (
-		<ToggleGroup
-			type="single"
+		<RadioGroupPrimitive.Root
 			value={selected}
 			aria-label={label}
 			disabled={disabled}
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex h-auto flex-wrap justify-start gap-basalt-space-lg rounded-basalt-lg p-basalt-space-sm",
+				"grid w-full min-w-0 max-w-3xl grid-cols-[repeat(auto-fit,minmax(min(100%,9rem),1fr))] gap-basalt-space-lg",
 				className,
 			)}
 			onValueChange={(next) => {
-				if (!next) return;
 				const color = next as TagColor;
 				if (value === undefined) setLocalValue(color);
 				onValueChange?.(color);
 			}}
 		>
 			{colors.map((color) => (
-				<ToggleGroupItem
+				<RadioGroupPrimitive.Item
 					key={color}
 					value={color}
 					aria-label={labels?.[color] ?? TAG_COLORS[color].label}
-					className="h-auto min-w-basalt-16 flex-col gap-basalt-space-md rounded-basalt-md px-basalt-space-lg py-basalt-space-lg"
+					className={cn(
+						"group flex min-w-0 items-center gap-basalt-space-lg rounded-basalt-md border border-transparent p-basalt-space-lg text-left text-basalt-foreground transition-colors hover:bg-basalt-hover data-[state=checked]:border-basalt-primary/40 data-[state=checked]:bg-basalt-control disabled:cursor-not-allowed disabled:opacity-50",
+						FOCUS_INSET,
+					)}
 				>
 					<span
 						aria-hidden="true"
 						className={cn(
-							"flex size-basalt-7 items-center justify-center rounded-basalt-full border",
+							"size-basalt-7 shrink-0 rounded-basalt-md border",
 							TAG_COLORS[color].className,
 						)}
-					>
-						{selected === color && <Check className="size-basalt-icon-lg" />}
+					/>
+					<span className="min-w-0 flex-1 break-words text-basalt-sm font-medium">
+						{labels?.[color] ?? TAG_COLORS[color].label}
 					</span>
-					<span className="text-basalt-sm">{labels?.[color] ?? TAG_COLORS[color].label}</span>
-				</ToggleGroupItem>
+					<Check
+						aria-hidden="true"
+						className="size-basalt-icon shrink-0 text-basalt-primary opacity-0 group-data-[state=checked]:opacity-100"
+					/>
+				</RadioGroupPrimitive.Item>
 			))}
-		</ToggleGroup>
+		</RadioGroupPrimitive.Root>
 	);
 }

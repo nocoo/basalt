@@ -4,12 +4,12 @@ import { useState } from "react";
 
 export default function StatusColors() {
 	const [color, setColor] = useState<TagColor>("success");
-	const names = { success: "Healthy", warning: "Needs attention", danger: "Incident" };
+	const names = { success: "Healthy", warning: "Follow-up", danger: "Urgent" };
 	return (
 		<div className="w-full space-y-basalt-space-lg">
-			<h3 className="font-medium">Service status palette</h3>
+			<h3 className="font-medium">Care status palette</h3>
 			<TagColorPicker
-				label="Service status color"
+				label="Care status color"
 				value={color}
 				onValueChange={setColor}
 				colors={["success", "warning", "danger"]}

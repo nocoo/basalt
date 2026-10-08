@@ -7,6 +7,7 @@
     --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
     monospace;
     --spacing: 0.25rem;
+    --container-3xl: 48rem;
     --font-weight-normal: 400;
     --font-weight-medium: 500;
     --font-weight-semibold: 600;
@@ -1737,6 +1738,9 @@
   .w-px {
     width: 1px;
   }
+  .max-w-3xl {
+    max-width: var(--container-3xl);
+  }
   .max-w-\[65ch\] {
     max-width: 65ch;
   }
@@ -1763,9 +1767,6 @@
   }
   .min-w-basalt-10 {
     min-width: var(--basalt-space-10);
-  }
-  .min-w-basalt-16 {
-    min-width: var(--basalt-space-16);
   }
   .min-w-basalt-40 {
     min-width: var(--basalt-space-40);
@@ -1876,6 +1877,9 @@
   }
   .grid-cols-7 {
     grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+  .grid-cols-\[repeat\(auto-fit\,minmax\(min\(100\%\,9rem\)\,1fr\)\)\] {
+    grid-template-columns: repeat(auto-fit,minmax(min(100%, 9rem),1fr));
   }
   .flex-col {
     flex-direction: column;
@@ -3074,6 +3078,9 @@
   .group-data-\[state\=checked\]\:block:is(:where(.group)[data-state="checked"] *) {
     display: block;
   }
+  .group-data-\[state\=checked\]\:opacity-100:is(:where(.group)[data-state="checked"] *) {
+    opacity: 100%;
+  }
   .group-data-\[state\=indeterminate\]\:block:is(:where(.group)[data-state="indeterminate"] *) {
     display: block;
   }
@@ -3396,6 +3403,15 @@
   .data-\[state\=checked\]\:translate-x-basalt-5[data-state="checked"] {
     --tw-translate-x: var(--basalt-space-5);
     translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .data-\[state\=checked\]\:border-basalt-primary\/40[data-state="checked"] {
+    border-color: hsl(var(--basalt-primary));
+    @supports (color: color-mix(in lab, red, red)) {
+      border-color: color-mix(in oklab, hsl(var(--basalt-primary)) 40%, transparent);
+    }
+  }
+  .data-\[state\=checked\]\:bg-basalt-control[data-state="checked"] {
+    background-color: var(--basalt-control-fill);
   }
   .data-\[state\=checked\]\:bg-basalt-primary[data-state="checked"] {
     background-color: hsl(var(--basalt-primary));

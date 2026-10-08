@@ -7,7 +7,10 @@ describe("TagColorPicker", () => {
 		const change = vi.fn();
 		render(<TagColorPicker label="Color" onValueChange={change} />);
 		expect(screen.getAllByRole("radio")).toHaveLength(10);
+		expect(screen.getByRole("radiogroup", { name: "Color" })).not.toHaveClass("bg-basalt-muted");
+		expect(document.querySelector('[data-slot="selection-indicator"]')).toBeNull();
 		expect(screen.getByRole("radio", { name: "Slate" })).toHaveAttribute("aria-checked", "true");
+		expect(screen.getByRole("radio", { name: "Slate" })).toHaveClass("focus-visible:ring-inset");
 		fireEvent.click(screen.getByRole("radio", { name: "Blue" }));
 		expect(change).toHaveBeenCalledExactlyOnceWith("blue");
 		expect(screen.getByRole("radio", { name: "Blue" })).toHaveAttribute("aria-checked", "true");

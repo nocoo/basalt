@@ -4,10 +4,10 @@ import { TagColorPicker } from "@nocoo/basalt/components/tag-color-picker";
 import { useState } from "react";
 
 export default function TagEditor() {
-	const [name, setName] = useState("Research");
+	const [name, setName] = useState("Care plan");
 	const [color, setColor] = useState<TagColor>("violet");
 	return (
-		<div className="w-full space-y-basalt-space-lg">
+		<div className="w-full space-y-basalt-layout">
 			<div className="flex flex-wrap items-center gap-basalt-space-lg">
 				<Input
 					className="max-w-60"
@@ -17,9 +17,12 @@ export default function TagEditor() {
 				/>
 				<TagBadge name={name || "Untitled tag"} color={color} />
 			</div>
-			<TagColorPicker label="Tag color" value={color} onValueChange={setColor} />
+			<div className="space-y-basalt-space-lg">
+				<p className="text-basalt-sm font-medium">Label color</p>
+				<TagColorPicker label="Tag color" value={color} onValueChange={setColor} />
+			</div>
 			<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
-				Color stored by this page: {color}
+				Your care label uses the {color} palette.
 			</p>
 		</div>
 	);
