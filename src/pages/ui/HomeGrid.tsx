@@ -231,10 +231,10 @@ export interface HomeGridProps {
 
 export function HomeGrid({ groups }: HomeGridProps) {
 	return (
-		<div className="space-y-basalt-layout-xl">
-			<LayerCard padding="none">
-				{groups.map((group) => (
-					<section key={group.id} className="min-w-0 max-w-full" aria-label={group.label}>
+		<div className="space-y-basalt-layout-lg">
+			{groups.map((group) => (
+				<section key={group.id} className="min-w-0 max-w-full" aria-label={group.label}>
+					<LayerCard padding="none">
 						<LayerCard.Header className="flex-wrap items-center">
 							<h2 className="text-basalt-lg font-medium text-basalt-foreground">{group.label}</h2>
 							<div className="flex min-w-0 max-w-full flex-wrap items-center gap-basalt-space-lg text-basalt-base">
@@ -281,9 +281,9 @@ export function HomeGrid({ groups }: HomeGridProps) {
 								);
 							})}
 						</ul>
-					</section>
-				))}
-			</LayerCard>
+					</LayerCard>
+				</section>
+			))}
 		</div>
 	);
 }

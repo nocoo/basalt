@@ -259,9 +259,10 @@ Scrollable gallery previews reserve 8px of internal space on every edge for
 control rings, focus outlines and shadows. Padding outside the scroll viewport
 does not protect that paint. Center previews safely so oversized content keeps
 its leading edge reachable.
-The component library uses one shared LayerCard behind all category grids, not
-individual cards per component. Its light surface is white-toned; dark mode uses
-the same surface hierarchy rather than a fixed white fill.
+The component library uses one LayerCard per category, separated by 24px. Each
+category uses LayerCard.Header above its grid, not individual cards per component.
+Its light surface is white-toned; dark mode uses the same surface hierarchy rather
+than a fixed white fill.
 
 Cards with headings use `LayerCard.Header` and `LayerCard.Body`; use one Body for
 related content with a shared internal gap, not a padded Body for every line.
