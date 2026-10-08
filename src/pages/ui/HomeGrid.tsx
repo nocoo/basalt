@@ -225,14 +225,90 @@ function itemDemo(item: CatalogIndexItem): ComponentType | undefined {
 	return HOME_DEMOS[item.entry.slug] ?? item.hero.render;
 }
 
+const GROUP_CARD_CLASS =
+	"min-w-0 border-b border-basalt-border md:border-r md:max-lg:nth-[2n]:border-r-0 lg:max-2xl:nth-[3n]:border-r-0 2xl:nth-[4n]:border-r-0";
+const TABLE_CARD_CLASS = "min-w-0 border-b border-basalt-border md:border-r md:nth-[2n]:border-r-0";
+
+const TABLE_CARD_SLUGS = ["table", "data-table", "diff-table", "table-pager"] as const;
+
+interface CatalogCardProps {
+	item: CatalogIndexItem;
+	className: string;
+}
+
+function CatalogCard({ item, className }: CatalogCardProps) {
+	const Demo = itemDemo(item);
+	const title = catalogNavName(item.entry);
+	const titleClass =
+		"min-w-0 max-w-full text-basalt-base font-medium text-foreground [overflow-wrap:anywhere] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+	return (
+		<li data-catalog-card={item.entry.slug} className={className}>
+			<div className="flex min-w-0 max-w-full min-h-48 flex-col gap-basalt-layout p-basalt-card">
+				{item.pageStatus === "ready" ? (
+					<Link to={`/ui/${item.entry.slug}`} className={titleClass}>
+						{title}
+					</Link>
+				) : (
+					<span className="text-basalt-base font-medium text-muted-foreground">{title}</span>
+				)}
+				<div
+					data-gallery-preview=""
+					className="flex min-h-36 min-w-0 max-w-full flex-1 items-center justify-start overflow-x-auto p-basalt-space-lg [&>*]:min-w-0 [&>*]:max-w-full sm:justify-center-safe"
+				>
+					{Demo ? <Demo /> : null}
+				</div>
+			</div>
+		</li>
+	);
+}
+
+function partitionTableCards(groups: readonly CatalogIndexGroup[]): {
+	tables: CatalogIndexItem[];
+	componentGroups: CatalogIndexGroup[];
+} {
+	const tableSlugs = new Set<string>(TABLE_CARD_SLUGS);
+	const bySlug = new Map(
+		groups.flatMap((group) => group.items).map((item) => [item.entry.slug, item]),
+	);
+	const tables = TABLE_CARD_SLUGS.flatMap((slug) => {
+		const item = bySlug.get(slug);
+		return item ? [item] : [];
+	});
+	return {
+		tables,
+		componentGroups: groups
+			.map((group) => ({
+				...group,
+				items: group.items.filter((item) => !tableSlugs.has(item.entry.slug)),
+			}))
+			.filter((group) => group.items.length > 0),
+	};
+}
+
 export interface HomeGridProps {
 	groups: readonly CatalogIndexGroup[];
 }
 
 export function HomeGrid({ groups }: HomeGridProps) {
+	const { tables, componentGroups } = partitionTableCards(groups);
 	return (
 		<div className="space-y-basalt-layout-lg">
-			{groups.map((group) => (
+			{tables.length > 0 ? (
+				<section className="min-w-0 max-w-full" aria-label="Tables">
+					<LayerCard padding="none">
+						<LayerCard.Header className="flex-wrap items-center">
+							<h2 className="text-basalt-lg font-medium text-basalt-foreground">Tables</h2>
+							<span className="text-basalt-base text-muted-foreground">{tables.length} items</span>
+						</LayerCard.Header>
+						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border md:grid-cols-2">
+							{tables.map((item) => (
+								<CatalogCard key={item.entry.slug} item={item} className={TABLE_CARD_CLASS} />
+							))}
+						</ul>
+					</LayerCard>
+				</section>
+			) : null}
+			{componentGroups.map((group) => (
 				<section key={group.id} className="min-w-0 max-w-full" aria-label={group.label}>
 					<LayerCard padding="none">
 						<LayerCard.Header className="flex-wrap items-center">
@@ -249,37 +325,9 @@ export function HomeGrid({ groups }: HomeGridProps) {
 							</div>
 						</LayerCard.Header>
 						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-							{group.items.map((item) => {
-								const Demo = itemDemo(item);
-								const title = catalogNavName(item.entry);
-								const titleClass =
-									"min-w-0 max-w-full text-basalt-base font-medium text-foreground [overflow-wrap:anywhere] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
-								return (
-									<li
-										key={item.entry.slug}
-										data-catalog-card={item.entry.slug}
-										className="min-w-0 border-b border-basalt-border md:border-r md:max-lg:nth-[2n]:border-r-0 lg:max-2xl:nth-[3n]:border-r-0 2xl:nth-[4n]:border-r-0"
-									>
-										<div className="flex min-w-0 max-w-full min-h-48 flex-col gap-basalt-layout p-basalt-card">
-											{item.pageStatus === "ready" ? (
-												<Link to={`/ui/${item.entry.slug}`} className={titleClass}>
-													{title}
-												</Link>
-											) : (
-												<span className="text-basalt-base font-medium text-muted-foreground">
-													{title}
-												</span>
-											)}
-											<div
-												data-gallery-preview=""
-												className="flex min-h-36 min-w-0 max-w-full flex-1 items-center justify-start overflow-x-auto p-basalt-space-lg [&>*]:min-w-0 [&>*]:max-w-full sm:justify-center-safe"
-											>
-												{Demo ? <Demo /> : null}
-											</div>
-										</div>
-									</li>
-								);
-							})}
+							{group.items.map((item) => (
+								<CatalogCard key={item.entry.slug} item={item} className={GROUP_CARD_CLASS} />
+							))}
 						</ul>
 					</LayerCard>
 				</section>

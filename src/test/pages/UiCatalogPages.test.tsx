@@ -115,12 +115,27 @@ describe("ui catalog", () => {
 		expect(filtersToggle).toHaveAttribute("aria-expanded", "true");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toBeInTheDocument();
 
+		const tableSlugs = new Set(["table", "data-table", "diff-table", "table-pager"]);
 		for (const group of CATALOG_INDEX_GROUPS) {
 			const section = screen.getByRole("region", { name: group.label, hidden: true });
 			expect(section).toBeVisible();
-			expect(within(section).getByText(`${group.items.length} items`)).toBeInTheDocument();
-			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength(group.items.length);
+			const remaining = group.items.filter((item) => !tableSlugs.has(item.entry.slug));
+			expect(within(section).getByText(`${remaining.length} items`)).toBeInTheDocument();
+			expect(section.querySelectorAll("[data-catalog-card]")).toHaveLength(remaining.length);
 		}
+		const tablesSection = screen.getByRole("region", { name: "Tables", hidden: true });
+		expect(tablesSection.querySelectorAll("[data-catalog-card]")).toHaveLength(4);
+		expect(
+			Array.from(tablesSection.querySelectorAll<HTMLElement>("[data-catalog-card]")).map(
+				(card) => card.dataset.catalogCard,
+			),
+		).toEqual(["table", "data-table", "diff-table", "table-pager"]);
+		expect(within(tablesSection).getByText("4 items")).toBeInTheDocument();
+		expect(within(tablesSection).queryByRole("link", { name: "Tables overview" })).toBeNull();
+		const tablesGrid = tablesSection.querySelector("ul");
+		expect(tablesGrid).toHaveClass("md:grid-cols-2");
+		expect(tablesGrid).not.toHaveClass("lg:grid-cols-3");
+		expect(tablesGrid).not.toHaveClass("2xl:grid-cols-4");
 		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(121);
 		expect(document.querySelectorAll('[data-catalog-card="input"]')).toHaveLength(1);
 		expect(screen.queryByText("Input (with validation)")).not.toBeInTheDocument();
