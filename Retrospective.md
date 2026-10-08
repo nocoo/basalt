@@ -294,3 +294,13 @@ Use a line for balance movement and retain a zero baseline for income bars;
 disclose nonzero line scales and the actual observation window. Do not clip
 interactive chart tooltips with the card surface. Structural tests and builds
 cannot replace browser geometry and visual review; report missing evidence.
+
+## 2026-10-06: A persistent layout also persists scroll position
+
+DashboardLayout kept the same ContentIsland while Outlet changed pages, so a newly
+selected page inherited the previous page's vertical position. Reset at the leaf
+route commit inside Suspense, not on a sidebar click or by remounting the shell.
+This also handles programmatic and history navigation and delayed page content.
+Preserve same-page filters, local interactions and sidebar position; valid fragments
+take precedence and use the existing sticky-directory measurement. The policy is
+application-owned, rather than a new library prop or wheel/scroll listener.

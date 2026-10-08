@@ -782,6 +782,8 @@ Standalone login, loading, error, and landing pages use their own first-screen s
 
 The showcase's routes under `DashboardLayout` use the app-local `ShowcasePage`: one PageHeader and a shared section gap, with no repeated island padding, painted shell or nested main/viewport. Category overviews, component documentation and source viewers use its plain header. The library index and selected dashboard examples retain the scenic `ShowcaseHeader` variant with paired day/night mountain imagery. This is a catalog composition, not a package export. The original logo remains in the navigation. See [DESIGN.md](DESIGN.md#page-composition) for slot ownership and exceptions.
 
+The catalog's app-local `RouteScrollReset` wraps each leaf page inside its Suspense boundary. Once the route content is committed, a changed pathname resets ContentIsland and document scrolling immediately, including Back/Forward navigation. Valid URL fragments instead use the chapter anchor with the measured sticky-directory inset. Same-page query changes and local controls preserve scroll. The shared sidebar is not remounted or scrolled. Routing policy belongs to the app, never to the Basalt package.
+
 The `/forms`, `/settings`, `/data`, and `/chat` examples demonstrate local state and simulated requests, including failure/retry and cancellation. Their viewmodels own data and timers; Views own native FormData, focus, and responsive layout. Replace the local service adapter when integrating a backend. Theme selection uses the shared provider; local profile, uploads, and chat changes do not update a real account.
 
 `PageHeader` is flush on `ContentIsland`. Do not wrap it in another card. Do not put an icon row above the heading.

@@ -4,6 +4,7 @@ import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { type ComponentType, lazy, type ReactNode, Suspense } from "react";
 import { BrowserRouter, Route, Link as RouterLink, Routes } from "react-router";
+import { RouteScrollReset } from "@/components/RouteScrollReset";
 import { SitePaletteProvider } from "@/components/SitePaletteProvider";
 import LandingPage from "./pages/LandingPage";
 
@@ -86,7 +87,9 @@ function RouteLoadingFallback() {
 function routeElement(Page: ComponentType) {
 	return (
 		<Suspense fallback={<RouteLoadingFallback />}>
-			<Page />
+			<RouteScrollReset>
+				<Page />
+			</RouteScrollReset>
 		</Suspense>
 	);
 }
@@ -101,7 +104,13 @@ const App = () => (
 						<Routes>
 							<Route path="/" element={routeElement(LandingPage)} />
 							{/* Layout route: sidebar + header wraps all dashboard pages */}
-							<Route element={routeElement(DashboardLayout)}>
+							<Route
+								element={
+									<Suspense fallback={<RouteLoadingFallback />}>
+										<DashboardLayout />
+									</Suspense>
+								}
+							>
 								<Route path="/components" element={routeElement(ComponentsPage)} />
 								<Route path="/forms" element={routeElement(FormsPage)} />
 								<Route path="/navigation" element={routeElement(NavigationPage)} />

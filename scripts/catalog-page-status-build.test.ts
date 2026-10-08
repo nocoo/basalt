@@ -57,8 +57,8 @@ describe("application route build boundary", () => {
 				),
 			);
 		}
-		expect(source.match(/<Suspense /g)).toHaveLength(1);
-		expect(source.match(/fallback={<RouteLoadingFallback \/>}/g)).toHaveLength(1);
+		expect(source.match(/<Suspense /g)).toHaveLength(2);
+		expect(source.match(/fallback={<RouteLoadingFallback \/>}/g)).toHaveLength(2);
 		expect(source).toContain('role="status"');
 		expect(source).toContain('aria-live="polite"');
 	});
