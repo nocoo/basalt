@@ -440,7 +440,7 @@ export function SidebarSearch({
 export interface SidebarNavProps extends HTMLAttributes<HTMLElement> {}
 
 export function SidebarNav({ className, ...props }: SidebarNavProps) {
-	const highlightRef = useHoverHighlight();
+	const highlightRef = useHoverHighlight(undefined, { restoreOnPointerLeave: false });
 	return (
 		<nav
 			ref={highlightRef}

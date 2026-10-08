@@ -8,8 +8,13 @@ async function frame() {
 		await new Promise((resolve) => requestAnimationFrame(resolve));
 	});
 }
-function Probe({ selected = false, nested = false, refTarget = createRef<HTMLDivElement>() }) {
-	const ref = useHoverHighlight(refTarget);
+function Probe({
+	selected = false,
+	nested = false,
+	refTarget = createRef<HTMLDivElement>(),
+	restoreOnPointerLeave = true,
+}) {
+	const ref = useHoverHighlight(refTarget, { restoreOnPointerLeave });
 	return (
 		<>
 			<input aria-label="Search" aria-controls="choices" />
@@ -144,6 +149,21 @@ describe("shared hover highlight", () => {
 		fireEvent.pointerLeave(root);
 		await frame();
 		expect(root).toHaveAttribute("data-hover-visible", "false");
+	});
+	it("fades at the last hovered row instead of returning to selection when configured", async () => {
+		geometry();
+		render(<Probe selected restoreOnPointerLeave={false} />);
+		await frame();
+		const root = screen.getByTestId("list");
+		fireEvent.pointerOver(screen.getByText("Second"));
+		await frame();
+		fireEvent.pointerLeave(root);
+		await frame();
+		expect(root).toHaveAttribute("data-hover-visible", "false");
+		expect(root.style.getPropertyValue("--basalt-hover-y")).toBe("40px");
+		fireEvent.focusIn(screen.getByText("First"));
+		await frame();
+		expect(root).toHaveAttribute("data-hover-visible", "true");
 	});
 	it("follows selected attributes and focus, excludes disabled and hidden rows", async () => {
 		geometry();

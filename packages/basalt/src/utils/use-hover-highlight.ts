@@ -5,12 +5,16 @@ const ROW = "[data-basalt-hover-item]";
 const ACTIVE =
 	'[data-highlighted], [data-hover-active="true"], [aria-selected="true"], [data-state="checked"], [data-hover-selected="true"], [data-selected="true"]';
 
-export function useHoverHighlight(ref?: Ref<HTMLElement | null>) {
+export function useHoverHighlight(
+	ref?: Ref<HTMLElement | null>,
+	{ restoreOnPointerLeave = true }: { restoreOnPointerLeave?: boolean } = {},
+) {
 	return useCallback(
 		(root: HTMLElement | null) => {
 			assignRef(ref, root);
 			if (!root) return;
 			let hovered: HTMLElement | null = null;
+			let pointerExited = false;
 			let focused: HTMLElement | null = null;
 			let previous: HTMLElement | null = null;
 			let selected: HTMLElement | null = null;
@@ -50,8 +54,9 @@ export function useHoverHighlight(ref?: Ref<HTMLElement | null>) {
 					}
 					selectionDirty = false;
 				}
-				const item =
-					eligible(active) ?? eligible(hovered) ?? eligible(focused) ?? eligible(selected);
+				const item = pointerExited
+					? null
+					: (eligible(active) ?? eligible(hovered) ?? eligible(focused) ?? eligible(selected));
 				if (item === previous && !layoutChanged) return;
 				if (item !== previous) {
 					if (previous) resize.unobserve(previous);
@@ -60,6 +65,7 @@ export function useHoverHighlight(ref?: Ref<HTMLElement | null>) {
 				const width = item?.offsetWidth ?? 0;
 				const height = item?.offsetHeight ?? 0;
 				if (!item || !width || !height) {
+					if (pointerExited) root.dataset.hoverAnimated = "true";
 					root.dataset.hoverVisible = "false";
 					previous = null;
 					geometry = "";
@@ -99,6 +105,7 @@ export function useHoverHighlight(ref?: Ref<HTMLElement | null>) {
 			}
 			const over = (event: PointerEvent) => {
 				if (event.pointerType === "touch") return;
+				pointerExited = false;
 				const next = row(event.target);
 				if (next !== hovered) {
 					hovered = next;
@@ -107,9 +114,11 @@ export function useHoverHighlight(ref?: Ref<HTMLElement | null>) {
 			};
 			const leave = () => {
 				hovered = null;
+				pointerExited = !restoreOnPointerLeave;
 				schedule();
 			};
 			const focus = (event: FocusEvent) => {
+				pointerExited = false;
 				focused = row(event.target);
 				hovered = null;
 				schedule();
@@ -126,6 +135,7 @@ export function useHoverHighlight(ref?: Ref<HTMLElement | null>) {
 				)
 					return;
 				hovered = null;
+				pointerExited = false;
 				schedule();
 			};
 			const layout = (event: Event) => {
@@ -185,6 +195,6 @@ export function useHoverHighlight(ref?: Ref<HTMLElement | null>) {
 				assignRef(ref, null);
 			};
 		},
-		[ref],
+		[ref, restoreOnPointerLeave],
 	);
 }
