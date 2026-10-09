@@ -50,6 +50,7 @@ export async function assertOverlayMotion(page: Page, baseUrl: string) {
 				await sampleAnimation(panel, "basalt-sheet-out");
 				await sampleAnimation(backdrop, "basalt-sheet-backdrop-out");
 				await panel.waitFor({ state: "detached" });
+				await backdrop.waitFor({ state: "detached" });
 				await page.waitForFunction(
 					(node) => node === document.activeElement,
 					await trigger.elementHandle(),
@@ -65,6 +66,7 @@ export async function assertOverlayMotion(page: Page, baseUrl: string) {
 			);
 			await page.getByRole("button", { name: "Close panel", exact: true }).click();
 			await page.locator("[data-basalt-sheet]").waitFor({ state: "detached" });
+			await page.locator(".basalt-sheet-overlay").waitFor({ state: "detached" });
 
 			for (const slug of ["dropdown-menu", "popover", "select", "combobox", "autocomplete"]) {
 				await page.goto(`${baseUrl}/ui/${slug}`);
