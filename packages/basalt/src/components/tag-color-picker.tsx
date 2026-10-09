@@ -71,7 +71,9 @@ export function TagColorPicker({
 					value={color}
 					aria-label={labels?.[color] ?? TAG_COLORS[color].label}
 					className={cn(
-						"group flex min-w-0 items-center gap-basalt-space-lg rounded-basalt-md border border-transparent p-basalt-space-lg text-left text-basalt-foreground transition-colors hover:bg-basalt-hover data-[state=checked]:border-basalt-primary/40 data-[state=checked]:bg-basalt-control disabled:cursor-not-allowed disabled:opacity-50",
+						// Accent choice grid: the selected tile owns the primary fill and its
+						// contrast-corrected foreground, not a control fill inside a frame.
+						"group flex min-w-0 items-center gap-basalt-space-lg rounded-basalt-md p-basalt-space-lg text-left text-basalt-foreground transition-colors hover:bg-basalt-hover data-[state=checked]:bg-basalt-primary data-[state=checked]:text-basalt-primary-foreground disabled:cursor-not-allowed disabled:opacity-50",
 						FOCUS_INSET,
 					)}
 				>
@@ -87,7 +89,7 @@ export function TagColorPicker({
 					</span>
 					<Check
 						aria-hidden="true"
-						className="size-basalt-icon shrink-0 text-basalt-primary opacity-0 group-data-[state=checked]:opacity-100"
+						className="size-basalt-icon shrink-0 opacity-0 group-data-[state=checked]:opacity-100"
 					/>
 				</RadioGroupPrimitive.Item>
 			))}

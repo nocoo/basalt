@@ -46,6 +46,19 @@ describe("IconPicker", () => {
 		rerender(<IconPicker label="Icon" options={options} value="folder" disabled />);
 		expect(screen.getByRole("button")).toBeDisabled();
 	});
+	it("marks the chosen icon with the accent fill instead of a frame", async () => {
+		render(<IconPicker label="Icon" options={options} defaultValue="folder" />);
+		fireEvent.click(screen.getByRole("button", { name: /^Icon:/ }));
+		const folder = await screen.findByRole("radio", { name: "Folder" });
+		expect(folder).toHaveClass(
+			"data-[state=on]:bg-basalt-primary",
+			"data-[state=on]:text-basalt-primary-foreground",
+		);
+		expect(folder.className).not.toMatch(/border-basalt-primary\/40|border-transparent/);
+		expect(folder).toHaveAttribute("data-state", "on");
+		expect(screen.getByRole("radio", { name: "Book" })).toHaveAttribute("data-state", "off");
+	});
+
 	it("composes with Field validation and names its selected value", async () => {
 		render(
 			<Field label="Folder icon" hint="Shown in the sidebar" error="Choose an icon">

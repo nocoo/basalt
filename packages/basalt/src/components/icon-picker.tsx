@@ -134,7 +134,9 @@ export function IconPicker({
 							aria-label={item.label}
 							title={item.label}
 							className={cn(
-								"group relative flex min-w-0 flex-col items-center justify-center gap-basalt-space-lg rounded-basalt-md border border-transparent p-basalt-layout-sm text-basalt-foreground hover:bg-basalt-hover data-[state=on]:border-basalt-primary/40 data-[state=on]:bg-basalt-control disabled:cursor-not-allowed disabled:opacity-40",
+								// Accent choice grid: selection is the documented primary fill and its
+								// contrast-corrected foreground, never a control fill plus a frame.
+								"group relative flex min-w-0 flex-col items-center justify-center gap-basalt-space-lg rounded-basalt-md p-basalt-layout-sm text-basalt-foreground data-[state=on]:bg-basalt-primary data-[state=on]:text-basalt-primary-foreground disabled:cursor-not-allowed disabled:opacity-40",
 								FOCUS_INSET,
 							)}
 						>
@@ -149,7 +151,7 @@ export function IconPicker({
 							</span>
 							<Check
 								aria-hidden="true"
-								className="absolute right-basalt-space-sm top-basalt-space-sm size-basalt-icon-sm text-basalt-primary opacity-0 group-data-[state=on]:opacity-100"
+								className="absolute right-basalt-space-sm top-basalt-space-sm size-basalt-icon-sm opacity-0 group-data-[state=on]:opacity-100"
 							/>
 						</ToggleGroupPrimitive.Item>
 					))}

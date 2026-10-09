@@ -1,7 +1,56 @@
 import assert from "node:assert/strict";
-import type { Page } from "playwright";
+import type { Locator, Page } from "playwright";
 import { measureTagPalette } from "./consumer-editing";
 import { setShowcaseTheme } from "./showcase-theme";
+
+/** A selected choice must paint its own fill and keep normal-text contrast. */
+async function assertSelectedChoice(selected: Locator, unselected: Locator, label: string) {
+	// The tile cross-fades to its selected fill; measure the settled paint.
+	await selected.evaluate(async (node) => {
+		for (let frame = 0; frame < 60; frame += 1) {
+			await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+			if (node.getAnimations().every((animation) => animation.playState === "finished")) return;
+		}
+	});
+	const sample = await selected.evaluate(
+		(node, other) => {
+			const canvas = document.createElement("canvas");
+			canvas.width = canvas.height = 1;
+			const context = canvas.getContext("2d", { willReadFrequently: true });
+			if (!context) throw new Error("No canvas context");
+			const rgba = (color: string) => {
+				context.clearRect(0, 0, 1, 1);
+				context.fillStyle = color;
+				context.fillRect(0, 0, 1, 1);
+				return [...context.getImageData(0, 0, 1, 1).data];
+			};
+			const luminance = (channels: number[]) =>
+				channels
+					.slice(0, 3)
+					.map((channel) => channel / 255)
+					.map((channel) =>
+						channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4,
+					)
+					.reduce((sum, channel, index) => sum + channel * [0.2126, 0.7152, 0.0722][index], 0);
+			const style = getComputedStyle(node);
+			const foreground = rgba(style.color);
+			const background = rgba(style.backgroundColor);
+			const rest = rgba(getComputedStyle(other as Element).backgroundColor);
+			const a = luminance(foreground);
+			const b = luminance(background);
+			return {
+				ratio: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
+				opaque: foreground[3] === 255 && background[3] === 255,
+				differs: background.slice(0, 3).some((channel, index) => channel !== rest[index]),
+				fill: style.backgroundColor,
+			};
+		},
+		await unselected.elementHandle(),
+	);
+	assert.ok(sample.opaque, `${label}: selection must paint an opaque fill (${sample.fill})`);
+	assert.ok(sample.differs, `${label}: selection must not reuse the unselected fill`);
+	assert.ok(sample.ratio >= 4.5, `${label}: selection text contrast ${sample.ratio}`);
+}
 
 export async function assertEditingShowcases(page: Page, baseUrl: string) {
 	const cases: string[] = [];
@@ -82,6 +131,15 @@ export async function assertEditingShowcases(page: Page, baseUrl: string) {
 			assert.equal(await page.getByRole("radio", { name: "Private vault" }).isDisabled(), true);
 			await page.getByRole("radio", { name: "Audio", exact: true }).click();
 			await page.getByRole("status").filter({ hasText: "Using the audio icon." }).waitFor();
+			await page
+				.locator('[data-scenario="icon-picker-resource-icon"]')
+				.getByRole("button", { name: /^Resource icon:/ })
+				.click();
+			await assertSelectedChoice(
+				page.getByRole("radio", { name: "Audio", exact: true }),
+				page.getByRole("radio", { name: "Image", exact: true }),
+				"icon choice",
+			);
 
 			await visit("tag-badge");
 			const deterministic = page.locator('[data-scenario="tag-badge-deterministic"]');
@@ -110,6 +168,11 @@ export async function assertEditingShowcases(page: Page, baseUrl: string) {
 			const status = page.locator('[data-scenario="tag-color-picker-status-colors"]');
 			await status.getByRole("radio", { name: "Urgent", exact: true }).click();
 			assert.equal(await status.locator('[data-tag-color="danger"]').innerText(), "Urgent");
+			await assertSelectedChoice(
+				status.getByRole("radio", { name: "Urgent", exact: true }),
+				status.getByRole("radio", { name: "Healthy", exact: true }),
+				"tag color choice",
+			);
 
 			await visit("responsive-master-detail");
 			const resources = page.locator('[data-scenario="responsive-master-detail-resources"]');

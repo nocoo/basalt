@@ -18,6 +18,17 @@ describe("TagColorPicker", () => {
 		fireEvent.click(screen.getByRole("radio", { name: "Blue" }));
 		expect(change).toHaveBeenCalledTimes(1);
 	});
+	it("marks the chosen color with the accent fill instead of a frame", () => {
+		render(<TagColorPicker label="Color" colors={["slate", "blue"]} />);
+		const slate = screen.getByRole("radio", { name: "Slate" });
+		expect(slate).toHaveClass(
+			"data-[state=checked]:bg-basalt-primary",
+			"data-[state=checked]:text-basalt-primary-foreground",
+		);
+		expect(slate.className).not.toMatch(/border-basalt-primary\/40|border-transparent/);
+		expect(slate).not.toHaveClass("bg-basalt-control");
+	});
+
 	it("carries Field validation onto the radio group", () => {
 		render(
 			<Field label="Care status" hint="Shown on the plan">
