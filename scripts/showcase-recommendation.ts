@@ -36,31 +36,78 @@ export async function assertRecommendation(page: Page, baseUrl: string) {
 				});
 				await demo.getByRole("button", { name: "Alternatives", exact: true }).click();
 				await demo.getByRole("button", { name: /Review all care plan items/ }).click();
-				const action = demo.getByRole("button", {
+				const originalAction = demo.getByRole("button", {
 					name: "Accept full care plan update",
 					exact: true,
 				});
-				await action.waitFor();
-				const zoom = await action.evaluate((node) => {
-					const card = node.closest(".overflow-hidden") as HTMLElement;
-					const box = node.getBoundingClientRect();
-					const bounds = card.getBoundingClientRect();
-					const range = document.createRange();
-					range.selectNodeContents(node);
-					const text = range.getBoundingClientRect();
-					const style = getComputedStyle(node);
-					return {
-						cardOverflow: card.scrollWidth - card.clientWidth,
-						actionOverflow: node.scrollWidth - node.clientWidth,
-						textOverhang: text.right - (box.right - Number.parseFloat(style.paddingRight)),
-						actionRight: Math.round(box.right - bounds.right),
-						actionLines: box.height / Number.parseFloat(style.lineHeight),
-					};
-				});
-				assert.ok(zoom.cardOverflow <= 1, `clipped at 200% text: ${JSON.stringify(zoom)}`);
-				assert.ok(zoom.textOverhang <= 1, `action label clipped: ${JSON.stringify(zoom)}`);
-				assert.ok(zoom.actionRight <= 1, `action escaped the card: ${JSON.stringify(zoom)}`);
-				assert.ok(zoom.actionLines >= 1, `action height collapsed: ${JSON.stringify(zoom)}`);
+				await originalAction.waitFor();
+				await originalAction.evaluate((node) => node.setAttribute("data-zoom-action", ""));
+				const action = demo.locator("[data-zoom-action]");
+				for (const label of [
+					"Accept full care plan update",
+					"Synchronisationskonfigurations\u00e4nderungen \u00fcbernehmen",
+					"Acceptthisrecommendationandapplythechangeswithoutspaces0123456789",
+				]) {
+					const zoom = await action.evaluate((node, label) => {
+						node.textContent = label;
+						const card = node.closest(".overflow-hidden") as HTMLElement;
+						const box = node.getBoundingClientRect();
+						const bounds = card.getBoundingClientRect();
+						const style = getComputedStyle(node);
+						const content = {
+							left:
+								box.left +
+								Number.parseFloat(style.paddingLeft) +
+								Number.parseFloat(style.borderLeftWidth),
+							right:
+								box.right -
+								Number.parseFloat(style.paddingRight) -
+								Number.parseFloat(style.borderRightWidth),
+							top:
+								box.top +
+								Number.parseFloat(style.paddingTop) +
+								Number.parseFloat(style.borderTopWidth),
+							bottom:
+								box.bottom -
+								Number.parseFloat(style.paddingBottom) -
+								Number.parseFloat(style.borderBottomWidth),
+						};
+						const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+						const textRects = [];
+						while (walker.nextNode()) {
+							const range = document.createRange();
+							range.selectNodeContents(walker.currentNode);
+							textRects.push(...range.getClientRects());
+						}
+						return {
+							label,
+							cardOverflow: card.scrollWidth - card.clientWidth,
+							actionOverflow: node.scrollWidth - (node as HTMLElement).offsetWidth,
+							textOverhang: Math.max(
+								...textRects.flatMap((rect) => [
+									content.left - rect.left,
+									rect.right - content.right,
+									content.top - rect.top,
+									rect.bottom - content.bottom,
+								]),
+							),
+							actionOverhang: Math.max(
+								bounds.left - box.left,
+								box.right - bounds.right,
+								bounds.top - box.top,
+								box.bottom - bounds.bottom,
+							),
+							textLines: textRects.length,
+							actionLines: box.height / Number.parseFloat(style.lineHeight),
+						};
+					}, label);
+					assert.ok(zoom.cardOverflow <= 1, `clipped at 200% text: ${JSON.stringify(zoom)}`);
+					assert.ok(zoom.actionOverflow <= 1, `action overflow: ${JSON.stringify(zoom)}`);
+					assert.ok(zoom.textOverhang <= 1, `action label clipped: ${JSON.stringify(zoom)}`);
+					assert.ok(zoom.actionOverhang <= 1, `action escaped the card: ${JSON.stringify(zoom)}`);
+					assert.ok(zoom.textLines > 0, `action text missing: ${JSON.stringify(zoom)}`);
+					assert.ok(zoom.actionLines >= 1, `action height collapsed: ${JSON.stringify(zoom)}`);
+				}
 				await page.evaluate(() => {
 					document.documentElement.style.fontSize = "";
 				});

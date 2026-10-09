@@ -2838,6 +2838,9 @@
   .break-words {
     overflow-wrap: break-word;
   }
+  .wrap-anywhere {
+    overflow-wrap: anywhere;
+  }
   .wrap-break-word {
     overflow-wrap: break-word;
   }

@@ -8,13 +8,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 }> = {
 	"button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "1ecc70956e11f0d3",
+		"hash": "bf946e717c65ceff",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
 	"link-button": {
 		"file": "packages/basalt/src/components/button.tsx",
-		"hash": "1ecc70956e11f0d3",
+		"hash": "bf946e717c65ceff",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/button.js.map (sourcesContent[0])"
 	},
@@ -530,7 +530,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"recommendation-card": {
 		"file": "packages/basalt/src/components/recommendation-card.tsx",
-		"hash": "b6cbfdfd77a9b23e",
+		"hash": "b2c40a85ae1e8d82",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/recommendation-card.js.map (sourcesContent[0])"
 	},

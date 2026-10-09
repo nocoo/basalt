@@ -127,7 +127,7 @@ export function RecommendationCard({
 					)}
 					<div className="flex min-w-0 flex-wrap items-center justify-between gap-basalt-content-gap border-t border-basalt-border px-basalt-panel-x py-basalt-panel-y">
 						<Confidence value={vm.active.confidence} />
-						<div className="flex min-w-0 flex-wrap items-center justify-end gap-basalt-content-gap">
+						<div className="flex min-w-0 max-w-full flex-wrap items-center justify-end gap-basalt-content-gap">
 							{vm.others.length > 0 && (
 								<CollapsibleTrigger asChild>
 									<Button ref={alternativesRef} size="sm" variant="secondary" disabled={vm.blocked}>

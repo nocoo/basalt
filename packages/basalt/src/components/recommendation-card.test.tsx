@@ -14,6 +14,13 @@ const options: RecommendationOption[] = [
 	{ id: "all", label: "Full restock", description: "Restock everything", confidence: "none" },
 ];
 describe("RecommendationCard", () => {
+	it("lets compound-word actions shrink and wrap inside the footer", () => {
+		const actionLabel = "Synchronisationskonfigurations\u00e4nderungen \u00fcbernehmen";
+		render(<RecommendationCard options={[{ ...options[0], actionLabel }]} onAccept={vi.fn()} />);
+		const action = screen.getByRole("button", { name: actionLabel });
+		expect(action).toHaveClass("wrap-anywhere");
+		expect(action.parentElement).toHaveClass("min-w-0", "max-w-full", "flex-wrap");
+	});
 	it("opens alternatives, promotes a choice and restores keyboard focus", () => {
 		render(<RecommendationCard options={options} onAccept={vi.fn()} />);
 		expect(screen.getByText("Reorder cones")).toBeInTheDocument();
