@@ -1570,6 +1570,9 @@
   .h-basalt-table-row {
     height: var(--basalt-size-table-row);
   }
+  .h-dvh {
+    height: 100dvh;
+  }
   .h-full {
     height: 100%;
   }
@@ -1629,6 +1632,12 @@
   }
   .min-h-basalt-touch {
     min-height: var(--basalt-size-touch);
+  }
+  .min-h-dvh {
+    min-height: 100dvh;
+  }
+  .w-72 {
+    width: calc(var(--spacing) * 72);
   }
   .w-\[4\.25rem\] {
     width: 4.25rem;
@@ -2904,6 +2913,12 @@
   .text-basalt-primary-foreground {
     color: hsl(var(--basalt-primary-foreground));
   }
+  .text-basalt-primary-foreground\/80 {
+    color: hsl(var(--basalt-primary-foreground));
+    @supports (color: color-mix(in lab, red, red)) {
+      color: color-mix(in oklab, hsl(var(--basalt-primary-foreground)) 80%, transparent);
+    }
+  }
   .text-basalt-tag-amber-foreground {
     color: var(--basalt-tag-amber-foreground);
   }
@@ -3438,15 +3453,6 @@
     --tw-translate-x: var(--basalt-space-5);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
-  .data-\[state\=checked\]\:border-basalt-primary\/40[data-state="checked"] {
-    border-color: hsl(var(--basalt-primary));
-    @supports (color: color-mix(in lab, red, red)) {
-      border-color: color-mix(in oklab, hsl(var(--basalt-primary)) 40%, transparent);
-    }
-  }
-  .data-\[state\=checked\]\:bg-basalt-control[data-state="checked"] {
-    background-color: var(--basalt-control-fill);
-  }
   .data-\[state\=checked\]\:bg-basalt-primary[data-state="checked"] {
     background-color: hsl(var(--basalt-primary));
   }
@@ -3471,14 +3477,11 @@
   .data-\[state\=indeterminate\]\:text-basalt-primary-foreground[data-state="indeterminate"] {
     color: hsl(var(--basalt-primary-foreground));
   }
-  .data-\[state\=on\]\:border-basalt-primary\/40[data-state="on"] {
-    border-color: hsl(var(--basalt-primary));
-    @supports (color: color-mix(in lab, red, red)) {
-      border-color: color-mix(in oklab, hsl(var(--basalt-primary)) 40%, transparent);
-    }
+  .data-\[state\=on\]\:bg-basalt-primary[data-state="on"] {
+    background-color: hsl(var(--basalt-primary));
   }
-  .data-\[state\=on\]\:bg-basalt-control[data-state="on"] {
-    background-color: var(--basalt-control-fill);
+  .data-\[state\=on\]\:text-basalt-primary-foreground[data-state="on"] {
+    color: hsl(var(--basalt-primary-foreground));
   }
   .data-\[state\=open\]\:animate-basalt-collapsible-down[data-state="open"] {
     animation: basalt-collapsible-down var(--basalt-motion-normal)

@@ -695,56 +695,29 @@ Product title and version live in `SidebarHeader`, not in `AppHeader`. Read the 
 
 Login is **not** inside `AppShell`. It is a centered badge on the full viewport.
 
-Shape: ISO ID card, `aspect-[54/86]`, `w-72`, `rounded-2xl`, `bg-basalt-card`, layered shadow, hairline ring. Primary strip on top, mark and actions in the body, status strip pinned to the bottom.
+Shape: a fixed badge width, `rounded-basalt-lg`, `bg-basalt-card` and a hairline ring. Three bands: the primary strip on top, the body holding the mark and actions, and the status footer at the bottom. The body grows with its content, so a sign-in form fits without a fixed aspect ratio.
 
 ```tsx excerpt:login-badge-page
 export function LoginPage() {
   return (
-    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-basalt-background p-basalt-space-lg">
-      <div className="flex flex-col items-center">
-        <div
-          data-basalt-surface-root=""
-          className="relative flex aspect-[54/86] w-72 flex-col overflow-hidden rounded-2xl bg-basalt-card ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
-          style={{
-            boxShadow: [
-              "0 1px 2px rgba(0,0,0,0.06)",
-              "0 4px 8px rgba(0,0,0,0.04)",
-              "0 12px 24px rgba(0,0,0,0.06)",
-              "0 24px 48px rgba(0,0,0,0.04)",
-              "0 0 0 0.5px rgba(0,0,0,0.02)",
-              "0 0 60px rgba(0,0,0,0.03)",
-            ].join(", "),
-          }}
-        >
-          <div className="bg-basalt-primary px-basalt-space-lg py-basalt-space-lg">
-            <div className="flex items-center justify-between">
-              <div className="h-4 w-8 rounded-full bg-basalt-background/80" />
-              <div className="flex items-center gap-basalt-space-lg">
-                <BasaltMark className="h-4 w-4 text-basalt-primary-foreground" />
-                <span className="text-sm font-semibold text-basalt-primary-foreground">
-                  Acme
-                </span>
-              </div>
-              <span className="text-[10px] font-medium tracking-widest text-basalt-primary-foreground/60 uppercase">
-                Visitor
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-1 flex-col items-center px-basalt-space-lg pt-basalt-space-lg pb-basalt-space-lg">
-            <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-full bg-basalt-secondary p-basalt-space-lg ring-1 ring-basalt-border">
-              <BasaltMark className="h-10 w-10 text-basalt-muted-foreground" />
-            </div>
-            <p className="mt-basalt-space-lg text-lg font-semibold text-basalt-foreground">Welcome</p>
-            <p className="mt-basalt-space-sm text-xs text-basalt-muted-foreground">Sign in to continue</p>
-            <div className="mt-basalt-space-lg h-px w-full bg-basalt-border" />
-            <div className="flex-1" />
-            <Button variant="secondary" className="w-full rounded-xl py-basalt-space-lg">
-              Continue
-            </Button>
-          </div>
-          <div className="absolute right-0 bottom-0 left-0 flex items-center justify-center border-t border-basalt-border bg-basalt-secondary/50 py-basalt-space-lg">
-            <span className="text-[10px] text-basalt-muted-foreground">Secure sign-in</span>
-          </div>
+    <div className="relative flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-space-lg">
+      <div
+        data-basalt-surface-root=""
+        className="flex w-72 max-w-full flex-col overflow-hidden rounded-basalt-lg bg-basalt-card ring-1 ring-basalt-border"
+      >
+        <div className="flex items-center justify-between gap-basalt-space-lg bg-basalt-primary px-basalt-space-lg py-basalt-space-lg">
+          <span className="text-basalt-base font-semibold text-basalt-primary-foreground">Acme</span>
+          <span className="text-basalt-xs font-medium uppercase tracking-widest text-basalt-primary-foreground/80">
+            Visitor
+          </span>
+        </div>
+        <div className="flex flex-1 flex-col items-center gap-basalt-space-lg px-basalt-space-lg py-basalt-space-lg">
+          <p className="text-basalt-xl font-semibold text-basalt-foreground">Welcome</p>
+          <p className="text-basalt-sm text-basalt-muted-foreground">Sign in to continue</p>
+          <Button className="w-full">Continue</Button>
+        </div>
+        <div className="border-t border-basalt-border px-basalt-space-lg py-basalt-space-lg">
+          <p className="text-basalt-xs text-basalt-muted-foreground">Secure sign-in</p>
         </div>
       </div>
     </div>

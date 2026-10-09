@@ -77,6 +77,24 @@ export async function assertConsumerRecipes(page: Page, url: string) {
 				() => document.activeElement?.getAttribute("aria-label") === "Toggle navigation",
 			);
 		}
+		// The island owns the desktop inset and its own scrolling, not a wrapper div.
+		const island = await page.locator("[data-basalt-island]").evaluate((node) => {
+			const style = getComputedStyle(node);
+			return {
+				padding: style.paddingLeft,
+				overflowY: style.overflowY,
+				background: style.backgroundColor,
+				tag: node.tagName,
+			};
+		});
+		assert.notEqual(island.padding, "0px", JSON.stringify(island));
+		assert.equal(island.overflowY, width < 768 ? "visible" : "auto", JSON.stringify(island));
+		assert.equal(island.tag, "DIV", JSON.stringify(island));
+		const shell = await page.evaluate(() => {
+			const node = document.querySelector("[data-basalt-shell]") as HTMLElement;
+			return Math.abs(node.getBoundingClientRect().height - innerHeight);
+		});
+		assert.ok(shell <= 1, `bounded shell must fill the viewport: ${shell}px`);
 		const skip = page.getByRole("link", { name: "Skip to content" });
 		await skip.focus();
 		await page.keyboard.press("Enter");
@@ -87,6 +105,22 @@ export async function assertConsumerRecipes(page: Page, url: string) {
 		);
 
 		await page.goto(`${url}?recipe=login`);
+		// The badge keeps its documented bands and token geometry in both CSS modes.
+		const badge = await page.locator("[data-basalt-surface-root]").evaluate((node) => ({
+			strip: getComputedStyle(node.firstElementChild as HTMLElement).backgroundColor,
+			bands: node.children.length,
+			footerBorder: getComputedStyle(node.lastElementChild as HTMLElement).borderTopWidth,
+			footerPadding: getComputedStyle(node.lastElementChild as HTMLElement).paddingLeft,
+			bodyPadding: getComputedStyle(node.children[1] as HTMLElement).paddingLeft,
+			rootHeight: getComputedStyle(node.closest("main") as HTMLElement).minHeight,
+			role: node.getAttribute("role"),
+		}));
+		assert.equal(badge.bands, 3, `login badge bands ${JSON.stringify(badge)}`);
+		assert.notEqual(badge.strip, "rgba(0, 0, 0, 0)", `login badge strip: ${JSON.stringify(badge)}`);
+		assert.equal(badge.footerBorder, "1px", JSON.stringify(badge));
+		assert.equal(badge.footerPadding, badge.bodyPadding, JSON.stringify(badge));
+		assert.notEqual(badge.bodyPadding, "0px", JSON.stringify(badge));
+		assert.equal(badge.rootHeight, "100dvh", JSON.stringify(badge));
 		await page.getByRole("textbox", { name: "Email" }).fill("reader@example.com");
 		await page.getByLabel("Password", { exact: true }).fill("incorrect");
 		await page.getByRole("button", { name: "Sign in", exact: true }).click();
@@ -107,6 +141,16 @@ export async function assertConsumerRecipes(page: Page, url: string) {
 
 		await page.goto(`${url}?recipe=resources`);
 		await page.getByText("The project service is unavailable.").waitFor();
+		assert.equal(
+			await page.locator("[data-basalt-shell]").getAttribute("data-basalt-shell"),
+			"document",
+		);
+		assert.notEqual(
+			await page
+				.locator("[data-basalt-island]")
+				.evaluate((node) => getComputedStyle(node).paddingLeft),
+			"0px",
+		);
 		await page.getByRole("button", { name: "Try again", exact: true }).click();
 		await page.getByRole("cell", { name: "Atlas", exact: true }).waitFor();
 		await page.getByRole("textbox", { name: "Search projects" }).fill("boreal");
@@ -175,6 +219,8 @@ export async function assertConsumerRecipes(page: Page, url: string) {
 		installedMarkdown: true,
 		navigation: true,
 		login: true,
+		badgeGeometry: true,
+		islandOwnership: true,
 		abort: true,
 		resourceRetry: true,
 	};

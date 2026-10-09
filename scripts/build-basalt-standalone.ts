@@ -4,6 +4,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compile } from "tailwindcss";
 import { classCandidates } from "./class-candidates";
+import { parseApplicationRecipes } from "./consumer-recipes";
 
 const require = createRequire(import.meta.url);
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -55,6 +56,10 @@ const candidates = [
 		"data-[disabled=true]:opacity-50",
 		...walk(resolve(packageRoot, "src")).flatMap((file) =>
 			classCandidates(readFileSync(file, "utf8")),
+		),
+		// Shipped recipes are part of the package: standalone mode must style them too.
+		...parseApplicationRecipes(readFileSync(resolve(packageRoot, "ai/RECIPES.md"), "utf8")).flatMap(
+			(recipe) => classCandidates(recipe.code),
 		),
 	]),
 ].sort();

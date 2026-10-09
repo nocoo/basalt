@@ -16,7 +16,7 @@ import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-she
 import { Button } from "@nocoo/basalt/components/button";
 import { DialogDescription, DialogTitle } from "@nocoo/basalt/components/dialog";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
-import { Sidebar, SidebarHeader, SidebarItem, SidebarNav, SidebarProvider } from "@nocoo/basalt/components/sidebar";
+import { ContentIsland, Sidebar, SidebarHeader, SidebarItem, SidebarNav, SidebarProvider } from "@nocoo/basalt/components/sidebar";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { useEffect, useState } from "react";
@@ -34,9 +34,10 @@ export default function AppFrameRecipe() {
   }, []);
   // Replace this local state change with your router's navigation adapter.
   function navigate(next: string) { setPage(next); if (compact) setCollapsed(true); }
-  return <ThemeProvider><div style={{ position: "fixed", inset: 0 }}>
+  return <ThemeProvider>
     <SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed} overlay={compact}>
-      <AppShell>
+      {/* One bounded viewport; the island below owns its own scrolling. */}
+      <AppShell layout="workspace" className="h-dvh">
         <AppSkipLink href="#recipe-main">Skip to content</AppSkipLink>
         <Sidebar>
           {compact && <><DialogTitle className="sr-only">Workspace navigation</DialogTitle><DialogDescription className="sr-only">Choose an application section.</DialogDescription></>}
@@ -47,14 +48,14 @@ export default function AppFrameRecipe() {
         </Sidebar>
         <AppMain id="recipe-main" tabIndex={-1}>
           <AppHeader leading={<Button size="sm" variant="ghost" aria-label="Toggle navigation" onClick={() => setCollapsed(!collapsed)}>Menu</Button>} actions={<ThemeToggle aria-label="Change theme" />} />
-          <div style={{ overflow: "auto", flex: 1, padding: 24 }}>
+          <ContentIsland className="space-y-basalt-layout-lg">
             <PageHeader title={page} description="A reusable application frame with responsive navigation." />
-            <p role="status" className="mt-4 text-sm text-basalt-muted-foreground">Opened {page}. Your application supplies routes and page content.</p>
-          </div>
+            <p role="status" className="text-basalt-sm text-basalt-muted-foreground">Opened {page}. Your application supplies routes and page content.</p>
+          </ContentIsland>
         </AppMain>
       </AppShell>
     </SidebarProvider>
-  </div></ThemeProvider>;
+  </ThemeProvider>;
 }
 ```
 
@@ -79,7 +80,7 @@ export function LoginForm({ authenticate, onSuccess }: {
   const [error, setError] = useState("");
   const active = useRef<AbortController | null>(null);
   useEffect(() => () => active.current?.abort(), []);
-  return <form aria-label="Sign in" className="space-y-4" onSubmit={async (event) => {
+  return <form aria-label="Sign in" className="space-y-basalt-space-lg" onSubmit={async (event) => {
     event.preventDefault();
     if (active.current) return;
     const form = new FormData(event.currentTarget);
@@ -98,21 +99,37 @@ export function LoginForm({ authenticate, onSuccess }: {
   }}>
     <Field label="Email"><Input name="email" type="email" autoComplete="username" required /></Field>
     <Field label="Password"><SensitiveInput name="password" autoComplete="current-password" revealLabel="Show password" hideLabel="Hide password" required /></Field>
-    {error && <p role="alert" className="text-sm text-basalt-destructive">{error}</p>}
+    {error && <p role="alert" className="text-basalt-sm text-basalt-destructive">{error}</p>}
     <Button className="w-full" type="submit" loading={pending}>Sign in</Button>
   </form>;
 }
 
+// The documented visitor badge: a full-viewport root, a primary strip, the body,
+// and a status footer. It never enters AppShell, and the body grows with the form.
 export default function LoginRecipe() {
   const [account, setAccount] = useState<string | null>(null);
-  return <ThemeProvider><main style={{ boxSizing: "border-box", minHeight: "100dvh", display: "grid", placeItems: "center", padding: 16 }}>
-    <div className="rounded-basalt-lg border border-basalt-border bg-basalt-card p-6 space-y-4" style={{ boxSizing: "border-box", width: "100%", maxWidth: 380 }}>
-      <h1 className="text-xl font-semibold">Welcome to Atlas</h1>
-      {account ? <><p role="status">Signed in as {account}</p><Button onClick={() => setAccount(null)}>Sign out</Button></> :
-        <><p className="text-sm text-basalt-muted-foreground">Local sign-in demo. Use password demo-pass.</p>
-        <LoginForm authenticate={async ({ password }) => { if (password !== "demo-pass") throw new Error("Incorrect demo password."); }} onSuccess={setAccount} /></>}
-    </div>
-  </main></ThemeProvider>;
+  return <ThemeProvider>
+    <main className="flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-space-lg">
+      <div data-basalt-surface-root="" className="flex w-72 max-w-full flex-col overflow-hidden rounded-basalt-lg bg-basalt-card ring-1 ring-basalt-border">
+        <div className="flex items-center justify-between gap-basalt-space-lg bg-basalt-primary px-basalt-space-lg py-basalt-space-lg">
+          <span className="text-basalt-base font-semibold text-basalt-primary-foreground">Atlas</span>
+          <span className="text-basalt-xs font-medium uppercase tracking-widest text-basalt-primary-foreground/80">Visitor</span>
+        </div>
+        <div className="flex flex-1 flex-col gap-basalt-space-lg px-basalt-space-lg py-basalt-space-lg">
+          <div className="space-y-basalt-space-sm">
+            <h1 className="text-basalt-xl font-semibold text-basalt-foreground">Welcome to Atlas</h1>
+            <p className="text-basalt-sm text-basalt-muted-foreground">Local sign-in demo. Use password demo-pass.</p>
+          </div>
+          {account ? <><p role="status" className="text-basalt-sm text-basalt-foreground">Signed in as {account}</p>
+            <Button variant="outline" onClick={() => setAccount(null)}>Sign out</Button></> :
+            <LoginForm authenticate={async ({ password }) => { if (password !== "demo-pass") throw new Error("Incorrect demo password."); }} onSuccess={setAccount} />}
+        </div>
+        <div className="border-t border-basalt-border px-basalt-space-lg py-basalt-space-lg">
+          <p className="text-basalt-xs text-basalt-muted-foreground">Secure sign-in. Sessions stay with your application.</p>
+        </div>
+      </div>
+    </main>
+  </ThemeProvider>;
 }
 ```
 
@@ -121,11 +138,13 @@ export default function LoginRecipe() {
 Search, an error with retry, formatted status cells, and a confirmation flow use page-owned state. The first local deletion fails so the retry path can be tested. For remote pagination use the existing DataTable manual-state adapter.
 
 ```tsx compile:recipe-resources
+import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-shell";
 import { Button } from "@nocoo/basalt/components/button";
 import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-table";
 import { DeleteResource } from "@nocoo/basalt/components/delete-resource";
 import { Input } from "@nocoo/basalt/components/input";
 import { ResourceList } from "@nocoo/basalt/components/resource-list";
+import { ContentIsland } from "@nocoo/basalt/components/sidebar";
 import { TagBadge } from "@nocoo/basalt/components/tag-badge";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { useRef, useState } from "react";
@@ -150,13 +169,19 @@ export default function ResourcesRecipe() {
       setRows((current) => current.filter((item) => item.id !== row.id)); setMessage("Deleted " + row.name);
     }} /> },
   ];
-  return <ThemeProvider><main style={{ padding: 24, maxWidth: 960, margin: "auto" }}>
-    <ResourceList title="Projects" description="A complete resource-page composition with local service adapters." data={[]}
-      toolbar={<div className="flex flex-wrap gap-3"><Input aria-label="Search projects" placeholder="Search projects…" value={query} onChange={(event) => setQuery(event.target.value)} /><Button variant="outline" onClick={() => { setRows(initial); setQuery(""); setMessage(""); }}>Reset projects</Button></div>}
-      footer={<p role="status" className="text-sm text-basalt-muted-foreground">{message || (filtered.length + " projects")}</p>}>
-      <DataTable aria-label="Projects" data={filtered} columns={columns} error={error ? "The project service is unavailable." : undefined} onRetry={() => setError(false)} />
-    </ResourceList>
-  </main></ThemeProvider>;
+  // A document page: the shell grows with content and the island owns the desktop inset.
+  return <ThemeProvider><AppShell layout="document">
+    <AppSkipLink href="#recipe-resources">Skip to content</AppSkipLink>
+    <AppMain id="recipe-resources" tabIndex={-1}>
+      <ContentIsland>
+        <ResourceList title="Projects" description="A complete resource-page composition with local service adapters." data={[]}
+          toolbar={<div className="flex flex-wrap gap-basalt-content-gap"><Input aria-label="Search projects" placeholder="Search projects…" value={query} onChange={(event) => setQuery(event.target.value)} /><Button variant="outline" onClick={() => { setRows(initial); setQuery(""); setMessage(""); }}>Reset projects</Button></div>}
+          footer={<p role="status" className="text-basalt-sm text-basalt-muted-foreground">{message || (filtered.length + " projects")}</p>}>
+          <DataTable aria-label="Projects" data={filtered} columns={columns} error={error ? "The project service is unavailable." : undefined} onRetry={() => setError(false)} />
+        </ResourceList>
+      </ContentIsland>
+    </AppMain>
+  </AppShell></ThemeProvider>;
 }
 ```
 
@@ -184,7 +209,7 @@ export default function MobileLayoutRecipe() {
             <PopoverContent aria-label="Options"><p>Application-owned reading preferences.</p></PopoverContent>
           </Popover>
         } />
-        <article style={{ maxWidth: "65ch", marginInline: "auto", padding: "1rem", lineHeight: 1.7 }}>
+        <article className="mx-auto max-w-[65ch] space-y-basalt-space-lg p-basalt-layout text-basalt-base leading-basalt-relaxed">
           {Array.from({ length: 24 }, (_, index) => <section key={index}>
             <h2>Observation {index + 1}</h2>
             <p>The shell leaves the document in charge on a narrow screen. Content grows naturally, the header stays reachable, and the final paragraph remains above the trailing safe area.</p>
