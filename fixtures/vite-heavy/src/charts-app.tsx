@@ -255,7 +255,6 @@ function ChartsPanel() {
 						value={72}
 						max={100}
 						ariaLabel="System load gauge"
-						className="h-36 w-36"
 						summary="Current system load is at 72% within normal bounds."
 						dataAlternative={<p id="gauge-alt">Load is 72 out of 100 maximum capacity.</p>}
 					/>
