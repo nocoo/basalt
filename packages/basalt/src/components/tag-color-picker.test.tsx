@@ -1,5 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
+import { Field } from "./field";
 import { TagColorPicker } from "./tag-color-picker";
 
 describe("TagColorPicker", () => {
@@ -17,6 +18,20 @@ describe("TagColorPicker", () => {
 		fireEvent.click(screen.getByRole("radio", { name: "Blue" }));
 		expect(change).toHaveBeenCalledTimes(1);
 	});
+	it("carries Field validation onto the radio group", () => {
+		render(
+			<Field label="Care status" hint="Shown on the plan">
+				<TagColorPicker label="Care status" colors={["success", "danger"]} />
+			</Field>,
+		);
+		const group = screen.getByRole("radiogroup", { name: "Care status" });
+		const id = group.getAttribute("id");
+		expect(id).toBeTruthy();
+		expect(document.querySelector(`label[for="${id}"]`)).toHaveTextContent("Care status");
+		expect(group).not.toHaveAttribute("aria-invalid");
+		expect(group).toHaveAttribute("aria-describedby", `${id}-hint`);
+	});
+
 	it("supports a controlled localized subset and disabling selection", () => {
 		const change = vi.fn();
 		const props = {

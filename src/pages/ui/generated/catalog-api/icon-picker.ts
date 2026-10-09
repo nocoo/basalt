@@ -64,6 +64,24 @@ export const API = [
 				description: "Empty-search text.",
 			},
 			{
+				name: "id",
+				type: "string",
+				required: false,
+				description: "Forwarded to the trigger so Field and Label can own it.",
+			},
+			{
+				name: "aria-invalid",
+				type: "\"false\" | \"grammar\" | \"spelling\" | \"true\" | false | true",
+				required: false,
+				description: "Forwarded to the trigger; Field sets it while the value is invalid.",
+			},
+			{
+				name: "aria-describedby",
+				type: "string",
+				required: false,
+				description: "Forwarded to the trigger; Field points it at the hint or error.",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,

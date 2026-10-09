@@ -50,6 +50,24 @@ export const API = [
 				description: "Disable the picker.",
 			},
 			{
+				name: "id",
+				type: "string",
+				required: false,
+				description: "Forwarded to the radio group so Field and Label can own it.",
+			},
+			{
+				name: "aria-invalid",
+				type: "\"false\" | \"grammar\" | \"spelling\" | \"true\" | false | true",
+				required: false,
+				description: "Forwarded to the radio group; Field sets it while the value is invalid.",
+			},
+			{
+				name: "aria-describedby",
+				type: "string",
+				required: false,
+				description: "Forwarded to the radio group; Field points it at the hint or error.",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,

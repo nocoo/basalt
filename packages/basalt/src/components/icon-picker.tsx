@@ -1,6 +1,6 @@
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
 import { Check, ChevronDown, Search } from "lucide-react";
-import { type ReactNode, useState } from "react";
+import { type AriaAttributes, type ReactNode, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Button } from "./button";
@@ -37,6 +37,12 @@ export interface IconPickerProps {
 	searchPlaceholder?: string;
 	/** Empty-search text. @default "No icons found." */
 	emptyLabel?: string;
+	/** Forwarded to the trigger so Field and Label can own it. */
+	id?: string;
+	/** Forwarded to the trigger; Field sets it while the value is invalid. */
+	"aria-invalid"?: AriaAttributes["aria-invalid"];
+	/** Forwarded to the trigger; Field points it at the hint or error. */
+	"aria-describedby"?: string;
 	/** Additional root classes. */
 	className?: string;
 }
@@ -50,6 +56,9 @@ export function IconPicker({
 	placeholder = "Choose icon",
 	searchPlaceholder = "Search icons…",
 	emptyLabel = "No icons found.",
+	id,
+	"aria-invalid": ariaInvalid,
+	"aria-describedby": describedBy,
 	className,
 }: IconPickerProps) {
 	const [localValue, setLocalValue] = useState(defaultValue);
@@ -72,7 +81,10 @@ export function IconPicker({
 				<Button
 					variant="outline"
 					disabled={disabled}
-					aria-label={label}
+					id={id}
+					aria-invalid={ariaInvalid}
+					aria-describedby={describedBy}
+					aria-label={`${label}: ${option?.label ?? placeholder}`}
 					className={cn(BASALT_UI_CLASS, "max-w-full", className)}
 				>
 					<span aria-hidden="true" className="shrink-0">

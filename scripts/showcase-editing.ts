@@ -70,14 +70,14 @@ export async function assertEditingShowcases(page: Page, baseUrl: string) {
 			await visit("icon-picker");
 			await page
 				.locator('[data-scenario="icon-picker-folder-icon"]')
-				.getByRole("button", { name: "Care plan icon", exact: true })
+				.getByRole("button", { name: /^Care plan icon:/ })
 				.click();
 			await page.getByRole("textbox", { name: "Care plan icon: search" }).fill("code");
 			await page.getByRole("radio", { name: "Code", exact: true }).click();
 			await page.getByRole("status").filter({ hasText: "Selected icon: code" }).waitFor();
 			await page
 				.locator('[data-scenario="icon-picker-resource-icon"]')
-				.getByRole("button", { name: "Resource icon", exact: true })
+				.getByRole("button", { name: /^Resource icon:/ })
 				.click();
 			assert.equal(await page.getByRole("radio", { name: "Private vault" }).isDisabled(), true);
 			await page.getByRole("radio", { name: "Audio", exact: true }).click();

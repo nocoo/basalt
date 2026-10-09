@@ -1,6 +1,6 @@
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group";
 import { Check } from "lucide-react";
-import { useState } from "react";
+import { type AriaAttributes, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { FOCUS_INSET } from "./overlay";
@@ -21,6 +21,12 @@ export interface TagColorPickerProps {
 	labels?: Partial<Record<TagColor, string>>;
 	/** Disable the picker. @default false */
 	disabled?: boolean;
+	/** Forwarded to the radio group so Field and Label can own it. */
+	id?: string;
+	/** Forwarded to the radio group; Field sets it while the value is invalid. */
+	"aria-invalid"?: AriaAttributes["aria-invalid"];
+	/** Forwarded to the radio group; Field points it at the hint or error. */
+	"aria-describedby"?: string;
 	/** Additional root classes. */
 	className?: string;
 }
@@ -33,6 +39,9 @@ export function TagColorPicker({
 	colors = ALL_COLORS,
 	labels,
 	disabled = false,
+	id,
+	"aria-invalid": ariaInvalid,
+	"aria-describedby": describedBy,
 	className,
 }: TagColorPickerProps) {
 	const [localValue, setLocalValue] = useState(defaultValue);
@@ -40,7 +49,10 @@ export function TagColorPicker({
 	return (
 		<RadioGroupPrimitive.Root
 			value={selected}
+			id={id}
 			aria-label={label}
+			aria-invalid={ariaInvalid}
+			aria-describedby={describedBy}
 			disabled={disabled}
 			className={cn(
 				BASALT_UI_CLASS,

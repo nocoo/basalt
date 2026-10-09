@@ -16989,7 +16989,7 @@
 			"importPath": "@nocoo/basalt/components/icon-picker",
 			"subpath": "./components/icon-picker",
 			"sourceFile": "packages/basalt/src/components/icon-picker.tsx",
-			"sourceHash": "bba88d8600c74b84",
+			"sourceHash": "e84f2c6c02313215",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -17095,6 +17095,24 @@
 									"description": "Empty-search text."
 								},
 								{
+									"name": "id",
+									"type": "string",
+									"required": false,
+									"description": "Forwarded to the trigger so Field and Label can own it."
+								},
+								{
+									"name": "aria-invalid",
+									"type": "\"false\" | \"grammar\" | \"spelling\" | \"true\" | false | true",
+									"required": false,
+									"description": "Forwarded to the trigger; Field sets it while the value is invalid."
+								},
+								{
+									"name": "aria-describedby",
+									"type": "string",
+									"required": false,
+									"description": "Forwarded to the trigger; Field points it at the hint or error."
+								},
+								{
 									"name": "className",
 									"type": "string",
 									"required": false,
@@ -17166,6 +17184,24 @@
 							"required": false,
 							"default": "\"No icons found.\"",
 							"description": "Empty-search text."
+						},
+						{
+							"name": "id",
+							"type": "string",
+							"required": false,
+							"description": "Forwarded to the trigger so Field and Label can own it."
+						},
+						{
+							"name": "aria-invalid",
+							"type": "\"false\" | \"grammar\" | \"spelling\" | \"true\" | false | true",
+							"required": false,
+							"description": "Forwarded to the trigger; Field sets it while the value is invalid."
+						},
+						{
+							"name": "aria-describedby",
+							"type": "string",
+							"required": false,
+							"description": "Forwarded to the trigger; Field points it at the hint or error."
 						},
 						{
 							"name": "className",
@@ -25837,7 +25873,7 @@
 			"importPath": "@nocoo/basalt/components/tag-color-picker",
 			"subpath": "./components/tag-color-picker",
 			"sourceFile": "packages/basalt/src/components/tag-color-picker.tsx",
-			"sourceHash": "e28d60cb3578de4b",
+			"sourceHash": "4712016fe3c506e6",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -25921,6 +25957,24 @@
 									"description": "Disable the picker."
 								},
 								{
+									"name": "id",
+									"type": "string",
+									"required": false,
+									"description": "Forwarded to the radio group so Field and Label can own it."
+								},
+								{
+									"name": "aria-invalid",
+									"type": "\"false\" | \"grammar\" | \"spelling\" | \"true\" | false | true",
+									"required": false,
+									"description": "Forwarded to the radio group; Field sets it while the value is invalid."
+								},
+								{
+									"name": "aria-describedby",
+									"type": "string",
+									"required": false,
+									"description": "Forwarded to the radio group; Field points it at the hint or error."
+								},
+								{
 									"name": "className",
 									"type": "string",
 									"required": false,
@@ -25978,6 +26032,24 @@
 							"required": false,
 							"default": "false",
 							"description": "Disable the picker."
+						},
+						{
+							"name": "id",
+							"type": "string",
+							"required": false,
+							"description": "Forwarded to the radio group so Field and Label can own it."
+						},
+						{
+							"name": "aria-invalid",
+							"type": "\"false\" | \"grammar\" | \"spelling\" | \"true\" | false | true",
+							"required": false,
+							"description": "Forwarded to the radio group; Field sets it while the value is invalid."
+						},
+						{
+							"name": "aria-describedby",
+							"type": "string",
+							"required": false,
+							"description": "Forwarded to the radio group; Field points it at the hint or error."
 						},
 						{
 							"name": "className",
@@ -37620,7 +37692,7 @@
 			"exportName": "IconPicker",
 			"importPath": "@nocoo/basalt/components/icon-picker",
 			"sourceFile": "packages/basalt/src/components/icon-picker.tsx",
-			"sourceHash": "bba88d8600c74b84",
+			"sourceHash": "e84f2c6c02313215",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#icon-picker",
@@ -37685,6 +37757,24 @@
 							"required": false,
 							"default": "\"No icons found.\"",
 							"description": "Empty-search text."
+						},
+						{
+							"name": "id",
+							"type": "string",
+							"required": false,
+							"description": "Forwarded to the trigger so Field and Label can own it."
+						},
+						{
+							"name": "aria-invalid",
+							"type": "\"false\" | \"grammar\" | \"spelling\" | \"true\" | false | true",
+							"required": false,
+							"description": "Forwarded to the trigger; Field sets it while the value is invalid."
+						},
+						{
+							"name": "aria-describedby",
+							"type": "string",
+							"required": false,
+							"description": "Forwarded to the trigger; Field points it at the hint or error."
 						},
 						{
 							"name": "className",
@@ -37761,7 +37851,7 @@
 			"exportName": "TagColorPicker",
 			"importPath": "@nocoo/basalt/components/tag-color-picker",
 			"sourceFile": "packages/basalt/src/components/tag-color-picker.tsx",
-			"sourceHash": "e28d60cb3578de4b",
+			"sourceHash": "4712016fe3c506e6",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#tag-color-picker",
@@ -37812,6 +37902,24 @@
 							"required": false,
 							"default": "false",
 							"description": "Disable the picker."
+						},
+						{
+							"name": "id",
+							"type": "string",
+							"required": false,
+							"description": "Forwarded to the radio group so Field and Label can own it."
+						},
+						{
+							"name": "aria-invalid",
+							"type": "\"false\" | \"grammar\" | \"spelling\" | \"true\" | false | true",
+							"required": false,
+							"description": "Forwarded to the radio group; Field sets it while the value is invalid."
+						},
+						{
+							"name": "aria-describedby",
+							"type": "string",
+							"required": false,
+							"description": "Forwarded to the radio group; Field points it at the hint or error."
 						},
 						{
 							"name": "className",
