@@ -442,8 +442,9 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			);
 
 			// After End key and automatic scroll, tooltip for Dec 31 must remain visible and readable
-			await page.waitForSelector('[role="tooltip"]', { state: "visible" });
-			const dec31TooltipText = (await page.locator('[role="tooltip"]').textContent()) ?? "";
+			const dec31Tooltip = page.getByRole("tooltip").filter({ hasText: "2026-12-31" });
+			await dec31Tooltip.waitFor({ state: "visible" });
+			const dec31TooltipText = (await dec31Tooltip.textContent()) ?? "";
 			assert.ok(
 				dec31TooltipText.includes("2026-12-31") && dec31TooltipText.includes("9 commits"),
 				`Tooltip after End horizontal scroll must remain visible with Dec 31 data (received: "${dec31TooltipText}")`,
@@ -1144,9 +1145,13 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			);
 
 			// Tooltip should open on focus showing exact 12ms and Operational
-			const matrixTooltip = page.locator('[data-testid="matrix-custom-tooltip"]');
+			const matrixTooltip = page.locator(
+				'[role="tooltip"]:not([data-state="closed"]) [data-testid="matrix-custom-tooltip"]',
+			);
 			await matrixTooltip.waitFor({ state: "visible" });
-			const firstTitle = (await page.locator("#matrix-tooltip-title").textContent())?.trim();
+			const firstTitle = (
+				await matrixTooltip.locator("#matrix-tooltip-title").textContent()
+			)?.trim();
 			assert.equal(firstTitle, "US-East at 00:00", "First cell title must be 'US-East at 00:00'");
 			const firstRowText = (
 				await matrixTooltip.locator('[data-testid="chart-tooltip-row"]').innerText()
@@ -1181,7 +1186,9 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			await page.keyboard.press("ArrowRight");
 			await page.keyboard.press("ArrowRight");
 			await matrixTooltip.waitFor({ state: "visible" });
-			const zeroTitle = (await page.locator("#matrix-tooltip-title").textContent())?.trim();
+			const zeroTitle = (
+				await matrixTooltip.locator("#matrix-tooltip-title").textContent()
+			)?.trim();
 			assert.equal(zeroTitle, "US-East at 18:00", "Zero cell title must be 'US-East at 18:00'");
 			const zeroRowText = (
 				await matrixTooltip.locator('[data-testid="chart-tooltip-row"]').innerText()
@@ -1204,7 +1211,9 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			await page.keyboard.press("ArrowDown");
 			await page.keyboard.press("ArrowLeft");
 			await matrixTooltip.waitFor({ state: "visible" });
-			const missingTitle = (await page.locator("#matrix-tooltip-title").textContent())?.trim();
+			const missingTitle = (
+				await matrixTooltip.locator("#matrix-tooltip-title").textContent()
+			)?.trim();
 			assert.equal(
 				missingTitle,
 				"US-West at 12:00",
