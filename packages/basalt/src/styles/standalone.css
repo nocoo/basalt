@@ -548,7 +548,7 @@
     line-height: var(--basalt-leading-inline);
   }
   .basalt-banner {
-    padding: var(--basalt-space-default);
+    padding: var(--basalt-space-panel-y) var(--basalt-space-panel-x);
     font-size: var(--basalt-text-base);
     line-height: var(--basalt-leading-banner);
   }

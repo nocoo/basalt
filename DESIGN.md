@@ -36,7 +36,7 @@ different density; opening the page layout must not enlarge compact controls.
 | Large / default | `--basalt-space-lg`, `--basalt-space-default` | `.5rem` | 8px |
 
 These four steps belong to control content: labels, icons, fields, actions,
-selectable rows, menus and banners. They are not the maximum spacing for a page
+selectable rows, menus and banner content. They are not the maximum spacing for a page
 or content surface. Card and layout boundaries use their own four-step roles:
 
 | Step | Card token | Layout token | Value | Reference |
@@ -125,7 +125,9 @@ The shared classes calculate natural size as follows:
   1px border each side = 34px. Explicit `sm` (28px) and `lg` (40px) are shared
   size variants, not ad-hoc height utilities. Icon-only actions use a minimum
   derived from `1lh`, not a fixed height; icons are normally 14px.
-- `basalt-banner`: 14px font, 22px line box + 8px padding each side = 38px.
+- `basalt-banner`: 14px font, 22px line box + 12px vertical padding = 46px.
+  The outer boundary uses 16px horizontal / 12px vertical panel insets; internal
+  icons and actions retain compact control spacing.
   Descriptions, wrapping and actions can make a banner taller.
 - Action rows: 22px text line (`--basalt-line-row`) + 6px vertical padding each
   side = 34px. Body prose/code retain the 20px line box. Compound inputs own one

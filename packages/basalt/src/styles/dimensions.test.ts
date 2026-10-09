@@ -6,6 +6,12 @@ const tailwind = readFileSync("packages/basalt/src/styles/tailwind.css", "utf8")
 const standalone = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
 
 describe("dimension token contract", () => {
+	it("gives banners panel insets without enlarging their controls", () => {
+		for (const css of [tokens, standalone]) {
+			const block = css.match(/\.basalt-banner \{([^}]+)\}/)?.[1];
+			expect(block).toContain("padding: var(--basalt-space-panel-y) var(--basalt-space-panel-x)");
+		}
+	});
 	it("sizes default actions and borderless rows to 34px without enlarging body copy", () => {
 		for (const css of [tokens, standalone]) {
 			expect(css).toContain("--basalt-leading-action: calc(24 / 14)");

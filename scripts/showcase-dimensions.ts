@@ -109,9 +109,16 @@ export async function assertDimensionTokens(page: Page, baseUrl: string) {
 	await banner.evaluate((node) => {
 		node.textContent = "Single-line notification";
 	});
-	assert.equal(Math.round((await banner.boundingBox())?.height ?? 0), 38);
+	assert.deepEqual(
+		await banner.evaluate((node) => {
+			const style = getComputedStyle(node);
+			return [style.paddingTop, style.paddingRight, style.paddingBottom, style.paddingLeft];
+		}),
+		["12px", "16px", "12px", "16px"],
+	);
+	assert.equal(Math.round((await banner.boundingBox())?.height ?? 0), 46);
 	return {
-		sizes: [22, 28, 34, 38, 40],
+		sizes: [22, 28, 34, 38, 40, 46],
 		compoundControls: 4,
 		cssEntrypoints: 2,
 		isolatedHostSpacing: true,
