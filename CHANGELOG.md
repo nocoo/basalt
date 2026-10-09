@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-10-09
+
 ### Breaking Changes
 - Replace Loader's SVG root with a span-based eight-cell grid. Migrate SVG-only props and refs; use `showLabel={false} showElapsed={false}` for icon-only slots.
 - Standardize intrinsic component geometry, typography and container ownership. Controls retain compact spacing; cards and layouts use 12/16/24/32px role-based tokens. Update custom DOM selectors and visual snapshots, including 34px action rows and 46px banners.
