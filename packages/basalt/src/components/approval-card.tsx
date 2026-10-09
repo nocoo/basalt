@@ -26,6 +26,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 	const vm = useApprovalCardViewModel(props);
 	const id = useId();
 	const options = useRef<HTMLDivElement | null>(null);
+	const heading = useRef<HTMLHeadingElement | null>(null);
 	const submitted = useRef<HTMLParagraphElement | null>(null);
 	const highlightRef = useHoverHighlight(options);
 	useEffect(() => {
@@ -39,11 +40,10 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 			!active.matches(":disabled, [aria-disabled='true']")
 		)
 			return;
-		options.current
-			?.querySelector<HTMLElement>(
-				'[role="radio"]:not([disabled]), [role="checkbox"]:not([disabled])',
-			)
-			?.focus();
+		const answer = options.current?.querySelector<HTMLElement>(
+			':is([role="radio"], [role="checkbox"], input):not(:disabled):not([aria-disabled="true"])',
+		);
+		(answer ?? heading.current)?.focus();
 	}, [vm.focusToken]);
 	useEffect(() => {
 		if (vm.status === "submitted") submitted.current?.focus();
@@ -73,7 +73,13 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 			)}
 		>
 			<div className="flex items-center justify-between gap-basalt-content-gap">
-				<h3 id={id} className="text-basalt-base font-medium" aria-live="polite">
+				<h3
+					ref={heading}
+					id={id}
+					tabIndex={-1}
+					className="text-basalt-base font-medium"
+					aria-live="polite"
+				>
 					{question.label}
 				</h3>
 				{onDismiss && (

@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-10: Focus fix omitted generated source metadata
+
+- **What:** The first R2-01 commit attempt passed focused tests but the index-snapshot hook rejected stale package source hashes. The shell wrapper also used zsh's read-only `status` variable when reporting the failure.
+- **Why:** A private focus change still changes the source integrity contract; unchanged public types do not mean generated metadata stays current.
+- **Follow-up:** Run `bun run catalog-api:generate` after component edits, stage the matching generated hashes, and use a non-reserved shell variable for exit codes. Keep the hook enabled so incomplete source snapshots cannot commit.
+
 ## 2026-09: Type-equivalence fixture compiled unrelated ambient types
 
 - **What:** The first full coverage run after the 2026-09-23 dependency repairs timed out one `scripts/catalog-type-printer.test.ts` test (default 5s) under suite load; no assertion failed.

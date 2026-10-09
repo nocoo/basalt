@@ -164,6 +164,77 @@ describe("ApprovalCard", () => {
 			market: { selected: [], skipped: true },
 		});
 	});
+	it.each(["single", "multiple"] as const)(
+		"focuses the custom-only %s answer after automatic progression",
+		(type) => {
+			vi.useFakeTimers();
+			render(
+				<ApprovalCard
+					questions={[
+						questions[0],
+						{ id: "custom", label: "Explain your choice", type, options: [], allowCustom: true },
+					]}
+					onSubmit={vi.fn()}
+				/>,
+			);
+			const alpha = screen.getByRole("radio", { name: "Alpha" });
+			act(() => alpha.focus());
+			fireEvent.click(alpha);
+			act(() => vi.advanceTimersByTime(240));
+			expect(screen.getByRole("textbox", { name: "Custom answer" })).toHaveFocus();
+		},
+	);
+	it("focuses the heading when the next question has no enabled answer control", () => {
+		vi.useFakeTimers();
+		render(
+			<ApprovalCard
+				questions={[
+					questions[0],
+					{
+						id: "optional",
+						label: "Optional question",
+						type: "multiple",
+						required: false,
+						options: [{ id: "disabled", label: "Unavailable", disabled: true }],
+					},
+				]}
+				onSubmit={vi.fn()}
+			/>,
+		);
+		const alpha = screen.getByRole("radio", { name: "Alpha" });
+		act(() => alpha.focus());
+		fireEvent.click(alpha);
+		act(() => vi.advanceTimersByTime(240));
+		expect(screen.getByRole("heading", { name: "Optional question" })).toHaveFocus();
+		expect(screen.getByRole("button", { name: "Skip" })).toBeEnabled();
+	});
+	it("does not steal outside focus during automatic progression to a custom answer", () => {
+		vi.useFakeTimers();
+		render(
+			<>
+				<button type="button">Outside</button>
+				<ApprovalCard
+					questions={[
+						questions[0],
+						{
+							id: "custom",
+							label: "Explain your choice",
+							type: "single",
+							options: [],
+							allowCustom: true,
+						},
+					]}
+					onSubmit={vi.fn()}
+				/>
+			</>,
+		);
+		fireEvent.click(screen.getByRole("radio", { name: "Alpha" }));
+		const outside = screen.getByRole("button", { name: "Outside" });
+		act(() => outside.focus());
+		act(() => vi.advanceTimersByTime(240));
+		expect(screen.getByRole("textbox", { name: "Custom answer" })).toBeInTheDocument();
+		expect(outside).toHaveFocus();
+	});
 });
 describe("ToolChips", () => {
 	it("expands tool output and opens diff previews", async () => {
