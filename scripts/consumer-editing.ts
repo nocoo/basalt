@@ -108,7 +108,8 @@ export async function assertConsumerEditing(page: Page) {
 			const locked = nav.getByRole("link", { name: "Locked folder" });
 			assert.equal(await locked.getAttribute("aria-disabled"), "true");
 
-			const picker = page.getByRole("button", { name: "Folder icon", exact: true });
+			const picker = page.getByRole("button", { name: /^Folder icon: / });
+			assert.equal(await picker.getAttribute("aria-label"), "Folder icon: Folder");
 			await picker.focus();
 			await page.keyboard.press("Enter");
 			const search = page.getByRole("textbox", { name: "Folder icon: search" });
@@ -123,6 +124,7 @@ export async function assertConsumerEditing(page: Page) {
 			await page.keyboard.press("Space");
 			await focused(picker);
 			assert.match(await picker.innerText(), /Book/);
+			assert.equal(await picker.getAttribute("aria-label"), "Folder icon: Book");
 			const colors = page.getByRole("radiogroup", { name: "Tag color", exact: true });
 			await colors.getByRole("radio", { name: "Blue", exact: true }).focus();
 			await page.keyboard.press("ArrowRight");

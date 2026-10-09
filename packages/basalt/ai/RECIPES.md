@@ -47,7 +47,7 @@ export default function AppFrameRecipe() {
           </SidebarNav>
         </Sidebar>
         <AppMain id="recipe-main" tabIndex={-1}>
-          <AppHeader leading={<Button size="sm" variant="ghost" aria-label="Toggle navigation" onClick={() => setCollapsed(!collapsed)}>Menu</Button>} actions={<ThemeToggle aria-label="Change theme" />} />
+          <AppHeader leading={<Button size="sm" variant="ghost" aria-label="Toggle navigation" onClick={(event) => { event.currentTarget.focus(); setCollapsed(!collapsed); }}>Menu</Button>} actions={<ThemeToggle aria-label="Change theme" />} />
           <ContentIsland className="space-y-basalt-layout-lg">
             <PageHeader title={page} description="A reusable application frame with responsive navigation." />
             <p role="status" className="text-basalt-sm text-basalt-muted-foreground">Opened {page}. Your application supplies routes and page content.</p>
@@ -109,7 +109,7 @@ export function LoginForm({ authenticate, onSuccess }: {
 export default function LoginRecipe() {
   const [account, setAccount] = useState<string | null>(null);
   return <ThemeProvider>
-    <main className="flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-space-lg">
+    <main className="basalt-ui flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-space-lg">
       <div data-basalt-surface-root="" className="flex w-72 max-w-full flex-col overflow-hidden rounded-basalt-lg bg-basalt-card ring-1 ring-basalt-border">
         <div className="flex items-center justify-between gap-basalt-space-lg bg-basalt-primary px-basalt-space-lg py-basalt-space-lg">
           <span className="text-basalt-base font-semibold text-basalt-primary-foreground">Atlas</span>

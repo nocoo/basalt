@@ -37,6 +37,15 @@ function classNames(code: string) {
 }
 
 describe("installed application recipes", () => {
+	it("owns native login resets and explicitly focuses the drawer opener", () => {
+		const recipes = parseApplicationRecipes(markdown);
+		expect(recipes.find(({ id }) => id === "recipe-login")?.code).toContain(
+			'<main className="basalt-ui ',
+		);
+		expect(recipes.find(({ id }) => id === "recipe-app-frame")?.code).toContain(
+			"event.currentTarget.focus(); setCollapsed(!collapsed);",
+		);
+	});
 	it("writes only exact installed-package fences with independently checked hashes", () => {
 		const root = mkdtempSync(join(tmpdir(), "basalt-recipes-"));
 		try {

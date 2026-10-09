@@ -23,10 +23,10 @@ export async function assertConsumerEmpty(page: Page) {
 	assert.equal(await standaloneEmpty.getAttribute("id"), "custom-empty-id");
 	assert.equal(await standaloneEmpty.getAttribute("aria-label"), "Empty Workspace");
 
-	const emptyTitle = standaloneEmpty.locator("p.text-sm");
+	const emptyTitle = standaloneEmpty.locator("p.text-basalt-base");
 	assert.equal(await emptyTitle.textContent(), "No documents");
 
-	const emptyDesc = standaloneEmpty.locator("p.text-xs");
+	const emptyDesc = standaloneEmpty.locator("p.text-basalt-sm");
 	assert.equal(await emptyDesc.textContent(), "There are currently zero files.");
 
 	// Numeric zero in children
@@ -60,10 +60,10 @@ export async function assertConsumerEmpty(page: Page) {
 	assert.equal(await cardEmpty.getAttribute("id"), "custom-card-empty-id");
 	assert.equal(await cardEmpty.getAttribute("aria-label"), "Empty Card Activity");
 
-	const cardTitle = cardEmpty.locator("p.text-sm");
+	const cardTitle = cardEmpty.locator("p.text-basalt-base");
 	assert.equal(await cardTitle.textContent(), "No activity recorded");
 
-	const cardDesc = cardEmpty.locator("p.text-xs");
+	const cardDesc = cardEmpty.locator("p.text-basalt-sm");
 	assert.equal(await cardDesc.textContent(), "Incoming events will be listed here.");
 
 	// Numeric zero in LayerCard.Empty children

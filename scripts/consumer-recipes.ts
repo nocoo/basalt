@@ -88,7 +88,7 @@ export async function assertConsumerRecipes(page: Page, url: string) {
 			};
 		});
 		assert.notEqual(island.padding, "0px", JSON.stringify(island));
-		assert.equal(island.overflowY, width < 768 ? "visible" : "auto", JSON.stringify(island));
+		assert.equal(island.overflowY, "auto", JSON.stringify(island));
 		assert.equal(island.tag, "DIV", JSON.stringify(island));
 		const shell = await page.evaluate(() => {
 			const node = document.querySelector("[data-basalt-shell]") as HTMLElement;
@@ -112,7 +112,12 @@ export async function assertConsumerRecipes(page: Page, url: string) {
 			footerBorder: getComputedStyle(node.lastElementChild as HTMLElement).borderTopWidth,
 			footerPadding: getComputedStyle(node.lastElementChild as HTMLElement).paddingLeft,
 			bodyPadding: getComputedStyle(node.children[1] as HTMLElement).paddingLeft,
-			rootHeight: getComputedStyle(node.closest("main") as HTMLElement).minHeight,
+			rootHeight: (node.closest("main") as HTMLElement).getBoundingClientRect().height,
+			viewportHeight: innerHeight,
+			rootSizing: getComputedStyle(node.closest("main") as HTMLElement).boxSizing,
+			titleMargin: getComputedStyle(node.querySelector("h1") as HTMLElement).marginTop,
+			footerMargin: getComputedStyle(node.lastElementChild?.querySelector("p") as HTMLElement)
+				.marginBottom,
 			role: node.getAttribute("role"),
 		}));
 		assert.equal(badge.bands, 3, `login badge bands ${JSON.stringify(badge)}`);
@@ -120,7 +125,10 @@ export async function assertConsumerRecipes(page: Page, url: string) {
 		assert.equal(badge.footerBorder, "1px", JSON.stringify(badge));
 		assert.equal(badge.footerPadding, badge.bodyPadding, JSON.stringify(badge));
 		assert.notEqual(badge.bodyPadding, "0px", JSON.stringify(badge));
-		assert.equal(badge.rootHeight, "100dvh", JSON.stringify(badge));
+		assert.ok(Math.abs(badge.rootHeight - badge.viewportHeight) <= 1, JSON.stringify(badge));
+		assert.equal(badge.rootSizing, "border-box", JSON.stringify(badge));
+		assert.equal(badge.titleMargin, "0px", JSON.stringify(badge));
+		assert.equal(badge.footerMargin, "0px", JSON.stringify(badge));
 		await page.getByRole("textbox", { name: "Email" }).fill("reader@example.com");
 		await page.getByLabel("Password", { exact: true }).fill("incorrect");
 		await page.getByRole("button", { name: "Sign in", exact: true }).click();

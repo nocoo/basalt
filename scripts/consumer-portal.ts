@@ -65,7 +65,7 @@ export async function assertConsumerPortal(page: Page) {
 							nodeTag: node?.tagName ?? null,
 							refTag: window.auditRefTag ?? null,
 							sameElement: node === target && !!node,
-							arrowCount: node?.querySelectorAll('svg[width="20"][height="10"]').length ?? 0,
+							arrowCount: node?.querySelectorAll('svg[viewBox="0 0 12 6"]').length ?? 0,
 							events: window.auditEvents ?? [],
 						};
 					});

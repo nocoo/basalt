@@ -700,7 +700,7 @@ Shape: a fixed badge width, `rounded-basalt-lg`, `bg-basalt-card` and a hairline
 ```tsx excerpt:login-badge-page
 export function LoginPage() {
   return (
-    <div className="relative flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-space-lg">
+    <div className="basalt-ui relative flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-space-lg">
       <div
         data-basalt-surface-root=""
         className="flex w-72 max-w-full flex-col overflow-hidden rounded-basalt-lg bg-basalt-card ring-1 ring-basalt-border"
@@ -1808,7 +1808,7 @@ Basalt geometry no longer depends on a host's Tailwind `--spacing`. Both CSS ent
 | Textarea minimum height | `--basalt-size-textarea-sm`, `--basalt-size-textarea`, `--basalt-size-textarea-lg` | 64 / 80 / 96px |
 | Table row / horizontal / vertical inset | `--basalt-size-table-row`, `--basalt-space-table-x`, `--basalt-space-table-y` | 36 / 8 / 6px |
 
-Defaults use rem and unitless line-height, preserving browser font-size preferences. [DESIGN.md](DESIGN.md) defines compact 2/4/6/8px control spacing, separate 12/16/24/32px card and layout spacing, and natural 22/34/38px inline/action/banner categories. The size tokens describe reference geometry, not fixed text-control heights. Use the semantic spacing role for the boundary being laid out; numbered geometry tokens are not padding alternatives. LayerCard accepts `padding="sm|md|lg|xl"` for unstructured content; Grid accepts `gap="sm|md|lg|xl"`. Both default to `md`; 32px `xl` is opt-in. ContentIsland owns a 16px mobile, 24px tablet, and 32px horizontal / 24px vertical desktop inset. Examples must use component size props rather than fixed-height overrides. Textareas, avatars and panels retain content-specific geometry.
+Defaults use rem and unitless line-height, preserving browser font-size preferences. [DESIGN.md](DESIGN.md) defines compact 2/4/6/8px control spacing, separate 12/16/24/32px card and layout spacing, and natural 22/34/46px inline/action/banner categories. The size tokens describe reference geometry, not fixed text-control heights. Use the semantic spacing role for the boundary being laid out; numbered geometry tokens are not padding alternatives. LayerCard accepts `padding="sm|md|lg|xl"` for unstructured content; Grid accepts `gap="sm|md|lg|xl"`. Both default to `md`; 32px `xl` is opt-in. ContentIsland owns a 16px mobile, 24px tablet, and 32px horizontal / 24px vertical desktop inset. Examples must use component size props rather than fixed-height overrides. Textareas, avatars and panels retain content-specific geometry.
 
 ### Compact record tables
 
