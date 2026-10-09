@@ -310,7 +310,12 @@ the compact global tiers cannot express; its CSS is exempt from those token rule
 keeps motion tokens only. Explicit
 specialist controls remain in the palette demos: color swatches and native color
 pickers display the colors being edited. Hidden file inputs and theme-preview
-radio inputs preserve native form behavior. These exceptions are not permission
+radio inputs preserve native form behavior. The catalog Login visitor badge keeps
+its accepted independent 54:86 artwork composition, bespoke spacing/type/radii,
+provider-button padding and reserved footer clearance. Do not normalize it to
+dashboard/control tiers. The exception is scoped to `src/pages/LoginPage.tsx`;
+motion, intrinsic action sizing and library-control requirements still apply.
+These exceptions are not permission
 to recreate ordinary actions, selects or inputs.
 
 ## Enforcement and acceptance

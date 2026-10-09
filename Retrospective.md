@@ -4,6 +4,18 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-10: UI regression checks confused test APIs and decorative separators
+
+- **What:** Profile layout assertions initially queried decorative Separator elements as semantic separators and passed Playwright's `exact` option to Testing Library role queries. Runtime tests caught the first mistake; the staged typecheck blocked the second. The Banner commit also caught an unsynchronized package DESIGN mirror.
+- **Why:** Similar-looking browser and unit-test helpers have different contracts. Generated package docs remain part of the source snapshot even when only design prose changes.
+- **Follow-up:** Read component defaults and test-library types, query decorative boundaries by their structural marker, and regenerate mirrored package docs before staging. Keep the snapshot hooks enabled.
+
+## 2026-10: Generic spacing normalization broke the visitor badge
+
+- **What:** The earlier catalog normalization replaced Login's 56px footer clearance with 8px, causing the fixed footer to overlap terms; it also compressed the accepted header/body spacing and altered the badge's display scale.
+- **Why:** A specialist identity composition was treated like ordinary dashboard content. Independent root ownership alone did not protect its internal geometry.
+- **Follow-up:** Restore the accepted pre-normalization layout and scope its spacing/type/radius exception to LoginPage. Test the reserved body inset and verify actual terms-to-footer clearance at mobile/desktop widths in both engines; do not exempt normal actions from intrinsic sizing or motion requirements.
+
 ## 2026-10: Focus fix omitted generated source metadata
 
 - **What:** The first R2-01 commit attempt passed focused tests but the index-snapshot hook rejected stale package source hashes. The shell wrapper also used zsh's read-only `status` variable when reporting the failure.

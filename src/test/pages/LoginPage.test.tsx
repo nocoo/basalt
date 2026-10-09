@@ -16,5 +16,12 @@ describe("LoginPage", () => {
 			"button",
 		);
 		expect(screen.getByText("basalt.")).toBeInTheDocument();
+		const button = screen.getByRole("button", { name: "Continue with Google" });
+		expect(button).toHaveClass("rounded-xl", "py-3");
+		expect(button.parentElement).toHaveClass("px-6", "pt-6", "pb-14");
+		expect(button.closest("[data-basalt-surface-root]")).toHaveClass(
+			"aspect-[54/86]",
+			"rounded-2xl",
+		);
 	});
 });

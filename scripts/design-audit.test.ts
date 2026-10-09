@@ -7,6 +7,15 @@ import {
 } from "./design-audit";
 
 describe("design audit rules (without scanning the repository)", () => {
+	it("preserves the visitor badge scale without exempting ordinary controls or motion", () => {
+		const source = '<Button className="px-6 py-3 rounded-xl text-sm h-12 duration-200" />';
+		expect(auditDesignSource("src/pages/LoginPage.tsx", source).map((issue) => issue.rule)).toEqual(
+			["motion-token", "intrinsic-action-size"],
+		);
+		expect(
+			auditDesignSource("src/pages/InteractivePage.tsx", source).map((issue) => issue.rule),
+		).toContain("control-spacing-owner");
+	});
 	it("keeps selected state separate from decorative and disabled fills", () => {
 		const issues = auditDesignSource(
 			"choice.tsx",
