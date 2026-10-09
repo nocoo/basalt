@@ -9,6 +9,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from "@nocoo/basalt/components/alert-dialog";
+import { Avatar, AvatarFallback } from "@nocoo/basalt/components/avatar";
 import { Banner } from "@nocoo/basalt/components/banner";
 import { Button } from "@nocoo/basalt/components/button";
 import {
@@ -51,10 +52,12 @@ import {
 	Check,
 	CheckCircle2,
 	Copy,
+	CreditCard,
 	Filter,
 	Inbox,
 	Info,
 	Loader2,
+	LogOut,
 	PanelBottom,
 	PanelLeft,
 	PanelRight,
@@ -117,9 +120,7 @@ function LoadingButton() {
 	};
 	return (
 		<Button onClick={handleClick} disabled={loading}>
-			{loading && (
-				<Loader2 className="mr-basalt-space-lg h-4 w-4 animate-spin motion-reduce:animate-none" />
-			)}
+			{loading && <Loader2 className="h-4 w-4 animate-spin motion-reduce:animate-none" />}
 			{loading ? t("pages.interactive.processing") : t("common.submit")}
 		</Button>
 	);
@@ -134,11 +135,7 @@ function CopyButton() {
 	};
 	return (
 		<Button variant="outline" size="sm" onClick={handleCopy}>
-			{copied ? (
-				<Check className="mr-basalt-space-lg h-3.5 w-3.5" />
-			) : (
-				<Copy className="mr-basalt-space-lg h-3.5 w-3.5" />
-			)}
+			{copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
 			{copied ? t("common.copied") : t("common.copy")}
 		</Button>
 	);
@@ -173,9 +170,8 @@ export default function InteractivePage() {
 	];
 
 	const profileMenuItems = [
-		{ label: t("pages.interactive.profileSettings"), key: "profile-settings" },
-		{ label: t("pages.interactive.billing"), key: "billing" },
-		{ label: t("common.signOut"), key: "sign-out" },
+		{ label: t("pages.interactive.profileSettings"), key: "profile-settings", icon: User },
+		{ label: t("pages.interactive.billing"), key: "billing", icon: CreditCard },
 	];
 
 	return (
@@ -218,30 +214,28 @@ export default function InteractivePage() {
 			<SectionRule title={t("pages.interactive.toastNotifications")}>
 				<div className="flex flex-wrap gap-basalt-space-lg">
 					<Button size="sm" onClick={() => toast.success(t("pages.interactive.toastSuccess"))}>
-						<CheckCircle2 className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
-						{t("pages.interactive.success")}
+						<CheckCircle2 className="h-3.5 w-3.5" /> {t("pages.interactive.success")}
 					</Button>
 					<Button
 						size="sm"
 						variant="destructive"
 						onClick={() => toast.error(t("pages.interactive.toastError"))}
 					>
-						<XCircle className="mr-basalt-space-lg h-3.5 w-3.5" /> {t("pages.interactive.error")}
+						<XCircle className="h-3.5 w-3.5" /> {t("pages.interactive.error")}
 					</Button>
 					<Button
 						size="sm"
 						variant="outline"
 						onClick={() => toast.warning(t("pages.interactive.toastWarning"))}
 					>
-						<AlertTriangle className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
-						{t("pages.interactive.warning")}
+						<AlertTriangle className="h-3.5 w-3.5" /> {t("pages.interactive.warning")}
 					</Button>
 					<Button
 						size="sm"
 						variant="secondary"
 						onClick={() => toast.info(t("pages.interactive.toastInfo"))}
 					>
-						<Info className="mr-basalt-space-lg h-3.5 w-3.5" /> {t("pages.interactive.info")}
+						<Info className="h-3.5 w-3.5" /> {t("pages.interactive.info")}
 					</Button>
 				</div>
 			</SectionRule>
@@ -332,7 +326,7 @@ export default function InteractivePage() {
 							{t("pages.interactive.pleaseTryAgain")}
 						</p>
 						<Button size="sm" variant="outline">
-							<RefreshCw className="mr-basalt-space-lg h-3.5 w-3.5" /> {t("common.retry")}
+							<RefreshCw className="h-3.5 w-3.5" /> {t("common.retry")}
 						</Button>
 					</LayerCard>
 				</div>
@@ -343,8 +337,7 @@ export default function InteractivePage() {
 					<Sheet>
 						<SheetTrigger asChild>
 							<Button variant="outline" size="sm">
-								<PanelRight className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
-								{t("pages.interactive.sheetRight")}
+								<PanelRight className="h-3.5 w-3.5" /> {t("pages.interactive.sheetRight")}
 							</Button>
 						</SheetTrigger>
 						<SheetContent side="right">
@@ -372,8 +365,7 @@ export default function InteractivePage() {
 					<Sheet>
 						<SheetTrigger asChild>
 							<Button variant="outline" size="sm">
-								<PanelLeft className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
-								{t("pages.interactive.sheetLeft")}
+								<PanelLeft className="h-3.5 w-3.5" /> {t("pages.interactive.sheetLeft")}
 							</Button>
 						</SheetTrigger>
 						<SheetContent side="left">
@@ -393,8 +385,7 @@ export default function InteractivePage() {
 					<Sheet>
 						<SheetTrigger asChild>
 							<Button variant="outline" size="sm">
-								<PanelBottom className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
-								{t("pages.interactive.sheetBottom")}
+								<PanelBottom className="h-3.5 w-3.5" /> {t("pages.interactive.sheetBottom")}
 							</Button>
 						</SheetTrigger>
 						<SheetContent side="bottom">
@@ -468,7 +459,7 @@ export default function InteractivePage() {
 					<Popover>
 						<PopoverTrigger asChild>
 							<Button variant="outline" size="sm">
-								<Filter className="mr-basalt-space-lg h-3.5 w-3.5" /> {t("common.filter")}
+								<Filter className="h-3.5 w-3.5" /> {t("common.filter")}
 							</Button>
 						</PopoverTrigger>
 						<PopoverContent className="w-64">
@@ -491,37 +482,51 @@ export default function InteractivePage() {
 					<Popover>
 						<PopoverTrigger asChild>
 							<Button variant="outline" size="sm">
-								<User className="mr-basalt-space-lg h-3.5 w-3.5" />{" "}
-								{t("pages.interactive.profileLabel")}
+								<User className="h-3.5 w-3.5" /> {t("pages.interactive.profileLabel")}
 							</Button>
 						</PopoverTrigger>
-						<PopoverContent className="w-72">
-							<div className="flex items-center gap-basalt-space-lg">
-								<div className="h-10 w-10 rounded-basalt-full bg-muted flex items-center justify-center text-basalt-sm font-medium">
-									{t("pages.interactive.profileInitials")}
-								</div>
-								<div>
+						<PopoverContent
+							align="start"
+							className="w-basalt-72"
+							aria-label={t("pages.interactive.profileLabel")}
+						>
+							<div className="flex items-center gap-basalt-layout-sm">
+								<Avatar className="shrink-0">
+									<AvatarFallback>{t("pages.interactive.profileInitials")}</AvatarFallback>
+								</Avatar>
+								<div className="min-w-0">
 									<p className="text-basalt-base font-medium">
 										{t("pages.interactive.profileName")}
 									</p>
-									<p className="text-basalt-sm text-muted-foreground">
+									<p className="break-words text-basalt-sm text-basalt-muted-foreground">
 										{t("pages.interactive.profileEmail")}
 									</p>
 								</div>
 							</div>
-							<Separator className="my-basalt-space-lg" />
+							<Separator className="my-basalt-layout-sm" />
 							<div className="space-y-basalt-space-sm">
 								{profileMenuItems.map((item) => (
 									<Button
 										variant="ghost"
+										size="sm"
+										icon={<item.icon aria-hidden="true" />}
 										type="button"
 										key={item.key}
-										className="flex w-full items-center text-muted-foreground"
+										className="min-h-basalt-menu-row w-full justify-start text-left"
 									>
 										{item.label}
 									</Button>
 								))}
 							</div>
+							<Separator className="my-basalt-space-lg" />
+							<Button
+								variant="ghost"
+								size="sm"
+								icon={<LogOut aria-hidden="true" />}
+								className="min-h-basalt-menu-row w-full justify-start text-left text-basalt-muted-foreground"
+							>
+								{t("common.signOut")}
+							</Button>
 						</PopoverContent>
 					</Popover>
 				</div>
