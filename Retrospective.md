@@ -467,3 +467,7 @@ Removing the landing version badge looked trivial, so the first commit used
 smaller than the gate. The gate was then re-run on the real staged index and
 passed. Stage an atomic hunk set (partial `git update-index` when unrelated
 working-tree edits exist) and let pre-commit run, however long it takes.
+
+## 2026-10-04: Fixture declarations are independent dependency targets
+
+The dependency-duty draft initially compared issues #517–#519 with the root Bun lock. Independent review identified that their current bodies explicitly target uninstalled consumer fixtures. Reading those manifests confirmed stale Node types, Lucide and Vite declarations; the root lock did not describe those installations. The draft was corrected before any disposition comment or PR was published. Future triage must resolve every issue workspace and declared-only occurrence before assigning already-satisfied. Verify the copied external consumers with their own package manager, typecheck, build and dependency scan, while retaining all normal CI consumer gates.
