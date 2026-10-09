@@ -471,3 +471,7 @@ working-tree edits exist) and let pre-commit run, however long it takes.
 ## 2026-10-04: Fixture declarations are independent dependency targets
 
 The dependency-duty draft initially compared issues #517–#519 with the root Bun lock. Independent review identified that their current bodies explicitly target uninstalled consumer fixtures. Reading those manifests confirmed stale Node types, Lucide and Vite declarations; the root lock did not describe those installations. The draft was corrected before any disposition comment or PR was published. Future triage must resolve every issue workspace and declared-only occurrence before assigning already-satisfied. Verify the copied external consumers with their own package manager, typecheck, build and dependency scan, while retaining all normal CI consumer gates.
+
+## 2026-10-09: Keep release probes outside gate source trees
+
+The focused WebKit recipe probe was created inside an owned release snapshot. Its temporary node_modules link polluted the fixture source scan, and the probe itself entered the repository-wide lint scan. Both checks correctly rejected this contamination; neither was weakened. Restore the owned fixture from the tracked revision and keep ad-hoc probe files outside the source tree before running publication gates. Browser assertions should compare rendered viewport geometry, not browser-dependent computed serialization of dynamic viewport units.

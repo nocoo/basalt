@@ -2,6 +2,25 @@
 
 ## [Unreleased]
 
+### Breaking Changes
+- Replace Loader's SVG root with a span-based eight-cell grid. Migrate SVG-only props and refs; use `showLabel={false} showElapsed={false}` for icon-only slots.
+- Standardize intrinsic component geometry, typography and container ownership. Controls retain compact spacing; cards and layouts use 12/16/24/32px role-based tokens. Update custom DOM selectors and visual snapshots, including 34px action rows and 46px banners.
+- IconPicker's accessible name now includes its selected value. Update exact-name queries and keep Field validation and descriptions on the trigger.
+
+### Changed
+- Unify catalog page composition, card headers, navigation hierarchy and selected surfaces while preserving the visitor-badge login layout as a deliberate exception.
+- Refine banner insets, profile actions and compound button spacing; give the central sign-in provider action an outline.
+- Refresh catalog, package and external-consumer dependencies with synchronized lockfile metadata.
+
+### Fixed
+- Keep keyboard focus through approval questions, custom answers, mobile detail navigation and WebKit drawer dismissal.
+- Wrap long recommendation actions at enlarged text sizes and show contrasting focus rings on selected pickers.
+- Pair solid badge colors with readable theme-specific foregrounds.
+- Scope standalone login recipe resets, verify rendered viewport geometry across browsers, and align external consumer assertions with current component contracts.
+
+### Added
+- Expand agent and healthcare showcase compositions, responsive application recipes, and installed-package browser acceptance coverage.
+
 ## [2.2.0] - 2026-10-02
 
 ### Added

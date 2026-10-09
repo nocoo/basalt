@@ -1,8 +1,14 @@
 # Basalt Public API and Compatibility Policy
 
-## Local 2.2 development: Loader
+## 3.0 migration
 
-Loader now renders an inline span with a eight-cell perimeter grid, an optional shimmering label, and an elapsed timer shown after 5000ms. Use `showLabel={false} showElapsed={false}` for icon-only slots. `size` controls grid dimensions, not the entire row. SVG-specific attributes no longer apply; span attributes do. `animate`, `shimmer`, `showElapsed`, and `elapsedDelayMs` control presentation. Reduced motion stops both animations. The timer measures real elapsed time from mount, including time before it becomes visible, and is hidden from live announcements.
+Loader now renders an inline span with an eight-cell perimeter grid, an optional shimmering label, and an elapsed timer shown after 5000ms. Use `showLabel={false} showElapsed={false}` for icon-only slots. `size` controls grid dimensions, not the entire row. SVG-specific attributes no longer apply; span attributes do. `animate`, `shimmer`, `showElapsed`, and `elapsedDelayMs` control presentation. Reduced motion stops both animations. The timer measures real elapsed time from mount, including time before it becomes visible, and is hidden from live announcements.
+
+Component geometry and DOM styling are intentional major-version changes. Recheck custom selectors and visual snapshots against the current components rather than relying on former utility classes. Action rows are 34px; banners are 46px with 12px vertical and 16px horizontal insets. Compact control spacing remains separate from the 12/16/24/32px card and layout scale. ContentIsland owns page insets and card slots own card padding; remove duplicated wrapper padding rather than overriding shared control tokens.
+
+IconPicker trigger names include the current value (`Folder icon: Folder`, then `Folder icon: Book`). Exact-name automation must follow that value; Field labels, validation and descriptions remain attached to the trigger. Standalone application recipes scope native-element resets with `basalt-ui` and explicitly focus mobile drawer openers before opening them. The catalog's visitor-badge login is an intentional layout exception, not a general application-shell template.
+
+The historical export baseline below stays frozen. This major release documents actual DOM, geometry and presentation changes; it does not imply removal of those entrypoints or require a React major upgrade.
 
 This document defines the stability contracts, export architecture, and semantic versioning guarantees for `@nocoo/basalt`.
 
@@ -148,7 +154,7 @@ These notes cover the components, documentation, examples and palette changes in
 
 Chart gray retains its prior light/dark values. Marks use solid candy colors without contrasting outlines or shadows; their fills are not darkened. Raw candy fills can fall below 3:1 on light surfaces; use descriptive labels and `summary` / `dataAlternative` alongside them. Custom control palettes remain independent.
 
-Named Teal and Purple `Badge` variants use the Bondi and Grape control swatches. Solid color badges (`success`, `red`, `orange`, `teal`, `blue`, `purple`) keep white label text in both themes. Their backgrounds use `--basalt-badge-teal` and `--basalt-badge-purple`, keeping named badge hues independent of the numbered chart aliases.
+Named Teal and Purple `Badge` variants retain the Bondi and Grape identities with dedicated light/dark background tokens. Solid color badges (`success`, `red`, `orange`, `teal`, `blue`, `purple`) now use paired semantic foreground tokens, including dark text on brighter dark-theme fills. Do not force white text or substitute raw chart colors for those background/foreground pairs.
 
 v2.1.0 includes the palette count and value changes above as an explicit exception to the usual minor-release compatibility policy. Consumers that index colors or persist palette choices must follow these migration notes. The unchanged export baseline alone does not prove runtime-value compatibility.
 
