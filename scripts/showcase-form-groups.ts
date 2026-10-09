@@ -28,22 +28,22 @@ export async function assertFormGroupSpacing(page: Page, baseUrl: string) {
 	const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
 	for (const width of [390, 1280]) {
 		await page.setViewportSize({ width, height: 1000 });
-		for (const [route, scenario, title, gap] of [
-			["loader", "[data-hero-scenario]", "Display options", 6],
-			["switch", '[data-scenario="switch-group-and-legend"]', "Alerts", 6],
-			["checkbox", '[data-scenario="checkbox-group-and-legend"]', "Topics", 6],
-			["radio", '[data-scenario="radio-group-and-legend"]', "Plan", 8],
+		for (const [route, scenario, title] of [
+			["loader", "[data-hero-scenario]", "Display options"],
+			["switch", '[data-scenario="switch-group-and-legend"]', "Alerts"],
+			["checkbox", '[data-scenario="checkbox-group-and-legend"]', "Topics"],
+			["radio", '[data-scenario="radio-group-and-legend"]', "Plan"],
 		] as const) {
 			await page.goto(`${baseUrl}/ui/${route}`);
 			const group = page.locator(scenario).getByRole("group", { name: title, exact: true });
 			await group.waitFor();
-			await assertGroupSpacing(group, gap);
+			await assertGroupSpacing(group, 8);
 			const markup = await group.evaluate((node) => node.outerHTML);
 			await group.evaluate((node) => (node as HTMLElement).style.setProperty("--spacing", "9px"));
-			await assertGroupSpacing(group, gap);
+			await assertGroupSpacing(group, 8);
 			await page.setContent(`<style>${css}</style>${markup}`);
 			const standalone = page.getByRole("group", { name: title, exact: true });
-			await assertGroupSpacing(standalone, gap);
+			await assertGroupSpacing(standalone, 8);
 			await standalone.evaluate((node) =>
 				(node as HTMLElement).style.setProperty("--basalt-space-field-gap", "4px"),
 			);

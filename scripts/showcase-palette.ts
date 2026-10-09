@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import type { Page } from "playwright";
+import type { Locator, Page } from "playwright";
 import { CATALOG } from "../src/pages/ui/catalog";
 import { CATALOG_PAGE_STATUS } from "../src/pages/ui/generated/catalog-page-status";
 import { assertGaugeAppearance, measureChartContrast } from "./chart-appearance";
@@ -110,6 +110,20 @@ async function editPalette(page: Page) {
 	if ((await summary.getAttribute("aria-expanded")) !== "true") await summary.click();
 }
 
+/**
+ * The prerendered markup is replaced by the client render, so an edit made in the
+ * first moment after load can be discarded. Retry until the controlled field keeps it.
+ */
+async function fillColor(input: Locator, value: string) {
+	for (let attempt = 0; attempt < 10; attempt += 1) {
+		await input.fill(value);
+		if ((await input.inputValue()) === value) return;
+		await input.page().waitForTimeout(100);
+	}
+	const label = await input.getAttribute("aria-label");
+	assert.fail(`${label} did not keep ${value}`);
+}
+
 async function assertPageWidth(page: Page, label: string) {
 	assert.equal(
 		await page.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -212,7 +226,7 @@ export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 			await editPalette(page);
 			const lightInput = page.getByRole("textbox", { name: "Blue · Light", exact: true });
 			const darkInput = page.getByRole("textbox", { name: "Blue · Dark", exact: true });
-			await lightInput.fill("#bad");
+			await fillColor(lightInput, "#bad");
 			assert.equal(await lightInput.getAttribute("aria-invalid"), "true");
 			assert.equal(
 				await page.getByRole("button", { name: "Save custom palette" }).isDisabled(),
@@ -224,8 +238,8 @@ export async function assertPaletteShowcases(page: Page, baseUrl: string) {
 				classic,
 				"Invalid draft must not change the active palette",
 			);
-			await lightInput.fill("#f37ea8");
-			await darkInput.fill("#b799e8");
+			await fillColor(lightInput, "#f37ea8");
+			await fillColor(darkInput, "#b799e8");
 			await page.getByRole("button", { name: "Save custom palette" }).click();
 			await page
 				.getByRole("status")
@@ -455,7 +469,7 @@ async function assertPaletteStorage(page: Page, baseUrl: string) {
 		await peer.goto(`${baseUrl}/palette`);
 		await peer.locator("[data-accent-choice]").first().waitFor();
 		await editPalette(page);
-		await page.getByRole("textbox", { name: "Blue · Light", exact: true }).fill("#55bb99");
+		await fillColor(page.getByRole("textbox", { name: "Blue · Light", exact: true }), "#55bb99");
 		await page.getByRole("button", { name: "Save custom palette" }).click();
 		await peer.waitForFunction(
 			() =>
@@ -513,8 +527,11 @@ async function assertPaletteStorage(page: Page, baseUrl: string) {
 			await denied.goto(`${baseUrl}/palette`);
 			await denied.locator("[data-accent-choice]").first().waitFor();
 			await editPalette(denied);
-			await denied.getByRole("textbox", { name: "Blue · Light", exact: true }).fill("#cc88ee");
-			await denied.getByRole("textbox", { name: "Blue · Dark", exact: true }).fill("#cc88ee");
+			await fillColor(
+				denied.getByRole("textbox", { name: "Blue · Light", exact: true }),
+				"#cc88ee",
+			);
+			await fillColor(denied.getByRole("textbox", { name: "Blue · Dark", exact: true }), "#cc88ee");
 			await denied.getByRole("button", { name: "Save custom palette" }).click();
 			await denied
 				.getByRole("status")

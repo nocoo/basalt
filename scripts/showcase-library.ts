@@ -276,7 +276,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 				assert.equal(await table.locator("tbody tr").count(), 4);
 				await assertPlots(demo);
 				const header = demo.getByRole("button", {
-					name: devices ? "Requests / hour" : "Monthly cost",
+					name: devices ? "Activity / hour" : "Monthly cost",
 					exact: true,
 				});
 				await header.focus();
@@ -292,7 +292,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 					),
 				);
 				const query = demo.getByRole("textbox", {
-					name: devices ? "Search devices" : "Search subscriptions",
+					name: devices ? "Search devices" : "Search care plans",
 				});
 				await query.fill("no-such-resource");
 				await demo.getByRole("button", { name: "Reset filters" }).waitFor();
@@ -325,7 +325,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 					})
 					.click();
 				await demo
-					.getByText(devices ? "1 devices resumed" : "Review prepared for 1 subscriptions", {
+					.getByText(devices ? "1 devices resumed" : "Review prepared for 1 folders", {
 						exact: true,
 					})
 					.waitFor();

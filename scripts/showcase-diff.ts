@@ -15,7 +15,7 @@ export async function assertDiffReview(page: Page, baseUrl: string) {
 					.evaluate((node) => node.scrollWidth <= node.clientWidth + 1),
 				"Hidden column labels must stay inside the table scroll boundary",
 			);
-			const change = demo.getByRole("checkbox", { name: "Include removal Rocky Road" });
+			const change = demo.getByRole("checkbox", { name: "Include removal Blood pressure" });
 			await change.focus();
 			await page.keyboard.press("Space");
 			assert.equal(await change.isChecked(), false);

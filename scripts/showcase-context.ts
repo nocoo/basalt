@@ -9,15 +9,15 @@ export async function assertContextCards(page: Page, baseUrl: string) {
 			await page.locator('[data-status="ready"]').waitFor();
 			await setShowcaseTheme(page, dark);
 			const demo = page.locator("[data-hero-scenario]");
-			assert.equal(await demo.getByRole("link", { name: /Dairy Onboarding SOP/ }).count(), 1);
-			assert.equal(await demo.getByRole("link", { name: /Sales Velocity/ }).count(), 0);
+			assert.equal(await demo.getByRole("link", { name: /Patient Intake Guide/ }).count(), 1);
+			assert.equal(await demo.getByRole("link", { name: /Care Progress Export/ }).count(), 0);
 			await demo.getByRole("radio", { name: "loading", exact: true }).click();
 			await demo.getByRole("status", { name: "Loading context" }).waitFor();
 			await demo.getByRole("radio", { name: "empty", exact: true }).click();
 			await demo.getByText("No context retrieved", { exact: true }).waitFor();
 			await demo.getByRole("radio", { name: "error", exact: true }).click();
 			await demo.getByRole("button", { name: "Try again" }).click();
-			await demo.getByText("Vendor onboarding rule", { exact: true }).waitFor();
+			await demo.getByText("Patient intake rule", { exact: true }).waitFor();
 			await page.emulateMedia({ reducedMotion: "reduce" });
 			const animations = await demo
 				.locator(".basalt-agent-reveal")

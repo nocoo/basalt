@@ -66,7 +66,12 @@ export async function assertHoverAndDensity(page: Page, baseUrl: string) {
 						slug === "select" ? demo.getByRole("combobox") : demo.getByRole("button").first();
 					assert.equal(Math.round((await trigger.boundingBox())?.height ?? 0), 34);
 					await trigger.click();
-					group = page.locator(".basalt-hover-list");
+					// The open overlay owns the highlight layer itself (dropdown-menu) or holds it (select viewport).
+					group = page
+						.locator(
+							'.basalt-floating[data-state="open"].basalt-hover-list, .basalt-floating[data-state="open"] .basalt-hover-list',
+						)
+						.first();
 				} else group = demo.locator(".basalt-hover-list").first();
 				try {
 					await assertMovingHighlight(group);

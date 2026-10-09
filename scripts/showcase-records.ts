@@ -21,11 +21,11 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 				"6",
 			]);
 			assert.equal(
-				await demo.getByRole("img", { name: "Alpine Churn — Zurich" }).innerText(),
+				await demo.getByRole("img", { name: "Alpine Clinic — Zurich" }).innerText(),
 				"AC",
 			);
 
-			const region = demo.getByRole("region", { name: "Supplier records scroll area" });
+			const region = demo.getByRole("region", { name: "Medical provider records scroll area" });
 			const geometry = await table.evaluate((node) => ({
 				rows: Array.from(node.querySelectorAll("tbody tr")).map(
 					(row) => row.getBoundingClientRect().height,
@@ -70,7 +70,7 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 			});
 			await table.getByRole("checkbox").first().check();
 			assert.equal(await table.locator('tbody tr[aria-selected="true"]').count(), 1);
-			const heading = table.getByRole("button", { name: "Company", exact: true });
+			const heading = table.getByRole("button", { name: "Care provider", exact: true });
 			await heading.click();
 			assert.equal(
 				await heading.locator("xpath=ancestor::th").getAttribute("aria-sort"),

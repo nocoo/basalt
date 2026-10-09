@@ -747,9 +747,11 @@
 			var(--basalt-motion-ease-enter);
 	}
 
+	/* A closing backdrop must never swallow clicks for the content already revealed. */
 	.basalt-sheet-overlay[data-state="closed"] {
 		animation: basalt-sheet-backdrop-out var(--basalt-sheet-duration-exit)
 			var(--basalt-motion-ease-exit) forwards;
+		pointer-events: none;
 	}
 
 	@media (prefers-reduced-motion: reduce) {

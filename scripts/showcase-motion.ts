@@ -70,14 +70,20 @@ export async function assertOverlayMotion(page: Page, baseUrl: string) {
 				await page.goto(`${baseUrl}/ui/${slug}`);
 				await page.locator('[data-status="ready"]').waitFor();
 				const demo = page.locator("[data-hero-scenario]");
-				const trigger = ["select", "combobox", "autocomplete"].includes(slug)
-					? demo.getByRole("combobox").first()
-					: demo.getByRole("button").first();
+				// Resolve the trigger while the page is reachable: an open modal overlay marks the
+				// rest of the document aria-hidden, which hides it from role queries.
+				const trigger = await (["select", "combobox", "autocomplete"].includes(slug)
+					? demo.getByRole("combobox")
+					: demo.getByRole("button")
+				)
+					.first()
+					.elementHandle();
+				assert.ok(trigger, `${slug}: trigger`);
 				const panel = page.locator('.basalt-floating[data-state="open"]');
 				for (const reduce of [false, true]) {
 					await page.emulateMedia({ reducedMotion: reduce ? "reduce" : "no-preference" });
 					await trigger.click();
-					if (slug === "autocomplete") await trigger.fill("ap");
+					if (slug === "autocomplete") await trigger.fill("ca");
 					if (reduce) {
 						assert.equal(
 							await panel.evaluate((node) => getComputedStyle(node).animationName),
@@ -92,10 +98,7 @@ export async function assertOverlayMotion(page: Page, baseUrl: string) {
 					const closing = page.locator('.basalt-floating[data-state="closed"]');
 					if (!reduce) await sampleAnimation(closing, "basalt-floating-out");
 					await closing.waitFor({ state: "detached" });
-					await page.waitForFunction(
-						(node) => node === document.activeElement,
-						await trigger.elementHandle(),
-					);
+					await page.waitForFunction((node) => node === document.activeElement, trigger);
 				}
 			}
 			cases.push(`${width}/${dark ? "dark" : "light"}`);

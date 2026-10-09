@@ -47,9 +47,9 @@ export async function assertEditingShowcases(page: Page, baseUrl: string) {
 
 			await visit("editable-nav-item");
 			const folders = page.locator('[data-scenario="editable-nav-item-folders"]');
-			await folders.getByRole("button", { name: "Reading list", exact: true }).click();
-			await folders.getByRole("button", { name: "Pin Reading list" }).click();
-			await folders.getByRole("button", { name: "Rename Reading list" }).click();
+			await folders.getByRole("button", { name: "Resources list", exact: true }).click();
+			await folders.getByRole("button", { name: "Pin Resources list" }).click();
+			await folders.getByRole("button", { name: "Rename Resources list" }).click();
 			await folders.getByRole("textbox").fill("Reading room");
 			await page.keyboard.press("Enter");
 			await folders
@@ -58,7 +58,7 @@ export async function assertEditingShowcases(page: Page, baseUrl: string) {
 				.waitFor();
 			const views = page.locator('[data-scenario="editable-nav-item-saved-views"]');
 			assert.equal(
-				await views.getByRole("button", { name: "Restricted workspace" }).isDisabled(),
+				await views.getByRole("button", { name: "Restricted care team" }).isDisabled(),
 				true,
 			);
 			await views.getByRole("button", { name: "Rename High usage devices" }).click();
@@ -70,9 +70,9 @@ export async function assertEditingShowcases(page: Page, baseUrl: string) {
 			await visit("icon-picker");
 			await page
 				.locator('[data-scenario="icon-picker-folder-icon"]')
-				.getByRole("button", { name: "Folder icon", exact: true })
+				.getByRole("button", { name: "Care plan icon", exact: true })
 				.click();
-			await page.getByRole("textbox", { name: "Folder icon: search" }).fill("code");
+			await page.getByRole("textbox", { name: "Care plan icon: search" }).fill("code");
 			await page.getByRole("radio", { name: "Code", exact: true }).click();
 			await page.getByRole("status").filter({ hasText: "Selected icon: code" }).waitFor();
 			await page
@@ -91,7 +91,7 @@ export async function assertEditingShowcases(page: Page, baseUrl: string) {
 					.first()
 					.getAttribute("data-tag-color"),
 				await deterministic
-					.getByText("Research & reading", { exact: true })
+					.getByText("Research & wellness", { exact: true })
 					.getAttribute("data-tag-color"),
 			);
 			await measureTagPalette(
@@ -108,8 +108,8 @@ export async function assertEditingShowcases(page: Page, baseUrl: string) {
 				"teal",
 			);
 			const status = page.locator('[data-scenario="tag-color-picker-status-colors"]');
-			await status.getByRole("radio", { name: "Incident", exact: true }).click();
-			assert.equal(await status.locator('[data-tag-color="danger"]').innerText(), "Incident");
+			await status.getByRole("radio", { name: "Urgent", exact: true }).click();
+			assert.equal(await status.locator('[data-tag-color="danger"]').innerText(), "Urgent");
 
 			await visit("responsive-master-detail");
 			const resources = page.locator('[data-scenario="responsive-master-detail-resources"]');

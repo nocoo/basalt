@@ -25,17 +25,17 @@ export async function assertReusableShowcases(page: Page, baseUrl: string) {
 				await folders.getByRole("button", { name: "Remove Team archive" }).isDisabled(),
 				true,
 			);
-			await folders.getByRole("button", { name: "Folders", exact: true }).click();
-			await page.getByRole("combobox", { name: "Folders: search" }).fill("design");
+			await folders.getByRole("button", { name: "Care plans", exact: true }).click();
+			await page.getByRole("combobox", { name: "Care plans: search" }).fill("wellness");
 			await page.keyboard.press("Enter");
 			await page.keyboard.press("Escape");
 			assert.match(await folders.getByRole("status").innerText(), /3 folders/);
-			await folders.getByRole("button", { name: "Remove Design" }).click();
+			await folders.getByRole("button", { name: "Remove Wellness" }).click();
 			const remote = page.locator('[data-scenario="multi-select-remote-search"]');
-			await remote.getByRole("button", { name: "Models", exact: true }).click();
-			await page.getByRole("combobox", { name: "Models: search" }).fill("ember");
+			await remote.getByRole("button", { name: "Care providers", exact: true }).click();
+			await page.getByRole("combobox", { name: "Care providers: search" }).fill("ember");
 			await page.waitForFunction(() => {
-				const list = document.querySelector('[role="listbox"][aria-label="Models"]');
+				const list = document.querySelector('[role="listbox"][aria-label="Care providers"]');
 				return (
 					list?.getAttribute("aria-busy") === "false" &&
 					list.querySelectorAll('[role="option"]').length === 1
@@ -44,7 +44,7 @@ export async function assertReusableShowcases(page: Page, baseUrl: string) {
 			await page.getByRole("option", { name: /Ember/ }).waitFor();
 			await page.keyboard.press("Enter");
 			await page.keyboard.press("Escape");
-			assert.match(await remote.getByRole("status").innerText(), /Comparing ember/);
+			assert.match(await remote.getByRole("status").innerText(), /Comparing care providers ember/);
 			await visit("filter-bar");
 			const resources = page.locator('[data-scenario="filter-bar-resources"]');
 			assert.equal(await resources.getByRole("status").innerText(), "2 resources");
@@ -104,12 +104,12 @@ export async function assertReusableShowcases(page: Page, baseUrl: string) {
 			await queue.getByRole("button", { name: "Start uploads" }).click();
 			await queue.getByRole("alert").waitFor();
 			await queue.getByRole("checkbox", { name: "Simulate failure" }).uncheck();
-			await queue.getByRole("button", { name: "Retry Project-notes-1.pdf" }).click();
-			await queue.getByRole("button", { name: "Cancel Project-notes-1.pdf" }).click();
-			await queue.getByRole("button", { name: "Retry Project-notes-1.pdf" }).click();
+			await queue.getByRole("button", { name: "Retry Care-plan-notes-1.pdf" }).click();
+			await queue.getByRole("button", { name: "Cancel Care-plan-notes-1.pdf" }).click();
+			await queue.getByRole("button", { name: "Retry Care-plan-notes-1.pdf" }).click();
 			await queue.getByRole("status").filter({ hasText: "1 completed · 1 total" }).waitFor();
 			assert.equal(await queue.getByRole("status").innerText(), "1 completed · 1 total");
-			await queue.getByRole("button", { name: "Remove Project-notes-1.pdf" }).click();
+			await queue.getByRole("button", { name: "Remove Care-plan-notes-1.pdf" }).click();
 			await queue.getByRole("button", { name: "Add sample file" }).click();
 			await queue.getByRole("button", { name: "Start uploads" }).click();
 			// Unmount while a transport timer is pending; fault collection stays attached.

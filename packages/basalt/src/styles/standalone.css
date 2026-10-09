@@ -724,6 +724,7 @@
   }
   .basalt-sheet-overlay[data-state="closed"] {
     animation: basalt-sheet-backdrop-out var(--basalt-sheet-duration-exit)	var(--basalt-motion-ease-exit) forwards;
+    pointer-events: none;
   }
   @media (prefers-reduced-motion: reduce) {
     :is(.basalt-floating, [data-basalt-sheet], .basalt-sheet-overlay)[data-state] {
@@ -2601,9 +2602,6 @@
   }
   .px-basalt-table-x {
     padding-inline: var(--basalt-space-table-x);
-  }
-  .py-0 {
-    padding-block: 0px;
   }
   .py-basalt-card {
     padding-block: var(--basalt-space-card);

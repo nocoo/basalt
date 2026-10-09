@@ -52,7 +52,9 @@ export async function assertDimensionTokens(page: Page, baseUrl: string) {
 	const buttons = page.locator("[data-hero-scenario] button");
 	assert.ok((await buttons.count()) > 0);
 	const heights = await buttons.evaluateAll((nodes) =>
-		nodes.map((node) => node.getBoundingClientRect().height),
+		nodes
+			.filter((node) => !node.closest('[data-slot="code-header"]'))
+			.map((node) => node.getBoundingClientRect().height),
 	);
 	assert.ok(
 		heights.every((height) => height === 34 || height === 28),

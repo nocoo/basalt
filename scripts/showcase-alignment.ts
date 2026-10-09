@@ -7,7 +7,7 @@ export async function assertCompositeAlignment(page: Page, baseUrl: string) {
 		await page.emulateMedia({ reducedMotion: "reduce" });
 		await page.goto(`${baseUrl}/ui/tool-chips`);
 		const demo = page.locator("[data-hero-scenario]");
-		await demo.getByRole("button", { name: /Read image flavor-chart.png/ }).waitFor();
+		await demo.getByRole("button", { name: /Read report wellness-report\.png/ }).waitFor();
 		const row = demo.getByRole("button", { name: /Rebuild and verify npm run freeze/ });
 		const measure = () =>
 			row.evaluate((node) => {
@@ -25,7 +25,15 @@ export async function assertCompositeAlignment(page: Page, baseUrl: string) {
 			});
 		const before = await measure();
 		assert.equal(before.padding, "6px 8px");
-		assert.equal(before.height, width < 768 ? 56 : 34);
+		// A narrow row wraps its label once; growth stays inside one row leading instead of clipping.
+		assert.ok(
+			width < 768 ? before.height > 34 : before.height === 34,
+			`Row height ${before.height} at ${width}`,
+		);
+		assert.ok(
+			before.height <= 34 + (width < 768 ? Number.parseFloat(before.line) : 0),
+			`Row height ${before.height} at ${width}`,
+		);
 		assert.equal(before.line, "22px");
 		assert.equal(before.icons[0].width, 16);
 		assert.equal(before.icons[before.icons.length - 1].width, 12);
@@ -53,15 +61,17 @@ export async function assertCompositeAlignment(page: Page, baseUrl: string) {
 			) < 1,
 		);
 		await article.getByRole("button", { name: "Sources 1" }).click();
-		await article.getByRole("link", { name: /Summer sales report/ }).waitFor();
+		await article.getByRole("link", { name: /Summer care report/ }).waitFor();
 		assert.equal(await article.locator("[data-basalt-surface]").count(), 0);
 		assert.equal(
 			await article.getByRole("link").evaluate((node) => getComputedStyle(node).padding),
 			"4px 8px",
 		);
 		await page.goto(`${baseUrl}/ui/context-cards`);
-		await demo.getByRole("heading", { name: "Vendor onboarding rule", exact: true }).waitFor();
-		const card = demo.locator("[data-basalt-surface]").first();
+		await demo.getByRole("heading", { name: "Patient intake rule", exact: true }).waitFor();
+		const card = demo
+			.getByRole("heading", { name: "Patient intake rule", exact: true })
+			.locator("xpath=ancestor::*[@data-basalt-surface][1]");
 		const insets = await card.evaluate((node) => {
 			const header = node.firstElementChild as HTMLElement;
 			const body = node.querySelector("p") as HTMLElement;

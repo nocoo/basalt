@@ -20,8 +20,10 @@ async function assertCodeScrollChaining(page: Page, panel: Locator) {
 	const host = page.locator("[data-code-scroll-test]");
 	const pre = host.locator("pre");
 	const wheel = async (x: number, y: number) => {
-		await page.mouse.move(0, 0);
-		await pre.hover();
+		// Aim the wheel at the code surface directly: hover auto-scroll would move the host first.
+		const box = await pre.boundingBox();
+		assert.ok(box, "the code surface must be visible");
+		await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
 		await page.mouse.wheel(x, y);
 	};
 	try {
@@ -113,14 +115,21 @@ async function assertCodePanel(page: Page, panel: Locator) {
 			line: getComputedStyle(code).lineHeight,
 			scroll: pre.scrollWidth,
 			width: pre.clientWidth,
-			panelWidth: node.getBoundingClientRect().width,
 		};
 	});
 	assert.equal(geometry.header, 57);
 	assert.equal(geometry.inset, "12px 16px");
 	assert.equal(geometry.font, "12px");
 	assert.equal(geometry.line, "20px");
-	assert.ok(geometry.scroll > geometry.width, JSON.stringify(geometry));
+	// A narrow panel must contain its code instead of stretching the page.
+	await panel.evaluate((node) => {
+		(node as HTMLElement).style.width = "260px";
+	});
+	const overflow = await panel.evaluate((node) => {
+		const pre = node.querySelector("pre") as HTMLElement;
+		return { scroll: pre.scrollWidth, width: pre.clientWidth };
+	});
+	assert.ok(overflow.scroll > overflow.width, JSON.stringify(overflow));
 	await pre.focus();
 	await pre.press("ArrowRight");
 	await page.waitForFunction(() => (document.activeElement as HTMLElement)?.scrollLeft > 0);
@@ -176,11 +185,8 @@ export async function assertCodePanels(page: Page, baseUrl: string) {
 	for (const width of [390, 1280]) {
 		await page.setViewportSize({ width, height: 1000 });
 		await page.goto(`${baseUrl}/ui/code`);
-		const panel = page.locator("[data-hero-scenario] [data-basalt-code]");
+		const panel = page.locator("[data-hero-scenario] [data-basalt-code]:not([data-code-attached])");
 		await panel.waitFor();
-		await panel.evaluate((node) => {
-			(node as HTMLElement).style.width = "260px";
-		});
 		await assertCodePanel(page, panel);
 		await assertCodeScrollChaining(page, panel);
 		await page.goto(`${baseUrl}/ui/code`);

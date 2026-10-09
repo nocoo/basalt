@@ -70,7 +70,7 @@ export async function assertNavigationLists(page: Page, baseUrl: string) {
 			await sidebar.evaluate((node) =>
 				(node as HTMLElement).style.removeProperty("--basalt-space-nav-inset"),
 			);
-			const last = nav.getByRole("button", { name: "Subway surfing" });
+			const last = nav.getByRole("button", { name: "Daily activity notes" });
 			await last.focus();
 			await last.press("Enter");
 			assert.equal(await last.getAttribute("aria-current"), "page");

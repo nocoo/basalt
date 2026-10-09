@@ -65,11 +65,12 @@ describe("Code", () => {
 			);
 			expect(screen.getByText("example.ts")).toHaveClass("text-basalt-code");
 			expect(screen.getByText("example.ts").closest('[data-slot="code-header"]')).toHaveClass(
-				"basalt-banner",
+				"px-basalt-panel-x",
+				"py-basalt-panel-y",
 			);
 			expect(screen.getByText("example.ts")).not.toHaveClass("truncate");
 			expect(screen.getByRole("button", { name: "Copy code" })).toHaveClass("basalt-action");
-			expect(screen.getByRole("button", { name: "Copy code" })).toHaveClass("py-0", "border-0");
+			expect(screen.getByRole("button", { name: "Copy code" })).toHaveClass("border-0");
 		},
 	);
 	it("renders a titled panel with custom icon and safe, numbered code", () => {

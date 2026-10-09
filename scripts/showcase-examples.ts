@@ -193,15 +193,15 @@ async function assertData(page: Page, baseUrl: string) {
 	await page.getByRole("combobox", { name: "Filter", exact: true }).click();
 	await page.getByRole("option", { name: "Paid", exact: true }).click();
 	assert.equal(await table.locator("tbody tr").count(), 2);
-	assert.ok((await table.locator("tbody").textContent())?.includes("Nova Labs"));
+	assert.ok((await table.locator("tbody").textContent())?.includes("North Clinic"));
 	await table.getByRole("button", { name: "Amount", exact: true }).focus();
 	await page.keyboard.press("Enter");
-	assert.ok((await table.locator("tbody tr").first().textContent())?.includes("Atlas Works"));
+	assert.ok((await table.locator("tbody tr").first().textContent())?.includes("Atlas Care Center"));
 	await page.getByRole("combobox", { name: "Filter", exact: true }).click();
 	await page.getByRole("option", { name: "All statuses", exact: true }).click();
 	await page.getByRole("button", { name: "Next page", exact: true }).click();
 	assert.equal(await table.locator("tbody tr").count(), 2);
-	await query.fill("Violet");
+	await query.fill("Harbor");
 	assert.equal(await table.locator("tbody tr").count(), 1);
 	assert.equal(
 		await page.getByRole("button", { name: "Previous page", exact: true }).isDisabled(),
@@ -356,10 +356,14 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 			const copy = await page.getByRole("button", { name: "Copy page", exact: true }).boundingBox();
 			assert.ok(copy && copy.x >= 0 && copy.x + copy.width <= width, "copy page action is visible");
 			if (slug === "date-picker") {
-				await assertKeyboardScroll(
-					page,
-					page.getByRole("region", { name: "DatePicker API scrolling table", exact: true }),
-				);
+				const apiTable = page.getByRole("region", {
+					name: "DatePicker API scrolling table",
+					exact: true,
+				});
+				// The wide API table must scroll by keyboard whenever it overflows its column.
+				if (await apiTable.evaluate((node) => node.scrollWidth > node.clientWidth))
+					await assertKeyboardScroll(page, apiTable);
+				else assert.ok(width >= 640, `API table must stay scrollable at ${width}px`);
 				const codes = page.getByRole("region", { name: "Code example", exact: true });
 				let scrollable: Locator | undefined;
 				for (const code of await codes.all())

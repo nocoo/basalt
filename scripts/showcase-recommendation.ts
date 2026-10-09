@@ -45,15 +45,20 @@ export async function assertRecommendation(page: Page, baseUrl: string) {
 					const card = node.closest(".overflow-hidden") as HTMLElement;
 					const box = node.getBoundingClientRect();
 					const bounds = card.getBoundingClientRect();
+					const range = document.createRange();
+					range.selectNodeContents(node);
+					const text = range.getBoundingClientRect();
+					const style = getComputedStyle(node);
 					return {
 						cardOverflow: card.scrollWidth - card.clientWidth,
 						actionOverflow: node.scrollWidth - node.clientWidth,
+						textOverhang: text.right - (box.right - Number.parseFloat(style.paddingRight)),
 						actionRight: Math.round(box.right - bounds.right),
-						actionLines: box.height / Number.parseFloat(getComputedStyle(node).lineHeight),
+						actionLines: box.height / Number.parseFloat(style.lineHeight),
 					};
 				});
 				assert.ok(zoom.cardOverflow <= 1, `clipped at 200% text: ${JSON.stringify(zoom)}`);
-				assert.ok(zoom.actionOverflow <= 1, `action label clipped: ${JSON.stringify(zoom)}`);
+				assert.ok(zoom.textOverhang <= 1, `action label clipped: ${JSON.stringify(zoom)}`);
 				assert.ok(zoom.actionRight <= 1, `action escaped the card: ${JSON.stringify(zoom)}`);
 				assert.ok(zoom.actionLines >= 1, `action height collapsed: ${JSON.stringify(zoom)}`);
 				await page.evaluate(() => {
