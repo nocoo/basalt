@@ -373,8 +373,9 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			assert.equal(isJan1Active, true, "Active element after Tab must be the Jan 1 cell button");
 
 			// Initial Tab should open and keep visible the Jan 1 tooltip even if scroll occurs
-			await page.waitForSelector('[role="tooltip"]', { state: "visible" });
-			const jan1TooltipText = (await page.locator('[role="tooltip"]').textContent()) ?? "";
+			const jan1Tooltip = page.getByRole("tooltip").filter({ hasText: "2026-01-01" });
+			await jan1Tooltip.waitFor({ state: "visible" });
+			const jan1TooltipText = (await jan1Tooltip.textContent()) ?? "";
 			assert.ok(
 				jan1TooltipText.includes("2026-01-01") && jan1TooltipText.includes("5 commits"),
 				`Tooltip on initial Tab must display Jan 1 data (received: "${jan1TooltipText}")`,
@@ -410,8 +411,9 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			);
 
 			// Tooltip should be visible for Jan 2
-			await page.waitForSelector('[role="tooltip"]', { state: "visible" });
-			const tooltipText = (await page.locator('[role="tooltip"]').textContent()) ?? "";
+			const jan2Tooltip = page.getByRole("tooltip").filter({ hasText: "2026-01-02" });
+			await jan2Tooltip.waitFor({ state: "visible" });
+			const tooltipText = (await jan2Tooltip.textContent()) ?? "";
 			assert.ok(
 				tooltipText.includes("2026-01-02") && tooltipText.includes("12 commits"),
 				`Tooltip must display Jan 2 data (received: "${tooltipText}")`,
@@ -419,7 +421,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 
 			// Escape closes tooltip while maintaining active focus on the exact same cell
 			await page.keyboard.press("Escape");
-			await page.waitForSelector('[role="tooltip"]', { state: "hidden" });
+			await jan2Tooltip.waitFor({ state: "hidden" });
 			const activeAfterEscape = await page.evaluate(
 				() => document.activeElement?.getAttribute("aria-label") ?? "",
 			);
