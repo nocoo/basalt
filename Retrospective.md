@@ -475,3 +475,7 @@ The dependency-duty draft initially compared issues #517–#519 with the root Bu
 ## 2026-10-09: Keep release probes outside gate source trees
 
 The focused WebKit recipe probe was created inside an owned release snapshot. Its temporary node_modules link polluted the fixture source scan, and the probe itself entered the repository-wide lint scan. Both checks correctly rejected this contamination; neither was weakened. Restore the owned fixture from the tracked revision and keep ad-hoc probe files outside the source tree before running publication gates. Browser assertions should compare rendered viewport geometry, not browser-dependent computed serialization of dynamic viewport units.
+
+## 2026-10-09: Inspect lockfile registry changes before release push
+
+The release automation inherited the permitted local registry override and Bun rewrote tarball URLs into the lockfile. The change was discovered after the main push, before tagging or npm publication. Normalize only the temporary mirror URL fields back to Bun's registry-relative empty values, preserve versions and integrity hashes, and validate frozen installation. Release review must inspect lockfile changes before pushing, not assume lockfile-only synchronization changes workspace metadata alone. An isolated release checkout also needs its package built before the pre-push dist-guard tests; pre-commit's staged snapshot build does not build that checkout.
