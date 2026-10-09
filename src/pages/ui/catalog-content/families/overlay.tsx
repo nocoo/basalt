@@ -655,6 +655,7 @@ export default function Example() {
 </Dialog>`,
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
+						'import { LayerCard } from "@nocoo/basalt/components/layer-card";',
 						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 						'import { X } from "lucide-react";',
 					],
