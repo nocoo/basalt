@@ -3462,6 +3462,9 @@
   .data-\[state\=checked\]\:text-basalt-primary-foreground[data-state="checked"] {
     color: hsl(var(--basalt-primary-foreground));
   }
+  .data-\[state\=checked\]\:focus-visible\:ring-basalt-primary-foreground[data-state="checked"]:focus-visible {
+    --tw-ring-color: hsl(var(--basalt-primary-foreground));
+  }
   .data-\[state\=closed\]\:animate-basalt-collapsible-up[data-state="closed"] {
     animation: basalt-collapsible-up var(--basalt-motion-fast)
 		var(--basalt-motion-ease);
@@ -3485,6 +3488,9 @@
   }
   .data-\[state\=on\]\:text-basalt-primary-foreground[data-state="on"] {
     color: hsl(var(--basalt-primary-foreground));
+  }
+  .data-\[state\=on\]\:focus-visible\:ring-basalt-primary-foreground[data-state="on"]:focus-visible {
+    --tw-ring-color: hsl(var(--basalt-primary-foreground));
   }
   .data-\[state\=open\]\:animate-basalt-collapsible-down[data-state="open"] {
     animation: basalt-collapsible-down var(--basalt-motion-normal)

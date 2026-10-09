@@ -138,6 +138,7 @@ export function IconPicker({
 								// contrast-corrected foreground, never a control fill plus a frame.
 								"group relative flex min-w-0 flex-col items-center justify-center gap-basalt-space-lg rounded-basalt-md p-basalt-layout-sm text-basalt-foreground data-[state=on]:bg-basalt-primary data-[state=on]:text-basalt-primary-foreground disabled:cursor-not-allowed disabled:opacity-40",
 								FOCUS_INSET,
+								"data-[state=on]:focus-visible:ring-basalt-primary-foreground",
 							)}
 						>
 							<span

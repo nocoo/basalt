@@ -12,6 +12,18 @@ async function assertSelectedChoice(selected: Locator, unselected: Locator, labe
 			if (node.getAnimations().every((animation) => animation.playState === "finished")) return;
 		}
 	});
+	await selected.focus();
+	await selected.evaluate((node) => {
+		const start = document.createElement("button");
+		start.dataset.focusProbe = "";
+		node.before(start);
+		start.focus();
+	});
+	const restShadow = await selected.evaluate((node) => getComputedStyle(node).boxShadow);
+	await selected.page().keyboard.press("Tab");
+	await selected.evaluate((node) =>
+		node.parentElement?.querySelector("[data-focus-probe]")?.remove(),
+	);
 	const sample = await selected.evaluate(
 		(node, other) => {
 			const canvas = document.createElement("canvas");
@@ -38,11 +50,15 @@ async function assertSelectedChoice(selected: Locator, unselected: Locator, labe
 			const rest = rgba(getComputedStyle(other as Element).backgroundColor);
 			const a = luminance(foreground);
 			const b = luminance(background);
+			const ring = luminance(rgba(style.getPropertyValue("--tw-ring-color")));
 			return {
 				ratio: (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05),
 				opaque: foreground[3] === 255 && background[3] === 255,
 				differs: background.slice(0, 3).some((channel, index) => channel !== rest[index]),
 				fill: style.backgroundColor,
+				focusVisible: node === document.activeElement && node.matches(":focus-visible"),
+				focusShadow: style.boxShadow,
+				focusRatio: (Math.max(ring, b) + 0.05) / (Math.min(ring, b) + 0.05),
 			};
 		},
 		await unselected.elementHandle(),
@@ -50,6 +66,9 @@ async function assertSelectedChoice(selected: Locator, unselected: Locator, labe
 	assert.ok(sample.opaque, `${label}: selection must paint an opaque fill (${sample.fill})`);
 	assert.ok(sample.differs, `${label}: selection must not reuse the unselected fill`);
 	assert.ok(sample.ratio >= 4.5, `${label}: selection text contrast ${sample.ratio}`);
+	assert.ok(sample.focusVisible, `${label}: keyboard focus must return to the selected tile`);
+	assert.notEqual(sample.focusShadow, restShadow, `${label}: focus must change the tile's paint`);
+	assert.ok(sample.focusRatio >= 3, `${label}: focus indicator contrast ${sample.focusRatio}`);
 }
 
 export async function assertEditingShowcases(page: Page, baseUrl: string) {

@@ -10,6 +10,12 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 - **Why:** A private focus change still changes the source integrity contract; unchanged public types do not mean generated metadata stays current.
 - **Follow-up:** Run `bun run catalog-api:generate` after component edits, stage the matching generated hashes, and use a non-reserved shell variable for exit codes. Keep the hook enabled so incomplete source snapshots cannot commit.
 
+## 2026-10: Picker probe crossed an unsettled portal lifecycle
+
+- **What:** The first focused-selected browser probe reported a missing icon and a transient low-contrast ring, despite the settled component using the correct foreground pair.
+- **Why:** Focusing an outside control dismissed the non-modal popover; later measurements raced portal focus restoration and theme color transitions.
+- **Follow-up:** Keep the unfocused icon baseline inside its popover, wait for settled theme paint, and await portal detachment before testing a separate picker. Use a real Tab entry for cross-engine `:focus-visible` checks; programmatic focus after Shift alone does not establish keyboard focus in WebKit. Distinguish harness races from product defects instead of weakening contrast assertions.
+
 ## 2026-09: Type-equivalence fixture compiled unrelated ambient types
 
 - **What:** The first full coverage run after the 2026-09-23 dependency repairs timed out one `scripts/catalog-type-printer.test.ts` test (default 5s) under suite load; no assertion failed.

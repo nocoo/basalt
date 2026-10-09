@@ -53,6 +53,7 @@ describe("IconPicker", () => {
 		expect(folder).toHaveClass(
 			"data-[state=on]:bg-basalt-primary",
 			"data-[state=on]:text-basalt-primary-foreground",
+			"data-[state=on]:focus-visible:ring-basalt-primary-foreground",
 		);
 		expect(folder.className).not.toMatch(/border-basalt-primary\/40|border-transparent/);
 		expect(folder).toHaveAttribute("data-state", "on");

@@ -24,6 +24,7 @@ describe("TagColorPicker", () => {
 		expect(slate).toHaveClass(
 			"data-[state=checked]:bg-basalt-primary",
 			"data-[state=checked]:text-basalt-primary-foreground",
+			"data-[state=checked]:focus-visible:ring-basalt-primary-foreground",
 		);
 		expect(slate.className).not.toMatch(/border-basalt-primary\/40|border-transparent/);
 		expect(slate).not.toHaveClass("bg-basalt-control");

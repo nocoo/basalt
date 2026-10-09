@@ -488,7 +488,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"icon-picker": {
 		"file": "packages/basalt/src/components/icon-picker.tsx",
-		"hash": "a9dc1b6689acfc6d",
+		"hash": "640e8b2008dc773b",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/icon-picker.js.map (sourcesContent[0])"
 	},
@@ -500,7 +500,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"tag-color-picker": {
 		"file": "packages/basalt/src/components/tag-color-picker.tsx",
-		"hash": "355223fe23186510",
+		"hash": "6d4dc2589183616d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tag-color-picker.js.map (sourcesContent[0])"
 	},

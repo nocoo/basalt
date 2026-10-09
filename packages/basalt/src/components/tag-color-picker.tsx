@@ -75,6 +75,7 @@ export function TagColorPicker({
 						// contrast-corrected foreground, not a control fill inside a frame.
 						"group flex min-w-0 items-center gap-basalt-space-lg rounded-basalt-md p-basalt-space-lg text-left text-basalt-foreground transition-colors hover:bg-basalt-hover data-[state=checked]:bg-basalt-primary data-[state=checked]:text-basalt-primary-foreground disabled:cursor-not-allowed disabled:opacity-50",
 						FOCUS_INSET,
+						"data-[state=checked]:focus-visible:ring-basalt-primary-foreground",
 					)}
 				>
 					<span
