@@ -5,6 +5,15 @@ import { APP_VERSION } from "../src/lib/version";
 
 const origin = `https://${APEX_HOST}`;
 
+export function assertHomepageFooterVersion(html: string, version: string): void {
+	const footer = html.match(/<footer\b[^>]*>[\s\S]*?<\/footer>/i)?.[0] ?? "";
+	const header = html.match(/<header\b[^>]*>[\s\S]*?<\/header>/i)?.[0] ?? "";
+	const label = `v${version}`;
+	const versionEl = footer.match(/id="landing-version"[^>]*>([^<]*)/i)?.[1]?.trim() ?? "";
+	assert.equal(versionEl, label, `Homepage footer must show ${label}`);
+	assert(!header.includes(label), "Homepage header must not show the version");
+}
+
 async function get(url: string): Promise<Response> {
 	return fetch(url, {
 		redirect: "manual",
@@ -43,7 +52,7 @@ async function checkHomepage(): Promise<void> {
 		"Production must be indexable",
 	);
 	const html = await response.text();
-	assert(html.includes(`v${APP_VERSION}`), `Prerendered HTML must report v${APP_VERSION}`);
+	assertHomepageFooterVersion(html, APP_VERSION);
 	assert(html.includes(`rel="canonical" href="${origin}/"`), "The canonical URL must use the apex");
 }
 

@@ -18,6 +18,7 @@ import {
 	LANDING_TEMPLATES,
 } from "@/lib/landing";
 import { SITE } from "@/lib/site";
+import { APP_VERSION } from "@/lib/version";
 import { HeaderTooltip, HexlyLink } from "../header-links";
 
 interface LandingContentProps {
@@ -515,7 +516,7 @@ export function LandingContent({
 							<a href={SITE.portfolio} target="_blank" rel="noopener noreferrer">
 								hexly.ai
 							</a>
-							. Released under the MIT license.
+							. Released under the MIT license. <span id="landing-version">v{APP_VERSION}</span>
 						</p>
 						<div className="landing-footer-actions">
 							<span className="landing-footer-signature">

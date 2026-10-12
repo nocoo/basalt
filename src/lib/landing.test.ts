@@ -25,6 +25,7 @@ import {
 	requiredLandingSnippets,
 } from "./landing-document";
 import { SITE } from "./site";
+import { APP_VERSION } from "./version";
 
 function parse(html: string) {
 	return new DOMParser().parseFromString(html, "text/html");
@@ -74,6 +75,8 @@ describe("landing document", () => {
 		]) {
 			expect(body).toContain(url);
 		}
+		expect(document.querySelector("footer #landing-version")?.textContent).toBe(`v${APP_VERSION}`);
+		expect(document.querySelector("header")?.textContent).not.toContain(`v${APP_VERSION}`);
 	});
 
 	it("keeps every header navigation link visible on small screens", () => {
@@ -88,6 +91,10 @@ describe("landing document", () => {
 		for (const snippet of requiredLandingSnippets()) expect(html).toContain(snippet);
 		expect(html).toContain(renderLandingBody());
 		expect(applyLandingToIndexHtml(html)).toBe(html);
+		const document = parse(html);
+		expect(document.querySelector("footer #landing-version")?.textContent).toBe(`v${APP_VERSION}`);
+		expect(document.querySelector("header")?.textContent).not.toContain(`v${APP_VERSION}`);
+		expect(document.querySelector('meta[name="basalt-version"]')).toBeNull();
 	});
 
 	it("removes the old global width styles on regeneration and loads CSS without JavaScript", () => {

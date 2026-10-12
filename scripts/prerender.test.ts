@@ -4,6 +4,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { LANDING_HEADING } from "../src/lib/landing";
 import { SHOWCASE_PATHS } from "../src/lib/site";
+import { APP_VERSION } from "../src/lib/version";
 import { CATALOG, CATALOG_CATEGORIES } from "../src/pages/ui/catalog";
 import { catalogCategoryPath } from "../src/pages/ui/catalog-categories";
 import { fileForPath, prerenderHtml } from "./prerender";
@@ -26,6 +27,15 @@ describe("prerender", () => {
 		for (const route of paths) {
 			const html = readFileSync(fileForPath(dist, route), "utf8");
 			const document = new DOMParser().parseFromString(html, "text/html");
+			expect(document.querySelector('meta[name="basalt-version"]')).toBeNull();
+			if (route === "/") {
+				expect(document.querySelector("footer #landing-version")?.textContent).toBe(
+					`v${APP_VERSION}`,
+				);
+				expect(document.querySelector("header")?.textContent).not.toContain(`v${APP_VERSION}`);
+			} else {
+				expect(document.querySelector("#landing-version")).toBeNull();
+			}
 			expect(document.querySelectorAll("h1")).toHaveLength(1);
 			expect(document.querySelector('link[rel="canonical"]')?.getAttribute("href")).toBe(
 				`https://basaltui.com${route}`,

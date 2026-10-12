@@ -35,6 +35,7 @@ export function applyLandingToIndexHtml(html: string): string {
 export function requiredLandingSnippets(): string[] {
 	return [
 		'id="landing-title"',
+		'id="landing-version"',
 		'id="main-content"',
 		'id="templates"',
 		'id="get-started"',

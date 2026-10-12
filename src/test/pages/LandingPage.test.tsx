@@ -4,6 +4,7 @@ import { MemoryRouter } from "react-router";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { LANDING_HEADING, LANDING_INSTALL } from "@/lib/landing";
 import { SITE } from "@/lib/site";
+import { APP_VERSION } from "@/lib/version";
 import LandingPage from "@/pages/LandingPage";
 
 function renderLanding(defaultTheme: BasaltTheme = "light", persist = false) {
@@ -39,6 +40,8 @@ describe("LandingPage", () => {
 		);
 		expect(screen.getByRole("link", { name: "Portfolio" })).toHaveAttribute("href", SITE.portfolio);
 		expect(document.title).toBe(SITE.homeTitle);
+		expect(document.querySelector("footer #landing-version")).toHaveTextContent(`v${APP_VERSION}`);
+		expect(document.querySelector("header")).not.toHaveTextContent(`v${APP_VERSION}`);
 	});
 
 	it("copies the install command and announces success", async () => {

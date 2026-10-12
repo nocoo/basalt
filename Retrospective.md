@@ -479,3 +479,9 @@ The focused WebKit recipe probe was created inside an owned release snapshot. It
 ## 2026-10-09: Inspect lockfile registry changes before release push
 
 The release automation inherited the permitted local registry override and Bun rewrote tarball URLs into the lockfile. The change was discovered after the main push, before tagging or npm publication. Normalize only the temporary mirror URL fields back to Bun's registry-relative empty values, preserve versions and integrity hashes, and validate frozen installation. Release review must inspect lockfile changes before pushing, not assume lockfile-only synchronization changes workspace metadata alone. An isolated release checkout also needs its package built before the pre-push dist-guard tests; pre-commit's staged snapshot build does not build that checkout.
+
+## 2026-10-13: Keep deployment probes aligned with visible version placement
+
+Removing the landing header version left the deployment probe searching the entire homepage for the old label. Worker deployment succeeded, but verification repeatedly failed. Keep the version in the footer, verify that location explicitly, and reject header-only or metadata-only matches. Regenerate the shared landing HTML and cover the rendered footer before pushing. CI reruns retain their source run ID, so wait for each dependent Release to finish before starting the next attempt; never move an existing release tag to test a new commit.
+
+The repair handoff also used an outdated reviewer model alias and submitted a task-file path before creating the file. Correct the model from the runtime's supported IDs, create and verify handoff files before dispatch, and confirm that an agent actually enters its working state rather than treating prompt submission as execution.
