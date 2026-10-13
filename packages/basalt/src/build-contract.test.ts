@@ -238,7 +238,7 @@ describe("package build contract", () => {
 			devDependencies: Record<string, string>;
 		};
 		expect(root.private).toBe(true);
-		expect(root.devDependencies.publint).toBe("0.3.24");
+		expect(root.devDependencies.publint).toBe("0.3.25");
 		expect(root.devDependencies.publint).not.toMatch(/[\^~]|latest/);
 		for (const manifest of fixtureManifests) {
 			const fixture = JSON.parse(readFileSync(manifest, "utf8")) as { private?: boolean };

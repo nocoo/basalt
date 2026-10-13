@@ -144,8 +144,8 @@ import "@nocoo/basalt/styles/tailwind";`),
 		assertTemplateManifest(manifest);
 		expect(manifest).toContain('"react": "19.3.0"');
 		expect(manifest).toContain('"react-dom": "19.3.0"');
-		expect(manifest).toContain('"lucide-react": "1.49.0"');
-		expect(manifest).toContain('"vite": "8.3.1"');
+		expect(manifest).toContain('"lucide-react": "1.55.0"');
+		expect(manifest).toContain('"vite": "8.3.4"');
 		assertRootConsumerSource(readFileSync("fixtures/vite-standalone/src/main.tsx", "utf8"));
 		assertStandaloneTypecheckGate(
 			readFileSync("fixtures/vite-standalone/tsconfig.json", "utf8"),
@@ -428,7 +428,7 @@ describe("next consumer gate helpers", () => {
 		expect(app.lastIndexOf("<Toast")).toBeGreaterThan(app.indexOf("data-basalt-toast-host"));
 		expect(manifest).not.toContain("playwright");
 		const rootManifest = readFileSync("package.json", "utf8");
-		expect(rootManifest).toContain('"playwright": "1.63.0"');
+		expect(rootManifest).toContain('"playwright": "1.64.0"');
 		expect(rootManifest).toContain("playwright:install");
 		const rootScripts = (JSON.parse(rootManifest) as { scripts: Record<string, string> }).scripts;
 		for (const scriptName of ["test", "test:coverage", "test:watch"] as const) {
@@ -691,7 +691,7 @@ export const n = <><DonutChart /><DatePicker /><DataTable /></>;
 		const pkg = JSON.parse(readFileSync("package.json", "utf8")) as {
 			devDependencies?: Record<string, string>;
 		};
-		expect(pkg.devDependencies?.["@swc/core"]).toBe("1.16.13");
+		expect(pkg.devDependencies?.["@swc/core"]).toBe("1.16.18");
 		const gate = readFileSync("scripts/consumer-gate.ts", "utf8");
 		expect(gate).toContain('from "@swc/core"');
 		expect(gate).not.toContain("@vitejs/plugin-react-swc");
