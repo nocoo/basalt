@@ -26,7 +26,7 @@ jobs:
       node-version: "24.20.0"
       install-policy: "trusted"
       browser: "chromium"
-      timeout-minutes: 15
+      timeout-minutes: 20
       pre-command: "bun run --cwd packages/basalt build"
       command: |
         bun run --cwd packages/basalt types:check
