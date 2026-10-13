@@ -428,7 +428,7 @@ describe("next consumer gate helpers", () => {
 		expect(app.lastIndexOf("<Toast")).toBeGreaterThan(app.indexOf("data-basalt-toast-host"));
 		expect(manifest).not.toContain("playwright");
 		const rootManifest = readFileSync("package.json", "utf8");
-		expect(rootManifest).toContain('"playwright": "1.63.0"');
+		expect(rootManifest).toContain('"playwright": "1.64.0"');
 		expect(rootManifest).toContain("playwright:install");
 		const rootScripts = (JSON.parse(rootManifest) as { scripts: Record<string, string> }).scripts;
 		for (const scriptName of ["test", "test:coverage", "test:watch"] as const) {
