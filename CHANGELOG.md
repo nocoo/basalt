@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [3.0.1] - 2026-10-13
+
+### Changed
+- Refresh catalog, Radix primitives, and publishable package dependencies with synchronized lockfile metadata.
+
 ## [3.0.0] - 2026-10-09
 
 ### Breaking Changes
