@@ -81,7 +81,7 @@
 		"clsx": "^2.1.1",
 		"cmdk": "^1.1.1",
 		"entities": "8.1.0",
-		"marked": "18.0.14",
+		"marked": "18.1.1",
 		"sonner": "2.0.8",
 		"tailwind-merge": "3.7.0"
 	},
