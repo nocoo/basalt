@@ -41,6 +41,11 @@ describe("AlertDialog", () => {
 		);
 		fireEvent.click(screen.getByText("Delete"));
 		expect(screen.getByRole("alertdialog", { name: "Delete Account?" })).toBeInTheDocument();
+		expect(screen.getByRole("heading", { name: "Delete Account?" })).toHaveClass(
+			"min-w-0",
+			"wrap-anywhere",
+			"text-basalt-3xl",
+		);
 		expect(screen.getByText("This cannot be undone.")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Cancel" }).className).toContain(
 			"border-basalt-border",

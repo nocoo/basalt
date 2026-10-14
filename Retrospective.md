@@ -567,3 +567,15 @@ implicit task controls, just as pane controls require verified explicit IDs.
 A worker's browser-install wrapper also used zsh's read-only `status` variable
 and lost the command's exit receipt. Use `exit_code` or an explicit bash wrapper;
 inspect the existing process and output before repeating an idempotent command.
+
+## 2026-10-14: Test enlarged titles at the shared overlay boundary
+
+Release CI rejected the contribution dialog with 25px of horizontal overflow at
+a 390px viewport and 200% root text size. The earlier ConfirmDialog heading fix
+did not cover the plain DialogTitle primitive. On macOS, the panel stayed within
+its bounds while the heading itself overflowed by 2px, so panel-only measurements
+were insufficient across font metrics. Let both shared dialog title primitives
+shrink and wrap long words, without shrinking typography, padding or close targets.
+Assert the title's own boundary as well as panel/page overflow and preserve focus
+trapping and restoration checks. A failed release artifact remains ineligible;
+rebuild and verify the repaired revision before publication.

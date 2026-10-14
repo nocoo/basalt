@@ -64,7 +64,8 @@ async function assertFormDialogSpacing(
 	await contribution.waitFor();
 	await settleOverlay(contribution);
 	const dialogGaps = await contribution.evaluate((node) => {
-		const heading = node.querySelector("h2")?.parentElement as HTMLElement;
+		const title = node.querySelector("h2") as HTMLElement;
+		const heading = title.parentElement as HTMLElement;
 		const fields = node.querySelector("[data-dialog-fields]") as HTMLElement;
 		const fieldNodes = Array.from(fields.children) as HTMLElement[];
 		const footer = fields.nextElementSibling as HTMLElement;
@@ -80,6 +81,7 @@ async function assertFormDialogSpacing(
 			),
 			fieldPad: getComputedStyle(fieldNodes[0]).rowGap,
 			overflow: node.scrollWidth - node.clientWidth,
+			titleOverflow: title.scrollWidth - title.clientWidth,
 			pageOverflow: document.documentElement.scrollWidth - innerWidth,
 		};
 	});
@@ -89,6 +91,7 @@ async function assertFormDialogSpacing(
 	assert.equal(dialogGaps.fieldPad, `${compact}px`);
 	if (options.trap) {
 		assert.ok(dialogGaps.overflow <= 1, JSON.stringify(dialogGaps));
+		assert.ok(dialogGaps.titleOverflow <= 1, JSON.stringify(dialogGaps));
 		assert.ok(dialogGaps.pageOverflow <= 1, JSON.stringify(dialogGaps));
 		assert.equal(
 			await contribution.evaluate((node) => node.contains(document.activeElement)),

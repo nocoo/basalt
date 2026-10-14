@@ -168,7 +168,7 @@ export const AlertDialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<AlertDialogPrimitive.Title
 		ref={ref}
-		className={cn("text-basalt-3xl font-semibold tracking-tight", className)}
+		className={cn("min-w-0 text-basalt-3xl font-semibold tracking-tight wrap-anywhere", className)}
 		{...props}
 	/>
 ));

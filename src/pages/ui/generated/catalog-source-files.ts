@@ -254,13 +254,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"dialog": {
 		"file": "packages/basalt/src/components/dialog.tsx",
-		"hash": "3374c01162ceb969",
+		"hash": "1190ff90dc8df750",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dialog.js.map (sourcesContent[0])"
 	},
 	"alert-dialog": {
 		"file": "packages/basalt/src/components/alert-dialog.tsx",
-		"hash": "e76f7c3db3df6047",
+		"hash": "6893fc30686191ed",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/alert-dialog.js.map (sourcesContent[0])"
 	},
