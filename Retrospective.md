@@ -557,3 +557,13 @@ too, while leaving tables inside padded bodies and unframed tables unchanged.
 Send review snippets as literal task-file contents, not double-quoted shell
 arguments: backticks in a review message can otherwise run command substitution
 instead of reaching the worker.
+
+## 2026-10-14: Resolve release orchestration targets explicitly
+
+A task-title update used inherited Codex context belonging to a sibling project,
+despite the shell working in Basalt. The title was restored immediately; no
+source or publication state changed. Resolve the intended thread before using
+implicit task controls, just as pane controls require verified explicit IDs.
+A worker's browser-install wrapper also used zsh's read-only `status` variable
+and lost the command's exit receipt. Use `exit_code` or an explicit bash wrapper;
+inspect the existing process and output before repeating an idempotent command.

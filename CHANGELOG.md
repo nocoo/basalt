@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+## [3.1.0] - 2026-10-14
+
+### Added
+- Add logical table text alignment, a shared sortable header, and an explicit attached-edge mode for DataTable.
+
+### Changed
+- Standardize semantic spacing across page sections, cards, forms, sidebars, and overlay footers without enlarging compact controls.
+- Align table headers, cells, actions, and framed-table edges through shared spacing tokens in both Tailwind and standalone CSS.
+- Incorporate the dependency refresh and shared CI upgrade, retaining the full consumer verification budget.
+
+### Fixed
+- Keep sidebar hover entry and exit at the pointer target instead of animating from the active page or stale focus.
+- Restore table caption insets and preserve logical edge ownership in RTL, nested tables, and row-span layouts.
+- Let enlarged dialog titles wrap without pushing the close action outside the panel.
+- Verify the visible homepage footer version after deployment.
+
 ## [3.0.1] - 2026-10-13
 
 ### Changed
