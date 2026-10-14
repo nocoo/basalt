@@ -42,20 +42,6 @@ export const DOCUMENTED_NATIVE_ONLY_SURFACES: Record<string, NativeOnlySurfaceDo
 		forwardsRef: false,
 		forwardsRestProps: true,
 	},
-	TableHead: {
-		justification:
-			"Semantic header cell wrapper with consistent alignment tokens; inherits HTMLTableCellElement attributes.",
-		inheritedElement: "HTMLTableCellElement",
-		forwardsRef: false,
-		forwardsRestProps: true,
-	},
-	TableCell: {
-		justification:
-			"Semantic body data cell wrapper with layout tokens; inherits HTMLTableCellElement attributes.",
-		inheritedElement: "HTMLTableCellElement",
-		forwardsRef: false,
-		forwardsRestProps: true,
-	},
 	"LayerCard.Secondary": {
 		justification:
 			"Semantic subheader section for card containers; inherits HTMLDivElement attributes without component-specific props.",

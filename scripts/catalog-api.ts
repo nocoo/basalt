@@ -891,6 +891,12 @@ export const CATALOG_API_TARGETS: CatalogApiTarget[] = [
 		surface: "TableCell",
 	},
 	{
+		slug: "table",
+		sourceFile: "packages/basalt/src/components/table.tsx",
+		propsType: "TableSortableHeaderProps",
+		surface: "TableSortableHeader",
+	},
+	{
 		slug: "data-table",
 		sourceFile: "packages/basalt/src/components/data-table.tsx",
 		propsType: "DataTableProps",

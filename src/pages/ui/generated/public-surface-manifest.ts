@@ -3,9 +3,9 @@
 export const PUBLIC_SURFACE_MANIFEST = {
 	"packageVersion": "3.0.0",
 	"totalModules": 131,
-	"totalSymbols": 776,
-	"totalValues": 405,
-	"totalTypes": 371,
+	"totalSymbols": 781,
+	"totalValues": 406,
+	"totalTypes": 375,
 	"totalCssExports": 3,
 	"modules": [
 		{
@@ -3639,6 +3639,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/data-table"
 				},
 				{
+					"name": "DataTableEdge",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/data-table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/data-table"
+				},
+				{
 					"name": "DataTableColumn",
 					"isValue": false,
 					"isType": true,
@@ -6447,6 +6455,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/table"
 				},
 				{
+					"name": "TableTextAlign",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
+					"name": "TableSortDirection",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
 					"name": "TableProps",
 					"isValue": false,
 					"isType": true,
@@ -6570,6 +6594,22 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"name": "TableCaptionProps",
 					"isValue": false,
 					"isType": true,
+					"ownerDoc": "src/pages/ui/table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
+					"name": "TableSortableHeaderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/table",
+					"ownerKind": "catalog-component",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
+					"name": "TableSortableHeader",
+					"isValue": true,
+					"isType": false,
 					"ownerDoc": "src/pages/ui/table",
 					"ownerKind": "catalog-component",
 					"originModule": "@nocoo/basalt/components/table"

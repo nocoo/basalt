@@ -383,6 +383,9 @@ export function Sidebar({
 	);
 }
 
+const SIDEBAR_ROW_CLASS =
+	"min-h-[calc(var(--basalt-line-row)+2*var(--basalt-space-lg))] py-basalt-space-lg";
+
 export interface SidebarHeaderProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function SidebarHeader({ className, ...props }: SidebarHeaderProps) {
@@ -421,6 +424,7 @@ export function SidebarSearch({
 			className={cn(
 				BASALT_UI_CLASS,
 				NAV_ROW_CLASS,
+				SIDEBAR_ROW_CLASS,
 				"w-full cursor-pointer bg-basalt-secondary transition-colors basalt-motion hover:bg-basalt-hover",
 				className,
 			)}
@@ -484,8 +488,9 @@ export function SidebarItem({ active = false, className, ...props }: SidebarItem
 			type="button"
 			aria-current={active ? "page" : undefined}
 			data-basalt-hover-item=""
+			data-sidebar-row=""
 			data-hover-selected={active}
-			className={cn(NAV_ITEM_CLASS, "w-full", className)}
+			className={cn(NAV_ITEM_CLASS, SIDEBAR_ROW_CLASS, "w-full", className)}
 			{...props}
 		/>
 	);
@@ -508,10 +513,12 @@ export function SidebarIconItem({ active = false, className, ...props }: Sidebar
 			type="button"
 			aria-current={active ? "page" : undefined}
 			data-basalt-hover-item=""
+			data-sidebar-row=""
 			data-hover-selected={active}
 			className={cn(
 				NAV_ITEM_CLASS,
-				"relative min-h-basalt-control w-basalt-control justify-center",
+				SIDEBAR_ROW_CLASS,
+				"relative w-basalt-control justify-center",
 				className,
 			)}
 			{...props}
@@ -552,7 +559,7 @@ export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGro
 					type="button"
 					data-slot="sidebar-group-label"
 					className={cn(
-						"flex w-full cursor-pointer items-center justify-between gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-space-lg text-left text-basalt-xs font-semibold leading-[calc(var(--basalt-size-control)-2*var(--basalt-space-lg))] tracking-wide text-basalt-muted-foreground uppercase transition-colors basalt-motion hover:text-basalt-foreground",
+						"flex w-full cursor-pointer items-center justify-between gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-space-lg text-left text-basalt-xs font-semibold leading-basalt-row tracking-wide text-basalt-muted-foreground uppercase transition-colors basalt-motion hover:text-basalt-foreground",
 						FOCUS_INSET,
 					)}
 				>

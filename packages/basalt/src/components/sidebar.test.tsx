@@ -34,13 +34,21 @@ describe("Sidebar", () => {
 		for (const name of ["Home", "Report"]) {
 			expect(screen.getByRole("button", { name })).toHaveClass(
 				"px-basalt-row-x",
-				"py-basalt-row-y",
+				"py-basalt-space-lg",
 			);
+			expect(screen.getByRole("button", { name })).not.toHaveClass("py-basalt-row-y");
 			expect(screen.getByRole("button", { name })).toHaveAttribute("data-basalt-hover-item");
+			expect(screen.getByRole("button", { name })).toHaveAttribute("data-sidebar-row");
 		}
 		const group = screen.getByRole("button", { name: "Recent" });
 		expect(group).not.toHaveAttribute("data-basalt-hover-item");
-		expect(group).toHaveClass("uppercase", "font-semibold", "text-basalt-xs", "py-basalt-space-lg");
+		expect(group).toHaveClass(
+			"uppercase",
+			"font-semibold",
+			"text-basalt-xs",
+			"py-basalt-space-lg",
+			"leading-basalt-row",
+		);
 		expect(group.closest('[data-slot="sidebar-group"]')).toHaveClass("pt-basalt-layout-sm");
 		expect(screen.getByRole("button", { name: "Home" })).toHaveClass("focus-visible:ring-inset");
 		expect(screen.getByText("Header")).toHaveClass("px-basalt-nav-inset");
@@ -327,6 +335,31 @@ describe("Sidebar", () => {
 		render(<SidebarSearch>Search</SidebarSearch>);
 		expect(screen.getByRole("button", { name: /Search/ })).toBeInTheDocument();
 		expect(screen.getByText("⌘K")).toBeInTheDocument();
+	});
+
+	it("relaxes destination rows locally without a fixed height", () => {
+		render(<SidebarItem>Home</SidebarItem>);
+		const row = screen.getByRole("button", { name: "Home" });
+		expect(row).toHaveClass(
+			"py-basalt-space-lg",
+			"leading-basalt-row",
+			"min-h-[calc(var(--basalt-line-row)+2*var(--basalt-space-lg))]",
+		);
+		expect(row).not.toHaveClass("py-basalt-row-y");
+		expect(row.className.split(/\s+/)).not.toContain("h-basalt-14");
+	});
+
+	it("keeps collapsed icon items on the centered rail slot", () => {
+		render(<SidebarIconItem aria-label="Mail">Mail</SidebarIconItem>);
+		const button = screen.getByRole("button", { name: "Mail" });
+		expect(button).toHaveClass(
+			"py-basalt-space-lg",
+			"min-h-[calc(var(--basalt-line-row)+2*var(--basalt-space-lg))]",
+			"w-basalt-control",
+			"justify-center",
+		);
+		expect(button).not.toHaveClass("w-full");
+		expect(button).not.toHaveClass("min-h-basalt-control");
 	});
 
 	it("toggles SidebarIconItem inactive and active classes and forwards button props", () => {

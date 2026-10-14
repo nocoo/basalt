@@ -28,7 +28,7 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 	assert.equal(geometry.padding, `${inset}px`);
 	assert.equal(geometry.firstTop, inset);
 	assert.ok(
-		geometry.rows.every((row) => row.height === 34),
+		geometry.rows.every((row) => row.height === 38),
 		JSON.stringify(geometry),
 	);
 	if (collapsed) {
@@ -39,7 +39,7 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 		);
 	} else {
 		assert.ok(
-			geometry.rows.every((row) => row.left === inset && row.padding === "6px 8px"),
+			geometry.rows.every((row) => row.left === inset && row.padding === "8px"),
 			JSON.stringify(geometry),
 		);
 	}
@@ -120,7 +120,7 @@ export async function assertNavigationLists(page: Page, baseUrl: string) {
 		viewports: 2,
 		themes: 2,
 		cssEntrypoints: 2,
-		rowHeight: 34,
+		rowHeight: 38,
 		railAxis: 34,
 		inset: 8,
 		navigationFamilies: 3,

@@ -64,6 +64,12 @@ Dialog and AlertDialog panels use 16px outer insets on mobile and 24px from
 640px. Their buttons and fields retain compact control spacing. Sheets and
 small floating menus have separate inset contracts.
 
+Form rhythm distinguishes a field from a group: label/control/hint spacing stays
+8px, related fields use 16px layout gaps, and separate sections use 24px. A form's
+stack owns those gaps; individual Field components do not add outer margins.
+DialogFooter owns 16px separation from content and keeps 8px between its actions.
+Do not add a matching margin at every caller or enlarge controls to open a form.
+
 Metric cards use the shared `StatCard`, not a hand-built Header/Body split. A single
 16px inset owns the title, value, comparison and supporting chart; 12px separates
 the heading, metric and content groups, and 4px separates value/supporting text.
@@ -79,9 +85,12 @@ Zero, auto margins and hairline seams are structural exceptions, not new density
 levels. Negative margins may cancel an owned boundary, not invent a new gap.
 Use `p-basalt-card`, `gap-basalt-layout`, `gap-basalt-space-sm`, etc. Default nav
 insets and field gaps remain 8px. Selectable rows use 8px horizontal / 6px vertical
-insets and an 8px icon gap. One component owns each boundary: nested sections must
-not accidentally double outer padding. Indented detail content may derive its
-alignment from the row inset + icon width + gap; this is not another density tier.
+insets and an 8px icon gap. Sidebar destinations alone use 8px vertical padding;
+menus, editable navigation and chat rows retain their compact role. One component
+owns each boundary: nested sections must not accidentally double the same inset.
+Distinct surface, column and semantic-slot boundaries may compose their spacing.
+Indented detail content may derive its alignment from the row inset, icon width
+and gap; this is not another density tier.
 
 Existing numbered `--basalt-space-*` tokens are a geometry scale for icons,
 media and shell widths. They are not an alternative margin/padding scale.
@@ -133,6 +142,8 @@ The shared classes calculate natural size as follows:
   side = 34px. Body prose/code retain the 20px line box. Compound inputs own one
   outer border; inset children do not add another. Segmented tracks keep 12px text
   on a 20px line box: 30px items + 2px track inset per side = 34px.
+- Sidebar destination and disclosure rows use the same 22px line box with 8px
+  vertical padding, yielding 38px reference rows without changing shared controls.
 - Cards, dialogs and layout containers have no mandatory height. Textareas and
   chat inputs grow with content (chat: up to five lines, then scroll).
 
@@ -198,9 +209,12 @@ interaction contracts; do not change their containment as a global workaround.
   opacity or mutes its primary label.
 - SidebarPartition is a major section label (12px, semibold, uppercase, 16px top
   spacing). SidebarGroup is a compact disclosure label (11px, semibold, uppercase,
-  8px inset, 12px group separation), not a destination or hover-highlight target.
-  Ordinary destinations use 14px text and the shared 8px/6px row insets. Groups
-  preserve keyboard expansion and chevron motion; collapsed rails omit labels.
+  22px line box, 8px inset, 12px group separation), not a destination or
+  hover-highlight target. Ordinary sidebar destinations use 14px text and 8px
+  row insets. Groups preserve keyboard expansion and chevron motion; collapsed
+  rails omit labels. Icons stay centered on the 68px collapsed rail, and the brand
+  mark keeps the same center when expanded. Do not trade that axis for a global
+  left-edge alignment.
 - Content wells use the actual surface hierarchy, not selected tokens or muted
   fills. Skeletons, progress tracks and decorative code marks may remain subdued.
 
@@ -260,7 +274,9 @@ natural height, no scenic wrappers, negative insets or fixed empty openings.
 Scrollable gallery previews reserve 8px of internal space on every edge for
 control rings, focus outlines and shadows. Padding outside the scroll viewport
 does not protect that paint. Center previews safely so oversized content keeps
-its leading edge reachable.
+its leading edge reachable. Multi-column Table, DataTable and DiffTable examples
+span the category grid; do not squeeze a working data surface into a half-width
+thumbnail. Compact examples such as TablePager retain their smaller grid cells.
 The component library uses one LayerCard per category, separated by 24px. Each
 category uses LayerCard.Header above its grid, not individual cards per component.
 Its light surface is white-toned; dark mode uses the same surface hierarchy rather
@@ -275,6 +291,40 @@ painted divs. Use library controls and tables instead of rebuilding their spacin
 focus, selection and motion in page CSS. Semantic color overrides and purposeful
 chart/canvas geometry remain separate from shared control geometry.
 
+### Alignment hierarchy
+
+Alignment is local to a meaningful scope, not a requirement that every text node
+start at the page edge. Establish the outer rail before composing the inner one:
+
+| Scope | Alignment rule |
+| --- | --- |
+| Page | PageHeader and region edges share the ContentIsland rail |
+| Surface | Header, body and footer share their panel inset |
+| Field or column | Labels, controls and values follow that group's start or end rail |
+| Semantic slot | Checkboxes, row numbers and status glyphs reserve their own consistent space |
+
+Related text keeps its rail across sorting, selection and missing optional icons.
+Numeric headings and values share the end rail; a sort glyph sits inward of that
+label rather than pushing it away from the values. Reserve the same glyph slot
+for Keep, Add and Remove instead of indenting only changed rows. Ordinary button
+padding is not a table-header inset. Preserve the focus target through a shared
+header control rather than compensating with negative page margins.
+
+Table cells keep 8px horizontal / 6px vertical insets and 36px reference rows.
+An edge attached to a panel uses `--basalt-space-table-edge` (the panel's 16px
+horizontal inset), independently of the space between columns. The owner of the
+column structure marks the actual edge cells; DOM first/last-child selectors
+cannot infer that boundary across rowSpan. DataTable owns this through
+`edge="attached"`; native Table compositions use `ps-basalt-table-edge` and
+`pe-basalt-table-edge` only on the corresponding edge cells. A full-width cell
+uses both. Row fills and header rules remain full width, and nested tables keep
+their own insets. An already inset table retains the default cell spacing.
+
+Purposeful nesting, such as a preview's focus clearance around a self-contained
+surface, remains valid. Increase the separation between groups before increasing
+every inner gap; breathing room comes from distinguishable groups and adequate
+content width, not uniformly loose controls or one global density multiplier.
+
 ### Container boundary ownership
 
 Choose the boundary before choosing a spacing token. A valid token on the wrong
@@ -287,7 +337,7 @@ owner is still a design error:
 | Full-width disclosure heading | `LayerCard.Header asChild` | Slot onto `CollapsibleTrigger`; one hit target, 16/12px insets |
 | Expanded prose or fields | `LayerCard.Body` | Inside `CollapsibleContent unstyled`; one 16px inset |
 | Attached code | `CodeBlock attached` / `CodeHighlighted attached` | Direct child of unstyled disclosure; code owns its 16/12px insets |
-| Edge-to-edge table/list | Its row/cell components | Direct card child; no Body with `p-0` or compensating margins |
+| Edge-to-edge table/list | Its row/cell components | Direct card child; panel inset on edge cells, no Body with `p-0` or compensating margins |
 | Compact status/action strip | `Banner` | Control spacing, not a hand-drawn card |
 
 Collapsible owns visibility, focus semantics and motion; it does not add another

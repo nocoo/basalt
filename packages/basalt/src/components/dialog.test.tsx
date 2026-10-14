@@ -105,7 +105,9 @@ describe("Dialog", () => {
 			</Dialog>,
 		);
 		expect(screen.getByText("Edit").parentElement?.className).toContain("flex-col");
-		expect(screen.getByText("Save").className).toContain("mt-basalt-space-lg");
+		expect(screen.getByText("Save").className).toContain("mt-basalt-layout");
+		expect(screen.getByText("Save").className).toContain("gap-basalt-space-lg");
+		expect(screen.getByText("Save").className).not.toContain("mt-basalt-space-lg");
 		expect(screen.getByText("Save").className).toContain("sm:justify-end");
 	});
 

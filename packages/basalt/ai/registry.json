@@ -2,9 +2,9 @@
 	"packageName": "@nocoo/basalt",
 	"packageVersion": "3.0.0",
 	"totalModules": 131,
-	"totalSymbols": 776,
-	"totalValues": 405,
-	"totalTypes": 371,
+	"totalSymbols": 781,
+	"totalValues": 406,
+	"totalTypes": 375,
 	"totalCssExports": 3,
 	"totalCatalogEntries": 120,
 	"modules": [
@@ -12213,7 +12213,7 @@
 			"importPath": "@nocoo/basalt/components/data-table",
 			"subpath": "./components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "c379b6fdeb17d0bd",
+			"sourceHash": "cf4d04c79f9bcff5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -12227,6 +12227,14 @@
 					"name": "DataTable",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/data-table",
+					"packageDoc": "ai/registry.json#data-table",
+					"originModule": "@nocoo/basalt/components/data-table"
+				},
+				{
+					"name": "DataTableEdge",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/data-table",
 					"packageDoc": "ai/registry.json#data-table",
 					"originModule": "@nocoo/basalt/components/data-table"
@@ -12454,6 +12462,13 @@
 									"type": "string",
 									"required": false,
 									"description": "ID of additional table instructions or summary."
+								},
+								{
+									"name": "edge",
+									"type": "DataTableEdge",
+									"required": false,
+									"default": "\"inset\"",
+									"description": "Direct-card rails on the first and last display columns."
 								}
 							]
 						}
@@ -12650,6 +12665,13 @@
 							"type": "string",
 							"required": false,
 							"description": "ID of additional table instructions or summary."
+						},
+						{
+							"name": "edge",
+							"type": "DataTableEdge",
+							"required": false,
+							"default": "\"inset\"",
+							"description": "Direct-card rails on the first and last display columns."
 						}
 					]
 				}
@@ -13225,7 +13247,7 @@
 			"importPath": "@nocoo/basalt/components/dialog",
 			"subpath": "./components/dialog",
 			"sourceFile": "packages/basalt/src/components/dialog.tsx",
-			"sourceHash": "d5f8e6d0a61a73df",
+			"sourceHash": "3374c01162ceb969",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -13829,7 +13851,7 @@
 			"importPath": "@nocoo/basalt/components/diff-table",
 			"subpath": "./components/diff-table",
 			"sourceFile": "packages/basalt/src/components/diff-table.tsx",
-			"sourceHash": "222a34547a323765",
+			"sourceHash": "f5dc2b0dbcc625d4",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -23439,7 +23461,7 @@
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"subpath": "./components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "a3aeba71071554d7",
+			"sourceHash": "9f68a198780ffd4a",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"kind": "catalog-component",
@@ -24857,20 +24879,36 @@
 			"importPath": "@nocoo/basalt/components/table",
 			"subpath": "./components/table",
 			"sourceFile": "packages/basalt/src/components/table.tsx",
-			"sourceHash": "118b5f2523670fbc",
+			"sourceHash": "e394b2b775b1e88b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"kind": "catalog-component",
 			"ownerDoc": "src/pages/ui/table",
 			"packageDoc": "ai/registry.json#table",
 			"summary": "Table component documentation and catalog playground",
-			"peers": ["react"],
+			"peers": ["lucide-react", "react"],
 			"optionalPeers": [],
 			"symbols": [
 				{
 					"name": "TableCaption",
 					"isValue": true,
 					"isType": false,
+					"ownerDoc": "src/pages/ui/table",
+					"packageDoc": "ai/registry.json#table",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
+					"name": "TableTextAlign",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/table",
+					"packageDoc": "ai/registry.json#table",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
+					"name": "TableSortDirection",
+					"isValue": false,
+					"isType": true,
 					"ownerDoc": "src/pages/ui/table",
 					"packageDoc": "ai/registry.json#table",
 					"originModule": "@nocoo/basalt/components/table"
@@ -25002,6 +25040,22 @@
 					"ownerDoc": "src/pages/ui/table",
 					"packageDoc": "ai/registry.json#table",
 					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
+					"name": "TableSortableHeaderProps",
+					"isValue": false,
+					"isType": true,
+					"ownerDoc": "src/pages/ui/table",
+					"packageDoc": "ai/registry.json#table",
+					"originModule": "@nocoo/basalt/components/table"
+				},
+				{
+					"name": "TableSortableHeader",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "src/pages/ui/table",
+					"packageDoc": "ai/registry.json#table",
+					"originModule": "@nocoo/basalt/components/table"
 				}
 			],
 			"catalogEntries": [
@@ -25073,6 +25127,12 @@
 									"type": "string",
 									"required": false,
 									"description": "Additional classes for the header cell."
+								},
+								{
+									"name": "textAlign",
+									"type": "TableTextAlign",
+									"required": false,
+									"description": "Logical inline alignment. Omitted headers keep `text-start` unless native `align` is set."
 								}
 							]
 						},
@@ -25084,6 +25144,40 @@
 									"type": "string",
 									"required": false,
 									"description": "Additional classes for the cell."
+								},
+								{
+									"name": "textAlign",
+									"type": "TableTextAlign",
+									"required": false,
+									"description": "Logical inline alignment. Omitted cells inherit from the table or row. Native HTML `align` is unchanged."
+								}
+							]
+						},
+						{
+							"name": "TableSortableHeader",
+							"props": [
+								{
+									"name": "children",
+									"type": "React.ReactNode",
+									"required": true
+								},
+								{
+									"name": "textAlign",
+									"type": "TableTextAlign",
+									"required": false,
+									"default": "\"start\"",
+									"description": "Logical control layout. `end` places the sort icon inward of the label."
+								},
+								{
+									"name": "sorted",
+									"type": "TableSortDirection",
+									"required": false,
+									"description": "Current sort direction when this column is sorted."
+								},
+								{
+									"name": "className",
+									"type": "string",
+									"required": false
 								}
 							]
 						}
@@ -25151,6 +25245,12 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional classes for the header cell."
+						},
+						{
+							"name": "textAlign",
+							"type": "TableTextAlign",
+							"required": false,
+							"description": "Logical inline alignment. Omitted headers keep `text-start` unless native `align` is set."
 						}
 					]
 				},
@@ -25162,6 +25262,40 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional classes for the cell."
+						},
+						{
+							"name": "textAlign",
+							"type": "TableTextAlign",
+							"required": false,
+							"description": "Logical inline alignment. Omitted cells inherit from the table or row. Native HTML `align` is unchanged."
+						}
+					]
+				},
+				{
+					"name": "TableSortableHeader",
+					"props": [
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": true
+						},
+						{
+							"name": "textAlign",
+							"type": "TableTextAlign",
+							"required": false,
+							"default": "\"start\"",
+							"description": "Logical control layout. `end` places the sort icon inward of the label."
+						},
+						{
+							"name": "sorted",
+							"type": "TableSortDirection",
+							"required": false,
+							"description": "Current sort direction when this column is sorted."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
 						}
 					]
 				}
@@ -32836,7 +32970,7 @@
 			"exportName": "Dialog",
 			"importPath": "@nocoo/basalt/components/dialog",
 			"sourceFile": "packages/basalt/src/components/dialog.tsx",
-			"sourceHash": "d5f8e6d0a61a73df",
+			"sourceHash": "3374c01162ceb969",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#dialog",
@@ -34831,7 +34965,7 @@
 			"exportName": "Table",
 			"importPath": "@nocoo/basalt/components/table",
 			"sourceFile": "packages/basalt/src/components/table.tsx",
-			"sourceHash": "118b5f2523670fbc",
+			"sourceHash": "e394b2b775b1e88b",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#table",
@@ -34896,6 +35030,12 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional classes for the header cell."
+						},
+						{
+							"name": "textAlign",
+							"type": "TableTextAlign",
+							"required": false,
+							"description": "Logical inline alignment. Omitted headers keep `text-start` unless native `align` is set."
 						}
 					]
 				},
@@ -34907,6 +35047,40 @@
 							"type": "string",
 							"required": false,
 							"description": "Additional classes for the cell."
+						},
+						{
+							"name": "textAlign",
+							"type": "TableTextAlign",
+							"required": false,
+							"description": "Logical inline alignment. Omitted cells inherit from the table or row. Native HTML `align` is unchanged."
+						}
+					]
+				},
+				{
+					"name": "TableSortableHeader",
+					"props": [
+						{
+							"name": "children",
+							"type": "React.ReactNode",
+							"required": true
+						},
+						{
+							"name": "textAlign",
+							"type": "TableTextAlign",
+							"required": false,
+							"default": "\"start\"",
+							"description": "Logical control layout. `end` places the sort icon inward of the label."
+						},
+						{
+							"name": "sorted",
+							"type": "TableSortDirection",
+							"required": false,
+							"description": "Current sort direction when this column is sorted."
+						},
+						{
+							"name": "className",
+							"type": "string",
+							"required": false
 						}
 					]
 				}
@@ -34918,7 +35092,7 @@
 			"exportName": "DataTable",
 			"importPath": "@nocoo/basalt/components/data-table",
 			"sourceFile": "packages/basalt/src/components/data-table.tsx",
-			"sourceHash": "c379b6fdeb17d0bd",
+			"sourceHash": "cf4d04c79f9bcff5",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#data-table",
@@ -35112,6 +35286,13 @@
 							"type": "string",
 							"required": false,
 							"description": "ID of additional table instructions or summary."
+						},
+						{
+							"name": "edge",
+							"type": "DataTableEdge",
+							"required": false,
+							"default": "\"inset\"",
+							"description": "Direct-card rails on the first and last display columns."
 						}
 					]
 				}
@@ -35931,7 +36112,7 @@
 			"exportName": "Sidebar",
 			"importPath": "@nocoo/basalt/components/sidebar",
 			"sourceFile": "packages/basalt/src/components/sidebar.tsx",
-			"sourceHash": "a3aeba71071554d7",
+			"sourceHash": "9f68a198780ffd4a",
 			"rootAvailable": true,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#sidebar",
@@ -38280,7 +38461,7 @@
 			"exportName": "DiffTable",
 			"importPath": "@nocoo/basalt/components/diff-table",
 			"sourceFile": "packages/basalt/src/components/diff-table.tsx",
-			"sourceHash": "222a34547a323765",
+			"sourceHash": "f5dc2b0dbcc625d4",
 			"rootAvailable": false,
 			"maturity": "ready",
 			"packageDoc": "ai/registry.json#diff-table",

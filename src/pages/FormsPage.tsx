@@ -14,6 +14,9 @@ import { DemoFeedback } from "@/components/examples/DemoFeedback";
 import { ShowcasePage } from "@/components/ShowcasePage";
 import { useFormsViewModel } from "@/viewmodels/useFormsViewModel";
 
+const FORM_STACK_CLASS = "space-y-basalt-layout";
+const FIELD_STACK_CLASS = "space-y-basalt-space-lg";
+
 export default function FormsPage() {
 	const { t } = useTranslation();
 	const vm = useFormsViewModel();
@@ -25,7 +28,8 @@ export default function FormsPage() {
 				<SectionRule title={t("pages.forms.profileForm")}>
 					<form
 						aria-label={t("pages.forms.profileForm")}
-						className="space-y-basalt-space-lg"
+						data-form-stack=""
+						className={FORM_STACK_CLASS}
 						onSubmit={(event) => {
 							event.preventDefault();
 							const data = new FormData(event.currentTarget);
@@ -35,7 +39,7 @@ export default function FormsPage() {
 						}}
 					>
 						<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2">
-							<div className="space-y-basalt-space-lg">
+							<div data-field="" className={FIELD_STACK_CLASS}>
 								<Label htmlFor="profile-first" className="text-foreground">
 									{t("pages.forms.firstName")}
 								</Label>
@@ -46,7 +50,7 @@ export default function FormsPage() {
 									placeholder={t("pages.forms.firstNamePlaceholder")}
 								/>
 							</div>
-							<div className="space-y-basalt-space-lg">
+							<div data-field="" className={FIELD_STACK_CLASS}>
 								<Label htmlFor="profile-last" className="text-foreground">
 									{t("pages.forms.lastName")}
 								</Label>
@@ -58,7 +62,7 @@ export default function FormsPage() {
 								/>
 							</div>
 						</div>
-						<div className="space-y-basalt-space-lg">
+						<div data-field="" className={FIELD_STACK_CLASS}>
 							<Label htmlFor="profile-email" className="text-foreground">
 								{t("pages.forms.email")}
 							</Label>
@@ -70,7 +74,7 @@ export default function FormsPage() {
 								placeholder={t("pages.forms.emailPlaceholder")}
 							/>
 						</div>
-						<div className="space-y-basalt-space-lg">
+						<div data-field="" className={FIELD_STACK_CLASS}>
 							<Label htmlFor="profile-location" className="text-foreground">
 								{t("pages.forms.location")}
 							</Label>
@@ -95,7 +99,8 @@ export default function FormsPage() {
 				<SectionRule title={t("pages.forms.security")}>
 					<form
 						aria-label={t("pages.forms.security")}
-						className="space-y-basalt-space-lg"
+						data-form-stack=""
+						className={FORM_STACK_CLASS}
 						onSubmit={(event) => {
 							event.preventDefault();
 							const data = new FormData(event.currentTarget);
@@ -106,7 +111,7 @@ export default function FormsPage() {
 							);
 						}}
 					>
-						<div className="space-y-basalt-space-lg">
+						<div data-field="" className={FIELD_STACK_CLASS}>
 							<Label htmlFor="security-password" className="text-foreground">
 								{t("pages.forms.password")}
 							</Label>
@@ -120,7 +125,7 @@ export default function FormsPage() {
 								placeholder="••••••••"
 							/>
 						</div>
-						<div className="space-y-basalt-space-lg">
+						<div data-field="" className={FIELD_STACK_CLASS}>
 							<Label htmlFor="security-confirm" className="text-foreground">
 								{t("pages.forms.confirmPassword")}
 							</Label>
@@ -160,7 +165,8 @@ export default function FormsPage() {
 				<SectionRule title={t("pages.forms.newsletter")}>
 					<form
 						aria-label={t("pages.forms.newsletter")}
-						className="space-y-basalt-space-lg"
+						data-form-stack=""
+						className={FORM_STACK_CLASS}
 						onSubmit={(event) => {
 							event.preventDefault();
 							vm.newsletter.submit({
@@ -168,7 +174,7 @@ export default function FormsPage() {
 							});
 						}}
 					>
-						<div className="space-y-basalt-space-lg">
+						<div data-field="" className={FIELD_STACK_CLASS}>
 							<Label htmlFor="news-email" className="text-foreground">
 								{t("pages.forms.newsletterEmail")}
 							</Label>

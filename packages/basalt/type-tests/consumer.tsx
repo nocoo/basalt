@@ -17,6 +17,16 @@ import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-t
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 import { Field as GranularField } from "@nocoo/basalt/components/field";
 import { ResourceList } from "@nocoo/basalt/components/resource-list";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+	TableSortableHeader,
+	type TableTextAlign,
+} from "@nocoo/basalt/components/table";
 import { Text as GranularText } from "@nocoo/basalt/components/text";
 import { ThemeProvider as GranularThemeProvider } from "@nocoo/basalt/providers/theme";
 import { createRef } from "react";
@@ -316,6 +326,7 @@ const resourceColumns: DataTableColumn<{ id: string; count: bigint }>[] = [
 		accessor: (row) => row.count,
 		sortValue: (row) => row.count,
 		headerContent: <strong>Count</strong>,
+		textAlign: "end",
 		width: 180,
 		cellClassName: "numeric",
 	},
@@ -326,6 +337,7 @@ export const serverResourceTable = (
 		<DataTable
 			data={[{ id: "a", count: 12n }]}
 			columns={resourceColumns}
+			edge="attached"
 			sort={null}
 			manualPagination
 			manualSorting
@@ -345,6 +357,41 @@ export const badResourceColumn: DataTableColumn<{ count: number }> = {
 	header: <strong>Count</strong>,
 	accessor: (row) => row.count,
 };
+
+const numericAlignment: TableTextAlign = "end";
+export const logicalRecordTable = (
+	<Table dir="rtl">
+		<TableHeader>
+			<TableRow>
+				<TableHead textAlign={numericAlignment} aria-sort="ascending">
+					<TableSortableHeader
+						ref={createRef<HTMLButtonElement>()}
+						textAlign={numericAlignment}
+						sorted="asc"
+						onClick={(event) => event.currentTarget.focus()}
+					>
+						Count
+					</TableSortableHeader>
+				</TableHead>
+				<TableHead align="right" colSpan={1}>
+					Native alignment
+				</TableHead>
+			</TableRow>
+		</TableHeader>
+		<TableBody>
+			<TableRow>
+				<TableCell textAlign="end">12</TableCell>
+				<TableCell align="center" rowSpan={1}>
+					Native attributes
+				</TableCell>
+			</TableRow>
+		</TableBody>
+	</Table>
+);
+// @ts-expect-error Semantic alignment uses logical directions, not native HTML values.
+const _invalidTableAlignment = <TableCell textAlign="right" />;
+// @ts-expect-error Sort direction uses the shared short identifiers.
+const _invalidTableDirection = <TableSortableHeader sorted="descending">Count</TableSortableHeader>;
 // @ts-expect-error ResourceList preserves required data for existing callers reading the props type.
 export const badResourceList = <ResourceList title="Missing rows" />;
 // @ts-expect-error Battery meters always need an accessible name.

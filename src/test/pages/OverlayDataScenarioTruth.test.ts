@@ -231,6 +231,7 @@ describe("overlay data scenario truth", () => {
 			"DialogTitle",
 			"DialogDescription",
 			"DialogClose",
+			"DialogFooter",
 		]);
 		expectUsageImportsCover(CATALOG_DOCS.popover?.usage ?? "", [
 			"Button",
@@ -260,6 +261,27 @@ describe("overlay data scenario truth", () => {
 		expect(scenario("popover", "popover-sides").code).toContain('side="bottom"');
 		expect(scenario("popover", "popover-sides").code).toContain("PopoverTrigger");
 		expect(scenario("popover", "popover-sides").code).not.toContain("…");
+	});
+
+	it("uses shared DialogFooter for dialog action rows in live and copyable source", () => {
+		for (const id of [
+			"dialog-sizes",
+			"dialog-confirmation-dialog",
+			"dialog-with-actions",
+			"dialog-with-select",
+			"dialog-with-combobox",
+			"dialog-with-dropdown",
+		]) {
+			const code = scenario("dialog", id).code;
+			expect(code, id).toContain("<DialogFooter");
+			expect(code, id).not.toContain("mt-basalt-space-lg flex justify-end");
+			expect(code, id).not.toContain("function DialogFooter");
+		}
+		expect(scenario("dialog", "dialog-confirmation-dialog").code).toContain("<DialogActions");
+		expect(scenario("dialog", "dialog-with-actions").code).toContain("<DialogActions");
+		expect(scenario("dialog", "dialog-alert-dialog").code).toContain(
+			"mt-basalt-space-lg flex justify-end gap-basalt-space-lg",
+		);
 	});
 
 	it("keeps toolbar compound members and button names", () => {

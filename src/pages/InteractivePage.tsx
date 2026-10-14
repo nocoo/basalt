@@ -417,7 +417,7 @@ export default function InteractivePage() {
 								<DialogTitle>{t("pages.interactive.editProfile")}</DialogTitle>
 								<DialogDescription>{t("pages.interactive.editProfileDesc")}</DialogDescription>
 							</DialogHeader>
-							<div className="space-y-basalt-space-lg py-basalt-space-lg">
+							<div className="mt-basalt-layout space-y-basalt-space-lg">
 								<div className="space-y-basalt-space-lg">
 									<Label>{t("pages.interactive.displayName")}</Label>
 									<Input defaultValue={t("pages.interactive.displayNameValue")} />

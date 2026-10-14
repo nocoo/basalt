@@ -1,6 +1,138 @@
 import assert from "node:assert/strict";
-import type { Page } from "playwright";
+import { readFileSync } from "node:fs";
+import type { Locator, Page } from "playwright";
 import { setShowcaseTheme } from "./showcase-theme";
+
+async function remPx(page: Page, rem: number) {
+	return page.evaluate(
+		(units) => units * Number.parseFloat(getComputedStyle(document.documentElement).fontSize),
+		rem,
+	);
+}
+
+async function inlinePad(locator: Locator) {
+	return locator.evaluate((node) => {
+		const style = getComputedStyle(node);
+		return {
+			start: Number.parseFloat(style.paddingInlineStart),
+			end: Number.parseFloat(style.paddingInlineEnd),
+		};
+	});
+}
+
+type TextRail = { start: number; end: number };
+
+function assertStandaloneTableCss(css: string) {
+	for (const token of [
+		".ps-basalt-table-edge",
+		".pe-basalt-table-edge",
+		".text-start",
+		".text-end",
+		".ms-auto",
+	]) {
+		assert.ok(css.includes(token), `standalone.css missing ${token}`);
+	}
+}
+
+async function textRail(root: Locator): Promise<TextRail> {
+	return root.evaluate((node) => {
+		const rtl = node.closest("[dir='rtl']") != null || getComputedStyle(node).direction === "rtl";
+		const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+		while (walker.nextNode()) {
+			const text = walker.currentNode;
+			if (!text.textContent?.trim()) continue;
+			const parent = text.parentElement;
+			if (!parent || parent.closest("svg, .sr-only, [aria-hidden='true']")) continue;
+			const range = document.createRange();
+			range.selectNodeContents(text);
+			const rects = [...range.getClientRects()].filter((rect) => rect.width > 0 && rect.height > 0);
+			if (rects.length === 0) continue;
+			const first = rects[0];
+			const last = rects[rects.length - 1];
+			if (!first || !last) continue;
+			return {
+				start: rtl ? first.right : first.left,
+				end: rtl ? last.left : last.right,
+			};
+		}
+		throw new Error("No visible text rail");
+	});
+}
+
+async function headerCellPair(table: Locator, headerName: string) {
+	const header = table.getByRole("columnheader", { name: headerName, exact: true });
+	const index = await header.evaluate((node) => {
+		const row = node.parentElement;
+		if (!row) throw new Error("Missing header row");
+		return [...row.children].indexOf(node);
+	});
+	const cell = table.locator("tbody tr").first().locator("td").nth(index);
+	return { header, cell };
+}
+
+async function assertHeaderValueRail(
+	table: Locator,
+	headerName: string,
+	align: "start" | "end",
+	label: string,
+) {
+	const { header, cell } = await headerCellPair(table, headerName);
+	const button = header.getByRole("button", { name: headerName, exact: true });
+	const headerRail = await textRail(button);
+	const cellRail = await textRail(cell);
+	assert.ok(
+		Math.abs(headerRail[align] - cellRail[align]) < 1,
+		`${label}: ${JSON.stringify({ headerRail, cellRail, align })}`,
+	);
+}
+
+async function assertRailsAcrossSorts(
+	table: Locator,
+	headerName: string,
+	otherHeader: string,
+	align: "start" | "end",
+) {
+	const button = table.getByRole("button", { name: headerName, exact: true });
+	const other = table.getByRole("button", { name: otherHeader, exact: true });
+	const th = button.locator("xpath=ancestor::th");
+	for (const dir of ["ltr", "rtl"] as const) {
+		await table.evaluate((node, value) => {
+			if (value === "ltr") node.removeAttribute("dir");
+			else node.setAttribute("dir", value);
+		}, dir);
+		await other.click();
+		assert.equal(await th.getAttribute("aria-sort"), "none", `${headerName} ${dir} unsorted`);
+		await assertHeaderValueRail(table, headerName, align, `${headerName} ${dir} none`);
+		await button.click();
+		assert.equal(await th.getAttribute("aria-sort"), "ascending", `${headerName} ${dir} asc`);
+		await assertHeaderValueRail(table, headerName, align, `${headerName} ${dir} asc`);
+		await button.click();
+		assert.equal(await th.getAttribute("aria-sort"), "descending", `${headerName} ${dir} desc`);
+		await assertHeaderValueRail(table, headerName, align, `${headerName} ${dir} desc`);
+	}
+	await table.evaluate((node) => node.removeAttribute("dir"));
+}
+
+async function assertStandaloneMarkupParity(
+	page: Page,
+	table: Locator,
+	headerName: string,
+	align: "start" | "end",
+) {
+	const css = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
+	assertStandaloneTableCss(css);
+	const html = await table.evaluate((node) => node.outerHTML);
+	const isolated = await page.context().newPage();
+	try {
+		await isolated.setContent(
+			`<!doctype html><html><head><style>${css}</style></head><body>${html}</body></html>`,
+		);
+		const clone = isolated.locator("table").first();
+		await assertHeaderValueRail(clone, headerName, align, `${headerName} standalone`);
+	} finally {
+		await isolated.close();
+	}
+}
 
 export async function assertRecordGeometry(page: Page, baseUrl: string) {
 	for (const width of [390, 1280])
@@ -77,7 +209,90 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 				"descending",
 			);
 			assert.equal(await heading.locator("svg").count(), 1);
+			await region.focus();
+			assert.equal(
+				await region.evaluate((node) => document.activeElement === node),
+				true,
+				"named region must take focus before keyboard return",
+			);
+			await page.keyboard.press("Tab");
+			assert.equal(
+				await region.evaluate((node) => document.activeElement === node),
+				false,
+				"Tab must leave the named region",
+			);
+			await page.keyboard.press("Shift+Tab");
+			const focusState = await region.evaluate((node) => ({
+				active: document.activeElement === node,
+				focusVisible: node.matches(":focus-visible"),
+			}));
+			assert.equal(focusState.active, true, JSON.stringify(focusState));
+			assert.equal(focusState.focusVisible, true, JSON.stringify(focusState));
+			const focusPaint = await region.evaluate((node) => {
+				const style = getComputedStyle(node);
+				const box = node.getBoundingClientRect();
+				const tableBox = node.querySelector("table")?.getBoundingClientRect();
+				const offset = Number.parseFloat(style.outlineOffset);
+				const width = Number.parseFloat(style.outlineWidth);
+				return {
+					offset: style.outlineOffset,
+					width: style.outlineWidth,
+					style: style.outlineStyle,
+					overContent: offset < 0 && width > 0 && (tableBox?.top ?? 0) >= box.top,
+					inside: offset + width <= 0,
+				};
+			});
+			assert.equal(focusPaint.offset, "-2px", JSON.stringify(focusPaint));
+			assert.equal(focusPaint.width, "2px", JSON.stringify(focusPaint));
+			assert.notEqual(focusPaint.style, "none", JSON.stringify(focusPaint));
+			assert.equal(focusPaint.overContent, true, JSON.stringify(focusPaint));
+			assert.equal(focusPaint.inside, true, JSON.stringify(focusPaint));
 			assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth));
 		}
-	return { rowHeight: 36, headerIcons: 12, widthsPreserved: true, scroll: true, selection: true };
+
+	await page.setViewportSize({ width: 1280, height: 1000 });
+	await page.goto(`${baseUrl}/data`);
+	const invoices = page.getByRole("table", { name: "Data Table", exact: true });
+	await invoices.waitFor();
+	await assertRailsAcrossSorts(invoices, "Invoice", "Amount", "start");
+	await assertRailsAcrossSorts(invoices, "Amount", "Invoice", "end");
+	await assertStandaloneMarkupParity(page, invoices, "Amount", "end");
+
+	await page.goto(`${baseUrl}/ui/table`);
+	await page.locator('[data-status="ready"]').waitFor();
+	const ledger = page.locator('[data-scenario="table-subscriptions"]');
+	await ledger.scrollIntoViewIfNeeded();
+	const ledgerTable = ledger.getByRole("table", { name: "Health plan ledger" });
+	await assertRailsAcrossSorts(ledgerTable, "Health plan", "Monthly cost", "start");
+	await assertRailsAcrossSorts(ledgerTable, "Monthly cost", "Health plan", "end");
+	await assertStandaloneMarkupParity(page, ledgerTable, "Monthly cost", "end");
+
+	const spanDemo = page.locator('[data-scenario="table-selected-row"]');
+	await spanDemo.scrollIntoViewIfNeeded();
+	const spanTable = spanDemo.getByRole("table", { name: "Direct card with spanning cells" });
+	const alpha = await textRail(spanTable.getByRole("cell", { name: "Alpha" }));
+	const beta = await textRail(spanTable.getByRole("cell", { name: "Beta" }));
+	assert.ok(Math.abs(alpha.start - beta.start) < 1, JSON.stringify({ alpha, beta }));
+	const edge = await remPx(page, 1);
+	const gutter = await remPx(page, 0.5);
+	assert.equal((await inlinePad(spanTable.getByRole("cell", { name: "North" }))).start, edge);
+	assert.equal((await inlinePad(spanTable.getByRole("cell", { name: "Beta" }))).start, gutter);
+	const nested = spanDemo.getByRole("table", { name: "Nested inset" }).getByRole("cell");
+	const nestedPad = await inlinePad(nested);
+	assert.equal(nestedPad.start, gutter, JSON.stringify(nestedPad));
+	assert.equal(nestedPad.end, gutter, JSON.stringify(nestedPad));
+
+	return {
+		rowHeight: 36,
+		headerIcons: 12,
+		widthsPreserved: true,
+		scroll: true,
+		selection: true,
+		focusInset: true,
+		rails: true,
+		rtl: true,
+		nested: true,
+		span: true,
+		standalone: true,
+	};
 }

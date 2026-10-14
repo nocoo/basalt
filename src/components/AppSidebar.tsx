@@ -333,6 +333,8 @@ const LIBRARY_GROUPS: NavGroup[] = CATALOG_CATEGORIES.map((category, index) => (
 
 const ALL_NAV_ITEMS = [...NAV_GROUPS.flatMap((g) => g.items), ...LIBRARY_LEAD];
 
+const SIDEBAR_MARK_SLOT_CLASS = "flex w-full items-center";
+
 function itemTitle(item: NavItem, t: (key: string) => string) {
 	return item.title ?? t(item.titleKey ?? "");
 }
@@ -505,8 +507,8 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 			<SidebarHeader>
 				<div
 					className={cn(
-						"flex w-full items-center",
-						collapsed ? "justify-center" : "justify-between px-basalt-row-x",
+						SIDEBAR_MARK_SLOT_CLASS,
+						collapsed ? "justify-center" : "justify-between pl-basalt-layout-sm",
 					)}
 				>
 					<Link

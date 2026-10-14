@@ -295,7 +295,7 @@ export interface DialogFooterProps extends React.HTMLAttributes<HTMLDivElement> 
 export const DialogFooter = ({ className, ...props }: DialogFooterProps) => (
 	<div
 		className={cn(
-			"mt-basalt-space-lg flex flex-col-reverse gap-basalt-space-lg sm:flex-row sm:justify-end",
+			"mt-basalt-layout flex flex-col-reverse gap-basalt-space-lg sm:flex-row sm:justify-end",
 			className,
 		)}
 		{...props}

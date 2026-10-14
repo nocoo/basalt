@@ -62,6 +62,9 @@ describe("DialogsPage", () => {
 		expect(screen.getByRole("heading", { name: "Log contribution" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
 		expect(screen.getByLabelText("Amount")).toBeInTheDocument();
+		const contributionFields = screen.getByRole("dialog").querySelector("[data-dialog-fields]");
+		expect(contributionFields).toHaveClass("mt-basalt-layout", "space-y-basalt-layout");
+		expect(screen.getByRole("dialog").querySelector(".mt-basalt-layout.flex")).toBeTruthy();
 		fireEvent.click(screen.getByRole("button", { name: "Close" }));
 
 		fireEvent.click(screen.getByRole("button", { name: "Open holding" }));
@@ -87,5 +90,13 @@ describe("DialogsPage", () => {
 		expect(screen.getByText("History")).toBeInTheDocument();
 		expect(screen.getByLabelText("Code")).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Close" })).toBeInTheDocument();
+		expect(unit.querySelector("[data-dialog-fields] > .grid")).toHaveClass(
+			"grid-cols-1",
+			"lg:grid-cols-3",
+		);
+		const historyAmount = screen.getByText("$12,400.00");
+		expect(historyAmount).toHaveClass("ms-auto", "tabular-nums");
+		expect(historyAmount.parentElement).toHaveClass("flex-wrap");
+		expect(historyAmount.parentElement).not.toHaveClass("justify-between");
 	});
 });

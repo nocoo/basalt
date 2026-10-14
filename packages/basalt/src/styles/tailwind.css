@@ -146,6 +146,7 @@
 	--spacing-basalt-field-gap: var(--basalt-space-field-gap);
 	--spacing-basalt-table-x: var(--basalt-space-table-x);
 	--spacing-basalt-table-y: var(--basalt-space-table-y);
+	--spacing-basalt-table-edge: var(--basalt-space-table-edge);
 	--spacing-basalt-overlay: var(--basalt-space-overlay);
 	--spacing-basalt-panel-x: var(--basalt-space-panel-x);
 	--spacing-basalt-panel-y: var(--basalt-space-panel-y);

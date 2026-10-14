@@ -969,6 +969,12 @@ describe("catalog API generator contract", () => {
 				surface: "TableCell",
 			},
 			{
+				slug: "table",
+				sourceFile: "packages/basalt/src/components/table.tsx",
+				propsType: "TableSortableHeaderProps",
+				surface: "TableSortableHeader",
+			},
+			{
 				slug: "data-table",
 				sourceFile: "packages/basalt/src/components/data-table.tsx",
 				propsType: "DataTableProps",
@@ -1721,7 +1727,7 @@ describe("catalog API generator contract", () => {
 				surface: "PromptBar",
 			},
 		]);
-		expect(CATALOG_API_TARGETS).toHaveLength(260);
+		expect(CATALOG_API_TARGETS).toHaveLength(261);
 		expect(
 			CATALOG_API_TARGETS.filter((target) => target.allowEmpty === true).map(
 				(target) => target.surface,
@@ -3000,6 +3006,7 @@ export interface WidgetProps {
 				"TableCaption",
 				"TableHead",
 				"TableCell",
+				"TableSortableHeader",
 			],
 			"data-table": ["DataTable"],
 			pagination: ["Pagination"],
@@ -3931,6 +3938,25 @@ export interface WidgetProps {
 			),
 		).toBe(false);
 	}, 60_000);
+
+	it("extracts logical table alignment and the flush sorter without native props", () => {
+		const surfaces = generateProductionApi().table;
+		for (const name of ["TableHead", "TableCell"]) {
+			expect(surfaces?.find((surface) => surface.name === name)?.props).toContainEqual(
+				expect.objectContaining({ name: "textAlign", type: "TableTextAlign", required: false }),
+			);
+		}
+		const sorter = surfaces?.find((surface) => surface.name === "TableSortableHeader");
+		expect(sorter?.props.map((prop) => prop.name)).toEqual([
+			"children",
+			"textAlign",
+			"sorted",
+			"className",
+		]);
+		expect(sorter?.props[0]).toEqual({ name: "children", type: "React.ReactNode", required: true });
+		expect(sorter?.props[1]?.default).toBe('"start"');
+		expect(sorter?.props[2]?.type).toBe("TableSortDirection");
+	});
 
 	it("extracts the TablePager surface without inherited DOM inventory", () => {
 		const generated = generateProductionApi();
@@ -4880,6 +4906,7 @@ export interface WidgetProps {
 		expect(joined).toContain('name: "TableCaption"');
 		expect(joined).toContain('name: "TableHead"');
 		expect(joined).toContain('name: "TableCell"');
+		expect(joined).toContain('name: "TableSortableHeader"');
 		expect(joined).toContain('name: "DataTable"');
 		expect(joined).toContain('name: "Pagination"');
 		expect(joined).toContain('name: "TableOfContents"');
@@ -4909,7 +4936,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"aed0745a28ad86d10654cb19e31d83c59f450976cc726eb280f956565f25e5dc",
+			"e5c71ee3ede0a03e39110fb46d2e14eedb9cbac166d942181ba562e7076e80a0",
 		);
 	}, 60_000);
 

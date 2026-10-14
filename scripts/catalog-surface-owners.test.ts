@@ -93,9 +93,9 @@ describe("public surface documentation ownership and freshness", () => {
 
 		expect(manifest.packageVersion).toBe(rootPkg.version);
 		expect(manifest.totalModules).toBe(131);
-		expect(manifest.totalSymbols).toBe(776);
-		expect(manifest.totalValues).toBe(405);
-		expect(manifest.totalTypes).toBe(371);
+		expect(manifest.totalSymbols).toBe(781);
+		expect(manifest.totalValues).toBe(406);
+		expect(manifest.totalTypes).toBe(375);
 		expect(manifest.totalCssExports).toBe(3);
 
 		// Every module must have valid documentation ownership
@@ -342,8 +342,6 @@ describe("public surface documentation ownership and freshness", () => {
 			"Code",
 			"Table",
 			"TableCaption",
-			"TableHead",
-			"TableCell",
 			"LayerCard.Secondary",
 			"LayerCard.Body",
 			"LayerCard.Footer",

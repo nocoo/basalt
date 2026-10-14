@@ -228,8 +228,10 @@ function itemDemo(item: CatalogIndexItem): ComponentType | undefined {
 const GROUP_CARD_CLASS =
 	"min-w-0 border-b border-basalt-border md:border-r md:max-lg:nth-[2n]:border-r-0 lg:max-2xl:nth-[3n]:border-r-0 2xl:nth-[4n]:border-r-0";
 const TABLE_CARD_CLASS = "min-w-0 border-b border-basalt-border md:border-r md:nth-[2n]:border-r-0";
+const WIDE_TABLE_CARD_CLASS = "min-w-0 border-b border-basalt-border md:col-span-2";
 
 const TABLE_CARD_SLUGS = ["table", "data-table", "diff-table", "table-pager"] as const;
+const WIDE_GALLERY_SLUGS = new Set(["table", "data-table", "diff-table"]);
 
 interface CatalogCardProps {
 	item: CatalogIndexItem;
@@ -239,10 +241,11 @@ interface CatalogCardProps {
 function CatalogCard({ item, className }: CatalogCardProps) {
 	const Demo = itemDemo(item);
 	const title = catalogNavName(item.entry);
+	const span = WIDE_GALLERY_SLUGS.has(item.entry.slug) ? "full" : "compact";
 	const titleClass =
 		"min-w-0 max-w-full text-basalt-base font-medium text-foreground [overflow-wrap:anywhere] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
 	return (
-		<li data-catalog-card={item.entry.slug} className={className}>
+		<li data-catalog-card={item.entry.slug} data-gallery-span={span} className={className}>
 			<div className="flex min-w-0 max-w-full min-h-48 flex-col gap-basalt-layout p-basalt-card">
 				{item.pageStatus === "ready" ? (
 					<Link to={`/ui/${item.entry.slug}`} className={titleClass}>
@@ -302,7 +305,15 @@ export function HomeGrid({ groups }: HomeGridProps) {
 						</LayerCard.Header>
 						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border md:grid-cols-2">
 							{tables.map((item) => (
-								<CatalogCard key={item.entry.slug} item={item} className={TABLE_CARD_CLASS} />
+								<CatalogCard
+									key={item.entry.slug}
+									item={item}
+									className={
+										WIDE_GALLERY_SLUGS.has(item.entry.slug)
+											? WIDE_TABLE_CARD_CLASS
+											: TABLE_CARD_CLASS
+									}
+								/>
 							))}
 						</ul>
 					</LayerCard>

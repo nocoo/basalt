@@ -270,12 +270,14 @@ describe("AppSidebar", () => {
 		}
 	});
 
-	it("pins the sidebar logo to the expanded left edge when collapsed", () => {
+	it("keeps the collapsed mark centered and matches it with an expanded rail inset", () => {
 		const { unmount } = renderSidebar();
 		const expandedHome = screen.getByRole("link", { name: "Home" });
 		expect(expandedHome).toHaveAttribute("href", "/");
 		const expanded = expandedHome.querySelector("img");
 		expect(expanded).toHaveClass("h-7", "w-7");
+		expect(expandedHome.parentElement).toHaveClass("pl-basalt-layout-sm", "justify-between");
+		expect(expandedHome.parentElement).not.toHaveClass("justify-center");
 		expect(expanded?.closest(".flex.h-basalt-14")).not.toHaveClass("pl-basalt-space-lg");
 		unmount();
 		renderSidebar("/ui/button", true);
@@ -285,6 +287,7 @@ describe("AppSidebar", () => {
 		expect(collapsed).toHaveClass("h-7", "w-7");
 		expect(collapsed?.closest("[data-slot=sidebar-header]")).toHaveClass("px-basalt-nav-inset");
 		expect(collapsedHome.parentElement).toHaveClass("justify-center");
+		expect(collapsedHome.parentElement).not.toHaveClass("pl-basalt-layout-sm");
 	});
 
 	it("aligns collapsed search with the icon rail", () => {
@@ -296,7 +299,12 @@ describe("AppSidebar", () => {
 		expect(icons[0]).toBe(search);
 		expect(icons.length).toBeGreaterThan(1);
 		for (const icon of icons) {
-			expect(icon).toHaveClass("min-h-basalt-control", "w-basalt-control", "justify-center");
+			expect(icon).toHaveClass(
+				"min-h-[calc(var(--basalt-line-row)+2*var(--basalt-space-lg))]",
+				"w-basalt-control",
+				"justify-center",
+			);
+			expect(icon).not.toHaveClass("min-h-basalt-control");
 		}
 	});
 

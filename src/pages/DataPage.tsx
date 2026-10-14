@@ -20,6 +20,7 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
+	TableSortableHeader,
 } from "@nocoo/basalt/components/table";
 import {
 	AlertTriangle,
@@ -190,36 +191,49 @@ export default function DataPage() {
 										["amount", t("common.amount")],
 										["date", t("common.date")],
 									] as const
-								).map(([key, label]) => (
-									<TableHead
-										key={key}
-										aria-sort={
-											vm.sort.key === key
-												? vm.sort.direction === 1
-													? "ascending"
-													: "descending"
-												: "none"
-										}
-									>
-										<Button
-											variant="ghost"
-											type="button"
-											onClick={() => vm.sortBy(key)}
-											className="inline-flex items-center gap-basalt-space-sm focus-visible:outline-2 focus-visible:outline-primary"
+								).map(([key, label], index, columns) => {
+									const textAlign = key === "amount" ? "end" : undefined;
+									return (
+										<TableHead
+											key={key}
+											textAlign={textAlign}
+											className={
+												index === 0
+													? "ps-basalt-table-edge"
+													: index === columns.length - 1
+														? "pe-basalt-table-edge"
+														: undefined
+											}
+											aria-sort={
+												vm.sort.key === key
+													? vm.sort.direction === 1
+														? "ascending"
+														: "descending"
+													: "none"
+											}
 										>
-											{label}
-											{vm.sort.key === key && (
-												<span aria-hidden="true">{vm.sort.direction === 1 ? "↑" : "↓"}</span>
-											)}
-										</Button>
-									</TableHead>
-								))}
+											<TableSortableHeader
+												textAlign={textAlign}
+												sorted={
+													vm.sort.key === key
+														? vm.sort.direction === 1
+															? "asc"
+															: "desc"
+														: undefined
+												}
+												onClick={() => vm.sortBy(key)}
+											>
+												{label}
+											</TableSortableHeader>
+										</TableHead>
+									);
+								})}
 							</TableRow>
 						</TableHeader>
 						<TableBody>
 							{vm.rows.map((row) => (
 								<TableRow key={row.id}>
-									<TableCell>{row.id}</TableCell>
+									<TableCell className="ps-basalt-table-edge">{row.id}</TableCell>
 									<TableCell>{row.customer}</TableCell>
 									<TableCell>
 										<span
@@ -234,19 +248,21 @@ export default function DataPage() {
 											{row.status}
 										</span>
 									</TableCell>
-									<TableCell>
+									<TableCell textAlign="end">
 										{new Intl.NumberFormat("en-US", {
 											style: "currency",
 											currency: "USD",
 											maximumFractionDigits: 0,
 										}).format(row.amount)}
 									</TableCell>
-									<TableCell className="text-basalt-muted-foreground">{row.date}</TableCell>
+									<TableCell className="pe-basalt-table-edge text-basalt-muted-foreground">
+										{row.date}
+									</TableCell>
 								</TableRow>
 							))}
 							{vm.rows.length === 0 && (
 								<TableRow>
-									<TableCell colSpan={5}>
+									<TableCell colSpan={5} className="ps-basalt-table-edge pe-basalt-table-edge">
 										<div className="py-basalt-space-lg text-center" role="status">
 											{t("demo.noResults")}{" "}
 											<Button variant="ghost" size="sm" onClick={vm.reset}>

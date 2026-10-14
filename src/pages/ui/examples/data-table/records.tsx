@@ -1,5 +1,6 @@
 import { AvatarInitials } from "@nocoo/basalt/components/avatar";
 import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-table";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { TagBadge, type TagColor } from "@nocoo/basalt/components/tag-badge";
 import { CalendarDays, ExternalLink, Link2, ListFilter, Signal } from "lucide-react";
 
@@ -157,20 +158,25 @@ const columns: DataTableColumn<(typeof records)[number]>[] = [
 export default function RecordsTable() {
 	return (
 		<div className="w-full space-y-basalt-space-lg" data-demo="records-table">
-			<DataTable
-				data={records}
-				columns={columns}
-				rowNumbers
-				multiple
-				defaultSelected={[]}
-				getRowId={(row) => row.id}
-				defaultSort={{ id: "name", dir: "asc" }}
-				maxHeight={300}
-				aria-label="Medical provider records"
-			/>
-			<p className="text-basalt-sm text-basalt-muted-foreground">
-				6 records · Scroll horizontally for relationship details
-			</p>
+			<LayerCard>
+				<DataTable
+					data={records}
+					columns={columns}
+					edge="attached"
+					rowNumbers
+					multiple
+					defaultSelected={[]}
+					getRowId={(row) => row.id}
+					defaultSort={{ id: "name", dir: "asc" }}
+					maxHeight={300}
+					aria-label="Medical provider records"
+				/>
+				<LayerCard.Footer>
+					<p className="text-basalt-sm text-basalt-muted-foreground">
+						6 records · Scroll horizontally for relationship details
+					</p>
+				</LayerCard.Footer>
+			</LayerCard>
 		</div>
 	);
 }

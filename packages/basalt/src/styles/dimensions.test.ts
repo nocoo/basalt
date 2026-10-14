@@ -105,6 +105,10 @@ describe("dimension token contract", () => {
 		expect(tokens).toContain("--basalt-space-nav-inset: var(--basalt-space-lg)");
 		expect(tokens).toContain("--basalt-space-panel-x: var(--basalt-space-card)");
 		expect(tokens).toContain("--basalt-space-panel-y: var(--basalt-space-card-sm)");
+		expect(tokens).toContain("--basalt-space-table-edge: var(--basalt-space-panel-x)");
+		expect(tokens).toContain("--basalt-space-table-x: var(--basalt-space-lg)");
+		expect(tokens).not.toContain("data-basalt-table-edge");
+		expect(tailwind).toContain("--spacing-basalt-table-edge: var(--basalt-space-table-edge)");
 	});
 	it("emits zero padding once, before axis overrides", () => {
 		expect(standalone.match(/\.p-0 \{/g)).toHaveLength(1);

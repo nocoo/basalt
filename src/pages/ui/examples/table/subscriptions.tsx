@@ -21,6 +21,8 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
+	TableSortableHeader,
+	type TableTextAlign,
 } from "@nocoo/basalt/components/table";
 import { lazy, Suspense, useMemo, useState } from "react";
 
@@ -137,13 +139,14 @@ export default function SubscriptionTable() {
 		[query, team, sort],
 	);
 	const visible = mode === "empty" ? [] : rows.slice((page - 1) * 4, page * 4);
-	const header = (label: string, key: SortKey) => (
+	const header = (label: string, key: SortKey, textAlign?: TableTextAlign) => (
 		<TableHead
+			textAlign={textAlign}
 			aria-sort={sort.key === key ? (sort.direction === 1 ? "ascending" : "descending") : "none"}
 		>
-			<Button
-				variant="ghost"
-				type="button"
+			<TableSortableHeader
+				textAlign={textAlign}
+				sorted={sort.key === key ? (sort.direction === 1 ? "asc" : "desc") : undefined}
 				onClick={() =>
 					setSort((current) => ({
 						key,
@@ -152,10 +155,7 @@ export default function SubscriptionTable() {
 				}
 			>
 				{label}
-				<span aria-hidden="true" className="ml-basalt-space-sm">
-					{sort.key === key ? (sort.direction === 1 ? "↑" : "↓") : "↕"}
-				</span>
-			</Button>
+			</TableSortableHeader>
 		</TableHead>
 	);
 	const changeText = (row: Subscription) => `${row.change > 0 ? "+" : ""}${row.change.toFixed(1)}%`;
@@ -265,7 +265,7 @@ export default function SubscriptionTable() {
 								<span className="sr-only">Select</span>
 							</TableHead>
 							{header("Health plan", "name")}
-							{header("Monthly cost", "monthly")}
+							{header("Monthly cost", "monthly", "end")}
 							{header("Change", "change")}
 							{header("Plan utilization", "used")}
 							{header("Renewal", "renewal")}
@@ -352,7 +352,7 @@ export default function SubscriptionTable() {
 											<Badge variant="secondary">{row.plan}</Badge>
 										</div>
 									</TableCell>
-									<TableCell className="text-right font-medium tabular-nums">
+									<TableCell textAlign="end" className="font-medium">
 										{money.format(row.monthly)}
 										<p className="mt-basalt-space-sm text-basalt-sm font-normal text-basalt-muted-foreground">
 											per month

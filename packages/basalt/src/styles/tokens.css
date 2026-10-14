@@ -110,6 +110,7 @@
 	--basalt-space-overlay: var(--basalt-space-lg);
 	--basalt-space-panel-x: var(--basalt-space-card);
 	--basalt-space-panel-y: var(--basalt-space-card-sm);
+	--basalt-space-table-edge: var(--basalt-space-panel-x);
 	--basalt-space-content-gap: var(--basalt-space-lg);
 	--basalt-space-row-x: var(--basalt-space-lg);
 	--basalt-space-row-y: var(--basalt-space-md);

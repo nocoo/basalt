@@ -53,13 +53,15 @@ export function DiffTable({
 				<Table aria-label={title} aria-busy={vm.status === "applying" || undefined}>
 					<TableHeader>
 						<TableRow>
-							<TableHead scope="col">Change</TableHead>
+							<TableHead scope="col" className="ps-basalt-table-edge">
+								Change
+							</TableHead>
 							{columns.map((column) => (
 								<TableHead key={column.id} scope="col" style={{ minWidth: column.width }}>
 									{column.label}
 								</TableHead>
 							))}
-							<TableHead scope="col">
+							<TableHead scope="col" className="pe-basalt-table-edge">
 								<span className="sr-only">Include change</span>
 							</TableHead>
 						</TableRow>
@@ -83,13 +85,19 @@ export function DiffTable({
 										vm.toggle(row.id);
 									}}
 								>
-									<TableCell className="whitespace-nowrap text-basalt-sm">
+									<TableCell className="whitespace-nowrap ps-basalt-table-edge text-basalt-sm">
 										<span className="inline-flex items-center gap-basalt-control-gap leading-[var(--basalt-line-body)]">
-											{row.change === "add" ? (
-												<Plus aria-hidden="true" className="size-basalt-icon-sm" />
-											) : row.change === "remove" ? (
-												<Minus aria-hidden="true" className="size-basalt-icon-sm" />
-											) : null}
+											<span
+												data-diff-marker=""
+												aria-hidden="true"
+												className="inline-flex size-basalt-icon-sm shrink-0 items-center justify-center"
+											>
+												{row.change === "add" ? (
+													<Plus className="size-basalt-icon-sm" />
+												) : row.change === "remove" ? (
+													<Minus className="size-basalt-icon-sm" />
+												) : null}
+											</span>
 											{row.change === "unchanged"
 												? "Keep"
 												: row.change === "add"
@@ -109,7 +117,7 @@ export function DiffTable({
 											{row.values[column.id] ?? "—"}
 										</TableCell>
 									))}
-									<TableCell>
+									<TableCell className="pe-basalt-table-edge">
 										{row.change !== "unchanged" && (
 											<Checkbox
 												disabled={vm.blocked}
@@ -124,7 +132,10 @@ export function DiffTable({
 						})}
 						{props.rows.length === 0 && (
 							<TableRow>
-								<TableCell colSpan={columns.length + 2}>
+								<TableCell
+									colSpan={columns.length + 2}
+									className="ps-basalt-table-edge pe-basalt-table-edge"
+								>
 									<p role="status" className="text-basalt-muted-foreground">
 										No proposed changes
 									</p>

@@ -43,9 +43,43 @@ describe("DiffTable", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Apply 1 changes" }));
 		await screen.findByText("1 changes applied");
 	});
+	it("marks the known outer cells of the attached card table", () => {
+		render(<DiffTable columns={columns} rows={rows} onApply={vi.fn()} />);
+		expect(screen.getByRole("columnheader", { name: "Change" })).toHaveClass(
+			"ps-basalt-table-edge",
+		);
+		expect(screen.getByRole("columnheader", { name: "Include change" })).toHaveClass(
+			"pe-basalt-table-edge",
+		);
+		expect(screen.getByRole("cell", { name: /Keep/ }).className).toMatch(
+			/\bps-basalt-table-edge\b/,
+		);
+		expect(
+			screen.getByRole("checkbox", { name: "Include addition Pistachio" }).closest("td"),
+		).toHaveClass("pe-basalt-table-edge");
+	});
+
+	it("reserves the change-marker slot for Keep, Add and Remove", () => {
+		render(<DiffTable columns={columns} rows={rows} onApply={vi.fn()} />);
+		for (const label of ["Keep", "Add", "Remove"] as const) {
+			const marker = screen.getByText(label).closest("td")?.querySelector("[data-diff-marker]");
+			expect(marker).toHaveAttribute("data-diff-marker");
+			expect(marker).toHaveClass("size-basalt-icon-sm");
+			if (label === "Keep") {
+				expect(marker?.childElementCount).toBe(0);
+			} else {
+				expect(marker?.querySelector("svg")).toBeTruthy();
+			}
+		}
+	});
+
 	it("handles no changes, disabled application and absent cells", () => {
 		const { rerender } = render(<DiffTable columns={columns} rows={[]} onApply={vi.fn()} />);
 		expect(screen.getByRole("status")).toHaveTextContent("No proposed changes");
+		expect(screen.getByRole("status").closest("td")).toHaveClass(
+			"ps-basalt-table-edge",
+			"pe-basalt-table-edge",
+		);
 		expect(screen.getByRole("button", { name: "Apply 0 changes" })).toBeDisabled();
 		rerender(
 			<DiffTable

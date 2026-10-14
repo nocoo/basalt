@@ -215,6 +215,9 @@ describe("record geometry", () => {
 				defaultSelected={[]}
 			/>,
 		);
+		expect(screen.getByRole("region", { name: "Records scroll area" })).toHaveClass(
+			"focus-visible:-outline-offset-2",
+		);
 		expect(screen.getByRole("region", { name: "Records scroll area" })).toHaveStyle({
 			maxHeight: "320px",
 		});
@@ -242,6 +245,131 @@ describe("record geometry", () => {
 		expect(button.textContent).toBe("Company");
 		fireEvent.click(button);
 		expect(button.closest("th")).toHaveAttribute("aria-sort", "descending");
+	});
+});
+
+describe("column alignment", () => {
+	it("aligns sortable numeric headers with values and preserves sort", () => {
+		const onSortChange = vi.fn();
+		render(
+			<DataTable
+				data={rows}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{
+						id: "count",
+						header: "Count",
+						textAlign: "end",
+						accessor: (row) => `$${row.count}`,
+						sortValue: (row) => row.count,
+					},
+				]}
+				onSortChange={onSortChange}
+			/>,
+		);
+		const header = screen.getByRole("columnheader", { name: "Count" });
+		const button = screen.getByRole("button", { name: "Count" });
+		expect(header).toHaveClass("text-end", "tabular-nums");
+		expect(button).toHaveClass("justify-end", "text-end", "p-0", "border-0");
+		expect(button.firstElementChild?.tagName).toBe("svg");
+		expect(button.querySelector("svg")).not.toHaveClass("ml-auto");
+		expect(screen.getByRole("cell", { name: "$20" })).toHaveClass("text-end", "tabular-nums");
+		fireEvent.click(button);
+		expect(onSortChange).toHaveBeenCalledWith({ id: "count", dir: "asc" });
+		expect(header).toHaveAttribute("aria-sort", "ascending");
+		expect(names()).toEqual(["Birch", "Atlas"]);
+	});
+
+	it("does not force cell alignment when a column omits textAlign", () => {
+		render(
+			<DataTable
+				data={rows}
+				columns={[{ id: "name", header: "Name", accessor: (row) => row.name }]}
+			/>,
+		);
+		expect(screen.getByRole("cell", { name: "Atlas" }).className).not.toMatch(/\btext-start\b/);
+		expect(screen.getByRole("columnheader", { name: "Name" })).toHaveClass("text-start");
+	});
+
+	it("aligns non-sortable headers without creating a sort control", () => {
+		render(
+			<DataTable
+				data={rows}
+				columns={[
+					{ id: "name", header: "Name", accessor: (row) => row.name },
+					{
+						id: "count",
+						header: "Total",
+						textAlign: "end",
+						sortable: false,
+						accessor: (row) => row.count,
+					},
+				]}
+			/>,
+		);
+		expect(screen.queryByRole("button", { name: "Total" })).not.toBeInTheDocument();
+		expect(screen.getByText("Total").tagName).toBe("SPAN");
+		expect(screen.getByRole("columnheader", { name: "Total" })).toHaveClass("text-end");
+		expect(screen.getByText("Total")).toHaveClass("justify-end", "text-end");
+	});
+
+	it("stamps attached rails on display indices including numbers, select and state rows", () => {
+		render(
+			<DataTable
+				data={rows}
+				columns={columns}
+				edge="attached"
+				rowNumbers
+				maxHeight={240}
+				defaultSelected={[]}
+				getRowId={(row) => row.id}
+				aria-label="Aligned"
+			/>,
+		);
+		expect(screen.getByRole("table")).not.toHaveAttribute("data-basalt-table-edge");
+		const rowHead = screen.getByRole("columnheader", { name: "Row number" });
+		const nameHead = screen.getByRole("columnheader", { name: "Name" });
+		const countHead = screen.getByRole("columnheader", { name: "Count" });
+		expect(rowHead).toHaveClass("ps-basalt-table-edge");
+		expect(rowHead.className).not.toMatch(/\bpe-basalt-table-edge\b/);
+		expect(nameHead.className).not.toMatch(/basalt-table-edge/);
+		expect(countHead).toHaveClass("pe-basalt-table-edge");
+		expect(countHead.className).not.toMatch(/\bps-basalt-table-edge\b/);
+		expect(screen.getByRole("cell", { name: "1" })).toHaveClass("ps-basalt-table-edge");
+		expect(screen.getByRole("cell", { name: "$20" })).toHaveClass("pe-basalt-table-edge");
+		expect(screen.getByRole("region", { name: "Aligned scroll area" })).toHaveStyle({
+			maxHeight: "240px",
+		});
+		expect(screen.getByRole("checkbox", { name: "Select a" })).toBeInTheDocument();
+		expect(screen.getByRole("columnheader", { name: "Select" }).className).not.toMatch(
+			/basalt-table-edge/,
+		);
+	});
+
+	it("applies both rails to attached full-row state cells", () => {
+		render(<DataTable data={[]} columns={columns} edge="attached" empty="None" />);
+		expect(screen.getByRole("cell", { name: "None" })).toHaveClass(
+			"ps-basalt-table-edge",
+			"pe-basalt-table-edge",
+		);
+		expect(screen.getByRole("columnheader", { name: "Name" })).toHaveClass("ps-basalt-table-edge");
+		expect(screen.getByRole("columnheader", { name: "Count" })).toHaveClass("pe-basalt-table-edge");
+	});
+
+	it("insets attached pagination to the panel rail and keeps inset pagination compact", () => {
+		const { rerender } = render(
+			<DataTable data={rows} columns={columns} edge="attached" pageSize={1} />,
+		);
+		expect(screen.getByRole("navigation", { name: "Pagination" })).toHaveClass(
+			"px-basalt-panel-x",
+			"pb-basalt-panel-y",
+		);
+		expect(screen.getByRole("button", { name: "Next page" })).toHaveClass("basalt-action-inset");
+		rerender(<DataTable data={rows} columns={columns} pageSize={1} />);
+		expect(screen.getByRole("navigation", { name: "Pagination" }).className).not.toMatch(
+			/basalt-panel-x/,
+		);
+		expect(screen.getByRole("button", { name: "Next page" })).toHaveClass("basalt-action-inset");
 	});
 });
 

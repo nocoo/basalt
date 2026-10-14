@@ -489,3 +489,44 @@ The repair handoff also used an outdated reviewer model alias and submitted a ta
 ## 2026-10-13: Budget the full consumer job, not just its test command
 
 Repeated CI verification exposed a separate job-budget failure. The first package-gates execution took 875 seconds; the next reached GitHub's 900-second ceiling with only about 20 seconds left when the final mobile-layout gate began. GitHub explicitly reported the job execution timeout even though earlier consumer and showcase assertions passed. Allocate 20 minutes to the complete job, including browser installation and cleanup, without changing test selection, assertion timeouts or failure propagation. Restart consecutive-success verification on the final revision instead of counting the cancelled attempt or retrying until a faster runner happens to pass.
+
+## 2026-10-14: Align semantic boundaries, not DOM child positions
+
+The first spacing draft inferred table edges with first/last-child selectors.
+Review caught padding leaking into nested tables and then a rowSpan continuation
+whose first DOM cell was actually an interior column. Mark actual edge cells with
+logical token utilities; DataTable can do this because it owns the column model,
+while native Table must not guess. Keep cell fills full width instead of adding
+an empty table gutter or a DOM grid-tracking engine. New logical alignment also
+needs its own textAlign prop: overloading native align broke existing attributes,
+and mixing physical text alignment with logical flex alignment failed in RTL.
+
+The same review caught collapsed icons drifting away from their rail center and
+an omitted cell alignment that no longer inherited. Verify unchanged states and
+native attributes, not only the improved screenshot. Geometry probes must wait
+for portal animations: a 16px gap measured as 14.72px during the 0.92 entrance
+scale. Correct the measurement timing rather than compensating with spacing.
+
+The final keyboard probe initially measured focus-visible after mouse sorting
+and programmatic focus, which correctly kept pointer modality. Enter the target
+with real Tab navigation before checking its focus paint. Keep one-run screenshot
+paths in temporary probes, not conditional capture branches in repository gates.
+At 200% text size, a dialog title's intrinsic flex width also pushed Close outside
+the panel with both old and new footer spacing. Allow title shrinking and wrapping
+instead of reducing typography, padding or the close target.
+
+An ad-hoc API extraction probe omitted its required repository-root argument and
+failed before generating files. Read the full helper signature before bypassing
+the documented CLI; a failed probe is not a generator defect.
+
+A later baseline probe exported a cache path through macOS's `/tmp` symlink.
+SWC rejected the cache ancestry before any test ran. Resolve the temporary root
+with `pwd -P`, as the commit hook already does, before exporting cache paths;
+do not disable the native cache validation. A forced cleanup command was rejected
+before execution, so use reversible trash for checked, task-owned probe roots.
+
+Registry formatter subprocesses also timed out in two different verification
+cases. Preserve those failures and diagnose call stages outside the source tree.
+Bounded old/new input comparisons and instrumented successes are not full-gate
+proof or evidence that the intermittent cause is fixed. Keep timeouts, assertions
+and hooks unchanged, and require a normal exact-index run for the final commit.

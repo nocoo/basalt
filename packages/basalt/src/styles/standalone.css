@@ -132,6 +132,7 @@
   --basalt-space-overlay: var(--basalt-space-lg);
   --basalt-space-panel-x: var(--basalt-space-card);
   --basalt-space-panel-y: var(--basalt-space-card-sm);
+  --basalt-space-table-edge: var(--basalt-space-panel-x);
   --basalt-space-content-gap: var(--basalt-space-lg);
   --basalt-space-row-x: var(--basalt-space-lg);
   --basalt-space-row-y: var(--basalt-space-md);
@@ -1369,11 +1370,17 @@
   .my-basalt-layout-xl {
     margin-block: var(--basalt-space-layout-xl);
   }
+  .ms-auto {
+    margin-inline-start: auto;
+  }
   .mt-auto {
     margin-top: auto;
   }
   .mt-basalt-content-gap {
     margin-top: var(--basalt-space-content-gap);
+  }
+  .mt-basalt-layout {
+    margin-top: var(--basalt-space-layout);
   }
   .mt-basalt-space-lg {
     margin-top: var(--basalt-space-lg);
@@ -1608,6 +1615,9 @@
   }
   .min-h-\[calc\(1lh\+var\(--basalt-space-2\)\)\] {
     min-height: calc(1lh + var(--basalt-space-2));
+  }
+  .min-h-\[calc\(var\(--basalt-line-row\)\+2\*var\(--basalt-space-lg\)\)\] {
+    min-height: calc(var(--basalt-line-row) + 2 * var(--basalt-space-lg));
   }
   .min-h-basalt-action {
     min-height: var(--basalt-size-action);
@@ -2609,9 +2619,6 @@
   .px-basalt-space-sm {
     padding-inline: var(--basalt-space-sm);
   }
-  .px-basalt-table-x {
-    padding-inline: var(--basalt-space-table-x);
-  }
   .py-basalt-card {
     padding-block: var(--basalt-space-card);
   }
@@ -2669,6 +2676,18 @@
   .py-basalt-table-y {
     padding-block: var(--basalt-space-table-y);
   }
+  .ps-basalt-table-edge {
+    padding-inline-start: var(--basalt-space-table-edge);
+  }
+  .ps-basalt-table-x {
+    padding-inline-start: var(--basalt-space-table-x);
+  }
+  .pe-basalt-table-edge {
+    padding-inline-end: var(--basalt-space-table-edge);
+  }
+  .pe-basalt-table-x {
+    padding-inline-end: var(--basalt-space-table-x);
+  }
   .pt-basalt-layout {
     padding-top: var(--basalt-space-layout);
   }
@@ -2717,11 +2736,17 @@
   .text-center {
     text-align: center;
   }
+  .text-end {
+    text-align: end;
+  }
   .text-left {
     text-align: left;
   }
   .text-right {
     text-align: right;
+  }
+  .text-start {
+    text-align: start;
   }
   .align-middle {
     vertical-align: middle;
@@ -2767,10 +2792,6 @@
   .text-basalt-xs {
     font-size: var(--basalt-text-xs);
     line-height: var(--tw-leading, var(--basalt-leading-body));
-  }
-  .leading-\[calc\(var\(--basalt-size-control\)-2\*var\(--basalt-space-lg\)\)\] {
-    --tw-leading: calc(var(--basalt-size-control) - 2 * var(--basalt-space-lg));
-    line-height: calc(var(--basalt-size-control) - 2 * var(--basalt-space-lg));
   }
   .leading-\[var\(--basalt-leading-banner\)\] {
     --tw-leading: var(--basalt-leading-banner);

@@ -254,7 +254,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"dialog": {
 		"file": "packages/basalt/src/components/dialog.tsx",
-		"hash": "d5f8e6d0a61a73df",
+		"hash": "3374c01162ceb969",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dialog.js.map (sourcesContent[0])"
 	},
@@ -314,13 +314,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"table": {
 		"file": "packages/basalt/src/components/table.tsx",
-		"hash": "118b5f2523670fbc",
+		"hash": "e394b2b775b1e88b",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/table.js.map (sourcesContent[0])"
 	},
 	"data-table": {
 		"file": "packages/basalt/src/components/data-table.tsx",
-		"hash": "c379b6fdeb17d0bd",
+		"hash": "cf4d04c79f9bcff5",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/data-table.js.map (sourcesContent[0])"
 	},
@@ -380,7 +380,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "a3aeba71071554d7",
+		"hash": "9f68a198780ffd4a",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},
@@ -542,7 +542,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"diff-table": {
 		"file": "packages/basalt/src/components/diff-table.tsx",
-		"hash": "222a34547a323765",
+		"hash": "f5dc2b0dbcc625d4",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/diff-table.js.map (sourcesContent[0])"
 	},

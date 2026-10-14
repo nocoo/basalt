@@ -157,6 +157,7 @@ describe("data-layout catalog content family", () => {
 			"retryLabel",
 			"aria-label",
 			"aria-describedby",
+			"edge",
 		]);
 		expect(dataLayout.table?.examples).toBe(TABLE_EXAMPLES);
 		expect(dataLayout.table?.docs.api).toBe(tableApi);

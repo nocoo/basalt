@@ -40,6 +40,9 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ShowcasePage } from "@/components/ShowcasePage";
 
+const DIALOG_FIELDS_CLASS = "mt-basalt-layout space-y-basalt-layout";
+const DIALOG_SECTION_CLASS = "mt-basalt-layout space-y-basalt-layout-lg";
+
 const DIALOG_SIZES: { size: DialogSize; width: string }[] = [
 	{ size: "sm", width: "288px" },
 	{ size: "base", width: "384px" },
@@ -196,7 +199,7 @@ export default function DialogsPage() {
 									title={t("pages.dialogs.logTitle")}
 									description={t("pages.dialogs.logBody")}
 								/>
-								<div className="mt-basalt-space-lg space-y-basalt-space-lg">
+								<div data-dialog-fields="" className={DIALOG_FIELDS_CLASS}>
 									<Field label={t("pages.dialogs.operation")}>
 										<Input defaultValue={t("pages.dialogs.invest")} />
 									</Field>
@@ -225,7 +228,7 @@ export default function DialogsPage() {
 									title={t("pages.dialogs.holdingTitle")}
 									description={t("pages.dialogs.holdingBody")}
 								/>
-								<div className="mt-basalt-space-lg space-y-basalt-space-lg">
+								<div data-dialog-fields="" className={DIALOG_FIELDS_CLASS}>
 									<Field label={t("pages.dialogs.holdingName")}>
 										<Input defaultValue={t("pages.dialogs.holdingNameValue")} />
 									</Field>
@@ -260,7 +263,7 @@ export default function DialogsPage() {
 									title={t("pages.dialogs.reviewTitle")}
 									description={t("pages.dialogs.reviewBody")}
 								/>
-								<div className="mt-basalt-space-lg">
+								<div className="mt-basalt-layout">
 									<DescriptionList columns={2}>
 										<DescriptionList.Item term={t("pages.dialogs.from")}>
 											{t("pages.dialogs.fromValue")}
@@ -295,125 +298,131 @@ export default function DialogsPage() {
 									title={t("pages.dialogs.unitTitle")}
 									description={t("pages.dialogs.unitBody")}
 								/>
-								<div className="mt-basalt-space-lg grid items-start gap-basalt-layout lg:grid-cols-3">
-									<div className="space-y-basalt-space-lg">
-										<DialogColumnTitle>{t("pages.dialogs.unitBasics")}</DialogColumnTitle>
-										<Field label={t("pages.dialogs.unitCode")}>
-											<Input defaultValue="U-2044" />
-										</Field>
-										<Field label={t("pages.dialogs.amount")}>
-											<Input defaultValue="80,000.00" inputMode="decimal" />
-										</Field>
-										<div className="grid grid-cols-2 gap-basalt-layout">
-											<Select defaultValue="USD">
-												<Field label={t("pages.dialogs.currency")}>
-													<SelectTrigger aria-label={t("pages.dialogs.currency")}>
-														<SelectValue />
-													</SelectTrigger>
-												</Field>
-												<SelectContent>
-													<SelectItem value="USD">USD</SelectItem>
-													<SelectItem value="CNY">CNY</SelectItem>
-													<SelectItem value="HKD">HKD</SelectItem>
-												</SelectContent>
-											</Select>
-											<Select defaultValue="active">
-												<Field label={t("pages.dialogs.status")}>
-													<SelectTrigger aria-label={t("pages.dialogs.status")}>
-														<SelectValue />
-													</SelectTrigger>
-												</Field>
-												<SelectContent>
-													<SelectItem value="active">{t("pages.dialogs.statusActive")}</SelectItem>
-													<SelectItem value="planned">
-														{t("pages.dialogs.statusPlanned")}
-													</SelectItem>
-													<SelectItem value="archived">
-														{t("pages.dialogs.statusArchived")}
-													</SelectItem>
-												</SelectContent>
-											</Select>
-										</div>
-										<Select defaultValue="usd-cash">
-											<Field label={t("pages.dialogs.strategy")}>
-												<SelectTrigger aria-label={t("pages.dialogs.strategy")}>
-													<SelectValue />
-												</SelectTrigger>
+								<div data-dialog-fields="" className={DIALOG_SECTION_CLASS}>
+									<div className="grid grid-cols-1 items-start gap-basalt-layout lg:grid-cols-3">
+										<div className="space-y-basalt-layout">
+											<DialogColumnTitle>{t("pages.dialogs.unitBasics")}</DialogColumnTitle>
+											<Field label={t("pages.dialogs.unitCode")}>
+												<Input defaultValue="U-2044" />
 											</Field>
-											<SelectContent>
-												<SelectItem value="usd-cash">{t("pages.dialogs.strategyUsd")}</SelectItem>
-												<SelectItem value="long">{t("pages.dialogs.strategyLong")}</SelectItem>
-												<SelectItem value="short">{t("pages.dialogs.strategyShort")}</SelectItem>
-											</SelectContent>
-										</Select>
-										<Field label={t("pages.dialogs.startDate")}>
-											<Input defaultValue="2024-11-01" />
-										</Field>
-										<Field label={t("pages.dialogs.unitNote")} required={false}>
-											<InputArea defaultValue={t("pages.dialogs.unitNoteValue")} />
-										</Field>
-									</div>
-									<div className="space-y-basalt-space-lg">
-										<DialogColumnTitle>{t("pages.dialogs.unitProduct")}</DialogColumnTitle>
-										<Field label={t("pages.dialogs.product")}>
-											<Input defaultValue={t("pages.dialogs.holdingNameValue")} />
-										</Field>
-										<Field label={t("pages.dialogs.channel")}>
-											<Input defaultValue={t("pages.dialogs.channelValue")} />
-										</Field>
-										<div className="space-y-basalt-space-lg">
-											<p className="text-basalt-sm text-muted-foreground">
-												{t("pages.dialogs.stagedOps")}
-											</p>
-											<div className="flex flex-wrap gap-basalt-space-lg">
-												<Button type="button" variant="outline" size="sm">
-													{t("pages.dialogs.invest")}
-												</Button>
-												<Button type="button" variant="outline" size="sm">
-													{t("pages.dialogs.withdraw")}
-												</Button>
-												<Button type="button" variant="outline" size="sm">
-													{t("pages.dialogs.switchProduct")}
-												</Button>
+											<Field label={t("pages.dialogs.amount")}>
+												<Input defaultValue="80,000.00" inputMode="decimal" />
+											</Field>
+											<div className="grid grid-cols-2 gap-basalt-layout">
+												<Select defaultValue="USD">
+													<Field label={t("pages.dialogs.currency")}>
+														<SelectTrigger aria-label={t("pages.dialogs.currency")}>
+															<SelectValue />
+														</SelectTrigger>
+													</Field>
+													<SelectContent>
+														<SelectItem value="USD">USD</SelectItem>
+														<SelectItem value="CNY">CNY</SelectItem>
+														<SelectItem value="HKD">HKD</SelectItem>
+													</SelectContent>
+												</Select>
+												<Select defaultValue="active">
+													<Field label={t("pages.dialogs.status")}>
+														<SelectTrigger aria-label={t("pages.dialogs.status")}>
+															<SelectValue />
+														</SelectTrigger>
+													</Field>
+													<SelectContent>
+														<SelectItem value="active">
+															{t("pages.dialogs.statusActive")}
+														</SelectItem>
+														<SelectItem value="planned">
+															{t("pages.dialogs.statusPlanned")}
+														</SelectItem>
+														<SelectItem value="archived">
+															{t("pages.dialogs.statusArchived")}
+														</SelectItem>
+													</SelectContent>
+												</Select>
+											</div>
+											<Select defaultValue="usd-cash">
+												<Field label={t("pages.dialogs.strategy")}>
+													<SelectTrigger aria-label={t("pages.dialogs.strategy")}>
+														<SelectValue />
+													</SelectTrigger>
+												</Field>
+												<SelectContent>
+													<SelectItem value="usd-cash">{t("pages.dialogs.strategyUsd")}</SelectItem>
+													<SelectItem value="long">{t("pages.dialogs.strategyLong")}</SelectItem>
+													<SelectItem value="short">{t("pages.dialogs.strategyShort")}</SelectItem>
+												</SelectContent>
+											</Select>
+											<Field label={t("pages.dialogs.startDate")}>
+												<Input defaultValue="2024-11-01" />
+											</Field>
+											<Field label={t("pages.dialogs.unitNote")} required={false}>
+												<InputArea defaultValue={t("pages.dialogs.unitNoteValue")} />
+											</Field>
+										</div>
+										<div className="space-y-basalt-layout">
+											<DialogColumnTitle>{t("pages.dialogs.unitProduct")}</DialogColumnTitle>
+											<Field label={t("pages.dialogs.product")}>
+												<Input defaultValue={t("pages.dialogs.holdingNameValue")} />
+											</Field>
+											<Field label={t("pages.dialogs.channel")}>
+												<Input defaultValue={t("pages.dialogs.channelValue")} />
+											</Field>
+											<div className="space-y-basalt-layout">
+												<p className="text-basalt-sm text-muted-foreground">
+													{t("pages.dialogs.stagedOps")}
+												</p>
+												<div className="flex flex-wrap gap-basalt-space-lg">
+													<Button type="button" variant="outline" size="sm">
+														{t("pages.dialogs.invest")}
+													</Button>
+													<Button type="button" variant="outline" size="sm">
+														{t("pages.dialogs.withdraw")}
+													</Button>
+													<Button type="button" variant="outline" size="sm">
+														{t("pages.dialogs.switchProduct")}
+													</Button>
+												</div>
+											</div>
+											<DescriptionList columns={1}>
+												<DescriptionList.Item term={t("pages.dialogs.lock")}>
+													{t("pages.dialogs.lockValue")}
+												</DescriptionList.Item>
+												<DescriptionList.Item term={t("pages.dialogs.nextOpen")}>
+													2026-09-15
+												</DescriptionList.Item>
+											</DescriptionList>
+										</div>
+										<div className="space-y-basalt-layout">
+											<DialogColumnTitle>{t("pages.dialogs.unitHistory")}</DialogColumnTitle>
+											<div className="space-y-basalt-layout">
+												{UNIT_LOGS.map((log) => (
+													<div
+														key={log.date}
+														className="flex flex-wrap items-baseline gap-basalt-space-lg"
+													>
+														<div>
+															<p className="text-basalt-base text-foreground">
+																{t(`pages.dialogs.${log.action}`)}
+															</p>
+															<p className="text-basalt-sm text-muted-foreground">{log.date}</p>
+														</div>
+														<p className="ms-auto text-basalt-base tabular-nums">{log.amount}</p>
+													</div>
+												))}
 											</div>
 										</div>
-										<DescriptionList columns={1}>
-											<DescriptionList.Item term={t("pages.dialogs.lock")}>
-												{t("pages.dialogs.lockValue")}
-											</DescriptionList.Item>
-											<DescriptionList.Item term={t("pages.dialogs.nextOpen")}>
-												2026-09-15
-											</DescriptionList.Item>
-										</DescriptionList>
 									</div>
-									<div className="space-y-basalt-space-lg">
-										<DialogColumnTitle>{t("pages.dialogs.unitHistory")}</DialogColumnTitle>
-										<div className="space-y-basalt-space-lg">
-											{UNIT_LOGS.map((log) => (
-												<div
-													key={log.date}
-													className="flex items-baseline justify-between gap-basalt-space-lg"
-												>
-													<div>
-														<p className="text-basalt-base text-foreground">
-															{t(`pages.dialogs.${log.action}`)}
-														</p>
-														<p className="text-basalt-sm text-muted-foreground">{log.date}</p>
-													</div>
-													<p className="text-basalt-base tabular-nums">{log.amount}</p>
-												</div>
-											))}
+									<div className="space-y-basalt-layout">
+										<Separator />
+										<div className="grid gap-basalt-layout sm:grid-cols-[minmax(0,1fr)_11rem]">
+											<Field label={t("pages.dialogs.commitNote")} required={false}>
+												<Input placeholder={t("pages.dialogs.commitNotePlaceholder")} />
+											</Field>
+											<Field label={t("pages.dialogs.operationDate")}>
+												<Input defaultValue="2026-09-04" />
+											</Field>
 										</div>
 									</div>
-								</div>
-								<Separator className="mt-basalt-space-lg" />
-								<div className="mt-basalt-space-lg grid gap-basalt-layout sm:grid-cols-[minmax(0,1fr)_11rem]">
-									<Field label={t("pages.dialogs.commitNote")} required={false}>
-										<Input placeholder={t("pages.dialogs.commitNotePlaceholder")} />
-									</Field>
-									<Field label={t("pages.dialogs.operationDate")}>
-										<Input defaultValue="2026-09-04" />
-									</Field>
 								</div>
 								<DialogFooter>
 									<DialogClose asChild>
@@ -441,7 +450,7 @@ export default function DialogsPage() {
 								title={t("pages.dialogs.formTitle")}
 								description={t("pages.dialogs.formBody")}
 							/>
-							<div className="mt-basalt-space-lg">
+							<div data-dialog-fields="" className={DIALOG_FIELDS_CLASS}>
 								<Field label={t("pages.dialogs.workspaceName")}>
 									<Input placeholder={t("pages.dialogs.workspacePlaceholder")} />
 								</Field>

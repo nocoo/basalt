@@ -6,6 +6,11 @@ describe("FormsPage", () => {
 	it("uses library buttons for form actions", () => {
 		render(<FormsPage />);
 
+		expect(screen.getByRole("form", { name: "Profile Form" })).toHaveClass("space-y-basalt-layout");
+		expect(screen.getByRole("form", { name: "Security" })).toHaveClass("space-y-basalt-layout");
+		expect(screen.getByRole("form", { name: "Newsletter" })).toHaveClass("space-y-basalt-layout");
+		const firstName = screen.getByRole("textbox", { name: "First name" });
+		expect(firstName.closest("[data-field]")).toHaveClass("space-y-basalt-space-lg");
 		expect(screen.getByRole("button", { name: "Save profile" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Update security" })).toBeInTheDocument();
 		expect(screen.getByRole("button", { name: "Subscribe" })).toBeInTheDocument();

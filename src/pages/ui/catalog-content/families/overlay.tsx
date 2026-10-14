@@ -31,6 +31,7 @@ import {
 	DialogClose,
 	DialogContent,
 	DialogDescription,
+	DialogFooter,
 	type DialogSize,
 	DialogTitle,
 	DialogTrigger,
@@ -125,13 +126,13 @@ const DIALOG_HEADER_HELPERS = `function DialogCloseButton() {
 function DialogHeaderRow({ title }: { title: string }) {
 	return (
 		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
-			<DialogTitle>{title}</DialogTitle>
+			<DialogTitle className="min-w-0 wrap-anywhere">{title}</DialogTitle>
 			<DialogCloseButton />
 		</div>
 	);
 }`;
 
-const DIALOG_FOOTER_HELPER = `function DialogFooter({
+const DIALOG_ACTIONS_HELPER = `function DialogActions({
 	cancel = "Cancel",
 	action = "Delete",
 	actionVariant = "destructive",
@@ -141,18 +142,18 @@ const DIALOG_FOOTER_HELPER = `function DialogFooter({
 	actionVariant?: "default" | "destructive";
 }) {
 	return (
-		<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
+		<>
 			<DialogClose asChild>
 				<Button variant="outline">{cancel}</Button>
 			</DialogClose>
 			<DialogClose asChild>
 				<Button variant={actionVariant}>{action}</Button>
 			</DialogClose>
-		</div>
+		</>
 	);
 }`;
 
-const DIALOG_ALL_HELPERS = `${DIALOG_HEADER_HELPERS}\n\n${DIALOG_FOOTER_HELPER}`;
+const DIALOG_ALL_HELPERS = `${DIALOG_HEADER_HELPERS}\n\n${DIALOG_ACTIONS_HELPER}`;
 
 function DialogCloseButton() {
 	return (
@@ -167,13 +168,13 @@ function DialogCloseButton() {
 function DialogHeaderRow({ title }: { title: string }) {
 	return (
 		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
-			<DialogTitle>{title}</DialogTitle>
+			<DialogTitle className="min-w-0 wrap-anywhere">{title}</DialogTitle>
 			<DialogCloseButton />
 		</div>
 	);
 }
 
-function DialogFooter({
+function DialogActions({
 	cancel = "Cancel",
 	action = "Delete",
 	actionVariant = "destructive",
@@ -183,14 +184,14 @@ function DialogFooter({
 	actionVariant?: "default" | "destructive";
 }) {
 	return (
-		<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
+		<>
 			<DialogClose asChild>
 				<Button variant="outline">{cancel}</Button>
 			</DialogClose>
 			<DialogClose asChild>
 				<Button variant={actionVariant}>{action}</Button>
 			</DialogClose>
-		</div>
+		</>
 	);
 }
 
@@ -235,11 +236,11 @@ function DialogSizesExample() {
 								</TableBody>
 							</Table>
 						</div>
-						<div className="mt-basalt-space-lg flex justify-end">
+						<DialogFooter>
 							<DialogClose asChild>
 								<Button variant="outline">Close</Button>
 							</DialogClose>
-						</div>
+						</DialogFooter>
 					</DialogContent>
 				</Dialog>
 			))}
@@ -328,6 +329,7 @@ import {
 	DialogClose,
 	DialogContent,
 	DialogDescription,
+	DialogFooter,
 	DialogTitle,
 	DialogTrigger,
 } from "@nocoo/basalt/components/dialog";
@@ -343,14 +345,14 @@ export default function Example() {
 				<DialogDescription>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 				</DialogDescription>
-				<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
+				<DialogFooter>
 					<DialogClose asChild>
 						<Button variant="outline">Cancel</Button>
 					</DialogClose>
 					<DialogClose asChild>
 						<Button variant="destructive">Delete</Button>
 					</DialogClose>
-				</div>
+				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	);
@@ -374,7 +376,7 @@ export default function Example() {
 	</DialogTrigger>
 	<DialogContent>
 		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
-			<DialogTitle>Modal Title</DialogTitle>
+			<DialogTitle className="min-w-0 wrap-anywhere">Modal Title</DialogTitle>
 			<DialogClose asChild>
 				<Button variant="outline" size="icon" aria-label="Close">
 					<X />
@@ -411,6 +413,7 @@ import {
 	DialogClose,
 	DialogContent,
 	DialogDescription,
+	DialogFooter,
 	type DialogSize,
 	DialogTitle,
 	DialogTrigger,
@@ -438,7 +441,7 @@ function DialogCloseButton() {
 function DialogHeaderRow({ title }: { title: string }) {
 	return (
 		<div className="mb-basalt-space-lg flex items-start justify-between gap-basalt-space-lg">
-			<DialogTitle>{title}</DialogTitle>
+			<DialogTitle className="min-w-0 wrap-anywhere">{title}</DialogTitle>
 			<DialogCloseButton />
 		</div>
 	);
@@ -485,11 +488,11 @@ export default function Example() {
 								</TableBody>
 							</Table>
 						</div>
-						<div className="mt-basalt-space-lg flex justify-end">
+						<DialogFooter>
 							<DialogClose asChild>
 								<Button variant="outline">Close</Button>
 							</DialogClose>
-						</div>
+						</DialogFooter>
 					</DialogContent>
 				</Dialog>
 			))}
@@ -570,15 +573,17 @@ export default function Example() {
 		<DialogDescription>
 			This action cannot be undone. This will permanently delete the care plan and all associated data.
 		</DialogDescription>
-		<DialogFooter action="Delete" />
+		<DialogFooter>
+			<DialogActions action="Delete" />
+		</DialogFooter>
 	</DialogContent>
 </Dialog>`,
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
-						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
+						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 						'import { AlertTriangle } from "lucide-react";',
 					],
-					DIALOG_FOOTER_HELPER,
+					DIALOG_ACTIONS_HELPER,
 				),
 				render: () => (
 					<Dialog>
@@ -596,7 +601,9 @@ export default function Example() {
 								This action cannot be undone. This will permanently delete the care plan and all
 								associated data.
 							</DialogDescription>
-							<DialogFooter action="Delete" />
+							<DialogFooter>
+								<DialogActions action="Delete" />
+							</DialogFooter>
 						</DialogContent>
 					</Dialog>
 				),
@@ -612,12 +619,14 @@ export default function Example() {
 	<DialogContent>
 		<DialogHeaderRow title="Delete Resource?" />
 		<DialogDescription>${DIALOG_LOREM}</DialogDescription>
-		<DialogFooter />
+		<DialogFooter>
+			<DialogActions />
+		</DialogFooter>
 	</DialogContent>
 </Dialog>`,
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
-						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
+						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 						'import { X } from "lucide-react";',
 					],
 					DIALOG_ALL_HELPERS,
@@ -630,7 +639,9 @@ export default function Example() {
 						<DialogContent>
 							<DialogHeaderRow title="Delete Resource?" />
 							<DialogDescription>{DIALOG_LOREM}</DialogDescription>
-							<DialogFooter />
+							<DialogFooter>
+								<DialogActions />
+							</DialogFooter>
 						</DialogContent>
 					</Dialog>
 				),
@@ -701,17 +712,17 @@ export default function Example() {
 				<SelectItem value="eu-west">EU West</SelectItem>
 			</SelectContent>
 		</Select>
-		<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
+		<DialogFooter>
 			<DialogClose asChild>
 				<Button variant="outline">Cancel</Button>
 			</DialogClose>
 			<Button>Create</Button>
-		</div>
+		</DialogFooter>
 	</DialogContent>
 </Dialog>`,
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
-						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
+						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 						'import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@nocoo/basalt/components/select";',
 						'import { X } from "lucide-react";',
 					],
@@ -737,12 +748,12 @@ export default function Example() {
 									<SelectItem value="eu-west">EU West</SelectItem>
 								</SelectContent>
 							</Select>
-							<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
+							<DialogFooter>
 								<DialogClose asChild>
 									<Button variant="outline">Cancel</Button>
 								</DialogClose>
 								<Button>Create</Button>
-							</div>
+							</DialogFooter>
 						</DialogContent>
 					</Dialog>
 				),
@@ -768,18 +779,18 @@ export default function Example() {
 			]}
 			placeholder="Search regions..."
 		/>
-		<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
+		<DialogFooter>
 			<DialogClose asChild>
 				<Button variant="outline">Cancel</Button>
 			</DialogClose>
 			<Button>Create</Button>
-		</div>
+		</DialogFooter>
 	</DialogContent>
 </Dialog>`,
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
 						'import { Combobox } from "@nocoo/basalt/components/combobox";',
-						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
+						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 						'import { X } from "lucide-react";',
 					],
 					DIALOG_HEADER_HELPERS,
@@ -802,12 +813,12 @@ export default function Example() {
 								]}
 								placeholder="Search regions..."
 							/>
-							<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
+							<DialogFooter>
 								<DialogClose asChild>
 									<Button variant="outline">Cancel</Button>
 								</DialogClose>
 								<Button>Create</Button>
-							</div>
+							</DialogFooter>
 						</DialogContent>
 					</Dialog>
 				),
@@ -835,16 +846,16 @@ export default function Example() {
 				<DropdownMenuItem>Delete</DropdownMenuItem>
 			</DropdownMenuContent>
 		</DropdownMenu>
-		<div className="mt-basalt-space-lg flex justify-end">
+		<DialogFooter>
 			<DialogClose asChild>
 				<Button variant="outline">Close</Button>
 			</DialogClose>
-		</div>
+		</DialogFooter>
 	</DialogContent>
 </Dialog>`,
 					[
 						'import { Button } from "@nocoo/basalt/components/button";',
-						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
+						'import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from "@nocoo/basalt/components/dialog";',
 						'import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@nocoo/basalt/components/dropdown-menu";',
 						'import { X } from "lucide-react";',
 					],
@@ -870,11 +881,11 @@ export default function Example() {
 									<DropdownMenuItem>Delete</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
-							<div className="mt-basalt-space-lg flex justify-end">
+							<DialogFooter>
 								<DialogClose asChild>
 									<Button variant="outline">Close</Button>
 								</DialogClose>
-							</div>
+							</DialogFooter>
 						</DialogContent>
 					</Dialog>
 				),

@@ -63,6 +63,12 @@ export const API = [
 				required: false,
 				description: "Additional classes for the header cell.",
 			},
+			{
+				name: "textAlign",
+				type: "TableTextAlign",
+				required: false,
+				description: "Logical inline alignment. Omitted headers keep `text-start` unless native `align` is set.",
+			},
 		],
 	},
 	{
@@ -73,6 +79,40 @@ export const API = [
 				type: "string",
 				required: false,
 				description: "Additional classes for the cell.",
+			},
+			{
+				name: "textAlign",
+				type: "TableTextAlign",
+				required: false,
+				description: "Logical inline alignment. Omitted cells inherit from the table or row. Native HTML `align` is unchanged.",
+			},
+		],
+	},
+	{
+		name: "TableSortableHeader",
+		props: [
+			{
+				name: "children",
+				type: "React.ReactNode",
+				required: true,
+			},
+			{
+				name: "textAlign",
+				type: "TableTextAlign",
+				required: false,
+				default: "\"start\"",
+				description: "Logical control layout. `end` places the sort icon inward of the label.",
+			},
+			{
+				name: "sorted",
+				type: "TableSortDirection",
+				required: false,
+				description: "Current sort direction when this column is sorted.",
+			},
+			{
+				name: "className",
+				type: "string",
+				required: false,
 			},
 		],
 	},

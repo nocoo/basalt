@@ -1,4 +1,3 @@
-import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import {
 	type CSSProperties,
 	type ReactNode,
@@ -14,7 +13,23 @@ import { Button } from "./button";
 import { Checkbox } from "./checkbox";
 import { Pagination } from "./pagination";
 import { SkeletonLine } from "./skeleton-line";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "./table";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+	TableSortableHeader,
+	type TableTextAlign,
+} from "./table";
+
+export type DataTableEdge = "inset" | "attached";
+
+function attachedEdge(edge: DataTableEdge | undefined, index: number, count: number) {
+	if (edge !== "attached") return;
+	return cn(index === 0 && "ps-basalt-table-edge", index === count - 1 && "pe-basalt-table-edge");
+}
 
 export type DataTableColumn<T> = {
 	id: string;
@@ -34,6 +49,8 @@ export type DataTableColumn<T> = {
 	headerClassName?: string;
 	/** Classes applied to each data cell. */
 	cellClassName?: string;
+	/** Logical header and cell alignment. Omitted cells inherit from the table. */
+	textAlign?: TableTextAlign;
 };
 
 export type DataTableSort = { id: string; dir: "asc" | "desc" };
@@ -242,6 +259,8 @@ export type DataTableProps<T = unknown> = {
 	"aria-label"?: string;
 	/** ID of additional table instructions or summary. */
 	"aria-describedby"?: string;
+	/** Direct-card rails on the first and last display columns. @default "inset" */
+	edge?: DataTableEdge;
 };
 
 export function DataTable<T>({
@@ -274,6 +293,7 @@ export function DataTable<T>({
 	retryLabel = "Try again",
 	"aria-label": ariaLabel = "Data table",
 	"aria-describedby": ariaDescribedBy,
+	edge,
 }: DataTableProps<T>) {
 	const [uncontrolledSort, setUncontrolledSort] = useState<DataTableSort | null>(defaultSort);
 	const sort = controlledSort === undefined ? uncontrolledSort : controlledSort;
@@ -509,7 +529,7 @@ export function DataTable<T>({
 				aria-label={`${ariaLabel} scroll area`}
 				// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
 				tabIndex={0}
-				className="relative min-w-0 overflow-auto rounded-basalt-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary"
+				className="relative min-w-0 overflow-auto rounded-basalt-md focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-basalt-primary"
 				style={{ maxHeight }}
 			>
 				<Table
@@ -524,7 +544,11 @@ export function DataTable<T>({
 							{rowNumbers && (
 								<TableHead
 									scope="col"
-									className="sticky top-0 z-10 w-basalt-10 min-w-basalt-10 bg-basalt-control text-right"
+									textAlign="end"
+									className={cn(
+										"sticky top-0 z-10 w-basalt-10 min-w-basalt-10 bg-basalt-control",
+										attachedEdge(edge, 0, colCount),
+									)}
 								>
 									<span aria-hidden="true">#</span>
 									<span className="sr-only">Row number</span>
@@ -533,15 +557,27 @@ export function DataTable<T>({
 							{selectable ? (
 								<TableHead
 									scope="col"
-									className="sticky top-0 z-10 w-basalt-10 min-w-basalt-10 bg-basalt-control text-center"
+									className={cn(
+										"sticky top-0 z-10 w-basalt-10 min-w-basalt-10 bg-basalt-control text-center",
+										attachedEdge(edge, rowNumbers ? 1 : 0, colCount),
+									)}
 								>
 									<span className="sr-only">Select</span>
 								</TableHead>
 							) : null}
-							{columns.map((column) => (
+							{columns.map((column, columnIndex) => (
 								<TableHead
 									key={column.id}
-									className={cn("sticky top-0 z-10 bg-basalt-control", column.headerClassName)}
+									textAlign={column.textAlign}
+									className={cn(
+										"sticky top-0 z-10 bg-basalt-control",
+										attachedEdge(
+											edge,
+											(rowNumbers ? 1 : 0) + (selectable ? 1 : 0) + columnIndex,
+											colCount,
+										),
+										column.headerClassName,
+									)}
 									style={{ width: column.width, minWidth: column.width }}
 									scope="col"
 									aria-sort={
@@ -555,14 +591,19 @@ export function DataTable<T>({
 									}
 								>
 									{column.sortable === false ? (
-										<span className="flex items-center gap-basalt-control-gap">
+										<span
+											className={cn(
+												"flex items-center gap-basalt-control-gap",
+												column.textAlign === "end" && "w-full justify-end text-end",
+											)}
+										>
 											{column.headerContent ?? column.header}
 										</span>
 									) : (
-										<button
-											type="button"
+										<TableSortableHeader
+											textAlign={column.textAlign}
+											sorted={sort?.id === column.id ? sort.dir : undefined}
 											aria-label={column.header}
-											className="group flex w-full cursor-pointer items-center gap-basalt-control-gap rounded-basalt-sm border-0 bg-transparent p-0 text-left font-inherit text-inherit font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary"
 											onClick={() =>
 												requestSort(
 													sort?.id === column.id && sort.dir === "asc"
@@ -571,31 +612,8 @@ export function DataTable<T>({
 												)
 											}
 										>
-											<span className="flex min-w-0 items-center gap-basalt-control-gap truncate">
-												{column.headerContent ?? column.header}
-											</span>
-											{sort?.id === column.id ? (
-												sort.dir === "asc" ? (
-													<ArrowUp
-														aria-hidden="true"
-														className="ml-auto size-basalt-icon-sm shrink-0"
-														strokeWidth={1.5}
-													/>
-												) : (
-													<ArrowDown
-														aria-hidden="true"
-														className="ml-auto size-basalt-icon-sm shrink-0"
-														strokeWidth={1.5}
-													/>
-												)
-											) : (
-												<ArrowUpDown
-													aria-hidden="true"
-													className="ml-auto size-basalt-icon-sm shrink-0 opacity-0 transition-opacity basalt-motion group-hover:opacity-60 group-focus-visible:opacity-60 motion-reduce:transition-none"
-													strokeWidth={1.5}
-												/>
-											)}
-										</button>
+											{column.headerContent ?? column.header}
+										</TableSortableHeader>
 									)}
 								</TableHead>
 							))}
@@ -604,7 +622,7 @@ export function DataTable<T>({
 					<TableBody>
 						{loading ? (
 							<TableRow>
-								<TableCell colSpan={colCount}>
+								<TableCell colSpan={colCount} className={attachedEdge(edge, 0, 1)}>
 									<div
 										role="status"
 										className="flex flex-col gap-basalt-space-lg py-basalt-space-lg"
@@ -618,7 +636,7 @@ export function DataTable<T>({
 							</TableRow>
 						) : error != null && error !== false ? (
 							<TableRow>
-								<TableCell colSpan={colCount}>
+								<TableCell colSpan={colCount} className={attachedEdge(edge, 0, 1)}>
 									<div
 										role="alert"
 										className="flex flex-wrap items-center justify-between gap-basalt-space-lg py-basalt-space-lg"
@@ -634,7 +652,7 @@ export function DataTable<T>({
 							</TableRow>
 						) : paged.length === 0 ? (
 							<TableRow>
-								<TableCell colSpan={colCount}>
+								<TableCell colSpan={colCount} className={attachedEdge(edge, 0, 1)}>
 									<div role="status">{empty}</div>
 								</TableCell>
 							</TableRow>
@@ -650,7 +668,11 @@ export function DataTable<T>({
 										{rowNumbers && (
 											<TableCell
 												data-row-number=""
-												className="text-right text-basalt-sm tabular-nums text-basalt-muted-foreground"
+												textAlign="end"
+												className={cn(
+													"text-basalt-sm text-basalt-muted-foreground",
+													attachedEdge(edge, 0, colCount),
+												)}
 											>
 												{(pageSize && pageSize > 0 ? (resolvedPage - 1) * pageSize : 0) +
 													rowIndex +
@@ -658,7 +680,12 @@ export function DataTable<T>({
 											</TableCell>
 										)}
 										{selectable ? (
-											<TableCell className="text-center">
+											<TableCell
+												className={cn(
+													"text-center",
+													attachedEdge(edge, rowNumbers ? 1 : 0, colCount),
+												)}
+											>
 												<Checkbox
 													checked={isSelected}
 													aria-label={`Select ${selectId}`}
@@ -667,13 +694,19 @@ export function DataTable<T>({
 												/>
 											</TableCell>
 										) : null}
-										{columns.map((column) => {
+										{columns.map((column, columnIndex) => {
 											const cell = column.accessor(row);
 											return (
 												<TableCell
 													key={column.id}
+													textAlign={column.textAlign}
 													className={cn(
 														column.wrap ? "whitespace-normal break-words" : "whitespace-nowrap",
+														attachedEdge(
+															edge,
+															(rowNumbers ? 1 : 0) + (selectable ? 1 : 0) + columnIndex,
+															colCount,
+														),
 														column.cellClassName,
 													)}
 													style={{ minWidth: column.width }}
@@ -695,6 +728,7 @@ export function DataTable<T>({
 					pageCount={pageCount}
 					disabled={loading}
 					onPageChange={setResolvedPage}
+					className={edge === "attached" ? "px-basalt-panel-x pb-basalt-panel-y" : undefined}
 				/>
 			) : null}
 		</div>

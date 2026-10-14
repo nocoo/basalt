@@ -192,6 +192,13 @@ export const API = [
 				required: false,
 				description: "ID of additional table instructions or summary.",
 			},
+			{
+				name: "edge",
+				type: "DataTableEdge",
+				required: false,
+				default: "\"inset\"",
+				description: "Direct-card rails on the first and last display columns.",
+			},
 		],
 	},
 ];

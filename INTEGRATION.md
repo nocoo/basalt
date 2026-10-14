@@ -428,7 +428,7 @@ Do not wrap those regions in another full-viewport column. Do not set `h-screen`
 
 ### Shared navigation geometry
 
-`SidebarNav` and `NavigationMenuList` own one `--basalt-space-nav-inset` (8px) boundary and `--basalt-space-nav-gap` (2px) between rows. Sidebar groups do not add another horizontal inset. Top-level items, group items, editable/folder rows and horizontal navigation links reuse the existing row roles: 8px horizontal, 6px vertical, 8px icon gap, 22px line box and a 34px reference height. Header, search wrapper and footer share the same navigation inset. Do not add caller-owned `px-basalt-space-lg`, `pt-basalt-space-sm` or item-stack padding to compensate for missing package geometry.
+`SidebarNav` and `NavigationMenuList` own one `--basalt-space-nav-inset` (8px) boundary and `--basalt-space-nav-gap` (2px) between rows. Sidebar groups do not add another horizontal inset. Sidebar destinations and search use 8px horizontal/vertical padding, an 8px icon gap and a 22px line box for a 38px reference row. This is local to Sidebar: editable/folder rows, horizontal navigation links and menus retain 6px vertical padding and 34px rows. Header, search wrapper and footer share the same navigation inset. Do not add caller-owned `px-basalt-space-lg`, `pt-basalt-space-sm` or item-stack padding to compensate for missing package geometry.
 
 Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavItem` / `FolderNavItem`; `NavigationMenuList` owns horizontal/vertical Radix navigation. Both compose the existing list-local hover adapter. One background moves with transform between enabled rows, follows keyboard focus and returns to selection on pointer leave. Nested lists own separate highlights. Hidden, disabled and actively renamed rows are excluded. Geometry reads are batched per animation frame, same-row pointer motion causes no updates, and reduced motion disables transitions. Navigation state, routes and rename operations remain application-owned; the adapter is View-only.
 
@@ -486,13 +486,13 @@ Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavI
 </Sidebar>
 ```
 
-SidebarPartition marks a major section; SidebarGroup is a smaller uppercase, semibold disclosure label with additional group spacing. Group labels do not participate in the destination hover layer. Do not restyle them as ordinary SidebarItem rows or add per-page indentation repairs.
+SidebarPartition marks a major section; SidebarGroup is a smaller uppercase, semibold disclosure label with a 22px line box, 8px insets and 12px group separation. Group labels do not participate in the destination hover layer. Do not restyle them as ordinary SidebarItem rows or add per-page indentation repairs.
 
 ### Collapsed tree
 
 Pass `collapsed` on `Sidebar`. The element becomes 68px. Children are icon-sized and centered. Still no inner width/height wrapper.
 
-The 68px rail uses `--basalt-size-rail`. Header and footer center their content automatically; SidebarIconItem uses the shared 34px control size. The navigation region centers its icon rows on that same rail axis without caller margin overrides. Render icon-only content with an accessible name and tooltip when collapsed; the library does not hide arbitrary application text. Keep a brand mark's expanded inset consistent with the collapsed axis instead of adding collapse-only offsets.
+The 68px rail uses `--basalt-size-rail`. Header and footer center their content automatically; SidebarIconItem keeps the 34px control width and derives its 38px minimum height from the sidebar line box and padding. The navigation region centers its icon rows on that same rail axis without caller margin overrides. Render icon-only content with an accessible name and tooltip when collapsed; the library does not hide arbitrary application text. Keep a brand mark's expanded inset consistent with the collapsed axis instead of adding collapse-only offsets.
 
 ```tsx excerpt:sidebar-collapsed-structure
 <Sidebar collapsed={collapsed}>
@@ -1021,6 +1021,12 @@ Stack one `SectionRule` per region. Live recipe: `/layout`. Catalog: `/ui/page-h
 
 Basalt form controls participate in standard forms and controlled state pipelines.
 
+Keep the Field's label/control/hint gap at 8px. Compose related fields with
+`space-y-basalt-layout` or `gap-basalt-layout` (16px); separate sections with the
+24px `layout-lg` role. The form owns the group gap, not each Field's margin.
+Action buttons keep their 8px internal gap. DialogFooter owns 16px separation
+from preceding content, so callers do not need a repeated margin override.
+
 ### Working Native HTML Form & FormData Pattern
 
 Standard inputs (`Input`, `InputArea`, `Checkbox`, `Radio`, `Switch`) reliably supply their values via standard `FormData(event.currentTarget)`:
@@ -1039,7 +1045,7 @@ export function ProfileForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="space-y-basalt-layout">
       <Field label="Email" hint="Your primary email address">
         <Input name="email" type="email" required />
       </Field>
@@ -1048,7 +1054,7 @@ export function ProfileForm() {
         <Switch name="notifications" defaultChecked />
       </Field>
 
-      <div className="flex gap-basalt-space-lg mt-basalt-space-lg">
+      <div className="flex gap-basalt-space-lg">
         <Button type="reset" variant="secondary">Reset</Button>
         <Button type="submit" variant="default">Save Changes</Button>
       </div>
@@ -1203,7 +1209,7 @@ export function ProjectSettingsForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-basalt-space-lg">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-basalt-layout">
       <Field
         label="Project Name"
         hint="Unique name for your project workspace"
@@ -1728,7 +1734,7 @@ export function UserPreferencesForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} onReset={handleReset} className="space-y-basalt-space-lg max-w-sm">
+    <form onSubmit={handleSubmit} onReset={handleReset} className="space-y-basalt-layout max-w-sm">
       <Field label="Username" hint="Public profile handle">
         <Input name="username" defaultValue="johndoe" required />
       </Field>
@@ -1807,12 +1813,67 @@ Basalt geometry no longer depends on a host's Tailwind `--spacing`. Both CSS ent
 | Field label gap | `--basalt-space-field-gap` | 8px |
 | Textarea minimum height | `--basalt-size-textarea-sm`, `--basalt-size-textarea`, `--basalt-size-textarea-lg` | 64 / 80 / 96px |
 | Table row / horizontal / vertical inset | `--basalt-size-table-row`, `--basalt-space-table-x`, `--basalt-space-table-y` | 36 / 8 / 6px |
+| Attached table outer edge | `--basalt-space-table-edge` | Panel horizontal inset, 16px |
 
 Defaults use rem and unitless line-height, preserving browser font-size preferences. [DESIGN.md](DESIGN.md) defines compact 2/4/6/8px control spacing, separate 12/16/24/32px card and layout spacing, and natural 22/34/46px inline/action/banner categories. The size tokens describe reference geometry, not fixed text-control heights. Use the semantic spacing role for the boundary being laid out; numbered geometry tokens are not padding alternatives. LayerCard accepts `padding="sm|md|lg|xl"` for unstructured content; Grid accepts `gap="sm|md|lg|xl"`. Both default to `md`; 32px `xl` is opt-in. ContentIsland owns a 16px mobile, 24px tablet, and 32px horizontal / 24px vertical desktop inset. Examples must use component size props rather than fixed-height overrides. Textareas, avatars and panels retain content-specific geometry.
 
 ### Compact record tables
 
 DataTable uses 13px single-line content, 36px minimum rows, tokenized horizontal/vertical insets and a native horizontally scrollable region. A column's `width` is also its minimum width; the browser must not squeeze names/dates into accidental multi-line rows. Use `column.wrap: true` for actual prose fields, or an explicitly sized inner `truncate` element with a title for long record names and URLs. `maxHeight` bounds the existing scroll region, with sticky opaque headers that stay inside it. Sorting uses a fixed 12px icon slot and retains `aria-sort`; row selection uses the shared Checkbox rather than an unstyled native checkbox. Rich `headerContent` composes icons and labels without changing the plain accessible sort name. Empty/loading/error content remains readable and wraps independently of data-cell defaults.
+
+Use `column.textAlign: "end"` for comparable numbers: the header and values share
+a logical end rail, with the sort glyph inward of the header label. `"start"` is
+the other explicit direction; omitted body-cell alignment remains inherited.
+The same `textAlign` prop is available on TableHead, TableCell and
+TableSortableHeader from `@nocoo/basalt/components/table`. It does not replace
+native HTML `align` attributes. Logical directions follow LTR/RTL consistently.
+
+TableSortableHeader is a flush, ref-forwarding button, not a generic Button with
+extra padding. Pass its `sorted` direction (`"asc"` / `"desc"`, or omitted) and
+sort callback; the enclosing TableHead owns `aria-sort`. Unsortable headers remain
+plain text, not disabled sort controls. DataTable handles those details for its
+own columns.
+
+For a DataTable directly attached to a LayerCard, set `edge="attached"`. It uses
+the 16px panel rail only at the outermost cells, including optional number/select
+columns and full-width state rows. Intercolumn spacing stays 8px per cell side.
+Built-in pagination shares that panel rail and its 12px bottom inset.
+The default `edge="inset"` keeps ordinary table spacing inside an already padded
+region; do not add a zero-padding Body around an attached table.
+
+```tsx compile:integration-attached-table
+import { DataTable, type DataTableColumn } from "@nocoo/basalt/components/data-table";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
+
+type Invoice = { id: string; amount: number };
+const columns: DataTableColumn<Invoice>[] = [
+  { id: "id", header: "Invoice", accessor: (row) => row.id },
+  { id: "amount", header: "Amount", accessor: (row) => row.amount, textAlign: "end" },
+];
+
+export function InvoicePanel() {
+  return (
+    <LayerCard>
+      <LayerCard.Header>Invoices</LayerCard.Header>
+      <DataTable
+        aria-label="Invoices"
+        edge="attached"
+        columns={columns}
+        data={[{ id: "INV-01", amount: 1240 }, { id: "INV-02", amount: 80 }]}
+        getRowId={(row) => row.id}
+      />
+    </LayerCard>
+  );
+}
+```
+
+Native Table does not infer a grid from its children. For an attached native
+composition, mark the true inline-start cells with `ps-basalt-table-edge`, the
+inline-end cells with `pe-basalt-table-edge`, and a full-width cell with both.
+Rows continuing a preceding `rowSpan` do not gain a new edge at their first DOM
+child. These token utilities keep cell backgrounds, sticky headers and separators
+full width without affecting nested tables. Use ordinary Table cells when no
+panel edge is being attached.
 
 ### Recommendations
 
@@ -1845,6 +1906,14 @@ All model names, progress summaries, searches and tool outputs on this route are
 ### Composite alignment
 
 Use one padding owner per boundary: `--basalt-space-panel-x/y` (16/12px) for composite card/header/body/footer sections, `--basalt-space-row-x/y/gap` (8/6/8px) for selectable rows, and `--basalt-space-content-gap` (8px) between related controls inside a composite. Page section gaps instead use `--basalt-space-layout-lg` (24px). `--basalt-space-row-content` derives the detail inset from row padding + a 16px icon slot + the row gap. Selectable action rows use the 22px `--basalt-line-row`, producing 34px single-line rows and growing by full lines when content wraps. Status icons occupy a first-line-height slot, not an arbitrary top margin. Body prose and code keep the 20px body line-height. Ordinary controls use 34px; inline message actions use the 34px `--basalt-size-action` target and 14px glyphs. Align visible glyphs with prose without removing their pointer target.
+
+These are local alignment rails, not one universal left edge. Page headings align
+to the island; card slots align to their panel; columns align their own labels and
+values. A checkbox, row number or optional status glyph has a consistent semantic
+slot. Distinct boundaries may add spacing, but the same boundary has one owner.
+See [alignment hierarchy](DESIGN.md#alignment-hierarchy). Keep nested preview focus
+clearance and give wide table examples enough columns rather than shrinking all
+their padding to fit a thumbnail.
 
 Thinking and ToolChips share row padding; disclosures rotate only their own chevron, never content icons. Approval, recommendation, retrieved context and diff sections share panel insets rather than adding another padding layer. ChatComposer owns its field inset, not an outer painted/padded card; the application owns placement in the page. ChatMessage `sources` renders a compact disclosure beside actions and a flat source list, with the same validated URL policy as ContextCards. Use ContextCards only for actual retrieved text chunks, not as a citation footer. No additional remote images are loaded.
 

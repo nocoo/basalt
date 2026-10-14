@@ -11,9 +11,18 @@ describe("DataPage", () => {
 			within(table)
 				.getAllByRole("columnheader")
 				.map((cell) => cell.textContent),
-		).toEqual(["Invoice↑", "Customer", "Status", "Amount", "Date"]);
+		).toEqual(["Invoice", "Customer", "Status", "Amount", "Date"]);
 		expect(within(table).getByRole("cell", { name: "INV-2041" })).toBeInTheDocument();
 		expect(within(table).getByRole("cell", { name: "North Clinic" })).toBeInTheDocument();
+
+		const invoiceHeader = within(table).getByRole("columnheader", { name: "Invoice" });
+		const sortButton = within(invoiceHeader).getByRole("button", { name: "Invoice" });
+		expect(invoiceHeader).toHaveAttribute("aria-sort", "ascending");
+		expect(sortButton.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+		fireEvent.click(sortButton);
+		expect(invoiceHeader).toHaveAttribute("aria-sort", "descending");
+		expect(within(table).getByRole("cell", { name: "INV-2044" })).toBeInTheDocument();
+		expect(within(table).queryByRole("cell", { name: "INV-2041" })).not.toBeInTheDocument();
 	});
 
 	it("filters the library table through a named status selector", () => {
