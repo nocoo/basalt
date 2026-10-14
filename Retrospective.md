@@ -530,3 +530,30 @@ cases. Preserve those failures and diagnose call stages outside the source tree.
 Bounded old/new input comparisons and instrumented successes are not full-gate
 proof or evidence that the intermittent cause is fixed. Keep timeouts, assertions
 and hooks unchanged, and require a normal exact-index run for the final commit.
+
+## 2026-10-14: Verify hover entry and every framed table boundary
+
+Disabling sidebar restoration only on pointer leave left the shared hover layer
+initialized on the selected route. Focus and non-item gaps could still restore
+that route, so the next hover traveled from it. Exercise mount, stale click focus,
+group labels, empty navigation padding and same-frame leave/re-entry, not just
+settled row-to-row motion. Keep transient pointer geometry separate from the
+current-page fill and keyboard focus indicator.
+Motion assertions must sample before awaiting transition completion. Clearing
+the duration alone does not cancel an in-flight transition with an unchanged
+endpoint: the non-animated hover state needs explicit `transition: none`. Test
+that CSS lifecycle with a longer existing duration token, not a manually paused
+Web Animation.
+Keep the hidden state non-animated too: reenabling transform just to fade opacity
+revives the interrupted flight after the pointer has already left.
+
+The earlier table pass treated the subscriptions example as already inset even
+though it owns a visible frame. Its checkbox stayed 8px from that frame and the
+caption's outside top margin left no bottom clearance. Audit the actual painted
+boundary: framed edge cells own the panel inset, selection owns a bounded column,
+and the caption owns balanced internal padding. Check framed API/dialog examples
+too, while leaving tables inside padded bodies and unframed tables unchanged.
+
+Send review snippets as literal task-file contents, not double-quoted shell
+arguments: backticks in a review message can otherwise run command substitution
+instead of reaching the worker.

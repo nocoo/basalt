@@ -233,6 +233,10 @@ use linear motion; decorative motion pauses off-screen/in background tabs.
   do not remeasure the same row for pointer movement, and write geometry without
   React rerenders. Nested lists are isolated. Disabled and hidden rows cannot
   become targets; keyboard selection/focus works independently of pointer hover.
+  Sidebar hover starts at the pointer's row and disappears there. It never uses
+  the current route or stale pointer focus as an entry/exit destination. Only
+  continuous movement between hovered rows animates; gaps and disclosure labels
+  end that sequence. Keyboard focus retains its independent focus indicator.
 - Selection indicators snap to the first valid measured selection before paint.
   Never animate from `(0, 0)`, including controlled initial values, non-first
   segments, remounts or initially hidden panels. Animate only between established
@@ -319,6 +323,8 @@ cannot infer that boundary across rowSpan. DataTable owns this through
 `pe-basalt-table-edge` only on the corresponding edge cells. A full-width cell
 uses both. Row fills and header rules remain full width, and nested tables keep
 their own insets. An already inset table retains the default cell spacing.
+TableCaption owns its 16px horizontal and 12px vertical panel insets, without an
+outside margin. Its text must not touch an enclosing table frame's bottom edge.
 
 Purposeful nesting, such as a preview's focus clearance around a self-contained
 surface, remains valid. Increase the separation between groups before increasing

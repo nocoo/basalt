@@ -20,6 +20,23 @@ async function inlinePad(locator: Locator) {
 	});
 }
 
+async function boxPad(locator: Locator) {
+	return locator.evaluate((node) => {
+		const style = getComputedStyle(node);
+		return {
+			start: Number.parseFloat(style.paddingInlineStart),
+			end: Number.parseFloat(style.paddingInlineEnd),
+			blockStart: Number.parseFloat(style.paddingBlockStart),
+			blockEnd: Number.parseFloat(style.paddingBlockEnd),
+			marginBlockStart: Number.parseFloat(style.marginBlockStart),
+			marginBlockEnd: Number.parseFloat(style.marginBlockEnd),
+			textAlign: style.textAlign,
+			fontSize: style.fontSize,
+			width: node.getBoundingClientRect().width,
+		};
+	});
+}
+
 type TextRail = { start: number; end: number };
 
 function assertStandaloneTableCss(css: string) {
@@ -111,6 +128,54 @@ async function assertRailsAcrossSorts(
 		await assertHeaderValueRail(table, headerName, align, `${headerName} ${dir} desc`);
 	}
 	await table.evaluate((node) => node.removeAttribute("dir"));
+}
+
+async function assertLedgerPanelInsets(page: Page, table: Locator) {
+	const caption = table.locator("caption");
+	const selectHead = table.getByRole("columnheader", { name: "Select", exact: true });
+	const actionsHead = table.getByRole("columnheader", { name: "Actions", exact: true });
+	const firstCell = table.locator("tbody tr").first().locator("td").first();
+	const lastCell = table.locator("tbody tr").first().locator("td").last();
+	const measure = async (dir: "ltr" | "rtl") => {
+		await table.evaluate((node, value) => {
+			if (value === "ltr") node.removeAttribute("dir");
+			else node.setAttribute("dir", value);
+		}, dir);
+		const edge = await remPx(page, 1);
+		const panelY = await remPx(page, 0.75);
+		const slot = await remPx(page, 2.5);
+		const cap = await boxPad(caption);
+		const select = await boxPad(selectHead);
+		assert.equal(cap.start, edge, `${dir} caption start ${JSON.stringify(cap)}`);
+		assert.equal(cap.end, edge, `${dir} caption end`);
+		assert.equal(cap.blockStart, panelY, `${dir} caption block start`);
+		assert.equal(cap.blockEnd, panelY, `${dir} caption block end`);
+		assert.equal(cap.marginBlockStart, 0, `${dir} caption margin start`);
+		assert.equal(cap.marginBlockEnd, 0, `${dir} caption margin end`);
+		assert.ok(
+			cap.textAlign === "-webkit-center" || cap.textAlign === "center",
+			`${dir} caption align ${cap.textAlign}`,
+		);
+		assert.equal(cap.fontSize, `${await remPx(page, 0.875)}px`, `${dir} caption font`);
+		assert.equal((await inlinePad(selectHead)).start, edge, `${dir} select head`);
+		assert.equal((await inlinePad(actionsHead)).end, edge, `${dir} actions head`);
+		assert.equal((await inlinePad(firstCell)).start, edge, `${dir} first cell`);
+		assert.equal((await inlinePad(lastCell)).end, edge, `${dir} last cell`);
+		assert.ok(Math.abs(select.width - slot) < 1, `${dir} select slot ${select.width} vs ${slot}`);
+	};
+	await measure("ltr");
+	await measure("rtl");
+	await table.evaluate((node) => node.removeAttribute("dir"));
+	try {
+		await page.evaluate(() => {
+			document.documentElement.style.fontSize = "32px";
+		});
+		await measure("ltr");
+	} finally {
+		await page.evaluate(() => {
+			document.documentElement.style.removeProperty("font-size");
+		});
+	}
 }
 
 async function assertStandaloneMarkupParity(
@@ -266,6 +331,7 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 	await assertRailsAcrossSorts(ledgerTable, "Health plan", "Monthly cost", "start");
 	await assertRailsAcrossSorts(ledgerTable, "Monthly cost", "Health plan", "end");
 	await assertStandaloneMarkupParity(page, ledgerTable, "Monthly cost", "end");
+	await assertLedgerPanelInsets(page, ledgerTable);
 
 	const spanDemo = page.locator('[data-scenario="table-selected-row"]');
 	await spanDemo.scrollIntoViewIfNeeded();

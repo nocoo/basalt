@@ -15,6 +15,7 @@ export function useHoverHighlight(
 			if (!root) return;
 			let hovered: HTMLElement | null = null;
 			let pointerExited = false;
+			let sequenceBroken = false;
 			let focused: HTMLElement | null = null;
 			let previous: HTMLElement | null = null;
 			let selected: HTMLElement | null = null;
@@ -54,9 +55,14 @@ export function useHoverHighlight(
 					}
 					selectionDirty = false;
 				}
+				const broken = sequenceBroken;
+				sequenceBroken = false;
+				if (broken) root.dataset.hoverAnimated = "false";
 				const item = pointerExited
 					? null
-					: (eligible(active) ?? eligible(hovered) ?? eligible(focused) ?? eligible(selected));
+					: restoreOnPointerLeave
+						? (eligible(active) ?? eligible(hovered) ?? eligible(focused) ?? eligible(selected))
+						: eligible(hovered);
 				if (item === previous && !layoutChanged) return;
 				if (item !== previous) {
 					if (previous) resize.unobserve(previous);
@@ -65,7 +71,7 @@ export function useHoverHighlight(
 				const width = item?.offsetWidth ?? 0;
 				const height = item?.offsetHeight ?? 0;
 				if (!item || !width || !height) {
-					if (pointerExited) root.dataset.hoverAnimated = "true";
+					if (!restoreOnPointerLeave) root.dataset.hoverAnimated = "false";
 					root.dataset.hoverVisible = "false";
 					previous = null;
 					geometry = "";
@@ -89,7 +95,7 @@ export function useHoverHighlight(
 				const next = `${x},${y},${width},${height}`;
 				if (next !== geometry) {
 					root.dataset.hoverAnimated =
-						previous && previous !== item && !layoutChanged ? "true" : "false";
+						previous && previous !== item && !layoutChanged && !broken ? "true" : "false";
 					root.style.setProperty("--basalt-hover-x", `${x}px`);
 					root.style.setProperty("--basalt-hover-y", `${y}px`);
 					root.style.setProperty("--basalt-hover-width", `${width}px`);
@@ -108,6 +114,7 @@ export function useHoverHighlight(
 				pointerExited = false;
 				const next = row(event.target);
 				if (next !== hovered) {
+					if (!restoreOnPointerLeave && (!next || !hovered)) sequenceBroken = true;
 					hovered = next;
 					schedule();
 				}
@@ -115,16 +122,19 @@ export function useHoverHighlight(
 			const leave = () => {
 				hovered = null;
 				pointerExited = !restoreOnPointerLeave;
+				if (!restoreOnPointerLeave) sequenceBroken = true;
 				schedule();
 			};
 			const focus = (event: FocusEvent) => {
-				pointerExited = false;
 				focused = row(event.target);
+				if (!restoreOnPointerLeave) return;
+				pointerExited = false;
 				hovered = null;
 				schedule();
 			};
 			const blur = (event: FocusEvent) => {
 				focused = row(event.relatedTarget);
+				if (!restoreOnPointerLeave) return;
 				schedule();
 			};
 			const keyboard = (event: KeyboardEvent) => {
@@ -134,6 +144,7 @@ export function useHoverHighlight(
 						(!root.id || event.target.getAttribute("aria-controls") !== root.id))
 				)
 					return;
+				if (!restoreOnPointerLeave) return;
 				hovered = null;
 				pointerExited = false;
 				schedule();

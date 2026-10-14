@@ -41,6 +41,25 @@ describe("overlay dialog action footer", () => {
 		expect(sizesFooter).toBeTruthy();
 		expect(sizesFooter).toHaveClass("gap-basalt-space-lg");
 		expect(sizesFooter).not.toHaveClass("mt-basalt-space-lg");
+		const sizesDialog = within(screen.getByRole("dialog"));
+		expect(sizesDialog.getByRole("columnheader", { name: "Care plan" })).toHaveClass(
+			"ps-basalt-table-edge",
+		);
+		expect(sizesDialog.getByRole("columnheader", { name: "Updated" })).toHaveClass(
+			"pe-basalt-table-edge",
+		);
+		expect(sizesDialog.getByRole("cell", { name: "northwind-analytics" })).toHaveClass(
+			"ps-basalt-table-edge",
+		);
+		expect(sizesDialog.getByRole("cell", { name: "Mon" })).toHaveClass("pe-basalt-table-edge");
+		expect(sizes.code).toContain(
+			'<TableHead className="ps-basalt-table-edge">Care plan</TableHead>',
+		);
+		expect(sizes.code).toContain('<TableHead className="pe-basalt-table-edge">Updated</TableHead>');
+		expect(sizes.code).toContain(
+			'<TableCell className="ps-basalt-table-edge">northwind-analytics</TableCell>',
+		);
+		expect(sizes.code).toContain('<TableCell className="pe-basalt-table-edge">Mon</TableCell>');
 		unmount();
 		const confirmation = catalogContent.dialog?.examples.find(
 			(item) => item.id === "dialog-confirmation-dialog",

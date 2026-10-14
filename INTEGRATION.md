@@ -430,7 +430,7 @@ Do not wrap those regions in another full-viewport column. Do not set `h-screen`
 
 `SidebarNav` and `NavigationMenuList` own one `--basalt-space-nav-inset` (8px) boundary and `--basalt-space-nav-gap` (2px) between rows. Sidebar groups do not add another horizontal inset. Sidebar destinations and search use 8px horizontal/vertical padding, an 8px icon gap and a 22px line box for a 38px reference row. This is local to Sidebar: editable/folder rows, horizontal navigation links and menus retain 6px vertical padding and 34px rows. Header, search wrapper and footer share the same navigation inset. Do not add caller-owned `px-basalt-space-lg`, `pt-basalt-space-sm` or item-stack padding to compensate for missing package geometry.
 
-Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavItem` / `FolderNavItem`; `NavigationMenuList` owns horizontal/vertical Radix navigation. Both compose the existing list-local hover adapter. One background moves with transform between enabled rows, follows keyboard focus and returns to selection on pointer leave. Nested lists own separate highlights. Hidden, disabled and actively renamed rows are excluded. Geometry reads are batched per animation frame, same-row pointer motion causes no updates, and reduced motion disables transitions. Navigation state, routes and rename operations remain application-owned; the adapter is View-only.
+Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavItem` / `FolderNavItem`; `NavigationMenuList` owns horizontal/vertical Radix navigation. Both compose the existing list-local hover adapter. One background moves with transform between enabled rows. Sidebar hover appears at the actual pointer row and disappears there on leave or over a gap/disclosure label; it never launches from or returns to the active route or stale pointer focus. Only continuous row-to-row hover animates. Keyboard focus remains independent. NavigationMenuList retains its focus/selection-following behavior. Nested lists own separate highlights. Hidden, disabled and actively renamed rows are excluded. Geometry reads are batched per animation frame, same-row pointer motion causes no updates, and reduced motion disables transitions. Navigation state, routes and rename operations remain application-owned; the adapter is View-only.
 
 `SidebarHeader` and `SidebarFooter` already pad horizontally. Brand, version pill, and collapse control go directly in the header. The version string is read from the app `package.json` at build time. Never hardcode it. `SidebarPartition` aligns with row text. `SidebarGroup` adds only section spacing, never a second item gutter.
 
@@ -1874,6 +1874,12 @@ Rows continuing a preceding `rowSpan` do not gain a new edge at their first DOM
 child. These token utilities keep cell backgrounds, sticky headers and separators
 full width without affecting nested tables. Use ordinary Table cells when no
 panel edge is being attached.
+
+TableCaption owns balanced `--basalt-space-panel-x` / `--basalt-space-panel-y`
+insets (16px horizontal / 12px vertical), not an outside top margin. Keep it
+inside the native table; do not pad the entire scroll region or compensate with
+an extra footer wrapper. This preserves full-width row paint and readable space
+above and below the description inside an enclosing frame.
 
 ### Recommendations
 

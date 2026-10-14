@@ -141,7 +141,10 @@ export function TableCaption({
 }: TableCaptionProps & React.HTMLAttributes<HTMLTableCaptionElement>) {
 	return (
 		<caption
-			className={cn("mt-basalt-space-lg text-basalt-base text-basalt-muted-foreground", className)}
+			className={cn(
+				"px-basalt-panel-x py-basalt-panel-y text-basalt-base text-basalt-muted-foreground",
+				className,
+			)}
 			{...props}
 		/>
 	);

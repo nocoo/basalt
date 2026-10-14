@@ -261,7 +261,7 @@ export default function SubscriptionTable() {
 					</TableCaption>
 					<TableHeader>
 						<TableRow>
-							<TableHead>
+							<TableHead className="w-basalt-10 min-w-basalt-10 ps-basalt-table-edge">
 								<span className="sr-only">Select</span>
 							</TableHead>
 							{header("Health plan", "name")}
@@ -269,13 +269,13 @@ export default function SubscriptionTable() {
 							{header("Change", "change")}
 							{header("Plan utilization", "used")}
 							{header("Renewal", "renewal")}
-							<TableHead>Actions</TableHead>
+							<TableHead className="pe-basalt-table-edge">Actions</TableHead>
 						</TableRow>
 					</TableHeader>
 					<TableBody>
 						{mode === "loading" ? (
 							<TableRow>
-								<TableCell colSpan={7}>
+								<TableCell colSpan={7} className="ps-basalt-table-edge pe-basalt-table-edge">
 									<div
 										role="status"
 										aria-label="Loading care plans"
@@ -289,7 +289,7 @@ export default function SubscriptionTable() {
 							</TableRow>
 						) : mode === "error" ? (
 							<TableRow>
-								<TableCell colSpan={7}>
+								<TableCell colSpan={7} className="ps-basalt-table-edge pe-basalt-table-edge">
 									<div
 										role="alert"
 										className="space-y-basalt-space-lg py-basalt-space-lg text-center"
@@ -309,7 +309,7 @@ export default function SubscriptionTable() {
 							</TableRow>
 						) : visible.length === 0 ? (
 							<TableRow>
-								<TableCell colSpan={7}>
+								<TableCell colSpan={7} className="ps-basalt-table-edge pe-basalt-table-edge">
 									<div
 										role="status"
 										className="space-y-basalt-space-lg py-basalt-space-lg text-center"
@@ -332,7 +332,7 @@ export default function SubscriptionTable() {
 						) : (
 							visible.map((row) => (
 								<TableRow key={row.id} variant={selected.includes(row.id) ? "selected" : "default"}>
-									<TableCell>
+									<TableCell className="ps-basalt-table-edge">
 										<Checkbox
 											aria-label={`Select ${row.name}`}
 											checked={selected.includes(row.id)}
@@ -408,7 +408,7 @@ export default function SubscriptionTable() {
 											{row.status}
 										</Badge>
 									</TableCell>
-									<TableCell>
+									<TableCell className="pe-basalt-table-edge">
 										<Button
 											size="sm"
 											variant="ghost"

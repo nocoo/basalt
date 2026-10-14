@@ -624,6 +624,7 @@
     border-radius: var(--basalt-radius-md);
     background: linear-gradient(90deg, var(--basalt-hover), var(--basalt-hover-end));
     opacity: 0;
+    transition: none;
   }
   .basalt-hover-list[data-hover-visible="true"]::before {
     opacity: 1;

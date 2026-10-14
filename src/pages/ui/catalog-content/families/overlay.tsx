@@ -220,18 +220,18 @@ function DialogSizesExample() {
 							<Table>
 								<TableHeader>
 									<TableRow>
-										<TableHead>Care plan</TableHead>
+										<TableHead className="ps-basalt-table-edge">Care plan</TableHead>
 										<TableHead>Care lead</TableHead>
 										<TableHead>Status</TableHead>
-										<TableHead>Updated</TableHead>
+										<TableHead className="pe-basalt-table-edge">Updated</TableHead>
 									</TableRow>
 								</TableHeader>
 								<TableBody>
 									<TableRow>
-										<TableCell>northwind-analytics</TableCell>
+										<TableCell className="ps-basalt-table-edge">northwind-analytics</TableCell>
 										<TableCell>Ada Lovelace</TableCell>
 										<TableCell>On track</TableCell>
-										<TableCell>Mon</TableCell>
+										<TableCell className="pe-basalt-table-edge">Mon</TableCell>
 									</TableRow>
 								</TableBody>
 							</Table>
@@ -472,18 +472,18 @@ export default function Example() {
 							<Table>
 								<TableHeader>
 									<TableRow>
-										<TableHead>Care plan</TableHead>
+										<TableHead className="ps-basalt-table-edge">Care plan</TableHead>
 										<TableHead>Care lead</TableHead>
 										<TableHead>Status</TableHead>
-										<TableHead>Updated</TableHead>
+										<TableHead className="pe-basalt-table-edge">Updated</TableHead>
 									</TableRow>
 								</TableHeader>
 								<TableBody>
 									<TableRow>
-										<TableCell>northwind-analytics</TableCell>
+										<TableCell className="ps-basalt-table-edge">northwind-analytics</TableCell>
 										<TableCell>Ada Lovelace</TableCell>
 										<TableCell>On track</TableCell>
-										<TableCell>Mon</TableCell>
+										<TableCell className="pe-basalt-table-edge">Mon</TableCell>
 									</TableRow>
 								</TableBody>
 							</Table>

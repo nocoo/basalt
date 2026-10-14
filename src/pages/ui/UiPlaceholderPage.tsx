@@ -208,16 +208,16 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 											>
 												<TableHeader>
 													<TableRow>
-														<TableHead>Option</TableHead>
+														<TableHead className="ps-basalt-table-edge">Option</TableHead>
 														<TableHead>Type</TableHead>
 														<TableHead>Default</TableHead>
-														<TableHead>Description</TableHead>
+														<TableHead className="pe-basalt-table-edge">Description</TableHead>
 													</TableRow>
 												</TableHeader>
 												<TableBody>
 													{surface.options.props.map((opt) => (
 														<TableRow key={opt.name}>
-															<TableCell className="font-medium text-foreground">
+															<TableCell className="font-medium text-foreground ps-basalt-table-edge">
 																{opt.name}
 																{opt.required === false ? "?" : ""}
 															</TableCell>
@@ -227,7 +227,7 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 															<TableCell className="text-muted-foreground">
 																{opt.default ?? "—"}
 															</TableCell>
-															<TableCell className="text-muted-foreground">
+															<TableCell className="text-muted-foreground pe-basalt-table-edge">
 																{opt.description ?? opt.name}
 															</TableCell>
 														</TableRow>
@@ -281,16 +281,16 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 								>
 									<TableHeader>
 										<TableRow>
-											<TableHead>Prop</TableHead>
+											<TableHead className="ps-basalt-table-edge">Prop</TableHead>
 											<TableHead>Type</TableHead>
 											<TableHead>Default</TableHead>
-											<TableHead>Description</TableHead>
+											<TableHead className="pe-basalt-table-edge">Description</TableHead>
 										</TableRow>
 									</TableHeader>
 									<TableBody>
 										{surface.props.map((prop) => (
 											<TableRow key={prop.name}>
-												<TableCell className="font-medium text-foreground">
+												<TableCell className="font-medium text-foreground ps-basalt-table-edge">
 													{prop.name}
 													{prop.required === false ? "?" : ""}
 												</TableCell>
@@ -300,7 +300,7 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 												<TableCell className="text-muted-foreground">
 													{prop.default ?? "—"}
 												</TableCell>
-												<TableCell className="text-muted-foreground">
+												<TableCell className="text-muted-foreground pe-basalt-table-edge">
 													{prop.description ?? prop.name}
 												</TableCell>
 											</TableRow>

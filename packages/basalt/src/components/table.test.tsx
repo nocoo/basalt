@@ -34,6 +34,11 @@ describe("Table", () => {
 		expect(screen.getByRole("cell", { name: "Atlas" }).tagName).toBe("TD");
 		expect(screen.getByRole("columnheader", { name: "Name" })).toHaveClass("relative");
 		expect(screen.getByRole("cell", { name: "Atlas" })).toHaveClass("relative");
+		const caption = screen.getByText("Roster");
+		expect(caption.tagName).toBe("CAPTION");
+		expect(caption).toHaveClass("px-basalt-panel-x", "py-basalt-panel-y", "text-basalt-base");
+		expect(caption.className).not.toMatch(/mt-basalt-space-lg/);
+		expect(caption.className).not.toMatch(/\btext-start\b|\btext-end\b|\btext-center\b/);
 	});
 
 	it("renders a footer row", () => {
