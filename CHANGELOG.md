@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [3.1.1] - 2026-10-19
+
+### Changed
+- Refresh catalog and workspace dependencies with synchronized lockfile metadata.
+
 ## [3.1.0] - 2026-10-14
 
 ### Added

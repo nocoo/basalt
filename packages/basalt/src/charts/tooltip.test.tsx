@@ -23,7 +23,7 @@ describe("ChartTooltipContent", () => {
 		expect(root).toHaveTextContent("Income");
 		expect(root).toHaveTextContent(formatChartNumber(4200));
 		expect(root.querySelector("span[aria-hidden='true']")).toHaveStyle({
-			background: "rgb(1, 2, 3)",
+			backgroundColor: "rgb(1, 2, 3)",
 		});
 	});
 
@@ -135,7 +135,7 @@ describe("ChartTooltipContent", () => {
 		expect(
 			screen.getByTestId("chart-tooltip").querySelector("span[aria-hidden='true']"),
 		).toHaveStyle({
-			background: "rgb(4, 5, 6)",
+			backgroundColor: "rgb(4, 5, 6)",
 		});
 		rerender(
 			<ChartTooltipContent active payload={[{ name: "A", value: 1, stroke: "rgb(7, 8, 9)" }]} />,
@@ -143,14 +143,13 @@ describe("ChartTooltipContent", () => {
 		expect(
 			screen.getByTestId("chart-tooltip").querySelector("span[aria-hidden='true']"),
 		).toHaveStyle({
-			background: "rgb(7, 8, 9)",
+			backgroundColor: "rgb(7, 8, 9)",
 		});
 		rerender(<ChartTooltipContent active payload={[{ name: "A", value: 1 }]} />);
-		expect(
-			screen.getByTestId("chart-tooltip").querySelector("span[aria-hidden='true']"),
-		).toHaveStyle({
-			background: "hsl(var(--basalt-chart-1))",
-		});
+		const fallbackSwatch = screen
+			.getByTestId("chart-tooltip")
+			.querySelector("span[aria-hidden='true']") as HTMLSpanElement;
+		expect(fallbackSwatch.style.background).toBe("hsl(var(--basalt-chart-1))");
 	});
 
 	it("stringifies non-numeric values and numeric strings", () => {
@@ -187,7 +186,7 @@ describe("Composable ChartTooltip primitives", () => {
 		expect(row).toHaveTextContent("Latency");
 		expect(row).toHaveTextContent("42ms");
 		expect(row.querySelector("span[aria-hidden='true']")).toHaveStyle({
-			background: "rgb(255, 0, 0)",
+			backgroundColor: "rgb(255, 0, 0)",
 		});
 	});
 
