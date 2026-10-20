@@ -8,7 +8,8 @@ Routing: narrative stays here. A project-specific rule that will recur may becom
 
 - **What:** The first 3.2.0 feature commit was correctly blocked by three catalog API assertions after all metadata generators had run; the other 2199 tests passed.
 - **Why:** LayerCard and PageHeader documentation changed, and the reviewed API additions changed the deterministic generated API digest, but the generator's explicit expectations still described the previous contract.
-- **Follow-up:** Review generated API diffs and synchronize the corresponding source-level contract assertions before release. Keep exact documentation and digest checks enabled, then rerun the complete staged-index hook.
+- **CI finding:** Main CI then caught a stale browser assertion expecting two-tone Sparkline bars after the accepted design changed them to uniform opacity. The release script stopped before tagging; the browser assertion was synchronized without changing the accepted design.
+- **Follow-up:** Review generated API diffs and synchronize the corresponding source-level and browser contract assertions before release. Keep exact documentation, digest and visual checks enabled, then rerun the complete staged-index hook and package publication gates.
 
 ## 2026-10: UI regression checks confused test APIs and decorative separators
 

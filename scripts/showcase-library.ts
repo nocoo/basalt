@@ -243,10 +243,7 @@ export async function assertLibraryShowcases(page: Page, baseUrl: string) {
 					};
 				}),
 			);
-			assert.deepEqual([...new Set(chartStyles.map((style) => style.opacity))].sort(), [
-				"0.4",
-				"1",
-			]);
+			assert.deepEqual([...new Set(chartStyles.map((style) => style.opacity))], ["1"]);
 			assert.ok(
 				chartStyles.every(
 					(style) => style.animation === "none" && !/NaN|Infinity/.test(style.path ?? ""),
