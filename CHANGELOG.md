@@ -2,6 +2,22 @@
 
 ## [Unreleased]
 
+## [3.2.0] - 2026-10-20
+
+### Added
+- Enforce island surface hierarchy, four-tier typography, and refined hover and dialog tokens
+
+### Changed
+- Bump postcss (#589)
+- Bump react-i18next (#587)
+- Bump jsdom (#586)
+- Bump vitest (#585,#588)
+- Bump react and react-dom (#583,#584)
+- Bump playwright (#582)
+- Bump i18next (#581)
+- Bump wrangler (#579)
+- Bump lucide-react (#578)
+
 ## [3.1.1] - 2026-10-19
 
 ### Changed
