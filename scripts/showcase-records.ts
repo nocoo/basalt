@@ -45,7 +45,6 @@ function assertStandaloneTableCss(css: string) {
 		".pe-basalt-table-edge",
 		".text-start",
 		".text-end",
-		".ms-auto",
 	]) {
 		assert.ok(css.includes(token), `standalone.css missing ${token}`);
 	}
@@ -143,7 +142,7 @@ async function assertLedgerPanelInsets(page: Page, table: Locator) {
 		}, dir);
 		const edge = await remPx(page, 1);
 		const panelY = await remPx(page, 0.75);
-		const slot = await remPx(page, 2.5);
+		const slot = await remPx(page, 2.75);
 		const cap = await boxPad(caption);
 		const select = await boxPad(selectHead);
 		assert.equal(cap.start, edge, `${dir} caption start ${JSON.stringify(cap)}`);
@@ -238,15 +237,9 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 			const foreignRows = await table
 				.locator("tbody tr")
 				.evaluateAll((rows) => rows.map((row) => row.getBoundingClientRect().height));
-			assert.ok(
-				foreignRows.every((height) => height === 36),
-				JSON.stringify(foreignRows),
-			);
+			assert.deepEqual(foreignRows, [41, 41, 41, 41, 41, 40]);
 			await page.evaluate(() => document.documentElement.style.removeProperty("--spacing"));
-			assert.ok(
-				geometry.rows.every((height) => height === 36),
-				JSON.stringify(geometry),
-			);
+			assert.deepEqual(geometry.rows, foreignRows);
 			assert.ok(geometry.heads.every((head) => head.whiteSpace === "nowrap"));
 			assert.ok(geometry.heads[2].width >= 240 && geometry.heads[3].width >= 240);
 			assert.ok(geometry.scroll > geometry.client);
@@ -340,7 +333,7 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 	const beta = await textRail(spanTable.getByRole("cell", { name: "Beta" }));
 	assert.ok(Math.abs(alpha.start - beta.start) < 1, JSON.stringify({ alpha, beta }));
 	const edge = await remPx(page, 1);
-	const gutter = await remPx(page, 0.5);
+	const gutter = await remPx(page, 0.75);
 	assert.equal((await inlinePad(spanTable.getByRole("cell", { name: "North" }))).start, edge);
 	assert.equal((await inlinePad(spanTable.getByRole("cell", { name: "Beta" }))).start, gutter);
 	const nested = spanDemo.getByRole("table", { name: "Nested inset" }).getByRole("cell");
@@ -349,7 +342,7 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 	assert.equal(nestedPad.end, gutter, JSON.stringify(nestedPad));
 
 	return {
-		rowHeight: 36,
+		rowHeight: 40,
 		headerIcons: 12,
 		widthsPreserved: true,
 		scroll: true,

@@ -117,7 +117,7 @@ async function assertCodePanel(page: Page, panel: Locator) {
 			width: pre.clientWidth,
 		};
 	});
-	assert.equal(geometry.header, 57);
+	assert.equal(geometry.header, 45);
 	assert.equal(geometry.inset, "12px 16px");
 	assert.equal(geometry.font, "12px");
 	assert.equal(geometry.line, "20px");

@@ -93,7 +93,7 @@ export async function assertSelectionHierarchy(page: Page, baseUrl: string) {
 								padding: style.padding,
 							};
 						});
-					assert.deepEqual(labelStyle, { transform: "uppercase", font: "11px", padding: "8px" });
+					assert.deepEqual(labelStyle, { transform: "uppercase", font: "12px", padding: "8px" });
 				}
 				const markup = await demo.evaluate((node) => node.outerHTML);
 				await page.setContent(

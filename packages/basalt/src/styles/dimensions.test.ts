@@ -51,7 +51,7 @@ describe("dimension token contract", () => {
 			);
 		}
 		expect(tokens).toContain("--basalt-leading-action-sm: 1.5");
-		expect(tokens).toContain("--basalt-leading-action-lg: 1.375");
+		expect(tokens).toContain("--basalt-leading-action-lg: calc(22 / 14)");
 	});
 	it("ships axis-specific code scroll containment in standalone CSS", () => {
 		for (const [axis, value] of [

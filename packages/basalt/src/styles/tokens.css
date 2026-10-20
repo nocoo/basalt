@@ -25,7 +25,7 @@
 	--basalt-leading-inline: calc(16 / 12);
 	--basalt-leading-action: calc(24 / 14);
 	--basalt-leading-action-sm: 1.5;
-	--basalt-leading-action-lg: 1.375;
+	--basalt-leading-action-lg: calc(22 / 14);
 	--basalt-leading-banner: calc(22 / 14);
 	--basalt-radius-sm: 0.25rem;
 	--basalt-radius-md: 0.5rem;

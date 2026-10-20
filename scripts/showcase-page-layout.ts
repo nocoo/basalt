@@ -185,9 +185,9 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 				assert.equal(geometry.insetY, y);
 				assert.ok(Math.abs(geometry.titleX - x) <= 1, JSON.stringify(geometry));
 				assert.ok(Math.abs(geometry.titleY - y) <= 1, JSON.stringify(geometry));
-				assert.equal(geometry.titleSize, 1.875 * rootSize);
-				assert.equal(geometry.descriptionSize, rootSize);
-				assert.equal(geometry.descriptionLine, rootSize * 1.5);
+				assert.equal(geometry.titleSize, 1.5 * rootSize);
+				assert.equal(geometry.descriptionSize, 0.875 * rootSize);
+				assert.equal(geometry.descriptionLine, rootSize * 0.875 * 1.5);
 				assert.ok(Math.abs(geometry.textGap - rootSize * 0.5) <= 1);
 				assert.equal(geometry.pageGap, rootSize * 1.5);
 				const sectionGaps = await page
@@ -284,7 +284,7 @@ export async function assertPageLayout(page: Page, baseUrl: string) {
 		await standalone.setContent(`<style>${css}</style>${markup}`);
 		assert.equal(
 			await standalone.locator("h1").evaluate((n) => getComputedStyle(n).fontSize),
-			"30px",
+			"24px",
 		);
 	} finally {
 		await standalone.close();
