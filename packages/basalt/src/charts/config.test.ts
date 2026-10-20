@@ -17,19 +17,19 @@ import {
 import { CHART_COLORS, chartAxis, withAlpha } from "./palette";
 
 describe("chart type helpers", () => {
-	it("sets axis ticks smaller than legend and tooltip", () => {
-		expect(chartFontSize("axis")).toBe("var(--basalt-text-xs)");
+	it("shares the auxiliary tier across axis ticks, legend and tooltip", () => {
+		expect(chartFontSize("axis")).toBe("var(--basalt-text-sm)");
 		expect(chartFontSize("legend")).toBe("var(--basalt-text-sm)");
 		expect(chartFontSize("tooltipTitle")).toBe("var(--basalt-text-sm)");
 		expect(chartFontSize("tooltipBody")).toBe("var(--basalt-text-sm)");
-		expect(chartTextStyle("axis")).toEqual({ fontSize: "var(--basalt-text-xs)" });
+		expect(chartTextStyle("axis")).toEqual({ fontSize: "var(--basalt-text-sm)" });
 	});
 
 	it("paints ticks with the axis token", () => {
-		expect(chartTickStyle()).toEqual({ fontSize: "var(--basalt-text-xs)", fill: chartAxis });
+		expect(chartTickStyle()).toEqual({ fontSize: "var(--basalt-text-sm)", fill: chartAxis });
 		expect(AXIS_CONFIG.axisLine).toBe(false);
 		expect(AXIS_CONFIG.tickLine).toBe(false);
-		expect(AXIS_CONFIG.tick).toEqual({ fontSize: "var(--basalt-text-xs)", fill: chartAxis });
+		expect(AXIS_CONFIG.tick).toEqual({ fontSize: "var(--basalt-text-sm)", fill: chartAxis });
 		expect(cartesianAxisProps(true).hide).toBe(true);
 	});
 

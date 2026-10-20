@@ -1,5 +1,6 @@
 import { AreaChart } from "@nocoo/basalt/charts/area";
 import { BarChart } from "@nocoo/basalt/charts/bar";
+import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { Activity, BarChart3 } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -16,32 +17,20 @@ export default function FlowComparisonPage() {
 			title={t("pages.flowComparison.title")}
 			description={t("pages.flowComparison.description")}
 		>
-			<div className="grid grid-cols-1 gap-basalt-layout md:gap-basalt-layout sm:grid-cols-3">
-				<LayerCard>
-					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
-						{t("pages.flowComparison.totalInflow")}
-					</p>
-					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-success font-display tracking-tight">
-						${summary.totalInflow.toLocaleString()}
-					</p>
-				</LayerCard>
-				<LayerCard>
-					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
-						{t("pages.flowComparison.totalOutflow")}
-					</p>
-					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-destructive font-display tracking-tight">
-						${summary.totalOutflow.toLocaleString()}
-					</p>
-				</LayerCard>
-				<LayerCard>
-					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
-						{t("pages.flowComparison.netCashFlow")}
-					</p>
-					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
-						${summary.netFlow.toLocaleString()}
-					</p>
-				</LayerCard>
-			</div>
+			<StatGrid columns={3}>
+				<StatCard
+					title={t("pages.flowComparison.totalInflow")}
+					value={`$${summary.totalInflow.toLocaleString()}`}
+				/>
+				<StatCard
+					title={t("pages.flowComparison.totalOutflow")}
+					value={`$${summary.totalOutflow.toLocaleString()}`}
+				/>
+				<StatCard
+					title={t("pages.flowComparison.netCashFlow")}
+					value={`$${summary.netFlow.toLocaleString()}`}
+				/>
+			</StatGrid>
 
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">

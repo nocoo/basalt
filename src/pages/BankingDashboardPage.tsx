@@ -89,23 +89,32 @@ export default function BankingDashboardPage() {
 							{t("pages.banking.recentTransfers")}
 						</h2>
 					</LayerCard.Header>
-					<LayerCard.Body className="space-y-basalt-space-lg">
+					<LayerCard.Body className="divide-y divide-basalt-border/60">
 						{transfers.map((item) => (
-							<LayerCard key={item.name} className="flex items-center justify-between">
+							<div
+								key={item.name}
+								className="flex items-center justify-between gap-basalt-card py-basalt-card-sm first:pt-0 last:pb-0"
+							>
 								<div className="flex min-w-0 items-center gap-basalt-space-lg">
 									<div
-										className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${item.direction === "in" ? "bg-success/10" : "bg-destructive/10"}`}
+										className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${item.direction === "in" ? "bg-basalt-success/10" : "bg-basalt-destructive/10"}`}
 									>
 										{item.direction === "in" ? (
-											<ArrowDownLeft className="h-3.5 w-3.5 text-success" strokeWidth={1.5} />
+											<ArrowDownLeft
+												className="h-3.5 w-3.5 text-basalt-success"
+												strokeWidth={1.5}
+											/>
 										) : (
-											<ArrowUpRight className="h-3.5 w-3.5 text-destructive" strokeWidth={1.5} />
+											<ArrowUpRight
+												className="h-3.5 w-3.5 text-basalt-destructive"
+												strokeWidth={1.5}
+											/>
 										)}
 									</div>
 									<span className="text-basalt-base text-foreground">{item.name}</span>
 								</div>
 								<span className="text-basalt-base font-medium text-foreground">{item.amount}</span>
-							</LayerCard>
+							</div>
 						))}
 					</LayerCard.Body>
 				</LayerCard>

@@ -74,7 +74,7 @@ export const SheetTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<DialogPrimitive.Title
 		ref={ref}
-		className={cn("text-basalt-lg font-semibold leading-basalt-tight tracking-tight", className)}
+		className={cn("text-basalt-xl font-semibold leading-basalt-tight tracking-tight", className)}
 		{...props}
 	/>
 ));
@@ -202,7 +202,7 @@ SheetContent.displayName = "SheetContent";
 export interface SheetHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const SheetHeader = ({ className, ...props }: SheetHeaderProps) => (
-	<div className={cn("flex flex-col space-y-basalt-space-lg text-left", className)} {...props} />
+	<div className={cn("flex flex-col space-y-basalt-space-md text-left", className)} {...props} />
 );
 SheetHeader.displayName = "SheetHeader";
 
@@ -211,7 +211,7 @@ export interface SheetFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 export const SheetFooter = ({ className, ...props }: SheetFooterProps) => (
 	<div
 		className={cn(
-			"flex flex-col-reverse gap-basalt-space-lg sm:flex-row sm:justify-end",
+			"mt-basalt-layout flex flex-col-reverse gap-basalt-space-lg sm:flex-row sm:justify-end",
 			className,
 		)}
 		{...props}

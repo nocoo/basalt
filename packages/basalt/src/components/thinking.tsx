@@ -79,7 +79,7 @@ export function Thinking({ steps, variant = "steps", title, className, ...props 
 								)}
 							</span>
 							<div className="min-w-0">
-								<p className={cn("text-basalt-code", variant === "coding" && "font-mono")}>
+								<p className={cn("text-basalt-base", variant === "coding" && "font-mono")}>
 									{step.label}
 								</p>
 								{step.detail && (

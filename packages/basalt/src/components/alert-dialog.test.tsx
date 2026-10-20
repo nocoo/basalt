@@ -44,9 +44,19 @@ describe("AlertDialog", () => {
 		expect(screen.getByRole("heading", { name: "Delete Account?" })).toHaveClass(
 			"min-w-0",
 			"wrap-anywhere",
-			"text-basalt-3xl",
+			"text-basalt-xl",
+			"leading-basalt-tight",
 		);
-		expect(screen.getByText("This cannot be undone.")).toBeInTheDocument();
+		expect(screen.getByText("This cannot be undone.")).toHaveClass(
+			"text-basalt-base",
+			"leading-[var(--basalt-line-relaxed)]",
+		);
+		expect(screen.getByText("This cannot be undone.").parentElement).toHaveClass(
+			"space-y-basalt-space-md",
+		);
+		expect(screen.getByRole("button", { name: "Cancel" }).parentElement).toHaveClass(
+			"mt-basalt-layout",
+		);
 		expect(screen.getByRole("button", { name: "Cancel" }).className).toContain(
 			"border-basalt-border",
 		);

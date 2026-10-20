@@ -68,7 +68,7 @@ function DialogDismiss() {
 
 function DialogHeading({ title, description }: { title: string; description?: string }) {
 	return (
-		<div className="pr-basalt-space-lg">
+		<div className="pr-basalt-card-xl">
 			<DialogTitle>{title}</DialogTitle>
 			{description ? (
 				<DialogDescription className="mt-basalt-space-md">{description}</DialogDescription>
@@ -398,7 +398,7 @@ export default function DialogsPage() {
 												{UNIT_LOGS.map((log) => (
 													<div
 														key={log.date}
-														className="flex flex-wrap items-baseline gap-basalt-space-lg"
+														className="flex flex-wrap items-baseline gap-basalt-card-sm"
 													>
 														<div>
 															<p className="text-basalt-base text-foreground">

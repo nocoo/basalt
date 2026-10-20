@@ -16,7 +16,7 @@ vi.mock("recharts", async (importOriginal) => {
 });
 
 describe("Sparkline", () => {
-	it("renders compact two-tone green bars instead of a line", () => {
+	it("renders compact uniform green bars instead of a line", () => {
 		const { container } = render(
 			<Sparkline
 				data={[
@@ -28,8 +28,7 @@ describe("Sparkline", () => {
 		);
 		const bars = container.querySelectorAll(".recharts-rectangle");
 		expect(bars).toHaveLength(3);
-		expect(bars[0]).toHaveAttribute("fill-opacity", "0.4");
-		expect(bars[1]).toHaveAttribute("fill-opacity", "1");
+		for (const bar of bars) expect(bar).toHaveAttribute("fill-opacity", "1");
 		expect(bars[0]).toHaveAttribute("fill", "hsl(var(--basalt-chart-5))");
 		expect(container.querySelector(".recharts-line")).toBeNull();
 		expect(container.querySelector(".basalt-chart")).toHaveClass("h-basalt-5", "w-basalt-28");

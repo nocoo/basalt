@@ -87,6 +87,19 @@ describe("InteractionShowcasePage", () => {
 		expect(screen.getByText(/interactive ui patterns/i)).toBeInTheDocument();
 	});
 
+	it("provides section descriptions as heading hints instead of canvas paragraphs", () => {
+		render(<InteractionShowcasePage />);
+		expect(screen.getAllByRole("button", { name: "More information" })).toHaveLength(2);
+		expect(
+			screen.queryByText("Click any card to trigger a live toast notification via Sonner."),
+		).not.toBeInTheDocument();
+		expect(
+			screen.queryByText(
+				"Click any card to open a dialog. Three styles are demonstrated: informational, form, and destructive confirmation.",
+			),
+		).not.toBeInTheDocument();
+	});
+
 	it("renders toast notification cards", () => {
 		const { container } = render(<InteractionShowcasePage />);
 		expect(screen.getByText("Toast Notifications")).toBeInTheDocument();

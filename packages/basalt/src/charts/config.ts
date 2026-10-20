@@ -8,7 +8,7 @@ export type { ChartSeriesDescriptor } from "./series";
 export type ChartTypeFace = "axis" | "legend" | "tooltipTitle" | "tooltipBody";
 
 export const CHART_TYPE = {
-	axisFontSize: "var(--basalt-text-xs)",
+	axisFontSize: "var(--basalt-text-sm)",
 	legendFontSize: "var(--basalt-text-sm)",
 	tooltipTitleSize: "var(--basalt-text-sm)",
 	tooltipBodySize: "var(--basalt-text-sm)",

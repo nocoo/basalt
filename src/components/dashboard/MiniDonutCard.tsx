@@ -15,11 +15,11 @@ export function MiniDonutCard() {
 			<LayerCard.Header className="flex-col">
 				<h2 className="text-basalt-base text-muted-foreground">{t("dashboard.miniDonut")}</h2>
 			</LayerCard.Header>
-			<LayerCard.Body className="min-h-0 flex-1 flex items-center gap-basalt-space-lg">
+			<LayerCard.Body className="min-h-0 flex-1 flex items-center gap-basalt-card">
 				<div className="h-24 w-24">
 					<DonutChartWidget data={data} height={96} />
 				</div>
-				<div className="space-y-basalt-space-lg text-basalt-sm text-muted-foreground">
+				<div className="space-y-basalt-card-sm text-basalt-sm text-muted-foreground">
 					<div className="flex items-center justify-between gap-basalt-space-lg">
 						<span>{t("dashboard.activeLabel")}</span>
 						<span className="text-foreground">62%</span>

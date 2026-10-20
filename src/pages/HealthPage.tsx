@@ -56,13 +56,25 @@ const activityBreakdown = [
 
 const sleepSlots = Array.from({ length: 24 }).map((_, i) => ({
 	color:
-		i < 6 ? "bg-indigo-800" : i < 10 ? "bg-indigo-500" : i < 16 ? "bg-green-600" : "bg-orange-500",
+		i < 6
+			? "bg-basalt-primary/60"
+			: i < 10
+				? "bg-basalt-primary"
+				: i < 16
+					? "bg-basalt-success"
+					: "bg-basalt-warning",
 	label: `Hour ${i}`,
 }));
 
 const heartRateSlots = Array.from({ length: 24 }).map((_, i) => ({
 	color:
-		i < 8 ? "bg-green-600" : i < 16 ? "bg-yellow-600" : i < 20 ? "bg-orange-600" : "bg-red-600",
+		i < 8
+			? "bg-basalt-success"
+			: i < 16
+				? "bg-basalt-warning/60"
+				: i < 20
+					? "bg-basalt-warning"
+					: "bg-basalt-destructive",
 	label: `Hour ${i}`,
 }));
 
@@ -159,35 +171,40 @@ export default function HealthPage() {
 			time: "06:30",
 			title: t("pages.health.wakeUp"),
 			subtitle: t("pages.health.rested"),
-			color: "bg-indigo-500",
+			color: "bg-basalt-primary/10",
+			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t2",
 			time: "07:10",
 			title: t("pages.health.hydration"),
 			subtitle: "400ml",
-			color: "bg-blue-500",
+			color: "bg-basalt-info/10",
+			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t3",
 			time: "12:20",
 			title: t("pages.health.walk"),
 			subtitle: "3.2km",
-			color: "bg-green-600",
+			color: "bg-basalt-success/10",
+			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t4",
 			time: "18:10",
 			title: t("pages.health.workout"),
 			subtitle: t("pages.health.strength45m"),
-			color: "bg-orange-500",
+			color: "bg-basalt-warning/10",
+			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t5",
 			time: "21:40",
 			title: t("pages.health.windDown"),
 			subtitle: t("pages.health.stretching"),
-			color: "bg-indigo-400",
+			color: "bg-basalt-primary/10",
+			textColor: "hsl(var(--basalt-foreground))",
 		},
 	];
 
@@ -197,28 +214,32 @@ export default function HealthPage() {
 			time: "07:30",
 			title: t("pages.health.sleepDebtDetected"),
 			subtitle: t("pages.health.recommendEarlyWindDown"),
-			color: "bg-indigo-500",
+			color: "bg-basalt-primary/10",
+			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "i2",
 			time: "09:10",
 			title: t("pages.health.hydrationDip"),
 			subtitle: t("pages.health.add400mlBeforeNoon"),
-			color: "bg-blue-500",
+			color: "bg-basalt-info/10",
+			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "i3",
 			time: "13:20",
 			title: t("pages.health.focusWindow"),
 			subtitle: t("pages.health.scheduleDeepWorkBlock"),
-			color: "bg-green-600",
+			color: "bg-basalt-success/10",
+			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "i4",
 			time: "17:40",
 			title: t("pages.health.recoveryNeeded"),
 			subtitle: t("pages.health.lightMovementRecommended"),
-			color: "bg-orange-500",
+			color: "bg-basalt-warning/10",
+			textColor: "hsl(var(--basalt-foreground))",
 		},
 	];
 
@@ -263,11 +284,13 @@ export default function HealthPage() {
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Moon className="h-4 w-4 text-indigo-500" strokeWidth={1.5} />
+						<Moon className="h-4 w-4 text-basalt-primary" strokeWidth={1.5} />
 						<h2 className="text-basalt-base text-muted-foreground">
 							{t("pages.health.sleepStages")}
 						</h2>
-						<span className="ml-auto text-basalt-base font-semibold text-indigo-500">7h 24m</span>
+						<span className="ml-auto text-basalt-base font-semibold text-basalt-primary">
+							7h 24m
+						</span>
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<SlotBarChart items={sleepSlots} />
@@ -275,11 +298,13 @@ export default function HealthPage() {
 				</LayerCard>
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Heart className="h-4 w-4 text-red-500" strokeWidth={1.5} />
+						<Heart className="h-4 w-4 text-basalt-destructive" strokeWidth={1.5} />
 						<h2 className="text-basalt-base text-muted-foreground">
 							{t("pages.health.heartRateZones")}
 						</h2>
-						<span className="ml-auto text-basalt-base font-semibold text-red-500">72 bpm</span>
+						<span className="ml-auto text-basalt-base font-semibold text-basalt-destructive">
+							72 bpm
+						</span>
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<SlotBarChart items={heartRateSlots} />
@@ -334,14 +359,14 @@ export default function HealthPage() {
 						/>
 					</LayerCard.Body>
 				</LayerCard>
-				<LayerCard className="lg:col-span-2 max-h-[25rem] overflow-y-auto">
+				<LayerCard className="lg:col-span-2">
 					<LayerCard.Header className="items-center justify-start">
 						<Activity className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<h2 className="text-basalt-base text-muted-foreground">
 							{t("pages.health.dailyTimeline")}
 						</h2>
 					</LayerCard.Header>
-					<LayerCard.Body>
+					<LayerCard.Body className="max-h-[22rem] overflow-y-auto">
 						<Timeline events={timelineEvents} />
 					</LayerCard.Body>
 				</LayerCard>
@@ -419,7 +444,7 @@ export default function HealthPage() {
 								{t("pages.health.promptStudio")}
 							</h2>
 						</LayerCard.Header>
-						<LayerCard.Body className="space-y-basalt-space-lg">
+						<LayerCard.Body className="space-y-basalt-card">
 							<InputArea
 								rows={5}
 								placeholder={t("pages.health.promptPlaceholder")}
@@ -453,12 +478,12 @@ export default function HealthPage() {
 								{t("pages.health.recommendedActions")}
 							</h2>
 						</LayerCard.Header>
-						<LayerCard.Body className="space-y-basalt-space-lg">
+						<LayerCard.Body className="divide-y divide-basalt-border/60">
 							{recommendations.map((item) => (
-								<LayerCard key={item.title}>
-									<p className="text-basalt-base text-foreground">{item.title}</p>
-									<span className="text-basalt-sm text-muted-foreground">{item.status}</span>
-								</LayerCard>
+								<div key={item.title} className="py-basalt-card-sm first:pt-0 last:pb-0">
+									<p className="text-basalt-base text-basalt-foreground">{item.title}</p>
+									<span className="text-basalt-sm text-basalt-muted-foreground">{item.status}</span>
+								</div>
 							))}
 						</LayerCard.Body>
 					</LayerCard>

@@ -6,6 +6,25 @@ const tailwind = readFileSync("packages/basalt/src/styles/tailwind.css", "utf8")
 const standalone = readFileSync("packages/basalt/src/styles/standalone.css", "utf8");
 
 describe("dimension token contract", () => {
+	it("maps the core text scale to four tiers in both entrypoints", () => {
+		for (const css of [tokens, standalone]) {
+			for (const [name, value] of Object.entries({
+				xs: "0.75rem",
+				sm: "0.75rem",
+				code: "0.875rem",
+				base: "0.875rem",
+				lg: "1.125rem",
+				xl: "1.125rem",
+				"2xl": "1.125rem",
+				"3xl": "1.5rem",
+				"4xl": "1.5rem",
+			})) {
+				expect(css).toContain(`--basalt-text-${name}: ${value};`);
+			}
+			const largeAction = css.match(/\.basalt-action-lg \{([^}]+)\}/)?.[1];
+			expect(largeAction).toContain("font-size: var(--basalt-text-base)");
+		}
+	});
 	it("gives banners panel insets without enlarging their controls", () => {
 		for (const css of [tokens, standalone]) {
 			const block = css.match(/\.basalt-banner \{([^}]+)\}/)?.[1];
@@ -106,9 +125,17 @@ describe("dimension token contract", () => {
 		expect(tokens).toContain("--basalt-space-panel-x: var(--basalt-space-card)");
 		expect(tokens).toContain("--basalt-space-panel-y: var(--basalt-space-card-sm)");
 		expect(tokens).toContain("--basalt-space-table-edge: var(--basalt-space-panel-x)");
-		expect(tokens).toContain("--basalt-space-table-x: var(--basalt-space-lg)");
+		expect(tokens).toContain("--basalt-space-table-x: 0.75rem");
+		expect(tokens).toContain("--basalt-space-table-y: var(--basalt-space-lg)");
 		expect(tokens).not.toContain("data-basalt-table-edge");
 		expect(tailwind).toContain("--spacing-basalt-table-edge: var(--basalt-space-table-edge)");
+	});
+	it("gives action labels horizontal breathing room at every size", () => {
+		for (const css of [tokens, standalone]) {
+			expect(css).toContain("--basalt-space-control-x-sm: 0.625rem");
+			expect(css).toContain("--basalt-space-control-x: 0.75rem");
+			expect(css).toContain("--basalt-space-control-x-lg: 1rem");
+		}
 	});
 	it("emits zero padding once, before axis overrides", () => {
 		expect(standalone.match(/\.p-0 \{/g)).toHaveLength(1);
@@ -122,7 +149,7 @@ describe("dimension token contract", () => {
 			icon: "0.875rem",
 			"icon-lg": "1rem",
 			touch: "2.75rem",
-			"table-row": "2.25rem",
+			"table-row": "2.5rem",
 			rail: "4.25rem",
 		})) {
 			expect(tokens).toContain(`--basalt-size-${role}: ${value}`);

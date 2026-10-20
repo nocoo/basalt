@@ -23,208 +23,218 @@ export default function FormsPage() {
 
 	return (
 		<ShowcasePage title={t("pages.forms.title")} description={t("pages.forms.description")}>
-			<p className="text-basalt-base text-muted-foreground">{t("demo.localOnly")}</p>
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-2">
 				<SectionRule title={t("pages.forms.profileForm")}>
-					<form
-						aria-label={t("pages.forms.profileForm")}
-						data-form-stack=""
-						className={FORM_STACK_CLASS}
-						onSubmit={(event) => {
-							event.preventDefault();
-							const data = new FormData(event.currentTarget);
-							vm.profile.submit(
-								Object.fromEntries([...data].map(([key, value]) => [key, String(value)])),
-							);
-						}}
-					>
-						<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2">
+					<LayerCard>
+						<form
+							aria-label={t("pages.forms.profileForm")}
+							data-form-stack=""
+							className={FORM_STACK_CLASS}
+							onSubmit={(event) => {
+								event.preventDefault();
+								const data = new FormData(event.currentTarget);
+								vm.profile.submit(
+									Object.fromEntries([...data].map(([key, value]) => [key, String(value)])),
+								);
+							}}
+						>
+							<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2">
+								<div data-field="" className={FIELD_STACK_CLASS}>
+									<Label htmlFor="profile-first" className="text-foreground">
+										{t("pages.forms.firstName")}
+									</Label>
+									<Input
+										id="profile-first"
+										name="firstName"
+										required
+										placeholder={t("pages.forms.firstNamePlaceholder")}
+									/>
+								</div>
+								<div data-field="" className={FIELD_STACK_CLASS}>
+									<Label htmlFor="profile-last" className="text-foreground">
+										{t("pages.forms.lastName")}
+									</Label>
+									<Input
+										id="profile-last"
+										name="lastName"
+										required
+										placeholder={t("pages.forms.lastNamePlaceholder")}
+									/>
+								</div>
+							</div>
 							<div data-field="" className={FIELD_STACK_CLASS}>
-								<Label htmlFor="profile-first" className="text-foreground">
-									{t("pages.forms.firstName")}
+								<Label htmlFor="profile-email" className="text-foreground">
+									{t("pages.forms.email")}
 								</Label>
 								<Input
-									id="profile-first"
-									name="firstName"
+									id="profile-email"
+									name="email"
 									required
-									placeholder={t("pages.forms.firstNamePlaceholder")}
+									type="email"
+									placeholder={t("pages.forms.emailPlaceholder")}
 								/>
 							</div>
 							<div data-field="" className={FIELD_STACK_CLASS}>
-								<Label htmlFor="profile-last" className="text-foreground">
-									{t("pages.forms.lastName")}
+								<Label htmlFor="profile-location" className="text-foreground">
+									{t("pages.forms.location")}
 								</Label>
-								<Input
-									id="profile-last"
-									name="lastName"
-									required
-									placeholder={t("pages.forms.lastNamePlaceholder")}
-								/>
+								<InputGroup>
+									<InputGroup.Addon>
+										<MapPin strokeWidth={1.5} />
+									</InputGroup.Addon>
+									<InputGroup.Input
+										id="profile-location"
+										name="location"
+										placeholder={t("pages.forms.locationPlaceholder")}
+									/>
+								</InputGroup>
 							</div>
-						</div>
-						<div data-field="" className={FIELD_STACK_CLASS}>
-							<Label htmlFor="profile-email" className="text-foreground">
-								{t("pages.forms.email")}
-							</Label>
-							<Input
-								id="profile-email"
-								name="email"
-								required
-								type="email"
-								placeholder={t("pages.forms.emailPlaceholder")}
-							/>
-						</div>
-						<div data-field="" className={FIELD_STACK_CLASS}>
-							<Label htmlFor="profile-location" className="text-foreground">
-								{t("pages.forms.location")}
-							</Label>
-							<InputGroup>
-								<InputGroup.Addon>
-									<MapPin strokeWidth={1.5} />
-								</InputGroup.Addon>
-								<InputGroup.Input
-									id="profile-location"
-									name="location"
-									placeholder={t("pages.forms.locationPlaceholder")}
-								/>
-							</InputGroup>
-						</div>
-						<Button type="submit" loading={vm.profile.status === "pending"}>
-							{t("pages.forms.saveProfile")}
-						</Button>
-						<DemoFeedback {...vm.profile} />
-					</form>
+							<Button type="submit" loading={vm.profile.status === "pending"}>
+								{t("pages.forms.saveProfile")}
+							</Button>
+							<DemoFeedback {...vm.profile} />
+						</form>
+					</LayerCard>
 				</SectionRule>
 
 				<SectionRule title={t("pages.forms.security")}>
-					<form
-						aria-label={t("pages.forms.security")}
-						data-form-stack=""
-						className={FORM_STACK_CLASS}
-						onSubmit={(event) => {
-							event.preventDefault();
-							const data = new FormData(event.currentTarget);
-							vm.updateSecurity(
-								String(data.get("password")),
-								String(data.get("confirmation")),
-								data.has("twoFactor"),
-							);
-						}}
-					>
-						<div data-field="" className={FIELD_STACK_CLASS}>
-							<Label htmlFor="security-password" className="text-foreground">
-								{t("pages.forms.password")}
-							</Label>
-							<Input
-								id="security-password"
-								name="password"
-								required
-								minLength={8}
-								autoComplete="new-password"
-								type="password"
-								placeholder="••••••••"
-							/>
-						</div>
-						<div data-field="" className={FIELD_STACK_CLASS}>
-							<Label htmlFor="security-confirm" className="text-foreground">
-								{t("pages.forms.confirmPassword")}
-							</Label>
-							<Input
-								id="security-confirm"
-								name="confirmation"
-								required
-								minLength={8}
-								autoComplete="new-password"
-								type="password"
-								placeholder="••••••••"
-							/>
-						</div>
-						<LayerCard className="flex items-center justify-between">
-							<div>
-								<p className="text-basalt-base text-foreground">{t("pages.forms.twoFactorAuth")}</p>
-								<p className="text-basalt-sm text-muted-foreground">
-									{t("pages.forms.twoFactorDesc")}
-								</p>
+					<LayerCard>
+						<form
+							aria-label={t("pages.forms.security")}
+							data-form-stack=""
+							className={FORM_STACK_CLASS}
+							onSubmit={(event) => {
+								event.preventDefault();
+								const data = new FormData(event.currentTarget);
+								vm.updateSecurity(
+									String(data.get("password")),
+									String(data.get("confirmation")),
+									data.has("twoFactor"),
+								);
+							}}
+						>
+							<div data-field="" className={FIELD_STACK_CLASS}>
+								<Label htmlFor="security-password" className="text-foreground">
+									{t("pages.forms.password")}
+								</Label>
+								<Input
+									id="security-password"
+									name="password"
+									required
+									minLength={8}
+									autoComplete="new-password"
+									type="password"
+									placeholder="••••••••"
+								/>
 							</div>
-							<Switch name="twoFactor" defaultChecked aria-label={t("pages.forms.twoFactorAuth")} />
-						</LayerCard>
-						<Button type="submit" variant="secondary" loading={vm.security.status === "pending"}>
-							{t("pages.forms.updateSecurity")}
-						</Button>
-						{vm.passwordError && (
-							<p role="alert" className="text-basalt-base text-destructive">
-								{t("demo.passwordMismatch")}
-							</p>
-						)}
-						<DemoFeedback {...vm.security} />
-					</form>
+							<div data-field="" className={FIELD_STACK_CLASS}>
+								<Label htmlFor="security-confirm" className="text-foreground">
+									{t("pages.forms.confirmPassword")}
+								</Label>
+								<Input
+									id="security-confirm"
+									name="confirmation"
+									required
+									minLength={8}
+									autoComplete="new-password"
+									type="password"
+									placeholder="••••••••"
+								/>
+							</div>
+							<div className="flex items-center justify-between gap-basalt-card rounded-basalt-md border border-basalt-border/60 p-basalt-card-sm">
+								<div>
+									<p className="text-basalt-base text-foreground">
+										{t("pages.forms.twoFactorAuth")}
+									</p>
+									<p className="text-basalt-sm text-muted-foreground">
+										{t("pages.forms.twoFactorDesc")}
+									</p>
+								</div>
+								<Switch
+									name="twoFactor"
+									defaultChecked
+									aria-label={t("pages.forms.twoFactorAuth")}
+								/>
+							</div>
+							<Button type="submit" variant="secondary" loading={vm.security.status === "pending"}>
+								{t("pages.forms.updateSecurity")}
+							</Button>
+							{vm.passwordError && (
+								<p role="alert" className="text-basalt-base text-destructive">
+									{t("demo.passwordMismatch")}
+								</p>
+							)}
+							<DemoFeedback {...vm.security} />
+						</form>
+					</LayerCard>
 				</SectionRule>
 			</div>
 
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<SectionRule title={t("pages.forms.newsletter")}>
-					<form
-						aria-label={t("pages.forms.newsletter")}
-						data-form-stack=""
-						className={FORM_STACK_CLASS}
-						onSubmit={(event) => {
-							event.preventDefault();
-							vm.newsletter.submit({
-								email: String(new FormData(event.currentTarget).get("email")),
-							});
-						}}
-					>
-						<div data-field="" className={FIELD_STACK_CLASS}>
-							<Label htmlFor="news-email" className="text-foreground">
-								{t("pages.forms.newsletterEmail")}
-							</Label>
-							<Input
-								id="news-email"
-								name="email"
-								required
-								type="email"
-								placeholder={t("pages.forms.newsletterEmailPlaceholder")}
-							/>
-						</div>
-						<div className="flex items-center gap-basalt-space-lg">
-							<Checkbox id="news-consent" name="consent" required />
-							<label
-								htmlFor="news-consent"
-								className="text-basalt-sm text-muted-foreground cursor-pointer"
-							>
-								{t("pages.forms.agreeUpdates")}
-							</label>
-						</div>
-						<Button type="submit" loading={vm.newsletter.status === "pending"}>
-							{t("pages.forms.subscribe")}
-						</Button>
-						<DemoFeedback {...vm.newsletter} />
-					</form>
+					<LayerCard>
+						<form
+							aria-label={t("pages.forms.newsletter")}
+							data-form-stack=""
+							className={FORM_STACK_CLASS}
+							onSubmit={(event) => {
+								event.preventDefault();
+								vm.newsletter.submit({
+									email: String(new FormData(event.currentTarget).get("email")),
+								});
+							}}
+						>
+							<div data-field="" className={FIELD_STACK_CLASS}>
+								<Label htmlFor="news-email" className="text-foreground">
+									{t("pages.forms.newsletterEmail")}
+								</Label>
+								<Input
+									id="news-email"
+									name="email"
+									required
+									type="email"
+									placeholder={t("pages.forms.newsletterEmailPlaceholder")}
+								/>
+							</div>
+							<div className="flex items-center gap-basalt-space-lg">
+								<Checkbox id="news-consent" name="consent" required />
+								<label
+									htmlFor="news-consent"
+									className="text-basalt-sm text-muted-foreground cursor-pointer"
+								>
+									{t("pages.forms.agreeUpdates")}
+								</label>
+							</div>
+							<Button type="submit" loading={vm.newsletter.status === "pending"}>
+								{t("pages.forms.subscribe")}
+							</Button>
+							<DemoFeedback {...vm.newsletter} />
+						</form>
+					</LayerCard>
 				</SectionRule>
 
 				<SectionRule title={t("pages.forms.fileUpload")}>
-					<div className="space-y-basalt-space-lg">
-						<FileDropzone
-							label={t("pages.forms.fileUpload")}
-							description={t("pages.forms.fileTypes")}
-							accept="image/png,image/jpeg,application/pdf"
-							maxSize={4 * 1024 * 1024}
-							browseLabel={t("pages.forms.browseFiles")}
-							onFilesAccepted={(files) =>
-								vm.setFiles(files.map(({ name, size }) => ({ name, size })))
-							}
-						/>
-						<ul
-							className="mt-basalt-space-lg space-y-basalt-space-sm text-basalt-sm break-words"
-							aria-live="polite"
-						>
-							{vm.files.map((file, index) => (
-								<li key={`${file.name}-${index}`}>
-									{file.name} · {Math.ceil(file.size / 1024)} KB
-								</li>
-							))}
-						</ul>
-					</div>
+					<LayerCard>
+						<div className="space-y-basalt-card">
+							<FileDropzone
+								label={t("pages.forms.fileUpload")}
+								description={t("pages.forms.fileTypes")}
+								accept="image/png,image/jpeg,application/pdf"
+								maxSize={4 * 1024 * 1024}
+								browseLabel={t("pages.forms.browseFiles")}
+								onFilesAccepted={(files) =>
+									vm.setFiles(files.map(({ name, size }) => ({ name, size })))
+								}
+							/>
+							<ul className="space-y-basalt-space-sm text-basalt-sm break-words" aria-live="polite">
+								{vm.files.map((file, index) => (
+									<li key={`${file.name}-${index}`}>
+										{file.name} · {Math.ceil(file.size / 1024)} KB
+									</li>
+								))}
+							</ul>
+						</div>
+					</LayerCard>
 				</SectionRule>
 
 				<SectionRule title={t("pages.forms.successState")}>
@@ -237,7 +247,7 @@ export default function FormsPage() {
 							)}
 						</p>
 						<p className="text-basalt-sm text-muted-foreground">{t("demo.localOnly")}</p>
-						<Separator className="my-basalt-space-lg bg-border" />
+						<Separator className="my-basalt-card-sm bg-border" />
 						<Button
 							variant="secondary"
 							size="sm"
@@ -247,7 +257,7 @@ export default function FormsPage() {
 							{t("pages.forms.viewDetails")}
 						</Button>
 						{vm.detailsOpen && (
-							<pre className="mt-basalt-space-lg whitespace-pre-wrap break-words text-basalt-sm">
+							<pre className="mt-basalt-card-sm whitespace-pre-wrap break-words text-basalt-sm">
 								{JSON.stringify(
 									{
 										profile: vm.profile.result,

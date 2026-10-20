@@ -38,7 +38,7 @@ export function SectionRule({
 					<h2
 						className={
 							variant === "heading"
-								? "font-basalt-display text-basalt-2xl font-semibold tracking-tight text-basalt-foreground [overflow-wrap:anywhere]"
+								? "font-basalt-display text-basalt-xl font-semibold tracking-tight text-basalt-foreground [overflow-wrap:anywhere]"
 								: "text-basalt-sm font-medium tracking-wider text-basalt-muted-foreground uppercase"
 						}
 					>

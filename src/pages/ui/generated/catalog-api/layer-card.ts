@@ -16,7 +16,7 @@ export const API = [
 				type: "boolean",
 				required: false,
 				default: "false",
-				description: "Draw a hairline ring. Default grouping is luminance only.",
+				description: "Strengthen the default perimeter hairline.",
 			},
 			{
 				name: "padding",
@@ -52,6 +52,13 @@ export const API = [
 				required: false,
 				default: "false",
 				description: "Apply header insets to one child, such as a CollapsibleTrigger, without another wrapper.",
+			},
+			{
+				name: "divided",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Separate the header from its body with a divider.",
 			},
 		],
 	},

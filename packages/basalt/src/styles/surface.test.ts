@@ -53,32 +53,34 @@ describe("nested surface CSS", () => {
 		}
 	});
 
-	it("derives visible hover gradients from the configured primary in both themes", () => {
-		const css = postcss.parse(tokens);
-		for (const [selector, weights] of [
-			['[data-mode="light"]', [9.6, 4.8]],
-			['[data-mode="dark"]', [16, 9.6]],
+	it("derives soft uniform matte hover from the configured primary in both themes", () => {
+		for (const [selector, weight] of [
+			['[data-mode="light"]', 18],
+			['[data-mode="dark"]', 18],
 		] as const) {
-			const values = new Map<string, string>();
-			css.walkRules((rule) => {
-				if (rule.selectors.includes(selector)) {
-					rule.walkDecls((decl) => {
-						values.set(decl.prop, decl.value);
-					});
-				}
-			});
-			for (const [index, token] of ["--basalt-hover", "--basalt-hover-end"].entries()) {
-				expect(values.get(token)?.replace(/\s+/g, "")).toBe(
-					`color-mix(insrgb,hsl(var(--basalt-primary))${weights[index]}%,hsl(var(--basalt-popover)))`,
-				);
-			}
+			expect(tokenValues(selector).get("--basalt-hover")?.replace(/\s+/g, "")).toBe(
+				`color-mix(insrgb,hsl(var(--basalt-primary))${weight}%,hsl(var(--basalt-surface-elevated)))`,
+			);
 		}
-		expect(
-			tokens.match(
-				/background: linear-gradient\(90deg, var\(--basalt-hover\), var\(--basalt-hover-end\)\);/g,
-			),
-		).toHaveLength(2);
+		for (const selector of [".basalt-hover-list::before", ".basalt-command-list::before"]) {
+			expect(tokenValues(selector).get("background")).toBe("var(--basalt-hover)");
+		}
+		expect(tokens).not.toContain("--basalt-hover-end");
 		expect(tailwind).toContain("--color-basalt-hover: var(--basalt-hover);");
+	});
+
+	it("keeps the first eight numbered chart series distinct in both themes", () => {
+		for (const selector of themeSelectors) {
+			const values = tokenValues(selector);
+			const colors = Array.from({ length: 8 }, (_, index) => {
+				const value = values.get(`--basalt-chart-${index + 1}`) ?? "";
+				const alias = /^var\((--basalt-chart-[\w-]+)\)$/.exec(value);
+				return alias ? values.get(alias[1]) : value;
+			});
+			expect(colors).not.toContain("");
+			expect(colors).not.toContain(undefined);
+			expect(new Set(colors).size).toBe(8);
+		}
 	});
 
 	it("retains selected paint independently of moving hover and keeps semantic diffs", () => {
@@ -103,9 +105,27 @@ describe("nested surface CSS", () => {
 		expect(tokens).toContain("background: hsl(var(--basalt-info-tint));");
 		expect(tailwind).toContain("--color-basalt-selected: hsl(var(--basalt-selected));");
 	});
-	it("defaults control and zebra fills on the document", () => {
-		expect(tokens).toContain("--basalt-control-fill: hsl(var(--basalt-secondary));");
-		expect(tokens).toContain("--basalt-zebra-fill: hsl(var(--basalt-bright));");
+	it("raises control fills above their parent root and card surfaces", () => {
+		for (const selector of [...themeSelectors, "[data-basalt-surface-root]"]) {
+			expect(tokenValues(selector).get("--basalt-control-fill")).toBe(
+				"hsl(var(--basalt-secondary))",
+			);
+		}
+		for (const selector of [
+			"[data-basalt-surface-root] [data-basalt-surface]",
+			"[data-basalt-surface]:not([data-basalt-surface-root] *):not([data-basalt-surface] *)",
+			"[data-basalt-surface]:not([data-basalt-surface-root] *) [data-basalt-surface]",
+		]) {
+			expect(tokenValues(selector).get("--basalt-control-fill")).toBe("hsl(var(--basalt-bright))");
+		}
+		expect(tokenValues("[data-basalt-surface-root]").get("--basalt-surface-current")).toBe(
+			"var(--basalt-card)",
+		);
+		expect(
+			tokenValues("[data-basalt-surface-root] [data-basalt-surface]").get(
+				"--basalt-surface-current",
+			),
+		).toBe("var(--basalt-secondary)");
 	});
 
 	it("paints nested surfaces with descendant selectors and no @scope", () => {
@@ -117,14 +137,47 @@ describe("nested surface CSS", () => {
 		expect(tokens).not.toContain("@scope");
 	});
 
-	it("stripes tables from the inherited zebra fill", () => {
-		expect(tokens).toContain("[data-basalt-table] tbody tr:nth-child(even)");
-		expect(tokens).toContain(":not(:hover)");
-		expect(tokens).toContain('tr[aria-selected="true"] td');
+	it("opts into striping without covering hover or selection and adds default cell hairlines", () => {
+		expect(
+			tokenValues('[data-basalt-table][data-striped="true"] tbody tr:nth-child(even)').get(
+				"background-color",
+			),
+		).toBe("hsl(var(--basalt-surface-current))");
+		expect(tokens).not.toContain("[data-basalt-table] tbody tr:nth-child(even)");
+		expect(
+			tokenValues('[data-basalt-table] tbody tr[aria-selected="true"] td').get("background"),
+		).toBe("hsl(var(--basalt-selected))");
+		for (const selector of [
+			"[data-basalt-table] tbody tr:not(:last-child)",
+			"[data-basalt-table] tbody tr:not(:last-child) > td",
+		]) {
+			expect(tokenValues(selector).get("border-bottom")).toBe(
+				"1px solid hsl(var(--basalt-border) / 0.5)",
+			);
+		}
+	});
+
+	it("aligns opted-in attached table edges with card insets", () => {
+		for (const [edge, side] of [
+			["first", "start"],
+			["last", "end"],
+		]) {
+			expect(
+				tokenValues(
+					`[data-basalt-table-container][data-edge="attached"] :where(th, td):${edge}-child`,
+				).get(`padding-inline-${side}`),
+			).toBe("var(--basalt-space-card)");
+		}
 	});
 
 	it("exposes the control fill to Tailwind", () => {
 		expect(tailwind).toContain("--color-basalt-control: var(--basalt-control-fill);");
+		expect(tailwind).toContain("--color-basalt-success: var(--basalt-success);");
+		for (const selector of themeSelectors) {
+			expect(tokenValues(selector).get("--basalt-success")).toBe(
+				"var(--basalt-tag-success-foreground)",
+			);
+		}
 	});
 
 	it("pairs every solid badge fill with a foreground above the 4.5:1 text threshold", () => {

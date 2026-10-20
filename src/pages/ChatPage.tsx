@@ -30,7 +30,7 @@ export default function ChatPage() {
 	const failId = useId();
 	const threads = (
 		<div className="flex h-full min-h-0 flex-col">
-			<div className="p-basalt-space-lg">
+			<div className="p-basalt-card-sm">
 				<Button
 					variant="secondary"
 					className="w-full justify-start"
@@ -58,7 +58,7 @@ export default function ChatPage() {
 					setThreadsOpen(false);
 				}}
 			/>
-			<p className="p-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
+			<p className="p-basalt-card-sm text-basalt-sm text-basalt-muted-foreground">
 				{t("pages.chat.sessionHint")}
 			</p>
 		</div>
@@ -70,7 +70,10 @@ export default function ChatPage() {
 			title={t("pages.chat.title")}
 			description={t("pages.chat.description")}
 		>
-			<div className="flex min-h-0 flex-1 overflow-hidden rounded-basalt-lg border border-basalt-border">
+			<div
+				data-basalt-surface=""
+				className="flex min-h-0 flex-1 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border/50"
+			>
 				{!mobile && (
 					<aside className="w-basalt-56 shrink-0 border-r border-basalt-border bg-basalt-secondary">
 						{threads}
@@ -80,7 +83,7 @@ export default function ChatPage() {
 					className="flex min-h-0 min-w-0 flex-1 flex-col"
 					aria-label={t("pages.chat.assistant")}
 				>
-					<header className="flex shrink-0 flex-wrap items-center gap-basalt-space-lg border-b border-basalt-border px-basalt-space-lg py-basalt-space-lg">
+					<header className="flex shrink-0 flex-wrap items-center gap-basalt-space-lg border-b border-basalt-border px-basalt-card py-basalt-card-sm">
 						{mobile && (
 							<Sheet open={threadsOpen} onOpenChange={setThreadsOpen}>
 								<SheetTrigger asChild>
@@ -113,7 +116,7 @@ export default function ChatPage() {
 								<DialogTitle>{t("pages.chat.rename")}</DialogTitle>
 								<DialogDescription>{t("pages.chat.renameHint")}</DialogDescription>
 								<form
-									className="mt-basalt-space-lg space-y-basalt-space-lg"
+									className="mt-basalt-card space-y-basalt-card"
 									onSubmit={(event) => {
 										event.preventDefault();
 										vm.dispatch({ type: "rename", title: name });
@@ -150,16 +153,16 @@ export default function ChatPage() {
 						</Button>
 					</header>
 					<Conversation key={vm.activeId} vm={vm} />
+					<div className="flex shrink-0 items-center gap-basalt-space-lg border-t border-basalt-border px-basalt-card py-basalt-card-sm text-basalt-sm text-basalt-muted-foreground">
+						<Checkbox
+							id={failId}
+							checked={vm.failNext}
+							disabled={vm.running}
+							onCheckedChange={(value) => vm.dispatch({ type: "fail", value: value === true })}
+						/>
+						<label htmlFor={failId}>{t("demo.failNextReply")}</label>
+					</div>
 				</section>
-			</div>
-			<div className="flex shrink-0 items-center gap-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
-				<Checkbox
-					id={failId}
-					checked={vm.failNext}
-					disabled={vm.running}
-					onCheckedChange={(value) => vm.dispatch({ type: "fail", value: value === true })}
-				/>
-				<label htmlFor={failId}>{t("demo.failNextReply")}</label>
 			</div>
 			<ConfirmDialog
 				open={confirm !== null}

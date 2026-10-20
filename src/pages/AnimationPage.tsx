@@ -60,7 +60,7 @@ export default function AnimationPage() {
 			<div
 				data-motion={paused ? "paused" : "running"}
 				className={
-					paused ? "space-y-basalt-space-lg [&_*]:![animation:none]" : "space-y-basalt-space-lg"
+					paused ? "space-y-basalt-layout-lg [&_*]:![animation:none]" : "space-y-basalt-layout-lg"
 				}
 			>
 				<SectionRule
@@ -68,13 +68,13 @@ export default function AnimationPage() {
 					hint={t("pages.animation.continuousHint")}
 				>
 					<div className="grid gap-basalt-layout md:grid-cols-3">
-						<LayerCard className="flex flex-col items-center gap-basalt-space-lg">
+						<LayerCard className="flex flex-col items-center gap-basalt-card-sm">
 							<Loader size={32} />
 							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.animation.loaderLabel")}
 							</p>
 						</LayerCard>
-						<LayerCard className="space-y-basalt-space-lg">
+						<LayerCard className="space-y-basalt-card-sm">
 							<SkeletonLine minWidth={88} maxWidth={88} />
 							<SkeletonLine minWidth={64} maxWidth={64} />
 							<SkeletonLine minWidth={72} maxWidth={72} />
@@ -82,7 +82,7 @@ export default function AnimationPage() {
 								{t("pages.animation.shimmerLabel")}
 							</p>
 						</LayerCard>
-						<LayerCard className="flex flex-col items-center justify-center gap-basalt-space-lg">
+						<LayerCard className="flex flex-col items-center justify-center gap-basalt-card-sm">
 							<Button loading>{t("pages.animation.buttonBusy")}</Button>
 							<p className="text-basalt-sm text-basalt-muted-foreground">
 								{t("pages.animation.buttonHint")}
@@ -92,60 +92,62 @@ export default function AnimationPage() {
 				</SectionRule>
 
 				<SectionRule title={t("pages.animation.overlays")} hint={t("pages.animation.overlaysHint")}>
-					<div className="flex flex-wrap gap-basalt-space-lg">
-						<Dialog>
-							<DialogTrigger asChild>
-								<Button variant="outline" size="sm">
-									{t("pages.animation.openDialog")}
-								</Button>
-							</DialogTrigger>
-							<DialogContent>
-								<DialogTitle>{t("pages.animation.dialogTitle")}</DialogTitle>
-								<DialogDescription>{t("pages.animation.dialogBody")}</DialogDescription>
-								<div className="mt-basalt-space-lg flex justify-end">
-									<DialogClose asChild>
-										<Button size="sm">{t("common.close")}</Button>
-									</DialogClose>
-								</div>
-							</DialogContent>
-						</Dialog>
-						<Sheet>
-							<SheetTrigger asChild>
-								<Button variant="outline" size="sm">
-									{t("pages.animation.openSheet")}
-								</Button>
-							</SheetTrigger>
-							<SheetContent>
-								<SheetTitle>{t("pages.animation.sheetTitle")}</SheetTitle>
-								<SheetDescription>{t("pages.animation.sheetBody")}</SheetDescription>
-								<div className="mt-basalt-space-lg flex justify-end">
-									<SheetClose asChild>
-										<Button size="sm" variant="outline">
-											{t("common.close")}
-										</Button>
-									</SheetClose>
-								</div>
-							</SheetContent>
-						</Sheet>
-						<Popover>
-							<PopoverTrigger asChild>
-								<Button variant="outline" size="sm">
-									{t("pages.animation.openPopover")}
-								</Button>
-							</PopoverTrigger>
-							<PopoverContent>
-								<PopoverTitle>{t("pages.animation.popoverTitle")}</PopoverTitle>
-								<PopoverDescription>{t("pages.animation.popoverBody")}</PopoverDescription>
-							</PopoverContent>
-						</Popover>
-						<Button
-							size="sm"
-							variant="secondary"
-							onClick={() => toast.success(t("pages.animation.toastMessage"))}
-						>
-							{t("pages.animation.toast")}
-						</Button>
-					</div>
+					<LayerCard>
+						<div className="flex flex-wrap gap-basalt-space-lg">
+							<Dialog>
+								<DialogTrigger asChild>
+									<Button variant="outline" size="sm">
+										{t("pages.animation.openDialog")}
+									</Button>
+								</DialogTrigger>
+								<DialogContent>
+									<DialogTitle>{t("pages.animation.dialogTitle")}</DialogTitle>
+									<DialogDescription>{t("pages.animation.dialogBody")}</DialogDescription>
+									<div className="mt-basalt-card flex justify-end">
+										<DialogClose asChild>
+											<Button size="sm">{t("common.close")}</Button>
+										</DialogClose>
+									</div>
+								</DialogContent>
+							</Dialog>
+							<Sheet>
+								<SheetTrigger asChild>
+									<Button variant="outline" size="sm">
+										{t("pages.animation.openSheet")}
+									</Button>
+								</SheetTrigger>
+								<SheetContent>
+									<SheetTitle>{t("pages.animation.sheetTitle")}</SheetTitle>
+									<SheetDescription>{t("pages.animation.sheetBody")}</SheetDescription>
+									<div className="mt-basalt-card flex justify-end">
+										<SheetClose asChild>
+											<Button size="sm" variant="outline">
+												{t("common.close")}
+											</Button>
+										</SheetClose>
+									</div>
+								</SheetContent>
+							</Sheet>
+							<Popover>
+								<PopoverTrigger asChild>
+									<Button variant="outline" size="sm">
+										{t("pages.animation.openPopover")}
+									</Button>
+								</PopoverTrigger>
+								<PopoverContent>
+									<PopoverTitle>{t("pages.animation.popoverTitle")}</PopoverTitle>
+									<PopoverDescription>{t("pages.animation.popoverBody")}</PopoverDescription>
+								</PopoverContent>
+							</Popover>
+							<Button
+								size="sm"
+								variant="secondary"
+								onClick={() => toast.success(t("pages.animation.toastMessage"))}
+							>
+								{t("pages.animation.toast")}
+							</Button>
+						</div>
+					</LayerCard>
 				</SectionRule>
 
 				<SectionRule title={t("pages.animation.collapse")} hint={t("pages.animation.collapseHint")}>
@@ -162,7 +164,7 @@ export default function AnimationPage() {
 								</AccordionItem>
 							</Accordion>
 						</LayerCard>
-						<LayerCard className="space-y-basalt-space-lg">
+						<LayerCard className="space-y-basalt-card">
 							<Collapsible defaultOpen>
 								<CollapsibleTrigger>{t("pages.animation.collapsible")}</CollapsibleTrigger>
 								<CollapsibleContent>
@@ -177,12 +179,12 @@ export default function AnimationPage() {
 									<TabsTrigger value="activity">{t("pages.animation.tabActivity")}</TabsTrigger>
 								</TabsList>
 								<TabsContent value="overview">
-									<p className="pt-basalt-space-lg text-basalt-base text-basalt-muted-foreground">
+									<p className="pt-basalt-card-sm text-basalt-base text-basalt-muted-foreground">
 										{t("pages.animation.tabOverviewBody")}
 									</p>
 								</TabsContent>
 								<TabsContent value="activity">
-									<p className="pt-basalt-space-lg text-basalt-base text-basalt-muted-foreground">
+									<p className="pt-basalt-card-sm text-basalt-base text-basalt-muted-foreground">
 										{t("pages.animation.tabActivityBody")}
 									</p>
 								</TabsContent>

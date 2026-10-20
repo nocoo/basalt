@@ -109,7 +109,7 @@ describe("overlay dialog action footer", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Delete" }));
 		const dialog = screen.getByRole("dialog");
 		const title = within(dialog).getByRole("heading", { name: "Delete Resource?" });
-		expect(title).toHaveClass("min-w-0", "wrap-anywhere", "text-basalt-3xl");
+		expect(title).toHaveClass("min-w-0", "wrap-anywhere", "text-basalt-xl");
 		expect(within(dialog).getByRole("button", { name: "Close" })).toHaveClass(
 			"basalt-action-icon",
 			"shrink-0",

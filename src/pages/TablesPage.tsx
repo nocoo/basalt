@@ -29,7 +29,7 @@ import {
 	useTableShowcaseViewModel,
 } from "@/viewmodels/useTableShowcaseViewModel";
 
-const DENSE = "px-basalt-space-lg py-basalt-space-lg whitespace-nowrap";
+const DENSE = "whitespace-nowrap";
 const TAG_COLOR: Record<string, TagColor> = {
 	Enterprise: "blue",
 	Upsell: "violet",
@@ -52,7 +52,7 @@ function TagStack({ tags }: { tags: readonly string[] }) {
 				<TagBadge key={tag} name={tag} color={TAG_COLOR[tag]} size="sm" />
 			))}
 			{extra > 0 ? (
-				<Badge variant="outline" className="px-basalt-space-md py-0 text-basalt-xs">
+				<Badge variant="outline" className="px-basalt-space-md py-0 text-basalt-sm">
 					+{extra}
 				</Badge>
 			) : null}
@@ -64,7 +64,7 @@ function OwnerCell({ name, initials }: { name: string; initials: string }) {
 	return (
 		<div className="flex items-center gap-basalt-space-lg">
 			<Avatar className="h-6 w-6">
-				<AvatarFallback className="text-basalt-xs">{initials}</AvatarFallback>
+				<AvatarFallback className="text-basalt-sm">{initials}</AvatarFallback>
 			</Avatar>
 			<span>{name}</span>
 		</div>
@@ -114,6 +114,7 @@ export default function TablesPage() {
 		},
 		{
 			id: "deals",
+			textAlign: "end",
 			header: t("pages.tables.colDeals"),
 			accessor: (row) => row.deals,
 			cellClassName: `${DENSE} tabular-nums`,
@@ -122,6 +123,7 @@ export default function TablesPage() {
 		},
 		{
 			id: "pipeline",
+			textAlign: "end",
 			header: t("pages.tables.colPipeline"),
 			accessor: (row) => formatUsd(row.pipeline),
 			sortValue: (row) => row.pipeline,
@@ -199,6 +201,7 @@ export default function TablesPage() {
 		},
 		{
 			id: "value",
+			textAlign: "end",
 			header: t("pages.tables.colValue"),
 			accessor: (row) => formatUsd(row.value),
 			sortValue: (row) => row.value,
@@ -232,6 +235,7 @@ export default function TablesPage() {
 		},
 		{
 			id: "count",
+			textAlign: "end",
 			header: t("pages.tables.colCompanies"),
 			accessor: (row) => row.count,
 			cellClassName: `${DENSE} tabular-nums`,
@@ -239,6 +243,7 @@ export default function TablesPage() {
 		},
 		{
 			id: "pipeline",
+			textAlign: "end",
 			header: t("pages.tables.colPipeline"),
 			accessor: (row) => formatUsd(row.pipeline),
 			sortValue: (row) => row.pipeline,
@@ -286,6 +291,7 @@ export default function TablesPage() {
 		},
 		{
 			id: "amount",
+			textAlign: "end",
 			header: t("pages.tables.colAmount"),
 			accessor: (row) => formatUsd(row.amount),
 			sortValue: (row) => row.amount,
@@ -341,6 +347,7 @@ export default function TablesPage() {
 		},
 		{
 			id: "requests",
+			textAlign: "end",
 			header: t("pages.tables.colRequests"),
 			accessor: (row) => row.requests.toLocaleString("en-US"),
 			sortValue: (row) => row.requests,
@@ -354,7 +361,7 @@ export default function TablesPage() {
 			<SectionRule title={t("pages.tables.pipeline")} hint={t("pages.tables.pipelineHint")}>
 				<LayerCard padding="none" data-table-showcase="pipeline">
 					<Tabs value={vm.tab} onValueChange={(value) => vm.setTab(value as TableShowcaseTab)}>
-						<div className="flex flex-wrap items-center justify-between gap-basalt-space-lg px-basalt-space-lg pt-basalt-space-lg">
+						<div className="flex flex-wrap items-center justify-between gap-basalt-card px-basalt-card pt-basalt-card-sm">
 							<TabsList>
 								<TabsTrigger value="companies">{t("pages.tables.tabCompanies")}</TabsTrigger>
 								<TabsTrigger value="deals">{t("pages.tables.tabDeals")}</TabsTrigger>
@@ -367,7 +374,7 @@ export default function TablesPage() {
 								<Button size="sm">{t("pages.tables.newCompany")}</Button>
 							</div>
 						</div>
-						<div className="px-basalt-space-lg py-basalt-space-lg">
+						<div className="border-b border-basalt-border/60 px-basalt-card py-basalt-card-sm">
 							<FilterBar
 								label={t("pages.tables.filters")}
 								active={vm.owner !== "all" || vm.stage !== "all"}
@@ -404,10 +411,11 @@ export default function TablesPage() {
 								</Select>
 							</FilterBar>
 						</div>
-						<div className="px-basalt-space-lg pb-basalt-space-lg">
+						<div className="min-w-0">
 							<TabsContent value="companies" className="mt-0">
 								<DataTable
 									aria-label={t("pages.tables.tabCompanies")}
+									edge="attached"
 									data={[...vm.companies]}
 									columns={companyColumns}
 									multiple
@@ -419,6 +427,7 @@ export default function TablesPage() {
 							<TabsContent value="deals" className="mt-0">
 								<DataTable
 									aria-label={t("pages.tables.tabDeals")}
+									edge="attached"
 									data={[...vm.deals]}
 									columns={dealColumns}
 									getRowId={(row) => row.id}
@@ -427,6 +436,7 @@ export default function TablesPage() {
 							<TabsContent value="forecast" className="mt-0">
 								<DataTable
 									aria-label={t("pages.tables.tabForecast")}
+									edge="attached"
 									data={vm.forecast}
 									columns={forecastColumns}
 									getRowId={(row) => row.stage}
@@ -434,27 +444,25 @@ export default function TablesPage() {
 							</TabsContent>
 						</div>
 					</Tabs>
-					<div className="grid grid-cols-2 gap-px border-t border-basalt-border bg-basalt-border text-basalt-sm text-basalt-muted-foreground md:grid-cols-4">
-						<div className="bg-basalt-background px-basalt-space-lg py-basalt-space-lg">
+					<div className="grid grid-cols-2 gap-basalt-card border-t border-basalt-border/60 px-basalt-card py-basalt-card-sm text-basalt-sm text-basalt-muted-foreground md:grid-cols-4">
+						<div>
 							{vm.tab === "deals"
 								? t("pages.tables.dealsInView", { count: vm.dealCount })
 								: t("pages.tables.companiesInView", { count: vm.companyCount })}
 						</div>
-						<div className="bg-basalt-background px-basalt-space-lg py-basalt-space-lg tabular-nums">
+						<div className="tabular-nums">
 							{t("pages.tables.pipelineSum", { value: formatUsd(vm.pipelineSum) })}
 						</div>
-						<div className="bg-basalt-background px-basalt-space-lg py-basalt-space-lg tabular-nums">
+						<div className="tabular-nums">
 							{t("pages.tables.winAvg", { value: formatPercent(vm.winAvg) })}
 						</div>
-						<div className="bg-basalt-background px-basalt-space-lg py-basalt-space-lg">
-							{t("pages.tables.addCalculation")}
-						</div>
+						<div>{t("pages.tables.addCalculation")}</div>
 					</div>
 				</LayerCard>
 			</SectionRule>
 
 			<SectionRule title={t("pages.tables.ledger")} hint={t("pages.tables.ledgerHint")}>
-				<LayerCard className="space-y-basalt-space-lg" data-table-showcase="ledger">
+				<LayerCard className="space-y-basalt-card" data-table-showcase="ledger">
 					<Input
 						className="max-w-64"
 						aria-label={t("pages.tables.searchInvoices")}
@@ -474,7 +482,7 @@ export default function TablesPage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.tables.fleet")} hint={t("pages.tables.fleetHint")}>
-				<LayerCard className="space-y-basalt-space-lg" data-table-showcase="fleet">
+				<LayerCard className="space-y-basalt-card" data-table-showcase="fleet">
 					<FilterBar
 						label={t("pages.tables.deviceFilters")}
 						active={vm.deviceStatus !== "all"}

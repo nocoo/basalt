@@ -23,7 +23,7 @@ export function TrendLineCard() {
 			icon={Activity}
 			trend={{ value: -1.8 }}
 		>
-			<div className="space-y-basalt-space-lg">
+			<div className="space-y-basalt-card-sm">
 				<LineChart
 					data={DATA}
 					series={[{ key: "y", label: t("dashboard.spendingTrend") }]}

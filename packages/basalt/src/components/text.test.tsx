@@ -7,8 +7,8 @@ const SIZE_CLASS = {
 	xs: "text-basalt-sm",
 	sm: "text-basalt-base",
 	md: "text-basalt-base leading-[var(--basalt-line-relaxed)]",
-	lg: "text-basalt-lg",
-	xl: "text-basalt-xl",
+	lg: "text-basalt-xl",
+	xl: "text-basalt-3xl",
 } as const;
 
 describe("Text", () => {
@@ -28,7 +28,7 @@ describe("Text", () => {
 		const { rerender } = render(<Text variant="heading">Title</Text>);
 		const heading = screen.getByText("Title");
 		expect(heading.tagName).toBe("SPAN");
-		expect(heading.className).toContain("text-basalt-lg");
+		expect(heading.className).toContain("text-basalt-xl");
 		expect(heading.className).toContain("font-semibold");
 
 		for (const as of ["h1", "h2", "h3", "h4", "h5", "h6"] as const) {
@@ -55,7 +55,7 @@ describe("Text", () => {
 		expect(screen.getByText("npm").tagName).toBe("CODE");
 	});
 
-	it("keeps the five existing size class mappings", () => {
+	it("maps five size options onto the four canonical tiers", () => {
 		const { rerender } = render(<Text size="xs">Copy</Text>);
 		for (const [size, className] of Object.entries(SIZE_CLASS)) {
 			rerender(<Text size={size as keyof typeof SIZE_CLASS}>Copy</Text>);

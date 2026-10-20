@@ -216,7 +216,7 @@ function DialogSizesExample() {
 						<DialogDescription>
 							This size="{size}" dialog stays {width} wide on desktop.
 						</DialogDescription>
-						<div className="mt-basalt-space-lg overflow-auto rounded-basalt-md ring-1 ring-basalt-border">
+						<div className="mt-basalt-layout overflow-auto rounded-basalt-md ring-1 ring-basalt-border">
 							<Table>
 								<TableHeader>
 									<TableRow>
@@ -468,7 +468,7 @@ export default function Example() {
 						<DialogDescription>
 							This size="{size}" dialog stays {width} wide on desktop.
 						</DialogDescription>
-						<div className="mt-basalt-space-lg overflow-auto rounded-basalt-md ring-1 ring-basalt-border">
+						<div className="mt-basalt-layout overflow-auto rounded-basalt-md ring-1 ring-basalt-border">
 							<Table>
 								<TableHeader>
 									<TableRow>
@@ -514,12 +514,12 @@ export default function Example() {
 			<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 				<AlertTriangle className="size-5 text-basalt-destructive" />
 			</div>
-			<AlertDialogTitle className="text-basalt-2xl">Delete Account?</AlertDialogTitle>
+			<AlertDialogTitle>Delete Account?</AlertDialogTitle>
 		</div>
 		<AlertDialogDescription>
 			This action cannot be undone. All your data will be permanently removed from our care systems. Are you sure you want to proceed?
 		</AlertDialogDescription>
-		<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
+		<div className="mt-basalt-layout flex justify-end gap-basalt-space-lg">
 			<AlertDialogCancel>Cancel</AlertDialogCancel>
 			<AlertDialogAction>Delete Account</AlertDialogAction>
 		</div>
@@ -541,13 +541,13 @@ export default function Example() {
 								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 									<AlertTriangle className="size-5 text-basalt-destructive" />
 								</div>
-								<AlertDialogTitle className="text-basalt-2xl">Delete Account?</AlertDialogTitle>
+								<AlertDialogTitle>Delete Account?</AlertDialogTitle>
 							</div>
 							<AlertDialogDescription>
 								This action cannot be undone. All your data will be permanently removed from our
 								care systems. Are you sure you want to proceed?
 							</AlertDialogDescription>
-							<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
+							<div className="mt-basalt-layout flex justify-end gap-basalt-space-lg">
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction>Delete Account</AlertDialogAction>
 							</div>
@@ -568,7 +568,7 @@ export default function Example() {
 			<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 				<AlertTriangle className="size-5 text-basalt-destructive" />
 			</div>
-			<DialogTitle className="text-basalt-2xl">Delete care plan?</DialogTitle>
+			<DialogTitle>Delete care plan?</DialogTitle>
 		</div>
 		<DialogDescription>
 			This action cannot be undone. This will permanently delete the care plan and all associated data.
@@ -595,7 +595,7 @@ export default function Example() {
 								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 									<AlertTriangle className="size-5 text-basalt-destructive" />
 								</div>
-								<DialogTitle className="text-basalt-2xl">Delete care plan?</DialogTitle>
+								<DialogTitle>Delete care plan?</DialogTitle>
 							</div>
 							<DialogDescription>
 								This action cannot be undone. This will permanently delete the care plan and all
@@ -918,7 +918,7 @@ export default function Example() {
 				<AlertDialogDescription>
 					This action cannot be undone. All your data will be permanently removed from our care systems.
 				</AlertDialogDescription>
-				<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
+				<div className="mt-basalt-layout flex justify-end gap-basalt-space-lg">
 					<AlertDialogCancel>Cancel</AlertDialogCancel>
 					<AlertDialogAction>Delete Account</AlertDialogAction>
 				</div>
@@ -949,13 +949,13 @@ export default function Example() {
 								<div className="flex h-10 w-10 items-center justify-center rounded-basalt-full bg-basalt-destructive/20">
 									<AlertTriangle className="size-5 text-basalt-destructive" />
 								</div>
-								<AlertDialogTitle className="text-basalt-2xl">Delete Account?</AlertDialogTitle>
+								<AlertDialogTitle>Delete Account?</AlertDialogTitle>
 							</div>
 							<AlertDialogDescription>
 								This action cannot be undone. All your data will be permanently removed from our
 								care systems.
 							</AlertDialogDescription>
-							<div className="mt-basalt-space-lg flex justify-end gap-basalt-space-lg">
+							<div className="mt-basalt-layout flex justify-end gap-basalt-space-lg">
 								<AlertDialogCancel>Cancel</AlertDialogCancel>
 								<AlertDialogAction>Delete Account</AlertDialogAction>
 							</div>

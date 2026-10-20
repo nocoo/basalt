@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { MemoryRouter, Route, Routes } from "react-router";
 import { describe, expect, it } from "vitest";
 import { catalogNavName, libraryNavEntries } from "@/pages/ui/catalog";
@@ -28,12 +28,29 @@ describe("category overview pages", () => {
 			const cards = Array.from(container.querySelectorAll("[data-basalt-surface]")).filter(
 				(card) => !card.parentElement?.closest("[data-basalt-surface]"),
 			);
-			expect(cards).toHaveLength(3);
+			expect(cards).toHaveLength(6);
 			for (const card of cards) {
-				expect(card.className).not.toContain("p-basalt-card");
-				expect(card.firstElementChild?.querySelector("h2")).not.toBeNull();
-				expect(card.lastElementChild).toHaveClass("p-basalt-card");
+				expect(card).toHaveClass("p-basalt-card");
+				expect(card).not.toHaveAttribute("data-card-structured");
+				expect(card.querySelector('[data-slot="card-header"], [data-slot="card-body"]')).toBeNull();
 			}
+			expect(screen.getByText(CATEGORY_GUIDES[category.id].rationale)).toHaveClass(
+				"text-basalt-foreground",
+			);
+			expect(
+				screen.getByText(CATEGORY_GUIDES[category.id].rationale).closest("[data-basalt-surface]"),
+			).toBe(cards[0]);
+			expect(
+				within(cards[1] as HTMLElement).getByRole("heading", { name: "Size and spacing" }),
+			).toBeInTheDocument();
+			expect(
+				within(cards[2] as HTMLElement).getByRole("heading", { name: "Interaction and motion" }),
+			).toBeInTheDocument();
+			expect(cards[3].querySelector("ul")).not.toBeNull();
+			expect(cards[4].querySelector("ul")).not.toBeNull();
+			expect(
+				within(cards[5] as HTMLElement).getByRole("heading", { name: "One shared contract" }),
+			).toBeInTheDocument();
 			expect(
 				screen.getByRole("heading", { name: `${category.label} overview` }),
 			).toBeInTheDocument();
@@ -74,7 +91,9 @@ describe("category overview pages", () => {
 	it("does not silently render another category for an invalid URL", () => {
 		renderOverview("/ui/overview/missing");
 		expect(screen.getByRole("heading", { name: "Category not found" })).toBeInTheDocument();
-		expect(screen.getByRole("link", { name: "Library index" })).toHaveAttribute("href", "/ui");
+		const indexLink = screen.getByRole("link", { name: "Library index" });
+		expect(indexLink).toHaveAttribute("href", "/ui");
+		expect(indexLink.closest("[data-basalt-surface]")).toHaveClass("p-basalt-card");
 	});
 	it.each(["card", "layout"] as const)("previews the extra-large %s spacing tier", (category) => {
 		const { container } = renderOverview(`/ui/overview/${category}`);

@@ -59,6 +59,19 @@ describe("DiffTable", () => {
 		).toHaveClass("pe-basalt-table-edge");
 	});
 
+	it("uses semantic change labels and keeps selection controls adjacent", () => {
+		render(<DiffTable columns={columns} rows={rows} onApply={vi.fn()} />);
+		expect(screen.getByText("Add")).toHaveClass("text-basalt-success");
+		expect(screen.getByText("Remove")).toHaveClass("text-basalt-destructive");
+		expect(screen.getByText("Keep")).not.toHaveClass(
+			"text-basalt-success",
+			"text-basalt-destructive",
+		);
+		for (const checkbox of screen.getAllByRole("checkbox")) {
+			expect(checkbox).not.toHaveClass("ms-auto");
+		}
+	});
+
 	it("reserves the change-marker slot for Keep, Add and Remove", () => {
 		render(<DiffTable columns={columns} rows={rows} onApply={vi.fn()} />);
 		for (const label of ["Keep", "Add", "Remove"] as const) {

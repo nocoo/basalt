@@ -17,7 +17,7 @@ export function SecondaryMetricCard() {
 			icon={TrendingUp}
 			trend={{ value: 2.4, label: t("common.vsLastMonth") }}
 		>
-			<div className="space-y-basalt-space-lg">
+			<div className="space-y-basalt-card-sm">
 				<BarChart
 					data={DATA}
 					series={[{ key: "y", label: t("dashboard.income") }]}

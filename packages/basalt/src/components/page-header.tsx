@@ -10,7 +10,7 @@ export interface PageHeaderBreadcrumb {
 }
 
 export interface PageHeaderProps {
-	/** Heading scale: workspace, dashboard, or reading-focused page. @default "md" */
+	/** Page preset; all presets share the same title and description scale. @default "md" */
 	size?: "md" | "lg" | "xl";
 	/** The page title, rendered as the only heading. */
 	title: React.ReactNode;
@@ -24,14 +24,7 @@ export interface PageHeaderProps {
 	filters?: React.ReactNode;
 }
 
-export function PageHeader({
-	actions,
-	breadcrumbs,
-	description,
-	filters,
-	size = "md",
-	title,
-}: PageHeaderProps) {
+export function PageHeader({ actions, breadcrumbs, description, filters, title }: PageHeaderProps) {
 	const titleId = React.useId();
 
 	return (
@@ -45,23 +38,12 @@ export function PageHeader({
 				<div className="min-w-0 flex-1 space-y-basalt-space-lg">
 					<h1
 						id={titleId}
-						className={cn(
-							"font-basalt-display font-semibold tracking-tight text-basalt-foreground [overflow-wrap:anywhere]",
-							size === "md" && "text-basalt-3xl",
-							size === "lg" && "text-basalt-4xl",
-							size === "xl" && "text-basalt-4xl md:text-basalt-5xl",
-							"leading-basalt-tight",
-						)}
+						className="font-basalt-display text-basalt-3xl font-semibold leading-basalt-tight tracking-tight text-basalt-foreground [overflow-wrap:anywhere]"
 					>
 						{title}
 					</h1>
 					{description ? (
-						<p
-							className={cn(
-								"max-w-[65ch] text-basalt-muted-foreground [overflow-wrap:anywhere]",
-								size === "md" ? "text-basalt-base" : "text-basalt-lg leading-basalt-relaxed",
-							)}
-						>
+						<p className="max-w-[65ch] text-basalt-base leading-basalt-relaxed text-basalt-muted-foreground [overflow-wrap:anywhere]">
 							{description}
 						</p>
 					) : null}

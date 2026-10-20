@@ -153,14 +153,14 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 			{api.map((surface) => {
 				if (surface.callSignature) {
 					return (
-						<div key={surface.name} className="space-y-basalt-space-lg">
+						<div key={surface.name} className="space-y-basalt-card-sm">
 							<h3
 								id={catalogApiSurfaceId(surface.name)}
 								className="scroll-mt-6 text-basalt-base font-medium"
 							>
 								{surface.name}
 							</h3>
-							<LayerCard className="min-w-0 space-y-basalt-space-lg text-basalt-base [overflow-wrap:anywhere]">
+							<LayerCard className="min-w-0 space-y-basalt-card text-basalt-base [overflow-wrap:anywhere]">
 								<div>
 									<code className="text-basalt-sm font-mono text-primary font-semibold">
 										{surface.callSignature}
@@ -191,7 +191,7 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 									</div>
 								) : null}
 								{surface.options && surface.options.props.length > 0 ? (
-									<div className="space-y-basalt-space-lg pt-basalt-space-lg border-t border-border">
+									<div className="space-y-basalt-card-sm pt-basalt-card-sm border-t border-border">
 										<p className="text-basalt-sm font-medium text-foreground">
 											Options (<code>{surface.options.name}</code>)
 										</p>
@@ -247,67 +247,83 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 					surface.props.length,
 					surface.props[0]?.name,
 				);
-				return (
-					<div key={surface.name} className="space-y-basalt-space-lg">
-						<h3
-							id={catalogApiSurfaceId(surface.name)}
-							className="scroll-mt-6 text-basalt-base font-medium"
-						>
-							{surface.name}
-						</h3>
-						{surface.typeParameters && (
+				const notes = (
+					<>
+						{surface.typeParameters ? (
 							<p className="text-basalt-sm text-muted-foreground break-words [overflow-wrap:anywhere]">
 								Type parameters: <code>{surface.typeParameters}</code>
 							</p>
-						)}
+						) : null}
 						{isNative && nativeDoc ? (
 							<p className="text-basalt-sm text-muted-foreground">
 								{formatNativeSurfaceStrategy(nativeDoc)}
 							</p>
 						) : null}
+					</>
+				);
+				return (
+					<div key={surface.name} className="space-y-basalt-card-sm">
+						<h3
+							id={catalogApiSurfaceId(surface.name)}
+							className="scroll-mt-6 font-mono text-basalt-base font-semibold text-foreground"
+						>
+							{surface.name}
+						</h3>
 						{surface.props.length === 0 ? (
-							<p className="text-basalt-base text-muted-foreground">No component-specific props.</p>
+							<LayerCard className="space-y-basalt-card-sm">
+								{notes}
+								<p className="text-basalt-base text-muted-foreground">
+									No component-specific props.
+								</p>
+							</LayerCard>
 						) : (
-							<div
-								role="region"
-								// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
-								tabIndex={0}
-								aria-label={`${surface.name} API scrolling table`}
-								className="max-w-full overflow-x-auto rounded-basalt-md border border-border focus-visible:outline-2 focus-visible:outline-primary"
-							>
-								<Table
-									aria-label={`${surface.name} props`}
-									className="w-full min-w-[36rem] text-basalt-base [&_code]:break-words [&_code]:[overflow-wrap:anywhere]"
+							<LayerCard padding="none" className="overflow-hidden">
+								{surface.typeParameters || (isNative && nativeDoc) ? (
+									<div className="space-y-basalt-space-sm border-b border-basalt-border/60 px-basalt-card py-basalt-card-sm">
+										{notes}
+									</div>
+								) : null}
+								<div
+									role="region"
+									// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
+									tabIndex={0}
+									aria-label={`${surface.name} API scrolling table`}
+									className="max-w-full overflow-x-auto focus-visible:outline-2 focus-visible:outline-primary"
 								>
-									<TableHeader>
-										<TableRow>
-											<TableHead className="ps-basalt-table-edge">Prop</TableHead>
-											<TableHead>Type</TableHead>
-											<TableHead>Default</TableHead>
-											<TableHead className="pe-basalt-table-edge">Description</TableHead>
-										</TableRow>
-									</TableHeader>
-									<TableBody>
-										{surface.props.map((prop) => (
-											<TableRow key={prop.name}>
-												<TableCell className="font-medium text-foreground ps-basalt-table-edge">
-													{prop.name}
-													{prop.required === false ? "?" : ""}
-												</TableCell>
-												<TableCell className="text-muted-foreground">
-													<code>{prop.type}</code>
-												</TableCell>
-												<TableCell className="text-muted-foreground">
-													{prop.default ?? "—"}
-												</TableCell>
-												<TableCell className="text-muted-foreground pe-basalt-table-edge">
-													{prop.description ?? prop.name}
-												</TableCell>
+									<Table
+										aria-label={`${surface.name} props`}
+										className="w-full min-w-[36rem] text-basalt-base [&_code]:break-words [&_code]:[overflow-wrap:anywhere]"
+									>
+										<TableHeader>
+											<TableRow>
+												<TableHead className="ps-basalt-table-edge">Prop</TableHead>
+												<TableHead>Type</TableHead>
+												<TableHead>Default</TableHead>
+												<TableHead className="pe-basalt-table-edge">Description</TableHead>
 											</TableRow>
-										))}
-									</TableBody>
-								</Table>
-							</div>
+										</TableHeader>
+										<TableBody>
+											{surface.props.map((prop) => (
+												<TableRow key={prop.name}>
+													<TableCell className="font-medium text-foreground ps-basalt-table-edge">
+														{prop.name}
+														{prop.required === false ? "?" : ""}
+													</TableCell>
+													<TableCell className="text-muted-foreground">
+														<code>{prop.type}</code>
+													</TableCell>
+													<TableCell className="text-muted-foreground">
+														{prop.default ?? "—"}
+													</TableCell>
+													<TableCell className="text-muted-foreground pe-basalt-table-edge">
+														{prop.description ?? prop.name}
+													</TableCell>
+												</TableRow>
+											))}
+										</TableBody>
+									</Table>
+								</div>
+							</LayerCard>
 						)}
 					</div>
 				);
@@ -462,7 +478,7 @@ function ReadyDoc({
 						))}
 					</SectionRule>
 					<CatalogApiReference api={docs.api} />
-					<div className="space-y-basalt-space-sm text-basalt-base text-muted-foreground [overflow-wrap:anywhere]">
+					<LayerCard className="space-y-basalt-space-sm text-basalt-base text-muted-foreground [overflow-wrap:anywhere]">
 						<p>
 							Implementation{" "}
 							<a
@@ -488,7 +504,7 @@ function ReadyDoc({
 								{docs.provenance.file}
 							</p>
 						) : null}
-					</div>
+					</LayerCard>
 				</article>
 				<aside className={widePreview ? "hidden" : "hidden min-w-0 xl:block"}>
 					<div className="sticky top-4">
@@ -535,11 +551,11 @@ export default function UiPlaceholderPage() {
 			title={catalogNavName(entry)}
 			description="未实现. This catalog page is a placeholder until the control ships."
 		>
-			<div className="text-basalt-base text-muted-foreground">
+			<LayerCard className="text-basalt-base text-muted-foreground">
 				<Link className="text-foreground underline underline-offset-4" to="/ui">
 					Library index
 				</Link>
-			</div>
+			</LayerCard>
 		</ShowcasePage>
 	);
 }

@@ -78,8 +78,27 @@ describe("AccountsPage", () => {
 	it("renders action buttons", () => {
 		render(<AccountsPage />);
 
-		expect(screen.getByRole("button", { name: "Add Money" })).toBeInTheDocument();
-		expect(screen.getByRole("button", { name: "Send" })).toBeInTheDocument();
+		const addMoney = screen.getByRole("button", { name: "Add Money" });
+		const send = screen.getByRole("button", { name: "Send" });
+		expect(addMoney.closest("header")).toBe(
+			screen.getByRole("heading", { name: "Care accounts" }).closest("header"),
+		);
+		expect(addMoney.closest("header")).not.toBeNull();
+		expect(send.closest("header")).toBe(addMoney.closest("header"));
+	});
+
+	it("groups cards and transactions beneath section headings with actions", () => {
+		render(<AccountsPage />);
+		const cards = screen.getByRole("heading", { name: /cards active/i }).closest("section");
+		const transactions = screen.getByRole("heading", { name: "2 transactions" }).closest("section");
+		expect(cards).not.toBeNull();
+		expect(transactions).not.toBeNull();
+		expect(cards).toContainElement(screen.getByRole("button", { name: "Hide balances" }));
+		expect(cards?.querySelectorAll('[role="progressbar"]')).toHaveLength(3);
+		expect(transactions).toContainElement(screen.getByRole("button", { name: "Filter" }));
+		expect(transactions).toContainElement(
+			screen.getByRole("table", { name: "Transactions", hidden: true }),
+		);
 	});
 
 	it("renders Recent Activity section header", () => {

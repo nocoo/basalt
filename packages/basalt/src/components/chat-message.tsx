@@ -178,7 +178,7 @@ export function ChatMessage({
 												/>
 												<span className="min-w-0 flex-1 break-words">{source.name}</span>
 												{source.type && (
-													<span className="shrink-0 font-mono text-basalt-xs">{source.type}</span>
+													<span className="shrink-0 font-mono text-basalt-sm">{source.type}</span>
 												)}
 												{source.href && (
 													<ExternalLink

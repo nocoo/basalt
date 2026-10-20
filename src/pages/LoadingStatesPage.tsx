@@ -68,11 +68,11 @@ export default function LoadingStatesPage() {
 				hint={t("pages.loadingStates.primitivesHint")}
 			>
 				<div className="grid gap-basalt-layout lg:grid-cols-2">
-					<LayerCard className="space-y-basalt-space-lg">
+					<LayerCard className="space-y-basalt-card-sm">
 						<SkeletonLine minWidth={40} maxWidth={40} />
 						<SkeletonLine minWidth={88} maxWidth={88} />
 						<SkeletonLine minWidth={64} maxWidth={64} />
-						<div className="flex items-center gap-basalt-space-lg pt-basalt-space-lg">
+						<div className="flex items-center gap-basalt-card-sm pt-basalt-card-sm">
 							<BoneAvatar />
 							<div className="min-w-0 flex-1 space-y-basalt-space-lg">
 								<SkeletonLine minWidth={52} maxWidth={52} />
@@ -90,18 +90,20 @@ export default function LoadingStatesPage() {
 				title={t("pages.loadingStates.spinners")}
 				hint={t("pages.loadingStates.spinnersHint")}
 			>
-				<div className="flex flex-wrap items-center gap-basalt-space-lg">
-					<Loader size={16} showLabel={false} showElapsed={false} />
-					<Loader size={24} />
-					<Loader size={36} />
-					<Button loading>{t("pages.loadingStates.buttonBusy")}</Button>
-					<InputGroup className="max-w-56">
-						<InputGroup.Input defaultValue="atlas" aria-label={t("pages.loadingStates.query")} />
-						<InputGroup.Addon align="end">
-							<Loader size={16} showLabel={false} showElapsed={false} />
-						</InputGroup.Addon>
-					</InputGroup>
-				</div>
+				<LayerCard>
+					<div className="flex flex-wrap items-center gap-basalt-space-lg">
+						<Loader size={16} showLabel={false} showElapsed={false} />
+						<Loader size={24} />
+						<Loader size={36} />
+						<Button loading>{t("pages.loadingStates.buttonBusy")}</Button>
+						<InputGroup className="max-w-56">
+							<InputGroup.Input defaultValue="atlas" aria-label={t("pages.loadingStates.query")} />
+							<InputGroup.Addon align="end">
+								<Loader size={16} showLabel={false} showElapsed={false} />
+							</InputGroup.Addon>
+						</InputGroup>
+					</div>
+				</LayerCard>
 			</SectionRule>
 
 			<SectionRule title={t("pages.loadingStates.metrics")}>
@@ -118,14 +120,10 @@ export default function LoadingStatesPage() {
 				title={t("pages.loadingStates.dashboard")}
 				hint={t("pages.loadingStates.dashboardHint")}
 			>
-				<div
-					aria-busy={busy}
-					data-loading-composition="dashboard"
-					className="space-y-basalt-space-lg"
-				>
+				<div aria-busy={busy} data-loading-composition="dashboard" className="space-y-basalt-card">
 					<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2 xl:grid-cols-4">
 						{METRICS.map((metric) => (
-							<LayerCard key={metric.labelKey} className="h-28 space-y-basalt-space-lg">
+							<LayerCard key={metric.labelKey} className="min-h-28 space-y-basalt-card-sm">
 								{busy ? (
 									<>
 										<SkeletonLine minWidth={metric.width} maxWidth={metric.width} height={10} />
@@ -170,7 +168,7 @@ export default function LoadingStatesPage() {
 
 			<SectionRule title={t("pages.loadingStates.list")}>
 				<LayerCard padding="none" aria-busy={busy} data-loading-composition="list">
-					<div className="grid grid-cols-[minmax(0,1fr)_5.625rem_5.625rem] gap-basalt-layout border-b border-basalt-border px-basalt-space-lg py-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
+					<div className="grid grid-cols-[minmax(0,1fr)_5.625rem_5.625rem] gap-basalt-layout border-b border-basalt-border px-basalt-card py-basalt-card-sm text-basalt-sm text-basalt-muted-foreground">
 						<span>{t("pages.loadingStates.colWorkspace")}</span>
 						<span>{t("pages.loadingStates.colStatus")}</span>
 						<span className="text-right">{t("pages.loadingStates.colRequests")}</span>
@@ -178,7 +176,7 @@ export default function LoadingStatesPage() {
 					{WORKSPACES.map((row, index) => (
 						<div
 							key={row.name}
-							className="grid h-16 grid-cols-[minmax(0,1fr)_5.625rem_5.625rem] items-center gap-basalt-layout border-b border-basalt-border/60 px-basalt-space-lg last:border-0"
+							className="grid h-16 grid-cols-[minmax(0,1fr)_5.625rem_5.625rem] items-center gap-basalt-layout border-b border-basalt-border/60 px-basalt-card last:border-0"
 						>
 							<div className="flex items-center gap-basalt-space-lg">
 								{busy ? (
@@ -220,7 +218,7 @@ export default function LoadingStatesPage() {
 				>
 					<LayerCard>
 						<LayerCard.Header className="items-center justify-start">
-							<div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-basalt-lg bg-basalt-muted text-basalt-2xl font-semibold">
+							<div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-basalt-lg bg-basalt-muted text-basalt-xl font-semibold">
 								{busy ? <SkeletonLine minWidth={100} maxWidth={100} height={56} /> : "A"}
 							</div>
 							<div className="min-w-0 flex-1 space-y-basalt-space-lg">
@@ -231,7 +229,7 @@ export default function LoadingStatesPage() {
 									</>
 								) : (
 									<>
-										<h2 className="text-basalt-2xl font-semibold">
+										<h2 className="text-basalt-xl font-semibold">
 											{t("pages.loadingStates.detailTitle")}
 										</h2>
 										<p className="text-basalt-base text-basalt-muted-foreground">
@@ -278,42 +276,47 @@ export default function LoadingStatesPage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.loadingStates.table")}>
-				<DataTable
-					loading={busy}
-					data={TABLE_ROWS}
-					columns={[
-						{
-							id: "name",
-							header: t("pages.loadingStates.colWorkspace"),
-							accessor: (row) => row.name,
-						},
-						{
-							id: "region",
-							header: t("pages.loadingStates.region"),
-							accessor: (row) => row.region,
-						},
-						{
-							id: "status",
-							header: t("pages.loadingStates.colStatus"),
-							accessor: (row) => row.status,
-						},
-					]}
-				/>
+				<LayerCard padding="none">
+					<DataTable
+						edge="attached"
+						loading={busy}
+						data={TABLE_ROWS}
+						columns={[
+							{
+								id: "name",
+								header: t("pages.loadingStates.colWorkspace"),
+								accessor: (row) => row.name,
+							},
+							{
+								id: "region",
+								header: t("pages.loadingStates.region"),
+								accessor: (row) => row.region,
+							},
+							{
+								id: "status",
+								header: t("pages.loadingStates.colStatus"),
+								accessor: (row) => row.status,
+							},
+						]}
+					/>
+				</LayerCard>
 			</SectionRule>
 
 			<SectionRule
 				title={t("pages.loadingStates.screen")}
 				hint={t("pages.loadingStates.screenHint")}
 			>
-				<div className="space-y-basalt-space-lg">
-					<div className="relative h-40 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
-						<LoadingScreen
-							label={t("pages.loadingStates.screenLabel")}
-							className="absolute inset-0 z-0"
-						/>
+				<LayerCard>
+					<div className="space-y-basalt-card">
+						<div className="relative h-40 overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border">
+							<LoadingScreen
+								label={t("pages.loadingStates.screenLabel")}
+								className="absolute inset-0 z-0"
+							/>
+						</div>
+						<Link href="/loading">{t("pages.loadingStates.openScreen")}</Link>
 					</div>
-					<Link href="/loading">{t("pages.loadingStates.openScreen")}</Link>
-				</div>
+				</LayerCard>
 			</SectionRule>
 		</ShowcasePage>
 	);

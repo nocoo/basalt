@@ -38,7 +38,7 @@ export function DiffTable({
 			className={cn("min-w-0 overflow-hidden leading-[var(--basalt-line-body)]", className)}
 		>
 			<header className="flex flex-wrap items-center justify-between gap-basalt-content-gap border-b border-basalt-border px-basalt-panel-x py-basalt-panel-y">
-				<h3 id={id} className="text-basalt-code font-medium">
+				<h3 id={id} className="text-basalt-base font-medium">
 					{title}
 				</h3>
 				<span className="text-basalt-sm text-basalt-muted-foreground">Select changes to apply</span>
@@ -86,7 +86,13 @@ export function DiffTable({
 									}}
 								>
 									<TableCell className="whitespace-nowrap ps-basalt-table-edge text-basalt-sm">
-										<span className="inline-flex items-center gap-basalt-control-gap leading-[var(--basalt-line-body)]">
+										<span
+											className={cn(
+												"inline-flex items-center gap-basalt-control-gap leading-[var(--basalt-line-body)]",
+												row.change === "add" && "text-basalt-success",
+												row.change === "remove" && "text-basalt-destructive",
+											)}
+										>
 											<span
 												data-diff-marker=""
 												aria-hidden="true"

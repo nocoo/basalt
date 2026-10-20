@@ -18,7 +18,7 @@ const SIZE_CLASS = {
 		"min-h-basalt-textarea-lg",
 		"px-basalt-control-x-lg",
 		"py-basalt-space-lg",
-		"text-basalt-lg",
+		"text-basalt-base",
 	],
 } as const;
 

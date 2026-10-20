@@ -27,16 +27,16 @@ export function RecentListCard() {
 				</Link>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
-				<div className="flex flex-1 flex-col gap-basalt-space-lg">
+				<div className="flex flex-1 flex-col gap-basalt-card-sm">
 					{transactions.map((tx, i) => (
 						<div key={i} className="flex items-center gap-basalt-space-lg">
 							<div
-								className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${tx.type === "income" ? "bg-success/10" : "bg-destructive/10"}`}
+								className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${tx.type === "income" ? "bg-basalt-success/10" : "bg-basalt-destructive/10"}`}
 							>
 								{tx.type === "income" ? (
-									<ArrowDownLeft className="h-3.5 w-3.5 text-success" strokeWidth={1.5} />
+									<ArrowDownLeft className="h-3.5 w-3.5 text-basalt-success" strokeWidth={1.5} />
 								) : (
-									<ArrowUpRight className="h-3.5 w-3.5 text-destructive" strokeWidth={1.5} />
+									<ArrowUpRight className="h-3.5 w-3.5 text-basalt-destructive" strokeWidth={1.5} />
 								)}
 							</div>
 							<div className="flex-1 min-w-0">
@@ -44,7 +44,7 @@ export function RecentListCard() {
 								<p className="text-basalt-sm text-muted-foreground">{tx.date}</p>
 							</div>
 							<span
-								className={`text-basalt-base font-medium ${tx.amount > 0 ? "text-success" : "text-foreground"}`}
+								className={`text-basalt-base font-medium ${tx.amount > 0 ? "text-basalt-success" : "text-basalt-foreground"}`}
 							>
 								{tx.amount > 0 ? "+" : ""}
 								{tx.amount.toLocaleString("en-US", { style: "currency", currency: "USD" })}

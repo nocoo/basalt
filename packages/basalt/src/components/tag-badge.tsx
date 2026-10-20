@@ -86,7 +86,7 @@ export function TagBadge({
 				BASALT_UI_CLASS,
 				"inline-flex max-w-full items-center break-words rounded-basalt-full border font-medium",
 				"basalt-inline",
-				size === "sm" && "px-basalt-space-sm",
+				size === "sm" ? "px-basalt-space-md" : "px-basalt-space-lg",
 				TAG_COLORS[resolved].className,
 				className,
 			)}

@@ -80,7 +80,7 @@ export function Sparkline<
 						{...ANIMATION_PROPS}
 					>
 						{data.map((point, pointIndex) => (
-							<Cell key={`${point.x}-${pointIndex}`} fillOpacity={pointIndex % 3 === 0 ? 0.4 : 1} />
+							<Cell key={`${point.x}-${pointIndex}`} fillOpacity={1} />
 						))}
 					</Bar>
 				))}

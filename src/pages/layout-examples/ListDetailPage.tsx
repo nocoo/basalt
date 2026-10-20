@@ -39,7 +39,7 @@ export default function ListDetailPage() {
 							detailLabel="Selected note"
 							backLabel="Back to notes"
 							list={
-								<div className="space-y-basalt-space-sm p-basalt-space-lg">
+								<div className="space-y-basalt-space-sm p-basalt-card-sm">
 									{notes.map((note) => (
 										<Button
 											key={note.id}
@@ -54,12 +54,12 @@ export default function ListDetailPage() {
 								</div>
 							}
 						>
-							<article className="space-y-basalt-space-lg p-basalt-space-lg">
+							<article className="space-y-basalt-card p-basalt-card">
 								<h2 className="font-basalt-display text-basalt-3xl">Field note {selected}</h2>
 								{Array.from({ length: 18 }, (_, index) => (
 									<p
 										key={`paragraph-${index}`}
-										className="max-w-prose text-basalt-lg leading-basalt-relaxed"
+										className="max-w-prose text-basalt-base leading-basalt-relaxed"
 									>
 										Observation {index + 1}: The list and the selected detail share a bounded
 										workspace on a wide screen. On a narrow screen only one region is visible. The

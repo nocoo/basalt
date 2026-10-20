@@ -52,7 +52,7 @@ export function SkeletonLine({
 			aria-hidden="true"
 			{...props}
 		>
-			<span className="pointer-events-none absolute inset-0 animate-basalt-shimmer bg-gradient-to-r from-transparent via-basalt-backdrop/10 to-transparent motion-reduce:animate-none" />
+			<span className="pointer-events-none absolute inset-0 animate-basalt-shimmer bg-gradient-to-r from-transparent via-basalt-foreground/10 to-transparent motion-reduce:animate-none" />
 		</div>
 	);
 }

@@ -83,9 +83,9 @@ export default function NavigationPage() {
 			description={t("pages.navigation.description")}
 		>
 			<SectionRule title={t("pages.navigation.breadcrumbs")}>
-				<div className="space-y-basalt-space-lg">
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+				<div className="space-y-basalt-card">
+					<LayerCard className="space-y-basalt-space-sm">
+						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.simple")}
 						</p>
 						<Breadcrumbs
@@ -97,9 +97,9 @@ export default function NavigationPage() {
 								{ label: t("pages.navigation.headphones") },
 							]}
 						/>
-					</div>
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+					</LayerCard>
+					<LayerCard className="space-y-basalt-space-sm">
+						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.withIcons")}
 						</p>
 						<Breadcrumbs
@@ -123,12 +123,12 @@ export default function NavigationPage() {
 								},
 							]}
 						/>
-					</div>
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+					</LayerCard>
+					<LayerCard className="space-y-basalt-space-sm">
+						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.insideCard")}
 						</p>
-						<LayerCard>
+						<div>
 							<Breadcrumbs
 								className="flex-wrap gap-y-basalt-space-lg"
 								items={[
@@ -137,68 +137,65 @@ export default function NavigationPage() {
 									{ label: t("pages.navigation.notifications") },
 								]}
 							/>
-							<p className="text-basalt-base text-foreground font-medium mt-basalt-space-lg">
+							<p className="text-basalt-base text-foreground font-medium mt-basalt-card-sm">
 								{t("pages.navigation.notificationPrefs")}
 							</p>
 							<p className="text-basalt-sm text-muted-foreground mt-basalt-space-sm">
 								{t("pages.navigation.notificationPrefsDesc")}
 							</p>
-						</LayerCard>
-					</div>
+						</div>
+					</LayerCard>
 				</div>
 			</SectionRule>
 
 			{/* Pagination */}
 			<SectionRule title={t("pages.navigation.pagination")}>
-				<div className="space-y-basalt-space-lg">
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+				<div className="space-y-basalt-card">
+					<LayerCard className="space-y-basalt-space-sm">
+						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.short5Pages")}
 						</p>
 						<Pagination page={page1} pageCount={5} onPageChange={setPage1} />
-					</div>
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+					</LayerCard>
+					<LayerCard className="space-y-basalt-space-sm">
+						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.long20Pages")}
 						</p>
 						<Pagination page={page2} pageCount={20} onPageChange={setPage2} />
-					</div>
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+					</LayerCard>
+					<LayerCard className="space-y-basalt-space-sm">
+						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.withContext")}
 						</p>
-						<LayerCard>
-							<TablePager
-								page={page2}
-								pageSize={10}
-								totalCount={200}
-								onPageChange={setPage2}
-								formatRange={({ start, end, totalCount }) => (
-									<>
-										{t("common.showing")}{" "}
-										<span className="font-medium text-foreground">
-											{start}-{end}
-										</span>{" "}
-										{t("common.of")}{" "}
-										<span className="font-medium text-foreground">{totalCount}</span>{" "}
-										{t("common.results")}
-									</>
-								)}
-							/>
-						</LayerCard>
-					</div>
+						<TablePager
+							page={page2}
+							pageSize={10}
+							totalCount={200}
+							onPageChange={setPage2}
+							formatRange={({ start, end, totalCount }) => (
+								<>
+									{t("common.showing")}{" "}
+									<span className="font-medium text-foreground">
+										{start}-{end}
+									</span>{" "}
+									{t("common.of")} <span className="font-medium text-foreground">{totalCount}</span>{" "}
+									{t("common.results")}
+								</>
+							)}
+						/>
+					</LayerCard>
 				</div>
 			</SectionRule>
 
 			{/* Stepper / Wizard */}
 			<SectionRule title={t("pages.navigation.stepperWizard")}>
-				<div className="space-y-basalt-space-lg">
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+				<div className="space-y-basalt-card">
+					<LayerCard className="space-y-basalt-card">
+						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.horizontalStepper")}
 						</p>
 						<Stepper steps={stepperSteps} current={stepperIndex} />
-						<div className="flex items-center gap-basalt-space-lg mt-basalt-space-lg">
+						<div className="flex items-center gap-basalt-space-lg mt-basalt-card-sm">
 							<Button
 								variant="outline"
 								size="sm"
@@ -223,11 +220,11 @@ export default function NavigationPage() {
 								{t("common.reset")}
 							</Button>
 						</div>
-					</div>
+					</LayerCard>
 
 					{/* Vertical stepper */}
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+					<LayerCard className="space-y-basalt-card">
+						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.verticalStepper")}
 						</p>
 						<div className="max-w-sm">
@@ -251,7 +248,7 @@ export default function NavigationPage() {
 											/>
 										)}
 									</div>
-									<div className="pb-basalt-space-lg">
+									<div className="pb-basalt-card">
 										<p
 											className={`text-basalt-base font-medium ${i <= stepperIndex ? "text-foreground" : "text-muted-foreground"}`}
 										>
@@ -268,16 +265,16 @@ export default function NavigationPage() {
 								</div>
 							))}
 						</div>
-					</div>
+					</LayerCard>
 				</div>
 			</SectionRule>
 
 			{/* Tabs Variants */}
 			<SectionRule title={t("pages.navigation.tabPatterns")}>
-				<div className="space-y-basalt-space-lg">
+				<div className="space-y-basalt-card">
 					{/* Standard tabs */}
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+					<LayerCard className="space-y-basalt-space-sm">
+						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.standardTabs")}
 						</p>
 						<Tabs defaultValue="overview">
@@ -288,42 +285,42 @@ export default function NavigationPage() {
 								<TabsTrigger value="settings">{t("pages.navigation.settings")}</TabsTrigger>
 							</TabsList>
 							<TabsContent value="overview">
-								<LayerCard>
+								<div className="pt-basalt-card-sm">
 									<p className="text-basalt-base text-foreground">
 										{t("pages.navigation.overviewContent")}
 									</p>
 									<p className="text-basalt-sm text-muted-foreground mt-basalt-space-sm">
 										{t("pages.navigation.overviewContentDesc")}
 									</p>
-								</LayerCard>
+								</div>
 							</TabsContent>
 							<TabsContent value="analytics">
-								<LayerCard>
+								<div className="pt-basalt-card-sm">
 									<p className="text-basalt-base text-foreground">
 										{t("pages.navigation.analyticsContent")}
 									</p>
-								</LayerCard>
+								</div>
 							</TabsContent>
 							<TabsContent value="reports">
-								<LayerCard>
+								<div className="pt-basalt-card-sm">
 									<p className="text-basalt-base text-foreground">
 										{t("pages.navigation.reportsContent")}
 									</p>
-								</LayerCard>
+								</div>
 							</TabsContent>
 							<TabsContent value="settings">
-								<LayerCard>
+								<div className="pt-basalt-card-sm">
 									<p className="text-basalt-base text-foreground">
 										{t("pages.navigation.settingsContent")}
 									</p>
-								</LayerCard>
+								</div>
 							</TabsContent>
 						</Tabs>
-					</div>
+					</LayerCard>
 
 					{/* Underline tabs */}
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+					<LayerCard className="space-y-basalt-space-sm">
+						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.underlineStyle")}
 						</p>
 						<Tabs defaultValue="all">
@@ -335,39 +332,39 @@ export default function NavigationPage() {
 								))}
 							</TabsList>
 							<TabsContent value="all">
-								<LayerCard>
+								<div className="pt-basalt-card-sm">
 									<p className="text-basalt-base text-foreground">
 										{t("pages.navigation.showingAll")}
 									</p>
-								</LayerCard>
+								</div>
 							</TabsContent>
 							<TabsContent value="active">
-								<LayerCard>
+								<div className="pt-basalt-card-sm">
 									<p className="text-basalt-base text-foreground">
 										{t("pages.navigation.showingActive")}
 									</p>
-								</LayerCard>
+								</div>
 							</TabsContent>
 							<TabsContent value="archived">
-								<LayerCard>
+								<div className="pt-basalt-card-sm">
 									<p className="text-basalt-base text-foreground">
 										{t("pages.navigation.showingArchived")}
 									</p>
-								</LayerCard>
+								</div>
 							</TabsContent>
 							<TabsContent value="drafts">
-								<LayerCard>
+								<div className="pt-basalt-card-sm">
 									<p className="text-basalt-base text-foreground">
 										{t("pages.navigation.showingDrafts")}
 									</p>
-								</LayerCard>
+								</div>
 							</TabsContent>
 						</Tabs>
-					</div>
+					</LayerCard>
 
 					{/* Pill tabs */}
-					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+					<LayerCard className="space-y-basalt-space-sm">
+						<p className="text-basalt-sm text-muted-foreground font-mono">
 							{t("pages.navigation.pillStyle")}
 						</p>
 						<SegmentControl
@@ -376,7 +373,7 @@ export default function NavigationPage() {
 							value={period}
 							onValueChange={setPeriod}
 						/>
-					</div>
+					</LayerCard>
 				</div>
 			</SectionRule>
 		</ShowcasePage>

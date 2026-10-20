@@ -6,6 +6,13 @@ export const API = [
 		name: "Table",
 		props: [
 			{
+				name: "striped",
+				type: "boolean",
+				required: false,
+				default: "false",
+				description: "Paint alternating rows.",
+			},
+			{
 				name: "className",
 				type: "string",
 				required: false,

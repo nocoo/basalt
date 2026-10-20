@@ -434,7 +434,7 @@ export function SidebarSearch({
 			<span className="flex-1 text-left text-basalt-base text-basalt-muted-foreground">
 				{children}
 			</span>
-			<kbd className="pointer-events-none hidden rounded-basalt-sm border border-basalt-border bg-basalt-card px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-basalt-muted-foreground sm:inline-block">
+			<kbd className="pointer-events-none hidden rounded-basalt-sm border border-basalt-border bg-basalt-card px-basalt-space-md py-basalt-space-xs text-basalt-sm font-medium text-basalt-muted-foreground sm:inline-block">
 				{shortcut}
 			</kbd>
 		</button>
@@ -559,7 +559,7 @@ export function SidebarGroup({ label, defaultOpen = true, children }: SidebarGro
 					type="button"
 					data-slot="sidebar-group-label"
 					className={cn(
-						"flex w-full cursor-pointer items-center justify-between gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-space-lg text-left text-basalt-xs font-semibold leading-basalt-row tracking-wide text-basalt-muted-foreground uppercase transition-colors basalt-motion hover:text-basalt-foreground",
+						"flex w-full cursor-pointer items-center justify-between gap-basalt-row-gap rounded-basalt-md px-basalt-row-x py-basalt-space-lg text-left text-basalt-sm font-semibold leading-basalt-row tracking-wide text-basalt-muted-foreground uppercase transition-colors basalt-motion hover:text-basalt-foreground",
 						FOCUS_INSET,
 					)}
 				>

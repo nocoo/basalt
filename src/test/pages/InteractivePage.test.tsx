@@ -17,7 +17,7 @@ describe("InteractivePage", () => {
 		render(<InteractivePage />);
 		fireEvent.click(screen.getByRole("button", { name: "Basic dialog" }));
 		const dialog = screen.getByRole("dialog", { name: "Edit profile" });
-		const fields = dialog.querySelector(".mt-basalt-layout.space-y-basalt-space-lg");
+		const fields = dialog.querySelector(".mt-basalt-layout.space-y-basalt-card");
 		expect(fields).toBeTruthy();
 		expect(fields).not.toHaveClass("py-basalt-space-lg");
 		const footer = dialog.querySelector(".mt-basalt-layout.flex");

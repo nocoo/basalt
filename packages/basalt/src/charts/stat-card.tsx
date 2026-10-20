@@ -147,7 +147,7 @@ export function StatCard({
 				) : (
 					<p
 						data-slot="stat-card-value"
-						className="font-basalt-display text-basalt-4xl leading-basalt-tight font-semibold tracking-tight tabular-nums text-basalt-foreground"
+						className="font-basalt-display text-basalt-3xl leading-basalt-tight font-semibold tracking-tight tabular-nums text-basalt-foreground"
 					>
 						{display}
 					</p>

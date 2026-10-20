@@ -37,7 +37,7 @@ export function ChatBubble({
 			<p
 				className={cn(
 					BASALT_UI_CLASS,
-					"px-basalt-space-sm text-center text-basalt-xs text-basalt-muted-foreground",
+					"px-basalt-space-sm text-center text-basalt-sm text-basalt-muted-foreground",
 					className,
 				)}
 			>

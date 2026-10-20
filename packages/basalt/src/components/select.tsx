@@ -91,7 +91,7 @@ export const SelectTrigger = React.forwardRef<
 		aria-busy={loading || undefined}
 		className={controlSurfaceClass(
 			cn(
-				"group/select flex w-full items-center justify-between",
+				"group/select flex w-full items-center justify-between gap-basalt-control-gap",
 				SELECT_SIZE_CLASS[size],
 				FOCUS_BORDER,
 				"aria-invalid:border-basalt-destructive aria-invalid:focus-visible:border-basalt-destructive",

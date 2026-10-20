@@ -7,17 +7,25 @@ export function ActionGridCard() {
 	const { t } = useTranslation();
 
 	const actions = [
-		{ icon: ArrowUpRight, label: t("dashboard.sendMoney"), color: "bg-primary/10 text-primary" },
-		{ icon: ArrowDownLeft, label: t("dashboard.receive"), color: "bg-success/10 text-success" },
+		{
+			icon: ArrowUpRight,
+			label: t("dashboard.sendMoney"),
+			color: "bg-basalt-primary/10 text-basalt-primary",
+		},
+		{
+			icon: ArrowDownLeft,
+			label: t("dashboard.receive"),
+			color: "bg-basalt-success/10 text-basalt-success",
+		},
 		{
 			icon: CreditCard,
 			label: t("dashboard.payBill"),
-			color: "bg-destructive/10 text-destructive",
+			color: "bg-basalt-destructive/10 text-basalt-destructive",
 		},
 		{
 			icon: PiggyBank,
 			label: t("dashboard.saveAction"),
-			color: "bg-purple-500/10 text-purple-500",
+			color: "bg-basalt-info/10 text-basalt-info",
 		},
 	];
 
@@ -32,7 +40,7 @@ export function ActionGridCard() {
 				</div>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
-				<div className="flex-1 grid grid-cols-2 gap-basalt-space-lg">
+				<div className="flex-1 grid grid-cols-2 gap-basalt-card">
 					{actions.map((action) => (
 						<Button variant="secondary" type="button" key={action.label} className="flex-col">
 							<div

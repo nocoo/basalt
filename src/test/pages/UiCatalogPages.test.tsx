@@ -114,6 +114,8 @@ describe("ui catalog", () => {
 		fireEvent.click(filtersToggle);
 		expect(filtersToggle).toHaveAttribute("aria-expanded", "true");
 		expect(screen.getByRole("searchbox", { name: "Search" })).toBeInTheDocument();
+		expect(document.getElementById("catalog-filters")).toHaveAttribute("data-basalt-surface");
+		expect(document.getElementById("catalog-filters")).toHaveClass("p-basalt-card");
 
 		const tableSlugs = new Set(["table", "data-table", "diff-table", "table-pager"]);
 		for (const group of CATALOG_INDEX_GROUPS) {
@@ -264,7 +266,8 @@ describe("ui catalog", () => {
 		renderCatalog("/ui?foreign=kept&q=does-not-exist&category=block");
 		const filters = within(document.getElementById("catalog-filters") as HTMLElement);
 		expect(document.querySelector("[data-result-summary]")).toHaveTextContent("0 results");
-		expect(document.querySelector("[data-empty-status]")).toBeInTheDocument();
+		expect(document.querySelector("[data-empty-status]")).toHaveAttribute("data-basalt-surface");
+		expect(document.querySelector("[data-empty-status]")).toHaveClass("p-basalt-card");
 		expect(document.querySelectorAll("[data-catalog-card]")).toHaveLength(0);
 		expect(screen.queryByRole("region")).not.toBeInTheDocument();
 		expect(filters.getAllByRole("button", { name: "Reset filters" })).toHaveLength(1);
@@ -285,6 +288,9 @@ describe("ui catalog", () => {
 		expect(screen.getByRole("heading", { name: "Maps" })).toBeInTheDocument();
 		expect(document.querySelector("[data-status='placeholder']")).toBeTruthy();
 		expect(screen.getByText(/未实现/)).toBeInTheDocument();
+		expect(
+			screen.getByRole("link", { name: "Library index" }).closest("[data-basalt-surface]"),
+		).toHaveClass("p-basalt-card");
 	});
 
 	it("marks unknown slugs as missing", () => {
@@ -345,9 +351,11 @@ describe("ui catalog", () => {
 			name: "View Basalt component source",
 		});
 		expect(implementationLink).toHaveAttribute("href", viewerHref);
-		expect(
-			screen.getByRole("link", { name: githubSourceLabel(docs.implementationSource) }),
-		).toHaveAttribute("href", viewerHref);
+		const footerLink = screen.getByRole("link", {
+			name: githubSourceLabel(docs.implementationSource),
+		});
+		expect(footerLink).toHaveAttribute("href", viewerHref);
+		expect(footerLink.closest("[data-basalt-surface]")).toHaveClass("p-basalt-card");
 		if (docs.provenance) {
 			expect(
 				screen.getByRole("link", { name: githubSourceLabel(docs.provenance) }),
@@ -597,13 +605,48 @@ describe("ui catalog", () => {
 		expect(alpha.compareDocumentPosition(beta) & Node.DOCUMENT_POSITION_FOLLOWING).toBe(
 			Node.DOCUMENT_POSITION_FOLLOWING,
 		);
-		expect(screen.getByRole("table", { name: "Alpha props" })).toHaveTextContent("one");
+		const alphaTable = screen.getByRole("table", { name: "Alpha props" });
+		expect(alphaTable).toHaveTextContent("one");
+		const tableRegion = screen.getByRole("region", { name: "Alpha API scrolling table" });
+		expect(tableRegion).toHaveAttribute("tabindex", "0");
+		expect(tableRegion).not.toHaveClass("border", "rounded-basalt-md");
+		expect(tableRegion.parentElement).toHaveAttribute("data-basalt-surface");
+		expect(tableRegion.parentElement).not.toHaveClass("p-basalt-card");
+		expect(alpha.closest("[data-basalt-surface]")).toBeNull();
 		expect(screen.queryByRole("table", { name: "Beta props" })).not.toBeInTheDocument();
 		expect(beta?.parentElement).toHaveTextContent("No component-specific props.");
 		const empty = beta.parentElement?.querySelector("p");
 		expect(empty).toHaveTextContent("No component-specific props.");
 		expect(empty).toHaveClass("text-basalt-base");
 		expect(empty).toHaveClass("text-muted-foreground");
+		expect(empty?.closest("[data-basalt-surface]")).toHaveClass("p-basalt-card");
+		expect(beta.closest("[data-basalt-surface]")).toBeNull();
+	});
+
+	it("keeps generic API notes inside their content islands", () => {
+		render(
+			<CatalogApiReference
+				api={[
+					{ name: "GenericEmpty", typeParameters: "<T>", props: [] },
+					{
+						name: "GenericTable",
+						typeParameters: "<T extends string>",
+						props: [{ name: "value", type: "T" }],
+					},
+				]}
+			/>,
+		);
+		const emptyNotes = screen.getByText("<T>").closest("p");
+		expect(emptyNotes?.parentElement).toHaveAttribute("data-basalt-surface");
+		expect(emptyNotes?.parentElement).toHaveClass("p-basalt-card");
+		const tableNotes = screen.getByText("<T extends string>").closest("p");
+		expect(tableNotes?.parentElement).toHaveClass("border-b", "px-basalt-card");
+		const tableIsland = tableNotes?.closest("[data-basalt-surface]");
+		expect(tableIsland).not.toBeNull();
+		expect(tableIsland).not.toHaveClass("p-basalt-card");
+		expect(
+			screen.getByRole("table", { name: "GenericTable props" }).closest("[data-basalt-surface]"),
+		).toBe(tableIsland);
 	});
 
 	it("sources link-button API rows from generated catalog data", async () => {
@@ -1509,7 +1552,7 @@ describe("ui catalog", () => {
 			["className", "outlined", "padding"],
 			["outlined"],
 			[],
-			["asChild"],
+			["asChild", "divided"],
 			[],
 			["outlined"],
 			[],
@@ -1519,7 +1562,7 @@ describe("ui catalog", () => {
 		renderCatalog("/ui/layer-card");
 		const api = document.getElementById("api-reference");
 		expect(api).toBeTruthy();
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(12);
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(13);
 		expect(api).toHaveTextContent("className?");
 		expect(api).toHaveTextContent("outlined?");
 		expect(api).toHaveTextContent("padding?");
@@ -1530,10 +1573,10 @@ describe("ui catalog", () => {
 		expect(api).toHaveTextContent("string");
 		expect(api).toHaveTextContent("Additional classes for the card root.");
 		expect(api).toHaveTextContent("—");
-		expect(api?.querySelectorAll("tbody tr")).toHaveLength(12);
-		expect(api).not.toHaveTextContent("id");
-		expect(api).not.toHaveTextContent("style");
-		expect(api).not.toHaveTextContent("role");
+		expect(api?.querySelectorAll("tbody tr")).toHaveLength(13);
+		expect(within(api as HTMLElement).queryByRole("cell", { name: /^id\??$/ })).toBeNull();
+		expect(within(api as HTMLElement).queryByRole("cell", { name: /^style\??$/ })).toBeNull();
+		expect(within(api as HTMLElement).queryByRole("cell", { name: /^role\??$/ })).toBeNull();
 		expect(api).not.toHaveTextContent("LayerCardSectionProps");
 		expect(document.body.textContent).toContain(
 			"<LayerCard><LayerCard.Header>Title</LayerCard.Header><LayerCard.Body>Content</LayerCard.Body><LayerCard.Footer>Actions</LayerCard.Footer></LayerCard>",
@@ -3695,6 +3738,7 @@ describe("ui catalog", () => {
 		expect(strategy).toHaveTextContent(
 			"Native element wrapper: inherits and forwards all standard HTMLDivElement attributes (including children); does not expose ref.",
 		);
+		expect(strategy?.parentElement).toHaveAttribute("data-basalt-surface");
 		expect(strategy).toHaveClass("text-basalt-sm");
 		expect(strategy).toHaveClass("text-muted-foreground");
 		const empty = suffixHeading?.parentElement?.querySelectorAll("p")[1];
@@ -4180,7 +4224,10 @@ describe("ui catalog", () => {
 
 		it("renders source content when hash matches component fingerprint", async () => {
 			const view = renderCatalog(`/ui/button/source?hash=${buttonHash}`);
-			expect(screen.getByText("Loading source...")).toBeInTheDocument();
+			const loading = screen.getByRole("status");
+			expect(loading).toHaveTextContent("Loading source…");
+			expect(loading).toHaveAttribute("data-basalt-surface");
+			expect(loading).toHaveClass("p-basalt-card");
 			await screen.findByText(/export const Button/);
 			expect(view.container.querySelector("[data-showcase-page]")).not.toBeNull();
 			expect(view.container.querySelector("main, .min-h-screen")).toBeNull();
@@ -4239,7 +4286,7 @@ describe("ui catalog", () => {
 
 			try {
 				// Initial state: loading with valid hash, waiting on slow crypto.subtle.digest
-				expect(screen.getByText("Loading source...")).toBeInTheDocument();
+				expect(screen.getByText("Loading source…")).toBeInTheDocument();
 
 				// Ensure raw import resolved and crypto.subtle.digest was actively invoked
 				await waitFor(() => expect(digestSpy).toHaveBeenCalled());

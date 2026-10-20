@@ -69,7 +69,7 @@ export function ToolChips({
 									<span className="flex min-w-0 flex-wrap items-center gap-x-basalt-row-gap">
 										<span>{step.label}</span>
 										{step.target && (
-											<span className="max-w-full truncate font-mono text-basalt-code text-basalt-muted-foreground">
+											<span className="max-w-full truncate font-mono text-basalt-base text-basalt-muted-foreground">
 												{step.target}
 											</span>
 										)}
@@ -93,7 +93,7 @@ export function ToolChips({
 								unstyled
 								className="pl-basalt-row-content pr-basalt-row-x pb-basalt-row-y"
 							>
-								<p className="whitespace-pre-wrap break-words text-basalt-code text-basalt-muted-foreground">
+								<p className="whitespace-pre-wrap break-words text-basalt-base text-basalt-muted-foreground">
 									{step.detail || "No output yet"}
 								</p>
 							</CollapsibleContent>

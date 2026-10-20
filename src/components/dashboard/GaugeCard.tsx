@@ -10,10 +10,10 @@ export function GaugeCard() {
 	const { t } = useTranslation();
 
 	function getScoreLabel(s: number) {
-		if (s >= 740) return { label: t("dashboard.excellent"), color: "text-success" };
+		if (s >= 740) return { label: t("dashboard.excellent"), color: "text-basalt-success" };
 		if (s >= 670) return { label: t("dashboard.good"), color: "text-foreground" };
-		if (s >= 580) return { label: t("dashboard.fair"), color: "text-amber-500" };
-		return { label: t("dashboard.poor"), color: "text-destructive" };
+		if (s >= 580) return { label: t("dashboard.fair"), color: "text-basalt-warning" };
+		return { label: t("dashboard.poor"), color: "text-basalt-destructive" };
 	}
 
 	const { label, color } = getScoreLabel(score);
@@ -36,7 +36,7 @@ export function GaugeCard() {
 						ariaLabel={t("dashboard.creditScoreAria", { score, max, rating: label })}
 						className="w-full"
 					/>
-					<div className="mt-basalt-space-lg grid w-full grid-cols-3 gap-x-basalt-space-lg gap-y-basalt-space-lg">
+					<div className="mt-basalt-card-sm grid w-full grid-cols-3 gap-basalt-card-sm">
 						<div className="flex flex-col items-center gap-basalt-space-xs">
 							<span className="text-basalt-base font-medium text-foreground font-display">
 								{score}

@@ -1,4 +1,5 @@
 import { GroupedBarChart } from "@nocoo/basalt/charts/grouped-bar";
+import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { BarChart3, LayoutGrid } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -15,32 +16,20 @@ export default function ProgressTrackingPage() {
 			title={t("pages.progressTracking.title")}
 			description={t("pages.progressTracking.description")}
 		>
-			<div className="grid grid-cols-1 gap-basalt-layout md:gap-basalt-layout sm:grid-cols-3">
-				<LayerCard>
-					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
-						{t("pages.progressTracking.totalBudget")}
-					</p>
-					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
-						${summary.totalLimit.toLocaleString()}
-					</p>
-				</LayerCard>
-				<LayerCard>
-					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
-						{t("pages.progressTracking.spentSoFar")}
-					</p>
-					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
-						${summary.totalSpent.toLocaleString()}
-					</p>
-				</LayerCard>
-				<LayerCard>
-					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
-						{t("pages.progressTracking.remaining")}
-					</p>
-					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-success font-display tracking-tight">
-						${summary.remaining.toLocaleString()}
-					</p>
-				</LayerCard>
-			</div>
+			<StatGrid columns={3}>
+				<StatCard
+					title={t("pages.progressTracking.totalBudget")}
+					value={`$${summary.totalLimit.toLocaleString()}`}
+				/>
+				<StatCard
+					title={t("pages.progressTracking.spentSoFar")}
+					value={`$${summary.totalSpent.toLocaleString()}`}
+				/>
+				<StatCard
+					title={t("pages.progressTracking.remaining")}
+					value={`$${summary.remaining.toLocaleString()}`}
+				/>
+			</StatGrid>
 
 			<LayerCard>
 				<LayerCard.Header className="items-center justify-start">
@@ -49,7 +38,7 @@ export default function ProgressTrackingPage() {
 						{t("pages.progressTracking.categoryBudgets")}
 					</h2>
 				</LayerCard.Header>
-				<LayerCard.Body className="flex flex-col gap-basalt-space-lg">
+				<LayerCard.Body className="flex flex-col gap-basalt-card">
 					{categories.map((cat) => (
 						<div key={cat.category}>
 							<div className="flex items-center justify-between mb-basalt-space-md">

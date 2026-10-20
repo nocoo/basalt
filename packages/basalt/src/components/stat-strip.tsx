@@ -41,7 +41,7 @@ export const StatStrip = React.forwardRef<HTMLDListElement, StatStripProps>(
 						<dt className="text-basalt-base font-medium text-basalt-muted-foreground">
 							{item.label}
 						</dt>
-						<dd className="mt-basalt-space-sm text-basalt-xl font-medium tabular-nums text-basalt-foreground">
+						<dd className="mt-basalt-space-sm text-basalt-3xl font-basalt-display font-semibold tracking-tight tabular-nums text-basalt-foreground">
 							{loading ? <SkeletonLine /> : item.value}
 						</dd>
 					</div>

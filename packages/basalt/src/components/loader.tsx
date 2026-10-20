@@ -69,7 +69,7 @@ export function Loader({
 			{showLabel && (
 				<span
 					className={cn(
-						"text-basalt-code font-medium",
+						"text-basalt-base font-medium",
 						shimmer && animate && "basalt-shimmer-label",
 					)}
 				>

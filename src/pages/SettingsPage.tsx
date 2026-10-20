@@ -84,7 +84,6 @@ export default function SettingsPage() {
 
 	return (
 		<ShowcasePage title={t("pages.settings.title")} description={t("pages.settings.description")}>
-			<p className="text-basalt-base text-muted-foreground">{t("demo.localOnly")}</p>
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-4">
 				{/* Left nav */}
 				<LayerCard className="flex flex-col lg:col-span-1" padding="none">
@@ -108,6 +107,18 @@ export default function SettingsPage() {
 							))}
 						</SidebarNav>
 					</LayerCard.Body>
+					<LayerCard.Footer className="flex-col items-start">
+						<p className="text-basalt-base text-muted-foreground">{t("demo.localOnly")}</p>
+						{vm.notice && (
+							<p
+								role="status"
+								aria-live="polite"
+								className="text-basalt-base text-muted-foreground"
+							>
+								{t(`demo.${vm.notice}`)}
+							</p>
+						)}
+					</LayerCard.Footer>
 				</LayerCard>
 
 				{/* Right content */}
@@ -118,11 +129,6 @@ export default function SettingsPage() {
 					{activeSection === "appearance" && <AppearanceSection vm={vm} />}
 				</div>
 			</div>
-			{vm.notice && (
-				<p role="status" className="text-basalt-base text-muted-foreground">
-					{t(`demo.${vm.notice}`)}
-				</p>
-			)}
 		</ShowcasePage>
 	);
 }
@@ -146,7 +152,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 			<LayerCard.Body>
 				<form
 					aria-label={t("pages.settings.profileInfo")}
-					className="min-h-0 flex-1 space-y-basalt-space-lg"
+					className="min-h-0 flex-1 space-y-basalt-card"
 					onSubmit={(event) => {
 						event.preventDefault();
 						vm.saveProfile();
@@ -162,7 +168,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 						aria-label={t("demo.profilePhoto")}
 						onChange={(event) => vm.setPhoto(event.currentTarget.files?.[0]?.name ?? "")}
 					/>
-					<div className="flex items-center gap-basalt-space-lg">
+					<div className="flex items-center gap-basalt-card">
 						<div className="relative">
 							<div className="flex h-16 w-16 items-center justify-center rounded-basalt-full bg-primary/10 text-primary">
 								<User className="h-7 w-7" strokeWidth={1.5} />
@@ -194,7 +200,7 @@ function ProfileSection({ vm }: { vm: SettingsVM }) {
 					<Separator className="bg-border" />
 
 					{/* Form fields */}
-					<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2">
+					<div className="grid grid-cols-1 gap-basalt-card sm:grid-cols-2">
 						<div className="space-y-basalt-space-lg">
 							<Label htmlFor="settings-first-name" className="text-foreground">
 								{t("pages.settings.firstName")}
@@ -294,26 +300,26 @@ function NotificationsSection({ vm }: { vm: SettingsVM }) {
 					</h2>
 				</div>
 			</LayerCard.Header>
-			<LayerCard.Body className="min-h-0 flex-1 space-y-basalt-space-sm">
-				{NOTIFICATION_TOGGLES.map((item, i) => (
-					<div key={item.id}>
-						<div className="flex items-center justify-between py-basalt-space-lg">
-							<div className="space-y-basalt-space-xs">
-								<label
-									htmlFor={`notif-${item.id}`}
-									className="text-basalt-base text-foreground cursor-pointer"
-								>
-									{t(item.labelKey)}
-								</label>
-								<p className="text-basalt-sm text-muted-foreground">{t(item.descriptionKey)}</p>
-							</div>
-							<Switch
-								id={`notif-${item.id}`}
-								checked={vm.notifications[item.id]}
-								onCheckedChange={(value) => vm.setNotification(item.id, value)}
-							/>
+			<LayerCard.Body className="min-h-0 flex-1 divide-y divide-basalt-border/60">
+				{NOTIFICATION_TOGGLES.map((item) => (
+					<div
+						key={item.id}
+						className="flex items-center justify-between gap-basalt-card py-basalt-card-sm first:pt-0 last:pb-0"
+					>
+						<div className="space-y-basalt-space-xs">
+							<label
+								htmlFor={`notif-${item.id}`}
+								className="text-basalt-base text-foreground cursor-pointer"
+							>
+								{t(item.labelKey)}
+							</label>
+							<p className="text-basalt-sm text-muted-foreground">{t(item.descriptionKey)}</p>
 						</div>
-						{i < NOTIFICATION_TOGGLES.length - 1 && <Separator className="bg-border" />}
+						<Switch
+							id={`notif-${item.id}`}
+							checked={vm.notifications[item.id]}
+							onCheckedChange={(value) => vm.setNotification(item.id, value)}
+						/>
 					</div>
 				))}
 			</LayerCard.Body>
@@ -327,7 +333,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 	const { t } = useTranslation();
 
 	return (
-		<div className="space-y-basalt-space-lg">
+		<div className="space-y-basalt-card">
 			{/* Password */}
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
@@ -341,7 +347,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 				<LayerCard.Body>
 					<form
 						aria-label={t("pages.settings.passwordTitle")}
-						className="min-h-0 flex-1 space-y-basalt-space-lg"
+						className="min-h-0 flex-1 space-y-basalt-card"
 						onSubmit={(event) => {
 							event.preventDefault();
 							const data = new FormData(event.currentTarget);
@@ -366,7 +372,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 								placeholder="••••••••"
 							/>
 						</div>
-						<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2">
+						<div className="grid grid-cols-1 gap-basalt-card sm:grid-cols-2">
 							<div className="space-y-basalt-space-lg">
 								<Label htmlFor="settings-new-password" className="text-foreground">
 									{t("pages.settings.newPassword")}
@@ -446,7 +452,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 							onCheckedChange={(value) => vm.setSecurityPreference("authenticator", value)}
 						/>
 					</div>
-					<Separator className="my-basalt-space-lg bg-border" />
+					<Separator className="my-basalt-card-sm bg-border" />
 					<div className="flex items-center justify-between">
 						<div className="space-y-basalt-space-xs">
 							<label htmlFor="2fa-sms" className="text-basalt-base text-foreground cursor-pointer">
@@ -473,11 +479,11 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 						</h2>
 					</div>
 				</LayerCard.Header>
-				<LayerCard.Body className="min-h-0 flex-1 space-y-basalt-space-lg">
+				<LayerCard.Body className="min-h-0 flex-1 divide-y divide-basalt-border/60">
 					{vm.sessions.map((session) => (
-						<LayerCard
+						<div
 							key={session.device}
-							className="flex items-center justify-between gap-basalt-layout"
+							className="flex items-center justify-between gap-basalt-card py-basalt-card-sm first:pt-0 last:pb-0"
 						>
 							<div className="space-y-basalt-space-xs">
 								<p className="text-basalt-base text-foreground">
@@ -500,7 +506,7 @@ function SecuritySection({ vm }: { vm: SettingsVM }) {
 									{t("common.revoke")}
 								</Button>
 							)}
-						</LayerCard>
+						</div>
 					))}
 				</LayerCard.Body>
 			</LayerCard>
@@ -515,7 +521,7 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 	const { theme: activeTheme, setTheme } = useTheme();
 
 	return (
-		<div className="space-y-basalt-space-lg">
+		<div className="space-y-basalt-card">
 			{/* Theme */}
 			<LayerCard className="flex flex-col" padding="none">
 				<LayerCard.Header className="flex-col">
@@ -541,7 +547,7 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 						).map((theme) => (
 							<label
 								key={theme.key}
-								className={`relative cursor-pointer focus-within:ring-2 focus-within:ring-primary flex flex-col items-center gap-basalt-space-lg rounded-basalt-md border p-basalt-space-lg transition-colors basalt-motion ${
+								className={`relative cursor-pointer focus-within:ring-2 focus-within:ring-primary flex flex-col items-center gap-basalt-card-sm rounded-basalt-md border p-basalt-card-sm transition-colors basalt-motion ${
 									theme.key === activeTheme
 										? "border-basalt-primary bg-basalt-selected"
 										: "border-border hover:border-primary/50 hover:bg-basalt-hover"
@@ -583,7 +589,7 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 					</div>
 				</LayerCard.Header>
 				<LayerCard.Body
-					className={`min-h-0 flex-1 ${vm.compact ? "space-y-basalt-space-sm" : "space-y-basalt-space-lg"}`}
+					className={`min-h-0 flex-1 ${vm.compact ? "space-y-basalt-card-sm" : "space-y-basalt-card"}`}
 				>
 					<div className="flex items-center justify-between">
 						<div className="space-y-basalt-space-xs">

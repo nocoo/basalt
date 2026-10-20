@@ -72,7 +72,7 @@ export function RecommendationCard({
 				{vm.active ? (
 					<p
 						key={vm.active.id}
-						className="basalt-agent-reveal whitespace-pre-wrap break-words text-basalt-code leading-[var(--basalt-line-body)] text-basalt-muted-foreground"
+						className="basalt-agent-reveal whitespace-pre-wrap break-words text-basalt-base leading-[var(--basalt-line-body)] text-basalt-muted-foreground"
 					>
 						{vm.active.description}
 					</p>
@@ -108,7 +108,7 @@ export function RecommendationCard({
 										}}
 										className="h-auto min-h-basalt-menu-row w-full justify-start whitespace-normal px-basalt-row-x py-basalt-row-y text-left hover:bg-transparent"
 									>
-										<span className="min-w-0 flex-1 break-words text-basalt-code">
+										<span className="min-w-0 flex-1 break-words text-basalt-base">
 											{option.label}
 										</span>
 										<Confidence value={option.confidence} />

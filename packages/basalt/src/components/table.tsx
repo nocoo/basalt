@@ -8,6 +8,8 @@ export type TableTextAlign = "start" | "end";
 export type TableSortDirection = "asc" | "desc";
 
 export type TableProps = {
+	/** Paint alternating rows. @default false */
+	striped?: boolean;
 	/**
 	 * Additional classes for the table.
 	 */
@@ -17,13 +19,14 @@ export type TableProps = {
 export const Table = React.forwardRef<
 	HTMLTableElement,
 	TableProps & React.HTMLAttributes<HTMLTableElement>
->(({ className, ...props }, ref) => (
+>(({ className, striped = false, ...props }, ref) => (
 	<table
 		ref={ref}
 		data-basalt-table=""
+		data-striped={striped ? "true" : undefined}
 		className={cn(
 			BASALT_UI_CLASS,
-			"w-full border-separate border-spacing-0 caption-bottom text-start text-basalt-code leading-[var(--basalt-line-body)] text-basalt-foreground",
+			"w-full border-separate border-spacing-0 caption-bottom text-start text-basalt-base leading-[var(--basalt-line-body)] text-basalt-foreground",
 			className,
 		)}
 		{...props}
@@ -93,7 +96,7 @@ export const TableHead = ({
 }: TableHeadProps & React.ThHTMLAttributes<HTMLTableCellElement>) => (
 	<th
 		className={cn(
-			"relative h-basalt-table-row whitespace-nowrap border-b border-basalt-border ps-basalt-table-x pe-basalt-table-x py-basalt-table-y align-middle text-basalt-sm font-medium text-basalt-muted-foreground",
+			"relative h-basalt-table-row whitespace-nowrap border-b border-basalt-border ps-basalt-table-x pe-basalt-table-x py-basalt-table-y align-middle text-basalt-sm font-medium tracking-[0.04em] text-basalt-muted-foreground",
 			textAlignClass(textAlign) ?? (align == null ? "text-start" : undefined),
 			className,
 		)}
@@ -164,14 +167,13 @@ export type TableSortableHeaderProps = {
 	className?: string;
 } & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, "type" | "children" | "className">;
 
-function SortIcon({ sorted, trailing }: { sorted?: TableSortDirection; trailing: boolean }) {
+function SortIcon({ sorted }: { sorted?: TableSortDirection }) {
 	const Icon = sorted === "asc" ? ArrowUp : sorted === "desc" ? ArrowDown : ArrowUpDown;
 	return (
 		<Icon
 			aria-hidden="true"
 			className={cn(
 				"size-basalt-icon-sm shrink-0",
-				trailing && "ms-auto",
 				!sorted &&
 					"opacity-0 transition-opacity basalt-motion group-hover:opacity-60 group-focus-visible:opacity-60 motion-reduce:transition-none",
 			)}
@@ -185,13 +187,13 @@ export const TableSortableHeader = React.forwardRef<HTMLButtonElement, TableSort
 		const label = (
 			<span className="flex min-w-0 items-center gap-basalt-control-gap truncate">{children}</span>
 		);
-		const icon = <SortIcon sorted={sorted} trailing={textAlign !== "end"} />;
+		const icon = <SortIcon sorted={sorted} />;
 		return (
 			<button
 				type="button"
 				ref={ref}
 				className={cn(
-					"group flex w-full cursor-pointer items-center gap-basalt-control-gap rounded-basalt-sm border-0 bg-transparent p-0 font-inherit text-inherit font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary",
+					"group flex w-full cursor-pointer items-center gap-basalt-space-sm rounded-basalt-sm border-0 bg-transparent p-0 font-inherit text-inherit font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary",
 					textAlign === "end" ? "justify-end text-end" : "text-start",
 					className,
 				)}

@@ -31,7 +31,7 @@ export function RadialProgressCard() {
 						})}
 						className="w-full"
 					/>
-					<div className="mt-basalt-space-lg grid w-full grid-cols-3 gap-x-basalt-space-lg gap-y-basalt-space-lg">
+					<div className="mt-basalt-card-sm grid w-full grid-cols-3 gap-basalt-card-sm">
 						<div className="flex flex-col items-center gap-basalt-space-xs">
 							<span className="text-basalt-base font-medium text-foreground font-display">
 								${saved.toLocaleString()}

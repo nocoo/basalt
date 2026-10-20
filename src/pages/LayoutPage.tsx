@@ -26,17 +26,22 @@ export default function LayoutPage() {
 
 	return (
 		<ShowcasePage title={t("pages.layout.title")} description={t("pages.layout.description")}>
-			<section aria-label="Full-page layout examples" className="flex flex-wrap gap-basalt-layout">
-				<LinkButton href="/examples/reader" variant="outline">
-					Immersive reader
-				</LinkButton>
-				<LinkButton href="/examples/list-detail" variant="outline">
-					Mobile list / desktop panes
-				</LinkButton>
-				<LinkButton href="/examples/workspace" variant="outline">
-					Workspace and form
-				</LinkButton>
-			</section>
+			<SectionRule
+				title={t("pages.layout.fullPageTitle", { defaultValue: "Full-page layout examples" })}
+				aria-label="Full-page layout examples"
+			>
+				<LayerCard className="flex flex-wrap items-center gap-basalt-layout">
+					<LinkButton href="/examples/reader" variant="outline">
+						Immersive reader
+					</LinkButton>
+					<LinkButton href="/examples/list-detail" variant="outline">
+						Mobile list / desktop panes
+					</LinkButton>
+					<LinkButton href="/examples/workspace" variant="outline">
+						Workspace and form
+					</LinkButton>
+				</LayerCard>
+			</SectionRule>
 
 			<SectionRule title={t("pages.layout.stack")} hint={t("pages.layout.stackDesc")}>
 				<LayerCard padding="none">
@@ -55,7 +60,7 @@ export default function LayoutPage() {
 					<LayerCard padding="none">
 						<LayerCard.Header>{t("pages.layout.bodyTitle")}</LayerCard.Header>
 						<LayerCard.Body>
-							<p className="mb-basalt-space-lg text-basalt-sm text-muted-foreground">
+							<p className="mb-basalt-card-sm text-basalt-sm text-muted-foreground">
 								{t("pages.layout.bodyDesc")}
 							</p>
 							<DescriptionList columns={1}>
@@ -71,7 +76,7 @@ export default function LayoutPage() {
 					<LayerCard padding="none">
 						<LayerCard.Header>{t("pages.layout.wellTitle")}</LayerCard.Header>
 						<LayerCard.Well>
-							<p className="mb-basalt-space-lg text-basalt-sm text-muted-foreground">
+							<p className="mb-basalt-card-sm text-basalt-sm text-muted-foreground">
 								{t("pages.layout.wellDesc")}
 							</p>
 							<DescriptionList columns={1}>
@@ -223,7 +228,7 @@ export default function LayoutPage() {
 			<SectionRule title={t("pages.layout.flexboxPatterns")}>
 				<div className="space-y-basalt-layout">
 					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+						<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 							justify-center
 						</p>
 						<div className="flex justify-center gap-basalt-layout">
@@ -233,7 +238,7 @@ export default function LayoutPage() {
 						</div>
 					</div>
 					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+						<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 							justify-between
 						</p>
 						<div className="flex justify-between gap-basalt-layout">
@@ -242,7 +247,7 @@ export default function LayoutPage() {
 						</div>
 					</div>
 					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+						<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 							flex-wrap
 						</p>
 						<div className="flex flex-wrap gap-basalt-layout">
@@ -252,7 +257,7 @@ export default function LayoutPage() {
 						</div>
 					</div>
 					<div>
-						<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+						<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 							flex-col gap-basalt-layout
 						</p>
 						<div className="flex max-w-xs flex-col gap-basalt-layout">

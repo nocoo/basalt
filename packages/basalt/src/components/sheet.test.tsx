@@ -49,7 +49,11 @@ describe("Sheet", () => {
 				</SheetContent>
 			</Sheet>,
 		);
-		expect(screen.getByText("Panel").parentElement?.className).toContain("flex-col");
+		expect(screen.getByText("Panel").parentElement).toHaveClass(
+			"flex-col",
+			"space-y-basalt-space-md",
+		);
+		expect(screen.getByText("Done")).toHaveClass("mt-basalt-layout");
 		expect(screen.getByText("Done").className).toContain("sm:justify-end");
 	});
 
@@ -66,7 +70,7 @@ describe("Sheet", () => {
 		);
 		const panel = screen.getByRole("dialog");
 		expect(panel.className).toContain("p-basalt-card sm:p-basalt-card-lg");
-		expect(screen.getByRole("heading", { name: "Panel" }).className).toContain("text-basalt-lg");
+		expect(screen.getByRole("heading", { name: "Panel" }).className).toContain("text-basalt-xl");
 		expect(screen.getByText("Panel details").className).toContain("text-basalt-base");
 		expect(screen.getByText("Panel details").className).toContain("basalt-line-body");
 	});

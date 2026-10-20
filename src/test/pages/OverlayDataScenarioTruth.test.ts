@@ -280,7 +280,7 @@ describe("overlay data scenario truth", () => {
 		expect(scenario("dialog", "dialog-confirmation-dialog").code).toContain("<DialogActions");
 		expect(scenario("dialog", "dialog-with-actions").code).toContain("<DialogActions");
 		expect(scenario("dialog", "dialog-alert-dialog").code).toContain(
-			"mt-basalt-space-lg flex justify-end gap-basalt-space-lg",
+			"mt-basalt-layout flex justify-end gap-basalt-space-lg",
 		);
 	});
 

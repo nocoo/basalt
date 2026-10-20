@@ -21,6 +21,11 @@ describe("SkeletonLine", () => {
 	it("shimmers across the bar", () => {
 		const { container } = render(<SkeletonLine minWidth={50} maxWidth={50} />);
 		expect(container.firstChild).toHaveClass("overflow-hidden");
-		expect(container.querySelector("span")?.className).toContain("animate-basalt-shimmer");
+		expect(container.querySelector("span")).toHaveClass(
+			"animate-basalt-shimmer",
+			"via-basalt-foreground/10",
+			"motion-reduce:animate-none",
+		);
+		expect(container.querySelector("span")).not.toHaveClass("via-basalt-backdrop/10");
 	});
 });

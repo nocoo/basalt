@@ -85,7 +85,10 @@ describe("Tabs", () => {
 				</TabsList>
 			</Tabs>,
 		);
-		expect(screen.getByRole("tab", { name: "Home" })).toBeInTheDocument();
+		const tab = screen.getByRole("tab", { name: "Home" });
+		expect(tab).toBeInTheDocument();
+		expect(tab).toHaveClass("data-[state=active]:text-basalt-selected-foreground");
+		expect(tab).not.toHaveClass("rounded-t-basalt-md", "data-[state=active]:bg-basalt-selected");
 	});
 
 	it("renders tab panels", () => {

@@ -4,6 +4,18 @@ import ChatPage from "@/pages/ChatPage";
 
 afterEach(() => vi.useRealTimers());
 describe("ChatPage", () => {
+	it("keeps the conversation and failure simulation on the workspace island", () => {
+		render(<ChatPage />);
+		const conversation = screen.getByRole("region", { name: "Assistant" });
+		const island = conversation.closest("[data-basalt-surface]");
+		expect(island).not.toBeNull();
+		const failure = screen.getByRole("checkbox", { name: "Simulate a failed reply" });
+		expect(conversation).toContainElement(failure);
+		expect(failure.closest("[data-basalt-surface]")).toBe(island);
+		fireEvent.click(failure);
+		expect(failure).toHaveAttribute("aria-checked", "true");
+	});
+
 	it("keeps thread drafts, supports rename and confirmed deletion", () => {
 		render(<ChatPage />);
 		expect(screen.getByRole("heading", { name: "Care assistant" })).toBeInTheDocument();

@@ -19,7 +19,7 @@ export default function ResourceDetailSkeleton() {
 			</div>
 			<div aria-busy={loading} className="space-y-basalt-space-lg">
 				<LayerCard outlined className="flex h-44 items-center sm:h-28 gap-basalt-space-lg">
-					<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-basalt-lg bg-basalt-muted text-basalt-2xl font-semibold">
+					<div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-basalt-lg bg-basalt-muted text-basalt-xl font-semibold">
 						{loading ? <SkeletonLine minWidth={100} maxWidth={100} height={56} /> : "A"}
 					</div>
 					<div className="min-w-0 flex-1 space-y-basalt-space-lg">
@@ -30,7 +30,7 @@ export default function ResourceDetailSkeleton() {
 							</>
 						) : (
 							<>
-								<h4 className="text-basalt-2xl font-semibold">Atlas care program</h4>
+								<h4 className="text-basalt-xl font-semibold">Atlas care program</h4>
 								<p className="text-basalt-base text-basalt-muted-foreground">
 									A shared home for your active care programs.
 								</p>
@@ -60,7 +60,7 @@ export default function ResourceDetailSkeleton() {
 								<SkeletonLine minWidth={100} maxWidth={100} height={176} />
 							) : (
 								<div className="text-center">
-									<p className="text-basalt-5xl font-semibold tabular-nums">99.98%</p>
+									<p className="text-basalt-3xl font-semibold tabular-nums">99.98%</p>
 									<p className="mt-basalt-space-lg text-basalt-base text-basalt-muted-foreground">
 										Availability over the last 30 days
 									</p>

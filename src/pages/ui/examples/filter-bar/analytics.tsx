@@ -58,7 +58,7 @@ export default function AnalyticsFilters() {
 				<p className="text-basalt-base text-basalt-muted-foreground">
 					Patient visits in selected period
 				</p>
-				<p role="status" className="mt-basalt-space-lg text-basalt-4xl font-semibold tabular-nums">
+				<p role="status" className="mt-basalt-space-lg text-basalt-3xl font-semibold tabular-nums">
 					{rows.reduce((sum, row) => sum + row.requests, 0).toLocaleString()}
 				</p>
 				<p className="mt-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">

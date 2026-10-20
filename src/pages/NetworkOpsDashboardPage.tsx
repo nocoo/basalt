@@ -27,21 +27,24 @@ const incidents = [
 		time: "02:10",
 		title: "Edge router spike",
 		subtitle: "latency +12ms",
-		color: "bg-amber-500",
+		color: "bg-basalt-warning/10",
+		textColor: "hsl(var(--basalt-foreground))",
 	},
 	{
 		id: "i2",
 		time: "08:45",
 		title: "Packet loss",
 		subtitle: "0.6% in us-east",
-		color: "bg-red-500",
+		color: "bg-basalt-destructive/10",
+		textColor: "hsl(var(--basalt-foreground))",
 	},
 	{
 		id: "i3",
 		time: "15:30",
 		title: "BGP reconverge",
 		subtitle: "reroute complete",
-		color: "bg-green-600",
+		color: "bg-basalt-success/10",
+		textColor: "hsl(var(--basalt-foreground))",
 	},
 ];
 
@@ -118,14 +121,14 @@ export default function NetworkOpsDashboardPage() {
 
 			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<HeatmapCard />
-				<LayerCard className="lg:col-span-2 max-h-[26.25rem] overflow-y-auto">
+				<LayerCard className="lg:col-span-2">
 					<LayerCard.Header className="items-center justify-start">
 						<Clock className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<h2 className="text-basalt-base text-muted-foreground">
 							{t("pages.networkOps.incidentTimeline")}
 						</h2>
 					</LayerCard.Header>
-					<LayerCard.Body>
+					<LayerCard.Body className="max-h-[22rem] overflow-y-auto">
 						<Timeline events={incidents} />
 					</LayerCard.Body>
 				</LayerCard>

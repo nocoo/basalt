@@ -36,6 +36,19 @@ describe("DataPage", () => {
 		expect(within(table).queryByRole("cell", { name: "North Clinic" })).not.toBeInTheDocument();
 	});
 
+	it("keeps table filters on the same island as the invoice table", () => {
+		render(<DataPage />);
+		const table = screen.getByRole("table", { name: "Data Table" });
+		const island = table.closest("[data-basalt-surface]");
+		expect(island).not.toBeNull();
+		expect(screen.getByRole("combobox", { name: "Filter" }).closest("[data-basalt-surface]")).toBe(
+			island,
+		);
+		expect(screen.getByRole("textbox", { name: "Search" }).closest("[data-basalt-surface]")).toBe(
+			island,
+		);
+	});
+
 	it("does not paint inner wells with bg-card", () => {
 		const { container } = render(<DataPage />);
 		expect(container.innerHTML).not.toContain("bg-card");

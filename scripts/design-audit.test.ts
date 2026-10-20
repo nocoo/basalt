@@ -48,6 +48,40 @@ describe("design audit rules (without scanning the repository)", () => {
 			]),
 		);
 	});
+	it.each([
+		"text-basalt-xs",
+		"text-basalt-code",
+		"text-basalt-lg",
+		"text-basalt-2xl",
+		"text-basalt-4xl",
+		"text-basalt-5xl",
+		"text-basalt-6xl",
+		"text-basalt-7xl",
+		"text-basalt-8xl",
+		"text-basalt-9xl",
+		"text-basalt-10xl",
+		"md:text-basalt-2xl",
+		"!text-basalt-lg",
+		"text-basalt-xs!",
+	])("rejects noncanonical typography: %s", (token) => {
+		expect(auditDesignSource("example.tsx", `<span className="${token}"/>`)).toEqual([
+			{ file: "example.tsx", rule: "type-token", value: token },
+		]);
+	});
+	it("allows only the four positional sizes and the scoped 404 display exemption", () => {
+		expect(
+			auditDesignSource(
+				"example.tsx",
+				'<div className="text-basalt-sm text-basalt-base text-basalt-xl text-basalt-3xl text-basalt-foreground"/>',
+			),
+		).toEqual([]);
+		expect(
+			auditDesignSource(
+				"src/pages/NotFound.tsx",
+				'<div className="text-basalt-10xl md:text-basalt-10xl text-basalt-4xl"/>',
+			),
+		).toEqual([{ file: "src/pages/NotFound.tsx", rule: "type-token", value: "text-basalt-4xl" }]);
+	});
 	it("allows semantic roles, four steps, natural geometry and data coordinates", () => {
 		expect(
 			auditDesignSource(

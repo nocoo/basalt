@@ -133,8 +133,7 @@ export function AvatarInitials({
 		>
 			<AvatarFallback
 				className={cn(
-					"font-medium",
-					size === "sm" ? "text-basalt-xs" : "text-basalt-sm",
+					"font-medium text-basalt-sm",
 					AVATAR_TONES[avatarColorIndex(colorKey ?? name)],
 				)}
 			>

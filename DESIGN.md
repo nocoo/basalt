@@ -46,11 +46,21 @@ or content surface. Card and layout boundaries use their own four-step roles:
 | Large | `--basalt-space-card-lg` | `--basalt-space-layout-lg` | `1.5rem` | 24px |
 | Extra large | `--basalt-space-card-xl` | `--basalt-space-layout-xl` | `2rem` | 32px |
 
-Card padding defaults to medium. LayerCard header/footer insets are 16px horizontal
-and 12px vertical; Body/Well use 16px. `padding="sm|md|lg|xl"` selects unstructured
+Card padding defaults to medium. LayerCard headers flow into Body by default:
+16px horizontal/top insets, no bottom inset and an 8px internal gap, without a divider.
+`Header divided` uses 16px on all sides and a bottom rule. Disclosure headers
+(`Header asChild`) keep 16px horizontal / 12px vertical insets and show their
+bottom rule only when open. Footer keeps 16px horizontal / 12px vertical insets;
+Body/Well use 16px. `padding="sm|md|lg|xl"` selects unstructured
 card padding; structured cards keep their slot-owned insets. Compact composite
 card panels use the same 16/12px panel aliases. Their internal buttons and rows
 keep control spacing; do not stretch action rows to the card scale.
+
+Compact card/panel headers (`CodeBlock` header, `ContextCards` chunk header and
+`LayerCard.Header asChild`) share a 44px single-line reference height: a 20px line
+box plus 12px vertical panel inset on each side. Header action buttons use
+`size="sm"` and `-my-basalt-space-sm` so they never inflate the header bar.
+Wrapping and enlarged text may grow the header; do not impose a fixed height.
 
 Layout grids default to medium (16px). ContentIsland owns 16px insets on mobile,
 24px on tablets and 24px vertical / 32px horizontal from 1024px. The catalog shell
@@ -67,19 +77,26 @@ small floating menus have separate inset contracts.
 Form rhythm distinguishes a field from a group: label/control/hint spacing stays
 8px, related fields use 16px layout gaps, and separate sections use 24px. A form's
 stack owns those gaps; individual Field components do not add outer margins.
-DialogFooter owns 16px separation from content and keeps 8px between its actions.
-Do not add a matching margin at every caller or enlarge controls to open a form.
+DialogFooter, AlertDialogFooter and SheetFooter own 16px separation from content
+and keep 8px between actions. Do not add a matching margin at every caller or
+enlarge controls to open a form.
 
 Metric cards use the shared `StatCard`, not a hand-built Header/Body split. A single
 16px inset owns the title, value, comparison and supporting chart; 12px separates
 the heading, metric and content groups, and 4px separates value/supporting text.
 Keep the comparison next to the metric in reading order, before the chart. Icons
-are small unboxed heading cues, not a second painted surface. Values use tabular
-display numerals and wrap naturally. Compact trend plots use 4rem geometry, not
-`flex-1` to fill the card; analytical charts with axes remain separate surfaces.
+are small unboxed heading cues, not a second painted surface. `StatCard` titles
+use 14px (`text-basalt-base`); primary metric numerals in `StatCard`, `StatStrip`
+and dashboard KPIs use 24px (`text-basalt-3xl`), tabular alignment and natural
+wrapping. Compact trend plots use 4rem geometry, not `flex-1` to fill the card;
+analytical charts with axes remain separate surfaces.
 Show the time window and disclose a nonzero line-chart scale. Bar charts keep
 their zero baseline. Metric cards have no internal divider or decorative border.
 
+Action horizontal insets use `--basalt-space-control-x-sm` (10px),
+`--basalt-space-control-x` (12px) and `--basalt-space-control-x-lg` (16px).
+Vertical padding and icon gaps stay compact; Select uses the shared control gap.
+TagBadge uses 6px horizontal padding at `sm` and 8px at `md`.
 All nonzero padding, margin and gaps use the appropriate category scale or aliases.
 Zero, auto margins and hairline seams are structural exceptions, not new density
 levels. Negative margins may cancel an owned boundary, not invent a new gap.
@@ -140,7 +157,7 @@ The shared classes calculate natural size as follows:
   Descriptions, wrapping and actions can make a banner taller.
 - Action rows: 22px text line (`--basalt-line-row`) + 6px vertical padding each
   side = 34px. Body prose/code retain the 20px line box. Compound inputs own one
-  outer border; inset children do not add another. Segmented tracks keep 12px text
+  outer border; inset children do not add another. Segmented tracks keep 14px text
   on a 20px line box: 30px items + 2px track inset per side = 34px.
 - Sidebar destination and disclosure rows use the same 22px line box with 8px
   vertical padding, yielding 38px reference rows without changing shared controls.
@@ -165,12 +182,26 @@ interaction contracts; do not change their containment as a global workaround.
 - Radius choices: `--basalt-radius-sm` (.25rem), `-md` (.5rem), `-lg` (.75rem)
   and `-full` (pill/circle); `none` and `inherit` are structural choices. Widget,
   card and island aliases reference those choices; no per-component radii.
-- Typography uses `--basalt-text-*` and `--basalt-leading-*`. Ordinary text is
-  at least 11px reference, body/action 14px, code content 12px (`text-basalt-sm`),
-  code panel titles 13px (`text-basalt-code`). Display headings use
-  the shared larger scale. Do not shrink text to fit a fixed box.
-- Surfaces preserve the matte L0/L1/L2/L3 hierarchy. Controls use the
-  surface-relative control fill. Hover uses `--basalt-hover`,
+- Typography is positional, not component-specific. Use only the four font-size
+  tokens below, with `--basalt-leading-*` for line boxes. Do not shrink text to
+  fit a fixed box or introduce responsive intermediate sizes.
+
+  | Tier | Reference | Token / utility | Roles |
+  | --- | --- | --- | --- |
+  | Auxiliary | 12px / `.75rem` | `--basalt-text-sm` / `text-basalt-sm` | Badges, table column headers, field hints/errors, sidebar uppercase group/partition labels, secondary metadata, chart axes/legends/tooltips, inline code and code block source (`font-mono`) |
+  | Body | 14px / `.875rem` | `--basalt-text-base` / `text-basalt-base` | Body prose, all interactive controls and option rows (including ApprovalCard, RecommendationCard, Table cells and ContextCards), card/panel titles (LayerCard.Header, CodeBlock title, ContextCards header, StatCard title, Popover title and Empty title), PageHeader descriptions and modal/sheet descriptions (DialogDescription, AlertDialogDescription and SheetDescription) |
+  | Section | 18px / `1.125rem` | `--basalt-text-xl` / `text-basalt-xl` | Section/category h2/h3 headings, SectionRule variant="heading" h2, modal/drawer titles (DialogTitle, AlertDialogTitle and SheetTitle) |
+  | Page / metric | 24px / `1.5rem` | `--basalt-text-3xl` / `text-basalt-3xl` | Page main title (PageHeader h1) and primary KPI numerals (StatCard value, StatStrip value and dashboard metrics) |
+
+  The only independent display-scale exemptions are LandingPage
+  (`src/styles/landing.css`), LoginPage (`src/pages/LoginPage.tsx`) and the 404
+  display in NotFound (`src/pages/NotFound.tsx`, `text-basalt-10xl` only). Every
+  other `src/` font-size class must use one of the four canonical utilities.
+- Surfaces preserve the matte L0/L1/L2/L3 hierarchy. LayerCard adds a subtle
+  `ring-1 ring-basalt-border/50` perimeter; `outlined` strengthens it. Headers
+  use 14px medium-weight foreground text with tight tracking. Controls contrast
+  with their parent: document/surface roots use `--basalt-secondary`, while cards
+  and deeper surfaces use `--basalt-bright` for their control fill. Hover uses `--basalt-hover`,
   `--basalt-primary-hover` or `--basalt-destructive-hover`, not caller opacity.
 - Semantic states, tags, data series and brand imagery may choose semantic
   palettes; keep foreground/background pairs and verify both themes. Centralize
@@ -184,12 +215,13 @@ interaction contracts; do not change their containment as a global workaround.
   lightness in dark mode), never the darker decorative `accent` or `muted` fill.
   Do not add decorative side bars, selection outlines, shadows or pseudo-element
   frames. Navigation uses foreground contrast and medium weight alongside fill;
-  existing semantic checkmarks and tab underlines remain. Both primary and
-  secondary text retain at least 4.5:1 contrast.
-- Hover is transient and follows the configured primary. `--basalt-hover` and
-  `--basalt-hover-end` are complete CSS colors, mixed against the theme popover
-  surface at 9.6%/4.8% in light mode and 16%/9.6% in dark mode. Moving menu and command
-  highlights use a subtle gradient between them, without decorative borders.
+  existing semantic checkmarks and tab underlines remain. Underline tabs use
+  active foreground text and the bottom indicator only, without a rounded box
+  or selected background. Both primary and secondary text retain at least 4.5:1 contrast.
+- Hover is transient and follows the configured primary. `--basalt-hover` is
+  a complete CSS color, mixed against `--basalt-surface-elevated` at 18% primary
+  in both light and dark modes. Moving menu and command highlights use
+  this uniform matte fill, without gradients or decorative borders.
   SegmentControl and ToggleGroup selected items use `--basalt-primary` and its
   contrast-corrected foreground; they are accent controls, not neutral navigation.
   Neutral row selection retains its independent selected tokens.
@@ -207,16 +239,20 @@ interaction contracts; do not change their containment as a global workaround.
   so overflow and collapsed groups cannot clip it. Disabled controls retain
   subdued opacity and cannot become moving-hover targets; selection never lowers
   opacity or mutes its primary label.
-- SidebarPartition is a major section label (12px, semibold, uppercase, 16px top
-  spacing). SidebarGroup is a compact disclosure label (11px, semibold, uppercase,
-  22px line box, 8px inset, 12px group separation), not a destination or
-  hover-highlight target. Ordinary sidebar destinations use 14px text and 8px
-  row insets. Groups preserve keyboard expansion and chevron motion; collapsed
-  rails omit labels. Icons stay centered on the 68px collapsed rail, and the brand
+- SidebarPartition is a major section label (12px / `text-basalt-sm`, semibold,
+  uppercase, 16px top spacing). SidebarGroup is a compact disclosure label
+  (12px / `text-basalt-sm`, semibold, uppercase, 22px line box, 8px inset, 12px
+  group separation), not a destination or hover-highlight target. Ordinary sidebar
+  destinations use 14px (`text-basalt-base`) text and 8px row insets. Groups preserve
+  keyboard expansion and chevron motion; collapsed rails omit labels. Icons stay centered on the 68px collapsed rail, and the brand
   mark keeps the same center when expanded. Do not trade that axis for a global
   left-edge alignment.
 - Content wells use the actual surface hierarchy, not selected tokens or muted
   fills. Skeletons, progress tracks and decorative code marks may remain subdued.
+  Skeleton shimmer uses foreground at 10% opacity so it remains visible in both themes.
+- The first eight numbered chart tokens resolve to distinct colors in both themes;
+  supplementary series use matte HSL values independently of the control accent.
+  Sparkline bars use uniform full opacity, never positional dimming.
 
 ## Motion and performance
 
@@ -259,19 +295,20 @@ catalog states and source viewers. Do not add a second `main`, viewport height,
 page background, wrapper card or page padding inside the island. A bounded chat
 workspace can use `h-full min-h-0`; it must not create a nested viewport.
 
-Every catalog route uses the same ShowcasePage header: 30px display titles,
-16px descriptions on a 24px line box, 8px title separation and a 65ch maximum
-reading width. Page sections use 24px separation regardless of route category.
-The standalone PageHeader API retains its size choices for consumers, but catalog
-pages do not override the shared scale. ShowcasePage marks `variant="document"`
-for the library index, category guides, component documentation and source viewers.
+Every catalog route uses the same ShowcasePage header: 24px main titles
+(`text-basalt-3xl`), 14px descriptions (`text-basalt-base`) on a 20px line box,
+8px title separation and a 65ch maximum reading width. Page sections use 24px
+separation regardless of route category. PageHeader size choices must preserve
+the same positional font sizes; catalog pages do not override the shared scale.
+ShowcasePage marks `variant="document"` for the library index, category guides,
+component documentation and source viewers.
 The shell owns the complete breadcrumb trail from Dashboard through the library,
 category and component to the current route. Ancestors are links; the current
 route appears once as nonlinked text with aria-current. Source views include their
 component parent. Narrow headers keep every segment reachable by scrolling the
 breadcrumb region without overflowing the page.
-Document sections use `SectionRule variant="heading"`: 20px sentence-case
-headings without the compact dashed rule. Component previews retain their own
+Document sections use `SectionRule variant="heading"`: 18px (`text-basalt-xl`)
+sentence-case headings without the compact dashed rule. Component previews retain their own
 scope; document typography must not cascade into copied controls. Headers have
 natural height, no scenic wrappers, negative insets or fixed empty openings.
 
@@ -286,14 +323,31 @@ category uses LayerCard.Header above its grid, not individual cards per componen
 Its light surface is white-toned; dark mode uses the same surface hierarchy rather
 than a fixed white fill.
 
-Cards with headings use `LayerCard.Header` and `LayerCard.Body`; use one Body for
-related content with a shared internal gap, not a padded Body for every line.
+Cards with distinct heading/body regions use `LayerCard.Header` and
+`LayerCard.Body`; use one Body for related content with a shared internal gap,
+not a padded Body for every line. Short overview prose blocks may keep their
+heading and text in one unstructured card inset without Header/Body slots.
 Structured roots and slots must not receive extra outer padding or margins.
 Unstructured cards select `padding` rather than overriding it with utilities.
 Do not paint a fixed surface onto LayerCard or recreate cards with rounded,
 painted divs. Use library controls and tables instead of rebuilding their spacing,
 focus, selection and motion in page CSS. Semantic color overrides and purposeful
 chart/canvas geometry remain separate from shared control geometry.
+
+### Island hierarchy
+
+The shell is L0 (`--basalt-background`). `ContentIsland` is the L1 gray canvas
+(`--basalt-card`); its first `LayerCard` islands are L2 (`--basalt-secondary`),
+white-toned in light mode and elevated in both themes.
+
+Inside `ShowcasePage` / `ContentIsland`, only structural chrome sits directly on
+L1: `PageHeader`, `SectionRule` headings, and top-level navigation tabs or filter
+bars that are not attached to a single card. All substantive content blocks MUST
+be encapsulated inside L2 `LayerCard` islands: rationales, guidelines, lists,
+forms, interactive demos, tables, and empty or loading states. A region heading
+does not make its content a surface. Revealed filter forms belong in a `LayerCard`,
+not directly on the L1 canvas. Keep page and region headings outside the content
+islands rather than wrapping the whole page in another card.
 
 ### Alignment hierarchy
 
@@ -309,20 +363,25 @@ start at the page edge. Establish the outer rail before composing the inner one:
 
 Related text keeps its rail across sorting, selection and missing optional icons.
 Numeric headings and values share the end rail; a sort glyph sits inward of that
-label rather than pushing it away from the values. Reserve the same glyph slot
+label with a 4px gap rather than pushing it away from the values. Reserve the same glyph slot
 for Keep, Add and Remove instead of indenting only changed rows. Ordinary button
 padding is not a table-header inset. Preserve the focus target through a shared
 header control rather than compensating with negative page margins.
 
-Table cells keep 8px horizontal / 6px vertical insets and 36px reference rows.
+Table cells keep 12px horizontal / 8px vertical insets and 40px reference rows.
+Headers use medium weight and 0.04em tracking. Body rows have a subtle bottom
+hairline except the last row; the native separate-border layout paints that
+hairline on cells as well. Striping is off by default; `Table striped` opts into
+alternating current-surface row fills, independently of hover and selection.
 An edge attached to a panel uses `--basalt-space-table-edge` (the panel's 16px
-horizontal inset), independently of the space between columns. The owner of the
-column structure marks the actual edge cells; DOM first/last-child selectors
-cannot infer that boundary across rowSpan. DataTable owns this through
-`edge="attached"`; native Table compositions use `ps-basalt-table-edge` and
-`pe-basalt-table-edge` only on the corresponding edge cells. A full-width cell
-uses both. Row fills and header rules remain full width, and nested tables keep
-their own insets. An already inset table retains the default cell spacing.
+horizontal inset), independently of the space between columns. DataTable owns
+this through `edge="attached"`; native Table compositions can use
+`ps-basalt-table-edge` and `pe-basalt-table-edge` on the corresponding edge cells.
+A full-width cell uses both. Simple tables without rowSpan or nested tables may
+instead opt into automatic first/last-cell alignment through a wrapper marked
+`data-basalt-table-container` and `data-edge="attached"`. The column owner must
+mark actual edge cells explicitly for rowSpan or nested tables. Row fills and
+header rules remain full width. An already inset table retains the default cell spacing.
 TableCaption owns its 16px horizontal and 12px vertical panel insets, without an
 outside margin. Its text must not touch an enclosing table frame's bottom edge.
 
@@ -379,7 +438,10 @@ to recreate ordinary actions, selects or inputs.
 `bun run design:check` scans library components/helpers and catalog examples,
 including CSS, for raw spacing/type/radius/motion values, fixed action overrides
 and inline design repairs. The landing route's own CSS is exempt from the spacing,
-radius and type rules and still keeps motion tokens. It derives dashboard page requirements from App routes
+radius and type rules and still keeps motion tokens. Noncanonical Basalt font-size
+classes are rejected, including responsive and important variants; only NotFound's
+`text-basalt-10xl` and LoginPage's independent scale are exempt from the source
+font-size check. It derives dashboard page requirements from App routes
 and checks template ownership, duplicate slot spacing, recreated card surfaces,
 ordinary native controls in pages and page-level control padding overrides.
 It rejects compact control padding on content panels, raw application disclosures,

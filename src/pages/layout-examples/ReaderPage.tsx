@@ -67,7 +67,7 @@ export default function ReaderPage() {
 						/>
 						<article
 							aria-label="A slower way to see"
-							className={`mx-auto max-w-prose space-y-basalt-space-lg px-basalt-space-lg py-basalt-space-lg leading-basalt-relaxed md:px-basalt-space-lg ${large ? "text-basalt-2xl" : "text-basalt-lg"}`}
+							className={`mx-auto max-w-prose space-y-basalt-card px-basalt-card py-basalt-card leading-basalt-relaxed md:px-basalt-card ${large ? "text-basalt-xl" : "text-basalt-base"}`}
 						>
 							<div className="hidden md:block">
 								<PageHeader
@@ -87,8 +87,8 @@ export default function ReaderPage() {
 									: "Local demonstration; no account or network writes."}
 							</p>
 							{Array.from({ length: 12 }, (_, index) => (
-								<section key={`note-${index}`} className="space-y-basalt-space-lg">
-									<h2 className="font-basalt-display text-basalt-2xl">
+								<section key={`note-${index}`} className="space-y-basalt-card">
+									<h2 className="font-basalt-display text-basalt-xl">
 										{index + 1}.{" "}
 										{
 											["Start at the water", "Leave room for a pause", "Notice the small changes"][
@@ -109,7 +109,7 @@ export default function ReaderPage() {
 									</p>
 								</section>
 							))}
-							<p data-reader-end className="border-t border-basalt-border pt-basalt-space-lg">
+							<p data-reader-end className="border-t border-basalt-border pt-basalt-card-sm">
 								End of the field journal.
 							</p>
 							<LinkButton href="/examples/list-detail" variant="outline" className="min-h-11">

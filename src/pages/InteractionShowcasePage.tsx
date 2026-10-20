@@ -36,8 +36,8 @@ const VARIANT_STYLE: Record<ToastVariant, string> = {
 	default: "text-foreground",
 	success: "text-success",
 	error: "text-destructive",
-	warning: "text-amber-500",
-	info: "text-blue-500",
+	warning: "text-basalt-warning",
+	info: "text-basalt-info",
 };
 
 // ── Section wrapper (matches PalettePage pattern) ──
@@ -68,10 +68,10 @@ function ToastSection() {
 	};
 
 	return (
-		<SectionRule title={t("pages.interactionShowcase.toastNotifications")}>
-			<p className="text-basalt-base text-muted-foreground">
-				{t("pages.interactionShowcase.toastDesc")}
-			</p>
+		<SectionRule
+			title={t("pages.interactionShowcase.toastNotifications")}
+			hint={t("pages.interactionShowcase.toastDesc")}
+		>
 			<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-2 lg:grid-cols-3">
 				{toasts.map((t) => {
 					const Icon = VARIANT_ICON[t.variant];
@@ -94,7 +94,7 @@ function ToastSection() {
 										<p className="text-basalt-sm text-muted-foreground mt-basalt-space-xs line-clamp-2">
 											{t.description}
 										</p>
-										<span className="mt-basalt-space-md inline-block rounded-basalt-sm bg-muted px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-muted-foreground">
+										<span className="mt-basalt-space-md inline-block rounded-basalt-sm bg-muted px-basalt-space-md py-basalt-space-xs text-basalt-sm font-medium text-muted-foreground">
 											{t.variantLabel}
 										</span>
 									</div>
@@ -118,10 +118,10 @@ function DialogSection() {
 	const current = activeDialog ? getDialogById(activeDialog) : undefined;
 
 	return (
-		<SectionRule title={t("pages.interactionShowcase.dialogs")}>
-			<p className="text-basalt-base text-muted-foreground">
-				{t("pages.interactionShowcase.dialogDesc")}
-			</p>
+		<SectionRule
+			title={t("pages.interactionShowcase.dialogs")}
+			hint={t("pages.interactionShowcase.dialogDesc")}
+		>
 			<div className="grid grid-cols-1 gap-basalt-layout sm:grid-cols-3">
 				{dialogs.map((d) => {
 					const styleLabel =
@@ -143,7 +143,7 @@ function DialogSection() {
 									<p className="text-basalt-sm text-muted-foreground line-clamp-2">
 										{d.description}
 									</p>
-									<span className="mt-auto rounded-basalt-sm bg-muted px-basalt-space-md py-basalt-space-xs text-basalt-xs font-medium text-muted-foreground">
+									<span className="mt-auto rounded-basalt-sm bg-muted px-basalt-space-md py-basalt-space-xs text-basalt-sm font-medium text-muted-foreground">
 										{styleLabel}
 									</span>
 								</Button>

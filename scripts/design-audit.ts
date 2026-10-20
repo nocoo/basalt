@@ -46,7 +46,12 @@ export function auditDesignSource(
 			!/^(?:rounded(?:-[trblse]{1,2})?-(?:none|basalt-[\w-]+)|rounded-\[inherit\])$/.test(utility)
 		)
 			add("radius-token", token);
-		if (/^text-(?:\[[^\]]*(?:px|rem|em|vw)[^\]]*\]|xs|sm|base|lg|\d?xl)$/.test(utility))
+		if (
+			/^text-(?:\[[^\]]*(?:px|rem|em|vw)[^\]]*\]|xs|sm|base|lg|\d?xl|basalt-(?:xs|code|lg|2xl|[4-9]xl|10xl))$/.test(
+				utility,
+			) &&
+			!(file === "src/pages/NotFound.tsx" && utility === "text-basalt-10xl")
+		)
 			add("type-token", token);
 		if (/^(?:bg|text|border|ring)-\[#/.test(utility)) add("color-token", token);
 		if (

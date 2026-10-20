@@ -30,7 +30,7 @@ export function SummaryMetricCard() {
 			icon={Globe}
 			trend={{ value: 3.1, label: t("common.vsLastMonth") }}
 		>
-			<div className="space-y-basalt-space-lg">
+			<div className="space-y-basalt-card-sm">
 				<LineChart
 					data={DATA}
 					series={[{ key: "y", label: t("dashboard.totalBalance") }]}

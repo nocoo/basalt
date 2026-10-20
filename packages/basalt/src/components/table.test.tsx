@@ -95,9 +95,18 @@ describe("Table", () => {
 			</Table>,
 		);
 		expect(screen.getByRole("table")).toHaveAttribute("data-basalt-table");
-		expect(screen.getByText("Name").className).toContain("font-medium");
+		expect(screen.getByText("Name")).toHaveClass("font-medium", "tracking-[0.04em]");
+		expect(screen.getByRole("table")).not.toHaveAttribute("data-striped");
 		expect(screen.getByText("Name").className).toContain("text-basalt-muted-foreground");
 		expect(screen.getByText("Name").className).not.toContain("bg-basalt-card");
+	});
+
+	it("opts into striping without forwarding a non-native prop", () => {
+		const { rerender } = render(<Table striped aria-label="Striped" />);
+		expect(screen.getByRole("table")).toHaveAttribute("data-striped", "true");
+		expect(screen.getByRole("table")).not.toHaveAttribute("striped");
+		rerender(<Table striped={false} aria-label="Plain" />);
+		expect(screen.getByRole("table")).not.toHaveAttribute("data-striped");
 	});
 
 	it("highlights a selected row", () => {
@@ -281,8 +290,9 @@ describe("Table", () => {
 		const button = screen.getByRole("button", { name: "Plan" });
 		expect(button).toHaveClass("p-0", "border-0", "text-start");
 		expect(button.className).not.toContain("basalt-action");
-		expect(button.querySelector("svg")).toHaveClass("ms-auto", "size-basalt-icon-sm");
-		expect(button.querySelector("svg")).not.toHaveClass("ml-auto");
+		expect(button.querySelector("svg")).toHaveClass("size-basalt-icon-sm");
+		expect(button.querySelector("svg")).not.toHaveClass("ms-auto", "ml-auto");
+		expect(button).toHaveClass("gap-basalt-space-sm");
 		expect(ref.current).toBe(button);
 		fireEvent.click(button);
 		expect(onClick).toHaveBeenCalledOnce();
@@ -303,7 +313,7 @@ describe("Table", () => {
 			</Table>,
 		);
 		let button = screen.getByRole("button", { name: "Amount" });
-		expect(button).toHaveClass("justify-end", "text-end");
+		expect(button).toHaveClass("justify-end", "text-end", "gap-basalt-space-sm");
 		expect(button.firstElementChild?.tagName).toBe("svg");
 		expect(button.firstElementChild).not.toHaveClass("ms-auto");
 		expect(button.textContent).toBe("Amount");

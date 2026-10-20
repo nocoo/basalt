@@ -38,7 +38,7 @@ export const creditCards: CreditCard[] = [
 		expiry: "09/28",
 		balance: 3250.0,
 		limit: 10000,
-		color: "from-blue-600 to-blue-800",
+		color: "bg-basalt-primary",
 	},
 	{
 		name: "Wellness Card",
@@ -48,7 +48,7 @@ export const creditCards: CreditCard[] = [
 		expiry: "03/27",
 		balance: 1820.5,
 		limit: 5000,
-		color: "from-purple-600 to-purple-800",
+		color: "bg-basalt-info",
 	},
 	{
 		name: "Emergency Care Card",
@@ -58,7 +58,7 @@ export const creditCards: CreditCard[] = [
 		expiry: "12/29",
 		balance: 8400.0,
 		limit: 25000,
-		color: "from-neutral-800 to-neutral-950",
+		color: "bg-basalt-secondary",
 	},
 ];
 

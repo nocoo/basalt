@@ -166,7 +166,7 @@ export default function SubscriptionTable() {
 					<p className="text-basalt-sm uppercase tracking-widest text-basalt-muted-foreground">
 						Spend management
 					</p>
-					<h3 className="mt-basalt-space-sm text-basalt-2xl font-semibold">
+					<h3 className="mt-basalt-space-sm text-basalt-xl font-semibold">
 						Health plans & commitments
 					</h3>
 					<p className="mt-basalt-space-sm text-basalt-base text-basalt-muted-foreground">

@@ -22,7 +22,15 @@ describe("LayerCard", () => {
 		);
 		const trigger = screen.getByRole("button", { name: "Details" });
 		expect(trigger).toHaveAttribute("data-slot", "card-header");
-		expect(trigger).toHaveClass("px-basalt-card", "py-basalt-card-sm", "justify-between");
+		expect(trigger).toHaveClass(
+			"px-basalt-card",
+			"py-basalt-card-sm",
+			"justify-between",
+			"gap-basalt-space-lg",
+			"data-[state=open]:border-b",
+			"data-[state=open]:border-basalt-border",
+		);
+		expect(trigger).not.toHaveClass("border-b");
 		expect(trigger.parentElement).toHaveAttribute("data-card-structured", "true");
 		expect(trigger.parentElement).not.toHaveClass("p-basalt-card");
 		fireEvent.click(trigger);
@@ -37,7 +45,7 @@ describe("LayerCard", () => {
 		expect(root.className).toContain("p-basalt-card");
 		expect(root.className).not.toContain("bg-basalt-bright");
 		expect(root.className).not.toContain("shadow-xs");
-		expect(root.className).not.toContain("ring-1");
+		expect(root).toHaveClass("ring-1", "ring-basalt-border/50");
 	});
 
 	it("raises a well without a muted tray", () => {
@@ -49,7 +57,12 @@ describe("LayerCard", () => {
 		);
 		const header = screen.getByText("Next Steps");
 		const body = screen.getByText("Hello");
-		expect(header.className).toContain("text-basalt-muted-foreground");
+		expect(header).toHaveClass(
+			"text-basalt-base",
+			"font-medium",
+			"tracking-tight",
+			"text-basalt-foreground",
+		);
 		expect(header.className).not.toContain("bg-basalt-muted");
 		expect(body).toHaveAttribute("data-basalt-surface");
 		expect(body.className).toContain("p-basalt-card");
@@ -156,10 +169,12 @@ describe("LayerCard", () => {
 		expect(screen.getByLabelText("Deployment")).not.toHaveClass("p-basalt-card-lg");
 		expect(screen.getByLabelText("Deployment")).toHaveAttribute("data-basalt-surface");
 		expect(screen.getByTestId("header")).toHaveClass(
-			"border-b",
 			"px-basalt-card",
-			"py-basalt-card-sm",
+			"pt-basalt-card",
+			"pb-0",
+			"gap-basalt-space-lg",
 		);
+		expect(screen.getByTestId("header")).not.toHaveClass("border-b", "p-basalt-card");
 		expect(screen.getByTestId("body")).toHaveClass("p-basalt-card");
 		expect(screen.getByTestId("body")).not.toHaveAttribute("data-basalt-surface");
 		expect(screen.getByTestId("footer")).toHaveClass(
@@ -182,13 +197,43 @@ describe("LayerCard", () => {
 		expect(screen.getByTestId("well").parentElement?.className).not.toContain("p-basalt-card");
 	});
 
-	it("adds an optional ring without a default shadow", () => {
+	it("only divides an ordinary header when explicitly requested", () => {
+		const { rerender } = render(
+			<LayerCard>
+				<Fragment key="sections">
+					<LayerCard.Header divided data-testid="header">
+						Heading
+					</LayerCard.Header>
+					<LayerCard.Body>Body</LayerCard.Body>
+				</Fragment>
+			</LayerCard>,
+		);
+		expect(screen.getByTestId("header")).toHaveClass(
+			"p-basalt-card",
+			"border-b",
+			"border-basalt-border",
+			"gap-basalt-space-lg",
+		);
+		expect(screen.getByTestId("header")).not.toHaveAttribute("divided");
+		rerender(
+			<LayerCard>
+				<LayerCard.Header divided={false} data-testid="header">
+					Heading
+				</LayerCard.Header>
+				<LayerCard.Body>Body</LayerCard.Body>
+			</LayerCard>,
+		);
+		expect(screen.getByTestId("header")).not.toHaveClass("border-b", "p-basalt-card");
+		expect(screen.getByTestId("header")).toHaveClass("px-basalt-card", "pt-basalt-card", "pb-0");
+	});
+
+	it("strengthens an outlined ring without a default shadow", () => {
 		render(
 			<LayerCard outlined data-testid="card">
 				Body
 			</LayerCard>,
 		);
-		expect(screen.getByTestId("card")).toHaveClass("ring-1", "ring-basalt-border/40");
+		expect(screen.getByTestId("card")).toHaveClass("ring-1", "ring-basalt-border");
 		expect(screen.getByTestId("card").className).not.toContain("shadow-xs");
 	});
 

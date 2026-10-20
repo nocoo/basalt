@@ -32,7 +32,7 @@ export function BarChartCard() {
 					</h2>
 				</div>
 				<div className="flex items-baseline gap-basalt-space-lg">
-					<p className="text-basalt-4xl font-semibold text-foreground font-display tracking-tight">
+					<p className="text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
 						$15,200
 					</p>
 					<span className="text-basalt-base text-muted-foreground">

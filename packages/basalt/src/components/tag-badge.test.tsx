@@ -27,8 +27,10 @@ describe("TagBadge", () => {
 		expect(ref.current).toBe(screen.getByText("Incident"));
 		expect(ref.current).toHaveAttribute("data-tag-color", "danger");
 		expect(ref.current).toHaveAttribute("title", "Incident status");
+		expect(ref.current).toHaveClass("px-basalt-space-md");
 		rerender(<TagBadge name="Healthy" color="success" />);
 		expect(screen.getByText("Healthy")).toHaveAttribute("data-tag-color", "success");
+		expect(screen.getByText("Healthy")).toHaveClass("px-basalt-space-lg");
 		rerender(<TagBadge name="Research" />);
 		expect(screen.getByText("Research")).toHaveAttribute("data-tag-color", tagColorFor("Research"));
 		expect(Object.keys(TAG_COLORS)).toEqual([

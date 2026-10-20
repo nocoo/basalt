@@ -51,7 +51,7 @@ export function ChatHeader({
 				<div className="min-w-0">
 					<p className="truncate text-basalt-base font-semibold tracking-tight">{title}</p>
 					{subtitle ? (
-						<p className="truncate text-basalt-xs text-basalt-muted-foreground">{subtitle}</p>
+						<p className="truncate text-basalt-sm text-basalt-muted-foreground">{subtitle}</p>
 					) : null}
 				</div>
 			</div>

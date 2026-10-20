@@ -83,13 +83,13 @@ const utilityColors = [
 
 function Swatch({ token, label }: { token: string; label: string }) {
 	return (
-		<div className="flex w-24 flex-col items-center gap-basalt-space-lg">
+		<div className="flex w-24 flex-col items-center gap-basalt-card-sm">
 			<div
 				className="size-12 rounded-basalt-md border border-border"
 				style={{ background: `hsl(var(${token}))` }}
 			/>
 			<p className="text-center text-basalt-sm font-medium text-foreground">{label}</p>
-			<code className="break-all text-center text-basalt-xs text-muted-foreground">{token}</code>
+			<code className="break-all text-center text-basalt-sm text-muted-foreground">{token}</code>
 		</div>
 	);
 }
@@ -103,47 +103,44 @@ export default function PalettePage() {
 	return (
 		<ShowcasePage title={t("pages.palette.title")} description={t("pages.palette.description")}>
 			<SectionRule title={t("pages.palette.themePalette")}>
-				<div className="space-y-basalt-space-lg">
-					<p className="max-w-3xl text-basalt-base leading-basalt-relaxed text-muted-foreground">
-						{t("pages.palette.candyDescription")}
-					</p>
-					<div
-						className="grid grid-cols-3 gap-basalt-layout sm:grid-cols-4 xl:grid-cols-6"
-						role="group"
-						aria-label={t("pages.palette.themePalette")}
-					>
-						{swatches.map((color) => (
-							<button
-								key={color.id}
-								type="button"
-								aria-label={color.label}
-								aria-pressed={color.id === accent}
-								data-accent-choice={color.id}
-								onClick={() => setAccent(color.id)}
-								className={`group min-w-0 rounded-basalt-lg border p-basalt-space-lg text-left transition-colors basalt-motion focus-visible:outline-2 focus-visible:outline-primary ${color.id === accent ? "border-basalt-primary bg-basalt-selected" : "border-border hover:border-primary/50"}`}
-							>
-								<span
-									data-accent-swatch={color.id}
-									className="relative block h-16 overflow-hidden rounded-basalt-md border border-black/5 sm:h-20"
-									style={{ background: `hsl(var(${color.token}))` }}
+				<div className="space-y-basalt-card">
+					<LayerCard className="space-y-basalt-card">
+						<p className="max-w-3xl text-basalt-base leading-basalt-relaxed text-muted-foreground">
+							{t("pages.palette.candyDescription")}
+						</p>
+						<div
+							className="grid grid-cols-3 gap-basalt-layout sm:grid-cols-4 xl:grid-cols-6"
+							role="group"
+							aria-label={t("pages.palette.themePalette")}
+						>
+							{swatches.map((color) => (
+								<button
+									key={color.id}
+									type="button"
+									aria-label={color.label}
+									aria-pressed={color.id === accent}
+									data-accent-choice={color.id}
+									onClick={() => setAccent(color.id)}
+									className={`group min-w-0 rounded-basalt-lg border p-basalt-card-sm text-left transition-colors basalt-motion focus-visible:outline-2 focus-visible:outline-primary ${color.id === accent ? "border-basalt-primary bg-basalt-selected" : "border-border hover:border-primary/50"}`}
 								>
 									<span
-										className="absolute inset-0 bg-linear-to-br from-white/30 to-transparent"
-										aria-hidden="true"
+										data-accent-swatch={color.id}
+										className="block h-16 rounded-basalt-md sm:h-20"
+										style={{ background: `hsl(var(${color.token}))` }}
 									/>
-								</span>
-								<span className="mt-basalt-space-lg flex items-center justify-between gap-basalt-space-sm px-basalt-space-xs text-basalt-sm font-medium text-foreground">
-									{color.label}
-									{color.id === accent && (
-										<Check className="size-3.5 shrink-0 text-primary" aria-hidden="true" />
-									)}
-								</span>
-							</button>
-						))}
-					</div>
+									<span className="mt-basalt-card-sm flex items-center justify-between gap-basalt-space-sm px-basalt-space-xs text-basalt-sm font-medium text-foreground">
+										{color.label}
+										{color.id === accent && (
+											<Check className="size-3.5 shrink-0 text-primary" aria-hidden="true" />
+										)}
+									</span>
+								</button>
+							))}
+						</div>
+					</LayerCard>
 					<LayerCard
 						data-palette-preview
-						className="flex flex-wrap items-center gap-x-basalt-space-lg gap-y-basalt-space-lg"
+						className="flex flex-wrap items-center gap-x-basalt-card-sm gap-y-basalt-card-sm"
 					>
 						<Button aria-pressed={preview} onClick={() => setPreview(!preview)}>
 							{t(preview ? "pages.palette.previewActive" : "pages.palette.previewAction")}
@@ -172,12 +169,12 @@ export default function PalettePage() {
 
 			<SectionRule title={t("pages.palette.chartPalette")}>
 				<LayerCard>
-					<p className="mb-basalt-space-lg max-w-3xl text-basalt-base leading-basalt-relaxed text-muted-foreground">
+					<p className="mb-basalt-card max-w-3xl text-basalt-base leading-basalt-relaxed text-muted-foreground">
 						{t("pages.palette.chartDescription")}
 					</p>
 					<div className="grid grid-cols-5 gap-basalt-layout" data-chart-palette>
 						{CHART_COLORS.map((color, index) => (
-							<div key={color} className="min-w-0 space-y-basalt-space-lg">
+							<div key={color} className="min-w-0 space-y-basalt-card-sm">
 								<div
 									className="h-12 rounded-basalt-md"
 									style={{ background: color }}
@@ -220,7 +217,7 @@ export default function PalettePage() {
 								className="h-[11.25rem] w-[11.25rem]"
 								valueFormatter={formatPercent}
 							/>
-							<div className="mt-basalt-space-lg grid w-full grid-cols-3 gap-x-basalt-space-lg gap-y-basalt-space-lg">
+							<div className="mt-basalt-card grid w-full grid-cols-3 gap-x-basalt-card-sm gap-y-basalt-card-sm">
 								{pieData.map((item, i) => (
 									<div key={item.name} className="flex flex-col items-center gap-basalt-space-xs">
 										<span className="font-display text-basalt-base font-medium text-foreground">
@@ -278,7 +275,7 @@ export default function PalettePage() {
 					<LayerCard>
 						<LayerCard.Header
 							data-palette-rings
-							className="flex flex-wrap items-center justify-center gap-basalt-space-lg"
+							className="flex flex-wrap items-center justify-center gap-basalt-card"
 						>
 							{[0, 64, 100].map((value) => (
 								<Gauge
@@ -291,7 +288,7 @@ export default function PalettePage() {
 							))}
 						</LayerCard.Header>
 						<LayerCard.Body>
-							<p className="mt-basalt-space-lg text-basalt-sm leading-basalt-relaxed text-muted-foreground">
+							<p className="text-basalt-sm leading-basalt-relaxed text-muted-foreground">
 								{t("pages.palette.ringDescription")}
 							</p>
 						</LayerCard.Body>
@@ -306,7 +303,7 @@ export default function PalettePage() {
 						</CollapsibleTrigger>
 					</LayerCard.Header>
 					<CollapsibleContent unstyled>
-						<LayerCard.Body className="flex flex-wrap gap-basalt-space-lg border-t border-basalt-border">
+						<LayerCard.Body className="flex flex-wrap gap-basalt-card-sm border-t border-basalt-border">
 							{[...baseColors, ...utilityColors].map((color) => (
 								<Swatch key={color.token} token={color.token} label={color.label} />
 							))}

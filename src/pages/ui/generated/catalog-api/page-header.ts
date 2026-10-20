@@ -10,7 +10,7 @@ export const API = [
 				type: "\"lg\" | \"md\" | \"xl\"",
 				required: false,
 				default: "\"md\"",
-				description: "Heading scale: workspace, dashboard, or reading-focused page.",
+				description: "Page preset; all presets share the same title and description scale.",
 			},
 			{
 				name: "title",

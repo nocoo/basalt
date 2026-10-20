@@ -22,8 +22,8 @@ describe("ShowcasePage", () => {
 		expect(root).toHaveClass("h-full", "gap-basalt-layout-lg", "min-w-0");
 		expect(root?.className).not.toMatch(/\b(?:p-|bg-|min-h-screen)/);
 		expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
-		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-basalt-4xl");
-		expect(screen.getByText("Shared layout")).toHaveClass("text-basalt-lg");
+		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-basalt-3xl");
+		expect(screen.getByText("Shared layout")).toHaveClass("text-basalt-base");
 		expect(screen.getByRole("button", { name: "New item" })).toBeInTheDocument();
 		expect(screen.getByText("Filters")).toBeInTheDocument();
 		expect(root?.lastElementChild).toHaveTextContent("Content");
@@ -35,7 +35,7 @@ describe("ShowcasePage", () => {
 		expect(root).toHaveAttribute("data-page-variant", "document");
 		expect(root).toHaveClass("gap-basalt-layout-lg");
 		expect(root?.firstElementChild?.tagName).toBe("HEADER");
-		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-basalt-4xl");
+		expect(screen.getByRole("heading", { level: 1 })).toHaveClass("text-basalt-3xl");
 		expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
 	});
 });

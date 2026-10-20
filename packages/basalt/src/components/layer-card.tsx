@@ -1,7 +1,6 @@
 import { Slot } from "@radix-ui/react-slot";
 import {
 	Children,
-	cloneElement,
 	Fragment,
 	forwardRef,
 	type HTMLAttributes,
@@ -14,7 +13,7 @@ import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Empty } from "./empty";
 import { SkeletonLine } from "./skeleton-line";
 
-const ROOT_CLASSES = `${BASALT_UI_CLASS} overflow-hidden rounded-basalt-lg text-basalt-foreground`;
+const ROOT_CLASSES = `${BASALT_UI_CLASS} overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border/50 text-basalt-foreground`;
 const PADDING_CLASSES = {
 	none: "",
 	sm: "p-basalt-card-sm",
@@ -31,7 +30,7 @@ export type LayerCardProps = Omit<HTMLAttributes<HTMLDivElement>, "className"> &
 	 */
 	className?: string;
 	/**
-	 * Draw a hairline ring. Default grouping is luminance only.
+	 * Strengthen the default perimeter hairline.
 	 * @default false
 	 */
 	outlined?: boolean;
@@ -45,6 +44,8 @@ export type LayerCardSectionProps = HTMLAttributes<HTMLDivElement>;
 export type LayerCardHeaderProps = LayerCardSectionProps & {
 	/** Apply header insets to one child, such as a CollapsibleTrigger, without another wrapper. @default false */
 	asChild?: boolean;
+	/** Separate the header from its body with a divider. @default false */
+	divided?: boolean;
 };
 export type LayerCardWellProps = LayerCardSectionProps & {
 	/**
@@ -103,38 +104,9 @@ function hasSlot(children: ReactNode, match: (type: unknown) => boolean): boolea
 	});
 }
 
-function decorateHeaders(children: ReactNode, divided: boolean): ReactNode {
-	if (!divided) {
-		return children;
-	}
-	return Children.map(children, (child) => {
-		if (!isElement(child)) {
-			return child;
-		}
-		if (child.type === Fragment) {
-			return cloneElement(child, {
-				children: decorateHeaders(child.props.children, divided),
-			});
-		}
-		if (child.type === LayerCardHeader || child.type === LayerCardSecondary) {
-			const typed = child as ReactElement<{ className?: string }>;
-			return cloneElement(typed, {
-				className: cn(typed.props.className, "border-b border-basalt-border"),
-			});
-		}
-		return child;
-	});
-}
-
 const LayerCardRoot = forwardRef<HTMLDivElement, LayerCardProps>(
 	({ className, children, outlined = false, padding = "md", ...props }, ref) => {
 		const structured = hasSlot(children, (type) => STRUCTURED_TYPES.has(type));
-		const hasWell = hasSlot(
-			children,
-			(type) => type === LayerCardWell || type === LayerCardPrimary,
-		);
-		const hasBody = hasSlot(children, (type) => type === LayerCardBody);
-		const headerDivided = hasBody && !hasWell;
 		return (
 			<div
 				ref={ref}
@@ -143,26 +115,35 @@ const LayerCardRoot = forwardRef<HTMLDivElement, LayerCardProps>(
 				className={cn(
 					ROOT_CLASSES,
 					structured ? "flex w-full flex-col" : PADDING_CLASSES[padding],
-					outlined && "ring-1 ring-basalt-border/40",
+					outlined && "ring-basalt-border",
 					className,
 				)}
 				{...props}
 			>
-				{decorateHeaders(children, headerDivided)}
+				{children}
 			</div>
 		);
 	},
 );
 LayerCardRoot.displayName = "LayerCard";
 
-function LayerCardHeader({ className, asChild = false, ...props }: LayerCardHeaderProps) {
+function LayerCardHeader({
+	className,
+	asChild = false,
+	divided = false,
+	...props
+}: LayerCardHeaderProps) {
 	const Component = asChild ? Slot : "div";
 	return (
 		<Component
 			data-slot="card-header"
 			className={cn(
-				"flex min-w-0 justify-between gap-basalt-card px-basalt-card py-basalt-card-sm text-basalt-muted-foreground",
-				asChild ? "w-full items-center" : "items-start",
+				"flex min-w-0 justify-between gap-basalt-space-lg text-basalt-base font-medium tracking-tight text-basalt-foreground",
+				asChild
+					? "w-full items-center px-basalt-card py-basalt-card-sm data-[state=open]:border-b data-[state=open]:border-basalt-border"
+					: divided
+						? "items-start p-basalt-card border-b border-basalt-border"
+						: "items-start px-basalt-card pt-basalt-card pb-0",
 				className,
 			)}
 			{...props}
@@ -194,7 +175,7 @@ function LayerCardPrimary(props: LayerCardWellProps) {
 }
 LayerCardPrimary.displayName = "LayerCard.Primary";
 
-function LayerCardSecondary(props: LayerCardSectionProps) {
+function LayerCardSecondary(props: LayerCardHeaderProps) {
 	return <LayerCardHeader {...props} />;
 }
 LayerCardSecondary.displayName = "LayerCard.Secondary";

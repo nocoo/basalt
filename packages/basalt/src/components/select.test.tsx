@@ -48,6 +48,7 @@ describe("Select", () => {
 		);
 		const trigger = screen.getByRole("combobox", { name: "Version" });
 		expect(trigger).toBeInTheDocument();
+		expect(trigger).toHaveClass("gap-basalt-control-gap");
 		expect(trigger.className.split(/\s+/)).toEqual(
 			expect.arrayContaining(CONTROL_SURFACE_CLASS.split(/\s+/)),
 		);

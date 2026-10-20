@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-10: Design release missed generated API contract expectations
+
+- **What:** The first 3.2.0 feature commit was correctly blocked by three catalog API assertions after all metadata generators had run; the other 2199 tests passed.
+- **Why:** LayerCard and PageHeader documentation changed, and the reviewed API additions changed the deterministic generated API digest, but the generator's explicit expectations still described the previous contract.
+- **Follow-up:** Review generated API diffs and synchronize the corresponding source-level contract assertions before release. Keep exact documentation and digest checks enabled, then rerun the complete staged-index hook.
+
 ## 2026-10: UI regression checks confused test APIs and decorative separators
 
 - **What:** Profile layout assertions initially queried decorative Separator elements as semantic separators and passed Playwright's `exact` option to Testing Library role queries. Runtime tests caught the first mistake; the staged typecheck blocked the second. The Banner commit also caught an unsynchronized package DESIGN mirror.

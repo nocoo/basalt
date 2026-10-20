@@ -1,5 +1,6 @@
 import { Button } from "@nocoo/basalt/components/button";
 import { InputGroup } from "@nocoo/basalt/components/input-group";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { SegmentControl } from "@nocoo/basalt/components/segment-control";
 import {
 	Select,
@@ -106,7 +107,7 @@ export default function UiIndexPage() {
 					{filterCount > 0 ? (
 						<span
 							aria-hidden="true"
-							className="flex h-4 min-w-4 items-center justify-center rounded-basalt-full bg-basalt-primary px-basalt-space-sm text-basalt-xs leading-basalt-tight text-basalt-primary-foreground"
+							className="flex h-4 min-w-4 items-center justify-center rounded-basalt-full bg-basalt-primary px-basalt-space-sm text-basalt-sm leading-basalt-tight text-basalt-primary-foreground"
 						>
 							{filterCount}
 						</span>
@@ -115,7 +116,7 @@ export default function UiIndexPage() {
 			}
 		>
 			{filtersOpen ? (
-				<div id="catalog-filters" className="space-y-basalt-space-lg">
+				<LayerCard id="catalog-filters" className="space-y-basalt-card">
 					<div className="flex flex-col gap-basalt-space-lg xl:flex-row xl:flex-wrap xl:items-end">
 						<div className="min-w-0 flex-1 space-y-basalt-space-lg xl:max-w-sm">
 							<label
@@ -200,17 +201,21 @@ export default function UiIndexPage() {
 							</Button>
 						) : null}
 					</div>
-				</div>
+				</LayerCard>
 			) : null}
 
 			{resultCount > 0 ? (
 				<HomeGrid groups={groups} />
 			) : (
-				<div className="py-basalt-space-lg text-center" data-empty-status>
+				<LayerCard
+					padding="md"
+					className="text-center text-basalt-base text-muted-foreground"
+					data-empty-status
+				>
 					<p className="text-basalt-base font-medium text-basalt-foreground">
 						No matching catalog items
 					</p>
-				</div>
+				</LayerCard>
 			)}
 		</ShowcasePage>
 	);

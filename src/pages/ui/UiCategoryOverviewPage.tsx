@@ -59,7 +59,9 @@ export default function UiCategoryOverviewPage() {
 				title="Category not found"
 				description="Choose a category from the library."
 			>
-				<Link href="/ui">Library index</Link>
+				<LayerCard className="text-basalt-base text-muted-foreground">
+					<Link href="/ui">Library index</Link>
+				</LayerCard>
 			</ShowcasePage>
 		);
 	}
@@ -72,94 +74,92 @@ export default function UiCategoryOverviewPage() {
 			title={`${category.label} overview`}
 			description={category.description}
 		>
-			<SectionRule variant="heading" title="Design thinking">
-				<p className="max-w-[65ch] text-basalt-lg leading-basalt-relaxed text-basalt-muted-foreground">
-					{guide.rationale}
-				</p>
-			</SectionRule>
-			<div className="grid gap-basalt-layout lg:grid-cols-2">
+			<SectionRule variant="heading" title="Design thinking" className="space-y-basalt-card">
 				<LayerCard>
-					<LayerCard.Header>
+					<p className="max-w-3xl text-basalt-base leading-basalt-relaxed text-basalt-foreground">
+						{guide.rationale}
+					</p>
+				</LayerCard>
+				<div className="grid gap-basalt-layout lg:grid-cols-2">
+					<LayerCard className="space-y-basalt-card-sm">
 						<h2 className="text-basalt-base font-medium">Size and spacing</h2>
-					</LayerCard.Header>
-					<LayerCard.Body className="space-y-basalt-card-sm">
 						<p className="text-basalt-base font-medium">{category.size}</p>
 						<p className="text-basalt-base text-basalt-muted-foreground">{guide.geometry}</p>
 						{category.id === "card" || category.id === "layout" ? (
 							<SpacingPreview category={category.id} />
 						) : null}
-					</LayerCard.Body>
-				</LayerCard>
-				<LayerCard>
-					<LayerCard.Header>
+					</LayerCard>
+					<LayerCard className="space-y-basalt-card-sm">
 						<h2 className="text-basalt-base font-medium">Interaction and motion</h2>
-					</LayerCard.Header>
-					<LayerCard.Body>
 						<p className="text-basalt-base text-basalt-muted-foreground">{guide.interaction}</p>
-					</LayerCard.Body>
+					</LayerCard>
+				</div>
+			</SectionRule>
+			<SectionRule variant="heading" title="Best practices" className="space-y-basalt-card">
+				<LayerCard>
+					<ul className="grid gap-basalt-layout md:grid-cols-2">
+						{guide.practices.map((practice, index) => (
+							<li key={practice} className="flex items-start gap-basalt-space-lg text-basalt-base">
+								<Badge variant="outline" className="shrink-0 tabular-nums" aria-hidden="true">
+									{index + 1}
+								</Badge>
+								<p>{practice}</p>
+							</li>
+						))}
+					</ul>
 				</LayerCard>
-			</div>
-			<SectionRule variant="heading" title="Best practices">
-				<ul className="grid gap-basalt-layout md:grid-cols-2">
-					{guide.practices.map((practice, index) => (
-						<li key={practice} className="flex items-start gap-basalt-space-lg text-basalt-base">
-							<Badge variant="outline" className="shrink-0 tabular-nums" aria-hidden="true">
-								{index + 1}
-							</Badge>
-							<p>{practice}</p>
-						</li>
-					))}
-				</ul>
 			</SectionRule>
 			<SectionRule
 				variant="heading"
 				title="In this group"
 				actions={<Badge variant="secondary">{entries.length} items</Badge>}
+				className="space-y-basalt-card"
 			>
-				<ul className="grid gap-basalt-layout sm:grid-cols-2 xl:grid-cols-3">
-					{entries.map((entry) => (
-						<li key={entry.slug} className="flex items-center gap-basalt-space-lg text-basalt-base">
-							{catalogPageStatus(entry.slug) === "ready" ? (
-								<Link href={`/ui/${entry.slug}`}>{catalogNavName(entry)}</Link>
-							) : (
-								<>
-									<span>{catalogNavName(entry)}</span>
-									<Badge variant="outline">Planned</Badge>
-								</>
-							)}
-						</li>
-					))}
-				</ul>
+				<LayerCard>
+					<ul className="grid gap-basalt-layout sm:grid-cols-2 xl:grid-cols-3">
+						{entries.map((entry) => (
+							<li
+								key={entry.slug}
+								className="flex items-center gap-basalt-space-lg text-basalt-base"
+							>
+								{catalogPageStatus(entry.slug) === "ready" ? (
+									<Link href={`/ui/${entry.slug}`}>{catalogNavName(entry)}</Link>
+								) : (
+									<>
+										<span>{catalogNavName(entry)}</span>
+										<Badge variant="outline">Planned</Badge>
+									</>
+								)}
+							</li>
+						))}
+					</ul>
+				</LayerCard>
 			</SectionRule>
-			<LayerCard>
-				<LayerCard.Header>
-					<h2 className="text-basalt-base font-medium">One shared contract</h2>
-				</LayerCard.Header>
-				<LayerCard.Body className="space-y-basalt-card-sm text-basalt-base">
-					<p className="text-basalt-muted-foreground">
-						Control spacing uses .125rem, .25rem, .375rem and .5rem. Cards and layouts use .75rem,
-						1rem, 1.5rem and 2rem; cards and grids default to 1rem, page sections to 1.5rem. Shared
-						tokens own typography, radii, color and motion. Reference sizes assume a 16px root,
-						never a forced root font size or a fixed-height limit. Verify wrapping, text zoom, both
-						themes, keyboard use and reduced motion.
-					</p>
-					<div className="flex flex-wrap gap-basalt-space-lg">
-						<Link
-							href={`${SITE.github}/blob/main/DESIGN.md`}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							Design contract
-						</Link>
-						<Link
-							href={`${SITE.github}/blob/main/INTEGRATION.md`}
-							target="_blank"
-							rel="noopener noreferrer"
-						>
-							Integration guide
-						</Link>
-					</div>
-				</LayerCard.Body>
+			<LayerCard className="space-y-basalt-card-sm text-basalt-base">
+				<h2 className="text-basalt-base font-medium">One shared contract</h2>
+				<p className="text-basalt-muted-foreground">
+					Control spacing uses .125rem, .25rem, .375rem and .5rem. Cards and layouts use .75rem,
+					1rem, 1.5rem and 2rem; cards and grids default to 1rem, page sections to 1.5rem. Shared
+					tokens own typography, radii, color and motion. Reference sizes assume a 16px root, never
+					a forced root font size or a fixed-height limit. Verify wrapping, text zoom, both themes,
+					keyboard use and reduced motion.
+				</p>
+				<div className="flex flex-wrap gap-basalt-space-lg">
+					<Link
+						href={`${SITE.github}/blob/main/DESIGN.md`}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Design contract
+					</Link>
+					<Link
+						href={`${SITE.github}/blob/main/INTEGRATION.md`}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Integration guide
+					</Link>
+				</div>
 			</LayerCard>
 		</ShowcasePage>
 	);

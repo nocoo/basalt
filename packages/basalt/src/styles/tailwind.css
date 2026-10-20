@@ -175,6 +175,7 @@
 	--color-basalt-muted-foreground: hsl(var(--basalt-muted-foreground));
 	--color-basalt-accent: hsl(var(--basalt-accent));
 	--color-basalt-accent-foreground: hsl(var(--basalt-accent-foreground));
+	--color-basalt-success: var(--basalt-success);
 	--color-basalt-destructive: hsl(var(--basalt-destructive));
 	--color-basalt-destructive-foreground: hsl(var(--basalt-destructive-foreground));
 	--color-basalt-info: hsl(var(--basalt-info));

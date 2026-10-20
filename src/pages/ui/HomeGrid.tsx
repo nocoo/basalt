@@ -300,7 +300,7 @@ export function HomeGrid({ groups }: HomeGridProps) {
 				<section className="min-w-0 max-w-full" aria-label="Tables">
 					<LayerCard padding="none">
 						<LayerCard.Header className="flex-wrap items-center">
-							<h2 className="text-basalt-lg font-medium text-basalt-foreground">Tables</h2>
+							<h2 className="text-basalt-xl font-medium text-basalt-foreground">Tables</h2>
 							<span className="text-basalt-base text-muted-foreground">{tables.length} items</span>
 						</LayerCard.Header>
 						<ul className="grid min-w-0 grid-cols-1 border-t border-basalt-border md:grid-cols-2">
@@ -323,7 +323,7 @@ export function HomeGrid({ groups }: HomeGridProps) {
 				<section key={group.id} className="min-w-0 max-w-full" aria-label={group.label}>
 					<LayerCard padding="none">
 						<LayerCard.Header className="flex-wrap items-center">
-							<h2 className="text-basalt-lg font-medium text-basalt-foreground">{group.label}</h2>
+							<h2 className="text-basalt-xl font-medium text-basalt-foreground">{group.label}</h2>
 							<div className="flex min-w-0 max-w-full flex-wrap items-center gap-basalt-space-lg text-basalt-base">
 								<Link
 									to={catalogCategoryPath(group.id)}

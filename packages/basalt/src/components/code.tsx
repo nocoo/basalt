@@ -104,7 +104,7 @@ function CodePanel({
 						<span
 							id={id}
 							title={heading}
-							className="min-w-0 break-words font-mono text-basalt-code leading-[var(--basalt-line-row)] [overflow-wrap:anywhere]"
+							className="min-w-0 break-words font-mono text-basalt-base font-medium leading-[var(--basalt-line-body)] [overflow-wrap:anywhere]"
 						>
 							{heading}
 						</span>
@@ -112,7 +112,8 @@ function CodePanel({
 					{copyable && (
 						<Button
 							variant="ghost"
-							className="shrink-0 border-0 px-basalt-space-md font-normal text-basalt-muted-foreground [&_svg]:size-basalt-icon-sm"
+							size="sm"
+							className="-my-basalt-space-sm shrink-0 border-0 px-basalt-space-md font-normal text-basalt-muted-foreground [&_svg]:size-basalt-icon-sm"
 							aria-label={copyLabel}
 							disabled={vm.status === "pending"}
 							onClick={() => void vm.copy((text) => navigator.clipboard.writeText(text))}
@@ -146,7 +147,7 @@ function CodePanel({
 					{lineNumbers && (
 						<span
 							aria-hidden="true"
-							className="shrink-0 select-none border-r border-basalt-border text-right text-basalt-xs tabular-nums text-basalt-muted-foreground"
+							className="shrink-0 select-none border-r border-basalt-border text-right text-basalt-sm tabular-nums text-basalt-muted-foreground"
 							style={{
 								width: `calc(${String(vm.lines.length).length}ch + 2 * var(--basalt-space-row-x))`,
 							}}

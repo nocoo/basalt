@@ -3,6 +3,7 @@
 @import "./tailwind.css";
 @import "tailwindcss/utilities" layer(utilities);
 @source "../components/**/*.{ts,tsx}";
+@source "../charts/**/*.{ts,tsx}";
 @source "../providers/**/*.{ts,tsx}";
 
 @utility font-inherit {

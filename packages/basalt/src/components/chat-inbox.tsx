@@ -72,7 +72,7 @@ export function ChatInbox({ items, activeId, onSelect, className, ...props }: Ch
 									{item.title}
 								</span>
 								{item.time ? (
-									<span className="shrink-0 text-basalt-xs text-basalt-muted-foreground">
+									<span className="shrink-0 text-basalt-sm text-basalt-muted-foreground">
 										{item.time}
 									</span>
 								) : null}

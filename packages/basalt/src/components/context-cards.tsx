@@ -44,7 +44,7 @@ export function ContextCards({
 			)}
 		>
 			<header className="flex items-center gap-basalt-content-gap">
-				<h3 id={id} className="text-basalt-code font-medium">
+				<h3 id={id} className="text-basalt-base font-medium">
 					{title}
 				</h3>
 				<Badge variant="secondary" className="tabular-nums leading-[var(--basalt-line-compact)]">
@@ -87,7 +87,7 @@ export function ContextCards({
 						>
 							<LayerCard padding="none" className="min-w-0 overflow-hidden">
 								<div className="flex flex-wrap items-center justify-between gap-basalt-control-gap border-b border-basalt-border px-basalt-panel-x py-basalt-panel-y">
-									<h4 className="inline-flex min-w-0 items-center gap-basalt-row-gap text-basalt-code leading-[var(--basalt-line-body)] font-medium">
+									<h4 className="inline-flex min-w-0 items-center gap-basalt-row-gap text-basalt-base leading-[var(--basalt-line-body)] font-medium">
 										<TextAlignStart
 											aria-hidden="true"
 											className="size-basalt-icon shrink-0"
@@ -99,7 +99,7 @@ export function ContextCards({
 										{chunk.characters.toLocaleString("en-US")} characters
 									</span>
 								</div>
-								<p className="whitespace-pre-wrap break-words px-basalt-panel-x py-basalt-panel-y text-basalt-code leading-[var(--basalt-line-body)] text-basalt-muted-foreground">
+								<p className="whitespace-pre-wrap break-words px-basalt-panel-x py-basalt-panel-y text-basalt-base leading-[var(--basalt-line-body)] text-basalt-muted-foreground">
 									{chunk.body}
 								</p>
 								<div className="flex min-w-0 px-basalt-panel-x pb-basalt-panel-y">
@@ -115,7 +115,7 @@ export function ContextCards({
 												className="size-basalt-icon shrink-0"
 												strokeWidth={1.5}
 											/>
-											<span className="shrink-0 font-mono text-basalt-xs text-basalt-muted-foreground">
+											<span className="shrink-0 font-mono text-basalt-sm text-basalt-muted-foreground">
 												{chunk.source.type}
 											</span>
 											<span className="truncate" title={chunk.source.name}>
@@ -134,7 +134,7 @@ export function ContextCards({
 												className="size-basalt-icon shrink-0"
 												strokeWidth={1.5}
 											/>
-											<span className="shrink-0 font-mono text-basalt-xs text-basalt-muted-foreground">
+											<span className="shrink-0 font-mono text-basalt-sm text-basalt-muted-foreground">
 												{chunk.source.type}
 											</span>
 											<span className="truncate" title={chunk.source.name}>

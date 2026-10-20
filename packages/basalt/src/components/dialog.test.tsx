@@ -39,11 +39,15 @@ describe("Dialog", () => {
 		);
 		fireEvent.click(screen.getByText("Open"));
 		expect(screen.getByRole("dialog", { name: "Title" })).toBeInTheDocument();
-		expect(screen.getByText("Details")).toBeInTheDocument();
+		expect(screen.getByText("Details")).toHaveClass(
+			"text-basalt-base",
+			"leading-[var(--basalt-line-relaxed)]",
+		);
 		expect(screen.getByRole("heading", { name: "Title" })).toHaveClass(
 			"min-w-0",
 			"wrap-anywhere",
-			"text-basalt-3xl",
+			"text-basalt-xl",
+			"leading-basalt-tight",
 		);
 	});
 

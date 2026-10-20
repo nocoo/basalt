@@ -4,15 +4,15 @@
 	--basalt-space-md: 0.375rem;
 	--basalt-space-lg: 0.5rem;
 	--basalt-space-default: var(--basalt-space-lg);
-	--basalt-text-xs: 0.6875rem;
+	--basalt-text-xs: 0.75rem;
 	--basalt-text-sm: 0.75rem;
-	--basalt-text-code: 0.8125rem;
+	--basalt-text-code: 0.875rem;
 	--basalt-text-base: 0.875rem;
-	--basalt-text-lg: 1rem;
+	--basalt-text-lg: 1.125rem;
 	--basalt-text-xl: 1.125rem;
-	--basalt-text-2xl: 1.25rem;
+	--basalt-text-2xl: 1.125rem;
 	--basalt-text-3xl: 1.5rem;
-	--basalt-text-4xl: 1.875rem;
+	--basalt-text-4xl: 1.5rem;
 	--basalt-text-5xl: 2.25rem;
 	--basalt-text-6xl: 3rem;
 	--basalt-text-7xl: 3.75rem;
@@ -82,15 +82,15 @@
 	--basalt-size-icon-display: 1.5rem;
 	--basalt-size-touch: 2.75rem;
 	--basalt-size-menu-row: var(--basalt-size-control);
-	--basalt-size-table-row: 2.25rem;
+	--basalt-size-table-row: 2.5rem;
 	--basalt-size-check: 1rem;
 	--basalt-size-check-sm: 0.75rem;
 	--basalt-size-textarea: 5rem;
 	--basalt-size-textarea-sm: 4rem;
 	--basalt-size-textarea-lg: 6rem;
-	--basalt-space-control-x: var(--basalt-space-lg);
-	--basalt-space-control-x-sm: var(--basalt-space-md);
-	--basalt-space-control-x-lg: var(--basalt-space-lg);
+	--basalt-space-control-x: 0.75rem;
+	--basalt-space-control-x-sm: 0.625rem;
+	--basalt-space-control-x-lg: 1rem;
 	--basalt-space-control-y: var(--basalt-space-sm);
 	--basalt-space-control-gap: var(--basalt-space-lg);
 	--basalt-space-menu-inset: var(--basalt-space-lg);
@@ -105,8 +105,8 @@
 	--basalt-space-layout-lg: 1.5rem;
 	--basalt-space-layout-xl: 2rem;
 	--basalt-space-field-gap: var(--basalt-space-lg);
-	--basalt-space-table-x: var(--basalt-space-lg);
-	--basalt-space-table-y: var(--basalt-space-md);
+	--basalt-space-table-x: 0.75rem;
+	--basalt-space-table-y: var(--basalt-space-lg);
 	--basalt-space-overlay: var(--basalt-space-lg);
 	--basalt-space-panel-x: var(--basalt-space-card);
 	--basalt-space-panel-y: var(--basalt-space-card-sm);
@@ -159,11 +159,13 @@
 	--basalt-input: 220 13% 88%;
 	--basalt-ring: var(--basalt-primary);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
-	--basalt-hover: color-mix(in srgb, hsl(var(--basalt-primary)) 9.6%, hsl(var(--basalt-popover)));
-	--basalt-hover-end: color-mix(
+	--basalt-surface-current: var(--basalt-card);
+	--basalt-surface-elevated: var(--basalt-secondary);
+	--basalt-hover-weight: 18%;
+	--basalt-hover: color-mix(
 		in srgb,
-		hsl(var(--basalt-primary)) 4.8%,
-		hsl(var(--basalt-popover))
+		hsl(var(--basalt-primary)) 18%,
+		hsl(var(--basalt-surface-elevated))
 	);
 	--basalt-selected: 0 0% 100%;
 	--basalt-selected-foreground: var(--basalt-foreground);
@@ -198,13 +200,13 @@
 	--basalt-chart-yellow: 49 100% 69%;
 	--basalt-chart-pearl: 215 12% 48%;
 	--basalt-chart-1: var(--basalt-chart-blue);
-	--basalt-chart-2: var(--basalt-chart-blue);
-	--basalt-chart-3: var(--basalt-chart-green);
-	--basalt-chart-4: var(--basalt-chart-green);
+	--basalt-chart-2: var(--basalt-chart-pink);
+	--basalt-chart-3: 182 38% 48%;
+	--basalt-chart-4: 280 32% 62%;
 	--basalt-chart-5: var(--basalt-chart-green);
-	--basalt-chart-6: var(--basalt-chart-green);
+	--basalt-chart-6: 27 54% 62%;
 	--basalt-chart-7: var(--basalt-chart-yellow);
-	--basalt-chart-8: var(--basalt-chart-yellow);
+	--basalt-chart-8: 237 36% 62%;
 	--basalt-chart-9: var(--basalt-chart-pink);
 	--basalt-chart-10: var(--basalt-chart-pink);
 	--basalt-chart-11: var(--basalt-chart-pink);
@@ -234,6 +236,7 @@
 	--basalt-accent-10: 280 53% 71%;
 	--basalt-accent-11: 237 66% 69%;
 	--basalt-accent-12: 210 20% 87%;
+	--basalt-success: var(--basalt-tag-success-foreground);
 	--basalt-badge-green: 113 60% 30%;
 	--basalt-badge-green-foreground: 0 0% 100%;
 	--basalt-badge-teal: 182 62% 30%;
@@ -288,6 +291,7 @@
 	--basalt-danger-tint: 0 40% 16%;
 	--basalt-info-foreground: 0 0% 10%;
 	--basalt-warning-foreground: 0 0% 10%;
+	--basalt-success: var(--basalt-tag-success-foreground);
 	--basalt-badge-green: 113 55% 62%;
 	--basalt-badge-green-foreground: 0 0% 10%;
 	--basalt-badge-teal: var(--basalt-accent-3);
@@ -298,11 +302,13 @@
 	--basalt-input: 0 0% 18%;
 	--basalt-ring: var(--basalt-primary);
 	--basalt-control-fill: hsl(var(--basalt-secondary));
-	--basalt-hover: color-mix(in srgb, hsl(var(--basalt-primary)) 16%, hsl(var(--basalt-popover)));
-	--basalt-hover-end: color-mix(
+	--basalt-surface-current: var(--basalt-card);
+	--basalt-surface-elevated: var(--basalt-secondary);
+	--basalt-hover-weight: 18%;
+	--basalt-hover: color-mix(
 		in srgb,
-		hsl(var(--basalt-primary)) 9.6%,
-		hsl(var(--basalt-popover))
+		hsl(var(--basalt-primary)) 18%,
+		hsl(var(--basalt-surface-elevated))
 	);
 	--basalt-selected: 0 0% 22%;
 	--basalt-selected-foreground: var(--basalt-foreground);
@@ -324,13 +330,13 @@
 	--basalt-chart-yellow: 49 100% 73%;
 	--basalt-chart-pearl: 210 20% 86%;
 	--basalt-chart-1: var(--basalt-chart-blue);
-	--basalt-chart-2: var(--basalt-chart-blue);
-	--basalt-chart-3: var(--basalt-chart-green);
-	--basalt-chart-4: var(--basalt-chart-green);
+	--basalt-chart-2: var(--basalt-chart-pink);
+	--basalt-chart-3: 182 38% 64%;
+	--basalt-chart-4: 280 32% 74%;
 	--basalt-chart-5: var(--basalt-chart-green);
-	--basalt-chart-6: var(--basalt-chart-green);
+	--basalt-chart-6: 27 54% 72%;
 	--basalt-chart-7: var(--basalt-chart-yellow);
-	--basalt-chart-8: var(--basalt-chart-yellow);
+	--basalt-chart-8: 237 36% 74%;
 	--basalt-chart-9: var(--basalt-chart-pink);
 	--basalt-chart-10: var(--basalt-chart-pink);
 	--basalt-chart-11: var(--basalt-chart-pink);
@@ -382,13 +388,22 @@
 
 [data-basalt-surface-root] {
 	background: hsl(var(--basalt-card));
-	--basalt-control-fill: hsl(var(--basalt-card));
+	--basalt-surface-current: var(--basalt-card);
+	--basalt-surface-elevated: var(--basalt-secondary);
+	--basalt-control-fill: hsl(var(--basalt-secondary));
 	--basalt-zebra-fill: hsl(var(--basalt-secondary));
 }
 
 [data-basalt-surface-root] [data-basalt-surface] {
 	background: hsl(var(--basalt-secondary));
-	--basalt-control-fill: hsl(var(--basalt-secondary));
+	--basalt-surface-current: var(--basalt-secondary);
+	--basalt-surface-elevated: var(--basalt-bright);
+	--basalt-control-fill: hsl(var(--basalt-bright));
+	--basalt-hover: color-mix(
+		in srgb,
+		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
+		hsl(var(--basalt-surface-elevated))
+	);
 	--basalt-primary-hover: color-mix(
 		in srgb,
 		hsl(var(--basalt-primary)) 90%,
@@ -404,6 +419,7 @@
 
 [data-basalt-surface-root] [data-basalt-surface] [data-basalt-surface] {
 	background: hsl(var(--basalt-bright));
+	--basalt-surface-current: var(--basalt-bright);
 	--basalt-control-fill: hsl(var(--basalt-bright));
 	--basalt-zebra-fill: transparent;
 }
@@ -416,14 +432,27 @@
 
 [data-basalt-surface]:not([data-basalt-surface-root] *):not([data-basalt-surface] *) {
 	background: hsl(var(--basalt-card));
-	--basalt-control-fill: hsl(var(--basalt-card));
+	--basalt-surface-current: var(--basalt-card);
+	--basalt-surface-elevated: var(--basalt-bright);
+	--basalt-control-fill: hsl(var(--basalt-bright));
+	--basalt-hover: color-mix(
+		in srgb,
+		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
+		hsl(var(--basalt-surface-elevated))
+	);
 	--basalt-zebra-fill: hsl(var(--basalt-secondary));
 }
 
 /* biome-ignore lint/style/noDescendingSpecificity: Rootless surface trees cannot overlap a surface-root tree. */
 [data-basalt-surface]:not([data-basalt-surface-root] *) [data-basalt-surface] {
 	background: hsl(var(--basalt-secondary));
-	--basalt-control-fill: hsl(var(--basalt-secondary));
+	--basalt-surface-current: var(--basalt-secondary);
+	--basalt-control-fill: hsl(var(--basalt-bright));
+	--basalt-hover: color-mix(
+		in srgb,
+		hsl(var(--basalt-primary)) var(--basalt-hover-weight),
+		hsl(var(--basalt-surface-elevated))
+	);
 	--basalt-primary-hover: color-mix(
 		in srgb,
 		hsl(var(--basalt-primary)) 90%,
@@ -441,6 +470,7 @@
 	[data-basalt-surface]
 	[data-basalt-surface] {
 	background: hsl(var(--basalt-bright));
+	--basalt-surface-current: var(--basalt-bright);
 	--basalt-control-fill: hsl(var(--basalt-bright));
 	--basalt-zebra-fill: transparent;
 }
@@ -454,6 +484,11 @@
 	--basalt-zebra-fill: transparent;
 }
 
+[data-basalt-table] tbody tr:not(:last-child),
+[data-basalt-table] tbody tr:not(:last-child) > td {
+	border-bottom: 1px solid hsl(var(--basalt-border) / 0.5);
+}
+
 [data-basalt-table] tbody tr[aria-selected="true"] td {
 	background: hsl(var(--basalt-selected));
 	color: hsl(var(--basalt-selected-foreground));
@@ -463,8 +498,16 @@
 	background: var(--basalt-hover);
 }
 
-[data-basalt-table] tbody tr:nth-child(even):not([aria-selected="true"]):not(:hover) td {
-	background: var(--basalt-zebra-fill);
+[data-basalt-table][data-striped="true"] tbody tr:nth-child(even) {
+	background-color: hsl(var(--basalt-surface-current));
+}
+
+[data-basalt-table-container][data-edge="attached"] :where(th, td):first-child {
+	padding-inline-start: var(--basalt-space-card);
+}
+
+[data-basalt-table-container][data-edge="attached"] :where(th, td):last-child {
+	padding-inline-end: var(--basalt-space-card);
 }
 
 [data-basalt-table]
@@ -518,7 +561,7 @@
 	.basalt-action-lg {
 		padding-block: var(--basalt-space-lg);
 		padding-inline: var(--basalt-space-control-x-lg);
-		font-size: var(--basalt-text-lg);
+		font-size: var(--basalt-text-base);
 		line-height: var(--basalt-leading-action-lg);
 	}
 	.basalt-action-icon {
@@ -615,7 +658,7 @@
 		height: var(--basalt-hover-height, 0px);
 		transform: translate(var(--basalt-hover-x, 0px), var(--basalt-hover-y, 0px));
 		border-radius: var(--basalt-radius-md);
-		background: linear-gradient(90deg, var(--basalt-hover), var(--basalt-hover-end));
+		background: var(--basalt-hover);
 		opacity: 0;
 		transition: none;
 	}
@@ -679,7 +722,7 @@
 		width: var(--basalt-command-width);
 		height: var(--basalt-command-height);
 		border-radius: var(--basalt-radius-md);
-		background: linear-gradient(90deg, var(--basalt-hover), var(--basalt-hover-end));
+		background: var(--basalt-hover);
 	}
 
 	.basalt-command-list[data-basalt-command-animated="true"]::before {

@@ -8,13 +8,13 @@ export default function StaticPage() {
 	useSiteTitle(t("nav.staticPage"));
 
 	return (
-		<div className="min-h-screen bg-background p-basalt-space-lg flex items-center justify-center">
+		<div className="min-h-screen bg-basalt-background p-basalt-card flex items-center justify-center">
 			<article
 				data-basalt-surface-root=""
-				className="mx-auto w-full max-w-2xl rounded-basalt-lg bg-card p-basalt-space-lg"
+				className="mx-auto w-full max-w-2xl rounded-basalt-lg bg-basalt-card p-basalt-card"
 			>
 				{/* Header */}
-				<div className="space-y-basalt-space-lg mb-basalt-space-lg">
+				<div className="space-y-basalt-card-sm mb-basalt-card">
 					<div className="flex items-center gap-basalt-space-lg">
 						<Link
 							href="/"
@@ -31,9 +31,9 @@ export default function StaticPage() {
 				</div>
 
 				{/* Body */}
-				<div className="space-y-basalt-space-lg text-basalt-base">
+				<div className="space-y-basalt-card text-basalt-base">
 					<section>
-						<h2 className="font-semibold mb-basalt-space-lg text-basalt-lg">
+						<h2 className="font-semibold mb-basalt-card-sm text-basalt-xl">
 							{t("pages.static.section1Title")}
 						</h2>
 						<p className="text-muted-foreground leading-basalt-relaxed">
@@ -42,10 +42,10 @@ export default function StaticPage() {
 					</section>
 
 					<section>
-						<h2 className="font-semibold mb-basalt-space-lg text-basalt-lg">
+						<h2 className="font-semibold mb-basalt-card-sm text-basalt-xl">
 							{t("pages.static.section2Title")}
 						</h2>
-						<p className="text-muted-foreground leading-basalt-relaxed mb-basalt-space-lg">
+						<p className="text-muted-foreground leading-basalt-relaxed mb-basalt-card-sm">
 							{t("pages.static.section2Body")}
 						</p>
 						<ul className="list-disc list-inside text-muted-foreground space-y-basalt-space-sm ml-basalt-space-lg">
@@ -57,10 +57,10 @@ export default function StaticPage() {
 					</section>
 
 					<section>
-						<h2 className="font-semibold mb-basalt-space-lg text-basalt-lg">
+						<h2 className="font-semibold mb-basalt-card-sm text-basalt-xl">
 							{t("pages.static.section3Title")}
 						</h2>
-						<p className="text-muted-foreground leading-basalt-relaxed mb-basalt-space-lg">
+						<p className="text-muted-foreground leading-basalt-relaxed mb-basalt-card-sm">
 							{t("pages.static.section3Body")}
 						</p>
 						<ul className="list-disc list-inside text-muted-foreground space-y-basalt-space-sm ml-basalt-space-lg">
@@ -72,7 +72,7 @@ export default function StaticPage() {
 					</section>
 
 					<section>
-						<h2 className="font-semibold mb-basalt-space-lg text-basalt-lg">
+						<h2 className="font-semibold mb-basalt-card-sm text-basalt-xl">
 							{t("pages.static.section4Title")}
 						</h2>
 						<p className="text-muted-foreground leading-basalt-relaxed">
@@ -81,7 +81,7 @@ export default function StaticPage() {
 					</section>
 
 					<section>
-						<h2 className="font-semibold mb-basalt-space-lg text-basalt-lg">
+						<h2 className="font-semibold mb-basalt-card-sm text-basalt-xl">
 							{t("pages.static.section5Title")}
 						</h2>
 						<p className="text-muted-foreground leading-basalt-relaxed">
@@ -90,7 +90,7 @@ export default function StaticPage() {
 					</section>
 
 					{/* Footer divider */}
-					<div className="pt-basalt-space-lg border-t">
+					<div className="pt-basalt-card-sm border-t border-basalt-border">
 						<p className="text-muted-foreground text-basalt-sm">{t("pages.static.footerText")}</p>
 					</div>
 				</div>

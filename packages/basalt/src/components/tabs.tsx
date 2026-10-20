@@ -120,7 +120,7 @@ export const TabsTrigger = React.forwardRef<
 	<TabsPrimitive.Trigger
 		ref={ref}
 		className={cn(
-			"basalt-action rounded-t-basalt-md inline-flex items-center justify-center font-medium text-basalt-muted-foreground transition-colors basalt-motion hover:text-basalt-foreground data-[state=active]:bg-basalt-selected data-[state=active]:text-basalt-selected-foreground",
+			"basalt-action inline-flex items-center justify-center font-medium text-basalt-muted-foreground transition-colors basalt-motion hover:text-basalt-foreground data-[state=active]:text-basalt-selected-foreground",
 			OVERLAY_MOTION,
 			className,
 		)}

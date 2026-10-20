@@ -2288,7 +2288,7 @@ describe("catalog API generator contract", () => {
 				type: "boolean",
 				required: false,
 				default: "false",
-				description: "Draw a hairline ring. Default grouping is luminance only.",
+				description: "Strengthen the default perimeter hairline.",
 			},
 			{
 				name: "padding",
@@ -3786,7 +3786,7 @@ export interface WidgetProps {
 						type: '"lg" | "md" | "xl"',
 						required: false,
 						default: '"md"',
-						description: "Heading scale: workspace, dashboard, or reading-focused page.",
+						description: "Page preset; all presets share the same title and description scale.",
 					},
 					{
 						name: "title",
@@ -4936,7 +4936,7 @@ export interface WidgetProps {
 			digest.update(first[relative] ?? "");
 		}
 		expect(digest.digest("hex")).toBe(
-			"e5c71ee3ede0a03e39110fb46d2e14eedb9cbac166d942181ba562e7076e80a0",
+			"61f704acdfb7e4f896105725408e92bce3b3f348e2ac49c8eab637550f29c951",
 		);
 	}, 60_000);
 

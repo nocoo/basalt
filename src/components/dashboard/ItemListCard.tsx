@@ -21,7 +21,7 @@ export function ItemListCard() {
 				</div>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
-				<div className="flex flex-1 flex-col gap-basalt-space-lg">
+				<div className="flex flex-1 flex-col gap-basalt-card-sm">
 					{accountItems.map((acc) => (
 						<div key={acc.name} className="flex items-center justify-between">
 							<span className="text-basalt-base text-foreground">{acc.name}</span>
@@ -29,7 +29,9 @@ export function ItemListCard() {
 								<span className="text-basalt-base font-medium text-foreground font-display">
 									${acc.balance.toLocaleString()}
 								</span>
-								<span className="text-basalt-sm text-success ml-basalt-space-lg">{acc.change}</span>
+								<span className="text-basalt-sm text-basalt-success ml-basalt-space-lg">
+									{acc.change}
+								</span>
 							</div>
 						</div>
 					))}

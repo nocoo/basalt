@@ -96,7 +96,7 @@ export default function ComponentsPage() {
 						<p className="text-basalt-sm text-muted-foreground">
 							{t("pages.components.aiReadinessDesc")}
 						</p>
-						<Button variant="secondary" size="sm" className="mt-basalt-space-lg">
+						<Button variant="secondary" size="sm" className="mt-basalt-card-sm">
 							{t("common.viewModule")}
 						</Button>
 					</LayerCard>
@@ -107,7 +107,7 @@ export default function ComponentsPage() {
 						<p className="text-basalt-sm text-muted-foreground">
 							{t("pages.components.retentionModuleDesc")}
 						</p>
-						<Button variant="secondary" size="sm" className="mt-basalt-space-lg">
+						<Button variant="secondary" size="sm" className="mt-basalt-card-sm">
 							{t("common.viewModule")}
 						</Button>
 					</LayerCard>
@@ -121,8 +121,8 @@ export default function ComponentsPage() {
 						return (
 							<LayerCard key={goal.name}>
 								<LayerCard.Header className="items-center justify-start">
-									<div className="flex h-10 w-10 items-center justify-center rounded-basalt-md bg-primary/10">
-										<Icon className="h-5 w-5 text-primary" strokeWidth={1.5} />
+									<div className="flex h-10 w-10 items-center justify-center rounded-basalt-md bg-basalt-primary/10">
+										<Icon className="h-5 w-5 text-basalt-primary" strokeWidth={1.5} />
 									</div>
 									<div className="flex-1">
 										<p className="text-basalt-base font-medium text-foreground">{goal.name}</p>
@@ -135,7 +135,7 @@ export default function ComponentsPage() {
 										{goal.percent}%
 									</span>
 								</LayerCard.Header>
-								<LayerCard.Body className="space-y-basalt-space-lg">
+								<LayerCard.Body className="space-y-basalt-card-sm">
 									<Meter
 										hideValue
 										value={goal.percent}
@@ -146,7 +146,7 @@ export default function ComponentsPage() {
 											{t("pages.components.monthlyTarget")} ${goal.monthlyTarget.toLocaleString()}
 										</span>
 										{goal.onTrack && (
-											<span className="flex items-center gap-basalt-space-sm text-basalt-sm text-success">
+											<span className="flex items-center gap-basalt-space-sm text-basalt-sm text-basalt-success">
 												<Check className="h-3 w-3" strokeWidth={2} />{" "}
 												{t("pages.components.onTrack")}
 											</span>

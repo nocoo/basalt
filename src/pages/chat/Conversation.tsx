@@ -43,7 +43,7 @@ function Response({ message, vm }: { message: Message; vm: VM }) {
 			}
 			onFeedback={(value) => vm.dispatch({ type: "feedback", id: message.id, value })}
 			trace={
-				<div className="space-y-basalt-space-lg">
+				<div className="space-y-basalt-card-sm">
 					{message.reasoning && (
 						<Thinking
 							title={
@@ -200,7 +200,7 @@ export function Conversation({ vm }: { vm: VM }) {
 				role="log"
 				aria-label={t("demo.messages")}
 				aria-live="off"
-				className="min-h-0 flex-1 overflow-y-auto overscroll-contain [overflow-anchor:none] px-basalt-space-lg md:px-basalt-space-lg"
+				className="min-h-0 flex-1 overflow-y-auto overscroll-contain [overflow-anchor:none] px-basalt-card"
 				onScroll={(event) => {
 					const node = event.currentTarget;
 					const next = node.scrollHeight - node.scrollTop - node.clientHeight > 64;
@@ -210,10 +210,10 @@ export function Conversation({ vm }: { vm: VM }) {
 			>
 				<div
 					ref={content}
-					className="mx-auto w-full max-w-[48rem] space-y-basalt-space-lg py-basalt-space-lg"
+					className="mx-auto w-full max-w-[48rem] space-y-basalt-card py-basalt-card"
 				>
 					{vm.thread.messages.length === 0 && (
-						<div className="space-y-basalt-space-lg py-basalt-space-lg">
+						<div className="space-y-basalt-card py-basalt-card-sm">
 							<Sparkles className="size-basalt-8 text-basalt-primary" aria-hidden="true" />
 							<div className="space-y-basalt-space-lg">
 								<h2 className="text-basalt-3xl font-semibold tracking-tight">
@@ -223,7 +223,7 @@ export function Conversation({ vm }: { vm: VM }) {
 									{t("pages.chat.welcomeHint")}
 								</p>
 							</div>
-							<div className="grid gap-basalt-space-lg sm:grid-cols-2">
+							<div className="grid gap-basalt-card sm:grid-cols-2">
 								{["planPrompt", "codePrompt", "testPrompt", "contextPrompt"].map((key) => (
 									<Button
 										key={key}
@@ -241,8 +241,8 @@ export function Conversation({ vm }: { vm: VM }) {
 						message.variant === "assistant" ? (
 							<Response key={message.id} message={message} vm={vm} />
 						) : vm.editing?.id === message.id ? (
-							<LayerCard key={message.id}>
-								<p className="px-basalt-space-lg text-basalt-sm text-basalt-muted-foreground">
+							<LayerCard key={message.id} className="space-y-basalt-card-sm">
+								<p className="text-basalt-sm text-basalt-muted-foreground">
 									{t("pages.chat.editHint")}
 								</p>
 								<ChatComposer
@@ -296,9 +296,9 @@ export function Conversation({ vm }: { vm: VM }) {
 					</Button>
 				</div>
 			)}
-			<div className="mx-auto w-full max-w-[51rem] shrink-0 px-basalt-space-lg pb-basalt-space-lg md:px-basalt-space-lg">
+			<div className="mx-auto w-full max-w-[50rem] shrink-0 space-y-basalt-space-lg px-basalt-card py-basalt-card-sm">
 				{vm.error && (
-					<p role="alert" className="px-basalt-space-lg text-basalt-sm text-basalt-danger">
+					<p role="alert" className="text-basalt-sm text-basalt-danger">
 						{vm.error}
 					</p>
 				)}
@@ -328,10 +328,7 @@ export function Conversation({ vm }: { vm: VM }) {
 					onRemoveAttachment={(id) => vm.dispatch({ type: "removeFile", id })}
 					accept="image/*,text/*,application/pdf"
 				/>
-				<p
-					role="status"
-					className="px-basalt-space-lg text-center text-basalt-xs text-basalt-muted-foreground"
-				>
+				<p role="status" className="text-center text-basalt-sm text-basalt-muted-foreground">
 					{vm.running
 						? vm.waiting
 							? t("pages.chat.waiting")

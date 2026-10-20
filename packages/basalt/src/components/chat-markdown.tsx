@@ -24,7 +24,7 @@ function nodes(tokens: readonly Token[], streaming = false): ReactNode {
 			case "heading": {
 				const Heading = `h${Math.min(6, token.depth + 1)}` as "h2";
 				node = (
-					<Heading className="font-semibold text-basalt-lg">
+					<Heading className="font-semibold text-basalt-xl">
 						{nodes(token.tokens, streaming)}
 					</Heading>
 				);

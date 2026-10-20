@@ -1,5 +1,6 @@
 import { DonutChart } from "@nocoo/basalt/charts/donut";
 import { LineChart } from "@nocoo/basalt/charts/line";
+import { Badge } from "@nocoo/basalt/components/badge";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import {
 	Table,
@@ -27,30 +28,28 @@ export default function PortfolioPage() {
 					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
 						{t("pages.portfolio.portfolioValue")}
 					</p>
-					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
+					<p className="text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
 						${totalValue.toLocaleString()}
 					</p>
-					<span className="text-basalt-sm font-medium text-success">
-						{t("pages.portfolio.allTime")}
-					</span>
+					<Badge variant="success">{t("pages.portfolio.allTime")}</Badge>
 				</LayerCard>
 				<LayerCard>
 					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
 						{t("pages.portfolio.todaysChange")}
 					</p>
-					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-success font-display tracking-tight">
+					<p className="text-basalt-3xl font-semibold text-basalt-success font-display tracking-tight">
 						+$342.50
 					</p>
-					<span className="text-basalt-sm font-medium text-success">+0.34%</span>
+					<span className="text-basalt-sm font-medium text-basalt-success">+0.34%</span>
 				</LayerCard>
 				<LayerCard>
 					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
 						{t("pages.portfolio.totalReturn")}
 					</p>
-					<p className="text-basalt-2xl md:text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
+					<p className="text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
 						$8,600
 					</p>
-					<span className="text-basalt-sm font-medium text-success">+8.6%</span>
+					<span className="text-basalt-sm font-medium text-basalt-success">+8.6%</span>
 				</LayerCard>
 			</div>
 
@@ -88,7 +87,7 @@ export default function PortfolioPage() {
 							className="h-[10rem] w-[10rem] md:h-[11.25rem] md:w-[11.25rem]"
 							valueFormatter={formatPercent}
 						/>
-						<div className="mt-basalt-space-lg grid w-full grid-cols-3 gap-x-basalt-space-lg gap-y-basalt-space-lg">
+						<div className="mt-basalt-card-sm grid w-full grid-cols-3 gap-basalt-card-sm">
 							{holdings.map((item, i) => (
 								<div key={item.name} className="flex flex-col items-center gap-basalt-space-xs">
 									<span className="text-basalt-base font-medium text-foreground font-display">
@@ -160,7 +159,7 @@ export default function PortfolioPage() {
 										${item.value.toLocaleString()}
 									</TableCell>
 									<TableCell
-										className={`text-right ${item.up ? "text-success" : "text-destructive"}`}
+										className={`text-right ${item.up ? "text-basalt-success" : "text-basalt-destructive"}`}
 									>
 										{item.change}
 									</TableCell>

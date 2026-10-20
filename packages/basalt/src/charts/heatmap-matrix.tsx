@@ -417,7 +417,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 											<th
 												key={`${matrixId}-col-${colIdx}`}
 												scope="col"
-												className="p-0 text-center font-mono text-basalt-xs text-basalt-muted-foreground select-none"
+												className="p-0 text-center font-mono text-basalt-sm text-basalt-muted-foreground select-none"
 												style={{
 													width: effectiveColWidth,
 													maxWidth: effectiveColWidth,
@@ -565,7 +565,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 						{/* Legend footer */}
 						{showLegend ? (
 							<div
-								className="mt-basalt-space-sm flex items-center justify-end gap-basalt-space-sm text-basalt-xs text-basalt-muted-foreground select-none"
+								className="mt-basalt-space-sm flex items-center justify-end gap-basalt-space-sm text-basalt-sm text-basalt-muted-foreground select-none"
 								aria-hidden="true"
 							>
 								<span>{lessLabel}</span>

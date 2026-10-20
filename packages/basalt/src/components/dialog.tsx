@@ -256,7 +256,10 @@ export const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<DialogPrimitive.Title
 		ref={ref}
-		className={cn("min-w-0 text-basalt-3xl font-semibold tracking-tight wrap-anywhere", className)}
+		className={cn(
+			"min-w-0 text-basalt-xl font-semibold leading-basalt-tight tracking-tight wrap-anywhere",
+			className,
+		)}
 		{...props}
 	/>
 ));
@@ -277,7 +280,10 @@ export const DialogDescription = React.forwardRef<
 >(({ className, ...props }, ref) => (
 	<DialogPrimitive.Description
 		ref={ref}
-		className={cn("text-basalt-lg text-basalt-muted-foreground", className)}
+		className={cn(
+			"text-basalt-base leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground",
+			className,
+		)}
 		{...props}
 	/>
 ));

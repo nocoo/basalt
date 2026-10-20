@@ -1,6 +1,7 @@
 import { Banner } from "@nocoo/basalt/components/banner";
 import { LinkButton } from "@nocoo/basalt/components/button";
 import { CodeBlock } from "@nocoo/basalt/components/code";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { ShowcasePage } from "@/components/ShowcasePage";
@@ -126,9 +127,9 @@ export function UiSourceViewerPage() {
 			{error ? (
 				<Banner variant="error" title="Source unavailable" description={error} />
 			) : content === null ? (
-				<p role="status" className="text-basalt-base text-basalt-muted-foreground">
-					Loading source...
-				</p>
+				<LayerCard role="status" className="text-basalt-base text-muted-foreground">
+					Loading source…
+				</LayerCard>
 			) : (
 				<CodeBlock title={sourceInfo.file} lineNumbers>
 					{content}

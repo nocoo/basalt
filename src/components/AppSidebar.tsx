@@ -381,7 +381,7 @@ function NavItemButton({ item, currentPath }: { item: NavItem; currentPath: stri
 			) : null}
 			{item.badge ? (
 				<span className="flex h-[var(--basalt-line-body)] shrink-0 items-center justify-center">
-					<span className="flex h-5 min-w-[1.25rem] items-center justify-center rounded-basalt-full bg-badge-red px-basalt-space-md text-basalt-xs font-medium text-badge-red-foreground">
+					<span className="flex h-5 min-w-[1.25rem] items-center justify-center rounded-basalt-full bg-badge-red px-basalt-space-md text-basalt-sm font-medium text-badge-red-foreground">
 						{item.badge}
 					</span>
 				</span>
@@ -438,7 +438,7 @@ function CollapsedNavItem({ item, currentPath }: { item: NavItem; currentPath: s
 				>
 					<item.icon className="h-4 w-4" strokeWidth={1.5} />
 					{item.badge ? (
-						<span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-basalt-full bg-badge-red px-basalt-space-sm text-basalt-xs font-medium text-badge-red-foreground">
+						<span className="absolute -top-0.5 -right-0.5 flex h-4 min-w-[1rem] items-center justify-center rounded-basalt-full bg-badge-red px-basalt-space-sm text-basalt-sm font-medium text-badge-red-foreground">
 							{item.badge}
 						</span>
 					) : null}
@@ -519,10 +519,8 @@ export function AppSidebar({ collapsed, onToggle }: AppSidebarProps) {
 						<BasaltLogo alt="" className="h-7 w-7 shrink-0 object-contain" />
 						{collapsed ? null : (
 							<>
-								<span className="text-basalt-xl font-semibold text-basalt-foreground md:text-basalt-2xl">
-									basalt.
-								</span>
-								<span className="rounded-basalt-md bg-basalt-secondary px-basalt-space-md py-basalt-space-xs text-basalt-xs leading-basalt-tight font-medium text-basalt-muted-foreground">
+								<span className="text-basalt-xl font-semibold text-basalt-foreground">basalt.</span>
+								<span className="rounded-basalt-md bg-basalt-secondary px-basalt-space-md py-basalt-space-xs text-basalt-sm leading-basalt-tight font-medium text-basalt-muted-foreground">
 									v{APP_VERSION}
 								</span>
 							</>

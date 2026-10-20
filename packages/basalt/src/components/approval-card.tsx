@@ -68,7 +68,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 		<LayerCard
 			padding="sm"
 			className={cn(
-				"w-full space-y-basalt-content-gap px-basalt-panel-x py-basalt-panel-y leading-[var(--basalt-line-body)]",
+				"w-full space-y-basalt-card-sm px-basalt-panel-x py-basalt-panel-y leading-[var(--basalt-line-body)]",
 				className,
 			)}
 		>
@@ -86,6 +86,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 					<Button
 						variant="ghost"
 						size="icon"
+						className="-my-basalt-space-sm -mr-basalt-space-sm"
 						aria-label="Dismiss approval"
 						disabled={busy}
 						onClick={onDismiss}
@@ -114,7 +115,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 								data-hover-selected={vm.answer?.selected.includes(option.id)}
 								data-disabled={option.disabled || busy ? "" : undefined}
 								htmlFor={`${id}-${option.id}`}
-								className="flex cursor-pointer items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-row-y text-basalt-code leading-basalt-row"
+								className="flex cursor-pointer items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-row-y text-basalt-base leading-basalt-row"
 							>
 								<Radio.Item
 									id={`${id}-${option.id}`}
@@ -134,7 +135,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 								data-hover-selected={vm.answer?.selected.includes(option.id)}
 								data-disabled={option.disabled || busy ? "" : undefined}
 								htmlFor={`${id}-${option.id}`}
-								className="flex cursor-pointer items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-row-y text-basalt-code leading-basalt-row"
+								className="flex cursor-pointer items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-row-y text-basalt-base leading-basalt-row"
 							>
 								<Checkbox
 									id={`${id}-${option.id}`}
@@ -163,7 +164,7 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 					{vm.error}
 				</p>
 			)}
-			<div className="flex items-center justify-between gap-basalt-content-gap border-t border-basalt-border pt-basalt-space-lg">
+			<div className="flex items-center justify-between gap-basalt-content-gap border-t border-basalt-border pt-basalt-card-sm">
 				<div className="flex items-center gap-basalt-content-gap">
 					<Button
 						variant="ghost"
@@ -181,11 +182,11 @@ export function ApprovalCard({ className, onDismiss, ...props }: ApprovalCardPro
 				</div>
 				<div className="flex gap-basalt-content-gap">
 					{question.required === false && (
-						<Button variant="ghost" size="sm" disabled={busy} onClick={vm.skip}>
+						<Button variant="ghost" disabled={busy} onClick={vm.skip}>
 							Skip
 						</Button>
 					)}
-					<Button size="sm" loading={busy} disabled={!vm.canContinue || busy} onClick={vm.continue}>
+					<Button loading={busy} disabled={!vm.canContinue || busy} onClick={vm.continue}>
 						{vm.last ? "Submit" : "Continue"}
 					</Button>
 				</div>

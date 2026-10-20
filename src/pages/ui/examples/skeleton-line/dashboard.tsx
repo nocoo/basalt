@@ -29,7 +29,7 @@ export default function DashboardSkeleton() {
 					<p className="text-basalt-sm uppercase tracking-widest text-basalt-muted-foreground">
 						Care team overview
 					</p>
-					<h3 className="mt-basalt-space-sm text-basalt-2xl font-semibold">
+					<h3 className="mt-basalt-space-sm text-basalt-xl font-semibold">
 						A clear view of your activity
 					</h3>
 				</div>

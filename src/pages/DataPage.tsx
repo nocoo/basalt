@@ -50,28 +50,28 @@ const PEOPLE = [
 const TIMELINE = [
 	{
 		icon: CheckCircle2,
-		color: "text-emerald-500",
+		color: "text-basalt-success",
 		title: "Wellness report ready",
 		desc: "Your weekly activity and sleep report is available",
 		time: "2 min ago",
 	},
 	{
 		icon: GitCommit,
-		color: "text-blue-500",
+		color: "text-basalt-info",
 		title: "Code merged",
 		desc: "PR #142 merged into main",
 		time: "15 min ago",
 	},
 	{
 		icon: MessageSquare,
-		color: "text-amber-500",
+		color: "text-basalt-warning",
 		title: "New comment",
 		desc: "Alice left a review",
 		time: "1 hr ago",
 	},
 	{
 		icon: Star,
-		color: "text-purple-500",
+		color: "text-basalt-primary",
 		title: "Milestone reached",
 		desc: "Sprint 8 completed",
 		time: "3 hr ago",
@@ -81,15 +81,15 @@ const TIMELINE = [
 const SOLID_PILLS = [
 	{ label: "Primary", className: "bg-primary text-primary-foreground" },
 	{ label: "Success", className: "bg-success text-success-foreground" },
-	{ label: "Warning", className: "bg-amber-500 text-white" },
+	{ label: "Warning", className: "bg-basalt-warning text-basalt-warning-foreground" },
 	{ label: "Error", className: "bg-destructive text-destructive-foreground" },
 ];
 
 const SOFT_PILLS = [
-	{ label: "Blue", className: "bg-blue-500/10 text-blue-500" },
-	{ label: "Teal", className: "bg-teal-500/10 text-teal-500" },
-	{ label: "Indigo", className: "bg-indigo-500/10 text-indigo-500" },
-	{ label: "Rose", className: "bg-rose-500/10 text-rose-500" },
+	{ label: "Blue", className: "bg-basalt-info/10 text-basalt-info" },
+	{ label: "Teal", className: "bg-basalt-success/10 text-basalt-success" },
+	{ label: "Indigo", className: "bg-basalt-primary/10 text-basalt-primary" },
+	{ label: "Rose", className: "bg-basalt-destructive/10 text-basalt-destructive" },
 ];
 
 const OUTLINE_PILLS = [
@@ -100,14 +100,26 @@ const OUTLINE_PILLS = [
 
 const ICON_PILLS = [
 	{ label: "Verified", icon: BadgeCheck, className: "bg-success/10 text-success" },
-	{ label: "At risk", icon: AlertTriangle, className: "bg-amber-500/10 text-amber-500" },
-	{ label: "AI", icon: Sparkles, className: "bg-purple-500/10 text-purple-500" },
+	{ label: "At risk", icon: AlertTriangle, className: "bg-basalt-warning/10 text-basalt-warning" },
+	{ label: "AI", icon: Sparkles, className: "bg-basalt-primary/10 text-basalt-primary" },
 ];
 
 const DOT_PILLS = [
-	{ label: "Live", dot: "bg-green-500", className: "bg-green-500/10 text-green-600" },
-	{ label: "Paused", dot: "bg-amber-500", className: "bg-amber-500/10 text-amber-500" },
-	{ label: "Offline", dot: "bg-rose-500", className: "bg-rose-500/10 text-rose-500" },
+	{
+		label: "Live",
+		dot: "bg-basalt-success",
+		className: "bg-basalt-success/10 text-basalt-success",
+	},
+	{
+		label: "Paused",
+		dot: "bg-basalt-warning",
+		className: "bg-basalt-warning/10 text-basalt-warning",
+	},
+	{
+		label: "Offline",
+		dot: "bg-basalt-destructive",
+		className: "bg-basalt-destructive/10 text-basalt-destructive",
+	},
 ];
 
 export default function DataPage() {
@@ -136,12 +148,14 @@ export default function DataPage() {
 						<LayerCard key={kpi.label}>
 							<p className="text-basalt-sm text-muted-foreground mb-basalt-space-sm">{kpi.label}</p>
 							<p className="text-basalt-3xl font-semibold text-foreground">{kpi.value}</p>
-							<div className="flex items-center gap-basalt-space-sm mt-basalt-space-lg">
-								{kpi.trend === "up" && <TrendingUp className="h-3.5 w-3.5 text-emerald-500" />}
-								{kpi.trend === "down" && <TrendingDown className="h-3.5 w-3.5 text-red-500" />}
+							<div className="flex items-center gap-basalt-space-sm mt-basalt-card-sm">
+								{kpi.trend === "up" && <TrendingUp className="h-3.5 w-3.5 text-basalt-success" />}
+								{kpi.trend === "down" && (
+									<TrendingDown className="h-3.5 w-3.5 text-basalt-destructive" />
+								)}
 								{kpi.trend === "flat" && <Minus className="h-3.5 w-3.5 text-muted-foreground" />}
 								<span
-									className={`text-basalt-sm font-medium ${kpi.trend === "up" ? "text-emerald-500" : kpi.trend === "down" ? "text-red-500" : "text-muted-foreground"}`}
+									className={`text-basalt-sm font-medium ${kpi.trend === "up" ? "text-basalt-success" : kpi.trend === "down" ? "text-basalt-destructive" : "text-muted-foreground"}`}
 								>
 									{kpi.change}
 								</span>
@@ -155,31 +169,31 @@ export default function DataPage() {
 			</SectionRule>
 
 			<SectionRule title={t("pages.data.dataTable")}>
-				<div className="flex flex-wrap items-center gap-basalt-space-lg">
-					<InputGroup className="min-w-0 flex-1 basis-48">
-						<InputGroup.Addon>
-							<Search strokeWidth={1.5} />
-						</InputGroup.Addon>
-						<InputGroup.Input
-							aria-label={t("pages.data.searchPlaceholder")}
-							value={vm.query}
-							onChange={(event) => vm.setQuery(event.target.value)}
-							placeholder={t("pages.data.searchPlaceholder")}
-						/>
-					</InputGroup>
-					<Select value={vm.status} onValueChange={(value) => vm.setStatus(value)}>
-						<SelectTrigger aria-label={t("common.filter")} className="w-auto">
-							<SelectValue />
-						</SelectTrigger>
-						<SelectContent>
-							<SelectItem value="all">{t("demo.allStatuses")}</SelectItem>
-							<SelectItem value="Paid">{t("demo.paid")}</SelectItem>
-							<SelectItem value="Pending">{t("demo.pendingStatus")}</SelectItem>
-							<SelectItem value="Overdue">{t("demo.overdue")}</SelectItem>
-						</SelectContent>
-					</Select>
-				</div>
 				<LayerCard padding="none">
+					<div className="flex flex-wrap items-center gap-basalt-space-lg border-b border-basalt-border/60 px-basalt-card py-basalt-card-sm">
+						<InputGroup className="min-w-0 flex-1 basis-48">
+							<InputGroup.Addon>
+								<Search strokeWidth={1.5} />
+							</InputGroup.Addon>
+							<InputGroup.Input
+								aria-label={t("pages.data.searchPlaceholder")}
+								value={vm.query}
+								onChange={(event) => vm.setQuery(event.target.value)}
+								placeholder={t("pages.data.searchPlaceholder")}
+							/>
+						</InputGroup>
+						<Select value={vm.status} onValueChange={(value) => vm.setStatus(value)}>
+							<SelectTrigger aria-label={t("common.filter")} className="w-auto">
+								<SelectValue />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectItem value="all">{t("demo.allStatuses")}</SelectItem>
+								<SelectItem value="Paid">{t("demo.paid")}</SelectItem>
+								<SelectItem value="Pending">{t("demo.pendingStatus")}</SelectItem>
+								<SelectItem value="Overdue">{t("demo.overdue")}</SelectItem>
+							</SelectContent>
+						</Select>
+					</div>
 					<Table aria-label={t("pages.data.dataTable")}>
 						<TableHeader>
 							<TableRow>
@@ -237,11 +251,11 @@ export default function DataPage() {
 									<TableCell>{row.customer}</TableCell>
 									<TableCell>
 										<span
-											className={`rounded-basalt-full px-basalt-space-lg py-basalt-space-xs text-basalt-xs font-medium ${
+											className={`rounded-basalt-full px-basalt-space-lg py-basalt-space-xs text-basalt-sm font-medium ${
 												row.status === "Paid"
 													? "bg-success/10 text-success"
 													: row.status === "Pending"
-														? "bg-amber-500/10 text-amber-500"
+														? "bg-basalt-warning/10 text-basalt-warning"
 														: "bg-destructive/10 text-destructive"
 											}`}
 										>
@@ -263,7 +277,7 @@ export default function DataPage() {
 							{vm.rows.length === 0 && (
 								<TableRow>
 									<TableCell colSpan={5} className="ps-basalt-table-edge pe-basalt-table-edge">
-										<div className="py-basalt-space-lg text-center" role="status">
+										<div className="py-basalt-card-sm text-center" role="status">
 											{t("demo.noResults")}{" "}
 											<Button variant="ghost" size="sm" onClick={vm.reset}>
 												{t("demo.resetFilters")}
@@ -286,15 +300,15 @@ export default function DataPage() {
 			<SectionRule title={t("pages.data.avatars")}>
 				<LayerCard>
 					<LayerCard.Body>
-						<div className="space-y-basalt-space-lg">
+						<div className="space-y-basalt-card">
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.sizes")}
 								</p>
-								<div className="flex items-end gap-basalt-space-lg">
+								<div className="flex items-end gap-basalt-card-sm">
 									{[
-										{ size: "h-6 w-6", text: "text-basalt-xs" },
-										{ size: "h-8 w-8", text: "text-basalt-xs" },
+										{ size: "h-6 w-6", text: "text-basalt-sm" },
+										{ size: "h-8 w-8", text: "text-basalt-sm" },
 										{ size: "h-10 w-10", text: "text-basalt-sm" },
 										{ size: "h-12 w-12", text: "text-basalt-base" },
 									].map(({ size, text }, i) => (
@@ -309,17 +323,17 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.stackedGroup")}
 								</p>
 								<div className="flex -space-x-basalt-space-lg">
 									{PEOPLE.map((p) => (
 										<Avatar key={p.seed} className="h-9 w-9 border-2 border-background">
 											<AvatarImage src={`https://avatar.vercel.sh/${p.seed}`} alt={p.name} />
-											<AvatarFallback className="text-basalt-xs">{p.initials}</AvatarFallback>
+											<AvatarFallback className="text-basalt-sm">{p.initials}</AvatarFallback>
 										</Avatar>
 									))}
-									<div className="flex h-9 w-9 items-center justify-center rounded-basalt-full border-2 border-background bg-muted text-basalt-xs font-medium text-muted-foreground">
+									<div className="flex h-9 w-9 items-center justify-center rounded-basalt-full border-2 border-background bg-muted text-basalt-sm font-medium text-muted-foreground">
 										+3
 									</div>
 								</div>
@@ -332,9 +346,9 @@ export default function DataPage() {
 			<SectionRule title={t("pages.data.badges")}>
 				<LayerCard>
 					<LayerCard.Body>
-						<div className="space-y-basalt-space-lg">
+						<div className="space-y-basalt-card">
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.variants")}
 								</p>
 								<div className="flex flex-wrap items-center gap-basalt-space-lg">
@@ -345,20 +359,20 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.semantic")}
 								</p>
 								<div className="flex flex-wrap items-center gap-basalt-space-lg">
-									<Badge className="border-transparent bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+									<Badge className="border-transparent bg-basalt-success/15 text-basalt-success">
 										Active
 									</Badge>
-									<Badge className="border-transparent bg-amber-500/15 text-amber-600 dark:text-amber-400">
+									<Badge className="border-transparent bg-basalt-warning/15 text-basalt-warning">
 										Pending
 									</Badge>
-									<Badge className="border-transparent bg-red-500/15 text-red-600 dark:text-red-400">
+									<Badge className="border-transparent bg-basalt-destructive/15 text-basalt-destructive">
 										Failed
 									</Badge>
-									<Badge className="border-transparent bg-blue-500/15 text-blue-600 dark:text-blue-400">
+									<Badge className="border-transparent bg-basalt-info/15 text-basalt-info">
 										Info
 									</Badge>
 								</div>
@@ -371,9 +385,9 @@ export default function DataPage() {
 			<SectionRule title={t("pages.data.pills")}>
 				<LayerCard>
 					<LayerCard.Body>
-						<div className="space-y-basalt-space-lg">
+						<div className="space-y-basalt-card">
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.solid")}
 								</p>
 								<div className="flex flex-wrap gap-basalt-space-lg">
@@ -388,7 +402,7 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.soft")}
 								</p>
 								<div className="flex flex-wrap gap-basalt-space-lg">
@@ -403,7 +417,7 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.outline")}
 								</p>
 								<div className="flex flex-wrap gap-basalt-space-lg">
@@ -418,7 +432,7 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.withIcons")}
 								</p>
 								<div className="flex flex-wrap gap-basalt-space-lg">
@@ -434,7 +448,7 @@ export default function DataPage() {
 								</div>
 							</div>
 							<div>
-								<p className="text-basalt-sm text-muted-foreground mb-basalt-space-lg font-mono">
+								<p className="text-basalt-sm text-muted-foreground mb-basalt-card-sm font-mono">
 									{t("pages.data.withDotIndicators")}
 								</p>
 								<div className="flex flex-wrap gap-basalt-space-lg">
@@ -459,7 +473,7 @@ export default function DataPage() {
 					<LayerCard.Well>
 						<div className="space-y-0">
 							{TIMELINE.map((item, i) => (
-								<div key={i} className="flex gap-basalt-space-lg">
+								<div key={i} className="flex gap-basalt-card-sm">
 									<div className="flex flex-col items-center">
 										<div
 											className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-basalt-full border border-border ${item.color}`}
@@ -468,10 +482,10 @@ export default function DataPage() {
 										</div>
 										{i < TIMELINE.length - 1 && <div className="w-px flex-1 bg-border" />}
 									</div>
-									<div className={`pb-basalt-space-lg ${i === TIMELINE.length - 1 ? "pb-0" : ""}`}>
+									<div className={`pb-basalt-card ${i === TIMELINE.length - 1 ? "pb-0" : ""}`}>
 										<p className="text-basalt-base font-medium text-foreground">{item.title}</p>
 										<p className="text-basalt-sm text-muted-foreground">{item.desc}</p>
-										<p className="text-basalt-xs text-muted-foreground/70 mt-basalt-space-sm">
+										<p className="text-basalt-sm text-muted-foreground/70 mt-basalt-space-sm">
 											{item.time}
 										</p>
 									</div>
@@ -488,11 +502,11 @@ export default function DataPage() {
 						{PEOPLE.slice(0, 4).map((person) => (
 							<div
 								key={person.seed}
-								className="flex items-center gap-basalt-space-lg px-basalt-space-lg py-basalt-space-lg"
+								className="flex items-center gap-basalt-card-sm px-basalt-card py-basalt-card-sm"
 							>
 								<Avatar className="h-9 w-9">
 									<AvatarImage src={`https://avatar.vercel.sh/${person.seed}`} alt={person.name} />
-									<AvatarFallback className="text-basalt-xs">{person.initials}</AvatarFallback>
+									<AvatarFallback className="text-basalt-sm">{person.initials}</AvatarFallback>
 								</Avatar>
 								<div className="flex-1 min-w-0">
 									<p className="text-basalt-base font-medium text-foreground truncate">
@@ -501,7 +515,7 @@ export default function DataPage() {
 									<p className="text-basalt-sm text-muted-foreground truncate">{person.email}</p>
 								</div>
 								<Badge variant="outline" className="gap-basalt-space-md shrink-0">
-									<span className="h-1.5 w-1.5 rounded-basalt-full bg-emerald-500" /> Active
+									<span className="h-1.5 w-1.5 rounded-basalt-full bg-basalt-success" /> Active
 								</Badge>
 							</div>
 						))}

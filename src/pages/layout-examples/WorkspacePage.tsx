@@ -3,6 +3,7 @@ import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-she
 import { Button, LinkButton } from "@nocoo/basalt/components/button";
 import { Input } from "@nocoo/basalt/components/input";
 import { Label } from "@nocoo/basalt/components/label";
+import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 import {
 	Sheet,
@@ -80,57 +81,59 @@ export default function WorkspacePage() {
 				/>
 				<div className="flex min-h-0 min-w-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-space-lg md:pb-basalt-space-lg">
 					<ContentIsland>
-						<div className="mx-auto max-w-2xl space-y-basalt-space-lg">
+						<div className="mx-auto max-w-2xl space-y-basalt-layout-lg">
 							<PageHeader
 								title="Profile and preferences"
 								description="An inset form surface. Resize, tab through fields, then open and dismiss navigation."
 							/>
-							<div
-								role="group"
-								aria-label="Scroll layout"
-								className="flex flex-wrap gap-basalt-space-lg"
-							>
-								{(["responsive", "document", "workspace"] as const).map((mode) => (
-									<Button
-										key={mode}
-										variant="outline"
-										className="min-h-11"
-										aria-pressed={layout === mode}
-										onClick={() => setLayout(mode)}
-									>
-										{mode}
+							<LayerCard className="space-y-basalt-card">
+								<div
+									role="group"
+									aria-label="Scroll layout"
+									className="flex flex-wrap gap-basalt-space-lg"
+								>
+									{(["responsive", "document", "workspace"] as const).map((mode) => (
+										<Button
+											key={mode}
+											variant="outline"
+											className="min-h-11"
+											aria-pressed={layout === mode}
+											onClick={() => setLayout(mode)}
+										>
+											{mode}
+										</Button>
+									))}
+								</div>
+								<form
+									aria-label="Workspace profile"
+									className="space-y-basalt-card"
+									onSubmit={(event) => {
+										event.preventDefault();
+										setSaved(true);
+									}}
+								>
+									{Array.from({ length: 14 }, (_, index) => (
+										<div key={`field-${index}`} className="space-y-basalt-space-lg">
+											<Label htmlFor={`field-${index}`}>
+												{index === 13 ? "Final note" : `Preference ${index + 1}`}
+											</Label>
+											<Input
+												id={`field-${index}`}
+												name={`field-${index}`}
+												className="min-h-11 text-basalt-base"
+												autoComplete="off"
+												required={index === 13}
+											/>
+										</div>
+									))}
+									<Button type="submit" className="min-h-11">
+										Save preferences
 									</Button>
-								))}
-							</div>
-							<form
-								aria-label="Workspace profile"
-								className="space-y-basalt-space-lg"
-								onSubmit={(event) => {
-									event.preventDefault();
-									setSaved(true);
-								}}
-							>
-								{Array.from({ length: 14 }, (_, index) => (
-									<div key={`field-${index}`} className="space-y-basalt-space-lg">
-										<Label htmlFor={`field-${index}`}>
-											{index === 13 ? "Final note" : `Preference ${index + 1}`}
-										</Label>
-										<Input
-											id={`field-${index}`}
-											name={`field-${index}`}
-											className="min-h-11 text-basalt-lg"
-											autoComplete="off"
-											required={index === 13}
-										/>
-									</div>
-								))}
-								<Button type="submit" className="min-h-11">
-									Save preferences
-								</Button>
-								<p role="status">
-									{saved ? "Preferences saved locally." : "Nothing is sent to a server."}
-								</p>
-							</form>
+									<p role="status">
+										{saved ? "Preferences saved locally." : "Nothing is sent to a server."}
+									</p>
+								</form>
+							</LayerCard>
 						</div>
 					</ContentIsland>
 				</div>

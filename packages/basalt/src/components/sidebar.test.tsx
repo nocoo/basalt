@@ -45,7 +45,7 @@ describe("Sidebar", () => {
 		expect(group).toHaveClass(
 			"uppercase",
 			"font-semibold",
-			"text-basalt-xs",
+			"text-basalt-sm",
 			"py-basalt-space-lg",
 			"leading-basalt-row",
 		);

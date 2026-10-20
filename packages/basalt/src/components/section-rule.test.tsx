@@ -10,7 +10,7 @@ describe("SectionRule", () => {
 			</SectionRule>,
 		);
 		const heading = screen.getByRole("heading", { level: 2 });
-		expect(heading).toHaveClass("text-basalt-2xl", "font-basalt-display");
+		expect(heading).toHaveClass("text-basalt-xl", "font-basalt-display");
 		expect(heading).not.toHaveClass("uppercase");
 		expect(heading.closest("section")).toHaveClass("space-y-basalt-layout");
 		expect(container.querySelector(".border-dashed")).toBeNull();
