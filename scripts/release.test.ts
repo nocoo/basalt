@@ -168,8 +168,8 @@ describe("updateWorkspaceLockVersion", () => {
 			);
 			const pkg = join(cwd, "packages/basalt/package.json");
 			writeFileSync(pkg, JSON.stringify({ name: "@nocoo/basalt", version: "2.0.3" }));
-			const install = (flag: string) =>
-				spawnSync("bun", ["install", flag, "--ignore-scripts"], {
+			const install = (...flags: string[]) =>
+				spawnSync("bun", ["install", ...flags, "--ignore-scripts"], {
 					cwd,
 					encoding: "utf-8",
 					timeout: 15_000,
@@ -182,9 +182,7 @@ describe("updateWorkspaceLockVersion", () => {
 				updateWorkspaceLockVersion(readFileSync(lock, "utf-8"), "2.0.3", "2.1.0"),
 			);
 			const synchronized = readFileSync(lock, "utf-8");
-			expect(install("--lockfile-only").status).toBe(0);
-			expect(readFileSync(lock, "utf-8")).toBe(synchronized);
-			expect(install("--frozen-lockfile").status).toBe(0);
+			expect(install("--frozen-lockfile", "--no-save").status).toBe(0);
 			expect(readFileSync(lock, "utf-8")).toBe(synchronized);
 		} finally {
 			rmSync(cwd, { recursive: true, force: true });
@@ -336,13 +334,19 @@ describe("executeRelease gates and failure paths", () => {
 		const stageIndex = commands.findIndex((c) => c.cmd === "git" && c.args[0] === "add");
 		const commitIndex = commands.findIndex((c) => c.cmd === "git" && c.args[0] === "commit");
 		expect(lockIndex).toBeGreaterThan(-1);
-		expect(commands[lockIndex].args).toEqual(["install", "--lockfile-only", "--ignore-scripts"]);
+		expect(commands[lockIndex].args).toEqual([
+			"install",
+			"--frozen-lockfile",
+			"--ignore-scripts",
+			"--no-save",
+		]);
+		expect(commands.filter((c) => c.cmd === "bun" && c.args[0] === "install")).toHaveLength(1);
 		expect(stageIndex).toBeGreaterThan(lockIndex);
 		expect(commands[stageIndex].args).toContain("bun.lock");
 		expect(commitIndex).toBeGreaterThan(stageIndex);
 	});
 
-	it("blocks commit and publication when lockfile synchronization fails", async () => {
+	it("blocks commit and publication when the frozen install fails", async () => {
 		const { ctx, commands, filesWritten } = createMockRunnerContext();
 		const run = ctx.run;
 		ctx.run = async (cmd, args, opts) => {
@@ -353,7 +357,7 @@ describe("executeRelease gates and failure paths", () => {
 			return run(cmd, args, opts);
 		};
 		await expect(executeRelease({ bumpArg: "minor", isDryRun: false }, ctx)).rejects.toThrow(
-			"Failed to synchronize bun.lock: registry unavailable",
+			"Failed to install locked dependencies: registry unavailable",
 		);
 		expect(filesWritten["CHANGELOG.md"]).toBeUndefined();
 		expect(
@@ -454,6 +458,26 @@ describe("executeRelease gates and failure paths", () => {
 		};
 		await expect(executeRelease({ bumpArg: "minor", isDryRun: false }, ctx)).rejects.toThrow(
 			"bun.lock workspace version must be 2.1.0",
+		);
+		expect(
+			commands.some((c) => c.cmd === "git" && ["add", "commit", "push", "tag"].includes(c.args[0])),
+		).toBe(false);
+	});
+
+	it("blocks publication if Bun persists temporary registry URLs despite no-save", async () => {
+		const { ctx, commands, filesWritten } = createMockRunnerContext();
+		const run = ctx.run;
+		ctx.run = async (cmd, args, opts) => {
+			if (cmd === "bun" && args[0] === "install") {
+				filesWritten["bun.lock"] = filesWritten["bun.lock"].replace(
+					'"dep@2.0.3", ""',
+					'"dep@2.0.3", "https://mirror.example/dep.tgz"',
+				);
+			}
+			return run(cmd, args, opts);
+		};
+		await expect(executeRelease({ bumpArg: "patch", isDryRun: false }, ctx)).rejects.toThrow(
+			"Bun changed bun.lock during a version-only release",
 		);
 		expect(
 			commands.some((c) => c.cmd === "git" && ["add", "commit", "push", "tag"].includes(c.args[0])),

@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [3.2.1] - 2026-10-21
+
+### Fixed
+- Unify focus and container boundaries
+- Keep temporary installation mirrors out of version-only release lockfiles.
+
 ## [3.2.0] - 2026-10-20
 
 ### Added

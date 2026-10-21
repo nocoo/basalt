@@ -612,3 +612,14 @@ both browsers. DataTable now owns a non-scrolling focus frame above its isolated
 viewport, without adding padding or affecting layout. Pixel assertions check all
 four strokes before and after scrolling both axes; focusing a cell must remove
 the viewport frame.
+
+## 2026-10-21: A release install persisted temporary mirror URLs
+
+The release script ran lockfile-only and frozen Bun installs under the permitted
+temporary registry. Bun retained package versions and integrities but persisted
+450 machine-specific tarball URLs. The coordinator stopped the release before
+commit or push and restored only those verified URL changes, preserving 3.2.1.
+Version-only releases now update workspace metadata once, install with
+`--frozen-lockfile --no-save`, and reject any subsequent lockfile mutation before
+staging. A negative regression fixture exercises a successful install that still
+rewrites registry URLs; installation success alone is not publication evidence.

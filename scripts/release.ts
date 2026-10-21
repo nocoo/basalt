@@ -480,19 +480,24 @@ export async function executeRelease(
 		ctx.log(`updated ${target}`);
 	}
 
-	ctx.writeLockfile(updateWorkspaceLockVersion(ctx.readLockfile(), currentVersion, newVersion));
-	const lockResult = await ctx.run("bun", ["install", "--lockfile-only", "--ignore-scripts"]);
-	if (lockResult.code !== 0) {
-		throw new Error(`Failed to synchronize bun.lock: ${lockResult.stderr.trim()}`);
-	}
-	updateWorkspaceLockVersion(ctx.readLockfile(), newVersion, newVersion);
-	ctx.log("synchronized bun.lock");
-
-	// Lockfile-only leaves installed renderers stale after dependency updates.
-	const installResult = await ctx.run("bun", ["install", "--frozen-lockfile", "--ignore-scripts"]);
+	const releaseLock = updateWorkspaceLockVersion(ctx.readLockfile(), currentVersion, newVersion);
+	ctx.writeLockfile(releaseLock);
+	// Frozen installs can still persist machine-specific registry URLs unless saving is disabled.
+	const installResult = await ctx.run("bun", [
+		"install",
+		"--frozen-lockfile",
+		"--ignore-scripts",
+		"--no-save",
+	]);
 	if (installResult.code !== 0) {
 		throw new Error(`Failed to install locked dependencies: ${installResult.stderr.trim()}`);
 	}
+	const installedLock = ctx.readLockfile();
+	updateWorkspaceLockVersion(installedLock, newVersion, newVersion);
+	if (installedLock !== releaseLock) {
+		throw new Error("Bun changed bun.lock during a version-only release");
+	}
+	ctx.log("synchronized bun.lock and installed locked dependencies");
 
 	ctx.updateChangelog(changelog);
 
