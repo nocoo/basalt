@@ -48,6 +48,7 @@ describe("HeatmapMatrix", () => {
 
 		const buttons = screen.getAllByRole("button");
 		expect(buttons).toHaveLength(12);
+		expect(buttons[0]).toHaveClass("basalt-focus", "basalt-focus-inset", "basalt-focus-swatch");
 
 		// First cell has tabIndex=0, others -1
 		expect(buttons[0]).toHaveAttribute("tabindex", "0");

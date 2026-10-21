@@ -48,7 +48,7 @@ export function DiffTable({
 				aria-label={`${title} scroll area`}
 				// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow region supports keyboard scrolling.
 				tabIndex={0}
-				className="overflow-x-auto outline-hidden focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-basalt-ring"
+				className="basalt-focus basalt-focus-inset overflow-x-auto"
 			>
 				<Table aria-label={title} aria-busy={vm.status === "applying" || undefined}>
 					<TableHeader>

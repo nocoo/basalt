@@ -90,10 +90,10 @@ export async function assertMobileLayouts(page: Page, url: string) {
 			window.scrollTo(0, 0);
 		});
 		const shortSurface = await page.locator("[data-basalt-island]").boundingBox();
+		const outerInset = width < 768 ? 0 : 12;
 		assert.ok(
-			shortSurface &&
-				Math.abs(shortSurface.y + shortSurface.height - (width < 768 ? 780 : 772)) < 2,
-			"Short content fills the remaining viewport",
+			shortSurface && Math.abs(shortSurface.y + shortSurface.height - (780 - outerInset)) < 2,
+			`Short content fills the remaining viewport: ${JSON.stringify({ width, shortSurface })}`,
 		);
 		if (width < 768) {
 			await page.setViewportSize({ width: 768, height: 780 });

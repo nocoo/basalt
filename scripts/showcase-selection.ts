@@ -79,8 +79,9 @@ export async function assertSelectionHierarchy(page: Page, baseUrl: string) {
 				await other.focus();
 				await other.press("Enter");
 				assert.equal(await selected.textContent(), label);
-				assert.ok(
-					await selected.evaluate((node) => getComputedStyle(node).boxShadow.includes("inset")),
+				assert.equal(
+					await selected.evaluate((node) => getComputedStyle(node).outlineOffset),
+					"-2px",
 				);
 				if (slug === "sidebar") {
 					const labelStyle = await demo

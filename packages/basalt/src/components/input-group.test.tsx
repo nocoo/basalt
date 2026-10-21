@@ -19,6 +19,20 @@ function acceptButtonProps(_props: InputGroupButtonProps) {}
 function acceptSuffixProps(_props: InputGroupSuffixProps) {}
 
 describe("InputGroup", () => {
+	it("owns composite focus and the invalid border without field-level focus overrides", () => {
+		render(
+			<InputGroup>
+				<InputGroup.Input aria-label="Invalid query" aria-invalid="true" />
+				<InputGroup.Button aria-label="Search" />
+			</InputGroup>,
+		);
+		const input = screen.getByRole("textbox", { name: "Invalid query" });
+		expect(input.parentElement).toHaveClass(
+			"basalt-focus-group",
+			"has-[input[aria-invalid=true]]:border-basalt-destructive",
+		);
+		expect(input.className).not.toMatch(/focus-visible:(?:border-transparent|ring-0)/);
+	});
 	it("renders a composed input", () => {
 		render(
 			<InputGroup>

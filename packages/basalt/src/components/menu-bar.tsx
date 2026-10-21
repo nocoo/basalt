@@ -85,7 +85,7 @@ export const MenuBarTrigger = React.forwardRef<
 		ref={ref}
 		className={cn(
 			BASALT_UI_CLASS,
-			"inline-flex min-h-basalt-control items-center rounded-basalt-sm px-basalt-space-lg text-basalt-base font-medium outline-hidden hover:bg-basalt-hover data-[state=open]:bg-basalt-selected",
+			"basalt-focus basalt-focus-inset inline-flex min-h-basalt-control items-center rounded-basalt-sm px-basalt-space-lg text-basalt-base font-medium hover:bg-basalt-hover data-[state=open]:bg-basalt-selected",
 			className,
 		)}
 		{...props}
@@ -252,7 +252,7 @@ export const MenuBarItem = React.forwardRef<
 	<MenubarPrimitive.Item
 		data-basalt-hover-item=""
 		ref={ref}
-		className={overlayItemClass(cn("relative outline-hidden", className))}
+		className={overlayItemClass(cn("relative", className))}
 		{...props}
 	/>
 ));

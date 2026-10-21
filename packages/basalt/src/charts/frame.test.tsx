@@ -38,6 +38,7 @@ describe("ChartFrame behavior", () => {
 		expect(svg).toHaveAttribute("role", "application");
 		expect(svg).toHaveAttribute("tabindex", "0");
 		expect(svg).toHaveAttribute("aria-label", "Default accessible bar");
+		expect(svg?.closest(".basalt-chart")?.className).not.toContain("outline-2");
 	});
 
 	it("disables interactive role on child svg when parent accessibilityLayer={false}", () => {

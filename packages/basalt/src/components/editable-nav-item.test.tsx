@@ -26,6 +26,9 @@ describe("editable navigation", () => {
 		expect(link).toHaveAttribute("href", "#library");
 		expect(link).toHaveAccessibleDescription("0");
 		expect(link).toHaveAttribute("aria-current", "page");
+		expect(link).toHaveClass("basalt-focus", "basalt-focus-inset");
+		expect(link.parentElement).toHaveClass("basalt-nav-actions", "gap-basalt-space-xs");
+		expect(link.parentElement).not.toHaveClass("gap-basalt-nav-gap");
 		fireEvent.click(screen.getByRole("button", { name: "Pin" }));
 		expect(action).toHaveBeenCalledOnce();
 		expect(select).not.toHaveBeenCalled();

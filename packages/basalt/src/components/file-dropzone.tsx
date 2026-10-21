@@ -154,7 +154,7 @@ export function FileDropzone({
 					receive(Array.from(event.dataTransfer.files));
 				}}
 				className={cn(
-					"flex w-full min-w-0 flex-col items-center gap-basalt-space-lg rounded-basalt-lg border-2 border-dashed px-basalt-card py-basalt-card text-center transition-colors basalt-motion focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-ring disabled:cursor-not-allowed disabled:opacity-50",
+					"basalt-focus flex w-full min-w-0 flex-col items-center gap-basalt-space-lg rounded-basalt-lg border-2 border-dashed px-basalt-card py-basalt-card text-center transition-colors basalt-motion disabled:cursor-not-allowed disabled:opacity-50",
 					dragging && !disabled
 						? "border-basalt-primary bg-basalt-selected"
 						: "border-basalt-border bg-basalt-control hover:bg-basalt-hover",

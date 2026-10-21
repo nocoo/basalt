@@ -130,6 +130,7 @@ export const ToolbarButton = React.forwardRef<HTMLButtonElement, ToolbarButtonPr
 				icon={icon}
 				className={cn(
 					toolbarControlClass,
+					FOCUS_INSET,
 					"h-auto min-h-basalt-control shrink-0",
 					resolvedSize === "icon" && "w-basalt-control",
 					className,

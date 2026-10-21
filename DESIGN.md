@@ -64,10 +64,12 @@ Wrapping and enlarged text may grow the header; do not impose a fixed height.
 
 Layout grids default to medium (16px). ContentIsland owns 16px insets on mobile,
 24px on tablets and 24px vertical / 32px horizontal from 1024px. The catalog shell
-keeps 8px outside the island on mobile and 12px from 768px. Ordinary application
-sections use 24px gaps, including catalog documentation. SectionRule
-uses 12px content separation for compact labels and 16px for reading headings. `Grid gap="sm|md|lg|xl"`
-and semantic utilities such as `gap-basalt-layout-xl` select these tiers.
+keeps 8px outside the island on mobile and 12px from 768px; AppHeader uses the
+same 8px / 12px horizontal inset to align with that outer island boundary, not its
+inner content edge. Ordinary application sections use 24px gaps, including catalog
+documentation. SectionRule uses 12px content separation for compact labels and
+16px for reading headings. `Grid gap="sm|md|lg|xl"` and semantic utilities such as
+`gap-basalt-layout-xl` select these tiers.
 There is no universal height for either category.
 
 Dialog and AlertDialog panels use 16px outer insets on mobile and 24px from
@@ -100,8 +102,9 @@ TagBadge uses 6px horizontal padding at `sm` and 8px at `md`.
 All nonzero padding, margin and gaps use the appropriate category scale or aliases.
 Zero, auto margins and hairline seams are structural exceptions, not new density
 levels. Negative margins may cancel an owned boundary, not invent a new gap.
-Use `p-basalt-card`, `gap-basalt-layout`, `gap-basalt-space-sm`, etc. Default nav
-insets and field gaps remain 8px. Selectable rows use 8px horizontal / 6px vertical
+Container spacing uses 4px multiples (4/8/12/16/24/32px); 2px and 6px
+control-internal spacing remains unchanged. Use `p-basalt-card`, `gap-basalt-layout`,
+`gap-basalt-space-sm`, etc. Default nav insets and field gaps remain 8px. Selectable rows use 8px horizontal / 6px vertical
 insets and an 8px icon gap. Sidebar destinations alone use 8px vertical padding;
 menus, editable navigation and chat rows retain their compact role. One component
 owns each boundary: nested sections must not accidentally double the same inset.
@@ -158,7 +161,9 @@ The shared classes calculate natural size as follows:
 - Action rows: 22px text line (`--basalt-line-row`) + 6px vertical padding each
   side = 34px. Body prose/code retain the 20px line box. Compound inputs own one
   outer border; inset children do not add another. Segmented tracks keep 14px text
-  on a 20px line box: 30px items + 2px track inset per side = 34px.
+  on a 20px line box: 30px items + 2px track inset per side = 34px. A horizontally
+  scrolling SegmentControl viewport adds 4px clearance on all four edges and uses
+  matching scroll-padding; this does not enlarge the ToggleGroup track.
 - Sidebar destination and disclosure rows use the same 22px line box with 8px
   vertical padding, yielding 38px reference rows without changing shared controls.
 - Cards, dialogs and layout containers have no mandatory height. Textareas and
@@ -235,8 +240,14 @@ interaction contracts; do not change their containment as a global workaround.
   expose that state instead of switching to a gray secondary variant alone.
   Checkbox/radio/switch glyphs, primary/destructive actions and semantic diff
   colors keep their semantic fills. Color swatches retain their actual palette.
-- Keyboard focus is separate from selection. Navigation uses an inset focus ring
-  so overflow and collapsed groups cannot clip it. Disabled controls retain
+- Keyboard focus is separate from selection. Ordinary focus uses a 1px theme
+  `--basalt-ring` stroke with a 2px outer offset; flush structural targets use the
+  same stroke inset with a 2px negative offset (`basalt-focus-inset`). External
+  focus targets need 4px clearance inside their nearest clipping container;
+  existing padding of at least 4px counts and is not stacked. Forced-colors mode
+  may use a 2px system outline. Focus causes no layout shift, and error indicators
+  remain independent. Navigation uses inset focus so overflow and collapsed groups
+  cannot clip it. Disabled controls retain
   subdued opacity and cannot become moving-hover targets; selection never lowers
   opacity or mutes its primary label.
 - SidebarPartition is a major section label (12px / `text-basalt-sm`, semibold,

@@ -21,6 +21,7 @@ describe("DataTable", () => {
 	it("renders cells", () => {
 		render(<DataTable data={rows} columns={columns} />);
 		expect(screen.getByText("Zed")).toBeInTheDocument();
+		expect(screen.getByRole("region")).toHaveClass("basalt-focus", "basalt-focus-inset");
 	});
 
 	it("sorts positive infinity after finite numbers", () => {

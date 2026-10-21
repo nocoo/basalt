@@ -54,7 +54,7 @@ describe("Input", () => {
 		const input = screen.getByRole("textbox", { name: "Name" });
 		expect(input.className).toContain("aria-invalid:border-basalt-destructive");
 		expect(input.className).toContain("aria-invalid:focus-visible:border-basalt-destructive");
-		expect(input.className).toContain("focus-visible:border-basalt-ring");
+		expect(input).toHaveClass("basalt-focus");
 	});
 
 	it("adds password-manager markers only when requested and does not let callers override them", () => {

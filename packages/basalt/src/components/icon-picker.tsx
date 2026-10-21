@@ -5,7 +5,7 @@ import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Button } from "./button";
 import { Input } from "./input";
-import { FOCUS_INSET } from "./overlay";
+import { FOCUS_RING } from "./overlay";
 import { Popover, PopoverContent, PopoverTrigger } from "./popover";
 
 export interface IconPickerOption {
@@ -117,7 +117,7 @@ export function IconPicker({
 					type="single"
 					aria-label={label}
 					value={selected}
-					className="grid max-h-basalt-64 grid-cols-2 gap-basalt-space-lg overflow-y-auto"
+					className="grid max-h-basalt-64 grid-cols-2 gap-basalt-space-lg overflow-y-auto p-basalt-space-sm"
 					onValueChange={(next) => {
 						if (!next) return;
 						if (value === undefined) setLocalValue(next);
@@ -137,8 +137,7 @@ export function IconPicker({
 								// Accent choice grid: selection is the documented primary fill and its
 								// contrast-corrected foreground, never a control fill plus a frame.
 								"group relative flex min-w-0 flex-col items-center justify-center gap-basalt-space-lg rounded-basalt-md p-basalt-layout-sm text-basalt-foreground data-[state=on]:bg-basalt-primary data-[state=on]:text-basalt-primary-foreground disabled:cursor-not-allowed disabled:opacity-40",
-								FOCUS_INSET,
-								"data-[state=on]:focus-visible:ring-basalt-primary-foreground",
+								FOCUS_RING,
 							)}
 						>
 							<span

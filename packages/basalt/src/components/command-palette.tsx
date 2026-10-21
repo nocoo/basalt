@@ -126,7 +126,7 @@ export const CommandInput = React.forwardRef<
 	CommandInputProps
 >(({ className, ...props }, ref) => (
 	<div
-		className="flex shrink-0 items-center border-b border-basalt-border px-basalt-space-lg"
+		className="basalt-focus-group basalt-focus-inset flex shrink-0 items-center border-b border-basalt-border px-basalt-space-lg"
 		cmdk-input-wrapper=""
 	>
 		<Search
@@ -136,7 +136,7 @@ export const CommandInput = React.forwardRef<
 		<CommandPrimitive.Input
 			ref={ref}
 			className={cn(
-				"basalt-action flex min-w-0 w-full rounded-basalt-md bg-transparent outline-hidden ring-0 shadow-none placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
+				"basalt-action flex min-w-0 w-full rounded-basalt-md bg-transparent ring-0 shadow-none placeholder:text-basalt-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
 				className,
 			)}
 			{...props}

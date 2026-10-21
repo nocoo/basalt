@@ -38,13 +38,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"scroll-area": {
 		"file": "packages/basalt/src/components/scroll-area.tsx",
-		"hash": "d16a96dc8e176894",
+		"hash": "8828354c00fa97c3",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/scroll-area.js.map (sourcesContent[0])"
 	},
 	"link": {
 		"file": "packages/basalt/src/components/link.tsx",
-		"hash": "f20bf4d5d18babdd",
+		"hash": "4ce7c21c995930c3",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/link.js.map (sourcesContent[0])"
 	},
@@ -62,7 +62,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"layer-card": {
 		"file": "packages/basalt/src/components/layer-card.tsx",
-		"hash": "1bf2247a0bc14c0d",
+		"hash": "cbfda1b62564e31d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/layer-card.js.map (sourcesContent[0])"
 	},
@@ -98,13 +98,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"input-group": {
 		"file": "packages/basalt/src/components/input-group.tsx",
-		"hash": "b11a9342965533fa",
+		"hash": "1c7e90fa57dd31ea",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/input-group.js.map (sourcesContent[0])"
 	},
 	"sensitive-input": {
 		"file": "packages/basalt/src/components/sensitive-input.tsx",
-		"hash": "e6e1c5c42cc5aaaa",
+		"hash": "a6e53592cbf725ea",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sensitive-input.js.map (sourcesContent[0])"
 	},
@@ -128,7 +128,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"select": {
 		"file": "packages/basalt/src/components/select.tsx",
-		"hash": "8812868afd3e2df3",
+		"hash": "41cc904ea52c6841",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/select.js.map (sourcesContent[0])"
 	},
@@ -170,7 +170,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"segment-control": {
 		"file": "packages/basalt/src/components/segment-control.tsx",
-		"hash": "02bcd0f8545ff747",
+		"hash": "302d260043dc04ef",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/segment-control.js.map (sourcesContent[0])"
 	},
@@ -218,7 +218,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"toast": {
 		"file": "packages/basalt/src/components/toast.tsx",
-		"hash": "a2fb8265457a7bc8",
+		"hash": "27b46a11d9761e78",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/toast.js.map (sourcesContent[0])"
 	},
@@ -230,13 +230,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"code": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "aa4a1904fb0ca8a4",
+		"hash": "9cdeb3b2d08208bb",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
 	"code-block": {
 		"file": "packages/basalt/src/components/code.tsx",
-		"hash": "aa4a1904fb0ca8a4",
+		"hash": "9cdeb3b2d08208bb",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/code.js.map (sourcesContent[0])"
 	},
@@ -278,13 +278,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"dropdown-menu": {
 		"file": "packages/basalt/src/components/dropdown-menu.tsx",
-		"hash": "8ec167a443486cf4",
+		"hash": "d93c66c419833a66",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/dropdown-menu.js.map (sourcesContent[0])"
 	},
 	"context-menu": {
 		"file": "packages/basalt/src/components/context-menu.tsx",
-		"hash": "8cfdb28b739bfdf6",
+		"hash": "e879e388ca6f66b3",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/context-menu.js.map (sourcesContent[0])"
 	},
@@ -302,25 +302,25 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"command-palette": {
 		"file": "packages/basalt/src/components/command-palette.tsx",
-		"hash": "58825386383a69dd",
+		"hash": "652c17edbfd57212",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/command-palette.js.map (sourcesContent[0])"
 	},
 	"tabs": {
 		"file": "packages/basalt/src/components/tabs.tsx",
-		"hash": "1ba2da32e4c8dce4",
+		"hash": "8397fb687139e0ed",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tabs.js.map (sourcesContent[0])"
 	},
 	"table": {
 		"file": "packages/basalt/src/components/table.tsx",
-		"hash": "f7fecd8b70b948ff",
+		"hash": "f9052526f1b9ca6d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/table.js.map (sourcesContent[0])"
 	},
 	"data-table": {
 		"file": "packages/basalt/src/components/data-table.tsx",
-		"hash": "cf4d04c79f9bcff5",
+		"hash": "a91bd7c62e63fb59",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/data-table.js.map (sourcesContent[0])"
 	},
@@ -350,13 +350,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"menu-bar": {
 		"file": "packages/basalt/src/components/menu-bar.tsx",
-		"hash": "59f2895a2c98cc56",
+		"hash": "c4937ccb38cafaa3",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/menu-bar.js.map (sourcesContent[0])"
 	},
 	"toolbar": {
 		"file": "packages/basalt/src/components/toolbar.tsx",
-		"hash": "e325650ac86086c8",
+		"hash": "62a687042f479109",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/toolbar.js.map (sourcesContent[0])"
 	},
@@ -380,7 +380,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"sidebar": {
 		"file": "packages/basalt/src/components/sidebar.tsx",
-		"hash": "1c23e92bcd05c517",
+		"hash": "2da3a93b55792b9d",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/sidebar.js.map (sourcesContent[0])"
 	},
@@ -422,7 +422,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"chat-composer": {
 		"file": "packages/basalt/src/components/chat-composer.tsx",
-		"hash": "ba4399aa7bcfc903",
+		"hash": "45c7f7ef5043009c",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-composer.js.map (sourcesContent[0])"
 	},
@@ -452,19 +452,19 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"multi-select": {
 		"file": "packages/basalt/src/components/multi-select.tsx",
-		"hash": "33030bf0eb604802",
+		"hash": "9e153f5c810be9af",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/multi-select.js.map (sourcesContent[0])"
 	},
 	"filter-bar": {
 		"file": "packages/basalt/src/components/filter-bar.tsx",
-		"hash": "bdaf59bd52459e45",
+		"hash": "6d10240666b897c6",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/filter-bar.js.map (sourcesContent[0])"
 	},
 	"file-dropzone": {
 		"file": "packages/basalt/src/components/file-dropzone.tsx",
-		"hash": "d9c7d0721f282637",
+		"hash": "53f6ebabafc9e0a3",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/file-dropzone.js.map (sourcesContent[0])"
 	},
@@ -476,19 +476,19 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"inline-editable": {
 		"file": "packages/basalt/src/components/inline-editable.tsx",
-		"hash": "6378e4b409124aa1",
+		"hash": "92a62175d959eeb0",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/inline-editable.js.map (sourcesContent[0])"
 	},
 	"editable-nav-item": {
 		"file": "packages/basalt/src/components/editable-nav-item.tsx",
-		"hash": "b8d497299adb1f75",
+		"hash": "8ac1827630139caa",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/editable-nav-item.js.map (sourcesContent[0])"
 	},
 	"icon-picker": {
 		"file": "packages/basalt/src/components/icon-picker.tsx",
-		"hash": "640e8b2008dc773b",
+		"hash": "84f024be6a22b8b7",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/icon-picker.js.map (sourcesContent[0])"
 	},
@@ -500,13 +500,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"tag-color-picker": {
 		"file": "packages/basalt/src/components/tag-color-picker.tsx",
-		"hash": "6d4dc2589183616d",
+		"hash": "55e282a3a6d9186a",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/tag-color-picker.js.map (sourcesContent[0])"
 	},
 	"responsive-master-detail": {
 		"file": "packages/basalt/src/components/responsive-master-detail.tsx",
-		"hash": "242aaa4a6ed56c62",
+		"hash": "5bebfe5df3c9e1f6",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/responsive-master-detail.js.map (sourcesContent[0])"
 	},
@@ -536,13 +536,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"context-cards": {
 		"file": "packages/basalt/src/components/context-cards.tsx",
-		"hash": "d8f0522fe885b920",
+		"hash": "aa8a4ab88305988e",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/context-cards.js.map (sourcesContent[0])"
 	},
 	"diff-table": {
 		"file": "packages/basalt/src/components/diff-table.tsx",
-		"hash": "3443dce43d645f34",
+		"hash": "02643e8850da4629",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/diff-table.js.map (sourcesContent[0])"
 	},
@@ -554,7 +554,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"chat-message": {
 		"file": "packages/basalt/src/components/chat-message.tsx",
-		"hash": "be9f026b3164095d",
+		"hash": "f785021e462fd0f0",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/components/chat-message.js.map (sourcesContent[0])"
 	},
@@ -644,13 +644,13 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"heatmap-calendar": {
 		"file": "packages/basalt/src/charts/heatmap-calendar.tsx",
-		"hash": "a1d7c8d517e24b91",
+		"hash": "ad0187e00e4bbc51",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/heatmap-calendar.js.map (sourcesContent[0])"
 	},
 	"heatmap-matrix": {
 		"file": "packages/basalt/src/charts/heatmap-matrix.tsx",
-		"hash": "2b5d296db49226a5",
+		"hash": "2c26493bb58f6155",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/heatmap-matrix.js.map (sourcesContent[0])"
 	},

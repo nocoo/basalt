@@ -92,7 +92,7 @@ export function FilterChip({
 				disabled={disabled}
 				aria-label={removeLabel ?? `Remove ${label}`}
 				onClick={onRemove}
-				className="shrink-0 rounded-basalt-full p-basalt-space-sm focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
+				className="basalt-focus basalt-focus-inset shrink-0 rounded-basalt-full p-basalt-space-sm disabled:opacity-50"
 			>
 				<X className="size-basalt-icon-sm" aria-hidden="true" />
 			</button>

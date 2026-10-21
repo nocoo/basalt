@@ -53,7 +53,9 @@ describe("Button", () => {
 
 	it("keeps keyboard focus visible on the primary fill", () => {
 		render(<Button>Save</Button>);
-		expect(screen.getByRole("button", { name: "Save" }).className).toContain("ring-offset-2");
+		const button = screen.getByRole("button", { name: "Save" });
+		expect(button).toHaveClass("basalt-focus");
+		expect(button).not.toHaveClass("basalt-focus-inset");
 	});
 
 	it("renders a secondary variant", () => {

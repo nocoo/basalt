@@ -547,7 +547,7 @@ function AppearanceSection({ vm }: { vm: SettingsVM }) {
 						).map((theme) => (
 							<label
 								key={theme.key}
-								className={`relative cursor-pointer focus-within:ring-2 focus-within:ring-primary flex flex-col items-center gap-basalt-card-sm rounded-basalt-md border p-basalt-card-sm transition-colors basalt-motion ${
+								className={`basalt-focus-group relative cursor-pointer flex flex-col items-center gap-basalt-card-sm rounded-basalt-md border p-basalt-card-sm transition-colors basalt-motion ${
 									theme.key === activeTheme
 										? "border-basalt-primary bg-basalt-selected"
 										: "border-border hover:border-primary/50 hover:bg-basalt-hover"

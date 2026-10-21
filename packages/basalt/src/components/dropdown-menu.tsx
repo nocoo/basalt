@@ -337,10 +337,7 @@ export const DropdownMenuItem = React.forwardRef<
 		data-basalt-hover-item=""
 		ref={ref}
 		className={overlayItemClass(
-			cn(
-				"relative outline-hidden data-disabled:pointer-events-none data-disabled:opacity-50",
-				className,
-			),
+			cn("relative data-disabled:pointer-events-none data-disabled:opacity-50", className),
 		)}
 		{...props}
 	/>

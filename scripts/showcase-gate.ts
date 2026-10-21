@@ -20,6 +20,7 @@ import { assertDiffReview } from "./showcase-diff";
 import { assertDimensionTokens } from "./showcase-dimensions";
 import { assertEditingShowcases } from "./showcase-editing";
 import { assertExamplePages } from "./showcase-examples";
+import { assertFocusBoundaries } from "./showcase-focus";
 import { assertFormGroupSpacing } from "./showcase-form-groups";
 import { assertHoverAndDensity } from "./showcase-hover";
 import { assertLandingShowcase } from "./showcase-landing";
@@ -73,6 +74,7 @@ export async function runShowcaseGate() {
 			const selection = await assertSelectionHierarchy(page, url);
 			const dimensions = await assertDimensionTokens(page, url);
 			const pageLayout = await assertPageLayout(page, url);
+			const focus = await assertFocusBoundaries(page, url);
 			const metrics = await assertMetricCards(page, url);
 			const records = await assertRecordGeometry(page, url);
 			const recommendation = await assertRecommendation(page, url);
@@ -99,6 +101,7 @@ export async function runShowcaseGate() {
 				selection,
 				dimensions,
 				pageLayout,
+				focus,
 				metrics,
 				records,
 				recommendation,

@@ -32,7 +32,12 @@ describe("ScrollArea", () => {
 		expect(viewport).toHaveAttribute("data-slot", "scroll-area-viewport");
 		expect(viewport).toHaveAttribute("data-orientation", "vertical");
 		expect(viewport).toHaveAttribute("tabindex", "0");
-		expect(viewport).toHaveClass("overflow-x-hidden!", "px-basalt-space-lg");
+		expect(viewport).toHaveClass(
+			"basalt-focus",
+			"basalt-focus-inset",
+			"overflow-x-hidden!",
+			"px-basalt-space-lg",
+		);
 		expect(ref.current).toBe(viewport);
 
 		fireEvent.scroll(viewport);

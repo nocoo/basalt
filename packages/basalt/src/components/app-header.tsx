@@ -30,7 +30,7 @@ export function AppHeader({
 			data-density={density}
 			className={cn(
 				BASALT_UI_CLASS,
-				"flex shrink-0 items-center justify-between gap-basalt-space-lg px-basalt-space-lg md:px-basalt-space-lg",
+				"flex shrink-0 items-center justify-between gap-basalt-space-lg px-basalt-space-lg md:px-basalt-layout-sm",
 				density === "compact" ? "h-[3.25rem]" : "h-basalt-14",
 				className,
 			)}

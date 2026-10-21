@@ -121,7 +121,7 @@ export default function PalettePage() {
 									aria-pressed={color.id === accent}
 									data-accent-choice={color.id}
 									onClick={() => setAccent(color.id)}
-									className={`group min-w-0 rounded-basalt-lg border p-basalt-card-sm text-left transition-colors basalt-motion focus-visible:outline-2 focus-visible:outline-primary ${color.id === accent ? "border-basalt-primary bg-basalt-selected" : "border-border hover:border-primary/50"}`}
+									className={`basalt-focus group min-w-0 rounded-basalt-lg border p-basalt-card-sm text-left transition-colors basalt-motion ${color.id === accent ? "border-basalt-primary bg-basalt-selected" : "border-border hover:border-primary/50"}`}
 								>
 									<span
 										data-accent-swatch={color.id}

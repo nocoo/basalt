@@ -524,203 +524,205 @@ export function DataTable<T>({
 
 	return (
 		<div className="flex min-w-0 flex-col gap-basalt-space-lg">
-			<div
-				role="region"
-				aria-label={`${ariaLabel} scroll area`}
-				// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
-				tabIndex={0}
-				className="relative min-w-0 overflow-auto rounded-basalt-md focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-basalt-primary"
-				style={{ maxHeight }}
-			>
-				<Table
-					className={cn("w-full", className)}
-					aria-label={ariaLabel}
-					aria-describedby={ariaDescribedBy}
-					aria-busy={loading || undefined}
-					data-basalt-data-table=""
+			<div className="basalt-focus-frame relative isolate min-w-0 rounded-basalt-md">
+				<div
+					role="region"
+					aria-label={`${ariaLabel} scroll area`}
+					// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
+					tabIndex={0}
+					className="basalt-focus basalt-focus-inset relative isolate min-w-0 overflow-auto rounded-[inherit]"
+					style={{ maxHeight }}
 				>
-					<TableHeader>
-						<TableRow>
-							{rowNumbers && (
-								<TableHead
-									scope="col"
-									textAlign="end"
-									className={cn(
-										"sticky top-0 z-10 w-basalt-10 min-w-basalt-10 bg-basalt-control",
-										attachedEdge(edge, 0, colCount),
-									)}
-								>
-									<span aria-hidden="true">#</span>
-									<span className="sr-only">Row number</span>
-								</TableHead>
-							)}
-							{selectable ? (
-								<TableHead
-									scope="col"
-									className={cn(
-										"sticky top-0 z-10 w-basalt-10 min-w-basalt-10 bg-basalt-control text-center",
-										attachedEdge(edge, rowNumbers ? 1 : 0, colCount),
-									)}
-								>
-									<span className="sr-only">Select</span>
-								</TableHead>
-							) : null}
-							{columns.map((column, columnIndex) => (
-								<TableHead
-									key={column.id}
-									textAlign={column.textAlign}
-									className={cn(
-										"sticky top-0 z-10 bg-basalt-control",
-										attachedEdge(
-											edge,
-											(rowNumbers ? 1 : 0) + (selectable ? 1 : 0) + columnIndex,
-											colCount,
-										),
-										column.headerClassName,
-									)}
-									style={{ width: column.width, minWidth: column.width }}
-									scope="col"
-									aria-sort={
-										column.sortable === false
-											? undefined
-											: sort?.id === column.id
-												? sort.dir === "asc"
-													? "ascending"
-													: "descending"
-												: "none"
-									}
-								>
-									{column.sortable === false ? (
-										<span
-											className={cn(
-												"flex items-center gap-basalt-control-gap",
-												column.textAlign === "end" && "w-full justify-end text-end",
-											)}
-										>
-											{column.headerContent ?? column.header}
-										</span>
-									) : (
-										<TableSortableHeader
-											textAlign={column.textAlign}
-											sorted={sort?.id === column.id ? sort.dir : undefined}
-											aria-label={column.header}
-											onClick={() =>
-												requestSort(
-													sort?.id === column.id && sort.dir === "asc"
-														? { id: column.id, dir: "desc" }
-														: { id: column.id, dir: "asc" },
-												)
-											}
-										>
-											{column.headerContent ?? column.header}
-										</TableSortableHeader>
-									)}
-								</TableHead>
-							))}
-						</TableRow>
-					</TableHeader>
-					<TableBody>
-						{loading ? (
+					<Table
+						className={cn("w-full", className)}
+						aria-label={ariaLabel}
+						aria-describedby={ariaDescribedBy}
+						aria-busy={loading || undefined}
+						data-basalt-data-table=""
+					>
+						<TableHeader>
 							<TableRow>
-								<TableCell colSpan={colCount} className={attachedEdge(edge, 0, 1)}>
-									<div
-										role="status"
-										className="flex flex-col gap-basalt-space-lg py-basalt-space-lg"
-									>
-										<span className="sr-only">Loading</span>
-										<SkeletonLine />
-										<SkeletonLine />
-										<SkeletonLine />
-									</div>
-								</TableCell>
-							</TableRow>
-						) : error != null && error !== false ? (
-							<TableRow>
-								<TableCell colSpan={colCount} className={attachedEdge(edge, 0, 1)}>
-									<div
-										role="alert"
-										className="flex flex-wrap items-center justify-between gap-basalt-space-lg py-basalt-space-lg"
-									>
-										<div>{error}</div>
-										{onRetry ? (
-											<Button variant="outline" size="sm" onClick={onRetry}>
-												{retryLabel}
-											</Button>
-										) : null}
-									</div>
-								</TableCell>
-							</TableRow>
-						) : paged.length === 0 ? (
-							<TableRow>
-								<TableCell colSpan={colCount} className={attachedEdge(edge, 0, 1)}>
-									<div role="status">{empty}</div>
-								</TableCell>
-							</TableRow>
-						) : (
-							paged.map(({ row, key, selectId }, rowIndex) => {
-								const isSelected = selectedIds.includes(selectId);
-								return (
-									<TableRow
-										key={key}
-										variant={isSelected ? "selected" : "default"}
-										aria-selected={selectable ? isSelected : undefined}
-									>
-										{rowNumbers && (
-											<TableCell
-												data-row-number=""
-												textAlign="end"
-												className={cn(
-													"text-basalt-sm text-basalt-muted-foreground",
-													attachedEdge(edge, 0, colCount),
-												)}
-											>
-												{(pageSize && pageSize > 0 ? (resolvedPage - 1) * pageSize : 0) +
-													rowIndex +
-													1}
-											</TableCell>
+								{rowNumbers && (
+									<TableHead
+										scope="col"
+										textAlign="end"
+										className={cn(
+											"sticky top-0 z-10 w-basalt-10 min-w-basalt-10 bg-basalt-control",
+											attachedEdge(edge, 0, colCount),
 										)}
-										{selectable ? (
-											<TableCell
+									>
+										<span aria-hidden="true">#</span>
+										<span className="sr-only">Row number</span>
+									</TableHead>
+								)}
+								{selectable ? (
+									<TableHead
+										scope="col"
+										className={cn(
+											"sticky top-0 z-10 w-basalt-10 min-w-basalt-10 bg-basalt-control text-center",
+											attachedEdge(edge, rowNumbers ? 1 : 0, colCount),
+										)}
+									>
+										<span className="sr-only">Select</span>
+									</TableHead>
+								) : null}
+								{columns.map((column, columnIndex) => (
+									<TableHead
+										key={column.id}
+										textAlign={column.textAlign}
+										className={cn(
+											"sticky top-0 z-10 bg-basalt-control",
+											attachedEdge(
+												edge,
+												(rowNumbers ? 1 : 0) + (selectable ? 1 : 0) + columnIndex,
+												colCount,
+											),
+											column.headerClassName,
+										)}
+										style={{ width: column.width, minWidth: column.width }}
+										scope="col"
+										aria-sort={
+											column.sortable === false
+												? undefined
+												: sort?.id === column.id
+													? sort.dir === "asc"
+														? "ascending"
+														: "descending"
+													: "none"
+										}
+									>
+										{column.sortable === false ? (
+											<span
 												className={cn(
-													"text-center",
-													attachedEdge(edge, rowNumbers ? 1 : 0, colCount),
+													"flex items-center gap-basalt-control-gap",
+													column.textAlign === "end" && "w-full justify-end text-end",
 												)}
 											>
-												<Checkbox
-													checked={isSelected}
-													aria-label={`Select ${selectId}`}
-													onCheckedChange={() => toggleSelected(selectId)}
-													className="align-middle"
-												/>
-											</TableCell>
-										) : null}
-										{columns.map((column, columnIndex) => {
-											const cell = column.accessor(row);
-											return (
+												{column.headerContent ?? column.header}
+											</span>
+										) : (
+											<TableSortableHeader
+												textAlign={column.textAlign}
+												sorted={sort?.id === column.id ? sort.dir : undefined}
+												aria-label={column.header}
+												onClick={() =>
+													requestSort(
+														sort?.id === column.id && sort.dir === "asc"
+															? { id: column.id, dir: "desc" }
+															: { id: column.id, dir: "asc" },
+													)
+												}
+											>
+												{column.headerContent ?? column.header}
+											</TableSortableHeader>
+										)}
+									</TableHead>
+								))}
+							</TableRow>
+						</TableHeader>
+						<TableBody>
+							{loading ? (
+								<TableRow>
+									<TableCell colSpan={colCount} className={attachedEdge(edge, 0, 1)}>
+										<div
+											role="status"
+											className="flex flex-col gap-basalt-space-lg py-basalt-space-lg"
+										>
+											<span className="sr-only">Loading</span>
+											<SkeletonLine />
+											<SkeletonLine />
+											<SkeletonLine />
+										</div>
+									</TableCell>
+								</TableRow>
+							) : error != null && error !== false ? (
+								<TableRow>
+									<TableCell colSpan={colCount} className={attachedEdge(edge, 0, 1)}>
+										<div
+											role="alert"
+											className="flex flex-wrap items-center justify-between gap-basalt-space-lg py-basalt-space-lg"
+										>
+											<div>{error}</div>
+											{onRetry ? (
+												<Button variant="outline" size="sm" onClick={onRetry}>
+													{retryLabel}
+												</Button>
+											) : null}
+										</div>
+									</TableCell>
+								</TableRow>
+							) : paged.length === 0 ? (
+								<TableRow>
+									<TableCell colSpan={colCount} className={attachedEdge(edge, 0, 1)}>
+										<div role="status">{empty}</div>
+									</TableCell>
+								</TableRow>
+							) : (
+								paged.map(({ row, key, selectId }, rowIndex) => {
+									const isSelected = selectedIds.includes(selectId);
+									return (
+										<TableRow
+											key={key}
+											variant={isSelected ? "selected" : "default"}
+											aria-selected={selectable ? isSelected : undefined}
+										>
+											{rowNumbers && (
 												<TableCell
-													key={column.id}
-													textAlign={column.textAlign}
+													data-row-number=""
+													textAlign="end"
 													className={cn(
-														column.wrap ? "whitespace-normal break-words" : "whitespace-nowrap",
-														attachedEdge(
-															edge,
-															(rowNumbers ? 1 : 0) + (selectable ? 1 : 0) + columnIndex,
-															colCount,
-														),
-														column.cellClassName,
+														"text-basalt-sm text-basalt-muted-foreground",
+														attachedEdge(edge, 0, colCount),
 													)}
-													style={{ minWidth: column.width }}
 												>
-													{typeof cell === "bigint" ? String(cell) : cell}
+													{(pageSize && pageSize > 0 ? (resolvedPage - 1) * pageSize : 0) +
+														rowIndex +
+														1}
 												</TableCell>
-											);
-										})}
-									</TableRow>
-								);
-							})
-						)}
-					</TableBody>
-				</Table>
+											)}
+											{selectable ? (
+												<TableCell
+													className={cn(
+														"text-center",
+														attachedEdge(edge, rowNumbers ? 1 : 0, colCount),
+													)}
+												>
+													<Checkbox
+														checked={isSelected}
+														aria-label={`Select ${selectId}`}
+														onCheckedChange={() => toggleSelected(selectId)}
+														className="align-middle"
+													/>
+												</TableCell>
+											) : null}
+											{columns.map((column, columnIndex) => {
+												const cell = column.accessor(row);
+												return (
+													<TableCell
+														key={column.id}
+														textAlign={column.textAlign}
+														className={cn(
+															column.wrap ? "whitespace-normal break-words" : "whitespace-nowrap",
+															attachedEdge(
+																edge,
+																(rowNumbers ? 1 : 0) + (selectable ? 1 : 0) + columnIndex,
+																colCount,
+															),
+															column.cellClassName,
+														)}
+														style={{ minWidth: column.width }}
+													>
+														{typeof cell === "bigint" ? String(cell) : cell}
+													</TableCell>
+												);
+											})}
+										</TableRow>
+									);
+								})
+							)}
+						</TableBody>
+					</Table>
+				</div>
 			</div>
 			{pageSize && pageSize > 0 ? (
 				<Pagination

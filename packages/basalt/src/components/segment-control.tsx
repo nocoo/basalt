@@ -64,7 +64,7 @@ export const SegmentControl = React.forwardRef<HTMLFieldSetElement, SegmentContr
 				</legend>
 				<div
 					data-slot="segment-control-viewport"
-					className="max-w-full overflow-x-auto pb-basalt-space-sm"
+					className="max-w-full scroll-p-basalt-space-sm overflow-x-auto p-basalt-space-sm"
 				>
 					<ToggleGroup
 						type="single"

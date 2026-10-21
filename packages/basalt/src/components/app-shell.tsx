@@ -13,6 +13,7 @@ export function AppSkipLink({
 			href={href}
 			className={cn(
 				BASALT_UI_CLASS,
+				"basalt-focus",
 				"sr-only focus:not-sr-only focus:absolute focus:top-basalt-2 focus:left-basalt-2 focus:z-[100] focus:rounded-basalt-md focus:bg-basalt-primary focus:px-basalt-space-lg focus:py-basalt-space-lg focus:text-basalt-base focus:font-medium focus:text-basalt-primary-foreground",
 				className,
 			)}

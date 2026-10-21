@@ -112,6 +112,13 @@ describe("SegmentControl", () => {
 		expect(ref.current).toBe(screen.getByTestId("segments"));
 		expect(ref.current?.className).toContain("max-w-40");
 		expect(viewport?.className).toContain("overflow-x-auto");
-		expect(screen.getByRole("radiogroup").className).toContain("w-max");
+		expect(viewport?.className).toContain("p-basalt-space-sm");
+		expect(viewport?.className).toContain("scroll-p-basalt-space-sm");
+		const group = screen.getByRole("radiogroup");
+		expect(group.className).toContain("w-max");
+		expect(group).toHaveClass("gap-basalt-space-xs", "p-basalt-space-xs");
+		for (const item of screen.getAllByRole("radio")) {
+			expect(item).toHaveClass("basalt-action-sm");
+		}
 	});
 });

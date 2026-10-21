@@ -30,7 +30,9 @@ describe("Checkbox", () => {
 
 	it("keeps keyboard focus visible on the primary fill", () => {
 		render(<Checkbox aria-label="Accept" />);
-		expect(screen.getByRole("checkbox", { name: "Accept" }).className).toContain("ring-offset-2");
+		const checkbox = screen.getByRole("checkbox", { name: "Accept" });
+		expect(checkbox).toHaveClass("basalt-focus");
+		expect(checkbox).not.toHaveClass("basalt-focus-inset");
 	});
 
 	it("renders an indeterminate state", () => {

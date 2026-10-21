@@ -6,6 +6,7 @@ import { build } from "vite";
 import { showcaseBuildConfig } from "./catalog-page-status-build";
 import { assertNoPageFaults, attachPageFaults } from "./consumer-browser";
 import { allocatePort, startHttpServer, stopChild } from "./consumer-http";
+import { assertFocusBoundaries } from "./showcase-focus";
 import { assertMobileLayouts } from "./showcase-mobile-layouts";
 
 const root = mkdtempSync(join(tmpdir(), "basalt-mobile-layouts-"));
@@ -39,15 +40,18 @@ try {
 				throw new Error(`Install pinned ${engine.name()} with playwright install ${engine.name()}`);
 			const browser = await engine.launch();
 			try {
-				const page = await browser.newPage();
+				const context = await browser.newContext();
+				const page = await context.newPage();
 				const faults = attachPageFaults(page);
 				const evidence = await assertMobileLayouts(page, url);
+				const focus = await assertFocusBoundaries(page, url);
 				assertNoPageFaults(faults);
 				console.log(
 					JSON.stringify({
 						engine: engine.name(),
 						version: browser.version(),
 						evidence,
+						focus,
 						physicalIPhone: "manual verification required",
 					}),
 				);

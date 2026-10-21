@@ -18,6 +18,7 @@ describe("AppShell", () => {
 			</AppShell>,
 		);
 		expect(screen.getByRole("link", { name: "Skip" })).toHaveAttribute("href", "#main-content");
+		expect(screen.getByRole("link", { name: "Skip" })).toHaveClass("basalt-focus");
 		expect(screen.getByRole("link", { name: "Examples" })).toHaveAttribute("href", "/");
 		expect(screen.getByRole("heading", { name: "Dashboard" })).toBeInTheDocument();
 		expect(screen.getByRole("main")).toHaveTextContent("Body");
@@ -78,6 +79,7 @@ describe("AppHeader", () => {
 	it("declares a compact safe sticky row with no DOM-only props", () => {
 		render(<AppHeader sticky density="compact" title="Read" />);
 		const header = screen.getByRole("banner");
+		expect(header).toHaveClass("px-basalt-space-lg", "md:px-basalt-layout-sm");
 		expect(header).toHaveAttribute("data-sticky", "true");
 		expect(header).toHaveAttribute("data-density", "compact");
 		expect(header).toHaveClass("h-[3.25rem]");

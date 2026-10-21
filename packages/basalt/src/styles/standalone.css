@@ -27,6 +27,9 @@
   --basalt-space-md: 0.375rem;
   --basalt-space-lg: 0.5rem;
   --basalt-space-default: var(--basalt-space-lg);
+  --basalt-focus-width: 0.0625rem;
+  --basalt-focus-offset: 0.125rem;
+  --basalt-focus-clearance: var(--basalt-space-sm);
   --basalt-text-xs: 0.75rem;
   --basalt-text-sm: 0.75rem;
   --basalt-text-code: 0.875rem;
@@ -144,7 +147,7 @@
 	);
   --basalt-size-action: var(--basalt-size-control);
   --basalt-space-nav-inset: var(--basalt-space-lg);
-  --basalt-space-nav-gap: var(--basalt-space-xs);
+  --basalt-space-nav-gap: var(--basalt-space-sm);
   --basalt-size-rail: 4.25rem;
 }
 :root, .light, [data-mode="light"] {
@@ -1194,17 +1197,60 @@
   }
 }
 @layer components {
+  :is(.basalt-focus, .basalt-action) {
+    scroll-margin: var(--basalt-focus-clearance);
+  }
+  :is(.basalt-focus, .basalt-action):focus:not(:focus-visible) {
+    outline: none;
+  }
+  :is(.basalt-focus, .basalt-action):focus-visible,	.basalt-nav-actions :focus-visible,	.basalt-focus-frame:has(> .basalt-focus:focus-visible)::after,	.basalt-focus-group:has(:is(input, textarea):focus-visible):not(	:has(.basalt-focus-group :focus-visible)	) {
+    outline: var(--basalt-focus-width) solid hsl(var(--basalt-ring));
+    outline-offset: var(--basalt-focus-offset);
+  }
+  .basalt-focus-inset:focus-visible,	.basalt-focus-frame:has(> .basalt-focus:focus-visible)::after,	.basalt-focus-group.basalt-focus-inset:has(:is(input, textarea):focus-visible):not(	:has(.basalt-focus-group :focus-visible)	),	.basalt-focus-group .basalt-choice:focus-visible,	.basalt-nav-actions .basalt-choice:focus-visible {
+    outline-offset: calc(-1 * var(--basalt-focus-offset));
+  }
+  .basalt-focus-group :is(input, textarea):focus-visible,	.basalt-focus-frame > .basalt-focus:focus-visible {
+    outline: none;
+  }
+  .basalt-focus-frame:has(> .basalt-focus:focus-visible)::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  @media (forced-colors: active) {
+    :is(.basalt-focus, .basalt-action):focus-visible,	.basalt-nav-actions :focus-visible,	.basalt-focus-frame:has(> .basalt-focus:focus-visible)::after,	.basalt-focus-group:has(:is(input, textarea):focus-visible):not(	:has(.basalt-focus-group :focus-visible)	) {
+      outline: 2px solid Highlight;
+    }
+    .basalt-focus-group :is(input, textarea):focus-visible {
+      outline: none;
+    }
+  }
   [data-basalt-header][data-density="compact"]	:where([data-basalt-header-leading], [data-basalt-header-actions])	:where(button, a, [role="button"]) {
     min-height: var(--basalt-size-touch);
     min-width: var(--basalt-size-touch);
   }
 }
+:is(.basalt-focus, .basalt-action):focus-visible, .basalt-nav-actions :focus-visible, .basalt-focus-group:has(:is(input, textarea):focus-visible):not(	:has(.basalt-focus-group :focus-visible) ), .basalt-chart :focus-visible {
+  transition: none;
+}
+.basalt-focus-swatch:focus-visible {
+  box-shadow: inset 0 0 0 calc(var(--basalt-focus-offset) + var(--basalt-focus-width))	hsl(var(--basalt-background));
+}
 .basalt-chart .recharts-sector:focus:not(:focus-visible), .basalt-chart .recharts-rectangle:focus:not(:focus-visible), .basalt-chart .recharts-layer:focus:not(:focus-visible), .basalt-chart .recharts-surface:focus:not(:focus-visible) {
   outline: none;
 }
 .basalt-chart :focus-visible {
-  outline: 2px solid hsl(var(--basalt-ring));
-  outline-offset: 2px;
+  outline: var(--basalt-focus-width) solid hsl(var(--basalt-ring));
+  outline-offset: var(--basalt-focus-offset);
+}
+@media (forced-colors: active) {
+  .basalt-chart :focus-visible {
+    outline: 2px solid Highlight;
+  }
 }
 @layer utilities {
   .pointer-events-none {
@@ -1924,6 +1970,9 @@
   .resize-none {
     resize: none;
   }
+  .scroll-p-basalt-space-sm {
+    scroll-padding: var(--basalt-space-sm);
+  }
   .list-decimal {
     list-style-type: decimal;
   }
@@ -2267,6 +2316,10 @@
   }
   .rounded-none {
     border-radius: 0;
+  }
+  .rounded-t-basalt-lg {
+    border-top-left-radius: var(--basalt-radius-lg);
+    border-top-right-radius: var(--basalt-radius-lg);
   }
   .rounded-l-basalt-md {
     border-top-left-radius: var(--basalt-radius-md);
@@ -2694,9 +2747,6 @@
   .py-basalt-menu-y {
     padding-block: var(--basalt-space-menu-y);
   }
-  .py-basalt-nav-inset {
-    padding-block: var(--basalt-space-nav-inset);
-  }
   .py-basalt-panel-y {
     padding-block: var(--basalt-space-panel-y);
   }
@@ -2745,6 +2795,9 @@
   .pt-basalt-nav-gap {
     padding-top: var(--basalt-space-nav-gap);
   }
+  .pt-basalt-space-lg {
+    padding-top: var(--basalt-space-lg);
+  }
   .pr-basalt-row-x {
     padding-right: var(--basalt-space-row-x);
   }
@@ -2757,6 +2810,9 @@
   .pb-0 {
     padding-bottom: 0px;
   }
+  .pb-basalt-layout {
+    padding-bottom: var(--basalt-space-layout);
+  }
   .pb-basalt-panel-y {
     padding-bottom: var(--basalt-space-panel-y);
   }
@@ -2765,9 +2821,6 @@
   }
   .pb-basalt-space-lg {
     padding-bottom: var(--basalt-space-lg);
-  }
-  .pb-basalt-space-sm {
-    padding-bottom: var(--basalt-space-sm);
   }
   .pl-\[calc\(var\(--basalt-size-icon-lg\)\/2\+var\(--basalt-space-row-gap\)\)\] {
     padding-left: calc(var(--basalt-size-icon-lg) / 2 + var(--basalt-space-row-gap));
@@ -3242,14 +3295,12 @@
     border-top-right-radius: var(--basalt-radius-md);
     border-bottom-right-radius: var(--basalt-radius-md);
   }
+  .last\:rounded-b-basalt-lg:last-child {
+    border-bottom-right-radius: var(--basalt-radius-lg);
+    border-bottom-left-radius: var(--basalt-radius-lg);
+  }
   .focus-within\:z-2:focus-within {
     z-index: 2;
-  }
-  .focus-within\:border-basalt-ring:focus-within {
-    border-color: hsl(var(--basalt-ring));
-  }
-  .focus-within\:ring-basalt-ring:focus-within {
-    --tw-ring-color: hsl(var(--basalt-ring));
   }
   @media (hover: hover) {
     .hover\:scale-\[1\.03\]:hover {
@@ -3344,62 +3395,8 @@
   .focus-visible\:z-2:focus-visible {
     z-index: 2;
   }
-  .focus-visible\:border-basalt-ring:focus-visible {
-    border-color: hsl(var(--basalt-ring));
-  }
-  .focus-visible\:border-transparent:focus-visible {
-    border-color: transparent;
-  }
   .focus-visible\:bg-basalt-hover:focus-visible {
     background-color: var(--basalt-hover);
-  }
-  .focus-visible\:ring-0:focus-visible {
-    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .focus-visible\:ring-1:focus-visible {
-    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .focus-visible\:ring-2:focus-visible {
-    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
-    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-  }
-  .focus-visible\:ring-basalt-ring:focus-visible {
-    --tw-ring-color: hsl(var(--basalt-ring));
-  }
-  .focus-visible\:ring-offset-0:focus-visible {
-    --tw-ring-offset-width: 0px;
-    --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  }
-  .focus-visible\:ring-offset-2:focus-visible {
-    --tw-ring-offset-width: 2px;
-    --tw-ring-offset-shadow: var(--tw-ring-inset,) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-  }
-  .focus-visible\:ring-offset-basalt-background:focus-visible {
-    --tw-ring-offset-color: hsl(var(--basalt-background));
-  }
-  .focus-visible\:outline-2:focus-visible {
-    outline-style: var(--tw-outline-style);
-    outline-width: 2px;
-  }
-  .focus-visible\:-outline-offset-2:focus-visible {
-    outline-offset: calc(2px * -1);
-  }
-  .focus-visible\:outline-offset-1:focus-visible {
-    outline-offset: 1px;
-  }
-  .focus-visible\:outline-offset-2:focus-visible {
-    outline-offset: 2px;
-  }
-  .focus-visible\:outline-basalt-primary:focus-visible {
-    outline-color: hsl(var(--basalt-primary));
-  }
-  .focus-visible\:outline-basalt-ring:focus-visible {
-    outline-color: hsl(var(--basalt-ring));
-  }
-  .focus-visible\:ring-inset:focus-visible {
-    --tw-ring-inset: inset;
   }
   .active\:scale-\[0\.98\]:active {
     scale: 0.98;
@@ -3515,9 +3512,6 @@
   .data-\[state\=checked\]\:text-basalt-primary-foreground[data-state="checked"] {
     color: hsl(var(--basalt-primary-foreground));
   }
-  .data-\[state\=checked\]\:focus-visible\:ring-basalt-primary-foreground[data-state="checked"]:focus-visible {
-    --tw-ring-color: hsl(var(--basalt-primary-foreground));
-  }
   .data-\[state\=closed\]\:animate-basalt-collapsible-up[data-state="closed"] {
     animation: basalt-collapsible-up var(--basalt-motion-fast)
 		var(--basalt-motion-ease);
@@ -3530,6 +3524,10 @@
     animation: basalt-overlay-out var(--basalt-floating-duration-exit)
 		var(--basalt-motion-ease-exit) forwards;
   }
+  .data-\[state\=closed\]\:rounded-b-basalt-lg[data-state="closed"] {
+    border-bottom-right-radius: var(--basalt-radius-lg);
+    border-bottom-left-radius: var(--basalt-radius-lg);
+  }
   .data-\[state\=indeterminate\]\:bg-basalt-primary[data-state="indeterminate"] {
     background-color: hsl(var(--basalt-primary));
   }
@@ -3541,9 +3539,6 @@
   }
   .data-\[state\=on\]\:text-basalt-primary-foreground[data-state="on"] {
     color: hsl(var(--basalt-primary-foreground));
-  }
-  .data-\[state\=on\]\:focus-visible\:ring-basalt-primary-foreground[data-state="on"]:focus-visible {
-    --tw-ring-color: hsl(var(--basalt-primary-foreground));
   }
   .data-\[state\=open\]\:animate-basalt-collapsible-down[data-state="open"] {
     animation: basalt-collapsible-down var(--basalt-motion-normal)
@@ -3661,8 +3656,8 @@
     .md\:p-basalt-layout-lg {
       padding: var(--basalt-space-layout-lg);
     }
-    .md\:px-basalt-space-lg {
-      padding-inline: var(--basalt-space-lg);
+    .md\:px-basalt-layout-sm {
+      padding-inline: var(--basalt-space-layout-sm);
     }
     .md\:shadow-sm {
       --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
@@ -3691,16 +3686,6 @@
     .lg\:px-basalt-layout-xl {
       padding-inline: var(--basalt-space-layout-xl);
     }
-  }
-  .\[\&_\.recharts-surface\:focus-visible\]\:outline-2 .recharts-surface:focus-visible {
-    outline-style: var(--tw-outline-style);
-    outline-width: 2px;
-  }
-  .\[\&_\.recharts-surface\:focus-visible\]\:outline-offset-2 .recharts-surface:focus-visible {
-    outline-offset: 2px;
-  }
-  .\[\&_\.recharts-surface\:focus-visible\]\:outline-basalt-ring .recharts-surface:focus-visible {
-    outline-color: hsl(var(--basalt-ring));
   }
   .\[\&_\[cmdk-group-heading\]\]\:px-basalt-space-lg [cmdk-group-heading] {
     padding-inline: var(--basalt-space-lg);

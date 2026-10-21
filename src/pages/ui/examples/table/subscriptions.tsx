@@ -249,7 +249,7 @@ export default function SubscriptionTable() {
 				aria-label="Health plan ledger scroll area"
 				// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
 				tabIndex={0}
-				className="overflow-x-auto rounded-basalt-md border border-basalt-border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary"
+				className="basalt-focus basalt-focus-inset overflow-x-auto rounded-basalt-md border border-basalt-border"
 			>
 				<Table
 					aria-label="Health plan ledger"

@@ -96,7 +96,7 @@ function ChartContainer({
 				className={cn(size, className)}
 				style={{ display: "flex", flexDirection: "column", minHeight: 0, minWidth: 0 }}
 			>
-				<div className="min-h-0 w-full flex-1 basalt-chart [&_.recharts-surface:focus-visible]:outline-2 [&_.recharts-surface:focus-visible]:outline-offset-2 [&_.recharts-surface:focus-visible]:outline-basalt-ring">
+				<div className="min-h-0 w-full flex-1 basalt-chart">
 					<ResponsiveContainer {...RESPONSIVE_CONTAINER_PROPS}>{clonedChild}</ResponsiveContainer>
 				</div>
 				{legend}
@@ -104,13 +104,7 @@ function ChartContainer({
 		);
 	} else {
 		plotContainer = (
-			<div
-				className={cn(
-					size,
-					"min-h-0 min-w-0 basalt-chart [&_.recharts-surface:focus-visible]:outline-2 [&_.recharts-surface:focus-visible]:outline-offset-2 [&_.recharts-surface:focus-visible]:outline-basalt-ring",
-					className,
-				)}
-			>
+			<div className={cn(size, "min-h-0 min-w-0 basalt-chart", className)}>
 				<ResponsiveContainer {...RESPONSIVE_CONTAINER_PROPS}>{clonedChild}</ResponsiveContainer>
 			</div>
 		);

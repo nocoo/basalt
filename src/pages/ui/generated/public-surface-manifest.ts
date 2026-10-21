@@ -5245,6 +5245,14 @@ export const PUBLIC_SURFACE_MANIFEST = {
 					"originModule": "@nocoo/basalt/components/overlay"
 				},
 				{
+					"name": "FOCUS_RING",
+					"isValue": true,
+					"isType": false,
+					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
+					"ownerKind": "legacy-internal",
+					"originModule": "@nocoo/basalt/components/overlay"
+				},
+				{
 					"name": "FOCUS_BORDER",
 					"isValue": true,
 					"isType": false,
@@ -5254,14 +5262,6 @@ export const PUBLIC_SURFACE_MANIFEST = {
 				},
 				{
 					"name": "FOCUS_INSET",
-					"isValue": true,
-					"isType": false,
-					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",
-					"ownerKind": "legacy-internal",
-					"originModule": "@nocoo/basalt/components/overlay"
-				},
-				{
-					"name": "FOCUS_RING",
 					"isValue": true,
 					"isType": false,
 					"ownerDoc": "packages/basalt/ai/COMPATIBILITY.md#wildcard-subpaths",

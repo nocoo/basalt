@@ -18,7 +18,7 @@ export default function OverflowDisabledExample() {
 			value={range}
 			onValueChange={setRange}
 			options={rangeOptions}
-			className="max-w-64"
+			className="w-64"
 		/>
 	);
 }

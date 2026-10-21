@@ -32,7 +32,7 @@ export function AccentPicker() {
 							<button
 								key={swatch.id}
 								type="button"
-								className={`flex h-8 w-8 items-center justify-center rounded-basalt-md ${
+								className={`basalt-focus flex h-8 w-8 items-center justify-center rounded-basalt-md ${
 									selected
 										? "bg-basalt-selected ring-2 ring-basalt-primary"
 										: "ring-1 ring-basalt-border"

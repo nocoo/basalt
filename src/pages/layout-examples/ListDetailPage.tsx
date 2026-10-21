@@ -25,7 +25,7 @@ export default function ListDetailPage() {
 						</LinkButton>
 					}
 				/>
-				<div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-basalt-space-lg md:pb-basalt-space-lg">
+				<div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-basalt-layout-sm md:pb-basalt-layout-sm">
 					<ContentIsland mobileSurface="edge-to-edge" className="md:overflow-hidden">
 						<ResponsiveMasterDetail
 							label="Field notebook"

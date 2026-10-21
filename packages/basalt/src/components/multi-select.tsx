@@ -200,7 +200,7 @@ export function MultiSelect({
 									type="button"
 									disabled={disabled || option?.disabled}
 									aria-label={`${removeLabel} ${text}`}
-									className="rounded-basalt-sm p-basalt-space-sm focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
+									className="basalt-focus basalt-focus-inset rounded-basalt-sm p-basalt-space-sm disabled:opacity-50"
 									onClick={() => changeValue(selected.filter((value) => value !== item))}
 								>
 									<X className="size-basalt-icon-sm" aria-hidden="true" />

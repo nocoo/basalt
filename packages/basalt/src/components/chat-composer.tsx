@@ -119,7 +119,7 @@ export function ChatComposer({
 
 	return (
 		<form className={cn("basalt-ui shrink-0", className)} onSubmit={onSubmit}>
-			<div className="rounded-basalt-lg bg-basalt-control p-basalt-space-lg ring-1 ring-basalt-border focus-within:ring-basalt-ring">
+			<div className="basalt-focus-group rounded-basalt-lg bg-basalt-control p-basalt-space-lg ring-1 ring-basalt-border">
 				{attachments.length > 0 && (
 					<ul
 						aria-label="Attachments"

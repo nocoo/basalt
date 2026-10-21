@@ -169,7 +169,7 @@ export function ChatMessage({
 												href={source.href}
 												target={source.href ? "_blank" : undefined}
 												rel={source.href ? "noopener noreferrer" : undefined}
-												className="flex min-w-0 items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-control-y text-basalt-sm leading-[var(--basalt-line-body)] text-basalt-muted-foreground outline-hidden hover:bg-basalt-hover focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-basalt-ring"
+												className="basalt-focus basalt-focus-inset flex min-w-0 items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-row-x py-basalt-control-y text-basalt-sm leading-[var(--basalt-line-body)] text-basalt-muted-foreground hover:bg-basalt-hover"
 											>
 												<FileText
 													aria-hidden="true"

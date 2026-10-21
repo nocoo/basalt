@@ -27,7 +27,7 @@ const InputGroupRoot = React.forwardRef<HTMLDivElement, InputGroupProps>(
 					cn(
 						"flex w-full items-center text-basalt-base shadow-xs",
 						"[&>:first-child]:rounded-l-basalt-md [&>:last-child]:rounded-r-basalt-md",
-						"outline-hidden focus-within:border-basalt-ring",
+						"basalt-focus-group has-[input[aria-invalid=true]]:border-basalt-destructive",
 						"has-[[data-slot=input-group-addon-start]]:[&_input]:pl-basalt-space-lg",
 						"has-[[data-slot=input-group-addon-end]]:[&_input]:pr-basalt-space-lg",
 						"has-[[data-slot=input-group-suffix]]:[&_input]:flex-none",
@@ -76,7 +76,6 @@ const InputGroupInput = React.forwardRef<HTMLInputElement, InputGroupInputProps>
 				disabled={disabled || groupDisabled}
 				className={cn(
 					"min-w-0 w-auto! flex-1 rounded-none border-0 bg-transparent px-basalt-space-lg shadow-none",
-					"outline-hidden focus-visible:border-transparent focus-visible:ring-0",
 					className,
 				)}
 				{...props}

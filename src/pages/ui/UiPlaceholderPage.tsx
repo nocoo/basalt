@@ -200,7 +200,7 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 											// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
 											tabIndex={0}
 											aria-label={`${surface.options.name} API scrolling table`}
-											className="max-w-full overflow-x-auto rounded-basalt-md border border-border focus-visible:outline-2 focus-visible:outline-primary"
+											className="basalt-focus basalt-focus-inset max-w-full overflow-x-auto rounded-basalt-md border border-border"
 										>
 											<Table
 												aria-label={`${surface.options.name} props`}
@@ -288,7 +288,7 @@ export function CatalogApiReference({ api }: { api: CatalogApiSurface[] }) {
 									// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
 									tabIndex={0}
 									aria-label={`${surface.name} API scrolling table`}
-									className="max-w-full overflow-x-auto focus-visible:outline-2 focus-visible:outline-primary"
+									className="basalt-focus basalt-focus-inset max-w-full overflow-x-auto"
 								>
 									<Table
 										aria-label={`${surface.name} props`}

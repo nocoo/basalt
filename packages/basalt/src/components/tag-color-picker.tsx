@@ -3,7 +3,7 @@ import { Check } from "lucide-react";
 import { type AriaAttributes, useState } from "react";
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
-import { FOCUS_INSET } from "./overlay";
+import { FOCUS_RING } from "./overlay";
 import { TAG_COLORS, type TagColor } from "./tag-badge";
 
 export interface TagColorPickerProps {
@@ -74,8 +74,7 @@ export function TagColorPicker({
 						// Accent choice grid: the selected tile owns the primary fill and its
 						// contrast-corrected foreground, not a control fill inside a frame.
 						"group flex min-w-0 items-center gap-basalt-space-lg rounded-basalt-md p-basalt-space-lg text-left text-basalt-foreground transition-colors hover:bg-basalt-hover data-[state=checked]:bg-basalt-primary data-[state=checked]:text-basalt-primary-foreground disabled:cursor-not-allowed disabled:opacity-50",
-						FOCUS_INSET,
-						"data-[state=checked]:focus-visible:ring-basalt-primary-foreground",
+						FOCUS_RING,
 					)}
 				>
 					<span

@@ -146,7 +146,7 @@ export const TabsContent = React.forwardRef<
 	<TabsPrimitive.Content
 		ref={ref}
 		className={cn(
-			"mt-basalt-space-lg text-basalt-base text-basalt-foreground data-[state=active]:animate-basalt-tab-in",
+			"basalt-focus basalt-focus-inset mt-basalt-space-lg text-basalt-base text-basalt-foreground data-[state=active]:animate-basalt-tab-in",
 			OVERLAY_MOTION,
 			className,
 		)}

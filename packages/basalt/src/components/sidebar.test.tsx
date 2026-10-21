@@ -50,9 +50,16 @@ describe("Sidebar", () => {
 			"leading-basalt-row",
 		);
 		expect(group.closest('[data-slot="sidebar-group"]')).toHaveClass("pt-basalt-layout-sm");
-		expect(screen.getByRole("button", { name: "Home" })).toHaveClass("focus-visible:ring-inset");
+		expect(screen.getByRole("button", { name: "Home" })).toHaveClass("basalt-focus-inset");
 		expect(screen.getByText("Header")).toHaveClass("px-basalt-nav-inset");
-		expect(screen.getByText("Footer")).toHaveClass("px-basalt-nav-inset");
+		expect(screen.getByText("Footer").closest('[data-slot="sidebar-footer"]')).toHaveClass(
+			"px-basalt-layout",
+			"pt-basalt-space-lg",
+			"pb-basalt-layout",
+		);
+		expect(screen.getByText("Footer").closest('[data-slot="sidebar-footer"]')).not.toHaveClass(
+			"px-basalt-nav-inset",
+		);
 	});
 	it("renders children on the L0 chrome", () => {
 		render(<Sidebar>Nav</Sidebar>);

@@ -10,14 +10,9 @@ export const OVERLAY_LAYER = "z-50";
 /** Kill CSS animation and transition when the user prefers reduced motion. */
 export const OVERLAY_MOTION = "motion-reduce:animate-none motion-reduce:transition-none";
 
-/** Recolor the existing 1px border. No extra ring, no layout shift. */
-export const FOCUS_BORDER = "outline-hidden focus-visible:border-basalt-ring";
-/** Inset 1px theme ring for borderless controls. Outer size stays put. */
-export const FOCUS_INSET =
-	"outline-hidden focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-basalt-ring";
-/** Offset ring stays visible on primary fills (ring token equals primary). */
-export const FOCUS_RING =
-	"outline-hidden focus-visible:ring-2 focus-visible:ring-basalt-ring focus-visible:ring-offset-2 focus-visible:ring-offset-basalt-background";
+export const FOCUS_RING = "basalt-focus";
+export const FOCUS_BORDER = FOCUS_RING;
+export const FOCUS_INSET = "basalt-focus basalt-focus-inset";
 
 export function overlayPanelClass(className?: string) {
 	return cn(
@@ -31,7 +26,8 @@ export function overlayPanelClass(className?: string) {
 
 export function overlayItemClass(className?: string) {
 	return cn(
-		"mx-basalt-menu-inset flex min-h-basalt-menu-row w-[calc(100%-var(--basalt-space-menu-inset)*2)] cursor-default items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-menu-x py-basalt-menu-y text-left text-basalt-base leading-basalt-row outline-hidden select-none",
+		"mx-basalt-menu-inset flex min-h-basalt-menu-row w-[calc(100%-var(--basalt-space-menu-inset)*2)] cursor-default items-center gap-basalt-row-gap rounded-basalt-sm px-basalt-menu-x py-basalt-menu-y text-left text-basalt-base leading-basalt-row select-none",
+		FOCUS_INSET,
 		className,
 	);
 }

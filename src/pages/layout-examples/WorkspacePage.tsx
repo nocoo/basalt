@@ -79,7 +79,7 @@ export default function WorkspacePage() {
 						</LinkButton>
 					}
 				/>
-				<div className="flex min-h-0 min-w-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-space-lg md:pb-basalt-space-lg">
+				<div className="flex min-h-0 min-w-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-layout-sm md:pb-basalt-layout-sm">
 					<ContentIsland>
 						<div className="mx-auto max-w-2xl space-y-basalt-layout-lg">
 							<PageHeader

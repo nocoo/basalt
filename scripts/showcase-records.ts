@@ -287,7 +287,10 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 			assert.equal(focusState.active, true, JSON.stringify(focusState));
 			assert.equal(focusState.focusVisible, true, JSON.stringify(focusState));
 			const focusPaint = await region.evaluate((node) => {
-				const style = getComputedStyle(node);
+				const frame = node.parentElement?.classList.contains("basalt-focus-frame")
+					? node.parentElement
+					: null;
+				const style = getComputedStyle(frame ?? node, frame ? "::after" : null);
 				const box = node.getBoundingClientRect();
 				const tableBox = node.querySelector("table")?.getBoundingClientRect();
 				const offset = Number.parseFloat(style.outlineOffset);
@@ -301,7 +304,7 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 				};
 			});
 			assert.equal(focusPaint.offset, "-2px", JSON.stringify(focusPaint));
-			assert.equal(focusPaint.width, "2px", JSON.stringify(focusPaint));
+			assert.equal(focusPaint.width, "1px", JSON.stringify(focusPaint));
 			assert.notEqual(focusPaint.style, "none", JSON.stringify(focusPaint));
 			assert.equal(focusPaint.overContent, true, JSON.stringify(focusPaint));
 			assert.equal(focusPaint.inside, true, JSON.stringify(focusPaint));

@@ -300,7 +300,7 @@ export function Toaster({ closeButton = true, ...props }: ToasterProps) {
 					description:
 						"text-basalt-sm leading-[var(--basalt-line-relaxed)] text-basalt-muted-foreground",
 					closeButton:
-						"basalt-action basalt-action-icon order-last inline-flex shrink-0 cursor-pointer items-center justify-center rounded-basalt-sm text-basalt-muted-foreground hover:bg-basalt-hover hover:text-basalt-foreground focus-visible:ring-2 focus-visible:ring-basalt-ring",
+						"basalt-action basalt-action-icon order-last inline-flex shrink-0 cursor-pointer items-center justify-center rounded-basalt-sm text-basalt-muted-foreground hover:bg-basalt-hover hover:text-basalt-foreground",
 					actionButton:
 						"basalt-action shrink-0 cursor-pointer rounded-basalt-sm bg-basalt-primary text-basalt-primary-foreground hover:bg-basalt-primary-hover",
 					cancelButton:

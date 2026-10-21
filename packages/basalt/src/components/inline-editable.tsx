@@ -212,7 +212,7 @@ export function InlineEditable({
 					type="button"
 					disabled={disabled || pending}
 					aria-label={`${editLabel} ${label}`}
-					className="group flex max-w-full items-center gap-basalt-space-lg rounded-basalt-md px-basalt-space-sm py-basalt-space-sm text-left text-basalt-base hover:bg-basalt-hover focus-visible:outline-2 focus-visible:outline-basalt-ring disabled:opacity-50"
+					className="basalt-focus group flex max-w-full items-center gap-basalt-space-lg rounded-basalt-md px-basalt-space-sm py-basalt-space-sm text-left text-basalt-base hover:bg-basalt-hover disabled:opacity-50"
 					onClick={() => {
 						setDraft(value);
 						setFailure(undefined);

@@ -202,10 +202,81 @@
 }
 
 @layer components {
+	:is(.basalt-focus, .basalt-action) {
+		scroll-margin: var(--basalt-focus-clearance);
+	}
+
+	:is(.basalt-focus, .basalt-action):focus:not(:focus-visible) {
+		outline: none;
+	}
+
+	:is(.basalt-focus, .basalt-action):focus-visible,
+	.basalt-nav-actions :focus-visible,
+	.basalt-focus-frame:has(> .basalt-focus:focus-visible)::after,
+	.basalt-focus-group:has(:is(input, textarea):focus-visible):not(
+		:has(.basalt-focus-group :focus-visible)
+	) {
+		outline: var(--basalt-focus-width) solid hsl(var(--basalt-ring));
+		outline-offset: var(--basalt-focus-offset);
+	}
+
+	.basalt-focus-inset:focus-visible,
+	.basalt-focus-frame:has(> .basalt-focus:focus-visible)::after,
+	.basalt-focus-group.basalt-focus-inset:has(:is(input, textarea):focus-visible):not(
+		:has(.basalt-focus-group :focus-visible)
+	),
+	.basalt-focus-group .basalt-choice:focus-visible,
+	.basalt-nav-actions .basalt-choice:focus-visible {
+		outline-offset: calc(-1 * var(--basalt-focus-offset));
+	}
+
+	.basalt-focus-group :is(input, textarea):focus-visible,
+	.basalt-focus-frame > .basalt-focus:focus-visible {
+		outline: none;
+	}
+
+	.basalt-focus-frame:has(> .basalt-focus:focus-visible)::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		border-radius: inherit;
+		pointer-events: none;
+	}
+
+	@media (forced-colors: active) {
+		:is(.basalt-focus, .basalt-action):focus-visible,
+		.basalt-nav-actions :focus-visible,
+		.basalt-focus-frame:has(> .basalt-focus:focus-visible)::after,
+		.basalt-focus-group:has(:is(input, textarea):focus-visible):not(
+				:has(.basalt-focus-group :focus-visible)
+			) {
+			outline: 2px solid Highlight;
+		}
+
+		.basalt-focus-group :is(input, textarea):focus-visible {
+			outline: none;
+		}
+	}
+
 	[data-basalt-header][data-density="compact"]
 		:where([data-basalt-header-leading], [data-basalt-header-actions])
 		:where(button, a, [role="button"]) {
 		min-height: var(--basalt-size-touch);
 		min-width: var(--basalt-size-touch);
 	}
+}
+
+:is(.basalt-focus, .basalt-action):focus-visible,
+.basalt-nav-actions :focus-visible,
+.basalt-focus-group:has(:is(input, textarea):focus-visible):not(
+	:has(.basalt-focus-group :focus-visible)
+),
+.basalt-chart :focus-visible {
+	transition: none;
+}
+
+.basalt-focus-swatch:focus-visible {
+	box-shadow: inset 0 0 0 calc(var(--basalt-focus-offset) + var(--basalt-focus-width))
+		hsl(var(--basalt-background));
 }

@@ -588,7 +588,7 @@ export function SidebarFooter({ className, ...props }: SidebarFooterProps) {
 		<div
 			data-slot="sidebar-footer"
 			className={cn(
-				"flex shrink-0 flex-col gap-basalt-content-gap px-basalt-nav-inset py-basalt-nav-inset",
+				"flex shrink-0 flex-col gap-basalt-content-gap px-basalt-layout pt-basalt-space-lg pb-basalt-layout",
 				className,
 			)}
 			{...props}

@@ -193,7 +193,7 @@ export const SelectItem = React.forwardRef<
 		ref={ref}
 		className={overlayItemClass(
 			cn(
-				"relative outline-hidden data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[disabled]:hover:bg-transparent",
+				"relative data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[disabled]:hover:bg-transparent",
 				className,
 			),
 		)}

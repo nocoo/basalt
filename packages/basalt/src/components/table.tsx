@@ -193,7 +193,7 @@ export const TableSortableHeader = React.forwardRef<HTMLButtonElement, TableSort
 				type="button"
 				ref={ref}
 				className={cn(
-					"group flex w-full cursor-pointer items-center gap-basalt-space-sm rounded-basalt-sm border-0 bg-transparent p-0 font-inherit text-inherit font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-basalt-primary",
+					"basalt-focus group flex w-full cursor-pointer items-center gap-basalt-space-sm rounded-basalt-sm border-0 bg-transparent p-0 font-inherit text-inherit font-medium",
 					textAlign === "end" ? "justify-end text-end" : "text-start",
 					className,
 				)}

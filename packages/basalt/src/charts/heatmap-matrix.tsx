@@ -375,7 +375,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 				aria-label={ariaLabel}
 				data-testid="heatmap-matrix"
 				className={cn(
-					"flex flex-col gap-basalt-space-lg rounded-basalt-md border border-basalt-border/60 bg-basalt-card p-basalt-space-lg text-basalt-sm outline-none",
+					"basalt-focus basalt-focus-inset flex flex-col gap-basalt-space-lg rounded-basalt-md border border-basalt-border/60 bg-basalt-card p-basalt-space-lg text-basalt-sm",
 					isEmpty ? "text-basalt-muted-foreground" : "text-basalt-foreground",
 					className,
 				)}
@@ -394,7 +394,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 							tabIndex={-1}
 							role="region"
 							aria-label={`${ariaLabel} scrollable table`}
-							className="w-full overflow-x-auto outline-none"
+							className="basalt-focus basalt-focus-inset w-full overflow-x-auto"
 						>
 							<table
 								// biome-ignore lint/a11y/noNoninteractiveElementToInteractiveRole: W3C ARIA interactive 2D grid table with descendant roving tab buttons
@@ -521,7 +521,7 @@ export const HeatmapMatrix = forwardRef<HTMLDivElement, HeatmapMatrixProps>(func
 																	onBlur={() => {
 																		setOpenTooltipPos((curr) => (curr === cellKey ? null : curr));
 																	}}
-																	className="box-border block cursor-pointer rounded-basalt-sm border-0 p-0 transition-colors basalt-motion hover:ring-1 hover:ring-basalt-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
+																	className="basalt-focus basalt-focus-inset basalt-focus-swatch box-border block cursor-pointer rounded-basalt-sm border-0 p-0 transition-colors basalt-motion hover:ring-1 hover:ring-basalt-foreground"
 																	style={{
 																		width: effectiveColWidth,
 																		height: cellSize,

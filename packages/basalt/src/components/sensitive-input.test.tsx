@@ -15,6 +15,7 @@ describe("SensitiveInput", () => {
 			/>,
 		);
 		expect(screen.getByLabelText("Password")).toHaveAttribute("type", "password");
+		expect(screen.getByLabelText("Password").parentElement).toHaveClass("basalt-focus-group");
 		fireEvent.click(screen.getByRole("button", { name: "Show password" }));
 		expect(screen.getByLabelText("Password")).toHaveAttribute("type", "text");
 	});

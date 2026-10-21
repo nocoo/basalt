@@ -110,7 +110,7 @@ export function EditableNavItem({
 					}}
 				/>
 			) : (
-				<div className="flex min-w-0 items-center gap-basalt-nav-gap">
+				<div className="basalt-nav-actions flex min-w-0 items-center gap-basalt-space-xs">
 					<Button
 						asChild={!!href}
 						variant="ghost"
@@ -118,7 +118,7 @@ export function EditableNavItem({
 						className={cn(
 							NAV_ROW_CLASS,
 							FOCUS_INSET,
-							"h-auto flex-1 justify-start hover:bg-transparent hover:border-transparent focus-visible:ring-offset-0",
+							"h-auto flex-1 justify-start hover:bg-transparent hover:border-transparent",
 						)}
 						aria-current={selected ? "page" : undefined}
 						aria-label={label}

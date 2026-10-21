@@ -98,7 +98,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
 					tabIndex={tabIndex}
 					onScroll={onScroll}
 					className={cn(
-						"size-full rounded-[inherit] outline-hidden focus-visible:ring-2 focus-visible:ring-basalt-ring focus-visible:ring-offset-2 focus-visible:ring-offset-basalt-background",
+						"basalt-focus basalt-focus-inset size-full rounded-[inherit]",
 						orientation === "vertical" && "overflow-x-hidden!",
 						orientation === "horizontal" && "overflow-y-hidden!",
 						viewportClassName,

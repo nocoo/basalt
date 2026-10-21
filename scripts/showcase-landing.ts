@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import type { Page } from "playwright";
 import { LANDING_HEADING } from "../src/lib/landing";
 import { SITE, SITE_ORIGIN } from "../src/lib/site";
+import { assertFocusPaint } from "./showcase-focus";
 import { setShowcaseTheme } from "./showcase-theme";
 
 async function assertLandingBounds(page: Page, width: number) {
@@ -113,6 +114,12 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 					)
 				);
 			}, dark);
+			await assertFocusPaint(
+				page.locator(".landing-header-actions").getByRole("button", { name: /Toggle theme/ }),
+				16,
+				false,
+			);
+			await assertFocusPaint(page.locator(".landing-brand-motion").first(), 16, false);
 			assert.equal(await page.locator("h1").count(), 1);
 			assert.equal((await page.locator("h1").innerText()).replace(/\s+/g, " "), LANDING_HEADING);
 			await assertLandingBounds(page, width);

@@ -587,3 +587,28 @@ shrink and wrap long words, without shrinking typography, padding or close targe
 Assert the title's own boundary as well as panel/page overflow and preserve focus
 trapping and restoration checks. A failed release artifact remains ineligible;
 rebuild and verify the repaired revision before publication.
+
+## 2026-10-21: Focus ownership stops at the nearest composite
+
+The first thin-focus pass forced every action inside an input group to use an
+inset outline. Review reproduced an invisible primary Send action: its theme
+outline matched its fill. A broad `:has()` selector also outlined both an outer
+composer and a nested input group. Keep primary actions external, limit inherited
+inset placement to neutral actions, and let only the nearest composite own text
+focus. Browser regressions now exercise nested source-rendered components and
+primary actions in both CSS entrypoints, themes, and engines.
+
+The browser fixture initially used Playwright's single-page convenience context,
+which rejects a second page; reusable multi-page gates now create an explicit
+context. Geometry probes must not append children to void inputs, must await
+Radix's keyboard focus transition, and must verify actual overflow rather than
+assuming a preview's `max-width` survives its parent styles. CSS declaration
+tests normalize insignificant selector whitespace without erasing descendant
+combinators.
+
+Computed native inset outlines passed while screenshots showed sticky table
+headers covering the entire top stroke. Stacking-context-only probes failed in
+both browsers. DataTable now owns a non-scrolling focus frame above its isolated
+viewport, without adding padding or affecting layout. Pixel assertions check all
+four strokes before and after scrolling both axes; focusing a cell must remove
+the viewport frame.

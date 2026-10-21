@@ -213,10 +213,13 @@ async function assertSidebarPointerHover(
 		const el = document.activeElement;
 		return {
 			inside: node.contains(el),
-			ring: el ? getComputedStyle(el).boxShadow : "",
+			outline: el ? getComputedStyle(el).outlineWidth : "",
+			offset: el ? getComputedStyle(el).outlineOffset : "",
 		};
 	});
-	assert.ok(focused.inside && focused.ring.includes("inset"), JSON.stringify(focused));
+	assert.ok(focused.inside, JSON.stringify(focused));
+	assert.equal(focused.outline, "1px", JSON.stringify(focused));
+	assert.equal(focused.offset, "-2px", JSON.stringify(focused));
 }
 
 async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, inset = 8) {

@@ -277,8 +277,14 @@
 }
 
 .basalt-chart :focus-visible {
-	outline: 2px solid hsl(var(--basalt-ring));
-	outline-offset: 2px;
+	outline: var(--basalt-focus-width) solid hsl(var(--basalt-ring));
+	outline-offset: var(--basalt-focus-offset);
+}
+
+@media (forced-colors: active) {
+	.basalt-chart :focus-visible {
+		outline: 2px solid Highlight;
+	}
 }
 
 @utility duration-basalt-normal {

@@ -11,7 +11,7 @@ describe("TagColorPicker", () => {
 		expect(screen.getByRole("radiogroup", { name: "Color" })).not.toHaveClass("bg-basalt-muted");
 		expect(document.querySelector('[data-slot="selection-indicator"]')).toBeNull();
 		expect(screen.getByRole("radio", { name: "Slate" })).toHaveAttribute("aria-checked", "true");
-		expect(screen.getByRole("radio", { name: "Slate" })).toHaveClass("focus-visible:ring-inset");
+		expect(screen.getByRole("radio", { name: "Slate" })).toHaveClass("basalt-focus");
 		fireEvent.click(screen.getByRole("radio", { name: "Blue" }));
 		expect(change).toHaveBeenCalledExactlyOnceWith("blue");
 		expect(screen.getByRole("radio", { name: "Blue" })).toHaveAttribute("aria-checked", "true");
@@ -24,8 +24,9 @@ describe("TagColorPicker", () => {
 		expect(slate).toHaveClass(
 			"data-[state=checked]:bg-basalt-primary",
 			"data-[state=checked]:text-basalt-primary-foreground",
-			"data-[state=checked]:focus-visible:ring-basalt-primary-foreground",
+			"basalt-focus",
 		);
+		expect(slate).not.toHaveClass("basalt-focus-inset");
 		expect(slate.className).not.toMatch(/border-basalt-primary\/40|border-transparent/);
 		expect(slate).not.toHaveClass("bg-basalt-control");
 	});

@@ -11,6 +11,7 @@ import {
 import { cn } from "../utils/cn";
 import { BASALT_UI_CLASS } from "../utils/control-surface";
 import { Empty } from "./empty";
+import { FOCUS_INSET } from "./overlay";
 import { SkeletonLine } from "./skeleton-line";
 
 const ROOT_CLASSES = `${BASALT_UI_CLASS} overflow-hidden rounded-basalt-lg ring-1 ring-basalt-border/50 text-basalt-foreground`;
@@ -140,10 +141,11 @@ function LayerCardHeader({
 			className={cn(
 				"flex min-w-0 justify-between gap-basalt-space-lg text-basalt-base font-medium tracking-tight text-basalt-foreground",
 				asChild
-					? "w-full items-center px-basalt-card py-basalt-card-sm data-[state=open]:border-b data-[state=open]:border-basalt-border"
+					? "w-full items-center rounded-none rounded-t-basalt-lg last:rounded-b-basalt-lg data-[state=closed]:rounded-b-basalt-lg px-basalt-card py-basalt-card-sm data-[state=open]:border-b data-[state=open]:border-basalt-border"
 					: divided
 						? "items-start p-basalt-card border-b border-basalt-border"
 						: "items-start px-basalt-card pt-basalt-card pb-0",
+				asChild && FOCUS_INSET,
 				className,
 			)}
 			{...props}

@@ -10,6 +10,7 @@ describe("HeatmapCalendar", () => {
 
 		const buttons = screen.getAllByRole("button");
 		expect(buttons).toHaveLength(3);
+		expect(buttons[0]).toHaveClass("basalt-focus", "basalt-focus-inset", "basalt-focus-swatch");
 		expect(buttons[0]).toHaveAttribute("tabindex", "0");
 		expect(buttons[1]).toHaveAttribute("tabindex", "-1");
 		expect(buttons[0]).toHaveAttribute("aria-label", "Position 1: 10");

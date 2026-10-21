@@ -260,7 +260,7 @@ function ValuesHeatmap({
 				}
 			}}
 			className={cn(
-				"grid grid-cols-7 gap-basalt-space-sm p-basalt-space-xs outline-none",
+				"basalt-focus basalt-focus-inset grid grid-cols-7 gap-basalt-space-sm p-basalt-space-xs",
 				className,
 			)}
 		>
@@ -302,7 +302,7 @@ function ValuesHeatmap({
 								}}
 								onKeyDown={(e) => handleKeyDown(e, index)}
 								aria-label={`Position ${index + 1}: ${value}`}
-								className="box-border m-0 h-basalt-3 w-basalt-3 cursor-pointer rounded-basalt-sm border-0 p-0 transition-colors basalt-motion focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
+								className="basalt-focus basalt-focus-inset basalt-focus-swatch box-border m-0 h-basalt-3 w-basalt-3 cursor-pointer rounded-basalt-sm border-0 p-0 transition-colors basalt-motion"
 								style={{
 									backgroundColor: `hsl(var(--basalt-chart-5) / ${0.2 + Math.min(4, Math.max(0, value)) * 0.15})`,
 								}}
@@ -491,10 +491,7 @@ function YearHeatmap({
 					isYearFocusedInsideRef.current = false;
 				}
 			}}
-			className={cn(
-				"overflow-x-auto rounded-basalt-md outline-none focus-visible:ring-1 focus-visible:ring-basalt-ring",
-				className,
-			)}
+			className={cn("basalt-focus basalt-focus-inset overflow-x-auto rounded-basalt-md", className)}
 		>
 			<TooltipProvider>
 				<div className="inline-block p-basalt-space-sm" role="group" aria-label={ariaLabel}>
@@ -596,7 +593,7 @@ function YearHeatmap({
 															setOpenTooltipDate((curr) => (curr === dateStr ? null : curr));
 														}}
 														onKeyDown={(e) => handleCellKeyDown(e, dateStr)}
-														className="box-border m-0 cursor-pointer rounded-basalt-sm border-0 p-0 transition-colors basalt-motion hover:ring-1 hover:ring-basalt-foreground focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-basalt-ring"
+														className="basalt-focus basalt-focus-inset basalt-focus-swatch box-border m-0 cursor-pointer rounded-basalt-sm border-0 p-0 transition-colors basalt-motion hover:ring-1 hover:ring-basalt-foreground"
 														style={{
 															width: cellSize,
 															height: cellSize,

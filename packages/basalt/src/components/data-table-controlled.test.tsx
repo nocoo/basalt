@@ -216,7 +216,11 @@ describe("record geometry", () => {
 			/>,
 		);
 		expect(screen.getByRole("region", { name: "Records scroll area" })).toHaveClass(
-			"focus-visible:-outline-offset-2",
+			"basalt-focus-inset",
+			"isolate",
+		);
+		expect(screen.getByRole("region", { name: "Records scroll area" }).parentElement).toHaveClass(
+			"basalt-focus-frame",
 		);
 		expect(screen.getByRole("region", { name: "Records scroll area" })).toHaveStyle({
 			maxHeight: "320px",

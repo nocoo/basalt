@@ -90,7 +90,7 @@ export function ResponsiveMasterDetail({
 				hidden={compact && detailOpen}
 				inert={compact && detailOpen}
 				className={cn(
-					"min-h-0 min-w-0 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-basalt-ring md:overflow-y-auto md:overscroll-y-contain md:border-r md:border-basalt-border",
+					"basalt-focus basalt-focus-inset min-h-0 min-w-0 md:overflow-y-auto md:overscroll-y-contain md:border-r md:border-basalt-border",
 					detailOpen && "hidden md:block",
 				)}
 				onFocusCapture={(event) => {
@@ -112,7 +112,7 @@ export function ResponsiveMasterDetail({
 				hidden={compact && !detailOpen}
 				inert={compact && !detailOpen}
 				className={cn(
-					"min-h-0 min-w-0 bg-basalt-background focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-basalt-ring md:overflow-y-auto md:overscroll-y-contain",
+					"basalt-focus basalt-focus-inset min-h-0 min-w-0 bg-basalt-background md:overflow-y-auto md:overscroll-y-contain",
 					!detailOpen && "hidden md:block",
 				)}
 			>

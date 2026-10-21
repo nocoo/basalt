@@ -20,7 +20,7 @@ export default function ReaderPage() {
 		<AppShell layout="responsive">
 			<AppSkipLink>Skip to content</AppSkipLink>
 			<AppMain>
-				<div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-basalt-space-lg md:py-basalt-space-lg">
+				<div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-basalt-layout-sm md:py-basalt-layout-sm">
 					<ContentIsland mobileSurface="edge-to-edge">
 						<AppHeader
 							sticky

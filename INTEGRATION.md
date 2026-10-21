@@ -45,7 +45,7 @@ AppShell                          ← dashboard and catalog routes
 ├── Sidebar                       ← product title + version + nav
 └── AppMain                       ← id="main-content"
     ├── AppHeader                 ← crumbs + current page | top-right
-    └── island wrap               ← px-basalt-space-lg pb-basalt-space-lg md:px-basalt-space-lg md:pb-basalt-space-lg
+    └── island wrap               ← px-basalt-space-lg pb-basalt-space-lg md:px-basalt-layout-sm md:pb-basalt-layout-sm
         └── ContentIsland
             ├── PageHeader        ← title + subtitle | create / short filters
             │                     ← optional own-row complex filters
@@ -390,7 +390,7 @@ Bounded shells use border-box `height/max-height: 100dvh`. Document shells use `
   <AppSkipLink>Skip to content</AppSkipLink>
   <AppMain>
     <AppHeader title="Field notes" actions={actions} />
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-basalt-space-lg md:pb-basalt-space-lg">
+    <div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-basalt-layout-sm md:pb-basalt-layout-sm">
       <ContentIsland mobileSurface="edge-to-edge">
         <div className="mx-auto max-w-prose px-basalt-space-lg py-basalt-space-lg md:p-0">{content}</div>
       </ContentIsland>
@@ -428,11 +428,11 @@ Do not wrap those regions in another full-viewport column. Do not set `h-screen`
 
 ### Shared navigation geometry
 
-`SidebarNav` and `NavigationMenuList` own one `--basalt-space-nav-inset` (8px) boundary and `--basalt-space-nav-gap` (2px) between rows. Sidebar groups do not add another horizontal inset. Sidebar destinations and search use 8px horizontal/vertical padding, an 8px icon gap and a 22px line box for a 38px reference row. This is local to Sidebar: editable/folder rows, horizontal navigation links and menus retain 6px vertical padding and 34px rows. Header, search wrapper and footer share the same navigation inset. Do not add caller-owned `px-basalt-space-lg`, `pt-basalt-space-sm` or item-stack padding to compensate for missing package geometry.
+`SidebarNav` and `NavigationMenuList` own one `--basalt-space-nav-inset` (8px) boundary and `--basalt-space-nav-gap` (4px) between rows. Sidebar groups do not add another horizontal inset. Sidebar destinations and search use 8px horizontal/vertical padding, an 8px icon gap and a 22px line box for a 38px reference row. This is local to Sidebar: editable/folder rows, horizontal navigation links and menus retain 6px vertical padding and 34px rows. Header and search wrapper use the navigation inset. SidebarFooter instead owns 16px horizontal and bottom padding plus 8px top padding; keep the same 68px rail centering and expanded layout without duplicating that inset. Do not add caller-owned padding to compensate for missing package geometry.
 
 Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavItem` / `FolderNavItem`; `NavigationMenuList` owns horizontal/vertical Radix navigation. Both compose the existing list-local hover adapter. One background moves with transform between enabled rows. Sidebar hover appears at the actual pointer row and disappears there on leave or over a gap/disclosure label; it never launches from or returns to the active route or stale pointer focus. Only continuous row-to-row hover animates. Keyboard focus remains independent. NavigationMenuList retains its focus/selection-following behavior. Nested lists own separate highlights. Hidden, disabled and actively renamed rows are excluded. Geometry reads are batched per animation frame, same-row pointer motion causes no updates, and reduced motion disables transitions. Navigation state, routes and rename operations remain application-owned; the adapter is View-only.
 
-`SidebarHeader` and `SidebarFooter` already pad horizontally. Brand, version pill, and collapse control go directly in the header. The version string is read from the app `package.json` at build time. Never hardcode it. `SidebarPartition` aligns with row text. `SidebarGroup` adds only section spacing, never a second item gutter.
+`SidebarHeader` pads horizontally by the navigation inset; `SidebarFooter` owns its larger footer boundary. Brand, version pill, and collapse control go directly in the header. The version string is read from the app `package.json` at build time. Never hardcode it. `SidebarPartition` aligns with row text. `SidebarGroup` adds only section spacing, never a second item gutter.
 
 ```tsx excerpt:sidebar-expanded-structure
 <Sidebar collapsed={collapsed}>
@@ -662,7 +662,7 @@ export function AppFrame() {
           title={title}
           actions={<ThemeToggle aria-label={`Toggle theme (now ${theme})`} />}
         />
-        <div className="flex min-h-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-space-lg md:pb-basalt-space-lg">
+        <div className="flex min-h-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-layout-sm md:pb-basalt-layout-sm">
           <ContentIsland>
             <Outlet />
           </ContentIsland>
@@ -675,7 +675,7 @@ export function AppFrame() {
 
 <a id="appheader-and-breadcrumbs"></a>
 
-`AppHeader` defaults to `h-14`, matching `SidebarHeader`; `density="compact"` uses a 52px row with 44px minimum targets. `sticky` keeps it visible within the current scroll owner; see §6 for safe-area positioning.
+`AppHeader` defaults to `h-14`, matching `SidebarHeader`; `density="compact"` uses a 52px row with 44px minimum targets. Its horizontal inset is 8px on mobile and 12px from 768px, aligning with the outer ContentIsland wrapper rather than the island's inner card edge. `sticky` keeps it visible within the current scroll owner; see §6 for safe-area positioning.
 
 ### AppHeader API & Contracts
 
@@ -759,7 +759,7 @@ The catalog's app-local `RouteScrollReset` wraps each leaf page inside its Suspe
 
 The `/forms`, `/settings`, `/data`, and `/chat` examples demonstrate local state and simulated requests, including failure/retry and cancellation. Their viewmodels own data and timers; Views own native FormData, focus, and responsive layout. Replace the local service adapter when integrating a backend. Theme selection uses the shared provider; local profile, uploads, and chat changes do not update a real account.
 
-`PageHeader` is flush on `ContentIsland`. The island owns 16px mobile insets, 24px tablet insets, and 32px horizontal / 24px vertical desktop insets. Do not wrap the header in another card or add page padding. `PageHeader.size` is `"md" | "lg" | "xl"` (default `"md"`); larger headings use 16/24px descriptions, all title/description pairs use an 8px gap. `SectionRule variant="heading"` gives reading sections a 20px sentence-case title without the compact dashed rule. Controls and card slots keep their compact geometry.
+`PageHeader` is flush on `ContentIsland`. The island owns 16px mobile insets, 24px tablet insets, and 32px horizontal / 24px vertical desktop insets. `AppHeader` remains aligned to the outer island boundary (8px mobile, 12px from 768px), not this inner content edge. Do not wrap the header in another card or add page padding. `PageHeader.size` is `"md" | "lg" | "xl"` (default `"md"`); larger headings use 16/24px descriptions, all title/description pairs use an 8px gap. `SectionRule variant="heading"` gives reading sections a 20px sentence-case title without the compact dashed rule. Controls and card slots keep their compact geometry.
 
 ### Create and filters
 
@@ -930,7 +930,7 @@ Input, Select, secondary / outline Button use `bg-basalt-control` (`--basalt-con
 
 `Table` sets `data-basalt-table`. Zebra, hover, and selected paint on `td`, from `--basalt-zebra-fill`, `--basalt-hover` and `--basalt-selected`. Selection adds no decorative side bar or frame; semantic add/remove diff tints are preserved.
 
-Neutral selected states use the brighter `--basalt-selected` surface, readable `--basalt-selected-foreground` and navigation font weight, without decorative side bars or selected borders. Never use `accent` or `muted` to signal selection. Existing semantic checkmarks and tab underlines remain; do not add a decorative frame at the white ceiling. A moving hover layer must not erase the selected row. Sidebar, navigation menus, editable navigation and ChatInbox share this behavior and inset keyboard focus; neutral Button variants also honor `aria-pressed` and `aria-current`. Segments and tabs retain their existing measured indicator motion. Primary/destructive actions, check/radio/switch glyphs and semantic diffs keep their semantic colors. See [DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy).
+Neutral selected states use the brighter `--basalt-selected` surface, readable `--basalt-selected-foreground` and navigation font weight, without decorative side bars or selected borders. Never use `accent` or `muted` to signal selection. Existing semantic checkmarks and tab underlines remain; do not add a decorative frame at the white ceiling. A moving hover layer must not erase the selected row. Sidebar, navigation menus, editable navigation and ChatInbox share this behavior and inset keyboard focus; neutral Button variants also honor `aria-pressed` and `aria-current`. Focus is separate from selection: ordinary targets use the 1px theme `--basalt-ring` stroke with a 2px outer offset; flush targets use the same stroke inset with a 2px negative offset. External focus targets need at least 4px clearance inside their nearest clipping container; existing 4px padding counts and is not stacked. Focus does not shift layout, error indicators stay independent, and forced-colors mode may use a 2px system outline. Segments and tabs retain their existing measured indicator motion. Primary/destructive actions, check/radio/switch glyphs and semantic diffs keep their semantic colors. See [DESIGN.md](DESIGN.md#selection-and-navigation-hierarchy).
 
 `DescriptionList` is layout and type only. It is not a surface.
 
@@ -1925,7 +1925,7 @@ Thinking and ToolChips share row padding; disclosures rotate only their own chev
 
 The standalone build generates every Tailwind utility once in canonical order. Do not append handwritten copies of `.p-0`, `.bg-transparent` or other native utilities after generated axis/state rules: a later shorthand can silently erase semantic padding. Browser acceptance measures actual computed insets in both CSS entrypoints, under foreign host spacing and semantic overrides.
 
-Public Radio, Checkbox, Switch and SegmentControl group roots establish the scoped `.basalt-ui` reset. Fieldsets and legends have no browser-default padding/margin inside that boundary; standalone and Tailwind consumers must have identical group insets. Host form groups outside Basalt remain untouched.
+Public Radio, Checkbox, Switch and SegmentControl group roots establish the scoped `.basalt-ui` reset. Fieldsets and legends have no browser-default padding/margin inside that boundary; standalone and Tailwind consumers must have identical group insets. SegmentControl's horizontal scrolling viewport has 4px focus clearance on every edge and matching scroll-padding so keyboard navigation can reveal end items; the ToggleGroup track retains its 2px compact inset and 34px item geometry. Host form groups outside Basalt remain untouched.
 
 Native form legends do not participate in a fieldset's flex gap. Radio, Checkbox and Switch legends therefore own `margin-bottom: var(--basalt-space-field-gap)` (8px) independently of the group's row layout. Do not replace the semantic legend or add wrapper divs to simulate this spacing. Override the existing field-gap token when a different group density is required.
 

@@ -243,7 +243,7 @@ function CatalogCard({ item, className }: CatalogCardProps) {
 	const title = catalogNavName(item.entry);
 	const span = WIDE_GALLERY_SLUGS.has(item.entry.slug) ? "full" : "compact";
 	const titleClass =
-		"min-w-0 max-w-full text-basalt-base font-medium text-foreground [overflow-wrap:anywhere] underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+		"basalt-focus min-w-0 max-w-full text-basalt-base font-medium text-foreground [overflow-wrap:anywhere] underline-offset-4 hover:underline";
 	return (
 		<li data-catalog-card={item.entry.slug} data-gallery-span={span} className={className}>
 			<div className="flex min-w-0 max-w-full min-h-48 flex-col gap-basalt-layout p-basalt-card">

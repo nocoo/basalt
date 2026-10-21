@@ -28,8 +28,13 @@
 	text-decoration: none;
 }
 .landing :where(a, button, summary):focus-visible {
-	outline: 0.125rem solid hsl(var(--basalt-primary));
-	outline-offset: 0.3125rem;
+	outline: var(--basalt-focus-width) solid hsl(var(--basalt-ring));
+	outline-offset: var(--basalt-focus-offset);
+}
+@media (forced-colors: active) {
+	.landing :where(a, button, summary):focus-visible {
+		outline: 2px solid Highlight;
+	}
 }
 .landing :where(h1, h2, h3) {
 	font-family: var(--basalt-font-display);
@@ -1077,10 +1082,6 @@
 }
 .landing-brand-motion:hover {
 	background: var(--basalt-scene-glass-860);
-}
-.landing-brand-motion:focus-visible {
-	outline: 0.125rem solid var(--landing-brand-ink);
-	outline-offset: 0.1875rem;
 }
 .landing-brand-motion:disabled {
 	cursor: wait;

@@ -141,7 +141,7 @@ function CodePanel({
 					event.currentTarget.scrollLeft +=
 						((event.key === "ArrowRight" ? 1 : -1) * event.currentTarget.clientWidth) / 4;
 				}}
-				className="min-h-0 min-w-0 overflow-auto overscroll-x-contain overscroll-y-auto py-basalt-panel-y font-mono text-basalt-sm leading-[var(--basalt-line-body)] outline-hidden focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-basalt-ring"
+				className="basalt-focus basalt-focus-inset min-h-0 min-w-0 overflow-auto overscroll-x-contain overscroll-y-auto py-basalt-panel-y font-mono text-basalt-sm leading-[var(--basalt-line-body)]"
 			>
 				<span className="flex min-w-max">
 					{lineNumbers && (

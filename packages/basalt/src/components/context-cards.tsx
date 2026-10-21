@@ -108,7 +108,7 @@ export function ContextCards({
 											href={chunk.href}
 											target="_blank"
 											rel="noopener noreferrer"
-											className="inline-flex max-w-full items-center gap-basalt-control-gap py-basalt-space-xs text-basalt-sm text-basalt-foreground outline-hidden hover:bg-basalt-hover focus-visible:ring-2 focus-visible:ring-basalt-ring"
+											className="basalt-focus inline-flex max-w-full items-center gap-basalt-control-gap py-basalt-space-xs text-basalt-sm text-basalt-foreground hover:bg-basalt-hover"
 										>
 											<FileText
 												aria-hidden="true"

@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { createRef, Fragment } from "react";
 import { describe, expect, it, vi } from "vitest";
+import { Button } from "./button";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "./collapsible";
 import { LayerCard, type LayerCardProps } from "./layer-card";
 
@@ -23,6 +24,11 @@ describe("LayerCard", () => {
 		const trigger = screen.getByRole("button", { name: "Details" });
 		expect(trigger).toHaveAttribute("data-slot", "card-header");
 		expect(trigger).toHaveClass(
+			"basalt-focus",
+			"basalt-focus-inset",
+			"rounded-t-basalt-lg",
+			"last:rounded-b-basalt-lg",
+			"data-[state=closed]:rounded-b-basalt-lg",
 			"px-basalt-card",
 			"py-basalt-card-sm",
 			"justify-between",
@@ -37,6 +43,23 @@ describe("LayerCard", () => {
 		expect(trigger).toHaveAttribute("aria-expanded", "true");
 		expect(screen.getByText("Expanded content")).toHaveClass("p-basalt-card");
 		expect(screen.getAllByRole("button")).toHaveLength(1);
+	});
+	it("contains a full-card button focus and uses the card radius", () => {
+		render(
+			<LayerCard>
+				<LayerCard.Header asChild>
+					<Button variant="ghost">Open card</Button>
+				</LayerCard.Header>
+			</LayerCard>,
+		);
+		const button = screen.getByRole("button", { name: "Open card" });
+		expect(button).toHaveClass(
+			"basalt-focus-inset",
+			"rounded-t-basalt-lg",
+			"last:rounded-b-basalt-lg",
+		);
+		expect(button).not.toHaveClass("rounded-basalt-md");
+		expect(button.parentElement).toHaveClass("overflow-hidden");
 	});
 	it("paints an unstructured surface with default padding", () => {
 		render(<LayerCard>Body</LayerCard>);

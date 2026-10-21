@@ -17,7 +17,8 @@ describe("IconPicker", () => {
 		const search = await screen.findByRole("textbox", { name: "Icon: search" });
 		expect(document.querySelector('[data-slot="selection-indicator"]')).toBeNull();
 		expect(screen.getByRole("radio", { name: "Folder" })).toHaveTextContent("Folder");
-		expect(screen.getByRole("radio", { name: "Folder" })).toHaveClass("focus-visible:ring-inset");
+		expect(screen.getByRole("radio", { name: "Folder" })).toHaveClass("basalt-focus");
+		expect(screen.getByRole("radiogroup", { name: "Icon" })).toHaveClass("p-basalt-space-sm");
 		fireEvent.change(search, { target: { value: "not found" } });
 		expect(screen.getByRole("status")).toHaveTextContent("No icons found.");
 		fireEvent.change(search, { target: { value: "  BOO  " } });
@@ -53,8 +54,9 @@ describe("IconPicker", () => {
 		expect(folder).toHaveClass(
 			"data-[state=on]:bg-basalt-primary",
 			"data-[state=on]:text-basalt-primary-foreground",
-			"data-[state=on]:focus-visible:ring-basalt-primary-foreground",
+			"basalt-focus",
 		);
+		expect(folder).not.toHaveClass("basalt-focus-inset");
 		expect(folder.className).not.toMatch(/border-basalt-primary\/40|border-transparent/);
 		expect(folder).toHaveAttribute("data-state", "on");
 		expect(screen.getByRole("radio", { name: "Book" })).toHaveAttribute("data-state", "off");
