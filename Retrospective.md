@@ -632,3 +632,8 @@ WebKit lane. The release remained unpublished. The package job now allows 30
 minutes and the release waiter allows 35 minutes, including queue/setup margin.
 All gate commands and assertions remain unchanged; a regression verifies that
 the waiter permits a late successful run but still stops at its own deadline.
+
+The manual resume command also used `$sha:refs/heads/main` in zsh, where the colon
+was parsed as a parameter modifier. Git rejected the malformed refspec before
+any push. Shell-composed refspecs must delimit the revision as
+`${sha}:refs/heads/main`; do not rely on Bash interpolation rules in zsh.
