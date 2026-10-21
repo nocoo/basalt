@@ -339,7 +339,7 @@ export async function waitForCiSuccess(
 	opts: CiPollOptions = {},
 ): Promise<void> {
 	const pollIntervalMs = opts.pollIntervalMs ?? 15000;
-	const timeoutMs = opts.timeoutMs ?? 20 * 60 * 1000;
+	const timeoutMs = opts.timeoutMs ?? 35 * 60 * 1000;
 	const startTime = Date.now();
 
 	ctx.log(`Waiting for CI workflow on commit ${sha} (main push)...`);

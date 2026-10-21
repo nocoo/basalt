@@ -623,3 +623,12 @@ Version-only releases now update workspace metadata once, install with
 `--frozen-lockfile --no-save`, and reject any subsequent lockfile mutation before
 staging. A negative regression fixture exercises a successful install that still
 rewrites registry URLs; installation success alone is not publication evidence.
+
+## 2026-10-21: Expanded browser coverage exceeded the package job deadline
+
+CI run 39538577913 passed quality, security, consumers, showcase, and Chromium
+layout/focus checks, then hit the package job's 20-minute limit during the final
+WebKit lane. The release remained unpublished. The package job now allows 30
+minutes and the release waiter allows 35 minutes, including queue/setup margin.
+All gate commands and assertions remain unchanged; a regression verifies that
+the waiter permits a late successful run but still stops at its own deadline.

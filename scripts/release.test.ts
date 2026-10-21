@@ -2,7 +2,7 @@ import { spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import {
 	bumpVersion,
 	classifyCommits,
@@ -14,6 +14,7 @@ import {
 	type RunnerContext,
 	updateWorkspaceLockVersion,
 	VERSION_TARGETS,
+	waitForCiSuccess,
 } from "./release";
 
 describe("parseSemver", () => {
@@ -738,6 +739,21 @@ describe("executeRelease gates and failure paths", () => {
 		await expect(executeRelease({ bumpArg: "patch", isDryRun: false }, ctx)).rejects.toThrow(
 			/conclusion: failure/,
 		);
+	});
+
+	it("waits beyond the package job limit but stops at the default 35-minute deadline", async () => {
+		const { ctx } = createMockRunnerContext();
+		const clock = vi
+			.spyOn(Date, "now")
+			.mockReturnValueOnce(0)
+			.mockReturnValue(31 * 60 * 1000);
+		try {
+			await expect(waitForCiSuccess("commit123", ctx)).resolves.toBeUndefined();
+			clock.mockReturnValueOnce(0).mockReturnValue(35 * 60 * 1000);
+			await expect(waitForCiSuccess("commit123", ctx)).rejects.toThrow("after 2100s");
+		} finally {
+			clock.mockRestore();
+		}
 	});
 
 	it("aborts release if CI times out", async () => {

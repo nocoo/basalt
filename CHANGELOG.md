@@ -7,6 +7,7 @@
 ### Fixed
 - Unify focus and container boundaries
 - Keep temporary installation mirrors out of version-only release lockfiles.
+- Allow the complete package and dual-browser release gates to finish within a bounded CI deadline.
 
 ## [3.2.0] - 2026-10-20
 
