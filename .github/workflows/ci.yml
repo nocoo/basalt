@@ -23,7 +23,7 @@ jobs:
     uses: nocoo/base-ci/.github/workflows/test-job.yml@ac635753a869cb85fad1f52aae4ccbd6119f3cae # main 2026-10-22
     with:
       runtime-version: "1.4.0"
-      node-version: "24.20.0"
+      node-version: "24.22.1"
       install-policy: "trusted"
       browser: "chromium"
       timeout-minutes: 30
