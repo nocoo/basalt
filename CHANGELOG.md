@@ -1,5 +1,14 @@
 # Changelog
 
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+Version headings list only versions published to npm as `@nocoo/basalt`; each
+date is the npm publish date in Beijing time (UTC+8). Notes for versions that
+were prepared but never published are folded into the next published version.
+
 ## [Unreleased]
 
 ## [3.2.1] - 2026-10-21
@@ -10,6 +19,8 @@
 - Allow the complete package and dual-browser release gates to finish within a bounded CI deadline.
 
 ## [3.2.0] - 2026-10-20
+
+Includes the 3.1.1 notes; 3.1.1 was never published to npm.
 
 ### Added
 - Enforce island surface hierarchy, four-tier typography, and refined hover and dialog tokens
@@ -24,13 +35,11 @@
 - Bump i18next (#581)
 - Bump wrangler (#579)
 - Bump lucide-react (#578)
-
-## [3.1.1] - 2026-10-19
-
-### Changed
 - Refresh catalog and workspace dependencies with synchronized lockfile metadata.
 
 ## [3.1.0] - 2026-10-14
+
+Includes the 3.0.1 notes; 3.0.1 was never published to npm.
 
 ### Added
 - Add logical table text alignment, a shared sortable header, and an explicit attached-edge mode for DataTable.
@@ -39,17 +48,13 @@
 - Standardize semantic spacing across page sections, cards, forms, sidebars, and overlay footers without enlarging compact controls.
 - Align table headers, cells, actions, and framed-table edges through shared spacing tokens in both Tailwind and standalone CSS.
 - Incorporate the dependency refresh and shared CI upgrade, retaining the full consumer verification budget.
+- Refresh catalog, Radix primitives, and publishable package dependencies with synchronized lockfile metadata.
 
 ### Fixed
 - Keep sidebar hover entry and exit at the pointer target instead of animating from the active page or stale focus.
 - Restore table caption insets and preserve logical edge ownership in RTL, nested tables, and row-span layouts.
 - Let enlarged dialog titles wrap without pushing the close action outside the panel.
 - Verify the visible homepage footer version after deployment.
-
-## [3.0.1] - 2026-10-13
-
-### Changed
-- Refresh catalog, Radix primitives, and publishable package dependencies with synchronized lockfile metadata.
 
 ## [3.0.0] - 2026-10-09
 
@@ -89,7 +94,6 @@
 - Refresh development and consumer dependencies; align deployment tooling with the lockfile.
 - Move the repository handbook to AGENTS.md and remove unused FAQ mock data.
 
-
 ## [2.1.8] - 2026-09-17
 
 ### Fixed
@@ -102,41 +106,7 @@
 
 ## [2.1.7] - 2026-09-10
 
-### Changed
-- Simplify component library internals
-- Align lucide-react with root
-- Sync mobile motion guidance
-- Upgrade lucide-react to 1.43.0
-
-### Fixed
-- Show landing header links on mobile
-- Make mobile tilt opt in
-- Enable mobile tilt by default
-- Refine tower card and mobile motion
-
-### Removed
-- [CO][20260910-0204] Remove unused previewRobotTag and serviceDocLink
-
-## [2.1.6] - 2026-09-09
-
-### Changed
-- Keep mobile tower tilt off by default. Request motion permission only after an explicit click on Enable tilt, so ordinary touches never open a permission prompt.
-
-## [2.1.5] - 2026-09-09
-
-### Added
-- Enable corner-tower tilt by default on mobile, without an activation button. Request native motion permission on the first touch of the artwork only when required, and preserve touch dragging and vertical page scrolling.
-
-### Fixed
-- Remove the brand card's lower-edge seams by painting the backdrop as one layer, clipping it once, and removing the adjacent divider and card outline.
-
-## [2.1.4] - 2026-09-09
-
-### Fixed
-- Keep the palace backdrop and animated tower layers inside the brand card's rounded boundary on mobile browsers.
-- Deploy with Wrangler 4 so static pages honor Worker-first routing, including www redirects and security headers. Verify production redirects, the live version, and prerendered HTML after every deployment.
-
-## [2.1.3] - 2026-09-09
+Includes the 2.1.3, 2.1.4, 2.1.5 and 2.1.6 notes; those versions were never published to npm.
 
 ### Added
 - Self-hosted Open Graph, Twitter, JSON-LD, sitemap, robots and `llms.txt` so search and AI crawlers can read the catalog without JavaScript.
@@ -146,6 +116,11 @@
 - Uncached `/api/live` response reports the deployed version from the root package manifest.
 
 ### Changed
+- Simplify component library internals
+- Align lucide-react with root
+- Sync mobile motion guidance
+- Upgrade lucide-react to 1.43.0
+- Add mobile corner-tower tilt as an opt-in: request motion permission only after an explicit click on Enable tilt, so ordinary touches never open a permission prompt; touch dragging and vertical page scrolling are preserved. (Unpublished 2.1.5 briefly enabled tilt by default with a permission request on first touch; 2.1.6 reverted that before 2.1.7.)
 - Rebuilt the landing page with shared prerendered content, theme-aware dashboard previews, template links, installation guidance, and accessible FAQs.
 - Pair daylight and twilight landscapes from the same 2880px master composition beneath a floating glass header; retain responsive 3200px dashboard captures.
 - Simplify the landing header to an icon-only GitHub link and a light/dark switch that initially follows the system and remembers explicit choices.
@@ -157,6 +132,11 @@
 - Social card places the `basalt.` wordmark beside the corner tower on the pale engineering field.
 
 ### Fixed
+- Show landing header links on mobile
+- Refine tower card and mobile motion
+- Remove the brand card's lower-edge seams by painting the backdrop as one layer, clipping it once, and removing the adjacent divider and card outline.
+- Keep the palace backdrop and animated tower layers inside the brand card's rounded boundary on mobile browsers.
+- Deploy with Wrangler 4 so static pages honor Worker-first routing, including www redirects and security headers. Verify production redirects, the live version, and prerendered HTML after every deployment.
 - Remove the global 720px crawler styles that constrained the landing page, dashboard, and component library; restore document scrolling for standalone pages.
 - Separate landing and dashboard navigation, and retain the full available dashboard width when entering the catalog or collapsing the sidebar.
 - Keep screen-reader labels inside the dashboard scroll boundary, and serve prerendered HTML at the same extensionless URLs used by the sitemap and canonical tags.
@@ -164,24 +144,23 @@
 - Contain positioned component previews within their cards and wrap source filenames to prevent horizontal overflow in the catalog.
 - Install locked dependencies before regenerating and staging release artifacts so prerendered content matches clean CI builds and version information stays synchronized.
 
+### Removed
+- [CO][20260910-0204] Remove unused previewRobotTag and serviceDocLink
+
 ## [2.1.2] - 2026-09-08
+
+Includes the 2.1.1 notes; 2.1.1 was never published to npm.
 
 ### Added
 - Load Open Graph and Twitter card metadata from the Hexly share API.
-
-### Fixed
-- Solid color Badge variants keep white label text in both themes, including Home Ready status chips.
-- Relax consumer contrast for solid color badges so white labels can sit on candy fills.
-
-## [2.1.1] - 2026-09-08
-
-### Added
 - Library showcase pages for loading skeletons (`/loading-states`), motion (`/animation`) and dense tables (`/tables`).
 
 ### Changed
 - Replace the obsidian corner-tower mark with the Hanbaiyu marble and candy-color presentation; navigation, favicons and the embedded library mark stay transparent, while README and social images keep the pale engineering field.
 
 ### Fixed
+- Solid color Badge variants keep white label text in both themes, including Home Ready status chips.
+- Relax consumer contrast for solid color badges so white labels can sit on candy fills.
 - Keep the sidebar logo on a shared left edge while the rail width animates.
 - Align the collapsed sidebar search control with the icon rail size, centering and spacing.
 - Stop nested full-viewport sidebar columns from leaking wheel scroll into the document and opening blank space below the shell.
@@ -257,6 +236,8 @@
 
 ## [2.0.2] - 2026-09-03
 
+Includes the 2.0.1 notes; 2.0.1 was never published to npm.
+
 ### Added
 - Add section-rule page chrome
 - Enrich chart catalog mock data
@@ -265,6 +246,9 @@
 - Add description list component
 - Nest layercard surfaces with well
 - Add nested surface css engine
+- Add automated release script
+- Read app version from package.json
+- Share theme palette with header picker
 
 ### Changed
 - Spell out mvp chrome setup
@@ -278,6 +262,8 @@
 - Sync 01 version with package.json
 - Add claude agent handbook
 - Add Retrospective.md for accident routing
+- Rename chrome guide to integration
+- Add app chrome guide for agents
 
 ### Fixed
 - Collapse catalog index filters
@@ -287,86 +273,40 @@
 - Parse empty jsx attrs in standalone css
 - Paint alert dialog as surface root
 - Paint tables and controls from surface
-
-## [2.0.1] - 2026-09-03
-
-### Added
-- Add automated release script
-- Read app version from package.json
-- Share theme palette with header picker
-
-### Changed
-- Rename chrome guide to integration
-- Add app chrome guide for agents
-
-### Fixed
 - Date changelog entries in local timezone
 - Stop ci catalog test timeouts
 
 ## [2.0.0] - 2026-09-03
 
-First stable 2.0. Includes rc.1–rc.3.
+First stable 2.0. Includes the 2.0.0-rc.2 and 2.0.0-rc.3 notes; those prereleases were never published to npm.
 
 ### Added
 
 - Publishable `@nocoo/basalt` package with granular ESM exports, Tailwind v4
   and standalone CSS, and consumer tarball gates.
-- Shared `ChartLegend` and a custom chart tooltip (swatch, muted label,
-  tabular value, popover chrome).
-- Accent swatches (`AccentProvider`) with a showcase header picker persisted
-  to `localStorage`.
-
-### Changed
-
-- Showcase login is the badge card only.
-- LoadingScreen is a small mark and shimmer bar.
-- Chart cards are one L2 surface; cartesian plots use compact margins.
-- Demo pages consume library Table, Button, Link, SensitiveInput, and
-  InputArea.
-
-### Fixed
-
-- Money and percent examples use integer series, named labels, and formatted
-  tooltip/axis values instead of raw `y` keys.
-- Legend markers follow the lead `color` prop and stay inside chart height.
-- Heatmap and metric cards no longer wrap plots in a second border.
-
-## [2.0.0-rc.3] - 2026-09-02
-
-### Added
-
-- Shared `ChartLegend` below cartesian and donut plots (`showLegend`).
-
-### Changed
-
-- Showcase chart cards are one L2 surface; `/components` no longer nests
-  those cards in a second section card.
-
-### Fixed
-
-- Bar/line metric cards no longer wrap the plot in an inner border.
-- Legend markers follow the lead `color` prop, and stay inside the chart
-  height.
-
-## [2.0.0-rc.2] - 2026-09-02
-
-### Added
-
+- Shared `ChartLegend` below cartesian and donut plots (`showLegend`) and a
+  custom chart tooltip (swatch, muted label, tabular value, popover chrome).
 - Accent swatches (`AccentProvider`) that restyle `--basalt-primary`,
-  `--basalt-ring`, and `--basalt-chart-1`, with a header picker on the
-  showcase that persists the choice.
+  `--basalt-ring`, and `--basalt-chart-1`, with a showcase header picker
+  persisted to `localStorage`.
 
 ### Changed
 
 - Showcase login is the badge card only; `/badge-login` is gone.
 - LoadingScreen is a small mark and shimmer bar.
+- Chart cards are one L2 surface; `/components` no longer nests those cards
+  in a second section card.
 - Cartesian charts use compact plot margins and quieter tooltips.
 - Demo pages consume library Table, Button, Link, SensitiveInput, and
   InputArea instead of leftover local copies.
 
 ### Fixed
 
-- HeatmapCard no longer draws a second card inside the page surface.
+- Money and percent examples use integer series, named labels, and formatted
+  tooltip/axis values instead of raw `y` keys.
+- Legend markers follow the lead `color` prop and stay inside chart height.
+- Heatmap and bar/line metric cards no longer wrap plots in a second border;
+  HeatmapCard no longer draws a second card inside the page surface.
 
 ## [2.0.0-rc.1] - 2026-09-02
 
@@ -383,9 +323,15 @@ First stable 2.0. Includes rc.1–rc.3.
 - Site and package versions now share root `package.json` as the source of
   truth. Sidebar badge and `/api/live` read that value.
 
-## [1.3.5] - 2026-07-29
+## Pre-npm history
 
-### Fixed
+The 1.x releases below predate the `@nocoo/basalt` package. The repository
+root was a private catalog app (`"private": true`) and nothing was published
+to npm for these versions; they are kept for history only.
+
+### [1.3.5] - 2026-07-29
+
+#### Fixed
 
 - **Security**: Release the `postcss` root override (`8.5.22`) that
   closes GHSA-r28c-9q8g-f849 (high, path traversal in source-map
@@ -394,9 +340,9 @@ First stable 2.0. Includes rc.1–rc.3.
   consolidates every resolution to `8.5.22`. Direct `postcss` pin and
   `vite` (already on `postcss@8.5.19`) unchanged. Closes basalt#291.
 
-## [1.3.4] - 2026-07-21
+### [1.3.4] - 2026-07-21
 
-### Changed
+#### Changed
 
 - **Dependencies**:
   - `@testing-library/jest-dom` ^6.9.1 → 7.0.0 (MAJOR). v7 requires
@@ -409,9 +355,9 @@ First stable 2.0. Includes rc.1–rc.3.
     `PieChartWidget` continues to work unchanged.
   Closes basalt#254, #255.
 
-## [1.3.3] - 2026-07-20
+### [1.3.3] - 2026-07-20
 
-### Changed
+#### Changed
 
 - **Dependencies (patch/minor bumps)**:
   - `postcss` 8.5.19 → 8.5.20
@@ -441,17 +387,17 @@ First stable 2.0. Includes rc.1–rc.3.
   - `@radix-ui/react-tooltip` 1.2.12 → 1.2.13
   Closes basalt#228, #229, #230, #231, #232, #233, #234, #235, #236, #237, #238, #239, #240, #241, #242, #243, #244, #245, #246, #247, #248, #249, #250, #251, #252.
 
-## [1.3.2] - 2026-07-18
+### [1.3.2] - 2026-07-18
 
-### Changed
+#### Changed
 
 - **Dependencies (minor bump)**:
   - `lucide-react` 1.24.0 → 1.25.0
   Closes basalt#226.
 
-## [1.3.1] - 2026-07-17
+### [1.3.1] - 2026-07-17
 
-### Changed
+#### Changed
 
 - **Dependencies (patch/minor bumps)**:
   - `@biomejs/biome` 2.5.3 → 2.5.4
@@ -460,9 +406,9 @@ First stable 2.0. Includes rc.1–rc.3.
   - `vite` 8.1.4 → 8.1.5
   Closes basalt#221, #222, #223, #224.
 
-## [1.3.0] - 2026-07-16
+### [1.3.0] - 2026-07-16
 
-### Fixed
+#### Fixed
 
 - **Mobile drawer regression**: the route-change effect in `DashboardLayout`
   had an empty dependency array left over from a stale `eslint-disable`
@@ -473,20 +419,20 @@ First stable 2.0. Includes rc.1–rc.3.
   silently type-checked nothing. Now runs both `tsconfig.app.json` and
   `tsconfig.node.json` explicitly — future TS errors actually get caught.
 
-### Removed
+#### Removed
 
 - All six remaining `eslint-disable` comments across `src/`
   (`react-hooks/set-state-in-effect`, `react-refresh/only-export-components`) —
   the migration commit had claimed to remove them but missed these six.
   Biome has no equivalent rules, so the comments were dead weight.
 
-### Added
+#### Added
 
 - Regression test `src/test/components/DashboardLayout.test.tsx` covering
   the mobile-drawer scroll lock + route-change close flow, so this
   particular regression cannot resurface silently.
 
-### Changed
+#### Changed
 
 - `README.md`: tech-stack table now advertises Vite 8 / TypeScript 7
   (not the pre-migration 7 / 5.9), and the "Run tests" snippet uses
@@ -497,9 +443,9 @@ First stable 2.0. Includes rc.1–rc.3.
 - `osv-scanner.toml`: dropped ignored-vuln entries that referenced the
   now-deleted ESLint toolchain.
 
-## [1.2.1] - 2026-07-15
+### [1.2.1] - 2026-07-15
 
-### Changed
+#### Changed
 
 - **Toolchain**: Replaced ESLint (with `typescript-eslint`) by [Biome](https://biomejs.dev) 2.5.3.
   Biome is now the single tool for lint + format + import sorting. `eslint.config.js` is deleted;
@@ -511,12 +457,12 @@ First stable 2.0. Includes rc.1–rc.3.
   pre-push runs `build && test:coverage && lint && osv-scanner`. `lint-staged` now runs
   `biome check --error-on-warnings --no-errors-on-unmatched` over the staged JS/TS/JSON/CSS files.
 
-### Removed
+#### Removed
 
 - `eslint`, `@eslint/js`, `eslint-plugin-react-hooks`, `eslint-plugin-react-refresh`,
   `typescript-eslint`, `globals` — full ESLint toolchain and all inline `eslint-disable` comments.
 
-### Fixed
+#### Fixed
 
 - Refactor `document.getElementById("root")!` in `src/main.tsx` to a guarded lookup that throws
   a clear error if the mount point is missing (removes `noNonNullAssertion` violation).
@@ -524,9 +470,9 @@ First stable 2.0. Includes rc.1–rc.3.
 - Every raw `<button>` now carries an explicit `type` attribute (`useButtonType` a11y).
 - Applied Biome import ordering and tab-indent formatting across the codebase.
 
-## [1.1.1] - 2026-06-11
+### [1.1.1] - 2026-06-11
 
-### Changed
+#### Changed
 
 - **Dependencies**: Bumped 46 dependencies across patch, minor, and MAJOR upgrades.
   - Radix UI suite: 24 packages bumped to latest patch/minor versions.
@@ -538,24 +484,19 @@ First stable 2.0. Includes rc.1–rc.3.
   - **MAJOR**: `sonner` 1.7 → 2.0, `tailwind-merge` 2.6 → 3.6, `jsdom` 28 → 29, `@types/node` 22 → 25, `globals` 15 → 17.
   - Patch: react/react-dom 19.2.6 → 19.2.7, vite 8.0.10 → 8.0.16, vitest 4.1.6 → 4.1.8, plus other minor/patch bumps.
 
-### Added
+#### Added
 
 - `src/components/icons/github.tsx` — local Github icon component using `createLucideIcon`, replacing the brand icon removed from lucide-react v1.
 
-## [1.1.0] - 2026-05-01
+### [1.1.0] - 2026-05-01
 
-### Changed
+#### Changed
 
 - Minor version bump to validate CI/CD pipeline.
 
-All notable changes to this project will be documented in this file.
+### [1.0.0] - 2026-02-23
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-## [1.0.0] - 2026-02-23
-
-### Added
+#### Added
 
 - **i18n**: Full internationalization support with English and Chinese translations
 - **Language toggle**: Dropdown in header for switching between languages
@@ -578,7 +519,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **SlotBarChart**: Time-slot bar chart for schedule visualizations
 - **Comprehensive test suite**: 116 tests across models, viewmodels, and page smoke tests
 
-### Changed
+#### Changed
 
 - Upgraded to React 19, Vite 7, Tailwind CSS 4, React Router 7, Recharts 3
 - Migrated from npm to bun package manager
