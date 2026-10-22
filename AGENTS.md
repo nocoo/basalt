@@ -70,7 +70,7 @@ bun run package:prepublish
 | pre-commit | Staged index snapshot: staged-source package build, typecheck, lint, UT with all four coverage floors, skip/only/empty rejection, staged Gitleaks | Reduce full-gate wall time (~8 min on a loaded host) toward the <30s target |
 | pre-push | Working-tree build/coverage/lint, OSV | Applicable integration+G2 on stdin push refs, <3min |
 
-Install restores Husky. Hooks are check-only; never use `--no-verify` on commits or branch pushes. CI uses pinned `base-ci/quality.yml` and `test-job.yml` at `0394178ebcff0418c442d84a84119220f31f8987` (`v2026.9`).
+Install restores Husky. Hooks are check-only; never use `--no-verify` on commits or branch pushes. CI uses pinned `base-ci/quality.yml` and `test-job.yml` at `ac635753a869cb85fad1f52aae4ccbd6119f3cae` (`main 2026-10-22`).
 
 ## Resources and isolation
 
