@@ -29,7 +29,7 @@ jobs:
        github.event.workflow_run.head_branch == 'main' &&
        github.event.workflow_run.head_repository.full_name == github.repository &&
        github.event.workflow_run.conclusion == 'success')
-    uses: nocoo/base-ci/.github/workflows/deploy-worker.yml@0394178ebcff0418c442d84a84119220f31f8987 # v2026.9
+    uses: nocoo/base-ci/.github/workflows/deploy-worker.yml@ac635753a869cb85fad1f52aae4ccbd6119f3cae # main 2026-10-22
     with:
       expected-workflow-path: ".github/workflows/ci.yml"
       expected-workflow-name: "CI"
@@ -37,7 +37,7 @@ jobs:
       tag: ${{ github.event_name == 'push' && github.ref_name || inputs.tag || '' }}
       package-version-match: ${{ github.event_name != 'workflow_run' }}
       runtime-version: "1.4.0"
-      node-version: "24.20.0"
+      node-version: "24.22.1"
       install-policy: "blocked"
       build-command: bun run build
       environment: production
