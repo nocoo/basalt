@@ -29,7 +29,10 @@ describe("catalog entries", () => {
 			(category) => category.id !== "chart" && category.id !== "block",
 		);
 		for (const [index, category] of componentCategories.entries()) {
-			const row = design.split("\n").find((line) => line.startsWith(`| ${designNames[index]} |`));
+			const namePattern = new RegExp(
+				`^\\|\\s*${designNames[index].replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\s*\\|`,
+			);
+			const row = design.split("\n").find((line) => namePattern.test(line));
 			expect(row).toBeDefined();
 			for (const entry of libraryNavEntries(category.id)) {
 				if (entry.kind === "provider") {

@@ -653,7 +653,7 @@ export function DatePicker({
 					index = selectedIndex;
 				} else {
 					const firstInMonth = days.findIndex((date) => date?.m === activeMonth.m);
-					index = firstInMonth >= 0 ? firstInMonth : 0;
+					index = Math.max(firstInMonth, 0);
 				}
 			}
 		}

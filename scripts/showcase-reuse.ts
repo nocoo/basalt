@@ -29,7 +29,7 @@ export async function assertReusableShowcases(page: Page, baseUrl: string) {
 			await page.getByRole("combobox", { name: "Care plans: search" }).fill("wellness");
 			await page.keyboard.press("Enter");
 			await page.keyboard.press("Escape");
-			assert.match(await folders.getByRole("status").innerText(), /3 folders/);
+			assert.match(await folders.getByRole("status").textContent(), /3 folders/);
 			await folders.getByRole("button", { name: "Remove Wellness" }).click();
 			const remote = page.locator('[data-scenario="multi-select-remote-search"]');
 			await remote.getByRole("button", { name: "Care providers", exact: true }).click();
@@ -44,19 +44,22 @@ export async function assertReusableShowcases(page: Page, baseUrl: string) {
 			await page.getByRole("option", { name: /Ember/ }).waitFor();
 			await page.keyboard.press("Enter");
 			await page.keyboard.press("Escape");
-			assert.match(await remote.getByRole("status").innerText(), /Comparing care providers ember/);
+			assert.match(
+				await remote.getByRole("status").textContent(),
+				/Comparing care providers ember/,
+			);
 			await visit("filter-bar");
 			const resources = page.locator('[data-scenario="filter-bar-resources"]');
-			assert.equal(await resources.getByRole("status").innerText(), "2 resources");
+			assert.equal(await resources.getByRole("status").textContent(), "2 resources");
 			await resources.getByRole("textbox", { name: "Search resources" }).fill("no match");
-			assert.equal(await resources.getByRole("status").innerText(), "0 resources");
+			assert.equal(await resources.getByRole("status").textContent(), "0 resources");
 			await resources.getByRole("button", { name: "Clear filters" }).click();
-			assert.equal(await resources.getByRole("status").innerText(), "4 resources");
+			assert.equal(await resources.getByRole("status").textContent(), "4 resources");
 			const analytics = page.locator('[data-scenario="filter-bar-analytics"]');
 			await analytics.getByRole("button", { name: "Last 3 days" }).click();
-			assert.equal(await analytics.getByRole("status").innerText(), "6,100");
+			assert.equal(await analytics.getByRole("status").textContent(), "6,100");
 			await analytics.getByRole("button", { name: "This week" }).click();
-			assert.equal(await analytics.getByRole("status").innerText(), "10,300");
+			assert.equal(await analytics.getByRole("status").textContent(), "10,300");
 			await visit("file-dropzone");
 			const docs = page.locator('[data-scenario="file-dropzone-documents"]');
 			await docs
@@ -108,7 +111,7 @@ export async function assertReusableShowcases(page: Page, baseUrl: string) {
 			await queue.getByRole("button", { name: "Cancel Care-plan-notes-1.pdf" }).click();
 			await queue.getByRole("button", { name: "Retry Care-plan-notes-1.pdf" }).click();
 			await queue.getByRole("status").filter({ hasText: "1 completed · 1 total" }).waitFor();
-			assert.equal(await queue.getByRole("status").innerText(), "1 completed · 1 total");
+			assert.equal(await queue.getByRole("status").textContent(), "1 completed · 1 total");
 			await queue.getByRole("button", { name: "Remove Care-plan-notes-1.pdf" }).click();
 			await queue.getByRole("button", { name: "Add sample file" }).click();
 			await queue.getByRole("button", { name: "Start uploads" }).click();

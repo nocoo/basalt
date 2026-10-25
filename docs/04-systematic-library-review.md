@@ -12,23 +12,23 @@ Basalt 已有清楚的视觉语言、较完整的基础控件、严格的包产�
 
 当前成熟度不均衡。`ready` 只证明页面有文档和至少一个例子，部分组件仍有可复现的行为缺陷；文档生成、公共出口、浏览器质量门与发布流程也没有形成完整约束。继续扩大迁移前，应先处理会改变调用行为、破坏布局或使质量门误放行的问题，再扩充控件数量。
 
-| 优先级 | 本文含义 | 首批事项 |
-|---|---|---|
-| P1 | 应先于进一步扩大迁移或依赖该能力发布解决 | 质量门失效、复制即无法编译的代码、公共出口边界、禁用/表单/焦点契约、standalone 尺寸、基础文本对比度 |
-| P2 | 应在对应模块迁移前补齐 | 文档与 agent 入口、版本兼容约定、复杂数据接口、Example 功能与响应式、可访问性和动效一致性 |
-| P3 | 持续维护与精修 | 工具链统一、过期豁免清理、次要示例密度和呈现调整 |
+| 优先级 | 本文含义                                 | 首批事项                                                                                            |
+| ------ | ---------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| P1     | 应先于进一步扩大迁移或依赖该能力发布解决 | 质量门失效、复制即无法编译的代码、公共出口边界、禁用/表单/焦点契约、standalone 尺寸、基础文本对比度 |
+| P2     | 应在对应模块迁移前补齐                   | 文档与 agent 入口、版本兼容约定、复杂数据接口、Example 功能与响应式、可访问性和动效一致性           |
+| P3     | 持续维护与精修                           | 工具链统一、过期豁免清理、次要示例密度和呈现调整                                                    |
 
 证据分为三类：**复现**表示实际执行脚本或浏览器操作；**源码**表示可直接从当前实现确认；**建议**表示面向复用和维护的设计取舍。能力缺口不等于现有功能发生故障，本文分别标注。
 
 建议先处理这些问题组：
 
-| 问题组 | 编号 | 影响 |
-|---|---|---|
-| 质量与发布门 | Q01–Q04 | 失败的 build/coverage 可能通过 pre-push；CI 跳过完整类型检查；包接入门仍靠手工；tag 部署不等待同一提交 CI |
-| 安装与公共接口 | D02、D05、D06 | 四个安装示例生成非法 import；内部文件成为公共子路径；默认几何变更缺少明确兼容政策 |
-| 组件行为 | C01–C07 | 禁用链接仍执行、表单 reset 失效、Tab 焦点被拉回、弹层被裁剪、模态与焦点归还不完整 |
-| 基础视觉 | C02、C12、E01、E04、E05 | 无 Tailwind 时尺寸错误、小字对比度不足、移动端文档截断、Chat 挤压、Network 图表高度塌缩 |
-| 复用路线 | R01–R08 | 优先提炼筛选、上传、目录导航和图表能力；扩大现有组件的可组合性 |
+| 问题组         | 编号                    | 影响                                                                                                      |
+| -------------- | ----------------------- | --------------------------------------------------------------------------------------------------------- |
+| 质量与发布门   | Q01–Q04                 | 失败的 build/coverage 可能通过 pre-push；CI 跳过完整类型检查；包接入门仍靠手工；tag 部署不等待同一提交 CI |
+| 安装与公共接口 | D02、D05、D06           | 四个安装示例生成非法 import；内部文件成为公共子路径；默认几何变更缺少明确兼容政策                         |
+| 组件行为       | C01–C07                 | 禁用链接仍执行、表单 reset 失效、Tab 焦点被拉回、弹层被裁剪、模态与焦点归还不完整                         |
+| 基础视觉       | C02、C12、E01、E04、E05 | 无 Tailwind 时尺寸错误、小字对比度不足、移动端文档截断、Chat 挤压、Network 图表高度塌缩                   |
+| 复用路线       | R01–R08                 | 优先提炼筛选、上传、目录导航和图表能力；扩大现有组件的可组合性                                            |
 
 ## 2. 审查范围与实际验证
 
@@ -36,21 +36,21 @@ Basalt 已有清楚的视觉语言、较完整的基础控件、严格的包产�
 
 ### 2.1 已执行的检查
 
-| 检查 | 结果及范围 |
-|---|---|
-| `bun run typecheck` | 通过；包含 catalog 检查和应用/脚本 TypeScript 检查 |
-| `bun run lint` | 通过；773 个文件，无自动修复 |
-| `bun run build` | 展示站生产构建通过 |
-| `bun run test:coverage` | 173 个测试文件、1,428 个测试通过 |
-| 包 `build` | 通过；113 个 JS/声明入口，根入口依赖闭包校验通过 |
-| 包 `types:check` | Bundler、NodeNext 两种声明消费检查通过 |
-| 包 `pack:check` | 通过；343 个打包文件，109 对通配子路径产物 |
-| 包 `publint` | strict 检查通过 |
-| `consumer:tailwind` / `consumer:standalone` | 仓外安装 tarball、类型/构建/CSS 存在性检查通过 |
-| `consumer:next` | 21 个浏览器门相关测试通过；Next 消费端 hydration、按钮、主题切换、toast portal 检查通过 |
-| `consumer:heavy` | 图表、DatePicker、DataTable 的细粒度消费检查通过 |
-| OSV | 扫描 `bun.lock` 的 390 个包，无命中；报告 9 条未使用的 ignore |
-| Gitleaks | 对 `git archive HEAD` 导出的已提交源码快照扫描，无命中；不是完整历史扫描 |
+| 检查                                        | 结果及范围                                                                              |
+| ------------------------------------------- | --------------------------------------------------------------------------------------- |
+| `bun run typecheck`                         | 通过；包含 catalog 检查和应用/脚本 TypeScript 检查                                      |
+| `bun run lint`                              | 通过；773 个文件，无自动修复                                                            |
+| `bun run build`                             | 展示站生产构建通过                                                                      |
+| `bun run test:coverage`                     | 173 个测试文件、1,428 个测试通过                                                        |
+| 包 `build`                                  | 通过；113 个 JS/声明入口，根入口依赖闭包校验通过                                        |
+| 包 `types:check`                            | Bundler、NodeNext 两种声明消费检查通过                                                  |
+| 包 `pack:check`                             | 通过；343 个打包文件，109 对通配子路径产物                                              |
+| 包 `publint`                                | strict 检查通过                                                                         |
+| `consumer:tailwind` / `consumer:standalone` | 仓外安装 tarball、类型/构建/CSS 存在性检查通过                                          |
+| `consumer:next`                             | 21 个浏览器门相关测试通过；Next 消费端 hydration、按钮、主题切换、toast portal 检查通过 |
+| `consumer:heavy`                            | 图表、DatePicker、DataTable 的细粒度消费检查通过                                        |
+| OSV                                         | 扫描 `bun.lock` 的 390 个包，无命中；报告 9 条未使用的 ignore                           |
+| Gitleaks                                    | 对 `git archive HEAD` 导出的已提交源码快照扫描，无命中；不是完整历史扫描                |
 
 四项覆盖率为 statements **97.44%**、branches **95.26%**、functions **97.87%**、lines **97.60%**。这是配置范围内的**汇总覆盖率**，不是每个组件都达到 95%，也不是浏览器行为覆盖率。
 
@@ -145,14 +145,14 @@ Kumo 的可借鉴点是 [AI Usage Guide](../../../references/kumo/packages/kumo/
 
 ### 4.1 与 Kumo 对照应采用的标准
 
-| 维度 | Basalt 现状 | Kumo 中可借鉴的具体机制 |
-|---|---|---|
-| 变体与类型 | CVA、原生/Radix props、部分 JSDoc；默认值元数据不均衡 | [Button](../../../references/kumo/packages/kumo/src/components/button/button.tsx) 的 variants/defaults 元数据、派生类型、icon-only 可访问名称约束 |
-| 组件契约 | 基础输入和 Radix 包装较完整，部分自制控件的焦点/表单组合失效 | 统一 controlled/uncontrolled、ref、键盘和 primitive 使用方式；无需整体更换 Radix |
-| 模板与块 | ResourceList 固定两列；DeleteResource 接口较薄 | [ResourceListPage](../../../references/kumo/packages/kumo/src/blocks/resource-list/resource-list.tsx) 的组合式页面壳；[DeleteResource](../../../references/kumo/packages/kumo/src/blocks/delete-resource/delete-resource.tsx) 的确认/错误反馈接口 |
-| 发布面 | 小根入口值得保留，通配子路径边界过宽 | 显式 exports、[changeset 校验](../../../references/kumo/ci/scripts/validate-kumo-changeset.ts) |
-| 文档与 agent | 内部生成能力较强，对外分发不足 | registry/schema、Markdown、AI guide、版本一致的发布链 |
-| 质量标准 | jsdom/覆盖率强，真实控件浏览器契约弱 | [browser config](../../../references/kumo/packages/kumo/vitest.browser.config.ts)、[variant lint](../../../references/kumo/packages/kumo/lint/enforce-variant-standard.js) |
+| 维度         | Basalt 现状                                                  | Kumo 中可借鉴的具体机制                                                                                                                                                                                                                           |
+| ------------ | ------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 变体与类型   | CVA、原生/Radix props、部分 JSDoc；默认值元数据不均衡        | [Button](../../../references/kumo/packages/kumo/src/components/button/button.tsx) 的 variants/defaults 元数据、派生类型、icon-only 可访问名称约束                                                                                                 |
+| 组件契约     | 基础输入和 Radix 包装较完整，部分自制控件的焦点/表单组合失效 | 统一 controlled/uncontrolled、ref、键盘和 primitive 使用方式；无需整体更换 Radix                                                                                                                                                                  |
+| 模板与块     | ResourceList 固定两列；DeleteResource 接口较薄               | [ResourceListPage](../../../references/kumo/packages/kumo/src/blocks/resource-list/resource-list.tsx) 的组合式页面壳；[DeleteResource](../../../references/kumo/packages/kumo/src/blocks/delete-resource/delete-resource.tsx) 的确认/错误反馈接口 |
+| 发布面       | 小根入口值得保留，通配子路径边界过宽                         | 显式 exports、[changeset 校验](../../../references/kumo/ci/scripts/validate-kumo-changeset.ts)                                                                                                                                                    |
+| 文档与 agent | 内部生成能力较强，对外分发不足                               | registry/schema、Markdown、AI guide、版本一致的发布链                                                                                                                                                                                             |
+| 质量标准     | jsdom/覆盖率强，真实控件浏览器契约弱                         | [browser config](../../../references/kumo/packages/kumo/vitest.browser.config.ts)、[variant lint](../../../references/kumo/packages/kumo/lint/enforce-variant-standard.js)                                                                        |
 
 专业程度应按契约、可组合性、可访问性、状态完整性、版本维护判断，不能只按「有没有同名组件」或代码行数判断。Kumo 也有自己的历史包袱，不宜照搬全部实现。
 
@@ -252,13 +252,13 @@ localStorage 的 get/set 没有异常处理。浏览器模拟 Storage 拒绝访�
 
 **位置：**[tokens.css](../packages/basalt/src/styles/tokens.css)、[AccentProvider](../packages/basalt/src/providers/accent.tsx)、Button/Badge/导航文字。
 
-| 典型组合 | 约计对比度 | 问题 |
-|---|---|---|
-| 浅色 muted 文本 `#737373` / L0 `#eeeff2` | 4.12:1 | 常用于小字，低于 4.5:1 |
-| 同一文本 / L1 `#f6f7f8` | 4.42:1 | 边界仍不足 |
-| 深色 muted 文本 `#7a7a7a` / L2 `#1f1f1f` | 3.84:1 | 小字不达标 |
-| 同一文本 / L1 `#1b1b1b` | 4.01:1 | 小字不达标 |
-| 白字 / primary `#3c83f6` | 3.63:1 | 默认按钮等普通字号文字不足 |
+| 典型组合                                 | 约计对比度 | 问题                       |
+| ---------------------------------------- | ---------- | -------------------------- |
+| 浅色 muted 文本 `#737373` / L0 `#eeeff2` | 4.12:1     | 常用于小字，低于 4.5:1     |
+| 同一文本 / L1 `#f6f7f8`                  | 4.42:1     | 边界仍不足                 |
+| 深色 muted 文本 `#7a7a7a` / L2 `#1f1f1f` | 3.84:1     | 小字不达标                 |
+| 同一文本 / L1 `#1b1b1b`                  | 4.01:1     | 小字不达标                 |
+| 白字 / primary `#3c83f6`                 | 3.63:1     | 默认按钮等普通字号文字不足 |
 
 这些来自默认主题本身，公共 chrome 在许多路由重复触发 axe。低 opacity 的 Login 辅助文字还会进一步下降。不能因为大标题满足 3:1，就把同一颜色用于所有小字。
 
@@ -294,17 +294,17 @@ ResourceList 只接受 `{name,status}[]`，固定英文两列，没有 create、
 
 下表按当前 family manifest 归组，覆盖全部 99 个 ready 条目及 Maps。数量是文档/例子覆盖数据，不是通过专业认证的数量。
 
-| 家族 | 条目与注册 scenario | 涵盖条目 | 审查判断 |
-|---|---|---|---|
-| Foundation | 12 项 / 35 例；10 项生成 API | Button、LinkButton、Text、Label、Separator、ScrollArea、Link、ThemeToggle、LayerCard、BasaltMark、ThemeProvider、LinkProvider | 视觉与框架基础可保留；优先 C01/C02/C11、D03/D06 |
-| Forms | 16 项 / 69 例；13 项生成 API | Field、Input、InputArea、InputGroup、SensitiveInput、Checkbox、Radio、Switch、Select、Combobox、Autocomplete、DatePicker、Slider、Toggle、ToggleGroup、SegmentControl | 普通输入状态相对丰富；复合输入的焦点、原生表单、浮层契约需补 C03–C05、C08/C10 |
-| Overlay | 11 项 / 23 例；5 项生成 API | Tooltip、Accordion、Dialog、AlertDialog、ConfirmDialog、Popover、DropdownMenu、ContextMenu、HoverCard、Sheet、Collapsible | Radix 基础可靠；文档深度不均，独立 confirm 和复杂嵌套要验证 C07 |
-| Feedback | 11 项 / 44 例；2 项生成 API | Badge、Banner、Empty、Loader、SkeletonLine、Meter、Toast、ClipboardText、Code、CodeBlock、Avatar | Toast/Badge/Banner 例子不少；API 表格和空/错/重试组合不足，见 C09、D03 |
-| Navigation | 9 项 / 20 例；6 项生成 API | CommandPalette、Tabs、Pagination、Breadcrumbs、NavigationMenu、MenuBar、Toolbar、TableOfContents、Sidebar | Sidebar 与分页已有较完整控制接口；目录编辑、长导航和路由 adapters 是下游复用机会 |
-| Data/Layout | 11 项 / 24 例；11 项生成 API | DescriptionList、Table、DataTable、Grid、SectionRule、Flow、StatStrip、TablePager、PageHeader、ResourceList、DeleteResource | 结构层级清楚；资源页能力和失败状态偏薄，见 C14/R05 |
-| Chat | 6 项 / 8 例；2 项生成 API | Fab、Dock、ChatBubble、ChatComposer、ChatHeader、ChatInbox | 基础视觉存在；真实发送、流式、停止、错误及移动端组合不足，见 C06/E03/E04/E07 |
-| Charts | 23 项 / 23 例；全部生成 API | Charts、Colors、Timeseries、CustomChart、StatCard、SlotBar、Bar、Line、Area、Donut、GroupedBar、StackedBar、Sparkline、HeatmapCalendar、Gauge、Radar、Funnel、Bullet、Timeline、Sankey、ItemList、DateNavigation、Palette | API 生成齐全但每项只有一例；数据扩展、可访问性与容器组合需 C13/C15/E05 |
-| Planned | 1 项 / 0 例 | Maps | 已明确排除，不把它列为应立即补齐的缺陷 |
+| 家族        | 条目与注册 scenario          | 涵盖条目                                                                                                                                                                                                                  | 审查判断                                                                         |
+| ----------- | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Foundation  | 12 项 / 35 例；10 项生成 API | Button、LinkButton、Text、Label、Separator、ScrollArea、Link、ThemeToggle、LayerCard、BasaltMark、ThemeProvider、LinkProvider                                                                                             | 视觉与框架基础可保留；优先 C01/C02/C11、D03/D06                                  |
+| Forms       | 16 项 / 69 例；13 项生成 API | Field、Input、InputArea、InputGroup、SensitiveInput、Checkbox、Radio、Switch、Select、Combobox、Autocomplete、DatePicker、Slider、Toggle、ToggleGroup、SegmentControl                                                     | 普通输入状态相对丰富；复合输入的焦点、原生表单、浮层契约需补 C03–C05、C08/C10    |
+| Overlay     | 11 项 / 23 例；5 项生成 API  | Tooltip、Accordion、Dialog、AlertDialog、ConfirmDialog、Popover、DropdownMenu、ContextMenu、HoverCard、Sheet、Collapsible                                                                                                 | Radix 基础可靠；文档深度不均，独立 confirm 和复杂嵌套要验证 C07                  |
+| Feedback    | 11 项 / 44 例；2 项生成 API  | Badge、Banner、Empty、Loader、SkeletonLine、Meter、Toast、ClipboardText、Code、CodeBlock、Avatar                                                                                                                          | Toast/Badge/Banner 例子不少；API 表格和空/错/重试组合不足，见 C09、D03           |
+| Navigation  | 9 项 / 20 例；6 项生成 API   | CommandPalette、Tabs、Pagination、Breadcrumbs、NavigationMenu、MenuBar、Toolbar、TableOfContents、Sidebar                                                                                                                 | Sidebar 与分页已有较完整控制接口；目录编辑、长导航和路由 adapters 是下游复用机会 |
+| Data/Layout | 11 项 / 24 例；11 项生成 API | DescriptionList、Table、DataTable、Grid、SectionRule、Flow、StatStrip、TablePager、PageHeader、ResourceList、DeleteResource                                                                                               | 结构层级清楚；资源页能力和失败状态偏薄，见 C14/R05                               |
+| Chat        | 6 项 / 8 例；2 项生成 API    | Fab、Dock、ChatBubble、ChatComposer、ChatHeader、ChatInbox                                                                                                                                                                | 基础视觉存在；真实发送、流式、停止、错误及移动端组合不足，见 C06/E03/E04/E07     |
+| Charts      | 23 项 / 23 例；全部生成 API  | Charts、Colors、Timeseries、CustomChart、StatCard、SlotBar、Bar、Line、Area、Donut、GroupedBar、StackedBar、Sparkline、HeatmapCalendar、Gauge、Radar、Funnel、Bullet、Timeline、Sankey、ItemList、DateNavigation、Palette | API 生成齐全但每项只有一例；数据扩展、可访问性与容器组合需 C13/C15/E05           |
+| Planned     | 1 项 / 0 例                  | Maps                                                                                                                                                                                                                      | 已明确排除，不把它列为应立即补齐的缺陷                                           |
 
 `CodeHighlighted` 已提供基于正则的基础高亮，Code/CodeBlock 提供排版；文档应明确各自职责、语言范围和复制操作的组合方法。
 
@@ -314,14 +314,14 @@ ResourceList 只接受 `{name,status}[]`，固定英文两列，没有 create、
 
 ### 5.1 执行矩阵
 
-| 维度 | 当前实际执行 | 结论 |
-|---|---|---|
-| L1：单元/行为 | pre-commit 跑 test；pre-push 与 CI 跑 coverage；包代码在分母内，四项汇总 95% 门槛 | 本次全部通过；jsdom 很难证明布局、原生焦点和实际渲染正确 |
-| L2：集成 | HTTP API 对本站为 N/A；组件库仍有 exports、tarball、CSS、types、optional peers 的集成责任 | 仓外 A/B/C/D 和声明检查已实现，主要在手工 prepublish 路径 |
-| L3：真实浏览器 | `consumer:next` 和浏览器门相关测试；未进入普通 CI/hook | 对一个最小 Next fixture 有真实证明，对全部控件和 Examples 仍不足 |
-| G1：静态分析 | pre-commit 有完整 typecheck+lint；CI 有 Biome、catalog/build，显式跳过 typecheck | 类型门没有在不可绕过的远端路径落地 |
-| G2：安全 | pre-commit gitleaks staged；pre-push OSV；固定 SHA 的共享 CI 默认启用两项扫描 | 机制存在，本次本地扫描通过；豁免与版本管理需要维护 |
-| 文档 | catalog API、page-status、content freshness 自动检查；编号文档与 INTEGRATION 人工约束 | 能拦生成内容过期，不能证明复制代码可编译、文档完整或随版本发布 |
+| 维度           | 当前实际执行                                                                              | 结论                                                             |
+| -------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| L1：单元/行为  | pre-commit 跑 test；pre-push 与 CI 跑 coverage；包代码在分母内，四项汇总 95% 门槛         | 本次全部通过；jsdom 很难证明布局、原生焦点和实际渲染正确         |
+| L2：集成       | HTTP API 对本站为 N/A；组件库仍有 exports、tarball、CSS、types、optional peers 的集成责任 | 仓外 A/B/C/D 和声明检查已实现，主要在手工 prepublish 路径        |
+| L3：真实浏览器 | `consumer:next` 和浏览器门相关测试；未进入普通 CI/hook                                    | 对一个最小 Next fixture 有真实证明，对全部控件和 Examples 仍不足 |
+| G1：静态分析   | pre-commit 有完整 typecheck+lint；CI 有 Biome、catalog/build，显式跳过 typecheck          | 类型门没有在不可绕过的远端路径落地                               |
+| G2：安全       | pre-commit gitleaks staged；pre-push OSV；固定 SHA 的共享 CI 默认启用两项扫描             | 机制存在，本次本地扫描通过；豁免与版本管理需要维护               |
+| 文档           | catalog API、page-status、content freshness 自动检查；编号文档与 INTEGRATION 人工约束     | 能拦生成内容过期，不能证明复制代码可编译、文档完整或随版本发布   |
 
 已读取 CI 固定引用的 [base-ci 工作流源码](https://github.com/nocoo/base-ci/blob/aec4adc1a817c56790d1698329ef9398a15a754a/.github/workflows/bun-quality.yml)，确认默认 lint、安全扫描、Bun latest 以及 L3 默认关闭；没有仅凭名称推断共享 CI 的职责。
 
@@ -336,11 +336,11 @@ osv-scanner scan --lockfile=bun.lock --config=osv-scanner.toml
 
 Husky 用 `sh -e` 执行，但 AND-list 中间失败不触发预期的立即退出，下一行 OSV 成功会成为整个脚本的退出状态。使用临时 PATH stub、按相同 shell 方式执行，得到：
 
-| 注入故障 | 故障命令退出码 | hook 最终退出码 |
-|---|---|---|
-| build 失败，OSV 成功 | 41 | **0** |
-| coverage 失败，OSV 成功 | 41 | **0** |
-| lint 失败 | 41 | 41 |
+| 注入故障                | 故障命令退出码 | hook 最终退出码 |
+| ----------------------- | -------------- | --------------- |
+| build 失败，OSV 成功    | 41             | **0**           |
+| coverage 失败，OSV 成功 | 41             | **0**           |
+| lint 失败               | 41             | 41              |
 
 没有执行真实 push。**验收：**每个步骤单独失败时 hook 都非零退出，后续成功不得覆盖失败；同时在 CI 保留独立门，不能只依赖本机 hook。
 
@@ -455,32 +455,32 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 
 “局部可交互”不表示有真实业务服务；“静态”也不必然是缺陷。关键在于页面是否清楚传达用途，以及复制后能否保留正确的控件契约。源文件均在 [src/pages](../src/pages)。
 
-| 路由 / 源文件 | 完备性 | 布局、动效与建议 |
-|---|---|---|
-| `/` · DashboardPage | 金融假数据与组合图表 | 桌面层次、卡片网格成熟，移动堆叠清楚；补内容标题约定、数据状态和可访问摘要 |
-| `/accounts` · AccountsPage | 余额显隐可用，资金操作为展示 | 银行卡比例与材质有完成度，移动布局合理；说明操作为模拟并补反馈 |
-| `/progress-tracking` · ProgressTrackingPage | 静态预算/进度 | 条目密度与图表清楚；补超预算、零值、长名称和状态变化 |
-| `/flow-comparison` · FlowComparisonPage | 静态流入流出对比 | 双图层级明确，移动单列可读；补负值/空值/时间范围与文本说明 |
-| `/portfolio` · PortfolioPage | 静态资产概览 | 主图、配置与持仓组织良好；补大金额、长资产名、空组合、筛选 |
-| `/components` · ComponentsPage | 可复用块展示墙 | 密度合理但多卡片仅有默认数据；与单组件文档的用途需清楚区分 |
-| `/forms` · FormsPage | 外观为主 | 栅格与标签间距基本好；submit、验证、上传闭环缺失，见 E03 |
-| `/navigation` · NavigationPage | 分页/stepper 有本地状态 | 移动长 breadcrumbs 出现拥挤换行；需长层级截断/返回模式，不只验证短标签 |
-| `/interactive` · InteractivePage | toast、复制、loading、折叠等局部可用 | 状态展示较丰富；修复 8 个翻译 key 与局部动画策略 |
-| `/data` · DataPage | 静态表格/状态/统计展示 | 卡片移动堆叠好；表头操作区紧凑，搜索/筛选未接数据 |
-| `/layout` · LayoutPage | 当前 surface 结构示例 | 对 L1/L2/Well 解释清楚，可作推荐范本；补浮层与滚动组合 |
-| `/dialogs` · DialogsPage | 多尺寸、表单、确认可打开 | Anatomy 与尺寸解释较完整；补 Promise 失败、触发器消失、嵌套浮层、长内容移动端 |
-| `/chat` · ChatPage | Dock 开关/会话选择可用，发送为空操作 | 桌面概念清楚；移动端挤压，缺完整发送/流式/停止/失败演示 |
-| `/settings` · SettingsPage | 分区导航、原生输入可用 | 桌面双栏和移动图标导航整洁；缺标题规范，主题选中硬编码，保存等无闭环 |
-| `/palette` · PalettePage | accent 选择可用 | 有助于理解配色；增加文字配对对比度，而非只展示色块 |
-| `/interactions` · InteractionShowcasePage | 有表单结果、toast、dialog 本地闭环 | 交互可观察，适合作为功能样例基线；继续复用公共状态组件 |
-| `/health` · HealthPage | 健康假数据与时间/状态控件组合 | 统计、SlotBar、时间线布局丰富；日期控件与数据刷新关系需显式演示 |
-| `/wearable` · WearableDashboardPage | 健康领域场景组合 | 与 Health 重复结构多；日期区窄屏标题拥挤，宜复用场景结构和状态 fixture |
-| `/banking` · BankingDashboardPage | 金融场景组合 | 多图表网格完成度较高，是较好的组合参照；补无数据、单位与加载状态 |
-| `/network` · NetworkOpsDashboardPage | 网络假数据 | 桌面三列图表高度错误与 SVG 报错，见 E05；需要稳定尺寸的组合范本 |
-| `/login` · LoginPage | 登录视觉样例，非认证实现 | badge 卡片细节完整、移动居中良好；辅助文字过淡，状态灯 pulse 需 reduced motion |
-| `/static-page` · StaticPage | 静态条款与返回入口 | 阅读宽度和移动留白合理；可补长文目录/打印示例，优先级较低 |
-| `/loading` · LoadingPage | 独立加载状态 | 简洁，有 status 名称和 reduced-motion；无需为了“完整”添加假按钮 |
-| `/404` · NotFound | 错误码与返回主页 | 目的明确、响应式正常；轻量页面不要求复杂动画 |
+| 路由 / 源文件                               | 完备性                               | 布局、动效与建议                                                               |
+| ------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------------------ |
+| `/` · DashboardPage                         | 金融假数据与组合图表                 | 桌面层次、卡片网格成熟，移动堆叠清楚；补内容标题约定、数据状态和可访问摘要     |
+| `/accounts` · AccountsPage                  | 余额显隐可用，资金操作为展示         | 银行卡比例与材质有完成度，移动布局合理；说明操作为模拟并补反馈                 |
+| `/progress-tracking` · ProgressTrackingPage | 静态预算/进度                        | 条目密度与图表清楚；补超预算、零值、长名称和状态变化                           |
+| `/flow-comparison` · FlowComparisonPage     | 静态流入流出对比                     | 双图层级明确，移动单列可读；补负值/空值/时间范围与文本说明                     |
+| `/portfolio` · PortfolioPage                | 静态资产概览                         | 主图、配置与持仓组织良好；补大金额、长资产名、空组合、筛选                     |
+| `/components` · ComponentsPage              | 可复用块展示墙                       | 密度合理但多卡片仅有默认数据；与单组件文档的用途需清楚区分                     |
+| `/forms` · FormsPage                        | 外观为主                             | 栅格与标签间距基本好；submit、验证、上传闭环缺失，见 E03                       |
+| `/navigation` · NavigationPage              | 分页/stepper 有本地状态              | 移动长 breadcrumbs 出现拥挤换行；需长层级截断/返回模式，不只验证短标签         |
+| `/interactive` · InteractivePage            | toast、复制、loading、折叠等局部可用 | 状态展示较丰富；修复 8 个翻译 key 与局部动画策略                               |
+| `/data` · DataPage                          | 静态表格/状态/统计展示               | 卡片移动堆叠好；表头操作区紧凑，搜索/筛选未接数据                              |
+| `/layout` · LayoutPage                      | 当前 surface 结构示例                | 对 L1/L2/Well 解释清楚，可作推荐范本；补浮层与滚动组合                         |
+| `/dialogs` · DialogsPage                    | 多尺寸、表单、确认可打开             | Anatomy 与尺寸解释较完整；补 Promise 失败、触发器消失、嵌套浮层、长内容移动端  |
+| `/chat` · ChatPage                          | Dock 开关/会话选择可用，发送为空操作 | 桌面概念清楚；移动端挤压，缺完整发送/流式/停止/失败演示                        |
+| `/settings` · SettingsPage                  | 分区导航、原生输入可用               | 桌面双栏和移动图标导航整洁；缺标题规范，主题选中硬编码，保存等无闭环           |
+| `/palette` · PalettePage                    | accent 选择可用                      | 有助于理解配色；增加文字配对对比度，而非只展示色块                             |
+| `/interactions` · InteractionShowcasePage   | 有表单结果、toast、dialog 本地闭环   | 交互可观察，适合作为功能样例基线；继续复用公共状态组件                         |
+| `/health` · HealthPage                      | 健康假数据与时间/状态控件组合        | 统计、SlotBar、时间线布局丰富；日期控件与数据刷新关系需显式演示                |
+| `/wearable` · WearableDashboardPage         | 健康领域场景组合                     | 与 Health 重复结构多；日期区窄屏标题拥挤，宜复用场景结构和状态 fixture         |
+| `/banking` · BankingDashboardPage           | 金融场景组合                         | 多图表网格完成度较高，是较好的组合参照；补无数据、单位与加载状态               |
+| `/network` · NetworkOpsDashboardPage        | 网络假数据                           | 桌面三列图表高度错误与 SVG 报错，见 E05；需要稳定尺寸的组合范本                |
+| `/login` · LoginPage                        | 登录视觉样例，非认证实现             | badge 卡片细节完整、移动居中良好；辅助文字过淡，状态灯 pulse 需 reduced motion |
+| `/static-page` · StaticPage                 | 静态条款与返回入口                   | 阅读宽度和移动留白合理；可补长文目录/打印示例，优先级较低                      |
+| `/loading` · LoadingPage                    | 独立加载状态                         | 简洁，有 status 名称和 reduced-motion；无需为了“完整”添加假按钮                |
+| `/404` · NotFound                           | 错误码与返回主页                     | 目的明确、响应式正常；轻量页面不要求复杂动画                                   |
 
 ### 6.2 catalog Example 的下一步验收方式
 
@@ -494,21 +494,21 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 
 按上级目录的 package.json 查得 **11 个声明依赖的工作目录**。Raven 与 raven-dev 是两个工作副本，不能算两份独立复用需求。扫描 `.ts/.tsx/.css` 字面量 import 后，10 个目录存在源码引用，Fundly 只有依赖声明。
 
-| 工作目录 | 声明版本 | 研究结果与迁移阶段 |
-|---|---|---|
-| ai-arsenal | 2.0.3 | 已用 shell、基础组件；仍保留 EmptyState、删除确认、过滤等包装 |
-| firefly | 2.0.3 | 主要接入管理端 shell/sidebar/CSS；媒体上传、过滤、确认仍在本地 |
-| fundly | 2.0.3 | 未检出源码导入；有本地 FilterDropdown/FilterChips、图表、EmptyState，属于待实际接入 |
-| gecko | 2.0.3 / dashboard `^2.0.3` | 已接入框架、主题、部分控件；本地 TagBadge 等仍有公共价值 |
-| giraffe | 2.0.3 | 多路由直接组合 PageHeader、LayerCard、SectionRule、Table，可作为迁移后的验证样本 |
-| lyre | 2.0.2 | 已有较多控件接入；文件夹侧栏、上传队列/对话框仍是独立实现 |
-| neo | 2.0.3 | 已用 app-shell、主题和 LayerCard；保留 tools 列表、删除确认与本地 UI 包装 |
-| noheir | 2.0.3 | 框架/providers 接入明显；统计、tag 配色、业务列表等仍在应用 |
-| raven | 2.0.3 | analytics 等已较多直接使用；日期/模型/设备过滤、chip 与图表配置需求丰富 |
-| raven-dev | 2.0.2 | Raven 的另一工作副本；用于观察版本差异，不重复计入候选组件的支持度 |
-| surety | 2.0.3 | 部分框架、chart-card、CSS 已接入；策略过滤、空状态、上传进度仍在本地 |
-| pew | 无包依赖 | [设计文档](../../pew/docs/01-plan.md) 明确采用 Basalt；动态图表、热力图、过滤器、榜单为重点迁移需求 |
-| zhe | 无包依赖 | 本地 UI/CHANGELOG 记录 Basalt 风格；链接/标签/上传、树形任务、编辑面板为重点迁移需求 |
+| 工作目录   | 声明版本                   | 研究结果与迁移阶段                                                                                  |
+| ---------- | -------------------------- | --------------------------------------------------------------------------------------------------- |
+| ai-arsenal | 2.0.3                      | 已用 shell、基础组件；仍保留 EmptyState、删除确认、过滤等包装                                       |
+| firefly    | 2.0.3                      | 主要接入管理端 shell/sidebar/CSS；媒体上传、过滤、确认仍在本地                                      |
+| fundly     | 2.0.3                      | 未检出源码导入；有本地 FilterDropdown/FilterChips、图表、EmptyState，属于待实际接入                 |
+| gecko      | 2.0.3 / dashboard `^2.0.3` | 已接入框架、主题、部分控件；本地 TagBadge 等仍有公共价值                                            |
+| giraffe    | 2.0.3                      | 多路由直接组合 PageHeader、LayerCard、SectionRule、Table，可作为迁移后的验证样本                    |
+| lyre       | 2.0.2                      | 已有较多控件接入；文件夹侧栏、上传队列/对话框仍是独立实现                                           |
+| neo        | 2.0.3                      | 已用 app-shell、主题和 LayerCard；保留 tools 列表、删除确认与本地 UI 包装                           |
+| noheir     | 2.0.3                      | 框架/providers 接入明显；统计、tag 配色、业务列表等仍在应用                                         |
+| raven      | 2.0.3                      | analytics 等已较多直接使用；日期/模型/设备过滤、chip 与图表配置需求丰富                             |
+| raven-dev  | 2.0.2                      | Raven 的另一工作副本；用于观察版本差异，不重复计入候选组件的支持度                                  |
+| surety     | 2.0.3                      | 部分框架、chart-card、CSS 已接入；策略过滤、空状态、上传进度仍在本地                                |
+| pew        | 无包依赖                   | [设计文档](../../pew/docs/01-plan.md) 明确采用 Basalt；动态图表、热力图、过滤器、榜单为重点迁移需求 |
+| zhe        | 无包依赖                   | 本地 UI/CHANGELOG 记录 Basalt 风格；链接/标签/上传、树形任务、编辑面板为重点迁移需求                |
 
 其他目录仅出现“Basalt”文字引用，不足以证明仍在使用，未计入以上消费者数量。不能把「已经安装包」「已经迁移框架」「全部 UI 统一到库」当作同一状态。
 
@@ -522,16 +522,16 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 
 ### 7.3 候选组件、依据与边界
 
-| 编号 / 建议顺序 | 应吸收的公共能力 | 具体源码依据 | 应留在应用侧 |
-|---|---|---|---|
-| R01 · 优先 | Searchable MultiSelect/TagPicker、FilterChip、FilterBar、日期范围/预设的组合 | [zhe LinkFilterBar](../../zhe/components/dashboard/link-filter-bar.tsx)、[pew FilterDropdown](../../pew/packages/web/src/components/dashboard/filter-dropdown.tsx)、[pew PeriodSelector](../../pew/packages/web/src/components/dashboard/period-selector.tsx)、[raven FilterBar](../../raven/packages/dashboard/src/components/analytics/filter-bar.tsx)、[fundly FilterChips](../../fundly/apps/web/src/components/ui/filter-chips.tsx) | URL/router 状态、查询 key、服务端过滤含义、具体模型/文件夹接口 |
-| R02 · 优先 | FileDropzone、UploadQueue/UploadItem：拖放、键盘选择、校验提示、预览、进度/取消/重试状态 | [zhe UploadZone](../../zhe/components/dashboard/upload-zone.tsx)、[zhe UploadItem](../../zhe/components/dashboard/upload-item.tsx)、[lyre UploadDialog](../../lyre/apps/web/src/components/upload-dialog.tsx)、[firefly ImageUploadZone](../../firefly/src/components/admin/image-upload-zone.tsx) | 上传 URL、鉴权、存储协议、并发/重试调度、业务文件大小限制 |
-| R03 · 优先小件，Tree 后置 | EditableNavItem/FolderNavItem、IconPicker、行尾 action slot；随后可选 Tree adapter | [zhe SidebarFolderItem](../../zhe/components/sidebar-folder-item.tsx)、[zhe TodoTreeShell](../../zhe/components/dashboard/todos-page-parts/todo-tree-shell.tsx)、[lyre FolderSidebar](../../lyre/apps/web/src/components/layout/folder-sidebar.tsx) | Todo 模型、文件夹权限、后端移动与排序事务；重型 tree 依赖不得进入根入口 |
-| R04 · 优先扩展现有 kit | 泛型 series、轴/单位格式、Tooltip.Row/Summary/Divider、HeatmapMatrix、ChartCard 状态 | [pew ChartTooltip](../../pew/packages/web/src/components/dashboard/chart-tooltip.tsx)、[pew ModelTrend](../../pew/packages/web/src/components/dashboard/device-model-trend-chart.tsx)、[pew WorkingHoursHeatmap](../../pew/packages/web/src/components/dashboard/working-hours-heatmap.tsx)、[fundly SeriesChart](../../fundly/apps/web/src/components/charts/series-chart.tsx) | 模型配色映射、货币/计费指标、业务聚合和专用图表标题 |
-| R05 · 扩展现有组件 | Empty action/error/retry、Confirm/DeleteResource 的错误与确认内容、StatCard 的 tooltip/趋势/状态 slot | [ai-arsenal EmptyState](../../ai-arsenal/src/components/ui/empty-state.tsx)、[pew StatCard](../../pew/packages/web/src/components/dashboard/stat-card.tsx)、本库 Empty/ConfirmDialog/DeleteResource | 删除请求、权限、乐观更新、指标含义；避免新增平行 EmptyState/ConfirmModal/MetricCard |
-| R06 · 次优先 | TagBadge 的语义色/确定性色板、可访问的 TagColorPicker | [gecko TagBadge](../../gecko/apps/web-dashboard/src/components/tag-badge.tsx)、[noheir tag-colors](../../noheir/src/lib/tag-colors.ts)、[zhe TagColorPicker](../../zhe/components/dashboard/tags-page-parts/tag-color-picker.tsx) | 标签实体、服务端颜色存储、业务分类体系；色板须符合 C12 |
-| R07 · 次优先 | InlineEditable、ResponsiveMasterDetail；有第二个明确需求后再做可拖拽 SplitPane | [zhe InlineEditArea](../../zhe/components/dashboard/link-card-parts/inline-edit-area.tsx)、[zhe EditorSplit](../../zhe/components/dashboard/idea-editor-page-parts/editor-split.tsx)、本库 Chat/Dock 组合 | Markdown 引擎、编辑器数据保存、草稿同步、LLM 工具执行和具体业务表单 |
-| R08 · 文档/模板优先 | 可安装或复制的 AppFrame、Login、ResourceList 场景 block，包含正确 provider 与移动端策略 | [INTEGRATION 框架 recipe](../INTEGRATION.md)、[firefly Shell](../../firefly/src/components/admin/shell.tsx)、[noheir AppShell](../../noheir/src/components/layout/app-shell.tsx)、[neo AppShell](../../neo/components/app-shell.tsx) | 路由配置、认证、菜单权限、组织/用户查询；不用单个巨型 AppShell 接管应用 |
+| 编号 / 建议顺序           | 应吸收的公共能力                                                                                      | 具体源码依据                                                                                                                                                                                                                                                                                                                                                                                                                             | 应留在应用侧                                                                        |
+| ------------------------- | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| R01 · 优先                | Searchable MultiSelect/TagPicker、FilterChip、FilterBar、日期范围/预设的组合                          | [zhe LinkFilterBar](../../zhe/components/dashboard/link-filter-bar.tsx)、[pew FilterDropdown](../../pew/packages/web/src/components/dashboard/filter-dropdown.tsx)、[pew PeriodSelector](../../pew/packages/web/src/components/dashboard/period-selector.tsx)、[raven FilterBar](../../raven/packages/dashboard/src/components/analytics/filter-bar.tsx)、[fundly FilterChips](../../fundly/apps/web/src/components/ui/filter-chips.tsx) | URL/router 状态、查询 key、服务端过滤含义、具体模型/文件夹接口                      |
+| R02 · 优先                | FileDropzone、UploadQueue/UploadItem：拖放、键盘选择、校验提示、预览、进度/取消/重试状态              | [zhe UploadZone](../../zhe/components/dashboard/upload-zone.tsx)、[zhe UploadItem](../../zhe/components/dashboard/upload-item.tsx)、[lyre UploadDialog](../../lyre/apps/web/src/components/upload-dialog.tsx)、[firefly ImageUploadZone](../../firefly/src/components/admin/image-upload-zone.tsx)                                                                                                                                       | 上传 URL、鉴权、存储协议、并发/重试调度、业务文件大小限制                           |
+| R03 · 优先小件，Tree 后置 | EditableNavItem/FolderNavItem、IconPicker、行尾 action slot；随后可选 Tree adapter                    | [zhe SidebarFolderItem](../../zhe/components/sidebar-folder-item.tsx)、[zhe TodoTreeShell](../../zhe/components/dashboard/todos-page-parts/todo-tree-shell.tsx)、[lyre FolderSidebar](../../lyre/apps/web/src/components/layout/folder-sidebar.tsx)                                                                                                                                                                                      | Todo 模型、文件夹权限、后端移动与排序事务；重型 tree 依赖不得进入根入口             |
+| R04 · 优先扩展现有 kit    | 泛型 series、轴/单位格式、Tooltip.Row/Summary/Divider、HeatmapMatrix、ChartCard 状态                  | [pew ChartTooltip](../../pew/packages/web/src/components/dashboard/chart-tooltip.tsx)、[pew ModelTrend](../../pew/packages/web/src/components/dashboard/device-model-trend-chart.tsx)、[pew WorkingHoursHeatmap](../../pew/packages/web/src/components/dashboard/working-hours-heatmap.tsx)、[fundly SeriesChart](../../fundly/apps/web/src/components/charts/series-chart.tsx)                                                          | 模型配色映射、货币/计费指标、业务聚合和专用图表标题                                 |
+| R05 · 扩展现有组件        | Empty action/error/retry、Confirm/DeleteResource 的错误与确认内容、StatCard 的 tooltip/趋势/状态 slot | [ai-arsenal EmptyState](../../ai-arsenal/src/components/ui/empty-state.tsx)、[pew StatCard](../../pew/packages/web/src/components/dashboard/stat-card.tsx)、本库 Empty/ConfirmDialog/DeleteResource                                                                                                                                                                                                                                      | 删除请求、权限、乐观更新、指标含义；避免新增平行 EmptyState/ConfirmModal/MetricCard |
+| R06 · 次优先              | TagBadge 的语义色/确定性色板、可访问的 TagColorPicker                                                 | [gecko TagBadge](../../gecko/apps/web-dashboard/src/components/tag-badge.tsx)、[noheir tag-colors](../../noheir/src/lib/tag-colors.ts)、[zhe TagColorPicker](../../zhe/components/dashboard/tags-page-parts/tag-color-picker.tsx)                                                                                                                                                                                                        | 标签实体、服务端颜色存储、业务分类体系；色板须符合 C12                              |
+| R07 · 次优先              | InlineEditable、ResponsiveMasterDetail；有第二个明确需求后再做可拖拽 SplitPane                        | [zhe InlineEditArea](../../zhe/components/dashboard/link-card-parts/inline-edit-area.tsx)、[zhe EditorSplit](../../zhe/components/dashboard/idea-editor-page-parts/editor-split.tsx)、本库 Chat/Dock 组合                                                                                                                                                                                                                                | Markdown 引擎、编辑器数据保存、草稿同步、LLM 工具执行和具体业务表单                 |
+| R08 · 文档/模板优先       | 可安装或复制的 AppFrame、Login、ResourceList 场景 block，包含正确 provider 与移动端策略               | [INTEGRATION 框架 recipe](../INTEGRATION.md)、[firefly Shell](../../firefly/src/components/admin/shell.tsx)、[noheir AppShell](../../noheir/src/components/layout/app-shell.tsx)、[neo AppShell](../../neo/components/app-shell.tsx)                                                                                                                                                                                                     | 路由配置、认证、菜单权限、组织/用户查询；不用单个巨型 AppShell 接管应用             |
 
 候选进入公共库前至少满足：能指出真实消费者；抽离后不导入业务 model/viewmodel、路由和服务；有受控接口；根入口成本可控；在至少两个独立使用场景验证。只有 zhe 证明的高级 Tree/SplitPane 先做 adapter 或实验块，不能因为一个项目复杂就立刻冻结通用 API。
 
@@ -547,13 +547,13 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 
 ### 8.2 公共控件与业务状态的边界
 
-| 能力 | 公共接口草案 | 稳定前必须确认 |
-|---|---|---|
-| 多选 | `items`、`value/defaultValue`、`onValueChange`、`query/onQueryChange`、loading/empty、label、disabled | 字符串 ID 与泛型 item 的取舍、异步搜索取消、受控 open、键盘及 chip 删除 |
-| 上传 | Dropzone 发出 `File[]`；UploadItem 消费明确的 queued/uploading/success/error/cancelled 状态与回调 | 文件拒绝结果、预览 URL 释放责任、取消/重试语义；不持有 fetch 或业务 token |
-| Tree | 受控 nodes/selection/expanded、renderRow、onMove/onRename；重型 adapter 走独立子路径 | 稳定 ID、虚拟化、键盘树导航、触屏替代动作、异步移动失败如何回滚 |
-| Chart | 泛型 data 与 series descriptor、formatter/domain/stack、tooltip/legend/summary slot | 系列动态增删、null/NaN/负值、主题对比、resize、无障碍、与原简单 props 的兼容 |
-| ResourceList | 标题/操作/筛选/结果/状态/分页 slots，可组合已有 DataTable 或业务列表 | 不规定后端数据形状；不把 URL 状态塞进基础组件；服务端与本地状态边界清楚 |
+| 能力         | 公共接口草案                                                                                          | 稳定前必须确认                                                               |
+| ------------ | ----------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| 多选         | `items`、`value/defaultValue`、`onValueChange`、`query/onQueryChange`、loading/empty、label、disabled | 字符串 ID 与泛型 item 的取舍、异步搜索取消、受控 open、键盘及 chip 删除      |
+| 上传         | Dropzone 发出 `File[]`；UploadItem 消费明确的 queued/uploading/success/error/cancelled 状态与回调     | 文件拒绝结果、预览 URL 释放责任、取消/重试语义；不持有 fetch 或业务 token    |
+| Tree         | 受控 nodes/selection/expanded、renderRow、onMove/onRename；重型 adapter 走独立子路径                  | 稳定 ID、虚拟化、键盘树导航、触屏替代动作、异步移动失败如何回滚              |
+| Chart        | 泛型 data 与 series descriptor、formatter/domain/stack、tooltip/legend/summary slot                   | 系列动态增删、null/NaN/负值、主题对比、resize、无障碍、与原简单 props 的兼容 |
+| ResourceList | 标题/操作/筛选/结果/状态/分页 slots，可组合已有 DataTable 或业务列表                                  | 不规定后端数据形状；不把 URL 状态塞进基础组件；服务端与本地状态边界清楚      |
 
 ### 8.3 稳定迁移顺序
 
@@ -565,82 +565,82 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 
 以下拆分已进入实施授权范围，按第 12 节阶段推进。P1–P5 按原子组提交；自 P6 起遵照用户新指示，由主 agent 直接实施并按大阶段提交。下表保留原始功能拆分用于追踪，后续同阶段的多行可合并为一次提交。每个功能提交携带对应的必要测试和文档。新 API 优先兼容扩展现有组件；Tree adapter 与可拖拽 SplitPane 仍按第 7 节后置，不纳入本轮稳定接口。验收修正单独提交，不改写已经审阅的历史。
 
-| 顺序 | 建议提交 | 对应问题与验收 |
-|---|---|---|
-| 01 | `fix: propagate pre-push failures` | Q01；build/coverage/lint/OSV 各失败路径均非零 |
-| 02a | `ci: enforce full type checking` | Q02；远端实际执行 tsc |
-| 02b | `ci: validate package artifacts and consumers` | Q03；包门进入 CI，记录同一提交证据 |
-| 03 | `fix: gate releases on validated commits` | Q04；main/CI/单 tag 校验与 dry-run 故障测试 |
-| 04 | `docs: define public API and compatibility policy` | D01/D05/D06；先建立出口、默认值与兼容基线，不删除已发布路径 |
-| 05 | `fix: generate compilable catalog imports` | D02；所有安装/Copy page 代码在消费端编译 |
-| 06a | `docs: complete public API metadata` | D03；公开 surface 归属、默认值和完整性约束 |
-| 06b1 | `docs: generate versioned package knowledge` | D04；随包 registry、实际源码/peer 归属及版本 freshness，包含隔离版本提升验证 |
-| 06b2 | `docs: complete integration guides and recipes` | D01/D04；Vite/standalone/Next、真实表单 adapter、迁移步骤与原文编译 |
-| 07 | `fix: scope standalone component base styles` | C02；Tailwind/standalone 两条几何与 portal 验证 |
-| 08a | `fix: preserve button disabled semantics` | C01；鼠标、键盘、loading 与 asChild 契约 |
-| 08b | `fix: position typeahead menus outside clipping ancestors` | C03；卡片、Dialog、滚动区和视口边缘 |
-| 08c | `fix: preserve focus when committing autocomplete blur` | C04；Tab/Shift+Tab 提交不抢回焦点 |
-| 09 | `fix: preserve date picker form refs and validity` | C05；ref/reset/FormData/required 真实浏览器验证 |
-| 09q | `test: budget package registry integration validation` | Q05；为实测超过 5 秒的真实生成器用例设置独立预算，保留全部断言与覆盖率阈值 |
-| 09b | `fix: respect cancelled native form resets` | C20；Typeahead、Checkbox.Group、Switch.Group 的普通与取消 reset 对照 |
-| 09c | `fix: preserve group callback ref cleanup` | C21；两个 Group 的 React 19 ref cleanup、替换及卸载 |
-| 10a | `fix: align dock overlay semantics` | C06；背景交互与模态边界一致 |
-| 10b | `fix: restore imperative confirm focus` | C07；无 trigger 的 Promise 路径也归还焦点 |
-| 10c | `fix: preserve force mounting across overlay portals` | C16；内置 Portal 尊重既有 forceMount，正常开关及卸载清理保持正确 |
-| 10d | `fix: compose popover content slots` | C17；asChild 在有无箭头时均可挂载，保留子元素与 ref/事件合成 |
-| 10e | `fix: honor toast icon suppression` | C18；四种状态通知的 icon=false 真正隐藏图标，保留默认及自定义图标 |
-| 11a | `fix: complete slider values and accessible names` | C08；单值/范围、Thumb 数量及名称 |
-| 11b | `fix: complete calendar keyboard navigation` | C10；日历导航、可访问树与本地化 |
-| 11b2 | `feat: expose controlled calendar months and localized validation` | C10；受控月份、父级接纳/拒绝导航、可本地化验证反馈与键盘说明；与 11b 均验收后关闭 |
-| 12a | `fix: render empty state actions` | C09；明确 slot 并验证所有允许的 children |
-| 12b | `fix: tolerate unavailable theme storage` | C11；回退与持久化行为 |
-| 13a | `fix: improve semantic text contrast` | C12；主题与表面配对验证 |
-| 13b1 | `feat: expose accessible chart alternatives` | C13；图表框架及公开包装的摘要、数据替代与键盘路径 |
-| 13b2 | `fix: make heatmap values keyboard accessible` | C13；日期/数值名称、单一 Tab 入口、方向键及局部横滚 |
-| 13b3 | `feat: compose metric card states and explanations` | R05；现有 StatCard/LayerCard/ChartShell 的说明、趋势与状态插槽 |
-| 13c | `fix: respect reduced motion across feedback states` | E07；spinner、caret、局部 pulse 与系统偏好 |
-| 13d | `fix: restore mobile navigation focus` | E08；移动 Sheet 关闭回焦与滚动锁清理 |
-| 14a | `fix: make catalog tables and headers responsive` | E01；移动端信息完整、可键盘滚动 |
-| 14b | `fix: isolate catalog example IDs` | E02；重复实例的 label/description 正确归属 |
-| 14c | `fix: adapt chat panes to narrow viewports` | E04；移动 master/detail 与输入区可达 |
-| 14d | `fix: preserve network chart dimensions` | E05；有效几何与 Sidebar resize |
-| 14e | `fix: complete example translations` | E06；英中文案不显示原始 key |
-| 14f | `docs: align example page structure with integration` | E06；内容标题规范及明确例外 |
-| 15a | `feat: demonstrate settings state changes` | E03；主题、保存、错误与反馈 |
-| 15b | `feat: demonstrate native form submission flows` | E03；提交、验证、成功与失败 |
-| 15c | `feat: demonstrate chat streaming and cancellation` | E03/6.2；本地模拟发送、流式、停止、重试 |
-| 16a | `feat: add searchable multi-selection` | R01；先验证选项、搜索、chip 与键盘契约 |
-| 16b | `feat: compose reusable filter controls` | R01；FilterBar/Chip/日期预设组合，URL 状态在外部 |
-| 16c | `feat: add file drop and upload state primitives` | R02；文件交互与受控上传状态，应用负责 transport |
-| 17a | `feat: support dynamic chart series` | C15/R04；旧 props 兼容、任意系列和真实消费图表 |
-| 17a-tooltip | `feat: add composable chart tooltip parts` | R04；行、分组分隔与总计，两个实际组合示例 |
-| 17a-matrix | `feat: add reusable heatmap matrix` | R04；caller 行列标签、颜色域、空值与键盘导航 |
-| 17a-heatmap-tests | `fix: preserve heatmap focus across data transitions` | C23 与 P5 热力日历/矩阵分支缺口；清空后加载回焦、键盘、读数及清理回归 |
-| 17a-chart-tests | `test: cover chart rendering options` | P5 图表框架与包装选项的公共行为回归；不改四维 95% 门槛 |
-| 17a-registry-perf | `perf: avoid redundant registry parsing` | Q08；减少单次 registry 校验中的重复解析，保留生成内容、跨调用 freshness 与既有时间预算 |
-| 17a-generator-fixtures | `test: reuse compiler fixtures without weakening checks` | Q08 复核；减少只读清单与独立 callable 场景重复编译，保留所有断言与原时间预算 |
-| 17a-transition-tests | `test: cover heatmap focus transition boundaries` | 数据缩短、矩阵直接清空与恢复的键盘焦点回归；保持既有公共实现和门槛 |
-| 17b | `feat: expose controlled data table state` | C14；按实际服务端列表需求设计 adapter |
-| 17c | `feat: compose resource page regions` | C14/R05；页面 slots、状态与操作区 |
-| 17d | `feat: showcase composed loading skeletons` | S01；Library 可发现的仪表盘、列表、详情组合，加载/内容切换与稳定几何 |
-| 17e | `feat: showcase rich interactive tables` | S02；交互表头、格式化字段、语义色、行内电量/容量与趋势图、真实状态闭环 |
-| 18a | `feat: add editable navigation rows` | R03；小控件先行，Tree adapter 后续单独设计 |
-| 18b | `feat: standardize tag colors and selection` | R06；色板、主题、无障碍与调用方实体解耦 |
-| 18c | `feat: add responsive master-detail composition` | R07；先验证窄屏与焦点，SplitPane 后续单独设计 |
-| 18d | `docs: provide reusable application blocks` | R08；框架/登录/资源页 recipe 可安装或编译 |
-| 19a | `chore: align supported toolchain versions` | Q06；本机和 CI 的版本策略一致 |
-| 19b | `chore: retire stale vulnerability waivers` | Q06；豁免有效且扫描配置一致 |
+| 顺序                   | 建议提交                                                           | 对应问题与验收                                                                         |
+| ---------------------- | ------------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| 01                     | `fix: propagate pre-push failures`                                 | Q01；build/coverage/lint/OSV 各失败路径均非零                                          |
+| 02a                    | `ci: enforce full type checking`                                   | Q02；远端实际执行 tsc                                                                  |
+| 02b                    | `ci: validate package artifacts and consumers`                     | Q03；包门进入 CI，记录同一提交证据                                                     |
+| 03                     | `fix: gate releases on validated commits`                          | Q04；main/CI/单 tag 校验与 dry-run 故障测试                                            |
+| 04                     | `docs: define public API and compatibility policy`                 | D01/D05/D06；先建立出口、默认值与兼容基线，不删除已发布路径                            |
+| 05                     | `fix: generate compilable catalog imports`                         | D02；所有安装/Copy page 代码在消费端编译                                               |
+| 06a                    | `docs: complete public API metadata`                               | D03；公开 surface 归属、默认值和完整性约束                                             |
+| 06b1                   | `docs: generate versioned package knowledge`                       | D04；随包 registry、实际源码/peer 归属及版本 freshness，包含隔离版本提升验证           |
+| 06b2                   | `docs: complete integration guides and recipes`                    | D01/D04；Vite/standalone/Next、真实表单 adapter、迁移步骤与原文编译                    |
+| 07                     | `fix: scope standalone component base styles`                      | C02；Tailwind/standalone 两条几何与 portal 验证                                        |
+| 08a                    | `fix: preserve button disabled semantics`                          | C01；鼠标、键盘、loading 与 asChild 契约                                               |
+| 08b                    | `fix: position typeahead menus outside clipping ancestors`         | C03；卡片、Dialog、滚动区和视口边缘                                                    |
+| 08c                    | `fix: preserve focus when committing autocomplete blur`            | C04；Tab/Shift+Tab 提交不抢回焦点                                                      |
+| 09                     | `fix: preserve date picker form refs and validity`                 | C05；ref/reset/FormData/required 真实浏览器验证                                        |
+| 09q                    | `test: budget package registry integration validation`             | Q05；为实测超过 5 秒的真实生成器用例设置独立预算，保留全部断言与覆盖率阈值             |
+| 09b                    | `fix: respect cancelled native form resets`                        | C20；Typeahead、Checkbox.Group、Switch.Group 的普通与取消 reset 对照                   |
+| 09c                    | `fix: preserve group callback ref cleanup`                         | C21；两个 Group 的 React 19 ref cleanup、替换及卸载                                    |
+| 10a                    | `fix: align dock overlay semantics`                                | C06；背景交互与模态边界一致                                                            |
+| 10b                    | `fix: restore imperative confirm focus`                            | C07；无 trigger 的 Promise 路径也归还焦点                                              |
+| 10c                    | `fix: preserve force mounting across overlay portals`              | C16；内置 Portal 尊重既有 forceMount，正常开关及卸载清理保持正确                       |
+| 10d                    | `fix: compose popover content slots`                               | C17；asChild 在有无箭头时均可挂载，保留子元素与 ref/事件合成                           |
+| 10e                    | `fix: honor toast icon suppression`                                | C18；四种状态通知的 icon=false 真正隐藏图标，保留默认及自定义图标                      |
+| 11a                    | `fix: complete slider values and accessible names`                 | C08；单值/范围、Thumb 数量及名称                                                       |
+| 11b                    | `fix: complete calendar keyboard navigation`                       | C10；日历导航、可访问树与本地化                                                        |
+| 11b2                   | `feat: expose controlled calendar months and localized validation` | C10；受控月份、父级接纳/拒绝导航、可本地化验证反馈与键盘说明；与 11b 均验收后关闭      |
+| 12a                    | `fix: render empty state actions`                                  | C09；明确 slot 并验证所有允许的 children                                               |
+| 12b                    | `fix: tolerate unavailable theme storage`                          | C11；回退与持久化行为                                                                  |
+| 13a                    | `fix: improve semantic text contrast`                              | C12；主题与表面配对验证                                                                |
+| 13b1                   | `feat: expose accessible chart alternatives`                       | C13；图表框架及公开包装的摘要、数据替代与键盘路径                                      |
+| 13b2                   | `fix: make heatmap values keyboard accessible`                     | C13；日期/数值名称、单一 Tab 入口、方向键及局部横滚                                    |
+| 13b3                   | `feat: compose metric card states and explanations`                | R05；现有 StatCard/LayerCard/ChartShell 的说明、趋势与状态插槽                         |
+| 13c                    | `fix: respect reduced motion across feedback states`               | E07；spinner、caret、局部 pulse 与系统偏好                                             |
+| 13d                    | `fix: restore mobile navigation focus`                             | E08；移动 Sheet 关闭回焦与滚动锁清理                                                   |
+| 14a                    | `fix: make catalog tables and headers responsive`                  | E01；移动端信息完整、可键盘滚动                                                        |
+| 14b                    | `fix: isolate catalog example IDs`                                 | E02；重复实例的 label/description 正确归属                                             |
+| 14c                    | `fix: adapt chat panes to narrow viewports`                        | E04；移动 master/detail 与输入区可达                                                   |
+| 14d                    | `fix: preserve network chart dimensions`                           | E05；有效几何与 Sidebar resize                                                         |
+| 14e                    | `fix: complete example translations`                               | E06；英中文案不显示原始 key                                                            |
+| 14f                    | `docs: align example page structure with integration`              | E06；内容标题规范及明确例外                                                            |
+| 15a                    | `feat: demonstrate settings state changes`                         | E03；主题、保存、错误与反馈                                                            |
+| 15b                    | `feat: demonstrate native form submission flows`                   | E03；提交、验证、成功与失败                                                            |
+| 15c                    | `feat: demonstrate chat streaming and cancellation`                | E03/6.2；本地模拟发送、流式、停止、重试                                                |
+| 16a                    | `feat: add searchable multi-selection`                             | R01；先验证选项、搜索、chip 与键盘契约                                                 |
+| 16b                    | `feat: compose reusable filter controls`                           | R01；FilterBar/Chip/日期预设组合，URL 状态在外部                                       |
+| 16c                    | `feat: add file drop and upload state primitives`                  | R02；文件交互与受控上传状态，应用负责 transport                                        |
+| 17a                    | `feat: support dynamic chart series`                               | C15/R04；旧 props 兼容、任意系列和真实消费图表                                         |
+| 17a-tooltip            | `feat: add composable chart tooltip parts`                         | R04；行、分组分隔与总计，两个实际组合示例                                              |
+| 17a-matrix             | `feat: add reusable heatmap matrix`                                | R04；caller 行列标签、颜色域、空值与键盘导航                                           |
+| 17a-heatmap-tests      | `fix: preserve heatmap focus across data transitions`              | C23 与 P5 热力日历/矩阵分支缺口；清空后加载回焦、键盘、读数及清理回归                  |
+| 17a-chart-tests        | `test: cover chart rendering options`                              | P5 图表框架与包装选项的公共行为回归；不改四维 95% 门槛                                 |
+| 17a-registry-perf      | `perf: avoid redundant registry parsing`                           | Q08；减少单次 registry 校验中的重复解析，保留生成内容、跨调用 freshness 与既有时间预算 |
+| 17a-generator-fixtures | `test: reuse compiler fixtures without weakening checks`           | Q08 复核；减少只读清单与独立 callable 场景重复编译，保留所有断言与原时间预算           |
+| 17a-transition-tests   | `test: cover heatmap focus transition boundaries`                  | 数据缩短、矩阵直接清空与恢复的键盘焦点回归；保持既有公共实现和门槛                     |
+| 17b                    | `feat: expose controlled data table state`                         | C14；按实际服务端列表需求设计 adapter                                                  |
+| 17c                    | `feat: compose resource page regions`                              | C14/R05；页面 slots、状态与操作区                                                      |
+| 17d                    | `feat: showcase composed loading skeletons`                        | S01；Library 可发现的仪表盘、列表、详情组合，加载/内容切换与稳定几何                   |
+| 17e                    | `feat: showcase rich interactive tables`                           | S02；交互表头、格式化字段、语义色、行内电量/容量与趋势图、真实状态闭环                 |
+| 18a                    | `feat: add editable navigation rows`                               | R03；小控件先行，Tree adapter 后续单独设计                                             |
+| 18b                    | `feat: standardize tag colors and selection`                       | R06；色板、主题、无障碍与调用方实体解耦                                                |
+| 18c                    | `feat: add responsive master-detail composition`                   | R07；先验证窄屏与焦点，SplitPane 后续单独设计                                          |
+| 18d                    | `docs: provide reusable application blocks`                        | R08；框架/登录/资源页 recipe 可安装或编译                                              |
+| 19a                    | `chore: align supported toolchain versions`                        | Q06；本机和 CI 的版本策略一致                                                          |
+| 19b                    | `chore: retire stale vulnerability waivers`                        | Q06；豁免有效且扫描配置一致                                                            |
 
 ## 10. 后续 6DQ 质量计划
 
-| 维度 | 必需证明 | 防止的具体回归 |
-|---|---|---|
-| L1 | 受控/非受控、事件、表单值、异常、ref 合并、状态机；保留汇总阈值 | 禁用时执行动作、状态与 DOM 不一致、上传/删除错误被吞 |
-| L2 | 从候选 tarball 安装；精确 exports/类型基线；Bundler/NodeNext；peer 缺省与选装；编译文档代码 | 源码 alias 掩盖包缺文件、内部出口意外变更、复制 import 失败 |
-| L3 | 两种 CSS 合约；Next hydration；键盘焦点/原生表单/portal/Storage；390px 与桌面；少量关键视觉基线 | reset/ref、Tab、模态逃逸、尺寸错误、裁剪、图表塌缩 |
-| G1 | CI 真实 tsc+Biome；公开 API 元数据/生成内容 freshness；关键 a11y 规则有明确豁免 | 手工文档漂移、类型门被跳过、无语义交互悄悄增长 |
-| G2 | 源码/产物敏感信息检查、依赖扫描、有效豁免、版本/发布凭据边界 | 打包遗漏控制、无效扫描配置、未经验证的提交发布 |
-| 文档 | 按版本发布安装、组件、迁移、agent 指南；scenario 状态矩阵；公共面变更说明 | ready 被误认成稳定、调用方读到 main 的不匹配 API |
+| 维度 | 必需证明                                                                                        | 防止的具体回归                                              |
+| ---- | ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------- |
+| L1   | 受控/非受控、事件、表单值、异常、ref 合并、状态机；保留汇总阈值                                 | 禁用时执行动作、状态与 DOM 不一致、上传/删除错误被吞        |
+| L2   | 从候选 tarball 安装；精确 exports/类型基线；Bundler/NodeNext；peer 缺省与选装；编译文档代码     | 源码 alias 掩盖包缺文件、内部出口意外变更、复制 import 失败 |
+| L3   | 两种 CSS 合约；Next hydration；键盘焦点/原生表单/portal/Storage；390px 与桌面；少量关键视觉基线 | reset/ref、Tab、模态逃逸、尺寸错误、裁剪、图表塌缩          |
+| G1   | CI 真实 tsc+Biome；公开 API 元数据/生成内容 freshness；关键 a11y 规则有明确豁免                 | 手工文档漂移、类型门被跳过、无语义交互悄悄增长              |
+| G2   | 源码/产物敏感信息检查、依赖扫描、有效豁免、版本/发布凭据边界                                    | 打包遗漏控制、无效扫描配置、未经验证的提交发布              |
+| 文档 | 按版本发布安装、组件、迁移、agent 指南；scenario 状态矩阵；公共面变更说明                       | ready 被误认成稳定、调用方读到 main 的不匹配 API            |
 
 视觉验证采用有限的高价值组合：默认/长内容、浅/深色、桌面/移动、普通/reduced motion；图表加容器 resize，交互控件加键盘路径。后续若引入截图基线，这是基于此次发现提出的新方案，不应倒过来把历史计划「不做全站像素 diff」说成未执行承诺。
 
@@ -693,19 +693,19 @@ Sidebar、Dock、Fab、LoadingScreen、Loader 已考虑 reduced motion；Sidebar
 
 ### 12.3 阶段计划与状态
 
-| 阶段 | 范围 / 原子提交编号 | 必须独立验收的结果 | 状态 | 提交 / 证据 |
-|---|---|---|---|---|
-| P0 | 计划修订、S01/S02 设计、调度与监控 | 范围清楚、基线保留、任务只发给本仓库现有 pi | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动 |
-| P1 | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布 | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4 |
-| P2 | 公共接口与文档：04、05、06a/b1/b2；D01–D06 | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略 | 已验收 | `ef2bd65`–`2b8f088`：99 页 API、99 Usage、246 场景、随包 registry/指南及正式 tarball 编译门；120 项旧接口契约与 5 项真实 recipe 浏览器检查通过，详见 12.4 |
-| P3 | 基础样式与输入：07、08a/b/c、09/q/b/c/d；C01–C05/C19–C21 | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required、Group 原生事件与 ref 清理 | 已验收 | 运行时至 `b85649d`、行为回归 `026a958`；C01–C05/C19–C21 已关闭，177 文件 / 1,544 测试，四维覆盖率均 ≥95%；120 项旧接口与真实安装包验收通过 |
-| P4 | 浮层与语义：10a/b/c/d/e、11a/b/b2/b3、12a/b/c/d；C06–C11/C16–C18/C22/Q07/R05 | Dock 非模态语义、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘/受控月份/本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 已验收 | 实现至 `781aadf`，C06–C11/C16–C18/C22/Q07 已关闭；177 文件 / 1,628 测试，四维覆盖率 97.45 / 95.26 / 98.22 / 97.53；最终包、Next 与文档消费通过，详见 12.4 |
-| P5 | 视觉/图表/动效：13a/b1/b2/b3/c/d、17a 及 tooltip/matrix/回归/registry 子组；C12/C13/C15/C23/E07/E08/Q08/R04/R05 | 主题对比、导航回焦、图表替代、StatCard 状态、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、reduced motion | 已验收 | 实施至 `236ac18`；183 文件 / 1,703 测试全部通过，四维覆盖率 97.24 / 95.05 / 98.50 / 97.43；C12/C13/C15/C23/E07/E08/Q08/R04 已关闭，详见 12.4 |
-| P6 | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05 | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘 | 已验收 | `462b43e`；三种骨架屏、两种丰富表格、BatteryMeter 与受控列表；1,719 项测试及四维 95% 门、真实包和浏览器检查通过 |
-| P7 | Example 完备性：14a–f、15a–c；E01–E06 | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环 | 已验收 | `e5cb6de`；1,729 项测试、四维 95% 门及 fresh 生产构建浏览器检查通过 |
-| P8 | 筛选与上传：16a/b/c；R01/R02 | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费 | 已验收 | `55b9dba`；1,755 项测试、四维 95% 门、真实 tarball A/B/Next、文档与生产展示通过 |
-| P9 | 小型复用控件与应用模板：18a/b/c/d；R03/R06/R07/R08 | EditableNav、Tag 色板/选择、InlineEditable/master-detail、可编译 AppFrame/Login/Resource recipes | 已验收 | `9d63226`；1,787 项测试、四维 95% 门、真实 tarball A/B/Next 与文档/生产展示通过 |
-| P10 | D07 类型打印器；主色/图表双色板；生产域名；整体验收、兼容/迁移说明与台账收口 | 泛型/readonly/回调类型可编译；12 糖果主色及本地自定义色板；固定图表色板与 ring 衬底；basaltui.com / GitHub metadata；最终候选全套 6DQ、tarball/文档 freshness、无未记录 API 破坏 | 已验收 | 与本节同阶段提交；1,795 项测试、四维 95% 门、包质量、A/B/Next/heavy/docs 与 fresh showcase 全通过，详见 12.4 |
+| 阶段 | 范围 / 原子提交编号                                                                                             | 必须独立验收的结果                                                                                                                                                                          | 状态   | 提交 / 证据                                                                                                                                               |
+| ---- | --------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| P0   | 计划修订、S01/S02 设计、调度与监控                                                                              | 范围清楚、基线保留、任务只发给本仓库现有 pi                                                                                                                                                 | 已验收 | `40e831b`；正常 hooks 通过；129 个文档链接均存在；45 秒监控已启动                                                                                         |
+| P1   | 质量与发布门：01、02a/b、03、19a/b；Q01–Q04/Q06                                                                 | 失败注入、真正 tsc、包与消费门进入 CI、release 同 SHA/main/单 tag；不执行发布                                                                                                               | 已验收 | `987f99c`–`e99b4b1` 共 8 个实现提交；阶段末全门与独立失败注入通过，详见 12.4                                                                              |
+| P2   | 公共接口与文档：04、05、06a/b1/b2；D01–D06                                                                      | 公开出口兼容基线、可编译安装代码、API 归属/默认值、随包 agent 指南与迁移策略                                                                                                                | 已验收 | `ef2bd65`–`2b8f088`：99 页 API、99 Usage、246 场景、随包 registry/指南及正式 tarball 编译门；120 项旧接口契约与 5 项真实 recipe 浏览器检查通过，详见 12.4 |
+| P3   | 基础样式与输入：07、08a/b/c、09/q/b/c/d；C01–C05/C19–C21                                                        | standalone/ Tailwind 尺寸、disabled、portal、Tab、DatePicker ref/reset/required、Group 原生事件与 ref 清理                                                                                  | 已验收 | 运行时至 `b85649d`、行为回归 `026a958`；C01–C05/C19–C21 已关闭，177 文件 / 1,544 测试，四维覆盖率均 ≥95%；120 项旧接口与真实安装包验收通过                |
+| P4   | 浮层与语义：10a/b/c/d/e、11a/b/b2/b3、12a/b/c/d；C06–C11/C16–C18/C22/Q07/R05                                    | Dock 非模态语义、Confirm 焦点/异常、Portal forceMount、Popover asChild、Toast 图标隐藏、Slider 多值/名称/双轴几何、日历键盘/受控月份/本地化、Empty action、Theme/Accent 组合下 Storage 拒绝 | 已验收 | 实现至 `781aadf`，C06–C11/C16–C18/C22/Q07 已关闭；177 文件 / 1,628 测试，四维覆盖率 97.45 / 95.26 / 98.22 / 97.53；最终包、Next 与文档消费通过，详见 12.4 |
+| P5   | 视觉/图表/动效：13a/b1/b2/b3/c/d、17a 及 tooltip/matrix/回归/registry 子组；C12/C13/C15/C23/E07/E08/Q08/R04/R05 | 主题对比、导航回焦、图表替代、StatCard 状态、动态系列与 formatter/domain/stack、热力矩阵/tooltip 组合、reduced motion                                                                       | 已验收 | 实施至 `236ac18`；183 文件 / 1,703 测试全部通过，四维覆盖率 97.24 / 95.05 / 98.50 / 97.43；C12/C13/C15/C23/E07/E08/Q08/R04 已关闭，详见 12.4              |
+| P6   | Library 骨架屏与 Table：17b/c/d/e；C14/S01/S02/R05                                                              | 三类骨架屏；两类丰富 Table；受控状态、格式化/行内图表、四态、移动/深色/键盘                                                                                                                 | 已验收 | `462b43e`；三种骨架屏、两种丰富表格、BatteryMeter 与受控列表；1,719 项测试及四维 95% 门、真实包和浏览器检查通过                                           |
+| P7   | Example 完备性：14a–f、15a–c；E01–E06                                                                           | 文档表格/ID、Chat 移动、Network 几何、翻译/页头；Settings、Forms、Data、Chat 可观察状态闭环                                                                                                 | 已验收 | `e5cb6de`；1,729 项测试、四维 95% 门及 fresh 生产构建浏览器检查通过                                                                                       |
+| P8   | 筛选与上传：16a/b/c；R01/R02                                                                                    | 受控搜索多选与 chip、FilterBar、文件选择/拖放及队列状态；两个场景和纯包消费                                                                                                                 | 已验收 | `55b9dba`；1,755 项测试、四维 95% 门、真实 tarball A/B/Next、文档与生产展示通过                                                                           |
+| P9   | 小型复用控件与应用模板：18a/b/c/d；R03/R06/R07/R08                                                              | EditableNav、Tag 色板/选择、InlineEditable/master-detail、可编译 AppFrame/Login/Resource recipes                                                                                            | 已验收 | `9d63226`；1,787 项测试、四维 95% 门、真实 tarball A/B/Next 与文档/生产展示通过                                                                           |
+| P10  | D07 类型打印器；主色/图表双色板；生产域名；整体验收、兼容/迁移说明与台账收口                                    | 泛型/readonly/回调类型可编译；12 糖果主色及本地自定义色板；固定图表色板与 ring 衬底；basaltui.com / GitHub metadata；最终候选全套 6DQ、tarball/文档 freshness、无未记录 API 破坏            | 已验收 | 与本节同阶段提交；1,795 项测试、四维 95% 门、包质量、A/B/Next/heavy/docs 与 fresh showcase 全通过，详见 12.4                                              |
 
 P7 包含原拆分表未单列的 Data 页面搜索/筛选闭环；P9 包含实际受控需求所需的 InlineEditable。两者均已按用户修订后的大阶段提交方式交付。新增公开 surface 同阶段补齐元数据、出口和文档。
 
@@ -719,13 +719,13 @@ P7 包含原拆分表未单列的 Data 页面搜索/筛选闭环；P9 包含实�
 
 #### P1 验收记录（已验收，2026-09-06）
 
-| 问题 | 实现提交 | 主 agent 独立核验 |
-|---|---|---|
-| Q01 | `987f99c` | 在真实 `/bin/sh -e` 下，成功路径依序执行四项；build/coverage/lint/OSV 分别注入 exit 41，均原样非零退出且不执行后续命令 |
-| Q02 | `b5cb086` | shared CI 明确运行 `bun run typecheck`，不再使用 `true` |
-| Q03 | `b66f457` | 同一 CI workflow 的独立 job 包含 package build、双模块类型、pack、publint 与四类 consumer；Node 24、Chromium 系统依赖明确配置 |
-| Q04 | `2881a59`、`a4418fd` | 正式 Vitest 命令下 19 个 release 测试通过；另以隔离 Git/GitHub 响应执行实际工作流 shell，13 个正负用例全部通过；验证精确 SHA、最新 CI、完整 tag ref、祖先/checkout/版本匹配和零实际发布 |
-| Q06 | `fbc85b7`、`007cc8c`、`e99b4b1` | manifest 与全部 CI/CD Bun 均为 1.4.0；锁文件未变；过期 9 条豁免全部移除，扫描配置保持启用 |
+| 问题 | 实现提交                        | 主 agent 独立核验                                                                                                                                                                       |
+| ---- | ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Q01  | `987f99c`                       | 在真实 `/bin/sh -e` 下，成功路径依序执行四项；build/coverage/lint/OSV 分别注入 exit 41，均原样非零退出且不执行后续命令                                                                  |
+| Q02  | `b5cb086`                       | shared CI 明确运行 `bun run typecheck`，不再使用 `true`                                                                                                                                 |
+| Q03  | `b66f457`                       | 同一 CI workflow 的独立 job 包含 package build、双模块类型、pack、publint 与四类 consumer；Node 24、Chromium 系统依赖明确配置                                                           |
+| Q04  | `2881a59`、`a4418fd`            | 正式 Vitest 命令下 19 个 release 测试通过；另以隔离 Git/GitHub 响应执行实际工作流 shell，13 个正负用例全部通过；验证精确 SHA、最新 CI、完整 tag ref、祖先/checkout/版本匹配和零实际发布 |
+| Q06  | `fbc85b7`、`007cc8c`、`e99b4b1` | manifest 与全部 CI/CD Bun 均为 1.4.0；锁文件未变；过期 9 条豁免全部移除，扫描配置保持启用                                                                                               |
 
 发布验收包含等待期间 HEAD 变化、旧成功与新 pending 并存、错误分支/事件/SHA、缺少 CI、失败 CI、非法/不存在的 tag、tag 与 checkout 不匹配、不在 main 上等边界。`deploy-main` 另限定本仓库的 main push，避免仅凭来源分支名称判定。Actionlint 1.7.7 对工作流的语法检查通过。
 
@@ -1200,31 +1200,31 @@ Next 16.3.3 / Turbopack 生产消费页在挂载 TagColorPicker 时触发 React 
 
 第 1–8 节保留初审原文。下表反映 P1–P10 最终实施结果，不能把历史缺陷描述当作当前状态，也不能用阶段完成代替后置项的独立验收。对应的新证据见 12.4。
 
-| 分类 / 编号 | 当前结果 | 阶段与核验位置 |
-|---|---|---|
-| 文档 D01–D06 | 已关闭：接入入口、可编译代码、完整 API 归属、随包 agent 知识、公开出口基线与兼容政策 | P2；INTEGRATION、ai/registry、USAGE、COMPATIBILITY、真实 tarball docs gate |
-| 文档 D07 | 已关闭：类型打印器的泛型、readonly、回调优先级与递归别名修正；TypeScript 正反对照及完整文档门通过 | P10；catalog-type-printer.test.ts、Copy page 回归与生成 API |
-| 控件 C01–C05 | 已关闭：禁用/loading、standalone 尺寸、输入弹层、Tab、DatePicker ref/表单 | P3；真实 A/B 包消费及原生 FormData、reset、焦点对照 |
-| 控件 C06–C11 | 已关闭：Dock、Confirm、Slider、Empty、日历、主题存储 | P4；键盘、受控状态、异常、几何与 storage 拒绝 |
-| 控件 C12–C13 | 已关闭：语义对比度、图表摘要/数据替代与热力图键盘路径；新增色板通过 P10 全矩阵验收 | P5/P10；文字及 hover/focus 对照、图表和日历消费门 |
-| 控件 C14 | 已关闭：DataTable 手动/受控数据处理及 ResourceList 页面组合 | P6；设备运维表、订阅台账、旧 props 类型正反例 |
-| 控件 C15 | 已关闭：动态图表 series、formatter/domain/stack 等配置 | P5；真实包图表与旧 y/y2/y3 输入兼容 |
-| 控件 C16–C18、C22 | 已关闭：Portal forceMount、Popover asChild、Toast 隐藏图标、日历极端日期 | P4；默认/显式路径、卸载清理及原生日期上限 |
-| 控件 C19–C21 | 已关闭：类名提取、取消 reset、Group callback ref cleanup | P3；编译 CSS、父级重渲染与 React 19 清理 |
-| 控件 C23 | 已关闭：热力日历清空后重新加载的焦点恢复 | P5；空态恢复与外部焦点所有权，正式 heavy 持续回归 |
-| 控件 C24 | 已关闭：Next 生产压缩下选择指示器重复更新 | P9；真实 Next 生产产物，稳定默认回调及 hydration 就绪 |
-| 质量 Q01–Q04、Q06 | 已关闭：失败传播、真实 tsc、包/消费门接入、发布 SHA/main/tag 约束及工具/豁免归一 | P1；失败注入、工作流及 release 正反例；未触发远端发布 |
-| 质量 Q05 | 本轮缺陷的契约、浏览器、几何与配色门已接入；组织级 skip 治理、既有 lint a11y 豁免复查仍后置，未宣称全面关闭 | P3–P10；保持原覆盖分母和四维 95%，ready 仅表示文档/示例可展示 |
-| 质量 Q07–Q08 | 已关闭：formatter 固定调用与重复 registry/生成解析 | P4/P5；原时间预算、跨调用 freshness、完整生成内容与断言保留 |
-| Example E01–E06 | 已关闭：移动文档、重复 ID、交互闭环、Chat 窄屏、Network 几何、文案/页头 | P7；24 个路由、320/390/640px 文档重排、手机/桌面与两主题工作流 |
-| Example E07–E08 | 已关闭：reduced motion 覆盖与移动导航回焦 | P5；P6–P10 新场景继续使用正式 motion、键盘与清理检查 |
-| 展示 S01–S02 | 已关闭：三种复杂骨架屏及两种丰富可交互表格 | P6；Library 主展示、复制代码、四态与 loading/loaded 几何 |
-| 复用 R01–R02 | 已关闭：MultiSelect、FilterBar、FileDropzone、UploadQueue | P8；每项两个独立场景，纯包消费及取消/重试/清理 |
-| 复用 R03 | 本轮小控件已验收：EditableNavItem/FolderNavItem、IconPicker、InlineEditable；Tree adapter 后置 | P9；保留调用方路由、树模型与持久化责任 |
-| 复用 R04 | 已关闭：图表动态系列、tooltip 组合、HeatmapMatrix | P5；通用图形与业务数据分离 |
-| 复用 R05 | 已关闭：指标卡说明/状态及资源页面 slots/四态 | P4–P6；StatCard、LayerCard、ChartShell、ResourceList |
-| 复用 R06–R08 | 本轮已验收：标签颜色/选择、响应式 master/detail、三份应用 recipes；可拖拽 SplitPane 后置 | P9；小图标集合、手机返回回焦、安装包 Markdown 原文编译与交互 |
-| P10 追加需求 | 已验收：12 糖果主色、自定义缓存、独立固定五色图表、中性 ring 轨道、新域名/GitHub homepage | 12.4 P10 记录及 COMPATIBILITY 迁移表 |
+| 分类 / 编号       | 当前结果                                                                                                    | 阶段与核验位置                                                             |
+| ----------------- | ----------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| 文档 D01–D06      | 已关闭：接入入口、可编译代码、完整 API 归属、随包 agent 知识、公开出口基线与兼容政策                        | P2；INTEGRATION、ai/registry、USAGE、COMPATIBILITY、真实 tarball docs gate |
+| 文档 D07          | 已关闭：类型打印器的泛型、readonly、回调优先级与递归别名修正；TypeScript 正反对照及完整文档门通过           | P10；catalog-type-printer.test.ts、Copy page 回归与生成 API                |
+| 控件 C01–C05      | 已关闭：禁用/loading、standalone 尺寸、输入弹层、Tab、DatePicker ref/表单                                   | P3；真实 A/B 包消费及原生 FormData、reset、焦点对照                        |
+| 控件 C06–C11      | 已关闭：Dock、Confirm、Slider、Empty、日历、主题存储                                                        | P4；键盘、受控状态、异常、几何与 storage 拒绝                              |
+| 控件 C12–C13      | 已关闭：语义对比度、图表摘要/数据替代与热力图键盘路径；新增色板通过 P10 全矩阵验收                          | P5/P10；文字及 hover/focus 对照、图表和日历消费门                          |
+| 控件 C14          | 已关闭：DataTable 手动/受控数据处理及 ResourceList 页面组合                                                 | P6；设备运维表、订阅台账、旧 props 类型正反例                              |
+| 控件 C15          | 已关闭：动态图表 series、formatter/domain/stack 等配置                                                      | P5；真实包图表与旧 y/y2/y3 输入兼容                                        |
+| 控件 C16–C18、C22 | 已关闭：Portal forceMount、Popover asChild、Toast 隐藏图标、日历极端日期                                    | P4；默认/显式路径、卸载清理及原生日期上限                                  |
+| 控件 C19–C21      | 已关闭：类名提取、取消 reset、Group callback ref cleanup                                                    | P3；编译 CSS、父级重渲染与 React 19 清理                                   |
+| 控件 C23          | 已关闭：热力日历清空后重新加载的焦点恢复                                                                    | P5；空态恢复与外部焦点所有权，正式 heavy 持续回归                          |
+| 控件 C24          | 已关闭：Next 生产压缩下选择指示器重复更新                                                                   | P9；真实 Next 生产产物，稳定默认回调及 hydration 就绪                      |
+| 质量 Q01–Q04、Q06 | 已关闭：失败传播、真实 tsc、包/消费门接入、发布 SHA/main/tag 约束及工具/豁免归一                            | P1；失败注入、工作流及 release 正反例；未触发远端发布                      |
+| 质量 Q05          | 本轮缺陷的契约、浏览器、几何与配色门已接入；组织级 skip 治理、既有 lint a11y 豁免复查仍后置，未宣称全面关闭 | P3–P10；保持原覆盖分母和四维 95%，ready 仅表示文档/示例可展示              |
+| 质量 Q07–Q08      | 已关闭：formatter 固定调用与重复 registry/生成解析                                                          | P4/P5；原时间预算、跨调用 freshness、完整生成内容与断言保留                |
+| Example E01–E06   | 已关闭：移动文档、重复 ID、交互闭环、Chat 窄屏、Network 几何、文案/页头                                     | P7；24 个路由、320/390/640px 文档重排、手机/桌面与两主题工作流             |
+| Example E07–E08   | 已关闭：reduced motion 覆盖与移动导航回焦                                                                   | P5；P6–P10 新场景继续使用正式 motion、键盘与清理检查                       |
+| 展示 S01–S02      | 已关闭：三种复杂骨架屏及两种丰富可交互表格                                                                  | P6；Library 主展示、复制代码、四态与 loading/loaded 几何                   |
+| 复用 R01–R02      | 已关闭：MultiSelect、FilterBar、FileDropzone、UploadQueue                                                   | P8；每项两个独立场景，纯包消费及取消/重试/清理                             |
+| 复用 R03          | 本轮小控件已验收：EditableNavItem/FolderNavItem、IconPicker、InlineEditable；Tree adapter 后置              | P9；保留调用方路由、树模型与持久化责任                                     |
+| 复用 R04          | 已关闭：图表动态系列、tooltip 组合、HeatmapMatrix                                                           | P5；通用图形与业务数据分离                                                 |
+| 复用 R05          | 已关闭：指标卡说明/状态及资源页面 slots/四态                                                                | P4–P6；StatCard、LayerCard、ChartShell、ResourceList                       |
+| 复用 R06–R08      | 本轮已验收：标签颜色/选择、响应式 master/detail、三份应用 recipes；可拖拽 SplitPane 后置                    | P9；小图标集合、手机返回回焦、安装包 Markdown 原文编译与交互               |
+| P10 追加需求      | 已验收：12 糖果主色、自定义缓存、独立固定五色图表、中性 ring 轨道、新域名/GitHub homepage                   | 12.4 P10 记录及 COMPATIBILITY 迁移表                                       |
 
 后置范围保持明确：Tree adapter 与可拖拽 SplitPane 需要独立的数据/拖动/键盘契约设计；maps 仍为唯一 planned catalog 页面。组织级 index-snapshot pre-commit、stdin-range pre-push、skip 检测及既有可访问性规则豁免复查未在本轮替换。当前提交仍执行正常 typecheck、lint、全量单测与 staged gitleaks；pre-push/CI 配置中的覆盖率与消费门继续保留。远端 CI 尚未为这些本地提交运行。
 
@@ -1232,13 +1232,13 @@ Next 16.3.3 / Turbopack 生产消费页在挂载 TagColorPicker 时触发 React 
 
 以下路径均可在本地 `http://localhost:7003` 或 `https://basalt.dev.hexly.ai` 查看。v2.1.0 的生产入口为 https://basaltui.com，上线状态以 [Release workflow](https://github.com/nocoo/basalt/actions/workflows/release.yml) 的部署结果为准。
 
-| 阶段 | 能直接看到的页面 | 实施前 → 当前实现 | 不做的影响 |
-|---|---|---|---|
-| P6 | `/ui/skeleton-line`、`/ui/data-table`、`/ui/table`、`/ui/battery-meter` | 几条占位线与简单表格 → 仪表盘/列表/详情加载组合；可排序、筛选、分页、选择的丰富表格，行内格式化金额/状态/电量/趋势及失败重试 | 大型项目仍需各自补骨架屏和列表状态，迁移时难以共享一致的数据契约 |
-| P7 | `/forms`、`/settings`、`/data`、`/chat`、`/network`，手机 Library | 外观为主、窄屏挤压/截断 → 保存/取消/错误/重试可操作，Chat 流式/停止与返回列表可用，图表尺寸稳定、文档可键盘横滚 | 示例无法作为可工作的迁移起点，移动布局和焦点问题继续进入下游 |
-| P8 | `/ui/multi-select`、`/ui/filter-bar`、`/ui/file-dropzone`、`/ui/upload-queue` | 下游重复实现筛选和文件流程 → 公共多选/筛选/拖放/队列，展示搜索、校验、进度、取消、失败重试 | 文件生命周期、原生表单和异步取消等边界需每个应用重复维护 |
-| P9 | `/ui/inline-editable`、`/ui/editable-nav-item`、`/ui/icon-picker`、`/ui/tag-badge`、`/ui/tag-color-picker`、`/ui/responsive-master-detail`；随包 `ai/RECIPES.md` | 零散编辑/导航/标签与应用壳 → 可复用的小控件、手机主从视图及三份可编译 AppFrame/Login/Resources 模块 | 应用迁移仍依赖复制局部代码，容易遗漏回焦、草稿保留、请求取消和 SSR 生产差异 |
-| P10 | `/palette`、`/ui/gauge`、`/ui/line`、`/ui/radar`、`/ui/timeline`，泛型控件 API/Copy page | 主色与 chart 共用旧色板、黑色 ring 剩余区、文档类型失真 → 12 糖果主色及本地自定义、独立固定五色图表、中性轨道、清晰文字/网格与正确泛型文档；生产链接切换为 basaltui.com | 主色更换会扰动图表系列，ring 观感与文字配色问题保留，按文档写类型仍可能无法编译，旧生产链接继续失效 |
+| 阶段 | 能直接看到的页面                                                                                                                                                 | 实施前 → 当前实现                                                                                                                                                       | 不做的影响                                                                                          |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| P6   | `/ui/skeleton-line`、`/ui/data-table`、`/ui/table`、`/ui/battery-meter`                                                                                          | 几条占位线与简单表格 → 仪表盘/列表/详情加载组合；可排序、筛选、分页、选择的丰富表格，行内格式化金额/状态/电量/趋势及失败重试                                            | 大型项目仍需各自补骨架屏和列表状态，迁移时难以共享一致的数据契约                                    |
+| P7   | `/forms`、`/settings`、`/data`、`/chat`、`/network`，手机 Library                                                                                                | 外观为主、窄屏挤压/截断 → 保存/取消/错误/重试可操作，Chat 流式/停止与返回列表可用，图表尺寸稳定、文档可键盘横滚                                                         | 示例无法作为可工作的迁移起点，移动布局和焦点问题继续进入下游                                        |
+| P8   | `/ui/multi-select`、`/ui/filter-bar`、`/ui/file-dropzone`、`/ui/upload-queue`                                                                                    | 下游重复实现筛选和文件流程 → 公共多选/筛选/拖放/队列，展示搜索、校验、进度、取消、失败重试                                                                              | 文件生命周期、原生表单和异步取消等边界需每个应用重复维护                                            |
+| P9   | `/ui/inline-editable`、`/ui/editable-nav-item`、`/ui/icon-picker`、`/ui/tag-badge`、`/ui/tag-color-picker`、`/ui/responsive-master-detail`；随包 `ai/RECIPES.md` | 零散编辑/导航/标签与应用壳 → 可复用的小控件、手机主从视图及三份可编译 AppFrame/Login/Resources 模块                                                                     | 应用迁移仍依赖复制局部代码，容易遗漏回焦、草稿保留、请求取消和 SSR 生产差异                         |
+| P10  | `/palette`、`/ui/gauge`、`/ui/line`、`/ui/radar`、`/ui/timeline`，泛型控件 API/Copy page                                                                         | 主色与 chart 共用旧色板、黑色 ring 剩余区、文档类型失真 → 12 糖果主色及本地自定义、独立固定五色图表、中性轨道、清晰文字/网格与正确泛型文档；生产链接切换为 basaltui.com | 主色更换会扰动图表系列，ring 观感与文字配色问题保留，按文档写类型仍可能无法编译，旧生产链接继续失效 |
 
 ### 12.8 P10 后续配色调整（已验收，2026-09-07）
 

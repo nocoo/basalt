@@ -23,16 +23,16 @@ Ship in this order. Each step has a section below. Do not skip ahead to cards.
 
 ### Who owns what
 
-| Layer | Component | Owns | Does not own |
-|---|---|---|---|
-| Landing | public marketing route | full-width sections and document scrolling | dashboard width or scroll rules |
-| Login | app page, not `AppShell` | identity badge | rail, header, island |
-| Rail | `Sidebar` | product title, version pill, nav, user | page body |
-| Framework bar | `AppHeader` | ancestor breadcrumbs, current page name, top-right actions (`ThemeToggle`, …) | create, filters, cards |
-| Island | `ContentIsland` | L1 surface and scroll | page chrome |
-| Page heading | `PageHeader` | content title, subtitle, create last, filters | `AppHeader` crumbs |
-| Region | `SectionRule` | dashed title rule, optional hint, optional region actions | `LayerCard.Header` |
-| Card | `LayerCard` | nested surface | page title |
+| Layer         | Component                | Owns                                                                          | Does not own                    |
+| ------------- | ------------------------ | ----------------------------------------------------------------------------- | ------------------------------- |
+| Landing       | public marketing route   | full-width sections and document scrolling                                    | dashboard width or scroll rules |
+| Login         | app page, not `AppShell` | identity badge                                                                | rail, header, island            |
+| Rail          | `Sidebar`                | product title, version pill, nav, user                                        | page body                       |
+| Framework bar | `AppHeader`              | ancestor breadcrumbs, current page name, top-right actions (`ThemeToggle`, …) | create, filters, cards          |
+| Island        | `ContentIsland`          | L1 surface and scroll                                                         | page chrome                     |
+| Page heading  | `PageHeader`             | content title, subtitle, create last, filters                                 | `AppHeader` crumbs              |
+| Region        | `SectionRule`            | dashed title rule, optional hint, optional region actions                     | `LayerCard.Header`              |
+| Card          | `LayerCard`              | nested surface                                                                | page title                      |
 
 ### Tree
 
@@ -95,7 +95,7 @@ import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  plugins: [tailwindcss(), react()],
+	plugins: [tailwindcss(), react()],
 });
 ```
 
@@ -107,14 +107,14 @@ In the app stylesheet (e.g. `src/index.css`), the exact 3-line import order is r
 @import "tailwindcss";
 
 @layer base {
-  html,
-  body,
-  #root {
-    height: 100%;
-  }
-  body {
-    @apply bg-basalt-background text-basalt-foreground antialiased;
-  }
+	html,
+	body,
+	#root {
+		height: 100%;
+	}
+	body {
+		@apply bg-basalt-background text-basalt-foreground antialiased;
+	}
 }
 ```
 
@@ -137,9 +137,9 @@ Apply theme on the document **before** React paints:
 ```ts
 let stored: string | null = null;
 try {
-  stored = window.localStorage.getItem("theme");
+	stored = window.localStorage.getItem("theme");
 } catch {
-  // Continue with the system theme when browser storage is denied.
+	// Continue with the system theme when browser storage is denied.
 }
 const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 const isDark = stored === "dark" || (stored !== "light" && prefersDark);
@@ -154,19 +154,19 @@ document.documentElement.dataset.mode = isDark ? "dark" : "light";
 
 Root barrel is small leaves and providers. Shell chrome is granular.
 
-| From | Import |
-|---|---|
-| `@nocoo/basalt` | `Button`, `Input`, `LayerCard`, `DescriptionList`, `Sidebar`, `SidebarHeader`, `SidebarNav`, `SidebarFooter`, `SidebarItem`, `SidebarIconItem`, `SidebarPartition`, `SidebarGroup`, `SidebarSearch`, `SidebarUser`, `ContentIsland`, `Sheet`, `SheetContent`, `SheetTitle`, `Avatar`, `AvatarFallback`, `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`, `Toaster`, `CommandPalette`, … |
-| `@nocoo/basalt/components/app-shell` | `AppShell`, `AppMain`, `AppSkipLink` |
-| `@nocoo/basalt/components/app-header` | `AppHeader` |
-| `@nocoo/basalt/components/page-header` | `PageHeader` |
-| `@nocoo/basalt/components/section-rule` | `SectionRule` |
-| `@nocoo/basalt/components/loading-screen` | `LoadingScreen` |
-| `@nocoo/basalt/components/basalt-mark` | `BasaltMark` |
-| `@nocoo/basalt/providers/theme` | `useTheme` (if not taking `ThemeProvider` from the root) |
-| `@nocoo/basalt/charts/*` | charts |
-| `@nocoo/basalt/components/date-picker` | DatePicker |
-| `@nocoo/basalt/components/data-table` | DataTable |
+| From                                      | Import                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ----------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `@nocoo/basalt`                           | `Button`, `Input`, `LayerCard`, `DescriptionList`, `Sidebar`, `SidebarHeader`, `SidebarNav`, `SidebarFooter`, `SidebarItem`, `SidebarIconItem`, `SidebarPartition`, `SidebarGroup`, `SidebarSearch`, `SidebarUser`, `ContentIsland`, `Sheet`, `SheetContent`, `SheetTitle`, `Avatar`, `AvatarFallback`, `Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`, `ThemeProvider`, `ThemeToggle`, `LinkProvider`, `Toaster`, `CommandPalette`, … |
+| `@nocoo/basalt/components/app-shell`      | `AppShell`, `AppMain`, `AppSkipLink`                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| `@nocoo/basalt/components/app-header`     | `AppHeader`                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `@nocoo/basalt/components/page-header`    | `PageHeader`                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `@nocoo/basalt/components/section-rule`   | `SectionRule`                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| `@nocoo/basalt/components/loading-screen` | `LoadingScreen`                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `@nocoo/basalt/components/basalt-mark`    | `BasaltMark`                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| `@nocoo/basalt/providers/theme`           | `useTheme` (if not taking `ThemeProvider` from the root)                                                                                                                                                                                                                                                                                                                                                                                                 |
+| `@nocoo/basalt/charts/*`                  | charts                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| `@nocoo/basalt/components/date-picker`    | DatePicker                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `@nocoo/basalt/components/data-table`     | DataTable                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
 Off the root barrel: `AppShell`, `AppMain`, `AppSkipLink`, `AppHeader`, `PageHeader`, `SectionRule`, `LoadingScreen`, `BasaltMark`, charts, DatePicker, DataTable. Import those from the granular paths above. `LayerCard` is on the root barrel **and** `@nocoo/basalt/components/layer-card`.
 
@@ -178,20 +178,18 @@ One tree for the whole app. Login and the shell both sit under it.
 
 ```tsx excerpt:app-provider-tree
 <ThemeProvider>
-  <LinkProvider render={AppLink}>
-    <TooltipProvider>
-      <BrowserRouter>
-        <Toaster />
-        <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route element={<AppFrame />}>
-            {/* authenticated pages */}
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </LinkProvider>
-</ThemeProvider>
+	<LinkProvider render={AppLink}>
+		<TooltipProvider>
+			<BrowserRouter>
+				<Toaster />
+				<Routes>
+					<Route path="/login" element={<LoginPage />} />
+					<Route element={<AppFrame />}>{/* authenticated pages */}</Route>
+				</Routes>
+			</BrowserRouter>
+		</TooltipProvider>
+	</LinkProvider>
+</ThemeProvider>;
 ```
 
 `LinkProvider` `render` must map `href` to the app router (React Router `Link`, etc.). External `http(s):` / `mailto:` / `tel:` stay as `<a>`.
@@ -202,16 +200,15 @@ One tree for the whole app. Login and the shell both sit under it.
 
 `ThemeProvider` manages color scheme mode (`"light" | "dark" | "system"`). It synchronizes active classes (`light`/`dark`) and attributes (`data-mode="dark"|"light"`) onto `document.documentElement`, supports cross-tab and same-page synchronization, and provides graceful fallback when storage is restricted.
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `ReactNode` | *(required)* | Application components wrapped by the theme context. |
-| `storageKey` | `string` | `"theme"` | Key used for `localStorage` persistence. |
-| `defaultTheme` | `BasaltTheme` (`"light"` \| `"dark"` \| `"system"`) | `"system"` | Initial fallback theme during SSR or when no stored preference exists. |
-| `persist` | `boolean` | `true` | When `false`, completely isolates the provider from `localStorage` (never reads or writes storage, does not broadcast or listen to external storage events). |
-| `theme` | `BasaltTheme` | `undefined` | Controlled theme value. When supplied, internal state is driven by this prop. |
-| `onThemeChange` | `(theme: BasaltTheme) => void` | `undefined` | Callback fired when a theme change is requested. In controlled mode, callers update `theme`. |
-| `applyToDocument` | `boolean` | `true` | When `false`, disables mutating classes or dataset on `document.documentElement`, allowing a host theme system to manage root DOM state. |
-
+| Prop              | Type                                                | Default      | Description                                                                                                                                                  |
+| ----------------- | --------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `children`        | `ReactNode`                                         | _(required)_ | Application components wrapped by the theme context.                                                                                                         |
+| `storageKey`      | `string`                                            | `"theme"`    | Key used for `localStorage` persistence.                                                                                                                     |
+| `defaultTheme`    | `BasaltTheme` (`"light"` \| `"dark"` \| `"system"`) | `"system"`   | Initial fallback theme during SSR or when no stored preference exists.                                                                                       |
+| `persist`         | `boolean`                                           | `true`       | When `false`, completely isolates the provider from `localStorage` (never reads or writes storage, does not broadcast or listen to external storage events). |
+| `theme`           | `BasaltTheme`                                       | `undefined`  | Controlled theme value. When supplied, internal state is driven by this prop.                                                                                |
+| `onThemeChange`   | `(theme: BasaltTheme) => void`                      | `undefined`  | Callback fired when a theme change is requested. In controlled mode, callers update `theme`.                                                                 |
+| `applyToDocument` | `boolean`                                           | `true`       | When `false`, disables mutating classes or dataset on `document.documentElement`, allowing a host theme system to manage root DOM state.                     |
 - **Hook `useTheme()`**: Returns `{ theme: BasaltTheme, setTheme: (theme: BasaltTheme) => void }`. Throws an error when invoked outside a `ThemeProvider`.
 - **Storage failure resilience**: If reading or writing `localStorage` throws (e.g. quota exceeded or sandboxed iframe security error), `ThemeProvider` catches the error, retains the explicit selection in memory, and suppresses stale bare storage events from rolling back state.
 - **SSR & Hydration**: During SSR, `ThemeProvider` returns controlled `theme` (if provided) or `defaultTheme`. On the client, it hydrates from `localStorage` if `persist=true`. When custom `storageKey` or `defaultTheme` is configured, pre-hydration inline scripts must match the same key and default.
@@ -225,17 +222,16 @@ One tree for the whole app. Login and the shell both sit under it.
 
 #### AccentProvider Configuration
 
-| Prop | Type | Default | Description |
-|---|---|---|---|
-| `children` | `ReactNode` | *(required)* | Application components wrapped by the accent context. |
-| `storageKey` | `string` | `"basalt-accent"` | Key used for `localStorage` persistence. |
-| `defaultAccent` | `string` | `"primary"` | Initial accent swatch ID during SSR or when no stored preference exists. |
-| `persist` | `boolean` | `true` | When `false`, isolates the provider from `localStorage` (no storage read/write, no cross-tab sync). |
-| `accent` | `string` | `undefined` | Controlled accent value. When supplied, internal state is driven by this prop. |
-| `onAccentChange` | `(accent: string) => void` | `undefined` | Callback fired when an accent change is requested. |
-| `applyToDocument` | `boolean` | `true` | When `false`, disables writing CSS custom properties and `data-accent` to `document.documentElement`. |
-| `paletteOverrides` | `Readonly<Record<string, { light: string; dark: string }>>` | `undefined` | Optional HSL-channel pairs for the twelve preset IDs. Invalid pairs and unknown IDs are ignored. The application owns persistence. |
-
+| Prop               | Type                                                        | Default           | Description                                                                                                                        |
+| ------------------ | ----------------------------------------------------------- | ----------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `children`         | `ReactNode`                                                 | _(required)_      | Application components wrapped by the accent context.                                                                              |
+| `storageKey`       | `string`                                                    | `"basalt-accent"` | Key used for `localStorage` persistence.                                                                                           |
+| `defaultAccent`    | `string`                                                    | `"primary"`       | Initial accent swatch ID during SSR or when no stored preference exists.                                                           |
+| `persist`          | `boolean`                                                   | `true`            | When `false`, isolates the provider from `localStorage` (no storage read/write, no cross-tab sync).                                |
+| `accent`           | `string`                                                    | `undefined`       | Controlled accent value. When supplied, internal state is driven by this prop.                                                     |
+| `onAccentChange`   | `(accent: string) => void`                                  | `undefined`       | Callback fired when an accent change is requested.                                                                                 |
+| `applyToDocument`  | `boolean`                                                   | `true`            | When `false`, disables writing CSS custom properties and `data-accent` to `document.documentElement`.                              |
+| `paletteOverrides` | `Readonly<Record<string, { light: string; dark: string }>>` | `undefined`       | Optional HSL-channel pairs for the twelve preset IDs. Invalid pairs and unknown IDs are ignored. The application owns persistence. |
 - **Hook `useAccent()`**: Returns `{ accent: string, setAccent: (id: string) => void, swatches: readonly AccentSwatch[] }`. Throws an error when invoked outside an `AccentProvider`.
 - **`AccentSwatch` Type**:
   - `id: string`: Unique swatch identifier (e.g., `"primary"`, `"teal"`, `"rose"`).
@@ -260,15 +256,15 @@ import { Button } from "@nocoo/basalt/components/button";
 import { AccentProvider } from "@nocoo/basalt/providers/accent";
 
 export function CustomBrand() {
-  return (
-    <AccentProvider
-      defaultAccent="primary"
-      persist={false}
-      paletteOverrides={{ primary: { light: "204 88% 62%", dark: "204 90% 70%" } }}
-    >
-      <Button>Save changes</Button>
-    </AccentProvider>
-  );
+	return (
+		<AccentProvider
+			defaultAccent="primary"
+			persist={false}
+			paletteOverrides={{ primary: { light: "204 88% 62%", dark: "204 90% 70%" } }}
+		>
+			<Button>Save changes</Button>
+		</AccentProvider>
+	);
 }
 ```
 
@@ -289,65 +285,58 @@ import { AccentProvider, useAccent } from "@nocoo/basalt/providers/accent";
 import { type BasaltTheme, ThemeProvider, useTheme } from "@nocoo/basalt/providers/theme";
 
 function PreferencesControls() {
-  const { theme, setTheme } = useTheme();
-  const { accent, setAccent } = useAccent();
+	const { theme, setTheme } = useTheme();
+	const { accent, setAccent } = useAccent();
 
-  return (
-    <div className="flex flex-wrap items-center gap-basalt-space-lg">
-      <span className="text-sm font-medium">Theme: {theme}</span>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      >
-        Toggle {theme === "dark" ? "Light" : "Dark"}
-      </Button>
-      <span className="text-sm font-medium ml-basalt-space-lg">Accent: {accent}</span>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => {
-          const next = accent === "rose" ? "sky" : "rose";
-          setAccent(next);
-        }}
-      >
-        Toggle Accent
-      </Button>
-    </div>
-  );
+	return (
+		<div className="flex flex-wrap items-center gap-basalt-space-lg">
+			<span className="text-sm font-medium">Theme: {theme}</span>
+			<Button
+				variant="outline"
+				size="sm"
+				onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+			>
+				Toggle {theme === "dark" ? "Light" : "Dark"}
+			</Button>
+			<span className="text-sm font-medium ml-basalt-space-lg">Accent: {accent}</span>
+			<Button
+				variant="outline"
+				size="sm"
+				onClick={() => {
+					const next = accent === "rose" ? "sky" : "rose";
+					setAccent(next);
+				}}
+			>
+				Toggle Accent
+			</Button>
+		</div>
+	);
 }
 
 export function HostPreferencesApp() {
-  const [theme, setTheme] = useState<BasaltTheme>("light");
-  const [accent, setAccent] = useState("rose");
+	const [theme, setTheme] = useState<BasaltTheme>("light");
+	const [accent, setAccent] = useState("rose");
 
-  return (
-    <ThemeProvider
-      persist={false}
-      applyToDocument={false}
-      theme={theme}
-      onThemeChange={setTheme}
-    >
-      <AccentProvider
-        persist={false}
-        applyToDocument={false}
-        accent={accent}
-        onAccentChange={setAccent}
-      >
-        <div className="p-basalt-space-lg border rounded-lg space-y-basalt-space-lg">
-          <p className="text-xs text-basalt-muted-foreground">
-            Host owns document root DOM and persistence. Basalt contexts operate safely without side-effects.
-          </p>
-          <PreferencesControls />
-        </div>
-      </AccentProvider>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider persist={false} applyToDocument={false} theme={theme} onThemeChange={setTheme}>
+			<AccentProvider
+				persist={false}
+				applyToDocument={false}
+				accent={accent}
+				onAccentChange={setAccent}
+			>
+				<div className="p-basalt-space-lg border rounded-lg space-y-basalt-space-lg">
+					<p className="text-xs text-basalt-muted-foreground">
+						Host owns document root DOM and persistence. Basalt contexts operate safely without
+						side-effects.
+					</p>
+					<PreferencesControls />
+				</div>
+			</AccentProvider>
+		</ThemeProvider>
+	);
 }
 ```
-
-
-
 
 ---
 
@@ -369,11 +358,11 @@ Icons: `lucide-react`, `strokeWidth={1.5}`, nav size `h-4 w-4 shrink-0`.
 
 `AppShell` owns the viewport and safe area; `AppMain` and `ContentIsland` derive their scroll behavior from it. Choose deliberately:
 
-| `layout` | Below 768px | 768px and above |
-| --- | --- | --- |
-| `workspace` (default) | Bounded panes | Bounded panes |
-| `responsive` | Natural document scrolling | Bounded panes |
-| `document` | Natural document scrolling | Natural document scrolling |
+| `layout`              | Below 768px                | 768px and above            |
+| --------------------- | -------------------------- | -------------------------- |
+| `workspace` (default) | Bounded panes              | Bounded panes              |
+| `responsive`          | Natural document scrolling | Bounded panes              |
+| `document`            | Natural document scrolling | Natural document scrolling |
 
 Bounded shells use border-box `height/max-height: 100dvh`. Document shells use `min-height: 100dvh`, automatic height, visible overflow and ordinary root scrolling. Main and island release their height/overflow constraints together; no UA detection, innerHeight workaround, fixed reader viewport or nested mobile scroller is needed. Desktop workspaces keep the island as the vertical scroll owner.
 
@@ -387,16 +376,18 @@ Bounded shells use border-box `height/max-height: 100dvh`. Document shells use `
 
 ```tsx excerpt:responsive-shell
 <AppShell layout="responsive">
-  <AppSkipLink>Skip to content</AppSkipLink>
-  <AppMain>
-    <AppHeader title="Field notes" actions={actions} />
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-basalt-layout-sm md:pb-basalt-layout-sm">
-      <ContentIsland mobileSurface="edge-to-edge">
-        <div className="mx-auto max-w-prose px-basalt-space-lg py-basalt-space-lg md:p-0">{content}</div>
-      </ContentIsland>
-    </div>
-  </AppMain>
-</AppShell>
+	<AppSkipLink>Skip to content</AppSkipLink>
+	<AppMain>
+		<AppHeader title="Field notes" actions={actions} />
+		<div className="flex min-h-0 min-w-0 flex-1 flex-col md:px-basalt-layout-sm md:pb-basalt-layout-sm">
+			<ContentIsland mobileSurface="edge-to-edge">
+				<div className="mx-auto max-w-prose px-basalt-space-lg py-basalt-space-lg md:p-0">
+					{content}
+				</div>
+			</ContentIsland>
+		</div>
+	</AppMain>
+</AppShell>;
 ```
 
 The wrapper intentionally has **no mobile `px-basalt-space-lg` / `pb-basalt-space-lg`**. ContentIsland cannot remove spacing owned by its parent. Remove consumer `h-screen`, `h-full`, `overflow-hidden`, fixed heights and body scroll locks from the document path; all intermediate wrappers must be natural-height columns. Do not target private descendants to undo the library.
@@ -436,54 +427,54 @@ Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavI
 
 ```tsx excerpt:sidebar-expanded-structure
 <Sidebar collapsed={collapsed}>
-  <SidebarHeader>
-    <div className="flex w-full items-center justify-between">
-      <div className="flex min-w-0 items-center gap-basalt-space-lg">
-        <BasaltMark className="h-5 w-5 shrink-0" />
-        <span className="truncate text-lg font-semibold text-basalt-foreground md:text-xl">
-          Acme
-        </span>
-        <span className="shrink-0 rounded-md bg-basalt-secondary px-basalt-space-md py-basalt-space-xs text-[10px] leading-none font-medium text-basalt-muted-foreground">
-          v{version}
-        </span>
-      </div>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="h-7 w-7 shrink-0"
-        onClick={onToggle}
-        aria-label="Collapse sidebar"
-      >
-        <PanelLeft aria-hidden="true" />
-      </Button>
-    </div>
-  </SidebarHeader>
-  <div className="px-basalt-nav-inset">
-    <SidebarSearch onClick={() => setSearchOpen(true)}>Search</SidebarSearch>
-  </div>
-  <SidebarNav>
-    {groups.map((group) => (
-      <div key={group.label}>
-        <SidebarPartition>{group.label}</SidebarPartition>
-        <div className="flex flex-col gap-basalt-nav-gap">
-          {group.items.map((item) => (
-            <SidebarItem
-              key={item.href}
-              active={active(item.href)}
-              onClick={() => navigate(item.href)}
-            >
-              <item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
-              <span className="flex-1 truncate text-left">{item.label}</span>
-            </SidebarItem>
-          ))}
-        </div>
-      </div>
-    ))}
-  </SidebarNav>
-  <SidebarFooter>
-    <SidebarUser name={name} email={email} avatar={avatar} />
-  </SidebarFooter>
-</Sidebar>
+	<SidebarHeader>
+		<div className="flex w-full items-center justify-between">
+			<div className="flex min-w-0 items-center gap-basalt-space-lg">
+				<BasaltMark className="h-5 w-5 shrink-0" />
+				<span className="truncate text-lg font-semibold text-basalt-foreground md:text-xl">
+					Acme
+				</span>
+				<span className="shrink-0 rounded-md bg-basalt-secondary px-basalt-space-md py-basalt-space-xs text-[10px] leading-none font-medium text-basalt-muted-foreground">
+					v{version}
+				</span>
+			</div>
+			<Button
+				variant="ghost"
+				size="icon"
+				className="h-7 w-7 shrink-0"
+				onClick={onToggle}
+				aria-label="Collapse sidebar"
+			>
+				<PanelLeft aria-hidden="true" />
+			</Button>
+		</div>
+	</SidebarHeader>
+	<div className="px-basalt-nav-inset">
+		<SidebarSearch onClick={() => setSearchOpen(true)}>Search</SidebarSearch>
+	</div>
+	<SidebarNav>
+		{groups.map((group) => (
+			<div key={group.label}>
+				<SidebarPartition>{group.label}</SidebarPartition>
+				<div className="flex flex-col gap-basalt-nav-gap">
+					{group.items.map((item) => (
+						<SidebarItem
+							key={item.href}
+							active={active(item.href)}
+							onClick={() => navigate(item.href)}
+						>
+							<item.icon className="h-4 w-4 shrink-0" strokeWidth={1.5} />
+							<span className="flex-1 truncate text-left">{item.label}</span>
+						</SidebarItem>
+					))}
+				</div>
+			</div>
+		))}
+	</SidebarNav>
+	<SidebarFooter>
+		<SidebarUser name={name} email={email} avatar={avatar} />
+	</SidebarFooter>
+</Sidebar>;
 ```
 
 SidebarPartition marks a major section; SidebarGroup is a smaller uppercase, semibold disclosure label with a 22px line box, 8px insets and 12px group separation. Group labels do not participate in the destination hover layer. Do not restyle them as ordinary SidebarItem rows or add per-page indentation repairs.
@@ -496,60 +487,57 @@ The 68px rail uses `--basalt-size-rail`. Header and footer center their content 
 
 ```tsx excerpt:sidebar-collapsed-structure
 <Sidebar collapsed={collapsed}>
-  <SidebarHeader>
-    <BasaltMark className="h-5 w-5" />
-  </SidebarHeader>
-  <Button
-    variant="ghost"
-    size="icon"
-    className="mb-basalt-space-sm self-center"
-    onClick={onToggle}
-    aria-label="Expand sidebar"
-  >
-    <PanelLeft aria-hidden="true" />
-  </Button>
-  <SidebarNav>
-    <Tooltip delayDuration={0}>
-      <TooltipTrigger asChild>
-        <SidebarIconItem
-          onClick={() => setSearchOpen(true)}
-          aria-label="Search (⌘K)"
-        >
-          <Search className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
-        </SidebarIconItem>
-      </TooltipTrigger>
-      <TooltipContent side="right" sideOffset={8}>
-        Search (⌘K)
-      </TooltipContent>
-    </Tooltip>
-    {items.map((item) => (
-      <Tooltip key={item.href} delayDuration={0}>
-        <TooltipTrigger asChild>
-          <SidebarIconItem
-            active={active(item.href)}
-            aria-label={item.label}
-            onClick={() => navigate(item.href)}
-          >
-            <item.icon className="h-4 w-4" strokeWidth={1.5} />
-          </SidebarIconItem>
-        </TooltipTrigger>
-        <TooltipContent side="right" sideOffset={8}>
-          {item.label}
-        </TooltipContent>
-      </Tooltip>
-    ))}
-  </SidebarNav>
-  <SidebarFooter>
-    <Tooltip delayDuration={0}>
-      <TooltipTrigger asChild>
-        <span className="inline-flex">{avatar}</span>
-      </TooltipTrigger>
-      <TooltipContent side="right" sideOffset={8}>
-        {name}
-      </TooltipContent>
-    </Tooltip>
-  </SidebarFooter>
-</Sidebar>
+	<SidebarHeader>
+		<BasaltMark className="h-5 w-5" />
+	</SidebarHeader>
+	<Button
+		variant="ghost"
+		size="icon"
+		className="mb-basalt-space-sm self-center"
+		onClick={onToggle}
+		aria-label="Expand sidebar"
+	>
+		<PanelLeft aria-hidden="true" />
+	</Button>
+	<SidebarNav>
+		<Tooltip delayDuration={0}>
+			<TooltipTrigger asChild>
+				<SidebarIconItem onClick={() => setSearchOpen(true)} aria-label="Search (⌘K)">
+					<Search className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
+				</SidebarIconItem>
+			</TooltipTrigger>
+			<TooltipContent side="right" sideOffset={8}>
+				Search (⌘K)
+			</TooltipContent>
+		</Tooltip>
+		{items.map((item) => (
+			<Tooltip key={item.href} delayDuration={0}>
+				<TooltipTrigger asChild>
+					<SidebarIconItem
+						active={active(item.href)}
+						aria-label={item.label}
+						onClick={() => navigate(item.href)}
+					>
+						<item.icon className="h-4 w-4" strokeWidth={1.5} />
+					</SidebarIconItem>
+				</TooltipTrigger>
+				<TooltipContent side="right" sideOffset={8}>
+					{item.label}
+				</TooltipContent>
+			</Tooltip>
+		))}
+	</SidebarNav>
+	<SidebarFooter>
+		<Tooltip delayDuration={0}>
+			<TooltipTrigger asChild>
+				<span className="inline-flex">{avatar}</span>
+			</TooltipTrigger>
+			<TooltipContent side="right" sideOffset={8}>
+				{name}
+			</TooltipContent>
+		</Tooltip>
+	</SidebarFooter>
+</Sidebar>;
 ```
 
 Render expanded **or** collapsed regions from the same `collapsed` flag. One `Sidebar`. The flag is the animation.
@@ -572,14 +560,11 @@ Breakpoint: `768px`. Below that, the in-flow rail is omitted. The same sidebar c
 
 ```tsx excerpt:mobile-sheet-sidebar
 <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-  <SheetContent
-    side="left"
-    className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0"
-  >
-    <SheetTitle className="sr-only">Navigation</SheetTitle>
-    <AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} />
-  </SheetContent>
-</Sheet>
+	<SheetContent side="left" className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0">
+		<SheetTitle className="sr-only">Navigation</SheetTitle>
+		<AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} />
+	</SheetContent>
+</Sheet>;
 ```
 
 `SheetContent` bounds its Sidebar to the available height. Sidebar owns the 260px column and the portal safe area. Close the sheet on pathname change. Radix Sheet owns modal scroll locking and focus restoration; do not set body overflow separately.
@@ -596,15 +581,15 @@ Local hook (not in the package):
 const MOBILE_BREAKPOINT = 768;
 
 export function useIsMobile() {
-  const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
-  useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
-    const onChange = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
-    mql.addEventListener("change", onChange);
-    setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
-    return () => mql.removeEventListener("change", onChange);
-  }, []);
-  return !!isMobile;
+	const [isMobile, setIsMobile] = useState<boolean | undefined>(undefined);
+	useEffect(() => {
+		const mql = window.matchMedia(`(max-width: ${MOBILE_BREAKPOINT - 1}px)`);
+		const onChange = () => setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+		mql.addEventListener("change", onChange);
+		setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+		return () => mql.removeEventListener("change", onChange);
+	}, []);
+	return !!isMobile;
 }
 ```
 
@@ -614,62 +599,61 @@ export function useIsMobile() {
 
 ```tsx excerpt:app-frame-component
 export function AppFrame() {
-  const [collapsed, setCollapsed] = useState(false);
-  const isMobile = useIsMobile();
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
-  const { theme } = useTheme();
-  const crumbs = [{ href: "/", label: "Home" }];
-  const title = "Projects";
+	const [collapsed, setCollapsed] = useState(false);
+	const isMobile = useIsMobile();
+	const [mobileOpen, setMobileOpen] = useState(false);
+	const location = useLocation();
+	const { theme } = useTheme();
+	const crumbs = [{ href: "/", label: "Home" }];
+	const title = "Projects";
 
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [location.pathname]);
+	useEffect(() => {
+		setMobileOpen(false);
+	}, [location.pathname]);
 
-
-  return (
-    <AppShell>
-      <AppSkipLink>Skip to main content</AppSkipLink>
-      {!isMobile ? (
-        <AppSidebar collapsed={collapsed} onToggle={() => setCollapsed((v) => !v)} />
-      ) : (
-        <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-          <SheetContent
-            side="left"
-            className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0"
-          >
-            <SheetTitle className="sr-only">Navigation</SheetTitle>
-            <AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} />
-          </SheetContent>
-        </Sheet>
-      )}
-      <AppMain>
-        <AppHeader
-          leading={
-            isMobile ? (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => setMobileOpen(true)}
-                aria-label="Open navigation"
-              >
-                <Menu aria-hidden="true" />
-              </Button>
-            ) : null
-          }
-          breadcrumbs={crumbs}
-          title={title}
-          actions={<ThemeToggle aria-label={`Toggle theme (now ${theme})`} />}
-        />
-        <div className="flex min-h-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-layout-sm md:pb-basalt-layout-sm">
-          <ContentIsland>
-            <Outlet />
-          </ContentIsland>
-        </div>
-      </AppMain>
-    </AppShell>
-  );
+	return (
+		<AppShell>
+			<AppSkipLink>Skip to main content</AppSkipLink>
+			{!isMobile ? (
+				<AppSidebar collapsed={collapsed} onToggle={() => setCollapsed((v) => !v)} />
+			) : (
+				<Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
+					<SheetContent
+						side="left"
+						className="w-[260px] max-w-[260px] border-0 bg-basalt-background p-0"
+					>
+						<SheetTitle className="sr-only">Navigation</SheetTitle>
+						<AppSidebar collapsed={false} onToggle={() => setMobileOpen(false)} />
+					</SheetContent>
+				</Sheet>
+			)}
+			<AppMain>
+				<AppHeader
+					leading={
+						isMobile ? (
+							<Button
+								variant="ghost"
+								size="icon"
+								className="h-8 w-8"
+								onClick={() => setMobileOpen(true)}
+								aria-label="Open navigation"
+							>
+								<Menu aria-hidden="true" />
+							</Button>
+						) : null
+					}
+					breadcrumbs={crumbs}
+					title={title}
+					actions={<ThemeToggle aria-label={`Toggle theme (now ${theme})`} />}
+				/>
+				<div className="flex min-h-0 flex-1 flex-col px-basalt-space-lg pb-basalt-space-lg md:px-basalt-layout-sm md:pb-basalt-layout-sm">
+					<ContentIsland>
+						<Outlet />
+					</ContentIsland>
+				</div>
+			</AppMain>
+		</AppShell>
+	);
 }
 ```
 
@@ -699,29 +683,31 @@ Shape: a fixed badge width, `rounded-basalt-lg`, `bg-basalt-card` and a hairline
 
 ```tsx excerpt:login-badge-page
 export function LoginPage() {
-  return (
-    <div className="basalt-ui relative flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-space-lg">
-      <div
-        data-basalt-surface-root=""
-        className="flex w-72 max-w-full flex-col overflow-hidden rounded-basalt-lg bg-basalt-card ring-1 ring-basalt-border"
-      >
-        <div className="flex items-center justify-between gap-basalt-space-lg bg-basalt-primary px-basalt-space-lg py-basalt-space-lg">
-          <span className="text-basalt-base font-semibold text-basalt-primary-foreground">Acme</span>
-          <span className="text-basalt-xs font-medium uppercase tracking-widest text-basalt-primary-foreground/80">
-            Visitor
-          </span>
-        </div>
-        <div className="flex flex-1 flex-col items-center gap-basalt-space-lg px-basalt-space-lg py-basalt-space-lg">
-          <p className="text-basalt-xl font-semibold text-basalt-foreground">Welcome</p>
-          <p className="text-basalt-sm text-basalt-muted-foreground">Sign in to continue</p>
-          <Button className="w-full">Continue</Button>
-        </div>
-        <div className="border-t border-basalt-border px-basalt-space-lg py-basalt-space-lg">
-          <p className="text-basalt-xs text-basalt-muted-foreground">Secure sign-in</p>
-        </div>
-      </div>
-    </div>
-  );
+	return (
+		<div className="basalt-ui relative flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-space-lg">
+			<div
+				data-basalt-surface-root=""
+				className="flex w-72 max-w-full flex-col overflow-hidden rounded-basalt-lg bg-basalt-card ring-1 ring-basalt-border"
+			>
+				<div className="flex items-center justify-between gap-basalt-space-lg bg-basalt-primary px-basalt-space-lg py-basalt-space-lg">
+					<span className="text-basalt-base font-semibold text-basalt-primary-foreground">
+						Acme
+					</span>
+					<span className="text-basalt-xs font-medium uppercase tracking-widest text-basalt-primary-foreground/80">
+						Visitor
+					</span>
+				</div>
+				<div className="flex flex-1 flex-col items-center gap-basalt-space-lg px-basalt-space-lg py-basalt-space-lg">
+					<p className="text-basalt-xl font-semibold text-basalt-foreground">Welcome</p>
+					<p className="text-basalt-sm text-basalt-muted-foreground">Sign in to continue</p>
+					<Button className="w-full">Continue</Button>
+				</div>
+				<div className="border-t border-basalt-border px-basalt-space-lg py-basalt-space-lg">
+					<p className="text-basalt-xs text-basalt-muted-foreground">Secure sign-in</p>
+				</div>
+			</div>
+		</div>
+	);
 }
 ```
 
@@ -742,7 +728,7 @@ Boot and route gates use `LoadingScreen` — a centered mark and a 6rem shimmer 
 - **Native & Ref Boundary**: Inherits standard `HTMLAttributes<HTMLDivElement>`. Overlays full viewport (`fixed inset-0 z-50 flex items-center justify-center bg-basalt-background`). Does not forward ref.
 
 ```tsx excerpt:loading-screen-snippet
-<LoadingScreen label="Loading" />
+<LoadingScreen label="Loading" />;
 ```
 
 ---
@@ -779,23 +765,23 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 
 export default function ProjectsPage() {
-  return (
-    <div className="space-y-basalt-layout-lg">
-      <PageHeader
-        title="Projects"
-        description="Active work in this workspace."
-        actions={
-          <>
-            <Input placeholder="Search" className="max-w-48" />
-            <Button>New project</Button>
-          </>
-        }
-      />
-      <LayerCard>
-        <p className="text-sm text-basalt-muted-foreground">List or board.</p>
-      </LayerCard>
-    </div>
-  );
+	return (
+		<div className="space-y-basalt-layout-lg">
+			<PageHeader
+				title="Projects"
+				description="Active work in this workspace."
+				actions={
+					<>
+						<Input placeholder="Search" className="max-w-48" />
+						<Button>New project</Button>
+					</>
+				}
+			/>
+			<LayerCard>
+				<p className="text-sm text-basalt-muted-foreground">List or board.</p>
+			</LayerCard>
+		</div>
+	);
 }
 ```
 
@@ -809,56 +795,56 @@ import { PageHeader } from "@nocoo/basalt/components/page-header";
 import { SectionRule } from "@nocoo/basalt/components/section-rule";
 
 export default function ProjectsPage() {
-  return (
-    <div className="space-y-basalt-layout-lg">
-      <PageHeader
-        title="Projects"
-        description="Active work in this workspace."
-        actions={
-          <>
-            <Button variant="outline">Export</Button>
-            <Button>New project</Button>
-          </>
-        }
-        filters={
-          <>
-            <Input placeholder="Owner" className="max-w-48" />
-            <Input placeholder="Region" className="max-w-48" />
-            <Input placeholder="Risk" className="max-w-48" />
-          </>
-        }
-      />
-      <SectionRule title="Overview" hint="Live totals for the current workspace.">
-        <div className="grid grid-cols-2 gap-basalt-layout">
-          <LayerCard>
-            <p className="text-xs text-basalt-muted-foreground">Projects</p>
-            <p className="text-2xl font-semibold">24</p>
-          </LayerCard>
-          <LayerCard>
-            <p className="text-xs text-basalt-muted-foreground">Ready</p>
-            <p className="text-2xl font-semibold">18</p>
-          </LayerCard>
-        </div>
-      </SectionRule>
-      <SectionRule
-        title="Catalog"
-        actions={
-          <Button variant="outline" size="sm">
-            Filter
-          </Button>
-        }
-      >
-        <LayerCard>
-          <LayerCard.Header>Items</LayerCard.Header>
-          <LayerCard.Body>
-            <p className="text-sm text-basalt-muted-foreground">
-              Later work is only more cards in this region.
-            </p>
-          </LayerCard.Body>
-        </LayerCard>
-      </SectionRule>
-    </div>
-  );
+	return (
+		<div className="space-y-basalt-layout-lg">
+			<PageHeader
+				title="Projects"
+				description="Active work in this workspace."
+				actions={
+					<>
+						<Button variant="outline">Export</Button>
+						<Button>New project</Button>
+					</>
+				}
+				filters={
+					<>
+						<Input placeholder="Owner" className="max-w-48" />
+						<Input placeholder="Region" className="max-w-48" />
+						<Input placeholder="Risk" className="max-w-48" />
+					</>
+				}
+			/>
+			<SectionRule title="Overview" hint="Live totals for the current workspace.">
+				<div className="grid grid-cols-2 gap-basalt-layout">
+					<LayerCard>
+						<p className="text-xs text-basalt-muted-foreground">Projects</p>
+						<p className="text-2xl font-semibold">24</p>
+					</LayerCard>
+					<LayerCard>
+						<p className="text-xs text-basalt-muted-foreground">Ready</p>
+						<p className="text-2xl font-semibold">18</p>
+					</LayerCard>
+				</div>
+			</SectionRule>
+			<SectionRule
+				title="Catalog"
+				actions={
+					<Button variant="outline" size="sm">
+						Filter
+					</Button>
+				}
+			>
+				<LayerCard>
+					<LayerCard.Header>Items</LayerCard.Header>
+					<LayerCard.Body>
+						<p className="text-sm text-basalt-muted-foreground">
+							Later work is only more cards in this region.
+						</p>
+					</LayerCard.Body>
+				</LayerCard>
+			</SectionRule>
+		</div>
+	);
 }
 ```
 
@@ -874,14 +860,14 @@ Pages render **inside** `ContentIsland`. That island is already L1. Paint is CSS
 
 ### Levels
 
-| Where | Mark | Paint |
-|---|---|---|
-| L0 | `AppShell`, login viewport | `--basalt-background` 94% / 9% |
-| L1 | `ContentIsland`, Dialog, Sheet, AlertDialog, login badge | `--basalt-card` 97% / 10.6% |
-| L2 | first `LayerCard` under a root | `--basalt-secondary` 99% / 12.2% |
-| L3 | `LayerCard.Well` or a nested `LayerCard` | `--basalt-bright` 100% / 14% |
-| L3+ | deeper nested surface | transparent, no ring by default |
-| Overlay | Tooltip, Popover, Dropdown, HoverCard | `--basalt-popover` — not a stack step |
+| Where   | Mark                                                     | Paint                                 |
+| ------- | -------------------------------------------------------- | ------------------------------------- |
+| L0      | `AppShell`, login viewport                               | `--basalt-background` 94% / 9%        |
+| L1      | `ContentIsland`, Dialog, Sheet, AlertDialog, login badge | `--basalt-card` 97% / 10.6%           |
+| L2      | first `LayerCard` under a root                           | `--basalt-secondary` 99% / 12.2%      |
+| L3      | `LayerCard.Well` or a nested `LayerCard`                 | `--basalt-bright` 100% / 14%          |
+| L3+     | deeper nested surface                                    | transparent, no ring by default       |
+| Overlay | Tooltip, Popover, Dropdown, HoverCard                    | `--basalt-popover` — not a stack step |
 
 `--basalt-muted` is not a content step. Isolated (no root): the outermost `LayerCard` paints as L1; its Well is L2.
 
@@ -893,31 +879,29 @@ Unstructured card (KPI, metric, tile) — root padding, one surface:
 
 ```tsx excerpt:layercard-unstructured
 <LayerCard>
-  <p className="text-xs text-basalt-muted-foreground">Sessions</p>
-  <p className="text-2xl font-semibold">1,284</p>
-</LayerCard>
+	<p className="text-xs text-basalt-muted-foreground">Sessions</p>
+	<p className="text-2xl font-semibold">1,284</p>
+</LayerCard>;
 ```
 
 Structured card — root padding drops. `Body` stays on L2. `Well` raises to L3:
 
 ```tsx excerpt:layercard-structured-body
 <LayerCard>
-  <LayerCard.Header>Account</LayerCard.Header>
-  <LayerCard.Body>
-    <DescriptionList columns={1}>
-      <DescriptionList.Item term="Status">Active</DescriptionList.Item>
-    </DescriptionList>
-  </LayerCard.Body>
-</LayerCard>
+	<LayerCard.Header>Account</LayerCard.Header>
+	<LayerCard.Body>
+		<DescriptionList columns={1}>
+			<DescriptionList.Item term="Status">Active</DescriptionList.Item>
+		</DescriptionList>
+	</LayerCard.Body>
+</LayerCard>;
 ```
 
 ```tsx excerpt:layercard-structured-well
 <LayerCard>
-  <LayerCard.Header>Activity</LayerCard.Header>
-  <LayerCard.Well>
-    {/* lists, nested groups, inner frames */}
-  </LayerCard.Well>
-</LayerCard>
+	<LayerCard.Header>Activity</LayerCard.Header>
+	<LayerCard.Well>{/* lists, nested groups, inner frames */}</LayerCard.Well>
+</LayerCard>;
 ```
 
 Place cards with Grid or flex. Those classes do not paint. A grid of `LayerCard` on the island is L2. A `LayerCard` inside a Well is L3+.
@@ -972,16 +956,16 @@ Flush heading. Title left. Create last in `actions`. Short filters in `actions`.
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 
 <PageHeader
-  title="Projects"
-  description="Active work in this workspace."
-  actions={
-    <>
-      <Button variant="outline">Export</Button>
-      <Button>New project</Button>
-    </>
-  }
-  filters={<Input placeholder="Owner" className="max-w-48" />}
-/>
+	title="Projects"
+	description="Active work in this workspace."
+	actions={
+		<>
+			<Button variant="outline">Export</Button>
+			<Button>New project</Button>
+		</>
+	}
+	filters={<Input placeholder="Owner" className="max-w-48" />}
+/>;
 ```
 
 ### SectionRule
@@ -1036,30 +1020,34 @@ import type React from "react";
 import { Button, Field, Input, Switch } from "@nocoo/basalt";
 
 export function ProfileForm() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const email = data.get("email");
-    const notifications = data.get("notifications") === "on";
-    console.log({ email, notifications });
-  };
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		const data = new FormData(event.currentTarget);
+		const email = data.get("email");
+		const notifications = data.get("notifications") === "on";
+		console.log({ email, notifications });
+	};
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-basalt-layout">
-      <Field label="Email" hint="Your primary email address">
-        <Input name="email" type="email" required />
-      </Field>
+	return (
+		<form onSubmit={handleSubmit} className="space-y-basalt-layout">
+			<Field label="Email" hint="Your primary email address">
+				<Input name="email" type="email" required />
+			</Field>
 
-      <Field label="Notifications">
-        <Switch name="notifications" defaultChecked />
-      </Field>
+			<Field label="Notifications">
+				<Switch name="notifications" defaultChecked />
+			</Field>
 
-      <div className="flex gap-basalt-space-lg">
-        <Button type="reset" variant="secondary">Reset</Button>
-        <Button type="submit" variant="default">Save Changes</Button>
-      </div>
-    </form>
-  );
+			<div className="flex gap-basalt-space-lg">
+				<Button type="reset" variant="secondary">
+					Reset
+				</Button>
+				<Button type="submit" variant="default">
+					Save Changes
+				</Button>
+			</div>
+		</form>
+	);
 }
 ```
 
@@ -1072,18 +1060,18 @@ import { useState } from "react";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 
 export function ControlledDatePickerField() {
-  const [selectedDate, setSelectedDate] = useState<string>("2026-09-01");
-  const [activeMonth, setActiveMonth] = useState<string>("2026-09");
+	const [selectedDate, setSelectedDate] = useState<string>("2026-09-01");
+	const [activeMonth, setActiveMonth] = useState<string>("2026-09");
 
-  return (
-    <DatePicker
-      value={selectedDate}
-      onChange={setSelectedDate}
-      month={activeMonth}
-      onMonthChange={setActiveMonth}
-      aria-label="Target Date"
-    />
-  );
+	return (
+		<DatePicker
+			value={selectedDate}
+			onChange={setSelectedDate}
+			month={activeMonth}
+			onMonthChange={setActiveMonth}
+			aria-label="Target Date"
+		/>
+	);
 }
 ```
 
@@ -1111,21 +1099,20 @@ For internationalization, `locale` formats month titles and trigger values, whil
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 
 export function LocalizedDatePickerExample() {
-  return (
-    <DatePicker
-      locale="fr-FR"
-      weekStartsOn={1}
-      labels={{
-        calendar: "Calendrier des dates",
-        previousMonth: "Mois précédent",
-        nextMonth: "Mois suivant",
-        placeholder: "Sélectionnez une date",
-        validationMessage: "Veuillez sélectionner une date valide.",
-        keyboardInstructions:
-          "Utilisez les flèches pour naviguer et Entrée pour valider.",
-      }}
-    />
-  );
+	return (
+		<DatePicker
+			locale="fr-FR"
+			weekStartsOn={1}
+			labels={{
+				calendar: "Calendrier des dates",
+				previousMonth: "Mois précédent",
+				nextMonth: "Mois suivant",
+				placeholder: "Sélectionnez une date",
+				validationMessage: "Veuillez sélectionner une date valide.",
+				keyboardInstructions: "Utilisez les flèches pour naviguer et Entrée pour valider.",
+			}}
+		/>
+	);
 }
 ```
 
@@ -1140,29 +1127,29 @@ import { Empty } from "@nocoo/basalt/components/empty";
 import { LayerCard } from "@nocoo/basalt/components/layer-card";
 
 export function EmptyActionExample() {
-  const [created, setCreated] = useState(false);
+	const [created, setCreated] = useState(false);
 
-  return (
-    <LayerCard className="max-w-md">
-      {created ? (
-        <p className="text-sm text-basalt-foreground">Project created successfully.</p>
-      ) : (
-        <Empty
-          title="No projects found"
-          description="You haven't created any workspace projects yet."
-          action={
-            <Button size="sm" onClick={() => setCreated(true)}>
-              Create project
-            </Button>
-          }
-        >
-          <span className="text-xs text-basalt-muted-foreground">
-            Get started by launching a new workspace.
-          </span>
-        </Empty>
-      )}
-    </LayerCard>
-  );
+	return (
+		<LayerCard className="max-w-md">
+			{created ? (
+				<p className="text-sm text-basalt-foreground">Project created successfully.</p>
+			) : (
+				<Empty
+					title="No projects found"
+					description="You haven't created any workspace projects yet."
+					action={
+						<Button size="sm" onClick={() => setCreated(true)}>
+							Create project
+						</Button>
+					}
+				>
+					<span className="text-xs text-basalt-muted-foreground">
+						Get started by launching a new workspace.
+					</span>
+				</Empty>
+			)}
+		</LayerCard>
+	);
 }
 ```
 
@@ -1177,99 +1164,99 @@ import { Button, Field, Input } from "@nocoo/basalt";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 
 interface ProjectFormValues {
-  projectName: string;
-  startDate: string;
+	projectName: string;
+	startDate: string;
 }
 
 const defaultValues: ProjectFormValues = {
-  projectName: "",
-  startDate: "2026-09-01",
+	projectName: "",
+	startDate: "2026-09-01",
 };
 
 export function ProjectSettingsForm() {
-  const [submittedData, setSubmittedData] = useState<ProjectFormValues | null>(null);
+	const [submittedData, setSubmittedData] = useState<ProjectFormValues | null>(null);
 
-  const {
-    register,
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<ProjectFormValues>({
-    defaultValues,
-  });
+	const {
+		register,
+		control,
+		handleSubmit,
+		reset,
+		formState: { errors, isSubmitting },
+	} = useForm<ProjectFormValues>({
+		defaultValues,
+	});
 
-  const onSubmit = (values: ProjectFormValues) => {
-    setSubmittedData(values);
-  };
+	const onSubmit = (values: ProjectFormValues) => {
+		setSubmittedData(values);
+	};
 
-  const handleControlledReset = () => {
-    reset(defaultValues);
-    setSubmittedData(null);
-  };
+	const handleControlledReset = () => {
+		reset(defaultValues);
+		setSubmittedData(null);
+	};
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-basalt-layout">
-      <Field
-        label="Project Name"
-        hint="Unique name for your project workspace"
-        error={errors.projectName?.message}
-      >
-        <Input
-          {...register("projectName", {
-            required: "Project name is required",
-            minLength: { value: 3, message: "Minimum 3 characters required" },
-          })}
-          placeholder="e.g. Acme Dashboard"
-          aria-label="Project Name"
-        />
-      </Field>
+	return (
+		<form onSubmit={handleSubmit(onSubmit)} className="space-y-basalt-layout">
+			<Field
+				label="Project Name"
+				hint="Unique name for your project workspace"
+				error={errors.projectName?.message}
+			>
+				<Input
+					{...register("projectName", {
+						required: "Project name is required",
+						minLength: { value: 3, message: "Minimum 3 characters required" },
+					})}
+					placeholder="e.g. Acme Dashboard"
+					aria-label="Project Name"
+				/>
+			</Field>
 
-      <Controller
-        name="startDate"
-        control={control}
-        rules={{ required: "Start date is required" }}
-        render={({ field }) => (
-          <Field
-            label="Start Date"
-            hint="Initial project milestone date (YYYY-MM-DD)"
-            error={errors.startDate?.message}
-          >
-            <DatePicker
-              name={field.name}
-              value={field.value}
-              onChange={field.onChange}
-              onBlur={field.onBlur}
-              aria-label="Start Date"
-            />
-          </Field>
-        )}
-      />
+			<Controller
+				name="startDate"
+				control={control}
+				rules={{ required: "Start date is required" }}
+				render={({ field }) => (
+					<Field
+						label="Start Date"
+						hint="Initial project milestone date (YYYY-MM-DD)"
+						error={errors.startDate?.message}
+					>
+						<DatePicker
+							name={field.name}
+							value={field.value}
+							onChange={field.onChange}
+							onBlur={field.onBlur}
+							aria-label="Start Date"
+						/>
+					</Field>
+				)}
+			/>
 
-      {submittedData && (
-        <div data-testid="submission-output" className="text-sm font-mono p-basalt-space-lg border rounded">
-          Submitted: {JSON.stringify(submittedData)}
-        </div>
-      )}
+			{submittedData && (
+				<div
+					data-testid="submission-output"
+					className="text-sm font-mono p-basalt-space-lg border rounded"
+				>
+					Submitted: {JSON.stringify(submittedData)}
+				</div>
+			)}
 
-      <div className="flex gap-basalt-space-lg">
-        <Button
-          type="button"
-          variant="secondary"
-          onClick={handleControlledReset}
-        >
-          Reset
-        </Button>
-        <Button type="submit" variant="default" disabled={isSubmitting}>
-          Save Project
-        </Button>
-      </div>
-    </form>
-  );
+			<div className="flex gap-basalt-space-lg">
+				<Button type="button" variant="secondary" onClick={handleControlledReset}>
+					Reset
+				</Button>
+				<Button type="submit" variant="default" disabled={isSubmitting}>
+					Save Project
+				</Button>
+			</div>
+		</form>
+	);
 }
 ```
 
 ### Known Form Limitations
+
 1. `DatePicker` external ref merging & focus target: forwarding a custom `ref` correctly targets the underlying native `input` element with full object/callback/React 19 cleanup support and preserves native form association and reset behavior; note that the forwarded `ref` points to the native input element (not the visual trigger button).
 2. `Field` composition with Form Library Controllers: `Field` clones its immediate child element to inject accessibility IDs (`id`, `aria-describedby`). When wrapping controls with an abstraction like `react-hook-form`'s `<Controller>`, render `<Field>` **inside** the `Controller`'s `render` prop (wrapping the actual input control) rather than nesting `Controller` inside `Field`.
 3. `Autocomplete` free-text commit on blur: unselected free text and matching suggestions commit on blur without reclaiming focus, preserving natural Tab / Shift+Tab navigation and pointer departures.
@@ -1282,11 +1269,13 @@ export function ProjectSettingsForm() {
 ### Migrating to `@nocoo/basalt`
 
 1. **Step 1: Install Package & Peer Dependencies**
+
    ```bash
    bun add @nocoo/basalt lucide-react
    ```
 2. **Step 2: Configure Stylesheet & Scan Sources**
    - In Tailwind v4 setups, configure CSS imports with `@source` scanning `dist`:
+
      ```css
      @source "../node_modules/@nocoo/basalt/dist/**/*.{js,jsx,ts,tsx}";
      @import "@nocoo/basalt/styles/tailwind";
@@ -1305,6 +1294,7 @@ export function ProjectSettingsForm() {
 5. **Step 5: Verify Contrast, Surface Tokens & Form Handling**
    - Verify all content cards use `LayerCard` or surface classes rather than manual border/background combinations.
    - For composite forms (`DatePicker`, `Autocomplete`), implement controlled state or wrap in form library Controllers (e.g. `react-hook-form`).
+
 ---
 
 ## 18. Chart Subsystem Primitives
@@ -1508,37 +1498,37 @@ import { Button, Input, LayerCard, ThemeProvider, ThemeToggle } from "@nocoo/bas
 import { PageHeader } from "@nocoo/basalt/components/page-header";
 
 export function StandaloneViteApp() {
-  const [query, setQuery] = useState("");
+	const [query, setQuery] = useState("");
 
-  return (
-    <ThemeProvider>
-      <div className="min-h-screen bg-basalt-background text-basalt-foreground p-basalt-space-lg space-y-basalt-space-lg">
-        <PageHeader
-          title="Standalone Workspace"
-          description="Rendered with @nocoo/basalt/styles/standalone without Tailwind preflight"
-          actions={<ThemeToggle aria-label="Toggle visual theme" />}
-        />
-        <LayerCard>
-          <LayerCard.Header>
-            <span className="font-semibold text-basalt-foreground">Project Search</span>
-          </LayerCard.Header>
-          <LayerCard.Body>
-            <div className="flex gap-basalt-space-lg max-w-md">
-              <Input
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search resources..."
-                aria-label="Search resources"
-              />
-              <Button variant="default" onClick={() => console.log(query)}>
-                Search
-              </Button>
-            </div>
-          </LayerCard.Body>
-        </LayerCard>
-      </div>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider>
+			<div className="min-h-screen bg-basalt-background text-basalt-foreground p-basalt-space-lg space-y-basalt-space-lg">
+				<PageHeader
+					title="Standalone Workspace"
+					description="Rendered with @nocoo/basalt/styles/standalone without Tailwind preflight"
+					actions={<ThemeToggle aria-label="Toggle visual theme" />}
+				/>
+				<LayerCard>
+					<LayerCard.Header>
+						<span className="font-semibold text-basalt-foreground">Project Search</span>
+					</LayerCard.Header>
+					<LayerCard.Body>
+						<div className="flex gap-basalt-space-lg max-w-md">
+							<Input
+								value={query}
+								onChange={(e) => setQuery(e.target.value)}
+								placeholder="Search resources..."
+								aria-label="Search resources"
+							/>
+							<Button variant="default" onClick={() => console.log(query)}>
+								Search
+							</Button>
+						</div>
+					</LayerCard.Body>
+				</LayerCard>
+			</div>
+		</ThemeProvider>
+	);
 }
 ```
 
@@ -1563,25 +1553,21 @@ import "@nocoo/basalt/styles/standalone";
 
 const themeInitScript = `(function(){try{var s=localStorage.getItem("theme");var d=window.matchMedia("(prefers-color-scheme: dark)").matches;var isDark=s==="dark"||(s!=="light"&&d);document.documentElement.classList.toggle("dark",isDark);document.documentElement.classList.toggle("light",!isDark);document.documentElement.dataset.mode=isDark?"dark":"light";}catch(e){}})();`;
 
-export default function RootLayout({
-  children,
-}: {
-  children: ReactNode;
-}) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: themeInitScript,
-          }}
-        />
-      </head>
-      <body className="min-h-screen bg-basalt-background text-basalt-foreground antialiased">
-        {children}
-      </body>
-    </html>
-  );
+export default function RootLayout({ children }: { children: ReactNode }) {
+	return (
+		<html lang="en" suppressHydrationWarning>
+			<head>
+				<script
+					dangerouslySetInnerHTML={{
+						__html: themeInitScript,
+					}}
+				/>
+			</head>
+			<body className="min-h-screen bg-basalt-background text-basalt-foreground antialiased">
+				{children}
+			</body>
+		</html>
+	);
 }
 ```
 
@@ -1596,33 +1582,33 @@ import React, { useState } from "react";
 import { Button, Input, LayerCard, ThemeProvider, ThemeToggle } from "@nocoo/basalt";
 
 export default function NextClientDashboardPage() {
-  const [metricName, setMetricName] = useState("Daily Active Users");
+	const [metricName, setMetricName] = useState("Daily Active Users");
 
-  return (
-    <ThemeProvider>
-      <div className="p-basalt-space-lg space-y-basalt-space-lg">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-bold text-basalt-foreground">Next.js Client Dashboard</h2>
-          <ThemeToggle aria-label="Toggle theme mode" />
-        </div>
-        <LayerCard>
-          <LayerCard.Header>Metric Details</LayerCard.Header>
-          <LayerCard.Body>
-            <Input
-              value={metricName}
-              onChange={(e) => setMetricName(e.target.value)}
-              aria-label="Metric Name"
-            />
-            <div className="mt-basalt-space-lg">
-              <Button variant="outline" onClick={() => setMetricName("Default Metric")}>
-                Reset Metric
-              </Button>
-            </div>
-          </LayerCard.Body>
-        </LayerCard>
-      </div>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider>
+			<div className="p-basalt-space-lg space-y-basalt-space-lg">
+				<div className="flex justify-between items-center">
+					<h2 className="text-xl font-bold text-basalt-foreground">Next.js Client Dashboard</h2>
+					<ThemeToggle aria-label="Toggle theme mode" />
+				</div>
+				<LayerCard>
+					<LayerCard.Header>Metric Details</LayerCard.Header>
+					<LayerCard.Body>
+						<Input
+							value={metricName}
+							onChange={(e) => setMetricName(e.target.value)}
+							aria-label="Metric Name"
+						/>
+						<div className="mt-basalt-space-lg">
+							<Button variant="outline" onClick={() => setMetricName("Default Metric")}>
+								Reset Metric
+							</Button>
+						</div>
+					</LayerCard.Body>
+				</LayerCard>
+			</div>
+		</ThemeProvider>
+	);
 }
 ```
 
@@ -1643,69 +1629,72 @@ import { useLinkComponent } from "@nocoo/basalt/providers/link";
 
 // Real router adapter mapping Basalt href/className/children to React Router Link
 export const ReactRouterLinkAdapter: ComponentType<{
-  href: string;
-  className?: string;
-  children?: ReactNode;
+	href: string;
+	className?: string;
+	children?: ReactNode;
 }> = ({ href, className, children }) => {
-  const isExternal =
-    href.startsWith("http://") ||
-    href.startsWith("https://") ||
-    href.startsWith("//") ||
-    href.startsWith("mailto:") ||
-    href.startsWith("tel:");
+	const isExternal =
+		href.startsWith("http://") ||
+		href.startsWith("https://") ||
+		href.startsWith("//") ||
+		href.startsWith("mailto:") ||
+		href.startsWith("tel:");
 
-  if (isExternal) {
-    return (
-      <a href={href} className={className} rel="noopener noreferrer" target="_blank">
-        {children}
-      </a>
-    );
-  }
+	if (isExternal) {
+		return (
+			<a href={href} className={className} rel="noopener noreferrer" target="_blank">
+				{children}
+			</a>
+		);
+	}
 
-  return (
-    <RouterLink to={href} className={className}>
-      {children}
-    </RouterLink>
-  );
+	return (
+		<RouterLink to={href} className={className}>
+			{children}
+		</RouterLink>
+	);
 };
 
 export function RoutedNavigationSection() {
-  return (
-    <MemoryRouter initialEntries={["/dashboard"]}>
-      <LinkProvider render={ReactRouterLinkAdapter}>
-        <nav className="flex gap-basalt-space-lg p-basalt-space-lg border-b border-basalt-border">
-          <NavigationItem href="/dashboard">Dashboard</NavigationItem>
-          <NavigationItem href="/settings">Settings</NavigationItem>
-          <NavigationItem href="https://docs.hexly.ai">External Docs</NavigationItem>
-        </nav>
-        <div className="p-basalt-space-lg">
-          <Routes>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-          </Routes>
-        </div>
-      </LinkProvider>
-    </MemoryRouter>
-  );
+	return (
+		<MemoryRouter initialEntries={["/dashboard"]}>
+			<LinkProvider render={ReactRouterLinkAdapter}>
+				<nav className="flex gap-basalt-space-lg p-basalt-space-lg border-b border-basalt-border">
+					<NavigationItem href="/dashboard">Dashboard</NavigationItem>
+					<NavigationItem href="/settings">Settings</NavigationItem>
+					<NavigationItem href="https://docs.hexly.ai">External Docs</NavigationItem>
+				</nav>
+				<div className="p-basalt-space-lg">
+					<Routes>
+						<Route path="/dashboard" element={<DashboardPage />} />
+						<Route path="/settings" element={<SettingsPage />} />
+					</Routes>
+				</div>
+			</LinkProvider>
+		</MemoryRouter>
+	);
 }
 
 function NavigationItem({ href, children }: { href: string; children: ReactNode }) {
-  const LinkComponent = useLinkComponent();
-  return (
-    <LinkComponent href={href} className="text-sm font-medium hover:underline text-basalt-foreground">
-      {children}
-    </LinkComponent>
-  );
+	const LinkComponent = useLinkComponent();
+	return (
+		<LinkComponent
+			href={href}
+			className="text-sm font-medium hover:underline text-basalt-foreground"
+		>
+			{children}
+		</LinkComponent>
+	);
 }
 
 function DashboardPage() {
-  const location = useLocation();
-  return <div data-testid="active-route">Active Location: {location.pathname}</div>;
+	const location = useLocation();
+	return <div data-testid="active-route">Active Location: {location.pathname}</div>;
 }
 
 function SettingsPage() {
-  const location = useLocation();
-  return <div data-testid="active-route">Settings Location: {location.pathname}</div>;
+	const location = useLocation();
+	return <div data-testid="active-route">Settings Location: {location.pathname}</div>;
 }
 ```
 
@@ -1719,46 +1708,48 @@ import { useState } from "react";
 import { Button, Field, Input, Switch } from "@nocoo/basalt";
 
 export function UserPreferencesForm() {
-  const [feedback, setFeedback] = useState<string>("");
+	const [feedback, setFeedback] = useState<string>("");
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const username = String(data.get("username") ?? "");
-    const emailAlerts = data.get("emailAlerts") === "on";
-    setFeedback(`Saved preferences for ${username} (alerts: ${emailAlerts ? "enabled" : "disabled"})`);
-  };
+	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
+		const data = new FormData(event.currentTarget);
+		const username = String(data.get("username") ?? "");
+		const emailAlerts = data.get("emailAlerts") === "on";
+		setFeedback(
+			`Saved preferences for ${username} (alerts: ${emailAlerts ? "enabled" : "disabled"})`,
+		);
+	};
 
-  const handleReset = (event: React.FormEvent<HTMLFormElement>) => {
-    setFeedback("Form reset to default values");
-  };
+	const handleReset = (event: React.FormEvent<HTMLFormElement>) => {
+		setFeedback("Form reset to default values");
+	};
 
-  return (
-    <form onSubmit={handleSubmit} onReset={handleReset} className="space-y-basalt-layout max-w-sm">
-      <Field label="Username" hint="Public profile handle">
-        <Input name="username" defaultValue="johndoe" required />
-      </Field>
+	return (
+		<form onSubmit={handleSubmit} onReset={handleReset} className="space-y-basalt-layout max-w-sm">
+			<Field label="Username" hint="Public profile handle">
+				<Input name="username" defaultValue="johndoe" required />
+			</Field>
 
-      <Field label="Email Alerts" hint="Receive daily system digests">
-        <Switch name="emailAlerts" defaultChecked />
-      </Field>
+			<Field label="Email Alerts" hint="Receive daily system digests">
+				<Switch name="emailAlerts" defaultChecked />
+			</Field>
 
-      {feedback && (
-        <div role="status" className="text-sm text-basalt-muted-foreground">
-          {feedback}
-        </div>
-      )}
+			{feedback && (
+				<div role="status" className="text-sm text-basalt-muted-foreground">
+					{feedback}
+				</div>
+			)}
 
-      <div className="flex gap-basalt-space-lg">
-        <Button type="reset" variant="secondary">
-          Reset
-        </Button>
-        <Button type="submit" variant="default">
-          Save
-        </Button>
-      </div>
-    </form>
-  );
+			<div className="flex gap-basalt-space-lg">
+				<Button type="reset" variant="secondary">
+					Reset
+				</Button>
+				<Button type="submit" variant="default">
+					Save
+				</Button>
+			</div>
+		</form>
+	);
 }
 ```
 
@@ -1768,16 +1759,16 @@ export function UserPreferencesForm() {
 
 ```tsx excerpt:confirmation-focus-replacement
 <ConfirmDialog
-  open={confirmOpen}
-  onOpenChange={setConfirmOpen}
-  title="Remove item?"
-  description="This action cannot be undone."
-  onConfirm={removeItem}
-  onCloseAutoFocus={(event) => {
-    event.preventDefault();
-    currentActionRef.current?.focus();
-  }}
-/>
+	open={confirmOpen}
+	onOpenChange={setConfirmOpen}
+	title="Remove item?"
+	description="This action cannot be undone."
+	onConfirm={removeItem}
+	onCloseAutoFocus={(event) => {
+		event.preventDefault();
+		currentActionRef.current?.focus();
+	}}
+/>;
 ```
 
 ## Agent feedback
@@ -1801,19 +1792,19 @@ Loader uses eight perimeter cells with an empty center, moving clockwise continu
 
 Basalt geometry no longer depends on a host's Tailwind `--spacing`. Both CSS entrypoints expose the same `--basalt-space-*` and `--basalt-size-*` variables. Override semantic roles on a shared ancestor; portaled overlays inherit from their portal ancestor, so application-wide settings belong on `:root`. Theme switches do not reset dimensions.
 
-| Role | Token | Default |
-| --- | --- | --- |
-| Small / default / large control | `--basalt-size-control-sm`, `--basalt-size-control`, `--basalt-size-control-lg` | 28 / 34 / 40px |
-| Compact / standard / display icon | `--basalt-size-icon-sm`, `--basalt-size-icon`, `--basalt-size-icon-lg` | 12 / 14 / 16px |
-| Nested action | `--basalt-size-control-inset` | 28px |
-| Minimum touch target | `--basalt-size-touch` | 44px |
-| Menu option | `--basalt-size-menu-row`, `--basalt-space-menu-inset`, `--basalt-space-menu-x`, `--basalt-space-menu-y` | 34px / 8px / 8px / 6px |
-| Card padding | `--basalt-space-card-sm`, `--basalt-space-card`, `--basalt-space-card-lg`, `--basalt-space-card-xl` | 12 / 16 / 24 / 32px; default 16px |
-| Layout spacing | `--basalt-space-layout-sm`, `--basalt-space-layout`, `--basalt-space-layout-lg`, `--basalt-space-layout-xl` | 12 / 16 / 24 / 32px; grids 16px, page sections 24px |
-| Field label gap | `--basalt-space-field-gap` | 8px |
-| Textarea minimum height | `--basalt-size-textarea-sm`, `--basalt-size-textarea`, `--basalt-size-textarea-lg` | 64 / 80 / 96px |
-| Table row / horizontal / vertical inset | `--basalt-size-table-row`, `--basalt-space-table-x`, `--basalt-space-table-y` | 36 / 8 / 6px |
-| Attached table outer edge | `--basalt-space-table-edge` | Panel horizontal inset, 16px |
+| Role                                    | Token                                                                                                       | Default                                             |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| Small / default / large control         | `--basalt-size-control-sm`, `--basalt-size-control`, `--basalt-size-control-lg`                             | 28 / 34 / 40px                                      |
+| Compact / standard / display icon       | `--basalt-size-icon-sm`, `--basalt-size-icon`, `--basalt-size-icon-lg`                                      | 12 / 14 / 16px                                      |
+| Nested action                           | `--basalt-size-control-inset`                                                                               | 28px                                                |
+| Minimum touch target                    | `--basalt-size-touch`                                                                                       | 44px                                                |
+| Menu option                             | `--basalt-size-menu-row`, `--basalt-space-menu-inset`, `--basalt-space-menu-x`, `--basalt-space-menu-y`     | 34px / 8px / 8px / 6px                              |
+| Card padding                            | `--basalt-space-card-sm`, `--basalt-space-card`, `--basalt-space-card-lg`, `--basalt-space-card-xl`         | 12 / 16 / 24 / 32px; default 16px                   |
+| Layout spacing                          | `--basalt-space-layout-sm`, `--basalt-space-layout`, `--basalt-space-layout-lg`, `--basalt-space-layout-xl` | 12 / 16 / 24 / 32px; grids 16px, page sections 24px |
+| Field label gap                         | `--basalt-space-field-gap`                                                                                  | 8px                                                 |
+| Textarea minimum height                 | `--basalt-size-textarea-sm`, `--basalt-size-textarea`, `--basalt-size-textarea-lg`                          | 64 / 80 / 96px                                      |
+| Table row / horizontal / vertical inset | `--basalt-size-table-row`, `--basalt-space-table-x`, `--basalt-space-table-y`                               | 36 / 8 / 6px                                        |
+| Attached table outer edge               | `--basalt-space-table-edge`                                                                                 | Panel horizontal inset, 16px                        |
 
 Defaults use rem and unitless line-height, preserving browser font-size preferences. [DESIGN.md](DESIGN.md) defines compact 2/4/6/8px control spacing, separate 12/16/24/32px card and layout spacing, and natural 22/34/46px inline/action/banner categories. The size tokens describe reference geometry, not fixed text-control heights. Use the semantic spacing role for the boundary being laid out; numbered geometry tokens are not padding alternatives. LayerCard accepts `padding="sm|md|lg|xl"` for unstructured content; Grid accepts `gap="sm|md|lg|xl"`. Both default to `md`; 32px `xl` is opt-in. ContentIsland owns a 16px mobile, 24px tablet, and 32px horizontal / 24px vertical desktop inset. Examples must use component size props rather than fixed-height overrides. Textareas, avatars and panels retain content-specific geometry.
 
@@ -1847,23 +1838,26 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 
 type Invoice = { id: string; amount: number };
 const columns: DataTableColumn<Invoice>[] = [
-  { id: "id", header: "Invoice", accessor: (row) => row.id },
-  { id: "amount", header: "Amount", accessor: (row) => row.amount, textAlign: "end" },
+	{ id: "id", header: "Invoice", accessor: (row) => row.id },
+	{ id: "amount", header: "Amount", accessor: (row) => row.amount, textAlign: "end" },
 ];
 
 export function InvoicePanel() {
-  return (
-    <LayerCard>
-      <LayerCard.Header>Invoices</LayerCard.Header>
-      <DataTable
-        aria-label="Invoices"
-        edge="attached"
-        columns={columns}
-        data={[{ id: "INV-01", amount: 1240 }, { id: "INV-02", amount: 80 }]}
-        getRowId={(row) => row.id}
-      />
-    </LayerCard>
-  );
+	return (
+		<LayerCard>
+			<LayerCard.Header>Invoices</LayerCard.Header>
+			<DataTable
+				aria-label="Invoices"
+				edge="attached"
+				columns={columns}
+				data={[
+					{ id: "INV-01", amount: 1240 },
+					{ id: "INV-02", amount: 80 },
+				]}
+				getRowId={(row) => row.id}
+			/>
+		</LayerCard>
+	);
 }
 ```
 

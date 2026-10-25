@@ -230,7 +230,7 @@ export async function assertVisibleToastOutsideRoot(page: Page, timeoutMs = 5000
 	if (!(await title.isVisible())) {
 		throw new Error("toast title is hidden");
 	}
-	const titleText = (await title.innerText()).replace(/\s+/g, " ").trim();
+	const titleText = (await title.textContent()).replace(/\s+/g, " ").trim();
 	if (titleText !== NEXT_TOAST_MESSAGE) {
 		throw new Error(
 			`toast title ${JSON.stringify(titleText)} does not equal ${JSON.stringify(NEXT_TOAST_MESSAGE)}`,
@@ -270,7 +270,7 @@ export async function proveNextHydration(
 		if (!(await marker.isVisible())) {
 			throw new Error("HTTP first screen marker not visible");
 		}
-		const markerText = (await marker.innerText()).trim();
+		const markerText = (await marker.textContent()).trim();
 		if (!markerText.includes("basalt-next19-ok")) {
 			throw new Error("missing HTTP marker in DOM");
 		}

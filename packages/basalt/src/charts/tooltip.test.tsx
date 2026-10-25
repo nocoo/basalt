@@ -193,10 +193,10 @@ describe("Composable ChartTooltip primitives", () => {
 	it("preserves numeric 0 for label and value independently in ChartTooltipRow", () => {
 		const { rerender } = render(<ChartTooltipRow label={0} value="Ready" />);
 		const row = screen.getByTestId("chart-tooltip-row");
-		expect(row).toHaveTextContent("0Ready");
+		expect(row).toHaveTextContent("0 Ready");
 
 		rerender(<ChartTooltipRow label="Power" value={0} unit="%" />);
-		expect(screen.getByTestId("chart-tooltip-row")).toHaveTextContent("Power0%");
+		expect(screen.getByTestId("chart-tooltip-row")).toHaveTextContent("Power 0%");
 	});
 
 	it("renders placeholder — when value is null or undefined without unit", () => {

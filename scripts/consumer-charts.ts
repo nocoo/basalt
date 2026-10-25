@@ -989,7 +989,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				"First ArrowRight must navigate to the 11:00 coordinate",
 			);
 			const usMetricFirst = (
-				await dynamicCase.locator("#dynamic-tooltip-items [data-key='p95US']").innerText()
+				await dynamicCase.locator("#dynamic-tooltip-items [data-key='p95US']").textContent()
 			)
 				.replace(/\s+/g, " ")
 				.trim();
@@ -1017,7 +1017,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				"Second ArrowRight must navigate to the 12:00 coordinate",
 			);
 			const usMetricSecond = (
-				await dynamicCase.locator("#dynamic-tooltip-items [data-key='p95US']").innerText()
+				await dynamicCase.locator("#dynamic-tooltip-items [data-key='p95US']").textContent()
 			)
 				.replace(/\s+/g, " ")
 				.trim();
@@ -1060,7 +1060,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				1,
 				"Dynamic tooltip must render ChartTooltipSummary",
 			);
-			const summaryText = (await tooltipSummary.innerText()).replace(/\s+/g, " ").trim();
+			const summaryText = (await tooltipSummary.textContent()).replace(/\s+/g, " ").trim();
 			assert.equal(
 				summaryText,
 				"Aggregated Latency 390ms",
@@ -1154,13 +1154,13 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			)?.trim();
 			assert.equal(firstTitle, "US-East at 00:00", "First cell title must be 'US-East at 00:00'");
 			const firstRowText = (
-				await matrixTooltip.locator('[data-testid="chart-tooltip-row"]').innerText()
+				await matrixTooltip.locator('[data-testid="chart-tooltip-row"]').textContent()
 			)
 				.replace(/\s+/g, " ")
 				.trim();
 			assert.equal(firstRowText, "Latency 12ms", "First cell row must render exact 'Latency 12ms'");
 			const firstSummaryText = (
-				await matrixTooltip.locator('[data-testid="chart-tooltip-summary"]').innerText()
+				await matrixTooltip.locator('[data-testid="chart-tooltip-summary"]').textContent()
 			)
 				.replace(/\s+/g, " ")
 				.trim();
@@ -1191,7 +1191,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 			)?.trim();
 			assert.equal(zeroTitle, "US-East at 18:00", "Zero cell title must be 'US-East at 18:00'");
 			const zeroRowText = (
-				await matrixTooltip.locator('[data-testid="chart-tooltip-row"]').innerText()
+				await matrixTooltip.locator('[data-testid="chart-tooltip-row"]').textContent()
 			)
 				.replace(/\s+/g, " ")
 				.trim();
@@ -1201,7 +1201,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				"Numeric 0 cell must render exact 'Latency 0ms' (distinct from missing)",
 			);
 			const zeroSummaryText = (
-				await matrixTooltip.locator('[data-testid="chart-tooltip-summary"]').innerText()
+				await matrixTooltip.locator('[data-testid="chart-tooltip-summary"]').textContent()
 			)
 				.replace(/\s+/g, " ")
 				.trim();
@@ -1220,7 +1220,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				"Missing cell title must be 'US-West at 12:00'",
 			);
 			const missingRowText = (
-				await matrixTooltip.locator('[data-testid="chart-tooltip-row"]').innerText()
+				await matrixTooltip.locator('[data-testid="chart-tooltip-row"]').textContent()
 			)
 				.replace(/\s+/g, " ")
 				.trim();
@@ -1230,7 +1230,7 @@ export async function assertConsumerCharts(page: Page): Promise<ChartsGateResult
 				"Missing/null cell must render exact 'Latency —' without any ms unit",
 			);
 			const missingSummaryText = (
-				await matrixTooltip.locator('[data-testid="chart-tooltip-summary"]').innerText()
+				await matrixTooltip.locator('[data-testid="chart-tooltip-summary"]').textContent()
 			)
 				.replace(/\s+/g, " ")
 				.trim();

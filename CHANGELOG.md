@@ -14,6 +14,7 @@ were prepared but never published are folded into the next published version.
 ## [3.2.1] - 2026-10-21
 
 ### Fixed
+
 - Unify focus and container boundaries
 - Keep temporary installation mirrors out of version-only release lockfiles.
 - Allow the complete package and dual-browser release gates to finish within a bounded CI deadline.
@@ -23,9 +24,11 @@ were prepared but never published are folded into the next published version.
 Includes the 3.1.1 notes; 3.1.1 was never published to npm.
 
 ### Added
+
 - Enforce island surface hierarchy, four-tier typography, and refined hover and dialog tokens
 
 ### Changed
+
 - Bump postcss (#589)
 - Bump react-i18next (#587)
 - Bump jsdom (#586)
@@ -42,15 +45,18 @@ Includes the 3.1.1 notes; 3.1.1 was never published to npm.
 Includes the 3.0.1 notes; 3.0.1 was never published to npm.
 
 ### Added
+
 - Add logical table text alignment, a shared sortable header, and an explicit attached-edge mode for DataTable.
 
 ### Changed
+
 - Standardize semantic spacing across page sections, cards, forms, sidebars, and overlay footers without enlarging compact controls.
 - Align table headers, cells, actions, and framed-table edges through shared spacing tokens in both Tailwind and standalone CSS.
 - Incorporate the dependency refresh and shared CI upgrade, retaining the full consumer verification budget.
 - Refresh catalog, Radix primitives, and publishable package dependencies with synchronized lockfile metadata.
 
 ### Fixed
+
 - Keep sidebar hover entry and exit at the pointer target instead of animating from the active page or stale focus.
 - Restore table caption insets and preserve logical edge ownership in RTL, nested tables, and row-span layouts.
 - Let enlarged dialog titles wrap without pushing the close action outside the panel.
@@ -59,49 +65,58 @@ Includes the 3.0.1 notes; 3.0.1 was never published to npm.
 ## [3.0.0] - 2026-10-09
 
 ### Breaking Changes
+
 - Replace Loader's SVG root with a span-based eight-cell grid. Migrate SVG-only props and refs; use `showLabel={false} showElapsed={false}` for icon-only slots.
 - Standardize intrinsic component geometry, typography and container ownership. Controls retain compact spacing; cards and layouts use 12/16/24/32px role-based tokens. Update custom DOM selectors and visual snapshots, including 34px action rows and 46px banners.
 - IconPicker's accessible name now includes its selected value. Update exact-name queries and keep Field validation and descriptions on the trigger.
 
 ### Changed
+
 - Unify catalog page composition, card headers, navigation hierarchy and selected surfaces while preserving the visitor-badge login layout as a deliberate exception.
 - Refine banner insets, profile actions and compound button spacing; give the central sign-in provider action an outline.
 - Refresh catalog, package and external-consumer dependencies with synchronized lockfile metadata.
 
 ### Fixed
+
 - Keep keyboard focus through approval questions, custom answers, mobile detail navigation and WebKit drawer dismissal.
 - Wrap long recommendation actions at enlarged text sizes and show contrasting focus rings on selected pickers.
 - Pair solid badge colors with readable theme-specific foregrounds.
 - Scope standalone login recipe resets, verify rendered viewport geometry across browsers, and align external consumer assertions with current component contracts.
 
 ### Added
+
 - Expand agent and healthcare showcase compositions, responsive application recipes, and installed-package browser acceptance coverage.
 
 ## [2.2.0] - 2026-10-02
 
 ### Added
+
 - Add responsive and document AppShell layouts with coordinated main, island, sidebar and safe-area ownership; keep bounded workspace mode as the default.
 - Add mobile edge-to-edge ContentIsland and compact sticky AppHeader with safe notch painting and touch-sized action slots.
 - Add full-page reader, list/detail and form examples, a copyable installed-package recipe, and Chromium/WebKit layout regression gates.
 - Add fullscreen loading motion studies and an HD logo pulse preview.
 
 ### Fixed
+
 - Preserve the pointer opener when WebKit focuses a list region, restoring focus after mobile detail navigation.
 - Generate Next fixture types on demand, canonicalize native pre-commit cache roots and parse grouped npm pack metadata.
 - Keep staged-source coverage/static/security gates and reject skipped or focused test runs.
 
 ### Changed
+
 - Refresh development and consumer dependencies; align deployment tooling with the lockfile.
 - Move the repository handbook to AGENTS.md and remove unused FAQ mock data.
 
 ## [2.1.8] - 2026-09-17
 
 ### Fixed
+
 - Keep the hand cursor across the entire button, including rounded corners, with compact 12px tooltips.
 - Preserve toggle selection colors and sliding indicators when composed with tooltips.
 - Restore clean-checkout site builds and align the release workflow with the installed Wrangler version.
 
 ### Added
+
 - Link the homepage and dashboard header to the Basalt project on hexly.ai, with matching tooltips on header actions.
 
 ## [2.1.7] - 2026-09-10
@@ -109,6 +124,7 @@ Includes the 3.0.1 notes; 3.0.1 was never published to npm.
 Includes the 2.1.3, 2.1.4, 2.1.5 and 2.1.6 notes; those versions were never published to npm.
 
 ### Added
+
 - Self-hosted Open Graph, Twitter, JSON-LD, sitemap, robots and `llms.txt` so search and AI crawlers can read the catalog without JavaScript.
 - Preview responses send `X-Robots-Tag: noindex`; production stays indexable and advertises `/llms.txt`.
 - Crawler-visible landing page at `/` with H1, skip link, catalog/npm/GitHub/hexly/Play/Journal links, and prerendered HTML for `/ui` and each catalog slug.
@@ -116,6 +132,7 @@ Includes the 2.1.3, 2.1.4, 2.1.5 and 2.1.6 notes; those versions were never publ
 - Uncached `/api/live` response reports the deployed version from the root package manifest.
 
 ### Changed
+
 - Simplify component library internals
 - Align lucide-react with root
 - Sync mobile motion guidance
@@ -132,6 +149,7 @@ Includes the 2.1.3, 2.1.4, 2.1.5 and 2.1.6 notes; those versions were never publ
 - Social card places the `basalt.` wordmark beside the corner tower on the pale engineering field.
 
 ### Fixed
+
 - Show landing header links on mobile
 - Refine tower card and mobile motion
 - Remove the brand card's lower-edge seams by painting the backdrop as one layer, clipping it once, and removing the adjacent divider and card outline.
@@ -145,6 +163,7 @@ Includes the 2.1.3, 2.1.4, 2.1.5 and 2.1.6 notes; those versions were never publ
 - Install locked dependencies before regenerating and staging release artifacts so prerendered content matches clean CI builds and version information stays synchronized.
 
 ### Removed
+
 - [CO][20260910-0204] Remove unused previewRobotTag and serviceDocLink
 
 ## [2.1.2] - 2026-09-08
@@ -152,13 +171,16 @@ Includes the 2.1.3, 2.1.4, 2.1.5 and 2.1.6 notes; those versions were never publ
 Includes the 2.1.1 notes; 2.1.1 was never published to npm.
 
 ### Added
+
 - Load Open Graph and Twitter card metadata from the Hexly share API.
 - Library showcase pages for loading skeletons (`/loading-states`), motion (`/animation`) and dense tables (`/tables`).
 
 ### Changed
+
 - Replace the obsidian corner-tower mark with the Hanbaiyu marble and candy-color presentation; navigation, favicons and the embedded library mark stay transparent, while README and social images keep the pale engineering field.
 
 ### Fixed
+
 - Solid color Badge variants keep white label text in both themes, including Home Ready status chips.
 - Relax consumer contrast for solid color badges so white labels can sit on candy fills.
 - Keep the sidebar logo on a shared left edge while the rail width animates.
@@ -168,6 +190,7 @@ Includes the 2.1.1 notes; 2.1.1 was never published to npm.
 ## [2.1.0] - 2026-09-07
 
 ### Added
+
 - Source-backed package registry, installed source recovery, compilable documentation and AppFrame / Login / Resources recipes.
 - Complex loading dashboard, resource-list and detail compositions; interactive device and subscription tables with formatted cells, inline charts and BatteryMeter.
 - MultiSelect, FilterBar/FilterChip, FileDropzone and UploadQueue/UploadItem.
@@ -177,6 +200,7 @@ Includes the 2.1.1 notes; 2.1.1 was never published to npm.
 - CI package/consumer/showcase gates, failure propagation checks and release validation tied to the exact commit.
 
 ### Changed
+
 - Replace the 24-color control palette with twelve candy colors inspired by classic Apple iMac and iPhone 5C finishes; raw swatches and contrast-safe primary tokens are distinct.
 - Charts now use a fixed five-color cycle. Blue, pink, green and yellow match the classic control swatches exactly; the existing gray is retained, and chart marks use solid colors without contrasting outlines or shadows. `CHART_COLORS.length` changes from 24 to 5; use `getChartColor(index)` or modulo indexing. Old `chart` keys and numbered CSS tokens remain aliases. [Migration details](https://github.com/nocoo/basalt/blob/v2.1.0/packages/basalt/ai/COMPATIBILITY.md#6-unreleased-migration-notes-p1p10) list stored-ID mappings and runtime-value changes.
 - Add optional `AccentProvider.paletteOverrides`; consumer applications own persistence.
@@ -187,6 +211,7 @@ Includes the 2.1.1 notes; 2.1.1 was never published to npm.
 - Update Playwright, Lucide, SWC, Node types and consumer fixtures, including Next.js 16.3.4 and React Table 9.2.4.
 
 ### Fixed
+
 - Native forms/reset and forwarded refs, portal clipping/forceMount/asChild, keyboard/focus restoration, Dock semantics and Slider contracts.
 - Standalone CSS scope and class extraction, semantic contrast and reduced-motion behavior.
 - Named Teal and Purple badges use the candy control swatches with readable text in both themes.
@@ -201,6 +226,7 @@ Includes the 2.1.1 notes; 2.1.1 was never published to npm.
 ## [2.0.3] - 2026-09-04
 
 ### Added
+
 - Demo overlay dock on chat page
 - Normalize fab and dock catalog
 - Add overlay mode to dock
@@ -217,6 +243,7 @@ Includes the 2.1.1 notes; 2.1.1 was never published to npm.
 - Remove library placeholder docs
 
 ### Fixed
+
 - Honor visibility overrides in dock trap
 - Skip css-hidden dock trap ancestors
 - Skip hidden nodes in dock trap
@@ -239,6 +266,7 @@ Includes the 2.1.1 notes; 2.1.1 was never published to npm.
 Includes the 2.0.1 notes; 2.0.1 was never published to npm.
 
 ### Added
+
 - Add section-rule page chrome
 - Enrich chart catalog mock data
 - Teach nested surfaces on layout
@@ -251,6 +279,7 @@ Includes the 2.0.1 notes; 2.0.1 was never published to npm.
 - Share theme palette with header picker
 
 ### Changed
+
 - Spell out mvp chrome setup
 - Document page chrome in integration
 - Reuse page chrome sitewide
@@ -266,6 +295,7 @@ Includes the 2.0.1 notes; 2.0.1 was never published to npm.
 - Add app chrome guide for agents
 
 ### Fixed
+
 - Collapse catalog index filters
 - Flatten content page headers
 - Wrap description list values
@@ -353,7 +383,7 @@ to npm for these versions; they are kept for history only.
   - `recharts` 3.9.2 → 3.10.0 (minor). Legend gains additive
     `position`/`offset` props; existing `align`/`verticalAlign` usage in
     `PieChartWidget` continues to work unchanged.
-  Closes basalt#254, #255.
+    Closes basalt#254, #255.
 
 ### [1.3.3] - 2026-07-20
 
@@ -385,7 +415,7 @@ to npm for these versions; they are kept for history only.
   - `@radix-ui/react-toggle` 1.1.14 → 1.1.15
   - `@radix-ui/react-toggle-group` 1.1.15 → 1.1.16
   - `@radix-ui/react-tooltip` 1.2.12 → 1.2.13
-  Closes basalt#228, #229, #230, #231, #232, #233, #234, #235, #236, #237, #238, #239, #240, #241, #242, #243, #244, #245, #246, #247, #248, #249, #250, #251, #252.
+    Closes basalt#228, #229, #230, #231, #232, #233, #234, #235, #236, #237, #238, #239, #240, #241, #242, #243, #244, #245, #246, #247, #248, #249, #250, #251, #252.
 
 ### [1.3.2] - 2026-07-18
 
@@ -393,7 +423,7 @@ to npm for these versions; they are kept for history only.
 
 - **Dependencies (minor bump)**:
   - `lucide-react` 1.24.0 → 1.25.0
-  Closes basalt#226.
+    Closes basalt#226.
 
 ### [1.3.1] - 2026-07-17
 
@@ -404,7 +434,7 @@ to npm for these versions; they are kept for history only.
   - `@tailwindcss/vite` 4.3.2 → 4.3.3
   - `tailwindcss` 4.3.2 → 4.3.3
   - `vite` 8.1.4 → 8.1.5
-  Closes basalt#221, #222, #223, #224.
+    Closes basalt#221, #222, #223, #224.
 
 ### [1.3.0] - 2026-07-16
 

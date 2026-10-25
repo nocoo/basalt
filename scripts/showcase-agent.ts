@@ -38,7 +38,7 @@ export async function assertAgentFeedback(page: Page, baseUrl: string) {
 			await demo.getByText("Answers submitted", { exact: true }).waitFor();
 			await page.waitForFunction(() => document.activeElement?.getAttribute("role") === "status");
 			assert.match(
-				await demo.getByRole("status", { name: "Submitted answers" }).innerText(),
+				await demo.getByRole("status", { name: "Submitted answers" }).textContent(),
 				/Remote monitoring/,
 			);
 			await page.goto(`${baseUrl}/ui/tool-chips`);

@@ -42,9 +42,9 @@ describe("installed application recipes", () => {
 		expect(recipes.find(({ id }) => id === "recipe-login")?.code).toContain(
 			'<main className="basalt-ui ',
 		);
-		expect(recipes.find(({ id }) => id === "recipe-app-frame")?.code).toContain(
-			"event.currentTarget.focus(); setCollapsed(!collapsed);",
-		);
+		const appFrameCode = recipes.find(({ id }) => id === "recipe-app-frame")?.code;
+		expect(appFrameCode).toContain("event.currentTarget.focus()");
+		expect(appFrameCode).toContain("setCollapsed(!collapsed)");
 	});
 	it("writes only exact installed-package fences with independently checked hashes", () => {
 		const root = mkdtempSync(join(tmpdir(), "basalt-recipes-"));

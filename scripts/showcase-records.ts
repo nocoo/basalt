@@ -217,7 +217,7 @@ export async function assertRecordGeometry(page: Page, baseUrl: string) {
 				"6",
 			]);
 			assert.equal(
-				await demo.getByRole("img", { name: "Alpine Clinic — Zurich" }).innerText(),
+				await demo.getByRole("img", { name: "Alpine Clinic — Zurich" }).textContent(),
 				"AC",
 			);
 

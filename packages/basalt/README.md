@@ -52,12 +52,14 @@ Import order is strict. Register Basalt tokens before the Tailwind framework imp
 @import "tailwindcss";
 
 @layer base {
-  html, body, #root {
-    height: 100%;
-  }
-  body {
-    @apply bg-basalt-background text-basalt-foreground antialiased;
-  }
+	html,
+	body,
+	#root {
+		height: 100%;
+	}
+	body {
+		@apply bg-basalt-background text-basalt-foreground antialiased;
+	}
 }
 ```
 
@@ -79,21 +81,23 @@ Standalone CSS contains compiled design tokens, scoped control classes, keyframe
 ## Import Architecture
 
 ### 1. Root Barrel (`@nocoo/basalt`)
+
 Contains lightweight base components, inputs, layout surfaces, and providers:
 ```tsx compile:pkg-readme-root-import
 import {
-  Button,
-  Input,
-  LayerCard,
-  ThemeProvider,
-  ThemeToggle,
-  Tooltip,
-  Toast,
-  Sidebar
+	Button,
+	Input,
+	LayerCard,
+	ThemeProvider,
+	ThemeToggle,
+	Tooltip,
+	Toast,
+	Sidebar,
 } from "@nocoo/basalt";
 ```
 
 ### 2. Granular Subpaths (`@nocoo/basalt/components/*`, `@nocoo/basalt/charts/*`, `@nocoo/basalt/providers/*`)
+
 Keeps initial bundle size small by isolating complex or specialized dependencies:
 ```tsx compile:pkg-readme-granular-import
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
@@ -107,6 +111,7 @@ import { useTheme } from "@nocoo/basalt/providers/theme";
 ## Framework Integration Highlights
 
 ### React 19 & Next.js Client Boundaries
+
 Basalt controls require browser event listeners and React context. When using Next.js App Router, render Basalt components within a client module:
 
 ```tsx compile:pkg-readme-client-app
@@ -116,15 +121,16 @@ Basalt controls require browser event listeners and React context. When using Ne
 import { Button, ThemeProvider } from "@nocoo/basalt";
 
 export function BasaltApp() {
-  return (
-    <ThemeProvider>
-      <Button variant="default">Client Control</Button>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider>
+			<Button variant="default">Client Control</Button>
+		</ThemeProvider>
+	);
 }
 ```
 
 ### Server-Side Theme Pre-Hydration
+
 To eliminate theme flashing (FOUC), inject the theme class before React renders:
 
 ```html

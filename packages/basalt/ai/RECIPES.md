@@ -16,46 +16,94 @@ import { AppMain, AppShell, AppSkipLink } from "@nocoo/basalt/components/app-she
 import { Button } from "@nocoo/basalt/components/button";
 import { DialogDescription, DialogTitle } from "@nocoo/basalt/components/dialog";
 import { PageHeader } from "@nocoo/basalt/components/page-header";
-import { ContentIsland, Sidebar, SidebarHeader, SidebarItem, SidebarNav, SidebarProvider } from "@nocoo/basalt/components/sidebar";
+import {
+	ContentIsland,
+	Sidebar,
+	SidebarHeader,
+	SidebarItem,
+	SidebarNav,
+	SidebarProvider,
+} from "@nocoo/basalt/components/sidebar";
 import { ThemeToggle } from "@nocoo/basalt/components/theme-toggle";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { useEffect, useState } from "react";
 
 export default function AppFrameRecipe() {
-  const [page, setPage] = useState("Projects");
-  const [compact, setCompact] = useState(false);
-  const [collapsed, setCollapsed] = useState(true);
-  useEffect(() => {
-    const media = matchMedia("(max-width: 767px)");
-    const update = () => { setCompact(media.matches); setCollapsed(media.matches); };
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
-  // Replace this local state change with your router's navigation adapter.
-  function navigate(next: string) { setPage(next); if (compact) setCollapsed(true); }
-  return <ThemeProvider>
-    <SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed} overlay={compact}>
-      {/* One bounded viewport; the island below owns its own scrolling. */}
-      <AppShell layout="workspace" className="h-dvh">
-        <AppSkipLink href="#recipe-main">Skip to content</AppSkipLink>
-        <Sidebar>
-          {compact && <><DialogTitle className="sr-only">Workspace navigation</DialogTitle><DialogDescription className="sr-only">Choose an application section.</DialogDescription></>}
-          <SidebarHeader><strong>Atlas workspace</strong></SidebarHeader>
-          <SidebarNav aria-label="Workspace navigation">
-            {["Projects", "Members", "Activity"].map((name) => <SidebarItem key={name} active={page === name} onClick={() => navigate(name)}>{name}</SidebarItem>)}
-          </SidebarNav>
-        </Sidebar>
-        <AppMain id="recipe-main" tabIndex={-1}>
-          <AppHeader leading={<Button size="sm" variant="ghost" aria-label="Toggle navigation" onClick={(event) => { event.currentTarget.focus(); setCollapsed(!collapsed); }}>Menu</Button>} actions={<ThemeToggle aria-label="Change theme" />} />
-          <ContentIsland className="space-y-basalt-layout-lg">
-            <PageHeader title={page} description="A reusable application frame with responsive navigation." />
-            <p role="status" className="text-basalt-sm text-basalt-muted-foreground">Opened {page}. Your application supplies routes and page content.</p>
-          </ContentIsland>
-        </AppMain>
-      </AppShell>
-    </SidebarProvider>
-  </ThemeProvider>;
+	const [page, setPage] = useState("Projects");
+	const [compact, setCompact] = useState(false);
+	const [collapsed, setCollapsed] = useState(true);
+	useEffect(() => {
+		const media = matchMedia("(max-width: 767px)");
+		const update = () => {
+			setCompact(media.matches);
+			setCollapsed(media.matches);
+		};
+		update();
+		media.addEventListener("change", update);
+		return () => media.removeEventListener("change", update);
+	}, []);
+	// Replace this local state change with your router's navigation adapter.
+	function navigate(next: string) {
+		setPage(next);
+		if (compact) setCollapsed(true);
+	}
+	return (
+		<ThemeProvider>
+			<SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed} overlay={compact}>
+				{/* One bounded viewport; the island below owns its own scrolling. */}
+				<AppShell layout="workspace" className="h-dvh">
+					<AppSkipLink href="#recipe-main">Skip to content</AppSkipLink>
+					<Sidebar>
+						{compact && (
+							<>
+								<DialogTitle className="sr-only">Workspace navigation</DialogTitle>
+								<DialogDescription className="sr-only">
+									Choose an application section.
+								</DialogDescription>
+							</>
+						)}
+						<SidebarHeader>
+							<strong>Atlas workspace</strong>
+						</SidebarHeader>
+						<SidebarNav aria-label="Workspace navigation">
+							{["Projects", "Members", "Activity"].map((name) => (
+								<SidebarItem key={name} active={page === name} onClick={() => navigate(name)}>
+									{name}
+								</SidebarItem>
+							))}
+						</SidebarNav>
+					</Sidebar>
+					<AppMain id="recipe-main" tabIndex={-1}>
+						<AppHeader
+							leading={
+								<Button
+									size="sm"
+									variant="ghost"
+									aria-label="Toggle navigation"
+									onClick={(event) => {
+										event.currentTarget.focus();
+										setCollapsed(!collapsed);
+									}}
+								>
+									Menu
+								</Button>
+							}
+							actions={<ThemeToggle aria-label="Change theme" />}
+						/>
+						<ContentIsland className="space-y-basalt-layout-lg">
+							<PageHeader
+								title={page}
+								description="A reusable application frame with responsive navigation."
+							/>
+							<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
+								Opened {page}. Your application supplies routes and page content.
+							</p>
+						</ContentIsland>
+					</AppMain>
+				</AppShell>
+			</SidebarProvider>
+		</ThemeProvider>
+	);
 }
 ```
 
@@ -72,64 +120,124 @@ import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { useEffect, useRef, useState } from "react";
 
 type Credentials = { email: string; password: string };
-export function LoginForm({ authenticate, onSuccess }: {
-  authenticate: (credentials: Credentials, signal: AbortSignal) => Promise<void>;
-  onSuccess: (email: string) => void;
+export function LoginForm({
+	authenticate,
+	onSuccess,
+}: {
+	authenticate: (credentials: Credentials, signal: AbortSignal) => Promise<void>;
+	onSuccess: (email: string) => void;
 }) {
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState("");
-  const active = useRef<AbortController | null>(null);
-  useEffect(() => () => active.current?.abort(), []);
-  return <form aria-label="Sign in" className="space-y-basalt-space-lg" onSubmit={async (event) => {
-    event.preventDefault();
-    if (active.current) return;
-    const form = new FormData(event.currentTarget);
-    const email = String(form.get("email") ?? "");
-    const password = String(form.get("password") ?? "");
-    const controller = new AbortController();
-    active.current = controller; setPending(true); setError("");
-    try {
-      await authenticate({ email, password }, controller.signal);
-      if (!controller.signal.aborted) onSuccess(email);
-    } catch (cause) {
-      if (!controller.signal.aborted) setError(cause instanceof Error ? cause.message : "Sign in failed. Try again.");
-    } finally {
-      if (!controller.signal.aborted) { active.current = null; setPending(false); }
-    }
-  }}>
-    <Field label="Email"><Input name="email" type="email" autoComplete="username" required /></Field>
-    <Field label="Password"><SensitiveInput name="password" autoComplete="current-password" revealLabel="Show password" hideLabel="Hide password" required /></Field>
-    {error && <p role="alert" className="text-basalt-sm text-basalt-destructive">{error}</p>}
-    <Button className="w-full" type="submit" loading={pending}>Sign in</Button>
-  </form>;
+	const [pending, setPending] = useState(false);
+	const [error, setError] = useState("");
+	const active = useRef<AbortController | null>(null);
+	useEffect(() => () => active.current?.abort(), []);
+	return (
+		<form
+			aria-label="Sign in"
+			className="space-y-basalt-space-lg"
+			onSubmit={async (event) => {
+				event.preventDefault();
+				if (active.current) return;
+				const form = new FormData(event.currentTarget);
+				const email = String(form.get("email") ?? "");
+				const password = String(form.get("password") ?? "");
+				const controller = new AbortController();
+				active.current = controller;
+				setPending(true);
+				setError("");
+				try {
+					await authenticate({ email, password }, controller.signal);
+					if (!controller.signal.aborted) onSuccess(email);
+				} catch (cause) {
+					if (!controller.signal.aborted)
+						setError(cause instanceof Error ? cause.message : "Sign in failed. Try again.");
+				} finally {
+					if (!controller.signal.aborted) {
+						active.current = null;
+						setPending(false);
+					}
+				}
+			}}
+		>
+			<Field label="Email">
+				<Input name="email" type="email" autoComplete="username" required />
+			</Field>
+			<Field label="Password">
+				<SensitiveInput
+					name="password"
+					autoComplete="current-password"
+					revealLabel="Show password"
+					hideLabel="Hide password"
+					required
+				/>
+			</Field>
+			{error && (
+				<p role="alert" className="text-basalt-sm text-basalt-destructive">
+					{error}
+				</p>
+			)}
+			<Button className="w-full" type="submit" loading={pending}>
+				Sign in
+			</Button>
+		</form>
+	);
 }
 
 // The documented visitor badge: a full-viewport root, a primary strip, the body,
 // and a status footer. It never enters AppShell, and the body grows with the form.
 export default function LoginRecipe() {
-  const [account, setAccount] = useState<string | null>(null);
-  return <ThemeProvider>
-    <main className="basalt-ui flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-space-lg">
-      <div data-basalt-surface-root="" className="flex w-72 max-w-full flex-col overflow-hidden rounded-basalt-lg bg-basalt-card ring-1 ring-basalt-border">
-        <div className="flex items-center justify-between gap-basalt-space-lg bg-basalt-primary px-basalt-space-lg py-basalt-space-lg">
-          <span className="text-basalt-base font-semibold text-basalt-primary-foreground">Atlas</span>
-          <span className="text-basalt-xs font-medium uppercase tracking-widest text-basalt-primary-foreground/80">Visitor</span>
-        </div>
-        <div className="flex flex-1 flex-col gap-basalt-space-lg px-basalt-space-lg py-basalt-space-lg">
-          <div className="space-y-basalt-space-sm">
-            <h1 className="text-basalt-xl font-semibold text-basalt-foreground">Welcome to Atlas</h1>
-            <p className="text-basalt-sm text-basalt-muted-foreground">Local sign-in demo. Use password demo-pass.</p>
-          </div>
-          {account ? <><p role="status" className="text-basalt-sm text-basalt-foreground">Signed in as {account}</p>
-            <Button variant="outline" onClick={() => setAccount(null)}>Sign out</Button></> :
-            <LoginForm authenticate={async ({ password }) => { if (password !== "demo-pass") throw new Error("Incorrect demo password."); }} onSuccess={setAccount} />}
-        </div>
-        <div className="border-t border-basalt-border px-basalt-space-lg py-basalt-space-lg">
-          <p className="text-basalt-xs text-basalt-muted-foreground">Secure sign-in. Sessions stay with your application.</p>
-        </div>
-      </div>
-    </main>
-  </ThemeProvider>;
+	const [account, setAccount] = useState<string | null>(null);
+	return (
+		<ThemeProvider>
+			<main className="basalt-ui flex min-h-dvh items-center justify-center bg-basalt-background p-basalt-space-lg">
+				<div
+					data-basalt-surface-root=""
+					className="flex w-72 max-w-full flex-col overflow-hidden rounded-basalt-lg bg-basalt-card ring-1 ring-basalt-border"
+				>
+					<div className="flex items-center justify-between gap-basalt-space-lg bg-basalt-primary px-basalt-space-lg py-basalt-space-lg">
+						<span className="text-basalt-base font-semibold text-basalt-primary-foreground">
+							Atlas
+						</span>
+						<span className="text-basalt-xs font-medium uppercase tracking-widest text-basalt-primary-foreground/80">
+							Visitor
+						</span>
+					</div>
+					<div className="flex flex-1 flex-col gap-basalt-space-lg px-basalt-space-lg py-basalt-space-lg">
+						<div className="space-y-basalt-space-sm">
+							<h1 className="text-basalt-xl font-semibold text-basalt-foreground">
+								Welcome to Atlas
+							</h1>
+							<p className="text-basalt-sm text-basalt-muted-foreground">
+								Local sign-in demo. Use password demo-pass.
+							</p>
+						</div>
+						{account ? (
+							<>
+								<p role="status" className="text-basalt-sm text-basalt-foreground">
+									Signed in as {account}
+								</p>
+								<Button variant="outline" onClick={() => setAccount(null)}>
+									Sign out
+								</Button>
+							</>
+						) : (
+							<LoginForm
+								authenticate={async ({ password }) => {
+									if (password !== "demo-pass") throw new Error("Incorrect demo password.");
+								}}
+								onSuccess={setAccount}
+							/>
+						)}
+					</div>
+					<div className="border-t border-basalt-border px-basalt-space-lg py-basalt-space-lg">
+						<p className="text-basalt-xs text-basalt-muted-foreground">
+							Secure sign-in. Sessions stay with your application.
+						</p>
+					</div>
+				</div>
+			</main>
+		</ThemeProvider>
+	);
 }
 ```
 
@@ -151,37 +259,95 @@ import { useRef, useState } from "react";
 
 type Project = { id: string; name: string; status: "Active" | "Paused" };
 const initial: Project[] = [
-  { id: "atlas", name: "Atlas", status: "Active" }, { id: "boreal", name: "Boreal", status: "Paused" },
-  { id: "cedar", name: "Cedar", status: "Active" },
+	{ id: "atlas", name: "Atlas", status: "Active" },
+	{ id: "boreal", name: "Boreal", status: "Paused" },
+	{ id: "cedar", name: "Cedar", status: "Active" },
 ];
 export default function ResourcesRecipe() {
-  const [rows, setRows] = useState(initial);
-  const [query, setQuery] = useState("");
-  const [error, setError] = useState(true);
-  const [message, setMessage] = useState("");
-  const failDeletion = useRef(true);
-  const filtered = rows.filter((row) => row.name.toLowerCase().includes(query.toLowerCase()));
-  const columns: DataTableColumn<Project>[] = [
-    { id: "name", header: "Project", accessor: (row) => row.name },
-    { id: "status", header: "Status", accessor: (row) => <TagBadge name={row.status} color={row.status === "Active" ? "success" : "warning"} /> },
-    { id: "actions", header: "Actions", sortable: false, accessor: (row) => <DeleteResource name={row.name} onDelete={async () => {
-      if (failDeletion.current) { failDeletion.current = false; throw new Error("Temporary conflict. Retry this deletion."); }
-      setRows((current) => current.filter((item) => item.id !== row.id)); setMessage("Deleted " + row.name);
-    }} /> },
-  ];
-  // A document page: the shell grows with content and the island owns the desktop inset.
-  return <ThemeProvider><AppShell layout="document">
-    <AppSkipLink href="#recipe-resources">Skip to content</AppSkipLink>
-    <AppMain id="recipe-resources" tabIndex={-1}>
-      <ContentIsland>
-        <ResourceList title="Projects" description="A complete resource-page composition with local service adapters." data={[]}
-          toolbar={<div className="flex flex-wrap gap-basalt-content-gap"><Input aria-label="Search projects" placeholder="Search projects…" value={query} onChange={(event) => setQuery(event.target.value)} /><Button variant="outline" onClick={() => { setRows(initial); setQuery(""); setMessage(""); }}>Reset projects</Button></div>}
-          footer={<p role="status" className="text-basalt-sm text-basalt-muted-foreground">{message || (filtered.length + " projects")}</p>}>
-          <DataTable aria-label="Projects" data={filtered} columns={columns} error={error ? "The project service is unavailable." : undefined} onRetry={() => setError(false)} />
-        </ResourceList>
-      </ContentIsland>
-    </AppMain>
-  </AppShell></ThemeProvider>;
+	const [rows, setRows] = useState(initial);
+	const [query, setQuery] = useState("");
+	const [error, setError] = useState(true);
+	const [message, setMessage] = useState("");
+	const failDeletion = useRef(true);
+	const filtered = rows.filter((row) => row.name.toLowerCase().includes(query.toLowerCase()));
+	const columns: DataTableColumn<Project>[] = [
+		{ id: "name", header: "Project", accessor: (row) => row.name },
+		{
+			id: "status",
+			header: "Status",
+			accessor: (row) => (
+				<TagBadge name={row.status} color={row.status === "Active" ? "success" : "warning"} />
+			),
+		},
+		{
+			id: "actions",
+			header: "Actions",
+			sortable: false,
+			accessor: (row) => (
+				<DeleteResource
+					name={row.name}
+					onDelete={async () => {
+						if (failDeletion.current) {
+							failDeletion.current = false;
+							throw new Error("Temporary conflict. Retry this deletion.");
+						}
+						setRows((current) => current.filter((item) => item.id !== row.id));
+						setMessage("Deleted " + row.name);
+					}}
+				/>
+			),
+		},
+	];
+	// A document page: the shell grows with content and the island owns the desktop inset.
+	return (
+		<ThemeProvider>
+			<AppShell layout="document">
+				<AppSkipLink href="#recipe-resources">Skip to content</AppSkipLink>
+				<AppMain id="recipe-resources" tabIndex={-1}>
+					<ContentIsland>
+						<ResourceList
+							title="Projects"
+							description="A complete resource-page composition with local service adapters."
+							data={[]}
+							toolbar={
+								<div className="flex flex-wrap gap-basalt-content-gap">
+									<Input
+										aria-label="Search projects"
+										placeholder="Search projects…"
+										value={query}
+										onChange={(event) => setQuery(event.target.value)}
+									/>
+									<Button
+										variant="outline"
+										onClick={() => {
+											setRows(initial);
+											setQuery("");
+											setMessage("");
+										}}
+									>
+										Reset projects
+									</Button>
+								</div>
+							}
+							footer={
+								<p role="status" className="text-basalt-sm text-basalt-muted-foreground">
+									{message || filtered.length + " projects"}
+								</p>
+							}
+						>
+							<DataTable
+								aria-label="Projects"
+								data={filtered}
+								columns={columns}
+								error={error ? "The project service is unavailable." : undefined}
+								onRetry={() => setError(false)}
+							/>
+						</ResourceList>
+					</ContentIsland>
+				</AppMain>
+			</AppShell>
+		</ThemeProvider>
+	);
 }
 ```
 
@@ -200,25 +366,45 @@ import { ContentIsland } from "@nocoo/basalt/components/sidebar";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 
 export default function MobileLayoutRecipe() {
-  return <ThemeProvider><AppShell layout="responsive">
-    <AppSkipLink>Skip to content</AppSkipLink>
-    <AppMain>
-      <ContentIsland mobileSurface="edge-to-edge">
-        <AppHeader sticky density="compact" title="Field notes" actions={
-          <Popover><PopoverTrigger asChild><Button variant="ghost">Options</Button></PopoverTrigger>
-            <PopoverContent aria-label="Options"><p>Application-owned reading preferences.</p></PopoverContent>
-          </Popover>
-        } />
-        <article className="mx-auto max-w-[65ch] space-y-basalt-space-lg p-basalt-layout text-basalt-base leading-basalt-relaxed">
-          {Array.from({ length: 24 }, (_, index) => <section key={index}>
-            <h2>Observation {index + 1}</h2>
-            <p>The shell leaves the document in charge on a narrow screen. Content grows naturally, the header stays reachable, and the final paragraph remains above the trailing safe area.</p>
-          </section>)}
-          <p>End of notes.</p>
-        </article>
-      </ContentIsland>
-    </AppMain>
-  </AppShell></ThemeProvider>;
+	return (
+		<ThemeProvider>
+			<AppShell layout="responsive">
+				<AppSkipLink>Skip to content</AppSkipLink>
+				<AppMain>
+					<ContentIsland mobileSurface="edge-to-edge">
+						<AppHeader
+							sticky
+							density="compact"
+							title="Field notes"
+							actions={
+								<Popover>
+									<PopoverTrigger asChild>
+										<Button variant="ghost">Options</Button>
+									</PopoverTrigger>
+									<PopoverContent aria-label="Options">
+										<p>Application-owned reading preferences.</p>
+									</PopoverContent>
+								</Popover>
+							}
+						/>
+						<article className="mx-auto max-w-[65ch] space-y-basalt-space-lg p-basalt-layout text-basalt-base leading-basalt-relaxed">
+							{Array.from({ length: 24 }, (_, index) => (
+								<section key={index}>
+									<h2>Observation {index + 1}</h2>
+									<p>
+										The shell leaves the document in charge on a narrow screen. Content grows
+										naturally, the header stays reachable, and the final paragraph remains above the
+										trailing safe area.
+									</p>
+								</section>
+							))}
+							<p>End of notes.</p>
+						</article>
+					</ContentIsland>
+				</AppMain>
+			</AppShell>
+		</ThemeProvider>
+	);
 }
 ```
 

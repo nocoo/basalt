@@ -46,12 +46,14 @@ For Tailwind CSS v4, import Basalt tokens and Tailwind in your main stylesheet. 
 @import "tailwindcss";
 
 @layer base {
-  html, body, #root {
-    height: 100%;
-  }
-  body {
-    @apply bg-basalt-background text-basalt-foreground antialiased;
-  }
+	html,
+	body,
+	#root {
+		height: 100%;
+	}
+	body {
+		@apply bg-basalt-background text-basalt-foreground antialiased;
+	}
 }
 ```
 
@@ -72,20 +74,20 @@ import { Button, Input, LayerCard, ThemeProvider } from "@nocoo/basalt";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 
 export function App() {
-  return (
-    <ThemeProvider>
-      <LayerCard>
-        <LayerCard.Header>
-          <span className="font-semibold text-basalt-foreground">Overview</span>
-        </LayerCard.Header>
-        <LayerCard.Body>
-          <Input placeholder="Project Name" aria-label="Project Name" />
-          <DatePicker aria-label="Target Date" />
-          <Button variant="default">Submit</Button>
-        </LayerCard.Body>
-      </LayerCard>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider>
+			<LayerCard>
+				<LayerCard.Header>
+					<span className="font-semibold text-basalt-foreground">Overview</span>
+				</LayerCard.Header>
+				<LayerCard.Body>
+					<Input placeholder="Project Name" aria-label="Project Name" />
+					<DatePicker aria-label="Target Date" />
+					<Button variant="default">Submit</Button>
+				</LayerCard.Body>
+			</LayerCard>
+		</ThemeProvider>
+	);
 }
 ```
 
@@ -118,14 +120,14 @@ Site output goes to the root `dist/`; library output goes to `packages/basalt/di
 
 ## Tests
 
-| Layer / scenario | Run from the repository root |
-| --- | --- |
-| Unit and component tests | `bun run test` |
+| Layer / scenario                           | Run from the repository root                               |
+| ------------------------------------------ | ---------------------------------------------------------- |
+| Unit and component tests                   | `bun run test`                                             |
 | Tailwind / standalone consumer integration | `bun run consumer:tailwind`, `bun run consumer:standalone` |
-| Next.js SSR and browser interaction | `bun run consumer:next` |
-| Charts and optional-peer integration | `bun run consumer:heavy` |
-| Documentation code examples | `bun run consumer:docs` |
-| Showcase browser tests | `bun run test:showcase` |
+| Next.js SSR and browser interaction        | `bun run consumer:next`                                    |
+| Charts and optional-peer integration       | `bun run consumer:heavy`                                   |
+| Documentation code examples                | `bun run consumer:docs`                                    |
+| Showcase browser tests                     | `bun run test:showcase`                                    |
 
 Run `bun run playwright:install` before browser tests. External-consumer tests pack, install dependencies, and build in temporary directories; they need npm and network access and manage their own test ports. Run `bun run --cwd packages/basalt build` before `consumer:docs`. Use `bun run test:coverage` for a unit-test report. See [fixtures/README.md](../fixtures/README.md) for fixture details.
 
@@ -137,11 +139,11 @@ Run `bun run playwright:install` before browser tests. External-consumer tests p
 ![Radix UI](https://img.shields.io/badge/Radix_UI-161618?logo=radixui&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
 
-| Area | Implementation |
-| --- | --- |
-| Component library | React, TypeScript, Radix UI, ESM subpath exports |
-| Styles and charts | CSS tokens, Tailwind CSS / standalone CSS, Recharts, Lucide |
-| Showcase | Vite, React Router, i18next, Cloudflare Workers static assets |
+| Area                  | Implementation                                                                |
+| --------------------- | ----------------------------------------------------------------------------- |
+| Component library     | React, TypeScript, Radix UI, ESM subpath exports                              |
+| Styles and charts     | CSS tokens, Tailwind CSS / standalone CSS, Recharts, Lucide                   |
+| Showcase              | Vite, React Router, i18next, Cloudflare Workers static assets                 |
 | Development and tests | Bun, Biome, Vitest, Testing Library, Playwright, TypeScript consumer fixtures |
 
 ## Documentation

@@ -400,7 +400,7 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 			.waitFor();
 		await page.locator("[data-doc-scroll] h1").waitFor();
 		assert.equal(
-			/pages\.interactive\.alert\w+/.test(await page.locator("body").innerText()),
+			/pages\.interactive\.alert\w+/.test(await page.locator("body").textContent()),
 			false,
 		);
 		cases.push(`interactive:${language}`);
