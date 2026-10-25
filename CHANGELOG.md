@@ -11,6 +11,21 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.2.2] - 2026-10-25
+
+### Changed
+
+- Override undici for security (#602)
+- Bump i18next-browser-languagedetector (#601)
+- Bump react-i18next (#600)
+- Bump @swc/core (#599)
+- Bump vite (#596)
+- Bump @biomejs/biome (#595)
+- Bump lucide-react (#594)
+- Bump wrangler (#593)
+- Bump react-router (#592)
+- Bump i18next (#591)
+
 ## [3.2.1] - 2026-10-21
 
 ### Fixed
