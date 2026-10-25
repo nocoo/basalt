@@ -691,7 +691,7 @@ export const n = <><DonutChart /><DatePicker /><DataTable /></>;
 		const pkg = JSON.parse(readFileSync("package.json", "utf8")) as {
 			devDependencies?: Record<string, string>;
 		};
-		expect(pkg.devDependencies?.["@swc/core"]).toBe("1.16.18");
+		expect(pkg.devDependencies?.["@swc/core"]).toBe("1.16.20");
 		const gate = readFileSync("scripts/consumer-gate.ts", "utf8");
 		expect(gate).toContain('from "@swc/core"');
 		expect(gate).not.toContain("@vitejs/plugin-react-swc");

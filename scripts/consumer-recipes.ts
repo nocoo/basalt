@@ -218,10 +218,10 @@ export async function assertConsumerRecipes(page: Page, url: string) {
 		.evaluate((form) =>
 			form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true })),
 		);
-	assert.equal(await page.getByTestId("auth-calls").innerText(), "1");
+	assert.equal(await page.getByTestId("auth-calls").textContent(), "1");
 	await page.getByRole("button", { name: "Unmount login" }).click();
 	await page.getByTestId("auth-aborted").filter({ hasText: "true" }).waitFor();
-	assert.equal(await page.getByTestId("auth-success").innerText(), "false");
+	assert.equal(await page.getByTestId("auth-success").textContent(), "false");
 	return {
 		cases,
 		installedMarkdown: true,

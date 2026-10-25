@@ -46,12 +46,14 @@ bun add @nocoo/basalt lucide-react
 @import "tailwindcss";
 
 @layer base {
-  html, body, #root {
-    height: 100%;
-  }
-  body {
-    @apply bg-basalt-background text-basalt-foreground antialiased;
-  }
+	html,
+	body,
+	#root {
+		height: 100%;
+	}
+	body {
+		@apply bg-basalt-background text-basalt-foreground antialiased;
+	}
 }
 ```
 
@@ -72,20 +74,20 @@ import { Button, Input, LayerCard, ThemeProvider } from "@nocoo/basalt";
 import { DatePicker } from "@nocoo/basalt/components/date-picker";
 
 export function App() {
-  return (
-    <ThemeProvider>
-      <LayerCard>
-        <LayerCard.Header>
-          <span className="font-semibold text-basalt-foreground">Overview</span>
-        </LayerCard.Header>
-        <LayerCard.Body>
-          <Input placeholder="Project Name" aria-label="Project Name" />
-          <DatePicker aria-label="Target Date" />
-          <Button variant="default">Submit</Button>
-        </LayerCard.Body>
-      </LayerCard>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider>
+			<LayerCard>
+				<LayerCard.Header>
+					<span className="font-semibold text-basalt-foreground">Overview</span>
+				</LayerCard.Header>
+				<LayerCard.Body>
+					<Input placeholder="Project Name" aria-label="Project Name" />
+					<DatePicker aria-label="Target Date" />
+					<Button variant="default">Submit</Button>
+				</LayerCard.Body>
+			</LayerCard>
+		</ThemeProvider>
+	);
 }
 ```
 
@@ -118,14 +120,14 @@ bun run --cwd packages/basalt build
 
 ## 测试
 
-| 测试层 / 场景 | 从仓库根目录执行 |
-| --- | --- |
-| 单元与组件测试 | `bun run test` |
+| 测试层 / 场景                      | 从仓库根目录执行                                           |
+| ---------------------------------- | ---------------------------------------------------------- |
+| 单元与组件测试                     | `bun run test`                                             |
 | Tailwind / standalone 外部应用集成 | `bun run consumer:tailwind`、`bun run consumer:standalone` |
-| Next.js SSR 与浏览器交互 | `bun run consumer:next` |
-| 图表与可选依赖集成 | `bun run consumer:heavy` |
-| 文档代码示例 | `bun run consumer:docs` |
-| 示例站浏览器测试 | `bun run test:showcase` |
+| Next.js SSR 与浏览器交互           | `bun run consumer:next`                                    |
+| 图表与可选依赖集成                 | `bun run consumer:heavy`                                   |
+| 文档代码示例                       | `bun run consumer:docs`                                    |
+| 示例站浏览器测试                   | `bun run test:showcase`                                    |
 
 浏览器测试前执行 `bun run playwright:install`。外部应用测试会在临时目录打包、安装依赖和构建，需要 npm 与网络，并自行管理测试端口。执行 `consumer:docs` 前先运行 `bun run --cwd packages/basalt build`。可用 `bun run test:coverage` 生成单元测试报告；各类夹具说明见 [fixtures/README.md](fixtures/README.md)。
 
@@ -137,11 +139,11 @@ bun run --cwd packages/basalt build
 ![Radix UI](https://img.shields.io/badge/Radix_UI-161618?logo=radixui&logoColor=white)
 ![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white)
 
-| 部分 | 实现 |
-| --- | --- |
-| 组件库 | React、TypeScript、Radix UI、ESM 分路径导出 |
-| 样式与图表 | CSS tokens、Tailwind CSS / standalone CSS、Recharts、Lucide |
-| 示例站 | Vite、React Router、i18next、Cloudflare Workers 静态资源 |
+| 部分       | 实现                                                                   |
+| ---------- | ---------------------------------------------------------------------- |
+| 组件库     | React、TypeScript、Radix UI、ESM 分路径导出                            |
+| 样式与图表 | CSS tokens、Tailwind CSS / standalone CSS、Recharts、Lucide            |
+| 示例站     | Vite、React Router、i18next、Cloudflare Workers 静态资源               |
 | 开发与测试 | Bun、Biome、Vitest、Testing Library、Playwright、TypeScript 消费者夹具 |
 
 ## 文档

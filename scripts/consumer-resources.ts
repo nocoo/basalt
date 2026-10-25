@@ -37,7 +37,7 @@ export async function assertConsumerResources(page: Page) {
 				"descending",
 			);
 			assert.equal(
-				await table.locator("tbody tr").first().locator("td").nth(1).innerText(),
+				await table.locator("tbody tr").first().locator("td").nth(1).textContent(),
 				"Cedar",
 				"manual sorting waits for caller data",
 			);
@@ -45,7 +45,7 @@ export async function assertConsumerResources(page: Page) {
 			await page.getByRole("button", { name: "Next page", exact: true }).click();
 			await table.getByRole("cell", { name: "Ember", exact: true }).waitFor();
 			await table.getByRole("checkbox", { name: "Select e", exact: true }).check();
-			assert.equal(await page.getByTestId("selected").innerText(), "Selected: c,e");
+			assert.equal(await page.getByTestId("selected").textContent(), "Selected: c,e");
 			await page.getByRole("button", { name: "Previous page", exact: true }).click();
 			assert.equal(
 				await table.getByRole("checkbox", { name: "Select c", exact: true }).isChecked(),
@@ -70,7 +70,7 @@ export async function assertConsumerResources(page: Page) {
 			await page.getByRole("button", { name: "error", exact: true }).click();
 			await table.getByRole("alert").waitFor();
 			await table.getByRole("button", { name: "Try again" }).click();
-			assert.match(await page.getByTestId("requests").innerText(), /retries:1/);
+			assert.match(await page.getByTestId("requests").textContent(), /retries:1/);
 			await table.getByRole("cell", { name: "Cedar", exact: true }).waitFor();
 			await page.getByRole("button", { name: "empty", exact: true }).click();
 			await table.getByText("No results", { exact: true }).waitFor();

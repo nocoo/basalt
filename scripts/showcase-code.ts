@@ -98,7 +98,7 @@ async function assertCodePanel(page: Page, panel: Locator) {
 	});
 	assert.equal(selected, source);
 	assert.equal(
-		await pre.locator("code").innerText(),
+		await pre.locator("code").textContent(),
 		source,
 		"selection must not add blank lines or line numbers",
 	);

@@ -28,23 +28,23 @@ different density; opening the page layout must not enlarge compact controls.
 
 ## Spacing
 
-| Step | Token | Value | Reference |
-| --- | --- | --- | --- |
-| Extra small | `--basalt-space-xs` | `.125rem` | 2px |
-| Small | `--basalt-space-sm` | `.25rem` | 4px |
-| Medium | `--basalt-space-md` | `.375rem` | 6px |
-| Large / default | `--basalt-space-lg`, `--basalt-space-default` | `.5rem` | 8px |
+| Step            | Token                                         | Value     | Reference |
+| --------------- | --------------------------------------------- | --------- | --------- |
+| Extra small     | `--basalt-space-xs`                           | `.125rem` | 2px       |
+| Small           | `--basalt-space-sm`                           | `.25rem`  | 4px       |
+| Medium          | `--basalt-space-md`                           | `.375rem` | 6px       |
+| Large / default | `--basalt-space-lg`, `--basalt-space-default` | `.5rem`   | 8px       |
 
 These four steps belong to control content: labels, icons, fields, actions,
 selectable rows, menus and banner content. They are not the maximum spacing for a page
 or content surface. Card and layout boundaries use their own four-step roles:
 
-| Step | Card token | Layout token | Value | Reference |
-| --- | --- | --- | --- | --- |
-| Small | `--basalt-space-card-sm` | `--basalt-space-layout-sm` | `.75rem` | 12px |
-| Medium | `--basalt-space-card` | `--basalt-space-layout` | `1rem` | 16px |
-| Large | `--basalt-space-card-lg` | `--basalt-space-layout-lg` | `1.5rem` | 24px |
-| Extra large | `--basalt-space-card-xl` | `--basalt-space-layout-xl` | `2rem` | 32px |
+| Step        | Card token               | Layout token               | Value    | Reference |
+| ----------- | ------------------------ | -------------------------- | -------- | --------- |
+| Small       | `--basalt-space-card-sm` | `--basalt-space-layout-sm` | `.75rem` | 12px      |
+| Medium      | `--basalt-space-card`    | `--basalt-space-layout`    | `1rem`   | 16px      |
+| Large       | `--basalt-space-card-lg` | `--basalt-space-layout-lg` | `1.5rem` | 24px      |
+| Extra large | `--basalt-space-card-xl` | `--basalt-space-layout-xl` | `2rem`   | 32px      |
 
 Card padding defaults to medium. LayerCard headers flow into Body by default:
 16px horizontal/top insets, no bottom inset and an 8px internal gap, without a divider.
@@ -120,15 +120,15 @@ media and shell widths. They are not an alternative margin/padding scale.
 Choose a category before implementing a component. A composite's root and its
 children can have different categories. Root module inventory:
 
-| Category | Reference | Component modules |
-| --- | --- | --- |
-| Inline | 22px single line | `badge`, `tag-badge` |
-| Action | 34px default | `button`, `input`, `select`, `toggle`, `toggle-group`, `segment-control`, `autocomplete`, `combobox`, `typeahead-field`, `sensitive-input`, `input-group`, `input-area`, `clipboard-text`, `inline-editable`, `multi-select`, `date-picker`, `icon-picker`, `tag-color-picker`, `theme-toggle`, `pagination`, `table-pager` |
-| Banner | 38px single line | `banner`, `toast` |
-| Card / content surface | Natural | `layer-card`, `approval-card`, `context-cards`, `recommendation-card`, `chat-bubble`, `code`, `empty`, `file-dropzone`, `resource-list`, `upload-queue` |
-| Layout / composite | Natural | `accordion`, `collapsible`, `app-header`, `app-shell`, `sidebar`, `navigation-menu`, `editable-nav-item`, `breadcrumbs`, `page-header`, `section-rule`, `filter-bar`, `toolbar`, `grid`, `flow`, `field`, `description-list`, `table`, `data-table`, `diff-table`, `tabs`, `table-of-contents`, `responsive-master-detail`, `scroll-area`, `separator`, `stat-strip`, `chat-header`, `chat-inbox`, `chat-message`, `chat-markdown`, `chat-composer`, `prompt-bar`, `thinking`, `tool-chips`, `loading-screen` |
-| Overlay composite | Natural; triggers/actions follow Action | `dialog`, `alert-dialog`, `confirm-dialog`, `delete-resource`, `sheet`, `dock`, `popover`, `hover-card`, `tooltip`, `dropdown-menu`, `context-menu`, `menu-bar`, `command-palette` |
-| Graphic / text primitive | Content-specific | `avatar`, `basalt-mark`, `battery-meter`, `meter`, `loader`, `skeleton-line`, `text`, `label`, `link`, `checkbox`, `radio`, `switch`, `slider`, `fab` |
+| Category                 | Reference                               | Component modules                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| ------------------------ | --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Inline                   | 22px single line                        | `badge`, `tag-badge`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| Action                   | 34px default                            | `button`, `input`, `select`, `toggle`, `toggle-group`, `segment-control`, `autocomplete`, `combobox`, `typeahead-field`, `sensitive-input`, `input-group`, `input-area`, `clipboard-text`, `inline-editable`, `multi-select`, `date-picker`, `icon-picker`, `tag-color-picker`, `theme-toggle`, `pagination`, `table-pager`                                                                                                                                                                                   |
+| Banner                   | 38px single line                        | `banner`, `toast`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| Card / content surface   | Natural                                 | `layer-card`, `approval-card`, `context-cards`, `recommendation-card`, `chat-bubble`, `code`, `empty`, `file-dropzone`, `resource-list`, `upload-queue`                                                                                                                                                                                                                                                                                                                                                       |
+| Layout / composite       | Natural                                 | `accordion`, `collapsible`, `app-header`, `app-shell`, `sidebar`, `navigation-menu`, `editable-nav-item`, `breadcrumbs`, `page-header`, `section-rule`, `filter-bar`, `toolbar`, `grid`, `flow`, `field`, `description-list`, `table`, `data-table`, `diff-table`, `tabs`, `table-of-contents`, `responsive-master-detail`, `scroll-area`, `separator`, `stat-strip`, `chat-header`, `chat-inbox`, `chat-message`, `chat-markdown`, `chat-composer`, `prompt-bar`, `thinking`, `tool-chips`, `loading-screen` |
+| Overlay composite        | Natural; triggers/actions follow Action | `dialog`, `alert-dialog`, `confirm-dialog`, `delete-resource`, `sheet`, `dock`, `popover`, `hover-card`, `tooltip`, `dropdown-menu`, `context-menu`, `menu-bar`, `command-palette`                                                                                                                                                                                                                                                                                                                            |
+| Graphic / text primitive | Content-specific                        | `avatar`, `basalt-mark`, `battery-meter`, `meter`, `loader`, `skeleton-line`, `text`, `label`, `link`, `checkbox`, `radio`, `switch`, `slider`, `fab`                                                                                                                                                                                                                                                                                                                                                         |
 
 Graphic primitives preserve their intrinsic shape: a checkbox mark is not a
 34px square and an avatar is not a text input. Their containing action rows use
@@ -191,12 +191,12 @@ interaction contracts; do not change their containment as a global workaround.
   tokens below, with `--basalt-leading-*` for line boxes. Do not shrink text to
   fit a fixed box or introduce responsive intermediate sizes.
 
-  | Tier | Reference | Token / utility | Roles |
-  | --- | --- | --- | --- |
-  | Auxiliary | 12px / `.75rem` | `--basalt-text-sm` / `text-basalt-sm` | Badges, table column headers, field hints/errors, sidebar uppercase group/partition labels, secondary metadata, chart axes/legends/tooltips, inline code and code block source (`font-mono`) |
-  | Body | 14px / `.875rem` | `--basalt-text-base` / `text-basalt-base` | Body prose, all interactive controls and option rows (including ApprovalCard, RecommendationCard, Table cells and ContextCards), card/panel titles (LayerCard.Header, CodeBlock title, ContextCards header, StatCard title, Popover title and Empty title), PageHeader descriptions and modal/sheet descriptions (DialogDescription, AlertDialogDescription and SheetDescription) |
-  | Section | 18px / `1.125rem` | `--basalt-text-xl` / `text-basalt-xl` | Section/category h2/h3 headings, SectionRule variant="heading" h2, modal/drawer titles (DialogTitle, AlertDialogTitle and SheetTitle) |
-  | Page / metric | 24px / `1.5rem` | `--basalt-text-3xl` / `text-basalt-3xl` | Page main title (PageHeader h1) and primary KPI numerals (StatCard value, StatStrip value and dashboard metrics) |
+  | Tier          | Reference         | Token / utility                           | Roles                                                                                                                                                                                                                                                                                                                                                                             |
+  | ------------- | ----------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+  | Auxiliary     | 12px / `.75rem`   | `--basalt-text-sm` / `text-basalt-sm`     | Badges, table column headers, field hints/errors, sidebar uppercase group/partition labels, secondary metadata, chart axes/legends/tooltips, inline code and code block source (`font-mono`)                                                                                                                                                                                      |
+  | Body          | 14px / `.875rem`  | `--basalt-text-base` / `text-basalt-base` | Body prose, all interactive controls and option rows (including ApprovalCard, RecommendationCard, Table cells and ContextCards), card/panel titles (LayerCard.Header, CodeBlock title, ContextCards header, StatCard title, Popover title and Empty title), PageHeader descriptions and modal/sheet descriptions (DialogDescription, AlertDialogDescription and SheetDescription) |
+  | Section       | 18px / `1.125rem` | `--basalt-text-xl` / `text-basalt-xl`     | Section/category h2/h3 headings, SectionRule variant="heading" h2, modal/drawer titles (DialogTitle, AlertDialogTitle and SheetTitle)                                                                                                                                                                                                                                             |
+  | Page / metric | 24px / `1.5rem`   | `--basalt-text-3xl` / `text-basalt-3xl`   | Page main title (PageHeader h1) and primary KPI numerals (StatCard value, StatStrip value and dashboard metrics)                                                                                                                                                                                                                                                                  |
 
   The only independent display-scale exemptions are LandingPage
   (`src/styles/landing.css`), LoginPage (`src/pages/LoginPage.tsx`) and the 404
@@ -365,12 +365,12 @@ islands rather than wrapping the whole page in another card.
 Alignment is local to a meaningful scope, not a requirement that every text node
 start at the page edge. Establish the outer rail before composing the inner one:
 
-| Scope | Alignment rule |
-| --- | --- |
-| Page | PageHeader and region edges share the ContentIsland rail |
-| Surface | Header, body and footer share their panel inset |
-| Field or column | Labels, controls and values follow that group's start or end rail |
-| Semantic slot | Checkboxes, row numbers and status glyphs reserve their own consistent space |
+| Scope           | Alignment rule                                                               |
+| --------------- | ---------------------------------------------------------------------------- |
+| Page            | PageHeader and region edges share the ContentIsland rail                     |
+| Surface         | Header, body and footer share their panel inset                              |
+| Field or column | Labels, controls and values follow that group's start or end rail            |
+| Semantic slot   | Checkboxes, row numbers and status glyphs reserve their own consistent space |
 
 Related text keeps its rail across sorting, selection and missing optional icons.
 Numeric headings and values share the end rail; a sort glyph sits inward of that
@@ -406,15 +406,15 @@ content width, not uniformly loose controls or one global density multiplier.
 Choose the boundary before choosing a spacing token. A valid token on the wrong
 owner is still a design error:
 
-| Boundary | Owner | Composition |
-| --- | --- | --- |
-| Page/region separation | `ShowcasePage` / `SectionRule` | Layout gaps, no second page inset |
-| Painted content or navigation panel | `LayerCard` | Header and Body slots, never an unpadded painted div |
-| Full-width disclosure heading | `LayerCard.Header asChild` | Slot onto `CollapsibleTrigger`; one hit target, 16/12px insets |
-| Expanded prose or fields | `LayerCard.Body` | Inside `CollapsibleContent unstyled`; one 16px inset |
-| Attached code | `CodeBlock attached` / `CodeHighlighted attached` | Direct child of unstyled disclosure; code owns its 16/12px insets |
-| Edge-to-edge table/list | Its row/cell components | Direct card child; panel inset on edge cells, no Body with `p-0` or compensating margins |
-| Compact status/action strip | `Banner` | Control spacing, not a hand-drawn card |
+| Boundary                            | Owner                                             | Composition                                                                              |
+| ----------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| Page/region separation              | `ShowcasePage` / `SectionRule`                    | Layout gaps, no second page inset                                                        |
+| Painted content or navigation panel | `LayerCard`                                       | Header and Body slots, never an unpadded painted div                                     |
+| Full-width disclosure heading       | `LayerCard.Header asChild`                        | Slot onto `CollapsibleTrigger`; one hit target, 16/12px insets                           |
+| Expanded prose or fields            | `LayerCard.Body`                                  | Inside `CollapsibleContent unstyled`; one 16px inset                                     |
+| Attached code                       | `CodeBlock attached` / `CodeHighlighted attached` | Direct child of unstyled disclosure; code owns its 16/12px insets                        |
+| Edge-to-edge table/list             | Its row/cell components                           | Direct card child; panel inset on edge cells, no Body with `p-0` or compensating margins |
+| Compact status/action strip         | `Banner`                                          | Control spacing, not a hand-drawn card                                                   |
 
 Collapsible owns visibility, focus semantics and motion; it does not add another
 surface. Its default inset is for plain standalone text. Use `unstyled` when a

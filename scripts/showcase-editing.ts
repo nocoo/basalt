@@ -116,7 +116,7 @@ export async function assertEditingShowcases(page: Page, baseUrl: string) {
 			await caption.getByRole("textbox").fill("A retained caption");
 			await caption.getByRole("button", { name: "Save", exact: true }).click();
 			assert.match(
-				await caption.getByRole("status").innerText(),
+				await caption.getByRole("status").textContent(),
 				/Published caption: A retained caption/,
 			);
 
@@ -193,7 +193,7 @@ export async function assertEditingShowcases(page: Page, baseUrl: string) {
 			);
 			const status = page.locator('[data-scenario="tag-color-picker-status-colors"]');
 			await status.getByRole("radio", { name: "Urgent", exact: true }).click();
-			assert.equal(await status.locator('[data-tag-color="danger"]').innerText(), "Urgent");
+			assert.equal(await status.locator('[data-tag-color="danger"]').textContent(), "Urgent");
 			await assertSelectedChoice(
 				status.getByRole("radio", { name: "Urgent", exact: true }),
 				status.getByRole("radio", { name: "Healthy", exact: true }),

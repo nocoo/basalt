@@ -1,5 +1,5 @@
 {
-	"$schema": "https://biomejs.dev/schemas/2.5.15/schema.json",
+	"$schema": "https://biomejs.dev/schemas/2.6.3/schema.json",
 	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"linter": {
 		"enabled": true,
@@ -52,6 +52,26 @@
 		"lineWidth": 100
 	},
 	"overrides": [
+		{
+			"includes": [
+				"INTEGRATION.md",
+				"packages/basalt/ai/INTEGRATION.md",
+				"packages/basalt/ai/USAGE.md"
+			],
+			"formatter": {
+				"enabled": false
+			}
+		},
+		{
+			"includes": ["**/*.test.ts", "**/*.test.tsx"],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"noComponentHookFactories": "off"
+					}
+				}
+			}
+		},
 		{
 			"includes": ["packages/basalt/src/components/date-picker.tsx"],
 			"linter": {

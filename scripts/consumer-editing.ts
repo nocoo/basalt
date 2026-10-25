@@ -76,19 +76,19 @@ export async function assertConsumerEditing(page: Page) {
 			await page.getByRole("button", { name: "Complete save", exact: true }).click();
 			const trigger = editor.getByRole("button", { name: "Edit Collection name" });
 			await focused(trigger);
-			assert.equal(await page.getByTestId("saved-name").innerText(), "Renamed collection");
+			assert.equal(await page.getByTestId("saved-name").textContent(), "Renamed collection");
 			await trigger.click();
 			await input.fill("Discarded");
 			await input.press("Escape");
 			await focused(trigger);
-			assert.equal(await page.getByTestId("saved-name").innerText(), "Renamed collection");
+			assert.equal(await page.getByTestId("saved-name").textContent(), "Renamed collection");
 			await trigger.click();
 			await input.fill("Saved by blur");
 			await page.getByRole("button", { name: "Outside editor" }).focus();
 			await page.getByRole("button", { name: "Complete save", exact: true }).click();
 			await trigger.waitFor();
 			await focused(page.getByRole("button", { name: "Complete save", exact: true }));
-			assert.equal(await page.getByTestId("saved-name").innerText(), "Saved by blur");
+			assert.equal(await page.getByTestId("saved-name").textContent(), "Saved by blur");
 
 			const nav = page.getByRole("navigation", { name: "Editable folders" });
 			await nav.getByRole("button", { name: "Research", exact: true }).click();
@@ -99,7 +99,7 @@ export async function assertConsumerEditing(page: Page) {
 				"page",
 			);
 			await nav.getByRole("button", { name: "Pin folder" }).click();
-			assert.equal(await page.getByTestId("pinned").innerText(), "true");
+			assert.equal(await page.getByTestId("pinned").textContent(), "true");
 			await nav.getByRole("button", { name: "Rename Research" }).click();
 			await nav.getByRole("textbox", { name: "Rename Research" }).fill("Reading");
 			await page.keyboard.press("Enter");
@@ -123,7 +123,7 @@ export async function assertConsumerEditing(page: Page) {
 			await focused(page.getByRole("radio", { name: "Book", exact: true }));
 			await page.keyboard.press("Space");
 			await focused(picker);
-			assert.match(await picker.innerText(), /Book/);
+			assert.match(await picker.textContent(), /Book/);
 			assert.equal(await picker.getAttribute("aria-label"), "Folder icon: Book");
 			const colors = page.getByRole("radiogroup", { name: "Tag color", exact: true });
 			await colors.getByRole("radio", { name: "Blue", exact: true }).focus();

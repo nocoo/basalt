@@ -1261,7 +1261,7 @@ console.log(JSON.stringify({
 						throw combineErrors(
 							error,
 							new Error(
-								`Editing route ${response?.status()} ${page.url()}\n${await page.locator("body").innerText()}\n${JSON.stringify(faults)}`,
+								`Editing route ${response?.status()} ${page.url()}\n${await page.locator("body").textContent()}\n${JSON.stringify(faults)}`,
 							),
 						);
 					}

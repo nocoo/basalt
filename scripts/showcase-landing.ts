@@ -121,7 +121,7 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 			);
 			await assertFocusPaint(page.locator(".landing-brand-motion").first(), 16, false);
 			assert.equal(await page.locator("h1").count(), 1);
-			assert.equal((await page.locator("h1").innerText()).replace(/\s+/g, " "), LANDING_HEADING);
+			assert.equal((await page.locator("h1").textContent()).replace(/\s+/g, " "), LANDING_HEADING);
 			await assertLandingBounds(page, width);
 			cases.push(`${width}/${dark ? "dark" : "light"}`);
 		}

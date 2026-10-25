@@ -21,7 +21,7 @@ export async function assertConsumerFilters(page: Page) {
 			assert.equal(await search.evaluate((node) => node === document.activeElement), true);
 			await page.keyboard.press("ArrowDown");
 			await page.keyboard.press("Enter");
-			assert.match(await page.getByTestId("filters-result").innerText(), /Selected: a,b/);
+			assert.match(await page.getByTestId("filters-result").textContent(), /Selected: a,b/);
 			assert.equal(await page.getByRole("option", { name: "Archive" }).isDisabled(), true);
 			await search.fill("ced");
 			await page.keyboard.press("Enter");
@@ -42,11 +42,11 @@ export async function assertConsumerFilters(page: Page) {
 			await page.keyboard.press("Escape");
 			await page.getByRole("button", { name: "Reset native selection" }).click();
 			await page.getByRole("button", { name: "Read form" }).click();
-			assert.equal(await page.getByTestId("native-result").innerText(), "a,c");
+			assert.equal(await page.getByTestId("native-result").textContent(), "a,c");
 			await page.getByRole("button", { name: "Allow reset" }).click();
 			await page.getByRole("button", { name: "Reset native selection" }).click();
 			await page.getByRole("button", { name: "Read form" }).click();
-			assert.equal(await page.getByTestId("native-result").innerText(), "a");
+			assert.equal(await page.getByTestId("native-result").textContent(), "a");
 			const input = page.locator('input[type="file"]');
 			await input.setInputFiles([
 				{ name: "bad.exe", mimeType: "application/octet-stream", buffer: Buffer.from("bad") },
@@ -57,8 +57,8 @@ export async function assertConsumerFilters(page: Page) {
 				},
 			]);
 			const alert = page.getByRole("group", { name: "Evidence", exact: true }).getByRole("alert");
-			assert.match(await alert.innerText(), /File type is not accepted/);
-			assert.match(await alert.innerText(), /File exceeds the size limit/);
+			assert.match(await alert.textContent(), /File type is not accepted/);
+			assert.match(await alert.textContent(), /File exceeds the size limit/);
 			await input.setInputFiles({
 				name: "notes.pdf",
 				mimeType: "application/pdf",
@@ -71,7 +71,7 @@ export async function assertConsumerFilters(page: Page) {
 			await page.getByRole("button", { name: "Cancel notes.pdf" }).click();
 			await page.getByRole("button", { name: "Retry notes.pdf" }).click();
 			assert.match(
-				await page.getByRole("list", { name: "Evidence queue" }).innerText(),
+				await page.getByRole("list", { name: "Evidence queue" }).textContent(),
 				/Uploaded/,
 			);
 			await page.getByRole("button", { name: "Remove notes.pdf" }).click();

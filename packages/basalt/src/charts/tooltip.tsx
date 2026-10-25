@@ -163,6 +163,7 @@ export function ChartTooltipRow({
 					{label}
 				</span>
 			) : null}
+			{hasLabel ? " " : null}
 			<span
 				style={{
 					color: "hsl(var(--basalt-popover-foreground))",
@@ -239,6 +240,7 @@ export function ChartTooltipSummary({
 					{label}
 				</span>
 			) : null}
+			{hasLabel ? " " : null}
 			<span
 				style={{
 					color: "hsl(var(--basalt-popover-foreground))",
