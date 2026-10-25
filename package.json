@@ -110,7 +110,8 @@
 		"vite": "$vite",
 		"source-map-js": "1.2.2",
 		"@radix-ui/react-dialog": "$@radix-ui/react-dialog",
-		"@radix-ui/react-slot": "1.5.0"
+		"@radix-ui/react-slot": "1.5.0",
+		"undici": "7.30.1"
 	},
 	"lint-staged": {
 		"*.{ts,tsx,js,jsx,json,css}": [
