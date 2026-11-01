@@ -3,12 +3,14 @@ import path from "node:path";
 import english from "../src/i18n/locales/en.json";
 import {
 	applyCrawlPage,
+	applyNotFoundDocument,
 	catalogCrawlPage,
 	categoryCrawlPage,
 	homeCrawlPage,
 	showcaseCrawlPage,
 	uiIndexCrawlPage,
 } from "../src/lib/crawl";
+import { NOT_FOUND_PATH } from "../src/lib/routes";
 import { SHOWCASE_PAGES } from "../src/lib/site";
 import { CATALOG, catalogNavName } from "../src/pages/ui/catalog";
 import { CATALOG_CATEGORIES } from "../src/pages/ui/catalog-categories";
@@ -47,5 +49,9 @@ export function prerenderHtml(distDir: string, template: string): string[] {
 		writeFileSync(filePath, applyCrawlPage(template, page));
 		written.push(filePath);
 	}
+	// Served by the worker with HTTP 404 for unknown URLs (and as-is for the /404 showcase route).
+	const notFoundFile = fileForPath(distDir, NOT_FOUND_PATH);
+	writeFileSync(notFoundFile, applyNotFoundDocument(template));
+	written.push(notFoundFile);
 	return written;
 }
