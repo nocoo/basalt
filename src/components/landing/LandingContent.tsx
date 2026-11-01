@@ -17,6 +17,12 @@ import {
 	LANDING_STATS,
 	LANDING_TEMPLATES,
 } from "@/lib/landing";
+import {
+	CARD_IMAGE_SIZES,
+	HERO_IMAGE_SIZES,
+	templateImageUrl,
+	templateSrcSet,
+} from "@/lib/landing-images";
 import { SITE } from "@/lib/site";
 import { APP_VERSION } from "@/lib/version";
 import { HeaderTooltip, HexlyLink } from "../header-links";
@@ -42,23 +48,34 @@ function TemplateImage({
 	mode?: "light" | "dark";
 	hero?: boolean;
 }) {
+	const sizes = hero ? HERO_IMAGE_SIZES : CARD_IMAGE_SIZES;
+	// Without an explicit mode (the prerendered document) the system color scheme picks a variant.
+	const darkMedia = mode ? (mode === "dark" ? "all" : "not all") : "(prefers-color-scheme: dark)";
 	return (
 		<picture>
 			<source
-				media={mode ? (mode === "dark" ? "all" : "not all") : "(prefers-color-scheme: dark)"}
-				srcSet={`/landing/${name}-dark-1200.webp 1200w, /landing/${name}-dark.webp 3200w`}
-				sizes={hero ? "(min-width: 1600px) 1456px, 91vw" : "(max-width: 760px) 90vw, 30vw"}
+				media={darkMedia}
+				type="image/avif"
+				srcSet={templateSrcSet(name, "dark", "avif")}
+				sizes={sizes}
 			/>
+			<source
+				media={darkMedia}
+				type="image/webp"
+				srcSet={templateSrcSet(name, "dark", "webp")}
+				sizes={sizes}
+			/>
+			<source type="image/avif" srcSet={templateSrcSet(name, "light", "avif")} sizes={sizes} />
 			<img
-				src={`/landing/${name}-light.webp`}
-				srcSet={`/landing/${name}-light-1200.webp 1200w, /landing/${name}-light.webp 3200w`}
-				sizes={hero ? "(min-width: 1600px) 1456px, 91vw" : "(max-width: 760px) 90vw, 30vw"}
+				src={templateImageUrl(name, "light", 1200, "webp")}
+				srcSet={templateSrcSet(name, "light", "webp")}
+				sizes={sizes}
 				alt={alt}
 				width={3200}
 				height={2000}
 				loading={hero ? "eager" : "lazy"}
 				fetchPriority={hero ? "high" : undefined}
-				decoding="async"
+				decoding={hero ? undefined : "async"}
 			/>
 		</picture>
 	);

@@ -186,6 +186,33 @@
 .landing-header-actions :where(button:hover, .landing-github:hover) {
 	background: var(--basalt-scene-glass-180);
 }
+/* Scene photography: WebP everywhere, AVIF (about half the bytes) where image-set types work. */
+.landing {
+	--landing-ridge-light-image: url("/landing/ridge-light.webp");
+	--landing-ridge-dark-image: url("/landing/ridge.webp");
+	--landing-palace-light-image: url("/landing/palace-light.webp");
+	--landing-palace-dark-image: url("/landing/palace-dark.webp");
+}
+@supports (background-image: image-set(url("/landing/ridge.avif") type("image/avif"))) {
+	.landing {
+		--landing-ridge-light-image: image-set(
+			url("/landing/ridge-light.avif") type("image/avif"),
+			url("/landing/ridge-light.webp") type("image/webp")
+		);
+		--landing-ridge-dark-image: image-set(
+			url("/landing/ridge.avif") type("image/avif"),
+			url("/landing/ridge.webp") type("image/webp")
+		);
+		--landing-palace-light-image: image-set(
+			url("/landing/palace-light.avif") type("image/avif"),
+			url("/landing/palace-light.webp") type("image/webp")
+		);
+		--landing-palace-dark-image: image-set(
+			url("/landing/palace-dark.avif") type("image/avif"),
+			url("/landing/palace-dark.webp") type("image/webp")
+		);
+	}
+}
 .landing-hero {
 	position: relative;
 	isolation: isolate;
@@ -210,7 +237,7 @@
 			var(--basalt-scene-daylight-wash),
 			var(--basalt-scene-daylight-edge) 65%
 		),
-		url("/landing/ridge-light.webp") center 48% / cover;
+		var(--landing-ridge-light-image) center 48% / cover;
 	mask-image: linear-gradient(
 		to bottom,
 		var(--basalt-scene-mask) 0%,
@@ -227,7 +254,7 @@
 			var(--basalt-scene-night-middle) 60%,
 			var(--basalt-scene-night-edge)
 		),
-		url("/landing/ridge.webp") center 48% / cover;
+		var(--landing-ridge-dark-image) center 48% / cover;
 }
 .landing-hero-copy {
 	text-align: center;
@@ -885,7 +912,7 @@
 	--landing-brand-ink: var(--basalt-scene-brand-ink-light);
 	--landing-brand-muted: var(--basalt-scene-brand-muted-light);
 	--landing-brand-surface: var(--basalt-scene-brand-surface-light);
-	--landing-brand-image: url("/landing/palace-light.webp");
+	--landing-brand-image: var(--landing-palace-light-image);
 	--landing-brand-wash: linear-gradient(
 		90deg,
 		var(--basalt-scene-brand-wash-light) 26%,
@@ -922,7 +949,7 @@
 	--landing-brand-ink: var(--basalt-scene-brand-ink-dark);
 	--landing-brand-muted: var(--basalt-scene-brand-muted-dark);
 	--landing-brand-surface: var(--basalt-scene-brand-surface-dark);
-	--landing-brand-image: url("/landing/palace-dark.webp");
+	--landing-brand-image: var(--landing-palace-dark-image);
 	--landing-brand-wash: linear-gradient(
 		90deg,
 		var(--basalt-scene-brand-wash-dark) 26%,
@@ -1002,6 +1029,10 @@
 }
 .landing-brand-artwork[data-motion="running"] :where(.landing-brand-float) {
 	animation-play-state: running;
+}
+/* The <picture> wrapper must not interrupt the tower's preserve-3d context. */
+.landing-brand-float > picture {
+	display: contents;
 }
 .landing-brand-mark {
 	display: block;

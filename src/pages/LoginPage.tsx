@@ -87,7 +87,7 @@ export default function LoginPage() {
 					</div>
 
 					<div className="flex flex-1 flex-col items-center px-6 pt-6 pb-14">
-						<BasaltLogo className="h-24 w-24 object-contain" />
+						<BasaltLogo className="h-24 w-24 object-contain" sizes="6rem" />
 
 						<p className="mt-5 text-lg font-semibold text-foreground">
 							{t("pages.badgeLogin.welcome")}
