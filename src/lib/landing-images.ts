@@ -38,7 +38,7 @@ export function templateSrcSet(
 	).join(", ");
 }
 
-export const TOWER_IMAGE_WIDTHS = [480, 720, 960, 1280] as const;
+export const TOWER_IMAGE_WIDTHS = [480, 600, 720, 960, 1280] as const;
 export const TOWER_MASTER_WIDTH = 1280;
 /** The tower fills its artwork column: most of a phone, about a third of a desktop row. */
 export const TOWER_IMAGE_SIZES =
@@ -67,11 +67,37 @@ export function heroPreloadLinks(): string[] {
 	);
 }
 
+/** The phone query that swaps in the square ridge crops in src/styles/landing.css. */
+export const PHONE_SCENE_MEDIA = "(max-width: 47.5rem)";
+const RIDGE_IMAGE: Record<LandingImageMode, string> = { light: "ridge-light", dark: "ridge" };
+
+/**
+ * The hero's ridge photograph is a CSS background, which Chrome fetches at high priority once it
+ * is on screen, competing with the scripts that paint the hero preview. A low-priority preload of
+ * the exact AVIF the stylesheet resolves to starts it early without that contention.
+ */
+export function sceneBackgroundPreloadLinks(): string[] {
+	return (["light", "dark"] as const).flatMap((mode) =>
+		[
+			[`/landing/${RIDGE_IMAGE[mode]}-square.avif`, PHONE_SCENE_MEDIA],
+			[`/landing/${RIDGE_IMAGE[mode]}.avif`, "(width > 47.5rem)"],
+		].map(
+			([href, viewport]) =>
+				`<link rel="preload" as="image" type="image/avif" fetchpriority="low" href="${href}" media="${viewport} and ${PRELOAD_MEDIA[mode]}" />`,
+		),
+	);
+}
+
 export const HERO_PRELOAD_START = "<!--landing:preload-->";
 export const HERO_PRELOAD_END = "<!--/landing:preload-->";
 
 export function heroPreloadBlock(): string {
-	return [HERO_PRELOAD_START, ...heroPreloadLinks(), HERO_PRELOAD_END].join("\n    ");
+	return [
+		HERO_PRELOAD_START,
+		...heroPreloadLinks(),
+		...sceneBackgroundPreloadLinks(),
+		HERO_PRELOAD_END,
+	].join("\n    ");
 }
 
 /** Other prerendered pages reuse the homepage document as a template; drop its hero hints. */

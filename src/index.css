@@ -2,6 +2,7 @@
 @source "../packages/basalt/src/**/*.{ts,tsx}";
 @import "../packages/basalt/src/styles/tailwind.css";
 @import "tailwindcss";
+@import "./styles/fonts.css";
 @import "./styles/site-tokens.css";
 @import "./styles/landing.css";
 

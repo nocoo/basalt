@@ -179,7 +179,6 @@ export function InteractiveBrandArtwork() {
 					<button
 						type="button"
 						className="landing-brand-motion"
-						aria-label={playing ? "Pause tower motion" : "Resume tower motion"}
 						onClick={() => setPlaying((current) => !current)}
 					>
 						{playing ? (

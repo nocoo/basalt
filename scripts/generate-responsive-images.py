@@ -59,12 +59,13 @@ for name in ["dashboard", "banking", "network"]:
             save(resized(master, width), f"landing/{name}-{mode}{suffix}.avif",
                  "template preview", source, AVIF)
 
-# Brand tower: 1280px RGBA master, displayed at ~320-560 CSS px below the fold.
+# Brand tower: 1280px RGBA master, displayed at ~320-560 CSS px below the fold. 600w covers a
+# typical phone (about 330 CSS px at 1.75x) without stepping up to 720w.
 tower_source = "public/landing/tower.webp"
 tower = Image.open(root / tower_source).convert("RGBA")
-for width in [480, 720, 960]:
+for width in [480, 600, 720, 960]:
     save(resized(tower, width), f"landing/tower-{width}.webp", "brand tower", tower_source, WEBP)
-for width in [480, 720, 960, 1280]:
+for width in [480, 600, 720, 960, 1280]:
     suffix = "" if width == tower.width else f"-{width}"
     save(resized(tower, width), f"landing/tower{suffix}.avif", "brand tower", tower_source,
          AVIF_DETAIL)
@@ -82,6 +83,14 @@ for asset in backgrounds["assets"]:
     image = image.filter(ImageFilter.GaussianBlur(asset["gaussianBlurRadius"]))
     relative = asset["path"].removeprefix("public/").removesuffix(".webp") + ".avif"
     save(image, relative, "scene background", scene["master"], AVIF)
+    # Phones: the hero is taller than it is wide, so `cover` scales the 2:1 ridge by height and
+    # shows only its middle. A centered square crop renders the same framing at half the bytes.
+    if asset["scene"] == "mountains":
+        left = (image.width - image.height) // 2
+        square = image.crop((left, 0, left + image.height, image.height))
+        stem = asset["path"].removeprefix("public/").removesuffix(".webp") + "-square"
+        save(square, stem + ".avif", "scene background (phone crop)", scene["master"], AVIF)
+        save(square, stem + ".webp", "scene background (phone crop)", scene["master"], WEBP)
 
 # Logo mark: shown at 24-32 CSS px in headers, so 2x/3x screens need 64-96px, not 256px.
 logo_source = "logo.png"

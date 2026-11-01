@@ -10,6 +10,8 @@ import {
 	HERO_PRELOAD_START,
 	heroPreloadBlock,
 	heroPreloadLinks,
+	PHONE_SCENE_MEDIA,
+	sceneBackgroundPreloadLinks,
 	stripHeroPreload,
 	TEMPLATE_IMAGE_WIDTHS,
 	TOWER_IMAGE_WIDTHS,
@@ -62,6 +64,22 @@ describe("landing image variants", () => {
 	});
 });
 
+describe("scene background preload", () => {
+	it("starts each ridge AVIF the stylesheet resolves to at low priority", () => {
+		const css = readFileSync(resolve(__dirname, "../styles/landing.css"), "utf8");
+		const links = sceneBackgroundPreloadLinks();
+		expect(links).toHaveLength(4);
+		expect(css).toContain(`@media ${PHONE_SCENE_MEDIA} {`);
+		for (const link of links) {
+			expect(link).toContain('fetchpriority="low"');
+			const href = link.match(/href="([^"]+)"/)?.[1] ?? "";
+			expect(existsSync(publicFile(href)), href).toBe(true);
+			expect(css).toContain(`url("${href}") type("image/avif")`);
+		}
+		expect(links.filter((link) => link.includes(PHONE_SCENE_MEDIA))).toHaveLength(2);
+	});
+});
+
 describe("hero preload", () => {
 	it("preloads only the hero AVIF set, one per color scheme", () => {
 		const links = heroPreloadLinks();
@@ -86,7 +104,7 @@ describe("hero preload", () => {
 		expect(other).not.toContain("dashboard-light-960.avif 960w");
 	});
 
-	it("falls back to the end of <head> without a font preconnect", () => {
+	it("falls back to the end of <head> without a font preload", () => {
 		const html = applyLandingToIndexHtml(
 			'<html><head><title>x</title></head><body><div id="root"></div></body></html>',
 		);

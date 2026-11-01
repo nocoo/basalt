@@ -1,9 +1,10 @@
-import { Toaster } from "@nocoo/basalt/components/toast";
 import { TooltipProvider } from "@nocoo/basalt/components/tooltip";
 import { LinkProvider } from "@nocoo/basalt/providers/link";
 import { ThemeProvider } from "@nocoo/basalt/providers/theme";
 import { type ComponentType, lazy, type ReactNode, Suspense } from "react";
 import { BrowserRouter, Route, Link as RouterLink, Routes } from "react-router";
+import { DeferredToaster } from "@/components/DeferredToaster";
+import { I18nReady } from "@/components/I18nReady";
 import { RouteScrollReset } from "@/components/RouteScrollReset";
 import { SitePaletteProvider } from "@/components/SitePaletteProvider";
 import LandingPage from "./pages/LandingPage";
@@ -84,11 +85,18 @@ function RouteLoadingFallback() {
 	);
 }
 
-function routeElement(Page: ComponentType) {
+/** Application routes wait for i18next; the prerendered landing renders without it. */
+function routeElement(Page: ComponentType, translated = true) {
 	return (
 		<Suspense fallback={<RouteLoadingFallback />}>
 			<RouteScrollReset>
-				<Page />
+				{translated ? (
+					<I18nReady>
+						<Page />
+					</I18nReady>
+				) : (
+					<Page />
+				)}
 			</RouteScrollReset>
 		</Suspense>
 	);
@@ -100,14 +108,16 @@ const App = () => (
 			<BrowserRouter>
 				<LinkProvider render={AppLink}>
 					<TooltipProvider>
-						<Toaster />
+						<DeferredToaster />
 						<Routes>
-							<Route path="/" element={routeElement(LandingPage)} />
+							<Route path="/" element={routeElement(LandingPage, false)} />
 							{/* Layout route: sidebar + header wraps all dashboard pages */}
 							<Route
 								element={
 									<Suspense fallback={<RouteLoadingFallback />}>
-										<DashboardLayout />
+										<I18nReady>
+											<DashboardLayout />
+										</I18nReady>
 									</Suspense>
 								}
 							>
