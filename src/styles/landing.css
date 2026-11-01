@@ -1197,6 +1197,13 @@
 .landing-footer-bottom :where(a) {
 	color: hsl(var(--basalt-foreground));
 }
+/* Links inside running text need a non-color cue (WCAG 1.4.1): a hairline underline. */
+.landing-footer-bottom :where(p) :where(a) {
+	text-decoration-line: underline;
+	text-decoration-thickness: 0.0625rem;
+	text-decoration-color: hsl(var(--basalt-muted-foreground));
+	text-underline-offset: 0.2em;
+}
 .landing-footer-actions {
 	display: flex;
 	align-items: center;

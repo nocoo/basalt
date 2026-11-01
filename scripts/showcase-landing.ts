@@ -135,14 +135,16 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 		() =>
 			document.querySelector(".landing-brand-artwork")?.getAttribute("data-motion") === "running",
 	);
-	await page.getByRole("button", { name: "Pause tower motion", exact: true }).click();
+	// The visible label is the accessible name (WCAG 2.5.3); the group names the tower.
+	const motionControls = page.getByRole("group", { name: "Tower motion controls" });
+	await motionControls.getByRole("button", { name: "Pause motion", exact: true }).click();
 	assert.equal(
 		await page
 			.locator(".landing-brand-float")
 			.evaluate((node) => getComputedStyle(node).animationPlayState),
 		"paused",
 	);
-	await page.getByRole("button", { name: "Resume tower motion", exact: true }).click();
+	await motionControls.getByRole("button", { name: "Resume motion", exact: true }).click();
 	await page.emulateMedia({ reducedMotion: "reduce" });
 	assert.equal(
 		await page
