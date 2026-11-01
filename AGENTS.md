@@ -24,7 +24,7 @@ Direction: [INTEGRATION.md](INTEGRATION.md); numbered `docs/01`–`03` describe 
 - Root package is a private catalog; publish only `packages/basalt`. Keep CSS tokens and both Tailwind/standalone entrypoints in the verified tarball; never include secrets.
 - Preserve matte surface hierarchy, theme/contrast/accessibility behavior, public API and React client/SSR boundaries described in the integration guide.
 - Viewmodels have no View/DOM imports; pages remain thin. Catalog examples use mock data, with no business database or auth service.
-- Worker `theme-basalt` serves `dist/`; site CD belongs to `release.yml`, never a parallel laptop deployment. Vite and `worker/index.ts` expose `/api/live`; preserve status/version and production no-store caching.
+- Worker `theme-basalt` serves `dist/`; site CD belongs to `release.yml`, never a parallel laptop deployment. Vite and `worker/index.ts` expose `/api/live`; preserve status/version and production no-store caching. Assets use `not_found_handling = "none"`: the worker serves the app shell for client routes in `src/lib/routes.ts` and `dist/404.html` with HTTP 404 for anything else; register new `<Route>` paths there.
 - Keep the Bun lockfile; never delete it for installation. Temporary registry mirrors must not leak into the committed lock. Direct-dependency overrides use the existing `$name` convention.
 - Root and published package versions, catalog metadata and changelog must remain aligned for an authorized release.
 

@@ -2,6 +2,7 @@ import { mkdtempSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { applyNotFoundDocument } from "../src/lib/crawl";
 import { LANDING_HEADING } from "../src/lib/landing";
 import { SHOWCASE_PATHS } from "../src/lib/site";
 import { APP_VERSION } from "../src/lib/version";
@@ -23,7 +24,19 @@ describe("prerender", () => {
 			...CATALOG_CATEGORIES.map((category) => catalogCategoryPath(category.id)),
 			...CATALOG.map((entry) => `/ui/${entry.slug}`),
 		];
-		expect(written).toHaveLength(paths.length);
+		expect(written).toHaveLength(paths.length + 1);
+		const notFound = new DOMParser().parseFromString(
+			readFileSync(path.join(dist, "404.html"), "utf8"),
+			"text/html",
+		);
+		expect(written).toContain(path.join(dist, "404.html"));
+		expect(notFound.querySelector("h1")?.textContent).toBe("Page not found");
+		expect(notFound.querySelector('meta[name="robots"]')?.getAttribute("content")).toBe("noindex");
+		const indexed = TEMPLATE.replace("</head>", '<meta name="robots" content="index" /></head>');
+		const replaced = applyNotFoundDocument(indexed);
+		expect(replaced.match(/<meta name="robots"/g)).toHaveLength(1);
+		expect(replaced).toContain('content="noindex"');
+		expect(notFound.querySelector('link[rel="canonical"]')).toBeNull();
 		for (const route of paths) {
 			const html = readFileSync(fileForPath(dist, route), "utf8");
 			const document = new DOMParser().parseFromString(html, "text/html");

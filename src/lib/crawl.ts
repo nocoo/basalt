@@ -10,7 +10,7 @@ import { LANDING_HEADING, LANDING_LEDE, LANDING_TEMPLATES } from "./landing";
 import { renderLandingBody } from "./landing-document";
 import { stripHeroPreload } from "./landing-images";
 import { applyMetadataToHtml, pageMetadata } from "./metadata";
-import { absoluteUrl, escapeXml, type PageMetadata, SITE } from "./site";
+import { absoluteUrl, documentTitle, escapeXml, type PageMetadata, SITE } from "./site";
 
 export interface CrawlPage extends PageMetadata {
 	heading: string;
@@ -119,6 +119,34 @@ export function showcaseCrawlPage(path: string, name: string): CrawlPage {
 			].join(""),
 		),
 	};
+}
+
+export const NOT_FOUND_HEADING = "Page not found";
+
+/** The document the edge worker serves, with HTTP 404, for URLs the app has no page for. */
+export function notFoundCrawlPage(): CrawlPage {
+	return {
+		path: "/404",
+		title: documentTitle(NOT_FOUND_HEADING),
+		description: "This page does not exist. Browse the Basalt component library or templates.",
+		heading: NOT_FOUND_HEADING,
+		html: crawlShell(
+			NOT_FOUND_HEADING,
+			'<p>This page does not exist or has moved.</p><p><a href="/">Back to the homepage</a> · <a href="/ui">Browse all components</a></p>',
+		),
+	};
+}
+
+/** Not-found documents must never be indexed or point search engines at a canonical URL. */
+export function applyNotFoundDocument(html: string): string {
+	const robots = '<meta name="robots" content="noindex" />';
+	const next = applyCrawlPage(html, notFoundCrawlPage()).replace(
+		/\s*<link rel="canonical"[^>]*>/,
+		"",
+	);
+	return /<meta name="robots"[^>]*>/.test(next)
+		? next.replace(/<meta name="robots"[^>]*>/, robots)
+		: next.replace("</head>", `    ${robots}\n  </head>`);
 }
 
 export function applyCrawlPage(html: string, page: CrawlPage): string {
