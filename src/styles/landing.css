@@ -213,6 +213,26 @@
 		);
 	}
 }
+/* Phones: the hero is taller than wide, so `cover` shows only the ridge's middle; a centered
+   square crop gives the same framing with fewer bytes. */
+@media (max-width: 47.5rem) {
+	.landing {
+		--landing-ridge-light-image: url("/landing/ridge-light-square.webp");
+		--landing-ridge-dark-image: url("/landing/ridge-square.webp");
+	}
+	@supports (background-image: image-set(url("/landing/ridge.avif") type("image/avif"))) {
+		.landing {
+			--landing-ridge-light-image: image-set(
+				url("/landing/ridge-light-square.avif") type("image/avif"),
+				url("/landing/ridge-light-square.webp") type("image/webp")
+			);
+			--landing-ridge-dark-image: image-set(
+				url("/landing/ridge-square.avif") type("image/avif"),
+				url("/landing/ridge-square.webp") type("image/webp")
+			);
+		}
+	}
+}
 .landing-hero {
 	position: relative;
 	isolation: isolate;

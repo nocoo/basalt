@@ -9,6 +9,10 @@ export function renderLandingBody(): string {
 	return renderToStaticMarkup(<LandingContent />);
 }
 
+/** Self-hosted DM Sans (see src/styles/fonts.css); every document preloads the latin subset. */
+export const FONT_PRELOAD =
+	'<link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />';
+
 export function landingBodyMarkers(inner: string): string {
 	return `<!--seo:body-->${inner}<!--/seo:body-->`;
 }
@@ -28,9 +32,8 @@ export function applyLandingToIndexHtml(html: string): string {
 	}
 	// Hint the hero preview (the LCP element) before the stylesheet and font requests.
 	next = stripHeroPreload(next);
-	const fontPreconnect = '<link rel="preconnect" href="https://fonts.googleapis.com" />';
-	next = next.includes(fontPreconnect)
-		? next.replace(fontPreconnect, () => `${heroPreloadBlock()}\n    ${fontPreconnect}`)
+	next = next.includes(FONT_PRELOAD)
+		? next.replace(FONT_PRELOAD, () => `${heroPreloadBlock()}\n    ${FONT_PRELOAD}`)
 		: next.replace("</head>", () => `    ${heroPreloadBlock()}\n  </head>`);
 	const body = landingBodyMarkers(renderLandingBody());
 	if (next.includes("<!--seo:body-->")) {

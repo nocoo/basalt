@@ -444,6 +444,15 @@
 			"sha256": "a47094904bcffb2ad7e86c180374d75b5f221533aace2b7d1ea91621196742e8"
 		},
 		{
+			"path": "public/landing/tower-600.webp",
+			"role": "brand tower",
+			"source": "public/landing/tower.webp",
+			"width": 600,
+			"height": 600,
+			"bytes": 79908,
+			"sha256": "5ac6c485ad736440162028273611815d416b00aa954b083f069d33201aa28840"
+		},
+		{
 			"path": "public/landing/tower-720.webp",
 			"role": "brand tower",
 			"source": "public/landing/tower.webp",
@@ -469,6 +478,15 @@
 			"height": 480,
 			"bytes": 51109,
 			"sha256": "0aec7acc613f500e701092bfa6528ca4b3ed96d2f4327830b1e4df0219ad5f51"
+		},
+		{
+			"path": "public/landing/tower-600.avif",
+			"role": "brand tower",
+			"source": "public/landing/tower.webp",
+			"width": 600,
+			"height": 600,
+			"bytes": 70773,
+			"sha256": "25d62071febbb9b4c0b9a2e2b63007510ceb865fd684d214dca19a3b5ff484a4"
 		},
 		{
 			"path": "public/landing/tower-720.avif",
@@ -507,6 +525,24 @@
 			"sha256": "215c54e65c9a947adcb75715302ac994e55342c107ffbbb70f4657f3a04dc606"
 		},
 		{
+			"path": "public/landing/ridge-light-square.avif",
+			"role": "scene background (phone crop)",
+			"source": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
+			"width": 1440,
+			"height": 1440,
+			"bytes": 78250,
+			"sha256": "8264584844b4ce3c555859125f778e654785cec0b022af09804f91cd655c1d00"
+		},
+		{
+			"path": "public/landing/ridge-light-square.webp",
+			"role": "scene background (phone crop)",
+			"source": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
+			"width": 1440,
+			"height": 1440,
+			"bytes": 88218,
+			"sha256": "70c6658d688187b3f4beec61999e09e4f1884b3a028297b2b307d63a1c3c380d"
+		},
+		{
 			"path": "public/landing/ridge.avif",
 			"role": "scene background",
 			"source": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
@@ -514,6 +550,24 @@
 			"height": 1440,
 			"bytes": 68916,
 			"sha256": "12fbfe157643169cf78cfd70573148901af6b9c875f763f34b7c5f13af71cb33"
+		},
+		{
+			"path": "public/landing/ridge-square.avif",
+			"role": "scene background (phone crop)",
+			"source": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
+			"width": 1440,
+			"height": 1440,
+			"bytes": 43804,
+			"sha256": "9e0fc645d99ad926d72ed04e7e86de36c28d37a32068277e29a46a1c2b831300"
+		},
+		{
+			"path": "public/landing/ridge-square.webp",
+			"role": "scene background (phone crop)",
+			"source": "assets/landing/generated/2026-09-09/mountains/raw/generated.png",
+			"width": 1440,
+			"height": 1440,
+			"bytes": 49594,
+			"sha256": "e6d33aeb9c3837087c85f4c9453a94afdf0e69e4e60e60e6bde61fcf0ec1328d"
 		},
 		{
 			"path": "public/landing/palace-light.avif",
