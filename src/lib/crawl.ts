@@ -8,6 +8,7 @@ import {
 import { CATEGORY_GUIDES } from "../pages/ui/catalog-category-guides";
 import { LANDING_HEADING, LANDING_LEDE, LANDING_TEMPLATES } from "./landing";
 import { renderLandingBody } from "./landing-document";
+import { stripHeroPreload } from "./landing-images";
 import { applyMetadataToHtml, pageMetadata } from "./metadata";
 import { absoluteUrl, escapeXml, type PageMetadata, SITE } from "./site";
 
@@ -121,7 +122,9 @@ export function showcaseCrawlPage(path: string, name: string): CrawlPage {
 }
 
 export function applyCrawlPage(html: string, page: CrawlPage): string {
-	const next = applyMetadataToHtml(html, page);
+	const metadataApplied = applyMetadataToHtml(html, page);
+	// The homepage document is the template; only the homepage itself keeps its hero preload.
+	const next = page.path === "/" ? metadataApplied : stripHeroPreload(metadataApplied);
 	const body = `<!--seo:body-->${page.html}<!--/seo:body-->`;
 	return next.includes("<!--seo:body-->")
 		? next.replace(/<!--seo:body-->[\s\S]*?<!--\/seo:body-->/, () => body)

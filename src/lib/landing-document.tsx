@@ -1,5 +1,6 @@
 import { renderToStaticMarkup } from "react-dom/server";
 import { LandingContent } from "../components/landing/LandingContent";
+import { HERO_PRELOAD_START, heroPreloadBlock, stripHeroPreload } from "./landing-images";
 import { applyMetadataToHtml, pageMetadata } from "./metadata";
 import { SITE } from "./site";
 
@@ -25,6 +26,12 @@ export function applyLandingToIndexHtml(html: string): string {
 			'    <link rel="stylesheet" href="/src/index.css" />\n  </head>',
 		);
 	}
+	// Hint the hero preview (the LCP element) before the stylesheet and font requests.
+	next = stripHeroPreload(next);
+	const fontPreconnect = '<link rel="preconnect" href="https://fonts.googleapis.com" />';
+	next = next.includes(fontPreconnect)
+		? next.replace(fontPreconnect, () => `${heroPreloadBlock()}\n    ${fontPreconnect}`)
+		: next.replace("</head>", () => `    ${heroPreloadBlock()}\n  </head>`);
 	const body = landingBodyMarkers(renderLandingBody());
 	if (next.includes("<!--seo:body-->")) {
 		return next.replace(/<!--seo:body-->[\s\S]*?<!--\/seo:body-->/, () => body);
@@ -46,5 +53,6 @@ export function requiredLandingSnippets(): string[] {
 		SITE.portfolio,
 		"https://lizheng.me/",
 		'<link rel="canonical" href="https://basaltui.com/" />',
+		HERO_PRELOAD_START,
 	];
 }
