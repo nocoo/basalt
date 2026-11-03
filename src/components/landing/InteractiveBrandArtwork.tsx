@@ -12,12 +12,10 @@ function moveArtwork(node: HTMLDivElement, x: number, y: number) {
 	const vertical = Math.max(-0.5, Math.min(0.5, y));
 	node.style.setProperty("--tower-yaw", `${horizontal * 16}deg`);
 	node.style.setProperty("--tower-pitch", `${-vertical * 10}deg`);
-	node.style.setProperty("--tower-glow-x", `${horizontal * 28}px`);
-	node.style.setProperty("--tower-glow-y", `${vertical * 20}px`);
 }
 
 function resetArtwork(node: HTMLDivElement) {
-	for (const name of ["--tower-yaw", "--tower-pitch", "--tower-glow-x", "--tower-glow-y"]) {
+	for (const name of ["--tower-yaw", "--tower-pitch"]) {
 		node.style.removeProperty(name);
 	}
 }

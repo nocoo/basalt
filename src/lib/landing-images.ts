@@ -61,10 +61,10 @@ const PRELOAD_MEDIA: Record<LandingImageMode, string> = {
  * AVIF `<source>` exactly so the browser reuses the preloaded response instead of fetching twice.
  */
 export function heroPreloadLinks(): string[] {
-	return (["light", "dark"] as const).map(
-		(mode) =>
-			`<link rel="preload" as="image" type="image/avif" fetchpriority="high" imagesrcset="${templateSrcSet(HERO_TEMPLATE_IMAGE, mode, "avif")}" imagesizes="${HERO_IMAGE_SIZES}" media="${PRELOAD_MEDIA[mode]}" />`,
-	);
+	return (["light", "dark"] as const).flatMap((mode) => [
+		`<link rel="preload" as="image" type="image/avif" fetchpriority="high" href="/landing/dashboard-${mode}-mobile.avif" media="(max-width: 30rem) and ${PRELOAD_MEDIA[mode]}" />`,
+		`<link rel="preload" as="image" type="image/avif" fetchpriority="high" imagesrcset="${templateSrcSet(HERO_TEMPLATE_IMAGE, mode, "avif")}" imagesizes="${HERO_IMAGE_SIZES}" media="(width > 30rem) and ${PRELOAD_MEDIA[mode]}" />`,
+	]);
 }
 
 /** The phone query that swaps in the square ridge crops in src/styles/landing.css. */

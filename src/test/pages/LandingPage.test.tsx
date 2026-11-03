@@ -70,10 +70,17 @@ describe("LandingPage", () => {
 
 	it("keeps the preview in sync with the light/dark switch", () => {
 		renderLanding();
-		const preview = document.querySelector(".landing-preview source");
-		expect(preview).toHaveAttribute("media", "not all");
+		const mobilePreview = document.querySelector(
+			'.landing-preview source[srcset*="dark-mobile.avif"]',
+		);
+		const desktopPreview = document.querySelector(
+			'.landing-preview source[srcset*="dark-640.avif"]',
+		);
+		expect(mobilePreview).toHaveAttribute("media", "not all");
+		expect(desktopPreview).toHaveAttribute("media", "not all");
 		fireEvent.click(screen.getByRole("button", { name: "Toggle theme (current: light)" }));
-		expect(preview).toHaveAttribute("media", "all");
+		expect(mobilePreview).toHaveAttribute("media", "(max-width: 30rem)");
+		expect(desktopPreview).toHaveAttribute("media", "all");
 	});
 
 	it.each(["light", "dark"] as const)(
@@ -92,10 +99,9 @@ describe("LandingPage", () => {
 			);
 			expect(document.documentElement.dataset.mode).toBe(opposite);
 			expect(localStorage.getItem("theme")).toBe(opposite);
-			expect(document.querySelector(".landing-preview source")).toHaveAttribute(
-				"media",
-				opposite === "dark" ? "all" : "not all",
-			);
+			expect(
+				document.querySelector('.landing-preview source[srcset*="dark-640.avif"]'),
+			).toHaveAttribute("media", opposite === "dark" ? "all" : "not all");
 			fireEvent.click(screen.getByRole("button", { name: `Toggle theme (current: ${opposite})` }));
 			expect(document.documentElement.dataset.mode).toBe(systemTheme);
 			expect(localStorage.getItem("theme")).toBe(systemTheme);

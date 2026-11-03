@@ -51,8 +51,37 @@ function TemplateImage({
 	const sizes = hero ? HERO_IMAGE_SIZES : CARD_IMAGE_SIZES;
 	// Without an explicit mode (the prerendered document) the system color scheme picks a variant.
 	const darkMedia = mode ? (mode === "dark" ? "all" : "not all") : "(prefers-color-scheme: dark)";
+	const mobileDarkMedia = mode
+		? mode === "dark"
+			? "(max-width: 30rem)"
+			: "not all"
+		: "(max-width: 30rem) and (prefers-color-scheme: dark)";
 	return (
 		<picture>
+			{hero && (
+				<>
+					<source
+						media={mobileDarkMedia}
+						type="image/avif"
+						srcSet="/landing/dashboard-dark-mobile.avif"
+					/>
+					<source
+						media={mobileDarkMedia}
+						type="image/webp"
+						srcSet="/landing/dashboard-dark-mobile.webp"
+					/>
+					<source
+						media="(max-width: 30rem)"
+						type="image/avif"
+						srcSet="/landing/dashboard-light-mobile.avif"
+					/>
+					<source
+						media="(max-width: 30rem)"
+						type="image/webp"
+						srcSet="/landing/dashboard-light-mobile.webp"
+					/>
+				</>
+			)}
 			<source
 				media={darkMedia}
 				type="image/avif"
@@ -114,9 +143,7 @@ function ChartSample() {
 		<div className="landing-chart-sample" aria-hidden="true">
 			<div className="landing-sample-metric">
 				<span>Monthly revenue</span>
-				<strong>
-					$24,680 <small>+12.8%</small>
-				</strong>
+				<strong>$24,680</strong>
 			</div>
 			<div className="landing-sample-bars">
 				{SAMPLE_BARS.map((height, index) => (
@@ -236,14 +263,14 @@ export function LandingContent({
 							>
 								<TemplateImage
 									name="dashboard"
-									alt="Basalt analytics dashboard with a navigation sidebar, financial metrics, bar charts, and an expense breakdown"
+									alt="Basalt health dashboard with care metrics and charts"
 									mode={imageMode}
 									hero
 								/>
 							</Link>
 							<figcaption>
 								<span>
-									<span className="landing-status-dot" /> Real components. A working starting point.
+									<span className="landing-status-dot" /> A working dashboard built with Basalt
 								</span>
 								<Link href="/dashboard">
 									Open dashboard
@@ -278,15 +305,10 @@ export function LandingContent({
 						<div className="landing-section-heading">
 							<div>
 								<p className="landing-eyebrow">The starting points</p>
-								<h2 id="templates-title">
-									Skip the blank canvas.
-									<br />
-									Keep the possibilities.
-								</h2>
+								<h2 id="templates-title">Layouts to build on</h2>
 							</div>
 							<p>
-								Working layouts for the work that matters. Explore the details, borrow the patterns,
-								and make them your own.
+								Explore working examples and adapt their components and layouts to your application.
 							</p>
 						</div>
 						<div className="landing-template-grid">
@@ -337,9 +359,9 @@ export function LandingContent({
 						<div className="landing-brand-intro">
 							<p className="landing-eyebrow">The Basalt mark</p>
 							<h2 id="brand-title">
-								Craft in
+								A design built
 								<br />
-								every layer.
+								in layers
 							</h2>
 							<p>
 								A familiar silhouette.
@@ -381,9 +403,9 @@ export function LandingContent({
 							<div>
 								<p className="landing-eyebrow">The details add up</p>
 								<h2 id="foundation-title">
-									Quiet by design.
+									One system, from
 									<br />
-									Capable by default.
+									controls to charts
 								</h2>
 							</div>
 							<p>
@@ -417,9 +439,9 @@ export function LandingContent({
 								<Code2 size={15} aria-hidden="true" /> From here, it’s yours
 							</p>
 							<h2 id="install-title">
-								Make something
+								Start building
 								<br />
-								worth using.
+								with Basalt
 							</h2>
 							<p>
 								Start with a component. Grow into a system.
@@ -464,7 +486,7 @@ export function LandingContent({
 					<section className="landing-faq landing-section" aria-labelledby="faq-title">
 						<div>
 							<p className="landing-eyebrow">A few useful answers</p>
-							<h2 id="faq-title">Before you begin.</h2>
+							<h2 id="faq-title">Before you begin</h2>
 							<a
 								href={SITE.github}
 								target="_blank"

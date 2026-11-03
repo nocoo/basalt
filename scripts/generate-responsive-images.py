@@ -59,6 +59,12 @@ for name in ["dashboard", "banking", "network"]:
             save(resized(master, width), f"landing/{name}-{mode}{suffix}.avif",
                  "template preview", source, AVIF)
 
+# The hero has a readable narrow-screen capture instead of a scaled desktop screenshot.
+for mode in ["light", "dark"]:
+    source = f"public/landing/dashboard-{mode}-mobile.webp"
+    mobile = Image.open(root / source).convert("RGB")
+    save(mobile, f"landing/dashboard-{mode}-mobile.avif", "mobile hero preview", source, AVIF)
+
 # Brand tower: 1280px RGBA master, displayed at ~320-560 CSS px below the fold. 600w covers a
 # typical phone (about 330 CSS px at 1.75x) without stepping up to 720w.
 tower_source = "public/landing/tower.webp"

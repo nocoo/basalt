@@ -81,16 +81,23 @@ describe("scene background preload", () => {
 });
 
 describe("hero preload", () => {
-	it("preloads only the hero AVIF set, one per color scheme", () => {
+	it("preloads the matching mobile or desktop hero AVIF for each color scheme", () => {
 		const links = heroPreloadLinks();
-		expect(links).toHaveLength(2);
+		expect(links).toHaveLength(4);
 		for (const link of links) {
 			expect(link).toContain('fetchpriority="high"');
 			expect(link).toContain('type="image/avif"');
-			expect(link).toContain(`imagesizes="${HERO_IMAGE_SIZES}"`);
 		}
-		expect(links[0]).toContain("dashboard-light-960.avif 960w");
-		expect(links[1]).toContain("dashboard-dark-960.avif 960w");
+		expect(links[0]).toContain("/landing/dashboard-light-mobile.avif");
+		expect(links[1]).toContain("dashboard-light-960.avif 960w");
+		expect(links[1]).toContain(`imagesizes="${HERO_IMAGE_SIZES}"`);
+		expect(links[2]).toContain("/landing/dashboard-dark-mobile.avif");
+		expect(links[3]).toContain("dashboard-dark-960.avif 960w");
+		for (const mode of ["light", "dark"]) {
+			for (const format of ["avif", "webp"]) {
+				expect(existsSync(publicFile(`/landing/dashboard-${mode}-mobile.${format}`))).toBe(true);
+			}
+		}
 	});
 
 	it("is injected once into the homepage document and stripped elsewhere", () => {

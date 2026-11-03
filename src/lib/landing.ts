@@ -1,11 +1,11 @@
 import { CATALOG, CATALOG_CATEGORIES } from "../pages/ui/catalog";
 import { SITE } from "./site";
 
-export const LANDING_HEADING_LINES = ["A calmer canvas", "for complex software."] as const;
+export const LANDING_HEADING_LINES = ["React components", "for complex interfaces"] as const;
 export const LANDING_HEADING = LANDING_HEADING_LINES.join(" ");
 export const LANDING_KICKER = "The matte React design system";
 export const LANDING_LEDE =
-	"Thoughtful components and complete dashboard layouts. Build information-rich products with a little less noise, and a lot more clarity.";
+	"Build dashboards and information-rich applications with matte components, charts, and ready-to-use example layouts.";
 export const LANDING_INSTALL = "npm i @nocoo/basalt lucide-react";
 
 export interface LandingLink {
@@ -75,19 +75,19 @@ export const LANDING_TEMPLATES = [
 
 export const LANDING_FACTS = [
 	{
-		title: "Every detail belongs.",
+		title: "Components that work together",
 		body: "Buttons, inputs, menus, and dialogs share the same spacing, shape, and interaction language. Less time reconciling the details.",
 		href: "/ui",
 		link: "Explore components",
 	},
 	{
-		title: "Give your data a voice.",
+		title: "Charts for clear data",
 		body: "From a quiet sparkline to a full analytics view. Charts and data patterns designed to make dense information easier to read.",
 		href: "/ui?category=chart",
 		link: "Explore charts",
 	},
 	{
-		title: "Depth without distraction.",
+		title: "Matte surfaces in both themes",
 		body: "Matte surfaces, measured contrast, and a palette that feels at home in light and dark. One system, with room to make it yours.",
 		href: "/palette",
 		link: "Explore the palette",

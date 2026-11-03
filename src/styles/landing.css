@@ -81,54 +81,20 @@
 	inset-inline: 0;
 	width: 100%;
 	padding-inline: var(--landing-gutter);
-	color: var(--landing-hero-ink);
+	color: hsl(var(--basalt-foreground));
 }
 .landing-header-inner {
-	position: relative;
-	isolation: isolate;
 	display: flex;
 	align-items: center;
 	width: 100%;
 	max-width: 81rem;
 	min-height: 4rem;
 	margin-inline: auto;
-	padding-inline: 1.375rem;
+	padding-inline: 1.5rem;
 	gap: 1rem;
-	border: 0.0625rem solid var(--basalt-scene-glass-480);
-	border-radius: 1.25rem;
-	background: var(--basalt-scene-glass-40);
-	box-shadow:
-		0 0.5rem 1.75rem var(--basalt-scene-header-shadow-light),
-		inset 0 0.0625rem 0 var(--basalt-scene-glass-650),
-		inset 0 -0.0625rem 0 var(--basalt-scene-glass-140);
-	-webkit-backdrop-filter: blur(1.125rem) saturate(1.35);
-	backdrop-filter: blur(1.125rem) saturate(1.35);
-}
-.landing-header-inner::before {
-	content: "";
-	position: absolute;
-	z-index: -1;
-	inset: 0;
-	border-radius: inherit;
-	background: linear-gradient(
-		115deg,
-		var(--basalt-scene-glass-160),
-		var(--basalt-scene-glass-20) 36%,
-		var(--basalt-scene-glass-40) 68%,
-		var(--basalt-scene-glass-100)
-	);
-	pointer-events: none;
-}
-.dark :where(.landing-header-inner) {
-	border-color: var(--basalt-scene-glass-200);
-	background: var(--basalt-scene-glass-25);
-	box-shadow:
-		0 0.5rem 1.75rem var(--basalt-scene-header-shadow-dark),
-		inset 0 0.0625rem 0 var(--basalt-scene-glass-260),
-		inset 0 -0.0625rem 0 var(--basalt-scene-glass-60);
-}
-.dark :where(.landing-header-inner)::before {
-	opacity: 0.4;
+	border: 0.0625rem solid hsl(var(--basalt-border));
+	border-radius: 1rem;
+	background: hsl(var(--basalt-card));
 }
 .landing-brand {
 	display: inline-flex;
@@ -156,7 +122,7 @@
 .landing-nav :where(a) {
 	font-size: var(--basalt-text-code);
 	font-weight: 500;
-	color: var(--landing-hero-ink);
+	color: hsl(var(--basalt-foreground));
 	text-underline-offset: 0.3125rem;
 }
 .landing-nav :where(a) {
@@ -168,7 +134,7 @@
 	text-decoration: underline;
 }
 .landing-header :where(.landing-brand) {
-	color: var(--landing-hero-ink);
+	color: hsl(var(--basalt-foreground));
 }
 .landing-header-actions {
 	display: flex;
@@ -181,10 +147,10 @@
 .landing-header-actions :where(button, .landing-github) {
 	border-radius: var(--basalt-radius-full);
 	background: transparent;
-	color: var(--landing-hero-ink);
+	color: hsl(var(--basalt-foreground));
 }
 .landing-header-actions :where(button:hover, .landing-github:hover) {
-	background: var(--basalt-scene-glass-180);
+	background: var(--basalt-hover);
 }
 /* Scene photography: WebP everywhere, AVIF (about half the bytes) where image-set types work. */
 .landing {
@@ -283,31 +249,16 @@
 .landing-eyebrow {
 	display: flex;
 	align-items: center;
-	gap: 0.5625rem;
+	gap: 0.5rem;
 	color: hsl(var(--basalt-muted-foreground));
 	font-family: var(--basalt-font-sans);
-	font-size: var(--basalt-text-xs);
-	font-weight: 600;
+	font-size: var(--basalt-text-sm);
+	font-weight: 500;
 	line-height: var(--basalt-leading-relaxed);
-	letter-spacing: 0.15em;
-	text-transform: uppercase;
 }
 .landing-hero-copy > :where(.landing-eyebrow) {
 	justify-content: center;
-	width: fit-content;
-	min-height: 1.625rem;
-	margin-inline: auto;
-	padding: 0.25rem 0.6875rem;
-	border: 0.0625rem solid var(--basalt-scene-glass-500);
-	border-radius: 1.25rem;
-	background: var(--basalt-scene-glass-320);
 	color: var(--landing-hero-ink);
-	-webkit-backdrop-filter: blur(0.75rem);
-	backdrop-filter: blur(0.75rem);
-}
-.dark :where(.landing-hero-copy) > :where(.landing-eyebrow) {
-	border-color: var(--basalt-scene-glass-160);
-	background: var(--basalt-scene-night-glass);
 }
 .landing-status-dot {
 	display: inline-block;
@@ -318,7 +269,7 @@
 	background: hsl(var(--basalt-primary));
 }
 .landing :where(h1) {
-	margin-top: 1.6875rem;
+	margin-top: 1.5rem;
 	font-size: clamp(2.75rem, 6.6vw, 5.875rem);
 	font-weight: 600;
 	line-height: 1.04;
@@ -332,7 +283,7 @@
 }
 .landing-lede {
 	max-width: 36.25rem;
-	margin: 1.5625rem auto 0;
+	margin: 1.5rem auto 0;
 	color: var(--landing-hero-muted);
 	font-size: var(--basalt-text-xl);
 	line-height: 1.75;
@@ -344,7 +295,7 @@
 	justify-content: center;
 	align-items: center;
 	gap: 0.75rem;
-	margin-top: 1.9375rem;
+	margin-top: 2rem;
 }
 .landing-button {
 	display: inline-flex;
@@ -382,21 +333,12 @@
 	background: hsl(var(--basalt-accent));
 }
 .landing-hero-actions :where(.landing-button-secondary) {
-	color: var(--landing-hero-ink);
-	background: var(--basalt-scene-glass-320);
-	border-color: var(--basalt-scene-glass-650);
-	-webkit-backdrop-filter: blur(0.5rem);
-	backdrop-filter: blur(0.5rem);
+	color: hsl(var(--basalt-foreground));
+	background: hsl(var(--basalt-card));
+	border-color: hsl(var(--basalt-border));
 }
 .landing-hero-actions :where(.landing-button-secondary:hover) {
-	background: var(--basalt-scene-glass-500);
-}
-.dark :where(.landing-hero-actions) :where(.landing-button-secondary) {
-	background: var(--basalt-scene-glass-80);
-	border-color: var(--basalt-scene-glass-220);
-}
-.dark :where(.landing-hero-actions) :where(.landing-button-secondary:hover) {
-	background: var(--basalt-scene-glass-160);
+	background: var(--basalt-hover);
 }
 .landing-hero-note {
 	display: flex;
@@ -497,7 +439,7 @@
 	align-items: flex-end;
 	justify-content: space-between;
 	gap: 3rem;
-	margin-bottom: 2.375rem;
+	margin-bottom: 2.5rem;
 }
 .landing-section-heading :where(h2) {
 	margin-top: 1rem;
@@ -548,7 +490,7 @@
 	flex: 1;
 	flex-direction: column;
 	align-items: flex-start;
-	padding: 1.3125rem 0 0;
+	padding: 1.25rem 0 0;
 }
 .landing-template :where(h3) {
 	display: flex;
@@ -556,13 +498,13 @@
 	justify-content: space-between;
 	gap: 0.75rem;
 	width: 100%;
-	margin-top: 0.5625rem;
+	margin-top: 0.5rem;
 }
 .landing-template :where(h3) :where(svg) {
 	color: hsl(var(--basalt-muted-foreground));
 }
 .landing-template :where(h3) + :where(p) {
-	margin-top: 0.5625rem;
+	margin-top: 0.5rem;
 	color: hsl(var(--basalt-muted-foreground));
 	font-size: var(--basalt-text-code);
 	line-height: 1.75;
@@ -583,7 +525,7 @@
 	text-underline-offset: 0.25rem;
 }
 .landing-template-copy :where(.landing-text-link) {
-	padding-top: 1.1875rem;
+	padding-top: 1.25rem;
 	margin-top: auto;
 }
 .landing-template-more {
@@ -591,8 +533,8 @@
 	justify-content: center;
 	flex-wrap: wrap;
 	gap: 0.75rem 1.625rem;
-	margin-top: 2.625rem;
-	padding-top: 1.5625rem;
+	margin-top: 2.5rem;
+	padding-top: 1.5rem;
 	border-top: 0.0625rem solid hsl(var(--basalt-border));
 	font-size: var(--basalt-text-xs);
 	color: hsl(var(--basalt-muted-foreground));
@@ -728,14 +670,6 @@
 	font-weight: 500;
 	letter-spacing: -0.04em;
 }
-.landing-sample-metric :where(small) {
-	display: block;
-	margin-top: 0.3125rem;
-	color: hsl(var(--basalt-primary));
-	font-family: var(--basalt-font-sans);
-	font-size: var(--basalt-text-xs);
-	letter-spacing: normal;
-}
 .landing-sample-bars {
 	display: flex;
 	align-items: flex-end;
@@ -748,9 +682,6 @@
 	flex: 1;
 	background: hsl(var(--basalt-chart-1));
 	border-radius: 0.1875rem 0.1875rem 0 0;
-}
-.landing-sample-bars :where(span:nth-child(3n)) {
-	opacity: 0.55;
 }
 .landing-surface-sample {
 	display: flex;
@@ -999,8 +930,6 @@
 .landing-brand-material {
 	font-size: var(--basalt-text-xs);
 	font-weight: 500;
-	letter-spacing: 0.12em;
-	text-transform: uppercase;
 	color: var(--landing-brand-ink);
 }
 .landing-brand-details > :where(p) {
@@ -1060,45 +989,7 @@
 	height: auto;
 	transform: rotateX(var(--tower-pitch, 0deg)) rotateY(var(--tower-yaw, 0deg)) translateZ(1.125rem);
 	transition: transform var(--basalt-motion-normal) var(--basalt-motion-ease);
-	filter: drop-shadow(0 1rem 1.5rem var(--basalt-scene-aura-blue-light));
 	user-select: none;
-}
-.dark :where(.landing-brand-mark) {
-	filter: drop-shadow(0 1rem 1.75rem var(--basalt-scene-aura-blue-dark));
-}
-.landing-brand-glow {
-	position: absolute;
-	inset: 4% -8% -7%;
-	border-radius: var(--basalt-radius-full);
-	background:
-		radial-gradient(ellipse at 30% 40%, var(--basalt-scene-aura-sky), transparent 62%),
-		radial-gradient(ellipse at 74% 62%, var(--basalt-scene-aura-pink), transparent 58%),
-		radial-gradient(ellipse at 45% 82%, var(--basalt-scene-aura-green), transparent 54%);
-	filter: blur(1.5rem);
-	transform: translate(var(--tower-glow-x, 0), var(--tower-glow-y, 0));
-	transition: transform var(--basalt-motion-normal) var(--basalt-motion-ease);
-	pointer-events: none;
-}
-.dark :where(.landing-brand-glow) {
-	opacity: 0.52;
-}
-.landing-brand-orbit {
-	position: absolute;
-	bottom: -5%;
-	left: -7%;
-	width: 114%;
-	height: 27%;
-	border: 0.0625rem solid var(--basalt-scene-aura-edge);
-	border-radius: var(--basalt-radius-full);
-	transform: rotate(-12deg);
-	pointer-events: none;
-}
-.landing-brand-orbit::after {
-	content: "";
-	position: absolute;
-	inset: 12%;
-	border: 0.0625rem solid var(--basalt-scene-aura-pink-edge);
-	border-radius: var(--basalt-radius-full);
 }
 .landing-brand-controls {
 	position: absolute;
@@ -1566,10 +1457,6 @@
 		font-size: var(--basalt-text-base);
 		line-height: 1.85;
 	}
-	.landing-eyebrow {
-		font-size: var(--basalt-text-xs);
-		letter-spacing: 0.12em;
-	}
 	.landing-hero-actions {
 		gap: 0.5625rem;
 		margin-top: 1.625rem;
@@ -1584,6 +1471,13 @@
 	}
 	.landing-hero-note span + span::before {
 		margin-inline: 0.5625rem;
+	}
+	.landing-preview :where(picture) {
+		aspect-ratio: 13 / 14;
+	}
+	.landing-preview :where(img) {
+		height: 100%;
+		object-fit: cover;
 	}
 	.landing-preview :where(figcaption) {
 		font-size: var(--basalt-text-xs);
@@ -1668,8 +1562,7 @@
 	.landing-brand-artwork[data-motion] :where(.landing-brand-float) {
 		animation: none;
 	}
-	.landing-brand-mark,
-	.landing-brand-glow {
+	.landing-brand-mark {
 		transform: none;
 	}
 	.landing-brand-controls {

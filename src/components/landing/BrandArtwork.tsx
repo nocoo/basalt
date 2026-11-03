@@ -10,8 +10,6 @@ interface BrandArtworkProps extends HTMLAttributes<HTMLDivElement> {
 export function BrandArtwork({ artworkRef, controls, ...props }: BrandArtworkProps) {
 	return (
 		<div ref={artworkRef} className="landing-brand-artwork" {...props}>
-			<div className="landing-brand-orbit" aria-hidden="true" />
-			<div className="landing-brand-glow" aria-hidden="true" />
 			<div className="landing-brand-float">
 				<picture>
 					<source type="image/avif" srcSet={towerSrcSet("avif")} sizes={TOWER_IMAGE_SIZES} />

@@ -114,6 +114,13 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 					)
 				);
 			}, dark);
+			const image = await page.locator(".landing-preview img").evaluate((node) => ({
+				src: (node as HTMLImageElement).currentSrc,
+				width: (node as HTMLImageElement).naturalWidth,
+				height: (node as HTMLImageElement).naturalHeight,
+			}));
+			assert.equal(image.src.includes("-mobile."), width <= 480, JSON.stringify(image));
+			assert.equal(image.height > image.width, width <= 480, JSON.stringify(image));
 			await assertFocusPaint(
 				page.locator(".landing-header-actions").getByRole("button", { name: /Toggle theme/ }),
 				16,
