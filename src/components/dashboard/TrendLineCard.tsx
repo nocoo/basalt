@@ -16,18 +16,22 @@ const DATA = [
 
 export function TrendLineCard() {
 	const { t } = useTranslation();
+	const latest = formatUsd(DATA[DATA.length - 1].y);
 	return (
 		<StatCard
 			title={t("dashboard.spendingTrend")}
-			value="$3,420"
+			value={latest}
 			icon={Activity}
-			trend={{ value: -1.8 }}
+			trend={{ value: -1.8, label: t("dashboard.comparisonPeriodUnknown") }}
 		>
 			<div className="space-y-basalt-card-sm">
 				<LineChart
-					data={DATA}
+					data={DATA.map((row) => ({
+						...row,
+						x: t(`dashboard.weekdays.${row.x.toLowerCase()}`),
+					}))}
 					series={[{ key: "y", label: t("dashboard.spendingTrend") }]}
-					ariaLabel={t("dashboard.spendingTrendAria")}
+					ariaLabel={t("dashboard.spendingTrendAria", { latest })}
 					className="h-basalt-16 w-full"
 					valueFormatter={formatUsd}
 				/>

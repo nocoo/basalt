@@ -4,11 +4,31 @@ import { ArrowDownLeft, ArrowLeftRight, ArrowUpRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const transactions = [
-	{ name: "Sleep coaching", amount: -15.99, date: "Today", type: "expense" },
-	{ name: "Employer wellness benefit", amount: 5200.0, date: "Yesterday", type: "income" },
-	{ name: "Nutrition consult", amount: -82.4, date: "Yesterday", type: "expense" },
-	{ name: "Therapy reimbursement", amount: 1200.0, date: "Feb 8", type: "income" },
-	{ name: "Lab testing", amount: -145.0, date: "Feb 7", type: "expense" },
+	{ nameKey: "dashboard.activitySleep", amount: -15.99, dateKey: "common.today", type: "expense" },
+	{
+		nameKey: "dashboard.activityBenefit",
+		amount: 5200.0,
+		dateKey: "dashboard.activityYesterday",
+		type: "income",
+	},
+	{
+		nameKey: "dashboard.activityNutrition",
+		amount: -82.4,
+		dateKey: "dashboard.activityYesterday",
+		type: "expense",
+	},
+	{
+		nameKey: "dashboard.activityTherapy",
+		amount: 1200.0,
+		dateKey: "dashboard.activityFeb8",
+		type: "income",
+	},
+	{
+		nameKey: "dashboard.activityLab",
+		amount: -145.0,
+		dateKey: "dashboard.activityFeb7",
+		type: "expense",
+	},
 ];
 
 export function RecentListCard() {
@@ -40,8 +60,8 @@ export function RecentListCard() {
 								)}
 							</div>
 							<div className="flex-1 min-w-0">
-								<p className="text-basalt-base text-foreground truncate">{tx.name}</p>
-								<p className="text-basalt-sm text-muted-foreground">{tx.date}</p>
+								<p className="text-basalt-base text-foreground truncate">{t(tx.nameKey)}</p>
+								<p className="text-basalt-sm text-muted-foreground">{t(tx.dateKey)}</p>
 							</div>
 							<span
 								className={`text-basalt-base font-medium ${tx.amount > 0 ? "text-basalt-success" : "text-basalt-foreground"}`}

@@ -31,7 +31,9 @@ describe("dashboard metric compositions", () => {
 			}
 			expect(screen.getByText("$8,800")).toBeInTheDocument();
 			expect(screen.getByText("$4,500")).toBeInTheDocument();
-			expect(screen.getByText("$3,420")).toBeInTheDocument();
+			expect(screen.getByText("$4,300")).toBeInTheDocument();
+			expect(screen.getByText("+3.2%")).toBeInTheDocument();
+			expect(screen.getByText(i18n.t("dashboard.comparisonPeriodUnknown"))).toBeInTheDocument();
 			expect(screen.getByText(i18n.t("dashboard.balancePeriod"))).toBeInTheDocument();
 			expect(screen.getByText(i18n.t("dashboard.incomePeriod"))).toBeInTheDocument();
 			expect(

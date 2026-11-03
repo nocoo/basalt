@@ -174,10 +174,15 @@ export const goals: Goal[] = [
 
 // ── Analytics ──
 export const analyticsStats = [
-	{ label: "Avg. daily care spend", value: "$142", change: "-3.2%" },
-	{ label: "Care touchpoints/day", value: "8.4", change: "+1.5%" },
-	{ label: "Care Plan Rate", value: "24%", change: "+2.1%" },
-	{ label: "Top health focus", value: "Nutrition", change: "35%" },
+	{ labelKey: "dashboard.metricDailySpend", value: "$142", valueKey: null, change: "-3.2%" },
+	{ labelKey: "dashboard.metricTouchpoints", value: "8.4", valueKey: null, change: "+1.5%" },
+	{ labelKey: "dashboard.metricPlanRate", value: "24%", valueKey: null, change: "+2.1%" },
+	{
+		labelKey: "dashboard.metricTopFocus",
+		value: "Nutrition",
+		valueKey: "dashboard.categoryNutrition",
+		change: "35%",
+	},
 ];
 
 // ── Care Funding Flow ──

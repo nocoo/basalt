@@ -97,5 +97,31 @@ export async function assertMetricCards(page: Page, baseUrl: string) {
 		const box = await chart.boundingBox();
 		assert.ok(box && Math.abs(box.height - 64) < 1);
 	}
+	for (const { width, rootFont, columns } of [
+		{ width: 320, rootFont: 16, columns: 1 },
+		{ width: 390, rootFont: 16, columns: 2 },
+		{ width: 390, rootFont: 32, columns: 1 },
+		{ width: 1440, rootFont: 16, columns: 4 },
+	]) {
+		await page.setViewportSize({ width, height: 900 });
+		await page.goto(`${baseUrl}/dashboard`);
+		await page.addStyleTag({ content: `html { font-size: ${rootFont}px }` });
+		const cards = page.locator('[data-showcase-page] [data-slot="stat-card"]').filter({
+			has: page.locator('[data-slot="stat-card-value"]'),
+		});
+		await cards.first().waitFor();
+		const boxes = await Promise.all(
+			(await cards.all()).slice(0, 4).map((card) => card.boundingBox()),
+		);
+		assert.ok(
+			boxes.every((box) => box),
+			JSON.stringify(boxes),
+		);
+		assert.equal(new Set(boxes.map((box) => Math.round(box?.x ?? 0))).size, columns);
+		const overflow = await page
+			.locator("[data-doc-scroll]")
+			.evaluate((node) => Math.max(0, node.scrollWidth - node.clientWidth));
+		assert.ok(overflow <= 1, `dashboard overflows by ${overflow}px at ${width}/${rootFont}`);
+	}
 	return { widths: [390, 1280], rootFonts: [16, 32], cssEntrypoints: 2, dashboardTrends: 3 };
 }

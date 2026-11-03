@@ -8,8 +8,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 16058,
-			"sha256": "be856e4095e3c249ccb31f907c684eda1c392b88b0ef903bac67f8a708158ce8",
+			"bytes": 16752,
+			"sha256": "2ec33494cf8c09028a0d373b01799c5a39f6c4dbe4d10530957cd67747db2eab",
 			"pillow": "11.3.0"
 		},
 		{
@@ -18,8 +18,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 28526,
-			"sha256": "00c5dcac71156da04a4eacdc6145620e3fe436d82c4405a8262e32463044026f",
+			"bytes": 29940,
+			"sha256": "6c701e0b1ddd67955d299e6a612c59b402725534b4ac060848e0b2dbf9649e23",
 			"pillow": "11.3.0"
 		},
 		{
@@ -28,8 +28,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 57338,
-			"sha256": "2a1d80582f322e2e6bcd78355c542dcce1cb12d6a14a7e0d1b75c27b22d51ecd",
+			"bytes": 59348,
+			"sha256": "4fd7123236e21a832d2b9376cb91205330985bc2ecbea6db4629716e78eca741",
 			"pillow": "11.3.0"
 		},
 		{
@@ -38,8 +38,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 10468,
-			"sha256": "64275a88d6bfbe2309321e5222148be041127670ab10393b675dd58853c8ac99",
+			"bytes": 10949,
+			"sha256": "ee10d26ed72257b93fbab9cca96e86c4b4a1767ae38f45b17ae6c39b8583fe48",
 			"pillow": "11.3.0"
 		},
 		{
@@ -48,8 +48,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 19910,
-			"sha256": "867cc23046dea8d82a8ec41b78908d24095753a74034f57a07a265b0ed7136ec",
+			"bytes": 20961,
+			"sha256": "fa63896d4ecaf8d483fc21ee3dd0b8814a5e0f4cf144a08b8844f010a31933f3",
 			"pillow": "11.3.0"
 		},
 		{
@@ -58,8 +58,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 26972,
-			"sha256": "0d8a2a2716b4f8ec8b6c92efc22bd1aff6b74b4334af1b1a462a3a38079fd413",
+			"bytes": 28190,
+			"sha256": "eb2ff9a293f9a9ea1772ab8c592e2e4f70c752a0d6e9a7192f08527df60dc67e",
 			"pillow": "11.3.0"
 		},
 		{
@@ -68,8 +68,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 42040,
-			"sha256": "e6eaa2f8d146e7ec49e7254ba669ce657b8c02438a35893291a2c8a9daf788f8",
+			"bytes": 44393,
+			"sha256": "6c593d7641d767ac4a76f0ddb331a77813037fbba6c0e18731764de0a935d5bc",
 			"pillow": "11.3.0"
 		},
 		{
@@ -78,8 +78,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 89972,
-			"sha256": "50a989f6462ffe17d278ad8931e94293b52a8a67add35251785f0e4fe8030a6b",
+			"bytes": 95225,
+			"sha256": "6e135ad50f7fc8fd51f15d29dc9bd05060a118ddc6fbc97a85297377bedbd429",
 			"pillow": "11.3.0"
 		},
 		{
@@ -88,8 +88,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 15736,
-			"sha256": "b703622218467881767a1827aaa14b46224a717327a77cadb7b6af4b3b1bd2b2",
+			"bytes": 16438,
+			"sha256": "d8d8b1aa7ab2285600e5163e6597828a2f9a5c10731857137583501910bd5894",
 			"pillow": "11.3.0"
 		},
 		{
@@ -98,8 +98,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 27802,
-			"sha256": "c21d39f0eeca9b2fe119ca20b7765b514e752e8c4061bebae74c23c6a95d2df7",
+			"bytes": 29020,
+			"sha256": "64f38bb619891cd77cb79b779037a881188fd22ef6316463e82785d93d42d405",
 			"pillow": "11.3.0"
 		},
 		{
@@ -108,8 +108,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 54728,
-			"sha256": "0e458afcebdc6f9db84ada2b2e3a4bfeb11d483766cb54c45eddbb1ff5555fbf",
+			"bytes": 57722,
+			"sha256": "1cb72278df4cb07fcd727f87050d16964955b2115a3016e4aacfb7570fc29cea",
 			"pillow": "11.3.0"
 		},
 		{
@@ -118,8 +118,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 10928,
-			"sha256": "1049748f1ec18275cc19afe834ad0e83af99a933cc54686feae28b7ba520e518",
+			"bytes": 11280,
+			"sha256": "30fba7c760c367e71637c52570362cc93c66c6315624f6941a8d8f1c235319e1",
 			"pillow": "11.3.0"
 		},
 		{
@@ -128,8 +128,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 19725,
-			"sha256": "9ea027c0084aad584974c547fb39b1807305f925d4c17b90ed000ac56bfe78e0",
+			"bytes": 20702,
+			"sha256": "e1221ca18ca4a71bdc28aaef206c74bf84bca11ff313223ab384e8361032fecc",
 			"pillow": "11.3.0"
 		},
 		{
@@ -138,8 +138,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 26804,
-			"sha256": "b881f6c238e8f6fa36ad4b86ffaaa860d03e3c07f1d1c3e08304dcb0e784e6ae",
+			"bytes": 28320,
+			"sha256": "f6d993f8048fff2b36c445efbf1190f009906e1b706a61c3f9abf1403e8340c9",
 			"pillow": "11.3.0"
 		},
 		{
@@ -148,8 +148,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 37139,
-			"sha256": "bdf5683a25151fbc798ae98e0bf31b2e804b788f7b8bccfbd5fc21af4090f780",
+			"bytes": 39145,
+			"sha256": "f6fed5150bbbbb65350fb686b3222b35aaed8afa6e670e4190d90ab9277a1db3",
 			"pillow": "11.3.0"
 		},
 		{
@@ -158,8 +158,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 69715,
-			"sha256": "154c647b09ba63462fbef416491bc16c2234a646fd443cc5c8a28ac251d06ce9",
+			"bytes": 73033,
+			"sha256": "4b4617f95e27ec3ac5f30e9a32fba7696c2b06abe26b615db1722edb94bcf2e1",
 			"pillow": "11.3.0"
 		},
 		{
@@ -659,8 +659,8 @@
 			"source": "public/landing/dashboard-light-mobile.webp",
 			"width": 780,
 			"height": 840,
-			"bytes": 14817,
-			"sha256": "4fed923ff86ab218db1f49766780d5ef993a4184171612637ac06f656c0a201f",
+			"bytes": 21230,
+			"sha256": "6d650948aae1ae4c862b5985ca8461ad302e69910f0f97a81f6a7c4a0da436a8",
 			"pillow": "11.3.0"
 		},
 		{
@@ -669,8 +669,8 @@
 			"source": "public/landing/dashboard-dark-mobile.webp",
 			"width": 780,
 			"height": 840,
-			"bytes": 10871,
-			"sha256": "76b1ebfd0e7a9e733ce525f572e3a950b98b8d149301c380e18aa8099495ec5d",
+			"bytes": 15453,
+			"sha256": "fc0818e99f9604b4fe8a6db074cce918c727c39dff5123b48063e3fa710ac80d",
 			"pillow": "11.3.0"
 		}
 	]

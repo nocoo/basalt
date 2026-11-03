@@ -29,7 +29,11 @@ export function AreaChartCard() {
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
 				<AreaChart
-					data={data.map((row) => ({ x: row.day, y: row.income, y2: row.expense }))}
+					data={data.map((row) => ({
+						x: t(`dashboard.weekdays.${row.day.toLowerCase()}`),
+						y: row.income,
+						y2: row.expense,
+					}))}
 					series={[
 						{ key: "y", label: t("dashboard.income") },
 						{ key: "y2", label: t("dashboard.expense") },

@@ -5,15 +5,20 @@ import { useTranslation } from "react-i18next";
 import { formatPercent } from "@/lib/format";
 import { CHART_COLORS } from "@/lib/palette";
 
-const data = [
-	{ name: "Nutrition", value: 35 },
-	{ name: "Mobility", value: 20 },
-	{ name: "Medical supplies", value: 25 },
-	{ name: "Lab services", value: 20 },
-].map((d, i) => ({ ...d, fill: CHART_COLORS[i] }));
+const categories = [
+	{ nameKey: "dashboard.categoryNutrition", value: 35 },
+	{ nameKey: "dashboard.categoryMobility", value: 20 },
+	{ nameKey: "dashboard.categorySupplies", value: 25 },
+	{ nameKey: "dashboard.categoryLab", value: 20 },
+];
 
 export function DonutChartCard() {
 	const { t } = useTranslation();
+	const data = categories.map((item, index) => ({
+		name: t(item.nameKey),
+		value: item.value,
+		fill: CHART_COLORS[index],
+	}));
 
 	return (
 		<LayerCard className="flex flex-col h-full">

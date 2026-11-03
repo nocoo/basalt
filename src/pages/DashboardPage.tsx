@@ -22,13 +22,22 @@ export default function DashboardPage() {
 	return (
 		<ShowcasePage title={t("pages.dashboard.title")} description={t("pages.dashboard.description")}>
 			{/* Row 0: analytics stat cards */}
-			<StatGrid>
+			<StatGrid className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
 				{stats.map((s) => (
 					<StatCard
 						key={s.label}
 						label={s.label}
 						value={s.value}
-						trendContent={<span className={`font-medium ${s.changeColorClass}`}>{s.change}</span>}
+						trendContent={
+							<>
+								<span className={`font-medium ${s.changeColorClass}`}>{s.change}</span>
+								{(s.change.startsWith("+") || s.change.startsWith("-")) && (
+									<span className="text-basalt-muted-foreground">
+										{t("dashboard.comparisonPeriodUnknown")}
+									</span>
+								)}
+							</>
+						}
 					/>
 				))}
 			</StatGrid>
@@ -69,7 +78,7 @@ export default function DashboardPage() {
 
 			{/* Row 5: quick actions + accounts */}
 			<div className="grid grid-cols-1 gap-basalt-layout md:grid-cols-2 lg:grid-cols-3">
-				<ActionGridCard />
+				<ActionGridCard demo />
 				<ItemListCard />
 			</div>
 		</ShowcasePage>

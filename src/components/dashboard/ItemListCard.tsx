@@ -3,9 +3,9 @@ import { Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
 const accountItems = [
-	{ name: "Primary Care", balance: 12450.8, change: "+2.4%" },
-	{ name: "Care Plan", balance: 8200.0, change: "+5.1%" },
-	{ name: "Wellness Reserve", balance: 23100.5, change: "+8.7%" },
+	{ nameKey: "dashboard.accountPrimary", balance: 12450.8, change: "+2.4%" },
+	{ nameKey: "dashboard.accountPlan", balance: 8200.0, change: "+5.1%" },
+	{ nameKey: "dashboard.accountReserve", balance: 23100.5, change: "+8.7%" },
 ];
 
 export function ItemListCard() {
@@ -23,11 +23,14 @@ export function ItemListCard() {
 			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
 				<div className="flex flex-1 flex-col gap-basalt-card-sm">
 					{accountItems.map((acc) => (
-						<div key={acc.name} className="flex items-center justify-between">
-							<span className="text-basalt-base text-foreground">{acc.name}</span>
+						<div
+							key={acc.nameKey}
+							className="flex items-center justify-between gap-basalt-space-lg"
+						>
+							<span className="text-basalt-base text-foreground">{t(acc.nameKey)}</span>
 							<div className="text-right">
 								<span className="text-basalt-base font-medium text-foreground font-display">
-									${acc.balance.toLocaleString()}
+									{acc.balance.toLocaleString("en-US", { style: "currency", currency: "USD" })}
 								</span>
 								<span className="text-basalt-sm text-basalt-success ml-basalt-space-lg">
 									{acc.change}
@@ -35,6 +38,9 @@ export function ItemListCard() {
 							</div>
 						</div>
 					))}
+					<p className="text-basalt-sm text-basalt-muted-foreground">
+						{t("dashboard.listComparisonUnknown")}
+					</p>
 				</div>
 			</LayerCard.Body>
 		</LayerCard>

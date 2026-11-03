@@ -10,16 +10,19 @@ const DATA = MONTHS.map((x, index) => ({ x, y: INCOME[index] }));
 
 export function SecondaryMetricCard() {
 	const { t } = useTranslation();
+	const current = INCOME[INCOME.length - 1];
+	const previous = INCOME[INCOME.length - 2];
+	const change = Math.round(((current - previous) / previous) * 1000) / 10;
 	return (
 		<StatCard
 			title={t("dashboard.income")}
-			value="$4,500"
+			value={formatUsd(current)}
 			icon={TrendingUp}
-			trend={{ value: 2.4, label: t("common.vsLastMonth") }}
+			trend={{ value: change, label: t("common.vsLastMonth") }}
 		>
 			<div className="space-y-basalt-card-sm">
 				<BarChart
-					data={DATA}
+					data={DATA.map((row) => ({ ...row, x: t(`dashboard.months.${row.x.toLowerCase()}`) }))}
 					series={[{ key: "y", label: t("dashboard.income") }]}
 					ariaLabel={t("dashboard.incomeAria")}
 					className="h-basalt-16 w-full"

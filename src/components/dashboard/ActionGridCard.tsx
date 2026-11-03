@@ -3,7 +3,7 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { ArrowDownLeft, ArrowUpRight, CreditCard, PiggyBank, Zap } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
-export function ActionGridCard() {
+export function ActionGridCard({ demo = false }: { demo?: boolean }) {
 	const { t } = useTranslation();
 
 	const actions = [
@@ -39,10 +39,21 @@ export function ActionGridCard() {
 					</h2>
 				</div>
 			</LayerCard.Header>
-			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
+			<LayerCard.Body className="min-h-0 flex-1 flex flex-col gap-basalt-card-sm">
+				{demo && (
+					<p className="text-basalt-sm text-basalt-muted-foreground">
+						{t("dashboard.demoActions")}
+					</p>
+				)}
 				<div className="flex-1 grid grid-cols-2 gap-basalt-card">
 					{actions.map((action) => (
-						<Button variant="secondary" type="button" key={action.label} className="flex-col">
+						<Button
+							variant="secondary"
+							type="button"
+							key={action.label}
+							className="flex-col"
+							disabled={demo}
+						>
 							<div
 								className={`flex h-9 w-9 items-center justify-center rounded-basalt-md ${action.color}`}
 							>

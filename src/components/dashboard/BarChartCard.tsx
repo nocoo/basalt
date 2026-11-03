@@ -21,6 +21,7 @@ const data = [
 
 export function BarChartCard() {
 	const { t } = useTranslation();
+	const total = formatUsd(data.reduce((sum, row) => sum + row.value, 0));
 
 	return (
 		<LayerCard className="flex flex-col h-full">
@@ -33,7 +34,7 @@ export function BarChartCard() {
 				</div>
 				<div className="flex items-baseline gap-basalt-space-lg">
 					<p className="text-basalt-3xl font-semibold text-foreground font-display tracking-tight">
-						$15,200
+						{total}
 					</p>
 					<span className="text-basalt-base text-muted-foreground">
 						{t("dashboard.totalTransactions")}
@@ -42,9 +43,12 @@ export function BarChartCard() {
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex flex-col">
 				<BarChart
-					data={data.map((row) => ({ x: row.name, y: row.value }))}
+					data={data.map((row) => ({
+						x: t(`dashboard.months.${row.name.toLowerCase()}`),
+						y: row.value,
+					}))}
 					series={[{ key: "y", label: t("dashboard.spend") }]}
-					ariaLabel={t("dashboard.usageCategoryAria")}
+					ariaLabel={t("dashboard.usageCategoryAria", { total })}
 					className="min-h-[12.5rem] w-full flex-1"
 					showAxes
 					valueFormatter={formatUsd}
