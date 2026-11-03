@@ -4,6 +4,17 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-11: Date-picker tests depended on the calendar
+
+- **What:** The landing commit was blocked when two date-picker keyboard tests ran during their hard-coded November 2026 initial month.
+- **Why:** The tests expected the first day to receive focus, but an empty picker correctly focuses today when today is in the displayed month.
+- **Follow-up:** Freeze only `Date` outside that month for these tests; leave timers real and restore the clock after each test.
+
+## 2026-11: Landing documentation mirror became stale
+
+- **What:** The first typecheck after the landing update failed because `packages/basalt/ai/INTEGRATION.md` had not been synchronized with `INTEGRATION.md`.
+- **Follow-up:** Run `bun run catalog-api:generate` immediately after editing the integration guide, before running checks or staging.
+
 ## 2026-10: Design release missed generated API contract expectations
 
 - **What:** The first 3.2.0 feature commit was correctly blocked by three catalog API assertions after all metadata generators had run; the other 2199 tests passed.
