@@ -20,9 +20,9 @@ import { StackedAreaCard } from "@/components/dashboard/StackedAreaCard";
 import { ShowcasePage } from "@/components/ShowcasePage";
 
 const transfers = [
-	{ name: "Care fund transfer", amount: "$120k", direction: "in" },
-	{ name: "Treatment payment", amount: "$4.8k", direction: "out" },
-	{ name: "Insurance reimbursement", amount: "$3.6k", direction: "in" },
+	{ nameKey: "pages.banking.transferCareFund", amount: "$120k", direction: "in" },
+	{ nameKey: "pages.banking.transferTreatment", amount: "$4.8k", direction: "out" },
+	{ nameKey: "pages.banking.transferInsurance", amount: "$3.6k", direction: "in" },
 ];
 
 export default function BankingDashboardPage() {
@@ -60,8 +60,11 @@ export default function BankingDashboardPage() {
 	];
 
 	return (
-		<ShowcasePage title={t("pages.banking.title")} description={t("pages.banking.description")}>
-			<StatGrid columns={4}>
+		<ShowcasePage
+			title={t("pages.banking.title")}
+			description={`${t("pages.banking.description")} ${t("demo.analyticsData")}`}
+		>
+			<StatGrid columns={4} className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
 				{statCards.map((stat) => (
 					<StatCard key={stat.title} {...stat} />
 				))}
@@ -92,7 +95,7 @@ export default function BankingDashboardPage() {
 					<LayerCard.Body className="divide-y divide-basalt-border/60">
 						{transfers.map((item) => (
 							<div
-								key={item.name}
+								key={item.nameKey}
 								className="flex items-center justify-between gap-basalt-card py-basalt-card-sm first:pt-0 last:pb-0"
 							>
 								<div className="flex min-w-0 items-center gap-basalt-space-lg">
@@ -111,7 +114,7 @@ export default function BankingDashboardPage() {
 											/>
 										)}
 									</div>
-									<span className="text-basalt-base text-foreground">{item.name}</span>
+									<span className="text-basalt-base text-foreground">{t(item.nameKey)}</span>
 								</div>
 								<span className="text-basalt-base font-medium text-foreground">{item.amount}</span>
 							</div>

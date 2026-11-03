@@ -1,5 +1,6 @@
-import { renderHook } from "@testing-library/react";
+import { act, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
+import i18n from "@/i18n";
 import { useProgressTrackingViewModel } from "@/viewmodels/useProgressTrackingViewModel";
 
 describe("useProgressTrackingViewModel", () => {
@@ -21,6 +22,20 @@ describe("useProgressTrackingViewModel", () => {
 			expect(cat).toHaveProperty("progress");
 			expect(cat).toHaveProperty("color");
 			expect(cat.progress).toBeGreaterThanOrEqual(0);
+		}
+	});
+
+	it("updates budget categories when the language changes", async () => {
+		const previous = i18n.language;
+		const { result, unmount } = renderHook(() => useProgressTrackingViewModel());
+		try {
+			await act(async () => i18n.changeLanguage("zh"));
+			expect(result.current.categories[0].category).toBe("营养与餐饮");
+			await act(async () => i18n.changeLanguage("en"));
+			expect(result.current.categories[0].category).toBe("Nutrition & Dining");
+		} finally {
+			unmount();
+			await i18n.changeLanguage(previous);
 		}
 	});
 

@@ -8,6 +8,7 @@ export interface BarChartDataPoint {
 
 export interface BarChartWidgetProps {
 	data: BarChartDataPoint[];
+	ariaLabel: string;
 	height?: number;
 	color?: string;
 	valueFormatter?: (value: number) => string;
@@ -16,6 +17,7 @@ export interface BarChartWidgetProps {
 
 export function BarChartWidget({
 	data,
+	ariaLabel,
 	height = 200,
 	color,
 	valueFormatter,
@@ -25,7 +27,7 @@ export function BarChartWidget({
 		<div className={cn("w-full", className)} style={{ height }}>
 			<BarChart
 				data={data.map((point) => ({ x: point.label, y: point.value }))}
-				ariaLabel="Bar chart"
+				ariaLabel={ariaLabel}
 				showAxes
 				color={color}
 				valueFormatter={valueFormatter}

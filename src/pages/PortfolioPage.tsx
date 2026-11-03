@@ -22,8 +22,11 @@ export default function PortfolioPage() {
 	const { totalValue, holdings, performanceData } = usePortfolioViewModel();
 
 	return (
-		<ShowcasePage title={t("pages.portfolio.title")} description={t("pages.portfolio.description")}>
-			<div className="grid grid-cols-1 gap-basalt-layout md:gap-basalt-layout sm:grid-cols-3">
+		<ShowcasePage
+			title={t("pages.portfolio.title")}
+			description={`${t("pages.portfolio.description")} ${t("demo.analyticsData")}`}
+		>
+			<div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))] gap-basalt-layout sm:grid-cols-3">
 				<LayerCard>
 					<p className="text-basalt-sm md:text-basalt-base text-muted-foreground mb-basalt-space-sm">
 						{t("pages.portfolio.portfolioValue")}
@@ -63,13 +66,19 @@ export default function PortfolioPage() {
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<LineChart
-							data={performanceData.map((row) => ({ x: row.month, y: row.value }))}
+							data={performanceData.map((row) => ({
+								x: t(`dashboard.months.${row.month.toLowerCase()}`),
+								y: row.value,
+							}))}
 							series={[{ key: "y", label: t("pages.portfolio.value") }]}
 							ariaLabel={t("pages.portfolio.performanceAria")}
 							className="h-[11.25rem] w-full md:h-[12.5rem]"
 							showAxes
 							valueFormatter={formatUsd}
 						/>
+						<p className="text-basalt-sm text-basalt-muted-foreground">
+							{t("pages.portfolio.trendSampleNote")}
+						</p>
 					</LayerCard.Body>
 				</LayerCard>
 
@@ -119,54 +128,65 @@ export default function PortfolioPage() {
 					</h2>
 				</LayerCard.Header>
 				<LayerCard.Body>
-					<Table aria-label={t("pages.portfolio.holdings")}>
-						<TableHeader>
-							<TableRow>
-								<TableHead>{t("pages.portfolio.asset")}</TableHead>
-								<TableHead className="text-right">{t("pages.portfolio.value")}</TableHead>
-								<TableHead className="text-right">{t("pages.portfolio.change")}</TableHead>
-							</TableRow>
-						</TableHeader>
-						<TableBody>
-							{holdings.map((item, i) => (
-								<TableRow key={item.name}>
-									<TableCell>
-										<div className="flex items-center gap-basalt-space-lg">
-											<div
-												className="flex h-8 w-8 items-center justify-center rounded-basalt-md"
-												style={{ background: withAlpha(CHART_TOKENS[i], 0.12) }}
-											>
-												{item.up ? (
-													<TrendingUp
-														className="h-3.5 w-3.5"
-														style={{ color: CHART_COLORS[i] }}
-														strokeWidth={1.5}
-														aria-hidden="true"
-													/>
-												) : (
-													<TrendingDown
-														className="h-3.5 w-3.5"
-														style={{ color: CHART_COLORS[i] }}
-														strokeWidth={1.5}
-														aria-hidden="true"
-													/>
-												)}
-											</div>
-											{item.name}
-										</div>
-									</TableCell>
-									<TableCell className="text-right font-medium">
-										${item.value.toLocaleString()}
-									</TableCell>
-									<TableCell
-										className={`text-right ${item.up ? "text-basalt-success" : "text-basalt-destructive"}`}
-									>
-										{item.change}
-									</TableCell>
+					<div
+						role="region"
+						// biome-ignore lint/a11y/noNoninteractiveTabindex: Named overflow regions need keyboard scrolling.
+						tabIndex={0}
+						aria-label={t("pages.portfolio.holdingsScroll")}
+						className="overflow-x-auto basalt-focus basalt-focus-inset"
+					>
+						<Table aria-label={t("pages.portfolio.holdings")}>
+							<TableHeader>
+								<TableRow>
+									<TableHead>{t("pages.portfolio.asset")}</TableHead>
+									<TableHead className="text-right">{t("pages.portfolio.value")}</TableHead>
+									<TableHead className="text-right">{t("pages.portfolio.change")}</TableHead>
 								</TableRow>
-							))}
-						</TableBody>
-					</Table>
+							</TableHeader>
+							<TableBody>
+								{holdings.map((item, i) => (
+									<TableRow key={item.name}>
+										<TableCell>
+											<div className="flex items-center gap-basalt-space-lg">
+												<div
+													className="flex h-8 w-8 items-center justify-center rounded-basalt-md"
+													style={{ background: withAlpha(CHART_TOKENS[i], 0.12) }}
+												>
+													{item.up ? (
+														<TrendingUp
+															className="h-3.5 w-3.5"
+															style={{ color: CHART_COLORS[i] }}
+															strokeWidth={1.5}
+															aria-hidden="true"
+														/>
+													) : (
+														<TrendingDown
+															className="h-3.5 w-3.5"
+															style={{ color: CHART_COLORS[i] }}
+															strokeWidth={1.5}
+															aria-hidden="true"
+														/>
+													)}
+												</div>
+												{item.name}
+											</div>
+										</TableCell>
+										<TableCell className="text-right font-medium">
+											${item.value.toLocaleString()}
+										</TableCell>
+										<TableCell
+											className={`text-right ${item.up ? "text-basalt-success" : "text-basalt-destructive"}`}
+										>
+											{item.change}
+										</TableCell>
+									</TableRow>
+								))}
+							</TableBody>
+						</Table>
+					</div>
+					<p className="mt-basalt-card-sm text-basalt-sm text-basalt-muted-foreground">
+						{t("dashboard.listComparisonUnknown")}
+					</p>
 				</LayerCard.Body>
 			</LayerCard>
 		</ShowcasePage>

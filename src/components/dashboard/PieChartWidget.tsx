@@ -8,6 +8,7 @@ export interface PieChartDataPoint {
 
 export interface PieChartWidgetProps {
 	data: PieChartDataPoint[];
+	ariaLabel: string;
 	height?: number;
 	showLegend?: boolean;
 	valueFormatter?: (value: number) => string;
@@ -16,6 +17,7 @@ export interface PieChartWidgetProps {
 
 export function PieChartWidget({
 	data,
+	ariaLabel,
 	height = 200,
 	showLegend,
 	valueFormatter,
@@ -25,7 +27,7 @@ export function PieChartWidget({
 		<div className={cn("w-full", className)} style={{ height }}>
 			<DonutChart
 				data={data.map((point) => ({ name: point.label, value: point.value }))}
-				ariaLabel="Donut chart"
+				ariaLabel={ariaLabel}
 				showLegend={showLegend}
 				valueFormatter={valueFormatter}
 				className="h-full w-full"

@@ -15,9 +15,9 @@ export default function FlowComparisonPage() {
 	return (
 		<ShowcasePage
 			title={t("pages.flowComparison.title")}
-			description={t("pages.flowComparison.description")}
+			description={`${t("pages.flowComparison.description")} ${t("demo.analyticsData")}`}
 		>
-			<StatGrid columns={3}>
+			<StatGrid columns={3} className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
 				<StatCard
 					title={t("pages.flowComparison.totalInflow")}
 					value={`$${summary.totalInflow.toLocaleString()}`}
@@ -41,7 +41,11 @@ export default function FlowComparisonPage() {
 				</LayerCard.Header>
 				<LayerCard.Body>
 					<AreaChart
-						data={flowData.map((row) => ({ x: row.month, y: row.inflow, y2: row.outflow }))}
+						data={flowData.map((row) => ({
+							x: t(`dashboard.months.${row.month.toLowerCase()}`),
+							y: row.inflow,
+							y2: row.outflow,
+						}))}
 						series={[
 							{ key: "y", label: t("pages.flowComparison.inflow") },
 							{ key: "y2", label: t("pages.flowComparison.outflow") },
@@ -64,7 +68,10 @@ export default function FlowComparisonPage() {
 				</LayerCard.Header>
 				<LayerCard.Body>
 					<BarChart
-						data={netFlowData.map((row) => ({ x: row.month, y: row.net }))}
+						data={netFlowData.map((row) => ({
+							x: t(`dashboard.months.${row.month.toLowerCase()}`),
+							y: row.net,
+						}))}
 						series={[{ key: "y", label: t("pages.flowComparison.net") }]}
 						ariaLabel={t("pages.flowComparison.netCashFlowByMonthAria")}
 						className="h-[10rem] w-full md:h-[11.25rem]"

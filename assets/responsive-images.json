@@ -8,8 +8,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 16752,
-			"sha256": "2ec33494cf8c09028a0d373b01799c5a39f6c4dbe4d10530957cd67747db2eab",
+			"bytes": 16580,
+			"sha256": "48c5b4eb76d0d1ab687bca1ede944a073663c6cb825558e1c6917b3a3a684b7f",
 			"pillow": "11.3.0"
 		},
 		{
@@ -18,8 +18,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 29940,
-			"sha256": "6c701e0b1ddd67955d299e6a612c59b402725534b4ac060848e0b2dbf9649e23",
+			"bytes": 30384,
+			"sha256": "8b66851b9f043ddd4129b8e8cfa9ab40e3e45d4db1a4da2b147db19f03cda761",
 			"pillow": "11.3.0"
 		},
 		{
@@ -28,8 +28,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 59348,
-			"sha256": "4fd7123236e21a832d2b9376cb91205330985bc2ecbea6db4629716e78eca741",
+			"bytes": 60174,
+			"sha256": "af0e423cc8c2782407c4f40f3b8f60606fec44bbf39c3abebd55bbb26ee74693",
 			"pillow": "11.3.0"
 		},
 		{
@@ -38,8 +38,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 10949,
-			"sha256": "ee10d26ed72257b93fbab9cca96e86c4b4a1767ae38f45b17ae6c39b8583fe48",
+			"bytes": 11254,
+			"sha256": "4637d0cf62c58ac3b7c5bdbd6d6d88eaaacb6833f0bd0a799dc4956e29d5cbce",
 			"pillow": "11.3.0"
 		},
 		{
@@ -48,8 +48,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 20961,
-			"sha256": "fa63896d4ecaf8d483fc21ee3dd0b8814a5e0f4cf144a08b8844f010a31933f3",
+			"bytes": 21090,
+			"sha256": "5254bbfe6a7d5dd726445fc746329eb5a1d43466c50408a0be786062a5fd1be1",
 			"pillow": "11.3.0"
 		},
 		{
@@ -58,8 +58,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 28190,
-			"sha256": "eb2ff9a293f9a9ea1772ab8c592e2e4f70c752a0d6e9a7192f08527df60dc67e",
+			"bytes": 31734,
+			"sha256": "d9e51222b76b2503b4ab87a8eb1c539f753dce22042e18e9412395721df11c8b",
 			"pillow": "11.3.0"
 		},
 		{
@@ -68,8 +68,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 44393,
-			"sha256": "6c593d7641d767ac4a76f0ddb331a77813037fbba6c0e18731764de0a935d5bc",
+			"bytes": 39767,
+			"sha256": "e871423961f0f896e371d52e0f15c143a6edb98da8f0a1fd6e654dbce061f3c3",
 			"pillow": "11.3.0"
 		},
 		{
@@ -78,8 +78,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 95225,
-			"sha256": "6e135ad50f7fc8fd51f15d29dc9bd05060a118ddc6fbc97a85297377bedbd429",
+			"bytes": 97260,
+			"sha256": "b44baa91cddc77182e5d532acb01ee00158fc92a7c8550f2c2f9e372b93f4cd1",
 			"pillow": "11.3.0"
 		},
 		{
@@ -88,8 +88,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 16438,
-			"sha256": "d8d8b1aa7ab2285600e5163e6597828a2f9a5c10731857137583501910bd5894",
+			"bytes": 16234,
+			"sha256": "8179a39f9869985ce78944c411a7e1399a64ca42838861aa57140a70038484bd",
 			"pillow": "11.3.0"
 		},
 		{
@@ -98,8 +98,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 29020,
-			"sha256": "64f38bb619891cd77cb79b779037a881188fd22ef6316463e82785d93d42d405",
+			"bytes": 29474,
+			"sha256": "71d8b633e76aee2c451a749b1a4e8bc6267acd9eaf82137a57a79d360c1efd96",
 			"pillow": "11.3.0"
 		},
 		{
@@ -108,8 +108,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 57722,
-			"sha256": "1cb72278df4cb07fcd727f87050d16964955b2115a3016e4aacfb7570fc29cea",
+			"bytes": 58658,
+			"sha256": "99231f138d3ebdbdcf34467c2f27f818e8fbcad380943c248ac66ea3e2c0477d",
 			"pillow": "11.3.0"
 		},
 		{
@@ -118,8 +118,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 11280,
-			"sha256": "30fba7c760c367e71637c52570362cc93c66c6315624f6941a8d8f1c235319e1",
+			"bytes": 11553,
+			"sha256": "046e5bc04bd78eb5f00a4ad6e986bea1b4e90813aabe8ce39b95b2e995f03c60",
 			"pillow": "11.3.0"
 		},
 		{
@@ -128,8 +128,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 20702,
-			"sha256": "e1221ca18ca4a71bdc28aaef206c74bf84bca11ff313223ab384e8361032fecc",
+			"bytes": 21163,
+			"sha256": "34dcff0c5cb580c6d4262c5bc508df5f0a0629f1284d56fad3b03d8e76ad81f6",
 			"pillow": "11.3.0"
 		},
 		{
@@ -138,8 +138,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 28320,
-			"sha256": "f6d993f8048fff2b36c445efbf1190f009906e1b706a61c3f9abf1403e8340c9",
+			"bytes": 28936,
+			"sha256": "44da0a069ae602e605e7a977fa553c35e1df4cbef3eb826ae1b3bbc793338e5c",
 			"pillow": "11.3.0"
 		},
 		{
@@ -148,8 +148,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 39145,
-			"sha256": "f6fed5150bbbbb65350fb686b3222b35aaed8afa6e670e4190d90ab9277a1db3",
+			"bytes": 39652,
+			"sha256": "c37a4bf9a11fee6f4f9049002511155cbe81551b43c14b3dcac1606f564e7ffd",
 			"pillow": "11.3.0"
 		},
 		{
@@ -158,8 +158,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 73033,
-			"sha256": "4b4617f95e27ec3ac5f30e9a32fba7696c2b06abe26b615db1722edb94bcf2e1",
+			"bytes": 74662,
+			"sha256": "e2e6231e9f867bda930061cb6ddc2f653144ee4a8f6352ee9a89f9cbb5034372",
 			"pillow": "11.3.0"
 		},
 		{
@@ -168,8 +168,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 15920,
-			"sha256": "95bf3dd9d868ea82fbca4a58db033c71f5d1d8d3ca6734fe4df196f2d28ca9c0",
+			"bytes": 15682,
+			"sha256": "1f3ad089b0edf3bd03c5cca6d648b7d620d115fd61124a50cd078d87dbec30aa",
 			"pillow": "11.3.0"
 		},
 		{
@@ -178,8 +178,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 28596,
-			"sha256": "66bea4f74c54cf7c2499ed3b4918b9539e6f2cd12c60dbc53f31be10e5196a54",
+			"bytes": 28260,
+			"sha256": "2537f9a04c3000c4b21c6b4fcc3ffed823cd6b9969969b3942ccd5ddf4596d02",
 			"pillow": "11.3.0"
 		},
 		{
@@ -188,8 +188,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 57444,
-			"sha256": "052fc8c15b7b3206b6b0eb026f038aba2bf1c119c431b83d8e1838883263c935",
+			"bytes": 57806,
+			"sha256": "b9fead259bd8ad76cca07cf62c2e5585d61e366d0ac4962de0f54511b8dff7ba",
 			"pillow": "11.3.0"
 		},
 		{
@@ -198,8 +198,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 11066,
-			"sha256": "f400eb4916f8cbb2910a88ff572917d5fe91ee4edbf6abc3692fc369fdf01626",
+			"bytes": 10883,
+			"sha256": "ab0108457d25471d14517cf7edddc239062064b171e4329a549cc3ea16523d3c",
 			"pillow": "11.3.0"
 		},
 		{
@@ -208,8 +208,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 20172,
-			"sha256": "bfddc83d26146cd2898a3c9651a6409d6e9c30f775cad1bef03a91d7afa5999f",
+			"bytes": 21270,
+			"sha256": "701d3d79a32af639d796ed82e86328d1a8184dc153676affac6823034deb0be4",
 			"pillow": "11.3.0"
 		},
 		{
@@ -218,8 +218,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 27396,
-			"sha256": "30cd3d9d64805fa7477e204ff39ce8947e8dcc3bbc713d98843c9a56b9af129f",
+			"bytes": 26711,
+			"sha256": "29e4f54414c33b16cf6e6d24b37b0e1f33678525ada392fdb632d8e5c6e60fde",
 			"pillow": "11.3.0"
 		},
 		{
@@ -228,8 +228,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 38282,
-			"sha256": "57030d63903f51cf7ea05a5aad27af26ae703f95b2da0f30356a5527d193b4a2",
+			"bytes": 42521,
+			"sha256": "dada301dbc26717aa48f905891a4f07ccbcce19df11274d340c0017194c7c923",
 			"pillow": "11.3.0"
 		},
 		{
@@ -238,8 +238,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 91678,
-			"sha256": "93f4935ed98f84579b6dcf0825f634c7f6212789e80228c56987776351c11c0f",
+			"bytes": 90690,
+			"sha256": "906ee5e73c9bcc957505dc60d0e4722ba310a80b3a95bb7585a2782ecf8a2cb2",
 			"pillow": "11.3.0"
 		},
 		{
@@ -248,8 +248,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 15648,
-			"sha256": "f6e4e0d91eeceb876839c0d69ed7bba292c6a8b82bd55b1e63ca73cae041381d",
+			"bytes": 15494,
+			"sha256": "c14b487866cc4740ab9348d6ff9692becb8522c28229e724e0d4e07a7857e0f0",
 			"pillow": "11.3.0"
 		},
 		{
@@ -258,8 +258,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 28292,
-			"sha256": "4e05393de4376c353932c039086460df96c90fc3dbe7e3229ff3c575124e0bb3",
+			"bytes": 27730,
+			"sha256": "e87aaa6dbe4f7e4e4169df8659f5f452567cc72ac69b03f5a0ef9a421175f2d8",
 			"pillow": "11.3.0"
 		},
 		{
@@ -268,8 +268,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 55480,
-			"sha256": "9d05a4b03b891563fd495dee5c899e44e8fae7c1e912124add0bb77ec0140c17",
+			"bytes": 56040,
+			"sha256": "99d4e2a33d2dc341fef987a5a8d24b892bfda49ad02ba82d32eda6c462afb212",
 			"pillow": "11.3.0"
 		},
 		{
@@ -278,8 +278,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 11239,
-			"sha256": "4821a9601f341447b63e80d21fa807cd4c5dec51ac6ff884b1f04f0fb6b91f05",
+			"bytes": 11094,
+			"sha256": "b13ba6344368c4d2665588533ea28c158497df054b442b3540fec78efbc5aa79",
 			"pillow": "11.3.0"
 		},
 		{
@@ -288,8 +288,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 20760,
-			"sha256": "11a4207eb8699f94aca769ae072da62514ff0b1a9e19b7ade3e7271685d5f48d",
+			"bytes": 20233,
+			"sha256": "cf355664044ed8381dc13afbf357e71a51d22f582849df0a5a5f61ef63fec5de",
 			"pillow": "11.3.0"
 		},
 		{
@@ -298,8 +298,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 28018,
-			"sha256": "98edc64b326e582209630e4f82b7572eda172771a2fbd2ad83781a1cca5d6c8b",
+			"bytes": 27351,
+			"sha256": "c1b27f3d99f703101e4ee6d7c68614adb0e3c79a839449453da9fc5e27ed5f1b",
 			"pillow": "11.3.0"
 		},
 		{
@@ -308,8 +308,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 38712,
-			"sha256": "272ff5801fe0c46bb463d3d4ff963513a78dfe49606fb62132731adaa0d382f9",
+			"bytes": 38222,
+			"sha256": "b284569590fc271b866a05487f936a4c1d6c2cf33ee9b6bbde92c023d864eda2",
 			"pillow": "11.3.0"
 		},
 		{
@@ -318,8 +318,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 71313,
-			"sha256": "1585617ea85bdd58aa1a861e77ca377b319e2d875f2e4a0dd2c23644d8c5e8d9",
+			"bytes": 70548,
+			"sha256": "e0b43f15728d239d4e1f16fc55e0a9b0b28e7e1c08e0e7baa0886873e8d7c5a8",
 			"pillow": "11.3.0"
 		},
 		{
@@ -328,8 +328,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 15532,
-			"sha256": "eb37550c2a6cc9d7c08c922910cea64c3f546973531e0948c77160020959dc5b",
+			"bytes": 15260,
+			"sha256": "1d72f261278e3c550a666373b9308414c74b711a6a093271be811f9bd7209c60",
 			"pillow": "11.3.0"
 		},
 		{
@@ -338,8 +338,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 27492,
-			"sha256": "1048737983cf0f31cbb08b3653d2d90cf03694efdd71bf42337ea82a6f490977",
+			"bytes": 27294,
+			"sha256": "f472bf53b6246107f3fa601380bd23f6774940e39771e6c471f46897e58962f0",
 			"pillow": "11.3.0"
 		},
 		{
@@ -348,8 +348,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 56014,
-			"sha256": "4dc19f99a99eea9d23f9302129d33a10c1fa19ea0bcc86504ba7b6a9404505e7",
+			"bytes": 58190,
+			"sha256": "a73967257081a721fd77d4a67c3ef2dd58c3d2ef0759e09353edd9eb4d5af8ea",
 			"pillow": "11.3.0"
 		},
 		{
@@ -358,8 +358,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 10742,
-			"sha256": "ae93b58c406f6e2302d2efbae4fa3dde6ed9ed1ea0d54b1267973bb557fcf09f",
+			"bytes": 10458,
+			"sha256": "73fd1fea093ed4d4a8337ae960edc5d849301833084ddb72b853d18cfb554a40",
 			"pillow": "11.3.0"
 		},
 		{
@@ -368,8 +368,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 19367,
-			"sha256": "fa771a2718ff24d832ce694d5e4d1f3873ce3c50903ed356edb4658f1dbc81a7",
+			"bytes": 20818,
+			"sha256": "7affbeecd042086247cd7a9d65e8b7684609b68cf119427b30b75e38d16d6f9e",
 			"pillow": "11.3.0"
 		},
 		{
@@ -378,8 +378,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 26481,
-			"sha256": "e3f9065f797e7553db9e500186e63f9237314e6bcd5e5421d5cbe22dfe4c4698",
+			"bytes": 26289,
+			"sha256": "52a76c333a128d9f5ca5d9dc6948f35cc299aad5ea3914839e7aa3ad33cdd6c8",
 			"pillow": "11.3.0"
 		},
 		{
@@ -388,8 +388,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 37167,
-			"sha256": "2d9b783a88343d91ee01f5f188dbacf19bf67817af6d02e19c6b1ccc3ba35a9a",
+			"bytes": 41944,
+			"sha256": "631a39a4b51bb49d82bcaa0972698bc149cae83d2712126a1529971ecfeb4100",
 			"pillow": "11.3.0"
 		},
 		{
@@ -398,8 +398,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 90452,
-			"sha256": "669125ca036700b08c5b16406d9340757a86e2d9f77b6bd54e9d5940eba47520",
+			"bytes": 89990,
+			"sha256": "06dda51496236055603809ae94318789f9df5a6d1a5a60b0a6d54d845fba8632",
 			"pillow": "11.3.0"
 		},
 		{
@@ -408,8 +408,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 15298,
-			"sha256": "80ca6f178f132e2e6590d463369aadc1f93d88e1c29759bf97fa761064371c0d",
+			"bytes": 15210,
+			"sha256": "e12b8c0fd5ff810aea74d8464e7e805b30b72e1d85c1e8a06a4d7f4fff1eceb5",
 			"pillow": "11.3.0"
 		},
 		{
@@ -418,8 +418,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 27192,
-			"sha256": "da01840e2d8a092b3e6366ecebd1282b9bfd750908eb0c60d0d671b5e9aad199",
+			"bytes": 26934,
+			"sha256": "e80a8b4953236e1afd20e6ee03e9b6513885e75e27f7b707c1907eb236de4dba",
 			"pillow": "11.3.0"
 		},
 		{
@@ -428,8 +428,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 53818,
-			"sha256": "515067d4eacf525b1a7cf02144b57e14dda96388b5a9b6b70a57ebdb9a16e967",
+			"bytes": 55882,
+			"sha256": "77dc7c3a62aba2b6b24f00f3e5a0a7bb2e9c1fae61b04844034c02a24c5d678e",
 			"pillow": "11.3.0"
 		},
 		{
@@ -438,8 +438,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 10572,
-			"sha256": "41230cfff6ef0ae7932d133ff218285d347c5bc21130a41c0569e8581eda797a",
+			"bytes": 10550,
+			"sha256": "c0bc9168fc785486ef4a3eecdff819167cfa16c10d3eb2edd38450ea6d3403b3",
 			"pillow": "11.3.0"
 		},
 		{
@@ -448,8 +448,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 19644,
-			"sha256": "8ed2550e9409cec4021debd82cd4e51edd89137535a54e657069eda6c60ca3af",
+			"bytes": 19650,
+			"sha256": "f2e1fe9d0ecb7b9c93017c97798de47e4b0ca3233abac5d8b7e20939b71bae6c",
 			"pillow": "11.3.0"
 		},
 		{
@@ -458,8 +458,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 26631,
-			"sha256": "a2d94bb67bc90c050f74f98683a0d54bbc4596c1a8842c5760e53b34d1321aa9",
+			"bytes": 26683,
+			"sha256": "b00e6fa0b84bad961303d398820e66b136c73b6083f966edd5a38084cb879b39",
 			"pillow": "11.3.0"
 		},
 		{
@@ -468,8 +468,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 37284,
-			"sha256": "800ee6ac1460af37dd317b962e3476eb6fdd1f6bfd8c30a073ba918bc7730a79",
+			"bytes": 37382,
+			"sha256": "3bae9dc4e00dd99eab1b9ce271cdc401280e3edc67917072d5f456e9afdca151",
 			"pillow": "11.3.0"
 		},
 		{
@@ -478,8 +478,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 71066,
-			"sha256": "f276eac640662d9b7acd1c4e5563887241dba85cd8e6ab3854c4a661c90fe391",
+			"bytes": 87960,
+			"sha256": "07d0ed69751c0974d7b17a1413e86cbf7ca3831373faf8a2ed57bdabe55dd1bd",
 			"pillow": "11.3.0"
 		},
 		{
@@ -659,8 +659,8 @@
 			"source": "public/landing/dashboard-light-mobile.webp",
 			"width": 780,
 			"height": 840,
-			"bytes": 21230,
-			"sha256": "6d650948aae1ae4c862b5985ca8461ad302e69910f0f97a81f6a7c4a0da436a8",
+			"bytes": 23267,
+			"sha256": "be1adbad1be81432f0770f292c6c378ede156e22db184520b74a395576bb35fd",
 			"pillow": "11.3.0"
 		},
 		{
@@ -669,8 +669,8 @@
 			"source": "public/landing/dashboard-dark-mobile.webp",
 			"width": 780,
 			"height": 840,
-			"bytes": 15453,
-			"sha256": "fc0818e99f9604b4fe8a6db074cce918c727c39dff5123b48063e3fa710ac80d",
+			"bytes": 16997,
+			"sha256": "1dce4f4d4f5b4432ef3b5ca62634557b75e3a297ec8cb8f751d4fb49928f9144",
 			"pillow": "11.3.0"
 		}
 	]

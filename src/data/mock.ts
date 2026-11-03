@@ -148,11 +148,11 @@ export const transactions: Transaction[] = [
 
 // ── Budget ──
 export const budgets: Budget[] = [
-	{ category: "Nutrition & Dining", spent: 420, limit: 600 },
-	{ category: "Mobility & exercise", spent: 180, limit: 300 },
-	{ category: "Sleep & recovery", spent: 95, limit: 150 },
-	{ category: "Medical supplies", spent: 310, limit: 400 },
-	{ category: "Lab services", spent: 245, limit: 250 },
+	{ category: "pages.progressTracking.categoryNutrition", spent: 420, limit: 600 },
+	{ category: "pages.progressTracking.categoryMobility", spent: 180, limit: 300 },
+	{ category: "pages.progressTracking.categorySleep", spent: 95, limit: 150 },
+	{ category: "pages.progressTracking.categorySupplies", spent: 310, limit: 400 },
+	{ category: "pages.progressTracking.categoryLab", spent: 245, limit: 250 },
 ];
 
 export const monthlyBudgetData: MonthlyBudget[] = [
@@ -199,11 +199,23 @@ export const monthlyFlow = [
 
 // ── Care Funds ──
 export const portfolio: PortfolioItem[] = [
-	{ name: "Primary care fund", value: 45000, allocation: 45, change: "+12.4%", up: true },
-	{ name: "Therapy fund", value: 20000, allocation: 20, change: "+3.2%", up: true },
-	{ name: "Recovery fund", value: 15000, allocation: 15, change: "+7.8%", up: true },
-	{ name: "Medication fund", value: 10000, allocation: 10, change: "-5.1%", up: false },
-	{ name: "Emergency reserve", value: 10000, allocation: 10, change: "+0.5%", up: true },
+	{ name: "pages.portfolio.fundPrimary", value: 45000, allocation: 45, change: "+12.4%", up: true },
+	{ name: "pages.portfolio.fundTherapy", value: 20000, allocation: 20, change: "+3.2%", up: true },
+	{ name: "pages.portfolio.fundRecovery", value: 15000, allocation: 15, change: "+7.8%", up: true },
+	{
+		name: "pages.portfolio.fundMedication",
+		value: 10000,
+		allocation: 10,
+		change: "-5.1%",
+		up: false,
+	},
+	{
+		name: "pages.portfolio.fundEmergency",
+		value: 10000,
+		allocation: 10,
+		change: "+0.5%",
+		up: true,
+	},
 ];
 
 export const performanceData = [

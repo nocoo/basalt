@@ -119,6 +119,56 @@ async function assertNetwork(page: Page, baseUrl: string, width: number) {
 	}
 }
 
+async function assertAnalytics(page: Page, route: string, width: number) {
+	if (
+		[
+			"/health",
+			"/wearable",
+			"/banking",
+			"/network",
+			"/progress-tracking",
+			"/flow-comparison",
+		].includes(route) &&
+		width === 390
+	) {
+		const cards = page.locator('[data-showcase-page] [data-slot="stat-card"]');
+		const [first, second] = await Promise.all([
+			cards.nth(0).boundingBox(),
+			cards.nth(1).boundingBox(),
+		]);
+		assert.ok(
+			first && second && Math.abs(first.y - second.y) < 1 && second.x > first.x,
+			`${route}: metrics must share the first row`,
+		);
+	}
+	if (route === "/health" || route === "/wearable") {
+		await page.getByText("Sample day", { exact: true }).waitFor();
+		assert.equal(await page.getByRole("button", { name: "Previous day" }).count(), 0);
+		assert.equal(await page.getByRole("list", { name: "Daily timeline" }).locator("li").count(), 5);
+		await page.getByRole("group", { name: "Weekly steps", exact: true }).waitFor();
+		const metric = route === "/health" ? "Activities" : "Workouts";
+		assert.match(
+			(await page
+				.getByRole("button", { name: new RegExp(`^2026-12-31, ${metric}:`) })
+				.getAttribute("aria-label")) ?? "",
+			/: [1-9]/,
+		);
+		if (route === "/health") {
+			assert.equal(await page.getByRole("button", { name: "Generate insight" }).isDisabled(), true);
+			assert.equal(
+				await page.getByRole("list", { name: "Insight timeline" }).locator("li").count(),
+				4,
+			);
+		}
+	}
+	if (route === "/network") {
+		assert.equal(
+			await page.getByRole("list", { name: "Incident timeline" }).locator("li").count(),
+			3,
+		);
+	}
+}
+
 async function assertForms(page: Page, baseUrl: string) {
 	await page.goto(`${baseUrl}/forms`);
 	const profile = page.getByRole("form", { name: "Profile Form", exact: true });
@@ -319,6 +369,7 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 			await settle(page);
 			await assertNoDuplicateIds(page, `${width} ${route}`);
 			await assertPageWidth(page, `${width} ${route}`);
+			await assertAnalytics(page, route, width);
 			assert.ok((await page.locator("#root").textContent())?.trim(), `${route}: empty page`);
 			cases.push(`${width}:${route}`);
 		}
@@ -336,6 +387,17 @@ export async function assertExamplePages(page: Page, baseUrl: string) {
 		await assertChat(page, baseUrl, width < 768);
 		cases.push(`${width}:dark:network/forms/settings/data/chat`);
 		await setShowcaseTheme(page, false);
+	}
+	for (const rootFont of [16, 32]) {
+		await page.setViewportSize({ width: 320, height: 900 });
+		await page.goto(`${baseUrl}/portfolio`);
+		await page.addStyleTag({ content: `html { font-size: ${rootFont}px }` });
+		const region = page.getByRole("region", { name: "Holdings table, scroll horizontally" });
+		await region.waitFor();
+		assert.ok(await region.evaluate((node) => node.scrollWidth > node.clientWidth));
+		await assertKeyboardScroll(page, region);
+		await assertPageWidth(page, `portfolio 320/${rootFont}`);
+		cases.push(`portfolio:320/${rootFont}:keyboard-scroll`);
 	}
 	for (const width of [320, 390, 640]) {
 		await page.setViewportSize({ width, height: 900 });

@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 
 const data = {
 	nodes: [
-		{ name: "Visits" },
-		{ name: "Signup" },
-		{ name: "Activate" },
-		{ name: "Upgrade" },
-		{ name: "Churn" },
+		{ name: "dashboard.sankeyVisits" },
+		{ name: "dashboard.sankeySignup" },
+		{ name: "dashboard.sankeyActivate" },
+		{ name: "dashboard.sankeyUpgrade" },
+		{ name: "dashboard.sankeyChurn" },
 	],
 	links: [
 		{ source: 0, target: 1, value: 1200 },
@@ -27,7 +27,7 @@ export function SankeyCard() {
 			</LayerCard.Header>
 			<LayerCard.Body className="h-64 min-w-0 shrink-0">
 				<SankeyChart
-					data={data}
+					data={{ ...data, nodes: data.nodes.map((node) => ({ name: t(node.name) })) }}
 					ariaLabel={t("dashboard.userFlowSankey")}
 					className="h-full w-full"
 				/>

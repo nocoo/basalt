@@ -1,4 +1,3 @@
-import { DateNavigation } from "@nocoo/basalt/charts/date-navigation";
 import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatmap-calendar";
 import { SlotBarChart } from "@nocoo/basalt/charts/slot-bar";
 import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
@@ -63,7 +62,6 @@ const sleepSlots = Array.from({ length: 24 }).map((_, i) => ({
 				: i < 16
 					? "bg-basalt-success"
 					: "bg-basalt-warning",
-	label: `Hour ${i}`,
 }));
 
 const heartRateSlots = Array.from({ length: 24 }).map((_, i) => ({
@@ -75,11 +73,10 @@ const heartRateSlots = Array.from({ length: 24 }).map((_, i) => ({
 				: i < 20
 					? "bg-basalt-warning"
 					: "bg-basalt-destructive",
-	label: `Hour ${i}`,
 }));
 
 const heatmapData = Array.from({ length: 365 }).map((_, i) => {
-	const date = new Date(2026, 0, 1 + i);
+	const date = new Date(Date.UTC(2026, 0, 1 + i));
 	const noise = Math.sin(i * 17.13 + 3.1) * 100000;
 	const random = noise - Math.floor(noise);
 	const value = Math.max(1, Math.round(2 + random * 9));
@@ -171,40 +168,30 @@ export default function HealthPage() {
 			time: "06:30",
 			title: t("pages.health.wakeUp"),
 			subtitle: t("pages.health.rested"),
-			color: "bg-basalt-primary/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t2",
 			time: "07:10",
 			title: t("pages.health.hydration"),
 			subtitle: "400ml",
-			color: "bg-basalt-info/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t3",
 			time: "12:20",
 			title: t("pages.health.walk"),
 			subtitle: "3.2km",
-			color: "bg-basalt-success/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t4",
 			time: "18:10",
 			title: t("pages.health.workout"),
 			subtitle: t("pages.health.strength45m"),
-			color: "bg-basalt-warning/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t5",
 			time: "21:40",
 			title: t("pages.health.windDown"),
 			subtitle: t("pages.health.stretching"),
-			color: "bg-basalt-primary/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 	];
 
@@ -214,32 +201,24 @@ export default function HealthPage() {
 			time: "07:30",
 			title: t("pages.health.sleepDebtDetected"),
 			subtitle: t("pages.health.recommendEarlyWindDown"),
-			color: "bg-basalt-primary/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "i2",
 			time: "09:10",
 			title: t("pages.health.hydrationDip"),
 			subtitle: t("pages.health.add400mlBeforeNoon"),
-			color: "bg-basalt-info/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "i3",
 			time: "13:20",
 			title: t("pages.health.focusWindow"),
 			subtitle: t("pages.health.scheduleDeepWorkBlock"),
-			color: "bg-basalt-success/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "i4",
 			time: "17:40",
 			title: t("pages.health.recoveryNeeded"),
 			subtitle: t("pages.health.lightMovementRecommended"),
-			color: "bg-basalt-warning/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 	];
 
@@ -253,22 +232,17 @@ export default function HealthPage() {
 	return (
 		<ShowcasePage title={t("pages.health.title")} description={t("pages.health.description")}>
 			<SectionRule
-				title={t("pages.health.today")}
+				title={t("pages.health.sampleDay")}
 				actions={
-					<DateNavigation
-						selectedDate={new Date(2026, 1, 13)}
-						onPrevDay={() => {}}
-						onNextDay={() => {}}
-						onToday={() => {}}
-						todayLabel={t("common.today")}
-						previousDayLabel={t("common.previousDay")}
-						nextDayLabel={t("common.nextDay")}
-						locale={i18n.language}
-					/>
+					<span className="text-basalt-base text-basalt-muted-foreground">
+						{new Intl.DateTimeFormat(i18n.language, { dateStyle: "full" }).format(
+							new Date(2026, 1, 13),
+						)}
+					</span>
 				}
 			/>
 
-			<StatGrid columns={4}>
+			<StatGrid columns={4} className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
 				{statCards.map((stat) => (
 					<StatCard
 						key={stat.title}
@@ -292,22 +266,40 @@ export default function HealthPage() {
 							7h 24m
 						</span>
 					</LayerCard.Header>
-					<LayerCard.Body>
-						<SlotBarChart items={sleepSlots} />
+					<LayerCard.Body className="space-y-basalt-card-sm">
+						<SlotBarChart
+							items={sleepSlots.map((item, index) => ({
+								...item,
+								label: t("pages.health.sampleSlot", { number: index + 1 }),
+							}))}
+							ariaLabel={t("pages.health.sleepStagesSample")}
+						/>
+						<p className="text-basalt-sm text-basalt-muted-foreground">
+							{t("pages.health.sampleColors")}
+						</p>
 					</LayerCard.Body>
 				</LayerCard>
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Heart className="h-4 w-4 text-basalt-destructive" strokeWidth={1.5} />
+						<Heart className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<h2 className="text-basalt-base text-muted-foreground">
 							{t("pages.health.heartRateZones")}
 						</h2>
-						<span className="ml-auto text-basalt-base font-semibold text-basalt-destructive">
+						<span className="ml-auto text-basalt-base font-semibold text-basalt-foreground">
 							72 bpm
 						</span>
 					</LayerCard.Header>
-					<LayerCard.Body>
-						<SlotBarChart items={heartRateSlots} />
+					<LayerCard.Body className="space-y-basalt-card-sm">
+						<SlotBarChart
+							items={heartRateSlots.map((item, index) => ({
+								...item,
+								label: t("pages.health.sampleSlot", { number: index + 1 }),
+							}))}
+							ariaLabel={t("pages.health.heartRateSample")}
+						/>
+						<p className="text-basalt-sm text-basalt-muted-foreground">
+							{t("pages.health.sampleColors")}
+						</p>
 					</LayerCard.Body>
 				</LayerCard>
 			</div>
@@ -321,7 +313,15 @@ export default function HealthPage() {
 						</h2>
 					</LayerCard.Header>
 					<LayerCard.Body>
-						<BarChartWidget data={weeklySteps} height={200} color={chart.green} />
+						<BarChartWidget
+							data={weeklySteps.map((item) => ({
+								...item,
+								label: t(`dashboard.weekdays.${item.label.toLowerCase()}`),
+							}))}
+							ariaLabel={t("pages.health.weeklySteps")}
+							height={200}
+							color={chart.green}
+						/>
 					</LayerCard.Body>
 				</LayerCard>
 				<LayerCard>
@@ -333,7 +333,11 @@ export default function HealthPage() {
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<LineChartWidget
-							data={monthlySleep}
+							data={monthlySleep.map((item, index) => ({
+								...item,
+								label: t("pages.health.week", { number: index + 1 }),
+							}))}
+							ariaLabel={t("pages.health.monthlySleepTrend")}
 							height={200}
 							color={chart.indigo}
 							valueFormatter={(v) => `${v}h`}
@@ -352,7 +356,11 @@ export default function HealthPage() {
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<DonutChartWidget
-							data={activityBreakdown}
+							data={activityBreakdown.map((item) => ({
+								...item,
+								label: t(`pages.health.activity${item.label}`),
+							}))}
+							ariaLabel={t("pages.health.activityBreakdown")}
 							height={220}
 							showLegend
 							valueFormatter={formatPercent}
@@ -366,8 +374,15 @@ export default function HealthPage() {
 							{t("pages.health.dailyTimeline")}
 						</h2>
 					</LayerCard.Header>
-					<LayerCard.Body className="max-h-[22rem] overflow-y-auto">
-						<Timeline events={timelineEvents} />
+					<LayerCard.Body>
+						<Timeline
+							ariaLabel={t("pages.health.dailyTimeline")}
+							items={timelineEvents.map((event) => ({
+								id: event.id,
+								at: event.time,
+								title: `${event.title} · ${event.subtitle}`,
+							}))}
+						/>
 					</LayerCard.Body>
 				</LayerCard>
 			</div>
@@ -381,6 +396,7 @@ export default function HealthPage() {
 				</LayerCard.Header>
 				<LayerCard.Body>
 					<HeatmapCalendar
+						ariaLabel={t("pages.health.activityHeatmap2026")}
 						data={heatmapData}
 						year={2026}
 						colorScale={heatmapColorScales.green}
@@ -393,7 +409,10 @@ export default function HealthPage() {
 			</LayerCard>
 
 			<SectionRule title={t("pages.health.lifeAiInsights")}>
-				<StatGrid columns={3}>
+				<p className="text-basalt-base text-basalt-muted-foreground">
+					{t("pages.health.insightsExample")}
+				</p>
+				<StatGrid columns={3} className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
 					{aiStatCards.map((stat) => (
 						<StatCard
 							key={stat.title}
@@ -416,7 +435,11 @@ export default function HealthPage() {
 						</LayerCard.Header>
 						<LayerCard.Body>
 							<LineChartWidget
-								data={readinessTrend}
+								data={readinessTrend.map((item) => ({
+									...item,
+									label: t(`dashboard.weekdays.${item.label.toLowerCase()}`),
+								}))}
+								ariaLabel={t("pages.health.aiReadinessTrend")}
 								height={200}
 								color={chart.primary}
 								valueFormatter={formatPercent}
@@ -431,7 +454,15 @@ export default function HealthPage() {
 							</h2>
 						</LayerCard.Header>
 						<LayerCard.Body>
-							<BarChartWidget data={recommendationImpact} height={200} color={chart.teal} />
+							<BarChartWidget
+								data={recommendationImpact.map((item) => ({
+									...item,
+									label: t(`pages.health.impact${item.label}`),
+								}))}
+								ariaLabel={t("pages.health.recommendationImpact")}
+								height={200}
+								color={chart.teal}
+							/>
 						</LayerCard.Body>
 					</LayerCard>
 				</div>
@@ -445,6 +476,9 @@ export default function HealthPage() {
 							</h2>
 						</LayerCard.Header>
 						<LayerCard.Body className="space-y-basalt-card">
+							<p className="text-basalt-sm text-basalt-muted-foreground">
+								{t("pages.health.insightsDemo")}
+							</p>
 							<InputArea
 								rows={5}
 								placeholder={t("pages.health.promptPlaceholder")}
@@ -462,12 +496,15 @@ export default function HealthPage() {
 										type="button"
 										key={chip}
 										className="text-muted-foreground"
+										disabled
 									>
 										{chip}
 									</Button>
 								))}
 							</div>
-							<Button className="w-full">{t("pages.health.generateInsight")}</Button>
+							<Button className="w-full" disabled>
+								{t("pages.health.generateInsight")}
+							</Button>
 						</LayerCard.Body>
 					</LayerCard>
 
@@ -496,7 +533,14 @@ export default function HealthPage() {
 							</h2>
 						</LayerCard.Header>
 						<LayerCard.Body>
-							<Timeline events={insightTimeline} />
+							<Timeline
+								ariaLabel={t("pages.health.insightTimeline")}
+								items={insightTimeline.map((event) => ({
+									id: event.id,
+									at: event.time,
+									title: `${event.title} · ${event.subtitle}`,
+								}))}
+							/>
 						</LayerCard.Body>
 					</LayerCard>
 				</div>

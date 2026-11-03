@@ -25,26 +25,20 @@ const incidents = [
 	{
 		id: "i1",
 		time: "02:10",
-		title: "Edge router spike",
-		subtitle: "latency +12ms",
-		color: "bg-basalt-warning/10",
-		textColor: "hsl(var(--basalt-foreground))",
+		titleKey: "pages.networkOps.incidentRouter",
+		subtitleKey: "pages.networkOps.incidentRouterDetail",
 	},
 	{
 		id: "i2",
 		time: "08:45",
-		title: "Packet loss",
-		subtitle: "0.6% in us-east",
-		color: "bg-basalt-destructive/10",
-		textColor: "hsl(var(--basalt-foreground))",
+		titleKey: "pages.networkOps.incidentLoss",
+		subtitleKey: "pages.networkOps.incidentLossDetail",
 	},
 	{
 		id: "i3",
 		time: "15:30",
-		title: "BGP reconverge",
-		subtitle: "reroute complete",
-		color: "bg-basalt-success/10",
-		textColor: "hsl(var(--basalt-foreground))",
+		titleKey: "pages.networkOps.incidentBgp",
+		subtitleKey: "pages.networkOps.incidentBgpDetail",
 	},
 ];
 
@@ -85,9 +79,9 @@ export default function NetworkOpsDashboardPage() {
 	return (
 		<ShowcasePage
 			title={t("pages.networkOps.title")}
-			description={t("pages.networkOps.description")}
+			description={`${t("pages.networkOps.description")} ${t("demo.analyticsData")}`}
 		>
-			<StatGrid columns={4}>
+			<StatGrid columns={4} className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
 				{statCards.map((stat) => (
 					<StatCard key={stat.title} {...stat} />
 				))}
@@ -104,6 +98,7 @@ export default function NetworkOpsDashboardPage() {
 					<LayerCard.Body>
 						<LineChartWidget
 							data={latencyTrend}
+							ariaLabel={t("pages.networkOps.latencyTrend")}
 							height={220}
 							color={chart.teal}
 							valueFormatter={(v) => `${v}ms`}
@@ -128,8 +123,15 @@ export default function NetworkOpsDashboardPage() {
 							{t("pages.networkOps.incidentTimeline")}
 						</h2>
 					</LayerCard.Header>
-					<LayerCard.Body className="max-h-[22rem] overflow-y-auto">
-						<Timeline events={incidents} />
+					<LayerCard.Body>
+						<Timeline
+							ariaLabel={t("pages.networkOps.incidentTimeline")}
+							items={incidents.map((event) => ({
+								id: event.id,
+								at: event.time,
+								title: `${t(event.titleKey)} · ${t(event.subtitleKey)}`,
+							}))}
+						/>
 					</LayerCard.Body>
 				</LayerCard>
 			</div>

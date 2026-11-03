@@ -54,6 +54,10 @@ describe("PortfolioPage", () => {
 		render(<PortfolioPage />);
 
 		expect(screen.getByText("Holdings")).toBeInTheDocument();
+		expect(
+			screen.getByRole("region", { name: "Holdings table, scroll horizontally" }),
+		).toHaveAttribute("tabindex", "0");
+		expect(screen.getByText("Sample trend is separate from current holdings.")).toBeInTheDocument();
 		const table = screen.getByRole("table", { name: "Holdings" });
 		expect(
 			within(table)

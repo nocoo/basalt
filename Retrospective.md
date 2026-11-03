@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-11: Chart wrapper call site was missed
+
+- **What:** The first typecheck after requiring chart labels failed because `MiniDonutCard` also calls the shared chart wrapper.
+- **Why:** The caller search was limited to pages and missed a nested component.
+- **Follow-up:** Search all of `src/`, including component-to-component calls, before changing shared props.
+
 ## 2026-11: Date-picker tests depended on the calendar
 
 - **What:** The landing commit was blocked when two date-picker keyboard tests ran during their hard-coded November 2026 initial month.

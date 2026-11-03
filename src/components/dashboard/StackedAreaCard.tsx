@@ -20,7 +20,7 @@ export function StackedAreaCard() {
 			<LayerCard.Body className="h-64 min-w-0 shrink-0">
 				<AreaChart
 					data={data.map((row) => ({
-						x: row.name,
+						x: t(`dashboard.weekdays.${row.name.toLowerCase()}`),
 						y: row.core,
 						y2: row.growth,
 						y3: row.churn,

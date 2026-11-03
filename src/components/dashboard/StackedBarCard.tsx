@@ -21,7 +21,12 @@ export function StackedBarCard() {
 			</LayerCard.Header>
 			<LayerCard.Body className="h-64 min-w-0 shrink-0">
 				<StackedBarChart
-					data={stackedData.map((row) => ({ x: row.name, y: row.a, y2: row.b, y3: row.c }))}
+					data={stackedData.map((row) => ({
+						x: t(`dashboard.weekdays.${row.name.toLowerCase()}`),
+						y: row.a,
+						y2: row.b,
+						y3: row.c,
+					}))}
 					series={[
 						{ key: "y", label: t("dashboard.core") },
 						{ key: "y2", label: t("dashboard.growth") },

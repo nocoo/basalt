@@ -51,12 +51,15 @@ describe("ProgressTrackingPage", () => {
 		expect(screen.getByText("Category Budgets")).toBeInTheDocument();
 		expect(screen.getByText("Food & Dining")).toBeInTheDocument();
 		expect(screen.getByText("Transport")).toBeInTheDocument();
+		expect(
+			screen.getByRole("progressbar", { name: "Food & Dining budget: 80% spent" }),
+		).toBeInTheDocument();
 	});
 
 	it("renders spent/limit for each category", () => {
 		render(<ProgressTrackingPage />);
 
-		expect(screen.getByText("$800 / $1000")).toBeInTheDocument();
+		expect(screen.getByText("$800 / $1,000")).toBeInTheDocument();
 		expect(screen.getByText("$200 / $500")).toBeInTheDocument();
 	});
 

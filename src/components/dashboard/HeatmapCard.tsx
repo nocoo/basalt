@@ -3,7 +3,7 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
 
 const heatmapData = Array.from({ length: 365 }).map((_, i) => {
-	const date = new Date(2026, 0, 1 + i);
+	const date = new Date(Date.UTC(2026, 0, 1 + i));
 	const noise = Math.sin(i * 12.9898) * 43758.5453;
 	const random = noise - Math.floor(noise);
 	const value = Math.max(1, Math.round(3 + random * 9));
@@ -24,6 +24,7 @@ export function HeatmapCard() {
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1">
 				<HeatmapCalendar
+					ariaLabel={t("dashboard.engagementHeatmap")}
 					data={heatmapData}
 					year={2026}
 					colorScale={heatmapColorScales.blue}

@@ -14,9 +14,9 @@ export default function ProgressTrackingPage() {
 	return (
 		<ShowcasePage
 			title={t("pages.progressTracking.title")}
-			description={t("pages.progressTracking.description")}
+			description={`${t("pages.progressTracking.description")} ${t("demo.analyticsData")}`}
 		>
-			<StatGrid columns={3}>
+			<StatGrid columns={3} className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
 				<StatCard
 					title={t("pages.progressTracking.totalBudget")}
 					value={`$${summary.totalLimit.toLocaleString()}`}
@@ -44,7 +44,7 @@ export default function ProgressTrackingPage() {
 							<div className="flex items-center justify-between mb-basalt-space-md">
 								<span className="text-basalt-base text-foreground">{cat.category}</span>
 								<span className="text-basalt-sm text-muted-foreground">
-									${cat.spent} / ${cat.limit}
+									{formatUsd(cat.spent)} / {formatUsd(cat.limit)}
 								</span>
 							</div>
 							<div
@@ -53,7 +53,10 @@ export default function ProgressTrackingPage() {
 								aria-valuenow={cat.progress}
 								aria-valuemin={0}
 								aria-valuemax={100}
-								aria-label={`${cat.category} budget: ${cat.progress}% spent`}
+								aria-label={t("pages.progressTracking.categoryProgressAria", {
+									category: cat.category,
+									percent: cat.progress,
+								})}
 							>
 								<div
 									className="h-full rounded-basalt-full transition-[width,opacity] basalt-motion"
@@ -75,7 +78,11 @@ export default function ProgressTrackingPage() {
 				</LayerCard.Header>
 				<LayerCard.Body>
 					<GroupedBarChart
-						data={comparisonData.map((row) => ({ x: row.month, y: row.budget, y2: row.actual }))}
+						data={comparisonData.map((row) => ({
+							x: t(`dashboard.months.${row.month.toLowerCase()}`),
+							y: row.budget,
+							y2: row.actual,
+						}))}
 						series={[
 							{ key: "y", label: t("pages.progressTracking.budget") },
 							{ key: "y2", label: t("pages.progressTracking.actual") },

@@ -1,4 +1,3 @@
-import { DateNavigation } from "@nocoo/basalt/charts/date-navigation";
 import { HeatmapCalendar, heatmapColorScales } from "@nocoo/basalt/charts/heatmap-calendar";
 import { SlotBarChart } from "@nocoo/basalt/charts/slot-bar";
 import { StatCard, StatGrid } from "@nocoo/basalt/charts/stat-card";
@@ -47,7 +46,6 @@ const sleepSlots = Array.from({ length: 24 }).map((_, i) => ({
 				: i < 16
 					? "bg-basalt-success"
 					: "bg-basalt-warning",
-	label: `Hour ${i}`,
 }));
 
 const heartRateSlots = Array.from({ length: 24 }).map((_, i) => ({
@@ -59,11 +57,10 @@ const heartRateSlots = Array.from({ length: 24 }).map((_, i) => ({
 				: i < 20
 					? "bg-basalt-warning"
 					: "bg-basalt-destructive",
-	label: `Hour ${i}`,
 }));
 
 const heatmapData = Array.from({ length: 365 }).map((_, i) => {
-	const date = new Date(2026, 0, 1 + i);
+	const date = new Date(Date.UTC(2026, 0, 1 + i));
 	const noise = Math.sin(i * 91.337) * 10000;
 	const random = noise - Math.floor(noise);
 	const value = Math.max(1, Math.round(2 + random * 10));
@@ -110,62 +107,47 @@ export default function WearableDashboardPage() {
 			time: "06:10",
 			title: t("pages.wearable.wakeUp"),
 			subtitle: t("pages.wearable.recoveryScore86"),
-			color: "bg-basalt-primary/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t2",
 			time: "07:30",
 			title: t("pages.wearable.morningWalk"),
 			subtitle: "3.2 km",
-			color: "bg-basalt-success/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t3",
 			time: "12:40",
 			title: t("pages.wearable.hydration"),
 			subtitle: "600 ml",
-			color: "bg-basalt-info/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t4",
 			time: "18:10",
 			title: t("pages.wearable.training"),
 			subtitle: t("pages.wearable.strength45m"),
-			color: "bg-basalt-warning/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 		{
 			id: "t5",
 			time: "21:30",
 			title: t("pages.wearable.windDown"),
 			subtitle: t("pages.wearable.stretchBreath"),
-			color: "bg-basalt-info/10",
-			textColor: "hsl(var(--basalt-foreground))",
 		},
 	];
 
 	return (
 		<ShowcasePage title={t("pages.wearable.title")} description={t("pages.wearable.description")}>
 			<SectionRule
-				title={t("pages.wearable.todaySummary")}
+				title={t("pages.health.sampleDay")}
 				actions={
-					<DateNavigation
-						selectedDate={new Date(2026, 1, 13)}
-						onPrevDay={() => {}}
-						onNextDay={() => {}}
-						onToday={() => {}}
-						todayLabel={t("common.today")}
-						previousDayLabel={t("common.previousDay")}
-						nextDayLabel={t("common.nextDay")}
-						locale={i18n.language}
-					/>
+					<span className="text-basalt-base text-basalt-muted-foreground">
+						{new Intl.DateTimeFormat(i18n.language, { dateStyle: "full" }).format(
+							new Date(2026, 1, 13),
+						)}
+					</span>
 				}
 			/>
 
-			<StatGrid columns={4}>
+			<StatGrid columns={4} className="grid-cols-[repeat(auto-fit,minmax(min(100%,10rem),1fr))]">
 				{statCards.map((stat) => (
 					<StatCard key={stat.title} {...stat} />
 				))}
@@ -182,22 +164,40 @@ export default function WearableDashboardPage() {
 							7h 42m
 						</span>
 					</LayerCard.Header>
-					<LayerCard.Body>
-						<SlotBarChart items={sleepSlots} />
+					<LayerCard.Body className="space-y-basalt-card-sm">
+						<SlotBarChart
+							items={sleepSlots.map((item, index) => ({
+								...item,
+								label: t("pages.health.sampleSlot", { number: index + 1 }),
+							}))}
+							ariaLabel={t("pages.health.sleepStagesSample")}
+						/>
+						<p className="text-basalt-sm text-basalt-muted-foreground">
+							{t("pages.health.sampleColors")}
+						</p>
 					</LayerCard.Body>
 				</LayerCard>
 				<LayerCard>
 					<LayerCard.Header className="items-center justify-start">
-						<Heart className="h-4 w-4 text-basalt-destructive" strokeWidth={1.5} />
+						<Heart className="h-4 w-4 text-muted-foreground" strokeWidth={1.5} />
 						<h2 className="text-basalt-base text-muted-foreground">
 							{t("pages.wearable.heartRateZones")}
 						</h2>
-						<span className="ml-auto text-basalt-base font-semibold text-basalt-destructive">
+						<span className="ml-auto text-basalt-base font-semibold text-basalt-foreground">
 							68 bpm
 						</span>
 					</LayerCard.Header>
-					<LayerCard.Body>
-						<SlotBarChart items={heartRateSlots} />
+					<LayerCard.Body className="space-y-basalt-card-sm">
+						<SlotBarChart
+							items={heartRateSlots.map((item, index) => ({
+								...item,
+								label: t("pages.health.sampleSlot", { number: index + 1 }),
+							}))}
+							ariaLabel={t("pages.health.heartRateSample")}
+						/>
+						<p className="text-basalt-sm text-basalt-muted-foreground">
+							{t("pages.health.sampleColors")}
+						</p>
 					</LayerCard.Body>
 				</LayerCard>
 			</div>
@@ -211,7 +211,15 @@ export default function WearableDashboardPage() {
 						</h2>
 					</LayerCard.Header>
 					<LayerCard.Body>
-						<BarChartWidget data={weeklySteps} height={200} color={chart.green} />
+						<BarChartWidget
+							data={weeklySteps.map((item) => ({
+								...item,
+								label: t(`dashboard.weekdays.${item.label.toLowerCase()}`),
+							}))}
+							ariaLabel={t("pages.wearable.weeklySteps")}
+							height={200}
+							color={chart.green}
+						/>
 					</LayerCard.Body>
 				</LayerCard>
 				<LayerCard>
@@ -223,7 +231,11 @@ export default function WearableDashboardPage() {
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<LineChartWidget
-							data={recoveryTrend}
+							data={recoveryTrend.map((item, index) => ({
+								...item,
+								label: t("pages.health.week", { number: index + 1 }),
+							}))}
+							ariaLabel={t("pages.wearable.recoveryTrend")}
 							height={200}
 							color={chart.indigo}
 							valueFormatter={(v) => `${v}%`}
@@ -242,7 +254,11 @@ export default function WearableDashboardPage() {
 					</LayerCard.Header>
 					<LayerCard.Body>
 						<DonutChartWidget
-							data={activityBreakdown}
+							data={activityBreakdown.map((item) => ({
+								...item,
+								label: t(`pages.health.activity${item.label}`),
+							}))}
+							ariaLabel={t("pages.wearable.activityMix")}
 							height={220}
 							showLegend
 							valueFormatter={formatPercent}
@@ -256,8 +272,15 @@ export default function WearableDashboardPage() {
 							{t("pages.wearable.dailyTimeline")}
 						</h2>
 					</LayerCard.Header>
-					<LayerCard.Body className="max-h-[22rem] overflow-y-auto">
-						<Timeline events={timeline} />
+					<LayerCard.Body>
+						<Timeline
+							ariaLabel={t("pages.wearable.dailyTimeline")}
+							items={timeline.map((event) => ({
+								id: event.id,
+								at: event.time,
+								title: `${event.title} · ${event.subtitle}`,
+							}))}
+						/>
 					</LayerCard.Body>
 				</LayerCard>
 			</div>
@@ -271,6 +294,7 @@ export default function WearableDashboardPage() {
 				</LayerCard.Header>
 				<LayerCard.Body>
 					<HeatmapCalendar
+						ariaLabel={t("pages.wearable.workoutConsistency2026")}
 						data={heatmapData}
 						year={2026}
 						colorScale={heatmapColorScales.green}

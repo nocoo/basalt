@@ -8,6 +8,7 @@ export interface LineChartDataPoint {
 
 export interface LineChartProps {
 	data: LineChartDataPoint[];
+	ariaLabel: string;
 	height?: number;
 	color?: string;
 	valueFormatter?: (value: number) => string;
@@ -16,6 +17,7 @@ export interface LineChartProps {
 
 export function LineChartWidget({
 	data,
+	ariaLabel,
 	height = 200,
 	color,
 	valueFormatter,
@@ -32,7 +34,7 @@ export function LineChartWidget({
 		<div className={cn("w-full", className)} style={{ height }}>
 			<LineChart
 				data={points}
-				ariaLabel="Line chart"
+				ariaLabel={ariaLabel}
 				showAxes
 				color={color}
 				valueFormatter={valueFormatter}

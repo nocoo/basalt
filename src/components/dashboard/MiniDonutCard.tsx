@@ -3,9 +3,9 @@ import { useTranslation } from "react-i18next";
 import { DonutChartWidget } from "@/components/dashboard/PieChartWidget";
 
 const data = [
-	{ label: "Active", value: 62 },
-	{ label: "Idle", value: 28 },
-	{ label: "Churn", value: 10 },
+	{ labelKey: "dashboard.activeLabel", value: 62 },
+	{ labelKey: "dashboard.idleLabel", value: 28 },
+	{ labelKey: "dashboard.churnLabel", value: 10 },
 ];
 
 export function MiniDonutCard() {
@@ -17,7 +17,11 @@ export function MiniDonutCard() {
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 flex items-center gap-basalt-card">
 				<div className="h-24 w-24">
-					<DonutChartWidget data={data} height={96} />
+					<DonutChartWidget
+						data={data.map((item) => ({ label: t(item.labelKey), value: item.value }))}
+						ariaLabel={data.map((item) => `${t(item.labelKey)} ${item.value}%`).join(", ")}
+						height={96}
+					/>
 				</div>
 				<div className="space-y-basalt-card-sm text-basalt-sm text-muted-foreground">
 					<div className="flex items-center justify-between gap-basalt-space-lg">

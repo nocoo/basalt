@@ -3,9 +3,9 @@ import { LayerCard } from "@nocoo/basalt/components/layer-card";
 import { useTranslation } from "react-i18next";
 
 const data = [
-	{ name: "Care adherence", value: 68, target: 80 },
-	{ name: "Follow-up completion", value: 72, target: 85 },
-	{ name: "Plan participation", value: 58, target: 70 },
+	{ name: "dashboard.bulletAdherence", value: 68, target: 80 },
+	{ name: "dashboard.bulletFollowup", value: 72, target: 85 },
+	{ name: "dashboard.bulletParticipation", value: 58, target: 70 },
 ];
 
 export function BulletChartCard() {
@@ -16,7 +16,11 @@ export function BulletChartCard() {
 				<h2 className="text-basalt-base text-muted-foreground">{t("dashboard.bulletKpis")}</h2>
 			</LayerCard.Header>
 			<LayerCard.Body className="min-h-0 flex-1 h-56">
-				<BulletChart data={data} ariaLabel={t("dashboard.bulletKpis")} className="h-full w-full" />
+				<BulletChart
+					data={data.map((item) => ({ ...item, name: t(item.name) }))}
+					ariaLabel={t("dashboard.bulletKpis")}
+					className="h-full w-full"
+				/>
 			</LayerCard.Body>
 		</LayerCard>
 	);
