@@ -1470,6 +1470,8 @@ describe("DatePicker", () => {
 	});
 
 	it("respects defaultMonth for initial view and allows uncontrolled navigation", () => {
+		vi.useFakeTimers({ shouldAdvanceTime: true });
+		vi.setSystemTime(new Date(2026, 10, 1, 15, 0, 0));
 		const onMonthChange = vi.fn();
 		const { rerender } = render(
 			<DatePicker defaultMonth="2026-11" onMonthChange={onMonthChange} aria-label="DefaultMonth" />,
@@ -1495,9 +1497,12 @@ describe("DatePicker", () => {
 		fireEvent.click(screen.getByRole("button", { name: "Next" }));
 		expect(screen.getByText("December 2026")).toBeInTheDocument();
 		expect(onMonthChange).toHaveBeenCalledWith("2026-12");
+		vi.useRealTimers();
 	});
 
 	it("preserves keyboard roving focus sequence after accepting PageDown with empty value", async () => {
+		vi.useFakeTimers({ shouldAdvanceTime: true });
+		vi.setSystemTime(new Date(2026, 10, 1, 15, 0, 0));
 		let currentMonth = "2026-11";
 		const onMonthChange = vi.fn((next: string) => {
 			currentMonth = next;
@@ -1543,6 +1548,7 @@ describe("DatePicker", () => {
 		// Subsequent ArrowRight advances to 2026-12-03
 		fireEvent.keyDown(document.activeElement as HTMLElement, { key: "ArrowRight" });
 		expect(document.activeElement).toHaveAttribute("aria-label", "2026-12-03");
+		vi.useRealTimers();
 	});
 
 	it("falls back gracefully on invalid month strings and handles extended years across boundaries", () => {
