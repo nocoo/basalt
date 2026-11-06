@@ -674,7 +674,7 @@ export const CATALOG_SOURCE_FILES: Record<string, {
 	},
 	"bullet": {
 		"file": "packages/basalt/src/charts/bullet.tsx",
-		"hash": "b89317488bb05fd8",
+		"hash": "94c38dccc70cc239",
 		"kind": "sourcemap",
 		"packageReadLocation": "node_modules/@nocoo/basalt/dist/charts/bullet.js.map (sourcesContent[0])"
 	},

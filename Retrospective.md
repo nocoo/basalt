@@ -4,6 +4,12 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-11: Chart audit needed library measurement and real rendering proof
+
+- **What:** The first Bullet chart fix estimated label width from character counts and forced every tick visible. Review found that this would still clip wide glyphs and overlap dense labels. The initial browser assertion also used an obsolete Recharts axis-descendant selector.
+- **Why:** CSS/class assertions do not establish rendered chart geometry, and character counts are not font measurements. Recharts 3.10 already exposes `YAxis width="auto"` and renders tick labels in separate label groups.
+- **Follow-up:** Read installed types and DOM before adding measurement code. Keep native tick collision handling, give the plot a definite height, and test actual bars and label boundaries at narrow widths, both themes and enlarged root fonts.
+
 ## 2026-10: Design release missed generated API contract expectations
 
 - **What:** The first 3.2.0 feature commit was correctly blocked by three catalog API assertions after all metadata generators had run; the other 2199 tests passed.

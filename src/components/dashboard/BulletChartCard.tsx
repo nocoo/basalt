@@ -10,13 +10,29 @@ const data = [
 
 export function BulletChartCard() {
 	const { t } = useTranslation();
+	const targetLabel = t("dashboard.target");
+	const summary = data
+		.map((point) => `${point.name}: ${point.value}%, ${targetLabel} ${point.target}%`)
+		.join(" · ");
+
 	return (
-		<LayerCard className="flex flex-col h-full">
+		<LayerCard>
 			<LayerCard.Header className="flex-col">
 				<h2 className="text-basalt-base text-muted-foreground">{t("dashboard.bulletKpis")}</h2>
 			</LayerCard.Header>
-			<LayerCard.Body className="min-h-0 flex-1 h-56">
-				<BulletChart data={data} ariaLabel={t("dashboard.bulletKpis")} className="h-full w-full" />
+			<LayerCard.Body
+				className="overflow-x-auto basalt-focus-inset"
+				role="region"
+				aria-label={t("dashboard.bulletKpis")}
+				tabIndex={0}
+			>
+				<BulletChart
+					data={data}
+					ariaLabel={t("dashboard.bulletKpis")}
+					className="h-56 min-w-72 w-full"
+					summary={summary}
+					valueFormatter={(value) => `${value}%`}
+				/>
 			</LayerCard.Body>
 		</LayerCard>
 	);
