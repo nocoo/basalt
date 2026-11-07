@@ -1,16 +1,8 @@
 import type { ReactNode } from "react";
 import { Bar, BarChart as RechartsBar, Tooltip, XAxis, YAxis } from "recharts";
-import { ANIMATION_PROPS, cartesianAxisProps, chartTooltipProps } from "./config";
+import { ANIMATION_PROPS, cartesianAxisProps, chartTooltipProps, seriesColor } from "./config";
 import { ChartFrame } from "./frame";
-import { chart } from "./palette";
 import { type BulletPoint, type BulletSeriesDescriptor, resolveChartSeries } from "./series";
-
-const AXIS_TICK_MARGIN = 8;
-
-const BULLET_SERIES_FILL = {
-	value: chart.primary,
-	target: chart.amber,
-} as const;
 
 export type BulletChartProps = {
 	data: BulletPoint[];
@@ -59,21 +51,15 @@ export function BulletChart({
 		>
 			<RechartsBar data={data} layout="vertical">
 				<XAxis type="number" {...cartesianAxisProps(!showAxes)} tickFormatter={valueFormatter} />
-				<YAxis
-					type="category"
-					dataKey="name"
-					width="auto"
-					tickMargin={AXIS_TICK_MARGIN}
-					{...cartesianAxisProps(!showAxes)}
-				/>
+				<YAxis type="category" dataKey="name" {...cartesianAxisProps(!showAxes)} />
 				<Tooltip {...chartTooltipProps({ formatter: valueFormatter, cursor: "bar" })} />
 				{bars.map((item) => (
 					<Bar
 						key={item.key}
 						dataKey={item.key}
 						name={item.label ?? item.key}
-						fill={item.color ?? BULLET_SERIES_FILL[item.key]}
-						barSize={item.key === "value" ? 10 : 6}
+						fill={seriesColor(item, item.key === "target" ? 6 : 1)}
+						barSize={item.key === "target" ? 10 : 6}
 						{...ANIMATION_PROPS}
 					/>
 				))}

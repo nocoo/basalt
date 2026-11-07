@@ -54,9 +54,6 @@ describe("landing document", () => {
 		expect(document.querySelector("h1")?.textContent).toBe(LANDING_HEADING);
 		expect(document.querySelector("#main-content")).not.toBeNull();
 		expect(document.querySelectorAll("details")).toHaveLength(4);
-		for (const role of ["switch", "checkbox"]) {
-			expect(document.querySelector(`[role="${role}"]`)?.hasAttribute("disabled")).toBe(true);
-		}
 		expect(document.querySelector('[href="#main-content"]')?.textContent).toBe(
 			"Skip to main content",
 		);

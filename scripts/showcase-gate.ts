@@ -35,8 +35,6 @@ import { assertRecommendation } from "./showcase-recommendation";
 import { assertRecordGeometry } from "./showcase-records";
 import { assertReusableShowcases } from "./showcase-reuse";
 import { assertSelectionHierarchy } from "./showcase-selection";
-import { assertTemplateCharts } from "./showcase-template-charts";
-import { assertTemplateDemos } from "./showcase-template-demos";
 
 /** Build and test the current source; never silently consume yesterday's dist. */
 export async function runShowcaseGate() {
@@ -78,8 +76,6 @@ export async function runShowcaseGate() {
 			const pageLayout = await assertPageLayout(page, url);
 			const focus = await assertFocusBoundaries(page, url);
 			const metrics = await assertMetricCards(page, url);
-			const templateCharts = await assertTemplateCharts(page, url);
-			const templateDemos = await assertTemplateDemos(page, url);
 			const records = await assertRecordGeometry(page, url);
 			const recommendation = await assertRecommendation(page, url);
 			const context = await assertContextCards(page, url);
@@ -107,8 +103,6 @@ export async function runShowcaseGate() {
 				pageLayout,
 				focus,
 				metrics,
-				templateCharts,
-				templateDemos,
 				records,
 				recommendation,
 				context,

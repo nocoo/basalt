@@ -1,11 +1,11 @@
 import { CATALOG, CATALOG_CATEGORIES } from "../pages/ui/catalog";
 import { SITE } from "./site";
 
-export const LANDING_HEADING_LINES = ["React components", "for data-rich apps."] as const;
+export const LANDING_HEADING_LINES = ["A calmer canvas", "for complex software."] as const;
 export const LANDING_HEADING = LANDING_HEADING_LINES.join(" ");
-export const LANDING_KICKER = "Open-source React 19 UI library";
+export const LANDING_KICKER = "The matte React design system";
 export const LANDING_LEDE =
-	"Build dashboards with components, charts, and application layouts. Use Tailwind v4 or standalone CSS, with light and dark themes.";
+	"Thoughtful components and complete dashboard layouts. Build information-rich products with a little less noise, and a lot more clarity.";
 export const LANDING_INSTALL = "npm i @nocoo/basalt lucide-react";
 
 export interface LandingLink {
@@ -51,23 +51,23 @@ export const LANDING_STATS = [
 
 export const LANDING_TEMPLATES = [
 	{
-		name: "Care overview",
+		name: "Analytics overview",
 		category: "Dashboard",
-		description: "Care spending, reimbursements, and health metrics in one dashboard.",
+		description: "Metrics, trends, and the bigger picture. All in one place.",
 		href: "/dashboard",
 		image: "dashboard",
 	},
 	{
-		name: "Care funding",
+		name: "Banking & wealth",
 		category: "Finance",
-		description: "Treatment funds, reserves, and reimbursements with readable financial charts.",
+		description: "A considered home for balances, portfolios, and transactions.",
 		href: "/banking",
 		image: "banking",
 	},
 	{
-		name: "Care platform operations",
+		name: "Network operations",
 		category: "Infrastructure",
-		description: "Service availability, network latency, and incidents across a care platform.",
+		description: "Bring traffic, service health, and system activity into focus.",
 		href: "/network",
 		image: "network",
 	},
@@ -75,22 +75,22 @@ export const LANDING_TEMPLATES = [
 
 export const LANDING_FACTS = [
 	{
-		title: "Consistent controls",
-		body: "Buttons, inputs, menus, and dialogs share spacing, focus states, and keyboard behavior.",
+		title: "Every detail belongs.",
+		body: "Buttons, inputs, menus, and dialogs share the same spacing, shape, and interaction language. Less time reconciling the details.",
 		href: "/ui",
-		link: "Browse components",
+		link: "Explore components",
 	},
 	{
-		title: "Charts for dense data",
-		body: "Compose sparklines, metric cards, and analytical charts with shared colors and accessible data alternatives.",
+		title: "Give your data a voice.",
+		body: "From a quiet sparkline to a full analytics view. Charts and data patterns designed to make dense information easier to read.",
 		href: "/ui?category=chart",
-		link: "Browse charts",
+		link: "Explore charts",
 	},
 	{
-		title: "Light and dark surfaces",
-		body: "Layered matte surfaces separate content from controls. Shared tokens keep both themes consistent.",
+		title: "Depth without distraction.",
+		body: "Matte surfaces, measured contrast, and a palette that feels at home in light and dark. One system, with room to make it yours.",
 		href: "/palette",
-		link: "View the palette",
+		link: "Explore the palette",
 	},
 ] as const;
 

@@ -25,15 +25,6 @@ const transfers = [
 	{ name: "Insurance reimbursement", amount: "$3.6k", direction: "in" },
 ];
 
-function improvingTrendContent(value: number, label: string) {
-	return (
-		<>
-			<span className="font-medium tabular-nums text-basalt-tag-success-foreground">{value}%</span>
-			<span className="text-basalt-muted-foreground">{label}</span>
-		</>
-	);
-}
-
 export default function BankingDashboardPage() {
 	const { t } = useTranslation();
 
@@ -64,7 +55,7 @@ export default function BankingDashboardPage() {
 			value: t("pages.banking.low"),
 			subtitle: t("pages.banking.portfolioTilt"),
 			icon: ShieldCheck,
-			trendContent: improvingTrendContent(-3.2, t("pages.banking.yoy")),
+			trend: { value: -3.2, label: t("pages.banking.yoy") },
 		},
 	];
 
@@ -76,13 +67,13 @@ export default function BankingDashboardPage() {
 				))}
 			</StatGrid>
 
-			<div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))] gap-basalt-layout">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<StackedAreaCard />
 				<MiniDonutCard />
 				<BulletChartCard />
 			</div>
 
-			<div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,22rem),1fr))] gap-basalt-layout">
+			<div className="grid grid-cols-1 gap-basalt-layout lg:grid-cols-3">
 				<SankeyCard />
 				<GroupedBarCard />
 				<RadialProgressCard />

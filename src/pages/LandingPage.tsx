@@ -57,7 +57,6 @@ export default function LandingPage() {
 	const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
 	return (
 		<LandingContent
-			interactiveSamples
 			linkComponent={Link}
 			imageMode={resolvedTheme}
 			themeToggle={

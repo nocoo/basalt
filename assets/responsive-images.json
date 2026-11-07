@@ -3,31 +3,13 @@
 	"pillow": "13.0.0",
 	"files": [
 		{
-			"path": "public/landing/dashboard-light.webp",
-			"role": "template preview",
-			"source": "public/landing/dashboard-light.webp",
-			"width": 3200,
-			"height": 2000,
-			"bytes": 129866,
-			"sha256": "2ad616a83682c61b7ee774a167c649af9236b6a2c9a9bd022a717b13cf006b8f"
-		},
-		{
-			"path": "public/landing/dashboard-light-1200.webp",
-			"role": "template preview",
-			"source": "public/landing/dashboard-light.webp",
-			"width": 1200,
-			"height": 750,
-			"bytes": 39050,
-			"sha256": "e9d1d514e86423f045304c6c0846be43770538b8b34dcbd46668275cae68e330"
-		},
-		{
 			"path": "public/landing/dashboard-light-640.webp",
 			"role": "template preview",
 			"source": "public/landing/dashboard-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 16018,
-			"sha256": "5936e41c49e94e48f3dc2cf121b404e7873050f87f30939bad6dc714d4f6ed4f"
+			"bytes": 16730,
+			"sha256": "aa226c8f285be03ea129bb3882e2773e7b2c91b9aa0d8cf4e6104402df23ebe9"
 		},
 		{
 			"path": "public/landing/dashboard-light-960.webp",
@@ -35,8 +17,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 28608,
-			"sha256": "52d6ac4e8361124d3615ab04b1e59adfaf68656c58b9d2e526cd36ce6a140660"
+			"bytes": 30258,
+			"sha256": "452c7b172aab77d49bca5d6e7486e007d637318fbfd90662b94fbd3ca8933368"
 		},
 		{
 			"path": "public/landing/dashboard-light-1600.webp",
@@ -44,8 +26,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 56802,
-			"sha256": "ef378e7fa8579f09ee3ab253d08107576047a641d1347ce2cd18e419264757dc"
+			"bytes": 58604,
+			"sha256": "97125adde012595e938b06fc5a75aea2bbc3e6aef08ca7a193352ad69c13dcd1"
 		},
 		{
 			"path": "public/landing/dashboard-light-640.avif",
@@ -53,8 +35,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 11293,
-			"sha256": "34fd61a668e9d9b6e5025089a79b20fc34dbcfc7558f92bdb69c0d129de98520"
+			"bytes": 12209,
+			"sha256": "428932a01e7de403fda0011c14f18bb438de093997af1869e0e93d364cab1fff"
 		},
 		{
 			"path": "public/landing/dashboard-light-960.avif",
@@ -62,8 +44,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 20833,
-			"sha256": "0f5b9c8e4de7bb1cfd4290189e689a89dfd20d7e401696a231f58e6394c0a15a"
+			"bytes": 21960,
+			"sha256": "c357999e1b19ed32f1a824f84599c2aca15a24605a7b8d1a5cf12676893de542"
 		},
 		{
 			"path": "public/landing/dashboard-light-1200.avif",
@@ -71,8 +53,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 28710,
-			"sha256": "d066d77c1083d4010186f6278d3b89139834bcbf437214684094d54086b05d4c"
+			"bytes": 29601,
+			"sha256": "90235be17ccbdb60bee24fddde909266c5c5fd33a373b5e183728e0de176780b"
 		},
 		{
 			"path": "public/landing/dashboard-light-1600.avif",
@@ -80,8 +62,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 39334,
-			"sha256": "5aeb59ed71db3ce6a74a90e5aae232da2cf1606228356bab49b4879d17b6177d"
+			"bytes": 40984,
+			"sha256": "7d22f65477d7f2a324870251f4d062115427478e5f41c0f34115b9b58f24a875"
 		},
 		{
 			"path": "public/landing/dashboard-light.avif",
@@ -89,26 +71,8 @@
 			"source": "public/landing/dashboard-light.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 63724,
-			"sha256": "2ac184bac094460a384cf2feafc1e45e80f803a7f7a4af689d463df316785be6"
-		},
-		{
-			"path": "public/landing/dashboard-dark.webp",
-			"role": "template preview",
-			"source": "public/landing/dashboard-dark.webp",
-			"width": 3200,
-			"height": 2000,
-			"bytes": 124116,
-			"sha256": "93080af43d35519aa4d0866c806fe8214f179ce196ba5be78e885dbce813b12d"
-		},
-		{
-			"path": "public/landing/dashboard-dark-1200.webp",
-			"role": "template preview",
-			"source": "public/landing/dashboard-dark.webp",
-			"width": 1200,
-			"height": 750,
-			"bytes": 37896,
-			"sha256": "834a1d2831937970577f4b7e687c8d78cd9c7a82941c128f0b2fcf4454a18d5d"
+			"bytes": 76896,
+			"sha256": "64f1d461ea91a50ec1913f8e95103d4943e9836d9626da76ceb5126ca1855997"
 		},
 		{
 			"path": "public/landing/dashboard-dark-640.webp",
@@ -116,8 +80,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 15814,
-			"sha256": "a5eaee961eee9eeab169758e7c63ea71942d206525c6d644ca82af56a8de8a4b"
+			"bytes": 16472,
+			"sha256": "96397d56c6421ae805cf31aed8b6e076e9f73817ec3ecc0e1b8cfc5f63989b00"
 		},
 		{
 			"path": "public/landing/dashboard-dark-960.webp",
@@ -125,8 +89,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 27730,
-			"sha256": "80b23b518c1a5844846ff45ea6be8dcbb21b21cf60c6f2322214483e74ac4c88"
+			"bytes": 29714,
+			"sha256": "841977deb76753012985d8777e7b17e6ad371382ac70d3712db28f238bd6139c"
 		},
 		{
 			"path": "public/landing/dashboard-dark-1600.webp",
@@ -134,8 +98,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 54996,
-			"sha256": "a9c784ce56116a8ae15e842a730a89de70111c630234c894c4dba5896acded59"
+			"bytes": 57014,
+			"sha256": "fe0b3be92cbb6c890bc4cb7220b3e47739433279504f7754481383d810adf760"
 		},
 		{
 			"path": "public/landing/dashboard-dark-640.avif",
@@ -143,8 +107,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 12285,
-			"sha256": "fb876ecea0e44cc6dc93b12620da5cb4d854f7aff10d43da58383773fb939ee3"
+			"bytes": 12957,
+			"sha256": "562df17f44f637c45164d7b4027ec401401eb17db7fa8c05583718f3105431d3"
 		},
 		{
 			"path": "public/landing/dashboard-dark-960.avif",
@@ -152,8 +116,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 22113,
-			"sha256": "dc17e320b3518d1204e6e9f51e0faa0e4acd08ec9c8a856c1c0adfb43ca8ccf2"
+			"bytes": 23310,
+			"sha256": "05de311be426380f3cb0b167696a37120710605eb411c477e7ed4509db02b1ad"
 		},
 		{
 			"path": "public/landing/dashboard-dark-1200.avif",
@@ -161,8 +125,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 30924,
-			"sha256": "5fae2fe9b299eb88382ef21d19a699a94c70c37d87d8cf671cc77122fda55ff5"
+			"bytes": 31564,
+			"sha256": "2d8d7bef3fa0ddd93213c6cc8c6cee7a39a4d794477bd0401a0008e620196d7c"
 		},
 		{
 			"path": "public/landing/dashboard-dark-1600.avif",
@@ -170,8 +134,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 43123,
-			"sha256": "7129847cb6aa34513b12d8d0b6729cca6d8c5e1f7b6918f1e0bb590c67cebccc"
+			"bytes": 44105,
+			"sha256": "1a1349ecf2229080de303dbc2c5b97b58a77eab09d056af8283191352fae2e2e"
 		},
 		{
 			"path": "public/landing/dashboard-dark.avif",
@@ -179,26 +143,8 @@
 			"source": "public/landing/dashboard-dark.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 61319,
-			"sha256": "1b8dd4122d332ed80fbba56df6d4422b3b0f7a9b2e43b7d414cf6e572d246762"
-		},
-		{
-			"path": "public/landing/banking-light.webp",
-			"role": "template preview",
-			"source": "public/landing/banking-light.webp",
-			"width": 3200,
-			"height": 2000,
-			"bytes": 134468,
-			"sha256": "6dcd758ff374a7edf6aec8751e2658df7d1673b51163620918c8ec993e70f274"
-		},
-		{
-			"path": "public/landing/banking-light-1200.webp",
-			"role": "template preview",
-			"source": "public/landing/banking-light.webp",
-			"width": 1200,
-			"height": 750,
-			"bytes": 40356,
-			"sha256": "759357d85a1d48febccdfe4a2bbf9bbe9650f6111b5af15be83aa56a5936f4a1"
+			"bytes": 76793,
+			"sha256": "bef907a1d663156a229125bc04f736f6a51524a8bb38b792e50382d763aacbd8"
 		},
 		{
 			"path": "public/landing/banking-light-640.webp",
@@ -206,8 +152,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 16092,
-			"sha256": "2dcc64779cab23d564bd73ca3aa2c4c67b919000ca06aa32ce65d73e1a257b76"
+			"bytes": 16238,
+			"sha256": "5e7edabe1e319613354ae9fecaabd5304c497c673372bbf068d8d9ccddd54f49"
 		},
 		{
 			"path": "public/landing/banking-light-960.webp",
@@ -215,8 +161,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 29468,
-			"sha256": "a9c38013c4a91be1dfc798d12365958a470018538e03840bea7d333b6ad8d165"
+			"bytes": 28932,
+			"sha256": "f3b1915667ed6384196acbee0ac4db4033fd8fb49b64486e41952bc3c242a051"
 		},
 		{
 			"path": "public/landing/banking-light-1600.webp",
@@ -224,8 +170,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 58994,
-			"sha256": "14b6883b2cc0778ab9f73c8e21952a26ed3158c99b4a720fe0ef56d6e41271cb"
+			"bytes": 57412,
+			"sha256": "fd0e6d054d3e6982bfe97f4ea73fed79e8e35a90704078ef04aaf78e01459a00"
 		},
 		{
 			"path": "public/landing/banking-light-640.avif",
@@ -233,8 +179,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 12059,
-			"sha256": "d86071ddbe089c024617ca0f57ad81f1da14a74a94a077e38eea6506abf24eb8"
+			"bytes": 12168,
+			"sha256": "bdd9f72431b03a976c7279eb5a953b25ec960cf16ae9271462e9dbd40db7a9f6"
 		},
 		{
 			"path": "public/landing/banking-light-960.avif",
@@ -242,8 +188,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 21814,
-			"sha256": "272c481766c37caee7d28ea5ede174ff533233a2d1f0e18a81ae026a7f7e1382"
+			"bytes": 21541,
+			"sha256": "cfc55a04925b9ce831480671ed336edf1d4502ecfa7ad28af556e0ed16b7b7e7"
 		},
 		{
 			"path": "public/landing/banking-light-1200.avif",
@@ -251,8 +197,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 29764,
-			"sha256": "9d3d05b4ef2fda1fd2a5c4af931ef57a04cbcdb2d1658b7ff690e9dd24123fa5"
+			"bytes": 29221,
+			"sha256": "62d0f24ec00447d39e340f4c76b95d1df78cced0fcf34bad6d60ba4e6f1e9ca3"
 		},
 		{
 			"path": "public/landing/banking-light-1600.avif",
@@ -260,8 +206,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 41304,
-			"sha256": "534c355bef5d5111fa2f92102f63b2a0a3d219f7301355ce0733cb7a6504eb65"
+			"bytes": 41035,
+			"sha256": "58af5734eba9e273f8e81c1843e417e0ab5c0913f29491194a2c61d9e956008a"
 		},
 		{
 			"path": "public/landing/banking-light.avif",
@@ -269,26 +215,8 @@
 			"source": "public/landing/banking-light.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 70028,
-			"sha256": "c325de2ce9b4fa4e380f4cfc8da9f27af5380ccb486f45ec4943cf7b5f003c03"
-		},
-		{
-			"path": "public/landing/banking-dark.webp",
-			"role": "template preview",
-			"source": "public/landing/banking-dark.webp",
-			"width": 3200,
-			"height": 2000,
-			"bytes": 130862,
-			"sha256": "1c4b19127794d23cc50ed5e5365896e8bb0a8ea35681ddc4faf1d5e72ed7ae4b"
-		},
-		{
-			"path": "public/landing/banking-dark-1200.webp",
-			"role": "template preview",
-			"source": "public/landing/banking-dark.webp",
-			"width": 1200,
-			"height": 750,
-			"bytes": 39668,
-			"sha256": "9860ec799f224b8af53ac3f5fb55bacd679c480329802d7eabc21756c0c32711"
+			"bytes": 76410,
+			"sha256": "6a13708058428d2bcf6689b9a1cd8fe854cec0b46d6cba588ef90ac3aab55d3c"
 		},
 		{
 			"path": "public/landing/banking-dark-640.webp",
@@ -296,8 +224,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 15944,
-			"sha256": "2db15cdf80e8a12aa5f5d31e58b0193158b1eaaf5bfc594ada8c6d4c5ae01424"
+			"bytes": 16116,
+			"sha256": "3e72ab0914f395c637140210db74c4d100db93d2563ac2f07c1fe1656357cf27"
 		},
 		{
 			"path": "public/landing/banking-dark-960.webp",
@@ -305,8 +233,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 29052,
-			"sha256": "1f6fc71728c201a7017e471bae2dfc621b142ae1071f8b4dddacfdc04a278951"
+			"bytes": 28832,
+			"sha256": "47df65b2f586a873f1a25196c6d96691248052ff23d2850c7b8292a28c54c114"
 		},
 		{
 			"path": "public/landing/banking-dark-1600.webp",
@@ -314,8 +242,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 57192,
-			"sha256": "baca417c5b8becee1e7eb18042fd6929df51ba5603851d568672f1385bbccda4"
+			"bytes": 56138,
+			"sha256": "8fcabdb4cde4bf4861c9e772b8b897cdaf4eb57efaee61031ce282d0fb9f47ef"
 		},
 		{
 			"path": "public/landing/banking-dark-640.avif",
@@ -323,8 +251,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 12917,
-			"sha256": "d9cbbaecf2b5e588c8832111144350c151cb76c3222f365bbe239d49092c8499"
+			"bytes": 12853,
+			"sha256": "ac8534265fc8e1bf67e4760a01dc112fe1b186e7dccad86053c8ee7a44369c58"
 		},
 		{
 			"path": "public/landing/banking-dark-960.avif",
@@ -332,8 +260,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 23017,
-			"sha256": "7f7a97d690351d7934439698029e41cfdd09efd9f69170fbe57d3f9df1c62254"
+			"bytes": 22672,
+			"sha256": "dfa8be10a149076a54d1c30e560df80dd349c09a01fbaa98d9d183f5d4a3f48c"
 		},
 		{
 			"path": "public/landing/banking-dark-1200.avif",
@@ -341,8 +269,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 31829,
-			"sha256": "4e0591687eaf6afef77e7bbe1f11a7b2f885c84a26ae75af892c3f756dc0e753"
+			"bytes": 31452,
+			"sha256": "9b3ad26fa3feb6a0d20468ab515158c3663e0da2448076a234da96fbed0f8c4d"
 		},
 		{
 			"path": "public/landing/banking-dark-1600.avif",
@@ -350,8 +278,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 45799,
-			"sha256": "6c628be5a061137ba0b8e09d04546ca3e4ce43aabfd1f848b809f906bfdf75e2"
+			"bytes": 43644,
+			"sha256": "ea6586a1ff2041dc2e908e8c21d9ee975ce5b140b1b8c05dc8b36d3d7efd514d"
 		},
 		{
 			"path": "public/landing/banking-dark.avif",
@@ -359,26 +287,8 @@
 			"source": "public/landing/banking-dark.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 67224,
-			"sha256": "9ba393cf7ec815f5f1d6812584ca9091cc546113ab89aeaec681090671b581db"
-		},
-		{
-			"path": "public/landing/network-light.webp",
-			"role": "template preview",
-			"source": "public/landing/network-light.webp",
-			"width": 3200,
-			"height": 2000,
-			"bytes": 131718,
-			"sha256": "1413bc42e5d9903baa4559c1bff44e707f0652b89b1eaff62f70630439d37f2c"
-		},
-		{
-			"path": "public/landing/network-light-1200.webp",
-			"role": "template preview",
-			"source": "public/landing/network-light.webp",
-			"width": 1200,
-			"height": 750,
-			"bytes": 38564,
-			"sha256": "745908ee72fdd2388751a30f4ff24897db0d4c64838c4f37cca10518dcc49570"
+			"bytes": 76490,
+			"sha256": "79892a472a2b4cf6120f2673b9d34e2fe07f0eccc6b97382d76a4b32bb476def"
 		},
 		{
 			"path": "public/landing/network-light-640.webp",
@@ -386,8 +296,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 15588,
-			"sha256": "587d23408ebd47085c31a1676a2899c11bcfbc41d502c2b01043c98f6257ec5d"
+			"bytes": 15678,
+			"sha256": "b2f664906dfa6810a3cb4d8572287fe9a0d7f6a0769521181d035ac9969ead6d"
 		},
 		{
 			"path": "public/landing/network-light-960.webp",
@@ -395,8 +305,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 27368,
-			"sha256": "23a532de60c02632c0dc55fa64bd8d752a206c57c5a9734d76ded05e372d0660"
+			"bytes": 28256,
+			"sha256": "7709ee1d676767739d616020fa6116e6ba81fae0a9ee406b7ecd76c83a6b34b4"
 		},
 		{
 			"path": "public/landing/network-light-1600.webp",
@@ -404,8 +314,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 56300,
-			"sha256": "8791dcf4253f5ac972b404723c973166b32abc55198dfc15dfda25830fb677be"
+			"bytes": 58346,
+			"sha256": "38aedec168ac27c4ecd777d4d4c3b85fde543b9a96ff10fee0b200bf4a38c732"
 		},
 		{
 			"path": "public/landing/network-light-640.avif",
@@ -413,8 +323,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 11403,
-			"sha256": "1cb144b41607d791d34db37eba922494265622a55457d7d0fffc73ea223070a0"
+			"bytes": 11600,
+			"sha256": "4ecafda149e187e55264520382b294fa2165f34ab456ef60a23430eea94af5b5"
 		},
 		{
 			"path": "public/landing/network-light-960.avif",
@@ -422,8 +332,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 21019,
-			"sha256": "be0a4181c68db0ff462d5992ce028112c8d7363ee50d07323a46cf232a5e0d9a"
+			"bytes": 21083,
+			"sha256": "09d24d26c5f5b4f2ffd1657fd8d2a98ff0d5e91f1c8e447167d7d346ee8d1b2b"
 		},
 		{
 			"path": "public/landing/network-light-1200.avif",
@@ -431,8 +341,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 28687,
-			"sha256": "7d47e2a924205ff2c7cd2fbd0c8fac45f45f78e1a60a7fe8c806ce5ce5b53aa5"
+			"bytes": 29110,
+			"sha256": "f6713db69662e109a799ead10158d9961e8df1d641f634402c75a47602a317b5"
 		},
 		{
 			"path": "public/landing/network-light-1600.avif",
@@ -440,8 +350,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 39791,
-			"sha256": "ed96c3ab6d66d3ae8a77eb57ef18c146d57f79bd63d2f67b856e99ce8c2ccb10"
+			"bytes": 40819,
+			"sha256": "5da1ed750197a5b8532b90912f7c4bfecf79da33d9631b524c08209eda13dad8"
 		},
 		{
 			"path": "public/landing/network-light.avif",
@@ -449,26 +359,8 @@
 			"source": "public/landing/network-light.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 65896,
-			"sha256": "b71393b7521d3da70014f7f0f9a530c506d987ea5d67786b2a225f2603a74487"
-		},
-		{
-			"path": "public/landing/network-dark.webp",
-			"role": "template preview",
-			"source": "public/landing/network-dark.webp",
-			"width": 3200,
-			"height": 2000,
-			"bytes": 128184,
-			"sha256": "c190c6d5f09b908c39ab0d0b08a987cc0191877ab1f4f0c3d31640384643a707"
-		},
-		{
-			"path": "public/landing/network-dark-1200.webp",
-			"role": "template preview",
-			"source": "public/landing/network-dark.webp",
-			"width": 1200,
-			"height": 750,
-			"bytes": 37184,
-			"sha256": "96f7429c045102f21e79ec2cb8bed04a03f47cdb1e4696387bd6c40b5b502791"
+			"bytes": 76203,
+			"sha256": "b484b57c5ec2faef023101d26b55b90b9ae3be7aafba465d7fa133a976a26098"
 		},
 		{
 			"path": "public/landing/network-dark-640.webp",
@@ -476,8 +368,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 15342,
-			"sha256": "54cbe5d6b14131feaa491f7bb265a8558bbc6ef026550a4b7e8e6ec4a01b6339"
+			"bytes": 15620,
+			"sha256": "3249bfa0a5150b692b4f4adec28ee0fe6ab100e35e798a9e66fb125fc7af9aa2"
 		},
 		{
 			"path": "public/landing/network-dark-960.webp",
@@ -485,8 +377,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 27248,
-			"sha256": "8617358e4d49969d55165707c904d2614d71f3a6e19b4fdac982ca494169762a"
+			"bytes": 28196,
+			"sha256": "605241c3ca05fe7f003898e3d597288199140c70482cd25ddcc5b19863204d70"
 		},
 		{
 			"path": "public/landing/network-dark-1600.webp",
@@ -494,8 +386,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 54126,
-			"sha256": "a838c4c0c9e5844ba0f82f42ece26426a5e3cf371dbeb630e814b42d58227cd7"
+			"bytes": 57008,
+			"sha256": "0376db6dc913c50f6accf6cc16dc9a0b9f57a18cd22ed0a3c766a930b043363f"
 		},
 		{
 			"path": "public/landing/network-dark-640.avif",
@@ -503,8 +395,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 640,
 			"height": 400,
-			"bytes": 12036,
-			"sha256": "5448f1cc6ab05f28b8271fe29929ebd981a336120abed39e77cd9256e581a13a"
+			"bytes": 12261,
+			"sha256": "ec3a54e162f878b8f0957ba293a551c140fd363f847dadc6497f86e0f8c7dbbe"
 		},
 		{
 			"path": "public/landing/network-dark-960.avif",
@@ -512,8 +404,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 960,
 			"height": 600,
-			"bytes": 21814,
-			"sha256": "fbc7d94ee36e2695a16276f831c4c4f8fa4bf17a4157a84002ffd0c288383491"
+			"bytes": 22606,
+			"sha256": "6c2b7f8812ffa08e138b589d8ee74757fe1e1acfc717ff88c992ca307623b957"
 		},
 		{
 			"path": "public/landing/network-dark-1200.avif",
@@ -521,8 +413,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 1200,
 			"height": 750,
-			"bytes": 30235,
-			"sha256": "351a598e70326d361a6f8a7769bec6fc04949b964bc15a709d50b1944e7613f5"
+			"bytes": 31037,
+			"sha256": "8f6891f7873740ed3b4dd3cfaee8af365d1456626b61a7cd69036960200e3d39"
 		},
 		{
 			"path": "public/landing/network-dark-1600.avif",
@@ -530,8 +422,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 1600,
 			"height": 1000,
-			"bytes": 43591,
-			"sha256": "58b0de9841605483c8ace9df596663dec978c2ecca060c5058de56fc0fbceff0"
+			"bytes": 43781,
+			"sha256": "65cb87ba76e4b92b08cc87b9da524cad43fa2a97e424283c96f1485b9d198e35"
 		},
 		{
 			"path": "public/landing/network-dark.avif",
@@ -539,8 +431,8 @@
 			"source": "public/landing/network-dark.webp",
 			"width": 3200,
 			"height": 2000,
-			"bytes": 64296,
-			"sha256": "8c1f198c285ddb26ac10510af0c704d47db2157742d78643b3356d6a3e197019"
+			"bytes": 77653,
+			"sha256": "749cf2303f8e4b611c82fcd78858005e4bec8ee3bc3073be9ec87f957b70dbb7"
 		},
 		{
 			"path": "public/landing/tower-480.webp",

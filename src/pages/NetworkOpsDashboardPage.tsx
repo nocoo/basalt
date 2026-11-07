@@ -48,15 +48,6 @@ const incidents = [
 	},
 ];
 
-function improvingTrendContent(value: number, label: string) {
-	return (
-		<>
-			<span className="font-medium tabular-nums text-basalt-tag-success-foreground">{value}%</span>
-			<span className="text-basalt-muted-foreground">{label}</span>
-		</>
-	);
-}
-
 export default function NetworkOpsDashboardPage() {
 	const { t } = useTranslation();
 
@@ -73,14 +64,14 @@ export default function NetworkOpsDashboardPage() {
 			value: "18 ms",
 			subtitle: t("pages.networkOps.avgRtt"),
 			icon: Wifi,
-			trendContent: improvingTrendContent(-4.2, t("common.vsLastWeek")),
+			trend: { value: -4.2, label: t("common.vsLastWeek") },
 		},
 		{
 			title: t("pages.networkOps.packetLoss"),
 			value: "0.12%",
 			subtitle: t("pages.networkOps.regionAvg"),
 			icon: AlertTriangle,
-			trendContent: improvingTrendContent(-0.04, t("common.vsLastWeek")),
+			trend: { value: -0.04, label: t("common.vsLastWeek") },
 		},
 		{
 			title: t("pages.networkOps.throughput"),
