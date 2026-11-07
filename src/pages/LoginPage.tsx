@@ -1,5 +1,5 @@
 import { Button } from "@nocoo/basalt/components/button";
-import { Wallet } from "lucide-react";
+import { CircleSlash, Wallet } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { BasaltLogo } from "@/components/BasaltLogo";
 import { useSiteTitle } from "@/hooks/use-site-title";
@@ -26,7 +26,7 @@ export default function LoginPage() {
 	const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
 
 	return (
-		<div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background p-4">
+		<div className="relative flex min-h-dvh items-center justify-center overflow-x-hidden bg-background p-4">
 			<div
 				className="pointer-events-none absolute inset-0"
 				style={{
@@ -44,10 +44,10 @@ export default function LoginPage() {
 					].join(" "),
 				}}
 			/>
-			<div className="flex flex-col items-center">
+			<div className="flex min-w-0 max-w-full flex-col items-center">
 				<div
 					data-basalt-surface-root=""
-					className="relative flex aspect-[54/86] w-72 flex-col overflow-hidden rounded-2xl bg-card ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
+					className="relative flex aspect-[54/86] w-72 max-w-full flex-col overflow-hidden rounded-2xl bg-card ring-1 ring-black/[0.08] dark:ring-white/[0.06]"
 					style={{
 						boxShadow: [
 							"0 1px 2px rgba(0,0,0,0.06)",
@@ -97,7 +97,13 @@ export default function LoginPage() {
 						<div className="mt-5 h-px w-full bg-border" />
 						<div className="flex-1" />
 
-						<Button variant="outline" className="w-full rounded-xl py-3">
+						<Button
+							type="button"
+							variant="outline"
+							className="w-full rounded-xl py-3"
+							disabled
+							aria-describedby="login-demo-notice"
+						>
 							<svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
 								<path
 									d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
@@ -126,9 +132,9 @@ export default function LoginPage() {
 
 					<div className="absolute right-0 bottom-0 left-0 flex items-center justify-center border-t border-border bg-secondary/50 py-2.5">
 						<div className="flex items-center gap-1.5">
-							<div className="h-1.5 w-1.5 animate-pulse motion-reduce:animate-none rounded-full bg-success" />
-							<span className="text-[10px] text-muted-foreground">
-								{t("pages.badgeLogin.secureAuth")}
+							<CircleSlash className="h-3 w-3 text-muted-foreground" strokeWidth={1.5} />
+							<span id="login-demo-notice" className="text-[10px] text-muted-foreground">
+								{t("pages.badgeLogin.demoNotice")}
 							</span>
 						</div>
 					</div>

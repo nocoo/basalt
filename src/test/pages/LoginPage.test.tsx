@@ -24,4 +24,20 @@ describe("LoginPage", () => {
 			"rounded-2xl",
 		);
 	});
+
+	it("disables the provider sign-in as an explained demo", () => {
+		render(
+			<MemoryRouter>
+				<LoginPage />
+			</MemoryRouter>,
+		);
+
+		const button = screen.getByRole("button", { name: "Continue with Google" });
+		expect(button).toBeDisabled();
+
+		const notice = screen.getByText("Demo template · sign-in is disabled");
+		expect(button).toHaveAttribute("aria-describedby", "login-demo-notice");
+		expect(notice).toHaveAttribute("id", "login-demo-notice");
+		expect(screen.queryByText(/secure authentication/i)).not.toBeInTheDocument();
+	});
 });
