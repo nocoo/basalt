@@ -95,8 +95,18 @@ async function assertHeaderActions(page: Page, selector: string, { square = fals
 /** Covers the original global-CSS regression, route transitions, and crawler-visible output. */
 export async function assertLandingShowcase(page: Page, baseUrl: string) {
 	const cases: string[] = [];
-	for (const width of [320, 390, 768, 1440, 1920]) {
-		await page.setViewportSize({ width, height: 900 });
+	for (const width of [320, 390, 768, 820, 1024, 1440, 1920]) {
+		const height =
+			width === 390
+				? 844
+				: width === 768
+					? 1024
+					: width === 820
+						? 1180
+						: width === 1024
+							? 768
+							: 900;
+		await page.setViewportSize({ width, height });
 		for (const dark of [false, true]) {
 			await page.goto(baseUrl);
 			await page
@@ -122,6 +132,17 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 			await assertFocusPaint(page.locator(".landing-brand-motion").first(), 16, false);
 			assert.equal(await page.locator("h1").count(), 1);
 			assert.equal((await page.locator("h1").textContent()).replace(/\s+/g, " "), LANDING_HEADING);
+			if (width >= 390) {
+				await page.evaluate(() => window.scrollTo({ top: 0, behavior: "instant" }));
+				await page.waitForFunction(() => window.scrollY === 0);
+				const preview = await page.locator(".landing-preview-link").boundingBox();
+				const action = await page.locator(".landing-hero-actions").boundingBox();
+				assert.ok(
+					preview && preview.y >= 0 && preview.y + preview.height <= height,
+					JSON.stringify({ width, height, preview }),
+				);
+				assert.ok(action && action.y >= 0 && action.y + action.height <= height);
+			}
 			await assertLandingBounds(page, width);
 			cases.push(`${width}/${dark ? "dark" : "light"}`);
 		}
@@ -129,6 +150,16 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 	await page.setViewportSize({ width: 1440, height: 900 });
 	await page.goto(baseUrl);
 	await assertHeaderActions(page, ".landing-header-actions", { square: true });
+	for (const [role, name] of [
+		["switch", "Preview notifications"],
+		["checkbox", "Preview selection"],
+	] as const) {
+		const control = page.getByRole(role, { name });
+		await control.scrollIntoViewIfNeeded();
+		assert.equal(await control.getAttribute("aria-checked"), "true");
+		await control.click();
+		assert.equal(await control.getAttribute("aria-checked"), "false");
+	}
 	await page.emulateMedia({ reducedMotion: "no-preference" });
 	await page.locator(".landing-brand-artwork").scrollIntoViewIfNeeded();
 	await page.waitForFunction(
@@ -162,7 +193,10 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 		await page.evaluate(() => {
 			document.body.dataset.landingSession = "preserved";
 		});
-		await page.getByRole("link", { name: "Browse components", exact: true }).click();
+		await page
+			.locator(".landing-hero-actions")
+			.getByRole("link", { name: "Browse components", exact: true })
+			.click();
 		await assertDashboardBounds(page, width);
 		if (width === 1440) {
 			await assertHeaderActions(page, "[data-dashboard-shell] main > header > div:last-child");
@@ -203,6 +237,28 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 
 	const browser = page.context().browser();
 	assert.ok(browser);
+	const retina = await browser.newContext({
+		viewport: { width: 1920, height: 900 },
+		deviceScaleFactor: 2,
+	});
+	try {
+		const wide = await retina.newPage();
+		await wide.goto(baseUrl);
+		await wide.locator(".landing-header-actions button").waitFor();
+		for (const image of await wide.locator(".landing-preview img, .landing-template img").all()) {
+			await image.scrollIntoViewIfNeeded();
+			const size = await image.evaluate(async (node: HTMLImageElement) => {
+				await node.decode();
+				const source = new Image();
+				source.src = node.currentSrc;
+				await source.decode();
+				return { source: source.naturalWidth, required: node.clientWidth * devicePixelRatio };
+			});
+			assert.ok(size.source >= size.required, JSON.stringify(size));
+		}
+	} finally {
+		await retina.close();
+	}
 	const context = await browser.newContext({
 		javaScriptEnabled: false,
 		viewport: { width: 1440, height: 900 },
@@ -222,6 +278,10 @@ export async function assertLandingShowcase(page: Page, baseUrl: string) {
 				await crawler.title(),
 			);
 			if (path === "/") {
+				assert.ok(
+					await crawler.getByRole("switch", { name: "Preview notifications" }).isDisabled(),
+				);
+				assert.ok(await crawler.getByRole("checkbox", { name: "Preview selection" }).isDisabled());
 				await assertLandingBounds(crawler, 1440);
 				await crawler.locator("details summary").first().click();
 				assert.equal(

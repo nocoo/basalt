@@ -28,8 +28,10 @@ describe("LandingPage", () => {
 		renderLanding();
 		expect(screen.getByRole("heading", { level: 1, name: LANDING_HEADING })).toBeInTheDocument();
 		expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
-		expect(screen.getByRole("link", { name: "Browse components" })).toHaveAttribute("href", "/ui");
-		expect(screen.getByRole("link", { name: "Explore templates" })).toHaveAttribute(
+		for (const link of screen.getAllByRole("link", { name: "Browse components" })) {
+			expect(link).toHaveAttribute("href", "/ui");
+		}
+		expect(screen.getByRole("link", { name: "View templates" })).toHaveAttribute(
 			"href",
 			"#templates",
 		);
@@ -42,6 +44,23 @@ describe("LandingPage", () => {
 		expect(document.title).toBe(SITE.homeTitle);
 		expect(document.querySelector("footer #landing-version")).toHaveTextContent(`v${APP_VERSION}`);
 		expect(document.querySelector("header")).not.toHaveTextContent(`v${APP_VERSION}`);
+	});
+
+	it("shows matching care templates and real interactive controls", () => {
+		renderLanding();
+		for (const name of ["Care overview", "Care funding", "Care platform operations"]) {
+			expect(screen.getByRole("heading", { name })).toBeInTheDocument();
+		}
+		expect(screen.getByRole("heading", { name: "Dashboard templates" })).toBeInTheDocument();
+		expect(document.querySelector(".landing-preview figcaption")).toBeNull();
+		const notifications = screen.getByRole("switch", { name: "Preview notifications" });
+		const selection = screen.getByRole("checkbox", { name: "Preview selection" });
+		expect(notifications).toBeChecked();
+		expect(selection).toBeChecked();
+		fireEvent.click(notifications);
+		fireEvent.click(selection);
+		expect(notifications).not.toBeChecked();
+		expect(selection).not.toBeChecked();
 	});
 
 	it("copies the install command and announces success", async () => {

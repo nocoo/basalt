@@ -4,6 +4,11 @@ Accident narratives for this repo.
 
 Routing: narrative stays here. A project-specific rule that will recur may become one line in `AGENTS.md`. Cross-project lessons go to nmem or a global rule. If it can be checked by a machine, add a hook or test instead of prose.
 
+## 2026-11: Landing proof must use the first screen and the served version
+
+- **What:** The first new fold assertion ran after a focus helper scrolled to the tower. Negative viewport coordinates could falsely pass. Initial capture metadata also copied the checkout version without verifying the local server.
+- **Follow-up:** Reset document scrolling and assert both top and bottom bounds when testing a fold. Read the actual rendered version before capturing assets. Static HTML must disable JavaScript-only demo controls instead of advertising inert interactions. For SPA performance checks, serve the build directory at `/`, not its `/index.html` URL; inspect the reported LCP element and document height so a client-side 404 cannot masquerade as a fast homepage.
+
 ## 2026-11: Chart audit needed library measurement and real rendering proof
 
 - **What:** The first Bullet chart fix estimated label width from character counts and forced every tick visible. Review found that this would still clip wide glyphs and overlap dense labels. The initial browser assertion also used an obsolete Recharts axis-descendant selector.

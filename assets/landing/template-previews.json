@@ -1,0 +1,9 @@
+{
+	"version": "3.2.3",
+	"viewport": {
+		"width": 1600,
+		"height": 1000
+	},
+	"deviceScaleFactor": 2,
+	"routes": ["/dashboard", "/banking", "/network"]
+}

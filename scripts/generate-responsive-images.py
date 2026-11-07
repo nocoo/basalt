@@ -1,13 +1,15 @@
 """Derive right-sized AVIF/WebP variants for images the catalog site serves.
 
-The published masters stay untouched; this script only adds smaller or modern-format
-siblings next to them and records each output in assets/responsive-images.json.
-Run from anywhere: python3 scripts/generate-responsive-images.py
+By default masters stay untouched. --template-captures replaces template masters
+from fresh 3200x2000 PNG captures and updates only template preview variants.
+Every output is recorded in assets/responsive-images.json.
 """
 
 from hashlib import sha256
 from pathlib import Path
+import argparse
 import json
+import subprocess
 
 from PIL import Image, ImageFilter, __version__ as pillow_version
 
@@ -15,6 +17,19 @@ root = Path(__file__).resolve().parents[1]
 public = root / "public"
 landing = public / "landing"
 outputs = []
+parser = argparse.ArgumentParser()
+parser.add_argument("--template-captures", type=Path)
+captures = parser.parse_args().template_captures
+if captures:
+    metadata = json.loads((captures / "capture.json").read_text())
+    version = json.loads((root / "package.json").read_text())["version"]
+    if metadata["version"] != version:
+        raise ValueError("Template captures must match the current package version")
+    for name in ["dashboard", "banking", "network"]:
+        for mode in ["light", "dark"]:
+            with Image.open(captures / f"{name}-{mode}.png") as image:
+                if image.size != (3200, 2000):
+                    raise ValueError("Template captures must be 3200x2000")
 
 WEBP = {"format": "WEBP", "quality": 82, "method": 6}
 AVIF = {"format": "AVIF", "quality": 60, "speed": 4}
@@ -37,6 +52,17 @@ def save(image: Image.Image, relative: str, role: str, source: str, options: dic
     })
 
 
+def write_manifest() -> None:
+    manifest = {
+        "generator": "scripts/generate-responsive-images.py",
+        "pillow": pillow_version,
+        "files": outputs,
+    }
+    (root / "assets/responsive-images.json").write_text(json.dumps(manifest, indent="\t") + "\n")
+    for record in outputs:
+        print(f"{record['path']}: {record['width']}x{record['height']} {record['bytes']} B")
+
+
 def resized(image: Image.Image, width: int) -> Image.Image:
     if width == image.width:
         return image
@@ -50,7 +76,12 @@ TEMPLATE_AVIF_WIDTHS = [640, 960, 1200, 1600, 3200]
 for name in ["dashboard", "banking", "network"]:
     for mode in ["light", "dark"]:
         source = f"public/landing/{name}-{mode}.webp"
-        master = Image.open(root / source).convert("RGB")
+        master_path = captures / f"{name}-{mode}.png" if captures else root / source
+        master = Image.open(master_path).convert("RGB")
+        if captures:
+            save(master, f"landing/{name}-{mode}.webp", "template preview", source, WEBP)
+            save(resized(master, 1200), f"landing/{name}-{mode}-1200.webp",
+                 "template preview", source, WEBP)
         for width in TEMPLATE_WEBP_WIDTHS:
             save(resized(master, width), f"landing/{name}-{mode}-{width}.webp",
                  "template preview", source, WEBP)
@@ -58,6 +89,15 @@ for name in ["dashboard", "banking", "network"]:
             suffix = "" if width == master.width else f"-{width}"
             save(resized(master, width), f"landing/{name}-{mode}{suffix}.avif",
                  "template preview", source, AVIF)
+
+if captures:
+    previous = json.loads((root / "assets/responsive-images.json").read_text())
+    outputs.extend(record for record in previous["files"] if record["role"] != "template preview")
+    write_manifest()
+    provenance = root / "assets/landing/template-previews.json"
+    provenance.write_text(json.dumps(metadata, indent="\t") + "\n")
+    subprocess.run([root / "node_modules/.bin/biome", "format", "--write", provenance], check=True)
+    raise SystemExit(0)
 
 # Brand tower: 1280px RGBA master, displayed at ~320-560 CSS px below the fold. 600w covers a
 # typical phone (about 330 CSS px at 1.75x) without stepping up to 720w.
@@ -99,11 +139,4 @@ for size in [64, 96]:
     save(logo.resize((size, size), Image.Resampling.LANCZOS), f"logo-{size}.webp",
          "transparent application mark", logo_source, {"format": "WEBP", "lossless": True, "method": 6})
 
-manifest = {
-    "generator": "scripts/generate-responsive-images.py",
-    "pillow": pillow_version,
-    "files": outputs,
-}
-(root / "assets/responsive-images.json").write_text(json.dumps(manifest, indent="\t") + "\n")
-for record in outputs:
-    print(f"{record['path']}: {record['width']}x{record['height']} {record['bytes']} B")
+write_manifest()

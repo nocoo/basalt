@@ -1,5 +1,8 @@
+import { Badge } from "@nocoo/basalt/components/badge";
 import { LinkButton } from "@nocoo/basalt/components/button";
-import { ArrowRight, ArrowUp, ArrowUpRight, Check, CheckCheck, Code2, Plus } from "lucide-react";
+import { Checkbox } from "@nocoo/basalt/components/checkbox";
+import { Switch } from "@nocoo/basalt/components/switch";
+import { ArrowRight, ArrowUp, ArrowUpRight, CheckCheck, Code2, Plus } from "lucide-react";
 import type { AnchorHTMLAttributes, ElementType, ReactNode } from "react";
 import { BasaltLogo } from "@/components/BasaltLogo";
 import { Github } from "@/components/icons/github";
@@ -35,6 +38,7 @@ interface LandingContentProps {
 	installAction?: ReactNode;
 	brandArtwork?: ReactNode;
 	imageMode?: "light" | "dark";
+	interactiveSamples?: boolean;
 }
 
 function TemplateImage({
@@ -81,27 +85,17 @@ function TemplateImage({
 	);
 }
 
-function ComponentSample() {
+function ComponentSample({ interactive = false }: { interactive?: boolean }) {
 	return (
-		<div className="landing-component-sample" aria-hidden="true">
-			<div className="landing-sample-actions">
-				<span className="landing-sample-primary">
-					<Plus size={15} /> Create project
-				</span>
-				<span className="landing-sample-icon">
-					<Plus size={17} />
-				</span>
-			</div>
+		<div className="landing-component-sample">
+			<LinkButton href="/ui/button" size="sm">
+				View button
+				<ArrowRight aria-hidden="true" />
+			</LinkButton>
 			<div className="landing-sample-controls">
-				<span className="landing-sample-status">
-					<Check size={12} /> Published
-				</span>
-				<span className="landing-sample-switch">
-					<span />
-				</span>
-				<span className="landing-sample-checkbox">
-					<Check size={13} />
-				</span>
+				<Badge>Ready</Badge>
+				<Switch aria-label="Preview notifications" defaultChecked disabled={!interactive} />
+				<Checkbox aria-label="Preview selection" defaultChecked disabled={!interactive} />
 			</div>
 		</div>
 	);
@@ -154,6 +148,7 @@ export function LandingContent({
 	installAction,
 	brandArtwork,
 	imageMode,
+	interactiveSamples = false,
 }: LandingContentProps) {
 	return (
 		<div id="top" className="landing" data-landing-page tabIndex={-1}>
@@ -218,7 +213,7 @@ export function LandingContent({
 									<ArrowRight size={17} aria-hidden="true" />
 								</Link>
 								<a href="#templates" className="landing-button landing-button-secondary">
-									Explore templates
+									View templates
 									<ArrowUpRight size={17} aria-hidden="true" />
 								</a>
 							</div>
@@ -228,29 +223,16 @@ export function LandingContent({
 								<span>Open source · MIT</span>
 							</p>
 						</div>
-						<figure className="landing-preview">
-							<Link
-								href="/dashboard"
-								className="landing-preview-link"
-								aria-label="Explore the live analytics dashboard"
-							>
+						<div className="landing-preview">
+							<Link href="/dashboard" className="landing-preview-link" aria-label="Open dashboard">
 								<TemplateImage
 									name="dashboard"
-									alt="Basalt analytics dashboard with a navigation sidebar, financial metrics, bar charts, and an expense breakdown"
+									alt="Care overview built with Basalt: spending metrics, reimbursements, charts, and navigation"
 									mode={imageMode}
 									hero
 								/>
 							</Link>
-							<figcaption>
-								<span>
-									<span className="landing-status-dot" /> Real components. A working starting point.
-								</span>
-								<Link href="/dashboard">
-									Open dashboard
-									<ArrowUpRight size={14} aria-hidden="true" />
-								</Link>
-							</figcaption>
-						</figure>
+						</div>
 					</div>
 				</section>
 
@@ -277,16 +259,11 @@ export function LandingContent({
 					<section id="templates" className="landing-section" aria-labelledby="templates-title">
 						<div className="landing-section-heading">
 							<div>
-								<p className="landing-eyebrow">The starting points</p>
-								<h2 id="templates-title">
-									Skip the blank canvas.
-									<br />
-									Keep the possibilities.
-								</h2>
+								<p className="landing-eyebrow">Application layouts</p>
+								<h2 id="templates-title">Dashboard templates</h2>
 							</div>
 							<p>
-								Working layouts for the work that matters. Explore the details, borrow the patterns,
-								and make them your own.
+								Start with a working care dashboard. Adapt the layout, then connect your own data.
 							</p>
 						</div>
 						<div className="landing-template-grid">
@@ -308,7 +285,7 @@ export function LandingContent({
 											</h3>
 											<p>{template.description}</p>
 											<span className="landing-text-link">
-												Explore template
+												View template
 												<ArrowRight size={14} aria-hidden="true" />
 											</span>
 										</div>
@@ -317,13 +294,13 @@ export function LandingContent({
 							))}
 						</div>
 						<div className="landing-template-more">
-							<span>There’s more to build on.</span>
+							<span>More layouts</span>
 							<Link href="/wearable">
 								Health & activity
 								<ArrowUpRight size={13} aria-hidden="true" />
 							</Link>
 							<Link href="/layout">
-								Application shell
+								Layout patterns
 								<ArrowUpRight size={13} aria-hidden="true" />
 							</Link>
 							<Link href="/login">
@@ -367,7 +344,7 @@ export function LandingContent({
 								<span />
 							</div>
 							<Link href="/palette" className="landing-text-link">
-								Explore our colors
+								View brand colors
 								<ArrowUpRight size={14} aria-hidden="true" />
 							</Link>
 						</div>
@@ -379,17 +356,10 @@ export function LandingContent({
 					>
 						<div className="landing-section-heading">
 							<div>
-								<p className="landing-eyebrow">The details add up</p>
-								<h2 id="foundation-title">
-									Quiet by design.
-									<br />
-									Capable by default.
-								</h2>
+								<p className="landing-eyebrow">The component library</p>
+								<h2 id="foundation-title">One system for every screen</h2>
 							</div>
-							<p>
-								A consistent foundation from your first button to your busiest screen. Built to feel
-								like one product.
-							</p>
+							<p>Browse the controls and charts. Compare both themes.</p>
 						</div>
 						<div className="landing-feature-grid">
 							{LANDING_FACTS.map((fact, index) => {
@@ -397,7 +367,7 @@ export function LandingContent({
 								return (
 									<article key={fact.title} className="landing-feature">
 										<div className="landing-feature-sample">
-											<Sample />
+											<Sample interactive={interactiveSamples} />
 										</div>
 										<h3>{fact.title}</h3>
 										<p>{fact.body}</p>
@@ -414,20 +384,12 @@ export function LandingContent({
 					<section id="get-started" className="landing-install" aria-labelledby="install-title">
 						<div>
 							<p className="landing-eyebrow">
-								<Code2 size={15} aria-hidden="true" /> From here, it’s yours
+								<Code2 size={15} aria-hidden="true" /> Get started
 							</p>
-							<h2 id="install-title">
-								Make something
-								<br />
-								worth using.
-							</h2>
-							<p>
-								Start with a component. Grow into a system.
-								<br />
-								The source is open, and the next move is yours.
-							</p>
+							<h2 id="install-title">Install Basalt</h2>
+							<p>Choose a component, add the package, and follow the integration guide.</p>
 							<Link href="/ui" className="landing-button landing-button-primary">
-								Open the catalog
+								Browse components
 								<ArrowRight size={16} aria-hidden="true" />
 							</Link>
 						</div>
@@ -463,15 +425,15 @@ export function LandingContent({
 
 					<section className="landing-faq landing-section" aria-labelledby="faq-title">
 						<div>
-							<p className="landing-eyebrow">A few useful answers</p>
-							<h2 id="faq-title">Before you begin.</h2>
+							<p className="landing-eyebrow">Before you build</p>
+							<h2 id="faq-title">Common questions</h2>
 							<a
 								href={SITE.github}
 								target="_blank"
 								rel="noopener noreferrer"
 								className="landing-text-link"
 							>
-								More on GitHub
+								Read the documentation
 								<ArrowUpRight size={14} aria-hidden="true" />
 							</a>
 						</div>

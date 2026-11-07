@@ -10,10 +10,10 @@ export type LandingImageFormat = "avif" | "webp";
 export const TEMPLATE_IMAGE_WIDTHS = [640, 960, 1200, 1600, 3200] as const;
 export const TEMPLATE_MASTER_WIDTH = 3200;
 
-/** The hero preview spans the page container; the template cards are a 3-up grid. */
-export const HERO_IMAGE_SIZES = "(min-width: 1600px) 1456px, 91vw";
+export const HERO_IMAGE_SIZES =
+	"(max-width: 63.9375rem) 91vw, (min-width: 100rem) 843px, (min-width: 90rem) 758px, 54vw";
 export const CARD_IMAGE_SIZES =
-	"(max-width: 30rem) 87vw, (max-width: 47.5rem) 45vw, (max-width: 100rem) 28vw, 28rem";
+	"(max-width: 30rem) 87vw, (max-width: 63.9375rem) 48vw, (min-width: 100rem) 444px, (min-width: 90rem) 394px, 28vw";
 
 /** The hero preview is the landing page's largest contentful paint on mobile and desktop. */
 export const HERO_TEMPLATE_IMAGE = "dashboard";
