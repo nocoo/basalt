@@ -11,6 +11,21 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.2.3] - 2026-11-05
+
+### Changed
+
+- Bump @swc/core (#616)
+- Bump @types/node (#613)
+- Bump react-router (#612)
+- Bump postcss (#609)
+- Bump i18next-browser-languagedetector (#606)
+- Bump i18next (#605)
+
+### Fixed
+
+- Freeze November 2026 clock in DatePicker keyboard focus tests
+
 ## [3.2.2] - 2026-10-25
 
 ### Changed
