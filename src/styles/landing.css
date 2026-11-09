@@ -204,6 +204,8 @@
 	isolation: isolate;
 	padding-top: clamp(9.5rem, 13vw, 12.25rem);
 }
+/* Until the low-priority ridge photograph arrives, the scene veils sit on the page background
+   token: a flat surface color, no blurred or gradient stand-in. */
 .landing-hero::before {
 	content: "";
 	position: absolute;
@@ -223,7 +225,7 @@
 			var(--basalt-scene-daylight-wash),
 			var(--basalt-scene-daylight-edge) 65%
 		),
-		var(--landing-ridge-light-image) center 48% / cover;
+		var(--landing-ridge-light-image) center 48% / cover hsl(var(--basalt-background));
 	mask-image: linear-gradient(
 		to bottom,
 		var(--basalt-scene-mask) 0%,
@@ -240,7 +242,7 @@
 			var(--basalt-scene-night-middle) 60%,
 			var(--basalt-scene-night-edge)
 		),
-		var(--landing-ridge-dark-image) center 48% / cover;
+		var(--landing-ridge-dark-image) center 48% / cover hsl(var(--basalt-background));
 }
 .landing-hero-copy {
 	text-align: center;
@@ -1108,12 +1110,18 @@
 .landing-footer-bottom :where(a) {
 	color: hsl(var(--basalt-foreground));
 }
-/* Links inside running text need a non-color cue (WCAG 1.4.1): a hairline underline. */
+/* Links inside running text need a non-color cue (WCAG 1.4.1): a hairline muted underline that
+   takes the link color on hover and keyboard focus. Prose paragraphs only; navigation, buttons
+   and cards keep their own affordances. Focus still draws the shared landing focus ring. */
 .landing-footer-bottom :where(p) :where(a) {
 	text-decoration-line: underline;
-	text-decoration-thickness: 0.0625rem;
+	text-decoration-thickness: var(--basalt-border-width);
 	text-decoration-color: hsl(var(--basalt-muted-foreground));
 	text-underline-offset: 0.2em;
+	transition: text-decoration-color var(--basalt-motion-normal) var(--basalt-motion-ease);
+}
+.landing-footer-bottom :where(p) :where(a):where(:hover, :focus-visible) {
+	text-decoration-color: hsl(var(--basalt-primary));
 }
 .landing-footer-actions {
 	display: flex;
