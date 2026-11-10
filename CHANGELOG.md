@@ -11,6 +11,22 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.2.6] - 2026-11-10
+
+### Changed
+
+- Follow the 24px logo and collapsed toggle row geometry
+- Align Node baseline with 26 LTS across handbook and READMEs
+- Pin Node 26.12.1 in package-gates and release deploy
+
+### Fixed
+
+- Keep the version badge beside the brand name
+- Stop stale hover from opening the collapsed search tooltip
+- Size the collapsed toggle like a rail row
+- Render brand version as a badge
+- Enlarge brand logo to 24px on the rail axis
+
 ## [3.2.5] - 2026-11-10
 
 ### Fixed
