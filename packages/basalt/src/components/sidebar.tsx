@@ -500,6 +500,7 @@ export function SidebarToggle({
 				<TooltipTrigger asChild>
 					<Button
 						{...props}
+						data-slot="sidebar-toggle"
 						variant={variant}
 						size="icon-sm"
 						aria-expanded={!collapsed}

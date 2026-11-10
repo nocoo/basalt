@@ -133,6 +133,14 @@ describe("dimension token contract", () => {
 		expect(tokens).toContain("--basalt-size-sidebar-brand-slot:");
 		for (const css of [tokens, standalone])
 			expect(css).toContain("--basalt-size-sidebar-logo: 1.5rem");
+		for (const css of [tokens, standalone]) {
+			expect(css).toContain(
+				"--basalt-size-sidebar-row: calc(var(--basalt-line-row) + 2 * var(--basalt-space-lg))",
+			);
+			expect(css).toMatch(
+				/\[data-basalt-sidebar\]\[data-collapsed\] \[data-slot="sidebar-toggle"\] \{[^}]*inline-size: var\(--basalt-size-control\);[^}]*block-size: var\(--basalt-size-sidebar-row\);/,
+			);
+		}
 		expect(tokens).toContain("--basalt-space-panel-x: var(--basalt-space-card)");
 		expect(tokens).toContain("--basalt-space-panel-y: var(--basalt-space-card-sm)");
 		expect(tokens).toContain("--basalt-space-table-edge: var(--basalt-space-panel-x)");

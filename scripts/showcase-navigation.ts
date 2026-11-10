@@ -100,6 +100,15 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 					sidebarWidth: sidebarBox.width,
 				},
 				toggleCenterX: toggleBox.x + toggleBox.width / 2 - sidebarBox.x,
+				toggleBox: {
+					x: toggleBox.x - sidebarBox.x,
+					width: toggleBox.width,
+					height: toggleBox.height,
+				},
+				searchRow: (() => {
+					const row = search.parentElement?.getBoundingClientRect();
+					return row ? { x: row.x - sidebarBox.x, width: row.width, height: row.height } : null;
+				})(),
 				chevronCenterX: chevronBox ? chevronBox.x + chevronBox.width / 2 - sidebarBox.x : null,
 				search: {
 					x: search.getBoundingClientRect().x - sidebarBox.x,
@@ -185,6 +194,17 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 	}
 	assert.ok(Math.abs(collapsed.avatar.x - 16) <= 0.5, JSON.stringify(collapsed));
 	assert.ok(Math.abs(collapsed.avatar.width - 36) <= 0.5, JSON.stringify(collapsed));
+	// The collapsed expand toggle is a full rail row: same box as search and nav icon rows.
+	assert.ok(collapsed.searchRow, JSON.stringify(collapsed));
+	assert.ok(Math.abs(collapsed.toggleBox.x - 17) <= 0.5, JSON.stringify(collapsed));
+	assert.ok(Math.abs(collapsed.toggleBox.width - 34) <= 0.5, JSON.stringify(collapsed));
+	assert.ok(Math.abs(collapsed.toggleBox.height - 38) <= 0.5, JSON.stringify(collapsed));
+	for (const key of ["x", "width", "height"] as const) {
+		assert.ok(
+			Math.abs(collapsed.toggleBox[key] - (collapsed.searchRow?.[key] ?? Number.NaN)) <= 0.5,
+			JSON.stringify(collapsed),
+		);
+	}
 	const geometry = {
 		expanded: expanded.logo,
 		collapsed: collapsed.logo,

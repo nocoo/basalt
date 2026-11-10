@@ -120,6 +120,7 @@ describe("Sidebar", () => {
 		const toggle = screen.getByRole("button", { name: "Collapse sidebar" });
 		expect(toggle).toHaveAttribute("aria-expanded", "true");
 		expect(toggle).toHaveClass("basalt-action-icon-sm");
+		expect(toggle).toHaveAttribute("data-slot", "sidebar-toggle");
 		fireEvent.click(toggle);
 		expect(onClick).toHaveBeenCalledOnce();
 		expect(onCollapsedChange).toHaveBeenCalledWith(true);
