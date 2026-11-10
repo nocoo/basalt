@@ -161,6 +161,7 @@
 	--spacing-basalt-nav-gap: var(--basalt-space-nav-gap);
 	--spacing-basalt-rail: var(--basalt-size-rail);
 	--spacing-basalt-sidebar-brand-slot: var(--basalt-size-sidebar-brand-slot);
+	--spacing-basalt-sidebar-logo: var(--basalt-size-sidebar-logo);
 	--color-basalt-background: hsl(var(--basalt-background));
 	--color-basalt-foreground: hsl(var(--basalt-foreground));
 	--color-basalt-card: hsl(var(--basalt-card));

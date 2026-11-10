@@ -133,6 +133,7 @@
 		2 *
 		var(--basalt-space-layout-lg)
 	);
+	--basalt-size-sidebar-logo: 1.5rem;
 	--basalt-space-sidebar-footer-inline: calc((var(--basalt-size-rail) - var(--basalt-space-9)) / 2);
 }
 
@@ -610,6 +611,18 @@
 	.size-basalt-sidebar-brand-slot {
 		inline-size: var(--basalt-size-sidebar-brand-slot);
 		block-size: var(--basalt-size-sidebar-brand-slot);
+	}
+	.basalt-sidebar-brand-logo {
+		display: flex;
+		flex-shrink: 0;
+		align-items: center;
+		justify-content: center;
+		inline-size: var(--basalt-size-sidebar-logo);
+		block-size: var(--basalt-size-sidebar-logo);
+		margin-inline-start: calc(
+			(var(--basalt-size-sidebar-brand-slot) - var(--basalt-size-sidebar-logo)) /
+			2
+		);
 	}
 	.basalt-action-inset {
 		border-width: 0;

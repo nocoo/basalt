@@ -257,19 +257,21 @@ describe("AppSidebar", () => {
 		const expandedHome = screen.getByRole("link", { name: "Home" });
 		expect(expandedHome).toHaveAttribute("href", "/");
 		const expanded = expandedHome.querySelector("img");
-		expect(expanded).toHaveClass("size-basalt-5");
+		expect(expanded).not.toHaveClass("size-basalt-5");
 		expect(expanded?.closest("[data-slot=sidebar-brand-logo]")).toHaveClass(
-			"w-basalt-sidebar-brand-slot",
+			"basalt-sidebar-brand-logo",
+			"[&>a>img]:size-full",
 		);
 		unmount();
 		renderSidebar("/ui/button", true);
 		const collapsedHome = screen.getByRole("link", { name: "Home" });
 		expect(collapsedHome).toHaveAttribute("href", "/");
 		const collapsed = collapsedHome.querySelector("img");
-		expect(collapsed).toHaveClass("size-basalt-5");
+		expect(collapsed).not.toHaveClass("size-basalt-5");
 		expect(collapsed?.closest("[data-slot=sidebar-header]")).toHaveClass("px-basalt-layout-lg");
 		expect(collapsed?.closest("[data-slot=sidebar-brand-logo]")).toHaveClass(
-			"w-basalt-sidebar-brand-slot",
+			"basalt-sidebar-brand-logo",
+			"[&>a>img]:size-full",
 		);
 	});
 

@@ -116,8 +116,16 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 			};
 		});
 	const expanded = await measure();
-	assert.ok(Math.abs(expanded.logo.x - 24) <= 0.5, JSON.stringify(expanded));
-	assert.ok(Math.abs(expanded.logo.width - 20) <= 0.5, JSON.stringify(expanded));
+	// 24px mark centered on the 34px rail axis (x = 22), wider than the 20px icon column.
+	assert.ok(Math.abs(expanded.logo.x - 22) <= 0.5, JSON.stringify(expanded));
+	assert.ok(Math.abs(expanded.logo.width - 24) <= 0.5, JSON.stringify(expanded));
+	assert.ok(Math.abs(expanded.logo.height - 24) <= 0.5, JSON.stringify(expanded));
+	assert.ok(
+		Math.abs(
+			expanded.logo.x + expanded.logo.width / 2 - (expanded.nav.x + expanded.nav.width / 2),
+		) <= 0.5,
+		JSON.stringify(expanded),
+	);
 	assert.ok(expanded.chevronCenterX !== null, JSON.stringify(expanded));
 	for (const icon of [expanded.search, expanded.nav]) {
 		assert.ok(Math.abs(icon.x - 24) <= 0.5, JSON.stringify(expanded));

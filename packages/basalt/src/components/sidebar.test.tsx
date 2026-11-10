@@ -87,8 +87,10 @@ describe("Sidebar", () => {
 		);
 		expect(container.querySelector('[data-slot="sidebar-brand"]')).toBeInTheDocument();
 		expect(container.querySelector('[data-slot="sidebar-brand-logo"]')).toHaveClass(
-			"w-basalt-sidebar-brand-slot",
-			"shrink-0",
+			"basalt-sidebar-brand-logo",
+			"[&>img]:size-full",
+			"[&>svg]:size-full",
+			"[&>a>img]:size-full",
 		);
 		expect(screen.getByText("v1.2.3")).toHaveClass("text-basalt-sm");
 		expect(container.querySelector('[data-slot="sidebar-brand-action"]')).toHaveClass(

@@ -416,8 +416,15 @@ export function SidebarHeader({ className, ...props }: SidebarHeaderProps) {
 	);
 }
 
+const SIDEBAR_BRAND_LOGO_CLASS =
+	"basalt-sidebar-brand-logo [&>a]:flex [&>a]:size-full [&>a]:items-center [&>a]:justify-center [&>a>img]:size-full [&>a>svg]:size-full [&>img]:size-full [&>svg]:size-full [&_img]:object-contain";
+
 export interface SidebarBrandProps extends Omit<HTMLAttributes<HTMLDivElement>, "children"> {
-	/** Brand mark rendered in the fixed collapsed-rail slot. */
+	/**
+	 * Brand mark rendered in the fixed collapsed-rail slot. The slot sizes a direct
+	 * `img`/`svg` child (or one wrapped in a single link) to `--basalt-size-sidebar-logo`
+	 * and centers it on the rail axis; pass the mark without size classes.
+	 */
 	logo: ReactNode;
 	/** Product or workspace name. */
 	name: ReactNode;
@@ -444,10 +451,7 @@ export function SidebarBrand({
 			)}
 			{...props}
 		>
-			<span
-				data-slot="sidebar-brand-logo"
-				className="flex w-basalt-sidebar-brand-slot shrink-0 items-center justify-center"
-			>
+			<span data-slot="sidebar-brand-logo" className={SIDEBAR_BRAND_LOGO_CLASS}>
 				{logo}
 			</span>
 			<div className="flex min-w-0 flex-1 items-center gap-basalt-row-gap overflow-hidden whitespace-nowrap">

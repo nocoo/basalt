@@ -97,7 +97,7 @@ export const API = [
 				name: "logo",
 				type: "React.ReactNode",
 				required: true,
-				description: "Brand mark rendered in the fixed collapsed-rail slot.",
+				description: "Brand mark rendered in the fixed collapsed-rail slot. The slot sizes a direct\n`img`/`svg` child (or one wrapped in a single link) to `--basalt-size-sidebar-logo`\nand centers it on the rail axis; pass the mark without size classes.",
 			},
 			{
 				name: "name",
