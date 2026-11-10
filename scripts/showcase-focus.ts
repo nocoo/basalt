@@ -251,7 +251,7 @@ export async function assertFocusBoundaries(page: Page, baseUrl: string) {
 		};
 	});
 	assert.equal(shell.right[0], shell.right[1], JSON.stringify(shell));
-	assert.equal(shell.footer, "8px 24px 16px", JSON.stringify(shell));
+	assert.equal(shell.footer, "8px 16px 16px", JSON.stringify(shell));
 	assert.equal(shell.gap, "4px", JSON.stringify(shell));
 	await page.getByRole("button", { name: "Collapse sidebar", exact: true }).click();
 	await page.waitForFunction(

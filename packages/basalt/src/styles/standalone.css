@@ -155,6 +155,7 @@
 		2 *
 		var(--basalt-space-layout-lg)
 	);
+  --basalt-space-sidebar-footer-inline: calc((var(--basalt-size-rail) - var(--basalt-space-9)) / 2);
 }
 :root, .light, [data-mode="light"] {
   --basalt-background: 220 14% 94%;
@@ -670,8 +671,16 @@
     pointer-events: none;
     opacity: 0.5;
   }
-  [data-basalt-sidebar][data-collapsed] [data-slot="sidebar-footer"] {
-    align-items: center;
+  .basalt-sidebar-footer {
+    display: flex;
+    flex-direction: column;
+    padding-inline: var(--basalt-space-sidebar-footer-inline);
+  }
+  [data-basalt-sidebar][data-collapsed] .basalt-sidebar-footer {
+    display: grid;
+    grid-template-columns: var(--basalt-space-9);
+    justify-content: start;
+    justify-items: center;
   }
   [data-basalt-sidebar][data-collapsed] [data-slot="sidebar-nav"] {
     padding-inline: calc((var(--basalt-size-rail) - var(--basalt-size-control)) / 2);
@@ -3873,6 +3882,10 @@
   }
   .\[\&\>svg\]\:shrink-0 > svg {
     flex-shrink: 0;
+  }
+  .\[\&\>svg\:first-child\]\:size-basalt-sidebar-brand-slot > svg:first-child {
+    width: var(--basalt-size-sidebar-brand-slot);
+    height: var(--basalt-size-sidebar-brand-slot);
   }
   .basalt-hover-list .\[\.basalt-hover-list_\&\]\:focus\:bg-transparent:focus {
     background-color: transparent;

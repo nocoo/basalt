@@ -77,13 +77,16 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 			const logo = sidebar?.querySelector<HTMLElement>("[data-sidebar-brand-image]");
 			const toggle = sidebar?.querySelector<HTMLElement>("[data-sidebar-toggle]");
 			const chevron = sidebar?.querySelector<SVGElement>('[data-slot="sidebar-group-label"] svg');
-			const columnItems = [
-				sidebar?.querySelector("button > svg.lucide-search"),
-				sidebar?.querySelector("[data-sidebar-row] > svg"),
-				sidebar?.querySelector('[data-slot="sidebar-group-label"] > span'),
-				sidebar?.querySelector('[data-slot="sidebar-footer"] > div > :first-child'),
-			];
-			if (!sidebar || !logo || !toggle) throw new Error("Missing sidebar geometry");
+			const search = sidebar?.querySelector<SVGElement>('[data-slot="sidebar-search"] > svg');
+			const navIcon = sidebar?.querySelector<SVGElement>(
+				'[data-sidebar-row]:not([data-slot="sidebar-search"]) > svg',
+			);
+			const avatar =
+				sidebar?.querySelector<HTMLElement>('[data-slot="sidebar-footer"] > div > :first-child') ??
+				sidebar?.querySelector<HTMLElement>('[data-slot="sidebar-footer"] > :first-child');
+			if (!sidebar || !logo || !toggle || !search || !navIcon || !avatar) {
+				throw new Error("Missing sidebar geometry");
+			}
 			const sidebarBox = sidebar.getBoundingClientRect();
 			const logoBox = logo.getBoundingClientRect();
 			const toggleBox = toggle.getBoundingClientRect();
@@ -98,17 +101,30 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 				},
 				toggleCenterX: toggleBox.x + toggleBox.width / 2 - sidebarBox.x,
 				chevronCenterX: chevronBox ? chevronBox.x + chevronBox.width / 2 - sidebarBox.x : null,
-				columnX: columnItems.map((item) => item && item.getBoundingClientRect().x - sidebarBox.x),
+				search: {
+					x: search.getBoundingClientRect().x - sidebarBox.x,
+					width: search.getBoundingClientRect().width,
+				},
+				nav: {
+					x: navIcon.getBoundingClientRect().x - sidebarBox.x,
+					width: navIcon.getBoundingClientRect().width,
+				},
+				avatar: {
+					x: avatar.getBoundingClientRect().x - sidebarBox.x,
+					width: avatar.getBoundingClientRect().width,
+				},
 			};
 		});
 	const expanded = await measure();
 	assert.ok(Math.abs(expanded.logo.x - 24) <= 0.5, JSON.stringify(expanded));
 	assert.ok(Math.abs(expanded.logo.width - 20) <= 0.5, JSON.stringify(expanded));
 	assert.ok(expanded.chevronCenterX !== null, JSON.stringify(expanded));
-	assert.ok(
-		expanded.columnX.every((position) => position !== null && Math.abs(position - 24) <= 0.5),
-		JSON.stringify(expanded),
-	);
+	for (const icon of [expanded.search, expanded.nav]) {
+		assert.ok(Math.abs(icon.x - 24) <= 0.5, JSON.stringify(expanded));
+		assert.ok(Math.abs(icon.width - 20) <= 0.5, JSON.stringify(expanded));
+	}
+	assert.ok(Math.abs(expanded.avatar.x - 16) <= 0.5, JSON.stringify(expanded));
+	assert.ok(Math.abs(expanded.avatar.width - 36) <= 0.5, JSON.stringify(expanded));
 	assert.ok(
 		Math.abs(expanded.toggleCenterX - expanded.chevronCenterX) <= 0.5,
 		JSON.stringify(expanded),
@@ -155,6 +171,12 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 	}
 	assert.ok(Math.abs(collapsed.logo.x - expanded.logo.x) <= 0.5, JSON.stringify(collapsed));
 	assert.ok(Math.abs(collapsed.logo.y - expanded.logo.y) <= 0.5, JSON.stringify(collapsed));
+	for (const icon of [collapsed.search, collapsed.nav]) {
+		assert.ok(Math.abs(icon.x - 24) <= 0.5, JSON.stringify(collapsed));
+		assert.ok(Math.abs(icon.width - 20) <= 0.5, JSON.stringify(collapsed));
+	}
+	assert.ok(Math.abs(collapsed.avatar.x - 16) <= 0.5, JSON.stringify(collapsed));
+	assert.ok(Math.abs(collapsed.avatar.width - 36) <= 0.5, JSON.stringify(collapsed));
 	const geometry = {
 		expanded: expanded.logo,
 		collapsed: collapsed.logo,
@@ -353,19 +375,71 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 	const geometry = await sidebar.evaluate((node) => {
 		const nav = node.querySelector("nav") as HTMLElement;
 		const box = node.getBoundingClientRect();
-		const rows = Array.from(nav.querySelectorAll<HTMLElement>("[data-basalt-hover-item]"));
+		const search = nav.querySelector<HTMLElement>('[data-slot="sidebar-search"]');
+		const footerControl = node.querySelector<HTMLElement>(
+			'[data-slot="sidebar-footer"] > .basalt-action',
+		);
+		if (!search || !footerControl) throw new Error("Missing sidebar control geometry");
+		const footer = footerControl.parentElement;
+		if (!footer) throw new Error("Missing sidebar footer geometry");
+		const footerProbeCenters = node.hasAttribute("data-collapsed")
+			? (
+					[
+						["a", 20],
+						["button", 30],
+						["span", 36],
+					] as const
+				).map(([tag, width]) => {
+					const probe = document.createElement(tag);
+					probe.style.boxSizing = "border-box";
+					probe.style.inlineSize = `${width}px`;
+					probe.style.blockSize = "20px";
+					probe.style.border = "0";
+					probe.style.padding = "0";
+					footer.append(probe);
+					const probeBox = probe.getBoundingClientRect();
+					const center = probeBox.left + probeBox.width / 2 - box.left;
+					probe.remove();
+					return center;
+				})
+			: [];
+		const top = (element: HTMLElement) =>
+			element.getBoundingClientRect().top - nav.getBoundingClientRect().top + nav.scrollTop;
+		const destinations = Array.from(
+			nav.querySelectorAll<HTMLElement>("[data-basalt-hover-item]"),
+		).filter((row) => row !== search);
+		const directDestinations = Array.from(nav.children).filter(
+			(child): child is HTMLElement =>
+				child instanceof HTMLElement &&
+				child.hasAttribute("data-basalt-hover-item") &&
+				child !== search,
+		);
+		const rowGeometry = (row: HTMLElement) => ({
+			top: top(row),
+			left: row.getBoundingClientRect().left - box.left,
+			height: row.getBoundingClientRect().height,
+			padding: getComputedStyle(row).padding,
+		});
 		return {
 			width: box.width,
 			paddingInline: getComputedStyle(nav).paddingInlineStart,
 			paddingTop: getComputedStyle(nav).paddingTop,
 			paddingBottom: getComputedStyle(nav).paddingBottom,
-			firstTop:
-				rows[0].getBoundingClientRect().top - nav.getBoundingClientRect().top + nav.scrollTop,
-			rows: rows.map((row) => ({
-				left: row.getBoundingClientRect().left - box.left,
-				height: row.getBoundingClientRect().height,
-				padding: getComputedStyle(row).padding,
-			})),
+			search: {
+				...rowGeometry(search),
+				hoverItem: search.hasAttribute("data-basalt-hover-item"),
+			},
+			footerControl: (() => {
+				const controlBox = footerControl.getBoundingClientRect();
+				return {
+					left: controlBox.left - box.left,
+					center: controlBox.left + controlBox.width / 2 - box.left,
+					width: controlBox.width,
+				};
+			})(),
+			footerProbeCenters,
+			destinations: destinations.map(rowGeometry),
+			directDestinationTops: directDestinations.map(top),
 			centers: Array.from(
 				node.querySelectorAll(
 					'[data-slot="sidebar-brand-action"] svg, [data-basalt-hover-item] svg',
@@ -378,7 +452,7 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 		};
 	});
 	assert.ok(
-		geometry.rows.every((row) => row.height === 38),
+		geometry.destinations.every((row) => row.height === 38),
 		JSON.stringify(geometry),
 	);
 	if (collapsed) {
@@ -386,7 +460,31 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 		assert.equal(geometry.paddingInline, "17px");
 		assert.equal(geometry.paddingTop, "36px");
 		assert.equal(geometry.paddingBottom, "8px");
-		assert.equal(geometry.firstTop, 36);
+		assert.deepEqual(geometry.directDestinationTops, [78, 120, 162], JSON.stringify(geometry));
+		assert.equal(geometry.search.top, 36, JSON.stringify(geometry));
+		assert.equal(geometry.search.height, 38, JSON.stringify(geometry));
+		assert.equal(geometry.search.hoverItem, true, JSON.stringify(geometry));
+		assert.equal(geometry.search.left, 17, JSON.stringify(geometry));
+		assert.equal(geometry.search.padding, "8px", JSON.stringify(geometry));
+		assert.deepEqual(
+			geometry.footerControl,
+			{ left: 20, center: 34, width: 28 },
+			JSON.stringify(geometry),
+		);
+		assert.ok(
+			geometry.footerProbeCenters.length === 3 &&
+				geometry.footerProbeCenters.every((center) => Math.abs(center - 34) <= 0.5),
+			JSON.stringify(geometry),
+		);
+		assert.equal(
+			geometry.directDestinationTops[0] - geometry.search.top - geometry.search.height,
+			4,
+			JSON.stringify(geometry),
+		);
+		assert.ok(
+			geometry.destinations.every((row) => row.left === 17 && row.padding === "8px"),
+			JSON.stringify(geometry),
+		);
 		assert.ok(
 			geometry.centers.every((center) => Math.abs(center - 34) < 1),
 			JSON.stringify(geometry),
@@ -394,9 +492,22 @@ async function assertNavigationGeometry(sidebar: Locator, collapsed: boolean, in
 	} else {
 		assert.equal(geometry.paddingInline, `${inset}px`);
 		assert.equal(geometry.paddingTop, "8px");
-		assert.equal(geometry.firstTop, 8);
+		assert.equal(geometry.search.top, 8, JSON.stringify(geometry));
+		assert.equal(geometry.search.hoverItem, false, JSON.stringify(geometry));
+		assert.equal(geometry.search.left, inset, JSON.stringify(geometry));
+		assert.equal(geometry.search.padding, "8px", JSON.stringify(geometry));
+		assert.equal(geometry.footerControl.left, 16, JSON.stringify(geometry));
+		assert.equal(geometry.footerControl.width, geometry.width - 32, JSON.stringify(geometry));
+		const firstDestinationTop = geometry.search.top + geometry.search.height + 4;
+		assert.equal(geometry.directDestinationTops.length, 3, JSON.stringify(geometry));
+		geometry.directDestinationTops.forEach((top, index) => {
+			assert.ok(
+				Math.abs(top - (firstDestinationTop + index * 42)) < 0.01,
+				JSON.stringify(geometry),
+			);
+		});
 		assert.ok(
-			geometry.rows.every((row) => row.left === inset && row.padding === "8px"),
+			geometry.destinations.every((row) => row.left === inset && row.padding === "8px"),
 			JSON.stringify(geometry),
 		);
 	}

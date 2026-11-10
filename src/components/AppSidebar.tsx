@@ -530,48 +530,14 @@ export function AppSidebar({ collapsed, onToggle, resizable = true }: AppSidebar
 						}
 					/>
 				</SidebarHeader>
-				{collapsed ? (
-					<>
-						<SidebarNav>
-							<Tooltip delayDuration={0}>
-								<TooltipTrigger asChild>
-									<SidebarIconItem
-										onClick={() => setSearchOpen(true)}
-										aria-label={`${t("common.search")} (⌘K)`}
-									>
-										<Search aria-hidden="true" className="h-4 w-4" strokeWidth={1.5} />
-									</SidebarIconItem>
-								</TooltipTrigger>
-								<TooltipContent side="right" sideOffset={8}>
-									{t("common.search")} (⌘K)
-								</TooltipContent>
-							</Tooltip>
-							{ALL_NAV_ITEMS.map((item) => (
-								<CollapsedNavItem key={item.path} item={item} currentPath={pathname} />
-							))}
-						</SidebarNav>
-						<SidebarFooter>
-							<Tooltip delayDuration={0}>
-								<TooltipTrigger asChild>
-									<Avatar className="h-9 w-9 cursor-pointer">
-										<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-										<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
-									</Avatar>
-								</TooltipTrigger>
-								<TooltipContent side="right" sideOffset={8}>
-									Zheng Li
-								</TooltipContent>
-							</Tooltip>
-						</SidebarFooter>
-					</>
-				) : (
-					<>
-						<div className="px-basalt-layout">
-							<SidebarSearch onClick={() => setSearchOpen(true)}>
-								{t("common.search")}
-							</SidebarSearch>
-						</div>
-						<SidebarNav>
+				<SidebarNav>
+					<SidebarSearch onClick={() => setSearchOpen(true)}>{t("common.search")}</SidebarSearch>
+					{collapsed ? (
+						ALL_NAV_ITEMS.map((item) => (
+							<CollapsedNavItem key={item.path} item={item} currentPath={pathname} />
+						))
+					) : (
+						<>
 							<SidebarPartition>{t("nav.examples")}</SidebarPartition>
 							{NAV_GROUPS.map((group) => (
 								<NavGroupSection key={group.labelKey} group={group} currentPath={pathname} />
@@ -579,31 +545,45 @@ export function AppSidebar({ collapsed, onToggle, resizable = true }: AppSidebar
 							<Separator className="mx-basalt-row-x my-basalt-content-gap w-auto" />
 							<SidebarPartition>{t("nav.kit")}</SidebarPartition>
 							<LibraryNav currentPath={pathname} />
-						</SidebarNav>
-						<SidebarFooter>
-							<SidebarUser
-								name="Zheng Li"
-								email="zhengli@example.com"
-								avatar={
-									<Avatar className="h-9 w-9 shrink-0">
-										<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
-										<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
-									</Avatar>
-								}
-								action={
-									<Button
-										variant="ghost"
-										size="icon-sm"
-										className="shrink-0"
-										aria-label={t("common.logOut")}
-									>
-										<LogOut aria-hidden="true" />
-									</Button>
-								}
-							/>
-						</SidebarFooter>
-					</>
-				)}
+						</>
+					)}
+				</SidebarNav>
+				<SidebarFooter>
+					{collapsed ? (
+						<Tooltip delayDuration={0}>
+							<TooltipTrigger asChild>
+								<Avatar className="h-9 w-9 cursor-pointer">
+									<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
+									<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
+								</Avatar>
+							</TooltipTrigger>
+							<TooltipContent side="right" sideOffset={8}>
+								Zheng Li
+							</TooltipContent>
+						</Tooltip>
+					) : (
+						<SidebarUser
+							name="Zheng Li"
+							email="zhengli@example.com"
+							avatar={
+								<Avatar className="h-9 w-9 shrink-0">
+									<AvatarImage src="https://avatar.vercel.sh/acme" alt="User" />
+									<AvatarFallback className="text-basalt-sm">ZL</AvatarFallback>
+								</Avatar>
+							}
+							action={
+								<Button
+									variant="ghost"
+									size="icon-sm"
+									className="shrink-0"
+									aria-label={t("common.logOut")}
+								>
+									<LogOut aria-hidden="true" />
+								</Button>
+							}
+						/>
+					)}
+				</SidebarFooter>
 				<CommandPalette
 					open={searchOpen}
 					onOpenChange={handleSearchOpenChange}

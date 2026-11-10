@@ -419,7 +419,7 @@ Do not wrap those regions in another full-viewport column. Do not set `h-screen`
 
 ### Shared navigation geometry
 
-`SidebarNav` uses a 16px horizontal inset plus the row's 8px inset, placing row content on a 24px column. `NavigationMenuList` retains its 8px navigation inset; both use a 4px row gap. Sidebar groups do not add another horizontal inset. Sidebar destinations and search use 8px horizontal/vertical padding, an 8px icon gap and a 22px line box for a 38px reference row. Editable/folder rows, horizontal navigation links and menus retain 6px vertical padding and 34px rows. Header and footer use a 24px horizontal inset; footer keeps 8px top and 16px bottom padding. Wrap search in `px-basalt-layout` so its row inset reaches the same column.
+`SidebarNav` uses a 16px horizontal inset plus the row's 8px inset, placing row content on a 24px column. `NavigationMenuList` retains its 8px navigation inset; both use a 4px row gap. Sidebar groups do not add another horizontal inset. Sidebar destinations and search use 8px horizontal/vertical padding, an 8px icon gap and a 22px line box for a 38px reference row. Editable/folder rows, horizontal navigation links and menus retain 6px vertical padding and 34px rows. The header uses a 24px horizontal inset; the footer uses a token-derived 16px avatar inset plus 8px top and 16px bottom padding. Place `SidebarSearch` directly in `SidebarNav`; one instance switches between the filled row and collapsed icon form.
 
 Use `SidebarNav` for vertical lists, including standalone lists of `EditableNavItem` / `FolderNavItem`; `NavigationMenuList` owns horizontal/vertical Radix navigation. Both compose the existing list-local hover adapter. One background moves with transform between enabled rows. Sidebar hover appears at the actual pointer row and disappears there on leave or over a gap/disclosure label; it never launches from or returns to the active route or stale pointer focus. Only continuous row-to-row hover animates. Keyboard focus remains independent. NavigationMenuList retains its focus/selection-following behavior. Nested lists own separate highlights. Hidden, disabled and actively renamed rows are excluded. Geometry reads are batched per animation frame, same-row pointer motion causes no updates, and reduced motion disables transitions. Navigation state, routes and rename operations remain application-owned; the adapter is View-only.
 
@@ -436,10 +436,8 @@ Place `SidebarBrand` in `SidebarHeader` with a 20px mark and `SidebarToggle` in 
 				action={<SidebarToggle />}
 			/>
 		</SidebarHeader>
-		<div className="px-basalt-layout">
-			<SidebarSearch onClick={() => setSearchOpen(true)}>Search</SidebarSearch>
-		</div>
 		<SidebarNav>
+			<SidebarSearch onClick={() => setSearchOpen(true)}>Search</SidebarSearch>
 			{groups.map((group) => (
 				<div key={group.label}>
 					<SidebarPartition>{group.label}</SidebarPartition>
@@ -467,7 +465,7 @@ SidebarPartition marks a major section; SidebarGroup is a smaller uppercase, sem
 
 Control `collapsed` through `SidebarProvider`. The element becomes 68px. Children are icon-sized and centered. Still no inner width/height wrapper.
 
-The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationary and moves its action below the header; the footer centers its content. SidebarIconItem keeps the 34px control width and derives its 38px minimum height from the sidebar line box and padding. The navigation region centers its icon rows on that same rail axis without caller margin overrides. Render icon-only content with an accessible name and tooltip when collapsed; the library does not hide arbitrary application text.
+The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationary and moves its action below the header; the footer remains left-aligned with the avatar fixed 16px from the rail edge. `SidebarSearch` and `SidebarIconItem` keep the 34px control width and 20px sidebar icon size, and derive their 38px minimum height from the sidebar line box and padding. The navigation region centers icon rows on that same rail axis without caller margin overrides. `SidebarSearch` automatically exposes its collapsed tooltip and accessible name; keep the same instance in both states.
 
 ```tsx excerpt:sidebar-collapsed-structure
 <SidebarProvider collapsed={collapsed} onCollapsedChange={setCollapsed}>
@@ -481,16 +479,7 @@ The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationar
 			/>
 		</SidebarHeader>
 		<SidebarNav>
-			<Tooltip delayDuration={0}>
-				<TooltipTrigger asChild>
-					<SidebarIconItem onClick={() => setSearchOpen(true)} aria-label="Search (⌘K)">
-						<Search className="h-4 w-4" strokeWidth={1.5} aria-hidden="true" />
-					</SidebarIconItem>
-				</TooltipTrigger>
-				<TooltipContent side="right" sideOffset={8}>
-					Search (⌘K)
-				</TooltipContent>
-			</Tooltip>
+			<SidebarSearch onClick={() => setSearchOpen(true)}>Search</SidebarSearch>
 			{items.map((item) => (
 				<Tooltip key={item.href} delayDuration={0}>
 					<TooltipTrigger asChild>
@@ -512,7 +501,7 @@ The 68px rail uses `--basalt-size-rail`. `SidebarBrand` keeps the mark stationar
 </SidebarProvider>;
 ```
 
-Render expanded **or** collapsed regions from the same `collapsed` flag. One `Sidebar`. The flag is the animation.
+Render expanded **or** collapsed navigation from the same `collapsed` flag when item labels need separate representations. Keep one `Sidebar` and one `SidebarSearch`; the provider controls the search form, width and animation.
 
 Portaled UI (`CommandPalette`, dialogs) may be a sibling of these regions inside `Sidebar`. They leave the document via a portal and do not participate in the column.
 

@@ -44,6 +44,7 @@ describe("Sidebar", () => {
 			expect(screen.getByRole("button", { name })).toHaveClass(
 				"px-basalt-row-x",
 				"py-basalt-space-lg",
+				"[&>svg:first-child]:size-basalt-sidebar-brand-slot",
 			);
 			expect(screen.getByRole("button", { name })).not.toHaveClass("py-basalt-row-y");
 			expect(screen.getByRole("button", { name })).toHaveAttribute("data-basalt-hover-item");
@@ -62,7 +63,7 @@ describe("Sidebar", () => {
 		expect(screen.getByRole("button", { name: "Home" })).toHaveClass("basalt-focus-inset");
 		expect(screen.getByText("Header")).toHaveClass("px-basalt-layout-lg");
 		expect(screen.getByText("Footer").closest('[data-slot="sidebar-footer"]')).toHaveClass(
-			"px-basalt-layout-lg",
+			"basalt-sidebar-footer",
 			"pt-basalt-space-lg",
 			"pb-basalt-layout",
 		);
@@ -544,8 +545,90 @@ describe("Sidebar", () => {
 
 	it("renders the search trigger", () => {
 		render(<SidebarSearch>Search</SidebarSearch>);
-		expect(screen.getByRole("button", { name: /Search/ })).toBeInTheDocument();
+		const search = screen.getByRole("button", { name: /Search/ });
+		expect(search).toHaveAttribute("data-slot", "sidebar-search");
+		expect(search).toHaveClass(
+			"basalt-sidebar-row",
+			"w-full",
+			"text-basalt-base",
+			"[&>svg:first-child]:size-basalt-sidebar-brand-slot",
+		);
+		expect(search.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
 		expect(screen.getByText("⌘K")).toBeInTheDocument();
+	});
+
+	it("renders one accessible icon search with a tooltip while collapsed", async () => {
+		const onClick = vi.fn();
+		render(
+			<SidebarProvider defaultCollapsed>
+				<Sidebar>
+					<SidebarNav>
+						<SidebarSearch onClick={onClick}>Search</SidebarSearch>
+					</SidebarNav>
+				</Sidebar>
+			</SidebarProvider>,
+		);
+		const search = screen.getByRole("button", { name: "Search (⌘K)" });
+		expect(search).toHaveClass("basalt-sidebar-row", "w-basalt-control", "justify-center");
+		expect(search).toHaveAttribute("data-basalt-hover-item");
+		expect(search.querySelector("svg")).toHaveAttribute("aria-hidden", "true");
+		expect(screen.queryByText("⌘K")).not.toBeInTheDocument();
+		fireEvent.click(search);
+		expect(onClick).toHaveBeenCalledOnce();
+		act(() => search.focus());
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Search (⌘K)");
+	});
+
+	it("preserves search focus and DOM identity across collapse and peek transitions", async () => {
+		function SearchTransitions() {
+			const { collapsed, setCollapsed } = useSidebar();
+			return (
+				<>
+					<button type="button" onClick={() => setCollapsed(!collapsed)}>
+						Toggle collapse
+					</button>
+					<Sidebar>
+						<SidebarNav>
+							<SidebarSearch>Search</SidebarSearch>
+						</SidebarNav>
+					</Sidebar>
+				</>
+			);
+		}
+		const { container } = render(
+			<SidebarProvider peek>
+				<SearchTransitions />
+			</SidebarProvider>,
+		);
+		const sidebar = container.querySelector<HTMLElement>("[data-basalt-sidebar]");
+		const toggle = screen.getByRole("button", { name: "Toggle collapse" });
+		const search = screen.getByRole("button", { name: /Search/ });
+		const icon = search.querySelector("svg");
+		if (!sidebar || !icon) throw new Error("Missing sidebar search transition fixture");
+
+		act(() => search.focus());
+		fireEvent.click(toggle);
+		expect(screen.getByRole("button", { name: "Search (⌘K)" })).toBe(search);
+		expect(search.querySelector("svg")).toBe(icon);
+		expect(search).toHaveFocus();
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Search (⌘K)");
+
+		fireEvent.mouseEnter(sidebar);
+		expect(screen.getByRole("button", { name: /Search/ })).toBe(search);
+		expect(search.querySelector("svg")).toBe(icon);
+		expect(search).toHaveFocus();
+		expect(search).not.toHaveAttribute("data-basalt-hover-item");
+
+		fireEvent.mouseLeave(sidebar);
+		expect(screen.getByRole("button", { name: "Search (⌘K)" })).toBe(search);
+		expect(search.querySelector("svg")).toBe(icon);
+		expect(search).toHaveFocus();
+		expect(await screen.findByRole("tooltip")).toHaveTextContent("Search (⌘K)");
+
+		fireEvent.click(toggle);
+		expect(screen.getByRole("button", { name: /Search/ })).toBe(search);
+		expect(search.querySelector("svg")).toBe(icon);
+		expect(search).toHaveFocus();
 	});
 
 	it("relaxes destination rows locally without a fixed height", () => {

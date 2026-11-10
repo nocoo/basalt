@@ -57,6 +57,11 @@ describe("standalone css", () => {
 		expect(css).toContain("transform var(--basalt-motion-normal) var(--basalt-motion-ease)");
 		expect(css).toContain("prefers-reduced-motion: reduce");
 		expect(css).toContain(".basalt-selection-motion");
+		const sidebarIcon = css.indexOf(
+			".\\[\\&\\>svg\\:first-child\\]\\:size-basalt-sidebar-brand-slot > svg:first-child",
+		);
+		const defaultIcon = css.indexOf(".\\[\\&\\>svg\\]\\:size-basalt-icon-lg > svg");
+		expect(sidebarIcon).toBeGreaterThan(defaultIcon);
 		expect(css).toContain(".shadow-sm");
 		expect(css).toContain(".sticky");
 		expect(css).toContain(".w-\\[4\\.25rem\\]");
