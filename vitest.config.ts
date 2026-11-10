@@ -21,7 +21,7 @@ export default defineConfig({
 		coverage: {
 			provider: "v8",
 			// AST-aware remapping is built into vitest v4+; no opt-in needed.
-			reporter: ["text", "text-summary", "lcov"],
+			reporter: ["text", "text-summary", "json-summary", "lcov"],
 			include: [
 				"src/models/**/*.ts",
 				"src/viewmodels/**/*.ts",
