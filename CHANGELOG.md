@@ -11,6 +11,8 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+## [3.3.0] - 2026-11-11
+
 ### Added
 
 - Add a `dismiss` mode to `SidebarToggle` for closing a drawer that hosts the sidebar; it renders no tooltip, so the first Escape closes an auto-focused drawer.
