@@ -11,6 +11,13 @@ were prepared but never published are folded into the next published version.
 
 ## [Unreleased]
 
+Target 3.2.5 (unreleased).
+
+### Fixed
+
+- Keep the sidebar footer avatar and search/navigation icons at a constant position during collapse and expand transitions.
+- Give SidebarSearch an accessible collapsed icon form with a tooltip while preserving one consumer instance across sidebar states.
+
 ## [3.2.4] - 2026-11-10
 
 Includes the prepared but unpublished 3.2.2 and 3.2.3 notes.

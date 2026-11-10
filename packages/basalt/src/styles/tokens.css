@@ -133,6 +133,7 @@
 		2 *
 		var(--basalt-space-layout-lg)
 	);
+	--basalt-space-sidebar-footer-inline: calc((var(--basalt-size-rail) - var(--basalt-space-9)) / 2);
 }
 
 :root,
@@ -663,8 +664,8 @@
 		pointer-events: none;
 		opacity: 0.5;
 	}
-	[data-basalt-sidebar][data-collapsed] [data-slot="sidebar-footer"] {
-		align-items: center;
+	.basalt-sidebar-footer {
+		padding-inline: var(--basalt-space-sidebar-footer-inline);
 	}
 	[data-basalt-sidebar][data-collapsed] [data-slot="sidebar-nav"] {
 		padding-inline: calc((var(--basalt-size-rail) - var(--basalt-size-control)) / 2);

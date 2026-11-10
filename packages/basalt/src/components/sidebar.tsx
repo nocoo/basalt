@@ -399,7 +399,7 @@ export function Sidebar({
 }
 
 const SIDEBAR_ROW_CLASS =
-	"min-h-[calc(var(--basalt-line-row)+2*var(--basalt-space-lg))] py-basalt-space-lg";
+	"basalt-sidebar-row min-h-[calc(var(--basalt-line-row)+2*var(--basalt-space-lg))] py-basalt-space-lg [&>svg:first-child]:size-basalt-sidebar-brand-slot";
 
 export interface SidebarHeaderProps extends HTMLAttributes<HTMLDivElement> {}
 
@@ -524,26 +524,52 @@ export function SidebarSearch({
 	children,
 	...props
 }: SidebarSearchProps) {
-	return (
+	const context = useContext(SidebarContext);
+	const collapsed = context?.collapsed && !(context.peek && context.peeking);
+	const button = (
 		<button
 			type="button"
+			data-slot="sidebar-search"
+			data-basalt-hover-item={collapsed ? "" : undefined}
+			data-sidebar-row={collapsed ? "" : undefined}
+			data-hover-selected={collapsed ? "false" : undefined}
 			className={cn(
-				BASALT_UI_CLASS,
-				NAV_ROW_CLASS,
+				collapsed ? NAV_ITEM_CLASS : cn(BASALT_UI_CLASS, NAV_ROW_CLASS),
 				SIDEBAR_ROW_CLASS,
-				"w-full cursor-pointer bg-basalt-secondary transition-colors basalt-motion hover:bg-basalt-hover",
+				collapsed
+					? "relative w-basalt-control justify-center"
+					: "w-full cursor-pointer bg-basalt-secondary transition-colors basalt-motion hover:bg-basalt-hover",
 				className,
 			)}
 			{...props}
 		>
-			<Search className="h-basalt-4 w-basalt-4 text-basalt-muted-foreground" strokeWidth={1.5} />
-			<span className="flex-1 text-left text-basalt-base text-basalt-muted-foreground">
+			<Search className="text-basalt-foreground" strokeWidth={1.5} aria-hidden="true" />
+			<span
+				className={
+					collapsed ? "sr-only" : "flex-1 text-left text-basalt-base text-basalt-foreground"
+				}
+			>
 				{children}
+				{collapsed && shortcut ? ` (${shortcut})` : null}
 			</span>
-			<kbd className="pointer-events-none hidden rounded-basalt-sm border border-basalt-border bg-basalt-card px-basalt-space-md py-basalt-space-xs text-basalt-sm font-medium text-basalt-muted-foreground sm:inline-block">
-				{shortcut}
-			</kbd>
+			{!collapsed ? (
+				<kbd className="pointer-events-none hidden rounded-basalt-sm border border-basalt-border bg-basalt-card px-basalt-space-md py-basalt-space-xs text-basalt-sm font-medium text-basalt-muted-foreground sm:inline-block">
+					{shortcut}
+				</kbd>
+			) : null}
 		</button>
+	);
+	if (!collapsed) return button;
+	return (
+		<TooltipProvider>
+			<Tooltip delayDuration={0}>
+				<TooltipTrigger asChild>{button}</TooltipTrigger>
+				<TooltipContent side={context?.side === "right" ? "left" : "right"} sideOffset={8}>
+					{children}
+					{shortcut ? ` (${shortcut})` : null}
+				</TooltipContent>
+			</Tooltip>
+		</TooltipProvider>
 	);
 }
 
@@ -801,7 +827,7 @@ export function SidebarFooter({ className, ...props }: SidebarFooterProps) {
 		<div
 			data-slot="sidebar-footer"
 			className={cn(
-				"flex shrink-0 flex-col gap-basalt-content-gap px-basalt-layout-lg pt-basalt-space-lg pb-basalt-layout",
+				"basalt-sidebar-footer flex shrink-0 flex-col gap-basalt-content-gap pt-basalt-space-lg pb-basalt-layout",
 				className,
 			)}
 			{...props}

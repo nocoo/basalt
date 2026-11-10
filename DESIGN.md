@@ -258,8 +258,9 @@ interaction contracts; do not change their containment as a global workaround.
   destinations use 14px (`text-basalt-base`) text and 8px row insets. Sidebar owns
   a private 24px content column: its 16px region inset composes with the row's
   8px inset, without changing the shared 8px navigation inset used by other
-  components. Header, footer, search, group and destination content align to that
-  column. `SidebarBrand` reserves a fixed 20px logo slot at 24px, keeping the logo
+  components. Header, search, group and destination content align to that column;
+  the footer uses a fixed 16px avatar inset so its 36px avatar stays stationary
+  through collapse. `SidebarBrand` reserves a fixed 20px logo slot at 24px, keeping the logo
   center on the 68px rail axis during the width transition. Its action remains
   reachable below the header when collapsed. Groups preserve keyboard expansion
   and chevron motion; collapsed rails omit labels. Icons stay centered on the 68px

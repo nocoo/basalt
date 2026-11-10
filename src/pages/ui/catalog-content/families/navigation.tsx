@@ -320,7 +320,7 @@ export default function Example() {
 const sidebarDocs = extraDocs(
 	"Sidebar",
 	"sidebar",
-	"App chrome: L0 sidebar with an L1 content island that floats a corner shadow. SidebarSearch is a native button supporting button attributes; its shortcut is a visual label only and does not register keyboard shortcuts (defaults to ⌘K). SidebarIconItem requires caller-provided aria-label or aria-labelledby for accessible naming. SidebarGroup provides an uncontrolled collapsible section with defaultOpen and does not accept controlled open props or arbitrary DOM attributes. SidebarProvider.defaultWidth accepts an initial width clamped between 180px and 400px. useSidebar() must be called inside a SidebarProvider (throws an error if called outside) and returns the sidebar context state rather than component props.",
+	"App chrome: L0 sidebar with an L1 content island that floats a corner shadow. SidebarSearch is a native button supporting button attributes; inside a provider it becomes an accessible icon item with a tooltip while collapsed, so consumers keep one instance. Its shortcut is a visual label only and does not register keyboard shortcuts (defaults to ⌘K). SidebarIconItem requires caller-provided aria-label or aria-labelledby for accessible naming. SidebarGroup provides an uncontrolled collapsible section with defaultOpen and does not accept controlled open props or arbitrary DOM attributes. SidebarProvider.defaultWidth accepts an initial width clamped between 180px and 400px. useSidebar() must be called inside a SidebarProvider (throws an error if called outside) and returns the sidebar context state rather than component props.",
 	"",
 	undefined,
 	SIDEBAR_EXAMPLES[0].code,

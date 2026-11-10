@@ -10,6 +10,7 @@ import {
 	SidebarItem,
 	SidebarNav,
 	SidebarProvider,
+	SidebarSearch,
 	SidebarToggle,
 } from "@nocoo/basalt/components/sidebar";
 import { ArrowUp, Home, Plus, Users } from "lucide-react";
@@ -51,6 +52,7 @@ export default function SidebarDefault() {
 					/>
 				</SidebarHeader>
 				<SidebarNav aria-label="Example care team">
+					<SidebarSearch onClick={() => setActive("Search")}>Search</SidebarSearch>
 					{destinations.map(({ label, icon: Icon, href }) =>
 						collapsed ? (
 							<SidebarIconItem

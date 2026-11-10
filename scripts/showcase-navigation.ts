@@ -77,13 +77,16 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 			const logo = sidebar?.querySelector<HTMLElement>("[data-sidebar-brand-image]");
 			const toggle = sidebar?.querySelector<HTMLElement>("[data-sidebar-toggle]");
 			const chevron = sidebar?.querySelector<SVGElement>('[data-slot="sidebar-group-label"] svg');
-			const columnItems = [
-				sidebar?.querySelector("button > svg.lucide-search"),
-				sidebar?.querySelector("[data-sidebar-row] > svg"),
-				sidebar?.querySelector('[data-slot="sidebar-group-label"] > span'),
-				sidebar?.querySelector('[data-slot="sidebar-footer"] > div > :first-child'),
-			];
-			if (!sidebar || !logo || !toggle) throw new Error("Missing sidebar geometry");
+			const search = sidebar?.querySelector<SVGElement>('[data-slot="sidebar-search"] > svg');
+			const navIcon = sidebar?.querySelector<SVGElement>(
+				'[data-sidebar-row]:not([data-slot="sidebar-search"]) > svg',
+			);
+			const avatar =
+				sidebar?.querySelector<HTMLElement>('[data-slot="sidebar-footer"] > div > :first-child') ??
+				sidebar?.querySelector<HTMLElement>('[data-slot="sidebar-footer"] > :first-child');
+			if (!sidebar || !logo || !toggle || !search || !navIcon || !avatar) {
+				throw new Error("Missing sidebar geometry");
+			}
 			const sidebarBox = sidebar.getBoundingClientRect();
 			const logoBox = logo.getBoundingClientRect();
 			const toggleBox = toggle.getBoundingClientRect();
@@ -98,17 +101,30 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 				},
 				toggleCenterX: toggleBox.x + toggleBox.width / 2 - sidebarBox.x,
 				chevronCenterX: chevronBox ? chevronBox.x + chevronBox.width / 2 - sidebarBox.x : null,
-				columnX: columnItems.map((item) => item && item.getBoundingClientRect().x - sidebarBox.x),
+				search: {
+					x: search.getBoundingClientRect().x - sidebarBox.x,
+					width: search.getBoundingClientRect().width,
+				},
+				nav: {
+					x: navIcon.getBoundingClientRect().x - sidebarBox.x,
+					width: navIcon.getBoundingClientRect().width,
+				},
+				avatar: {
+					x: avatar.getBoundingClientRect().x - sidebarBox.x,
+					width: avatar.getBoundingClientRect().width,
+				},
 			};
 		});
 	const expanded = await measure();
 	assert.ok(Math.abs(expanded.logo.x - 24) <= 0.5, JSON.stringify(expanded));
 	assert.ok(Math.abs(expanded.logo.width - 20) <= 0.5, JSON.stringify(expanded));
 	assert.ok(expanded.chevronCenterX !== null, JSON.stringify(expanded));
-	assert.ok(
-		expanded.columnX.every((position) => position !== null && Math.abs(position - 24) <= 0.5),
-		JSON.stringify(expanded),
-	);
+	for (const icon of [expanded.search, expanded.nav]) {
+		assert.ok(Math.abs(icon.x - 24) <= 0.5, JSON.stringify(expanded));
+		assert.ok(Math.abs(icon.width - 20) <= 0.5, JSON.stringify(expanded));
+	}
+	assert.ok(Math.abs(expanded.avatar.x - 16) <= 0.5, JSON.stringify(expanded));
+	assert.ok(Math.abs(expanded.avatar.width - 36) <= 0.5, JSON.stringify(expanded));
 	assert.ok(
 		Math.abs(expanded.toggleCenterX - expanded.chevronCenterX) <= 0.5,
 		JSON.stringify(expanded),
@@ -155,6 +171,12 @@ async function assertSidebarBrandGeometry(page: Page, baseUrl: string) {
 	}
 	assert.ok(Math.abs(collapsed.logo.x - expanded.logo.x) <= 0.5, JSON.stringify(collapsed));
 	assert.ok(Math.abs(collapsed.logo.y - expanded.logo.y) <= 0.5, JSON.stringify(collapsed));
+	for (const icon of [collapsed.search, collapsed.nav]) {
+		assert.ok(Math.abs(icon.x - 24) <= 0.5, JSON.stringify(collapsed));
+		assert.ok(Math.abs(icon.width - 20) <= 0.5, JSON.stringify(collapsed));
+	}
+	assert.ok(Math.abs(collapsed.avatar.x - 16) <= 0.5, JSON.stringify(collapsed));
+	assert.ok(Math.abs(collapsed.avatar.width - 36) <= 0.5, JSON.stringify(collapsed));
 	const geometry = {
 		expanded: expanded.logo,
 		collapsed: collapsed.logo,
