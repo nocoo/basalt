@@ -97,7 +97,7 @@ export function App() {
 
 ## 开发
 
-仓库使用 Bun workspaces，`packageManager` 指定 Bun 1.4.0。Node.js 建议使用 24 或更新版本。
+仓库使用 Bun workspaces，`packageManager` 指定 Bun 1.4.0。Node.js 建议使用 26 或更新版本。
 
 ```bash
 git clone https://github.com/nocoo/basalt.git

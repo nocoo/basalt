@@ -30,7 +30,7 @@ Direction: [INTEGRATION.md](INTEGRATION.md); numbered `docs/01`–`03` describe 
 
 ## Setup and commands
 
-TypeScript 7, Bun 1.4.0, Node 24+ for consumer fixtures. Catalog: Vite 8/React, CSS tokens, Cloudflare Worker assets. Package: React 19 components with optional chart peers and separate import paths. Static/tests: TypeScript, Biome, Vitest/V8, Playwright and built external consumers. `src/` holds pages, models, viewmodels and catalog/lib; `packages/basalt/`, `fixtures/` and `scripts/` hold the publishable library, consumer examples and verification runners.
+TypeScript 7, Bun 1.4.0, Node 26+ for consumer fixtures. Catalog: Vite 8/React, CSS tokens, Cloudflare Worker assets. Package: React 19 components with optional chart peers and separate import paths. Static/tests: TypeScript, Biome, Vitest/V8, Playwright and built external consumers. `src/` holds pages, models, viewmodels and catalog/lib; `packages/basalt/`, `fixtures/` and `scripts/` hold the publishable library, consumer examples and verification runners.
 
 Run from the root. Consumer gates create temporary external projects and need npm/network access; browser tests need Chromium; the mobile layout gate also needs WebKit. No production secrets or data are required.
 
